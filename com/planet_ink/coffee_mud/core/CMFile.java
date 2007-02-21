@@ -1066,4 +1066,38 @@ public class CMFile
             cset[s]=(CMFile)set.elementAt(s);
         return cset;
     }
+    
+    public boolean findRemove(String match)
+    {
+        boolean removed=false;
+        StringBuffer text=textUnformatted();
+        int x=text.toString().toUpperCase().indexOf(match.toUpperCase());
+        while(x>=0)
+        {
+            if(((x==0)||(!Character.isLetterOrDigit(text.charAt(x-1))))
+            &&(text.substring(x+match.length()).trim().startsWith("=")))
+            {
+                int zb1=text.lastIndexOf("\n",x);
+                int zb2=text.lastIndexOf("\r",x);
+                int zb=(zb2>zb1)?zb2:zb1;
+                if(zb<0) zb=0; else zb++;
+                int ze1=text.indexOf("\n",x);
+                int ze2=text.indexOf("\r",x);
+                int ze=ze2+1;
+                if((ze1>zb)&&(ze1==ze2+1)) ze=ze1+1; 
+                else
+                if((ze2<0)&&(ze1>0)) ze=ze1+1;
+                if(ze<=0) ze=text.length();
+                if(!text.substring(zb).trim().startsWith("#"))
+                {
+                    text.delete(zb,ze);
+                    x=-1;
+                    removed=true;
+                }
+            }
+            x=text.toString().toUpperCase().indexOf(match.toUpperCase(),x+1);
+        }
+        if(removed) saveRaw(text);
+        return removed;
+    }
 }

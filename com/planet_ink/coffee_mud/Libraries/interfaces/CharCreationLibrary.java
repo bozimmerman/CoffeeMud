@@ -91,4 +91,5 @@ public interface CharCreationLibrary extends CMLibrary
     public String evaluateAutoTitle(String row, boolean addIfPossible);
     public boolean evaluateAutoTitles(MOB mob);
     public void reloadAutoTitles();
+    public void dispossesTitle(String title);
 }

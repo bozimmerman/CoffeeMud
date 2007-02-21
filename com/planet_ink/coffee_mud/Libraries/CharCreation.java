@@ -1086,6 +1086,22 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         }
         return somethingDone;
     }
+    
+    public void dispossesTitle(String title)
+    {
+    	Vector list=CMLib.database().getUserList();
+    	for(int v=0;v<list.size();v++)
+        {
+            MOB M=CMLib.map().getLoadPlayer((String)list.elementAt(v));
+            if((M.playerStats()!=null)&&(M.playerStats().getTitles().contains(title)))
+            {
+                M.playerStats().getTitles().remove(title);
+                if(!CMLib.flags().isInTheGame(M,true))
+                    CMLib.database().DBUpdatePlayerStatsOnly(M);
+            }
+        }
+    }
+    
     public void reloadAutoTitles()
     {
         autoTitles=new DVector(3);

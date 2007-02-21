@@ -268,5 +268,4 @@ public class Resources
 	public static void setCompression(boolean truefalse)
 	{	compress=truefalse;}
 	public static boolean compressed(){return compress;}
-	
 }
