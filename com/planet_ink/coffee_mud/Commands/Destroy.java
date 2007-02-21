@@ -540,7 +540,7 @@ public class Destroy extends BaseItemParser
 		CMFile F=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true);
 		if(F!=null)
 		{
-            boolean removed=F.findRemove(classID);
+            boolean removed=Resources.findRemoveProperty(F, classID);
 			if(removed)
 			{
 				CMLib.ableMapper().getAbilityComponentMap().remove(classID.toUpperCase());
@@ -563,7 +563,7 @@ public class Destroy extends BaseItemParser
         CMFile F=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,true);
         if(F!=null)
         {
-            boolean removed=F.findRemove(classID);
+            boolean removed=Resources.findRemoveProperty(F, classID);
             if(removed)
             {
                 Resources.removeResource("skills/expertises.txt");
@@ -597,7 +597,7 @@ public class Destroy extends BaseItemParser
         CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,true);
         if(F!=null)
         {
-            boolean removed=F.findRemove(classID);
+            boolean removed=Resources.findRemoveProperty(F, classID);
             if(removed)
             {
                 mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The prestige of players just decreased!");
