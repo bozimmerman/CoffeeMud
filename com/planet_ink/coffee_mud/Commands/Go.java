@@ -389,10 +389,23 @@ public class Go extends StdCommand
 		}
 
 		int direction=Directions.getGoodDirectionCode(CMParms.combine(commands,1));
-		if((direction<0)&&(mob.location().fetchFromRoomFavorItems(null,CMParms.combine(commands,1),Item.WORNREQ_UNWORNONLY) instanceof Rideable))
+		if(direction<0)
 		{
-			Command C=CMClass.getCommand("Enter");
-			return C.execute(mob,commands);
+			Room R=mob.location();
+			Environmental E=null;
+			if(R!=null)
+				E=R.fetchFromRoomFavorItems(null,CMParms.combine(commands,1),Item.WORNREQ_UNWORNONLY);
+			if(E instanceof Rideable)
+			{
+				Command C=CMClass.getCommand("Enter");
+				return C.execute(mob,commands);
+			}
+			if(E instanceof Exit)
+			{
+				for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
+					if(R.getExitInDir(e)==E)
+					{ direction=e; break;}
+			}
 		}
 		String doing=(String)commands.elementAt(0);
 		if(direction>=0)
