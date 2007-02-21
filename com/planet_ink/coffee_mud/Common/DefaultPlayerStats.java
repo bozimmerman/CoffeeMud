@@ -80,8 +80,8 @@ public class DefaultPlayerStats implements PlayerStats
 		switch(getCodeNum(code))
 		{
 		case 0: return ID();
-		case 1: return getPrivateList(getFriends());
-		case 2: return getPrivateList(getIgnored());
+		case 1: return "<FRIENDS>"+getPrivateList(getFriends())+"</FRIENDS>";
+		case 2: return "<IGNORED>"+getPrivateList(getIgnored())+"</IGNORED>";
 		case 3: return getTitleXML();
 		case 4: return getAliasXML();
 		case 5: return lastIP;
@@ -98,7 +98,7 @@ public class DefaultPlayerStats implements PlayerStats
 		case 16: return ""+wrap;
 		case 17: return CMParms.toStringList(birthday);
 		case 18: return ""+accountExpiration;
-		case 19: return getPrivateList(introductions);
+		case 19: return "<INTROS>"+getPrivateList(introductions)+"</INTROS>";
 		}
 		return "";
 	}
