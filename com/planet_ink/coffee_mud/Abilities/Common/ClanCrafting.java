@@ -73,7 +73,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 						commonEmote(mob,"<S-NAME> mess(es) up crafting "+building.name()+".");
 					else
 					{
-						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
+						dropAWinner(mob,building);
 						CMLib.commands().postGet(mob,null,building,true);
 					}
 				}

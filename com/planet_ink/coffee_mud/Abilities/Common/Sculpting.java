@@ -89,10 +89,10 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor
 							building.setUsesRemaining(100);
 						else
 						{
-							mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
+							dropAWinner(mob,building);
 							if(key!=null)
 							{
-								mob.location().addItemRefuse(key,Item.REFUSE_PLAYER_DROP);
+								dropAWinner(mob,key);
 								key.setContainer(building);
 							}
 						}

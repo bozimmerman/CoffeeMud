@@ -103,10 +103,10 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor
 						}
 						else
 						{
-							mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
+							dropAWinner(mob,building);
 							if(key!=null)
 							{
-								mob.location().addItemRefuse(key,Item.REFUSE_PLAYER_DROP);
+								dropAWinner(mob,key);
 								key.setContainer(building);
 							}
 						}

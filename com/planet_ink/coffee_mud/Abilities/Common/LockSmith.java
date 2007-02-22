@@ -60,7 +60,7 @@ public class LockSmith extends CraftingSkill
 						commonTell(mob,"You've ruined "+building.name()+"!");
 					else
                     if(!delock)
-						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
+						dropAWinner(mob,building);
 				}
 				building=null;
 			}

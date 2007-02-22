@@ -76,7 +76,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 					if(messedUp)
 						commonTell(mob,"<S-NAME> mess(es) up making "+building.name()+".");
 					else
-						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
+						dropAWinner(mob,building);
 				}
 				building=null;
 			}

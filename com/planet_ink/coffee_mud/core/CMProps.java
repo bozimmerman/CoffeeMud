@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.ByteArrayInputStream;
 
-/* 
+/*
    Copyright 2000-2007 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,12 +39,12 @@ public class CMProps extends Properties
     private static CMProps[] props=new CMProps[256];
     private CMProps(){
     	super();
-    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0); 
+    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
     	if(props==null) props=new CMProps[256];
-	    if(props[c]==null) props[c]=this; 
+	    if(props[c]==null) props[c]=this;
     }
     public static CMProps instance(){return p();}
-    
+
 	public static final long serialVersionUID=0;
     public static final int SYSTEM_PKILL=0;
     public static final int SYSTEM_MULTICLASS=1;
@@ -96,7 +96,7 @@ public class CMProps extends Properties
     public static final int SYSTEM_MXPIMAGEPATH=47;
     public static final int SYSTEM_IGNOREMASK=48;
     public static final int SYSTEM_SIPLET=49;
-    public static final int SYSTEM_PREFACTIONS=50; 
+    public static final int SYSTEM_PREFACTIONS=50;
     public static final int SYSTEM_AUTOAREAPROPS=51;
     public static final int SYSTEM_MOBDEATH=52;
     public static final int SYSTEM_I3ROUTERS=53;
@@ -172,7 +172,7 @@ public class CMProps extends Properties
     public static final int SYSTEMB_ACCOUNTEXPIRATION=9;
     public static final int SYSTEMB_INTRODUCTIONSYSTEM=10;
     public static final int NUMB_SYSTEM=11;
-    
+
     protected String[] sysVars=new String[NUM_SYSTEM];
     protected Integer[] sysInts=new Integer[NUMI_SYSTEM];
     protected Boolean[] sysBools=new Boolean[NUMB_SYSTEM];
@@ -183,13 +183,13 @@ public class CMProps extends Properties
     protected DVector skillMaxManaExceptions=new DVector(2);
     protected DVector skillMinManaExceptions=new DVector(2);
     public int pkillLevelDiff=26;
-    
+
     public boolean loaded=false;
 
 	public CMProps(InputStream in)
 	{
-    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0); 
-	    if(props[c]==null) props[c]=this; 
+    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+	    if(props[c]==null) props[c]=this;
 		try
 		{
 			this.load(in);
@@ -202,8 +202,8 @@ public class CMProps extends Properties
 	}
 	public CMProps(String filename)
 	{
-    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0); 
-	    if(props[c]==null) props[c]=this; 
+    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+	    if(props[c]==null) props[c]=this;
 		try
 		{
 			CMFile F=new CMFile(filename,null,false);
@@ -234,13 +234,13 @@ public class CMProps extends Properties
         }
         return loaded;
     }
-    
+
 	public CMProps(Properties p, String filename)
 	{
 		super(p);
-    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0); 
-	    if(props[c]==null) props[c]=this; 
-		
+    	char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+	    if(props[c]==null) props[c]=this;
+
 		try
 		{
             this.load(new ByteArrayInputStream(new CMFile(filename,null,false).raw()));
@@ -304,7 +304,7 @@ public class CMProps extends Properties
 			return 0.0;
 		}
 	}
-	
+
 	/** retrieve a particular .ini file entry as an integer
 	*
 	* <br><br><b>Usage:</b>  int i=propertyGetterOfInteger(p,"TAG");
@@ -322,7 +322,7 @@ public class CMProps extends Properties
 			return 0;
 		}
 	}
-	
+
     private static CMProps p(){ return props[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
 
     public static int getPKillLevelDiff(){return p().pkillLevelDiff;}
@@ -421,7 +421,7 @@ public class CMProps extends Properties
         	DV.addElement(address,new Long(System.currentTimeMillis()+TimeManager.MILI_DAY));
         }
     }
-    
+
     public static int getMinManaException(String skillID)
     {
         DVector DV=p().skillMinManaExceptions;
@@ -454,8 +454,8 @@ public class CMProps extends Properties
     	}
     	return endVal;
     }
-    
-    
+
+
     public void resetSystemVars()
     {
         if(CMLib.lang()!=null)
@@ -496,7 +496,7 @@ public class CMProps extends Properties
         setVar(SYSTEM_DEVALUERATE,getStr("DEVALUERATE"));
         setVar(SYSTEM_INVRESETRATE,getStr("INVRESETRATE"));
         setVar(SYSTEM_AUCTIONRATES,getStr("AUCTIONRATES"));
-        if(getVar(SYSTEM_AUCTIONRATES).length()==0) setVar(SYSTEM_AUCTIONRATES,"0,10,0.1%,10%,5%,168");
+        if(getVar(SYSTEM_AUCTIONRATES).length()==0) setVar(SYSTEM_AUCTIONRATES,"0,10,0.1%,10%,5%,1,168");
         setVar(SYSTEM_EMOTEFILTER,getStr("EMOTEFILTER"));
         p().emoteFilter=CMParms.parse((getStr("EMOTEFILTER")).toUpperCase());
         setVar(SYSTEM_SAYFILTER,getStr("SAYFILTER"));
@@ -516,7 +516,7 @@ public class CMProps extends Properties
         setBoolVar(SYSTEMB_ACCOUNTEXPIRATION,getStr("ACCOUNTEXPIRATION").equalsIgnoreCase("YES")?true:false);
         setBoolVar(SYSTEMB_INTRODUCTIONSYSTEM,getStr("INTRODUCTIONSYSTEM").equalsIgnoreCase("YES")?true:false);
         setUpLowVar(SYSTEM_PREFACTIONS,getStr("FACTIONS"));
-        
+
         if(CMLib.color()!=null) CMLib.color().clearLookups();
         if(getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))
             setIntVar(SYSTEMI_MANACONSUMEAMT,-100);
@@ -579,9 +579,9 @@ public class CMProps extends Properties
         setIntVar(SYSTEMI_DEFCOMCMDTIME,(int)Math.round(getDouble("DEFCOMCMDTIME")*100.0));
         setIntVar(SYSTEMI_DEFABLETIME,(int)Math.round(getDouble("DEFABLETIME")*100.0));
         setIntVar(SYSTEMI_DEFCOMABLETIME,(int)Math.round(getDouble("DEFCOMABLETIME")*100.0));
-        
+
         Vector V=CMParms.parseCommas(getStr("INJURYSYSTEM"),true);
-        
+
         if(V.size()>0) setIntVar(SYSTEMI_INJPCTCHANCE,CMath.s_int((String)V.elementAt(0)));
         else setIntVar(SYSTEMI_INJPCTCHANCE,100);
         if(V.size()>1) setIntVar(SYSTEMI_INJPCTHP,CMath.s_int((String)V.elementAt(1)));
@@ -600,7 +600,7 @@ public class CMProps extends Properties
         else setIntVar(SYSTEMI_INJBLEEDPCTHP,20);
         if(V.size()>8) setIntVar(SYSTEMI_INJBLEEDPCTCHANCE,CMath.s_int((String)V.elementAt(8)));
         else setIntVar(SYSTEMI_INJBLEEDPCTCHANCE,100);
-        
+
         String stateVar=getStr("STARTHP");
         if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
             setIntVar(SYSTEMI_STARTHP,CMath.s_int(stateVar));
@@ -710,7 +710,7 @@ public class CMProps extends Properties
             return getVar(SYSTEM_MXPIMAGEPATH);
         return getVar(SYSTEM_MXPIMAGEPATH)+"/";
     }
-    
+
     public static String mxpImage(Environmental E, String parms)
     {
         if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
@@ -722,7 +722,7 @@ public class CMProps extends Properties
         if(path.length()==0) return "";
         return "^<IMAGE '"+image+"' URL=\""+path+"\" "+parms+"^>^N";
     }
-    
+
     public static String mxpImage(Environmental E, String parms, String pre, String post)
     {
         if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
@@ -734,7 +734,7 @@ public class CMProps extends Properties
         if(path.length()==0) return "";
         return pre+"^<IMAGE '"+image+"' URL=\""+path+"\" "+parms+"^>^N"+post;
     }
-    
+
     public static String getHashedMXPImage(String key)
     {
         Hashtable H=(Hashtable)Resources.getResource("MXP_IMAGES");
@@ -742,7 +742,7 @@ public class CMProps extends Properties
         H=(Hashtable)Resources.getResource("MXP_IMAGES");
         if(H==null) return "";
         return getHashedMXPImage(H,key);
-        
+
     }
     public static String getHashedMXPImage(Hashtable H, String key)
     {
@@ -753,7 +753,7 @@ public class CMProps extends Properties
         if(s.equalsIgnoreCase("NULL")) return "";
         return s;
     }
-    
+
     public static String getDefaultMXPImage(Object O)
     {
         if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
@@ -1061,7 +1061,7 @@ public class CMProps extends Properties
 
     public static String msp(String soundName, int priority)
     { return msp(soundName,50,CMLib.dice().roll(1,50,priority));}
-    
+
     public static boolean isTheme(int i)
     {
         return (getIntVar(SYSTEMI_MUDTHEME)&i)>0;
@@ -1087,5 +1087,5 @@ public class CMProps extends Properties
         return page;
     }
 
-    
+
 }

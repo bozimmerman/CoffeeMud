@@ -2025,4 +2025,32 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 35. Druids get extra xp for freeing animals from cities(shops) into the country
 36. Really kindof a bug fix, but CMFS is now TRUELY case-insensitive -- even on unix systems!
 37. A surge of new bug-destroying troops was ordered into the code.
+# Build 5.3.0 Released February 22, 2007
+1. New MOB-Type(s) StdAuctioneer/GenAuctioneer to support multi-game-day auctions.
+2. New coffeemud.ini entry AUCTIONRATES to support both AUCTION command, and new Auctioneer settings with charges, costs, and limits.
+3. New Command BID for placing bids with StdAuctioneer/GenAuctioneer
+4. Command/Channel AUCTION changed a bit in its syntax: Prop_Auction has been eliminated from the codebase.
+5. Command LIST now supports a name filter in parameters
+6. By default, Areas now support a PASSIVE state -- if a player hasn't been in an area for 30 mins, all mobility and aggro behavior stops until a player re-enters the area.  This can be disabled from the coffeemud.ini DISABLE flags.  Has cut CPU usage on my own mud in HALF!
+7. When compositing a journal message or email, a TO field that starts with MASK= will now make it only visible to those who meet the ensueing zapper mask settings.
+8. Archons using the AREAS command will see areas color-coded to reflect active/passive states (neat way to see where your players have been)
+9. BUY/BID commands now supports .N format (BUY sword.3, etc)
+10. CoffeeMud has a QuestMaker now with over a dozen templates, available from MUDGrinder Quest Manager.  New META-QUESTSCRIPT language written to support it.
+11. CREATE QUEST (no parameters) now launches the command-line QuestMaker
+12. GO <exit name> is apparantly a new feature. :/
+13. New Scriptable function: INAREA, also new Scriptable variable $b
+14. ItemGenerator behavior now supports MAXDUPS parameters
+15. Conquerable now announces control point changes to players in the area
+16. Quest Scripts now supports an embedded file format -- keep EVERYTHING related to your quest in one file! Even the Scriptable behavior given as part of a quest can refer to files embedded in the quest script.
+17. The MUDGrinder File Manager got a cosmetic and interface tweak.  It's much easier to use now (I think)
+18. Command-Line journal commands can now be used to directly transfer msgs from one to another.  I forget the syntax -- check the HELP. :)
+19. A SKYSIZE (from coffeemud.ini file) of a negative number will create the appropriately sized skys/depths, but hide the exits.
+20. We now support multiple/random intro.txt files and intro.jpg files.. just put multiples of them in the same directory with different numbers before the extension (intro1.txt, intro23432.txt, intro283.jpg) and the system will select between them
+21. New internal-use Property: QuestBound.  Makes resetting a room/mob in use by a quest automatically STOP the quest.
+22. New Property: Prop_Artifact, for creating one-of-a-kind items that are carefully maintained and monitored by the system.
+23. Thief Conning now takes time to complete.
+24. Internal: web server threads are now monitored (like all others) and killed when overdue for completion.
+25. New global item-looting entry in coffeemud.ini called ITEMLOOTPOLICY -- very powerful for limiting/controlling looted items globally.
+26. New standard Exit type: UnseenWalkway
+27. Infamous bugs found dead.  Paternity has not yet been established.
 

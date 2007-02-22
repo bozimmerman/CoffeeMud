@@ -81,7 +81,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 					if(messedUp)
 						commonTell(mob,CMStrings.capitalizeAndLower(building.name())+" explodes!");
 					else
-						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
+						dropAWinner(mob,building);
 				}
 				building=null;
 			}

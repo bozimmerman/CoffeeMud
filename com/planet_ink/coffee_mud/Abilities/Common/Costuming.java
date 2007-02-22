@@ -96,7 +96,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor
 							building.recoverEnvStats();
 						}
 						else
-							mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
+							dropAWinner(mob,building);
 					}
 				}
 				building=null;

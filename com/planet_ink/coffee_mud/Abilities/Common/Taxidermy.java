@@ -60,7 +60,7 @@ public class Taxidermy extends CraftingSkill
 					if(messedUp)
 						commonTell(mob,"You've messed up stuffing "+foundShortName+"!");
 					else
-						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
+						dropAWinner(mob,building);
 				}
 			}
 		}

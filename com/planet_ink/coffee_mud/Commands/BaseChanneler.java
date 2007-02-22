@@ -32,13 +32,14 @@ import java.util.*;
 */
 public class BaseChanneler extends StdCommand
 {
-	public static void channelTo(Session ses,
-								 boolean areareq,
-								 int channelInt,
-								 CMMsg msg,
-								 MOB sender)
+	public static boolean channelTo(Session ses,
+								    boolean areareq,
+								    int channelInt,
+								    CMMsg msg,
+								    MOB sender)
 	{
         MOB M=ses.mob();
+        boolean didIt=false;
 		if(CMLib.channels().mayReadThisChannel(sender,areareq,ses,channelInt)
         &&(M.location()!=null)
 		&&(M.location().okMessage(ses.mob(),msg)))
@@ -50,11 +51,15 @@ public class BaseChanneler extends StdCommand
 				{
 					CMMsg msg2=(CMMsg)msg.trailerMsgs().elementAt(i);
 					if((msg!=msg2)&&(M.location()!=null)&&(M.location().okMessage(M,msg2)))
+					{
 						M.executeMsg(M,msg2);
+						didIt=true;
+					}
 				}
 				msg.trailerMsgs().clear();
 			}
 		}
+		return didIt;
 	}
 	
 	public static void reallyChannel(MOB mob,

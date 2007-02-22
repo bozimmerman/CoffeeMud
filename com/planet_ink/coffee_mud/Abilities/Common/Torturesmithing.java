@@ -68,7 +68,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 					if(messedUp)
 						commonTell(mob,"You've ruined "+building.name()+"!");
 					else
-						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
+						dropAWinner(mob,building);
 				}
 				building=null;
 			}

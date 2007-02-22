@@ -81,10 +81,10 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 						commonEmote(mob,"<S-NAME> mess(es) up building "+building.name()+".");
 					else
 					{
-						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
+						dropAWinner(mob,building);
 						if(key!=null)
 						{
-							mob.location().addItemRefuse(key,Item.REFUSE_PLAYER_DROP);
+							dropAWinner(mob,key);
 							key.setContainer(building);
 						}
 					}

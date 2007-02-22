@@ -97,6 +97,30 @@ public class CraftingSkill extends GatheringSkill
 	    return recipes;
 	}
 	
+	protected void dropAWinner(MOB mob, Item building)
+	{
+		Room R=mob.location();
+		if(R==null)
+			commonTell(mob,"You are NOWHERE?!");
+		else
+		if(building==null)
+			commonTell(mob,"You have built NOTHING?!!");
+		else
+		{
+			R.addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
+			R.recoverRoomStats();
+			boolean foundIt=false;
+			for(int r=0;r<R.numItems();r++)
+				if(R.fetchItem(r)==building)
+					foundIt=true;
+			if(!foundIt)
+			{
+				commonTell(mob,"You have won the common-skill-failure LOTTERY! Congratulations!");
+				CMLib.leveler().postExperience(mob, null, null,50,false);
+			}
+		}
+	}
+	
 	protected void addSpells(Environmental E, String spells)
 	{
 	    if(spells.length()==0) return;

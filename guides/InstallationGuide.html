@@ -14,6 +14,9 @@
 
 
 
+
+  
+  
   <title>Installing and Using CoffeeMud 5.3</title>
   <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
 <!-- Modified by Josh Mueller, 2006-5-5, fix validation problems, add index, and fix spelling errors -->
@@ -26,8 +29,10 @@
 
 
 
+
 <center>
 <table border="1" bordercolor="gray" cellpadding="5" cellspacing="0" width="100%">
+
 
 
 
@@ -37,7 +42,9 @@
 
 
 
+
            <tr>
+
 
 
 
@@ -47,7 +54,9 @@
 
 
 
+      
       <h1>Installing and Using CoffeeMud 5.3</h1>
+
 
 
 
@@ -57,12 +66,15 @@
 
 
 
+
            </tr>
 
 
 
 
+
            <tr>
+
 
 
 
@@ -73,12 +85,15 @@
 
 
 
+      
       <ul>
 
 
 
 
+
                   <li><a href="#installation">Installation</a></li>
+
 
 
 
@@ -89,7 +104,9 @@
 
 
 
+          
           <ul>
+
 
 
 
@@ -99,7 +116,9 @@
 
 
 
+
                       <li><a href="#changedfdb">Changed w/fakedb</a></li>
+
 
 
 
@@ -115,7 +134,10 @@
 
 
 
+
+          
           </ul>
+
 
 
 
@@ -125,12 +147,15 @@
 
 
 
+
                   <li><a href="#settings">Settings</a></li>
 
 
 
 
+
                   <li><a href="#package">The CoffeeMud Package</a></li>
+
 
 
 
@@ -142,7 +167,9 @@
 
 
 
+          
           <ul>
+
 
 
 
@@ -152,7 +179,9 @@
 
 
 
+
                       <li><a href="#mysqlwin">MySQL/ Win</a></li>
+
 
 
 
@@ -162,7 +191,9 @@
 
 
 
+
                       <li><a href="#hsql">HSQL</a></li>
+
 
 
 
@@ -178,12 +209,16 @@
 
 
 
+
+          
           </ul>
 
 
 
 
+
                   </li>
+
 
 
 
@@ -198,12 +233,16 @@
 
 
 
+
+      
       </ul>
 
 
 
 
+
               </td>
+
 
 
 
@@ -214,6 +253,7 @@
 
 
 
+      
       <h2><a name="installation">Installation</a></h2>
 
 
@@ -224,6 +264,8 @@
 
 
 
+
+      
       <p>           The first and most critical step in installing CoffeeMud
    5.3 is to make           sure that you have downloaded and installed the
   latest version of the           Sun Java SDK.  As of this writing, that
@@ -240,6 +282,8 @@ GCJ -- CoffeeMud            (and Sun) do not support it.         </p>
 
 
 
+
+      
       <p>           Now, if you are upgrading from a previous version of
 CoffeeMud, you           need to stop here and skip ahead to the section
 on upgrading.  If           this is your first installation, keep reading.
@@ -253,6 +297,8 @@ on upgrading.  If           this is your first installation, keep reading.
 
 
 
+
+      
       <p>           You will now need to unpack the CoffeeMud.zip package
    into a           directory on your hard drive.  This directory may be
 called,    for           instance, "CoffeeMud".         </p>
@@ -265,6 +311,8 @@ called,    for           instance, "CoffeeMud".         </p>
 
 
 
+
+      
       <p>           If you are using a UNIX/Linux system, you should now
 bring up a console           and cd to whatever directory you unpacked CoffeeMud
    to.  You will           first want to convert the dos-formatted install
@@ -291,6 +339,8 @@ to       <a href="mailto:wrichter@att.net">wrichter@att.net</a> if you have
 
 
 
+
+      
       <p>           If you are using Windows, or you are using UNIX/Linux
    and have           completed the above instructions...         </p>
 
@@ -302,6 +352,8 @@ to       <a href="mailto:wrichter@att.net">wrichter@att.net</a> if you have
 
 
 
+
+      
       <p class="bold">           Congratulations!         </p>
 
 
@@ -312,6 +364,8 @@ to       <a href="mailto:wrichter@att.net">wrichter@att.net</a> if you have
 
 
 
+
+      
       <p>           You have successfully installed CoffeeMud.         </p>
 
 
@@ -322,6 +376,8 @@ to       <a href="mailto:wrichter@att.net">wrichter@att.net</a> if you have
 
 
 
+
+      
       <p>           You may wish, at this point, to investigate the settings
    and components           of the CoffeeMud server.  If so, by all means,
  continue  reading           this document.  If you couldn't care less, then
@@ -336,6 +392,8 @@ prompt and            enter (for Windows or DOS users):         </p>
 
 
 
+
+      
       <p>           <code>java -classpath           ".;.\lib\js.jar;.\lib\jzlib.jar"
    -Xmx85535000           com.planet_ink.coffee_mud.application.MUD "Your
 Muds             Name"           </code>         </p>
@@ -348,6 +406,8 @@ Muds             Name"           </code>         </p>
 
 
 
+
+      
       <p>           And for Unix, Linux, or FreeBSD users, the command differs
    only in the           classpath:         </p>
 
@@ -359,6 +419,8 @@ Muds             Name"           </code>         </p>
 
 
 
+
+      
       <p>           <code>           java -classpath           ".:./lib/js.jar:./lib/jzlib.jar
    -Xmx85535000           com.planet_ink.coffee_mud.application.MUD "Your
 Muds             Name"           </code>         </p>
@@ -371,6 +433,8 @@ Muds             Name"           </code>         </p>
 
 
 
+
+      
       <p>           This will start up the CoffeeMud server. Remember to
 change the           "Your Muds Name" text at the end to the unique name
 you want to give           your mud.  If you are running Windows, you might
@@ -388,6 +452,8 @@ you may           first modify, then make executable using the command <code>chm
 
 
 
+
+      
       <p>           Now, connect to the server on port 5555 using your telnet
    or other           MUD client.  Create yourself a new character.  This
 new             character will be your administrative player, or Archon,
@@ -405,6 +471,8 @@ up the book  and           read it.  The commands to do this are:
 
 
 
+
+      
       <pre>get book<br />read book<br /></pre>
 
 
@@ -415,6 +483,8 @@ up the book  and           read it.  The commands to do this are:
 
 
 
+
+      
       <p>           Doing this will turn your player into an Archon.  An
 Archon is an           all-powerful administrative player who is capable
 of all manner of           magical conjurations. You will probably want to
@@ -429,6 +499,8 @@ you should enter:         </p>
 
 
 
+
+      
       <pre>ahelp import<br /></pre>
 
 
@@ -439,6 +511,8 @@ you should enter:         </p>
 
 
 
+
+      
       <p>           This will tell you how to import *.CMARE files, which
    are CoffeeMud           formatted area files.  Other formats are supported
    as well.         </p>
@@ -451,6 +525,8 @@ you should enter:         </p>
 
 
 
+
+      
       <p>           If you'd like to actually learn how to use the CoffeeMud
    engine, you           should do the following:         </p>
 
@@ -462,7 +538,10 @@ you should enter:         </p>
 
 
 
+
+      
       <ul>
+
 
 
 
@@ -472,22 +551,44 @@ you should enter:         </p>
 
 
 
+
                <li>Go through the <a href="../coffeemud.ini">coffeemud.ini</a>
  file,   and use the <a href="MUDGrinder.html">MudGrinders</a> Control Panel.</li>
+
+        
         <ul>
+
           <li>Set your DOMAIN field</li>
+
+        
         </ul>
+
+        
         <ul>
+
           <li>Set your SMTPSERVERNAME field</li>
+
           <li>Visit <a href="http://www.muddomain.com/imc/">http://www.muddomain.com/imc/</a> , apply for an IMC2 account</li>
+
+          
           <ul>
+
             <li>IMC2 Settings (IMC2LOGIN, IMC2PASS1, IMC2PASS2, etc..)</li>
+
+          
           </ul>
+
           <li>Set your I3EMAIL and I3STATE fields</li>
+
           <li>Set your START field</li>
+
           <li>Set your SOUNDPATH field</li>
+
           <li>Set your MXPIMAGEPATH field</li>
+
+        
         </ul>
+
 
 
 
@@ -495,7 +596,9 @@ you should enter:         </p>
                   <li>Read the <a href="ArchonGuide.html">Archon's Guide</a>.</li>
 
 
+
         <li>Review the <a href="GameBuildersGuide.html">Game Builders Guide</a>.</li>
+
 
 
 
@@ -505,7 +608,9 @@ you should enter:         </p>
 
 
 
+
                <li>Peruse the <a href="Reference.html">Reference Guide</a></li>
+
 
 
 
@@ -515,7 +620,9 @@ you should enter:         </p>
 
 
 
+
                   <li>Be aware of the <a href="SMTPServer.html">SMTP Server Guide</a>.</li>
+
 
 
 
@@ -530,6 +637,8 @@ you should enter:         </p>
 
 
 
+
+      
       </ul>
 
 
@@ -540,8 +649,11 @@ you should enter:         </p>
 
 
 
+
+      
       <p>           Otherwise, once you have your administrator and a few
    areas, you are           technically ready to play!         </p>
+
 
 
 
@@ -552,6 +664,7 @@ you should enter:         </p>
 
 
 
+      
       <h2><a name="upgrading">Upgrading From a Previous Version of CoffeeMud</a></h2>
 
 
@@ -562,6 +675,8 @@ you should enter:         </p>
 
 
 
+
+      
       <p>           There are three upgrade paths, one where the database
              schema was not changed (4.5.0 to 4.5.1), and two others where
  the            database schema was changed (i.e. 4.7 to 5.0) .  If you are
@@ -576,6 +691,8 @@ you should enter:         </p>
 
 
 
+
+      
       <h3><a name="unchanged">Unchanged Database Schema Process</a></h3>
 
 
@@ -586,6 +703,8 @@ you should enter:         </p>
 
 
 
+
+      
       <p>           If you are upgrading to a version where the database
 schema has           (presumably) not changed, you still must expect that
 many other things           probably have.   Therefore, follow these steps:
@@ -599,7 +718,10 @@ many other things           probably have.   Therefore, follow these steps:
 
 
 
+
+      
       <ul>
+
 
 
 
@@ -610,6 +732,7 @@ many other things           probably have.   Therefore, follow these steps:
 
 
 
+          
           <p>             First go into the directory that contains your
 olde             version of CoffeeMud and obliterate the entire "com" path.
  Just             wipe it away.  You won't need it, and it will just cause
@@ -620,7 +743,9 @@ might want to             pull them out first and copy them elsewhere.
 
 
 
+
                   </li>
+
 
 
 
@@ -631,6 +756,7 @@ might want to             pull them out first and copy them elsewhere.
 
 
 
+          
           <p>             Next, save away (in another directory) your
          coffeemud.ini file, and perhaps your mud.bat or mudLINUX.bat.
           Also save away any files in the resources or web directory
@@ -640,7 +766,9 @@ might want to             pull them out first and copy them elsewhere.
 
 
 
+
                   </li>
+
 
 
 
@@ -651,13 +779,16 @@ might want to             pull them out first and copy them elsewhere.
 
 
 
+          
           <p>             Now unpack/unzip the new version of CoffeeMud on
                TOP of your olde one.           </p>
 
 
 
 
+
                   </li>
+
 
 
 
@@ -668,6 +799,7 @@ might want to             pull them out first and copy them elsewhere.
 
 
 
+          
           <p>             Open up the coffeemud.ini file that comes with
 the             new version and also open up your olde customized coffeemud.ini
    file             you saved away in step 2.  Copy over from the old ini
@@ -680,7 +812,9 @@ settings  for             instance.           </p>
 
 
 
+
                   </li>
+
 
 
 
@@ -691,6 +825,7 @@ settings  for             instance.           </p>
 
 
 
+          
           <p>             Copy your intro.txt on top of the one from the
 new             build.  As in step 4, merge any other files back into their
              counterparts in the new build.           </p>
@@ -698,7 +833,9 @@ new             build.  As in step 4, merge any other files back into their
 
 
 
+
                   </li>
+
 
 
 
@@ -709,7 +846,9 @@ new             build.  As in step 4, merge any other files back into their
 
 
 
+          
           <p>             Smile, you are done.           </p>
+
 
 
 
@@ -724,6 +863,8 @@ new             build.  As in step 4, merge any other files back into their
 
 
 
+
+      
       </ul>
 
 
@@ -734,6 +875,8 @@ new             build.  As in step 4, merge any other files back into their
 
 
 
+
+      
       <h3><a name="changedfdb">Changed FakeDB Database Schema Process</a></h3>
 
 
@@ -744,6 +887,8 @@ new             build.  As in step 4, merge any other files back into their
 
 
 
+
+      
       <p>           If you are upgrading to a version with an updated database
              schema, follow the correct instructions for your database
        type.  If you are using fakedb, follow the instructions
@@ -759,7 +904,10 @@ below.   If you don't know whether or not you are using fakedb,
 
 
 
+
+      
       <ul>
+
 
 
 
@@ -770,6 +918,7 @@ below.   If you don't know whether or not you are using fakedb,
 
 
 
+          
           <p>             Go into the CoffeeMud directory for your olde
            version and copy the entire fakedb data directory to somewhere
 else on             your hard drive.  On CoffeeMud versions 1.2 - 4.7, your
@@ -783,7 +932,9 @@ them!           </p>
 
 
 
+
                   </li>
+
 
 
 
@@ -794,6 +945,7 @@ them!           </p>
 
 
 
+          
           <p>             Go back to the beginning of this section and follow
                steps 1 through 5 from the <em>unchanged database schema</em>
    process.           </p>
@@ -801,7 +953,9 @@ them!           </p>
 
 
 
+
                   </li>
+
 
 
 
@@ -812,6 +966,7 @@ them!           </p>
 
 
 
+          
           <p>             From the command line, go into your CoffeeMud
            directory, and from there into fakedb data directory.  Delete
 all             the files matching fakedb.data.*  Do NOT delete
@@ -822,7 +977,9 @@ all             the files matching fakedb.data.*  Do NOT delete
 
 
 
+
                   </li>
+
 
 
 
@@ -833,6 +990,7 @@ all             the files matching fakedb.data.*  Do NOT delete
 
 
 
+          
           <p>             Still from the command line, go into your CoffeeMud
                directory and enter the following:             <code>java com.planet_ink.fakedb.DBUpgrade</code>
              </p>
@@ -840,7 +998,9 @@ all             the files matching fakedb.data.*  Do NOT delete
 
 
 
+
                   </li>
+
 
 
 
@@ -851,13 +1011,16 @@ all             the files matching fakedb.data.*  Do NOT delete
 
 
 
+          
           <p>             Follow the instructions for this little program.
              </p>
 
 
 
 
+
                   </li>
+
 
 
 
@@ -868,7 +1031,9 @@ all             the files matching fakedb.data.*  Do NOT delete
 
 
 
+          
           <p>             Smile, you are done.           </p>
+
 
 
 
@@ -883,6 +1048,8 @@ all             the files matching fakedb.data.*  Do NOT delete
 
 
 
+
+      
       </ul>
 
 
@@ -893,6 +1060,8 @@ all             the files matching fakedb.data.*  Do NOT delete
 
 
 
+
+      
       <h3><a name="changed">Changed Database Schema Process (not FakeDB)</a></h3>
 
 
@@ -903,6 +1072,8 @@ all             the files matching fakedb.data.*  Do NOT delete
 
 
 
+
+      
       <p>           Now, if you are upgrading to a version with an updated
    database schema           and you are NOT using fakedb, but are using
 Access,    SQL Server, MySQL,           or some other database, follow these
@@ -916,7 +1087,10 @@ instructions:            </p>
 
 
 
+
+      
       <ul>
+
 
 
 
@@ -927,6 +1101,7 @@ instructions:            </p>
 
 
 
+          
           <p>             Go into the CoffeeMud directory for your olde
            version and copy the entire fakedb data directory to somewhere
 else on             your hard drive.  On CoffeeMud versions 1.2 - 4.7, your
@@ -942,7 +1117,9 @@ to copy FakeDB's schema             for use with the upgrade application.
 
 
 
+
                   </li>
+
 
 
 
@@ -953,6 +1130,7 @@ to copy FakeDB's schema             for use with the upgrade application.
 
 
 
+          
           <p>             Go back to the beginning of this section and follow
                steps 1 through 5 from the <em>unchanged database schema</em>
    process.           </p>
@@ -960,7 +1138,9 @@ to copy FakeDB's schema             for use with the upgrade application.
 
 
 
+
                   </li>
+
 
 
 
@@ -971,6 +1151,7 @@ to copy FakeDB's schema             for use with the upgrade application.
 
 
 
+          
           <p>             Following the instructions provided by your
          database system, create a brand NEW database for the new version
 of             CoffeeMud.  You will need to use the appropriate database
@@ -983,7 +1164,9 @@ you             preserve your olde CoffeeMud database from the olde version!
 
 
 
+
                   </li>
+
 
 
 
@@ -994,6 +1177,7 @@ you             preserve your olde CoffeeMud database from the olde version!
 
 
 
+          
           <p>             From the command line, go into your CoffeeMud
            directory and enter the following from the command line:
        <code>java com.planet_ink.fakedb.DBUpgrade</code>           </p>
@@ -1001,7 +1185,9 @@ you             preserve your olde CoffeeMud database from the olde version!
 
 
 
+
                   </li>
+
 
 
 
@@ -1012,13 +1198,16 @@ you             preserve your olde CoffeeMud database from the olde version!
 
 
 
+          
           <p>             Follow the instructions for this little program.
              </p>
 
 
 
 
+
                   </li>
+
 
 
 
@@ -1029,6 +1218,7 @@ you             preserve your olde CoffeeMud database from the olde version!
 
 
 
+          
           <p>             Now open up your coffeemud.ini file and make any
                changes necessary to point CoffeeMud to the database for the
    new             version.  This may require creating a new ODBC data source,
@@ -1038,7 +1228,9 @@ you             preserve your olde CoffeeMud database from the olde version!
 
 
 
+
                   </li>
+
 
 
 
@@ -1049,7 +1241,9 @@ you             preserve your olde CoffeeMud database from the olde version!
 
 
 
+          
           <p>             Smile, you are done.           </p>
+
 
 
 
@@ -1064,7 +1258,10 @@ you             preserve your olde CoffeeMud database from the olde version!
 
 
 
+
+      
       </ul>
+
 
 
 
@@ -1075,6 +1272,7 @@ you             preserve your olde CoffeeMud database from the olde version!
 
 
 
+      
       <h2><a name="settings">Settings</a></h2>
 
 
@@ -1085,6 +1283,8 @@ you             preserve your olde CoffeeMud database from the olde version!
 
 
 
+
+      
       <p>           All of the general purpose settings for the CoffeeMud
    server are kept           in the INI file, called "coffeemud.ini".  This
   file may be           modified with your favorite text editor: notepad,
@@ -1102,6 +1302,8 @@ can.           </p>
 
 
 
+
+      
       <p>           If you are happy with the standard installation, you
 will usually also           be content to leave the INI file alone.  You
 will eventually,           however, probably find a need to at least modify
@@ -1117,6 +1319,8 @@ effect.         </p>
 
 
 
+
+      
       <p>           Below are some of the more important configuration settings
    to be aware           of in your ini file.  There are actually many many
   more, but they           just aren't discussed here.  The best way to modify
@@ -1130,7 +1334,10 @@ effect.         </p>
 
 
 
+
+      
       <ul>
+
 
 
 
@@ -1142,6 +1349,7 @@ effect.         </p>
 
 
 
+          
           <p>             These entries refer to logged             system
    messages, logged error messages, and logged debug messages
  respectively.    When logging is directed to a file, that file is
@@ -1156,7 +1364,9 @@ are set to "BOTH", while              DBGMSGS is set to "OFF".
 
 
 
+
                   </li>
+
 
 
 
@@ -1167,6 +1377,7 @@ are set to "BOTH", while              DBGMSGS is set to "OFF".
 
 
 
+          
           <p>             This is the TCP/IP port number which the main
            CoffeeMud server will listen on.  By default the setting is
           5555.  If you would like to change this number to some other port,
@@ -1175,7 +1386,9 @@ are set to "BOTH", while              DBGMSGS is set to "OFF".
 
 
 
+
                     </li>
+
 
 
 
@@ -1186,6 +1399,7 @@ are set to "BOTH", while              DBGMSGS is set to "OFF".
 
 
 
+          
           <p>This setting designates the Room ID of the place
  on your map where new players will start off at.  It also dictates
        where players are brought to when the Recall skill is used.  By
@@ -1196,7 +1410,9 @@ are set to "BOTH", while              DBGMSGS is set to "OFF".
 
 
 
+
                     </li>
+
 
 
 
@@ -1208,6 +1424,7 @@ are set to "BOTH", while              DBGMSGS is set to "OFF".
 
 
 
+          
           <p>             This is a comma separated list of channels
         which the users of your system may converse publicly on.  An
         minimum character level may optionally be specified after each channel
@@ -1221,7 +1438,9 @@ below) is  16 or 32, I forget.             </p>
 
 
 
+
                     </li>
+
 
 
 
@@ -1233,6 +1452,7 @@ below) is  16 or 32, I forget.             </p>
 
 
 
+          
           <p>             This TCP/IP setting denotes how many connections
    can be queued up when             the server is busy. Leave it at 6.
          </p>
@@ -1240,7 +1460,9 @@ below) is  16 or 32, I forget.             </p>
 
 
 
+
                    </li>
+
 
 
 
@@ -1251,6 +1473,7 @@ below) is  16 or 32, I forget.             </p>
 
 
 
+          
           <p>             This TCP/IP setting will limit the IP addresses
    which can connect to             your server.  It is commented out by
 default,    which means that             everyone is allowed to connect.
@@ -1259,7 +1482,9 @@ default,    which means that             everyone is allowed to connect.
 
 
 
+
                     </li>
+
 
 
 
@@ -1271,6 +1496,7 @@ default,    which means that             everyone is allowed to connect.
 
 
 
+          
           <p>             This setting tells CoffeeMud whether to start up
                the built-in InterMud3 server and make a connection to the
             InterMud router.  A value of "TRUE" will turn on the I3 server
@@ -1279,7 +1505,9 @@ default,    which means that             everyone is allowed to connect.
 
 
 
+
                     </li>
+
 
 
 
@@ -1291,6 +1519,7 @@ default,    which means that             everyone is allowed to connect.
 
 
 
+          
           <p>             This is the TCP/IP port number which the
       main InterMud3 server will listen on.  By default the setting
        is 27766.  If you would like to change this number to some other
@@ -1301,7 +1530,9 @@ default,    which means that             everyone is allowed to connect.
 
 
 
+
                     </li>
+
 
 
 
@@ -1313,6 +1544,7 @@ default,    which means that             everyone is allowed to connect.
 
 
 
+          
           <p>             This is a short description of the state of your
                mud as you want it published to the I3 network.  A state is
              typically like "Private", or "Open to the public", or "Under
@@ -1321,7 +1553,9 @@ default,    which means that             everyone is allowed to connect.
 
 
 
+
                     </li>
+
 
 
 
@@ -1333,6 +1567,7 @@ default,    which means that             everyone is allowed to connect.
 
 
 
+          
           <p>             This is a comma separated list of InterMud3
          channels which the users of your system may converse publicly on.
                Each channel entry is separated by a comma.  Each entry consists
@@ -1348,7 +1583,9 @@ of  the InterMud3             channel to map this local channel to.  A couple
 
 
 
+
                     </li>
+
 
 
 
@@ -1360,6 +1597,7 @@ of  the InterMud3             channel to map this local channel to.  A couple
 
 
 
+          
           <p>             This setting tells CoffeeMud whether to
      start up the built-in web servers.  A value of "TRUE" will turn on
            the web servers.  Even if you don't wish to publish any of your
@@ -1372,7 +1610,9 @@ CoffeeMud   web server in             general, please read the <a href="WebServe
 
 
 
+
                     </li>
+
 
 
 
@@ -1384,6 +1624,7 @@ CoffeeMud   web server in             general, please read the <a href="WebServe
 
 
 
+          
           <p>             This setting tells CoffeeMud whether to
      start up the built-in SMTP (mail) server.  A value of             "TRUE"
    will turn on the SMTP servers.  Even if you don't wish             to
@@ -1396,7 +1637,9 @@ please  read  the <a href="SMTPServer.html">SMTPServer             Guide</a>.
 
 
 
+
                     </li>
+
 
 
 
@@ -1409,6 +1652,7 @@ please  read  the <a href="SMTPServer.html">SMTPServer             Guide</a>.
 
 
 
+          
           <p>             These settings each specify a path on your local
    drive which will             contain Java class files.  These class files
    are typically classes             which you might want to use with your
@@ -1420,7 +1664,9 @@ please  read  the <a href="SMTPServer.html">SMTPServer             Guide</a>.
 
 
 
+
                   </li>
+
 
 
 
@@ -1431,6 +1677,7 @@ please  read  the <a href="SMTPServer.html">SMTPServer             Guide</a>.
 
 
 
+          
           <p>             This specifies the name of the Java class which
                will be used as your JDBC or ODBC database driver.  If
         you are using a System ODBC data source, this entry will typically
@@ -1443,7 +1690,9 @@ please  read  the <a href="SMTPServer.html">SMTPServer             Guide</a>.
 
 
 
+
                    </li>
+
 
 
 
@@ -1454,6 +1703,7 @@ please  read  the <a href="SMTPServer.html">SMTPServer             Guide</a>.
 
 
 
+          
           <p>             This is the name of the JDBC or ODBC Service as
    defined by your local             operating system.  It typically denotes
    the name of the ODBC             service, or the name of the database
@@ -1469,7 +1719,9 @@ on "The  CoffeeMud Database" for more             information.
 
 
 
+
                     </li>
+
 
 
 
@@ -1481,6 +1733,7 @@ on "The  CoffeeMud Database" for more             information.
 
 
 
+          
           <p>             This specifies the name and password
   which may or may not be required to log into your ODBC service, or
         database.  Not required for fakedb, and thus blank by default.
@@ -1489,7 +1742,9 @@ on "The  CoffeeMud Database" for more             information.
 
 
 
+
                   </li>
+
 
 
 
@@ -1501,10 +1756,12 @@ on "The  CoffeeMud Database" for more             information.
 
 
 
+          
           <p>This  is the number of independent             connections to
    make to the database through your JDBC/ODBC             driver.  1 or
 2  is  plenty.  CoffeeMud is not especially             database intensive.
           </p>
+
 
 
 
@@ -1519,6 +1776,8 @@ on "The  CoffeeMud Database" for more             information.
 
 
 
+
+      
       </ul>
 
 
@@ -1529,10 +1788,13 @@ on "The  CoffeeMud Database" for more             information.
 
 
 
+
+      
       <p>           * In Addition to the above, you will find other numerous
    flags and           settings which allow you to better customize your
 CoffeeMud.     Make           sure you check out the Control Panel feature
 in the MUDGrinder    to           modify them.         </p>
+
 
 
 
@@ -1543,6 +1805,7 @@ in the MUDGrinder    to           modify them.         </p>
 
 
 
+      
       <h2><a name="package">The CoffeeMud Package</a></h2>
 
 
@@ -1553,9 +1816,12 @@ in the MUDGrinder    to           modify them.         </p>
 
 
 
+
+      
       <p>           Here is a summary of the directories inside the CoffeeMud
    package,           along with some of the important files you may want
 to   edit when           configuring your server.         </p>
+
 
 
 
@@ -1566,10 +1832,12 @@ to   edit when           configuring your server.         </p>
 
 
 
+      
       <p>           The directories inside the <code>com</code> directory
    contain all           the Java Class files, which are the executable portion
    of CoffeeMud.           All of the Java source files are also found herein.
            </p>
+
 
 
 
@@ -1580,6 +1848,7 @@ to   edit when           configuring your server.         </p>
 
 
 
+      
       <p>           The <code>guides</code> directory is where you'll find
    this           document, as well as other HTML documents you may find
 helpful    in           configuring your server as well as building areas
@@ -1593,6 +1862,8 @@ inside it.            </p>
 
 
 
+
+      
       <p>           The <code>guides/database</code> directory is where you'll
    find           several SQL scripts necessary to configuring another database
    engine,           such as SQL Server, MySQL, PostgreSQL, Access, and others.
@@ -1606,9 +1877,12 @@ inside it.            </p>
 
 
 
+
+      
       <p>           The <code>guides/images</code> directory contains image
    files used           inside the HTML files in the guides directory.
       </p>
+
 
 
 
@@ -1619,11 +1893,13 @@ inside it.            </p>
 
 
 
+      
       <p>           The <code>lib</code> directory holds any external libraries
    or           components necessary to run CoffeeMud, but not necessarily
  part  of the           CoffeeMud source proper. For instance, this directory
  holds  the Mozilla           Rhino Javascript library jar file, called js.jar,
  as  well as the zlib           library file, called jzlib.jar.         </p>
+
 
 
 
@@ -1634,6 +1910,7 @@ inside it.            </p>
 
 
 
+      
       <p>           The <code>web</code> directory is where you'll find several
              important files related to the configuration of the two default
    web           servers: admin, and public (pub):  You may want to edit
@@ -1649,7 +1926,10 @@ you            CAN edit.         </p>
 
 
 
+
+      
       <table border="1" width="100%">
+
 
 
 
@@ -1659,12 +1939,15 @@ you            CAN edit.         </p>
 
 
 
+
                     <tr>
 
 
 
 
+
                       <td>                 admin.ini               </td>
+
 
 
 
@@ -1677,7 +1960,9 @@ and  utilities.               </td>
 
 
 
+
                      </tr>
+
 
 
 
@@ -1687,7 +1972,9 @@ and  utilities.               </td>
 
 
 
+
                       <td>                 common.ini               </td>
+
 
 
 
@@ -1699,7 +1986,9 @@ and  utilities.               </td>
 
 
 
+
                     </tr>
+
 
 
 
@@ -1709,7 +1998,9 @@ and  utilities.               </td>
 
 
 
+
                       <td>                 pub.ini               </td>
+
 
 
 
@@ -1720,7 +2011,9 @@ public   web server.               </td>
 
 
 
+
                     </tr>
+
 
 
 
@@ -1730,7 +2023,9 @@ public   web server.               </td>
 
 
 
+
                        <td>                 email.ini               </td>
+
 
 
 
@@ -1741,6 +2036,7 @@ smtp   server.               </td>
 
 
 
+
                     </tr>
 
 
@@ -1752,12 +2048,15 @@ smtp   server.               </td>
 
 
 
+
+        
         </tbody>
 
 
 
 
 
+      
       </table>
 
 
@@ -1768,6 +2067,8 @@ smtp   server.               </td>
 
 
 
+
+      
       <p>           The <code>admin</code> directory is where the pages made
    available           by the admin web server are found, by default. This
  directory  also           contains the <code>admin/images</code> to store
@@ -1783,6 +2084,8 @@ smtp   server.               </td>
 
 
 
+
+      
       <p>           The <code>admin.templates</code> directory is where the
    default           error page for the admin web server is found.
         </p>
@@ -1795,12 +2098,15 @@ smtp   server.               </td>
 
 
 
+
+      
       <p>           The <code>pub</code> directory is where the pages made
    available by           the pub web server are found, by default. This
 directory    also contains           the <code>pub/images</code> to store
 image files   displayed by the           public web pages, as well as the
       <code>pub/sounds</code>    directory           where MSP sound files
-are stored for players to access.            </p>
+are stored for players to access.</p>
+      <p>The directory <span style="font-family: monospace;">pub/images/mxp</span> contains all of the MXP displayable images, including the file <span style="font-family: monospace;">pub/images/mxp/intro.jpg</span>, which is the image displayed when players who have MXP compliant mud clients log into your mud. &nbsp;To use multiple/random intros, just insert numbers before the extension for additional ones (intro1.jpg, intro234.jpg)            </p>
 
 
 
@@ -1810,9 +2116,12 @@ are stored for players to access.            </p>
 
 
 
+
+      
       <p>           The <code>pub.templates</code> directory is where the
    default error           page for the pub web server is found.
       </p>
+
 
 
 
@@ -1823,6 +2132,7 @@ are stored for players to access.            </p>
 
 
 
+      
       <p>           The <code>resources</code> directory is where you'll
 find most of           the important files for tinkering with the configuration
    of several           aspects of your system. Some of these files are in
@@ -1838,7 +2148,10 @@ find most of           the important files for tinkering with the configuration
 
 
 
+
+      
       <table border="1" width="100%">
+
 
 
 
@@ -1848,12 +2161,15 @@ find most of           the important files for tinkering with the configuration
 
 
 
+
                     <tr>
 
 
 
 
+
                       <td>                 chat.dat               </td>
+
 
 
 
@@ -1865,7 +2181,9 @@ MudChat   behavior.  You can                 edit this one too.
 
 
 
+
                     </tr>
+
 
 
 
@@ -1875,7 +2193,9 @@ MudChat   behavior.  You can                 edit this one too.
 
 
 
+
                       <td>                 laws.ini               </td>
+
 
 
 
@@ -1887,7 +2207,9 @@ to  deal with law through law books.               </td>
 
 
 
+
                     </tr>
+
 
 
 
@@ -1897,7 +2219,9 @@ to  deal with law through law books.               </td>
 
 
 
+
                       <td>                 lawtoc.ini               </td>
+
 
 
 
@@ -1908,7 +2232,9 @@ GenLawBook   item.               </td>
 
 
 
+
                     </tr>
+
 
 
 
@@ -1918,7 +2244,9 @@ GenLawBook   item.               </td>
 
 
 
+
                       <td>                 alignment.ini               </td>
+
 
 
 
@@ -1930,7 +2258,9 @@ GenLawBook   item.               </td>
 
 
 
+
                     </tr>
+
 
 
 
@@ -1940,7 +2270,9 @@ GenLawBook   item.               </td>
 
 
 
+
                       <td>                 movingroom.xml               </td>
+
 
 
 
@@ -1951,7 +2283,9 @@ GenLawBook   item.               </td>
 
 
 
+
                     </tr>
+
 
 
 
@@ -1960,7 +2294,9 @@ GenLawBook   item.               </td>
 
 
 
+
             <td>parser_en_TX.properties</td>
+
 
 
 
@@ -1968,24 +2304,32 @@ GenLawBook   item.               </td>
 
 
 
+
           </tr>
 
 
 
+
           <tr>
+
 
             <td>translation_en_TX.properties</td>
 
+
             <td>The definitions file for CoffeeMud's user-putput translation engine.</td>
+
 
           </tr>
 
+
           <tr>
+
 
 
 
 
                       <td>                 socials.txt               </td>
+
 
 
 
@@ -1997,7 +2341,9 @@ GenLawBook   item.               </td>
 
 
 
+
                     </tr>
+
 
 
 
@@ -2007,7 +2353,9 @@ GenLawBook   item.               </td>
 
 
 
+
                       <td>                 mxp_images.txt               </td>
+
 
 
 
@@ -2018,7 +2366,9 @@ GenLawBook   item.               </td>
 
 
 
+
                     </tr>
+
 
 
 
@@ -2028,12 +2378,15 @@ GenLawBook   item.               </td>
 
 
 
+
             <td valign="top">titles.txt<br />
 
 
 
 
+
             </td>
+
 
 
 
@@ -2044,7 +2397,9 @@ GenLawBook   item.               </td>
 
 
 
+
             </td>
+
 
 
 
@@ -2060,12 +2415,15 @@ GenLawBook   item.               </td>
 
 
 
+
+        
         </tbody>
 
 
 
 
 
+      
       </table>
 
 
@@ -2076,6 +2434,8 @@ GenLawBook   item.               </td>
 
 
 
+
+      
       <p>           The <code>resources/fakedb</code> directory is where
 all area,           room, mob, journal, and player data is stored when the
 FAKEDB system is           being used. When FAKEDB is not being used, this
@@ -2089,8 +2449,11 @@ directory is unused.         </p>
 
 
 
+
+      
       <p>           The <code>resources/examples</code> directory is where
    you'll find           sample files for a variety of things. <br />
+
 
 
 
@@ -2104,7 +2467,10 @@ directory is unused.         </p>
 
 
 
+
+      
       <table border="1" width="100%">
+
 
 
 
@@ -2114,7 +2480,9 @@ directory is unused.         </p>
 
 
 
+
           <tr>
+
 
 
 
@@ -2124,7 +2492,9 @@ directory is unused.         </p>
 
 
 
+
             </td>
+
 
 
 
@@ -2136,7 +2506,9 @@ this set of mobs.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2146,7 +2518,9 @@ this set of mobs.<br />
 
 
 
+
           <tr>
+
 
 
 
@@ -2156,7 +2530,9 @@ this set of mobs.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2167,7 +2543,9 @@ creation wizard when new factions are created. &nbsp;Do not modify this file!!<b
 
 
 
+
             </td>
+
 
 
 
@@ -2177,7 +2555,9 @@ creation wizard when new factions are created. &nbsp;Do not modify this file!!<b
 
 
 
+
           <tr>
+
 
 
 
@@ -2187,7 +2567,9 @@ creation wizard when new factions are created. &nbsp;Do not modify this file!!<b
 
 
 
+
             </td>
+
 
 
 
@@ -2199,7 +2581,9 @@ use  of.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2209,7 +2593,9 @@ use  of.<br />
 
 
 
+
           <tr>
+
 
 
 
@@ -2219,7 +2605,9 @@ use  of.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2231,7 +2619,9 @@ to           load it up, and see the Programmer's Guide for more information<br 
 
 
 
+
             </td>
+
 
 
 
@@ -2245,11 +2635,14 @@ to           load it up, and see the Programmer's Guide for more information<br 
 
 
 
+
+        
         </tbody>
 
 
 
 
+      
       </table>
 
 
@@ -2260,6 +2653,8 @@ to           load it up, and see the Programmer's Guide for more information<br 
 
 
 
+
+      
       <p>           The <code>resources/help</code> directory is where you'll
    find all           of the files responsible for the numerous standard
 and    archon HELP           entries. It also contains the two text files
@@ -2278,8 +2673,11 @@ do not are for the HELP (player help) command.         </p>
 
 
 
+
+      
       <p>           The <code>resources/progs</code> directory contains several
    sample program files:<br />
+
 
 
 
@@ -2293,7 +2691,10 @@ do not are for the HELP (player help) command.         </p>
 
 
 
+
+      
       <table border="1" width="100%">
+
 
 
 
@@ -2303,7 +2704,9 @@ do not are for the HELP (player help) command.         </p>
 
 
 
+
           <tr>
+
 
 
 
@@ -2313,7 +2716,9 @@ do not are for the HELP (player help) command.         </p>
 
 
 
+
             </td>
+
 
 
 
@@ -2326,7 +2731,9 @@ help on Scriptable for more information.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2336,7 +2743,9 @@ help on Scriptable for more information.<br />
 
 
 
+
           <tr>
+
 
 
 
@@ -2346,7 +2755,9 @@ help on Scriptable for more information.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2358,7 +2769,9 @@ resources/progs/clearChannelQue.js &lt;channel_name&gt;<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2368,7 +2781,9 @@ resources/progs/clearChannelQue.js &lt;channel_name&gt;<br />
 
 
 
+
           <tr>
+
 
 
 
@@ -2378,7 +2793,9 @@ resources/progs/clearChannelQue.js &lt;channel_name&gt;<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2390,7 +2807,9 @@ is added above.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2400,7 +2819,9 @@ is added above.<br />
 
 
 
+
           <tr>
+
 
 
 
@@ -2410,7 +2831,9 @@ is added above.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2421,7 +2844,9 @@ dealer. &nbsp;Added to mobs the same way blackjack.script is added above.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2431,7 +2856,9 @@ dealer. &nbsp;Added to mobs the same way blackjack.script is added above.<br />
 
 
 
+
           <tr>
+
 
 
 
@@ -2441,7 +2868,9 @@ dealer. &nbsp;Added to mobs the same way blackjack.script is added above.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2453,7 +2882,9 @@ JRUN resources/progs/everyoneIsHome.js<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2463,7 +2894,9 @@ JRUN resources/progs/everyoneIsHome.js<br />
 
 
 
+
           <tr>
+
 
 
 
@@ -2473,7 +2906,9 @@ JRUN resources/progs/everyoneIsHome.js<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2486,7 +2921,9 @@ behavior (to implement law in that area).<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2496,7 +2933,9 @@ behavior (to implement law in that area).<br />
 
 
 
+
           <tr>
+
 
 
 
@@ -2506,7 +2945,9 @@ behavior (to implement law in that area).<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2517,7 +2958,9 @@ dealer. &nbsp;Added to mobs the same way blackjack.script is added above.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2527,7 +2970,9 @@ dealer. &nbsp;Added to mobs the same way blackjack.script is added above.<br />
 
 
 
+
           <tr>
+
 
 
 
@@ -2537,7 +2982,9 @@ dealer. &nbsp;Added to mobs the same way blackjack.script is added above.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2548,7 +2995,9 @@ which rooms have the most items in them. &nbsp;To execute, enter JRUN resources/
 
 
 
+
             </td>
+
 
 
 
@@ -2558,7 +3007,9 @@ which rooms have the most items in them. &nbsp;To execute, enter JRUN resources/
 
 
 
+
           <tr>
+
 
 
 
@@ -2568,7 +3019,9 @@ which rooms have the most items in them. &nbsp;To execute, enter JRUN resources/
 
 
 
+
             </td>
+
 
 
 
@@ -2579,12 +3032,15 @@ triggers. &nbsp;Added to mobs the same way blackjack.script is added above.<br /
 
 
 
+
             </td>
 
 
 
 
+
           </tr>
+
 
 
 
@@ -2594,12 +3050,15 @@ triggers. &nbsp;Added to mobs the same way blackjack.script is added above.<br /
 
 
 
+
             <td valign="top">strangetrader.script<br />
 
 
 
 
+
             </td>
+
 
 
 
@@ -2610,7 +3069,9 @@ triggers. &nbsp;Added to mobs the same way blackjack.script is added above.<br /
 
 
 
+
             </td>
+
 
 
 
@@ -2624,11 +3085,14 @@ triggers. &nbsp;Added to mobs the same way blackjack.script is added above.<br /
 
 
 
+
+        
         </tbody>
 
 
 
 
+      
       </table>
 
 
@@ -2639,6 +3103,8 @@ triggers. &nbsp;Added to mobs the same way blackjack.script is added above.<br /
 
 
 
+
+      
       <p>           The <code>resources/quests</code> directory contains
 several sample           quests. Each quest is in its own directory, along
 with any supporting           Scriptable *.script files, and any supporting
@@ -2656,11 +3122,14 @@ the MUDGrinder.         </p>
 
 
 
+
+      
       <p>           The <code>resources/skills</code> directory contains
 the database           of recipes used by the Common skills in CoffeeMud.
 Each text file           contains recipe for a single skill, and each is
 formatted in           tab-delimited format, with rows separated by carriage
 returns. &nbsp;This directory includes:<br />
+
 
 
 
@@ -2675,7 +3144,10 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
+      
       <table border="1" width="100%">
+
 
 
 
@@ -2685,7 +3157,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
  <tr>
+
 
 
 
@@ -2695,7 +3169,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Alchemy skill<br />
+
 
 
 
@@ -2705,12 +3181,15 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -2720,7 +3199,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Armorsmithing skill<br />
+
 
 
 
@@ -2730,12 +3211,15 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -2745,7 +3229,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Baking skill<br />
+
 
 
 
@@ -2755,12 +3241,15 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -2770,7 +3259,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Baking skill<br />
+
 
 
 
@@ -2780,12 +3271,15 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -2795,7 +3289,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Blacksmithing skill<br />
+
 
 
 
@@ -2805,12 +3301,15 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -2820,7 +3319,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Carpentry skill<br />
+
 
 
 
@@ -2830,12 +3331,15 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -2845,7 +3349,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Clan Crafting skill<br />
+
 
 
 
@@ -2855,12 +3361,15 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -2870,7 +3379,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Cobbler skill<br />
+
 
 
 
@@ -2880,7 +3391,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
+
 
 
 
@@ -2890,7 +3403,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">components.txt</td>
+
 
 
 
@@ -2901,7 +3416,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2911,7 +3428,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
  <tr>
+
 
 
 
@@ -2921,7 +3440,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Costuming skill<br />
+
 
 
 
@@ -2931,7 +3452,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
+
 
 
 
@@ -2941,7 +3464,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">expertises.txt</td>
+
 
 
 
@@ -2952,7 +3477,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             </td>
+
 
 
 
@@ -2962,7 +3489,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
  <tr>
+
 
 
 
@@ -2972,7 +3501,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Fletching skill<br />
+
 
 
 
@@ -2982,12 +3513,15 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -2997,7 +3531,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the FoodPrep skill<br />
+
 
 
 
@@ -3007,12 +3543,15 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3022,7 +3561,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Glass Blowing skill<br />
+
 
 
 
@@ -3032,12 +3573,15 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3047,7 +3591,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Herbalism skill<br />
+
 
 
 
@@ -3057,12 +3603,15 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3072,7 +3621,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Herbology skill<br />
+
 
 
 
@@ -3082,12 +3633,15 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3097,7 +3651,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Recipes for the Instruments skill<br />
+
 
 
 
@@ -3107,12 +3663,15 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3122,7 +3681,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">Insults text source file for the Joke skill<br />
+
 
 
 
@@ -3132,7 +3693,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
           </tr>
+
 
 
 
@@ -3142,7 +3705,9 @@ returns. &nbsp;This directory includes:<br />
 
 
 
+
             <td valign="top">insulto.txt</td>
+
 
 
 
@@ -3153,7 +3718,9 @@ skill<br />
 
 
 
+
             </td>
+
 
 
 
@@ -3163,7 +3730,9 @@ skill<br />
 
 
 
+
  <tr>
+
 
 
 
@@ -3173,7 +3742,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Jewelmaking skill<br />
+
 
 
 
@@ -3183,12 +3754,15 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3198,7 +3772,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Leatherworking skill<br />
+
 
 
 
@@ -3208,12 +3784,15 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3223,7 +3802,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Distilling skill<br />
+
 
 
 
@@ -3233,12 +3814,15 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3248,7 +3832,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Master Armorsmithing skill<br />
+
 
 
 
@@ -3258,12 +3844,15 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3273,7 +3862,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Master Costuming skill<br />
+
 
 
 
@@ -3283,12 +3874,15 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3298,7 +3892,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Master Leatherworking skill<br />
+
 
 
 
@@ -3308,12 +3904,15 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3323,7 +3922,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Master Tailoring skill<br />
+
 
 
 
@@ -3333,12 +3934,15 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3348,7 +3952,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Master Weaponsmithing skill<br />
+
 
 
 
@@ -3358,12 +3964,15 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3373,7 +3982,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Papermaking skill<br />
+
 
 
 
@@ -3383,12 +3994,15 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3398,7 +4012,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Poisons skill<br />
+
 
 
 
@@ -3408,12 +4024,15 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3423,7 +4042,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Pottery skill<br />
+
 
 
 
@@ -3433,12 +4054,15 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3448,7 +4072,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Cooking skill<br />
+
 
 
 
@@ -3458,12 +4084,15 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3473,7 +4102,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Scrimshawing skill<br />
+
 
 
 
@@ -3483,12 +4114,15 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3498,7 +4132,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Sculpting skill<br />
+
 
 
 
@@ -3508,12 +4144,15 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3523,7 +4162,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the ShipWrighting skill<br />
+
 
 
 
@@ -3533,12 +4174,15 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3548,7 +4192,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Smelting skill<br />
+
 
 
 
@@ -3558,12 +4204,15 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3573,7 +4222,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Tailoring skill<br />
+
 
 
 
@@ -3583,12 +4234,15 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3598,7 +4252,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes/Descriptiong for the Taxidermy skill<br />
+
 
 
 
@@ -3608,12 +4264,15 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3623,7 +4282,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Torturesmithing skill<br />
+
 
 
 
@@ -3633,12 +4294,15 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3648,7 +4312,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Wainwrighting skill<br />
+
 
 
 
@@ -3658,12 +4324,15 @@ skill<br />
 
 
 
+
           </tr>
 
 
 
 
+
  <tr>
+
 
 
 
@@ -3673,7 +4342,9 @@ skill<br />
 
 
 
+
             <td valign="top">Recipes for the Weaponsmithing skill<br />
+
 
 
 
@@ -3683,7 +4354,9 @@ skill<br />
 
 
 
+
           </tr>
+
 
 
 
@@ -3693,7 +4366,9 @@ skill<br />
 
 
 
+
             <td valign="top">weaving.txt</td>
+
 
 
 
@@ -3703,7 +4378,9 @@ skill<br />
 
 
 
+
             </td>
+
 
 
 
@@ -3718,11 +4395,14 @@ skill<br />
 
 
 
+
+        
         </tbody>
 
 
 
 
+      
       </table>
 
 
@@ -3733,6 +4413,8 @@ skill<br />
 
 
 
+
+      
       <p>           The <code>resources/text</code> directory contains several
    text           files displayed at different points in the CoffeeMud engine.
    Feel free           to load these into a text editor and have at them.
@@ -3746,7 +4428,10 @@ skill<br />
 
 
 
+
+      
       <table border="1" width="100%">
+
 
 
 
@@ -3756,12 +4441,15 @@ skill<br />
 
 
 
+
                     <tr>
 
 
 
 
+
                       <td>                 alignment.txt               </td>
+
 
 
 
@@ -3772,7 +4460,9 @@ skill<br />
 
 
 
+
                      </tr>
+
 
 
 
@@ -3782,7 +4472,9 @@ skill<br />
 
 
 
+
                       <td>                 classes.txt               </td>
+
 
 
 
@@ -3793,7 +4485,9 @@ skill<br />
 
 
 
+
                     </tr>
+
 
 
 
@@ -3803,7 +4497,9 @@ skill<br />
 
 
 
+
                       <td>                 credits.txt               </td>
+
 
 
 
@@ -3814,7 +4510,9 @@ skill<br />
 
 
 
+
                     </tr>
+
 
 
 
@@ -3824,7 +4522,9 @@ skill<br />
 
 
 
+
                        <td>                 down.txt               </td>
+
 
 
 
@@ -3836,12 +4536,15 @@ skill<br />
 
 
 
+
                     </tr>
 
 
 
 
+
                     <tr>
+
 
 
 
@@ -3851,8 +4554,12 @@ skill<br />
 
 
 
-                      <td>                 The text file displayed to users
- when  they connect to your mud.               </td>
+
+                      <td> The text file displayed to users
+when they connect to your mud. &nbsp;To use multiple/random intros,
+just insert numbers before the extension for additional ones
+(intro1.txt, intro234.txt) </td>
+
 
 
 
@@ -3862,12 +4569,15 @@ skill<br />
 
 
 
+
                     <tr>
 
 
 
 
+
                       <td>                 mxp.txt                </td>
+
 
 
 
@@ -3879,7 +4589,9 @@ skill<br />
 
 
 
+
                     </tr>
+
 
 
 
@@ -3889,12 +4601,15 @@ skill<br />
 
 
 
+
             <td valign="top">                  newchar.txt<br />
 
 
 
 
+
             </td>
+
 
 
 
@@ -3905,7 +4620,9 @@ mud  to  new players.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -3915,7 +4632,9 @@ mud  to  new players.<br />
 
 
 
+
           <tr>
+
 
 
 
@@ -3926,8 +4645,10 @@ mud  to  new players.<br />
 
 
 
+
                       <td>                 A text file shown to players after
 they have created their character.               </td>
+
 
 
 
@@ -3937,7 +4658,9 @@ they have created their character.               </td>
 
 
 
+
                     <tr>
+
 
 
 
@@ -3947,7 +4670,9 @@ they have created their character.               </td>
 
 
 
+
             </td>
+
 
 
 
@@ -3958,7 +4683,9 @@ login when the LOGINS flag is disabled in the coffeemud.ini file.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -3968,12 +4695,15 @@ login when the LOGINS flag is disabled in the coffeemud.ini file.<br />
 
 
 
+
           <tr>
 
 
 
 
+
                       <td>                 offline.txt                </td>
+
 
 
 
@@ -3984,7 +4714,9 @@ login when the LOGINS flag is disabled in the coffeemud.ini file.<br />
 
 
 
+
                     </tr>
+
 
 
 
@@ -3994,7 +4726,9 @@ login when the LOGINS flag is disabled in the coffeemud.ini file.<br />
 
 
 
+
                       <td>                 races.txt               </td>
+
 
 
 
@@ -4005,7 +4739,9 @@ login when the LOGINS flag is disabled in the coffeemud.ini file.<br />
 
 
 
+
                     </tr>
+
 
 
 
@@ -4015,12 +4751,15 @@ login when the LOGINS flag is disabled in the coffeemud.ini file.<br />
 
 
 
+
             <td valign="top">rules.txt<br />
 
 
 
 
+
             </td>
+
 
 
 
@@ -4031,7 +4770,9 @@ command.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -4041,12 +4782,15 @@ command.<br />
 
 
 
+
           <tr>
 
 
 
 
+
                       <td>                 stats.txt               </td>
+
 
 
 
@@ -4057,7 +4801,9 @@ command.<br />
 
 
 
+
                     </tr>
+
 
 
 
@@ -4067,7 +4813,9 @@ command.<br />
 
 
 
+
                       <td>                 motd.txt               </td>
+
 
 
 
@@ -4086,7 +4834,9 @@ how   to log in perhaps.               </td>
 
 
 
+
                     </tr>
+
 
 
 
@@ -4096,12 +4846,15 @@ how   to log in perhaps.               </td>
 
 
 
+
             <td valign="top">themes.txt<br />
 
 
 
 
+
             </td>
+
 
 
 
@@ -4113,7 +4866,9 @@ well, however.<br />
 
 
 
+
             </td>
+
 
 
 
@@ -4129,13 +4884,17 @@ well, however.<br />
 
 
 
+
+        
         </tbody>
 
 
 
 
 
+      
       </table>
+
 
 
 
@@ -4146,6 +4905,7 @@ well, however.<br />
 
 
 
+      
       <h2><a name="database">The CoffeeMud Database</a></h2>
 
 
@@ -4156,6 +4916,8 @@ well, however.<br />
 
 
 
+
+      
       <p>           CoffeeMud requires a database for operation.  A database
    is simply           the place where all the rooms, items, monsters, players,
    pets, and           other information is stored on the computer.  Without
@@ -4171,6 +4933,8 @@ would be   bad.         </p>
 
 
 
+
+      
       <p>           By default, CoffeeMud uses a custom JDBC flat-file database
    called           "fakedb".  FakeDB stores its data into text formatted
 files   inside           the "resources/fakedb" directory of your CoffeeMud
@@ -4186,6 +4950,8 @@ package.             FakeDB is rather slow, and hardly a powerful or professiona
 
 
 
+
+      
       <p>           For the more adventurous, CoffeeMud supports any JDBC
    or ODBC compliant           database system.  This includes such systems
   as Microsoft Access,           Microsoft SQL Server, PostgreSQL, MySQL,
@@ -4219,6 +4985,8 @@ for  more           information on this.         </p>
 
 
 
+
+      
       <p>           In order to use your database with CoffeeMud, as specified
    in the           section on Settings, you must provide CoffeeMud with
 a  JDBC  compliant           Driver class.  In many cases, you will be creating
@@ -4234,6 +5002,8 @@ a  JDBC  compliant           Driver class.  In many cases, you will be creating
 
 
 
+
+      
       <p>           Some systems, however, such as MySQL, IBM DB2, and Microsoft
    SQL Server           2000, have native JDBC Drivers which may be used
 instead    of the general           ODBC Driver.  These native JDBC Drivers
@@ -4248,6 +5018,8 @@ recommended.            </p>
 
 
 
+
+      
       <p>           The care and feeding of the tables used by CoffeeMud
 should be very           low.  The database will grow along with the areas
 created, and           along with the number of players which join your MUD.
@@ -4264,6 +5036,8 @@ nor   should you           attempt to affect individual rows in your database
 
 
 
+
+      
       <h3><a name="access">Installing and using Microsoft Access with CoffeeMud
    on a           Windows machine</a></h3>
 
@@ -4275,7 +5049,10 @@ nor   should you           attempt to affect individual rows in your database
 
 
 
+
+      
       <ul>
+
 
 
 
@@ -4286,6 +5063,7 @@ nor   should you           attempt to affect individual rows in your database
 
 
 
+          
           <p>             Open up Microsoft Access and select to create a
                Blank Access Database.  Give the database a name and save it
   on             your hard drive.           </p>
@@ -4293,7 +5071,9 @@ nor   should you           attempt to affect individual rows in your database
 
 
 
+
                   </li>
+
 
 
 
@@ -4304,6 +5084,7 @@ nor   should you           attempt to affect individual rows in your database
 
 
 
+          
           <p>             Under Objects, select the Queries section and
            select Create Query in Design View.  When the dialog box appears,
                click the close button.           </p>
@@ -4311,7 +5092,9 @@ nor   should you           attempt to affect individual rows in your database
 
 
 
+
                   </li>
+
 
 
 
@@ -4322,13 +5105,16 @@ nor   should you           attempt to affect individual rows in your database
 
 
 
+          
           <p>             Now right click on the large grey area and select
                "SQL View" from the context Menu.           </p>
 
 
 
 
+
                   </li>
+
 
 
 
@@ -4339,6 +5125,7 @@ nor   should you           attempt to affect individual rows in your database
 
 
 
+          
           <p>             Inside your CoffeeMud/guides/database folder, open
                up the coffeemuddbaccess.sql file using Notepad.  You will
 see               that the file contains numerous blocks of sql text.  Each
@@ -4348,7 +5135,9 @@ block               begins with CREATE TABLE, and ends with a semicolon );
 
 
 
+
                   </li>
+
 
 
 
@@ -4359,6 +5148,7 @@ block               begins with CREATE TABLE, and ends with a semicolon );
 
 
 
+          
           <p>             Select the first block of text in your sql file,
                from the first CREATE TABLE line down through the ); line,
 and  select             Copy from Notepad.  Paste this block into the Select
@@ -4368,7 +5158,9 @@ and  select             Copy from Notepad.  Paste this block into the Select
 
 
 
+
                   </li>
+
 
 
 
@@ -4379,13 +5171,16 @@ and  select             Copy from Notepad.  Paste this block into the Select
 
 
 
+          
           <p>             Press the "!" symbol at the top to execute the
            block of sql script.           </p>
 
 
 
 
+
                   </li>
+
 
 
 
@@ -4396,13 +5191,16 @@ and  select             Copy from Notepad.  Paste this block into the Select
 
 
 
+          
           <p>             Repeat steps 5 and 6 for the remaining CREATE TABLE
                blocks in the coffeemuddb2.sql file.           </p>
 
 
 
 
+
                   </li>
+
 
 
 
@@ -4413,6 +5211,7 @@ and  select             Copy from Notepad.  Paste this block into the Select
 
 
 
+          
           <p>             Now go to your Windows Control Panel (under XP,
                switch to Classic View)  and double-click the
          <code>ODBC   Data Sources (32-bit)</code> icon.  If you are using
@@ -4423,7 +5222,9 @@ and  select             Copy from Notepad.  Paste this block into the Select
 
 
 
+
                   </li>
+
 
 
 
@@ -4434,6 +5235,7 @@ and  select             Copy from Notepad.  Paste this block into the Select
 
 
 
+          
           <p>             Now, click on the <code>System             DSN</code>
    tab. Click the <code>Add</code> button. This             will present
 you    with a list of drivers. Select "             <code>Microsoft Access
@@ -4442,7 +5244,9 @@ Driver    (*.mdb)</code>"           </p>
 
 
 
+
                   </li>
+
 
 
 
@@ -4453,6 +5257,7 @@ Driver    (*.mdb)</code>"           </p>
 
 
 
+          
           <p>             Here you should probably name the data source
            something sensical, like <code>CoffeeMudData</code> or the
          like. Under <code>Database</code>, click             <code>Select</code>.
@@ -4463,7 +5268,9 @@ Driver    (*.mdb)</code>"           </p>
 
 
 
+
                   </li>
+
 
 
 
@@ -4474,6 +5281,7 @@ Driver    (*.mdb)</code>"           </p>
 
 
 
+          
           <p>             Open coffeemud.CMVars. Go to where it says "ODBC
                Database fields". That section should instead look like this:
              </p>
@@ -4487,6 +5295,8 @@ Driver    (*.mdb)</code>"           </p>
 
 
 
+
+          
           <pre>#------------------------<br /># ODBC Database fields<br />#------------------------<br /># DBCLASS is the name of the ODBC Driver, typically sun.jdbc.odbc.JdbcOdbcDriver<br /># DBSERVICE is the name of the ODBC Service as defined by your local operating system<br /># DBUSER is a user name required to log into the ODBC service<br /># DBPASS is the password for the above user name<br /># DBCONNECTIONS is the number of independent connections to make to the database<br />DBCLASS=sun.jdbc.odbc.JdbcOdbcDriver<br />DBSERVICE=jdbc:odbc:CoffeeMudData<br />DBUSER=<br />DBPASS=<br />DBCONNECTIONS=1<br /></pre>
 
 
@@ -4498,11 +5308,14 @@ Driver    (*.mdb)</code>"           </p>
 
 
 
+
+          
           <p>             Where it says "<code>jdbc:odbc:CoffeeMudData</code>",
    make             sure the part after "<code>jdbc:odbc:</code>" matches
 the               DNS name you made earlier.  Make sure your DBCONNECTIONS
 is never              set above 1 when using Microsoft Access.  Now, reboot
              CoffeeMud, and you are done!           </p>
+
 
 
 
@@ -4517,6 +5330,8 @@ is never              set above 1 when using Microsoft Access.  Now, reboot
 
 
 
+
+      
       </ul>
 
 
@@ -4527,6 +5342,8 @@ is never              set above 1 when using Microsoft Access.  Now, reboot
 
 
 
+
+      
       <h3><a name="mysqlwin">Installing and using MySQL with CoffeeMud on
    a Windows           machine</a></h3>
 
@@ -4538,7 +5355,10 @@ is never              set above 1 when using Microsoft Access.  Now, reboot
 
 
 
+
+      
       <ul>
+
 
 
 
@@ -4549,6 +5369,7 @@ is never              set above 1 when using Microsoft Access.  Now, reboot
 
 
 
+          
           <p>             Go to <a href="http://www.mysql.com">www.mysql.com</a>,
    click on Downloads (one of             the tabs at the very top), scroll
   down under "MySQL database server             &amp; Standard Clients:"
@@ -4563,7 +5384,9 @@ file    called "mysql-4.0.1.2-win.zip" (or whatever the newest
 
 
 
+
                     </li>
+
 
 
 
@@ -4574,6 +5397,7 @@ file    called "mysql-4.0.1.2-win.zip" (or whatever the newest
 
 
 
+          
           <p>             Go back to the Downloads tab, this time scroll
 down             to "Application Programming Interfaces (APIs), and click
 on "MySQL             Connector /J -- for connecting to MySQL from Java".
@@ -4587,7 +5411,9 @@ and Binaries (zip)" ( be             SURE to get the ZIP file, not the (tar.gz)!
 
 
 
+
                   </li>
+
 
 
 
@@ -4598,6 +5424,7 @@ and Binaries (zip)" ( be             SURE to get the ZIP file, not the (tar.gz)!
 
 
 
+          
           <p>             Locate the mysql-4.0.1.2-win.zip file you
        downloaded and unzip it ( if you don't know how to do that..I don't
    think             running a mud should be on your list of priorities...)
@@ -4608,7 +5435,9 @@ and Binaries (zip)" ( be             SURE to get the ZIP file, not the (tar.gz)!
 
 
 
+
                    </li>
+
 
 
 
@@ -4619,6 +5448,7 @@ and Binaries (zip)" ( be             SURE to get the ZIP file, not the (tar.gz)!
 
 
 
+          
           <p>             Go to your coffeemud folder, open the
    <code>guides\database folder</code>, and you will see a file called
           "coffeemuddbmysql.sql". Open that file with a text editor or
@@ -4634,6 +5464,8 @@ and Binaries (zip)" ( be             SURE to get the ZIP file, not the (tar.gz)!
 
 
 
+
+          
           <pre># Connection: SQL<br /># Host: localhost<br /># Saved: 2003-04-01 00:29:14<br />#<br /># Connection: SQL<br /># Host: localhost<br /># Saved: 2003-04-01 00:27:39<br />#<br />use coffeemud &lt;----ADD THIS LINE!<br />CREATE TABLE CMCHAB (<br />CMUSERID char (50) NULL ,<br />CMABID char (50) NULL ,<br />CMABPF int NULL ,<br />CMABTX text NULL<br />etc..<br />etc..<br /></pre>
 
 
@@ -4645,13 +5477,17 @@ and Binaries (zip)" ( be             SURE to get the ZIP file, not the (tar.gz)!
 
 
 
+
+          
           <p>             Now copy the edited coffeemuddbmysql.sql to your
              <code>c:\mysql\bin</code>             folder.             </p>
 
 
 
 
+
                     </li>
+
 
 
 
@@ -4662,6 +5498,7 @@ and Binaries (zip)" ( be             SURE to get the ZIP file, not the (tar.gz)!
 
 
 
+          
           <p>             Now, open a DOS window (Start &gt; Run &gt; type
                "command" and hit enter) and type cd c:\mysql\bin and hit Enter.
   Your             prompt should now be c:\mysql\bin&gt; then type "mysqld"
@@ -4681,7 +5518,9 @@ there, you're in business, and MySQL is running in the             background.
 
 
 
+
                     </li>
+
 
 
 
@@ -4692,6 +5531,7 @@ there, you're in business, and MySQL is running in the             background.
 
 
 
+          
           <p>             Now that your out of the monitor, you should be
                back to the c:\mysql\bin&gt; prompt. Now type "mysql &lt;
            coffeemuddbmysql.sql"  (without the quotes of course) and hit
@@ -4703,7 +5543,9 @@ there, you're in business, and MySQL is running in the             background.
 
 
 
+
                     </li>
+
 
 
 
@@ -4714,6 +5556,7 @@ there, you're in business, and MySQL is running in the             background.
 
 
 
+          
           <p>             Now go to your coffeemud folder and open your
            coffeemud.ini file in notepad or some text editor, and look for
    the             section that says:             </p>
@@ -4727,6 +5570,8 @@ there, you're in business, and MySQL is running in the             background.
 
 
 
+
+          
           <pre>DBCLASS=com.planet_ink.fakedb.Driver<br />DBSERVICE=jdbc:fakedb:resources/data<br />DBUSER=<br />DBPASS=<br />DBCONNECTIONS=2<br /></pre>
 
 
@@ -4738,6 +5583,8 @@ there, you're in business, and MySQL is running in the             background.
 
 
 
+
+          
           <p>             and change it to:             </p>
 
 
@@ -4749,12 +5596,16 @@ there, you're in business, and MySQL is running in the             background.
 
 
 
+
+          
           <pre>DBCLASS=com.mysql.jdbc.Driver<br />DBSERVICE=jdbc:mysql://localhost/coffeemud<br />DBUSER=<br />DBPASS=<br />DBCONNECTIONS=4<br /></pre>
 
 
 
 
+
                     </li>
+
 
 
 
@@ -4765,6 +5616,7 @@ there, you're in business, and MySQL is running in the             background.
 
 
 
+          
           <p>             Go back to the other file you downloaded in STEP
    2,             mysql-connector-java-3.0.7-stable.zip, and now extract
 that    into a temp             folder. Inside, there should be a "mysql-connector-java-3.0.7-stable"
@@ -4777,7 +5629,9 @@ called           <code>planet_ink</code>.            </p>
 
 
 
+
                   </li>
+
 
 
 
@@ -4788,10 +5642,12 @@ called           <code>planet_ink</code>.            </p>
 
 
 
+          
           <p>             Now, with mysqld still running in the background,
                just launch the mud.bat AS IT IS to start the mud..( I didnt
    have to             make ANY changes in there for this to work, hopefully
    the same for             you...)           </p>
+
 
 
 
@@ -4806,6 +5662,8 @@ called           <code>planet_ink</code>.            </p>
 
 
 
+
+      
       </ul>
 
 
@@ -4816,6 +5674,8 @@ called           <code>planet_ink</code>.            </p>
 
 
 
+
+      
       <h3><a name="mysqllinux">Installing and using MySQL with CoffeeMud
 on a UN*X or           Linux machine</a></h3>
 
@@ -4827,7 +5687,10 @@ on a UN*X or           Linux machine</a></h3>
 
 
 
+
+      
       <ul>
+
 
 
 
@@ -4838,6 +5701,7 @@ on a UN*X or           Linux machine</a></h3>
 
 
 
+          
           <p>             Download and install mysql from <a href="http://www.mysql.com/downloads/index.html">http://www.mysql.com/downloads/index.html</a>.
                Make sure mysqld is being run at boot time, and not by the
 root  user.           </p>
@@ -4845,7 +5709,9 @@ root  user.           </p>
 
 
 
+
                   </li>
+
 
 
 
@@ -4856,6 +5722,7 @@ root  user.           </p>
 
 
 
+          
           <p>             Download and install the mysql jdbc api from
           <a href="http://www.mysql.com/downloads/api-jdbc-stable.html">http://www.mysql.com/downloads/api-jdbc-stable.html</a>.
    Extract             the .tar.gz file to a temporary directory. Then copy
@@ -4865,7 +5732,9 @@ into  /CoffeeMud/com/.           </p>
 
 
 
+
                   </li>
+
 
 
 
@@ -4876,6 +5745,7 @@ into  /CoffeeMud/com/.           </p>
 
 
 
+          
           <p>             Create a coffeemud database from the shell as root
                type, "mysqladmin create coffeemud" (in this example we name
    the db             coffeemud). If you screw up, or need to delete the
@@ -4885,7 +5755,9 @@ coffeemud".              </p>
 
 
 
+
                   </li>
+
 
 
 
@@ -4896,6 +5768,7 @@ coffeemud".              </p>
 
 
 
+          
           <p>             Create a user for the new database (user in this
                example is called coffee).  As root, type "mysql" into the
 shell.               Now enter: GRANT ALL ON coffeemud.* TO coffee@localhost
@@ -4905,7 +5778,9 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+
                   </li>
+
 
 
 
@@ -4916,6 +5791,7 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+          
           <p>             Edit the file CoffeeMud/guides/coffeemuddbmysql.sql
                like so: at line 9 insert "use coffeemud" (assuming the new
  db is             called coffeemud). Then save the changes.           </p>
@@ -4923,7 +5799,9 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+
                   </li>
+
 
 
 
@@ -4934,13 +5812,16 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+          
           <p>             Run the SQL file as follows: from the shell
          type, "mysql &lt; coffeemuddbmysql.sql"           </p>
 
 
 
 
+
                   </li>
+
 
 
 
@@ -4951,6 +5832,7 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+          
           <p>             Edit the following settings in CoffeeMud/coffeemud.ini:
                </p>
 
@@ -4963,6 +5845,8 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+
+          
           <pre>DBCLASS=com.mysql.jdbc.Driver<br />DBSERVICE=jdbc:mysql://localhost/coffeemud<br />DBUSER=coffee<br />DBPASS=password<br />DBCONNECTIONS=4<br /></pre>
 
 
@@ -4974,12 +5858,16 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+
+          
           <p>             (no quotes on the password here)<br />
 
 
 
 
+
                     Save your changes and fire up CoffeeMud!           </p>
+
 
 
 
@@ -4994,6 +5882,8 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+
+      
       </ul>
 
 
@@ -5004,6 +5894,8 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+
+      
       <h3><a name="hsqldb">Installing and using HSQLDB with CoffeeMud</a></h3>
 
 
@@ -5014,7 +5906,10 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+
+      
       <ul>
+
 
 
 
@@ -5025,13 +5920,16 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+          
           <p>           Go to <a href="http://sourceforge.net/projects/hsqldb/">http://sourceforge.net/projects/hsqldb/</a>
              and download the applicable archive.         </p>
 
 
 
 
+
                 </li>
+
 
 
 
@@ -5042,6 +5940,7 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+          
           <p>           Go into the archive that was just downloaded. Extract
    the file           hsqldb.jar. This file needs to be placed into the classpath.
    I merely           placed it in "&lt;JRE install path&gt;\lib\ext" (C:\Program
@@ -5050,7 +5949,9 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+
                 </li>
+
 
 
 
@@ -5061,6 +5962,7 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+          
           <p>           Open a command window and navigate to the root of
    the CoffeeMUD install           directory.         </p>
 
@@ -5073,6 +5975,8 @@ the             quotes. Now type, "quit".           </p>
 
 
 
+
+          
           <p>           Create the directory for the database to reside in
    by executing the           following command (or wherever you want to
 call    it):         </p>
@@ -5086,6 +5990,8 @@ call    it):         </p>
 
 
 
+
+          
           <pre>mkdir coffeemud<br /></pre>
 
 
@@ -5097,6 +6003,8 @@ call    it):         </p>
 
 
 
+
+          
           <p>           Now navigate into the newly created directory.
       </p>
 
@@ -5109,6 +6017,8 @@ call    it):         </p>
 
 
 
+
+          
           <p>           Next, issue the following command to start the database
    interface.         </p>
 
@@ -5121,6 +6031,8 @@ call    it):         </p>
 
 
 
+
+          
           <pre>java org.hsqldb.util.DatabaseManager<br /></pre>
 
 
@@ -5132,6 +6044,8 @@ call    it):         </p>
 
 
 
+
+          
           <p>           The system will respond by bringing up a small GUI
    application.         </p>
 
@@ -5144,6 +6058,8 @@ call    it):         </p>
 
 
 
+
+          
           <p>           Now we need to set up the correct parameters to create
    the database.           The final parameter of the URL is the name of
 the    database         </p>
@@ -5157,6 +6073,8 @@ the    database         </p>
 
 
 
+
+          
           <pre>Type: HSQL Database Engine Standalone<br />Driver: org.hsqldb.jdbcDriver<br />URL: jdbc:hsqldb:file:coffeemud<br />User: &lt;whatever you want&gt;<br />Password: &lt;whatever you want&gt;<br /></pre>
 
 
@@ -5168,6 +6086,8 @@ the    database         </p>
 
 
 
+
+          
           <p>            Now that the values have been filled in click ok.
            </p>
 
@@ -5180,6 +6100,8 @@ the    database         </p>
 
 
 
+
+          
           <p>           The tables necessary for CoffeeMUD can be setup by:
            </p>
 
@@ -5192,6 +6114,8 @@ the    database         </p>
 
 
 
+
+          
           <pre>Open File Menu.<br />Select Open Script.<br />Find and open the coffeemuddbh.sql file in the CoffeeMUD\guides\database directory.<br />The script will then be loaded into the program.<br />Click the Execute button.<br />The system should return with and update count of 0.<br /></pre>
 
 
@@ -5203,6 +6127,8 @@ the    database         </p>
 
 
 
+
+          
           <p>           Now to shutdown the database and exit this utility:
            </p>
 
@@ -5215,6 +6141,8 @@ the    database         </p>
 
 
 
+
+          
           <pre>Open Command Menu.<br />Select SHUTDOWN.<br />Click the Execute Button.<br />Open the File Menu.<br />Select Exit.<br /></pre>
 
 
@@ -5226,13 +6154,17 @@ the    database         </p>
 
 
 
+
+          
           <p>           The coffeemud database will exist in the folder where
    the           DatabaseManager utility was run.         </p>
 
 
 
 
+
                 </li>
+
 
 
 
@@ -5244,6 +6176,7 @@ the    database         </p>
 
 
 
+          
           <p>           Open coffeemud.ini and scroll down to the ODBC Database
    fields section.           Comment out the current settings (place a #
 in   front of them) and add           the following lines below them:
@@ -5258,6 +6191,8 @@ in   front of them) and add           the following lines below them:
 
 
 
+
+          
           <pre>#here are the settings for HSQLDB<br />DBCLASS=org.hsqldb.jdbcDriver<br />DBSERVICE=jdbc:hsqldb:file:coffeemud/coffeemud<br />DBUSER=sa<br />DBPASS=<br />DBCONNECTIONS=4<br /></pre>
 
 
@@ -5269,6 +6204,8 @@ in   front of them) and add           the following lines below them:
 
 
 
+
+          
           <p>           The file: parameter of the DBSERVICE is the path
 to the database           (relative from the root of the coffeemud directory)
    followed by the           name of the database.         </p>
@@ -5276,7 +6213,9 @@ to the database           (relative from the root of the coffeemud directory)
 
 
 
+
                 </li>
+
 
 
 
@@ -5287,6 +6226,7 @@ to the database           (relative from the root of the coffeemud directory)
 
 
 
+          
           <p>         Open DBConnections.java (<code>com\planet_ink\coffee_mud\core\database\</code>)
    in your text editor of choice. Go to the         <code>public void killConnections()</code>
    function.         </p>
@@ -5300,6 +6240,8 @@ to the database           (relative from the root of the coffeemud directory)
 
 
 
+
+          
           <p>         Before the synchronized block opens add the following
    line:         </p>
 
@@ -5312,6 +6254,8 @@ to the database           (relative from the root of the coffeemud directory)
 
 
 
+
+          
           <pre>    update( "SHUTDOWN COMPACT" );<br />        </pre>
 
 
@@ -5323,13 +6267,17 @@ to the database           (relative from the root of the coffeemud directory)
 
 
 
+
+          
           <p>           Now recompile the source and it will work like a
 dream...         </p>
 
 
 
 
+
                 </li>
+
 
 
 
@@ -5344,6 +6292,8 @@ dream...         </p>
 
 
 
+
+      
       </ul>
 
 
@@ -5354,6 +6304,8 @@ dream...         </p>
 
 
 
+
+      
       <h3><a name="derby">Installing and using Derby (IBM Cloudscape) with
    CoffeeMud</a></h3>
 
@@ -5365,7 +6317,10 @@ dream...         </p>
 
 
 
+
+      
       <ul>
+
 
 
 
@@ -5376,6 +6331,7 @@ dream...         </p>
 
 
 
+          
           <p>           Go to <a href="http://db.apache.org/derby/derby_downloads.html">http://db.apache.org/derby/derby_downloads.html</a>
              and download the distribution( lib or bin, unless you want to
  build the whole project ).         </p>
@@ -5383,7 +6339,9 @@ dream...         </p>
 
 
 
+
                 </li>
+
 
 
 
@@ -5394,6 +6352,7 @@ dream...         </p>
 
 
 
+          
           <p>           Derby.jar and Derbytools.jar must be placed into
 the classpath for them           to be of any use. These archives live in
 the lib subfolder of the           Derby distribution. They can be placed
@@ -5404,7 +6363,9 @@ into the root of the           CoffeeMUD folder or they can be placed into
 
 
 
+
                 </li>
+
 
 
 
@@ -5415,6 +6376,7 @@ into the root of the           CoffeeMUD folder or they can be placed into
 
 
 
+          
           <p>           Open a command window and navigate to the root of
    the CoffeeMUD install           directory. Issue the following command
 to   start the database interface.         </p>
@@ -5428,6 +6390,8 @@ to   start the database interface.         </p>
 
 
 
+
+          
           <pre>java org.apache.derby.tools.ij<br /></pre>
 
 
@@ -5439,6 +6403,8 @@ to   start the database interface.         </p>
 
 
 
+
+          
           <p>           The system will respond with:         </p>
 
 
@@ -5450,6 +6416,8 @@ to   start the database interface.         </p>
 
 
 
+
+          
           <pre>ij version 10.1<br />ij&gt;<br /></pre>
 
 
@@ -5461,6 +6429,8 @@ to   start the database interface.         </p>
 
 
 
+
+          
           <p>           Now we will issue the command that will create the
    database.         </p>
 
@@ -5473,6 +6443,8 @@ to   start the database interface.         </p>
 
 
 
+
+          
           <pre>connect 'jdbc:derby:coffeemud;create=true';<br /></pre>
 
 
@@ -5484,6 +6456,8 @@ to   start the database interface.         </p>
 
 
 
+
+          
           <p>           After a time the ij&gt; prompt will return. Now to
    run the SQL that           will set up the tables:         </p>
 
@@ -5496,6 +6470,8 @@ to   start the database interface.         </p>
 
 
 
+
+          
           <pre>run '.\guides\database\coffeemuddbderby.sql';<br /></pre>
 
 
@@ -5507,6 +6483,8 @@ to   start the database interface.         </p>
 
 
 
+
+          
           <p>           A description of all of the tables created will fill
    up the window.           Finally, we must disconnect from the database
 and   exit the utility.         </p>
@@ -5520,6 +6498,8 @@ and   exit the utility.         </p>
 
 
 
+
+          
           <pre>disconnect;<br />exit;<br /></pre>
 
 
@@ -5531,6 +6511,8 @@ and   exit the utility.         </p>
 
 
 
+
+          
           <p>           The coffeemud database will exist in a folder called
    'coffeemud' in the           current working directory, and if CoffeeMUD
   is to find it this must be           the root of the coffeemud install.
@@ -5539,7 +6521,9 @@ and   exit the utility.         </p>
 
 
 
+
                 </li>
+
 
 
 
@@ -5551,6 +6535,7 @@ and   exit the utility.         </p>
 
 
 
+          
           <p>           Open coffeemud.ini and scroll down to the ODBC Database
    fields section.           Comment out the current settings (place a #
 in   front of them) and add           the following lines below them:
@@ -5565,12 +6550,16 @@ in   front of them) and add           the following lines below them:
 
 
 
+
+          
           <pre>#here are the settings for IBM Cloudscape/Derby/ApacheDB<br />DBCLASS=org.apache.derby.jdbc.EmbeddedDriver<br />DBSERVICE=jdbc:derby:coffeemud<br />DBCONNECTIONS=2<br /></pre>
 
 
 
 
+
                 </li>
+
 
 
 
@@ -5581,13 +6570,16 @@ in   front of them) and add           the following lines below them:
 
 
 
+          
           <p>           Currently there are some minor changes that must
 be made to the code           for Derby to work properly.         </p>
 
 
 
 
+
                 </li>
+
 
 
 
@@ -5598,6 +6590,7 @@ be made to the code           for Derby to work properly.         </p>
 
 
 
+          
           <p>           This step is not really necessary, it just makes
 things cleaner.           Currently when CoffeeMUD is shut down it does not
 exit the database           properly, I have not yet worked out a good way
@@ -5612,6 +6605,8 @@ to fix this, however,           the following will work:         </p>
 
 
 
+
+          
           <p>           Open DBConnections.java (<code>com\planet_ink\coffee_mud\core\database\</code>)
    in your text editor of choice. Go to the           <code>public void killConnections()</code>
    function.         </p>
@@ -5625,6 +6620,8 @@ to fix this, however,           the following will work:         </p>
 
 
 
+
+          
           <p>           after the synchronized block closes add this:
      </p>
 
@@ -5637,6 +6634,8 @@ to fix this, however,           the following will work:         </p>
 
 
 
+
+          
           <pre>    try<br />    {<br />      DriverManager.getConnection("jdbc:derby:;shutdown=true");<br />    }<br />    catch (SQLException se)<br />    {<br />    }<br />    </pre>
 
 
@@ -5648,13 +6647,17 @@ to fix this, however,           the following will work:         </p>
 
 
 
+
+          
           <p>           Now recompile the source and it will work like a
 dream...         </p>
 
 
 
 
+
                 </li>
+
 
 
 
@@ -5665,6 +6668,7 @@ dream...         </p>
 
 
 
+          
           <p>           The basic settings for Derby end up in it being about
    half the speed of           other databases. The method to correct this
  is  simple, however, it is           very memory intensive (I upped the
@@ -5680,6 +6684,8 @@ about 300    Megs...)         </p>
 
 
 
+
+          
           <p>           Before running step 4 (the creation of the database),
    create a file           called 'derby.properties' in the root CoffeeMUD
  directory.  This file           should contain:         </p>
@@ -5693,6 +6699,8 @@ about 300    Megs...)         </p>
 
 
 
+
+          
           <pre># derby.properties<br />#<br />derby.storage.pageSize=32768<br />derby.storage.pageCacheSize=10000<br /></pre>
 
 
@@ -5704,10 +6712,13 @@ about 300    Megs...)         </p>
 
 
 
+
+          
           <p>           When the coffeemud database is created this time
 it will run at about           the same speed as other databases. More information
    on these properties           can be found at &lt;Derby Install Path&gt;\doc\pdf\tuning.pdf.
            </p>
+
 
 
 
@@ -5722,7 +6733,10 @@ it will run at about           the same speed as other databases. More informati
 
 
 
+
+      
       </ul>
+
 
 
 
@@ -5733,6 +6747,7 @@ it will run at about           the same speed as other databases. More informati
 
 
 
+      
       <h2><a name="shutdown">The OffLine And Shutdown Applications</a></h2>
 
 
@@ -5743,6 +6758,8 @@ it will run at about           the same speed as other databases. More informati
 
 
 
+
+      
       <p>           In the off chance you should need to keep your mud down
    while database,           or other software (or hardware?) maintenance
 is   going on, a small           footprint OffLine application is available.
@@ -5761,6 +6778,8 @@ you should    go into your           coffeemud directory and enter:
 
 
 
+
+      
       <pre>java com.planet_ink.coffee_mud.application.OffLine<br /></pre>
 
 
@@ -5771,6 +6790,8 @@ you should    go into your           coffeemud directory and enter:
 
 
 
+
+      
       <p>           The Shutdown application is a means of shutting down
 your MUD remotely           without logging in. It is part of the application
 package of CoffeeMud,           but it does not rely on any of the other
@@ -5787,6 +6808,8 @@ folder or directory.         </p>
 
 
 
+
+      
       <p>           The Shutdown application requires that you pass to it
    the URL of your           server, the standard MUD port to connect to,
 the   login name of a valid           Archon character, and the password.
@@ -5804,12 +6827,16 @@ enter:         </p>
 
 
 
+
+      
       <pre>java com.planet_ink.coffee_mud.application.Shutdown localhost 5555 AdminName AdminPassword<br /></pre>
 
 
 
 
+
         	</td>
+
 
 
 
@@ -5824,8 +6851,11 @@ enter:         </p>
 
 
 
+
+  
   </tbody>
 </table>
+
 
 
 
@@ -5835,12 +6865,15 @@ enter:         </p>
 
 
 
+
            <br />
 
 
 
 
+
          <br />
+
 
 
 

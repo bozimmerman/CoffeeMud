@@ -80,7 +80,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 					if(messedUp)
 						commonEmote(mob,"<S-NAME> mess(es) up "+building.name()+".");
 					else
-						mob.location().addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
+						dropAWinner(mob,building);
 				}
 				building=null;
 			}
