@@ -144,6 +144,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		int duration=4;
 		if(str.equalsIgnoreCase("list"))
 		{
+			String mask=CMParms.combine(commands,1);
 			StringBuffer buf=new StringBuffer("");
 			int toggler=1;
 			int toggleTop=2;
@@ -158,7 +159,8 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
-					if(level+20<=xlevel(mob))
+					if((level+20<=xlevel(mob))
+					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
 						buf.append(CMStrings.padRight("Designer "+item,30)+" "+CMStrings.padRight(""+(level+20),3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
@@ -173,7 +175,8 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
-					if((level+25)<=(xlevel(mob)))
+					if(((level+25)<=(xlevel(mob)))
+					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
 						buf.append(CMStrings.padRight("Cuirbouli "+item,30)+" "+CMStrings.padRight(""+(level+25),3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
@@ -188,7 +191,8 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
-					if((level+30)<=xlevel(mob))
+					if(((level+30)<=xlevel(mob))
+					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
 						buf.append(CMStrings.padRight("Reinforced "+item,30)+" "+CMStrings.padRight(""+(level+30),3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
@@ -203,7 +207,8 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
-					if((level+35)<=xlevel(mob))
+					if(((level+35)<=xlevel(mob))
+					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
 						buf.append(CMStrings.padRight("Masterwork "+item,30)+" "+CMStrings.padRight(""+(level+35),3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
@@ -218,7 +223,8 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
-					if((level+40)<=xlevel(mob))
+					if(((level+40)<=xlevel(mob))
+					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
 						buf.append(CMStrings.padRight("Laminar "+item,30)+" "+CMStrings.padRight(""+(level+40),3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
@@ -233,7 +239,8 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
-					if((level+45)<=xlevel(mob))
+					if(((level+45)<=xlevel(mob))
+					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
 						buf.append(CMStrings.padRight("Battlemoulded "+item,30)+" "+CMStrings.padRight(""+(level+45),3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;

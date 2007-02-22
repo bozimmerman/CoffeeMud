@@ -498,10 +498,12 @@ public class Construction extends CraftingSkill
 		String str=(String)commands.elementAt(0);
 		if(("LIST").startsWith(str.toUpperCase()))
 		{
+			String mask=CMParms.combine(commands,1);
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",20)+" Wood required\n\r");
 			for(int r=0;r<data.length;r++)
 			{
-				if((r!=BUILD_SECRETDOOR)||(mob.charStats().getCurrentClass().baseClass().equals("Thief")))
+				if(((r!=BUILD_SECRETDOOR)||(mob.charStats().getCurrentClass().baseClass().equals("Thief")))
+				&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(CMStrings.padRight(data[r][DAT_NAME],20),mask)))
                 {
                     int wood=CMath.s_int(data[r][DAT_WOOD])-(int)Math.round((0.2*(double)super.getXPCOSTLevel(mob)));
 					buf.append(CMStrings.padRight(data[r][DAT_NAME],20)+" "+wood+"\n\r");

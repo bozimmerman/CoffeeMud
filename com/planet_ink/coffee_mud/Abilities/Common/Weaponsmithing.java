@@ -199,6 +199,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		int duration=4;
 		if(str.equalsIgnoreCase("list"))
 		{
+			String mask=CMParms.combine(commands,1);
 			StringBuffer buf=new StringBuffer("Weapons <S-NAME> <S-IS-ARE> skilled at making:\n\r");
 			int toggler=1;
 			int toggleTop=displayColumns();
@@ -214,8 +215,9 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
-					if((autoGenerate>0)||((level<=xlevel(mob))
-                                        &&((canDo((String)V.elementAt(RCP_WEAPONCLASS),mob)))))
+					if(((autoGenerate>0)
+						||((level<=xlevel(mob))&&((canDo((String)V.elementAt(RCP_WEAPONCLASS),mob)))))
+					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
 						buf.append(CMStrings.padRight(item,itemWidth)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(""+wood,3)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;

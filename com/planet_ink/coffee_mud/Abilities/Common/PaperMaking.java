@@ -114,6 +114,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		int duration=4;
 		if(str.equalsIgnoreCase("list"))
 		{
+			String mask=CMParms.combine(commands,1);
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",22)+" Lvl Material required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -124,7 +125,8 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
 					String material=(String)V.elementAt(RCP_WOODTYPE);
-					if(level<=xlevel(mob))
+					if((level<=xlevel(mob))
+					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 						buf.append(CMStrings.padRight(item,22)+" "+CMStrings.padRight(""+level,3)+" "+wood+" "+material.toLowerCase()+"\n\r");
 				}
 			}

@@ -386,8 +386,11 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			givenTarget=null;
 		}
 		randomRecipeFix(mob,allRecipes,commands,autoGenerate);
-		if(CMParms.combine(commands,0).equalsIgnoreCase("list"))
+		if((commands.size()>0)
+		&&(commands.firstElement() instanceof String)
+		&&((String)commands.firstElement()).equalsIgnoreCase("list"))
 		{
+			String mask=CMParms.combine(commands,1);
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("^xRecipe",20)+"^.^? ^wIngredients required^N\n\r");
 			for(int r=0;r<allRecipes.size();r++)
 			{
@@ -397,7 +400,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					String item=(String)Vr.elementAt(RCP_FINALFOOD);
 					if(item.length()==0) continue;
 					int level=CMath.s_int((String)Vr.elementAt(RCP_LEVEL));
-					if(level<=xlevel(mob))
+					if((level<=xlevel(mob))
+					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
 						buf.append("^c"+CMStrings.padRight(CMStrings.capitalizeAndLower(replacePercent(item,"")),20)+"^w ");
 						for(int vr=RCP_MAININGR;vr<Vr.size();vr+=2)

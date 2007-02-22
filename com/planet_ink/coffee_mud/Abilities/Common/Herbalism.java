@@ -111,8 +111,9 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 		}
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String pos=(String)commands.lastElement();
-		if(pos.equalsIgnoreCase("list"))
+		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement()).equalsIgnoreCase("LIST")))
 		{
+			String mask=CMParms.combine(commands,1);
 			StringBuffer buf=new StringBuffer("Potions you know how to brew:\n\r");
 			buf.append(CMStrings.padRight("Chant",20)+" "+CMStrings.padRight("Level",5)+" Ingredients\n\r");
 			boolean fillUsage=(usage.size()==0);

@@ -134,8 +134,9 @@ public class Alchemy extends CraftingSkill
 		}
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String pos=(String)commands.lastElement();
-		if(pos.equalsIgnoreCase("list"))
+		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("list"))
 		{
+			String mask=CMParms.combine(commands,1);
 			StringBuffer buf=new StringBuffer("Potions you know how to brew:\n\r");
 			buf.append(CMStrings.padRight("Spell",25)+" "+CMStrings.padRight("Spell",25)+" "+CMStrings.padRight("Spell",25));
 			int toggler=1;
@@ -149,7 +150,8 @@ public class Alchemy extends CraftingSkill
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
 					&&(spellLevel(mob,A)>=0)
-					&&(xlevel(mob)>=spellLevel(mob,A)))
+					&&(xlevel(mob)>=spellLevel(mob,A))
+					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(spell,mask)))
 					{
 						buf.append(CMStrings.padRight(A.name(),25)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;

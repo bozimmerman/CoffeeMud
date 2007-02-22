@@ -532,10 +532,12 @@ public class Masonry extends CraftingSkill
 		String str=(String)commands.elementAt(0);
 		if(("LIST").startsWith(str.toUpperCase()))
 		{
+			String mask=CMParms.combine(commands,1);
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",20)+" Stone required\n\r");
 			for(int r=0;r<data.length;r++)
 			{
-				if((r!=BUILD_MONUMENT)||(mob.charStats().getCurrentClass().baseClass().equals("Druid")))
+				if(((r!=BUILD_MONUMENT)||(mob.charStats().getCurrentClass().baseClass().equals("Druid")))
+				&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(CMStrings.padRight(data[r][DAT_NAME],20),mask)))
                 {
 					buf.append(CMStrings.padRight(data[r][DAT_NAME],20)+" "+data[r][DAT_WOOD]);
                     if(doingCode==BUILD_PORTCULIS)

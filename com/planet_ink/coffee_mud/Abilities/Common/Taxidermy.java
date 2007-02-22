@@ -115,7 +115,8 @@ public class Taxidermy extends CraftingSkill
 			for(int p=0;p<POSES.size();p++)
 			{
 				Vector PP=(Vector)POSES.elementAt(p);
-				if(PP.size()>1) str.append(((String)PP.firstElement())+"\n");
+				if(PP.size()>1) 
+					str.append(((String)PP.firstElement())+"\n");
 			}
 			mob.tell(str.toString());
 			return true;

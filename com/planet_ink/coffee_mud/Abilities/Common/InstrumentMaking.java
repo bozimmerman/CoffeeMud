@@ -117,6 +117,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
         boolean archon=CMSecurity.isASysOp(mob)||CMSecurity.isAllowed(mob,mob.location(),"ALLSKILLS");
 		if(str.equalsIgnoreCase("list"))
 		{
+			String mask=CMParms.combine(commands,1);
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",16)+" Lvl "+CMStrings.padRight("Type",10)+" Material required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -130,7 +131,8 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 					String race=((String)V.elementAt(RCP_RACES)).trim();
 					String itype=CMStrings.capitalizeAndLower(((String)V.elementAt(RCP_TYPE)).toLowerCase()).trim();
 					if((level<xlevel(mob))
-					&&((race.length()==0)||archon||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0)))
+					&&((race.length()==0)||archon||((" "+race+" ").toUpperCase().indexOf(" "+mob.charStats().getMyRace().ID().toUpperCase()+" ")>=0))
+					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 						buf.append(CMStrings.padRight(item,16)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(itype,10)+" "+wood+" "+type+"\n\r");
 				}
 			}

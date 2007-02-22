@@ -151,6 +151,7 @@ public class MasterTailoring extends EnhancedCraftingSkill implements ItemCrafto
 		int duration=4;
 		if(str.equalsIgnoreCase("list"))
 		{
+			String mask=CMParms.combine(commands,1);
 			StringBuffer buf=new StringBuffer("");
 			int toggler=1;
 			int toggleTop=2;
@@ -165,7 +166,8 @@ public class MasterTailoring extends EnhancedCraftingSkill implements ItemCrafto
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
-					if(level<=xlevel(mob))
+					if((level<=xlevel(mob))
+					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
 						buf.append(CMStrings.padRight(item,28)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(""+wood,5)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
