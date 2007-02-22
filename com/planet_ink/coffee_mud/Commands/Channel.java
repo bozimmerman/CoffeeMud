@@ -115,17 +115,21 @@ public class Channel extends BaseChanneler
 		{
 			int num=CMath.s_int((String)commands.lastElement());
 			Vector que=CMLib.channels().getChannelQue(channelInt);
-			if(que.size()==0)
+			boolean showedAny=false;
+			if(que.size()>0)
+			{
+				if(num>que.size()) num=que.size();
+				boolean areareq=flags.contains("SAMEAREA");
+				for(int i=que.size()-num;i<que.size();i++)
+				{
+					CMMsg msg=(CMMsg)que.elementAt(i);
+					showedAny=channelTo(mob.session(),areareq,channelInt,msg,msg.source())||showedAny;
+				}
+			}
+			if(!showedAny)
 			{
 				mob.tell("There are no previous entries on this channel.");
 				return false;
-			}
-			if(num>que.size()) num=que.size();
-			boolean areareq=flags.contains("SAMEAREA");
-			for(int i=que.size()-num;i<que.size();i++)
-			{
-				CMMsg msg=(CMMsg)que.elementAt(i);
-				channelTo(mob.session(),areareq,channelInt,msg,msg.source());
 			}
 		}
 		else
