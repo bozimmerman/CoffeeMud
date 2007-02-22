@@ -2052,5 +2052,6 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 24. Internal: web server threads are now monitored (like all others) and killed when overdue for completion.
 25. New global item-looting entry in coffeemud.ini called ITEMLOOTPOLICY -- very powerful for limiting/controlling looted items globally.
 26. New standard Exit type: UnseenWalkway
-27. Infamous bugs found dead.  Paternity has not yet been established.
+27. Common crafting skills LIST command can now have simple word mask.  Also, Crafting skills allow player to win an XP-BONUS "lottery" if it determines that an item crafted was not found in the room after it was added.
+28. Infamous bugs found dead.  Paternity has not yet been established.
 
