@@ -35,7 +35,7 @@ public interface GridZones extends Environmental
 	/**
 	 * Returns the fully-qualified Room ID of this room
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
-	 * @see com.planet_ink.coffee_mud.Area.interfaces.GridZones#getGridChild(String)
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.GridZones#getGridChild(String)
 	 * @param loc a Room object
 	 * @return a fully qualified room ID
 	 */
@@ -43,7 +43,7 @@ public interface GridZones extends Environmental
 	/**
 	 * Returns the fully-qualified Room ID of this room
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
-	 * @see com.planet_ink.coffee_mud.Area.interfaces.GridZones#getGridChildCode(Room)
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.GridZones#getGridChildCode(Room)
 	 * @param childCode a fully-qualified Room ID for this Room
 	 * @return a Room object
 	 */
