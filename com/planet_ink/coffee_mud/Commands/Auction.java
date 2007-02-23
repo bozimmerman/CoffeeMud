@@ -264,7 +264,7 @@ public class Auction extends Channel implements Tickable
         		return false;
         	}
 			Vector V=new Vector();
-			if((commands.size()>2)
+			if((commands.size()>=2)
 			&&((CMLib.english().numPossibleGold(mob,(String)commands.lastElement())>0)||(((String)commands.lastElement()).equals("0"))))
 			{
 				V.addElement(commands.lastElement());
