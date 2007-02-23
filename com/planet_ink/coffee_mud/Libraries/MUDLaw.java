@@ -100,7 +100,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
         for(Enumeration e=A.getCompleteMap();e.hasMoreElements();)
         {
             R=(Room)e.nextElement();
-            if(R.roomID().length()==0) continue;
+            if((R==null)||(R.roomID()==null)||(R.roomID().length()==0)) continue;
             if(R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
                 streets++;
             else
