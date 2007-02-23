@@ -772,7 +772,7 @@ public class StdMOB implements MOB
 		}
         if(location()==null)
         {
-        	Log.errOut("StdMOB",name()+" of "+CMLib.map().getExtendedRoomID(newLocation)+" was auto-destroyed!!");
+        	Log.errOut("StdMOB",name()+" of "+CMLib.map().getExtendedRoomID(newLocation)+" was auto-destroyed by its tick!!");
             destroy();
             return;
         }
@@ -781,6 +781,12 @@ public class StdMOB implements MOB
 		if((!isGeneric())&&(resetStats))
 			resetToMaxState();
 
+        if(location()==null)
+        {
+        	Log.errOut("StdMOB",name()+" of "+CMLib.map().getExtendedRoomID(newLocation)+" was auto-destroyed by its room recover!!");
+            destroy();
+            return;
+        }
         location().showOthers(this,null,CMMsg.MSG_BRINGTOLIFE,null);
 		if(CMLib.flags().isSleeping(this))
 			tell("(You are asleep)");
