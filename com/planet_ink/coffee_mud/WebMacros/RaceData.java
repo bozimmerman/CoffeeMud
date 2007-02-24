@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -737,9 +738,7 @@ public class RaceData extends StdWebMacro
                     str.append(itemList(V,'W',httpReq,parms,0,true)+", ");
                 }
                 if(parms.containsKey("RESOURCES"))
-                {
-                    //TODO: race resources (item list with # of each)
-                }
+                    str.append(itemList(R.myResources(),'R',httpReq,parms,0,false)+", ");
                 if(parms.containsKey("BODYKILL"))
                 {
                     String old=httpReq.getRequestParameter("BODYKILL");
@@ -748,15 +747,37 @@ public class RaceData extends StdWebMacro
                         bodyKill=CMath.s_bool(R.makeGenRace().getStat("BODYKILL"));
                     else
                         bodyKill=old.equalsIgnoreCase("on");
-                    if(bodyKill) str.append(" CHECKED ");
+                    if(bodyKill) str.append(" CHECKED , ");
                 }
                 if(parms.containsKey("DISFLAGS"))
                 {
-                    //TODO: race disable flags
+                    R=R.makeGenRace();
+                	if(!httpReq.isRequestParameter("DISFLAGS"))
+	                    httpReq.addRequestParameters("DISFLAGS",R.getStat("DISFLAGS"));
+                    int flags=CMath.s_int(httpReq.getRequestParameter("DISFLAGS"));
+                    for(int i=0;i<Race.GENFLAG_DESCS.length;i++)
+                    {
+                    	str.append("<OPTION VALUE="+CMath.pow(2,i));
+                    	if(CMath.bset(flags,CMath.pow(2,i)))
+                    		str.append(" SELECTED");
+                    	str.append(">"+Race.GENFLAG_DESCS[i]);
+                    }
                 }
                 if(parms.containsKey("AGING"))
                 {
-                    //TODO: race aging chart
+                	int[] ageChart=R.getAgingChart();
+                	if(!httpReq.isRequestParameter("AGE0"))
+	                	for(int i=0;i<Race.AGE_DESCS.length;i++)
+	                		httpReq.addRequestParameters("AGE"+i,""+ageChart[i]);
+            		int val=-1;
+                	for(int i=0;i<Race.AGE_DESCS.length;i++)
+                	{
+                		int lastVal=val;
+                		val=CMath.s_int((String)httpReq.getRequestParameter("AGE"+i));
+                		if(val<lastVal){ val=lastVal; httpReq.addRequestParameters("AGE"+i,""+val);}
+                		str.append("<INPUT TYPE=TEXT SIZE=4 NAME=AGE"+i+" VALUE="+val+">"+Race.AGE_DESCS[i]+"<BR>");
+                	}
+					str.append(", ");
                 }
                 
 				if(parms.containsKey("SENSES"))
