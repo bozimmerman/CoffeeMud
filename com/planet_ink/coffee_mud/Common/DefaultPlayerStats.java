@@ -62,6 +62,9 @@ public class DefaultPlayerStats implements PlayerStats
 	protected int wrap=78;
     protected int[] birthday=null;
 	protected MOB replyTo=null;
+	protected int replyType=0;
+	protected long replyTime=0;
+	
 	protected Vector securityGroups=new Vector();
     protected long accountExpiration=0;
     protected RoomnumberSet visitedRoomSet=null;
@@ -187,7 +190,13 @@ public class DefaultPlayerStats implements PlayerStats
 	public void setChannelMask(int newMask){ channelMask=newMask;}
 	public int getChannelMask(){ return channelMask;}
 	public MOB replyTo(){	return replyTo;	}
-	public void setReplyTo(MOB mob){	replyTo=mob;	}
+	public int replyType(){	return replyType;}
+	public long replyTime(){	return replyTime;	}
+	public void setReplyTo(MOB mob, int replyType)
+	{	
+		replyTo=mob;
+		this.replyType=replyType;
+	}
 	public void setPrompt(String newPrompt){prompt=newPrompt;}
 	public String getColorStr(){return colorStr;}
 	public void setColorStr(String newColors){colorStr=newColors;}

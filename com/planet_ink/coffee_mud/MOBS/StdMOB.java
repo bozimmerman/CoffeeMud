@@ -2355,7 +2355,7 @@ public class StdMOB implements MOB
 				if((msg.targetMinor()==CMMsg.TYP_SPEAK)
 				 &&(msg.source()!=null)
 				 &&(playerStats()!=null))
-					playerStats().setReplyTo(msg.source());
+					playerStats().setReplyTo(msg.source(),PlayerStats.REPLY_SAY);
 				tell(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
 			}
 			else

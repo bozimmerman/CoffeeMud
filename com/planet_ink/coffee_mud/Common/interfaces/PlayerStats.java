@@ -31,6 +31,10 @@ import java.util.*;
 */
 public interface PlayerStats extends CMCommon, CMModifiable
 {
+	public static final int REPLY_SAY=0;
+	public static final int REPLY_YELL=1;
+	public static final int REPLY_TELL=2;
+	
 	public String getEmail();
 	public void setEmail(String newAdd);
 	/** When the USER last logged off */
@@ -70,8 +74,10 @@ public interface PlayerStats extends CMCommon, CMModifiable
 	public void setXML(String str);
 	public String lastIP();
 	public void setLastIP(String ip);
-	public void setReplyTo(MOB mob);
+	public void setReplyTo(MOB mob, int replyType);
 	public MOB replyTo();
+	public int replyType();
+	public long replyTime();
 	public Vector getSecurityGroups();
 	public int[] getBirthday();
 	public int initializeBirthday(int ageHours, Race R);
