@@ -182,6 +182,7 @@ public class Chant_SummonSapling extends Chant
 		newMOB.setVictim(victim);
 		newMOB.recoverEnvStats();
 		newMOB.recoverCharStats();
+		newMOB.baseEnvStats().setAbility(newMOB.baseEnvStats().ability()*2);
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
 		newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));

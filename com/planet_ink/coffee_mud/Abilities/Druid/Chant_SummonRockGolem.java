@@ -120,6 +120,7 @@ public class Chant_SummonRockGolem extends Chant
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("StoneGolem"));
 		newMOB.recoverEnvStats();
 		newMOB.recoverCharStats();
+		newMOB.baseEnvStats().setAbility(newMOB.baseEnvStats().ability()*2);
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB)+100);
 		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB)+100);
 		newMOB.baseEnvStats().setSpeed(newMOB.baseCharStats().getCurrentClass().getLevelSpeed(newMOB)/2.0);

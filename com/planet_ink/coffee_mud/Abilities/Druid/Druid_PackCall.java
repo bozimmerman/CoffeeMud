@@ -183,6 +183,7 @@ public class Druid_PackCall extends StdAbility
 					newMOB.setLocation(mob.location());
 					newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 					newMOB.recoverEnvStats();
+					newMOB.baseEnvStats().setAbility(newMOB.baseEnvStats().ability()*2);
 					newMOB.baseEnvStats().setArmor(newMOB.charStats().getCurrentClass().getLevelArmor(newMOB));
 					newMOB.baseEnvStats().setAttackAdjustment(newMOB.charStats().getCurrentClass().getLevelAttack(newMOB));
 					newMOB.baseEnvStats().setDamage(newMOB.charStats().getCurrentClass().getLevelDamage(newMOB));
