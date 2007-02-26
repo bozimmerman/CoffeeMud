@@ -681,7 +681,8 @@ public class ItemData extends StdWebMacro
 					str.append(old);
 					break;
 				case 55: // is wallpaper
-					if(CMClass.classID(I).indexOf("GenWallpaper")>0) return "true";
+					if(CMClass.classID(I).indexOf("Wallpaper")>=0) 
+						return "true";
                     return "false";
 				case 56: // readabletext
 					if(firstTime) old=""+I.readableText();
