@@ -191,6 +191,45 @@ public class Reset extends StdCommand
 		return -1;
 	}
 
+	public String resetWarning(MOB mob, Area A)
+	{
+		Room R=null;
+		StringBuffer warning=new StringBuffer("");
+		String roomWarning=null; 
+		for(Enumeration e=A.getProperMap();e.hasMoreElements();)
+		{
+			R=(Room)e.nextElement();
+			roomWarning=resetWarning(mob,R);
+			if(roomWarning!=null)
+				warning.append(roomWarning);
+		}
+		if(warning.length()==0) return null;
+		return warning.toString();
+	}
+	public String resetWarning(MOB mob, Room R)
+	{
+		if((mob==null)||(R==null)) return null;
+		StringBuffer warning=new StringBuffer("");
+		for(int s=0;s<CMLib.sessions().size();s++)
+		{
+			Session S=CMLib.sessions().elementAt(s);
+			if((S!=null)&&(S.mob()!=null)&&(S.mob()!=mob)&&(S.mob().location()==R))
+				warning.append("A player, '"+S.mob().Name()+" is in "+CMLib.map().getExtendedRoomID(R)+"\n\r");
+		}
+		Item I=null;
+		for(int i=0;i<R.numItems();i++)
+		{
+			I=R.fetchItem(i);
+			if((I instanceof DeadBody)
+			&&(((DeadBody)I).playerCorpse()))
+				warning.append("A player corpse, '"+I.Name()+" is in "+CMLib.map().getExtendedRoomID(R)+"\n\r");
+		}
+		if(warning.length()==0) return null;
+		return warning.toString();
+	}
+	
+	
+	
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -213,14 +252,19 @@ public class Reset extends StdCommand
 			Area A=mob.location().getArea();
 			if(A!=null)
 			{
-				Session S=null;
-				for(int x=0;x<CMLib.sessions().size();x++)
+				String warning=resetWarning(mob, A);
+				if(warning!=null) mob.tell(warning);
+				if((mob.session()==null)||(mob.session().confirm("Reset the contents of the area '"+A.name()+"', OK (Y/n)?","Y")))
 				{
-					S=CMLib.sessions().elementAt(x);
-					if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(A.inMyMetroArea(S.mob().location().getArea())))
-						mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> order(s) this area to normalcy.");
+					Session S=null;
+					for(int x=0;x<CMLib.sessions().size();x++)
+					{
+						S=CMLib.sessions().elementAt(x);
+						if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(A.inMyMetroArea(S.mob().location().getArea())))
+							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> order(s) this area to normalcy.");
+					}
+					CMLib.map().resetArea(A);
 				}
-				CMLib.map().resetArea(A);
 			}
 			mob.tell("Done.");
 		}
