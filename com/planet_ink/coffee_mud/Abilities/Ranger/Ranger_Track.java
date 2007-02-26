@@ -35,6 +35,7 @@ public class Ranger_Track extends StdAbility
 {
 	public String ID() { return "Ranger_Track"; }
 	public String name(){ return "Track";}
+
 	protected String displayText="(Tracking)";
 	public String displayText(){ return displayText;}
 	protected int canAffectCode(){return CAN_MOBS;}
@@ -48,7 +49,6 @@ public class Ranger_Track extends StdAbility
 
 	protected Vector theTrail=null;
 	public int nextDirection=-2;
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -187,7 +187,7 @@ public class Ranger_Track extends StdAbility
 				mob.location().send(mob,msg);
 				target.executeMsg(target,msg);
 				invoker=mob;
-				displayText="(tracking "+target.name()+")";
+				displayText="(Tracking "+target.name()+")";
 				Ranger_Track newOne=(Ranger_Track)this.copyOf();
 				if(mob.fetchEffect(newOne.ID())==null)
 					mob.addEffect(newOne);
