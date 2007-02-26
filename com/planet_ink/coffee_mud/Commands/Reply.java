@@ -60,7 +60,33 @@ public class Reply extends StdCommand
 			mob.tell("Tell '"+pstats.replyTo().Name()+" what?");
 			return false;
 		}
-		CMLib.commands().postSay(mob,pstats.replyTo(),CMParms.combine(commands,1),true,!mob.location().isInhabitant(pstats.replyTo()));
+		int replyType=pstats.replyType();
+		if((pstats.replyTo().Name().indexOf("@")<0)
+		&&((mob.location()==null)||(!mob.location().isInhabitant(pstats.replyTo()))))
+		{
+			mob.tell(pstats.replyTo().Name()+" is no longer in the room.");
+			return false;
+		}
+		
+		switch(replyType)
+		{
+		case PlayerStats.REPLY_SAY:
+			CMLib.commands().postSay(mob,pstats.replyTo(),CMParms.combine(commands,1),false,false);
+			break;
+		case PlayerStats.REPLY_TELL:
+			CMLib.commands().postSay(mob,pstats.replyTo(),CMParms.combine(commands,1),true,true);
+			break;
+		case PlayerStats.REPLY_YELL:
+			{
+				Command C=CMClass.getCommand("Say");
+				if((C!=null)&&(C.securityCheck(mob)))
+				{
+					commands.setElementAt("Yell",0);
+					C.execute(mob, commands);
+				}
+				break;
+			}
+		}
 		if((pstats.replyTo().session()!=null)
 		&&(pstats.replyTo().session().afkFlag()))
 			mob.tell(pstats.replyTo().session().afkMessage());
