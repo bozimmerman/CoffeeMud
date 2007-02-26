@@ -45,16 +45,14 @@ public class BaseChanneler extends StdCommand
 		&&(M.location().okMessage(ses.mob(),msg)))
 		{
 			M.executeMsg(M,msg);
+			didIt=true;
 			if(msg.trailerMsgs()!=null)
 			{
 				for(int i=0;i<msg.trailerMsgs().size();i++)
 				{
 					CMMsg msg2=(CMMsg)msg.trailerMsgs().elementAt(i);
 					if((msg!=msg2)&&(M.location()!=null)&&(M.location().okMessage(M,msg2)))
-					{
 						M.executeMsg(M,msg2);
-						didIt=true;
-					}
 				}
 				msg.trailerMsgs().clear();
 			}
