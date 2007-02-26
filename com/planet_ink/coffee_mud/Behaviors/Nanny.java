@@ -557,7 +557,16 @@ public class Nanny extends StdBehavior
             	{
             		E=(Environmental)V.elementAt(v);
             		if(E instanceof MOB)
+            		{
             			CMLib.commands().postFollow((MOB)E,msg.source(),false);
+            			if(((MOB)E).amFollowing()!=msg.source())
+            			{
+        					CMLib.commands().postSay((MOB)host,msg.source(),"Hmm, '"+E.name()+"' doesn't seem ready to leave.  Now get along!",true,false);
+        					msg.source().location().send((MOB)E,CMClass.getMsg((MOB)E,msg.source(),null,CMMsg.MSG_FOLLOW|CMMsg.MASK_ALWAYS,"<S-NAME> follow(s) <T-NAMESELF>."));
+                			if(((MOB)E).amFollowing()!=msg.source())
+	        					((MOB)E).setFollowing(msg.source());
+            			}
+            		}
             	}
             	clearTheSlate(msg.source());
             	sayLaters.addElement(msg.source(),"Thanks, come again!");
