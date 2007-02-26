@@ -3375,9 +3375,12 @@ public class BaseGenerics extends StdCommand
 				long wornCode=1<<l;
 				if((CMLib.flags().wornLocation(wornCode).length()>0)
 				&&(((E.rawProperLocationBitmap()&wornCode)==wornCode)))
-					buf.append(CMLib.flags().wornLocation(wornCode)+" ");
+					buf.append(CMLib.flags().wornLocation(wornCode)+", ");
 			}
-			mob.tell(buf.toString());
+			if(buf.toString().endsWith(", "))
+				mob.tell(buf.substring(0,buf.length()-2));
+			else
+				mob.tell(buf.toString());
 			return;
 		}
 		int codeVal=-1;
