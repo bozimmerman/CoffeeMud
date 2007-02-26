@@ -55,8 +55,8 @@ public class Dance_War extends Dance
 		super.affectEnvStats(affected,affectableStats);
 		if(affected==null) return;
         int bonus=adjustedLevel(invoker(),0);
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+bonus);
-		affectableStats.setArmor(affectableStats.armor()-bonus);
+		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(bonus*2));
+		affectableStats.setArmor(affectableStats.armor()-(bonus*2));
 		affectableStats.setDamage(affectableStats.damage()+(bonus/3));
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
