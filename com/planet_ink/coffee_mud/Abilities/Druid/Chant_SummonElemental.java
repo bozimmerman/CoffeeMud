@@ -148,6 +148,7 @@ public class Chant_SummonElemental extends Chant
 		}
 		newMOB.recoverEnvStats();
 		newMOB.recoverCharStats();
+		newMOB.baseEnvStats().setAbility(newMOB.baseEnvStats().ability()*2);
 		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
 		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
 		newMOB.baseEnvStats().setSpeed(newMOB.baseCharStats().getCurrentClass().getLevelSpeed(newMOB));

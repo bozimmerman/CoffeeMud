@@ -152,6 +152,7 @@ public class Chant_BrownMold extends Chant
 		A.setProficiency(100);
 		newMOB.addAbility(A);
 		newMOB.setVictim(victim);
+		newMOB.baseEnvStats().setAbility(newMOB.baseEnvStats().ability()*2);
 		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
 		newMOB.setLocation(caster.location());
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
