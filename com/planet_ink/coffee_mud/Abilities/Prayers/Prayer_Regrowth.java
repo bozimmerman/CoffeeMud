@@ -36,7 +36,7 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-public class Prayer_Regrowth extends Prayer
+public class Prayer_Regrowth extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_Regrowth"; }
 	public String name(){ return "Regrowth";}
@@ -65,6 +65,12 @@ public class Prayer_Regrowth extends Prayer
 		}
 	}
 
+	public boolean supportsMending(Environmental E)
+	{ 
+		if(!(E instanceof MOB)) return false;
+		return (E.fetchEffect("Amputation")!=null);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

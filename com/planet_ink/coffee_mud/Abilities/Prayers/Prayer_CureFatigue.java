@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Prayer_CureFatigue extends Prayer
+public class Prayer_CureFatigue extends Prayer implements MendingSkill
 {
     public String ID() { return "Prayer_CureFatigue"; }
     public String name(){ return "Cure Fatigue";}
@@ -41,6 +41,13 @@ public class Prayer_CureFatigue extends Prayer
     public long flags(){return Ability.FLAG_HOLY;}
     protected long minCastWaitTime(){return Tickable.TIME_TICK/2;}
 
+	public boolean supportsMending(Environmental E)
+	{ 
+		return (E instanceof MOB)
+				&&(((((MOB)E).curState()).getFatigue()>0)
+						||((((MOB)E).curState()).getMovement()<(((MOB)E).maxState()).getMovement()));
+	}
+	
     public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         MOB target=this.getTarget(mob,commands,givenTarget);

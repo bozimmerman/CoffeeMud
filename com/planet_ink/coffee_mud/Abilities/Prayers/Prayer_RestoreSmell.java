@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_RestoreSmell extends Prayer
+public class Prayer_RestoreSmell extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_RestoreSmell"; }
 	public String name(){ return "Restore Smell";}
@@ -39,6 +39,17 @@ public class Prayer_RestoreSmell extends Prayer
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
+	public boolean supportsMending(Environmental E)
+	{ 
+		if(!(E instanceof MOB)) return false;
+		MOB caster=CMClass.getMOB("StdMOB");
+		caster.baseEnvStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
+		caster.envStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
+		boolean canMend=returnOffensiveAffects(caster,E).size()>0;
+		caster.destroy();
+		return canMend;
+	}
+	
 	public Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
 	{
 		MOB newMOB=CMClass.getMOB("StdMOB");

@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_RemoveDeathMark extends Prayer
+public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_RemoveDeathMark"; }
 	public String name(){ return "Remove Death Mark";}
@@ -41,6 +41,12 @@ public class Prayer_RemoveDeathMark extends Prayer
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
+	public boolean supportsMending(Environmental E)
+	{ 
+		if(!(E instanceof MOB)) return false;
+		return (E.fetchEffect("Thief_Mark")!=null)||(E.fetchEffect("Thief_ContractHit")!=null);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

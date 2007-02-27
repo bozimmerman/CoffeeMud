@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor
+public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	public String ID() { return "ScrimShaw"; }
 	public String name(){ return "Scrimshawing";}
@@ -105,7 +105,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
-	public boolean supportsMending(Item I){ return canMend(null,I,true);}
+	public boolean supportsMending(Environmental E){ return canMend(null,E,true);}
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;

@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_RockFlesh extends Prayer
+public class Prayer_RockFlesh extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_RockFlesh"; }
 	public String name(){return "Rock Flesh";}
@@ -39,6 +39,12 @@ public class Prayer_RockFlesh extends Prayer
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
+	public boolean supportsMending(Environmental E)
+	{ 
+		if(!(E instanceof MOB)) return false;
+		return (E.fetchEffect("Spell_FleshStone")!=null)||(E.fetchEffect("Prayer_FleshRock")!=null);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 

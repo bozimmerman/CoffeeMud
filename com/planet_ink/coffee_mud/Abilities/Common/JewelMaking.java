@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor
+public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	public String ID() { return "JewelMaking"; }
 	public String name(){ return "Jewel Making";}
@@ -149,7 +149,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor
 		return true;
 	}
 
-	public boolean supportsMending(Item I){ return canMend(null,I,true);}
+	public boolean supportsMending(Environmental E){ return canMend(null,E,true);}
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;

@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
+public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	public String ID() { return "Weaponsmithing"; }
 	public String name(){ return "Weaponsmithing";}
@@ -152,7 +152,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		return true;
 	}
 
-	public boolean supportsMending(Item I){ return canMend(null,I,true);}
+	public boolean supportsMending(Environmental E){ return canMend(null,E,true);}
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;

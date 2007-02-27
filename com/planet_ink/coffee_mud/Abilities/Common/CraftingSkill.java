@@ -650,8 +650,6 @@ public class CraftingSkill extends GatheringSkill
 		return true;
 	}
 
-
-	public boolean supportsMending(Item I){ return false;}
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(E==null) return false;

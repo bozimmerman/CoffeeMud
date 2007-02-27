@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_Resurrect extends Prayer
+public class Prayer_Resurrect extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_Resurrect"; }
 	public String name(){ return "Resurrect";}
@@ -40,6 +40,11 @@ public class Prayer_Resurrect extends Prayer
 	public long flags(){return Ability.FLAG_HOLY;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 
+	public boolean supportsMending(Environmental E)
+	{ 
+		return (E instanceof DeadBody);
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental body=null;

@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Prayer_HolyWord extends Prayer
+public class Prayer_HolyWord extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_HolyWord"; }
 	public String name(){ return "Holy Word";}
@@ -42,6 +42,13 @@ public class Prayer_HolyWord extends Prayer
 	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
 	public long flags(){return Ability.FLAG_HOLY;}
+
+	public boolean supportsMending(Environmental E)
+	{ 
+		return (E instanceof MOB)
+				&&((Prayer_Bless.getSomething((MOB)E,true)!=null)
+					||(CMLib.flags().domainAffects(E,Ability.DOMAIN_CURSING).size()>0));
+	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

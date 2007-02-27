@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_MassHeal extends Prayer
+public class Prayer_MassHeal extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_MassHeal"; }
 	public String name(){ return "Mass Heal";}
@@ -39,6 +39,12 @@ public class Prayer_MassHeal extends Prayer
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
 
+	public boolean supportsMending(Environmental E)
+	{ 
+		return (E instanceof MOB)
+				&&((((MOB)E).curState()).getHitPoints()<(((MOB)E).maxState()).getHitPoints());
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

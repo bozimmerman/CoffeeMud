@@ -31,13 +31,19 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_RemoveParalysis extends Prayer
+public class Prayer_RemoveParalysis extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_RemoveParalysis"; }
 	public String name(){ return "Remove Paralysis";}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
+
+	public boolean supportsMending(Environmental E)
+	{ 
+		return (E instanceof MOB)
+					&&(CMLib.flags().flaggedAffects(E,Ability.FLAG_PARALYZING|Ability.FLAG_UNHOLY).size()>0);
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

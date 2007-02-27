@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Prayer_Bless extends Prayer
+public class Prayer_Bless extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_Bless"; }
 	public String name(){ return "Bless";}
@@ -131,6 +131,13 @@ public class Prayer_Bless extends Prayer
 			if(CMLib.ableMapper().lowestQualifyingLevel(A.ID())<=level)
 				A.unInvoke();
 		}
+	}
+	
+	public boolean supportsMending(Environmental E)
+	{ 
+		return (E instanceof MOB)
+				&&((Prayer_Bless.getSomething((MOB)E,true)!=null)
+					||(CMLib.flags().domainAffects(E,Ability.DOMAIN_CURSING).size()>0));
 	}
 
 	public static boolean isCursed(Item item)

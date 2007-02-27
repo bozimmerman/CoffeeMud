@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Prayer_CureDisease extends Prayer
+public class Prayer_CureDisease extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_CureDisease"; }
 	public String name(){ return "Cure Disease";}
@@ -40,6 +40,13 @@ public class Prayer_CureDisease extends Prayer
 	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
+	public boolean supportsMending(Environmental E)
+	{ 
+		if(!(E instanceof MOB)) return false;
+		boolean canMend=returnOffensiveAffects(E).size()>0;
+		return canMend;
+	}
+	
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{
 		Vector offenders=new Vector();

@@ -34,7 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
+public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	public String ID() { return "LeatherWorking"; }
 	public String name(){ return "Leather Working";}
@@ -134,7 +134,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
-	public boolean supportsMending(Item I){ return canMend(null,I,true);}
+	public boolean supportsMending(Environmental E){ return canMend(null,E,true);}
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;

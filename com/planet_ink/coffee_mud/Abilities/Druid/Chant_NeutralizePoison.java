@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Chant_NeutralizePoison extends Chant
+public class Chant_NeutralizePoison extends Chant implements MendingSkill
 {
 	public String ID() { return "Chant_NeutralizePoison"; }
 	public String name(){ return "Neutralize Poison";}
@@ -41,6 +41,13 @@ public class Chant_NeutralizePoison extends Chant
 	protected int canTargetCode(){return CAN_MOBS;}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 
+	public boolean supportsMending(Environmental E)
+	{ 
+		if(!(E instanceof MOB)) return false;
+		boolean canMend=returnOffensiveAffects(E).size()>0;
+		return canMend;
+	}
+	
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{
 		Vector offenders=new Vector();

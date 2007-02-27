@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_RemovePoison extends Prayer
+public class Prayer_RemovePoison extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_RemovePoison"; }
 	public String name(){ return "Remove Poison";}
@@ -39,6 +39,13 @@ public class Prayer_RemovePoison extends Prayer
 	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
+	public boolean supportsMending(Environmental E)
+	{ 
+		if(!(E instanceof MOB)) return false;
+		boolean canMend=returnOffensiveAffects(E).size()>0;
+		return canMend;
+	}
+	
 	public static Vector returnOffensiveAffects(Environmental fromMe)
 	{
 		Vector offenders=new Vector();

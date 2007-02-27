@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Prayer_CureCannibalism extends Prayer
+public class Prayer_CureCannibalism extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_CureCannibalism"; }
 	public String name(){ return "Cure Cannibalism";}
@@ -40,6 +40,12 @@ public class Prayer_CureCannibalism extends Prayer
 	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
+	public boolean supportsMending(Environmental E)
+	{ 
+		if(!(E instanceof MOB)) return false;
+		return E.fetchEffect("Prayer_Cannibalism")!=null;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

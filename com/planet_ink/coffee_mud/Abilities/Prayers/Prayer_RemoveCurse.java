@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_RemoveCurse extends Prayer
+public class Prayer_RemoveCurse extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_RemoveCurse"; }
 	public String name(){ return "Remove Curse";}
@@ -41,6 +41,12 @@ public class Prayer_RemoveCurse extends Prayer
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 
+	public boolean supportsMending(Environmental E)
+	{ 
+		if(!(E instanceof MOB)) return false;
+		return CMLib.flags().domainAffects(E,Ability.DOMAIN_CURSING).size()>0;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

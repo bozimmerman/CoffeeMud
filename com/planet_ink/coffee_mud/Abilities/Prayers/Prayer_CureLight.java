@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Prayer_CureLight extends Prayer
+public class Prayer_CureLight extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_CureLight"; }
 	public String name(){ return "Cure Light Wounds";}
@@ -40,6 +40,12 @@ public class Prayer_CureLight extends Prayer
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
     protected long minCastWaitTime(){return Tickable.TIME_TICK/2;}
+    
+	public boolean supportsMending(Environmental E)
+	{ 
+		return (E instanceof MOB)
+				&&((((MOB)E).curState()).getHitPoints()<(((MOB)E).maxState()).getHitPoints());
+	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

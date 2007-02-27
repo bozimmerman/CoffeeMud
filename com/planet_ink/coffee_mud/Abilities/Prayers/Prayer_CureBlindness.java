@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Prayer_CureBlindness extends Prayer
+public class Prayer_CureBlindness extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_CureBlindness"; }
 	public String name(){ return "Cure Blindness";}
@@ -40,6 +40,17 @@ public class Prayer_CureBlindness extends Prayer
 	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
+	public boolean supportsMending(Environmental E)
+	{ 
+		if(!(E instanceof MOB)) return false;
+		MOB caster=CMClass.getMOB("StdMOB");
+		caster.baseEnvStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
+		caster.envStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
+		boolean canMend=returnOffensiveAffects(caster,E).size()>0;
+		caster.destroy();
+		return canMend;
+	}
+	
 	public Vector returnOffensiveAffects(MOB caster, Environmental fromMe)
 	{
 		MOB newMOB=CMClass.getMOB("StdMOB");

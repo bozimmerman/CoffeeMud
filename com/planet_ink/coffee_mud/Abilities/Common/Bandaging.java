@@ -31,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Bandaging extends CommonSkill
+public class Bandaging extends CommonSkill implements MendingSkill
 {
 	public String ID() { return "Bandaging"; }
 	public String name(){ return "Bandaging";}
@@ -49,6 +49,12 @@ public class Bandaging extends CommonSkill
 		displayText="You are bandaging...";
 		verb="bandaging";
 	}
+	public boolean supportsMending(Environmental E)
+	{ 
+		if(!(E instanceof MOB)) return false;
+		return (E.fetchEffect("Bleeding")!=null)||(E.fetchEffect("Injury")!=null);
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)

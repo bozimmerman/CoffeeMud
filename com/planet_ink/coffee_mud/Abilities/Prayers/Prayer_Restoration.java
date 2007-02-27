@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Prayer_Restoration extends Prayer
+public class Prayer_Restoration extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_Restoration"; }
 	public String name(){ return "Restoration";}
@@ -40,6 +40,35 @@ public class Prayer_Restoration extends Prayer
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
+	public boolean supportsMending(Environmental E)
+	{ 
+		if(!(E instanceof MOB)) return false;
+		
+		if(((((MOB)E).curState()).getHitPoints()<(((MOB)E).maxState()).getHitPoints()))
+			return true;
+		MOB caster=CMClass.getMOB("StdMOB");
+		caster.baseEnvStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
+		caster.envStats().setLevel(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL));
+		if(
+		  (E.fetchEffect("Amputation")!=null)
+		||(E.fetchEffect("Fighter_AtemiStrike")!=null)
+		||(E.fetchEffect("Undead_EnergyDrain")!=null)
+		||(E.fetchEffect("Undead_WeakEnergyDrain")!=null)
+		||(E.fetchEffect("Undead_ColdTouch")!=null)
+		||((new Prayer_RestoreSmell().returnOffensiveAffects(caster,E)).size()>0)
+		||((new Prayer_RestoreVoice().returnOffensiveAffects(caster,E)).size()>0)
+		||((Prayer_RemovePoison.returnOffensiveAffects(E)).size()>0)
+		||((new Prayer_Freedom().returnOffensiveAffects(caster,E)).size()>0)
+		||((new Prayer_CureBlindness().returnOffensiveAffects(caster,E)).size()>0)
+		||((new Prayer_CureDeafness().returnOffensiveAffects(caster,E)).size()>0)
+		)
+		{
+			caster.destroy();
+			return true;
+		}
+		caster.destroy();
+		return false;
+	}
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
