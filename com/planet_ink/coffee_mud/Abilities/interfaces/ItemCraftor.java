@@ -116,4 +116,11 @@ public interface ItemCraftor extends Ability
 	 * @return a vector of integers
 	 */
 	public Vector myResources();
+	/**
+	 * Returns a Vector of Integer objects where each Integer
+	 * is a fully qualified RawMaterial code.
+	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
+	 * @return a vector of integers
+	 */
+	public boolean supportsMending(Item I);
 }

@@ -96,6 +96,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		super.unInvoke();
 	}
 
+	public boolean supportsMending(Item I){ return canMend(null,I,true);}
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;

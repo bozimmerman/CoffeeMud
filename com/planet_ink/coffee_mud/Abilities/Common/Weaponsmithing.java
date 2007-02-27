@@ -152,6 +152,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		return true;
 	}
 
+	public boolean supportsMending(Item I){ return canMend(null,I,true);}
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(!super.canMend(mob,E,quiet)) return false;
