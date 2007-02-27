@@ -66,13 +66,22 @@ public class GatheringSkill extends CommonSkill
 	        if(str.length()>0)
 	        {
 	            boolean found=false;
+        		if(str.startsWith("-"))
+        		{
+        			str=str.substring(1);
+    	            for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+            			if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(str))
+	    	            	maskV.removeElement(new Integer(RawMaterial.RESOURCE_DATA[i][0]));
+    	            found=true;
+        		}
+        		if(!found)
         		for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
         			if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(str))
         			{
         			    for(int ii=0;ii<RawMaterial.RESOURCE_DATA.length;ii++)
         			        if((RawMaterial.RESOURCE_DATA[ii][0]&RawMaterial.MATERIAL_MASK)==(i<<8))
 			                { 
-        			            found=true; 
+        			            found=true;
         			            maskV.addElement(new Integer(RawMaterial.RESOURCE_DATA[ii][0]));
         			        }
         			    break;

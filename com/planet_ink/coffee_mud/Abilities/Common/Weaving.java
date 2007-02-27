@@ -39,7 +39,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor
 	public String name(){ return "Weaving";}
 	private static final String[] triggerStrings = {"WEAVING","WEAVE"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public String supportedResourceString(){return "VEGETATION|HEMP|SILK|COTTON";}
+    public String supportedResourceString(){return "WHEAT|VINE|SEAWEED|HEMP|SILK|COTTON";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
