@@ -4076,7 +4076,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						results.append(E.fetchEffect(CMLib.dice().roll(1,((MOB)E).numAllEffects(),-1)).name());
 				}
 				else
-				if(E.numEffects()>0)
+				if((E!=null)&&(E.numEffects()>0))
 					results.append(E.fetchEffect(CMLib.dice().roll(1,E.numEffects(),-1)).name());
 				break;
 			}
@@ -4084,6 +4084,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                if(E!=null)
 				for(int i=0;i<E.numBehaviors();i++)
 					results.append(E.fetchBehavior(i).ID()+" ");
 				break;
