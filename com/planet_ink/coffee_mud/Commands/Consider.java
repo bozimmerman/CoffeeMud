@@ -199,7 +199,7 @@ public class Consider extends StdCommand
 			mob.tell(withWhat.toString()+".");
 		else
 		if(!(target instanceof MOB))
-			mob.tell((MOB)target,null,null,"You don't have any particular thoughts about that.");
+			mob.tell("You don't have any particular thoughts about that.");
 		return true;
 	}
     public double combatActionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
