@@ -66,92 +66,141 @@ public class Consider extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-        MOB target=null;
-        if((commands.size()==1)&&(commands.firstElement() instanceof MOB))
-            target=(MOB)commands.firstElement();
+		Room R=mob.location();
+		if(R==null) return false;
+        Environmental target=null;
+        if((commands.size()==1)&&(commands.firstElement() instanceof Environmental))
+        	target=(Environmental)commands.firstElement();
         else
         {
     		if(commands.size()<2)
     		{
-    			mob.tell("Consider whom?");
+    			mob.tell("Consider whom or what?");
     			return false;
     		}
     		commands.removeElementAt(0);
     		String targetName=CMParms.combine(commands,0);
-    		target=mob.location().fetchInhabitant(targetName);
+    		if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
+    			target=mob;
+    		if(target==null)
+    			target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,targetName,Item.WORNREQ_ANY);
     		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
     		{
     			mob.tell("I don't see '"+targetName+"' here.");
     			return false;
     		}
         }
+		CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MASK_EYES|CMMsg.TYP_OK_VISUAL,null,"<S-NAME> consider(s) <T-NAMESELF>.","<S-NAME> consider(s) <T-NAMESELF>.");
+		if(R.okMessage(mob,msg))
+			R.send(mob,msg);
+        if(target instanceof MOB)
+        {
+        	MOB targetMOB=(MOB)target;
+			int relDiff=relativeLevelDiff(targetMOB,mob);
+			int lvlDiff=(target.envStats().level()-mob.envStats().level());
+			int realDiff=relDiff;//(relDiff+lvlDiff)/2;
+	
+			int theDiff=2;
+			if(mob.envStats().level()>20) theDiff=3;
+			if(mob.envStats().level()>40) theDiff=4;
+			if(mob.envStats().level()>60) theDiff=5;
+			if(mob.envStats().level()>80) theDiff=6;
 
-		int relDiff=relativeLevelDiff(target,mob);
-		int lvlDiff=(target.envStats().level()-mob.envStats().level());
-		int realDiff=(relDiff+lvlDiff)/2;
-
-		int theDiff=2;
-		if(mob.envStats().level()>20) theDiff=3;
-		if(mob.envStats().level()>40) theDiff=4;
-		if(mob.envStats().level()>60) theDiff=5;
-		if(mob.envStats().level()>80) theDiff=6;
-
-		int levelDiff=Math.abs(realDiff);
-		if(levelDiff<theDiff)
-		{
-			mob.tell("The perfect match!");
-			return false;
-		}
-		else
-		if(realDiff<0)
-		{
-			if(realDiff>-(2*theDiff))
+			String levelMsg=null;
+			if(lvlDiff==0)
+				levelMsg=targetMOB.charStats().HeShe()+" is your equal";
+			else
+			if(lvlDiff<-CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE))
+				levelMsg=targetMOB.charStats().HeShe()+" is vastly inferior to you";
+			else
+			if(lvlDiff>CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE))
+				levelMsg=targetMOB.charStats().HeShe()+" is far superior to you";
+			else
+			if(CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE)!=0)
 			{
-				mob.tell(target.charStats().HeShe()+" might give you a fight.");
-				return false;
+				int relLvlDiff=(lvlDiff<0)?-lvlDiff:lvlDiff;
+				double pct=CMath.div(relLvlDiff,CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE));
+				if((lvlDiff<0)&&(pct<0.5))
+					levelMsg=targetMOB.charStats().HeShe()+" is almost your equal";
+				else
+				if((lvlDiff<0)&&(pct<=1.0))
+					levelMsg=targetMOB.charStats().HeShe()+" is somewhat inferior to you";
+				else
+				if((lvlDiff<0))
+					levelMsg=targetMOB.charStats().HeShe()+" is inferior to you";
+				else
+				if((lvlDiff>0)&&(pct<0.5))
+					levelMsg="You are almost "+targetMOB.charStats().hisher()+" equal";
+				else
+				if((lvlDiff>0)&&(pct<0.8))
+					levelMsg=targetMOB.charStats().HeShe()+" is somewhat superior to you";
+				else
+					levelMsg=targetMOB.charStats().HeShe()+" is superior to you";
+			}
+			
+			int levelDiff=Math.abs(realDiff);
+			if(levelDiff<theDiff)
+			{
+				levelMsg+=(lvlDiff!=0)?" but ":" and ";
+				levelMsg+="the perfect match!";
 			}
 			else
-			if(realDiff>-(3*theDiff))
+			if(realDiff<0)
 			{
-				mob.tell(target.charStats().HeShe()+" is hardly worth your while.");
-				return false;
+				levelMsg+=(lvlDiff<0)?" and ":" but ";
+				if(realDiff>-(2*theDiff))
+					levelMsg+=targetMOB.charStats().heshe()+" might give you a fight.";
+				else
+				if(realDiff>-(3*theDiff))
+					levelMsg+=targetMOB.charStats().heshe()+" is hardly worth your while.";
+				else
+				if(realDiff>-(4*theDiff))
+					levelMsg+=targetMOB.charStats().heshe()+" is a pushover.";
+				else
+					levelMsg+=targetMOB.charStats().heshe()+" is not worth the effort.";
 			}
 			else
-			if(realDiff>-(4*theDiff))
 			{
-				mob.tell(target.charStats().HeShe()+" is a pushover.");
-				return false;
+				levelMsg+=(lvlDiff>0)?" and ":" but ";
+				if(realDiff<(2*theDiff))
+					levelMsg+=targetMOB.charStats().heshe()+" looks a little tough.";
+				else
+				if(realDiff<(3*theDiff))
+					levelMsg+=targetMOB.charStats().heshe()+" is a serious threat.";
+				else
+				if(realDiff<(4*theDiff))
+					levelMsg+=targetMOB.charStats().heshe()+" will clean your clock.";
+				else
+					levelMsg+=targetMOB.charStats().heshe()+" WILL KILL YOU DEAD!";
 			}
+			mob.tell(levelMsg);
+        }
+		StringBuffer withWhat=new StringBuffer("");
+		Vector mendors=new Vector();
+		for(int c=0;c<mob.numAbilities();c++)
+		{
+			Ability A=mob.fetchAbility(c);
+			if((A instanceof MendingSkill)&&(((MendingSkill)A).supportsMending((target))))
+				mendors.addElement(A);
+		}
+		for(int m=0;m<mendors.size();m++)
+		{
+			Ability A=mob.fetchAbility(m);
+			if(m==0)
+				withWhat.append("You could probably help "+target.name()+" out with your "+A.name()+" skill");
 			else
-			{
-				mob.tell(target.charStats().HeShe()+" is not worth the effort.");
-				return false;
-			}
-
+			if(m<mendors.size()-1)
+				withWhat.append(", your "+A.name()+" skill");
+			else
+				withWhat.append(" or your "+A.name()+" skill");
 		}
+		
+		if(withWhat.length()>0)
+			mob.tell(withWhat.toString()+".");
 		else
-		if(realDiff<(2*theDiff))
-		{
-			mob.tell(target.charStats().HeShe()+" looks a little tough.");
-			return false;
-		}
-		else
-		if(realDiff<(3*theDiff))
-		{
-			mob.tell(target.charStats().HeShe()+" is a serious threat.");
-			return false;
-		}
-		else
-		if(realDiff<(4*theDiff))
-		{
-			mob.tell(target.charStats().HeShe()+" will clean your clock.");
-			return false;
-		}
-		else
-		{
-			mob.tell(target.charStats().HeShe()+" WILL KILL YOU DEAD!");
-			return false;
-		}
+		if(!(target instanceof MOB))
+			mob.tell((MOB)target,null,null,"You don't have any particular thoughts about that.");
+		return true;
 	}
     public double combatActionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
     public double actionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
