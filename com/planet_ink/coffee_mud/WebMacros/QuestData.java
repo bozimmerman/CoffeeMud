@@ -74,9 +74,21 @@ public class QuestData extends StdWebMacro
 				return ""+Q.getWinnerStr();
 			if(parms.containsKey("SCRIPT"))
 			{
-				String script=Q.script();
-				script=CMStrings.replaceAll(script,";","\n");
-                return clearWebMacros(script);
+				StringBuffer script=new StringBuffer(Q.script());
+				if((parms.containsKey("REDIRECT"))
+				&&(script.toString().toUpperCase().trim().startsWith("LOAD=")))
+				{
+					String fileName=script.toString().trim().substring(5);
+					CMFile F=new CMFile(Resources.makeFileResourceName(fileName),null,true);
+					if((F.exists())&&(F.canRead()))
+						script=F.text();
+					script=new StringBuffer(CMStrings.replaceAll(script.toString(),"\n\r","\n"));
+				}
+				for(int i=0;i<script.length();i++)
+					if((script.charAt(i)==';')
+					&&((i==0)||(script.charAt(i-1)!='\\')))
+						script.setCharAt(i,'\n');
+                return clearWebMacros(CMStrings.replaceAll(script.toString(),"\\;",";"));
 			}
 		}
 		return "";

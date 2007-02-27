@@ -24,7 +24,7 @@
 #This time is expressed in "ticks" (4 second periods).  You may enter math 
 #expressions, and use the special ? operator to generate random numbers.
 #For instance, 5 + 3?10 would generate a duration of 8-15 ticks.
-#$DURATION=$EXPRESSION=175
+#$DURATION=$EXPRESSION=1350
 #
 #Quest-Player Criterium:
 #You may leave this entry blank, or enter a Zapper Mask to describe what
@@ -69,7 +69,7 @@
 #
 #Deliverer announcement:
 #Select what type of annoucement the Deliverer will make when the quest starts.
-#$QUEST_ANNOUNCEMENT_TYPE=$CHOOSE=QUESTCHAT,MPECHO,SAY,YELL
+#$QUEST_ANNOUNCEMENT_TYPE=$CHOOSE=YELL,QUESTCHAT,MPECHO,SAY
 #This is what the announcement says.  Leave it blank if you only want him to talk to people who enter the room with him.
 #$QUEST_ANNOUNCEMENT=($STRING)
 #

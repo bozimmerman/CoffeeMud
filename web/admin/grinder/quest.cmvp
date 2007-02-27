@@ -42,13 +42,13 @@
 		<FONT COLOR=RED><B>@QuestMgr?CREATE@</B></FONT>
 	@else@
 		@if?CheckReqParm?FUNCTION=MODIFY@
-			<FONT COLOR=RED><B>@QuestMgr?MODIFY@</B></FONT>
+			<FONT COLOR=RED><B>@QuestMgr?MODIFY&REDIRECT@</B></FONT>
 		@endif@
 	@endif@
 @endif@
 <P ALIGN=RIGHT><A href="javascript:openUp('QUESTS');"><FONT COLOR=PINK><I>help</I></FONT></A></P>
 <BR>
-@if?!CheckReqParm?QUEST=@<TEXTAREA ROWS=25 COLS=70 NAME=SCRIPT>@QuestData?SCRIPT@</TEXTAREA>
+@if?!CheckReqParm?QUEST=@<TEXTAREA ROWS=25 COLS=70 NAME=SCRIPT>@QuestData?SCRIPT&REDIRECT@</TEXTAREA>
 @else@
 <TEXTAREA ROWS=25 COLS=70 NAME=SCRIPT>
 set name MyQuest

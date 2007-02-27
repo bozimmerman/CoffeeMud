@@ -128,7 +128,7 @@
 #
 #Announcer announcement:
 #Select what type of annoucement the Announcer will make when the quest starts.
-#$QUEST_ANNOUNCEMENT_TYPE=$CHOOSE=QUESTCHAT,MPECHO,SAY,YELL
+#$QUEST_ANNOUNCEMENT_TYPE=$CHOOSE=YELL,QUESTCHAT,MPECHO,SAY
 #This is what the announcement says.  Leave it blank if you only want him to talk to people who enter the room with him.
 #$QUEST_ANNOUNCEMENT=($LONG_STRING)=We have a mystery that needs solving! Something was done to or for $TARGET at $WHEREHAPPENED on $WHENHAPPENED.  Come see me about it IMMEDIATELY!!
 #

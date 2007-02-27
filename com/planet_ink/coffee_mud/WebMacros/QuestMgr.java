@@ -43,7 +43,7 @@ public class QuestMgr extends StdWebMacro
 		if(parms.containsKey("CREATE"))
 		{
 			Q=(Quest)CMClass.getCommon("DefaultQuest");
-			String err=populateQuest(httpReq,Q);
+			String err=populateQuest(httpReq,Q,false);
 			if(err.length()>0) return err;
 			CMLib.quests().addQuest(Q);
 			CMLib.quests().save();
@@ -66,7 +66,7 @@ public class QuestMgr extends StdWebMacro
 			if(Q==null) return "";
 			if(parms.containsKey("MODIFY"))
 			{
-				String err=populateQuest(httpReq,Q);
+				String err=populateQuest(httpReq,Q,parms.containsKey("REDIRECT"));
 				if(err.length()>0) return err;
 				httpReq.addRequestParameters("QUEST",Q.name());
 				CMLib.quests().save();
@@ -109,22 +109,46 @@ public class QuestMgr extends StdWebMacro
 		return "";
 	}
 	
-	public String populateQuest(ExternalHTTPRequests httpReq, Quest Q)
+	public String populateQuest(ExternalHTTPRequests httpReq, Quest Q, boolean redirect)
 	{
 		Q.script();
 		String script=httpReq.getRequestParameter("SCRIPT");
+		String unRedirectedScript=script;
+		CMFile redirectF=null;
+		if(redirect
+		&&(Q.script().toString().toUpperCase().trim().startsWith("LOAD=")))
+		{
+			String fileName=Q.script().toString().trim().substring(5);
+			redirectF=new CMFile(Resources.makeFileResourceName(fileName),null,true);
+			if((!redirectF.exists())||(!redirectF.canRead()))
+				return "Unable to load redirected file '"+fileName+"'";
+		}
+		else
+			redirect=false;
 		script=CMStrings.replaceAll(script,"'","`");
-		script=CMStrings.replaceAll(script,"\n",";");
-		script=CMStrings.replaceAll(script,"\r",";");
-		script=CMStrings.replaceAll(script,";;",";");
-		script=CMStrings.replaceAll(script,";;",";");
+		if(redirect)
+			script=CMStrings.replaceAll(script,";","\\;");
+		else
+		{
+			script=CMStrings.replaceAll(script,"\n",";");
+			script=CMStrings.replaceAll(script,"\r",";");
+			script=CMStrings.replaceAll(script,";;",";");
+			script=CMStrings.replaceAll(script,";;",";");
+		}
 		script=script.trim();
 		while(script.endsWith(";"))
 			script=script.substring(0,script.length()-1);
 		script=script.trim();
 		if((script==null)||(script.trim().length()==0))
 			return "No script was specified.";
-		Q.setScript(script);
+		if(redirect)
+		{
+			redirectF.saveText(script);
+			script=unRedirectedScript;
+			Q.setScript(Q.script());
+		}
+		else
+			Q.setScript(script);
 		if(Q.name().length()==0)
 			return "You must specify a VALID quest string.  This one contained no name.";
 		else
