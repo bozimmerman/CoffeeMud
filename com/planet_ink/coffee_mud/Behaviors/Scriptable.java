@@ -2825,6 +2825,31 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				break;
 			}
+			case 91: // datetime
+			{
+				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
+				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
+				String arg3=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
+				int index=CMParms.indexOf(ScriptingEngine.DATETIME_ARGS,arg1.toUpperCase().trim());
+				if(index<0)
+					scriptableError(scripted,"DATETIME","Syntax","Unknown arg: "+arg1+" for "+scripted.name());
+				else
+				if(CMLib.map().areaLocation(scripted)!=null)
+				{
+					String val=null;
+					switch(index)
+					{
+					case 2: val=""+CMLib.map().areaLocation(scripted).getTimeObj().getDayOfMonth(); break;
+					case 3: val=""+CMLib.map().areaLocation(scripted).getTimeObj().getDayOfMonth(); break;
+					case 4: val=""+CMLib.map().areaLocation(scripted).getTimeObj().getMonth(); break;
+					case 5: val=""+CMLib.map().areaLocation(scripted).getTimeObj().getYear(); break;
+					default:
+						val=""+CMLib.map().areaLocation(scripted).getTimeObj().getTimeOfDay(); break;
+					}
+					returnable=simpleEval(scripted,val,arg3,arg2,"DATETIME");
+				}
+				break;
+			}
 			case 13: // stat
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
@@ -4488,6 +4513,25 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&(E instanceof MOB))
 					results.append(((MOB)E).charStats().genderName());
+				break;
+			}
+			case 91: // datetime
+			{
+				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
+				int index=CMParms.indexOf(ScriptingEngine.DATETIME_ARGS,arg1.toUpperCase().trim());
+				if(index<0)
+					scriptableError(scripted,"DATETIME","Syntax","Unknown arg: "+arg1+" for "+scripted.name());
+				else
+				if(CMLib.map().areaLocation(scripted)!=null)
+				switch(index)
+				{
+				case 2: results.append(CMLib.map().areaLocation(scripted).getTimeObj().getDayOfMonth()); break;
+				case 3: results.append(CMLib.map().areaLocation(scripted).getTimeObj().getDayOfMonth()); break;
+				case 4: results.append(CMLib.map().areaLocation(scripted).getTimeObj().getMonth()); break;
+				case 5: results.append(CMLib.map().areaLocation(scripted).getTimeObj().getYear()); break;
+				default:
+					results.append(CMLib.map().areaLocation(scripted).getTimeObj().getTimeOfDay()); break;
+				}
 				break;
 			}
 			case 13: // stat

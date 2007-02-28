@@ -227,6 +227,7 @@ public interface ScriptingEngine extends Behavior
         "MOOD", //88
         "ISRECALL", //89
         "INAREA", //90
+        "DATETIME", //91
     };
     public static final String[] methods={
         "MPASOUND", //1
@@ -321,5 +322,5 @@ public interface ScriptingEngine extends Behavior
         "TOPMEMBER" // 16
     };
 
-
+	public final static String[] DATETIME_ARGS={"HOUR","TIME","DAY","DATE","MONTH","YEAR"};
 }
