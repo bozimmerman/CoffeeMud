@@ -45,7 +45,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 
     protected Weapon lastSecondary=null;
     protected Weapon lastPrimary=null;
-
+    protected boolean attackedSinceLastTick=true;
 
     protected Weapon getFirstWeapon(MOB mob)
 	{
@@ -104,6 +104,15 @@ public class Skill_TwoWeaponFighting extends StdSkill
 			}
 		}
 	}
+	
+	public void executeMsg(Environmental host, CMMsg msg)
+	{
+		if((msg.source()==affected)
+		&&(msg.target() instanceof MOB)
+		&&(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK))
+			attackedSinceLastTick=true;
+		super.executeMsg(host, msg);
+	}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -119,6 +128,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 				Item weapon=getSecondWeapon(mob);
 				if((weapon!=null) // try to wield anything!
 				&&(primaryWeapon!=null)
+				&&attackedSinceLastTick
 				&&(mob.rangeToTarget()>=0)
 				&&(mob.rangeToTarget()>=weapon.minRange())
 				&&(mob.rangeToTarget()<=weapon.maxRange())
@@ -140,6 +150,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 						helpProficiency(mob);
 				}
 			}
+			attackedSinceLastTick=false;
 		}
 		return super.tick(ticking,tickID);
 	}
