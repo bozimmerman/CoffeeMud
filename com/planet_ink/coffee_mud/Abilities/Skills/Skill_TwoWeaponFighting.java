@@ -45,7 +45,7 @@ public class Skill_TwoWeaponFighting extends StdSkill
 
     protected Weapon lastSecondary=null;
     protected Weapon lastPrimary=null;
-    protected boolean attackedSinceLastTick=true;
+    protected boolean attackedSinceLastTick=false;
 
     protected Weapon getFirstWeapon(MOB mob)
 	{
