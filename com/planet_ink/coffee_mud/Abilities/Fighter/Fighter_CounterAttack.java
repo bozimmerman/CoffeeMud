@@ -42,16 +42,6 @@ public class Fighter_CounterAttack extends FighterSkill
     public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-    protected boolean attackedSinceLastTick=false;
-
-	public void executeMsg(Environmental host, CMMsg msg)
-	{
-		if((msg.source()==affected)
-		&&(msg.target() instanceof MOB)
-		&&(msg.sourceMinor()==CMMsg.TYP_WEAPONATTACK))
-			attackedSinceLastTick=true;
-		super.executeMsg(host, msg);
-	}
 	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
