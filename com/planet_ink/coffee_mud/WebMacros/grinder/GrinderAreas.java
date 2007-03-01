@@ -129,6 +129,8 @@ public class GrinderAreas
 			CMLib.map().addArea(A);
 			A.setName(oldA.Name());
 			redoAllMyDamnRooms=true;
+			areasNeedingUpdates.remove(oldA);
+			areasNeedingUpdates.addElement(A);
 		}
 
 		// name
