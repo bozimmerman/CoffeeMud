@@ -253,7 +253,7 @@ public class StdClanItem extends StdItem implements ClanItem
 				if(giver!=null)
 					giver.tell("This item should only be given to those who roam the area.");
 				else
-					targetMOB.location().show(targetMOB,null,myHost,CMMsg.MSG_OK_VISUAL,"<S-NAME> doesn't seem mobile enough to take <O-NAME>.");
+					targetMOB.location().show(targetMOB,null,myHost,CMMsg.MSG_OK_VISUAL,"<S-NAME> do(es)n't seem mobile enough to take <O-NAME>.");
 				return false;
 			}
 			Room startRoom=targetMOB.getStartRoom();

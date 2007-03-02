@@ -48,20 +48,19 @@ public class Paladin_Purity extends Paladin
 	{
 		if(!super.okMessage(myHost,msg))
 			return false;
-		if((invoker==null)||(!(CMLib.flags().isGood(invoker))))
+		if((affected==null)||(!(CMLib.flags().isGood(affected))))
 			return true;
-		if(affected==null) return true;
 		if(!(affected instanceof MOB)) return true;
 
 		if((msg.sourceMinor()==CMMsg.TYP_FACTIONCHANGE)
-		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
+		&&(msg.source()==affected)
 		&&(msg.tool()!=null)
 		&&(!msg.source().isMine(msg.tool()))
 		&&(msg.value()<0)
 		&&(msg.othersMessage()!=null)
 		&&(msg.othersMessage().equalsIgnoreCase(CMLib.factions().AlignID())))
 		{
-			msg.source().location().show((MOB)msg.target(),null,CMMsg.MSG_OK_VISUAL,"The purity of <S-NAME> protect(s) <S-HIM-HER> from the evil influence.");
+			msg.source().location().show((MOB)msg.source(),null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> purity protects <S-HIM-HER> from the evil influence.");
 			return false;
 		}
 		return true;

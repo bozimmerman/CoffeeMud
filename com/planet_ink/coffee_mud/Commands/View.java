@@ -81,7 +81,7 @@ public class View extends StdCommand
 		while((allFlag)&&(addendum<=maxToDo));
 
 		if(V.size()==0)
-			mob.tell(mob,shopkeeper,null,"<T-NAME> doesn't appear to have any '"+whatName+"' for sale.  Try LIST.");
+			mob.tell(mob,shopkeeper,null,"<T-NAME> do(es)n't appear to have any '"+whatName+"' for sale.  Try LIST.");
 		else
 		for(int v=0;v<V.size();v++)
 		{

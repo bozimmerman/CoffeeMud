@@ -73,7 +73,7 @@ public class SlaveTrading extends CommonSkill
 			}
 			if((M.fetchEffect("Skill_Enslave")==null)||(!M.fetchEffect("Skill_Enslave").text().equals(mob.Name())))
 			{
-				commonTell(mob,M,null,"<T-NAME> doesn't seem to be your slave.");
+				commonTell(mob,M,null,"<T-NAME> do(es)n't seem to be your slave.");
 				return false;
 			}
 		}

@@ -75,7 +75,7 @@ public class Spell_DispelMagic extends Spell
 			if(auto)
 				mob.tell("Nothing seems to be happening.");
 			else
-				mob.tell(mob,target,null,"<T-NAME> does not appear to be affected by anything you can dispel.");
+				mob.tell(mob,target,null,"<T-NAME> do(es) not appear to be affected by anything you can dispel.");
 			return false;
 		}
 
