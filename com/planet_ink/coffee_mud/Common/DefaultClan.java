@@ -612,6 +612,34 @@ public class DefaultClan implements Clan
         }
         return "Clan";
     }
+    
+	public boolean canBeAssigned(MOB mob, int role)
+	{
+        if(mob==null) return false;
+        if(role<0) return false;
+        switch(government)
+        {
+        case GVT_OLIGARCHY:
+    		return true;
+        case GVT_REPUBLIC:
+    		return true;
+        case GVT_DEMOCRACY:
+    		return true;
+        case GVT_THEOCRACY:
+        	if(role>=POS_LEADER)
+        	{
+        		if((mob.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Cleric"))
+        		||(mob.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Priest"))
+        		||(mob.baseCharStats().getCurrentClass().baseClass().equalsIgnoreCase("Clergy")))
+        			return true;
+        		return false;
+        	}
+    		return true;
+        case GVT_DICTATORSHIP:
+    		return true;
+        }
+		return false;
+	}
 
     public int allowedToDoThis(MOB mob, int function)
     {

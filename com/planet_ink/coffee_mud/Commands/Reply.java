@@ -61,17 +61,16 @@ public class Reply extends StdCommand
 			return false;
 		}
 		int replyType=pstats.replyType();
-		if((pstats.replyTo().Name().indexOf("@")<0)
-		&&((mob.location()==null)||(!mob.location().isInhabitant(pstats.replyTo())))
-		&&(replyType==PlayerStats.REPLY_SAY))
-		{
-			mob.tell(pstats.replyTo().Name()+" is no longer in the room.");
-			return false;
-		}
 		
 		switch(replyType)
 		{
 		case PlayerStats.REPLY_SAY:
+			if((pstats.replyTo().Name().indexOf("@")<0)
+			&&((mob.location()==null)||(!mob.location().isInhabitant(pstats.replyTo()))))
+			{
+				mob.tell(pstats.replyTo().Name()+" is no longer in the room.");
+				return false;
+			}
 			CMLib.commands().postSay(mob,pstats.replyTo(),CMParms.combine(commands,1),false,false);
 			break;
 		case PlayerStats.REPLY_TELL:

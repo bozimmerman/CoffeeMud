@@ -79,7 +79,7 @@ public class Say extends StdCommand
         Room R=mob.location();
 		if((commands.size()==1)||(R==null))
 		{
-			mob.tell(theWord+"  what?");
+			mob.tell(theWord+" what?");
 			return false;
 		}
 

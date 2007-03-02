@@ -192,6 +192,15 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 	public String getDetail(MOB mob);
 
 	/**
+	 * Returns whether the given may is allowed to be the given role.
+	 * @param mob the mob to test
+	 * @param role the role to test
+	 * @return whether the mob may be that role.
+	 */
+	public boolean canBeAssigned(MOB mob, int role);
+	
+	
+	/**
 	 * Returns a mask used to identify whether a player is allowed
 	 * to join a particular clan.  
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
