@@ -95,6 +95,11 @@ public class ClanAssign extends BaseClanner
 							mob.tell(qual+" was not found.  Could not change "+C.typeName()+" role.");
 							return false;
 						}
+						if(!C.canBeAssigned(M, newPos))
+						{
+							mob.tell(M.name()+" may not be assigned to "+CMLib.clans().getRoleName(C.getGovernment(),newPos,true,false)+".");
+							return false;
+						}
 						if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANASSIGN,true))
 						{
 						    int oldPos=M.getClanRole();
