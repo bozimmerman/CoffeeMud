@@ -710,7 +710,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         {
             buf.append("\n\r");
             Container contitem=(Container)item;
-            if((contitem.isOpen())&&((contitem.capacity()>0)||(contitem.getContents().size()>0)))
+            if((contitem.isOpen())
+            &&((contitem.capacity()>0)
+        		||(contitem.getContents().size()>0)
+        		||((contitem instanceof Drink)&&(((Drink)contitem).liquidRemaining()>0))))
             {
                 buf.append(item.name()+" contains:^<!ENTITY container \""+item.name()+"\"^>"+(CMath.bset(mob.getBitmap(),MOB.ATT_COMPRESS)?" ":"\n\r"));
                 Vector newItems=new Vector();

@@ -176,7 +176,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	public Hashtable potContents(Container pot)
 	{
 		Hashtable h=new Hashtable();
-		if((pot instanceof Drink)&&(((Drink)pot).containsDrink()))
+		if((pot instanceof Drink)&&(((Drink)pot).liquidRemaining()>0))
 		{
 			if(pot instanceof RawMaterial)
 				h.put(RawMaterial.RESOURCE_DESCS[((RawMaterial)pot).material()&RawMaterial.RESOURCE_MASK]+"/",new Integer(((Drink)pot).liquidRemaining()/10));
@@ -661,8 +661,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		if(foodType.equalsIgnoreCase("DRINK"))
 		{
 			building=CMClass.getItem("GenLiquidResource");
-			building.setMiscText(cooking.text());
-			building.recoverEnvStats();
+			//building.setMiscText(cooking.text());
+			//building.recoverEnvStats();
 			building.setName(((messedUp)?"spoiled ":"")+finalDishName);
 			building.setDisplayText("some "+((messedUp)?"spoiled ":"")+finalDishName+" has been left here.");
 			building.setDescription("It looks "+((messedUp)?"spoiled!":"good!"));

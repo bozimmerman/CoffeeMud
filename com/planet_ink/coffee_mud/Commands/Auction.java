@@ -133,6 +133,9 @@ public class Auction extends Channel implements Tickable
 	                        }
 						}
 					}
+					else
+					if(!auctioneerM.isMine((Item)liveData.auctioningI))
+                        auctioneerM.giveItem((Item)liveData.auctioningI);
                     liveData.auctioningM=null;
                     liveData.auctioningI=null;
                     liveData.highBidderM=null;

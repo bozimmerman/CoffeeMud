@@ -55,6 +55,10 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 	    decayTime=0;
 	}
 	
+	public void setCapacity(int cap){
+		super.setCapacity(cap);
+	}
+	
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
         super.executeMsg(host,msg);
