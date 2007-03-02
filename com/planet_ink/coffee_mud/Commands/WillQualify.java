@@ -41,8 +41,11 @@ public class WillQualify extends BaseAbleLister{
 	private String[] access={"WILLQUALIFY"};
 	public String[] getAccessWords(){return access;}
 
-	public StringBuffer getQualifiedAbilities(MOB able, String Class,
-	                                          int maxLevel, String prefix)
+	public StringBuffer getQualifiedAbilities(MOB able, 
+											  String Class,
+	                                          int maxLevel, 
+	                                          String prefix,
+	                                          Vector types)
 	{
 		int highestLevel = maxLevel;
 		StringBuffer msg = new StringBuffer("");
@@ -56,18 +59,21 @@ public class WillQualify extends BaseAbleLister{
 				AbilityMapper.AbilityMapping cimable=(AbilityMapper.AbilityMapping)a.nextElement();
 				if((cimable.qualLevel ==l)&&(!cimable.isSecret))
 				{
-					if ( (++col) > 2) 
-					{
-					    thisLine.append("\n\r");
-					    col = 1;
-					}
 					Ability A=CMClass.getAbility(cimable.abilityName);
-					if(A!=null)
-                    {
+					if((A!=null)
+                    &&((types.size()==0)
+						||(types.contains(new Integer(A.classificationCode()&Ability.ALL_ACODES)))
+						||(types.contains(new Integer(A.classificationCode()&Ability.ALL_DOMAINS)))))
+					{
+						if ( (++col) > 2) 
+						{
+						    thisLine.append("\n\r");
+						    col = 1;
+						}
     					thisLine.append("^N[^H" + CMStrings.padRight("" + l, 3) + "^?] "
     					        + CMStrings.padRight("^<HELP^>"+A.name()+"^</HELP^>", 19) + " "
     					        + CMStrings.padRight(A.requirements()+(cimable.autoGain?" *":""), (col == 2) ? 12 : 13));
-                    }
+					}
 				}
 			}
 			ExpertiseLibrary.ExpertiseDefinition E=null;
@@ -83,14 +89,21 @@ public class WillQualify extends BaseAbleLister{
 	            		minLevel=qualLevel.intValue();
 	            	if(minLevel==l)
 	            	{
-						if ( (++col) > 2) 
+						if((types.size()==0)
+						||types.contains("EXPERTISE")
+						||types.contains("EXPERTISES")
+						||types.contains(E.ID.toUpperCase())
+						||types.contains(E.name.toUpperCase()))
 						{
-						    thisLine.append("\n\r");
-						    col = 1;
+							if ( (++col) > 2) 
+							{
+							    thisLine.append("\n\r");
+							    col = 1;
+							}
+							thisLine.append("^N[^H" + CMStrings.padRight("" + l, 3) + "^?] "
+							        + CMStrings.padRight("^<HELP^>"+E.name+"^</HELP^>", 19) + " "
+							        + CMStrings.padRight(E.costDescription(), (col == 2) ? 12 : 13));
 						}
-						thisLine.append("^N[^H" + CMStrings.padRight("" + l, 3) + "^?] "
-						        + CMStrings.padRight("^<HELP^>"+E.name+"^</HELP^>", 19) + " "
-						        + CMStrings.padRight(E.costDescription(), (col == 2) ? 12 : 13));
 	            	}
 				}
 			}
@@ -112,32 +125,60 @@ public class WillQualify extends BaseAbleLister{
 	                throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");
-		String willQualErr = "Specify level and class:  WILLQUALIFY [LEVEL] ([CLASS NAME]).";
-		if((commands.size()<2)||((commands.size()>1)&&(!CMath.isNumber((String)commands.elementAt(1)))))
+		String willQualErr = "Specify level, class, and or skill-type:  WILLQUALIFY ([LEVEL]) ([CLASS NAME]) ([SKILL TYPE]).";
+		int level=CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL);
+		CharClass C=mob.charStats().getCurrentClass();
+		Vector types=new Vector();
+		if(commands.size()>0) commands.removeElementAt(0);
+		if((commands.size()>0)&&(CMath.isNumber((String)commands.firstElement())))
 		{
-			mob.tell(willQualErr); 
-			return false;
-		}
-		// # is param 1, class name is param 2+
-		int level=CMath.s_int((String)commands.elementAt(1));
-		if (level > 0) 
-		{
-			
-			String className=mob.charStats().getCurrentClass().ID();
-			if(commands.size()>2) className=CMParms.combine(commands,2);
-			CharClass C=CMClass.findCharClass(className);
-			if (C == null) 
+			level=CMath.s_int((String)commands.firstElement());
+			if(level<0)
 			{
-			        mob.tell("No class found by that name.");
-			        return false;
+				mob.tell(willQualErr);
+				return false;
 			}
-			msg.append("At level "+level+" of class '"+C.ID()+"', you could qualify for:\n\r");
-			msg.append(getQualifiedAbilities(mob,C.ID(),level,""));
-			if(!mob.isMonster())
-			    mob.session().wraplessPrintln(msg.toString());
-			return false;
+			commands.removeElementAt(0);
 		}
-		mob.tell(willQualErr);
+		if(commands.size()>0)
+		{
+			CharClass C2=CMClass.findCharClass((String)commands.firstElement());
+			if(C2!=null){ C=C2;commands.removeElementAt(0);}
+		}
+		while(commands.size()>0)
+		{
+			String str=((String)commands.firstElement()).toUpperCase().trim();
+			int x=CMParms.indexOf(Ability.ACODE_DESCS,str);
+			if(x<0) x=CMParms.indexOf(Ability.ACODE_DESCS,str.replace(' ','_'));
+			if(x>=0)
+				types.addElement(new Integer(x));
+			else
+			{
+				x=CMParms.indexOf(Ability.DOMAIN_DESCS,str);
+				if(x<0)
+					x=CMParms.indexOf(Ability.DOMAIN_DESCS,str.replace(' ','_'));
+				if(x<0)
+				{
+					if((CMLib.expertises().findDefinition(str,false)==null)
+					&&!str.equalsIgnoreCase("EXPERTISE")
+					&&!str.equalsIgnoreCase("EXPERTISES"))
+					{
+						mob.tell("'"+str+"' is not a valid skill type, domain, expertise, or character class.");
+						mob.tell(willQualErr);
+						return false;
+					}
+					types.addElement(str.toUpperCase().trim());
+				}
+				else
+					types.addElement(new Integer(x<<5));
+			}
+			commands.removeElementAt(0);
+		}
+		
+		msg.append("At level "+level+" of class '"+C.name()+"', you could qualify for:\n\r");
+		msg.append(getQualifiedAbilities(mob,C.ID(),level,"",types));
+		if(!mob.isMonster())
+		    mob.session().wraplessPrintln(msg.toString());
 		return false;
 	}
 }
