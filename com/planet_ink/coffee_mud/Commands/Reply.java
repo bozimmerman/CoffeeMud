@@ -62,7 +62,8 @@ public class Reply extends StdCommand
 		}
 		int replyType=pstats.replyType();
 		if((pstats.replyTo().Name().indexOf("@")<0)
-		&&((mob.location()==null)||(!mob.location().isInhabitant(pstats.replyTo()))))
+		&&((mob.location()==null)||(!mob.location().isInhabitant(pstats.replyTo())))
+		&&(replyType==PlayerStats.REPLY_SAY))
 		{
 			mob.tell(pstats.replyTo().Name()+" is no longer in the room.");
 			return false;
