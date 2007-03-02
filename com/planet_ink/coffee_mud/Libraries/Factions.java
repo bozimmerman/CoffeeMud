@@ -207,6 +207,39 @@ public class Factions extends StdLibrary implements FactionManager
 			else{ /* a -1 value is the new norm */}
 		}
 	}
+	
+    public boolean postChangeAllFactions(MOB mob, MOB victim, int amount, boolean quiet)
+    {
+        if((mob==null))
+            return false;
+        CMMsg msg=CMClass.getMsg(mob,victim,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,""+quiet);
+        msg.setValue(amount);
+        if(mob.location()!=null)
+        {
+            if(mob.location().okMessage(mob,msg))
+                mob.location().send(mob,msg);
+            else
+                return false;
+        }
+        return true;
+    }
+    
+    public boolean postFactionChange(MOB mob,Environmental tool, String factionID, int amount)
+	{
+		if((mob==null))
+			return false;
+		CMMsg msg=CMClass.getMsg(mob,null,tool,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,factionID);
+		msg.setValue(amount);
+		if(mob.location()!=null)
+		{
+			if(mob.location().okMessage(mob,msg))
+				mob.location().send(mob,msg);
+			else
+				return false;
+		}
+		return true;
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
         if(CMLib.sessions().size()==0) 

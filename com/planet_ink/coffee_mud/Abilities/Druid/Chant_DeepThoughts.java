@@ -105,9 +105,9 @@ public class Chant_DeepThoughts extends Chant
 			if(CMLib.factions().getAlignPurity(myAlignment,Faction.ALIGN_INDIFF)<99)
 			{
 				if(CMLib.factions().getAlignPurity(myAlignment,Faction.ALIGN_EVIL)<CMLib.factions().getAlignPurity(myAlignment,Faction.ALIGN_GOOD))
-					mob.adjustFaction(CMLib.factions().AlignID(),ratePct);
+					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), ratePct);
 				else
-					mob.adjustFaction(CMLib.factions().AlignID(),-ratePct);
+					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), -ratePct);
 				switch(CMLib.dice().roll(1,10,0))
 				{
 				case 0: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> contemplate(s) the great depths."); break;

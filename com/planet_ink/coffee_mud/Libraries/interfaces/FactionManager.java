@@ -66,4 +66,6 @@ public interface FactionManager extends CMLibrary, Tickable
     public int isFactionTag(String tag);
     public int getAlignEquiv(String str);
     public void modifyFaction(MOB mob, Faction me) throws IOException;
+    public boolean postChangeAllFactions(MOB mob, MOB victim, int amount, boolean quiet);
+    public boolean postFactionChange(MOB mob, Environmental tool,String factionID, int amount);
 }

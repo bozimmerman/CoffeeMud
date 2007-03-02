@@ -111,9 +111,9 @@ public class Chant_NaturalCommunion extends Chant
 			if(CMLib.factions().getAlignPurity(myAlignment,Faction.ALIGN_INDIFF)<99)
 			{
 				if(CMLib.factions().getAlignPurity(myAlignment,Faction.ALIGN_EVIL)<CMLib.factions().getAlignPurity(myAlignment,Faction.ALIGN_GOOD))
-					mob.adjustFaction(CMLib.factions().AlignID(),oneHalfPct);
+					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), oneHalfPct);
 				else
-					mob.adjustFaction(CMLib.factions().AlignID(),-oneHalfPct);
+					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), -oneHalfPct);
 				switch(CMLib.dice().roll(1,10,0))
 				{
 				case 0: room.show(mob,null,this,CMMsg.MSG_QUIETMOVEMENT,"<S-NAME> whisper(s) to the plants."); break;

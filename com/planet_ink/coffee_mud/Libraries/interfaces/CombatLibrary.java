@@ -49,7 +49,6 @@ public interface CombatLibrary extends CMLibrary
     public boolean postHealing(MOB healer, MOB target, Environmental tool, int messageCode, int healing, String allDisplayMessage);
     public String replaceDamageTag(String str, int damage, int damageType);
     public void postDamage(MOB attacker, MOB target, Environmental weapon, int damage, int messageCode, int damageType, String allDisplayMessage);
-    public boolean changeFactions(MOB mob, MOB victim, int amount, boolean quiet);
     public void postWeaponDamage(MOB source, MOB target, Item item, boolean success);
     public void processFormation(Vector[] done, MOB leader, int level);
     public MOB getFollowedLeader(MOB mob);
