@@ -553,16 +553,16 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		
 		if(!CMLib.combat().isKnockedOutUponDeath(target,source))
 		{
-			DeadBody Body=null;
+			DeadBody body=null;
 			if(!(CMParms.parseCommas(whatToDo.toUpperCase().trim(),true).contains("RECALL")))
 				target.killMeDead(true);
 			Room bodyRoom=deathRoom;
-			if((Body!=null)&&(Body.owner() instanceof Room)&&(((Room)Body.owner()).isContent(Body)))
-				bodyRoom=(Room)Body.owner();
-	        if((source!=null)&&(Body!=null))
+			if((body!=null)&&(body.owner() instanceof Room)&&(((Room)body.owner()).isContent(body)))
+				bodyRoom=(Room)body.owner();
+	        if((source!=null)&&(body!=null))
 	        {
-	            Body.setKillerName(source.Name());
-	            Body.setKillerPlayer(!source.isMonster());
+	            body.setKillerName(source.Name());
+	            body.setKillerPlayer(!source.isMonster());
 	        }
 	
 			if((!target.isMonster())&&(CMLib.dice().rollPercentage()==1))
@@ -585,6 +585,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	
 			if((source!=null)
 	        &&(bodyRoom!=null)
+	        &&(body!=null)
 			&&(source.location()==bodyRoom)
 			&&(bodyRoom.isInhabitant(source))
 			&&(CMath.bset(source.getBitmap(),MOB.ATT_AUTOLOOT)))
@@ -599,21 +600,21 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				{
 					Item item=bodyRoom.fetchItem(i);
 					if((item!=null)
-					&&(item.container()==Body)
-					&&(CMLib.flags().canBeSeenBy(Body,source))
-					&&((!Body.destroyAfterLooting())||(!(item instanceof RawMaterial)))
+					&&(item.container()==body)
+					&&(CMLib.flags().canBeSeenBy(body,source))
+					&&((!body.destroyAfterLooting())||(!(item instanceof RawMaterial)))
 					&&(CMLib.flags().canBeSeenBy(item,source)))
-						CMLib.commands().postGet(source,Body,item,false);
+						CMLib.commands().postGet(source,body,item,false);
 				}
-				if(Body.destroyAfterLooting())
+				if(body.destroyAfterLooting())
 					bodyRoom.recoverRoomStats();
 			}
 	
 			Coins C=null;
-			if((deadMoney>0)&&(myAmountOfDeadMoney>0))
+			if((deadMoney>0)&&(myAmountOfDeadMoney>0)&&(body!=null))
 			for(int g=0;g<goldLooters.size();g++)
 			{
-			    C=CMLib.beanCounter().makeBestCurrency(currency,myAmountOfDeadMoney,null,Body);
+			    C=CMLib.beanCounter().makeBestCurrency(currency,myAmountOfDeadMoney,null,body);
 			    if(C!=null)
 			    {
 					C.recoverEnvStats();
@@ -628,25 +629,25 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 						if((mob.riding()!=null)&&(mob.riding() instanceof Item))
 							mob.tell("You'll need to disembark to get "+C.name()+" off the body.");
 						else
-						if(CMLib.flags().canBeSeenBy(Body,mob))
-							CMLib.commands().postGet(mob,Body,C,false);
+						if(CMLib.flags().canBeSeenBy(body,mob))
+							CMLib.commands().postGet(mob,body,C,false);
 					}
 			    }
 			}
 	
-			if((Body!=null)&&Body.destroyAfterLooting())
+			if((body!=null)&&body.destroyAfterLooting())
 			{
 				for(int i=bodyRoom.numItems()-1;i>=0;i--)
 				{
 					Item item=bodyRoom.fetchItem(i);
-					if((item!=null)&&(item.container()==Body))
+					if((item!=null)&&(item.container()==body))
 						item.setContainer(null);
 				}
-				Body.destroy();
+				body.destroy();
 				bodyRoom.recoverEnvStats();
 	            return null;
 			}
-	        return Body;
+	        return body;
 		}
 		return null;
 	}
