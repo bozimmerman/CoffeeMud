@@ -88,7 +88,12 @@ public class CraftingSkill extends GatheringSkill
 	                if((recipes.size()==0)||(((Vector)recipes.lastElement()).size()<=V2.size()))
 	                    recipes.addElement(V2);
 	                else
+	                {
 	                    Log.errOut(ID(),"Not enough parms ("+((Vector)recipes.lastElement()).size()+"<="+V2.size()+"): "+((Recipe)I).getRecipeCodeLine());
+	                    while(V2.size()<((Vector)recipes.lastElement()).size()) V2.addElement("");
+	                    while(V2.size()>((Vector)recipes.lastElement()).size()) V2.removeElementAt(V2.size()-1);
+	                    recipes.addElement(V2);
+	                }
 	                V2.trimToSize();
 	            }
 	        }
