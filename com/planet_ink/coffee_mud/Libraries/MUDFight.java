@@ -536,7 +536,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		{
 			DeadBody body=null;
 			if(!(CMParms.parseCommas(whatToDo.toUpperCase().trim(),true).contains("RECALL")))
-				target.killMeDead(true);
+				body=target.killMeDead(true);
 			Room bodyRoom=deathRoom;
 			if((body!=null)&&(body.owner() instanceof Room)&&(((Room)body.owner()).isContent(body)))
 				bodyRoom=(Room)body.owner();
