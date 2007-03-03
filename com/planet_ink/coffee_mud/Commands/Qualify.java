@@ -135,7 +135,7 @@ public class Qualify extends BaseAbleLister
 			msg.append(getQualifiedAbilities(mob,Ability.ACODE_CHANT,-1,"\n\r^HDruidic Chants:^? ",shortOnly));
 		if(showAll||"SONGS".startsWith(qual)||"BARD SONGS".startsWith(qual))
 			msg.append(getQualifiedAbilities(mob,Ability.ACODE_SONG,-1,"\n\r^HSongs:^? ",shortOnly));
-		if(showAll||"LANGUAGES".startsWith(qual))
+		if(showAll||"LANGUAGES".startsWith(qual)||"LANGS".startsWith(qual))
 			msg.append(getQualifiedAbilities(mob,Ability.ACODE_LANGUAGE,-1,"\n\r^HLanguages:^? ",shortOnly));
 		int domain=-1;
 		String domainName="";
