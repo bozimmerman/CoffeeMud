@@ -4893,7 +4893,17 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					if(E instanceof Item)
 					{
 						if(((Item)E).riding()!=null)
+							results.append(((Item)E).riding().Name());
+						else
+						if(((Item)E).container()!=null)
 							results.append(((Item)E).container().Name());
+						else
+						if(E instanceof Container)
+						{
+							Vector V=((Container)E).getContents();
+							for(int v=0;v<V.size();v++)
+								results.append("\""+((Item)V.elementAt(v)).Name()+"\" ");
+						}
 					}
 				}
 				break;
