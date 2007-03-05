@@ -54,7 +54,8 @@ public class Scavenger extends ActiveTicker
 			MOB mob=(MOB)ticking;
 			Room thisRoom=mob.location();
             if(origItems<0) origItems=mob.inventorySize();
-            if((mob.envStats().weight()>=mob.maxCarry())||(mob.inventorySize()>=mob.maxItems()))
+            if((mob.envStats().weight()>=(int)Math.round(CMath.mul(mob.maxCarry(),0.9)))
+            ||(mob.inventorySize()>=mob.maxItems()))
             {
                 if(CMLib.flags().isATrackingMonster(mob)) return true;
                 String trashRoomID=CMParms.getParmStr(getParms(),"TRASH","");
