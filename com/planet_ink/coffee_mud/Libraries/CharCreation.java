@@ -283,6 +283,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             mob.playerStats().setPassword(password);
 
             boolean emailReq=(!CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"));
+        	session.println(null,null,null,new CMFile(Resources.buildResourcePath("text")+"email.txt",null,true).text().toString());
             while(true)
             {
                 String newEmail=session.prompt("\n\rEnter your e-mail address:");
