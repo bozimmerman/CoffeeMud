@@ -156,6 +156,44 @@
 			<TD WIDTH=25%><FONT COLOR=YELLOW>Health Race: </FONT></TD>
 			<TD WIDTH=66%><SELECT NAME=HEALTHRACE>@RaceData?HEALTHRACE@</SELECT></TD>
 		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Event Race: </FONT></TD>
+			<TD WIDTH=66%><SELECT NAME=EVENTRACE>@RaceData?EVENTRACE@</SELECT></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Body Parts: </FONT></TD>
+			<TD WIDTH=66%>@RaceData?BODY&FONT=<FONT COLOR=WHITE SIZE=-2>@</TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Unwearable Locs: </FONT></TD>
+			<TD WIDTH=66%><SELECT NAME=WEARID MULTIPLE SIZE=5 >@RaceData?WEARID@</SELECT></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Never create corpse: </FONT></TD>
+			<TD WIDTH=66%><INPUT TYPE=CHECKBOX NAME=BODYKILL @RaceData?BODYKILL@></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>EStat Adjustments: </FONT></TD>
+			<TD WIDTH=66%>@RaceData?ESTATS@></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>CharStat Adjustments: </FONT></TD>
+			<TD WIDTH=66%>@RaceData?ASTATS@></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>CharStat Settings: </FONT></TD>
+			<TD WIDTH=66%>@RaceData?CSTATS@></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>CharState Adjustments: </FONT></TD>
+			<TD WIDTH=66%>@RaceData?ASTATE@></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>New Player CharState Adj: </FONT></TD>
+			<TD WIDTH=66%>@RaceData?STARTASTATE@></TD>
+		</TR>
+		
+		
 		
 			<!--<A HREF="javascript:OpenUp('ahelp.cmvp','PROP_HAVEZAPPER')"><FONT COLOR=WHITE><I>mask help</I></FONT></a>-->
 	</TABLE>

@@ -48,13 +48,13 @@ public class RaceData extends StdWebMacro
         for(Enumeration e=CMClass.races();e.hasMoreElements();)
         {
             R2=(Race)e.nextElement();
-            if(!R2.isGeneric())
-                str.append("<OPTION VALUE=\"\" "+((old.equalsIgnoreCase(R2.getClass().getName()))?"SELECTED":"")+">"+R2.getClass().getName());
+            if((!R2.isGeneric())&&(!old.toLowerCase().startsWith("com.")))
+                str.append("<OPTION VALUE=\"\" "+((old.equalsIgnoreCase(R2.getClass().getName())||(old.equalsIgnoreCase(R2.name())))?"SELECTED":"")+">"+R2.getClass().getName());
             else
             {
                 String RID="com.planet_ink.coffee_mud.Races."+R2.ID();
                 if(CMClass.checkForCMClass("RACE",RID))
-                    str.append("<OPTION VALUE=\"\" "+((old.equalsIgnoreCase(RID))?"SELECTED":"")+">"+RID);
+                    str.append("<OPTION VALUE=\"\" "+((old.equalsIgnoreCase(RID)||(old.equalsIgnoreCase(R2.name())))?"SELECTED":"")+">"+RID);
             }
         }
         return str.toString();
@@ -106,7 +106,7 @@ public class RaceData extends StdWebMacro
         str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+c+"ESTATS"+(theclasses.size()+1)+">");
         str.append("<OPTION SELECTED VALUE=\"\">Select a stat");
         for(int i=0;i<E.getStatCodes().length;i++)
-            if(CMath.isNumber(E.getStat(E.getStatCodes()[i])))
+            if((CMath.isNumber(E.getStat(E.getStatCodes()[i])))&&(!theclasses.contains(E.getStatCodes()[i])))
                 str.append("<OPTION VALUE=\""+E.getStatCodes()[i]+"\">"+E.getStatCodes()[i]);
         str.append("</SELECT>");
         str.append("</TD>");
@@ -164,7 +164,8 @@ public class RaceData extends StdWebMacro
         str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+c+"CSTATS"+(theclasses.size()+1)+">");
         str.append("<OPTION SELECTED VALUE=\"\">Select a stat");
         for(int i=0;i<CharStats.STAT_DESCS.length;i++)
-            str.append("<OPTION VALUE=\""+CharStats.STAT_DESCS[i]+"\">"+CharStats.STAT_DESCS[i]);
+        	if(!theclasses.contains(CharStats.STAT_DESCS[i]))
+	            str.append("<OPTION VALUE=\""+CharStats.STAT_DESCS[i]+"\">"+CharStats.STAT_DESCS[i]);
         str.append("</SELECT>");
         str.append("</TD>");
         str.append("<TD WIDTH=65%>");
@@ -222,7 +223,8 @@ public class RaceData extends StdWebMacro
         str.append("<OPTION SELECTED VALUE=\"\">Select a stat");
         for(int i=0;i<E.getStatCodes().length;i++)
             if(CMath.isNumber(E.getStat(E.getStatCodes()[i])))
-                str.append("<OPTION VALUE=\""+E.getStatCodes()[i]+"\">"+E.getStatCodes()[i]);
+            	if(!theclasses.contains(E.getStatCodes()[i]))
+	                str.append("<OPTION VALUE=\""+E.getStatCodes()[i]+"\">"+E.getStatCodes()[i]);
         str.append("</SELECT>");
         str.append("</TD>");
         str.append("<TD WIDTH=65%>");
@@ -601,14 +603,25 @@ public class RaceData extends StdWebMacro
                 }
                 if(parms.containsKey("BODY"))
                 {
-                    str.append("<TABLE WIDTH=100% BORDER=0>");
+                    str.append("<TABLE WIDTH=100% BORDER=0><TR>");
+                    String font=(String)parms.get("FONT");
+                    if(font==null) font="";
+                    int col=-1;
                     for(int i=0;i<Race.BODYPARTSTR.length;i++)
                     {
                         String old=httpReq.getRequestParameter("BODYPART"+i);
                         if(old==null) old=""+R.bodyMask()[i];
-                        str.append("<TR><TD>"+Race.BODYPARTSTR[i]+"</TD><TD><INPUT TYPE=TEXT NAME=BODYPART"+i+" VALUE=\""+old+"\" SIZE=3></TD></TR>");
+                        if((++col)==4)
+                        {
+                        	col=0; 
+                        	str.append("</TR><TR>");
+                        }
+                        str.append("<TD WIDTH=1%>"+font+Race.BODYPARTSTR[i]+"</B></I></FONT></TD><TD><INPUT TYPE=TEXT NAME=BODYPART"+i+" VALUE=\""+old+"\" SIZE=3></TD>");
+                        
                     }
-                    str.append("</TABLE>, ");
+                    for(int i=col;i<4;i++)
+                        str.append("<TD></TD><TD></TD>");
+                    str.append("</TR></TABLE>, ");
                 }
                 if(parms.containsKey("WEAR"))
                     for(int b=0;b<Item.WORN_CODES.length;b++)
@@ -633,7 +646,7 @@ public class RaceData extends StdWebMacro
                             else
                                 break;
                     }
-                    for(int i=0;i<Item.WORN_CODES.length;i++)
+                    for(int i=1;i<Item.WORN_CODES.length;i++)
                     {
                         str.append("<OPTION VALUE="+Item.WORN_CODES[i]+" ");
                         if(CMath.bset(mask,Item.WORN_CODES[i]))
