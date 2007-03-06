@@ -674,6 +674,7 @@ public class RaceData extends StdWebMacro
 				mob2.recoverEnvStats();
 				mob2.recoverMaxState();
 				mob.setSession(null);
+				//*/
                 
                 if(parms.containsKey("STATS"))
                 {
