@@ -192,6 +192,31 @@
 			<TD WIDTH=25%><FONT COLOR=YELLOW>New Player CharState Adj: </FONT></TD>
 			<TD WIDTH=66%>@RaceData?STARTASTATE@></TD>
 		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Resources: </FONT></TD>
+			<TD WIDTH=66%>@RaceData?RESOURCES@></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Outfit: </FONT></TD>
+			<TD WIDTH=66%>@RaceData?OUTFIT@></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Natural Weapon: </FONT></TD>
+			<TD WIDTH=66%>@RaceData?WEAPON@></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Weapon Race: </FONT></TD>
+			<TD WIDTH=66%><SELECT NAME=WEAPONRACE>@RaceData?WEAPONRACE@</SELECT></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Racial Abilities: </FONT></TD>
+			<TD WIDTH=66%><FONT COLOR=WHITE SIZE=-1>@RaceData?RABLE&FONT=<FONT COLOR=WHITE SIZE=-2>@</FONT></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Cultural Abilities: </FONT></TD>
+			<TD WIDTH=66%><FONT COLOR=WHITE SIZE=-1>@RaceData?CABLE&FONT=<FONT COLOR=WHITE SIZE=-2>@</FONT></TD>
+		</TR>
+		
 		
 		
 		

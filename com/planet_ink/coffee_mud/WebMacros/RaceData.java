@@ -237,6 +237,7 @@ public class RaceData extends StdWebMacro
     
     public static StringBuffer itemList(Vector items, char c, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize, boolean one)
     {
+    	if(items==null) items=new Vector();
         StringBuffer str=new StringBuffer("");
         Vector classes=new Vector();
         Vector itemlist=null;
@@ -340,7 +341,7 @@ public class RaceData extends StdWebMacro
         return str;
     }
     
-    public static StringBuffer rabilities(Race E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    public static StringBuffer rabilities(Race E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize, String font)
     {
         StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(4);
@@ -374,6 +375,7 @@ public class RaceData extends StdWebMacro
                     theclasses.addElement(Able.ID(),Able.proficiency()+"",CMLib.ableMapper().getDefaultGain(E.ID(),false,Able.ID())?"on":"",CMLib.ableMapper().getQualifyingLevel(E.ID(),false,Able.ID())+"");
             }
         }
+        if(font==null) font="<FONT COLOR=WHITE><B>";
         str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
         for(int i=0;i<theclasses.size();i++)
         {
@@ -385,13 +387,13 @@ public class RaceData extends StdWebMacro
             str.append("</SELECT>");
             str.append("</TD>");
             str.append("<TD WIDTH=25%>");
-            str.append("<FONT COLOR=WHITE><B>Lvl:</B></FONT> <INPUT TYPE=TEXT NAME=RABLVL"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,4))+"\" SIZE=3 MAXLENGTH=3>");
+            str.append(font+"Lvl:</B></FONT> <INPUT TYPE=TEXT NAME=RABLVL"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,4))+"\" SIZE=3 MAXLENGTH=3>");
             str.append("</TD>");
             str.append("<TD WIDTH=10%>");
-            str.append("<INPUT TYPE=TEXT NAME=RABPOF"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=3 MAXLENGTH=3><FONT COLOR=WHITE><B>%</B></FONT>");
+            str.append("<INPUT TYPE=TEXT NAME=RABPOF"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=3 MAXLENGTH=3>"+font+"%</B></I></FONT>");
             str.append("</TD>");
             str.append("<TD WIDTH=30%>");
-            str.append("<INPUT TYPE=CHECKBOX NAME=RABQUA"+(i+1)+" "+(((String)theclasses.elementAt(i,2)).equalsIgnoreCase("on")?"CHECKED":"")+">Qualify Only");
+            str.append("<INPUT TYPE=CHECKBOX NAME=RABQUA"+(i+1)+" "+(((String)theclasses.elementAt(i,2)).equalsIgnoreCase("on")?"CHECKED":"")+">"+font+"Qualify Only</B></FONT></I>");
             str.append("</TD>");
             str.append("</TR>");
         }
@@ -406,13 +408,13 @@ public class RaceData extends StdWebMacro
         str.append("</SELECT>");
         str.append("</TD>");
         str.append("<TD WIDTH=25%>");
-        str.append("<FONT COLOR=WHITE><B>Lvl:</B></FONT> <INPUT TYPE=TEXT NAME=RABLVL"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3>");
+        str.append(font+"Lvl:</B></I></FONT> <INPUT TYPE=TEXT NAME=RABLVL"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3>");
         str.append("</TD>");
         str.append("<TD WIDTH=10%>");
-        str.append("<INPUT TYPE=TEXT NAME=RABPOF"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3><FONT COLOR=WHITE><B>%</B></FONT>");
+        str.append("<INPUT TYPE=TEXT NAME=RABPOF"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3>"+font+"%</B></I></FONT>");
         str.append("</TD>");
         str.append("<TD WIDTH=30%>");
-        str.append("<INPUT TYPE=CHECKBOX NAME=RABQUA"+(theclasses.size()+1)+" >Qualify Only");
+        str.append("<INPUT TYPE=CHECKBOX NAME=RABQUA"+(theclasses.size()+1)+" >"+font+"Qualify Only</B></I></FONT>");
         str.append("</TD>");
         str.append("</TR>");
         str.append("</TABLE>");
@@ -420,7 +422,7 @@ public class RaceData extends StdWebMacro
     }
 
     
-    public static StringBuffer cabilities(Race E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    public static StringBuffer cabilities(Race E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize, String font)
     {
         StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(2);
@@ -446,6 +448,7 @@ public class RaceData extends StdWebMacro
             for(int i=0;i<ables.size();i++)
                 theclasses.addElement(ables.elementAt(i,1),ables.elementAt(i,2).toString());
         }
+        if(font==null) font="<FONT COLOR=WHITE><B>";
         str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
         for(int i=0;i<theclasses.size();i++)
         {
@@ -457,7 +460,7 @@ public class RaceData extends StdWebMacro
             str.append("</SELECT>");
             str.append("</TD>");
             str.append("<TD WIDTH=65%>");
-            str.append("<INPUT TYPE=TEXT NAME=CABPOF"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=3 MAXLENGTH=3><FONT COLOR=WHITE><B>%</B></FONT>");
+            str.append("<INPUT TYPE=TEXT NAME=CABPOF"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=3 MAXLENGTH=3>"+font+"%</B></I></FONT>");
             str.append("</TD>");
             str.append("</TR>");
         }
@@ -472,7 +475,7 @@ public class RaceData extends StdWebMacro
         str.append("</SELECT>");
         str.append("</TD>");
         str.append("<TD WIDTH=65%>");
-        str.append("<INPUT TYPE=TEXT NAME=CABPOF"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3><FONT COLOR=WHITE><B>%</B></FONT>");
+        str.append("<INPUT TYPE=TEXT NAME=CABPOF"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3>"+font+"%</B></I></FONT>");
         str.append("</TD>");
         str.append("</TR>");
         str.append("</TABLE>");
@@ -499,6 +502,20 @@ public class RaceData extends StdWebMacro
             }
         }
         return ables;
+    }
+
+    private MOB makeMOB(Race R)
+    {
+		MOB mob=CMClass.getMOB("StdMOB");
+		mob.setSession((Session)CMClass.getCommon("DefaultSession"));
+		mob.baseCharStats().setMyRace(R);
+		R.startRacing(mob,false);
+		mob.recoverCharStats();
+		mob.recoverCharStats();
+		mob.recoverEnvStats();
+		mob.recoverMaxState();
+		mob.setSession(null);
+		return mob;
     }
     
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
@@ -628,9 +645,9 @@ public class RaceData extends StdWebMacro
                         if(CMath.bset(R.forbiddenWornBits(),Item.WORN_CODES[b]))
                             str.append(Item.WORN_DESCS[b]+", ");
                 if(parms.containsKey("RABLE"))
-                    str.append(rabilities(R,httpReq,parms,0)+", ");
+                    str.append(rabilities(R,httpReq,parms,0,(String)parms.get("FONT"))+", ");
                 if(parms.containsKey("CABLE"))
-                    str.append(cabilities(R,httpReq,parms,0)+", ");
+                    str.append(cabilities(R,httpReq,parms,0,(String)parms.get("FONT"))+", ");
                 if(parms.containsKey("WEARID"))
                 {
                     String old=httpReq.getRequestParameter("WEARID");
@@ -673,24 +690,17 @@ public class RaceData extends StdWebMacro
 					str.append(Area.THEME_DESCS_EXT[R.availabilityCode()]+", ");
 				if(parms.containsKey("NATURALWEAPON"))
 					str.append(R.myNaturalWeapon().name()+", ");
-				MOB mob=CMClass.getMOB("StdMOB");
-				MOB mob2=CMClass.getMOB("StdMOB");
-				mob.setSession((Session)CMClass.getCommon("DefaultSession"));
-				mob.baseCharStats().setMyRace(R);
-				mob2.baseCharStats().setMyRace(CMClass.getRace("StdRace"));
-				R.startRacing(mob,false);
-				mob.recoverCharStats();
-				mob.recoverCharStats();
-				mob.recoverEnvStats();
-				mob.recoverMaxState();
-				mob2.recoverCharStats();
-				mob2.recoverEnvStats();
-				mob2.recoverMaxState();
-				mob.setSession(null);
-				//*/
-                
+				
+				MOB mob=null;
+				
                 if(parms.containsKey("STATS"))
                 {
+					if(mob==null) mob=makeMOB(R);
+					MOB mob2=makeMOB(R);
+					mob2.baseCharStats().setMyRace(CMClass.getRace("StdRace"));
+					mob2.recoverCharStats();
+					mob2.recoverEnvStats();
+					mob2.recoverMaxState();
                     for(int c=0;c<CharStats.NUM_STATS;c++)
                     {
                         int oldStat=mob2.charStats().getStat(c);
@@ -726,7 +736,7 @@ public class RaceData extends StdWebMacro
                         CharStats adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0);
                         String cStats=R.getStat("ASTATS");
                         if(cStats.length()>0){  CMLib.coffeeMaker().setCharStats(adjStats,cStats);}
-                        str.append(cstats(mob.charStats(),'A',httpReq,parms,0)+", ");
+                        str.append(cstats(adjStats,'A',httpReq,parms,0)+", ");
                     }
                     if(parms.containsKey("ASTATE"))
                     {
@@ -796,6 +806,7 @@ public class RaceData extends StdWebMacro
                 
 				if(parms.containsKey("SENSES"))
 				{
+					if(mob==null) mob=makeMOB(R);
 					if(!CMLib.flags().canHear(mob))
 						str.append("deaf, ");
 					if(!CMLib.flags().canSee(mob))
@@ -829,6 +840,7 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("DISPOSITIONS"))
 				{
+					if(mob==null) mob=makeMOB(R);
 					if(CMLib.flags().isClimbing(mob))
 						str.append("climbing, ");
 					if((mob.envStats().disposition()&EnvStats.IS_EVIL)>0)
@@ -864,6 +876,7 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("TRAINS"))
 				{
+					if(mob==null) mob=makeMOB(R);
 					if(mob.getTrains()>0)
 						str.append("trains+"+mob.getTrains()+", ");
 				}
@@ -871,6 +884,7 @@ public class RaceData extends StdWebMacro
 					str.append(""+R.getAgingChart()[Race.AGE_ANCIENT]+", ");
 				if(parms.containsKey("PRACS"))
 				{
+					if(mob==null) mob=makeMOB(R);
 					if(mob.getPractices()>0)
 						str.append("practices+"+mob.getPractices()+", ");
 				}
@@ -930,6 +944,7 @@ public class RaceData extends StdWebMacro
 				}
 				if(parms.containsKey("CLASSES"))
 				{
+					if(mob==null) mob=makeMOB(R);
 					for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 						mob.baseCharStats().setStat(i,25);
 					mob.recoverCharStats();
@@ -945,8 +960,7 @@ public class RaceData extends StdWebMacro
 				String strstr=str.toString();
 				if(strstr.endsWith(", "))
 					strstr=strstr.substring(0,strstr.length()-2);
-                mob.destroy();
-                mob2.destroy();
+                if(mob!=null) mob.destroy();
                 httpReq.getRequestObjects().put("RACE-"+last,R);
                 return clearWebMacros(strstr);
 			}
