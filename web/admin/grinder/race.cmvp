@@ -1,0 +1,175 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_CMDCLANS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<html>
+<head>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
+	<title>Race Manager</title>
+	<script language=JavaScript>
+	<!--
+		@if?CheckReqParm?RACE=_NEWONE_@ 
+			window.alert('@MUDGrinder?ADDCLAN@');
+		@endif@
+		function openUp2(named)
+		{
+			var strFeatures="top=200,left=50,resizeable=no,scrollbars=yes,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("/property.cmvp?ABILITY="+named,
+			            "Ability",strFeatures, false);
+		}
+		function AddMember(v)
+		{
+			ReShow();
+		}
+		function EditMember(v)
+		{
+			ReShow();
+		}
+		function Delete()
+		{
+			if(confirm('Delete this race?! Confirm!'))
+			{
+				if(confirm('Press OK to Delete this race!'))
+				{
+					document.RESOURCES.action='racedo.cmvp';
+					document.RESOURCES.FUNCTION.value='DELRACE';
+					document.RESOURCES.submit();
+				}
+			}
+		}
+		function EditDone()
+		{
+			if(confirm('Submit your changes to this race?'))
+			{
+				document.RESOURCES.action='racedo.cmvp';
+				document.RESOURCES.FUNCTION.value='EDITRACE';
+				document.RESOURCES.submit();
+			}
+		}
+		function ReShow()
+		{
+			document.RESOURCES.FUNCTION.value='';
+			document.RESOURCES.action='/grinder/race.cmvp';
+			document.RESOURCES.submit();
+		}
+		function Cancel()
+		{
+			window.close();
+		}
+		function OpenUp(file,named)
+		{
+			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("/"+file+"?HELPTOPIC="+named,
+			            "Help",strFeatures, false);
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="race.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=33% ALIGN=LEFT VALIGN=CENTER>
+		<FONT COLOR=WHITE>Race ID: </FONT><BR>
+		@AddRequestParameter?OLDRACE=@@RequestParameter?RACE@@ @
+		<SELECT NAME=RACE>
+		@RaceNext?RESET@
+		<OPTION VALUE="" @if?CheckReqParm?RACE=@SELECTED@endif@>Select a race
+		@loop@
+		@RaceNext?ALL@
+		<OPTION VALUE="@RaceID@" @if?CheckReqParm?RACE=@@RequestParameter?OLDRACE@@ @SELECTED@endif@>@RaceName@
+		@back@
+		</SELECT>
+		@AddRequestParameter?RACE=@@RequestParameter?OLDRACE@@ @
+	</TD>
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
+		<TABLE WIDTH=50% BORDER=1>
+		<TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
+		<TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+		<TR><TD><a href="javascript:ReShow();"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
+		</TABLE>
+	</TD>
+	</TR>
+	</TABLE>
+<CENTER>
+	
+@if?CheckReqParm?RACE=@
+	Select a race above to view/edit.
+@else@
+	<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Name: </FONT></TD>
+			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=20 NAME=NAME VALUE="@RaceData?NAME@"></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Category: </FONT></TD>
+			<TD WIDTH=66%>
+				<SELECT NAME=CAT>
+				@RaceCatNext?RESET@
+				@loop@
+				@RaceCatNext?ALL@
+				<OPTION VALUE="@RequestParameter?RACECAT@" @if?CheckReqParm?RACECAT=@@RaceData?CAT@@ @SELECTED@endif@>@RequestParameter?RACECAT@
+				@back@
+				</SELECT>
+			</TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Base Weight: </FONT></TD>
+			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=10 NAME=BWEIGHT VALUE="@RaceData?BWEIGHT@"></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Weight Variance: </FONT></TD>
+			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=10 NAME=VWEIGHT VALUE="@RaceData?VWEIGHT@"></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Base Male Height: </FONT></TD>
+			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=10 NAME=MHEIGHT VALUE="@RaceData?MHEIGHT@"></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Base Female Height: </FONT></TD>
+			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=10 NAME=FHEIGHT VALUE="@RaceData?FHEIGHT@"></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Height Variance: </FONT></TD>
+			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=10 NAME=VHEIGHT VALUE="@RaceData?VHEIGHT@"></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Availability: </FONT></TD>
+			<TD WIDTH=66%><SELECT NAME=PLAYABLEID>@RaceData?PLAYABLEID@</SELECT></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Disabled Flags: </FONT></TD>
+			<TD WIDTH=66%><SELECT NAME=DISFLAGS MULTIPLE>@RaceData?DISFLAGS@</SELECT></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Leave Text: </FONT></TD>
+			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=20 NAME=LEAVESTR VALUE="@RaceData?LEAVESTR@"></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Arrive Text: </FONT></TD>
+			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=20 NAME=ARRIVESTR VALUE="@RaceData?ARRIVESTR@"></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Health Race: </FONT></TD>
+			<TD WIDTH=66%><SELECT NAME=HEALTHRACE>@RaceData?HEALTHRACE@</SELECT></TD>
+		</TR>
+		
+			<!--<A HREF="javascript:OpenUp('ahelp.cmvp','PROP_HAVEZAPPER')"><FONT COLOR=WHITE><I>mask help</I></FONT></a>-->
+	</TABLE>
+@endif@
+<BR>
+<TABLE WIDTH=100% BORDER=0>
+<TR>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Finished" ONCLICK="EditDone();"></TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
+</TR>
+</TABLE>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@
