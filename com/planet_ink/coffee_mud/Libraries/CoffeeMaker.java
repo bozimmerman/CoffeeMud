@@ -221,6 +221,9 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
                 V.addElement((flag+" "+myArea.getBlurbFlag(flag)).trim());
             }
             str.append(CMLib.xml().convertXMLtoTag("BLURBS",CMLib.xml().getXMLList(V)));
+			if(E instanceof GridZones)
+	            str.append(CMLib.xml().convertXMLtoTag("XGRID",((GridZones)E).xGridSize())
+						  +CMLib.xml().convertXMLtoTag("YGRID",((GridZones)E).yGridSize()));
 		    return str.toString();
 		}
 		else
@@ -1717,6 +1720,11 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
             Vector VB=CMLib.xml().parseXMLList(CMLib.xml().getValFromPieces(V,"BLURBS"));
             for(int i=0;i<VB.size();i++)
                 ((Area)E).addBlurbFlag((String)VB.elementAt(i));
+			if(E instanceof GridZones)
+			{
+				((GridZones)E).setXGridSize(CMLib.xml().getIntFromPieces(V,"XGRID"));
+				((GridZones)E).setYGridSize(CMLib.xml().getIntFromPieces(V,"YGRID"));
+			}
 			setExtraEnvProperties(E,V);
 		}
 		else
