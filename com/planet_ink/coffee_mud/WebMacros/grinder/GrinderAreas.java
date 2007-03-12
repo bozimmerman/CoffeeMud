@@ -222,7 +222,7 @@ public class GrinderAreas
 		// gridx
 		String gridx=httpReq.getRequestParameter("GRIDX");
 		if((gridx!=null)&&(A instanceof GridZones))
-			((GridZones)A).setXGridSize(CMath.s_int(gridy));
+			((GridZones)A).setXGridSize(CMath.s_int(gridx));
 		
 		// author
 		String author=httpReq.getRequestParameter("AUTHOR");
