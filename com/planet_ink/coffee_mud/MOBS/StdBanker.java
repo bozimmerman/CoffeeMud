@@ -500,8 +500,9 @@ public class StdBanker extends StdShopKeeper implements Banker
 						    CMLib.commands().postSay(this,mob,"Ok, your new balance is "+CMLib.beanCounter().nameCurrencyLong(this,getBalance(owner))+".",true,false);
 						recoverEnvStats();
 						
-						if(msg.othersMessage()!=null)
-							msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(),"<O-NAME>",msg.tool().name()));
+						if(msg.sourceMessage()!=null) msg.setSourceMessage(CMStrings.replaceAll(msg.sourceMessage(),"<O-NAME>",msg.tool().name()));
+						if(msg.targetMessage()!=null) msg.setTargetMessage(CMStrings.replaceAll(msg.targetMessage(),"<O-NAME>",msg.tool().name()));
+						if(msg.othersMessage()!=null) msg.setOthersMessage(CMStrings.replaceAll(msg.othersMessage(),"<O-NAME>",msg.tool().name()));
 						((Coins)msg.tool()).setNumberOfCoins(0); // prevents banker from accumulating wealth
 						double riches=CMLib.beanCounter().getTotalAbsoluteNativeValue(this);
 						if(riches>0.0) CMLib.beanCounter().subtractMoney(this,riches);
