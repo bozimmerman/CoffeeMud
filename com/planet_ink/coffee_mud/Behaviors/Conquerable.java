@@ -992,7 +992,9 @@ public class Conquerable extends Arrest
 			// from those events.  Protect against multi-follows using
 			// a queue.
 			if((((msg.sourceMinor()==CMMsg.TYP_DEATH)&&(msg.tool()!=null)&&(msg.tool() instanceof MOB))
-				||((msg.sourceMinor()==CMMsg.TYP_FOLLOW)&&(msg.target()!=null)&&(msg.target() instanceof MOB)&&(!noMultiFollows.contains(msg.source()))))
+				||((msg.sourceMinor()==CMMsg.TYP_FOLLOW)
+						&&(msg.target()!=null)&&(msg.target() instanceof MOB)
+						&&(!noMultiFollows.contains(msg.source()))))
 			&&(msg.source().isMonster())
 			&&(msg.source().getStartRoom()!=null))
 			{
@@ -1000,7 +1002,7 @@ public class Conquerable extends Arrest
 				MOB killer=null;
 				if(msg.sourceMinor()==CMMsg.TYP_FOLLOW)
 				{
-					if(noMultiFollows.size()>=7)
+					if(noMultiFollows.size()>=70)
 						noMultiFollows.removeElementAt(0);
 					noMultiFollows.addElement(msg.source());
 					if(msg.target() instanceof MOB)
