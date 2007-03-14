@@ -1056,6 +1056,7 @@ public class Conquerable extends Arrest
 					if((killer.getClanID().equals(holdingClan)) // killer is from holding clan
                     &&(holdingClan.length()>0)
 					&&(msg.source().getClanID().length()>0)     // killed is a conquesting one
+					&&(!msg.source().getClanID().equals(holdingClan))
 					&&(flagFound((Area)myHost,msg.source().getClanID())))
                     {
                         if(debugging) Log.debugOut("Conquest",msg.source().getClanID()+" lose "+(msg.source().envStats().level())+" points by allowing the death of "+msg.source().name());
