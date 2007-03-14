@@ -730,13 +730,13 @@ public class List extends StdCommand
 		else
 		{
 			buf.append("\n\r^xQuest Report:^.^N\n\r");
-			buf.append("\n\r^x"+CMStrings.padRight("#",5)+CMStrings.padRight("Name",20)+" Status^.^N\n\r");
+			buf.append("\n\r^x"+CMStrings.padRight("#",5)+CMStrings.padRight("Name",30)+" Status^.^N\n\r");
 			for(int i=0;i<CMLib.quests().numQuests();i++)
 			{
 				Quest Q=CMLib.quests().fetchQuest(i);
 				if(Q!=null)
 				{
-					buf.append(CMStrings.padRight(""+(i+1),5)+CMStrings.padRight("^<LSTQUEST^>"+Q.name()+"^</LSTQUEST^>",20)+" ");
+					buf.append(CMStrings.padRight(""+(i+1),5)+CMStrings.padRight("^<LSTQUEST^>"+Q.name()+"^</LSTQUEST^>",30)+" ");
 					if(Q.running())
 					{
 						if(Q.isCopy())
