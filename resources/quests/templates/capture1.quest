@@ -118,7 +118,8 @@
 #$CAPTURABLES_NAMES=$NAME
 #
 #Num Capturables:
-#Specify how many of the capturable mobs must be brought in to complete the quest.
+#Specify how many of the capturable mobs must be brought and presented to the announcer
+#in order to complete the quest.
 #$NUM_CAPTURABLES=($EXPRESSION)=1
 #
 #!QUESTMAKER_PAGE Capturables Behavior
