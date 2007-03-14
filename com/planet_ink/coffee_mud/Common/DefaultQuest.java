@@ -2749,6 +2749,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     Room R=M.getStartRoom();
                     if((R==null)||(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE)))
                     {
+                    	M.setFollowing(null);
                         CMLib.tracking().wanderAway(M,true,false);
                         if(M.location()!=null)
                             M.location().delInhabitant(M);
@@ -2760,7 +2761,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     &&(!M.amDead())
                     &&(!M.amDestroyed())
                     &&((M.location()!=R)||(!R.isInhabitant(M))))
+                    {
+                    	M.setFollowing(null);
                         CMLib.tracking().wanderAway(M,false,true);
+                    }
                 }
                 i--;
             }
