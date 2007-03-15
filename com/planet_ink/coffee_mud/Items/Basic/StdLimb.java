@@ -43,6 +43,19 @@ public class StdLimb extends StdItem
 		partnum=-1;
 	}
 	
+	public boolean okMessage(Environmental host, CMMsg msg)
+	{
+		if(!super.okMessage(host, msg))
+			return false;
+		if((msg.target()==this)
+		&&(msg.targetMinor()==CMMsg.TYP_REMOVE)
+		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS)))
+		{
+			
+		}
+		return true;
+	}
+	
 	public void setSecretIdentity(String id)
 	{
 		super.setSecretIdentity(id);
