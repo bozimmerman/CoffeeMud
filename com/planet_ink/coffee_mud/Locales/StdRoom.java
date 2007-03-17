@@ -941,7 +941,6 @@ public class StdRoom implements Room
 	public void bringMobHere(MOB mob, boolean andFollowers)
 	{
 		if(mob==null) return;
-
 		Room oldRoom=mob.location();
 		if(oldRoom!=null)
 			oldRoom.delInhabitant(mob);

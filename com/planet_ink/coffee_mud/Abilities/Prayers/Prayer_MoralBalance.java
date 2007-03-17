@@ -70,11 +70,12 @@ public class Prayer_MoralBalance extends Prayer
                     Faction F=CMLib.factions().getFaction(CMLib.factions().AlignID());
                     if(F!=null)
                     {
-                    	int bredth=F.maximum()-F.minimum();
+                     	int bredth=F.maximum()-F.minimum();
                     	int midpoint=F.minimum()+(bredth/2);
                     	int distance=midpoint-target.fetchFaction(F.factionID());
                     	int amt=target.fetchFaction(F.factionID())+(distance/8);
-    					CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(),amt-target.fetchFaction(F.ID()));
+                        int change=amt-target.fetchFaction(F.factionID());
+    					CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(),change);
                     }
 				}
                 if(msg2!=null) mob.location().send(mob,msg2);

@@ -1129,13 +1129,51 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 	}
     
+    
+    private DVector getAllPlayersHere(Area area, boolean includeLocalFollowers)
+    {
+        DVector playersHere=new DVector(2);
+        Session S=null;
+        MOB M=null;
+        Room R=null;
+        for(int s=CMLib.sessions().size()-1;s>=0;s--)
+        {
+            S=CMLib.sessions().elementAt(s);
+            M=(S!=null)?S.mob():null;
+            R=(M!=null)?M.location():null;
+            if((R!=null)&&(R.getArea()==area))
+            {
+                playersHere.addElement(M,CMLib.map().getExtendedRoomID(R));
+                if(includeLocalFollowers)
+                {
+                    MOB M2=null;
+                    HashSet H=M.getGroupMembers(new HashSet());
+                    for(Iterator i=H.iterator();i.hasNext();)
+                    {
+                        M2=(MOB)i.next();
+                        if((M2!=M)&&(M2.location()==R))
+                            playersHere.addElement(M2,CMLib.map().getExtendedRoomID(R));
+                    }
+                }
+            }
+        }
+        return playersHere;
+        
+    }
     public void resetArea(Area area)
     {
         int oldFlag=area.getAreaFlags();
         area.setAreaFlags(Area.FLAG_FROZEN);
+        DVector playersHere=getAllPlayersHere(area,true);
         for(Enumeration r=area.getProperMap();r.hasMoreElements();)
             resetRoom((Room)r.nextElement());
         area.fillInAreaRooms();
+        for(int p=0;p<playersHere.size();p++)
+        {
+            MOB M=(MOB)playersHere.elementAt(p,1);
+            Room R=CMLib.map().getRoom((String)playersHere.elementAt(p,2));
+            if(R!=null) R.bringMobHere(M,false);
+        }
         area.setAreaFlags(oldFlag);
     }
     
