@@ -369,7 +369,7 @@ public class RoomLoader
         
         DBReadRoomExits(null,rooms,set==null,unloadedRooms);
 
-		DBReadContent(null,rooms,unloadedRooms,set==null);
+		DBReadContent(null,null,rooms,unloadedRooms,set==null);
 
 		if(set==null)
 			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Finalizing room data)");
@@ -477,12 +477,51 @@ public class RoomLoader
 		}
 	}
 
-
-    public void DBReadContent(Room thisRoom, Vector rooms, RoomnumberSet unloadedRooms, boolean setStatus)
+	private void fixContentContainers(Hashtable content, Hashtable stuff, String roomID, Room room, boolean debug)
+	{
+		String lastName=null;
+		Hashtable itemLocs=null;
+		Hashtable mobRides=null;
+		for(Enumeration i=content.elements();i.hasMoreElements();)
+		{
+			Environmental E=(Environmental)i.nextElement();
+			if((debug)&&((lastName==null)||(!lastName.equals(E.Name()))))
+            {lastName=E.Name(); Log.debugOut("RoomLoader","Loading object(s): "+E.Name());}
+			if(E instanceof Item)
+				room.addItem((Item)E);
+			else
+			if(room!=null)
+            {
+                ((MOB)E).setStartRoom(room);
+				((MOB)E).bringToLife(room,true);
+            }
+		}
+		itemLocs=(Hashtable)stuff.get("LOCSFOR"+roomID);
+		mobRides=(Hashtable)stuff.get("RIDESFOR"+roomID);
+		if(itemLocs!=null)
+		{
+			fixItemKeys(itemLocs,content);
+			if(room!=null)
+			{
+				room.recoverRoomStats();
+				room.recoverRoomStats();
+			}
+		}
+		if(mobRides!=null)
+			fixMOBRides(mobRides,content);
+	}
+	
+	public void DBReadCatalogs()
+	{
+		DBReadContent("CATALOG_MOBS",null,null,null,true);
+		DBReadContent("CATALOG_ITEMS",null,null,null,true);
+	}
+	
+    public void DBReadContent(String thisRoomID, Room thisRoom, Vector rooms, RoomnumberSet unloadedRooms, boolean setStatus)
 	{
 		boolean debug=Log.debugChannelOn()&&(CMSecurity.isDebugging("DBROOMPOP"));
 		if(debug||(Log.debugChannelOn()&&(CMSecurity.isDebugging("DBROOMS"))))
-			Log.debugOut("RoomLoader","Reading content of "+((thisRoom!=null)?thisRoom.roomID():"ALL"));
+			Log.debugOut("RoomLoader","Reading content of "+((thisRoomID!=null)?thisRoomID:"ALL"));
 		
 		Hashtable stuff=new Hashtable();
         Hashtable itemNums=null;
@@ -496,7 +535,7 @@ public class RoomLoader
 			D=DB.DBFetch();
 			if(setStatus)
 				CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Counting Items");
-			ResultSet R=D.query("SELECT * FROM CMROIT"+((thisRoom==null)?"":" WHERE CMROID='"+thisRoom.roomID()+"'"));
+			ResultSet R=D.query("SELECT * FROM CMROIT"+((thisRoomID==null)?"":" WHERE CMROID='"+thisRoomID+"'"));
 			if(setStatus) recordCount=DB.getRecordCount(D,R);
 			updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 			while(R.next())
@@ -561,7 +600,7 @@ public class RoomLoader
 			D=DB.DBFetch();
 			if(setStatus)
 				CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Counting MOBS");
-			ResultSet R=D.query("SELECT * FROM CMROCH"+((thisRoom==null)?"":" WHERE CMROID='"+thisRoom.roomID()+"'"));
+			ResultSet R=D.query("SELECT * FROM CMROCH"+((thisRoomID==null)?"":" WHERE CMROID='"+thisRoomID+"'"));
 			if(setStatus) recordCount=DB.getRecordCount(D,R);
 			updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 			while(R.next())
@@ -630,9 +669,29 @@ public class RoomLoader
 			rooms=new Vector();
 			rooms.addElement(thisRoom);
 		}
-		recordCount=rooms.size();
+		if(rooms!=null) recordCount=rooms.size();
 		updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
 		currentRecordPos=0;
+
+		itemNums=(Hashtable)stuff.get("NUMSFORCATALOG_ITEMS");
+		if((itemNums!=null)&&(thisRoomID!=null)&&(thisRoomID.equals("CATALOG_ITEMS")))
+		{
+			fixContentContainers(itemNums,stuff,"CATALOG_ITEMS",null,debug);
+			for(Enumeration e=itemNums.elements();e.hasMoreElements();)
+				CMLib.map().addCatalogReplace((Item)e.nextElement());
+		}
+
+		// load mob catalog
+		itemNums=(Hashtable)stuff.get("NUMSFORCATALOG_MOBS");
+		if((itemNums!=null)&&(thisRoomID!=null)&&(thisRoomID.equals("CATALOG_MOBS")))
+		{
+			fixContentContainers(itemNums,stuff,"CATALOG_MOBS",null,debug);
+			for(Enumeration e=itemNums.elements();e.hasMoreElements();)
+				CMLib.map().addCatalogReplace((MOB)e.nextElement());
+		}
+		
+		// now load the rooms
+		if(rooms!=null)
 		for(Enumeration e=rooms.elements();e.hasMoreElements();)
 		{
 			if((((++currentRecordPos)%updateBreak)==0)&&(setStatus))
@@ -641,36 +700,10 @@ public class RoomLoader
 			if(debug) Log.debugOut("RoomLoader","Populating room: "+room.roomID());
 			itemNums=(Hashtable)stuff.get("NUMSFOR"+room.roomID());
 			if(itemNums!=null)
-			{
-				String lastName=null;
-				for(Enumeration i=itemNums.elements();i.hasMoreElements();)
-				{
-					Environmental E=(Environmental)i.nextElement();
-					if((debug)&&((lastName==null)||(!lastName.equals(E.Name()))))
-                    {lastName=E.Name(); Log.debugOut("RoomLoader","Loading object(s): "+E.Name());}
-					if(E instanceof Item)
-						room.addItem((Item)E);
-					else
-                    {
-                        ((MOB)E).setStartRoom(room);
-						((MOB)E).bringToLife(room,true);
-                    }
-				}
-				itemLocs=(Hashtable)stuff.get("LOCSFOR"+room.roomID());
-				mobRides=(Hashtable)stuff.get("RIDESFOR"+room.roomID());
-				if(itemLocs!=null)
-				{
-					fixItemKeys(itemLocs,itemNums);
-					room.recoverRoomStats();
-					room.recoverRoomStats();
-				}
-					
-				if(mobRides!=null)
-					fixMOBRides(mobRides,itemNums);
-			}
+				fixContentContainers(itemNums,stuff,room.roomID(),room,debug);
 		}
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("DBROOMS")))
-			Log.debugOut("RoomLoader","Done reading content of "+((thisRoom!=null)?thisRoom.roomID():"ALL"));
+			Log.debugOut("RoomLoader","Done reading content of "+((thisRoomID!=null)?thisRoomID:"ALL"));
 	}
 
     

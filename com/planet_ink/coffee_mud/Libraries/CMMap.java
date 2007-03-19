@@ -330,7 +330,10 @@ public class CMMap extends StdLibrary implements WorldMap
             }
         }
         if(comp==0)
+        {
+        	((Environmental)V.elementAt(mid)).destroy();
         	V.setElementAt(E,mid);
+        }
         else
         {
             if(mid>=0)
@@ -891,6 +894,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		bodyRooms=new Hashtable();
 		startRooms=new Hashtable();
 		deathRooms=new Hashtable();
+		icatalog=new Vector();
+		mcatalog=new Vector();
         globalHandlers.clear();
 	}
 

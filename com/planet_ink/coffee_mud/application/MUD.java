@@ -241,6 +241,10 @@ public class MUD extends Thread implements MudHost
 
 		CMLib.threads().startTickDown(CMLib.factions(),Tickable.TICKID_MOB,10);
 
+		Log.sysOut(Thread.currentThread().getName(),"Loading catalog...");
+		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: loading catalog....");
+		CMLib.database().DBReadCatalogs();
+		
 		Log.sysOut(Thread.currentThread().getName(),"Loading map...");
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: loading rooms....");
 		CMLib.database().DBReadAllRooms(null);

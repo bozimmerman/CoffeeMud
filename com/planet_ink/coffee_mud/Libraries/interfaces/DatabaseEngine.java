@@ -50,6 +50,7 @@ public interface DatabaseEngine extends CMLibrary
 	public static final int PDAT_XML=3;
 	
 	public void DBUpdateFollowers(MOB mob);
+	public void DBReadCatalogs();
 	public void DBReadContent(Room thisRoom, Vector rooms);
     public Vector DBReadAreaData(String areaID, boolean reportStatus);
     public Vector DBReadRoomData(String roomID, boolean reportStatus);
