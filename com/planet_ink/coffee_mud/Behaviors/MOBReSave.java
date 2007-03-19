@@ -75,7 +75,7 @@ public class MOBReSave extends ActiveTicker
 					}
 				}
 				if(canAct(ticking,tickID))
-					CMLib.database().DBUpdateRoomMOB(""+mob,R,mob);
+					CMLib.database().DBUpdateMOB(R.roomID(),mob);
 	    	}
 		}
 		noRecurse=false;

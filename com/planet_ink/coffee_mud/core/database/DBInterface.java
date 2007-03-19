@@ -195,8 +195,17 @@ public class DBInterface implements DatabaseEngine
     public void DBUpdatePlayerStatsOnly(MOB mob)
     {MOBloader.DBUpdateJustMOB(mob);}
 	
-	public void DBUpdateRoomMOB(String keyName, Room room, MOB mob)
-	{RoomLoader.DBUpdateRoomMOB(keyName,room,mob);}
+	public void DBUpdateMOB(String roomID, MOB mob)
+	{RoomLoader.DBUpdateRoomMOB(roomID,mob);}
+	
+	public void DBUpdateItem(String roomID, Item item)
+	{RoomLoader.DBUpdateRoomItem(roomID,item);}
+	
+	public void DBDeleteMOB(String roomID, MOB mob)
+	{RoomLoader.DBDeleteRoomMOB(roomID,mob);}
+	
+	public void DBDeleteItem(String roomID, Item item)
+	{RoomLoader.DBDeleteRoomItem(roomID,item);}
 	
 	public void DBUpdateItems(Room room)
 	{RoomLoader.DBUpdateItems(room);}

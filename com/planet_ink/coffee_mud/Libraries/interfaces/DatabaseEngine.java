@@ -69,7 +69,10 @@ public interface DatabaseEngine extends CMLibrary
     public void DBUpdatePlayerStatsOnly(MOB mob);
     public void DBUpdatePlayerAbilities(MOB mob);
     public void DBUpdatePlayerItems(MOB mob);
-	public void DBUpdateRoomMOB(String keyName, Room room, MOB mob);
+	public void DBUpdateMOB(String roomID, MOB mob);
+	public void DBUpdateItem(String roomID, Item item);
+	public void DBDeleteMOB(String roomID, MOB mob);
+	public void DBDeleteItem(String roomID, Item item);
 	public void DBUpdateItems(Room room);
 	public void DBUpdateQuests(Vector quests);
 	public void DBUpdateQuest(Quest Q);

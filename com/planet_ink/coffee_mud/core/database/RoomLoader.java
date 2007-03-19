@@ -1069,18 +1069,22 @@ public class RoomLoader
 			Log.debugOut("RoomLoader","Done updating area "+A.name());
 	}
 
-	public void DBUpdateRoomItem(String roomID, Item item)
+	public void DBDeleteRoomItem(String roomID, Item item)
 	{
-		if((roomID==null)||(!item.savable())||(item.amDestroyed())) return;
-		
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
-			Log.debugOut("RoomLoader","Done updating item "+item.name()+" in room "+roomID);
 		//TODO: Make this WORK! It will NOT delete the old one!
 		String keyName=""+item;
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Done updating item "+item.name()+" in room "+roomID);
 		DB.update(
 		"DELETE FROM CMROIT "
 		+"WHERE CMROID='"+roomID+"' "
 		+"AND CMITNM='"+keyName+"'");
+	}
+	
+	public void DBUpdateRoomItem(String roomID, Item item)
+	{
+		if((roomID==null)||(!item.savable())||(item.amDestroyed())) return;
+		DBDeleteRoomItem(roomID,item);
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Continue updating item "+item.name()+" in room "+roomID);
 		DBCreateThisItem(roomID,item);
@@ -1088,18 +1092,22 @@ public class RoomLoader
 			Log.debugOut("RoomLoader","Done updating item "+item.name()+" in room "+roomID);
 	}
 	
-	public void DBUpdateRoomMOB(String roomID, MOB mob)
+	public void DBDeleteRoomMOB(String roomID, MOB mob)
 	{
-		if((roomID==null)||(!mob.savable())||(mob.amDestroyed())) return;
-		
+		String keyName=""+mob;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done updating mob "+mob.name()+" in room "+roomID);
 		//TODO: Make this WORK! It will NOT delete the old one!
-		String keyName=""+mob;
 		DB.update(
 		"DELETE FROM CMROCH "
 		+"WHERE CMROID='"+roomID+"' "
 		+"AND CMCHNM='"+keyName+"'");
+	}
+	
+	public void DBUpdateRoomMOB(String roomID, MOB mob)
+	{
+		if((roomID==null)||(!mob.savable())||(mob.amDestroyed())) return;
+		DBDeleteRoomMOB(roomID, mob);
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Continue updating mob "+mob.name()+" in room "+roomID);
 		DBCreateThisMOB(roomID,mob);
