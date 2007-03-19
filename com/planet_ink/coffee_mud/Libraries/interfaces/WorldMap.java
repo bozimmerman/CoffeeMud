@@ -9,8 +9,6 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.CoffeeUtensils;
-import com.planet_ink.coffee_mud.Libraries.Sense;
 import com.planet_ink.coffee_mud.Libraries.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -91,6 +89,21 @@ public interface WorldMap extends CMLibrary
     public Room getDefaultStartRoom(MOB mob);
     public Room getDefaultDeathRoom(MOB mob);
     public Room getDefaultBodyRoom(MOB mob);
+    
+    
+    /************************************************************************/
+    /**                          CATALOGS                                   */
+    /************************************************************************/
+    public Vector getCatalogItems();
+    public Vector getCatalogMobs();
+    public Item getCatalogItem(String called);
+    public MOB getCatalogMob(String called);
+    public void delCatalog(Item I);
+    public void delCatalog(MOB M);
+    public void addCatalogUnsafe(Item I);
+    public void addCatalogUnsafe(MOB M);
+    public void addCatalog(Item I);
+    public void addCatalog(MOB M);
     
     /************************************************************************/
     /**							 QUICK-MAPPINGS    							*/

@@ -49,7 +49,36 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Vector space=new Vector();
     public Hashtable globalHandlers=new Hashtable();
     public Vector sortedAreas=null;
+    public Vector icatalog=new Vector();
+    public Vector mcatalog=new Vector();
 
+    protected Environmental getNewGlobal(Vector list, String name)
+    {
+        Environmental O=(Environmental)getGlobal(list,name);
+        if(O!=null) return (Environmental)O.newInstance();
+        return null;
+    }
+    protected Environmental getGlobal(Vector list, String name)
+    {
+        if(list.size()==0) return null;
+        int start=0;
+        int end=list.size()-1;
+        while(start<=end)
+        {
+            int mid=(end+start)/2;
+            int comp=((Environmental)list.elementAt(mid)).Name().compareToIgnoreCase(name);
+            if(comp==0)
+                return (Environmental)list.elementAt(mid);
+            else
+            if(comp>0)
+                end=mid-1;
+            else
+                start=mid+1;
+
+        }
+        return null;
+    }
+    
 	// areas
 	public int numAreas() { return areasList.size(); }
 	public void addArea(Area newOne)
@@ -273,6 +302,46 @@ public class CMMap extends StdLibrary implements WorldMap
         return true;
     }
 
+    public void addCatalogUnsafe(Vector V, Environmental E){
+        /*
+        int start=0;
+        int end=V.size()-1;
+        while(start<=end)
+        {
+            int mid=(end+start)/2;
+            int comp=((Environmental)V.elementAt(mid)).Name().compareToIgnoreCase(name);
+            if(comp==0)
+                return list.elementAt(mid);
+            else
+            if(comp>0)
+                end=mid-1;
+            else
+                start=mid+1;
+
+        }
+        */
+    }
+    
+    public Vector getCatalogItems(){return icatalog;}
+    public Vector getCatalogMobs(){return icatalog;}
+    public Item getCatalogItem(String called){ return (Item)getNewGlobal(icatalog,called);}
+    public MOB getCatalogMob(String called){ return (MOB)getNewGlobal(mcatalog,called);}
+    public void delCatalog(Item I){ icatalog.remove(I);}
+    public void delCatalog(MOB M){ mcatalog.remove(M);}
+    public void addCatalogUnsafe(Item I){addCatalogUnsafe(icatalog,I);}
+    public void addCatalogUnsafe(MOB M){addCatalogUnsafe(icatalog,M);}
+    public void addCatalog(Item I){
+        Environmental E=getGlobal(icatalog,I.Name());
+        if(E!=null) delCatalog((Item)E);
+        addCatalogUnsafe((Item)E);
+    }
+    public void addCatalog(MOB M){
+        Environmental E=getGlobal(icatalog,M.Name());
+        if(E!=null) delCatalog((MOB)E);
+        addCatalogUnsafe((MOB)E);
+    }
+    
+    
 	public String getExtendedRoomID(Room R)
 	{
 		if(R==null) return "";
