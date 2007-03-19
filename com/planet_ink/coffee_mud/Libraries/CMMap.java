@@ -302,7 +302,7 @@ public class CMMap extends StdLibrary implements WorldMap
         return true;
     }
 
-    public void addCatalogUnsafe(Vector V, Environmental E)
+    public void addCatalogReplace(Vector V, Environmental E)
     {
         int start=0;
         int end=V.size()-1;
@@ -330,7 +330,7 @@ public class CMMap extends StdLibrary implements WorldMap
             }
         }
         if(comp==0)
-        	V.insertElementAt(E,mid);
+        	V.setElementAt(E,mid);
         else
         {
             if(mid>=0)
@@ -351,19 +351,18 @@ public class CMMap extends StdLibrary implements WorldMap
     public MOB getCatalogMob(String called){ return (MOB)getNewGlobal(mcatalog,called);}
     public void delCatalog(Item I){ icatalog.remove(I);}
     public void delCatalog(MOB M){ mcatalog.remove(M);}
-    public void addCatalogUnsafe(Item I){addCatalogUnsafe(icatalog,I);}
-    public void addCatalogUnsafe(MOB M){addCatalogUnsafe(icatalog,M);}
+    public void addCatalogReplace(Item I){addCatalogReplace(icatalog,I);}
+    public void addCatalogReplace(MOB M){addCatalogReplace(icatalog,M);}
     public void addCatalog(Item I){
         Environmental E=getGlobal(icatalog,I.Name());
         if(E!=null) delCatalog((Item)E);
-        addCatalogUnsafe((Item)E);
+        addCatalogReplace((Item)E);
     }
     public void addCatalog(MOB M){
         Environmental E=getGlobal(icatalog,M.Name());
         if(E!=null) delCatalog((MOB)E);
-        addCatalogUnsafe((MOB)E);
+        addCatalogReplace((MOB)E);
     }
-    
     
 	public String getExtendedRoomID(Room R)
 	{

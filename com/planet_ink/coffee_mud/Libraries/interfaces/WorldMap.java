@@ -100,8 +100,8 @@ public interface WorldMap extends CMLibrary
     public MOB getCatalogMob(String called);
     public void delCatalog(Item I);
     public void delCatalog(MOB M);
-    public void addCatalogUnsafe(Item I);
-    public void addCatalogUnsafe(MOB M);
+    public void addCatalogReplace(Item I);
+    public void addCatalogReplace(MOB M);
     public void addCatalog(Item I);
     public void addCatalog(MOB M);
     
