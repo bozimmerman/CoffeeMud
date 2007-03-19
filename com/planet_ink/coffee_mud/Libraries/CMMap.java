@@ -302,24 +302,47 @@ public class CMMap extends StdLibrary implements WorldMap
         return true;
     }
 
-    public void addCatalogUnsafe(Vector V, Environmental E){
-        /*
+    public void addCatalogUnsafe(Vector V, Environmental E)
+    {
         int start=0;
         int end=V.size()-1;
+        String name=E.Name();
+        int lastStart=0;
+        int lastEnd=V.size()-1;
+        int comp=-1;
+        int mid=-1;
         while(start<=end)
         {
-            int mid=(end+start)/2;
-            int comp=((Environmental)V.elementAt(mid)).Name().compareToIgnoreCase(name);
+            mid=(end+start)/2;
+            comp=((Environmental)V.elementAt(mid)).Name().compareToIgnoreCase(name);
             if(comp==0)
-                return list.elementAt(mid);
+            	break;
             else
             if(comp>0)
+            {
+            	lastEnd=end;
                 end=mid-1;
+            }
             else
+            {
+            	lastStart=start;
                 start=mid+1;
-
+            }
         }
-        */
+        if(comp==0)
+        	V.insertElementAt(E,mid);
+        else
+        {
+            if(mid>=0)
+                for(comp=lastStart;comp<=lastEnd;comp++)
+                    if(((Environmental)V.elementAt(comp)).Name().compareToIgnoreCase(name)>0)
+                    {
+                        V.insertElementAt(E,comp);
+                        return;
+                    }
+        	V.addElement(E);
+        }
+        
     }
     
     public Vector getCatalogItems(){return icatalog;}
