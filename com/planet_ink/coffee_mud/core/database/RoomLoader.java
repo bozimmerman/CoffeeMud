@@ -728,8 +728,9 @@ public class RoomLoader
 		&&(thisItem.riding().savable()))
 		{
 			Room room=CMLib.map().roomLocation(thisItem);
-			if((room!=null)
-			&&(room.isHere(thisItem.riding())))
+			if(((room!=null)&&(room.isHere(thisItem.riding())))
+			||(CMLib.map().getCatalogItem(thisItem.riding().Name())==thisItem.riding())
+			||(CMLib.map().getCatalogMob(thisItem.riding().Name())==thisItem.riding()))
 				container=thisItem.riding();
 		}
 		DB.update(
@@ -1068,21 +1069,42 @@ public class RoomLoader
 			Log.debugOut("RoomLoader","Done updating area "+A.name());
 	}
 
-	public void DBUpdateRoomMOB(String keyName, Room room, MOB mob)
+	public void DBUpdateRoomItem(String roomID, Item item)
 	{
-		if((room==null)||(!room.savable())||(room.amDestroyed())) return;
+		if((roomID==null)||(!item.savable())||(item.amDestroyed())) return;
+		
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Done updating item "+item.name()+" in room "+roomID);
+		//TODO: Make this WORK! It will NOT delete the old one!
+		String keyName=""+item;
+		DB.update(
+		"DELETE FROM CMROIT "
+		+"WHERE CMROID='"+roomID+"' "
+		+"AND CMITNM='"+keyName+"'");
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Continue updating item "+item.name()+" in room "+roomID);
+		DBCreateThisItem(roomID,item);
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Done updating item "+item.name()+" in room "+roomID);
+	}
+	
+	public void DBUpdateRoomMOB(String roomID, MOB mob)
+	{
+		if((roomID==null)||(!mob.savable())||(mob.amDestroyed())) return;
 		
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
-			Log.debugOut("RoomLoader","Done updating mob "+mob.name()+" in room "+room.roomID());
+			Log.debugOut("RoomLoader","Done updating mob "+mob.name()+" in room "+roomID);
+		//TODO: Make this WORK! It will NOT delete the old one!
+		String keyName=""+mob;
 		DB.update(
 		"DELETE FROM CMROCH "
-		+"WHERE CMROID='"+room.roomID()+"' "
+		+"WHERE CMROID='"+roomID+"' "
 		+"AND CMCHNM='"+keyName+"'");
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
-			Log.debugOut("RoomLoader","Continue updating mob "+mob.name()+" in room "+room.roomID());
-		DBCreateThisMOB(room.roomID(),mob);
+			Log.debugOut("RoomLoader","Continue updating mob "+mob.name()+" in room "+roomID);
+		DBCreateThisMOB(roomID,mob);
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
-			Log.debugOut("RoomLoader","Done updating mob "+mob.name()+" in room "+room.roomID());
+			Log.debugOut("RoomLoader","Done updating mob "+mob.name()+" in room "+roomID);
 	}
 
 	public void DBDelete(Area A)
