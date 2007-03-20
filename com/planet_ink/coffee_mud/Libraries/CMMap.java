@@ -350,8 +350,8 @@ public class CMMap extends StdLibrary implements WorldMap
     
     public Vector getCatalogItems(){return icatalog;}
     public Vector getCatalogMobs(){return icatalog;}
-    public Item getCatalogItem(String called){ return (Item)getNewGlobal(icatalog,called);}
-    public MOB getCatalogMob(String called){ return (MOB)getNewGlobal(mcatalog,called);}
+    public Item getCatalogItem(String called){ return (Item)getGlobal(icatalog,called);}
+    public MOB getCatalogMob(String called){ return (MOB)getGlobal(mcatalog,called);}
     public void delCatalog(Item I){ icatalog.remove(I);}
     public void delCatalog(MOB M){ mcatalog.remove(M);}
     public void addCatalogReplace(Item I){addCatalogReplace(icatalog,I);}

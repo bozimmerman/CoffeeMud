@@ -49,7 +49,7 @@ public class CMSecurity
 	// IMPORTPLAYERS, EXPORT, EXPORTPLAYERS, EXPORTFILE, RESTRING, PURGE, TASKS
 	// ORDER (includes TAKE, GIVE, DRESS, mob passivity, all follow)
 	// I3, ABOVELAW (also law books), WIZINV (includes see WIZINV), CMDABILITIES
-	// CMDMOBS (also prevents walkaways), KILLASSIST, ALLSKILLS, GMODIFY
+	// CMDMOBS (also prevents walkaways), KILLASSIST, ALLSKILLS, GMODIFY, CATALOG
 	// SUPERSKILL (never fails skills), IMMORT (never dies), MXPTAGS, IDLEOK
 	// JOURNALS, PKILL, SESSIONS, TRAILTO, CMDFACTIONS, COMPONENTS, EXPERTISES, TITLES
     // FS:relative path from /coffeemud/ -- read/write access to regular file sys
