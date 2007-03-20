@@ -1634,6 +1634,23 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				setGenPropertiesStr(E,V);
 			if(fromTop)
 				setOrdPropertiesStr(E,V);
+			if((CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+			&&(E.isGeneric()))
+			{
+				Environmental cataE=null;
+				if(E instanceof MOB)
+					cataE=CMLib.map().getCatalogMob(E.Name());
+				else
+				if(E instanceof Item)
+					cataE=CMLib.map().getCatalogItem(E.Name());
+				if((cataE!=null)
+				&&(cataE!=E)
+				&&(!CMath.bset(cataE.baseEnvStats().disposition(),EnvStats.IS_CATALOGED)))
+				{
+					setPropertiesStr(E,E.text(),fromTop);
+					E.baseEnvStats().setDisposition(cataE.baseEnvStats().disposition()|EnvStats.IS_CATALOGED);
+				}
+			}
 			recoverEnvironmental(E);
 		}
 	}
