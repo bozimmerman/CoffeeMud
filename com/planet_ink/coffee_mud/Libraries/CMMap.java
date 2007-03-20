@@ -52,15 +52,9 @@ public class CMMap extends StdLibrary implements WorldMap
     public DVector icatalog=new DVector(2);
     public DVector mcatalog=new DVector(2);
 
-    protected Environmental getNewGlobal(Vector list, String name)
+    protected int getGlobalIndex(Vector list, String name)
     {
-        Environmental O=(Environmental)getGlobal(list,name);
-        if(O!=null) return (Environmental)O.newInstance();
-        return null;
-    }
-    protected Environmental getGlobal(Vector list, String name)
-    {
-        if(list.size()==0) return null;
+        if(list.size()==0) return -1;
         int start=0;
         int end=list.size()-1;
         while(start<=end)
@@ -68,7 +62,7 @@ public class CMMap extends StdLibrary implements WorldMap
             int mid=(end+start)/2;
             int comp=((Environmental)list.elementAt(mid)).Name().compareToIgnoreCase(name);
             if(comp==0)
-                return (Environmental)list.elementAt(mid);
+                return mid;
             else
             if(comp>0)
                 end=mid-1;
@@ -76,7 +70,7 @@ public class CMMap extends StdLibrary implements WorldMap
                 start=mid+1;
 
         }
-        return null;
+        return -1;
     }
     
 	// areas
@@ -350,19 +344,39 @@ public class CMMap extends StdLibrary implements WorldMap
     
     public DVector getCatalogItems(){return icatalog;}
     public DVector getCatalogMobs(){return icatalog;}
-    public Item getCatalogItem(String called){ return (Item)getGlobal(icatalog.getDimensionVector(1),called);}
-    public MOB getCatalogMob(String called){ return (MOB)getGlobal(mcatalog.getDimensionVector(1),called);}
+    
+    public boolean isCatalogObj(Environmental E){
+    	if(E instanceof MOB) return mcatalog.contains(E);
+    	if(E instanceof Item) return icatalog.contains(E);
+    	return false;
+    }
+    public boolean isCatalogObj(String name)
+    {
+    	int index=getCatalogMobIndex(name);
+    	if(index<0) index=getCatalogItemIndex(name);
+    	return index>=0;
+    }
+    public int getCatalogItemIndex(String called){ return getGlobalIndex(icatalog.getDimensionVector(1),called);}
+    public int getCatalogMobIndex(String called){ return getGlobalIndex(mcatalog.getDimensionVector(1),called);}
+    public Item getCatalogItem(int index){ try{return (Item)icatalog.elementAt(index,1);}catch(Exception e){return null;}}
+    public MOB getCatalogMob(int index){ try{return (MOB)mcatalog.elementAt(index,1);}catch(Exception e){return null;}}
+    public int[] getCatalogItemUsage(int index){ try{return (int[])icatalog.elementAt(index,1);}catch(Exception e){return null;}}
+    public int[] getCatalogMobUsage(int index){ try{return (int[])mcatalog.elementAt(index,1);}catch(Exception e){return null;}}
     public void delCatalog(Item I){ icatalog.removeElement(I);}
     public void delCatalog(MOB M){ mcatalog.removeElement(M);}
     public void addCatalogReplace(Item I){addCatalogReplace(icatalog,I);}
     public void addCatalogReplace(MOB M){addCatalogReplace(icatalog,M);}
     public void addCatalog(Item I){
-        Environmental E=getGlobal(icatalog.getDimensionVector(1),I.Name());
+    	int oldIndex=getCatalogItemIndex(I.Name());
+    	Environmental E=null;
+    	if(oldIndex>=0) E=getCatalogItem(oldIndex);
         if(E!=null) delCatalog((Item)E);
         addCatalogReplace((Item)E);
     }
     public void addCatalog(MOB M){
-        Environmental E=getGlobal(icatalog.getDimensionVector(1),M.Name());
+    	int oldIndex=getCatalogMobIndex(M.Name());
+    	Environmental E=null;
+    	if(oldIndex>=0) E=getCatalogMob(oldIndex);
         if(E!=null) delCatalog((MOB)E);
         addCatalogReplace((MOB)E);
     }

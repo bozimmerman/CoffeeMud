@@ -1095,6 +1095,12 @@ public class StdItem implements Item
 	public void destroy()
 	{
 		myContainer=null;
+    	if((baseEnvStats()!=null)
+    	&&(CMath.bset(baseEnvStats().disposition(),EnvStats.IS_CATALOGED)))
+    	{
+    		int index=CMLib.map().getCatalogItemIndex(Name());
+    		if(index>=0) CMLib.map().getCatalogItemUsage(index)[0]--;
+    	}
 		for(int a=numEffects()-1;a>=0;a--)
 		{
 			Ability aff=fetchEffect(a);

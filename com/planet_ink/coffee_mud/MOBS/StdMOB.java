@@ -601,6 +601,12 @@ public class StdMOB implements MOB
 
 	public void destroy()
 	{
+    	if((baseEnvStats()!=null)
+    	&&(CMath.bset(baseEnvStats().disposition(),EnvStats.IS_CATALOGED)))
+    	{
+    		int index=CMLib.map().getCatalogMobIndex(Name());
+    		if(index>=0) CMLib.map().getCatalogMobUsage(index)[0]--;
+    	}
         if((CMSecurity.isDebugging("MISSINGKIDS"))&&(fetchEffect("Age")!=null)&&CMath.isInteger(fetchEffect("Age").text())&&(CMath.s_long(fetchEffect("Age").text())>Short.MAX_VALUE))
             Log.debugOut("MISSKIDS",new Exception(Name()+" went missing form "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(this))));
         if(soulMate()!=null) dispossess(false);

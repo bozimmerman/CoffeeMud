@@ -731,8 +731,7 @@ public class RoomLoader
 		{
 			Room room=CMLib.map().roomLocation(thisItem);
 			if(((room!=null)&&(room.isHere(thisItem.riding())))
-			||(CMLib.map().getCatalogItem(thisItem.riding().Name())==thisItem.riding())
-			||(CMLib.map().getCatalogMob(thisItem.riding().Name())==thisItem.riding()))
+			||(CMLib.map().isCatalogObj(thisItem.riding())))
 				container=thisItem.riding();
 		}
 		String itemID=""+thisItem;

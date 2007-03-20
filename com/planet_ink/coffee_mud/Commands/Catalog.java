@@ -37,23 +37,23 @@ public class Catalog extends StdCommand
 	private String[] access={"CATALOG"};
 	public String[] getAccessWords(){return access;}
 	
-	public Environmental findCatalog(int whatKind, String ID, boolean exactOnly)
+	public int[] findCatalogIndex(int whatKind, String ID, boolean exactOnly)
 	{
-		Environmental E=null;
-		if((E==null)&&((whatKind==0)||(whatKind==1)))
-			E=CMLib.map().getCatalogMob(ID);
-		if((E==null)&&((whatKind==0)||(whatKind==2)))
-			E=CMLib.map().getCatalogItem(ID);
-		if(exactOnly) return E;
-		if((E==null)&&((whatKind==0)||(whatKind==1)))
+		int[] data=new int[]{-1,-1};
+		if((data[0]<0)&&((whatKind==0)||(whatKind==1)))
+		{ data[0]=CMLib.map().getCatalogMobIndex(ID); if(data[0]>=0) data[1]=1;}
+		if((data[0]<0)&&((whatKind==0)||(whatKind==2)))
+		{ data[0]=CMLib.map().getCatalogItemIndex(ID); if(data[0]>=0) data[1]=2;}
+		if(exactOnly) return data;
+		if((data[0]<0)&&((whatKind==0)||(whatKind==1)))
 			for(int x=0;x<CMLib.map().getCatalogMobs().size();x++)
 				if(CMLib.english().containsString(((MOB)CMLib.map().getCatalogMobs().elementAt(x,1)).Name(), ID))
-				{	E=(MOB)CMLib.map().getCatalogMobs().elementAt(x,1); break;}
-		if((E==null)&&((whatKind==0)||(whatKind==2)))
+				{	data[0]=x; data[1]=1; break;}
+		if((data[0]<0)&&((whatKind==0)||(whatKind==2)))
 			for(int x=0;x<CMLib.map().getCatalogItems().size();x++)
 				if(CMLib.english().containsString(((Item)CMLib.map().getCatalogItems().elementAt(x,1)).Name(), ID))
-				{	E=(Item)CMLib.map().getCatalogItems().elementAt(x,1); break;}
-		return E;
+				{	data[0]=x; data[1]=2; break;}
+		return data;
 	}
 	
 	public boolean execute(MOB mob, Vector commands)
@@ -84,31 +84,25 @@ public class Catalog extends StdCommand
 				if((commands.size()>0)&&("ITEMS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
 				{ commands.removeElementAt(0); whatKind=2;}
 				String ID=CMParms.combine(commands,1);
-				Environmental E=findCatalog(whatKind,ID,false);
-				if(E==null)
+				int[] foundData=findCatalogIndex(whatKind,ID,false);
+				if(foundData[0]<0)
 				{
 					mob.tell("'"+ID+"' not found in catalog! Try LIST CATALOG");
 					return false;
 				}
-				for(int x=0;x<CMLib.map().getCatalogMobs().size();x++)
-					if(((MOB)CMLib.map().getCatalogMobs().elementAt(x,1)==E)
-					&&(((int[])CMLib.map().getCatalogMobs().elementAt(x,2))[0]>0))
-					{	
-						mob.tell("Catalog MOB '"+((MOB)E).Name()+" is currently listed as being in use '"+((int[])CMLib.map().getCatalogMobs().elementAt(x,2))[0]+" times.  Please remove these instances first.");
-						return false;
-					}
-				for(int x=0;x<CMLib.map().getCatalogItems().size();x++)
-					if(((Item)CMLib.map().getCatalogItems().elementAt(x,1)==E)
-					&&(((int[])CMLib.map().getCatalogItems().elementAt(x,2))[0]>0))
-					{	
-						mob.tell("Catalog Item '"+((Item)E).Name()+" is currently listed as being in use '"+((int[])CMLib.map().getCatalogItems().elementAt(x,2))[0]+" times.  Please remove these instances first.");
-						return false;
-					}
-				
+				Environmental E=(foundData[1]==1)?
+								(Environmental)CMLib.map().getCatalogMob(foundData[0]):
+								(Environmental)CMLib.map().getCatalogItem(foundData[0]);
+				int[] usage=(foundData[1]==1)?
+							CMLib.map().getCatalogMobUsage(foundData[0]):
+							CMLib.map().getCatalogItemUsage(foundData[0]);
 				if(E instanceof MOB)
 				{
+					String prefix="";
+					if(usage[0]>0)
+						prefix="Catalog MOB '"+((MOB)E).Name()+" is currently listed as being in use '"+usage[0]+" times.  ";
 					if((mob.session()!=null)
-					&&(mob.session().confirm("This will permanently delete mob '"+((MOB)E).Name()+"' from the catalog.  Are you sure (y/N)?","N")))
+					&&(mob.session().confirm(prefix+"This will permanently delete mob '"+((MOB)E).Name()+"' from the catalog.  Are you sure (y/N)?","N")))
 					{
 						CMLib.map().delCatalog((MOB)E);
 						CMLib.database().DBDeleteMOB("CATALOG_MOBS",(MOB)E);
@@ -118,8 +112,11 @@ public class Catalog extends StdCommand
 				else
 				if(E instanceof Item)
 				{
+					String prefix="";
+					if(usage[0]>0)
+						prefix="Catalog Item '"+((Item)E).Name()+" is currently listed as being in use '"+usage[0]+" times.  ";
 					if((mob.session()!=null)
-					&&(mob.session().confirm("This will permanently delete item '"+((Item)E).Name()+"' from the catalog.  Are you sure (y/N)?","N")))
+					&&(mob.session().confirm(prefix+"This will permanently delete item '"+((Item)E).Name()+"' from the catalog.  Are you sure (y/N)?","N")))
 					{
 						CMLib.map().delCatalog((Item)E);
 						CMLib.database().DBDeleteItem("CATALOG_ITEMS",(Item)E);
