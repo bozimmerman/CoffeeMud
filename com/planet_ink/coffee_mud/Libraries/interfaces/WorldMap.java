@@ -94,8 +94,8 @@ public interface WorldMap extends CMLibrary
     /************************************************************************/
     /**                          CATALOGS                                   */
     /************************************************************************/
-    public Vector getCatalogItems();
-    public Vector getCatalogMobs();
+    public DVector getCatalogItems();
+    public DVector getCatalogMobs();
     public Item getCatalogItem(String called);
     public MOB getCatalogMob(String called);
     public void delCatalog(Item I);

@@ -49,8 +49,8 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Vector space=new Vector();
     public Hashtable globalHandlers=new Hashtable();
     public Vector sortedAreas=null;
-    public Vector icatalog=new Vector();
-    public Vector mcatalog=new Vector();
+    public DVector icatalog=new DVector(2);
+    public DVector mcatalog=new DVector(2);
 
     protected Environmental getNewGlobal(Vector list, String name)
     {
@@ -302,19 +302,19 @@ public class CMMap extends StdLibrary implements WorldMap
         return true;
     }
 
-    public void addCatalogReplace(Vector V, Environmental E)
+    public void addCatalogReplace(DVector DV, Environmental E)
     {
         int start=0;
-        int end=V.size()-1;
+        int end=DV.size()-1;
         String name=E.Name();
         int lastStart=0;
-        int lastEnd=V.size()-1;
+        int lastEnd=DV.size()-1;
         int comp=-1;
         int mid=-1;
         while(start<=end)
         {
             mid=(end+start)/2;
-            comp=((Environmental)V.elementAt(mid)).Name().compareToIgnoreCase(name);
+            comp=((Environmental)DV.elementAt(mid,1)).Name().compareToIgnoreCase(name);
             if(comp==0)
             	break;
             else
@@ -331,38 +331,38 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         if(comp==0)
         {
-        	((Environmental)V.elementAt(mid)).destroy();
-        	V.setElementAt(E,mid);
+        	((Environmental)DV.elementAt(mid,1)).destroy();
+        	DV.setElementAt(mid,1,E);
         }
         else
         {
             if(mid>=0)
                 for(comp=lastStart;comp<=lastEnd;comp++)
-                    if(((Environmental)V.elementAt(comp)).Name().compareToIgnoreCase(name)>0)
+                    if(((Environmental)DV.elementAt(comp,1)).Name().compareToIgnoreCase(name)>0)
                     {
-                        V.insertElementAt(E,comp);
+                        DV.insertElementAt(comp,E,new int[]{0});
                         return;
                     }
-        	V.addElement(E);
+        	DV.addElement(E,new int[]{0});
         }
         
     }
     
-    public Vector getCatalogItems(){return icatalog;}
-    public Vector getCatalogMobs(){return icatalog;}
-    public Item getCatalogItem(String called){ return (Item)getGlobal(icatalog,called);}
-    public MOB getCatalogMob(String called){ return (MOB)getGlobal(mcatalog,called);}
-    public void delCatalog(Item I){ icatalog.remove(I);}
-    public void delCatalog(MOB M){ mcatalog.remove(M);}
+    public DVector getCatalogItems(){return icatalog;}
+    public DVector getCatalogMobs(){return icatalog;}
+    public Item getCatalogItem(String called){ return (Item)getGlobal(icatalog.getDimensionVector(1),called);}
+    public MOB getCatalogMob(String called){ return (MOB)getGlobal(mcatalog.getDimensionVector(1),called);}
+    public void delCatalog(Item I){ icatalog.removeElement(I);}
+    public void delCatalog(MOB M){ mcatalog.removeElement(M);}
     public void addCatalogReplace(Item I){addCatalogReplace(icatalog,I);}
     public void addCatalogReplace(MOB M){addCatalogReplace(icatalog,M);}
     public void addCatalog(Item I){
-        Environmental E=getGlobal(icatalog,I.Name());
+        Environmental E=getGlobal(icatalog.getDimensionVector(1),I.Name());
         if(E!=null) delCatalog((Item)E);
         addCatalogReplace((Item)E);
     }
     public void addCatalog(MOB M){
-        Environmental E=getGlobal(icatalog,M.Name());
+        Environmental E=getGlobal(icatalog.getDimensionVector(1),M.Name());
         if(E!=null) delCatalog((MOB)E);
         addCatalogReplace((MOB)E);
     }
@@ -894,8 +894,8 @@ public class CMMap extends StdLibrary implements WorldMap
 		bodyRooms=new Hashtable();
 		startRooms=new Hashtable();
 		deathRooms=new Hashtable();
-		icatalog=new Vector();
-		mcatalog=new Vector();
+		icatalog=new DVector(2);
+		mcatalog=new DVector(2);
         globalHandlers.clear();
 	}
 
