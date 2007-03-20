@@ -35,6 +35,14 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
+/**
+ * @author Owner
+ *
+ */
+/**
+ * @author Owner
+ *
+ */
 public interface Item extends Environmental, Rider
 {
     /** a constant used in the Locale item search classes to filter on only items being worn */
@@ -358,7 +366,7 @@ public interface Item extends Environmental, Rider
      */
     public Environmental owner();
     /**
-     * Sets te Room or MOB representing where this item is located.  Containers are handled
+     * Sets the Room or MOB representing where this item is located.  Containers are handled
      * by another pointer, container(), so those two methods be used together to determine
      * where a given item is.  This method is called by the addInventory method on mobs
      * and the addItem interface on Rooms.  Alone, this method is insufficient to properly
@@ -368,6 +376,26 @@ public interface Item extends Environmental, Rider
      * @param E the mob or room where the item is located
      */
     public void setOwner(Environmental E);
+    
+	/**
+	 * Sets the internal database id for mapping back to tables.
+	 * Used principally by code that needs to do an UPDATE on a 
+	 * particular mob, so it can be traced back to its row in 
+	 * the appropriate table.
+	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#databaseID()
+	 * @param id the database id
+	 */
+	public void setDatabaseID(String id);
+	
+	/**
+	 * Gets the internal database id for mapping back to tables.
+	 * Used principally by code that needs to do an UPDATE on a 
+	 * particular mob, so it can be traced back to its row in 
+	 * the appropriate table.
+	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#setDatabaseID(String)
+	 * @return the database id
+	 */
+	public String databaseID();
     
 	/** worn code constant, representing  being unworn altogether */
 	public static final long IN_INVENTORY=0;

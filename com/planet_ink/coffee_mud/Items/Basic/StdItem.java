@@ -52,6 +52,7 @@ public class StdItem implements Item
 	protected Environmental owner=null;
 	protected long dispossessionTime=0;
 	protected long tickStatus=Tickable.STATUS_NOT;
+	protected String databaseID="";
 
 	protected Vector affects=null;
 	protected Vector behaviors=null;
@@ -206,6 +207,10 @@ public class StdItem implements Item
 	{
 		return dispossessionTime;
 	}
+	public void setDatabaseID(String id){databaseID=id;}
+	
+	public String databaseID(){return databaseID;}
+	
 	public void setExpirationDate(long time)
 	{
 		dispossessionTime=time;

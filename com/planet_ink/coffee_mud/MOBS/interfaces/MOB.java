@@ -35,80 +35,8 @@ import java.util.Vector;
  * A MOB is a creature in the system, from a user
  * down to a goblin
  */
-public interface MOB
-	extends Environmental, Rider
+public interface MOB extends Environmental, Rider
 {
-	public static final int ATT_AUTOGOLD=1;
-	public static final int ATT_AUTOLOOT=2;
-	public static final int ATT_AUTOEXITS=4;
-	public static final int ATT_AUTOASSIST=8;
-	public static final int ATT_ANSI=16;
-	public static final int ATT_SYSOPMSGS=32;
-	public static final int ATT_AUTOMELEE=64;
-	public static final int ATT_PLAYERKILL=128;
-	public static final int ATT_BRIEF=256;
-	public static final int ATT_NOFOLLOW=512;
-	public static final int ATT_AUTOWEATHER=1024;
-	public static final int ATT_AUTODRAW=2048;
-	public static final int ATT_AUTOGUARD=4096;
-	public static final int ATT_SOUND=8192;
-	public static final int ATT_AUTOIMPROVE=16384;
-	public static final int ATT_NOTEACH=32768;
-	public static final int ATT_AUTONOTIFY=65536;
-	public static final int ATT_AUTOFORWARD=131072;
-	public static final int ATT_DAILYMESSAGE=262144;
-	public static final int ATT_QUIET=524288;
-    public static final int ATT_MXP=1048576;
-    public static final int ATT_COMPRESS=2097152;
-	// maybe 10 more?
-
-	public static final long SHEATH_TIME=3*Tickable.TIME_TICK;
-
-	public static final boolean[] AUTOREV={false,
-										   false,
-										   false,
-										   true,
-										   false,
-										   false,
-										   true,
-										   false,
-										   false,
-										   false,
-										   false,
-										   false,
-										   false,
-										   false,
-										   false,
-										   false,
-										   false,
-										   true,
-										   true,
-										   false,
-                                           false,
-										   false};
-	public static final String[] AUTODESC={"AUTOGOLD",
-										   "AUTOLOOT",
-										   "AUTOEXITS",
-										   "AUTOASSIST",
-										   "ANSI COLOR",
-										   "SYSMSGS",
-										   "AUTOMELEE",
-										   "PLAYERKILL",
-										   "BRIEF",
-										   "NOFOLLOW",
-										   "AUTOWEATHER",
-										   "AUTODRAW",
-										   "AUTOGUARD",
-										   "SOUNDS",
-										   "AUTOIMPROVEMENT",
-										   "NOTEACH",
-										   "AUTONOTIFY",
-										   "AUTOFORWARD",
-										   "MOTD",
-										   "QUIET",
-										   "MXP",
-                                           "COMPRESSED"};
-
 	public int getBitmap();
 	public void setBitmap(int bitmap);
 	public String titledName();
@@ -150,6 +78,9 @@ public interface MOB
 	public int adjustedArmor();
 	public int adjustedDamage(Weapon weapon, MOB target);
 	public long peaceTime();
+	
+	public void setDatabaseID(String id);
+	public String databaseID();
 
 	/** Primary mob communication */
 	public void tell(MOB source, Environmental target, Environmental tool, String msg);
@@ -298,4 +229,76 @@ public interface MOB
     public String getFactionListing();
     public void removeFaction(String which);
     public void copyFactions(MOB source);
+    
+	public static final int ATT_AUTOGOLD=1;
+	public static final int ATT_AUTOLOOT=2;
+	public static final int ATT_AUTOEXITS=4;
+	public static final int ATT_AUTOASSIST=8;
+	public static final int ATT_ANSI=16;
+	public static final int ATT_SYSOPMSGS=32;
+	public static final int ATT_AUTOMELEE=64;
+	public static final int ATT_PLAYERKILL=128;
+	public static final int ATT_BRIEF=256;
+	public static final int ATT_NOFOLLOW=512;
+	public static final int ATT_AUTOWEATHER=1024;
+	public static final int ATT_AUTODRAW=2048;
+	public static final int ATT_AUTOGUARD=4096;
+	public static final int ATT_SOUND=8192;
+	public static final int ATT_AUTOIMPROVE=16384;
+	public static final int ATT_NOTEACH=32768;
+	public static final int ATT_AUTONOTIFY=65536;
+	public static final int ATT_AUTOFORWARD=131072;
+	public static final int ATT_DAILYMESSAGE=262144;
+	public static final int ATT_QUIET=524288;
+    public static final int ATT_MXP=1048576;
+    public static final int ATT_COMPRESS=2097152;
+	// maybe 10 more?
+
+	public static final long SHEATH_TIME=3*Tickable.TIME_TICK;
+
+	public static final boolean[] AUTOREV={false,
+										   false,
+										   false,
+										   true,
+										   false,
+										   false,
+										   true,
+										   false,
+										   false,
+										   false,
+										   false,
+										   false,
+										   false,
+										   false,
+										   false,
+										   false,
+										   false,
+										   true,
+										   true,
+										   false,
+                                           false,
+										   false};
+	public static final String[] AUTODESC={"AUTOGOLD",
+										   "AUTOLOOT",
+										   "AUTOEXITS",
+										   "AUTOASSIST",
+										   "ANSI COLOR",
+										   "SYSMSGS",
+										   "AUTOMELEE",
+										   "PLAYERKILL",
+										   "BRIEF",
+										   "NOFOLLOW",
+										   "AUTOWEATHER",
+										   "AUTODRAW",
+										   "AUTOGUARD",
+										   "SOUNDS",
+										   "AUTOIMPROVEMENT",
+										   "NOTEACH",
+										   "AUTONOTIFY",
+										   "AUTOFORWARD",
+										   "MOTD",
+										   "QUIET",
+										   "MXP",
+                                           "COMPRESSED"};
+
 }

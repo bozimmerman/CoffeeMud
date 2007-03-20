@@ -83,6 +83,7 @@ public class StdMOB implements MOB
 	protected long AgeHours=0;
 	protected int Money=0;
 	protected int attributesBitmap=MOB.ATT_NOTEACH;
+	protected String databaseID="";
 
     protected int tickCounter=0;
     private long expirationDate=0;
@@ -214,6 +215,9 @@ public class StdMOB implements MOB
 
 	public long peaceTime(){return peaceTime;}
 
+	public void setDatabaseID(String id){databaseID=id;}
+	public String databaseID(){return databaseID;}
+	
 	public String Name()
 	{
 		return Username;

@@ -563,6 +563,7 @@ public class RoomLoader
 					Log.errOut("Room","Couldn't find item '"+itemID+"'");
 				else
 				{
+					newItem.setDatabaseID(itemID);
 					itemNums.put(itemNum,newItem);
 					String loc=DBConnections.getResQuietly(R,"CMITLO");
 					if(loc.length()>0)
@@ -630,6 +631,7 @@ public class RoomLoader
 					Log.errOut("Room","Couldn't find MOB '"+MOBID+"'");
 				else
 				{
+					newMOB.setDatabaseID(NUMID);
 					itemNums.put(NUMID,newMOB);
                     if(thisRoom!=null)
                     {
@@ -733,6 +735,8 @@ public class RoomLoader
 			||(CMLib.map().getCatalogMob(thisItem.riding().Name())==thisItem.riding()))
 				container=thisItem.riding();
 		}
+		String itemID=""+thisItem;
+		thisItem.setDatabaseID(itemID);
 		DB.update(
 		"INSERT INTO CMROIT ("
 		+"CMROID, "
@@ -747,7 +751,7 @@ public class RoomLoader
 		+"CMHEIT"
 		+") values ("
 		+"'"+roomID+"',"
-		+"'"+thisItem+"',"
+		+"'"+itemID+"',"
 		+"'"+thisItem.ID()+"',"
 		+"'"+((container!=null)?(""+container):"")+"',"
 		+"'"+thisItem.text()+" ',"
@@ -878,6 +882,7 @@ public class RoomLoader
 		else
 			ride="";
 		String mobID=""+thisMOB;
+		thisMOB.setDatabaseID(mobID);
 		
 		DB.update(
 		"INSERT INTO CMROCH ("
@@ -1071,8 +1076,8 @@ public class RoomLoader
 
 	public void DBDeleteRoomItem(String roomID, Item item)
 	{
-		//TODO: Make this WORK! It will NOT delete the old one!
-		String keyName=""+item;
+		String keyName=item.databaseID();
+		if(keyName.length()==0) keyName=""+item;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done updating item "+item.name()+" in room "+roomID);
 		DB.update(
@@ -1094,10 +1099,10 @@ public class RoomLoader
 	
 	public void DBDeleteRoomMOB(String roomID, MOB mob)
 	{
-		String keyName=""+mob;
+		String keyName=mob.databaseID();
+		if(keyName.length()==0) keyName=""+mob;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done updating mob "+mob.name()+" in room "+roomID);
-		//TODO: Make this WORK! It will NOT delete the old one!
 		DB.update(
 		"DELETE FROM CMROCH "
 		+"WHERE CMROID='"+roomID+"' "
