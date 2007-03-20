@@ -1098,6 +1098,7 @@ public class StdItem implements Item
     	if((baseEnvStats()!=null)
     	&&(CMath.bset(baseEnvStats().disposition(),EnvStats.IS_CATALOGED)))
     	{
+    		baseEnvStats().setDisposition(baseEnvStats().disposition()-EnvStats.IS_CATALOGED);
     		int index=CMLib.map().getCatalogItemIndex(Name());
     		if(index>=0) CMLib.map().getCatalogItemUsage(index)[0]--;
     	}

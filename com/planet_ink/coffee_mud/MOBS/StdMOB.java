@@ -604,6 +604,7 @@ public class StdMOB implements MOB
     	if((baseEnvStats()!=null)
     	&&(CMath.bset(baseEnvStats().disposition(),EnvStats.IS_CATALOGED)))
     	{
+    		baseEnvStats().setDisposition(baseEnvStats().disposition()-EnvStats.IS_CATALOGED);
     		int index=CMLib.map().getCatalogMobIndex(Name());
     		if(index>=0) CMLib.map().getCatalogMobUsage(index)[0]--;
     	}
