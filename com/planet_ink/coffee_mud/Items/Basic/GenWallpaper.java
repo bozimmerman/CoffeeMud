@@ -40,7 +40,7 @@ public class GenWallpaper implements Item
 	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	protected boolean destroyed=false;
 	protected Environmental owner=null;
-	protected String databaseID="";
+	//protected String databaseID="";
 
     public GenWallpaper()
     {
@@ -55,8 +55,8 @@ public class GenWallpaper implements Item
 	public void setImage(String newImage){}
     public void initializeClass(){}
 	
-	public void setDatabaseID(String id){databaseID=id;}
-	public String databaseID(){return databaseID;}
+	public void setDatabaseID(String id){}//databaseID=id;}
+	public String databaseID(){return "";}//databaseID;}
 
 	public String Name(){ return name;}
 	public String name()
