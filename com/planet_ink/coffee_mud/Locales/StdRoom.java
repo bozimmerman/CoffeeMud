@@ -823,8 +823,8 @@ public class StdRoom implements Room
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		getArea().affectEnvStats(affected,affectableStats);
-		if(envStats().sensesMask()>0)
-			affectableStats.setSensesMask(affectableStats.sensesMask()|envStats().sensesMask());
+		//if(envStats().sensesMask()>0)
+		//	affectableStats.setSensesMask(affectableStats.sensesMask()|envStats().sensesMask());
 		int disposition=envStats().disposition()
 			&((Integer.MAX_VALUE-(EnvStats.IS_DARK|EnvStats.IS_LIGHTSOURCE|EnvStats.IS_SLEEPING|EnvStats.IS_HIDDEN)));
 		if(disposition>0)

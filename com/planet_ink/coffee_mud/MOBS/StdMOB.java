@@ -2343,6 +2343,7 @@ public class StdMOB implements MOB
                 if((CMProps.getBoolVar(CMProps.SYSTEMB_INTRODUCTIONSYSTEM))
                 &&(!asleep)&&(canhearsrc))
                     CMLib.commands().handleIntroductions(msg.source(),this,msg.targetMessage());
+        		canhearsrc=CMLib.flags().canBeHeardBy(msg.source(),this);
                 break;
             default:
                 if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))&&(!amDead))
