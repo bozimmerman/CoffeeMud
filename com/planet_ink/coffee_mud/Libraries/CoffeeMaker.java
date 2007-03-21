@@ -2780,18 +2780,19 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 	{
 		double[] nums=new double[11];
 		int x=0;
-		for(int y=props.indexOf("|");y>=0;y=props.indexOf("|"))
+		int lastBar=0;
+		for(int y=0;y<props.length();y++)
+			if(props.charAt(y)=='|')
+			{
+				try{nums[x]=Double.valueOf(props.substring(lastBar,y)).doubleValue();}
+				catch(Exception e){nums[x]=new Integer(CMath.s_int(props.substring(lastBar,y))).doubleValue();}
+				x++;
+				lastBar=y+1;
+			}
+		if(lastBar<props.length())
 		{
-			try
-			{
-				nums[x]=Double.valueOf(props.substring(0,y)).doubleValue();
-			}
-			catch(Exception e)
-			{
-				nums[x]=new Integer(CMath.s_int(props.substring(0,y))).doubleValue();
-			}
-			x++;
-			props=props.substring(y+1);
+			try{nums[x]=Double.valueOf(props.substring(lastBar)).doubleValue();}
+			catch(Exception e){nums[x]=new Integer(CMath.s_int(props.substring(lastBar))).doubleValue();}
 		}
 		E.setAbility((int)Math.round(nums[0]));
 		E.setArmor((int)Math.round(nums[1]));
