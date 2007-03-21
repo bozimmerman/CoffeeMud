@@ -56,6 +56,8 @@ public interface DatabaseEngine extends CMLibrary
     public Vector DBReadRoomData(String roomID, boolean reportStatus);
     public void DBReadRoomExits(String roomID, Vector allRooms, boolean reportStatus);
 	public void DBUpdateExits(Room room);
+	public void DBCreateThisItem(String roomID, Item thisItem);
+	public void DBCreateThisMOB(String roomID, MOB thisMOB);
 	public String DBReadRoomMOBData(String roomID, String mobID);
 	public String DBReadRoomDesc(String roomID);
     public void DBReadAllRooms(RoomnumberSet roomsToRead);

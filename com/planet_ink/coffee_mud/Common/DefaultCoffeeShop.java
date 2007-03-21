@@ -384,12 +384,12 @@ public class DefaultCoffeeShop implements CoffeeShop
             itemstr.append("<INVS>");
             for(int i=0;i<V.size();i++)
             {
-                Item I=(Item)V.elementAt(i);
+                Environmental E=(Environmental)V.elementAt(i);
                 itemstr.append("<INV>");
-                itemstr.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.classID(I)));
-                itemstr.append(CMLib.xml().convertXMLtoTag("INUM",""+numberInStock(I)));
-                itemstr.append(CMLib.xml().convertXMLtoTag("IVAL",""+stockPrice(I)));
-                itemstr.append(CMLib.xml().convertXMLtoTag("IDATA",CMLib.coffeeMaker().getPropertiesStr(I,true)));
+                itemstr.append(CMLib.xml().convertXMLtoTag("ICLASS",CMClass.classID(E)));
+                itemstr.append(CMLib.xml().convertXMLtoTag("INUM",""+numberInStock(E)));
+                itemstr.append(CMLib.xml().convertXMLtoTag("IVAL",""+stockPrice(E)));
+                itemstr.append(CMLib.xml().convertXMLtoTag("IDATA",CMLib.coffeeMaker().getPropertiesStr(E,true)));
                 itemstr.append("</INV>");
             }
             return itemstr.toString()+"</INVS>";
@@ -463,6 +463,7 @@ public class DefaultCoffeeShop implements CoffeeShop
             int itemnum=CMLib.xml().getIntFromPieces(iblk.contents,"INUM");
             int val=CMLib.xml().getIntFromPieces(iblk.contents,"IVAL");
             Environmental newOne=CMClass.getItem(itemi);
+            if(newOne==null) newOne=CMClass.getMOB(itemi);
             Vector idat=CMLib.xml().getRealContentsFromPieces(iblk.contents,"IDATA");
             if((idat==null)||(newOne==null)||(!(newOne instanceof Item)))
             {
@@ -470,10 +471,10 @@ public class DefaultCoffeeShop implements CoffeeShop
                 return;
             }
             CMLib.coffeeMaker().setPropertiesStr(newOne,idat,true);
-            Item I=(Item)newOne;
-            I.recoverEnvStats();
-            V.addElement(I);
-            addStoreInventory(I,itemnum,val,shop);
+            Environmental E=(Environmental)newOne;
+            E.recoverEnvStats();
+            V.addElement(E);
+            addStoreInventory(E,itemnum,val,shop);
         }
     }
 }

@@ -868,7 +868,7 @@ public class RoomLoader
 			Log.debugOut("RoomLoader","Finished exit update for room "+room.roomID());
 	}
 
-	private void DBCreateThisMOB(String roomID, MOB thisMOB)
+	public void DBCreateThisMOB(String roomID, MOB thisMOB)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Creating mob "+thisMOB.name()+" for room "+roomID);

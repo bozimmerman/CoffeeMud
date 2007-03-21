@@ -1039,6 +1039,24 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         }
     }
 
+    public Vector getAllInProximity(MOB to, int distance)
+    {
+    	Room R=to.location();
+    	Vector V=new Vector();
+    	V.addElement(to);
+    	if(R==null) return V;
+    	Vector everyV=new Vector();
+    	for(int i=0;i<R.numInhabitants();i++)
+    		everyV.addElement(R.fetchInhabitant(i));
+    	if(!everyV.contains(to)) everyV.addElement(to);
+    	int[][] map=new int[everyV.size()][everyV.size()];
+    	for(int x=0;x<map.length;x++)
+        	for(int y=0;y<map.length;y++)
+        		map[x][y]=-1;
+    	
+    	return V;
+    }
+    
     public void establishRange(MOB source, MOB target, Environmental tool)
     {
         // establish and enforce range

@@ -71,8 +71,56 @@ public class Catalog extends StdCommand
 				{ commands.removeElementAt(0); whatKind=1;}
 				if((commands.size()>0)&&("ITEMS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
 				{ commands.removeElementAt(0); whatKind=2;}
-				
-				
+				String ID=CMParms.combine(commands,0);
+				StringBuffer list=new StringBuffer("");
+				if((whatKind==0)||(whatKind==1)) 
+				{
+					list.append("^HMobs\n\r----\n\r\n\r^N");
+					list.append(CMStrings.padRight("Name",33)+" "+CMStrings.padRight("#",4)+" ");
+					list.append(CMStrings.padRight("Name",33)+" "+CMStrings.padRight("#",4)+" ");
+					int col=0;
+					MOB M=null;
+					Item I=null;
+					int[] usage=null;
+					for(int i=0;i<CMLib.map().getCatalogMobs().size();i++)
+					{
+						M=CMLib.map().getCatalogMob(i);
+						usage=CMLib.map().getCatalogMobUsage(i);
+						if((ID==null)||(ID.length()==0)||(CMLib.english().containsString(M.Name(),ID)))
+						{
+							list.append(CMStrings.padRight(M.Name(),33)+" "+CMStrings.padRight(""+usage[0],4));
+							if(col==0)
+							{
+								col++;
+								list.append(" ");
+							}
+							else
+							{
+								col++;
+								list.append("\n\r");
+							}
+						}
+					}
+					for(int i=0;i<CMLib.map().getCatalogItems().size();i++)
+					{
+						I=CMLib.map().getCatalogItem(i);
+						usage=CMLib.map().getCatalogItemUsage(i);
+						if((ID==null)||(ID.length()==0)||(CMLib.english().containsString(I.Name(),ID)))
+						{
+							list.append(CMStrings.padRight(I.Name(),33)+" "+CMStrings.padRight(""+usage[0],4));
+							if(col==0)
+							{
+								col++;
+								list.append(" ");
+							}
+							else
+							{
+								col++;
+								list.append("\n\r");
+							}
+						}
+					}
+				}
 			}
 			else
 			if(((String)commands.firstElement()).equalsIgnoreCase("DELETE"))
@@ -83,7 +131,7 @@ public class Catalog extends StdCommand
 				{ commands.removeElementAt(0); whatKind=1;}
 				if((commands.size()>0)&&("ITEMS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
 				{ commands.removeElementAt(0); whatKind=2;}
-				String ID=CMParms.combine(commands,1);
+				String ID=CMParms.combine(commands,0);
 				int[] foundData=findCatalogIndex(whatKind,ID,false);
 				if(foundData[0]<0)
 				{
@@ -135,10 +183,79 @@ public class Catalog extends StdCommand
 					thisThang=R.fetchFromRoomFavorMOBs(null,ID,Item.WORNREQ_ANY);
 				if(thisThang!=null)
 				{
-					String textMsg="<S-NAME> catalog(s) <T-NAMESELF>.";
-					CMMsg msg=CMClass.getMsg(mob,thisThang,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_LOOK,textMsg);
-					if(R.okMessage(mob,msg))
-						R.send(mob,msg);
+					int exists=-1;
+					if(thisThang instanceof MOB)
+						exists=CMLib.map().getCatalogMobIndex(thisThang.Name());
+					else
+						exists=CMLib.map().getCatalogItemIndex(thisThang.Name());
+					String msg="<S-NAME> catalog(s) <T-NAMESELF>.";
+					
+					thisThang.baseEnvStats().setDisposition(thisThang.baseEnvStats().disposition()|EnvStats.IS_CATALOGED);
+					thisThang.envStats().setDisposition(thisThang.envStats().disposition()|EnvStats.IS_CATALOGED);
+					thisThang=(Environmental)thisThang.copyOf();
+					thisThang.baseEnvStats().setDisposition(CMath.unsetb(thisThang.baseEnvStats().disposition(),EnvStats.IS_CATALOGED));
+					thisThang.envStats().setDisposition(CMath.unsetb(thisThang.envStats().disposition(),EnvStats.IS_CATALOGED));
+					if(exists>=0)
+					{
+						StringBuffer diffs=new StringBuffer("");
+						Environmental cat=(thisThang instanceof MOB)?
+										 (Environmental)CMLib.map().getCatalogMob(exists):
+										 (Environmental)CMLib.map().getCatalogItem(exists);
+						if(thisThang.sameAs(cat))
+						{
+							mob.tell("The object '"+cat.Name()+"' already exists in the catalog, exactly as it is -- aborted.");
+							return false;
+						}
+						else
+						{
+							for(int i=0;i<cat.getStatCodes().length;i++)
+								if((!cat.getStat(cat.getStatCodes()[i]).equals(thisThang.getStat(cat.getStatCodes()[i]))))
+									diffs.append(cat.getStatCodes()[i]);
+							if((mob.session()==null)
+							||(!mob.session().confirm("Cataloging that object will change the existing cataloged '"+thisThang.Name()+"' by altering the following properties: "+diffs.toString()+".  Please confirm (y/N)?","Y")))
+								return false;
+							msg="<S-NAME> modif(ys) the cataloged version of <T-NAMESELF>.";
+						}
+						if(thisThang instanceof MOB)
+						{
+							if(((MOB)thisThang).databaseID().length()==0)
+							{
+								mob.tell("A null-databaseID was encountered.  Please consult CoffeeMud support.");
+								return false;
+							}
+							CMLib.map().addCatalogReplace((MOB)thisThang);
+							CMLib.database().DBUpdateMOB("CATALOG_MOBS",(MOB)thisThang);
+						}
+						else
+						if(thisThang instanceof Item)
+						{
+							if(((Item)thisThang).databaseID().length()==0)
+							{
+								mob.tell("A null-databaseID was encountered.  Please consult CoffeeMud support.");
+								return false;
+							}
+							CMLib.map().addCatalogReplace((Item)thisThang);
+							CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)thisThang);
+						}
+						if(mob.session()!=null) mob.session().print("Updating world map...");
+						CMLib.map().propogateCatalogChange(thisThang);
+						if(mob.session()!=null) mob.session().println(".");
+					}
+					else
+					{
+						if(thisThang instanceof MOB)
+						{
+							CMLib.map().addCatalog((MOB)thisThang);
+							CMLib.database().DBCreateThisMOB("CATALOG_MOBS",(MOB)thisThang);
+						}
+						else
+						if(thisThang instanceof Item)
+						{
+							CMLib.map().addCatalog((Item)thisThang);
+							CMLib.database().DBCreateThisItem("CATALOG_ITEMS",(Item)thisThang);
+						}
+					}
+					R.show(mob,thisThang,CMMsg.MSG_OK_VISUAL,msg);
 				}
 				else
 					mob.tell("You don't see '"+ID+"' here!");

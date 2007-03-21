@@ -161,6 +161,13 @@ public class Create extends BaseGenerics
 			    newItem=CMLib.beanCounter().makeCurrency(currency,denom,numCoins);
 		}
 
+		boolean doGenerica=true;
+		if(newItem==null)
+		{
+			newItem=getNewCatalogItem(itemID);
+			doGenerica=newItem==null;
+		}
+		
 		if(newItem==null)
 		{
 			mob.tell("There's no such thing as a '"+itemID+"'.\n\r");
@@ -189,7 +196,7 @@ public class Create extends BaseGenerics
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" drops into "+dest.name()+"'s arms.");
 		}
 
-		if(newItem.isGeneric())
+		if((newItem.isGeneric())&&(doGenerica))
 			genMiscSet(mob,newItem);
 		mob.location().recoverRoomStats();
 		Log.sysOut("Items",mob.Name()+" created item "+newItem.ID()+".");
@@ -294,6 +301,36 @@ public class Create extends BaseGenerics
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly a block of earth falls from the sky.\n\r");
 		Log.sysOut("Rooms",mob.Name()+" created room "+thisRoom.roomID()+".");
 	}
+	
+	public MOB getNewCatalogMob(String mobID)
+	{
+		int catDex=CMLib.map().getCatalogMobIndex(mobID);
+		MOB newMOB=null;
+		if(catDex>=0)
+		{
+			newMOB=CMLib.map().getCatalogMob(catDex);
+			CMLib.map().getCatalogMobUsage(catDex)[0]++;
+			newMOB=(MOB)newMOB.copyOf();
+			newMOB.baseEnvStats().setDisposition(newMOB.baseEnvStats().disposition()|EnvStats.IS_CATALOGED);
+			newMOB.envStats().setDisposition(newMOB.envStats().disposition()|EnvStats.IS_CATALOGED);
+		}
+		return newMOB;
+	}
+	
+	public Item getNewCatalogItem(String itemID)
+	{
+		Item newItem=null;
+		int catDex=CMLib.map().getCatalogItemIndex(itemID);
+		if(catDex>=0)
+		{
+			newItem=CMLib.map().getCatalogItem(catDex);
+			CMLib.map().getCatalogItemUsage(catDex)[0]++;
+			newItem=(Item)newItem.copyOf();
+			newItem.baseEnvStats().setDisposition(newItem.baseEnvStats().disposition()|EnvStats.IS_CATALOGED);
+			newItem.envStats().setDisposition(newItem.envStats().disposition()|EnvStats.IS_CATALOGED);
+		}
+		return newItem;
+	}
 
 	public void mobs(MOB mob, Vector commands)
 		throws IOException
@@ -308,13 +345,20 @@ public class Create extends BaseGenerics
 		String mobID=((String)commands.elementAt(2));
 		MOB newMOB=CMClass.getMOB(mobID);
 
+		boolean doGenerica=true;
+		if(newMOB==null)
+		{
+			newMOB=getNewCatalogMob(mobID);
+			doGenerica=newMOB==null;
+		}
+		
 		if(newMOB==null)
 		{
 			mob.tell("There's no such thing as a '"+mobID+"'.\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return;
 		}
-
+		
 		if(newMOB.Name().length()==0)
 			newMOB.setName("A Standard MOB");
 		newMOB.setStartRoom(mob.location());
@@ -331,7 +375,7 @@ public class Create extends BaseGenerics
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();
 		mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java plain.");
-		if(newMOB.isGeneric())
+		if((newMOB.isGeneric())&&(doGenerica))
 			genMiscSet(mob,newMOB);
 		Log.sysOut("Mobs",mob.Name()+" created mob "+newMOB.Name()+".");
 	}
@@ -957,7 +1001,9 @@ public class Create extends BaseGenerics
 				lastWord=(String)commands.lastElement();
 			Environmental E=null;
 			E=CMClass.getItem(allWord);
-			if(((E!=null)&&(E instanceof Item))||(CMLib.english().numPossibleGold(null,allWord)>0))
+			if(((E!=null)&&(E instanceof Item))
+			||(CMLib.english().numPossibleGold(null,allWord)>0)
+			||(CMLib.map().getCatalogItemIndex(allWord)>=0))
 			{
 				commands.insertElementAt("ITEM",1);
 				execute(mob,commands);
@@ -965,7 +1011,8 @@ public class Create extends BaseGenerics
 			else
 			{
 				E=CMClass.getMOB(allWord);
-				if((E!=null)&&(E instanceof MOB))
+				if(((E!=null)&&(E instanceof MOB))
+				||(CMLib.map().getCatalogMobIndex(allWord)>=0))
 				{
 					commands.insertElementAt("MOB",1);
 					execute(mob,commands);

@@ -110,6 +110,7 @@ public interface WorldMap extends CMLibrary
     public void addCatalogReplace(MOB M);
     public void addCatalog(Item I);
     public void addCatalog(MOB M);
+    public void propogateCatalogChange(Environmental thang);
     
     /************************************************************************/
     /**							 QUICK-MAPPINGS    							*/

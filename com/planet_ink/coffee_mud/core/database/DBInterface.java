@@ -130,6 +130,12 @@ public class DBInterface implements DatabaseEngine
     public RoomnumberSet DBReadAreaRoomList(String areaName, boolean reportStatus)
     {return RoomLoader.DBReadAreaRoomList(areaName,reportStatus);}
 
+	public void DBCreateThisItem(String roomID, Item thisItem)
+    {RoomLoader.DBCreateThisItem(roomID,thisItem);}
+	
+	public void DBCreateThisMOB(String roomID, MOB thisMOB)
+    {RoomLoader.DBCreateThisMOB(roomID,thisMOB);}
+	
 	public void DBUpdateExits(Room room)
 	{RoomLoader.DBUpdateExits(room);}
 	

@@ -36,6 +36,7 @@ public class Copy extends StdCommand
 
 	private String[] access={"COPY"};
 	public String[] getAccessWords(){return access;}
+	
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
@@ -86,6 +87,23 @@ public class Copy extends StdCommand
 
         if(E==null) E=mob.location().fetchFromRoomFavorMOBs(null,name,Item.WORNREQ_UNWORNONLY);
 		if(E==null)	E=mob.fetchInventory(name);
+		if(E==null)
+		{
+			
+		}
+		if(E==null)
+		{
+		    try
+		    {
+				for(Enumeration r=mob.location().getArea().getMetroMap();r.hasMoreElements();)
+				{
+					Room R=(Room)r.nextElement();
+					E=R.fetchInhabitant(name);
+					if(E==null) E=R.fetchAnyItem(name);
+					if(E!=null) break;
+				}
+		    }catch(NoSuchElementException e){}
+		}
 		if(E==null)
 		{
 		    try

@@ -1286,6 +1286,77 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         area.setAreaFlags(oldFlag);
     }
+
+    
+    private void propogateShopChange(ShopKeeper SK, Environmental thang)
+    {
+    	boolean isMob=(thang instanceof MOB);
+    	Environmental E=null;
+    	int i=0;
+        Vector V=SK.getShop().getStoreInventory();
+        for(i=0;i<V.size();i++)
+        {
+            E=(Environmental)V.elementAt(i);
+			if((isMob)&&(E instanceof MOB)
+			&&(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+			&&(thang.Name().equalsIgnoreCase(E.Name())))
+				E.setMiscText(E.text());
+			if((!isMob)&&(E instanceof Item)
+			&&(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+			&&(thang.Name().equalsIgnoreCase(E.Name())))
+				E.setMiscText(E.text());
+        }
+    }
+    
+    public void propogateCatalogChange(Environmental thang)
+    {
+    	boolean isMob=(thang instanceof MOB);
+    	MOB M=null;
+    	Room R=null;
+    	Item I=null;
+    	ShopKeeper SK=null;
+    	int m=0,i=0;
+    	for(Enumeration e=areas();e.hasMoreElements();)
+    	{
+    		Area A=(Area)e.nextElement();
+    		SK=CMLib.coffeeShops().getShopKeeper(A);
+    		if(SK!=null) propogateShopChange(SK,thang);
+    	}
+    	for(Enumeration e=rooms();e.hasMoreElements();)
+    	{
+    		R=(Room)e.nextElement();
+    		if(!isMob)
+			for(i=0;i<R.numItems();i++)
+			{
+				I=R.fetchItem(i);
+				if((CMath.bset(I.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+				&&(thang.Name().equalsIgnoreCase(I.Name())))
+					I.setMiscText(I.text());
+			}
+    		for(m=0;m<R.numInhabitants();m++)
+    		{
+    			M=R.fetchInhabitant(m);
+    			if((isMob)
+				&&(CMath.bset(M.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+				&&(thang.Name().equalsIgnoreCase(M.Name())))
+    				M.setMiscText(M.text());
+    			if(!isMob)
+    			{
+					for(i=0;i<M.inventorySize();i++)
+					{
+						I=M.fetchInventory(i);
+						if((CMath.bset(I.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+						&&(thang.Name().equalsIgnoreCase(I.Name())))
+							I.setMiscText(I.text());
+					}
+	        		SK=CMLib.coffeeShops().getShopKeeper(M);
+	        		if(SK!=null) propogateShopChange(SK,thang);
+    			}
+    		}
+    		SK=CMLib.coffeeShops().getShopKeeper(R);
+    		if(SK!=null) propogateShopChange(SK,thang);
+    	}
+    }
     
 	public void obliteratePlayer(MOB deadMOB, boolean quiet)
 	{
