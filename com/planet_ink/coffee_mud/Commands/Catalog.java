@@ -73,15 +73,15 @@ public class Catalog extends StdCommand
 				{ commands.removeElementAt(0); whatKind=2;}
 				String ID=CMParms.combine(commands,0);
 				StringBuffer list=new StringBuffer("");
+				int col=0;
+				MOB M=null;
+				Item I=null;
+				int[] usage=null;
 				if((whatKind==0)||(whatKind==1)) 
 				{
 					list.append("^HMobs\n\r----\n\r\n\r^N");
 					list.append(CMStrings.padRight("Name",33)+" "+CMStrings.padRight("#",4)+" ");
 					list.append(CMStrings.padRight("Name",33)+" "+CMStrings.padRight("#",4)+" ");
-					int col=0;
-					MOB M=null;
-					Item I=null;
-					int[] usage=null;
 					for(int i=0;i<CMLib.map().getCatalogMobs().size();i++)
 					{
 						M=CMLib.map().getCatalogMob(i);
@@ -101,6 +101,13 @@ public class Catalog extends StdCommand
 							}
 						}
 					}
+					list.append("\n\r");
+				}
+				if((whatKind==0)||(whatKind==1)) 
+				{
+					list.append("^HItems\n\r-----\n\r\n\r^N");
+					list.append(CMStrings.padRight("Name",33)+" "+CMStrings.padRight("#",4)+" ");
+					list.append(CMStrings.padRight("Name",33)+" "+CMStrings.padRight("#",4)+" ");
 					for(int i=0;i<CMLib.map().getCatalogItems().size();i++)
 					{
 						I=CMLib.map().getCatalogItem(i);
@@ -120,6 +127,7 @@ public class Catalog extends StdCommand
 							}
 						}
 					}
+					list.append("\n\r");
 				}
 			}
 			else
