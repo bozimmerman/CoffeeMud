@@ -115,7 +115,7 @@ public class StdLawBook extends StdItem
 						if(mob.session()!=null)
 						{
 							StringBuffer str=new StringBuffer();
-							str.append("^hLaws of "+A.name()+"^?\n\r\n\r");
+							str.append("^HLaws of "+A.name()+"^?\n\r\n\r");
 							str.append(getFromTOC("TOC"));
 							mob.session().colorOnlyPrintln(str.toString());
 						}

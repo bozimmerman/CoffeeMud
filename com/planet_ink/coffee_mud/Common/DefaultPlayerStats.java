@@ -208,7 +208,7 @@ public class DefaultPlayerStats implements PlayerStats
         {
             prompt=CMProps.getVar(CMProps.SYSTEM_DEFAULTPROMPT);
             if((prompt==null)||(prompt.length()==0))
-                return "^N%E<^c%hhp %mm %vmv^N>";
+                return "^N%E<^h%hhp ^m%mm ^v%vmv^N>";
         }
 		return prompt;
 	}
