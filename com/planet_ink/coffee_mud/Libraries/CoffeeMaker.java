@@ -1630,13 +1630,11 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			Log.errOut("CoffeeMaker","setPropertiesStr: null 'E': "+((E==null)?"":E.Name()));
 		else
 		{
-			if(E.isGeneric())
-				setGenPropertiesStr(E,V);
-			if(fromTop)
-				setOrdPropertiesStr(E,V);
+			setEnvStats(E.baseEnvStats(),CMLib.xml().getValFromPieces(V,"PROP"));
 			if((CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
 			&&(E.isGeneric()))
 			{
+				E.setName(CMLib.xml().getValFromPieces(V,"NAME"));
 				Environmental cataE=null;
 				if(E instanceof MOB)
 				{
@@ -1663,8 +1661,15 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				{
 					setPropertiesStr(E,E.text(),fromTop);
 					E.baseEnvStats().setDisposition(cataE.baseEnvStats().disposition()|EnvStats.IS_CATALOGED);
+					recoverEnvironmental(E);
+					return;
 				}
+				
 			}
+			if(E.isGeneric())
+				setGenPropertiesStr(E,V);
+			if(fromTop)
+				setOrdPropertiesStr(E,V);
 			recoverEnvironmental(E);
 		}
 	}
