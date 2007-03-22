@@ -563,7 +563,7 @@ public class RoomLoader
 					Log.errOut("Room","Couldn't find item '"+itemID+"'");
 				else
 				{
-					newItem.setDatabaseID(itemID);
+					newItem.setDatabaseID(itemNum);
 					itemNums.put(itemNum,newItem);
 					String loc=DBConnections.getResQuietly(R,"CMITLO");
 					if(loc.length()>0)

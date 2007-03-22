@@ -80,9 +80,10 @@ public class Catalog extends StdCommand
 				int[] usage=null;
 				if((whatKind==0)||(whatKind==1)) 
 				{
-					list.append("^HMobs\n\r----\n\r\n\r^N");
+					list.append("^HMobs\n\r^N");
 					list.append(CMStrings.padRight("Name",33)+" "+CMStrings.padRight("#",4)+" ");
 					list.append(CMStrings.padRight("Name",33)+" "+CMStrings.padRight("#",4)+" ");
+					list.append(CMStrings.repeat("-",78)+"\n\r");
 					for(int i=0;i<CMLib.map().getCatalogMobs().size();i++)
 					{
 						M=CMLib.map().getCatalogMob(i);
@@ -106,9 +107,10 @@ public class Catalog extends StdCommand
 				}
 				if((whatKind==0)||(whatKind==2)) 
 				{
-					list.append("^HItems\n\r-----\n\r\n\r^N");
+					list.append("^HItems\n\r^N");
 					list.append(CMStrings.padRight("Name",33)+" "+CMStrings.padRight("#",4)+" ");
 					list.append(CMStrings.padRight("Name",33)+" "+CMStrings.padRight("#",4)+" ");
+					list.append(CMStrings.repeat("-",78)+"\n\r");
 					for(int i=0;i<CMLib.map().getCatalogItems().size();i++)
 					{
 						I=CMLib.map().getCatalogItem(i);
@@ -214,7 +216,9 @@ public class Catalog extends StdCommand
 										 (Environmental)CMLib.map().getCatalogItem(exists);
 						if(thisThang.sameAs(cat))
 						{
-							mob.tell("The object '"+cat.Name()+"' already exists in the catalog, exactly as it is -- aborted.");
+							thisThang.baseEnvStats().setDisposition(thisThang.baseEnvStats().disposition()|EnvStats.IS_CATALOGED);
+							thisThang.envStats().setDisposition(thisThang.envStats().disposition()|EnvStats.IS_CATALOGED);
+							mob.tell("The object '"+cat.Name()+"' already exists in the catalog, exactly as it is.");
 							return false;
 						}
 						else

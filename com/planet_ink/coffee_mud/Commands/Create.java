@@ -342,7 +342,7 @@ public class Create extends BaseGenerics
 			return;
 		}
 
-		String mobID=((String)commands.elementAt(2));
+		String mobID=CMParms.combine(commands,2);
 		MOB newMOB=CMClass.getMOB(mobID);
 
 		boolean doGenerica=true;

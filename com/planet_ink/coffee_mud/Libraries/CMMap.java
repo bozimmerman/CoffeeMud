@@ -343,7 +343,7 @@ public class CMMap extends StdLibrary implements WorldMap
     }
     
     public DVector getCatalogItems(){return icatalog;}
-    public DVector getCatalogMobs(){return icatalog;}
+    public DVector getCatalogMobs(){return mcatalog;}
     
     public boolean isCatalogObj(Environmental E){
     	if(E instanceof MOB) return mcatalog.contains(E);
@@ -364,8 +364,12 @@ public class CMMap extends StdLibrary implements WorldMap
     public int[] getCatalogMobUsage(int index){ try{return (int[])mcatalog.elementAt(index,2);}catch(Exception e){return null;}}
     public void delCatalog(Item I){ icatalog.removeElement(I);}
     public void delCatalog(MOB M){ mcatalog.removeElement(M);}
-    public void addCatalogReplace(Item I){addCatalogReplace(icatalog,I);}
-    public void addCatalogReplace(MOB M){addCatalogReplace(mcatalog,M);}
+    public void addCatalogReplace(Item I){
+    	addCatalogReplace(icatalog,I);
+    }
+    public void addCatalogReplace(MOB M){
+    	addCatalogReplace(mcatalog,M);
+    }
     public void addCatalog(Item I){
     	int oldIndex=getCatalogItemIndex(I.Name());
     	Environmental E=null;

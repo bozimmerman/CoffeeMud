@@ -80,12 +80,18 @@ public class BaseGenerics extends StdCommand
 		Environmental cataE=(E instanceof MOB)?
 			 	 			(Environmental)CMLib.map().getCatalogMob(oldIndex):
 			 	 			(Environmental)CMLib.map().getCatalogItem(oldIndex);
-		if(cataE.sameAs(E)) return;
+			 	 			
+		E.baseEnvStats().setDisposition(CMath.unsetb(E.baseEnvStats().disposition(), EnvStats.IS_CATALOGED));
+		E.envStats().setDisposition(CMath.unsetb(E.envStats().disposition(), EnvStats.IS_CATALOGED));
+		if(cataE.sameAs(E)) 
+		{
+			E.baseEnvStats().setDisposition(E.baseEnvStats().disposition()| EnvStats.IS_CATALOGED);
+			E.envStats().setDisposition(E.envStats().disposition()| EnvStats.IS_CATALOGED);
+			return;
+		}
 		int[] usage=(E instanceof MOB)?
 				 	 CMLib.map().getCatalogMobUsage(oldIndex):
 				 	 CMLib.map().getCatalogItemUsage(oldIndex);
-		E.baseEnvStats().setDisposition(CMath.unsetb(E.baseEnvStats().disposition(), EnvStats.IS_CATALOGED));
-		E.envStats().setDisposition(CMath.unsetb(E.envStats().disposition(), EnvStats.IS_CATALOGED));
 		if(mob.session().confirm("This object is cataloged.  Enter Y to update the cataloged version, or N to detach this object from the catalog (Y/n)?","Y"))
 		{
 			
@@ -1581,6 +1587,8 @@ public class BaseGenerics extends StdCommand
 	protected void genMiscSet(MOB mob, Environmental E)
 		throws IOException
 	{
+		if(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+			mob.tell("*** This object is Cataloged **\n\r");
 		if(E instanceof ShopKeeper)
 			modifyGenShopkeeper(mob,(ShopKeeper)E);
 		else
@@ -1623,6 +1631,7 @@ public class BaseGenerics extends StdCommand
 			else
 				modifyGenItem(mob,(Item)E);
 		}
+		catalogCheckUpdate(mob, E);
 	}
 
 	protected void genMiscText(MOB mob, Environmental E, int showNumber, int showFlag)
@@ -5628,7 +5637,6 @@ public class BaseGenerics extends StdCommand
 				}
 			}
 		}
-		catalogCheckUpdate(mob, me);
 	}
 
 	protected void modifyGenFood(MOB mob, Food me)
@@ -5678,7 +5686,6 @@ public class BaseGenerics extends StdCommand
 				}
 			}
 		}
-		catalogCheckUpdate(mob, me);
 	}
 	
 	protected void modifyGenDrink(MOB mob, Drink me)
@@ -5733,7 +5740,6 @@ public class BaseGenerics extends StdCommand
 				}
 			}
 		}
-		catalogCheckUpdate(mob, me);
 	}
 
 	protected void modifyGenWallpaper(MOB mob, Item me)
@@ -5817,7 +5823,6 @@ public class BaseGenerics extends StdCommand
 				}
 			}
 		}
-		catalogCheckUpdate(mob, me);
 	}
 
 	protected void modifyGenContainer(MOB mob, Container me)
@@ -5888,7 +5893,6 @@ public class BaseGenerics extends StdCommand
 				}
 			}
 		}
-		catalogCheckUpdate(mob, me);
 	}
 
 	protected void modifyGenWeapon(MOB mob, Weapon me)
@@ -5954,7 +5958,6 @@ public class BaseGenerics extends StdCommand
 				}
 			}
 		}
-		catalogCheckUpdate(mob, me);
 	}
 	
 	protected void modifyGenArmor(MOB mob, Armor me)
@@ -6013,7 +6016,6 @@ public class BaseGenerics extends StdCommand
 				}
 			}
 		}
-		catalogCheckUpdate(mob, me);
 	}
 
 
@@ -6063,7 +6065,6 @@ public class BaseGenerics extends StdCommand
 				}
 			}
 		}
-		catalogCheckUpdate(mob, me);
 	}
 
 
@@ -6204,11 +6205,13 @@ public class BaseGenerics extends StdCommand
 					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
 					ok=false;
 				}
+				boolean wasCataloged=CMath.bset(me.baseEnvStats().disposition(), EnvStats.IS_CATALOGED);
+				me.baseEnvStats().setDisposition(CMath.unsetb(me.baseEnvStats().disposition(), EnvStats.IS_CATALOGED));
 				me.setMiscText(me.text());
+				if(wasCataloged)
+					me.baseEnvStats().setDisposition(me.baseEnvStats().disposition()| EnvStats.IS_CATALOGED);
 			}
 		}
-		catalogCheckUpdate(mob, me);
-		mob.tell("\n\rNow don't forget to equip "+me.charStats().himher()+" with stuff before saving!\n\r");
 	}
 
 	protected void modifyPlayer(MOB mob, MOB me)
@@ -6656,10 +6659,12 @@ public class BaseGenerics extends StdCommand
 					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
 					ok=false;
 				}
+				boolean wasCataloged=CMath.bset(me.baseEnvStats().disposition(), EnvStats.IS_CATALOGED);
+				me.baseEnvStats().setDisposition(CMath.unsetb(me.baseEnvStats().disposition(), EnvStats.IS_CATALOGED));
 				me.setMiscText(me.text());
+				if(wasCataloged)
+					me.baseEnvStats().setDisposition(me.baseEnvStats().disposition()| EnvStats.IS_CATALOGED);
 			}
 		}
-		catalogCheckUpdate(mob, me);
-		mob.tell("\n\rNow don't forget to equip him with non-generic items before saving! If you DO add items to his list, be sure to come back here in case you've exceeded the string limit again.\n\r");
 	}
 }

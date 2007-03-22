@@ -1642,7 +1642,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					if(index>=0)
 					{
 						cataE=CMLib.map().getCatalogMob(index);
-						((int[])CMLib.map().getCatalogMobs().elementAt(index,2))[0]++;
+						CMLib.map().getCatalogMobUsage(index)[0]++;
 					}
 				}
 				else
@@ -1652,14 +1652,14 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					if(index>=0)
 					{
 						cataE=CMLib.map().getCatalogItem(index);
-						((int[])CMLib.map().getCatalogItems().elementAt(index,2))[0]++;
+						CMLib.map().getCatalogItemUsage(index)[0]++;
 					}
 				}
 				if((cataE!=null)
 				&&(cataE!=E)
 				&&(!CMath.bset(cataE.baseEnvStats().disposition(),EnvStats.IS_CATALOGED)))
 				{
-					setPropertiesStr(E,E.text(),fromTop);
+					setPropertiesStr(E,cataE.text(),fromTop);
 					E.baseEnvStats().setDisposition(cataE.baseEnvStats().disposition()|EnvStats.IS_CATALOGED);
 					recoverEnvironmental(E);
 					return;
