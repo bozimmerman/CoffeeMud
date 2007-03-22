@@ -64,6 +64,39 @@ public class Catalog extends StdCommand
 		if((commands!=null)&&(commands.size()>1))
 		{
 			commands.removeElementAt(0);
+			if((((String)commands.firstElement()).equalsIgnoreCase("ROOM"))
+			||(((String)commands.firstElement()).equalsIgnoreCase("AREA"))
+			||(((String)commands.firstElement()).equalsIgnoreCase("WORLD")))
+			{
+				String which=((String)commands.firstElement()).toLowerCase();
+				Enumeration rooms=null;
+				if(which.equalsIgnoreCase("ROOM"))
+					rooms=CMParms.makeVector(mob.location()).elements();
+				else
+				if(which.equalsIgnoreCase("AREA"))
+					rooms=mob.location().getArea().getCompleteMap();
+				else
+				if(which.equalsIgnoreCase("WORLD"))
+					rooms=CMLib.map().rooms();
+				commands.removeElementAt(0);
+				int whatKind=0;
+				String type="objects";
+				if((commands.size()>0)&&("MOBS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
+				{ commands.removeElementAt(0); whatKind=1; type="mobs";}
+				if((commands.size()>0)&&("ITEMS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
+				{ commands.removeElementAt(0); whatKind=2;type="items";}
+				
+				if((mob.session()!=null)
+				&&(mob.session().confirm("You are about to auto-catalog (and save) all "+which+" "+type+", are you sure (y/N)?","N")))
+				{
+					for(;rooms.hasMoreElements();)
+					{
+						
+					}
+				}
+				
+			}
+			else
 			if(((String)commands.firstElement()).equalsIgnoreCase("LIST"))
 			{
 				commands.removeElementAt(0);
