@@ -42,7 +42,24 @@ public class BaseGenerics extends StdCommand
 	// showFlag should be a valid number for editing, or -1 for skipping
 
 	protected void genName(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException
-	{   E.setName(CMLib.english().prompt(mob,E.Name(),showNumber,showFlag,"Name",false,false));}
+	{
+		String newName=CMLib.english().prompt(mob,E.Name(),showNumber,showFlag,"Name",false,false);
+		if(newName.equals(E.Name())) return;
+		if((!CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+		||((!(E instanceof MOB))&&(!(E instanceof Item)))
+		||(mob.session()==null))
+		{ E.setName(newName); return;}
+		int oldIndex=(E instanceof MOB)?
+				 	 CMLib.map().getCatalogMobIndex(E.Name()):
+				 	 CMLib.map().getCatalogItemIndex(E.Name());
+		if(oldIndex<0) return;
+		if(mob.session().confirm("This object is cataloged.  Changing its name will detach it from the catalogged version, are you sure (y/N)?","N"))
+		{
+			E.setName(newName);
+			E.baseEnvStats().setDisposition(CMath.unsetb(E.baseEnvStats().disposition(), EnvStats.IS_CATALOGED));
+			E.envStats().setDisposition(CMath.unsetb(E.envStats().disposition(), EnvStats.IS_CATALOGED));
+		}
+	}
 
 	protected void genImage(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException
     {   E.setImage(CMLib.english().prompt(mob,E.rawImage(),showNumber,showFlag,"MXP Image filename",true,false,"This is the path/filename of your MXP image file for this object."));}
