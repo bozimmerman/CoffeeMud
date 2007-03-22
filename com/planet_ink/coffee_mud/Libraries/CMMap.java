@@ -365,20 +365,20 @@ public class CMMap extends StdLibrary implements WorldMap
     public void delCatalog(Item I){ icatalog.removeElement(I);}
     public void delCatalog(MOB M){ mcatalog.removeElement(M);}
     public void addCatalogReplace(Item I){addCatalogReplace(icatalog,I);}
-    public void addCatalogReplace(MOB M){addCatalogReplace(icatalog,M);}
+    public void addCatalogReplace(MOB M){addCatalogReplace(mcatalog,M);}
     public void addCatalog(Item I){
     	int oldIndex=getCatalogItemIndex(I.Name());
     	Environmental E=null;
     	if(oldIndex>=0) E=getCatalogItem(oldIndex);
         if(E!=null) delCatalog((Item)E);
-        addCatalogReplace((Item)E);
+        addCatalogReplace(I);
     }
     public void addCatalog(MOB M){
     	int oldIndex=getCatalogMobIndex(M.Name());
     	Environmental E=null;
     	if(oldIndex>=0) E=getCatalogMob(oldIndex);
         if(E!=null) delCatalog((MOB)E);
-        addCatalogReplace((MOB)E);
+        addCatalogReplace(M);
     }
     
 	public String getExtendedRoomID(Room R)
