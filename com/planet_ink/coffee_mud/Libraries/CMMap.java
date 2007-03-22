@@ -360,8 +360,8 @@ public class CMMap extends StdLibrary implements WorldMap
     public int getCatalogMobIndex(String called){ return getGlobalIndex(mcatalog.getDimensionVector(1),called);}
     public Item getCatalogItem(int index){ try{return (Item)icatalog.elementAt(index,1);}catch(Exception e){return null;}}
     public MOB getCatalogMob(int index){ try{return (MOB)mcatalog.elementAt(index,1);}catch(Exception e){return null;}}
-    public int[] getCatalogItemUsage(int index){ try{return (int[])icatalog.elementAt(index,1);}catch(Exception e){return null;}}
-    public int[] getCatalogMobUsage(int index){ try{return (int[])mcatalog.elementAt(index,1);}catch(Exception e){return null;}}
+    public int[] getCatalogItemUsage(int index){ try{return (int[])icatalog.elementAt(index,2);}catch(Exception e){return null;}}
+    public int[] getCatalogMobUsage(int index){ try{return (int[])mcatalog.elementAt(index,2);}catch(Exception e){return null;}}
     public void delCatalog(Item I){ icatalog.removeElement(I);}
     public void delCatalog(MOB M){ mcatalog.removeElement(M);}
     public void addCatalogReplace(Item I){addCatalogReplace(icatalog,I);}

@@ -63,6 +63,7 @@ public class Catalog extends StdCommand
 		if(R==null) return false;
 		if((commands!=null)&&(commands.size()>1))
 		{
+			commands.removeElementAt(0);
 			if(((String)commands.firstElement()).equalsIgnoreCase("LIST"))
 			{
 				commands.removeElementAt(0);
@@ -103,7 +104,7 @@ public class Catalog extends StdCommand
 					}
 					list.append("\n\r");
 				}
-				if((whatKind==0)||(whatKind==1)) 
+				if((whatKind==0)||(whatKind==2)) 
 				{
 					list.append("^HItems\n\r-----\n\r\n\r^N");
 					list.append(CMStrings.padRight("Name",33)+" "+CMStrings.padRight("#",4)+" ");
@@ -129,6 +130,8 @@ public class Catalog extends StdCommand
 					}
 					list.append("\n\r");
 				}
+				if(mob.session()!=null)
+					mob.session().wraplessPrintln(list.toString());
 			}
 			else
 			if(((String)commands.firstElement()).equalsIgnoreCase("DELETE"))
@@ -184,7 +187,7 @@ public class Catalog extends StdCommand
 			else
 			{
 				Environmental thisThang=null;
-				String ID=CMParms.combine(commands,1);
+				String ID=CMParms.combine(commands,0);
 				if(ID.equalsIgnoreCase("SELF")||ID.equalsIgnoreCase("ME"))
 					thisThang=mob;
 				if(thisThang==null)
