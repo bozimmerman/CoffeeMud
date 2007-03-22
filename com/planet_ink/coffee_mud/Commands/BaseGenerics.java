@@ -53,14 +53,60 @@ public class BaseGenerics extends StdCommand
 				 	 CMLib.map().getCatalogMobIndex(E.Name()):
 				 	 CMLib.map().getCatalogItemIndex(E.Name());
 		if(oldIndex<0) return;
-		if(mob.session().confirm("This object is cataloged.  Changing its name will detach it from the catalogged version, are you sure (y/N)?","N"))
+		int[] usage=(E instanceof MOB)?
+				 	 CMLib.map().getCatalogMobUsage(oldIndex):
+				 	 CMLib.map().getCatalogItemUsage(oldIndex);
+		if(mob.session().confirm("This object is cataloged.  Changing its name will detach it from the cataloged version, are you sure (y/N)?","N"))
 		{
 			E.setName(newName);
 			E.baseEnvStats().setDisposition(CMath.unsetb(E.baseEnvStats().disposition(), EnvStats.IS_CATALOGED));
 			E.envStats().setDisposition(CMath.unsetb(E.envStats().disposition(), EnvStats.IS_CATALOGED));
+			usage[0]--;
 		}
 	}
 
+	protected void catalogCheckUpdate(MOB mob, Environmental E)
+		throws IOException
+	{
+		if((!CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+		||((!(E instanceof MOB))&&(!(E instanceof Item)))
+		||(mob.session()==null))
+			return;
+		
+		int oldIndex=(E instanceof MOB)?
+				 	 CMLib.map().getCatalogMobIndex(E.Name()):
+				 	 CMLib.map().getCatalogItemIndex(E.Name());
+		if(oldIndex<0) return;
+		Environmental cataE=(E instanceof MOB)?
+			 	 			(Environmental)CMLib.map().getCatalogMob(oldIndex):
+			 	 			(Environmental)CMLib.map().getCatalogItem(oldIndex);
+		int[] usage=(E instanceof MOB)?
+				 	 CMLib.map().getCatalogMobUsage(oldIndex):
+				 	 CMLib.map().getCatalogItemUsage(oldIndex);
+		E.baseEnvStats().setDisposition(CMath.unsetb(E.baseEnvStats().disposition(), EnvStats.IS_CATALOGED));
+		E.envStats().setDisposition(CMath.unsetb(E.envStats().disposition(), EnvStats.IS_CATALOGED));
+		if(mob.session().confirm("This object is cataloged.  Enter Y to update the cataloged version, or N to detach this object from the catalog (Y/n)?","Y"))
+		{
+			
+			cataE.setMiscText(E.text());
+			if(E instanceof MOB)
+				CMLib.database().DBUpdateMOB("CATALOG_MOBS",(MOB)cataE);
+			else
+				CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)cataE);
+			E.baseEnvStats().setDisposition(E.baseEnvStats().disposition()|EnvStats.IS_CATALOGED);
+			E.envStats().setDisposition(E.envStats().disposition()|EnvStats.IS_CATALOGED);
+			CMLib.map().propogateCatalogChange(cataE);
+			mob.tell("Catalog update complete.");
+		}
+		else
+		{
+			
+			E.baseEnvStats().setDisposition(CMath.unsetb(E.baseEnvStats().disposition(), EnvStats.IS_CATALOGED));
+			E.envStats().setDisposition(CMath.unsetb(E.envStats().disposition(), EnvStats.IS_CATALOGED));
+			usage[0]--;
+		}
+	}
+	
 	protected void genImage(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException
     {   E.setImage(CMLib.english().prompt(mob,E.rawImage(),showNumber,showFlag,"MXP Image filename",true,false,"This is the path/filename of your MXP image file for this object."));}
 
