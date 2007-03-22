@@ -80,6 +80,7 @@ public class BaseGenerics extends StdCommand
 		Environmental cataE=(E instanceof MOB)?
 			 	 			(Environmental)CMLib.map().getCatalogMob(oldIndex):
 			 	 			(Environmental)CMLib.map().getCatalogItem(oldIndex);
+		if(cataE.sameAs(E)) return;
 		int[] usage=(E instanceof MOB)?
 				 	 CMLib.map().getCatalogMobUsage(oldIndex):
 				 	 CMLib.map().getCatalogItemUsage(oldIndex);
@@ -5135,6 +5136,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
+	
 	protected void genCulturalAbilities(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -5215,6 +5217,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
+	
 	protected void modifyGenClass(MOB mob, CharClass me)
 		throws IOException
 	{
@@ -5625,6 +5628,7 @@ public class BaseGenerics extends StdCommand
 				}
 			}
 		}
+		catalogCheckUpdate(mob, me);
 	}
 
 	protected void modifyGenFood(MOB mob, Food me)
@@ -5674,7 +5678,9 @@ public class BaseGenerics extends StdCommand
 				}
 			}
 		}
+		catalogCheckUpdate(mob, me);
 	}
+	
 	protected void modifyGenDrink(MOB mob, Drink me)
 		throws IOException
 	{
@@ -5727,6 +5733,7 @@ public class BaseGenerics extends StdCommand
 				}
 			}
 		}
+		catalogCheckUpdate(mob, me);
 	}
 
 	protected void modifyGenWallpaper(MOB mob, Item me)
@@ -5810,6 +5817,7 @@ public class BaseGenerics extends StdCommand
 				}
 			}
 		}
+		catalogCheckUpdate(mob, me);
 	}
 
 	protected void modifyGenContainer(MOB mob, Container me)
@@ -5880,6 +5888,7 @@ public class BaseGenerics extends StdCommand
 				}
 			}
 		}
+		catalogCheckUpdate(mob, me);
 	}
 
 	protected void modifyGenWeapon(MOB mob, Weapon me)
@@ -5945,7 +5954,9 @@ public class BaseGenerics extends StdCommand
 				}
 			}
 		}
+		catalogCheckUpdate(mob, me);
 	}
+	
 	protected void modifyGenArmor(MOB mob, Armor me)
 		throws IOException
 	{
@@ -6002,6 +6013,7 @@ public class BaseGenerics extends StdCommand
 				}
 			}
 		}
+		catalogCheckUpdate(mob, me);
 	}
 
 
@@ -6051,6 +6063,7 @@ public class BaseGenerics extends StdCommand
 				}
 			}
 		}
+		catalogCheckUpdate(mob, me);
 	}
 
 
@@ -6194,7 +6207,7 @@ public class BaseGenerics extends StdCommand
 				me.setMiscText(me.text());
 			}
 		}
-
+		catalogCheckUpdate(mob, me);
 		mob.tell("\n\rNow don't forget to equip "+me.charStats().himher()+" with stuff before saving!\n\r");
 	}
 
@@ -6646,6 +6659,7 @@ public class BaseGenerics extends StdCommand
 				me.setMiscText(me.text());
 			}
 		}
+		catalogCheckUpdate(mob, me);
 		mob.tell("\n\rNow don't forget to equip him with non-generic items before saving! If you DO add items to his list, be sure to come back here in case you've exceeded the string limit again.\n\r");
 	}
 }
