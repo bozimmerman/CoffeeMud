@@ -217,7 +217,11 @@ public class Prop_RoomForSale extends Property implements LandTitle
 						&&(M.savable())
 						&&(M.getStartRoom()==R)
 						&&((M.baseEnvStats().rejuv()==0)||(M.baseEnvStats().rejuv()==Integer.MAX_VALUE)))
+						{
+			            	if(CMLib.flags().isCatalogedFalsely(M))
+			            		CMLib.flags().setCataloged(M,false);
 							mobs.addElement(M);
+						}
 					}
 					if(!CMSecurity.isSaveFlag("NOPROPERTYMOBS"))
 						CMLib.database().DBUpdateTheseMOBs(R,mobs);
@@ -304,6 +308,8 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				{
 					I=R.fetchItem(i);
 	                if((I==null)||(I.Name().equalsIgnoreCase("id"))) continue;
+	            	if(CMLib.flags().isCatalogedFalsely(I))
+	            		CMLib.flags().setCataloged(I,false);
 	                if(clearAllItems)
 	                {
 	                    I.destroy();

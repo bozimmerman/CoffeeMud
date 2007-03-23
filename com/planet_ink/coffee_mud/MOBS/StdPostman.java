@@ -107,6 +107,8 @@ public class StdPostman extends StdShopKeeper implements PostOffice
     public void addToBox(String mob, Item thisThang, String from, String to, long holdTime, double COD)
     {
         String name=thisThang.ID();
+    	if(CMLib.flags().isCatalogedFalsely(thisThang))
+    		CMLib.flags().setCataloged(thisThang,false);
         CMLib.database().DBCreateData(mob,
                 postalChain(),
                 postalBranch()+";"+thisThang+Math.random(),
