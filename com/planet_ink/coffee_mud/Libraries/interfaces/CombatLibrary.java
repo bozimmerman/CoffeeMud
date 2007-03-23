@@ -56,6 +56,7 @@ public interface CombatLibrary extends CMLibrary
     public Vector getFormationFollowed(MOB mob);
     public int getFormationAbsOrder(MOB mob);
     public CharClass getCombatDominantClass(MOB killer, MOB killed);
+    public HashSet getCombatDividers(MOB killer, MOB killed, CharClass combatCharClass);
     public HashSet getCombatBeneficiaries(MOB killer, MOB killed, CharClass combatCharClass);
     public DeadBody justDie(MOB source, MOB target);
     public int[] damageThresholds();
@@ -89,9 +90,10 @@ public interface CombatLibrary extends CMLibrary
      * exp bounty for the kill. 
      * @see ExpLevelLibrary#postExperience(MOB, MOB, String, int, boolean)
      * @param killers a set of mobs to benefit from the kill
+     * @param dividers a set of mobs who must divide the xp.. usually subset of killers
      * @param killed the mob killed 
      */
-	public void dispenseExperience(HashSet killers, MOB killed);
+	public void dispenseExperience(HashSet killers, HashSet dividers, MOB killed);
 	
     public static final String[] DEFAULT_ARMOR_DESCS={
         "vulnerable",

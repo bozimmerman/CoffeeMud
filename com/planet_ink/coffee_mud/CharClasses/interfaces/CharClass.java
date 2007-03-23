@@ -177,6 +177,18 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 */
     public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, HashSet followers);
 
+	/**
+	 * Returns whether the given mob should count in the division of experience gained by the killer
+	 * for having killed the killed.  Assumes the mob is in the same room, and requires
+	 * the followers of the killer be passed in.
+	 * @param killer the killer mob
+	 * @param killed who the killer mob killed
+	 * @param mob the mob whose sharing capacity is being evaluated
+	 * @param followers the killers followers
+	 * @return whether the mob shares in the exp gains
+	 */
+    public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, HashSet followers);
+    
     /**
      * Typically called when a mob gains a level in this class, to allow the class to 
      * assign any new skills.  Can also be called just to populate a mob with class skills,

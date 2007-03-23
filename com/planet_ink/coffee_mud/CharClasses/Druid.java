@@ -389,7 +389,7 @@ public class Druid extends StdCharClass
 
     public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Druid.doAnimalFollowerLevelingCheck(this,host,msg); Druid.doAnimalFreeingCheck(this,host,msg);}
     
-    public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, HashSet followers)
+    public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, HashSet followers)
     {
 		if((mob!=null)
         &&(mob!=killed)

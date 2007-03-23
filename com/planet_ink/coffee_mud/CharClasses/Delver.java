@@ -179,7 +179,7 @@ public class Delver extends StdCharClass
 	}
 
 
-    public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, HashSet followers)
+    public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, HashSet followers)
 	{
 		if((mob!=null)
         &&(mob!=killed)

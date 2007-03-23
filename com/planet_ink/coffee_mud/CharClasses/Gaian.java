@@ -169,7 +169,7 @@ public class Gaian extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-    public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, HashSet followers)
+    public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, HashSet followers)
 	{
 		if((mob!=null)
         &&(mob!=killed)

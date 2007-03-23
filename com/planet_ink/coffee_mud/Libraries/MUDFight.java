@@ -494,6 +494,36 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     }
     
     
+    protected HashSet getCombatDividers(MOB killer, MOB killed, Room deathRoom, HashSet beneficiaries, CharClass combatCharClass)
+    {
+        HashSet followers=(killer!=null)?killer.getGroupMembers(new HashSet()):(new HashSet());
+        if(combatCharClass==null) combatCharClass=CMClass.getCharClass("StdCharClass");
+        if(deathRoom!=null)
+        {
+            for(int m=0;m<deathRoom.numInhabitants();m++)
+            {
+                MOB mob=deathRoom.fetchInhabitant(m);
+                if((combatCharClass.isValidClassDivider(killer,killed,mob,followers))
+                &&(!beneficiaries.contains(mob)))
+                    beneficiaries.add(mob);
+            }
+        }
+        if((killer!=null)&&(!beneficiaries.contains(killer))&&(killer!=killed)&&(CMLib.flags().isInTheGame(killer,true)))
+            beneficiaries.add(killer);
+        return beneficiaries; 
+    }
+    
+    public HashSet getCombatDividers(MOB killer, MOB killed, CharClass combatCharClass)
+    {
+        if((killer==null)||(killed==null)) return new HashSet();
+        HashSet beneficiaries=new HashSet();
+        Room R=killer.location();
+        if(R!=null) getCombatDividers(killer,killed,R,beneficiaries,combatCharClass);
+        R=killed.location();
+        if((R!=null)&&(R!=killer.location())) getCombatDividers(killer,killed,R,beneficiaries,combatCharClass);
+        return beneficiaries;
+    }
+    
 	public DeadBody justDie(MOB source, MOB target)
 	{
 		if(target==null) return null;
@@ -501,7 +531,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
         CharClass combatCharClass=getCombatDominantClass(source,target);
 		HashSet beneficiaries=getCombatBeneficiaries(source,target,combatCharClass);
-        dispenseExperience(beneficiaries,target);
+		HashSet dividers=getCombatDividers(source,target,combatCharClass);
+		
+        dispenseExperience(beneficiaries,dividers,target);
         
 	    String currency=CMLib.beanCounter().getCurrency(target);
 		double deadMoney=CMLib.beanCounter().getTotalAbsoluteValue(target,currency);
@@ -1216,16 +1248,16 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         }
     }
     
-    public void dispenseExperience(HashSet killers, MOB killed)
+    public void dispenseExperience(HashSet killers, HashSet dividers, MOB killed)
     {
         int totalLevels=0;
         int expAmount=100;
 
-        for(Iterator i=killers.iterator();i.hasNext();)
+        for(Iterator i=dividers.iterator();i.hasNext();)
         {
             MOB mob=(MOB)i.next();
             totalLevels+=(mob.envStats().level()*mob.envStats().level());
-            expAmount+=25;
+            if(dividers.contains(mob)) expAmount+=25;
         }
 		for(Iterator i=killers.iterator();i.hasNext();)
 		{

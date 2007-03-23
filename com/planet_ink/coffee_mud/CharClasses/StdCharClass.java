@@ -692,6 +692,11 @@ public class StdCharClass implements CharClass
 		return move;
 	}
 
+	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, HashSet followers)
+	{
+		return isValidClassBeneficiary(killer,killed,mob,followers);
+	}
+	
 	public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, HashSet followers)
 	{
 		if((mob!=null)
