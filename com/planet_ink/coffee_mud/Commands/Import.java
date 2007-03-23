@@ -4297,7 +4297,7 @@ public class Import extends StdCommand
 							CMLib.map().obliteratePlayer(CMLib.map().getLoadPlayer(M.Name()),false);
 					}
 					if(M.playerStats()!=null)
-						M.playerStats().setUpdated(System.currentTimeMillis());
+						M.playerStats().setLastUpdated(System.currentTimeMillis());
 					CMLib.database().DBCreateCharacter(M);
 					CMLib.map().addPlayer(M);
 					Log.sysOut("Import","Imported user: "+M.Name());

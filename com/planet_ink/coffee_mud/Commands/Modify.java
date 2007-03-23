@@ -915,7 +915,7 @@ public class Modify extends BaseGenerics
 			CMLib.database().DBReadPlayer(M);
 			CMLib.database().DBReadFollowers(M,false);
 			if(M.playerStats()!=null)
-				M.playerStats().setUpdated(M.playerStats().lastDateTime());
+				M.playerStats().setLastUpdated(M.playerStats().lastDateTime());
 			M.recoverEnvStats();
 			M.recoverCharStats();
 		}

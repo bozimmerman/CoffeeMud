@@ -178,7 +178,7 @@ public class DefaultPlayerStats implements PlayerStats
 	public String getEmail(){if(email==null) return ""; return email;}
 	public void setEmail(String newAdd){email=newAdd;}
 	public long lastUpdated(){return lastUpdated;}
-	public void setUpdated(long time){lastUpdated=time;}
+	public void setLastUpdated(long time){lastUpdated=time;}
 	public long lastDateTime(){return LastDateTime;}
 	public void setLastDateTime(long C){ LastDateTime=C;}
 	public int getWrap(){return wrap;}

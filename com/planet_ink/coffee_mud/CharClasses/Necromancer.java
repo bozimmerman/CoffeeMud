@@ -175,7 +175,7 @@ public class Necromancer extends Cleric
 			Race newRace=CMClass.getRace("Lich");
 			if(newRace!=null)
 			{
-				myChar.tell("You are being transformed into a "+newRace.name()+"!!");
+				myChar.tell("The dark powers are transforming you into a "+newRace.name()+"!!");
 				myChar.baseCharStats().setMyRace(newRace);
 				myChar.recoverCharStats();
 			}

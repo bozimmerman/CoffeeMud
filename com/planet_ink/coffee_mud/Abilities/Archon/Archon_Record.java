@@ -87,7 +87,7 @@ public class Archon_Record extends ArchonSkill
 		if(A!=null)
 		{
 			target.delEffect(A);
-			if(target.playerStats()!=null) target.playerStats().setUpdated(0);
+			if(target.playerStats()!=null) target.playerStats().setLastUpdated(0);
 			mob.tell(target.Name()+" will no longer be recorded.");
 			return true;
 		}

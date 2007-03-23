@@ -94,7 +94,7 @@ public class Spell_Phantasm extends Spell
 			&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 			{
 				unInvoke();
-				if(msg.source().playerStats()!=null) msg.source().playerStats().setUpdated(0);
+				if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
 			}
 			else
 			if(msg.amITarget(mob)&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))

@@ -136,7 +136,7 @@ public class SaveThread extends Thread
                 CMLib.database().DBUpdatePlayerAbilities(mob);
 				status("saving "+mob.numFollowers()+" followers of "+mob.Name());
                 CMLib.database().DBUpdateFollowers(mob);
-				mob.playerStats().setUpdated(System.currentTimeMillis());
+				mob.playerStats().setLastUpdated(System.currentTimeMillis());
 				processed++;
 			}
 			else
@@ -152,7 +152,7 @@ public class SaveThread extends Thread
                 CMLib.database().DBUpdatePlayerItems(mob);
 				status("just saving "+mob.Name()+", "+mob.numLearnedAbilities()+" abilities");
                 CMLib.database().DBUpdatePlayerAbilities(mob);
-				mob.playerStats().setUpdated(System.currentTimeMillis());
+				mob.playerStats().setLastUpdated(System.currentTimeMillis());
 				processed++;
 			}
 		}

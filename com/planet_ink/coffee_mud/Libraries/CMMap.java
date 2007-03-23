@@ -687,7 +687,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				CMLib.database().DBReadPlayer(M);
 				CMLib.database().DBReadFollowers(M,false);
 				if(M.playerStats()!=null)
-					M.playerStats().setUpdated(M.playerStats().lastDateTime());
+					M.playerStats().setLastUpdated(M.playerStats().lastDateTime());
 				M.recoverEnvStats();
 				M.recoverCharStats();
 			}
@@ -1340,6 +1340,7 @@ public class CMMap extends StdLibrary implements WorldMap
     		for(m=0;m<R.numInhabitants();m++)
     		{
     			M=R.fetchInhabitant(m);
+    			if(!M.isMonster()) continue;
     			if((isMob)
 				&&(CMath.bset(M.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
 				&&(thang.Name().equalsIgnoreCase(M.Name())))
@@ -1369,7 +1370,11 @@ public class CMMap extends StdLibrary implements WorldMap
 				I=M.fetchInventory(i);
 				if((CMath.bset(I.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
 				&&(thang.Name().equalsIgnoreCase(I.Name())))
+				{
 					I.setMiscText(I.text());
+					if(M.playerStats()!=null)
+						M.playerStats().setLastUpdated(0);
+				}
 			}
     		SK=CMLib.coffeeShops().getShopKeeper(M);
     		if(SK!=null) propogateShopChange(SK,thang);

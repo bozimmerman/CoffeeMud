@@ -117,7 +117,7 @@ public class As extends StdCommand
 			mob.location().bringMobHere(M,false);
 		}
 		M.doCommand(commands);
-		if(M.playerStats()!=null) M.playerStats().setUpdated(0);
+		if(M.playerStats()!=null) M.playerStats().setLastUpdated(0);
 		if((oldRoom!=null)&&(inside)&&(!oldRoom.isInhabitant(M)))
 			oldRoom.bringMobHere(M,false);
 		else

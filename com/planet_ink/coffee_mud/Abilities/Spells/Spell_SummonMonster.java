@@ -61,7 +61,7 @@ public class Spell_SummonMonster extends Spell
 		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
 		{
 			unInvoke();
-			if(msg.source().playerStats()!=null) msg.source().playerStats().setUpdated(0);
+			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
 		}
 	}
 

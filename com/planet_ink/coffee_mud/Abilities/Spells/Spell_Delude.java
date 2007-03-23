@@ -51,7 +51,7 @@ public class Spell_Delude extends Spell
 		if(canBeUninvoked())
 		{
             if(mob.playerStats()!=null)
-                mob.playerStats().setUpdated(0);
+                mob.playerStats().setLastUpdated(0);
 			CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), previousAlignment-mob.fetchFaction(CMLib.factions().AlignID()));
 			mob.tell("Your attitude returns to normal.");
 		}

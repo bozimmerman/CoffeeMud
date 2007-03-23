@@ -295,7 +295,7 @@ public class Age extends StdAbility
 					newMan.setWorshipCharID(babe.getWorshipCharID());
 					newMan.playerStats().setPassword(liege.playerStats().password());
 					newMan.playerStats().setEmail(liege.playerStats().getEmail());
-					newMan.playerStats().setUpdated(System.currentTimeMillis());
+					newMan.playerStats().setLastUpdated(System.currentTimeMillis());
 					newMan.playerStats().setLastDateTime(System.currentTimeMillis());
 					if(newMan.playerStats().getBirthday()==null)
 					    newMan.baseCharStats().setStat(CharStats.STAT_AGE,newMan.playerStats().initializeBirthday(ellapsed*15,newMan.baseCharStats().getMyRace()));
@@ -318,7 +318,7 @@ public class Age extends StdAbility
 					for(int i=CharStats.STAT_MAX_STRENGTH_ADJ;i<CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.NUM_BASE_STATS;i++)
 						newMan.baseCharStats().setStat(i,newMan.baseCharStats().getStat(i)+1);
 					newMan.playerStats().setLastDateTime(System.currentTimeMillis());
-					newMan.playerStats().setUpdated(System.currentTimeMillis());
+					newMan.playerStats().setLastUpdated(System.currentTimeMillis());
 					newMan.recoverCharStats();
 					newMan.recoverEnvStats();
 					newMan.recoverMaxState();

@@ -542,7 +542,7 @@ public class MOBloader
         if((mob.Name().length()==0)||(mob.playerStats()==null)) return;
         DBUpdateItems(mob);
         DBUpdateAbilities(mob);
-        mob.playerStats().setUpdated(System.currentTimeMillis());
+        mob.playerStats().setLastUpdated(System.currentTimeMillis());
     }
 
     public void DBUpdatePassword(MOB mob)
