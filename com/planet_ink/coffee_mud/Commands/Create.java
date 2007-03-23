@@ -311,8 +311,7 @@ public class Create extends BaseGenerics
 			newMOB=CMLib.map().getCatalogMob(catDex);
 			CMLib.map().getCatalogMobUsage(catDex)[0]++;
 			newMOB=(MOB)newMOB.copyOf();
-			newMOB.baseEnvStats().setDisposition(newMOB.baseEnvStats().disposition()|EnvStats.IS_CATALOGED);
-			newMOB.envStats().setDisposition(newMOB.envStats().disposition()|EnvStats.IS_CATALOGED);
+			CMLib.flags().setCataloged(newMOB,true);
 		}
 		return newMOB;
 	}
@@ -326,8 +325,7 @@ public class Create extends BaseGenerics
 			newItem=CMLib.map().getCatalogItem(catDex);
 			CMLib.map().getCatalogItemUsage(catDex)[0]++;
 			newItem=(Item)newItem.copyOf();
-			newItem.baseEnvStats().setDisposition(newItem.baseEnvStats().disposition()|EnvStats.IS_CATALOGED);
-			newItem.envStats().setDisposition(newItem.envStats().disposition()|EnvStats.IS_CATALOGED);
+			CMLib.flags().setCataloged(newItem,true);
 		}
 		return newItem;
 	}

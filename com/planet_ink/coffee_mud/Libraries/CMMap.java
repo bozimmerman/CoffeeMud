@@ -1302,11 +1302,11 @@ public class CMMap extends StdLibrary implements WorldMap
         {
             E=(Environmental)V.elementAt(i);
 			if((isMob)&&(E instanceof MOB)
-			&&(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+			&&(CMLib.flags().isCataloged(E))
 			&&(thang.Name().equalsIgnoreCase(E.Name())))
 				E.setMiscText(E.text());
 			if((!isMob)&&(E instanceof Item)
-			&&(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+			&&(CMLib.flags().isCataloged(E))
 			&&(thang.Name().equalsIgnoreCase(E.Name())))
 				E.setMiscText(E.text());
         }
@@ -1333,7 +1333,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			for(i=0;i<R.numItems();i++)
 			{
 				I=R.fetchItem(i);
-				if((CMath.bset(I.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+				if((CMLib.flags().isCataloged(I))
 				&&(thang.Name().equalsIgnoreCase(I.Name())))
 					I.setMiscText(I.text());
 			}
@@ -1342,7 +1342,7 @@ public class CMMap extends StdLibrary implements WorldMap
     			M=R.fetchInhabitant(m);
     			if(!M.isMonster()) continue;
     			if((isMob)
-				&&(CMath.bset(M.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+				&&(CMLib.flags().isCataloged(M))
 				&&(thang.Name().equalsIgnoreCase(M.Name())))
     				M.setMiscText(M.text());
     			if(!isMob)

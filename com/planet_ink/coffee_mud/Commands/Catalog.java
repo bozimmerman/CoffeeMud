@@ -236,11 +236,9 @@ public class Catalog extends StdCommand
 						exists=CMLib.map().getCatalogItemIndex(thisThang.Name());
 					String msg="<S-NAME> catalog(s) <T-NAMESELF>.";
 					
-					thisThang.baseEnvStats().setDisposition(thisThang.baseEnvStats().disposition()|EnvStats.IS_CATALOGED);
-					thisThang.envStats().setDisposition(thisThang.envStats().disposition()|EnvStats.IS_CATALOGED);
+					CMLib.flags().setCataloged(thisThang,true);
 					thisThang=(Environmental)thisThang.copyOf();
-					thisThang.baseEnvStats().setDisposition(CMath.unsetb(thisThang.baseEnvStats().disposition(),EnvStats.IS_CATALOGED));
-					thisThang.envStats().setDisposition(CMath.unsetb(thisThang.envStats().disposition(),EnvStats.IS_CATALOGED));
+					CMLib.flags().setCataloged(thisThang,false);
 					if(exists>=0)
 					{
 						StringBuffer diffs=new StringBuffer("");
@@ -249,8 +247,7 @@ public class Catalog extends StdCommand
 										 (Environmental)CMLib.map().getCatalogItem(exists);
 						if(thisThang.sameAs(cat))
 						{
-							thisThang.baseEnvStats().setDisposition(thisThang.baseEnvStats().disposition()|EnvStats.IS_CATALOGED);
-							thisThang.envStats().setDisposition(thisThang.envStats().disposition()|EnvStats.IS_CATALOGED);
+							CMLib.flags().setCataloged(thisThang,true);
 							mob.tell("The object '"+cat.Name()+"' already exists in the catalog, exactly as it is.");
 							return false;
 						}

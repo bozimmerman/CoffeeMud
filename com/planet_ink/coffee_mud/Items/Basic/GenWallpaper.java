@@ -257,7 +257,7 @@ public class GenWallpaper implements Item
 	public void destroy()
 	{
     	if((baseEnvStats()!=null)
-    	&&(CMath.bset(baseEnvStats().disposition(),EnvStats.IS_CATALOGED)))
+    	&&(CMLib.flags().isCataloged(this))
     	{
     		int index=CMLib.map().getCatalogItemIndex(Name());
     		if(index>=0) CMLib.map().getCatalogItemUsage(index)[0]--;

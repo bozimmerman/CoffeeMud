@@ -637,6 +637,8 @@ public class MOBloader
             Item thisItem=mob.fetchInventory(i);
             if((thisItem!=null)&&(!done.contains(""+thisItem))&&(thisItem.savable()))
             {
+            	if(CMLib.flags().isCatalogedFalsely(thisItem))
+            		CMLib.flags().setCataloged(thisItem,false);
                 String str="INSERT INTO CMCHIT (CMUSERID, CMITNM, CMITID, CMITTX, CMITLO, CMITWO, "
                 +"CMITUR, CMITLV, CMITAB, CMHEIT"
                 +") values ('"+mob.Name()+"','"+(thisItem)+"','"+thisItem.ID()+"','"+thisItem.text()+" ','"
@@ -676,6 +678,8 @@ public class MOBloader
             MOB thisMOB=mob.fetchFollower(f);
             if((thisMOB!=null)&&(thisMOB.isMonster())&&(!thisMOB.isPossessing()))
             {
+            	if(CMLib.flags().isCatalogedFalsely(thisMOB))
+            		CMLib.flags().setCataloged(thisMOB,false);
                 String str="INSERT INTO CMCHFO (CMUSERID, CMFONM, CMFOID, CMFOTX, CMFOLV, CMFOAB"
                 +") values ('"+mob.Name()+"',"+f+",'"+CMClass.classID(thisMOB)+"','"+thisMOB.text()+" ',"
                 +thisMOB.baseEnvStats().level()+","+thisMOB.baseEnvStats().ability()+")";

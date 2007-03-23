@@ -45,7 +45,7 @@ public class BaseGenerics extends StdCommand
 	{
 		String newName=CMLib.english().prompt(mob,E.Name(),showNumber,showFlag,"Name",false,false);
 		if(newName.equals(E.Name())) return;
-		if((!CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+		if((!CMLib.flags().isCataloged(E))
 		||((!(E instanceof MOB))&&(!(E instanceof Item)))
 		||(mob.session()==null))
 		{ E.setName(newName); return;}
@@ -59,8 +59,7 @@ public class BaseGenerics extends StdCommand
 		if(mob.session().confirm("This object is cataloged.  Changing its name will detach it from the cataloged version, are you sure (y/N)?","N"))
 		{
 			E.setName(newName);
-			E.baseEnvStats().setDisposition(CMath.unsetb(E.baseEnvStats().disposition(), EnvStats.IS_CATALOGED));
-			E.envStats().setDisposition(CMath.unsetb(E.envStats().disposition(), EnvStats.IS_CATALOGED));
+			CMLib.flags().setCataloged(E,false);
 			usage[0]--;
 		}
 	}
@@ -68,7 +67,7 @@ public class BaseGenerics extends StdCommand
 	protected void catalogCheckUpdate(MOB mob, Environmental E)
 		throws IOException
 	{
-		if((!CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+		if((!CMLib.flags().isCataloged(E))
 		||((!(E instanceof MOB))&&(!(E instanceof Item)))
 		||(mob.session()==null))
 			return;
@@ -80,13 +79,11 @@ public class BaseGenerics extends StdCommand
 		Environmental cataE=(E instanceof MOB)?
 			 	 			(Environmental)CMLib.map().getCatalogMob(oldIndex):
 			 	 			(Environmental)CMLib.map().getCatalogItem(oldIndex);
-			 	 			
-		E.baseEnvStats().setDisposition(CMath.unsetb(E.baseEnvStats().disposition(), EnvStats.IS_CATALOGED));
-		E.envStats().setDisposition(CMath.unsetb(E.envStats().disposition(), EnvStats.IS_CATALOGED));
+			 
+		CMLib.flags().setCataloged(E,false);
 		if(cataE.sameAs(E)) 
 		{
-			E.baseEnvStats().setDisposition(E.baseEnvStats().disposition()| EnvStats.IS_CATALOGED);
-			E.envStats().setDisposition(E.envStats().disposition()| EnvStats.IS_CATALOGED);
+			CMLib.flags().setCataloged(E,true);
 			return;
 		}
 		int[] usage=(E instanceof MOB)?
@@ -100,16 +97,14 @@ public class BaseGenerics extends StdCommand
 				CMLib.database().DBUpdateMOB("CATALOG_MOBS",(MOB)cataE);
 			else
 				CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)cataE);
-			E.baseEnvStats().setDisposition(E.baseEnvStats().disposition()|EnvStats.IS_CATALOGED);
-			E.envStats().setDisposition(E.envStats().disposition()|EnvStats.IS_CATALOGED);
+			CMLib.flags().setCataloged(E,true);
 			CMLib.map().propogateCatalogChange(cataE);
 			mob.tell("Catalog update complete.");
 		}
 		else
 		{
 			
-			E.baseEnvStats().setDisposition(CMath.unsetb(E.baseEnvStats().disposition(), EnvStats.IS_CATALOGED));
-			E.envStats().setDisposition(CMath.unsetb(E.envStats().disposition(), EnvStats.IS_CATALOGED));
+			CMLib.flags().setCataloged(E,false);
 			usage[0]--;
 		}
 	}
@@ -1587,7 +1582,7 @@ public class BaseGenerics extends StdCommand
 	protected void genMiscSet(MOB mob, Environmental E)
 		throws IOException
 	{
-		if(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+		if(CMLib.flags().isCataloged(E))
 			mob.tell("*** This object is Cataloged **\n\r");
 		if(E instanceof ShopKeeper)
 			modifyGenShopkeeper(mob,(ShopKeeper)E);
@@ -6205,11 +6200,11 @@ public class BaseGenerics extends StdCommand
 					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
 					ok=false;
 				}
-				boolean wasCataloged=CMath.bset(me.baseEnvStats().disposition(), EnvStats.IS_CATALOGED);
-				me.baseEnvStats().setDisposition(CMath.unsetb(me.baseEnvStats().disposition(), EnvStats.IS_CATALOGED));
+				boolean wasCataloged=CMLib.flags().isCataloged(me);
+				CMLib.flags().setCataloged(me,false);
 				me.setMiscText(me.text());
 				if(wasCataloged)
-					me.baseEnvStats().setDisposition(me.baseEnvStats().disposition()| EnvStats.IS_CATALOGED);
+					CMLib.flags().setCataloged(me,true);
 			}
 		}
 	}
@@ -6659,11 +6654,11 @@ public class BaseGenerics extends StdCommand
 					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
 					ok=false;
 				}
-				boolean wasCataloged=CMath.bset(me.baseEnvStats().disposition(), EnvStats.IS_CATALOGED);
-				me.baseEnvStats().setDisposition(CMath.unsetb(me.baseEnvStats().disposition(), EnvStats.IS_CATALOGED));
+				boolean wasCataloged=CMLib.flags().isCataloged(me);
+				CMLib.flags().setCataloged(me,false);
 				me.setMiscText(me.text());
 				if(wasCataloged)
-					me.baseEnvStats().setDisposition(me.baseEnvStats().disposition()| EnvStats.IS_CATALOGED);
+					CMLib.flags().setCataloged(me,true);
 			}
 		}
 	}

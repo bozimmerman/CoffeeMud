@@ -1631,7 +1631,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		else
 		{
 			setEnvStats(E.baseEnvStats(),CMLib.xml().getValFromPieces(V,"PROP"));
-			if((CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+			if((CMLib.flags().isCataloged(E))
 			&&(E.isGeneric()))
 			{
 				E.setName(CMLib.xml().getValFromPieces(V,"NAME"));

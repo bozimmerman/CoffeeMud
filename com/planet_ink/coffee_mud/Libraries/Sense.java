@@ -87,8 +87,31 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{ return (I!=null)&&((I.envStats().sensesMask()&EnvStats.SENSE_ITEMNODROP)==0); }
 	public boolean isRemovable(Item I)
 	{ return (I!=null)&&((I.envStats().sensesMask()&EnvStats.SENSE_ITEMNOREMOVE)==0); }
+	public boolean isCataloged(Environmental E)
+	{ return (E!=null)&&((E.baseEnvStats().disposition()&EnvStats.IS_CATALOGED)==EnvStats.IS_CATALOGED); }
 	public boolean hasSeenContents(Environmental E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.SENSE_CONTENTSUNSEEN)==0); }
+	public boolean isCatalogedFalsely(Environmental E)
+	{
+		if(!isCataloged(E)) return false;
+		if(E instanceof MOB)
+		{
+			int index=CMLib.map().getCatalogMobIndex(E.Name());
+			if(index<0) return true;
+			Environmental E2=CMLib.map().getCatalogMob(index);
+			if(E2==null) return true;
+			if(!E2.sameAs(E)) return true;
+		}
+		if(E instanceof Item)
+		{
+			int index=CMLib.map().getCatalogItemIndex(E.Name());
+			if(index<0) return true;
+			Environmental E2=CMLib.map().getCatalogItem(index);
+			if(E2==null) return true;
+			if(!E2.sameAs(E)) return true;
+		}
+		return false;
+	}
 	public void setReadable(Item I, boolean truefalse)
 	{
 		if(I==null) return;
@@ -105,6 +128,24 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			I.baseEnvStats().setSensesMask(CMath.setb(I.baseEnvStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
 			I.envStats().setSensesMask(CMath.setb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
+		}
+	}
+	public void setCataloged(Environmental E, boolean truefalse)
+	{
+		if(E==null) return;
+		if(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+		{
+			if(!truefalse)
+			{
+				E.baseEnvStats().setDisposition(CMath.unsetb(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED));
+				E.envStats().setDisposition(CMath.unsetb(E.envStats().disposition(),EnvStats.IS_CATALOGED));
+			}
+		}
+		else
+		if(truefalse)
+		{
+			E.baseEnvStats().setDisposition(CMath.setb(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED));
+			E.envStats().setDisposition(CMath.setb(E.envStats().disposition(),EnvStats.IS_CATALOGED));
 		}
 	}
 	public void setGettable(Item I, boolean truefalse)

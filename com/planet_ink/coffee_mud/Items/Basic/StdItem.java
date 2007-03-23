@@ -1097,9 +1097,9 @@ public class StdItem implements Item
 	{
 		myContainer=null;
     	if((baseEnvStats()!=null)
-    	&&(CMath.bset(baseEnvStats().disposition(),EnvStats.IS_CATALOGED)))
+    	&&(CMLib.flags().isCataloged(this)))
     	{
-    		baseEnvStats().setDisposition(baseEnvStats().disposition()-EnvStats.IS_CATALOGED);
+    		CMLib.flags().setCataloged(this,false);
     		int index=CMLib.map().getCatalogItemIndex(Name());
     		if(index>=0) CMLib.map().getCatalogItemUsage(index)[0]--;
     	}
