@@ -625,7 +625,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                        for(int i=0;i<R2.numInhabitants();i++)
 	                                        {
 	                                            MOB M2=R2.fetchInhabitant(i);
-	                                            if((M2!=null)&&(M2.isMonster()))
+	                                            if((M2!=null)
+	                                            &&(M2.isMonster())
+	                                            &&((M2.amUltimatelyFollowing()==null)||(M2.amUltimatelyFollowing().isMonster())))
 	                                            {
 	                                                if(mobType.equalsIgnoreCase("any"))
 	                                                    choices.addElement(M2);
@@ -647,7 +649,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                    for(Enumeration e=q.mobGroup.elements();e.hasMoreElements();)
 	                                    {
 	                                        MOB M2=(MOB)e.nextElement();
-	                                        if((M2!=null)&&(M2.isMonster()))
+	                                        if((M2!=null)
+	                                        &&(M2.isMonster())
+                                            &&((M2.amUltimatelyFollowing()==null)||(M2.amUltimatelyFollowing().isMonster())))
 	                                        {
 	                                            if(mobType.equalsIgnoreCase("any"))
 	                                                choices.addElement(M2);
@@ -671,7 +675,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                            for(int i=choices.size()-1;i>=0;i--)
 	                            {
 	                                MOB M2=(MOB)choices.elementAt(i);
-	                                if((M2!=null)&&(M2.isMonster()))
+	                                if((M2!=null)
+	                                &&(M2.isMonster())
+                                    &&((M2.amUltimatelyFollowing()==null)||(M2.amUltimatelyFollowing().isMonster())))
 	                                {
 	                                    if((CMClass.classID(M2).toUpperCase().indexOf(mobType)>=0)
 	                                    ||(M2.charStats().getMyRace().racialCategory().toUpperCase().indexOf(mobType)>=0)
@@ -743,7 +749,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                for(int i=0;i<R2.numInhabitants();i++)
 	                                {
 	                                    MOB M2=R2.fetchInhabitant(i);
-	                                    if((M2!=null)&&(M2.isMonster()))
+	                                    if((M2!=null)
+	                                    &&(M2.isMonster())
+                                        &&((M2.amUltimatelyFollowing()==null)||(M2.amUltimatelyFollowing().isMonster())))
 	                                    {
 	                                        if(!CMLib.masking().maskCheck(mask,M2,true))
 	                                            continue;
@@ -1217,7 +1225,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                            for(Enumeration e=q.mobGroup.elements();e.hasMoreElements();)
 	                            {
 	                                MOB M2=(MOB)e.nextElement();
-	                                if((M2!=null)&&(M2.isMonster()))
+	                                if((M2!=null)
+	                                &&(M2.isMonster())
+                                    &&((M2.amUltimatelyFollowing()==null)||(M2.amUltimatelyFollowing().isMonster())))
 	                                {
 	                                    if(!CMLib.masking().maskCheck(mask,M2,true))
 	                                        continue;
@@ -1235,7 +1245,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                    for(int i=0;i<R2.numInhabitants();i++)
 	                                    {
 	                                        MOB M2=R2.fetchInhabitant(i);
-	                                        if((M2!=null)&&(M2.isMonster()))
+	                                        if((M2!=null)
+	                                        &&(M2.isMonster())
+                                            &&((M2.amUltimatelyFollowing()==null)||(M2.amUltimatelyFollowing().isMonster())))
 	                                        {
 	                                            if(!CMLib.masking().maskCheck(mask,M2,true))
 	                                                continue;
