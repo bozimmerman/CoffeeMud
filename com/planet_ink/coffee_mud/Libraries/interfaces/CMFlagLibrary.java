@@ -58,12 +58,14 @@ public interface CMFlagLibrary extends CMLibrary
     public boolean isReadable(Item I);
     public boolean isGettable(Item I);
     public boolean isDroppable(Item I);
+    public boolean isCataloged(Environmental E);
     public boolean isRemovable(Item I);
     public boolean hasSeenContents(Environmental E);
     public void setReadable(Item I, boolean truefalse);
     public void setGettable(Item I, boolean truefalse);
     public void setDroppable(Item I, boolean truefalse);
     public void setRemovable(Item I, boolean truefalse);
+    public void setCataloged(Environmental E, boolean truefalse);
     public boolean isSeen(Environmental E);
     public boolean isCloaked(Environmental E);
     public boolean isHidden(Environmental E);
