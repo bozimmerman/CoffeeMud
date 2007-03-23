@@ -1360,6 +1360,20 @@ public class CMMap extends StdLibrary implements WorldMap
     		SK=CMLib.coffeeShops().getShopKeeper(R);
     		if(SK!=null) propogateShopChange(SK,thang);
     	}
+		if(!isMob)
+    	for(Enumeration e=players();e.hasMoreElements();)
+    	{
+    		M=(MOB)e.nextElement();
+			for(i=0;i<M.inventorySize();i++)
+			{
+				I=M.fetchInventory(i);
+				if((CMath.bset(I.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+				&&(thang.Name().equalsIgnoreCase(I.Name())))
+					I.setMiscText(I.text());
+			}
+    		SK=CMLib.coffeeShops().getShopKeeper(M);
+    		if(SK!=null) propogateShopChange(SK,thang);
+    	}
     }
     
 	public void obliteratePlayer(MOB deadMOB, boolean quiet)
