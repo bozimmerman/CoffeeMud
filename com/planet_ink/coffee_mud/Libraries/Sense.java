@@ -98,9 +98,16 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			int index=CMLib.map().getCatalogMobIndex(E.Name());
 			if(index<0) return true;
+			
 			Environmental E2=CMLib.map().getCatalogMob(index);
 			if(E2==null) return true;
-			if(!E2.sameAs(E)) return true;
+			setCataloged(E,false);
+			if(!E2.sameAs(E))
+			{
+				setCataloged(E,true);
+				return true;
+			}
+			setCataloged(E,true);
 		}
 		if(E instanceof Item)
 		{
@@ -108,7 +115,13 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			if(index<0) return true;
 			Environmental E2=CMLib.map().getCatalogItem(index);
 			if(E2==null) return true;
-			if(!E2.sameAs(E)) return true;
+			setCataloged(E,false);
+			if(!E2.sameAs(E))
+			{
+				setCataloged(E,true);
+				return true;
+			}
+			setCataloged(E,true);
 		}
 		return false;
 	}
