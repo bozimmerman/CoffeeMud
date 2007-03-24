@@ -49,9 +49,24 @@ public class StdLimb extends StdItem
 			return false;
 		if((msg.target()==this)
 		&&(msg.targetMinor()==CMMsg.TYP_REMOVE)
-		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS)))
+		&&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
+		&&(owner() instanceof MOB))
 		{
-			
+			MOB mob=(MOB)owner();
+			for(int w=0;w<Item.WORN_CODES.length;w++)
+				if((amWearingAt(Item.WORN_CODES[w]))
+				&&(Item.WORN_DEPENDENCYGRID[w]>0))
+					for(int w2=0;w2<Item.WORN_CODES.length;w2++)
+						if(!amWearingAt(Item.WORN_CODES[w2])
+						&&(CMath.bset(Item.WORN_DEPENDENCYGRID[w], Item.WORN_CODES[w2])))
+						{
+							Item I=mob.fetchFirstWornItem(Item.WORN_CODES[w2]);
+							if((I!=null)&&(I!=this))
+							{
+								msg.source().tell(mob,I,null,"You'll need to remove <T-NAMESELF> first.");
+								return false;
+							}
+						}
 		}
 		return true;
 	}
