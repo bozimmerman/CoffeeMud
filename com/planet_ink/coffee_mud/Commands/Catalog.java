@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
@@ -89,9 +90,37 @@ public class Catalog extends StdCommand
 				if((mob.session()!=null)
 				&&(mob.session().confirm("You are about to auto-catalog (and save) all "+which+" "+type+", are you sure (y/N)?","N")))
 				{
+					Area A=null;
+					boolean dirtyMobs=false;
+					boolean dirtyItems=false;
+					Item I=null;
+					Item cI=null;
+					MOB M=null;
+					MOB cM=null;
+					int ndx=0;
+					CMFlagLibrary flagLib=CMLib.flags();
+					WorldMap mapLib=CMLib.map();
 					for(;rooms.hasMoreElements();)
 					{
-						
+						R=(Room)rooms.nextElement();
+						dirtyMobs=false;
+						dirtyItems=false;
+						if(R.roomID().length()>0)
+						{
+							A=R.getArea();
+				            int oldFlag=A.getAreaFlags();
+							R=CMLib.coffeeMaker().makeNewRoomContent(R);
+							if(R==null) continue;
+							A.setAreaFlags(Area.FLAG_FROZEN);
+							if((whatKind==0)||(whatKind==2))
+								for(int i=0;i<R.numItems();i++)
+								{
+									I=R.fetchItem(i);
+									if((I==null)||(I instanceof Coins)) continue;
+									ndx=mapLib.getCatalogItemIndex(I.Name());
+								}
+							A.setAreaFlags(oldFlag);
+						}
 					}
 				}
 				
