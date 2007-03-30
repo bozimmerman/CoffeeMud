@@ -387,14 +387,37 @@ public class Go extends StdCommand
 						((Boolean)commands.elementAt(3)).booleanValue(),false);
 
 		}
-
-		int direction=Directions.getGoodDirectionCode(CMParms.combine(commands,1));
+		String whereStr=CMParms.combine(commands,1);
+		Room R=mob.location();
+		int direction=-1;
+		if(whereStr.equalsIgnoreCase("OUT"))
+		{
+			if(!CMath.bset(R.domainType(),R.INDOORS))
+			{
+				mob.tell("You aren't indoors.");
+				return false;
+			}
+			
+			for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
+				if((R.getExitInDir(e)!=null)
+				&&(R.getRoomInDir(e)!=null)
+				&&(!CMath.bset(R.getRoomInDir(e).domainType(),R.INDOORS)))
+				{
+					if(direction>=0)
+					{
+						mob.tell("Which way out?  Try North, South, East, etc..");
+						return false;
+					}
+					direction=e;
+				}
+		}
+		if(direction<0)
+			direction=Directions.getGoodDirectionCode(whereStr);
 		if(direction<0)
 		{
-			Room R=mob.location();
 			Environmental E=null;
 			if(R!=null)
-				E=R.fetchFromRoomFavorItems(null,CMParms.combine(commands,1),Item.WORNREQ_UNWORNONLY);
+				E=R.fetchFromRoomFavorItems(null,whereStr,Item.WORNREQ_UNWORNONLY);
 			if(E instanceof Rideable)
 			{
 				Command C=CMClass.getCommand("Enter");
