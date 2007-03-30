@@ -410,6 +410,11 @@ public class Go extends StdCommand
 					}
 					direction=e;
 				}
+			if(direction<0)
+			{
+				mob.tell("There is no direct way out of this place.  Try a direction.");
+				return false;
+			}
 		}
 		if(direction<0)
 			direction=Directions.getGoodDirectionCode(whereStr);
