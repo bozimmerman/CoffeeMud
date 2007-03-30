@@ -167,6 +167,8 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 					thisRoom.rawDoors()[Directions.GATE]=oldR;
 					thisRoom.rawExits()[Directions.GATE]=oldE;
                     R.rawExits()[Directions.GATE]=oldE2;
+                    E.destroy();
+                    E2.destroy();
 				}
 			}
 			break;
