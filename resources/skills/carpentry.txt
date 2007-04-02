@@ -71,3 +71,12 @@ Four Poster % Bed	30	150	200	1500	GenBed	BED	4		0
 % Couch	10	80	120	200	GenChair	CHAIR	3	0	0
 % Sofa	16	90	100	250	GenChair	CHAIR	4	0	0
 % Peg Leg	10	30	10	100	GenLimb		0	0	0
+Solid % Club	16	85	50	350	GenWeapon	BLUNT	1	20	-20	
+Solid % Mace	20	95	60	1028	GenWeapon	BLUNT	1	16	0	
+Solid % Quarterstaff	22	105	75	667	GenWeapon	STAFF	2	27	0	
+Ornate % Club	32	130	100	650	GenWeapon	BLUNT	1	40	-20	
+Ornate % Mace	40	160	120	2056	GenWeapon	BLUNT	1	29	0	
+Ornate % Quarterstaff	55	180	150	1376	GenWeapon	STAFF	2	47	0	
+The % Club	64	150	200	1300	GenWeapon	BLUNT	1	40	-20	
+The % Mace	70	180	240	4000	GenWeapon	BLUNT	1	29	0	
+The % Quarterstaff	80	270	300	2700	GenWeapon	STAFF	2	47	0	

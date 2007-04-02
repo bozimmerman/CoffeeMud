@@ -180,21 +180,21 @@ public class Spell_WardArea extends Spell implements Trap
 				return false;
 			}
 		}
+        Environmental target = mob.location();
+        if((target.fetchEffect(this.ID())!=null)||(givenTarget!=null))
+        {
+            CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"A ward trap has already been set here!");
+            if(mob.location().okMessage(mob,msg))
+                mob.location().send(mob,msg);
+            return false;
+        }
+
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,
 		// and added as String objects to a vector.
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-		Environmental target = mob.location();
-		if((target.fetchEffect(this.ID())!=null)||(givenTarget!=null))
-		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),auto?"":"A ward trap has already been set here!");
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
-			return false;
-		}
-
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
