@@ -40,7 +40,10 @@ public class Exits extends StdCommand
 		throws java.io.IOException
 	{
 		if(mob.location()!=null)
-            CMLib.commands().lookAtExits(mob.location(),mob);
+			if((commands!=null)&&(commands.size()>1)&&(commands.lastElement() instanceof String)&&(((String)commands.lastElement()).equalsIgnoreCase("SHORT")))
+	            CMLib.commands().lookAtExitsShort(mob.location(),mob);
+			else
+	            CMLib.commands().lookAtExits(mob.location(),mob);
 		return false;
 	}
 	
