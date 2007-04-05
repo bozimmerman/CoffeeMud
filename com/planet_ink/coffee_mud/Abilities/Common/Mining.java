@@ -146,8 +146,7 @@ public class Mining extends GatheringSkill
 			if(found!=null)
 				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 		}
-		int duration=50-xtime(mob);
-		if(duration<15) duration=15;
+		int duration=getDuration(50,mob,1,15);
 		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) mining.");
 		if(mob.location().okMessage(mob,msg))
 		{

@@ -198,7 +198,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 			return false;
 		}
-		duration=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((xtime(mob)-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+		duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
 		String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
 		if(bundling)
 			itemName="a "+woodRequired+"# "+itemName;
@@ -264,7 +264,6 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 
 
 		messedUp=!proficiencyCheck(mob,0,auto);
-		if(duration<4) duration=4;
 
 		if(bundling)
 		{

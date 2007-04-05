@@ -155,8 +155,7 @@ public class BodyPiercing extends CommonSkill
 		verb="piercing "+target.name()+" on the "+wornName;
 		displayText="You are "+verb;
 		if(!proficiencyCheck(mob,0,auto)) writing="";
-		int duration=30-(xtime(mob));
-		if(duration<6) duration=6;
+		int duration=getDuration(30,mob,1,6);
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) piercing <T-NAMESELF> on the "+wornName.toLowerCase()+".");
 		if(mob.location().okMessage(mob,msg))
 		{

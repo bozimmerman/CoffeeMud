@@ -403,7 +403,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 				commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 				return false;
 			}
-			duration=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((xtime(mob)-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+			duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
 			String itemName=null;
 			if((otherRequired!=null)&&(otherRequired.length()>0)&&(otherRequired.equalsIgnoreCase("PRECIOUS")))
 				itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[1][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
@@ -500,7 +500,6 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 
 
 		messedUp=!proficiencyCheck(mob,0,auto);
-		if(duration<8) duration=8;
 
 		if(bundling)
 		{

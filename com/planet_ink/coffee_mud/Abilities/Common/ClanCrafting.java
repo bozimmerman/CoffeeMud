@@ -273,7 +273,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 			return false;
 		}
-		duration=CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS))-((xtime(mob)-CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)))*2);
+		duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
 		String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
 		String itemName=null;
 		if(!misctype.equalsIgnoreCase("area"))
@@ -390,7 +390,6 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 
 
 		messedUp=!proficiencyCheck(mob,0,auto);
-		if(duration<6) duration=6;
 
 		if(autoGenerate>0)
 		{

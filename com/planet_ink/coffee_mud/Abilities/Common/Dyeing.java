@@ -154,10 +154,10 @@ public class Dyeing extends CommonSkill
 		found=target;
 		if(darkFlag) writing=CMStrings.capitalizeAndLower(writing);
 		if(!proficiencyCheck(mob,0,auto)) writing="";
-		int duration=30-(xtime(mob));
+		int duration=30;
 		if((target.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER)
 			duration*=2;
-		if(duration<6) duration=6;
+		duration=getDuration(duration,mob,1,6);
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) dyeing "+target.name()+".");
 		if(mob.location().okMessage(mob,msg))
 		{

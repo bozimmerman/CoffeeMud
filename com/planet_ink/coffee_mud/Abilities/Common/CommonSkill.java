@@ -120,6 +120,18 @@ public class CommonSkill extends StdAbility
 		super.unInvoke();
 	}
 
+	protected int getDuration(int baseTicks, MOB mob, int itemLevel, int minDuration)
+	{
+		int ticks=baseTicks;
+		int level=mob.envStats().level();
+		level+=(2*getXTIMELevel(mob));
+		level-=itemLevel;
+		double pct=CMath.div(level,CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL))*.5;
+		ticks-=(int)Math.round(CMath.mul(ticks, pct));
+		if(ticks<minDuration) ticks=minDuration;
+		return ticks;
+	}
+	
 	protected void commonTell(MOB mob, Environmental target, Environmental tool, String str)
 	{
 		if(mob.isMonster()&&(mob.amFollowing()!=null))
@@ -237,7 +249,6 @@ public class CommonSkill extends StdAbility
 		return buildCostArray(mob,consumed,minimum);
 	}
 	public int xlevel(MOB mob){ return mob.envStats().level()+(2*getXLEVELLevel(mob));}
-    public int xtime(MOB mob){return (mob.envStats().level()+(2*getXTIMELevel(mob)));}
     
 	public boolean confirmPossibleMaterialLocation(int resource, Room location)
 	{

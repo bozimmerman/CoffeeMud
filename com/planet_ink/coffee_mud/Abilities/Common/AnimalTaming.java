@@ -197,8 +197,7 @@ public class AnimalTaming extends CommonSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		messedUp=!proficiencyCheck(mob,-taming.envStats().level()+(2*getXLEVELLevel(mob)),auto);
-		int duration=35+taming.envStats().level()-xtime(mob);
-		if(duration<10) duration=10;
+		int duration=getDuration(35,mob,taming.envStats().level(),10);
 		verb="taming "+M.name();
 		CMMsg msg=CMClass.getMsg(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) taming "+M.name()+".");
 		if(mob.location().okMessage(mob,msg))

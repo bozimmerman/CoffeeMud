@@ -147,8 +147,7 @@ public class Digging extends GatheringSkill
 				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
 		}
 		
-		int duration=60-xtime(mob);
-		if(duration<25) duration=25;
+		int duration=getDuration(60,mob,1,15);
 		CMMsg msg=CMClass.getMsg(mob,found,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) digging.");
 		if(mob.location().okMessage(mob,msg))
 		{

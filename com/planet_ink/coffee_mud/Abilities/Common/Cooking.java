@@ -468,8 +468,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		}
 
 		messedUp=!proficiencyCheck(mob,0,auto);
-		int duration=40-xtime(mob);
-		if(duration<15) duration=15;
+		int duration=getDuration(40,mob,1,5);
 		cooking=(Container)target;
 		oldContents=potContents(cooking);
 
