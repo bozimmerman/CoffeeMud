@@ -131,6 +131,11 @@ public class CommonSkill extends StdAbility
 		if(ticks<minDuration) ticks=minDuration;
 		return ticks;
 	}
+	protected int addedTickTime(MOB invokerMOB, int baseTickTime)
+	{
+		// common skills tend to SUBTRACT time -- not add to it!
+		return 0;
+	}
 	
 	protected void commonTell(MOB mob, Environmental target, Environmental tool, String str)
 	{

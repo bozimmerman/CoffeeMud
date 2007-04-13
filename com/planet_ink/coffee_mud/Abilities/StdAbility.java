@@ -247,13 +247,18 @@ public class StdAbility implements Ability
 		if(proficiency>100) proficiency=100;
 	}
 
+	protected int addedTickTime(MOB invokerMOB, int baseTickTime)
+	{
+		return (int)Math.round(CMath.mul(baseTickTime,CMath.mul(getXTIMELevel(invokerMOB),0.20)));
+	}
+	
 	public void startTickDown(MOB invokerMOB, Environmental affected, int tickTime)
 	{
 		if(invokerMOB!=null) invoker=invokerMOB;
 
 		savable=false; // makes it so that the effect does not save!
 
-        tickTime+=(int)Math.round(CMath.mul(tickTime,CMath.mul(getXTIMELevel(invokerMOB),0.20)));
+        tickTime+=addedTickTime(invokerMOB,tickTime);
 		if(invoker()!=null)
 			for(int c=0;c<invoker().charStats().numClasses();c++)
 				tickTime=invoker().charStats().getMyClass(c).classDurationModifier(invoker(),this,tickTime);
