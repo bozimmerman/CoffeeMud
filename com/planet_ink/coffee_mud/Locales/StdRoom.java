@@ -313,29 +313,30 @@ public class StdRoom implements Room
 			rawExits()[Directions.UP]=upE;
 			sky.rawDoors()[Directions.DOWN]=this;
 			sky.rawExits()[Directions.DOWN]=dnE;
-			for(int d=0;d<4;d++)
-			{
-				Room thatRoom=rawDoors()[d];
-				Room thatSky=null;
-				if((thatRoom!=null)&&(rawExits()[d]!=null))
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				if((d!=Directions.UP)&&(d!=Directions.DOWN))
 				{
-					thatRoom.giveASky(depth+1);
-					thatSky=thatRoom.rawDoors()[Directions.UP];
+					Room thatRoom=rawDoors()[d];
+					Room thatSky=null;
+					if((thatRoom!=null)&&(rawExits()[d]!=null))
+					{
+						thatRoom.giveASky(depth+1);
+						thatSky=thatRoom.rawDoors()[Directions.UP];
+					}
+					if((thatSky!=null)&&(thatSky.roomID().length()==0)
+					&&((thatSky instanceof EndlessThinSky)||(thatSky instanceof EndlessSky)))
+					{
+						sky.rawDoors()[d]=thatSky;
+						Exit xo=rawExits()[d];
+						if((xo==null)||(xo.hasADoor())) xo=dnE;
+						sky.rawExits()[d]=dnE;
+						thatSky.rawDoors()[Directions.getOpDirectionCode(d)]=sky;
+						xo=thatRoom.rawExits()[Directions.getOpDirectionCode(d)];
+						if((xo==null)||(xo.hasADoor())) xo=dnE;
+						thatSky.rawExits()[Directions.getOpDirectionCode(d)]=xo;
+						((GridLocale)thatSky).clearGrid(null);
+					}
 				}
-				if((thatSky!=null)&&(thatSky.roomID().length()==0)
-				&&((thatSky instanceof EndlessThinSky)||(thatSky instanceof EndlessSky)))
-				{
-					sky.rawDoors()[d]=thatSky;
-					Exit xo=rawExits()[d];
-					if((xo==null)||(xo.hasADoor())) xo=dnE;
-					sky.rawExits()[d]=dnE;
-					thatSky.rawDoors()[Directions.getOpDirectionCode(d)]=sky;
-					xo=thatRoom.rawExits()[Directions.getOpDirectionCode(d)];
-					if((xo==null)||(xo.hasADoor())) xo=dnE;
-					thatSky.rawExits()[Directions.getOpDirectionCode(d)]=xo;
-					((GridLocale)thatSky).clearGrid(null);
-				}
-			}
 			sky.clearGrid(null);
 		}
 	}
