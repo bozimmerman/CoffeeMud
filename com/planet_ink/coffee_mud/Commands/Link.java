@@ -31,7 +31,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Link extends StdCommand
+public class Link extends At
 {
 	public Link(){}
 
@@ -48,7 +48,9 @@ public class Link extends StdCommand
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
 			return false;
 		}
-		int direction=Directions.getGoodDirectionCode(CMParms.combine(commands,2));
+		String dirStr=(String)commands.lastElement();
+		commands.removeElementAt(commands.size()-1);
+		int direction=Directions.getGoodDirectionCode(dirStr);
 		if(direction<0)
 		{
 			mob.tell("You have failed to specify a direction.  Try "+Directions.DIRECTIONS_DESC+".\n\r");
@@ -57,13 +59,17 @@ public class Link extends StdCommand
 		}
 
 		Room thisRoom=null;
-		String RoomID=(String)commands.elementAt(1);
+		String RoomID=CMParms.combine(commands,1);
 		thisRoom=CMLib.map().getRoom(RoomID);
 		if(thisRoom==null)
 		{
-			mob.tell("Room \""+RoomID+"\" is unknown.  Try again.");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
-			return false;
+			thisRoom=super.findRoomLiberally(mob,new StringBuffer(RoomID));
+			if(thisRoom==null)
+			{
+				mob.tell("Room \""+RoomID+"\" is unknown.  Try again.");
+				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
+				return false;
+			}
 		}
 		exitifyNewPortal(mob,thisRoom,direction);
 		mob.location().getArea().fillInAreaRoom(mob.location());
