@@ -45,7 +45,7 @@ public class Enter extends Go
 			return false;
 		}
 		String enterWhat=CMParms.combine(commands,1).toUpperCase();
-		int dir=CMLib.tracking().findExitDir(mob,mob.location(),enterWhat);
+		int dir=Directions.getGoodDirectionCode(enterWhat);
 		if(dir<0)
 		{
 			Environmental getThis=mob.location().fetchFromRoomFavorItems(null,enterWhat,Item.WORNREQ_UNWORNONLY);
@@ -54,8 +54,12 @@ public class Enter extends Go
 				Command C=CMClass.getCommand("Sit");
 				if(C!=null) return C.execute(mob,commands);
 			}
-			mob.tell("You don't see '"+enterWhat.toLowerCase()+"' here.");
-			return false;
+			dir=CMLib.tracking().findExitDir(mob,mob.location(),enterWhat);
+			if(dir<0)
+			{
+				mob.tell("You don't see '"+enterWhat.toLowerCase()+"' here.");
+				return false;
+			}
 		}
 		move(mob,dir,false,false,false);
 		return false;

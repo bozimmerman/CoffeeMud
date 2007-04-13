@@ -69,7 +69,7 @@ public class ClanCreate extends BaseClanner
 						Clan C=CMLib.clans().findClan(doubleCheck);
 						if((CMLib.database().DBUserSearch(null,doubleCheck))
 						||(doubleCheck.equalsIgnoreCase("All")))
-							msg.append("That name clans are available.  You may 'CLANAPPLY' to join them.");
+							msg.append("That name is already in use.  You may 'CLANAPPLY' to join them.");
 						else
 						if(C!=null)
 							msg.append("Clan "+C.clanID()+"  exists already. Type 'CLANLIST' and I'll show you what clans are available.  You may 'CLANAPPLY' to join them.");
