@@ -330,7 +330,6 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 		EnhancedCraftingSkill affect=(EnhancedCraftingSkill)mob.fetchEffect(ID());
 		if((affect!=null)
 		&&(!affect.aborted)
-		&&(!affect.messedUp)
 		&&(!affect.mending)
 		&&(item!=null))
 		{
