@@ -3721,9 +3721,9 @@ public class BaseGenerics extends StdCommand
 			if(newName.length()==0)
 				mob.tell("(no change)");
 			else
-			if(CMParms.contains(Item.WORN_DESCS,newName))
+			if(CMParms.containsIgnoreCase(Item.WORN_DESCS,newName))
 			{
-				int bit=CMParms.indexOf(Item.WORN_DESCS,newName)-1;
+				int bit=CMParms.indexOfIgnoreCase(Item.WORN_DESCS,newName)-1;
 				if(bit>=0)
 				{
 					if(CMath.isSet(flags,bit))
