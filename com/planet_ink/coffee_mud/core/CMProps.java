@@ -497,7 +497,7 @@ public class CMProps extends Properties
         setVar(SYSTEM_DEVALUERATE,getStr("DEVALUERATE"));
         setVar(SYSTEM_INVRESETRATE,getStr("INVRESETRATE"));
         setVar(SYSTEM_AUCTIONRATES,getStr("AUCTIONRATES"));
-        setVar(SYSTEM_DEFAULTPROMPT,getStr("DEFAULTPROMPT"));
+        setUpLowVar(SYSTEM_DEFAULTPROMPT,getStr("DEFAULTPROMPT"));
         if(getVar(SYSTEM_AUCTIONRATES).length()==0) setVar(SYSTEM_AUCTIONRATES,"0,10,0.1%,10%,5%,1,168");
         setVar(SYSTEM_EMOTEFILTER,getStr("EMOTEFILTER"));
         p().emoteFilter=CMParms.parse((getStr("EMOTEFILTER")).toUpperCase());
