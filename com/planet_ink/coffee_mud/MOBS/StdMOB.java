@@ -2729,7 +2729,8 @@ public class StdMOB implements MOB
 					for(int t=0;t<num;t++)
 					{
 						tattoo=fetchTattoo(t);
-						if((tattoo.length()>0)
+						if((tattoo!=null)
+						&&(tattoo.length()>0)
 						&&(Character.isDigit(tattoo.charAt(0)))
 						&&(tattoo.indexOf(" ")>0)
 						&&(CMath.isNumber(tattoo.substring(0,tattoo.indexOf(" ")))))
