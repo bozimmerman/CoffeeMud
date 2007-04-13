@@ -122,7 +122,7 @@ public class Order extends StdCommand
 		for(int v=0;v<V.size();v++)
 		{
 			target=(MOB)V.elementAt(v);
-			O=CMLib.english().findCommand(target,commands);
+			O=CMLib.english().findCommand(target,(Vector)commands.clone());
 			if(!CMSecurity.isAllowed(mob,mob.location(),"ORDER"))
 			{
 				if((O instanceof Command)&&(!((Command)O).canBeOrdered()))
@@ -131,7 +131,7 @@ public class Order extends StdCommand
 					continue;
 				}
 				if(O instanceof Ability)
-					O=CMLib.english().getToEvoke(target,commands);
+					O=CMLib.english().getToEvoke(target,(Vector)commands.clone());
 				if(O instanceof Ability)
 				{
 					if(CMath.bset(((Ability)O).flags(),Ability.FLAG_NOORDERING))
