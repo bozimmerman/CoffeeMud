@@ -278,7 +278,11 @@ public class StdRideable extends StdContainer implements Rideable
 
 	public String displayText()
 	{
- 		if((numRiders()>0)&&(stateStringSubject(this).length()>0)&&CMLib.flags().hasSeenContents(this))
+ 		if((numRiders()>0)
+ 		&&(stateStringSubject(this).length()>0)
+ 		&&(displayText!=null)
+ 		&&(displayText.length()>0)
+ 		&&CMLib.flags().hasSeenContents(this))
 		{
 			StringBuffer sendBack=new StringBuffer(name());
 			sendBack.append(" "+stateStringSubject(this)+" ");
