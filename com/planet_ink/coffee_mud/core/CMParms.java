@@ -1281,8 +1281,20 @@ public class CMParms
                 return i;
         return -1;
     }
+    public static int indexOfIgnoreCase(String[] supported, String expertise)
+    {
+        if(supported==null) return -1;
+        if(expertise==null) return -1;
+        for(int i=0;i<supported.length;i++)
+            if(supported[i].equalsIgnoreCase(expertise))
+                return i;
+        return -1;
+    }
+    
     public static boolean contains(String[] supported, String expertise)
     { return indexOf(supported,expertise)>=0;}
+    public static boolean containsIgnoreCase(String[] supported, String expertise)
+    { return indexOfIgnoreCase(supported,expertise)>=0;}
     
     public static int indexOf(Object[] supported, Object expertise)
     {
@@ -1306,6 +1318,16 @@ public class CMParms
         return false;
     }
 
+    public static boolean startsWithIgnoreCase(String[] supported, String expertise)
+    {
+        if(supported==null) return true;
+        if(expertise==null) return false;
+        for(int i=0;i<supported.length;i++)
+            if(supported[i].toUpperCase().startsWith(expertise.toUpperCase()))
+                return true;
+        return false;
+    }
+    
     public static Vector denumerate(Enumeration e)
     {
         Vector V=new Vector();
