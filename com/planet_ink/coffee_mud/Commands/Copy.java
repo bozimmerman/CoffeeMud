@@ -44,7 +44,7 @@ public class Copy extends StdCommand
 		commands.removeElementAt(0); // copy
 		if(commands.size()<1)
 		{
-			mob.tell("You have failed to specify the proper fields.\n\rThe format is COPY (NUMBER) ([ITEM NAME]/[MOB NAME]/[DIRECTIONS])\n\r");
+			mob.tell("You have failed to specify the proper fields.\n\rThe format is COPY (NUMBER) ([ITEM NAME]/[MOB NAME][ROOM ID] [DIRECTIONS]/[DIRECTIONS])\n\r");
 			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
 			return false;
 		}
@@ -83,8 +83,23 @@ public class Copy extends StdCommand
 		if(dirCode>=0)
 			E=mob.location();
 		else
-			E=mob.location().fetchFromRoomFavorItems(null,name,Item.WORNREQ_UNWORNONLY);
-
+		if(commands.size()>1)
+		{
+			dirCode=Directions.getGoodDirectionCode((String)commands.lastElement());
+			if(dirCode>=0)
+			{
+				commands.removeElementAt(commands.size()-1);
+				name=CMParms.combine(commands,0);
+				E=CMLib.map().getRoom(name);
+				if(E==null)
+				{
+					mob.tell("Room ID '"+name+"' does not exist.");
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
+					return false;
+				}
+			}
+		}
+		if(E==null) E=mob.location().fetchFromRoomFavorItems(null,name,Item.WORNREQ_UNWORNONLY);
         if(E==null) E=mob.location().fetchFromRoomFavorMOBs(null,name,Item.WORNREQ_UNWORNONLY);
 		if(E==null)	E=mob.fetchInventory(name);
 		if(E==null)
