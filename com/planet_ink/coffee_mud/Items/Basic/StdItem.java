@@ -642,7 +642,8 @@ public class StdItem implements Item
 		&&(mob!=null)
 		&&(mob.isMine(this)))
 		{
-			if(envStats().weight()>(mob.maxCarry()/5))
+			if((envStats().weight()>(mob.maxCarry()/5))
+			&&(envStats().weight()!=0))
 			{
 				mob.tell(name()+" is too heavy to throw.");
 				return false;
@@ -825,7 +826,9 @@ public class StdItem implements Item
 					mob.tell(name()+" is too powerful to endure possessing it.");
 					return false;
 				}
-				if((envStats().weight()>(mob.maxCarry()-mob.envStats().weight()))&&(!mob.isMine(this)))
+				if((envStats().weight()>(mob.maxCarry()-mob.envStats().weight()))
+				&&(!mob.isMine(this))
+				&&(envStats().weight()!=0))
 				{
 					mob.tell(name()+" is too heavy.");
 					return false;
