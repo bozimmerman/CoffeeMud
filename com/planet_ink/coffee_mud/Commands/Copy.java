@@ -233,8 +233,7 @@ public class Copy extends StdCommand
 				}
 	    		synchronized(("SYNC"+room.roomID()).intern())
 	    		{
-	    			room=CMLib.map().getRoom(room);
-					Room newRoom=(Room)room.copyOf();
+					Room newRoom=(Room)E.copyOf();
 					newRoom.clearSky();
 					if(newRoom instanceof GridLocale)
 						((GridLocale)newRoom).clearGrid(null);
@@ -267,13 +266,13 @@ public class Copy extends StdCommand
 					if(i==0)
 					{
 						if(number>1)
-							room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+room.roomTitle()+"s fall "+Directions.getInDirectionName(dirCode)+".");
+							room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+newRoom.roomTitle()+"s fall "+Directions.getInDirectionName(dirCode)+".");
 						else
-							room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+room.roomTitle()+" falls "+Directions.getInDirectionName(dirCode)+".");
-						Log.sysOut("SysopUtils",mob.Name()+" copied "+number+" rooms "+room.roomID()+".");
+							room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newRoom.roomTitle()+" falls "+Directions.getInDirectionName(dirCode)+".");
+						Log.sysOut("SysopUtils",mob.Name()+" copied "+number+" rooms "+newRoom.roomID()+".");
 					}
 					else
-						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+room.roomTitle()+" falls "+Directions.getInDirectionName(dirCode)+".");
+						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newRoom.roomTitle()+" falls "+Directions.getInDirectionName(dirCode)+".");
 					room=newRoom;
 	    		}
 			}
