@@ -40,7 +40,8 @@ public class Spell_Silence extends Spell
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
-
+	public Room theRoom=null;
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -57,8 +58,37 @@ public class Spell_Silence extends Spell
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask() |  EnvStats.CAN_NOT_SPEAK);
-		affectableStats.setSensesMask(affectableStats.sensesMask() |  EnvStats.CAN_NOT_HEAR);
+		if((affected instanceof MOB)||(affected instanceof Item))
+		{
+			Room R=CMLib.map().roomLocation(affected);
+			if((R==theRoom)||(unInvoked))
+			{
+				affectableStats.setSensesMask(affectableStats.sensesMask() |  EnvStats.CAN_NOT_SPEAK);
+				affectableStats.setSensesMask(affectableStats.sensesMask() |  EnvStats.CAN_NOT_HEAR);
+			}
+			else
+			{
+				affected.delEffect(this);
+				affected.recoverEnvStats();
+			}
+		}
+		else
+		if((affected instanceof Room)&&(!unInvoked))
+		{
+			Room R=(Room)affected;
+			theRoom=R;
+			MOB M=null;
+			for(int i=0;i<R.numInhabitants();i++)
+			{
+				M=R.fetchInhabitant(i);
+				if((M!=null)&&(M.fetchEffect(ID())==null))
+				{
+					M.addEffect(this);
+					setAffectedOne(R);
+				}
+			}
+		}
+				
 	}
 
 
