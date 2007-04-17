@@ -40,7 +40,7 @@ public class Spell_FaerieFog extends Spell
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode() {	return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
-
+	private Room theRoom=null;
 
 	public void unInvoke()
 	{
@@ -60,9 +60,51 @@ public class Spell_FaerieFog extends Spell
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setSensesMask(affectableStats.sensesMask() |  EnvStats.CAN_SEE_INVISIBLE);
+		if((affected instanceof MOB)||(affected instanceof Item))
+		{
+			Room R=CMLib.map().roomLocation(affected);
+			if((R==theRoom)||(unInvoked))
+			{
+				if((affectableStats.disposition()&EnvStats.IS_INVISIBLE)==EnvStats.IS_INVISIBLE)
+					affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_INVISIBLE);
+				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_GLOWING);
+				affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_BONUS);
+				affectableStats.setArmor(affectableStats.armor()+10);
+			}
+			else
+			{
+				affected.delEffect(this);
+				affected.recoverEnvStats();
+			}
+		}
+		else
+		if((affected instanceof Room)&&(!unInvoked))
+		{
+			Room R=(Room)affected;
+			theRoom=R;
+			MOB M=null;
+			for(int i=0;i<R.numInhabitants();i++)
+			{
+				M=R.fetchInhabitant(i);
+				if((M!=null)&&(M.fetchEffect(ID())==null))
+				{
+					M.addEffect(this);
+					setAffectedOne(R);
+				}
+			}
+			Item I=null;
+			for(int i=0;i<R.numItems();i++)
+			{
+				I=R.fetchItem(i);
+				if((I!=null)&&(I.fetchEffect(ID())==null))
+				{
+					I.addEffect(this);
+					setAffectedOne(R);
+				}
+			}
+		}
+				
 	}
-
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
