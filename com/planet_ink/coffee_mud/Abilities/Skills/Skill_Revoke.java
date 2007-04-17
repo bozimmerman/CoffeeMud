@@ -73,9 +73,6 @@ public class Skill_Revoke extends StdSkill
 			return false;
 		}
 
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-			return false;
-
 		Ability revokeThis=null;
 		for(int a=0;a<target.numEffects();a++)
 		{
@@ -98,6 +95,10 @@ public class Skill_Revoke extends StdSkill
 				mob.tell(mob,target,null,"<T-NAME> do(es) not appear to be affected by anything you can revoke.");
 			return false;
 		}
+		
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
+
 
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
