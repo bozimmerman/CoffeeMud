@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2007 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,59 +41,59 @@ public class CMAble extends StdLibrary implements AbilityMapper
     public Hashtable completeDomainMap=new Hashtable();
     public Hashtable reverseAbilityMap=new Hashtable();
 
-	public void addCharAbilityMapping(String ID, 
+	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
-									  String ability, 
+									  String ability,
 									  boolean autoGain)
 	{ addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false,new Vector(),""); }
-	public void addCharAbilityMapping(String ID, 
+	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
-									  String ability, 
+									  String ability,
 									  boolean autoGain,
 									  String extraMasks)
 	{ addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false,new Vector(),extraMasks); }
-	public void addCharAbilityMapping(String ID, 
+	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
-									  String ability, 
+									  String ability,
 									  boolean autoGain,
 									  Vector skillPreReqs)
 	{ addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false,skillPreReqs,""); }
-	public void addCharAbilityMapping(String ID, 
+	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
-									  String ability, 
+									  String ability,
 									  boolean autoGain,
 									  Vector skillPreReqs,
 									  String extraMasks)
 	{ addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false,skillPreReqs,extraMasks); }
-	public void addCharAbilityMapping(String ID, 
+	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
-									  String ability, 
+									  String ability,
 									  int defaultProficiency,
 									  String defParm,
 									  boolean autoGain)
 	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,defParm,autoGain,false,new Vector(),""); }
-	public void addCharAbilityMapping(String ID, 
+	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
-									  String ability, 
+									  String ability,
 									  int defaultProficiency,
 									  String defParm,
 									  boolean autoGain,
 									  String extraMasks)
 	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,defParm,autoGain,false,new Vector(),extraMasks); }
-	public void addCharAbilityMapping(String ID, 
+	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
-									  String ability, 
+									  String ability,
 									  int defaultProficiency,
 									  boolean autoGain)
 	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,"",autoGain,false,new Vector(),""); }
-	public void addCharAbilityMapping(String ID, 
+	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
-									  String ability, 
+									  String ability,
 									  int defaultProficiency,
 									  boolean autoGain,
 									  String extraMasks)
 	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,"",autoGain,false,new Vector(),extraMasks); }
-	
+
 	public void delCharAbilityMapping(String ID, String ability)
 	{
 		if(!completeAbleMap.containsKey(ID))
@@ -115,7 +115,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			reV.removeElement(ID);
 		}
 	}
-	
+
 	public Enumeration getClassAbles(String ID)
 	{
 		if(!completeAbleMap.containsKey(ID))
@@ -123,28 +123,28 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
 		return ableMap.elements();
 	}
-	
-	public void addCharAbilityMapping(String ID, 
+
+	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
-									  String ability, 
+									  String ability,
 									  int defaultProficiency,
 									  String defaultParam,
 									  boolean autoGain,
 									  boolean secret)
 	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,defaultParam,autoGain,secret,new Vector(),"");}
-	public void addCharAbilityMapping(String ID, 
+	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
-									  String ability, 
+									  String ability,
 									  int defaultProficiency,
 									  String defaultParam,
 									  boolean autoGain,
 									  boolean secret,
 									  String extraMasks)
 	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,defaultParam,autoGain,secret,new Vector(),extraMasks);}
-    
-    public void addCharAbilityMapping(String ID, 
+
+    public void addCharAbilityMapping(String ID,
                                       int qualLevel,
-                                      String ability, 
+                                      String ability,
                                       int defaultProficiency,
                                       String defaultParam,
                                       boolean autoGain,
@@ -152,7 +152,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
                                       Vector preReqSkillsList,
                                       String extraMask)
     { addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,defaultParam,autoGain,secret,preReqSkillsList,extraMask,null);}
-	
+
 	public void addPreRequisites(String ID, Vector preReqSkillsList, String extraMask)
 	{
 		if(preReqSkillsList==null) return;
@@ -198,7 +198,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			}
 		}
 	}
-	
+
     public boolean isDomainIncludedInAnyAbility(int domain, int acode)
     {
         Vector V=(Vector)completeDomainMap.get(new Integer(domain));
@@ -217,7 +217,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
         }
         return V.contains(new Integer(acode));
     }
-    
+
     public DVector getClassAllowsList(String classID)
     {
         DVector ABLES=getUpToLevelListings(classID,CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL),false,false);
@@ -246,13 +246,13 @@ public class CMAble extends StdLibrary implements AbilityMapper
         }
         return DV;
     }
-    
+
 	public Vector getAbilityAllowsList(String ableID)
 	{
 		String KEYID=null;
 		String abilityID=null;
 		Vector remove=null;
-		for(Enumeration e=allows.keys();e.hasMoreElements();) 
+		for(Enumeration e=allows.keys();e.hasMoreElements();)
 		{
 			KEYID=(String)e.nextElement();
 			if(KEYID.startsWith("*"))
@@ -277,10 +277,10 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				allows.remove(remove.elementAt(r));
 		return (Vector)allows.get(ableID);
 	}
-	
-	public void addCharAbilityMapping(String ID, 
+
+	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
-									  String ability, 
+									  String ability,
 									  int defaultProficiency,
 									  String defaultParam,
 									  boolean autoGain,
@@ -300,7 +300,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		able.defaultProficiency=defaultProficiency;
 		able.extraMask=extraMask;
         able.costOverrides=costOverrides;
-		
+
 		able.skillPreReqs=new DVector(2);
 		addPreRequisites(ability,preReqSkillsList,extraMask);
 		if(preReqSkillsList!=null)
@@ -328,13 +328,13 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		if(reV==null){ reV=new DVector(2); reverseAbilityMap.put(ability,reV);}
 		if(!reV.contains(ID)) reV.addElement(ID, able);
 	}
-	
+
 	public boolean qualifiesByAnyCharClass(String abilityID)
 	{
 		if(completeAbleMap.containsKey("All"))
 		{
 			Hashtable ableMap=(Hashtable)completeAbleMap.get("All");
-			if(ableMap.containsKey(abilityID)) 
+			if(ableMap.containsKey(abilityID))
 				return true;
 		}
 		for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
@@ -343,26 +343,26 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			if(completeAbleMap.containsKey(C.ID()))
 			{
 				Hashtable ableMap=(Hashtable)completeAbleMap.get(C.ID());
-				if(ableMap.containsKey(abilityID)) 
+				if(ableMap.containsKey(abilityID))
 					return true;
 			}
 		}
 		return false;
 	}
-	
+
 	public int lowestQualifyingLevel(String ability)
 	{
 		Integer lowLevel=(Integer)lowestQualifyingLevelMap.get(ability);
 		if(lowLevel==null) return 0;
 		return lowLevel.intValue();
 	}
-	
+
 	public boolean classOnly(String classID, String abilityID)
 	{
 		if(completeAbleMap.containsKey(classID))
 		{
 			Hashtable ableMap=(Hashtable)completeAbleMap.get(classID);
-			if(!ableMap.containsKey(abilityID)) 
+			if(!ableMap.containsKey(abilityID))
 				return false;
 		}
 		else
@@ -377,13 +377,13 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return true;
 	}
 
-	
+
 	public boolean classOnly(MOB mob, String classID, String abilityID)
 	{
 		if(completeAbleMap.containsKey(classID))
 		{
 			Hashtable ableMap=(Hashtable)completeAbleMap.get(classID);
-			if(!ableMap.containsKey(abilityID)) 
+			if(!ableMap.containsKey(abilityID))
 				return false;
 		}
 		else
@@ -398,8 +398,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return true;
 	}
-	
-	
+
+
 	public boolean availableToTheme(String abilityID, int theme, boolean publicly)
 	{
 		for(Enumeration e=completeAbleMap.keys();e.hasMoreElements();)
@@ -417,7 +417,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return false;
 	}
-	
+
 	public Vector getLevelListings(String ID, boolean checkAll, int level)
 	{
 		Vector V=new Vector();
@@ -476,7 +476,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return DV;
 	}
-	
+
 	public int getQualifyingLevel(String ID, boolean checkAll, String ability)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -506,7 +506,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			{
 				String a=abilityID.substring(1).toUpperCase();
 				for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
-				{ 
+				{
 					preA=(Ability)e.nextElement();
 					if(preA.ID().toUpperCase().endsWith(a))
 						orset.addElement(preA.ID());
@@ -517,7 +517,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			{
 				String a=abilityID.substring(0,abilityID.length()-1).toUpperCase();
 				for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
-				{ 
+				{
 					preA=(Ability)e.nextElement();
 					if(preA.ID().toUpperCase().startsWith(a))
 						orset.addElement(preA.ID());
@@ -530,7 +530,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		{
 			abilityID=(String)orset.elementAt(o);
 			preA=CMClass.getAbility(abilityID);
-			if(preA==null) 
+			if(preA==null)
 			{
 				preA=CMClass.findAbility(abilityID);
 				if(preA!=null)
@@ -545,7 +545,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return orset;
 	}
-	
+
 	public void fillPreRequisites(Ability A, DVector rawPreReqs)
 	{
 		for(int v=0;v<rawPreReqs.size();v++)
@@ -560,7 +560,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			else
 			{
 				Ability otherAbility=CMClass.getAbility(abilityID);
-				if(otherAbility==null) 
+				if(otherAbility==null)
 				{
 					otherAbility=CMClass.findAbility(abilityID);
 					if(otherAbility!=null)
@@ -574,7 +574,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			}
 		}
 	}
-	
+
 	public DVector getApplicablePreRequisites(MOB mob, Ability A)
 	{
 		DVector V=getRawPreRequisites(mob,A);
@@ -582,7 +582,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		fillPreRequisites(A,V);
 		return V;
 	}
-	
+
 	public DVector getCommonPreRequisites(Ability A)
 	{
 		DVector preReqs=null;
@@ -607,9 +607,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		DVector reqs=preReqs.copyOf();
 		fillPreRequisites(A,reqs);
 		return reqs;
-		
+
 	}
-	
+
 	public String getCommonExtraMask(Ability A)
 	{
 		String mask=null;
@@ -633,7 +633,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		if((mask==null)||(mask.length()==0)) return "";
 		return mask;
 	}
-	
+
 	public DVector getUnmetPreRequisites(MOB student, Ability A)
 	{
 		DVector V=getRawPreRequisites(student,A);
@@ -676,7 +676,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return V;
 	}
-	
+
 	public DVector getPreReqs(String ID, boolean checkAll, String ability)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -693,7 +693,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return null;
 	}
-	
+
 	public String formatPreRequisites(DVector preReqs)
 	{
 		StringBuffer names=new StringBuffer("");
@@ -710,7 +710,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 					for(int v=0;v<V.size();v++)
 					{
 						Ability A=CMClass.getAbility((String)V.elementAt(v));
-						if(A!=null) 
+						if(A!=null)
 						{
 							names.append("'"+A.name()+"'");
 							if(V.size()>1)
@@ -731,7 +731,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 				else
 				{
 					Ability A=CMClass.getAbility((String)preReqs.elementAt(p,1));
-					if(A!=null) 
+					if(A!=null)
 					{
 						names.append("'"+A.name()+"'");
 						if(prof.intValue()>0)
@@ -750,7 +750,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return names.toString();
 	}
-	
+
 	public DVector getRawPreRequisites(MOB student, Ability A)
 	{
 		if(student==null) return new DVector(2);
@@ -793,7 +793,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return null;
 	}
-	
+
 	public String getApplicableMask(MOB student, Ability A)
 	{
 		if(student==null) return "";
@@ -819,7 +819,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		mask=getExtraMask(student.charStats().getCurrentClass().ID(),true,A.ID());
 		return mask==null?"":mask;
 	}
-	
+
 	public int qualifyingLevel(MOB student, Ability A)
 	{
 		if(student==null) return -1;
@@ -847,7 +847,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			greatestDiff=classLevel-level;
 			theLevel=level;
 		}
-		if(theLevel<0) 
+		if(theLevel<0)
 			return getQualifyingLevel(student.charStats().getCurrentClass().ID(),true,A.ID());
 		return theLevel;
 	}
@@ -876,7 +876,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		&&(classLevel>=level)
 		&&((classLevel-level)>greatestDiff))
 			greatestDiff=classLevel-level;
-		if(theClass==null) 
+		if(theClass==null)
 			return student.charStats().getClassLevel(student.charStats().getCurrentClass());
 		return student.charStats().getClassLevel(theClass);
 	}
@@ -906,7 +906,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return theClass;
 	}
 
-	
+
 	public boolean qualifiesByCurrentClassAndLevel(MOB student, Ability A)
 	{
 		if(student==null) return false;
@@ -955,8 +955,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return false;
 	}
-	
-	
+
+
     /**
      * @param ID
      * @param ability
@@ -973,7 +973,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
         return null;
     }
 	public AbilityMapping getAllAbleMap(String ability){ return getAbleMap("All",ability);}
-	
+
 	public boolean getSecretSkill(String ID, boolean checkAll, String ability)
 	{
 		boolean secretFound=false;
@@ -994,14 +994,14 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return secretFound;
 	}
-	
+
 	public boolean getAllSecretSkill(String ability)
 	{
 		AbilityMapping AB=getAllAbleMap(ability);
 		if(AB!=null) return AB.isSecret;
 		return false;
 	}
-	
+
 	public boolean getSecretSkill(MOB mob, String ability)
 	{
 		boolean secretFound=false;
@@ -1033,7 +1033,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		if(AB!=null) return AB.isSecret;
 		return secretFound;
 	}
-	
+
 	public boolean getSecretSkill(String ability)
 	{
 		boolean secretFound=false;
@@ -1069,7 +1069,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		if(AB!=null) return AB.isSecret;
 		return secretFound;
 	}
-	
+
     public Integer[] getCostOverrides(String ID, boolean checkAll, String ability)
     {
     	Integer[] found=null;
@@ -1086,14 +1086,14 @@ public class CMAble extends StdLibrary implements AbilityMapper
         }
         return found;
     }
-    
+
     public Integer[] getAllCostOverrides(String ability)
     {
         AbilityMapping AB=getAllAbleMap(ability);
         if(AB!=null) return AB.costOverrides;
         return null;
     }
-    
+
     public Integer[] getCostOverrides(MOB mob, String ability)
     {
     	Integer[] found=null;
@@ -1118,7 +1118,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
             return found=AB.costOverrides;
         return found;
     }
-    
+
     public Integer[] getCostOverrides(String ability)
     {
     	Integer[] found=null;
@@ -1147,7 +1147,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
             return found=AB.costOverrides;
         return found;
     }
-    
+
 	public String getDefaultParm(String ID, boolean checkAll, String ability)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -1156,7 +1156,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			if(ableMap.containsKey(ability))
 				return ((AbilityMapping)ableMap.get(ability)).defaultParm;
 		}
-		
+
 		if((checkAll)&&(completeAbleMap.containsKey("All")))
 		{
 			Hashtable ableMap=(Hashtable)completeAbleMap.get("All");
@@ -1165,7 +1165,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return "";
 	}
-	
+
 	public int getDefaultProficiency(String ID, boolean checkAll, String ability)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -1182,11 +1182,11 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return 0;
 	}
-	
+
 	// returns Vector of components found if all good, returns Integer of bad row if not.
 	public Vector componentCheck(MOB mob, DVector req)
 	{
-		if((mob==null)||(req==null)||(req.size()==0)) 
+		if((mob==null)||(req==null)||(req.size()==0))
 			return new Vector();
 		boolean currentAND=false;
 		boolean previousValue=true;
@@ -1201,7 +1201,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		{
 			currentAND=((Boolean)req.elementAt(i,1)).booleanValue();
 			if(previousValue&&(!currentAND)) return passes;
-			
+
 			// if they fail the zappermask, its like the req is NOT even there...
 			if((((String)req.elementAt(i,6)).length()>0)
 			&&(!CMLib.masking().maskCheck((String)req.elementAt(i,6),mob,true)))
@@ -1243,15 +1243,16 @@ public class CMAble extends StdLibrary implements AbilityMapper
                 if(I.envStats().weight()>amt)
                 {
                     I=(Item)CMLib.materials().unbundle(I,amt);
+                    if(I==null) continue;
 					amt=amt-I.envStats().weight();
                 }
                 else
                     amt=amt-I.envStats().weight();
                 thisSet.addElement(I);
-                
+
 				if(amt<=0)
 				{
-					if(thisSet.size()>0) 
+					if(thisSet.size()>0)
                         thisSet.addElement(req.elementAt(i,3));
 					break;
 				}
@@ -1298,7 +1299,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
         curr.addElement("MASK",(String)codedDV.elementAt(r,6));
         return curr;
     }
-    
+
     public void setAbilityComponentCodedFromDecodedDVector(DVector decodedDV, DVector codedDV, int row)
     {
         String[] s=new String[6];
@@ -1321,19 +1322,19 @@ public class CMAble extends StdLibrary implements AbilityMapper
             codedDV.setElementAt(row,3,new Boolean(false));
         codedDV.setElementAt(row,4,new Integer(CMath.s_int(s[3])));
         int depth=CMLib.materials().getResourceCode(s[4],false);
-        if(depth>=0) 
+        if(depth>=0)
             codedDV.setElementAt(row,5,new Integer(depth));
         else
         {
             depth=CMLib.materials().getMaterialCode(s[4],false);
-            if(depth>=0) 
+            if(depth>=0)
                 codedDV.setElementAt(row,5,new Long(depth));
             else
                 codedDV.setElementAt(row,5,s[4].toUpperCase().trim());
         }
         codedDV.setElementAt(row,6,s[5]);
     }
-    
+
     public Vector getAbilityComponentDecodedDVectors(DVector req)
     {
         if(req==null) return null;
@@ -1345,12 +1346,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
         }
         return V;
     }
-    
+
     public void addBlankAbilityComponent(DVector codedDV)
     {
         codedDV.addElement(new Boolean(true),new Integer(0),new Boolean(false),new Integer(1),new String("resource-material-item name"),"");
     }
-    
+
     public String getAbilityComponentCodedString(String AID)
     {
         StringBuffer buf=new StringBuffer("");
@@ -1374,7 +1375,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
         }
         return AID+"="+buf.toString();
     }
-    
+
     public String getAbilityComponentDesc(MOB mob, DVector req, int r)
     {
         int amt=0;
@@ -1411,7 +1412,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
         }
         return buf.toString();
     }
-    
+
 	public String getAbilityComponentDesc(MOB mob, String AID)
 	{
 		DVector req=getAbilityComponentDVector(AID);
@@ -1427,7 +1428,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		if(x<0) return "Malformed component line (code 0): "+s;
 		String id=s.substring(0,x).toUpperCase().trim();
 		String parms=s.substring(x+1);
-		
+
 		String parmS=null;
 		String rsc=null;
 		DVector parm=null;
@@ -1444,10 +1445,10 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			else
 			if(parms.startsWith("&&"))
 			{ parms=parms.substring(2).trim();}
-			
+
 			if(!parms.startsWith("("))
 			{error="Malformed component line (code 1): "+parms; break;}
-			
+
 			depth=0;
 			x=1;
 			for(;x<parms.length();x++)
@@ -1462,7 +1463,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			if(x==parms.length()){error="Malformed component line (code 2): "+parms; break;}
 			parmS=parms.substring(1,x).trim();
 			parms=parms.substring(x+1).trim();
-			
+
 			build[1]=new Integer(0);
 			x=parmS.indexOf(":");
 			if(x<0){error="Malformed component line (code 0-1): "+parmS; continue;}
@@ -1473,7 +1474,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			if((x>0)&&(!parmS.substring(0,x).equalsIgnoreCase("inventory")))
 			{error="Malformed component line (code 0-2): "+parmS; continue;}
 			parmS=parmS.substring(x+1);
-			
+
 			build[2]=new Boolean(true);
 			x=parmS.indexOf(":");
 			if(x<0){error="Malformed component line (code 1-1): "+parmS; continue;}
@@ -1482,7 +1483,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			if((x>0)&&(!parmS.substring(0,x).equalsIgnoreCase("consumed")))
 			{error="Malformed component line (code 1-2): "+parmS; continue;}
 			parmS=parmS.substring(x+1);
-			
+
 			build[3]=new Integer(1);
 			x=parmS.indexOf(":");
 			if(x<0){error="Malformed component line (code 2-1): "+parmS; continue;}
@@ -1490,26 +1491,26 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			{error="Malformed component line (code 2-2): "+parmS; continue;}
 			if(x>0) build[3]=new Integer(CMath.s_int(parmS.substring(0,x)));
 			parmS=parmS.substring(x+1);
-			
+
 			build[4]=new String("");
 			x=parmS.indexOf(":");
 			if(x<=0){error="Malformed component line (code 3-1): "+parmS; continue;}
 			rsc=parmS.substring(0,x);
 			depth=CMLib.materials().getResourceCode(rsc,false);
-			if(depth>=0) 
+			if(depth>=0)
 				build[4]=new Integer(depth);
 			else
 			{
 				depth=CMLib.materials().getMaterialCode(rsc,false);
-				if(depth>=0) 
+				if(depth>=0)
 					build[4]=new Long(depth);
 				else
 					build[4]=rsc.toUpperCase().trim();
 			}
 			parmS=parmS.substring(x+1);
-			
+
 			build[5]=parmS;
-			
+
 			parm.addElement(build[0],build[1],build[2],build[3],build[4],build[5]);
 		}
 		parm.trimToSize();
@@ -1517,8 +1518,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		if(parm.size()>0) H.put(id.toUpperCase(),parm);
 		return null;
 	}
-	
-	// format of each data entry is 1=ANDOR(B), 2=DISPO(I), 3=CONSUMED(B), 4=AMT(I), 5=MATERIAL(L)RESOURCE(I)NAME(S), 6=MASK(S) 
+
+	// format of each data entry is 1=ANDOR(B), 2=DISPO(I), 3=CONSUMED(B), 4=AMT(I), 5=MATERIAL(L)RESOURCE(I)NAME(S), 6=MASK(S)
 	public Hashtable getAbilityComponentMap()
 	{
 		Hashtable H=(Hashtable)Resources.getResource("COMPONENT_MAP");
@@ -1543,5 +1544,5 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return H;
 	}
-	
+
 }
