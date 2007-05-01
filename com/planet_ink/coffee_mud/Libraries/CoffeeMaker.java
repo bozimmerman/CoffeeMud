@@ -3034,7 +3034,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		case 6: return M.description();
 		case 7: {
 		    	String money=""+CMLib.beanCounter().getMoney(M);
-		    	CMLib.beanCounter().clearZeroMoney(M,null);
+		    	//CMLib.beanCounter().clearZeroMoney(M,null);  WHY THE HECK WAS THIS EVER HERE?!?!
 		    	return money;
 		    	}
 		case 8: return ""+M.fetchFaction(CMLib.factions().AlignID());
