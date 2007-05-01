@@ -821,7 +821,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	{
 	    Vector V=new Vector();
 		if(mob==null) return V;
-		if((currency==null)||((currency.equals(getCurrency(mob)))&&(mob.getMoney()>0)))
+		if(((currency==null)||(currency.equals(getCurrency(mob))))&&(mob.getMoney()>0))
 		{
 		    addMoney(mob,getCurrency(mob),new Integer(mob.getMoney()).doubleValue());
 		    mob.setMoney(0);
