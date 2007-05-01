@@ -1855,7 +1855,15 @@ public class BaseGenerics extends StdCommand
 	}
 
 	protected void genMoney(MOB mob, MOB E, int showNumber, int showFlag) throws IOException
-    { CMLib.beanCounter().setMoney(E,CMLib.english().prompt(mob,CMLib.beanCounter().getMoney(E),showNumber,showFlag,"Money")); }
+    {
+		if(E.getMoney()==0)
+		{
+			double d=CMLib.beanCounter().getTotalAbsoluteNativeValue(E);
+			CMLib.beanCounter().subtractMoney(E,d);
+			E.setMoney((int)Math.round(d));
+		}
+		CMLib.beanCounter().setMoney(E,CMLib.english().prompt(mob,E.getMoney(),showNumber,showFlag,"Money")); 
+	}
 
 	protected void genWeaponAmmo(MOB mob, Weapon E, int showNumber, int showFlag)
 		throws IOException
@@ -6195,6 +6203,7 @@ public class BaseGenerics extends StdCommand
 				me.recoverMaxState();
 				me.recoverEnvStats();
 				me.resetToMaxState();
+				
 				if(me.text().length()>=maxLength)
 				{
 					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
