@@ -2725,8 +2725,7 @@ public class StdMOB implements MOB
 				try
 				{
 					String tattoo=null;
-                    num=numTattoos();
-					for(int t=0;t<num;t++)
+					for(int t=0;t<numTattoos();t++)
 					{
 						tattoo=fetchTattoo(t);
 						if((tattoo!=null)
@@ -3377,7 +3376,7 @@ public class StdMOB implements MOB
 			for(int i=0;i<numTattoos();i++)
 			{
 				s=fetchTattoo(i);
-				if(s.endsWith(of))
+				if((s!=null)&&(s.endsWith(of)))
 				{
 					x=0;
 					while(Character.isDigit(s.charAt(x))) x++;
