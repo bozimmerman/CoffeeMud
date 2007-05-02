@@ -117,7 +117,7 @@ public class LPCData {
                         str = (String)tmp.elementAt(1);
                         str = str.trim();
                         if( str.charAt(0) != ':' ) {
-                            throw new I3Exception("Invalid mapping format: " + str);
+                            throw new I3Exception("Invalid mapping format1: " + str);
                         }
                         str = str.substring(1, str.length());
                         key = tmp.elementAt(0);
@@ -127,7 +127,7 @@ public class LPCData {
                         h.put(key, value);
                         str = str.trim();
                         if( str.charAt(0) != ',' && str.charAt(0) != ']' ) {
-                            throw new I3Exception("Invalid mapping format: " + str);
+                            throw new I3Exception("Invalid mapping format2: " + str);
                         }
                         else if( str.charAt(0) != ']' ) {
                             str = str.substring(1, str.length());
@@ -137,7 +137,7 @@ public class LPCData {
                     if( str.charAt(1) != ')' ) {
                         str = str.substring(2, str.length()).trim();
                         if( str.charAt(0) != ')' ) {
-                            throw new I3Exception("Invalid mapping format: " + str);
+                            throw new I3Exception("Invalid mapping format3: " + str);
                         }
                         data.setElementAt(str.substring(1, str.length()).trim(), 1);
                     }
@@ -154,29 +154,38 @@ public class LPCData {
             }
         }
         else if( str.charAt(0) == '"' ) {
-            String tmp = "";
-            char prior = '\0';
-            char next = str.charAt(1);
-
-            while( next != '"' || (next == '"' && str.charAt(0) == '\\') ) {
-                if( next == '"' && str.charAt(0) == '\\' && prior == '\\') {
-                    break;
-                }
-                if( next != '\\' || str.charAt(0) == '\\') {
-                    tmp += next;
-                }
-                prior = str.charAt(0);
-                str = str.substring(1, str.length());
-                next = str.charAt(1);
-            }
-            if( !flag ) {
-                return tmp;
-            }
-            if( str.length() > 2 ) {
-                str = str.substring(2, str.length()).trim();
-            }
-            data.setElementAt(tmp, 0);
-            data.setElementAt(str, 1);
+        	int x=1;
+        	StringBuffer in=new StringBuffer("");
+        	char c='\0';
+        	while(x<str.length())
+        	{
+        		c=str.charAt(x);
+	        	switch(str.charAt(x))
+	        	{
+	        	case '\\':
+	        		if((x+1)<str.length())
+	        		{
+	        			in.append(str.charAt(x+1));
+	        			x++;
+	        		}
+	        		else
+	        			in.append(c);
+	        		x++;
+	        		break;
+	        	case '"':
+	                if( !flag ) return in.toString();
+	        		data.setElementAt(in.toString(),0);
+	        		data.setElementAt(str.substring(x+1),1);
+	        		return data;
+	        	default:
+	        		in.append(c);
+	        		x++;
+	        		break;
+	        	}
+        	}
+            if( !flag ) return in.toString();
+    		data.setElementAt(in.toString(),0);
+    		data.setElementAt("",1);
             return data;
         }
         else if( Character.isDigit(str.charAt(0)) || str.charAt(0) == '-' ) {
