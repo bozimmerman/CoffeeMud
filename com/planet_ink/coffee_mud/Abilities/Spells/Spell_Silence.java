@@ -61,7 +61,7 @@ public class Spell_Silence extends Spell
 		if((affected instanceof MOB)||(affected instanceof Item))
 		{
 			Room R=CMLib.map().roomLocation(affected);
-			if((R==theRoom)||(unInvoked))
+			if((R!=null)&&(R==theRoom)&&(!unInvoked)&&(R.fetchEffect(ID())==this))
 			{
 				affectableStats.setSensesMask(affectableStats.sensesMask() |  EnvStats.CAN_NOT_SPEAK);
 				affectableStats.setSensesMask(affectableStats.sensesMask() |  EnvStats.CAN_NOT_HEAR);

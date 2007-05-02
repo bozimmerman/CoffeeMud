@@ -63,7 +63,7 @@ public class Spell_FaerieFog extends Spell
 		if((affected instanceof MOB)||(affected instanceof Item))
 		{
 			Room R=CMLib.map().roomLocation(affected);
-			if((R==theRoom)||(unInvoked))
+			if((R!=null)&&(R==theRoom)&&(!unInvoked)&&(R.fetchEffect(ID())==this))
 			{
 				if((affectableStats.disposition()&EnvStats.IS_INVISIBLE)==EnvStats.IS_INVISIBLE)
 					affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_INVISIBLE);
