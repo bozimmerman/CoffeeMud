@@ -1352,7 +1352,7 @@ public class StdMOB implements MOB
 	                {
 	                    if(!((Command)O).preExecute(this,commands,secondsElapsed,-diff))
 	                    {
-	                        commandQue.removeElement(ROW);
+	                        commandQue.removeElementsAt(0);
 	                        return true;
 	                    }
 	                }
@@ -1361,7 +1361,7 @@ public class StdMOB implements MOB
 	                {
 	                    if(!CMLib.english().preEvoke(this,commands,secondsElapsed,-diff))
 	                    {
-	                        commandQue.removeElement(ROW);
+	                        commandQue.removeElementsAt(0);
 	                        return true;
 	                    }
 	                }
