@@ -32,7 +32,7 @@ Designer % Skullcap	72	20	5	250	GenArmor	-2:HEAD	0	0	0
 Designer % Cuff	33	20	1	18	GenArmor	-1:LEFT WRIST||RIGHT WRIST	0	3	0
 Designer % Vambrace	51	30	5	160	GenArmor	-1:LEFT WRIST||RIGHT WRIST	0	4	0
 Designer % Hose	38	10	3	1054	GenArmor	s-4:LEGS	0	0	0	Prop_WearAdjuster;CHA+1
-Designer % Loinclothe	42	10	2	49	GenArmor	s-2:LEGS	0	14	0
+Designer % Loincloth	42	10	2	49	GenArmor	s-2:LEGS	0	14	0
 Designer % Leggings	42	20	3	73	GenArmor	-1:LEGS	0	14	0
 Designer % Skirt	42	20	3	73	GenArmor	s-1:LEGS	0	14	0
 Designer % Pants	43	30	3	73	GenArmor	-1:LEGS	5	14	0
