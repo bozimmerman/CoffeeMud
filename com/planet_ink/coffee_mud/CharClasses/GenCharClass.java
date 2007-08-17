@@ -702,7 +702,7 @@ public class GenCharClass extends StdCharClass
                 break;
 		case 2: baseClass=val; break;
 		case 3: hpDivisor=CMath.s_int(val); break;
-		case 4: hpDie=CMath.s_int(val); break;
+		case 4: hpDice=CMath.s_int(val); break;
 		case 5: bonusPracLevel=CMath.s_int(val); break;
 		case 6: manaDivisor=CMath.s_int(val); break;
 		case 7: bonusAttackLevel=CMath.s_int(val); break;
