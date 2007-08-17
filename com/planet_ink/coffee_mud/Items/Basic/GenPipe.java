@@ -42,7 +42,7 @@ public class GenPipe extends GenCigar
 		setDisplayText("a generic pipe sits here.");
 		setDescription("This nice wooden pipe could use some herbs in it to smoke.");
 		setMaterial(RawMaterial.RESOURCE_OAK);
-		durationTicks=0;
+		durationTicks=1200;
 		destroyedWhenBurnedOut=false;
 		baseGoldValue=5;
 		capacity=2;
