@@ -34,7 +34,7 @@ public class CMStrings
     
     public static String stripPunctuation(String str)
     {
-        if(str.length()==0) return str;
+        if((str==null)||(str.length()==0)) return str;
         for(int x=str.length()-1;x>=0;x--)
             if("`~!@#$%^&*()_-+=[]{}\\|;:'\",<.>/?".indexOf(str.charAt(x))>=0)
                 str=str.substring(0,x)+str.substring(x+1);
@@ -42,7 +42,7 @@ public class CMStrings
     }
     public static String endWithAPeriod(String str)
     {
-        if(str.length()==0) return str;
+        if((str==null)||(str.length()==0)) return str;
         int x=str.length()-1;
         while((x>=0)
         &&((Character.isWhitespace(str.charAt(x)))
@@ -59,8 +59,7 @@ public class CMStrings
     
     public static String startWithAorAn(String str)
     {
-        if(str.length()==0) 
-            return str;
+        if((str==null)||(str.length()==0)) return str;
         if((!str.toUpperCase().startsWith("A "))
         &&(!str.toUpperCase().startsWith("AN "))
         &&(!str.toUpperCase().startsWith("THE "))
