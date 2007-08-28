@@ -74,7 +74,7 @@ public class Log
 	 * out throwable message type.
  	 *
 	 * <br><br><b>Usage:</b> if(isMaskedErrMsg(errException.getMessage()))
-	 * @param String the message
+	 * @param str the message
 	 * @return boolean TRUE if masked out.
 	 */
 	public static boolean isMaskedErrMsg(String str)

@@ -75,7 +75,7 @@ public class DBConnections
 	 * @param NEWDBUser	the odbc user login
 	 * @param NEWDBPass	the odbc user password
 	 * @param NEWnumConnections	Connections to maintain
-	 * @param Reuse	Whether to reuse connections
+	 * @param NEWreuse	Whether to reuse connections
 	 * @param DoErrorQueueing	whether to save errors to a file
 	 */
 	public DBConnections(String NEWDBClass,

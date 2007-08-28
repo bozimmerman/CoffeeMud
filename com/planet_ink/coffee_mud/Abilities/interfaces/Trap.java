@@ -104,7 +104,7 @@ public interface Trap extends Ability
 	 * to set this trap.  This is where level restrictions are enforced,
 	 * though no messages should be given.
 	 * @see Trap#canSetTrapOn(MOB, Environmental)
-	 * @see Trap#setTrap(MOB, Environmental, int, int)
+	 * @see Trap#setTrap(MOB, Environmental, int, int, boolean)
 	 * @param mob the trap setter to check
 	 * @param asLevel the level of the trapper, compared to this traps internal level
 	 * @return true if the given trapper is allowed to set this trap, false otherwise
@@ -116,7 +116,7 @@ public interface Trap extends Ability
 	 * trapper if any internal checks aren't made.  Required materials or conditions
 	 * are checked here
 	 * @see Trap#maySetTrap(MOB, int)
-	 * @see Trap#setTrap(MOB, Environmental, int, int)
+	 * @see Trap#setTrap(MOB, Environmental, int, int, boolean)
 	 * @param mob the trapper
 	 * @param E the object this trap will be set upon
 	 * @return true if the trapper has everything he needs to proceed, false otherwise

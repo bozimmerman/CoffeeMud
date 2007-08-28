@@ -67,7 +67,7 @@ public class CMath
     /** Convert an integer to its Roman Numeral equivalent
      * 
      * Usage: Return=MiscFunc.convertToRoman(Number)+".";
-     * @param i Integer to convert
+     * @param s String to convert
      * 
      * @return String Converted integer
      */

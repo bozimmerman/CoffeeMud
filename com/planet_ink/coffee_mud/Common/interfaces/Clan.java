@@ -192,15 +192,6 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 	public String getDetail(MOB mob);
 
 	/**
-	 * Returns whether the given may is allowed to be the given role.
-	 * @param mob the mob to test
-	 * @param role the role to test
-	 * @return whether the mob may be that role.
-	 */
-	public boolean canBeAssigned(MOB mob, int role);
-	
-	
-	/**
 	 * Returns a mask used to identify whether a player is allowed
 	 * to join a particular clan.  
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
@@ -235,7 +226,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 	/**
 	 * Returns whether membership is automatically approved to this clan.
 	 * And if so, what the default position for members are.
-	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setAutoPosition(String)
+	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setAutoPosition(int)
 	 * @return xml document describing the politics of this clan
 	 */
 	public int getAutoPosition();
@@ -395,7 +386,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 	 * each row represents a member, and the columns are
 	 * name, role, last login date
 	 * @see Clan#getMemberList(int)
-	 * @see com.planet_ink.coffee_mud.planet_ink.core.DVector
+	 * @see com.planet_ink.coffee_mud.core.DVector
 	 * @return the membership
 	 */
 	public DVector getMemberList();
@@ -405,7 +396,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 	 * name, role, last login date.  Will filter by the
 	 * given Clan.POS_* constant.
 	 * @see Clan
-	 * @see com.planet_ink.coffee_mud.planet_ink.core.DVector
+	 * @see com.planet_ink.coffee_mud.core.DVector
 	 * @param PosFilter
 	 * @return the membership
 	 */

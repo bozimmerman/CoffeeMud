@@ -233,7 +233,7 @@ public interface AbilityMapper extends CMLibrary
 	 */
 	public Vector getAbilityAllowsList(String ableID);
     /**
-     * @param ableID
+     * @param ID
      * @return
      */
     public DVector getClassAllowsList(String ID);
@@ -476,7 +476,6 @@ public interface AbilityMapper extends CMLibrary
      * @param decodedDV
      * @param codedDV
      * @param row
-     * @return
      */
     public void setAbilityComponentCodedFromDecodedDVector(DVector decodedDV, DVector codedDV, int row);
     /**
@@ -487,12 +486,11 @@ public interface AbilityMapper extends CMLibrary
     public DVector getAbilityComponentDecodedDVector(DVector codedDV, int r);
     /**
      * @param codedDV
-     * @return
      */
     public void addBlankAbilityComponent(DVector codedDV);
     /**
-     * @param s
-     * @param to
+     * @param domain
+     * @param acode
      * @return
      */
     public boolean isDomainIncludedInAnyAbility(int domain, int acode);

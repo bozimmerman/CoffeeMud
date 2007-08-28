@@ -108,7 +108,7 @@ public interface CMIntegerGrouper extends CMCommon
     public CMIntegerGrouper add(long x);
     /**
      * Removes the room number
-     * @param x the coded digit pair to remove.
+     * @param grp the coded digit pair to remove.
      * @return the integrouper with the pair removed
      */
     public CMIntegerGrouper remove(CMIntegerGrouper grp);

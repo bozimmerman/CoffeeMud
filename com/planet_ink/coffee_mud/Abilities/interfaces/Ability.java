@@ -329,7 +329,7 @@ public interface Ability extends Environmental
 	 * @see Ability#usageType()
 	 * @see Ability
 	 * @param mob the invoker of the skill
-	 * @param boolean whether to ignore Class Overrides
+	 * @param ignoreClassOverride whether to ignore Class Overrides
 	 * @return an array of costs, indexed by Ability.USAGEINDEX_*
 	 */
 	public int[] usageCost(MOB mob, boolean ignoreClassOverride);
