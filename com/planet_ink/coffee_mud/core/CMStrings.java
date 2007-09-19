@@ -82,15 +82,15 @@ public class CMStrings
         ||(str.toUpperCase().startsWith("AN ")))
         {
             if("aeiouAEIOU".indexOf(adjective.charAt(0))>=0) 
-                return "an "+adjective+" "+str;
-            return "a "+adjective+" "+str;
+                return "an "+adjective+" "+str.substring(2).trim();
+            return "a "+adjective+" "+str.substring(2).trim();
         }
         if((!str.toUpperCase().startsWith("THE "))
         &&(!str.toUpperCase().startsWith("SOME ")))
         {
             if("aeiouAEIOU".indexOf(adjective.charAt(0))>=0) 
-                return "an "+adjective+" "+str;
-            return "a "+adjective+" "+str;
+                return "an "+adjective+" "+str.substring(4).trim();
+            return "a "+adjective+" "+str.substring(4).trim();
         }
         int x=str.indexOf(' ');
         return str.substring(0,x)+" "+adjective+" "+str.substring(x+1);
