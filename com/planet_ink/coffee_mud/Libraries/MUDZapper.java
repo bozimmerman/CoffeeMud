@@ -1551,7 +1551,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 88: // +int
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"An":"Requires an")+" base intelligence of at least "+val+".  ");
+					buf.append((skipFirstWord?"A":"Requires a")+" base intelligence of at least "+val+".  ");
 					break;
 				case 89: // +wis
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
@@ -1575,7 +1575,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 94: // -int
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-					buf.append((skipFirstWord?"An":"Requires an")+" base intelligence of at most "+val+".  ");
+					buf.append((skipFirstWord?"A":"Requires a")+" base intelligence of at most "+val+".  ");
 					break;
 				case 95: // -wis
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;

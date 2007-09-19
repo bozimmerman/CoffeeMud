@@ -17,6 +17,6 @@ lock unlock open close pick         qualify noansi prompt colorset
 list buy sell value examine         bug commands help topics assist
                                     
 ^HBASE CLASSES^?
-fighter bard druid mage thief
+fighter bard druid mage thief cleric
 ** enter ^HHELP 'command name'^?, ^HCOMMANDS^? or ^HTOPICS^? for more help!
 
