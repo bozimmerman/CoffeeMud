@@ -175,7 +175,7 @@ public class StdGrid extends StdRoom implements GridLocale
 					if((!EX.out)
 					&&(EX.destRoomID.equalsIgnoreCase(roomID))
 					&&(EX.dir==direction)
-					&&(EX.x>=0)&&(EX.y>=0)&&(EX.x<yGridSize())&&(EX.y<yGridSize())
+					&&(EX.x>=0)&&(EX.y>=0)&&(EX.x<xGridSize())&&(EX.y<yGridSize())
 					&&(grid[EX.x][EX.y]!=null))
 						return grid[EX.x][EX.y];
 				}
