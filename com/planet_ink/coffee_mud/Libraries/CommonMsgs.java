@@ -418,7 +418,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                         expenseAffects.addElement(A);
                 }
             }
-            if((expenseAffects!=null)&&(expenseAffects.size()>0))
+            if(expenseAffects.size()>0)
             {
                 int basePrice=1;
                 switch(CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMEAMT))
@@ -443,23 +443,20 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                     break;
                 }
 
-                if(expenseAffects!=null)
+                // 1 per tick per level per msg.  +1 to the affects so that way it's about
+                // 3 cost = 1 regen... :)
+                int reallyEat=basePrice*(expenseAffects.size()+1);
+                while(mob.curState().getMana()<reallyEat)
                 {
-                    // 1 per tick per level per msg.  +1 to the affects so that way it's about
-                    // 3 cost = 1 regen... :)
-                    int reallyEat=basePrice*(expenseAffects.size()+1);
-                    while(mob.curState().getMana()<reallyEat)
-                    {
-                        mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> strength of will begins to crumble.");
-                        //pick one and kill it
-                        Ability A=(Ability)expenseAffects.elementAt(CMLib.dice().roll(1,expenseAffects.size(),-1));
-                        A.unInvoke();
-                        expenseAffects.remove(A);
-                        reallyEat=basePrice*expenseAffects.size();
-                    }
-                    if(reallyEat>0)
-                        mob.curState().adjMana( -reallyEat, mob.maxState());
+                    mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> strength of will begins to crumble.");
+                    //pick one and kill it
+                    Ability A=(Ability)expenseAffects.elementAt(CMLib.dice().roll(1,expenseAffects.size(),-1));
+                    A.unInvoke();
+                    expenseAffects.remove(A);
+                    reallyEat=basePrice*expenseAffects.size();
                 }
+                if(reallyEat>0)
+                    mob.curState().adjMana( -reallyEat, mob.maxState());
             }
         }
         return manaConsumeCounter;

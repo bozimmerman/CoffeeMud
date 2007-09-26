@@ -1627,7 +1627,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			Log.errOut("CoffeeMaker","setPropertiesStr: null 'V': "+((E==null)?"":E.Name()));
 		else
 		if(E==null)
-			Log.errOut("CoffeeMaker","setPropertiesStr: null 'E': "+((E==null)?"":E.Name()));
+			Log.errOut("CoffeeMaker","setPropertiesStr: null 'E'");
 		else
 		{
 			setEnvStats(E.baseEnvStats(),CMLib.xml().getValFromPieces(V,"PROP"));
@@ -1811,7 +1811,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				continue;
 			}
 			Vector adat=CMLib.xml().getRealContentsFromPieces(ablk.contents,"ADATA");
-			if((adat==null)||(newOne==null))
+			if(adat==null)
 			{
 				Log.errOut("CoffeeMaker","Error parsing 'ABLTY DATA' of "+identifier(M,null)+".  Load aborted");
 				return;
@@ -1856,7 +1856,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				continue;
 			}
 			Vector idat=CMLib.xml().getRealContentsFromPieces(iblk.contents,"IDATA");
-			if((idat==null)||(newOne==null))
+			if(idat==null)
 			{
 				Log.errOut("CoffeeMaker","Error parsing 'ITEM DATA' of "+identifier(M,null)+".  Load aborted");
 				return;
@@ -1930,7 +1930,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				Log.errOut("CoffeeMaker","Unknown item "+itemi+" on "+identifier(E,null)+", skipping.");
 				continue;
 			}
-			if((idat==null)||(newOne==null))
+			if(idat==null)
 			{
 				Log.errOut("CoffeeMaker","Error parsing 'SHOP DATA' of "+identifier(E,null)+".  Load aborted");
 				continue;
@@ -2283,7 +2283,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					}
                     boolean clericsOnly=CMLib.xml().getBoolFromPieces(ablk.contents,"BLONLY");
 					Vector adat=CMLib.xml().getRealContentsFromPieces(ablk.contents,"BLDATA");
-					if((adat==null)||(newOne==null))
+					if(adat==null)
 					{
 						Log.errOut("CoffeeMaker","Error parsing 'BLESS DATA' of "+identifier(E,null)+".  Load aborted");
 						return;
@@ -2310,7 +2310,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 						}
                         boolean clericsOnly=CMLib.xml().getBoolFromPieces(ablk.contents,"CUONLY");
 						Vector adat=CMLib.xml().getRealContentsFromPieces(ablk.contents,"CUDATA");
-						if((adat==null)||(newOne==null))
+						if(adat==null)
 						{
 							Log.errOut("CoffeeMaker","Error parsing 'CURSE DATA' of "+identifier(E,null)+".  Load aborted");
 							return;
@@ -2337,7 +2337,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 							continue;
 						}
 						Vector adat=CMLib.xml().getRealContentsFromPieces(ablk.contents,"PODATA");
-						if((adat==null)||(newOne==null))
+						if(adat==null)
 						{
 							Log.errOut("CoffeeMaker","Error parsing 'POWER DATA' of "+identifier(E,null)+".  Load aborted");
 							return;

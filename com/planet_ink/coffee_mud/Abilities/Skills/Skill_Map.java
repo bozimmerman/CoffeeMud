@@ -103,7 +103,7 @@ public class Skill_Map extends StdSkill
 		if(target==null)return false;
 
 		Item item=target;
-		if((item==null)||((item!=null)&&(!CMLib.flags().isReadable(item))))
+		if(!CMLib.flags().isReadable(item))
 		{
 			mob.tell("You can't map on that.");
 			return false;

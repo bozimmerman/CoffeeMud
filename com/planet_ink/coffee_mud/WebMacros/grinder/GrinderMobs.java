@@ -129,10 +129,13 @@ public class GrinderMobs
 				if(whichFaction.length()>0)
 				{
 					Faction F=CMLib.factions().getFaction(whichFaction);
-					int amt=new Integer(howMuch).intValue();
-					if(amt<F.minimum()) amt=F.minimum();
-					if(amt>F.maximum()) amt=F.maximum();
-					if(F!=null) E.addFaction(F.factionID(),amt);
+					if(F!=null)
+					{
+    					int amt=new Integer(howMuch).intValue();
+    					if(amt<F.minimum()) amt=F.minimum();
+    					if(amt>F.maximum()) amt=F.maximum();
+    					E.addFaction(F.factionID(),amt);
+					}
 				}
 				num++;
 				whichFaction=httpReq.getRequestParameter("FACTION"+num);
@@ -645,9 +648,6 @@ public class GrinderMobs
 					String theprice=httpReq.getRequestParameter("SPRIC"+num);
 					while((MATCHING!=null)&&(theparm!=null))
 					{
-						if(MATCHING==null)
-							break;
-						else
 						if(CMath.isNumber(MATCHING))
 						{
 							Environmental O=(Environmental)inventory.elementAt(CMath.s_int(MATCHING)-1);
@@ -706,9 +706,6 @@ public class GrinderMobs
                     String MASK=httpReq.getRequestParameter("IPRICM"+num);
                     while((DOUBLE!=null)&&(MASK!=null))
                     {
-                        if(DOUBLE==null)
-                            break;
-                        else
                         if(CMath.isNumber(DOUBLE))
                             prics.addElement((DOUBLE+" "+MASK).trim());
                         num++;

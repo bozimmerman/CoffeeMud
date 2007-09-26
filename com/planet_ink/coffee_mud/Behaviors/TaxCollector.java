@@ -103,7 +103,7 @@ public class TaxCollector extends StdBehavior
 	public void executeMsg(Environmental oking, CMMsg msg)
 	{
 		super.executeMsg(oking,msg);
-		if((oking!=null)||(oking instanceof MOB))
+		if((oking!=null)&&(oking instanceof MOB))
 		{
 			MOB mob=(MOB)oking;
 			if(msg.amITarget(mob)

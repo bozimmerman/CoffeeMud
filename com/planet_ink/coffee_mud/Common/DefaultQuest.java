@@ -3302,7 +3302,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             B.setParms(parms);
             behaving.addBehavior(B);
         }
-        if(B!=null) B.registerDefaultQuest(this);
+        B.registerDefaultQuest(this);
         questState.addons.addElement(V,new Integer(questState.preserveState));
     }
     

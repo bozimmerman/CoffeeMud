@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2007 Jeremy Vyska, Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -55,23 +55,23 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 	 * may do it now, that they may not do it, or that it requires
 	 * a vote.  A return value 1 means they can do it now, 0 means
 	 * it requires a vote, and -1 means they can never do it. The
-	 * functions are defined in the Clan interface as FUNC_* 
-	 * constants. 
+	 * functions are defined in the Clan interface as FUNC_*
+	 * constants.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
 	 * @param mob the mob whose priviledges to check.
 	 * @param function the Clan.FUNC_* constant to use
 	 * @return either 1, 0, or -1 saying if they are allowed.
 	 */
 	public int allowedToDoThis(MOB mob, int function);
-	
+
 	/**
 	 * Sends a message to all members of all clans.
 	 * @param msg the message to send
 	 */
 	public void clanAnnounce(String msg);
-	
+
 	/**
-	 * If the clan type allows voting, this returns a 
+	 * If the clan type allows voting, this returns a
 	 * series of Clan.ClanVote objects
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan.ClanVote
 	 * @return the set of clan votes
@@ -96,13 +96,13 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 	 * @param CV the clanvote object to remove
 	 */
 	public void delVote(Object CV);
-	
+
 	/**
-	 * Returns the number of members allowed to vote on the 
+	 * Returns the number of members allowed to vote on the
 	 * given function.  The function is one of the Clan.FUNC_*
 	 * constants.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
-	 * @param function the FUNC_* constant 
+	 * @param function the FUNC_* constant
 	 * @return the number of members of this clan who can vote on it
 	 */
 	public int getNumVoters(int function);
@@ -139,7 +139,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 	 */
 	public int getType();
 	/**
-	 * Returns Clan, Republic, or another one of the 
+	 * Returns Clan, Republic, or another one of the
 	 * clan government types defined by Clan.GVT_DESC
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
 	 * @return the clans government types
@@ -154,46 +154,46 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 	 * @return whether the update succeeded
 	 */
 	public boolean updateClanPrivileges(MOB mob);
-	
-	/** 
-	 * Retrieves this Clan's basic story. 
+
+	/**
+	 * Retrieves this Clan's basic story.
 	 * This is to make the Clan's more RP based and so we can
 	 * provide up-to-date information on Clans on the web server.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setPremise(String)
 	 * @return the story of this clan
 	 */
 	public String getPremise();
-	/** 
+	/**
 	 * Sets this Clan's basic story.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getPremise()
 	 */
 	public void setPremise(String newPremise);
-	
-	/** 
+
+	/**
 	 * Sets this Clan's enforced character class.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getClanClass()
 	 */
 	public void setClanClass(String newClass);
 
-	/** 
-	 * Retrieves this Clan's enforced character class. 
+	/**
+	 * Retrieves this Clan's enforced character class.
 	 * All players who join this clan become this class.
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setClanClass(String)
 	 * @return the class of this clan
 	 */
 	public String getClanClass();
-	
-	/** 
+
+	/**
 	 * Creates the string for the 'clandetail' command, based on the
 	 * security of the given mob who will view the details.
 	 * @param mob the one who will view the details
-	 * @return the details view of this clan for the given mob 
+	 * @return the details view of this clan for the given mob
 	 */
 	public String getDetail(MOB mob);
 
 	/**
 	 * Returns a mask used to identify whether a player is allowed
-	 * to join a particular clan.  
+	 * to join a particular clan.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setAcceptanceSettings(String)
 	 * @return the mask used to identify prospects
@@ -201,7 +201,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 	public String getAcceptanceSettings();
 	/**
 	 * Sets a mask used to identify whether a player is allowed
-	 * to join a particular clan.  
+	 * to join a particular clan.
 	 * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getAcceptanceSettings()
 	 * @param newSettings the mask used to identify prospects
@@ -237,7 +237,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 	 * @param pos the positition to give to applicants
 	 */
 	public void setAutoPosition(int pos);
-	
+
 	/**
 	 * Returns one of the CLANSTAT_* constants describing the pending
 	 * status of this clan for acceptable, or whether its one its way out.
@@ -268,7 +268,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 	 */
 	public void setRecall(String newRecall);
 
-	/** 
+	/**
 	 * Returns the roomID of this clans morgue room
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setMorgue(String)
 	 * @return the roomID of this clans morgue room
@@ -298,19 +298,19 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 	 */
 	public void setTrophies(int trophyFlag);
 
-	/** 
+	/**
 	 * Returns the roomID of this clans donation room
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#setDonation(String)
 	 * @return the roomID of this clans donation room
 	 */
 	public String getDonation();
-	/** 
+	/**
 	 * Sets the roomID of this clans donation room
 	 * @see com.planet_ink.coffee_mud.Common.interfaces.Clan#getDonation()
 	 * @param newDonation the roomID of this clans donation room
 	 */
 	public void setDonation(String newDonation);
-  
+
 	/**
 	 * Gets the amount of experience earned by this clan.
 	 * @return the experience earned
@@ -368,14 +368,14 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 	 * @return a vector of area objects
 	 */
 	public Vector getControlledAreas();
-	
-	/** 
+
+	/**
 	 * Sets the tax rate for this clan.
 	 * @see Clan#getTaxes()
 	 * @param rate the tax rate 0-100.0
 	 */
 	public void setTaxes(double rate);
-	/** 
+	/**
 	 * Gets the tax rate for this clan.
 	 * @see Clan#setTaxes(double)
 	 * @return rate the tax rate 0-100.0
@@ -401,7 +401,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 	 * @return the membership
 	 */
 	public DVector getMemberList(int PosFilter);
-	
+
 	/**
 	 * Returns the highest ranking member of this clan.
 	 * @return the mob object for the highest ranking member.
@@ -481,7 +481,11 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 	 * Orders the system to create this clan in the database.
 	 */
 	public void create();
-	
+	/*
+	 * Returns whether the given user can be assigned the given role
+	 */
+	public boolean canBeAssigned(MOB mob, int role);
+
     /**
      * Represents an individual clan vote
      * @author Bo Zimmerman
@@ -515,7 +519,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon
         /**
          * A 2 dimentional vector of the votes, where each
          * row is a vote, with dimension 1 being the member name
-         * and dimension 2 being a Boolean representing their choice. 
+         * and dimension 2 being a Boolean representing their choice.
          */
         public DVector votes=null;
     }
@@ -555,11 +559,11 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 										POS_LEADER,
 										POS_BOSS};
 
-	/** constant for the Clan.getStatus() method, denoting normal status. @see Clan#getStatus() .*/ 
+	/** constant for the Clan.getStatus() method, denoting normal status. @see Clan#getStatus() .*/
 	public static final int CLANSTATUS_ACTIVE=0;
-	/** constant for the Clan.getStatus() method, denoting unapproved status. @see Clan#getStatus() .*/ 
+	/** constant for the Clan.getStatus() method, denoting unapproved status. @see Clan#getStatus() .*/
 	public static final int CLANSTATUS_PENDING=1;
-	/** constant for the Clan.getStatus() method, denoting fading status. @see Clan#getStatus() .*/ 
+	/** constant for the Clan.getStatus() method, denoting fading status. @see Clan#getStatus() .*/
 	public static final int CLANSTATUS_FADING=2;
 	/** constant descriptor strings for the Clan.CLANSTATUS_* constants, ordered by their value. @see Clan .*/
 	public static final String[] CLANSTATUS_DESC={
@@ -612,7 +616,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 	public static final String TROPHY_DESCS_SHORT[]={"","CP","EXP","","AREA","","","","PK"};
 	/** long descriptor strings for the Clan.TROPHY_* constants, ordered by their value.  @see Clan */
 	public static final String TROPHY_DESCS[]={"","Most control points","Most clan experience","","Most controlled areas","","","","Most rival player-kills"};
-	
+
 	/** constant for the getGovernment @see Clan#getGovernment() method. Denotes Clan. */
 	public static final int GVT_DICTATORSHIP=0;
 	/** constant for the getGovernment @see Clan#getGovernment() method. Denotes Guild. */
@@ -639,8 +643,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 		POS_LEADER,
         POS_BOSS
 	};
-	
-	
+
+
 	/** descriptor table with x axis being Clan.POS_* constants, and y axis being Clan.GVT_* constants.  @see Clan */
 	public static final String[][] ROL_DESCS={
 		{"APPLICANT","MEMBER","STAFF","ENCHANTER","TREASURER","LEADER","BOSS"},

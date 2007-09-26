@@ -199,14 +199,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			CMMsg.MSG_DEATH,null);
 		if(addHere!=null)
 		{
-			if((deathRoom==null)||(deathRoom.okMessage(deadM,msg2)))
+			if(deathRoom.okMessage(deadM,msg2))
 			{
 				addHere.addTrailerMsg(msg);
 				addHere.addTrailerMsg(msg2);
 			}
 		}
 		else
-		if((deathRoom!=null)&&(deathRoom.okMessage(deadM,msg)))
+		if(deathRoom.okMessage(deadM,msg))
 		{
 			deathRoom.send(deadM,msg);
 			if(deathRoom.okMessage(deadM,msg2))

@@ -739,10 +739,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
                                 }
                                 catch(Exception e)
                                 {
-                                    if(e!=null)
-                                        s.replace(i,v+l+1,"[jscript error: "+e.getMessage()+"]");
-                                    else
-                                        s.replace(i,v+l+1,"[jscript error: unknown]");
+                                    s.replace(i,v+l+1,"[jscript error: "+e.getMessage()+"]");
                                 }
                                 Context.exit();
                             }
@@ -886,7 +883,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		String hdrRedirectTo = null;
 		processStartTime=System.currentTimeMillis();
 		
-		BufferedReader sin = null;
 		DataOutputStream sout = null;
 		ByteArrayOutputStream bout=null;
 
@@ -1149,16 +1145,6 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 		try
 		{
-			if (sin != null)
-			{
-				sin.close();
-				sin = null;
-			}
-		}
-		catch (Exception e)	{}
-
-		try
-		{
 			if (sock != null)
 			{
 				sock.close();
@@ -1277,7 +1263,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
             	Log.errOut(getName(),e.getMessage());
 		    if(CMSecurity.isDebugging("HTTPERREXT"))
 		    	Log.errOut(getName(),e);
-		};
+		}
 		if(data.size()==0)
 			data.addElement(new String(out.toByteArray()));
 		else

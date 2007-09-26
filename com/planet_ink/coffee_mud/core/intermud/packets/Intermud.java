@@ -264,10 +264,7 @@ public class Intermud implements Runnable, Persistent, Serializable
                     }
                     catch(java.io.IOException e)
                     {
-                        if(e==null)
-                            connectionStatuses.addElement(n.ip+": "+n.port+": Unknown error\n");
-                        else
-                            connectionStatuses.addElement(n.ip+": "+n.port+": "+e.getMessage());
+                        connectionStatuses.addElement(n.ip+": "+n.port+": "+e.getMessage());
                         continue;
                     }
                     connected = true;

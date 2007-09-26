@@ -89,7 +89,6 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 									  int i,
                                       boolean offlineOK)
 	{
-        if(sender==null) return false;
 		if((sender==null)||(M==null)||(M.playerStats()==null)) return false;
 		Room R=M.location();
         if(((!offlineOK))

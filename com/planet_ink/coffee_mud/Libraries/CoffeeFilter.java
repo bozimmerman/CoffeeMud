@@ -262,7 +262,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 
 		if(msg.length()==0) return msg;
         String newMsg=(S==null)?null:CMLib.lang().sessionTranslation(msg);
-        if((newMsg!=null)&&(msg!=null)) msg=newMsg;
+        if(newMsg!=null) msg=newMsg;
         
 		boolean doSagain=false;
         boolean firstSdone=false;
@@ -764,7 +764,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 									            }
 								            }
 								            else
-								            if((S==null)||(!S.clientTelnetMode(Session.TELNET_MXP)))
+								            if(!S.clientTelnetMode(Session.TELNET_MXP))
 									        {
 								                buf.delete(tagStart,loop+2);
 									            loop=tagStart-1;

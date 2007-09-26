@@ -102,7 +102,7 @@ public interface QuestManager extends CMLibrary
         }},
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //expression
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
-            if((str==null)||(((String)str).trim().length()==0)){
+            if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
                 throw new CMException("You must enter an expression!");
             }
@@ -112,7 +112,7 @@ public interface QuestManager extends CMLibrary
         }},
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //quest name
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
-            if((str==null)||(((String)str).trim().length()==0)){
+            if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
                 throw new CMException("You must enter a quest name!");
             }
@@ -128,7 +128,7 @@ public interface QuestManager extends CMLibrary
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //choose
             if((choices==null)||(choices.length==0)) throw new CMException("NO choices?!");
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
-            if((str==null)||(((String)str).trim().length()==0)){
+            if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
                 throw new CMException("You must enter a value!");
             }
@@ -144,7 +144,7 @@ public interface QuestManager extends CMLibrary
             for(int c=0;c<choices.length;c++)
                 choiceNames.append(((Environmental)choices[c]).Name()+", ");
             if(choiceNames.toString().endsWith(", ")) choiceNames=new StringBuffer(choiceNames.substring(0,choiceNames.length()-2));
-            if((str==null)||(((String)str).trim().length()==0)){
+            if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
                 throw new CMException("You must enter one of the following: "+choiceNames.toString());
             }
@@ -157,7 +157,7 @@ public interface QuestManager extends CMLibrary
         }},
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //string
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
-            if((str==null)||(((String)str).trim().length()==0)){
+            if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
                 throw new CMException("You must enter a value!");
             }
@@ -165,7 +165,7 @@ public interface QuestManager extends CMLibrary
         }},
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //roomid
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
-            if((str==null)||(((String)str).trim().length()==0)){
+            if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
                 throw new CMException("You must enter an room id(s), name(s), keyword ANY, or ANY MASK=...");
             }
@@ -199,7 +199,7 @@ public interface QuestManager extends CMLibrary
         }},
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //area
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
-            if((str==null)||(((String)str).trim().length()==0)){
+            if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
                 throw new CMException("You must enter an area name(s), keyword ANY, or ANY MASK=...");
             }
@@ -225,7 +225,7 @@ public interface QuestManager extends CMLibrary
             for(int c=0;c<choices.length;c++)
                 choiceNames.append(((Environmental)choices[c]).Name()+", ");
             if(choiceNames.toString().endsWith(", ")) choiceNames=new StringBuffer(choiceNames.substring(0,choiceNames.length()-2));
-            if((str==null)||(((String)str).trim().length()==0)){
+            if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
                 throw new CMException("You must enter one of the following: "+choiceNames.toString());
             }
@@ -238,7 +238,7 @@ public interface QuestManager extends CMLibrary
         }},
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //designame
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
-            if((str==null)||(((String)str).trim().length()==0)){
+            if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
                 throw new CMException("You must enter a value!");
             }
@@ -250,7 +250,7 @@ public interface QuestManager extends CMLibrary
         }},
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //string
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
-            if((str==null)||(((String)str).trim().length()==0)){
+            if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
                 throw new CMException("You must enter a value!");
             }
@@ -275,7 +275,7 @@ public interface QuestManager extends CMLibrary
             StringBuffer list=new StringBuffer("");
             for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
             	list.append(((Ability)e.nextElement()).ID()+", ");
-            if((str==null)||(((String)str).trim().length()==0)){
+            if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
                 throw new CMException("You must enter an ability ID, choose from the following: "+list.toString());
             }
@@ -287,7 +287,7 @@ public interface QuestManager extends CMLibrary
         }},
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //existing quest name
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
-            if((str==null)||(((String)str).trim().length()==0)){
+            if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
                 throw new CMException("You must enter a quest name!");
             }

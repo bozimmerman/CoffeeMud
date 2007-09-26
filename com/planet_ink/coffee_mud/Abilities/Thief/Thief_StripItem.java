@@ -121,7 +121,7 @@ public class Thief_StripItem extends ThiefSkill
 				else
 				if(((hisStr==null)||mob.isMonster())
 				&&(!alreadyFighting)
-				&&((stolen==null)||(CMLib.dice().rollPercentage()>stolen.envStats().level())))
+				&&(CMLib.dice().rollPercentage()>stolen.envStats().level()))
 				{
 					if(target.getVictim()==mob)
 						target.makePeace();

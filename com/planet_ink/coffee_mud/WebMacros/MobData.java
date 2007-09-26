@@ -652,9 +652,6 @@ public class MobData extends StdWebMacro
 				Vector inventory=E.getShop().getStoreInventory();
 				while((MATCHING!=null)&&(theparm!=null))
 				{
-					if(MATCHING==null)
-						break;
-					else
 					if(CMath.isNumber(MATCHING))
 					{
 						Environmental O=(Environmental)inventory.elementAt(CMath.s_int(MATCHING)-1);

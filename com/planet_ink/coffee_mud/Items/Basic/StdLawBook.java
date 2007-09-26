@@ -96,7 +96,7 @@ public class StdLawBook extends StdItem
 				boolean allowedToModify=(CMSecurity.isAllowed(mob,mob.location(),"ABOVELAW"));
 				if(A.getMetroMap().hasMoreElements())
 					allowedToModify=(CMSecurity.isAllowed(mob,((Room)A.getMetroMap().nextElement()),"ABOVELAW"));
-                String rulingClan=(B!=null)?B.rulingClan():"";
+                String rulingClan=B.rulingClan();
 				if((!allowedToModify)
 				&&(rulingClan.length()>0)
                 &&(mob.getClanID().equals(rulingClan)))

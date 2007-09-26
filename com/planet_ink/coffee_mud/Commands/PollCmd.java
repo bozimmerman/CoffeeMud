@@ -95,7 +95,7 @@ public class PollCmd extends StdCommand
             if(P.mayISeeResults(mob))
             {
                 P.processResults(mob);
-                if((i<mypolls[2].size()-1)||(commands==null))
+                if(i<mypolls[2].size()-1)
                     mob.session().prompt("Press ENTER to continue:\n\r");
             }
         }

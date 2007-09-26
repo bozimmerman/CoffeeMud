@@ -688,7 +688,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             CMLib.database().DBCreateCharacter(mob);
             CMLib.map().addPlayer(mob);
 
-            if((session==null)||(mob.playerStats()==null)) return false;
+            if(mob.playerStats()==null) return false;
             mob.playerStats().setLastIP(session.getAddress());
             Log.sysOut("FrontDoor","Created user: "+mob.Name());
             CMProps.addNewUserByIP(session.getAddress());
@@ -1009,7 +1009,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                pendingLogins.remove(mob.Name().toUpperCase());
             return 0;
         }
-        if((mob!=null)&&(mob.session()!=null))
+        if(mob.session()!=null)
             mob.session().println("\n\r");
         if(pendingLogins.containsKey(mob.Name().toUpperCase()))
            pendingLogins.remove(mob.Name().toUpperCase());

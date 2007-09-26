@@ -4000,7 +4000,7 @@ public class Import extends StdCommand
 			// read in the .are file
 			CF=new CMFile(areaFileName,mob,true);
 			buf=CF.text();
-			if((buf==null)||((buf!=null)&&(buf.length()==0)))
+			if((buf==null)||(buf.length()==0))
 				return returnAnError(session,"File not found at: '"+areaFileName+"'!",compileErrors,commands);
 		}
 		try
@@ -4541,7 +4541,7 @@ public class Import extends StdCommand
 		}
 		String areaName=getAreaName(areaData);
 		String areaAuthor=getAreaAuthor(areaData);
-		if((areaName==null)||((areaName!=null)&&(areaName.length()==0)))
+		if((areaName==null)||(areaName.length()==0))
 		{
 			if(!didSocials)
 				returnAnError(session,"#AREA tag not found!",compileErrors,commands);

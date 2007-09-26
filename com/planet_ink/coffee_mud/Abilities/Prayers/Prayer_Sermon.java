@@ -130,7 +130,7 @@ public class Prayer_Sermon extends Prayer
 			&&(M.charStats().getStat(CharStats.STAT_INTELLIGENCE)>4))
 				h.put(M,M);
 		}
-		if((h==null)||(h.size()==0))
+		if(h.size()==0)
 		{
 			mob.tell("There doesn't appear to be anyone here worth sermonizing to.");
 			return false;

@@ -57,7 +57,7 @@ public class Close extends StdCommand
 			mob.tell("You don't see '"+whatToClose+"' here.");
 			return false;
 		}
-		String closeWord=((closeThis==null)||(!(closeThis instanceof Exit)))?"close":((Exit)closeThis).closeWord();
+		String closeWord=(!(closeThis instanceof Exit))?"close":((Exit)closeThis).closeWord();
 		CMMsg msg=CMClass.getMsg(mob,closeThis,null,CMMsg.MSG_CLOSE,"<S-NAME> "+closeWord+"(s) <T-NAMESELF>."+CMProps.msp("dooropen.wav",10));
 		if(closeThis instanceof Exit)
 		{

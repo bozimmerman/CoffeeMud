@@ -96,7 +96,7 @@ public class Spell_Scatter extends Spell
 				mob.tell("You don't seem to be carrying that.");
 		}
 
-		if((targets==null)||(targets.size()==0)) return false;
+		if(targets.size()==0) return false;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -159,4 +159,5 @@ public class Spell_Scatter extends Spell
 		return success;
 	}
 }
+
 

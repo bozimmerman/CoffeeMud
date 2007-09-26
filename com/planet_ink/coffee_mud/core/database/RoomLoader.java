@@ -1048,7 +1048,6 @@ public class RoomLoader
 		+"'"+A.description()+" ',"
 		+"'"+A.text()+" ',"
 		+A.getTechLevel()+")");
-		if(A==null) return null;
         A.setAreaFlags(Area.FLAG_ACTIVE);
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMAREA")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done creating area "+areaName);

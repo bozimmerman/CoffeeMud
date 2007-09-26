@@ -119,7 +119,7 @@ public class Thief_SlipItem extends ThiefSkill
 		{
 			String str=null;
 			if(!auto)
-				if((stolen!=null)&&(!stolen.amWearingAt(Item.IN_INVENTORY)))
+				if(!stolen.amWearingAt(Item.IN_INVENTORY))
 					str="<S-NAME> slip(s) "+stolen.name()+" off <T-NAMESELF>.";
 				else
 					str="<S-NAME> attempt(s) to slip "+stolen.name()+" off <T-HIM-HER>, but it doesn't appear "+target.charStats().heshe()+" has that in <T-HIS-HER> inventory!";
@@ -147,7 +147,7 @@ public class Thief_SlipItem extends ThiefSkill
 				else
 				if(((hisStr==null)||mob.isMonster())
 				&&(!alreadyFighting)
-				&&((stolen==null)||(CMLib.dice().rollPercentage()>stolen.envStats().level())))
+				&&(CMLib.dice().rollPercentage()>stolen.envStats().level()))
 				{
 					if(target.getVictim()==mob)
 						target.makePeace();

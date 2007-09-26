@@ -413,9 +413,9 @@ public class QuestMaker extends StdWebMacro
         	return(((Vector)filePages.elementAt(0,4)).lastElement()==pageData)?"true":"false";
         }
         else
-        if(parms.containsKey("QMPAGEERRORS")) return (qPageErrors==null)?"":qPageErrors;
+        if(parms.containsKey("QMPAGEERRORS")) return qPageErrors;
         else
-        if(parms.containsKey("QMERRORS")) return (qPageErrors==null)?"":qPageErrors;
+        if(parms.containsKey("QMERRORS")) return qPageErrors;
         else
         if(parms.containsKey("QMTEMPLATE")) return qTemplate;
         else
@@ -430,7 +430,7 @@ public class QuestMaker extends StdWebMacro
         		httpReq.addRequestParameters("QMPAGEERRORS","");
         		return "";
         	}
-        	if((qTemplate==null)||(qTemplate.length()==0)) return "[error - no template chosen?!]";
+        	if(qTemplate.length()==0) return "[error - no template chosen?!]";
         	DVector pageData=getPage(M,httpReq,qTemplate,qPageStr);
         	if(pageData==null) return "[error - no page data?!]";
             StringBuffer errors=new StringBuffer("");

@@ -57,7 +57,7 @@ public class Open extends BaseItemParser
 			mob.tell("You don't see '"+whatToOpen+"' here.");
 			return false;
 		}
-		String openWord=((openThis==null)||(!(openThis instanceof Exit)))?"open":((Exit)openThis).openWord();
+		String openWord=(!(openThis instanceof Exit))?"open":((Exit)openThis).openWord();
 		CMMsg msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_OPEN,("<S-NAME> "+openWord+"(s) <T-NAMESELF>.")+CMProps.msp("dooropen.wav",10));
 		if(openThis instanceof Exit)
 		{

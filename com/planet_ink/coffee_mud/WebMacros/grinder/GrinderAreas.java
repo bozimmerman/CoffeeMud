@@ -193,7 +193,6 @@ public class GrinderAreas
             String MASK=httpReq.getRequestParameter("BLURB"+num);
             while((DOUBLE!=null)&&(MASK!=null))
             {
-                if(DOUBLE==null) break;
                 if(DOUBLE.trim().length()>0)
                     prics.addElement((DOUBLE.toUpperCase().trim()+" "+MASK).trim());
                 num++;
@@ -269,9 +268,7 @@ public class GrinderAreas
             String MASK=httpReq.getRequestParameter("IPRICM"+num);
             while((DOUBLE!=null)&&(MASK!=null))
             {
-                if(DOUBLE==null)
-                    break;
-                else
+
                 if(CMath.isNumber(DOUBLE))
                     prics.addElement((DOUBLE+" "+MASK).trim());
                 num++;
