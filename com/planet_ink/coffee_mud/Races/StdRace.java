@@ -143,7 +143,7 @@ public class StdRace implements Race
 				    charStats.setStat(CharStats.STAT_SAVE_UNDEAD,charStats.getStat(CharStats.STAT_SAVE_UNDEAD)-5);
 				    charStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,charStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)-2);
 				    charStats.setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,charStats.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)-2);
-				    charStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,charStats.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)-2);
+				    charStats.setStat(CharStats.STAT_MAX_DEXTERITY_ADJ,charStats.getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)-2);
 				    charStats.setStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ,charStats.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ)+2);
 				    charStats.setStat(CharStats.STAT_MAX_WISDOM_ADJ,charStats.getStat(CharStats.STAT_MAX_WISDOM_ADJ)+2);
 				    charStats.setStat(CharStats.STAT_MAX_CHARISMA_ADJ,charStats.getStat(CharStats.STAT_MAX_CHARISMA_ADJ)+2);
@@ -263,7 +263,7 @@ public class StdRace implements Race
 	}
 	public void level(MOB mob, Vector gainedAbilityIDs){}
 	public int adjustExperienceGain(MOB mob, MOB victim, int amount) { return amount;}
-	
+
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
 	public boolean tick(Tickable myChar, int tickID){return true;}
 	public void startRacing(MOB mob, boolean verifyOnly)
@@ -571,7 +571,7 @@ public class StdRace implements Race
 		racialEffectMap.put(level,finalV);
 		return finalV;
 	}
-	
+
 	public Race makeGenRace()
 	{
 		Race GR=(Race)CMClass.getRace("GenRace").copyOf();
@@ -593,7 +593,7 @@ public class StdRace implements Race
 		GR.setStat("AGING",CMParms.toStringList(getAgingChart()));
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
 				GR.bodyMask()[i]=bodyMask()[i];
-        
+
 		Weapon W=myNaturalWeapon();
 		Weapon NW=CMClass.getWeapon("Natural");
 		if((W!=null)&&(W!=NW))
@@ -614,23 +614,23 @@ public class StdRace implements Race
 			GR.setStat("WEAPONXML",W.text());
 		}
 		GR.setStat("WEAPONRACE",getClass().getName());
-		
+
         EnvStats RS=(EnvStats)CMClass.getCommon("DefaultEnvStats");
         RS.setAllValues(0);
         MOB fakeMOB=CMClass.getMOB("StdMOB");
         affectEnvStats(fakeMOB,RS);
         RS.setRejuv(0);
 		GR.setStat("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(RS));
-        
-        CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+
+        CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats");
         S1.setAllValues(0);
-        CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats");
         S2.setAllValues(10);
-        CharStats S3=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        CharStats S3=(CharStats)CMClass.getCommon("DefaultCharStats");
         S3.setAllValues(11);
-        CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
         SETSTAT.setAllValues(0);
-        CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
         ADJSTAT.setAllValues(0);
 		affectCharStats(fakeMOB,S1);
 		affectCharStats(fakeMOB,S2);
@@ -705,7 +705,7 @@ public class StdRace implements Race
     			GR.setStat("GETRABLEPROF"+i,""+racialAbilityProficiencies()[i]);
     		}
         }
-		
+
         GR.setStat("NUMCABLE","");
         if(culturalAbilityNames()!=null)
         {
@@ -716,7 +716,7 @@ public class StdRace implements Race
     			GR.setStat("GETCABLEPROF"+i,""+culturalAbilityProficiencies()[i]);
     		}
         }
-		
+
 		GR.setStat("NUMREFF","");
         if(racialEffectNames()!=null)
         {
@@ -740,7 +740,7 @@ public class StdRace implements Race
 		GR.setRacialParms("<RACE><ID>"+newRaceID+"</ID><NAME>"+newRaceName+"</NAME></RACE>");
 		if(!race1.isGeneric()) race1=race1.makeGenRace();
 		if(!race2.isGeneric()) race2=race2.makeGenRace();
-		
+
 		Race nonHuman=(race1.ID().equals("Human"))?race2:race1;
 		Race otherRace=(nonHuman==race1)?race2:race1;
 		GR.setStat("CAT",nonHuman.racialCategory());
@@ -760,7 +760,7 @@ public class StdRace implements Race
 		    aging[i]+=race2.getAgingChart()[i];
 		for(int i=0;i<aging.length;i++)
 		    aging[i]=aging[i]/2;
-		
+
 		int race1worn=CMath.s_int(otherRace.getStat("WEAR"));
 		int race2worn=CMath.s_int(nonHuman.getStat("WEAR"));
 		int finalWear=0;
@@ -780,7 +780,7 @@ public class StdRace implements Race
 				finalWear=finalWear|(int)CMath.pow(2,i);
 				toggle=!toggle;
 			}
-		
+
 		GR.setStat("WEAR",""+finalWear);
 		Weapon W=otherRace.myNaturalWeapon();
 		if(W==null) W=nonHuman.myNaturalWeapon();
@@ -789,7 +789,7 @@ public class StdRace implements Race
 			GR.setStat("WEAPONCLASS",W.ID());
 			GR.setStat("WEAPONXML",W.text());
 		}
-		
+
 		GR.setStat("BODYKILL",""+otherRace.getStat("BODYKILL"));
 		GR.setStat("AGING",CMParms.toStringList(aging));
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
@@ -801,15 +801,15 @@ public class StdRace implements Race
 			else
 				GR.bodyMask()[i]=race1.bodyMask()[i];
 
-		EnvStats RS1=(EnvStats)CMClass.getCommon("DefaultEnvStats"); 
-		RS1.setAllValues(0); 
+		EnvStats RS1=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+		RS1.setAllValues(0);
 		CMLib.coffeeMaker().setEnvStats(RS1,race1.getStat("ESTATS"));
-		
-		EnvStats RS2=(EnvStats)CMClass.getCommon("DefaultEnvStats"); 
-		RS2.setAllValues(0); 
+
+		EnvStats RS2=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+		RS2.setAllValues(0);
 		CMLib.coffeeMaker().setEnvStats(RS2,race2.getStat("ESTATS"));
-		
-		EnvStats RS=(EnvStats)CMClass.getCommon("DefaultEnvStats"); 
+
+		EnvStats RS=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 		RS.setAbility((RS1.ability()+RS2.ability())/2);
 		RS.setArmor((RS2.armor()+RS2.armor())/2);
 		RS.setAttackAdjustment((RS1.attackAdjustment()+RS2.attackAdjustment())/2);
@@ -820,26 +820,26 @@ public class StdRace implements Race
 		RS.setRejuv(0);
 		GR.setStat("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(RS));
 
-        CharStats SETSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        CharStats SETSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats");
         SETSTAT1.setAllValues(0);
         CMLib.coffeeMaker().setCharStats(SETSTAT1,race1.getStat("CSTATS"));
-        
-        CharStats SETSTAT2=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+
+        CharStats SETSTAT2=(CharStats)CMClass.getCommon("DefaultCharStats");
         SETSTAT2.setAllValues(0);
         CMLib.coffeeMaker().setCharStats(SETSTAT2,race2.getStat("CSTATS"));
-        
-        CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+
+        CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
         SETSTAT.setAllValues(0);
-        
-        CharStats ADJSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+
+        CharStats ADJSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats");
         ADJSTAT1.setAllValues(0);
         CMLib.coffeeMaker().setCharStats(ADJSTAT1,race1.getStat("ASTATS"));
-        
-        CharStats ADJSTAT2=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+
+        CharStats ADJSTAT2=(CharStats)CMClass.getCommon("DefaultCharStats");
         ADJSTAT2.setAllValues(0);
         CMLib.coffeeMaker().setCharStats(ADJSTAT2,race2.getStat("ASTATS"));
-        
-        CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+
+        CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
         ADJSTAT.setAllValues(0);
 
 		for(int i=0;i<CharStats.NUM_STATS;i++)
@@ -856,15 +856,15 @@ public class StdRace implements Race
 		GR.setStat("ASTATS",CMLib.coffeeMaker().getCharStatsStr(ADJSTAT));
 		GR.setStat("CSTATS",CMLib.coffeeMaker().getCharStatsStr(SETSTAT));
 
-        CharState CS1=(CharState)CMClass.getCommon("DefaultCharState"); 
+        CharState CS1=(CharState)CMClass.getCommon("DefaultCharState");
         CS1.setAllValues(0);
         CMLib.coffeeMaker().setCharState(CS1,race1.getStat("ASTATE"));
-        CharState CS2=(CharState)CMClass.getCommon("DefaultCharState"); 
+        CharState CS2=(CharState)CMClass.getCommon("DefaultCharState");
         CS2.setAllValues(0);
         CMLib.coffeeMaker().setCharState(CS2,race2.getStat("ASTATE"));
-        CharState CS=(CharState)CMClass.getCommon("DefaultCharState"); 
+        CharState CS=(CharState)CMClass.getCommon("DefaultCharState");
         CS.setAllValues(0);
-        
+
 		CS.setFatigue((CS1.getFatigue()+CS2.getFatigue())/2);
 		CS.setHitPoints((CS1.getHitPoints()+CS2.getHitPoints())/2);
 		CS.setHunger((CS1.getHunger()+CS2.getHunger())/2);
@@ -873,17 +873,17 @@ public class StdRace implements Race
 		CS.setThirst((CS1.getThirst()+CS2.getThirst())/2);
 		GR.setStat("ASTATE",CMLib.coffeeMaker().getCharStateStr(CS));
 
-        CharState STARTCS1=(CharState)CMClass.getCommon("DefaultCharState"); 
+        CharState STARTCS1=(CharState)CMClass.getCommon("DefaultCharState");
         STARTCS1.setAllValues(0);
         CMLib.coffeeMaker().setCharState(STARTCS1,race1.getStat("STARTASTATE"));
-        
-        CharState STARTCS2=(CharState)CMClass.getCommon("DefaultCharState"); 
+
+        CharState STARTCS2=(CharState)CMClass.getCommon("DefaultCharState");
         STARTCS2.setAllValues(0);
         CMLib.coffeeMaker().setCharState(STARTCS1,race2.getStat("STARTASTATE"));
-        
-        CharState STARTCS=(CharState)CMClass.getCommon("DefaultCharState"); 
+
+        CharState STARTCS=(CharState)CMClass.getCommon("DefaultCharState");
         STARTCS.setAllValues(0);
-        
+
         STARTCS.setFatigue((STARTCS1.getFatigue()+STARTCS2.getFatigue())/2);
         STARTCS.setHitPoints((STARTCS1.getHitPoints()+STARTCS2.getHitPoints())/2);
         STARTCS.setHunger((STARTCS1.getHunger()+STARTCS2.getHunger())/2);
@@ -893,7 +893,7 @@ public class StdRace implements Race
 		GR.setStat("STARTASTATE",CMLib.coffeeMaker().getCharStateStr(STARTCS));
 
 		GR.setStat("DISFLAGS",""+(CMath.s_int(race1.getStat("DISFLAGS"))|CMath.s_int(race2.getStat("DISFLAGS"))));
-		
+
 		Vector rscs=nonHuman.myResources();
 		GR.setStat("NUMRSC",""+rscs.size());
 		for(int i=0;i<rscs.size();i++)
