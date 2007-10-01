@@ -253,7 +253,7 @@ public class GrinderMap extends GrinderFlatMap
 				  dir.positionedAlready = false;
 			}
 		}
-		
+
 		Hashtable processed = new Hashtable();
 		boolean doneSomething = true;
 
@@ -392,7 +392,7 @@ public class GrinderMap extends GrinderFlatMap
 								try {
 								  buf.append("<a name=\"" +
 								             URLEncoder.encode(GR.roomID, "UTF-8") +
-								      "\" href=\"javascript:RC('" +GR.roomID 
+								      "\" href=\"javascript:RC('" +GR.roomID
 								      + "');\"><FONT SIZE=-1><B>" + roomID +
 								      "</B></FONT></a><BR>");
 								}
@@ -489,7 +489,7 @@ public class GrinderMap extends GrinderFlatMap
 			for (int x = 0; x <= Xbound; x++)
 				buf.append("<TD WIDTH=" + roomSize + " HEIGHT=" + roomSize +"></TD>");
 			buf.append("</TR>");
-				
+
 			for (int y = 0; y <= Ybound; y++)
 			{
 				buf.append("<TR HEIGHT=" + roomSize + ">");
@@ -560,9 +560,11 @@ public class GrinderMap extends GrinderFlatMap
 		case Directions.UP:
 			if (room.z > maxZ)
 			  return grid[room.xy[0]][room.xy[1]][room.z - 1];
+			break;
 		case Directions.DOWN:
 			if (room.z < minZ)
 			  return grid[room.xy[0]][room.xy[1]][room.z + 1];
+			break;
 		}
 		return null;
 	}

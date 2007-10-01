@@ -1053,8 +1053,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						   str.append("\""+M.name()+"\" ");
 					}
 					middle=str.toString();
-					break;
 				}
+				break;
 			case 'L':
 				if(lastKnownLocation!=null)
 				{
@@ -1066,8 +1066,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						   str.append("\""+I.name()+"\" ");
 					}
 					middle=str.toString();
-					break;
 				}
+				break;
 			case '<':
 				{
 					int x=back.indexOf(">");
@@ -4620,6 +4620,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             {
                 String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
                 results.append(""+Math.round(CMath.s_parseMathExpression(arg1)));
+                break;
             }
 			case 85: // islike
 			{
@@ -5948,8 +5949,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						monster.recoverEnvStats();
 						monster.recoverMaxState();
 					}
-					break;
 				}
+				break;
 			}
 			case 41: // mpoloadroom
 			{
@@ -6581,8 +6582,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						}
 					}
 				}
-				break;
 			}
+			break;
 			case 17: // mptransfer
 			{
 				String mobName=CMParms.getCleanBit(s,1);
@@ -6747,6 +6748,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					Vector V=CMParms.parse(s);
 					((MOB)newTarget).doCommand(V);
 				}
+				break;
 			}
 			case 20: // mpsetvar
 			{

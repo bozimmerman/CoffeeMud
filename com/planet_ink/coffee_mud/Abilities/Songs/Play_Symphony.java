@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2007 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -589,29 +589,29 @@ public class Play_Symphony extends Play
 		switch(toDoCode)
 		{
 		case CODE_DOWNDAMAGEPER5:
-		if((msg.sourceMinor()==toDoVal)
-		&&(msg.target()==affected))
-		{
-			int dmg=(adjustedLevel(invoker(),0)/5);
-			msg.setValue(msg.value()-dmg);
+			if((msg.sourceMinor()==toDoVal)
+			&&(msg.target()==affected))
+			{
+				int dmg=(adjustedLevel(invoker(),0)/5);
+				msg.setValue(msg.value()-dmg);
+			}
 			break;
-		}
 		case CODE_UPDAMAGEPER3:
 		case CODE_UPDAMAGEPER5:
-		if((affected==invoker())
-		&&(msg.sourceMinor()==toDoVal)
-		&&(msg.target()!=null)
-		&&(msg.target().fetchEffect(ID())==null)
-		&&(msg.target().fetchEffect(ID()).invoker()!=invoker()))
-		{
-			int dmg=0;
-			if(toDoCode==CODE_UPDAMAGEPER3)
-				dmg=dmg+(adjustedLevel(invoker(),0)/3);
-			else
-				dmg=dmg+(adjustedLevel(invoker(),0)/5);
-			msg.setValue(msg.value()+dmg);
+			if((affected==invoker())
+			&&(msg.sourceMinor()==toDoVal)
+			&&(msg.target()!=null)
+			&&(msg.target().fetchEffect(ID())==null)
+			&&(msg.target().fetchEffect(ID()).invoker()!=invoker()))
+			{
+				int dmg=0;
+				if(toDoCode==CODE_UPDAMAGEPER3)
+					dmg=dmg+(adjustedLevel(invoker(),0)/3);
+				else
+					dmg=dmg+(adjustedLevel(invoker(),0)/5);
+				msg.setValue(msg.value()+dmg);
+			}
 			break;
-		}
 		default:
 			break;
 		}
