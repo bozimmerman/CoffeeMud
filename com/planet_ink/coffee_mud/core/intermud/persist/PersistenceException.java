@@ -45,7 +45,7 @@ public class PersistenceException extends Exception
 	public static final long serialVersionUID=0;
     private Exception prior;
 
-    private PersistenceException() {
+    public PersistenceException() {
         this("No reason given.");
     }
 

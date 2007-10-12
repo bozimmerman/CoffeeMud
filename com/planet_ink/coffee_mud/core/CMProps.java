@@ -37,7 +37,7 @@ import java.io.ByteArrayInputStream;
 public class CMProps extends Properties
 {
     private static CMProps[] props=new CMProps[256];
-    private CMProps(){
+    public CMProps(){
     	super();
     	char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
     	if(props==null) props=new CMProps[256];

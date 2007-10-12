@@ -91,20 +91,20 @@ public class Catalog extends StdCommand
 				&&(mob.session().confirm("You are about to auto-catalog (and save) all "+which+" "+type+", are you sure (y/N)?","N")))
 				{
 					Area A=null;
-					boolean dirtyMobs=false;
-					boolean dirtyItems=false;
+					//boolean dirtyMobs=false;
+					//boolean dirtyItems=false;
 					Item I=null;
-					Item cI=null;
-					MOB M=null;
-					MOB cM=null;
-					int ndx=0;
-					CMFlagLibrary flagLib=CMLib.flags();
-					WorldMap mapLib=CMLib.map();
+					//Item cI=null;
+					//MOB M=null;
+					//MOB cM=null;
+					//int ndx=0;
+					//CMFlagLibrary flagLib=CMLib.flags();
+					//WorldMap mapLib=CMLib.map();
 					for(;rooms.hasMoreElements();)
 					{
 						R=(Room)rooms.nextElement();
-						dirtyMobs=false;
-						dirtyItems=false;
+						//dirtyMobs=false;
+						//dirtyItems=false;
 						if(R.roomID().length()>0)
 						{
 							A=R.getArea();
@@ -117,7 +117,7 @@ public class Catalog extends StdCommand
 								{
 									I=R.fetchItem(i);
 									if((I==null)||(I instanceof Coins)) continue;
-									ndx=mapLib.getCatalogItemIndex(I.Name());
+									//ndx=mapLib.getCatalogItemIndex(I.Name());
 								}
 							A.setAreaFlags(oldFlag);
 						}

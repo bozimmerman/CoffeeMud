@@ -389,88 +389,30 @@ public class StdTrap extends StdAbility implements Trap
 
 	protected Item findFirstResource(Room room, String other)
 	{
-		if((other==null)||(other.length()==0))
-			return null;
-		for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
-			if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(other))
-				return findFirstResource(room,RawMaterial.RESOURCE_DATA[i][0]);
-		return null;
+		return CMLib.materials().findFirstResource(room,other);
 	}
 	protected Item findFirstResource(Room room, int resource)
 	{
-		for(int i=0;i<room.numItems();i++)
-		{
-			Item I=room.fetchItem(i);
-			if((I instanceof RawMaterial)
-			&&(I.material()==resource)
-			&&(!CMLib.flags().isOnFire(I))
-			&&(I.container()==null))
-				return I;
-		}
-		return null;
+		return CMLib.materials().findFirstResource(room,resource);
 	}
 	protected Item findMostOfMaterial(Room room, String other)
 	{
-		if((other==null)||(other.length()==0))
-			return null;
-		for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
-			if(RawMaterial.MATERIAL_DESCS[i].equalsIgnoreCase(other))
-				return findMostOfMaterial(room,(i<<8));
-		return null;
+		return CMLib.materials().findMostOfMaterial(room,other);
 	}
 
 	protected Item findMostOfMaterial(Room room, int material)
 	{
-		int most=0;
-		int mostMaterial=-1;
-		Item mostItem=null;
-		for(int i=0;i<room.numItems();i++)
-		{
-			Item I=room.fetchItem(i);
-			if((I instanceof RawMaterial)
-			&&((I.material()&RawMaterial.MATERIAL_MASK)==material)
-			&&(I.material()!=mostMaterial)
-			&&(!CMLib.flags().isOnFire(I))
-			&&(I.container()==null))
-			{
-				int num=findNumberOfResource(room,I.material());
-				if(num>most)
-				{
-					mostItem=I;
-					most=num;
-					mostMaterial=I.material();
-				}
-			}
-		}
-		return mostItem;
+		return CMLib.materials().findMostOfMaterial(room, material);
 	}
 
 	protected void destroyResources(Room room, int resource, int number)
 	{
-		for(int i=room.numItems()-1;i>=0;i--)
-		{
-			Item I=room.fetchItem(i);
-			if((I instanceof RawMaterial)
-			&&(I.container()==null)
-			&&(I.material()==resource)
-			&&((--number)>=0))
-				I.destroy();
-		}
+		CMLib.materials().destroyResources(room,number,resource,-1,null);
 	}
 
 	protected int findNumberOfResource(Room room, int resource)
 	{
-		int foundWood=0;
-		for(int i=0;i<room.numItems();i++)
-		{
-			Item I=room.fetchItem(i);
-			if((I instanceof RawMaterial)
-			&&(I.material()==resource)
-			&&(!CMLib.flags().isOnFire(I))
-			&&(I.container()==null))
-				foundWood++;
-		}
-		return foundWood;
+		return CMLib.materials().findNumberOfResource(room, resource);
 	}
 
 }

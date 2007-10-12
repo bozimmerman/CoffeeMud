@@ -84,7 +84,7 @@ public class TelnetFilter
     private MSP mspModule=new MSP();
     private MXP mxpModule=new MXP();
     
-    private TelnetFilter(){};
+    public TelnetFilter(){};
     public TelnetFilter(Siplet codebase)
     {
         codeBase=codebase;

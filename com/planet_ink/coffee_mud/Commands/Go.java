@@ -392,7 +392,7 @@ public class Go extends StdCommand
 		int direction=-1;
 		if(whereStr.equalsIgnoreCase("OUT"))
 		{
-			if(!CMath.bset(R.domainType(),R.INDOORS))
+			if(!CMath.bset(R.domainType(),Room.INDOORS))
 			{
 				mob.tell("You aren't indoors.");
 				return false;
@@ -401,7 +401,7 @@ public class Go extends StdCommand
 			for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
 				if((R.getExitInDir(e)!=null)
 				&&(R.getRoomInDir(e)!=null)
-				&&(!CMath.bset(R.getRoomInDir(e).domainType(),R.INDOORS)))
+				&&(!CMath.bset(R.getRoomInDir(e).domainType(),Room.INDOORS)))
 				{
 					if(direction>=0)
 					{
