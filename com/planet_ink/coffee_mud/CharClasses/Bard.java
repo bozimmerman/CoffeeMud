@@ -162,15 +162,16 @@ public class Bard extends StdCharClass
     public static void visitationBonusMessage(Environmental host, CMMsg msg)
     {
         if((msg.target() instanceof Room)
-        &&(host instanceof MOB)
-        &&(!((MOB)host).isMonster())
+        &&(msg.source()==host)
+        &&(!msg.source().isMonster())
         &&(msg.targetMinor()==CMMsg.TYP_ENTER)
-        &&(((MOB)host).playerStats()!=null))
+        &&(msg.source().playerStats()!=null))
         {
             Room R=(Room)msg.target();
+            MOB mob=msg.source();
             if(((R.roomID().length()>0)
             ||((R.getGridParent()!=null)&&(R.getGridParent().roomID().length()>0)))
-            &&(!((MOB)host).playerStats().hasVisited(R)))
+            &&(!msg.source().playerStats().hasVisited(R)))
             {
                 Area A=R.getArea();
                 MOB M=null;
@@ -207,9 +208,9 @@ public class Bard extends StdCharClass
                     if(CMLib.leveler().postExperience((MOB)host,null,null,50,true))
                         msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"^HYou have discovered a new pub, you gain "+50+" experience.^?",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
                 }
-                if(!((MOB)host).playerStats().hasVisited(A))
+                if(!mob.playerStats().hasVisited(A))
                 {
-                    ((MOB)host).playerStats().addRoomVisit(R);
+                    mob.playerStats().addRoomVisit(R);
                     int xp=(int)Math.round(100.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],host.envStats().level()));
                     if(xp>250) xp=250;
                     if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
@@ -217,9 +218,9 @@ public class Bard extends StdCharClass
                 }
                 else
                 {
-                    int pctBefore=((MOB)host).playerStats().percentVisited((MOB)host,A);
-                    ((MOB)host).playerStats().addRoomVisit(R);
-                    int pctAfter=((MOB)host).playerStats().percentVisited((MOB)host,A);
+                    int pctBefore=mob.playerStats().percentVisited((MOB)host,A);
+                    mob.playerStats().addRoomVisit(R);
+                    int pctAfter=mob.playerStats().percentVisited((MOB)host,A);
                     if((pctBefore<50)&&(pctAfter>=50))
                     {
                         int xp=(int)Math.round(50.0*CMath.div(A.getAreaIStats()[Area.AREASTAT_AVGLEVEL],host.envStats().level()));
