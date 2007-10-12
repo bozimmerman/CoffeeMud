@@ -2775,18 +2775,32 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             }
 			case 37: // inlocale
 			{
-				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+				String parms=evaluable.substring(y+1,z);
+				String arg2=null;
 				Environmental E=monster;
-				if((E==null)||(!(E instanceof MOB)))
+				if(CMParms.numBits(parms)==1)
+					arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(parms));
+				else
+				{
+					E=getArgumentItem(CMParms.getCleanBit(parms,0),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(parms,0));
+				}
+				if(E==null)
 					returnable=false;
 				else
 				if(arg2.length()==0)
 					returnable=true;
 				else
-				if(CMClass.classID(((MOB)E).location()).toUpperCase().indexOf(arg2.toUpperCase())>=0)
-					returnable=true;
-				else
-					returnable=false;
+				{
+					Room R=CMLib.map().roomLocation(E);
+					if(R==null)
+						returnable=false;
+					else
+					if(CMClass.classID(R).toUpperCase().indexOf(arg2.toUpperCase())>=0)
+						returnable=true;
+					else
+						returnable=false;
+				}
 				break;
 			}
 			case 18: // sex
@@ -4503,8 +4517,22 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             }
 			case 37: // inlocale
 			{
-				if(lastKnownLocation!=null)
-					results.append(lastKnownLocation.name());
+				String parms=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
+				if(parms.trim().length()==0)
+				{
+					if(lastKnownLocation!=null)
+						results.append(lastKnownLocation.name());
+				}
+				else
+				{
+					Environmental E=getArgumentItem(parms,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+					if(E!=null)
+					{
+						Room R=CMLib.map().roomLocation(E);
+						if(R!=null)
+							results.append(R.name());
+					}
+				}
 				break;
 			}
 			case 18: // sex
