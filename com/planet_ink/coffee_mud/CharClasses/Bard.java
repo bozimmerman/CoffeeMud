@@ -125,30 +125,36 @@ public class Bard extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Song_Ode",true);
 	}
 
-	public int adjustExperienceGain(MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(mob,victim,amount,5.0);}
-    public static int bardAdjustExperienceGain(MOB mob, MOB victim, int amount, double rate)
+	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,5.0);}
+    public static int bardAdjustExperienceGain(MOB host, MOB mob, MOB victim, int amount, double rate)
     {
         double theAmount=new Integer(amount).doubleValue();
         if((mob!=null)&&(victim!=null)&&(theAmount>10.0))
         {
-            HashSet H=mob.getGroupMembers(new HashSet());
-            double origAmount=theAmount;
-            for(Iterator e=H.iterator();e.hasNext();)
-            {
-                MOB mob2=(MOB)e.next();
-                if((mob2!=mob)
-                   &&(mob2!=victim)
-                   &&(mob2.location()!=null)
-                   &&(mob2.location()==mob.location()))
-                {
-                    if(!mob2.isMonster())
-                        theAmount+=(origAmount/rate);
-                    else
-                    if(!CMLib.flags().isAnimalIntelligence(mob2))
-                        theAmount+=1.0;
-                }
-            }
-        }
+	    	if(host == mob)
+	    	{
+	            HashSet H=mob.getGroupMembers(new HashSet());
+	            double origAmount=theAmount;
+	            for(Iterator e=H.iterator();e.hasNext();)
+	            {
+	                MOB mob2=(MOB)e.next();
+	                if((mob2!=mob)
+	                   &&(mob2!=victim)
+	                   &&(mob2.location()!=null)
+	                   &&(mob2.location()==mob.location()))
+	                {
+	                    if(!mob2.isMonster())
+	                        theAmount+=(origAmount/rate);
+	                    else
+	                    if(!CMLib.flags().isAnimalIntelligence(mob2))
+	                        theAmount+=1.0;
+	                }
+	            }
+	        }
+	    	else
+            if((!host.isMonster())&&(!mob.isMonster()))
+            	theAmount = 1.1 * theAmount;
+    	}
         return (int)Math.round(theAmount);
     }
     

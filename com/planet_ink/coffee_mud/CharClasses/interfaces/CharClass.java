@@ -210,13 +210,14 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	
 	/**
 	 * Whenever a player or mob of this race gains experience, this method gets a chance
-	 * to modify the amount before the gain actually occurs.  
+	 * to modify the amount before the gain actually occurs.
+	 * @param host the player or mob whose class is being queried  
 	 * @param mob the player or mob gaining experience
 	 * @param victim if applicable, the mob or player who died to give the exp
 	 * @param amount the amount of exp on track for gaining
 	 * @return the adjusted amount of experience to gain
 	 */
-	public int adjustExperienceGain(MOB mob, MOB victim, int amount);
+	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount);
 	
 	/**
 	 * This method is called whenever a player loses a level while a member of this class.  If

@@ -251,7 +251,7 @@ public class Prancer extends StdCharClass
 		mob.recoverMaxState();
 	}
 
-    public int adjustExperienceGain(MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(mob,victim,amount,5.0);}
+    public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,5.0);}
     
 	public String otherBonuses(){return "Receives (Dexterity/9)+1 bonus to defence every level.  Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration experience based on danger level.";}
 

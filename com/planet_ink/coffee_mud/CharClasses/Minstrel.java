@@ -219,7 +219,7 @@ public class Minstrel extends StdCharClass
 			+(affectableStats.getClassLevel(this)*2));
 	}
 
-    public int adjustExperienceGain(MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(mob,victim,amount,5.0);}
+    public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,5.0);}
     
 	public String otherLimitations(){return "";}
 	public String otherBonuses(){return "Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration experience based on danger level.";}

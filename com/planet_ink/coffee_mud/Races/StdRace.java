@@ -262,7 +262,7 @@ public class StdRace implements Race
 		return "leaves";
 	}
 	public void level(MOB mob, Vector gainedAbilityIDs){}
-	public int adjustExperienceGain(MOB mob, MOB victim, int amount) { return amount;}
+	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount) { return amount;}
 
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
 	public boolean tick(Tickable myChar, int tickID){return true;}

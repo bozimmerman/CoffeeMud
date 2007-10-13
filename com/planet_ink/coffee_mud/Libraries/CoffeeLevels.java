@@ -375,8 +375,19 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
     
     public int adjustedExperience(MOB mob, MOB victim, int amount)
     {
-        amount=mob.charStats().getCurrentClass().adjustExperienceGain(mob,victim,amount);
-        amount=mob.charStats().getMyRace().adjustExperienceGain(mob,victim,amount);
+        HashSet group=mob.getGroupMembers(new HashSet());
+        CharClass charClass=null;
+        Race charRace=null;
+        for(Iterator i=group.iterator();i.hasNext();)
+        {
+        	MOB allyMOB=(MOB)i.next();
+        	charClass = allyMOB.charStats().getCurrentClass();
+        	charRace = allyMOB.charStats().getMyRace();
+        	if(charClass != null)
+        		amount = charClass.adjustExperienceGain(allyMOB, mob, victim, amount);
+        	if(charRace != null)
+        		amount = charRace.adjustExperienceGain(allyMOB, mob, victim, amount);
+        }
         
         if(victim!=null)
         {
@@ -394,6 +405,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
                 amount=(int)Math.round(new Integer(amount).doubleValue()+CMath.mul(levelFactor,amount));
             }
         }
+        
         return amount;
     }
 

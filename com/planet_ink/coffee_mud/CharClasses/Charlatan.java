@@ -168,7 +168,7 @@ public class Charlatan extends StdCharClass
 		return super.qualifiesForThisClass(mob,quiet);
 	}
     
-    public int adjustExperienceGain(MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(mob,victim,amount,6.0);}
+    public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,6.0);}
     
 	public String otherLimitations(){return "";}
 	public String otherBonuses(){return "Receives 2% resistance per level to mind affects, 4% resistance per level to divination spells.  Non-class skills become cheaper at 30th level.  Gains a random non-class skill or spell every other level! Receives exploration experience based on danger level.";}

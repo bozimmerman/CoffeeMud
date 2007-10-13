@@ -654,7 +654,7 @@ public class StdCharClass implements CharClass
 
 	public void level(MOB mob, Vector gainedAbilityIDs){}
 
-	public int adjustExperienceGain(MOB mob, MOB victim, int amount) { return amount;}
+	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount) { return amount;}
 	
 	public int getLevelMana(MOB mob)
 	{

@@ -260,13 +260,14 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, C
 
 	/**
 	 * Whenever a player or mob of this race gains experience, this method gets a chance
-	 * to modify the amount before the gain actually occurs.  
+	 * to modify the amount before the gain actually occurs.
+	 * @param host the player or mob whose race object this is  
 	 * @param mob the player or mob gaining experience
 	 * @param victim if applicable, the mob or player who died to give the exp
 	 * @param amount the amount of exp on track for gaining
 	 * @return the adjusted amount of experience to gain
 	 */
-	public int adjustExperienceGain(MOB mob, MOB victim, int amount);
+	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount);
 	
 	/**
 	 * Whether this race can be associated with a character class.

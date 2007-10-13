@@ -211,7 +211,7 @@ public class Jester extends StdCharClass
 		}
 	}
 
-    public int adjustExperienceGain(MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(mob,victim,amount,6.0);}
+    public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host, mob,victim,amount,6.0);}
 	public String otherLimitations(){return "";}
 	public String otherBonuses(){return "Receives 2%/level bonus to saves versus poison.  Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration experience based on danger level.";}
 	public Vector outfit(MOB myChar)
