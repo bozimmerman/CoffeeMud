@@ -149,7 +149,7 @@ public class Prayer_SummonElemental extends Prayer
 			ride.setRiderCapacity(0);
 			break;
 		case 2:
-			newMOB.baseCharStats().setMyRace(CMClass.getRace("AireElemental"));
+			newMOB.baseCharStats().setMyRace(CMClass.getRace("AirElemental"));
 			newMOB.setName("a swirling air elemental");
 			newMOB.setDisplayText("a swirling air elemental spins around here");
 			newMOB.setDescription("This enormous swirling code of air is roughly the shape of a humanoid.");
