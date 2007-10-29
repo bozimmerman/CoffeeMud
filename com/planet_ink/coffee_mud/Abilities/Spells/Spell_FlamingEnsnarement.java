@@ -39,7 +39,7 @@ public class Spell_FlamingEnsnarement extends Spell
 	public String displayText(){return "(Ensnared in Fire)";}
 	public int maxRange(){return adjustedMaxInvokerRange(5);}
 	public int minRange(){return 1;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_BINDING|Ability.FLAG_FIREBASED|Ability.FLAG_HEATING;}

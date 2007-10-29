@@ -36,7 +36,7 @@ public class Spell_Spook extends Spell
 	public String ID() { return "Spell_Spook"; }
 	public String name(){return "Spook";}
 	public String displayText(){return "(Spooked)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

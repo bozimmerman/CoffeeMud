@@ -36,7 +36,7 @@ public class Spell_Phantasm extends Spell
 	public String ID() { return "Spell_Phantasm"; }
 	public String name(){return "Phantasm";}
 	public String displayText(){return "(Phantasm)";}
-	public int abstractQuality(){return  Ability.QUALITY_BENEFICIAL_SELF;};
+	public int abstractQuality(){return  Ability.QUALITY_BENEFICIAL_SELF;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}

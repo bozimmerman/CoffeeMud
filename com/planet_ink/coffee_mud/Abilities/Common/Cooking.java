@@ -39,8 +39,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	public String name(){ return "Cooking";}
 	private static final String[] triggerStrings = {"COOK","COOKING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public String cookWordShort(){return "cook";};
-	public String cookWord(){return "cooking";};
+	public String cookWordShort(){return "cook";}
+	public String cookWord(){return "cooking";}
 	public boolean honorHerbs(){return true;}
 	public boolean requireFire(){return true;}
 	public boolean requireLid(){return false;}

@@ -37,7 +37,7 @@ public class Prayer_SummonElemental extends Prayer
 	public String name(){return "Elemental Aid";}
 	public String displayText(){return "(Elemental Aid)";}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
-	public int abstractQuality(){return  Ability.QUALITY_BENEFICIAL_SELF;};
+	public int abstractQuality(){return  Ability.QUALITY_BENEFICIAL_SELF;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}

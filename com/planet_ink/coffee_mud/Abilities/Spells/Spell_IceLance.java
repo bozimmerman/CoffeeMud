@@ -37,7 +37,7 @@ public class Spell_IceLance extends Spell
 	public String name(){return "Ice Lance";}
 	public int minRange(){return 1;}
 	public int maxRange(){return adjustedMaxInvokerRange(5);}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
     public long flags(){return Ability.FLAG_WATERBASED;}
 

@@ -642,7 +642,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
         return getStartArea().finalItemPricingAdjustments();
     }
     public String[] itemPricingAdjustments(){ return new String[0];}
-    public void setItemPricingAdjustments(String[] factors){;}
+    public void setItemPricingAdjustments(String[] factors){}
     
     public String finalBudget(){ 
         if(budget().length()>0) return budget();
@@ -656,7 +656,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
         return getStartArea().finalDevalueRate();
     }
 	public String devalueRate(){return "";}
-	public void setDevalueRate(String factors){;}
+	public void setDevalueRate(String factors){}
 	
     public int finalInvResetRate(){
         if(invResetRate()!=0) return invResetRate();

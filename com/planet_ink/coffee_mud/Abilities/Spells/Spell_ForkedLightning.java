@@ -35,7 +35,7 @@ public class Spell_ForkedLightning extends Spell
 	public String ID() { return "Spell_ForkedLightning"; }
 	public String name(){return "Forked Lightning";}
 	public int maxRange(){return adjustedMaxInvokerRange(2);}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
     public long flags(){return Ability.FLAG_AIRBASED;}
 

@@ -245,7 +245,7 @@ public class Druid_ShapeShift extends StdAbility
 				str.append("Please select: ");
 				String choice=mob.session().choose(str.toString(),choices.toString(),"");
 				myRaceCode=CMath.s_int(choice)-1;
-				}catch(Exception e){};
+				}catch(Exception e){}
 			}
 		}
 

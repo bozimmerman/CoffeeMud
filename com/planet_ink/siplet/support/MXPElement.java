@@ -72,7 +72,7 @@ public class MXPElement implements Cloneable
             if(E.userParms!=null) E.userParms=(Vector)E.userParms.clone();
             return E;
         }
-        catch(Exception e){};
+        catch(Exception e){}
         return this;
     }
 

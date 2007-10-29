@@ -38,7 +38,7 @@ public class Chant_FurCoat extends Chant
 	public String name(){return "Fur Coat";}
 	public String displayText(){return "(Fur Coat)";}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	public int abstractQuality(){return  Ability.QUALITY_BENEFICIAL_SELF;};
+	public int abstractQuality(){return  Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
 	Item theArmor=null;

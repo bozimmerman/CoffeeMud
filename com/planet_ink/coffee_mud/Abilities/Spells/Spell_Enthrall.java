@@ -36,7 +36,7 @@ public class Spell_Enthrall extends Spell
 	public String ID() { return "Spell_Enthrall"; }
 	public String name(){return "Enthrall";}
 	public String displayText(){return "(Enthralled)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public long flags(){return Ability.FLAG_CHARMING;}

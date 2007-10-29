@@ -38,7 +38,7 @@ public class Spell_WeaknessCold extends Spell
 	public String ID() { return "Spell_WeaknessCold"; }
 	public String name(){return "Weakness to Cold";}
 	public String displayText(){return "(Weakness to Cold)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 

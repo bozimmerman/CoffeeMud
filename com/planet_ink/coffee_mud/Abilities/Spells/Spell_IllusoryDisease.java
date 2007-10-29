@@ -36,7 +36,7 @@ public class Spell_IllusoryDisease extends Spell implements DiseaseAffect
 	public String ID() { return "Spell_IllusoryDisease"; }
 	public String name(){return "Illusory Disease";}
 	public String displayText(){return "(Diseased)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 	public int difficultyLevel(){return 9;}

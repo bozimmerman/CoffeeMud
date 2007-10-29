@@ -38,7 +38,7 @@ public class Chant_Dehydrate extends Chant
 	public String name(){return "Dehydrate";}
 	public String displayText(){return "(Dehydrate)";}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

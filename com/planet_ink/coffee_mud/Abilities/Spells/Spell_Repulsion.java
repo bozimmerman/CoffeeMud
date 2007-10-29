@@ -37,7 +37,7 @@ public class Spell_Repulsion extends Spell
 	public String name(){return "Repulsion";}
 	public String displayText(){return "(Repulsion)";}
 	public int maxRange(){return adjustedMaxInvokerRange(3);}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 	public long flags(){return Ability.FLAG_MOVING;}

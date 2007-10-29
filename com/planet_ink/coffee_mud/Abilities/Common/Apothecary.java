@@ -39,8 +39,8 @@ public class Apothecary extends Cooking
 	private static final String[] triggerStrings = {"APOTHECARY","MIX"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "MISC";}
-	public String cookWordShort(){return "mix";};
-	public String cookWord(){return "mixing";};
+	public String cookWordShort(){return "mix";}
+	public String cookWord(){return "mixing";}
 	public boolean honorHerbs(){return false;}
 	protected int iniTrainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
 	protected int iniPracticesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}

@@ -36,7 +36,7 @@ public class Spell_Clog extends Spell
 	public String ID() { return "Spell_Clog"; }
 	public String name(){return "Shrink Mouth";}
 	public String displayText(){return "(Shrunken Mouth)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 

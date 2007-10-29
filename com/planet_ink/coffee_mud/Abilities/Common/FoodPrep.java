@@ -38,8 +38,8 @@ public class FoodPrep extends Cooking
 	public String name(){ return "Food Prep";}
 	private static final String[] triggerStrings = {"FOODPREPPING","FPREP"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public String cookWordShort(){return "make";};
-	public String cookWord(){return "making";};
+	public String cookWordShort(){return "make";}
+	public String cookWord(){return "making";}
 	public boolean honorHerbs(){return false;}
 	public boolean requireFire(){return false;}
     protected String defaultFoodSound="chopchop.wav";

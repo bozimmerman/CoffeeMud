@@ -38,7 +38,7 @@ public class Spell_WeaknessElectricity extends Spell
 	public String ID() { return "Spell_WeaknessElectricity"; }
 	public String name(){return "Weakness to Electricity";}
 	public String displayText(){return "(Weakness/Electricity)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 

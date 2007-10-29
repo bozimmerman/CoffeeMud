@@ -49,7 +49,7 @@ public class GenWallpaper implements Item
     }
 	public boolean isGeneric(){return true;}
 	public Rideable riding(){return null;}
-	public void setRiding(Rideable one){};
+	public void setRiding(Rideable one){}
 	public String image(){return "";}
     public String rawImage(){return "";}
 	public void setImage(String newImage){}

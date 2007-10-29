@@ -44,7 +44,7 @@ public class Spell_Siphon extends Spell
 	public String name(){return "Siphon";}
 	public String displayText(){return "(Siphon spell)";}
 	public int maxRange(){return adjustedMaxInvokerRange(1);}
-	public int abstractQuality(){return  Ability.QUALITY_BENEFICIAL_OTHERS;};
+	public int abstractQuality(){return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

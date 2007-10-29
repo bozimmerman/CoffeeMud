@@ -176,7 +176,7 @@ public class GenCharClass extends StdCharClass
 	}
 
 	public boolean loaded(){return true;}
-	public void setLoaded(boolean truefalse){};
+	public void setLoaded(boolean truefalse){}
 
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{

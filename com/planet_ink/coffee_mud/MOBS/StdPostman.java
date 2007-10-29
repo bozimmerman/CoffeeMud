@@ -168,11 +168,11 @@ public class StdPostman extends StdShopKeeper implements PostOffice
             }
         }
         return found;
-    };
+    }
     public void emptyBox(String mob)
     {
         CMLib.database().DBDeleteData(mob,postalChain());
-    };
+    }
     public Hashtable getOurOpenBoxes(String mob)
     {
         Hashtable branches=new Hashtable();
@@ -236,7 +236,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
     public Vector getBoxRowData(String mob)
     {
         return CMLib.database().DBReadData(mob,postalChain());
-    };
+    }
     public Item findBoxContents(MOB mob, String likeThis)
     {
         if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
@@ -263,7 +263,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
             }
         }
         return null;
-    };
+    }
 
     public Vector findExactBoxData(String mob, Item likeThis)
     {
@@ -281,7 +281,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
             }
         }
         return null;
-    };
+    }
 
     public Vector parsePostalItemData(String data)
     {

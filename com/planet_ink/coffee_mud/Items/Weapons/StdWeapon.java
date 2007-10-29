@@ -368,7 +368,7 @@ public class StdWeapon extends StdItem implements Weapon
 		if((readableText()==null)||(this instanceof Wand))
 			return false;
 		return readableText().length()>0;
-	};
+	}
 	public void setAmmunitionType(String ammo)
 	{
 		if(!(this instanceof Wand))

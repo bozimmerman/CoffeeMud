@@ -420,7 +420,7 @@ public class StdTitle extends StdItem implements LandTitle
 					catch(Throwable t)
 					{
 						return;
-					};
+					}
 					AREA=CMLib.coffeeMaker().copyArea(AREA,newName);
 					if(AREA==null)
 					{

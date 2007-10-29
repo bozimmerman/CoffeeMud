@@ -38,7 +38,7 @@ public class Chant_MeteorStrike extends Chant
 	public int maxRange(){return adjustedMaxInvokerRange(5);}
 	public int minRange(){return 1;}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

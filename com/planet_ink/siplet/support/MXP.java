@@ -546,7 +546,7 @@ public class MXP
             if(E.needsText())
             {
                 if(tagDebugLong){System.out.println("/TAG>"+substr(buf,0,buf.length())); System.out.flush();}
-                if(tagDebug){System.out.println("/TAG*/Entity needs text, so purge and look for close."); ; System.out.flush();}           
+                if(tagDebug){System.out.println("/TAG*/Entity needs text, so purge and look for close."); System.out.flush();}           
                 return -1; // we want it to continue to look for closing tag 
             }
         }

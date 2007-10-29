@@ -48,17 +48,17 @@ public class DefaultSocial implements Social
 	public String name(){ return Social_name;}
 	public String Name(){return name();}
 	public void setName(String newName){Social_name=newName;}
-	public String You_see(){return You_see;};
-	public String Third_party_sees(){return Third_party_sees;};
-	public String Target_sees(){return Target_sees;};
-	public String See_when_no_target(){return See_when_no_target;};
+	public String You_see(){return You_see;}
+	public String Third_party_sees(){return Third_party_sees;}
+	public String Target_sees(){return Target_sees;}
+	public String See_when_no_target(){return See_when_no_target;}
 	public int sourceCode(){return sourceCode;}
 	public int othersCode(){return othersCode;}
 	public int targetCode(){return targetCode;}
-	public void setYou_see(String str){You_see=str;};
-	public void setThird_party_sees(String str){Third_party_sees=str;};
-	public void setTarget_sees(String str){Target_sees=str;};
-	public void setSee_when_no_target(String str){See_when_no_target=str;};
+	public void setYou_see(String str){You_see=str;}
+	public void setThird_party_sees(String str){Third_party_sees=str;}
+	public void setTarget_sees(String str){Target_sees=str;}
+	public void setSee_when_no_target(String str){See_when_no_target=str;}
 	public void setSourceCode(int code){sourceCode=code;}
 	public void setOthersCode(int code){othersCode=code;}
 	public void setTargetCode(int code){targetCode=code;}

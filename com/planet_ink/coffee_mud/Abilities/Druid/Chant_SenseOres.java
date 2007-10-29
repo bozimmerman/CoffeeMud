@@ -40,7 +40,7 @@ public class Chant_SenseOres extends Chant_SensePlants
 	public String displayText(){return "(Sensing Ores)";}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	public long flags(){return Ability.FLAG_TRACKING;}
-	protected String word(){return "ores";};
+	protected String word(){return "ores";}
 
 	private int[] myMats={RawMaterial.MATERIAL_ROCK,
 						  RawMaterial.MATERIAL_METAL};

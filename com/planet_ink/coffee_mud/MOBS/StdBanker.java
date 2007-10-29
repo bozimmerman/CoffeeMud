@@ -170,15 +170,15 @@ public class StdBanker extends StdShopKeeper implements Banker
 			}
 		}
 		return found;
-	};
+	}
 	public void delAllDeposits(String mob)
 	{
 		CMLib.database().DBDeleteData(mob,bankChain());
-	};
+	}
 	public int numberDeposited(String mob)
 	{
 		return getDepositInventory(mob).size();
-	};
+	}
 	public Vector getDepositedItems(MOB mob)
 	{
 		if(mob==null) return new Vector();
@@ -203,7 +203,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	public Vector getDepositInventory(String mob)
 	{
 		return CMLib.database().DBReadData(mob,bankChain());
-	};
+	}
 	public Vector getAccountNames()
 	{
 		Vector V=CMLib.database().DBReadData(bankChain());
@@ -263,7 +263,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				return I;
 		}
 		return null;
-	};
+	}
 
 	public long timeInterval()
 	{
@@ -272,10 +272,10 @@ public class StdBanker extends StdShopKeeper implements Banker
 				*location().getArea().getTimeObj().getDaysInMonth()).longValue();
 	}
 
-	public void setCoinInterest(double interest){coinInterest=interest;};
-	public void setItemInterest(double interest){itemInterest=interest;};
-	public double getCoinInterest(){return coinInterest;};
-	public double getItemInterest(){return itemInterest;};
+	public void setCoinInterest(double interest){coinInterest=interest;}
+	public void setItemInterest(double interest){itemInterest=interest;}
+	public double getCoinInterest(){return coinInterest;}
+	public double getItemInterest(){return itemInterest;}
 	public void setLoanInterest(double interest){loanInterest=interest;}
 	public double getLoanInterest(){return loanInterest;}
 	public Vector getDebtInfo(MOB mob)

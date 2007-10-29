@@ -36,7 +36,7 @@ public class Spell_MassSleep extends Spell
 	public String ID() { return "Spell_MassSleep"; }
 	public String name(){return "Mass Sleep";}
 	public String displayText(){return "";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return 0;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 

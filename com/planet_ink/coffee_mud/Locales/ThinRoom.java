@@ -50,7 +50,7 @@ public class ThinRoom implements Room {
 	protected static final Exit[] exits=new Exit[Directions.NUM_DIRECTIONS];
 	protected static final Room[] rooms=new Room[Directions.NUM_DIRECTIONS];
 	public String roomID(){return roomID;}
-	public void setRoomID(String newRoomID){roomID=newRoomID;};
+	public void setRoomID(String newRoomID){roomID=newRoomID;}
     public void initializeClass(){}
     public String getContextName(Environmental E){return E==null?"nothing":E.name();}
 

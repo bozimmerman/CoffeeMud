@@ -97,7 +97,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
         while(start<=end)
         {
             mid=(end+start)/2;
-            if((mid>0)&&((xs[mid-1]&NEXT_FLAG)>0)){mid--;};
+            if((mid>0)&&((xs[mid-1]&NEXT_FLAG)>0)){mid--;}
             if(x<(xs[mid]&NEXT_BITS))
                 end=mid-1;
             else
@@ -126,7 +126,7 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
         while(start<=end)
         {
             mid=(end+start)/2;
-            if((mid>0)&&((ys[mid-1]&NEXT_FLAGL)>0)){mid--;};
+            if((mid>0)&&((ys[mid-1]&NEXT_FLAGL)>0)){mid--;}
             if(y<(ys[mid]&NEXT_BITSL))
                 end=mid-1;
             else

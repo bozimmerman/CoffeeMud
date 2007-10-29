@@ -40,7 +40,7 @@ public class Chant_SenseGems extends Chant_SensePlants
 	public String displayText(){return "(Sensing Gems)";}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	public long flags(){return Ability.FLAG_TRACKING;}
-	protected String word(){return "gems";};
+	protected String word(){return "gems";}
 
 	private int[] myMats={RawMaterial.MATERIAL_PRECIOUS,
 						  RawMaterial.MATERIAL_GLASS};

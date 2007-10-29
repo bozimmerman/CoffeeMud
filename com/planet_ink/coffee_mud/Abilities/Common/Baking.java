@@ -38,8 +38,8 @@ public class Baking extends Cooking
 	private static final String[] triggerStrings = {"BAKING","BAKE"};
     public String supportedResourceString(){return "MISC";}
 	public String[] triggerStrings(){return triggerStrings;}
-	public String cookWordShort(){return "bake";};
-	public String cookWord(){return "baking";};
+	public String cookWordShort(){return "bake";}
+	public String cookWord(){return "baking";}
 	public boolean honorHerbs(){return false;}
 	public boolean requireLid(){return true;}
 

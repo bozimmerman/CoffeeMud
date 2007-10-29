@@ -48,7 +48,7 @@ public class Fighter_Charge extends FighterSkill
 	public int maxRange(){return adjustedMaxInvokerRange(2);}
     protected int code=0;
     public int abilityCode(){return code;}
-    public void setAbilityCode(int c){code=c;};
+    public void setAbilityCode(int c){code=c;}
     
 	public boolean done=false;
 

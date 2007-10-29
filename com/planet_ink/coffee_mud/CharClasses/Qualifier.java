@@ -38,7 +38,7 @@ public class Qualifier extends StdCharClass
 	public String baseClass(){return ID();}
 	private static boolean abilitiesLoaded=false;
 	public boolean loaded(){return abilitiesLoaded;}
-	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;};
+	public void setLoaded(boolean truefalse){abilitiesLoaded=truefalse;}
 	
 	public Qualifier()
 	{

@@ -36,7 +36,7 @@ public class Spell_ManaBurn extends Spell
 	public String ID() { return "Spell_ManaBurn"; }
 	public String name(){return "Mana Burn";}
 	public String displayText(){return "(Mana Burn)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 

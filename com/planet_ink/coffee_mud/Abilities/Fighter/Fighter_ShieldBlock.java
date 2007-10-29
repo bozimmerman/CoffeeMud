@@ -37,7 +37,7 @@ public class Fighter_ShieldBlock extends FighterSkill
 	public int hits=0;
 	public String ID() { return "Fighter_ShieldBlock"; }
 	public String name(){ return "Shield Block";}
-	public String displayText(){return "";};
+	public String displayText(){return "";}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}

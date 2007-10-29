@@ -39,8 +39,8 @@ public class Distilling extends Cooking
 	public String name(){ return "Distilling";}
 	private static final String[] triggerStrings = {"DISTILLING"};
 	public String[] triggerStrings(){return triggerStrings;}
-	public String cookWordShort(){return "distill";};
-	public String cookWord(){return "distilling";};
+	public String cookWordShort(){return "distill";}
+	public String cookWord(){return "distilling";}
 	public boolean honorHerbs(){return false;}
     public String supportedResourceString(){return "MISC";}
     protected String defaultFoodSound="hotspring.wav";

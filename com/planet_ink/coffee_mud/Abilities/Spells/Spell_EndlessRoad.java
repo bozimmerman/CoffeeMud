@@ -36,7 +36,7 @@ public class Spell_EndlessRoad extends Spell
 	public String ID() { return "Spell_EndlessRoad"; }
 	public String name(){return "Endless Road";}
 	public String displayText(){return "(Endless Road)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 

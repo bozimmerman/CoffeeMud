@@ -100,11 +100,11 @@ public class QuestLoader
 		if(quests.size()>0) quType=CMClass.classID(quests.firstElement());
 		DBConnection D=null;
 		DB.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'");
-		try{Thread.sleep((1000+(quests.size()*100)));}catch(Exception e){};
+		try{Thread.sleep((1000+(quests.size()*100)));}catch(Exception e){}
 		if(DB.queryRows("SELECT * FROM CMQUESTS WHERE CMQUTYPE='"+quType+"'")>0) 
 			Log.errOut("Failed to delete quest typed '"+quType+"'.");
 		DB.update("DELETE FROM CMQUESTS WHERE CMQUTYPE='Quests'");
-		try{Thread.sleep((1000+(quests.size()*100)));}catch(Exception e){};
+		try{Thread.sleep((1000+(quests.size()*100)));}catch(Exception e){}
 		if(DB.queryRows("SELECT * FROM CMQUESTS WHERE CMQUTYPE='Quests'")>0) 
 			Log.errOut("Failed to delete quest typed 'Quests'.");
 		D=DB.DBFetch();

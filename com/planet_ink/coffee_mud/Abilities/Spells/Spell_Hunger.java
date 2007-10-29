@@ -36,7 +36,7 @@ public class Spell_Hunger extends Spell
 	public String ID() { return "Spell_Hunger"; }
 	public String name(){return "Endless Hunger";}
 	public String displayText(){return "(Hunger)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 

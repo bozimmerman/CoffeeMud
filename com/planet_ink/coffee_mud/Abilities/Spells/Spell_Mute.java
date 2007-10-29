@@ -36,7 +36,7 @@ public class Spell_Mute extends Spell
 	public String ID() { return "Spell_Mute"; }
 	public String name(){return "Mute";}
 	public String displayText(){return "(Mute)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 

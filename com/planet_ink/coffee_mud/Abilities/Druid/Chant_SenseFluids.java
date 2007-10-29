@@ -40,7 +40,7 @@ public class Chant_SenseFluids extends Chant_SensePlants
 	public String displayText(){return "(Sensing Fluids)";}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
 	public long flags(){return Ability.FLAG_TRACKING;}
-	protected String word(){return "fluids";};
+	protected String word(){return "fluids";}
 
 	private int[] myMats={RawMaterial.MATERIAL_LIQUID};
 	protected int[] okMaterials(){	return myMats;}

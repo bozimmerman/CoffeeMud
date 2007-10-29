@@ -36,7 +36,7 @@ public class Spell_Slow extends Spell
 	public String ID() { return "Spell_Slow"; }
 	public String name(){return "Slow";}
 	public String displayText(){return "(Slow spell)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 

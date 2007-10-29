@@ -36,7 +36,7 @@ public class Spell_GravitySlam extends Spell
 	public String ID() { return "Spell_GravitySlam"; }
 	public String name(){return "Gravity Slam";}
 	public int maxRange(){return adjustedMaxInvokerRange(5);}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 	public long flags(){return Ability.FLAG_MOVING;}
 

@@ -37,7 +37,7 @@ public class Spell_Polymorph extends Spell
 	public String ID() { return "Spell_Polymorph"; }
 	public String name(){return "Polymorph";}
 	public String displayText(){return "(Polymorph)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 

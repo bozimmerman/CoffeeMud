@@ -36,7 +36,7 @@ public class Fighter_AutoBash extends FighterSkill
 {
 	public String ID() { return "Fighter_AutoBash"; }
 	public String name(){ return "AutoBash";}
-	public String displayText(){return "";};
+	public String displayText(){return "";}
 	private static final String[] triggerStrings = {"AUTOBASH"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}

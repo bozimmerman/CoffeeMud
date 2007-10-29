@@ -36,7 +36,7 @@ public class Spell_Confusion extends Spell
 	public String ID() { return "Spell_Confusion"; }
 	public String name(){return "Confusion";}
 	public String displayText(){return "(Confusion spell)";}
-	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;};
+	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
