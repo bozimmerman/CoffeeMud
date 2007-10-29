@@ -48,13 +48,26 @@ public class Chant_ControlWeather extends Chant
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg)) return false;
-		if((!msg.amISource(invoker())||(abilityCode()==1))
-		&&(msg.tool()!=null)
-		&&(msg.tool() instanceof Ability)
+		if((msg.tool() instanceof Ability)
 		&&(CMath.bset(((Ability)msg.tool()).flags(),Ability.FLAG_WEATHERAFFECTING)))
 		{
-			msg.source().tell("The weather does not heed to your call.");
-			return false;
+			if(abilityCode()==1)
+			{
+				Ability A=(Ability)msg.tool();
+				if((!msg.amISource(invoker()))
+				||(((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_MOONALTERING)
+				   &&((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_MOONSUMMONING)))
+				{
+					msg.source().tell("The weather is finely balanced here, and will not heed your call.");
+					return false;
+				}
+			}
+			else
+			if(!msg.amISource(invoker()))
+			{
+				msg.source().tell("The sky here does not heed to your call.");
+				return false;
+			}
 		}
 		return true;
 	}
