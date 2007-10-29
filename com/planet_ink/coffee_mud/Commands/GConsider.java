@@ -81,7 +81,7 @@ public class GConsider extends StdCommand
 		commands.removeElementAt(0);
 		String targetName=CMParms.combine(commands,0);
 		MOB target=mob.location().fetchInhabitant(targetName);
-		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
+		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("I don't see '"+targetName+"' here.");
 			return false;

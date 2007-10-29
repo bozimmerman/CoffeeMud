@@ -1559,7 +1559,7 @@ public class StdRoom implements Room
 			found=mob.fetchCarried(goodLocation, thingName);
 		if((found==null)&&(!mineOnly))
 		{
-			if(found==null)	found=CMLib.english().fetchEnvironmental(exits,thingName,true);
+			found=CMLib.english().fetchEnvironmental(exits,thingName,true);
 			if(found==null) found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,true);
 			if(found==null)	found=CMLib.english().fetchEnvironmental(exits,thingName,false);
 			if(found==null) found=CMLib.english().fetchAvailableItem(contents,thingName,goodLocation,wornReqCode,false);
@@ -1641,7 +1641,7 @@ public class StdRoom implements Room
 		V.addAll(contents);
 		for(int e=0;e<exits.length;e++)
 		    if(exits[e]!=null)V.addElement(exits[e]);
-		if(found==null)	found=CMLib.english().fetchAvailable(V,thingName,goodLocation,wornReqCode,true);
+		found=CMLib.english().fetchAvailable(V,thingName,goodLocation,wornReqCode,true);
 		if(found==null) found=CMLib.english().fetchAvailable(V,thingName,goodLocation,wornReqCode,false);
 		if(found==null)
 		{

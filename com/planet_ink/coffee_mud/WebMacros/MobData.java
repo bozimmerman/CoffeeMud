@@ -884,13 +884,9 @@ public class MobData extends StdWebMacro
 		Room R=(Room)httpReq.getRequestObjects().get(last);
 		if(R==null)
 		{
-			if((last!=null)&&(last.equalsIgnoreCase("ANY")))
+			if(!last.equalsIgnoreCase("ANY"))
 			{
-
-			}
-			else
-			{
-				R=CMLib.map().getRoom(last);
+			    R=CMLib.map().getRoom(last);
 				if(R==null)
 					return "No Room?!";
 				CMLib.map().resetRoom(R);

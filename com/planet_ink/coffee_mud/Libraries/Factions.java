@@ -867,7 +867,6 @@ public class Factions extends StdLibrary implements FactionManager
                 else
                 if(!mob.session().confirm("Create a new allowance (y/N): ","N"))
                 {
-                    CA=null;
                     continue;
                 }
                 else

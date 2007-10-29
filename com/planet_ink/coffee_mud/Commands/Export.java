@@ -108,7 +108,7 @@ public class Export extends StdCommand
 			if(O instanceof Room)
 			{
 				room=(Room)O;
-				area=(room!=null)?room.getArea():null;
+				area=room.getArea();
 			}
 			else
 			if(O instanceof Area)

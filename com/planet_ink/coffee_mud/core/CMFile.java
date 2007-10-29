@@ -517,7 +517,6 @@ public class CMFile
                 O=(byte[])data;
         }
         else
-        if(data!=null)
             O=new StringBuffer(data.toString());
         if(!isLocalFile())
         {
@@ -589,7 +588,6 @@ public class CMFile
         if(data instanceof byte[])
             O=new StringBuffer(CMStrings.bytesToStr((byte[])data));
         else
-        if(data!=null)
             O=new StringBuffer(data.toString());
         if(!isLocalFile())
         {

@@ -60,7 +60,7 @@ public class ATopics extends StdCommand
 			topicBuffer=new StringBuffer(topicBuffer.toString().replace('_',' '));
 			Resources.submitResource(resName,topicBuffer);
 		}
-		if((topicBuffer!=null)&&(mob!=null)&&(!mob.isMonster()))
+		if((mob!=null)&&(!mob.isMonster()))
 			mob.session().colorOnlyPrintln(topicBuffer.toString()+"\n\r\n\rEnter "+helpName+" (TOPIC NAME) for more information.",23,false);
 	}
 

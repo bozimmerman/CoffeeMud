@@ -274,7 +274,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 			}
 			else
 			{
-				CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+((target==null)?mob.name():target.name())+"\"^><S-NAME> say(s) '"+text+"'"+((target==null)?"^</SAY^>":" to <T-NAMESELF>.^</SAY^>^?"),CMMsg.MSG_SPEAK,"^T^<SAY \""+mob.name()+"\"^><S-NAME> say(s) '"+text+"'"+((target==null)?"^</SAY^>":" to <T-NAMESELF>.^</SAY^>^?"),CMMsg.NO_EFFECT,null);
+				CMMsg msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_SPEAK,"^T^<SAY \""+target.name()+"\"^><S-NAME> say(s) '"+text+"' to <T-NAMESELF>.^</SAY^>^?",CMMsg.MSG_SPEAK,"^T^<SAY \""+mob.name()+"\"^><S-NAME> say(s) '"+text+"' to <T-NAMESELF>.^</SAY^>^?",CMMsg.NO_EFFECT,null);
 				if(location.okMessage(mob,msg))
 					location.send(mob,msg);
 			}

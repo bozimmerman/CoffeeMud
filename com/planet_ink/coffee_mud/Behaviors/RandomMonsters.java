@@ -219,7 +219,7 @@ public class RandomMonsters extends ActiveTicker
 				if(thang!=null)
 				    thangName=thang.name();
 				
-				if((buf==null)||((buf!=null)&&(buf.length()<20)))
+				if((buf==null)||(buf.length()<20))
 				{
 					Log.errOut("RandomMonsters","Unknown XML file: '"+filename+"' for '"+thangName+"'.");
 					return null;

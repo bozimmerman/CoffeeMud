@@ -66,18 +66,17 @@ public class Skill_Write extends StdSkill
 				return false;
 			}
 		}
-		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
+		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+((String)commands.elementAt(0))+"' here.");
 			return false;
 		}
 
 		Item item=target;
-		if((item==null)
-		||((item.material()!=RawMaterial.RESOURCE_PAPER)
+		if(((item.material()!=RawMaterial.RESOURCE_PAPER)
 		   &&(item.material()!=RawMaterial.RESOURCE_SILK)
 		   &&(item.material()!=RawMaterial.RESOURCE_HEMP))
-		||((item!=null)&&(!CMLib.flags().isReadable(item))))
+		||(!CMLib.flags().isReadable(item)))
 		{
 			mob.tell("You can't write on that.");
 			return false;

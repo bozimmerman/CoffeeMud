@@ -695,7 +695,7 @@ public class RaceData extends StdWebMacro
 				
                 if(parms.containsKey("STATS"))
                 {
-					if(mob==null) mob=makeMOB(R);
+					mob=makeMOB(R);
 					MOB mob2=makeMOB(R);
 					mob2.baseCharStats().setMyRace(CMClass.getRace("StdRace"));
 					mob2.recoverCharStats();

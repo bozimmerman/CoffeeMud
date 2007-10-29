@@ -111,7 +111,6 @@ public class Drop extends BaseItemParser
 		{
             dropThis=mob.fetchCarried(container,whatToDrop+addendumStr);
 			if((dropThis==null)
-			&&(container==null)
 			&&(V.size()==0)
 			&&(addendumStr.length()==0)
 			&&(!allFlag))

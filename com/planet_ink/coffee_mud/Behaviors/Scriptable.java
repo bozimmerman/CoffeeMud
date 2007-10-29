@@ -572,7 +572,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		else
 		if(scripted!=null)
 		    thangName=scripted.name();
-		if((buf==null)||((buf!=null)&&(buf.length()<20)))
+		if((buf==null)||(buf.length()<20))
 		{
 			scriptableError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"' in "+thangName);
 			return null;
@@ -611,7 +611,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		else
 		if(scripted!=null)
 		    thangName=scripted.name();
-		if((buf==null)||((buf!=null)&&(buf.length()<20)))
+		if((buf==null)||(buf.length()<20))
 		{
 			scriptableError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"' in "+thangName);
 			return null;
@@ -5422,7 +5422,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					Ability A=newTarget.fetchEffect(which);
 					if(A!=null)
 					{
-                        if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster())&&(A!=null))
+                        if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
                             Log.sysOut("Scriptable",newTarget.Name()+" was MPUNAFFECTED by "+A.Name());
 						A.unInvoke();
 						if(newTarget.fetchEffect(which)==A)
@@ -6286,7 +6286,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(cast!=null) A=CMClass.findAbility(cast);
 				if((newTarget!=null)&&(A!=null))
 				{
-                    if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster())&&(A!=null))
+                    if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
                         Log.sysOut("Scriptable",newTarget.Name()+" was MPAFFECTED by "+A.Name());
 					A.setMiscText(m2);
 					if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
@@ -6309,7 +6309,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				if((newTarget!=null)&&(A!=null))
 				{
-                    if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster())&&(A!=null))
+                    if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
                         Log.sysOut("Scriptable",newTarget.Name()+" was MPBEHAVED with "+A.name());
 					A.setParms(m2);
 					if(newTarget.fetchBehavior(A.ID())==null)
@@ -7221,7 +7221,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     if((!((MOB)newTarget).isMonster())&&(A!=null))
                         Log.sysOut("Scriptable",newTarget.Name()+" was MPDISABLED with "+A.Name());
                     ExpertiseLibrary.ExpertiseDefinition D=CMLib.expertises().findDefinition(cast,false);
-                    if((newTarget!=null)&&(newTarget instanceof MOB)&&(D!=null))
+                    if((newTarget instanceof MOB)&&(D!=null))
                         ((MOB)newTarget).delExpertise(D.ID);
 				}
 				break;

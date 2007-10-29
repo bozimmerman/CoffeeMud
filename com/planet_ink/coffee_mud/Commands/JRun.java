@@ -68,10 +68,7 @@ public class JRun extends StdCommand
         }
         catch(Exception e)
         {
-            if(e!=null)
-                mob.tell("JavaScript error: "+e.getMessage());
-            else
-                mob.tell("JavaScript error: unknown");
+            mob.tell("JavaScript error: "+e.getMessage());
         }
         Context.exit();
         return false;

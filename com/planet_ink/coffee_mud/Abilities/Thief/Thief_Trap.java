@@ -117,7 +117,7 @@ public class Thief_Trap extends ThiefSkill
 
 			String whatToTrap=CMParms.combine(commands,0);
 			int dirCode=Directions.getGoodDirectionCode(whatToTrap);
-			if((trapThis==null)&&(whatToTrap.equalsIgnoreCase("room")||whatToTrap.equalsIgnoreCase("here")))
+			if(whatToTrap.equalsIgnoreCase("room")||whatToTrap.equalsIgnoreCase("here"))
 				trapThis=mob.location();
 			if((dirCode>=0)&&(trapThis==null))
 				trapThis=mob.location().getExitInDir(dirCode);

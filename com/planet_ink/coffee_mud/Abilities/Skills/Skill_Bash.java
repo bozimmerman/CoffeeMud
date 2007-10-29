@@ -47,8 +47,8 @@ public class Skill_Bash extends StdSkill
 	{
 		if((mob!=null)&&(target!=null))
 		{
-			Item thisSheild=getShield(mob);
-			if(thisSheild==null)
+			Item thisShield=getShield(mob);
+			if(thisShield==null)
 				return Ability.QUALITY_INDIFFERENT;
 			if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
 				return Ability.QUALITY_INDIFFERENT;
@@ -58,22 +58,22 @@ public class Skill_Bash extends StdSkill
 
 	public Item getShield(MOB mob)
 	{
-		Item thisSheild=null;
+		Item thisShield=null;
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item I=mob.fetchInventory(i);
 			if((I!=null)&&(I instanceof Shield)&&(!I.amWearingAt(Item.IN_INVENTORY)))
-			{ thisSheild=I; break;}
+			{ thisShield=I; break;}
 		}
-		return thisSheild;
+		return thisShield;
 	}
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		Item thisSheild=getShield(mob);
-		if(thisSheild==null)
+		Item thisShield=getShield(mob);
+		if(thisShield==null)
 		{
 			mob.tell("You must have a shield to perform a bash.");
 			return false;
@@ -93,19 +93,19 @@ public class Skill_Bash extends StdSkill
 		String str=null;
 		if(success)
 		{
-			str=auto?"<T-NAME> is bashed!":"^F^<FIGHT^><S-NAME> bash(es) <T-NAMESELF> with "+thisSheild.name()+"!^</FIGHT^>^?";
+			str=auto?"<T-NAME> is bashed!":"^F^<FIGHT^><S-NAME> bash(es) <T-NAMESELF> with "+thisShield.name()+"!^</FIGHT^>^?";
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),str);
             CMLib.color().fixSourceFightColor(msg);
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
 				Weapon w=CMClass.getWeapon("ShieldWeapon");
-				if((w!=null)&&(thisSheild!=null))
+				if(w!=null)
 				{
-					w.setName(thisSheild.name());
-					w.setDisplayText(thisSheild.displayText());
-					w.setDescription(thisSheild.description());
-					w.baseEnvStats().setDamage(thisSheild.envStats().level()+5+(2*getXLEVELLevel(mob)));
+					w.setName(thisShield.name());
+					w.setDisplayText(thisShield.displayText());
+					w.setDescription(thisShield.description());
+					w.baseEnvStats().setDamage(thisShield.envStats().level()+5+(2*getXLEVELLevel(mob)));
 					if((CMLib.combat().postAttack(mob,target,w))
 					&&(target.charStats().getBodyPart(Race.BODY_LEG)>0)
 					&&(target.envStats().weight()<(mob.envStats().weight()*2)))

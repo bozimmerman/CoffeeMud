@@ -51,7 +51,7 @@ public class Skill_SongWrite extends BardSkill
 			return false;
 		}
 		Environmental target=mob.location().fetchFromMOBRoomFavorsItems(mob,null,(String)commands.lastElement(),Item.WORNREQ_UNWORNONLY);
-		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
+		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+((String)commands.lastElement())+"' here.");
 			return false;

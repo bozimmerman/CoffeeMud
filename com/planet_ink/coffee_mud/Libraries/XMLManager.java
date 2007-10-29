@@ -386,7 +386,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	public boolean getBoolFromPieces(Vector V, String tag)
 	{
 		String val=getValFromPieces(V,tag);
-		if((val==null)||((val!=null)&&(val.length()==0)))
+		if((val==null)||(val.length()==0))
 			return false;
 		if(val.toUpperCase().trim().startsWith("T"))
 			return true;
@@ -611,7 +611,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	public boolean returnXMLBoolean(String Blob, String Tag)
 	{
 		String val=returnXMLValue(Blob,Tag);
-		if((val==null)||((val!=null)&&(val.length()==0)))
+		if((val==null)||(val.length()==0))
 			return false;
 		if(val.toUpperCase().trim().startsWith("T"))
 			return true;

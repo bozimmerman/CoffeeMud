@@ -194,7 +194,7 @@ public class Chant_FindMate extends Chant
 		if(rooms.size()>0)
 			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,true,false,true,true,true,50);
 
-		if((success)&&(theTrail!=null)&&(target!=null))
+		if((success)&&(theTrail!=null))
 		{
 			theTrail.addElement(mob.location());
 

@@ -862,23 +862,20 @@ public final class IMC2Driver extends Thread {
 
             if (hbeat == HeartBeat) {
                 Object o = this;
-                if (o != null) {
-                    Class cl = o.getClass();
-                    java.lang.reflect.Method funcs[] = cl.getMethods();
-                    if (funcs.length > 1) {
-                        for (int k = 0; k < funcs.length; k++) {
-                            String m_name = funcs[k].getName();
-                            if (m_name.equals(fun)) {
-                                try {
-                                    funcs[k].invoke(o, new Object[] {param});
-                                }
-                                catch (Exception e) {
-                                    tracef(0,
-                                           "imc: call_out failed with error: "
-                                           + e.toString());
-
-                                }
+                Class cl = o.getClass();
+                java.lang.reflect.Method funcs[] = cl.getMethods();
+                if (funcs.length > 1) {
+                    for (int k = 0; k < funcs.length; k++) {
+                        String m_name = funcs[k].getName();
+                        if (m_name.equals(fun)) {
+                            try {
+                                funcs[k].invoke(o, new Object[] {param});
                             }
+                            catch (Exception e) {
+                                tracef(0,
+                                       "imc: call_out failed with error: "
+                                       + e.toString());
+                             }
                         }
                     }
                 }

@@ -49,7 +49,7 @@ public class Eat extends StdCommand
 		Environmental thisThang=null;
 		thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,CMParms.combine(commands,0),Item.WORNREQ_ANY);
 		if((thisThang==null)
-		||((thisThang!=null)&&(!CMLib.flags().canBeSeenBy(thisThang,mob))))
+		||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 		{
 			mob.tell("You don't see '"+CMParms.combine(commands,0)+"' here.");
 			return false;

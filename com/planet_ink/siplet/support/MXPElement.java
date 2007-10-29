@@ -131,7 +131,7 @@ public class MXPElement implements Cloneable
         int i=-1;
         char lastC=' ';
         boolean firstEqual=false;
-        while((bit!=null)&&((++i)<buf.length()))
+        while((++i)<buf.length())
         {
             switch(buf.charAt(i))
             {

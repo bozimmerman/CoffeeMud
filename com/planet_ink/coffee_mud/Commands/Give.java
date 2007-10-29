@@ -53,7 +53,7 @@ public class Give extends BaseItemParser
 		}
 
 		MOB recipient=mob.location().fetchInhabitant((String)commands.lastElement());
-		if((recipient==null)||((recipient!=null)&&(!CMLib.flags().canBeSeenBy(recipient,mob))))
+		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{
 			mob.tell("I don't see anyone called "+(String)commands.lastElement()+" here.");
 			return false;

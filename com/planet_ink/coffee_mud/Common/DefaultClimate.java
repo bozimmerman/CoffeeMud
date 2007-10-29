@@ -355,7 +355,7 @@ public class DefaultClimate implements Climate
 				String stopWord=getWeatherStop(oldWeather);
 				switch(sayMap[(oldWeather*Climate.NUM_WEATHER)+currentWeather])
 				{
-				case 0: say=null; break;
+				case 0: break; //say=null break;
 				case 1: say=getWeatherDescription(A); break;
 				case 2: say=stopWord; break;
 				case 3: say=stopWord+" "+getWeatherDescription(A); break;

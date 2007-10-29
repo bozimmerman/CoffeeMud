@@ -102,8 +102,8 @@ public class Skill_MarkDisguise extends Skill_Disguise
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(A==null)	beneficialAffect(mob,mob,asLevel,0);
-				if(A==null) A=(Skill_Disguise)mob.fetchEffect("Skill_MarkDisguise");
+				beneficialAffect(mob,mob,asLevel,0);
+				A=(Skill_Disguise)mob.fetchEffect("Skill_MarkDisguise");
 				A.values[0]=""+target.baseEnvStats().weight();
 				A.values[1]=""+target.baseEnvStats().level();
 				A.values[2]=target.charStats().genderName();

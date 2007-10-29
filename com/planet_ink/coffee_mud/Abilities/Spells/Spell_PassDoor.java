@@ -96,7 +96,7 @@ public class Spell_PassDoor extends Spell
 			Exit exit=mob.location().getExitInDir(dirCode);
 			Room room=mob.location().getRoomInDir(dirCode);
 
-			if((exit==null)||(room==null)||((exit!=null)&&(!CMLib.flags().canBeSeenBy(exit,mob))))
+			if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob)))
 			{
 				mob.tell("You can't see anywhere to pass that way.");
 				return false;

@@ -245,7 +245,7 @@ public class RandomItems extends ActiveTicker
 				if(thang!=null)
 				    thangName=thang.name();
 				
-				if((buf==null)||((buf!=null)&&(buf.length()<20)))
+				if((buf==null)||(buf.length()<20))
 				{
 					Log.errOut("RandomItems","Unknown XML file: '"+filename+"' for '"+thangName+"'.");
 					return null;
@@ -392,7 +392,7 @@ public class RandomItems extends ActiveTicker
 								I.wearIfPossible(M);
 								maintained.addElement(I);
 							}
-							if((!favorMobs)&&(room!=null))
+							if(!favorMobs)
 							{
 								maintained.addElement(I);
 								room.addItem(I);

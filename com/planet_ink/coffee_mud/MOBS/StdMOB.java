@@ -1402,7 +1402,7 @@ public class StdMOB implements MOB
 		catch(java.io.IOException io)
 		{
 			Log.errOut("StdMOB",CMParms.toStringList(commands));
-			if((io!=null)&&(io.getMessage()!=null))
+			if(io.getMessage()!=null)
 				Log.errOut("StdMOB",io.getMessage());
 			else
 				Log.errOut("StdMOB",io);

@@ -174,7 +174,7 @@ public class CommandJournal extends StdCommand
         }
         String journalWord=null;
         int journalNum=-1;
-        if(journalWord==null)
+        
         for(int i=0;i<CMLib.journals().getNumCommandJournals();i++)
             if(CMLib.journals().getCommandJournalName(i).equals(((String)commands.firstElement()).toUpperCase().trim()))
             {

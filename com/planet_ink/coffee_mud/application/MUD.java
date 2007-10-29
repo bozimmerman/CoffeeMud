@@ -386,7 +386,6 @@ public class MUD extends Thread implements MudHost
 			catch (UnknownHostException e)
 			{
 				Log.errOut(Thread.currentThread().getName(),"ERROR: MUD Server could not bind to address " + CMProps.getVar(CMProps.SYSTEM_MUDBINDADDRESS));
-				bindAddr = null;
 			}
 		}
 

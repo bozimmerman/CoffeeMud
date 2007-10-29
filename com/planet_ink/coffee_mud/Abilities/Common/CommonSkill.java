@@ -232,7 +232,7 @@ public class CommonSkill extends StdAbility
 		int consumed=25;
 		int diff=CMLib.ableMapper().qualifyingClassLevel(mob,this)+super.getXLOWCOSTLevel(mob)-CMLib.ableMapper().qualifyingLevel(mob,this);
 		Integer[] costOverrides=null;
-		if((mob!=null)&&(!ignoreClassOverride)) 
+		if(!ignoreClassOverride) 
 			costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
 		if(diff>0)
 		switch(diff)

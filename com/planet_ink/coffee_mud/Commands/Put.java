@@ -103,7 +103,7 @@ public class Put extends BaseItemParser
 		}
 
 		Environmental container=CMLib.english().possibleContainer(mob,commands,false,Item.WORNREQ_ANY);
-		if((container==null)||((container!=null)&&(!CMLib.flags().canBeSeenBy(container,mob))))
+		if((container==null)||(!CMLib.flags().canBeSeenBy(container,mob)))
 		{
 			mob.tell("I don't see a "+(String)commands.lastElement()+" here.");
 			return false;
@@ -145,7 +145,7 @@ public class Put extends BaseItemParser
 		}
 		while((allFlag)&&(addendum<=maxToPut));
 
-		if((container!=null)&&(V.contains(container)))
+		if(V.contains(container))
 			V.remove(container);
 
 		if(V.size()==0)

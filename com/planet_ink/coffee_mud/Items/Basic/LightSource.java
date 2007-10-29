@@ -178,23 +178,20 @@ public class LightSource extends StdItem implements Light
 		if(mob==null) return;
 		Room room=mob.location();
 		if(room==null) return;
-		if(room!=null)
+		if(((LightSource.inTheRain(room)&&goesOutInTheRain())
+                   ||(LightSource.inTheWater(msg.source(),room)))
+		&&(isLit())
+		&&(getDuration()>0)
+		&&(mob.isMine(this))
+		&&((!CMLib.flags().isInFlight(mob))
+		   ||(LightSource.inTheRain(room))
+		   ||((room.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(room.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))))
 		{
-			if(((LightSource.inTheRain(room)&&goesOutInTheRain())
-                    ||(LightSource.inTheWater(msg.source(),room)))
-			&&(isLit())
-			&&(getDuration()>0)
-			&&(mob.isMine(this))
-			&&((!CMLib.flags().isInFlight(mob))
-			   ||(LightSource.inTheRain(room))
-			   ||((room.domainType()!=Room.DOMAIN_OUTDOORS_WATERSURFACE)&&(room.domainType()!=Room.DOMAIN_INDOORS_WATERSURFACE))))
-			{
-				if(LightSource.inTheWater(msg.source(),room))
-					mob.tell("The water makes "+name()+" go out.");
-				else
-					mob.tell("The rain makes "+name()+" go out.");
-				tick(this,Tickable.TICKID_LIGHT_FLICKERS);
-			}
+			if(LightSource.inTheWater(msg.source(),room))
+				mob.tell("The water makes "+name()+" go out.");
+			else
+				mob.tell("The rain makes "+name()+" go out.");
+			tick(this,Tickable.TICKID_LIGHT_FLICKERS);
 		}
 
 		if(msg.amITarget(this))

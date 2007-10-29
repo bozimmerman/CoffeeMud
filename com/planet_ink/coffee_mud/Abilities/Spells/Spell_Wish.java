@@ -289,7 +289,7 @@ public class Spell_Wish extends Spell
 			if(wishV.size()>2)
 			{
 				possName=CMParms.combine(wishV,0,2);
-				if(target==null) target=mob.location().fetchFromRoomFavorMOBs(null,possName,Item.WORNREQ_UNWORNONLY);
+				target=mob.location().fetchFromRoomFavorMOBs(null,possName,Item.WORNREQ_UNWORNONLY);
 				if(target==null) target=mob.fetchInventory(possName);
 				if(target==null) possName=((String)wishV.elementAt(0)).trim();
 			}

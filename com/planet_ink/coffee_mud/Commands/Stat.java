@@ -305,9 +305,9 @@ public class Stat extends BaseAbleLister
 		}
 		String MOBname=CMParms.combine(commands,0);
 		MOB target=getTarget(mob,MOBname,true);
-		if((target==null)||((target!=null)&&(!target.isMonster())))
+		if((target==null)||(!target.isMonster()))
 			target=mob.location().fetchInhabitant(MOBname);
-		if((target==null)||((target!=null)&&(!target.isMonster())))
+		if((target==null)||(!target.isMonster()))
 		{
 		    try
 		    {

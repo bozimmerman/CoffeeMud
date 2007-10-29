@@ -72,7 +72,7 @@ public class Skill_InstrumentBash extends BardSkill
 			{
 				mob.location().send(mob,msg);
 				Weapon w=CMClass.getWeapon("ShieldWeapon");
-				if((w!=null)&&(instrument!=null))
+				if(w!=null)
 				{
 					w.setName(instrument.name());
 					w.setDisplayText(instrument.displayText());

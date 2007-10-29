@@ -46,7 +46,7 @@ public class Compare extends StdCommand
 		}
 		commands.removeElementAt(0);
 		Item compareThis=mob.fetchInventory(null,(String)commands.elementAt(0));
-		if((compareThis==null)||((compareThis!=null)&&(!CMLib.flags().canBeSeenBy(compareThis,mob))))
+		if((compareThis==null)||(!CMLib.flags().canBeSeenBy(compareThis,mob)))
 		{
             Vector V=CMLib.coffeeShops().getAllShopkeepers(mob.location(),mob);
             if(V.size()>0) 
@@ -62,7 +62,7 @@ public class Compare extends StdCommand
                     }
                     compareThis=(Item)itemToDo;
                 }
-                if((compareThis==null)||((compareThis!=null)&&(!CMLib.flags().canBeSeenBy(compareThis,mob)))) 
+                if((compareThis==null)||(!CMLib.flags().canBeSeenBy(compareThis,mob))) 
 				{
                     mob.tell("You don't have a "+( (String) commands.elementAt(0))+".");
                     return false;
@@ -104,7 +104,7 @@ public class Compare extends StdCommand
 				}
 			}
 			if(toThis==null) toThis=possible;
-			if((toThis==null)||((toThis!=null)&&(!CMLib.flags().canBeSeenBy(toThis,mob))))
+			if((toThis==null)||(!CMLib.flags().canBeSeenBy(toThis,mob)))
 			{
 				mob.tell("Compare a "+compareThis.name()+" to what?");
 				return false;
@@ -112,7 +112,7 @@ public class Compare extends StdCommand
 		}
 		else
 			toThis=mob.fetchInventory(null,CMParms.combine(commands,1));
-		if((toThis==null)||((toThis!=null)&&(!CMLib.flags().canBeSeenBy(toThis,mob))))
+		if((toThis==null)||(!CMLib.flags().canBeSeenBy(toThis,mob)))
 		{
 			mob.tell("You don't have a "+((String)commands.elementAt(1))+".");
 			return false;

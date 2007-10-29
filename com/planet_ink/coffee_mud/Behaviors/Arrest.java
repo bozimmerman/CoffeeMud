@@ -1315,7 +1315,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if((requiresWitness)&&(witness==null))
 		{
 			if(CMSecurity.isDebugging("ARREST")) 
-			    Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Witness required, and none present: "+(witness==null?null:witness.Name())+".");
+			    Log.debugOut("ARREST", mob.name()+", data: "+crimeLocs+"->"+crimeFlags+"->"+crime+"->"+sentence+"* Witness required, and none present: .");
 		    return false;
 		}
 
@@ -1409,7 +1409,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 				return false;
 			}
 		}
-		if(W==null) W=laws.getOldWarrant(mob,crime,true);
+		W=laws.getOldWarrant(mob,crime,true);
 		if(W==null) W=(LegalWarrant)CMClass.getCommon("DefaultArrestWarrant");
 
 		// fill out the warrant!
@@ -2218,11 +2218,8 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					}
 					else
 					{
-						if(officer!=null)
-                        {
-							CMLib.commands().postSay(officer,null,"Hmph.",false,false);
-                            fileArrestResister(laws,myArea,W);
-                        }
+						CMLib.commands().postSay(officer,null,"Hmph.",false,false);
+                        fileArrestResister(laws,myArea,W);
 						W.setTravelAttemptTime(0);
 						unCuff(W.criminal());
 						W.setArrestingOfficer(myArea,null);
@@ -2456,8 +2453,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					}
 					else
 					{
-						if(officer!=null)
-							CMLib.commands().postSay(officer,null,"No court today.",false,false);
+						CMLib.commands().postSay(officer,null,"No court today.",false,false);
 						unCuff(W.criminal());
 						if(W.arrestingOfficer()!=null)
 							dismissOfficer(W.arrestingOfficer());
@@ -2661,8 +2657,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					}
 					else
 					{
-						if(officer!=null)
-							CMLib.commands().postSay(officer,null,"Looks like court is not in session.",false,false);
+						CMLib.commands().postSay(officer,null,"Looks like court is not in session.",false,false);
 						W.setTravelAttemptTime(0);
 						unCuff(W.criminal());
 						if(W.arrestingOfficer()!=null)

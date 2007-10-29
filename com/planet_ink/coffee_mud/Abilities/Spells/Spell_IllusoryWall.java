@@ -64,7 +64,7 @@ public class Spell_IllusoryWall extends Spell
 		Exit exit=mob.location().getExitInDir(dirCode);
 		Room room=mob.location().getRoomInDir(dirCode);
 
-		if((exit==null)||(room==null)||((exit!=null)&&(!CMLib.flags().canBeSeenBy(exit,mob))))
+		if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob)))
 		{
 			mob.tell("That way is already closed.");
 			return false;

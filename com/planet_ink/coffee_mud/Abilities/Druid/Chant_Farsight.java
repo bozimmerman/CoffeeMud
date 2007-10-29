@@ -113,7 +113,7 @@ public class Chant_Farsight extends Chant
 						Exit exit=thatRoom.getExitInDir(dirCode);
 						Room room=thatRoom.getRoomInDir(dirCode);
 
-						if((exit==null)||(room==null)||((exit!=null)&&(!CMLib.flags().canBeSeenBy(exit,mob)))||((exit!=null)&&(!exit.isOpen())))
+						if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob))||(!exit.isOpen()))
 						{
 							mob.tell("\n\rSomething has obstructed your vision.");
 							success=false;

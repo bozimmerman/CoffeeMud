@@ -579,8 +579,7 @@ public class StdAbility implements Ability
 		
 		if((target==null)
 		||(!(target instanceof Item))
-		||((target!=null)
-		   &&((givenTarget==null)&&(!CMLib.flags().canBeSeenBy(target,mob)))))
+		||((givenTarget==null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
 		{
 			if(targetName.length()==0)
 				mob.tell("You need to be more specific.");
@@ -806,7 +805,7 @@ public class StdAbility implements Ability
 		}
 
 		Integer[] costOverrides=null;
-		if((mob!=null)&&(!ignoreClassOverride)) 
+		if(!ignoreClassOverride)
 			costOverrides=CMLib.ableMapper().getCostOverrides(mob,ID());
 		int consumed=CMProps.getMaxManaException(ID());
 		if(consumed==Integer.MIN_VALUE) consumed=CMProps.getIntVar(CMProps.SYSTEMI_MANACOST);

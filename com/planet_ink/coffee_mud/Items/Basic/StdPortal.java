@@ -218,7 +218,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 		&&(CMLib.flags().isSeen(this)))
 			if(isOpen())
 			{
-				if((room!=null)&&(!CMLib.flags().canBeSeenBy(room,mob)))
+              if(!CMLib.flags().canBeSeenBy(room,mob))
 					Say.append("darkness");
 				else
 					Say.append(name()+CMLib.flags().colorCodes(this,mob));

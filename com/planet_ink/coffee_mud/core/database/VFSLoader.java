@@ -63,7 +63,7 @@ public class VFSLoader
             Log.errOut("VFSLoader",sqle);
             return null;
         }
-        if(D!=null) DB.DBDone(D);
+        DB.DBDone(D);
         // log comment
         return rows;
     }

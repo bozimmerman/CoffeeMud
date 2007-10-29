@@ -166,7 +166,6 @@ public class OffLine extends Thread implements MudHost
             catch (UnknownHostException e)
             {
                 System.out.println("ERROR: MUD Server could not bind to address " + bind);
-                bindAddr = null;
             }
         }
 

@@ -85,9 +85,9 @@ public class Possess extends StdCommand
 		commands.removeElementAt(0);
 		String MOBname=CMParms.combine(commands,0);
 		MOB target=getTarget(mob,commands,true);
-		if((target==null)||((target!=null)&&(!target.isMonster())))
+		if((target==null)||(!target.isMonster()))
 			target=mob.location().fetchInhabitant(MOBname);
-		if((target==null)||((target!=null)&&(!target.isMonster())))
+		if((target==null)||(!target.isMonster()))
 		{
 			Enumeration r=mob.location().getArea().getProperMap();
 			for(;r.hasMoreElements();)
@@ -101,7 +101,7 @@ public class Possess extends StdCommand
 				}
 			}
 		}
-		if((target==null)||((target!=null)&&(!target.isMonster())))
+		if((target==null)||(!target.isMonster()))
 		{
 		    try
 		    {

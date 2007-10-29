@@ -55,7 +55,7 @@ public class Undress extends StdCommand
 		commands.removeElement(what);
 		String whom=CMParms.combine(commands,0);
 		MOB target=mob.location().fetchInhabitant(whom);
-		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
+		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("I don't see "+whom+" here.");
 			return false;

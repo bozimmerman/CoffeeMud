@@ -81,7 +81,7 @@ public class Kill extends StdCommand
 		if(target==null)
 		{
 			target=mob.location().fetchInhabitant(whomToKill);
-			if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
+			if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 			{
 				mob.tell("I don't see '"+whomToKill+"' here.");
 				return false;

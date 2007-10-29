@@ -51,7 +51,7 @@ public class Serve extends StdCommand
 			mob.tell("You may not serve "+recipient.name()+".");
 			return false;
 		}
-		if((recipient==null)||((recipient!=null)&&(!CMLib.flags().canBeSeenBy(recipient,mob))))
+		if((recipient==null)||(!CMLib.flags().canBeSeenBy(recipient,mob)))
 		{
 			mob.tell("I don't see "+CMParms.combine(commands,0)+" here.");
 			return false;

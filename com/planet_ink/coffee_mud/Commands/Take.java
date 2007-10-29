@@ -57,7 +57,7 @@ public class Take extends BaseItemParser
 			}
 
 			MOB victim=mob.location().fetchInhabitant((String)commands.lastElement());
-			if((victim==null)||((victim!=null)&&(!CMLib.flags().canBeSeenBy(victim,mob))))
+			if((victim==null)||(!CMLib.flags().canBeSeenBy(victim,mob)))
 			{
 				mob.tell("I don't see anyone called "+(String)commands.lastElement()+" here.");
 				return false;

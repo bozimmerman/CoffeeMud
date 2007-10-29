@@ -389,7 +389,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                 {
                     branch=getBranchPostableTo(toWhom,P.postalBranch(),allBranchBoxes);
                     if(branch!=null) return branch;
-                    if((branch==null)&&(allBranchBoxes.size()==0))
+                    if(allBranchBoxes.size()==0)
                     {
                         P.createBoxHere(toWhom,toWhom);
                         return P.postalBranch();

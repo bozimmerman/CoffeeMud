@@ -1115,8 +1115,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                     Rider rider=source.riding().fetchRider(r);
                     if(!(rider instanceof MOB)) continue;
                     MOB otherMOB=(MOB)rider;
-                    if((otherMOB!=null)
-                       &&(otherMOB!=source)
+                    if((otherMOB!=source)
                        &&(otherMOB.isInCombat())
                        &&(otherMOB.getVictim()==target)
                        &&(otherMOB.rangeToTarget()>=0)

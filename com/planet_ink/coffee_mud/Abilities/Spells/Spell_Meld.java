@@ -81,13 +81,13 @@ public class Spell_Meld extends Spell
 			return false;
 		}
 		Item itemOne=mob.fetchInventory(null,(String)commands.elementAt(0));
-		if((itemOne==null)||((itemOne!=null)&&(!CMLib.flags().canBeSeenBy(itemOne,mob))))
+		if((itemOne==null)||(!CMLib.flags().canBeSeenBy(itemOne,mob)))
 		{
 			mob.tell("You don't seem to have a '"+((String)commands.elementAt(0))+"'.");
 			return false;
 		}
 		Item itemTwo=mob.fetchInventory(null,CMParms.combine(commands,1));
-		if((itemTwo==null)||((itemTwo!=null)&&(!CMLib.flags().canBeSeenBy(itemTwo,mob))))
+		if((itemTwo==null)||(!CMLib.flags().canBeSeenBy(itemTwo,mob)))
 		{
 			mob.tell("You don't seem to have a '"+CMParms.combine(commands,1)+"'.");
 			return false;

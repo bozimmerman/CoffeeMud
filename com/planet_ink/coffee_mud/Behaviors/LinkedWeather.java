@@ -65,7 +65,7 @@ public class LinkedWeather extends StdBehavior
 
 		Area A=(Area)ticking;
 		Area linkedA=CMLib.map().getArea(areaName);
-		if((A!=null)&&(linkedA!=null))
+		if(linkedA!=null)
 		{
 			if(rolling)
 				A.getClimateObj().setNextWeatherType(linkedA.getClimateObj().weatherType(null));

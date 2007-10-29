@@ -48,7 +48,7 @@ public class Pour extends StdCommand
 		Environmental fillFromThis=null;
 		String thingToFillFrom=(String)commands.elementAt(0);
 		fillFromThis=mob.fetchCarried(null,thingToFillFrom);
-		if((fillFromThis==null)||((fillFromThis!=null)&&(!CMLib.flags().canBeSeenBy(fillFromThis,mob))))
+		if((fillFromThis==null)||(!CMLib.flags().canBeSeenBy(fillFromThis,mob)))
 		{
 			mob.tell("You don't seem to have '"+thingToFillFrom+"'.");
 			return false;

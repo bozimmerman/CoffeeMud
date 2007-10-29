@@ -132,7 +132,7 @@ public class Domesticating extends CommonSkill
 			return false;
 		}
 		else
-		if((newName!=null)&&(M!=null))
+		if(newName!=null)
 		{
 			if(newName.trim().length()==0)
 			{

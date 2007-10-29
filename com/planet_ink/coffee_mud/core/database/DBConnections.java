@@ -198,7 +198,7 @@ public class DBConnections
 				System.out.println(x/y);
 				// this should create a division by zero error.
 			}
-			ThisDB=null;
+
 			if(Connections.size()<maxConnections)
 				try{
 					ThisDB=new DBConnection(this,DBClass,DBService,DBUser,DBPass,reuse);
@@ -238,7 +238,7 @@ public class DBConnections
 						consecutiveFailures=0;
 					}
 				}
-				if((ThisDB==null)&&(Connections.size()>=maxConnections))
+				if(Connections.size()>=maxConnections)
 				{
 					int inuse=0;
 					for(int i=0;i<Connections.size();i++)
@@ -271,12 +271,11 @@ public class DBConnections
 			}
 		}
 		
-		if(ThisDB!=null)
-		{
-			consecutiveFailures=0;
-			disconnected=false;
-			lockedUp=false;
-		}
+		
+		consecutiveFailures=0;
+		disconnected=false;
+		lockedUp=false;
+		
 		return ThisDB;
 	}
 	
@@ -526,44 +525,37 @@ public class DBConnections
 		synchronized("SQLErrors.que")
 		{
 			File myFile=new File("SQLErrors.que");
-			if(myFile!=null)
+			if(myFile.canRead())
 			{
-				if(myFile.canRead())
+				// open a reader for the file
+				BufferedReader in=null;
+				try
 				{
-					// open a reader for the file
-					BufferedReader in=null;
+					in = new BufferedReader(new FileReader(myFile));
+				}
+				catch(FileNotFoundException f){}
+				
+				if(in!=null)
+				{
+					// read in the queue
 					try
 					{
-						in = new BufferedReader(new FileReader(myFile));
-					}
-					catch(FileNotFoundException f)
-					{
-						in=null;
-					}
-					
-					if(in!=null)
-					{
-					
-						// read in the queue
-						try
+						while(in.ready())
 						{
-							while(in.ready())
-							{
-								String queueLine=in.readLine();
-								if(queueLine==null)
-									break;
-								Queue.addElement(queueLine);
-							}
+							String queueLine=in.readLine();
+							if(queueLine==null)
+								break;
+							Queue.addElement(queueLine);
 						}
-						catch(IOException e){}
-					
-						// close the channel.. done?
-						try
-						{
-							in.close();
-						}
-						catch(IOException e){}
 					}
+					catch(IOException e){}
+				
+					// close the channel.. done?
+					try
+					{
+						  in.close();
+					}
+					catch(IOException e){}
 				}
 			}
 			myFile.delete();

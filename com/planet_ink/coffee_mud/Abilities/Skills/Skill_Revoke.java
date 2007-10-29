@@ -67,7 +67,7 @@ public class Skill_Revoke extends StdSkill
 				target=mob.location().fetchFromRoomFavorMOBs(null,whatToRevoke,Item.WORNREQ_ANY);
 		}
 
-		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
+		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("Revoke from what?  You don't see '"+whatToRevoke+"' here.");
 			return false;

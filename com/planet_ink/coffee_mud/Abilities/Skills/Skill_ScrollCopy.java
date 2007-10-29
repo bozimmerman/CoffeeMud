@@ -52,7 +52,7 @@ public class Skill_ScrollCopy extends StdSkill
 			return false;
 		}
 		Item target=mob.fetchCarried(null,CMParms.combine(commands,1));
-		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
+		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
 			return false;

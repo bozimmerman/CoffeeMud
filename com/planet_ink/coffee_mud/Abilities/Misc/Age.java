@@ -179,8 +179,7 @@ public class Age extends StdAbility
 						babe.baseState().setHitPoints(2);
 						babe.baseState().setMana(10);
 						babe.baseState().setMovement(20);
-						if(following!=null)
-							babe.setLiegeID(following.Name());
+						babe.setLiegeID(following.Name());
 						babe.recoverCharStats();
 						babe.recoverEnvStats();
 						babe.recoverMaxState();
@@ -197,8 +196,7 @@ public class Age extends StdAbility
 						babe.setFollowing(following);
 						R.show(babe,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> JUST TOOK <S-HIS-HER> FIRST STEPS!!!");
 						I.destroy();
-                        if(following!=null)
-                            CMLib.database().DBReCreateData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.baseEnvStats().ability()+"/"+babe.text());
+                        CMLib.database().DBReCreateData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text(),babe.ID()+"/"+babe.baseEnvStats().ability()+"/"+babe.text());
 					}
 				}
 			}

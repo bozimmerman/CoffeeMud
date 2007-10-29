@@ -65,8 +65,7 @@ public class TargetPlayer extends ActiveTicker
 					{
 						shouldFight = consider;
 					}
-					else
-					if (shouldFight != null) 
+					else 
 					{
 						if (((shouldFight.envStats()!=null)&&(consider.envStats()!=null)) 
 						&&(shouldFight.envStats().level() > consider.envStats().level()))

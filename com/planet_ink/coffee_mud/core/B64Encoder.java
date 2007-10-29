@@ -426,12 +426,10 @@ public class B64Encoder
         catch( java.io.IOException e )
         {
             e.printStackTrace();
-            obj = null;
         }
         catch( java.lang.ClassNotFoundException e )
         {
             e.printStackTrace();
-            obj = null;
         }
         finally
         {

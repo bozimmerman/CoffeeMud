@@ -55,8 +55,7 @@ public class DrinkCmd extends StdCommand
 		{
 			thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,CMParms.combine(commands,0),Item.WORNREQ_ANY);
 			if((thisThang==null)
-			||((thisThang!=null)
-			   &&(!mob.isMine(thisThang))
+			||((!mob.isMine(thisThang))
 			   &&(!CMLib.flags().canBeSeenBy(thisThang,mob))))
 			{
 				mob.tell("You don't see '"+CMParms.combine(commands,0)+"' here.");

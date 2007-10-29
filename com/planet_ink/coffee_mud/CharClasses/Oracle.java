@@ -218,19 +218,20 @@ public class Oracle extends Cleric
 					while((newOne==null)&&((++tries2)<10000))
 					{
 						Ability A=CMClass.randomAbility();
-						int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
-						if((A!=null)
-						&&(lql<25)
-						&&(lql>0)
-						&&(!CMLib.ableMapper().getSecretSkill(C.ID(),true,A.ID()))
-						&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<0)
-						&&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))
-					    &&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
-                        &&(A.isAutoInvoked()||((A.triggerStrings()!=null)&&(A.triggerStrings().length>0)))
-						&&(mob.fetchAbility(A.ID())==null))
+						if( A != null )
 						{
-							newOne=A;
-							break;
+						  int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+						  if((lql<25)
+						      &&(lql>0)
+						      &&(!CMLib.ableMapper().getSecretSkill(C.ID(),true,A.ID()))
+						      &&(CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())<0)
+						      &&(CMLib.ableMapper().availableToTheme(A.ID(),Area.THEME_FANTASY,true))
+						      &&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
+                          &&(A.isAutoInvoked()||((A.triggerStrings()!=null)&&(A.triggerStrings().length>0)))
+                          &&(mob.fetchAbility(A.ID())==null))
+						  {
+						    newOne=A;
+						  }
 						}
 					}
 				}

@@ -233,7 +233,7 @@ public class Go extends StdCommand
 		if(exit==null)
 			thisRoom.showHappens(CMMsg.MSG_OK_VISUAL,"The area to the "+directionName+" shimmers and becomes transparent.");
 		else
-		if((exit!=null)&&(!exit.okMessage(mob,enterMsg))&&(!gotoAllowed))
+		if((!exit.okMessage(mob,enterMsg))&&(!gotoAllowed))
 			return false;
 		else
 		if(!leaveMsg.target().okMessage(mob,leaveMsg)&&(!gotoAllowed))
@@ -308,7 +308,6 @@ public class Go extends StdCommand
 			CMLib.commands().postLook(mob,true);
             if((!mob.isMonster())
             &&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOWEATHER))
-            &&(thisRoom!=null)
             &&(((Room)enterMsg.target())!=null)
             &&((thisRoom.domainType()&Room.INDOORS)>0)
             &&((((Room)enterMsg.target()).domainType()&Room.INDOORS)==0)

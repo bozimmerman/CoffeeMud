@@ -94,8 +94,7 @@ public class Spell_WizardsChest extends Spell
 			return false;
 		}
 		Environmental target=null;
-		if(target==null)
-			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
+		target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
 		if(target==null) return false;
 
 		if((!(target instanceof Container))||(!((Container)target).hasALock())||(!((Container)target).hasALid()))
@@ -145,4 +144,5 @@ public class Spell_WizardsChest extends Spell
 		return success;
 	}
 }
+
 

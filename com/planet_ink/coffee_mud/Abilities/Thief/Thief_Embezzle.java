@@ -156,7 +156,6 @@ public class Thief_Embezzle extends ThiefSkill
 				hisCoins=(Coins)C;
 				victim=possVic;
 				hisAmount=hisCoins.getTotalValue()/50.0;
-				break;
 			}
 		}
 		int classLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));

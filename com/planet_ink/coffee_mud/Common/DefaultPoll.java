@@ -343,8 +343,8 @@ public class DefaultPoll implements Poll
             for(int i=0;i<del.size();i++)
                 options.removeElement(del.elementAt(i));
             
-            PollOption PO=new PollOption();
-            while((PO!=null)&&(!mob.session().killFlag()))
+            PollOption PO=null;
+            while(!mob.session().killFlag())
             {
                 PO=new PollOption();
                 PO.text=CMLib.english().prompt(mob,PO.text,++showNumber,showFlag,"New Vote Option",true);

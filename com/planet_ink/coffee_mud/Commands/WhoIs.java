@@ -70,7 +70,7 @@ public class WhoIs extends Who
 			&&(mob2.name().toUpperCase().startsWith(mobName.toUpperCase())))
 				msg.append(showWhoShort(mob2));
 		}
-		if((mobName!=null)&&(msg.length()==0))
+		if(msg.length()==0)
 			mob.tell("That person doesn't appear to be online.\n\r");
 		else
 		{

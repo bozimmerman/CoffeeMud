@@ -521,7 +521,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 
         if(!areaTag)
         {
-			if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
+			if((thisTag==null)||(thisTag.length()==0))
 			for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
 			{
 				String key=((String)e.nextElement()).toUpperCase();
@@ -532,7 +532,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					break;
 				}
 			}
-			if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
+			if((thisTag==null)||(thisTag.length()==0))
 			for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
 			{
 				String key=((String)e.nextElement()).toUpperCase();
@@ -544,7 +544,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				}
 			}
         }
-		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
+		if((thisTag==null)||(thisTag.length()==0))
 		{
 			if(areaTag) helpStr=helpStr.substring(9);
 			String ahelpStr=helpStr.replaceAll("_"," ").trim();
@@ -620,10 +620,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				    break;
 			}
 		// the area exception
-		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
+		if((thisTag==null)||(thisTag.length()==0))
 			if(CMLib.map().getArea(helpStr.trim())!=null)
 				return CMLib.map().getArea(helpStr.trim()).getAreaStats();
-		if((thisTag==null)||((thisTag!=null)&&(thisTag.length()==0)))
+		if((thisTag==null)||(thisTag.length()==0))
 			return null;
 		if(noFix) return new StringBuffer(thisTag);
 		return new StringBuffer(fixHelp(helpStr,thisTag,forMOB));
@@ -681,30 +681,27 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
                             arcHelpFile.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,true).raw()));
     				}
     			}
-    			if(arcHelpFile!=null)
-    			{
-    				//DVector suspiciousPairs=suspiciousTags(arcHelpFile);
-    				//for(int d=0;d<suspiciousPairs.size();d++)
-    				//	Syst/em.out.pri/ntln(suspiciousPairs.elementAt(d,1)+": "+suspiciousPairs.elementAt(d,2));
-    				for(Enumeration e=arcHelpFile.keys();e.hasMoreElements();)
-    				{
-    					String key=(String)e.nextElement();
-    					String entry=(String)arcHelpFile.get(key);
-    					int x=entry.indexOf("<ZAP=");
-    					if(x>=0)
-    					{
-    						int y=entry.indexOf(">",x);
-    						if(y>(x+5))
-    						{
-    							String word=entry.substring(x+5,y).trim();
-    							entry=entry.substring(0,x)+CMLib.masking().maskHelp("\n\r",word)+entry.substring(y+1);
-    							arcHelpFile.remove(key);
-    							arcHelpFile.put(key,entry);
-    						}
-    					}
-    				}
-    				Resources.submitResource("ARCHON HELP FILE",arcHelpFile);
-    			}
+   				//DVector suspiciousPairs=suspiciousTags(arcHelpFile);
+   				//for(int d=0;d<suspiciousPairs.size();d++)
+   				//	Syst/em.out.pri/ntln(suspiciousPairs.elementAt(d,1)+": "+suspiciousPairs.elementAt(d,2));
+   				for(Enumeration e=arcHelpFile.keys();e.hasMoreElements();)
+   				{
+   					String key=(String)e.nextElement();
+   					String entry=(String)arcHelpFile.get(key);
+   					int x=entry.indexOf("<ZAP=");
+   					if(x>=0)
+   					{
+   						int y=entry.indexOf(">",x);
+   						if(y>(x+5))
+   						{
+   							String word=entry.substring(x+5,y).trim();
+   							entry=entry.substring(0,x)+CMLib.masking().maskHelp("\n\r",word)+entry.substring(y+1);
+   							arcHelpFile.remove(key);
+   							arcHelpFile.put(key,entry);
+   						}
+   					}
+   				}
+   				Resources.submitResource("ARCHON HELP FILE",arcHelpFile);
     		}
             return arcHelpFile;
         }
@@ -754,13 +751,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
                             helpFile.load(new ByteArrayInputStream(new CMFile(Resources.buildResourcePath("help")+item,null,true).raw()));
     				}
     			}
-    			if(helpFile!=null)
-    			{
-    				///DVector suspiciousPairs=suspiciousTags(helpFile);
-    				//for(int d=0;d<suspiciousPairs.size();d++)
-    				//	Sy/stem.out.pr/intln(suspiciousPairs.elementAt(d,1)+": "+suspiciousPairs.elementAt(d,2));
-    				Resources.submitResource("MAIN HELP FILE",helpFile);
-    			}
+   				///DVector suspiciousPairs=suspiciousTags(helpFile);
+   				//for(int d=0;d<suspiciousPairs.size();d++)
+   				//	Sy/stem.out.pr/intln(suspiciousPairs.elementAt(d,1)+": "+suspiciousPairs.elementAt(d,2));
+   				Resources.submitResource("MAIN HELP FILE",helpFile);
     		}
     		return helpFile;
         }

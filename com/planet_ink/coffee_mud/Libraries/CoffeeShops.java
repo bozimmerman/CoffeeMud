@@ -918,7 +918,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         if((baseProduct instanceof LandTitle)||(room.okMessage(mobFor,msg2)))
         {
             room.send(mobFor,msg2);
-            if((baseProduct instanceof InnKey)&&(room!=null))
+            if(baseProduct instanceof InnKey)
             {
                 InnKey item =(InnKey)baseProduct;
                 String buf=findInnRoom(item, "", room);

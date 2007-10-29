@@ -256,7 +256,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	{
         Object o=null;
         int x=str.indexOf("&");
-        if((x>=0)&&(o==null))
+        if(x>=0)
         {
             Vector V=CMParms.parseAny(str,"&",true);
             String s=null;

@@ -148,8 +148,7 @@ public class Mime extends ActiveTicker
 		else
 			return true;
 		disabled=true;
-		if((msg!=null)
-		&&(sMOB.location()!=null)
+		if((sMOB.location()!=null)
 		&&(sMOB.location().okMessage(sMOB,msg)))
 		{
 			if(msg.source().location()==null)

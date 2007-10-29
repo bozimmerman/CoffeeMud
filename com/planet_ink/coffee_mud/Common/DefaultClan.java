@@ -1055,9 +1055,8 @@ public class DefaultClan implements Clan
                         String s=(String)members.elementAt(j,1);
                         MOB M2=CMLib.map().getLoadPlayer(s);
                         if((M2==null)||(M2.getClanRole()==Clan.POS_APPLICANT)) continue;
-                        if((M2!=null)
-                        &&(M2.charStats().getCurrentClass().baseClass().equals("Cleric")
-                            ||CMSecurity.isASysOp(M2)))
+                        if(M2.charStats().getCurrentClass().baseClass().equals("Cleric")
+                            ||CMSecurity.isASysOp(M2))
                         {
                             if((CMLib.clans().getRoleOrder(((Integer)members.elementAt(j,2)).intValue())==max)
                             &&(M2.envStats().level()>=highestCleric))
@@ -1436,7 +1435,6 @@ public class DefaultClan implements Clan
                 case TROPHY_CONTROL: awardStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPCP); break;
                 case TROPHY_EXP: awardStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPEXP); break;
                 case TROPHY_PK: awardStr=CMProps.getVar(CMProps.SYSTEM_CLANTROPPK); break;
-                default: awardStr=null;
                 }
                 if(awardStr!=null)
                 {

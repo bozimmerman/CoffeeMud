@@ -381,7 +381,7 @@ public class Destroy extends BaseItemParser
 		if(itemID.toUpperCase().endsWith(".ALL")){ allFlag=true; itemID="ALL "+itemID.substring(0,itemID.length()-4);}
 		boolean doneSomething=false;
 		Item deadItem=null;
-		if(deadItem==null) deadItem=(srchRoom==null)?null:srchRoom.fetchItem(null,itemID);
+		deadItem=(srchRoom==null)?null:srchRoom.fetchItem(null,itemID);
 		if((!allFlag)&&(deadItem==null)) deadItem=(srchMob==null)?null:srchMob.fetchInventory(null,itemID);
 		while(deadItem!=null)
 		{
@@ -538,14 +538,11 @@ public class Destroy extends BaseItemParser
 			return false;
 		}
 		CMFile F=new CMFile(Resources.makeFileResourceName("skills/components.txt"),null,true);
-		if(F!=null)
+        boolean removed=Resources.findRemoveProperty(F, classID);
+		if(removed)
 		{
-            boolean removed=Resources.findRemoveProperty(F, classID);
-			if(removed)
-			{
-				CMLib.ableMapper().getAbilityComponentMap().remove(classID.toUpperCase());
-				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just decreased!");
-			}
+			CMLib.ableMapper().getAbilityComponentMap().remove(classID.toUpperCase());
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The complication of skill usage just decreased!");
 		}
 		return true;
 	}
@@ -561,15 +558,12 @@ public class Destroy extends BaseItemParser
 
         String classID=CMParms.combine(commands,2);
         CMFile F=new CMFile(Resources.makeFileResourceName("skills/expertises.txt"),null,true);
-        if(F!=null)
+        boolean removed=Resources.findRemoveProperty(F, classID);
+        if(removed)
         {
-            boolean removed=Resources.findRemoveProperty(F, classID);
-            if(removed)
-            {
-                Resources.removeResource("skills/expertises.txt");
-                mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The power of skill usage just decreased!");
-                CMLib.expertises().recompileExpertises();
-            }
+            Resources.removeResource("skills/expertises.txt");
+            mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The power of skill usage just decreased!");
+            CMLib.expertises().recompileExpertises();
         }
         return true;
     }
@@ -595,15 +589,12 @@ public class Destroy extends BaseItemParser
         }
         CMLib.login().dispossesTitle(classID);
         CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,true);
-        if(F!=null)
+        boolean removed=Resources.findRemoveProperty(F, classID);
+        if(removed)
         {
-            boolean removed=Resources.findRemoveProperty(F, classID);
-            if(removed)
-            {
-                mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The prestige of players just decreased!");
-                Resources.removeResource("titles.txt");
-                CMLib.login().reloadAutoTitles();
-            }
+            mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The prestige of players just decreased!");
+            Resources.removeResource("titles.txt");
+            CMLib.login().reloadAutoTitles();
         }
         return true;
     }

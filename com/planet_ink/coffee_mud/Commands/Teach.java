@@ -70,7 +70,7 @@ public class Teach extends StdCommand
 
 
 		MOB student=mob.location().fetchInhabitant((String)commands.elementAt(0));
-		if((student==null)||((student!=null)&&(!CMLib.flags().canBeSeenBy(student,mob))))
+		if((student==null)||(!CMLib.flags().canBeSeenBy(student,mob)))
 		{
 			mob.tell("That person doesn't seem to be here.");
 			return false;

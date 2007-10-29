@@ -1287,7 +1287,7 @@ public class Quests extends StdLibrary implements QuestManager
                 
             }
         }
-        if((templatesDV==null)||(templatesDV.size()==0))
+        if(templatesDV.size()==0)
             return null;
         DVector sortedTemplatesDV=new DVector(5);
         while(templatesDV.size()>0)

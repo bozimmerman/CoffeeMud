@@ -382,7 +382,7 @@ public class MudChat extends StdBehavior
 			expression=expression.substring(1,expression.length()-1).trim();
 
 		int end=0;
-		for(;((end<expression.length())&&(("(&|~").indexOf(expression.charAt(end))<0));end++);
+		for(;((end<expression.length())&&(("(&|~").indexOf(expression.charAt(end))<0));end++){/*loop*/}
 		String check=null;
 		if(end<expression.length())
 		{
@@ -513,7 +513,7 @@ public class MudChat extends StdBehavior
 						{
 							if(match(mob,expression.substring(1,expression.length()-1),str,rest))
 							{
-								if(myResponses==null) myResponses=new Vector();
+								myResponses=new Vector();
 								myResponses.addAll(possResponses);
                                 break;
 							}
@@ -569,7 +569,7 @@ public class MudChat extends StdBehavior
 						{
 							if(match(mob,expression.substring(1,expression.length()-1),str,rest))
 							{
-								if(myResponses==null) myResponses=new Vector();
+								myResponses=new Vector();
 								myResponses.addAll(possResponses);
                                 break;
 							}

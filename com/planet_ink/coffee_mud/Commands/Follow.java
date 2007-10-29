@@ -140,7 +140,7 @@ public class Follow extends StdCommand
 			return false;
 		}
 		MOB target=R.fetchInhabitant(whomToFollow);
-		if((target==null)||((target!=null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
+		if((target==null)||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("I don't see them here.");
 			return false;

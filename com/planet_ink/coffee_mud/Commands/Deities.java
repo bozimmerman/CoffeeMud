@@ -59,7 +59,7 @@ public class Deities extends StdCommand
                     msg.append(D.getWorshipRequirementsDesc()+"\n\r");
                 }
                 else
-                if((mob!=null)&&(mob.charStats().getCurrentClass().baseClass().equals("Cleric")))
+                if(mob.charStats().getCurrentClass().baseClass().equals("Cleric"))
     				msg.append(D.getClericRequirementsDesc()+"\n\r");
                 else
                     msg.append(D.getWorshipRequirementsDesc()+"\n\r");
@@ -81,7 +81,7 @@ public class Deities extends StdCommand
                         msg.append(D.getWorshipTriggerDesc()+"\n\r");
                     }
                     else
-                    if((mob!=null)&&(mob.charStats().getCurrentClass().baseClass().equals("Cleric")))
+                    if(mob.charStats().getCurrentClass().baseClass().equals("Cleric"))
                         msg.append(D.getClericTriggerDesc()+"\n\r");
                     else
                         msg.append(D.getWorshipTriggerDesc()+"\n\r");

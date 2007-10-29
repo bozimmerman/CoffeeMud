@@ -392,7 +392,7 @@ public class ItemGenerator extends ActiveTicker
 									maintained.addElement(I);
 								}
 							}
-							if((!favorMobs)&&(room!=null))
+							if(!favorMobs)
 							{
 								maintained.addElement(I);
 								room.addItem(CMLib.itemBuilder().enchant(I,enchantPct));

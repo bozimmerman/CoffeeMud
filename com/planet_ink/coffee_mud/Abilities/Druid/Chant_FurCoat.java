@@ -146,8 +146,11 @@ public class Chant_FurCoat extends Chant
 						I.unWear();
 				}
 				Ability A=CMClass.getAbility("Prop_WearResister");
-				A.setMiscText("cold");
-				if(A!=null) theArmor.addNonUninvokableEffect(A);
+				if( A != null )
+				{
+				  A.setMiscText("cold");
+				  theArmor.addNonUninvokableEffect(A);
+				}
 				theArmor.recoverEnvStats();
 				theArmor.text();
 				target.addInventory(theArmor);

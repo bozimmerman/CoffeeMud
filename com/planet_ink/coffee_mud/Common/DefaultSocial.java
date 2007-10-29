@@ -168,7 +168,7 @@ public class DefaultSocial implements Social
         &&(!((String)commands.elementAt(1)).equalsIgnoreCase("ALL")))
 			targetStr=(String)commands.elementAt(1);
 		Environmental Target=null;
-		if((Target==null)&&(targetStr.length()>0))
+		if(targetStr.length()>0)
 		{
 		    String targetMud="";
 		    if(targetStr.indexOf("@")>0)

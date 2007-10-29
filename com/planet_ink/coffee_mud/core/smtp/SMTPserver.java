@@ -272,7 +272,6 @@ public class SMTPserver extends Thread implements Tickable
 			catch (UnknownHostException e)
 			{
 				Log.errOut(getName(),"ERROR: Could not bind to address " + page.getStr("BIND"));
-				bindAddr = null;
 			}
 		}
 
@@ -308,12 +307,11 @@ public class SMTPserver extends Thread implements Tickable
 				sock=null;
 			}
 		}
-		catch(Throwable t)
+		catch(Exception e)
 		{
 			// jef: if we've been interrupted, servsock will be null
 			//   and serverOK will be true
-			if((t!=null)&&(t instanceof Exception))
-				Log.errOut(getName(),((Exception)t).getMessage());
+			Log.errOut(getName(),e.getMessage());
 
 
 			// jef: this prevents initHost() from running if run() has failed (eg socket in use)

@@ -211,12 +211,12 @@ public class Train extends StdCommand
 				break;
 			}
 		}
-		if((teacher==null)||((teacher!=null)&&(!CMLib.flags().canBeSeenBy(teacher,mob))))
+		if((teacher==null)||(!CMLib.flags().canBeSeenBy(teacher,mob)))
 		{
 			mob.tell(teacher,null,null,"<S-NAME> can't see you!");
 			return false;
 		}
-		if((teacher!=null)&&(!CMLib.flags().canBeSeenBy(mob,teacher)))
+		if(!CMLib.flags().canBeSeenBy(mob,teacher))
 		{
 			mob.tell(teacher,null,null,"<S-NAME> can't see you!");
 			return false;

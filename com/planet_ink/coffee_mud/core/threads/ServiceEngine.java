@@ -97,12 +97,9 @@ public class ServiceEngine implements ThreadEngine
 		if(tock==null) return;
 
 		TockClient client=new TockClient(E,numTicks,tickID);
-		if(client!=null)
-		{
-			if((tickID&65536)==65536)
-				tock.solitaryTicker=true;
-			tock.addTicker(client);
-		}
+		if((tickID&65536)==65536)
+			tock.solitaryTicker=true;
+		tock.addTicker(client);
 	}
 
 	public boolean deleteTick(Tickable E, int tickID)

@@ -149,7 +149,7 @@ public class Thief_ContractHit extends ThiefSkill
 		super.unInvoke();
 		if((M!=null)&&(M2!=null)&&(((done)||(M2.amDead()))))
 		{
-			if((M!=null)&&(M.location()!=null))
+			if(M.location()!=null)
 			{
 				M.location().showHappens(CMMsg.MSG_OK_VISUAL,"Someone steps out of the shadows and whispers something to "+M.name()+".");
 				M.tell("'It is done.'");

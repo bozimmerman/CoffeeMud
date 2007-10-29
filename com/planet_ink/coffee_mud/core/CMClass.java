@@ -814,7 +814,6 @@ public class CMClass extends ClassLoader
             catch (ClassNotFoundException e)
             {
                 Log.sysOut("CMClass","WARNING: Couldn't load ancestor class: "+ancestor);
-                ancestorCl = null;
             }
         }
 
@@ -862,7 +861,6 @@ public class CMClass extends ClassLoader
                 if(O==null)
                     Log.sysOut("CMClass","Unable to create class '"+packageName+"'");
                 else
-                if(O!=null)
                 {
                     String itemName=O.getClass().getName();
                     int x=itemName.lastIndexOf(".");

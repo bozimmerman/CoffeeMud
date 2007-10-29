@@ -141,7 +141,6 @@ public class Chant_SummonPlants extends Chant
             pct=(int)Math.round(100.0*CMath.div(V.size(),A.getAreaIStats()[Area.AREASTAT_VISITABLEROOMS]));
         Item I=buildMyPlant(mob,room);
         if((I!=null)
-        &&(A!=null)
         &&((mob.charStats().getCurrentClass().baseClass().equalsIgnoreCase("Druid"))||(CMSecurity.isASysOp(mob))))
         {
             if(!CMLib.law().isACity(A))

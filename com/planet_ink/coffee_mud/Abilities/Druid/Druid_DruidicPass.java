@@ -77,7 +77,7 @@ public class Druid_DruidicPass extends StdAbility
 		Exit exit=mob.location().getExitInDir(dirCode);
 		Room room=mob.location().getRoomInDir(dirCode);
 
-		if((exit==null)||(room==null)||((exit!=null)&&(!CMLib.flags().canBeSeenBy(exit,mob))))
+		if((exit==null)||(room==null)||(!CMLib.flags().canBeSeenBy(exit,mob)))
 		{
 			mob.tell("You can't see anywhere to pass that way.");
 			return false;

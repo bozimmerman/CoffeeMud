@@ -119,8 +119,7 @@ public class Flee extends Go
 				if(expLost[0]>0)
 				{
 					int gainedExperience=(int)Math.round(CMath.mul(expLost[0],1.0-pctHPremaining))/4;
-					if((fighting!=null)
-                    &&(fighting!=mob)
+					if((fighting!=mob)
                     &&(gainedExperience>0)
                     &&((mob.session()==null)
                        ||(fighting.session()==null)

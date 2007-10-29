@@ -105,7 +105,7 @@ public class WandArchon extends StdWand implements ArchonOnly
            &&(message!=null)
 		   &&(!this.amWearingAt(Item.IN_INVENTORY)))
 		{
-			if((mob.location()!=null)&&(afftarget!=null)&&(afftarget instanceof MOB)&&(message!=null))
+			if((mob.location()!=null)&&(afftarget!=null)&&(afftarget instanceof MOB))
 			{
 				MOB target=(MOB)afftarget;
 				message=CMStrings.getSayFromMessage(message.toUpperCase());
@@ -230,4 +230,5 @@ public class WandArchon extends StdWand implements ArchonOnly
 		super.waveIfAble(mob,afftarget,message);
 	}
 }
+
 

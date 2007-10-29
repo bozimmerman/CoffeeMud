@@ -56,7 +56,7 @@ public class CheckAuthCode extends StdWebMacro
 				if((AREA==null)||(AREA.length()==0)||(AREA.equals(A.Name())))
 					if(A.amISubOp(mob.Name()))
 					{ 
-						if(R==null) R=A.getRandomProperRoom();
+						R=A.getRandomProperRoom();
 						subOp=true; 
 						break;
 					}

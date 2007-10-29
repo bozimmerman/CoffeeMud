@@ -992,13 +992,12 @@ public class MXP
         if((val==null)&&(currentE!=null)) val=currentE.getAttributeValue(tag.toUpperCase());
         if((val==null)&&(currentE==null))
         {
-            if(val==null)
-                for(int x=openElements.size()-1;x>=0;x--)
-                {
-                    MXPElement E=(MXPElement)openElements.elementAt(x);
-                    val=E.getAttributeValue(tag);
-                    if(val!=null) break;
-                }
+            for(int x=openElements.size()-1;x>=0;x--)
+            {
+                MXPElement E=(MXPElement)openElements.elementAt(x);
+                val=E.getAttributeValue(tag);
+                if(val!=null) break;
+            }
             if(val==null)
                 for(int x=openElements.size()-1;x>=0;x--)
                 {

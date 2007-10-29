@@ -39,7 +39,7 @@ public class Read extends StdCommand
 
 	public void read(MOB mob, Environmental thisThang, String theRest)
 	{
-		if((thisThang==null)||((!(thisThang instanceof Item)&&(!(thisThang instanceof Exit))))||((thisThang!=null)&&(!CMLib.flags().canBeSeenBy(thisThang,mob))))
+		if((thisThang==null)||((!(thisThang instanceof Item)&&(!(thisThang instanceof Exit))))||(!CMLib.flags().canBeSeenBy(thisThang,mob)))
 		{
 			mob.tell("You don't seem to have that.");
 			return;

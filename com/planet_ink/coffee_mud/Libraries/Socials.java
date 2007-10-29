@@ -508,10 +508,9 @@ public class Socials extends StdLibrary implements SocialsList
 					break;
 				}
 			}
-			if(SocialName==null) SocialName=backupSocialName;
 			if(SocialName==null) 
-				S=null;
-			else
+			  SocialName=backupSocialName;
+			if(SocialName!=null)
 				S=FetchSocial(SocialName+theRest,true);
 		}
 		return S;

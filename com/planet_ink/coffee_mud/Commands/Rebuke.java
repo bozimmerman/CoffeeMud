@@ -62,10 +62,7 @@ public class Rebuke extends StdCommand
 		}
 
 		CMMsg msg=null;
-		if(target!=null)
-			msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_REBUKE,"<S-NAME> rebuke(s) "+target.Name()+".");
-		else
-			msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_REBUKE,"<S-NAME> rebuke(s) "+mob.getLiegeID()+".");
+		msg=CMClass.getMsg(mob,target,null,CMMsg.MSG_REBUKE,"<S-NAME> rebuke(s) "+target.Name()+".");
 		if(mob.location().okMessage(mob,msg))
 			mob.location().send(mob,msg);
 		if((target.amFollowing()==mob)&&(target.location()!=null))

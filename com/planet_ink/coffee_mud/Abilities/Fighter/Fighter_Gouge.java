@@ -173,8 +173,11 @@ public class Fighter_Gouge extends FighterSkill
                         if(!A2.invoke(mob,CMParms.makeVector(msg2),target,true,0))
                         {
                             A2=target.fetchEffect("Injury");
-                            A2.setMiscText(mob.Name()+"/"+gone);
-                            if(A2!=null) A2.okMessage(target,msg2);
+                            if( A2 != null )
+                            {
+                              A2.setMiscText(mob.Name()+"/"+gone);
+                              A2.okMessage(target,msg2);
+                            }
                         }
                     }
                 }
