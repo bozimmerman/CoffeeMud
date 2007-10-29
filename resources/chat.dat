@@ -123,7 +123,7 @@
 4!sigh
 
 [bounces onto your lap]
-8:stands up abruptly and pushes <T-NAME> off.
+8:stands up abruptly and pushes $t off.
 3ugh! Get off of me!
 
 [bows before you]
@@ -169,7 +169,7 @@
 1!kill $t
 
 [takes you in his arms|takes you in her arms|holds you in his|holds you in him|holds you in her]
-9:shoves <T-NAME> away
+9:shoves $t away
 1!slap $t
 
 [raises a hand in farewell to you|waves goodbye to you]
@@ -254,10 +254,10 @@
 9hey! If you got a problem with me, say it to my face, pal!
 7what did you say?!
 6!glare $t
-2:pretends to ignore <T-NAME>.
+2:pretends to ignore $t.
 
 [pats you on your head|ruffles your hair playfully]
-9:grabs <T-YOUPOSS> hand and thrusts it away
+9:grabs $t's hand and thrusts it away
 7do I look like a dog to you, buddy?
 3don't patronize me
 
@@ -277,7 +277,7 @@
 7what?!
 7!hush $t
 6!glare $t
-2:pretends to ignore <T-NAME>.
+2:pretends to ignore $t.
 
 [shivers at the suicidal thought of fighting you]
 9!grin $t
@@ -295,7 +295,7 @@
 3!kill $t
 
 [staggers blindly into you]
-9:shoves <T-NAME> away.
+9:shoves $t away.
 9get off me!
 
 [stares dreamily at you|hugs you supportively|tongue out at you]
