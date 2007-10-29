@@ -42,6 +42,9 @@ public class Minotaur extends Cow
 	public int weightVariance(){return 100;}
 	public long forbiddenWornBits(){return Item.WORN_HEAD;}
 	public String racialCategory(){return "Bovine";}
+	
+	private int[] agingChart={0,1,3,15,35,53,70,74,78};
+	public int[] getAgingChart(){return agingChart;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };
