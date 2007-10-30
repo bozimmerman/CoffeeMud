@@ -181,13 +181,14 @@ public class GatheringSkill extends CommonSkill
 		I.baseEnvStats().setWeight(amount);
 		if(R.show(mob,null,I,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> create(s) <O-NAME>."))
 		{
-		    int lostValue=CMLib.materials().destroyResources(R,amount,foundResource,-1,null);
+		    int lostValue=CMLib.materials().destroyResources(R,amount,foundResource,-1,I);
 			I.setBaseValue(lostValue);
 			if(I instanceof Food)
 			    ((Food)I).setNourishment(((Food)I).nourishment()*amount);
 			if(I instanceof Drink)
 			    ((Drink)I).setLiquidHeld(((Drink)I).liquidHeld()*amount);
-			R.addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
+			if((!I.amDestroyed())&&(!R.isContent(I)))
+				R.addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
 		}
 		if(I instanceof Decayable)
 		    ((Decayable)I).setDecayTime(lowestNonZeroFoodNumber);
