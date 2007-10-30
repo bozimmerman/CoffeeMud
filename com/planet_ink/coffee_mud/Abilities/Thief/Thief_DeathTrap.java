@@ -101,47 +101,6 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		super.executeMsg(myHost,msg);
 	}
 
-	protected Item findMostOfMaterial(Room room, int material)
-	{
-		int most=0;
-		int mostMaterial=-1;
-		Item mostItem=null;
-		for(int i=0;i<room.numItems();i++)
-		{
-			Item I=room.fetchItem(i);
-			if((I instanceof RawMaterial)
-			&&((I.material()&RawMaterial.MATERIAL_MASK)==material)
-			&&(I.material()!=mostMaterial)
-			&&(!CMLib.flags().isOnFire(I))
-			&&(I.container()==null))
-			{
-				int num=findNumberOfResource(room,I.material());
-				if(num>most)
-				{
-					mostItem=I;
-					most=num;
-					mostMaterial=I.material();
-				}
-			}
-		}
-		return mostItem;
-	}
-
-	protected int findNumberOfResource(Room room, int resource)
-	{
-		int foundWood=0;
-		for(int i=0;i<room.numItems();i++)
-		{
-			Item I=room.fetchItem(i);
-			if((I instanceof RawMaterial)
-			&&(I.material()==resource)
-			&&(!CMLib.flags().isOnFire(I))
-			&&(I.container()==null))
-				foundWood++;
-		}
-		return foundWood;
-	}
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
@@ -165,9 +124,10 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 	{
 		Room trapThis=mob.location();
 
-		Item resource=findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);
+		Item resource=CMLib.materials().findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);
 		int amount=0;
-		if(resource!=null) amount=findNumberOfResource(mob.location(),resource.material());
+		if(resource!=null) 
+			amount=CMLib.materials().findNumberOfResource(mob.location(),resource.material());
 		if(amount<100)
 		{
 			mob.tell("You need 100 pounds of raw metal to build this trap.");
@@ -178,19 +138,11 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int woodDestroyed=100;
-		for(int i=mob.location().numItems()-1;i>=0;i--)
-		{
-			Item I=mob.location().fetchItem(i);
-			if((I instanceof RawMaterial)
-			&&(I.container()==null)
-			&&(I.material()==resource.material())
-			&&((--woodDestroyed)>=0))
-				I.destroy();
-		}
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
+		CMLib.materials().destroyResources(mob.location(),100, resource.material(), -1, null);
+		
 		CMMsg msg=CMClass.getMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_ACTION,(auto?trapThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap here."));
 		if(mob.location().okMessage(mob,msg))
 		{
