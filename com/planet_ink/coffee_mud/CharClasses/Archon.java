@@ -62,6 +62,7 @@ public class Archon extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Hush",100,"",true,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Freeze",100,"",true,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Record",100,"",true,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Stinkify",100,"",true,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Banish",100,"",true,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Archon_Metacraft",100,"",true,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Amputation",100,"",true,true);
