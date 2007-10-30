@@ -877,24 +877,27 @@ public class StdDeity extends StdMOB implements Deity
 				Vector V=worshipTriggers;
 				if(msg.source().charStats().getCurrentClass().baseClass().equals("Cleric"))
 					V=clericTriggers;
-				boolean recheck=triggerCheck(msg,V,trigBlessingParts,trigBlessingTimes);
-
-				if((recheck)&&(!norecurse)&&(!alreadyBlessed(msg.source())))
+				if((V!=null)&&(V.size()>0))
 				{
-					boolean[] checks=(boolean[])trigBlessingParts.get(msg.source().Name());
-					if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
+					boolean recheck=triggerCheck(msg,V,trigBlessingParts,trigBlessingTimes);
+	
+					if((recheck)&&(!norecurse)&&(!alreadyBlessed(msg.source())))
 					{
-						boolean rollingTruth=checks[0];
-						for(int v=1;v<V.size();v++)
+						boolean[] checks=(boolean[])trigBlessingParts.get(msg.source().Name());
+						if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
 						{
-							DeityTrigger DT=(DeityTrigger)V.elementAt(v);
-							if(DT.previousConnect==CONNECT_AND)
-								rollingTruth=rollingTruth&&checks[v];
-							else
-								rollingTruth=rollingTruth||checks[v];
+							boolean rollingTruth=checks[0];
+							for(int v=1;v<V.size();v++)
+							{
+								DeityTrigger DT=(DeityTrigger)V.elementAt(v);
+								if(DT.previousConnect==CONNECT_AND)
+									rollingTruth=rollingTruth&&checks[v];
+								else
+									rollingTruth=rollingTruth||checks[v];
+							}
+							if(rollingTruth)
+								bestowBlessings(msg.source());
 						}
-						if(rollingTruth)
-							bestowBlessings(msg.source());
 					}
 				}
 			}
@@ -903,24 +906,26 @@ public class StdDeity extends StdMOB implements Deity
 				Vector V=worshipCurseTriggers;
 				if(msg.source().charStats().getCurrentClass().baseClass().equals("Cleric"))
 					V=clericCurseTriggers;
-				boolean recheck=triggerCheck(msg,V,trigCurseParts,trigCurseTimes);
-
-				if((recheck)&&(!norecurse))
+				if((V!=null)&&(V.size()>0))
 				{
-					boolean[] checks=(boolean[])trigCurseParts.get(msg.source().Name());
-					if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
+					boolean recheck=triggerCheck(msg,V,trigCurseParts,trigCurseTimes);
+					if((recheck)&&(!norecurse))
 					{
-						boolean rollingTruth=checks[0];
-						for(int v=1;v<V.size();v++)
+						boolean[] checks=(boolean[])trigCurseParts.get(msg.source().Name());
+						if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
 						{
-							DeityTrigger DT=(DeityTrigger)V.elementAt(v);
-							if(DT.previousConnect==CONNECT_AND)
-								rollingTruth=rollingTruth&&checks[v];
-							else
-								rollingTruth=rollingTruth||checks[v];
+							boolean rollingTruth=checks[0];
+							for(int v=1;v<V.size();v++)
+							{
+								DeityTrigger DT=(DeityTrigger)V.elementAt(v);
+								if(DT.previousConnect==CONNECT_AND)
+									rollingTruth=rollingTruth&&checks[v];
+								else
+									rollingTruth=rollingTruth||checks[v];
+							}
+							if(rollingTruth)
+								bestowCurses(msg.source());
 						}
-						if(rollingTruth)
-							bestowCurses(msg.source());
 					}
 				}
 			}
@@ -929,24 +934,27 @@ public class StdDeity extends StdMOB implements Deity
                 ||(CMSecurity.isASysOp(msg.source()))))
 			{
 				Vector V=clericPowerTriggers;
-				boolean recheck=triggerCheck(msg,V,trigPowerParts,trigPowerTimes);
-
-				if((recheck)&&(!norecurse)&&(!alreadyPowered(msg.source())))
+				if((V!=null)&&(V.size()>0))
 				{
-					boolean[] checks=(boolean[])trigPowerParts.get(msg.source().Name());
-					if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
+					boolean recheck=triggerCheck(msg,V,trigPowerParts,trigPowerTimes);
+	
+					if((recheck)&&(!norecurse)&&(!alreadyPowered(msg.source())))
 					{
-						boolean rollingTruth=checks[0];
-						for(int v=1;v<V.size();v++)
+						boolean[] checks=(boolean[])trigPowerParts.get(msg.source().Name());
+						if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
 						{
-							DeityTrigger DT=(DeityTrigger)V.elementAt(v);
-							if(DT.previousConnect==CONNECT_AND)
-								rollingTruth=rollingTruth&&checks[v];
-							else
-								rollingTruth=rollingTruth||checks[v];
+							boolean rollingTruth=checks[0];
+							for(int v=1;v<V.size();v++)
+							{
+								DeityTrigger DT=(DeityTrigger)V.elementAt(v);
+								if(DT.previousConnect==CONNECT_AND)
+									rollingTruth=rollingTruth&&checks[v];
+								else
+									rollingTruth=rollingTruth||checks[v];
+							}
+							if(rollingTruth)
+								bestowPowers(msg.source());
 						}
-						if(rollingTruth)
-							bestowPowers(msg.source());
 					}
 				}
 			}
@@ -956,27 +964,30 @@ public class StdDeity extends StdMOB implements Deity
             &&(CMLib.law().getClericInfused(msg.source().location())==this))
             {
                 Vector V=serviceTriggers;
-                boolean recheck=triggerCheck(msg,V,trigServiceParts,trigServiceTimes);
-
-                if((recheck)&&(!norecurse)&&(!alreadyServiced(msg.source(),msg.source().location())))
-                {
-                    boolean[] checks=(boolean[])trigServiceParts.get(msg.source().Name());
-                    if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
-                    {
-                        boolean rollingTruth=checks[0];
-                        for(int v=1;v<V.size();v++)
-                        {
-                            DeityTrigger DT=(DeityTrigger)V.elementAt(v);
-                            if(rollingTruth) startServiceIfNecessary(msg.source(),msg.source().location());
-                            if(DT.previousConnect==CONNECT_AND)
-                                rollingTruth=rollingTruth&&checks[v];
-                            else
-                                rollingTruth=rollingTruth||checks[v];
-                        }
-                        if(rollingTruth)
-                            finishService(msg.source(),msg.source().location());
-                    }
-                }
+				if((V!=null)&&(V.size()>0))
+				{
+	                boolean recheck=triggerCheck(msg,V,trigServiceParts,trigServiceTimes);
+	
+	                if((recheck)&&(!norecurse)&&(!alreadyServiced(msg.source(),msg.source().location())))
+	                {
+	                    boolean[] checks=(boolean[])trigServiceParts.get(msg.source().Name());
+	                    if((checks!=null)&&(checks.length==V.size())&&(checks.length>0))
+	                    {
+	                        boolean rollingTruth=checks[0];
+	                        for(int v=1;v<V.size();v++)
+	                        {
+	                            DeityTrigger DT=(DeityTrigger)V.elementAt(v);
+	                            if(rollingTruth) startServiceIfNecessary(msg.source(),msg.source().location());
+	                            if(DT.previousConnect==CONNECT_AND)
+	                                rollingTruth=rollingTruth&&checks[v];
+	                            else
+	                                rollingTruth=rollingTruth||checks[v];
+	                        }
+	                        if(rollingTruth)
+	                            finishService(msg.source(),msg.source().location());
+	                    }
+	                }
+				}
             }
 		}
 	}

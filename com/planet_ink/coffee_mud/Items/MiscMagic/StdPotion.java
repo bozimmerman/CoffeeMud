@@ -163,6 +163,7 @@ public class StdPotion extends StdDrink implements Potion
 					drinkIfAble(mob);
 					mob.tell(name()+" vanishes!");
 					destroy();
+					mob.recoverEnvStats();
 				}
 				else
 				{

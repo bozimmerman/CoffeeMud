@@ -41,6 +41,7 @@ public class BaseAbleLister extends StdCommand
 	{
 		Ability A=CMClass.findAbility(qual);
 		if((A!=null)
+		&&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
 		&&(acodes.contains(new Integer(A.classificationCode()&Ability.ALL_ACODES))))
 		{
 			Ability A2=mob.fetchAbility(A.ID());

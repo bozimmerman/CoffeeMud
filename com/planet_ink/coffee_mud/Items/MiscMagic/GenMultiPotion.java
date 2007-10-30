@@ -140,6 +140,7 @@ public class GenMultiPotion extends GenDrink implements Potion
 					{
 						mob.tell(name()+" vanishes!");
 						destroy();
+						mob.recoverEnvStats();
 					}
 				}
 				else
