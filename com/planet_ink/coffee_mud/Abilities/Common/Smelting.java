@@ -188,12 +188,12 @@ public class Smelting extends CraftingSkill
 		int amountResource2=CMLib.materials().findNumberOfResource(mob.location(),RawMaterial.RESOURCE_DATA[resourceCode2][0]);
 		if(amountResource1==0)
 		{
-			commonTell(mob,"There is no "+resourceDesc1+" here to make "+doneResourceDesc+" from.  It might need to put it down first.");
+			commonTell(mob,"There is no "+resourceDesc1+" here to make "+doneResourceDesc+" from.  It might need to be put down first.");
 			return false;
 		}
 		if(amountResource2==0)
 		{
-			commonTell(mob,"There is no "+resourceDesc2+" here to make "+doneResourceDesc+" from.  It might need to put it down first.");
+			commonTell(mob,"There is no "+resourceDesc2+" here to make "+doneResourceDesc+" from.  It might need to be put down first.");
 			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

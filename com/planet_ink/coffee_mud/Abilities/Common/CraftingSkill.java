@@ -322,7 +322,7 @@ public class CraftingSkill extends GatheringSkill
 			if(data[0][FOUND_AMT]==0)
 			{
 				if(req1Desc!=null)
-					commonTell(mob,"There is no "+req1Desc.toLowerCase()+" here to make anything from!  It might need to put it down first.");
+					commonTell(mob,"There is no "+req1Desc.toLowerCase()+" here to make anything from!  It might need to be put down first.");
 				return null;
 			}
 			if(!bundle) req1Required=fixResourceRequirement(data[0][FOUND_CODE],req1Required);

@@ -308,7 +308,8 @@ public class StdAbility implements Ability
     		else
     			adjLevel=caster.envStats().level()-lowestQualifyingLevel-25;
         }
-		if(asLevel>0) adjLevel=asLevel;
+        else
+        	adjLevel=asLevel;
 		if(adjLevel<lowestQualifyingLevel)
 			adjLevel=lowestQualifyingLevel;
 		if(adjLevel<1) return 1;
