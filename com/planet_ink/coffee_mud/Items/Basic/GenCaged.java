@@ -63,6 +63,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 		StringBuffer itemstr=new StringBuffer("");
 		itemstr.append("<MOBITEM>");
 		itemstr.append(CMLib.xml().convertXMLtoTag("MICLASS",CMClass.classID(M)));
+		itemstr.append(CMLib.xml().convertXMLtoTag("MISTART",CMLib.map().getExtendedRoomID(M.getStartRoom())));
 		itemstr.append(CMLib.xml().convertXMLtoTag("MIDATA",CMLib.coffeeMaker().getPropertiesStr(M,true)));
 		itemstr.append("</MOBITEM>");
 		setCageText(itemstr.toString());
@@ -108,6 +109,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 			return M;
 		}
 		String itemi=CMLib.xml().getValFromPieces(iblk.contents,"MICLASS");
+		String startr=CMLib.xml().getValFromPieces(iblk.contents,"MISTART");
 		Environmental newOne=CMClass.getMOB(itemi);
 		Vector idat=CMLib.xml().getRealContentsFromPieces(iblk.contents,"MIDATA");
 		if((idat==null)||(newOne==null)||(!(newOne instanceof MOB)))
@@ -121,6 +123,12 @@ public class GenCaged extends GenItem implements CagedAnimal
 		M.setStartRoom(null);
 		if(M.isGeneric())
 			CMLib.coffeeMaker().resetGenMOB(M,M.text());
+		if((startr.length()>0)&&(!startr.equalsIgnoreCase("null")))
+		{
+			Room R=CMLib.map().getRoom(startr);
+			if(R!=null)
+				M.setStartRoom(R);
+		}
 		return M;
 	}
 	public String cageText(){ return CMLib.xml().restoreAngleBrackets(readableText());}

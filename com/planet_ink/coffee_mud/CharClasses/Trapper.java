@@ -132,28 +132,6 @@ public class Trapper extends Thief
     { 
         super.executeMsg(host,msg); 
         Druid.doAnimalFollowerLevelingCheck(this,host,msg);
-        if(host instanceof MOB)
-        {
-            MOB myChar=(MOB)host;
-            if(msg.amISource(myChar)
-            &&(!myChar.isMonster())
-            &&(msg.tool() instanceof Ability)
-            &&(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
-            &&(myChar.location()!=null)
-            &&(myChar.isMine(msg.tool()))
-            &&(msg.tool().ID().equalsIgnoreCase("AnimalTrading"))
-            &&(msg.value()<0)
-            &&(msg.target() instanceof MOB)
-            &&(CMLib.flags().isAnimalIntelligence((MOB)msg.target()))
-            &&(((MOB)msg.target()).getStartRoom()!=null)
-            &&(CMLib.map().areaLocation(myChar)!=CMLib.map().getStartArea(msg.target())))
-            {
-                int xp=(int)Math.round(10.0*CMath.div(msg.target().envStats().level(),host.envStats().level()));
-                if(xp>125) xp=125;
-                if((xp>0)&&CMLib.leveler().postExperience((MOB)host,null,null,xp,true))
-                    msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"You gain "+xp+" experience for selling "+msg.target().name()+".",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
-            }
-        }
     }
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -166,6 +144,21 @@ public class Trapper extends Thief
 		&&(myChar.location()!=null)
 		&&(myChar.isMine(msg.tool())))
 		{
+			// animal trade must be here because execute of trade kills the mob object
+			// also, an add trailer is done, which only hits if this msg is not cancelled, 
+			// so ALL GOOD
+            if((msg.tool().ID().equalsIgnoreCase("AnimalTrading"))
+            &&(msg.value()<0)
+            &&(msg.target() instanceof MOB)
+            &&(CMLib.flags().isAnimalIntelligence((MOB)msg.target()))
+            &&(((MOB)msg.target()).getStartRoom()!=null)
+            &&(CMLib.map().areaLocation(myChar)!=CMLib.map().getStartArea(msg.target())))
+            {
+                int xp=(int)Math.round(10.0*CMath.div(msg.target().envStats().level(),myChar.envStats().level()));
+                if(xp>125) xp=125;
+                if((xp>0)&&CMLib.leveler().postExperience(myChar,null,null,xp,true))
+                    msg.addTrailerMsg(CMClass.getMsg(myChar,null,null,CMMsg.MSG_OK_VISUAL,"You gain "+xp+" experience for selling "+msg.target().name()+".",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+            }
 			if((((myChar.location().domainType()&Room.INDOORS)>0))
 			||(myChar.location().domainType()==Room.DOMAIN_OUTDOORS_CITY))
 			{
