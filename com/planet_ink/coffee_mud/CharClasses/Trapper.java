@@ -126,7 +126,7 @@ public class Trapper extends Thief
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_DeathTrap",true);
 	}
-    public String otherBonuses(){return "Benefits from animal followers leveling.  Gets experience for selling unique animals.";}
+    public String otherBonuses(){return "Benefits from animal followers leveling.  Gets experience for selling foreign unconjured animals of comparable level.";}
 	public String otherLimitations(){return "Sneak and Hide attempts will fail outside of the wild.";}
     public void executeMsg(Environmental host, CMMsg msg)
     { 
