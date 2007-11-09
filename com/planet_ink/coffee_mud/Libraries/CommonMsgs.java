@@ -258,15 +258,18 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 								}
 								msg.trailerMsgs().clear();
 							}
-							if(mob.playerStats()!=null)
+							if((!mob.isMonster())&&(!target.isMonster()))
 							{
-								mob.playerStats().setReplyTo(target,PlayerStats.REPLY_TELL);
-								mob.playerStats().addTellStack(CMLib.coffeeFilter().fullOutFilter(mob.session(),mob,mob,target,null,CMStrings.removeColors(msg.sourceMessage()),false));
-							}
-							if(target.playerStats()!=null)
-							{
-								target.playerStats().setReplyTo(mob,PlayerStats.REPLY_TELL);
-								target.playerStats().addTellStack(CMLib.coffeeFilter().fullOutFilter(target.session(),target,mob,target,null,CMStrings.removeColors(msg.targetMessage()),false));
+								if(mob.playerStats()!=null)
+								{
+									mob.playerStats().setReplyTo(target,PlayerStats.REPLY_TELL);
+									mob.playerStats().addTellStack(CMLib.coffeeFilter().fullOutFilter(mob.session(),mob,mob,target,null,CMStrings.removeColors(msg.sourceMessage()),false));
+								}
+								if(target.playerStats()!=null)
+								{
+									target.playerStats().setReplyTo(mob,PlayerStats.REPLY_TELL);
+									target.playerStats().addTellStack(CMLib.coffeeFilter().fullOutFilter(target.session(),target,mob,target,null,CMStrings.removeColors(msg.targetMessage()),false));
+								}
 							}
 						}
 					}

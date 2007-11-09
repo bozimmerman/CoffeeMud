@@ -71,7 +71,11 @@ public class Thief_Appraise extends ThiefSkill
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			double realValue=new Integer(target.value()).doubleValue();
+			double realValue=0.0;
+			if(target instanceof Coins)
+				realValue = ((Coins)target).getTotalValue();
+			else
+				realValue=new Integer(target.value()).doubleValue();
 			int materialCode=target.material();
 			int weight=target.baseEnvStats().weight();
 			int height=target.baseEnvStats().height();
