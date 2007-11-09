@@ -576,7 +576,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
             }
             I2.setDescription(CMStrings.endWithAPeriod(I2.description())+" "+ruinDescAdder);
             String oldName=I2.Name();
-            I2.setName(CMStrings.insertAdjective(I2.Name(),"ruined"));
+            I2.setName(CMStrings.insertUnColoredAdjective(I2.Name(),"ruined"));
             int x=I2.displayText().toUpperCase().indexOf(oldName.toUpperCase());
             I2.setBaseValue(0);
             if(x>=0)

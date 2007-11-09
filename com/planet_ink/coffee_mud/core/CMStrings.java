@@ -73,11 +73,11 @@ public class CMStrings
     }
     
     
-    public static String insertAdjective(String str, String adjective)
+    public static String insertUnColoredAdjective(String str, String adjective)
     {
         if(str.length()==0) 
             return str;
-        str=str.trim();
+        str=removeColors(str.trim());
         if((str.toUpperCase().startsWith("A "))
         ||(str.toUpperCase().startsWith("AN ")))
         {
