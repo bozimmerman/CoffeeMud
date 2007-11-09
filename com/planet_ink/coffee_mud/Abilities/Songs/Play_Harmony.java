@@ -43,8 +43,8 @@ public class Play_Harmony extends Play
 
 	protected void inpersistantAffect(MOB mob)
 	{
-		if(mob.getVictim()!=null)
-			mob.getVictim().makePeace();
+		MOB victim=mob.getVictim();
+		if(victim!=null) victim.makePeace();
 		mob.makePeace();
 	}
 }

@@ -65,7 +65,7 @@ public class Spell_StoreSpell extends Spell
 						   String message,
 						   Item me)
 	{
-		if((mob.isMine(me))&&(!me.amWearingAt(Item.IN_INVENTORY)))
+		if((mob.isMine(me))&&(!me.amWearingAt(Item.IN_INVENTORY))&&(message!=null))
 		{
 			Environmental target=null;
 			if((mob.location()!=null))

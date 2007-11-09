@@ -86,8 +86,8 @@ public class Chant_Treemorph extends Chant
 				msg.source().setVictim(null);
 			if(mob.isInCombat())
 			{
-				if(mob.getVictim()!=null)
-					mob.getVictim().makePeace();
+				MOB victim=mob.getVictim();
+				if(victim!=null) victim.makePeace();
 				mob.makePeace();
 			}
 			mob.recoverMaxState();
@@ -120,8 +120,8 @@ public class Chant_Treemorph extends Chant
 				msg.source().setVictim(null);
 			if(mob.isInCombat())
 			{
-				if(mob.getVictim()!=null)
-					mob.getVictim().makePeace();
+				MOB victim=mob.getVictim();
+				if(victim!=null) victim.makePeace();
 				mob.makePeace();
 			}
 		}

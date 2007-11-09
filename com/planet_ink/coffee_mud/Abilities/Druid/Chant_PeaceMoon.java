@@ -72,8 +72,8 @@ public class Chant_PeaceMoon extends Chant
 			   &&(msg.source()!=msg.target()))
 			{
 				msg.source().tell("Nah, you feel too peaceful under that bright moon.");
-				if(msg.source().getVictim()!=null)
-					msg.source().getVictim().makePeace();
+				MOB victim=msg.source().getVictim();
+				if(victim!=null) victim.makePeace();
 				msg.source().makePeace();
 			}
 			msg.modify(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"",CMMsg.NO_EFFECT,"");

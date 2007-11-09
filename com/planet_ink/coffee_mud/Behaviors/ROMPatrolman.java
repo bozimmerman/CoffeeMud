@@ -114,8 +114,8 @@ public class ROMPatrolman extends StdBehavior
 					CMMsg msgs=CMClass.getMsg(observer,inhab,CMMsg.MSG_NOISYMOVEMENT,msg);
 					if(observer.location().okMessage(observer,msgs))
 					{
-						inhab.getVictim().makePeace();
-						inhab.makePeace();
+						MOB ivictim=inhab.getVictim();
+						if(ivictim!=null) ivictim.makePeace();
 					}
 				}
 			}

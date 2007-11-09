@@ -96,8 +96,8 @@ public class GoodGuardian extends StdBehavior
 					if(observer.location().okMessage(observer,msgs))
 					{
 						observer.location().send(observer,msgs);
-						if(inhab.getVictim()!=null)
-							inhab.getVictim().makePeace();
+						MOB ivictim=inhab.getVictim();
+						if(ivictim!=null) ivictim.makePeace();
 						inhab.makePeace();
 					}
 				}
