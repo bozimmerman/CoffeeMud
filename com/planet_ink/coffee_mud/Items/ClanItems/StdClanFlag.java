@@ -76,6 +76,8 @@ public class StdClanFlag extends StdItem implements ClanItem
         super.destroy();
     }
 
+    public long expirationDate(){return 0;}
+    
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 	    if((System.currentTimeMillis()-lastClanCheck)>TimeManager.MILI_HOUR)
