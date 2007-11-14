@@ -6256,6 +6256,7 @@ public class BaseGenerics extends StdCommand
 			genGender(mob,me,++showNumber,showFlag);
 			genHeight(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
+			genClan(mob,me,++showNumber,showFlag);
 			genSpeed(mob,me,++showNumber,showFlag);
 			genAttack(mob,me,++showNumber,showFlag);
 			genDamage(mob,me,++showNumber,showFlag);
