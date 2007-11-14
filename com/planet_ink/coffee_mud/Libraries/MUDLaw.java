@@ -186,7 +186,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 		if(title.landOwner().equals(mob.Name())) return true;
 		if((title.landOwner().equals(mob.getLiegeID())&&(mob.isMarriedToLiege())))
 			return true;
-		if(title.landOwner().equals(mob.getClanID()))
+		if(title.landOwner().equals(mob.getClanID())&&(mob.getClanRole() != Clan.POS_APPLICANT))
 			return true;
 		if(mob.amFollowing()!=null) 
 			return doesHavePriviledgesHere(mob.amFollowing(),room);

@@ -96,7 +96,7 @@ public class Prayer_InfuseBalance extends Prayer
         {
             if(D==null)
             {
-                mob.tell("The faithless may be infuse balance in a room.");
+                mob.tell("The faithless may not infuse balance in a room.");
                 return false;
             }
             Area A=mob.location().getArea();

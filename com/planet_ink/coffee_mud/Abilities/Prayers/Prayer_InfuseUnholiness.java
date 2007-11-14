@@ -95,7 +95,7 @@ public class Prayer_InfuseUnholiness extends Prayer
         {
             if(D==null)
             {
-                mob.tell("The faithless may be infuse unholiness in a room.");
+                mob.tell("The faithless may not infuse unholiness in a room.");
                 return false;
             }
             Area A=mob.location().getArea();
