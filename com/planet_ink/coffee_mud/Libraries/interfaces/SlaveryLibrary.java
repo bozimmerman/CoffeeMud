@@ -209,15 +209,14 @@ public interface SlaveryLibrary extends CMLibrary
                 }
                 boolean starterFound=false;
                 response=response.toLowerCase().trim();
-                for(int i=0;i<responseStarters.length;i++);
-                    for(int s=0;s<responseStarters.length;s++)
+                for(int s=0;s<responseStarters.length;s++)
+                {
+                    if(response.startsWith(responseStarters[s]))
                     {
-                        if(response.startsWith(responseStarters[s]))
-                        {
-                            starterFound=true;
-                            response=response.substring(responseStarters[s].length()).trim();
-                        }
+                        starterFound=true;
+                        response=response.substring(responseStarters[s].length()).trim();
                     }
+                }
                 if((!starterFound)&&(speaker.isMonster())&&(CMLib.dice().rollPercentage()<10))
                     return false;
                 if(response.trim().length()==0)

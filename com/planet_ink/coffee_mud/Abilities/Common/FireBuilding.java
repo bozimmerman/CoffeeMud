@@ -68,8 +68,8 @@ public class FireBuilding extends CommonSkill
 						lighting=I;
 					}
 					Ability B=CMClass.getAbility("Burning");
-					B.setProficiency(durationOfBurn);
-					B.invoke(mob,lighting,true,0);
+System.out.println("DONE/"+this.durationOfBurn);
+					B.invoke(mob,lighting,true,durationOfBurn);
 				}
 				lighting=null;
 			}
@@ -243,6 +243,11 @@ public class FireBuilding extends CommonSkill
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,asLevel,duration);
+			FireBuilding fireBuild = (FireBuilding)mob.fetchEffect(ID());
+System.out.println(fireBuild+"/"+this.durationOfBurn);
+			if(fireBuild!=null)
+				fireBuild.durationOfBurn = this.durationOfBurn;
+			
 		}
 		return true;
 	}

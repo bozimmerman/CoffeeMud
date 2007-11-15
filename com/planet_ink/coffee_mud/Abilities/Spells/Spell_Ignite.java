@@ -61,8 +61,8 @@ public class Spell_Ignite extends Spell
 		}
 		mob.location().showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" ignites!");
 		Ability B=CMClass.getAbility("Burning");
-		B.setProficiency(durationOfBurn);
-		B.invoke(mob,I,true,0);
+		if(B!=null)
+			B.invoke(mob,I,true,durationOfBurn);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

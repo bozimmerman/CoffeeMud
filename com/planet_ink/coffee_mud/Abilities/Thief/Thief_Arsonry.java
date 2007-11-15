@@ -120,8 +120,8 @@ public class Thief_Arsonry extends ThiefSkill
 				mob.location().send(mob,msg);
 				if(targetRoom!=mob.location()) targetRoom.sendOthers(mob,msg);
 				Ability B=CMClass.getAbility("Burning");
-				B.setProficiency(CMLib.flags().burnStatus(target));
-				B.invoke(mob,target,true,asLevel);
+				if(B!=null)
+					B.invoke(mob,target,true,CMLib.flags().burnStatus(target));
 			}
 		}
 		else

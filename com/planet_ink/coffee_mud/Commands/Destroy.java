@@ -242,7 +242,8 @@ public class Destroy extends BaseItemParser
 			}
 
 			if(!confirmed)
-				if(!mob.session().confirm("You are fixing to permanantly destroy Room \""+deadRoom.roomID()+"\".  Are you ABSOLUTELY SURE (y/N)","N")) return;
+				if(!mob.session().confirm("You are fixing to permanantly destroy Room \""+deadRoom.roomID()+"\".  Are you ABSOLUTELY SURE (y/N)","N")) 
+					return;
 			CMLib.map().obliterateRoom(deadRoom);
 			mob.tell("The sound of massive destruction rings in your ears.");
 			mob.location().showOthers(mob,null,CMMsg.MSG_NOISE,"The sound of massive destruction rings in your ears.");
@@ -445,17 +446,17 @@ public class Destroy extends BaseItemParser
 			return;
 		}
 			
-		if(!confirmed);
-		if(mob.session().confirm("Area: \""+areaName+"\", OBLITERATE IT???","N"))
-		{
-			if(mob.location().getArea().Name().equalsIgnoreCase(areaName))
+		if(!confirmed)
+			if(mob.session().confirm("Area: \""+areaName+"\", OBLITERATE IT???","N"))
 			{
-				mob.tell("You dip!  You are IN that area!  Leave it first...");
-				mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
-				return;
+				if(mob.location().getArea().Name().equalsIgnoreCase(areaName))
+				{
+					mob.tell("You dip!  You are IN that area!  Leave it first...");
+					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a thunderous spell.");
+					return;
+				}
+				confirmed=true;
 			}
-			confirmed=true;
-		}
 		CMLib.map().obliterateArea(areaName);
 		if(confirmed)
 		{

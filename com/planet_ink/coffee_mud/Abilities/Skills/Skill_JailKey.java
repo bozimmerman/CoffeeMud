@@ -67,7 +67,7 @@ public class Skill_JailKey extends StdSkill
 				if(B==null) 
 				    unlockThis=null;
 				else
-				if(!B.isJailRoom(legalA,CMParms.makeVector(mob.location())));
+				if(!B.isJailRoom(legalA,CMParms.makeVector(mob.location())))
 				    unlockThis=null;
 			}
 		}

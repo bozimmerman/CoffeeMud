@@ -44,7 +44,7 @@ public class Burning extends StdAbility
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-        
+System.out.println(":"+super.tickDown);
         if((affected instanceof Item)&&(((Item)affected).owner() instanceof Room))
         {
             int unInvokeChance=0;
@@ -103,27 +103,10 @@ public class Burning extends StdAbility
 							&&(I instanceof RawMaterial)
 							&&(I.material()==((Item)affected).material()))
 							{
-								int durationOfBurn=5;
-								switch(I.material()&RawMaterial.MATERIAL_MASK)
-								{
-								case RawMaterial.MATERIAL_LEATHER:
-									durationOfBurn=20+I.envStats().weight();
-									break;
-								case RawMaterial.MATERIAL_CLOTH:
-								case RawMaterial.MATERIAL_PAPER:
-								case RawMaterial.MATERIAL_PLASTIC:
-									durationOfBurn=5+I.envStats().weight();
-									break;
-								case RawMaterial.MATERIAL_WOODEN:
-									durationOfBurn=40+(I.envStats().weight()*2);
-									break;
-								case RawMaterial.MATERIAL_ENERGY:
-									durationOfBurn=1;
-									break;
-								}
+								int durationOfBurn=CMLib.flags().burnStatus(I);
+								if(durationOfBurn<=0) durationOfBurn=5;
 								Burning B=new Burning();
-								B.setProficiency(durationOfBurn);
-								B.invoke(invoker,I,true,0);
+								B.invoke(invoker,I,true,durationOfBurn);
 								break;
 							}
 						}
@@ -159,6 +142,7 @@ public class Burning extends StdAbility
 					    }
 					    else
 					    {
+System.out.println("ash");
 							Item ash=CMClass.getItem("GenResource");
 							ash.setName("some ash");
 							ash.setDisplayText("a small pile of ash is here");
@@ -324,7 +308,10 @@ public class Burning extends StdAbility
 				if(mob.location().okMessage(mob,msg))
 					mob.location().send(mob,msg);
 			}
-			beneficialAffect(mob,target,asLevel,proficiency());
+			if(asLevel == 0)
+				asLevel = CMLib.flags().burnStatus(target);
+			if(asLevel < 0) asLevel = 0;
+			beneficialAffect(mob,target,0,asLevel);
 			target.recoverEnvStats();
 			if(target instanceof Item)
 			{

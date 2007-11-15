@@ -1049,7 +1049,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			case RawMaterial.MATERIAL_PLASTIC:
 				return 5+lighting.envStats().weight();
 			case RawMaterial.MATERIAL_WOODEN:
-				return 150+(lighting.envStats().weight()*5);
+				return 20*(1+lighting.envStats().weight());
 			case RawMaterial.MATERIAL_VEGETATION:
 			case RawMaterial.MATERIAL_FLESH:
 				return -1;

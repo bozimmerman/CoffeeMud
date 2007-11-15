@@ -184,6 +184,7 @@ public class FieryRoom
 
     private static void roastRoom(Room which) 
     {
+		MOB mob=CMLib.map().god(which);
 		for(int i=0;i<which.numItems();i++) 
 		{
 		    Item target=which.fetchItem(i);
@@ -191,10 +192,11 @@ public class FieryRoom
 			if((burn != null)&&(CMLib.dice().rollPercentage()>60)) 
 			{
 			    which.showHappens(CMMsg.MSG_OK_ACTION, target.Name() + " begins to burn!");
-			    target.addEffect(burn);
+			    burn.invoke(mob,target,true,0);
 			    target.recoverEnvStats();
 			}
 		}
+		mob.destroy();
     }
 
     private static Item getSomething(MOB mob) {

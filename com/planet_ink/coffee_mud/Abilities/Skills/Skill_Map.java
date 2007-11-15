@@ -141,7 +141,7 @@ public class Skill_Map extends StdSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				if(!item.ID().equals("BardMap"));
+				if(!item.ID().equals("BardMap"))
 				{
 					Item B=CMClass.getItem("BardMap");
 					B.setContainer(item.container());

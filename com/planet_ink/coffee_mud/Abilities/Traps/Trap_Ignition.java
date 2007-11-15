@@ -91,10 +91,7 @@ public class Trap_Ignition extends StdTrap
 				super.spring(target);
 				Ability B=CMClass.getAbility("Burning");
 				if(B!=null)
-				{
-					B.setProficiency((trapLevel()/5)+abilityCode());
-					B.invoke(invoker(),affected,true,0);
-				}
+					B.invoke(invoker(),affected,true,(trapLevel()/5)+abilityCode());
 				if(affected instanceof Item)
 				{
 					if(target.isMine(affected))

@@ -177,12 +177,6 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 return false;
 
         }
-        for(int c=0;c<login.length();c++)
-        {
-            char C=Character.toUpperCase(login.charAt(c));
-            if(("ABCDEFGHIJKLMNOPQRSTUVWXYZ ").indexOf(C)<0)
-                return false;
-        }
         return !CMSecurity.isBanned(login);
     }
 

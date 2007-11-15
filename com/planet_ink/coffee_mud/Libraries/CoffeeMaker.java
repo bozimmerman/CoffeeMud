@@ -650,7 +650,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				if(xxV.size()>0)
 				{
 					exit=CMClass.getExit(CMLib.xml().getValFromPieces(xxV,"EXID"));
-					if(xxV==null) return unpackErr("Room","null 'exit' in room "+newRoom.roomID());
+					if(exit==null) return unpackErr("Room","null 'exit' in room "+newRoom.roomID());
 					exit.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xxV,"EXDAT")));
 					newRoom.rawExits()[dir]=exit;
 				}
