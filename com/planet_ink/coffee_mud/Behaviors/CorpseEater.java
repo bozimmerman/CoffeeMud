@@ -86,13 +86,15 @@ public class CorpseEater extends ActiveTicker
 			for(int i=0;i<thisRoom.numItems();i++)
 			{
 				Item I=thisRoom.fetchItem(i);
-				if((I!=null)&&(I instanceof DeadBody)&&(CMLib.flags().canBeSeenBy(I,mob)||CMLib.flags().canSmell(mob)))
+				if((I!=null)
+				&&(I instanceof DeadBody)
+				&&(CMLib.flags().canBeSeenBy(I,mob)||CMLib.flags().canSmell(mob)))
 				{
 					if(getParms().length()>0)
 					{
                         if(((DeadBody)I).playerCorpse())
                         {
-                            if(getParms().toUpperCase().indexOf("-PLAYER")>=0)
+                            if(getParms().toUpperCase().indexOf("+PLAYER")<0)
                                 continue;
                         }
                         else
@@ -107,6 +109,10 @@ public class CorpseEater extends ActiveTicker
                         }
                         mob2.destroy();
 					}
+					else
+					if(((DeadBody)I).playerCorpse())
+						continue;
+						
 					if((I instanceof Container)&&(!EatItems))
 						((Container)I).emptyPlease();
 					thisRoom.show(mob,null,I,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> eat(s) <O-NAME>.");
