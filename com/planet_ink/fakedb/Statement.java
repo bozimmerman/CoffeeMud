@@ -1,4 +1,7 @@
 package com.planet_ink.fakedb;
+
+import java.sql.SQLException;
+
 /* 
    Copyright 2001 Thomas Neumann
 
@@ -396,4 +399,39 @@ public class Statement implements java.sql.Statement
    public int getResultSetConcurrency() throws java.sql.SQLException { return 0; }
    public int getResultSetType() throws java.sql.SQLException { return 0; }
    public java.sql.ResultSet getGeneratedKeys() throws java.sql.SQLException { return null; }
+
+  @Override
+  public boolean isClosed() throws SQLException
+  {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  public boolean isPoolable() throws SQLException
+  {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  public void setPoolable( boolean arg0 ) throws SQLException
+  {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public boolean isWrapperFor( Class<?> iface ) throws SQLException
+  {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  public <T> T unwrap( Class<T> iface ) throws SQLException
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
 }

@@ -1,4 +1,6 @@
 package com.planet_ink.fakedb;
+import java.sql.*;
+import java.util.Map;
 import java.util.Properties;
 import java.lang.ref.WeakReference;
 
@@ -219,6 +221,97 @@ public class Connection implements java.sql.Connection
       { return new java.util.HashMap(); }
    public void setTypeMap(java.util.Map map) throws java.sql.SQLException
       {}
+
+  @Override
+  public Array createArrayOf( String arg0, Object[] arg1 ) throws SQLException
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Blob createBlob() throws SQLException
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Clob createClob() throws SQLException
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public NClob createNClob() throws SQLException
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public SQLXML createSQLXML() throws SQLException
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Struct createStruct( String arg0, Object[] arg1 ) throws SQLException
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public Properties getClientInfo() throws SQLException
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public String getClientInfo( String arg0 ) throws SQLException
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
+
+  @Override
+  public boolean isValid( int arg0 ) throws SQLException
+  {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  public void setClientInfo( Properties arg0 ) throws SQLClientInfoException
+  {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public void setClientInfo( String arg0, String arg1 ) throws SQLClientInfoException
+  {
+    // TODO Auto-generated method stub
+    
+  }
+
+  @Override
+  public boolean isWrapperFor( Class<?> arg0 ) throws SQLException
+  {
+    // TODO Auto-generated method stub
+    return false;
+  }
+
+  @Override
+  public <T> T unwrap( Class<T> arg0 ) throws SQLException
+  {
+    // TODO Auto-generated method stub
+    return null;
+  }
 
    // JDK 1.4 stuff
 /*
