@@ -22,7 +22,7 @@
           </tr>
 
           <tr>
-            <td align="left" width="20%">
+            <td align="left" width="20%" valign="top">
               <ul>
                 <li><a href="#introduction">Introduction</a></li>
 
@@ -359,6 +359,8 @@
                     <li><a href="#isname">isname</a></li>
 
                     <li><a href="#isnpc">isnpc</a></li>
+
+                    <li><a href="#isodd">isodd</a></li>
 
                     <li><a href="#isopen">isopen</a></li>
 
@@ -2451,6 +2453,12 @@ say I am $%isgood($i)% and my favourite number is $%rand()%.
                     <td>Not implemented -- do not use.</td>
                   </tr>
 
+                  <tr>
+                    <td>ISODD([number])</td>
+
+                    <td>Echoes back the number if it is an odd whole number.</td>
+                  </tr>
+                  
                   <tr>
                     <td>ISOPEN([code or direction])</td>
 
@@ -5141,6 +5149,23 @@ else
 endif
 </pre>
 
+              <h3><a name="isodd">isodd</a></h3>
+
+              <p>Usage:</p>
+<pre>
+isodd(number)
+</pre>
+
+              <p>This checks to see if the number provided is an odd whole number.  Where number may be any literal or variable.</p>
+
+              <p>EXAMPLE:</p>
+<pre>
+if isodd('7') and isodd($0)
+  mpecho Seven and $0 are odd.
+else
+  mpecho Well, either Seven or $0 are not odd -- I'm guessing it's $0
+endif
+</pre>
               <h3><a name="isopen">isopen</a></h3>
 
               <p>Usage:</p>

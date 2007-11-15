@@ -2291,6 +2291,17 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 returnable=CMParms.stringContains(arg1,arg2)>=0;
                 break;
             }
+            case 92: // isodd
+            {
+	            String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z))).trim();
+	            boolean isodd = false;
+	            if( CMath.isLong( val ) )
+	            {
+		            isodd = (CMath.s_long(val) %2 == 1);
+	            }
+	            returnable = isodd;
+	            break;
+            }            
 			case 16: // hitprcnt
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
@@ -4669,6 +4680,20 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					results.append(((MOB)E).getTrains());
 				break;
 			}
+			case 92: // isodd
+			{
+				String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp ,CMParms.cleanBit(evaluable.substring(y+1,z))).trim();
+				boolean isodd = false;
+				if( CMath.isLong( val ) )
+				{
+					isodd = (CMath.s_long(val) %2 == 1);
+				}
+				if( isodd )
+				{
+					results.append( CMath.s_long( val.trim() ) );
+				}
+				break;
+			}			
 			case 82: // pracs
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));

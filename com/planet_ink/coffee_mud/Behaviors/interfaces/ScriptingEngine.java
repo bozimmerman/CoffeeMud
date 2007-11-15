@@ -228,6 +228,7 @@ public interface ScriptingEngine extends Behavior
         "ISRECALL", //89
         "INAREA", //90
         "DATETIME", //91
+        "ISODD", // 92
     };
     public static final String[] methods={
         "MPASOUND", //1
