@@ -534,7 +534,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 	}
 	
     
-    protected void adjustResourceName(Item I)
+    public void adjustResourceName(Item I)
     {
         String name=RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].toLowerCase();
         if((I.material()==RawMaterial.MATERIAL_MITHRIL)

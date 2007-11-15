@@ -44,7 +44,6 @@ public class Burning extends StdAbility
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-System.out.println(":"+super.tickDown);
         if((affected instanceof Item)&&(((Item)affected).owner() instanceof Room))
         {
             int unInvokeChance=0;
@@ -142,13 +141,27 @@ System.out.println(":"+super.tickDown);
 					    }
 					    else
 					    {
-System.out.println("ash");
 							Item ash=CMClass.getItem("GenResource");
 							ash.setName("some ash");
 							ash.setDisplayText("a small pile of ash is here");
 							ash.setMaterial(RawMaterial.RESOURCE_ASH);
+							ash.baseEnvStats().setWeight(1);
+							ash.recoverEnvStats();
 							room.addItemRefuse(ash,Item.REFUSE_MONSTER_EQ);
-							((Item)affected).destroy();
+							((RawMaterial)ash).rebundle();
+							if((affected instanceof RawMaterial)
+							&&(affected.baseEnvStats().weight()>1)
+							&&(CMLib.flags().burnStatus(affected)>0))
+							{
+								affected.baseEnvStats().setWeight(affected.baseEnvStats().weight()-1);
+								affected.recoverEnvStats();
+								this.tickDown = CMLib.flags().burnStatus(affected);
+								CMLib.materials().adjustResourceName((Item)affected);
+								((Room)E).recoverRoomStats();
+								return super.tick(ticking,tickID);
+							}
+							else
+								((Item)affected).destroy();
 					    }
 						break;
 					}
