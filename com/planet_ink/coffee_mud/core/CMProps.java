@@ -183,6 +183,7 @@ public class CMProps extends Properties
     protected DVector newusersByIP=new DVector(2);
     protected DVector skillMaxManaExceptions=new DVector(2);
     protected DVector skillMinManaExceptions=new DVector(2);
+    protected String[][] statCodeExtensions = null;
     public int pkillLevelDiff=26;
 
     public boolean loaded=false;
@@ -278,6 +279,38 @@ public class CMProps extends Properties
 			return props['0'].getStr(tagToGet);
 		if(thisTag==null) return "";
 		return thisTag;
+	}
+
+	/** retrieve particular .ini file entrys as a string array
+	*
+	* <br><br><b>Usage:</b>  String s=getStrs(p,"TAG");
+	* @param tagToGet	the property tag to retreive.
+	* @return String	the value of the .ini file tag
+	*/
+	public String[][] getStrsStarting(String tagStartersToGet)
+	{
+		DVector strBag = new DVector(2);
+		tagStartersToGet = tagStartersToGet.toUpperCase();
+		for(Enumeration e=propertyNames(); e.hasMoreElements();)
+		{
+			String propName = (String)e.nextElement();
+			if(propName.toUpperCase().startsWith(tagStartersToGet))
+			{
+				String subPropName = propName.substring(tagStartersToGet.length()).toUpperCase();
+				String thisTag=this.getProperty(propName);
+				if((thisTag==null)&&(props['0']!=null)&&(props['0']!=this))
+					thisTag = props['0'].getStr(propName);
+				if(thisTag!=null)
+					strBag.addElement(subPropName,thisTag);
+			}
+		}
+		String[][] strArray = new String[strBag.size()][2];
+		for(int s = 0; s < strBag.size(); s++)
+		{
+			strArray[s][0] = (String)strBag.elementAt(s,1);
+			strArray[s][1] = (String)strBag.elementAt(s,2);
+		}
+		return strArray;
 	}
 
 	public boolean getBoolean(String tagToGet)
@@ -629,6 +662,8 @@ public class CMProps extends Properties
         }
         CMSecurity.setDebugVars(getStr("DEBUG"));
         CMSecurity.setSaveFlags(getStr("SAVE"));
+        
+        statCodeExtensions = getStrsStarting("EXTVAR_");
     }
 
     public static String applyINIFilter(String msg, int whichFilter)
@@ -1089,5 +1124,35 @@ public class CMProps extends Properties
         return page;
     }
 
-
+    public static Vector getStatCodeExtentions(Class myClass)
+    {
+    	String[][] statCodeExtensions = p().statCodeExtensions;
+    	if( statCodeExtensions == null) return null;
+    	String className = CMClass.rawClassName(myClass).toUpperCase();
+    	for(int i=0;i<statCodeExtensions.length;i++)
+    		if(statCodeExtensions[i][0].equals(className))
+    			return CMParms.parseCommas(statCodeExtensions[i][1],true);
+    	return null;
+    }
+    
+    public static String[] getExtraStatCodesHolder(Class myClass)
+    {
+    	Vector addedStatCodesV = getStatCodeExtentions(myClass);
+    	if(addedStatCodesV == null) return null;
+    	return new String[addedStatCodesV.size()];
+    }
+    
+    public static String[] getStatCodesList(String[] baseStatCodes, Class myClass)
+    {
+    	Vector addedStatCodesV = getStatCodeExtentions(myClass);
+    	if(addedStatCodesV == null)
+    		return baseStatCodes;
+    	
+		String[] newStatCodes = new String[baseStatCodes.length + addedStatCodesV.size()];
+		for(int x=0;x<baseStatCodes.length;x++)
+			newStatCodes[x] = baseStatCodes[x];
+		for(int x=0;x<addedStatCodesV.size();x++)
+			newStatCodes[x+baseStatCodes.length] = (String)addedStatCodesV.elementAt(x);
+		return newStatCodes;
+    }
 }

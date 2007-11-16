@@ -901,7 +901,13 @@ public class CMClass extends ClassLoader
 	public static String rawClassName(Object O)
 	{
 		if(O==null) return "";
-		String name=O.getClass().getName();
+		return rawClassName(O.getClass());
+	}
+
+	public static String rawClassName(Class C)
+	{
+		if(C==null) return "";
+		String name=C.getName();
 		int lastDot=name.lastIndexOf(".");
 		if(lastDot>=0)
 			return name.substring(lastDot+1);
