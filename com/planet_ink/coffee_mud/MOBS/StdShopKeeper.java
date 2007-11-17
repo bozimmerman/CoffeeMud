@@ -123,7 +123,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			return false;
 		if((tickID==Tickable.TICKID_MOB)&&(isGeneric()))
 		{
-			if((--invResetTickDown)==0)
+			if((--invResetTickDown)<=0)
 			{
 				invResetTickDown=finalInvResetRate(); // we should now be at a positive number.
 				if(invResetTickDown<=0)
