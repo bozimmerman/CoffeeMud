@@ -34,8 +34,8 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class GenShopkeeper extends StdShopKeeper
 {
 	public String ID(){return "GenShopkeeper";}
-	protected String PrejudiceFactors="";
-    private String IgnoreMask="";
+	protected String prejudiceFactors="";
+    private String ignoreMask="";
 
 	public GenShopkeeper()
 	{
@@ -48,10 +48,10 @@ public class GenShopkeeper extends StdShopKeeper
 
 	public boolean isGeneric(){return true;}
 
-	public String prejudiceFactors(){return PrejudiceFactors;}
-	public void setPrejudiceFactors(String factors){PrejudiceFactors=factors;}
-    public String ignoreMask(){return IgnoreMask;}
-    public void setIgnoreMask(String factors){IgnoreMask=factors;}
+	public String prejudiceFactors(){return prejudiceFactors;}
+	public void setPrejudiceFactors(String factors){prejudiceFactors=factors;}
+    public String ignoreMask(){return ignoreMask;}
+    public void setIgnoreMask(String factors){ignoreMask=factors;}
 	public String text()
 	{
 		if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBCOMPRESS))
