@@ -1124,27 +1124,30 @@ public class CMProps extends Properties
         return page;
     }
 
-    public static Vector getStatCodeExtentions(Class myClass)
+    public static Vector getStatCodeExtentions(String myClassName)
     {
     	String[][] statCodeExtensions = p().statCodeExtensions;
     	if( statCodeExtensions == null) return null;
-    	String className = CMClass.rawClassName(myClass).toUpperCase();
+    	myClassName = myClassName.toUpperCase();
     	for(int i=0;i<statCodeExtensions.length;i++)
-    		if(statCodeExtensions[i][0].equals(className))
+    		if(statCodeExtensions[i][0].equals(myClassName))
     			return CMParms.parseCommas(statCodeExtensions[i][1],true);
     	return null;
     }
     
-    public static String[] getExtraStatCodesHolder(Class myClass)
+    public static String[] getExtraStatCodesHolder(String myClassName)
     {
-    	Vector addedStatCodesV = getStatCodeExtentions(myClass);
+    	Vector addedStatCodesV = getStatCodeExtentions(myClassName);
     	if(addedStatCodesV == null) return null;
-    	return new String[addedStatCodesV.size()];
+    	String[] statHolder= new String[addedStatCodesV.size()];
+    	for(int s=0;s<statHolder.length;s++)
+    		statHolder[s]="";
+    	return statHolder;
     }
     
-    public static String[] getStatCodesList(String[] baseStatCodes, Class myClass)
+    public static String[] getStatCodesList(String[] baseStatCodes, String myClassName)
     {
-    	Vector addedStatCodesV = getStatCodeExtentions(myClass);
+    	Vector addedStatCodesV = getStatCodeExtentions(myClassName);
     	if(addedStatCodesV == null)
     		return baseStatCodes;
     	
