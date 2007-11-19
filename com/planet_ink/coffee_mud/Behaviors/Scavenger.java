@@ -122,7 +122,7 @@ public class Scavenger extends ActiveTicker
 				if((thisItem!=null)
                 &&(thisItem.container()==null)
                 &&(CMLib.flags().isGettable(thisItem))
-                &&((!(thisItem instanceof DeadBody))||(!((DeadBody)thisItem).playerCorpse())))
+                &&(!(thisItem instanceof DeadBody)))
 					choices.addElement(thisItem);
 			}
             if(choices.size()==0) return true;
