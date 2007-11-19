@@ -7526,8 +7526,6 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				&&(msg.tool() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
-					if(lastMsg==msg) break;
-					lastMsg=msg;
 					trigger=trigger.substring(9).trim();
 					if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
@@ -7536,6 +7534,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						||(msg.tool().ID().equalsIgnoreCase(trigger))
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
+							if(lastMsg==msg) break;
+							lastMsg=msg;
 							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null));
 							return;
 						}
@@ -7550,6 +7550,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							||(msg.tool().ID().equalsIgnoreCase(t))
 							||(t.equalsIgnoreCase("ALL")))
 							{
+								if(lastMsg==msg) break;
+								lastMsg=msg;
 								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null));
 								return;
 							}
@@ -7687,8 +7689,6 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
-					if(lastMsg==msg) break;
-					lastMsg=msg;
 					trigger=trigger.substring(8).trim();
 					if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
@@ -7697,6 +7697,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						||(msg.target().ID().equalsIgnoreCase(trigger))
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
+							if(lastMsg==msg) break;
+							lastMsg=msg;
 							que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
 							return;
 						}
@@ -7711,6 +7713,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							||(msg.target().ID().equalsIgnoreCase(t))
 							||(t.equalsIgnoreCase("ALL")))
 							{
+								if(lastMsg==msg) break;
+								lastMsg=msg;
 								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
 								return;
 							}
@@ -7725,8 +7729,6 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
-					if(lastMsg==msg) break;
-					lastMsg=msg;
 					trigger=trigger.substring(9).trim();
 					if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
@@ -7735,6 +7737,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						||(msg.target().ID().equalsIgnoreCase(trigger))
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
+							if(lastMsg==msg) break;
+							lastMsg=msg;
 							if(msg.target() instanceof Coins)
 								execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,new Object[10]);
 							else
@@ -7752,6 +7756,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							||(msg.target().ID().equalsIgnoreCase(t))
 							||(t.equalsIgnoreCase("ALL")))
 							{
+								if(lastMsg==msg) break;
+								lastMsg=msg;
 								if(msg.target() instanceof Coins)
 									execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,new Object[10]);
 								else
@@ -7896,8 +7902,6 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				&&(msg.target() instanceof Item)
 				&&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
 				{
-					if(lastMsg==msg) break;
-					lastMsg=msg;
 					trigger=trigger.substring(8).trim();
 					if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
 					{
@@ -7906,6 +7910,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						||(msg.tool().ID().equalsIgnoreCase(trigger))
 						||(trigger.equalsIgnoreCase("ALL")))
 						{
+							if(lastMsg==msg) break;
+							lastMsg=msg;
 							if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
 								execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,new Object[10]);
 							else
@@ -7923,6 +7929,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							||(msg.tool().ID().equalsIgnoreCase(t))
 							||(t.equalsIgnoreCase("ALL")))
 							{
+								if(lastMsg==msg) break;
+								lastMsg=msg;
 								if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
 									execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,new Object[10]);
 								else

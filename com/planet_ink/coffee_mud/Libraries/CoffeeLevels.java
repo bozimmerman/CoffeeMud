@@ -424,6 +424,12 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
         amount=adjustedExperience(mob,victim,amount);
 		
+		if((mob.getClanID().length()>0)&&(amount>2))
+		{
+			Clan C=CMLib.clans().getClan(mob.getClanID());
+			if(C!=null) amount=C.applyExpMods(amount);
+		}
+
 		if((mob.getLiegeID().length()>0)&&(amount>2))
 		{
 			MOB sire=CMLib.map().getPlayer(mob.getLiegeID());
@@ -435,12 +441,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 				CMLib.leveler().postExperience(sire,null," from "+mob.displayName(sire),sireShare,quiet);
 			}
 		}
-		if((mob.getClanID().length()>0)&&(amount>2))
-		{
-			Clan C=CMLib.clans().getClan(mob.getClanID());
-			if(C!=null) amount=C.applyExpMods(amount);
-		}
-
+		
 		mob.setExperience(mob.getExperience()+amount);
 		if(homageMessage==null) homageMessage="";
 		if(!quiet)

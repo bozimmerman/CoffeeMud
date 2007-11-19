@@ -125,6 +125,8 @@ public class Thief_Flay extends ThiefSkill
 
 		boolean success=proficiencyCheck(mob,0,auto);
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MASK_MALICIOUS|CMMsg.MSG_THIEF_ACT,"<S-NAME> flay(s) the bare back of <T-NAMESELF>!");
+		boolean makePeace = CMLib.flags().isBound(target) && (mob.getVictim() == null) && (target.getVictim() == null);
+		
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
@@ -133,6 +135,11 @@ public class Thief_Flay extends ThiefSkill
 			{
 				Ability A=CMClass.getAbility("Bleeding");
 				if(A!=null) A.invoke(mob,mob,true,asLevel);
+				if(makePeace)
+				{
+					mob.makePeace();
+					target.makePeace();
+				}
 			}
 		}
 		else
