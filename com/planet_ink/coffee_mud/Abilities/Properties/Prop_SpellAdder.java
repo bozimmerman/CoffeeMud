@@ -41,8 +41,10 @@ public class Prop_SpellAdder extends Property
     protected MOB invokerMOB=null;
     protected boolean processing=false;
     protected boolean uninvocable=true;
+    protected int level=-1;
 	protected Vector spellV=null;
     protected Vector compiledMask=null;
+    protected Vector unrevocableSpells = null;
     
     public String getMaskString(String newText)
     {
@@ -85,6 +87,12 @@ public class Prop_SpellAdder extends Property
 			{
 				this.uninvocable=false;
 				continue;
+			}
+			if(thisOne.toUpperCase().startsWith("LEVEL"))
+			{
+				level=CMParms.getParmInt(thisOne,"LEVEL",-1);
+				if(level>=0)
+					continue;
 			}
 			String parm="";
 			if(thisOne.endsWith(")"))
@@ -218,7 +226,12 @@ public class Prop_SpellAdder extends Property
 		{
 			Ability A=(Ability)VTOO.elementAt(v);
             Vector V2=(Vector)VTOO.elementAt(v+1);
-			A.invoke(qualMOB,V2,target,true,asLevel>0?asLevel:((affected!=null)?affected.envStats().level():0));
+            if(level >= 0)
+            	asLevel = level;
+            else
+            if(asLevel <=0)
+            	asLevel = (affected!=null)?affected.envStats().level():0;
+			A.invoke(qualMOB,V2,target,true,asLevel);
 			Ability EA=target.fetchEffect(A.ID());
             lastMOB=target;
             // this needs to go here because otherwise it makes non-item-invoked spells long lasting,
@@ -226,8 +239,12 @@ public class Prop_SpellAdder extends Property
 			if((EA!=null)&&(makeLongLasting))
 			{
 				EA.makeLongLasting();
-				if(!this.uninvocable)
+				if(!uninvocable) {
 					EA.makeNonUninvokable();
+					if(unrevocableSpells == null)
+						unrevocableSpells = new Vector();
+					unrevocableSpells.addElement(EA);
+				}
 			}
 		}
         return true;
@@ -273,14 +290,28 @@ public class Prop_SpellAdder extends Property
 		if(eff.size()>0)
 		{
 			Hashtable h=makeMySpellsH(getMySpellsV());
+			if(unrevocableSpells != null)
+			{
+				for(int v=unrevocableSpells.size()-1;v>=0;v--)
+				{
+					thisAffect = (Ability)unrevocableSpells.elementAt(v);
+					if(h.containsKey(thisAffect.ID()))
+						E.delEffect(thisAffect);
+				}
+			}
+			else
 			for(x=0;x<eff.size();x++)
 			{
 				thisAffect=(Ability)eff.elementAt(x);
 				String ID=(String)h.get(thisAffect.ID());
 				if((ID!=null)
-	            &&(thisAffect.invoker()==getInvokerMOB(E,E)))
+	            &&(thisAffect.invoker()==getInvokerMOB(E,E))) {
 					thisAffect.unInvoke();
+					if((!uninvocable)&&(!thisAffect.canBeUninvoked()))
+						E.delEffect(thisAffect);
+				}
 			}
+			unrevocableSpells = null;
 		}
 	}
 
