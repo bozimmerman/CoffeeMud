@@ -101,7 +101,6 @@ public class AnimalTrading extends CommonSkill
 			{
 				String last=(String)commands.lastElement();
 				Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,last,Item.WORNREQ_ANY);
-				if(E==null)
 				if((E!=null)
 				&&(E instanceof Item)
 				&&(E instanceof Container)

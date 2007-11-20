@@ -36,7 +36,7 @@ import java.util.*;
 public class StdScroll extends StdItem implements MiscMagic, Scroll
 {
 	public String ID(){	return "StdScroll";}
-	protected boolean readableScroll=false;
+	protected String readableScrollBy=null;
 
 	public StdScroll()
 	{
@@ -123,9 +123,9 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 			if(readingMagic)
 			{
 				mob.tell(name()+" glows softly.");
-				me.setReadableScroll(true);
+				me.setReadableScrollBy(mob.Name());
 			}
-			if(me.isReadableScroll())
+			if(me.isReadableScrollBy(mob.Name()))
 			{
 				if(me.usesRemaining()<=0)
 					mob.tell("The markings have been read off the parchment, and are no longer discernable.");
@@ -253,8 +253,8 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		miscText=newText;
 		setSpellList(newText);
 	}
-	public boolean isReadableScroll(){return readableScroll;}
-	public void setReadableScroll(boolean isTrue){readableScroll=isTrue;}
+	public boolean isReadableScrollBy(String name){return (readableScrollBy!=null) && (readableScrollBy.equalsIgnoreCase(name));}
+	public void setReadableScrollBy(String name){readableScrollBy=name;}
 	protected static String[] CODES={"CLASS","LEVEL","ABILITY","TEXT"};
 	public String getStat(String code){
 		switch(getCodeNum(code))

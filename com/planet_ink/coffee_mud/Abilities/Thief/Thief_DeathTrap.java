@@ -125,6 +125,8 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		Room trapThis=mob.location();
 
 		Item resource=CMLib.materials().findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_METAL);
+		if(resource == null)
+			resource=CMLib.materials().findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_MITHRIL);
 		int amount=0;
 		if(resource!=null) 
 			amount=CMLib.materials().findNumberOfResource(mob.location(),resource.material());

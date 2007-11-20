@@ -33,7 +33,7 @@ public interface Scroll extends MiscMagic, Item, SpellHolder
 {
 	
 	public boolean useTheScroll(Ability A, MOB mob);
-	public boolean isReadableScroll();
-	public void setReadableScroll(boolean isTrue);
+	public boolean isReadableScrollBy(String name);
+	public void setReadableScrollBy(String name);
 	public void readIfAble(MOB mob, Scroll me, String spellName);
 }
