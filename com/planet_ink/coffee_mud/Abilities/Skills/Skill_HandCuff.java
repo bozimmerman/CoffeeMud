@@ -228,12 +228,18 @@ public class Skill_HandCuff extends StdSkill
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					amountRemaining=adjustedLevel(mob,asLevel)*300;
+					int amountToRemain=adjustedLevel(mob,asLevel)*300;
+					amountRemaining=amountToRemain;
 					if(target.location()==mob.location())
 					{
-						success=maliciousAffect(mob,target,asLevel,Integer.MAX_VALUE-1000,-1);
+						success=maliciousAffect(mob,target,asLevel,Integer.MAX_VALUE/4,-1);
 						if(success)
 						{
+							Skill_HandCuff A = (Skill_HandCuff)target.fetchEffect(ID());
+							if(A!=null) {
+								A.amountRemaining = amountToRemain;
+								if(auto) A.makeLongLasting();
+							}
 							oldAssist=CMath.bset(target.getBitmap(),MOB.ATT_AUTOASSIST);
 							if(!oldAssist)
 								target.setBitmap(CMath.setb(target.getBitmap(),MOB.ATT_AUTOASSIST));
@@ -250,6 +256,9 @@ public class Skill_HandCuff extends StdSkill
 							else
 								target.setBitmap(CMath.unsetb(target.getBitmap(),MOB.ATT_NOFOLLOW));
 							target.setFollowing(mob);
+							A = (Skill_HandCuff)target.fetchEffect(ID());
+							if(A!=null)
+								A.amountRemaining = amountToRemain;
 						}
 					}
 				}

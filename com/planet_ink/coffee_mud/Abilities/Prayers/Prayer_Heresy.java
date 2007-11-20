@@ -72,7 +72,12 @@ public class Prayer_Heresy extends Prayer
                     String desc=null;
 					if(D==null)
                     { 
-                        D=target; 
+						Enumeration deities = CMLib.map().deities();
+						if(deities.hasMoreElements())
+	                        D=(MOB)deities.nextElement();
+                    }
+					if(D==null) 
+					{
                         crime="heresy against the gods";
                         desc="Angering the gods will bring doom upon us all!";
                     }

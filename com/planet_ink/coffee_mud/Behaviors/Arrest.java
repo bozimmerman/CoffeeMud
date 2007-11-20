@@ -636,6 +636,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	    }
 		if((W.victim()!=null)&&(H.contains(W.victim()))) 
 	    {
+			MOB groupVictim=W.victim();
 		    if(debugging) Log.debugOut("ARREST", "Victim is a friend of the accused!");
 		    return false;
 	    }
@@ -1417,7 +1418,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		W.setVictim(victim);
 		W.setCrime(crime);
 		W.setState(Law.STATE_SEEKING);
-		W.setWitness(witness);
+		W.setWitness(requiresWitness?witness:null);
 		W.setLastOffense(System.currentTimeMillis());
 		W.setWarnMsg(warnMsg);
 		sentence=sentence.trim();
@@ -1935,10 +1936,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 			if(!isStillACrime(W,debugging))
 			{
-				unCuff(W.criminal());
-				if(W.arrestingOfficer()!=null)
-					dismissOfficer(W.arrestingOfficer());
-				W.setArrestingOfficer(myArea,null);
+				if(getWarrantsOf(myArea,W.criminal()).size()== 0)
+				{
+					unCuff(W.criminal());
+					if(W.arrestingOfficer()!=null) {
+						dismissOfficer(W.arrestingOfficer());
+					}
+					W.setArrestingOfficer(myArea,null);
+				}
 				W.setOffenses(W.offenses()+1);
 				laws.oldWarrants().addElement(W);
 				laws.warrants().removeElement(W);
