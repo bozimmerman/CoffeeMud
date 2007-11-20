@@ -38,6 +38,6 @@ public class Run extends Go
 
 	private String[] access={"RUN"};
 	public String[] getAccessWords(){return access;}
-	public int energyExpenseFactor(){return 3;}
+	public int energyExpenseFactor(){return 2;}
 	public double actionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),200.0);}
 }

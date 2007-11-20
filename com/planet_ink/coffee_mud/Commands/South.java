@@ -45,7 +45,12 @@ public class South extends Go
 			mob.tell("You need to stand up first.");
 			return false;
 		}
-		move(mob,Directions.SOUTH,false,false,false);
+		Go goClass = null;
+		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTORUN)) {
+			goClass=(Go)CMClass.getCommand("Run");
+		}
+		if(goClass == null) goClass = this;
+		goClass.move(mob,Directions.SOUTH,false,false,false);
 		return false;
 	}
 	public boolean canBeOrdered(){return true;}

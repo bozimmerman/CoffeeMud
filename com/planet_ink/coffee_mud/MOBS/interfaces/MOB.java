@@ -252,6 +252,7 @@ public interface MOB extends Environmental, Rider
 	public static final int ATT_QUIET=524288;
     public static final int ATT_MXP=1048576;
     public static final int ATT_COMPRESS=2097152;
+    public static final int ATT_AUTORUN=4194304;
 	// maybe 10 more?
 
 	public static final long SHEATH_TIME=3*Tickable.TIME_TICK;
@@ -277,6 +278,7 @@ public interface MOB extends Environmental, Rider
 										   true,
 										   false,
                                            false,
+										   false,
 										   false};
 	public static final String[] AUTODESC={"AUTOGOLD",
 										   "AUTOLOOT",
@@ -299,6 +301,7 @@ public interface MOB extends Environmental, Rider
 										   "MOTD",
 										   "QUIET",
 										   "MXP",
-                                           "COMPRESSED"};
+                                           "COMPRESSED",
+                                           "AUTORUN"};
 
 }
