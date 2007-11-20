@@ -61,8 +61,8 @@ public class StdCommand implements Command
     }
 
 	
-    public double actionsCost(){return 0.0;}
-    public double combatActionsCost(){return 0.0;}
+    public double actionsCost(MOB mob, Vector cmds){return 0.0;}
+    public double combatActionsCost(MOB mob, Vector cmds){return 0.0;}
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return true;}
 	public boolean staffCommand(){return false;}

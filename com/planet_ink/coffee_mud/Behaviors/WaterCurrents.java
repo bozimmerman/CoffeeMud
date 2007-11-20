@@ -221,8 +221,8 @@ public class WaterCurrents extends ActiveTicker
 		protected int canTargetCode(){return 0;}
 		public boolean canTarget(int can_code){return false;}
 		public boolean canAffect(int can_code){return false;}
-		public double castingTime(){return 0.0;}
-		public double combatCastingTime(){return 0.0;}
+		public double castingTime(MOB mob, Vector cmds){return 0.0;}
+		public double combatCastingTime(MOB mob, Vector cmds){return 0.0;}
         public void initializeClass(){}
 		public int abilityCode(){return 0;}
 		public void setAbilityCode(int newCode){}

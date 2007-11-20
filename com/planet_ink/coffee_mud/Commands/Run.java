@@ -39,5 +39,20 @@ public class Run extends Go
 	private String[] access={"RUN"};
 	public String[] getAccessWords(){return access;}
 	public int energyExpenseFactor(){return 2;}
-	public double actionsCost(){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),200.0);}
+	public double actionsCost(MOB mob, Vector cmds)
+	{
+		return super.actionsCost(mob, cmds) / 2.0;
+	}
+	public boolean execute(MOB mob, Vector commands)
+	throws java.io.IOException
+	{
+		if(mob==null)
+			return super.execute(mob, commands);
+		boolean wasSet = CMath.bset(mob.getBitmap(),MOB.ATT_AUTORUN);
+		mob.setBitmap(mob.getBitmap() | MOB.ATT_AUTORUN);
+		boolean returnValue = super.execute(mob, commands);
+		if(!wasSet)
+			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTORUN));
+		return returnValue;
+	}
 }

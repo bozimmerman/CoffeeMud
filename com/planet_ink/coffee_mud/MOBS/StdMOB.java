@@ -1325,7 +1325,7 @@ public class StdMOB implements MOB
 	                if(commandQue.size()>0)
 	                {
 	                	Object O=commandQue.elementAt(0,1);
-	                	Double D=new Double(calculateTickDelay(O,0.0));
+	                	Double D=new Double(calculateTickDelay(O,(Vector)doCommand[1],0.0));
 	                	if(commandQue.size()>0) commandQue.setElementAt(0,3,D);
 	                }
 	                else
@@ -1416,16 +1416,16 @@ public class StdMOB implements MOB
 		}
 	}
 
-    protected double calculateTickDelay(Object command, double tickDelay)
+    protected double calculateTickDelay(Object command, Vector commands, double tickDelay)
     {
         if(tickDelay<=0.0)
         {
             if(command==null){ tell("Huh?!"); return -1.0;}
             if(command instanceof Command)
-                tickDelay=isInCombat()?((Command)command).combatActionsCost():((Command)command).actionsCost();
+                tickDelay=isInCombat()?((Command)command).combatActionsCost(this,commands):((Command)command).actionsCost(this,commands);
             else
             if(command instanceof Ability)
-                tickDelay=isInCombat()?((Ability)command).combatCastingTime():((Ability)command).castingTime();
+                tickDelay=isInCombat()?((Ability)command).combatCastingTime(this,commands):((Ability)command).castingTime(this,commands);
             else
                 tickDelay=1.0;
         }
@@ -1437,7 +1437,7 @@ public class StdMOB implements MOB
         if(commands==null) return;
         Object O=CMLib.english().findCommand(this,commands);
         if(O==null){ CMLib.commands().handleUnknownCommand(this,commands); return;}
-        tickDelay=calculateTickDelay(O,tickDelay);
+        tickDelay=calculateTickDelay(O,commands,tickDelay);
         if(tickDelay<0.0) return;
         if(tickDelay==0.0)
             doCommand(O,commands);
@@ -1458,7 +1458,7 @@ public class StdMOB implements MOB
 		if(commands==null) return;
         Object O=CMLib.english().findCommand(this,commands);
         if(O==null){ CMLib.commands().handleUnknownCommand(this,commands); return;}
-        tickDelay=calculateTickDelay(O,tickDelay);
+        tickDelay=calculateTickDelay(O,commands,tickDelay);
         if(tickDelay<0.0) return;
         if(tickDelay==0.0)
             doCommand(commands);

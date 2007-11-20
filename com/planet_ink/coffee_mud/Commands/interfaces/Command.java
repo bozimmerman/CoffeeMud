@@ -46,19 +46,23 @@ public interface Command extends CMObject
 	 * activate this command. A value of 0.0 means perform 
 	 * instantly.  This method only applies when the user
 	 * is not in combat.
-	 * @see Command#combatActionsCost()
+	 * @see Command#combatActionsCost(MOB, Vector)
+     * @param mob the mob executing the command, if any
+     * @param cmds the parameters to be passed to the command, if any
 	 * @return the number of player free actions required to do this
 	 */
-	public double actionsCost();
+    public double actionsCost(MOB mob, Vector cmds);
 	/**
 	 * Returns the number of actions required to completely
 	 * activate this command. A value of 0.0 means perform 
 	 * instantly.  This method only applies when the user
 	 * is fighting in combat.
-	 * @see Command#actionsCost()
+	 * @see Command#actionsCost(MOB, Vector)
+     * @param mob the mob executing the command, if any
+     * @param cmds the parameters to be passed to the command, if any
 	 * @return the number of player free actions required to do this
 	 */
-    public double combatActionsCost();
+    public double combatActionsCost(MOB mob, Vector cmds);
     /**
      * Whether the a group leader or charmer can order their followers
      * to do this command.

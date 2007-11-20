@@ -2584,8 +2584,8 @@ public class DoNothing extends com.planet_ink.coffee_mud.Commands.StdCommand
               return that array. Our String array may contain as many strings as you would need to provide sufficient words to activate this
               command.</p>
 <pre>
-public double actionsCost(){ return 1.0; }
-public double combatActionsCost(){ return 1.0; }
+public double actionsCost(MOB mob, Vector cmds){ return 1.0; }
+public double combatActionsCost(MOB mob, Vector cmds){ return 1.0; }
 
 public boolean canBeOrdered(){ return true; }
 </pre>
@@ -4851,12 +4851,12 @@ public class Skill_Trip extends com.planet_ink.coffee_mud.Abilities.StdAbility
     return triggerStrings;
   }
 
-  public double castingTime()
+  public double castingTime(MOB mob, Vector cmds)
   {
     return 0.25;
   }
 
-  public double combatCastingTime()
+  public double combatCastingTime(MOB mob, Vector cmds)
   {
     return 1.0;
   }

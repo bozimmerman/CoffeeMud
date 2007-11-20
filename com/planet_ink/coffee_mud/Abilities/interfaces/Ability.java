@@ -177,20 +177,24 @@ public interface Ability extends Environmental
 	 * activate this skill. A value of 0.0 means invoke 
 	 * instantly.  This method only applies when the invoker
 	 * is not in combat.
-	 * @see Ability#combatCastingTime()
+	 * @see Ability#combatCastingTime(MOB, Vector)
+	 * @param mob the potential caster
+	 * @param cmds the potential command set
 	 * @return the number of player free actions required to do this
 	 */
-	public double castingTime();
+	public double castingTime(MOB mob, Vector commands);
 	
 	/**
 	 * Returns the number of actions required to completely
 	 * activate this skill. A value of 0.0 means invoke 
 	 * instantly.  This method only applies when the invoker
 	 * is in combat.
-	 * @see Ability#castingTime()
+	 * @see Ability#castingTime(MOB, Vector)
+	 * @param mob the potential caster
+	 * @param cmds the potential command set
 	 * @return the number of player free actions required to do this
 	 */
-	public double combatCastingTime();
+	public double combatCastingTime(MOB mob, Vector commands);
 
 	/**
 	 * This method is only called when the mob invoking this skill

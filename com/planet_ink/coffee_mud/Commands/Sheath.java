@@ -209,7 +209,7 @@ public class Sheath extends BaseItemParser
 		}
 		return false;
 	}
-    public double actionsCost(){return 0.5;}
+    public double actionsCost(MOB mob, Vector cmds){return 0.5;}
 	public boolean canBeOrdered(){return true;}
 
 	

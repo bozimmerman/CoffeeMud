@@ -58,8 +58,8 @@ public class Property implements Ability
 	protected int canTargetCode(){return 0;}
 	public boolean canTarget(int can_code){return CMath.bset(canTargetCode(),can_code);}
 	public boolean canAffect(int can_code){return CMath.bset(canAffectCode(),can_code);}
-	public double castingTime(){return 0.0;}
-	public double combatCastingTime(){return 0.0;}
+	public double castingTime(MOB mob, Vector cmds){return 0.0;}
+	public double combatCastingTime(MOB mob, Vector cmds){return 0.0;}
 	public int abilityCode(){return 0;}
 	public void setAbilityCode(int newCode){}
 	public int adjustedLevel(MOB mob, int asLevel){return -1;}
