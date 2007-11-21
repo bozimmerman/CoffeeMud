@@ -41,7 +41,7 @@ public class Run extends Go
 	public int energyExpenseFactor(){return 2;}
 	public double actionsCost(MOB mob, Vector cmds)
 	{
-		return super.actionsCost(mob, cmds) / 2.0;
+		return super.actionsCost(mob, cmds) / 4.0;
 	}
 	public boolean execute(MOB mob, Vector commands)
 	throws java.io.IOException

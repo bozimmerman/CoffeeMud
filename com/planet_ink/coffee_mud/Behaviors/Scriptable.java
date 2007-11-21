@@ -5393,7 +5393,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			case 4: // mpjunk
 			{
-				if(s.equalsIgnoreCase("all"))
+				if(s.substring(6).trim().equalsIgnoreCase("all"))
 				{
 					while(monster.inventorySize()>0)
 					{
