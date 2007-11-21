@@ -261,7 +261,7 @@ public class Prop_ClanEquipment extends Property
                     if(useAsWand(mob,wandUse.abilityCode()))
                     {
                         mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,me.name()+" glows brightly.");
-                        int flameDamage=CMLib.dice().roll(1*PowerLevel,6*PowerLevel,0);
+                        int flameDamage=CMLib.dice().roll(1,6*PowerLevel,1*PowerLevel);
                         CMLib.combat().postDamage(mob,target,null,flameDamage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|TypeOfEffect,WeaponType,
                                 "^F^<FIGHT^>The magic of "+clanName+" <DAMAGE> <T-NAME>!^</FIGHT^>^?");
                         wandUse.helpProficiency(mob);
@@ -347,7 +347,7 @@ public class Prop_ClanEquipment extends Property
                 &&(msg.target() instanceof MOB)&&(msg.tool() instanceof Weapon)&&(!(msg.tool() instanceof Wand))&&(TypeOfEffect<1000)
                 &&(!((MOB)msg.target()).amDead()))
         {
-            double flameDamage=new Integer(CMLib.dice().roll(1 * PowerLevel,6 * PowerLevel,0)).doubleValue();
+            double flameDamage=new Integer(CMLib.dice().roll(1,6*PowerLevel,1*PowerLevel)).doubleValue();
             String str="^F^<FIGHT^>The magic of "+clanName+" <DAMAGE> <T-NAME>!^</FIGHT^>^?";
             CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,(int)Math.round(flameDamage),
                     CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|TypeOfEffect,WeaponType,str);
@@ -367,7 +367,7 @@ public class Prop_ClanEquipment extends Property
                     source.location().send(source,msg2);
                     if(msg2.value()<=0)
                     {
-                        int damage=CMLib.dice().roll(1*PowerLevel,3*PowerLevel,0);
+                        int damage=CMLib.dice().roll(1,3*PowerLevel,1*PowerLevel);
                         CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|TypeOfEffect,WeaponType,
                                 "^F^<FIGHT^>The magic of "+clanName+" around <S-NAME> <DAMAGE> <T-NAME>!^</FIGHT^>^?");
                     }
