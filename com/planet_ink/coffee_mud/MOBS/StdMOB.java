@@ -2023,7 +2023,9 @@ public class StdMOB implements MOB
 					return false;
 				}
 
-				if(amFollowing()==mob) setFollowing(null);
+				if((amFollowing()==mob)
+				&&(!(msg.tool() instanceof DiseaseAffect)))
+					setFollowing(null);
 
 				if(isInCombat())
 				{
