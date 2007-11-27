@@ -94,6 +94,9 @@ public class Prop_SpellAdder extends Property
 				if(level>=0)
 					continue;
 			}
+			int pctDex=thisOne.indexOf("% ");
+			if((pctDex>0) && (thisOne.substring(pctDex+1).trim().length()>0))
+				thisOne=thisOne.substring(pctDex+1).trim();
 			String parm="";
 			if(thisOne.endsWith(")"))
 			{
