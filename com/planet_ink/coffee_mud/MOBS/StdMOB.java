@@ -3152,6 +3152,16 @@ public class StdMOB implements MOB
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
+	public void addPriorityEffect(Ability to)
+	{
+		if(to==null) return;
+		if(fetchEffect(to.ID())!=null) return;
+		if(affects.size()==0)
+			affects.addElement(to);
+		else
+			affects.insertElementAt(to,0);
+		to.setAffectedOne(this);
+	}
 	public void addEffect(Ability to)
 	{
 		if(to==null) return;

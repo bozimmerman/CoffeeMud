@@ -175,6 +175,7 @@ public interface MOB extends Environmental, Rider
 	public int getWearPositions(long wornCode);
 
 	public int numAllEffects();
+	public void addPriorityEffect(Ability to);
 
 	/** Manipulation of followers */
 	public void addFollower(MOB follower, int order);
