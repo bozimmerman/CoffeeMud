@@ -522,7 +522,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
         if((CMath.bset(I.envStats().disposition(),EnvStats.IS_UNSAVABLE))
         ||(I instanceof Coins))
             return I;
-        if(I.name().toLowerCase().indexOf("ruined")>=0)
+        if(I.name().toLowerCase().indexOf("ruined ")>=0)
         	return I;
         for(int d=0;d<policies.size();d++)
         {
