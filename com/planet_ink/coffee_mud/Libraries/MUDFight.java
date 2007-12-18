@@ -494,7 +494,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     }
     
     
-    protected HashSet getCombatDividers(MOB killer, MOB killed, Room deathRoom, HashSet beneficiaries, CharClass combatCharClass)
+    protected HashSet getCombatDividers(MOB killer, MOB killed, Room deathRoom, HashSet dividers, CharClass combatCharClass)
     {
         HashSet followers=(killer!=null)?killer.getGroupMembers(new HashSet()):(new HashSet());
         if(combatCharClass==null) combatCharClass=CMClass.getCharClass("StdCharClass");
@@ -504,24 +504,24 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             {
                 MOB mob=deathRoom.fetchInhabitant(m);
                 if((combatCharClass.isValidClassDivider(killer,killed,mob,followers))
-                &&(!beneficiaries.contains(mob)))
-                    beneficiaries.add(mob);
+                &&(!dividers.contains(mob)))
+                	dividers.add(mob);
             }
         }
-        if((killer!=null)&&(!beneficiaries.contains(killer))&&(killer!=killed)&&(CMLib.flags().isInTheGame(killer,true)))
-            beneficiaries.add(killer);
-        return beneficiaries; 
+        if((killer!=null)&&(!dividers.contains(killer))&&(killer!=killed)&&(CMLib.flags().isInTheGame(killer,true)))
+        	dividers.add(killer);
+        return dividers; 
     }
     
     public HashSet getCombatDividers(MOB killer, MOB killed, CharClass combatCharClass)
     {
         if((killer==null)||(killed==null)) return new HashSet();
-        HashSet beneficiaries=new HashSet();
+        HashSet dividers=new HashSet();
         Room R=killer.location();
-        if(R!=null) getCombatDividers(killer,killed,R,beneficiaries,combatCharClass);
+        if(R!=null) getCombatDividers(killer,killed,R,dividers,combatCharClass);
         R=killed.location();
-        if((R!=null)&&(R!=killer.location())) getCombatDividers(killer,killed,R,beneficiaries,combatCharClass);
-        return beneficiaries;
+        if((R!=null)&&(R!=killer.location())) getCombatDividers(killer,killed,R,dividers,combatCharClass);
+        return dividers;
     }
     
 	public DeadBody justDie(MOB source, MOB target)
@@ -1251,12 +1251,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     {
         int totalLevels=0;
         int expAmount=100;
+        int expAddition=25;
 
         for(Iterator i=dividers.iterator();i.hasNext();)
         {
             MOB mob=(MOB)i.next();
-            totalLevels+=(mob.envStats().level()*mob.envStats().level());
-            if(dividers.contains(mob)) expAmount+=25;
+            totalLevels += (mob.envStats().level()*mob.envStats().level());
+            expAmount += expAddition;
+            expAddition -= expAddition/4;
         }
 		for(Iterator i=killers.iterator();i.hasNext();)
 		{

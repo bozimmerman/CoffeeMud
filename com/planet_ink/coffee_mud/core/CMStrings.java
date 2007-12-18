@@ -89,8 +89,8 @@ public class CMStrings
         &&(!str.toUpperCase().startsWith("SOME ")))
         {
             if("aeiouAEIOU".indexOf(adjective.charAt(0))>=0) 
-                return "an "+adjective+" "+str.substring(4).trim();
-            return "a "+adjective+" "+str.substring(4).trim();
+                return "an "+adjective+" "+str.trim();
+            return "a "+adjective+" "+str.trim();
         }
         int x=str.indexOf(' ');
         return str.substring(0,x)+" "+adjective+" "+str.substring(x+1);

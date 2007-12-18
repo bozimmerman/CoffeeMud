@@ -2117,12 +2117,17 @@ public class BaseGenerics extends StdCommand
 		            }
 		            else
 		            {
-						int value =new Integer(mob.session().prompt("How much faction ("+lookedUp.findDefault(E)+")?",
-						           new Integer(lookedUp.findDefault(E)).toString())).intValue();
-			            if(value<lookedUp.minimum()) value=lookedUp.minimum();
-					    if(value>lookedUp.maximum()) value=lookedUp.maximum();
-		                E.addFaction(lookedUp.factionID(),value);
-		                mob.tell("Faction '"+lookedUp.name() +"' added.");
+		            	String howMuch = mob.session().prompt("How much faction ("+lookedUp.findDefault(E)+")?",
+						           new Integer(lookedUp.findDefault(E)).toString());
+		            	if(CMath.isInteger(howMuch)) {
+							int value =new Integer(howMuch).intValue();
+				            if(value<lookedUp.minimum()) value=lookedUp.minimum();
+						    if(value>lookedUp.maximum()) value=lookedUp.maximum();
+			                E.addFaction(lookedUp.factionID(),value);
+			                mob.tell("Faction '"+lookedUp.name() +"' added.");
+		            	}
+		            	else
+		            		mob.tell("'"+howMuch+"' is not a valid number.");
 		            }
 		         }
 		         else
