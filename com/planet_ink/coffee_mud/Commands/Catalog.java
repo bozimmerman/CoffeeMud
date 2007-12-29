@@ -280,16 +280,13 @@ public class Catalog extends StdCommand
 							mob.tell("The object '"+cat.Name()+"' already exists in the catalog, exactly as it is.");
 							return false;
 						}
-						else
-						{
-							for(int i=0;i<cat.getStatCodes().length;i++)
-								if((!cat.getStat(cat.getStatCodes()[i]).equals(thisThang.getStat(cat.getStatCodes()[i]))))
-									diffs.append(cat.getStatCodes()[i]);
-							if((mob.session()==null)
-							||(!mob.session().confirm("Cataloging that object will change the existing cataloged '"+thisThang.Name()+"' by altering the following properties: "+diffs.toString()+".  Please confirm (y/N)?","Y")))
-								return false;
-							msg="<S-NAME> modif(ys) the cataloged version of <T-NAMESELF>.";
-						}
+						for(int i=0;i<cat.getStatCodes().length;i++)
+							if((!cat.getStat(cat.getStatCodes()[i]).equals(thisThang.getStat(cat.getStatCodes()[i]))))
+								diffs.append(cat.getStatCodes()[i]);
+						if((mob.session()==null)
+						||(!mob.session().confirm("Cataloging that object will change the existing cataloged '"+thisThang.Name()+"' by altering the following properties: "+diffs.toString()+".  Please confirm (y/N)?","Y")))
+							return false;
+						msg="<S-NAME> modif(ys) the cataloged version of <T-NAMESELF>.";
 						if(thisThang instanceof MOB)
 						{
 							if(((MOB)thisThang).databaseID().length()==0)

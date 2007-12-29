@@ -33,10 +33,10 @@ import java.util.*;
 */
 public class AutoTitleData extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+    public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String deleteTitle(String title)
-	{
+    public String deleteTitle(String title)
+    {
         CMLib.login().dispossesTitle(title);
         CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,true);
         boolean removed=Resources.findRemoveProperty(F, title);
@@ -47,75 +47,75 @@ public class AutoTitleData extends StdWebMacro
             return null;
         }
         else
-        	return "Unable to delete title!";
-	}
-	
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
-	{
-		Hashtable parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("AUTOTITLE");
-		if((last==null)&&(!parms.containsKey("EDIT"))) return " @break@";
+            return "Unable to delete title!";
+    }
+    
+    public String runMacro(ExternalHTTPRequests httpReq, String parm)
+    {
+        Hashtable parms=parseParms(parm);
+        String last=httpReq.getRequestParameter("AUTOTITLE");
+        if((last==null)&&(!parms.containsKey("EDIT"))) return " @break@";
 
-		if(parms.containsKey("EDIT"))
-		{
-	        MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
-	        if(M==null) return "[authentication error]";
+        if(parms.containsKey("EDIT"))
+        {
+            MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(M==null) return "[authentication error]";
             if(!CMSecurity.isAllowed(M,M.location(),"TITLES")) return "[authentication error]";
             String newTitle=httpReq.getRequestParameter("TITLE");
             String newMask=httpReq.getRequestParameter("MASK");
             if((newTitle==null)||(newMask==null)||(newTitle.length()==0))
-            	return "[missing data error]";
+                return "[missing data error]";
             String error=CMLib.login().evaluateAutoTitle(newTitle+"="+newMask,false);
             if(error!=null) return "[error: "+error+"]";
             
             if((last!=null)&&(CMLib.login().isExistingAutoTitle(last)))
             {
-	            String err=deleteTitle(last);
-	            if(err!=null) return err;
+                String err=deleteTitle(last);
+                if(err!=null) return err;
             }
             if(CMLib.login().isExistingAutoTitle(newTitle))
-            	return "[new title already exists!]";
+                return "[new title already exists!]";
             CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,true);
             F.saveText("\n"+newTitle+"="+newMask,true);
             Resources.removeResource("titles.txt");
             CMLib.login().reloadAutoTitles();
-		}
-		else
-		if(parms.containsKey("DELETE"))
-		{
-	        MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
-	        if(M==null) return "[authentication error]";
+        }
+        else
+        if(parms.containsKey("DELETE"))
+        {
+            MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(M==null) return "[authentication error]";
             if(!CMSecurity.isAllowed(M,M.location(),"TITLES")) return "[authentication error]";
             if(last==null) return " @break@";
             if(!CMLib.login().isExistingAutoTitle(last))
-            	return "Unknown title!";
+                return "Unknown title!";
             String err=deleteTitle(last);
             if(err==null) return "Auto-Title deleted.";
             return err;
-		}
-		else
-		if(last==null) return " @break@";
-		else
-		if(last.length()>0)
-		{
-			StringBuffer str=new StringBuffer("");
-			
-			if(parms.containsKey("MASK"))
-			{
-				String mask=CMLib.login().getAutoTitleMask(last);
-				str.append(mask+", ");
-			}
-			if(parms.containsKey("MASKDESC"))
-			{
-				String mask=CMLib.login().getAutoTitleMask(last);
-				str.append(CMLib.masking().maskDesc(mask)+", ");
-			}
-			String strstr=str.toString();
-			if(strstr.endsWith(", "))
-				strstr=strstr.substring(0,strstr.length()-2);
+        }
+        else
+        if(last==null) return " @break@";
+        else
+        if(last.length()>0)
+        {
+            StringBuffer str=new StringBuffer("");
+            
+            if(parms.containsKey("MASK"))
+            {
+                String mask=CMLib.login().getAutoTitleMask(last);
+                str.append(mask+", ");
+            }
+            if(parms.containsKey("MASKDESC"))
+            {
+                String mask=CMLib.login().getAutoTitleMask(last);
+                str.append(CMLib.masking().maskDesc(mask)+", ");
+            }
+            String strstr=str.toString();
+            if(strstr.endsWith(", "))
+                strstr=strstr.substring(0,strstr.length()-2);
             return clearWebMacros(strstr);
-		}
-		
-		return "";
-	}
+        }
+        
+        return "";
+    }
 }
