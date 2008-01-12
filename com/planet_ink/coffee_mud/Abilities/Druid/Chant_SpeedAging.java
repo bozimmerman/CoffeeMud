@@ -121,7 +121,7 @@ public class Chant_SpeedAging extends Chant
 					if(M.baseCharStats().getStat(CharStats.STAT_AGE)<=0)
 						M.setAgeHours(M.getAgeHours()+(M.getAgeHours()/10));
 					else
-					if(M.playerStats().getBirthday()!=null)
+					if((M.playerStats()!=null) && (M.playerStats().getBirthday()!=null))
 					{
 					    double aging=CMath.mul(M.baseCharStats().getStat(CharStats.STAT_AGE),.10);
 					    int years=(int)Math.round(Math.floor(aging));
