@@ -134,7 +134,7 @@ public class StdPowder extends StdItem implements MagicDust {
 
 	public String secretIdentity()
 	{
-        return description()+"\n\r"+secretIdentity();
+        return description()+"\n\r"+super.secretIdentity();
 	}
 
 }

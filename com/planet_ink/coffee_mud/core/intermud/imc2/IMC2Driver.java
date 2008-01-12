@@ -1490,7 +1490,7 @@ public final class IMC2Driver extends Thread {
         out.to = reqFrom;
         imc_addkey(out, "versionid", IMC_VERSIONID);
         imc_addkey(out, "networkname", this_imcmud.network);
-        if (imc_siteinfo.flags != null && imc_siteinfo.flags != "")
+        if (imc_siteinfo.flags != null && !"".equals(imc_siteinfo.flags))
             imc_addkey(out, "flags", imc_siteinfo.flags);
         imc_send(out);
     }
@@ -1508,7 +1508,7 @@ public final class IMC2Driver extends Thread {
         out.from = "*";
         out.to = "*@*";
         imc_addkey(out, "versionid", IMC_VERSIONID);
-        if (imc_siteinfo.flags != null && imc_siteinfo.flags != "")
+        if (imc_siteinfo.flags != null && !"".equals(imc_siteinfo.flags))
             imc_addkey(out, "flags", imc_siteinfo.flags);
         imc_send(out);
     }

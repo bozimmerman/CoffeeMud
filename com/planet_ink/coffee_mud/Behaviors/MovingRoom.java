@@ -120,7 +120,7 @@ public class MovingRoom extends ActiveTicker
 		String theDescriptionsBlock=CMLib.xml().returnXMLBlock(theFullBlock, "ROOMDESCRIPTIONS");
 		int x=1;
 		String thisone=CMLib.xml().returnXMLValue(theStopsBlock, "STOP1");
-		while (thisone!="")
+		while (!"".equals(thisone))
 		{
 			++x;
 			listOfRooms.addElement(thisone);
