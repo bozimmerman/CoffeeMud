@@ -73,10 +73,6 @@ public class DumpFile extends StdCommand
 		{
 			boolean wipeAfter = true;
 			String fn = new String ( (String)commands.elementAt(0) );
-			// don't allow any path characters!
-			fn.replace('/','_');
-			fn.replace('\\','_');
-			fn.replace(':','_');
 
 			if (Resources.getResource(fn) != null)
 				wipeAfter = false;

@@ -702,13 +702,13 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Room getDefaultStartRoom(MOB mob)
 	{
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
-		race.replace(' ','_');
+		race=race.replace(' ','_');
 		String charClass=mob.baseCharStats().getCurrentClass().ID().toUpperCase();
-		charClass.replace(' ','_');
+		charClass=charClass.replace(' ','_');
 		String realrace=mob.baseCharStats().getMyRace().ID().toUpperCase();
-		realrace.replace(' ','_');
+		realrace=realrace.replace(' ','_');
 		String deity=mob.getWorshipCharID().toUpperCase();
-		deity.replace(' ','_');
+		deity=deity.replace(' ','_');
 		String align=CMLib.flags().getAlignmentName(mob);
 		String roomID=(String)startRooms.get(race);
 		if((roomID==null)||(roomID.length()==0))
@@ -742,11 +742,11 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Room getDefaultDeathRoom(MOB mob)
 	{
 		String charClass=mob.baseCharStats().getCurrentClass().ID().toUpperCase();
-		charClass.replace(' ','_');
+		charClass=charClass.replace(' ','_');
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
-		race.replace(' ','_');
+		race=race.replace(' ','_');
 		String deity=mob.getWorshipCharID().toUpperCase();
-		deity.replace(' ','_');
+		deity=deity.replace(' ','_');
 		String align=CMLib.flags().getAlignmentName(mob);
 		String roomID=(String)deathRooms.get(race);
 		if(((roomID==null)||(roomID.length()==0)))
@@ -792,13 +792,13 @@ public class CMMap extends StdLibrary implements WorldMap
 		    }
 	    }
 		String charClass=mob.baseCharStats().getCurrentClass().ID().toUpperCase();
-		charClass.replace(' ','_');
+		charClass=charClass.replace(' ','_');
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
-		race.replace(' ','_');
+		race=race.replace(' ','_');
 		String realrace=mob.baseCharStats().getMyRace().ID().toUpperCase();
-		realrace.replace(' ','_');
+		realrace=realrace.replace(' ','_');
 		String deity=mob.getWorshipCharID().toUpperCase();
-		deity.replace(' ','_');
+		deity=deity.replace(' ','_');
 		String align=CMLib.flags().getAlignmentName(mob);
 		String roomID=(String)bodyRooms.get(race);
 		if((roomID==null)||(roomID.length()==0))
