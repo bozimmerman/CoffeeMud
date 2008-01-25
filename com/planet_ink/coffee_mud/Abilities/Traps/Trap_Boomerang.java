@@ -49,15 +49,15 @@ public class Trap_Boomerang extends StdTrap
 			else
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> set(s) off a trap!"))
 			{
-				super.spring(target);
-				if((canBeUninvoked())&&(affected instanceof Item))
-					disable();
 				if(affected instanceof Item)
 				{
 					((Item)affected).unWear();
 					((Item)affected).removeFromOwnerContainer();
 					invoker().addInventory((Item)affected);
 				}
+				super.spring(target);
+				if((canBeUninvoked())&&(affected instanceof Item))
+					disable();
 			}
 		}
 	}
