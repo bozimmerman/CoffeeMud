@@ -356,7 +356,7 @@ public class StdTrap extends StdAbility implements Trap
 					if(I.owner() instanceof Room)
 					{
 						Room R=(Room)I.owner();
-						for(int i=0;i<R.numInhabitants();i++)
+						for(int i=R.numInhabitants()-1;i>=0;i--)
 						{
 							MOB M=R.fetchInhabitant(i);
 							if(M!=null)
