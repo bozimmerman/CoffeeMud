@@ -62,6 +62,7 @@ public class Disease_MummyRot extends StdAbility implements DiseaseAffect
 			diseaseTick=10;
 			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> rotting away...");
 			conDown++;
+			mob.recoverCharStats();
 			return true;
 		}
 		return true;
