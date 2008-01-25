@@ -73,6 +73,7 @@ public class Trap_ElectricShock extends StdTrap
 		{
 			if((!invoker().mayIFight(target))
 			||(isLocalNPCMobWLocalTrap(target))
+			||(invoker().getGroupMembers(new HashSet()).contains(target))
 			||(target==invoker())
 			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a shocking trap!");

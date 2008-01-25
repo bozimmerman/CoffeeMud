@@ -65,6 +65,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if((!invoker().mayIFight(target))
+			||(invoker().getGroupMembers(new HashSet()).contains(target))
 			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) some agressive plants!");
 			else
