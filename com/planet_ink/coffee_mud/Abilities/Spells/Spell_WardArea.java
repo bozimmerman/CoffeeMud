@@ -81,10 +81,11 @@ public class Spell_WardArea extends Spell implements Trap
 				if(msg.targetMinor()==CMMsg.TYP_LEAVE)
 					return true;
 				spring(msg.source());
-				return false;
+				if(sprung)
+					return false;
 			}
 		}
-		return true;
+		return super.okMessage(myHost,msg);
 	}
 
 
