@@ -39,6 +39,17 @@ public class Trap_Boomerang extends StdTrap
 	protected int trapLevel(){return 24;}
 	public String requiresToSet(){return "";}
 
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		boolean wasSprung = sprung;
+		super.executeMsg(myHost, msg);
+		if((!wasSprung)&&(sprung))
+		{
+			msg.setSourceCode(CMMsg.NO_EFFECT);
+			msg.setTargetCode(CMMsg.NO_EFFECT);
+			msg.setOthersCode(CMMsg.NO_EFFECT);
+		}
+	}
 	public void spring(MOB target)
 	{
 		if((target!=invoker())&&(target.location()!=null))
@@ -54,6 +65,7 @@ public class Trap_Boomerang extends StdTrap
 					((Item)affected).unWear();
 					((Item)affected).removeFromOwnerContainer();
 					invoker().addInventory((Item)affected);
+					invoker().tell("Magically, "+affected.name()+" appears in your hands.");
 				}
 				super.spring(target);
 				if((canBeUninvoked())&&(affected instanceof Item))
