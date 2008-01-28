@@ -16,7 +16,7 @@ import java.util.*;
 
 
 
-/* 
+/*
    Copyright 2000-2007 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,19 +42,34 @@ public class AutoTitleData extends StdWebMacro
         boolean removed=Resources.findRemoveProperty(F, title);
         if(removed)
         {
-            Resources.removeResource("titles.txt");
-            CMLib.login().reloadAutoTitles();
-            return null;
+            boolean removed=Resources.findRemoveProperty(F, title);
+            if(removed)
+            {
+                Resources.removeResource("titles.txt");
+                CMLib.login().reloadAutoTitles();
+                return null;
+            }
+        	return "Unable to delete title!";
         }
+    	return "Unable to open titles.txt!";
+	}
+
+	public String runMacro(ExternalHTTPRequests httpReq, String parm)
+	{
+		Hashtable parms=parseParms(parm);
+		String last=httpReq.getRequestParameter("AUTOTITLE");
+		if((last==null)&&(!parms.containsKey("EDIT"))) return " @break@";
+=======
         else
             return "Unable to delete title!";
     }
-    
+
     public String runMacro(ExternalHTTPRequests httpReq, String parm)
     {
         Hashtable parms=parseParms(parm);
         String last=httpReq.getRequestParameter("AUTOTITLE");
         if((last==null)&&(!parms.containsKey("EDIT"))) return " @break@";
+>>>>>>> .r1524
 
         if(parms.containsKey("EDIT"))
         {
@@ -67,7 +82,7 @@ public class AutoTitleData extends StdWebMacro
                 return "[missing data error]";
             String error=CMLib.login().evaluateAutoTitle(newTitle+"="+newMask,false);
             if(error!=null) return "[error: "+error+"]";
-            
+
             if((last!=null)&&(CMLib.login().isExistingAutoTitle(last)))
             {
                 String err=deleteTitle(last);
@@ -99,7 +114,7 @@ public class AutoTitleData extends StdWebMacro
         if(last.length()>0)
         {
             StringBuffer str=new StringBuffer("");
-            
+
             if(parms.containsKey("MASK"))
             {
                 String mask=CMLib.login().getAutoTitleMask(last);
@@ -115,7 +130,7 @@ public class AutoTitleData extends StdWebMacro
                 strstr=strstr.substring(0,strstr.length()-2);
             return clearWebMacros(strstr);
         }
-        
+
         return "";
     }
 }
