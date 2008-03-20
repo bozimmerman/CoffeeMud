@@ -217,6 +217,9 @@ public class DefaultTimeClock implements TimeClock
 			return TimeClock.TIME_DAY;
 		if((time>=getDawnToDusk()[TimeClock.TIME_DAWN])&&(getDawnToDusk()[TimeClock.TIME_DAWN]>=0))
 			return TimeClock.TIME_DAWN;
+		// it's before night, dusk, day, and dawn... before dawn is still night.
+        if(getDawnToDusk()[TimeClock.TIME_NIGHT]>=0)
+            return TimeClock.TIME_NIGHT;
 		return TimeClock.TIME_DAY;
 	}
 	public boolean setTimeOfDay(int t)
