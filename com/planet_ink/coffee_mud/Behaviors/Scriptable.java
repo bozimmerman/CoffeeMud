@@ -106,7 +106,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 &&(CMath.s_int(CMParms.getCleanBit(trigger,2).trim())<0))
                 {
                     oncesDone.addElement(script);
-                    execute(hostObj,mob,mob,mob,null,null,script,null,new Object[10]);
+                    execute(hostObj,mob,mob,mob,null,null,script,null,new Object[12]);
                     return true;
                 }
             }
@@ -801,9 +801,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						return monster.amFollowing();
 					  return null;
 			case 'r':
-			case 'R': return getFirstPC(monster,null,lastKnownLocation);
+			case 'R': return getRandPC(monster,tmp,lastKnownLocation);
 			case 'c':
-			case 'C': return getFirstAnyone(monster,null,lastKnownLocation);
+			case 'C': return getRandAnyone(monster,tmp,lastKnownLocation);
 			case 'w': return primaryItem!=null?primaryItem.owner():null;
 			case 'W': return secondaryItem!=null?secondaryItem.owner():null;
 			case 'x':
@@ -944,7 +944,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             case 'B': middle=lastLoaded!=null?lastLoaded.displayText():""; break;
 			case 'c':
 			case 'C':
-				randMOB=getFirstAnyone(monster,randMOB,lastKnownLocation);
+				randMOB=getRandAnyone(monster,tmp,lastKnownLocation);
 				if(randMOB!=null)
 					middle=randMOB.name();
 				break;
@@ -976,7 +976,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 break;
 			case 'r':
 			case 'R':
-				randMOB=getFirstPC(monster,randMOB,lastKnownLocation);
+				randMOB=getRandPC(monster,tmp,lastKnownLocation);
 				if(randMOB!=null)
 					middle=randMOB.name();
 				break;
@@ -1001,7 +1001,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					middle=((MOB)target).charStats().heshe();
 				break;
 			case 'J':
-				randMOB=getFirstPC(monster,randMOB,lastKnownLocation);
+				randMOB=getRandPC(monster,tmp,lastKnownLocation);
 				if(randMOB!=null)
 					middle=randMOB.charStats().heshe();
 				break;
@@ -1018,7 +1018,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					middle=((MOB)target).charStats().hisher();
 				break;
 			case 'K':
-				randMOB=getFirstPC(monster,randMOB,lastKnownLocation);
+				randMOB=getRandPC(monster,tmp,lastKnownLocation);
 				if(randMOB!=null)
 					middle=randMOB.charStats().hisher();
 				break;
@@ -5021,49 +5021,57 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		return results.toString();
 	}
 
-	protected MOB getFirstPC(MOB monster, MOB randMOB, Room room)
+	protected MOB getRandPC(MOB monster, Object[] tmp, Room room)
 	{
-		if((randMOB!=null)&&(randMOB!=monster))
-			return randMOB;
-		MOB M=null;
-		if(room!=null)
-			for(int p=0;p<room.numInhabitants();p++)
-			{
-				M=room.fetchInhabitant(p);
-				if((!M.isMonster())&&(M!=monster))
-				{
-                    HashSet seen=new HashSet();
-					while((M.amFollowing()!=null)&&(!M.amFollowing().isMonster())&&(!seen.contains(M)))
-                    {
-                        seen.add(M);
-						M=M.amFollowing();
-                    }
-					return M;
-				}
-			}
-		return null;
+		if((tmp[10]==null)||(tmp[10]==monster)) {
+    		MOB M=null;
+    		if(room!=null) {
+    		    Vector choices = new Vector();
+    			for(int p=0;p<room.numInhabitants();p++)
+    			{
+    				M=room.fetchInhabitant(p);
+    				if((!M.isMonster())&&(M!=monster))
+    				{
+                        HashSet seen=new HashSet();
+    					while((M.amFollowing()!=null)&&(!M.amFollowing().isMonster())&&(!seen.contains(M)))
+                        {
+                            seen.add(M);
+    						M=M.amFollowing();
+                        }
+    					choices.addElement(M);
+    				}
+    			}
+    			if(choices.size() > 0)
+    			    tmp[10] = choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+    		}
+		}
+		return (MOB)tmp[10];
 	}
-	protected MOB getFirstAnyone(MOB monster, MOB randMOB, Room room)
+	protected MOB getRandAnyone(MOB monster, Object[] tmp, Room room)
 	{
-		if((randMOB!=null)&&(randMOB!=monster))
-			return randMOB;
-		MOB M=null;
-		if(room!=null)
-			for(int p=0;p<room.numInhabitants();p++)
-			{
-				M=room.fetchInhabitant(p);
-				if(M!=monster)
-				{
-                    HashSet seen=new HashSet();
-                    while((M.amFollowing()!=null)&&(!M.amFollowing().isMonster())&&(!seen.contains(M)))
-                    {
-                        seen.add(M);
-                        M=M.amFollowing();
-                    }
-					return M;
-				}
-			}
-		return null;
+        if((tmp[11]==null)||(tmp[11]==monster)) {
+    		MOB M=null;
+    		if(room!=null) {
+                Vector choices = new Vector();
+    			for(int p=0;p<room.numInhabitants();p++)
+    			{
+    				M=room.fetchInhabitant(p);
+    				if(M!=monster)
+    				{
+                        HashSet seen=new HashSet();
+                        while((M.amFollowing()!=null)&&(!M.amFollowing().isMonster())&&(!seen.contains(M)))
+                        {
+                            seen.add(M);
+                            M=M.amFollowing();
+                        }
+                        choices.addElement(M);
+    				}
+    			}
+                if(choices.size() > 0)
+                    tmp[11] = choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+            }
+        }
+		return (MOB)tmp[11];
 	}
 
 	public String execute(Environmental scripted,
@@ -7392,12 +7400,12 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(Tool==null) Tool=defaultItem;
 				String resp=null;
 				if(msg.target() instanceof MOB)
-                    resp=execute(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,str,new Object[10]);
+                    resp=execute(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,str,new Object[12]);
 				else
 				if(msg.target() instanceof Item)
-					resp=execute(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,str,new Object[10]);
+					resp=execute(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,str,new Object[12]);
 				else
-					resp=execute(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,str,new Object[10]);
+					resp=execute(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,str,new Object[12]);
 				if((resp!=null)&&(resp.equalsIgnoreCase("CANCEL")))
 					return false;
 			}
@@ -7741,7 +7749,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							if(lastMsg==msg) break;
 							lastMsg=msg;
 							if(msg.target() instanceof Coins)
-								execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,new Object[10]);
+								execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,new Object[12]);
 							else
 								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
 							return;
@@ -7760,7 +7768,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 								if(lastMsg==msg) break;
 								lastMsg=msg;
 								if(msg.target() instanceof Coins)
-									execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,new Object[10]);
+									execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,new Object[12]);
 								else
 									que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
 								return;
@@ -7914,7 +7922,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							if(lastMsg==msg) break;
 							lastMsg=msg;
 							if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
-								execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,new Object[10]);
+								execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,new Object[12]);
 							else
 								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)msg.tool(),script,1,null));
 							return;
@@ -7933,7 +7941,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 								if(lastMsg==msg) break;
 								lastMsg=msg;
 								if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
-									execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,new Object[10]);
+									execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,new Object[12]);
 								else
 									que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)msg.tool(),script,1,null));
 								return;
@@ -7960,7 +7968,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                             Item product=makeCheapItem(msg.tool());
 							if((product instanceof Coins)
                             &&(product.owner() instanceof Room))
-								execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,new Object[10]);
+								execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,new Object[12]);
 							else
 								que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,product,product,script,1,null));
 							return;
@@ -7979,7 +7987,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                                 Item product=makeCheapItem(msg.tool());
 								if((product instanceof Coins)
                                 &&(product.owner() instanceof Room))
-									execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,new Object[10]);
+									execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,new Object[12]);
 								else
 									que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,product,product,script,1,null));
 								return;
@@ -8005,7 +8013,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                             Item product=makeCheapItem(msg.tool());
                             if((product instanceof Coins)
                             &&(product.owner() instanceof Room))
-                                execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,new Object[10]);
+                                execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,new Object[12]);
                             else
                                 que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,product,product,script,1,null));
 							return;
@@ -8024,7 +8032,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                                 Item product=makeCheapItem(msg.tool());
                                 if((product instanceof Coins)
                                 &&(product.owner() instanceof Room))
-                                    execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,new Object[10]);
+                                    execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,new Object[12]);
                                 else
                                     que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,product,product,script,1,null));
 								return;
@@ -8138,7 +8146,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                         src=(MOB)msg.tool();
 					if((src==null)||(src.location()!=monster.location()))
 					   src=ded;
-					execute(affecting,src,ded,ded,defaultItem,null,script,null,new Object[10]);
+					execute(affecting,src,ded,ded,defaultItem,null,script,null,new Object[12]);
 					return;
 				}
 				break;
@@ -8152,7 +8160,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                         src=(MOB)msg.tool();
 					if((src==null)||(src.location()!=monster.location()))
 					   src=ded;
-					execute(affecting,src,ded,ded,defaultItem,null,script,null,new Object[10]);
+					execute(affecting,src,ded,ded,defaultItem,null,script,null,new Object[12]);
 					return;
 				}
 				break;
@@ -8163,7 +8171,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					Item I=null;
 					if(msg.tool() instanceof Item)
 						I=(Item)msg.tool();
-					execute(affecting,msg.source(),msg.target(),eventMob,defaultItem,I,script,""+msg.value(),new Object[10]);
+					execute(affecting,msg.source(),msg.target(),eventMob,defaultItem,I,script,""+msg.value(),new Object[12]);
 					return;
 				}
 				break;
@@ -8510,7 +8518,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				{
 					int prcnt=CMath.s_int(CMParms.getCleanBit(trigger,1).trim());
 					if(CMLib.dice().rollPercentage()<prcnt)
-						execute(affecting,mob,mob,mob,defaultItem,null,script,null,new Object[10]);
+						execute(affecting,mob,mob,mob,defaultItem,null,script,null,new Object[12]);
 				}
 				break;
 			case 16: // delay_prog
@@ -8534,7 +8542,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						delayProgCounters.put(new Integer(thisScriptIndex),new Integer(0));
 					if(delayProgCounter==targetTick)
 					{
-						execute(affecting,mob,mob,mob,defaultItem,null,script,null,new Object[10]);
+						execute(affecting,mob,mob,mob,defaultItem,null,script,null,new Object[12]);
 						delayProgCounter=-1;
 					}
 					delayProgCounters.remove(new Integer(thisScriptIndex));
@@ -8546,7 +8554,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				{
 					int prcnt=CMath.s_int(CMParms.getCleanBit(trigger,1).trim());
 					if(CMLib.dice().rollPercentage()<prcnt)
-						execute(affecting,mob.getVictim(),mob,mob,defaultItem,null,script,null,new Object[10]);
+						execute(affecting,mob.getVictim(),mob,mob,defaultItem,null,script,null,new Object[12]);
 				}
 				else
 				if((ticking instanceof Item)
@@ -8559,7 +8567,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					{
 					    MOB M=(MOB)((Item)ticking).owner();
 					    if(!M.amDead())
-							execute(affecting,M,mob.getVictim(),mob,defaultItem,null,script,null,new Object[10]);
+							execute(affecting,M,mob.getVictim(),mob,defaultItem,null,script,null,new Object[12]);
 					}
 				}
 				break;
@@ -8568,7 +8576,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				{
 					int floor=(int)Math.round(CMath.mul(CMath.div(CMath.s_int(CMParms.getCleanBit(trigger,1).trim()),100.0),mob.maxState().getHitPoints()));
 					if(mob.curState().getHitPoints()<=floor)
-						execute(affecting,mob.getVictim(),mob,mob,defaultItem,null,script,null,new Object[10]);
+						execute(affecting,mob.getVictim(),mob,mob,defaultItem,null,script,null,new Object[12]);
 				}
 				else
 				if((ticking instanceof Item)
@@ -8581,7 +8589,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				    {
 						int floor=(int)Math.round(CMath.mul(CMath.div(CMath.s_int(CMParms.getCleanBit(trigger,1).trim()),100.0),M.maxState().getHitPoints()));
 						if(M.curState().getHitPoints()<=floor)
-							execute(affecting,M,mob.getVictim(),mob,defaultItem,null,script,null,new Object[10]);
+							execute(affecting,M,mob.getVictim(),mob,defaultItem,null,script,null,new Object[12]);
 				    }
 				}
 				break;
@@ -8589,7 +8597,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(!oncesDone.contains(script)&&canTrigger(6))
 				{
 					oncesDone.addElement(script);
-					execute(affecting,mob,mob,mob,defaultItem,null,script,null,new Object[10]);
+					execute(affecting,mob,mob,mob,defaultItem,null,script,null,new Object[12]);
 				}
 				break;
 			case 14: // time_prog
@@ -8609,7 +8617,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							if(time==CMath.s_int(CMParms.getCleanBit(trigger,i).trim()))
 							{
 								done=true;
-								execute(affecting,mob,mob,mob,defaultItem,null,script,null,new Object[10]);
+								execute(affecting,mob,mob,mob,defaultItem,null,script,null,new Object[12]);
 								lastTimeProgsDone.remove(new Integer(thisScriptIndex));
 								lastTimeProgsDone.put(new Integer(thisScriptIndex),new Integer(time));
 								break;
@@ -8636,7 +8644,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							if(day==CMath.s_int(CMParms.getCleanBit(trigger,i).trim()))
 							{
 								done=true;
-								execute(affecting,mob,mob,mob,defaultItem,null,script,null,new Object[10]);
+								execute(affecting,mob,mob,mob,defaultItem,null,script,null,new Object[12]);
 								lastDayProgsDone.remove(new Integer(thisScriptIndex));
 								lastDayProgsDone.put(new Integer(thisScriptIndex),new Integer(day));
 								break;
@@ -8657,7 +8665,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 						if(time>=Q.minsRemaining())
 						{
 							oncesDone.addElement(script);
-							execute(affecting,mob,mob,mob,defaultItem,null,script,null,new Object[10]);
+							execute(affecting,mob,mob,mob,defaultItem,null,script,null,new Object[12]);
 						}
 					}
 				}
@@ -8682,7 +8690,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				try{SB=(ScriptableResponse)que.elementAt(q);}catch(ArrayIndexOutOfBoundsException x){continue;}
 				if(SB.checkTimeToExecute())
                 {
-                    execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,new Object[10]);
+                    execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,new Object[12]);
                     que.removeElement(SB);
                 }
 			}
