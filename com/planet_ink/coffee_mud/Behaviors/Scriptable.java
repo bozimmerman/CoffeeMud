@@ -8220,7 +8220,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				if(!canTrigger(12))
 					break;
 			case 18: // act_prog
-				if((!msg.amISource(monster))
+				if((msg.amISource(monster))
 				||((triggerCode==18)&&(!canTrigger(18))))
 					break;
 			case 43: // imask_prog
