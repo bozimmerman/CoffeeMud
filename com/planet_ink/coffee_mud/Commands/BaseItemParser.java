@@ -67,7 +67,7 @@ public class BaseItemParser extends StdCommand
                 String packCheckName=CMParms.combine(commands,1);
                 Environmental fromWhat=null;
                 if(checkWhat instanceof MOB)
-                    fromWhat=mob.fetchInventory(packCheckName);
+                    fromWhat=mob.fetchInventory(null,packCheckName);
                 else
                 if(checkWhat instanceof Room)
                     fromWhat=((Room)checkWhat).fetchFromMOBRoomFavorsItems(mob,null,packCheckName,Item.WORNREQ_UNWORNONLY);
