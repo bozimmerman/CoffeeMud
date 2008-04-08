@@ -38,6 +38,8 @@ public class MOBEater extends ActiveTicker
 	protected Room Stomach = null;
 	protected int digestDown=4;
 	protected Room lastKnownLocation=null;
+	protected int chanceToEat = 5;
+    protected int pctAcidHp = 50;
 
 	public MOBEater()
 	{
@@ -46,7 +48,11 @@ public class MOBEater extends ActiveTicker
 		tickReset();
 	}
 
-
+	public void setParms(String parms) 
+	{
+	    super.setParms(parms);
+	    pctAcidHp=CMParms.getParmInt(parms,"acidpct",50);
+	}
 
 	public void startBehavior(Environmental forMe)
 	{
@@ -178,7 +184,7 @@ public class MOBEater extends ActiveTicker
 										   "<S-NAME> digest(s) <T-NAMESELF>!!");
 				// no OKaffectS, since the dragon is not in his own stomach.
 				Stomach.send(mob,DigestMsg);
-				int damage=(int)Math.round(CMath.div(TastyMorsel.curState().getHitPoints(),2));
+				int damage=(int)Math.round(TastyMorsel.curState().getHitPoints() * CMath.div(pctAcidHp, 100));
 				if(damage<(TastyMorsel.envStats().level()+6)) damage=TastyMorsel.curState().getHitPoints()+1;
 				CMLib.combat().postDamage(mob,TastyMorsel,null,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ACID,Weapon.TYPE_MELTING,"The stomach acid <DAMAGE> <T-NAME>!");
 			}
