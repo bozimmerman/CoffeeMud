@@ -47,42 +47,56 @@ public interface PlayerStats extends CMCommon, CMModifiable
 	/** User PASSWORD */
 	public String password();
 	public void setPassword(String newPassword);
+	
 	public void setChannelMask(int newMask);
 	public int getChannelMask();
+	
 	public String getColorStr();
 	public void setColorStr(String color);
+	
+    public int getWrap();
+    public void setWrap(int newWrap);
+    
 	public String getPrompt();
 	public void setPrompt(String prompt);
+	
 	public String notes();
 	public void setNotes(String newnotes);
+	
 	public HashSet getFriends();
 	public HashSet getIgnored();
     public Vector getTitles();
     public String getActiveTitle();
+    
 	public void addTellStack(String msg);
 	public Vector getTellStack();
 	public void addGTellStack(String msg);
 	public Vector getGTellStack();
+	
 	public String poofIn();
 	public String poofOut();
 	public String tranPoofIn();
 	public String tranPoofOut();
 	public void setPoofs(String poofIn, String poofOut, String tranPoofIn, String tranPoofOut);
+	
     public String announceMessage();
     public void setAnnounceMessage(String msg);
+    
 	public String getXML();
 	public void setXML(String str);
+	
 	public String lastIP();
 	public void setLastIP(String ip);
+	
 	public void setReplyTo(MOB mob, int replyType);
 	public MOB replyTo();
 	public int replyType();
 	public long replyTime();
+	
 	public Vector getSecurityGroups();
+	
 	public int[] getBirthday();
 	public int initializeBirthday(int ageHours, Race R);
-	public int getWrap();
-	public void setWrap(int newWrap);
 	
 	public final static long HYGIENE_DELIMIT=5000;
 	public final static long HYGIENE_WATERCLEAN=-1000;
