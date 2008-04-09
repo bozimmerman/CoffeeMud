@@ -268,6 +268,69 @@
 							</TABLE>
 						@else@
 							<INPUT TYPE=BUTTON NAME=ADDNEW VALUE="Compose New Message" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','POSTNEW');">
+							@if?!CheckReqParm?FUNCTION=SHOWALL@
+                                <INPUT TYPE=BUTTON NAME=SHOWALLBUTT VALUE="Show All Messages" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','','SHOWALL');">
+                            @else@
+                                <HR>
+                                @JournalMessageNext?RESET@
+                                @loop@
+                                    @JournalMessageNext@
+                                    <TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>
+                                    <TR>
+                                        <TD WIDTH=20%><FONT COLOR=YELLOW>Message: </FONT>
+                                        </TD>
+                                        <TD WIDTH=80%><FONT COLOR=WHITE>#@RequestParameter?JOURNALMESSAGE@</FONT></TD>
+                                    </TR>
+                                    <TR>
+                                        <TD><FONT COLOR=YELLOW>From: </FONT></TD>
+                                        <TD><FONT COLOR=WHITE>@JournalInfo?FROM@</FONT></TD>
+                                    </TR>
+                                    <TR>
+                                        <TD><FONT COLOR=YELLOW>To: </FONT></TD>
+                                        <TD><FONT COLOR=WHITE>@JournalInfo?TO@</FONT></TD>
+                                    </TR>
+                                    <TR>
+                                        <TD><FONT COLOR=YELLOW>Date: </FONT></TD>
+                                        <TD><FONT COLOR=WHITE>@JournalInfo?DATE@</FONT></TD>
+                                    </TR>
+                                    <TR>
+                                        <TD><FONT COLOR=YELLOW>Subject: </FONT></TD>
+                                        <TD><FONT COLOR=WHITE>@JournalInfo?SUBJECT@</FONT></TD>
+                                    </TR>
+                                    </TABLE>
+                                    <FONT COLOR=WHITE>@JournalInfo?MESSAGE@</FONT><P>
+                                    <TABLE WIDTH=100% BORDER=0>
+                                    <TR VALIGN=TOP>
+                                    <TD WIDTH=51% ALIGN=LEFT VALIGN=TOP>
+                                        @if?CheckAuthCode?AUTH_JOURNALS=true@
+                                        <INPUT TYPE=BUTTON NAME=TRANSFER@RequestParameter?JOURNALMESSAGE@ VALUE="Transfer TO:" ONCLICK="if(document.JOURNAL.NEWJOURNAL@RequestParameter?JOURNALMESSAGE@.selectedIndex>=0)Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','TRANSFER');">
+                                        @AddRequestParameter?THISJOURNAL=@@RequestParameter?JOURNAL@@ @
+                                        <SELECT NAME=NEWJOURNAL@RequestParameter?JOURNALMESSAGE@>
+                                        @JournalNext?RESET@
+                                        @loop@
+                                            @JournalNext@
+                                            <OPTION VALUE="@JournalName@">@JournalName@
+                                        @back@
+                                        </SELECT>
+                                        @AddRequestParameter?JOURNAL=@@RequestParameter?THISJOURNAL@@ @
+                                        @endif@
+                                    </TD>
+                                    <TD WIDTH=17% ALIGN=CENTER VALIGN=TOP>
+                                        <INPUT TYPE=BUTTON NAME=REPLY VALUE="Reply" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','POSTREPLY');">
+                                    </TD>
+                                    <TD WIDTH=17% ALIGN=CENTER VALIGN=TOP>
+                                    @if?JournalInfo?EMAILALLOWED@
+                                        <INPUT TYPE=BUTTON NAME=EMAIL VALUE="Email" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','POSTEMAIL');">
+                                    @endif@
+                                    </TD>
+                                    <TD WIDTH=17% ALIGN=CENTER VALIGN=TOP>
+                                        <INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="if(confirm('Delete this message?'))Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','DELETE');">
+                                    </TD>
+                                    </TR>
+                                    </TABLE>
+                                    <HR>
+                                @back@
+                            @endif@
 						@endif@
 					@endif@
 					@endif@
