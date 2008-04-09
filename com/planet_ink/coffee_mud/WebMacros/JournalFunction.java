@@ -138,7 +138,9 @@ public class JournalFunction extends StdWebMacro
                 if(parms.containsKey("TRANSFER"))
                 {
                     String journal=httpReq.getRequestParameter("NEWJOURNAL");
-                    if(journal.length()==0)
+                    if((journal==null) || (journal.length()==0))
+                        journal=httpReq.getRequestParameter("NEWJOURNAL"+lastlast);
+                    if((journal==null) || (journal.length()==0))
                         return "Transfer not completed -- No journal!";
                     String realName=null;
                     for(int i=0;i<CMLib.journals().getNumCommandJournals();i++)
