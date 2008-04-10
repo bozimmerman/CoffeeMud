@@ -35,7 +35,14 @@ public class BrotherHelper extends StdBehavior
 {
 	public String ID(){return "BrotherHelper";}
 
-	protected boolean mobKiller=false;
+	//protected boolean mobKiller=false;
+	protected boolean nameOnly = true;
+	
+	public void setParms(String parms)
+	{
+	    super.setParms(parms);
+	    nameOnly=parms.toUpperCase().indexOf("NAMEONLY")>=0;
+	}
 
 	public static boolean isBrother(MOB target, MOB observer)
 	{
