@@ -1268,7 +1268,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         switch(shop.whatIsSold())
         {
         case ShopKeeper.DEAL_ANYTHING:
-            return true;
+            return !(thisThang instanceof LandTitle);
         case ShopKeeper.DEAL_ARMOR:
             return (thisThang instanceof Armor);
         case ShopKeeper.DEAL_MAGIC:
@@ -1283,6 +1283,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     &&(!(thisThang instanceof Weapon))
                     &&(!(thisThang instanceof Ammunition))
                     &&(!(thisThang instanceof MOB))
+                    &&(!(thisThang instanceof LandTitle))
                     &&(!(thisThang instanceof RawMaterial))
                     &&(!(thisThang instanceof Ability)));
         case ShopKeeper.DEAL_LEATHER:

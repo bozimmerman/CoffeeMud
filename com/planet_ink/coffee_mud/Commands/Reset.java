@@ -242,9 +242,22 @@ public class Reset extends StdCommand
 		String s=(String)commands.elementAt(0);
 		if(s.equalsIgnoreCase("room"))
 		{
-			mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> order(s) this room to normalcy.");
-			CMLib.map().resetRoom(mob.location());
-			mob.tell("Done.");
+            String warning=resetWarning(mob, mob.location());
+            if(warning!=null) mob.tell(warning);
+            if((mob.session()==null)||(mob.session().confirm("Reset the contents of the room '"+mob.location().roomTitle()+"', OK (Y/n)?","Y")))
+            {
+                Session S=null;
+                for(int x=0;x<CMLib.sessions().size();x++)
+                {
+                    S=CMLib.sessions().elementAt(x);
+                    if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(S.mob().location()==mob.location()))
+                        mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> order(s) this room to normalcy.");
+                }
+    			CMLib.map().resetRoom(mob.location());
+                mob.tell("Done.");
+            }
+            else
+                mob.tell("Cancelled.");
 		}
 		else
 		if(s.equalsIgnoreCase("area"))

@@ -485,8 +485,23 @@ public class Nanny extends StdBehavior
         {
 			String currency=CMLib.beanCounter().getCurrency(host);
         	HashSet H=msg.source().getGroupMembers(new HashSet());
-        	msg.source().getRideBuddies(H);
-        	if(!H.contains(msg.source())) H.add(msg.source());
+            msg.source().getRideBuddies(H);
+            if(!H.contains(msg.source())) H.add(msg.source());
+        	HashSet H2 = null;
+        	do {
+                H2 = (HashSet)H.clone();
+            	for(Iterator i = H2.iterator(); i.hasNext(); ) {
+            	    Environmental E = (Environmental)i.next();
+            	    if(E instanceof Rideable)
+            	    {
+            	        Rideable R = (Rideable)E;
+            	        for(int r = 0; r<R.numRiders(); r++)
+            	            if(!H.contains(R.fetchRider(r)))
+            	                H.add(R.fetchRider(r));
+            	    }
+            	}
+        	} while(H.size() > H2.size());
+        	
         	addAssociationsIfNecessary(H);
     		Vector myAssocs=myCurrentAssocs(msg.source());
     		StringBuffer list=new StringBuffer("");
@@ -559,6 +574,8 @@ public class Nanny extends StdBehavior
             		if(E instanceof MOB)
             		{
             			CMLib.commands().postFollow((MOB)E,msg.source(),false);
+            			if(CMath.bset(((MOB)E).getBitmap(), MOB.ATT_AUTOGUARD))
+            			    ((MOB)E).setBitmap(CMath.unsetb(((MOB)E).getBitmap(), MOB.ATT_AUTOGUARD));
             			if(((MOB)E).amFollowing()!=msg.source())
             			{
         					CMLib.commands().postSay((MOB)host,msg.source(),"Hmm, '"+E.name()+"' doesn't seem ready to leave.  Now get along!",true,false);
@@ -751,18 +768,23 @@ public class Nanny extends StdBehavior
         {
         	owner=(Environmental)associations.elementAt(a,2);
         	E=(Environmental)associations.elementAt(a,1);
-        	if((CMLib.map().roomLocation(owner)!=R)
-        	||(!CMLib.flags().isInTheGame(owner,true)))
+        	if(R.isHere(E))
         	{
-        		if(!dropOffs.contains(E))
-        		{
-        			if((E instanceof MOB)&&(((MOB)E).amFollowing()!=null))
-        				((MOB)E).setFollowing(null);
-        			dropOffs.addElement(E,owner,new Long(System.currentTimeMillis()));
-        			associations.removeElementsAt(a);
-	    			changedSinceLastSave=true;
-        		}
+            	if((CMLib.map().roomLocation(owner)!=R)
+            	||(!CMLib.flags().isInTheGame(owner,true)))
+            	{
+            		if(!dropOffs.contains(E))
+            		{
+            			if((E instanceof MOB)&&(((MOB)E).amFollowing()!=null))
+            				((MOB)E).setFollowing(null);
+            			dropOffs.addElement(E,owner,new Long(System.currentTimeMillis()));
+            			associations.removeElementsAt(a);
+    	    			changedSinceLastSave=true;
+            		}
+            	}
         	}
+        	else
+        	    associations.removeElementAt(a);
         }
         
         if(!changedSinceLastSave)
