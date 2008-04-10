@@ -175,14 +175,14 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 						{
 							amt1=mat1.substring(m1+1);
 							mat1=mat1.substring(0,m1).toLowerCase();
-		                    amt1=""+adjustWoodRequired(CMath.s_int(amt1),mob);
+		                    //amt1=""+adjustWoodRequired(CMath.s_int(amt1),mob);
 						}
 						int m2=mat2.indexOf("/");
 						if(m2>=0)
 						{
 							amt2=mat2.substring(m2+1);
 							mat2=mat2.substring(0,m2).toLowerCase();
-                            amt2=""+adjustWoodRequired(CMath.s_int(amt2),mob);
+                            //amt2=""+adjustWoodRequired(CMath.s_int(amt2),mob);
 						}
 						buf.append(CMStrings.padRight(item,24)+" "
 								   +CMStrings.padRight(""+exp,9)+" "
@@ -230,14 +230,14 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		{
 			amt1=CMath.s_int(mat1.substring(m1+1));
 			mat1=mat1.substring(0,m1).toLowerCase();
-	        amt1=adjustWoodRequired(amt1, mob);
+	        //amt1=adjustWoodRequired(amt1, mob);
 		}
 		int m2=mat2.indexOf("/");
 		if(m2>=0)
 		{
 			amt2=CMath.s_int(mat2.substring(m2+1));
 			mat2=mat2.substring(0,m2).toLowerCase();
-            amt2=adjustWoodRequired(amt2, mob);
+            //amt2=adjustWoodRequired(amt2, mob);
 		}
 
 		int expRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_EXP));
