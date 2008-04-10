@@ -264,9 +264,11 @@ public class Reset extends StdCommand
 							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> order(s) this area to normalcy.");
 					}
 					CMLib.map().resetArea(A);
+		            mob.tell("Done.");
 				}
+				else
+		            mob.tell("Cancelled.");
 			}
-			mob.tell("Done.");
 		}
         else
         if(CMLib.map().getPlayer(s)!=null)
