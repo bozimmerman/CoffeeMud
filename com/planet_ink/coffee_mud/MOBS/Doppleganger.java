@@ -110,6 +110,7 @@ public class Doppleganger extends StdMOB
 			{
 				if((mimicing.getVictim()!=null)&&(mimicing.getVictim()!=this))
 					mimicing=null;
+				else
 				if((mimicing.location()!=null)&&(mimicing.location()!=location()))
 					mimicing=null;
 			}
