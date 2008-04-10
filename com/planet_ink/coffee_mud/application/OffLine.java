@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.io.*;
     
     /* 
-    Copyright 2000-2007 Bo Zimmerman
+    Copyright 2000-2008 Bo Zimmerman
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -397,7 +397,7 @@ public class OffLine extends Thread implements MudHost
 
                 System.out.println();
                 System.out.println("CoffeeMud Off-Line");
-                System.out.println("(C) 2000-2007 Bo Zimmerman");
+                System.out.println("(C) 2000-2008 Bo Zimmerman");
                 System.out.println("http://www.coffeemud.org");
 
                 if(OffLine.isOK)

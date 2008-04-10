@@ -18,7 +18,7 @@ import java.util.*;
 
 /* 
    Portions Copyright 2002 Jeff Kamenek
-   Portions Copyright 2002-2007 Bo Zimmerman
+   Portions Copyright 2002-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.

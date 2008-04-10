@@ -22,7 +22,7 @@ import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
-   Copyright 2000-2007 Bo Zimmerman
+   Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -167,7 +167,7 @@ public class SMTPserver extends Thread implements Tickable
 		if (!displayedBlurb)
 		{
 			displayedBlurb = true;
-			//Log.sysOut(getName(),"SMTPserver (C)2005-2007 Bo Zimmerman");
+			//Log.sysOut(getName(),"SMTPserver (C)2005-2008 Bo Zimmerman");
 		}
 		if(mailbox.length()==0)
 			Log.sysOut(getName(),"Player mail box system is disabled.");
