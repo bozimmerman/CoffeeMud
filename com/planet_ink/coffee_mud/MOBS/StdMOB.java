@@ -3353,16 +3353,19 @@ public class StdMOB implements MOB
 	public void addTattoo(String of)
 	{
 		if(tattoos==null) tattoos=new Vector();
+		if(of==null) return;
+		of=of.toUpperCase().trim();
 		if(of.length()==0) return;
 		if((fetchTattoo(of)==null)&&(of!=null))
-			tattoos.addElement(of.toUpperCase().trim());
+			tattoos.addElement(of);
 	}
 	public void delTattoo(String of)
 	{
-		if(tattoos==null)
+		if((tattoos==null)||(of==null))
 			return;
 		synchronized(tattoos)
 		{
+	        of=of.toUpperCase().trim();
 			of=fetchTattoo(of);
 			if(of!=null) tattoos.removeElement(of);
 		}
