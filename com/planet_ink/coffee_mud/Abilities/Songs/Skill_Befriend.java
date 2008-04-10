@@ -83,7 +83,7 @@ public class Skill_Befriend extends BardSkill
         
         if(!target.charStats().getMyRace().racialCategory().equals(mob.charStats().getMyRace().racialCategory()))
         {
-            mob.tell(target,null,null,"<S-NAME> is not a fellow "+target.charStats().getMyRace().racialCategory()+".");
+            mob.tell(target,null,null,"<S-NAME> is not a fellow "+mob.charStats().getMyRace().racialCategory()+".");
             return false;
         }
 
