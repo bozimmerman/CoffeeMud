@@ -412,7 +412,11 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 								int amount=1;
 								if(vr<Vr.size()-1)amount=CMath.s_int((String)Vr.elementAt(vr+1));
 								if(amount==0) amount=1;
-								if(amount<0) amount=amount*-1;
+								if(amount<0)
+							    {
+							        ingredient="~"+ingredient;
+							        amount=amount*-1;
+							    }
 								if(ingredient.equalsIgnoreCase("water"))
 									amount=amount*10;
 								buf.append(ingredient.toLowerCase()+"("+amount+") ");
@@ -422,7 +426,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					}
 				}
 			}
-			commonTell(mob,buf.toString());
+			commonTell(mob,buf.toString()+"\n\rIngredients beginning with the ~ character are optional additives.");
 			return true;
 		}
 		Item possibleContainer=possibleContainer(mob,commands,true,Item.WORNREQ_UNWORNONLY);
