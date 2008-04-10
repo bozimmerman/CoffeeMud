@@ -127,6 +127,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
+                    wood=adjustWoodRequired(wood,mob);
 					String type=(String)V.elementAt(RCP_MATERIAL);
 					String race=((String)V.elementAt(RCP_RACES)).trim();
 					String itype=CMStrings.capitalizeAndLower(((String)V.elementAt(RCP_TYPE)).toLowerCase()).trim();
@@ -170,6 +171,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 			return false;
 		}
 		int woodRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_WOOD));
+        woodRequired=adjustWoodRequired(woodRequired,mob);
 		if(amount>woodRequired) woodRequired=amount;
 		String materialRequired=(String)foundRecipe.elementAt(RCP_MATERIAL);
 		String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);

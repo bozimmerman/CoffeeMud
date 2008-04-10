@@ -216,6 +216,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
+                    wood=adjustWoodRequired(wood,mob);
 					if(((autoGenerate>0)
 						||((level<=xlevel(mob))&&((canDo((String)V.elementAt(RCP_WEAPONCLASS),mob)))))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
@@ -288,6 +289,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 				return false;
 			}
 			int woodRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_WOOD));
+            woodRequired=adjustWoodRequired(woodRequired,mob);
 			if(amount>woodRequired) woodRequired=amount;
 			String otherRequired=(String)foundRecipe.elementAt(RCP_EXTRAREQ);
 			int[] pm={RawMaterial.MATERIAL_METAL,RawMaterial.MATERIAL_MITHRIL};

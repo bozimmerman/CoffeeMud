@@ -102,6 +102,16 @@ public class CraftingSkill extends GatheringSkill
 	    return recipes;
 	}
 	
+	protected int adjustWoodRequired(int woodRequired, MOB mob) {
+        int newWoodRequired=woodRequired-(int)Math.round((0.05*(double)woodRequired*(double)getXPCOSTLevel(mob)));
+        if(newWoodRequired<=0)
+            if(woodRequired > 0)
+                newWoodRequired=1;
+            else
+                newWoodRequired=0;
+        return newWoodRequired;
+	}
+	
 	protected void dropAWinner(MOB mob, Item building)
 	{
 		Room R=mob.location();

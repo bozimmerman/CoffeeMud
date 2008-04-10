@@ -124,6 +124,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
+                    wood=adjustWoodRequired(wood,mob);
 					String material=(String)V.elementAt(RCP_WOODTYPE);
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
@@ -162,6 +163,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 			return false;
 		}
 		int woodRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_WOOD));
+        woodRequired=adjustWoodRequired(woodRequired,mob);
 		int[][] data=fetchFoundResourceData(mob,
 											woodRequired,materialDesc,null,
 											0,null,null,

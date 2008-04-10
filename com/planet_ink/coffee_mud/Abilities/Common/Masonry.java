@@ -539,7 +539,8 @@ public class Masonry extends CraftingSkill
 				if(((r!=BUILD_MONUMENT)||(mob.charStats().getCurrentClass().baseClass().equals("Druid")))
 				&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(CMStrings.padRight(data[r][DAT_NAME],20),mask)))
                 {
-					buf.append(CMStrings.padRight(data[r][DAT_NAME],20)+" "+data[r][DAT_WOOD]);
+			        int woodRequired=adjustWoodRequired(CMath.s_int(data[r][DAT_WOOD]),mob);
+					buf.append(CMStrings.padRight(data[r][DAT_NAME],20)+" "+woodRequired);
                     if(doingCode==BUILD_PORTCULIS)
                         buf.append(" metal");
                     buf.append("\n\r");
@@ -629,7 +630,7 @@ public class Masonry extends CraftingSkill
 		}
 
 
-		int woodRequired=CMath.s_int(data[doingCode][DAT_WOOD]);
+        int woodRequired=adjustWoodRequired(CMath.s_int(data[doingCode][DAT_WOOD]),mob);
 		if(((mob.location().domainType()&Room.INDOORS)==0)
 		&&(data[doingCode][DAT_ROOF].equals("1")))
 		{

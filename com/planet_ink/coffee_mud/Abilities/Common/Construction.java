@@ -505,8 +505,8 @@ public class Construction extends CraftingSkill
 				if(((r!=BUILD_SECRETDOOR)||(mob.charStats().getCurrentClass().baseClass().equals("Thief")))
 				&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(CMStrings.padRight(data[r][DAT_NAME],20),mask)))
                 {
-                    int wood=CMath.s_int(data[r][DAT_WOOD])-(int)Math.round((0.2*(double)super.getXPCOSTLevel(mob)));
-					buf.append(CMStrings.padRight(data[r][DAT_NAME],20)+" "+wood+"\n\r");
+			        int woodRequired=adjustWoodRequired(CMath.s_int(data[r][DAT_WOOD]),mob);
+					buf.append(CMStrings.padRight(data[r][DAT_NAME],20)+" "+woodRequired+"\n\r");
                 }
 			}
 			commonTell(mob,buf.toString());
@@ -592,7 +592,7 @@ public class Construction extends CraftingSkill
 		}
 
 
-		int woodRequired=CMath.s_int(data[doingCode][DAT_WOOD])-(int)Math.round((0.2*(double)super.getXPCOSTLevel(mob)));
+        int woodRequired=adjustWoodRequired(CMath.s_int(data[doingCode][DAT_WOOD]),mob);
 		if(((mob.location().domainType()&Room.INDOORS)==0)
 		   &&(data[doingCode][DAT_ROOF].equals("1")))
 		{

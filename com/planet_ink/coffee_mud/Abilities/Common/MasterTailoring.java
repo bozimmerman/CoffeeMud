@@ -167,6 +167,7 @@ public class MasterTailoring extends EnhancedCraftingSkill implements ItemCrafto
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
+                    wood=adjustWoodRequired(wood,mob);
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
@@ -259,6 +260,7 @@ public class MasterTailoring extends EnhancedCraftingSkill implements ItemCrafto
 				return false;
 			}
 			int woodRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_WOOD));
+            woodRequired=adjustWoodRequired(woodRequired,mob);
 			String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
             bundling=misctype.equalsIgnoreCase("BUNDLE");
 			int[] pm={RawMaterial.MATERIAL_CLOTH};

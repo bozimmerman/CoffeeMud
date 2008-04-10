@@ -206,6 +206,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
 					int level=CMath.s_int((String)V.elementAt(RCP_LEVEL));
 					int wood=CMath.s_int((String)V.elementAt(RCP_WOOD));
+                    wood=adjustWoodRequired(wood,mob);
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
@@ -382,6 +383,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			else
 				fireRequired=false;
 			int woodRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_WOOD));
+            woodRequired=adjustWoodRequired(woodRequired,mob);
 			if(amount>woodRequired) woodRequired=amount;
 			String otherRequired=(String)foundRecipe.elementAt(RCP_EXTRAREQ);
 			int[] pm={RawMaterial.MATERIAL_MITHRIL,RawMaterial.MATERIAL_METAL};
