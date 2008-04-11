@@ -87,6 +87,7 @@ public class TelnetFilter
     private TelnetFilter(){}
     public TelnetFilter(Siplet codebase)
     {
+        this();
         codeBase=codebase;
     }
     

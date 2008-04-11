@@ -219,8 +219,21 @@ public class Connection implements java.sql.Connection
       {}
    public java.util.Map getTypeMap() throws java.sql.SQLException
       { return new java.util.HashMap(); }
-   public void setTypeMap(java.util.Map map) throws java.sql.SQLException
-      {}
+
+    public Array createArrayOf(String arg0, Object[] arg1) throws SQLException { return null; }
+    public Blob createBlob() throws SQLException { return null; }
+    public Clob createClob() throws SQLException { return null; }
+    //public NClob createNClob() throws SQLException { return null; }
+    //public SQLXML createSQLXML() throws SQLException { return null; }
+    public Struct createStruct(String arg0, Object[] arg1) throws SQLException { return null; }
+    public Properties getClientInfo() throws SQLException { return null; }
+    public String getClientInfo(String arg0) throws SQLException { return null; }
+    public boolean isValid(int arg0) throws SQLException { return false; }
+    //public void setClientInfo(Properties arg0) throws SQLClientInfoException { }
+    //public void setClientInfo(String arg0, String arg1) throws SQLClientInfoException { }
+    public void setTypeMap(Map<String, Class<?>> arg0) throws SQLException { }
+    public boolean isWrapperFor(Class<?> iface) throws SQLException { return false;}
+    public <T> T unwrap(Class<T> iface) throws SQLException { return null; }
 
    // JDK 1.4 stuff
 /*

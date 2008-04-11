@@ -40,8 +40,6 @@ public class Troll extends StdMOB
 	public Troll()
 	{
 		super();
-		Random randomizer = new Random(System.currentTimeMillis());
-
 		Username="a troll";
 		setDescription("Nine foot tall and reeking of rotten meat..");
 		setDisplayText("A mean looking troll glares at you.");

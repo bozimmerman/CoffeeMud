@@ -636,7 +636,6 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	    }
 		if((W.victim()!=null)&&(H.contains(W.victim()))) 
 	    {
-			MOB groupVictim=W.victim();
 		    if(debugging) Log.debugOut("ARREST", "Victim is a friend of the accused!");
 		    return false;
 	    }
