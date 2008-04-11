@@ -251,7 +251,7 @@ public class Reset extends StdCommand
                 {
                     S=CMLib.sessions().elementAt(x);
                     if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(S.mob().location()==mob.location()))
-                        mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> order(s) this room to normalcy.");
+                        S.mob().tell("<S-NAME> order(s) this room to normalcy.");
                 }
     			CMLib.map().resetRoom(mob.location());
                 mob.tell("Done.");
@@ -274,7 +274,7 @@ public class Reset extends StdCommand
 					{
 						S=CMLib.sessions().elementAt(x);
 						if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(A.inMyMetroArea(S.mob().location().getArea())))
-							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> order(s) this area to normalcy.");
+	                        S.mob().tell("<S-NAME> order(s) this area to normalcy.");
 					}
 					CMLib.map().resetArea(A);
 		            mob.tell("Done.");
