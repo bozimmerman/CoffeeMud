@@ -231,9 +231,10 @@ public class Connection implements java.sql.Connection
     public boolean isValid(int arg0) throws SQLException { return false; }
     //public void setClientInfo(Properties arg0) throws SQLClientInfoException { }
     //public void setClientInfo(String arg0, String arg1) throws SQLClientInfoException { }
-    public void setTypeMap(Map<String, Class<?>> arg0) throws SQLException { }
-    public boolean isWrapperFor(Class<?> iface) throws SQLException { return false;}
-    public <T> T unwrap(Class<T> iface) throws SQLException { return null; }
+    public void setTypeMap(Map arg0) throws SQLException { }
+    //public void setTypeMap(Map<String, Class<?>> arg0) throws SQLException { }
+    //public boolean isWrapperFor(Class<?> iface) throws SQLException { return false;}
+    //public <T> T unwrap(Class<T> iface) throws SQLException { return null; }
 
    // JDK 1.4 stuff
 /*

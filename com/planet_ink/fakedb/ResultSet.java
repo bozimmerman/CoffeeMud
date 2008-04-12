@@ -548,12 +548,10 @@ class ResultSet implements java.sql.ResultSet
     //public NClob getNClob(String arg0) throws SQLException { return null; }
     public String getNString(int arg0) throws SQLException { return null; }
     public String getNString(String arg0) throws SQLException { return null; }
-    public Object getObject(int arg0, Map<String, Class<?>> arg1) throws SQLException {    
-        return getString(arg0); 
-    }
-    public Object getObject(String arg0, Map<String, Class<?>> arg1) throws SQLException { 
-        return getObject(findColumn(arg0),arg1);
-    }
+    public Object getObject(int arg0, Map arg1) throws SQLException { return getString(arg0); }
+    //public Object getObject(int arg0, Map<String, Class<?>> arg1) throws SQLException { return getString(arg0); }
+    //public Object getObject(String arg0, Map<String, Class<?>> arg1) throws SQLException { return getObject(findColumn(arg0),arg1); }
+    public Object getObject(String arg0, Map arg1) throws SQLException { return getObject(findColumn(arg0),arg1); }
     //public RowId getRowId(int arg0) throws SQLException { return null; }
     //public RowId getRowId(String arg0) throws SQLException { return null; }
     //public SQLXML getSQLXML(int arg0) throws SQLException { return null; }
@@ -595,6 +593,6 @@ class ResultSet implements java.sql.ResultSet
     //public void updateRowId(String arg0, RowId arg1) throws SQLException {}
     //public void updateSQLXML(int arg0, SQLXML arg1) throws SQLException {}
     //public void updateSQLXML(String arg0, SQLXML arg1) throws SQLException {}
-    public boolean isWrapperFor(Class<?> iface) throws SQLException {return false;}
-    public <T> T unwrap(Class<T> iface) throws SQLException {return null;}
+    //public boolean isWrapperFor(Class<?> iface) throws SQLException {return false;}
+    //public <T> T unwrap(Class<T> iface) throws SQLException {return null;}
 }
