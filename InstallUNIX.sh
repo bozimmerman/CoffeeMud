@@ -15,7 +15,7 @@ echo "***** MAKE SURE YOU ARE EXECUTING THIS SCRIPT FROM THE MAIN COFFEEMUD DIR 
 sleep 2
 
 echo "Questions:"
-echo "1. What is the location of JAVA (example: /opt/jdk1.5.0_12 - just to main dir NO TRAILING SLASH)?"
+echo "1. What is the location of JAVA (example: /opt/j2sdk1.4.2_16 - just to main dir NO TRAILING SLASH)?"
 read Java_Home
 
 echo "
