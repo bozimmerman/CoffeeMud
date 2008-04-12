@@ -76,8 +76,7 @@ public class Dance_Swords extends Dance
 		&&(((Item)E).owner()!=null)
 		&&(((Item)E).owner() instanceof Room))
 		{
-			((Room)((Item)E).owner()).showHappens(CMMsg.MSG_OK_ACTION,E.name()+" vanishes!");
-			((Item)E).destroy();
+			((Room)((Item)E).owner()).showHappens(CMMsg.MSG_OK_ACTION,E.name()+" stops dancing!");
 		}
 	}
 
@@ -90,7 +89,7 @@ public class Dance_Swords extends Dance
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(!super.tick(ticking,tickID))
+		if((affected instanceof MOB)&&(!super.tick(ticking,tickID)))
 			return false;
 		if(affected==invoker())
 		{
