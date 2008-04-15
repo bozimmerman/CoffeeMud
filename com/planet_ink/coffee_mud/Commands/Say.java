@@ -117,13 +117,7 @@ public class Say extends StdCommand
 					target=null;
 			}
 		}
-		for(int i=1;i<commands.size();i++)
-		{
-			String s=(String)commands.elementAt(i);
-			if(s.indexOf(" ")>=0)
-				commands.setElementAt("\""+s+"\"",i);
-		}
-		String combinedCommands=CMParms.combine(commands,1);
+		String combinedCommands=CMParms.combineWithQuotes(commands,1);
 		if(combinedCommands.equals(""))
 		{
 			mob.tell(theWord+"  what?");

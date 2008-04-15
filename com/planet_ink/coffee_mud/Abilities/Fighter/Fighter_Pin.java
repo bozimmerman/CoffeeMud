@@ -59,7 +59,7 @@ public class Fighter_Pin extends FighterSkill
 
 		MOB mob=(MOB)affected;
 		
-		if((msg.sourceMinor() == CMMsg.MSG_DEATH)&&(pairedWith != null)&&(msg.amISource(pairedWith)))
+		if((msg.sourceMinor() == CMMsg.TYP_DEATH)&&(pairedWith != null)&&(msg.amISource(pairedWith)))
 		{
 			unInvoke();
 			return super.okMessage(myHost, msg);

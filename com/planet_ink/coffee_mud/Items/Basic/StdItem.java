@@ -578,6 +578,14 @@ public class StdItem implements Item
 				}
 				else
 				{
+	                short layer=(this instanceof Armor)?((Armor)this).getClothingLayer():0;
+                    short layer2=(alreadyWearing instanceof Armor)?((Armor)alreadyWearing).getClothingLayer():0;
+				    if((rawProperLocationBitmap() == alreadyWearing.rawProperLocationBitmap())
+				    &&(rawLogicalAnd())
+				    &&(alreadyWearing.rawLogicalAnd())
+                    &&(layer == layer2)
+				    &&(CMLib.commands().postRemove(mob,alreadyWearing,false)))
+				        return true;
 					if(cantWearAt==Item.WORN_HELD)
 						mob.tell("You are already holding "+alreadyWearing.name()+".");
 					else

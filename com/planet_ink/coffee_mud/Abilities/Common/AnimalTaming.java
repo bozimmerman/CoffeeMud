@@ -103,13 +103,15 @@ public class AnimalTaming extends CommonSkill
 							String s="";
 							if(amount>1)
 								s="of "+amount+" ";
-							s+="of "+animal.charStats().himher()+" behaviors";
+							s+="of "+animal.charStats().hisher()+" behaviors";
 							mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to tame "+animal.name()+" "+s+".");
 							for(int i=0;i<amount;i++)
 							{
 								if(animal.numBehaviors()==0) break;
 								Behavior B=animal.fetchBehavior(CMLib.dice().roll(1,animal.numBehaviors(),-1));
-								if(B!=null)	animal.delBehavior(B);
+								if(B!=null)	{
+								    animal.delBehavior(B);
+								}
 								animal.recoverCharStats();
 								animal.recoverEnvStats();
 								animal.recoverMaxState();

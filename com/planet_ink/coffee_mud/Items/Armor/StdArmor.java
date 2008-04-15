@@ -593,6 +593,6 @@ public class StdArmor extends StdContainer implements Armor
 		else
 		if(envStats().ability()<0)
 			id=name()+" "+envStats().ability()+((id.length()>0)?"\n\r":"")+id;
-		return id+"\n\rProtection: "+envStats().armor();
+		return id+"\n\rBase Protection: "+envStats().armor();
 	}
 }
