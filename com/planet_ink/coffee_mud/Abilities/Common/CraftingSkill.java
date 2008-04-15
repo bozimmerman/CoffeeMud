@@ -562,17 +562,18 @@ public class CraftingSkill extends GatheringSkill
 			}
 			if(matches.size()>0) return matches;
 			String lastWord=(String)CMParms.parse(recipeName).lastElement();
-			for(int r=0;r<recipes.size();r++)
-			{
-				Vector V=(Vector)recipes.elementAt(r);
-				if(V.size()>0)
-				{
-					String item=(String)V.elementAt(0);
-					if((replacePercent(item,"").toUpperCase().indexOf(lastWord.toUpperCase())>=0)
-					||(lastWord.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
-						matches.addElement(V);
-				}
-			}
+			if(lastWord.length()>1)
+    			for(int r=0;r<recipes.size();r++)
+    			{
+    				Vector V=(Vector)recipes.elementAt(r);
+    				if(V.size()>0)
+    				{
+    					String item=(String)V.elementAt(0);
+    					if((replacePercent(item,"").toUpperCase().indexOf(lastWord.toUpperCase())>=0)
+    					||(lastWord.toUpperCase().indexOf(replacePercent(item,"").toUpperCase())>=0))
+    						matches.addElement(V);
+    				}
+    			}
 		}
 		return matches;
 	}

@@ -40,7 +40,7 @@ public class Spell_Cogniportive extends Spell
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 
-	public String establishHome(MOB mob, Item me)
+	public String establishHome(MOB mob, Item me, boolean beLoose)
 	{
 		if(me instanceof LandTitle)
 			return ((Room)((LandTitle)me).getPropertyRooms().firstElement()).roomID();
@@ -60,6 +60,7 @@ public class Spell_Cogniportive extends Spell
 						&&(!(M instanceof ShopKeeper))
 						&&(M.fetchInventory(me.Name())!=null)
 						&&(!M.fetchInventory(me.Name()).amWearingAt(Item.IN_INVENTORY))
+						&&((beLoose) || me.sameAs(M.fetchInventory(me.Name())))
                         &&(CMLib.law().getLandTitle(R)==null))
 							return CMLib.map().getExtendedRoomID(M.getStartRoom());
 					}
@@ -81,6 +82,7 @@ public class Spell_Cogniportive extends Spell
 						{
 							ShopKeeper S=CMLib.coffeeShops().getShopKeeper(M);
 							if((S.getShop().doIHaveThisInStock(me.Name(),null,S.whatIsSold(),M.getStartRoom()))
+	                        &&((beLoose) || me.sameAs(S.getShop().getStock(me.Name(), null, S.whatIsSold(), M.getStartRoom())))
                             &&(CMLib.law().getLandTitle(R)==null))
 								return CMLib.map().getExtendedRoomID(M.getStartRoom());
 						}
@@ -104,6 +106,7 @@ public class Spell_Cogniportive extends Spell
 						&&(!(M instanceof ShopKeeper))
 						&&(M.fetchInventory(me.Name())!=null)
 						&&(M.fetchInventory(me.Name()).amWearingAt(Item.IN_INVENTORY))
+                        &&((beLoose) || me.sameAs(M.fetchInventory(me.Name())))
                         &&(CMLib.law().getLandTitle(R)==null))
 							return CMLib.map().getExtendedRoomID(M.getStartRoom());
 					}
@@ -118,6 +121,7 @@ public class Spell_Cogniportive extends Spell
 				Room R=(Room)r.nextElement();
 				if((CMLib.flags().canAccess(mob,R))
                 &&(R.fetchItem(null,me.Name())!=null)
+                &&((beLoose) || me.sameAs(R.fetchItem(null,me.Name())))
                 &&(CMLib.law().getLandTitle(R)==null))
 				   return CMLib.map().getExtendedRoomID(R);
 			}
@@ -135,7 +139,9 @@ public class Spell_Cogniportive extends Spell
 		   &&(me!=null))
 		{
 			if(text().length()==0)
-				setMiscText(establishHome(mob,me));
+				setMiscText(establishHome(mob,me,false));
+            if(text().length()==0)
+                setMiscText(establishHome(mob,me,true));
 			Room home=CMLib.map().getRoom(text());
 			if((home==null)||(!CMLib.flags().canAccess(mob,home)))
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"Strange fizzled sparks fly from "+me.name()+".");
@@ -240,8 +246,12 @@ public class Spell_Cogniportive extends Spell
 				mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> glow(s) softly!");
 				beneficialAffect(mob,target,asLevel,1000);
 				A=target.fetchEffect(ID());
-				if(A!=null)
-					A.setMiscText(((Spell_Cogniportive)A).establishHome(mob,target));
+				if(A!=null) {
+				    String home=((Spell_Cogniportive)A).establishHome(mob,target,false);
+				    if(home.length()==0)
+				        home=((Spell_Cogniportive)A).establishHome(mob,target,true);
+					A.setMiscText(home);
+				}
 				target.recoverEnvStats();
 				mob.recoverEnvStats();
 				mob.location().recoverRoomStats();
