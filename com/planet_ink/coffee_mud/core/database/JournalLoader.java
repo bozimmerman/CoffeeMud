@@ -166,8 +166,13 @@ public class JournalLoader
 				while(R.next())
 				{
 					String which=DBConnections.getRes(R,"CMJRNL");
-					if(!journal.contains(which))
-						journal.addElement(which);
+					if(!journal.contains(which)) {
+					    if((which.toUpperCase().startsWith("SYSTEM_"))
+					    &&(journal.size()>0))
+					        journal.insertElementAt(which,0);
+					    else
+    						journal.addElement(which);
+					}
 				}
 				DB.DBDone(D);
 			}
