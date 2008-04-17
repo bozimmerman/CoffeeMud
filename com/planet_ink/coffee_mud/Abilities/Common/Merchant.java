@@ -316,7 +316,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
             case CMMsg.TYP_VALUE:
                 super.executeMsg(myHost,msg);
                 if(merchantM.isMonster())
-                    CMLib.commands().postSay(merchantM,mob,"I'll give you "+CMLib.beanCounter().nameCurrencyShort(merchantM,CMLib.coffeeShops().pawningPrice(mob,msg.tool(),this).absoluteGoldPrice)+" for "+msg.tool().name()+".",true,false);
+                    CMLib.commands().postSay(merchantM,mob,"I'll give you "+CMLib.beanCounter().nameCurrencyShort(merchantM,CMLib.coffeeShops().pawningPrice(merchantM,mob,msg.tool(),this).absoluteGoldPrice)+" for "+msg.tool().name()+".",true,false);
                 break;
 			case CMMsg.TYP_VIEW:
 				super.executeMsg(myHost,msg);

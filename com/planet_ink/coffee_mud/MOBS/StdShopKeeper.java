@@ -263,7 +263,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 			{
 				super.executeMsg(myHost,msg);
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
-					CMLib.commands().postSay(this,mob,"I'll give you "+CMLib.beanCounter().nameCurrencyShort(this,CMLib.coffeeShops().pawningPrice(mob,msg.tool(),this).absoluteGoldPrice)+" for "+msg.tool().name()+".",true,false);
+					CMLib.commands().postSay(this,mob,"I'll give you "+CMLib.beanCounter().nameCurrencyShort(this,CMLib.coffeeShops().pawningPrice(this,mob,msg.tool(),this).absoluteGoldPrice)+" for "+msg.tool().name()+".",true,false);
 				break;
 			}
 			case CMMsg.TYP_SELL: // sell TO -- this is a shopkeeper purchasing from a player
