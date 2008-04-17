@@ -243,8 +243,7 @@ public class Reset extends StdCommand
 		if(s.equalsIgnoreCase("room"))
 		{
             String warning=resetWarning(mob, mob.location());
-            if(warning!=null) mob.tell(warning);
-            if((mob.session()==null)||(mob.session().confirm("Reset the contents of the room '"+mob.location().roomTitle()+"', OK (Y/n)?","Y")))
+            if((mob.session()==null)||(warning==null)||(mob.session().confirm(warning + "\n\rReset the contents of the room '"+mob.location().roomTitle()+"', OK (Y/n)?","Y")))
             {
                 Session S=null;
                 for(int x=0;x<CMLib.sessions().size();x++)
@@ -274,7 +273,7 @@ public class Reset extends StdCommand
 					{
 						S=CMLib.sessions().elementAt(x);
 						if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(A.inMyMetroArea(S.mob().location().getArea())))
-	                        S.mob().tell("<S-NAME> order(s) this area to normalcy.");
+	                        S.mob().tell(mob,null,null,"<S-NAME> order(s) this area to normalcy.");
 					}
 					CMLib.map().resetArea(A);
 		            mob.tell("Done.");
