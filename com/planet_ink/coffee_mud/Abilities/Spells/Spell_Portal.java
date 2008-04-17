@@ -40,8 +40,8 @@ public class Spell_Portal extends Spell
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 	protected int overrideMana(){return Integer.MAX_VALUE-90;}
 
-	Room newRoom=null;
-	Room oldRoom=null;
+    Room newRoom=null;
+    Room oldRoom=null;
 
 	public void unInvoke()
 	{
@@ -65,6 +65,9 @@ public class Spell_Portal extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+        newRoom=null;
+        oldRoom=null;
+
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
 		{
 			commands.clear();

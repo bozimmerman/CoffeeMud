@@ -64,7 +64,9 @@ public class Spell_MarkerPortal extends Spell
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		Room newRoom=null;
+        newRoom=null;
+        oldRoom=null;
+
 		try
 		{
 			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
@@ -90,7 +92,7 @@ public class Spell_MarkerPortal extends Spell
 			mob.tell("You can't seem to focus on your marker.  Are you sure you've already summoned it?");
 			return false;
 		}
-		Room oldRoom=mob.location();
+		oldRoom=mob.location();
 		if(oldRoom==newRoom)
 		{
 			mob.tell("But your marker is HERE!");
