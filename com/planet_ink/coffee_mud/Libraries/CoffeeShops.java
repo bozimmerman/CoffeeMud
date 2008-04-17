@@ -393,7 +393,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         return rate;
     }
     
-    public ShopKeeper.ShopPrice pawningPrice(MOB buyer,
+    public ShopKeeper.ShopPrice pawningPrice(MOB seller,
+                                             MOB buyer,
                                              Environmental product,
                                              ShopKeeper shop)
     {
@@ -421,16 +422,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         prejudiceFactor*=itemPriceFactor(product,loc,shop.finalItemPricingAdjustments(),true);
         val.absoluteGoldPrice=CMath.mul(prejudiceFactor,val.absoluteGoldPrice);
 
-        //double halfPrice=Math.round(CMath.div(val,2.0));
         // gets the shopkeeper a deal on junk.  Pays 5% at 3 charisma, and 50% at 30
         double buyPrice=CMath.div(CMath.mul(val.absoluteGoldPrice,buyer.charStats().getStat(CharStats.STAT_CHARISMA)),60.0);
         if(!(product instanceof Ability))
             buyPrice=CMath.mul(buyPrice,1.0-devalue(shop,product));
+        
 
         // the price is 200% at 0 charisma, and 100% at 30
-        double sellPrice=val.absoluteGoldPrice
-                        +val.absoluteGoldPrice
-                        -CMath.mul(val.absoluteGoldPrice,CMath.div(buyer.charStats().getStat(CharStats.STAT_CHARISMA),30.0));
+        double sellPrice=sellingPrice(seller,buyer,product,shop,false).absoluteGoldPrice;
 
         if(buyPrice>sellPrice)
             val.absoluteGoldPrice=sellPrice;
@@ -494,7 +493,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     }
                 }
             }
-            double yourValue=pawningPrice(buyer,product,shop).absoluteGoldPrice;
+            double yourValue=pawningPrice(seller,buyer,product,shop).absoluteGoldPrice;
             if(yourValue<2)
             {
                 CMLib.commands().postSay(seller,buyer,"I'm not interested.",true,false);
@@ -796,7 +795,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         }
         if((coreSoldItem!=null)&&(shop.doISellThis(coreSoldItem)))
         {
-            double val=pawningPrice(pawner,rawSoldItem,shop).absoluteGoldPrice;
+            double val=pawningPrice(shopkeeper,pawner,rawSoldItem,shop).absoluteGoldPrice;
             String currency=CMLib.beanCounter().getCurrency(shopkeeper);
             if(!(shopkeeper instanceof ShopKeeper))
                 CMLib.beanCounter().subtractMoney(shopkeeper,currency,val);
