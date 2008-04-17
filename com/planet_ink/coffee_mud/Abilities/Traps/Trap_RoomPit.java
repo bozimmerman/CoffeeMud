@@ -88,6 +88,20 @@ public class Trap_RoomPit extends StdTrap
 		}
 	}
 
+    public boolean canSetTrapOn(MOB mob, Environmental E)
+    {
+        if(!super.canSetTrapOn(mob,E)) return false;
+        if(E instanceof Room)
+        {
+            if(((Room)E).getRoomInDir(Directions.DOWN)!=null)
+            {
+                mob.tell("The flooring here won't support a pit.");
+                return false;
+            }
+        }
+        return true;
+    }
+    
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((unInvoked)&&(canBeUninvoked()))
