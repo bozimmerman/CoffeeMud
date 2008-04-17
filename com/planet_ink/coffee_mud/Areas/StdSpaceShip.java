@@ -843,6 +843,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 			return myRooms.elements();
 		}
 	}
+	public Enumeration getFilledProperMap() { return getProperMap();}
 	public Vector getSubOpVectorList(){	return new Vector();}
 
     public void addChildToLoad(String str){}

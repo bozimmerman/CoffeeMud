@@ -246,6 +246,15 @@ public interface Area extends Environmental, Economics
 	 */
 	public Enumeration getProperMap();
     /**
+     * Returns an enumerator for all previously loaded rooms that
+     * properly belongs to this area, along with their skys or underwater
+     * add-ons.
+     * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getProperMap()
+     * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
+     * @return an enumerator of Room objects
+     */
+	public Enumeration getFilledProperMap();
+	/**
      * Designates that the given roomID belongs to this Area.
      * @param roomID the roomID of a room which should belong to this Area.
      */

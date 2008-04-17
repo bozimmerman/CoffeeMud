@@ -103,12 +103,6 @@ public class Where extends StdCommand
 			else
 			{
 
-				Enumeration r=CMLib.map().rooms();
-				if(who.toUpperCase().startsWith("AREA "))
-				{
-					r=mob.location().getArea().getProperMap();
-					who=who.substring(5).trim();
-				}
 				boolean mobOnly=false;
 				boolean itemOnly=false;
 				boolean roomOnly=false;
@@ -177,11 +171,20 @@ public class Where extends StdCommand
                     mob.tell("^xMask used:^?^.^N "+CMLib.masking().maskDesc(who)+"\n\r");
                     who=who.substring(10).trim();
                 }
+				
+                Enumeration r=(roomOnly||exitOnly)?CMLib.map().rooms():CMLib.map().roomsFilled();
+                if(who.toUpperCase().startsWith("AREA "))
+                {
+                    r=(roomOnly||exitOnly)?mob.location().getArea().getProperMap():mob.location().getArea().getFilledProperMap();
+                    who=who.substring(5).trim();
+                }
+                Room R = null;
+				
 				try
 				{
 					for(;r.hasMoreElements();)
 					{
-						Room R=(Room)r.nextElement();
+						R=(Room)r.nextElement();
 						if((R!=null)&&(CMSecurity.isAllowed(mob,R,"WHERE")))
 						{
 							if((!mobOnly)&&(!itemOnly)&&(!exitOnly))

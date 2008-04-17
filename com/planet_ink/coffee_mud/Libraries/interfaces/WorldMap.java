@@ -59,6 +59,7 @@ public interface WorldMap extends CMLibrary
     public Room getRoom(Vector roomSet, String calledThis);
 	public Room getRoom(Hashtable hashedRoomSet, String areaName, String calledThis);
     public Enumeration rooms();
+    public Enumeration roomsFilled();
     public Room getRandomRoom();
     public void renameRooms(Area A, String oldName, Vector allMyDamnRooms);
     public void obliterateRoom(Room deadRoom);

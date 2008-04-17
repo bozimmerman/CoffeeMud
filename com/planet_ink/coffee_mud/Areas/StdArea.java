@@ -1085,18 +1085,19 @@ public class StdArea implements Area
         {
         	int insertAt=0;
     		String roomID=R.roomID();
+            if(roomID.length()==0) 
+            {
+                if((R.getGridParent()!=null)
+                &&(R.getGridParent().roomID().length()>0))
+                {
+                    // for some reason, grid children always get the back of the bus.
+                    addProperRoomnumber(R.getGridParent().getGridChildCode(R));
+                    addMetroRoom(R);
+                }
+                return;
+            }
         	if(properRooms.size()>0)
         	{
-	        	if(R.roomID().length()==0) 
-	        	{
-	        		if((R.getGridParent()!=null)
-	        		&&(R.getGridParent().roomID().length()>0))
-	        		{
-	        			addProperRoomnumber(R.getGridParent().getGridChildCode(R));
-	        			addMetroRoom(R);
-	        		}
-	        		return;
-	        	}
         		insertAt=getProperIndex(R);
 	            int comp=((Room)properRooms.elementAt(insertAt)).roomID().compareToIgnoreCase(roomID);
 	            if(comp==0) return;
@@ -1301,6 +1302,31 @@ public class StdArea implements Area
 		}
 		return V.elements();
 	}
+	
+    public Enumeration getFilledProperMap()
+    {
+        Enumeration r=getProperMap();
+        Vector V=new Vector();
+        Room R=null;
+        Room R2=null;
+        for(;r.hasMoreElements();)
+        {
+            R=(Room)r.nextElement();
+            V.addElement(R);
+            for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+            {
+                R2=R.rawDoors()[d];
+                if((R2 != null)&&((R2.roomID().length()==0)))
+                {
+                    if(R2 instanceof GridLocale)
+                        V.addAll(((GridLocale)R2).getAllRooms());
+                    else
+                        V.add(R2);
+                }
+            }
+        }
+        return V.elements();
+    }
 	public Vector getMetroCollection()
 	{
 		Vector V=(Vector)properRooms.clone();

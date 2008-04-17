@@ -475,7 +475,8 @@ public class CMMap extends StdLibrary implements WorldMap
     }
     
 	public Room getRoom(String calledThis){ return getRoom(null,calledThis); }
-	public Enumeration rooms(){ return new AreaEnumerator(); }
+	public Enumeration rooms(){ return new AreaEnumerator(false); }
+    public Enumeration roomsFilled(){ return new AreaEnumerator(true); }
 	public Room getRandomRoom()
 	{
 		Room R=null;
@@ -1002,14 +1003,20 @@ public class CMMap extends StdLibrary implements WorldMap
     {
         private Enumeration curAreaEnumeration=null;
         private Enumeration curRoomEnumeration=null;
-        
+        private boolean addSkys = false;
+        public AreaEnumerator(boolean includeSkys) {
+            addSkys = includeSkys;
+        }
         public boolean hasMoreElements()
         {
             if(curAreaEnumeration==null) curAreaEnumeration=CMLib.map().areas();
             while((curRoomEnumeration==null)||(!curRoomEnumeration.hasMoreElements()))
             {
                 if(!curAreaEnumeration.hasMoreElements()) return false;
-                curRoomEnumeration=((Area)curAreaEnumeration.nextElement()).getProperMap();
+                if(addSkys)
+                    curRoomEnumeration=((Area)curAreaEnumeration.nextElement()).getFilledProperMap();
+                else
+                    curRoomEnumeration=((Area)curAreaEnumeration.nextElement()).getProperMap();
             }
             return curRoomEnumeration.hasMoreElements();
         }
@@ -1019,7 +1026,10 @@ public class CMMap extends StdLibrary implements WorldMap
             while((curRoomEnumeration==null)||(!curRoomEnumeration.hasMoreElements()))
             {
                 if(!curAreaEnumeration.hasMoreElements()) return null;
-                curRoomEnumeration=((Area)curAreaEnumeration.nextElement()).getProperMap();
+                if(addSkys)
+                    curRoomEnumeration=((Area)curAreaEnumeration.nextElement()).getFilledProperMap();
+                else
+                    curRoomEnumeration=((Area)curAreaEnumeration.nextElement()).getProperMap();
             }
             return curRoomEnumeration.nextElement();
         }

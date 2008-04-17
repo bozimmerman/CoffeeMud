@@ -104,16 +104,19 @@ public class Prop_LangTranslator extends Property
 				String str=CMStrings.getSayFromMessage(msg.sourceMessage());
 				if(str!=null)
 				{
+				    Environmental target=null;
+				    if(msg.target() instanceof MOB)
+				        target=(MOB)msg.target();
 					if(!(affected instanceof MOB))
 						mob.setLocation(CMLib.map().roomLocation(affected));
 					if(CMath.bset(msg.sourceCode(),CMMsg.MASK_CHANNEL))
 						msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.TYP_SPEAK,"<S-NAME> say(s) '"+msg.source().name()+" said \""+CMStrings.substituteSayInMessage(msg.othersMessage(),str)+"\" in "+msg.tool().name()+"'"));
 					else
-					if(msg.amITarget(null)&&(msg.targetMessage()!=null))
+					if((target==null)&&(msg.targetMessage()!=null))
 						msg.addTrailerMsg(CMClass.getMsg(mob,null,null,CMMsg.TYP_SPEAK,"<S-NAME> say(s) '"+msg.source().name()+" said \""+CMStrings.substituteSayInMessage(msg.targetMessage(),str)+"\" in "+msg.tool().name()+"'"));
 					else
 					if(msg.othersMessage()!=null)
-						msg.addTrailerMsg(CMClass.getMsg(mob,msg.target(),null,CMMsg.TYP_SPEAK,"<S-NAME> say(s) '"+msg.source().name()+" said \""+CMStrings.substituteSayInMessage(msg.othersMessage(),str)+"\" in "+msg.tool().name()+"'"));
+						msg.addTrailerMsg(CMClass.getMsg(mob,target,null,CMMsg.TYP_SPEAK,"<S-NAME> say(s) '"+msg.source().name()+" said \""+CMStrings.substituteSayInMessage(msg.othersMessage(),str)+"\" in "+msg.tool().name()+"'"));
 				}
 			}
 		}

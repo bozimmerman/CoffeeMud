@@ -40,7 +40,7 @@ public class Push extends Go
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		Environmental openThis=null;
+		Environmental pushThis=null;
 		String dir="";
 		int dirCode=-1;
 		Environmental E=null;
@@ -65,33 +65,40 @@ public class Push extends Go
 		{
 			dirCode=Directions.getGoodDirectionCode((String)commands.lastElement());
 			if(dirCode>=0)
-				openThis=mob.location().getExitInDir(dirCode);
+				pushThis=mob.location().getExitInDir(dirCode);
 		}
 		String whatToOpen=CMParms.combine(commands,1);
-		if(openThis==null)
-			openThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToOpen,Item.WORNREQ_ANY);
+		if(pushThis==null)
+			pushThis=mob.location().fetchFromMOBRoomFavorsItems(mob,null,whatToOpen,Item.WORNREQ_ANY);
 
-		if((openThis==null)||(!CMLib.flags().canBeSeenBy(openThis,mob)))
+		if((pushThis==null)||(!CMLib.flags().canBeSeenBy(pushThis,mob)))
 		{
 			mob.tell("You don't see '"+whatToOpen+"' here.");
 			return false;
 		}
-		int malmask=(openThis instanceof MOB)?CMMsg.MASK_MALICIOUS:0;
-		CMMsg msg=CMClass.getMsg(mob,openThis,E,CMMsg.MSG_PUSH|malmask,"<S-NAME> push(es) <T-NAME>"+dir+".");
+		int malmask=(pushThis instanceof MOB)?CMMsg.MASK_MALICIOUS:0;
+		String msgStr = "<S-NAME> push(es) <T-NAME>"+dir+".";
+		CMMsg msg=CMClass.getMsg(mob,pushThis,E,CMMsg.MSG_PUSH|malmask,msgStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 		    mob.location().send(mob,msg);
 		    if((dir.length()>0)&&(msg.tool() instanceof Room))
 		    {
 		        Room R=(Room)msg.tool();
-		        dirCode=CMLib.tracking().findRoomDir(mob,R);
-		        if(dirCode>=0)
+		        if(R.okMessage(mob,msg))
 		        {
-			        if(openThis instanceof Item)
-			            R.bringItemHere((Item)openThis,Item.REFUSE_PLAYER_DROP,true);
-			        else
-			        if(openThis instanceof MOB)
-			            move((MOB)openThis,dirCode,((MOB)openThis).isInCombat(),false,true,true);
+    		        dirCode=CMLib.tracking().findRoomDir(mob,R);
+    		        if(dirCode>=0)
+    		        {
+    		            if(msg.othersMessage().equals(msgStr))
+    		                msg.setOthersMessage("<S-NAME> push(es) <T-NAME> into here.");
+                        R.sendOthers(mob,msg);
+    			        if(pushThis instanceof Item)
+    			            R.bringItemHere((Item)pushThis,Item.REFUSE_PLAYER_DROP,true);
+    			        else
+    			        if(pushThis instanceof MOB)
+    			            move((MOB)pushThis,dirCode,((MOB)pushThis).isInCombat(),false,true,true);
+    		        }
 		        }
 		    }
 		            

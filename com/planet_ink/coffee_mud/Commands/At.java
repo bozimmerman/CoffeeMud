@@ -48,6 +48,7 @@ public class At extends StdCommand
 			room = CMLib.map().getRoom(cmd.toString());
 		if(room==null)
 		{
+		    // first get room ids
 			if((cmd.charAt(0)=='#')&&(curRoom!=null))
 			{
 				cmd.insert(0,curRoom.getArea().Name());
@@ -56,6 +57,7 @@ public class At extends StdCommand
 			else
 			{
                 String srchStr=cmd.toString();
+                // then look for players
 				for(int s=0;s<CMLib.sessions().size();s++)
 				{
 					Session thisSession=CMLib.sessions().elementAt(s);
@@ -67,6 +69,7 @@ public class At extends StdCommand
 						break;
 					}
 				}
+				// keep looking for players
 				if(room==null)
 					for(int s=0;s<CMLib.sessions().size();s++)
 					{
@@ -81,6 +84,7 @@ public class At extends StdCommand
 					}
                 if(room==null)
                 {
+                    // now look for area names
                     for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
                     {
                         Area A=(Area)a.nextElement();
@@ -94,6 +98,7 @@ public class At extends StdCommand
                         }
                     }
                 }
+                // keep looking at area names
 				if(room==null)
 				{
 					for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
@@ -109,19 +114,20 @@ public class At extends StdCommand
 						}
 					}
 				}
+				// no good, so look for room inhabitants
 				if(room==null)
 				{
 					Vector candidates=new Vector();
 					MOB target=null;
 					try
 					{
-						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-						{
-							Room R=(Room)r.nextElement();
-							target=R.fetchInhabitant(srchStr);
-							if(target!=null)
-								candidates.addElement(target);
-						}
+                        for(Enumeration r=CMLib.map().roomsFilled();r.hasMoreElements();)
+                        {
+                            Room R=(Room)r.nextElement();
+                            target=R.fetchInhabitant(srchStr);
+                            if(target!=null)
+                                candidates.addElement(target);
+                        }
 				    }
 				    catch(NoSuchElementException e){}
 					if(candidates.size()>0)
@@ -130,6 +136,7 @@ public class At extends StdCommand
 						room=target.location();
 					}
 				}
+				// now check room descriptions
 				if(room==null)
 				{
 					String areaName=srchStr.toUpperCase();
@@ -142,41 +149,44 @@ public class At extends StdCommand
 						   break;
 						}
 					}
-					if(room==null)
-					{
-					    try
-					    {
-							for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-							{
-								Room R=(Room)r.nextElement();
-								if(CMLib.english().containsString(CMStrings.removeColors(R.description()),areaName))
-								{
-								   room=R;
-								   break;
-								}
-							}
-					    }catch(NoSuchElementException e){}
-					}
-					if(room==null)
-					{
-						Vector candidates=new Vector();
-						Item target=null;
-						try
+				}
+                // still check room descriptions
+				if(room==null)
+				{
+                    String areaName=srchStr.toUpperCase();
+				    try
+				    {
+						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 						{
-							for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+							Room R=(Room)r.nextElement();
+							if(CMLib.english().containsString(CMStrings.removeColors(R.description()),areaName))
 							{
-								Room R=(Room)r.nextElement();
-								target=R.fetchItem(null,srchStr);
-								if(target!=null)
-									candidates.addElement(target);
+							   room=R;
+							   break;
 							}
-					    }catch(NoSuchElementException e){}
-						if(candidates.size()>0)
-						{
-							target=(Item)candidates.elementAt(CMLib.dice().roll(1,candidates.size(),-1));
-							if(target.owner() instanceof Room)
-								room=(Room)target.owner();
 						}
+				    }catch(NoSuchElementException e){}
+				}
+				// lastly, check floor items
+				if(room==null)
+				{
+					Vector candidates=new Vector();
+					Item target=null;
+					try
+					{
+						for(Enumeration r=CMLib.map().roomsFilled();r.hasMoreElements();)
+						{
+							Room R=(Room)r.nextElement();
+							target=R.fetchItem(null,srchStr);
+							if(target!=null)
+								candidates.addElement(target);
+						}
+				    }catch(NoSuchElementException e){}
+					if(candidates.size()>0)
+					{
+						target=(Item)candidates.elementAt(CMLib.dice().roll(1,candidates.size(),-1));
+						if(target.owner() instanceof Room)
+							room=(Room)target.owner();
 					}
 				}
 			}
