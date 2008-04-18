@@ -472,18 +472,22 @@ public class MobData extends StdWebMacro
 				}
 			}
 			else
-			for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
 			{
-				CharClass C=(CharClass)e.nextElement();
-				if(C!=null)
-				{
-					int lvl=E.baseCharStats().getClassLevel(C);
-					if(lvl>=0)
-					{
-						theclasses.addElement(C.ID());
-						theparms.addElement(new Integer(lvl).toString());
-					}
-				}
+			    CharStats baseStats = E.baseCharStats();
+			    if(baseStats!=null)
+			    for(int c=0;c<baseStats.numClasses();c++)
+			    {
+			        CharClass C=baseStats.getMyClass(c);
+			        if(C!=null)
+			        {
+                        int lvl=baseStats.getClassLevel(C);
+                        if(lvl>=0)
+                        {
+                            theclasses.addElement(C.ID());
+                            theparms.addElement(new Integer(lvl).toString());
+                        }
+			        }
+			    }
 			}
 			str.append("<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>");
 			for(int i=0;i<theclasses.size();i++)
@@ -495,7 +499,8 @@ public class MobData extends StdWebMacro
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditFaction(this);\" NAME=CHARCLASS"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
-				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+C.name());
+				str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+C.name()
+				                +((i==theclasses.size()-1)?" (Current)":""));
 				str.append("</SELECT>");
 				str.append("</TD><TD WIDTH=50%>");
 				str.append("<INPUT TYPE=TEXT SIZE=3 MAXLENGTH=3 NAME=CHARCLASSLVL"+(i+1)+" VALUE=\""+theparm+"\">");
