@@ -2903,6 +2903,14 @@ time in the room of the behavior, and in any adjacent rooms.
     GenPortal in it. If so, then every time the GenMobilPortal is moved by a player carrying it from place to place, the target for the paired
     GenPortal will also be changed to reflect the move.<br>
     </p>
+    
+    <p>
+    Scripting a Portal has an extra twist to be aware of.  Although the player uses the ENTER command to
+    traverse a portal, the CoffeeMud engine will translate this into a directed SIT message aimed at the
+    portal object.  When using Scriptable MOBPROG scripting, for instance, one way to capture the event of entering 
+    a portal is to use the CNCLMSG_PROG SIT trigger (See the <a href="Scriptable.html">Scriptable Guide</a>) for 
+    more information on scripting.
+    </P>
 
     <p>Whenever a GenPortal is created, much like the GenRideable above, you are presented with a list of properties to fill in. Pressing enter
     will leave the property unchanged:</p>
