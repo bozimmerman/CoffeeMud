@@ -31,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Gigantic extends Language
+public class Gigantic extends StdLanguage
 {
 	public String ID() { return "Gigantic"; }
 	public String name(){ return "Gigantic";}
@@ -43,7 +43,7 @@ public class Gigantic extends Language
 		if(!mapped){mapped=true;
 					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Vector translationVector()
+	public Vector translationVector(String language)
 	{
 		if(wordLists==null)
 		{
@@ -75,7 +75,7 @@ six={"jedanast","delalime","veralim","dvanast","bahone","zahedon","prasad","tren
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((beingSpoken())
+		if((beingSpoken(ID()))
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
 		&&(msg.sourceMessage()!=null)
@@ -93,7 +93,7 @@ six={"jedanast","delalime","veralim","dvanast","bahone","zahedon","prasad","tren
 	}
 
 	private static final Hashtable hashwords=new Hashtable();
-	public Hashtable translationHash()
+	public Hashtable translationHash(String language)
 	{
 		if((hashwords!=null)&&(hashwords.size()>0))
 			return hashwords;

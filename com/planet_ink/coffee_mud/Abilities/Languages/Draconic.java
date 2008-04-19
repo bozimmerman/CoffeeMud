@@ -31,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Draconic extends Language
+public class Draconic extends StdLanguage
 {
 	public String ID() { return "Draconic"; }
 	public String name(){ return "Draconic";}
@@ -44,7 +44,7 @@ public class Draconic extends Language
 					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
 
-	public Vector translationVector()
+	public Vector translationVector(String language)
 	{
 		if(wordLists==null)
 		{

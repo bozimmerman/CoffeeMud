@@ -31,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Goblinese extends Language
+public class Goblinese extends StdLanguage
 {
 	public String ID() { return "Goblinese"; }
 	public String name(){ return "Goblinese";}
@@ -43,7 +43,7 @@ public class Goblinese extends Language
 		if(!mapped){mapped=true;
 					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Vector translationVector()
+	public Vector translationVector(String language)
 	{
 		if(wordLists==null)
 		{

@@ -31,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Drowish extends Language
+public class Drowish extends StdLanguage
 {
 	public String ID() { return "Drowish"; }
 	public String name(){ return "Drowish";}
@@ -43,7 +43,7 @@ public class Drowish extends Language
 		if(!mapped){mapped=true;
 					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Vector translationVector()
+	public Vector translationVector(String language)
 	{
 		if(wordLists==null)
 		{
@@ -64,7 +64,7 @@ public class Drowish extends Language
 		return wordLists;
 	}
 	private static final Hashtable hashwords=new Hashtable();
-	public Hashtable translationHash()
+	public Hashtable translationHash(String language)
 	{
 		if((hashwords!=null)&&(hashwords.size()>0))
 			return hashwords;

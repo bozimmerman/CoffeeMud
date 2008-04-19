@@ -31,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Orcish extends Language
+public class Orcish extends StdLanguage
 {
 	public String ID() { return "Orcish"; }
 	public String name(){ return "Orcish";}
@@ -43,7 +43,7 @@ public class Orcish extends Language
 		if(!mapped){mapped=true;
 					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Vector translationVector()
+	public Vector translationVector(String language)
 	{
 		if(wordLists==null)
 		{

@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-public class Ignan extends Language
+public class Ignan extends StdLanguage
 {
 	public String ID() { return "Ignan"; }
 	public String name(){ return "Ignan";}
@@ -31,7 +31,7 @@ public class Ignan extends Language
     {	
         return new Ignan();
     }
-	public Vector translationVector()
+	public Vector translationVector(String language)
 	{
 		if(wordLists==null)
 		{
@@ -52,7 +52,7 @@ public class Ignan extends Language
 		return wordLists;
 	}
 	private static final Hashtable hashwords=new Hashtable();
-	public Hashtable translationHash()
+	public Hashtable translationHash(String language)
 	{
 		if((hashwords!=null)&&(hashwords.size()>0))
 			return hashwords;

@@ -7264,7 +7264,7 @@ public class Elvish extends com.planet_ink.coffee_mud.Abilities.Languages.Langua
               creation.</p>
 <pre>
   public static Vector wordLists = null;
-  public Vector translationVector()
+  public Vector translationVector(String language)
   {
     if(wordLists==null)
     {
@@ -7345,7 +7345,7 @@ public class Elvish extends com.planet_ink.coffee_mud.Abilities.Languages.Langua
               fun for the players who don't speak a language to try and guess what is being said by counting letters.</p>
 <pre>
   private static final Hashtable hashwords = new Hashtable();
-  public Hashtable translationHash()
+  public Hashtable translationHash(String language)
   {
     if( ( hashwords != null ) &amp;&amp; ( hashwords.size() &gt; 0 ) )
     {

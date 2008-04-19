@@ -31,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Dwarven extends Language
+public class Dwarven extends StdLanguage
 {
 	public String ID() { return "Dwarven"; }
 	public String name(){ return "Dwarven";}
@@ -44,7 +44,7 @@ public class Dwarven extends Language
 					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
 
-	public Vector translationVector()
+	public Vector translationVector(String language)
 	{
 		if(wordLists==null)
 		{

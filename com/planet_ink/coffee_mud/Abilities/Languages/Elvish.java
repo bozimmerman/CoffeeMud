@@ -31,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Elvish extends Language
+public class Elvish extends StdLanguage
 {
 	public String ID() { return "Elvish"; }
 	public String name(){ return "Elvish";}
@@ -43,7 +43,7 @@ public class Elvish extends Language
 		if(!mapped){mapped=true;
 					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Vector translationVector()
+	public Vector translationVector(String language)
 	{
 		if(wordLists==null)
 		{
@@ -64,7 +64,7 @@ public class Elvish extends Language
 		return wordLists;
 	}
 	private static final Hashtable hashwords=new Hashtable();
-	public Hashtable translationHash()
+	public Hashtable translationHash(String language)
 	{
 		if((hashwords!=null)&&(hashwords.size()>0))
 			return hashwords;

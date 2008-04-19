@@ -31,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Druidic extends Language
+public class Druidic extends StdLanguage
 {
 	public String ID() { return "Druidic"; }
 	public String name(){ return "Druidic";}
@@ -46,7 +46,7 @@ public class Druidic extends Language
 					}
 	}
 
-	public Vector translationVector()
+	public Vector translationVector(String language)
 	{
 		if(wordLists==null)
 		{

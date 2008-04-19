@@ -31,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Blah extends Language
+public class Blah extends StdLanguage
 {
 	public String ID() { return "Blah"; }
 	public String name(){ return "Blah";}
@@ -44,12 +44,12 @@ public class Blah extends Language
 					CMLib.ableMapper().addCharAbilityMapping("Archon",1,ID(),false);}
 	}
 
-	public Vector translationVector()
+	public Vector translationVector(String language)
 	{
 		return wordLists;
 	}
 
-	protected String translate(String word)
+	public String translate(String language, String word)
 	{
 		return fixCase(word,"blah");
 	}

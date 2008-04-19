@@ -31,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Common extends Language
+public class Common extends StdLanguage
 {
 	public String ID() { return "Common"; }
 	public String name(){ return "Common";}
@@ -54,10 +54,10 @@ public class Common extends Language
 		{
 			Ability A=mob.fetchEffect(a);
 			if((A!=null)&&(A instanceof Language))
-				if(((Language)A).beingSpoken())
+				if(((Language)A).beingSpoken(ID()))
 				{
 					anythingDone=true;
-					((Language)A).setBeingSpoken(false);
+					((Language)A).setBeingSpoken(ID(),false);
 				}
 
 		}

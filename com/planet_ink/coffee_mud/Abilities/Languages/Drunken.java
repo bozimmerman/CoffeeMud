@@ -31,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Drunken extends Language
+public class Drunken extends StdLanguage
 {
 	public String ID() { return "Drunken"; }
 	public String name(){ return "Drunken";}
@@ -44,7 +44,7 @@ public class Drunken extends Language
 					CMLib.ableMapper().addCharAbilityMapping("Archon",1,ID(),false);}
 	}
 
-	public Vector translationVector()
+	public Vector translationVector(String language)
 	{
 		return wordLists;
 	}
@@ -77,7 +77,7 @@ public class Drunken extends Language
 		return V;
 	}
 
-	protected String translate(String word)
+	public String translate(String language, String word)
 	{
 		StringBuffer sbw=new StringBuffer(word);
 		Vector V=getSChoices(sbw);

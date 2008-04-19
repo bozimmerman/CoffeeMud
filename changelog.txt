@@ -615,7 +615,7 @@ The only new features are the addition of the Amputation Ability, a few new Cler
   11. INSTALLATION GUIDE Updated (includes Upgrade guide)
   12. new DBUpgrade utility in the FakeDB package allows upgrading/copying CoffeeMud database from and to ANY versions(even 1.2).
   13. Prop_ClosedDayNight has LOTs of new parameters now making it MUCH more powerful. Check this out too!
-  14. Languages have a translationHash() method to return word for word translations.
+  14. Languages have a translationHash(String language) method to return word for word translations.
   15. Bad weather will now (every 90 seconds or so) blurb to users who are outdoors.
   16. The True Sight spell can now see through disguises and polymorphs
   17. Import code now supports MADROM "sounds" codes, as well as ROM/ROM2/MADROM external mob prog script importing.

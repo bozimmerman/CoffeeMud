@@ -38,7 +38,7 @@ import java.util.*;
     Respect to all who work on Coffee, keep the tradition going!
 */
 
-public class ThievesCant extends Language
+public class ThievesCant extends StdLanguage
 {
     public String ID() { return "ThievesCant"; }
     public String name(){ return "Thieves Cant";}
@@ -51,7 +51,7 @@ public class ThievesCant extends Language
                 CMLib.ableMapper().addCharAbilityMapping("Bard",10,ID(),false);}
     }
 
-    public Vector translationVector()
+    public Vector translationVector(String language)
     {
         if(wordLists==null)
         {
@@ -72,7 +72,7 @@ public class ThievesCant extends Language
         return wordLists;
     }
     private static final Hashtable hashwords=new Hashtable();
-    public Hashtable translationHash()
+    public Hashtable translationHash(String language)
     {
         if((hashwords!=null)&&(hashwords.size()>0))
             return hashwords;

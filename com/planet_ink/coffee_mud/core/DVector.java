@@ -218,6 +218,14 @@ public class DVector implements Cloneable, java.io.Serializable
 		return stuff[dim-1];
 	}
 	public boolean contains(Object O){return stuff[0].contains(O);}
+	public boolean containsIgnoreCase(String S)
+	{
+	    Vector V=(Vector)stuff[0].clone();
+	    for(int v=0;v<V.size();v++)
+	        if(V.elementAt(v).toString().equalsIgnoreCase(S))
+	            return true;
+	    return false;
+	}
 	public int size()
 	{
 		if(stuff==null) return 0;

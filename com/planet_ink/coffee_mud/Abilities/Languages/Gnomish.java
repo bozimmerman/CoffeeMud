@@ -31,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
-public class Gnomish extends Language
+public class Gnomish extends StdLanguage
 {
 	public String ID() { return "Gnomish"; }
 	public String name(){ return "Gnomish";}
@@ -43,7 +43,7 @@ public class Gnomish extends Language
 		if(!mapped){mapped=true;
 					CMLib.ableMapper().addCharAbilityMapping("All",1,ID(),false);}
 	}
-	public Vector translationVector()
+	public Vector translationVector(String language)
 	{
 		if(wordLists==null)
 		{
