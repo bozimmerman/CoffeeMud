@@ -299,6 +299,7 @@ public class StdRace implements Race
                         &&(!CMLib.flags().isChild(mob))
                         &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
 						{
+						    
 							if(A.proficiency()>0) A.setProficiency(100);
 							A.invoke(mob,mob,false,0);
 							if(CMLib.flags().isChild(mob))
