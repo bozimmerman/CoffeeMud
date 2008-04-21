@@ -48,7 +48,7 @@ public class Bull extends StdMOB
 		baseEnvStats().setAbility(0);
 		baseEnvStats().setLevel(7);
 		baseEnvStats().setArmor(90);
-		baseCharStats().setMyRace(CMClass.getRace("Cow"));
+		baseCharStats().setMyRace(CMClass.getRace("Bull"));
 		baseCharStats().getMyRace().startRacing(this,false);
 
 		baseState.setHitPoints(CMLib.dice().roll(baseEnvStats().level(),20,baseEnvStats().level()));
