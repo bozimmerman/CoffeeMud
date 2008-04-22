@@ -267,6 +267,32 @@ public class Amputation extends StdAbility implements Amputator
 		return missingLimbs;
 	}
 
+    public Vector completeLimbNameSet(Environmental E)
+    {
+        Vector V=new Vector();
+        if(!(E instanceof MOB)) return V;
+        MOB M=(MOB)E;
+        int[] limbs=M.charStats().getMyRace().bodyMask();
+        for(int i=0;i<limbs.length;i++)
+        {
+            if((limbs[i]>0)&&(validamputees[i]))
+            {
+                if(limbs[i]==1)
+                    V.addElement(Race.BODYPARTSTR[i].toLowerCase());
+                else
+                if(limbs[i]==2)
+                {
+                        V.addElement("left "+Race.BODYPARTSTR[i].toLowerCase());
+                        V.addElement("right "+Race.BODYPARTSTR[i].toLowerCase());
+                }
+                else
+                for(int ii=0;ii<limbs[i];ii++)
+                    V.addElement(Race.BODYPARTSTR[i].toLowerCase());
+            }
+        }
+        return V;
+    }
+    
 	public Vector remainingLimbNameSet(Environmental E)
 	{
 		missingLimbNameSet();
@@ -390,28 +416,22 @@ public class Amputation extends StdAbility implements Amputator
 			}
 		}
 		Item limb=null;
+		boolean isFakeLimb=false;
 		if(target instanceof MOB)
 		{
 		    MOB tmob=(MOB)target;
-		    for(int i=0;i<tmob.inventorySize();i++)
+		    limb=findFakeLimb(tmob,gone);
+		    if(limb!=null)
 		    {
-		        Item I=tmob.fetchInventory(i);
-		        if((I!=null)
-                &&(!I.amWearingAt(Item.IN_INVENTORY))
-                &&(I.ID().endsWith("Limb"))
-				&&((I.name().toUpperCase().endsWith(gone.toUpperCase()))
-    				||(I.rawSecretIdentity().toUpperCase().endsWith(gone.toUpperCase()))))
-		        {
-		            limb=I;
-		            I.unWear();
-		            tmob.recoverCharStats();
-		            tmob.recoverEnvStats();
-		            tmob.recoverMaxState();
-		            break;
-		        }
+	            limb.unWear();
+	            limb.removeFromOwnerContainer();
+	            isFakeLimb=true;
+	            tmob.recoverCharStats();
+	            tmob.recoverEnvStats();
+	            tmob.recoverMaxState();
 		    }
 		}
-		if(limb==null)
+		if(!isFakeLimb)
 		{
 			limb=CMClass.getItem("GenLimb");
 			limb.setName("a "+gone);
@@ -436,6 +456,7 @@ public class Amputation extends StdAbility implements Amputator
 			limb.baseEnvStats().setWeight(5);
 			limb.recoverEnvStats();
 		}
+		
 		if((target instanceof MOB)&&(((MOB)target).location()!=null))
 			((MOB)target).location().addItemRefuse(limb,Item.REFUSE_MONSTER_EQ);
 		else
@@ -444,8 +465,14 @@ public class Amputation extends StdAbility implements Amputator
 		&&(((Item)target).owner() instanceof Room))
 			((Room)((Item)target).owner()).addItemRefuse(limb,Item.REFUSE_MONSTER_EQ);
         
-		Vector theRest=A.affectedLimbNameSet(target,gone,A.missingLimbNameSet());
-		if(!theRest.contains(gone)) theRest.addElement(gone);
+        if(!isFakeLimb)
+        {
+    		Vector theRest=A.affectedLimbNameSet(target,gone,A.missingLimbNameSet());
+    		if(!theRest.contains(gone)) theRest.addElement(gone);
+            for(int i=0;i<theRest.size();i++)
+                A.setMiscText(A.text()+((String)theRest.elementAt(i))+";");
+        }
+		
 		Injury I=(Injury)target.fetchEffect("Injury");
 		if(I!=null)
 		{
@@ -463,8 +490,6 @@ public class Amputation extends StdAbility implements Amputator
 				    }
 			}
 		}
-		for(int i=0;i<theRest.size();i++)
-			A.setMiscText(A.text()+((String)theRest.elementAt(i))+";");
 		if((target instanceof MOB)
 		&&(CMLib.dice().roll(1,100,0)<=CMProps.getIntVar(CMProps.SYSTEMI_INJBLEEDPCTCHANCE)))
 		{
@@ -474,6 +499,29 @@ public class Amputation extends StdAbility implements Amputator
 		return limb;
 	}
 
+	private Item findFakeLimb(MOB tmob, String named) {
+        if(named.length()>0)
+        {
+            named=named.toUpperCase();
+            if(named.startsWith("RIGHT "))
+                named=named.substring(6).trim();
+            else
+            if(named.startsWith("LEFT "))
+                named=named.substring(5).trim();
+            for(int i=0;i<tmob.inventorySize();i++)
+            {
+                Item I=tmob.fetchInventory(i);
+                if((I!=null)
+                &&(!I.amWearingAt(Item.IN_INVENTORY))
+                &&(I.ID().endsWith("Limb"))
+                &&((I.name().toUpperCase().endsWith(named))
+                    ||(I.rawSecretIdentity().toUpperCase().endsWith(named))))
+                    return I;
+            }
+        }
+        return null;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String choice="";
@@ -549,15 +597,30 @@ public class Amputation extends StdAbility implements Amputator
 				newOne=true;
 			}
 
+	        Item fakeLimb=null;
+            String gone=null;
+	        if((target instanceof MOB)&&(choice.length()>0)) 
+	        {
+	            fakeLimb=findFakeLimb((MOB)target,choice);
+	            if(fakeLimb != null)
+	            {
+	                Vector VN=completeLimbNameSet(target);
+	                for(int i=0;i<VN.size();i++)
+	                    if(CMLib.english().containsString((String)VN.elementAt(i),choice))
+	                    { gone=(String)VN.elementAt(i); break;}
+	                if(gone==null)
+	                    fakeLimb=null;
+	            }
+	        }
+	        
 			Vector VN=A.remainingLimbNameSet(target);
-			if(VN.size()==0)
+			if((VN.size()==0)&&(fakeLimb==null))
 			{
 				if(!auto)
 					mob.tell("There is nothing left on "+target.name()+" to amputate!");
 				return false;
 			}
-			String gone=null;
-			if(choice.length()>0)
+			if((choice.length()>0)&&(fakeLimb==null)&&(gone==null))
 			{
 				for(int i=0;i<VN.size();i++)
 					if(CMLib.english().containsString((String)VN.elementAt(i),choice))
@@ -571,9 +634,22 @@ public class Amputation extends StdAbility implements Amputator
 			}
 
 			if(gone==null)
+			{
+                if(target instanceof MOB)
+                {
+    			    Vector completeSet = completeLimbNameSet(target);
+    			    for(int v=0;v<completeSet.size();v++)
+    			        if((!VN.contains(completeSet.elementAt(v)))
+    			        &&(findFakeLimb((MOB)target,(String)completeSet.elementAt(v))!=null))
+    			            VN.addElement(completeSet.elementAt(v));
+                }
 				gone=(String)VN.elementAt(CMLib.dice().roll(1,VN.size(),-1));
+                if(target instanceof MOB)
+	                fakeLimb=findFakeLimb((MOB)target,gone);
+			}
+			String goneName = (fakeLimb!=null)?fakeLimb.name():gone;
 
-			String str=auto?"":"^F^<FIGHT^><S-NAME> amputate(s) <T-YOUPOSS> "+gone+"!^</FIGHT^>^?";
+			String str=auto?"":"^F^<FIGHT^><S-NAME> amputate(s) <T-YOUPOSS> "+goneName+"!^</FIGHT^>^?";
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_DELICATE_HANDS_ACT|(auto?CMMsg.MASK_ALWAYS:0),str);
             CMLib.color().fixSourceFightColor(msg);
 			if(target.location().okMessage(target,msg))
