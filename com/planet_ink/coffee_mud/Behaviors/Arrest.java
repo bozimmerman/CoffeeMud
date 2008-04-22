@@ -362,6 +362,20 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	protected boolean defaultModifiableNames(){return true;}
 
+	public Vector externalFiles() 
+	{
+        String lawName=getLawParms();
+        if(lawName.length()==0)
+            lawName="laws.ini";
+        if(lawName.equalsIgnoreCase("custom"))
+    	    return super.externalFiles();
+        if(lawName.equalsIgnoreCase("laws.ini"))
+            return super.externalFiles();
+        if(new CMFile(Resources.makeFileResourceName(lawName),null,false).exists())
+            return CMParms.makeVector(lawName);
+        return super.externalFiles();
+	}
+	
 	protected Law getLaws(Environmental what, boolean cleanOnly)
 	{
 		String lawName=getLawParms();
