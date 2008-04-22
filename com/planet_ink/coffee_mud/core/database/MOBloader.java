@@ -667,6 +667,34 @@ public class MOBloader
             DB.update((String)V.elementAt(v));
     }
 
+    // this method is unused, but is a good idea of how to collect riders, followers, carts, etc.
+    protected void addFollowerDependent(Environmental E, DVector list, String parent)
+    {
+        if(E==null) return;
+        if(list.contains(E)) return;
+        if((E instanceof MOB)
+        &&((!((MOB)E).isMonster())||(((MOB)E).isPossessing())))
+            return;
+        if(CMLib.flags().isCatalogedFalsely(E))
+            CMLib.flags().setCataloged(E,false);
+        String myCode=""+(list.size()-1);
+        list.addElement(E,CMClass.classID(E)+"#"+myCode+parent);
+        if(E instanceof Rideable)
+        {
+            Rideable R=(Rideable)E;
+            for(int r=0;r<R.numRiders();r++)
+                addFollowerDependent(R.fetchRider(r),list,"@"+myCode+"R");
+        }
+        if(E instanceof Container)
+        {
+            Container C=(Container)E;
+            Vector contents=C.getContents();
+            for(int c=0;c<contents.size();c++)
+                addFollowerDependent((Environmental)contents.elementAt(c),list,"@"+myCode+"C");
+        }
+        
+    }
+    
     public void DBUpdateFollowers(MOB mob)
     {
         if((mob==null)||(mob.Name().length()==0)) return;
