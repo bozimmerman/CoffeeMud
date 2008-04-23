@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
-@if?!CheckAuthCode?AUTH_CMDCLANS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_CMDRACES=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 <html>
 <head>
@@ -9,7 +9,7 @@
 	<script language=JavaScript>
 	<!--
 		@if?CheckReqParm?RACE=_NEWONE_@ 
-			window.alert('@MUDGrinder?ADDCLAN@');
+			window.alert('@MUDGrinder?ADDRACE@');
 		@endif@
 		function openUp2(named)
 		{
@@ -25,6 +25,21 @@
 		{
 			ReShow();
 		}
+        function EditAffect(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function AddAffect(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
+        function AddItem(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
 		function Delete()
 		{
 			if(confirm('Delete this race?! Confirm!'))
@@ -52,6 +67,12 @@
 			document.RESOURCES.action='/grinder/race.cmvp';
 			document.RESOURCES.submit();
 		}
+        function ReRace()
+        {
+            document.RESOURCES.FUNCTION.value='RERACE';
+            document.RESOURCES.action='/grinder/racedo.cmvp';
+            document.RESOURCES.submit();
+        }
 		function Cancel()
 		{
 			window.close();
@@ -81,7 +102,7 @@
 		@RaceNext?ALL@
 		<OPTION VALUE="@RaceID@" @if?CheckReqParm?RACE=@@RequestParameter?OLDRACE@@ @SELECTED@endif@>@RaceName@
 		@back@
-		</SELECT>
+		</SELECT>&nbsp;&nbsp;&nbsp;<a href="javascript:ReRace();"><FONT COLOR=RED SIZE=-1>Load</FONT></a>
 		@AddRequestParameter?RACE=@@RequestParameter?OLDRACE@@ @
 	</TD>
 	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
