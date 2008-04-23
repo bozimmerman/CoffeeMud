@@ -482,20 +482,21 @@ public class RoomLoader
 		String lastName=null;
 		Hashtable itemLocs=null;
 		Hashtable mobRides=null;
-		for(Enumeration i=content.elements();i.hasMoreElements();)
-		{
-			Environmental E=(Environmental)i.nextElement();
-			if((debug)&&((lastName==null)||(!lastName.equals(E.Name()))))
-            {lastName=E.Name(); Log.debugOut("RoomLoader","Loading object(s): "+E.Name());}
-			if(E instanceof Item)
-				room.addItem((Item)E);
-			else
-			if(room!=null)
-            {
-                ((MOB)E).setStartRoom(room);
-				((MOB)E).bringToLife(room,true);
-            }
-		}
+        if(room != null)
+    		for(Enumeration i=content.elements();i.hasMoreElements();)
+    		{
+    			Environmental E=(Environmental)i.nextElement();
+    			if((debug)&&((lastName==null)||(!lastName.equals(E.Name()))))
+                {lastName=E.Name(); Log.debugOut("RoomLoader","Loading object(s): "+E.Name());}
+    			if(E instanceof Item)
+    				room.addItem((Item)E);
+    			else
+    			if(room!=null)
+                {
+                    ((MOB)E).setStartRoom(room);
+    				((MOB)E).bringToLife(room,true);
+                }
+    		}
 		itemLocs=(Hashtable)stuff.get("LOCSFOR"+roomID);
 		mobRides=(Hashtable)stuff.get("RIDESFOR"+roomID);
 		if(itemLocs!=null)
