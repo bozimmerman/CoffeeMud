@@ -491,7 +491,6 @@ public class RoomLoader
     			if(E instanceof Item)
     				room.addItem((Item)E);
     			else
-    			if(room!=null)
                 {
                     ((MOB)E).setStartRoom(room);
     				((MOB)E).bringToLife(room,true);
