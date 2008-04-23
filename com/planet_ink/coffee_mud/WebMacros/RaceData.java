@@ -45,17 +45,21 @@ public class RaceData extends StdWebMacro
         StringBuffer str=new StringBuffer("");
         str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">None");
         Race R2=null;
+        String R2ID=null;
         for(Enumeration e=CMClass.races();e.hasMoreElements();)
         {
             R2=(Race)e.nextElement();
-            if((!R2.isGeneric())&&(!old.toLowerCase().startsWith("com.")))
-                str.append("<OPTION VALUE=\"\" "+((old.equalsIgnoreCase(R2.getClass().getName())||(old.equalsIgnoreCase(R2.name())))?"SELECTED":"")+">"+R2.getClass().getName());
-            else
+            R2ID="com.planet_ink.coffee_mud.Races."+R2.ID();
+            if(R2.isGeneric() && CMClass.checkForCMClass("RACE",R2ID))
             {
-                String RID="com.planet_ink.coffee_mud.Races."+R2.ID();
-                if(CMClass.checkForCMClass("RACE",RID))
-                    str.append("<OPTION VALUE=\"\" "+((old.equalsIgnoreCase(RID)||(old.equalsIgnoreCase(R2.name())))?"SELECTED":"")+">"+RID);
+                str.append("<OPTION VALUE=\""+R2.ID()+"\" "+((old.equalsIgnoreCase(R2.ID()))?"SELECTED":"")+">"+R2.ID()+" (Generic)");
+                str.append("<OPTION VALUE=\""+R2ID+"\" "+((old.equalsIgnoreCase(R2ID))?"SELECTED":"")+">"+R2ID);
             }
+            else
+            if(R2.isGeneric())
+                str.append("<OPTION VALUE=\""+R2.ID()+"\" "+((old.equalsIgnoreCase(R2.ID())||old.equalsIgnoreCase(R2ID))?"SELECTED":"")+">"+R2.ID()+" (Generic)");
+            else
+                str.append("<OPTION VALUE=\""+R2ID+"\" "+((old.equalsIgnoreCase(R2.ID())||old.equalsIgnoreCase(R2ID))?"SELECTED":"")+">"+R2ID);
         }
         return str.toString();
     }
