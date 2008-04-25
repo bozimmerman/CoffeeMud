@@ -81,7 +81,7 @@ public class Chant_SummonFood extends Chant
 					newItem.setNourishment(150+(10*super.getX1Level(mob)));
 					newItem.setBaseValue(1);
 					newItem.setMiscText(newItem.text());
-					mob.location().addItemRefuse(newItem,Item.REFUSE_RESOURCE);
+					mob.location().addItemRefuse(newItem,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));
 				}
 				if(newItem!=null)
 					mob.location().showHappens(CMMsg.MSG_OK_ACTION,CMStrings.capitalizeAndLower(newItem.name())+" quickly begin to grow here.");

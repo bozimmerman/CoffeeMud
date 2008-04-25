@@ -142,7 +142,7 @@ public class StdDeckOfCards extends StdHandOfCards implements DeckOfCards
             if(deck.owner==null)
                 ((Room)owner).addItem(deck);
             else
-                ((Room)owner).bringItemHere(deck,Item.REFUSE_PLAYER_DROP,false);
+                ((Room)owner).bringItemHere(deck,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),false);
         }
         deck.fillInTheDeck();
         return deck;

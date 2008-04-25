@@ -4356,7 +4356,7 @@ public class Import extends StdCommand
 				for(int i=0;i<items.size();i++)
 				{
 					Item I=(Item)items.elementAt(i);
-					mob.location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
+					mob.location().addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 				}
 				mob.location().recoverRoomStats();
 				Log.sysOut("Import",mob.Name()+" imported "+areaFileName);

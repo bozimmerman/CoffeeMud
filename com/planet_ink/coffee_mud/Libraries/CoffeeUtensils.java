@@ -319,7 +319,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
             thisContainer.setExpirationDate(0);
         }
         else
-            room.addItemRefuse(thisContainer,Item.REFUSE_PLAYER_DROP);
+            room.addItemRefuse(thisContainer,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
         thisContainer.recoverEnvStats();
         boolean nothingDone=true;
         do

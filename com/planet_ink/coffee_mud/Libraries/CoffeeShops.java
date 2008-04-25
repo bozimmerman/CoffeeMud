@@ -912,7 +912,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             return false;
         Room room=seller.location();
         for(int p=0;p<products.size();p++)
-            room.addItemRefuse((Item)products.elementAt(p),Item.REFUSE_PLAYER_DROP);
+            room.addItemRefuse((Item)products.elementAt(p),CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
         CMMsg msg2=CMClass.getMsg(mobFor,baseProduct,seller,CMMsg.MSG_GET,null);
         if((baseProduct instanceof LandTitle)||(room.okMessage(mobFor,msg2)))
         {

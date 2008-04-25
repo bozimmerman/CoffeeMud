@@ -245,7 +245,7 @@ public class Prop_ItemTransporter extends Property
 						Item item=(Item)itemsToMove.elementAt(i);
 						if((item.container()==null)||(item.container()==container))
 							item.setContainer(nextDestination);
-						room.addItemRefuse(item,Item.REFUSE_PLAYER_DROP);
+						room.addItemRefuse(item,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 					}
 				if(mob!=null)
 					for(int i=0;i<itemsToMove.size();i++)

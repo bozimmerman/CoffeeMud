@@ -223,7 +223,7 @@ public class Conquerable extends Arrest
                     }
 					I.setRawWornCode(0);
 					I.setContainer(null);
-					M.location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
+					M.location().addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 				}
 			}
 		}

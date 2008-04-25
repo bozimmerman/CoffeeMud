@@ -74,7 +74,7 @@ public class Pour extends StdCommand
 			((Drink)out).setLiquidRemaining(0);
 			out.setDisplayText("");
 			out.setName("out");
-			mob.location().addItemRefuse(out,Item.REFUSE_RESOURCE);
+			mob.location().addItemRefuse(out,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));
 			fillThis=out;
 		}
 		if((fillThis==null)

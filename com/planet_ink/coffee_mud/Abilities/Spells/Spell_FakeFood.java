@@ -80,7 +80,7 @@ public class Spell_FakeFood extends Spell
 				{
 					Food F2=(Food)F.copyOf();
 					F2.recoverEnvStats();
-					mob.location().addItemRefuse(F2,Item.REFUSE_RESOURCE);
+					mob.location().addItemRefuse(F2,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));
 					mob.location().show(mob,null,F2,CMMsg.MSG_OK_VISUAL,"<O-NAME> appears!");
 				}
 			}

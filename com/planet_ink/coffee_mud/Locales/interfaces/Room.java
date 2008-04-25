@@ -219,14 +219,14 @@ public interface Room extends Environmental, Affectable, Behavable
 	public String getContextName(Environmental E);
 	
 	public void addItem(Item item);
-	public void addItemRefuse(Item item, double survivalRLHours);
+	public void addItemRefuse(Item item, int expireMins);
 	public void delItem(Item item);
 	public int numItems();
 	public boolean isContent(Item item);
 	public Item fetchItem(Item goodLocation, String itemID);
 	public Item fetchItem(int i);
 	public Item fetchAnyItem(String itemID);
-	public void bringItemHere(Item item, double survivalRLHours, boolean andRiders);
+	public void bringItemHere(Item item, int expireMins, boolean andRiders);
 
 	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName,int wornReqCode);
 	public Environmental fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornReqCode);

@@ -203,7 +203,7 @@ public class Sinking extends StdAbility
 				{
 					Item thisItem=(Item)V.elementAt(v);
 					room.delItem(thisItem);
-					nextRoom.addItemRefuse(thisItem,Item.REFUSE_PLAYER_DROP);
+					nextRoom.addItemRefuse(thisItem,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 				}
 				room=nextRoom;
 				nextRoom.show(invoker,null,item,CMMsg.MSG_OK_ACTION,"<O-NAME> sinks in from "+(reversed()?"below":"above")+".");

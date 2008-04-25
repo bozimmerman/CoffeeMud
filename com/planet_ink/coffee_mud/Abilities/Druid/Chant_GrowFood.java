@@ -120,7 +120,7 @@ public class Chant_GrowFood extends Chant
 				newItem.setDescription("");
 				newItem.recoverEnvStats();
 				newItem.setMiscText(newItem.text());
-				mob.location().addItemRefuse(newItem,Item.REFUSE_RESOURCE);
+				mob.location().addItemRefuse(newItem,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" pops out of the ground.");
 				mob.location().recoverEnvStats();
 			}

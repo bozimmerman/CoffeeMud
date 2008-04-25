@@ -91,7 +91,7 @@ public class Scrapping extends CommonSkill
 						for(int i=0;i<amount;i++)
 						{
 							Item newFound=(Item)found.copyOf();
-							mob.location().addItemRefuse(newFound,Item.REFUSE_PLAYER_DROP);
+							mob.location().addItemRefuse(newFound,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 							CMLib.commands().postGet(mob,null,newFound,true);
 						}
 					}

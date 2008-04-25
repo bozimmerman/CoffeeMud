@@ -668,7 +668,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                         }
                         CMLib.commands().postSay(this,mob,"There ya go!",true,false);
                         if(location()!=null)
-                            location().addItemRefuse(old,Item.REFUSE_PLAYER_DROP);
+                            location().addItemRefuse(old,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
                         CMMsg msg2=CMClass.getMsg(mob,old,this,CMMsg.MSG_GET,null);
                         if(location().okMessage(mob,msg2))
                             location().send(mob,msg2);

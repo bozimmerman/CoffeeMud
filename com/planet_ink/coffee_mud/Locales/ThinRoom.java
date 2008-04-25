@@ -198,14 +198,14 @@ public class ThinRoom implements Room {
 	public void setImage(String newImage){}
 
 	public void addItem(Item item){}
-	public void addItemRefuse(Item item, double survivalRLHours){}
+	public void addItemRefuse(Item item, int expireMins){}
 	public void delItem(Item item){}
 	public int numItems(){return 0;}
 	public boolean isContent(Item item){return false;}
 	public Item fetchItem(Item goodLocation, String itemID){return null;}
 	public Item fetchItem(int i){return null;}
 	public Item fetchAnyItem(String itemID){return null;}
-	public void bringItemHere(Item item, double survivalRLHours, boolean andRiders){}
+	public void bringItemHere(Item item, int expireMins, boolean andRiders){}
 
 	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName,int wornReqCode){return null;}
 	public Environmental fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornReqCode){return null;}

@@ -91,8 +91,8 @@ public class Chant_CrystalGrowth extends Chant
 				Item building=(Item)V.firstElement();
 				Item key=null;
 				if(V.size()>1) key=(Item)V.lastElement();
-				mob.location().addItemRefuse(building,Item.REFUSE_RESOURCE);
-				if(key!=null) mob.location().addItemRefuse(key,Item.REFUSE_RESOURCE);
+				mob.location().addItemRefuse(building,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));
+				if(key!=null) mob.location().addItemRefuse(key,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));
 				Ability A2=CMClass.getAbility("Chant_Brittle");
 				if(A2!=null) building.addNonUninvokableEffect(A2);
 

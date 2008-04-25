@@ -81,7 +81,7 @@ public class Archon_Wrath extends ArchonSkill
 				{
 					I.unWear();
 					I.removeFromOwnerContainer();
-					target.location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
+					target.location().addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 				}
                 Log.sysOut("Banish",mob.name()+" wrathed "+target.name()+".");
                 if(announce)

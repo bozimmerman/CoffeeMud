@@ -94,7 +94,7 @@ public class Push extends Go
     		                msg.setOthersMessage("<S-NAME> push(es) <T-NAME> into here.");
                         R.sendOthers(mob,msg);
     			        if(pushThis instanceof Item)
-    			            R.bringItemHere((Item)pushThis,Item.REFUSE_PLAYER_DROP,true);
+    			            R.bringItemHere((Item)pushThis,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),true);
     			        else
     			        if(pushThis instanceof MOB)
     			            move((MOB)pushThis,dirCode,((MOB)pushThis).isInCombat(),false,true,true);

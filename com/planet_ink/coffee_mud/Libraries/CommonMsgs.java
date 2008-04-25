@@ -1343,7 +1343,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         {
             mob.delInventory(item);
             if(!mob.location().isContent(item))
-                mob.location().addItemRefuse(item,Item.REFUSE_PLAYER_DROP);
+                mob.location().addItemRefuse(item,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
             if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
                 mob.location().recoverRoomStats();
         }

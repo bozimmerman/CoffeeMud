@@ -122,7 +122,7 @@ public class CraftingSkill extends GatheringSkill
 			commonTell(mob,"You have built NOTHING?!!");
 		else
 		{
-			R.addItemRefuse(building,Item.REFUSE_PLAYER_DROP);
+			R.addItemRefuse(building,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 			R.recoverRoomStats();
 			boolean foundIt=false;
 			for(int r=0;r<R.numItems();r++)

@@ -5998,7 +5998,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 										((MOB)container.owner()).addInventory(m);
 									else
 									if(container instanceof Room)
-										((Room)container.owner()).addItemRefuse(m,Item.REFUSE_PLAYER_DROP);
+										((Room)container.owner()).addItemRefuse(m,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 									else
 										monster.addInventory(m);
                                     lastLoaded=m;
@@ -6059,7 +6059,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							{
 								I=(Item)I.copyOf();
 								I.recoverEnvStats();
-								lastKnownLocation.addItemRefuse(I,Item.REFUSE_MONSTER_EQ);
+								lastKnownLocation.addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ));
 								I.setContainer(container);
 								if(I instanceof Coins)
 								    ((Coins)I).putCoinsBack();
@@ -6600,7 +6600,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							goHere.bringMobHere((MOB)scripted,true);
 						else
 						if(scripted instanceof Item)
-							goHere.bringItemHere((Item)scripted,Item.REFUSE_PLAYER_DROP,true);
+							goHere.bringItemHere((Item)scripted,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),true);
 						else
 						{
 							goHere.bringMobHere(monster,true);
@@ -6754,7 +6754,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 							else
 							if((V.elementAt(v) instanceof Item)
 							&&(newRoom!=CMLib.map().roomLocation((Environmental)V.elementAt(v))))
-								newRoom.bringItemHere((Item)V.elementAt(v),Item.REFUSE_PLAYER_DROP,true);
+								newRoom.bringItemHere((Item)V.elementAt(v),CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),true);
 							if(V.elementAt(v)==scripted)
 								lastKnownLocation=newRoom;
 						}
@@ -6913,7 +6913,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					{
 						if(arg2.length()>0) ((Item)caged).setName(arg2);
 						if(arg3.length()>0) ((Item)caged).setDisplayText(arg3);
-						lastKnownLocation.addItemRefuse((Item)caged,Item.REFUSE_PLAYER_DROP);
+						lastKnownLocation.addItemRefuse((Item)caged,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 						((MOB)E).killMeDead(false);
 					}
 				}

@@ -149,7 +149,7 @@ public class WaterCurrents extends ActiveTicker
 				    {
 						I=(Item)todo.elementAt(m);
 						R.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" is swept "+Directions.getDirectionName(dir).toLowerCase()+" by the current.");
-						R2.bringItemHere(I,Item.REFUSE_PLAYER_DROP,false);
+						R2.bringItemHere(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),false);
 						R2.showHappens(CMMsg.MSG_OK_VISUAL,I.name()+" is swept in from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(dir)).toLowerCase()+" by the current.");
 				    }
 				}

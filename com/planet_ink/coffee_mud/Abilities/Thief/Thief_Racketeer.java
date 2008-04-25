@@ -4,14 +4,9 @@ import java.util.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.Ability;
 import com.planet_ink.coffee_mud.Common.interfaces.CMMsg;
 import com.planet_ink.coffee_mud.Items.interfaces.Coins;
-import com.planet_ink.coffee_mud.Items.interfaces.Item;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
-import com.planet_ink.coffee_mud.core.CMClass;
-import com.planet_ink.coffee_mud.core.CMLib;
-import com.planet_ink.coffee_mud.core.CMParms;
-import com.planet_ink.coffee_mud.core.interfaces.Environmental;
-import com.planet_ink.coffee_mud.core.interfaces.MudHost;
-import com.planet_ink.coffee_mud.core.interfaces.Tickable;
+import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
 
 /*
  * Copyright 2000-2008 Bo Zimmerman, Lee Fox Licensed under the Apache License,
@@ -148,7 +143,7 @@ public class Thief_Racketeer extends ThiefSkill
                 Coins C=CMLib.beanCounter().makeBestCurrency(mob,amount);
                 if(C!=null)
                 {
-                    mob.location().addItemRefuse(C,Item.REFUSE_PLAYER_DROP);
+                    mob.location().addItemRefuse(C,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
                     CMLib.commands().postGet(mob,null,C,true);
                 }
             }

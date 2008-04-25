@@ -1191,7 +1191,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			I=(Item)inhabs.elementAt(i);
 			if(bringBackHere!=null)
-				bringBackHere.bringItemHere(I,Item.REFUSE_PLAYER_DROP,false);
+				bringBackHere.bringItemHere(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),false);
 			else
 				I.destroy();
 		}

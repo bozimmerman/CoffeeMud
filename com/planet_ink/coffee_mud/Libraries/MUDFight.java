@@ -631,7 +631,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			    if(C!=null)
 			    {
 					C.recoverEnvStats();
-					bodyRoom.addItemRefuse(C,Item.REFUSE_MONSTER_EQ);
+					bodyRoom.addItemRefuse(C,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ));
 					bodyRoom.recoverRoomStats();
 					MOB mob=(MOB)goldLooters.elementAt(g);
 					if(mob.location()==bodyRoom)

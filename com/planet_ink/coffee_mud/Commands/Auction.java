@@ -109,7 +109,7 @@ public class Auction extends Channel implements Tickable
 						{
 							((Item)liveData.auctioningI).unWear();
                             Auctioneer.AuctionRates aRates=new Auctioneer.AuctionRates();
-							winnerM.location().bringItemHere((Item)liveData.auctioningI,Item.REFUSE_PLAYER_DROP,false);
+							winnerM.location().bringItemHere((Item)liveData.auctioningI,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),false);
 							double houseCut=Math.floor(liveData.bid*aRates.liveCutPct);
 							double finalAmount=liveData.bid-houseCut;
 							CMLib.coffeeShops().returnMoney(winnerM,liveData.currency,liveData.highBid-liveData.bid);

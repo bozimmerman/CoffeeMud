@@ -314,7 +314,7 @@ public class Test extends StdCommand
             	B2.setParms("RAND_PROG 100;IF !ISHERE(nondescript);MPECHO LOST MY CONTAINER $d $D!; GOSSIP LOST MY CONTAINER! $d $D; MPPURGE $i;ENDIF;~;");
             	M2.addBehavior(B2);
             	Item I=CMClass.getBasicItem("LockableContainer");
-            	mob.location().addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
+            	mob.location().addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
             	I.setRiding((Rideable)M2);
             }
             

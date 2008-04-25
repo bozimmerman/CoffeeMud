@@ -94,7 +94,7 @@ public class Spell_Duplicate extends Spell
 					((MOB)target.owner()).addInventory(newTarget);
 				else
 				if(target.owner() instanceof Room)
-					((Room)target.owner()).addItemRefuse(newTarget,Item.REFUSE_PLAYER_DROP);
+					((Room)target.owner()).addItemRefuse(newTarget,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 				else
 					mob.addInventory(newTarget);
 				if(newTarget instanceof Coins)

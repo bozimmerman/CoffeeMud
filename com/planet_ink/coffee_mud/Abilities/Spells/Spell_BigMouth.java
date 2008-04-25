@@ -121,7 +121,7 @@ public class Spell_BigMouth extends Spell
 			}
 			if((msg.target() instanceof Item)
 			&&(!(msg.target() instanceof Food)))
-				Stomach().bringItemHere((Item)msg.target(),Item.REFUSE_MONSTER_EQ,false);
+				Stomach().bringItemHere((Item)msg.target(),CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ),false);
 		}
 		if((msg.amISource(mob))
 		&&((msg.sourceMinor()==CMMsg.TYP_QUIT)||(msg.sourceMinor()==CMMsg.TYP_DEATH)))
@@ -177,7 +177,7 @@ public class Spell_BigMouth extends Spell
 			Item PartiallyDigestedItem = Stomach().fetchItem(y);
 			if (PartiallyDigestedItem!=null)
 			{
-				lastKnownLocation().addItemRefuse(PartiallyDigestedItem,Item.REFUSE_PLAYER_DROP);
+				lastKnownLocation().addItemRefuse(PartiallyDigestedItem,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 				Stomach().delItem(PartiallyDigestedItem);
 			}
 		}

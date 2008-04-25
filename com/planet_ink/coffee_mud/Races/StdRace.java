@@ -451,7 +451,7 @@ public class StdRace implements Race
 		Ability AGE=mob.fetchEffect("Age");
 		if(AGE!=null) Body.addNonUninvokableEffect(AGE);
 		if(room!=null)
-			room.addItemRefuse(Body,mob.isMonster()?Item.REFUSE_MONSTER_BODY:Item.REFUSE_PLAYER_BODY);
+			room.addItemRefuse(Body,mob.isMonster()?CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_BODY):CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_BODY));
 		Body.setDestroyAfterLooting(destroyBodyAfterUse());
 		Body.recoverEnvStats();
 		for(int i=0;i<mob.numAllEffects();i++)
@@ -485,7 +485,7 @@ public class StdRace implements Race
                     if(thisItem.container()!=null)
                         containerMap.put(thisItem,thisItem.container());
 					newItem.setContainer(null);
-					newItem.setExpirationDate(System.currentTimeMillis()+Math.round(Item.REFUSE_MONSTER_EQ*TimeManager.MILI_HOUR));
+					newItem.setExpirationDate(System.currentTimeMillis()+Math.round(CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ)*TimeManager.MILI_HOUR));
 					newItem.recoverEnvStats();
 					thisItem=newItem;
 					i++;
@@ -523,7 +523,7 @@ public class StdRace implements Race
 					I=(Item)I.copyOf();
 					I.setContainer(Body);
 					if(room!=null)
-						room.addItemRefuse(I,Item.REFUSE_MONSTER_EQ);
+						room.addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ));
 				}
 			}
 		}

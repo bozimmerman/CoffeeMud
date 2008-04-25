@@ -143,7 +143,7 @@ public class Chicken extends StdRace
                     ((MOB)ticking).location().show(((MOB)ticking),null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> lay(s) an egg.");
                     I.removeFromOwnerContainer();
                     I.executeMsg((MOB)ticking,CMClass.getMsg((MOB)ticking,I,null,CMMsg.TYP_ROOMRESET,null));
-                    ((MOB)ticking).location().addItemRefuse(I,Item.REFUSE_RESOURCE);
+                    ((MOB)ticking).location().addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));
                     ((MOB)ticking).location().recoverRoomStats();
                 }
             }

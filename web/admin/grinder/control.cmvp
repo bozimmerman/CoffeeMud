@@ -793,6 +793,13 @@
 		<A HREF="javascript:openUp('PROP_HAVEZAPPER')">Click here for Prop_HaveZapper help</a>
 		</TD></TR>
 		
+        <TR><TD WIDTH=20% VALIGN=TOP><FONT COLOR=WHITE>EXPIRATIONS</FONT>
+        </TD><TD WIDTH=80% VALIGN=TOP>
+        <INPUT TYPE=TEXT NAME=EXPIRATIONS SIZE=40 VALUE="@INIValue?MASK=EXPIRATIONS&VALUE@">
+        <BR>
+        <FONT COLOR=WHITE>@INIValue?MASK=EXPIRATIONS&INIHELP@
+        </TD></TR>
+        
 		</TABLE>
 	@endif@
 	@if?CheckReqParm?INIPAGE=MISC@

@@ -136,7 +136,7 @@ public class Chant_SummonDustdevil extends Chant
 			{
 				Item I=(Item)V.elementAt(i);
 				mob.delInventory(I);
-				mob.location().addItemRefuse(I,Item.REFUSE_MONSTER_EQ);
+				mob.location().addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ));
 			}
 		}
 		super.unInvoke();

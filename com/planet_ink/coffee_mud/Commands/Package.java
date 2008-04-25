@@ -110,7 +110,7 @@ public class Package extends BaseItemParser
             thePackage.packageMe(getThis,V.size());
             for(int i=0;i<V.size();i++)
                 ((Item)V.elementAt(i)).destroy();
-            mob.location().addItemRefuse(thePackage,Item.REFUSE_PLAYER_DROP);
+            mob.location().addItemRefuse(thePackage,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
             mob.location().recoverRoomStats();
             mob.location().recoverRoomStats();
         }

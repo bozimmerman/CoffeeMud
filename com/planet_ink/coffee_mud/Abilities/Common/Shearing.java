@@ -95,7 +95,7 @@ public class Shearing extends CommonSkill
 						{
 							RawMaterial I=(RawMaterial)V.elementAt(v);
 							I=(RawMaterial)I.copyOf();
-							mob.location().addItemRefuse(I,Item.REFUSE_MONSTER_EQ);
+							mob.location().addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ));
 						}
 					}
 				}

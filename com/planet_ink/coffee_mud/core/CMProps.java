@@ -159,7 +159,13 @@ public class CMProps extends Properties
     public static final int SYSTEMI_INJBLEEDMINLEVEL=49;
     public static final int SYSTEMI_INJBLEEDPCTHP=50;
     public static final int SYSTEMI_INJBLEEDPCTCHANCE=51;
-    public static final int NUMI_SYSTEM=52;
+    public static final int SYSTEMI_EXPIRE_MONSTER_EQ=52;
+    public static final int SYSTEMI_EXPIRE_PLAYER_DROP=53;
+    public static final int SYSTEMI_EXPIRE_RESOURCE=54;
+    public static final int SYSTEMI_EXPIRE_MONSTER_BODY=55;
+    public static final int SYSTEMI_EXPIRE_PLAYER_BODY=56;
+
+    public static final int NUMI_SYSTEM=57;
 
     public static final int SYSTEMB_MOBCOMPRESS=0;
     public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -576,6 +582,27 @@ public class CMProps extends Properties
             setIntVar(SYSTEMI_EQVIEW,1);
         else
             setIntVar(SYSTEMI_EQVIEW,0);
+        
+        s=getStr("EXPIRATIONS");
+        Vector V=CMParms.parseCommas(s,false);
+        for(int i=0;i<5;i++) 
+        {
+            if(V.size()>0)
+            {
+                setIntVar(SYSTEMI_EXPIRE_MONSTER_EQ + i,(String)V.elementAt(0));
+                V.removeElementAt(0);
+            }
+            else
+            switch(SYSTEMI_EXPIRE_MONSTER_EQ + i)
+            {
+            case SYSTEMI_EXPIRE_MONSTER_EQ: setIntVar(SYSTEMI_EXPIRE_MONSTER_EQ,"30"); break;
+            case SYSTEMI_EXPIRE_PLAYER_DROP: setIntVar(SYSTEMI_EXPIRE_PLAYER_DROP,"1200"); break;
+            case SYSTEMI_EXPIRE_RESOURCE: setIntVar(SYSTEMI_EXPIRE_RESOURCE,"60"); break;
+            case SYSTEMI_EXPIRE_MONSTER_BODY: setIntVar(SYSTEMI_EXPIRE_MONSTER_BODY,"30"); break;
+            case SYSTEMI_EXPIRE_PLAYER_BODY: setIntVar(SYSTEMI_EXPIRE_PLAYER_BODY,"1330"); break;
+            }
+        }
+        
 
         setIntVar(SYSTEMI_MANACONSUMETIME,getStr("MANACONSUMETIME"));
         setIntVar(SYSTEMI_PAGEBREAK,getStr("PAGEBREAK"));
@@ -615,7 +642,7 @@ public class CMProps extends Properties
         setIntVar(SYSTEMI_DEFABLETIME,(int)Math.round(getDouble("DEFABLETIME")*100.0));
         setIntVar(SYSTEMI_DEFCOMABLETIME,(int)Math.round(getDouble("DEFCOMABLETIME")*100.0));
 
-        Vector V=CMParms.parseCommas(getStr("INJURYSYSTEM"),true);
+        V=CMParms.parseCommas(getStr("INJURYSYSTEM"),true);
 
         if(V.size()>0) setIntVar(SYSTEMI_INJPCTCHANCE,CMath.s_int((String)V.elementAt(0)));
         else setIntVar(SYSTEMI_INJPCTCHANCE,100);

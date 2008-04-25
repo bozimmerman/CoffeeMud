@@ -78,7 +78,7 @@ public class Chant_SummonHerb extends Chant
 					newItem.setMaterial(RawMaterial.RESOURCE_HERBS);
 					newItem.setNourishment(1);
 					newItem.setMiscText(newItem.text());
-					mob.location().addItemRefuse(newItem,Item.REFUSE_RESOURCE);
+					mob.location().addItemRefuse(newItem,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));
 				}
 				mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Some herbs quickly begin to grow here.");
 				mob.location().recoverEnvStats();

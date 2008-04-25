@@ -113,7 +113,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
             if(own instanceof Room)
             {
                 I.removeFromOwnerContainer();
-                ((Room)own).addItemRefuse(I,Item.REFUSE_PLAYER_DROP);
+                ((Room)own).addItemRefuse(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
             }
             else
             {
@@ -164,7 +164,7 @@ public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCar
                 ((Room)owner()).addItem(card);
             else
             if(!((Room)owner()).isContent(card))
-                ((Room)owner()).bringItemHere(card,Item.REFUSE_PLAYER_DROP,false);
+                ((Room)owner()).bringItemHere(card,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),false);
         }
         else
         {

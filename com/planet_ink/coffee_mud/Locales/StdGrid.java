@@ -654,7 +654,7 @@ public class StdGrid extends StdRoom implements GridLocale
 							if(I!=null)
 							{
 								if(backHere!=null)
-									backHere.bringItemHere(I,Item.REFUSE_PLAYER_DROP,true);
+									backHere.bringItemHere(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),true);
 								else
 									I.destroy();
                                 if(room.isContent(I))

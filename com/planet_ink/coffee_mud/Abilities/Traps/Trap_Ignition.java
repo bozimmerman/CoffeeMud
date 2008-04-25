@@ -99,7 +99,7 @@ public class Trap_Ignition extends StdTrap
 					{
 						target.location().show(target,affected,null,CMMsg.MSG_DROP,"<S-NAME> drop(s) the burning <T-NAME>!");
 						if(target.isMine(affected))
-							target.location().bringItemHere((Item)affected,Item.REFUSE_PLAYER_DROP,false);
+							target.location().bringItemHere((Item)affected,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),false);
 					}
 					if(canBeUninvoked())
 						disable();

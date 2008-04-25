@@ -227,7 +227,7 @@ public class Thief_Robbery extends ThiefSkill
 					stolen=(Environmental)products.firstElement();
 					if(stolen instanceof Item)
 					{
-						mob.location().addItemRefuse((Item)stolen,Item.REFUSE_PLAYER_DROP);
+						mob.location().addItemRefuse((Item)stolen,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 						msg=CMClass.getMsg(mob,stolen,null,CMMsg.MSG_GET,CMMsg.MSG_GET,CMMsg.MSG_NOISE,null);
 						if(mob.location().okMessage(mob,msg))
 							mob.location().send(mob,msg);

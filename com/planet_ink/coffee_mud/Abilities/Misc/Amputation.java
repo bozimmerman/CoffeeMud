@@ -458,12 +458,12 @@ public class Amputation extends StdAbility implements Amputator
 		}
 		
 		if((target instanceof MOB)&&(((MOB)target).location()!=null))
-			((MOB)target).location().addItemRefuse(limb,Item.REFUSE_MONSTER_EQ);
+			((MOB)target).location().addItemRefuse(limb,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ));
 		else
 		if((target instanceof DeadBody)
 		&&(((Item)target).owner()!=null)
 		&&(((Item)target).owner() instanceof Room))
-			((Room)((Item)target).owner()).addItemRefuse(limb,Item.REFUSE_MONSTER_EQ);
+			((Room)((Item)target).owner()).addItemRefuse(limb,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ));
         
         if(!isFakeLimb)
         {

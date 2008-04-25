@@ -83,7 +83,7 @@ public class Butchering extends GatheringSkill
 								for(int d=0;d<diseases.size();d++)
 									newFound.addNonUninvokableEffect((Ability)((Ability)diseases.elementAt(d)).copyOf());
 								newFound.recoverEnvStats();
-								mob.location().addItemRefuse(newFound,Item.REFUSE_RESOURCE);
+								mob.location().addItemRefuse(newFound,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_RESOURCE));
 								mob.location().recoverRoomStats();
 							}
 						}

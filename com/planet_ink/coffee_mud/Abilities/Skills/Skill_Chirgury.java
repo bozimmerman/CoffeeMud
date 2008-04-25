@@ -168,7 +168,7 @@ public class Skill_Chirgury extends StdSkill
 				        meat=(Item)meat.copyOf();
 					    meat.recoverEnvStats();
 					    meat.text();
-				        mob.location().addItemRefuse(meat,Item.REFUSE_PLAYER_DROP);
+				        mob.location().addItemRefuse(meat,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 				        mob.location().show(mob,meat,null,CMMsg.MSG_GET,(i==0)?"<S-NAME> remove(s) <T-NAME> from "+target.name()+".":null);
 				    }
 				}
@@ -202,7 +202,7 @@ public class Skill_Chirgury extends StdSkill
 				        baby.setDescription(CMStrings.capitalizeAndLower(baby.charStats().hisher())+" body parts can be faintly made out in the twisted and mangled flesh.");
 				        baby.setMobDescription(baby.description());
 				        baby.text();
-				        mob.location().addItemRefuse(baby,Item.REFUSE_PLAYER_DROP);
+				        mob.location().addItemRefuse(baby,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 				        mob.location().show(mob,baby,null,CMMsg.MSG_GET,"<S-NAME> remove(s) <T-NAME> from "+target.name()+".");
 				    }
 				}

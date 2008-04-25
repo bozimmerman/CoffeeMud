@@ -173,7 +173,7 @@ public class Skill_Juggle extends BardSkill
 					unJuggle(I);
 				else
 				if((I.owner() instanceof Room)&&(I.owner()!=R))
-					R.bringItemHere(I,Item.REFUSE_PLAYER_DROP,false);
+					R.bringItemHere(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),false);
 			}
 		}
 		pause=true;
@@ -234,7 +234,7 @@ public class Skill_Juggle extends BardSkill
 			{
 				I.unWear();
 				if(!M.location().isContent(I))
-					M.location().bringItemHere(I,Item.REFUSE_PLAYER_DROP,false);
+					M.location().bringItemHere(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),false);
 			}
 		}
 		M.recoverEnvStats();

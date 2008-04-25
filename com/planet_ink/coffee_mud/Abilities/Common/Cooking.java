@@ -143,7 +143,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 						food.setMiscText(building.text());
 						food.recoverEnvStats();
 						if(cooking.owner() instanceof Room)
-							((Room)cooking.owner()).addItemRefuse(food,Item.REFUSE_PLAYER_DROP);
+							((Room)cooking.owner()).addItemRefuse(food,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 						else
 						if(cooking.owner() instanceof MOB)
 							((MOB)cooking.owner()).addInventory(food);

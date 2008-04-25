@@ -159,7 +159,7 @@ public class Spell_FeignDeath extends Spell
     			Body.setDisplayText("the body of "+target.name()+" lies here.");
     			Body.baseEnvStats().setWeight(target.envStats().weight()+100);
     			Body.setSecretIdentity("FAKE");
-    			deathRoom.addItemRefuse(Body,Item.REFUSE_MONSTER_BODY);
+    			deathRoom.addItemRefuse(Body,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_BODY));
     			Body.recoverEnvStats();
     			deathRoom.recoverRoomStats();
             }

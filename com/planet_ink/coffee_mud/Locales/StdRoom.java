@@ -967,7 +967,7 @@ public class StdRoom implements Room
 					bringMobHere((MOB)RI,andFollowers);
 				else
 				if(RI instanceof Item)
-					bringItemHere((Item)RI,Item.REFUSE_PLAYER_DROP,andFollowers);
+					bringItemHere((Item)RI,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),andFollowers);
 				// refuse is good for above, since mostly moving player stuff around
 			}
 			else
@@ -987,7 +987,7 @@ public class StdRoom implements Room
 							bringMobHere((MOB)RR,andFollowers);
 						else
 						if(RR instanceof Item)
-							bringItemHere((Item)RR,Item.REFUSE_PLAYER_DROP,andFollowers);
+							bringItemHere((Item)RR,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),andFollowers);
 						// refuse is good for above, since mostly moving player stuff around
 					}
 					else
@@ -1000,7 +1000,7 @@ public class StdRoom implements Room
 		recoverRoomStats();
 	}
 
-	public void bringItemHere(Item item, double survivalRLHours, boolean andRiders)
+	public void bringItemHere(Item item, int expireMins, boolean andRiders)
 	{
 		if(item==null) return;
 
@@ -1013,10 +1013,10 @@ public class StdRoom implements Room
 		if(o instanceof MOB)((MOB)o).delInventory(item);
 		if(o instanceof Room) ((Room)o).delItem(item);
 
-		if(survivalRLHours<=0.0)
+		if(expireMins<=0)
 			addItem(item);
 		else
-			addItemRefuse(item,survivalRLHours);
+			addItemRefuse(item,expireMins);
 		for(int v=0;v<V.size();v++)
 		{
 			Item i2=(Item)V.elementAt(v);
@@ -1056,7 +1056,7 @@ public class StdRoom implements Room
 							bringMobHere((MOB)RR,true);
 						else
 						if(RR instanceof Item)
-							bringItemHere((Item)RR,Item.REFUSE_PLAYER_DROP,true);
+							bringItemHere((Item)RR,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),true);
 					}
 					else
 						RR.setRiding(null);
@@ -1491,13 +1491,13 @@ public class StdRoom implements Room
 		contents.addElement(item);
 		item.recoverEnvStats();
 	}
-	public void addItemRefuse(Item item, double survivalRLHours)
+	public void addItemRefuse(Item item, int expireMins)
 	{
 		addItem(item);
-        if(survivalRLHours<=0)
+        if(expireMins<=0)
             item.setExpirationDate(0);
         else
-    		item.setExpirationDate(System.currentTimeMillis()+Math.round(CMath.mul(survivalRLHours,TimeManager.MILI_HOUR)));
+    		item.setExpirationDate(System.currentTimeMillis()+(expireMins * TimeManager.MILI_MINUTE));
 	}
 	public void delItem(Item item)
 	{
