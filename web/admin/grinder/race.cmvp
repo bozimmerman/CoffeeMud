@@ -17,6 +17,24 @@
 			w=window.open("/property.cmvp?ABILITY="+named,
 			            "Ability",strFeatures, false);
 		}
+        function AddNewItem(FIELD)
+        {
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM=NEW&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,"Race Item",strFeatures, false);
+        }
+        function AddItem(ME)
+        {
+            ReShow();
+        }
+        function EditItemDone()
+        {
+            ReShow();
+        }
+        function EditItem(ME,FIELD)
+        {
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM="+ME+"&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,"Race Item",strFeatures, false);
+        }
 		function AddMember(v)
 		{
 			ReShow();
@@ -31,11 +49,6 @@
                 ReShow();
         }
         function AddAffect(ME)
-        {
-            if(ME.selectedIndex>0)
-                ReShow();
-        }
-        function AddItem(ME)
         {
             if(ME.selectedIndex>0)
                 ReShow();
@@ -89,6 +102,7 @@
 <body BGCOLOR=BLACK>
 <FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="race.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=REPLACE VALUE="">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 	<TABLE WIDTH=100% BORDER=0>
 	<TR>

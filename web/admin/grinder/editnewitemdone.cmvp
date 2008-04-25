@@ -10,6 +10,14 @@
 @if?CheckReqParm?MOB=@
 	<SCRIPT LANGUAGE=JavaScript>
 	<!--
+	    var responsefield = '@RequestParameter?RESPONSEFIELD@';
+        var replacefield = '@RequestParameter?REPLACEFIELD@';
+	    if(responsefield != '') 
+	    {
+	       var newitemid = '@RequestParameter?ITEM@'; 
+	       var responsecommand = 'opener.document.' + responsefield + '.value = "' + replacefield + '=' + newitemid +'"';
+	       eval(responsecommand);
+	    }
 		opener.EditItemDone();
 		window.close();
 	//-->
