@@ -253,7 +253,13 @@ public class RaceData extends StdWebMacro
                 String MATCHING=httpReq.getRequestParameter(c+"ITEM"+i);
                 if(MATCHING==null)
                     break;
-                Item I2=RoomData.getItemFromAnywhere(items,MATCHING);
+                Item I2=RoomData.getItemFromAnywhere(itemlist,MATCHING);
+                if(I2==null)
+                {
+                    I2=RoomData.getItemFromAnywhere(items,MATCHING);
+                    if(I2!=null)
+                        RoomData.contributeItems(CMParms.makeVector(I2));
+                }
                 if(I2!=null)
                     classes.addElement(I2);
                 if(one) break;
@@ -289,7 +295,7 @@ public class RaceData extends StdWebMacro
             str.append("</SELECT>");
             str.append("</TD>");
             str.append("<TD WIDTH=10%>");
-            str.append("<INPUT TYPE=BUTTON NAME="+c+"EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+RoomData.getItemCode(classes,I)+"');\">");
+            str.append("<INPUT TYPE=BUTTON NAME="+c+"EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+RoomData.getItemCode(classes,I)+"','"+c+"ITEM"+(numItems)+"');\">");
             str.append("</TD></TR>");
         }
         str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
@@ -340,7 +346,7 @@ public class RaceData extends StdWebMacro
         str.append("</SELECT>");
         str.append("</TD>");
         str.append("<TD WIDTH=10%>");
-        str.append("<INPUT TYPE=BUTTON NAME="+c+"ADDITEM VALUE=\"NEW\" ONCLICK=\"AddNewItem();\">");
+        str.append("<INPUT TYPE=BUTTON NAME="+c+"ADDITEM VALUE=\"NEW\" ONCLICK=\"AddNewItem('"+c+"ITEM"+(numItems+1)+"');\">");
         str.append("</TD></TR></TABLE>");
         return str;
     }
@@ -525,6 +531,19 @@ public class RaceData extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
+		
+		String replaceCommand=httpReq.getRequestParameter("REPLACE");
+		if((replaceCommand != null) 
+		&& (replaceCommand.length()>0)
+        && (replaceCommand.indexOf('=')>0))
+		{
+		    int eq=replaceCommand.indexOf('=');
+		    String field=replaceCommand.substring(0,eq);
+		    String value=replaceCommand.substring(eq+1);
+		    httpReq.addRequestParameters(field, value);
+            httpReq.addRequestParameters("REPLACE","");
+		}
+		
 		String last=httpReq.getRequestParameter("RACE");
 		if(last==null) return " @break@";
 		if(last.length()>0)

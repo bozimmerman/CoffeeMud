@@ -52,6 +52,9 @@ public class RoomData extends StdWebMacro
 		for(int i=0;i<allitems.size();i++)
 			if(allitems.elementAt(i)==I)
 				return new Long(new String(I.ID()+"/"+I.Name()+"/"+I.displayText()).hashCode()<<5).toString()+i;
+        for(int i=0;i<allitems.size();i++)
+            if(((Environmental)allitems.elementAt(i)).sameAs(I))
+                return new Long(new String(I.ID()+"/"+I.Name()+"/"+I.displayText()).hashCode()<<5).toString()+i;
 		return "";
 	}
 
