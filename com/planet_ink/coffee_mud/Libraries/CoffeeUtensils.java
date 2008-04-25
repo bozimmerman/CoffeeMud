@@ -587,5 +587,71 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
         }
         return I;
     }
+    
+    public void reloadCharClasses(CharClass oldC)
+    {
+        for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+        {
+            Room room=(Room)e.nextElement();
+            for(int i=0;i<room.numInhabitants();i++)
+            {
+                MOB M=room.fetchInhabitant(i);
+                if(M==null) continue;
+                for(int c=0;c<M.baseCharStats().numClasses();c++)
+                    if(M.baseCharStats().getMyClass(c)==oldC)
+                    {
+                        M.baseCharStats().setMyClasses(M.baseCharStats().getMyClassesStr());
+                        break;
+                    }
+                for(int c=0;c<M.charStats().numClasses();c++)
+                    if(M.charStats().getMyClass(c)==oldC)
+                    {
+                        M.charStats().setMyClasses(M.charStats().getMyClassesStr());
+                        break;
+                    }
+            }
+            for(e=CMLib.map().players();e.hasMoreElements();)
+            {
+                MOB M=(MOB)e.nextElement();
+                for(int c=0;c<M.baseCharStats().numClasses();c++)
+                    if(M.baseCharStats().getMyClass(c)==oldC)
+                    {
+                        M.baseCharStats().setMyClasses(M.baseCharStats().getMyClassesStr());
+                        break;
+                    }
+                for(int c=0;c<M.charStats().numClasses();c++)
+                    if(M.charStats().getMyClass(c)==oldC)
+                    {
+                        M.charStats().setMyClasses(M.charStats().getMyClassesStr());
+                        break;
+                    }
+            }
+        }
+    }
+    
+    public void swapRaces(Race newR, Race oldR)
+    {
+        for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+        {
+            Room room=(Room)e.nextElement();
+            for(int i=0;i<room.numInhabitants();i++)
+            {
+                MOB M=room.fetchInhabitant(i);
+                if(M==null) continue;
+                if(M.baseCharStats().getMyRace()==oldR)
+                    M.baseCharStats().setMyRace(newR);
+                if(M.charStats().getMyRace()==oldR)
+                    M.charStats().setMyRace(newR);
+            }
+            for(e=CMLib.map().players();e.hasMoreElements();)
+            {
+                MOB M=(MOB)e.nextElement();
+                if(M.baseCharStats().getMyRace()==oldR)
+                    M.baseCharStats().setMyRace(newR);
+                if(M.charStats().getMyRace()==oldR)
+                    M.charStats().setMyRace(newR);
+            }
+        }
+    }
 }
 

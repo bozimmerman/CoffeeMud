@@ -494,27 +494,7 @@ public class Destroy extends BaseItemParser
 		CMClass.loadClass("RACE","com/planet_ink/coffee_mud/Races/"+oldRID+".class");
 		Race oldR=CMClass.getRace(oldRID);
         if(oldR==null) oldR=CMClass.getRace("StdRace");
-		for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
-		{
-			Room room=(Room)e.nextElement();
-			for(int i=0;i<room.numInhabitants();i++)
-			{
-				MOB M=room.fetchInhabitant(i);
-				if(M==null) continue;
-				if(M.baseCharStats().getMyRace()==R)
-					M.baseCharStats().setMyRace(oldR);
-				if(M.charStats().getMyRace()==R)
-					M.charStats().setMyRace(oldR);
-			}
-			for(e=CMLib.map().players();e.hasMoreElements();)
-			{
-				MOB M=(MOB)e.nextElement();
-				if(M.baseCharStats().getMyRace()==R)
-					M.baseCharStats().setMyRace(oldR);
-				if(M.charStats().getMyRace()==R)
-					M.charStats().setMyRace(oldR);
-			}
-		}
+        CMLib.utensils().swapRaces(oldR,R);
         if(!oldR.ID().equals("StdRace"))
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just changed?!");
 		else
@@ -629,31 +609,7 @@ public class Destroy extends BaseItemParser
         CMClass.loadClass("CHARCLASS","com/planet_ink/coffee_mud/CharClasses/"+oldCID+".class");
         CharClass oldC=CMClass.getCharClass(oldCID);
         if(oldC==null) oldC=CMClass.getCharClass("StdCharClass");
-        for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
-        {
-            Room room=(Room)e.nextElement();
-            for(int i=0;i<room.numInhabitants();i++)
-            {
-                MOB M=room.fetchInhabitant(i);
-                if(M==null) continue;
-                for(int c=0;c<M.baseCharStats().numClasses();c++)
-                    if(M.baseCharStats().getMyClass(c)==C)
-                        M.baseCharStats().setMyClasses(M.baseCharStats().getMyClassesStr());
-                for(int c=0;c<M.charStats().numClasses();c++)
-                    if(M.charStats().getMyClass(c)==C)
-                        M.charStats().setMyClasses(M.charStats().getMyClassesStr());
-            }
-            for(e=CMLib.map().players();e.hasMoreElements();)
-            {
-                MOB M=(MOB)e.nextElement();
-                for(int c=0;c<M.baseCharStats().numClasses();c++)
-                    if(M.baseCharStats().getMyClass(c)==C)
-                        M.baseCharStats().setMyClasses(M.baseCharStats().getMyClassesStr());
-                for(int c=0;c<M.charStats().numClasses();c++)
-                    if(M.charStats().getMyClass(c)==C)
-                        M.charStats().setMyClasses(M.charStats().getMyClassesStr());
-            }
-        }
+        CMLib.utensils().reloadCharClasses(C);
         if(!oldC.ID().equals("StdCharClass"))
             mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just changed?!");
         else

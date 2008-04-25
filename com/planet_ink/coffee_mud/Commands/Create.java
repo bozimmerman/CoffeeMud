@@ -422,27 +422,7 @@ public class Create extends BaseGenerics
 		modifyGenRace(mob,GR);
 		CMLib.database().DBCreateRace(GR.ID(),GR.racialParms());
 		if(R!=null)
-		for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
-		{
-			Room room=(Room)e.nextElement();
-			for(int i=0;i<room.numInhabitants();i++)
-			{
-				MOB M=room.fetchInhabitant(i);
-				if(M==null) continue;
-				if(M.baseCharStats().getMyRace()==R)
-					M.baseCharStats().setMyRace(GR);
-				if(M.charStats().getMyRace()==R)
-					M.charStats().setMyRace(GR);
-			}
-			for(e=CMLib.map().players();e.hasMoreElements();)
-			{
-				MOB M=(MOB)e.nextElement();
-				if(M.baseCharStats().getMyRace()==R)
-					M.baseCharStats().setMyRace(GR);
-				if(M.charStats().getMyRace()==R)
-					M.charStats().setMyRace(GR);
-			}
-		}
+            CMLib.utensils().swapRaces(GR,R);
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The diversity of the world just increased!");
 	}
 
@@ -706,31 +686,7 @@ public class Create extends BaseGenerics
 		modifyGenClass(mob,CR);
 		CMLib.database().DBCreateClass(CR.ID(),CR.classParms());
 		if(C!=null)
-			for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
-			{
-				Room room=(Room)e.nextElement();
-				for(int i=0;i<room.numInhabitants();i++)
-				{
-					MOB M=room.fetchInhabitant(i);
-					if(M==null) continue;
-					for(int c=0;c<M.baseCharStats().numClasses();c++)
-						if(M.baseCharStats().getMyClass(c)==C)
-							M.baseCharStats().setMyClasses(M.baseCharStats().getMyClassesStr());
-					for(int c=0;c<M.charStats().numClasses();c++)
-						if(M.charStats().getMyClass(c)==C)
-							M.charStats().setMyClasses(M.charStats().getMyClassesStr());
-				}
-				for(e=CMLib.map().players();e.hasMoreElements();)
-				{
-					MOB M=(MOB)e.nextElement();
-					for(int c=0;c<M.baseCharStats().numClasses();c++)
-						if(M.baseCharStats().getMyClass(c)==C)
-							M.baseCharStats().setMyClasses(M.baseCharStats().getMyClassesStr());
-					for(int c=0;c<M.charStats().numClasses();c++)
-						if(M.charStats().getMyClass(c)==C)
-							M.charStats().setMyClasses(M.charStats().getMyClassesStr());
-				}
-			}
+		    CMLib.utensils().reloadCharClasses(C);
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The employment of the world just increased!");
 	}
 

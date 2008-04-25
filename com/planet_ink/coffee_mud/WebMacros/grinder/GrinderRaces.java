@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.WebMacros.grinder;
+import com.planet_ink.coffee_mud.WebMacros.RoomData;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -36,214 +37,97 @@ public class GrinderRaces
 {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-    // valid parms include HELP, STATS, SENSES, TRAINS, PRACS, ABILITIES,
-    // HEALTHTEXTS, NATURALWEAPON, PLAYABLE, DISPOSITIONS, STARTINGEQ,
-    // CLASSES, LANGS, EFFECTS
-
-    private String raceDropDown(String old)
+    public static String getEStats(char c, ExternalHTTPRequests httpReq)
     {
-        StringBuffer str=new StringBuffer("");
-        str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">None");
-        Race R2=null;
-        String R2ID=null;
-        for(Enumeration e=CMClass.races();e.hasMoreElements();)
-        {
-            R2=(Race)e.nextElement();
-            R2ID="com.planet_ink.coffee_mud.Races."+R2.ID();
-            if(R2.isGeneric() && CMClass.checkForCMClass("RACE",R2ID))
-            {
-                str.append("<OPTION VALUE=\""+R2.ID()+"\" "+((old.equalsIgnoreCase(R2.ID()))?"SELECTED":"")+">"+R2.ID()+" (Generic)");
-                str.append("<OPTION VALUE=\""+R2ID+"\" "+((old.equalsIgnoreCase(R2ID))?"SELECTED":"")+">"+R2ID);
-            }
-            else
-            if(R2.isGeneric())
-                str.append("<OPTION VALUE=\""+R2.ID()+"\" "+((old.equalsIgnoreCase(R2.ID())||old.equalsIgnoreCase(R2ID))?"SELECTED":"")+">"+R2.ID()+" (Generic)");
-            else
-                str.append("<OPTION VALUE=\""+R2ID+"\" "+((old.equalsIgnoreCase(R2.ID())||old.equalsIgnoreCase(R2ID))?"SELECTED":"")+">"+R2ID);
-        }
-        return str.toString();
-    }
-    
-    public static StringBuffer estats(EnvStats E, char c, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
-    {
-        StringBuffer str=new StringBuffer("");
-        DVector theclasses=new DVector(2);
+        boolean changes = false;
+        EnvStats adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); 
+        adjEStats.setAllValues(0);
         if(httpReq.isRequestParameter(c+"ESTATS1"))
         {
             int num=1;
             String behav=httpReq.getRequestParameter(c+"ESTATS"+num);
             while(behav!=null)
             {
-                if(behav.length()>0)
+                if((behav.length()>0) && (CMParms.makeVector(adjEStats.getStatCodes()).contains(behav.toUpperCase().trim())))
                 {
                     String prof=httpReq.getRequestParameter(c+"ESTATSV"+num);
                     if(prof==null) prof="0";
                     if(CMath.s_int(prof)!=0)
-                    theclasses.addElement(behav,prof);
+                    {
+                        adjEStats.setStat(behav.toUpperCase().trim(), prof);
+                        changes = true;
+                    }
                 }
                 num++;
                 behav=httpReq.getRequestParameter(c+"ESTATS"+num);
             }
         }
-        else
-        {
-            for(int i=0;i<E.getStatCodes().length;i++)
-                if(CMath.s_int(E.getStat(E.getStatCodes()[i]))!=0)
-                    theclasses.addElement(E.getStatCodes()[i],new Integer(CMath.s_int(E.getStat(E.getStatCodes()[i]))).toString());
-        }
-        str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
-        for(int i=0;i<theclasses.size();i++)
-        {
-            String theclass=(String)theclasses.elementAt(i,1);
-            str.append("<TR><TD WIDTH=35%>");
-            str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME="+c+"ESTATS"+(i+1)+">");
-            str.append("<OPTION VALUE=\"\">Delete!");
-            str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
-            str.append("</SELECT>");
-            str.append("</TD>");
-            str.append("<TD WIDTH=65%>");
-            str.append("<INPUT TYPE=TEXT NAME="+c+"ESTATSV"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=3 MAXLENGTH=3>");
-            str.append("</TD>");
-            str.append("</TR>");
-        }
-        str.append("<TR><TD WIDTH=35%>");
-        str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+c+"ESTATS"+(theclasses.size()+1)+">");
-        str.append("<OPTION SELECTED VALUE=\"\">Select a stat");
-        for(int i=0;i<E.getStatCodes().length;i++)
-            if((CMath.isNumber(E.getStat(E.getStatCodes()[i])))&&(!theclasses.contains(E.getStatCodes()[i])))
-                str.append("<OPTION VALUE=\""+E.getStatCodes()[i]+"\">"+E.getStatCodes()[i]);
-        str.append("</SELECT>");
-        str.append("</TD>");
-        str.append("<TD WIDTH=65%>");
-        str.append("<INPUT TYPE=TEXT NAME="+c+"ESTATSV"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3>");
-        str.append("</TD>");
-        str.append("</TR>");
-        str.append("</TABLE>");
-        return str;
+        if(!changes) return "";
+        else return CMLib.coffeeMaker().getEnvStatsStr(adjEStats);
     }
     
-    public static StringBuffer cstats(CharStats E, char c, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    public static String getCStats(char c, ExternalHTTPRequests httpReq)
     {
-        StringBuffer str=new StringBuffer("");
-        DVector theclasses=new DVector(2);
+        boolean changes = false;
+        CharStats adjCStats=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        adjCStats.setAllValues(0); 
         if(httpReq.isRequestParameter(c+"CSTATS1"))
         {
             int num=1;
             String behav=httpReq.getRequestParameter(c+"CSTATS"+num);
             while(behav!=null)
             {
-                if(behav.length()>0)
+                if((behav.length()>0) && (CMParms.makeVector(CharStats.STAT_DESCS).contains(behav.toUpperCase().trim())))
                 {
-                    String prof=httpReq.getRequestParameter(c+"CSTATSV"+num);
-                    if(prof==null) prof="0";
-                    if(CMath.s_int(prof)!=0)
-                    theclasses.addElement(behav,prof);
+                    int val=CMath.s_int(httpReq.getRequestParameter(c+"CSTATSV"+num));
+                    if(val!=0)
+                    {
+                        adjCStats.setStat(CMParms.indexOf(CharStats.STAT_DESCS,behav.toUpperCase().trim()), val);
+                        changes = true;
+                    }
                 }
                 num++;
                 behav=httpReq.getRequestParameter(c+"CSTATS"+num);
             }
         }
-        else
-        {
-            for(int i=0;i<CharStats.STAT_DESCS.length;i++)
-                if(E.getStat(CharStats.STAT_DESCS[i])!=0)
-                    theclasses.addElement(CharStats.STAT_DESCS[i],new Integer(E.getStat(CharStats.STAT_DESCS[i])).toString());
-        }
-        str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
-        for(int i=0;i<theclasses.size();i++)
-        {
-            String theclass=(String)theclasses.elementAt(i,1);
-            str.append("<TR><TD WIDTH=35%>");
-            str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME="+c+"CSTATS"+(i+1)+">");
-            str.append("<OPTION VALUE=\"\">Delete!");
-            str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
-            str.append("</SELECT>");
-            str.append("</TD>");
-            str.append("<TD WIDTH=65%>");
-            str.append("<INPUT TYPE=TEXT NAME="+c+"CSTATSV"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=3 MAXLENGTH=3>");
-            str.append("</TD>");
-            str.append("</TR>");
-        }
-        str.append("<TR><TD WIDTH=35%>");
-        str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+c+"CSTATS"+(theclasses.size()+1)+">");
-        str.append("<OPTION SELECTED VALUE=\"\">Select a stat");
-        for(int i=0;i<CharStats.STAT_DESCS.length;i++)
-            if(!theclasses.contains(CharStats.STAT_DESCS[i]))
-                str.append("<OPTION VALUE=\""+CharStats.STAT_DESCS[i]+"\">"+CharStats.STAT_DESCS[i]);
-        str.append("</SELECT>");
-        str.append("</TD>");
-        str.append("<TD WIDTH=65%>");
-        str.append("<INPUT TYPE=TEXT NAME="+c+"CSTATSV"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3>");
-        str.append("</TD>");
-        str.append("</TR>");
-        str.append("</TABLE>");
-        return str;
+        if(!changes) return "";
+        else return CMLib.coffeeMaker().getCharStatsStr(adjCStats);
     }
     
-    public static StringBuffer cstate(CharState E, char c, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    public static String getCState(char c, ExternalHTTPRequests httpReq)
     {
-        StringBuffer str=new StringBuffer("");
-        DVector theclasses=new DVector(2);
+        boolean changes = false;
+        CharState adjCState=(CharState)CMClass.getCommon("DefaultCharState");  
+        adjCState.setAllValues(0);
         if(httpReq.isRequestParameter(c+"CSTATE1"))
         {
             int num=1;
             String behav=httpReq.getRequestParameter(c+"CSTATE"+num);
             while(behav!=null)
             {
-                if(behav.length()>0)
+                if((behav.length()>0) && (CMParms.makeVector(adjCState.getStatCodes()).contains(behav.toUpperCase().trim())))
                 {
                     String prof=httpReq.getRequestParameter(c+"CSTATEV"+num);
                     if(prof==null) prof="0";
                     if(CMath.s_int(prof)!=0)
-                    theclasses.addElement(behav,prof);
+                    {
+                        adjCState.setStat(behav.toUpperCase().trim(), prof);
+                        changes = true;
+                    }
                 }
                 num++;
                 behav=httpReq.getRequestParameter(c+"CSTATE"+num);
             }
         }
-        else
-        {
-            for(int i=0;i<E.getStatCodes().length;i++)
-                if(CMath.s_int(E.getStat(E.getStatCodes()[i]))!=0)
-                    theclasses.addElement(E.getStatCodes()[i],new Integer(E.getStat(E.getStatCodes()[i])).toString());
-        }
-        str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
-        for(int i=0;i<theclasses.size();i++)
-        {
-            String theclass=(String)theclasses.elementAt(i,1);
-            str.append("<TR><TD WIDTH=35%>");
-            str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME="+c+"CSTATE"+(i+1)+">");
-            str.append("<OPTION VALUE=\"\">Delete!");
-            str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
-            str.append("</SELECT>");
-            str.append("</TD>");
-            str.append("<TD WIDTH=65%>");
-            str.append("<INPUT TYPE=TEXT NAME="+c+"CSTATEV"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=3 MAXLENGTH=3>");
-            str.append("</TD>");
-            str.append("</TR>");
-        }
-        str.append("<TR><TD WIDTH=35%>");
-        str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+c+"CSTATE"+(theclasses.size()+1)+">");
-        str.append("<OPTION SELECTED VALUE=\"\">Select a stat");
-        for(int i=0;i<E.getStatCodes().length;i++)
-            if(CMath.isNumber(E.getStat(E.getStatCodes()[i])))
-                if(!theclasses.contains(E.getStatCodes()[i]))
-                    str.append("<OPTION VALUE=\""+E.getStatCodes()[i]+"\">"+E.getStatCodes()[i]);
-        str.append("</SELECT>");
-        str.append("</TD>");
-        str.append("<TD WIDTH=65%>");
-        str.append("<INPUT TYPE=TEXT NAME="+c+"CSTATEV"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3>");
-        str.append("</TD>");
-        str.append("</TR>");
-        str.append("</TABLE>");
-        return str;
+        if(!changes) return "";
+        else return CMLib.coffeeMaker().getCharStateStr(adjCState);
     }
     
-    public static StringBuffer itemList(Vector items, char c, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize, boolean one)
+    
+    public static Vector itemList(Vector items, char c, ExternalHTTPRequests httpReq, boolean one)
     {
         if(items==null) items=new Vector();
         StringBuffer str=new StringBuffer("");
-        /*
         Vector classes=new Vector();
         Vector itemlist=null;
         if(httpReq.isRequestParameter(c+"ITEM1"))
@@ -266,96 +150,11 @@ public class GrinderRaces
                 if(one) break;
             }
         }
-        else
-        {
-            for(int m=0;m<items.size();m++)
-            {
-                Item I2=(Item)items.elementAt(m);
-                classes.addElement(I2);
-            }
-            itemlist=RoomData.contributeItems(classes);
-        }
-        str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
-        int numItems=0;
-        if(!one)
-        for(int i=0;i<classes.size();i++)
-        {
-            numItems++;
-            Item I=(Item)classes.elementAt(i);
-            str.append("<TR>");
-            str.append("<TD WIDTH=90%>");
-            str.append("<SELECT NAME="+c+"ITEM"+(numItems)+">");
-            if(!one) str.append("<OPTION VALUE=\"\">Delete!");
-            if(items.contains(I))
-                str.append("<OPTION SELECTED VALUE=\""+RoomData.getItemCode(classes,I)+"\">"+I.Name()+" ("+I.ID()+")");
-            else
-            if(itemlist.contains(I))
-                str.append("<OPTION SELECTED VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
-            else
-                str.append("<OPTION SELECTED VALUE=\""+I.ID()+"\">"+I.Name()+" ("+I.ID()+")");
-            str.append("</SELECT>");
-            str.append("</TD>");
-            str.append("<TD WIDTH=10%>");
-            str.append("<INPUT TYPE=BUTTON NAME="+c+"EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+RoomData.getItemCode(classes,I)+"','"+c+"ITEM"+(numItems)+"');\">");
-            str.append("</TD></TR>");
-        }
-        str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
-        str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME="+c+"ITEM"+(numItems+1)+">");
-        if(!one) str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
-        for(int i=0;i<itemlist.size();i++)
-        {
-            Item I=(Item)itemlist.elementAt(i);
-            if(one&&(classes.contains(I)))
-            {
-                if(items.contains(I))
-                    str.append("<OPTION SELECTED VALUE=\""+RoomData.getItemCode(classes,I)+"\">"+I.Name()+" ("+I.ID()+")");
-                else
-                    str.append("<OPTION SELECTED VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
-            }
-            else
-                str.append("<OPTION VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
-        }
-        if(one)
-        {
-            Vector sortMe=new Vector();
-            CMClass.addAllItemClassNames(sortMe,true,true);
-            Object[] sorted=(new TreeSet(sortMe)).toArray();
-            for(int i=0;i<sorted.length;i++)
-            {
-                boolean selected=false;
-                for(int x=0;x<classes.size();x++)
-                    if(((Item)classes.elementAt(x)).ID().equals(sorted[i]))
-                    { selected=true; break;}
-                str.append("<OPTION "+(selected?"SELECTED":"")+" VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
-            }
-        }
-        else
-        {
-            StringBuffer mposs=(StringBuffer)Resources.getResource("MUDGRINDER-OTHERPOSS");
-            if(mposs==null)
-            {
-                mposs=new StringBuffer("");
-                Vector sortMe=new Vector();
-                CMClass.addAllItemClassNames(sortMe,true,true);
-                Object[] sorted=(new TreeSet(sortMe)).toArray();
-                for(int i=0;i<sorted.length;i++)
-                    mposs.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
-                Resources.submitResource("MUDGRINDER-OTHERPOSS",mposs);
-            }
-            str.append(mposs);
-        }
-        str.append("</SELECT>");
-        str.append("</TD>");
-        str.append("<TD WIDTH=10%>");
-        str.append("<INPUT TYPE=BUTTON NAME="+c+"ADDITEM VALUE=\"NEW\" ONCLICK=\"AddNewItem('"+c+"ITEM"+(numItems+1)+"');\">");
-        str.append("</TD></TR></TABLE>");
-        */
-        return str;
+        return classes;
     }
     
-    public static StringBuffer rabilities(Race E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize, String font)
+    public static DVector rabilities(ExternalHTTPRequests httpReq)
     {
-        StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(4);
         if(httpReq.isRequestParameter("RABLES1"))
         {
@@ -377,66 +176,12 @@ public class GrinderRaces
                 behav=httpReq.getRequestParameter("RABLES"+num);
             }
         }
-        else
-        {
-            Vector ables=E.racialAbilities(null);
-            for(int i=0;i<ables.size();i++)
-            {
-                Ability Able=(Ability)ables.elementAt(i);
-                if(Able!=null)
-                    theclasses.addElement(Able.ID(),Able.proficiency()+"",CMLib.ableMapper().getDefaultGain(E.ID(),false,Able.ID())?"on":"",CMLib.ableMapper().getQualifyingLevel(E.ID(),false,Able.ID())+"");
-            }
-        }
-        if(font==null) font="<FONT COLOR=WHITE><B>";
-        str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
-        for(int i=0;i<theclasses.size();i++)
-        {
-            String theclass=(String)theclasses.elementAt(i,1);
-            str.append("<TR><TD WIDTH=35%>");
-            str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=RABLES"+(i+1)+">");
-            str.append("<OPTION VALUE=\"\">Delete!");
-            str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
-            str.append("</SELECT>");
-            str.append("</TD>");
-            str.append("<TD WIDTH=25%>");
-            str.append(font+"Lvl:</B></FONT> <INPUT TYPE=TEXT NAME=RABLVL"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,4))+"\" SIZE=3 MAXLENGTH=3>");
-            str.append("</TD>");
-            str.append("<TD WIDTH=10%>");
-            str.append("<INPUT TYPE=TEXT NAME=RABPOF"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=3 MAXLENGTH=3>"+font+"%</B></I></FONT>");
-            str.append("</TD>");
-            str.append("<TD WIDTH=30%>");
-            str.append("<INPUT TYPE=CHECKBOX NAME=RABQUA"+(i+1)+" "+(((String)theclasses.elementAt(i,2)).equalsIgnoreCase("on")?"CHECKED":"")+">"+font+"Qualify Only</B></FONT></I>");
-            str.append("</TD>");
-            str.append("</TR>");
-        }
-        str.append("<TR><TD WIDTH=35%>");
-        str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=RABLES"+(theclasses.size()+1)+">");
-        str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
-        for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
-        {
-            String cnam=((Ability)a.nextElement()).ID();
-            str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
-        }
-        str.append("</SELECT>");
-        str.append("</TD>");
-        str.append("<TD WIDTH=25%>");
-        str.append(font+"Lvl:</B></I></FONT> <INPUT TYPE=TEXT NAME=RABLVL"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3>");
-        str.append("</TD>");
-        str.append("<TD WIDTH=10%>");
-        str.append("<INPUT TYPE=TEXT NAME=RABPOF"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3>"+font+"%</B></I></FONT>");
-        str.append("</TD>");
-        str.append("<TD WIDTH=30%>");
-        str.append("<INPUT TYPE=CHECKBOX NAME=RABQUA"+(theclasses.size()+1)+" >"+font+"Qualify Only</B></I></FONT>");
-        str.append("</TD>");
-        str.append("</TR>");
-        str.append("</TABLE>");
-        return str;
+        return theclasses;
     }
 
     
-    public static StringBuffer cabilities(Race E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize, String font)
+    public static DVector cabilities(ExternalHTTPRequests httpReq)
     {
-        StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(2);
         if(httpReq.isRequestParameter("CABLES1"))
         {
@@ -454,44 +199,7 @@ public class GrinderRaces
                 behav=httpReq.getRequestParameter("CABLES"+num);
             }
         }
-        else
-        {
-            DVector ables=E.culturalAbilities();
-            for(int i=0;i<ables.size();i++)
-                theclasses.addElement(ables.elementAt(i,1),ables.elementAt(i,2).toString());
-        }
-        if(font==null) font="<FONT COLOR=WHITE><B>";
-        str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
-        for(int i=0;i<theclasses.size();i++)
-        {
-            String theclass=(String)theclasses.elementAt(i,1);
-            str.append("<TR><TD WIDTH=35%>");
-            str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=CABLES"+(i+1)+">");
-            str.append("<OPTION VALUE=\"\">Delete!");
-            str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
-            str.append("</SELECT>");
-            str.append("</TD>");
-            str.append("<TD WIDTH=65%>");
-            str.append("<INPUT TYPE=TEXT NAME=CABPOF"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=3 MAXLENGTH=3>"+font+"%</B></I></FONT>");
-            str.append("</TD>");
-            str.append("</TR>");
-        }
-        str.append("<TR><TD WIDTH=35%>");
-        str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=CABLES"+(theclasses.size()+1)+">");
-        str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
-        for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
-        {
-            String cnam=((Ability)a.nextElement()).ID();
-            str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
-        }
-        str.append("</SELECT>");
-        str.append("</TD>");
-        str.append("<TD WIDTH=65%>");
-        str.append("<INPUT TYPE=TEXT NAME=CABPOF"+(theclasses.size()+1)+" VALUE=\"\" SIZE=3 MAXLENGTH=3>"+font+"%</B></I></FONT>");
-        str.append("</TD>");
-        str.append("</TR>");
-        str.append("</TABLE>");
-        return str;
+        return theclasses;
     }
 
     protected Vector allAbles(Race R)
@@ -516,21 +224,7 @@ public class GrinderRaces
         return ables;
     }
 
-    private MOB makeMOB(Race R)
-    {
-        MOB mob=CMClass.getMOB("StdMOB");
-        mob.setSession((Session)CMClass.getCommon("DefaultSession"));
-        mob.baseCharStats().setMyRace(R);
-        R.startRacing(mob,false);
-        mob.recoverCharStats();
-        mob.recoverCharStats();
-        mob.recoverEnvStats();
-        mob.recoverMaxState();
-        mob.setSession(null);
-        return mob;
-    }
-    
-    public String modifyRace(ExternalHTTPRequests httpReq, Hashtable parms, Race whom)
+    public static String modifyRace(ExternalHTTPRequests httpReq, Hashtable parms, Race R)
     {
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
         if((replaceCommand != null) 
@@ -546,363 +240,105 @@ public class GrinderRaces
         String old;
         
         old=httpReq.getRequestParameter("NAME");
-        whom.setStat("NAME",(old==null)?"NAME":old);
+        R.setStat("NAME",(old==null)?"NAME":old);
         old=httpReq.getRequestParameter("CAT");
-        whom.setStat("CAT",(old==null)?"CAT":old);
+        R.setStat("CAT",(old==null)?"CAT":old);
         old=httpReq.getRequestParameter("VWEIGHT");
-        whom.setStat("VWEIGHT",(old==null)?"VWEIGHT":old);
+        R.setStat("VWEIGHT",(old==null)?"VWEIGHT":old);
         old=httpReq.getRequestParameter("BWEIGHT");
-        whom.setStat("BWEIGHT",(old==null)?"BWEIGHT":old);
+        R.setStat("BWEIGHT",(old==null)?"BWEIGHT":old);
         old=httpReq.getRequestParameter("VHEIGHT");
-        whom.setStat("VHEIGHT",(old==null)?"VHEIGHT":old);
+        R.setStat("VHEIGHT",(old==null)?"VHEIGHT":old);
         old=httpReq.getRequestParameter("MHEIGHT");
-        whom.setStat("MHEIGHT",(old==null)?"MHEIGHT":old);
+        R.setStat("MHEIGHT",(old==null)?"MHEIGHT":old);
         old=httpReq.getRequestParameter("FHEIGHT");
-        whom.setStat("FHEIGHT",(old==null)?"FHEIGHT":old);
+        R.setStat("FHEIGHT",(old==null)?"FHEIGHT":old);
         old=httpReq.getRequestParameter("LEAVESTR");
-        whom.setStat("LEAVE",(old==null)?"LEAVESTR":old);
+        R.setStat("LEAVE",(old==null)?"LEAVESTR":old);
         old=httpReq.getRequestParameter("ARRIVESTR");
-        whom.setStat("ARRIVE",(old==null)?"ARRIVESTR":old);
+        R.setStat("ARRIVE",(old==null)?"ARRIVESTR":old);
         old=httpReq.getRequestParameter("HEALTHRACE");
-        whom.setStat("HEALTHRACE",(old==null)?"HEALTHRACE":old);
+        R.setStat("HEALTHRACE",(old==null)?"HEALTHRACE":old);
         old=httpReq.getRequestParameter("WEAPONRACE");
-        whom.setStat("WEAPONRACE",(old==null)?"WEAPONRACE":old);
+        R.setStat("WEAPONRACE",(old==null)?"WEAPONRACE":old);
         old=httpReq.getRequestParameter("EVENTRACE");
-        whom.setStat("EVENTRACE",(old==null)?"EVENTRACE":old);
+        R.setStat("EVENTRACE",(old==null)?"EVENTRACE":old);
         StringBuffer bodyOld=new StringBuffer("");
         for(int i=0;i<Race.BODYPARTSTR.length;i++)
         {
             old=httpReq.getRequestParameter("BODYPART"+i);
             bodyOld.append((old==null)?"":old).append(";");
         }
-        whom.setStat("BODY",bodyOld.toString());
-        /*
-                if(parms.containsKey("WEAR"))
-                    for(int b=0;b<Item.WORN_CODES.length;b++)
-                        if(CMath.bset(R.forbiddenWornBits(),Item.WORN_CODES[b]))
-                            str.append(Item.WORN_DESCS[b]+", ");
-                if(parms.containsKey("RABLE"))
-                    str.append(rabilities(R,httpReq,parms,0,(String)parms.get("FONT"))+", ");
-                if(parms.containsKey("CABLE"))
-                    str.append(cabilities(R,httpReq,parms,0,(String)parms.get("FONT"))+", ");
-                if(parms.containsKey("WEARID"))
-                {
-                    String old=httpReq.getRequestParameter("WEARID");
-                    long mask=0;
-                    if(old==null) 
-                        mask=R.forbiddenWornBits();
-                    else
-                    {
-                        mask|=CMath.s_long(old);
-                        for(int i=1;;i++)
-                            if(httpReq.isRequestParameter("WEARID"+(new Integer(i).toString())))
-                                mask|=CMath.s_long(httpReq.getRequestParameter("WEARID"+(new Integer(i).toString())));
-                            else
-                                break;
-                    }
-                    for(int i=1;i<Item.WORN_CODES.length;i++)
-                    {
-                        str.append("<OPTION VALUE="+Item.WORN_CODES[i]+" ");
-                        if(CMath.bset(mask,Item.WORN_CODES[i]))
-                            str.append("SELECTED");
-                        str.append(">"+Item.WORN_DESCS[i]);
-                    }
-                    str.append(", ");
-                }
-                if(parms.containsKey("PLAYABLEID"))
-                {
-                    String old=httpReq.getRequestParameter("PLAYABLEID");
-                    long mask=0;
-                    if(old==null) 
-                        mask=R.availabilityCode();
-                    else
-                        mask|=CMath.s_long(old);
-                    for(int i=0;i<Area.THEME_DESCS_EXT.length;i++)
-                        str.append("<OPTION VALUE="+i+" "+((i==mask)?"SELECTED":"")+">"+Area.THEME_DESCS_EXT[i]);
-                    str.append(", ");
-                }
-                
-                
-                if(parms.containsKey("PLAYABLE"))
-                    str.append(Area.THEME_DESCS_EXT[R.availabilityCode()]+", ");
-                if(parms.containsKey("NATURALWEAPON"))
-                    str.append(R.myNaturalWeapon().name()+", ");
-                
-                MOB mob=null;
-                
-                if(parms.containsKey("STATS"))
-                {
-                    mob=makeMOB(R);
-                    MOB mob2=makeMOB(R);
-                    mob2.baseCharStats().setMyRace(CMClass.getRace("StdRace"));
-                    mob2.recoverCharStats();
-                    mob2.recoverEnvStats();
-                    mob2.recoverMaxState();
-                    for(int c=0;c<CharStats.NUM_STATS;c++)
-                    {
-                        int oldStat=mob2.charStats().getStat(c);
-                        int newStat=mob.charStats().getStat(c);
-                        if(oldStat>newStat)
-                            str.append(CharStats.STAT_DESCS[c].toLowerCase()+"-"+(oldStat-newStat)+", ");
-                        else
-                        if(newStat>oldStat)
-                            str.append(CharStats.STAT_DESCS[c].toLowerCase()+"+"+(newStat-oldStat)+", ");
-                    }
-                }
-                
-                if(parms.containsKey("ESTATS")||parms.containsKey("CSTATS")||parms.containsKey("ASTATS")||parms.containsKey("ASTATE")||parms.containsKey("STARTASTATE"))
-                {
-                    R=R.makeGenRace();
-                    
-                    if(parms.containsKey("ESTATS"))
-                    {
-                        String eStats=R.getStat("ESTATS");
-                        EnvStats adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); adjEStats.setAllValues(0);
-                        if(eStats.length()>0){ CMLib.coffeeMaker().setEnvStats(adjEStats,eStats);}
-                        str.append(estats(adjEStats,'E',httpReq,parms,0)+", ");
-                    }
-                    if(parms.containsKey("CSTATS"))
-                    {
-                        CharStats setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0);
-                        String cStats=R.getStat("CSTATS");
-                        if(cStats.length()>0){  CMLib.coffeeMaker().setCharStats(setStats,cStats);}
-                        str.append(cstats(setStats,'S',httpReq,parms,0)+", ");
-                    }
-                    if(parms.containsKey("ASTATS"))
-                    {
-                        CharStats adjStats=(CharStats)CMClass.getCommon("DefaultCharStats"); adjStats.setAllValues(0);
-                        String cStats=R.getStat("ASTATS");
-                        if(cStats.length()>0){  CMLib.coffeeMaker().setCharStats(adjStats,cStats);}
-                        str.append(cstats(adjStats,'A',httpReq,parms,0)+", ");
-                    }
-                    if(parms.containsKey("ASTATE"))
-                    {
-                        CharState adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0);
-                        String aState=R.getStat("ASTATE");
-                        if(aState.length()>0){  CMLib.coffeeMaker().setCharState(adjState,aState);}
-                        str.append(cstate(adjState,'A',httpReq,parms,0)+", ");
-                    }
-                    if(parms.containsKey("STARTASTATE"))
-                    {
-                        CharState startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0);
-                        String saState=R.getStat("STARTASTATE");
-                        if(saState.length()>0){ CMLib.coffeeMaker().setCharState(startAdjState,saState);}
-                        str.append(cstate(startAdjState,'S',httpReq,parms,0)+", ");
-                    }
-                }
-                
-                if(parms.containsKey("OUTFIT"))
-                    str.append(itemList(R.outfit(null),'O',httpReq,parms,0,false)+", ");
-                if(parms.containsKey("WEAPON"))
-                {
-                    Vector V=CMParms.makeVector(R.myNaturalWeapon());
-                    str.append(itemList(V,'W',httpReq,parms,0,true)+", ");
-                }
-                if(parms.containsKey("RESOURCES"))
-                    str.append(itemList(R.myResources(),'R',httpReq,parms,0,false)+", ");
-                if(parms.containsKey("BODYKILL"))
-                {
-                    String old=httpReq.getRequestParameter("BODYKILL");
-                    boolean bodyKill=false;
-                    if(old==null) 
-                        bodyKill=CMath.s_bool(R.makeGenRace().getStat("BODYKILL"));
-                    else
-                        bodyKill=old.equalsIgnoreCase("on");
-                    if(bodyKill) str.append(" CHECKED , ");
-                }
-                if(parms.containsKey("DISFLAGS"))
-                {
-                    R=R.makeGenRace();
-                    if(!httpReq.isRequestParameter("DISFLAGS"))
-                        httpReq.addRequestParameters("DISFLAGS",R.getStat("DISFLAGS"));
-                    int flags=CMath.s_int(httpReq.getRequestParameter("DISFLAGS"));
-                    for(int i=0;i<Race.GENFLAG_DESCS.length;i++)
-                    {
-                        str.append("<OPTION VALUE="+CMath.pow(2,i));
-                        if(CMath.bset(flags,CMath.pow(2,i)))
-                            str.append(" SELECTED");
-                        str.append(">"+Race.GENFLAG_DESCS[i]);
-                    }
-                }
-                if(parms.containsKey("AGING"))
-                {
-                    int[] ageChart=R.getAgingChart();
-                    if(!httpReq.isRequestParameter("AGE0"))
-                        for(int i=0;i<Race.AGE_DESCS.length;i++)
-                            httpReq.addRequestParameters("AGE"+i,""+ageChart[i]);
-                    int val=-1;
-                    for(int i=0;i<Race.AGE_DESCS.length;i++)
-                    {
-                        int lastVal=val;
-                        val=CMath.s_int((String)httpReq.getRequestParameter("AGE"+i));
-                        if(val<lastVal){ val=lastVal; httpReq.addRequestParameters("AGE"+i,""+val);}
-                        str.append("<INPUT TYPE=TEXT SIZE=4 NAME=AGE"+i+" VALUE="+val+">"+Race.AGE_DESCS[i]+"<BR>");
-                    }
-                    str.append(", ");
-                }
-                
-                if(parms.containsKey("SENSES"))
-                {
-                    if(mob==null) mob=makeMOB(R);
-                    if(!CMLib.flags().canHear(mob))
-                        str.append("deaf, ");
-                    if(!CMLib.flags().canSee(mob))
-                        str.append("blind, ");
-                    if(!CMLib.flags().canMove(mob))
-                        str.append("can't move, ");
-                    if(CMLib.flags().canSeeBonusItems(mob))
-                        str.append("detect magic, ");
-                    if(CMLib.flags().canSeeEvil(mob))
-                        str.append("detect evil, ");
-                    if(CMLib.flags().canSeeGood(mob))
-                        str.append("detect good, ");
-                    if(CMLib.flags().canSeeHidden(mob))
-                        str.append("see hidden, ");
-                    if(CMLib.flags().canSeeInDark(mob))
-                        str.append("darkvision, ");
-                    if(CMLib.flags().canSeeInfrared(mob))
-                        str.append("infravision, ");
-                    if(CMLib.flags().canSeeInvisible(mob))
-                        str.append("see invisible, ");
-                    if(CMLib.flags().canSeeMetal(mob))
-                        str.append("metalvision, ");
-                    if(CMLib.flags().canSeeSneakers(mob))
-                        str.append("see sneaking, ");
-                    if(!CMLib.flags().canSmell(mob))
-                        str.append("can't smell, ");
-                    if(!CMLib.flags().canSpeak(mob))
-                        str.append("can't speak, ");
-                    if(!CMLib.flags().canTaste(mob))
-                        str.append("can't eat, ");
-                }
-                if(parms.containsKey("DISPOSITIONS"))
-                {
-                    if(mob==null) mob=makeMOB(R);
-                    if(CMLib.flags().isClimbing(mob))
-                        str.append("climbing, ");
-                    if((mob.envStats().disposition()&EnvStats.IS_EVIL)>0)
-                        str.append("evil, ");
-                    if(CMLib.flags().isFalling(mob))
-                        str.append("falling, ");
-                    if(CMLib.flags().isBound(mob))
-                        str.append("bound, ");
-                    if(CMLib.flags().isFlying(mob))
-                        str.append("flies, ");
-                    if((mob.envStats().disposition()&EnvStats.IS_GOOD)>0)
-                        str.append("good, ");
-                    if(CMLib.flags().isHidden(mob))
-                        str.append("hidden, ");
-                    if(CMLib.flags().isInDark(mob))
-                        str.append("darkness, ");
-                    if(CMLib.flags().isInvisible(mob))
-                        str.append("invisible, ");
-                    if(CMLib.flags().isGlowing(mob))
-                        str.append("glowing, ");
-                    if(CMLib.flags().isCloaked(mob))
-                        str.append("cloaked, ");
-                    if(!CMLib.flags().isSeen(mob))
-                        str.append("unseeable, ");
-                    if(CMLib.flags().isSitting(mob))
-                        str.append("crawls, ");
-                    if(CMLib.flags().isSleeping(mob))
-                        str.append("sleepy, ");
-                    if(CMLib.flags().isSneaking(mob))
-                        str.append("sneaks, ");
-                    if(CMLib.flags().isSwimming(mob))
-                        str.append("swims, ");
-                }
-                if(parms.containsKey("TRAINS"))
-                {
-                    if(mob==null) mob=makeMOB(R);
-                    if(mob.getTrains()>0)
-                        str.append("trains+"+mob.getTrains()+", ");
-                }
-                if(parms.containsKey("EXPECTANCY"))
-                    str.append(""+R.getAgingChart()[Race.AGE_ANCIENT]+", ");
-                if(parms.containsKey("PRACS"))
-                {
-                    if(mob==null) mob=makeMOB(R);
-                    if(mob.getPractices()>0)
-                        str.append("practices+"+mob.getPractices()+", ");
-                }
-                if(parms.containsKey("ABILITIES"))
-                {
-                    Vector ables=allAbles(R);
-                    Ability A=null;
-                    for(int i=0;i<ables.size();i++)
-                    {
-                        A=(Ability)ables.elementAt(i);
-                        if((A!=null)&&(((A.classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_LANGUAGE)))
-                        {
-                            if(A.proficiency()==0)
-                                str.append(A.Name()+", ");
-                            else
-                                str.append(A.Name()+"("+A.proficiency()+"%), ");
-                        }
-                    }
-
-                }
-                if(parms.containsKey("EFFECTS"))
-                {
-                    Vector ables=R.racialEffects(null);
-                    for(int i=0;i<ables.size();i++)
-                    {
-                        Ability A=(Ability)ables.elementAt(i);
-                        if(A!=null)
-                            str.append(A.Name()+", ");
-                    }
-                }
-                if(parms.containsKey("LANGS"))
-                {
-                    Vector ables=allAbles(R);
-                    Ability A=null;
-                    for(int i=0;i<ables.size();i++)
-                    {
-                        A=(Ability)ables.elementAt(i);
-                        if((A!=null)&&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE)))
-                        {
-                            if(A.proficiency()==0)
-                                str.append(A.Name()+", ");
-                            else
-                                str.append(A.Name()+"("+A.proficiency()+"%), ");
-                        }
-                    }
-
-                }
-                if(parms.containsKey("STARTINGEQ"))
-                {
-                    if(R.outfit(null)!=null)
-                    for(int i=0;i<R.outfit(null).size();i++)
-                    {
-                        Item I=(Item)R.outfit(null).elementAt(i);
-                        if(I!=null)
-                            str.append(I.Name()+", ");
-                    }
-                }
-                if(parms.containsKey("CLASSES"))
-                {
-                    if(mob==null) mob=makeMOB(R);
-                    for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
-                        mob.baseCharStats().setStat(i,25);
-                    mob.recoverCharStats();
-                    for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
-                    {
-                        CharClass C=(CharClass)c.nextElement();
-                        if((C!=null)
-                        &&(CMProps.isTheme(C.availabilityCode()))
-                        &&(C.qualifiesForThisClass(mob,true)))
-                            str.append(C.name()+", ");
-                    }
-                }
-                String strstr=str.toString();
-                if(strstr.endsWith(", "))
-                    strstr=strstr.substring(0,strstr.length()-2);
-                if(mob!=null) mob.destroy();
-                httpReq.getRequestObjects().put("RACE-"+last,R);
-                return clearWebMacros(strstr);
-            }
+        R.setStat("BODY",bodyOld.toString());
+        old=httpReq.getRequestParameter("WEARID");
+        long mask=0;
+        if(old!=null) 
+        {
+            mask|=CMath.s_long(old);
+            for(int i=1;;i++)
+                if(httpReq.isRequestParameter("WEARID"+(new Integer(i).toString())))
+                    mask|=CMath.s_long(httpReq.getRequestParameter("WEARID"+(new Integer(i).toString())));
+                else
+                    break;
         }
-        */
+        R.setStat("WEAR",""+mask);
+        R.setStat("AVAIL",""+CMath.s_long(httpReq.getRequestParameter("PLAYABLEID")));
+        R.setStat("BODYKILL",""+CMath.s_bool(httpReq.getRequestParameter("BODYKILL")));
+        R.setStat("DISFLAGS",""+CMath.s_long(httpReq.getRequestParameter("DISFLAGS")));
+        R.setStat("ESTATS",getEStats('E',httpReq));
+        R.setStat("CSTATS",getCStats('S',httpReq));
+        R.setStat("ASTATS",getCStats('A',httpReq));
+        R.setStat("ASTATE",getCState('A',httpReq));
+        R.setStat("STARTASTATE",getCState('S',httpReq));
+        StringBuffer commaList = new StringBuffer("");
+        int val=0;
+        for(int i=0;i<Race.AGE_DESCS.length;i++)
+        {
+            int lastVal=val;
+            val=CMath.s_int((String)httpReq.getRequestParameter("AGE"+i));
+            if(val<lastVal) val=lastVal;
+            if(i>0) commaList.append(",");
+            commaList.append(val);
+        }
+        R.setStat("AGING",commaList.toString());
+        Vector V=itemList(R.myResources(),'R',httpReq,false);
+        R.setStat("NUMRSC",""+V.size());
+        for(int l=0;l<V.size();l++)
+        {
+            R.setStat("GETRSCID"+l,((Environmental)V.elementAt(l)).ID());
+            R.setStat("GETRSCPARM"+l,((Environmental)V.elementAt(l)).text());
+        }
+        V=itemList(R.outfit(null),'O',httpReq,false);
+        R.setStat("NUMOFT",""+V.size());
+        for(int l=0;l<V.size();l++)
+        {
+            R.setStat("GETOFTID"+l,((Environmental)V.elementAt(l)).ID());
+            R.setStat("GETOFTPARM"+l,((Environmental)V.elementAt(l)).text());
+        }
+        V=itemList(CMParms.makeVector(R.myNaturalWeapon()),'W',httpReq,true);
+        if(V.size()==0)
+            R.setStat("WEAPONCLASS","StdWeapon");
+        else
+        {
+            R.setStat("WEAPONCLASS",((Environmental)V.firstElement()).ID());
+            R.setStat("WEAPONXML",((Environmental)V.firstElement()).text());
+        }
+        DVector DV=rabilities(httpReq);
+        R.setStat("NUMRABLE", ""+DV.size());
+        for(int i=0;i<DV.size();i++)
+        {
+            R.setStat("GETRABLE"+i, (String)DV.elementAt(i,1));
+            R.setStat("GETRABLEPROF"+i, (String)DV.elementAt(i,1));
+            R.setStat("GETRABLEQUAL"+i, (String)DV.elementAt(i,1));
+            R.setStat("GETRABLELVL"+i, (String)DV.elementAt(i,1));
+        }
+        DV=cabilities(httpReq);
+        R.setStat("NUMCABLE", ""+DV.size());
+        for(int i=0;i<DV.size();i++)
+        {
+            R.setStat("GETCABLE"+i, (String)DV.elementAt(i,1));
+            R.setStat("GETCABLEPROF"+i, (String)DV.elementAt(i,1));
+        }
         return "";
     }
 }

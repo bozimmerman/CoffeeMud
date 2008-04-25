@@ -63,4 +63,7 @@ public interface CMMiscUtils extends CMLibrary
     
     public Item isRuinedLoot(DVector policies, Item I);
     public DVector parseLootPolicyFor(MOB mob);
+    
+    public void swapRaces(Race newR, Race oldR);
+    public void reloadCharClasses(CharClass oldC);
 }

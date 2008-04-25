@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -328,6 +329,58 @@ public class MUDGrinder extends StdWebMacro
 			if(R==null) return "@break@";
 			String errMsg=GrinderRooms.editRoom(httpReq,parms,mob,R);
 			httpReq.addRequestParameters("ERRMSG",errMsg);
+		}
+        else
+        if(parms.contains("DELRACE"))
+        {
+            MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(mob==null) return "@break@";
+            Race R=null;
+            String last=httpReq.getRequestParameter("RACE");
+            if(last==null) return " @break@";
+            R=CMClass.getRace(last);
+            if((R==null)||(!R.isGeneric()))
+                return " @break@";
+            String oldRID=R.ID();
+            CMClass.delRace(R);
+            CMLib.database().DBDeleteRace(R.ID());
+            CMClass.loadClass("RACE","com/planet_ink/coffee_mud/Races/"+oldRID+".class");
+            Race oldR=CMClass.getRace(oldRID);
+            if(oldR==null) oldR=CMClass.getRace("StdRace");
+            boolean create=false;
+        }
+		else
+		if(parms.contains("EDITRACE"))
+		{
+            MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(mob==null) return "@break@";
+            Race R=null;
+            Race oldR=null;
+	        String last=httpReq.getRequestParameter("RACE");
+	        if(last==null) return " @break@";
+            R=CMClass.getRace(last);
+            boolean create=false;
+            if((R==null)||(!R.isGeneric())) {
+                create=true;
+                if(R!=null) oldR=R;
+                R=(Race)CMClass.getRace("GenRace").copyOf();
+                R.setRacialParms("<RACE><ID>"+last+"</ID><NAME>"+last+"</NAME></RACE>");
+            }
+	        if(R==null) return " @break@";
+	        R=R.makeGenRace();
+	        String errMsg=GrinderRaces.modifyRace(httpReq, parms, R);
+            httpReq.addRequestParameters("ERRMSG",errMsg);
+            if(!create)
+            {
+                CMLib.database().DBDeleteRace(R.ID());
+                CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+            }
+            else
+            {
+                CMClass.addRace(R);
+                CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+            }
+	        
 		}
 		else
 		if(parms.containsKey("EDITITEM"))
