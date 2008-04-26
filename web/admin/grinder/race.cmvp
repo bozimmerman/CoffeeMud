@@ -8,9 +8,6 @@
 	<title>Race Manager</title>
 	<script language=JavaScript>
 	<!--
-		@if?CheckReqParm?RACE=_NEWONE_@ 
-			window.alert('@MUDGrinder?ADDRACE@');
-		@endif@
 		function openUp2(named)
 		{
 			var strFeatures="top=200,left=50,resizeable=no,scrollbars=yes,height=400,width=650,alwaysRaised=yes,dependent=yes";
@@ -53,9 +50,26 @@
             if(ME.selectedIndex>0)
                 ReShow();
         }
+        function NewRace()
+        {
+            var raceid=window.prompt('Enter a new unique ID for your Race (no spaces):');
+            if(raceid==null)
+                return;
+            if(raceid.length==0)
+                return;
+            if(raceid.indexOf(' ')>=0)
+            {
+                window.alert('No spaces are allowed in your ID!');
+                return;
+            }
+            document.RESOURCES.NEWRACEID.value=raceid;
+            document.RESOURCES.FUNCTION.value='RERACE';
+            document.RESOURCES.action='/grinder/racedo.cmvp';
+            document.RESOURCES.submit();
+        }
 		function Delete()
 		{
-			if(confirm('Delete this race?! Confirm!'))
+			if(confirm('Delete this generic race?! Confirm!'))
 			{
 				if(confirm('Press OK to Delete this race!'))
 				{
@@ -67,12 +81,20 @@
 		}
 		function EditDone()
 		{
-			if(confirm('Submit your changes to this race?'))
-			{
-				document.RESOURCES.action='racedo.cmvp';
-				document.RESOURCES.FUNCTION.value='EDITRACE';
-				document.RESOURCES.submit();
-			}
+		    @if?RaceData?NEWRACE@
+                if(confirm('Create this new race?'))
+            @else@
+                @if?RaceData?ISGENERIC@
+                    if(confirm('Submit your changes to this race?'))
+                @else
+        			if(confirm('Submitting these changes will convert your standard Race to a Generic Race.  Are you absolutely sure?'))
+                @endif@
+    	    @endif@
+                {
+                    document.RESOURCES.action='racedo.cmvp';
+                    document.RESOURCES.FUNCTION.value='EDITRACE';
+                    document.RESOURCES.submit();
+                }
 		}
 		function ReShow()
 		{
@@ -102,6 +124,7 @@
 <body BGCOLOR=BLACK>
 <FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="race.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=NEWRACEID VALUE="">
 <INPUT TYPE=HIDDEN NAME=REPLACE VALUE="">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 	<TABLE WIDTH=100% BORDER=0>
@@ -109,14 +132,22 @@
 	<TD WIDTH=33% ALIGN=LEFT VALIGN=CENTER>
 		<FONT COLOR=WHITE>Race ID: </FONT><BR>
 		@AddRequestParameter?OLDRACE=@@RequestParameter?RACE@@ @
-		<SELECT NAME=RACE>
-		@RaceNext?RESET@
-		<OPTION VALUE="" @if?CheckReqParm?RACE=@SELECTED@endif@>Select a race
+		<SELECT NAME=RACE ONCHANGE="javascript:ReRace();">
+		
+		@if?RaceData?NEWRACE@
+            <OPTION VALUE="@RequestParameter?RACE@" SELECTED>*new* @RequestParameter?RACE@ (Generic)
+            @AddRequestParameter?RACE=@
+        @else@
+            <OPTION VALUE="" @if?CheckReqParm?RACE=@SELECTED@endif@>Select a race
+		@endif@
+		
+        @RaceNext?RESET@
 		@loop@
 		@RaceNext?ALL@
 		<OPTION VALUE="@RaceID@" @if?CheckReqParm?RACE=@@RequestParameter?OLDRACE@@ @SELECTED@endif@>@RaceName@
 		@back@
-		</SELECT>&nbsp;&nbsp;&nbsp;<a href="javascript:ReRace();"><FONT COLOR=RED SIZE=-1>Load</FONT></a>
+		</SELECT>&nbsp;&nbsp;&nbsp;
+		<INPUT TYPE=BUTTON NAME=NEWRACE VALUE="New" ONCLICK="NewRace();">
 		@AddRequestParameter?RACE=@@RequestParameter?OLDRACE@@ @
 	</TD>
 	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
@@ -261,8 +292,14 @@
 <BR>
 <TABLE WIDTH=100% BORDER=0>
 <TR>
-    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Finished" ONCLICK="EditDone();"></TD>
-    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
+    @if?RaceData?NEWRACE@
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
+    @else@
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
+    @endif@
+    @if?RaceData?ISGENERIC@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
+    @endif@
     <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
 </TR>
 </TABLE>

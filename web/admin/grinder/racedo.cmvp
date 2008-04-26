@@ -7,15 +7,22 @@
     <link rel="grinder icon" href="/images/grinder.ico" >
 </head>
 <body BGCOLOR=BLACK>
-@if?CheckReqParm?FUNCTION=DELETEMEPLEASETHANKYOU@
+@if?CheckReqParm?FUNCTION=DELRACE@
+    @MUDGrinder?DELRACE@
+    document.location.href='race.cmvp?AUTH=@Authenticate?AUTH@&RACE=';
+@endif@
+@if?CheckReqParm?FUNCTION=EDITRACE@
+    @MUDGrinder?DELRACE@
+    document.location.href='race.cmvp?AUTH=@Authenticate?AUTH@&RACE=@RaceID@';
 @endif@
 @if?CheckReqParm?FUNCTION=RERACE@
 <SCRIPT LANGUAGE=JavaScript>
 <!--
-document.location.href='race.cmvp?AUTH=@Authenticate?AUTH@&RACE=@RaceID@';
+document.location.href='race.cmvp?AUTH=@Authenticate?AUTH@&RACE=@RaceID@&NEWRACE=@RequestParameterEncoded?NEWRACEID@';
 //-->
 </SCRIPT>
 @endif@
+
 </BODY>
 </HTML>
 @endif@

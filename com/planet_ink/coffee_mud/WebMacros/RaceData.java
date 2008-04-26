@@ -548,12 +548,31 @@ public class RaceData extends StdWebMacro
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-            Race R=(Race)httpReq.getRequestObjects().get("RACE-"+last);
+            String newRaceID=httpReq.getRequestParameter("NEWRACE");
+            Race R = null;
+            if(R==null)
+                R=(Race)httpReq.getRequestObjects().get("RACE-"+last);
+            if((R==null)
+            &&(newRaceID!=null)
+            &&(newRaceID.length()>0)
+            &&(CMClass.getRace(newRaceID)==null))
+            {
+                R=(Race)CMClass.getRace("GenRace").copyOf();
+                R.setRacialParms("<RACE><ID>"+newRaceID+"</ID><NAME>"+newRaceID+"</NAME></RACE>");
+                last=newRaceID;
+                httpReq.addRequestParameters("RACE",newRaceID);
+            }
             if(R==null)
                 R=CMClass.getRace(last);
+	
 			if(R!=null)
 			{
 				StringBuffer str=new StringBuffer("");
+                if(parms.containsKey("NEWRACE"))
+                {
+                    Race R2=CMClass.getRace(last);
+                    return ""+(R2==null);
+                }
                 if(parms.containsKey("ISGENERIC"))
                 {
                     Race R2=CMClass.getRace(R.ID());
