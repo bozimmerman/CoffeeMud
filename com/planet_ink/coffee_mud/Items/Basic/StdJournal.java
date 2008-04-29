@@ -316,10 +316,11 @@ public class StdJournal extends StdItem
 				if(!mob.isMonster())
 				{
 					String to="ALL";
-					if(getWriteReq().toUpperCase().indexOf("PRIVATE")>=0)
+					if(CMath.s_bool(getParm("PRIVATE")))
 						to=mob.Name();
 					else
-					if(mob.session().confirm("Is this a private message (y/N)?","N"))
+					if(CMath.s_bool(getParm("MAILBOX"))
+					||mob.session().confirm("Is this a private message (y/N)?","N"))
 					{
 						to=mob.session().prompt("To whom:");
                         if(((!to.toUpperCase().trim().startsWith("MASK=")
@@ -534,65 +535,20 @@ public class StdJournal extends StdItem
 		return reply;
 	}
 
-	protected String getReadReq()
+	private String getParm(String parmName)
 	{
-		if(readableText().length()==0) return "";
-		String text=readableText().toUpperCase();
-		int readeq=text.indexOf("READ=");
-		if(readeq<0) return "";
-		text=text.substring(readeq+5);
-		int writeeq=text.indexOf("WRITE=");
-		if(writeeq>=0)text= text.substring(0,writeeq);
-        int replyreq=text.indexOf("REPLY=");
-        if(replyreq>=0) text=text.substring(0,replyreq);
-        int adminreq=text.indexOf("ADMIN=");
-        if(adminreq>=0) text=text.substring(0,adminreq);
-		return text;
-	}
-	protected String getWriteReq()
-	{
-		if(readableText().length()==0) return "";
-		String text=readableText().toUpperCase();
-		int writeeq=text.indexOf("WRITE=");
-		if(writeeq<0) return "";
-		text=text.substring(writeeq+6);
-		int readeq=text.indexOf("READ=");
-		if(readeq>=0) text=text.substring(0,readeq);
-        int replyreq=text.indexOf("REPLY=");
-        if(replyreq>=0) text=text.substring(0,replyreq);
-        int adminreq=text.indexOf("ADMIN=");
-        if(adminreq>=0) text=text.substring(0,adminreq);
-		return text;
-	}
-    private String getReplyReq()
-    {
         if(readableText().length()==0) return "";
-        String text=readableText().toUpperCase();
-        int replyreq=text.indexOf("REPLY=");
-        if(replyreq<0) return "";
-        text=text.substring(replyreq+6);
-        int readeq=text.indexOf("READ=");
-        if(readeq>=0) text=text.substring(0,readeq);
-        int writeeq=text.indexOf("WRITE=");
-        if(writeeq>=0)text= text.substring(0,writeeq);
-        int adminreq=text.indexOf("ADMIN=");
-        if(adminreq>=0) text=text.substring(0,adminreq);
-        return text;
-    }
-    private String getAdminReq()
-    {
-        if(readableText().length()==0) return "";
-        String text=readableText().toUpperCase();
-        int adminreq=text.indexOf("ADMIN=");
-        if(adminreq<0) return "";
-        text=text.substring(adminreq+6);
-        int readeq=text.indexOf("READ=");
-        if(readeq>=0) text=text.substring(0,readeq);
-        int writeeq=text.indexOf("WRITE=");
-        if(writeeq>=0)text= text.substring(0,writeeq);
-        int replyreq=text.indexOf("REPLY=");
-        if(replyreq>=0) text=text.substring(0,replyreq);
-        return text;
-    }
+	    Hashtable h=CMParms.parseEQParms(readableText().toUpperCase(),
+                                         new String[]{"READ","WRITE","REPLY","ADMIN","PRIVATE","MAILBOX"});
+        String req=(String)h.get(parmName.toUpperCase().trim());
+        if(req==null) req="";
+        return req;
+	}
+	
+	protected String getReadReq() { return getParm("READ");}
+	protected String getWriteReq() {return getParm("WRITE");}
+    private String getReplyReq() { return getParm("REPLY");}
+    private String getAdminReq() { return getParm("ADMIN");}
+    
 	public void recoverEnvStats(){CMLib.flags().setReadable(this,true); super.recoverEnvStats();}
 }

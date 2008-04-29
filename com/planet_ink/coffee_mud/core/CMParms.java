@@ -725,6 +725,50 @@ public class CMParms
         }
         return stringContains(V,combiner,buf,lastIndex);
     }
+    
+    public static Hashtable parseEQParms(String str, String[] parmList)
+    {
+        Hashtable h=new Hashtable();
+        int lastEQ=-1;
+        String lastParm=null;
+        for(int x=0;x<str.length();x++)
+        {
+            char c=Character.toUpperCase(str.charAt(x));
+            if(Character.isLetter(c))
+                for(int p=0;p<parmList.length;p++)
+                    if((Character.toUpperCase(parmList[p].charAt(0)) == c)
+                    &&((str.length()-x) >= parmList[p].length())
+                    &&(str.substring(x,x+parmList[p].length()).equalsIgnoreCase(parmList[p])))
+                    {
+                        int chkX=x+parmList[p].length();
+                        while((chkX<str.length())&&(Character.isWhitespace(str.charAt(chkX))))
+                            chkX++;
+                        if((chkX<str.length())&&(str.charAt(chkX)=='='))
+                        {
+                            chkX++;
+                            if((lastParm!=null)&&(lastEQ>0))
+                            {
+                                String val=str.substring(lastEQ,x).trim();
+                                if(val.startsWith("\"")&&(val.endsWith("\"")))
+                                    val=val.substring(1,val.length()-1).trim();
+                                h.put(lastParm,val);
+                            }
+                            lastParm=parmList[p];
+                            x=chkX;
+                            lastEQ=chkX;
+                        }
+                    }
+        }
+        if((lastParm!=null)&&(lastEQ>0))
+        {
+            String val=str.substring(lastEQ).trim();
+            if(val.startsWith("\"")&&(val.endsWith("\"")))
+                val=val.substring(1,val.length()-1).trim();
+            h.put(lastParm,val);
+        }
+        return h;
+    }
+    
     public static int stringContains(String str1, String str2)
     {
         StringBuffer buf1=new StringBuffer(str1.toLowerCase());
