@@ -348,6 +348,8 @@ public class MUDGrinder extends StdWebMacro
             Race oldR=CMClass.getRace(oldRID);
             if(oldR==null) oldR=CMClass.getRace("StdRace");
             boolean create=false;
+            Log.sysOut("Grinder",mob.name()+" deleted race "+R.ID());
+            return "Race "+R.ID()+" deleted.";
         }
 		else
 		if(parms.contains("EDITRACE"))
@@ -374,13 +376,17 @@ public class MUDGrinder extends StdWebMacro
             {
                 CMLib.database().DBDeleteRace(R.ID());
                 CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+                return "Race "+R.ID()+" modified.";
             }
             else
             {
                 CMClass.addRace(R);
                 CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+                if((oldR!=null)&&(!oldR.isGeneric()))
+                    return "Race "+R.ID()+" replaced with Generic Race " + R.ID()+".";
+                else
+                    return "Race "+R.ID()+" created.";
             }
-	        
 		}
 		else
 		if(parms.containsKey("EDITITEM"))

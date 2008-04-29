@@ -103,10 +103,8 @@
 	<BR>
 	@endif@
 	@if?CheckAuthCode?AUTH_STAT=true&AUTH_CMDRACE=true@
-	<!--
 	<A href="javascript:Clicked('race.cmvp')"><FONT COLOR=WHITE>Race Manager</FONT></a>
 	<BR>
-	-->
 	@endif@
 	@if?CheckAuthCode?AUTH_LOADUNLOAD=true@
 	<A href="javascript:Clicked('resources.cmvp')"><FONT COLOR=WHITE>Cache Resources</FONT></a>

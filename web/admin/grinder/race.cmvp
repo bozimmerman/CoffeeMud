@@ -86,7 +86,7 @@
             @else@
                 @if?RaceData?ISGENERIC@
                     if(confirm('Submit your changes to this race?'))
-                @else
+                @else@
         			if(confirm('Submitting these changes will convert your standard Race to a Generic Race.  Are you absolutely sure?'))
                 @endif@
     	    @endif@
@@ -130,7 +130,7 @@
 	<TABLE WIDTH=100% BORDER=0>
 	<TR>
 	<TD WIDTH=33% ALIGN=LEFT VALIGN=CENTER>
-		<FONT COLOR=WHITE>Race ID: </FONT><BR>
+		<FONT COLOR=WHITE>Race: </FONT>
 		@AddRequestParameter?OLDRACE=@@RequestParameter?RACE@@ @
 		<SELECT NAME=RACE ONCHANGE="javascript:ReRace();">
 		
@@ -166,6 +166,10 @@
 	Select a race above to view/edit.
 @else@
 	<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Race ID: </FONT></TD>
+            <TD WIDTH=66%><FONT COLOR=WHITE>@RequestParameter?RACE@</FONT></TD>
+        </TR>
 		<TR>
 			<TD WIDTH=25%><FONT COLOR=YELLOW>Name: </FONT></TD>
 			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=20 NAME=NAME VALUE="@RaceData?NAME@"></TD>

@@ -328,16 +328,16 @@ public class GrinderRaces
         for(int i=0;i<DV.size();i++)
         {
             R.setStat("GETRABLE"+i, (String)DV.elementAt(i,1));
-            R.setStat("GETRABLEPROF"+i, (String)DV.elementAt(i,1));
-            R.setStat("GETRABLEQUAL"+i, (String)DV.elementAt(i,1));
-            R.setStat("GETRABLELVL"+i, (String)DV.elementAt(i,1));
+            R.setStat("GETRABLEPROF"+i, (String)DV.elementAt(i,2));
+            R.setStat("GETRABLEQUAL"+i, (String)DV.elementAt(i,3));
+            R.setStat("GETRABLELVL"+i, (String)DV.elementAt(i,4));
         }
         DV=cabilities(httpReq);
         R.setStat("NUMCABLE", ""+DV.size());
         for(int i=0;i<DV.size();i++)
         {
             R.setStat("GETCABLE"+i, (String)DV.elementAt(i,1));
-            R.setStat("GETCABLEPROF"+i, (String)DV.elementAt(i,1));
+            R.setStat("GETCABLEPROF"+i, (String)DV.elementAt(i,2));
         }
         return "";
     }
