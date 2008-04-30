@@ -57,6 +57,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
     private Hashtable noTrigger=new Hashtable();
 	protected long tickStatus=Tickable.STATUS_NOT;
 	private Quest defaultQuest=null;
+	private MOB backupMOB=null;
 	protected CMMsg lastMsg=null;
     protected Environmental lastLoaded=null;
     protected static HashSet SIGNS=CMParms.makeHashSet(CMParms.parseCommas("==,>=,>,<,<=,=>,=<,!=",true));
@@ -785,11 +786,11 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             case 'B':
             case 'b': return lastLoaded;
 			case 'N':
-			case 'n': return source;
+			case 'n': return ((source==backupMOB)&&(backupMOB!=null)&&(monster!=scripted))?scripted:source;
 			case 'I':
 			case 'i': return scripted;
 			case 'T':
-			case 't': return target;
+			case 't': return ((target==backupMOB)&&(backupMOB!=null)&&(monster!=scripted))?scripted:target;
 			case 'O':
 			case 'o': return primaryItem;
 			case 'P':
@@ -1727,7 +1728,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if(arg2.length()==0)
 				{
 					scriptableError(scripted,"HASTITLE","Syntax",evaluable);
@@ -1767,7 +1768,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 4: // isnpc
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
@@ -1777,7 +1778,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 87: // isbirthday
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
@@ -1806,7 +1807,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 5: // ispc
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
@@ -1817,7 +1818,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if((E==null)||(!(E instanceof MOB)))
+				if(E==null)
 					returnable=false;
 				else
 					returnable=CMLib.flags().isGood(E);
@@ -1827,7 +1828,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if((E==null)||(!(E instanceof MOB)))
+				if(E==null)
 					returnable=false;
 				else
 					returnable=CMLib.flags().isEvil(E);
@@ -1837,7 +1838,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if((E==null)||(!(E instanceof MOB)))
+				if(E==null)
 					returnable=false;
 				else
 					returnable=CMLib.flags().isNeutral(E);
@@ -1846,7 +1847,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 54: // isalive
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&((E instanceof MOB))&&(!((MOB)E).amDead()))
 					returnable=true;
 				else
@@ -1857,7 +1858,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&((E instanceof MOB))&&(!((MOB)E).amDead()))
 				{
 					ExpertiseLibrary X=(ExpertiseLibrary)CMLib.expertises().findDefinition(arg2,true);
@@ -1917,7 +1918,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 10: // isfight
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
@@ -1927,7 +1928,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 11: // isimmort
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
@@ -1937,7 +1938,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 12: // ischarmed
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
@@ -1947,7 +1948,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 15: // isfollow
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
@@ -1963,7 +1964,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             case 73: // isservant
             {
                 String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((E==null)||(!(E instanceof MOB))||(lastKnownLocation==null))
                     returnable=false;
                 else
@@ -1979,7 +1980,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 55: // ispkill
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E==null)||(!(E instanceof MOB)))
 					returnable=false;
 				else
@@ -2098,7 +2099,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
                 String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
                 String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(evaluable.substring(y+1,z),1));
-                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((E==null)||(!(E instanceof MOB))||(((MOB)E).isMonster()))
                     returnable=false;
                 else
@@ -2307,7 +2308,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					scriptableError(scripted,"HITPRCNT","Syntax",evaluable);
@@ -2477,7 +2478,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 String where=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
                 String cmp=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),2));
                 String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),2));
-                Environmental E=getArgumentItem(whom,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Environmental E=getArgumentMOB(whom,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((E==null)||(!(E instanceof MOB)))
                 {
                     scriptableError(scripted,"EXPLORED","Unknown Code",whom);
@@ -2513,7 +2514,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
                 String cmp=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),2));
                 String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),3));
-                Environmental E=getArgumentItem(whom,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Environmental E=getArgumentMOB(whom,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 Faction F=CMLib.factions().getFaction(arg1);
                 if((E==null)||(!(E instanceof MOB)))
                 {
@@ -2595,7 +2596,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if(arg2.length()==0)
 				{
 					scriptableError(scripted,"HASTATTOO","Syntax",evaluable);
@@ -2826,7 +2827,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					case 1: arg3="MALE"; break;
 					case 2: arg3="FEMALE"; break;
 					}
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					scriptableError(scripted,"SEX","Syntax",evaluable);
@@ -2952,7 +2953,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					scriptableError(scripted,"POSITION","Syntax",evaluable);
 					return returnable;
 				}
-				if((E==null)||(!(E instanceof MOB)))
+				if(E==null)
 					returnable=false;
 				else
 				{
@@ -3000,7 +3001,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					scriptableError(scripted,"QUESTPOINTS","Syntax",evaluable);
@@ -3056,7 +3057,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					scriptableError(scripted,"TRAINS","Syntax",evaluable);
@@ -3076,7 +3077,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					scriptableError(scripted,"PRACS","Syntax",evaluable);
@@ -3096,7 +3097,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					scriptableError(scripted,"CLANRANK","Syntax",evaluable);
@@ -3116,7 +3117,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if(arg2.length()==0)
 				{
 					scriptableError(scripted,"DEITY","Syntax",evaluable);
@@ -3146,7 +3147,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=CMParms.getCleanBit(evaluable.substring(y+1,z),2);
 				String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),2).toUpperCase());
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					scriptableError(scripted,"CLANDATA","Syntax",evaluable);
@@ -3216,7 +3217,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if(arg2.length()==0)
 				{
 					scriptableError(scripted,"CLAN","Syntax",evaluable);
@@ -3245,7 +3246,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
                 String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
                 String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
-                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if(arg2.length()==0)
                 {
                     scriptableError(scripted,"MOOD","Syntax",evaluable);
@@ -3275,7 +3276,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					scriptableError(scripted,"CLASS","Syntax",evaluable);
@@ -3304,7 +3305,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					scriptableError(scripted,"CLASS","Syntax",evaluable);
@@ -3333,7 +3334,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					scriptableError(scripted,"RACE","Syntax",evaluable);
@@ -3362,7 +3363,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1).toUpperCase());
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					scriptableError(scripted,"RACECAT","Syntax",evaluable);
@@ -3425,7 +3426,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
 				String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()==0)||(arg3.length()==0))
 				{
 					scriptableError(scripted,"EXP","Syntax",evaluable);
@@ -3866,7 +3867,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 87: // isbirthday
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&(E instanceof MOB)&&(((MOB)E).playerStats()!=null)&&(((MOB)E).playerStats().getBirthday()!=null))
 				{
 					MOB mob=(MOB)E;
@@ -3898,7 +3899,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 6: // isgood
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&((E instanceof MOB)))
 				{
 				    Faction.FactionRange FR=CMLib.factions().getRange(CMLib.factions().AlignID(),((MOB)E).fetchFaction(CMLib.factions().AlignID()));
@@ -3912,7 +3913,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 8: // isevil
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&((E instanceof MOB)))
 					results.append(CMStrings.capitalizeAndLower(CMLib.flags().getAlignmentName(E)).toLowerCase());
 				break;
@@ -3920,7 +3921,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 9: // isneutral
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&((E instanceof MOB)))
 					results.append(((MOB)E).fetchFaction(CMLib.factions().AlignID()));
 				break;
@@ -3931,7 +3932,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 54: // isalive
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&((E instanceof MOB))&&(!((MOB)E).amDead()))
 					results.append(((MOB)E).healthText(null));
 				else
@@ -3942,7 +3943,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&((E instanceof MOB))&&(!((MOB)E).amDead()))
 				{
 					ExpertiseLibrary X=(ExpertiseLibrary)CMLib.expertises().findDefinition(arg2,true);
@@ -4054,7 +4055,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 55: // ispkill
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E==null)||(!(E instanceof MOB)))
 					results.append("false");
 				else
@@ -4067,7 +4068,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 10: // isfight
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&((E instanceof MOB))&&(((MOB)E).isInCombat()))
 					results.append(((MOB)E).getVictim().name());
 				break;
@@ -4075,7 +4076,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 12: // ischarmed
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if(E!=null)
 				{
 					Vector V=CMLib.flags().flaggedAffects(E,Ability.FLAG_CHARMING);
@@ -4142,7 +4143,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             case 70: // ipaddress
             {
                 String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((E!=null)&&(E instanceof MOB)&&(!((MOB)E).isMonster()))
                     results.append(((MOB)E).session().getAddress());
                 break;
@@ -4264,7 +4265,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 16: // hitprcnt
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&(E instanceof MOB))
 				{
 					double hitPctD=CMath.div(((MOB)E).curState().getHitPoints(),((MOB)E).maxState().getHitPoints());
@@ -4394,7 +4395,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             {
                 String whom=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
                 String where=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
-                Environmental E=getArgumentItem(whom,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Environmental E=getArgumentMOB(whom,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if(E instanceof MOB)
                 {
                     Area A=null;
@@ -4422,7 +4423,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             {
                 String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
                 String arg2=CMParms.getPastBit(evaluable.substring(y+1,z),0);
-                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 Faction F=CMLib.factions().getFaction(arg2);
                 if(F==null)
                     scriptableError(scripted,"FACTION","Unknown Faction",arg1);
@@ -4549,7 +4550,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 18: // sex
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&(E instanceof MOB))
 					results.append(((MOB)E).charStats().genderName());
 				break;
@@ -4615,7 +4616,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
 				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-				if((E!=null)&&(E instanceof MOB))
+				if(E!=null)
 				{
 					String sex="STANDING";
 					if(CMLib.flags().isSleeping(E))
@@ -4639,7 +4640,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 80: // questpoints
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if(E instanceof MOB)
 					results.append(((MOB)E).getQuestPoint());
 				break;
@@ -4675,7 +4676,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 81: // trains
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if(E instanceof MOB)
 					results.append(((MOB)E).getTrains());
 				break;
@@ -4697,7 +4698,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 82: // pracs
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if(E instanceof MOB)
 					results.append(((MOB)E).getPractices());
 				break;
@@ -4767,7 +4768,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			{
 				String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
 				String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),0));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((arg2.length()>0)&&(E instanceof MOB)&&(((MOB)E).playerStats()!=null))
 				{
 				    MOB M=(MOB)E;
@@ -4778,7 +4779,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 66: // clanrank
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&(E instanceof MOB))
 					results.append(((MOB)E).getClanRole()+"");
 				break;
@@ -4786,7 +4787,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 21: // class
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&(E instanceof MOB))
 					results.append(((MOB)E).charStats().displayClassName());
 				break;
@@ -4794,7 +4795,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 64: // deity
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&(E instanceof MOB))
 				{
 					String sex=((MOB)E).getWorshipCharID();
@@ -4805,7 +4806,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 65: // clan
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&(E instanceof MOB))
 				{
 					String sex=((MOB)E).getClanID();
@@ -4816,7 +4817,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             case 88: // mood
             {
                 String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((E!=null)&&(E instanceof MOB)&&(E.fetchEffect("Mood")!=null))
                     results.append(CMStrings.capitalizeAndLower(E.fetchEffect("Mood").text()));
                 break;
@@ -4824,7 +4825,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 22: // baseclass
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&(E instanceof MOB))
 					results.append(((MOB)E).charStats().getCurrentClass().baseClass());
 				break;
@@ -4832,7 +4833,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 23: // race
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&(E instanceof MOB))
 					results.append(((MOB)E).charStats().raceName());
 				break;
@@ -4840,7 +4841,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 24: //racecat
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if((E!=null)&&(E instanceof MOB))
 					results.append(((MOB)E).charStats().getMyRace().racialCategory());
 				break;
@@ -4874,7 +4875,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			case 78: // exp
 			{
 				String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
-				Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
 				if(E==null)
 					results.append(false);
 				else
@@ -8434,7 +8435,6 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		return I.intValue();
 	}
 
-	public MOB backupMOB=null;
 	public MOB getScriptableMOB(Tickable ticking)
 	{
 		MOB mob=null;
@@ -8458,6 +8458,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					backupMOB.setName(ticking.name());
 					backupMOB.setDisplayText(ticking.name()+" is here.");
 					backupMOB.setDescription("");
+					backupMOB.setAgeHours(-1);
 					mob=backupMOB;
 					if(backupMOB.location()!=lastKnownLocation)
 						backupMOB.setLocation(lastKnownLocation);
@@ -8465,6 +8466,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			}
 			else
 			{
+                backupMOB.setAgeHours(-1);
 				mob=backupMOB;
 				if(backupMOB.location()!=lastKnownLocation)
 					backupMOB.setLocation(lastKnownLocation);
