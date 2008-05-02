@@ -548,10 +548,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             int oldSize=areas.size();
                             if(areaName.equalsIgnoreCase("any"))
                                 areas.addElement(CMLib.map().getRandomArea());
+                            boolean addAll=areaName.equalsIgnoreCase("all");
                             if(oldSize==areas.size())
                             for (Enumeration e = CMLib.map().areas(); e.hasMoreElements(); )
                             {
                                 Area A2 = (Area) e.nextElement();
+                                if(addAll)
+                                    areas.addElement(A2);
+                                else
                                 if (A2.Name().equalsIgnoreCase(areaName))
                                 {
                                     areas.addElement(A2);
@@ -734,6 +738,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         	choices=(Vector)getObjectIfSpecified(p,args,2,1); 
                         }catch(CMException ex){
                             if(mobName.length()==0) mobName="ANY";
+                            boolean addAll=mobName.equalsIgnoreCase("all");
 	                        Vector choices0=new Vector();
 	                        Vector choices1=new Vector();
 	                        Vector choices2=new Vector();
@@ -750,9 +755,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                    &&(M2.isMonster())
                                         &&((M2.amUltimatelyFollowing()==null)||(M2.amUltimatelyFollowing().isMonster())))
 	                                    {
-	                                        if(!CMLib.masking().maskCheck(mask,M2,true))
-	                                            continue;
-	                                        choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
+                                            if(CMLib.masking().maskCheck(mask,M2,true)) 
+                                            {
+    	                                        if(addAll)
+    	                                        {
+    	                                            choices = choices0;
+    	                                            choices.addElement(M2);
+    	                                        }
+    	                                        else
+        	                                        choices=sortSelect(M2,mobName,choices,choices0,choices1,choices2,choices3);
+                                            }
 	                                    }
 	                                }
 	                            }
@@ -803,6 +815,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                        Vector choices2=new Vector();
 	                        Vector choices3=new Vector();
 	                        if(itemName.length()==0) itemName="ANY";
+                            boolean addAll=itemName.equalsIgnoreCase("all");
 	                        try
 	                        {
 	                            for(Enumeration e=getAppropriateRoomSet(q);e.hasMoreElements();)
@@ -813,9 +826,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                                    Item I2=R2.fetchItem(i);
 	                                    if(I2!=null)
 	                                    {
-	                                        if(!CMLib.masking().maskCheck(mask,I2,true))
-	                                            continue;
-	                                        choices=sortSelect(I2,itemName,choices,choices0,choices1,choices2,choices3);
+                                            if(CMLib.masking().maskCheck(mask,I2,true))
+                                            {
+    	                                        if(addAll)
+    	                                        {
+    	                                            choices = choices0;
+    	                                            choices.addElement(I2);
+    	                                        }
+    	                                        else
+        	                                        choices=sortSelect(I2,itemName,choices,choices0,choices1,choices2,choices3);
+                                            }
 	                                    }
 	                                }
 	                            }
@@ -1013,13 +1033,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                 	e=q.area.getMetroMap();
                                 else
                                 	e=CMLib.map().rooms();
+                                boolean addAll=(localeName.equalsIgnoreCase("any")
+                                                ||localeName.equalsIgnoreCase("all"));
                                 for(;e.hasMoreElements();)
                                 {
                                     Room R2=(Room)e.nextElement();
-                                    if(localeName.equalsIgnoreCase("any"))
-                                        choices.addElement(R2);
-                                    else
-                                    if(CMClass.classID(R2).toUpperCase().indexOf(localeName)>=0)
+                                    if(addAll||CMClass.classID(R2).toUpperCase().indexOf(localeName)>=0)
                                         choices.addElement(R2);
                                     else
                                     {
@@ -1129,6 +1148,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                 	e=q.area.getMetroMap();
                                 else
                                 	e=CMLib.map().rooms();
+                                boolean addAll=localeName.equalsIgnoreCase("any")
+                                             ||localeName.equalsIgnoreCase("all");
                                 for(;e.hasMoreElements();)
                                 {
                                     Room R2=(Room)e.nextElement();
@@ -1136,7 +1157,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                     String desc=R2.description().toUpperCase();
                                     if((mask!=null)&&(!CMLib.masking().maskCheck(mask,R2,true))) 
                                         continue;
-                                    if(localeName.equalsIgnoreCase("any"))
+                                    if(addAll)
                                     {
                                         choices=choices0;
                                         choices0.addElement(R2);
@@ -2120,17 +2141,18 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         Vector mask=pickMask(s,p);
                         if(mask!=null) mobName=CMParms.combine(p,2).toUpperCase();
                         if(mobName.length()==0) mobName="ANY";
+                        boolean addAll=mobName.equalsIgnoreCase("ALL")
+                                        ||mobName.equalsIgnoreCase("ANY");
                         Vector choices=new Vector();
                         for(int i=0;i<q.loadedMobs.size();i++)
                         {
                             MOB M2=(MOB)q.loadedMobs.elementAt(i);
-                            if(!CMLib.masking().maskCheck(mask,M2,true))
-                                continue;
-                            if((mobName.equalsIgnoreCase("any"))
-                            ||(CMLib.english().containsString(M2.name(),mobName))
-                            ||(CMLib.english().containsString(M2.displayText(),mobName))
-                            ||(CMLib.english().containsString(M2.description(),mobName)))
-                                choices.addElement(M2.copyOf());
+                            if((CMLib.masking().maskCheck(mask,M2,true))
+                            &&(addAll
+                                ||(CMLib.english().containsString(M2.name(),mobName))
+                                ||(CMLib.english().containsString(M2.displayText(),mobName))
+                                ||(CMLib.english().containsString(M2.description(),mobName))))
+                                    choices.addElement(M2.copyOf());
                         }
                         if(choices.size()==0)
                         {
