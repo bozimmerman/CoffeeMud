@@ -119,7 +119,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		return null;
 	}
-    public Area findArea(String calledThis)
+    public Area findAreaStartsWith(String calledThis)
     {
         Area A=getArea(calledThis);
         if(A!=null) return A;
@@ -132,6 +132,18 @@ public class CMMap extends StdLibrary implements WorldMap
         return null;
     }
     
+    public Area findArea(String calledThis)
+    {
+        Area A=findAreaStartsWith(calledThis);
+        if(A!=null) return A;
+        for(Enumeration a=areas();a.hasMoreElements();)
+        {
+            A=(Area)a.nextElement();
+            if(CMLib.english().containsString(A.Name(),calledThis))
+                return A;
+        }
+        return null;
+    }
 	public Enumeration areas()
     {
 		return areasList.elements();

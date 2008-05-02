@@ -40,6 +40,7 @@ public interface WorldMap extends CMLibrary
     public void addArea(Area newOne);
     public void delArea(Area oneToDel);
     public Area getArea(String calledThis);
+    public Area findAreaStartsWith(String calledThis);
     public Area findArea(String calledThis);
     public Enumeration areas();
 	public Enumeration sortedAreas();

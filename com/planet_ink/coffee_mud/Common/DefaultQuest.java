@@ -550,26 +550,21 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                                 areas.addElement(CMLib.map().getRandomArea());
                             boolean addAll=areaName.equalsIgnoreCase("all");
                             if(oldSize==areas.size())
-                            for (Enumeration e = CMLib.map().areas(); e.hasMoreElements(); )
                             {
-                                Area A2 = (Area) e.nextElement();
                                 if(addAll)
-                                    areas.addElement(A2);
-                                else
-                                if (A2.Name().equalsIgnoreCase(areaName))
                                 {
-                                    areas.addElement(A2);
-                                    break;
+                                    for (Enumeration e = CMLib.map().areas(); e.hasMoreElements(); )
+                                    {
+                                        Area A2=(Area)e.nextElement();
+                                        if(!areas.contains(A2))
+                                            areas.addElement(e.nextElement());
+                                    }
                                 }
-                            }
-                            if(oldSize==areas.size())
-                            for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
-                            {
-                                Area A2=(Area)e.nextElement();
-                                if(CMLib.english().containsString(A2.Name(),areaName))
+                                else
                                 {
-                                    areas.addElement(A2);
-                                    break;
+                                    Area A2=CMLib.map().findArea(areaName);
+                                    if((A2!=null)&&(!areas.contains(A2)))
+                                        areas.addElement(A2);
                                 }
                             }
                         }

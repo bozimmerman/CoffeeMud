@@ -760,7 +760,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                     }
                     else
                     {
-                        Area A=CMLib.map().findArea(str);
+                        Area A=CMLib.map().findAreaStartsWith(str);
                         if(A==null)
                             CMLib.commands().postSay(this,mob,"I don't know of an area called '"+str+"'.",true,false);
                         else

@@ -96,10 +96,28 @@ public class Mood extends StdAbility
 	
 	public void setMiscText(String newText)
 	{
-	    super.setMiscText(newText);
-	    for(int i=0;i<MOODS.length;i++)
-	    	if(MOODS[i][0].equalsIgnoreCase(newText))
-	    		moodCode=i;
+	    // this checks the input, and allows us to get mood
+	    // lists without having the code in front of us.
+	    if(newText.length()>0)
+	    {
+	        moodCode=-1;
+	        if(CMath.isInteger(newText))
+	        {
+	            int x=CMath.s_int(newText);
+	            if((x>=0)&&(x<=MOODS.length))
+	            {
+                    moodCode=x;
+	                newText=MOODS[x][0];
+	            }
+	        }
+	        else
+    	    for(int i=0;i<MOODS.length;i++)
+    	    	if(MOODS[i][0].equalsIgnoreCase(newText))
+    	    		moodCode=i;
+	        if(moodCode<0)
+	            newText="";
+	    }
+        super.setMiscText(newText);
 	}
 	
 	public boolean tick(Tickable ticking, int tickID)
