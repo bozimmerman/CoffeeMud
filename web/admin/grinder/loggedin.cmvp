@@ -114,6 +114,10 @@
 	<A href="javascript:Clicked('quests.cmvp')"><FONT COLOR=WHITE>Quests Manager</FONT></a>
 	<BR>
 	@endif@
+	@if?CheckAuthCode?AUTH_CMDQUESTS=true@
+	<A href="javascript:Clicked('holiday.cmvp')"><FONT COLOR=WHITE>Holidays Manager</FONT></a>
+	<BR>
+	@endif@
 	@if?CheckAuthCode?AUTH_LISTADMIN=true@
 	<A href="javascript:Clicked('reports.cmvp')"><FONT COLOR=WHITE>System Reports</FONT></a>
 	<BR>

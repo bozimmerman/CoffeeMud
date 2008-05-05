@@ -978,11 +978,33 @@ public class Quests extends StdLibrary implements QuestManager
             stats.addElement("PRICEMASKS",newVal,new Integer(stats.size()));
         return showNumber;
     }
-    
-    protected int genMudChat(MOB mob, String var, DVector behaviors, int showNumber, int showFlag)
-    throws IOException
+
+    public String breakOutMaskString(String s, Vector p)
     {
-        int mndex=behaviors.indexOf(var);
+        String mask="";
+        int x=s.toUpperCase().lastIndexOf("MASK=");
+        if(x>=0)
+        {
+            mask=s.substring(x+5).trim();
+            int i=0;
+            while((i<p.size())&&(((String)p.elementAt(i)).toUpperCase().indexOf("MASK=")<0))i++;
+            if(i<=p.size())
+            {
+                String pp=(String)p.elementAt(i);
+                x=pp.toUpperCase().indexOf("MASK=");
+                if((x>0)&&(pp.substring(0,x).trim().length()>0))
+                {
+                    p.setElementAt(pp.substring(0,x).trim(),i);
+                    i++;
+                }
+                while(i<p.size()) p.removeElementAt(i);
+            }
+        }
+        return mask.trim();
+    }
+    
+    public Vector breakOutMudChatVs(String MUDCHAT, DVector behaviors) {
+        int mndex=behaviors.indexOf(MUDCHAT);
         String mudChatStr=(mndex<0)?"":(String)behaviors.elementAt(mndex,2);
         if(mudChatStr.startsWith("+")) mudChatStr=mudChatStr.substring(1);
         Vector rawMCV=CMParms.parseSemicolons(mudChatStr,true);
@@ -1005,6 +1027,16 @@ public class Quests extends StdLibrary implements QuestManager
             V.addElement(s);
         }
         if(V.size()==0) mudChatV.removeElement(V);
+        return mudChatV;
+    }
+    
+    protected int genMudChat(MOB mob, String var, DVector behaviors, int showNumber, int showFlag)
+    throws IOException
+    {
+        int mndex=behaviors.indexOf(var);
+        Vector mudChatV = breakOutMudChatVs(var,behaviors);
+        Vector V = null;
+        String s=null;
         for(int v=0;v<=mudChatV.size();v++)
         {
             if((showFlag>0)&&(showFlag!=showNumber)){ if(v<mudChatV.size())showNumber++; continue;}

@@ -72,12 +72,17 @@ public class CMParms
 
     public static String combineWithTabs(Vector commands, int startAt)
     {
+        return combineWithX(commands,"\t",startAt);
+    }
+
+    public static String combineWithX(Vector commands, String X, int startAt)
+    {
         StringBuffer Combined=new StringBuffer("");
         if(commands!=null)
         for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
         {
             String s=(String)commands.elementAt(commandIndex);
-            Combined.append(s+"\t");
+            Combined.append(s+X);
         }
         return Combined.toString().trim();
     }

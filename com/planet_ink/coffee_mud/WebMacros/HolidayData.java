@@ -90,32 +90,34 @@ public class HolidayData extends StdWebMacro
                 {
                     // any, all, "name" "name" "name" "name"
                     String old=httpReq.getRequestParameter("AREAGROUP");
+                    Vector areaNames=null;
                     if(old==null)
                     {
                         int dex=settings.indexOf("AREAGROUP");
                         if(dex>=0)
                             old=(String)settings.elementAt(dex,2);
                         else
-                            old="Unknown";
+                            old="ALL";
+                        areaNames = CMParms.parse(old.toUpperCase().trim());
+                    } else {
+                        int areaNum=2;
+                        areaNames=new Vector();
+                        if(httpReq.isRequestParameter("AREAGROUP0")) areaNames.add("ALL");
+                        if(httpReq.isRequestParameter("AREAGROUP1")) areaNames.add("ANY");
+                        for(Enumeration e=CMLib.map().areas();e.hasMoreElements();areaNum++)
+                            if(httpReq.isRequestParameter("AREAGROUP"+areaNum))
+                                areaNames.add(((Area)e.nextElement()).Name().toUpperCase());
+                            else
+                                e.nextElement();
                     }
-                    /*else
-                    if((!old.equalsIgnoreCase("ALL"))&&(old.trim().length()>0))
+                    str.append("<OPTION VALUE=\"AREAGROUP0\" "+(areaNames.contains("ALL")?"SELECTED":"")+">All");
+                    str.append("<OPTION VALUE=\"AREAGROUP1\" "+(areaNames.contains("ANY")?"SELECTED":"")+">Any (Random)");
+                    int areaNum=2;
+                    for(Enumeration e=CMLib.map().areas();e.hasMoreElements();areaNum++)
                     {
-                        Vector areas=new Vector();
-                        Vector chkV=CMParms.parse(old);
-                        for(int a=0;a<chkV.size();a++)
-                            if(CMLib.map().findArea((String)chkV.elementAt(a))!=null)
-                                areas.addElement(CMLib.map().findArea((String)chkV.elementAt(a)).name());
-                        if(areas.size()==0)
-                        {
-                            chkV=CMParms.parseCommas(old,false);
-                            for(int a=0;a<chkV.size();a++)
-                                if(CMLib.map().findArea((String)chkV.elementAt(a))!=null)
-                                    areas.addElement(CMLib.map().findArea((String)chkV.elementAt(a)));
-                        }
-                        old=CMParms.combineWithQuotes(areas,0);
-                    }*/
-                    str.append(old+", ");
+                        Area A=(Area)e.nextElement();
+                        str.append("<OPTION VALUE=\"AREAGROUP"+areaNum+"\" "+(areaNames.contains(A.Name().toUpperCase())?"SELECTED":"")+">"+A.Name());
+                    }
                 }
                 if(parms.containsKey("MOBGROUP"))
                 {
@@ -127,7 +129,7 @@ public class HolidayData extends StdWebMacro
                         if(dex>=0)
                             old=(String)settings.elementAt(dex,2);
                         else
-                            old="Unknown";
+                            old="";
                     }
                     str.append(old+", ");
                 }
@@ -140,7 +142,7 @@ public class HolidayData extends StdWebMacro
                         if(dex>=0)
                             old=(String)properties.elementAt(dex,2);
                         else
-                            old="Unknown";
+                            old="";
                     }
                     /*else
                     if(old.length()>0)
@@ -149,6 +151,13 @@ public class HolidayData extends StdWebMacro
                         if(!V.contains(old.toUpperCase().trim()))
                             old="";
                     }*/
+                    Vector V=getMoodList();
+                    str.append("<OPTION VALUE=\"\" "+((old.trim().length()==0)?" SELECTED":"")+">None");
+                    for(int v=0;v<V.size();v++)
+                    {
+                        String s=(String)V.elementAt(v);
+                        str.append("<OPTION VALUE=\""+s+"\" "+((old.trim().equalsIgnoreCase(s))?" SELECTED":"")+">"+s);
+                    }
                     str.append(old+", ");
                 }
                 if(parms.containsKey("AGGRESSIVE"))
@@ -160,7 +169,7 @@ public class HolidayData extends StdWebMacro
                         if(dex>=0)
                             old=(String)behaviors.elementAt(dex,2);
                         else
-                            old="Unknown";
+                            old="";
                     }
                     str.append(old+", ");
                 }
@@ -180,12 +189,14 @@ public class HolidayData extends StdWebMacro
                             old=TYPES[2];
                         else
                             old=TYPES[0];
+                        old=""+CMParms.indexOf(TYPES,old);
                     }
                     if(parms.containsKey("SCHEDULETYPEID"))
                     for(int i=0;i<TYPES.length;i++)
-                        str.append("<OPTION VALUE="+i+" "+(old.equalsIgnoreCase(TYPES[i])?"SELECTED":"")+">"+TYPES[i]);
+                        str.append("<OPTION VALUE="+i+" "+(old.equalsIgnoreCase(""+i)?"SELECTED":"")+">"+TYPES[i]);
                     else
                         str.append(old);
+                    httpReq.addRequestParameters("SCHEDULETYPE",old);
                     str.append(", ");
                 }
                 if(parms.containsKey("MUDDAY"))
@@ -230,7 +241,7 @@ public class HolidayData extends StdWebMacro
                 str.append(HolidayData.behaviors(behaviors,httpReq,parms,1));
                 str.append(HolidayData.properties(properties,httpReq,parms,1));
                 str.append(HolidayData.priceFactors(stats, httpReq, parms, 1));
-                //showNumber=genMudChat(mob,"MUDCHAT",behaviors,++showNumber,showFlag);
+                str.append(HolidayData.mudChat(behaviors,httpReq,parms,1));
                 String strstr=str.toString();
                 if(strstr.endsWith(", "))
                     strstr=strstr.substring(0,strstr.length()-2);
@@ -448,13 +459,106 @@ public class HolidayData extends StdWebMacro
                 str.append("<TR><TD WIDTH=25%>");
                 str.append("<INPUT TYPE=TEXT SIZE=5 NAME=PRCFAC"+(i+1)+" VALUE=\""+theclass+"\">");
                 str.append("</TD><TD WIDTH=75%>");
-                str.append("<INPUT TYPE=TEXT SIZE=30 NAME=PMASK"+(i+1)+" VALUE=\""+theparm+"\">");
+                str.append("<INPUT TYPE=TEXT SIZE=60 NAME=PMASK"+(i+1)+" VALUE=\""+theparm+"\">");
                 str.append("</TD></TR>");
             }
             str.append("<TR><TD WIDTH=25%>");
             str.append("<INPUT TYPE=TEXT SIZE=5 NAME=PRCFAC"+(theclasses.size()+1)+" VALUE=\"\">");
             str.append("</TD><TD WIDTH=50%>");
-            str.append("<INPUT TYPE=TEXT SIZE=40 NAME=PMASK"+(theclasses.size()+1)+" VALUE=\"\">");
+            str.append("<INPUT TYPE=TEXT SIZE=60 NAME=PMASK"+(theclasses.size()+1)+" VALUE=\"\">");
+            str.append("</TD></TR>");
+            str.append("</TABLE>");
+        }
+        return str;
+    }
+    
+    public static StringBuffer mudChat(DVector behaviors, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    {
+        StringBuffer str=new StringBuffer("");
+        if(parms.containsKey("MUDCHAT"))
+        {
+            Vector mudchats=new Vector();
+            if(httpReq.isRequestParameter("MCWDS1"))
+            {
+                int wdsnum=1;
+                String wordsList=httpReq.getRequestParameter("MCWDS"+wdsnum);
+                String weight=httpReq.getRequestParameter("MCSAYW"+wdsnum+"_1");
+                String say=httpReq.getRequestParameter("MCSAYS"+wdsnum+"_1");
+                while((wordsList!=null)&&(weight!=null)&&(say!=null))
+                {
+                    Vector mudchat=new Vector();
+                    if(wordsList.length()>0)
+                    {
+                        mudchats.addElement(mudchat);
+                        mudchat.addElement(CMStrings.replaceAll(wordsList,",","|"));
+                        int saynum=1;
+                        while((weight!=null)&&(say!=null)&&(CMath.isInteger(weight)))
+                        {
+                            mudchat.addElement(weight+say);
+                            saynum++;
+                            say=httpReq.getRequestParameter("MCSAYS"+wdsnum+"_"+saynum);
+                            weight=httpReq.getRequestParameter("MCSAYW"+wdsnum+"_"+saynum);
+                        }
+                        wdsnum++;
+                        wordsList=httpReq.getRequestParameter("MCWDS"+wdsnum);
+                        say=httpReq.getRequestParameter("MCSAYS"+wdsnum+"_1");
+                        weight=httpReq.getRequestParameter("MCSAYW"+wdsnum+"_1");
+                    }
+                }
+            }
+            else
+                mudchats=CMLib.quests().breakOutMudChatVs("MUDCHAT",behaviors);
+            
+            str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
+            for(int i=0;i<mudchats.size();i++)
+            {
+                Vector mudChat=(Vector)mudchats.elementAt(i);
+                String sayList=CMStrings.replaceAll(CMStrings.replaceAll((String)mudChat.firstElement(),"\"","&quot;"),"|",",");
+                str.append("<TR><TD WIDTH=30% VALIGN=TOP>");
+                str.append("<INPUT TYPE=TEXT SIZE=40 NAME=MCWDS"+(i+1)+" VALUE=\""+sayList+"\">");
+                str.append("</TD><TD WIDTH=70%>");
+                str.append("<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>");
+                for(int ii=1;ii<mudChat.size();ii++)
+                {
+                    str.append("<TR><TD WIDTH=20%>");
+                    String say=(String)mudChat.elementAt(ii);
+                    int weight=CMath.s_int(""+say.charAt(0));
+                    say=CMStrings.replaceAll(say.substring(1),"\"","&quot;");
+                    str.append("<SELECT NAME=MCSAYW"+(i+1)+"_"+(ii)+" ONCHANGE=\"NewSay('"+(i+1)+"')\">");
+                    str.append("<OPTION VALUE=\"\">del");
+                    for(int i3=0;i3<=9;i3++)
+                        str.append("<OPTION VALUE="+i3+((i3==weight)?" SELECTED":"")+">"+i3);
+                    str.append("</SELECT>");
+                    str.append("</TD><TD WIDTH=80%>");
+                    str.append("<INPUT TYPE=TEXT SIZE=40 NAME=MCSAYS"+(i+1)+"_"+(ii)+" VALUE=\""+say+"\">");
+                    str.append("</TD></TR>");
+                }
+                str.append("<TR><TD WIDTH=20%>");
+                str.append("<SELECT NAME=MCSAYW"+(i+1)+"_"+(mudChat.size())+" ONCHANGE=\"NewSay('"+(i+1)+"')\">");
+                str.append("<OPTION VALUE=\"\">");
+                for(int i3=0;i3<=0;i3++)
+                    str.append("<OPTION VALUE="+i3+">"+i3);
+                str.append("</SELECT>");
+                str.append("</TD><TD WIDTH=80%>");
+                str.append("<INPUT TYPE=TEXT SIZE=40 NAME=MCSAYS"+(i+1)+"_"+(mudChat.size())+" VALUE=\"\">");
+                str.append("</TD></TR>");
+                str.append("</TABLE>");
+                str.append("</TD></TR>");
+            }
+            str.append("<TR><TD WIDTH=30% VALIGN=TOP>");
+            str.append("<INPUT TYPE=TEXT SIZE=40 NAME=MCWDS"+(mudchats.size())+" VALUE=\"\">");
+            str.append("</TD><TD WIDTH=70%>");
+            str.append("<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>");
+            str.append("<TR><TD WIDTH=20%>");
+            str.append("<SELECT NAME=MCSAYW"+(mudchats.size())+"_1 ONCHANGE=\"NewSay('')\">");
+            str.append("<OPTION VALUE=\"\">");
+            for(int i3=0;i3<=0;i3++)
+                str.append("<OPTION VALUE="+i3+">"+i3);
+            str.append("</SELECT>");
+            str.append("</TD><TD WIDTH=80%>");
+            str.append("<INPUT TYPE=TEXT SIZE=40 NAME=MCSAYS"+(mudchats.size())+"_1 VALUE=\"\">");
+            str.append("</TD></TR>");
+            str.append("</TABLE>");
             str.append("</TD></TR>");
             str.append("</TABLE>");
         }

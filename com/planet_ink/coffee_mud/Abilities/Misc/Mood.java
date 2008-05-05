@@ -104,7 +104,7 @@ public class Mood extends StdAbility
 	        if(CMath.isInteger(newText))
 	        {
 	            int x=CMath.s_int(newText);
-	            if((x>=0)&&(x<=MOODS.length))
+	            if((x>=0)&&(x<MOODS.length))
 	            {
                     moodCode=x;
 	                newText=MOODS[x][0];
