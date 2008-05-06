@@ -36,6 +36,21 @@ import java.util.*;
 public class GrinderHolidays {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
+    
+    protected static String setText(DVector sets, String var, String newVAL)
+    {
+        if(newVAL==null) newVAL="";
+        int index=sets.indexOf(var);
+        String oldVal=index>=0?(String)sets.elementAt(index,2):"";
+        if(index>=0)
+            sets.setElementAt(index,2,newVAL);
+        else
+        if(!newVAL.equals(oldVal))
+            sets.addElement(var,newVAL,new Integer(-1));
+        return newVAL;
+    }
+
+    
     public static String createModifyHoliday(ExternalHTTPRequests httpReq, Hashtable parms, String holidayName)
     {
         int index=CMLib.quests().getHolidayIndex(holidayName);
@@ -67,8 +82,94 @@ public class GrinderHolidays {
         Vector stepV=(Vector)encodedData.elementAt(4);
         int pricingMobIndex=((Integer)encodedData.elementAt(5)).intValue();
         
+        String name=setText(settings,"NAME",httpReq.getRequestParameter("NAME"));
+        if((name==null)||(name.trim().length()==0)) return "A name is required.";
+        
+        String duration=setText(settings,"DURATION",httpReq.getRequestParameter("DURATION"));
+        if((duration==null)||(!CMath.isMathExpression(duration))) return "Duration is mal-formed.";
+        
+        if(!httpReq.isRequestParameter("SCHEDULE")) return "Schedule not found.";
+        int typeIndex=CMath.s_int(httpReq.getRequestParameter("SCHEDULE"));
+        int mudDayIndex=settings.indexOf("MUDDAY");
+        int dateIndex=settings.indexOf("DATE");
+        int waitIndex=settings.indexOf("WAIT");
+        String scheduleName=new String[]{"WAIT","MUDDAY","DATE"}[typeIndex];
+        if((typeIndex!=0)&&(waitIndex>=0))
+            settings.removeElement("WAIT");
+        if((typeIndex!=1)&&(mudDayIndex>=0))
+            settings.removeElement("MUDDAY");
+        if((typeIndex!=2)&&(dateIndex>=0))
+            settings.removeElement("DATE");
+        String newWait = setText(settings,scheduleName,httpReq.getRequestParameter(scheduleName));
+        switch(typeIndex)
+        {
+        case 0: {
+            if(!CMath.isMathExpression(newWait))
+                return "Wait expression is invalid.";
+            break;
+            }
+        case 1: 
+        case 2: {
+            int dash=newWait.indexOf('-');
+            if(dash < 0) return "Given date is invalid. Use Month#-Day# format";
+            if(!CMath.isInteger(newWait.substring(0,dash).trim()))
+                return "Month value in the given date is not valid.";
+            if(!CMath.isInteger(newWait.substring(dash+1).trim()))
+                return "Day value in the given date is not valid.";
+            break;
+            }
+        }
+        
+        StringBuffer areaGroup = new StringBuffer("");
+        if(httpReq.isRequestParameter("AREAGROUP1")) 
+            areaGroup.append("ANY");
+        else
+        {
+            int areaNum=2;
+            for(Enumeration e=CMLib.map().areas();e.hasMoreElements();areaNum++)
+                if(httpReq.isRequestParameter("AREAGROUP"+areaNum))
+                    areaGroup.append(" \"" + ((Area)e.nextElement()).Name()+"\"");
+                else
+                    e.nextElement();
+        }
+        
+        setText(settings,"AREAGROUP",areaGroup.toString().trim());
+        setText(settings,"MOBGROUP",httpReq.getRequestParameter("MOBGROUP"));
+        
+        behaviors.clear();
+        setText(behaviors,"AGGRESSIVE",httpReq.getRequestParameter("AGGRESSIVE"));
+        for(int i=1;httpReq.isRequestParameter("BEHAV"+i);i++)
+            if(httpReq.getRequestParameter("BEHAV"+i).trim().length()>0)
+                setText(behaviors,httpReq.getRequestParameter("BEHAV"+i),httpReq.getRequestParameter("BDATA"+i));
+        StringBuffer mudChats=new StringBuffer("");
+        for(int i=1;httpReq.isRequestParameter("MCWDS"+i);i++)
+        {
+            String words=httpReq.getRequestParameter("MCWDS"+i).trim();
+            words=CMStrings.replaceAll(words,",","|");
+            if((words.length()>0)&&(httpReq.isRequestParameter("MCSAYS"+i+"_1")))
+            {
+                mudChats.append("("+words+");");
+                for(int ii=1;httpReq.isRequestParameter("MCSAYW"+i+"_"+ii);i++)
+                    if(CMath.isInteger(httpReq.getRequestParameter("MCSAYW"+i+"_"+ii)))
+                        mudChats.append(httpReq.getRequestParameter("MCSAYW"+i+"_"+ii)+httpReq.getRequestParameter("MCSAYS"+i+"_"+ii)+";");
+                mudChats.append(";");
+            }
+        }
+        setText(behaviors,"MUDCHAT",mudChats.toString());
+
+        properties.clear();
+        setText(properties,"MOOD",httpReq.getRequestParameter("MOOD"));
+        for(int i=1;httpReq.isRequestParameter("AFFECT"+i);i++)
+            if(httpReq.getRequestParameter("AFFECT"+i).trim().length()>0)
+                setText(properties,httpReq.getRequestParameter("AFFECT"+i),httpReq.getRequestParameter("ADATA"+i));
         
         
-        return "";
+        Vector priceFV=new Vector();
+        for(int i=1;httpReq.isRequestParameter("PRCFAC"+i);i++)
+            if(CMath.isPct(httpReq.getRequestParameter("PRCFAC"+i).trim()))
+                priceFV.add(((String)(CMath.s_pct(httpReq.getRequestParameter("PRCFAC"+i).trim())+" "+httpReq.getRequestParameter("PMASK"+i).trim())).trim());
+        setText(stats,"PRICEMASKS",CMParms.toStringList(priceFV));
+        
+        return CMLib.quests().alterHoliday(holidayName, encodedData);
     }
 }
