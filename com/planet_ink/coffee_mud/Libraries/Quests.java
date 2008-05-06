@@ -289,7 +289,7 @@ public class Quests extends StdLibrary implements QuestManager
         return newHoliday;
     }
     
-    public String deleteHoliday(Area A, int holidayNumber)
+    public String deleteHoliday(int holidayNumber)
     {
         Object resp=getHolidayFile();
         if(resp instanceof String)

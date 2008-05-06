@@ -405,7 +405,7 @@
 				</FONT>
 				<a href="javascript:OpenUp('ihelp.cmvp','PRICEFACTORS');"><FONT COLOR=WHITE><I>?</I></FONT></a>
 				<INPUT TYPE=BUTTON NAME=RESHOW2 VALUE="Submit" ONCLICK="ReShow();">
-				<A HREF="javascript:OpenUp('ahelp.cmvp','PROP_HAVEZAPPER')"><FONT COLOR=WHITE><I>mask help</I></FONT></a>
+				<A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>mask help</I></FONT></a>
 			</TD>
 		</TR>
 	@endif@

@@ -123,7 +123,7 @@
 	<TR>
 		<TD WIDTH=25%><FONT COLOR=YELLOW>Qualification Mask: </FONT></TD>
 		<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=50 NAME=ACCEPTANCEID VALUE="@ClanData?ACCEPTANCEID@">
-		<A HREF="javascript:OpenUp('ahelp.cmvp','PROP_HAVEZAPPER')"><FONT COLOR=WHITE><I>mask help</I></FONT></a>
+		<A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>mask help</I></FONT></a>
 		</TD>
 	</TR>
 	<TR>

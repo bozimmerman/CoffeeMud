@@ -40,12 +40,15 @@ public class GrinderHolidays {
     protected static String setText(DVector sets, String var, String newVAL)
     {
         if(newVAL==null) newVAL="";
+        //var=var.toUpperCase().trim();
         int index=sets.indexOf(var);
         String oldVal=index>=0?(String)sets.elementAt(index,2):"";
         if(index>=0)
-            sets.setElementAt(index,2,newVAL);
+        {
+            if(!newVAL.equals(oldVal))
+                sets.setElementAt(index,2,newVAL);
+        }
         else
-        if(!newVAL.equals(oldVal))
             sets.addElement(var,newVAL,new Integer(-1));
         return newVAL;
     }
@@ -88,8 +91,8 @@ public class GrinderHolidays {
         String duration=setText(settings,"DURATION",httpReq.getRequestParameter("DURATION"));
         if((duration==null)||(!CMath.isMathExpression(duration))) return "Duration is mal-formed.";
         
-        if(!httpReq.isRequestParameter("SCHEDULE")) return "Schedule not found.";
-        int typeIndex=CMath.s_int(httpReq.getRequestParameter("SCHEDULE"));
+        if(!httpReq.isRequestParameter("SCHEDULETYPE")) return "Schedule not found.";
+        int typeIndex=CMath.s_int(httpReq.getRequestParameter("SCHEDULETYPE"));
         int mudDayIndex=settings.indexOf("MUDDAY");
         int dateIndex=settings.indexOf("DATE");
         int waitIndex=settings.indexOf("WAIT");
@@ -121,16 +124,26 @@ public class GrinderHolidays {
         }
         
         StringBuffer areaGroup = new StringBuffer("");
-        if(httpReq.isRequestParameter("AREAGROUP1")) 
+        HashSet areaCodes=new HashSet();
+        String id="";
+        for(int i=0;httpReq.isRequestParameter("AREAGROUP"+id);id=new Integer(++i).toString())
+            areaCodes.add(httpReq.getRequestParameter("AREAGROUP"+id));
+        if(areaCodes.contains("AREAGROUP1")) 
             areaGroup.append("ANY");
         else
         {
             int areaNum=2;
+            boolean reallyAll=true;
             for(Enumeration e=CMLib.map().areas();e.hasMoreElements();areaNum++)
-                if(httpReq.isRequestParameter("AREAGROUP"+areaNum))
+                if(areaCodes.contains("AREAGROUP"+areaNum))
                     areaGroup.append(" \"" + ((Area)e.nextElement()).Name()+"\"");
                 else
+                {
+                    reallyAll=false;
                     e.nextElement();
+                }
+            if(reallyAll)
+                areaGroup.setLength(0);
         }
         
         setText(settings,"AREAGROUP",areaGroup.toString().trim());
@@ -149,7 +162,7 @@ public class GrinderHolidays {
             if((words.length()>0)&&(httpReq.isRequestParameter("MCSAYS"+i+"_1")))
             {
                 mudChats.append("("+words+");");
-                for(int ii=1;httpReq.isRequestParameter("MCSAYW"+i+"_"+ii);i++)
+                for(int ii=1;httpReq.isRequestParameter("MCSAYW"+i+"_"+ii);ii++)
                     if(CMath.isInteger(httpReq.getRequestParameter("MCSAYW"+i+"_"+ii)))
                         mudChats.append(httpReq.getRequestParameter("MCSAYW"+i+"_"+ii)+httpReq.getRequestParameter("MCSAYS"+i+"_"+ii)+";");
                 mudChats.append(";");
@@ -170,6 +183,9 @@ public class GrinderHolidays {
                 priceFV.add(((String)(CMath.s_pct(httpReq.getRequestParameter("PRCFAC"+i).trim())+" "+httpReq.getRequestParameter("PMASK"+i).trim())).trim());
         setText(stats,"PRICEMASKS",CMParms.toStringList(priceFV));
         
-        return CMLib.quests().alterHoliday(holidayName, encodedData);
+        String err=CMLib.quests().alterHoliday(holidayName, encodedData);
+        if(err.length()==0)
+            httpReq.addRequestParameters("HOLIDAY",name);
+        return err;
     }
 }

@@ -27,9 +27,15 @@
         {
             ReShow();
         }
+        function NoSay(ME)
+        {
+            if(ME.selectedIndex==0)
+            	ReShow();
+        }
         function NewSay(ME)
         {
-        	ReShow();
+            if(ME.selectedIndex>0)
+                ReShow();
         }
         function EditItem(ME,FIELD)
         {
@@ -64,49 +70,42 @@
             if(ME.selectedIndex>0)
                 ReShow();
         }
-        function NewRace()
+        function NewHoliday()
         {
-            var raceid=window.prompt('Enter a new unique ID for your Race (no spaces):');
-            if(raceid==null)
+            var holiday=window.prompt('Enter a new unique name for your Holiday:');
+            if(holiday==null)
                 return;
-            if(raceid.length==0)
+            if(holiday.length==0)
                 return;
-            if(raceid.indexOf(' ')>=0)
+            if(holiday.indexOf(' ')>=0)
             {
                 window.alert('No spaces are allowed in your ID!');
                 return;
             }
-            document.RESOURCES.NEWHOLIDAYID.value=raceid;
+            document.RESOURCES.NEWHOLIDAYID.value=holiday;
             document.RESOURCES.FUNCTION.value='REHOLIDAY';
             document.RESOURCES.action='/grinder/holidaydo.cmvp';
             document.RESOURCES.submit();
         }
 		function Delete()
 		{
-			if(confirm('Delete this generic race?! Confirm!'))
+			if(confirm('Delete this holiday?! Confirm!'))
 			{
-				if(confirm('Press OK to Delete this race!'))
-				{
-					document.RESOURCES.action='holidaydo.cmvp';
-					document.RESOURCES.FUNCTION.value='DELRACE';
-					document.RESOURCES.submit();
-				}
+				document.RESOURCES.action='holidaydo.cmvp';
+				document.RESOURCES.FUNCTION.value='DELHOLIDAY';
+				document.RESOURCES.submit();
 			}
 		}
 		function EditDone()
 		{
-		    @if?HolidayData?NEWRACE@
-                if(confirm('Create this new race?'))
+		    @if?!HolidayData?EXISTS@
+                if(confirm('Create this new holiday?'))
             @else@
-                @if?HolidayData?ISGENERIC@
-                    if(confirm('Submit your changes to this race?'))
-                @else@
-        			if(confirm('Submitting these changes will convert your standard Race to a Generic Race.  Are you absolutely sure?'))
-                @endif@
+                if(confirm('Submit your changes to this holiday?'))
     	    @endif@
                 {
-                    document.RESOURCES.action='holidaydo.cmvp';
-                    document.RESOURCES.FUNCTION.value='EDITRACE';
+                    document.RESOURCES.action='holiday.cmvp';
+                    document.RESOURCES.FUNCTION.value='EDITHOLIDAY';
                     document.RESOURCES.submit();
                 }
 		}
@@ -132,6 +131,17 @@
 			w=window.open("/"+file+"?HELPTOPIC="+named,
 			            "Help",strFeatures, false);
 		}
+        function Clicked(action)
+        {
+            document.RESOURCES.action=action;
+            document.RESOURCES.submit();
+        }
+        
+        @if?CheckReqParm?FUNCTION=EDITHOLIDAY@
+            var editresponse='@MUDGrinder?EDITHOLIDAY@';
+            if(editresponse!='')
+                alert(editresponse);
+        @endif@
 	//-->
 	</script>
 </head>
@@ -147,14 +157,15 @@
 		<FONT COLOR=WHITE>Holiday: </FONT>
 		@AddRequestParameter?OLDHOLIDAY=@@RequestParameter?HOLIDAY@@ @
 		<SELECT NAME=HOLIDAY ONCHANGE="javascript:REHOLIDAY();">
-		
-		@if?HolidayData?NEWHOLIDAY@
-            <OPTION VALUE="@RequestParameter?HOLIDAY@" SELECTED>*new* holiday: @RequestParameter?HOLIDAY@
-            @AddRequestParameter?HOLIDAY=@
+        @if?!CheckReqParm?HOLIDAY=@
+            @if?HolidayData?EXISTS@
+                <OPTION VALUE="" @if?CheckReqParm?HOLIDAY=@SELECTED@endif@>Select a holiday
+            @else@
+                <OPTION VALUE="@RequestParameter?HOLIDAY@" SELECTED>@RequestParameter?HOLIDAY@
+            @endif@
         @else@
-            <OPTION VALUE="" @if?CheckReqParm?HOLIDAY=@SELECTED@endif@>Select a holiday
-		@endif@
-		
+                <OPTION VALUE="" @if?CheckReqParm?HOLIDAY=@SELECTED@endif@>Select a holiday
+        @endif@
         @HolidayNext?RESET@
 		@loop@
 		@HolidayNext@
@@ -194,41 +205,41 @@
 		</TR>
 		@if?CheckReqParm?SCHEDULETYPE=1@
 			<TR>
-				<TD WIDTH=25%></TD>
+				<TD WIDTH=25%><FONT COLOR=YELLOW>Mud Date (Month-Day): </FONT></TD>
 				<TD WIDTH=66%>
-					<FONT COLOR=YELLOW>Mud Date (Month-Day): </FONT><BR>
 					<INPUT TYPE=TEXT SIZE=6 NAME=MUDDAY VALUE="@HolidayData?MUDDAY@">
 				</TD>
 			</TR>
 		@endif@
 		@if?CheckReqParm?SCHEDULETYPE=2@
 			<TR>
-				<TD WIDTH=25%></TD>
+				<TD WIDTH=25%><FONT COLOR=YELLOW>Real-Life Date (Month-Day): </FONT></TD>
 				<TD WIDTH=66%>
-					<FONT COLOR=YELLOW>Real-Life Date (Month-Day): </FONT><BR>
 					<INPUT TYPE=TEXT SIZE=6 NAME=DATE VALUE="@HolidayData?DATE@">
 				</TD>
 			</TR>
 		@endif@
 		@if?CheckReqParm?SCHEDULETYPE=0@
 			<TR>
-				<TD WIDTH=25%></TD>
+				<TD WIDTH=25%>
+				<FONT COLOR=YELLOW>Random Wait Ticks: </FONT><BR>
+				<A HREF="javascript:OpenUp('ahelp.cmvp','MATH_FORMULA')"><FONT COLOR=WHITE><I>Formula</I></FONT></a>
+				</TD>
 				<TD WIDTH=66%>
-					<FONT COLOR=YELLOW>Random Wait (Ticks <A HREF="javascript:OpenUp('ahelp.cmvp','MATH_FORMULA')"><FONT COLOR=WHITE><I>Formula</I></FONT></a>): </FONT><BR>
 					<INPUT TYPE=TEXT SIZE=10 NAME=WAIT VALUE="@HolidayData?WAIT@">
 				</TD>
 			</TR>
 		@endif@
 		<TR>
-			<TD WIDTH=25%><FONT COLOR=YELLOW>Duration (Ticks <A HREF="javascript:OpenUp('ahelp.cmvp','MATH_FORMULA')"><FONT COLOR=WHITE><I>Formula</I></FONT></a>):</FONT></TD>
-			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=20 NAME=NAME VALUE="@HolidayData?DURATION@"></TD>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Duration Ticks:</FONT><BR><A HREF="javascript:OpenUp('ahelp.cmvp','MATH_FORMULA')"><FONT COLOR=WHITE><I>Formula</I></FONT></a></TD>
+			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=20 NAME=DURATION VALUE="@HolidayData?DURATION@"></TD>
 		</TR>
 		<TR>
 			<TD WIDTH=25%><FONT COLOR=YELLOW>Area(s): </FONT></TD>
 			<TD WIDTH=66%><SELECT NAME=AREAGROUP MULTIPLE>@HolidayData?AREAGROUP@</SELECT></TD>
 		</TR>
 		<TR>
-			<TD WIDTH=25%><FONT COLOR=YELLOW>Area MOBs : <A HREF="javascript:OpenUp('ahelp.cmvp','PROP_HAVEZAPPER')"><FONT COLOR=WHITE><I>mask</I></FONT></FONT></TD>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Area MOBs:<BR><A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>mask</I></FONT></FONT></TD>
 			<TD WIDTH=66%>
 				<INPUT TYPE=TEXT SIZE=60 MAXLENGTH=255 NAME=MOBGROUP VALUE="@HolidayData?MOBGROUP@"><P>
 			</TD>
@@ -238,8 +249,8 @@
 			<TD WIDTH=66%><SELECT NAME=MOOD MULTIPLE>@HolidayData?MOOD@</SELECT></TD>
 		</TR>
 		<TR>
-			<TD WIDTH=25%><FONT COLOR=YELLOW>MOB Aggression <A HREF="javascript:OpenUp('ahelp.cmvp','AGGRESSIVE')"><FONT COLOR=WHITE><I>flags</I></FONT></a>:<BR> 
-			<BR><I><FONT SIZE=-1>Leave empty to disable</FONT></I>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>MOB Aggression: 
+			<BR><A HREF="javascript:OpenUp('ahelp.cmvp','AGGRESSIVE')"><FONT COLOR=WHITE><I>flags</I></FONT></a>&nbsp;<I><FONT SIZE=-1>Leave empty to disable</FONT></I>
 			</FONT></TD>
 			<TD WIDTH=66%>
 				<INPUT TYPE=TEXT SIZE=60 MAXLENGTH=255 NAME=AGGRESSIVE VALUE="@HolidayData?AGGRESSIVE@"><P>
@@ -253,23 +264,23 @@
 			</FONT></TD>
 		</TR>
 		<TR>
-			<TD><FONT COLOR=YELLOW><B>MOB Affects:</FONT>
+			<TD><FONT COLOR=YELLOW>MOB Affects:</FONT>
 			<BR><A target=HELP href="/affects.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
 		    <TD><FONT COLOR=WHITE>
 			@HolidayData?AFFECTS@
 			</FONT></TD>
 		</TR>
 		<TR>
-			<TD><FONT COLOR=YELLOW><B>MOB MudChatting:</FONT></TD>
+			<TD><FONT COLOR=YELLOW>MOB MudChatting:</FONT></TD>
 		    <TD><FONT COLOR=WHITE>
-			@HolidayData?MUDCHAT@
+			@HolidayData?MUDCHAT&HEADERCOL1=Words List&HEADERCOL2=Response Weight(s)&HEADERCOL3=Response phrase(s)&FONT=SIZE=-1 COLOR=YELLOW@
 			</FONT></TD>
 		</TR>
 		<TR>
-			<TD><FONT COLOR=YELLOW><B>Shops Pricing Factors:</FONT>
-			<a href="javascript:OpenUp('ihelp.cmvp','PRICEFACTORS');"><FONT COLOR=WHITE><I>?</I></FONT></a>
+			<TD><FONT COLOR=YELLOW>Shops Pricing Factors:</FONT>
+			<!--<a href="javascript:OpenUp('ihelp.cmvp','PRICEFACTORS');"><FONT COLOR=WHITE><I>?</I></FONT></a>-->
 		    <TD><FONT COLOR=WHITE>
-			@HolidayData?PRICEFACTORS@
+			@HolidayData?PRICEFACTORS&HEADERCOL1=Price Change (%)&HEADERCOL2=Item Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></A>&FONT=SIZE=-1 COLOR=YELLOW@
 			</FONT></TD>
 		</TR>
 	</TABLE>
@@ -277,8 +288,14 @@
 <BR>
 <TABLE WIDTH=100% BORDER=0>
 <TR>
-    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
-    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
+    @if?!CheckReqParm?HOLIDAY=@
+        @if?HolidayData?EXISTS@
+            <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
+            <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
+        @else@
+            <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
+        @endif@
+    @endif@
     <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
 </TR>
 </TABLE>

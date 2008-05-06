@@ -293,7 +293,7 @@
 			<BR>
 			<FONT COLOR=WHITE>@INIValue?MASK=SYSOPMASK=&INIHELP@</FONT>
 			<P>
-			<A HREF="javascript:openUp('PROP_HAVEZAPPER')">Click here for Prop_HaveZapper help</a>
+			<A HREF="javascript:openUp('MASKS')">Click here for Mask help</a>
 		</TD></TR>
 		<TR><TD WIDTH=20%  COLSPAN=2 VALIGN=TOP><FONT COLOR=WHITE>MAXCONNSPERIP</FONT>
 		</TD><TD WIDTH=80%  COLSPAN=8 VALIGN=TOP>
@@ -797,7 +797,7 @@
 		<TEXTAREA NAME=ITEMLOOTPOLICY COLS=60 ROWS=2>@INIValue?MASK=ITEMLOOTPOLICY&VALUE@</TEXTAREA>
 		<BR>
 		<FONT COLOR=WHITE>@INIValue?MASK=ITEMLOOTPOLICY&INIHELP@
-		<A HREF="javascript:openUp('PROP_HAVEZAPPER')">Click here for Prop_HaveZapper help</a>
+		<A HREF="javascript:openUp('MASKS')">Click here for Mask help</a>
 		</TD></TR>
 		
 		</TABLE>

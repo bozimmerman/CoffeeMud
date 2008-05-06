@@ -18,7 +18,11 @@
     document.location.href='holiday.cmvp?AUTH=@Authenticate?AUTH@&HOLIDAY=@RequestParameterEncoded?HOLIDAY@';
 @endif@
 @if?CheckReqParm?FUNCTION=REHOLIDAY@
-    document.location.href='holiday.cmvp?AUTH=@Authenticate?AUTH@&HOLIDAY=@RequestParameterEncoded?HOLIDAY@&NEWHOLIDAY=@RequestParameterEncoded?NEWHOLIDAYID@';
+    @if?CheckReqParm?NEWHOLIDAYID=@
+        document.location.href='holiday.cmvp?AUTH=@Authenticate?AUTH@&HOLIDAY=@RequestParameterEncoded?HOLIDAY@';
+    @else@
+        document.location.href='holiday.cmvp?AUTH=@Authenticate?AUTH@&HOLIDAY=@RequestParameterEncoded?NEWHOLIDAYID@';
+    @endif@
 @endif@
 //-->
 </SCRIPT>

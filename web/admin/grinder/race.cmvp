@@ -118,6 +118,11 @@
 			w=window.open("/"+file+"?HELPTOPIC="+named,
 			            "Help",strFeatures, false);
 		}
+        function Clicked(action)
+        {
+            document.RESOURCES.action=action;
+            document.RESOURCES.submit();
+        }
 	//-->
 	</script>
 </head>
@@ -290,7 +295,7 @@
 		
 		
 		
-			<!--<A HREF="javascript:OpenUp('ahelp.cmvp','PROP_HAVEZAPPER')"><FONT COLOR=WHITE><I>mask help</I></FONT></a>-->
+			<!--<A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>mask help</I></FONT></a>-->
 	</TABLE>
 @endif@
 <BR>

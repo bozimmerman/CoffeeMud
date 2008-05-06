@@ -984,7 +984,7 @@ public class Destroy extends BaseItemParser
                 return false;
             }
             mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
-            mob.tell(CMLib.quests().deleteHoliday(mob.location().getArea(),num));
+            mob.tell(CMLib.quests().deleteHoliday(num));
             Log.sysOut("CreateEdit",mob.Name()+" deleted Holiday "+name+".");
         }
 		else

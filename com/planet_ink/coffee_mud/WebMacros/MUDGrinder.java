@@ -351,6 +351,34 @@ public class MUDGrinder extends StdWebMacro
             Log.sysOut("Grinder",mob.name()+" deleted race "+R.ID());
             return "Race "+R.ID()+" deleted.";
         }
+        else
+        if(parms.contains("DELHOLIDAY"))
+        {
+            MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(mob==null) return "@break@";
+            String last=httpReq.getRequestParameter("HOLIDAY");
+            if(last==null) return " @break@";
+            int dex=CMLib.quests().getHolidayIndex(last);
+            if(dex<0) return "Holiday '" + last +"' does not exist.";
+            String err=CMLib.quests().deleteHoliday(dex);
+            Log.sysOut("Grinder",mob.name()+" deleted holiday "+last);
+            return (err.length()>0)?err:"Holiday '"+last+"' deleted.";
+        }
+        else
+        if(parms.contains("EDITHOLIDAY"))
+        {
+            MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(mob==null) return "@break@";
+            String last=httpReq.getRequestParameter("HOLIDAY");
+            if(last==null) return " @break@";
+            int holidayIndex=CMLib.quests().getHolidayIndex(last);
+            String err=GrinderHolidays.createModifyHoliday(httpReq, parms, last);
+            if(holidayIndex<0)
+                Log.sysOut("Grinder",mob.name()+" created holiday "+last);
+            else
+                Log.sysOut("Grinder",mob.name()+" modified holiday "+last);
+            return (err.length()>0)?err:"";
+        }
 		else
 		if(parms.contains("EDITRACE"))
 		{
