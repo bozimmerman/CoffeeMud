@@ -224,7 +224,7 @@ public class Quests extends StdLibrary implements QuestManager
         }
     }
 
-    public String createHoliday(Area A, String named)
+    public String createHoliday(String named, String areaName, boolean save)
     {
         Object resp=getHolidayFile();
         if(resp instanceof String)
@@ -262,23 +262,31 @@ public class Quests extends StdLibrary implements QuestManager
                 }
             }
         }
-        CMFile F=new CMFile(Resources.makeFileResourceName(holidayFilename),null,false);
+        if(save)
+        {
+            CMFile F=new CMFile(Resources.makeFileResourceName(holidayFilename),null,false);
+            F.saveText(getDefaultHoliData(named,areaName),true);
+            Quest Q=fetchQuest("holidays");
+            if(Q!=null) Q.setScript(holidayDefinition);
+        }
+        return "";
+    }
+    
+    public StringBuffer getDefaultHoliData(String named, String area)
+    {
         StringBuffer newHoliday=new StringBuffer("");
         newHoliday.append("\n\rSET NAME "+named+"\n\r");
         newHoliday.append("SET WAIT 900+(1?100)\n\r");
         newHoliday.append("SET INTERVAL 1\n\r");
         newHoliday.append("SET DURATION 900\n\r");
-        newHoliday.append("SET AREAGROUP \""+A.name()+"\"\n\r");
+        newHoliday.append("SET AREAGROUP \""+area+"\"\n\r");
         newHoliday.append("QUIET\n\r");
         newHoliday.append("SET MOBGROUP RESELECT MASK=+INT 3\n\r");
         newHoliday.append("GIVE BEHAVIOR MUDCHAT +(|"+named+")\\;9Happy "+named+" $n!\\;\n\r");
         newHoliday.append("SET MOBGROUP RESELECT MASK=-JAVACLASS +GenShopkeeper +StdShopKeeper\n\r");
         newHoliday.append("GIVE STAT PRICEMASKS 0.75 -MATERIAL +CLOTH\n\r");
         newHoliday.append("STEP BREAK\n\r");
-        F.saveText(newHoliday,true);
-        Quest Q=fetchQuest("holidays");
-        if(Q!=null) Q.setScript(holidayDefinition);
-        return "";
+        return newHoliday;
     }
     
     public String deleteHoliday(Area A, int holidayNumber)
@@ -479,10 +487,7 @@ public class Quests extends StdLibrary implements QuestManager
         DVector behaviors=(DVector)encodedData.elementAt(1);
         DVector properties=(DVector)encodedData.elementAt(2);
         DVector stats=(DVector)encodedData.elementAt(3);
-        Vector stepV=(Vector)encodedData.elementAt(4);
-        int pricingMobIndex=((Integer)encodedData.elementAt(5)).intValue();
-        DVector oldProperties=properties.copyOf();
-        DVector oldBehaviors=behaviors.copyOf();
+        
         int oldNameIndex=settings.indexOf("NAME");
         if((mob.isMonster())||(oldNameIndex<0)) 
             return;
@@ -519,198 +524,217 @@ public class Quests extends StdLibrary implements QuestManager
         }catch(java.io.IOException e){return;}
         if(ok)
         {
-            int newHolidayIndex=getHolidayIndex(oldName);
-            if(newHolidayIndex!=holidayNumber)
-                holidayNumber=newHolidayIndex;
-            resp=getHolidayFile();
-            if(resp instanceof String)
-            { mob.tell((String)resp); return;}
-            steps=null;
-            if(resp instanceof Vector)
-                steps=(Vector)resp;
+            String err=alterHoliday(oldName, encodedData);
+            if(err.length()==0)
+                mob.tell("Holiday modified.");
             else
-            { mob.tell("Unknown error."); return;}
-            
-            StringBuffer buf=new StringBuffer("");
-            for(int v=0;v<steps.size();v++)
-            {
-                step=(String)steps.elementAt(v);
-                if(v==holidayNumber)
-                {
-                    encodedData=getEncodedHolidayData(step);
-                    stepV=(Vector)encodedData.elementAt(4);
-                    int index=startLineIndex(stepV,"SET NAME");
-                    stepV.setElementAt("SET NAME "+(String)settings.elementAt(settings.indexOf("NAME"),2),index);
-                    index=startLineIndex(stepV,"SET DURATION");
-                    stepV.setElementAt("SET DURATION "+(String)settings.elementAt(settings.indexOf("DURATION"),2),index);
-                    int intervalLine=startLineIndex(stepV,"SET MUDDAY");
-                    if(intervalLine<0) intervalLine=startLineIndex(stepV,"SET DATE");
-                    if(intervalLine<0) intervalLine=startLineIndex(stepV,"SET WAIT");
-                    int mudDayIndex=settings.indexOf("MUDDAY");
-                    int dateIndex=settings.indexOf("DATE");
-                    int waitIndex=settings.indexOf("WAIT");
-                    if(mudDayIndex>=0)
-                        stepV.setElementAt("SET MUDDAY "+((String)settings.elementAt(mudDayIndex,2)),intervalLine);
-                    else
-                    if(dateIndex>=0)
-                        stepV.setElementAt("SET DATE "+((String)settings.elementAt(dateIndex,2)),intervalLine);
-                    else
-                        stepV.setElementAt("SET WAIT "+((String)settings.elementAt(waitIndex,2)),intervalLine);
-                    
-                    index=settings.indexOf("AREAGROUP");
-                    if(index>=0)
-                    {
-                        index=startLineIndex(stepV,"SET AREAGROUP");
-                        if(index>=0)
-                            stepV.setElementAt("SET AREAGROUP "+settings.elementAt(settings.indexOf("AREAGROUP"),2),index);
-                    }
-                    
-                    index=settings.indexOf("MOBGROUP");
-                    if(index>=0)
-                    {
-                        index=startLineIndex(stepV,"SET MOBGROUP");
-                        stepV.setElementAt("SET MOBGROUP RESELECT MASK="+settings.elementAt(settings.indexOf("MOBGROUP"),2),index);
-                    }
-                    if((pricingMobIndex>0)&&(stats.indexOf("PRICEMASKS")>=0))
-                    {
-                        index=startLineIndex(stepV,"GIVE STAT PRICEMASKS");
-                        String s=(String)stats.elementAt(stats.indexOf("PRICEMASKS"),2);
-                        if(s.trim().length()==0)
-                        {
-                            if(index>=0)
-                                stepV.removeElementAt(index);
-                        }
-                        else
-                        {
-                            if(index>=0)
-                                stepV.setElementAt("GIVE STAT PRICEMASKS "+s,index);
-                            else
-                                stepV.insertElementAt("GIVE STAT PRICEMASKS "+s,pricingMobIndex+1);
-                        }
-                    }
-                    int mobGroupIndex=startLineIndex(stepV,"SET MOBGROUP");
-                    index=behaviors.indexOf("AGGRESSIVE");
-                    if(index>=0)
-                    {
-                        index=startLineIndex(stepV,"GIVE BEHAVIOR AGGRESSIVE");
-                        String s=(String)behaviors.elementAt(behaviors.indexOf("AGGRESSIVE"),2);
-                        if(s.trim().length()==0)
-                        {
-                            if(index>=0)
-                                stepV.removeElementAt(index);
-                        }
-                        else
-                        {
-                            if(index>=0)
-                                stepV.setElementAt("GIVE BEHAVIOR AGGRESSIVE "+s,index);
-                            else
-                                stepV.insertElementAt("GIVE BEHAVIOR AGGRESSIVE "+s,mobGroupIndex+1);
-                        }
-                    }
-                    
-                    mobGroupIndex=startLineIndex(stepV,"SET MOBGROUP");
-                    index=behaviors.indexOf("MUDCHAT");
-                    if(index>=0)
-                    {
-                        index=startLineIndex(stepV,"GIVE BEHAVIOR MUDCHAT");
-                        String s=(String)behaviors.elementAt(behaviors.indexOf("MUDCHAT"),2);
-                        if(s.trim().length()<2)
-                        {
-                            if(index>=0)
-                                stepV.removeElementAt(index);
-                        }
-                        else
-                        {
-                            if(index>=0)
-                                stepV.setElementAt("GIVE BEHAVIOR MUDCHAT "+s,index);
-                            else
-                                stepV.insertElementAt("GIVE BEHAVIOR MUDCHAT "+s,mobGroupIndex+1);
-                        }
-                    }
-                    
-                    mobGroupIndex=startLineIndex(stepV,"SET MOBGROUP");
-                    index=properties.indexOf("MOOD");
-                    if(index>=0)
-                    {
-                        index=startLineIndex(stepV,"GIVE AFFECT MOOD");
-                        String s=(String)properties.elementAt(properties.indexOf("MOOD"),2);
-                        if(s.trim().length()==0)
-                        {
-                            if(index>=0)
-                                stepV.removeElementAt(index);
-                        }
-                        else
-                        {
-                            if(index>=0)
-                                stepV.setElementAt("GIVE AFFECT MOOD "+s,index);
-                            else
-                                stepV.insertElementAt("GIVE AFFECT MOOD "+s,mobGroupIndex+1);
-                        }
-                    }
-                    
-                    // look for newly missing stuff
-                    for(int p=0;p<oldProperties.size();p++)
-                    {
-                        String prop=(String)oldProperties.elementAt(p,1);
-                        if(properties.indexOf(prop)<0)
-                        {
-                            index=startLineIndex(stepV,"GIVE AFFECT "+prop);
-                            if(index>=0) stepV.removeElementAt(index);
-                        }
-                    }
-                    // look for newly missing stuff
-                    for(int p=0;p<oldBehaviors.size();p++)
-                    {
-                        String behav=(String)oldBehaviors.elementAt(p,1);
-                        if(behaviors.indexOf(behav)<0)
-                        {
-                            index=startLineIndex(stepV,"GIVE BEHAVIOR "+behav);
-                            if(index>=0) stepV.removeElementAt(index);
-                        }
-                    }
-                    // now changed/added stuff
-                    for(int p=0;p<properties.size();p++)
-                    {
-                        String prop=(String)properties.elementAt(p,1);
-                        if(prop.equalsIgnoreCase("MOOD")) continue;
-                        mobGroupIndex=startLineIndex(stepV,"SET MOBGROUP");
-                        index=startLineIndex(stepV,"GIVE AFFECT "+prop);
-                        if(index>=0) 
-                            stepV.setElementAt("GIVE AFFECT "+prop.toUpperCase().trim()+" "+(properties.elementAt(p,2)),index);
-                        else
-                            stepV.insertElementAt("GIVE AFFECT "+prop.toUpperCase().trim()+" "+(properties.elementAt(p,2)),mobGroupIndex+1);
-                    }
-                    // now changed/added stuff
-                    for(int p=0;p<behaviors.size();p++)
-                    {
-                        String behav=(String)behaviors.elementAt(p,1);
-                        if(behav.equalsIgnoreCase("AGGRESSIVE")||behav.equalsIgnoreCase("MUDCHAT")) continue;
-                        mobGroupIndex=startLineIndex(stepV,"SET MOBGROUP");
-                        index=startLineIndex(stepV,"GIVE BEHAVIOR "+behav);
-                        if(index>=0) 
-                            stepV.setElementAt("GIVE BEHAVIOR "+behav.toUpperCase().trim()+" "+(behaviors.elementAt(p,2)),index);
-                        else
-                            stepV.insertElementAt("GIVE BEHAVIOR "+behav.toUpperCase().trim()+" "+(behaviors.elementAt(p,2)),mobGroupIndex+1);
-                    }
-                    
-                    for(int v1=0;v1<stepV.size();v1++)
-                    {
-                        if(((String)stepV.elementAt(v1)).trim().length()>0)
-                            buf.append(CMStrings.replaceAll((((String)stepV.elementAt(v1))+"\n\r"),";","\\;"));
-                    }
-                    buf.append("\n\r");
-                }
-                else
-                    buf.append(step+"\n\r");
-            }
-            CMFile F=new CMFile(Resources.makeFileResourceName(holidayFilename),null,false);
-            F.saveText(buf);
-            Quest Q=fetchQuest("holidays");
-            if(Q!=null) Q.setScript(holidayDefinition);
-            mob.tell("Holiday modified.");
+                mob.tell(err);
         }
     }
 
+    public String alterHoliday(String oldName, Vector newData)
+    {
+        DVector settings=(DVector)newData.elementAt(0);
+        DVector behaviors=(DVector)newData.elementAt(1);
+        DVector properties=(DVector)newData.elementAt(2);
+        DVector stats=(DVector)newData.elementAt(3);
+        //Vector stepV=(Vector)data.elementAt(4);
+        int pricingMobIndex=((Integer)newData.elementAt(5)).intValue();
+        
+        int holidayNumber=getHolidayIndex(oldName);
+        Object resp=getHolidayFile();
+        if(resp instanceof String) return (String)resp;
+        Vector steps=null;
+        if(resp instanceof Vector)
+            steps=(Vector)resp;
+        else
+            return "Unknown error.";
+        
+        String step = null;
+        Vector stepV = null;
+        Vector encodedData = null;
+        StringBuffer buf=new StringBuffer("");
+        for(int v=0;v<steps.size();v++)
+        {
+            step=(String)steps.elementAt(v);
+            if(v==holidayNumber)
+            {
+                encodedData=getEncodedHolidayData(step);
+                DVector oldBehaviors=((DVector)encodedData.elementAt(1)).copyOf();
+                DVector oldProperties=((DVector)encodedData.elementAt(2)).copyOf();
+                stepV=(Vector)encodedData.elementAt(4);
+                
+                int index=startLineIndex(stepV,"SET NAME");
+                stepV.setElementAt("SET NAME "+(String)settings.elementAt(settings.indexOf("NAME"),2),index);
+                index=startLineIndex(stepV,"SET DURATION");
+                stepV.setElementAt("SET DURATION "+(String)settings.elementAt(settings.indexOf("DURATION"),2),index);
+                int intervalLine=startLineIndex(stepV,"SET MUDDAY");
+                if(intervalLine<0) intervalLine=startLineIndex(stepV,"SET DATE");
+                if(intervalLine<0) intervalLine=startLineIndex(stepV,"SET WAIT");
+                int mudDayIndex=settings.indexOf("MUDDAY");
+                int dateIndex=settings.indexOf("DATE");
+                int waitIndex=settings.indexOf("WAIT");
+                if(mudDayIndex>=0)
+                    stepV.setElementAt("SET MUDDAY "+((String)settings.elementAt(mudDayIndex,2)),intervalLine);
+                else
+                if(dateIndex>=0)
+                    stepV.setElementAt("SET DATE "+((String)settings.elementAt(dateIndex,2)),intervalLine);
+                else
+                    stepV.setElementAt("SET WAIT "+((String)settings.elementAt(waitIndex,2)),intervalLine);
+                
+                index=settings.indexOf("AREAGROUP");
+                if(index>=0)
+                {
+                    index=startLineIndex(stepV,"SET AREAGROUP");
+                    if(index>=0)
+                        stepV.setElementAt("SET AREAGROUP "+settings.elementAt(settings.indexOf("AREAGROUP"),2),index);
+                }
+                
+                index=settings.indexOf("MOBGROUP");
+                if(index>=0)
+                {
+                    index=startLineIndex(stepV,"SET MOBGROUP");
+                    stepV.setElementAt("SET MOBGROUP RESELECT MASK="+settings.elementAt(settings.indexOf("MOBGROUP"),2),index);
+                }
+                if((pricingMobIndex>0)&&(stats.indexOf("PRICEMASKS")>=0))
+                {
+                    index=startLineIndex(stepV,"GIVE STAT PRICEMASKS");
+                    String s=(String)stats.elementAt(stats.indexOf("PRICEMASKS"),2);
+                    if(s.trim().length()==0)
+                    {
+                        if(index>=0)
+                            stepV.removeElementAt(index);
+                    }
+                    else
+                    {
+                        if(index>=0)
+                            stepV.setElementAt("GIVE STAT PRICEMASKS "+s,index);
+                        else
+                            stepV.insertElementAt("GIVE STAT PRICEMASKS "+s,pricingMobIndex+1);
+                    }
+                }
+                int mobGroupIndex=startLineIndex(stepV,"SET MOBGROUP");
+                index=behaviors.indexOf("AGGRESSIVE");
+                if(index>=0)
+                {
+                    index=startLineIndex(stepV,"GIVE BEHAVIOR AGGRESSIVE");
+                    String s=(String)behaviors.elementAt(behaviors.indexOf("AGGRESSIVE"),2);
+                    if(s.trim().length()==0)
+                    {
+                        if(index>=0)
+                            stepV.removeElementAt(index);
+                    }
+                    else
+                    {
+                        if(index>=0)
+                            stepV.setElementAt("GIVE BEHAVIOR AGGRESSIVE "+s,index);
+                        else
+                            stepV.insertElementAt("GIVE BEHAVIOR AGGRESSIVE "+s,mobGroupIndex+1);
+                    }
+                }
+                
+                mobGroupIndex=startLineIndex(stepV,"SET MOBGROUP");
+                index=behaviors.indexOf("MUDCHAT");
+                if(index>=0)
+                {
+                    index=startLineIndex(stepV,"GIVE BEHAVIOR MUDCHAT");
+                    String s=(String)behaviors.elementAt(behaviors.indexOf("MUDCHAT"),2);
+                    if(s.trim().length()<2)
+                    {
+                        if(index>=0)
+                            stepV.removeElementAt(index);
+                    }
+                    else
+                    {
+                        if(index>=0)
+                            stepV.setElementAt("GIVE BEHAVIOR MUDCHAT "+s,index);
+                        else
+                            stepV.insertElementAt("GIVE BEHAVIOR MUDCHAT "+s,mobGroupIndex+1);
+                    }
+                }
+                
+                mobGroupIndex=startLineIndex(stepV,"SET MOBGROUP");
+                index=properties.indexOf("MOOD");
+                if(index>=0)
+                {
+                    index=startLineIndex(stepV,"GIVE AFFECT MOOD");
+                    String s=(String)properties.elementAt(properties.indexOf("MOOD"),2);
+                    if(s.trim().length()==0)
+                    {
+                        if(index>=0)
+                            stepV.removeElementAt(index);
+                    }
+                    else
+                    {
+                        if(index>=0)
+                            stepV.setElementAt("GIVE AFFECT MOOD "+s,index);
+                        else
+                            stepV.insertElementAt("GIVE AFFECT MOOD "+s,mobGroupIndex+1);
+                    }
+                }
+                
+                // look for newly missing stuff
+                for(int p=0;p<oldProperties.size();p++)
+                {
+                    String prop=(String)oldProperties.elementAt(p,1);
+                    if(properties.indexOf(prop)<0)
+                    {
+                        index=startLineIndex(stepV,"GIVE AFFECT "+prop);
+                        if(index>=0) stepV.removeElementAt(index);
+                    }
+                }
+                // look for newly missing stuff
+                for(int p=0;p<oldBehaviors.size();p++)
+                {
+                    String behav=(String)oldBehaviors.elementAt(p,1);
+                    if(behaviors.indexOf(behav)<0)
+                    {
+                        index=startLineIndex(stepV,"GIVE BEHAVIOR "+behav);
+                        if(index>=0) stepV.removeElementAt(index);
+                    }
+                }
+                // now changed/added stuff
+                for(int p=0;p<properties.size();p++)
+                {
+                    String prop=(String)properties.elementAt(p,1);
+                    if(prop.equalsIgnoreCase("MOOD")) continue;
+                    mobGroupIndex=startLineIndex(stepV,"SET MOBGROUP");
+                    index=startLineIndex(stepV,"GIVE AFFECT "+prop);
+                    if(index>=0) 
+                        stepV.setElementAt("GIVE AFFECT "+prop.toUpperCase().trim()+" "+(properties.elementAt(p,2)),index);
+                    else
+                        stepV.insertElementAt("GIVE AFFECT "+prop.toUpperCase().trim()+" "+(properties.elementAt(p,2)),mobGroupIndex+1);
+                }
+                // now changed/added stuff
+                for(int p=0;p<behaviors.size();p++)
+                {
+                    String behav=(String)behaviors.elementAt(p,1);
+                    if(behav.equalsIgnoreCase("AGGRESSIVE")||behav.equalsIgnoreCase("MUDCHAT")) continue;
+                    mobGroupIndex=startLineIndex(stepV,"SET MOBGROUP");
+                    index=startLineIndex(stepV,"GIVE BEHAVIOR "+behav);
+                    if(index>=0) 
+                        stepV.setElementAt("GIVE BEHAVIOR "+behav.toUpperCase().trim()+" "+(behaviors.elementAt(p,2)),index);
+                    else
+                        stepV.insertElementAt("GIVE BEHAVIOR "+behav.toUpperCase().trim()+" "+(behaviors.elementAt(p,2)),mobGroupIndex+1);
+                }
+                
+                for(int v1=0;v1<stepV.size();v1++)
+                {
+                    if(((String)stepV.elementAt(v1)).trim().length()>0)
+                        buf.append(CMStrings.replaceAll((((String)stepV.elementAt(v1))+"\n\r"),";","\\;"));
+                }
+                buf.append("\n\r");
+            }
+            else
+                buf.append(step+"\n\r");
+        }
+        CMFile F=new CMFile(Resources.makeFileResourceName(holidayFilename),null,false);
+        F.saveText(buf);
+        Quest Q=fetchQuest("holidays");
+        if(Q!=null) Q.setScript(holidayDefinition);
+        return "";
+    }
+    
     protected int promptDuration(MOB mob, DVector settings, int showNumber,int showFlag)
         throws IOException
     {

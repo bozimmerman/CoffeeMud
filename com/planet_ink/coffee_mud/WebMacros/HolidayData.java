@@ -42,14 +42,27 @@ public class HolidayData extends StdWebMacro
         if(last==null) return " @break@";
         if(last.length()>0)
         {
-            int index=CMLib.quests().getHolidayIndex(last);
-            Vector encodedData=null;
-            Object resp=CMLib.quests().getHolidayFile();
-            Vector steps=null;
-            if(resp instanceof Vector)
-                steps=(Vector)resp;
-            if((index>=0)&&(steps!=null)) 
-                encodedData=CMLib.quests().getEncodedHolidayData((String)steps.elementAt(index));
+            Vector encodedData=(Vector)httpReq.getRequestObjects().get("HOLIDAY_"+last.toUpperCase().trim());
+            if(encodedData==null)
+            {
+                int index=CMLib.quests().getHolidayIndex(last);
+                Vector steps=null;
+                if(index>=0)
+                {
+                    Object resp=CMLib.quests().getHolidayFile();
+                    if(resp instanceof Vector)
+                        steps=(Vector)resp;
+                    if(steps!=null) 
+                        encodedData=CMLib.quests().getEncodedHolidayData((String)steps.elementAt(index));
+                } 
+                else
+                {
+                    StringBuffer data=CMLib.quests().getDefaultHoliData(last, "ALL");
+                    encodedData=CMLib.quests().getEncodedHolidayData(data.toString());
+                }
+                if(encodedData != null)
+                    httpReq.getRequestObjects().put("HOLIDAY_"+last.toUpperCase().trim(), encodedData);
+            }
             if(encodedData!=null)
             {
                 DVector settings=(DVector)encodedData.elementAt(0);
@@ -69,7 +82,7 @@ public class HolidayData extends StdWebMacro
                         if(dex>=0)
                             old=(String)settings.elementAt(dex,2);
                         else
-                            old="Unknown";
+                            old="New Holiday";
                     }
                     str.append(old+", ");
                 }

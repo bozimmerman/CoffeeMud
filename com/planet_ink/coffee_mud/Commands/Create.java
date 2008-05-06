@@ -813,7 +813,7 @@ public class Create extends BaseGenerics
                 mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
                 return false;
             }
-            String err=CMLib.quests().createHoliday(mob.location().getArea(),named);
+            String err=CMLib.quests().createHoliday(named,mob.location().getArea().name(),true);
             if(err.length()>0)
             {
                 mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
