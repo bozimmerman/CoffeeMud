@@ -1,0 +1,29 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_CMDQUESTS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+    <link rel="grinder icon" href="/images/grinder.ico" >
+</head>
+<body BGCOLOR=BLACK>
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+@if?CheckReqParm?FUNCTION=DELHOLIDAY@
+    alert('@MUDGrinder?DELHOLIDAY@');
+    document.location.href='holiday.cmvp?AUTH=@Authenticate?AUTH@&HOLIDAY=';
+@endif@
+@if?CheckReqParm?FUNCTION=EDITHOLIDAY@
+    alert('@MUDGrinder?EDITHOLIDAY@');
+    document.location.href='holiday.cmvp?AUTH=@Authenticate?AUTH@&HOLIDAY=@RequestParameterEncoded?HOLIDAY@';
+@endif@
+@if?CheckReqParm?FUNCTION=REHOLIDAY@
+    document.location.href='holiday.cmvp?AUTH=@Authenticate?AUTH@&HOLIDAY=@RequestParameterEncoded?HOLIDAY@&NEWHOLIDAY=@RequestParameterEncoded?NEWHOLIDAYID@';
+@endif@
+//-->
+</SCRIPT>
+
+</BODY>
+</HTML>
+@endif@
+@endif@

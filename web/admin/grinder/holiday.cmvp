@@ -1,0 +1,289 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_CMDQUESTS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<html>
+<head>
+ 	<link rel="grinder icon" href="/images/grinder.ico" >
+	<title>Holiday Manager</title>
+	<script language=JavaScript>
+	<!--
+		function openUp2(named)
+		{
+			var strFeatures="top=200,left=50,resizeable=no,scrollbars=yes,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("/property.cmvp?ABILITY="+named,
+			            "Ability",strFeatures, false);
+		}
+        function AddNewItem(FIELD)
+        {
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM=NEW&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,"Race Item",strFeatures, false);
+        }
+        function AddItem(ME)
+        {
+            ReShow();
+        }
+        function EditItemDone()
+        {
+            ReShow();
+        }
+        function NewSay(ME)
+        {
+        	ReShow();
+        }
+        function EditItem(ME,FIELD)
+        {
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM="+ME+"&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,"Race Item",strFeatures, false);
+        }
+		function AddMember(v)
+		{
+			ReShow();
+		}
+		function EditMember(v)
+		{
+			ReShow();
+		}
+        function EditAffect(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function AddAffect(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
+        function EditBehavior(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function AddBehavior(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
+        function NewRace()
+        {
+            var raceid=window.prompt('Enter a new unique ID for your Race (no spaces):');
+            if(raceid==null)
+                return;
+            if(raceid.length==0)
+                return;
+            if(raceid.indexOf(' ')>=0)
+            {
+                window.alert('No spaces are allowed in your ID!');
+                return;
+            }
+            document.RESOURCES.NEWHOLIDAYID.value=raceid;
+            document.RESOURCES.FUNCTION.value='REHOLIDAY';
+            document.RESOURCES.action='/grinder/holidaydo.cmvp';
+            document.RESOURCES.submit();
+        }
+		function Delete()
+		{
+			if(confirm('Delete this generic race?! Confirm!'))
+			{
+				if(confirm('Press OK to Delete this race!'))
+				{
+					document.RESOURCES.action='holidaydo.cmvp';
+					document.RESOURCES.FUNCTION.value='DELRACE';
+					document.RESOURCES.submit();
+				}
+			}
+		}
+		function EditDone()
+		{
+		    @if?HolidayData?NEWRACE@
+                if(confirm('Create this new race?'))
+            @else@
+                @if?HolidayData?ISGENERIC@
+                    if(confirm('Submit your changes to this race?'))
+                @else@
+        			if(confirm('Submitting these changes will convert your standard Race to a Generic Race.  Are you absolutely sure?'))
+                @endif@
+    	    @endif@
+                {
+                    document.RESOURCES.action='holidaydo.cmvp';
+                    document.RESOURCES.FUNCTION.value='EDITRACE';
+                    document.RESOURCES.submit();
+                }
+		}
+		function ReShow()
+		{
+			document.RESOURCES.FUNCTION.value='';
+			document.RESOURCES.action='/grinder/holiday.cmvp';
+			document.RESOURCES.submit();
+		}
+        function REHOLIDAY()
+        {
+            document.RESOURCES.FUNCTION.value='REHOLIDAY';
+            document.RESOURCES.action='/grinder/holidaydo.cmvp';
+            document.RESOURCES.submit();
+        }
+		function Cancel()
+		{
+			window.close();
+		}
+		function OpenUp(file,named)
+		{
+			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+			w=window.open("/"+file+"?HELPTOPIC="+named,
+			            "Help",strFeatures, false);
+		}
+	//-->
+	</script>
+</head>
+<body BGCOLOR=BLACK>
+<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="holiday.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=NEWHOLIDAYID VALUE="">
+<INPUT TYPE=HIDDEN NAME=REPLACE VALUE="">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+	<TABLE WIDTH=100% BORDER=0>
+	<TR>
+	<TD WIDTH=33% ALIGN=LEFT VALIGN=CENTER>
+		<FONT COLOR=WHITE>Holiday: </FONT>
+		@AddRequestParameter?OLDHOLIDAY=@@RequestParameter?HOLIDAY@@ @
+		<SELECT NAME=HOLIDAY ONCHANGE="javascript:REHOLIDAY();">
+		
+		@if?HolidayData?NEWHOLIDAY@
+            <OPTION VALUE="@RequestParameter?HOLIDAY@" SELECTED>*new* holiday: @RequestParameter?HOLIDAY@
+            @AddRequestParameter?HOLIDAY=@
+        @else@
+            <OPTION VALUE="" @if?CheckReqParm?HOLIDAY=@SELECTED@endif@>Select a holiday
+		@endif@
+		
+        @HolidayNext?RESET@
+		@loop@
+		@HolidayNext@
+		<OPTION VALUE="@RequestParameter?HOLIDAY@" @if?CheckReqParm?HOLIDAY=@@RequestParameter?OLDHOLIDAY@@ @SELECTED@endif@>@RequestParameter?HOLIDAY@
+		@back@
+		</SELECT>&nbsp;&nbsp;&nbsp;
+		<INPUT TYPE=BUTTON NAME=BNEWHOLIDAY VALUE="New" ONCLICK="NewHoliday();">
+		@AddRequestParameter?HOLIDAY=@@RequestParameter?OLDHOLIDAY@@ @
+	</TD>
+	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
+	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
+		<TABLE WIDTH=50% BORDER=1>
+		<TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
+		<TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+		<TR><TD><a href="javascript:ReShow();"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
+		</TABLE>
+	</TD>
+	</TR>
+	</TABLE>
+<CENTER>
+	
+@if?CheckReqParm?HOLIDAY=@
+	Select a holiday above to view/edit.
+@else@
+	<TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Name: </FONT></TD>
+			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=20 NAME=NAME VALUE="@HolidayData?NAME@"></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Schedule: </FONT></TD>
+			<TD WIDTH=66%>
+				<SELECT NAME=SCHEDULETYPE ONCHANGE="ReShow();">
+				@HolidayData?SCHEDULETYPEID@
+				</SELECT>
+			</TD>
+		</TR>
+		@if?CheckReqParm?SCHEDULETYPE=1@
+			<TR>
+				<TD WIDTH=25%></TD>
+				<TD WIDTH=66%>
+					<FONT COLOR=YELLOW>Mud Date (Month-Day): </FONT><BR>
+					<INPUT TYPE=TEXT SIZE=6 NAME=MUDDAY VALUE="@HolidayData?MUDDAY@">
+				</TD>
+			</TR>
+		@endif@
+		@if?CheckReqParm?SCHEDULETYPE=2@
+			<TR>
+				<TD WIDTH=25%></TD>
+				<TD WIDTH=66%>
+					<FONT COLOR=YELLOW>Real-Life Date (Month-Day): </FONT><BR>
+					<INPUT TYPE=TEXT SIZE=6 NAME=DATE VALUE="@HolidayData?DATE@">
+				</TD>
+			</TR>
+		@endif@
+		@if?CheckReqParm?SCHEDULETYPE=0@
+			<TR>
+				<TD WIDTH=25%></TD>
+				<TD WIDTH=66%>
+					<FONT COLOR=YELLOW>Random Wait (Ticks <A HREF="javascript:OpenUp('ahelp.cmvp','MATH_FORMULA')"><FONT COLOR=WHITE><I>Formula</I></FONT></a>): </FONT><BR>
+					<INPUT TYPE=TEXT SIZE=10 NAME=WAIT VALUE="@HolidayData?WAIT@">
+				</TD>
+			</TR>
+		@endif@
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Duration (Ticks <A HREF="javascript:OpenUp('ahelp.cmvp','MATH_FORMULA')"><FONT COLOR=WHITE><I>Formula</I></FONT></a>):</FONT></TD>
+			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=20 NAME=NAME VALUE="@HolidayData?DURATION@"></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Area(s): </FONT></TD>
+			<TD WIDTH=66%><SELECT NAME=AREAGROUP MULTIPLE>@HolidayData?AREAGROUP@</SELECT></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Area MOBs : <A HREF="javascript:OpenUp('ahelp.cmvp','PROP_HAVEZAPPER')"><FONT COLOR=WHITE><I>mask</I></FONT></FONT></TD>
+			<TD WIDTH=66%>
+				<INPUT TYPE=TEXT SIZE=60 MAXLENGTH=255 NAME=MOBGROUP VALUE="@HolidayData?MOBGROUP@"><P>
+			</TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>MOB(s) Mood: </FONT></TD>
+			<TD WIDTH=66%><SELECT NAME=MOOD MULTIPLE>@HolidayData?MOOD@</SELECT></TD>
+		</TR>
+		<TR>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>MOB Aggression <A HREF="javascript:OpenUp('ahelp.cmvp','AGGRESSIVE')"><FONT COLOR=WHITE><I>flags</I></FONT></a>:<BR> 
+			<BR><I><FONT SIZE=-1>Leave empty to disable</FONT></I>
+			</FONT></TD>
+			<TD WIDTH=66%>
+				<INPUT TYPE=TEXT SIZE=60 MAXLENGTH=255 NAME=AGGRESSIVE VALUE="@HolidayData?AGGRESSIVE@"><P>
+			</TD>
+		</TR>
+		<TR>
+			<TD><FONT COLOR=YELLOW>MOB Behaviors:</FONT>
+			<BR><A target=HELP HREF="/behaviors.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
+		    <TD><FONT COLOR=WHITE>
+			@HolidayData?BEHAVIORS@
+			</FONT></TD>
+		</TR>
+		<TR>
+			<TD><FONT COLOR=YELLOW><B>MOB Affects:</FONT>
+			<BR><A target=HELP href="/affects.cmvp"><FONT COLOR=WHITE><I>help</I></FONT></a></TD>
+		    <TD><FONT COLOR=WHITE>
+			@HolidayData?AFFECTS@
+			</FONT></TD>
+		</TR>
+		<TR>
+			<TD><FONT COLOR=YELLOW><B>MOB MudChatting:</FONT></TD>
+		    <TD><FONT COLOR=WHITE>
+			@HolidayData?MUDCHAT@
+			</FONT></TD>
+		</TR>
+		<TR>
+			<TD><FONT COLOR=YELLOW><B>Shops Pricing Factors:</FONT>
+			<a href="javascript:OpenUp('ihelp.cmvp','PRICEFACTORS');"><FONT COLOR=WHITE><I>?</I></FONT></a>
+		    <TD><FONT COLOR=WHITE>
+			@HolidayData?PRICEFACTORS@
+			</FONT></TD>
+		</TR>
+	</TABLE>
+@endif@
+<BR>
+<TABLE WIDTH=100% BORDER=0>
+<TR>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
+</TR>
+</TABLE>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@
