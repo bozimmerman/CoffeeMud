@@ -40,7 +40,7 @@
 <TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Max-Stat Bonus</B></TD><TD>@CharClassData?MAXSTATS@</TD></TR>
 <TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Other Bonuses</B></TD><TD>@CharClassData?bonuses@</TD></TR>
 <TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Weapons</B></TD><TD>@CharClassData?weapons@</TD></TR>
-<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Armor</B></TD><TD>@CharClassData?armor@</TD></TR>
+<TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Armor</B></TD><TD>@CharClassData?armorlimits@</TD></TR>
 <TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Other Limitations</B></TD><TD>@CharClassData?limits@</TD></TR>
 <TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Starting Equipment</B></TD><TD>@CharClassData?startingeq@</TD></TR>
 <TR><TD WIDTH=25% VALIGN=TOP BGCOLOR=#99CCCC><B>Qualifying Races</B></TD><TD>@ClassRaceNext?reset@

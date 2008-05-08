@@ -646,23 +646,29 @@ public class RaceData extends StdWebMacro
                 }
                 if(parms.containsKey("HEALTHRACE"))
                 {
-                    R=R.makeGenRace();
                     String old=httpReq.getRequestParameter("HEALTHRACE");
-                    if(old==null) old=""+R.getStat("HEALTHRACE");
+                    if(old==null){
+                        R=R.makeGenRace();
+                        old=""+R.getStat("HEALTHRACE");
+                    }
                     str.append(raceDropDown(old));
                 }
                 if(parms.containsKey("WEAPONRACE"))
                 {
-                    R=R.makeGenRace();
                     String old=httpReq.getRequestParameter("WEAPONRACE");
-                    if(old==null) old=""+R.getStat("WEAPONRACE");
+                    if(old==null){
+                        R=R.makeGenRace();
+                        old=""+R.getStat("WEAPONRACE");
+                    }
                     str.append(raceDropDown(old));
                 }
                 if(parms.containsKey("EVENTRACE"))
                 {
-                    R=R.makeGenRace();
                     String old=httpReq.getRequestParameter("EVENTRACE");
-                    if(old==null) old=""+R.getStat("EVENTRACE");
+                    if(old==null){
+                        R=R.makeGenRace();
+                        old=""+R.getStat("EVENTRACE");
+                    }
                     str.append(raceDropDown(old));
                 }
                 if(parms.containsKey("BODY"))
@@ -822,9 +828,11 @@ public class RaceData extends StdWebMacro
                 }
                 if(parms.containsKey("DISFLAGS"))
                 {
-                    R=R.makeGenRace();
                 	if(!httpReq.isRequestParameter("DISFLAGS"))
+                    {
+                        R=R.makeGenRace();
 	                    httpReq.addRequestParameters("DISFLAGS",R.getStat("DISFLAGS"));
+                    }
                     int flags=CMath.s_int(httpReq.getRequestParameter("DISFLAGS"));
                     for(int i=0;i<Race.GENFLAG_DESCS.length;i++)
                     {

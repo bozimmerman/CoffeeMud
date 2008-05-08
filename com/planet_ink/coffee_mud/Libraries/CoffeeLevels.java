@@ -111,12 +111,14 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		theNews.append(manaGain+"^N " + (manaGain!=1?"points":"point") + " of mana,");
 
 
-
-		if((adjuster<0)&&(((classLevel+1)%curClass.getLevelsPerBonusDamage())==0))
-			mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()-1);
-		else
-		if((adjuster>0)&&((classLevel%curClass.getLevelsPerBonusDamage())==0))
-			mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()+1);
+		if(curClass.getLevelsPerBonusDamage()!=0)
+        {
+    		if((adjuster<0)&&(((classLevel+1)%curClass.getLevelsPerBonusDamage())==0))
+    			mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()-1);
+    		else
+    		if((adjuster>0)&&((classLevel%curClass.getLevelsPerBonusDamage())==0))
+    			mob.baseEnvStats().setDamage(mob.baseEnvStats().damage()+1);
+        }
 		mob.recoverMaxState();
 		return theNews;
 	}

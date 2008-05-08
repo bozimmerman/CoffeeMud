@@ -607,7 +607,7 @@ public class GenCharClass extends StdCharClass
 									 "STARTASTATE","NUMNAME","NAMELEVEL","NUMSSET","SSET",
                                      "SSETLEVEL","NUMWMAT","GETWMAT","ARMORMINOR","STATCLASS",
                                      "EVENTCLASS"
-									 };
+									 }; 
     
 	public String getStat(String code)
 	{
