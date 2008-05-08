@@ -40,6 +40,8 @@ public class QuestMgr extends StdWebMacro
 	{
 		Hashtable parms=parseParms(parm);
 		Quest Q=null;
+        MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+        String name=(M==null)?"Someone":M.Name();
 		if(parms.containsKey("CREATE"))
 		{
 			Q=(Quest)CMClass.getCommon("DefaultQuest");
@@ -48,6 +50,7 @@ public class QuestMgr extends StdWebMacro
 			CMLib.quests().addQuest(Q);
 			CMLib.quests().save();
 			httpReq.addRequestParameters("QUEST",Q.name());
+			Log.sysOut("QuestMgr",name+" created quest '"+Q.name()+"'");
 			return "Quest '"+Q.name()+"' created.";
 		}
 		
@@ -70,15 +73,17 @@ public class QuestMgr extends StdWebMacro
 				if(err.length()>0) return err;
 				httpReq.addRequestParameters("QUEST",Q.name());
 				CMLib.quests().save();
+	            Log.sysOut("QuestMgr",name+" modified quest '"+Q.name()+"'");
 			}
 			if(parms.containsKey("DELETE"))
 			{
 				CMLib.quests().delQuest(Q);
 				CMLib.quests().save();
 				httpReq.addRequestParameters("QUEST","");
-				CMFile F=new CMFile(Resources.makeFileResourceName("quests/"+Q.name()+".quest"),null,false,true);
+				CMFile F=new CMFile(Resources.makeFileResourceName("quests/"+Q.name()+".quest"),M,false,true);
 				if(F.exists())
 				{
+	                Log.sysOut("QuestMgr",name+" deleted quest '"+Q.name()+"'");
 					if(F.delete())
 						return "Quest script file '"+Resources.makeFileResourceName("quests/"+Q.name()+".quest")+"' deleted.";
 				}
