@@ -214,6 +214,91 @@ public class CharClassData extends StdWebMacro
                     if(old==null) old=C.name();
                     str.append(old+", ");
                 }
+                if(parms.containsKey("NAMES"))
+                {
+                    String old=httpReq.getRequestParameter("NAME1");
+                    DVector nameSet=new DVector(2);
+                    int numNames=0;
+                    boolean cSrc=false;
+                    if(old==null)
+                    {
+                        C=C.makeGenCharClass();
+                        numNames=CMath.s_int(C.getStat("NUMNAME"));
+                    }
+                    else
+                    {
+                        while(httpReq.isRequestParameter("NAME"+(numNames+1)))
+                            numNames++;
+                        
+                    }
+                    if(numNames<=0)
+                        nameSet.addElement(new Integer(0),C.name());
+                    else
+                    for(int i=0;i<numNames;i++)
+                    {
+                        String lvlStr=cSrc?C.getStat("NAMELEVEL"+i):httpReq.getRequestParameter("NAMELEVEL"+(i+1));
+                        if(CMath.isInteger(lvlStr))
+                        {
+                            int minLevel = CMath.s_int(lvlStr);
+                            String name=cSrc?C.getStat("NAME"+i):httpReq.getRequestParameter("NAME"+(i+1));
+                            if((name!=null)&&(name.length()>0))
+                            {
+                                if(nameSet.size()==0)
+                                    nameSet.addElement(new Integer(minLevel),name);
+                                else
+                                {
+                                    boolean added=false;
+                                    for(int n=0;n<nameSet.size();n++)
+                                        if(minLevel<((Integer)nameSet.elementAt(n,1)).intValue())
+                                        {
+                                            nameSet.insertElementAt(n,new Integer(minLevel),name);
+                                            added=true;
+                                        }
+                                        else
+                                        if(minLevel==((Integer)nameSet.elementAt(n,1)).intValue())
+                                            added=true;
+                                    if(!added)
+                                        nameSet.addElement(new Integer(minLevel),name);
+                                }
+                            }
+                        }
+                    }
+                    if(nameSet.size()==0)
+                        nameSet.addElement(new Integer(0),C.name());
+                    else
+                        nameSet.setElementAt(0,1,new Integer(0));
+                    int borderSize=1;
+                    str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
+                    String sfont=(parms.containsKey("FONT"))?("<FONT "+((String)parms.get("FONT"))+">"):"";
+                    String efont=(parms.containsKey("FONT"))?"</FONT>":"";
+                    if(parms.containsKey("HEADERCOL1")||parms.containsKey("HEADERCOL2"))
+                    {
+                        str.append("<TR><TD WIDTH=20%>");
+                        if(parms.containsKey("HEADERCOL1"))
+                            str.append(sfont + ((String)parms.get("HEADERCOL1")) + efont);
+                        str.append("</TD><TD WIDTH=80%>");
+                        if(parms.containsKey("HEADERCOL2"))
+                            str.append(sfont + ((String)parms.get("HEADERCOL2")) + efont);
+                        str.append("</TD></TR>");
+                    }
+                    for(int i=0;i<nameSet.size();i++)
+                    {
+                        Integer lvl=(Integer)nameSet.elementAt(i,1);
+                        String name=(String)nameSet.elementAt(i,2);
+                        str.append("<TR><TD WIDTH=20%>");
+                        str.append("<INPUT TYPE=TEXT SIZE=5 NAME=NAMELEVEL"+(i+1)+" VALUE=\""+lvl.toString()+"\">");
+                        str.append("</TD><TD WIDTH=80%>");
+                        str.append("<INPUT TYPE=TEXT SIZE=30 NAME=NAME"+(i+1)+" VALUE=\""+name+"\">");
+                        str.append("</TD></TR>");
+                    }
+                    str.append("<TR><TD WIDTH=25%>");
+                    str.append("<INPUT TYPE=TEXT SIZE=5 NAME=NAMELEVEL"+(nameSet.size()+1)+" VALUE=\"\">");
+                    str.append("</TD><TD WIDTH=50%>");
+                    str.append("<INPUT TYPE=TEXT SIZE=30 NAME=NAME"+(nameSet.size()+1)+" VALUE=\"\">");
+                    str.append("</TD></TR>");
+                    str.append("</TABLE>");
+                    str.append(old+", ");
+                }
                 if(parms.containsKey("BASE"))
                 {
                     String old=httpReq.getRequestParameter("BASE");
@@ -454,7 +539,94 @@ public class CharClassData extends StdWebMacro
                         str.append(">"+Race.GENFLAG_DESCS[i]);
                     }
                 }
-                //TODO: "NUMNAME","NAMELEVEL","NUMSSET","SSET", "SSETLEVEL",
+                if(parms.containsKey("SECURITYSETS"))
+                {
+                    String old=httpReq.getRequestParameter("SSET1");
+                    DVector sSet=new DVector(2);
+                    int numSSet=0;
+                    boolean cSrc=false;
+                    if(old==null)
+                    {
+                        C=C.makeGenCharClass();
+                        numSSet=CMath.s_int(C.getStat("NUMSSET"));
+                    }
+                    else
+                    {
+                        while(httpReq.isRequestParameter("SSET"+(numSSet+1)))
+                            numSSet++;
+                        
+                    }
+                    for(int i=0;i<numSSet;i++)
+                    {
+                        String lvlStr=cSrc?C.getStat("SSETLEVEL"+i):httpReq.getRequestParameter("SSETLEVEL"+(i+1));
+                        if(CMath.isInteger(lvlStr))
+                        {
+                            int minLevel = CMath.s_int(lvlStr);
+                            String sec = null;
+                            if(cSrc)
+                            {
+                                sec=C.getStat("SSET"+i);
+                                Vector V=CMParms.parse(sec);
+                                sec=CMParms.combineWithX(V,",",0);
+                            }
+                            else
+                                sec=httpReq.getRequestParameter("SSET"+(i+1));
+                            if((sec!=null)&&(sec.trim().length()>0)&&(CMParms.parseCommas(sec,true).size()>0))
+                            {
+                                sec=CMParms.combineWithX(CMParms.parseCommas(sec.toUpperCase().trim(),true),",",0);
+                                if(sSet.size()==0)
+                                    sSet.addElement(new Integer(minLevel),sec);
+                                else
+                                {
+                                    boolean added=false;
+                                    for(int n=0;n<sSet.size();n++)
+                                        if(minLevel<((Integer)sSet.elementAt(n,1)).intValue())
+                                        {
+                                            sSet.insertElementAt(n,new Integer(minLevel),sec);
+                                            added=true;
+                                        }
+                                        else
+                                        if(minLevel==((Integer)sSet.elementAt(n,1)).intValue())
+                                            added=true;
+                                    if(!added)
+                                        sSet.addElement(new Integer(minLevel),sec);
+                                }
+                            }
+                        }
+                    }
+                    int borderSize=1;
+                    str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
+                    String sfont=(parms.containsKey("FONT"))?("<FONT "+((String)parms.get("FONT"))+">"):"";
+                    String efont=(parms.containsKey("FONT"))?"</FONT>":"";
+                    if(parms.containsKey("HEADERCOL1")||parms.containsKey("HEADERCOL2"))
+                    {
+                        str.append("<TR><TD WIDTH=20%>");
+                        if(parms.containsKey("HEADERCOL1"))
+                            str.append(sfont + ((String)parms.get("HEADERCOL1")) + efont);
+                        str.append("</TD><TD WIDTH=80%>");
+                        if(parms.containsKey("HEADERCOL2"))
+                            str.append(sfont + ((String)parms.get("HEADERCOL2")) + efont);
+                        str.append("</TD></TR>");
+                    }
+                    for(int i=0;i<sSet.size();i++)
+                    {
+                        Integer lvl=(Integer)sSet.elementAt(i,1);
+                        String sec=(String)sSet.elementAt(i,2);
+                        str.append("<TR><TD WIDTH=20%>");
+                        str.append("<INPUT TYPE=TEXT SIZE=5 NAME=SSETLEVEL"+(i+1)+" VALUE=\""+lvl.toString()+"\">");
+                        str.append("</TD><TD WIDTH=80%>");
+                        str.append("<INPUT TYPE=TEXT SIZE=60 NAME=SSET"+(i+1)+" VALUE=\""+sec+"\">");
+                        str.append("</TD></TR>");
+                    }
+                    str.append("<TR><TD WIDTH=25%>");
+                    str.append("<INPUT TYPE=TEXT SIZE=5 NAME=SSETLEVEL"+(sSet.size()+1)+" VALUE=\"\">");
+                    str.append("</TD><TD WIDTH=50%>");
+                    str.append("<INPUT TYPE=TEXT SIZE=60 NAME=SSET"+(sSet.size()+1)+" VALUE=\"\">");
+                    str.append("</TD></TR>");
+                    str.append("</TABLE>");
+                    str.append(old+", ");
+                }
+                
                 if(parms.containsKey("WEAPMATS"))
                 {
                     String old=httpReq.getRequestParameter("WEAPMATS");
