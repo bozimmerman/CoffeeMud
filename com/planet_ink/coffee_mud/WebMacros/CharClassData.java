@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -36,6 +37,31 @@ public class CharClassData extends StdWebMacro
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 	
 	
+    private String classDropDown(String old)
+    {
+        StringBuffer str=new StringBuffer("");
+        str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">None");
+        CharClass C2=null;
+        String C2ID=null;
+        for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+        {
+            C2=(CharClass)e.nextElement();
+            C2ID="com.planet_ink.coffee_mud.CharClass."+C2.ID();
+            if(C2.isGeneric() && CMClass.checkForCMClass("CHARCLASS",C2ID))
+            {
+                str.append("<OPTION VALUE=\""+C2.ID()+"\" "+((old.equalsIgnoreCase(C2.ID()))?"SELECTED":"")+">"+C2.ID()+" (Generic)");
+                str.append("<OPTION VALUE=\""+C2ID+"\" "+((old.equalsIgnoreCase(C2ID))?"SELECTED":"")+">"+C2ID);
+            }
+            else
+            if(C2.isGeneric())
+                str.append("<OPTION VALUE=\""+C2.ID()+"\" "+((old.equalsIgnoreCase(C2.ID())||old.equalsIgnoreCase(C2ID))?"SELECTED":"")+">"+C2.ID()+" (Generic)");
+            else
+                str.append("<OPTION VALUE=\""+C2ID+"\" "+((old.equalsIgnoreCase(C2.ID())||old.equalsIgnoreCase(C2ID))?"SELECTED":"")+">"+C2ID);
+        }
+        return str.toString();
+    }
+    
+    
     public static StringBuffer cabilities(CharClass E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize, String font)
     {
         StringBuffer str=new StringBuffer("");
@@ -385,8 +411,115 @@ public class CharClassData extends StdWebMacro
                         str.append(RaceData.cstate(startAdjState,'S',httpReq,parms,0)+", ");
                     }
                 }
-                
-                
+                if(parms.containsKey("NOWEAPS"))
+                {
+                    String old=httpReq.getRequestParameter("NOWEAPS");
+                    Vector set=null;
+                    if(old==null) 
+                    {
+                        C=C.makeGenCharClass();
+                        String weapList=C.getStat("NUMWEP");
+                        set=CMParms.parseCommas(weapList,true);
+                    }
+                    else
+                    {
+                        String id="";
+                        set=new Vector();
+                        for(int i=1;httpReq.isRequestParameter("NOWEAPS"+id);id=""+(++i))
+                            set.addElement(httpReq.getRequestParameter("NOWEAPS"+id));
+                    }
+                    for(int i=0;i<Weapon.classifictionDescription.length;i++)
+                    {
+                        str.append("<OPTION VALUE="+i);
+                        if(set.contains(""+i)) str.append(" SELECTED");
+                        str.append(">"+Weapon.classifictionDescription[i]);
+                    }
+                    str.append(", ");
+                }
+                if(parms.containsKey("OUTFIT"))
+                    str.append(RaceData.itemList(C.outfit(null),'O',httpReq,parms,0,false)+", ");
+                if(parms.containsKey("DISFLAGS"))
+                {
+                    if(!httpReq.isRequestParameter("DISFLAGS"))
+                    {
+                        C=C.makeGenCharClass();
+                        httpReq.addRequestParameters("DISFLAGS",C.getStat("DISFLAGS"));
+                    }
+                    int flags=CMath.s_int(httpReq.getRequestParameter("DISFLAGS"));
+                    for(int i=0;i<Race.GENFLAG_DESCS.length;i++)
+                    {
+                        str.append("<OPTION VALUE="+CMath.pow(2,i));
+                        if(CMath.bset(flags,CMath.pow(2,i)))
+                            str.append(" SELECTED");
+                        str.append(">"+Race.GENFLAG_DESCS[i]);
+                    }
+                }
+                //TODO: "NUMNAME","NAMELEVEL","NUMSSET","SSET", "SSETLEVEL",
+                if(parms.containsKey("WEAPMATS"))
+                {
+                    String old=httpReq.getRequestParameter("WEAPMATS");
+                    Vector set=null;
+                    if(old==null) 
+                    {
+                        C=C.makeGenCharClass();
+                        String matList=C.getStat("GETWMAT");
+                        set=CMParms.parseCommas(matList,true);
+                    }
+                    else
+                    {
+                        String id="";
+                        set=new Vector();
+                        for(int i=1;httpReq.isRequestParameter("WEAPMATS"+id);id=""+(++i))
+                            set.addElement(httpReq.getRequestParameter("WEAPMATS"+id));
+                    }
+                    for(int i=0;i<RawMaterial.MATERIAL_DESCS.length;i++)
+                    {
+                        str.append("<OPTION VALUE="+i);
+                        if(set.contains(""+i)) str.append(" SELECTED");
+                        str.append(">"+RawMaterial.MATERIAL_DESCS[i]);
+                    }
+                    str.append(", ");
+                }
+                if(parms.containsKey("ARMORMINOR"))
+                {
+                    String old=httpReq.getRequestParameter("ARMORMINOR");
+                    int armorMinor=-1;
+                    if(old==null) 
+                    {
+                        C=C.makeGenCharClass();
+                        armorMinor=CMath.s_int(C.getStat("ARMORMINOR"));
+                    }
+                    else
+                        armorMinor=CMath.s_int(old);
+                    str.append("<OPTION VALUE=-1");
+                    if(armorMinor<0) str.append(" SELECTED");
+                    str.append(">N/A");
+                    for(int i=0;i<CMMsg.TYPE_DESCS.length;i++)
+                    {
+                        str.append("<OPTION VALUE="+i);
+                        if(i==armorMinor) str.append(" SELECTED");
+                        str.append(">"+CMMsg.TYPE_DESCS[i]);
+                    }
+                    str.append(", ");
+                }
+                if(parms.containsKey("STATCLASS"))
+                {
+                    String old=httpReq.getRequestParameter("STATCLASS");
+                    if(old==null){
+                        C=C.makeGenCharClass();
+                        old=""+C.getStat("STATCLASS");
+                    }
+                    str.append(classDropDown(old));
+                }
+                if(parms.containsKey("EVENTCLASS"))
+                {
+                    String old=httpReq.getRequestParameter("EVENTCLASS");
+                    if(old==null){
+                        C=C.makeGenCharClass();
+                        old=""+C.getStat("EVENTCLASS");
+                    }
+                    str.append(classDropDown(old));
+                }
                 /******************************************************/
                 // Here begins the displayable only fields.
                 /******************************************************/
