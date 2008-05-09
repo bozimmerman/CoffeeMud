@@ -59,7 +59,7 @@ public class Prayer_Haunted extends Prayer
 		super.unInvoke();
 
 		if((canBeUninvoked())&&(R!=null))
-		   R.showHappens(CMMsg.MSG_OK_VISUAL,"The haunt over you fades.");
+		   R.showHappens(CMMsg.MSG_OK_VISUAL,"The haunted aura fades.");
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
