@@ -41,6 +41,8 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"CLANCRAFT"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN|METAL|MITHRIL";}
+    protected int expRequired = 0;
+    protected Clan myClan=null;
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_MATERIAL1=1;
@@ -70,7 +72,14 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 				if((building!=null)&&(!aborted))
 				{
 					if(messedUp)
+					{
 						commonEmote(mob,"<S-NAME> mess(es) up crafting "+building.name()+".");
+                        if(myClan!=null)
+                        {
+                            myClan.setExp(myClan.getExp()+expRequired);
+                            myClan.update();
+                        }
+					}
 					else
 					{
 						dropAWinner(mob,building);
@@ -240,7 +249,8 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
             //amt2=adjustWoodRequired(amt2, mob);
 		}
 
-		int expRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_EXP));
+		expRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_EXP));
+        expRequired=getXPCOSTAdjustment(mob,expRequired);
 		if(C.getExp()<expRequired)
 		{
 			mob.tell("You need "+expRequired+" to do that, but your "+C.typeName()+" has only "+C.getExp()+" experience points.");
@@ -267,9 +277,6 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			CMLib.materials().destroyResources(mob.location(),amt1,data[0][FOUND_CODE],0,null);
 		if((amt2>0)&&(autoGenerate<=0))
 			CMLib.materials().destroyResources(mob.location(),amt2,data[1][FOUND_CODE],0,null);
-		expRequired=getXPCOSTAdjustment(mob,expRequired);
-		C.setExp(C.getExp()-expRequired);
-		C.update();
 
 		building=CMClass.getItem((String)foundRecipe.elementAt(RCP_CLASSTYPE));
 		if(building==null)
@@ -277,6 +284,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"There's no such thing as a "+foundRecipe.elementAt(RCP_CLASSTYPE)+"!!!");
 			return false;
 		}
+		
 		duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
 		String misctype=(String)foundRecipe.elementAt(RCP_MISCTYPE);
 		String itemName=null;
@@ -406,6 +414,15 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,asLevel,duration);
+			ClanCrafting CC=(ClanCrafting)mob.fetchEffect(ID());
+			if(CC!=null)
+			{
+		        C.setExp(C.getExp()-expRequired);
+		        C.update();
+		        
+			    CC.expRequired=expRequired;
+			    CC.myClan=C;
+			}
 		}
 		return true;
 	}
