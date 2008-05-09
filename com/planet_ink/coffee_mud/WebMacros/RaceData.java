@@ -298,7 +298,7 @@ public class RaceData extends StdWebMacro
             str.append("<INPUT TYPE=BUTTON NAME="+c+"EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+RoomData.getItemCode(classes,I)+"','"+c+"ITEM"+(numItems)+"');\">");
             str.append("</TD></TR>");
         }
-        str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
+        str.append("<TR><TD WIDTH=90%>");
         str.append("<SELECT ONCHANGE=\"AddItem(this);\" NAME="+c+"ITEM"+(numItems+1)+">");
         if(!one) str.append("<OPTION SELECTED VALUE=\"\">Select a new Item");
         for(int i=0;i<itemlist.size();i++)

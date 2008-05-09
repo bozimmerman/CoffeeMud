@@ -674,7 +674,7 @@ public class GenRace extends StdRace
 			healthBuddy=CMClass.getRace(val);
 			try{
 				if(healthBuddy==null)
-					healthBuddy=(Race)CMClass.unsortedLoadClass("RACE",val);
+					healthBuddy=(Race)CMClass.unsortedLoadClass("RACE",val,true);
 			}catch(Exception e){}
 			break;
 		}
@@ -815,14 +815,14 @@ public class GenRace extends StdRace
 		{
 			eventBuddy=CMClass.getRace(val);
 			if(eventBuddy==null)
-				eventBuddy=(Race)CMClass.unsortedLoadClass("RACE",val);
+				eventBuddy=(Race)CMClass.unsortedLoadClass("RACE",val,true);
 			break;
 		}
 		case 43:
 		{
 			weaponBuddy=CMClass.getRace(val);
 			if(weaponBuddy==null)
-				weaponBuddy=(Race)CMClass.unsortedLoadClass("RACE",val);
+				weaponBuddy=(Race)CMClass.unsortedLoadClass("RACE",val,true);
 			break;
 		}
 		}

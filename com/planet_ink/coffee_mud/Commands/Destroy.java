@@ -491,7 +491,7 @@ public class Destroy extends BaseItemParser
 		String oldRID=R.ID();
 		CMClass.delRace(R);
 		CMLib.database().DBDeleteRace(R.ID());
-		CMClass.loadClass("RACE","com/planet_ink/coffee_mud/Races/"+oldRID+".class");
+		CMClass.loadClass("RACE","com/planet_ink/coffee_mud/Races/"+oldRID+".class",true);
 		Race oldR=CMClass.getRace(oldRID);
         if(oldR==null) oldR=CMClass.getRace("StdRace");
         CMLib.utensils().swapRaces(oldR,R);
@@ -606,7 +606,7 @@ public class Destroy extends BaseItemParser
 		CMClass.delCharClass(C);
 		CMLib.database().DBDeleteClass(C.ID());
         String oldCID=C.ID();
-        CMClass.loadClass("CHARCLASS","com/planet_ink/coffee_mud/CharClasses/"+oldCID+".class");
+        CMClass.loadClass("CHARCLASS","com/planet_ink/coffee_mud/CharClasses/"+oldCID+".class",true);
         CharClass oldC=CMClass.getCharClass(oldCID);
         if(oldC==null) oldC=CMClass.getCharClass("StdCharClass");
         CMLib.utensils().reloadCharClasses(C);

@@ -197,7 +197,7 @@ public class Trapper extends Thief
 		return super.okMessage(myHost,msg);
 	}
 
-	public String statQualifications(){return "Dexterity 9+ Constitution 9+";}
+	public String statQualifications(){return "Dexterity 9+, Constitution 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
 		if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<=8)

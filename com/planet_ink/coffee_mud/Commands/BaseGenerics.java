@@ -3876,7 +3876,7 @@ public class BaseGenerics extends StdCommand
 		if(newName.length()>0)
 		{
 			Race R2=CMClass.getRace(newName);
-			if(R2==null) R2=(Race)CMClass.unsortedLoadClass("RACE",newName);
+			if(R2==null) R2=(Race)CMClass.unsortedLoadClass("RACE",newName,true);
 			if((R2!=null)&&(R2.isGeneric()))
 				R2=null;
 			if(R2==null)
@@ -3910,7 +3910,7 @@ public class BaseGenerics extends StdCommand
         if(newName.length()>0)
         {
             CharClass C2=CMClass.getCharClass(newName);
-            if(C2==null) C2=(CharClass)CMClass.unsortedLoadClass("CHARCLASS",newName);
+            if(C2==null) C2=(CharClass)CMClass.unsortedLoadClass("CHARCLASS",newName,true);
             if((C2!=null)&&(C2.isGeneric()))
                 C2=null;
             if(C2==null)

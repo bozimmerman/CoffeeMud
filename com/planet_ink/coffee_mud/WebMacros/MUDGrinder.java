@@ -331,27 +331,6 @@ public class MUDGrinder extends StdWebMacro
 			httpReq.addRequestParameters("ERRMSG",errMsg);
 		}
         else
-        if(parms.contains("DELRACE"))
-        {
-            MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
-            if(mob==null) return "@break@";
-            Race R=null;
-            String last=httpReq.getRequestParameter("RACE");
-            if(last==null) return " @break@";
-            R=CMClass.getRace(last);
-            if((R==null)||(!R.isGeneric()))
-                return " @break@";
-            String oldRID=R.ID();
-            CMClass.delRace(R);
-            CMLib.database().DBDeleteRace(R.ID());
-            CMClass.loadClass("RACE","com/planet_ink/coffee_mud/Races/"+oldRID+".class");
-            Race oldR=CMClass.getRace(oldRID);
-            if(oldR==null) oldR=CMClass.getRace("StdRace");
-            boolean create=false;
-            Log.sysOut("Grinder",mob.name()+" deleted race "+R.ID());
-            return "Race "+R.ID()+" deleted.";
-        }
-        else
         if(parms.contains("DELHOLIDAY"))
         {
             MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
@@ -379,6 +358,27 @@ public class MUDGrinder extends StdWebMacro
                 Log.sysOut("Grinder",mob.name()+" modified holiday "+last);
             return (err.length()>0)?err:"";
         }
+        else
+        if(parms.contains("DELRACE"))
+        {
+            MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(mob==null) return "@break@";
+            Race R=null;
+            String last=httpReq.getRequestParameter("RACE");
+            if(last==null) return " @break@";
+            R=CMClass.getRace(last);
+            if((R==null)||(!R.isGeneric()))
+                return " @break@";
+            String oldRID=R.ID();
+            CMClass.delRace(R);
+            CMLib.database().DBDeleteRace(R.ID());
+            CMClass.loadClass("RACE","com/planet_ink/coffee_mud/Races/"+oldRID+".class",true);
+            Race oldR=CMClass.getRace(oldRID);
+            if(oldR==null) oldR=CMClass.getRace("StdRace");
+            CMLib.utensils().swapRaces(oldR, R);
+            Log.sysOut("Grinder",mob.name()+" deleted race "+R.ID());
+            return "Race "+R.ID()+" deleted.";
+        }
 		else
 		if(parms.contains("EDITRACE"))
 		{
@@ -404,18 +404,85 @@ public class MUDGrinder extends StdWebMacro
             {
                 CMLib.database().DBDeleteRace(R.ID());
                 CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+                if((oldR!=null)&&(oldR!=R))
+                    CMLib.utensils().swapRaces(R, oldR);
                 return "Race "+R.ID()+" modified.";
             }
             else
             {
                 CMClass.addRace(R);
                 CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+                if((oldR!=null)&&(oldR!=R))
+                    CMLib.utensils().swapRaces(R, oldR);
                 if((oldR!=null)&&(!oldR.isGeneric()))
                     return "Race "+R.ID()+" replaced with Generic Race " + R.ID()+".";
                 else
                     return "Race "+R.ID()+" created.";
             }
 		}
+        else
+        if(parms.contains("DELCLASS"))
+        {
+            MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(mob==null) return "@break@";
+            CharClass C=null;
+            String last=httpReq.getRequestParameter("CLASS");
+            if(last==null) return " @break@";
+            C=CMClass.getCharClass(last);
+            if((C==null)||(!C.isGeneric()))
+                return " @break@";
+            String oldCID=C.ID();
+            CMClass.delCharClass(C);
+            CMLib.database().DBDeleteClass(C.ID());
+            CMClass.loadClass("CHARRCLASS","com/planet_ink/coffee_mud/CharClasses/"+oldCID+".class",true);
+            CharClass oldC=CMClass.getCharClass(oldCID);
+            if(oldC==null) oldC=CMClass.getCharClass("StdCharClass");
+            if((oldC!=null)&&(oldC!=C))
+                CMLib.utensils().reloadCharClasses(oldC);
+            Log.sysOut("Grinder",mob.name()+" deleted charclass "+C.ID());
+            return "CharClass "+C.ID()+" deleted.";
+        }
+        else
+        if(parms.contains("EDITCLASS"))
+        {
+            MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(mob==null) return "@break@";
+            CharClass C=null;
+            CharClass oldC=null;
+            String last=httpReq.getRequestParameter("CLASS");
+            if(last==null) return " @break@";
+            C=CMClass.getCharClass(last);
+            boolean create=false;
+            if((C==null)||(!C.isGeneric())) {
+                create=true;
+                if(C!=null) oldC=C;
+                C=(CharClass)CMClass.getCharClass("GenCharClass").copyOf();
+                C.setClassParms("<CCLASS><ID>"+last+"</ID><NAME>"+last+"</NAME></CCLASS>");
+            }
+            if(C==null) return " @break@";
+            C=C.makeGenCharClass();
+            String errMsg=GrinderClasses.modifyCharClass(httpReq, parms, C);
+            httpReq.addRequestParameters("ERRMSG",errMsg);
+            if(!create)
+            {
+                CMLib.database().DBDeleteClass(C.ID());
+                CMLib.database().DBCreateClass(C.ID(),C.classParms());
+                if((oldC!=null)&&(oldC!=C))
+                    CMLib.utensils().reloadCharClasses(oldC);
+                return "Char Class "+C.ID()+" modified.";
+            }
+            else
+            {
+                CMClass.addCharClass(C);
+                CMLib.database().DBCreateClass(C.ID(),C.classParms());
+                if((oldC!=null)&&(oldC!=C))
+                    CMLib.utensils().reloadCharClasses(oldC);
+                if((oldC!=null)&&(!oldC.isGeneric()))
+                    return "Char Class "+C.ID()+" replaced with Generic Class " + C.ID()+".";
+                else
+                    return "Char Class "+C.ID()+" created.";
+            }
+        }
 		else
 		if(parms.containsKey("EDITITEM"))
 		{

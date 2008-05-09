@@ -469,6 +469,7 @@ public class CMath
     public static boolean isLong(String INT){return isInteger(INT);}
     public static boolean isInteger(String INT)
     {
+        if(INT==null) return false;
         if(INT.length()==0) return false;
         if(INT.startsWith("-")&&(INT.length()>1))
             INT=INT.substring(1);
@@ -481,6 +482,7 @@ public class CMath
     public static boolean isFloat(String DBL){return isDouble(DBL);}
     public static boolean isDouble(String DBL)
     {
+        if(DBL==null) return false;
         if(DBL.length()==0) return false;
         if(DBL.startsWith("-")&&(DBL.length()>1))
             DBL=DBL.substring(1);

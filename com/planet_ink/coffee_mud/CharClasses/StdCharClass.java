@@ -392,8 +392,31 @@ public class StdCharClass implements CharClass
         //CR.setStat("STRARM",""+this.allowedArmorLevel());
         CR.setStat("STRLMT",""+otherLimitations());
         CR.setStat("STRBON",""+otherBonuses());
-        //CR.setStat("QUAL",""+this.qu);
         CR.setStat("PLAYER",""+availabilityCode());
+        
+        StringBuffer quals=new StringBuffer("");
+        String q=statQualifications().toUpperCase();
+        if(q.length()>0)
+            for(int c=0;c<CharStats.NUM_BASE_STATS;c++)
+                if(CharStats.STAT_DESCS[c].length()>3)
+                {
+                    int x=q.indexOf(CharStats.STAT_DESCS[c]+" ");
+                    if(x<0)
+                        x=q.indexOf(CharStats.STAT_DESCS[c].substring(0,3)+" ");
+                    if(x>=0)
+                    {
+                        String qs=q.substring(q.indexOf(" ",x+1)).trim();
+                        if(qs.length()>0)
+                        {
+                            int spot=0;
+                            while(Character.isDigit(qs.charAt(spot)))
+                                spot++;
+                            if(spot>0)
+                                quals.append("+"+CharStats.STAT_DESCS[c].substring(0,3)+" "+qs.substring(0,spot)+" ");
+                        }
+                    }
+                }
+        CR.setStat("QUAL",quals.toString().trim());
         
         MOB fakeMOB=CMClass.getMOB("StdMOB");
         fakeMOB.baseCharStats().setMyClasses(ID());        
@@ -558,6 +581,15 @@ public class StdCharClass implements CharClass
             CR.setStat("NUMWMAT",""+H.size());
             CR.setStat("GETWMAT",""+CMParms.toStringList(H));
         }
+        H=disallowedWeaponClasses(fakeMOB);
+        if((H==null)||(H.size()==0))
+            CR.setStat("NUMWEP","");
+        else
+        {
+            CR.setStat("NUMWEP",""+H.size());
+            CR.setStat("GETWEP",""+CMParms.toStringList(H));
+        }
+        
         CR.setStat("ARMORMINOR",""+requiredArmorSourceMinor());
         CR.setStat("STATCLASS",this.getClass().getName());
         CR.setStat("EVENTCLASS",this.getClass().getName());

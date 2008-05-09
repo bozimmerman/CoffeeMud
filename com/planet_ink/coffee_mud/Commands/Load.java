@@ -127,7 +127,7 @@ public class Load extends StdCommand
 					&&(name.toUpperCase().endsWith(".CLASS"))
 					&&(CMClass.delClass(what,(CMObject)O))) 
 						mob.tell(unloadClassName+" was unloaded.");
-	        		if(CMClass.loadClass(what,name))
+	        		if(CMClass.loadClass(what,name,false))
 	                {
 	        			mob.tell(CMStrings.capitalizeAndLower(what)+" "+name+" was successfully loaded.");
 	                    return true;

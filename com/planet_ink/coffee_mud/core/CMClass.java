@@ -393,13 +393,13 @@ public class CMClass extends ClassLoader
 		return -1;
 	}
 	
-	public static boolean loadClass(String classType, String path)
+	public static boolean loadClass(String classType, String path, boolean quiet)
 	{
         debugging=CMSecurity.isDebugging("CLASSLOADER");
 		Object set=getClassSet(classType);
 		if(set==null) return false;
 
-		if(!loadListToObj(set,path,OBJECT_ANCESTORS[classCode(classType)]))
+		if(!loadListToObj(set,path,OBJECT_ANCESTORS[classCode(classType)],quiet))
             return false;
 
         if(set instanceof Vector)
@@ -413,7 +413,7 @@ public class CMClass extends ClassLoader
 		return true;
 	}
 
-	public static Object unsortedLoadClass(String classType, String path)
+	public static Object unsortedLoadClass(String classType, String path, boolean quiet)
 	{
 		if((path==null)||(path.length()==0))
 			return null;
@@ -438,7 +438,7 @@ public class CMClass extends ClassLoader
 			path=path.replace('.','/');
 			path+=".class";
 		}
-		if(!loadListToObj(V,path,OBJECT_ANCESTORS[classCode(classType)]))
+		if(!loadListToObj(V,path,OBJECT_ANCESTORS[classCode(classType)],quiet))
 			return null;
 		if(V.size()==0) return null;
 		return (Object)V.firstElement();
@@ -446,7 +446,7 @@ public class CMClass extends ClassLoader
 
 	public static boolean checkForCMClass(String classType, String path)
 	{ 
-		return unsortedLoadClass(classType,path)!=null;
+		return unsortedLoadClass(classType,path,true)!=null;
 	}
 
     public static String ancestor(String code)
@@ -778,9 +778,9 @@ public class CMClass extends ClassLoader
 		{
             boolean success=false;
 			if(path.equalsIgnoreCase("%default%"))
-				success=loadListToObj(o,filePath, ancester);
+				success=loadListToObj(o,filePath, ancester, false);
 			else
-				success=loadListToObj(o,path,ancester);
+				success=loadListToObj(o,path,ancester, false);
             return success;
 		}
         return false;
@@ -801,7 +801,7 @@ public class CMClass extends ClassLoader
 		return new Vector(new TreeSet(v));
 	}
 
-	public static boolean loadListToObj(Object toThis, String filePath, String ancestor)
+	public static boolean loadListToObj(Object toThis, String filePath, String ancestor, boolean quiet)
 	{ 
         Class ancestorCl=null;
         CMClass loader=new CMClass();
@@ -813,7 +813,8 @@ public class CMClass extends ClassLoader
             }
             catch (ClassNotFoundException e)
             {
-                Log.sysOut("CMClass","WARNING: Couldn't load ancestor class: "+ancestor);
+                if(!quiet)
+                    Log.sysOut("CMClass","WARNING: Couldn't load ancestor class: "+ancestor);
             }
         }
 
@@ -838,7 +839,8 @@ public class CMClass extends ClassLoader
         }
         else
         {
-            Log.errOut("CMClass","Unable to access path "+file.getVFSPathAndName());
+            if(!quiet)
+                Log.errOut("CMClass","Unable to access path "+file.getVFSPathAndName());
             return false;
         }
         for(int l=0;l<fileList.size();l++)
@@ -855,11 +857,17 @@ public class CMClass extends ClassLoader
                 if(C!=null)
                 {
                     if(!checkAncestry(C,ancestorCl))
-                        Log.sysOut("CMClass","WARNING: class failed ancestral check: "+packageName);
+                    {
+                        if(!quiet)
+                            Log.sysOut("CMClass","WARNING: class failed ancestral check: "+packageName);
+                    }
                     O=C.newInstance();
                 }
                 if(O==null)
-                    Log.sysOut("CMClass","Unable to create class '"+packageName+"'");
+                {
+                    if(!quiet)
+                        Log.sysOut("CMClass","Unable to create class '"+packageName+"'");
+                }
                 else
                 {
                     String itemName=O.getClass().getName();
@@ -891,7 +899,8 @@ public class CMClass extends ClassLoader
             }
             catch(Throwable e)
             {
-                Log.errOut("CMClass",e);
+                if(!quiet)
+                    Log.errOut("CMClass",e);
                 return false;
             }
         }

@@ -102,10 +102,14 @@
 	<A href="javascript:Clicked('clans.cmvp')"><FONT COLOR=WHITE>Clan Manager</FONT></a>
 	<BR>
 	@endif@
-	@if?CheckAuthCode?AUTH_STAT=true&AUTH_CMDRACE=true@
+	@if?CheckAuthCode?AUTH_CMDRACE=true@
 	<A href="javascript:Clicked('race.cmvp')"><FONT COLOR=WHITE>Race Manager</FONT></a>
 	<BR>
 	@endif@
+    @if?CheckAuthCode?AUTH_CMDCLASSES=true@
+    <A href="javascript:Clicked('charclass.cmvp')"><FONT COLOR=WHITE>Class Manager</FONT></a>
+    <BR>
+    @endif@
 	@if?CheckAuthCode?AUTH_LOADUNLOAD=true@
 	<A href="javascript:Clicked('resources.cmvp')"><FONT COLOR=WHITE>Cache Resources</FONT></a>
 	<BR>

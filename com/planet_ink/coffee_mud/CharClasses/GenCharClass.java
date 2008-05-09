@@ -855,7 +855,7 @@ public class GenCharClass extends StdCharClass
             statBuddy=CMClass.getCharClass(val);
             try{
                 if(statBuddy==null)
-                    statBuddy=(CharClass)CMClass.unsortedLoadClass("CHARCLASS",val);
+                    statBuddy=(CharClass)CMClass.unsortedLoadClass("CHARCLASS",val,true);
             }catch(Exception e){}
             break;
         }
@@ -864,7 +864,7 @@ public class GenCharClass extends StdCharClass
             eventBuddy=CMClass.getCharClass(val);
             try{
                 if(eventBuddy==null)
-                    eventBuddy=(CharClass)CMClass.unsortedLoadClass("CHARCLASS",val);
+                    eventBuddy=(CharClass)CMClass.unsortedLoadClass("CHARCLASS",val,true);
             }catch(Exception e){}
             break;
         }

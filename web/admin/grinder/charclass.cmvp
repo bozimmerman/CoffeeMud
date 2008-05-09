@@ -1,0 +1,335 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_CMDCLASSES=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<html>
+<head>
+    <link rel="grinder icon" href="/images/grinder.ico" >
+    <title>CharClass Manager</title>
+    <script language=JavaScript>
+    <!--
+        function openUp2(named)
+        {
+            var strFeatures="top=200,left=50,resizeable=no,scrollbars=yes,height=400,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("/property.cmvp?ABILITY="+named,
+                        "Ability",strFeatures, false);
+        }
+        function AddNewItem(FIELD)
+        {
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM=NEW&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,"Class Item",strFeatures, false);
+        }
+        function AddItem(ME)
+        {
+            ReShow();
+        }
+        function EditItemDone()
+        {
+            ReShow();
+        }
+        function EditItem(ME,FIELD)
+        {
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM="+ME+"&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,"Class Item",strFeatures, false);
+        }
+        function AddMember(v)
+        {
+            ReShow();
+        }
+        function EditMember(v)
+        {
+            ReShow();
+        }
+        function EditAffect(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function AddAffect(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
+        function NewClass()
+        {
+            var classid=window.prompt('Enter a new unique ID for your Class (no spaces):');
+            if(classid==null)
+                return;
+            if(classid.length==0)
+                return;
+            if(classid.indexOf(' ')>=0)
+            {
+                window.alert('No spaces are allowed in your ID!');
+                return;
+            }
+            document.RESOURCES.NEWCLASSID.value=classid;
+            document.RESOURCES.FUNCTION.value='RECLASS';
+            document.RESOURCES.action='/grinder/charclassdo.cmvp';
+            document.RESOURCES.submit();
+        }
+        function Delete()
+        {
+            if(confirm('Delete this generic class?! Confirm!'))
+            {
+                if(confirm('Press OK to Delete this class!'))
+                {
+                    document.RESOURCES.action='charclassdo.cmvp';
+                    document.RESOURCES.FUNCTION.value='DELCLASS';
+                    document.RESOURCES.submit();
+                }
+            }
+        }
+        function EditDone()
+        {
+            @if?CharClassData?NEWCLASS@
+                if(confirm('Create this new class?'))
+            @else@
+                @if?CharClassData?ISGENERIC@
+                    if(confirm('Submit your changes to this class?'))
+                @else@
+                    if(confirm('Submitting these changes will convert your standard Class to a Generic Class.  Are you absolutely sure?'))
+                @endif@
+            @endif@
+                {
+                    document.RESOURCES.action='charclassdo.cmvp';
+                    document.RESOURCES.FUNCTION.value='EDITCLASS';
+                    document.RESOURCES.submit();
+                }
+        }
+        function ReShow()
+        {
+            document.RESOURCES.FUNCTION.value='';
+            document.RESOURCES.action='/grinder/charclass.cmvp';
+            document.RESOURCES.submit();
+        }
+        function ReClass()
+        {
+            document.RESOURCES.FUNCTION.value='RECLASS';
+            document.RESOURCES.action='/grinder/charclassdo.cmvp';
+            document.RESOURCES.submit();
+        }
+        function Cancel()
+        {
+            window.close();
+        }
+        function OpenUp(file,named)
+        {
+            var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("/"+file+"?HELPTOPIC="+named,
+                        "Help",strFeatures, false);
+        }
+        function Clicked(action)
+        {
+            document.RESOURCES.action=action;
+            document.RESOURCES.submit();
+        }
+    //-->
+    </script>
+</head>
+<body BGCOLOR=BLACK>
+<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="charclass.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=NEWCLASSID VALUE="">
+<INPUT TYPE=HIDDEN NAME=REPLACE VALUE="">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+    <TABLE WIDTH=100% BORDER=0>
+    <TR>
+    <TD WIDTH=33% ALIGN=LEFT VALIGN=CENTER>
+        <FONT COLOR=WHITE>Class: </FONT>
+        @AddRequestParameter?OLDCLASS=@@RequestParameter?CLASS@@ @
+        <SELECT NAME=CLASS ONCHANGE="javascript:ReClass();">
+        
+        @if?CharClassData?NEWCLASS@
+            <OPTION VALUE="@RequestParameter?CLASS@" SELECTED>*new* @RequestParameter?CLASS@ (Generic)
+            @AddRequestParameter?CLASS=@
+        @else@
+            <OPTION VALUE="" @if?CheckReqParm?CLASS=@SELECTED@endif@>Select a class
+        @endif@
+        
+        @CharClassNext?RESET@
+        @loop@
+        @CharClassNext?ALL@
+        <OPTION VALUE="@CharClassID@" @if?CheckReqParm?CLASS=@@RequestParameter?OLDCLASS@@ @SELECTED@endif@>@CharClassName@
+        @back@
+        </SELECT>&nbsp;&nbsp;&nbsp;
+        <INPUT TYPE=BUTTON NAME=NEWCLASS VALUE="New" ONCLICK="NewClass();">
+        @AddRequestParameter?CLASS=@@RequestParameter?OLDCLASS@@ @
+    </TD>
+    <TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
+    <TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
+        <TABLE WIDTH=50% BORDER=1>
+        <TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
+        <TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+        <TR><TD><a href="javascript:ReShow();"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
+        </TABLE>
+    </TD>
+    </TR>
+    </TABLE>
+<CENTER>
+    
+@if?CheckReqParm?CLASS=@
+    Select a class above to view/edit.
+@else@
+    <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Class ID: </FONT></TD>
+            <TD><FONT COLOR=WHITE>@RequestParameter?CLASS@</FONT></TD>
+        </TR>
+        <TR>
+            <TD VALIGN=TOP><FONT COLOR=YELLOW>Name(s): </FONT></TD>
+            <TD>
+            @CharClassData?NAMES&HEADERCOL1=<FONT COLOR=WHITE SIZE=-1>Min Lvl</FONT>&HEADERCOL2=<FONT COLOR=WHITE SIZE=-1>Name</FONT>@<INPUT TYPE=BUTTON NAME=NEWNAME VALUE="Add" ONCLICK="ReShow();">
+            </TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Base Class: </FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=20 NAME=BASE VALUE="@CharClassData?BASE@"></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Availability: </FONT></TD>
+            <TD><SELECT NAME=PLAYER>@CharClassData?PLAYER@</SELECT></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Requirements:<BR>
+             <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>mask help</I></FONT></a>
+             </FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=60 NAME=QUAL VALUE="@CharClassData?QUAL@"></TD>
+        </TR>
+        <TR>
+            <TD VALIGN=TOP><FONT COLOR=YELLOW>Disabled Flags: </FONT></TD>
+            <TD><SELECT NAME=DISFLAGS MULTIPLE>@CharClassData?DISFLAGS@</SELECT></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Starting Trains: </FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=5 NAME=FSTTRAN VALUE="@CharClassData?FSTTRAN@"></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Starting Practices: </FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=5 NAME=FSTPRAC VALUE="@CharClassData?FSTPRAC@"></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Bonus Pracs / Level: </FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=5 NAME=LVLPRAC VALUE="@CharClassData?LVLPRAC@"></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Bonus Attack / Level: </FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=5 NAME=LVLATT VALUE="@CharClassData?LVLATT@"></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Attack Attribute: </FONT></TD>
+            <TD><SELECT NAME=ATTATT>@CharClassData?ATTATT@</SELECT></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Hit Points / Level: </FONT></TD>
+            <TD><FONT COLOR=WHITE>Roll&nbsp; 
+                <INPUT TYPE=TEXT SIZE=2 NAME=HPDICE VALUE="@CharClassData?HPDICE@">
+                d
+                <INPUT TYPE=TEXT SIZE=2 NAME=HPDIE VALUE="@CharClassData?HPDIE@">
+                &nbsp;&nbsp;+&nbsp;&nbsp;
+                (Constitution / <INPUT TYPE=TEXT SIZE=2 NAME=HPDIV VALUE="@CharClassData?HPDIV@">)
+                </FONT>
+            </TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Mana / Level: </FONT></TD>
+            <TD><FONT COLOR=WHITE>Roll&nbsp; 
+                <INPUT TYPE=TEXT SIZE=2 NAME=MANADICE VALUE="@CharClassData?MANADICE@">
+                d
+                <INPUT TYPE=TEXT SIZE=2 NAME=MANADIE VALUE="@CharClassData?MANADIE@">
+                &nbsp;&nbsp;+&nbsp;&nbsp;
+                (Intelligence / <INPUT TYPE=TEXT SIZE=2 NAME=MANADIV VALUE="@CharClassData?MANADIV@">)
+                </FONT>
+            </TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Movement / Level: </FONT></TD>
+            <TD><FONT COLOR=WHITE>Strength / 18 X <INPUT TYPE=TEXT SIZE=5 NAME=LVLMOVE VALUE="@CharClassData?LVLMOVE@"></FONT></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Armor Limits: </FONT></TD>
+            <TD><SELECT NAME=ARMOR>@CharClassData?ARMOR@</SELECT></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Armor Restricts..: </FONT></TD>
+            <TD><SELECT NAME=ARMORMINOR SIZE=3>@CharClassData?ARMORMINOR@</SELECT></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Weapons Disallowed: </FONT></TD>
+            <TD><SELECT NAME=NOWEAPS MULTIPLE SIZE=3>@CharClassData?NOWEAPS@</SELECT></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Weapon Materials: </FONT></TD>
+            <TD><SELECT NAME=WEAPMATS MULTIPLE SIZE=3>@CharClassData?WEAPMATS@</SELECT></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Bonuses Desc: </FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=80 NAME=STRBON VALUE="@CharClassData?STRBON@"></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Limits Desc: </FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=80 NAME=STRLMT VALUE="@CharClassData?STRLMT@"></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>EStat Adjustments: </FONT></TD>
+            <TD>@CharClassData?ESTATS@</TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>CharStat Adjustments: </FONT></TD>
+            <TD>@CharClassData?ASTATS@</TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>CharStat Settings: </FONT></TD>
+            <TD>@CharClassData?CSTATS@</TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>CharState Adjustments: </FONT></TD>
+            <TD>@CharClassData?ASTATE@</TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>New Player CharState Adj: </FONT></TD>
+            <TD>@CharClassData?STARTASTATE@</TD>
+        </TR>
+        <TR>
+            <TD VALIGN=TOP><FONT COLOR=YELLOW>Outfit: </FONT></TD>
+            <TD>@CharClassData?OUTFIT@</TD>
+        </TR>
+        <TR>
+            <TD VALIGN=TOP><FONT COLOR=YELLOW>Security Flags / Level: <BR>
+             <A HREF="javascript:OpenUp('ahelp.cmvp','SECURITY')"><FONT COLOR=WHITE><I>flag help</I></FONT></a>
+            </FONT></TD>
+            <TD>@CharClassData?SECURITYSETS&HEADERCOL1=<FONT COLOR=WHITE SIZE=-1>Min Lvl</FONT>&HEADERCOL2=<FONT COLOR=WHITE SIZE=-1>Flags (comma sep.)</FONT>@
+            <INPUT TYPE=BUTTON NAME=NEWSEC VALUE="Add" ONCLICK="ReShow();"></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Event Class: </FONT></TD>
+            <TD><SELECT NAME=EVENTCLASS>@CharClassData?EVENTCLASS@</SELECT></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Stats Class: </FONT></TD>
+            <TD><SELECT NAME=STATCLASS>@CharClassData?STATCLASS@</SELECT></TD>
+        </TR>
+        <TR VALIGN=TOP>
+            <TD VALIGN=TOP><FONT COLOR=YELLOW>Abilities: </FONT></TD>
+            <TD>@CharClassData?CABILITIES&HEADERCOL1=<FONT COLOR=WHITE SIZE=-1>Skill / Parms (optional)</FONT>&&HEADERCOL2=<FONT COLOR=WHITE SIZE=-1>Level</FONT>&HEADERCOL3=<FONT COLOR=WHITE SIZE=-1>Proff.</FONT>&HEADERCOL4=<BR>@</TD>
+        </TR>
+    </TABLE>
+@endif@
+<BR>
+<TABLE WIDTH=100% BORDER=0>
+<TR>
+    @if?CharClassData?NEWCLASS@
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
+    @else@
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
+    @endif@
+    @if?CharClassData?ISGENERIC@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
+    @endif@
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
+</TR>
+</TABLE>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@

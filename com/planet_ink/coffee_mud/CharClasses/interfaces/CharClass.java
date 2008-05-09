@@ -578,4 +578,6 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	public final static int GENFLAG_NOLEVELS=2;
 	/** for character classes that define themselves using getParms, this can designate expless bitmaps */
 	public final static int GENFLAG_NOEXP=4;
+    /** constant string list naming each of the GENFLAG_* constants in the order of their value */
+    public final static String[] GENFLAG_DESCS={"RACELESS","LEVELLESS","EXPLESS"};
 }
