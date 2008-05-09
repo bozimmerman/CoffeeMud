@@ -217,10 +217,14 @@ public class GrinderClasses
                             {
                                 DV.insertElementAt(n,new Integer(minLevel),name);
                                 added=true;
+                                break;
                             }
                             else
                             if(minLevel==((Integer)DV.elementAt(n,1)).intValue())
+                            {
                                 added=true;
+                                break;
+                            }
                         if(!added)
                             DV.addElement(new Integer(minLevel),name);
                     }
@@ -294,10 +298,10 @@ public class GrinderClasses
         num=0;
         DV.clear();
         while(httpReq.isRequestParameter("SSET"+(++num)))
-            if(CMath.isInteger(httpReq.getRequestParameter("SSETLEVEL"+(num+1))))
+            if(CMath.isInteger(httpReq.getRequestParameter("SSETLEVEL"+(num))))
             {
-                int minLevel = CMath.s_int(httpReq.getRequestParameter("SSETLEVEL"+(num+1)));
-                String name=httpReq.getRequestParameter("SSET"+(num+1));
+                int minLevel = CMath.s_int(httpReq.getRequestParameter("SSETLEVEL"+(num)));
+                String name=httpReq.getRequestParameter("SSET"+(num));
                 if((name!=null)&&(name.length()>0))
                 {
                     if(DV.size()==0)
@@ -310,10 +314,14 @@ public class GrinderClasses
                             {
                                 DV.insertElementAt(n,new Integer(minLevel),name);
                                 added=true;
+                                break;
                             }
                             else
                             if(minLevel==((Integer)DV.elementAt(n,1)).intValue())
+                            {
                                 added=true;
+                                break;
+                            }
                         if(!added)
                             DV.addElement(new Integer(minLevel),name);
                     }
@@ -347,8 +355,8 @@ public class GrinderClasses
             C.setStat("GETCABLE"+i, (String)DV.elementAt(i,1));
             C.setStat("GETCABLELVL"+i, (String)DV.elementAt(i,2));
             C.setStat("GETCABLEPROF"+i, (String)DV.elementAt(i,3));
-            C.setStat("GETCABLEGAIN"+i, (String)DV.elementAt(i,4));
-            C.setStat("GETCABLESECR"+i, (String)DV.elementAt(i,5));
+            C.setStat("GETCABLEGAIN"+i, ((String)DV.elementAt(i,4)).equalsIgnoreCase("on")?"false":"true");
+            C.setStat("GETCABLESECR"+i, ((String)DV.elementAt(i,5)).equalsIgnoreCase("on")?"true":"false");
             C.setStat("GETCABLEPARM"+i, (String)DV.elementAt(i,6));
         }
         return "";

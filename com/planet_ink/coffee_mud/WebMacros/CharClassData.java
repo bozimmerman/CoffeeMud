@@ -76,8 +76,6 @@ public class CharClassData extends StdWebMacro
                 {
                     String prof=httpReq.getRequestParameter("CABPOF"+num);
                     if((prof==null)||(!CMath.isInteger(prof))) prof="0";
-                    if(behav.equalsIgnoreCase("THIEF_DETECTTRAPS"))
-                        System.out.println("hi");
                     String qual=httpReq.getRequestParameter("CABQUA"+num);
                     if(qual==null) qual=""; // null means unchecked
                     String levl=httpReq.getRequestParameter("CABLVL"+num);
@@ -300,10 +298,14 @@ public class CharClassData extends StdWebMacro
                                         {
                                             nameSet.insertElementAt(n,new Integer(minLevel),name);
                                             added=true;
+                                            break;
                                         }
                                         else
                                         if(minLevel==((Integer)nameSet.elementAt(n,1)).intValue())
+                                        {
                                             added=true;
+                                            break;
+                                        }
                                     if(!added)
                                         nameSet.addElement(new Integer(minLevel),name);
                                 }
@@ -597,6 +599,7 @@ public class CharClassData extends StdWebMacro
                     {
                         C=C.makeGenCharClass();
                         numSSet=CMath.s_int(C.getStat("NUMSSET"));
+                        cSrc=true;
                     }
                     else
                     {
@@ -632,10 +635,14 @@ public class CharClassData extends StdWebMacro
                                         {
                                             sSet.insertElementAt(n,new Integer(minLevel),sec);
                                             added=true;
+                                            break;
                                         }
                                         else
                                         if(minLevel==((Integer)sSet.elementAt(n,1)).intValue())
+                                        {
                                             added=true;
+                                            break;
+                                        }
                                     if(!added)
                                         sSet.addElement(new Integer(minLevel),sec);
                                 }

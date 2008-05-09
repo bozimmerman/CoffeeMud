@@ -202,28 +202,6 @@ public class GrinderRaces
         return theclasses;
     }
 
-    protected Vector allAbles(Race R)
-    {
-        Vector ables=R.racialAbilities(null);
-        if(ables==null) ables=new Vector();
-        else ables=(Vector)ables.clone();
-        DVector cables=R.culturalAbilities();
-        Ability A=null;
-        if(cables!=null)
-        {
-            for(int c=0;c<cables.size();c++)
-            {
-                A=CMClass.getAbility((String)cables.elementAt(c,1));
-                if(A!=null)
-                {
-                    A.setProficiency(((Integer)cables.elementAt(c,2)).intValue());
-                    ables.addElement(A);
-                }
-            }
-        }
-        return ables;
-    }
-
     public static String modifyRace(ExternalHTTPRequests httpReq, Hashtable parms, Race R)
     {
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
@@ -329,7 +307,7 @@ public class GrinderRaces
         {
             R.setStat("GETRABLE"+i, (String)DV.elementAt(i,1));
             R.setStat("GETRABLEPROF"+i, (String)DV.elementAt(i,2));
-            R.setStat("GETRABLEQUAL"+i, (String)DV.elementAt(i,3));
+            R.setStat("GETRABLEQUAL"+i, ((String)DV.elementAt(i,3)).equalsIgnoreCase("on")?"true":"false");
             R.setStat("GETRABLELVL"+i, (String)DV.elementAt(i,4));
         }
         DV=cabilities(httpReq);

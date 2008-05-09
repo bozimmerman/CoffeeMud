@@ -378,11 +378,12 @@ public class RaceData extends StdWebMacro
         else
         {
             Vector ables=E.racialAbilities(null);
+            DVector cables=E.culturalAbilities();
             for(int i=0;i<ables.size();i++)
             {
                 Ability Able=(Ability)ables.elementAt(i);
-                if(Able!=null)
-                    theclasses.addElement(Able.ID(),Able.proficiency()+"",CMLib.ableMapper().getDefaultGain(E.ID(),false,Able.ID())?"on":"",CMLib.ableMapper().getQualifyingLevel(E.ID(),false,Able.ID())+"");
+                if((Able!=null)&&(!cables.contains(Able.ID())))
+                    theclasses.addElement(Able.ID(),Able.proficiency()+"",CMLib.ableMapper().getDefaultGain(E.ID(),false,Able.ID())?"":"on",CMLib.ableMapper().getQualifyingLevel(E.ID(),false,Able.ID())+"");
             }
         }
         if(font==null) font="<FONT COLOR=WHITE><B>";
@@ -403,7 +404,7 @@ public class RaceData extends StdWebMacro
             str.append("<INPUT TYPE=TEXT NAME=RABPOF"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,2))+"\" SIZE=3 MAXLENGTH=3>"+font+"%</B></I></FONT>");
             str.append("</TD>");
             str.append("<TD WIDTH=30%>");
-            str.append("<INPUT TYPE=CHECKBOX NAME=RABQUA"+(i+1)+" "+(((String)theclasses.elementAt(i,2)).equalsIgnoreCase("on")?"CHECKED":"")+">"+font+"Qualify Only</B></FONT></I>");
+            str.append("<INPUT TYPE=CHECKBOX NAME=RABQUA"+(i+1)+" "+(((String)theclasses.elementAt(i,3)).equalsIgnoreCase("on")?"CHECKED":"")+">"+font+"Qualify Only</B></FONT></I>");
             str.append("</TD>");
             str.append("</TR>");
         }
