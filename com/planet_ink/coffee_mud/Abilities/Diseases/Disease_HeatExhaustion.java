@@ -87,6 +87,42 @@ public class Disease_HeatExhaustion extends Disease
     {
         if(!super.tick(ticking,tickID))
             return false;
+        if((affected instanceof MOB)
+        &&(canBeUninvoked()))
+        {
+            MOB M=((MOB)affected);
+            if(M.location()!=null)
+            {
+                Area A=M.location().getArea();
+                switch(M.location().domainType())
+                {
+                case Room.DOMAIN_INDOORS_UNDERWATER:
+                case Room.DOMAIN_OUTDOORS_UNDERWATER:
+                    unInvoke();
+                    return false;
+                }
+                Climate C=null;
+                if(A!=null)
+                    C=A.getClimateObj();
+                if(C!=null)
+                    switch(C.weatherType(M.location()))
+                    {
+                    case Climate.WEATHER_BLIZZARD:
+                    case Climate.WEATHER_HAIL:
+                    case Climate.WEATHER_RAIN:
+                    case Climate.WEATHER_SNOW:
+                    case Climate.WEATHER_THUNDERSTORM:
+                    case Climate.WEATHER_WINTER_COLD:
+                    {
+                        unInvoke();
+                        return false;
+                    }
+                    default:
+                        break;
+                    }
+            }
+            
+        }
         if((--changeDown)<=0)
         {
             changeDown=300;
