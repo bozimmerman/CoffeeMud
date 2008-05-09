@@ -75,6 +75,7 @@ public class Skill_Write extends StdSkill
 		Item item=target;
 		if(((item.material()!=RawMaterial.RESOURCE_PAPER)
 		   &&(item.material()!=RawMaterial.RESOURCE_SILK)
+           &&(item.material()!=RawMaterial.RESOURCE_HIDE)
 		   &&(item.material()!=RawMaterial.RESOURCE_HEMP))
 		||(!CMLib.flags().isReadable(item)))
 		{
