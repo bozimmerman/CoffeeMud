@@ -378,4 +378,44 @@ public class DVector implements Cloneable, java.io.Serializable
 			stuff[7].insertElementAt(O7,here);
 		}
 	}
+	
+    public static Vector softCopy(Vector V)
+    {
+        if(V==null) return null;
+        Vector V2=new Vector();
+        for(Enumeration e=V.elements();e.hasMoreElements();)
+            V2.addElement(e.nextElement());
+        return V2;
+    }
+    
+    public static DVector softCopy(DVector DV)
+    {
+        if(DV==null) return null;
+        DVector DV2=new DVector(DV.dimensions);
+        for(int d=0;d<DV.stuff.length;d++)
+            DV2.stuff[d]=softCopy(DV.stuff[d]);
+        return DV2;
+    }
+    
+    public static Hashtable softCopy(Hashtable H)
+    {
+        if(H==null) return null;
+        Hashtable H2=new Hashtable(H.size());
+        Object key=null;
+        for(Enumeration e=H.keys();e.hasMoreElements();)
+        {
+            key=e.nextElement();
+            H2.put(key, H.get(key));
+        }
+        return H2;
+    }
+    
+    public static HashSet softCopy(HashSet H)
+    {
+        if(H==null) return null;
+        HashSet H2=new HashSet(H.size());
+        for(Iterator i=H.iterator();i.hasNext();)
+            H2.add(i.next());
+        return H2;
+    }
 }

@@ -39,7 +39,7 @@ public class Unload extends StdCommand
 	public boolean execute(MOB mob, Vector commands)
 		throws java.io.IOException
 	{
-		String list="CLASS, HELP, USER, FACTION, ALL, <filename>";
+		String list="CLASS, HELP, USER, FACTION, ALL, [FILENAME]";
 		
 		String str=CMParms.combine(commands,1);
 		if(str.length()==0)

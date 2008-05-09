@@ -121,7 +121,7 @@
 #
 #Attacker appearance chance:
 #If you specified attacker(s) above, note here the percent chance (0-100)
-#that they will appear in any given room the player enters.  An attak 
+#that they will appear in any given room the player enters.  An attack 
 #will only happen once per quest!
 #$ATTACKER_PCT_CHANCE=($EXPRESSION)=5
 #

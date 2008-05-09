@@ -95,6 +95,7 @@ public interface Room extends Environmental, Affectable, Behavable
 	public Vector resourceChoices();
 	public void toggleMobility(boolean onoff);
 	public boolean getMobility();
+	public void resetVectors();
 
 	public final static String[][] variationCodes={
 		{"SUMMER","S"+TimeClock.SEASON_SUMMER},

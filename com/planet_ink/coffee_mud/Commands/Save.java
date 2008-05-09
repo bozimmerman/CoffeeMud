@@ -198,7 +198,7 @@ public class Save extends StdCommand
 			mob.tell(
 				"\n\rYou cannot save '"+commandType+"'. "
 				+"However, you might try "
-				+"ITEMS, USERS, <playername>, QUESTS, MOBS, or ROOM.");
+				+"ITEMS, USERS, [PLAYERNAME], QUESTS, MOBS, or ROOM.");
 		}
 		return false;
 	}

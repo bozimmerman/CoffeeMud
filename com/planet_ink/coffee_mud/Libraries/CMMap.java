@@ -1209,6 +1209,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		room.clearSky();
 		CMLib.threads().clearDebri(room,0);
+		room.resetVectors();
 	}
 
 

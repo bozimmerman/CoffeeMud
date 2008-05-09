@@ -81,6 +81,7 @@ public interface MOB extends Environmental, Rider
 	
 	public void setDatabaseID(String id);
 	public String databaseID();
+	public void resetVectors();
 
 	/** Primary mob communication */
 	public void tell(MOB source, Environmental target, Environmental tool, String msg);

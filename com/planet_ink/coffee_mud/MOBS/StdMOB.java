@@ -351,6 +351,18 @@ public class StdMOB implements MOB
 			return this.newInstance();
 		}
 	}
+	public void resetVectors()
+	{
+	    inventory=DVector.softCopy(inventory);
+	    followers=DVector.softCopy(followers);
+	    abilities=DVector.softCopy(abilities);
+	    affects=DVector.softCopy(affects);
+	    behaviors=DVector.softCopy(behaviors);
+	    tattoos=DVector.softCopy(tattoos);
+	    expertises=DVector.softCopy(expertises);
+	    factions=DVector.softCopy(factions);
+	    commandQue=DVector.softCopy(commandQue);
+	}
 	public boolean isGeneric(){return false;}
 	public EnvStats envStats()
 	{
@@ -2300,7 +2312,7 @@ public class StdMOB implements MOB
 				tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
 				break;
 			case CMMsg.TYP_STAND: CMLib.commands().handleStand(msg); break;
-			case CMMsg.TYP_RECALL:  CMLib.commands().handleRecall(msg); break;
+			case CMMsg.TYP_RECALL:  CMLib.commands().handleRecall(msg); resetVectors(); break;
 			case CMMsg.TYP_FOLLOW:
 				if((msg.target()!=null)&&(msg.target() instanceof MOB))
 				{

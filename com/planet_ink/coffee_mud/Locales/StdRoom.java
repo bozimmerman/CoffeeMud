@@ -114,6 +114,15 @@ public class StdRoom implements Room
     
 	
 	public boolean isGeneric(){return false;}
+	
+	public void resetVectors()
+	{
+	    affects=DVector.softCopy(affects);
+	    behaviors=DVector.softCopy(behaviors);
+	    contents=DVector.softCopy(contents);
+	    inhabitants=DVector.softCopy(inhabitants);
+	}
+	
 	protected void cloneFix(Room E)
 	{
 		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();
@@ -550,8 +559,7 @@ public class StdRoom implements Room
 					recoverRoomStats();
                 if(msg.source().playerStats()!=null)
                     msg.source().playerStats().addRoomVisit(this);
-                if(inhabitants!=null) inhabitants.trimToSize();
-                if(contents!=null) contents.trimToSize();
+                resetVectors();
 				break;
 			}
 			case CMMsg.TYP_LOOK:

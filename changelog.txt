@@ -2011,7 +2011,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 21. Can now destroy TICKS (ticking objects)
 22. CommandJournals now supports TRANSFER parameter to quickly transfer entries from one journal to another
 23. Internal: *all* zapper-masks are now compiled and cached for performance.  We no longer have string-parsed interpreted mask checks.
-24. Can now SAVE <playername> directly (yes, that should have been in 1.0 -- sue me)
+24. Can now SAVE [PLAYERNAME] directly (yes, that should have been in 1.0 -- sue me)
 25. RESET ROOM/AREA commands now give an emote to players in the area/room
 26. New MUDGrinder editor: Clan Editor
 27. Internal: classes can now have their own custom mana requirements, and ability cost requirements for skills.  Not exposed to GenClasses yet.

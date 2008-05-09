@@ -39,7 +39,7 @@ public class Prayer_GuardianHearth extends Prayer
 	public String name(){return "Guardian Hearth";}
 	public String displayText(){return "(Guardian Hearth)";}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_WARDING;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}

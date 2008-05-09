@@ -99,7 +99,6 @@ public class CMParms
     public static Vector parse(String str)
     {   return parse(str,-1);   }
 
-
     public static Vector paramParse(String str)
     {
         Vector commands=parse(str);
