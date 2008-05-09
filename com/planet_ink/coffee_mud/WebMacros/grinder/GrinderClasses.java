@@ -167,11 +167,11 @@ public class GrinderClasses
                     String prof=httpReq.getRequestParameter("CABPOF"+num);
                     if(prof==null) prof="0";
                     String qual=httpReq.getRequestParameter("CABQUA"+num);
-                    if(qual==null) qual="";
+                    if(qual==null) qual="";// null means unchecked
                     String levl=httpReq.getRequestParameter("CABLVL"+num);
                     if(levl==null) levl="0";
                     String secr=httpReq.getRequestParameter("CABSCR"+num);
-                    if(secr==null) secr="false";
+                    if(secr==null) secr="";// null means unchecked
                     String parm=httpReq.getRequestParameter("CABPRM"+num);
                     if(parm==null) parm="";
                     theclasses.addElement(behav,levl,prof,qual,secr,parm);
@@ -201,10 +201,10 @@ public class GrinderClasses
         DVector DV=new DVector(2);
         int num=0;
         while(httpReq.isRequestParameter("NAME"+(++num)))
-            if(CMath.isInteger(httpReq.getRequestParameter("NAMELEVEL"+(num+1))))
+            if(CMath.isInteger(httpReq.getRequestParameter("NAMELEVEL"+(num))))
             {
-                int minLevel = CMath.s_int(httpReq.getRequestParameter("NAMELEVEL"+(num+1)));
-                String name=httpReq.getRequestParameter("NAME"+(num+1));
+                int minLevel = CMath.s_int(httpReq.getRequestParameter("NAMELEVEL"+(num)));
+                String name=httpReq.getRequestParameter("NAME"+(num));
                 if((name!=null)&&(name.length()>0))
                 {
                     if(DV.size()==0)
@@ -280,7 +280,7 @@ public class GrinderClasses
         C.setStat("STARTASTATE",getCState('S',httpReq));
         String id="";
         Vector V=new Vector();
-        for(int i=1;httpReq.isRequestParameter("NOWEAPS"+id);id=""+(++i))
+        for(int i=0;httpReq.isRequestParameter("NOWEAPS"+id);id=""+(++i))
             V.addElement(httpReq.getRequestParameter("NOWEAPS"+id));
         C.setStat("GETWEP",CMParms.toStringList(V));
         V=itemList(C.outfit(null),'O',httpReq,false);
@@ -329,10 +329,11 @@ public class GrinderClasses
         }
         id="";
         V=new Vector();
-        for(int i=1;httpReq.isRequestParameter("WEAPMATS"+id);id=""+(++i))
+        for(int i=0;httpReq.isRequestParameter("WEAPMATS"+id);id=""+(++i))
             if(CMath.isInteger(httpReq.getRequestParameter("WEAPMATS"+id)))
                 V.addElement(httpReq.getRequestParameter("WEAPMATS"+id));
-        C.setStat("GETWEP",CMParms.toStringList(V));
+        C.setStat("NUMWMAT",""+V.size());
+        C.setStat("GETWMAT",CMParms.toStringList(V));
         old=httpReq.getRequestParameter("ARMORMINOR");
         C.setStat("ARMORMINOR",(old==null)?"-1":old);
         old=httpReq.getRequestParameter("STATCLASS");

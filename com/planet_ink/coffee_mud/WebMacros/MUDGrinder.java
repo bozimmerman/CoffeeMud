@@ -434,7 +434,7 @@ public class MUDGrinder extends StdWebMacro
             String oldCID=C.ID();
             CMClass.delCharClass(C);
             CMLib.database().DBDeleteClass(C.ID());
-            CMClass.loadClass("CHARRCLASS","com/planet_ink/coffee_mud/CharClasses/"+oldCID+".class",true);
+            CMClass.loadClass("CHARCLASS","com/planet_ink/coffee_mud/CharClasses/"+oldCID+".class",true);
             CharClass oldC=CMClass.getCharClass(oldCID);
             if(oldC==null) oldC=CMClass.getCharClass("StdCharClass");
             if((oldC!=null)&&(oldC!=C))

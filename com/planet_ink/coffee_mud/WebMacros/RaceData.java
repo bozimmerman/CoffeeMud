@@ -78,7 +78,7 @@ public class RaceData extends StdWebMacro
                 {
                     String prof=httpReq.getRequestParameter(c+"ESTATSV"+num);
                     if(prof==null) prof="0";
-                    if(CMath.s_int(prof)!=0)
+                    prof=""+CMath.s_int(prof);
                     theclasses.addElement(behav,prof);
                 }
                 num++;
@@ -136,7 +136,7 @@ public class RaceData extends StdWebMacro
                 {
                     String prof=httpReq.getRequestParameter(c+"CSTATSV"+num);
                     if(prof==null) prof="0";
-                    if(CMath.s_int(prof)!=0)
+                    prof=""+CMath.s_int(prof);
                     theclasses.addElement(behav,prof);
                 }
                 num++;
@@ -194,7 +194,7 @@ public class RaceData extends StdWebMacro
                 {
                     String prof=httpReq.getRequestParameter(c+"CSTATEV"+num);
                     if(prof==null) prof="0";
-                    if(CMath.s_int(prof)!=0)
+                    prof=""+CMath.s_int(prof);
                     theclasses.addElement(behav,prof);
                 }
                 num++;
