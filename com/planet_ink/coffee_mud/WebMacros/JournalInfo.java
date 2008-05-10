@@ -109,6 +109,7 @@ public class JournalInfo extends StdWebMacro
 					s=CMStrings.replaceAll(s,"%0D","<BR>");
 	                s=CMStrings.replaceAll(s,"\n","<BR>");
 	                s=colorwebifyOnly(new StringBuffer(s)).toString();
+	                s=clearWebMacros(s);
 				}
                 return s;
 			}

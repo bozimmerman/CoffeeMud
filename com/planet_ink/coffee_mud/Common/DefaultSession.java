@@ -1418,7 +1418,13 @@ public class DefaultSession extends Thread implements Session
 					status=Session.STATUS_LOGIN2;
 					if((!killFlag)&&(mob!=null))
                     {
-						Log.sysOut("Session",getAddress()+" login: "+mob.Name());
+					    StringBuffer loginMsg=new StringBuffer("");
+					    loginMsg.append(getAddress())
+					            .append(" "+terminalType)
+					            .append(((CMath.bset(mob.getBitmap(),MOB.ATT_MXP)&&clientTelnetMode(Session.TELNET_MXP)))?" MXP":"")
+                                .append(((CMath.bset(mob.getBitmap(),MOB.ATT_ANSI)&&clientTelnetMode(Session.TELNET_ANSI)))?" ANSI":"")
+                                .append(", login: "+mob.Name());
+						Log.sysOut("Session",loginMsg.toString());
                         if(loginAttempt>0)
                             if(!CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_LOGIN,CMClass.getMsg(mob,null,CMMsg.MSG_LOGIN,null)))
                                 killFlag=true;
