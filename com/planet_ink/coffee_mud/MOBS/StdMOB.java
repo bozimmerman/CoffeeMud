@@ -2312,7 +2312,7 @@ public class StdMOB implements MOB
 				tell(msg.source(),msg.target(),msg.tool(),msg.sourceMessage());
 				break;
 			case CMMsg.TYP_STAND: CMLib.commands().handleStand(msg); break;
-			case CMMsg.TYP_RECALL:  CMLib.commands().handleRecall(msg); resetVectors(); break;
+			case CMMsg.TYP_RECALL:  CMLib.commands().handleRecall(msg); break;
 			case CMMsg.TYP_FOLLOW:
 				if((msg.target()!=null)&&(msg.target() instanceof MOB))
 				{

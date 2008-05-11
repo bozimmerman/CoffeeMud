@@ -558,8 +558,9 @@ public class StdRoom implements Room
 				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					recoverRoomStats();
                 if(msg.source().playerStats()!=null)
+                {
                     msg.source().playerStats().addRoomVisit(this);
-                resetVectors();
+                }
 				break;
 			}
 			case CMMsg.TYP_LOOK:

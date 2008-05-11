@@ -37,6 +37,7 @@ public class UtiliThread extends Thread
 {
 	public boolean started=false;
 	private boolean shutDown=false;
+    public long lastVReset=0;
 	public long lastStart=0;
 	public long lastStop=0;
 	public static long milliTotal=0;
@@ -77,6 +78,12 @@ public class UtiliThread extends Thread
 			Vector roomsToGo=new Vector();
             MOB expireM=CMLib.map().god(null);
             CMMsg expireMsg=CMClass.getMsg(expireM,R,null,CMMsg.MSG_EXPIRE,null);
+            boolean vResetTime=false;
+            if((System.currentTimeMillis()-lastVReset)>(12 * 60 * 60 * 1000))
+            {
+                vResetTime=true;
+                lastVReset=System.currentTimeMillis();
+            }
 			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 			    R=(Room)r.nextElement();
@@ -108,7 +115,12 @@ public class UtiliThread extends Thread
 						&&(M.expirationDate()!=0)
 						&&(currentTime>M.expirationDate()))
 							stuffToGo.add(M);
+                        if(vResetTime && (M!=null) && (M.isMonster()))
+                            M.resetVectors();
 					}
+                    
+                    if(R.numPCInhabitants()==0)
+                        R.resetVectors();
 			    }
 			    if(stuffToGo.size()>0)
 			    {
@@ -126,6 +138,8 @@ public class UtiliThread extends Thread
 				    }
 				    stuffToGo.clear();
 			    }
+                if(vResetTime&&(R.numPCInhabitants()==0))
+                    R.resetVectors();
 			}
 			for(int r=0;r<roomsToGo.size();r++)
 			{
