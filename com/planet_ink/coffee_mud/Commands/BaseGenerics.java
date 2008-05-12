@@ -4962,12 +4962,16 @@ public class BaseGenerics extends StdCommand
         Boolean secret=null;
         Boolean gained=null;
         String parms="";
+        String masks="";
+        String preqs="";
         if(origLevelIndex<0)
         {
             prof=new Integer(0);
             secret=new Boolean(false);
             gained=new Boolean(false);
             parms="";
+            preqs="";
+            masks="";
         }
         else
         {
@@ -4976,6 +4980,8 @@ public class BaseGenerics extends StdCommand
             prof=(Integer)set.elementAt(origAbleIndex,3);
             secret=(Boolean)set.elementAt(origAbleIndex,4);
             parms=(String)set.elementAt(origAbleIndex,5);
+            preqs=(String)set.elementAt(origAbleIndex,6);
+            masks=(String)set.elementAt(origAbleIndex,7);
             set.removeElementAt(origAbleIndex);
             origAbleIndex=-1;
         }
@@ -4985,7 +4991,7 @@ public class BaseGenerics extends StdCommand
         if(newlevelIndex<0)
         {
             newlevelIndex=sets.size();
-            levelSet=new DVector(5);
+            levelSet=new DVector(7);
             sets.addElement(level,levelSet);
         }
         else
@@ -4993,8 +4999,26 @@ public class BaseGenerics extends StdCommand
         prof=new Integer(CMath.s_int(mob.session().prompt("Enter the (default) proficiency level ("+prof.toString()+"): ",prof.toString())));
         gained=new Boolean(mob.session().confirm("Is this skill automatically gained (Y/N)?",""+gained.toString()));
         secret=new Boolean(mob.session().confirm("Is this skill secret (N/y)?",secret.toString()));
-        parms=mob.session().prompt("Enter any properties ("+parms+"): ",parms);
-        levelSet.addElement(ableID,gained,prof,secret,parms);
+        parms=mob.session().prompt("Enter any properties ("+parms+")\n\r: ",parms);
+        String s="?";
+        while(s.equalsIgnoreCase("?"))
+        {
+            s=mob.session().prompt("Enter any pre-requisites ("+preqs+")\n\r(?) : ",preqs);
+            if(s.equalsIgnoreCase("?"))
+                mob.tell(""+CMLib.help().getHelpText("ABILITY_PREREQS",mob,true));
+            else
+                preqs=s;
+        }
+        s="?";
+        while(s.equalsIgnoreCase("?"))
+        {
+            s=mob.session().prompt("Enter any requirement mask ("+masks+")\n\r(?) : ",masks);
+            if(s.equalsIgnoreCase("?"))
+                mob.tell(""+CMLib.help().getHelpText("MASKS",mob,true));
+            else
+                masks=s;
+        }
+        levelSet.addElement(ableID,gained,prof,secret,parms,preqs,masks);
         return sets;
     }
 
@@ -5023,18 +5047,20 @@ public class BaseGenerics extends StdCommand
                     Integer lvl=new Integer(CMath.s_int(E.getStat("GETCABLELVL"+v)));
                     Boolean secret=new Boolean(CMath.s_bool(E.getStat("GETCABLESECR"+v)));
                     String parm=E.getStat("GETCABLEPARM"+v);
+                    String preq=E.getStat("GETCABLEPREQ"+v);
+                    String mask=E.getStat("GETCABLEMASK"+v);
                     int lvlIndex=levelSets.indexOf(lvl);
                     DVector set=null;
                     if(lvlIndex<0)
                     {
-                        set=new DVector(5);
+                        set=new DVector(7);
                         levelSets.addElement(lvl,set);
                         if(lvl.intValue()>maxAbledLevel)
                             maxAbledLevel=lvl.intValue();
                     }
                     else
                         set=(DVector)levelSets.elementAt(lvlIndex,2);
-                    set.addElement(A.ID(),gain,defProf,secret,parm);
+                    set.addElement(A.ID(),gain,defProf,secret,parm,preq,mask);
 				}
 			}
             String header=showNumber+". Class Abilities: ";
@@ -5045,7 +5071,9 @@ public class BaseGenerics extends StdCommand
                                +CMStrings.padRight("Proff",5)+" "
                                +CMStrings.padRight("Gain",5)+" "
                                +CMStrings.padRight("Secret",6)+" "
-                               +CMStrings.padRight("Parm",20)+"\n\r"
+                               +CMStrings.padRight("Parm",7)+" "
+                               +CMStrings.padRight("Preq",7)+" "
+                               +CMStrings.padRight("Mask",6)+"\n\r"
                                );
             for(int i=0;i<=maxAbledLevel;i++)
             {
@@ -5059,13 +5087,17 @@ public class BaseGenerics extends StdCommand
                     Integer defProf=(Integer)set.elementAt(s,3);
                     Boolean secret=(Boolean)set.elementAt(s,4);
                     String parm=(String)set.elementAt(s,5);
+                    String preq=(String)set.elementAt(s,6);
+                    String mask=(String)set.elementAt(s,7);
                     parts.append(spaces+CMStrings.padRight(""+i,3)+" "
-                                        +CMStrings.padRight(""+ID,25)+" "
-                                        +CMStrings.padRight(defProf.toString(),5)+" "
-                                        +CMStrings.padRight(gain.toString(),5)+" "
-                                        +CMStrings.padRight(secret.toString(),6)+" "
-                                        +CMStrings.padRight(parm,20)+"\n\r"
-                                        );
+                                       +CMStrings.padRight(""+ID,25)+" "
+                                       +CMStrings.padRight(defProf.toString(),5)+" "
+                                       +CMStrings.padRight(gain.toString(),5)+" "
+                                       +CMStrings.padRight(secret.toString(),6)+" "
+                                       +CMStrings.padRight(parm,7)+" "
+                                       +CMStrings.padRight(preq,7)+" "
+                                       +CMStrings.padRight(mask,6)+"\n\r"
+                                       );
                 }
             }
 
@@ -5135,12 +5167,15 @@ public class BaseGenerics extends StdCommand
                         DVector lvls=(DVector)levelSets.elementAt(s,2);
                         for(int l=0;l<lvls.size();l++)
                         {
-    						E.setStat("GETCABLE"+dex,lvls.elementAt(l,1).toString());
     						E.setStat("GETCABLELVL"+dex,lvl.toString());
                             E.setStat("GETCABLEGAIN"+dex,lvls.elementAt(l,2).toString());
     						E.setStat("GETCABLEPROF"+dex,lvls.elementAt(l,3).toString());
     						E.setStat("GETCABLESECR"+dex,lvls.elementAt(l,4).toString());
     						E.setStat("GETCABLEPARM"+dex,lvls.elementAt(l,5).toString());
+                            E.setStat("GETCABLEPREQ"+dex,lvls.elementAt(l,6).toString());
+                            E.setStat("GETCABLEMASK"+dex,lvls.elementAt(l,7).toString());
+                            // CABLE MUST BE LAST
+                            E.setStat("GETCABLE"+dex,lvls.elementAt(l,1).toString());
                             dex++;
                         }
 					}

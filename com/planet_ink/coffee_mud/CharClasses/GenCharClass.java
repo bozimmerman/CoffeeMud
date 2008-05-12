@@ -333,6 +333,8 @@ public class GenCharClass extends StdCharClass
 				str.append("<CAAGAIN>"+ables.elementAt(r,4)+"</CAAGAIN>");
 				str.append("<CASECR>"+ables.elementAt(r,5)+"</CASECR>");
 				str.append("<CAPARM>"+ables.elementAt(r,6)+"</CAPARM>");
+                str.append("<CAPREQ>"+ables.elementAt(r,7)+"</CAPREQ>");
+                str.append("<CAMASK>"+ables.elementAt(r,8)+"</CAMASK>");
 				str.append("</CABILITY>");
 			}
 			str.append("</CABILITIES>");
@@ -492,12 +494,14 @@ public class GenCharClass extends StdCharClass
 				if((!iblk.tag.equalsIgnoreCase("CABILITY"))||(iblk.contents==null))
 					continue;
 				CMLib.ableMapper().addCharAbilityMapping(ID(),
-											 CMLib.xml().getIntFromPieces(iblk.contents,"CALEVEL"),
-											 CMLib.xml().getValFromPieces(iblk.contents,"CACLASS"),
-											 CMLib.xml().getIntFromPieces(iblk.contents,"CAPROFF"),
-											 CMLib.xml().getValFromPieces(iblk.contents,"CAPARM"),
-											 CMLib.xml().getBoolFromPieces(iblk.contents,"CAAGAIN"),
-											 CMLib.xml().getBoolFromPieces(iblk.contents,"CASECR"));
+    								 CMLib.xml().getIntFromPieces(iblk.contents,"CALEVEL"),
+    								 CMLib.xml().getValFromPieces(iblk.contents,"CACLASS"),
+    								 CMLib.xml().getIntFromPieces(iblk.contents,"CAPROFF"),
+    								 CMLib.xml().getValFromPieces(iblk.contents,"CAPARM"),
+    								 CMLib.xml().getBoolFromPieces(iblk.contents,"CAAGAIN"),
+    								 CMLib.xml().getBoolFromPieces(iblk.contents,"CASECR"),
+                                     CMParms.parseCommas(CMLib.xml().getValFromPieces(iblk.contents,"CAPREQ"),true),
+                                     CMLib.xml().getValFromPieces(iblk.contents,"CAMASK"));
 			}
 
 		// now WEAPON RESTRICTIONS!
@@ -581,17 +585,19 @@ public class GenCharClass extends StdCharClass
 
 	protected DVector getAbleSet()
 	{
-		DVector VA=new DVector(6);
+		DVector VA=new DVector(8);
 		DVector V=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
 		for(int v=0;v<V.size();v++)
 		{
 			String AID=(String)V.elementAt(v,1);
 			VA.addElement(AID,
-						  ""+CMLib.ableMapper().getQualifyingLevel(ID(),true,AID),
-						  ""+CMLib.ableMapper().getDefaultProficiency(ID(),true,AID),
-						  ""+CMLib.ableMapper().getDefaultGain(ID(),true,AID),
-						  ""+CMLib.ableMapper().getSecretSkill(ID(),true,AID),
-						  ""+CMLib.ableMapper().getDefaultParm(ID(),true,AID));
+						  ""+CMLib.ableMapper().getQualifyingLevel(ID(),false,AID),
+						  ""+CMLib.ableMapper().getDefaultProficiency(ID(),false,AID),
+						  ""+CMLib.ableMapper().getDefaultGain(ID(),false,AID),
+						  ""+CMLib.ableMapper().getSecretSkill(ID(),false,AID),
+						  ""+CMLib.ableMapper().getDefaultParm(ID(),false,AID),
+                          ""+CMLib.ableMapper().getPreReqStrings(ID(),false,AID),
+                          ""+CMLib.ableMapper().getExtraMask(ID(),false,AID));
 		}
 		return VA;
 	}
@@ -606,7 +612,7 @@ public class GenCharClass extends StdCharClass
 									 "GETOFTPARM","HPDIE","MANADICE","MANADIE","DISFLAGS",
 									 "STARTASTATE","NUMNAME","NAMELEVEL","NUMSSET","SSET",
                                      "SSETLEVEL","NUMWMAT","GETWMAT","ARMORMINOR","STATCLASS",
-                                     "EVENTCLASS"
+                                     "EVENTCLASS","GETCABLEPREQ","GETCABLEMASK"
 									 }; 
     
 	public String getStat(String code)
@@ -680,10 +686,12 @@ public class GenCharClass extends StdCharClass
         case 48: return ""+requiredArmorSourceMinor();
         case 49: return this.getCharClassLocatorID(statBuddy);
         case 50: return this.getCharClassLocatorID(eventBuddy);
+        case 51: return (String)getAbleSet().elementAt(num,7);
+        case 52: return (String)getAbleSet().elementAt(num,8);
 		}
 		return "";
 	}
-	protected String[] tempables=new String[6];
+	protected String[] tempables=new String[8];
 	public void setStat(String code, String val)
 	{
         int num=0;
@@ -723,19 +731,21 @@ public class GenCharClass extends StdCharClass
 		case 22: setStats=null;if(val.length()>0){setStats=(CharStats)CMClass.getCommon("DefaultCharStats"); setStats.setAllValues(0); CMLib.coffeeMaker().setCharStats(setStats,val);}break;
 		case 23: adjState=null;if(val.length()>0){adjState=(CharState)CMClass.getCommon("DefaultCharState"); adjState.setAllValues(0); CMLib.coffeeMaker().setCharState(adjState,val);}break;
 		case 24: CMLib.ableMapper().delCharMappings(ID()); break;
-		case 25: tempables[0]=val; break;
+        case 25: CMLib.ableMapper().addCharAbilityMapping(ID(),
+                                                         CMath.s_int(tempables[1]),
+                                                         val,
+                                                         CMath.s_int(tempables[2]),
+                                                         tempables[5],
+                                                         CMath.s_bool(tempables[3]),
+                                                         CMath.s_bool(tempables[4]),
+                                                         CMParms.parseCommas(tempables[6],true),
+                                                         tempables[7]);
+                                                         break;
 		case 26: tempables[1]=val; break;
 		case 27: tempables[2]=val; break;
 		case 28: tempables[3]=val; break;
 		case 29: tempables[4]=val; break;
-		case 30: CMLib.ableMapper().addCharAbilityMapping(ID(),
-											  CMath.s_int(tempables[1]),
-											  tempables[0],
-											  CMath.s_int(tempables[2]),
-											  val,
-											  CMath.s_bool(tempables[3]),
-											  CMath.s_bool(tempables[4]));
-				break;
+        case 30: tempables[5]=val; break;
 		case 31: if(CMath.s_int(val)==0)
 					 disallowedWeaponSet=null;
 				 else
@@ -868,6 +878,8 @@ public class GenCharClass extends StdCharClass
             }catch(Exception e){}
             break;
         }
+        case 51: tempables[6]=val; break;
+        case 52: tempables[7]=val; break;
 		}
 	}
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)

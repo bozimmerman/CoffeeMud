@@ -296,10 +296,11 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		able.qualLevel=qualLevel;
 		able.autoGain=autoGain;
 		able.isSecret=secret;
-		able.defaultParm=defaultParam;
+		able.defaultParm=defaultParam==null?"":defaultParam;
 		able.defaultProficiency=defaultProficiency;
-		able.extraMask=extraMask;
+		able.extraMask=extraMask==null?"":extraMask;
         able.costOverrides=costOverrides;
+        able.originalSkillPreReqList=CMParms.toStringList(preReqSkillsList);
 
 		able.skillPreReqs=new DVector(2);
 		addPreRequisites(ability,preReqSkillsList,extraMask);
@@ -1165,6 +1166,24 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return "";
 	}
+    
+    public String getPreReqStrings(String ID, boolean checkAll, String ability)
+    {
+        if(completeAbleMap.containsKey(ID))
+        {
+            Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
+            if(ableMap.containsKey(ability))
+                return ((AbilityMapping)ableMap.get(ability)).originalSkillPreReqList;
+        }
+
+        if((checkAll)&&(completeAbleMap.containsKey("All")))
+        {
+            Hashtable ableMap=(Hashtable)completeAbleMap.get("All");
+            if(ableMap.containsKey(ability))
+                return ((AbilityMapping)ableMap.get(ability)).originalSkillPreReqList;
+        }
+        return "";
+    }
 
 	public int getDefaultProficiency(String ID, boolean checkAll, String ability)
 	{

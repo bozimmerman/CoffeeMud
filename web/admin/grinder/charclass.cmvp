@@ -309,8 +309,12 @@
             <TD><SELECT NAME=STATCLASS>@CharClassData?STATCLASS@</SELECT></TD>
         </TR>
         <TR VALIGN=TOP>
-            <TD VALIGN=TOP><FONT COLOR=YELLOW>Abilities: </FONT></TD>
-            <TD>@CharClassData?CABILITIES&HEADERCOL1=<FONT COLOR=WHITE SIZE=-1>Skill / Parms (optional)</FONT>&&HEADERCOL2=<FONT COLOR=WHITE SIZE=-1>Level</FONT>&HEADERCOL3=<FONT COLOR=WHITE SIZE=-1>Proff.</FONT>&HEADERCOL4=<BR>@</TD>
+            <TD VALIGN=TOP><FONT COLOR=YELLOW>Abilities: </FONT><BR>
+	        <INPUT TYPE=CHECKBOX NAME=SHOWPREREQS ONCLICK="ReShow();" @if?CheckReqParm?SHOWPREREQS=@ @else@CHECKED@endif@><FONT COLOR=WHITE>Show Pre-Requisites</FONT>&nbsp;<A HREF="javascript:OpenUp('ahelp.cmvp','ABILITY_PREREQS')"><FONT COLOR=WHITE><I>?</I></FONT></a><BR>
+            <INPUT TYPE=CHECKBOX NAME=SHOWMASKS ONCLICK="ReShow();" @if?CheckReqParm?SHOWMASKS=@ @else@CHECKED@endif@><FONT COLOR=WHITE>Show Masks</FONT>&nbsp;<A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a><BR>
+            <INPUT TYPE=CHECKBOX NAME=SHOWPARMS ONCLICK="ReShow();" @if?CheckReqParm?SHOWPARMS=@ @else@CHECKED@endif@><FONT COLOR=WHITE>Show Parameters</FONT><BR>
+            </TD>
+            <TD>@CharClassData?CABILITIES&HEADERCOL1=Skill Name&HEADERCOL2=Level&HEADERCOL3=Proff.&HEADERCOL4=<BR>&FONT=COLOR=WHITE SIZE=-1@</TD>
         </TR>
     </TABLE>
 @endif@

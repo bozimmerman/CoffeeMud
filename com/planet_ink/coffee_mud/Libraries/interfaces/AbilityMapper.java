@@ -54,6 +54,7 @@ public interface AbilityMapper extends CMLibrary
         public boolean isSecret=false;
         public DVector skillPreReqs=new DVector(2);
         public String extraMask="";
+        public String originalSkillPreReqList="";
         public Integer[] costOverrides=new Integer[COST_NUM];
     }
     
@@ -413,6 +414,14 @@ public interface AbilityMapper extends CMLibrary
      * @return
      */
     public String getDefaultParm(String ID, boolean checkAll, String ability);
+    
+    /**
+     * @param ID
+     * @param checkAll
+     * @param ability
+     * @return
+     */
+    public String getPreReqStrings(String ID, boolean checkAll, String ability);
     /**
      * @param ID
      * @param checkAll

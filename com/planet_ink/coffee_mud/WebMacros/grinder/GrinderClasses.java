@@ -63,7 +63,7 @@ public class GrinderClasses
             }
         }
         if(!changes) return "";
-        else return CMLib.coffeeMaker().getEnvStatsStr(adjEStats);
+        return CMLib.coffeeMaker().getEnvStatsStr(adjEStats);
     }
     
     public static String getCStats(char c, ExternalHTTPRequests httpReq)
@@ -91,7 +91,7 @@ public class GrinderClasses
             }
         }
         if(!changes) return "";
-        else return CMLib.coffeeMaker().getCharStatsStr(adjCStats);
+        return CMLib.coffeeMaker().getCharStatsStr(adjCStats);
     }
     
     public static String getCState(char c, ExternalHTTPRequests httpReq)
@@ -120,7 +120,7 @@ public class GrinderClasses
             }
         }
         if(!changes) return "";
-        else return CMLib.coffeeMaker().getCharStateStr(adjCState);
+        return CMLib.coffeeMaker().getCharStateStr(adjCState);
     }
     
     
@@ -155,7 +155,7 @@ public class GrinderClasses
     
     public static DVector cabilities(ExternalHTTPRequests httpReq)
     {
-        DVector theclasses=new DVector(6);
+        DVector theclasses=new DVector(8);
         if(httpReq.isRequestParameter("CABLES1"))
         {
             int num=1;
@@ -172,9 +172,13 @@ public class GrinderClasses
                     if(levl==null) levl="0";
                     String secr=httpReq.getRequestParameter("CABSCR"+num);
                     if(secr==null) secr="";// null means unchecked
-                    String parm=httpReq.getRequestParameter("CABPRM"+num);
+                    Object parm=httpReq.getRequestParameter("CABPRM"+num);
                     if(parm==null) parm="";
-                    theclasses.addElement(behav,levl,prof,qual,secr,parm);
+                    Object prereq=httpReq.getRequestParameter("CABPRE"+num);
+                    if(prereq==null) prereq="";
+                    Object mask=httpReq.getRequestParameter("CABMSK"+num);
+                    if(mask==null) mask="";
+                    theclasses.addElement(behav,levl,prof,qual,secr,parm,prereq,mask);
                 }
                 num++;
                 behav=httpReq.getRequestParameter("CABLES"+num);
@@ -352,12 +356,18 @@ public class GrinderClasses
         C.setStat("NUMCABLE", ""+DV.size());
         for(int i=0;i<DV.size();i++)
         {
-            C.setStat("GETCABLE"+i, (String)DV.elementAt(i,1));
             C.setStat("GETCABLELVL"+i, (String)DV.elementAt(i,2));
             C.setStat("GETCABLEPROF"+i, (String)DV.elementAt(i,3));
             C.setStat("GETCABLEGAIN"+i, ((String)DV.elementAt(i,4)).equalsIgnoreCase("on")?"false":"true");
             C.setStat("GETCABLESECR"+i, ((String)DV.elementAt(i,5)).equalsIgnoreCase("on")?"true":"false");
-            C.setStat("GETCABLEPARM"+i, (String)DV.elementAt(i,6));
+            if(DV.elementAt(i,6) instanceof String)
+                C.setStat("GETCABLEPARM"+i, (String)DV.elementAt(i,6));
+            if(DV.elementAt(i,7) instanceof String)
+                C.setStat("GETCABLEPREQ"+i, (String)DV.elementAt(i,7));
+            if(DV.elementAt(i,8) instanceof String)
+                C.setStat("GETCABLEMASK"+i, (String)DV.elementAt(i,8));
+            // CABLE MUST BE LAST
+            C.setStat("GETCABLE"+i, (String)DV.elementAt(i,1));
         }
         return "";
     }

@@ -475,8 +475,8 @@ public class StdCharClass implements CharClass
         CR.setStat("ASTATE",CMLib.coffeeMaker().getCharStateStr(CS));
 
         DVector data1=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
-        DVector completeSet=new DVector(6);
         String aID=null;
+        DVector completeSet=new DVector(8);
         for(int i=0;i<data1.size();i++)
         {
             aID=(String)data1.elementAt(i,1);
@@ -485,21 +485,26 @@ public class StdCharClass implements CharClass
                                    new Integer(CMLib.ableMapper().getDefaultProficiency(ID(),false,aID)),
                                    new Boolean(CMLib.ableMapper().getDefaultGain(ID(),false,aID)),
                                    new Boolean(CMLib.ableMapper().getSecretSkill(ID(),false,aID)),
-                                   CMLib.ableMapper().getDefaultParm(ID(),false,aID));
+                                   CMLib.ableMapper().getDefaultParm(ID(),false,aID),
+                                   CMLib.ableMapper().getPreReqStrings(ID(),false,aID),
+                                   CMLib.ableMapper().getExtraMask(ID(),false,aID));
         }
         
-        if(data1.size()>0)
-            CR.setStat("NUMCABLE",""+data1.size());
+        if(completeSet.size()>0)
+            CR.setStat("NUMCABLE",""+completeSet.size());
         else
             CR.setStat("NUMCABLE","");
         for(int i=0;i<completeSet.size();i++)
         {
-            CR.setStat("GETCABLE"+i,completeSet.elementAt(i,1).toString());
             CR.setStat("GETCABLELVL"+i,completeSet.elementAt(i,2).toString());
             CR.setStat("GETCABLEPROF"+i,completeSet.elementAt(i,3).toString());
             CR.setStat("GETCABLEGAIN"+i,completeSet.elementAt(i,4).toString());
             CR.setStat("GETCABLESECR"+i,completeSet.elementAt(i,5).toString());
             CR.setStat("GETCABLEPARM"+i,completeSet.elementAt(i,6).toString());
+            CR.setStat("GETCABLEPREQ"+i,completeSet.elementAt(i,7).toString());
+            CR.setStat("GETCABLEMASK"+i,completeSet.elementAt(i,8).toString());
+            // GETCABLE -- MUST BE LAST --
+            CR.setStat("GETCABLE"+i,completeSet.elementAt(i,1).toString());
         }
         
         HashSet H=disallowedWeaponClasses(null);
