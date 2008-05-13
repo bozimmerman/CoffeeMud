@@ -180,7 +180,7 @@
 			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=20 NAME=NAME VALUE="@RaceData?NAME@"></TD>
 		</TR>
 		<TR>
-			<TD WIDTH=25%><FONT COLOR=YELLOW>Category: </FONT></TD>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Racial Category: </FONT></TD>
 			<TD WIDTH=66%>
 				<SELECT NAME=CAT>
 				@RaceCatNext?RESET@
@@ -212,13 +212,13 @@
 			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=10 NAME=VHEIGHT VALUE="@RaceData?VHEIGHT@"></TD>
 		</TR>
 		<TR>
-			<TD WIDTH=25%><FONT COLOR=YELLOW>Availability: </FONT></TD>
-			<TD WIDTH=66%><SELECT NAME=PLAYABLEID>@RaceData?PLAYABLEID@</SELECT></TD>
-		</TR>
-		<TR>
 			<TD WIDTH=25%><FONT COLOR=YELLOW>Disabled Flags: </FONT></TD>
 			<TD WIDTH=66%><SELECT NAME=DISFLAGS MULTIPLE>@RaceData?DISFLAGS@</SELECT></TD>
 		</TR>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Availability: </FONT></TD>
+            <TD WIDTH=66%><SELECT NAME=PLAYABLEID>@RaceData?PLAYABLEID@</SELECT></TD>
+        </TR>
 		<TR>
 			<TD WIDTH=25%><FONT COLOR=YELLOW>Leave Text: </FONT></TD>
 			<TD WIDTH=66%><INPUT TYPE=TEXT SIZE=20 NAME=LEAVESTR VALUE="@RaceData?LEAVESTR@"></TD>
@@ -264,7 +264,7 @@
 			<TD WIDTH=66%>@RaceData?ASTATE@></TD>
 		</TR>
 		<TR>
-			<TD WIDTH=25%><FONT COLOR=YELLOW>New Player CharState Adj: </FONT></TD>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Starting CharState Adj: </FONT></TD>
 			<TD WIDTH=66%>@RaceData?STARTASTATE@></TD>
 		</TR>
 		<TR>
@@ -280,7 +280,7 @@
 			<TD WIDTH=66%>@RaceData?WEAPON@></TD>
 		</TR>
 		<TR>
-			<TD WIDTH=25%><FONT COLOR=YELLOW>Weapon Race: </FONT></TD>
+			<TD WIDTH=25%><FONT COLOR=YELLOW>Weapons Race: </FONT></TD>
 			<TD WIDTH=66%><SELECT NAME=WEAPONRACE>@RaceData?WEAPONRACE@</SELECT></TD>
 		</TR>
 		<TR>

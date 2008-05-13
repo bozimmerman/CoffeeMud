@@ -110,6 +110,10 @@
     <A href="javascript:Clicked('charclass.cmvp')"><FONT COLOR=WHITE>Class Manager</FONT></a>
     <BR>
     @endif@
+    @if?CheckAuthCode?AUTH_CMDABILITIES=true@
+    <A href="javascript:Clicked('ability.cmvp')"><FONT COLOR=WHITE>Abilities Creator</FONT></a>
+    <BR>
+    @endif@
 	@if?CheckAuthCode?AUTH_LOADUNLOAD=true@
 	<A href="javascript:Clicked('resources.cmvp')"><FONT COLOR=WHITE>Cache Resources</FONT></a>
 	<BR>

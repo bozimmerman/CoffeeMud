@@ -190,36 +190,6 @@
             <TD><SELECT NAME=PLAYER>@CharClassData?PLAYER@</SELECT></TD>
         </TR>
         <TR>
-            <TD><FONT COLOR=YELLOW>Requirements:<BR>
-             <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>mask help</I></FONT></a>
-             </FONT></TD>
-            <TD><INPUT TYPE=TEXT SIZE=60 NAME=QUAL VALUE="@CharClassData?QUAL@"></TD>
-        </TR>
-        <TR>
-            <TD VALIGN=TOP><FONT COLOR=YELLOW>Disabled Flags: </FONT></TD>
-            <TD><SELECT NAME=DISFLAGS MULTIPLE>@CharClassData?DISFLAGS@</SELECT></TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Starting Trains: </FONT></TD>
-            <TD><INPUT TYPE=TEXT SIZE=5 NAME=FSTTRAN VALUE="@CharClassData?FSTTRAN@"></TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Starting Practices: </FONT></TD>
-            <TD><INPUT TYPE=TEXT SIZE=5 NAME=FSTPRAC VALUE="@CharClassData?FSTPRAC@"></TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Bonus Pracs / Level: </FONT></TD>
-            <TD><INPUT TYPE=TEXT SIZE=5 NAME=LVLPRAC VALUE="@CharClassData?LVLPRAC@"></TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Bonus Attack / Level: </FONT></TD>
-            <TD><INPUT TYPE=TEXT SIZE=5 NAME=LVLATT VALUE="@CharClassData?LVLATT@"></TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Attack Attribute: </FONT></TD>
-            <TD><SELECT NAME=ATTATT>@CharClassData?ATTATT@</SELECT></TD>
-        </TR>
-        <TR>
             <TD><FONT COLOR=YELLOW>Hit Points / Level: </FONT></TD>
             <TD><FONT COLOR=WHITE>Roll&nbsp; 
                 <INPUT TYPE=TEXT SIZE=2 NAME=HPDICE VALUE="@CharClassData?HPDICE@">
@@ -242,6 +212,30 @@
             </TD>
         </TR>
         <TR>
+            <TD><FONT COLOR=YELLOW>Practices / Level: </FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=5 NAME=LVLPRAC VALUE="@CharClassData?LVLPRAC@"></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Attack / Level: </FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=5 NAME=LVLATT VALUE="@CharClassData?LVLATT@"></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Attack Attribute: </FONT></TD>
+            <TD><SELECT NAME=ATTATT>@CharClassData?ATTATT@</SELECT></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Practices / 1st Level: </FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=5 NAME=FSTPRAC VALUE="@CharClassData?FSTPRAC@"></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Trains / 1st Level: </FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=5 NAME=FSTTRAN VALUE="@CharClassData?FSTTRAN@"></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Levels / Dmg.Pt: </FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=5 NAME=LVLDAM VALUE="@CharClassData?LVLDAM@"></TD>
+        </TR>
+        <TR>
             <TD><FONT COLOR=YELLOW>Movement / Level: </FONT></TD>
             <TD><FONT COLOR=WHITE>Strength / 18 X <INPUT TYPE=TEXT SIZE=5 NAME=LVLMOVE VALUE="@CharClassData?LVLMOVE@"></FONT></TD>
         </TR>
@@ -254,20 +248,18 @@
             <TD><SELECT NAME=ARMORMINOR SIZE=3>@CharClassData?ARMORMINOR@</SELECT></TD>
         </TR>
         <TR>
-            <TD><FONT COLOR=YELLOW>Weapons Disallowed: </FONT></TD>
-            <TD><SELECT NAME=NOWEAPS MULTIPLE SIZE=3>@CharClassData?NOWEAPS@</SELECT></TD>
+            <TD><FONT COLOR=YELLOW>Limitations: </FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=80 NAME=STRLMT VALUE="@CharClassData?STRLMT@"></TD>
         </TR>
         <TR>
-            <TD><FONT COLOR=YELLOW>Weapon Materials: </FONT></TD>
-            <TD><SELECT NAME=WEAPMATS MULTIPLE SIZE=3>@CharClassData?WEAPMATS@</SELECT></TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Bonuses Desc: </FONT></TD>
+            <TD><FONT COLOR=YELLOW>Bonuses: </FONT></TD>
             <TD><INPUT TYPE=TEXT SIZE=80 NAME=STRBON VALUE="@CharClassData?STRBON@"></TD>
         </TR>
         <TR>
-            <TD><FONT COLOR=YELLOW>Limits Desc: </FONT></TD>
-            <TD><INPUT TYPE=TEXT SIZE=80 NAME=STRLMT VALUE="@CharClassData?STRLMT@"></TD>
+            <TD><FONT COLOR=YELLOW>Qualifications:<BR>
+             <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>mask help</I></FONT></a>
+             </FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=60 NAME=QUAL VALUE="@CharClassData?QUAL@"></TD>
         </TR>
         <TR>
             <TD><FONT COLOR=YELLOW>EStat Adjustments: </FONT></TD>
@@ -290,6 +282,18 @@
             <TD>@CharClassData?STARTASTATE@</TD>
         </TR>
         <TR>
+            <TD VALIGN=TOP><FONT COLOR=YELLOW>Extra Class Flags: </FONT></TD>
+            <TD><SELECT NAME=DISFLAGS MULTIPLE>@CharClassData?DISFLAGS@</SELECT></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Weapon Restrictions: </FONT></TD>
+            <TD><SELECT NAME=NOWEAPS MULTIPLE SIZE=3>@CharClassData?NOWEAPS@</SELECT></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Weapon Materials Req.: </FONT></TD>
+            <TD><SELECT NAME=WEAPMATS MULTIPLE SIZE=3>@CharClassData?WEAPMATS@</SELECT></TD>
+        </TR>
+        <TR>
             <TD VALIGN=TOP><FONT COLOR=YELLOW>Outfit: </FONT></TD>
             <TD>@CharClassData?OUTFIT@</TD>
         </TR>
@@ -301,15 +305,15 @@
             <INPUT TYPE=BUTTON NAME=NEWSEC VALUE="Add" ONCLICK="ReShow();"></TD>
         </TR>
         <TR>
-            <TD><FONT COLOR=YELLOW>Event Class: </FONT></TD>
-            <TD><SELECT NAME=EVENTCLASS>@CharClassData?EVENTCLASS@</SELECT></TD>
-        </TR>
-        <TR>
-            <TD><FONT COLOR=YELLOW>Stats Class: </FONT></TD>
+            <TD><FONT COLOR=YELLOW>Stat-Modifying Class: </FONT></TD>
             <TD><SELECT NAME=STATCLASS>@CharClassData?STATCLASS@</SELECT></TD>
         </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Special-Event Class: </FONT></TD>
+            <TD><SELECT NAME=EVENTCLASS>@CharClassData?EVENTCLASS@</SELECT></TD>
+        </TR>
         <TR VALIGN=TOP>
-            <TD VALIGN=TOP><FONT COLOR=YELLOW>Abilities: </FONT><BR>
+            <TD VALIGN=TOP><FONT COLOR=YELLOW>Class Abilities: </FONT><BR>
 	        <INPUT TYPE=CHECKBOX NAME=SHOWPREREQS ONCLICK="ReShow();" @if?CheckReqParm?SHOWPREREQS=@ @else@CHECKED@endif@><FONT COLOR=WHITE>Show Pre-Requisites</FONT>&nbsp;<A HREF="javascript:OpenUp('ahelp.cmvp','ABILITY_PREREQS')"><FONT COLOR=WHITE><I>?</I></FONT></a><BR>
             <INPUT TYPE=CHECKBOX NAME=SHOWMASKS ONCLICK="ReShow();" @if?CheckReqParm?SHOWMASKS=@ @else@CHECKED@endif@><FONT COLOR=WHITE>Show Masks</FONT>&nbsp;<A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a><BR>
             <INPUT TYPE=CHECKBOX NAME=SHOWPARMS ONCLICK="ReShow();" @if?CheckReqParm?SHOWPARMS=@ @else@CHECKED@endif@><FONT COLOR=WHITE>Show Parameters</FONT><BR>

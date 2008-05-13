@@ -40,15 +40,324 @@ public class AbilityData extends StdWebMacro
 	// qualifyQ, auto
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("ABILITY");
-		if(last==null) return " @break@";
-		if(last.length()>0)
-		{
-			Ability A=CMClass.getAbility(last);
-			if(A!=null)
-			{
+        Hashtable parms=parseParms(parm);
+        
+        String replaceCommand=httpReq.getRequestParameter("REPLACE");
+        if((replaceCommand != null) 
+        && (replaceCommand.length()>0)
+        && (replaceCommand.indexOf('=')>0))
+        {
+            int eq=replaceCommand.indexOf('=');
+            String field=replaceCommand.substring(0,eq);
+            String value=replaceCommand.substring(eq+1);
+            httpReq.addRequestParameters(field, value);
+            httpReq.addRequestParameters("REPLACE","");
+        }
+        
+        String last=httpReq.getRequestParameter("ABILITY");
+        if(last==null) return " @break@";
+        if(last.length()>0)
+        {
+            Ability A=null;
+            String newAbilityID=httpReq.getRequestParameter("NEWABILITY");
+            if(A==null)
+                A=(Ability)httpReq.getRequestObjects().get("ABILITY-"+last);
+            if((A==null)
+            &&(newAbilityID!=null)
+            &&(newAbilityID.length()>0)
+            &&(CMClass.getAbility(newAbilityID)==null))
+            {
+                A=(Ability)CMClass.getAbility("GenAbility").copyOf();
+                A.setStat("CLASS",newAbilityID);
+                last=newAbilityID;
+                httpReq.addRequestParameters("ABILITY",newAbilityID);
+            }
+            if(A==null)
+                A=CMClass.getAbility(last);
+            if(A!=null)
+            {
 				StringBuffer str=new StringBuffer("");
+                if(parms.containsKey("NEWABILITY"))
+                {
+                    Ability A2=CMClass.getAbility(last);
+                    return ""+(A2==null);
+                }
+                if(parms.containsKey("ISGENERIC"))
+                {
+                    Ability A2=CMClass.getAbility(A.ID());
+                    return ""+((A2!=null)&&(A2.isGeneric()));
+                }
+                if(parms.containsKey("NAME"))
+                {
+                    String old=httpReq.getRequestParameter("NAME");
+                    if(old==null) old=A.name();
+                    str.append(old+", ");
+                }
+                // here starts CLASSIFICATION
+                if(parms.containsKey("CLASSIFICATION_ACODE"))
+                {
+                    String old=httpReq.getRequestParameter("CLASSIFICATION_ACODE");
+                    if(old==null) old=""+(A.classificationCode()&Ability.ALL_ACODES);
+                    for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+                        str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.ACODE_DESCS[i]));
+                    str.append(", ");
+                }
+                if(parms.containsKey("CLASSIFICATION_DOMAIN"))
+                {
+                    String old=httpReq.getRequestParameter("CLASSIFICATION_DOMAIN");
+                    if(old==null) old=""+((A.classificationCode()&Ability.ALL_DOMAINS)>>5);
+                    for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
+                        str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[i]));
+                    str.append(", ");
+                }
+                // here ends CLASSIFICATION
+                
+                if(parms.containsKey("TRIGSTR"))
+                {
+                    String old=httpReq.getRequestParameter("TRIGSTR");
+                    if(old==null) old=CMParms.toStringList(A.triggerStrings());
+                    // remember to sort by longest->shortest on put-back
+                    str.append(old.toUpperCase().trim()+", ");
+                }
+                if(parms.containsKey("MINRANGE"))
+                {
+                    String old=httpReq.getRequestParameter("MINRANGE");
+                    if(old==null) old=""+A.minRange();
+                    for(int i=0;i<Ability.RANGE_CHOICES.length;i++)
+                        str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.RANGE_CHOICES[i]));
+                    str.append(", ");
+                }
+                if(parms.containsKey("MAXRANGE"))
+                {
+                    String old=httpReq.getRequestParameter("MAXRANGE");
+                    if(old==null) old=""+A.minRange();
+                    for(int i=0;i<Ability.RANGE_CHOICES.length;i++)
+                        str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.RANGE_CHOICES[i]));
+                    str.append(", ");
+                }
+                if(parms.containsKey("DISPLAY")) // affected string
+                {
+                    String old=httpReq.getRequestParameter("DISPLAY");
+                    if(old==null) old=A.displayText();
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("AUTOINVOKE"))
+                {
+                    String old=httpReq.getRequestParameter("AUTOINVOKE");
+                    if(old==null) 
+                        old=A.getStat("AUTOINVOKE");
+                    else
+                        old=""+old.equalsIgnoreCase("on");
+                    str.append(CMath.s_bool(old)?"CHECKED":"");
+                    str.append(", ");
+                }
+                if(parms.containsKey("FLAGS"))
+                {
+                    Vector list=new Vector();
+                    if(httpReq.isRequestParameter("FLAGS"))
+                    {
+                        String id="";
+                        int num=0;
+                        for(;httpReq.isRequestParameter("FLAGS"+id);id=""+(++num))
+                            list.addElement(httpReq.getRequestParameter("FLAGS"+id));
+                    } 
+                    else 
+                        list=CMParms.parseCommas(A.getStat("FLAGS"),true);
+                    for(int i=0;i<Ability.FLAG_DESCS.length;i++)
+                        str.append("<OPTION VALUE=\""+Ability.FLAG_DESCS[i]+"\""+(list.contains(Ability.FLAG_DESCS[i])?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.FLAG_DESCS[i]));
+                    str.append(", ");
+                }
+                if(parms.containsKey("CUSTOMOVERRIDEMANA"))
+                {
+                    String old=httpReq.getRequestParameter("OVERRIDEMANA");
+                    if(old==null) old=""+A.getStat("OVERRIDEMANA");
+                    int x=CMath.s_int(old);
+                    if((x>0) && (x<Integer.MAX_VALUE-101))
+                        str.append(old+", ");
+                }
+                if(parms.containsKey("OVERRIDEMANA"))
+                {
+                    String old=httpReq.getRequestParameter("OVERRIDEMANA");
+                    if(old==null) old=""+A.getStat("OVERRIDEMANA");
+                    int o=CMath.s_int(old);
+                    str.append("<OPTION VALUE=\"-1\""+((o==-1)?" SELECTED":"")+">Use Default");
+                    str.append("<OPTION VALUE=\"0"+((o==0)?" SELECTED":"")+">None (free skill)");
+                    str.append("<OPTION VALUE=\""+(((o>0)&&(o<Integer.MAX_VALUE-101))?" SELECTED":"")+">Custom Value");
+                    str.append("<OPTION VALUE=\""+Integer.MAX_VALUE+"\""+((o==Integer.MAX_VALUE)?" SELECTED":"")+">All Mana");
+                    for(int v=5;v<=95;v+=5)
+                        str.append("<OPTION VALUE=\""+(Integer.MAX_VALUE-v)+"\""+(((o>(v-5))&&(o<=v))?" SELECTED":"")+">"+v+"%");
+                    str.append(", ");
+                }
+                if(parms.containsKey("USAGEMASK"))
+                {
+                    Vector list=new Vector();
+                    if(httpReq.isRequestParameter("USAGEMASK"))
+                    {
+                        String id="";
+                        int num=0;
+                        for(;httpReq.isRequestParameter("USAGEMASK"+id);id=""+(++num))
+                            list.addElement(httpReq.getRequestParameter("USAGEMASK"+id));
+                    } 
+                    else 
+                        list=CMParms.parseCommas(A.getStat("USAGEMASK"),true);
+                    for(int i=0;i<Ability.USAGE_DESCS.length;i++)
+                        str.append("<OPTION VALUE=\""+Ability.USAGE_DESCS[i]+"\""+(list.contains(Ability.USAGE_DESCS[i])?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.USAGE_DESCS[i]));
+                    str.append(", ");
+                }
+                if(parms.containsKey("CANAFFECTMASK"))
+                {
+                    Vector list=new Vector();
+                    if(httpReq.isRequestParameter("CANAFFECTMASK"))
+                    {
+                        String id="";
+                        int num=0;
+                        for(;httpReq.isRequestParameter("CANAFFECTMASK"+id);id=""+(++num))
+                            list.addElement(httpReq.getRequestParameter("CANAFFECTMASK"+id));
+                    } 
+                    else 
+                        list=CMParms.parseCommas(A.getStat("CANAFFECTMASK"),true);
+                    for(int i=0;i<Ability.CAN_DESCS.length;i++)
+                        str.append("<OPTION VALUE=\""+Ability.CAN_DESCS[i]+"\""+(list.contains(Ability.CAN_DESCS[i])?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.CAN_DESCS[i]));
+                    str.append(", ");
+                }
+                if(parms.containsKey("CANTARGETMASK"))
+                {
+                    Vector list=new Vector();
+                    if(httpReq.isRequestParameter("CANTARGETMASK"))
+                    {
+                        String id="";
+                        int num=0;
+                        for(;httpReq.isRequestParameter("CANTARGETMASK"+id);id=""+(++num))
+                            list.addElement(httpReq.getRequestParameter("CANTARGETMASK"+id));
+                    } 
+                    else 
+                        list=CMParms.parseCommas(A.getStat("CANTARGETMASK"),true);
+                    for(int i=0;i<Ability.CAN_DESCS.length;i++)
+                        str.append("<OPTION VALUE=\""+Ability.CAN_DESCS[i]+"\""+(list.contains(Ability.CAN_DESCS[i])?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.CAN_DESCS[i]));
+                    str.append(", ");
+                }
+                if(parms.containsKey("VQUALITY")) //QUALITY
+                {
+                    String old=httpReq.getRequestParameter("VQUALITY");
+                    if(old==null) old=""+A.abstractQuality();
+                    for(int i=0;i<Ability.QUALITY_DESCS.length;i++)
+                        str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.QUALITY_DESCS[i]));
+                    str.append(", ");
+                }
+                if(parms.containsKey("HERESTATS")) // affect adj: Prop_HereAdjuster
+                {
+                    String old=httpReq.getRequestParameter("HERESTATS");
+                    if(old==null) old=A.getStat("HERESTATS");
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("SCRIPT"))
+                {
+                    String old=httpReq.getRequestParameter("SCRIPT");
+                    if(old==null) old=A.getStat("SCRIPT");
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("CASTMASK"))
+                {
+                    String old=httpReq.getRequestParameter("CASTMASK");
+                    if(old==null) old=A.getStat("CASTMASK");
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("TARGETMASK"))
+                {
+                    String old=httpReq.getRequestParameter("TARGETMASK");
+                    if(old==null) old=A.getStat("TARGETMASK");
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("FIZZLEMSG"))
+                {
+                    String old=httpReq.getRequestParameter("FIZZLEMSG");
+                    if(old==null) old=A.getStat("FIZZLEMSG");
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("AUTOCASTMSG"))
+                {
+                    String old=httpReq.getRequestParameter("AUTOCASTMSG");
+                    if(old==null) old=A.getStat("AUTOCASTMSG");
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("CASTMSG"))
+                {
+                    String old=httpReq.getRequestParameter("CASTMSG");
+                    if(old==null) old=A.getStat("CASTMSG");
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("POSTCASTMSG"))
+                {
+                    String old=httpReq.getRequestParameter("POSTCASTMSG");
+                    if(old==null) old=A.getStat("POSTCASTMSG");
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("ATTACKCODE"))
+                {
+                    String old=httpReq.getRequestParameter("ATTACKCODE");
+                    if(old==null) old=""+A.abstractQuality();
+                    for(int i=0;i<CMMsg.TYPE_DESCS.length;i++)
+                        str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(CMMsg.TYPE_DESCS[i]));
+                    str.append(", ");
+                }
+                if(parms.containsKey("POSTCASTAFFECT"))
+                {
+                    Vector list=new Vector();
+                    if(httpReq.isRequestParameter("POSTCASTAFFECT"))
+                    {
+                        String id="";
+                        int num=0;
+                        for(;httpReq.isRequestParameter("POSTCASTAFFECT"+id);id=""+(++num))
+                            list.addElement(httpReq.getRequestParameter("POSTCASTAFFECT"+id).toUpperCase());
+                    } 
+                    else 
+                        list=CMParms.parseSemicolons(A.getStat("POSTCASTAFFECT").toUpperCase(),true);
+                    for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                    {
+                        Ability A2=(Ability)e.nextElement();
+                        String AID=A2.ID();
+                        String ANAME=A2.name();
+                        str.append("<OPTION VALUE=\""+AID+"\""+(list.contains(AID.toUpperCase())?" SELECTED":"")+">"+ANAME);
+                    }
+                    str.append(", ");
+                }
+                if(parms.containsKey("POSTCASTABILITY"))
+                {
+                    Vector list=new Vector();
+                    if(httpReq.isRequestParameter("POSTCASTABILITY"))
+                    {
+                        String id="";
+                        int num=0;
+                        for(;httpReq.isRequestParameter("POSTCASTABILITY"+id);id=""+(++num))
+                            list.addElement(httpReq.getRequestParameter("POSTCASTABILITY"+id).toUpperCase());
+                    } 
+                    else 
+                        list=CMParms.parseSemicolons(A.getStat("POSTCASTABILITY").toUpperCase(),true);
+                    for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                    {
+                        Ability A2=(Ability)e.nextElement();
+                        String AID=A2.ID();
+                        String ANAME=A2.name();
+                        str.append("<OPTION VALUE=\""+AID+"\""+(list.contains(AID.toUpperCase())?" SELECTED":"")+">"+ANAME);
+                    }
+                    str.append(", ");
+                }
+                if(parms.containsKey("POSTCASTDAMAGE"))
+                {
+                    /*
+                        Enter a damage or healing formula.
+                        Use +/-*()?. @x1=caster level, @x2=target level.
+                        Formula evaluates >0 for damage, <0 for healing. Requires Can Target!"
+                    */
+                    String old=httpReq.getRequestParameter("POSTCASTDAMAGE");
+                    if(old==null) old=A.getStat("POSTCASTDAMAGE");
+                    str.append(old+", ");
+                }
+                
+                /*********************************************************************************/
+                /*********************************************************************************/
+	            // here begins the old display data parms
+	            
 				if(parms.containsKey("HELP"))
 				{
 					StringBuffer s=CMLib.help().getHelpText(A.ID(),null,false);
