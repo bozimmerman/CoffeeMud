@@ -1293,7 +1293,7 @@ public class CMClass extends ClassLoader
                     }
                     if(loaded>0)
                     {
-                        Log.sysOut(Thread.currentThread().getName(),"GenAbiles loaded  : "+loaded);
+                        Log.sysOut(Thread.currentThread().getName(),"GenAbles loaded   : "+loaded);
                         abilities=new Vector(new TreeSet(abilities));
                     }
                 }

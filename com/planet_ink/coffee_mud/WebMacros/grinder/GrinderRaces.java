@@ -202,7 +202,7 @@ public class GrinderRaces
         return theclasses;
     }
 
-    public static String modifyRace(ExternalHTTPRequests httpReq, Hashtable parms, Race R)
+    public static String modifyRace(ExternalHTTPRequests httpReq, Hashtable parms, Race oldR, Race R)
     {
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
         if((replaceCommand != null) 
@@ -279,21 +279,21 @@ public class GrinderRaces
             commaList.append(val);
         }
         R.setStat("AGING",commaList.toString());
-        Vector V=itemList(R.myResources(),'R',httpReq,false);
+        Vector V=itemList(oldR.myResources(),'R',httpReq,false);
         R.setStat("NUMRSC",""+V.size());
         for(int l=0;l<V.size();l++)
         {
             R.setStat("GETRSCID"+l,((Environmental)V.elementAt(l)).ID());
             R.setStat("GETRSCPARM"+l,((Environmental)V.elementAt(l)).text());
         }
-        V=itemList(R.outfit(null),'O',httpReq,false);
+        V=itemList(oldR.outfit(null),'O',httpReq,false);
         R.setStat("NUMOFT",""+V.size());
         for(int l=0;l<V.size();l++)
         {
             R.setStat("GETOFTID"+l,((Environmental)V.elementAt(l)).ID());
             R.setStat("GETOFTPARM"+l,((Environmental)V.elementAt(l)).text());
         }
-        V=itemList(CMParms.makeVector(R.myNaturalWeapon()),'W',httpReq,true);
+        V=itemList(CMParms.makeVector(oldR.myNaturalWeapon()),'W',httpReq,true);
         if(V.size()==0)
             R.setStat("WEAPONCLASS","StdWeapon");
         else

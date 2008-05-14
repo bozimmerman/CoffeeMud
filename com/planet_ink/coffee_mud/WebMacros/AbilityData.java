@@ -56,32 +56,29 @@ public class AbilityData extends StdWebMacro
         
         String last=httpReq.getRequestParameter("ABILITY");
         if(last==null) return " @break@";
+        Ability A=null;
+        String newAbilityID=httpReq.getRequestParameter("NEWABILITY");
+        if(A==null)
+            A=(Ability)httpReq.getRequestObjects().get("ABILITY-"+last);
+        if((A==null)
+        &&(newAbilityID!=null)
+        &&(newAbilityID.length()>0)
+        &&(CMClass.getAbility(newAbilityID)==null))
+        {
+            A=(Ability)CMClass.getAbility("GenAbility").copyOf();
+            A.setStat("CLASS9",newAbilityID);
+            last=newAbilityID;
+            httpReq.addRequestParameters("ABILITY",newAbilityID);
+        }
         if(last.length()>0)
         {
-            Ability A=null;
-            String newAbilityID=httpReq.getRequestParameter("NEWABILITY");
-            if(A==null)
-                A=(Ability)httpReq.getRequestObjects().get("ABILITY-"+last);
-            if((A==null)
-            &&(newAbilityID!=null)
-            &&(newAbilityID.length()>0)
-            &&(CMClass.getAbility(newAbilityID)==null))
-            {
-                A=(Ability)CMClass.getAbility("GenAbility").copyOf();
-                A.setStat("CLASS",newAbilityID);
-                last=newAbilityID;
-                httpReq.addRequestParameters("ABILITY",newAbilityID);
-            }
             if(A==null)
                 A=CMClass.getAbility(last);
+            if(parms.containsKey("NEWABILITY"))
+                return ""+(CMClass.getAbility(last)==null);
             if(A!=null)
             {
 				StringBuffer str=new StringBuffer("");
-                if(parms.containsKey("NEWABILITY"))
-                {
-                    Ability A2=CMClass.getAbility(last);
-                    return ""+(A2==null);
-                }
                 if(parms.containsKey("ISGENERIC"))
                 {
                     Ability A2=CMClass.getAbility(A.ID());
@@ -181,11 +178,12 @@ public class AbilityData extends StdWebMacro
                     if(old==null) old=""+A.getStat("OVERRIDEMANA");
                     int o=CMath.s_int(old);
                     str.append("<OPTION VALUE=\"-1\""+((o==-1)?" SELECTED":"")+">Use Default");
-                    str.append("<OPTION VALUE=\"0"+((o==0)?" SELECTED":"")+">None (free skill)");
-                    str.append("<OPTION VALUE=\""+(((o>0)&&(o<Integer.MAX_VALUE-101))?" SELECTED":"")+">Custom Value");
+                    str.append("<OPTION VALUE=\"0\""+((o==0)?" SELECTED":"")+">None (free skill)");
+                    str.append("<OPTION VALUE=\"\""+(((o>0)&&(o<Integer.MAX_VALUE-101))?" SELECTED":"")+"\">Custom Value");
                     str.append("<OPTION VALUE=\""+Integer.MAX_VALUE+"\""+((o==Integer.MAX_VALUE)?" SELECTED":"")+">All Mana");
-                    for(int v=5;v<=95;v+=5)
-                        str.append("<OPTION VALUE=\""+(Integer.MAX_VALUE-v)+"\""+(((o>(v-5))&&(o<=v))?" SELECTED":"")+">"+v+"%");
+                    for(int v=Integer.MAX_VALUE-5;v>=Integer.MAX_VALUE-95;v-=5) {
+                        str.append("<OPTION VALUE=\""+v+"\""+(((o>(v-5))&&(o<=v))?" SELECTED":"")+">"+(Integer.MAX_VALUE-v)+"%");
+                    }
                     str.append(", ");
                 }
                 if(parms.containsKey("USAGEMASK"))

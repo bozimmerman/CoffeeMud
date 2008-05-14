@@ -37,122 +37,6 @@ public class GrinderClasses
 {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-    public static String getEStats(char c, ExternalHTTPRequests httpReq)
-    {
-        boolean changes = false;
-        EnvStats adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); 
-        adjEStats.setAllValues(0);
-        if(httpReq.isRequestParameter(c+"ESTATS1"))
-        {
-            int num=1;
-            String behav=httpReq.getRequestParameter(c+"ESTATS"+num);
-            while(behav!=null)
-            {
-                if((behav.length()>0) && (CMParms.makeVector(adjEStats.getStatCodes()).contains(behav.toUpperCase().trim())))
-                {
-                    String prof=httpReq.getRequestParameter(c+"ESTATSV"+num);
-                    if(prof==null) prof="0";
-                    if(CMath.s_int(prof)!=0)
-                    {
-                        adjEStats.setStat(behav.toUpperCase().trim(), prof);
-                        changes = true;
-                    }
-                }
-                num++;
-                behav=httpReq.getRequestParameter(c+"ESTATS"+num);
-            }
-        }
-        if(!changes) return "";
-        return CMLib.coffeeMaker().getEnvStatsStr(adjEStats);
-    }
-    
-    public static String getCStats(char c, ExternalHTTPRequests httpReq)
-    {
-        boolean changes = false;
-        CharStats adjCStats=(CharStats)CMClass.getCommon("DefaultCharStats"); 
-        adjCStats.setAllValues(0); 
-        if(httpReq.isRequestParameter(c+"CSTATS1"))
-        {
-            int num=1;
-            String behav=httpReq.getRequestParameter(c+"CSTATS"+num);
-            while(behav!=null)
-            {
-                if((behav.length()>0) && (CMParms.makeVector(CharStats.STAT_DESCS).contains(behav.toUpperCase().trim())))
-                {
-                    int val=CMath.s_int(httpReq.getRequestParameter(c+"CSTATSV"+num));
-                    if(val!=0)
-                    {
-                        adjCStats.setStat(CMParms.indexOf(CharStats.STAT_DESCS,behav.toUpperCase().trim()), val);
-                        changes = true;
-                    }
-                }
-                num++;
-                behav=httpReq.getRequestParameter(c+"CSTATS"+num);
-            }
-        }
-        if(!changes) return "";
-        return CMLib.coffeeMaker().getCharStatsStr(adjCStats);
-    }
-    
-    public static String getCState(char c, ExternalHTTPRequests httpReq)
-    {
-        boolean changes = false;
-        CharState adjCState=(CharState)CMClass.getCommon("DefaultCharState");  
-        adjCState.setAllValues(0);
-        if(httpReq.isRequestParameter(c+"CSTATE1"))
-        {
-            int num=1;
-            String behav=httpReq.getRequestParameter(c+"CSTATE"+num);
-            while(behav!=null)
-            {
-                if((behav.length()>0) && (CMParms.makeVector(adjCState.getStatCodes()).contains(behav.toUpperCase().trim())))
-                {
-                    String prof=httpReq.getRequestParameter(c+"CSTATEV"+num);
-                    if(prof==null) prof="0";
-                    if(CMath.s_int(prof)!=0)
-                    {
-                        adjCState.setStat(behav.toUpperCase().trim(), prof);
-                        changes = true;
-                    }
-                }
-                num++;
-                behav=httpReq.getRequestParameter(c+"CSTATE"+num);
-            }
-        }
-        if(!changes) return "";
-        return CMLib.coffeeMaker().getCharStateStr(adjCState);
-    }
-    
-    
-    public static Vector itemList(Vector items, char c, ExternalHTTPRequests httpReq, boolean one)
-    {
-        if(items==null) items=new Vector();
-        StringBuffer str=new StringBuffer("");
-        Vector classes=new Vector();
-        Vector itemlist=null;
-        if(httpReq.isRequestParameter(c+"ITEM1"))
-        {
-            itemlist=RoomData.items;
-            for(int i=1;;i++)
-            {
-                String MATCHING=httpReq.getRequestParameter(c+"ITEM"+i);
-                if(MATCHING==null)
-                    break;
-                Item I2=RoomData.getItemFromAnywhere(itemlist,MATCHING);
-                if(I2==null)
-                {
-                    I2=RoomData.getItemFromAnywhere(items,MATCHING);
-                    if(I2!=null)
-                        RoomData.contributeItems(CMParms.makeVector(I2));
-                }
-                if(I2!=null)
-                    classes.addElement(I2);
-                if(one) break;
-            }
-        }
-        return classes;
-    }
-    
     public static DVector cabilities(ExternalHTTPRequests httpReq)
     {
         DVector theclasses=new DVector(8);
@@ -187,7 +71,7 @@ public class GrinderClasses
         return theclasses;
     }
 
-    public static String modifyCharClass(ExternalHTTPRequests httpReq, Hashtable parms, CharClass C)
+    public static String modifyCharClass(ExternalHTTPRequests httpReq, Hashtable parms, CharClass oldC, CharClass C)
     {
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
         if((replaceCommand != null) 
@@ -281,17 +165,17 @@ public class GrinderClasses
         C.setStat("QUAL",(old==null)?"":old);
         old=httpReq.getRequestParameter("PLAYER");
         C.setStat("PLAYER",(old==null)?"0":old);
-        C.setStat("ESTATS",getEStats('E',httpReq));
-        C.setStat("CSTATS",getCStats('S',httpReq));
-        C.setStat("ASTATS",getCStats('A',httpReq));
-        C.setStat("ASTATE",getCState('A',httpReq));
-        C.setStat("STARTASTATE",getCState('S',httpReq));
+        C.setStat("ESTATS",GrinderRaces.getEStats('E',httpReq));
+        C.setStat("CSTATS",GrinderRaces.getCStats('S',httpReq));
+        C.setStat("ASTATS",GrinderRaces.getCStats('A',httpReq));
+        C.setStat("ASTATE",GrinderRaces.getCState('A',httpReq));
+        C.setStat("STARTASTATE",GrinderRaces.getCState('S',httpReq));
         String id="";
         Vector V=new Vector();
         for(int i=0;httpReq.isRequestParameter("NOWEAPS"+id);id=""+(++i))
             V.addElement(httpReq.getRequestParameter("NOWEAPS"+id));
         C.setStat("GETWEP",CMParms.toStringList(V));
-        V=itemList(C.outfit(null),'O',httpReq,false);
+        V=GrinderRaces.itemList(oldC.outfit(null),'O',httpReq,false);
         C.setStat("NUMOFT",""+V.size());
         for(int l=0;l<V.size();l++)
         {

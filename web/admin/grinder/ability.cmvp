@@ -109,6 +109,8 @@
     <TD WIDTH=33% ALIGN=LEFT VALIGN=CENTER>
         <FONT COLOR=WHITE>Ability: </FONT>
         @AddRequestParameter?OLDABILITY=@@RequestParameter?ABILITY@@ @
+        @AddRequestParameter?OLDFLAGS=@@RequestParameter?FLAGS@@ @
+        @AddRequestParameter?FLAGS=@
         <SELECT NAME=ABILITY ONCHANGE="javascript:ReAbility();">
         
         @if?AbilityData?NEWABILITY@
@@ -119,10 +121,11 @@
         @endif@
         
         @AbilityNext?RESET@
-        @loop@ @AbilityNext?ALL@ @if?AbilityData?ISGENERIC@<OPTION VALUE="@AbilityID@" @if?CheckReqParm?ABILITY=@@RequestParameter?OLDABILITY@@ @SELECTED@endif@>@AbilityName@ @endif@ @back@
+        @loop@ @AbilityNext?GENERIC&ALL@ @if?!CheckReqParm?ABILITY=GenAbility@<OPTION VALUE="@AbilityID@" @if?CheckReqParm?ABILITY=@@RequestParameter?OLDABILITY@@ @SELECTED@endif@>@AbilityName@ @endif@ @back@
         </SELECT>&nbsp;&nbsp;&nbsp;
         <INPUT TYPE=BUTTON NAME=NEWABILITY VALUE="New" ONCLICK="NewAbility();">
         @AddRequestParameter?ABILITY=@@RequestParameter?OLDABILITY@@ @
+        @AddRequestParameter?FLAGS=@@RequestParameter?OLDFLAGS@@ @
     </TD>
     <TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
     <TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>

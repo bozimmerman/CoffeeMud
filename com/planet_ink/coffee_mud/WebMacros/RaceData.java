@@ -565,15 +565,12 @@ public class RaceData extends StdWebMacro
             }
             if(R==null)
                 R=CMClass.getRace(last);
+            if(parms.containsKey("NEWRACE"))
+                return ""+(CMClass.getRace(last)==null);
 	
 			if(R!=null)
 			{
 				StringBuffer str=new StringBuffer("");
-                if(parms.containsKey("NEWRACE"))
-                {
-                    Race R2=CMClass.getRace(last);
-                    return ""+(R2==null);
-                }
                 if(parms.containsKey("ISGENERIC"))
                 {
                     Race R2=CMClass.getRace(R.ID());

@@ -581,6 +581,14 @@ public class GenAbility extends StdAbility
     }
     public void setStat(String code, String val)
     {
+        int num=0;
+        int numDex=code.length();
+        while((numDex>0)&&(Character.isDigit(code.charAt(numDex-1)))) numDex--;
+        if(numDex<code.length())
+        {
+            num=CMath.s_int(code.substring(numDex));
+            code=code.substring(0,numDex);
+        }
         switch(getCodeNum(code))
         {
         case 0:
@@ -590,9 +598,11 @@ public class GenAbility extends StdAbility
         	Object[] O=(Object[])vars.get(ID); 
         	vars.remove(ID); 
         	vars.put(val,O);
-        	CMClass.delClass("ABILITY",this);
+        	if(num!=9)
+        	    CMClass.delClass("ABILITY",this);
         	ID=val;
-        	CMClass.addClass("ABILITY",this);
+            if(num!=9)
+            	CMClass.addClass("ABILITY",this);
         }
     	break;
         case 1: setMiscText(val); break;
@@ -656,7 +666,7 @@ public class GenAbility extends StdAbility
     	if(CMath.isInteger(val)) return CMath.s_int(val);
     	int dom=0;
     	int acod=Ability.ACODE_SKILL;
-    	Vector V=CMParms.parse(val);
+    	Vector V=CMParms.parseCommas(val,true);
     	for(int v=0;v<V.size();v++)
     	{
     		val=(String)V.elementAt(v);

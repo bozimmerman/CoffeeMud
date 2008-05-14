@@ -260,14 +260,11 @@ public class CharClassData extends StdWebMacro
             }
             if(C==null)
                 C=CMClass.getCharClass(last);
+            if(parms.containsKey("NEWCLASS"))
+                return ""+(CMClass.getCharClass(last)==null);
 			if(C!=null)
 			{
 				StringBuffer str=new StringBuffer("");
-                if(parms.containsKey("NEWCLASS"))
-                {
-                    CharClass C2=CMClass.getCharClass(last);
-                    return ""+(C2==null);
-                }
                 if(parms.containsKey("ISGENERIC"))
                 {
                     CharClass C2=CMClass.getCharClass(C.ID());

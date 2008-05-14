@@ -66,6 +66,9 @@ public class AbilityNext extends StdWebMacro
 			Ability A=(Ability)a.nextElement();
 			boolean okToShow=true;
 			int classType=A.classificationCode()&Ability.ALL_ACODES;
+			if(parms.containsKey("GENERIC"))
+			    okToShow=A.isGeneric();
+			
 			String className=httpReq.getRequestParameter("CLASS");
 			
 			if((className!=null)&&(className.length()>0))
@@ -87,6 +90,7 @@ public class AbilityNext extends StdWebMacro
 				}
 			}
 			else
+			if(!parms.containsKey("ALL"))
 			{
 				int level=CMLib.ableMapper().getQualifyingLevel("Archon",true,A.ID());
 				if(level<0)

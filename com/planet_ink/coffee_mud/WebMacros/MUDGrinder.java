@@ -398,7 +398,7 @@ public class MUDGrinder extends StdWebMacro
             }
 	        if(R==null) return " @break@";
 	        R=R.makeGenRace();
-	        String errMsg=GrinderRaces.modifyRace(httpReq, parms, R);
+	        String errMsg=GrinderRaces.modifyRace(httpReq, parms, (oldR==null)?R:oldR, R);
             httpReq.addRequestParameters("ERRMSG",errMsg);
             if(!create)
             {
@@ -406,6 +406,7 @@ public class MUDGrinder extends StdWebMacro
                 CMLib.database().DBCreateRace(R.ID(),R.racialParms());
                 if((oldR!=null)&&(oldR!=R))
                     CMLib.utensils().swapRaces(R, oldR);
+                Log.sysOut("Grinder",mob.name()+" modified race "+R.ID());
                 return "Race "+R.ID()+" modified.";
             }
             else
@@ -414,6 +415,7 @@ public class MUDGrinder extends StdWebMacro
                 CMLib.database().DBCreateRace(R.ID(),R.racialParms());
                 if((oldR!=null)&&(oldR!=R))
                     CMLib.utensils().swapRaces(R, oldR);
+                Log.sysOut("Grinder",mob.name()+" created race "+R.ID());
                 if((oldR!=null)&&(!oldR.isGeneric()))
                     return "Race "+R.ID()+" replaced with Generic Race " + R.ID()+".";
                 else
@@ -461,7 +463,7 @@ public class MUDGrinder extends StdWebMacro
             }
             if(C==null) return " @break@";
             C=C.makeGenCharClass();
-            String errMsg=GrinderClasses.modifyCharClass(httpReq, parms, C);
+            String errMsg=GrinderClasses.modifyCharClass(httpReq, parms, (oldC==null)?C:oldC, C);
             httpReq.addRequestParameters("ERRMSG",errMsg);
             if(!create)
             {
@@ -469,6 +471,7 @@ public class MUDGrinder extends StdWebMacro
                 CMLib.database().DBCreateClass(C.ID(),C.classParms());
                 if((oldC!=null)&&(oldC!=C))
                     CMLib.utensils().reloadCharClasses(oldC);
+                Log.sysOut("Grinder",mob.name()+" modified class "+C.ID());
                 return "Char Class "+C.ID()+" modified.";
             }
             else
@@ -477,10 +480,66 @@ public class MUDGrinder extends StdWebMacro
                 CMLib.database().DBCreateClass(C.ID(),C.classParms());
                 if((oldC!=null)&&(oldC!=C))
                     CMLib.utensils().reloadCharClasses(oldC);
+                Log.sysOut("Grinder",mob.name()+" created class "+C.ID());
                 if((oldC!=null)&&(!oldC.isGeneric()))
                     return "Char Class "+C.ID()+" replaced with Generic Class " + C.ID()+".";
                 else
                     return "Char Class "+C.ID()+" created.";
+            }
+        }
+        else
+        if(parms.contains("DELABILITY"))
+        {
+            MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(mob==null) return "@break@";
+            Ability A=null;
+            String last=httpReq.getRequestParameter("ABILITY");
+            if(last==null) return " @break@";
+            A=CMClass.getAbility(last);
+            if((A==null)||(!A.isGeneric()))
+                return " @break@";
+            Object O=CMClass.getClass(A.ID());
+            if(!(O instanceof Ability))
+                return " @break@";
+            CMClass.delClass("ABILITY",(Ability)O);
+            CMLib.database().DBDeleteAbility(A.ID());
+            Log.sysOut("Grinder",mob.name()+" deleted Ability "+A.ID());
+            return "Ability "+A.ID()+" deleted.";
+        }
+        else
+        if(parms.contains("EDITABILITY"))
+        {
+            MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(mob==null) return "@break@";
+            Ability A=null;
+            Ability oldA=null;
+            String last=httpReq.getRequestParameter("ABILITY");
+            if(last==null) return " @break@";
+            A=CMClass.getAbility(last);
+            boolean create=false;
+            if((A!=null)&&(!A.isGeneric()))
+                return " @break@";
+            if(A==null) {
+                create=true;
+                if(A!=null) oldA=A;
+                A=(Ability)CMClass.getAbility("GenAbility").copyOf();
+                A.setStat("CLASS",last);
+            }
+            if(A==null) return " @break@";
+            String errMsg=GrinderAbilities.modifyAbility(httpReq, parms, (oldA==null)?A:oldA, A);
+            httpReq.addRequestParameters("ERRMSG",errMsg);
+            if(!create)
+            {
+                CMLib.database().DBDeleteAbility(A.ID());
+                CMLib.database().DBCreateAbility(A.ID(),A.getStat("ALLXML"));
+                Log.sysOut("Grinder",mob.name()+" modified ability "+A.ID());
+                return "Ability "+A.ID()+" modified.";
+            }
+            else
+            {
+                CMLib.database().DBCreateAbility(A.ID(),A.getStat("ALLXML"));
+                Log.sysOut("Grinder",mob.name()+" created ability "+A.ID());
+                return "Ability "+A.ID()+" created.";
             }
         }
 		else
