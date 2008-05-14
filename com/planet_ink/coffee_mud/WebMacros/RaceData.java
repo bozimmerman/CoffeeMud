@@ -549,6 +549,12 @@ public class RaceData extends StdWebMacro
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
+            if(parms.containsKey("ISGENERIC"))
+            {
+                Race R2=CMClass.getRace(last);
+                return ""+((R2!=null)&&(R2.isGeneric()));
+            }
+            
             String newRaceID=httpReq.getRequestParameter("NEWRACE");
             Race R = null;
             if(R==null)
@@ -565,17 +571,12 @@ public class RaceData extends StdWebMacro
             }
             if(R==null)
                 R=CMClass.getRace(last);
-            if(parms.containsKey("NEWRACE"))
+            if(parms.containsKey("ISNEWRACE"))
                 return ""+(CMClass.getRace(last)==null);
 	
 			if(R!=null)
 			{
 				StringBuffer str=new StringBuffer("");
-                if(parms.containsKey("ISGENERIC"))
-                {
-                    Race R2=CMClass.getRace(R.ID());
-                    return ""+((R2!=null)&&(R2.isGeneric()));
-                }
 				if(parms.containsKey("HELP"))
 				{
 					StringBuffer s=CMLib.help().getHelpText(R.ID(),null,false);
@@ -640,6 +641,15 @@ public class RaceData extends StdWebMacro
                 {
                     String old=httpReq.getRequestParameter("ARRIVESTR");
                     if(old==null) old=""+R.arriveStr();
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("GENHELP"))
+                {
+                    String old=httpReq.getRequestParameter("GENHELP");
+                    if(old==null){
+                        R=R.makeGenRace();
+                        old=R.getStat("HELP");
+                    }
                     str.append(old+", ");
                 }
                 if(parms.containsKey("HEALTHRACE"))

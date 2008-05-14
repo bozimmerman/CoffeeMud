@@ -241,6 +241,8 @@ public class GrinderRaces
         R.setStat("WEAPONRACE",(old==null)?"WEAPONRACE":old);
         old=httpReq.getRequestParameter("EVENTRACE");
         R.setStat("EVENTRACE",(old==null)?"EVENTRACE":old);
+        old=httpReq.getRequestParameter("GENHELP");
+        R.setStat("HELP", ((old==null)?"":old));
         StringBuffer bodyOld=new StringBuffer("");
         for(int i=0;i<Race.BODYPARTSTR.length;i++)
         {

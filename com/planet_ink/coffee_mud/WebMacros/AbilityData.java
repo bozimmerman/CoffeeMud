@@ -74,7 +74,7 @@ public class AbilityData extends StdWebMacro
         {
             if(A==null)
                 A=CMClass.getAbility(last);
-            if(parms.containsKey("NEWABILITY"))
+            if(parms.containsKey("ISNEWABILITY"))
                 return ""+(CMClass.getAbility(last)==null);
             if(A!=null)
             {
@@ -88,6 +88,12 @@ public class AbilityData extends StdWebMacro
                 {
                     String old=httpReq.getRequestParameter("NAME");
                     if(old==null) old=A.name();
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("GENHELP"))
+                {
+                    String old=httpReq.getRequestParameter("GENHELP");
+                    if(old==null) old=A.getStat("HELP");
                     str.append(old+", ");
                 }
                 // here starts CLASSIFICATION
@@ -127,7 +133,7 @@ public class AbilityData extends StdWebMacro
                 if(parms.containsKey("MAXRANGE"))
                 {
                     String old=httpReq.getRequestParameter("MAXRANGE");
-                    if(old==null) old=""+A.minRange();
+                    if(old==null) old=""+A.maxRange();
                     for(int i=0;i<Ability.RANGE_CHOICES.length;i++)
                         str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(Ability.RANGE_CHOICES[i]));
                     str.append(", ");
@@ -148,15 +154,15 @@ public class AbilityData extends StdWebMacro
                     str.append(CMath.s_bool(old)?"CHECKED":"");
                     str.append(", ");
                 }
-                if(parms.containsKey("FLAGS"))
+                if(parms.containsKey("ABILITY_FLAGS"))
                 {
                     Vector list=new Vector();
-                    if(httpReq.isRequestParameter("FLAGS"))
+                    if(httpReq.isRequestParameter("ABILITY_FLAGS"))
                     {
                         String id="";
                         int num=0;
-                        for(;httpReq.isRequestParameter("FLAGS"+id);id=""+(++num))
-                            list.addElement(httpReq.getRequestParameter("FLAGS"+id));
+                        for(;httpReq.isRequestParameter("ABILITY_FLAGS"+id);id=""+(++num))
+                            list.addElement(httpReq.getRequestParameter("ABILITY_FLAGS"+id));
                     } 
                     else 
                         list=CMParms.parseCommas(A.getStat("FLAGS"),true);
@@ -293,7 +299,7 @@ public class AbilityData extends StdWebMacro
                 if(parms.containsKey("ATTACKCODE"))
                 {
                     String old=httpReq.getRequestParameter("ATTACKCODE");
-                    if(old==null) old=""+A.abstractQuality();
+                    if(old==null) old=""+CMParms.indexOf(CMMsg.TYPE_DESCS,A.getStat("ATTACKCODE"));
                     for(int i=0;i<CMMsg.TYPE_DESCS.length;i++)
                         str.append("<OPTION VALUE=\""+i+"\""+((CMath.s_int(old)==i)?" SELECTED":"")+">"+CMStrings.capitalizeAndLower(CMMsg.TYPE_DESCS[i]));
                     str.append(", ");

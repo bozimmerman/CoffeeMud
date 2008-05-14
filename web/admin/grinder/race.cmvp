@@ -81,7 +81,7 @@
 		}
 		function EditDone()
 		{
-		    @if?RaceData?NEWRACE@
+		    @if?RaceData?ISNEWRACE@
                 if(confirm('Create this new race?'))
             @else@
                 @if?RaceData?ISGENERIC@
@@ -110,7 +110,7 @@
         }
 		function Cancel()
 		{
-			window.close();
+            document.location.href='race.cmvp?AUTH=@Authenticate?AUTH@&RACE=';
 		}
 		function OpenUp(file,named)
 		{
@@ -139,7 +139,7 @@
 		@AddRequestParameter?OLDRACE=@@RequestParameter?RACE@@ @
 		<SELECT NAME=RACE ONCHANGE="javascript:ReRace();">
 		
-		@if?RaceData?NEWRACE@
+		@if?RaceData?ISNEWRACE@
             <OPTION VALUE="@RequestParameter?RACE@" SELECTED>*new* @RequestParameter?RACE@ (Generic)
             @AddRequestParameter?RACE=@
         @else@
@@ -149,10 +149,12 @@
         @RaceNext?RESET@
 		@loop@
 		@RaceNext?ALL@
-		<OPTION VALUE="@RaceID@" @if?CheckReqParm?RACE=@@RequestParameter?OLDRACE@@ @SELECTED@endif@>@RaceName@
+            @if?!CheckReqParm?RACE=GenRace@
+    		  <OPTION VALUE="@RaceID@" @if?CheckReqParm?RACE=@@RequestParameter?OLDRACE@@ @SELECTED@endif@>@RaceName@ @if?RaceData?ISGENERIC@*@endif@
+    		@endif@
 		@back@
 		</SELECT>&nbsp;&nbsp;&nbsp;
-		<INPUT TYPE=BUTTON NAME=NEWRACE VALUE="New" ONCLICK="NewRace();">
+		<INPUT TYPE=BUTTON NAME=BNEWRACE VALUE="New" ONCLICK="NewRace();">
 		@AddRequestParameter?RACE=@@RequestParameter?OLDRACE@@ @
 	</TD>
 	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
@@ -291,20 +293,26 @@
 			<TD WIDTH=25%><FONT COLOR=YELLOW>Cultural Abilities: </FONT></TD>
 			<TD WIDTH=66%><FONT COLOR=WHITE SIZE=-1>@RaceData?CABLE&FONT=<FONT COLOR=WHITE SIZE=-2>@</FONT></TD>
 		</TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Help Entry: </FONT></TD>
+            <TD><TEXTAREA ROWS=10 COLS=85 NAME=GENHELP>@RaceData?GENHELP@</TEXTAREA></TD>
+        </TR>
 	</TABLE>
 @endif@
 <BR>
 <TABLE WIDTH=100% BORDER=0>
 <TR>
-    @if?RaceData?NEWRACE@
-    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
-    @else@
-    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
+    @if?!CheckReqParm?RACE=@
+        @if?RaceData?ISNEWRACE@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
+        @else@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
+        @endif@
+        @if?RaceData?ISGENERIC@
+            <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
+        @endif@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
     @endif@
-    @if?RaceData?ISGENERIC@
-        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
-    @endif@
-    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
 </TR>
 </TABLE>
 </FORM>

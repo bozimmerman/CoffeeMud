@@ -18,7 +18,11 @@
     document.location.href='race.cmvp?AUTH=@Authenticate?AUTH@&RACE=@RaceID@';
 @endif@
 @if?CheckReqParm?FUNCTION=RERACE@
-    document.location.href='race.cmvp?AUTH=@Authenticate?AUTH@&RACE=@RaceID@&NEWRACE=@RequestParameterEncoded?NEWRACEID@';
+    @if?CheckReqParm?NEWRACEID=@
+        document.location.href='race.cmvp?AUTH=@Authenticate?AUTH@&RACE=@RaceID@';
+    @else@
+        document.location.href='race.cmvp?AUTH=@Authenticate?AUTH@&RACE=@RequestParameterEncoded?NEWRACEID@&NEWRACE=@RequestParameterEncoded?NEWRACEID@';
+    @endif@
 @endif@
 //-->
 </SCRIPT>

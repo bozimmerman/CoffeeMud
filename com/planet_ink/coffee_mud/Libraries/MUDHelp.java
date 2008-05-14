@@ -506,7 +506,16 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		helpStr=helpStr.toUpperCase().trim();
 		if(helpStr.indexOf(" ")>=0)
 			helpStr=helpStr.replace(' ','_');
-		String thisTag=rHelpFile.getProperty(helpStr);
+		String thisTag=null;
+
+        CharClass C=CMClass.findCharClass(helpStr.toUpperCase());
+        if((C!=null)&&(C.isGeneric()))
+            thisTag=C.getStat("HELP");
+        Race R=CMClass.findRace(helpStr.toUpperCase());
+        if((R!=null)&&(R.isGeneric()))
+            thisTag=R.getStat("HELP");
+		
+        if(thisTag==null) thisTag=rHelpFile.getProperty(helpStr);
 		boolean areaTag=(thisTag==null)&&helpStr.startsWith("AREAHELP_");
 		if(thisTag==null){thisTag=rHelpFile.getProperty("SPELL_"+helpStr); if(thisTag!=null) helpStr="SPELL_"+helpStr;}
 		if(thisTag==null){thisTag=rHelpFile.getProperty("PRAYER_"+helpStr); if(thisTag!=null) helpStr="PRAYER_"+helpStr;}
@@ -577,9 +586,9 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			        double denom=CMLib.english().matchAnyDenomination(currency,ahelpStr);
 			        if(denom>0.0)
 			        {
-			            Coins C=CMLib.beanCounter().makeCurrency(currency,denom,1);
-			            if((C!=null)&&(C.description().length()>0))
-			                return new StringBuffer(C.name()+" is "+C.description().toLowerCase());
+			            Coins C2=CMLib.beanCounter().makeCurrency(currency,denom,1);
+			            if((C2!=null)&&(C2.description().length()>0))
+			                return new StringBuffer(C.name()+" is "+C2.description().toLowerCase());
 			        }
 			    }
 			}
@@ -602,6 +611,16 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					helpStr=helpStr.toUpperCase();
 					found=true;
 				}
+			}
+			
+			if(!found)
+			{
+		        Ability A=CMClass.findAbility(helpStr.toUpperCase());
+		        if((A!=null)&&(A.isGeneric()))
+		        {
+		            thisTag=A.getStat("HELP");
+		            found=true;
+		        }
 			}
 		}
 		if(!areaTag)

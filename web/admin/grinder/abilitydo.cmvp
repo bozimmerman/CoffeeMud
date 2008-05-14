@@ -18,7 +18,11 @@
     document.location.href='ability.cmvp?AUTH=@Authenticate?AUTH@&ABILITY=@AbilityID@';
 @endif@
 @if?CheckReqParm?FUNCTION=REABILITY@
-    document.location.href='ability.cmvp?AUTH=@Authenticate?AUTH@&ABILITY=@AbilityID@&NEWABILITY=@RequestParameterEncoded?NEWABILITYID@';
+    @if?CheckReqParm?NEWABILITYID=@
+        document.location.href='ability.cmvp?AUTH=@Authenticate?AUTH@&ABILITY=@AbilityID@';
+    @else@
+        document.location.href='ability.cmvp?AUTH=@Authenticate?AUTH@&ABILITY=@RequestParameterEncoded?NEWABILITYID@&NEWABILITY=@RequestParameterEncoded?NEWABILITYID@';
+    @endif@
 @endif@
 //-->
 </SCRIPT>

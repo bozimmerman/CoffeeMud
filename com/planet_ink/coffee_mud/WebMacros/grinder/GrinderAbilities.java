@@ -66,15 +66,16 @@ public class GrinderAbilities {
         old=httpReq.getRequestParameter("AUTOINVOKE");
         A.setStat("AUTOINVOKE",(old==null)?"":""+old.equalsIgnoreCase("on"));
         Vector V=new Vector();
-        if(httpReq.isRequestParameter("FLAGS"))
+        if(httpReq.isRequestParameter("ABILITY_FLAGS"))
         {
             String id="";
             int num=0;
-            for(;httpReq.isRequestParameter("FLAGS"+id);id=""+(++num))
-                V.addElement(httpReq.getRequestParameter("FLAGS"+id));
+            for(;httpReq.isRequestParameter("ABILITY_FLAGS"+id);id=""+(++num))
+                V.addElement(httpReq.getRequestParameter("ABILITY_FLAGS"+id));
         } 
-        old=httpReq.getRequestParameter("FLAGS");
         A.setStat("FLAGS",CMParms.toStringList(V));
+        old=httpReq.getRequestParameter("GENHELP");
+        A.setStat("HELP", old==null?"":old);
         old=httpReq.getRequestParameter("OVERRIDEMANA");
         x1=CMath.s_int(old);
         if(((x1>0)&&(x1<Integer.MAX_VALUE-101))) 
@@ -137,7 +138,7 @@ public class GrinderAbilities {
             for(;httpReq.isRequestParameter("POSTCASTAFFECT"+id);id=""+(++num))
                 V.addElement(httpReq.getRequestParameter("POSTCASTAFFECT"+id));
         } 
-        A.setStat("POSTCASTABILITY",CMParms.toSemicolonList(V));
+        A.setStat("POSTCASTAFFECT",CMParms.toSemicolonList(V));
         V.clear();
         if(httpReq.isRequestParameter("POSTCASTABILITY"))
         {

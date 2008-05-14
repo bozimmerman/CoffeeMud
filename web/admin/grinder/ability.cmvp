@@ -53,7 +53,7 @@
         }
         function EditDone()
         {
-            @if?AbilityData?NEWABILITY@
+            @if?AbilityData?ISNEWABILITY@
                 if(confirm('Create this new ability?'))
             @else@
                 @if?AbilityData?ISGENERIC@
@@ -82,7 +82,7 @@
         }
         function Cancel()
         {
-            window.close();
+            document.location.href='ability.cmvp?AUTH=@Authenticate?AUTH@&ABILITY=';
         }
         function OpenUp(file,named)
         {
@@ -109,11 +109,10 @@
     <TD WIDTH=33% ALIGN=LEFT VALIGN=CENTER>
         <FONT COLOR=WHITE>Ability: </FONT>
         @AddRequestParameter?OLDABILITY=@@RequestParameter?ABILITY@@ @
-        @AddRequestParameter?OLDFLAGS=@@RequestParameter?FLAGS@@ @
         @AddRequestParameter?FLAGS=@
         <SELECT NAME=ABILITY ONCHANGE="javascript:ReAbility();">
         
-        @if?AbilityData?NEWABILITY@
+        @if?AbilityData?ISNEWABILITY@
             <OPTION VALUE="@RequestParameter?ABILITY@" SELECTED>*new* @RequestParameter?ABILITY@
             @AddRequestParameter?ABILITY=@
         @else@
@@ -125,7 +124,6 @@
         </SELECT>&nbsp;&nbsp;&nbsp;
         <INPUT TYPE=BUTTON NAME=NEWABILITY VALUE="New" ONCLICK="NewAbility();">
         @AddRequestParameter?ABILITY=@@RequestParameter?OLDABILITY@@ @
-        @AddRequestParameter?FLAGS=@@RequestParameter?OLDFLAGS@@ @
     </TD>
     <TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
     <TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
@@ -200,7 +198,7 @@
         <TR>
             <TD><FONT COLOR=YELLOW>Skill Flags: </FONT></TD>
             <TD>
-                <SELECT NAME=FLAGS MULTIPLE>@AbilityData?FLAGS@</SELECT>
+                <SELECT NAME=ABILITY_FLAGS MULTIPLE>@AbilityData?ABILITY_FLAGS@</SELECT>
             </TD>
         </TR>
         <TR>
@@ -318,21 +316,27 @@
                 <INPUT TYPE=TEXT SIZE=40 MAXLENGTH=255 NAME=POSTCASTDAMAGE VALUE="@AbilityData?POSTCASTDAMAGE@">
             </TD>
         </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Help Entry: </FONT></TD>
+            <TD><TEXTAREA ROWS=10 COLS=85 NAME=GENHELP>@AbilityData?GENHELP@</TEXTAREA></TD>
+        </TR>
         
     </TABLE>
 @endif@
 <BR>
 <TABLE WIDTH=100% BORDER=0>
 <TR>
-    @if?AbilityData?NEWABILITY@
-    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
-    @else@
-    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
+    @if?!CheckReqParm?ABILITY=@
+        @if?AbilityData?ISNEWABILITY@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
+        @else@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
+        @endif@
+        @if?AbilityData?ISGENERIC@
+            <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
+        @endif@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
     @endif@
-    @if?AbilityData?ISGENERIC@
-        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
-    @endif@
-    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
 </TR>
 </TABLE>
 </FORM>

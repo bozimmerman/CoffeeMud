@@ -18,7 +18,11 @@
     document.location.href='charclass.cmvp?AUTH=@Authenticate?AUTH@&CLASS=@CharClassID@';
 @endif@
 @if?CheckReqParm?FUNCTION=RECLASS@
-    document.location.href='charclass.cmvp?AUTH=@Authenticate?AUTH@&CLASS=@CharClassID@&NEWCLASS=@RequestParameterEncoded?NEWCLASSID@';
+    @if?CheckReqParm?NEWCLASSID=@
+        document.location.href='charclass.cmvp?AUTH=@Authenticate?AUTH@&CLASS=@CharClassID@';
+    @else@
+        document.location.href='charclass.cmvp?AUTH=@Authenticate?AUTH@&CLASS=@RequestParameterEncoded?NEWCLASSID@&NEWCLASS=@RequestParameterEncoded?NEWCLASSID@';
+    @endif@
 @endif@
 //-->
 </SCRIPT>

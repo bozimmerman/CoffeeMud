@@ -89,6 +89,8 @@ public class GenCharClass extends StdCharClass
     protected Vector[] securityGroups={};
     protected Integer[] securityGroupLevels={};
     protected Hashtable securityGroupCache=new Hashtable();
+    protected String helpEntry = "";
+    
     public Vector getSecurityGroups(int classLevel)
     {
         if(securityGroups.length==0)
@@ -301,6 +303,7 @@ public class GenCharClass extends StdCharClass
 		str.append(CMLib.xml().convertXMLtoTag("STRBON",otherBonuses));
 		str.append(CMLib.xml().convertXMLtoTag("QUAL",qualifications));
 		str.append(CMLib.xml().convertXMLtoTag("PLAYER",""+selectability));
+        str.append(CMLib.xml().convertXMLtoTag("HELP",CMLib.xml().parseOutAngleBrackets(helpEntry)));
 		if(adjEStats==null) str.append("<ESTATS/>");
 		else
 			str.append(CMLib.xml().convertXMLtoTag("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(adjEStats)));
@@ -463,6 +466,7 @@ public class GenCharClass extends StdCharClass
 		otherLimitations=CMLib.xml().getValFromPieces(classData,"STRLMT");
 		otherBonuses=CMLib.xml().getValFromPieces(classData,"STRBON");
 		qualifications=CMLib.xml().getValFromPieces(classData,"QUAL");
+		helpEntry=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(classData,"HELP"));
 		String s=CMLib.xml().getValFromPieces(classData,"PLAYER");
 		if(CMath.isNumber(s))
 		    selectability=CMath.s_int(s);
@@ -612,7 +616,7 @@ public class GenCharClass extends StdCharClass
 									 "GETOFTPARM","HPDIE","MANADICE","MANADIE","DISFLAGS",
 									 "STARTASTATE","NUMNAME","NAMELEVEL","NUMSSET","SSET",
                                      "SSETLEVEL","NUMWMAT","GETWMAT","ARMORMINOR","STATCLASS",
-                                     "EVENTCLASS","GETCABLEPREQ","GETCABLEMASK"
+                                     "EVENTCLASS","GETCABLEPREQ","GETCABLEMASK","HELP"
 									 }; 
     
 	public String getStat(String code)
@@ -688,6 +692,7 @@ public class GenCharClass extends StdCharClass
         case 50: return this.getCharClassLocatorID(eventBuddy);
         case 51: return (String)getAbleSet().elementAt(num,7);
         case 52: return (String)getAbleSet().elementAt(num,8);
+        case 53: return helpEntry;
 		}
 		return "";
 	}
@@ -880,6 +885,7 @@ public class GenCharClass extends StdCharClass
         }
         case 51: tempables[6]=val; break;
         case 52: tempables[7]=val; break;
+        case 53: helpEntry=val; break;
 		}
 	}
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)

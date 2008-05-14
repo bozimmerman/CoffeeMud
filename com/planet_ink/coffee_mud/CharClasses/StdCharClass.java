@@ -393,6 +393,7 @@ public class StdCharClass implements CharClass
         CR.setStat("STRLMT",""+otherLimitations());
         CR.setStat("STRBON",""+otherBonuses());
         CR.setStat("PLAYER",""+availabilityCode());
+        CR.setStat("HELP",""+CMLib.help().getHelpText(name(),null,false));
         
         StringBuffer quals=new StringBuffer("");
         String q=statQualifications().toUpperCase();

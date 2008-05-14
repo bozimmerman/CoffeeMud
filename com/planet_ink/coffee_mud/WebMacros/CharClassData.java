@@ -244,6 +244,12 @@ public class CharClassData extends StdWebMacro
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
+            if(parms.containsKey("ISGENERIC"))
+            {
+                CharClass C2=CMClass.getCharClass(last);
+                return ""+((C2!=null)&&(C2.isGeneric()));
+            }
+            
 			CharClass C=null;
             String newClassID=httpReq.getRequestParameter("NEWCLASS");
             if(C==null)
@@ -260,16 +266,11 @@ public class CharClassData extends StdWebMacro
             }
             if(C==null)
                 C=CMClass.getCharClass(last);
-            if(parms.containsKey("NEWCLASS"))
+            if(parms.containsKey("ISNEWCLASS"))
                 return ""+(CMClass.getCharClass(last)==null);
 			if(C!=null)
 			{
 				StringBuffer str=new StringBuffer("");
-                if(parms.containsKey("ISGENERIC"))
-                {
-                    CharClass C2=CMClass.getCharClass(C.ID());
-                    return ""+((C2!=null)&&(C2.isGeneric()));
-                }
                 if(parms.containsKey("NAME"))
                 {
                     String old=httpReq.getRequestParameter("NAME");
@@ -476,6 +477,15 @@ public class CharClassData extends StdWebMacro
                     String old=httpReq.getRequestParameter("LVLMOVE");
                     if(old==null) old=""+C.getMovementMultiplier();
                     if(CMath.s_int(old)<=0) old="0";
+                    str.append(old+", ");
+                }
+                if(parms.containsKey("GENHELP"))
+                {
+                    String old=httpReq.getRequestParameter("GENHELP");
+                    if(old==null){
+                        C=C.makeGenCharClass();
+                        old=C.getStat("HELP");
+                    }
                     str.append(old+", ");
                 }
                 if(parms.containsKey("ARMOR"))

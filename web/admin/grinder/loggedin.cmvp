@@ -98,7 +98,7 @@
 	<A href="javascript:Clicked('players.cmvp')"><FONT COLOR=WHITE>Player Manager</FONT></a>
 	<BR>
 	@endif@
-	@if?CheckAuthCode?AUTH_STAT=true&AUTH_CMDCLANS=true@
+	@if?CheckAuthCode?AUTH_CMDCLANS=true@
 	<A href="javascript:Clicked('clans.cmvp')"><FONT COLOR=WHITE>Clan Manager</FONT></a>
 	<BR>
 	@endif@

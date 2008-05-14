@@ -121,10 +121,10 @@
             document.RESOURCES.action='/grinder/holidaydo.cmvp';
             document.RESOURCES.submit();
         }
-		function Cancel()
-		{
-			window.close();
-		}
+        function Cancel()
+        {
+            document.location.href='holiday.cmvp?AUTH=@Authenticate?AUTH@';
+        }
 		function OpenUp(file,named)
 		{
 			var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
@@ -295,8 +295,8 @@
         @else@
             <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
         @endif@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
     @endif@
-    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
 </TR>
 </TABLE>
 </FORM>

@@ -591,6 +591,7 @@ public class StdRace implements Race
 		GR.setStat("HEALTHRACE",CMClass.classID(this));
 		GR.setStat("EVENTRACE",CMClass.classID(this));
 		GR.setStat("BODYKILL",""+destroyBodyAfterUse());
+		GR.setStat("HELP",""+CMLib.help().getHelpText(name(),null,false));
 		GR.setStat("AGING",CMParms.toStringList(getAgingChart()));
 		for(int i=0;i<Race.BODYPARTSTR.length;i++)
 				GR.bodyMask()[i]=bodyMask()[i];

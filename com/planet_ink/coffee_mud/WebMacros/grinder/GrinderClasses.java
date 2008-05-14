@@ -170,6 +170,8 @@ public class GrinderClasses
         C.setStat("ASTATS",GrinderRaces.getCStats('A',httpReq));
         C.setStat("ASTATE",GrinderRaces.getCState('A',httpReq));
         C.setStat("STARTASTATE",GrinderRaces.getCState('S',httpReq));
+        old=httpReq.getRequestParameter("GENHELP");
+        C.setStat("HELP", ((old==null)?"":old));
         String id="";
         Vector V=new Vector();
         for(int i=0;httpReq.isRequestParameter("NOWEAPS"+id);id=""+(++i))

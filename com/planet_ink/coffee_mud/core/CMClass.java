@@ -493,6 +493,18 @@ public class CMClass extends ClassLoader
 		return thisItem;
 	}
 
+    public static Race findRace(String calledThis)
+    {
+        Race thisItem=getRace(calledThis);
+        if(thisItem!=null) return thisItem;
+        for(int i=0;i<races.size();i++)
+        {
+            Race R=(Race)races.elementAt(i);
+            if(R.name().equalsIgnoreCase(calledThis))
+                return R;
+        }
+        return null;
+    }
     public static CharClass findCharClass(String calledThis)
     {
         CharClass thisItem=getCharClass(calledThis);

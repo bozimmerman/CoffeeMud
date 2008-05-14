@@ -63,7 +63,8 @@ public class GenAbility extends StdAbility
     private static final int V_PAFF=22;//S
     private static final int V_PABL=23;//S
     private static final int V_PDMG=24;//S
-    private static final int NUM_VS=25;//S
+    private static final int V_HELP=25;//S
+    private static final int NUM_VS=26;//S
     private static final Object[] makeEmpty()
     {
         Object[] O=new Object[NUM_VS];
@@ -92,6 +93,7 @@ public class GenAbility extends StdAbility
         O[V_PAFF]="";
         O[V_PABL]="";
         O[V_PDMG]="1";
+        O[V_HELP]="<ABILITY>This ability is not yet documented.";
         return O;
     }
     private static final Object V(String ID, int varNum)
@@ -197,7 +199,7 @@ public class GenAbility extends StdAbility
     	&&(((String)V(ID,V_CMSK)).length()>0)
     	&&(!CMLib.masking().maskCheck((String)V(ID,V_CMSK), mob,true)))
     	{
-    		mob.tell(CMLib.masking().maskDesc((String)V(ID,V_CMSK)));
+    		mob.tell("You do not meet the requirements: "+CMLib.masking().maskDesc((String)V(ID,V_CMSK)));
     		return false;
     	}
         // dont forget to allow super. calls to Spell.invoke, Chant.invoke, etc.. based on classification?
@@ -535,7 +537,8 @@ public class GenAbility extends StdAbility
                                          "ATTACKCODE",//23I
                                          "POSTCASTAFFECT",//24S
                                          "POSTCASTABILITY",//25S
-                                         "POSTCASTDAMAGE"//26I
+                                         "POSTCASTDAMAGE",//26I
+                                         "HELP"//27I
                                         };
     public String[] getStatCodes(){return CODES;}
     protected int getCodeNum(String code){
@@ -573,6 +576,7 @@ public class GenAbility extends StdAbility
         case 24: return (String)V(ID,V_PAFF);
         case 25: return (String)V(ID,V_PABL);
         case 26: return (String)V(ID,V_PDMG);
+        case 27: return (String)V(ID,V_HELP);
         default:
         	if(code.equalsIgnoreCase("allxml")) return getAllXML();
         	break;
@@ -634,6 +638,7 @@ public class GenAbility extends StdAbility
         case 24: SV(ID,V_PAFF,val); break;
         case 25: SV(ID,V_PABL,val); break;
         case 26: SV(ID,V_PDMG,val); break;
+        case 27: SV(ID,V_HELP,val); break;
         default:
         	if(code.equalsIgnoreCase("allxml")&&ID.equalsIgnoreCase("GenAbility")) parseAllXML(val);
         	break;

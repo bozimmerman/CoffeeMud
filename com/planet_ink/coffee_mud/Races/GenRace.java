@@ -88,6 +88,7 @@ public class GenRace extends StdRace
 	protected Race healthBuddy=null;
 	protected Race eventBuddy=null;
 	protected Race weaponBuddy=null;
+	protected String helpEntry = "";
 
 	protected String[] racialEffectNames=null;
 	protected int[] racialEffectLevels=null;
@@ -222,6 +223,7 @@ public class GenRace extends StdRace
 		str.append(CMLib.xml().convertXMLtoTag("WEAPONRACE",getRaceLocatorID(weaponBuddy)));
 		str.append(CMLib.xml().convertXMLtoTag("ARRIVE",arriveStr()));
 		str.append(CMLib.xml().convertXMLtoTag("LEAVE",leaveStr()));
+        str.append(CMLib.xml().convertXMLtoTag("HELP",CMLib.xml().parseOutAngleBrackets(helpEntry)));
 		str.append(CMLib.xml().convertXMLtoTag("AGING",CMParms.toStringList(getAgingChart())));
 		if(adjEStats==null) str.append("<ESTATS/>");
 		else
@@ -370,6 +372,7 @@ public class GenRace extends StdRace
 		heightVariance=CMLib.xml().getIntFromPieces(raceData,"VHEIGHT");
 		shortestFemale=CMLib.xml().getIntFromPieces(raceData,"FHEIGHT");
 		shortestMale=CMLib.xml().getIntFromPieces(raceData,"MHEIGHT");
+		helpEntry=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(raceData,"HELP"));
 		String playerval=CMLib.xml().getValFromPieces(raceData,"PLAYER").trim().toUpperCase();
 		if(playerval.length()>0)
 		{
@@ -542,7 +545,7 @@ public class GenRace extends StdRace
 									 "NUMCABLE","GETCABLE","GETCABLEPROF",
 									 "NUMOFT","GETOFTID","GETOFTPARM","BODYKILL",
 									 "NUMREFF","GETREFF","GETREFFPARM","GETREFFLVL","AGING",
-									 "DISFLAGS","STARTASTATE","EVENTRACE","WEAPONRACE"
+									 "DISFLAGS","STARTASTATE","EVENTRACE","WEAPONRACE", "HELP"
 									 };
 	public String getStat(String code)
 	{
@@ -606,6 +609,7 @@ public class GenRace extends StdRace
 		case 41: return (startAdjState==null)?"":CMLib.coffeeMaker().getCharStateStr(startAdjState);
 		case 42: return getRaceLocatorID(eventBuddy);
 		case 43: return getRaceLocatorID(weaponBuddy);
+		case 44: return helpEntry;
 		}
 		return "";
 	}
@@ -824,6 +828,11 @@ public class GenRace extends StdRace
 			if(weaponBuddy==null)
 				weaponBuddy=(Race)CMClass.unsortedLoadClass("RACE",val,true);
 			break;
+		}
+		case 44:
+		{
+		    helpEntry=val;
+		    break;
 		}
 		}
 	}

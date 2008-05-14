@@ -81,7 +81,7 @@
         }
         function EditDone()
         {
-            @if?CharClassData?NEWCLASS@
+            @if?CharClassData?ISNEWCLASS@
                 if(confirm('Create this new class?'))
             @else@
                 @if?CharClassData?ISGENERIC@
@@ -110,7 +110,7 @@
         }
         function Cancel()
         {
-            window.close();
+            document.location.href='charclass.cmvp?AUTH=@Authenticate?AUTH@&CLASS=';
         }
         function OpenUp(file,named)
         {
@@ -139,7 +139,7 @@
         @AddRequestParameter?OLDCLASS=@@RequestParameter?CLASS@@ @
         <SELECT NAME=CLASS ONCHANGE="javascript:ReClass();">
         
-        @if?CharClassData?NEWCLASS@
+        @if?CharClassData?ISNEWCLASS@
             <OPTION VALUE="@RequestParameter?CLASS@" SELECTED>*new* @RequestParameter?CLASS@ (Generic)
             @AddRequestParameter?CLASS=@
         @else@
@@ -149,10 +149,12 @@
         @CharClassNext?RESET@
         @loop@
         @CharClassNext?ALL@
-        <OPTION VALUE="@CharClassID@" @if?CheckReqParm?CLASS=@@RequestParameter?OLDCLASS@@ @SELECTED@endif@>@CharClassName@
+            @if?!CheckReqParm?CLASS=GenCharClass@
+                <OPTION VALUE="@CharClassID@" @if?CheckReqParm?CLASS=@@RequestParameter?OLDCLASS@@ @SELECTED@endif@>@CharClassName@  @if?CharClassData?ISGENERIC@*@endif@
+            @endif@
         @back@
         </SELECT>&nbsp;&nbsp;&nbsp;
-        <INPUT TYPE=BUTTON NAME=NEWCLASS VALUE="New" ONCLICK="NewClass();">
+        <INPUT TYPE=BUTTON NAME=BNEWCLASS VALUE="New" ONCLICK="NewClass();">
         @AddRequestParameter?CLASS=@@RequestParameter?OLDCLASS@@ @
     </TD>
     <TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
@@ -312,6 +314,10 @@
             <TD><FONT COLOR=YELLOW>Special-Event Class: </FONT></TD>
             <TD><SELECT NAME=EVENTCLASS>@CharClassData?EVENTCLASS@</SELECT></TD>
         </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Help Entry: </FONT></TD>
+            <TD><TEXTAREA ROWS=10 COLS=85 NAME=GENHELP>@CharClassData?GENHELP@</TEXTAREA></TD>
+        </TR>
         <TR VALIGN=TOP>
             <TD VALIGN=TOP><FONT COLOR=YELLOW>Class Abilities: </FONT><BR>
 	        <INPUT TYPE=CHECKBOX NAME=SHOWPREREQS ONCLICK="ReShow();" @if?CheckReqParm?SHOWPREREQS=@ @else@CHECKED@endif@><FONT COLOR=WHITE>Show Pre-Requisites</FONT>&nbsp;<A HREF="javascript:OpenUp('ahelp.cmvp','ABILITY_PREREQS')"><FONT COLOR=WHITE><I>?</I></FONT></a><BR>
@@ -325,15 +331,17 @@
 <BR>
 <TABLE WIDTH=100% BORDER=0>
 <TR>
-    @if?CharClassData?NEWCLASS@
-    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
-    @else@
-    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
+    @if?!CheckReqParm?CLASS=@
+        @if?CharClassData?ISNEWCLASS@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
+        @else@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
+        @endif@
+        @if?CharClassData?ISGENERIC@
+            <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
+        @endif@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
     @endif@
-    @if?CharClassData?ISGENERIC@
-        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
-    @endif@
-    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
 </TR>
 </TABLE>
 </FORM>
