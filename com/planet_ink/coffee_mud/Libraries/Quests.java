@@ -114,14 +114,15 @@ public class Quests extends StdLibrary implements QuestManager
             if((lF.exists())&&(!vF.exists())&&(lF.canRead())&&(vF.canWrite()))
             {
                 byte[] O=lF.raw();
-                if((O.length>0)&&(vF.saveRaw(O)))
-                {
-                    Q=(Quest)CMClass.getCommon("DefaultQuest");
-                    Q.setScript(holidayDefinition);
-                    addQuest(Q);
-                    CMLib.database().DBUpdateQuest(Q);
-                    Q=fetchQuest("holidays");
-                }
+                vF.saveRaw(O);
+            }
+            if(Q==null) 
+            {
+                Q=(Quest)CMClass.getCommon("DefaultQuest");
+                Q.setScript(holidayDefinition);
+                addQuest(Q);
+                CMLib.database().DBUpdateQuest(Q);
+                Q=fetchQuest("holidays");
             }
             if(Q==null)
                 return "A quest named 'holidays', with the script definition '"+holidayDefinition+"' has not been created.  Enter the following to create this quest:\n\r"
