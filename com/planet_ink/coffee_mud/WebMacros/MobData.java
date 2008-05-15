@@ -50,7 +50,7 @@ public class MobData extends StdWebMacro
       "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK",
       "LOANINT","SVCRIT","AUCCHAIN","LIVELIST","TIMELIST",
       "TIMELISTPCT","LIVECUT","TIMECUT","MAXDAYS",
-      "MINDAYS","ISAUCTION"};
+      "MINDAYS","ISAUCTION","DEITYID"};
 	public static int getShopCardinality(ShopKeeper E, Environmental O)
 	{
 		Vector V=E.getShop().getStoreInventory();
@@ -1362,6 +1362,19 @@ public class MobData extends StdWebMacro
             case 62: // is auction
                 if(M instanceof Auctioneer) return "true";
                 return "false";
+            case 63: // deityid
+            {
+                if(firstTime) old=M.getWorshipCharID();
+                for(Enumeration d=CMLib.map().deities();d.hasMoreElements();)
+                {
+                    Deity D=(Deity)d.nextElement();
+                    str.append("<OPTION VALUE=\""+D.Name()+"\"");
+                    if(D.Name().equalsIgnoreCase(old))
+                        str.append(" SELECTED");
+                    str.append(">"+D.Name());
+                }
+                break;
+            }
 			}
 			if(firstTime)
 				httpReq.addRequestParameters(okparms[o],old.equals("checked")?"on":old);

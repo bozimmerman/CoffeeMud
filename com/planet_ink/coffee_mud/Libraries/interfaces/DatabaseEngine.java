@@ -113,6 +113,7 @@ public interface DatabaseEngine extends CMLibrary
 	public boolean DBReadUserOnly(MOB mob);
 	public boolean DBUserSearch(MOB mob, String Login);
 	public void vassals(MOB mob, String liegeID);
+    public DVector worshippers(String deityID);
 	public Vector DBReadAllPlayerData(String playerID);
 	public Vector DBReadData(String playerID, String section);
 	public int DBCountData(String playerID, String section);

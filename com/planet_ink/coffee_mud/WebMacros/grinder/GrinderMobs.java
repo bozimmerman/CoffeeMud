@@ -49,7 +49,7 @@ public class GrinderMobs
       "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK",
       "LOANINT","SVCRIT","AUCCHAIN","LIVELIST","TIMELIST",
       "TIMELISTPCT","LIVECUT","TIMECUT","MAXDAYS",
-      "MINDAYS","ISAUCTION"};
+      "MINDAYS","ISAUCTION","DEITYID"};
 	public static String senses(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		E.baseEnvStats().setSensesMask(0);
@@ -607,6 +607,15 @@ public class GrinderMobs
 	                break;
 	            case 64: // is auction
 	                break;
+                case 65: // deity
+                    /*
+                    if(old.length()==0)
+                        M.setWorshipCharID("");
+                    else
+                    if(CMLib.map().getDeity(old)!=null)
+                        M.setWorshipCharID(CMLib.map().getDeity(old).Name());
+                    */
+                    break;
 				}
 			}
 

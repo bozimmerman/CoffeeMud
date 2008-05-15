@@ -38,6 +38,15 @@ public class DeityData extends StdWebMacro
 	// valid parms include description, worshipreq, clericreq,
 	// worshiptrig, clerictrig, worshipsintrig,clericsintrig,powertrig
 
+	private DVector getDeityData(ExternalHTTPRequests httpReq, String deityName)
+	{
+        DVector folData=(DVector)httpReq.getRequestObjects().get("DEITYDATAFOR-"+deityName.toUpperCase().trim());
+        if(folData!=null) return folData;
+        folData = CMLib.database().worshippers(deityName);
+        httpReq.getRequestObjects().put("DEITYDATAFOR-"+deityName.toUpperCase().trim(),folData);
+        return folData;
+	}
+	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
@@ -51,6 +60,15 @@ public class DeityData extends StdWebMacro
 				StringBuffer str=new StringBuffer("");
 				if(parms.containsKey("DESCRIPTION"))
 					str.append(D.description()+", ");
+                if(parms.containsKey("NAME"))
+                    str.append(D.Name()+", ");
+                if(parms.containsKey("LOCATION"))
+                {
+                    if(D.location()==null)
+                        str.append("Nowhere, ");
+                    else
+                        str.append(CMLib.map().getExtendedRoomID(D.location())+": "+D.location().displayText()+", ");
+                }
 				if(parms.containsKey("WORSHIPREQ"))
 					str.append(D.getWorshipRequirementsDesc()+", ");
 				if(parms.containsKey("CLERICREQ"))
@@ -75,6 +93,25 @@ public class DeityData extends StdWebMacro
 					if(parms.containsKey("CLERICTRIG"))
 						str.append(D.getClericTriggerDesc()+", ");
 				}
+                if(parms.containsKey("NUMFOLLOWERS"))
+                {
+                    DVector data=getDeityData(httpReq,D.Name());
+                    int num=data.size();
+                    str.append(num+", ");
+                }
+				if(parms.containsKey("NUMPRIESTS"))
+			    {
+				    DVector data=getDeityData(httpReq,D.Name());
+				    int num=0;
+	                //DV.addElement(username, cclass, ""+level, race);
+				    for(int d=0;d<data.size();d++)
+				    {
+				        CharClass C=CMClass.getCharClass((String)data.elementAt(d, 2));
+				        if((C!=null)&&(C.baseClass().equalsIgnoreCase("CLERIC")))
+				            num++;
+				    }
+				    str.append(num+", ");
+			    }
 				String strstr=str.toString();
 				if(strstr.endsWith(", "))
 					strstr=strstr.substring(0,strstr.length()-2);

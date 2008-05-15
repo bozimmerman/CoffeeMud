@@ -385,6 +385,31 @@ public class BaseGenerics extends StdCommand
 		}
 	}
 
+    protected void genDeity(MOB mob, MOB E, int showNumber, int showFlag)
+    throws IOException
+    {
+        if((showFlag<=0)||(showFlag==showNumber))
+        {
+            mob.tell(showNumber+". Deity (ID): '"+E.getWorshipCharID()+"'.");
+            if((showFlag==showNumber)||(showFlag<=-999))
+            {
+                String newName=mob.session().prompt("Enter a new one (null)\n\r:","");
+                if(newName.equalsIgnoreCase("null"))
+                    E.setWorshipCharID("");
+                else
+                if(newName.length()>0)
+                {
+                    if(CMLib.map().getDeity(newName)==null)
+                        mob.tell("That deity does not exist.");
+                    else
+                        E.setWorshipCharID(CMLib.map().getDeity(newName).Name());
+                }
+                else
+                    mob.tell("(no change)");
+            }
+        }
+    }
+
 	protected void genArchivePath(MOB mob, Area E, int showNumber, int showFlag) throws IOException
     {   E.setArchivePath(CMLib.english().prompt(mob,E.getArchivePath(),showNumber,showFlag,"Archive Path",true,false,"Path/filename for EXPORT AREA command.  Enter NULL for default."));}
 
@@ -6297,6 +6322,7 @@ public class BaseGenerics extends StdCommand
 			genHeight(mob,me,++showNumber,showFlag);
 			genWeight(mob,me,++showNumber,showFlag);
 			genClan(mob,me,++showNumber,showFlag);
+            genDeity(mob,me,++showNumber,showFlag);
 			genSpeed(mob,me,++showNumber,showFlag);
 			genAttack(mob,me,++showNumber,showFlag);
 			genDamage(mob,me,++showNumber,showFlag);

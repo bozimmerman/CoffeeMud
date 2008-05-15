@@ -442,6 +442,44 @@ public class MOBloader
         if(D!=null) DB.DBDone(D);
     }
 
+    public DVector worshippers(String deityID)
+    {
+        DBConnection D=null;
+        DVector DV=new DVector(4);
+        try
+        {
+            D=DB.DBFetch();
+            ResultSet R=D.query("SELECT * FROM CMCHAR WHERE CMWORS='"+deityID+"'");
+            if(R!=null) while(R.next())
+            {
+                String username=DBConnections.getRes(R,"CMUSERID");
+                String cclass=DBConnections.getRes(R,"CMCLAS");
+                int x=cclass.lastIndexOf(";");
+                if((x>0)&&(x<cclass.length()-2)) cclass=CMClass.getCharClass(cclass.substring(x+1)).name();
+                String race=(CMClass.getRace(DBConnections.getRes(R,"CMRACE"))).name();
+                String lvl=DBConnections.getRes(R,"CMLEVL");
+                x=lvl.indexOf(";");
+                int level=0;
+                while(x>=0)
+                {
+                    level+=CMath.s_int(lvl.substring(0,x));
+                    lvl=lvl.substring(x+1);
+                    x=lvl.indexOf(";");
+                }
+                if(lvl.length()>0) level+=CMath.s_int(lvl);
+                DV.addElement(username,
+                              cclass,
+                              ""+level,
+                              race);
+            }
+        }catch(Exception sqle)
+        {
+            Log.errOut("MOB",sqle);
+        }
+        if(D!=null) DB.DBDone(D);
+        return DV;
+    }
+
     public void DBReadFollowers(MOB mob, boolean bringToLife)
     {
         Room location=mob.location();

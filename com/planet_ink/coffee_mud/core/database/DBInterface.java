@@ -66,6 +66,9 @@ public class DBInterface implements DatabaseEngine
 	public void vassals(MOB mob, String liegeID)
 	{MOBloader.vassals(mob,liegeID);}
 	
+    public DVector worshippers(String deityID)
+    {return MOBloader.worshippers(deityID);}
+    
 	public Vector getUserList()
 	{return MOBloader.getUserList();}
 
