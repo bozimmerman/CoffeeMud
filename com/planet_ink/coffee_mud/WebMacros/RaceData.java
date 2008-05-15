@@ -613,6 +613,16 @@ public class RaceData extends StdWebMacro
                     if(old==null) old=""+R.lightestWeight();
                     str.append(old+", ");
                 }
+                if(parms.containsKey("WEIGHT"))
+                {
+                    str.append(""+(R.lightestWeight()+(R.weightVariance()/2))+", ");
+                }
+                if(parms.containsKey("HEIGHT"))
+                {
+                    int m=(R.shortestMale()+R.shortestFemale())/2;
+                    m+=(R.heightVariance()/2);
+                    str.append(m+", ");
+                }
                 if(parms.containsKey("VHEIGHT"))
                 {
                     String old=httpReq.getRequestParameter("VHEIGHT");

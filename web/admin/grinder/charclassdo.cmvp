@@ -10,12 +10,22 @@
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 @if?CheckReqParm?FUNCTION=DELCLASS@
-    alert('@MUDGrinder?DELCLASS@');
-    document.location.href='charclass.cmvp?AUTH=@Authenticate?AUTH@&CLASS=';
+    var v='@MUDGrinder?DELCLASS@';
+    if(v != '')
+        alert(v);
+    else
+        alert('Class deleted.');
+    opener.Refresh();
+    window.close();
 @endif@
 @if?CheckReqParm?FUNCTION=EDITCLASS@
-    alert('@MUDGrinder?EDITCLASS@');
-    document.location.href='charclass.cmvp?AUTH=@Authenticate?AUTH@&CLASS=@CharClassID@';
+    var v='@MUDGrinder?EDITCLASS@';
+    if(v != '')
+        alert(v);
+    else
+        alert('Holiday created/modified.');
+    opener.Refresh();
+    window.close();
 @endif@
 @if?CheckReqParm?FUNCTION=RECLASS@
     @if?CheckReqParm?NEWCLASSID=@

@@ -110,7 +110,7 @@
         }
         function Cancel()
         {
-            document.location.href='charclass.cmvp?AUTH=@Authenticate?AUTH@&CLASS=';
+            window.close();
         }
         function OpenUp(file,named)
         {
@@ -132,45 +132,11 @@
 <INPUT TYPE=HIDDEN NAME=NEWCLASSID VALUE="">
 <INPUT TYPE=HIDDEN NAME=REPLACE VALUE="">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
-    <TABLE WIDTH=100% BORDER=0>
-    <TR>
-    <TD WIDTH=33% ALIGN=LEFT VALIGN=CENTER>
-        <FONT COLOR=WHITE>Class: </FONT>
-        @AddRequestParameter?OLDCLASS=@@RequestParameter?CLASS@@ @
-        <SELECT NAME=CLASS ONCHANGE="javascript:ReClass();">
-        
-        @if?CharClassData?ISNEWCLASS@
-            <OPTION VALUE="@RequestParameter?CLASS@" SELECTED>*new* @RequestParameter?CLASS@ (Generic)
-            @AddRequestParameter?CLASS=@
-        @else@
-            <OPTION VALUE="" @if?CheckReqParm?CLASS=@SELECTED@endif@>Select a class
-        @endif@
-        
-        @CharClassNext?RESET@
-        @loop@
-        @CharClassNext?ALL@
-            @if?!CheckReqParm?CLASS=GenCharClass@
-                <OPTION VALUE="@CharClassID@" @if?CheckReqParm?CLASS=@@RequestParameter?OLDCLASS@@ @SELECTED@endif@>@CharClassName@  @if?CharClassData?ISGENERIC@*@endif@
-            @endif@
-        @back@
-        </SELECT>&nbsp;&nbsp;&nbsp;
-        <INPUT TYPE=BUTTON NAME=BNEWCLASS VALUE="New" ONCLICK="NewClass();">
-        @AddRequestParameter?CLASS=@@RequestParameter?OLDCLASS@@ @
-    </TD>
-    <TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
-    <TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
-        <TABLE WIDTH=50% BORDER=1>
-        <TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
-        <TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
-        <TR><TD><a href="javascript:ReShow();"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
-        </TABLE>
-    </TD>
-    </TR>
-    </TABLE>
+<INPUT TYPE=HIDDEN NAME=CLASS VALUE="@RequestParameter?CLASS@">
+<INPUT TYPE=HIDDEN NAME=NEWCLASS VALUE="@RequestParameter?NEWCLASS@">
 <CENTER>
-    
 @if?CheckReqParm?CLASS=@
-    Select a class above to view/edit.
+    Select a class to view/edit.
 @else@
     <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
         <TR>
@@ -316,7 +282,7 @@
         </TR>
         <TR>
             <TD><FONT COLOR=YELLOW>Help Entry: </FONT></TD>
-            <TD><TEXTAREA ROWS=10 COLS=85 NAME=GENHELP>@CharClassData?GENHELP@</TEXTAREA></TD>
+            <TD><TEXTAREA ROWS=10 COLS=55 NAME=GENHELP>@CharClassData?GENHELP@</TEXTAREA></TD>
         </TR>
         <TR VALIGN=TOP>
             <TD VALIGN=TOP><FONT COLOR=YELLOW>Class Abilities: </FONT><BR>

@@ -103,15 +103,15 @@
 	<BR>
 	@endif@
 	@if?CheckAuthCode?AUTH_CMDRACE=true@
-	<A href="javascript:Clicked('race.cmvp')"><FONT COLOR=WHITE>Race Manager</FONT></a>
+	<A href="javascript:Clicked('races.cmvp')"><FONT COLOR=WHITE>Race Manager</FONT></a>
 	<BR>
 	@endif@
     @if?CheckAuthCode?AUTH_CMDCLASSES=true@
-    <A href="javascript:Clicked('charclass.cmvp')"><FONT COLOR=WHITE>Class Manager</FONT></a>
+    <A href="javascript:Clicked('charclasses.cmvp')"><FONT COLOR=WHITE>Class Manager</FONT></a>
     <BR>
     @endif@
     @if?CheckAuthCode?AUTH_CMDABILITIES=true@
-    <A href="javascript:Clicked('ability.cmvp')"><FONT COLOR=WHITE>Abilities Creator</FONT></a>
+    <A href="javascript:Clicked('abilities.cmvp')"><FONT COLOR=WHITE>Abilities Creator</FONT></a>
     <BR>
     @endif@
 	@if?CheckAuthCode?AUTH_LOADUNLOAD=true@
@@ -123,9 +123,15 @@
 	<BR>
 	@endif@
 	@if?CheckAuthCode?AUTH_CMDQUESTS=true@
-	<A href="javascript:Clicked('holiday.cmvp')"><FONT COLOR=WHITE>Holidays Manager</FONT></a>
+	<A href="javascript:Clicked('holidays.cmvp')"><FONT COLOR=WHITE>Holidays Manager</FONT></a>
 	<BR>
 	@endif@
+    <!--
+    @if?CheckAuthCode?ANYMODAREAS=true@
+    <A href="javascript:Clicked('deities.cmvp')"><FONT COLOR=WHITE>Deities Manager</FONT></a>
+    <BR>
+    @endif@
+    -->
 	@if?CheckAuthCode?AUTH_LISTADMIN=true@
 	<A href="javascript:Clicked('reports.cmvp')"><FONT COLOR=WHITE>System Reports</FONT></a>
 	<BR>

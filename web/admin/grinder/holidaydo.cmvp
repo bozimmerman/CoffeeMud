@@ -10,12 +10,22 @@
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 @if?CheckReqParm?FUNCTION=DELHOLIDAY@
-    alert('@MUDGrinder?DELHOLIDAY@');
-    document.location.href='holiday.cmvp?AUTH=@Authenticate?AUTH@&HOLIDAY=';
+    var v='@MUDGrinder?DELHOLIDAY@';
+    if(v != '')
+        alert(v);
+    else
+        alert('Holiday deleted.');
+    opener.Refresh();
+    window.close();
 @endif@
 @if?CheckReqParm?FUNCTION=EDITHOLIDAY@
-    alert('@MUDGrinder?EDITHOLIDAY@');
-    document.location.href='holiday.cmvp?AUTH=@Authenticate?AUTH@&HOLIDAY=@RequestParameterEncoded?HOLIDAY@';
+    var v='@MUDGrinder?EDITHOLIDAY@';
+    if(v != '')
+        alert(v);
+    else
+        alert('Holiday created/modified.');
+    opener.Refresh();
+    window.close();
 @endif@
 @if?CheckReqParm?FUNCTION=REHOLIDAY@
     @if?CheckReqParm?NEWHOLIDAYID=@

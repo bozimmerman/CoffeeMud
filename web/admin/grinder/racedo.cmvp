@@ -10,12 +10,22 @@
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 @if?CheckReqParm?FUNCTION=DELRACE@
-    alert('@MUDGrinder?DELRACE@');
-    document.location.href='race.cmvp?AUTH=@Authenticate?AUTH@&RACE=';
+    var v='@MUDGrinder?DELRACE@';
+    if(v != '')
+        alert(v);
+    else
+        alert('Race deleted.');
+    opener.Refresh();
+    window.close();
 @endif@
 @if?CheckReqParm?FUNCTION=EDITRACE@
-    alert('@MUDGrinder?EDITRACE@');
-    document.location.href='race.cmvp?AUTH=@Authenticate?AUTH@&RACE=@RaceID@';
+    var v='@MUDGrinder?EDITRACE@';
+    if(v != '')
+        alert(v);
+    else
+        alert('Race created/modified.');
+    opener.Refresh();
+    window.close();
 @endif@
 @if?CheckReqParm?FUNCTION=RERACE@
     @if?CheckReqParm?NEWRACEID=@

@@ -110,7 +110,7 @@
         }
 		function Cancel()
 		{
-            document.location.href='race.cmvp?AUTH=@Authenticate?AUTH@&RACE=';
+    		  window.close();
 		}
 		function OpenUp(file,named)
 		{
@@ -132,43 +132,8 @@
 <INPUT TYPE=HIDDEN NAME=NEWRACEID VALUE="">
 <INPUT TYPE=HIDDEN NAME=REPLACE VALUE="">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
-	<TABLE WIDTH=100% BORDER=0>
-	<TR>
-	<TD WIDTH=33% ALIGN=LEFT VALIGN=CENTER>
-		<FONT COLOR=WHITE>Race: </FONT>
-		@AddRequestParameter?OLDRACE=@@RequestParameter?RACE@@ @
-		<SELECT NAME=RACE ONCHANGE="javascript:ReRace();">
-		
-		@if?RaceData?ISNEWRACE@
-            <OPTION VALUE="@RequestParameter?RACE@" SELECTED>*new* @RequestParameter?RACE@ (Generic)
-            @AddRequestParameter?RACE=@
-        @else@
-            <OPTION VALUE="" @if?CheckReqParm?RACE=@SELECTED@endif@>Select a race
-		@endif@
-		
-        @RaceNext?RESET@
-		@loop@
-		@RaceNext?ALL@
-            @if?!CheckReqParm?RACE=GenRace@
-    		  <OPTION VALUE="@RaceID@" @if?CheckReqParm?RACE=@@RequestParameter?OLDRACE@@ @SELECTED@endif@>@RaceName@ @if?RaceData?ISGENERIC@*@endif@
-    		@endif@
-		@back@
-		</SELECT>&nbsp;&nbsp;&nbsp;
-		<INPUT TYPE=BUTTON NAME=BNEWRACE VALUE="New" ONCLICK="NewRace();">
-		@AddRequestParameter?RACE=@@RequestParameter?OLDRACE@@ @
-	</TD>
-	<TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
-	<TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
-		<TABLE WIDTH=50% BORDER=1>
-		<TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
-		<TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
-		<TR><TD><a href="javascript:ReShow();"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
-		</TABLE>
-	</TD>
-	</TR>
-	</TABLE>
-<CENTER>
-	
+<INPUT TYPE=HIDDEN NAME=RACE VALUE="@RequestParameter?RACE@">
+<INPUT TYPE=HIDDEN NAME=NEWRACE VALUE="@RequestParameter?NEWRACE@">
 @if?CheckReqParm?RACE=@
 	Select a race above to view/edit.
 @else@
@@ -295,7 +260,7 @@
 		</TR>
         <TR>
             <TD><FONT COLOR=YELLOW>Help Entry: </FONT></TD>
-            <TD><TEXTAREA ROWS=10 COLS=85 NAME=GENHELP>@RaceData?GENHELP@</TEXTAREA></TD>
+            <TD><TEXTAREA ROWS=10 COLS=55 NAME=GENHELP>@RaceData?GENHELP@</TEXTAREA></TD>
         </TR>
 	</TABLE>
 @endif@

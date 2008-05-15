@@ -10,12 +10,22 @@
 <SCRIPT LANGUAGE=JavaScript>
 <!--
 @if?CheckReqParm?FUNCTION=DELABILITY@
-    alert('@MUDGrinder?DELABILITY@');
-    document.location.href='ability.cmvp?AUTH=@Authenticate?AUTH@&ABILITY=';
+    var v='@MUDGrinder?DELABILITY@';
+    if(v != '')
+        alert(v);
+    else
+        alert('Ability created/modified.');
+    opener.Refresh();
+    window.close();
 @endif@
 @if?CheckReqParm?FUNCTION=EDITABILITY@
-    alert('@MUDGrinder?EDITABILITY@');
-    document.location.href='ability.cmvp?AUTH=@Authenticate?AUTH@&ABILITY=@AbilityID@';
+    var v='@MUDGrinder?EDITABILITY@';
+    if(v != '')
+        alert(v);
+    else
+        alert('Ability created/modified.');
+    opener.Refresh();
+    window.close();
 @endif@
 @if?CheckReqParm?FUNCTION=REABILITY@
     @if?CheckReqParm?NEWABILITYID=@

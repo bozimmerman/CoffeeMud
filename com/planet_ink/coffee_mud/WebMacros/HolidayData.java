@@ -105,6 +105,16 @@ public class HolidayData extends StdWebMacro
                     }
                     str.append(old+", ");
                 }
+                if(parms.containsKey("AREAS"))
+                {
+                    int dex=settings.indexOf("AREAGROUP");
+                    String old=null;
+                    if(dex>=0)
+                        old=(String)settings.elementAt(dex,2);
+                    if((old==null)||(old.length()==0))
+                        old="ALL";
+                    str.append(old+", ");
+                }
                 if(parms.containsKey("AREAGROUP"))
                 {
                     // any, all, "name" "name" "name" "name"
@@ -237,6 +247,43 @@ public class HolidayData extends StdWebMacro
                     httpReq.addRequestParameters("SCHEDULETYPE",old);
                     str.append(", ");
                 }
+                if(parms.containsKey("SCHEDULE"))
+                {
+                    final String[] TYPES={"RANDOM INTERVAL","MUD-DAY","RL-DAY"};
+                    String old;
+                    int mudDayIndex=settings.indexOf("MUDDAY");
+                    int dateIndex=settings.indexOf("DATE");
+                    if(mudDayIndex>=0)
+                    {
+                        int dex=settings.indexOf("MUDDAY");
+                        if(dex>=0)
+                            old=(String)settings.elementAt(dex,2);
+                        else
+                            old="1-1";
+                        old=TYPES[1]+": "+old;
+                    }
+                    else
+                    if(dateIndex>=0) 
+                    {
+                        int dex=settings.indexOf("DATE");
+                        if(dex>=0)
+                            old=(String)settings.elementAt(dex,2);
+                        else
+                            old="1-1";
+                        old=TYPES[2]+": "+old;
+                    }
+                    else
+                    {
+                        old=TYPES[0];
+                        int dex=settings.indexOf("WAIT");
+                        if(dex>=0)
+                            old=(String)settings.elementAt(dex,2);
+                        else
+                            old="100";
+                        str.append(TYPES[0]+": "+old+" ticks");
+                    }
+                    str.append(", ");
+                }
                 if(parms.containsKey("MUDDAY"))
                 {
                     String old=httpReq.getRequestParameter("MUDDAY");
@@ -340,7 +387,7 @@ public class HolidayData extends StdWebMacro
                 str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
                 str.append("</SELECT>");
                 str.append("</TD><TD WIDTH=70%>");
-                str.append("<INPUT TYPE=TEXT SIZE=60 NAME=BDATA"+(i+1)+" VALUE=\""+theparm+"\">");
+                str.append("<INPUT TYPE=TEXT SIZE=40 NAME=BDATA"+(i+1)+" VALUE=\""+theparm+"\">");
                 str.append("</TD></TR>");
             }
             str.append("<TR><TD WIDTH=30%>");
@@ -362,7 +409,7 @@ public class HolidayData extends StdWebMacro
             }
             str.append("</SELECT>");
             str.append("</TD><TD WIDTH=70%>");
-            str.append("<INPUT TYPE=TEXT SIZE=60 NAME=BDATA"+(theclasses.size()+1)+" VALUE=\"\">");
+            str.append("<INPUT TYPE=TEXT SIZE=40 NAME=BDATA"+(theclasses.size()+1)+" VALUE=\"\">");
             str.append("</TD></TR>");
             str.append("</TABLE>");
         }
@@ -418,7 +465,7 @@ public class HolidayData extends StdWebMacro
                 str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
                 str.append("</SELECT>");
                 str.append("</TD><TD WIDTH=70%>");
-                str.append("<INPUT TYPE=TEXT SIZE=60 NAME=ADATA"+(i+1)+" VALUE=\""+theparm+"\">");
+                str.append("<INPUT TYPE=TEXT SIZE=40 NAME=ADATA"+(i+1)+" VALUE=\""+theparm+"\">");
                 str.append("</TD></TR>");
             }
             str.append("<TR><TD WIDTH=30%>");
@@ -432,7 +479,7 @@ public class HolidayData extends StdWebMacro
             }
             str.append("</SELECT>");
             str.append("</TD><TD WIDTH=70%>");
-            str.append("<INPUT TYPE=TEXT SIZE=60 NAME=ADATA"+(theclasses.size()+1)+" VALUE=\"\">");
+            str.append("<INPUT TYPE=TEXT SIZE=40 NAME=ADATA"+(theclasses.size()+1)+" VALUE=\"\">");
             str.append("</TD></TR>");
             str.append("</TABLE>");
         }
@@ -509,13 +556,13 @@ public class HolidayData extends StdWebMacro
                 str.append("<TR><TD WIDTH=25%>");
                 str.append("<INPUT TYPE=TEXT SIZE=5 NAME=PRCFAC"+(i+1)+" VALUE=\""+theclass+"\">");
                 str.append("</TD><TD WIDTH=75%>");
-                str.append("<INPUT TYPE=TEXT SIZE=60 NAME=PMASK"+(i+1)+" VALUE=\""+theparm+"\">");
+                str.append("<INPUT TYPE=TEXT SIZE=50 NAME=PMASK"+(i+1)+" VALUE=\""+theparm+"\">");
                 str.append("</TD></TR>");
             }
             str.append("<TR><TD WIDTH=25%>");
             str.append("<INPUT TYPE=TEXT SIZE=5 NAME=PRCFAC"+(theclasses.size()+1)+" VALUE=\"\">");
             str.append("</TD><TD WIDTH=50%>");
-            str.append("<INPUT TYPE=TEXT SIZE=60 NAME=PMASK"+(theclasses.size()+1)+" VALUE=\"\">");
+            str.append("<INPUT TYPE=TEXT SIZE=50 NAME=PMASK"+(theclasses.size()+1)+" VALUE=\"\">");
             str.append("</TD></TR>");
             str.append("</TABLE>");
         }
@@ -592,7 +639,7 @@ public class HolidayData extends StdWebMacro
                 Vector mudChat=(Vector)mudchats.elementAt(i);
                 String sayList=CMStrings.replaceAll(CMStrings.replaceAll((String)mudChat.firstElement(),"\"","&quot;"),"|",",");
                 str.append("<TR><TD WIDTH=25% VALIGN=TOP>");
-                str.append("<INPUT TYPE=TEXT SIZE=30 NAME=MCWDS"+(i+1)+" VALUE=\""+sayList+"\">");
+                str.append("<INPUT TYPE=TEXT SIZE=15 NAME=MCWDS"+(i+1)+" VALUE=\""+sayList+"\">");
                 str.append("</TD><TD WIDTH=75%>");
                 str.append("<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>");
                 for(int ii=1;ii<mudChat.size();ii++)
@@ -607,7 +654,7 @@ public class HolidayData extends StdWebMacro
                         str.append("<OPTION VALUE="+i3+((i3==weight)?" SELECTED":"")+">"+i3);
                     str.append("</SELECT>");
                     str.append("</TD><TD WIDTH=80%>");
-                    str.append("<INPUT TYPE=TEXT SIZE=60 NAME=MCSAYS"+(i+1)+"_"+(ii)+" VALUE=\""+say+"\">");
+                    str.append("<INPUT TYPE=TEXT SIZE=40 NAME=MCSAYS"+(i+1)+"_"+(ii)+" VALUE=\""+say+"\">");
                     str.append("</TD></TR>");
                 }
                 str.append("<TR><TD WIDTH=20%>");
@@ -617,13 +664,13 @@ public class HolidayData extends StdWebMacro
                     str.append("<OPTION VALUE="+i3+">"+i3);
                 str.append("</SELECT>");
                 str.append("</TD><TD WIDTH=80%>");
-                str.append("<INPUT TYPE=TEXT SIZE=60 NAME=MCSAYS"+(i+1)+"_"+(mudChat.size())+" VALUE=\"\">");
+                str.append("<INPUT TYPE=TEXT SIZE=40 NAME=MCSAYS"+(i+1)+"_"+(mudChat.size())+" VALUE=\"\">");
                 str.append("</TD></TR>");
                 str.append("</TABLE>");
                 str.append("</TD></TR>");
             }
             str.append("<TR><TD VALIGN=TOP>");
-            str.append("<INPUT TYPE=TEXT SIZE=30 NAME=MCWDS"+(mudchats.size()+1)+" VALUE=\"\">");
+            str.append("<INPUT TYPE=TEXT SIZE=15 NAME=MCWDS"+(mudchats.size()+1)+" VALUE=\"\">");
             str.append("</TD><TD>");
             str.append("<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>");
             str.append("<TR><TD WIDTH=20%>");
@@ -633,7 +680,7 @@ public class HolidayData extends StdWebMacro
                 str.append("<OPTION VALUE="+i3+">"+i3);
             str.append("</SELECT>");
             str.append("</TD><TD WIDTH=80%>");
-            str.append("<INPUT TYPE=TEXT SIZE=60 NAME=MCSAYS"+(mudchats.size()+1)+"_1 VALUE=\"\">");
+            str.append("<INPUT TYPE=TEXT SIZE=40 NAME=MCSAYS"+(mudchats.size()+1)+"_1 VALUE=\"\">");
             str.append("</TD></TR>");
             str.append("</TABLE>");
             str.append("</TD></TR>");
