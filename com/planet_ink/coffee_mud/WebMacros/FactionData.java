@@ -105,7 +105,7 @@ public class FactionData extends StdWebMacro
 	        		        str.append("<INPUT TYPE=TEXT NAME=RANGELOW"+num+" SIZE=8 VALUE=\""+oldLow+"\">");
 	        		        str.append("</TD><TD>");
 	        		        str.append("<INPUT TYPE=TEXT NAME=RANGEHIGH"+num+" SIZE=8 VALUE=\""+oldHigh+"\">");
-	        		        str.append("</TR>");
+	        		        str.append("</TD></TR>");
                         }
         		        num++;
         		    }
@@ -115,33 +115,108 @@ public class FactionData extends StdWebMacro
     		        str.append("<INPUT TYPE=TEXT NAME=RANGELOW"+num+" SIZE=8 VALUE=\"\">");
     		        str.append("</TD><TD>");
     		        str.append("<INPUT TYPE=TEXT NAME=RANGEHIGH"+num+" SIZE=8 VALUE=\"\">");
-    		        str.append("</TR>");
+    		        str.append("</TD></TR>");
                 }
                 
-                if(parms.containsKey("AUTOVALUES"))
+                if(parms.containsKey("AUTOVALUES")
+                || parms.containsKey("DEFAULTVALUES")
+                || parms.containsKey("PLAYERCHOICES"))
                 {
-//TODO: autodefaults
-// F.autoDefaults();
+                    String prefix="";
+                    Vector Fset=null;
+                    if(parms.containsKey("AUTOVALUES"))
+                    {
+                        prefix="AUTOVALUE";
+                        Fset=F.autoDefaults();
+                    }
+                    else
+                    if(parms.containsKey("DEFAULTVALUES"))
+                    {
+                        prefix="DEFAULTVALUE";
+                        Fset=F.defaults();
+                    }
+                    else
+                    if(parms.containsKey("PLAYERCHOICES"))
+                    {
+                        prefix="PLAYERCHOICE";
+                        Fset=F.defaults();
+                    }
+                        
+                    
+                    String value=httpReq.getRequestParameter(prefix+"0");
+                    String mask="";
+                    if((value==null)&&(Fset!=null))
+                        for(int v=0;v<Fset.size();v++)
+                        {
+                            String def=(String)F.autoDefaults().elementAt(v);
+                            int lastSp=0;
+                            int spDex=def.indexOf(' ',lastSp+1);
+                            int finalValue=-1;
+                            while(spDex>0)
+                            {
+                                if(CMath.isInteger(def.substring(lastSp,spDex).trim()))
+                                {
+                                    finalValue=CMath.s_int(def.substring(lastSp,spDex).trim());
+                                    def=def.substring(0,lastSp)+def.substring(spDex);
+                                    break;
+                                }
+                                lastSp=spDex;
+                                spDex=def.indexOf(' ',lastSp+1);
+                            }
+                            if((finalValue<0)&&CMath.isInteger(def.substring(lastSp).trim()))
+                            {
+                                finalValue=CMath.s_int(def.substring(lastSp).trim());
+                                def=def.substring(0,lastSp);
+                            }
+                            httpReq.addRequestParameters(prefix+v,""+finalValue);
+                            httpReq.addRequestParameters(prefix+"MASK"+v,def);
+                        }
+                    
+                    int num=0;
+                    while(httpReq.getRequestParameter(prefix+num)!=null)
+                    {
+                        mask=httpReq.getRequestParameter(prefix+num);
+                        if(value.length()>0)
+                        {
+                            mask=httpReq.getRequestParameter(prefix+"MASK"+num);
+                            str.append("<TR><TD>");
+                            str.append("<INPUT TYPE=TEXT NAME="+prefix+num+" SIZE=8 VALUE=\""+CMath.s_int(value)+"\">");
+                            str.append("</TD><TD>");
+                            str.append("<INPUT TYPE=TEXT NAME="+prefix+"MASK"+num+" SIZE=60 MAXLENGTH=255 VALUE=\""+mask+"\">");
+                            str.append("</TD></TR>");
+                        }
+                        num++;
+                    }
+                    str.append("<TR><TD>");
+                    str.append("<INPUT TYPE=TEXT NAME="+prefix+num+" SIZE=8 VALUE=\"\">");
+                    str.append("</TD><TD>");
+                    str.append("<INPUT TYPE=TEXT NAME="+prefix+"MASK"+num+" SIZE=60 MAXLENGTH=255 VALUE=\"\">");
+                    str.append("</TD></TR>");
                 }
-                if(parms.containsKey("DEFAULTVALUES"))
+                
+                if(parms.containsKey("ADJUSTMENTCHANGES"))
                 {
-//TODO: non-auto default values                    
-// F.defaults();
-                }
-                if(parms.containsKey("PLAYERCHOICES"))
-                {
-//TODO: default new player choices
-// F.choices();
-                }
-                if(parms.containsKey("PLAYERCHOICES"))
-                {
-//TODO: default new player choices
-// F.choices();
-                }
-                if(parms.containsKey("ADJUSTMENTFACTORS"))
-                {
+                    
 //TODO: default new faction change adjustment factors
 // F.Changes();
+                    /*
+                     * 
+                     * Faction.FactionChangeEvent
+         Trigger choices:
+             for(int i=0;i<Faction.FactionChangeEvent.MISC_TRIGGERS.length;i++) 
+                 ALL_TYPES.append(Faction.FactionChangeEvent.MISC_TRIGGERS[i]+", ");
+             for(int i=0;i<Ability.ACODE_DESCS.length;i++) 
+                 ALL_TYPES.append(Ability.ACODE_DESCS[i]+", ");
+             for(int i=0;i<Ability.DOMAIN_DESCS.length;i++) 
+                 ALL_TYPES.append(Ability.DOMAIN_DESCS[i]+", ");
+             for(int i=0;i<Ability.FLAG_DESCS.length;i++) 
+                 ALL_TYPES.append(Ability.FLAG_DESCS[i]+", ");
+             _ALL_TYPES=ALL_TYPES.toString()+" a valid Skill, Spell, Chant, etc. ID.";
+         Faction.FACTION_DIRECTIONS
+         factor (the value)
+         Faction.VALID_FLAGS (multi)
+         ZapperMask    
+                     */
                 }
                 if(parms.containsKey("ADJUSTMENTFACTORS"))
                 {

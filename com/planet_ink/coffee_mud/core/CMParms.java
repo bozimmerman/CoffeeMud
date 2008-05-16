@@ -548,7 +548,7 @@ public class CMParms
     }
 
     private static int[] makeIntArray(int x, int y){ int[] xy=new int[2]; xy[0]=x;xy[1]=y;return xy;}
-    
+
     public static int[] getParmCompare(String text, String key, int value)
     {
         int x=text.toUpperCase().indexOf(key.toUpperCase());
@@ -623,7 +623,7 @@ public class CMParms
         buf.setLength(0);
         switch(combiner)
         {
-        case '&': 
+        case '&':
             lastIndex=strIndex(V,str,0);
             return lastIndex;
         case '|':
@@ -684,7 +684,7 @@ public class CMParms
                     i=index[0];
                     switch(combiner)
                     {
-                    case '&': 
+                    case '&':
                         if((lastIndex<0)||(newIndex<0))
                             lastIndex=-1;
                         break;
@@ -729,7 +729,7 @@ public class CMParms
         }
         return stringContains(V,combiner,buf,lastIndex);
     }
-    
+
     public static Hashtable parseEQParms(String str, String[] parmList)
     {
         Hashtable h=new Hashtable();
@@ -772,7 +772,7 @@ public class CMParms
         }
         return h;
     }
-    
+
     public static int stringContains(String str1, String str2)
     {
         StringBuffer buf1=new StringBuffer(str1.toLowerCase());
@@ -786,7 +786,7 @@ public class CMParms
         Vector V=CMParms.parse(buf1.toString());
         return stringContains(V,str2.toCharArray(),new int[]{0},0);
     }
-    
+
     public static int getParmPlus(String text, String key)
     {
         int x=text.toUpperCase().indexOf(key.toUpperCase());
@@ -1107,7 +1107,7 @@ public class CMParms
         if(s.length()==0) return "";
         return s.toString().substring(2);
     }
-    
+
     public static String toStringList(byte[] V)
     {
         if((V==null)||(V.length==0)){
@@ -1143,7 +1143,7 @@ public class CMParms
         if(s.length()==0) return "";
         return s.toString().substring(2);
     }
-    
+
     public static String toStringList(double[] V)
     {
         if((V==null)||(V.length==0)){
@@ -1194,7 +1194,7 @@ public class CMParms
 
     public static Vector makeVector(Object[] O)
     {
-        Vector V=new Vector();
+        Vector V=new Vector(O!=null?O.length:0);
         if(O!=null)
         for(int s=0;s<O.length;s++)
             V.addElement(O[s]);
@@ -1210,7 +1210,7 @@ public class CMParms
     }
     public static Vector makeVector(String[] O)
     {
-        Vector V=new Vector();
+        Vector V=new Vector(O!=null?O.length:0);
         if(O!=null)
         for(int s=0;s<O.length;s++)
             V.addElement(O[s]);
@@ -1346,12 +1346,12 @@ public class CMParms
                 return i;
         return -1;
     }
-    
+
     public static boolean contains(String[] supported, String expertise)
     { return indexOf(supported,expertise)>=0;}
     public static boolean containsIgnoreCase(String[] supported, String expertise)
     { return indexOfIgnoreCase(supported,expertise)>=0;}
-    
+
     public static int indexOf(Object[] supported, Object expertise)
     {
         if(supported==null) return -1;
@@ -1363,7 +1363,7 @@ public class CMParms
     }
     public static boolean contains(Object[] supported, Object expertise)
     { return indexOf(supported,expertise)>=0;}
-    
+
     public static boolean startsWith(String[] supported, String expertise)
     {
         if(supported==null) return true;
@@ -1383,7 +1383,7 @@ public class CMParms
                 return true;
         return false;
     }
-    
+
     public static Vector denumerate(Enumeration e)
     {
         Vector V=new Vector();

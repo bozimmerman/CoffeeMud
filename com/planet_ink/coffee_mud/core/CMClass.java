@@ -687,6 +687,42 @@ public class CMClass extends ClassLoader
         return false;
     }
     
+    public static Vector sortEnvironmentalsByID(Vector V) {
+        Hashtable hashed=new Hashtable();
+        for(Enumeration e=V.elements();e.hasMoreElements();)
+        {
+            Environmental E=(Environmental)e.nextElement();
+            hashed.put(E.ID().toUpperCase(),E);
+        }
+        Vector idSet=new Vector(new TreeSet(hashed.keySet()));
+        Vector V2=new Vector(V.size());
+        for(Enumeration e=idSet.elements();e.hasMoreElements();)
+            V2.addElement(hashed.get((String)e.nextElement()));
+        return V2;
+    }
+
+    public static Vector sortEnvironmentalsByName(Vector V) {
+        Hashtable nameHash=new Hashtable();
+        Vector V3;
+        for(Enumeration e=V.elements();e.hasMoreElements();)
+        {
+            Environmental E=(Environmental)e.nextElement();
+            if(nameHash.containsKey(E.Name().toUpperCase()))
+            {
+                V3=CMParms.makeVector((Object[])nameHash.get(E.Name().toUpperCase()));
+                V3.addElement(E);
+                nameHash.put(E.Name().toUpperCase(),V3.toArray());
+            }
+            else
+                nameHash.put(E.Name().toUpperCase(),new Object[]{E});
+        }
+        Vector idSet=new Vector(new TreeSet(nameHash.keySet()));
+        Vector V2=new Vector(V.size());
+        for(Enumeration e=idSet.elements();e.hasMoreElements();)
+            V2.addAll(CMParms.makeVector((Object[])nameHash.get((String)e.nextElement())));
+        return V2;
+    }
+
     public static CMMsg MsgFactory()
     {
         CMMsg msg=null;

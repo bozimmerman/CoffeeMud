@@ -196,9 +196,10 @@ public class CharClassData extends StdWebMacro
         str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
         for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
         {
-            String cnam=((Ability)a.nextElement()).ID();
-            if(!used.contains(cnam))
-                str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+            Ability A=(Ability)a.nextElement();
+            String ID=A.ID();
+            if(!used.contains(ID))
+                str.append("<OPTION VALUE=\""+ID+"\">"+A.Name());
         }
         str.append("</SELECT>");
         str.append("</TD>");
