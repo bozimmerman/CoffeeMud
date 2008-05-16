@@ -109,7 +109,14 @@ public class Where extends StdCommand
                 boolean exitOnly=false;
                 boolean zapperMask=false;
                 boolean zapperMask2=false;
+                boolean areaFlag=false;
                 Vector compiledZapperMask=null;
+                if(who.toUpperCase().startsWith("AREA "))
+                {
+                    areaFlag=true;
+                    who=who.substring(5).trim();
+                }
+                
 				if((who.toUpperCase().startsWith("ROOM "))
 				||(who.toUpperCase().startsWith("ROOMS ")))
 				{
@@ -173,11 +180,10 @@ public class Where extends StdCommand
                 }
 				
                 Enumeration r=(roomOnly||exitOnly)?CMLib.map().rooms():CMLib.map().roomsFilled();
-                if(who.toUpperCase().startsWith("AREA "))
-                {
+                if(who.toUpperCase().startsWith("AREA ")||areaFlag)
                     r=(roomOnly||exitOnly)?mob.location().getArea().getProperMap():mob.location().getArea().getFilledProperMap();
+                if(who.toUpperCase().startsWith("AREA "))
                     who=who.substring(5).trim();
-                }
                 Room R = null;
 				
 				try

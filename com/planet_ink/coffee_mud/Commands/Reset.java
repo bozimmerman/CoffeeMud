@@ -214,7 +214,7 @@ public class Reset extends StdCommand
 		{
 			Session S=CMLib.sessions().elementAt(s);
 			if((S!=null)&&(S.mob()!=null)&&(S.mob()!=mob)&&(S.mob().location()==R))
-				warning.append("A player, '"+S.mob().Name()+" is in "+CMLib.map().getExtendedRoomID(R)+"\n\r");
+				warning.append("A player, '"+S.mob().Name()+"' is in "+CMLib.map().getExtendedRoomID(R)+"\n\r");
 		}
 		Item I=null;
 		for(int i=0;i<R.numItems();i++)
@@ -222,7 +222,7 @@ public class Reset extends StdCommand
 			I=R.fetchItem(i);
 			if((I instanceof DeadBody)
 			&&(((DeadBody)I).playerCorpse()))
-				warning.append("A player corpse, '"+I.Name()+" is in "+CMLib.map().getExtendedRoomID(R)+"\n\r");
+				warning.append("A player corpse, '"+I.Name()+"' is in "+CMLib.map().getExtendedRoomID(R)+"\n\r");
 		}
 		if(warning.length()==0) return null;
 		return warning.toString();
