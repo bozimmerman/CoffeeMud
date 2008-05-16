@@ -60,5 +60,4 @@ public class ClanNext extends StdWebMacro
 			return "<!--EMPTY-->";
 		return " @break@";
 	}
-
 }

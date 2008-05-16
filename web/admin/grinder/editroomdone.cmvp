@@ -5,6 +5,17 @@
  
 @MUDGrinder?EDITROOM@
 
+@if?RequestParameter?SINGLEMOB@
+<HTML><BODY><SCRIPT LANGUAGE=JavaScript>
+<!--
+	var v='@RequestParameter?ERRMSG@';
+	if(v!='') alert(v);
+	opener.Refresh();
+	window.close();
+//-->
+</SCRIPT></BODY></HTML>
+@endif@
+
 @if?!CheckReqParm?ERRMSG=@ @AddFile?/grinder/editroom.cmvp@ @else@ @AddFile?/grinder/modarea.cmvp@ @endif@
 
 @endif@ 

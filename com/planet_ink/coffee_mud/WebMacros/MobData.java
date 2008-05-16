@@ -908,6 +908,9 @@ public class MobData extends StdWebMacro
 				if(mobCode.equals("NEW"))
 					M=CMClass.getMOB("GenMob");
 				else
+                if(mobCode.equals("NEWDEITY"))
+                    M=CMClass.getMOB("GenDeity");
+                else
 				if(R!=null)
 					M=RoomData.getMOBFromCode(R,mobCode);
 				else
@@ -938,7 +941,7 @@ public class MobData extends StdWebMacro
 			M=CMClass.getMOB(newClassID);
 
 		boolean changedClass=((httpReq.isRequestParameter("CHANGEDCLASS"))&&(httpReq.getRequestParameter("CHANGEDCLASS")).equals("true"));
-		changedClass=changedClass&&(mobCode.equals("NEW"));
+		changedClass=changedClass&&(mobCode.equals("NEW")||mobCode.equalsIgnoreCase("NEWDEITY"));
 		boolean changedLevel=((httpReq.isRequestParameter("CHANGEDLEVEL"))&&(httpReq.getRequestParameter("CHANGEDLEVEL")).equals("true"));
 		boolean firstTime=(!httpReq.isRequestParameter("ACTION"))
 				||(!(httpReq.getRequestParameter("ACTION")).equals("MODIFYMOB"))
@@ -964,7 +967,13 @@ public class MobData extends StdWebMacro
 			switch(o)
 			{
 			case 0: // name
-				if(firstTime) old=M.Name();
+				if(firstTime) {
+                    if((mobCode.equalsIgnoreCase("NEW")||mobCode.equalsIgnoreCase("NEWDEITY"))
+                    &&(httpReq.isRequestParameter("NEWMOBNAME")))
+                        old=httpReq.getRequestParameter("NEWMOBNAME");
+                    else
+                        old=M.Name();
+                }
 				str.append(old);
 				break;
 			case 1: // classes

@@ -1200,6 +1200,14 @@ public class CMParms
             V.addElement(O[s]);
         return V;
     }
+    public static Vector makeVector(Enumeration e)
+    {
+        Vector V=new Vector();
+        if(e!=null)
+        for(;e.hasMoreElements();)
+            V.addElement(e.nextElement());
+        return V;
+    }
     public static Vector makeVector(String[] O)
     {
         Vector V=new Vector();

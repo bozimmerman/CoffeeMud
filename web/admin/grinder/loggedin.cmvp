@@ -126,12 +126,10 @@
 	<A href="javascript:Clicked('holidays.cmvp')"><FONT COLOR=WHITE>Holidays Manager</FONT></a>
 	<BR>
 	@endif@
-    <!--
     @if?CheckAuthCode?ANYMODAREAS=true@
     <A href="javascript:Clicked('deities.cmvp')"><FONT COLOR=WHITE>Deities Manager</FONT></a>
     <BR>
     @endif@
-    -->
 	@if?CheckAuthCode?AUTH_LISTADMIN=true@
 	<A href="javascript:Clicked('reports.cmvp')"><FONT COLOR=WHITE>System Reports</FONT></a>
 	<BR>

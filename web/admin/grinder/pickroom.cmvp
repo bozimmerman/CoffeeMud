@@ -1,0 +1,77 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+	function Refresh()
+	{
+		document.NEWAREA.submit();
+	}
+	
+	function Finished()
+	{
+		var aindex=document.NEWAREA.AREA.selectedIndex;
+		var rindex=document.NEWAREA.ROOM.selectedIndex;
+		var avalue=document.NEWAREA.AREA.options[aindex].value;
+		var rvalue=document.NEWAREA.ROOM.options[rindex].value;
+		if(avalue=='')
+		{
+			alert('Please select an area');
+			return;
+		}
+		if(rvalue=='')
+		{
+			alert('Please select a room');
+			return;
+		}
+		opener.pickedRoom(avalue,rvalue,document.NEWAREA.REST.value);
+	}
+//-->
+</SCRIPT>
+</HEAD>
+<BODY BGCOLOR=BLACK>
+<CENTER>
+<FORM NAME=NEWAREA METHOD=POST ACTION="/grinder/pickroom.cmvp" TARGET=_top>
+<INPUT TYPE=HIDDEN NAME=REST VALUE="@RequestParameter?REST@">
+<TABLE WIDTH=85% BORDER=1>
+<TR><TD WIDTH=100% COLSPAN=2 ALIGN=CENTER BGCOLOR=WHITE><FONT COLOR=BLACK>Select a Room</FONT></TD></TR>
+<TR>
+	<TD WIDTH=20%><FONT COLOR=WHITE>Area</FONT></TD>
+	<TD WIDTH=80%>
+		@AddRequestParameter?OLDAREA=@@RequestParameter?AREA@@ @
+		<SELECT NAME=AREA ONCHANGE="Refresh()">
+		<OPTION VALUE="">Select an Area
+		@AreaNext?RESET@
+		@loop@
+			@AreaNext@
+			<OPTION VALUE="@AreaName@" @if?CheckReqParm?OLDAREA=@@AreaName@@ @SELECTED@endif@>@AreaName@
+		@back@
+		</SELECT>
+		@AddRequestParameter?AREA=@@RequestParameter?OLDAREA@@ @
+	</TD>
+</TR>
+<TR>
+	<TD WIDTH=20%><FONT COLOR=WHITE>Room</FONT></TD>
+	<TD WIDTH=80%>
+		@AddRequestParameter?OLDROOM=@@RequestParameter?ROOM@@ @
+		<SELECT NAME=ROOM>
+		@if?CheckReqParm?AREA=@
+			<OPTION VALUE="">Select an Area
+		@else@
+			@RoomNext?RESET@
+			@loop@
+				@RoomNext@
+				<OPTION VALUE="@RoomID@">@RoomID@ - @RoomName@
+			@back@
+		@endif@
+		</SELECT>
+		@AddRequestParameter?ROOM=@@RequestParameter?OLDROOM@@ @
+	</TD>
+</TR>
+</TABLE>
+<BR>
+<INPUT TYPE=BUTTON NAME=BFINISHED VALUE="Finished" ONCLICK="Finished();">
+</FORM>
+</CENTER>
+</BODY>
+</HTML>

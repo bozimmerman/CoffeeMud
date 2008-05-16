@@ -70,6 +70,9 @@ public class GrinderRooms
     	{
     		R=CMLib.map().getRoom(R);
 	
+            boolean singleMobMode=CMath.s_bool(httpReq.getRequestParameter("SINGLEMOB"));
+            String delMOB=singleMobMode?httpReq.getRequestParameter("DELMOB"):null;
+            
 			CMLib.map().resetRoom(R);
 			Room copyRoom=(Room)R.copyOf();
             boolean skipImage=false;
@@ -180,7 +183,13 @@ public class GrinderRooms
 					if(RoomData.isAllNum(MATCHING))
 					{
 						MOB M=RoomData.getMOBFromCode(allmobs,MATCHING);
-						if(M!=null)	happilyAddMob(M,R);
+						if(M!=null)	
+                        {
+                            System.out.println("W:"+M.name()+"/"+RoomData.getMOBCode(allmobs,M));
+                            if(MATCHING.equalsIgnoreCase(delMOB))
+                                continue;
+                            happilyAddMob(M,R);
+                        }
 						else
 						{
 							StringBuffer str=new StringBuffer("!!!No MOB?!!!!");

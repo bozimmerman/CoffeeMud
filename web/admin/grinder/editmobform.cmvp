@@ -89,6 +89,14 @@
 			w=window.open("/"+file+"?HELPTOPIC="+named,
 			            "Help",strFeatures, false);
 		}
+		function DelMob()
+		{
+			if(window.confirm('Confirm: Delete this MOB?'))
+			{
+				document.AREAEDIT.DELMOB.value='@RequestParameter?MOB@';
+				document.AREAEDIT.submit();
+			}
+		}
 	//-->
 	</SCRIPT>
 </head>
@@ -123,6 +131,10 @@
 <INPUT TYPE=HIDDEN NAME=MOB VALUE="@RequestParameter?MOB@">
 <INPUT TYPE=HIDDEN NAME=ITEM VALUE="">
 <INPUT TYPE=HIDDEN NAME=ACTION VALUE="MODIFYMOB">
+@if?RequestParameter?SINGLEMOB@
+	<INPUT TYPE=HIDDEN NAME=SINGLEMOB VALUE="@RequestParameter?SINGLEMOB@">
+	<INPUT TYPE=HIDDEN NAME=DELMOB VALUE="">
+@endif@
 <TABLE WIDTH=600 BORDER=1 CELLSPACING=0 CELLPADDIN=0>
 <TR>
 	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>MOB Class:</B></FONT></TD>
@@ -146,8 +158,8 @@
     <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=DESCRIPTION SIZE=60 MAXLENGTH=1024 VALUE="@MobData?DESCRIPTION@"></TD>
 </TR>
 <TR>
-	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>GIF filename:</B></FONT></TD>
-    <TD WIDTH=500 COLSPAN=2><INPUT TYPE=TEXT NAME=IMAGE SIZE=50 VALUE="@MobData?IMAGE@"></TD>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>GIF filename:</B></FONT></TD>
+    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=IMAGE SIZE=50 VALUE="@MobData?IMAGE@"></TD>
 </TR>
 @else@
 <TR>
@@ -518,33 +530,52 @@
 	@endif@
 @endif@
 <TR>
-	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Tattoos:</B></FONT>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Tattoos:</B></FONT>
 	</TD>
-    <TD WIDTH=500 COLSPAN=2>
+    <TD WIDTH=450 COLSPAN=2>
     <INPUT TYPE=TEXT NAME=TATTOOS SIZE=30 VALUE="@MobData?TATTOOS@">
     <FONT SIZE=-1><I>Semicolon delimited</I>
     </TD>
 </TR>
 <TR>
-	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>Expertise:</B></FONT>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Expertise:</B></FONT>
 	</TD>
-    <TD WIDTH=500 COLSPAN=2>
+    <TD WIDTH=450 COLSPAN=2>
     <INPUT TYPE=TEXT NAME=EXPERTISES SIZE=30 VALUE="@MobData?EXPERTISES@">
     <FONT SIZE=-1><I>Semicolon delimited</I>
     </TD>
 </TR>
 <TR>
-	<TD WIDTH=100><FONT COLOR="#66FFFF"><B>MOB Inventory:</B></FONT></TD>
-    <TD WIDTH=500 COLSPAN=2>
+	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>MOB Inventory:</B></FONT></TD>
+    <TD WIDTH=450 COLSPAN=2>
     @MobData?ITEMLIST@
     </TD>
 </TR>
 @endif@
 <TR>
-    <TD WIDTH=600 COLSPAN=3 ALIGN=CENTER>
-	<INPUT TYPE=SUBMIT NAME=FINISHED VALUE="Finished">
-	</CENTER>
-	</TD>
+	@if?RequestParameter?SINGLEMOB@
+		@if?CheckReqParm?<MOB=NEW@
+		    <TD WIDTH=600 COLSPAN=3 ALIGN=CENTER>
+				<INPUT TYPE=SUBMIT NAME=FINISHED VALUE="Finished">
+			</TD>
+		@else@
+		    <TD WIDTH=600 COLSPAN=3 ALIGN=CENTER>
+		    	<TABLE WIDTH=100% BORDER=0>
+		    	<TR>
+		    		<TD WIDTH=50% ALIGN=CENTER>
+					<INPUT TYPE=SUBMIT NAME=FINISHED VALUE="Finished">
+					</T>
+		    		<TD WIDTH=50% ALIGN=CENTER>
+					<INPUT TYPE=BUTTON NAME=BDELESMOB VALUE="Delete" ONCLICK="DelMob()">
+					</T>
+				</TR></TABLE>
+			</TD>
+		@endif@
+	@else@
+	    <TD WIDTH=600 COLSPAN=3 ALIGN=CENTER>
+			<INPUT TYPE=SUBMIT NAME=FINISHED VALUE="Finished">
+		</TD>
+	@endif@
 </TR>
 </TABLE>
 </FORM>

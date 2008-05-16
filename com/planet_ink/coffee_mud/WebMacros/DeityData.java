@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import java.net.URLEncoder;
 import java.util.*;
 
 
@@ -64,10 +65,78 @@ public class DeityData extends StdWebMacro
                     str.append(D.Name()+", ");
                 if(parms.containsKey("LOCATION"))
                 {
-                    if(D.location()==null)
+                    if(D.getStartRoom()==null)
                         str.append("Nowhere, ");
                     else
-                        str.append(CMLib.map().getExtendedRoomID(D.location())+": "+D.location().displayText()+", ");
+                        str.append(CMLib.map().getExtendedRoomID(D.getStartRoom())+": "+D.getStartRoom().displayText()+", ");
+                }
+                if(parms.containsKey("AREA")&&(D.getStartRoom()!=null))
+                    if(parms.containsKey("ENCODED"))
+                        try {str.append(URLEncoder.encode(D.getStartRoom().getArea().Name(),"UTF-8")+", ");}catch(Exception e){}
+                    else
+                        str.append(D.getStartRoom().getArea().Name()+", ");
+                if(parms.containsKey("ROOM")&&(D.getStartRoom()!=null))
+                    if(parms.containsKey("ENCODED"))
+                        try {str.append(URLEncoder.encode(D.getStartRoom().roomID(),"UTF-8")+", ");}catch(Exception e){}
+                    else
+                        str.append(D.getStartRoom().roomID()+", ");
+                if(parms.containsKey("MOBCODE"))
+                {
+                    String roomID=D.getStartRoom().roomID();
+                    Vector classes=(Vector)httpReq.getRequestObjects().get("DEITYLIST-"+roomID);
+                    if(classes==null)
+                    {
+                        classes=new Vector();
+                        Room R=(Room)httpReq.getRequestObjects().get(roomID);
+                        if(R==null)
+                        {
+                            Vector deities=new Vector();
+                            for(Enumeration e=CMLib.map().deities();e.hasMoreElements();)
+                                deities.addElement(((MOB)e.nextElement()).copyOf());
+                            R=CMLib.map().getRoom(roomID);
+                            if(R==null)
+                                return "No Room?!";
+                            CMLib.map().resetRoom(R);
+                            R=CMLib.map().getRoom(roomID);
+                            httpReq.getRequestObjects().put(roomID,R);
+                            D=CMLib.map().getDeity(last);
+                            Vector ddeities=new Vector();
+                            for(Enumeration e=CMLib.map().deities();e.hasMoreElements();)
+                                ddeities.addElement(e.nextElement());
+                            for(Enumeration e=ddeities.elements();e.hasMoreElements();)
+                                CMLib.map().delDeity((Deity)e.nextElement());
+                            for(Enumeration e=deities.elements();e.hasMoreElements();)
+                            {
+                                Deity OD=(Deity)e.nextElement();
+                                for(Enumeration e2=ddeities.elements();e2.hasMoreElements();)
+                                {
+                                    Deity RD=(Deity)e2.nextElement();
+                                    if(OD.sameAs(RD))
+                                    {
+                                        CMLib.map().addDeity(RD);
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        synchronized(("SYNC"+roomID).intern())
+                        {
+                            R=CMLib.map().getRoom(R);
+                            for(int m=0;m<R.numInhabitants();m++)
+                            {
+                                MOB M=R.fetchInhabitant(m);
+                                if(M.savable())
+                                    classes.addElement(M);
+                            }
+                            RoomData.contributeMOBs(classes);
+                        }
+                        httpReq.getRequestObjects().put("DEITYLIST-"+roomID,classes);
+                    }
+                    System.out.println("R:"+D.name()+"/"+RoomData.getMOBCode(classes,D));
+                    if(parms.containsKey("ENCODED"))
+                        try {str.append(URLEncoder.encode(RoomData.getMOBCode(classes,D),"UTF-8")+", ");}catch(Exception e){}
+                    else
+                        str.append(RoomData.getMOBCode(classes,D)+", ");
                 }
 				if(parms.containsKey("WORSHIPREQ"))
 					str.append(D.getWorshipRequirementsDesc()+", ");

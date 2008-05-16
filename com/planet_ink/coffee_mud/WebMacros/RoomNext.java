@@ -31,40 +31,38 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class DeityNext extends StdWebMacro
+public class RoomNext extends StdWebMacro
 {
-	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+    public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
-	{
-		Hashtable parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("DEITY");
-		if(parms.containsKey("RESET"))
-		{	
-			if(last!=null) httpReq.removeRequestParameter("DEITY");
-			return "";
-		}
-		String lastID="";
-        HashSet heavensfound=new HashSet();
-		for(Enumeration d=CMLib.map().deities();d.hasMoreElements();)
-		{
-			Deity D=(Deity)d.nextElement();
-            if((D.location()!=null)&&(!heavensfound.contains(D.location())))
+    public String runMacro(ExternalHTTPRequests httpReq, String parm)
+    {
+        Hashtable parms=parseParms(parm);
+        String area=httpReq.getRequestParameter("AREA");
+        if((area==null)||(CMLib.map().getArea(area)==null))
+            return " @break@";
+        Area A=CMLib.map().getArea(area);
+        String last=httpReq.getRequestParameter("ROOM");
+        if(parms.containsKey("RESET"))
+        {   
+            if(last!=null) httpReq.removeRequestParameter("ROOM");
+            return "";
+        }
+        String lastID="";
+        
+        for(Enumeration d=A.getProperRoomnumbers().getRoomIDs();d.hasMoreElements();)
+        {
+            String roomid=(String)d.nextElement();
+            if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!roomid.equals(lastID))))
             {
-                if(parms.containsKey("HEAVENS"))
-                    heavensfound.add(D.location());
-    			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!D.Name().equals(lastID))))
-    			{
-    				httpReq.addRequestParameters("DEITY",D.Name());
-    				return "";
-    			}
-    			lastID=D.Name();
+                httpReq.addRequestParameters("ROOM",roomid);
+                return "";
             }
-		}
-		httpReq.addRequestParameters("DEITY","");
-		if(parms.containsKey("EMPTYOK"))
-			return "<!--EMPTY-->";
-		return " @break@";
-	}
-
+            lastID=roomid;
+        }
+        httpReq.addRequestParameters("ROOM","");
+        if(parms.containsKey("EMPTYOK"))
+            return "<!--EMPTY-->";
+        return " @break@";
+    }
 }

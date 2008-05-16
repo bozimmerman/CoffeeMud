@@ -304,7 +304,7 @@ public class GrinderMobs
     		}
 
 			MOB M=null;
-			if(mobCode.equals("NEW"))
+			if(mobCode.equals("NEW")||mobCode.equals("NEWDEITY"))
 				M=CMClass.getMOB(newClassID);
 			else
 				M=RoomData.getMOBFromCode(R,mobCode);
@@ -739,7 +739,7 @@ public class GrinderMobs
 			}
 			else
 			{
-				if(mobCode.equals("NEW"))
+				if(mobCode.equals("NEW")||mobCode.equals("NEWDEITY"))
 				{
 					M.bringToLife(R,true);
 				}

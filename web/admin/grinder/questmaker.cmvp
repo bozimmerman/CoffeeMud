@@ -28,9 +28,6 @@
 			if(window.confirm('Cancelling will lose all your hard work.  Are you SURE?!'))
 				window.close();
 		}
-		function AddNewMob()
-		{
-		}
 		function AddNewItem()
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";

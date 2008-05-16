@@ -405,6 +405,7 @@ public class Modify extends BaseGenerics
 			while(!ok)
 			{
 				int showNumber=0;
+                mob.tell("*. Class: "+myArea.ID());
 				genName(mob,myArea,++showNumber,showFlag);
 				genDescription(mob,myArea,++showNumber,showFlag);
 				genAuthor(mob,myArea,++showNumber,showFlag);

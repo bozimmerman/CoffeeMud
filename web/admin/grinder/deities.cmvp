@@ -8,16 +8,57 @@
     <title>Deities List</title>
     <script language=JavaScript>
     <!--
-        function Deity(action)
+        function Deity(area,room,mobcode)
         {
+        	var w;
+        	area=encodeURI(area);
+        	room=encodeURI(room);
+        	mobcode=encodeURI(mobcode);
+        	room=room.replace("#","%23");
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-            w=window.open("deity.cmvp?AUTH=@Authenticate?AUTH@&MOB="+action,"Deity",strFeatures, false);
+            w=window.open("editmobform.cmvp?AUTH=@Authenticate?AUTH@&AREA="+area+"&ROOM="+room+"&MOB="+mobcode+"&SINGLEMOB=true","MAP",strFeatures, false);
         }
+        
+        function pickedRoom(area,room,name)
+        {
+    		var mobcode='NEWDEITY';
+        	area=encodeURI(area);
+        	room=encodeURI(room);
+        	var mobcode=encodeURI(mobcode);
+        	room=room.replace("#","%23");
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("editmobform.cmvp?AUTH=@Authenticate?AUTH@&NEWMOBNAME="+name+"&AREA="+area+"&ROOM="+room+"&MOB="+mobcode+"&SINGLEMOB=true","MAP",strFeatures, false);
+        }
+        
+        function NewDeity(locitem,name)
+        {
+        	var lindex=locitem.selectedIndex;
+        	var location='';
+        	var w;
+        	if(lindex>=0)
+        		location=locitem.options[lindex].value;
+        	name=encodeURI(name);
+	    	if(location == '')
+        	{
+	            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=200,width=650,alwaysRaised=yes,dependent=yes";
+	            w=window.open("pickroom.cmvp?REST="+name,"MAP",strFeatures, false);
+        	}
+        	else 
+        	{
+	            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+        		var div=location.indexOf('~|~');
+        		var room=location.substr(0,div);
+        		var area=location.substr(div+3,location.length);
+        		pickedRoom(area,room,name);
+            }
+        }
+        
         function Clicked(action)
         {
             document.RESOURCES.action=action;
             document.RESOURCES.submit();
         }
+        
         function Refresh()
         {
             document.RESOURCES.action='deities.cmvp';
@@ -43,25 +84,43 @@
 <CENTER>
 <FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="deities.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=AREA VALUE="">
+<INPUT TYPE=HIDDEN NAME=ROOM VALUE="">
     <TABLE WIDTH=100% BORDER=1>
     <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Deity Manager</H2></FONT></TD></TR>
-    <TD WIDTH=40%><B><FONT COLOR=YELLOW>Name</FONT></b></TD>
-    <TD WIDTH=40%><B><FONT COLOR=YELLOW>Location</FONT></b></TD>
-    <TD WIDTH=10%><B><FONT COLOR=YELLOW>Priests</FONT></B></TD>
-    <TD WIDTH=10%><B><FONT COLOR=YELLOW>Followers</FONT></B></TD>
+    <TR>
+	    <TD WIDTH=40%><B><FONT COLOR=YELLOW>Name</FONT></b></TD>
+	    <TD WIDTH=40%><B><FONT COLOR=YELLOW>Location</FONT></b></TD>
+	    <TD WIDTH=10%><B><FONT COLOR=YELLOW>Priests</FONT></B></TD>
+	    <TD WIDTH=10%><B><FONT COLOR=YELLOW>Followers</FONT></B></TD>
     </TR>
     @DeityNext?RESET@
     @loop@
     @DeityNext@
     <TR>
-    <TD><a href="javascript:Deity('@DeityID@')"><FONT COLOR=WHITE><B>@DeityID@</B></FONT></a></TD>
-    <TD><FONT COLOR=WHITE>@DeityData?LOCATION@</FONT></TD>
-    <TD><FONT COLOR=WHITE>@DeityData?NUMPRIESTS@</FONT></TD>
-    <TD><FONT COLOR=WHITE>@DeityData?NUMFOLLOWERS@</FONT></TD>
+	    <TD>
+		<INPUT TYPE=HIDDEN NAME=ROOM@DeityData?MOBCODE&ENCODED@ VALUE="">
+	    <a href="javascript:Deity('@DeityData?AREA@','@DeityData?ROOM@','@DeityData?MOBCODE@')"><FONT COLOR=WHITE><B>@DeityID@</B></FONT></a>
+	    </TD>
+	    <TD><FONT COLOR=WHITE>@DeityData?LOCATION@</FONT></TD>
+	    <TD><FONT COLOR=WHITE>@DeityData?NUMPRIESTS@</FONT></TD>
+	    <TD><FONT COLOR=WHITE>@DeityData?NUMFOLLOWERS@</FONT></TD>
     </TR>
     @back@
     <TR>
-    <TD COLSPAN=5><a href="javascript:Deity('_NEWONE_&NEWDEITYID='+document.RESOURCES.NEWDEITYID.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWDEITYID SIZE=70></B></FONT></TD>
+    <TD COLSPAN=5><a href="javascript:NewDeity(document.RESOURCES.LOCATION,''+document.RESOURCES.NEWDEITYID.value)"><FONT COLOR=WHITE><B>Create New:</a>
+    &nbsp;<INPUT TYPE=TEXT NAME=NEWDEITYID SIZE=70>
+    &nbsp;in
+    <SELECT NAME=LOCATION>
+    <OPTION VALUE="">New Location
+    @DeityNext?RESET&HEAVENS@
+    @loop@
+	    @DeityNext?HEAVENS@
+	    <OPTION VALUE="@DeityData?ROOM@~|~@DeityData?AREA@">@DeityData?ROOM@
+    @back@
+    </SELECT>
+    </B></FONT>
+    </TD>
     </TR>
     </TABLE>
     <P>
