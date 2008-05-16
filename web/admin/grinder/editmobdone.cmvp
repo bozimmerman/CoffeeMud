@@ -2,7 +2,9 @@
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
 @if?!CheckAuthCode?ANYMODAREAS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
-@MUDGrinder?EDITMOB@
+@if?CheckReqParm?DELMOB=@
+	@MUDGrinder?EDITMOB@
+@endif@
 <HTML>
 <head>
  	<link rel="grinder icon" href="/images/grinder.ico" >

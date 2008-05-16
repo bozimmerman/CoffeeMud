@@ -185,7 +185,6 @@ public class GrinderRooms
 						MOB M=RoomData.getMOBFromCode(allmobs,MATCHING);
 						if(M!=null)	
                         {
-                            System.out.println("W:"+M.name()+"/"+RoomData.getMOBCode(allmobs,M));
                             if(MATCHING.equalsIgnoreCase(delMOB))
                                 continue;
                             happilyAddMob(M,R);

@@ -132,7 +132,6 @@ public class DeityData extends StdWebMacro
                         }
                         httpReq.getRequestObjects().put("DEITYLIST-"+roomID,classes);
                     }
-                    System.out.println("R:"+D.name()+"/"+RoomData.getMOBCode(classes,D));
                     if(parms.containsKey("ENCODED"))
                         try {str.append(URLEncoder.encode(RoomData.getMOBCode(classes,D),"UTF-8")+", ");}catch(Exception e){}
                     else
