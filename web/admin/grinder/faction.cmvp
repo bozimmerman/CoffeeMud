@@ -69,7 +69,7 @@
         }
         function Delete()
         {
-            if(confirm('Delete this generic faction?! Confirm!'))
+            if(confirm('Delete this faction?! Confirm!'))
             {
                 if(confirm('Press OK to Delete this faction!'))
                 {

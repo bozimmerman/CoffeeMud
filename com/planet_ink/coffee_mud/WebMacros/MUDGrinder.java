@@ -409,18 +409,14 @@ public class MUDGrinder extends StdWebMacro
                 Log.sysOut("Grinder",mob.name()+" modified race "+R.ID());
                 return "Race "+R.ID()+" modified.";
             }
-            else
-            {
-                CMClass.addRace(R);
-                CMLib.database().DBCreateRace(R.ID(),R.racialParms());
-                if((oldR!=null)&&(oldR!=R))
-                    CMLib.utensils().swapRaces(R, oldR);
-                Log.sysOut("Grinder",mob.name()+" created race "+R.ID());
-                if((oldR!=null)&&(!oldR.isGeneric()))
-                    return "Race "+R.ID()+" replaced with Generic Race " + R.ID()+".";
-                else
-                    return "Race "+R.ID()+" created.";
-            }
+            CMClass.addRace(R);
+            CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+            if((oldR!=null)&&(oldR!=R))
+                CMLib.utensils().swapRaces(R, oldR);
+            Log.sysOut("Grinder",mob.name()+" created race "+R.ID());
+            if((oldR!=null)&&(!oldR.isGeneric()))
+                return "Race "+R.ID()+" replaced with Generic Race " + R.ID()+".";
+            return "Race "+R.ID()+" created.";
 		}
         else
         if(parms.contains("DELCLASS"))

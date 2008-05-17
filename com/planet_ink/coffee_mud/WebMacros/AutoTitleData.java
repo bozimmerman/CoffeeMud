@@ -64,20 +64,32 @@ public class AutoTitleData extends StdWebMacro
             MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
             if(M==null) return "[authentication error]";
             if(!CMSecurity.isAllowed(M,M.location(),"TITLES")) return "[authentication error]";
+            String req=httpReq.getRequestParameter("ISREQUIRED");
             String newTitle=httpReq.getRequestParameter("TITLE");
+            if((req!=null)&&(req.equalsIgnoreCase("on")))
+                newTitle="{"+newTitle+"}";
             String newMask=httpReq.getRequestParameter("MASK");
             if((newTitle==null)||(newMask==null)||(newTitle.length()==0))
                 return "[missing data error]";
+            
+            if((last.length()==0)&&(CMLib.login().isExistingAutoTitle(newTitle)))
+            {
+                CMLib.login().reloadAutoTitles();
+                return "[new title already exists!]";
+            }
+            
             String error=CMLib.login().evaluateAutoTitle(newTitle+"="+newMask,false);
             if(error!=null) return "[error: "+error+"]";
 
             if((last!=null)&&(CMLib.login().isExistingAutoTitle(last)))
             {
                 String err=deleteTitle(last);
-                if(err!=null) return err;
+                if(err!=null)
+                {
+                    CMLib.login().reloadAutoTitles();
+                    return err;
+                }
             }
-            if(CMLib.login().isExistingAutoTitle(newTitle))
-                return "[new title already exists!]";
             CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,true);
             F.saveText("\n"+newTitle+"="+newMask,true);
             Resources.removeResource("titles.txt");
@@ -98,27 +110,47 @@ public class AutoTitleData extends StdWebMacro
         }
         else
         if(last==null) return " @break@";
-        else
-        if(last.length()>0)
+        StringBuffer str=new StringBuffer("");
+
+        if(parms.containsKey("MASK"))
         {
-            StringBuffer str=new StringBuffer("");
-
-            if(parms.containsKey("MASK"))
-            {
-                String mask=CMLib.login().getAutoTitleMask(last);
+            String mask=httpReq.getRequestParameter("MASK");
+            if((mask==null)&&(last.length()>0))
+                mask=CMLib.login().getAutoTitleMask(last);
+            if(mask!=null)
                 str.append(mask+", ");
-            }
-            if(parms.containsKey("MASKDESC"))
-            {
-                String mask=CMLib.login().getAutoTitleMask(last);
-                str.append(CMLib.masking().maskDesc(mask)+", ");
-            }
-            String strstr=str.toString();
-            if(strstr.endsWith(", "))
-                strstr=strstr.substring(0,strstr.length()-2);
-            return clearWebMacros(strstr);
         }
-
-        return "";
+        if(parms.containsKey("TITLE"))
+        {
+            String title=httpReq.getRequestParameter("TITLE");
+            if(title==null) 
+                title=last;
+            if(title!=null)
+            {
+                if(title.startsWith("{")&&title.endsWith("}"))
+                    title=title.substring(1,title.length()-1);
+                str.append(title+", ");
+            }
+        }
+        if(parms.containsKey("ISREQUIRED"))
+        {
+            String req=httpReq.getRequestParameter("ISREQUIRED");
+            if(req==null) 
+                req=(last.startsWith("{")&&last.endsWith("}"))?"on":"";
+            if(req!=null)
+                str.append((req.equalsIgnoreCase("on")?"CHECKED":"")+", ");
+        }
+        if(parms.containsKey("MASKDESC"))
+        {
+            String mask=httpReq.getRequestParameter("MASK");
+            if((mask==null)&&(last.length()>0))
+                mask=CMLib.login().getAutoTitleMask(last);
+            if(mask!=null)
+                str.append(CMLib.masking().maskDesc(mask)+", ");
+        }
+        String strstr=str.toString();
+        if(strstr.endsWith(", "))
+            strstr=strstr.substring(0,strstr.length()-2);
+        return clearWebMacros(strstr);
     }
 }

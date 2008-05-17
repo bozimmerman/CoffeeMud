@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import java.net.URLEncoder;
 import java.util.*;
 
 
@@ -39,6 +40,11 @@ public class AutoTitleID extends StdWebMacro
 	{
 		String last=httpReq.getRequestParameter("AUTOTITLE");
 		if(last==null) return " @break@";
-		return last;
+        Hashtable parms=parseParms(parm);
+        try {
+            if(parms.containsKey("ENCODED"))
+        		return URLEncoder.encode(last,"UTF-8");
+        } catch(Exception e) {}
+        return last;
 	}
 }
