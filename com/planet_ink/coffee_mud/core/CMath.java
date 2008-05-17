@@ -284,7 +284,7 @@ public class CMath
     {
     	if(s==null) return 0.0;
     	if(s.trim().endsWith("%")) s=s.trim().substring(0,s.length()-1).trim();
-    	return div(s_double(s),100.0);
+    	return s_double(s)/100.0;
     }
     
     public static boolean isSet(long number, int bitnumber)

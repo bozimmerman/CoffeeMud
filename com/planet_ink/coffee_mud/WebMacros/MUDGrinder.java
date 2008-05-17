@@ -488,6 +488,53 @@ public class MUDGrinder extends StdWebMacro
             }
         }
         else
+        if(parms.contains("DELFACTION"))
+        {
+            MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(mob==null) return "@break@";
+            Faction F=null;
+            String last=httpReq.getRequestParameter("FACTION");
+            if(last==null) return " @break@";
+            F=CMLib.factions().getFaction(last);
+            if(F==null) return " @break@";
+            java.io.File F2=new java.io.File(Resources.makeFileResourceName(F.factionID()));
+            if(F2.exists()) F2.delete();
+            Log.sysOut("Grinder",mob.Name()+" destroyed Faction "+F.name()+" ("+F.factionID()+").");
+            Resources.removeResource(F.factionID());
+            CMLib.factions().removeFaction(F.factionID());
+            return "Faction "+F.ID()+" deleted.";
+        }
+        else
+        if(parms.contains("EDITFACTION"))
+        {
+            MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(mob==null) return "@break@";
+            Faction F=null;
+            String last=httpReq.getRequestParameter("FACTION");
+            if(last==null) return " @break@";
+            F=CMLib.factions().getFaction(last);
+            //boolean create=false;
+            if(F==null){
+                //create=true;
+                StringBuffer template=new CMFile(Resources.buildResourcePath("examples")+"factiontemplate.ini",null,true).text();
+                if((template==null)||(template.length()==0))
+                    return "The file 'resources/examples/factiontemplate.ini' could not be located and is required for command line faction creation.";
+                Resources.submitResource(last,template);
+                if(!Resources.saveFileResource(last,mob,template))
+                    return "Unable to save "+Resources.buildResourcePath("")+last;
+                F=(Faction)CMClass.getCommon("DefaultFaction");
+                F.initializeFaction(template,last);
+            }
+            if(F==null) return " @break@";
+            String errMsg=GrinderFactions.modifyFaction(httpReq, parms, F);
+            if(errMsg.length()==0)
+                errMsg=CMLib.factions().resaveFaction(F);
+            httpReq.addRequestParameters("ERRMSG",errMsg);
+            if(errMsg.length()==0)
+                return "Faction "+F.ID()+" created/modified";
+            return errMsg;
+        }
+        else
         if(parms.contains("DELABILITY"))
         {
             MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));

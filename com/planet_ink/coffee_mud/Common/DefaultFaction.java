@@ -844,7 +844,7 @@ public class DefaultFaction implements Faction, MsgListener
             setDirection((String)v.elementAt(1));
             String amt=((String)v.elementAt(2)).trim();
             if(amt.endsWith("%"))
-                factor=CMath.div(CMath.s_int(amt.substring(0,amt.length()-1)),100.0);
+                factor=CMath.div(CMath.s_double(amt.substring(0,amt.length()-1)),100.0);
             else
                 factor=1.0;
             

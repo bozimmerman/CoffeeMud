@@ -115,6 +115,8 @@ public class FactionData extends StdWebMacro
                     String oldName=httpReq.getRequestParameter("RANGENAME0");
                     String oldLow=null;
                     String oldHigh=null;
+                    String code=null;
+                    String align=null;
                     if((oldName==null)&&(F.ranges()!=null))
 	        		    for(int v=0;v<F.ranges().size();v++)
 	        		    {
@@ -122,6 +124,8 @@ public class FactionData extends StdWebMacro
 	        		    	httpReq.addRequestParameters("RANGENAME"+v,FR.name());
 	        		    	httpReq.addRequestParameters("RANGELOW"+v,""+FR.low());
 	        		    	httpReq.addRequestParameters("RANGEHIGH"+v,""+FR.high());
+                            httpReq.addRequestParameters("RANGECODE"+v,""+FR.codeName());
+                            httpReq.addRequestParameters("RANGEFLAG"+v,""+Faction.ALIGN_NAMES[FR.alignEquiv()]);
 	        		    }
                     
                     int num=0;
@@ -134,6 +138,8 @@ public class FactionData extends StdWebMacro
                             ++showNum;
 	                        oldLow=httpReq.getRequestParameter("RANGELOW"+num);
 	                        oldHigh=httpReq.getRequestParameter("RANGEHIGH"+num);
+                            code=httpReq.getRequestParameter("RANGECODE"+num);
+                            align=httpReq.getRequestParameter("RANGEFLAG"+num);
 	                        if(CMath.s_int(oldHigh)<CMath.s_int(oldLow)) oldHigh=oldLow;
 	        		        str.append("<TR><TD>");
 	        		        str.append("<INPUT TYPE=TEXT NAME=RANGENAME"+showNum+" SIZE=20 VALUE=\""+oldName+"\">");
@@ -141,6 +147,19 @@ public class FactionData extends StdWebMacro
 	        		        str.append("<INPUT TYPE=TEXT NAME=RANGELOW"+showNum+" SIZE=8 VALUE=\""+oldLow+"\">");
 	        		        str.append("</TD><TD>");
 	        		        str.append("<INPUT TYPE=TEXT NAME=RANGEHIGH"+showNum+" SIZE=8 VALUE=\""+oldHigh+"\">");
+                            str.append("</TD><TD>");
+                            str.append("<INPUT TYPE=TEXT NAME=RANGECODE"+showNum+" SIZE=10 VALUE=\""+code+"\">");
+                            str.append("</TD><TD>");
+                            str.append("<SELECT NAME=RANGEFLAG"+showNum+">");
+                            for(int i=0;i<Faction.ALIGN_NAMES.length;i++)
+                            {
+                                str.append("<OPTION VALUE=\""+Faction.ALIGN_NAMES[i]+"\"");
+                                if(Faction.ALIGN_NAMES[i].equalsIgnoreCase(align))
+                                    str.append(" SELECTED");
+                                str.append(">"+CMStrings.capitalizeAndLower(Faction.ALIGN_NAMES[i]));
+                                
+                            }
+                            str.append("</SELECT>");
 	        		        str.append("</TD></TR>");
                         }
         		        num++;
@@ -152,6 +171,13 @@ public class FactionData extends StdWebMacro
     		        str.append("<INPUT TYPE=TEXT NAME=RANGELOW"+showNum+" SIZE=8 VALUE=\"\">");
     		        str.append("</TD><TD>");
     		        str.append("<INPUT TYPE=TEXT NAME=RANGEHIGH"+showNum+" SIZE=8 VALUE=\"\">");
+                    str.append("</TD><TD>");
+                    str.append("<INPUT TYPE=TEXT NAME=RANGECODE"+showNum+" SIZE=10 VALUE=\"\">");
+                    str.append("</TD><TD>");
+                    str.append("<SELECT NAME=RANGEFLAG"+showNum+">");
+                    for(int i=0;i<Faction.ALIGN_NAMES.length;i++)
+                        str.append("<OPTION VALUE=\""+Faction.ALIGN_NAMES[i]+"\">"+CMStrings.capitalizeAndLower(Faction.ALIGN_NAMES[i]));
+                    str.append("</SELECT>");
     		        str.append("</TD></TR>");
                 }
                 
@@ -267,7 +293,6 @@ public class FactionData extends StdWebMacro
                     
                     int num=0;
                     int showNum=-1;
-                    HashSet triggersUsed=new HashSet();
                     while(httpReq.getRequestParameter("CHANGESTRIGGER"+num)!=null)
                     {
                         trigger=httpReq.getRequestParameter("CHANGESTRIGGER"+num);
@@ -461,7 +486,7 @@ public class FactionData extends StdWebMacro
                             {
                                 Vector V=CMParms.parse(E.usageID());
                                 String id="";
-                                int x=0;
+                                int x=-1;
                                 for(Enumeration e2=V.elements();e2.hasMoreElements();id="_"+(++x))
                                     httpReq.addRequestParameters("ABILITYUSE"+v+id,(String)e2.nextElement());
                             }

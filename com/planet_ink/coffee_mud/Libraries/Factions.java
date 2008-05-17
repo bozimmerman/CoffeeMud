@@ -960,12 +960,39 @@ public class Factions extends StdLibrary implements FactionManager
                 ok=true;
             }
         }
-        if((me.factionID().length()>0)&&(CMLib.factions().getFaction(me.factionID())!=null))
+        
+        String errMsg=resaveFaction(me);
+        if(errMsg.length()>0)
+            mob.tell(errMsg);
+    }
+    
+    public String resaveFaction(Faction F)
+    {
+        F.setMinimum(Integer.MAX_VALUE);
+        F.setMaximum(Integer.MIN_VALUE);
+        for(int r=0;r<F.ranges().size();r++)
         {
-            Vector oldV=Resources.getFileLineVector(Resources.getFileResource(me.factionID(),true));
+            Faction.FactionRange FR=(Faction.FactionRange)F.ranges().elementAt(r);
+            if(FR.high()>F.maximum()) F.setMaximum(FR.high());
+            if(FR.low()<F.minimum()) F.setMinimum(FR.low());
+        }
+        if(F.minimum()==Integer.MAX_VALUE) F.setMinimum(Integer.MIN_VALUE);
+        if(F.maximum()==Integer.MIN_VALUE) F.setMaximum(Integer.MAX_VALUE);
+        if(F.maximum()<F.minimum())
+        {
+            int oldMin=F.minimum();
+            F.setMinimum(F.maximum());
+            F.setMaximum(oldMin);
+        }
+        F.setMiddle(F.minimum()+(int)Math.round(CMath.div(F.maximum()-F.minimum(),2.0)));
+        F.setDifference(CMath.abs(F.maximum()-F.minimum()));
+        
+        if((F.factionID().length()>0)&&(CMLib.factions().getFaction(F.factionID())!=null))
+        {
+            Vector oldV=Resources.getFileLineVector(Resources.getFileResource(F.factionID(),true));
             if(oldV.size()<10)
             {
-
+    
             }
             boolean[] defined=new boolean[Faction.ALL_TAGS.length];
             for(int i=0;i<defined.length;i++) defined[i]=false;
@@ -992,7 +1019,7 @@ public class Factions extends StdLibrary implements FactionManager
                     if((lastCommented>=0)&&(!done[lastCommented]))
                     {
                         done[lastCommented]=true;
-                        buf.append(me.getINIDef(Faction.ALL_TAGS[lastCommented],CR)+CR);
+                        buf.append(F.getINIDef(Faction.ALL_TAGS[lastCommented],CR)+CR);
                         lastCommented=-1;
                     }
                 }
@@ -1022,19 +1049,21 @@ public class Factions extends StdLibrary implements FactionManager
                     if(!done[tagRef])
                     {
                         done[tagRef]=true;
-                        buf.append(me.getINIDef(tag,CR)+CR);
+                        buf.append(F.getINIDef(tag,CR)+CR);
                     }
                 }
             }
             if((lastCommented>=0)&&(!done[lastCommented]))
-                buf.append(me.getINIDef(Faction.ALL_TAGS[lastCommented],CR)+CR);
-            Resources.removeResource(me.factionID());
-            Resources.submitResource(me.factionID(),buf);
-            if(!Resources.saveFileResource(me.factionID()))
-                mob.tell("Faction File '"+me.factionID()+"' could not be modified.  Make sure it is not READ-ONLY.");
+                buf.append(F.getINIDef(Faction.ALL_TAGS[lastCommented],CR)+CR);
+            Resources.removeResource(F.factionID());
+            Resources.submitResource(F.factionID(),buf);
+            if(!Resources.saveFileResource(F.factionID()))
+                return "Faction File '"+F.factionID()+"' could not be modified.  Make sure it is not READ-ONLY.";
         }
+        else
+            return "Can not save a blank faction";
+        return "";
     }
-    
     public int getAbilityFlagType(String strflag)
     {
         for(int i=0;i<Ability.ACODE_DESCS.length;i++) 

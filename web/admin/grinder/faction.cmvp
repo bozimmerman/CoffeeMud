@@ -158,9 +158,11 @@
             <TD>
             <TABLE WIDTH=100% BORDER=1>
             <TR>
-                <TD WIDTH=50%><FONT COLOR=WHITE>Name</FONT></TD>
-                <TD WIDTH=25%><FONT COLOR=WHITE>Low</FONT></TD>
-                <TD WIDTH=25%><FONT COLOR=WHITE>High</FONT></TD>
+                <TD WIDTH=35%><FONT COLOR=WHITE>Name</FONT></TD>
+                <TD WIDTH=15%><FONT COLOR=WHITE>Low</FONT></TD>
+                <TD WIDTH=15%><FONT COLOR=WHITE>High</FONT></TD>
+                <TD WIDTH=20%><FONT COLOR=WHITE>Code</FONT></TD>
+                <TD WIDTH=15%><FONT COLOR=WHITE>Align</FONT></TD>
             </TR>
             @FactionData?RANGES@
             <TR><TD WIDTH=100% COLSPAN=3><INPUT TYPE=BUTTON VALUE="Add" NAME=BUTT1 ONCLICK="ReShow()"></TD></TR>
@@ -208,11 +210,11 @@
         </TR>
         <TR>
             <TD><FONT COLOR=YELLOW>Choices introduction text: </FONT></TD>
-            <TD><INPUT TYPE=TEXT SIZE=30 NAME=NAME VALUE="@FactionData?PLAYERCHOICETEXT@"></TD>
+            <TD><INPUT TYPE=TEXT SIZE=30 NAME=PLAYERCHOICETEXT VALUE="@FactionData?PLAYERCHOICETEXT@"></TD>
         </TR>
         <TR>
             <TD><FONT COLOR=YELLOW>Rate Modifier: </FONT></TD>
-            <TD><INPUT TYPE=TEXT SIZE=5 NAME=NAME VALUE="@FactionData?RATEMODIFIER@"></TD>
+            <TD><INPUT TYPE=TEXT SIZE=5 NAME=RATEMODIFIER VALUE="@FactionData?RATEMODIFIER@"></TD>
         </TR>
         <TR>
             <TD><FONT COLOR=YELLOW>Affect on Experience: </FONT></TD>
