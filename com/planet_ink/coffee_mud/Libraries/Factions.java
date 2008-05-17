@@ -429,7 +429,7 @@ public class Factions extends StdLibrary implements FactionManager
                 }
                 if(FR!=null)
                 {
-                    String newName=mob.session().prompt("Enter a new name ("+FR.name()+")\n\r: "+FR.name());
+                    String newName=mob.session().prompt("Enter a new name ("+FR.name()+")\n\r: ");
                     boolean error99=false;
                     if(newName.length()==0)
                         error99=true;
@@ -528,11 +528,9 @@ public class Factions extends StdLibrary implements FactionManager
                 me.setChoiceIntro(CMLib.english().prompt(mob,me.choiceIntro(),++showNumber,showFlag,"Optional choices introduction text. Filename"));
 
             // rate modifier
-            String newModifier=CMLib.english().prompt(mob,Math.round(me.rateModifier()*100.0)+"%",++showNumber,showFlag,"Rate modifier");
-            if(newModifier.endsWith("%"))
-                newModifier=newModifier.substring(0,newModifier.length()-1);
-            if(CMath.isNumber(newModifier))
-                me.setRateModifier(CMath.s_double(newModifier)/100.0);
+            String newModifier=CMLib.english().prompt(mob,CMath.toPct(me.rateModifier()),++showNumber,showFlag,"Rate modifier");
+            if((CMath.isNumber(newModifier))||(CMath.isPct(newModifier)))
+                me.setRateModifier(CMath.s_pct(newModifier));
 
             // experience flag
             boolean error2=true;
@@ -583,8 +581,8 @@ public class Factions extends StdLibrary implements FactionManager
                         choices.append(((char)('A'+r)));
                         list.append("    "+(((char)('A'+r))+") "));
                         list.append(CMStrings.padRight((String)factor.elementAt(2),30)+" ");
-                        list.append(CMStrings.padRight(""+Math.round(CMath.s_double((String)factor.elementAt(0))*100.0)+"%",5)+" ");
-                        list.append(CMStrings.padRight(""+Math.round(CMath.s_double((String)factor.elementAt(1))*100.0)+"%",5)+"\n\r");
+                        list.append(CMStrings.padRight(""+CMath.toPct(((Double)factor.elementAt(0)).doubleValue()),5)+" ");
+                        list.append(CMStrings.padRight(""+CMath.toPct(((Double)factor.elementAt(1)).doubleValue()),5)+"\n\r");
                     }
                 }
                 mob.tell(list.toString());
@@ -610,35 +608,31 @@ public class Factions extends StdLibrary implements FactionManager
                 else
                 {
                     factor=new Vector();
-                    factor.addElement("1.0");
-                    factor.addElement("1.0");
+                    factor.addElement(new Double(1.0));
+                    factor.addElement(new Double(1.0));
                     factor.addElement("");
                     me.factors().addElement(factor);
                 }
                 if(factor!=null)
                 {
                     String mask=mob.session().prompt("Enter a new zapper mask ("+((String)factor.elementAt(2))+")\n\r: "+((String)factor.elementAt(2)));
-                    double newHigh=CMath.s_double((String)factor.elementAt(0));
-                    String newName=mob.session().prompt("Enter gain adjustment ("+Math.round(newHigh*100)+"%): "+Math.round(newHigh*100)+"".trim()+"%");
-                    if(newName.endsWith("%"))
-                        newName=newName.substring(0,newName.length()-1);
-                    if(!CMath.isNumber(newName))
+                    double newHigh=((Double)factor.elementAt(0)).doubleValue();
+                    String newName=mob.session().prompt("Enter gain adjustment ("+CMath.toPct(newHigh)+"): ");
+                    if((!CMath.isNumber(newName))&&(!CMath.isPct(newName)))
                         mob.tell("(no change)");
                     else
-                        newHigh=CMath.s_double(newName)/100.0;
+                        newHigh=CMath.s_pct(newName);
 
-                    double newLow=CMath.s_double((String)factor.elementAt(1));
-                    newName=mob.session().prompt("Enter loss adjustment ("+Math.round(newLow*100)+"%): "+Math.round(newLow*100)+"".trim()+"%");
-                    if(newName.endsWith("%"))
-                        newName=newName.substring(0,newName.length()-1);
-                    if(!CMath.isNumber(newName))
+                    double newLow=((Double)factor.elementAt(1)).doubleValue();
+                    newName=mob.session().prompt("Enter loss adjustment ("+CMath.toPct(newLow)+"): ");
+                    if((!CMath.isNumber(newName))&&(!CMath.isPct(newName)))
                         mob.tell("(no change)");
                     else
-                        newLow=CMath.s_double(newName)/100.0;
+                        newLow=CMath.s_pct(newName);
                     me.factors().removeElement(factor);
                     factor=new Vector();
-                    factor.addElement(""+newHigh);
-                    factor.addElement(""+newLow);
+                    factor.addElement(new Double(newHigh));
+                    factor.addElement(new Double(newLow));
                     factor.addElement(""+mask);
                     me.factors().addElement(factor);
                 }
@@ -658,8 +652,7 @@ public class Factions extends StdLibrary implements FactionManager
                     if(F!=null)
                     {
                         list.append("    "+CMStrings.padRight(F.name(),31)+" ");
-                        long lval=Math.round(value.doubleValue()*100.0);
-                        list.append(lval+"%");
+                        list.append(CMath.toPct(value.doubleValue()));
                         list.append("\n\r");
                     }
                 }
@@ -698,15 +691,12 @@ public class Factions extends StdLibrary implements FactionManager
                 }
                 if(theF!=null)
                 {
-                    long amount=Math.round(((Double)me.relations().get(theF.factionID())).doubleValue()*100.0);
-                    String newName=mob.session().prompt("Enter a relation amount ("+amount+"%): ",""+amount+"%");
-                    if(newName.endsWith("%")) newName=newName.substring(0,newName.length()-1);
-                    if(!CMath.isInteger(newName))
+                    String amount=CMath.toPct(((Double)me.relations().get(theF.factionID())).doubleValue());
+                    String newName=mob.session().prompt("Enter a relation amount ("+amount+"): ",""+amount);
+                    if((!CMath.isNumber(newName))&&(!CMath.isPct(newName)))
                         mob.tell("(no change)");
-                    else
-                        amount=CMath.s_long(newName);
                     me.relations().remove(theF.factionID());
-                    me.relations().put(theF.factionID(),new Double(amount/100.0));
+                    me.relations().put(theF.factionID(),new Double(CMath.s_pct(newName)));
                 }
             }
 
@@ -728,7 +718,7 @@ public class Factions extends StdLibrary implements FactionManager
                         list.append("    ");
                         list.append(CMStrings.padRight(CE.eventID(),15)+" ");
                         list.append(CMStrings.padRight(Faction.FactionChangeEvent.FACTION_DIRECTIONS[CE.direction()],10)+" ");
-                        list.append(CMStrings.padRight(Math.round(CE.factor()*100.0)+"%",10)+" ");
+                        list.append(CMStrings.padRight(CMath.toPct(CE.factor()),10)+" ");
                         list.append(CMStrings.padRight(CE.flagCache(),20)+" ");
                         list.append(CE.zapper()+"\n\r");
                     }
@@ -787,13 +777,12 @@ public class Factions extends StdLibrary implements FactionManager
                 if(CE!=null)
                 {
                     if(CE.factor()==0.0) CE.setFactor(1.0);
-                    int amount=(int)Math.round(CE.factor()*100.0);
-                    String newName=mob.session().prompt("Enter the amount factor ("+amount+"%): ",""+amount+"%");
-                    if(newName.endsWith("%")) newName=newName.substring(0,newName.length()-1);
-                    if(!CMath.isInteger(newName))
+                    String amount=CMath.toPct(CE.factor());
+                    String newName=mob.session().prompt("Enter the amount factor ("+amount+"): ",""+amount);
+                    if((!CMath.isNumber(newName))&&(!CMath.isPct(newName)))
                         mob.tell("(no change)");
                     else
-                        CE.setFactor(new Double(CMath.s_int(newName)/100.0).doubleValue());
+                        CE.setFactor(CMath.s_pct(newName));
                 }
                 if(CE!=null)
                 {

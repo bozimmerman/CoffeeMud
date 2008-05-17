@@ -181,7 +181,10 @@ public class DefaultFaction implements Faction, MsgListener
             if(key.startsWith("FACTOR"))
             {
                 Vector factor=CMParms.parseSemicolons(words,false);
-                factors.add(factor);
+                if(factor.size()>2)
+                    factors.add(CMParms.makeVector(new Double(CMath.s_double((String)factor.elementAt(0))),
+                                                   new Double(CMath.s_double((String)factor.elementAt(1))),
+                                                   (String)factor.elementAt(2)));
             }
             if(key.startsWith("RELATION"))
             {
@@ -192,7 +195,7 @@ public class DefaultFaction implements Faction, MsgListener
                     double factor;
                     String amt=((String)v.elementAt(1)).trim();
                     if(amt.endsWith("%"))
-                        factor=CMath.div(CMath.s_int(amt.substring(0,amt.length()-1)),100.0);
+                        factor=CMath.s_pct(amt);
                     else
                         factor=1;
                     relations.put(who,new Double(factor));
@@ -272,7 +275,7 @@ public class DefaultFaction implements Faction, MsgListener
                 String factionName=(String)e.nextElement();
                 Double D=(Double)relations.get(factionName);
                 if(i==numCall)
-                    return factionName+" "+((int)Math.round(D.doubleValue()*100.0))+"%";
+                    return factionName+" "+CMath.toPct(D.doubleValue());
                 i++;
             }
             return "";
@@ -504,8 +507,8 @@ public class DefaultFaction implements Faction, MsgListener
             &&(CMLib.masking().maskCheck(((String)factor.elementAt(2)),mob,false))) 
             {
                  if(gain)
-                     return CMath.s_double(((String)factor.elementAt(1)));
-                 return CMath.s_double(((String)factor.elementAt(0)));
+                     return ((Double)factor.elementAt(0)).doubleValue();
+                 return ((Double)factor.elementAt(1)).doubleValue();
              }
         }
         return 1.0;
@@ -844,7 +847,7 @@ public class DefaultFaction implements Faction, MsgListener
             setDirection((String)v.elementAt(1));
             String amt=((String)v.elementAt(2)).trim();
             if(amt.endsWith("%"))
-                factor=CMath.div(CMath.s_double(amt.substring(0,amt.length()-1)),100.0);
+                factor=CMath.s_pct(amt);
             else
                 factor=1.0;
             

@@ -474,18 +474,14 @@ public class MUDGrinder extends StdWebMacro
                 Log.sysOut("Grinder",mob.name()+" modified class "+C.ID());
                 return "Char Class "+C.ID()+" modified.";
             }
-            else
-            {
-                CMClass.addCharClass(C);
-                CMLib.database().DBCreateClass(C.ID(),C.classParms());
-                if((oldC!=null)&&(oldC!=C))
-                    CMLib.utensils().reloadCharClasses(oldC);
-                Log.sysOut("Grinder",mob.name()+" created class "+C.ID());
-                if((oldC!=null)&&(!oldC.isGeneric()))
-                    return "Char Class "+C.ID()+" replaced with Generic Class " + C.ID()+".";
-                else
-                    return "Char Class "+C.ID()+" created.";
-            }
+            CMClass.addCharClass(C);
+            CMLib.database().DBCreateClass(C.ID(),C.classParms());
+            if((oldC!=null)&&(oldC!=C))
+                CMLib.utensils().reloadCharClasses(oldC);
+            Log.sysOut("Grinder",mob.name()+" created class "+C.ID());
+            if((oldC!=null)&&(!oldC.isGeneric()))
+                return "Char Class "+C.ID()+" replaced with Generic Class " + C.ID()+".";
+            return "Char Class "+C.ID()+" created.";
         }
         else
         if(parms.contains("DELFACTION"))
@@ -524,6 +520,7 @@ public class MUDGrinder extends StdWebMacro
                     return "Unable to save "+Resources.buildResourcePath("")+last;
                 F=(Faction)CMClass.getCommon("DefaultFaction");
                 F.initializeFaction(template,last);
+                CMLib.factions().factionSet().put(F.factionID().toUpperCase(),F);
             }
             if(F==null) return " @break@";
             String errMsg=GrinderFactions.modifyFaction(httpReq, parms, F);

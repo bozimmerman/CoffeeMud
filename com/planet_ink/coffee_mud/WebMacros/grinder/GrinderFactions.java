@@ -128,7 +128,7 @@ public class GrinderFactions {
                 old+=";";
                 old+=CMath.s_int(httpReq.getRequestParameter("CHANGESDIR"+num));
                 old+=";";
-                old+=(CMath.s_pct(httpReq.getRequestParameter("CHANGESFACTOR"+num))*100.0)+"%";
+                old+=CMath.toPct(httpReq.getRequestParameter("CHANGESFACTOR"+num));
                 old+=";";
                 String id="";
                 int x=0;
@@ -149,8 +149,8 @@ public class GrinderFactions {
             old=httpReq.getRequestParameter("ADJFACTOR"+num);
             if(old.length()>0)
             {
-                String gain=""+CMath.s_pct(httpReq.getRequestParameter("ADJFACTORGAIN"+num));
-                String loss=""+CMath.s_pct(httpReq.getRequestParameter("ADJFACTORLOSS"+num));
+                Double gain=new Double(CMath.s_pct(httpReq.getRequestParameter("ADJFACTORGAIN"+num)));
+                Double loss=new Double(CMath.s_pct(httpReq.getRequestParameter("ADJFACTORLOSS"+num)));
                 F.factors().addElement(CMParms.makeVector(gain,loss,old));
             }
             num++;

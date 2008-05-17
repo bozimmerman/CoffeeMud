@@ -2488,7 +2488,8 @@ public class StdMOB implements MOB
         for(Enumeration e=fetchFactions();e.hasMoreElements();)
         {
             F=CMLib.factions().getFaction((String)e.nextElement());
-            F.executeMsg(this,msg);
+            if(F!=null)
+                F.executeMsg(this,msg);
         }
 	}
 

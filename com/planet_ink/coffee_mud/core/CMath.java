@@ -283,9 +283,18 @@ public class CMath
     public static double s_pct(String s)
     {
     	if(s==null) return 0.0;
-    	if(s.trim().endsWith("%")) s=s.trim().substring(0,s.length()-1).trim();
+    	while(s.trim().endsWith("%")) s=s.trim().substring(0,s.length()-1).trim();
     	return s_double(s)/100.0;
     }
+    public static String toPct(double d)
+    {
+        java.text.DecimalFormat twoPlaces = new java.text.DecimalFormat("0.#####%");
+        String s=twoPlaces.format(d);
+        if(s.endsWith("%%")) return s.substring(0,s.length()-1);
+        return s;
+        
+    }
+    public static String toPct(String s) { return toPct(s_pct(s)); }
     
     public static boolean isSet(long number, int bitnumber)
     {
