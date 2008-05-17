@@ -68,4 +68,5 @@ public interface FactionManager extends CMLibrary, Tickable
     public void modifyFaction(MOB mob, Faction me) throws IOException;
     public boolean postChangeAllFactions(MOB mob, MOB victim, int amount, boolean quiet);
     public boolean postFactionChange(MOB mob, Environmental tool,String factionID, int amount);
+    public int getAbilityFlagType(String strflag);
 }

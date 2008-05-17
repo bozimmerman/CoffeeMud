@@ -114,6 +114,10 @@
     <A href="javascript:Clicked('abilities.cmvp')"><FONT COLOR=WHITE>Abilities Creator</FONT></a>
     <BR>
     @endif@
+    @if?CheckAuthCode?AUTH_CMDFACTIONS=true@
+    <A href="javascript:Clicked('factions.cmvp')"><FONT COLOR=WHITE>Factions Manager</FONT></a>
+    <BR>
+    @endif@
 	@if?CheckAuthCode?AUTH_LOADUNLOAD=true@
 	<A href="javascript:Clicked('resources.cmvp')"><FONT COLOR=WHITE>Cache Resources</FONT></a>
 	<BR>

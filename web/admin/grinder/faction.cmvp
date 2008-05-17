@@ -1,0 +1,296 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_CMDFACTIONS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<html>
+<head>
+    <link rel="grinder icon" href="/images/grinder.ico" >
+    <title>Faction Manager</title>
+    <script language=JavaScript>
+    <!--
+        function openUp2(named)
+        {
+            var strFeatures="top=200,left=50,resizeable=no,scrollbars=yes,height=400,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("/property.cmvp?ABILITY="+named,
+                        "Ability",strFeatures, false);
+        }
+        function AddNewItem(FIELD)
+        {
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM=NEW&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,"Faction Item",strFeatures, false);
+        }
+        function AddItem(ME)
+        {
+            ReShow();
+        }
+        function EditItemDone()
+        {
+            ReShow();
+        }
+        function EditItem(ME,FIELD)
+        {
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM="+ME+"&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,"Faction Item",strFeatures, false);
+        }
+        function AddMember(v)
+        {
+            ReShow();
+        }
+        function EditMember(v)
+        {
+            ReShow();
+        }
+        function EditAffect(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function AddAffect(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
+        function NewFaction()
+        {
+            var factionid=window.prompt('Enter a new unique ID for your Faction (no spaces):');
+            if(factionid==null)
+                return;
+            if(factionid.length==0)
+                return;
+            if(factionid.indexOf(' ')>=0)
+            {
+                window.alert('No spaces are allowed in your ID!');
+                return;
+            }
+            document.RESOURCES.NEWFACTIONID.value=factionid;
+            document.RESOURCES.FUNCTION.value='REFACTION';
+            document.RESOURCES.action='/grinder/factiondo.cmvp';
+            document.RESOURCES.submit();
+        }
+        function Delete()
+        {
+            if(confirm('Delete this generic faction?! Confirm!'))
+            {
+                if(confirm('Press OK to Delete this faction!'))
+                {
+                    document.RESOURCES.action='factiondo.cmvp';
+                    document.RESOURCES.FUNCTION.value='DELFACTION';
+                    document.RESOURCES.submit();
+                }
+            }
+        }
+        function EditDone()
+        {
+            @if?FactionData?ISNEWFACTION@
+                if(confirm('Create this new faction?'))
+            @else@
+                if(confirm('Submit your changes to this faction?'))
+            @endif@
+                {
+                    document.RESOURCES.action='factiondo.cmvp';
+                    document.RESOURCES.FUNCTION.value='EDITFACTION';
+                    document.RESOURCES.submit();
+                }
+        }
+        function ReShow()
+        {
+            document.RESOURCES.FUNCTION.value='';
+            document.RESOURCES.action='/grinder/faction.cmvp';
+            document.RESOURCES.submit();
+        }
+        function ReFaction()
+        {
+            document.RESOURCES.FUNCTION.value='REFACTION';
+            document.RESOURCES.action='/grinder/factiondo.cmvp';
+            document.RESOURCES.submit();
+        }
+        function Cancel()
+        {
+            window.close();
+        }
+        function OpenUp(file,named)
+        {
+            var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("/"+file+"?HELPTOPIC="+named,
+                        "Help",strFeatures, false);
+        }
+        function Clicked(action)
+        {
+            document.RESOURCES.action=action;
+            document.RESOURCES.submit();
+        }
+    //-->
+    </script>
+</head>
+<body BGCOLOR=BLACK>
+<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="faction.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=NEWFACTIONID VALUE="">
+<INPUT TYPE=HIDDEN NAME=REPLACE VALUE="">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+<INPUT TYPE=HIDDEN NAME=FACTION VALUE="@RequestParameter?FACTION@">
+<INPUT TYPE=HIDDEN NAME=NEWFACTION VALUE="@RequestParameter?NEWFACTION@">
+<CENTER>
+@if?CheckReqParm?FACTION=@
+    Select a faction to view/edit.
+@else@
+    <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+        <TR>
+            <TD WIDTH=5%><FONT COLOR=YELLOW>Faction ID: </FONT></TD>
+            <TD WIDTH=95%><FONT COLOR=WHITE>@RequestParameter?FACTION@</FONT></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Name: </FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=20 NAME=NAME VALUE="@FactionData?NAME@"></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Flags: </FONT></TD>
+            <TD><FONT COLOR=WHITE>
+                <INPUT TYPE=CHECKBOX NAME=SHOWINSCORE @FactionData?SHOWINSCORE@>Show In Score
+                <BR><INPUT TYPE=CHECKBOX NAME=SHOWINFACTIONS @FactionData?SHOWINFACTIONS@>Show In Factions
+                <BR><INPUT TYPE=CHECKBOX NAME=SHOWINEDITOR @FactionData?SHOWINEDITOR@>Show In MOB Editor
+                <BR><INPUT TYPE=CHECKBOX NAME=SHOWINREPORTS @FactionData?SHOWINREPORTS@>Show In Reports
+                </FONT>
+            </TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Division / Ranges List: </FONT></TD>
+            <TD>
+            <TABLE WIDTH=100% BORDER=1>
+            <TR>
+                <TD WIDTH=50%><FONT COLOR=WHITE>Name</FONT></TD>
+                <TD WIDTH=25%><FONT COLOR=WHITE>Low</FONT></TD>
+                <TD WIDTH=25%><FONT COLOR=WHITE>High</FONT></TD>
+            </TR>
+            @FactionData?RANGES@
+            <TR><TD WIDTH=100% COLSPAN=3><INPUT TYPE=BUTTON VALUE="Add" NAME=BUTT1 ONCLICK="ReShow()"></TD></TR>
+            </TABLE>
+            </TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Automatic assigned values: </FONT></TD>
+            <TD>
+            <TABLE WIDTH=100% BORDER=1>
+            <TR>
+                <TD WIDTH=25%><FONT COLOR=WHITE>Value</FONT></TD>
+                <TD WIDTH=75%><FONT COLOR=WHITE>Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT></TD>
+            </TR>
+            @FactionData?AUTOVALUES@
+            <TR><TD WIDTH=100% COLSPAN=2><INPUT TYPE=BUTTON VALUE="Add" NAME=BUTT2 ONCLICK="ReShow()"></TD></TR>
+            </TABLE>
+            </TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Other default values: </FONT></TD>
+            <TD>
+            <TABLE WIDTH=100% BORDER=1>
+            <TR>
+                <TD WIDTH=25%><FONT COLOR=WHITE>Value</FONT></TD>
+                <TD WIDTH=75%><FONT COLOR=WHITE>Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT></TD>
+            </TR>
+            @FactionData?DEFAULTVALUES@
+            <TR><TD WIDTH=100% COLSPAN=2><INPUT TYPE=BUTTON VALUE="Add" NAME=BUTT3 ONCLICK="ReShow()"></TD></TR>
+            </TABLE>
+            </TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>New player value choice: </FONT></TD>
+            <TD>
+            <TABLE WIDTH=100% BORDER=1>
+            <TR>
+                <TD WIDTH=25%><FONT COLOR=WHITE>Value</FONT></TD>
+                <TD WIDTH=75%><FONT COLOR=WHITE>Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT></TD>
+            </TR>
+            @FactionData?PLAYERCHOICES@
+            <TR><TD WIDTH=100% COLSPAN=2><INPUT TYPE=BUTTON VALUE="Add" NAME=BUTT4 ONCLICK="ReShow()"></TD></TR>
+            </TABLE>
+            </TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Choices introduction text: </FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=30 NAME=NAME VALUE="@FactionData?PLAYERCHOICETEXT@"></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Rate Modifier: </FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=5 NAME=NAME VALUE="@FactionData?RATEMODIFIER@"></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Affect on Experience: </FONT></TD>
+            <TD><SELECT NAME=AFFECTONEXP>@FactionData?AFFECTONEXP@</SELECT></TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Faction Change Adjustments: </FONT></TD>
+            <TD>
+            <TABLE WIDTH=100% BORDER=1>
+            <TR>
+                <TD WIDTH=50%><FONT COLOR=WHITE>Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT></TD>
+                <TD WIDTH=25%><FONT COLOR=WHITE>Gain %</FONT></TD>
+                <TD WIDTH=25%><FONT COLOR=WHITE>Loss %</FONT></TD>
+            </TR>
+            @FactionData?ADJUSTMENTFACTORS@
+            <TR><TD WIDTH=100% COLSPAN=3><INPUT TYPE=BUTTON VALUE="Add" NAME=BUTT5 ONCLICK="ReShow()"></TD></TR>
+            </TABLE>
+            </TD>
+        </TR>
+        
+        <TR>
+            <TD><FONT COLOR=YELLOW>Cross Faction Relations: </FONT></TD>
+            <TD>
+            <TABLE WIDTH=100% BORDER=1>
+            <TR>
+                <TD WIDTH=50%><FONT COLOR=WHITE>Faction</FONT></TD>
+                <TD WIDTH=50%><FONT COLOR=WHITE>Amount +-%</FONT></TD>
+            </TR>
+            @FactionData?FACTIONRELATIONS@
+            </TABLE>
+            </TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Change Triggers: </FONT></TD>
+            <TD>
+            <TABLE WIDTH=100% BORDER=1>
+            <TR>
+                <TD WIDTH=40%><FONT COLOR=WHITE>Trigger</FONT></TD>
+                <TD WIDTH=12%><FONT COLOR=WHITE>Direction</FONT></TD>
+                <TD WIDTH=8%><FONT COLOR=WHITE>Factor</FONT></TD>
+                <TD WIDTH=12%><FONT COLOR=WHITE>Flags</FONT></TD>
+                <TD WIDTH=30%><FONT COLOR=WHITE>Mask <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></a></FONT></TD>
+            </TR>
+            @FactionData?ADJUSTMENTCHANGES@
+            </TABLE>
+            </TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Ability Allowances: </FONT></TD>
+            <TD>
+            <TABLE WIDTH=100% BORDER=1>
+            <TR>
+                <TD WIDTH=50%><FONT COLOR=WHITE>Ability Criteria(s)</FONT></TD>
+                <TD WIDTH=25%><FONT COLOR=WHITE>Minimum</FONT></TD>
+                <TD WIDTH=25%><FONT COLOR=WHITE>Maximum</FONT></TD>
+            </TR>
+            @FactionData?ABILITYALLOWANCES&FONT=COLOR=WHITE@
+            </TABLE>
+            </TD>
+        </TR>
+    </TABLE>
+@endif@
+<BR>
+<TABLE WIDTH=100% BORDER=0>
+<TR>
+    @if?!CheckReqParm?FACTION=@
+        @if?FactionData?ISNEWFACTION@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
+        @else@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
+        @endif@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
+    @endif@
+</TR>
+</TABLE>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@

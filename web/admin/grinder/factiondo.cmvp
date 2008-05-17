@@ -9,29 +9,29 @@
 <body BGCOLOR=BLACK>
 <SCRIPT LANGUAGE=JavaScript>
 <!--
-@if?CheckReqParm?FUNCTION=DELCLASS@
-    var v='@MUDGrinder?DELCLASS@';
+@if?CheckReqParm?FUNCTION=DELFACTION@
+    var v='@MUDGrinder?DELFACTION@';
     if(v != '')
         alert(v);
     else
-        alert('Class deleted.');
+        alert('Faction deleted.');
     opener.Refresh();
     window.close();
 @endif@
-@if?CheckReqParm?FUNCTION=EDITCLASS@
-    var v='@MUDGrinder?EDITCLASS@';
+@if?CheckReqParm?FUNCTION=EDITFACTION@
+    var v='@MUDGrinder?EDITFACTION@';
     if(v != '')
         alert(v);
     else
-        alert('Class created/modified.');
+        alert('Faction created/modified.');
     opener.Refresh();
     window.close();
 @endif@
-@if?CheckReqParm?FUNCTION=RECLASS@
-    @if?CheckReqParm?NEWCLASSID=@
-        document.location.href='charclass.cmvp?AUTH=@Authenticate?AUTH@&CLASS=@CharClassID@';
+@if?CheckReqParm?FUNCTION=REFACTION@
+    @if?CheckReqParm?NEWFACTIONID=@
+        document.location.href='faction.cmvp?AUTH=@Authenticate?AUTH@&FACTION=@FactionID@';
     @else@
-        document.location.href='charclass.cmvp?AUTH=@Authenticate?AUTH@&CLASS=@RequestParameterEncoded?NEWCLASSID@&NEWCLASS=@RequestParameterEncoded?NEWCLASSID@';
+        document.location.href='faction.cmvp?AUTH=@Authenticate?AUTH@&FACTION=@RequestParameterEncoded?NEWFACTIONID@&NEWFACTION=@RequestParameterEncoded?NEWFACTIONID@';
     @endif@
 @endif@
 //-->

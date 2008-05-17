@@ -38,11 +38,41 @@ public class FactionData extends StdWebMacro
     public String runMacro(ExternalHTTPRequests httpReq, String parm)
     {
         Hashtable parms=parseParms(parm);
+        String replaceCommand=httpReq.getRequestParameter("REPLACE");
+        if((replaceCommand != null) 
+        && (replaceCommand.length()>0)
+        && (replaceCommand.indexOf('=')>0))
+        {
+            int eq=replaceCommand.indexOf('=');
+            String field=replaceCommand.substring(0,eq);
+            String value=replaceCommand.substring(eq+1);
+            httpReq.addRequestParameters(field, value);
+            httpReq.addRequestParameters("REPLACE","");
+        }
+        
+        
         String last=httpReq.getRequestParameter("FACTION");
         if(last==null) return " @break@";
         if(last.length()>0)
         {
-            Faction F=CMLib.factions().getFaction(last);
+            Faction F=null;
+            String newFactionID=httpReq.getRequestParameter("NEWFACTION");
+            if(F==null)
+                F=(Faction)httpReq.getRequestObjects().get("FACTION-"+last);
+            if((F==null)
+            &&(newFactionID!=null)
+            &&(newFactionID.length()>0)
+            &&(CMLib.factions().getFaction(newFactionID)==null))
+            {
+                F=(Faction)CMClass.getCommon("DefaultFaction");
+                F.initializeFaction(newFactionID);
+                last=newFactionID;
+                httpReq.addRequestParameters("FACTION",newFactionID);
+            }
+            if(F==null)
+                F=CMLib.factions().getFaction(last);
+            if(parms.containsKey("ISNEWFACTION"))
+                return ""+(CMLib.factions().getFaction(last)==null);
             if(F!=null)
             {
                 StringBuffer str=new StringBuffer("");
@@ -52,29 +82,33 @@ public class FactionData extends StdWebMacro
                     if(old==null) old=F.name();
                     str.append(old+", ");
                 }
+                if(parms.containsKey("MINRANGE"))
+                    str.append(F.minimum()+", ");
+                if(parms.containsKey("MAXRANGE"))
+                    str.append(F.maximum()+", ");
                 if(parms.containsKey("SHOWINSCORE"))
                 {
                     String old=httpReq.getRequestParameter("SHOWINSCORE");
                     if(old==null) old=F.showinscore()?"on":"";
-                    str.append(old+", ");
+                    str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
                 }
                 if(parms.containsKey("SHOWINFACTIONS"))
                 {
                     String old=httpReq.getRequestParameter("SHOWINFACTIONS");
                     if(old==null) old=F.showinfactionscommand()?"on":"";
-                    str.append(old+", ");
+                    str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
                 }
                 if(parms.containsKey("SHOWINEDITOR"))
                 {
                     String old=httpReq.getRequestParameter("SHOWINEDITOR");
                     if(old==null) old=F.showineditor()?"on":"";
-                    str.append(old+", ");
+                    str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
                 }
                 if(parms.containsKey("SHOWINREPORTS"))
                 {
                     String old=httpReq.getRequestParameter("SHOWINREPORTS");
                     if(old==null) old=F.showinspecialreported()?"on":"";
-                    str.append(old+", ");
+                    str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
                 }
                 if(parms.containsKey("RANGES"))
                 {
@@ -91,31 +125,41 @@ public class FactionData extends StdWebMacro
 	        		    }
                     
                     int num=0;
+                    int showNum=-1;
                     while(httpReq.getRequestParameter("RANGENAME"+num)!=null)
         		    {
                         oldName=httpReq.getRequestParameter("RANGENAME"+num);
                         if(oldName.length()>0)
                         {
+                            ++showNum;
 	                        oldLow=httpReq.getRequestParameter("RANGELOW"+num);
 	                        oldHigh=httpReq.getRequestParameter("RANGEHIGH"+num);
 	                        if(CMath.s_int(oldHigh)<CMath.s_int(oldLow)) oldHigh=oldLow;
 	        		        str.append("<TR><TD>");
-	        		        str.append("<INPUT TYPE=TEXT NAME=RANGENAME"+num+" SIZE=20 VALUE=\""+oldName+"\">");
+	        		        str.append("<INPUT TYPE=TEXT NAME=RANGENAME"+showNum+" SIZE=20 VALUE=\""+oldName+"\">");
 	        		        str.append("</TD><TD>");
-	        		        str.append("<INPUT TYPE=TEXT NAME=RANGELOW"+num+" SIZE=8 VALUE=\""+oldLow+"\">");
+	        		        str.append("<INPUT TYPE=TEXT NAME=RANGELOW"+showNum+" SIZE=8 VALUE=\""+oldLow+"\">");
 	        		        str.append("</TD><TD>");
-	        		        str.append("<INPUT TYPE=TEXT NAME=RANGEHIGH"+num+" SIZE=8 VALUE=\""+oldHigh+"\">");
+	        		        str.append("<INPUT TYPE=TEXT NAME=RANGEHIGH"+showNum+" SIZE=8 VALUE=\""+oldHigh+"\">");
 	        		        str.append("</TD></TR>");
                         }
         		        num++;
         		    }
+                    ++showNum;
     		        str.append("<TR><TD>");
-    		        str.append("<INPUT TYPE=TEXT NAME=RANGENAME"+num+" SIZE=20 VALUE=\"\">");
+    		        str.append("<INPUT TYPE=TEXT NAME=RANGENAME"+showNum+" SIZE=20 VALUE=\"\">");
     		        str.append("</TD><TD>");
-    		        str.append("<INPUT TYPE=TEXT NAME=RANGELOW"+num+" SIZE=8 VALUE=\"\">");
+    		        str.append("<INPUT TYPE=TEXT NAME=RANGELOW"+showNum+" SIZE=8 VALUE=\"\">");
     		        str.append("</TD><TD>");
-    		        str.append("<INPUT TYPE=TEXT NAME=RANGEHIGH"+num+" SIZE=8 VALUE=\"\">");
+    		        str.append("<INPUT TYPE=TEXT NAME=RANGEHIGH"+showNum+" SIZE=8 VALUE=\"\">");
     		        str.append("</TD></TR>");
+                }
+                
+                if(parms.containsKey("PLAYERCHOICETEXT"))
+                {
+                    String oldName=httpReq.getRequestParameter("PLAYERCHOICETEXT");
+                    if(oldName==null) oldName=F.choiceIntro();
+                    str.append(oldName+", ");
                 }
                 
                 if(parms.containsKey("AUTOVALUES")
@@ -139,7 +183,7 @@ public class FactionData extends StdWebMacro
                     if(parms.containsKey("PLAYERCHOICES"))
                     {
                         prefix="PLAYERCHOICE";
-                        Fset=F.defaults();
+                        Fset=F.choices();
                     }
                         
                     
@@ -148,7 +192,7 @@ public class FactionData extends StdWebMacro
                     if((value==null)&&(Fset!=null))
                         for(int v=0;v<Fset.size();v++)
                         {
-                            String def=(String)F.autoDefaults().elementAt(v);
+                            String def=(String)Fset.elementAt(v);
                             int lastSp=0;
                             int spDex=def.indexOf(' ',lastSp+1);
                             int finalValue=-1;
@@ -173,70 +217,349 @@ public class FactionData extends StdWebMacro
                         }
                     
                     int num=0;
+                    int showNum=-1;
                     while(httpReq.getRequestParameter(prefix+num)!=null)
                     {
-                        mask=httpReq.getRequestParameter(prefix+num);
+                        value=httpReq.getRequestParameter(prefix+num);
                         if(value.length()>0)
                         {
+                            ++showNum;
                             mask=httpReq.getRequestParameter(prefix+"MASK"+num);
                             str.append("<TR><TD>");
-                            str.append("<INPUT TYPE=TEXT NAME="+prefix+num+" SIZE=8 VALUE=\""+CMath.s_int(value)+"\">");
+                            str.append("<INPUT TYPE=TEXT NAME="+prefix+showNum+" SIZE=8 VALUE=\""+CMath.s_int(value)+"\">");
                             str.append("</TD><TD>");
-                            str.append("<INPUT TYPE=TEXT NAME="+prefix+"MASK"+num+" SIZE=60 MAXLENGTH=255 VALUE=\""+mask+"\">");
+                            str.append("<INPUT TYPE=TEXT NAME="+prefix+"MASK"+showNum+" SIZE=60 MAXLENGTH=255 VALUE=\""+mask+"\">");
                             str.append("</TD></TR>");
                         }
                         num++;
                     }
+                    ++showNum;
                     str.append("<TR><TD>");
-                    str.append("<INPUT TYPE=TEXT NAME="+prefix+num+" SIZE=8 VALUE=\"\">");
+                    str.append("<INPUT TYPE=TEXT NAME="+prefix+showNum+" SIZE=8 VALUE=\"\">");
                     str.append("</TD><TD>");
-                    str.append("<INPUT TYPE=TEXT NAME="+prefix+"MASK"+num+" SIZE=60 MAXLENGTH=255 VALUE=\"\">");
+                    str.append("<INPUT TYPE=TEXT NAME="+prefix+"MASK"+showNum+" SIZE=60 MAXLENGTH=255 VALUE=\"\">");
                     str.append("</TD></TR>");
                 }
                 
                 if(parms.containsKey("ADJUSTMENTCHANGES"))
                 {
+                    String trigger=httpReq.getRequestParameter("CHANGESTRIGGER0");
+                    if((trigger==null)&&(F.Changes()!=null))
+                    {
+                        int v=0;
+                        for(Enumeration e=F.Changes().keys();e.hasMoreElements();v++)
+                        {
+                            String def=(String)e.nextElement();
+                            Faction.FactionChangeEvent E=(Faction.FactionChangeEvent)F.Changes().get(def);
+                            httpReq.addRequestParameters("CHANGESTRIGGER"+v,def);
+                            httpReq.addRequestParameters("CHANGESDIR"+v,""+E.direction());
+                            httpReq.addRequestParameters("CHANGESFACTOR"+v,""+(E.factor()*100.0)+"%");
+                            String id="";
+                            Vector flags=CMParms.parse(E.flagCache());
+                            for(int f=0;f<flags.size();f++)
+                            {
+                                httpReq.addRequestParameters("CHANGESFLAGS"+v+"_"+id,""+((String)flags.elementAt(f)));
+                                id=""+(f+1);
+                            }
+                            httpReq.addRequestParameters("CHANGESMASK"+v,E.zapper());
+                        }
+                    }
                     
-//TODO: default new faction change adjustment factors
-// F.Changes();
-                    /*
-                     * 
-                     * Faction.FactionChangeEvent
-         Trigger choices:
-             for(int i=0;i<Faction.FactionChangeEvent.MISC_TRIGGERS.length;i++) 
-                 ALL_TYPES.append(Faction.FactionChangeEvent.MISC_TRIGGERS[i]+", ");
-             for(int i=0;i<Ability.ACODE_DESCS.length;i++) 
-                 ALL_TYPES.append(Ability.ACODE_DESCS[i]+", ");
-             for(int i=0;i<Ability.DOMAIN_DESCS.length;i++) 
-                 ALL_TYPES.append(Ability.DOMAIN_DESCS[i]+", ");
-             for(int i=0;i<Ability.FLAG_DESCS.length;i++) 
-                 ALL_TYPES.append(Ability.FLAG_DESCS[i]+", ");
-             _ALL_TYPES=ALL_TYPES.toString()+" a valid Skill, Spell, Chant, etc. ID.";
-         Faction.FACTION_DIRECTIONS
-         factor (the value)
-         Faction.VALID_FLAGS (multi)
-         ZapperMask    
-                     */
+                    int num=0;
+                    int showNum=-1;
+                    HashSet triggersUsed=new HashSet();
+                    while(httpReq.getRequestParameter("CHANGESTRIGGER"+num)!=null)
+                    {
+                        trigger=httpReq.getRequestParameter("CHANGESTRIGGER"+num);
+                        if(trigger.length()>0)
+                        {
+                            ++showNum;
+                            String val=trigger;
+                            str.append("<TR><TD>");
+                            str.append("<SELECT NAME=CHANGESTRIGGER"+showNum+" ONCHANGE=\"DelItem(this);\">");
+                            str.append("<OPTION VALUE=\"\">Delete");
+                            str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+CMStrings.capitalizeAndLower(val));
+                            str.append("</SELECT>");
+                            str.append("</TD><TD>");
+                            val=""+CMath.s_int(httpReq.getRequestParameter("CHANGESDIR"+num));
+                            str.append("<SELECT NAME=CHANGESDIR"+showNum+">");
+                            for(int f=0;f<Faction.FactionChangeEvent.FACTION_DIRECTIONS.length;f++)
+                            {
+                                str.append("<OPTION VALUE=\""+f+"\"");
+                                if(f==CMath.s_int(val))
+                                    str.append(" SELECTED");
+                                str.append(">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.FACTION_DIRECTIONS[f]));
+                            }
+                            str.append("</SELECT>");
+                            str.append("</TD><TD>");
+                            val=(CMath.s_pct(httpReq.getRequestParameter("CHANGESFACTOR"+num))*100.0)+"%";
+                            str.append("<INPUT TYPE=TEXT NAME=CHANGESFACTOR"+showNum+" SIZE=4 VALUE=\""+val+"\">");
+                            str.append("</TD><TD>");
+                            Vector flags=new Vector();
+                            String id="";
+                            int x=0;
+                            for(;httpReq.isRequestParameter("CHANGESFLAGS"+num+"_"+id);id=""+(++x))
+                                flags.addElement(httpReq.getRequestParameter("CHANGESFLAGS"+num+"_"+id).toUpperCase());
+                            str.append("<SELECT NAME=CHANGESFLAGS"+showNum+"_ MULTIPLE>");
+                            for(int f=0;f<Faction.FactionChangeEvent.VALID_FLAGS.length;f++)
+                            {
+                                str.append("<OPTION VALUE=\""+Faction.FactionChangeEvent.VALID_FLAGS[f]+"\"");
+                                if(flags.contains(Faction.FactionChangeEvent.VALID_FLAGS[f]))
+                                    str.append(" SELECTED");
+                                str.append(">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.VALID_FLAGS[f]));
+                            }
+                            str.append("</SELECT>");
+                            str.append("</TD><TD>");
+                            val=""+httpReq.getRequestParameter("CHANGESMASK"+num);
+                            str.append("<INPUT TYPE=TEXT NAME=CHANGESMASK"+showNum+" SIZE=20 MAXLENGTH=255 VALUE=\""+val+"\">");
+                            str.append("</TD></TR>");
+                        }
+                        num++;
+                    }
+                    ++showNum;
+                    str.append("<TR><TD>");
+                    str.append("<SELECT NAME=CHANGESTRIGGER"+showNum+" ONCHANGE=\"AddItem(this);\">");
+                    str.append("<OPTION VALUE=\"\">Select a trigger");
+                    for(int i=0;i<Faction.FactionChangeEvent.MISC_TRIGGERS.length;i++) 
+                        str.append("<OPTION VALUE=\""+Faction.FactionChangeEvent.MISC_TRIGGERS[i]+"\">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.MISC_TRIGGERS[i]));
+                    for(int i=0;i<Ability.ACODE_DESCS.length;i++) 
+                        str.append("<OPTION VALUE=\""+Ability.ACODE_DESCS[i]+"\">"+CMStrings.capitalizeAndLower(Ability.ACODE_DESCS[i]));
+                    for(int i=0;i<Ability.DOMAIN_DESCS.length;i++) 
+                        str.append("<OPTION VALUE=\""+Ability.DOMAIN_DESCS[i]+"\">"+CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[i]));
+                    for(int i=0;i<Ability.FLAG_DESCS.length;i++) 
+                        str.append("<OPTION VALUE=\""+Ability.FLAG_DESCS[i]+"\">"+CMStrings.capitalizeAndLower(Ability.FLAG_DESCS[i]));
+                    for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                    {
+                        Ability A=(Ability)e.nextElement();
+                        str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
+                    }
+                    str.append("</SELECT>");
+                    str.append("</TD><TD>");
+                    str.append("<SELECT NAME=CHANGESDIR"+showNum+">");
+                    for(int f=0;f<Faction.FactionChangeEvent.FACTION_DIRECTIONS.length;f++)
+                        str.append("<OPTION VALUE=\""+f+"\">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.FACTION_DIRECTIONS[f]));
+                    str.append("</SELECT>");
+                    str.append("</TD><TD>");
+                    str.append("<INPUT TYPE=TEXT NAME=CHANGESFACTOR"+showNum+" SIZE=4 VALUE=\"\">");
+                    str.append("</TD><TD>");
+                    str.append("<SELECT NAME=CHANGESFLAGS"+showNum+"_ MULTIPLE>");
+                    for(int f=0;f<Faction.FactionChangeEvent.VALID_FLAGS.length;f++)
+                        str.append("<OPTION VALUE=\""+Faction.FactionChangeEvent.VALID_FLAGS[f]+"\">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.VALID_FLAGS[f]));
+                    str.append("</SELECT>");
+                    str.append("</TD><TD>");
+                    str.append("<INPUT TYPE=TEXT NAME=CHANGESMASK"+showNum+" SIZE=20 MAXLENGTH=255 VALUE=\"\">");
+                    str.append("</TD></TR>");
                 }
                 if(parms.containsKey("ADJUSTMENTFACTORS"))
                 {
-//TODO: default new faction change adjustment factors
-// F.factors();
+                    String mask=httpReq.getRequestParameter("ADJFACTOR0");
+                    String gain="";
+                    String loss="";
+                    if((mask==null)&&(F.factors()!=null))
+                        for(int v=0;v<F.factors().size();v++)
+                        {
+                            Vector factor=(Vector)F.factors().elementAt(v);
+                            if(factor.size()==3)
+                            {
+                                httpReq.addRequestParameters("ADJFACTOR"+v,(String)factor.elementAt(2));
+                                httpReq.addRequestParameters("ADJFACTORGAIN"+v,(CMath.s_pct(((String)factor.elementAt(0)))*100.0)+"%");
+                                httpReq.addRequestParameters("ADJFACTORLOSS"+v,(CMath.s_pct(((String)factor.elementAt(1)))*100.0)+"%");
+                            }
+                        }
+                    
+                    int num=0;
+                    int showNum=-1;
+                    while(httpReq.getRequestParameter("ADJFACTOR"+num)!=null)
+                    {
+                        mask=httpReq.getRequestParameter("ADJFACTOR"+num);
+                        if(mask.length()>0)
+                        {
+                            ++showNum;
+                            gain=(CMath.s_pct(httpReq.getRequestParameter("ADJFACTORGAIN"+num))*100.0)+"%";
+                            loss=(CMath.s_pct(httpReq.getRequestParameter("ADJFACTORLOSS"+num))*100.0)+"%";
+                            str.append("<TR><TD>");
+                            str.append("<INPUT TYPE=TEXT NAME=ADJFACTOR"+showNum+" SIZE=40 MAXLENGTH=255 VALUE=\""+mask+"\">");
+                            str.append("</TD><TD>");
+                            str.append("<INPUT TYPE=TEXT NAME=ADJFACTORGAIN"+showNum+" SIZE=8 VALUE=\""+gain+"\">");
+                            str.append("</TD><TD>");
+                            str.append("<INPUT TYPE=TEXT NAME=ADJFACTORLOSS"+showNum+" SIZE=8 VALUE=\""+loss+"\">");
+                            str.append("</TD></TR>");
+                        }
+                        num++;
+                    }
+                    ++showNum;
+                    str.append("<TR><TD>");
+                    str.append("<INPUT TYPE=TEXT NAME=ADJFACTOR"+showNum+" SIZE=40 MAXLENGTH=255 VALUE=\"\">");
+                    str.append("</TD><TD>");
+                    str.append("<INPUT TYPE=TEXT NAME=ADJFACTORGAIN"+showNum+" SIZE=8 VALUE=\"\">");
+                    str.append("</TD><TD>");
+                    str.append("<INPUT TYPE=TEXT NAME=ADJFACTORLOSS"+showNum+" SIZE=8 VALUE=\"\">");
+                    str.append("</TD></TR>");
                 }
                 if(parms.containsKey("FACTIONRELATIONS"))
                 {
-//TODO: default new faction relations
-// F.relations();
-                }
-                if(parms.containsKey("FACTIONTRIGGERS"))
-                {
-//TODO: default new faction triggers
-// F.Changes();
+                    String faction=httpReq.getRequestParameter("RELATIONS0");
+                    double pct=0.0;
+                    int x=0;
+                    if((faction==null)&&(F.relations()!=null))
+                        for(Enumeration e=F.relations().keys();e.hasMoreElements();x++)
+                        {
+                            String def=(String)e.nextElement();
+                            Double pctD=(Double)F.relations().get(def);
+                            pct=pctD.doubleValue()*100.0;
+                            httpReq.addRequestParameters("RELATIONS"+x,""+def);
+                            httpReq.addRequestParameters("RELATIONSAMT"+x,""+pct+"%");
+                        }
+                    
+                    int num=0;
+                    int showNum=-1;
+                    while(httpReq.getRequestParameter("RELATIONS"+num)!=null)
+                    {
+                        faction=httpReq.getRequestParameter("RELATIONS"+num);
+                        if(faction.length()>0)
+                        {
+                            ++showNum;
+                            pct=CMath.s_pct(httpReq.getRequestParameter("RELATIONSAMT"+num));
+                            str.append("<TR><TD>");
+                            str.append("<SELECT NAME=RELATIONS"+showNum+" ONCHANGE=\"DelItem(this);\">");
+                            str.append("<OPTION VALUE=\"\">Delete");
+                            Faction F2=CMLib.factions().getFaction(faction);
+                            if(F2!=null)
+                                str.append("<OPTION VALUE=\""+F2.factionID()+"\" SELECTED>"+F2.name());
+                            else
+                                str.append("<OPTION VALUE=\""+faction+"\" SELECTED>"+faction);
+                            str.append("</SELECT></TD><TD>");
+                            str.append("<INPUT TYPE=TEXT NAME=RELATIONSAMT"+showNum+" SIZE=8 VALUE=\""+(pct*100.0)+"%\">");
+                            str.append("</TD></TR>");
+                        }
+                        num++;
+                    }
+                    ++showNum;
+                    str.append("<TR><TD>");
+                    str.append("<SELECT NAME=RELATIONS"+showNum+" ONCHANGE=\"AddItem(this);\">");
+                    str.append("<OPTION VALUE=\"\">Select a faction");
+                    for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
+                    {
+                        Faction F2=(Faction)e.nextElement();
+                        str.append("<OPTION VALUE=\""+F2.factionID()+"\">"+F2.name());
+                    }
+                    str.append("</SELECT></TD><TD>");
+                    str.append("<INPUT TYPE=TEXT NAME=RELATIONSAMT"+showNum+" SIZE=8 VALUE=\"\">");
+                    str.append("</TD></TR>");
                 }
                 if(parms.containsKey("ABILITYALLOWANCES"))
                 {
-//TODO: default new ability allowances
-// F.abilityUsages();
+                    String abilityID="";
+                    abilityID=httpReq.getRequestParameter("ABILITYUSE0");
+                    if((abilityID==null)&&(F.abilityUsages()!=null))
+                    {
+                        int v=0;
+                        for(Enumeration e=F.abilityUsages().elements();e.hasMoreElements();v++)
+                        {
+                            Faction.FactionAbilityUsage E=(Faction.FactionAbilityUsage)e.nextElement();
+                            if(!E.possibleAbilityID()||CMClass.getAbility(E.usageID())==null)
+                            {
+                                Vector V=CMParms.parse(E.usageID());
+                                String id="";
+                                int x=0;
+                                for(Enumeration e2=V.elements();e2.hasMoreElements();id="_"+(++x))
+                                    httpReq.addRequestParameters("ABILITYUSE"+v+id,(String)e2.nextElement());
+                            }
+                            else
+                                httpReq.addRequestParameters("ABILITYUSE"+v,CMClass.getAbility(E.usageID()).ID());
+                            httpReq.addRequestParameters("ABILITYMIN"+v,""+E.low());
+                            httpReq.addRequestParameters("ABILITYMAX"+v,""+E.high());
+                        }
+                    }
+                    
+                    String sfont=(parms.containsKey("FONT"))?("<FONT "+((String)parms.get("FONT"))+">"):"";
+                    String efont=(parms.containsKey("FONT"))?"</FONT>":"";
+                    int num=0;
+                    int showNum=-1;
+                    while(httpReq.getRequestParameter("ABILITYUSE"+num)!=null)
+                    {
+                        abilityID=httpReq.getRequestParameter("ABILITYUSE"+num);
+                        if(abilityID.length()>0)
+                        {
+                            showNum++;
+                            String val=abilityID;
+                            str.append("<TR><TD>");
+                            int usedType=CMLib.factions().getAbilityFlagType(val);
+                            str.append("<SELECT NAME=ABILITYUSE"+showNum+" ONCHANGE=\"DelItem(this);\">");
+                            str.append("<OPTION VALUE=\"\">Delete This Row");
+                            str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+CMStrings.capitalizeAndLower(val));
+                            str.append("</SELECT>");
+                            if(usedType>0)
+                            {
+                                int x=-1;
+                                int sx=-1;
+                                HashSet doneSet=new HashSet();
+                                addDoneAbilityUsage(doneSet,val);
+                                while(httpReq.isRequestParameter("ABILITYUSE"+num+"_"+(++x)))
+                                {
+                                    val=httpReq.getRequestParameter("ABILITYUSE"+num+"_"+x);
+                                    if(val.length()>0)
+                                    {
+                                        ++sx;
+                                        addDoneAbilityUsage(doneSet,val);
+                                        str.append("<BR>"+sfont+"AND&nbsp;"+efont);
+                                        str.append("<SELECT NAME=ABILITYUSE"+showNum+"_"+sx+" ONCHANGE=\"DelItem(this);\">");
+                                        str.append("<OPTION VALUE=\"\">Delete");
+                                        str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+CMStrings.capitalizeAndLower(val));
+                                        str.append("</SELECT>");
+                                    }
+                                }
+                                ++sx;
+                                str.append("<BR>"+sfont+"AND&nbsp;"+efont);
+                                str.append("<SELECT NAME=ABILITYUSE"+showNum+"_"+sx+" ONCHANGE=\"AddItem(this);\">");
+                                str.append("<OPTION VALUE=\"\" SELECTED>Select an option");
+                                for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+                                    if(!doneSet.contains(Ability.ACODE_DESCS[i]))
+                                    str.append("<OPTION VALUE=\""+Ability.ACODE_DESCS[i]+"\">"+CMStrings.capitalizeAndLower(Ability.ACODE_DESCS[i]));
+                                for(int i=0;i<Ability.DOMAIN_DESCS.length;i++) 
+                                    if(!doneSet.contains(Ability.DOMAIN_DESCS[i]))
+                                    str.append("<OPTION VALUE=\""+Ability.DOMAIN_DESCS[i]+"\">"+CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[i]));
+                                for(int i=0;i<Ability.FLAG_DESCS.length;i++) 
+                                    if(!doneSet.contains(Ability.FLAG_DESCS[i]))
+                                    str.append("<OPTION VALUE=\""+Ability.FLAG_DESCS[i]+"\">"+CMStrings.capitalizeAndLower(Ability.FLAG_DESCS[i]));
+                                for(int i=0;i<Ability.FLAG_DESCS.length;i++) 
+                                    if(!doneSet.contains("!"+Ability.FLAG_DESCS[i]))
+                                    str.append("<OPTION VALUE=\"!"+Ability.FLAG_DESCS[i]+"\">Not "+CMStrings.capitalizeAndLower(Ability.FLAG_DESCS[i]));
+                                str.append("</SELECT>");
+                            }
+                            str.append("</TD><TD VALIGN=TOP>");
+                            val=""+CMath.s_int(httpReq.getRequestParameter("ABILITYMIN"+num));
+                            str.append("<INPUT TYPE=TEXT NAME=ABILITYMIN"+showNum+" SIZE=5 VALUE=\""+val+"\">");
+                            str.append("</TD><TD VALIGN=TOP>");
+                            val=""+CMath.s_int(httpReq.getRequestParameter("ABILITYMAX"+num));
+                            str.append("<INPUT TYPE=TEXT NAME=ABILITYMAX"+showNum+" SIZE=5 VALUE=\""+val+"\">");
+                            str.append("</TD></TR>");
+                        }
+                        num++;
+                    }
+                    ++showNum;
+                    str.append("<TR><TD>");
+                    str.append("<SELECT NAME=ABILITYUSE"+showNum+" ONCHANGE=\"AddItem(this);\">");
+                    str.append("<OPTION VALUE=\"\" SELECTED>Select an option");
+                    for(int i=0;i<Ability.ACODE_DESCS.length;i++) 
+                        str.append("<OPTION VALUE=\""+Ability.ACODE_DESCS[i]+"\">"+CMStrings.capitalizeAndLower(Ability.ACODE_DESCS[i]));
+                    for(int i=0;i<Ability.DOMAIN_DESCS.length;i++) 
+                        str.append("<OPTION VALUE=\""+Ability.DOMAIN_DESCS[i]+"\">"+CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[i]));
+                    for(int i=0;i<Ability.FLAG_DESCS.length;i++) 
+                        str.append("<OPTION VALUE=\""+Ability.FLAG_DESCS[i]+"\">"+CMStrings.capitalizeAndLower(Ability.FLAG_DESCS[i]));
+                    for(int i=0;i<Ability.FLAG_DESCS.length;i++) 
+                        str.append("<OPTION VALUE=\"!"+Ability.FLAG_DESCS[i]+"\">Not "+CMStrings.capitalizeAndLower(Ability.FLAG_DESCS[i]));
+                    for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                    {
+                        Ability A=(Ability)e.nextElement();
+                        str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
+                    }
+                    str.append("</SELECT>");
+                    str.append("</TD><TD VALIGN=TOP>");
+                    str.append("<INPUT TYPE=TEXT NAME=ABILITYMIN"+showNum+" SIZE=5 VALUE=\"\">");
+                    str.append("</TD><TD VALIGN=TOP>");
+                    str.append("<INPUT TYPE=TEXT NAME=ABILITYMAX"+showNum+" SIZE=5 VALUE=\"\">");
+                    str.append("</TD></TR>");
                 }
                 if(parms.containsKey("RATEMODIFIER"))
                 {
@@ -254,12 +577,14 @@ public class FactionData extends StdWebMacro
                     for(int i=0;i<Faction.EXPAFFECT_NAMES.length;i++)
                     {
                         str.append("<OPTION VALUE=\""+Faction.EXPAFFECT_NAMES[i]+"\" ");
-                        if(Faction.EXPAFFECT_NAMES[i].equalsIgnoreCase(old)) str.append("SELECTED");
+                        if(Faction.EXPAFFECT_NAMES[i].equalsIgnoreCase(old)) 
+                            str.append("SELECTED");
                         str.append(">"+Faction.EXPAFFECT_DESCS[i]);
                     }
                     str.append(", ");
                 }
                 
+                httpReq.getRequestObjects().put("FACTION-"+last,F);
                 String strstr=str.toString();
                 if(strstr.endsWith(", "))
                     strstr=strstr.substring(0,strstr.length()-2);
@@ -267,5 +592,23 @@ public class FactionData extends StdWebMacro
             }
         }
         return "";
+    }
+    
+    public void addDoneAbilityUsage(HashSet done, String val)
+    {
+        switch(CMLib.factions().getAbilityFlagType(val))
+        {
+        case 1:
+            for(int i=0;i<Ability.ACODE_DESCS.length;i++)
+                if(!done.contains(Ability.ACODE_DESCS[i].toUpperCase()))
+                    done.add(Ability.ACODE_DESCS[i].toUpperCase());
+            break;
+        case 2:
+            for(int i=0;i<Ability.DOMAIN_DESCS.length;i++)
+                if(!done.contains(Ability.DOMAIN_DESCS[i].toUpperCase()))
+                    done.add(Ability.DOMAIN_DESCS[i].toUpperCase());
+            break;
+        case 3: done.add(val.toUpperCase()); break;
+        }
     }
 }

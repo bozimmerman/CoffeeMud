@@ -91,7 +91,9 @@ public class Factions extends StdLibrary implements FactionManager
 	    if(factionID==null) return null;
 		Faction F=(Faction)factionSet.get(factionID.toUpperCase());
 		if(F!=null) return F;
-        StringBuffer buf=new CMFile(Resources.makeFileResourceName(factionID),null,true).text();
+		CMFile FILE=new CMFile(Resources.makeFileResourceName(factionID),null,true);
+		if(!FILE.exists()) return null;
+        StringBuffer buf=FILE.text();
 	    if((buf!=null)&&(buf.length()>0))
 	    {
             F=(Faction)CMClass.getCommon("DefaultFaction");
@@ -1032,4 +1034,22 @@ public class Factions extends StdLibrary implements FactionManager
                 mob.tell("Faction File '"+me.factionID()+"' could not be modified.  Make sure it is not READ-ONLY.");
         }
     }
+    
+    public int getAbilityFlagType(String strflag)
+    {
+        for(int i=0;i<Ability.ACODE_DESCS.length;i++) 
+            if(Ability.ACODE_DESCS[i].equalsIgnoreCase(strflag))
+                return 1;
+        for(int i=0;i<Ability.DOMAIN_DESCS.length;i++) 
+            if(Ability.DOMAIN_DESCS[i].equalsIgnoreCase(strflag))
+                return 2;
+        if(strflag.startsWith("!")) strflag=strflag.substring(1);
+        for(int i=0;i< Ability.FLAG_DESCS.length;i++)
+            if(Ability.FLAG_DESCS[i].equalsIgnoreCase(strflag))
+                return 3;
+        if(CMClass.getAbility(strflag)!=null)
+            return 0;
+        return -1;
+    }
+    
 }

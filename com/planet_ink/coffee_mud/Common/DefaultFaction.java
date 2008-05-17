@@ -1023,48 +1023,43 @@ public class DefaultFaction implements Faction, MsgListener
         {
             return ID+";"+low+";"+high;
         }
+        
         public Vector setAbilityFlag(String str)
         {
             ID=str;
             Vector flags=CMParms.parse(ID);
             Vector unknowns=new Vector();
+            possibleAbilityID=false;
             for(int f=0;f<flags.size();f++)
             {
                 String strflag=(String)flags.elementAt(f);
                 boolean not=strflag.startsWith("!");
                 if(not) strflag=strflag.substring(1);
-                boolean known=false;
-                for(int i=0;i<Ability.ACODE_DESCS.length;i++) 
-                    if(Ability.ACODE_DESCS[i].equalsIgnoreCase(strflag))
+                switch(CMLib.factions().getAbilityFlagType(strflag))
+                {
+                case 1:
+                    type=CMParms.indexOfIgnoreCase(Ability.ACODE_DESCS, strflag);
+                    break;
+                case 2:
+                    domain=CMParms.indexOfIgnoreCase(Ability.DOMAIN_DESCS, strflag);
+                    break;
+                case 3:
+                    int val=CMParms.indexOfIgnoreCase(Ability.FLAG_DESCS, strflag);
+                    if(not)
                     {
-                        type=i;
-                        known=true;
+                        if(notflag<0) notflag=0;
+                        notflag=notflag|(int)CMath.pow(2,val);
                     }
-                if(!known)
-                for(int i=0;i<Ability.DOMAIN_DESCS.length;i++) 
-                    if(Ability.DOMAIN_DESCS[i].equalsIgnoreCase(strflag))
+                    else
                     {
-                        domain=i<<5;
-                        known=true;
+                        if(flag<0) flag=0;
+                        flag=flag|(int)CMath.pow(2,val);
                     }
-                if(!known)
-                for(int i=0;i< Ability.FLAG_DESCS.length;i++)
-                    if(Ability.FLAG_DESCS[i].equalsIgnoreCase(strflag))
-                    {
-                        known=true;
-                        if(not)
-                        {
-                            if(notflag<0) notflag=0;
-                            notflag=notflag|(int)CMath.pow(2,i);
-                        }
-                        else
-                        {
-                            if(flag<0) flag=0;
-                            flag=flag|(int)CMath.pow(2,i);
-                        }
-                    }
-                if(!known)
+                    break;
+                default:
                     unknowns.addElement(strflag);
+                    break;
+                }
             }
             if((type<0)&&(domain<0)&&(flag<0))
                 possibleAbilityID=true;
