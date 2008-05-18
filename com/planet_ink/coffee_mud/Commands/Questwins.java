@@ -48,18 +48,10 @@ public class Questwins extends StdCommand
 		}
 		Collections.sort(qVec);
 		StringBuffer msg=new StringBuffer("^HQuests you are listed as having won:^?^N\n\r");
-		int col=0;
 		for(int i=0;i<qVec.size();i++)
-		{
-			if((++col)>3)
-			{
-				msg.append("\n\r");
-				col=1;
-			}
-			msg.append(CMStrings.padRight((String)qVec.elementAt(i),22)+"^N");
-		}
+			msg.append(CMStrings.padRight((String)qVec.elementAt(i),22)+"^N"+((i<qVec.size()-1)?", ":""));
 		if(!mob.isMonster())
-			mob.session().colorOnlyPrintln(msg.toString());
+			mob.tell(msg.toString());
 		return false;
 	}
 	
