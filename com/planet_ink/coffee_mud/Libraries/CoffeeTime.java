@@ -447,6 +447,18 @@ public class CoffeeTime extends StdLibrary implements TimeManager
     }
 
     /**
+     * Converts a number to two digits.
+     * @param num the number
+     * @return the number as two digits
+     */
+    public String twoDigits(long num)
+    {
+       String s=new Long(num).toString();
+       if(s.length()==1) return "0"+s;
+       return s;
+    }
+
+    /**
     * Returns the YYYY portion of a given date
     * Returns the DD portion of a given date
     * 

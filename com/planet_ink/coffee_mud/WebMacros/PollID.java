@@ -32,19 +32,19 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class AutoTitleID extends StdWebMacro
+public class PollID extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+    public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
-	{
-		String last=httpReq.getRequestParameter("AUTOTITLE");
-		if(last==null) return " @break@";
+    public String runMacro(ExternalHTTPRequests httpReq, String parm)
+    {
+        String last=httpReq.getRequestParameter("POLL");
+        if(last==null) return " @break@";
         Hashtable parms=parseParms(parm);
         try {
             if(parms.containsKey("ENCODED"))
-        		return URLEncoder.encode(last,"UTF-8");
+                return URLEncoder.encode(last,"UTF-8");
         } catch(Exception e) {}
         return clearWebMacros(last);
-	}
+    }
 }

@@ -77,7 +77,12 @@ public interface TimeManager extends CMLibrary
      */
     public Calendar string2Date(String TheDate);
     
-    
+    /**
+     * Converts a number to two digits.
+     * @param num the number
+     * @return the number as two digits
+     */
+    public String twoDigits(long num);
     
     /**
      * Returns the regular Hours given the hours in the 

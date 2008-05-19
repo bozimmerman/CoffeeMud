@@ -12,7 +12,6 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-import java.net.URLEncoder;
 import java.util.*;
 
 
@@ -32,19 +31,34 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class AutoTitleID extends StdWebMacro
+public class PollNext extends StdWebMacro
 {
-	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+    public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+    public boolean isAdminMacro()   {return true;}
 
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
-	{
-		String last=httpReq.getRequestParameter("AUTOTITLE");
-		if(last==null) return " @break@";
+    public String runMacro(ExternalHTTPRequests httpReq, String parm)
+    {
         Hashtable parms=parseParms(parm);
-        try {
-            if(parms.containsKey("ENCODED"))
-        		return URLEncoder.encode(last,"UTF-8");
-        } catch(Exception e) {}
-        return clearWebMacros(last);
-	}
+        String last=httpReq.getRequestParameter("POLL");
+        if(parms.containsKey("RESET"))
+        {   
+            if(last!=null) httpReq.removeRequestParameter("POLL");
+            return "";
+        }
+        String lastID="";
+        for(Enumeration q=CMLib.polls().getPollList().elements();q.hasMoreElements();)
+        {
+            Poll poll=(Poll)q.nextElement();
+            if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!poll.getName().equalsIgnoreCase(lastID))))
+            {
+                httpReq.addRequestParameters("POLL",poll.getName());
+                return "";
+            }
+            lastID=poll.getName();
+        }
+        httpReq.addRequestParameters("POLL","");
+        if(parms.containsKey("EMPTYOK"))
+            return "<!--EMPTY-->";
+        return " @break@";
+    }
 }
