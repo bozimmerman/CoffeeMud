@@ -1160,7 +1160,7 @@ public class Destroy extends BaseItemParser
             mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
             if((mob.session()!=null)&&(mob.session().confirm("Destroy POLL "+P.getName()+", are you SURE? (Y/n)? ","Y")))
             {
-                P.dbdelete();
+                CMLib.polls().deletePoll(P);
                 mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^SThe world has grown a bit more certain.^?");
                 Log.sysOut("CreateEdit",mob.Name()+" modified Poll "+P.getName()+".");
             }

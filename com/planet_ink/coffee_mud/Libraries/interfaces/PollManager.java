@@ -38,4 +38,14 @@ public interface PollManager extends CMLibrary
     public Poll getPoll(int x);
     public Vector[] getMyPolls(MOB mob, boolean login);
     public Vector getPollList();
+    public void processVote(Poll P, MOB mob);
+    public void modifyVote(Poll P, MOB mob) throws java.io.IOException;
+    public void processResults(Poll P, MOB mob);
+    
+    public void createPoll(Poll P);
+    public void updatePollResults(Poll P);
+    public void updatePoll(String oldName, Poll P);
+    public void deletePoll(Poll P);
+    public Poll loadPollByName(String name);
+    public boolean loadPollIfNecessary(Poll P);
 }

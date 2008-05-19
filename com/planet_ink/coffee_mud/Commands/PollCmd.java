@@ -61,10 +61,10 @@ public class PollCmd extends StdCommand
         for(int i=0;i<mypolls[0].size();i++)
         {
             Poll P=(Poll)mypolls[0].elementAt(i);
-            P.processVote(mob);
+            CMLib.polls().processVote(P, mob);
             if(P.mayISeeResults(mob))
             {
-                P.processResults(mob);
+                CMLib.polls().processResults(P, mob);
                 mob.session().prompt("Press ENTER to continue:\n\r");
             }
         }
@@ -79,10 +79,10 @@ public class PollCmd extends StdCommand
         for(int i=0;i<mypolls[1].size();i++)
         {
             Poll P=(Poll)mypolls[1].elementAt(i);
-            P.processVote(mob);
+            CMLib.polls().processVote(P, mob);
             if(P.mayISeeResults(mob))
             {
-                P.processResults(mob);
+                CMLib.polls().processResults(P, mob);
                 mob.session().prompt("Press ENTER to continue:");
             }
         }
@@ -94,7 +94,7 @@ public class PollCmd extends StdCommand
             Poll P=(Poll)mypolls[2].elementAt(i);
             if(P.mayISeeResults(mob))
             {
-                P.processResults(mob);
+                CMLib.polls().processResults(P, mob);
                 if(i<mypolls[2].size()-1)
                     mob.session().prompt("Press ENTER to continue:\n\r");
             }

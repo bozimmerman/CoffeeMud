@@ -1,17 +1,17 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
-@if?!CheckAuthCode?AUTH_CMDQUESTS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_POLLS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
 <html>
 <head>
     <link rel="grinder icon" href="/images/grinder.ico" >
-    <title>Holidays List</title>
+    <title>Polls List</title>
     <script language=JavaScript>
     <!--
-        function Holiday(action)
+        function Poll(action)
         {
-            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=750,alwaysRaised=yes,dependent=yes";
-            w=window.open("holiday.cmvp?AUTH=@Authenticate?AUTH@&HOLIDAY="+action,"Holiday",strFeatures, false);
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=500,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("poll.cmvp?AUTH=@Authenticate?AUTH@&POLL="+action,"Poll",strFeatures, false);
         }
         function Clicked(action)
         {
@@ -20,7 +20,7 @@
         }
         function Refresh()
         {
-            document.RESOURCES.action='holidays.cmvp';
+            document.RESOURCES.action='polls.cmvp';
             document.RESOURCES.submit();
         }
     //-->
@@ -41,28 +41,36 @@
     </TR>
     </TABLE>
 <CENTER>
-<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="holidays.cmvp">
+<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="polls.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
     <TABLE WIDTH=100% BORDER=1>
-    <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Holiday Manager</H2></FONT></TD></TR>
+    <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Poll Manager</H2></FONT></TD></TR>
 	<TR>
     <TD WIDTH=25%><B><FONT COLOR=YELLOW>Name</FONT></b></TD>
-    <TD WIDTH=30%><B><FONT COLOR=YELLOW>Area(s)</FONT></b></TD>
-    <TD WIDTH=30%><B><FONT COLOR=YELLOW>Schedule</FONT></B></TD>
-    <TD WIDTH=15%><B><FONT COLOR=YELLOW>Duration</FONT></B></TD>
+    <TD WIDTH=40%><B><FONT COLOR=YELLOW>Header</FONT></b></TD>
+    <TD WIDTH=21%><B><FONT COLOR=YELLOW>Expires</FONT></b></TD>
+    <TD WIDTH=7%><B><FONT COLOR=YELLOW>Options</FONT></B></TD>
+    <TD WIDTH=7%><B><FONT COLOR=YELLOW>Results</FONT></B></TD>
     </TR>
-    @HolidayNext?RESET@
+    @PollNext?RESET@
     @loop@
-    @HolidayNext@
+    @PollNext@
     <TR>
-    <TD><a href="javascript:Holiday('@HolidayID@')"><FONT COLOR=WHITE><B>@HolidayID@</B></FONT></a></TD>
-    <TD><FONT COLOR=WHITE>@HolidayData?AREAS@</FONT></TD>
-    <TD><FONT COLOR=WHITE>@HolidayData?SCHEDULE@</FONT></TD>
-    <TD><FONT COLOR=WHITE>@HolidayData?DURATION@ ticks</FONT></TD>
+    <TD><a href="javascript:Poll('@PollID?ENCODED@')"><FONT COLOR=WHITE><B>@PollID@</B></FONT></a></TD>
+    <TD><FONT COLOR=WHITE>@PollData?SUBJECT@</FONT></TD>
+    <TD><FONT COLOR=WHITE>
+            @if?PollData?DOESEXPIRE@
+                @PollData?EXPIRATION@
+            @else@
+                No expiration
+            @endif@
+        </FONT></TD>
+    <TD><FONT COLOR=WHITE>@PollData?NUMOPTIONS@</FONT></TD>
+    <TD><FONT COLOR=WHITE>@PollData?NUMRESULTS@</FONT></TD>
     </TR>
     @back@
     <TR>
-    <TD COLSPAN=4><a href="javascript:Holiday(document.RESOURCES.NEWHOLIDAY.value+'&NEWHOLIDAY='+document.RESOURCES.NEWHOLIDAY.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWHOLIDAY SIZE=70></B></FONT></TD>
+    <TD COLSPAN=5><a href="javascript:Poll(document.RESOURCES.NEWPOLL.value+'&NEWPOLL='+document.RESOURCES.NEWPOLL.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWPOLL SIZE=70></B></FONT></TD>
     </TR>
     </TABLE>
     <P>

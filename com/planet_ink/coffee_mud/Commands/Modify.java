@@ -1173,7 +1173,7 @@ public class Modify extends BaseGenerics
                 return false;
             }
             mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms around the idea of "+P.getSubject()+".^?");
-            P.modifyVote(mob);
+            CMLib.polls().modifyVote(P, mob);
             mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^SThe world's uncertainty has changed.^?");
             Log.sysOut("CreateEdit",mob.Name()+" modified Poll "+P.getName()+".");
         }

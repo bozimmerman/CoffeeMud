@@ -1,0 +1,241 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_CMDQUESTS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<html>
+<head>
+    <link rel="grinder icon" href="/images/grinder.ico" >
+    <title>Poll Manager</title>
+    <script language=JavaScript>
+    <!--
+        function openUp2(named)
+        {
+            var strFeatures="top=200,left=50,resizeable=no,scrollbars=yes,height=400,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("/property.cmvp?ABILITY="+named,
+                        "Ability",strFeatures, false);
+        }
+        function AddNewItem(FIELD)
+        {
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM=NEW&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,"Race Item",strFeatures, false);
+        }
+        function AddItem(ME)
+        {
+            ReShow();
+        }
+        function EditItemDone()
+        {
+            ReShow();
+        }
+        function NoSay(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function NewSay(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
+        function EditItem(ME,FIELD)
+        {
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM="+ME+"&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,"Race Item",strFeatures, false);
+        }
+        function AddMember(v)
+        {
+            ReShow();
+        }
+        function EditMember(v)
+        {
+            ReShow();
+        }
+        function EditAffect(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function AddAffect(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
+        function EditBehavior(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function AddBehavior(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
+        function NewPoll()
+        {
+            var poll=window.prompt('Enter a new unique name for your Poll:');
+            if(poll==null)
+                return;
+            if(poll.length==0)
+                return;
+            if(poll.indexOf(' ')>=0)
+            {
+                window.alert('No spaces are allowed in your ID!');
+                return;
+            }
+            document.RESOURCES.NEWPOLLID.value=poll;
+            document.RESOURCES.FUNCTION.value='REPOLL';
+            document.RESOURCES.action='/grinder/polldo.cmvp';
+            document.RESOURCES.submit();
+        }
+        function Delete()
+        {
+            if(confirm('Delete this poll?! Confirm!'))
+            {
+                document.RESOURCES.action='polldo.cmvp';
+                document.RESOURCES.FUNCTION.value='DELPOLL';
+                document.RESOURCES.submit();
+            }
+        }
+        function EditDone()
+        {
+            @if?!PollData?EXISTS@
+                if(confirm('Create this new poll?'))
+            @else@
+                if(confirm('Submit your changes to this poll?'))
+            @endif@
+                {
+                    document.RESOURCES.action='polldo.cmvp';
+                    document.RESOURCES.FUNCTION.value='EDITPOLL';
+                    document.RESOURCES.submit();
+                }
+        }
+        function ReShow()
+        {
+            document.RESOURCES.FUNCTION.value='';
+            document.RESOURCES.action='/grinder/poll.cmvp';
+            document.RESOURCES.submit();
+        }
+        function REPOLL()
+        {
+            document.RESOURCES.FUNCTION.value='REPOLL';
+            document.RESOURCES.action='/grinder/polldo.cmvp';
+            document.RESOURCES.submit();
+        }
+        function Cancel()
+        {
+            window.close();
+        }
+        function OpenUp(file,named)
+        {
+            var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("/"+file+"?HELPTOPIC="+named,
+                        "Help",strFeatures, false);
+        }
+        function Clicked(action)
+        {
+            document.RESOURCES.action=action;
+            document.RESOURCES.submit();
+        }
+    //-->
+    </script>
+</head>
+<body BGCOLOR=BLACK>
+<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="poll.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=NEWPOLLID VALUE="">
+<INPUT TYPE=HIDDEN NAME=REPLACE VALUE="">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+<INPUT TYPE=HIDDEN NAME=POLL VALUE="@RequestParameter?POLL@">
+<INPUT TYPE=HIDDEN NAME=NEWPOLL VALUE="@RequestParameter?NEWPOLL@">
+<CENTER>
+@if?CheckReqParm?POLL=@
+    Select a poll above to view/edit.
+@else@
+    <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Name: </FONT></TD>
+            <TD WIDTH=66%><INPUT TYPE=TEXT SIZE=30 NAME=TITLE VALUE="@PollData?TITLE@"></TD>
+        </TR>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Introduction: </FONT></TD>
+            <TD WIDTH=66%><TEXTAREA ROWS=3 COLS=55 NAME=DESCRIPTION>@PollData?DESCRIPTION@</TEXTAREA>
+        </TR>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Results Header: </FONT></TD>
+            <TD WIDTH=66%><INPUT TYPE=TEXT SIZE=60 MAXLENGTH=255 NAME=SUBJECT VALUE="@PollData?SUBJECT@"></TD>
+        </TR>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Qual. Mask:<BR><A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>mask</I></FONT></FONT></TD>
+            <TD WIDTH=66%>
+                <INPUT TYPE=TEXT SIZE=60 MAXLENGTH=255 NAME=QUALZAPPER VALUE="@PollData?QUALZAPPER@"><P>
+            </TD>
+        </TR>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Poll Active: </FONT></TD>
+            <TD WIDTH=66%><INPUT TYPE=CHECKBOX NAME=ISACTIVE @PollData?ISACTIVE@></TD>
+        </TR>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Preview Results: </FONT></TD>
+            <TD WIDTH=66%><INPUT TYPE=CHECKBOX NAME=ISPREVIEWRESULTS @PollData?ISPREVIEWRESULTS@></TD>
+        </TR>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Allow Abstention: </FONT></TD>
+            <TD WIDTH=66%><INPUT TYPE=CHECKBOX NAME=ISABSTAIN @PollData?ISABSTAIN@></TD>
+        </TR>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Use IP Addresses: </FONT></TD>
+            <TD WIDTH=66%><INPUT TYPE=CHECKBOX NAME=ISVOTEBYIP @PollData?ISVOTEBYIP@></TD>
+        </TR>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Hide Results: </FONT></TD>
+            <TD WIDTH=66%><INPUT TYPE=CHECKBOX NAME=ISHIDERESULTS @PollData?ISHIDERESULTS@></TD>
+        </TR>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>POLL cmd Only: </FONT></TD>
+            <TD WIDTH=66%><INPUT TYPE=CHECKBOX NAME=ISNOTATLOGIN @PollData?ISNOTATLOGIN@></TD>
+        </TR>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Expiration: </FONT></TD>
+            <TD WIDTH=66%>
+                <FONT COLOR=WHITE SIZE=-1>
+                @if?PollData?DOESEXPIRE@
+                        <INPUT TYPE=CHECKBOX NAME=DOESEXPIRE CHECKED ONCLICK="ReShow()">Does Expire<BR>
+                        @PollData?EXPIRATION&INPUT@
+                        &nbsp;(M/D/Y H24:M)
+                @else@
+                    <INPUT TYPE=CHECKBOX NAME=DOESEXPIRE ONCLICK="ReShow()">Does Expire<BR>
+                @endif@
+                </FONT>
+            </TD>
+        </TR>
+        <TR>
+            <TD WIDTH=25%><FONT COLOR=YELLOW>Vote Options: </FONT></TD>
+            <TD WIDTH=66%>
+                <TABLE WIDTH=100% BORDER=1>
+                @PollData?OPTIONS&INPUT&FONT=<TR><TD><FONT COLOR=WHITE SIZE=-1>@
+                </TABLE>
+                <BR>
+                <INPUT TYPE=BUTTON NAME=BADD VALUE="Add" ONCLICK="ReShow()">
+            </TD>
+        </TR>
+    </TABLE>
+@endif@
+<BR>
+<TABLE WIDTH=100% BORDER=0>
+<TR>
+    @if?!CheckReqParm?POLL=@
+        @if?PollData?ISNEWPOLL@
+            <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
+        @else@
+            <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
+            <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
+        @endif@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
+    @endif@
+</TR>
+</TABLE>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@

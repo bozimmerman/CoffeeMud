@@ -884,8 +884,8 @@ public class Create extends BaseGenerics
             while(CMLib.polls().getPoll(P.getName())!=null)
                 P.setName(P.getName()+"!");
             P.setFlags(Poll.FLAG_ACTIVE);
-            P.dbcreate();
-            P.modifyVote(mob);
+            CMLib.polls().createPoll(P);
+            CMLib.polls().modifyVote(P, mob);
             mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^SThe world has grown more uncertain.^?");
             Log.sysOut("CreateEdit",mob.Name()+" created Poll "+P.getName()+".");
         }

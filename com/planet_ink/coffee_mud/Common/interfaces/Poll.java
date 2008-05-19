@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -36,6 +37,7 @@ public interface Poll extends CMCommon
     public static class PollOption
     {
         public String text="";
+        public PollOption(String opt) { text=opt;}
     }
     
     public static class PollResult
@@ -43,6 +45,12 @@ public interface Poll extends CMCommon
         public String user="";
         public String ip="";
         public String answer="";
+        public PollResult(String usr, String ipaddr, String ans) 
+        { 
+            user=usr;
+            ip=ipaddr;
+            answer=ans;
+        }
     }
     public static final int FLAG_ACTIVE=1;
     public static final int FLAG_PREVIEWRESULTS=2;
@@ -71,17 +79,10 @@ public interface Poll extends CMCommon
     public void setResults(Vector V);
     public String getOptionsXML();
     public String getResultsXML();
-    public void dbcreate();
-    public void dbupdateresults();
-    public void dbupdateall(String oldName);
     public boolean loaded();
-    public void dbdelete();
-    public boolean dbloadbyname();
+    public void setLoaded(boolean truefalse);
     public PollResult getMyVote(MOB mob);
     public void addVoteResult(PollResult R);
     public boolean mayIVote(MOB mob);
     public boolean mayISeeResults(MOB mob);
-    public void processVote(MOB mob);
-    public void modifyVote(MOB mob) throws java.io.IOException;
-    public void processResults(MOB mob);
 }
