@@ -1453,7 +1453,7 @@ public class CMMap extends StdLibrary implements WorldMap
             if(somethingDone)
             {
     			Resources.updateResource("protectedplayers.ini",newNoPurge);
-    			Resources.saveFileResource("protectedplayers.ini");		
+    			Resources.saveFileResource("::protectedplayers.ini");		
             }
 		}
 		

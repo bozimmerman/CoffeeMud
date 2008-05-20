@@ -253,7 +253,8 @@ public class Resources
 	}
 	
     public static boolean saveFileResource(String filename)
-    {return saveFileResource(filename,null,getFileResource(filename,false));}
+    {return saveFileResource(filename,null,getFileResource(CMFile.vfsifyFilename(filename),false));}
+    
 	public static boolean saveFileResource(String filename, MOB whom, StringBuffer myRsc)
 	{
         boolean vfsFile=filename.trim().startsWith("::");

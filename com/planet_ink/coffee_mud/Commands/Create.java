@@ -853,7 +853,7 @@ public class Create extends BaseGenerics
                         return false;
                     }
                     Resources.submitResource(name,template);
-                    Resources.saveFileResource(name,null,template);
+                    Resources.saveFileResource("::"+name,null,template);
                     F=(Faction)CMClass.getCommon("DefaultFaction");
                     F.initializeFaction(template,name);
                     CMLib.factions().modifyFaction(mob,F);

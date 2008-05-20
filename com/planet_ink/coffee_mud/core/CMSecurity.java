@@ -676,7 +676,7 @@ public class CMSecurity
             if(O instanceof String)
                 newApproved.append(L.toString()+"="+((String)O)+"\n");
         }
-        Resources.saveFileResource("jscripts.ini",null,newApproved);
+        Resources.saveFileResource("::jscripts.ini",null,newApproved);
     }
     
     public static Hashtable getApprovedJScriptTable()
@@ -802,7 +802,7 @@ public class CMSecurity
                     newBanned.append(B+"\n");
             }
             Resources.updateResource("banned.ini",newBanned);
-            Resources.saveFileResource("banned.ini");
+            Resources.saveFileResource("::banned.ini");
         }
     }
     
@@ -819,7 +819,7 @@ public class CMSecurity
                     newBanned.append(B+"\n");
             }
             Resources.updateResource("banned.ini",newBanned);
-            Resources.saveFileResource("banned.ini");
+            Resources.saveFileResource("::banned.ini");
         }
     }
     
@@ -838,7 +838,7 @@ public class CMSecurity
         StringBuffer str=Resources.getFileResource("banned.ini",false);
         if(banMe.trim().length()>0) str.append(banMe+"\n");
         Resources.updateResource("banned.ini",str);
-        Resources.saveFileResource("banned.ini");
+        Resources.saveFileResource("::banned.ini");
         return -1;
     }
 }

@@ -66,7 +66,7 @@ public class NoPurge extends StdCommand
 		StringBuffer str=Resources.getFileResource("protectedplayers.ini",false);
 		if(protectMe.trim().length()>0) str.append(protectMe+"\n");
 		Resources.updateResource("protectedplayers.ini",str);
-		Resources.saveFileResource("protectedplayers.ini");
+		Resources.saveFileResource("::protectedplayers.ini");
 		return false;
 	}
 	

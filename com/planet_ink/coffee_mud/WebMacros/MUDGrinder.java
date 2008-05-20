@@ -512,7 +512,7 @@ public class MUDGrinder extends StdWebMacro
                 if((template==null)||(template.length()==0))
                     return "The file 'resources/examples/factiontemplate.ini' could not be located and is required for command line faction creation.";
                 Resources.submitResource(last,template);
-                if(!Resources.saveFileResource(last,mob,template))
+                if(!Resources.saveFileResource("::"+last,mob,template))
                     return "Unable to save "+Resources.buildResourcePath("")+last;
                 F=(Faction)CMClass.getCommon("DefaultFaction");
                 F.initializeFaction(template,last);

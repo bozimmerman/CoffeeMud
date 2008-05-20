@@ -281,7 +281,7 @@ public class SaveThread extends Thread
 						{
 							warnStr.append(M.name()+" "+M.playerStats().getEmail()+" "+System.currentTimeMillis()+"\n");
 							Resources.updateResource("warnedplayers.ini",warnStr);
-							Resources.saveFileResource("warnedplayers.ini");
+							Resources.saveFileResource("::warnedplayers.ini");
                             if(CMSecurity.isDebugging("AUTOPURGE"))
                                 Log.debugOut("SaveThread",name+" is now warned.");
 							warnPrePurge(M,warn-when);

@@ -962,7 +962,7 @@ public class Destroy extends BaseItemParser
 							newNoPurge.append(B+"\n");
 					}
 				Resources.updateResource("protectedplayers.ini",newNoPurge);
-				Resources.saveFileResource("protectedplayers.ini");
+				Resources.saveFileResource("::protectedplayers.ini");
 				mob.tell("Ok.");
 			}
 		}

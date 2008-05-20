@@ -104,7 +104,7 @@ public class IMudPeer implements PersistentPeer
 				out.writeObject(((Intermud)myobj).name_servers);
                 out.flush();
                 bout.flush();
-                new CMFile("resources/ppeer."+myID,null,false).saveRaw(bout.toByteArray());
+                new CMFile("::resources/ppeer."+myID,null,false).saveRaw(bout.toByteArray());
                 out.close();
                 bout.close();
 			}
