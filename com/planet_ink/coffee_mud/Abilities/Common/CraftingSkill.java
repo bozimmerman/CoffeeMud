@@ -212,7 +212,7 @@ public class CraftingSkill extends GatheringSkill
                     skipLine=true;
 			}
 		}
-		if((oneComma)&&(str.substring(start).trim().length()>0))
+		if((oneComma)&&(str.substring(start).trim().length()>0)&&(!skipLine))
 			V2.addElement(str.substring(start));
 		if(V2.size()>1)
 		{
