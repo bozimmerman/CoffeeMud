@@ -1,3 +1,4 @@
+#SPELL_NAME,RESOURCE
 Spell_IronGrip	IRON
 Spell_InsatiableThirst	SALT WATER
 Spell_ResistMagicMissiles	SCALES

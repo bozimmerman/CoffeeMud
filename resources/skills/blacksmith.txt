@@ -1,4 +1,4 @@
-#name($),level(#),ticks(#),wood(#),value(#),class(@),misc(?STATUE,LADDER),capacity(#),armordmg(#),spell
+#FINALNAME,LEVEL,TICKS,WOOD,VALUE,CLASS,STATUE_LADDER,CAPACITY,ARMOR/DAMAGE,SPELL
 % Cup	1	20	1	1	GenDrink		5	
 % Key Ring	1	10	1	1	GenContainer	1024	100	
 % Mug	1	20	1	1	GenDrink		5	
