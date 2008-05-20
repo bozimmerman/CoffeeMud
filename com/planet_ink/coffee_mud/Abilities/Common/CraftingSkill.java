@@ -181,17 +181,24 @@ public class CraftingSkill extends GatheringSkill
 		boolean oneComma=false;
 		int start=0;
 		int longestList=0;
+        boolean skipLine=(str.length()>0)&&(str.charAt(0)=='#');
 		for(int i=0;i<str.length();i++)
 		{
 			if(str.charAt(i)=='\t')
 			{
-				V2.addElement(str.substring(start,i));
-				start=i+1;
-				oneComma=true;
+                if(!skipLine)
+                {
+    				V2.addElement(str.substring(start,i));
+    				start=i+1;
+    				oneComma=true;
+                }
 			}
 			else
 			if((str.charAt(i)=='\n')||(str.charAt(i)=='\r'))
 			{
+                if(skipLine)
+                    skipLine=false;
+                else
 				if(oneComma)
 				{
 					V2.addElement(str.substring(start,i));
@@ -201,6 +208,8 @@ public class CraftingSkill extends GatheringSkill
 				}
 				start=i+1;
 				oneComma=false;
+                if((start<str.length())&&(str.charAt(start)=='#'))
+                    skipLine=true;
 			}
 		}
 		if((oneComma)&&(str.substring(start).trim().length()>0))
