@@ -253,7 +253,7 @@ public class Polls extends StdLibrary implements PollManager
             while(!mob.session().killFlag())
             {
                 PO=new Poll.PollOption(
-                        CMLib.english().prompt(mob,PO.text,++showNumber,showFlag,"New Vote Option",true)
+                        CMLib.english().prompt(mob,"",++showNumber,showFlag,"New Vote Option",true)
                 );
                 if(PO.text.length()==0) 
                     break;
