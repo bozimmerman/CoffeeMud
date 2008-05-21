@@ -52,6 +52,11 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 	//private static final int RCP_CAPACITY=7;
 	protected static final int RCP_SPELL=9;
 
+    public Vector fetchRecipeFormat() {
+        // not yet implemented
+        return null;
+    }
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))

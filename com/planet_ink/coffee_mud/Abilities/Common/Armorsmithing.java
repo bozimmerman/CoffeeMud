@@ -53,6 +53,10 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 	protected static final int RCP_CONTAINMASK=9;
 	protected static final int RCP_SPELL=10;
 
+    public Vector fetchRecipeFormat() {
+        // not yet implemented
+        return null;
+    }
 
 	protected String primeMaterialDesc(){return "metal";}
 

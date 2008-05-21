@@ -57,6 +57,11 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 
     protected Vector loadRecipes(){return super.loadRecipes("fletching.txt");}
 
+    public Vector fetchRecipeFormat() {
+        // not yet implemented
+        return null;
+    }
+
 	public void unInvoke()
 	{
 		if(canBeUninvoked())

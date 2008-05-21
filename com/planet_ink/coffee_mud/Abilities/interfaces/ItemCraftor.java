@@ -49,6 +49,13 @@ public interface ItemCraftor extends Ability
 	public Vector fetchRecipes();
 	
 	/**
+	 * A Vector containing the names and format of each field
+	 * in a recipe.
+	 * @return a Vector of formatted Strings.
+	 */
+	public Vector fetchRecipeFormat();
+	
+	/**
 	 * Returns a vector containing an entry for each craftable recipe
 	 * whose name matches the given name.  Each entry is also a vector.
 	 * @param recipeName the name of the recipe to craft

@@ -47,6 +47,11 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 	private Ability theSpell=null;
 	private static final Hashtable usage=new Hashtable();
 
+    public Vector fetchRecipeFormat() {
+        // not yet implemented
+        return null;
+    }
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))

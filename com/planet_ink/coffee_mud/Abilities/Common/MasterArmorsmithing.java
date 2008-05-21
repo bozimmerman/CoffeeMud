@@ -42,6 +42,11 @@ public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 
     protected Vector loadRecipes(){return super.loadRecipes("masterarmorsmith.txt");}
 
+    public Vector fetchRecipeFormat() {
+        // not yet implemented
+        return null;
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int autoGenerate=0;

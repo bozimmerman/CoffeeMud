@@ -58,6 +58,11 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int RCP_EXTRAREQ=12;
 	protected static final int RCP_SPELL=13;
 
+    public Vector fetchRecipeFormat() {
+        // not yet implemented
+        return null;
+    }
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))

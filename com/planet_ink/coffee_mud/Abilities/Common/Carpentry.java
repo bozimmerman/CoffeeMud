@@ -57,6 +57,11 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 
 	protected Item key=null;
 
+    public Vector fetchRecipeFormat() {
+        // not yet implemented
+        return null;
+    }
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))

@@ -56,6 +56,11 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 
 	protected Vector beingDone=null;
 
+    public Vector fetchRecipeFormat() {
+        // not yet implemented
+        return null;
+    }
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))

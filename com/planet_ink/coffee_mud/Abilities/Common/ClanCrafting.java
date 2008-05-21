@@ -62,6 +62,11 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 
     protected Vector loadRecipes(){return super.loadRecipes("clancraft.txt");}
 
+    public Vector fetchRecipeFormat() {
+        // not yet implemented
+        return null;
+    }
+
 	public void unInvoke()
 	{
 		if(canBeUninvoked())

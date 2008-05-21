@@ -56,6 +56,11 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 
     protected Vector loadRecipes(){return super.loadRecipes("masterleatherworking.txt");}
 
+    public Vector fetchRecipeFormat() {
+        // not yet implemented
+        return null;
+    }
+
 	public void unInvoke()
 	{
 		if(canBeUninvoked())

@@ -61,6 +61,11 @@ public class Cooking extends CraftingSkill implements ItemCraftor
     protected String defaultFoodSound="sizzle.wav";
     protected String defaultDrinkSound="liquid.wav";
      
+    public Vector fetchRecipeFormat() {
+        // not yet implemented
+        return null;
+    }
+
 	public Cooking()
 	{
 		super();
