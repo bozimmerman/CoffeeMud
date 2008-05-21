@@ -264,7 +264,7 @@ public class SocialData extends StdWebMacro
                     &&(CMath.s_int((String)parms.get("GETEXTRA"))<numxtras))
                         str.append(TYPES.elementAt(BTYPES.length+CMath.s_int((String)parms.get("GETEXTRA")))+", ");
                     
-                    old=httpReq.getRequestParameter("DOADDXSOCIALONCHECK");
+                    old=httpReq.getRequestParameter("DOADDXSOCIAL");
                     if((old!=null)
                     &&(old.equalsIgnoreCase("on"))
                     &&(httpReq.getRequestParameter("ADDXSOCIAL")!=null)
@@ -293,7 +293,8 @@ public class SocialData extends StdWebMacro
                         if(parms.containsKey("IS"+TYPE))
                         {
                             old=httpReq.getRequestParameter("IS"+TYPE);
-                            if(old==null) old=((S!=null)?"on":"");
+                            if(old==null)
+                                old=(((S!=null)&&(!httpReq.isRequestParameter("NUMXTRAS")))?"on":"");
                             str.append(""+old.equalsIgnoreCase("on")+", ");
                             if(!old.equalsIgnoreCase("on"))
                                 continue;
