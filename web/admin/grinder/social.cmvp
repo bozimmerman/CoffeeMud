@@ -193,7 +193,7 @@
         <TR>
             <TD><FONT COLOR=YELLOW>Target (SELF): </FONT></TD>
             <TD>
-                <INPUT TYPE=CHECKBOX NAME=ISSELF @if?SocialData?ISSELF@CHECKED@endif@  ONCLICK="ReShow();" VALUE=""><FONT COLOR=WHITE>Enabled</FONT>
+                <INPUT TYPE=CHECKBOX NAME=ISSELF @if?SocialData?ISSELF@CHECKED@endif@  ONCLICK="ReShow();"><FONT COLOR=WHITE>Enabled</FONT>
                 @if?SocialData?ISSELF@
                 <P>
                 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>

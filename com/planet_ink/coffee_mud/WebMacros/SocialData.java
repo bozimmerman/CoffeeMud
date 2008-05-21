@@ -66,10 +66,10 @@ public class SocialData extends StdWebMacro
             if(M==null) return "[authentication error]";
             if(!CMSecurity.isAllowed(M,M.location(),"CMDSOCIALS")) return "[authentication error]";
             
-            Vector SV=CMLib.socials().getSocialsSet(last);
-            Vector OSV=SV;
             boolean create=false;
+            Vector SV=CMLib.socials().getSocialsSet(last);
             create=(SV==null);
+            Vector OSV=(create)?null:(Vector)SV.clone();
             SV=new Vector();
             
             String old=httpReq.getRequestParameter("TITLE");
@@ -102,7 +102,7 @@ public class SocialData extends StdWebMacro
                     &&(httpReq.getRequestParameter("IS"+old.toUpperCase().trim()).equalsIgnoreCase("on")))
                     {
                         TYPES.addElement(old.toUpperCase().trim());
-                        EXTNS.addElement(old.toUpperCase().trim());
+                        EXTNS.addElement(" "+old.toUpperCase().trim());
                     }
                 }
             }
@@ -111,11 +111,10 @@ public class SocialData extends StdWebMacro
             {
                 String TYPE=(String)TYPES.elementAt(t);
                 String EXTN=(String)EXTNS.elementAt(t);
-                if(parms.containsKey("IS"+EXTNS))
-                {
-                    old=httpReq.getRequestParameter("IS"+EXTNS);
-                    if(!old.equalsIgnoreCase("on")) continue;
-                }
+                
+                old=httpReq.getRequestParameter("IS"+TYPE);
+                if((old==null)||(!old.equalsIgnoreCase("on"))) continue;
+                
                 Social S=CMLib.socials().makeDefaultSocial(last,EXTN);
                 String field=(t<BTYPES.length)?BFIELDS[t]:BFIELDS[0];
                 for(int f=0;f<field.length();f++)
@@ -142,6 +141,7 @@ public class SocialData extends StdWebMacro
                         }
                     }
                 }
+                SV.addElement(S);
             }
             if(OSV!=null)
                 for(int s=0;s<OSV.size();s++)
@@ -172,6 +172,7 @@ public class SocialData extends StdWebMacro
             Vector SV=CMLib.socials().getSocialsSet(last);
             if(SV==null)
                 return "Unknown social!";
+            SV=(Vector)SV.clone();
             for(int s=0;s<SV.size();s++)
                 CMLib.socials().remove(((Social)SV.elementAt(s)).Name());
             CMLib.socials().save(M);
@@ -257,13 +258,6 @@ public class SocialData extends StdWebMacro
                         }
                     }
                     
-                    int numxtras=TYPES.size()-BTYPES.length;
-                    if(parms.containsKey("NUMEXTRAS"))
-                        str.append(""+numxtras+", ");
-                    if(parms.containsKey("GETEXTRA")
-                    &&(CMath.s_int((String)parms.get("GETEXTRA"))<numxtras))
-                        str.append(TYPES.elementAt(BTYPES.length+CMath.s_int((String)parms.get("GETEXTRA")))+", ");
-                    
                     old=httpReq.getRequestParameter("DOADDXSOCIAL");
                     if((old!=null)
                     &&(old.equalsIgnoreCase("on"))
@@ -277,6 +271,12 @@ public class SocialData extends StdWebMacro
                         httpReq.addRequestParameters("IS"+TYPE,"on");
                     }
                     
+                    int numxtras=TYPES.size()-BTYPES.length;
+                    if(parms.containsKey("NUMEXTRAS"))
+                        str.append(""+numxtras+", ");
+                    if(parms.containsKey("GETEXTRA")
+                    &&(CMath.s_int((String)parms.get("GETEXTRA"))<numxtras))
+                        str.append(TYPES.elementAt(BTYPES.length+CMath.s_int((String)parms.get("GETEXTRA")))+", ");
                     
                     
                     for(int t=0;t<TYPES.size();t++)
