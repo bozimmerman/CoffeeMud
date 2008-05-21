@@ -162,7 +162,7 @@
         <TR>
             <TD><FONT COLOR=YELLOW>Target (NONE): </FONT></TD>
             <TD>
-                <INPUT TYPE=CHECKBOX NAME=ISNONE @if?SocialData?ISNONE@CHECKED@endif@ ONCHECK="ReShow();"><FONT COLOR=WHITE>Enabled</FONT>
+                <INPUT TYPE=CHECKBOX NAME=ISNONE @if?SocialData?ISNONE@CHECKED@endif@  ONCLICK="ReShow();"><FONT COLOR=WHITE>Enabled</FONT>
                 @if?SocialData?ISNONE@
                 <P>
                 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
@@ -193,7 +193,7 @@
         <TR>
             <TD><FONT COLOR=YELLOW>Target (SELF): </FONT></TD>
             <TD>
-                <INPUT TYPE=CHECKBOX NAME=ISSELF @if?SocialData?ISSELF@CHECKED@endif@ ONCHECK="ReShow();"><FONT COLOR=WHITE>Enabled</FONT>
+                <INPUT TYPE=CHECKBOX NAME=ISSELF @if?SocialData?ISSELF@CHECKED@endif@  ONCLICK="ReShow();"><FONT COLOR=WHITE>Enabled</FONT>
                 @if?SocialData?ISSELF@
                 <P>
                 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
@@ -224,7 +224,7 @@
         <TR>
             <TD><FONT COLOR=YELLOW>Target (OTHER): </FONT></TD>
             <TD>
-                <INPUT TYPE=CHECKBOX NAME=ISTARGET @if?SocialData?ISTARGET@CHECKED@endif@ ONCHECK="ReShow();"><FONT COLOR=WHITE>Enabled</FONT>
+                <INPUT TYPE=CHECKBOX NAME=ISTARGET @if?SocialData?ISTARGET@CHECKED@endif@  ONCLICK="ReShow();"><FONT COLOR=WHITE>Enabled</FONT>
                 @if?SocialData?ISTARGET@
                 <P>
                 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
@@ -267,7 +267,7 @@
         <TR>
             <TD><FONT COLOR=YELLOW>Target (ALL): </FONT></TD>
             <TD>
-                <INPUT TYPE=CHECKBOX NAME=ISALL @if?SocialData?ISALL@CHECKED@endif@ ONCHECK="ReShow();"><FONT COLOR=WHITE>Enabled</FONT>
+                <INPUT TYPE=CHECKBOX NAME=ISALL @if?SocialData?ISALL@CHECKED@endif@  ONCLICK="ReShow();"><FONT COLOR=WHITE>Enabled</FONT>
                 @if?SocialData?ISALL@
                 <P>
                 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
@@ -311,7 +311,7 @@
                     <INPUT TYPE=HIDDEN NAME=XSOCIAL@RequestParameter?NUMXTRA@ VALUE="@RequestParameter?XSOCIAL@"></TD>
                 </TD>
                 <TD>
-                    <INPUT TYPE=CHECKBOX NAME=IS@RequestParameter?XSOCIAL@ @if?SocialData?IS@@RequestParameter?XSOCIAL@@ @CHECKED@endif@ ONCHECK="ReShow();"><FONT COLOR=WHITE>Enabled</FONT>
+                    <INPUT TYPE=CHECKBOX NAME=IS@RequestParameter?XSOCIAL@ @if?SocialData?IS@@RequestParameter?XSOCIAL@@ @CHECKED@endif@  ONCLICK="ReShow();"><FONT COLOR=WHITE>Enabled</FONT>
                     @if?SocialData?IS@@RequestParameter?XSOCIAL@@ @
                     <P>
                     <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
@@ -344,7 +344,7 @@
         <TR>
             <TD><FONT COLOR=YELLOW>Target <INPUT TYPE=TEXT NAME=ADDXSOCIAL VALUE="" SIZE=10>: </FONT></TD>
             <TD>
-                <INPUT TYPE=CHECKBOX NAME=DOADDXSOCIALONCHECK="ReShow();"><FONT COLOR=WHITE>Create</FONT>
+                <INPUT TYPE=CHECKBOX NAME=DOADDXSOCIAL ONCLICK="ReShow();"><FONT COLOR=WHITE>Create</FONT>
             </TD>
         </TR>
     </TABLE>
