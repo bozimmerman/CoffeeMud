@@ -703,7 +703,7 @@ public class Create extends BaseGenerics
 			return;
 		}
         String stuff=CMParms.combine(commands,2);
-        if(CMLib.socials().FetchSocial(stuff,false)!=null)
+        if(CMLib.socials().fetchSocial(stuff,false)!=null)
         {
             mob.tell("The social '"+stuff+"' already exists.");
             mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");

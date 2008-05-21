@@ -230,11 +230,11 @@ public class MUD extends Thread implements MudHost
 		Log.sysOut(Thread.currentThread().getName(),"Channels loaded   : "+(numChannelsLoaded+numJournalsLoaded));
 
         CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: loading socials");
-		CMLib.socials().clearAllSocials();
-		if(CMLib.socials().num()==0)
+		CMLib.socials().unloadSocials();
+		if(CMLib.socials().numSocialSets()==0)
 			Log.errOut(Thread.currentThread().getName(),"WARNING: Unable to load socials from socials.txt!");
 		else
-			Log.sysOut(Thread.currentThread().getName(),"Socials loaded    : "+CMLib.socials().num());
+			Log.sysOut(Thread.currentThread().getName(),"Socials loaded    : "+CMLib.socials().numSocialSets());
 
 		CMLib.database().DBReadAllClans();
 		Log.sysOut(Thread.currentThread().getName(),"Clans loaded      : "+CMLib.clans().size());
@@ -721,7 +721,7 @@ public class MUD extends Thread implements MudHost
 		Log.sysOut(Thread.currentThread().getName(),"Database connections closed.");
 
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Clearing socials, clans, channels");
-		CMLib.socials().clearAllSocials();
+		CMLib.socials().unloadSocials();
 		CMLib.clans().shutdownClans();
         CMLib.channels().unloadChannels();
         CMLib.journals().unloadCommandJournals();

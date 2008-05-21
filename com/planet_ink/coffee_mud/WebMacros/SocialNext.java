@@ -1,19 +1,20 @@
-package com.planet_ink.coffee_mud.Commands;
+package com.planet_ink.coffee_mud.WebMacros;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
-import com.planet_ink.coffee_mud.Commands.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
 import java.util.*;
+
+
 
 /* 
    Copyright 2000-2008 Bo Zimmerman
@@ -30,21 +31,34 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class SocialsCmd extends StdCommand
+public class SocialNext extends StdWebMacro
 {
-	public SocialsCmd(){}
+    public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
+    public boolean isAdminMacro()   {return true;}
 
-	private String[] access={"SOCIALS"};
-	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
-		throws java.io.IOException
-	{
-		if(!mob.isMonster())
-			mob.session().colorOnlyPrintln("^HComplete socials list:^?\n\r"+CMLib.socials().getSocialsTable());
-		return false;
-	}
-	
-	public boolean canBeOrdered(){return true;}
-
-	
+    public String runMacro(ExternalHTTPRequests httpReq, String parm)
+    {
+        Hashtable parms=parseParms(parm);
+        String last=httpReq.getRequestParameter("SOCIAL");
+        if(parms.containsKey("RESET"))
+        {   
+            if(last!=null) httpReq.removeRequestParameter("SOCIAL");
+            return "";
+        }
+        String lastID="";
+        for(int s=0;s<CMLib.socials().getSocialsList().size();s++)
+        {
+            String name=(String)CMLib.socials().getSocialsList().elementAt(s);
+            if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!name.equalsIgnoreCase(lastID))))
+            {
+                httpReq.addRequestParameters("SOCIAL",name);
+                return "";
+            }
+            lastID=name;
+        }
+        httpReq.addRequestParameters("SOCIAL","");
+        if(parms.containsKey("EMPTYOK"))
+            return "<!--EMPTY-->";
+        return " @break@";
+    }
 }

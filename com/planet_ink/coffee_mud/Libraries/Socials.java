@@ -139,7 +139,7 @@ public class Socials extends StdLibrary implements SocialsList
 
                                 }
                             }
-                            soc.put(socobj.name(),socobj);
+                            put(soc,socobj.Name(),socobj);
                         }
                     }
                 }
@@ -148,16 +148,67 @@ public class Socials extends StdLibrary implements SocialsList
         return soc;
     }
 	public boolean isLoaded() { return Resources.getResource("PARSED: "+filename)!=null; }
-	public void put(String name, Social S) { getSocialHash().put(name, S); }
-	public void remove(String name) { getSocialHash().remove(name); }
-    public void addSocial(Social S){ getSocialHash().put(S.name(),S);}
-    public int num() {return getSocialHash().size();}
+	
+	private String realName(String name) 
+	{
+        String shortName=name.toUpperCase().trim();
+        int spdex=shortName.indexOf(' ');
+        if(spdex>0) shortName=shortName.substring(0,spdex);
+        return shortName;
+	}
+    private void put(Hashtable H, String name, Social S) 
+    { 
+        name=realName(name);
+        Vector V2=(Vector)H.get(name);
+        if(V2==null) {
+            V2=new Vector(4);
+            H.put(name,V2);
+            unloadDerivedResources();
+        }
+        for(int v=0;v<V2.size();v++)
+            if(((Social)V2.elementAt(v)).Name().equalsIgnoreCase(S.Name()))
+            {
+                V2.removeElementAt(v);
+                break;
+            }
+        V2.addElement(S);
+    }
+	public void put(String name, Social S) 
+	{ 
+	    put(getSocialHash(),name,S);
+	}
+	public void remove(String name) 
+	{ 
+	    String realName=realName(name);
+        Vector V2=(Vector)getSocialHash().get(realName);
+        if(V2==null) return;
+        for(int v=0;v<V2.size();v++)
+            if(((Social)V2.elementAt(v)).Name().equalsIgnoreCase(name))
+            {
+                V2.removeElementAt(v);
+                if(V2.size()==0)
+                {
+                    getSocialHash().remove(realName);
+                    unloadDerivedResources();
+                }
+                break;
+            }
+	}
+    public void addSocial(Social S){ put(S.name(),S);}
+    
+    public int numSocialSets() {return getSocialHash().size();}
 
-	public void clearAllSocials()
+    private void unloadDerivedResources()
+    {
+        Resources.removeResource("SOCIALS LIST");
+        Resources.removeResource("SOCIALS TABLE");
+        Resources.removeResource("WEB SOCIALS TBL");
+    }
+    
+	public void unloadSocials()
 	{
         Resources.removeResource("PARSED: "+filename);
-		Resources.removeResource("SOCIALS LIST");
-		Resources.removeResource("WEB SOCIALS TBL");
+        unloadDerivedResources();
 	}
 
 
@@ -274,7 +325,7 @@ public class Socials extends StdLibrary implements SocialsList
         }
         String name=((String)socials.firstElement()).toUpperCase().trim();
         String rest=socials.size()>1?CMParms.combine(socials,1):"";
-        socials=getAllSocialObjects((String)socials.firstElement());
+        socials=getSocialsSet((String)socials.firstElement());
         if((socials.size()==0)
         &&((mob.session()==null)
             ||(!mob.session().confirm("The social '"+name+"' does not exist.  Create it (y/N)? ","N"))))
@@ -358,52 +409,7 @@ public class Socials extends StdLibrary implements SocialsList
                     }
                 if(!pickNewSocial)
                 {
-                    if((newOne.length()>0)&&(!newOne.startsWith(" ")))
-                        newOne=" "+newOne;
-                    soc=(Social)CMClass.getCommon("DefaultSocial");
-                    soc.setName(name+newOne);
-                    if(newOne.trim().length()==0)
-                    {
-                        soc.setYou_see("You "+name.toLowerCase()+".");
-                        soc.setThird_party_sees("<S-NAME> "+name.toLowerCase()+"s.");
-                        soc.setSourceCode(CMMsg.MSG_HANDS);
-                        soc.setOthersCode(CMMsg.MSG_HANDS);
-                    }
-                    else
-                    if(newOne.trim().equals("ALL"))
-                    {
-                        soc.setYou_see("You "+name.toLowerCase()+" everyone.");
-                        soc.setThird_party_sees("<S-NAME> "+name.toLowerCase()+"s everyone.");
-                        soc.setSee_when_no_target(CMStrings.capitalizeAndLower(name)+" who?");
-                        soc.setSourceCode(CMMsg.MSG_SPEAK);
-                        soc.setOthersCode(CMMsg.MSG_SPEAK);
-                    }
-                    else
-                    if(newOne.trim().equals("<T-NAME>"))
-                    {
-                        soc.setYou_see("You "+name.toLowerCase()+" <T-NAME>.");
-                        soc.setTarget_sees("<S-NAME> "+name.toLowerCase()+"s you.");
-                        soc.setThird_party_sees("<S-NAME> "+name.toLowerCase()+"s <T-NAMESELF>.");
-                        soc.setSee_when_no_target(CMStrings.capitalizeAndLower(name)+" who?");
-                        soc.setSourceCode(CMMsg.MSG_NOISYMOVEMENT);
-                        soc.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
-                        soc.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
-                    }
-                    else
-                    if(newOne.trim().equals("SELF"))
-                    {
-                        soc.setYou_see("You "+name.toLowerCase()+" yourself.");
-                        soc.setThird_party_sees("<S-NAME> "+name.toLowerCase()+"s <S-HIM-HERSELF>.");
-                        soc.setSourceCode(CMMsg.MSG_NOISE);
-                        soc.setOthersCode(CMMsg.MSG_NOISE);
-                    }
-                    else
-                    {
-                        soc.setYou_see("You "+name.toLowerCase()+newOne.toLowerCase()+".");
-                        soc.setThird_party_sees("<S-NAME> "+name.toLowerCase()+"s"+newOne.toLowerCase()+".");
-                        soc.setSourceCode(CMMsg.MSG_HANDS);
-                        soc.setOthersCode(CMMsg.MSG_HANDS);
-                    }
+                    soc=makeDefaultSocial(name,newOne);
                     addSocial(soc);
                     socials.add(soc);
                     resaveSocials=true;
@@ -456,39 +462,54 @@ public class Socials extends StdLibrary implements SocialsList
         return true;
 	}
 
-	public Social FetchSocial(String name, boolean exactOnly)
+	public Social fetchSocial(Vector set, String name, boolean exactOnly) 
+	{
+	    for(int s=0;s<set.size();s++)
+	        if(((Social)set.elementAt(s)).Name().equalsIgnoreCase(name))
+	            return (Social)set.elementAt(s);
+	    if(exactOnly) return null;
+	    name=name.toUpperCase();
+        for(int s=0;s<set.size();s++)
+            if(((Social)set.elementAt(s)).Name().toUpperCase().startsWith(name))
+                return (Social)set.elementAt(s);
+        return null;
+	}
+	
+	public Social fetchSocial(String name, boolean exactOnly)
 	{
         Hashtable soc=getSocialHash();
-		Social thisOne=(Social)soc.get(name.toUpperCase());
-		if((exactOnly)||(thisOne!=null)) return thisOne;
-		name=name.toUpperCase();
+        String realName=realName(name);
+        Vector V=(Vector)soc.get(realName);
+        if((V==null)&&(exactOnly)) return null;
+        Social S=fetchSocial(V,name,exactOnly);
+        if(S!=null) return S;
 		for(Enumeration e=soc.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
 			if(key.toUpperCase().startsWith(name))
-				return (Social)soc.get(key);
+				return fetchSocial(V,name,false);
 		}
 		return null;
 	}
 
-	public Social FetchSocial(Vector C, boolean exactOnly)
+	public Social fetchSocial(Vector C, boolean exactOnly)
 	{
 		if(C==null) return null;
 		if(C.size()==0) return null;
 
-		String SocialName=(String)C.elementAt(0);
+		String socialName=(String)C.elementAt(0);
 		String theRest="";
         Social S=null;
 		if(C.size()>1)
 		{
 			String Target=((String)C.elementAt(1)).toUpperCase();
-            S=FetchSocial(SocialName+" "+Target,true);
+            S=fetchSocial(socialName+" "+Target,true);
             if((S==null)
 			&&((!Target.equals("SELF"))&&(!Target.equals("ALL"))))
 				Target="<T-NAME>";
 			theRest=" "+Target;
 		}
-		if(S==null) S=FetchSocial(SocialName+theRest,true);
+		if(S==null) S=fetchSocial(socialName+theRest,true);
 		if((S==null)&&(!exactOnly))
 		{
             Hashtable soc=getSocialHash();
@@ -496,78 +517,133 @@ public class Socials extends StdLibrary implements SocialsList
 			for(Enumeration e=soc.keys();e.hasMoreElements();)
 			{
 				String key=(String)e.nextElement();
-				if((key.startsWith(SocialName.toUpperCase()))&&(key.indexOf(" ")<0))
+				if((key.startsWith(socialName.toUpperCase()))&&(key.indexOf(" ")<0))
 				{	
-					SocialName=key; 
+					socialName=key; 
 					break;
 				}
 				else
-				if(key.startsWith(SocialName.toUpperCase()))
+				if(key.startsWith(socialName.toUpperCase()))
 				{	
 					backupSocialName=key; 
 					break;
 				}
 			}
-			if(SocialName==null) 
-			  SocialName=backupSocialName;
-			if(SocialName!=null)
-				S=FetchSocial(SocialName+theRest,true);
+			if(socialName==null) 
+			  socialName=backupSocialName;
+			if(socialName!=null)
+				S=fetchSocial(socialName+theRest,true);
 		}
 		return S;
 	}
 
-	public Social enumSocial(int index)
+	public Vector enumSocialSet(int index)
 	{
-		if((index<0)||(index>num())) return null;
+		if((index<0)||(index>numSocialSets())) return null;
 		int i=0;
         Hashtable soc=getSocialHash();
 		for (Enumeration e = soc.elements() ; e.hasMoreElements() ; i++)
 		{
-			Social I=(Social)e.nextElement();
-			if(i==index) return I;
+		    Vector V=(Vector)e.nextElement();
+			if(i==index) return V;
 		}
 		return null;
 	}
 
+	public Social makeDefaultSocial(String name, String type)
+	{
+        Social soc=(Social)CMClass.getCommon("DefaultSocial");
+        if((type.length()>0)&&(!type.startsWith(" ")))
+            type=" "+type;
+        soc.setName(name+type);
+        if(type.trim().length()==0)
+        {
+            soc.setYou_see("You "+name.toLowerCase()+".");
+            soc.setThird_party_sees("<S-NAME> "+name.toLowerCase()+"s.");
+            soc.setSourceCode(CMMsg.MSG_HANDS);
+            soc.setOthersCode(CMMsg.MSG_HANDS);
+        }
+        else
+        if(type.trim().equals("ALL"))
+        {
+            soc.setYou_see("You "+name.toLowerCase()+" everyone.");
+            soc.setThird_party_sees("<S-NAME> "+name.toLowerCase()+"s everyone.");
+            soc.setSee_when_no_target(CMStrings.capitalizeAndLower(name)+" who?");
+            soc.setSourceCode(CMMsg.MSG_SPEAK);
+            soc.setOthersCode(CMMsg.MSG_SPEAK);
+        }
+        else
+        if(type.trim().equals("<T-NAME>"))
+        {
+            soc.setYou_see("You "+name.toLowerCase()+" <T-NAME>.");
+            soc.setTarget_sees("<S-NAME> "+name.toLowerCase()+"s you.");
+            soc.setThird_party_sees("<S-NAME> "+name.toLowerCase()+"s <T-NAMESELF>.");
+            soc.setSee_when_no_target(CMStrings.capitalizeAndLower(name)+" who?");
+            soc.setSourceCode(CMMsg.MSG_NOISYMOVEMENT);
+            soc.setTargetCode(CMMsg.MSG_NOISYMOVEMENT);
+            soc.setOthersCode(CMMsg.MSG_NOISYMOVEMENT);
+        }
+        else
+        if(type.trim().equals("SELF"))
+        {
+            soc.setYou_see("You "+name.toLowerCase()+" yourself.");
+            soc.setThird_party_sees("<S-NAME> "+name.toLowerCase()+"s <S-HIM-HERSELF>.");
+            soc.setSourceCode(CMMsg.MSG_NOISE);
+            soc.setOthersCode(CMMsg.MSG_NOISE);
+        }
+        else
+        {
+            soc.setYou_see("You "+name.toLowerCase()+type.toLowerCase()+".");
+            soc.setThird_party_sees("<S-NAME> "+name.toLowerCase()+"s"+type.toLowerCase()+".");
+            soc.setSourceCode(CMMsg.MSG_HANDS);
+            soc.setOthersCode(CMMsg.MSG_HANDS);
+        }
+        return soc;
+	}
+	
 	public void save(MOB whom)
 	{
 		if(!isLoaded()) return;
         Hashtable soc=getSocialHash();
 		StringBuffer buf=new StringBuffer("");
-		Vector V=new Vector();
+		Vector V2=new Vector();
 		for (Enumeration e = soc.elements() ; e.hasMoreElements() ; )
 		{
-			Social S1=(Social)e.nextElement();
-			for(int i=0;i<V.size();i++)
-			{
-				Social S2=(Social)V.elementAt(i);
-				if(S1.equals(S2))
-				{
-					V.insertElementAt(S1,i);
-					break;
-				}
-			}
-			if(!V.contains(S1))
-				V.addElement(S1);
+		    Vector V1=(Vector)e.nextElement();
+            for(int v1=0;v1<V1.size();v1++)
+            {
+                Social S1=(Social)V1.elementAt(v1);
+    			for(int v2=0;v2<V2.size();v2++)
+    			{
+    				Social S2=(Social)V2.elementAt(v2);
+    				if(S1.equals(S2))
+    				{
+    					V2.insertElementAt(S1,v2);
+    					break;
+    				}
+    			}
+    			if(!V2.contains(S1))
+    				V2.addElement(S1);
+            }
 		}
         Vector sorted=new Vector();
-        while(V.size()>0)
+        while(V2.size()>0)
         {
-            Social lowest=(Social)V.firstElement();
+            Social lowest=(Social)V2.firstElement();
             Social S=null;
-            for(int i=1;i<V.size();i++)
+            for(int i=1;i<V2.size();i++)
             {
-                S=(Social)V.elementAt(i);
+                S=(Social)V2.elementAt(i);
                 if(S.name().compareToIgnoreCase(lowest.Name())<=0)
                     lowest=S;
             }
-            V.remove(lowest);
+            V2.remove(lowest);
             sorted.add(lowest);
         }
-        V=sorted;
-		for(int v=0;v<V.size();v++)
+        V2=sorted;
+		for(int v=0;v<V2.size();v++)
 		{
-			Social I=(Social)V.elementAt(v);
+			Social I=(Social)V2.elementAt(v);
 
 			switch(I.sourceCode())
 			{
@@ -629,48 +705,21 @@ public class Socials extends StdLibrary implements SocialsList
         // allowed is forced because this is already protected by SOCIALS security flag
         if(!new CMFile(filename,whom,false,true).saveText(buf))
             Log.errOut("Socials","Unable to save socials.txt!");
-		Resources.removeResource("SOCIALS LIST");
-		Resources.removeResource("WEB SOCIALS TBL");
+        unloadDerivedResources();
 	}
 
-    public Vector getAllSocialObjects(String named)
+    public Vector getSocialsSet(String named)
     {
-        Vector all=new Vector();
-        Hashtable soc=getSocialHash();
-        named=named.toUpperCase();
-        for (Enumeration e = soc.elements() ; e.hasMoreElements() ; )
-        {
-            Social I=(Social)e.nextElement();
-            int space=I.name().indexOf(" ");
-            String name=null;
-            if(space>0)
-                name=I.name().substring(0,space).trim().toUpperCase();
-            else
-                name=I.name().trim().toUpperCase();
-            if(name.equals(named))
-                all.addElement(I);
-        }
-        return all;
+        named=realName(named);
+        return (Vector)getSocialHash().get(named);
     }
 
     public String findSocialName(String named, boolean exactOnly)
     {
         if(named==null) return null;
-        named=named.toUpperCase().trim();
-        if(named.length()==0) return null;
-    	int x=named.indexOf(' ');
-    	if(x>0)named=named.substring(0,x).trim();
-        Hashtable soc=getSocialHash();
-        for (Enumeration e = soc.elements() ; e.hasMoreElements() ; )
-        {
-            Social S=(Social)e.nextElement();
-            String name=S.name().toUpperCase().trim();
-            int space=name.indexOf(' ');
-            if(space>0)name=name.substring(0,space).trim();
-            if(name.equals(named)) return name.toLowerCase();
-            if((!exactOnly)&&(name.startsWith(named)))
-            	return name.toLowerCase();
-        }
+        Social S = fetchSocial(named,exactOnly);
+        if(S!=null) 
+            return realName(S.Name()).toLowerCase();
         return null;
     }
     
@@ -679,7 +728,7 @@ public class Socials extends StdLibrary implements SocialsList
     	String realName=findSocialName(named,true);
     	if(realName==null) realName=findSocialName(named,false);
     	if(realName==null) return null;
-    	Vector list=getAllSocialObjects(realName.toUpperCase());
+    	Vector list=getSocialsSet(realName.toUpperCase());
     	if((list==null)||(list.size()==0)) return null;
     	StringBuffer help=new StringBuffer("");
     	help.append("^H\n\r");
@@ -727,40 +776,41 @@ public class Socials extends StdLibrary implements SocialsList
     	return help.toString();
     }
     
-	public String getSocialsList()
+    public Vector getSocialsList() 
+    {
+        Vector socialsList=(Vector)Resources.getResource("SOCIALS LIST");
+        if(socialsList!=null) return socialsList;
+        
+        Vector socialVec=new Vector();
+        for(int s=0;s<CMLib.socials().numSocialSets();s++)
+        {
+            Vector V=CMLib.socials().enumSocialSet(s);
+            if((V==null)||(V.size()==0)) continue;
+            Social S=(Social)V.firstElement();
+            socialVec.addElement(realName(S.Name()));
+        }
+        Collections.sort(socialVec);
+        Resources.submitResource("SOCIALS LIST",socialVec);
+        return socialVec;
+    }
+
+	public String getSocialsTable()
 	{
-		StringBuffer socialsList=(StringBuffer)Resources.getResource("SOCIALS LIST");
+		StringBuffer socialsList=(StringBuffer)Resources.getResource("SOCIALS TABLE");
 		if(socialsList!=null) return socialsList.toString();
+        Vector socialVec=getSocialsList();
 		socialsList=new StringBuffer("");
-		Hashtable uniqueList=new Hashtable();
-        Hashtable soc=getSocialHash();
-		for (Enumeration e = soc.elements() ; e.hasMoreElements() ; )
-		{
-			Social I=(Social)e.nextElement();
-			int space=I.name().indexOf(" ");
-			String name=null;
-			if(space>0)
-				name=I.name().substring(0,space).trim().toUpperCase();
-			else
-				name=I.name().trim().toUpperCase();
-			if(uniqueList.get(name)==null)
-				uniqueList.put(name,name);
-		}
-		Vector sortableList=new Vector();
-		for(Enumeration e=uniqueList.elements(); e.hasMoreElements();)
-			sortableList.addElement(e.nextElement());
-		Collections.sort(sortableList);
 		int col=0;
-		for(int i=0;i<sortableList.size();i++)
+		for(int i=0;i<socialVec.size();i++)
 		{
 			if((++col)>4)
 			{
 				socialsList.append("\n\r");
 				col=1;
 			}
-			socialsList.append(CMStrings.padRight((String)sortableList.elementAt(i),19));
+			socialsList.append(CMStrings.padRight((String)socialVec.elementAt(i),19));
 		}
-		Resources.submitResource("SOCIALS LIST",socialsList);
+		Resources.submitResource("SOCIALS TABLE",socialsList);
 		return socialsList.toString();
 	}
 }

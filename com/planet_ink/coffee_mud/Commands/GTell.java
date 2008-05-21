@@ -74,8 +74,8 @@ public class GTell extends StdCommand
 		{
 			text=text.substring(1);
 			Vector V=CMParms.parse(text);
-			Social S=CMLib.socials().FetchSocial(V,true);
-			if(S==null) S=CMLib.socials().FetchSocial(V,false);
+			Social S=CMLib.socials().fetchSocial(V,true);
+			if(S==null) S=CMLib.socials().fetchSocial(V,false);
 			if(S!=null)
 			{
 				tellMsg=S.makeMessage(mob,

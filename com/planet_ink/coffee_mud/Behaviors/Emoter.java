@@ -218,8 +218,8 @@ public class Emoter extends ActiveTicker
 		if(emoter.location()!=room) emoter.setLocation(room);
         if(((Integer)emote.elementAt(0)).intValue()==EMOTE_SOCIAL)
         {
-            Social S=CMLib.socials().FetchSocial(str,true);
-            if(S==null) S=CMLib.socials().FetchSocial(str,false);
+            Social S=CMLib.socials().fetchSocial(str,true);
+            if(S==null) S=CMLib.socials().fetchSocial(str,false);
             if(S!=null) 
             {
                 S.invoke(emoter,CMParms.parse(str),emoteTo,false);

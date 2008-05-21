@@ -153,6 +153,7 @@ public class PollData extends StdWebMacro
             if(P==null)
                 return "Unknown poll!";
             CMLib.polls().deletePoll(P);
+            Log.sysOut(M.name()+" deleted poll "+last);
             return "Poll deleted.";
         }
         else

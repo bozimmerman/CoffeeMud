@@ -89,8 +89,8 @@ public class BaseChanneler extends StdCommand
 		{
 			String msgstr=message.substring(1);
 			Vector V=CMParms.parse(msgstr);
-			Social S=CMLib.socials().FetchSocial(V,true);
-			if(S==null) S=CMLib.socials().FetchSocial(V,false);
+			Social S=CMLib.socials().fetchSocial(V,true);
+			if(S==null) S=CMLib.socials().fetchSocial(V,false);
 			if(S!=null)
 				msg=S.makeChannelMsg(mob,channelInt,channelName,V,false);
 			else

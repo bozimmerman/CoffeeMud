@@ -1,0 +1,330 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_CMDSOCIALS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+<html>
+<head>
+    <link rel="grinder icon" href="/images/grinder.ico" >
+    <title>Social Manager</title>
+    <script language=JavaScript>
+    <!--
+        function openUp2(named)
+        {
+            var strFeatures="top=200,left=50,resizeable=no,scrollbars=yes,height=400,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("/property.cmvp?ABILITY="+named,
+                        "Ability",strFeatures, false);
+        }
+        function AddNewItem(FIELD)
+        {
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM=NEW&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,"Race Item",strFeatures, false);
+        }
+        function AddItem(ME)
+        {
+            ReShow();
+        }
+        function EditItemDone()
+        {
+            ReShow();
+        }
+        function NoSay(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function NewSay(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
+        function EditItem(ME,FIELD)
+        {
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM="+ME+"&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,"Race Item",strFeatures, false);
+        }
+        function AddMember(v)
+        {
+            ReShow();
+        }
+        function EditMember(v)
+        {
+            ReShow();
+        }
+        function EditAffect(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function AddAffect(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
+        function EditBehavior(ME)
+        {
+            if(ME.selectedIndex==0)
+                ReShow();
+        }
+        function AddBehavior(ME)
+        {
+            if(ME.selectedIndex>0)
+                ReShow();
+        }
+        function NewSocial()
+        {
+            var social=window.prompt('Enter a new unique name for your Social:');
+            if(social==null)
+                return;
+            if(social.length==0)
+                return;
+            if(social.indexOf(' ')>=0)
+            {
+                window.alert('No spaces are allowed in your ID!');
+                return;
+            }
+            document.RESOURCES.NEWSOCIALID.value=social;
+            document.RESOURCES.FUNCTION.value='RESOCIAL';
+            document.RESOURCES.action='/grinder/socialdo.cmvp';
+            document.RESOURCES.submit();
+        }
+        function Delete()
+        {
+            if(confirm('Delete this social?! Confirm!'))
+            {
+                document.RESOURCES.action='socialdo.cmvp';
+                document.RESOURCES.FUNCTION.value='DELSOCIAL';
+                document.RESOURCES.submit();
+            }
+        }
+        function EditDone()
+        {
+            @if?!SocialData?EXISTS@
+                if(confirm('Create this new social?'))
+            @else@
+                if(confirm('Submit your changes to this social?'))
+            @endif@
+                {
+                    document.RESOURCES.action='socialdo.cmvp';
+                    document.RESOURCES.FUNCTION.value='EDITSOCIAL';
+                    document.RESOURCES.submit();
+                }
+        }
+        function ReShow()
+        {
+            document.RESOURCES.FUNCTION.value='';
+            document.RESOURCES.action='/grinder/social.cmvp';
+            document.RESOURCES.submit();
+        }
+        function RESOCIAL()
+        {
+            document.RESOURCES.FUNCTION.value='RESOCIAL';
+            document.RESOURCES.action='/grinder/socialdo.cmvp';
+            document.RESOURCES.submit();
+        }
+        function Cancel()
+        {
+            window.close();
+        }
+        function OpenUp(file,named)
+        {
+            var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("/"+file+"?HELPTOPIC="+named,
+                        "Help",strFeatures, false);
+        }
+        function Clicked(action)
+        {
+            document.RESOURCES.action=action;
+            document.RESOURCES.submit();
+        }
+    //-->
+    </script>
+</head>
+<body BGCOLOR=BLACK>
+<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="social.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=NEWSOCIALID VALUE="">
+<INPUT TYPE=HIDDEN NAME=REPLACE VALUE="">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
+<INPUT TYPE=HIDDEN NAME=SOCIAL VALUE="@RequestParameter?SOCIAL@">
+<INPUT TYPE=HIDDEN NAME=NEWSOCIAL VALUE="@RequestParameter?NEWSOCIAL@">
+<CENTER>
+@if?CheckReqParm?SOCIAL=@
+    Select a social above to view/edit.
+@else@
+    <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+        <TR>
+            <TD WIDTH=15%><FONT COLOR=YELLOW>Name: </FONT></TD>
+            <TD WIDTH=85%>
+                <FONT COLOR=WHITE>@SocialData?TITLE@</FONT>
+                <INPUT TYPE=HIDDEN SIZE=30 NAME=TITLE VALUE="@SocialData?TITLE@">
+            </TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Target (NONE): </FONT></TD>
+            <TD>
+                <INPUT TYPE=CHECKBOX NAME=ISNONE @if?SocialData?ISNONE@CHECKED@endif@><FONT COLOR=WHITE>Enabled</FONT>
+                @if?SocialData?ISNONE@
+                <P>
+                <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+                <TR>
+                    <TD WIDTH=20%><FONT COLOR=YELLOW>You See: </FONT></TD>
+                    <TD WIDTH=80%><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_NONE_Y VALUE="@SocialData?SDAT_NONE_Y@"></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>You Do: </FONT></TD>
+                    <TD><SELECT NAME=SDAT_NONE_YC>@SocialData?SDAT_NONE_YC@</SELECT></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>Others See: </FONT></TD>
+                    <TD><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_NONE_O VALUE="@SocialData?SDAT_NONE_O@"></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>Others: </FONT></TD>
+                    <TD><SELECT NAME=SDAT_NONE_YC>@SocialData?SDAT_NONE_OC@</SELECT></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>MSP Filename: </FONT></TD>
+                    <TD><INPUT TYPE=TEXT SIZE=40 NAME=SDAT_NONE_M VALUE="@SocialData?SDAT_NONE_M@"></TD>
+                </TR>
+                </TABLE>
+                @endif@
+            </TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Target (SELF): </FONT></TD>
+            <TD>
+                <INPUT TYPE=CHECKBOX NAME=ISSELF @if?SocialData?ISSELF@CHECKED@endif@><FONT COLOR=WHITE>Enabled</FONT>
+                @if?SocialData?ISSELF@
+                <P>
+                <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+                <TR>
+                    <TD WIDTH=20%><FONT COLOR=YELLOW>You See: </FONT></TD>
+                    <TD WIDTH=80%><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_SELF_Y VALUE="@SocialData?SDAT_SELF_Y@"></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>You Do: </FONT></TD>
+                    <TD><SELECT NAME=SDAT_SELF_YC>@SocialData?SDAT_SELF_YC@</SELECT></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>Others See: </FONT></TD>
+                    <TD><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_SELF_O VALUE="@SocialData?SDAT_SELF_O@"></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>Others: </FONT></TD>
+                    <TD><SELECT NAME=SDAT_SELF_YC>@SocialData?SDAT_SELF_OC@</SELECT></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>MSP Filename: </FONT></TD>
+                    <TD><INPUT TYPE=TEXT SIZE=40 NAME=SDAT_SELF_M VALUE="@SocialData?SDAT_SELF_M@"></TD>
+                </TR>
+                </TABLE>
+                @endif@
+            </TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Target (OTHER): </FONT></TD>
+            <TD>
+                <INPUT TYPE=CHECKBOX NAME=ISTARGET @if?SocialData?ISTARGET@CHECKED@endif@><FONT COLOR=WHITE>Enabled</FONT>
+                @if?SocialData?ISTARGET@
+                <P>
+                <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+                <TR>
+                    <TD WIDTH=20%><FONT COLOR=YELLOW>You See: </FONT></TD>
+                    <TD WIDTH=80%><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_TARGET_Y VALUE="@SocialData?SDAT_TARGET_Y@"></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>You Do: </FONT></TD>
+                    <TD><SELECT NAME=SDAT_TARGET_YC>@SocialData?SDAT_TARGET_YC@</SELECT></TD>
+                </TR>
+                <TR>
+                    <TD WIDTH=20%><FONT COLOR=YELLOW>Target Sees: </FONT></TD>
+                    <TD WIDTH=80%><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_TARGET_T VALUE="@SocialData?SDAT_TARGET_T@"></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>Target: </FONT></TD>
+                    <TD><SELECT NAME=SDAT_TARGET_TC>@SocialData?SDAT_TARGET_TC@</SELECT></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>Others See: </FONT></TD>
+                    <TD><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_TARGET_O VALUE="@SocialData?SDAT_TARGET_O@"></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>Others: </FONT></TD>
+                    <TD><SELECT NAME=SDAT_TARGET_YC>@SocialData?SDAT_TARGET_OC@</SELECT></TD>
+                </TR>
+                <TR>
+                    <TD WIDTH=20%><FONT COLOR=YELLOW>No Target Sees: </FONT></TD>
+                    <TD WIDTH=80%><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_TARGET_N VALUE="@SocialData?SDAT_TARGET_N@"></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>No Target: </FONT></TD>
+                    <TD><SELECT NAME=SDAT_TARGET_YC>@SocialData?SDAT_TARGET_NC@</SELECT></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>MSP Filename: </FONT></TD>
+                    <TD><INPUT TYPE=TEXT SIZE=40 NAME=SDAT_TARGET_M VALUE="@SocialData?SDAT_TARGET_M@"></TD>
+                </TR>
+                </TABLE>
+                @endif@
+            </TD>
+        </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Target (ALL): </FONT></TD>
+            <TD>
+                <INPUT TYPE=CHECKBOX NAME=ISALL @if?SocialData?ISALL@CHECKED@endif@><FONT COLOR=WHITE>Enabled</FONT>
+                @if?SocialData?ISALL@
+                <P>
+                <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+                <TR>
+                    <TD WIDTH=20%><FONT COLOR=YELLOW>You See: </FONT></TD>
+                    <TD WIDTH=80%><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_ALL_Y VALUE="@SocialData?SDAT_ALL_Y@"></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>You Do: </FONT></TD>
+                    <TD><SELECT NAME=SDAT_ALL_YC>@SocialData?SDAT_ALL_YC@</SELECT></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>Others See: </FONT></TD>
+                    <TD><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_ALL_O VALUE="@SocialData?SDAT_ALL_O@"></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>Others: </FONT></TD>
+                    <TD><SELECT NAME=SDAT_ALL_YC>@SocialData?SDAT_ALL_OC@</SELECT></TD>
+                </TR>
+                <TR>
+                    <TD WIDTH=20%><FONT COLOR=YELLOW>No Target Sees: </FONT></TD>
+                    <TD WIDTH=80%><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_ALL_N VALUE="@SocialData?SDAT_ALL_N@"></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>No Target: </FONT></TD>
+                    <TD><SELECT NAME=SDAT_ALL_YC>@SocialData?SDAT_ALL_NC@</SELECT></TD>
+                </TR>
+                <TR>
+                    <TD><FONT COLOR=YELLOW>MSP Filename: </FONT></TD>
+                    <TD><INPUT TYPE=TEXT SIZE=40 NAME=SDAT_ALL_M VALUE="@SocialData?SDAT_ALL_M@"></TD>
+                </TR>
+                </TABLE>
+                @endif@
+            </TD>
+        </TR>
+    </TABLE>
+@endif@
+<BR>
+<TABLE WIDTH=100% BORDER=0>
+<TR>
+    @if?!CheckReqParm?SOCIAL=@
+        @if?SocialData?ISNEWSOCIAL@
+            <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
+        @else@
+            <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
+            <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
+        @endif@
+        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>
+    @endif@
+</TR>
+</TABLE>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@

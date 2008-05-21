@@ -295,8 +295,8 @@ public class IMudClient implements I3Interface
 			{
 				String msgstr=message.substring(1);
 				Vector V=CMParms.parse(msgstr);
-				Social S=CMLib.socials().FetchSocial(V,true);
-				if(S==null) S=CMLib.socials().FetchSocial(V,false);
+				Social S=CMLib.socials().fetchSocial(V,true);
+				if(S==null) S=CMLib.socials().fetchSocial(V,false);
 				CMMsg msg=null;
 				if(S!=null)
 				{
@@ -369,8 +369,8 @@ public class IMudClient implements I3Interface
 				mob2.setName(mob.Name()+"@"+imc2.imc_name);
 				mob2.setLocation(CMClass.getLocale("StdRoom"));
 				Vector V=CMParms.parse(message);
-				Social S=CMLib.socials().FetchSocial(V,true);
-				if(S==null) S=CMLib.socials().FetchSocial(V,false);
+				Social S=CMLib.socials().fetchSocial(V,true);
+				if(S==null) S=CMLib.socials().fetchSocial(V,false);
 				CMMsg msg=null;
 				if(S!=null)
 				{

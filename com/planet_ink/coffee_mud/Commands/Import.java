@@ -4389,9 +4389,9 @@ public class Import extends StdCommand
 					int x=word.indexOf(" ");
 					if(x>0) word=word.substring(0,x).trim();
 
-					Social S1=CMLib.socials().FetchSocial(word,true);
-					Social S2=CMLib.socials().FetchSocial(word+" <T-NAME>",true);
-					Social S3=CMLib.socials().FetchSocial(word+" SELF",true);
+					Social S1=CMLib.socials().fetchSocial(word,true);
+					Social S2=CMLib.socials().fetchSocial(word+" <T-NAME>",true);
+					Social S3=CMLib.socials().fetchSocial(word+" SELF",true);
 					boolean changing=true;
 					if((S1==null)||(!S1.name().toUpperCase().equals(word)))
 					{

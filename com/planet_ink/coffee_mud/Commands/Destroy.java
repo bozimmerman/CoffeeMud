@@ -676,7 +676,7 @@ public class Destroy extends BaseItemParser
 			}
 		}
 
-		Social soc2=CMLib.socials().FetchSocial(CMParms.combine(commands,2).toUpperCase(),true);
+		Social soc2=CMLib.socials().fetchSocial(CMParms.combine(commands,2).toUpperCase(),true);
 		if(soc2==null)
 		{
 			mob.tell("but fail to specify an EXISTING SOCIAL!\n\r");
@@ -686,7 +686,6 @@ public class Destroy extends BaseItemParser
 		if(mob.session().confirm("Are you sure you want to delete that social (y/N)? ","N"))
 		{
 			CMLib.socials().remove(soc2.name());
-			Resources.removeResource("SOCIALS LIST");
 			CMLib.socials().save(mob);
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just decreased!");
             Log.sysOut("SysopSocials",mob.Name()+" destroyed social "+soc2.name()+".");
@@ -1278,7 +1277,7 @@ public class Destroy extends BaseItemParser
 						execute(mob,commands);
 					}
 					else
-					if(CMLib.socials().FetchSocial(allWord,true)!=null)
+					if(CMLib.socials().fetchSocial(allWord,true)!=null)
 					{
 						commands.insertElementAt("SOCIAL",1);
 						execute(mob,commands);

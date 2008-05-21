@@ -42,21 +42,7 @@ public class SocialTbl extends StdWebMacro
 		StringBuffer TBL=(StringBuffer)Resources.getResource("WEB SOCIALS TBL");
 		if(TBL!=null) return TBL.toString();
 
-		Vector socialVec=new Vector();
-		for(int s=0;s<CMLib.socials().num();s++)
-		{
-			Social S=CMLib.socials().enumSocial(s);
-			String name=null;
-			int x=S.name().trim().indexOf(" ");
-			if(x>=0)
-				name=S.name().trim().substring(0,x);
-			else
-				name=S.name();
-			if(!socialVec.contains(name))
-				socialVec.addElement(name);
-		}
-
-		Collections.sort(socialVec);
+		Vector socialVec=CMLib.socials().getSocialsList();
 		StringBuffer msg=new StringBuffer("\n\r");
 		int col=0;
 		int percent = 100/AT_MAX_COL;

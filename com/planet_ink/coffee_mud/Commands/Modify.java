@@ -877,7 +877,7 @@ public class Modify extends BaseGenerics
         String oldStuff=stuff;
         if(stuff.equals("NONE")) 
             stuff="";
-        Social S=CMLib.socials().FetchSocial((name+" "+stuff).trim(),false);
+        Social S=CMLib.socials().fetchSocial((name+" "+stuff).trim(),false);
         if(S==null)
         {
             mob.tell("The social '"+stuff+"' does not exist.");
@@ -1444,7 +1444,7 @@ public class Modify extends BaseGenerics
 				}
 			}
 			else
-			if(CMLib.socials().FetchSocial(allWord,true)!=null)
+			if(CMLib.socials().fetchSocial(allWord,true)!=null)
 			{
 				commands.insertElementAt("SOCIAL",1);
 				execute(mob,commands);

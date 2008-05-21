@@ -36,28 +36,35 @@ public interface SocialsList extends CMLibrary
 {
     public final String filename=Resources.buildResourcePath("")+"socials.txt";
     
-    public Hashtable getSocialHash();
     public boolean isLoaded();
+    
     public void put(String name, Social S);
     public void remove(String name);
     public void addSocial(Social S);
-    public int num();
-    public void clearAllSocials();
+    
     public void modifySocialOthersCode(MOB mob, Social me, int showNumber, int showFlag)
-    throws IOException;
+        throws IOException;
     public void modifySocialTargetCode(MOB mob, Social me, int showNumber, int showFlag)
-    throws IOException;
+        throws IOException;
     public void modifySocialSourceCode(MOB mob, Social me, int showNumber, int showFlag)
-    throws IOException;
+        throws IOException;
     public boolean modifySocialInterface(MOB mob, String socialString)
         throws IOException;
-    public Social FetchSocial(String name, boolean exactOnly);
-    public Social FetchSocial(Vector C, boolean exactOnly);
+    
+    public Social fetchSocial(String name, boolean exactOnly);
+    public Social fetchSocial(Vector C, boolean exactOnly);
+    public Social fetchSocial(Vector set, String name, boolean exactOnly);
     public String findSocialName(String named, boolean exactOnly);
-    public String getSocialsHelp(MOB mob, String named);
-    public Social enumSocial(int index);
+    
+    public Vector getSocialsSet(String named);
+    public int numSocialSets();
+    public Vector enumSocialSet(int index);
+    
+    public void unloadSocials();
     public void save(MOB whom);
-    public Vector getAllSocialObjects(String named);
-    public String getSocialsList();
-
+    public Vector getSocialsList();
+    public String getSocialsHelp(MOB mob, String named);
+    public String getSocialsTable();
+    public Social makeDefaultSocial(String name, String type);
+    
 }

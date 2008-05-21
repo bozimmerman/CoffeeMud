@@ -58,7 +58,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
         Social[] socials=new Social[req.length];
         for(int i=0;i<req.length;i++)
         {
-            socials[i]=CMLib.socials().FetchSocial(req[i],true);
+            socials[i]=CMLib.socials().fetchSocial(req[i],true);
             commands[i]=CMLib.english().findCommand(mob,CMParms.makeVector(req[i].toUpperCase()));
         }
         for(int p=0;p<fpmap.length;p++)
