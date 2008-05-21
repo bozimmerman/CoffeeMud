@@ -162,7 +162,7 @@
         <TR>
             <TD><FONT COLOR=YELLOW>Target (NONE): </FONT></TD>
             <TD>
-                <INPUT TYPE=CHECKBOX NAME=ISNONE @if?SocialData?ISNONE@CHECKED@endif@><FONT COLOR=WHITE>Enabled</FONT>
+                <INPUT TYPE=CHECKBOX NAME=ISNONE @if?SocialData?ISNONE@CHECKED@endif@ ONCHECK="ReShow();"><FONT COLOR=WHITE>Enabled</FONT>
                 @if?SocialData?ISNONE@
                 <P>
                 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
@@ -193,7 +193,7 @@
         <TR>
             <TD><FONT COLOR=YELLOW>Target (SELF): </FONT></TD>
             <TD>
-                <INPUT TYPE=CHECKBOX NAME=ISSELF @if?SocialData?ISSELF@CHECKED@endif@><FONT COLOR=WHITE>Enabled</FONT>
+                <INPUT TYPE=CHECKBOX NAME=ISSELF @if?SocialData?ISSELF@CHECKED@endif@ ONCHECK="ReShow();"><FONT COLOR=WHITE>Enabled</FONT>
                 @if?SocialData?ISSELF@
                 <P>
                 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
@@ -224,7 +224,7 @@
         <TR>
             <TD><FONT COLOR=YELLOW>Target (OTHER): </FONT></TD>
             <TD>
-                <INPUT TYPE=CHECKBOX NAME=ISTARGET @if?SocialData?ISTARGET@CHECKED@endif@><FONT COLOR=WHITE>Enabled</FONT>
+                <INPUT TYPE=CHECKBOX NAME=ISTARGET @if?SocialData?ISTARGET@CHECKED@endif@ ONCHECK="ReShow();"><FONT COLOR=WHITE>Enabled</FONT>
                 @if?SocialData?ISTARGET@
                 <P>
                 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
@@ -257,10 +257,6 @@
                     <TD WIDTH=80%><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_TARGET_N VALUE="@SocialData?SDAT_TARGET_N@"></TD>
                 </TR>
                 <TR>
-                    <TD><FONT COLOR=YELLOW>No Target: </FONT></TD>
-                    <TD><SELECT NAME=SDAT_TARGET_YC>@SocialData?SDAT_TARGET_NC@</SELECT></TD>
-                </TR>
-                <TR>
                     <TD><FONT COLOR=YELLOW>MSP Filename: </FONT></TD>
                     <TD><INPUT TYPE=TEXT SIZE=40 NAME=SDAT_TARGET_M VALUE="@SocialData?SDAT_TARGET_M@"></TD>
                 </TR>
@@ -271,7 +267,7 @@
         <TR>
             <TD><FONT COLOR=YELLOW>Target (ALL): </FONT></TD>
             <TD>
-                <INPUT TYPE=CHECKBOX NAME=ISALL @if?SocialData?ISALL@CHECKED@endif@><FONT COLOR=WHITE>Enabled</FONT>
+                <INPUT TYPE=CHECKBOX NAME=ISALL @if?SocialData?ISALL@CHECKED@endif@ ONCHECK="ReShow();"><FONT COLOR=WHITE>Enabled</FONT>
                 @if?SocialData?ISALL@
                 <P>
                 <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
@@ -296,15 +292,59 @@
                     <TD WIDTH=80%><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_ALL_N VALUE="@SocialData?SDAT_ALL_N@"></TD>
                 </TR>
                 <TR>
-                    <TD><FONT COLOR=YELLOW>No Target: </FONT></TD>
-                    <TD><SELECT NAME=SDAT_ALL_YC>@SocialData?SDAT_ALL_NC@</SELECT></TD>
-                </TR>
-                <TR>
                     <TD><FONT COLOR=YELLOW>MSP Filename: </FONT></TD>
                     <TD><INPUT TYPE=TEXT SIZE=40 NAME=SDAT_ALL_M VALUE="@SocialData?SDAT_ALL_M@"></TD>
                 </TR>
                 </TABLE>
                 @endif@
+            </TD>
+        </TR>
+        <TR><TD><INPUT TYPE=HIDDEN NAME=NUMXTRAS VALUE=@SocialData?NUMEXTRAS@></TD></TR>
+        @AddRequestParameter?NUMXTRA=@@SocialData?NUMEXTRAS@@ @
+        @AddRequestParameter?CURRNUM=0@
+        @loop@
+            @ChkReqParmBreak?NUMXTRA=@@RequestParameter?CURRNUM@@ @
+            @AddRequestParameter?XSOCIAL=@@SocialData?GETEXTRA=@@@RequestParameter?CURRNUM@@@ @@ @
+            <TR>
+                <TD>
+                    <FONT COLOR=YELLOW>Target (@RequestParameter?XSOCIAL@): </FONT>
+                    <INPUT TYPE=HIDDEN NAME=XSOCIAL@RequestParameter?NUMXTRA@ VALUE="@RequestParameter?XSOCIAL@"></TD>
+                </TD>
+                <TD>
+                    <INPUT TYPE=CHECKBOX NAME=IS@RequestParameter?XSOCIAL@ @if?SocialData?IS@@RequestParameter?XSOCIAL@@ @CHECKED@endif@ ONCHECK="ReShow();"><FONT COLOR=WHITE>Enabled</FONT>
+                    @if?SocialData?IS@@RequestParameter?XSOCIAL@@ @
+                    <P>
+                    <TABLE WIDTH=100% BORDER=1 CELLSPACING=0 CELLPADDING=0>
+                    <TR>
+                        <TD WIDTH=20%><FONT COLOR=YELLOW>You See: </FONT></TD>
+                        <TD WIDTH=80%><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_@RequestParameter?XSOCIAL@_Y VALUE="@SocialData?SDAT_@@RequestParameter?XSOCIAL@@_Y@"></TD>
+                    </TR>
+                    <TR>
+                        <TD><FONT COLOR=YELLOW>You Do: </FONT></TD>
+                        <TD><SELECT NAME=SDAT_@RequestParameter?XSOCIAL@_YC>@SocialData?SDAT_@@RequestParameter?XSOCIAL@@_YC@</SELECT></TD>
+                    </TR>
+                    <TR>
+                        <TD><FONT COLOR=YELLOW>Others See: </FONT></TD>
+                        <TD><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_@RequestParameter?XSOCIAL@_O VALUE="@SocialData?SDAT_@@RequestParameter?XSOCIAL@@_O@"></TD>
+                    </TR>
+                    <TR>
+                        <TD><FONT COLOR=YELLOW>Others: </FONT></TD>
+                        <TD><SELECT NAME=SDAT_@RequestParameter?XSOCIAL@_YC>@SocialData?SDAT_@@RequestParameter?XSOCIAL@@_OC@</SELECT></TD>
+                    </TR>
+                    <TR>
+                        <TD><FONT COLOR=YELLOW>MSP Filename: </FONT></TD>
+                        <TD><INPUT TYPE=TEXT SIZE=40 NAME=SDAT_@RequestParameter?XSOCIAL@_M VALUE="@SocialData?SDAT_@@RequestParameter?XSOCIAL@@_M@"></TD>
+                    </TR>
+                    </TABLE>
+                    @endif@
+                </TD>
+            </TR>
+            @AddRequestParameter?CURRNUM=++@
+        @back@
+        <TR>
+            <TD><FONT COLOR=YELLOW>Target <INPUT TYPE=TEXT NAME=ADDXSOCIAL VALUE="" SIZE=10>: </FONT></TD>
+            <TD>
+                <INPUT TYPE=CHECKBOX NAME=DOADDXSOCIALONCHECK="ReShow();"><FONT COLOR=WHITE>Create</FONT>
             </TD>
         </TR>
     </TABLE>

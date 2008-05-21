@@ -31,57 +31,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ChkReqParmBreak extends StdWebMacro
+public class ChkReqParmBreak extends CheckReqParm
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
-		boolean finalCondition=false;
-		for(Enumeration e=parms.keys();e.hasMoreElements();)
-		{
-			String key=(String)e.nextElement();
-			String equals=(String)parms.get(key);
-			boolean not=false;
-			boolean thisCondition=true;
-			if(key.startsWith("||")) key=key.substring(2);
-			
-			if(key.startsWith("!"))
-			{
-				key=key.substring(1);
-				not=true;
-			}
-			String check=httpReq.getRequestParameter(key);
-			if(not)
-			{
-				if((check==null)&&(equals.length()==0))
-					thisCondition=false;
-				else
-				if(check==null) 
-					thisCondition=true;
-				else
-				if(!check.equalsIgnoreCase(equals))
-					thisCondition=true;
-				else
-					thisCondition=false;
-			}
-			else
-			{
-				if((check==null)&&(equals.length()==0))
-					thisCondition=true;
-				else
-				if(check==null) 
-					thisCondition=false;
-				else
-				if(!check.equalsIgnoreCase(equals))
-					thisCondition=false;
-				else
-					thisCondition=true;
-			}
-			finalCondition=finalCondition||thisCondition;
-		}
-		if(finalCondition)
+	    String ans=super.runMacro(httpReq, parm);
+	    if(CMath.s_bool(ans))
 			return " @break@";
 		return "";
 	}

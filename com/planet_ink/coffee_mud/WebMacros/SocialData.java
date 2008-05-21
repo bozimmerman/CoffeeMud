@@ -34,9 +34,10 @@ import java.util.*;
 public class SocialData extends StdWebMacro
 {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-    static String[] TYPES={"NONE","ALL","SELF","TARGET"};
-    static String[] EXTNS={""," ALL"," SELF"," <T-NAME>"};
-    static String[] FIELDS={"YOM","YONM","YOM","YTONM"};
+    static String[] BTYPES={"NONE","ALL","SELF","TARGET"};
+    static String[] BEXTNS={""," ALL"," SELF"," <T-NAME>"};
+    static String[] BFIELDS={"YOM","YONM","YOM","YTONM"};
+    
     static String[] CODESTR={"WORDS","MOVEMENT","SOUND","VISUAL","HANDS"};
     static int[] CODES={CMMsg.MSG_SPEAK,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISE,CMMsg.MSG_OK_VISUAL,CMMsg.MSG_HANDS};
 
@@ -82,18 +83,44 @@ public class SocialData extends StdWebMacro
                 last=old;
             }
             
-            for(int t=0;t<TYPES.length;t++)
+            Vector TYPES=new Vector();
+            Vector EXTNS=new Vector();
+            for(int b=0;b<BTYPES.length;b++)
+                TYPES.addElement(BTYPES[b]);
+            for(int b=0;b<BEXTNS.length;b++)
+                EXTNS.addElement(BEXTNS[b]);
+            old=httpReq.getRequestParameter("NUMXTRAS");
+            if(old!=null)
             {
-                if(parms.containsKey("IS"+TYPES[t]))
+                int numXtras=CMath.s_int(httpReq.getRequestParameter("NUMXTRAS"));
+                for(int n=0;n<numXtras;n++)
                 {
-                    old=httpReq.getRequestParameter("IS"+TYPES[t]);
+                    old=httpReq.getRequestParameter("XSOCIAL"+n);
+                    if((old!=null)
+                    &&(old.length()>0)
+                    &&(httpReq.isRequestParameter("IS"+old.toUpperCase().trim()))
+                    &&(httpReq.getRequestParameter("IS"+old.toUpperCase().trim()).equalsIgnoreCase("on")))
+                    {
+                        TYPES.addElement(old.toUpperCase().trim());
+                        EXTNS.addElement(old.toUpperCase().trim());
+                    }
+                }
+            }
+            
+            for(int t=0;t<TYPES.size();t++)
+            {
+                String TYPE=(String)TYPES.elementAt(t);
+                String EXTN=(String)EXTNS.elementAt(t);
+                if(parms.containsKey("IS"+EXTNS))
+                {
+                    old=httpReq.getRequestParameter("IS"+EXTNS);
                     if(!old.equalsIgnoreCase("on")) continue;
                 }
-                Social S=CMLib.socials().makeDefaultSocial(last,EXTNS[t]);
-                String field=FIELDS[t];
+                Social S=CMLib.socials().makeDefaultSocial(last,EXTN);
+                String field=(t<BTYPES.length)?BFIELDS[t]:BFIELDS[0];
                 for(int f=0;f<field.length();f++)
                 {
-                    String fnam="SDAT_"+TYPES[t]+"_"+field.charAt(f);
+                    String fnam="SDAT_"+TYPE+"_"+field.charAt(f);
                     old=httpReq.getRequestParameter(fnam);
                     if(old!=null) {
                         switch(field.charAt(f)) {
@@ -176,42 +203,111 @@ public class SocialData extends StdWebMacro
                 if(SV!=null)
                 {
                     StringBuffer str=new StringBuffer("");
+                    String old;
+                    
                     if(parms.containsKey("TITLE"))
                     {
-                        String old=httpReq.getRequestParameter("TITLE");
+                        old=httpReq.getRequestParameter("TITLE");
                         if(old==null) 
                             old=last;
                         if(old!=null)
                             str.append(old+", ");
                     }
-                    String old;
-                    for(int t=0;t<TYPES.length;t++)
+                    Vector TYPES=new Vector();
+                    Vector EXTNS=new Vector();
+                    for(int b=0;b<BTYPES.length;b++)
+                        TYPES.addElement(BTYPES[b]);
+                    for(int b=0;b<BEXTNS.length;b++)
+                        EXTNS.addElement(BEXTNS[b]);
+                    old=httpReq.getRequestParameter("NUMXTRAS");
+                    if(old!=null)
                     {
+                        int numXtras=CMath.s_int(httpReq.getRequestParameter("NUMXTRAS"));
+                        for(int n=0;n<numXtras;n++)
+                        {
+                            old=httpReq.getRequestParameter("XSOCIAL"+n);
+                            if((old!=null)
+                            &&(old.length()>0)
+                            &&(httpReq.isRequestParameter("IS"+old.toUpperCase().trim()))
+                            &&(httpReq.getRequestParameter("IS"+old.toUpperCase().trim()).equalsIgnoreCase("on")))
+                            {
+                                TYPES.addElement(old.toUpperCase().trim());
+                                EXTNS.addElement(old.toUpperCase().trim());
+                            }
+                        }
+                    }
+                    else
+                    for(int s=0;s<SV.size();s++)
+                    {
+                        Social S=(Social)SV.elementAt(s);
+                        boolean found=false;
+                        for(int b=0;b<BEXTNS.length;b++)
+                            if(S.Name().equalsIgnoreCase(last+BEXTNS[b]))
+                                found=true;
+                        if(!found)
+                        {
+                            int x=S.Name().indexOf(' ');
+                            if(x>0)
+                            {
+                                String TYPE=S.Name().substring(x+1).trim().toUpperCase();
+                                TYPES.addElement(TYPE);
+                                EXTNS.addElement(" "+TYPE);
+                                httpReq.addRequestParameters("IS"+TYPE,"on");
+                            }
+                        }
+                    }
+                    
+                    int numxtras=TYPES.size()-BTYPES.length;
+                    if(parms.containsKey("NUMEXTRAS"))
+                        str.append(""+numxtras+", ");
+                    if(parms.containsKey("GETEXTRA")
+                    &&(CMath.s_int((String)parms.get("GETEXTRA"))<numxtras))
+                        str.append(TYPES.elementAt(BTYPES.length+CMath.s_int((String)parms.get("GETEXTRA")))+", ");
+                    
+                    old=httpReq.getRequestParameter("DOADDXSOCIALONCHECK");
+                    if((old!=null)
+                    &&(old.equalsIgnoreCase("on"))
+                    &&(httpReq.getRequestParameter("ADDXSOCIAL")!=null)
+                    &&(httpReq.getRequestParameter("ADDXSOCIAL").trim().length()>0)
+                    &&(!TYPES.contains(httpReq.getRequestParameter("ADDXSOCIAL").toUpperCase().trim())))
+                    {
+                        String TYPE=httpReq.getRequestParameter("ADDXSOCIAL").toUpperCase().trim();
+                        TYPES.addElement(TYPE);
+                        EXTNS.addElement(" "+TYPE);
+                        httpReq.addRequestParameters("IS"+TYPE,"on");
+                    }
+                    
+                    
+                    
+                    for(int t=0;t<TYPES.size();t++)
+                    {
+                        String TYPE=(String)TYPES.elementAt(t);
+                        String EXTN=(String)EXTNS.elementAt(t);
                         Social S=null;
                         for(int s=0;s<SV.size();s++)
-                            if(((Social)SV.elementAt(s)).Name().equalsIgnoreCase(last+EXTNS[t]))
+                            if(((Social)SV.elementAt(s)).Name().equalsIgnoreCase(last+EXTN))
                             {
                                 S=(Social)SV.elementAt(s);
                                 break;
                             }
-                        if(parms.containsKey("IS"+TYPES[t]))
+                        if(parms.containsKey("IS"+TYPE))
                         {
-                            old=httpReq.getRequestParameter("IS"+TYPES[t]);
+                            old=httpReq.getRequestParameter("IS"+TYPE);
                             if(old==null) old=((S!=null)?"on":"");
                             str.append(""+old.equalsIgnoreCase("on")+", ");
                             if(!old.equalsIgnoreCase("on"))
                                 continue;
                         }
-                        String field=FIELDS[t];
+                        String field=(t<BTYPES.length)?BFIELDS[t]:BFIELDS[0];
                         for(int f=0;f<field.length();f++)
                         {
-                            String fnam="SDAT_"+TYPES[t]+"_"+field.charAt(f);
+                            String fnam="SDAT_"+TYPE+"_"+field.charAt(f);
                             if(parms.containsKey(fnam))
                             {
                                 old=httpReq.getRequestParameter(fnam);
                                 if(old==null) {
                                     if(S==null) 
-                                        S=CMLib.socials().makeDefaultSocial(last,EXTNS[t]);
+                                        S=CMLib.socials().makeDefaultSocial(last,EXTN);
                                     switch(field.charAt(f)) {
                                         case 'Y': old=S.You_see(); break;
                                         case 'O': old=S.Third_party_sees(); break;
@@ -227,7 +323,7 @@ public class SocialData extends StdWebMacro
                                 old=httpReq.getRequestParameter(fnam);
                                 if(old==null) {
                                     if(S==null) 
-                                        S=CMLib.socials().makeDefaultSocial(last,EXTNS[t]);
+                                        S=CMLib.socials().makeDefaultSocial(last,EXTN);
                                     switch(field.charAt(f)) {
                                         case 'Y': old=""+S.sourceCode(); break;
                                         case 'O': old=""+S.othersCode(); break;
@@ -247,28 +343,6 @@ public class SocialData extends StdWebMacro
                             }
                         }
                     }
-                    
-/*
-public String Name();
-public void setName(String newName);
-public String You_see();
-public String Third_party_sees();
-public String Target_sees();
-public String See_when_no_target();
-public int sourceCode();
-public int othersCode();
-public int targetCode();
-public void setYou_see(String str);
-public void setThird_party_sees(String str);
-public void setTarget_sees(String str);
-public void setSee_when_no_target(String str);
-public void setSourceCode(int code);
-public void setOthersCode(int code);
-public void setTargetCode(int code);
-public boolean targetable();
-public String MSPfile();
-public void setMSPfile(String newFile);
-*/
                     httpReq.getRequestObjects().put("SOCIAL-"+last,SV);
                     String strstr=str.toString();
                     if(strstr.endsWith(", "))
