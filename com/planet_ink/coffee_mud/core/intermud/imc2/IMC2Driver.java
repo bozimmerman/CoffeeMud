@@ -1084,7 +1084,7 @@ public final class IMC2Driver extends Thread {
         MOB mob=CMClass.getMOB("StdMOB");
         mob.setName(from);
         mob.setLocation(CMClass.getLocale("StdRoom"));
-		String str="^Q^<CHANNEL \""+channelName+"\"^>"+mob.name()+" "+channelName+"(S) '"+text+"^Q'^</CHANNEL^>^N^.";
+		String str="^Q^<CHANNEL \""+channelName+"\"^>"+mob.name()+" "+channelName+"(S) '"+text+"'^</CHANNEL^>^N^.";
 		if(emote>0) 
 		{
 			if(emote==1)

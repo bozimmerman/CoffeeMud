@@ -481,7 +481,9 @@ public class Socials extends StdLibrary implements SocialsList
         String realName=realName(name);
         Vector V=(Vector)soc.get(realName);
         if((V==null)&&(exactOnly)) return null;
-        Social S=fetchSocial(V,name,exactOnly);
+        Social S=null;
+        if(V!=null)
+            S=fetchSocial(V,name,exactOnly);
         if(S!=null) return S;
 		for(Enumeration e=soc.keys();e.hasMoreElements();)
 		{
@@ -530,7 +532,7 @@ public class Socials extends StdLibrary implements SocialsList
 				}
 			}
 			if(socialName==null) 
-			  socialName=backupSocialName;
+			    socialName=backupSocialName;
 			if(socialName!=null)
 				S=fetchSocial(socialName+theRest,true);
 		}

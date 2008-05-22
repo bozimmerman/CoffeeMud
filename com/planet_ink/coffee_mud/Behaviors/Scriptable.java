@@ -863,6 +863,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			if(E==null) E=lastKnownLocation.fetchFromMOBRoomFavorsItems(monster,null,str,Item.WORNREQ_ANY);
 			if(E==null) E=lastKnownLocation.fetchAnyItem(str);
 			if((E==null)&&(monster!=null)) E=monster.fetchInventory(str);
+	        if(E==null) E=CMLib.map().getPlayer(str);
 			return E;
 		}
 		return null;
