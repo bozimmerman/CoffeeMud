@@ -35,22 +35,24 @@ public class AutoAffects extends StdCommand
     private String[] access={"AUTOAFFECTS","AUTOAFF","AAF"};
     public String[] getAccessWords(){return access;}
 
-    public String getAutoAffects(MOB mob)
+    public String getAutoAffects(Environmental E)
     {
         StringBuffer msg=new StringBuffer("");
-        int colnum=2;
-        for(int a=0;a<mob.numAllEffects();a++)
+        int NUM_COLS=2;
+        int COL_LEN=25;
+        int colnum=NUM_COLS;
+        for(int a=0;a<((E instanceof MOB)?((MOB)E).numAllEffects():E.numEffects());a++)
         {
-            Ability thisAffect=mob.fetchEffect(a);
+            Ability thisAffect=E.fetchEffect(a);
             String disp=thisAffect.name();
             if((thisAffect!=null)
             &&(thisAffect.displayText().length()==0)
-            &&(mob.fetchAbility(thisAffect.ID())!=null)
+            &&((!(E instanceof MOB))||(((MOB)E).fetchAbility(thisAffect.ID())!=null))
             &&(thisAffect.isAutoInvoked()))
             {
-                if(((++colnum)>2)||(disp.length()>25)){ msg.append("\n\r"); colnum=0;}
-                msg.append("^S"+CMStrings.padRightPreserve("^<HELPNAME NAME='"+thisAffect.Name()+"'^>"+disp+"^</HELPNAME^>",25));
-                if(disp.length()>25) colnum=99;
+                if(((++colnum)>NUM_COLS)||(disp.length()>COL_LEN)){ msg.append("\n\r"); colnum=0;}
+                msg.append("^S"+CMStrings.padRightPreserve("^<HELPNAME NAME='"+thisAffect.Name()+"'^>"+disp+"^</HELPNAME^>",COL_LEN));
+                if(disp.length()>COL_LEN) colnum=99;
             }
         }
         msg.append("^N\n\r");
@@ -87,6 +89,28 @@ public class AutoAffects extends StdCommand
 
         if(S!=null)
         {
+            if(CMSecurity.isAllowed(mob, mob.location(),"CMDMOBS"))
+            {
+                String name=CMParms.combine(commands,1);
+                if(name.length()>0)
+                {
+                    Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,name,Item.WORNREQ_ANY);
+                    if(E==null)
+                        S.colorOnlyPrint("You don't see "+name+" here.");
+                    else
+                    {
+                        if(S==mob.session())
+                            S.colorOnlyPrint(" \n\r^!"+E.name()+" is affected by: ^?");
+                        String msg=getAutoAffects(E);
+                        if(msg.length()<5)
+                            S.colorOnlyPrintln("Nothing!\n\r^N");
+                        else
+                            S.colorOnlyPrintln(msg);
+                    }
+                    return false;
+                }
+                
+            }
             if(S==mob.session())
                 S.colorOnlyPrint(" \n\r^!Your auto-invoked skills are:^?");
             String msg=getAutoAffects(mob);

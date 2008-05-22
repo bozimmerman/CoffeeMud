@@ -89,6 +89,52 @@ public class Injury extends StdAbility
 	        ((MOB)E).tell("Your injuries are healed.");
 	}
 	
+	public String text() {
+	    Vector V=null;
+        Object[] O=null;
+	    StringBuffer buf=new StringBuffer("");
+        if(injuries!=null)
+            for(int i=0;i<Race.BODY_PARTS;i++)
+            {
+                V=injuries[i];
+                if(V!=null)
+                for(int i2=0;i2<V.size();i2++)
+                {
+                    O=(Object[])V.elementAt(i2);
+                    buf.append(i+":"+((String)O[0]).toLowerCase()+":"+((Integer)O[1]).intValue()+";");
+                }
+            }
+        return buf.toString();
+	}
+	
+	public void setMiscText(String txt) {
+	    injuries=new Vector[Race.BODY_PARTS];
+	    Vector sets=CMParms.parseSemicolons(txt,true);
+	    for(int s=0;s<sets.size();s++)
+	    {
+	        String set=(String)sets.elementAt(s);
+	        Vector V=CMParms.parseAny(set,":",false);
+	        if(V.size()==3)
+	        {
+	            int part=CMath.s_int((String)V.firstElement());
+	            if((part>=0)&&(part<Race.BODY_PARTS))
+	            {
+    	            String msg=(String)V.elementAt(1);
+    	            int hurt=CMath.s_int((String)V.lastElement());
+    	            if(injuries[part]==null)
+    	                injuries[part] = new Vector();
+    	            injuries[part].addElement(new Object[]{msg,new Integer(hurt)});
+	            }
+	        }
+	    }
+        if(affected instanceof MOB)
+        {
+            MOB mob=(MOB)affected;
+            if(lastHP<0)
+                lastHP=mob.curState().getHitPoints();
+        }
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 	    if((affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))

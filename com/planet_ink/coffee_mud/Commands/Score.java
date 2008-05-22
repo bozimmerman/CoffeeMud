@@ -255,7 +255,7 @@ public class Score extends Affect
 			msg.append("^!You are hungry.^?\n\r");
 		if(mob.curState().getThirst()<1)
 			msg.append("^!You are thirsty.^?\n\r");
-		msg.append(getAffects(mob));
+		msg.append(getAffects(mob.session(),mob,false));
 		return msg;
 	}
 
