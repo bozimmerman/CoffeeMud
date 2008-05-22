@@ -49,6 +49,22 @@ public class SocialData extends StdWebMacro
             return ""+(new CMFile("::/resources/socials.txt",null,true).exists());
         if(parms.containsKey("ISLFS"))
             return ""+(new CMFile("///resources/socials.txt",null,true).exists());
+        if(parms.containsKey("NEWVFS"))
+        {
+            CMFile lf=new CMFile("///resources/socials.txt",null,true);
+            if(!lf.exists()) return "true";
+            CMFile vf=new CMFile("::/resources/socials.txt",null,true);
+            if(!vf.exists()) return "false";
+            return ""+(vf.lastModified() > lf.lastModified());
+        }
+        if(parms.containsKey("NEWLFS"))
+        {
+            CMFile lf=new CMFile("///resources/socials.txt",null,true);
+            if(!lf.exists()) return "false";
+            CMFile vf=new CMFile("::/resources/socials.txt",null,true);
+            if(!vf.exists()) return "true";
+            return ""+(vf.lastModified() < lf.lastModified());
+        }
         if(parms.containsKey("TOVFS"))
         {
             MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));

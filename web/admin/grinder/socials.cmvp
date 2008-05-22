@@ -46,11 +46,17 @@
         			alert('You must have at least one socials.txt file!');
         			me.checked=true;
         		@else@
-		            if(confirm('Remove your socials.txt file from vfs?'))
+        			var txt='R';
+	        	    @if?SocialData?NEWVFS@
+	        	    	txt='Your vfs socials file appears to be newer!  Are you sure you want to r';
+	        	    @endif@
+		            if(confirm(txt+'emove your socials.txt file from vfs?'))
 		            {
 		            	document.RESOURCES.FUNCTION.value='NOVFS';
 		            	Refresh();
 		            }
+		            else
+	        			me.checked=true;
         		@endif@
         	}
         	else
@@ -60,6 +66,8 @@
 		            	document.RESOURCES.FUNCTION.value='TOVFS';
 		            	Refresh();
 	            }
+	            else
+        			me.checked=false;
             }
         }
         function ChangeLFS(me)
@@ -70,11 +78,17 @@
         			alert('You must have at least one socials.txt file!');
         			me.checked=true;
         		@else@
-		            if(confirm('Remove your socials.txt file from the local filesysten?!?'))
+        			var txt='R';
+	        	    @if?SocialData?NEWLFS@
+	        	    	txt='Your local socials file appears to be newer!  Are you sure you want to r';
+	        	    @endif@
+		            if(confirm(txt+'emove your socials.txt file from the local filesystem?!?'))
 		            {
 		            	document.RESOURCES.FUNCTION.value='NOLFS';
 		            	Refresh();
 		            }
+		            else
+		            	me.checked=true;
         		@endif@
         	}
         	else
@@ -84,6 +98,8 @@
 		            	document.RESOURCES.FUNCTION.value='TOLFS';
 		            	Refresh();
 	            }
+	            else
+	            	me.checked=false;
             }
         }
     //-->
