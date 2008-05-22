@@ -150,7 +150,7 @@ public class DefaultSocial implements Social
 								boolean makeTarget)
 	{
 		String str=makeTarget?"":"^Q^<CHANNEL \""+channelName+"\"^>["+channelName+"] ";
-		String end=makeTarget?"":"^</CHANNEL^>^?^.";
+		String end=makeTarget?"":"^</CHANNEL^>^N^.";
 		return makeMessage(mob,str,end,CMMsg.MASK_CHANNEL,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),commands,channelName,makeTarget);
 	}
 	public CMMsg makeMessage(MOB mob,

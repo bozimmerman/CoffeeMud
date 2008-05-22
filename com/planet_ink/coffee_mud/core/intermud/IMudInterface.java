@@ -255,8 +255,8 @@ public class IMudInterface implements ImudServices, Serializable
 					msgs=CMProps.applyINIFilter(msgs,CMProps.SYSTEM_EMOTEFILTER);
 					String targmsgs=socialFixIn(ck.message_target);
 					targmsgs=CMProps.applyINIFilter(targmsgs,CMProps.SYSTEM_EMOTEFILTER);
-					String str="^Q^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+msgs+"^</CHANNEL^>^?^.";
-					String str2="^Q^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+targmsgs+"^</CHANNEL^>^?^.";
+					String str="^Q^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+msgs+"^</CHANNEL^>^N^.";
+					String str2="^Q^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+targmsgs+"^</CHANNEL^>^N^.";
 					msg=CMClass.getMsg(mob,targetMOB,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str2,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 				}
 				else
@@ -264,12 +264,12 @@ public class IMudInterface implements ImudServices, Serializable
 				{
 					String msgs=socialFixIn(ck.message);
 					msgs=CMProps.applyINIFilter(msgs,CMProps.SYSTEM_EMOTEFILTER);
-					String str="^Q^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+msgs+"^</CHANNEL^>^?^.";
+					String str="^Q^<CHANNEL \""+channelName+"\"^>["+channelName+"] "+msgs+"^</CHANNEL^>^N^.";
 					msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 				}
 				else
 				{
-					String str="^Q^<CHANNEL \""+channelName+"\"^>"+mob.name()+" "+channelName+"(S) '"+ck.message+"'^</CHANNEL^>^?^.";
+					String str="^Q^<CHANNEL \""+channelName+"\"^>"+mob.name()+" "+channelName+"(S) '"+ck.message+"^Q'^</CHANNEL^>^N^.";
 					msg=CMClass.getMsg(mob,null,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,CMMsg.MASK_CHANNEL|(CMMsg.TYP_CHANNEL+channelInt),str);
 				}
 
