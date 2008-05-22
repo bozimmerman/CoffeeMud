@@ -132,7 +132,6 @@ public class SocialData extends StdWebMacro
                     }
                     old=httpReq.getRequestParameter(fnam+"C");
                     if(old!=null) {
-System.out.println(fnam+"C"+"="+CMath.s_int(old));                        
                         switch(field.charAt(f)) {
                             case 'Y': S.setSourceCode(CMath.s_int(old)); break;
                             case 'O': S.setOthersCode(CMath.s_int(old)); break;
