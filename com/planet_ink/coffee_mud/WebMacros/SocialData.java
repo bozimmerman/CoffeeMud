@@ -130,8 +130,9 @@ public class SocialData extends StdWebMacro
                             case 'T': S.setTarget_sees(old); break;
                         }
                     }
-                    old=httpReq.getRequestParameter(fnam);
+                    old=httpReq.getRequestParameter(fnam+"C");
                     if(old!=null) {
+System.out.println(fnam+"C"+"="+CMath.s_int(old));                        
                         switch(field.charAt(f)) {
                             case 'Y': S.setSourceCode(CMath.s_int(old)); break;
                             case 'O': S.setOthersCode(CMath.s_int(old)); break;
@@ -156,11 +157,8 @@ public class SocialData extends StdWebMacro
                 Log.sysOut(M.name()+" created social "+last);
                 return "Social "+last+" created";
             }
-            else
-            {
-                Log.sysOut(M.name()+" updated social "+last);
-                return "Social "+last+" updated";
-            }
+            Log.sysOut(M.name()+" updated social "+last);
+            return "Social "+last+" updated";
         }
         else
         if(parms.containsKey("DELETE"))
@@ -321,7 +319,7 @@ public class SocialData extends StdWebMacro
                             }
                             if(parms.containsKey(fnam+"C"))
                             {
-                                old=httpReq.getRequestParameter(fnam);
+                                old=httpReq.getRequestParameter(fnam+"C");
                                 if(old==null) {
                                     if(S==null) 
                                         S=CMLib.socials().makeDefaultSocial(last,EXTN);

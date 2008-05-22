@@ -180,7 +180,7 @@
                 </TR>
                 <TR>
                     <TD><FONT COLOR=YELLOW>Others: </FONT></TD>
-                    <TD><SELECT NAME=SDAT_NONE_YC>@SocialData?SDAT_NONE_OC@</SELECT></TD>
+                    <TD><SELECT NAME=SDAT_NONE_OC>@SocialData?SDAT_NONE_OC@</SELECT></TD>
                 </TR>
                 <TR>
                     <TD><FONT COLOR=YELLOW>MSP Filename: </FONT></TD>
@@ -211,7 +211,7 @@
                 </TR>
                 <TR>
                     <TD><FONT COLOR=YELLOW>Others: </FONT></TD>
-                    <TD><SELECT NAME=SDAT_SELF_YC>@SocialData?SDAT_SELF_OC@</SELECT></TD>
+                    <TD><SELECT NAME=SDAT_SELF_OC>@SocialData?SDAT_SELF_OC@</SELECT></TD>
                 </TR>
                 <TR>
                     <TD><FONT COLOR=YELLOW>MSP Filename: </FONT></TD>
@@ -250,7 +250,7 @@
                 </TR>
                 <TR>
                     <TD><FONT COLOR=YELLOW>Others: </FONT></TD>
-                    <TD><SELECT NAME=SDAT_TARGET_YC>@SocialData?SDAT_TARGET_OC@</SELECT></TD>
+                    <TD><SELECT NAME=SDAT_TARGET_OC>@SocialData?SDAT_TARGET_OC@</SELECT></TD>
                 </TR>
                 <TR>
                     <TD WIDTH=20%><FONT COLOR=YELLOW>No Target Sees: </FONT></TD>
@@ -285,7 +285,7 @@
                 </TR>
                 <TR>
                     <TD><FONT COLOR=YELLOW>Others: </FONT></TD>
-                    <TD><SELECT NAME=SDAT_ALL_YC>@SocialData?SDAT_ALL_OC@</SELECT></TD>
+                    <TD><SELECT NAME=SDAT_ALL_OC>@SocialData?SDAT_ALL_OC@</SELECT></TD>
                 </TR>
                 <TR>
                     <TD WIDTH=20%><FONT COLOR=YELLOW>No Target Sees: </FONT></TD>
@@ -329,7 +329,7 @@
                     </TR>
                     <TR>
                         <TD><FONT COLOR=YELLOW>Others: </FONT></TD>
-                        <TD><SELECT NAME=SDAT_@RequestParameter?XSOCIAL@_YC>@SocialData?SDAT_@@RequestParameter?XSOCIAL@@_OC@</SELECT></TD>
+                        <TD><SELECT NAME=SDAT_@RequestParameter?XSOCIAL@_OC>@SocialData?SDAT_@@RequestParameter?XSOCIAL@@_OC@</SELECT></TD>
                     </TR>
                     <TR>
                         <TD><FONT COLOR=YELLOW>MSP Filename: </FONT></TD>
