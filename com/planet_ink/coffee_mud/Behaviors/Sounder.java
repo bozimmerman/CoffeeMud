@@ -78,8 +78,11 @@ public class Sounder extends StdBehavior
 			{
 				s=((String)emote.elementAt(v)).trim();
 				s=CMStrings.replaceAll(s,"$n","<S-NAME>");
+                s=CMStrings.replaceAll(s,"$N","<S-NAME>");
 				s=CMStrings.replaceAll(s,"$e","<S-HE-SHE>");
+                s=CMStrings.replaceAll(s,"$E","<S-HE-SHE>");
 				s=CMStrings.replaceAll(s,"$s","<S-HIS-HER>");
+                s=CMStrings.replaceAll(s,"$S","<S-HIS-HER>");
 				if(s.toUpperCase().startsWith("SOUND "))
 				{
 					s=s.substring(6).trim();
@@ -337,6 +340,7 @@ public class Sounder extends StdBehavior
 	{
 		MOB emoter=null;
 		emote=CMStrings.replaceAll(emote,"$p",ticking.name());
+        emote=CMStrings.replaceAll(emote,"$P",ticking.name());
 		if(ticking instanceof Area)
 		{
 			emoter=CMClass.getMOB("StdMOB");
