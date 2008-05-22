@@ -45,6 +45,71 @@ public class SocialData extends StdWebMacro
     {
         Hashtable parms=parseParms(parm);
         String last=httpReq.getRequestParameter("SOCIAL");
+        if(parms.containsKey("ISVFS"))
+            return ""+(new CMFile("::/resources/socials.txt",null,true).exists());
+        if(parms.containsKey("ISLFS"))
+            return ""+(new CMFile("///resources/socials.txt",null,true).exists());
+        if(parms.containsKey("TOVFS"))
+        {
+            MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(M==null) return "[authentication error]";
+            CMFile lf=new CMFile("///resources/socials.txt",M,true);
+            if(!lf.exists()) return "No local file.";
+            CMFile vf=new CMFile("::/resources/socials.txt",M,false);
+            if(vf.exists()) 
+                if(!vf.delete())
+                    return "Unable to delete existing vfs file.";
+            vf=new CMFile("::/resources/socials.txt",M,false);
+            if(!vf.canWrite())
+                return "Unable to write new vfs file.";
+            byte[] raw=lf.raw();
+            if(!vf.saveRaw(raw))
+                return "Unable to save new vfs file.";
+            CMLib.socials().unloadSocials();
+            return "Socials file copied from local filesystem to vfs";
+        }
+        if(parms.containsKey("TOLFS"))
+        {
+            MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(M==null) return "[authentication error]";
+            CMFile lf=new CMFile("::/resources/socials.txt",M,true);
+            if(!lf.exists()) return "No vfs file.";
+            CMFile vf=new CMFile("///resources/socials.txt",M,false);
+            if(vf.exists()) 
+                if(!vf.delete())
+                    return "Unable to delete existing local file.";
+            vf=new CMFile("///resources/socials.txt",M,false);
+            if(!vf.canWrite())
+                return "Unable to write new local file.";
+            byte[] raw=lf.raw();
+            if(!vf.saveRaw(raw))
+                return "Unable to save new local file.";
+            CMLib.socials().unloadSocials();
+            return "Socials file copied from vfs filesystem to local file.";
+        }
+        if(parms.containsKey("NOVFS"))
+        {
+            MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(M==null) return "[authentication error]";
+            CMFile vf=new CMFile("::/resources/socials.txt",M,false);
+            if(vf.exists()) 
+                if(!vf.delete())
+                    return "Unable to delete existing vfs file.";
+            CMLib.socials().unloadSocials();
+            return "Socials file removed from vfs";
+        }
+        if(parms.containsKey("NOLFS"))
+        {
+            MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(M==null) return "[authentication error]";
+            CMFile vf=new CMFile("///resources/socials.txt",M,false);
+            if(vf.exists()) 
+                if(!vf.delete())
+                    return "Unable to delete existing local file.";
+            CMLib.socials().unloadSocials();
+            return "Socials file removed from local file system.";
+        }
+                
         if((last==null)&&(!parms.containsKey("EDIT"))) return " @break@";
 
         
@@ -133,11 +198,14 @@ public class SocialData extends StdWebMacro
                     old=httpReq.getRequestParameter(fnam+"C");
                     if(old!=null) {
                         switch(field.charAt(f)) {
-                            case 'Y': S.setSourceCode(CMath.s_int(old)); break;
-                            case 'O': S.setOthersCode(CMath.s_int(old)); break;
+                            case 'Y': S.setSourceCode(CMath.s_int(old)); 
+                                      break;
+                            case 'O': S.setTargetCode(CMath.s_int(old));
+                                      S.setOthersCode(CMath.s_int(old)); 
+                                      break;
                             case 'N': break;
                             case 'M': break;
-                            case 'T': S.setTargetCode(CMath.s_int(old)); break;
+                            case 'T': break;
                         }
                     }
                 }
@@ -324,10 +392,10 @@ public class SocialData extends StdWebMacro
                                         S=CMLib.socials().makeDefaultSocial(last,EXTN);
                                     switch(field.charAt(f)) {
                                         case 'Y': old=""+S.sourceCode(); break;
-                                        case 'O': old=""+S.othersCode(); break;
+                                        case 'O': old=""+S.targetCode(); break;
                                         case 'N': old=null; break;
                                         case 'M': old=null; break;
-                                        case 'T': old=""+S.targetCode(); break;
+                                        case 'T': old=null; break;
                                     }
                                 }
                                 if(old!=null)

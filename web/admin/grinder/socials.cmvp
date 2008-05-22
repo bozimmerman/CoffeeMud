@@ -23,6 +23,69 @@
             document.RESOURCES.action='socials.cmvp';
             document.RESOURCES.submit();
         }
+        
+        
+        @if?CheckReqParm?FUNCTION=TOVFS@
+        	alert('@SocialData?TOVFS@');
+        @endif@
+        @if?CheckReqParm?FUNCTION=TOLFS@
+        	alert('@SocialData?TOLFS@');
+        @endif@
+        @if?CheckReqParm?FUNCTION=NOVFS@
+        	alert('@SocialData?NOVFS@');
+        @endif@
+        @if?CheckReqParm?FUNCTION=NOLFS@
+        	alert('@SocialData?NOLFS@');
+        @endif@
+        
+        function ChangeVFS(me)
+        {
+        	if(!me.checked)
+        	{
+        		@if?!SocialData?ISLFS@
+        			alert('You must have at least one socials.txt file!');
+        			me.checked=true;
+        		@else@
+		            if(confirm('Remove your socials.txt file from vfs?'))
+		            {
+		            	document.RESOURCES.FUNCTION.value='NOVFS';
+		            	Refresh();
+		            }
+        		@endif@
+        	}
+        	else
+        	{
+	            if(confirm('Copy your local socials.txt file to vfs?'))
+	            {
+		            	document.RESOURCES.FUNCTION.value='TOVFS';
+		            	Refresh();
+	            }
+            }
+        }
+        function ChangeLFS(me)
+        {
+        	if(!me.checked)
+        	{
+        		@if?!SocialData?ISVFS@
+        			alert('You must have at least one socials.txt file!');
+        			me.checked=true;
+        		@else@
+		            if(confirm('Remove your socials.txt file from the local filesysten?!?'))
+		            {
+		            	document.RESOURCES.FUNCTION.value='NOLFS';
+		            	Refresh();
+		            }
+        		@endif@
+        	}
+        	else
+        	{
+	            if(confirm('Copy your vfs socials.txt file to local filesystem?'))
+	            {
+		            	document.RESOURCES.FUNCTION.value='TOLFS';
+		            	Refresh();
+	            }
+            }
+        }
     //-->
     </script>
 </head>
@@ -42,6 +105,7 @@
     </TABLE>
 <CENTER>
 <FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="socials.cmvp">
+<INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
     <TABLE WIDTH=100% BORDER=1>
     <TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Socials Manager</H2></FONT></TD></TR>
@@ -94,6 +158,8 @@
     </TD>
     <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=REFRESH VALUE="Refresh" ONCLICK="Refresh();"></TD>
     <TD WIDTH=33% ALIGN=CENTER>
+    <INPUT TYPE=CHECKBOX NAME=CHECK4VFS @if?SocialData?ISVFS@CHECKED@endif@ ONCLICK="ChangeVFS(this);"><FONT COLOR=WHITE SIZE=-1>VFS</FONT>&nbsp;&nbsp;
+    <INPUT TYPE=CHECKBOX NAME=CHECK4LFS @if?SocialData?ISLFS@CHECKED@endif@ ONCLICK="ChangeLFS(this);"><FONT COLOR=WHITE SIZE=-1>Local</FONT>
     </TD>
     </TR>
     </TABLE>

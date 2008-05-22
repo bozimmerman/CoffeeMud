@@ -241,15 +241,11 @@
                     <TD WIDTH=80%><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_TARGET_T VALUE="@SocialData?SDAT_TARGET_T@"></TD>
                 </TR>
                 <TR>
-                    <TD><FONT COLOR=YELLOW>Target: </FONT></TD>
-                    <TD><SELECT NAME=SDAT_TARGET_TC>@SocialData?SDAT_TARGET_TC@</SELECT></TD>
-                </TR>
-                <TR>
                     <TD><FONT COLOR=YELLOW>Others See: </FONT></TD>
                     <TD><INPUT TYPE=TEXT SIZE=75 NAME=SDAT_TARGET_O VALUE="@SocialData?SDAT_TARGET_O@"></TD>
                 </TR>
                 <TR>
-                    <TD><FONT COLOR=YELLOW>Others: </FONT></TD>
+                    <TD><FONT COLOR=YELLOW>Others/Target: </FONT></TD>
                     <TD><SELECT NAME=SDAT_TARGET_OC>@SocialData?SDAT_TARGET_OC@</SELECT></TD>
                 </TR>
                 <TR>
