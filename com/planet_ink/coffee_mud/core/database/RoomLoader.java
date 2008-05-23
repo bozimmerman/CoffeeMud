@@ -525,8 +525,11 @@ public class RoomLoader
 		
 		Hashtable stuff=new Hashtable();
         Hashtable itemNums=null;
+        Hashtable cataData=null;
         Hashtable itemLocs=null;
 		Hashtable mobRides=null;
+		
+		boolean catalog=((thisRoomID!=null)&&(thisRoomID.startsWith("CATALOG_")));
 
 		DBConnection D=null;
 		// now grab the items
@@ -574,7 +577,25 @@ public class RoomLoader
 						else
 							itemLocs.put(newItem,loc);
 					}
-					newItem.setMiscText(DBConnections.getResQuietly(R,"CMITTX"));
+					if(catalog)
+					{
+					    String text=DBConnections.getResQuietly(R,"CMITTX");
+					    int x=text.lastIndexOf("<CATALOGDATA>");
+					    if((x>0)&&(text.indexOf("</CATALOGDATA>",x)>0))
+				        {
+			                cataData=(Hashtable)stuff.get("CATADATAFOR"+roomID);
+			                if(cataData==null)
+			                {
+			                    cataData=new Hashtable();
+			                    stuff.put("CATADATAFOR"+roomID,cataData);
+			                }
+			                cataData.put(itemNum,text.substring(x));
+			                text=text.substring(0,x);
+				        }
+                        newItem.setMiscText(text);
+					}
+					else
+    					newItem.setMiscText(DBConnections.getResQuietly(R,"CMITTX"));
 					newItem.baseEnvStats().setRejuv((int)DBConnections.getLongRes(R,"CMITRE"));
 					newItem.setUsesRemaining((int)DBConnections.getLongRes(R,"CMITUR"));
 					newItem.baseEnvStats().setLevel((int)DBConnections.getLongRes(R,"CMITLV"));
@@ -639,6 +660,7 @@ public class RoomLoader
                         newMOB.setLocation(thisRoom);
                     }
 					if((CMProps.getBoolVar(CMProps.SYSTEMB_MOBNOCACHE))
+					&&(!catalog)
 					&&(NUMID.indexOf(MOBID+"@")>=0))
 						newMOB.setMiscText("%DBID>"+roomID+NUMID.substring(NUMID.indexOf("@")));
 					else
@@ -676,20 +698,48 @@ public class RoomLoader
 		currentRecordPos=0;
 
 		itemNums=(Hashtable)stuff.get("NUMSFORCATALOG_ITEMS");
+        cataData=(Hashtable)stuff.get("CATADATAFORCATALOG_ITEMS");
 		if((itemNums!=null)&&(thisRoomID!=null)&&(thisRoomID.equals("CATALOG_ITEMS")))
 		{
+            String itemNum;
+            Item I;
+            String data;
 			fixContentContainers(itemNums,stuff,"CATALOG_ITEMS",null,debug);
-			for(Enumeration e=itemNums.elements();e.hasMoreElements();)
-				CMLib.catalog().addCatalogReplace((Item)e.nextElement());
+			for(Enumeration e=itemNums.keys();e.hasMoreElements();)
+			{
+			    itemNum=(String)e.nextElement();
+			    I=(Item)itemNums.get(itemNum);
+			    data=(String)((cataData!=null)?cataData.get(itemNum):null);
+				CMLib.catalog().addCatalogReplace(I);
+				if((data!=null)&&(data.length()>0))
+				{
+    				int dex=CMLib.catalog().getCatalogItemIndex(I.Name());
+    				if(dex>=0) CMLib.catalog().getCatalogItemData(dex).build(data);
+				}
+			}
 		}
 
 		// load mob catalog
 		itemNums=(Hashtable)stuff.get("NUMSFORCATALOG_MOBS");
+        cataData=(Hashtable)stuff.get("CATADATAFORCATALOG_MOBS");
 		if((itemNums!=null)&&(thisRoomID!=null)&&(thisRoomID.equals("CATALOG_MOBS")))
 		{
+            String itemNum;
+            MOB M;
+            String data;
 			fixContentContainers(itemNums,stuff,"CATALOG_MOBS",null,debug);
-			for(Enumeration e=itemNums.elements();e.hasMoreElements();)
-				CMLib.catalog().addCatalogReplace((MOB)e.nextElement());
+			for(Enumeration e=itemNums.keys();e.hasMoreElements();)
+			{
+                itemNum=(String)e.nextElement();
+                M=(MOB)itemNums.get(itemNum);
+                data=(String)((cataData!=null)?cataData.get(itemNum):null);
+				CMLib.catalog().addCatalogReplace(M);
+                if((data!=null)&&(data.length()>0))
+                {
+                    int dex=CMLib.catalog().getCatalogMobIndex(M.Name());
+                    if(dex>=0) CMLib.catalog().getCatalogMobData(dex).build(data);
+                }
+			}
 		}
 		
 		// now load the rooms
@@ -723,6 +773,7 @@ public class RoomLoader
     }
 	public void DBCreateThisItem(String roomID, Item thisItem)
 	{
+        boolean catalog=((roomID!=null)&&(roomID.startsWith("CATALOG_")));
 		thisItem.setExpirationDate(0); // saved items won't clear!
 		Environmental container=thisItem.container();
 		if((container==null)
@@ -736,6 +787,13 @@ public class RoomLoader
 		}
 		String itemID=""+thisItem;
 		thisItem.setDatabaseID(itemID);
+		String text=thisItem.text();
+		if(catalog)
+		{
+		    int x=CMLib.catalog().getCatalogItemIndex(thisItem.Name());
+		    if(x>=0) 
+		        text+=CMLib.catalog().getCatalogItemData(x).data();
+		}
 		DB.update(
 		"INSERT INTO CMROIT ("
 		+"CMROID, "
@@ -753,7 +811,7 @@ public class RoomLoader
 		+"'"+itemID+"',"
 		+"'"+thisItem.ID()+"',"
 		+"'"+((container!=null)?(""+container):"")+"',"
-		+"'"+thisItem.text()+" ',"
+		+"'"+text+" ',"
 		+thisItem.baseEnvStats().rejuv()+","
 		+thisItem.usesRemaining()+","
 		+thisItem.baseEnvStats().level()+","
@@ -872,6 +930,8 @@ public class RoomLoader
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Creating mob "+thisMOB.name()+" for room "+roomID);
+        boolean catalog=((roomID!=null)&&(roomID.startsWith("CATALOG_")));
+        
 		String ride=null;
 		if(thisMOB.riding()!=null)
 			ride=""+thisMOB.riding();
@@ -906,7 +966,7 @@ public class RoomLoader
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Created mob "+thisMOB.name()+" for room "+roomID);
 		
-		if(CMProps.getBoolVar(CMProps.SYSTEMB_MOBNOCACHE))
+		if((CMProps.getBoolVar(CMProps.SYSTEMB_MOBNOCACHE))&&(!catalog))
 		   thisMOB.setMiscText("%DBID>"+roomID+mobID.substring(mobID.indexOf("@")));
 	}
 	public void DBUpdateTheseMOBs(Room room, Vector mobs)

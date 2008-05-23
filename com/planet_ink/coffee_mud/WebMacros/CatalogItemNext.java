@@ -48,14 +48,19 @@ public class CatalogItemNext extends StdWebMacro
             httpReq.removeRequestParameter("CATALOG_ITEM_LEVEL");
             httpReq.removeRequestParameter("CATALOG_ITEM_CLASS");
             httpReq.removeRequestParameter("CATALOG_ITEM_VALUE");
+            httpReq.removeRequestParameter("CATALOG_ITEM_RATE");
+            httpReq.removeRequestParameter("CATALOG_ITEM_MASK");
+            httpReq.removeRequestParameter("CATALOG_ITEM_LIVE");
             return "";
         }
         String lastID="";
         Item I=null;
         String name=null;
+        CatalogLibrary.CataData data=null;
         for(int s=0;s<CMLib.catalog().getCatalogItems().size();s++)
         {
             I=CMLib.catalog().getCatalogItem(s);
+            data=CMLib.catalog().getCatalogItemData(s);
             if(I==null) continue;
             name="CATALOG-"+I.Name().toUpperCase().trim();
             if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!name.equalsIgnoreCase(lastID))))
@@ -66,6 +71,18 @@ public class CatalogItemNext extends StdWebMacro
                 httpReq.addRequestParameters("CATALOG_ITEM_LEVEL",""+I.baseEnvStats().level());
                 httpReq.addRequestParameters("CATALOG_ITEM_CLASS",I.ID());
                 httpReq.addRequestParameters("CATALOG_ITEM_VALUE",""+I.value());
+                if(data.rate>0.0)
+                {
+                    httpReq.addRequestParameters("CATALOG_ITEM_RATE",CMath.toPct(data.rate));
+                    httpReq.addRequestParameters("CATALOG_ITEM_MASK",data.lmaskStr==null?"":data.lmaskStr);
+                    httpReq.addRequestParameters("CATALOG_ITEM_LIVE",""+data.live);
+                }
+                else
+                {
+                    httpReq.addRequestParameters("CATALOG_ITEM_RATE","");
+                    httpReq.addRequestParameters("CATALOG_ITEM_MASK","");
+                    httpReq.addRequestParameters("CATALOG_ITEM_LIVE","");
+                }
                 return "";
             }
             lastID=name;

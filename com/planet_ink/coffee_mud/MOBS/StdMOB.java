@@ -808,6 +808,14 @@ public class StdMOB implements MOB
             destroy();
             return;
         }
+        
+        if(isMonster())
+        {
+            Item dropItem=CMLib.catalog().getDropItem(this,true);
+            if(dropItem!=null)
+                addInventory(dropItem);
+        }
+        
         location().showOthers(this,null,CMMsg.MSG_BRINGTOLIFE,null);
 		if(CMLib.flags().isSleeping(this))
 			tell("(You are asleep)");

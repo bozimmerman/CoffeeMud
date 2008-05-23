@@ -139,12 +139,13 @@ public class Catalog extends StdCommand
 				int col=0;
 				MOB M=null;
 				Item I=null;
+				CatalogLibrary.CataData data;
 				int[] usage=null;
 				if((whatKind==0)||(whatKind==1)) 
 				{
 					list.append("^HMobs\n\r^N");
-					list.append(CMStrings.padRight("Name",39)+" ");
-					list.append(CMStrings.padRight("Name",39)+" ");
+					list.append(CMStrings.padRight("Name",38)+" ");
+					list.append(CMStrings.padRight("Name",38)+" ");
 					list.append(CMStrings.repeat("-",78)+"\n\r");
 					for(int i=0;i<CMLib.catalog().getCatalogMobs().size();i++)
 					{
@@ -152,7 +153,7 @@ public class Catalog extends StdCommand
 						usage=CMLib.catalog().getCatalogMobUsage(i);
 						if((ID==null)||(ID.length()==0)||(CMLib.english().containsString(M.Name(),ID)))
 						{
-							list.append(CMStrings.padRight(M.Name(),39));
+							list.append(CMStrings.padRight(M.Name(),38));
 							if(col==0)
 							{
 								col++;
@@ -170,26 +171,30 @@ public class Catalog extends StdCommand
 				if((whatKind==0)||(whatKind==2)) 
 				{
 					list.append("^HItems\n\r^N");
-					list.append(CMStrings.padRight("Name",33)+" "+CMStrings.padRight("#",4)+" ");
-					list.append(CMStrings.padRight("Name",33)+" "+CMStrings.padRight("#",4)+" ");
+					list.append(CMStrings.padRight("Name",38)+" ");
+                    list.append(CMStrings.padRight("Rate",6)+" ");
+					list.append(CMStrings.padRight("Mask",31)+" ");
 					list.append(CMStrings.repeat("-",78)+"\n\r");
 					for(int i=0;i<CMLib.catalog().getCatalogItems().size();i++)
 					{
 						I=CMLib.catalog().getCatalogItem(i);
 						usage=CMLib.catalog().getCatalogItemUsage(i);
+                        data=CMLib.catalog().getCatalogItemData(i);
 						if((ID==null)||(ID.length()==0)||(CMLib.english().containsString(I.Name(),ID)))
 						{
-							list.append(CMStrings.padRight(I.Name(),33)+" "+CMStrings.padRight(""+usage[0],4));
-							if(col==0)
+							list.append(CMStrings.padRight(I.Name(),38)+" ");
+							if(data.rate<=0.0)
 							{
-								col++;
-								list.append(" ");
+							    list.append("N/A   ");
+			                    list.append(CMStrings.padRight(" ",31));
 							}
 							else
 							{
-								col++;
-								list.append("\n\r");
+							    list.append(CMStrings.padRight(CMath.toPct(data.rate),6)+" ");
+                                list.append(data.live?"L ":"D ");
+                                list.append(CMStrings.padRight(data.lmaskStr,29));
 							}
+							list.append("\n\r");
 						}
 					}
 					list.append("\n\r");
@@ -243,11 +248,82 @@ public class Catalog extends StdCommand
 					{
 						CMLib.catalog().delCatalog((Item)E);
 						CMLib.database().DBDeleteItem("CATALOG_ITEMS",(Item)E);
-						mob.tell("Item '"+((MOB)E).Name()+" has been permanently removed from the catalog.");
+						mob.tell("Item '"+E.Name()+" has been permanently removed from the catalog.");
 					}
 				}
 					
 			}
+            else
+            if(((String)commands.firstElement()).equalsIgnoreCase("EDIT"))
+            {
+                commands.removeElementAt(0);
+                int whatKind=0; // 0=both, 1=mob, 2=item
+                if((commands.size()>0)&&("MOBS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
+                { commands.removeElementAt(0); whatKind=1;}
+                if((commands.size()>0)&&("ITEMS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
+                { commands.removeElementAt(0); whatKind=2;}
+                String ID=CMParms.combine(commands,0);
+                int[] foundData=findCatalogIndex(whatKind,ID,false);
+                if(foundData[0]<0)
+                {
+                    mob.tell("'"+ID+"' not found in catalog! Try LIST CATALOG");
+                    return false;
+                }
+                Environmental E=(foundData[1]==1)?
+                                (Environmental)CMLib.catalog().getCatalogMob(foundData[0]):
+                                (Environmental)CMLib.catalog().getCatalogItem(foundData[0]);
+                CatalogLibrary.CataData data=(foundData[1]==1)?
+                                            CMLib.catalog().getCatalogMobData(foundData[0]):
+                                            CMLib.catalog().getCatalogItemData(foundData[0]);
+                if(E instanceof MOB)
+                {
+                    mob.tell("Data for mobs can not be edited at this time.");
+                }
+                else
+                if(E instanceof Item)
+                {
+                    String prefix="";
+                    if(mob.session()!=null)
+                    {
+                        String newRate=mob.session().prompt("Enter a new Drop Rate or 0% to disable ("+CMath.toPct(data.rate)+"): ", CMath.toPct(data.rate));
+                        if(!CMath.isPct(newRate))
+                            return false;
+                        data.rate=CMath.s_pct(newRate);
+                        if(data.rate<=0.0)
+                        {
+                            data.lmaskStr="";
+                            data.lmaskV=null;
+                            data.rate=0.0;
+                            CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)E);
+                            mob.tell("No drop item.");
+                            return false;
+                        }
+                        String choice=mob.session().choose("Is this for L)ive mobs or D)ead ones ("+(data.live?"L":"D")+"): ","LD", (data.live?"L":"D"));
+                        data.live=choice.equalsIgnoreCase("L");
+                        String newMask="?";
+                        while(newMask.equalsIgnoreCase("?"))
+                        {
+                            newMask=mob.session().prompt("Enter new MOB selection mask, or NULL ("+data.lmaskStr+")\n\r: ",data.lmaskStr);
+                            if(newMask.equalsIgnoreCase("?"))
+                                mob.tell(CMLib.masking().maskHelp("\n","disallow"));
+                        }
+                        if((newMask.length()==0)||(newMask.equalsIgnoreCase("null")))
+                        {
+                            data.lmaskStr="";
+                            data.lmaskV=null;
+                            data.rate=0.0;
+                            mob.tell("Mask removed.");
+                        }
+                        else
+                        {
+                            data.lmaskStr=newMask;
+                            data.lmaskV=CMLib.masking().maskCompile(newMask);
+                        }
+                        CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)E);
+                        mob.tell("Item '"+E.Name()+" has been updated.");
+                    }
+                }
+            }
 			else
 			{
 				Environmental thisThang=null;
@@ -274,6 +350,9 @@ public class Catalog extends StdCommand
 						Environmental cat=(thisThang instanceof MOB)?
 										 (Environmental)CMLib.catalog().getCatalogMob(exists):
 										 (Environmental)CMLib.catalog().getCatalogItem(exists);
+		                CatalogLibrary.CataData data=(thisThang instanceof MOB)?
+                    	                            CMLib.catalog().getCatalogMobData(exists):
+                    	                            CMLib.catalog().getCatalogItemData(exists);
 						if(thisThang.sameAs(cat))
 						{
 							CMLib.flags().setCataloged(thisThang,true);
@@ -333,7 +412,7 @@ public class Catalog extends StdCommand
 			}
 		}
 		else
-			mob.tell("Catalog huh? Try CATALOG LIST (MOBS/ITEMS) (MASK), CATALOG <mob/item name>, CATALOG DELETE <mob/item name>.");
+			mob.tell("Catalog huh? Try CATALOG LIST (MOBS/ITEMS) (MASK), CATALOG <mob/item name>, CATALOG DELETE <mob/item name>, CATALOG EDIT <item name>.");
 		return false;
 	}
 	

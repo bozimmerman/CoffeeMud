@@ -169,7 +169,10 @@
             <TD WIDTH=25%><B><FONT COLOR=YELLOW>Name</FONT></b></TD>
             <TD WIDTH=5%><B><FONT COLOR=YELLOW>Level</FONT></b></TD>
             <TD WIDTH=10%><B><FONT COLOR=YELLOW>Class</FONT></b></TD>
-            <TD WIDTH=60%><B><FONT COLOR=YELLOW>Value</FONT></b></TD>
+            <TD WIDTH=5%><B><FONT COLOR=YELLOW>Value</FONT></b></TD>
+            <TD WIDTH=10%><B><FONT COLOR=YELLOW>Rate</FONT></b></TD>
+            <TD WIDTH=10%><B><FONT COLOR=YELLOW>State</FONT></b></TD>
+            <TD WIDTH=35%><B><FONT COLOR=YELLOW>MOB Mask</FONT></b></TD>
             </TR>
             @CatalogItemNext?RESET@
             @loop@
@@ -179,10 +182,17 @@
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_LEVEL@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_CLASS@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_VALUE@</B></FONT></a></TD>
+                @if?CheckReqParm?CATALOG_ITEM_RATE=@
+                    <TD COLSPAN=3><FONT COLOR=WHITE>N/A</FONT></a></TD>
+                @else@
+                    <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_RATE@</B></FONT></a></TD>
+                    <TD><FONT COLOR=WHITE><B>@if?RequestParameter?CATALOG_ITEM_LIVE@Live@else@Dead@endif@</B></FONT></a></TD>
+                    <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_MASK@</B></FONT></a></TD>
+                @endif@
                 </TR>
             @back@
             <TR>
-            <TD COLSPAN=5><a href="javascript:NewCatalogItem('NEWCATA-'+document.RESOURCES.NEWOBJECT.value,document.RESOURCES.NEWOBJECT.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWOBJECT SIZE=70></B></FONT></TD>
+            <TD COLSPAN=7><a href="javascript:NewCatalogItem('NEWCATA-'+document.RESOURCES.NEWOBJECT.value,document.RESOURCES.NEWOBJECT.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWOBJECT SIZE=70></B></FONT></TD>
             </TR>
             </TABLE>
         </TD></TR>

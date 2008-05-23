@@ -43,13 +43,79 @@ public interface CatalogLibrary
     public MOB getCatalogMob(int index);
     public int[] getCatalogItemUsage(int index);
     public int[] getCatalogMobUsage(int index);
-    public void delCatalog(Item I);
-    public void delCatalog(MOB M);
-    public void addCatalogReplace(Item I);
-    public void addCatalogReplace(MOB M);
-    public void addCatalog(Item I);
-    public void addCatalog(MOB M);
-    public void propogateCatalogChange(Environmental thang);
+    public CataData getCatalogItemData(int index);
+    public CataData getCatalogMobData(int index);
+    public void delCatalog(Environmental E);
+    public void addCatalogReplace(Environmental E);
+    public void addCatalog(Environmental E);
+    public void propogateCatalogChange(Environmental E);
     public void changeCatalogUsage(Environmental E, boolean add);
+    public Item getDropItem(MOB M, boolean live);
     public void unLoad();
+    
+    public static class CataData 
+    {
+        public Vector lmaskV=null;
+        public String lmaskStr=null;
+        public boolean live=false;
+        public double rate=0.0;
+        
+        public CataData(String catadata)
+        {
+            build(catadata);
+        }
+        
+        public CataData(String _lmask, String _rate, boolean _live)
+        {
+            this(_lmask,CMath.s_pct(_rate),_live);
+        }
+        
+        public CataData(String _lmask, double _rate, boolean _live)
+        {
+            live=_live;
+            lmaskStr=_lmask;
+            lmaskV=null;
+            if(lmaskStr.length()>0)
+                lmaskV=CMLib.masking().maskCompile(lmaskStr);
+            rate=_rate;
+        }
+        
+        public String data() 
+        {
+            StringBuffer buf=new StringBuffer("");
+            buf.append("<CATALOGDATA>");
+            buf.append("<RATE>"+CMath.toPct(rate)+"</RATE>");
+            buf.append("<LMASK>"+CMLib.xml().parseOutAngleBrackets(lmaskStr)+"</LMASK>");
+            buf.append("<LIVE>"+live+"</LIVE>");
+            buf.append("</CATALOGDATA>");
+            return buf.toString();
+        }
+        
+        public void build(String catadata)
+        {
+            Vector V=null;
+            if((catadata!=null)&&(catadata.length()>0))
+            {
+                V=CMLib.xml().parseAllXML(catadata);
+                XMLLibrary.XMLpiece piece=CMLib.xml().getPieceFromPieces(V,"CATALOGDATA");
+                if((piece!=null)&&(piece.contents!=null)&&(piece.contents.size()>0))
+                {
+                    lmaskStr=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(piece.contents,"LMASK"));
+                    String ratestr=CMLib.xml().getValFromPieces(piece.contents,"RATE");
+                    rate=CMath.s_pct(ratestr);
+                    lmaskV=null;
+                    if(lmaskStr.length()>0)
+                        lmaskV=CMLib.masking().maskCompile(lmaskStr);
+                    live=CMath.s_bool(CMLib.xml().getValFromPieces(piece.contents,"LIVE"));
+                }
+            }
+            else
+            {
+                lmaskV=null;
+                lmaskStr="";
+                live=false;
+                rate=0.0;
+            }
+        }
+    }
 }

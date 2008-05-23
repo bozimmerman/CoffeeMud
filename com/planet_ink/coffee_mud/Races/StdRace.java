@@ -505,6 +505,18 @@ public class StdRace implements Race
 			else
 				i++;
 		}
+		
+		Item dropItem=CMLib.catalog().getDropItem(mob,false);
+		if(dropItem!=null)
+		{
+		    dropItem.unWear();
+            if(dropItem.container()==null)
+                dropItem.setContainer(Body);
+            if(room!=null)
+                room.addItem(dropItem);
+            items.addElement(dropItem);
+		}
+		
         for(Enumeration e=itemMap.keys();e.hasMoreElements();)
         {
             Item oldItem=(Item)e.nextElement();
