@@ -32,6 +32,8 @@
 		}
 		function Clicked(quest, action)
 		{
+			if((action=='DELETE')&&(!confirm('Confirm: Delete this quest?')))
+				return;
 			document.QUESTS.QUEST.value=quest;
 			document.QUESTS.FUNCTION.value=action;
 			document.QUESTS.action='/grinder/quests.cmvp';

@@ -512,7 +512,13 @@ public class QuestMaker extends StdWebMacro
 	                        Item I2=oldValue.length()>0?RoomData.getItemFromAnywhere(rawitemlist,oldValue):null;
 	                        if(I2==null)
 	                            I2=oldValue.length()>0?RoomData.getItemFromCatalog(oldValue):null;
-	                        if(I2!=null) oldValue=CMLib.english().getContextName(rawitemlist,I2);
+	                        if(I2!=null)
+                            {
+                                if(CMLib.flags().isCataloged(I2))
+                                    oldValue=CMLib.english().getContextSameName(rawitemlist,I2);
+                                else
+                                    oldValue=CMLib.english().getContextName(rawitemlist,I2);
+                            }
 	                        Object[] choices=rawitemlist.toArray();
 	                        String thisVal=(String)eval.eval(oldValue,choices,optionalEntry);
 	                        if(thisVal.length()>0)
@@ -538,7 +544,13 @@ public class QuestMaker extends StdWebMacro
                         Item I2=oldValue.length()>0?RoomData.getItemFromAnywhere(rawitemlist,oldValue):null;
                         if(I2==null)
                             I2=oldValue.length()>0?RoomData.getItemFromCatalog(oldValue):null;
-                        if(I2!=null) oldValue=CMLib.english().getContextName(rawitemlist,I2);
+                        if(I2!=null)
+                        {
+                            if(CMLib.flags().isCataloged(I2))
+                                oldValue=CMLib.english().getContextSameName(rawitemlist,I2);
+                            else
+                                oldValue=CMLib.english().getContextName(rawitemlist,I2);
+                        }
                         Object[] choices=rawitemlist.toArray();
                         String newVal=(String)eval.eval(oldValue,choices,optionalEntry);
                         if(newVal.length()>0)
@@ -577,7 +589,13 @@ public class QuestMaker extends StdWebMacro
 	                        MOB M2=oldValue.length()>0?RoomData.getMOBFromCode(rawmoblist,oldValue):null;
 	                        if(M2==null)
 	                            M2=oldValue.length()>0?RoomData.getMOBFromCatalog(oldValue):null;
-	                        if(M2!=null) oldValue=CMLib.english().getContextName(rawmoblist,M2);
+	                        if(M2!=null)
+                            {
+                                if(CMLib.flags().isCataloged(M2))
+                                    oldValue=CMLib.english().getContextSameName(rawmoblist,M2);
+                                else
+                                    oldValue=CMLib.english().getContextName(rawmoblist,M2);
+                            }
 	                        Object[] choices=rawmoblist.toArray();
 	                        String thisVal=(String)eval.eval(oldValue,choices,optionalEntry);
 	                        if(thisVal.length()>0)
@@ -603,7 +621,13 @@ public class QuestMaker extends StdWebMacro
                         MOB M2=oldValue.length()>0?RoomData.getMOBFromCode(rawmoblist,oldValue):null;
                         if(M2==null)
                             M2=oldValue.length()>0?RoomData.getMOBFromCatalog(oldValue):null;
-                        if(M2!=null) oldValue=CMLib.english().getContextName(rawmoblist,M2);
+                        if(M2!=null)
+                        {
+                            if(CMLib.flags().isCataloged(M2))
+                                oldValue=CMLib.english().getContextSameName(rawmoblist,M2);
+                            else
+                                oldValue=CMLib.english().getContextName(rawmoblist,M2);
+                        }
                         Object[] choices=rawmoblist.toArray();
                         String newVal=(String)eval.eval(oldValue,choices,optionalEntry);
                         if(newVal.length()>0)

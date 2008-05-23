@@ -61,6 +61,10 @@ public interface EnglishParsing extends CMLibrary
     public int getContextNumber(Vector list, Environmental E);
     public String getContextName(Vector list, Environmental E);
     public String getContextName(Object[] list, Environmental E);
+    public int getContextSameNumber(Object[] list, Environmental E);
+    public int getContextSameNumber(Vector list, Environmental E);
+    public String getContextSameName(Vector list, Environmental E);
+    public String getContextSameName(Object[] list, Environmental E);
     public Environmental fetchAvailable(Vector list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly);
     public Environmental parseShopkeeper(MOB mob, Vector commands, String error);
     public Vector fetchItemList(Environmental from, MOB mob, Item container, Vector commands, int preferredLoc, boolean visionMatters);

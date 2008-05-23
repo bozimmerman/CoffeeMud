@@ -654,11 +654,40 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             }
         return -1;
     }
+    public int getContextSameNumber(Object[] list, Environmental E){ return getContextSameNumber(CMParms.makeVector(list),E);}
+    public int getContextSameNumber(Vector list, Environmental E)
+    {
+        if(list==null) return 0;
+        Vector V=(Vector)list.clone();
+        int context=1;
+        for(int v=0;v<V.size();v++)
+            if((((Environmental)V.elementAt(v)).Name().equalsIgnoreCase(E.Name()))
+            ||(((Environmental)V.elementAt(v)).name().equalsIgnoreCase(E.name())))
+            {
+                if(E.sameAs((Environmental)V.elementAt(v)))
+                    return context<2?0:context;
+                if((!(V.elementAt(v) instanceof Item))
+                ||(!(E instanceof Item))
+                ||(((Item)E).container()==((Item)V.elementAt(v)).container()))
+                    context++;
+            }
+        return -1;
+    }
     public String getContextName(Object[] list, Environmental E){ return getContextName(CMParms.makeVector(list),E);}
     public String getContextName(Vector list, Environmental E)
     {
         if(list==null) return E.name();
         int number=getContextNumber(list,E);
+        if(number<0) return null;
+        if(number<2) return E.name();
+        return E.name()+"."+(number+1);
+    }
+    
+    public String getContextSameName(Object[] list, Environmental E){ return getContextName(CMParms.makeVector(list),E);}
+    public String getContextSameName(Vector list, Environmental E)
+    {
+        if(list==null) return E.name();
+        int number=getContextSameNumber(list,E);
         if(number<0) return null;
         if(number<2) return E.name();
         return E.name()+"."+(number+1);
