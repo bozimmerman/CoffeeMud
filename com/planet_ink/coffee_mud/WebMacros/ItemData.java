@@ -199,6 +199,15 @@ public class ItemData extends StdWebMacro
 				I=(Item)httpReq.getRequestObjects().get(itemCode);
 				if(I==null)
 				{
+	                if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
+	                {
+	                    int i=CMLib.map().getCatalogItemIndex(itemCode.substring(8));
+	                    if(i>=0) 
+	                        I=CMLib.map().getCatalogItem(i);
+	                    else
+	                        I=CMClass.getItem("GenItem");
+	                }
+	                else
 					if(itemCode.equals("NEW"))
 						I=CMClass.getItem("GenItem");
 					else
@@ -216,11 +225,14 @@ public class ItemData extends StdWebMacro
 			str.append(" Got: "+itemCode);
 			str.append(", Includes: ");
 			if(M==null)
+			{
+			    if(R!=null)
 				for(int i=0;i<R.numItems();i++)
 				{
 					Item I2=R.fetchItem(i);
 					if(I2!=null) str.append(I2.Name()+"="+RoomData.getItemCode(R,I2));
 				}
+			}
 			else
 				for(int i=0;i<M.inventorySize();i++)
 				{
@@ -241,8 +253,11 @@ public class ItemData extends StdWebMacro
 			if(I instanceof ArchonOnly) I=oldI;
 		}
 
-		boolean changedClass=(((httpReq.isRequestParameter("CHANGEDCLASS"))&&(httpReq.getRequestParameter("CHANGEDCLASS")).equals("true"))&&(itemCode.equals("NEW")));
-		boolean changedLevel=(httpReq.isRequestParameter("CHANGEDLEVEL"))&&(httpReq.getRequestParameter("CHANGEDLEVEL")).equals("true");
+		boolean changedClass=((httpReq.isRequestParameter("CHANGEDCLASS")
+		                     &&httpReq.getRequestParameter("CHANGEDCLASS").equals("true"))
+		                     &&(itemCode.equals("NEW")||itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")));
+		boolean changedLevel=(httpReq.isRequestParameter("CHANGEDLEVEL"))
+		                     &&(httpReq.getRequestParameter("CHANGEDLEVEL")).equals("true");
 		if((changedLevel)&&(I.isGeneric()))
 		{
 			int level=CMath.s_int(httpReq.getRequestParameter("LEVEL"));
@@ -309,7 +324,14 @@ public class ItemData extends StdWebMacro
 				switch(o)
 				{
 				case 0: // name
-					if(firstTime) old=I.Name();
+					if(firstTime)
+					{
+	                    if((itemCode.equalsIgnoreCase("NEW")||itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
+                        &&(httpReq.isRequestParameter("NEWITEMNAME")))
+                            old=httpReq.getRequestParameter("NEWITEMNAME");
+                        else
+    					    old=I.Name();
+					}
 					str.append(old);
 					break;
 				case 1: // classes

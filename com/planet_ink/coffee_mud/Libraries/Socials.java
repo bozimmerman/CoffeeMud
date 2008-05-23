@@ -705,7 +705,7 @@ public class Socials extends StdLibrary implements SocialsList
 			buf.append('\n');
 		}
         // allowed is forced because this is already protected by SOCIALS security flag
-        if(!new CMFile("::"+filename,whom,false,true).saveText(buf))
+        if(!new CMFile(filename,whom,false,true).saveText(buf))
             Log.errOut("Socials","Unable to save socials.txt!");
         unloadDerivedResources();
 	}

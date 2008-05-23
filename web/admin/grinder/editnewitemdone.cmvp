@@ -2,11 +2,34 @@
 <META HTTP-EQUIV="Pragma" CONTENT="no-cache">
 @if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
 @if?!CheckAuthCode?ANYMODAREAS=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
-@MUDGrinder?EDITITEM@
+@if?CheckReqParm?DELITEM=@
+    @MUDGrinder?EDITITEM@
+@endif@
 <HTML>
 <head>
  	<link rel="grinder icon" href="/images/grinder.ico" >
 </head>
+@if?CheckReqParm?<ITEM=CATALOG-@
+    <SCRIPT LANGUAGE=JavaScript>
+    <!--
+        @if?!CheckReqParm?DELITEM=@
+            var v='@MUDGrinder?DELCATALOGITEM@';
+            if(v.length>0)
+                alert(v);
+        @endif@
+        opener.EditItemDone();
+        window.close();
+    //-->
+    </SCRIPT>
+@else@
+@if?CheckReqParm?<ITEM=NEWCATA-@
+    <SCRIPT LANGUAGE=JavaScript>
+    <!--
+        opener.EditItemDone();
+        window.close();
+    //-->
+    </SCRIPT>
+@else@
 @if?CheckReqParm?MOB=@
 	<SCRIPT LANGUAGE=JavaScript>
 	<!--
@@ -23,9 +46,10 @@
 	//-->
 	</SCRIPT>
 @else@
-
 	@AddRequestParameter?ROOM=ANY@
 	@AddFile?/grinder/editmobform.cmvp@
+@endif@
+@endif@
 @endif@
 	</HTML>
 @endif@

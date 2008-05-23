@@ -165,7 +165,7 @@ public class Catalog extends StdCommand
 							}
 						}
 					}
-					list.append("\n\r");
+					list.append("\n\r\n\r");
 				}
 				if((whatKind==0)||(whatKind==2)) 
 				{

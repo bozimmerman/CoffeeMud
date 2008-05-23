@@ -1,0 +1,211 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_CATALOG=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+    <link rel="grinder icon" href="/images/grinder.ico" >
+    <title>Catalog Manager</title>
+    <script language=JavaScript>
+    <!--
+        function NewFaction(catalogid,action)
+        {
+            if(confirm('Create a file in your resources directory called '+catalogid+'?'))
+            {
+                var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=550,width=750,alwaysRaised=yes,dependent=yes";
+                w=window.open("catalog.cmvp?AUTH=@Authenticate?AUTH@&FACTION="+catalogid+action,"Faction",strFeatures, false);
+            }
+        }
+        function Catalog(catalogid,action)
+        {
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=750,alwaysRaised=yes,dependent=yes";
+            w=window.open("catalog.cmvp?AUTH=@Authenticate?AUTH@&FACTION="+catalogid+action,"Faction",strFeatures, false);
+        }
+        function CatalogMob(mobcode,x)
+        {
+            var w;
+            mobcode=encodeURI(mobcode);
+            mobcode=mobcode.replace("#","%23");
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+            var xtra='';
+            if(x.length > 0)
+            {
+                x=encodeURI(x);
+                xtra='&NEWMOBNAME='+x
+            }
+            w=window.open("editmobform.cmvp?AUTH=@Authenticate?AUTH@&AREA=ANY&ROOM=ANY&MOB="+mobcode+"&SINGLEMOB=true"+xtra,"MAP",strFeatures, false);
+        }
+        
+        function trim(stringToTrim) {
+            return stringToTrim.replace(/^\s+|\s+$/g,"");
+        }
+        
+        function NewCatalogItem(itemcode,x)
+        {
+            x=trim(x);
+            if(x.length == 0)
+            {
+                alert('Enter a name for your new catalog item');
+                return;
+            }
+            CatalogItem(itemcode,x);
+        }
+        
+        function NewCatalogMob(mobcode,x)
+        {
+            x=trim(x);
+            if(x.length == 0)
+            {
+                alert('Enter a name for your new catalog mob');
+                return;
+            }
+            CatalogMob(mobcode,x);
+        }
+        
+        function CatalogItem(itemcode,x)
+        {
+            var w;
+            itemcode=encodeURI(itemcode);
+            itemcode=itemcode.replace("#","%23");
+            var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
+            var xtra='';
+            if(x.length > 0)
+            {
+                x=encodeURI(x);
+                xtra='&NEWITEMNAME='+x
+            }
+            w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&AREA=ANY&ROOM=ANY&ITEM="+itemcode+"&SINGLEITEM=true"+xtra,"MAP",strFeatures, false);
+        }
+        
+        function Clicked(action)
+        {
+            document.RESOURCES.action=action;
+            document.RESOURCES.submit();
+        }
+        function Refresh()
+        {
+            document.RESOURCES.action='catalog.cmvp';
+            document.RESOURCES.submit();
+        }
+        function ToMob()
+        {
+            document.RESOURCES.MODE.value='';
+            Refresh();
+        }
+        function ToItem()
+        {
+            document.RESOURCES.MODE.value='ITEM';
+            Refresh();
+        }
+        function EditItemDone()
+        {
+            Refresh();
+        }
+        function EditMobDone()
+        {
+            Refresh();
+        }
+    //-->
+    </script>
+</head>
+<body BGCOLOR=BLACK>
+    <TABLE WIDTH=100% BORDER=0>
+    <TR>
+    <TD WIDTH=33% ALIGN=LEFT VALIGN=TOP></TD>
+    <TD WIDTH=33% ALIGN=CENTER VALIGN=TOP><IMG SRC="/grinder/images/grinder.gif" WIDTH=78 HEIGHT=122 ALT="" BORDER="0"></TD>
+    <TD WIDTH=33% ALIGN=RIGHT VALIGN=TOP>
+        <TABLE WIDTH=50% BORDER=1>
+        <TR><TD BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK SIZE=-1><B>Menu</B></FONT></TD></TR>
+        <TR><TD><a href="javascript:Clicked('/grinder/loggedin.cmvp');"><FONT COLOR=WHITE SIZE=-1><B>MUDGrinder Menu</B></FONT></A></TD></TR>
+        <TR><TD><a href="javascript:Refresh();"><FONT COLOR=WHITE SIZE=-1><B>Refresh Page</B></FONT></A></TD></TR>
+        </TABLE>
+    </TD>
+    </TR>
+    </TABLE>
+<CENTER>
+<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="catalogs.cmvp">
+<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
+<INPUT TYPE=HIDDEN NAME=MODE VALUE="@RequestParameter?MODE@">
+    <TABLE WIDTH=100% BORDER=1>
+    <TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Catalog Manager</H2></FONT></TD></TR>
+    @if?CheckReqParm?MODE=@
+        <TR>
+        <TD WIDTH=50% BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK>MOBs</FONT></TD>
+        <TD WIDTH=50% ALIGN=CENTER><a href="javascript:ToItem()"><FONT COLOR=WHITE>Items</FONT></a></TD>
+        </TR>
+        <TR><TD WIDTH=100% COLSPAN=2 VALIGN=TOP>
+            <TABLE WIDTH=100% BORDER=1>
+            <TR>
+            <TD WIDTH=30%><B><FONT COLOR=YELLOW>Name</FONT></b></TD>
+            <TD WIDTH=10%><B><FONT COLOR=YELLOW>Level</FONT></b></TD>
+            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Class</FONT></b></TD>
+            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Race</FONT></b></TD>
+            <TD WIDTH=10%><B><FONT COLOR=YELLOW>Gender</FONT></b></TD>
+            <TD WIDTH=10%><B><FONT COLOR=YELLOW>Usage</FONT></b></TD>
+            </TR>
+            @CatalogMobNext?RESET@
+            @loop@
+            @CatalogMobNext?ALL@
+                <TR>
+                <TD><a href="javascript:CatalogMob('@RequestParameter?MOB@','')"><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_NAME@</B></FONT></a></TD>
+                <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_LEVEL@</B></FONT></a></TD>
+                <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_CLASS@</B></FONT></a></TD>
+                <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_RACE@</B></FONT></a></TD>
+                <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_GENDER@</B></FONT></a></TD>
+                <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_USAGE@</B></FONT></a></TD>
+                </TR>
+            @back@
+            <TR>
+            <TD COLSPAN=6><a href="javascript:NewCatalogMob('NEWCATA-'+document.RESOURCES.NEWOBJECT.value,document.RESOURCES.NEWOBJECT.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWOBJECT SIZE=70></B></FONT></TD>
+            </TR>
+            </TABLE>
+        </TD></TR>
+    @else@
+        <TR>
+        <TD WIDTH=50% ALIGN=CENTER><a href="javascript:ToMob()"><FONT COLOR=WHITE>MOBs</FONT></a></TD>
+        <TD WIDTH=50% BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK>Items</FONT></TD>
+        </TR>
+        <TR><TD WIDTH=100% COLSPAN=2 VALIGN=TOP>
+            <TABLE WIDTH=100% BORDER=1>
+            <TR>
+            <TD WIDTH=30%><B><FONT COLOR=YELLOW>Name</FONT></b></TD>
+            <TD WIDTH=10%><B><FONT COLOR=YELLOW>Level</FONT></b></TD>
+            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Class</FONT></b></TD>
+            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Value</FONT></b></TD>
+            <TD WIDTH=10%><B><FONT COLOR=YELLOW>Usage</FONT></b></TD>
+            </TR>
+            @CatalogItemNext?RESET@
+            @loop@
+            @CatalogItemNext?ALL@
+                <TR>
+                <TD><a href="javascript:CatalogItem('@RequestParameter?ITEM@','')"><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_NAME@</B></FONT></a></TD>
+                <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_LEVEL@</B></FONT></a></TD>
+                <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_CLASS@</B></FONT></a></TD>
+                <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_VALUE@</B></FONT></a></TD>
+                <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_USAGE@</B></FONT></a></TD>
+                </TR>
+            @back@
+            <TR>
+            <TD COLSPAN=5><a href="javascript:NewCatalogItem('NEWCATA-'+document.RESOURCES.NEWOBJECT.value,document.RESOURCES.NEWOBJECT.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWOBJECT SIZE=70></B></FONT></TD>
+            </TR>
+            </TABLE>
+        </TD></TR>
+    @endif@
+    </TABLE>
+    <P>
+    <TABLE WIDTH=100% BORDER=0>
+    <TR>
+    <TD WIDTH=33% ALIGN=CENTER>
+    </TD>
+    <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=REFRESH VALUE="Refresh" ONCLICK="Refresh();"></TD>
+    <TD WIDTH=33% ALIGN=CENTER>
+    </TD>
+    </TR>
+    </TABLE>
+    <CENTER>
+    </CENTER>
+</FORM>
+</BODY>
+</HTML>
+@endif@
+@endif@

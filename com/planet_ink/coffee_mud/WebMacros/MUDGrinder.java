@@ -126,6 +126,52 @@ public class MUDGrinder extends StdWebMacro
 			return "The area "+A.Name()+" has been successfully deleted.";
 		}
         else
+        if(parms.containsKey("DELCATALOGMOB"))
+        {
+            MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(mob==null) return "@break@";
+            String last=httpReq.getRequestParameter("DELMOB");
+            if(last==null) return "@break@";
+            if(last.length()==0) return "@break@";
+            if(last.startsWith("CATALOG-")) {
+                last=last.substring(8);
+                int m=CMLib.map().getCatalogMobIndex(last);
+                if(m<0) return "@break@";
+                MOB M=CMLib.map().getCatalogMob(m);
+                if(M==null) return "@break@";
+                if(!CMSecurity.isAllowedEverywhere(mob,"CATALOG")) return "@break@";
+                CMLib.map().delCatalog(M);
+                CMLib.database().DBDeleteMOB("CATALOG_MOBS",M);
+                Log.sysOut("Grinder",mob.Name()+" destroyed catalog mob "+last);
+                return "The catalog mob "+last+" has been removed.";
+            }
+            else
+                return "@break@";
+        }
+        else
+        if(parms.containsKey("DELCATALOGITEM"))
+        {
+            MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            if(mob==null) return "@break@";
+            String last=httpReq.getRequestParameter("DELITEM");
+            if(last==null) return "@break@";
+            if(last.length()==0) return "@break@";
+            if(last.startsWith("CATALOG-")) {
+                last=last.substring(8);
+                int i=CMLib.map().getCatalogItemIndex(last);
+                if(i<0) return "@break@";
+                Item I=CMLib.map().getCatalogItem(i);
+                if(I==null) return "@break@";
+                if(!CMSecurity.isAllowedEverywhere(mob,"CATALOG")) return "@break@";
+                CMLib.map().delCatalog(I);
+                CMLib.database().DBDeleteItem("CATALOG_ITEMS",I);
+                Log.sysOut("Grinder",mob.Name()+" destroyed catalog item "+last);
+                return "The catalog item "+last+" has been removed.";
+            }
+            else
+                return "@break@";
+        }
+        else
         if(parms.containsKey("DELCLAN"))
         {
             MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));

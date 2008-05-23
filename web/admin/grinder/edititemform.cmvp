@@ -64,6 +64,14 @@
 			document.AREAEDIT.target=properTarget;
 			document.AREAEDIT.submit();
 		}
+        function DelItem()
+        {
+            if(confirm('Confirm: Delete this item?'))
+            {
+                document.AREAEDIT.DELITEM.value="@RequestParameter?ITEM@";
+                document.AREAEDIT.submit();
+            }
+        }
 		
 	//-->
 	</SCRIPT>
@@ -106,6 +114,7 @@
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=RESPONSEFIELD VALUE="@RequestParameter?RESPONSEFIELD@">
 <INPUT TYPE=HIDDEN NAME=REPLACEFIELD VALUE="@RequestParameter?REPLACEFIELD@">
+<INPUT TYPE=HIDDEN NAME=DELITEM VALUE="">
 <INPUT TYPE=HIDDEN NAME=CHANGEDCLASS VALUE="">
 <INPUT TYPE=HIDDEN NAME=CHANGEDLEVEL VALUE="">
 <INPUT TYPE=HIDDEN NAME=ITEM VALUE="@RequestParameter?ITEM@">
@@ -165,10 +174,18 @@
 </TR>
 @else@
 @if?ItemData?ISWALLPAPER@
-	<TR>
-		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Item Name:</B></FONT></TD>
-	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=NAME SIZE=60 VALUE="@ItemData?NAME@"></TD>
-	</TR>
+    <TR>
+        <TD WIDTH=150><FONT COLOR="#66FFFF"><B>Item Name:</B></FONT></TD>
+        @if?CheckReqParm?<ITEM=CATALOG-@
+            <TD WIDTH=450 COLSPAN=2><INPUT TYPE=HIDDEN NAME=NAME VALUE="@ItemData?NAME@"><FONT COLOR=WHITE>@ItemData?NAME@</FONT></TD>
+        @else@
+            @if?CheckReqParm?<ITEM=NEWCATA-@
+                <TD WIDTH=450 COLSPAN=2><INPUT TYPE=HIDDEN NAME=NAME VALUE="@ItemData?NAME@"><FONT COLOR=WHITE>@ItemData?NAME@</FONT></TD>
+            @else@
+                <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=NAME SIZE=60 VALUE="@ItemData?NAME@"></TD>
+            @endif@
+        @endif@
+    </TR>
 	<TR>
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Description:</B></FONT></TD>
 	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=DESCRIPTION SIZE=60  MAXLENGTH=1024 VALUE="@ItemData?DESCRIPTION@"></TD>
@@ -184,10 +201,18 @@
 	</TR>
 	@endif@
 @else@
-	<TR>
-		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Item Name:</B></FONT></TD>
-	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=NAME SIZE=60 VALUE="@ItemData?NAME@"></TD>
-	</TR>
+    <TR>
+        <TD WIDTH=150><FONT COLOR="#66FFFF"><B>Item Name:</B></FONT></TD>
+        @if?CheckReqParm?<ITEM=CATALOG-@
+            <TD WIDTH=450 COLSPAN=2><INPUT TYPE=HIDDEN NAME=NAME VALUE="@ItemData?NAME@"><FONT COLOR=WHITE>@ItemData?NAME@</FONT></TD>
+        @else@
+            @if?CheckReqParm?<ITEM=NEWCATA-@
+                <TD WIDTH=450 COLSPAN=2><INPUT TYPE=HIDDEN NAME=NAME VALUE="@ItemData?NAME@"><FONT COLOR=WHITE>@ItemData?NAME@</FONT></TD>
+            @else@
+                <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=NAME SIZE=60 VALUE="@ItemData?NAME@"></TD>
+            @endif@
+        @endif@
+    </TR>
 	<TR>
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Displayed:</B></FONT></TD>
 	    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=DISPLAYTEXT SIZE=60 MAXLENGTH=255 VALUE="@ItemData?DISPLAYTEXT@"></TD>
@@ -752,10 +777,26 @@
 @endif@
 @endif@
 <TR>
-    <TD WIDTH=600 COLSPAN=3 ALIGN=CENTER>
-	<INPUT TYPE=SUBMIT NAME=FINISHED VALUE="Finished">
-	</CENTER>
-	</TD>
+<TD WIDTH=600 COLSPAN=3 ALIGN=CENTER>
+    @if?CheckReqParm?<ITEM=NEWCATA-@
+        <INPUT TYPE=SUBMIT NAME=FINISHED VALUE="Finished">
+    @else@
+        @if?CheckReqParm?<ITEM=CATALOG-@
+        
+        <TABLE WIDTH=100% BORDER=0>
+            <TD WIDTH=33% ALIGN=CENTER>
+                <INPUT TYPE=SUBMIT NAME=FINISHED VALUE="Finished">
+            </TD>
+            <TD WIDTH=33% ALIGN=CENTER></TD>
+            <TD ALIGN=CENTER WIDTH=33%>
+                <INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="DelItem()">
+            </TD>
+        </TABLE>
+        @else@
+        	<INPUT TYPE=SUBMIT NAME=FINISHED VALUE="Finished">
+        @endif@
+    @endif@
+</TD>
 </TR>
 </TABLE>
 </FORM>

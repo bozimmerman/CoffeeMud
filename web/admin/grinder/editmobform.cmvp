@@ -147,7 +147,15 @@
 @if?MobData?ISGENERIC@
 <TR>
 	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Name:</B></FONT></TD>
-    <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=NAME SIZE=60 VALUE="@MobData?NAME@"></TD>
+	@if?CheckReqParm?<MOB=CATALOG-&@
+        <TD WIDTH=450 COLSPAN=2><INPUT TYPE=HIDDEN NAME=NAME VALUE="@MobData?NAME@"><FONT COLOR=WHITE>@MobData?NAME@</FONT></TD>
+    @else@
+        @if?CheckReqParm?<MOB=NEWCATA-&@
+            <TD WIDTH=450 COLSPAN=2><INPUT TYPE=HIDDEN NAME=NAME VALUE="@MobData?NAME@"><FONT COLOR=WHITE>@MobData?NAME@</FONT></TD>
+        @else@
+            <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=NAME SIZE=60 VALUE="@MobData?NAME@"></TD>
+        @endif@
+    @endif@
 </TR>
 <TR>
 	<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Display:</B></FONT></TD>

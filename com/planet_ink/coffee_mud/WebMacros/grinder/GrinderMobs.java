@@ -304,7 +304,7 @@ public class GrinderMobs
     		}
 
 			MOB M=null;
-			if(mobCode.equals("NEW")||mobCode.equals("NEWDEITY"))
+			if(mobCode.equals("NEW")||mobCode.equals("NEWDEITY")||mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
 				M=CMClass.getMOB(newClassID);
 			else
 				M=RoomData.getMOBFromCode(R,mobCode);
@@ -664,6 +664,15 @@ public class GrinderMobs
 								K.getShop().addStoreInventory(O,CMath.s_int(theparm),CMath.s_int(theprice),K);
 						}
 						else
+				        if(MATCHING.startsWith("CATALOG-"))
+				        {
+				            Environmental O=RoomData.getMOBFromCatalog(MATCHING);
+				            if(O==null) 
+				                O=RoomData.getItemFromAnywhere(null,MATCHING);
+                            if(O!=null)
+                                K.getShop().addStoreInventory((Environmental)O.copyOf(),CMath.s_int(theparm),CMath.s_int(theprice),K);
+				        }
+				        else
 						if(MATCHING.indexOf("@")>0)
 						{
 							Environmental O=null;
@@ -733,9 +742,36 @@ public class GrinderMobs
 			String newMobCode=null;
 			if(R==null)
 			{
-				RoomData.contributeMOBs(CMParms.makeVector(M));
-                MOB M2=RoomData.getReferenceMOB(M);
-				newMobCode=RoomData.getMOBCode(RoomData.mobs,M2);
+			    if(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
+			    {
+			        int m=CMLib.map().getCatalogMobIndex(mobCode.substring(8));
+			        if(m>=0)
+			        {
+			            MOB M2=CMLib.map().getCatalogMob(m);
+			            if(!M.Name().equalsIgnoreCase(M2.Name()))
+    			            M.setName(M2.Name());
+			            if((M2.databaseID()==null)||(M2.databaseID().length()==0))
+			                m=-1;
+			            else
+    			            M.setDatabaseID(M2.databaseID());
+			        }
+	                CMLib.flags().setCataloged(M,false);
+                    M.text(); // to get cataloged status into xml
+                    CMLib.map().addCatalogReplace(M);
+                    newMobCode=mobCode;
+                    CMLib.map().propogateCatalogChange(M);
+                    if(m>=0)
+                        CMLib.database().DBUpdateMOB("CATALOG_MOBS",M);
+                    else
+                        CMLib.database().DBCreateThisMOB("CATALOG_MOBS",M);
+                    copyMOB=M;
+			    }
+			    else 
+			    {
+    				RoomData.contributeMOBs(CMParms.makeVector(M));
+                    MOB M2=RoomData.getReferenceMOB(M);
+    				newMobCode=RoomData.getMOBCode(RoomData.mobs,M2);
+			    }
 			}
 			else
 			{

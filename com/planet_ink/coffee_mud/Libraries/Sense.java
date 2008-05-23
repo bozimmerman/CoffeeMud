@@ -93,6 +93,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.SENSE_CONTENTSUNSEEN)==0); }
 	public boolean isCatalogedFalsely(Environmental E)
 	{
+	    if(E==null) return false;
 		if(!isCataloged(E)) return false;
 		if(E instanceof MOB)
 		{

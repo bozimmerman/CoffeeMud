@@ -99,7 +99,7 @@ public class GrinderItems
 					return str.toString();
 				}
 			}
-			if(itemCode.equals("NEW"))
+			if(itemCode.equals("NEW")||itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 				I=CMClass.getItem(newClassID);
 			else
 			if(M!=null)
@@ -508,6 +508,31 @@ public class GrinderItems
 	
 			I.recoverEnvStats();
 			I.text();
+			if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
+			{
+                int i=CMLib.map().getCatalogItemIndex(itemCode.substring(8));
+                if(i>=0)
+                {
+                    Item I2=CMLib.map().getCatalogItem(i);
+                    if(!I.Name().equalsIgnoreCase(I2.Name()))
+                        I.setName(I2.Name());
+                    if((I2.databaseID()==null)||(I2.databaseID().length()==0))
+                        i=-1;
+                    else
+                        I.setDatabaseID(I2.databaseID());
+                }
+                CMLib.flags().setCataloged(I,false);
+                I.text(); // to get cataloged status into xml
+                CMLib.map().addCatalogReplace(I);
+                httpReq.addRequestParameters("ITEM",itemCode);
+                CMLib.map().propogateCatalogChange(I);
+                if(i>=0)
+                    CMLib.database().DBUpdateItem("CATALOG_ITEMS",I);
+                else
+                    CMLib.database().DBCreateThisItem("CATALOG_ITEMS",I);
+                copyItem=I;
+			}
+			else
 			if(itemCode.equals("NEW"))
 			{
 				if(M==null)
@@ -582,8 +607,12 @@ public class GrinderItems
 			{
 				if(R==null)
 				{
-					RoomData.contributeItems(CMParms.makeVector(I));
-					httpReq.addRequestParameters("ITEM",RoomData.getItemCode(RoomData.items,I));
+				    if((!itemCode.startsWith("CATALOG-"))
+				    &&(!itemCode.startsWith("NEWCATA-")))
+				    {
+    					RoomData.contributeItems(CMParms.makeVector(I));
+    					httpReq.addRequestParameters("ITEM",RoomData.getItemCode(RoomData.items,I));
+				    }
 				}
 				else
 				{

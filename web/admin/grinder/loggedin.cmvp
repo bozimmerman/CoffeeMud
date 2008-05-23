@@ -160,6 +160,10 @@
         <A href="javascript:Clicked('deities.cmvp')"><FONT COLOR=WHITE>Deities</FONT></a>
         <BR>
         @endif@
+        @if?CheckAuthCode?AUTH_CATALOG=true@
+        <A href="javascript:Clicked('catalog.cmvp')"><FONT COLOR=WHITE>Catalog</FONT></a>
+        <BR>
+        @endif@
 	</TD></TR>
 </TD></TR>
 </TABLE>

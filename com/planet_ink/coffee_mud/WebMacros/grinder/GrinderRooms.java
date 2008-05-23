@@ -196,6 +196,13 @@ public class GrinderRooms
 						}
 					}
 					else
+					if(MATCHING.startsWith("CATALOG-"))
+					{
+					    MOB M=RoomData.getMOBFromCatalog(MATCHING);
+					    if(M!=null)
+                            happilyAddMob((MOB)M.copyOf(),R);
+					}
+					else
 					if(MATCHING.indexOf("@")>0)
 					{
 						for(int m=0;m<RoomData.mobs.size();m++)

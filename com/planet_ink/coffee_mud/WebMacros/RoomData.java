@@ -154,6 +154,47 @@ public class RoomData extends StdWebMacro
 		return null;
 	}
 
+	
+	public static MOB getMOBFromCatalog(String MATCHING)
+	{
+        if(!MATCHING.startsWith("CATALOG-"))
+            return null;
+        int m=CMLib.map().getCatalogMobIndex(MATCHING.substring(8));
+        if(m>=0) 
+        {
+            MOB M2=CMLib.map().getCatalogMob(m);
+            if(M2!=null)
+            {
+                M2=(MOB)M2.copyOf();
+                CMLib.flags().setCataloged(M2,true);
+                M2.text();
+                return M2;
+            }
+        }
+        return null;
+	}
+	
+	
+    public static Item getItemFromCatalog(String MATCHING)
+    {
+        if(!MATCHING.startsWith("CATALOG-"))
+            return null;
+        int i=CMLib.map().getCatalogItemIndex(MATCHING.substring(8));
+        if(i>=0) 
+        {
+            Item I=CMLib.map().getCatalogItem(i);
+            if(I!=null)
+            {
+                I=(Item)I.copyOf();
+                CMLib.flags().setCataloged(I,true);
+                I.text();
+            }
+            return I;
+        }
+        return null;
+    }
+    
+    
 	public static Item getItemFromAnywhere(Object allitems, String MATCHING)
 	{
 		if(isAllNum(MATCHING))
@@ -168,6 +209,9 @@ public class RoomData extends StdWebMacro
 				return getItemFromCode((Vector)allitems,MATCHING);
 		}
 		else
+        if(MATCHING.startsWith("CATALOG-"))
+            return getItemFromCatalog(MATCHING);
+        else
 		if(MATCHING.indexOf("@")>0)
 		{
 			for(int m=0;m<items.size();m++)
@@ -377,6 +421,22 @@ public class RoomData extends StdWebMacro
 								classes.addElement(M2);
 						}
 						else
+						if(MATCHING.startsWith("CATALOG-"))
+						{
+						    int m=CMLib.map().getCatalogMobIndex(MATCHING.substring(8));
+						    if(m>=0) 
+						    {
+						        MOB M=CMLib.map().getCatalogMob(m);
+						        if(M!=null)
+						        {
+						            M=(MOB)M.copyOf();
+						            CMLib.flags().setCataloged(M,true);
+						            M.text();
+	                                classes.addElement(M);
+						        }
+						    }
+						}
+						else
 						if(MATCHING.indexOf("@")>0)
 						{
 							for(int m=0;m<moblist.size();m++)
@@ -401,6 +461,11 @@ public class RoomData extends StdWebMacro
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);
+	                    if((M!=null)&&(CMLib.flags().isCatalogedFalsely(M)))
+	                    {
+	                        CMLib.flags().setCataloged(M,false);
+                            M.text();
+	                    }
 						if(M.savable())
 							classes.addElement(M);
 					}
@@ -414,6 +479,9 @@ public class RoomData extends StdWebMacro
 					str.append("<TD WIDTH=90%>");
 					str.append("<SELECT ONCHANGE=\"DelMOB(this);\" NAME=MOB"+(i+1)+">");
 					str.append("<OPTION VALUE=\"\">Delete!");
+					if(CMLib.flags().isCataloged(M))
+                        str.append("<OPTION SELECTED VALUE=\"CATALOG-"+M.Name()+"\">"+M.Name()+" (Cataloged)");
+					else
 					if(R.isInhabitant(M))
 						str.append("<OPTION SELECTED VALUE=\""+getMOBCode(classes,M)+"\">"+M.Name()+" ("+M.ID()+")");
 					else
@@ -424,7 +492,8 @@ public class RoomData extends StdWebMacro
 					str.append("</SELECT>");
 					str.append("</TD>");
 					str.append("<TD WIDTH=10%>");
-					str.append("<INPUT TYPE=BUTTON NAME=EDITMOB"+(i+1)+" VALUE=EDIT ONCLICK=\"EditMOB('"+getMOBCode(classes,M)+"');\">");
+                    if(!CMLib.flags().isCataloged(M))
+    					str.append("<INPUT TYPE=BUTTON NAME=EDITMOB"+(i+1)+" VALUE=EDIT ONCLICK=\"EditMOB('"+getMOBCode(classes,M)+"');\">");
 					str.append("</TD></TR>");
 				}
 				str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
@@ -447,7 +516,13 @@ public class RoomData extends StdWebMacro
 					}
 					Resources.submitResource("MUDGRINDER-MOBLIST",mlist);
 				}
-				str.append(mlist);
+                str.append(mlist);
+				str.append("<OPTION VALUE=\"\">------ CATALOGED -------");
+				for(int m=0;m<CMLib.map().getCatalogMobs().size();m++)
+				{
+				    String name=((MOB)CMLib.map().getCatalogMobs().elementAt(m,1)).Name();
+				    str.append("<OPTION VALUE=\"CATALOG-"+name+"\">"+name);
+				}
 				str.append("</SELECT>");
 				str.append("</TD>");
 				str.append("<TD WIDTH=10%>");
@@ -477,6 +552,11 @@ public class RoomData extends StdWebMacro
 					for(int m=0;m<R.numItems();m++)
 					{
 						Item I2=R.fetchItem(m);
+	                    if((I2!=null)&&(CMLib.flags().isCatalogedFalsely(I2)))
+	                    {
+	                        CMLib.flags().setCataloged(I2,false);
+                            I2.text();
+	                    }
 						classes.addElement(I2);
 					}
 					itemlist=contributeItems(classes);
@@ -489,6 +569,9 @@ public class RoomData extends StdWebMacro
 					str.append("<TD WIDTH=90%>");
 					str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
 					str.append("<OPTION VALUE=\"\">Delete!");
+					if(CMLib.flags().isCataloged(I))
+                        str.append("<OPTION SELECTED VALUE=\"CATALOG-"+I.Name()+"\">"+I.Name()+" (Cataloged)"+((I.container()==null)?"":(" in "+I.container().Name())));
+					else
 					if(R.isContent(I))
 						str.append("<OPTION SELECTED VALUE=\""+getItemCode(classes,I)+"\">"+I.Name()+" ("+I.ID()+")"+((I.container()==null)?"":(" in "+I.container().Name())));
 					else
@@ -499,7 +582,8 @@ public class RoomData extends StdWebMacro
 					str.append("</SELECT>");
 					str.append("</TD>");
 					str.append("<TD WIDTH=10%>");
-					str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+getItemCode(classes,I)+"');\">");
+					if(!CMLib.flags().isCataloged(I))
+					    str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+getItemCode(classes,I)+"');\">");
 					str.append("</TD></TR>");
 				}
 				str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
@@ -521,6 +605,12 @@ public class RoomData extends StdWebMacro
 						ilist.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
 					Resources.submitResource("MUDGRINDER-ITEMLIST",ilist);
 				}
+				ilist.append("<OPTION VALUE=\"\">------ CATALOGED -------");
+                for(int m=0;m<CMLib.map().getCatalogItems().size();m++)
+                {
+                    String name=((Item)CMLib.map().getCatalogItems().elementAt(m,1)).Name();
+                    ilist.append("<OPTION VALUE=\"CATALOG-"+name+"\">"+name);
+                }
 				str.append(ilist);
 				str.append("</SELECT>");
 				str.append("</TD>");

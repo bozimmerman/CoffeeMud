@@ -312,6 +312,7 @@ public class Create extends BaseGenerics
 			CMLib.map().getCatalogMobUsage(catDex)[0]++;
 			newMOB=(MOB)newMOB.copyOf();
 			CMLib.flags().setCataloged(newMOB,true);
+			newMOB.text();
 		}
 		return newMOB;
 	}
@@ -326,6 +327,7 @@ public class Create extends BaseGenerics
 			CMLib.map().getCatalogItemUsage(catDex)[0]++;
 			newItem=(Item)newItem.copyOf();
 			CMLib.flags().setCataloged(newItem,true);
+			newItem.text();
 		}
 		return newItem;
 	}

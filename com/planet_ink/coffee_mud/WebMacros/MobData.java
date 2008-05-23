@@ -664,6 +664,14 @@ public class MobData extends StdWebMacro
 							theclasses.addElement(O);
 					}
 					else
+			        if(MATCHING.startsWith("CATALOG-"))
+			        {
+			            Environmental O=RoomData.getMOBFromCatalog(MATCHING);
+			            if(O==null) O=RoomData.getItemFromAnywhere(null,MATCHING);
+                        if(O!=null)
+                            theclasses.addElement(O);
+			        }
+			        else
 					if(MATCHING.indexOf("@")>0)
 					{
 						Environmental O=null;
@@ -717,6 +725,11 @@ public class MobData extends StdWebMacro
 					Environmental O=(Environmental)V.elementAt(b);
 					if(O instanceof Item) itemClasses.addElement(O);
 					if(O instanceof MOB) mobClasses.addElement(O);
+                    if((O!=null)&&(CMLib.flags().isCatalogedFalsely(O)))
+                    {
+                        CMLib.flags().setCataloged(O,false);
+                        O.text(); // to get cataloged status into xml
+                    }
 					theclasses.addElement(O);
 					theparms.addElement(""+E.getShop().numberInStock(O));
 					theprices.addElement(""+E.getShop().stockPrice(O));
@@ -733,6 +746,9 @@ public class MobData extends StdWebMacro
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=SHP"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
+				if(CMLib.flags().isCataloged(O))
+                    str.append("<OPTION SELECTED VALUE=\"CATALOG-"+O.Name()+"\">"+O.Name()+" (Cataloged)");
+				else
 				if(E.getShop().getStoreInventory().contains(O))
 					str.append("<OPTION SELECTED VALUE=\""+(getShopCardinality(E,O)+1)+"\">"+O.Name()+" ("+O.ID()+")");
 				else
@@ -782,7 +798,18 @@ public class MobData extends StdWebMacro
 				}
 				Resources.submitResource("MUDGRINDER-STORESTUFF",bufA);
 			}
-			str.append(bufA);
+            str.append(bufA);
+            str.append("<OPTION VALUE=\"\">------ CATALOGED -------");
+            for(int m=0;m<CMLib.map().getCatalogMobs().size();m++)
+            {
+                String name=((MOB)CMLib.map().getCatalogMobs().elementAt(m,1)).Name();
+                str.append("<OPTION VALUE=\"CATALOG-"+name+"\">"+name);
+            }
+            for(int m=0;m<CMLib.map().getCatalogItems().size();m++)
+            {
+                String name=((Item)CMLib.map().getCatalogItems().elementAt(m,1)).Name();
+                str.append("<OPTION VALUE=\"CATALOG-"+name+"\">"+name);
+            }
 			str.append("</SELECT>");
 			str.append("</TD><TD WIDTH=50%>Stock:");
 			str.append("<INPUT TYPE=TEXT SIZE=5 NAME=SDATA"+(theclasses.size()+1)+" VALUE=\"1\">");
@@ -821,6 +848,11 @@ public class MobData extends StdWebMacro
 				for(int m=0;m<M.inventorySize();m++)
 				{
 					Item I2=M.fetchInventory(m);
+	                if((I2!=null)&&(CMLib.flags().isCatalogedFalsely(I2)))
+	                {
+	                    CMLib.flags().setCataloged(I2,false);
+	                    I2.text();
+	                }
 					classes.addElement(I2);
 				}
 				itemlist=RoomData.contributeItems(classes);
@@ -833,6 +865,9 @@ public class MobData extends StdWebMacro
 				str.append("<TD WIDTH=90%>");
 				str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
+				if(CMLib.flags().isCataloged(I))
+                    str.append("<OPTION SELECTED VALUE=\"CATALOG-"+I.Name()+"\">"+I.Name()+" (Cataloged)"+((I.container()==null)?"":(" in "+I.container().Name()))+((I.amWearingAt(Item.IN_INVENTORY))?"":" (worn/wielded)"));
+				else
 				if(M.isMine(I))
 					str.append("<OPTION SELECTED VALUE=\""+RoomData.getItemCode(classes,I)+"\">"+I.Name()+" ("+I.ID()+")"+((I.container()==null)?"":(" in "+I.container().Name()))+((I.amWearingAt(Item.IN_INVENTORY))?"":" (worn/wielded)"));
 				else
@@ -843,7 +878,8 @@ public class MobData extends StdWebMacro
 				str.append("</SELECT>");
 				str.append("</TD>");
 				str.append("<TD WIDTH=10%>");
-				str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+RoomData.getItemCode(classes,I)+"');\">");
+				if(!CMLib.flags().isCataloged(I))
+    				str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+RoomData.getItemCode(classes,I)+"');\">");
 				str.append("</TD></TR>");
 			}
 			str.append("<TR><TD WIDTH=90% ALIGN=CENTER>");
@@ -865,7 +901,13 @@ public class MobData extends StdWebMacro
 					mposs.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
 				Resources.submitResource("MUDGRINDER-MOBPOSS",mposs);
 			}
-			str.append(mposs);
+            str.append(mposs);
+            str.append("<OPTION VALUE=\"\">------ CATALOGED -------");
+            for(int m=0;m<CMLib.map().getCatalogItems().size();m++)
+            {
+                String name=((Environmental)CMLib.map().getCatalogItems().elementAt(m,1)).Name();
+                str.append("<OPTION VALUE=\"CATALOG-"+name+"\">"+name);
+            }
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=10%>");
@@ -905,6 +947,15 @@ public class MobData extends StdWebMacro
     		M=(MOB)httpReq.getRequestObjects().get(mobCode);
 			if(M==null)
 			{
+			    if(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
+			    {
+			        int m=CMLib.map().getCatalogMobIndex(mobCode.substring(8));
+			        if(m>=0) 
+			            M=CMLib.map().getCatalogMob(m);
+			        else
+	                    M=CMClass.getMOB("GenMob");
+			    }
+			    else
 				if(mobCode.equals("NEW"))
 					M=CMClass.getMOB("GenMob");
 				else
@@ -940,8 +991,13 @@ public class MobData extends StdWebMacro
 		&&(CMClass.getMOB(newClassID)!=null))
 			M=CMClass.getMOB(newClassID);
 
-		boolean changedClass=((httpReq.isRequestParameter("CHANGEDCLASS"))&&(httpReq.getRequestParameter("CHANGEDCLASS")).equals("true"));
-		changedClass=changedClass&&(mobCode.equals("NEW")||mobCode.equalsIgnoreCase("NEWDEITY"));
+		boolean changedClass=((httpReq.isRequestParameter("CHANGEDCLASS"))
+		                     &&(httpReq.getRequestParameter("CHANGEDCLASS")).equals("true"));
+		changedClass=changedClass
+		             &&(mobCode.equals("NEW")
+		                     ||mobCode.equalsIgnoreCase("NEWDEITY")
+		                     ||mobCode.startsWith("CATALOG-")
+		                     ||mobCode.startsWith("NEWCATA-"));
 		boolean changedLevel=((httpReq.isRequestParameter("CHANGEDLEVEL"))&&(httpReq.getRequestParameter("CHANGEDLEVEL")).equals("true"));
 		boolean firstTime=(!httpReq.isRequestParameter("ACTION"))
 				||(!(httpReq.getRequestParameter("ACTION")).equals("MODIFYMOB"))
@@ -968,7 +1024,7 @@ public class MobData extends StdWebMacro
 			{
 			case 0: // name
 				if(firstTime) {
-                    if((mobCode.equalsIgnoreCase("NEW")||mobCode.equalsIgnoreCase("NEWDEITY"))
+                    if((mobCode.equalsIgnoreCase("NEW")||mobCode.equalsIgnoreCase("NEWDEITY")||mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
                     &&(httpReq.isRequestParameter("NEWMOBNAME")))
                         old=httpReq.getRequestParameter("NEWMOBNAME");
                     else
