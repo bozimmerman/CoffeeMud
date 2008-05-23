@@ -680,7 +680,7 @@ public class RoomLoader
 		{
 			fixContentContainers(itemNums,stuff,"CATALOG_ITEMS",null,debug);
 			for(Enumeration e=itemNums.elements();e.hasMoreElements();)
-				CMLib.map().addCatalogReplace((Item)e.nextElement());
+				CMLib.catalog().addCatalogReplace((Item)e.nextElement());
 		}
 
 		// load mob catalog
@@ -689,7 +689,7 @@ public class RoomLoader
 		{
 			fixContentContainers(itemNums,stuff,"CATALOG_MOBS",null,debug);
 			for(Enumeration e=itemNums.elements();e.hasMoreElements();)
-				CMLib.map().addCatalogReplace((MOB)e.nextElement());
+				CMLib.catalog().addCatalogReplace((MOB)e.nextElement());
 		}
 		
 		// now load the rooms
@@ -731,7 +731,7 @@ public class RoomLoader
 		{
 			Room room=CMLib.map().roomLocation(thisItem);
 			if(((room!=null)&&(room.isHere(thisItem.riding())))
-			||(CMLib.map().isCatalogObj(thisItem.riding())))
+			||(CMLib.catalog().isCatalogObj(thisItem.riding())))
 				container=thisItem.riding();
 		}
 		String itemID=""+thisItem;

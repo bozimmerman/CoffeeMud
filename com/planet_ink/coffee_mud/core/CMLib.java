@@ -87,7 +87,8 @@ public class CMLib
     public static final int LIBRARY_MATERIALS=39;
     public static final int LIBRARY_LEGAL=40;
     public static final int LIBRARY_LANGUAGE=41;
-    public static final int LIBRARY_TOTAL=42;
+    public static final int LIBRARY_CATALOG=42;
+    public static final int LIBRARY_TOTAL=43;
 
     private static final CMObject[] libraries=new CMObject[LIBRARY_TOTAL];
     private static boolean[] registered=new boolean[LIBRARY_TOTAL];
@@ -160,6 +161,7 @@ public class CMLib
     public static ColorLibrary color(){return (ColorLibrary)libraries[LIBRARY_COLOR];}
     public static CharCreationLibrary login(){return (CharCreationLibrary)libraries[LIBRARY_LOGIN];}
     public static ExpertiseLibrary expertises(){return (ExpertiseLibrary)libraries[LIBRARY_EXPERTISES];}
+    public static CatalogLibrary catalog(){return (CatalogLibrary)libraries[LIBRARY_CATALOG];}
 
     public static int convertToLibraryCode(Object O)
     {
@@ -205,6 +207,7 @@ public class CMLib
         if(O instanceof ExpertiseLibrary) return LIBRARY_EXPERTISES;
         if(O instanceof MaterialLibrary) return LIBRARY_MATERIALS;
         if(O instanceof LegalLibrary) return LIBRARY_LEGAL;
+        if(O instanceof CatalogLibrary) return LIBRARY_CATALOG;
         return -1;
     }
 

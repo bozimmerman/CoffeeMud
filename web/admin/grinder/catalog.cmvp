@@ -140,8 +140,7 @@
             <TD WIDTH=10%><B><FONT COLOR=YELLOW>Level</FONT></b></TD>
             <TD WIDTH=20%><B><FONT COLOR=YELLOW>Class</FONT></b></TD>
             <TD WIDTH=20%><B><FONT COLOR=YELLOW>Race</FONT></b></TD>
-            <TD WIDTH=10%><B><FONT COLOR=YELLOW>Gender</FONT></b></TD>
-            <TD WIDTH=10%><B><FONT COLOR=YELLOW>Usage</FONT></b></TD>
+            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Gender</FONT></b></TD>
             </TR>
             @CatalogMobNext?RESET@
             @loop@
@@ -152,7 +151,6 @@
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_CLASS@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_RACE@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_GENDER@</B></FONT></a></TD>
-                <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_USAGE@</B></FONT></a></TD>
                 </TR>
             @back@
             <TR>
@@ -171,8 +169,7 @@
             <TD WIDTH=30%><B><FONT COLOR=YELLOW>Name</FONT></b></TD>
             <TD WIDTH=10%><B><FONT COLOR=YELLOW>Level</FONT></b></TD>
             <TD WIDTH=20%><B><FONT COLOR=YELLOW>Class</FONT></b></TD>
-            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Value</FONT></b></TD>
-            <TD WIDTH=10%><B><FONT COLOR=YELLOW>Usage</FONT></b></TD>
+            <TD WIDTH=30%><B><FONT COLOR=YELLOW>Value</FONT></b></TD>
             </TR>
             @CatalogItemNext?RESET@
             @loop@
@@ -182,7 +179,6 @@
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_LEVEL@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_CLASS@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_VALUE@</B></FONT></a></TD>
-                <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_USAGE@</B></FONT></a></TD>
                 </TR>
             @back@
             <TR>

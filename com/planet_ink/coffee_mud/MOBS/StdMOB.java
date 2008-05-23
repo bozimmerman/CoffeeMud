@@ -274,7 +274,11 @@ public class StdMOB implements MOB
 	}
 	public long expirationDate(){return expirationDate;}
 	public void setExpirationDate(long time){expirationDate=time;}
-    protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_MOB);}
+    protected void finalize()
+    {
+        try { CMLib.catalog().changeCatalogUsage(this,false);} catch(Throwable t){}
+        CMClass.unbumpCounter(this,CMClass.OBJECT_MOB);
+    }
     public boolean amDestroyed(){return amDestroyed;}
 	protected void cloneFix(MOB E)
 	{
@@ -613,13 +617,7 @@ public class StdMOB implements MOB
 
 	public void destroy()
 	{
-    	if((baseEnvStats()!=null)
-    	&&(CMLib.flags().isCataloged(this)))
-    	{
-    		CMLib.flags().setCataloged(this,false);
-    		int index=CMLib.map().getCatalogMobIndex(Name());
-    		if(index>=0) CMLib.map().getCatalogMobUsage(index)[0]--;
-    	}
+        try { CMLib.catalog().changeCatalogUsage(this,false);} catch(Throwable t){}
         if((CMSecurity.isDebugging("MISSINGKIDS"))&&(fetchEffect("Age")!=null)&&CMath.isInteger(fetchEffect("Age").text())&&(CMath.s_long(fetchEffect("Age").text())>Short.MAX_VALUE))
             Log.debugOut("MISSKIDS",new Exception(Name()+" went missing form "+CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(this))));
         if(soulMate()!=null) dispossess(false);

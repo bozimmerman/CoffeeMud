@@ -256,12 +256,7 @@ public class GenWallpaper implements Item
 	public void stopTicking(){destroyed=true;}
 	public void destroy()
 	{
-    	if((baseEnvStats()!=null)
-    	&&(CMLib.flags().isCataloged(this)))
-    	{
-    		int index=CMLib.map().getCatalogItemIndex(Name());
-    		if(index>=0) CMLib.map().getCatalogItemUsage(index)[0]--;
-    	}
+	    try{ CMLib.catalog().changeCatalogUsage(this,false);}catch(Throwable t){}
 		if(owner==null) return;
 		destroyed=true;
 		removeFromOwnerContainer();

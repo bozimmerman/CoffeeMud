@@ -233,20 +233,34 @@ public class GrinderRooms
 	
 			if(httpReq.isRequestParameter("ITEM1"))
 			{
+			    Vector items=new Vector();
+			    Vector cstrings=new Vector();
 				for(int i=1;;i++)
 				{
 					String MATCHING=httpReq.getRequestParameter("ITEM"+i);
-					if(MATCHING==null)
-						break;
+                    if(MATCHING==null) break;
 					Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
 					if(I2!=null)
 					{
-						if(RoomData.isAllNum(MATCHING))
-							happilyAddItem(I2,R);
-						else
-							happilyAddItem((Item)I2.copyOf(),R);
+	                    if(!RoomData.isAllNum(MATCHING))
+	                        I2=(Item)I2.copyOf();
+                        I2.unWear();
+	                    //if(worn) I2.wearEvenIfImpossible(M);
+						happilyAddItem(I2,R);
+						items.addElement(I2);
+						I2.setContainer(null);
+                        String CONTAINER=httpReq.getRequestParameter("ITEMCONT"+i);
+                        cstrings.addElement((CONTAINER==null)?"":CONTAINER);
 					}
 				}
+	            for(int i=0;i<cstrings.size();i++)
+	            {
+	                String CONTAINER=(String)cstrings.elementAt(i);
+	                if(CONTAINER.length()==0) continue;
+	                Item I2=(Item)items.elementAt(i);
+	                Item C2=(Item)CMLib.english().fetchEnvironmental(items,CONTAINER,true);
+	                I2.setContainer(C2);
+	            }
 			}
 			else
 				return "No Item Data!";

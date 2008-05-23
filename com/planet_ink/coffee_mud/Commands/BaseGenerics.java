@@ -50,12 +50,12 @@ public class BaseGenerics extends StdCommand
 		||(mob.session()==null))
 		{ E.setName(newName); return;}
 		int oldIndex=(E instanceof MOB)?
-				 	 CMLib.map().getCatalogMobIndex(E.Name()):
-				 	 CMLib.map().getCatalogItemIndex(E.Name());
+				 	 CMLib.catalog().getCatalogMobIndex(E.Name()):
+				 	 CMLib.catalog().getCatalogItemIndex(E.Name());
 		if(oldIndex<0) return;
 		int[] usage=(E instanceof MOB)?
-				 	 CMLib.map().getCatalogMobUsage(oldIndex):
-				 	 CMLib.map().getCatalogItemUsage(oldIndex);
+				 	 CMLib.catalog().getCatalogMobUsage(oldIndex):
+				 	 CMLib.catalog().getCatalogItemUsage(oldIndex);
 		if(mob.session().confirm("This object is cataloged.  Changing its name will detach it from the cataloged version, are you sure (y/N)?","N"))
 		{
 			E.setName(newName);
@@ -73,12 +73,12 @@ public class BaseGenerics extends StdCommand
 			return;
 		
 		int oldIndex=(E instanceof MOB)?
-				 	 CMLib.map().getCatalogMobIndex(E.Name()):
-				 	 CMLib.map().getCatalogItemIndex(E.Name());
+				 	 CMLib.catalog().getCatalogMobIndex(E.Name()):
+				 	 CMLib.catalog().getCatalogItemIndex(E.Name());
 		if(oldIndex<0) return;
 		Environmental cataE=(E instanceof MOB)?
-			 	 			(Environmental)CMLib.map().getCatalogMob(oldIndex):
-			 	 			(Environmental)CMLib.map().getCatalogItem(oldIndex);
+			 	 			(Environmental)CMLib.catalog().getCatalogMob(oldIndex):
+			 	 			(Environmental)CMLib.catalog().getCatalogItem(oldIndex);
 			 
 		CMLib.flags().setCataloged(E,false);
 		if(cataE.sameAs(E)) 
@@ -87,8 +87,8 @@ public class BaseGenerics extends StdCommand
 			return;
 		}
 		int[] usage=(E instanceof MOB)?
-				 	 CMLib.map().getCatalogMobUsage(oldIndex):
-				 	 CMLib.map().getCatalogItemUsage(oldIndex);
+				 	 CMLib.catalog().getCatalogMobUsage(oldIndex):
+				 	 CMLib.catalog().getCatalogItemUsage(oldIndex);
 		if(mob.session().confirm("This object is cataloged.  Enter Y to update the cataloged version, or N to detach this object from the catalog (Y/n)?","Y"))
 		{
 			
@@ -98,7 +98,7 @@ public class BaseGenerics extends StdCommand
 			else
 				CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)cataE);
 			CMLib.flags().setCataloged(E,true);
-			CMLib.map().propogateCatalogChange(cataE);
+			CMLib.catalog().propogateCatalogChange(cataE);
 			mob.tell("Catalog update complete.");
 		}
 		else

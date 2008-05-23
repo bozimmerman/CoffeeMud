@@ -50,7 +50,7 @@ public class GrinderItems
           "INSTRUMENTTYPE","ISAMMO","ISMOBITEM","ISDUST","ISPERFUME",
           "SMELLS","IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT",
           "NUMCOINS","CURRENCY","DENOM","ISRECIPE","RECIPESKILL",
-          "RECIPEDATA", "LAYER","SEETHRU","MULTIWEAR"
+          "RECIPEDATA", "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED"
           };
 	public static String editItem(ExternalHTTPRequests httpReq,
 								  Hashtable parms,
@@ -146,6 +146,14 @@ public class GrinderItems
 					generic=false;
 					parm=parm.substring(1);
 				}
+				if((!httpReq.isRequestParameter(parm))
+				&&(oldI!=null)
+				&&(newClassID==null)
+				&&(CMLib.flags().isCataloged(oldI))
+				&&(!parm.equalsIgnoreCase("CONTAINER"))
+				&&(!parm.equalsIgnoreCase("BEINGWORN")))
+				    continue;
+				
 				String old=httpReq.getRequestParameter(parm);
 				if(old==null) old="";
 	
@@ -383,6 +391,7 @@ public class GrinderItems
 						((Food)I).setNourishment(CMath.s_int(old));
 					break;
 				case 57: // container
+				    /* pushed back to room/mob, where it belongs
 					if(!RoomData.isAllNum(old))
 						I.setContainer(null);
 					else
@@ -390,6 +399,7 @@ public class GrinderItems
 						I.setContainer(RoomData.getItemFromCode(R,old));
 					else
 						I.setContainer(RoomData.getItemFromCode(M,old));
+				    */
 					break;
 				case 58: // is light
 					break;
@@ -496,9 +506,11 @@ public class GrinderItems
 							((Armor)I).setLayerAttributes((short)(((Armor)I).getLayerAttributes()-Armor.LAYERMASK_MULTIWEAR));
 					}
 					break;
+				case 83: // iscataloged
+				    break;
 				}
 			}
-			if(I.isGeneric())
+			if(I.isGeneric()&&(!CMLib.flags().isCataloged(I)))
 			{
 				String error=GrinderExits.dispositions(I,httpReq,parms);
 				if(error.length()>0) return error;
@@ -510,10 +522,10 @@ public class GrinderItems
 			I.text();
 			if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 			{
-                int i=CMLib.map().getCatalogItemIndex(itemCode.substring(8));
+                int i=CMLib.catalog().getCatalogItemIndex(itemCode.substring(8));
                 if(i>=0)
                 {
-                    Item I2=CMLib.map().getCatalogItem(i);
+                    Item I2=CMLib.catalog().getCatalogItem(i);
                     if(!I.Name().equalsIgnoreCase(I2.Name()))
                         I.setName(I2.Name());
                     if((I2.databaseID()==null)||(I2.databaseID().length()==0))
@@ -523,9 +535,9 @@ public class GrinderItems
                 }
                 CMLib.flags().setCataloged(I,false);
                 I.text(); // to get cataloged status into xml
-                CMLib.map().addCatalogReplace(I);
+                CMLib.catalog().addCatalogReplace(I);
                 httpReq.addRequestParameters("ITEM",itemCode);
-                CMLib.map().propogateCatalogChange(I);
+                CMLib.catalog().propogateCatalogChange(I);
                 if(i>=0)
                     CMLib.database().DBUpdateItem("CATALOG_ITEMS",I);
                 else
@@ -624,13 +636,13 @@ public class GrinderItems
 			else
 			{
 				if((httpReq.isRequestParameter("BEINGWORN"))
-				   &&((httpReq.getRequestParameter("BEINGWORN")).equals("on")))
+			    &&((httpReq.getRequestParameter("BEINGWORN")).equals("on")))
 				{
-					if(I.amWearingAt(Item.IN_INVENTORY))
-						I.wearEvenIfImpossible(M);
+				    // deprecated back to room/mob, where it belongs
+					//if(I.amWearingAt(Item.IN_INVENTORY))
+					//	I.wearEvenIfImpossible(M);
 				}
-				else
-					I.wearAt(Item.IN_INVENTORY);
+				//else I.wearAt(Item.IN_INVENTORY);
                 if((R!=null)&&(playerM==null))
                 {
     				CMLib.database().DBUpdateMOBs(R);

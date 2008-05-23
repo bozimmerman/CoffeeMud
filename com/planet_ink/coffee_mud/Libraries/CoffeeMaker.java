@@ -1638,21 +1638,21 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				Environmental cataE=null;
 				if(E instanceof MOB)
 				{
-					int index=CMLib.map().getCatalogMobIndex(E.Name());
+					int index=CMLib.catalog().getCatalogMobIndex(E.Name());
 					if(index>=0)
 					{
-						cataE=CMLib.map().getCatalogMob(index);
-						CMLib.map().getCatalogMobUsage(index)[0]++;
+						cataE=CMLib.catalog().getCatalogMob(index);
+						CMLib.catalog().getCatalogMobUsage(index)[0]++;
 					}
 				}
 				else
 				if(E instanceof Item)
 				{
-					int index=CMLib.map().getCatalogItemIndex(E.Name());
+					int index=CMLib.catalog().getCatalogItemIndex(E.Name());
 					if(index>=0)
 					{
-						cataE=CMLib.map().getCatalogItem(index);
-						CMLib.map().getCatalogItemUsage(index)[0]++;
+						cataE=CMLib.catalog().getCatalogItem(index);
+						CMLib.catalog().getCatalogItemUsage(index)[0]++;
 					}
 				}
 				if((cataE!=null)

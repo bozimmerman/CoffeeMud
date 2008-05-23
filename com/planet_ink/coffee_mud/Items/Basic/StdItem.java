@@ -70,7 +70,11 @@ public class StdItem implements Item
 		baseEnvStats().setArmor(0);
 	}
     protected boolean abilityImbuesMagic(){return true;}
-    protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_ITEM);}
+    protected void finalize()
+    {
+        try {CMLib.catalog().changeCatalogUsage(this,false);} catch(Throwable t){}
+        CMClass.unbumpCounter(this,CMClass.OBJECT_ITEM);
+    }
     public void initializeClass(){}
     public boolean isGeneric(){return false;}
 	public String Name(){ return name;}
@@ -1107,13 +1111,7 @@ public class StdItem implements Item
 	public void destroy()
 	{
 		myContainer=null;
-    	if((baseEnvStats()!=null)
-    	&&(CMLib.flags().isCataloged(this)))
-    	{
-    		CMLib.flags().setCataloged(this,false);
-    		int index=CMLib.map().getCatalogItemIndex(Name());
-    		if(index>=0) CMLib.map().getCatalogItemUsage(index)[0]--;
-    	}
+        try {CMLib.catalog().changeCatalogUsage(this,false);} catch(Throwable t){}
 		for(int a=numEffects()-1;a>=0;a--)
 		{
 			Ability aff=fetchEffect(a);

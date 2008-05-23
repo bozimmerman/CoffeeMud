@@ -746,12 +746,12 @@ public class MobData extends StdWebMacro
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=SHP"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
-				if(CMLib.flags().isCataloged(O))
-                    str.append("<OPTION SELECTED VALUE=\"CATALOG-"+O.Name()+"\">"+O.Name()+" (Cataloged)");
-				else
 				if(E.getShop().getStoreInventory().contains(O))
 					str.append("<OPTION SELECTED VALUE=\""+(getShopCardinality(E,O)+1)+"\">"+O.Name()+" ("+O.ID()+")");
 				else
+                if(CMLib.flags().isCataloged(O))
+                    str.append("<OPTION SELECTED VALUE=\"CATALOG-"+O.Name()+"\">"+O.Name()+" (Cataloged)");
+                else
 				if(RoomData.items.contains(O))
 					str.append("<OPTION SELECTED VALUE=\""+O+"\">"+O.Name()+" ("+O.ID()+")");
 				else
@@ -800,14 +800,14 @@ public class MobData extends StdWebMacro
 			}
             str.append(bufA);
             str.append("<OPTION VALUE=\"\">------ CATALOGED -------");
-            for(int m=0;m<CMLib.map().getCatalogMobs().size();m++)
+            for(int m=0;m<CMLib.catalog().getCatalogMobs().size();m++)
             {
-                String name=((MOB)CMLib.map().getCatalogMobs().elementAt(m,1)).Name();
+                String name=((MOB)CMLib.catalog().getCatalogMobs().elementAt(m,1)).Name();
                 str.append("<OPTION VALUE=\"CATALOG-"+name+"\">"+name);
             }
-            for(int m=0;m<CMLib.map().getCatalogItems().size();m++)
+            for(int m=0;m<CMLib.catalog().getCatalogItems().size();m++)
             {
-                String name=((Item)CMLib.map().getCatalogItems().elementAt(m,1)).Name();
+                String name=((Item)CMLib.catalog().getCatalogItems().elementAt(m,1)).Name();
                 str.append("<OPTION VALUE=\"CATALOG-"+name+"\">"+name);
             }
 			str.append("</SELECT>");
@@ -825,6 +825,8 @@ public class MobData extends StdWebMacro
 		if(parms.containsKey("ITEMLIST"))
 		{
 			Vector classes=new Vector();
+			Vector containers=new Vector();
+            Vector beingWorn=new Vector();
 			Vector itemlist=null;
 			if(httpReq.isRequestParameter("ITEM1"))
 			{
@@ -832,28 +834,48 @@ public class MobData extends StdWebMacro
                     for(int i=0;i<oldM.inventorySize();i++)
                         M.addInventory(oldM.fetchInventory(i));
 
+                containers=new Vector();
 				itemlist=RoomData.items;
+				Vector cstrings=new Vector();
 				for(int i=1;;i++)
 				{
 					String MATCHING=httpReq.getRequestParameter("ITEM"+i);
-					if(MATCHING==null)
-						break;
+                    String WORN=httpReq.getRequestParameter("ITEMWORN"+i);
+					if(MATCHING==null) break;
 					Item I2=RoomData.getItemFromAnywhere(M,MATCHING);
-					if(I2!=null)
+					if(I2!=null) 
+					{
 						classes.addElement(I2);
+                        beingWorn.addElement(new Boolean((WORN!=null)&&(WORN.equalsIgnoreCase("on"))));
+                        String CONTAINER=httpReq.getRequestParameter("ITEMCONT"+i);
+                        cstrings.addElement((CONTAINER==null)?"":CONTAINER);
+					}
 				}
+                for(int i=0;i<cstrings.size();i++)
+                {
+                    String CONTAINER=(String)cstrings.elementAt(i);
+                    Item C2=null;
+                    if(CONTAINER.length()>0)
+                        C2=(Item)CMLib.english().fetchEnvironmental(classes,CONTAINER,true);
+                    containers.addElement((C2!=null)?(Object)C2:"");
+                }
 			}
 			else
 			{
 				for(int m=0;m<M.inventorySize();m++)
 				{
 					Item I2=M.fetchInventory(m);
-	                if((I2!=null)&&(CMLib.flags().isCatalogedFalsely(I2)))
-	                {
-	                    CMLib.flags().setCataloged(I2,false);
-	                    I2.text();
-	                }
-					classes.addElement(I2);
+                    if(I2!=null)
+                    {
+                        if(CMLib.flags().isCatalogedFalsely(I2))
+                        {
+                            CMLib.flags().setCataloged(I2,false);
+                            I2.text();
+                        }
+                        classes.addElement(I2);
+                        containers.addElement((I2.container()==null)?"":(Object)I2.container());
+                        beingWorn.addElement(new Boolean(!I2.amWearingAt(Item.IN_INVENTORY)));
+                    }
 				}
 				itemlist=RoomData.contributeItems(classes);
 			}
@@ -861,24 +883,31 @@ public class MobData extends StdWebMacro
 			for(int i=0;i<classes.size();i++)
 			{
 				Item I=(Item)classes.elementAt(i);
+                Item C=(classes.contains(containers.elementAt(i))?(Item)containers.elementAt(i):null);
+                Boolean W=(Boolean)beingWorn.elementAt(i);
 				str.append("<TR>");
 				str.append("<TD WIDTH=90%>");
 				str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");
 				str.append("<OPTION VALUE=\"\">Delete!");
-				if(CMLib.flags().isCataloged(I))
-                    str.append("<OPTION SELECTED VALUE=\"CATALOG-"+I.Name()+"\">"+I.Name()+" (Cataloged)"+((I.container()==null)?"":(" in "+I.container().Name()))+((I.amWearingAt(Item.IN_INVENTORY))?"":" (worn/wielded)"));
-				else
-				if(M.isMine(I))
-					str.append("<OPTION SELECTED VALUE=\""+RoomData.getItemCode(classes,I)+"\">"+I.Name()+" ("+I.ID()+")"+((I.container()==null)?"":(" in "+I.container().Name()))+((I.amWearingAt(Item.IN_INVENTORY))?"":" (worn/wielded)"));
-				else
-				if(itemlist.contains(I))
-					str.append("<OPTION SELECTED VALUE=\""+I+"\">"+I.Name()+" ("+I.ID()+")");
-				else
-					str.append("<OPTION SELECTED VALUE=\""+I.ID()+"\">"+I.Name()+" ("+I.ID()+")");
-				str.append("</SELECT>");
-				str.append("</TD>");
+                String code=RoomData.getAppropriateCode(I,M,classes,itemlist);
+				str.append("<OPTION SELECTED VALUE=\""+code+"\">"+I.Name()+" ("+I.ID()+")");
+                str.append("</SELECT><BR>");
+                str.append("<FONT COLOR=WHITE SIZE=-1>");
+                str.append("Container: ");
+                str.append("<SELECT NAME=ITEMCONT"+(i+1)+">");
+                str.append("<OPTION VALUE=\"\" "+((C==null)?"SELECTED":"")+">On the ground");
+                for(int i2=0;i2<classes.size();i2++)
+                    if((classes.elementAt(i2) instanceof Container)&&(i2!=i))
+                    {
+                        Container C2=(Container)classes.elementAt(i2);
+                        String name=CMLib.english().getContextName(classes,C2);
+                        str.append("<OPTION "+((C2==C)?"SELECTED":"")+" VALUE=\""+name+"\">"+name+" ("+C2.ID()+")");
+                    }
+                str.append("</SELECT>&nbsp;&nbsp;");
+                str.append("<INPUT TYPE=CHECKBOX NAME=ITEMWORN"+(i+1)+" "+(W.booleanValue()?"CHECKED":"")+">Worn/Wielded");
+                str.append("</FONT></TD>");
 				str.append("<TD WIDTH=10%>");
-				if(!CMLib.flags().isCataloged(I))
+                if(!CMLib.flags().isCataloged(I))
     				str.append("<INPUT TYPE=BUTTON NAME=EDITITEM"+(i+1)+" VALUE=EDIT ONCLICK=\"EditItem('"+RoomData.getItemCode(classes,I)+"');\">");
 				str.append("</TD></TR>");
 			}
@@ -903,9 +932,9 @@ public class MobData extends StdWebMacro
 			}
             str.append(mposs);
             str.append("<OPTION VALUE=\"\">------ CATALOGED -------");
-            for(int m=0;m<CMLib.map().getCatalogItems().size();m++)
+            for(int m=0;m<CMLib.catalog().getCatalogItems().size();m++)
             {
-                String name=((Environmental)CMLib.map().getCatalogItems().elementAt(m,1)).Name();
+                String name=((Environmental)CMLib.catalog().getCatalogItems().elementAt(m,1)).Name();
                 str.append("<OPTION VALUE=\"CATALOG-"+name+"\">"+name);
             }
 			str.append("</SELECT>");
@@ -949,9 +978,9 @@ public class MobData extends StdWebMacro
 			{
 			    if(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
 			    {
-			        int m=CMLib.map().getCatalogMobIndex(mobCode.substring(8));
+			        int m=CMLib.catalog().getCatalogMobIndex(mobCode.substring(8));
 			        if(m>=0) 
-			            M=CMLib.map().getCatalogMob(m);
+			            M=CMLib.catalog().getCatalogMob(m);
 			        else
 	                    M=CMClass.getMOB("GenMob");
 			    }

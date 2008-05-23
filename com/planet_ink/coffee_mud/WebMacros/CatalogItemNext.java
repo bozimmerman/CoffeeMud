@@ -53,16 +53,16 @@ public class CatalogItemNext extends StdWebMacro
         String lastID="";
         Item I=null;
         String name=null;
-        for(int s=0;s<CMLib.map().getCatalogItems().size();s++)
+        for(int s=0;s<CMLib.catalog().getCatalogItems().size();s++)
         {
-            I=CMLib.map().getCatalogItem(s);
+            I=CMLib.catalog().getCatalogItem(s);
             if(I==null) continue;
             name="CATALOG-"+I.Name().toUpperCase().trim();
             if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!name.equalsIgnoreCase(lastID))))
             {
                 httpReq.addRequestParameters("ITEM",name);
                 httpReq.addRequestParameters("CATALOG_ITEM_NAME",""+I.name());
-                httpReq.addRequestParameters("CATALOG_ITEM_USAGE",""+CMLib.map().getCatalogItemUsage(s)[0]);
+                httpReq.addRequestParameters("CATALOG_ITEM_USAGE",""+CMLib.catalog().getCatalogItemUsage(s)[0]);
                 httpReq.addRequestParameters("CATALOG_ITEM_LEVEL",""+I.baseEnvStats().level());
                 httpReq.addRequestParameters("CATALOG_ITEM_CLASS",I.ID());
                 httpReq.addRequestParameters("CATALOG_ITEM_VALUE",""+I.value());

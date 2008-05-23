@@ -94,27 +94,6 @@ public interface WorldMap extends CMLibrary
     
     
     /************************************************************************/
-    /**                          CATALOGS                                   */
-    /************************************************************************/
-    public DVector getCatalogItems();
-    public DVector getCatalogMobs();
-    public boolean isCatalogObj(Environmental E);
-    public boolean isCatalogObj(String name);
-    public int getCatalogItemIndex(String called);
-    public int getCatalogMobIndex(String called);
-    public Item getCatalogItem(int index);
-    public MOB getCatalogMob(int index);
-    public int[] getCatalogItemUsage(int index);
-    public int[] getCatalogMobUsage(int index);
-    public void delCatalog(Item I);
-    public void delCatalog(MOB M);
-    public void addCatalogReplace(Item I);
-    public void addCatalogReplace(MOB M);
-    public void addCatalog(Item I);
-    public void addCatalog(MOB M);
-    public void propogateCatalogChange(Environmental thang);
-    
-    /************************************************************************/
     /**							 QUICK-MAPPINGS    							*/
     /************************************************************************/
     public int numDeities();

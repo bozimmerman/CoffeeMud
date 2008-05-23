@@ -99,7 +99,7 @@ public class Thief_ContractHit extends ThiefSkill
 					M.recoverEnvStats();
 					M.recoverCharStats();
 					M.recoverMaxState();
-					M.text();
+					M.text(); // this establishes his current state.
 					hitmen.addElement(M);
 					M.bringToLife(mob.location(),true);
 					M.setVictim(mob);

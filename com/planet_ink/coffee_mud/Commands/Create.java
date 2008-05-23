@@ -304,13 +304,13 @@ public class Create extends BaseGenerics
 	
 	public MOB getNewCatalogMob(String mobID)
 	{
-		int catDex=CMLib.map().getCatalogMobIndex(mobID);
+		int catDex=CMLib.catalog().getCatalogMobIndex(mobID);
 		MOB newMOB=null;
 		if(catDex>=0)
 		{
-			newMOB=CMLib.map().getCatalogMob(catDex);
-			CMLib.map().getCatalogMobUsage(catDex)[0]++;
+			newMOB=CMLib.catalog().getCatalogMob(catDex);
 			newMOB=(MOB)newMOB.copyOf();
+            try { CMLib.catalog().changeCatalogUsage(newMOB,true);} catch(Throwable t){}
 			CMLib.flags().setCataloged(newMOB,true);
 			newMOB.text();
 		}
@@ -320,12 +320,12 @@ public class Create extends BaseGenerics
 	public Item getNewCatalogItem(String itemID)
 	{
 		Item newItem=null;
-		int catDex=CMLib.map().getCatalogItemIndex(itemID);
+		int catDex=CMLib.catalog().getCatalogItemIndex(itemID);
 		if(catDex>=0)
 		{
-			newItem=CMLib.map().getCatalogItem(catDex);
-			CMLib.map().getCatalogItemUsage(catDex)[0]++;
+			newItem=CMLib.catalog().getCatalogItem(catDex);
 			newItem=(Item)newItem.copyOf();
+	        try { CMLib.catalog().changeCatalogUsage(newItem,true);} catch(Throwable t){}
 			CMLib.flags().setCataloged(newItem,true);
 			newItem.text();
 		}
@@ -959,7 +959,7 @@ public class Create extends BaseGenerics
 			E=CMClass.getItem(allWord);
 			if(((E!=null)&&(E instanceof Item))
 			||(CMLib.english().numPossibleGold(null,allWord)>0)
-			||(CMLib.map().getCatalogItemIndex(allWord)>=0))
+			||(CMLib.catalog().getCatalogItemIndex(allWord)>=0))
 			{
 				commands.insertElementAt("ITEM",1);
 				execute(mob,commands);
@@ -968,7 +968,7 @@ public class Create extends BaseGenerics
 			{
 				E=CMClass.getMOB(allWord);
 				if(((E!=null)&&(E instanceof MOB))
-				||(CMLib.map().getCatalogMobIndex(allWord)>=0))
+				||(CMLib.catalog().getCatalogMobIndex(allWord)>=0))
 				{
 					commands.insertElementAt("MOB",1);
 					execute(mob,commands);

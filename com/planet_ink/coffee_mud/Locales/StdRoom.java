@@ -670,7 +670,7 @@ public class StdRoom implements Room
 			                if((M!=null)&&(M.savable()))
 			                {
 			                    M.setStartRoom(this);
-			                    M.text();
+			                    M.text(); // this permanizes his current state
 			                }
 			            }
 			            CMLib.database().DBUpdateMOBs(this);

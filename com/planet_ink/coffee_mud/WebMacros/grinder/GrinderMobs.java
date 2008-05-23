@@ -228,20 +228,37 @@ public class GrinderMobs
 	{
 		if(httpReq.isRequestParameter("ITEM1"))
 		{
+		    Vector items=new Vector();
+		    Vector cstrings=new Vector();
 			for(int i=1;;i++)
 			{
-				String MATCHING=httpReq.getRequestParameter("ITEM"+i);
-				if(MATCHING==null)
-					break;
-				Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
-				if(I2!=null)
-				{
-					if(CMath.isNumber(MATCHING))
-						happilyAddItem(I2,M);
-					else
-						happilyAddItem((Item)I2.copyOf(),M);
-				}
-			}
+                String MATCHING=httpReq.getRequestParameter("ITEM"+i);
+                String WORN=httpReq.getRequestParameter("ITEMWORN"+i);
+                if(MATCHING==null) break;
+                Item I2=RoomData.getItemFromAnywhere(allitems,MATCHING);
+                if(I2!=null)
+                {
+                    if(!CMath.isNumber(MATCHING))
+                        I2=(Item)I2.copyOf();
+                    boolean worn=((WORN!=null)&&(WORN.equalsIgnoreCase("on")));
+                    I2.setContainer(null);
+                    I2.unWear();
+                    if(worn) I2.wearEvenIfImpossible(M);
+					happilyAddItem(I2,M);
+					items.addElement(I2);
+                    I2.setContainer(null);
+                    String CONTAINER=httpReq.getRequestParameter("ITEMCONT"+i);
+                    cstrings.addElement((CONTAINER==null)?"":CONTAINER);
+                }
+            }
+            for(int i=0;i<cstrings.size();i++)
+            {
+                String CONTAINER=(String)cstrings.elementAt(i);
+                if(CONTAINER.length()==0) continue;
+                Item I2=(Item)items.elementAt(i);
+                Item C2=(Item)CMLib.english().fetchEnvironmental(items,CONTAINER,true);
+                I2.setContainer(C2);
+            }
 			for(int i=0;i<allitems.size();i++)
 			{
 				Item I=(Item)allitems.elementAt(i);
@@ -744,10 +761,10 @@ public class GrinderMobs
 			{
 			    if(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
 			    {
-			        int m=CMLib.map().getCatalogMobIndex(mobCode.substring(8));
+			        int m=CMLib.catalog().getCatalogMobIndex(mobCode.substring(8));
 			        if(m>=0)
 			        {
-			            MOB M2=CMLib.map().getCatalogMob(m);
+			            MOB M2=CMLib.catalog().getCatalogMob(m);
 			            if(!M.Name().equalsIgnoreCase(M2.Name()))
     			            M.setName(M2.Name());
 			            if((M2.databaseID()==null)||(M2.databaseID().length()==0))
@@ -757,9 +774,9 @@ public class GrinderMobs
 			        }
 	                CMLib.flags().setCataloged(M,false);
                     M.text(); // to get cataloged status into xml
-                    CMLib.map().addCatalogReplace(M);
+                    CMLib.catalog().addCatalogReplace(M);
                     newMobCode=mobCode;
-                    CMLib.map().propogateCatalogChange(M);
+                    CMLib.catalog().propogateCatalogChange(M);
                     if(m>=0)
                         CMLib.database().DBUpdateMOB("CATALOG_MOBS",M);
                     else

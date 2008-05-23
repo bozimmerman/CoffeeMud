@@ -680,7 +680,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         int number=getContextNumber(list,E);
         if(number<0) return null;
         if(number<2) return E.name();
-        return E.name()+"."+(number+1);
+        return E.name()+"."+number;
     }
     
     public String getContextSameName(Object[] list, Environmental E){ return getContextName(CMParms.makeVector(list),E);}
@@ -690,7 +690,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         int number=getContextSameNumber(list,E);
         if(number<0) return null;
         if(number<2) return E.name();
-        return E.name()+"."+(number+1);
+        return E.name()+"."+number;
     }
     
 	public Environmental fetchEnvironmental(Environmental[] list, String srchStr, boolean exactOnly)

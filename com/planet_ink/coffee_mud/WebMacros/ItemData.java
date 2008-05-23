@@ -57,7 +57,7 @@ public class ItemData extends StdWebMacro
       "ISAMMO","ISMOBITEM","ISDUST","ISPERFUME","SMELLS",
       "IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT","NUMCOINS",
       "CURRENCY","DENOM","ISRECIPE","RECIPESKILL","RECIPEDATA",
-      "LAYER","SEETHRU","MULTIWEAR"};
+      "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED"};
     public ItemData()
     {
         super();
@@ -77,7 +77,6 @@ public class ItemData extends StdWebMacro
                 sortedResources.insertElementAt(putHere,L,S);
         }
     }
-    
     
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
@@ -201,9 +200,9 @@ public class ItemData extends StdWebMacro
 				{
 	                if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 	                {
-	                    int i=CMLib.map().getCatalogItemIndex(itemCode.substring(8));
+	                    int i=CMLib.catalog().getCatalogItemIndex(itemCode.substring(8));
 	                    if(i>=0) 
-	                        I=CMLib.map().getCatalogItem(i);
+	                        I=CMLib.catalog().getCatalogItem(i);
 	                    else
 	                        I=CMClass.getItem("GenItem");
 	                }
@@ -711,54 +710,9 @@ public class ItemData extends StdWebMacro
 					str.append(old);
 					break;
 				case 57:
-				if((M!=null)||(R!=null))
-				{
-					Vector oldContents=new Vector();
-					if(oldI instanceof Container)
-						oldContents=((Container)oldI).getContents();
-					if((M==null)&&(R!=null))
-					{
-						if((firstTime)&&(I.container()!=null))
-							old=""+RoomData.getItemCode(R,I.container());
-						else
-							old=(firstTime)?"":old;
-						str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">Inventory");
-						for(int i=0;i<R.numItems();i++)
-						{
-							Item I2=R.fetchItem(i);
-							if((I2!=I)&&(I2!=oldI)&&(I2 instanceof Container)&&(!oldContents.contains(I2)))
-							{
-								str.append("<OPTION VALUE=\""+RoomData.getItemCode(R,I2)+"\"");
-								if(old.equals(RoomData.getItemCode(R,I2)))
-									str.append(" SELECTED");
-								str.append(">"+I2.Name()+" ("+I2.ID()+")"+((I2.container()==null)?"":(" in "+I2.container().Name())));
-							}
-						}
-					}
-					else
-					if(M!=null)
-					{
-						if((firstTime)&&(I.container()!=null))
-							old=""+RoomData.getItemCode(M,I.container());
-						else
-							old=(firstTime)?"":old;
-						str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">Inventory");
-						for(int i=0;i<M.inventorySize();i++)
-						{
-							Item I2=M.fetchInventory(i);
-							if((I2!=I)&&(I2!=I)&&(I2 instanceof Container)&&(!oldContents.contains(I2)))
-							{
-								str.append("<OPTION VALUE=\""+RoomData.getItemCode(M,I2)+"\"");
-								if(old.equals(RoomData.getItemCode(M,I2)))
-									str.append(" SELECTED");
-								str.append(">"+I2.Name()+" ("+I2.ID()+")"+((I2.container()==null)?"":(" in "+I2.container().Name())));
-							}
-						}
-					}
-					else
-	                    str.append("");
-				}
-				break;
+				    // pushed back to room/mob, where it belongs
+				    //str.append(container(R,M,oldI,I,old,firstTime));
+    				break;
 				case 58: // is light
 					if(I instanceof Light) return "true";
                     return "false";
@@ -785,7 +739,7 @@ public class ItemData extends StdWebMacro
 				case 62:
 					if(I instanceof Scroll) return "true";
                     return "false";
-				case 63: // being worn
+				case 63: // being worn -- pushed back to mob/room
 					if(firstTime)
 						old=I.amWearingAt(Item.IN_INVENTORY)?"":"checked";
 					else
@@ -969,12 +923,19 @@ public class ItemData extends StdWebMacro
 						old="checked";
 					str.append(old);
 					break;
+				case 87: // iscataloged
+				    str.append(""+CMLib.flags().isCataloged(I));
+				    break;
 				}
 				if(firstTime)
 					httpReq.addRequestParameters(okparms[o],old.equals("checked")?"on":old);
 			}
 			str.append(ExitData.dispositions(I,firstTime,httpReq,parms));
 			str.append(AreaData.affectsNBehaves(I,httpReq,parms,1));
+			if(oldI!=null){
+			    I.setContainer(oldI.container());
+			    I.setRawWornCode(oldI.rawWornCode());
+			}
 
 			String strstr=str.toString();
 			if(strstr.endsWith(", "))
