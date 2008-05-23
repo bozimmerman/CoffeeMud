@@ -166,10 +166,10 @@
         <TR><TD WIDTH=100% COLSPAN=2 VALIGN=TOP>
             <TABLE WIDTH=100% BORDER=1>
             <TR>
-            <TD WIDTH=30%><B><FONT COLOR=YELLOW>Name</FONT></b></TD>
-            <TD WIDTH=10%><B><FONT COLOR=YELLOW>Level</FONT></b></TD>
-            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Class</FONT></b></TD>
-            <TD WIDTH=30%><B><FONT COLOR=YELLOW>Value</FONT></b></TD>
+            <TD WIDTH=25%><B><FONT COLOR=YELLOW>Name</FONT></b></TD>
+            <TD WIDTH=5%><B><FONT COLOR=YELLOW>Level</FONT></b></TD>
+            <TD WIDTH=10%><B><FONT COLOR=YELLOW>Class</FONT></b></TD>
+            <TD WIDTH=60%><B><FONT COLOR=YELLOW>Value</FONT></b></TD>
             </TR>
             @CatalogItemNext?RESET@
             @loop@
