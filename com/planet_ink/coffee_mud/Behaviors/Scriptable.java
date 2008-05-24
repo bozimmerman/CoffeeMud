@@ -6259,7 +6259,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     {
                         Room R=(Room)e.nextElement();
                         if(R.numInhabitants()>0)
-                            R.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s));
+                            R.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1).trim()));
                     }
                 }
                 else
@@ -6270,7 +6270,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     {
                         Room R=(Room)e.nextElement();
                         if(R.numInhabitants()>0)
-                            R.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s));
+                            R.showOthers(monster,null,CMMsg.MSG_OK_ACTION,varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1).trim()));
                     }
                 }
                 else
