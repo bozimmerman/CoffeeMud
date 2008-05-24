@@ -20,6 +20,12 @@
 	<!--
 		var properTarget='MAP';
 		
+        function OpenUp(file,named)
+        {
+            var strFeatures="top=200,left=50,scrollbars=yes,resizeable=no,height=400,width=650,alwaysRaised=yes,dependent=yes";
+            w=window.open("/"+file+"?HELPTOPIC="+named,
+                        "Help",strFeatures, false);
+        }
 		function EditBehavior(ME)
 		{
 			if(ME.selectedIndex==0)
@@ -752,6 +758,29 @@
 	    </TD>
 	</TR>
 	@endif@
+    @if?CheckReqParm?<ITEM=NEWCATA-@
+    <TR><TD WIDTH=600 COLSPAN=3><FONT COLOR="#66FFFF"><B>* Edit this item later to set Auto-Drop rate information!</B></FONT></TD></TR>
+    @endif@
+    @if?CheckReqParm?<ITEM=CATALOG-@
+    <TR>
+        <TD WIDTH=150><FONT COLOR="#66FFFF"><B>Auto-Drop Rate %:</B></FONT></TD>
+        <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=CATARATE SIZE=5 VALUE="@ItemData?CATARATE@">
+        </TD>
+    </TR>
+    <TR>
+        <TD WIDTH=150><FONT COLOR="#66FFFF"><B>Drop Live-MOBS:</B></FONT></TD>
+        <TD WIDTH=450 COLSPAN=2><INPUT TYPE=CHECKBOX NAME=CATALIVE @ItemData?CATALIVE@></TD>
+    </TR>
+    <TR>
+        <TD WIDTH=150>
+            <FONT COLOR="#66FFFF"><B>Drop MOB Mask:</B></FONT>
+            <A HREF="javascript:OpenUp('ahelp.cmvp','MASKS')"><FONT COLOR=WHITE><I>?</I></FONT></FONT></TD>
+        </TD>
+        <TD WIDTH=450 COLSPAN=2>
+            <INPUT TYPE=TEXT NAME=CATAMASK SIZE=60 VALUE="@ItemData?CATAMASK@">
+        </TD>
+    </TR>
+    @endif@
 @endif@
 @endif@
 @endif@

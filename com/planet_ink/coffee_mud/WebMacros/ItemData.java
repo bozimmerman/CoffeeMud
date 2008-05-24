@@ -57,7 +57,8 @@ public class ItemData extends StdWebMacro
       "ISAMMO","ISMOBITEM","ISDUST","ISPERFUME","SMELLS",
       "IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT","NUMCOINS",
       "CURRENCY","DENOM","ISRECIPE","RECIPESKILL","RECIPEDATA",
-      "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED"};
+      "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED","CATARATE",
+      "CATALIVE","CATAMASK"};
     public ItemData()
     {
         super();
@@ -926,6 +927,45 @@ public class ItemData extends StdWebMacro
 				case 87: // iscataloged
 				    str.append(""+CMLib.flags().isCataloged(I));
 				    break;
+				case 88: // catarate
+				    if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
+		            {
+		                String name=itemCode.substring(8);
+		                int cataDex=CMLib.catalog().getCatalogItemIndex(name);
+		                CatalogLibrary.CataData data=null;
+		                if(cataDex>=0)
+		                    data=CMLib.catalog().getCatalogItemData(cataDex);
+		                if(data!=null)
+		                    old=CMath.toPct(data.rate);
+		            }
+				    str.append(old+", ");
+				    break;
+                case 89: // catalive
+                    if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
+                    {
+                        String name=itemCode.substring(8);
+                        int cataDex=CMLib.catalog().getCatalogItemIndex(name);
+                        CatalogLibrary.CataData data=null;
+                        if(cataDex>=0)
+                            data=CMLib.catalog().getCatalogItemData(cataDex);
+                        if(data!=null)
+                            old=data.live?"on":"";
+                    }
+                    str.append(((old!=null)&&(old.equalsIgnoreCase("on"))?"CHECKED":"")+", ");
+                    break;
+                case 90: // catamask
+                    if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
+                    {
+                        String name=itemCode.substring(8);
+                        int cataDex=CMLib.catalog().getCatalogItemIndex(name);
+                        CatalogLibrary.CataData data=null;
+                        if(cataDex>=0)
+                            data=CMLib.catalog().getCatalogItemData(cataDex);
+                        if(data!=null)
+                            old=""+data.lmaskStr;
+                    }
+                    str.append(old+", ");
+                    break;
 				}
 				if(firstTime)
 					httpReq.addRequestParameters(okparms[o],old.equals("checked")?"on":old);
@@ -936,7 +976,7 @@ public class ItemData extends StdWebMacro
 			    I.setContainer(oldI.container());
 			    I.setRawWornCode(oldI.rawWornCode());
 			}
-
+			
 			String strstr=str.toString();
 			if(strstr.endsWith(", "))
 				strstr=strstr.substring(0,strstr.length()-2);

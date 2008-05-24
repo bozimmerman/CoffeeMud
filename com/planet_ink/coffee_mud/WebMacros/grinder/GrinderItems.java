@@ -50,8 +50,8 @@ public class GrinderItems
           "INSTRUMENTTYPE","ISAMMO","ISMOBITEM","ISDUST","ISPERFUME",
           "SMELLS","IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT",
           "NUMCOINS","CURRENCY","DENOM","ISRECIPE","RECIPESKILL",
-          "RECIPEDATA", "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED"
-          };
+          "RECIPEDATA", "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED",
+          "CATARATE","CATALIVE","CATAMASK"};
 	public static String editItem(ExternalHTTPRequests httpReq,
 								  Hashtable parms,
 								  MOB whom,
@@ -136,6 +136,8 @@ public class GrinderItems
 				I=CMClass.getItem(newClassID);
                 if(I==null) Log.errOut("GrinderItems","Error: bad class id: "+newClassID);
             }
+			
+			CatalogLibrary.CataData cataData=null;
 	
 			for(int o=0;o<okparms.length;o++)
 			{
@@ -508,6 +510,27 @@ public class GrinderItems
 					break;
 				case 83: // iscataloged
 				    break;
+				case 84: // catarate
+				    if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
+				    {
+				        if(cataData==null) cataData=new CatalogLibrary.CataData("");
+				        cataData.rate=CMath.s_pct(old);
+				    }
+				    break;
+                case 85: // catalive
+                    if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
+                    {
+                        if(cataData==null) cataData=new CatalogLibrary.CataData("");
+                        cataData.live=((old!=null)&&(old.equalsIgnoreCase("on")));
+                    }
+                    break;
+                case 86: // catamask
+                    if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
+                    {
+                        if(cataData==null) cataData=new CatalogLibrary.CataData("");
+                        cataData.lmaskStr=old;
+                    }
+                    break;
 				}
 			}
 			if(I.isGeneric()&&(!CMLib.flags().isCataloged(I)))
@@ -538,6 +561,13 @@ public class GrinderItems
                 CMLib.catalog().addCatalogReplace(I);
                 httpReq.addRequestParameters("ITEM",itemCode);
                 CMLib.catalog().propogateCatalogChange(I);
+                int ii=CMLib.catalog().getCatalogItemIndex(itemCode.substring(8));
+                if((ii>=0)&&(cataData!=null))
+                {
+                    CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(ii);
+                    if((cataData.rate>0.0)&&(cataData.lmaskStr!=null)&&(cataData.lmaskStr.length()>0))
+                        data.build(cataData.data());
+                }
                 if(i>=0)
                     CMLib.database().DBUpdateItem("CATALOG_ITEMS",I);
                 else
