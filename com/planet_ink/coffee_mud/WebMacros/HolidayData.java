@@ -71,8 +71,8 @@ public class HolidayData extends StdWebMacro
                 DVector behaviors=(DVector)encodedData.elementAt(1);
                 DVector properties=(DVector)encodedData.elementAt(2);
                 DVector stats=(DVector)encodedData.elementAt(3);
-                Vector stepV=(Vector)encodedData.elementAt(4);
-                int pricingMobIndex=((Integer)encodedData.elementAt(5)).intValue();
+                //Vector stepV=(Vector)encodedData.elementAt(4);
+                //int pricingMobIndex=((Integer)encodedData.elementAt(5)).intValue();
                 
                 StringBuffer str=new StringBuffer("");
                 if(parms.containsKey("EXISTS"))

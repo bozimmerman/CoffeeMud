@@ -145,8 +145,7 @@ public class MUDGrinder extends StdWebMacro
                 Log.sysOut("Grinder",mob.Name()+" destroyed catalog mob "+last);
                 return "The catalog mob "+last+" has been removed.";
             }
-            else
-                return "@break@";
+            return "@break@";
         }
         else
         if(parms.containsKey("DELCATALOGITEM"))
@@ -168,8 +167,7 @@ public class MUDGrinder extends StdWebMacro
                 Log.sysOut("Grinder",mob.Name()+" destroyed catalog item "+last);
                 return "The catalog item "+last+" has been removed.";
             }
-            else
-                return "@break@";
+            return "@break@";
         }
         else
         if(parms.containsKey("DELCLAN"))
@@ -621,12 +619,9 @@ public class MUDGrinder extends StdWebMacro
                 Log.sysOut("Grinder",mob.name()+" modified ability "+A.ID());
                 return "Ability "+A.ID()+" modified.";
             }
-            else
-            {
-                CMLib.database().DBCreateAbility(A.ID(),A.getStat("ALLXML"));
-                Log.sysOut("Grinder",mob.name()+" created ability "+A.ID());
-                return "Ability "+A.ID()+" created.";
-            }
+            CMLib.database().DBCreateAbility(A.ID(),A.getStat("ALLXML"));
+            Log.sysOut("Grinder",mob.name()+" created ability "+A.ID());
+            return "Ability "+A.ID()+" created.";
         }
 		else
 		if(parms.containsKey("EDITITEM"))

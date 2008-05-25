@@ -140,7 +140,6 @@ public class Catalog extends StdCommand
 				MOB M=null;
 				Item I=null;
 				CatalogLibrary.CataData data;
-				int[] usage=null;
 				if((whatKind==0)||(whatKind==1)) 
 				{
 					list.append("^HMobs\n\r^N");
@@ -150,7 +149,6 @@ public class Catalog extends StdCommand
 					for(int i=0;i<CMLib.catalog().getCatalogMobs().size();i++)
 					{
 						M=CMLib.catalog().getCatalogMob(i);
-						usage=CMLib.catalog().getCatalogMobUsage(i);
 						if((ID==null)||(ID.length()==0)||(CMLib.english().containsString(M.Name(),ID)))
 						{
 							list.append(CMStrings.padRight(M.Name(),38));
@@ -178,7 +176,6 @@ public class Catalog extends StdCommand
 					for(int i=0;i<CMLib.catalog().getCatalogItems().size();i++)
 					{
 						I=CMLib.catalog().getCatalogItem(i);
-						usage=CMLib.catalog().getCatalogItemUsage(i);
                         data=CMLib.catalog().getCatalogItemData(i);
 						if((ID==null)||(ID.length()==0)||(CMLib.english().containsString(I.Name(),ID)))
 						{
@@ -282,7 +279,6 @@ public class Catalog extends StdCommand
                 else
                 if(E instanceof Item)
                 {
-                    String prefix="";
                     if(mob.session()!=null)
                     {
                         String newRate=mob.session().prompt("Enter a new Drop Rate or 0% to disable ("+CMath.toPct(data.rate)+"): ", CMath.toPct(data.rate));
@@ -350,9 +346,6 @@ public class Catalog extends StdCommand
 						Environmental cat=(thisThang instanceof MOB)?
 										 (Environmental)CMLib.catalog().getCatalogMob(exists):
 										 (Environmental)CMLib.catalog().getCatalogItem(exists);
-		                CatalogLibrary.CataData data=(thisThang instanceof MOB)?
-                    	                            CMLib.catalog().getCatalogMobData(exists):
-                    	                            CMLib.catalog().getCatalogItemData(exists);
 						if(thisThang.sameAs(cat))
 						{
 							CMLib.flags().setCataloged(thisThang,true);

@@ -62,8 +62,9 @@ public class GrinderRaces
                 behav=httpReq.getRequestParameter(c+"ESTATS"+num);
             }
         }
-        if(!changes) return "";
-        else return CMLib.coffeeMaker().getEnvStatsStr(adjEStats);
+        if(!changes) 
+            return "";
+        return CMLib.coffeeMaker().getEnvStatsStr(adjEStats);
     }
     
     public static String getCStats(char c, ExternalHTTPRequests httpReq)
@@ -90,8 +91,9 @@ public class GrinderRaces
                 behav=httpReq.getRequestParameter(c+"CSTATS"+num);
             }
         }
-        if(!changes) return "";
-        else return CMLib.coffeeMaker().getCharStatsStr(adjCStats);
+        if(!changes) 
+            return "";
+        return CMLib.coffeeMaker().getCharStatsStr(adjCStats);
     }
     
     public static String getCState(char c, ExternalHTTPRequests httpReq)
@@ -119,15 +121,15 @@ public class GrinderRaces
                 behav=httpReq.getRequestParameter(c+"CSTATE"+num);
             }
         }
-        if(!changes) return "";
-        else return CMLib.coffeeMaker().getCharStateStr(adjCState);
+        if(!changes) 
+            return "";
+        return CMLib.coffeeMaker().getCharStateStr(adjCState);
     }
     
     
     public static Vector itemList(Vector items, char c, ExternalHTTPRequests httpReq, boolean one)
     {
         if(items==null) items=new Vector();
-        StringBuffer str=new StringBuffer("");
         Vector classes=new Vector();
         Vector itemlist=null;
         if(httpReq.isRequestParameter(c+"ITEM1"))

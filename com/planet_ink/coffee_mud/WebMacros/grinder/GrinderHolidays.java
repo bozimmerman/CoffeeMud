@@ -82,8 +82,8 @@ public class GrinderHolidays {
         DVector behaviors=(DVector)encodedData.elementAt(1);
         DVector properties=(DVector)encodedData.elementAt(2);
         DVector stats=(DVector)encodedData.elementAt(3);
-        Vector stepV=(Vector)encodedData.elementAt(4);
-        int pricingMobIndex=((Integer)encodedData.elementAt(5)).intValue();
+        //Vector stepV=(Vector)encodedData.elementAt(4);
+        //int pricingMobIndex=((Integer)encodedData.elementAt(5)).intValue();
         
         String name=setText(settings,"NAME",httpReq.getRequestParameter("NAME"));
         if((name==null)||(name.trim().length()==0)) return "A name is required.";

@@ -160,8 +160,7 @@ public class Burning extends StdAbility
 								((Room)E).recoverRoomStats();
 								return super.tick(ticking,tickID);
 							}
-							else
-								((Item)affected).destroy();
+							((Item)affected).destroy();
 					    }
 						break;
 					}

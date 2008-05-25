@@ -593,7 +593,7 @@ public class RoomData extends StdWebMacro
 				{
 					Item I=(Item)classes.elementAt(i);
 					Item C=(classes.contains(containers.elementAt(i))?(Item)containers.elementAt(i):null);
-					Boolean W=(Boolean)beingWorn.elementAt(i);
+					//Boolean W=(Boolean)beingWorn.elementAt(i);
 					str.append("<TR>");
 					str.append("<TD WIDTH=90%>");
 					str.append("<SELECT ONCHANGE=\"DelItem(this);\" NAME=ITEM"+(i+1)+">");

@@ -135,12 +135,9 @@ public class PollData extends StdWebMacro
                 CMLib.polls().createPoll(P);
                 return "Poll "+P.getName()+" created";
             }
-            else
-            {
-                CMLib.polls().updatePoll(last, P);
-                Log.sysOut(M.name()+" updated poll "+P.getName());
-                return "Poll "+last+" updated";
-            }
+            CMLib.polls().updatePoll(last, P);
+            Log.sysOut(M.name()+" updated poll "+P.getName());
+            return "Poll "+last+" updated";
         }
         else
         if(parms.containsKey("DELETE"))
