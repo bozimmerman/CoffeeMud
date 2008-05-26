@@ -41,6 +41,7 @@ public class Affect extends StdCommand
         int NUM_COLS=xtra?1:2;
         int COL_LEN=xtra?38:25;
 		int colnum=NUM_COLS;
+        MOB mob=(S!=null)?S.mob():null;
 		for(int a=0;a<((E instanceof MOB)?((MOB)E).numAllEffects():E.numEffects());a++)
 		{
 			Ability thisAffect=E.fetchEffect(a);
@@ -61,7 +62,7 @@ public class Affect extends StdCommand
                 String[] disps={disp};
                 if(disp.length()>(COL_LEN*NUM_COLS))
                 {
-                    String s=CMLib.coffeeFilter().fullOutFilter(S,S.mob(),null,null,null,disp,true);
+                    String s=CMLib.coffeeFilter().fullOutFilter(S,mob,null,null,null,disp,true);
                     s=CMStrings.replaceAll(s,"\r","");
                     Vector V=CMParms.parseAny(s,"\n",true);
                     disps=new String[V.size()];
