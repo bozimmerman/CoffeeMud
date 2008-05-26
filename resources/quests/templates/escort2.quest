@@ -187,10 +187,18 @@ ONCE_PROG 100
 	MPSETVAR * $QUEST_NAME_ACCEPTED ''
 	MPSETVAR * $QUEST_NAME_CHECKEDROOM ''
 	MPSETVAR * $QUEST_NAME_ATTACKED ''
+	MPSETVAR * $QUEST_NAME_NUMACCEPTED ''
 	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
 ~
 
 QUEST_TIME_PROG -1 *
+	mpsetvar $i $QUEST_NAME_NUMACCEPTED '$<$i $QUEST_NAME_ACCEPTED>.LENGTH#'
+	for $0 = 0 to< '$<$i $QUEST_NAME_NUMACCEPTED>'
+		if(!QUESTWINNER('$<$i $QUEST_NAME_ACCEPTED>.$0' *))
+			tell "$<$i $QUEST_NAME_ACCEPTED>.$0" You failed to complete your escort quest in time.
+	    endif
+	endif
+	MPSETVAR * $QUEST_NAME_NUMACCEPTED ''
 	MPSETVAR * $QUEST_NAME_ALREADY_TOLD ''
 	MPSETVAR * $QUEST_NAME_ACCEPTED ''
 	MPSETVAR * $QUEST_NAME_REWARDED ''
@@ -203,7 +211,7 @@ GREET_PROG 100
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if !STRIN('$<$i $QUEST_NAME_ALREADY_TOLD>' '$n')
-				if VAR($i $QUEST_NAME_ACCEPTED == '')
+				if VAR($n $QUEST_NAME_ACCEPTED == '')
 					sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept' to take on this quest.
 					MPSETVAR $i $QUEST_NAME_ALREADY_TOLD '$<$i $QUEST_NAME_ALREADY_TOLD> "$n"'
 				endif
@@ -215,12 +223,12 @@ GREET_PROG 100
 SPEECH_PROG p i accept
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if VAR($i $QUEST_NAME_ACCEPTED == '')
+			if VAR($n $QUEST_NAME_ACCEPTED == '')
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
 				mpqset * REMAINING $DURATION
-				mpsetvar $i $QUEST_NAME_ACCEPTED $n
+				MPSETVAR $i $QUEST_NAME_ACCEPTED '$<$i $QUEST_NAME_ACCEPTED> $n'
 				mpsetvar $n $QUEST_NAME_ACCEPTED 'YES'
-				for $0 = 1 to '$%NUMMOBSROOM(*)%'
+				for $0 = 0 to< '$%NUMMOBSROOM(*)%'
 				   if QUESTMOB('$%ROOMMOB($0)%' *) AND EVAL('$%ROOMMOB($0)%' != $i)
 				   		mpforce '$%ROOMMOB($0)%' follow $n
 				   		if !isfollow($%ROOMMOB($0)%)
@@ -231,10 +239,7 @@ SPEECH_PROG p i accept
 				   endif
 				next
 			else
-				if VAR($i $QUEST_NAME_ACCEPTED == $n)
-					sayto "$n" Yes, yes, I know .. now off with you.
-				else
-				endif
+				sayto "$n" Yes, yes, I know .. now off with you.
 			endif
 		endif
 	endif
@@ -274,7 +279,7 @@ RAND_PROG 99
 		if VAR($f $QUEST_NAME_ATTACKED == '')
 			if EVAL('$ATTACKER_PCT_CHANCE' != '') AND RAND($ATTACKER_PCT_CHANCE) AND EVAL('$ATTACKER_SIZE' >= 1)
 				mpsetvar $f $QUEST_NAME_ATTACKED ATTACKED!
-				for $0 = 1 to $ATTACKER_SIZE
+				for $0 = 0 to< $ATTACKER_SIZE
 					mpmload fromfile $QUEST_NAME_attackers.xml any
 					mpqset * QUESTOBJ $b
 					mpforce $b YELL $ATTACKER_SCREAM

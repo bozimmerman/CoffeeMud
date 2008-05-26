@@ -207,21 +207,29 @@ ONCE_PROG 100
 	MPSETVAR * $QUEST_NAME_ALREADY_TOLD ''
 	MPSETVAR * $QUEST_NAME_COUNT ''
 	MPSETVAR * $QUEST_NAME_CURED ''
-	MPSETVAR * $QUEST_NAME_PARTICIPANTS ''
+	MPSETVAR * $QUEST_NAME_ACCEPTED ''
+	MPSETVAR * $QUEST_NAME_NUMACCEPTED ''
 	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
 ~
 
 QUEST_TIME_PROG -1 *
+	mpsetvar $i $QUEST_NAME_NUMACCEPTED '$<$i $QUEST_NAME_ACCEPTED>.LENGTH#'
+	for $0 = 0 to< '$<$i $QUEST_NAME_NUMACCEPTED>'
+		if(!QUESTWINNER('$<$i $QUEST_NAME_ACCEPTED>.$0' *))
+			tell "$<$i $QUEST_NAME_ACCEPTED>.$0" You failed to complete my quest in time.
+	    endif
+	next
+	MPSETVAR * $QUEST_NAME_NUMACCEPTED ''
 	MPSETVAR * $QUEST_NAME_ALREADY_TOLD ''
 	MPSETVAR * $QUEST_NAME_CURED ''
 	MPSETVAR * $QUEST_NAME_COUNT ''
-	MPSETVAR * $QUEST_NAME_PARTICIPANTS ''
+	MPSETVAR * $QUEST_NAME_ACCEPTED ''
 ~
 
-QUEST_TIME_PROG 1 *
-	mpsetvar $i $QUEST_NAME_NUMPARTICIPANTS '$<$i $QUEST_NAME_PARTICIPANTS>.#LENGTH#'
-	for $0 = 1 to '$<$i $QUEST_NAME_NUMPARTICIPANTS>'
-   		tell $<$i $QUEST_NAME_PARTICIPANTS>.$0 You have less than a minute left.
+QUEST_TIME_PROG * 1
+	mpsetvar $i $QUEST_NAME_NUMACCEPTED '$<$i $QUEST_NAME_ACCEPTED>.LENGTH#'
+	for $0 = 0 to< '$<$i $QUEST_NAME_NUMACCEPTED>'
+   		tell "$<$i $QUEST_NAME_ACCEPTED>.$0" You have less than a minute left.
 	next
 ~
 
@@ -240,7 +248,7 @@ SPEECH_PROG p i accept
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if VAR($n $QUEST_NAME_COUNT == '')
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
-				mpsetvar $i $QUEST_NAME_PARTICIPANTS '$<$i $QUEST_NAME_PARTICIPANTS> $n'
+				mpsetvar $i $QUEST_NAME_ACCEPTED '$<$i $QUEST_NAME_ACCEPTED> $n'
 				mpsetvar $n $QUEST_NAME_COUNT 0
 				mpqset * REMAINING $DURATION
 			else
@@ -264,7 +272,7 @@ RAND_PROG 99
 	if !affected($i $DISPEL_SPELL) and VAR($@i $QUEST_NAME_CURED == '')
 		mpsetvar $@i $QUEST_NAME_CURED 'TRUE'
 		mpargset $1 ''
-		for $0 = 1 to '$%NUMMOBSROOM(*)%'
+		for $0 = 0 to< '$%NUMMOBSROOM(*)%'
 		   if VAR($%ROOMMOB($0)% $QUEST_NAME_COUNT != '')
 		   		mpargset $1 $%ROOMMOB($0)%
 		   endif

@@ -178,16 +178,25 @@ ONCE_PROG 100
 	MPSETVAR * $QUEST_NAME_WARNED ''
 	MPSETVAR * $QUEST_NAME_ACCEPTED ''
 	MPSETVAR * $QUEST_NAME_KILLED ''
+	MPSETVAR * $QUEST_NAME_NUMACCEPTED ''
 	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
 ~
 
-QUEST_TIME_PROG 1 *
-	IF VAR($I $QUEST_NAME_ACCEPTED != '')
-		TELL "<$i $QUEST_NAME_ACCEPTED>" You have 1 minute to complete my quest.
-	ENDIF
+QUEST_TIME_PROG * 1
+	mpsetvar $i $QUEST_NAME_NUMACCEPTED '$<$i $QUEST_NAME_ACCEPTED>.LENGTH#'
+	for $0 = 0 to< '$<$i $QUEST_NAME_NUMACCEPTED>'
+		tell "$<$i $QUEST_NAME_ACCEPTED>.$0" You have 1 minute to complete my quest.
+	next
 ~
 
-QUEST_TIME_PROG -1 *
+QUEST_TIME_PROG * 1
+	mpsetvar $i $QUEST_NAME_NUMACCEPTED '$<$i $QUEST_NAME_ACCEPTED>.LENGTH#'
+	for $0 = 0 to< '$<$i $QUEST_NAME_NUMACCEPTED>'
+		if(!QUESTWINNER('$<$i $QUEST_NAME_ACCEPTED>.$0' *))
+			tell "$<$i $QUEST_NAME_ACCEPTED>.$0" You failed to complete my quest in time.
+	    endif
+	next
+	MPSETVAR * $QUEST_NAME_NUMACCEPTED ''
 	MPSETVAR * $QUEST_NAME_ALREADY_TOLD ''
 	MPSETVAR * $QUEST_NAME_ACCEPTED ''
 	MPSETVAR * $QUEST_NAME_REWARDED ''
@@ -202,7 +211,7 @@ ALL_GREET_PROG 100
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if !STRIN('$<$i $QUEST_NAME_ALREADY_TOLD>' '$n')
-				if VAR($i $QUEST_NAME_ACCEPTED == '')
+				if VAR($n $QUEST_NAME_ACCEPTED == '')
 					sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept' to take on this quest.
 					MPSETVAR $i $QUEST_NAME_ALREADY_TOLD '$<$i $QUEST_NAME_ALREADY_TOLD> "$n"'
 				endif
@@ -246,17 +255,14 @@ ALL_GREET_PROG 100
 SPEECH_PROG p i accept
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if VAR($i $QUEST_NAME_ACCEPTED == '')
+			if VAR($n $QUEST_NAME_ACCEPTED == '')
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
 				mpqset * REMAINING $DURATION
-				mpsetvar $i $QUEST_NAME_ACCEPTED $n
+				MPSETVAR $i $QUEST_NAME_ACCEPTED '$<$i $QUEST_NAME_ACCEPTED> $n'
 				mpsetvar $n $QUEST_NAME_ACCEPTED 'YES'
 				mpsetvar $n $QUEST_NAME_KILLED 0
 			else
-				if VAR($i $QUEST_NAME_ACCEPTED == $n)
-					sayto "$n" Yes, yes, I know .. now off with you.
-				else
-				endif
+				sayto "$n" Yes, yes, I know .. now off with you.
 			endif
 		endif
 	endif

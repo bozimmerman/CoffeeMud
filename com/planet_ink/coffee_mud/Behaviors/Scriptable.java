@@ -103,7 +103,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                     trigger=((String)script.elementAt(0)).toUpperCase().trim();
                 if((getTriggerCode(trigger)==13) //questtimeprog
                 &&(!oncesDone.contains(script))
-                &&(CMParms.getCleanBit(trigger,1).equalsIgnoreCase(quest)||(quest.equalsIgnoreCase("*")))
+                &&(CMParms.getCleanBit(trigger,1).equalsIgnoreCase(quest)||(CMParms.getCleanBit(trigger,1).equalsIgnoreCase("*")))
                 &&(CMath.s_int(CMParms.getCleanBit(trigger,2).trim())<0))
                 {
                     oncesDone.addElement(script);
@@ -1175,14 +1175,16 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				break;
 			}
-            if((middle.length()>0)
-            &&(back.startsWith("."))
+            if((back.startsWith("."))
             &&(back.length()>1))
             {
                 if(back.charAt(1)=='$')
                     back=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,back);
-				if(back.equalsIgnoreCase("#LENGTH#"))
+				if(back.equalsIgnoreCase(".LENGTH#"))
+                {
 					middle=""+CMParms.parse(middle).size();
+                    back="";
+                }
 				else
     			if((back.length()>1)&&Character.isDigit(back.charAt(1)))
     			{
@@ -5296,20 +5298,33 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 				}
 				int whichVar=CMath.s_int(Character.toString(varStr.charAt(1)));
 				if((tmp[whichVar] instanceof String)
-				&&(((String)tmp[whichVar]).length()>1)
-				&&(((String)tmp[whichVar]).startsWith(" "))
+				&&(((String)tmp[whichVar]).length()>0)
 				&&(CMath.isInteger(((String)tmp[whichVar]).trim())))
 				{
 					scriptableError(scripted,"FOR","Syntax","'"+whichVar+"' is already in use! Use a different one!");
                     tickStatus=Tickable.STATUS_END;
 					return null;
 				}
-				if((!CMParms.getBit(s,2).equals("="))&&(!CMParms.getBit(s,4).equalsIgnoreCase("to")))
-				{
-					scriptableError(scripted,"FOR","Syntax","'"+s+"' is illegal for syntax!");
+                if(!CMParms.getBit(s,2).equals("="))
+                {
+                    scriptableError(scripted,"FOR","Syntax","'"+s+"' is illegal for syntax!");
                     tickStatus=Tickable.STATUS_END;
-					return null;
-				}
+                    return null;
+                }
+                
+                int toAdd=0;
+                if(CMParms.getBit(s,4).equalsIgnoreCase("to<"))
+                    toAdd=-1;
+                else
+                if(CMParms.getBit(s,4).equalsIgnoreCase("to>"))
+                    toAdd=1;
+                else
+                if(!CMParms.getBit(s,4).equalsIgnoreCase("to"))
+                {
+                    scriptableError(scripted,"FOR","Syntax","'"+s+"' is illegal for syntax!");
+                    tickStatus=Tickable.STATUS_END;
+                    return null;
+                }
 				String from=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,3).trim()).trim();
 				String to=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,4).trim()).trim();
 				if((!CMath.isInteger(from))||(!CMath.isInteger(to)))
@@ -5363,18 +5378,29 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 					//source.tell("Starting "+conditionStr);
 					//for(int v=0;v<V.size();v++)
 					//	source.tell("Statement "+((String)V.elementAt(v)));
+                    int fromInt=CMath.s_int(from);
 					int toInt=CMath.s_int(to);
-					int fromInt=CMath.s_int(from);
 					int increment=(toInt>=fromInt)?1:-1;
 					String response=null;
-					for(int forLoop=fromInt;forLoop!=toInt;forLoop+=increment)
-					{
-						tmp[whichVar]=" "+forLoop;
-						response=execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg,tmp);
-						if(response!=null) break;
-					}
-					tmp[whichVar]=" "+toInt;
-					response=execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg,tmp);
+                    if(((increment>0)&&(fromInt<=(toInt+toAdd)))
+                    ||((increment<0)&&(fromInt>=(toInt+toAdd))))
+                    {
+                        toInt+=toAdd;
+                        long tm=System.currentTimeMillis()+(10 * 1000);
+    					for(int forLoop=fromInt;forLoop!=toInt;forLoop+=increment)
+    					{
+    						tmp[whichVar]=""+forLoop;
+    						response=execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg,tmp);
+    						if(response!=null) break;
+                            if(System.currentTimeMillis()>tm)
+                            {
+                                scriptableError(scripted,"FOR","Runtime","For loop violates 10 second rule: " +s);
+                                break;
+                            }
+    					}
+    					tmp[whichVar]=""+toInt;
+    					response=execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg,tmp);
+                    }
 					if(response!=null)
                     {
                         tickStatus=Tickable.STATUS_END;

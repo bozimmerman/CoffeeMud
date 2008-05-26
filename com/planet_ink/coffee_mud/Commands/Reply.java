@@ -57,7 +57,7 @@ public class Reply extends StdCommand
 		}
 		if(CMParms.combine(commands,1).length()==0)
 		{
-			mob.tell("Tell '"+pstats.replyTo().Name()+" what?");
+			mob.tell("Tell '"+pstats.replyTo().Name()+"' what?");
 			return false;
 		}
 		int replyType=pstats.replyType();
