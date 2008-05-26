@@ -117,7 +117,7 @@ public class QuestMgr extends StdWebMacro
 	public String populateQuest(ExternalHTTPRequests httpReq, Quest Q, boolean redirect)
 	{
 		Q.script();
-		String script=httpReq.getRequestParameter("SCRIPT");
+		String script=httpReq.getRequestParameter("RAWTEXT");
 		String unRedirectedScript=script;
 		CMFile redirectF=null;
 		if(redirect
@@ -130,6 +130,15 @@ public class QuestMgr extends StdWebMacro
 		}
 		else
 			redirect=false;
+        
+        script=CMStrings.replaceAll(script,"&amp;","&");
+        
+        String postFix="";
+        int x=script.toUpperCase().indexOf("<?XML");
+        if(x>=0) {
+            postFix=script.substring(x);
+            script=script.substring(0,x);
+        }
 		script=CMStrings.replaceAll(script,"'","`");
 		if(redirect)
 			script=CMStrings.replaceAll(script,";","\\;");
@@ -148,12 +157,12 @@ public class QuestMgr extends StdWebMacro
 			return "No script was specified.";
 		if(redirect)
 		{
-			redirectF.saveText(script);
+			redirectF.saveText(script+postFix);
 			script=unRedirectedScript;
 			Q.setScript(Q.script());
 		}
 		else
-			Q.setScript(script);
+			Q.setScript(script+postFix);
 		if(Q.name().length()==0)
 			return "You must specify a VALID quest string.  This one contained no name.";
 		else

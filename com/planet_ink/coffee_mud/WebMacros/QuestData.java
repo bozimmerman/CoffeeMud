@@ -72,7 +72,7 @@ public class QuestData extends StdWebMacro
 				return ""+Q.waitRemaining();
 			if(parms.containsKey("WINNERS"))
 				return ""+Q.getWinnerStr();
-			if(parms.containsKey("SCRIPT"))
+			if(parms.containsKey("RAWTEXT"))
 			{
 				StringBuffer script=new StringBuffer(Q.script());
 				if((parms.containsKey("REDIRECT"))
@@ -82,14 +82,23 @@ public class QuestData extends StdWebMacro
 					CMFile F=new CMFile(Resources.makeFileResourceName(fileName),null,true);
 					if((F.exists())&&(F.canRead()))
 						script=F.text();
-					script=new StringBuffer(CMStrings.replaceAll(script.toString(),"\n\r","\n"));
+                    script=new StringBuffer(CMStrings.replaceAll(script.toString(),"\n\r","\n"));
 				}
+                script=new StringBuffer(CMStrings.replaceAll(script.toString(),"&","&amp;"));
+                String postFix="";
+                int limit=script.toString().toUpperCase().indexOf("<?XML");
+                if(limit>=0)
+                {
+                    postFix=script.toString().substring(limit);
+                    script=new StringBuffer(script.toString().subSequence(0,limit));
+                }
 				for(int i=0;i<script.length();i++)
 					if((script.charAt(i)==';')
 					&&((i==0)||(script.charAt(i-1)!='\\')))
 						script.setCharAt(i,'\n');
-                return clearWebMacros(CMStrings.replaceAll(script.toString(),"\\;",";"));
-			}
+                script=new StringBuffer(CMStrings.replaceAll(script.toString(),"\\;",";"));
+                return clearWebMacros(script+postFix);
+ 			}
 		}
 		return "";
 	}
