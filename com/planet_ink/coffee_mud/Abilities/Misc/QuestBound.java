@@ -222,28 +222,7 @@ public class QuestBound implements Ability
 		||(keyPlayer
 		   &&(msg.source()==affected)
 		   &&(msg.sourceMinor()==CMMsg.TYP_DEATH)))
-		{
-			if(text().length()>0)
-			{
-				Quest Q=null;
-				Quest theQ=null;
-				for(int q=0;q<CMLib.quests().numQuests();q++)
-				{
-					Q=CMLib.quests().fetchQuest(q);
-					if((Q!=null)&&(""+Q).equals(text()))
-					{ theQ=Q; break;}
-				}
-				if((theQ==null)||(!Q.running()))
-					affected.delEffect(this);
-				else
-				{
-					Log.sysOut("QuestBound",CMMsg.TYPE_DESCS[msg.targetMinor()]+" message for "+(affected==null?"null":affected.name())+" caused "+Q.name()+" to stop.");
-					Q.stopQuest();
-				}
-			}
-			else
-				affected.delEffect(this);
-		}
+        stopQuest(msg.targetMinor());
 		return true;
 	}
     public void executeMsg(Environmental myHost, CMMsg msg)
@@ -259,31 +238,45 @@ public class QuestBound implements Ability
         ||(keyPlayer
             &&(msg.source()==affected)
             &&(msg.sourceMinor()==CMMsg.TYP_DEATH)))
-        {
-            if(text().length()>0)
-            {
-                Quest Q=null;
-                Quest theQ=null;
-                for(int q=0;q<CMLib.quests().numQuests();q++)
-                {
-                    Q=CMLib.quests().fetchQuest(q);
-                    if((Q!=null)&&(""+Q).equals(text()))
-                    { theQ=Q; break;}
-                }
-                if((theQ==null)||(!Q.running()))
-                    affected.delEffect(this);
-                else
-                {
-                    Log.sysOut("QuestBound",CMMsg.TYPE_DESCS[msg.targetMinor()]+" message for "+(affected==null?"null":affected.name())+" caused "+Q.name()+" to stop.");
-                    Q.stopQuest();
-                }
-            }
-            else
-                affected.delEffect(this);
-        }
+        stopQuest(msg.targetMinor());
     }
+    
+    private void stopQuest(int reason)
+    {
+        if(text().length()>0)
+        {
+            Quest Q=null;
+            Quest theQ=null;
+            for(int q=0;q<CMLib.quests().numQuests();q++)
+            {
+                Q=CMLib.quests().fetchQuest(q);
+                if((Q!=null)&&(""+Q).equals(text()))
+                { theQ=Q; break;}
+            }
+            if((theQ==null)||(!Q.running()))
+                affected.delEffect(this);
+            else
+            {
+                Log.sysOut("QuestBound",CMMsg.TYPE_DESCS[reason]+" message for "+(affected==null?"null":affected.name())+" caused "+Q.name()+" to stop.");
+                Q.stopQuest();
+            }
+        }
+        else
+            affected.delEffect(this);
+    }
+    
 	public boolean tick(Tickable ticking, int tickID)
-	{ return true;	}
+	{
+	    if((keyPlayer)
+	    &&(ticking instanceof MOB)
+	    &&(((MOB)ticking).amDead() || ((MOB)ticking).amDestroyed()))
+	    {
+            stopQuest(CMMsg.TYP_DEATH);
+            return false;
+	    }
+	    return true;	
+	}
+	
 	public void makeLongLasting(){}
 	public void makeNonUninvokable(){}
 	private static final int[] cost=new int[3];
