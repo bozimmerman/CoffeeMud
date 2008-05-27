@@ -90,7 +90,7 @@ public class QuestData extends StdWebMacro
                 if(limit>=0)
                 {
                     postFix=script.toString().substring(limit);
-                    script=new StringBuffer(script.toString().subSequence(0,limit));
+                    script=new StringBuffer(script.toString().substring(0,limit));
                 }
 				for(int i=0;i<script.length();i++)
 					if((script.charAt(i)==';')
