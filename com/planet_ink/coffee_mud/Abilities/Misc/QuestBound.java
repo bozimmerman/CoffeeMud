@@ -255,7 +255,10 @@ public class QuestBound implements Ability
             &&((msg.target() instanceof Room)
                 ||(msg.target()==affected)
                 ||((affected instanceof Item)&&(((Item)affected).owner()==msg.target()))))
-        ||(msg.targetMinor()==CMMsg.TYP_ROOMRESET))
+        ||(msg.targetMinor()==CMMsg.TYP_ROOMRESET)
+        ||(keyPlayer
+            &&(msg.source()==affected)
+            &&(msg.sourceMinor()==CMMsg.TYP_DEATH)))
         {
             if(text().length()>0)
             {
