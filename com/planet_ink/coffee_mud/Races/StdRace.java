@@ -410,23 +410,7 @@ public class StdRace implements Race
 
 	protected Item makeResource(String name, int type)
 	{
-		Item I=null;
-		if(((type&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH)
-		||((type&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION))
-			I=CMClass.getItem("GenFoodResource");
-		else
-		if((type&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
-			I=CMClass.getItem("GenLiquidResource");
-		else
-			I=CMClass.getItem("GenResource");
-		I.setName(name);
-		I.setDisplayText(name+" has been left here.");
-		I.setDescription("It looks like "+name());
-		I.setMaterial(type);
-		I.setBaseValue(RawMaterial.RESOURCE_DATA[type&RawMaterial.RESOURCE_MASK][1]);
-		I.baseEnvStats().setWeight(1);
-		I.recoverEnvStats();
-		return I;
+		return (Item)CMLib.materials().makeResource(type,-1,true,name);
 	}
 
 	public DeadBody getCorpseContainer(MOB mob, Room room)

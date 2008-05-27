@@ -634,6 +634,13 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         else
         {
 	        response.append("\n\r"+CMStrings.capitalizeFirstLetter(item.name())+" is a level "+level+" item, and weighs "+weight+" pounds.  ");
+	        if((item instanceof RawMaterial)
+	        &&(!CMLib.flags().isABonusItems(item))
+	        &&(item.rawSecretIdentity().length()>0)
+	        &&(item.baseEnvStats().weight()>1)
+            &&((mob==null)||(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>3)))
+	            response.append("It appears to be a bundle of `"+item.rawSecretIdentity()+"`.  ");
+	        
 	        if((mob!=null)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)<10))
 	            response.append("It is mostly made of a kind of "+RawMaterial.MATERIAL_NOUNDESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8].toLowerCase()+".  ");
 	        else

@@ -209,7 +209,7 @@ public class Hunting extends CommonSkill
 		   ||(resourceType==RawMaterial.RESOURCE_WOOL)
 		   ||((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER)))
 		{
-			found=(MOB)CMLib.materials().makeResource(resourceType,mob.location().domainType(),false);
+			found=(MOB)CMLib.materials().makeResource(resourceType,mob.location().domainType(),false,null);
 			foundShortName="nothing";
 			if(found!=null)
 			{
