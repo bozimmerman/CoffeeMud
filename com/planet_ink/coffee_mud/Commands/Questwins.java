@@ -44,7 +44,12 @@ public class Questwins extends StdCommand
 		{
 			Quest Q=CMLib.quests().fetchQuest(q);
 			if(Q.wasWinner(mob.Name()))
-				qVec.addElement(Q.name());
+            {
+                if(Q.displayName().trim().length()>0)
+    				qVec.addElement(Q.displayName());
+                else
+                    qVec.addElement(Q.name());
+            }
 		}
 		Collections.sort(qVec);
 		StringBuffer msg=new StringBuffer("^HQuests you are listed as having won:^?^N\n\r");

@@ -41,6 +41,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     public String ID(){return "DefaultQuest";}
 
     protected String name="";
+    protected String displayName="";
     protected String startDate="";
     protected int duration=450; // about 30 minutes
     protected String rawScriptParameter="";
@@ -63,6 +64,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     // the unique name of the quest
     public String name(){return name;}
     public void setName(String newName){name=newName;}
+    
+    // the display name of the quest
+    public String displayName(){ return displayName;}
+    public void setDisplayName(String newName){ displayName=newName;}
+    
     public CMObject copyOf()
     {
         try
@@ -96,6 +102,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 8: return ""+startDate();
 		case 9: return ""+waitInterval();
         case 10: return SPAWN_DESCS[getSpawn()];
+        case 11: return displayName();
 		}
 		return questState.getStat(named);
 	}
@@ -163,6 +170,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     public void setScript(String parm){
         rawScriptParameter=parm;
         name="";
+        displayName="";
         startDate="";
         duration=-1;
         minWait=-1;
@@ -3940,6 +3948,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         case 10: 
             setSpawn(CMParms.indexOf(SPAWN_DESCS,val.toUpperCase().trim())); 
             break;
+        case 11: setDisplayName(val); break;
 		default:
             if((code.toUpperCase().trim().equalsIgnoreCase("REMAINING"))&&(running()))
                 ticksRemaining=CMath.s_parseIntExpression(val);
@@ -3977,6 +3986,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 8: return ""+startDate();
 		case 9: return ""+waitInterval();
         case 10: return SPAWN_DESCS[getSpawn()];
+        case 11: return displayName();
 		default: 
             if((code.toUpperCase().trim().equalsIgnoreCase("REMAINING"))&&(running()))
                 return ""+ticksRemaining;

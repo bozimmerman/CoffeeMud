@@ -77,6 +77,7 @@ public interface QuestManager extends CMLibrary
     public final static int QM_COMMAND_$ABILITY=15;
     public final static int QM_COMMAND_$EXISTING_QUEST_NAME=16;
     public final static int QM_COMMAND_$HIDDEN=17;
+    public final static int QM_COMMAND_$FACTION=18;
     public final static int QM_COMMAND_MASK=127;
     public final static int QM_COMMAND_OPTIONAL=128;
     public final static String[] QM_COMMAND_TYPES={
@@ -97,7 +98,8 @@ public interface QuestManager extends CMLibrary
         "$ZAPPERMASK",
         "$ABILITY",
         "$EXISTING_QUEST_NAME",
-        "$HIDDEN"
+        "$HIDDEN",
+        "$FACTION"
     };
     public final static EnglishParsing.CMEval[] QM_COMMAND_TESTS={
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //title
@@ -304,6 +306,17 @@ public interface QuestManager extends CMLibrary
         }},
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //hidden
             return str;
+        }},
+        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //faction
+            if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+            if(((String)str).trim().length()==0){
+                if(emptyOK) return "";
+                throw new CMException("You must enter a faction id!");
+            }
+            Faction F=CMLib.factions().getFaction((String)str);
+            if(F==null)
+                throw new CMException("A faction of the name '"+((String)str).trim()+"' does not exist.  Enter another.");
+            return F.factionID();
         }},
     };
     

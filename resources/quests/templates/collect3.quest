@@ -6,9 +6,13 @@
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
 #
+#Quest ID:
+#Enter a unique name/id for your quest:
+#$QUEST_ID=$UNIQUE_QUEST_NAME=collect_3
+#
 #Quest Name:
-#Enter a unique name for your quest:
-#$QUEST_NAME=$UNIQUE_QUEST_NAME=collect_3
+#Enter a friendly displayable name for your quest:
+#$QUEST_NAME=$STRING=My New Quest
 #
 #Quest Frequency:
 #A quest starts and stops on timed intervals.  Enter the amount of time 
@@ -142,6 +146,12 @@
 #Amount of experience points, blank for none, or a number% for percent of exp to next level:
 #$EXP=($STRING)=10%
 #
+#Player Faction to give to or take from:
+#$FACTION=($FACTION)
+#If you selected a faction above, enter a new numeric amount, 
+#or enter +value to add, or --value to subtract:
+#$NUMFACTION=($STRING)
+#
 #Select whether a player may complete this quest multiple times:
 #$MULTIPLE=$CHOOSE=YES,NO
 #
@@ -151,7 +161,8 @@
 #
 #!QUESTMAKER_END_SCRIPT Collect #3
 
-set name $QUEST_NAME
+set name $QUEST_ID
+set display $QUEST_NAME
 
 set wait $FREQUENCY
 set interval 1
@@ -164,14 +175,14 @@ set area $ANNOUNCER_AREA
 set room $ANNOUNCER_ROOM
 set mobgroup
 set mob $ANNOUNCER_NAME
-give behavior Scriptable LOAD=$QUEST_NAME_announcer.script
+give behavior Scriptable LOAD=$QUEST_ID_announcer.script
 
 set area $HOLDERS_AREA
 set roomgroup $HOLDERS_ROOMS
 set mobgroup
 set mob
 set room
-import mobs $QUEST_NAME_mobs.xml
+import mobs $QUEST_ID_mobs.xml
 load mobgroup $HOLDERS_CREATED any
 set mob
 set agentgroup $COLLECTABLES_TOTAL 
@@ -181,10 +192,10 @@ set roomgroup
 set item
 set room
 set area
-import items $QUEST_NAME_items.xml
+import items $QUEST_ID_items.xml
 set itemgroup loadeditems
 set item
-give behavior Scriptable LOAD=$QUEST_NAME_item.script
+give behavior Scriptable LOAD=$QUEST_ID_item.script
 give item
 set item
 set mobgroup
@@ -192,53 +203,53 @@ set mobgroup
 set duration $DURATION
 
 <?xml version="1.0"?>
-<FILE><NAME>$QUEST_NAME_items.xml</NAME><DATA><ITEMS>$COLLECTABLES_ITEMS</ITEMS></DATA></FILE>
-<FILE><NAME>$QUEST_NAME_announcer.script</NAME>
+<FILE><NAME>$QUEST_ID_items.xml</NAME><DATA><ITEMS>$COLLECTABLES_ITEMS</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
 ONCE_PROG 100
-	MPSETVAR * $QUEST_NAME_ALREADY_TOLD ''
-	MPSETVAR * $QUEST_NAME_REWARDED ''
-	MPSETVAR * $QUEST_NAME_WARNED ''
-	MPSETVAR * $QUEST_NAME_ACCEPTED ''
-	MPSETVAR * $QUEST_NAME_COLLECTED ''
-	MPSETVAR * $QUEST_NAME_GOT ''
-	MPSETVAR * $QUEST_NAME_NUMACCEPTED ''
+	MPSETVAR * $QUEST_ID_ALREADY_TOLD ''
+	MPSETVAR * $QUEST_ID_REWARDED ''
+	MPSETVAR * $QUEST_ID_WARNED ''
+	MPSETVAR * $QUEST_ID_ACCEPTED ''
+	MPSETVAR * $QUEST_ID_COLLECTED ''
+	MPSETVAR * $QUEST_ID_GOT ''
+	MPSETVAR * $QUEST_ID_NUMACCEPTED ''
 	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
 ~
 
 QUEST_TIME_PROG * 1
-	mpsetvar $i $QUEST_NAME_NUMACCEPTED '$<$i $QUEST_NAME_ACCEPTED>.LENGTH#'
-	for $0 = 0 to< '$<$i $QUEST_NAME_NUMACCEPTED>'
-		tell "$<$i $QUEST_NAME_ACCEPTED>.$0" You have 1 minute to complete my quest.
+	mpsetvar $i $QUEST_ID_NUMACCEPTED '$<$i $QUEST_ID_ACCEPTED>.LENGTH#'
+	for $0 = 0 to< '$<$i $QUEST_ID_NUMACCEPTED>'
+		tell "$<$i $QUEST_ID_ACCEPTED>.$0" You have 1 minute to complete my quest.
 	next
 ~
 
 QUEST_TIME_PROG * -1
-	mpsetvar $i $QUEST_NAME_NUMACCEPTED '$<$i $QUEST_NAME_ACCEPTED>.LENGTH#'
-	for $0 = 0 to< '$<$i $QUEST_NAME_NUMACCEPTED>'
-		if(!QUESTWINNER('$<$i $QUEST_NAME_ACCEPTED>.$0' *))
-			tell "$<$i $QUEST_NAME_ACCEPTED>.$0" You failed to complete my quest in time.
+	mpsetvar $i $QUEST_ID_NUMACCEPTED '$<$i $QUEST_ID_ACCEPTED>.LENGTH#'
+	for $0 = 0 to< '$<$i $QUEST_ID_NUMACCEPTED>'
+		if !QUESTWINNER('$<$i $QUEST_ID_ACCEPTED>.$0' *)
+			tell "$<$i $QUEST_ID_ACCEPTED>.$0" You failed to complete my quest in time.
 	    endif
 	next
-	MPSETVAR * $QUEST_NAME_NUMACCEPTED ''
-	MPSETVAR * $QUEST_NAME_ALREADY_TOLD ''
-	MPSETVAR * $QUEST_NAME_ACCEPTED ''
-	MPSETVAR * $QUEST_NAME_REWARDED ''
-	MPSETVAR * $QUEST_NAME_WARNED ''
-	MPSETVAR * $QUEST_NAME_COLLECTED ''
-	MPSETVAR * $QUEST_NAME_GOT ''
-	if VAR($i $QUEST_NAME_REWARDED == '')
+	if VAR($i $QUEST_ID_REWARDED == '')
 		$QUEST_LOSESPEECH_TYPE $QUEST_LOSESPEECH_TEXT
 	endif
+	MPSETVAR * $QUEST_ID_NUMACCEPTED ''
+	MPSETVAR * $QUEST_ID_ALREADY_TOLD ''
+	MPSETVAR * $QUEST_ID_ACCEPTED ''
+	MPSETVAR * $QUEST_ID_REWARDED ''
+	MPSETVAR * $QUEST_ID_WARNED ''
+	MPSETVAR * $QUEST_ID_COLLECTED ''
+	MPSETVAR * $QUEST_ID_GOT ''
 ~
 
 ALL_GREET_PROG 100
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if !STRIN('$<$i $QUEST_NAME_ALREADY_TOLD>' '$n')
-				if VAR($n $QUEST_NAME_ACCEPTED == '')
+			if !STRIN('$<$i $QUEST_ID_ALREADY_TOLD>' '$n')
+				if VAR($n $QUEST_ID_ACCEPTED == '')
 					sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept' to take on this quest.
-					MPSETVAR $i $QUEST_NAME_ALREADY_TOLD '$<$i $QUEST_NAME_ALREADY_TOLD> "$n"'
+					MPSETVAR $i $QUEST_ID_ALREADY_TOLD '$<$i $QUEST_ID_ALREADY_TOLD> "$n"'
 				endif
 			endif
 		endif
@@ -246,22 +257,25 @@ ALL_GREET_PROG 100
 ~
 
 GIVE_PROG all
-	IF VAR($n $QUEST_NAME_ACCEPTED != '') AND ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+	IF VAR($n $QUEST_ID_ACCEPTED != '') AND ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
 			sayto "$n" Not YOU again
 			return
 		endif
-		if  VAR($i $QUEST_NAME_REWARDED == $n)
+		if  VAR($i $QUEST_ID_REWARDED == $n)
 			sayto "$n" Not YOU again
 			return
 		endif
 		if questobj($o *)
-			mpsetvar $n $QUEST_NAME_COLLECTED ++
+			mpsetvar $n $QUEST_ID_COLLECTED ++
 			mpjunk $o
-			if var($n $QUEST_NAME_COLLECTED >= $NUM_COLLECTABLES)
-				mpsetvar $i $QUEST_NAME_REWARDED $n
+			if var($n $QUEST_ID_COLLECTED >= $NUM_COLLECTABLES)
+				mpsetvar $i $QUEST_ID_REWARDED $n
 				if EVAL('$EXP' != '')
 					mpexp $n $EXP
+				endif
+				if EVAL('$FACTION' != '')
+					mpfaction $n $FACTION $NUMFACTION
 				endif
 				if EVAL('$QUEST_POINT' == 'YES')
 					mpoload QuestPoint
@@ -278,7 +292,7 @@ GIVE_PROG all
 					mpstartquest $NEXT_QUEST
 				ENDIF
 			else
-				sayto "$n" That's $<$n $QUEST_NAME_COLLECTED>/$NUM_COLLECTABLES.
+				sayto "$n" That's $<$n $QUEST_ID_COLLECTED>/$NUM_COLLECTABLES.
 			endif
 		else
 			sayto "$n" What's this?
@@ -293,13 +307,13 @@ GIVE_PROG all
 SPEECH_PROG p i accept
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if VAR($n $QUEST_NAME_ACCEPTED == '')
+			if VAR($n $QUEST_ID_ACCEPTED == '')
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
 				mpqset * REMAINING $DURATION
-				MPSETVAR $i $QUEST_NAME_ACCEPTED '$<$i $QUEST_NAME_ACCEPTED> $n'
-				mpsetvar $n $QUEST_NAME_ACCEPTED 'YES'
-				mpsetvar $n $QUEST_NAME_COLLECTED 0
-				MPSETVAR * $QUEST_NAME_GOT 0
+				MPSETVAR $i $QUEST_ID_ACCEPTED '$<$i $QUEST_ID_ACCEPTED> $n'
+				mpsetvar $n $QUEST_ID_ACCEPTED 'YES'
+				mpsetvar $n $QUEST_ID_COLLECTED 0
+				MPSETVAR * $QUEST_ID_GOT 0
 			else
 				sayto "$n" Yes, yes, I know .. now off with you.
 			endif
@@ -307,21 +321,21 @@ SPEECH_PROG p i accept
 	endif
 ~
 </DATA></FILE>
-<FILE><NAME>$QUEST_NAME_item.script</NAME>
+<FILE><NAME>$QUEST_ID_item.script</NAME>
 <DATA>
 GET_PROG all
-	if VAR($n $QUEST_NAME_ACCEPTED != '')
-		MPSETVAR $n $QUEST_NAME_GOT ++
-		mpechoat $n Picked up: $<$n $QUEST_NAME_GOT>/$NUM_COLLECTABLES.
+	if VAR($n $QUEST_ID_ACCEPTED != '')
+		MPSETVAR $n $QUEST_ID_GOT ++
+		mpechoat $n Picked up: $<$n $QUEST_ID_GOT>/$NUM_COLLECTABLES.
 	endif
 	
 ~
 DROP_PROG all
-	if VAR($n $QUEST_NAME_ACCEPTED != '')
-		MPSETVAR $n $QUEST_NAME_GOT --
+	if VAR($n $QUEST_ID_ACCEPTED != '')
+		MPSETVAR $n $QUEST_ID_GOT --
 	endif
 	
 ~
 </DATA>
 </FILE>
-<FILE><NAME>$QUEST_NAME_mobs.xml</NAME><DATA><MOBS>$HOLDERS_MOBS</MOBS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_mobs.xml</NAME><DATA><MOBS>$HOLDERS_MOBS</MOBS></DATA></FILE>

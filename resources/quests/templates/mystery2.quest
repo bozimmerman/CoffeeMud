@@ -7,9 +7,13 @@
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
 #
+#Quest ID:
+#Enter a unique name/id for your quest:
+#$QUEST_ID=$UNIQUE_QUEST_NAME=mystery_2
+#
 #Quest Name:
-#Enter a unique name for your quest:
-#$QUEST_NAME=$UNIQUE_QUEST_NAME=mystery_2
+#Enter a friendly displayable name for your quest:
+#$QUEST_NAME=$STRING=My New Quest
 #
 #Quest Frequency:
 #A quest starts and stops on timed intervals.  Enter the amount of time 
@@ -224,6 +228,12 @@
 #Amount of experience points, blank for none, or a number% for percent of exp to next level:
 #$EXP=($STRING)=10%
 #
+#Player Faction to give to or take from:
+#$FACTION=($FACTION)
+#If you selected a faction above, enter a new numeric amount, 
+#or enter +value to add, or --value to subtract:
+#$NUMFACTION=($STRING)
+#
 #Select whether a player may complete this quest multiple times:
 #$MULTIPLE=$CHOOSE=YES,NO
 #
@@ -239,7 +249,9 @@
 #$MOTIVE=$HIDDEN=$%QVAR(* MOTIVE)%
 #!QUESTMAKER_END_SCRIPT Mystery #2
 
-set name $QUEST_NAME
+set name $QUEST_ID
+set display $QUEST_NAME
+
 set wait $FREQUENCY
 set interval 1
 #quiet
@@ -253,7 +265,7 @@ set room $ANNOUNCER_ROOM
 set mobgroup
 set mob $ANNOUNCER_NAME
 take behavior MudChat
-give behavior Scriptable LOAD=$QUEST_NAME_announcer.script~
+give behavior Scriptable LOAD=$QUEST_ID_announcer.script~
 
 # Set up the victim
 set area $VICTIM_AREA
@@ -274,7 +286,7 @@ set roomgroup
 set area $SUSPECTS_AREA
 set room $SUSPECTS_ROOM
 set whereat room
-import mobs $QUEST_NAME_suspects.cmare
+import mobs $QUEST_ID_suspects.cmare
 load mobgroup $NUM_SUSPECTS any
 set agentgroup $NUM_SUSPECTS
 set mobgroup agentgroup-agent
@@ -292,25 +304,25 @@ set roomgroup
 set mobgroup
 set mob
 # Now set up all the evidence
-LOAD=$QUEST_NAME_agentmotivemap.quest wherehappened agentgroup-agent motivegroup-motive
-LOAD=$QUEST_NAME_agentmotivemap.quest wherehappened agent motivegroup-motive
-LOAD=$QUEST_NAME_agentmotivemap.quest wherehappened agentgroup-agent motive
+LOAD=$QUEST_ID_agentmotivemap.quest wherehappened agentgroup-agent motivegroup-motive
+LOAD=$QUEST_ID_agentmotivemap.quest wherehappened agent motivegroup-motive
+LOAD=$QUEST_ID_agentmotivemap.quest wherehappened agentgroup-agent motive
 # Now install a second set to make things easier.
-LOAD=$QUEST_NAME_agentmotivemap.quest wherehappened agentgroup-agent motivegroup-motive
-LOAD=$QUEST_NAME_agentmotivemap.quest wherehappened agent motivegroup-motive
-LOAD=$QUEST_NAME_agentmotivemap.quest wherehappened agentgroup-agent motive
+LOAD=$QUEST_ID_agentmotivemap.quest wherehappened agentgroup-agent motivegroup-motive
+LOAD=$QUEST_ID_agentmotivemap.quest wherehappened agent motivegroup-motive
+LOAD=$QUEST_ID_agentmotivemap.quest wherehappened agentgroup-agent motive
 
 set duration $DURATION
 
 <?xml version="1.0"?>
-<FILE><NAME>$QUEST_NAME_announcer.script</NAME>
+<FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
 GREET_PROG 100
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if !STRIN('$<$i $QUEST_NAME_ALREADY_TOLD>' '$n')
+			if !STRIN('$<$i $QUEST_ID_ALREADY_TOLD>' '$n')
 				sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept' and I'll give you the details.
-				MPSETVAR $i $QUEST_NAME_ALREADY_TOLD '$<$i $QUEST_NAME_ALREADY_TOLD> "$n"'
+				MPSETVAR $i $QUEST_ID_ALREADY_TOLD '$<$i $QUEST_ID_ALREADY_TOLD> "$n"'
 			endif
 		endif
 	endif
@@ -318,21 +330,21 @@ GREET_PROG 100
 
 ONCE_PROG
 	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
-	mpsetvar * $QUEST_NAME_REWARDED ''
-	mpsetvar * $QUEST_NAME_LOST ''
-	mpsetvar * $QUEST_NAME_AGENT ''
-	mpsetvar * $QUEST_NAME_MOTIVE ''
-	MPSETVAR * $QUEST_NAME_ACCEPTED ''
-	mpsetvar * $QUEST_NAME_ALREADY_TOLD ''
+	mpsetvar * $QUEST_ID_REWARDED ''
+	mpsetvar * $QUEST_ID_LOST ''
+	mpsetvar * $QUEST_ID_AGENT ''
+	mpsetvar * $QUEST_ID_MOTIVE ''
+	MPSETVAR * $QUEST_ID_ACCEPTED ''
+	mpsetvar * $QUEST_ID_ALREADY_TOLD ''
 ~
 
 SPEECH_PROG p i accept
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if VAR($n $QUEST_NAME_ACCEPTED == '')
-				MPSETVAR $n $QUEST_NAME_ACCEPTED 'TRUE'
+			if VAR($n $QUEST_ID_ACCEPTED == '')
+				MPSETVAR $n $QUEST_ID_ACCEPTED 'TRUE'
 				mpqset * REMAINING $DURATION
-				MPSETVAR $n $QUEST_NAME_CORRECT 0
+				MPSETVAR $n $QUEST_ID_CORRECT 0
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
 			else
 				sayto "$n" Yes, that's great .. now off with you.
@@ -346,19 +358,19 @@ SPEECH_PROG all
 		RETURN
 	endif
 	
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and VAR($n $QUEST_NAME_ACCEPTED != '')
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and VAR($n $QUEST_ID_ACCEPTED != '')
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			MPARGSET $9 ''
 			IF EVAL($9 == '')
 				MPARGSET $3 '$%QVAR(* AGENT)%'
 				IF STRCONTAINS($g "$3")
 					MPARGSET $9 $g
-					if VAR($n $QUEST_NAME_AGENT != '')
+					if VAR($n $QUEST_ID_AGENT != '')
 						sayto $n You've already made a guess on the who question.
 					else
-						MPSETVAR $n $QUEST_NAME_AGENT '$%QVAR(* AGENT)%'
+						MPSETVAR $n $QUEST_ID_AGENT '$%QVAR(* AGENT)%'
 						sayto $n Ok, so you think $%QVAR(* AGENT)% did it.
-						MPSETVAR $n $QUEST_NAME_CORRECT ++
+						MPSETVAR $n $QUEST_ID_CORRECT ++
 						MPCALLFUNC winner
 					endif
 				ELSE
@@ -368,10 +380,10 @@ SPEECH_PROG all
 						mpargset $3 '$%QVAR(* $2)%'
 						IF STRCONTAINS($g "$3") AND EVAL($9 == '')
 							MPARGSET $9 $g
-							if VAR($n $QUEST_NAME_AGENT != '')
+							if VAR($n $QUEST_ID_AGENT != '')
 								sayto $n You've already made a guess on the who question.
 							else
-								MPSETVAR $n $QUEST_NAME_AGENT '$3'
+								MPSETVAR $n $QUEST_ID_AGENT '$3'
 								sayto $n Ok, so you think $3 did it.
 								MPCALLFUNC winner
 							endif
@@ -383,12 +395,12 @@ SPEECH_PROG all
 				MPARGSET $3 '$%QVAR(* MOTIVE)%'
 				IF STRCONTAINS($g "$3")
 					MPARGSET $9 $g
-					if VAR($n $QUEST_NAME_MOTIVE != '')
+					if VAR($n $QUEST_ID_MOTIVE != '')
 						sayto $n You've already made a guess on the motive question.
 					else
-						MPSETVAR $n $QUEST_NAME_MOTIVE '$%QVAR(* MOTIVE)%'
+						MPSETVAR $n $QUEST_ID_MOTIVE '$%QVAR(* MOTIVE)%'
 						sayto $n Ok, so you think the motive was $%QVAR(* MOTIVE)%.
-						MPSETVAR $n $QUEST_NAME_CORRECT ++
+						MPSETVAR $n $QUEST_ID_CORRECT ++
 						MPCALLFUNC winner
 					endif
 				ELSE
@@ -398,10 +410,10 @@ SPEECH_PROG all
 						mpargset $3 '$%QVAR(* $2)%'
 						IF STRCONTAINS($g "$3") AND EVAL($9 == '')
 							MPARGSET $9 $g
-							if VAR($n $QUEST_NAME_MOTIVE != '')
+							if VAR($n $QUEST_ID_MOTIVE != '')
 								sayto $n You've already made a guess on the motive question.
 							else
-								MPSETVAR $n $QUEST_NAME_MOTIVE '$3'
+								MPSETVAR $n $QUEST_ID_MOTIVE '$3'
 								sayto $n Ok, so you think the motive was $3.
 								MPCALLFUNC winner
 							endif
@@ -416,9 +428,12 @@ SPEECH_PROG all
 FUNCTION_PROG winner
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if VAR($n $QUEST_NAME_CORRECT >= 2)
+			if VAR($n $QUEST_ID_CORRECT >= 2)
 				if EVAL('$EXP' != '')
 					mpexp $n $EXP
+				endif
+				if EVAL('$FACTION' != '')
+					mpfaction $n $FACTION $NUMFACTION
 				endif
 				if EVAL('$QUEST_POINT' == 'YES')
 					mpoload QuestPoint
@@ -428,7 +443,7 @@ FUNCTION_PROG winner
 					mpoload $GOLD
 					give $GOLD "$n" 
 				endif
-				mpsetvar $i $QUEST_NAME_REWARDED $n
+				mpsetvar $i $QUEST_ID_REWARDED $n
 				mpquestwin $n *
 				$SOLVED_RESPONSE_TYPE $SOLVED_RESPONSE_TEXT
 				mpendquest *
@@ -436,10 +451,10 @@ FUNCTION_PROG winner
 					mpstartquest $NEXT_QUEST
 				ENDIF
 			else
-				if VAR($n $QUEST_NAME_AGENT != '') AND VAR($n $QUEST_NAME_MOTIVE != '')
-					if VAR($n $QUEST_NAME_LOST == '')
+				if VAR($n $QUEST_ID_AGENT != '') AND VAR($n $QUEST_ID_MOTIVE != '')
+					if VAR($n $QUEST_ID_LOST == '')
 						sayto $n I'm sorry $n, your guesses were incorrect.  Thanks for trying.
-						MPSETVAR $n $QUEST_NAME_LOST 'YEP'
+						MPSETVAR $n $QUEST_ID_LOST 'YEP'
 					else
 						sayto $n Listen buddy, you lost.  Get over it.
 					endif
@@ -450,24 +465,24 @@ FUNCTION_PROG winner
 ~
 
 QUEST_TIME_PROG * 5
-	if VAR($i $QUEST_NAME_REWARDED == '')
+	if VAR($i $QUEST_ID_REWARDED == '')
 		$WARNING_RESPONSE_TYPE $WARNING_RESPONSE_TEXT
 	endif
 ~
 
 QUEST_TIME_PROG * -1
-	if VAR($i $QUEST_NAME_REWARDED == '')
+	if VAR($i $QUEST_ID_REWARDED == '')
 		$UNSOLVED_RESPONSE_TYPE $UNSOLVED_RESPONSE_TEXT
 	endif
-	mpsetvar * $QUEST_NAME_REWARDED ''
-	MPSETVAR * $QUEST_NAME_ACCEPTED ''
-	mpsetvar * $QUEST_NAME_LOST ''
-	mpsetvar * $QUEST_NAME_AGENT ''
-	mpsetvar * $QUEST_NAME_MOTIVE ''
-	mpsetvar * $QUEST_NAME_ALREADY_TOLD ''
+	mpsetvar * $QUEST_ID_REWARDED ''
+	MPSETVAR * $QUEST_ID_ACCEPTED ''
+	mpsetvar * $QUEST_ID_LOST ''
+	mpsetvar * $QUEST_ID_AGENT ''
+	mpsetvar * $QUEST_ID_MOTIVE ''
+	mpsetvar * $QUEST_ID_ALREADY_TOLD ''
 ~
 </DATA></FILE>
-<FILE><NAME>$QUEST_NAME_agentmotivemap.quest</NAME><DATA>
+<FILE><NAME>$QUEST_ID_agentmotivemap.quest</NAME><DATA>
 <OPTION>
 	set room ARG1
 	set roomgrouparound $WITNESS_RADIUS ANY
@@ -577,4 +592,4 @@ QUEST_TIME_PROG * -1
 	give affect Spell_LedFoot
 </OPTION>
 </DATA></FILE>
-<FILE><NAME>$QUEST_NAME_suspects.cmare</NAME><DATA><MOBS>$SUSPECTS_MOBS</MOBS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_suspects.cmare</NAME><DATA><MOBS>$SUSPECTS_MOBS</MOBS></DATA></FILE>

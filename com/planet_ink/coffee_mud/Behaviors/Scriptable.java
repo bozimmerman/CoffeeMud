@@ -5093,6 +5093,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 		{
 			String s=((String)script.elementAt(si)).trim();
 			String cmd=CMParms.getCleanBit(s,0).toUpperCase();
+            if(cmd.length()==0) continue;
+                
 			Integer methCode=(Integer)methH.get(cmd);
 			if((methCode==null)&&(cmd.startsWith("MP")))
 			    for(int i=0;i<methods.length;i++)
@@ -5100,8 +5102,6 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 			            methCode=new Integer(i);
 			if(methCode==null) methCode=new Integer(0);
 		    tickStatus=Tickable.STATUS_MISC3+methCode.intValue();
-			if(cmd.length()==0)
-				continue;
 			switch(methCode.intValue())
 			{
             case 57: // <SCRIPT>
@@ -6439,7 +6439,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
             }
 			case 54: // mpfaction
 			{
-				Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+				Environmental newTarget=getArgumentMOB(CMParms.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 String faction=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2));
                 String range=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,2));
                 Faction F=CMLib.factions().getFaction(faction);

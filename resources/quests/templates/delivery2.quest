@@ -6,9 +6,13 @@
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
 #
+#Quest ID:
+#Enter a unique name/id for your quest:
+#$QUEST_ID=$UNIQUE_QUEST_NAME=delivery_2
+#
 #Quest Name:
-#Enter a unique name for your delivery quest:
-#$QUEST_NAME=$UNIQUE_QUEST_NAME=delivery_2
+#Enter a friendly displayable name for your quest:
+#$QUEST_NAME=$STRING=My New Quest
 #
 #Quest Frequency:
 #A quest starts and stops on timed intervals.  Enter the amount of time 
@@ -124,6 +128,12 @@
 #Amount of experience points, blank for none, or a number% for percent of exp to next level:
 #$EXP=($STRING)=10%
 #
+#Player Faction to give to or take from:
+#$FACTION=($FACTION)
+#If you selected a faction above, enter a new numeric amount, 
+#or enter +value to add, or --value to subtract:
+#$NUMFACTION=($STRING)
+#
 #Select whether a player may complete this quest multiple times:
 #$MULTIPLE=$CHOOSE=YES,NO
 #
@@ -133,7 +143,8 @@
 #
 #!QUESTMAKER_END_SCRIPT Delivery #2
 
-set name $QUEST_NAME
+set name $QUEST_ID
+set display $QUEST_NAME
 
 set wait $FREQUENCY
 set interval 1
@@ -142,34 +153,34 @@ set interval 1
 set minplayers 1
 set playermask $QUEST_CRITERIA
 
-import items $QUEST_NAME_item.xml
+import items $QUEST_ID_item.xml
 set area $DELIVERER_AREA
 set room $DELIVERER_ROOM
 set mobgroup
 set mob $DELIVERER_NAME
-give behavior Scriptable LOAD=$QUEST_NAME_deliverer.script
+give behavior Scriptable LOAD=$QUEST_ID_deliverer.script
 load item any
 give item
 set item ITEM
-give behavior Scriptable LOAD=$QUEST_NAME_deliverable.script
+give behavior Scriptable LOAD=$QUEST_ID_deliverable.script
 
 set area $DESTINATION_AREA
 set room $DESTINATION_ROOM
-give behavior Scriptable LOAD=$QUEST_NAME_deliveree.script
+give behavior Scriptable LOAD=$QUEST_ID_deliveree.script
 set item $DESTINATION_CONTAINER
 give affect Property
 
 set duration $DURATION
 
 <?xml version="1.0"?>
-<FILE><NAME>$QUEST_NAME_item.xml</NAME><DATA><ITEMS>$DELIVERABLE_ITEM</ITEMS></DATA></FILE>
-<FILE><NAME>$QUEST_NAME_deliverable.script</NAME>
+<FILE><NAME>$QUEST_ID_item.xml</NAME><DATA><ITEMS>$DELIVERABLE_ITEM</ITEMS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_deliverable.script</NAME>
 <DATA>
 QUEST_TIME_PROG * 1
 	mpechoat $w You have less than a minute left to deliver $i.
 ~
 </DATA></FILE>
-<FILE><NAME>$QUEST_NAME_deliverer.script</NAME>
+<FILE><NAME>$QUEST_ID_deliverer.script</NAME>
 <DATA>
 ONCE_PROG 100
 	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
@@ -229,7 +240,7 @@ GIVE_PROG all
 	endif
 ~
 </DATA></FILE>
-<FILE><NAME>$QUEST_NAME_deliveree.script</NAME>
+<FILE><NAME>$QUEST_ID_deliveree.script</NAME>
 <DATA>
 
 PUT_PROG all
@@ -241,6 +252,9 @@ PUT_PROG all
 				if EVAL($p == '$[1 *]')
 					if EVAL('$EXP' != '')
 						mpexp $n $EXP
+					endif
+					if EVAL('$FACTION' != '')
+						mpfaction $n $FACTION $NUMFACTION
 					endif
 					if EVAL('$QUEST_POINT' == 'YES')
 						mpoload QuestPoint
@@ -273,6 +287,9 @@ DROP_PROG all
 			if EVAL($o == '$[1 *]')
 				if EVAL('$EXP' != '')
 					mpexp $n 10%
+				endif
+				if EVAL('$FACTION' != '')
+					mpfaction $n $FACTION $NUMFACTION
 				endif
 				if EVAL('$QUEST_POINT' == 'YES')
 					mpoload QuestPoint

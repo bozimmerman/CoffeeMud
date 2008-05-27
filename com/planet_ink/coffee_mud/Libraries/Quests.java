@@ -1730,6 +1730,18 @@ public class Quests extends StdLibrary implements QuestManager
                             if(newValue!=null) pageDV.setElementAt(step,4,newValue);
                         	break;
                         }
+                        case QM_COMMAND_$FACTION:
+                        {
+                            String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
+                            StringBuffer label=new StringBuffer(((lastLabel==null)?"":lastLabel)+"\n\rChoices: ");
+                            for(Enumeration f=CMLib.factions().factionSet().elements();f.hasMoreElements();)
+                                label.append("\""+((Faction)f.nextElement()).name()+"\" ");
+                            String s=CMLib.english().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,label.toString(),
+                                                            QuestManager.QM_COMMAND_TESTS[inputCode],
+                                                            null);
+                            pageDV.setElementAt(step,4,s);
+                            break;
+                        }
                         }
                     }
                     if(showFlag<-900){ ok=false; showFlag=0; mob.tell("\n\r^HNow verify this page's selections:^.^N"); continue;}

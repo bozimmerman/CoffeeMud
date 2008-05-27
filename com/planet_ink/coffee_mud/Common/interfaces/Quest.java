@@ -36,6 +36,10 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
 	public String name();
 	public void setName(String newName);
 	
+    // the display name of the quest
+    public String displayName();
+    public void setDisplayName(String newName);
+    
     // the unique start date of the quest
     public String startDate();
     public void setStartDate(String newName);
@@ -142,7 +146,7 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
 	public boolean isStat(String code);
 	
 	public final static String[] QCODES={"CLASS", "NAME", "DURATION", "WAIT", "MINPLAYERS", "PLAYERMASK",
-										 "RUNLEVEL", "DATE", "MUDDAY", "INTERVAL","SPAWNABLE"};
+										 "RUNLEVEL", "DATE", "MUDDAY", "INTERVAL","SPAWNABLE", "DISPLAY"};
 	public static final String[] SPECIAL_QCODES={"AREA","MOBTYPE","MOBGROUP","ITEMTYPE","LOCALE",
 												 "ROOM","MOB","ITEM","ITEMGROUP","ROOMGROUP","LOCALEGROUP",
 												 "ROOMGROUPAROUND","LOCALEGROUPAROUND","PRESERVE",
@@ -161,7 +165,7 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
 												 "WHENAT","WHENATGROUP",
 												 "TOOL","TOOLGROUP"};
 	public static final String[] ROOM_REFERENCE_QCODES={"WHEREHAPPENED","WHEREHAPPENEDGROUP",
-		"WHEREAT","WHEREATGROUP",
-		"ROOM","ROMGROUP"
+                                                		"WHEREAT","WHEREATGROUP",
+                                                		"ROOM","ROMGROUP"
 	};
 }

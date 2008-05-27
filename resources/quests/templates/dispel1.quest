@@ -5,9 +5,13 @@
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
 #
+#Quest ID:
+#Enter a unique name/id for your quest:
+#$QUEST_ID=$UNIQUE_QUEST_NAME=dispel_1
+#
 #Quest Name:
-#Enter a unique name for your quest:
-#$QUEST_NAME=$UNIQUE_QUEST_NAME=dispel_1
+#Enter a friendly displayable name for your quest:
+#$QUEST_NAME=$STRING=My New Quest
 #
 #Quest Frequency:
 #A quest starts and stops on timed intervals.  Enter the amount of time 
@@ -168,6 +172,12 @@
 #Amount of experience points, blank for none, or a number% for percent of exp to next level:
 #$EXP=($STRING)=10%
 #
+#Player Faction to give to or take from:
+#$FACTION=($FACTION)
+#If you selected a faction above, enter a new numeric amount, 
+#or enter +value to add, or --value to subtract:
+#$NUMFACTION=($STRING)
+#
 #Select whether a player may complete this quest multiple times:
 #$MULTIPLE=$CHOOSE=YES,NO
 #
@@ -177,7 +187,8 @@
 #
 #!QUESTMAKER_END_SCRIPT Dispel #1
 
-set name $QUEST_NAME
+set name $QUEST_ID
+set display $QUEST_NAME
 
 set wait $FREQUENCY
 set interval 1
@@ -190,55 +201,55 @@ set area $ANNOUNCER_AREA
 set room $ANNOUNCER_ROOM
 set mobgroup
 set mob $ANNOUNCER_NAME
-give behavior Scriptable LOAD=$QUEST_NAME_dispelannouncer.script
+give behavior Scriptable LOAD=$QUEST_ID_dispelannouncer.script
 
 set area $DISPELEE_AREA
 set room $DISPELEE_ROOM
 set $DISPELEE_TYPE $DISPELEE_NAME
 give affect $DISPEL_SPELL $DISPEL_SPELL_PARMS
-give behavior Scriptable LOAD=$QUEST_NAME_dispel.script
+give behavior Scriptable LOAD=$QUEST_ID_dispel.script
 
 set duration $DURATION
 
 <?xml version="1.0"?>
-<FILE><NAME>$QUEST_NAME_dispelannouncer.script</NAME>
+<FILE><NAME>$QUEST_ID_dispelannouncer.script</NAME>
 <DATA>
 ONCE_PROG 100
-	MPSETVAR * $QUEST_NAME_ALREADY_TOLD ''
-	MPSETVAR * $QUEST_NAME_COUNT ''
-	MPSETVAR * $QUEST_NAME_CURED ''
-	MPSETVAR * $QUEST_NAME_ACCEPTED ''
-	MPSETVAR * $QUEST_NAME_NUMACCEPTED ''
+	MPSETVAR * $QUEST_ID_ALREADY_TOLD ''
+	MPSETVAR * $QUEST_ID_COUNT ''
+	MPSETVAR * $QUEST_ID_CURED ''
+	MPSETVAR * $QUEST_ID_ACCEPTED ''
+	MPSETVAR * $QUEST_ID_NUMACCEPTED ''
 	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
 ~
 
-QUEST_TIME_PROG -1 *
-	mpsetvar $i $QUEST_NAME_NUMACCEPTED '$<$i $QUEST_NAME_ACCEPTED>.LENGTH#'
-	for $0 = 0 to< '$<$i $QUEST_NAME_NUMACCEPTED>'
-		if(!QUESTWINNER('$<$i $QUEST_NAME_ACCEPTED>.$0' *))
-			tell "$<$i $QUEST_NAME_ACCEPTED>.$0" You failed to complete my quest in time.
+QUEST_TIME_PROG * -1
+	mpsetvar $i $QUEST_ID_NUMACCEPTED '$<$i $QUEST_ID_ACCEPTED>.LENGTH#'
+	for $0 = 0 to< '$<$i $QUEST_ID_NUMACCEPTED>'
+		if !QUESTWINNER('$<$i $QUEST_ID_ACCEPTED>.$0' *)
+			tell "$<$i $QUEST_ID_ACCEPTED>.$0" You failed to complete my quest in time.
 	    endif
 	next
-	MPSETVAR * $QUEST_NAME_NUMACCEPTED ''
-	MPSETVAR * $QUEST_NAME_ALREADY_TOLD ''
-	MPSETVAR * $QUEST_NAME_CURED ''
-	MPSETVAR * $QUEST_NAME_COUNT ''
-	MPSETVAR * $QUEST_NAME_ACCEPTED ''
+	MPSETVAR * $QUEST_ID_NUMACCEPTED ''
+	MPSETVAR * $QUEST_ID_ALREADY_TOLD ''
+	MPSETVAR * $QUEST_ID_CURED ''
+	MPSETVAR * $QUEST_ID_COUNT ''
+	MPSETVAR * $QUEST_ID_ACCEPTED ''
 ~
 
 QUEST_TIME_PROG * 1
-	mpsetvar $i $QUEST_NAME_NUMACCEPTED '$<$i $QUEST_NAME_ACCEPTED>.LENGTH#'
-	for $0 = 0 to< '$<$i $QUEST_NAME_NUMACCEPTED>'
-   		tell "$<$i $QUEST_NAME_ACCEPTED>.$0" You have less than a minute left.
+	mpsetvar $i $QUEST_ID_NUMACCEPTED '$<$i $QUEST_ID_ACCEPTED>.LENGTH#'
+	for $0 = 0 to< '$<$i $QUEST_ID_NUMACCEPTED>'
+   		tell "$<$i $QUEST_ID_ACCEPTED>.$0" You have less than a minute left.
 	next
 ~
 
 GREET_PROG 100
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if !STRIN('$<$i $QUEST_NAME_ALREADY_TOLD>' '$n')
+			if !STRIN('$<$i $QUEST_ID_ALREADY_TOLD>' '$n')
 				sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept' to take on this quest.
-				MPSETVAR $i $QUEST_NAME_ALREADY_TOLD '$<$i $QUEST_NAME_ALREADY_TOLD> "$n"'
+				MPSETVAR $i $QUEST_ID_ALREADY_TOLD '$<$i $QUEST_ID_ALREADY_TOLD> "$n"'
 			endif
 		endif
 	endif
@@ -246,10 +257,10 @@ GREET_PROG 100
 SPEECH_PROG p i accept
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if VAR($n $QUEST_NAME_COUNT == '')
+			if VAR($n $QUEST_ID_COUNT == '')
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
-				mpsetvar $i $QUEST_NAME_ACCEPTED '$<$i $QUEST_NAME_ACCEPTED> $n'
-				mpsetvar $n $QUEST_NAME_COUNT 0
+				mpsetvar $i $QUEST_ID_ACCEPTED '$<$i $QUEST_ID_ACCEPTED> $n'
+				mpsetvar $n $QUEST_ID_COUNT 0
 				mpqset * REMAINING $DURATION
 			else
 				sayto "$n" Yes, yes, I know .. thanks again.
@@ -258,10 +269,10 @@ SPEECH_PROG p i accept
 	endif
 ~
 </DATA></FILE>
-<FILE><NAME>$QUEST_NAME_dispel.script</NAME>
+<FILE><NAME>$QUEST_ID_dispel.script</NAME>
 <DATA>
 ALL_GREET_PROG 99
-	if affected($i $DISPEL_SPELL) and ISPC($n) and VAR($@i $QUEST_NAME_CURED == '')
+	if affected($i $DISPEL_SPELL) and ISPC($n) and VAR($@i $QUEST_ID_CURED == '')
 		wake
 		stand
 		say "$n" $DISPELEE_GREETING
@@ -269,17 +280,17 @@ ALL_GREET_PROG 99
 ~
 
 RAND_PROG 99
-	if !affected($i $DISPEL_SPELL) and VAR($@i $QUEST_NAME_CURED == '')
-		mpsetvar $@i $QUEST_NAME_CURED 'TRUE'
+	if !affected($i $DISPEL_SPELL) and VAR($@i $QUEST_ID_CURED == '')
+		mpsetvar $@i $QUEST_ID_CURED 'TRUE'
 		mpargset $1 ''
 		for $0 = 0 to< '$%NUMMOBSROOM(*)%'
-		   if VAR($%ROOMMOB($0)% $QUEST_NAME_COUNT != '')
+		   if VAR($%ROOMMOB($0)% $QUEST_ID_COUNT != '')
 		   		mpargset $1 $%ROOMMOB($0)%
 		   endif
 		next
 		if EVAL($1 != '')
-			mpsetvar $1 $QUEST_NAME_COUNT ++
-			mpargset $2 '$<$1 $QUEST_NAME_COUNT>'
+			mpsetvar $1 $QUEST_ID_COUNT ++
+			mpargset $2 '$<$1 $QUEST_ID_COUNT>'
 			wake
 			stand
 			sayto "$1" $DISPELEE_RESPONSE_1
@@ -287,6 +298,9 @@ RAND_PROG 99
 				sayto "$1" $DISPELEE_RESPONSE_2
 				if EVAL('$EXP' != '')
 					mpexp $1 $EXP
+				endif
+				if EVAL('$FACTION' != '')
+					mpfaction $1 $FACTION $NUMFACTION
 				endif
 				if EVAL('$QUEST_POINT' == 'YES')
 					mpoload QuestPoint

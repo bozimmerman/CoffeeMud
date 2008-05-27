@@ -7,9 +7,13 @@
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
 #
+#Quest ID:
+#Enter a unique name/id for your quest:
+#$QUEST_ID=$UNIQUE_QUEST_NAME=invasion_2
+#
 #Quest Name:
-#Enter a unique name for your quest:
-#$QUEST_NAME=$UNIQUE_QUEST_NAME=invasion_2
+#Enter a friendly displayable name for your quest:
+#$QUEST_NAME=$STRING=My New Quest
 #
 #Quest Frequency:
 #A quest starts and stops on timed intervals.  Enter the amount of time 
@@ -154,6 +158,12 @@
 #Amount of experience points, blank for none, or a number% for percent of exp to next level:
 #$EXP=($STRING)=10%
 #
+#Player Faction to give to or take from:
+#$FACTION=($FACTION)
+#If you selected a faction above, enter a new numeric amount, 
+#or enter +value to add, or --value to subtract:
+#$NUMFACTION=($STRING)
+#
 #Select whether a player may complete this quest multiple times:
 #$MULTIPLE=$CHOOSE=YES,NO
 #
@@ -163,7 +173,8 @@
 #
 #!QUESTMAKER_END_SCRIPT Invasion #2
 
-set name $QUEST_NAME
+set name $QUEST_ID
+set display $QUEST_NAME
 
 set wait $FREQUENCY
 set interval 1
@@ -176,46 +187,49 @@ set area $ANNOUNCER_AREA
 set room $ANNOUNCER_ROOM
 set mobgroup
 set mob $ANNOUNCER_NAME
-give behavior Scriptable LOAD=$QUEST_NAME_announcer.script
+give behavior Scriptable LOAD=$QUEST_ID_announcer.script
 
 set area $INVADER_AREA
 set room $INVADER_ROOM
 set mob
 set mobgroup $INVADER_NAMES
 set mob
-give behavior Scriptable LOAD=$QUEST_NAME_invader.script
+give behavior Scriptable LOAD=$QUEST_ID_invader.script
 give behavior Mobile min=1 max=10 chance=99
 
 set duration $DURATION
 
 <?xml version="1.0"?>
-<FILE><NAME>$QUEST_NAME_invaders.xml</NAME><DATA><MOBS>$INVADER_MOBS</MOBS></DATA></FILE>
-<FILE><NAME>$QUEST_NAME_announcer.script</NAME>
+<FILE><NAME>$QUEST_ID_invaders.xml</NAME><DATA><MOBS>$INVADER_MOBS</MOBS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
 ONCE_PROG 100
-	MPSETVAR * $QUEST_NAME_ALREADY_TOLD ''
-	MPSETVAR * $QUEST_NAME_REWARDED ''
-	MPSETVAR * $QUEST_NAME_ACCEPTED ''
-	MPSETVAR * $QUEST_NAME_KILLS ''
+	MPSETVAR * $QUEST_ID_ALREADY_TOLD ''
+	MPSETVAR * $QUEST_ID_REWARDED ''
+	MPSETVAR * $QUEST_ID_ACCEPTED ''
+	MPSETVAR * $QUEST_ID_KILLS ''
 	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
 ~
 
-QUEST_TIME_PROG -1 *
-	IF VAR ($i $QUEST_NAME_REWARDED == '')
+QUEST_TIME_PROG * -1
+	IF VAR ($i $QUEST_ID_REWARDED == '')
 		$INVADER_WINS_RESPONSE_TYPE $INVADER_WINS_RESPONSE_TEXT
 	ENDIF
-	MPSETVAR * $QUEST_NAME_ALREADY_TOLD ''
-	MPSETVAR * $QUEST_NAME_ACCEPTED ''
-	MPSETVAR * $QUEST_NAME_REWARDED ''
-	MPSETVAR * $QUEST_NAME_KILLS ''
+	MPSETVAR * $QUEST_ID_ALREADY_TOLD ''
+	MPSETVAR * $QUEST_ID_ACCEPTED ''
+	MPSETVAR * $QUEST_ID_REWARDED ''
+	MPSETVAR * $QUEST_ID_KILLS ''
 ~
 
 GREET_PROG 100
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if VAR($n $QUEST_NAME_KILLS >= $INVADER_KILLS)
+			if VAR($n $QUEST_ID_KILLS >= $INVADER_KILLS)
 				if EVAL('$EXP' != '')
 					mpexp $n $EXP
+				endif
+				if EVAL('$FACTION' != '')
+					mpfaction $n $FACTION $NUMFACTION
 				endif
 				if EVAL('$QUEST_POINT' == 'YES')
 					mpoload QuestPoint
@@ -225,7 +239,7 @@ GREET_PROG 100
 					mpoload $GOLD
 					give $GOLD "$n" 
 				endif
-				mpsetvar $i $QUEST_NAME_REWARDED $n
+				mpsetvar $i $QUEST_ID_REWARDED $n
 				mpquestwin $n *
 				$INVADER_LOSES_RESPONSE_TYPE $INVADER_LOSES_RESPONSE_TEXT
 				mpendquest *
@@ -233,9 +247,9 @@ GREET_PROG 100
 					mpstartquest $NEXT_QUEST
 				ENDIF
 			else
-				if !STRIN('$<$i $QUEST_NAME_ALREADY_TOLD>' '$n')
+				if !STRIN('$<$i $QUEST_ID_ALREADY_TOLD>' '$n')
 					sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept' to take on this quest.
-					MPSETVAR $i $QUEST_NAME_ALREADY_TOLD '$<$i $QUEST_NAME_ALREADY_TOLD> "$n"'
+					MPSETVAR $i $QUEST_ID_ALREADY_TOLD '$<$i $QUEST_ID_ALREADY_TOLD> "$n"'
 				endif
 			endif
 		endif
@@ -243,7 +257,7 @@ GREET_PROG 100
 ~
 
 QUEST_TIME_PROG * 1
-	IF VAR ($i $QUEST_NAME_REWARDED == '')
+	IF VAR ($i $QUEST_ID_REWARDED == '')
 		$INVASION_WARNING_RESPONSE_TYPE $INVASION_WARNING_RESPONSE_TEXT
 	ENDIF
 ~
@@ -251,8 +265,8 @@ QUEST_TIME_PROG * 1
 SPEECH_PROG p i accept
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if VAR($n $QUEST_NAME_ACCEPTED == '')
-				mpsetvar $n $QUEST_NAME_ACCEPTED 'YES'
+			if VAR($n $QUEST_ID_ACCEPTED == '')
+				mpsetvar $n $QUEST_ID_ACCEPTED 'YES'
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
 			else
 				sayto "$n" Yes, yes, I know .. now off with you.
@@ -261,7 +275,7 @@ SPEECH_PROG p i accept
 	endif
 ~
 </DATA></FILE>
-<FILE><NAME>$QUEST_NAME_invader.script</NAME>
+<FILE><NAME>$QUEST_ID_invader.script</NAME>
 <DATA>
 RAND_PROG 50
 	MPARGSET $0 '${1 *}'
@@ -284,18 +298,18 @@ DEATH_PROG
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			IF ISPC($n)
-				MPSETVAR $n $QUEST_NAME_KILLS ++
+				MPSETVAR $n $QUEST_ID_KILLS ++
 				IF EVAL('$INVADER_KILLS' > 1)
-					mpechoat $n Killed $<$n $QUEST_NAME_KILLS>/$INVADER_KILLS
+					mpechoat $n Killed $<$n $QUEST_ID_KILLS>/$INVADER_KILLS
 				ELSE
 					mpechoat $n You have killed $t.
 				ENDIF
 			ELSE
 
 				IF ISPC($f)
-					MPSETVAR $f $QUEST_NAME_KILLS ++
+					MPSETVAR $f $QUEST_ID_KILLS ++
 					IF EVAL('$INVADER_KILLS' > 1)
-						mpechoat $n Killed $<$n $QUEST_NAME_KILLS>/$INVADER_KILLS
+						mpechoat $n Killed $<$n $QUEST_ID_KILLS>/$INVADER_KILLS
 					ELSE
 						mpechoat $n You have killed $t.
 					ENDIF

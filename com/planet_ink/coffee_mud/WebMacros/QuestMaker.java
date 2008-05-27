@@ -433,6 +433,27 @@ public class QuestMaker extends StdWebMacro
                     }
                 	break;
                 }
+                case QuestManager.QM_COMMAND_$FACTION:
+                {
+                    if(oldValue==null) oldValue=defValue;
+                    list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
+                    list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
+                    list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
+                    list.append("<TD><SELECT NAME="+httpKeyName+">");
+                    if(optionalEntry) list.append("<OPTION VALUE=\"\" "+((oldValue.length()==0)?"SELECTED":"")+">");
+                    for(Enumeration f=CMLib.factions().factionSet().keys();f.hasMoreElements();)
+                    {
+                        String fkey=(String)f.nextElement();
+                        Faction F=(Faction)CMLib.factions().getFaction(fkey);
+                        list.append("<OPTION VALUE=\""+fkey+"\" ");
+                        if(oldValue.equals(fkey)) list.append("SELECTED");
+                        list.append(">");
+                        list.append(F.name());
+                    }
+                    list.append("</SELECT>");
+                    list.append("</TD></TR>");
+                    break;
+                }
                 }
             }
             return list.toString();
