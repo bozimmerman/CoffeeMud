@@ -39,6 +39,7 @@ public class QuestBound implements Ability
 	public String description(){return "";}
 	public String displayText(){return "";}
 	protected Environmental affected=null;
+	protected boolean keyPlayer=false;
 	
 	public boolean canTarget(int can_code){return false;}
 	public boolean canAffect(int can_code){return false;}
@@ -137,7 +138,7 @@ public class QuestBound implements Ability
         CMClass.bumpCounter(this,CMClass.OBJECT_ABILITY);
     }
 	public int getSaveStatIndex(){return getStatCodes().length;}
-	private static final String[] CODES={"CLASS","TEXT"};
+	private static final String[] CODES={"CLASS","TEXT","KEY"};
 	public String[] getStatCodes(){return CODES;}
 	protected int getCodeNum(String code){
 		for(int i=0;i<CODES.length;i++)
@@ -149,6 +150,7 @@ public class QuestBound implements Ability
 		{
 		case 0: return ID();
 		case 1: return text();
+		case 2: return ""+keyPlayer;
 		}
 		return "";
 	}
@@ -158,6 +160,7 @@ public class QuestBound implements Ability
 		{
 		case 0: return;
 		case 1: setMiscText(val); break;
+		case 2: keyPlayer=CMath.s_bool(val); break;
 		}
 	}
 	public boolean sameAs(Environmental E)
@@ -215,7 +218,10 @@ public class QuestBound implements Ability
 			&&((msg.target() instanceof Room)
 				||(msg.target()==affected)
 				||((affected instanceof Item)&&(((Item)affected).owner()==msg.target()))))
-		||(msg.targetMinor()==CMMsg.TYP_ROOMRESET))
+		||(msg.targetMinor()==CMMsg.TYP_ROOMRESET)
+		||(keyPlayer
+		   &&(msg.source()==affected)
+		   &&(msg.sourceMinor()==CMMsg.TYP_DEATH)))
 		{
 			if(text().length()>0)
 			{
