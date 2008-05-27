@@ -404,7 +404,7 @@ public class BribeGateGuard extends StdBehavior
 		if ( (mob.location() == monster.location())
 		    && (mob != monster)
 		    && (msg.target() != null)
-		    && (!BrotherHelper.isBrother(mob, monster))
+		    && (!BrotherHelper.isBrother(mob, monster,false))
 		    && (CMLib.flags().canSenseMoving(mob, monster))
 		    && (!CMLib.masking().maskCheck(getParms(), mob,false))) {
 		  if ( (msg.tool() != null)

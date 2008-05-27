@@ -64,7 +64,7 @@ public class FaithHelper extends StdBehavior
 		&&(observer.getWorshipCharID().length()>0)
 		&&(CMLib.flags().canBeSeenBy(source,observer))
 		&&(CMLib.flags().canBeSeenBy(target,observer))
-		&&(!BrotherHelper.isBrother(source,observer)))
+		&&(!BrotherHelper.isBrother(source,observer,false)))
 		{
 			if(observer.getWorshipCharID().equalsIgnoreCase(target.getWorshipCharID()))
 			{

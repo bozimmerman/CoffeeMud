@@ -67,7 +67,7 @@ public class ClanHelper extends StdBehavior
 		&&(!observer.isInCombat())
 		&&(CMLib.flags().canBeSeenBy(source,observer))
 		&&(CMLib.flags().canBeSeenBy(target,observer))
-		&&(!BrotherHelper.isBrother(source,observer)))
+		&&(!BrotherHelper.isBrother(source,observer,false)))
 		{
 			if(observer.getClanID().equalsIgnoreCase(target.getClanID()))
 			{

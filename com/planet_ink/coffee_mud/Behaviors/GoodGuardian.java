@@ -54,7 +54,7 @@ public class GoodGuardian extends StdBehavior
 						return inhab;
 				}
 
-				if((BrotherHelper.isBrother(inhab,observer))&&(victim==null))
+				if((BrotherHelper.isBrother(inhab,observer,false))&&(victim==null))
 					victim=inhab.getVictim();
 
 				if((CMLib.flags().isEvil(inhab))
@@ -71,7 +71,7 @@ public class GoodGuardian extends StdBehavior
 
 		if(victim!=null)
 		{
-			if((!BrotherHelper.isBrother(victim,observer))
+			if((!BrotherHelper.isBrother(victim,observer,false))
             &&(!victim.amDead())
             &&(victim.isInCombat())
             &&(!victim.getVictim().amDead())

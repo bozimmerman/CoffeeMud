@@ -37,21 +37,39 @@ public class BrotherHelper extends StdBehavior
 
 	//protected boolean mobKiller=false;
 	protected boolean nameOnly = true;
+	protected int num=-1;
 	
 	public void setParms(String parms)
 	{
 	    super.setParms(parms);
 	    nameOnly=parms.toUpperCase().indexOf("NAMEONLY")>=0;
+	    num=-1;
+	}
+	
+	public int numAllowed() {
+	    if(num<0)
+	    {
+	        num=0;
+	        Vector V=CMParms.parse(getParms());
+	        for(int v=0;v<V.size();v++)
+	            if(CMath.isInteger((String)V.elementAt(v)))
+	                num=CMath.s_int((String)V.elementAt(v));
+	        
+	    }
+	    return num;
 	}
 
-	public static boolean isBrother(MOB target, MOB observer)
+	public static boolean isBrother(MOB target, MOB observer, boolean nameOnly)
 	{
 		if((observer==null)||(target==null)) return false;
-		if((observer.getStartRoom()!=null)&&(target.getStartRoom()!=null))
-        {
-			if (observer.getStartRoom() == target.getStartRoom())
-				return true;
-        }
+		if(!nameOnly)
+		{
+    		if((observer.getStartRoom()!=null)&&(target.getStartRoom()!=null))
+            {
+    			if (observer.getStartRoom() == target.getStartRoom())
+    				return true;
+            }
+		}
         if((observer.ID().equals(target.ID()))&&(observer.name().equals(target.name())))
 			return true;
 		return false;
@@ -73,8 +91,8 @@ public class BrotherHelper extends StdBehavior
 		&&(!observer.isInCombat())
 		&&(CMLib.flags().canBeSeenBy(source,observer))
 		&&(CMLib.flags().canBeSeenBy(target,observer))
-		&&(isBrother(target,observer))
-		&&(!isBrother(source,observer))
+		&&(isBrother(target,observer,nameOnly))
+		&&(!isBrother(source,observer,nameOnly))
 		&&(R!=null))
 		{
 			int numInFray=0;
@@ -84,12 +102,17 @@ public class BrotherHelper extends StdBehavior
 				if((M!=null)&&(M.getVictim()==source))
 					numInFray++;
 			}
-			int numAllowed=CMath.s_int(getParms());
-			boolean yep=(observer.location()==observer.getStartRoom())
-						||(!CMLib.flags().isAggressiveTo(target,source))
-						||(!CMLib.law().isLegalOfficerHere(observer))
-						||(CMLib.law().isLegalOfficialHere(target));
-			if(yep&&((numAllowed==0)||(numInFray<numAllowed)))
+			boolean yep=true;
+			if(CMLib.law().isLegalOfficerHere(observer))
+			{
+			    yep=false;
+			    if(CMLib.law().isLegalOfficialHere(target))
+			        yep=true;
+			    else
+			    if(!CMLib.flags().isAggressiveTo(target,source))
+			        yep=true;
+			}
+			if(yep&&((numAllowed()==0)||(numInFray<numAllowed())))
             {
 				yep=Aggressive.startFight(observer,source,true,false,"DON'T HURT MY FRIEND!");
             }
