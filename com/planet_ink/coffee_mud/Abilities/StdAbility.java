@@ -216,7 +216,10 @@ public class StdAbility implements Ability
 	public EnvStats baseEnvStats(){return envStats;}
 
 	
-	public long expirationDate(){return tickDown*Tickable.TIME_TICK;}
+	public long expirationDate()
+	{
+	    return new Long(tickDown).longValue() * Tickable.TIME_TICK;
+	}
 	public void setExpirationDate(long time){
 		if(time>System.currentTimeMillis())
 			tickDown=(int)((time-System.currentTimeMillis())/Tickable.TIME_TICK);
