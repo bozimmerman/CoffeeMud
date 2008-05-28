@@ -94,7 +94,7 @@ public class Trap_WeaponSwing extends StdTrap
 				name=text().substring(x+1);
 			}
 			if((!invoker().mayIFight(target))
-			||(isLocalNPCMobWLocalTrap(target))
+			||(isLocalExempt(target))
 			||(invoker().getGroupMembers(new HashSet()).contains(target))
 			||(target==invoker())
 			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))

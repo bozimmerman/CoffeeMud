@@ -71,18 +71,22 @@ public class StdTrap extends StdAbility implements Trap
 			   ||(affected.fetchEffect(ID())==null);
 	}
 	
-	public boolean isLocalNPCMobWLocalTrap(MOB target)
+	public boolean isLocalExempt(MOB target)
 	{
 		if(target==null) return false;
 		Room R=target.location();
-		if((target.isMonster())
-		&&(!canBeUninvoked())
+        if((!canBeUninvoked())
         &&(!isABomb())
-		&&(R!=null)
-		&&(target.getStartRoom()!=null)
-		&&(target.getStartRoom().getArea()==R.getArea())
-		&&((CMLib.law().getLandTitle(R)==null)||(CMLib.law().doesHavePriviledgesHere(target,R))))
-			return true;
+        &&(R!=null)) {
+            if((CMLib.law().getLandTitle(R)!=null)
+            &&(CMLib.law().doesHavePriviledgesHere(target,R)))
+                return true;
+            
+            if((target.isMonster())
+            &&(target.getStartRoom()!=null)
+            &&(target.getStartRoom().getArea()==R.getArea()))
+                return true;
+        }
 		return false;
 	}
 	

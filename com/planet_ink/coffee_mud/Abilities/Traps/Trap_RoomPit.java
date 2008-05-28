@@ -187,7 +187,7 @@ public class Trap_RoomPit extends StdTrap
 		if((target!=invoker())&&(target.location()!=null)&&(!CMLib.flags().isInFlight(target)))
 		{
 			if((!invoker().mayIFight(target))
-			||(isLocalNPCMobWLocalTrap(target))
+			||(isLocalExempt(target))
 			||(invoker().getGroupMembers(new HashSet()).contains(target))
 			||(target==invoker())
 			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))

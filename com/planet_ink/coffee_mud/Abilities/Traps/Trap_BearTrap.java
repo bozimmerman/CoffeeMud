@@ -111,7 +111,7 @@ public class Trap_BearTrap extends StdTrap
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if((!invoker().mayIFight(target))
-			||(isLocalNPCMobWLocalTrap(target))
+			||(isLocalExempt(target))
 			||(CMLib.flags().isInFlight(target))
 			||(invoker().getGroupMembers(new HashSet()).contains(target))
 			||(target==invoker())

@@ -72,7 +72,7 @@ public class Trap_Snare extends StdTrap
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if((!invoker().mayIFight(target))
-			||(isLocalNPCMobWLocalTrap(target))
+			||(isLocalExempt(target))
 			||(invoker().getGroupMembers(new HashSet()).contains(target))
 			||(target==invoker())
 			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
