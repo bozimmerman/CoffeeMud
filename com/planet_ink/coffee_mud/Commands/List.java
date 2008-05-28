@@ -746,7 +746,18 @@ public class List extends StdCommand
 					}
 					else
 					if(Q.waiting())
-						buf.append("waiting ("+Q.waitRemaining()+" ticks left)");
+					{
+					    long min=Q.waitRemaining();
+					    if(min>0) {
+					        min=min*Tickable.TIME_TICK;
+					        if(min>60000)
+	                            buf.append("waiting ("+(min/60000)+" minutes left)");
+					        else
+                                buf.append("waiting ("+(min/1000)+" seconds left)");
+					    }
+					    else
+    						buf.append("waiting ("+min+" minutes left)");
+					}
 					else
 						buf.append("loaded");
 					buf.append("^N\n\r");
@@ -1228,6 +1239,75 @@ public class List extends StdCommand
             mob.tell(str.toString());
         }
     }
+
+    public String listLog(MOB mob, Vector commands)
+    {
+        StringBuffer log=Log.getLog();
+        if(commands.size()<2)
+            return log.toString();
+        
+        Vector logV=new Vector();
+        int start=0;
+        for(int l=0;l<log.length();l++)
+            switch(log.charAt(l))
+            {
+            case '\r':
+            case '\n':
+                if(start<l)
+                {
+                    logV.addElement(log.subSequence(start,l));
+                    start=l+1;
+                }
+                break;
+            }
+        if(start<log.length())
+            logV.addElement(log.subSequence(start,log.length()));
+        
+        start=0;
+        int end=logV.size();
+        for(int i=1;i<commands.size();i++)
+        {
+            String s=(String)commands.elementAt(i);
+            if((s.equalsIgnoreCase("front")||(s.equalsIgnoreCase("first"))||(s.equalsIgnoreCase("head")))
+            &&(i<(commands.size()-1)))
+            {
+                s=(String)commands.elementAt(i+1);
+                if(CMath.isInteger(s))
+                {
+                    i++;
+                    end=CMath.s_int(s);
+                }
+            }
+            else
+            if((s.equalsIgnoreCase("back")||(s.equalsIgnoreCase("last"))||(s.equalsIgnoreCase("tail")))
+            &&(i<(commands.size()-1)))
+            {
+                s=(String)commands.elementAt(i+1);
+                if(CMath.isInteger(s))
+                {
+                    i++;
+                    start=(end-CMath.s_int(s))-1;
+                }
+            }
+            else
+            if(s.equalsIgnoreCase("skip")
+            &&(i<(commands.size()-1)))
+            {
+                s=(String)commands.elementAt(i+1);
+                if(CMath.isInteger(s))
+                {
+                    i++;
+                    start=start+CMath.s_int(s);
+                }
+            }
+        }
+        StringBuffer newLog=new StringBuffer("");
+        if(end>=log.length()) end=log.length();
+        if(start<0) start=0;
+        for(int i=start;i<end;i++)
+            newLog.append(logV.elementAt(i)).append("\r\n");
+        return newLog.toString();
+    }
     
 	public void archonlist(MOB mob, Vector commands)
 	{
@@ -1319,7 +1399,7 @@ public class List extends StdCommand
 			break;
 		}
         case 33: s.wraplessPrintln(listRaceCats(CMClass.races(),rest.equalsIgnoreCase("SHORT")).toString()); break;
-		case 34: s.wraplessPrintln(Log.getLog().toString()); break;
+		case 34: s.wraplessPrintln(listLog(mob,commands)); break; 
 		case 35: listUsers(mob,commands); break;
 		case 36: s.println(listLinkages(mob).toString()); break;
 		case 37: s.println(listReports(mob).toString()); break;

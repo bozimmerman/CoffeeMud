@@ -117,7 +117,14 @@ public class Affect extends StdCommand
 	            String name=CMParms.combine(commands,1);
 	            if(name.length()>0)
 	            {
-	                Environmental E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,name,Item.WORNREQ_ANY);
+	                Environmental E=null;
+	                if((name.equalsIgnoreCase("here")||(name.equalsIgnoreCase("room"))))
+	                    E=CMLib.map().roomLocation(mob);
+	                else
+                    if((name.equalsIgnoreCase("area")||(name.equalsIgnoreCase("zone"))))
+                        E=CMLib.map().areaLocation(mob);
+                    else
+    	                E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,name,Item.WORNREQ_ANY);
 	                if(E==null)
 	                    S.colorOnlyPrint("You don't see "+name+" here.");
 	                else
