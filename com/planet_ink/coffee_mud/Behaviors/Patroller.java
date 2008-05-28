@@ -231,7 +231,8 @@ public class Patroller extends ActiveTicker
 				thatRoom=thisRoom.getRoomInDir(direction);
 				if(thatRoom==null)
 				{
-                    Log.errOut("Patroller","'"+nxt+"' for "+ticking.name()+" at "+CMLib.map().getExtendedRoomID(thisRoom)+" is impossible!");
+				    if(step>0)
+                        Log.errOut("Patroller","'"+nxt+"' for "+ticking.name()+" at "+CMLib.map().getExtendedRoomID(thisRoom)+" is impossible!");
                     step=-1;
                     tickStatus=Tickable.STATUS_NOT;
                     return true;
