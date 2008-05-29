@@ -1543,6 +1543,15 @@ public class StdMOB implements MOB
 			if((B!=null)&&(!B.okMessage(this,msg)))
 				return false;
 		}
+        
+        ScriptingEngine S=null;
+        num=numScripts();
+        for(int s=0;s<num;s++)
+        {
+            S=fetchScript(s);
+            if((S!=null)&&(!S.okMessage(this, msg)))
+                return false;
+        }
 
 		Faction F=null;
         for(Enumeration e=fetchFactions();e.hasMoreElements();)
@@ -2247,11 +2256,19 @@ public class StdMOB implements MOB
 			charStats().getMyRace().executeMsg(this,msg);
 		}
 
+		Behavior B=null;
         for(int b=0;b<numBehaviors();b++)
 		{
-			Behavior B=fetchBehavior(b);
+			B=fetchBehavior(b);
 			if(B!=null)	B.executeMsg(this,msg);
 		}
+        
+        ScriptingEngine S=null;
+        for(int s=0;s<numScripts();s++)
+        {
+            S=fetchScript(s);
+            if(S!=null) S.executeMsg(this, msg);
+        }
 
 		MOB mob=msg.source();
 
@@ -2745,6 +2762,15 @@ public class StdMOB implements MOB
 				if(B!=null) B.tick(ticking,tickID);
 			}
 
+            num=numScripts();
+            ScriptingEngine S=null;
+            for(int s=0;s<num;s++)
+            {
+                S=fetchScript(s);
+                tickStatus=Tickable.STATUS_SCRIPT+s;
+                if(B!=null) B.tick(ticking,tickID);
+            }
+            
             num=charStats().numClasses();
 			tickStatus=Tickable.STATUS_CLASS;
 			for(int c=0;c<num;c++)

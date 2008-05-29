@@ -147,18 +147,20 @@ public interface Tickable extends CMObject
 	public static long STATUS_BEHAVIOR=512;
     /** a tick status MASK representing the tick access of an associated effect */
 	public static long STATUS_AFFECT=1024;
+    /** a tick status MASK representing the tick access of an associated script */
+    public static long STATUS_SCRIPT=2048;
     /** a tick status MASK  whose meaning is class dependent */
-	public static long STATUS_MISC=2048;
+    public static long STATUS_MISC=4096;
     /** a tick status MASK  whose meaning is class dependent */
-    public static long STATUS_MISC2=4096;
+	public static long STATUS_MISC2=8192;
     /** a tick status MASK  whose meaning is class dependent */
-	public static long STATUS_MISC3=8192;
+	public static long STATUS_MISC3=16384;
     /** a tick status MASK  whose meaning is class dependent */
-	public static long STATUS_MISC4=16384;
+	public static long STATUS_MISC4=32768;
     /** a tick status MASK  whose meaning is class dependent */
-	public static long STATUS_MISC5=32768;
+	public static long STATUS_MISC5=65536;
     /** a tick status MASK  whose meaning is class dependent */
-	public static long STATUS_MISC6=65536;
+    public static long STATUS_MISC6=131072;
     /** a tick status MASK  whose meaning is class dependent */
-    public static long STATUS_MISC7=131072;
+    public static long STATUS_MISC7=131072*2;
 }

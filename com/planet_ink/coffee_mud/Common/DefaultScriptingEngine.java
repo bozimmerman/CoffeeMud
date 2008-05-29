@@ -8658,7 +8658,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             if(script.size()>0)
                 trigger=((String)script.elementAt(0)).toUpperCase().trim();
             triggerCode=getTriggerCode(trigger);
-            tickStatus=Tickable.STATUS_BEHAVIOR+triggerCode;
+            tickStatus=Tickable.STATUS_SCRIPT+triggerCode;
             switch(triggerCode)
             {
             case 5: // rand_Prog
@@ -8822,7 +8822,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 break;
             }
         }
-        tickStatus=Tickable.STATUS_BEHAVIOR+100;
+        tickStatus=Tickable.STATUS_SCRIPT+100;
         dequeResponses();
         altStatusTickable=null;
         return true;
@@ -8834,7 +8834,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
     public void dequeResponses()
     {
         try{
-            tickStatus=Tickable.STATUS_BEHAVIOR+100;
+            tickStatus=Tickable.STATUS_SCRIPT+100;
             for(int q=que.size()-1;q>=0;q--)
             {
                 ScriptableResponse SB=null;

@@ -654,6 +654,18 @@ public class ServiceEngine implements ThreadEngine
                 return codeWord;
             }
             else
+            if(CMath.bset(code,Tickable.STATUS_SCRIPT)&&(obj instanceof MOB))
+            {
+                long b=(code-Tickable.STATUS_SCRIPT);
+                String codeWord="Script #"+b;
+                if((b>=0)&&(b<((MOB)obj).numScripts()))
+                {
+                    ScriptingEngine S=((MOB)obj).fetchScript((int)b);
+                    codeWord+=" ("+CMStrings.limit(S.getScript(),20)+": "+S.getTickStatus();
+                }
+                return codeWord;
+            }
+            else
             if((code&STATUS_ALLMISCTICKS)>0)
             {
                 long base=(code&STATUS_ALLMISCTICKS);
@@ -680,6 +692,9 @@ public class ServiceEngine implements ThreadEngine
         if(CMath.bset(code,Tickable.STATUS_BEHAVIOR))
            codeWord="Behavior?!";
         else
+        if(CMath.bset(code,Tickable.STATUS_SCRIPT))
+            codeWord="Script?!";
+         else
         if(CMath.bset(code,Tickable.STATUS_AFFECT))
            codeWord="Effect?!";
         else
