@@ -64,12 +64,26 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         return engine().externalFiles();
     }
 
+    public String getParms() { return engine().getScript();}
+    
     public void setParms(String newParms)
     {
         engine().setScript(newParms);
-        super.setParms(newParms);
+        super.setParms("");
     }
 
+    public String defaultQuestName() { return engine().defaultQuestName();}
+    
+    public void setVarScope(String scope){ engine().setVarScope(scope); }
+    
+    public String getVarScope() { return engine().getVarScope(); }
+    
+    public String getScopeValues(){ return engine().getScopeValues(); }
+    
+    public void setScopeValues(String xml){
+        if(engine().getVarScope().length()>0)
+            engine().setScopeValues(xml);
+    }
 
 
     public boolean eval(Environmental scripted,
@@ -85,9 +99,9 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         return engine().eval(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, evaluable);
     }
 
-    public String getScript() { return getParms();}
+    public String getScript() { return engine().getScript();}
     
-    public void setScript(String newParms){ setParms(newParms);}
+    public void setScript(String newParms){ engine().setScript(newParms);}
     
     public String execute(Environmental scripted,
                           MOB source,

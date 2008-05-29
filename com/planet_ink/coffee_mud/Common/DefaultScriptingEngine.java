@@ -44,7 +44,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
     protected static final Hashtable progH=new Hashtable();
     protected static final HashSet SIGNS=CMParms.makeHashSet(CMParms.parseCommas("==,>=,>,<,<=,=>,=<,!=",true));
     protected static Hashtable patterns=new Hashtable();
-    protected static Hashtable contexts=new Hashtable();
+    
+    protected String scope="";
     
     protected long tickStatus=Tickable.STATUS_NOT;
     protected boolean isSavable=true;
@@ -76,10 +77,83 @@ public class DefaultScriptingEngine implements ScriptingEngine
     public boolean isSavable(){ return isSavable;}
     public void setSavable(boolean truefalse){isSavable=truefalse;}
     
+    public String defaultQuestName(){ return defaultQuest!=null?defaultQuest.name():"";}
+    
+    public void setVarScope(String newScope){
+        if((newScope==null)||(newScope.trim().length()==0))
+        {
+            scope="";
+            resources=Resources.instance();
+        }
+        scope=newScope.toUpperCase().trim();
+        if(scope.equalsIgnoreCase("*"))
+            resources = Resources.newResources();
+        resources=(Resources)Resources.getResource("VARSCOPE-"+scope);
+        if(resources==null)
+        {
+            resources = Resources.newResources();
+            Resources.submitResource("VARSCOPE-"+scope,resources);
+        }
+    }
+    
+    public String getVarScope() { return scope;}
+    
+    public String getScopeValues() 
+    {
+        if((scope==null)||(scope.length()==0)) return "";
+        StringBuffer str=new StringBuffer("");
+        Vector V=resources._findResourceKeys("SCRIPTVAR-");
+        for(int v=0;v<V.size();v++)
+        {
+            String key=(String)V.elementAt(v);
+            if(key.startsWith("SCRIPTVAR-"))
+            {
+                str.append("<"+key.substring(10)+">");
+                Hashtable H=(Hashtable)resources._getResource(key);
+                for(Enumeration e=H.keys();e.hasMoreElements();)
+                {
+                    String vn=(String)e.nextElement();
+                    String val=(String)H.get(vn);
+                    str.append("<"+vn+">"+CMLib.xml().parseOutAngleBrackets(val)+"</"+vn+">");
+                }
+                str.append("</"+key.substring(10)+">");
+            }
+        }
+        return str.toString();
+    }
+    
+    public void setScopeValues(String xml) 
+    {
+        Vector V=resources._findResourceKeys("SCRIPTVAR-");
+        for(int v=0;v<V.size();v++)
+        {
+            String key=(String)V.elementAt(v);
+            if(key.startsWith("SCRIPTVAR-"))
+                resources._removeResource(key);
+        }
+        V=CMLib.xml().parseAllXML(xml);
+        for(int v=0;v<V.size();v++)
+        {
+            XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)V.elementAt(v);
+            if((piece.contents!=null)&&(piece.contents.size()>0))
+            {
+                String kkey="SCRIPTVAR-"+piece.tag;
+                Hashtable H=new Hashtable();
+                for(int c=0;c<piece.contents.size();c++)
+                {
+                    XMLLibrary.XMLpiece piece2=(XMLLibrary.XMLpiece)piece.contents.elementAt(c);
+                    H.put(piece2.tag,piece2.value);
+                }
+                resources._submitResource(kkey,H);
+            }
+        }
+    }
+    
     private Quest getQuest(String named)
     {
         if((defaultQuest!=null)&&(named.equals("*")||named.equalsIgnoreCase(defaultQuest.name())))
             return defaultQuest;
+        
         Quest Q=null;
         for(int i=0;i<CMLib.quests().numQuests();i++)
         {

@@ -68,6 +68,16 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
     
     public void registerDefaultQuest(Quest Q);
     
+    public String defaultQuestName();
+    
+    public void setVarScope(String scope);
+    
+    public String getVarScope();
+    
+    public String getScopeValues(); 
+    
+    public void setScopeValues(String xml);
+    
     public boolean isSavable();
     
     public void setSavable(boolean truefalse);
