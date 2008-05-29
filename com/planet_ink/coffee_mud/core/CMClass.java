@@ -505,6 +505,7 @@ public class CMClass extends ClassLoader
         }
         return null;
     }
+    
     public static CharClass findCharClass(String calledThis)
     {
         CharClass thisItem=getCharClass(calledThis);
@@ -518,12 +519,14 @@ public class CMClass extends ClassLoader
         }
         return null;
     }
+    
     public static CMObject getNewGlobal(Vector list, String ID)
     {
         CMObject O=(CMObject)getGlobal(list,ID);
         if(O!=null) return O.newInstance();
         return null;
     }
+    
 	public static Object getGlobal(Vector list, String ID)
 	{
 		if(list.size()==0) return null;
@@ -544,6 +547,7 @@ public class CMClass extends ClassLoader
 		}
 		return null;
 	}
+	
 	public static Ability findAbility(String calledThis)
 	{
 		Ability A=(Ability)getGlobal(abilities,calledThis);
@@ -552,6 +556,47 @@ public class CMClass extends ClassLoader
 		if(A!=null)A=(Ability)A.newInstance();
 		return A;
 	}
+	
+    public static Behavior getBehaviorByName(String calledThis, boolean exact)
+    {
+        if(calledThis==null) return null;
+        Behavior B=null;
+        for(Enumeration e=behaviors();e.hasMoreElements();)
+        {
+            B=(Behavior)e.nextElement();
+            if(B.name().equalsIgnoreCase(calledThis))
+                return B;
+        }
+        if(exact) return null;
+        for(Enumeration e=behaviors();e.hasMoreElements();)
+        {
+            B=(Behavior)e.nextElement();
+            if(CMLib.english().containsString(B.name(),calledThis))
+                return B;
+        }
+        return null;
+    }
+    
+	public static Ability getAbilityByName(String calledThis, boolean exact)
+	{
+        if(calledThis==null) return null;
+	    Ability A=null;
+        for(Enumeration e=abilities();e.hasMoreElements();)
+        {
+            A=(Ability)e.nextElement();
+            if(A.name().equalsIgnoreCase(calledThis))
+                return A;
+        }
+	    if(exact) return null;
+        for(Enumeration e=abilities();e.hasMoreElements();)
+        {
+            A=(Ability)e.nextElement();
+            if(CMLib.english().containsString(A.name(),calledThis))
+                return A;
+        }
+	    return null;
+	}
+	
 	public static Ability findAbility(String calledThis, CharStats charStats)
 	{
 		Ability A=null;
@@ -630,6 +675,7 @@ public class CMClass extends ClassLoader
 		}
 		races.addElement(GR);
 	}
+	
 	public static void addCharClass(CharClass CR)
 	{
 		for(int i=0;i<charClasses.size();i++)

@@ -1746,7 +1746,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("-"))
-								buf.append(str2.substring(1)+", ");
+                            {
+                                Ability A=CMClass.getAbility(str2.substring(1));
+                                if(A!=null)
+                                    buf.append(A.name()+", ");
+                                else
+    								buf.append(str2.substring(1)+", ");
+                            }
 						}
 						if(buf.toString().endsWith(", "))
 							buf=new StringBuffer(buf.substring(0,buf.length()-2));
@@ -1762,7 +1768,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             if(zapCodes.containsKey(str2))
                                 break;
                             if(str2.startsWith("+"))
-								buf.append(str2.substring(1)+", ");
+                            {
+                                Ability A=CMClass.getAbility(str2.substring(1));
+                                if(A!=null)
+                                    buf.append(A.name()+", ");
+                                else
+                                    buf.append(str2.substring(1)+", ");
+                            }
 						}
 						if(buf.toString().endsWith(", "))
 							buf=new StringBuffer(buf.substring(0,buf.length()-2));
@@ -2185,12 +2197,42 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         }
 					}
 					break;
+                case 43: // -Effect
+                case 42: // +Effect
+                    {
+                        Vector entry=new Vector();
+                        buf.addElement(entry);
+                        entry.addElement(zapCodes.get(str));
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            String str2=(String)V.elementAt(v2);
+                            if(zapCodes.containsKey(str2))
+                            {
+                                v=v2-1;
+                                break;
+                            }
+                            else
+                            if((str2.startsWith("-"))||(str2.startsWith("+")))
+                            {
+                                str2=str2.substring(1);
+                                CMObject A=CMClass.getAbility(str2);
+                                if(A==null) A=CMClass.getBehavior(str2);
+                                if(A==null) A=CMClass.getAbilityByName(str2,true);
+                                if(A==null) A=CMClass.getBehaviorByName(str2,true);
+                                if(A==null) A=CMClass.getAbilityByName(str2,false);
+                                if(A==null) A=CMClass.getBehaviorByName(str2,false);
+                                if(A!=null)
+                                    entry.addElement(A.ID());
+                            }
+                            v=V.size();
+                        }
+                    }
+                    break;
 				case 7: // -Tattoos
 				case 79: // -security
 				case 81: // -expertise
 				case 14: // -Clan
 				case 44: // -Deity
-				case 43: // -Effect
 				case 9: // -Names
 				case 32: // -Area
                 case 100: // -Home
@@ -2240,7 +2282,6 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 82: // +expertise
 				case 15: // +Clan
 				case 45: // +Deity
-				case 42: // +Effect
 				case 16: // +Names
 				case 31: // +Area
                 case 99: // +Home
@@ -3450,23 +3491,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 43: // -effects
 				{
 					boolean found=false;
-					for(int a=0;a<E.numEffects();a++)
-					{
-						Ability A=E.fetchEffect(a);
-						if(A!=null)
-						for(int v=1;v<V.size();v++)
-							if(A.Name().equalsIgnoreCase((String)V.elementAt(v)))
-							{ found=true; break;}
-					}
+                    for(int v=1;v<V.size();v++)
+                        if(E.fetchEffect((String)V.elementAt(v))!=null)
+                        {   found=true; break;}
                     if(!found)
-                    for(int a=0;a<E.numBehaviors();a++)
-                    {
-                        Behavior B=E.fetchBehavior(a);
-                        if(B!=null)
-                        for(int v=1;v<V.size();v++)
-                            if(B.name().equalsIgnoreCase((String)V.elementAt(v)))
-                            { found=true; break;}
-                    }
+                    for(int v=1;v<V.size();v++)
+                        if(E.fetchBehavior((String)V.elementAt(v))!=null)
+                        {   found=true; break;}
 					if(!found) return false;
 				}
 				break;
@@ -3487,22 +3518,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				}
 				break;
 			case 42: // +effects
-				for(int a=0;a<E.numEffects();a++)
-				{
-					Ability A=E.fetchEffect(a);
-					if(A!=null)
-					for(int v=1;v<V.size();v++)
-						if(A.Name().equalsIgnoreCase((String)V.elementAt(v)))
-						{ return false;}
-				}
-                for(int a=0;a<E.numBehaviors();a++)
-                {
-                    Behavior B=E.fetchBehavior(a);
-                    if(B!=null)
-                    for(int v=1;v<V.size();v++)
-                        if(B.name().equalsIgnoreCase((String)V.elementAt(v)))
-                            return false;
-                }
+                for(int v=1;v<V.size();v++)
+                    if(E.fetchEffect((String)V.elementAt(v))!=null)
+                        return false;
+                for(int v=1;v<V.size();v++)
+                    if(E.fetchBehavior((String)V.elementAt(v))!=null)
+                        return false;
 				break;
 			case 16: // +name
 				{

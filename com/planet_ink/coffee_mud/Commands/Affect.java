@@ -126,7 +126,7 @@ public class Affect extends StdCommand
                     else
     	                E=mob.location().fetchFromMOBRoomFavorsItems(mob,null,name,Item.WORNREQ_ANY);
 	                if(E==null)
-	                    S.colorOnlyPrint("You don't see "+name+" here.");
+	                    S.colorOnlyPrint("You don't see "+name+" here.\n\r^N");
 	                else
 	                {
 	                    if(S==mob.session())
