@@ -1489,6 +1489,17 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
     
     
     
+    public boolean promptToggle(MOB mob, int showNumber, int showFlag, String FieldDisp) 
+        throws IOException
+    {
+        if((showFlag>0)&&(showFlag!=showNumber)) return false;
+        mob.tell(showNumber+". "+FieldDisp);
+        if((showFlag!=showNumber)&&(showFlag>-999)) return false;
+        if(showFlag!=showNumber)
+            return mob.session().confirm("Toggle (y/N)?","N");
+        return true;
+    }
+    
     public String prompt(MOB mob, 
                          String oldVal, 
                          int showNumber, 

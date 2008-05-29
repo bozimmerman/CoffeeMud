@@ -596,6 +596,156 @@ public class Modify extends BaseGenerics
 		Log.sysOut("Rooms",mob.Name()+" modified area "+myArea.Name()+".");
 	}
 
+    public void quests(MOB mob, Vector commands)
+        throws IOException
+    {
+        if(commands.size()<3)
+            mob.tell("modify which quest?  Use list quests.");
+        else
+        {
+            int cmdDex=-1;
+            String[] CMDS={"START","STOP","ENABLE","DISABLE"};
+            if(commands.size()>3)
+            {
+                cmdDex=CMParms.indexOf(CMDS,((String)commands.lastElement()).toUpperCase());
+                if(cmdDex>=0)
+                    commands.removeElementAt(commands.size()-1);
+            }
+            String name=CMParms.combine(commands,2);
+            Quest Q=null;
+            if(CMath.isInteger(name))
+            {
+                Q=CMLib.quests().fetchQuest(CMath.s_int(name)-1);
+                if(Q!=null) name=Q.name();
+            }
+            if(Q==null) Q=CMLib.quests().fetchQuest(name);
+            if(Q==null)
+            {
+                mob.tell("Quest '"+name+"' is unknown.  Try list quests.");
+                return;
+            }
+            else
+            if(!mob.isMonster())
+            {
+                mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around "+Q.name()+".");
+                int showFlag=-1;
+                if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
+                    showFlag=-999;
+                boolean ok=false;
+                while(!ok)
+                {
+                    int showNumber=0;
+                    int doCmd=cmdDex;
+                    String newScript=null;
+                    if((doCmd<0)&&(CMLib.english().promptToggle(mob,++showNumber,showFlag,"Started: "+Q.running())))
+                        doCmd=Q.running()?1:0;
+                    if((doCmd<0)&&(CMLib.english().promptToggle(mob,++showNumber,showFlag,"Enabled: "+(!Q.suspended()))))
+                        doCmd=Q.suspended()?2:3;
+                    if(doCmd<0)
+                    {
+                        String oldScript=Q.script();
+                        newScript=CMLib.english().prompt(mob,oldScript,++showNumber,showFlag,"Script",false,false,CMLib.help().getHelpText("QUESTS",mob,true).toString(),null,null);
+                        if(!newScript.equals(oldScript))
+                        {
+                            Q.setScript(newScript);
+                            boolean revert=false;
+                            if(Q.name().length()==0)
+                            {
+                                mob.tell("You must specify a VALID quest string.  This one contained no name.");
+                                revert=true;
+                            }
+                            else
+                            if(Q.duration()<0)
+                            {
+                                mob.tell("You must specify a VALID quest string.  This one contained no duration.");
+                                revert=true;
+                            }
+                            else
+                            for(int q=0;q<CMLib.quests().numQuests();q++)
+                            {
+                                Quest Q1=CMLib.quests().fetchQuest(q);
+                                if(Q1.name().equalsIgnoreCase(Q.name())&&(Q1!=Q))
+                                {
+                                    mob.tell("A quest with that name already exists.");
+                                    revert=true;
+                                }
+                            }
+                            if(revert)
+                                Q.setScript(oldScript);
+                            else
+                                CMLib.quests().save();
+                        }
+                    }
+                    switch(doCmd)
+                    {
+                    case 0:
+                    {
+                        if(Q.running())
+                            mob.tell("That quest is already running.");
+                        else
+                        {
+                            Q.startQuest();
+                            if((!Q.running())&&(Q.getSpawn()!=Quest.SPAWN_ANY))
+                                mob.tell("Quest '"+Q.name()+"' NOT started -- check your mud.log for errors.");
+                            else
+                                mob.tell("Quest '"+Q.name()+"' started.");
+                        }
+                        break;
+                    }
+                    case 1:
+                    {
+                        if(!Q.running())
+                            mob.tell("That quest is not running.");
+                        else
+                        {
+                            Q.stopQuest();
+                            if(!Q.running())
+                                mob.tell("Quest '"+Q.name()+"' stopped.");
+                            else
+                                mob.tell("Quest '"+Q.name()+"' NOT stopped -- check your mud.log for errors.");
+                        }
+                        break;
+                    }
+                    case 2:
+                    {
+                        if(!Q.suspended())
+                            mob.tell("That quest is not disabled.");
+                        else
+                        {
+                            Q.setSuspended(false);
+                            mob.tell("Quest '"+Q.name()+"' enabled.");
+                        }
+                        break;
+                    }
+                    case 3:
+                    {
+                        if(Q.suspended())
+                            mob.tell("That quest is already disabled.");
+                        else
+                        {
+                            if(Q.running())
+                                Q.stopQuest();
+                            Q.setSuspended(true);
+                            mob.tell("Quest '"+Q.name()+"' disabled.");
+                        }
+                        break;
+                    }
+                    }
+                    
+                    if((showFlag<-900)||(cmdDex>=0)){ ok=true; break;}
+                    if(showFlag>0){ showFlag=-1; continue;}
+                    showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
+                    if(showFlag<=0)
+                    {
+                        showFlag=-1;
+                        ok=true;
+                    }
+                }
+                Log.sysOut("Rooms",mob.Name()+" modified quest "+Q.name()+".");
+            }
+        }
+    }
+    
 	public void exits(MOB mob, Vector commands)
 		throws IOException
 	{
@@ -1202,40 +1352,7 @@ public class Modify extends BaseGenerics
 		if(commandType.equals("QUEST"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS")) return errorOut(mob);
-			if(commands.size()<3)
-				mob.tell("Start/Stop which quest?  Use list quests.");
-			else
-			{
-				String name=CMParms.combine(commands,2);
-                Quest Q=null;
-                if(CMath.isInteger(name))
-                {
-                    Q=CMLib.quests().fetchQuest(CMath.s_int(name)-1);
-                    if(Q!=null) name=Q.name();
-                }
-                if(Q==null) Q=CMLib.quests().fetchQuest(name);
-				if(Q==null)
-					mob.tell("Quest '"+name+"' is unknown.  Try list quests.");
-				else
-				if(!mob.isMonster())
-				{
-					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around "+Q.name()+".");
-					if((Q.running())&&(mob.session().confirm("Stop quest '"+Q.name()+"' (y/N)?","N")))
-					{
-						Q.stopQuest();
-						mob.tell("Quest '"+Q.name()+"' stopped.");
-					}
-					else
-					if((!Q.running())&&(mob.session().confirm("Start quest '"+Q.name()+"' (Y/n)?","Y")))
-					{
-						Q.startQuest();
-                        if((!Q.running())&&(Q.getSpawn()!=Quest.SPAWN_ANY))
-    						mob.tell("Quest '"+Q.name()+"' NOT started -- check your mud.log for errors.");
-                        else
-                            mob.tell("Quest '"+Q.name()+"' started.");
-					}
-				}
-			}
+            quests(mob,commands);
 		}
         else
         if(commandType.equals("FACTION"))

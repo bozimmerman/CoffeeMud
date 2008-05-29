@@ -749,6 +749,9 @@ public class List extends StdCommand
 							buf.append("running "+minsLeft);
 					}
 					else
+                    if(Q.suspended())
+                        buf.append("disabled");
+                    else
 					if(Q.waiting())
 					{
 					    long min=Q.waitRemaining();
