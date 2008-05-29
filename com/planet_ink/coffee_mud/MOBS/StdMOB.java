@@ -65,14 +65,15 @@ public class StdMOB implements MOB
 	protected long tickStatus=Tickable.STATUS_NOT;
 
 	/* containers of items and attributes*/
-	protected Vector inventory=new Vector();
+	protected Vector inventory=new Vector(1);
 	protected DVector followers=null;
-	protected Vector abilities=new Vector();
-	protected Vector affects=new Vector();
-	protected Vector behaviors=new Vector();
-	protected Vector tattoos=new Vector();
-	protected Vector expertises=new Vector();
-    protected Hashtable factions=new Hashtable();
+	protected Vector scripts=new Vector(1);
+	protected Vector abilities=new Vector(1);
+	protected Vector affects=new Vector(1);
+	protected Vector behaviors=new Vector(1);
+	protected Vector tattoos=new Vector(1);
+	protected Vector expertises=new Vector(1);
+    protected Hashtable factions=new Hashtable(1);
 
 	protected DVector commandQue=new DVector(5);
 
@@ -282,7 +283,7 @@ public class StdMOB implements MOB
     public boolean amDestroyed(){return amDestroyed;}
 	protected void cloneFix(MOB E)
 	{
-		affects=new Vector();
+		affects=new Vector(1);
 		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();
 		envStats=(EnvStats)E.envStats().copyOf();
 		baseCharStats=(CharStats)E.baseCharStats().copyOf();
@@ -293,11 +294,12 @@ public class StdMOB implements MOB
 
 		pleaseDestroy=false;
 
-		inventory=new Vector();
+		inventory=new Vector(1);
 		followers=null;
-		abilities=new Vector();
-		affects=new Vector();
-		behaviors=new Vector();
+		abilities=new Vector(1);
+		affects=new Vector(1);
+		behaviors=new Vector(1);
+		scripts=new Vector(1);
 		Item I2=null;
 		Item I=null;
 		for(int i=0;i<E.inventorySize();i++)
@@ -339,7 +341,15 @@ public class StdMOB implements MOB
 			if(B!=null)
 				behaviors.addElement(B.copyOf());
 		}
+		ScriptingEngine S=null;
+        for(int i=0;i<E.numScripts();i++)
+        {
+            S=E.fetchScript(i);
+            if(A!=null)
+                addScript((ScriptingEngine)S.copyOf());
+        }
 	}
+	
 	public CMObject copyOf()
 	{
 		try
@@ -653,15 +663,16 @@ public class StdMOB implements MOB
         riding=null;
         mySession=null;
         imageName=null;
-        inventory=new Vector();
+        inventory=new Vector(1);
         followers=null;
-        abilities=new Vector();
-        affects=new Vector();
-        behaviors=new Vector();
-        tattoos=new Vector();
-        expertises=new Vector();
-        factions=new Hashtable();
+        abilities=new Vector(1);
+        affects=new Vector(1);
+        behaviors=new Vector(1);
+        tattoos=new Vector(1);
+        expertises=new Vector(1);
+        factions=new Hashtable(1);
         commandQue=new DVector(5);
+        scripts=new Vector(1);
         curState=maxState;
         WorshipCharID="";
         LiegeID="";
@@ -3368,6 +3379,24 @@ public class StdMOB implements MOB
 		return null;
 	}
 
+    /** Manipulation of the scripts list */
+    public void addScript(ScriptingEngine s)
+    {
+        if(scripts==null) scripts=new Vector(1);
+        if(!scripts.contains(s)) scripts.addElement(s);
+    }
+    public void delScript(ScriptingEngine s)
+    {
+        if(scripts!=null)
+        {
+            scripts.removeElement(s);
+            if(scripts.size()==0)
+                scripts=new Vector(1);
+        }
+    }
+    public int numScripts(){return (scripts==null)?0:scripts.size();}
+    public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
+    
 	/** Manipulation of the tatoo list */
 	public void addTattoo(String of)
 	{

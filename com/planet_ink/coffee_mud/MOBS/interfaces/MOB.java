@@ -213,6 +213,12 @@ public interface MOB extends Environmental, Rider
 	public String fetchExpertise(int x);
 	public String fetchExpertise(String of);
 
+    /** Manipulation of the script list */
+    public void addScript(ScriptingEngine s);
+    public void delScript(ScriptingEngine s);
+    public int numScripts();
+    public ScriptingEngine fetchScript(int x);
+    
 	/** Manipulation of the tatoo list */
 	public void addTattoo(String of);
 	public void delTattoo(String of);
