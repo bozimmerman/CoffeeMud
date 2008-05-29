@@ -103,6 +103,22 @@ public class QuestMgr extends StdWebMacro
 				Q.stopQuest();
 				return "Quest '"+Q.name()+"' stopped.";
 			}
+            if(parms.containsKey("ENABLE"))
+            {
+                if(!Q.suspended())
+                    return "Quest '"+Q.name()+"' was not disabled.";
+                Q.setSuspended(false);
+                return "Quest '"+Q.name()+"' enabled.";
+            }
+            if(parms.containsKey("DISABLE"))
+            {
+                if(Q.suspended())
+                    return "Quest '"+Q.name()+"' was already disabled.";
+                Q.setSuspended(true);
+                if(Q.running())
+                    Q.stopQuest();
+                return "Quest '"+Q.name()+"' disabled.";
+            }
             if(parms.containsKey("STEP"))
             {
                 if(!Q.running())

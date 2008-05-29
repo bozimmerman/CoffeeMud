@@ -58,6 +58,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     protected int spawn=SPAWN_NO;
     private QuestState questState=new QuestState();
     private boolean copy=false;
+    private boolean suspended=false;
     private Hashtable stepEllapsedTimes=new Hashtable();
     public DVector internalFiles=null;
 
@@ -81,6 +82,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             return newInstance();
         }
     }
+    
+    public boolean suspended(){ return suspended;}
+    public void setSuspended(boolean truefalse){suspended=truefalse;}
+    
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultQuest();}}
     public void initializeClass(){}
 	public Object getQuestObject(String named)
@@ -2814,10 +2819,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
     public void enterRunningState()
     {
-        if(duration()>0)
+        if(duration()>=0)
         {
             waitRemaining=-1;
-            ticksRemaining=duration();
+            if(duration()==0)
+                ticksRemaining=1;
+            else
+                ticksRemaining=duration();
             CMLib.threads().startTickDown(this,Tickable.TICKID_QUEST,1);
         }
         lastStartDateTime=System.currentTimeMillis();
@@ -3204,14 +3212,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             return false;
         if(CMSecurity.isDisabled("QUESTS")
         ||(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN))
-        ||(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))) 
+        ||(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
+        ||(suspended)) 
             return true;
         
         tickStatus=Tickable.STATUS_START;
         if(running())
         {
             tickStatus=Tickable.STATUS_ALIVE;
-            ticksRemaining--;
+            if(duration()>0)
+                ticksRemaining--;
             if(ticksRemaining<0)
                 stopQuest();
             tickStatus=Tickable.STATUS_END;
@@ -3248,7 +3258,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             }
         }
     	ticksRemaining=-1;
-        if((allowedToRun)&&(numElligiblePlayers>=minPlayers))
+        if((allowedToRun)
+        &&((numElligiblePlayers>=minPlayers)||(duration()==0)))
             return startQuest();
     	enterDormantState();
     	return false;

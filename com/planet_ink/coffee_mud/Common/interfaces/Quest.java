@@ -49,6 +49,10 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
 	public int duration();
 	public void setDuration(int newTicks);
 	
+	// whether this quest object is suspended
+	public boolean suspended();
+	public void setSuspended(boolean truefalse);
+	
 	// the rest of the script.  This may be semicolon-separated instructions, 
 	// or a LOAD command followed by the quest script path.
 	public void setScript(String parm);

@@ -82,6 +82,12 @@
 		@if?CheckReqParm?FUNCTION=DELETE@
 			<FONT COLOR=RED><B>@QuestMgr?DELETE@</B></FONT><P>
 		@endif@
+        @if?CheckReqParm?FUNCTION=DISABLE@
+            <FONT COLOR=RED><B>@QuestMgr?DISABLE@</B></FONT><P>
+        @endif@
+        @if?CheckReqParm?FUNCTION=ENABLE@
+            <FONT COLOR=RED><B>@QuestMgr?ENABLE@</B></FONT><P>
+        @endif@
 	@endif@
 	<TABLE WIDTH=100% BORDER=1>
 	<TR><TD WIDTH=100% COLSPAN=6 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Quests Manager</H2></FONT></TD></TR>
@@ -97,23 +103,35 @@
 	@QuestNext@
 	<TD><a href="javascript:Quest('@QuestData?NAME@')"><FONT COLOR=WHITE><B>@QuestData?NAME@</B></FONT></a></TD>
 	<TD><FONT COLOR=WHITE>
-	@if?QuestData?RUNNING@
-		Running (@QuestData?REMAINING@ mins remaining)
-	@else@
-		@if?QuestData?WAITING@
-			Waiting (@QuestData?WAITLEFT@ ticks left)
-		@else@
-			Loaded
-		@endif@
-	@endif@
+    @if?QuestData?SUSPENDED@
+        Disabled
+        @if?QuestData?RUNNING@
+            (Still running --@QuestData?REMAININGLEFT@ remaining)
+        @endif@
+    @else@
+        @if?QuestData?RUNNING@
+            Running (@QuestData?REMAININGLEFT@ remaining)
+        @else@
+            @if?QuestData?WAITING@
+                Waiting (@QuestData?WAITMINSLEFT@ left)
+            @else@
+                Loaded
+            @endif@
+        @endif@
+    @endif@
 	</FONT>
 	</TD>
 	<TD>
-	@if?QuestData?RUNNING@
-		<INPUT TYPE=BUTTON NAME=Stop VALUE=Stop ONCLICK="Clicked('@QuestData?ID@','STOP');">
-	@else@
-		<INPUT TYPE=BUTTON NAME=Start VALUE=Start ONCLICK="Clicked('@QuestData?ID@','START');">
-	@endif@
+    @if?QuestData?SUSPENDED@
+        <INPUT TYPE=BUTTON NAME=Enable VALUE=Enable ONCLICK="Clicked('@QuestData?ID@','ENABLE');">
+    @else@
+        @if?QuestData?RUNNING@
+            <INPUT TYPE=BUTTON NAME=Stop VALUE=Stop ONCLICK="Clicked('@QuestData?ID@','STOP');">
+        @else@
+            <INPUT TYPE=BUTTON NAME=Start VALUE=Start ONCLICK="Clicked('@QuestData?ID@','START');">
+        @endif@
+        <INPUT TYPE=BUTTON NAME=Disable VALUE=Disable ONCLICK="Clicked('@QuestData?ID@','DISABLE');">
+    @endif@
 	<INPUT TYPE=BUTTON NAME=Delete VALUE=Delete ONCLICK="Clicked('@QuestData?ID@','DELETE');">
 	</TD>
 	</TR>

@@ -59,7 +59,7 @@ public class QuestLoader
 				if(Q.name().length()==0)
                     Log.sysOut("QuestLoader","Unable to load Quest '"+questName+"' due to blank name.");
                 else
-                if(Q.duration()<=0)
+                if(Q.duration()<0)
                     Log.sysOut("QuestLoader","Unable to load Quest '"+questName+"' due to duration "+Q.duration()+".");
                 else
                 if(CMLib.quests().fetchQuest(Q.name())!=null)

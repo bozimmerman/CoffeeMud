@@ -66,10 +66,30 @@ public class QuestData extends StdWebMacro
 				return ""+Q.running();
 			if(parms.containsKey("WAITING"))
 				return ""+Q.waiting();
+            if(parms.containsKey("SUSPENDED"))
+                return ""+Q.suspended();
 			if(parms.containsKey("REMAINING"))
 				return ""+Q.minsRemaining();
+            if(parms.containsKey("REMAININGLEFT"))
+                if(Q.duration()==0)
+                    return "eternity";
+                else
+                    return Q.minsRemaining()+" minutes";
 			if(parms.containsKey("WAITLEFT"))
 				return ""+Q.waitRemaining();
+            if(parms.containsKey("WAITMINSLEFT"))
+            {
+                long min=Q.waitRemaining();
+                if(min>0) {
+                    min=min*Tickable.TIME_TICK;
+                    if(min>60000)
+                        return (min/60000)+" minutes";
+                    else
+                        return (min/1000)+" seconds";
+                }
+                else
+                    return min+" minutes";
+            }
 			if(parms.containsKey("WINNERS"))
 				return ""+Q.getWinnerStr();
 			if(parms.containsKey("RAWTEXT"))
