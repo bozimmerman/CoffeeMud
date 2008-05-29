@@ -148,34 +148,10 @@ public class StdBehavior implements Behavior
 		return false;
 	}
 	public static boolean canActAtAll(Tickable affecting)
-	{
-		if(affecting instanceof MOB)
-        {
-    		MOB monster=(MOB)affecting;
-    		if((monster.amDead())
-    		||(monster.location()==null)
-            ||(!CMLib.flags().aliveAwakeMobile(monster,true)) 
-            ||(!CMLib.flags().isInTheGame(monster,true)))
-                return false;
-            return true;
-        }
-        return false;
-	}
+	{ return CMLib.flags().canActAtAll(affecting);}
 
 	public static boolean canFreelyBehaveNormal(Tickable affecting)
-	{
-        if(affecting instanceof MOB)
-        {
-    		MOB monster=(MOB)affecting;
-    		if((!canActAtAll(monster))
-    		||(monster.isInCombat()) 
-    		||(monster.amFollowing()!=null)
-    		||(monster.curState().getHitPoints()<((int)Math.round(monster.maxState().getHitPoints()/2.0))))
-    			return false;
-    		return true;
-        }
-        return false;
-	}
+    { return CMLib.flags().canFreelyBehaveNormal(affecting);}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
