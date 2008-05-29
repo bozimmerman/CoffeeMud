@@ -43,7 +43,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
     protected static final Hashtable methH=new Hashtable();
     protected static final Hashtable progH=new Hashtable();
     protected static final HashSet SIGNS=CMParms.makeHashSet(CMParms.parseCommas("==,>=,>,<,<=,=>,=<,!=",true));
-    protected final Hashtable contexts=new Hashtable();
+    protected static Hashtable patterns=new Hashtable();
+    protected static Hashtable contexts=new Hashtable();
+    
     protected long tickStatus=Tickable.STATUS_NOT;
     protected boolean isSavable=true;
     
@@ -51,7 +53,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
     protected Room lastKnownLocation=null;
     protected Tickable altStatusTickable=null;
     protected Vector que=new Vector();
-    protected static Hashtable patterns=new Hashtable();
     protected Vector oncesDone=new Vector();
     protected Hashtable delayTargetTimes=new Hashtable();
     protected Hashtable delayProgCounters=new Hashtable();
@@ -165,7 +166,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return xmlfiles;
     }
 
-    public String getVarHost(Environmental E,
+    protected String getVarHost(Environmental E,
                              String rawHost,
                              MOB source,
                              Environmental target,
@@ -727,7 +728,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return null;
     }
 
-    public Environmental getArgumentMOB(String str,
+    protected Environmental getArgumentMOB(String str,
                                         MOB source,
                                         MOB monster,
                                         Environmental target,
@@ -739,15 +740,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return getArgumentItem(str,source,monster,monster,target,primaryItem,secondaryItem,msg,tmp);
     }
 
-    public Environmental getArgumentItem(String str,
-                                         MOB source,
-                                         MOB monster,
-                                         Environmental scripted,
-                                         Environmental target,
-                                         Item primaryItem,
-                                         Item secondaryItem,
-                                         String msg,
-                                         Object[] tmp)
+    protected Environmental getArgumentItem(String str,
+                                            MOB source,
+                                            MOB monster,
+                                            Environmental scripted,
+                                            Environmental target,
+                                            Item primaryItem,
+                                            Item secondaryItem,
+                                            String msg,
+                                            Object[] tmp)
     {
         if(str.length()<2) return null;
         if(str.charAt(0)=='$')
@@ -910,15 +911,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return ret.toString();
     }
 
-    public String varify(MOB source,
-                         Environmental target,
-                         Environmental scripted,
-                         MOB monster,
-                         Item primaryItem,
-                         Item secondaryItem,
-                         String msg,
-                         Object[] tmp,
-                         String varifyable)
+    protected String varify(MOB source,
+                            Environmental target,
+                            Environmental scripted,
+                            MOB monster,
+                            Item primaryItem,
+                            Item secondaryItem,
+                            String msg,
+                            Object[] tmp,
+                            String varifyable)
     {
         int t=varifyable.indexOf("$");
         if((monster!=null)&&(monster.location()!=null))
@@ -1220,7 +1221,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return varifyable;
     }
 
-    public DVector getScriptVarSet(String mobname, String varname)
+    protected DVector getScriptVarSet(String mobname, String varname)
     {
         DVector set=new DVector(2);
         if(mobname.equals("*"))
@@ -1262,7 +1263,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return set;
     }
 
-    public String getStatValue(Environmental E, String arg2)
+    protected String getStatValue(Environmental E, String arg2)
     {
         boolean found=false;
         String val="";
@@ -1321,7 +1322,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         if(!found)return null;
         return val;
     }
-    public String getGStatValue(Environmental E, String arg2)
+    protected String getGStatValue(Environmental E, String arg2)
     {
         if(E==null) return null;
         boolean found=false;
@@ -1406,7 +1407,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
     }
 
 
-    public void mpsetvar(String name, String key, String val)
+    protected void mpsetvar(String name, String key, String val)
     {
         DVector V=getScriptVarSet(name,key);
         for(int v=0;v<V.size();v++)
@@ -3698,15 +3699,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return returnable;
     }
 
-    public String functify(Environmental scripted,
-                           MOB source,
-                           Environmental target,
-                           MOB monster,
-                           Item primaryItem,
-                           Item secondaryItem,
-                           String msg,
-                           Object[] tmp,
-                           String evaluable)
+    protected String functify(Environmental scripted,
+                              MOB source,
+                              Environmental target,
+                              MOB monster,
+                              Item primaryItem,
+                              Item secondaryItem,
+                              String msg,
+                              Object[] tmp,
+                              String evaluable)
     {
         String uevaluable=evaluable.toUpperCase().trim();
         StringBuffer results = new StringBuffer("");
@@ -7375,7 +7376,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return scripts;
     }
 
-    public boolean match(String str, String patt)
+    protected boolean match(String str, String patt)
     {
         if(patt.trim().equalsIgnoreCase("ALL"))
             return true;
@@ -8510,7 +8511,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return I.intValue();
     }
 
-    public MOB getMakeMOB(Tickable ticking)
+    protected MOB getMakeMOB(Tickable ticking)
     {
         MOB mob=null;
         if(ticking instanceof MOB)
@@ -8550,7 +8551,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return mob;
     }
 
-    public boolean canTrigger(int triggerCode)
+    protected boolean canTrigger(int triggerCode)
     {
         Long L=(Long)noTrigger.get(new Integer(triggerCode));
         if(L==null) return true;
@@ -8562,9 +8563,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
     public boolean tick(Tickable ticking, int tickID)
     {
-        if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-            return false;
-
         MOB mob=getMakeMOB(ticking);
         Item defaultItem=(ticking instanceof Item)?(Item)ticking:null;
 
