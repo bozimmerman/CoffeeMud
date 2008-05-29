@@ -36,12 +36,117 @@ public class Resources
 {
     private Resources(){super();}
     private static Resources inst=new Resources();
+    private static boolean compress=false;
     public static Resources instance(){return inst;}
+    public static Resources newResources(){ return new Resources();}
+	
+	private DVector resources=new DVector(3);
     
-	private static boolean compress=false;
-	private static DVector resources=new DVector(3);
+    public static void clearResources(){inst._clearResources();}
+    public static void removeResource(String ID){ inst._removeResource(ID);}
+    public static Vector findResourceKeys(String srch){return inst._findResourceKeys(srch);}
+    public static Object getResource(String ID){return inst._getResource(ID);}
+    public static void submitResource(String ID, Object obj){inst._submitResource(ID,obj);}
+    public static void updateResource(String ID, Object obj){inst._updateResource(ID,obj);}
+    public static boolean isFileResource(String filename){return inst._isFileResource(filename);}
+    public static StringBuffer getFileResource(String filename, boolean reportErrors){return inst._getFileResource(filename,reportErrors);}
+    public static boolean saveFileResource(String filename){return inst._saveFileResource(filename);}
+    public static boolean saveFileResource(String filename, MOB whom, StringBuffer myRsc){return inst._saveFileResource(filename,whom,myRsc);}
+    public static boolean findRemoveProperty(CMFile F, String match){return inst._findRemoveProperty(F,match);}
     
-	public static void clearResources()
+    public static Vector getFileLineVector(StringBuffer buf)
+    {
+        Vector V=new Vector();
+        if(buf==null) return V;
+        StringBuffer str=new StringBuffer("");
+        for(int i=0;i<buf.length()-1;i++)
+        {
+            if(((buf.charAt(i)=='\n')&&(buf.charAt(i+1)=='\r'))
+               ||((buf.charAt(i)=='\r')&&(buf.charAt(i+1)=='\n')))
+            {
+                i++;
+                V.addElement(str.toString());
+                str.setLength(0);
+            }
+            else
+            if(((buf.charAt(i)=='\r'))
+            ||((buf.charAt(i)=='\n')))
+            {
+                V.addElement(str.toString());
+                str.setLength(0);
+            }
+            else
+                str.append(buf.charAt(i));
+        }
+        if(str.length()>0)
+            V.addElement(str.toString());
+        V.trimToSize();
+        return V;
+    }
+    
+    public static String buildResourcePath(String path)
+    {
+        if((path==null)||(path.length()==0)) return "resources/";
+        return "resources/"+path+"/";
+    }
+    
+    public static void updateMultiList(String filename, Hashtable lists)
+    {
+        StringBuffer str=new StringBuffer("");
+        for(Enumeration e=lists.keys();e.hasMoreElements();)
+        {
+            String ml=(String)e.nextElement();
+            Vector V=(Vector)lists.get(ml);
+            str.append(ml+"\r\n");
+            if(V!=null)
+            for(int v=0;v<V.size();v++)
+                str.append(((String)V.elementAt(v))+"\r\n");
+            str.append("\r\n");
+        }
+        new CMFile(filename,null,false).saveText(str);
+    }
+    
+    public static Hashtable getMultiLists(String filename)
+    {
+        Hashtable oldH=new Hashtable();
+        Vector V=new Vector();
+        try{
+            V=getFileLineVector(new CMFile("resources/"+filename,null,false).text());
+        }catch(Exception e){}
+        if((V!=null)&&(V.size()>0))
+        {
+            String journal="";
+            Vector set=new Vector();
+            for(int v=0;v<V.size();v++)
+            {
+                String s=(String)V.elementAt(v);
+                if(s.trim().length()==0)
+                    journal="";
+                else
+                if(journal.length()==0)
+                {
+                    journal=s;
+                    set=new Vector();
+                    oldH.put(journal,set);
+                }
+                else
+                    set.addElement(s);
+            }
+        }
+        return oldH;
+    }
+    
+    public static String makeFileResourceName(String filename)
+    {
+        return "resources/"+filename;
+    }
+    
+    public static void setCompression(boolean truefalse)
+    {   compress=truefalse;}
+    
+    public static boolean _compressed(){return compress;}
+    
+	public void _clearResources()
 	{
 		synchronized(resources)
 		{
@@ -49,59 +154,7 @@ public class Resources
 		}
 	}
     
-    public static String buildResourcePath(String path)
-    {
-        if((path==null)||(path.length()==0)) return "resources/";
-        return "resources/"+path+"/";
-    }
-	
-	public static void updateMultiList(String filename, Hashtable lists)
-	{
-		StringBuffer str=new StringBuffer("");
-		for(Enumeration e=lists.keys();e.hasMoreElements();)
-		{
-			String ml=(String)e.nextElement();
-			Vector V=(Vector)lists.get(ml);
-			str.append(ml+"\r\n");
-			if(V!=null)
-			for(int v=0;v<V.size();v++)
-				str.append(((String)V.elementAt(v))+"\r\n");
-			str.append("\r\n");
-		}
-        new CMFile(filename,null,false).saveText(str);
-	}
-	
-	public static Hashtable getMultiLists(String filename)
-	{
-		Hashtable oldH=new Hashtable();
-		Vector V=new Vector();
-		try{
-			V=Resources.getFileLineVector(new CMFile("resources/"+filename,null,false).text());
-		}catch(Exception e){}
-		if((V!=null)&&(V.size()>0))
-		{
-			String journal="";
-			Vector set=new Vector();
-			for(int v=0;v<V.size();v++)
-			{
-				String s=(String)V.elementAt(v);
-				if(s.trim().length()==0)
-					journal="";
-				else
-				if(journal.length()==0)
-				{
-					journal=s;
-					set=new Vector();
-					oldH.put(journal,set);
-				}
-				else
-					set.addElement(s);
-			}
-		}
-		return oldH;
-	}
-	
-	public static Vector findResourceKeys(String srch)
+	public Vector _findResourceKeys(String srch)
 	{
 		synchronized(resources)
 		{
@@ -116,7 +169,7 @@ public class Resources
 		}
 	}
 	
-	private static Object fetchResource(int x)
+	private Object _fetchResource(int x)
 	{
 		synchronized(resources)
 		{
@@ -132,13 +185,13 @@ public class Resources
 		}
 	}
 	
-	public static Object getResource(String ID)
+	public Object _getResource(String ID)
 	{
 		synchronized(resources)
 		{
 			for(int i=0;i<resources.size();i++)
 				if(((String)resources.elementAt(i,1)).equalsIgnoreCase(ID))
-					return fetchResource(i);
+					return _fetchResource(i);
 			return null;
 		}
 	}
@@ -153,18 +206,18 @@ public class Resources
 		return obj;
 	}
 	
-	public static void submitResource(String ID, Object obj)
+	public void _submitResource(String ID, Object obj)
 	{
 		synchronized(resources)
 		{
-			if(getResource(ID)!=null)
+			if(_getResource(ID)!=null)
 				return;
 	        Object prepared=prepareObject(obj);
 			resources.addElement(ID,prepared,new Boolean(prepared!=obj));
 		}
 	}
 	
-	public static void updateResource(String ID, Object obj)
+	public void _updateResource(String ID, Object obj)
 	{
 		synchronized(resources)
 		{
@@ -179,7 +232,7 @@ public class Resources
 		}
 	}
 	
-	public static void removeResource(String ID)
+	public void _removeResource(String ID)
 	{
 		synchronized(resources)
 		{
@@ -194,50 +247,16 @@ public class Resources
 		}
 	}
 	
-	public static Vector getFileLineVector(StringBuffer buf)
+	public boolean _isFileResource(String filename)
 	{
-		Vector V=new Vector();
-        if(buf==null) return V;
-		StringBuffer str=new StringBuffer("");
-		for(int i=0;i<buf.length()-1;i++)
-		{
-			if(((buf.charAt(i)=='\n')&&(buf.charAt(i+1)=='\r'))
-			   ||((buf.charAt(i)=='\r')&&(buf.charAt(i+1)=='\n')))
-			{
-				i++;
-				V.addElement(str.toString());
-				str.setLength(0);
-			}
-			else
-			if(((buf.charAt(i)=='\r'))
-			||((buf.charAt(i)=='\n')))
-			{
-				V.addElement(str.toString());
-				str.setLength(0);
-			}
-			else
-				str.append(buf.charAt(i));
-		}
-		if(str.length()>0)
-			V.addElement(str.toString());
-		V.trimToSize();
-		return V;
-	}
-	
-	public static String makeFileResourceName(String filename)
-	{
-	    return "resources/"+filename;
-	}
-	public static boolean isFileResource(String filename)
-	{
-	    if(getResource(filename)!=null) return true;
+	    if(_getResource(filename)!=null) return true;
 	    if(new CMFile(makeFileResourceName(filename),null,false).exists())
 	    	return true;
 	    return false;
 	}
-	public static StringBuffer getFileResource(String filename, boolean reportErrors)
+	public StringBuffer _getFileResource(String filename, boolean reportErrors)
 	{
-		Object rsc=getResource(filename);
+		Object rsc=_getResource(filename);
 		if(rsc!=null)
 		{
 			if(rsc instanceof StringBuffer)
@@ -248,14 +267,14 @@ public class Resources
 		}
 		
 		StringBuffer buf=new CMFile(makeFileResourceName(filename),null,reportErrors).text();
-		submitResource(filename,buf);
+		_submitResource(filename,buf);
 		return buf;
 	}
 	
-    public static boolean saveFileResource(String filename)
-    {return saveFileResource(filename,null,getFileResource(CMFile.vfsifyFilename(filename),false));}
+    public boolean _saveFileResource(String filename)
+    {return _saveFileResource(filename,null,_getFileResource(CMFile.vfsifyFilename(filename),false));}
     
-	public static boolean saveFileResource(String filename, MOB whom, StringBuffer myRsc)
+	public boolean _saveFileResource(String filename, MOB whom, StringBuffer myRsc)
 	{
         boolean vfsFile=filename.trim().startsWith("::");
         boolean localFile=filename.trim().startsWith("//");
@@ -266,11 +285,7 @@ public class Resources
         return new CMFile(filename,whom,false).saveRaw(myRsc);
 	}
 	
-	public static void setCompression(boolean truefalse)
-	{	compress=truefalse;}
-	public static boolean compressed(){return compress;}
-	
-    public static boolean findRemoveProperty(CMFile F, String match)
+    public boolean _findRemoveProperty(CMFile F, String match)
     {
         boolean removed=false;
         StringBuffer text=F.textUnformatted();
