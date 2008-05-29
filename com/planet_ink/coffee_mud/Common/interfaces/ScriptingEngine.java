@@ -68,6 +68,10 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
     
     public void registerDefaultQuest(Quest Q);
     
+    public boolean isSavable();
+    
+    public void setSavable(boolean truefalse);
+    
     public static class ScriptableResponse
     {
         private int tickDelay=0;

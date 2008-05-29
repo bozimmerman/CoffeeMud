@@ -45,6 +45,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
     protected static final HashSet SIGNS=CMParms.makeHashSet(CMParms.parseCommas("==,>=,>,<,<=,=>,=<,!=",true));
     protected final Hashtable contexts=new Hashtable();
     protected long tickStatus=Tickable.STATUS_NOT;
+    protected boolean isSavable=true;
     
     protected MOB lastToHurtMe=null;
     protected Room lastKnownLocation=null;
@@ -65,6 +66,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
     protected Environmental lastLoaded=null;
     protected String myScript="";
 
+    public DefaultScriptingEngine()
+    {
+        super();
+        CMClass.bumpCounter(this,CMClass.OBJECT_COMMON);
+    }
+
+    public boolean isSavable(){ return isSavable;}
+    public void setSavable(boolean truefalse){isSavable=truefalse;}
+    
     private Quest getQuest(String named)
     {
         if((defaultQuest!=null)&&(named.equals("*")||named.equalsIgnoreCase(defaultQuest.name())))
@@ -120,6 +130,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             return new DefaultScriptingEngine();
         }
     }
+    protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_COMMON);}
     
     public boolean endQuest(Environmental hostObj, MOB mob, String quest)
     {
@@ -486,16 +497,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
     }
 
 
-    protected void scriptableError(Environmental scripted, String cmdName, String errType, String errMsg)
+    protected void logError(Environmental scripted, String cmdName, String errType, String errMsg)
     {
         if(scripted!=null)
         {
             Room R=CMLib.map().roomLocation(scripted);
-            Log.errOut("Scriptable",scripted.name()+"/"+CMLib.map().getExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg);
-            if(R!=null) R.showHappens(CMMsg.MSG_OK_VISUAL,"Scriptable Error: "+scripted.name()+"/"+CMLib.map().getExtendedRoomID(R)+"/"+CMParms.toStringList(externalFiles())+"/"+ cmdName+"/"+errType+"/"+errMsg);
+            Log.errOut("Scripting",scripted.name()+"/"+CMLib.map().getExtendedRoomID(R)+"/"+ cmdName+"/"+errType+"/"+errMsg);
+            if(R!=null) R.showHappens(CMMsg.MSG_OK_VISUAL,"Scripting Error: "+scripted.name()+"/"+CMLib.map().getExtendedRoomID(R)+"/"+CMParms.toStringList(externalFiles())+"/"+ cmdName+"/"+errType+"/"+errMsg);
         }
         else
-            Log.errOut("Scriptable","*/*/"+CMParms.toStringList(externalFiles())+"/"+cmdName+"/"+errType+"/"+errMsg);
+            Log.errOut("Scripting","*/*/"+CMParms.toStringList(externalFiles())+"/"+cmdName+"/"+errType+"/"+errMsg);
 
     }
 
@@ -514,7 +525,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         else if(cmp.equalsIgnoreCase("!=")) return (x!=0);
         else
         {
-            scriptableError(scripted,cmdName,"Syntax",arg1+" "+cmp+" "+arg2);
+            logError(scripted,cmdName,"Syntax",arg1+" "+cmp+" "+arg2);
             return false;
         }
     }
@@ -532,7 +543,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         else if(cmp.equalsIgnoreCase("!=")) return (val1!=val2);
         else
         {
-            scriptableError(scripted,cmdName,"Syntax",val1+" "+cmp+" "+val2);
+            logError(scripted,cmdName,"Syntax",val1+" "+cmp+" "+val2);
             return false;
         }
     }
@@ -549,7 +560,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         else if(cmp.equalsIgnoreCase("!=")) return (val1!=val2);
         else
         {
-            scriptableError(scripted,cmdName,"Syntax",val1+" "+cmp+" "+val2);
+            logError(scripted,cmdName,"Syntax",val1+" "+cmp+" "+val2);
             return false;
         }
     }
@@ -569,24 +580,24 @@ public class DefaultScriptingEngine implements ScriptingEngine
             thangName=scripted.name();
         if((buf==null)||(buf.length()<20))
         {
-            scriptableError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"' in "+thangName);
+            logError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"' in "+thangName);
             return null;
         }
         if(buf.substring(0,20).indexOf("<MOBS>")<0)
         {
-            scriptableError(scripted,"XMLLOAD","?","Invalid XML file: '"+filename+"' in "+thangName);
+            logError(scripted,"XMLLOAD","?","Invalid XML file: '"+filename+"' in "+thangName);
             return null;
         }
         monsters=new Vector();
         String error=CMLib.coffeeMaker().addMOBsFromXML(buf.toString(),monsters,null);
         if(error.length()>0)
         {
-            scriptableError(scripted,"XMLLOAD","?","Error in XML file: '"+filename+"'");
+            logError(scripted,"XMLLOAD","?","Error in XML file: '"+filename+"'");
             return null;
         }
         if(monsters.size()<=0)
         {
-            scriptableError(scripted,"XMLLOAD","?","Empty XML file: '"+filename+"'");
+            logError(scripted,"XMLLOAD","?","Empty XML file: '"+filename+"'");
             return null;
         }
         Resources.submitResource("RANDOMMONSTERS-"+filename,monsters);
@@ -608,24 +619,24 @@ public class DefaultScriptingEngine implements ScriptingEngine
             thangName=scripted.name();
         if((buf==null)||(buf.length()<20))
         {
-            scriptableError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"' in "+thangName);
+            logError(scripted,"XMLLOAD","?","Unknown XML file: '"+filename+"' in "+thangName);
             return null;
         }
         if(buf.substring(0,20).indexOf("<ITEMS>")<0)
         {
-            scriptableError(scripted,"XMLLOAD","?","Invalid XML file: '"+filename+"' in "+thangName);
+            logError(scripted,"XMLLOAD","?","Invalid XML file: '"+filename+"' in "+thangName);
             return null;
         }
         items=new Vector();
         String error=CMLib.coffeeMaker().addItemsFromXML(buf.toString(),items,null);
         if(error.length()>0)
         {
-            scriptableError(scripted,"XMLLOAD","?","Error in XML file: '"+filename+"'");
+            logError(scripted,"XMLLOAD","?","Error in XML file: '"+filename+"'");
             return null;
         }
         if(items.size()<=0)
         {
-            scriptableError(scripted,"XMLLOAD","?","Empty XML file: '"+filename+"'");
+            logError(scripted,"XMLLOAD","?","Empty XML file: '"+filename+"'");
             return null;
         }
         Resources.submitResource("RANDOMITEMS-"+filename,items);
@@ -1546,7 +1557,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             if((y<0)||(numy>0)||(z<=y))
             {
-                scriptableError(scripted,"EVAL","Format",evaluable);
+                logError(scripted,"EVAL","Format",evaluable);
                 return false;
             }
             z--;
@@ -1612,7 +1623,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             else
             if((y<0)||(z<y))
             {
-                scriptableError(scripted,"()","Syntax",evaluable);
+                logError(scripted,"()","Syntax",evaluable);
                 break;
             }
             else
@@ -1638,7 +1649,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if(arg2.length()==0)
                 {
-                    scriptableError(scripted,"HAS","Syntax",evaluable);
+                    logError(scripted,"HAS","Syntax",evaluable);
                     return returnable;
                 }
                 Environmental E2=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -1676,7 +1687,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((value.length()==0)||(item.length()==0)||(cmp.length()==0))
                 {
-                    scriptableError(scripted,"HASNUM","Syntax",evaluable);
+                    logError(scripted,"HASNUM","Syntax",evaluable);
                     return returnable;
                 }
                 Item I=null;
@@ -1728,7 +1739,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if(arg2.length()==0)
                 {
-                    scriptableError(scripted,"HASTITLE","Syntax",evaluable);
+                    logError(scripted,"HASTITLE","Syntax",evaluable);
                     return returnable;
                 }
                 if(E instanceof MOB)
@@ -1747,7 +1758,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if(arg2.length()==0)
                 {
-                    scriptableError(scripted,"WORN","Syntax",evaluable);
+                    logError(scripted,"WORN","Syntax",evaluable);
                     return returnable;
                 }
                 if(E==null)
@@ -2064,7 +2075,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     }
                 }
                 if(!validFunc)
-                    scriptableError(scripted,"CALLFUNC","Unknown","Function: "+arg1);
+                    logError(scripted,"CALLFUNC","Unknown","Function: "+arg1);
                 else
                     returnable=!(found.trim().length()==0);
                 break;
@@ -2308,7 +2319,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    scriptableError(scripted,"HITPRCNT","Syntax",evaluable);
+                    logError(scripted,"HITPRCNT","Syntax",evaluable);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -2478,7 +2489,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(whom,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((E==null)||(!(E instanceof MOB)))
                 {
-                    scriptableError(scripted,"EXPLORED","Unknown Code",whom);
+                    logError(scripted,"EXPLORED","Unknown Code",whom);
                     return returnable;
                 }
                 Area A=null;
@@ -2491,7 +2502,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         A=CMLib.map().getArea(where);
                     if(A==null)
                     {
-                        scriptableError(scripted,"EXPLORED","Unknown Area",where);
+                        logError(scripted,"EXPLORED","Unknown Area",where);
                         return returnable;
                     }
                 }
@@ -2515,12 +2526,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Faction F=CMLib.factions().getFaction(arg1);
                 if((E==null)||(!(E instanceof MOB)))
                 {
-                    scriptableError(scripted,"FACTION","Unknown Code",whom);
+                    logError(scripted,"FACTION","Unknown Code",whom);
                     return returnable;
                 }
                 if(F==null)
                 {
-                    scriptableError(scripted,"FACTION","Unknown Faction",arg1);
+                    logError(scripted,"FACTION","Unknown Faction",arg1);
                     return returnable;
                 }
                 MOB M=(MOB)E;
@@ -2596,7 +2607,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if(arg2.length()==0)
                 {
-                    scriptableError(scripted,"HASTATTOO","Syntax",evaluable);
+                    logError(scripted,"HASTATTOO","Syntax",evaluable);
                     break;
                 }
                 else
@@ -2687,7 +2698,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 else
                 {
-                    scriptableError(scripted,"INROOM","Syntax",evaluable);
+                    logError(scripted,"INROOM","Syntax",evaluable);
                     return returnable;
                 }
                 Room R=null;
@@ -2723,7 +2734,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 else
                 {
-                    scriptableError(scripted,"INAREA","Syntax",evaluable);
+                    logError(scripted,"INAREA","Syntax",evaluable);
                     return returnable;
                 }
                 Room R=null;
@@ -2759,7 +2770,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 else
                 {
-                    scriptableError(scripted,"ISRECALL","Syntax",evaluable);
+                    logError(scripted,"ISRECALL","Syntax",evaluable);
                     return returnable;
                 }
                 Room R=null;
@@ -2827,7 +2838,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    scriptableError(scripted,"SEX","Syntax",evaluable);
+                    logError(scripted,"SEX","Syntax",evaluable);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -2842,7 +2853,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         returnable=!arg3.startsWith(sex);
                     else
                     {
-                        scriptableError(scripted,"SEX","Syntax",evaluable);
+                        logError(scripted,"SEX","Syntax",evaluable);
                         return returnable;
                     }
                 }
@@ -2855,7 +2866,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String arg3=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
                 int index=CMParms.indexOf(ScriptingEngine.DATETIME_ARGS,arg1.toUpperCase().trim());
                 if(index<0)
-                    scriptableError(scripted,"DATETIME","Syntax","Unknown arg: "+arg1+" for "+scripted.name());
+                    logError(scripted,"DATETIME","Syntax","Unknown arg: "+arg1+" for "+scripted.name());
                 else
                 if(CMLib.map().areaLocation(scripted)!=null)
                 {
@@ -2882,7 +2893,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    scriptableError(scripted,"STAT","Syntax",evaluable);
+                    logError(scripted,"STAT","Syntax",evaluable);
                     break;
                 }
                 if(E==null)
@@ -2892,7 +2903,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     String val=getStatValue(E,arg2);
                     if(val==null)
                     {
-                        scriptableError(scripted,"STAT","Syntax","Unknown stat: "+arg2+" for "+E.name());
+                        logError(scripted,"STAT","Syntax","Unknown stat: "+arg2+" for "+E.name());
                         break;
                     }
 
@@ -2915,7 +2926,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    scriptableError(scripted,"GSTAT","Syntax",evaluable);
+                    logError(scripted,"GSTAT","Syntax",evaluable);
                     break;
                 }
                 if(E==null)
@@ -2925,7 +2936,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     String val=getGStatValue(E,arg2);
                     if(val==null)
                     {
-                        scriptableError(scripted,"GSTAT","Syntax","Unknown stat: "+arg2+" for "+E.name());
+                        logError(scripted,"GSTAT","Syntax","Unknown stat: "+arg2+" for "+E.name());
                         break;
                     }
 
@@ -2947,7 +2958,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    scriptableError(scripted,"POSITION","Syntax",evaluable);
+                    logError(scripted,"POSITION","Syntax",evaluable);
                     return returnable;
                 }
                 if(E==null)
@@ -2967,7 +2978,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         returnable=!sex.startsWith(arg3);
                     else
                     {
-                        scriptableError(scripted,"POSITION","Syntax",evaluable);
+                        logError(scripted,"POSITION","Syntax",evaluable);
                         return returnable;
                     }
                 }
@@ -2981,7 +2992,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    scriptableError(scripted,"LEVEL","Syntax",evaluable);
+                    logError(scripted,"LEVEL","Syntax",evaluable);
                     return returnable;
                 }
                 if(E==null)
@@ -3001,7 +3012,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    scriptableError(scripted,"QUESTPOINTS","Syntax",evaluable);
+                    logError(scripted,"QUESTPOINTS","Syntax",evaluable);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3022,7 +3033,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Quest Q=getQuest(arg1);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    scriptableError(scripted,"QVAR","Syntax",evaluable);
+                    logError(scripted,"QVAR","Syntax",evaluable);
                     return returnable;
                 }
                 if(Q==null)
@@ -3038,12 +3049,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
                 if(!CMath.isMathExpression(arg1))
                 {
-                    scriptableError(scripted,"MATH","Syntax",evaluable);
+                    logError(scripted,"MATH","Syntax",evaluable);
                     return returnable;
                 }
                 if(!CMath.isMathExpression(arg3))
                 {
-                    scriptableError(scripted,"MATH","Syntax",evaluable);
+                    logError(scripted,"MATH","Syntax",evaluable);
                     return returnable;
                 }
                 returnable=simpleExpressionEval(scripted,arg1,arg3,arg2,"MATH");
@@ -3057,7 +3068,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    scriptableError(scripted,"TRAINS","Syntax",evaluable);
+                    logError(scripted,"TRAINS","Syntax",evaluable);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3077,7 +3088,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    scriptableError(scripted,"PRACS","Syntax",evaluable);
+                    logError(scripted,"PRACS","Syntax",evaluable);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3097,7 +3108,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    scriptableError(scripted,"CLANRANK","Syntax",evaluable);
+                    logError(scripted,"CLANRANK","Syntax",evaluable);
                     return returnable;
                 }
                 if(E==null)
@@ -3117,7 +3128,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if(arg2.length()==0)
                 {
-                    scriptableError(scripted,"DEITY","Syntax",evaluable);
+                    logError(scripted,"DEITY","Syntax",evaluable);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3132,7 +3143,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         returnable=!sex.equalsIgnoreCase(arg3);
                     else
                     {
-                        scriptableError(scripted,"DEITY","Syntax",evaluable);
+                        logError(scripted,"DEITY","Syntax",evaluable);
                         return returnable;
                     }
                 }
@@ -3147,7 +3158,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    scriptableError(scripted,"CLANDATA","Syntax",evaluable);
+                    logError(scripted,"CLANDATA","Syntax",evaluable);
                     return returnable;
                 }
                 String clanID=null;
@@ -3199,7 +3210,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                              if(M!=null) whichVal=M.Name();
                              break; // topmember
                     default:
-                        scriptableError(scripted,"CLANDATA","RunTime",arg2+" is not a valid clan variable.");
+                        logError(scripted,"CLANDATA","RunTime",arg2+" is not a valid clan variable.");
                         break;
                     }
                     if(CMath.isNumber(whichVal.trim())&&CMath.isNumber(arg4.trim()))
@@ -3217,7 +3228,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if(arg2.length()==0)
                 {
-                    scriptableError(scripted,"CLAN","Syntax",evaluable);
+                    logError(scripted,"CLAN","Syntax",evaluable);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3232,7 +3243,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         returnable=!sex.equalsIgnoreCase(arg3);
                     else
                     {
-                        scriptableError(scripted,"CLAN","Syntax",evaluable);
+                        logError(scripted,"CLAN","Syntax",evaluable);
                         return returnable;
                     }
                 }
@@ -3246,7 +3257,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if(arg2.length()==0)
                 {
-                    scriptableError(scripted,"MOOD","Syntax",evaluable);
+                    logError(scripted,"MOOD","Syntax",evaluable);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3262,7 +3273,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         returnable=!sex.equalsIgnoreCase(arg3);
                     else
                     {
-                        scriptableError(scripted,"MOOD","Syntax",evaluable);
+                        logError(scripted,"MOOD","Syntax",evaluable);
                         return returnable;
                     }
                 }
@@ -3276,7 +3287,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    scriptableError(scripted,"CLASS","Syntax",evaluable);
+                    logError(scripted,"CLASS","Syntax",evaluable);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3291,7 +3302,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         returnable=!sex.startsWith(arg3);
                     else
                     {
-                        scriptableError(scripted,"CLASS","Syntax",evaluable);
+                        logError(scripted,"CLASS","Syntax",evaluable);
                         return returnable;
                     }
                 }
@@ -3305,7 +3316,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    scriptableError(scripted,"CLASS","Syntax",evaluable);
+                    logError(scripted,"CLASS","Syntax",evaluable);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3320,7 +3331,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         returnable=!sex.startsWith(arg3);
                     else
                     {
-                        scriptableError(scripted,"CLASS","Syntax",evaluable);
+                        logError(scripted,"CLASS","Syntax",evaluable);
                         return returnable;
                     }
                 }
@@ -3334,7 +3345,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    scriptableError(scripted,"RACE","Syntax",evaluable);
+                    logError(scripted,"RACE","Syntax",evaluable);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3349,7 +3360,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         returnable=!sex.startsWith(arg3);
                     else
                     {
-                        scriptableError(scripted,"RACE","Syntax",evaluable);
+                        logError(scripted,"RACE","Syntax",evaluable);
                         return returnable;
                     }
                 }
@@ -3363,7 +3374,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    scriptableError(scripted,"RACECAT","Syntax",evaluable);
+                    logError(scripted,"RACECAT","Syntax",evaluable);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3378,7 +3389,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         returnable=!sex.startsWith(arg3);
                     else
                     {
-                        scriptableError(scripted,"RACECAT","Syntax",evaluable);
+                        logError(scripted,"RACECAT","Syntax",evaluable);
                         return returnable;
                     }
                 }
@@ -3392,7 +3403,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    scriptableError(scripted,"GOLDAMT","Syntax",evaluable);
+                    logError(scripted,"GOLDAMT","Syntax",evaluable);
                     break;
                 }
                 if(E==null)
@@ -3410,7 +3421,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         val1=((Item)E).value();
                     else
                     {
-                        scriptableError(scripted,"GOLDAMT","Syntax",evaluable);
+                        logError(scripted,"GOLDAMT","Syntax",evaluable);
                         return returnable;
                     }
 
@@ -3426,7 +3437,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    scriptableError(scripted,"EXP","Syntax",evaluable);
+                    logError(scripted,"EXP","Syntax",evaluable);
                     break;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3447,12 +3458,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),2));
                 if((arg2.length()==0)||(arg3.length()==0)||(arg4.length()==0))
                 {
-                    scriptableError(scripted,"VALUE","Syntax",evaluable);
+                    logError(scripted,"VALUE","Syntax",evaluable);
                     break;
                 }
                 if(!CMLib.beanCounter().getAllCurrencies().contains(arg2.toUpperCase()))
                 {
-                    scriptableError(scripted,"VALUE","Syntax",arg2+" is not a valid designated currency.");
+                    logError(scripted,"VALUE","Syntax",arg2+" is not a valid designated currency.");
                     break;
                 }
                 if(E==null)
@@ -3473,7 +3484,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         val1=((Item)E).value();
                     else
                     {
-                        scriptableError(scripted,"VALUE","Syntax",evaluable);
+                        logError(scripted,"VALUE","Syntax",evaluable);
                         return returnable;
                     }
 
@@ -3489,7 +3500,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    scriptableError(scripted,"OBJTYPE","Syntax",evaluable);
+                    logError(scripted,"OBJTYPE","Syntax",evaluable);
                     return returnable;
                 }
                 if(E==null)
@@ -3504,7 +3515,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         returnable=sex.indexOf(arg3)<0;
                     else
                     {
-                        scriptableError(scripted,"OBJTYPE","Syntax",evaluable);
+                        logError(scripted,"OBJTYPE","Syntax",evaluable);
                         return returnable;
                     }
                 }
@@ -3519,7 +3530,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    scriptableError(scripted,"VAR","Syntax",evaluable);
+                    logError(scripted,"VAR","Syntax",evaluable);
                     return returnable;
                 }
                 String val=getVar(E,arg1,arg2,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp);
@@ -3542,7 +3553,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     returnable=CMath.s_int(val.trim())<=CMath.s_int(arg4.trim());
                 else
                 {
-                    scriptableError(scripted,"VAR","Syntax",evaluable);
+                    logError(scripted,"VAR","Syntax",evaluable);
                     return returnable;
                 }
                 break;
@@ -3554,7 +3565,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(evaluable.substring(y+1,z),1));
                 if(arg3.length()==0)
                 {
-                    scriptableError(scripted,"EVAL","Syntax",evaluable);
+                    logError(scripted,"EVAL","Syntax",evaluable);
                     return returnable;
                 }
                 if(arg3.equals("=="))
@@ -3576,7 +3587,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     returnable=CMath.s_int(val.trim())<=CMath.s_int(arg4.trim());
                 else
                 {
-                    scriptableError(scripted,"EVAL","Syntax",evaluable);
+                    logError(scripted,"EVAL","Syntax",evaluable);
                     return returnable;
                 }
                 break;
@@ -3664,7 +3675,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 break;
             }
             default:
-                scriptableError(scripted,"Unknown Eval",preFab,evaluable);
+                logError(scripted,"Unknown Eval",preFab,evaluable);
                 return returnable;
             }
             if((z>=0)&&(z<=evaluable.length()))
@@ -3731,7 +3742,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             else
             if((y<0)||(z<y))
             {
-                scriptableError(scripted,"()","Syntax",evaluable);
+                logError(scripted,"()","Syntax",evaluable);
                 break;
             }
             else
@@ -3788,7 +3799,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String item=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),1));
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((item.length()==0)||(E==null))
-                    scriptableError(scripted,"HASNUM","Syntax",evaluable);
+                    logError(scripted,"HASNUM","Syntax",evaluable);
                 else
                 {
                     Item I=null;
@@ -4036,7 +4047,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     }
                 }
                 if(!validFunc)
-                    scriptableError(scripted,"CALLFUNC","Unknown","Function: "+arg1);
+                    logError(scripted,"CALLFUNC","Unknown","Function: "+arg1);
                 else
                     results.append(found);
                 break;
@@ -4423,7 +4434,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 Faction F=CMLib.factions().getFaction(arg2);
                 if(F==null)
-                    scriptableError(scripted,"FACTION","Unknown Faction",arg1);
+                    logError(scripted,"FACTION","Unknown Faction",arg1);
                 else
                 if((E!=null)&&(E instanceof MOB)&&(((MOB)E).hasFaction(F.factionID())))
                 {
@@ -4557,7 +4568,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
                 int index=CMParms.indexOf(ScriptingEngine.DATETIME_ARGS,arg1.toUpperCase().trim());
                 if(index<0)
-                    scriptableError(scripted,"DATETIME","Syntax","Unknown arg: "+arg1+" for "+scripted.name());
+                    logError(scripted,"DATETIME","Syntax","Unknown arg: "+arg1+" for "+scripted.name());
                 else
                 if(CMLib.map().areaLocation(scripted)!=null)
                 switch(index)
@@ -4581,7 +4592,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     String val=getStatValue(E,arg2);
                     if(val==null)
                     {
-                        scriptableError(scripted,"STAT","Syntax","Unknown stat: "+arg2+" for "+E.name());
+                        logError(scripted,"STAT","Syntax","Unknown stat: "+arg2+" for "+E.name());
                         break;
                     }
 
@@ -4600,7 +4611,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     String val=getGStatValue(E,arg2);
                     if(val==null)
                     {
-                        scriptableError(scripted,"GSTAT","Syntax","Unknown stat: "+arg2+" for "+E.name());
+                        logError(scripted,"GSTAT","Syntax","Unknown stat: "+arg2+" for "+E.name());
                         break;
                     }
 
@@ -4754,7 +4765,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                              if(M!=null) whichVal=M.Name();
                              break; // topmember
                     default:
-                        scriptableError(scripted,"CLANDATA","RunTime",arg2+" is not a valid clan variable.");
+                        logError(scripted,"CLANDATA","RunTime",arg2+" is not a valid clan variable.");
                         break;
                     }
                     results.append(whichVal);
@@ -4862,7 +4873,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         val1=((Item)E).value();
                     else
                     {
-                        scriptableError(scripted,"GOLDAMT","Syntax",evaluable);
+                        logError(scripted,"GOLDAMT","Syntax",evaluable);
                         return results.toString();
                     }
                     results.append(val1);
@@ -4890,7 +4901,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
                 if(!CMLib.beanCounter().getAllCurrencies().contains(arg2.toUpperCase()))
                 {
-                    scriptableError(scripted,"VALUE","Syntax",arg2+" is not a valid designated currency.");
+                    logError(scripted,"VALUE","Syntax",arg2+" is not a valid designated currency.");
                     return results.toString();
                 }
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -4912,7 +4923,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         val1=((Item)E).value();
                     else
                     {
-                        scriptableError(scripted,"GOLDAMT","Syntax",evaluable);
+                        logError(scripted,"GOLDAMT","Syntax",evaluable);
                         return results.toString();
                     }
                     results.append(val1);
@@ -5006,7 +5017,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 break;
             }
             default:
-                scriptableError(scripted,"Unknown Val",preFab,evaluable);
+                logError(scripted,"Unknown Val",preFab,evaluable);
                 return results.toString();
             }
             }
@@ -5123,7 +5134,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     }
                     catch(Exception e)
                     {
-                        Log.errOut("Scriptable",scripted.name()+"/"+CMLib.map().getExtendedRoomID(lastKnownLocation)+"/JSCRIPT Error: "+e.getMessage());
+                        Log.errOut("Scripting",scripted.name()+"/"+CMLib.map().getExtendedRoomID(lastKnownLocation)+"/JSCRIPT Error: "+e.getMessage());
                     }
                     Context.exit();
                 }
@@ -5186,7 +5197,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 if(!foundendif)
                 {
-                    scriptableError(scripted,"IF","Syntax"," Without ENDIF!");
+                    logError(scripted,"IF","Syntax"," Without ENDIF!");
                     tickStatus=Tickable.STATUS_END;
                     return null;
                 }
@@ -5260,7 +5271,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 if(!foundendif)
                 {
-                    scriptableError(scripted,"SWITCH","Syntax"," Without ENDSWITCH!");
+                    logError(scripted,"SWITCH","Syntax"," Without ENDSWITCH!");
                     tickStatus=Tickable.STATUS_END;
                     return null;
                 }
@@ -5279,14 +5290,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
             {
                 if(CMParms.numBits(s)<6)
                 {
-                    scriptableError(scripted,"FOR","Syntax","5 parms required!");
+                    logError(scripted,"FOR","Syntax","5 parms required!");
                     tickStatus=Tickable.STATUS_END;
                     return null;
                 }
                 String varStr=CMParms.getBit(s,1);
                 if((varStr.length()!=2)||(varStr.charAt(0)!='$')||(!Character.isDigit(varStr.charAt(1))))
                 {
-                    scriptableError(scripted,"FOR","Syntax","'"+varStr+"' is not a tmp var $1, $2..");
+                    logError(scripted,"FOR","Syntax","'"+varStr+"' is not a tmp var $1, $2..");
                     tickStatus=Tickable.STATUS_END;
                     return null;
                 }
@@ -5295,13 +5306,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(((String)tmp[whichVar]).length()>0)
                 &&(CMath.isInteger(((String)tmp[whichVar]).trim())))
                 {
-                    scriptableError(scripted,"FOR","Syntax","'"+whichVar+"' is already in use! Use a different one!");
+                    logError(scripted,"FOR","Syntax","'"+whichVar+"' is already in use! Use a different one!");
                     tickStatus=Tickable.STATUS_END;
                     return null;
                 }
                 if(!CMParms.getBit(s,2).equals("="))
                 {
-                    scriptableError(scripted,"FOR","Syntax","'"+s+"' is illegal for syntax!");
+                    logError(scripted,"FOR","Syntax","'"+s+"' is illegal for syntax!");
                     tickStatus=Tickable.STATUS_END;
                     return null;
                 }
@@ -5315,7 +5326,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 else
                 if(!CMParms.getBit(s,4).equalsIgnoreCase("to"))
                 {
-                    scriptableError(scripted,"FOR","Syntax","'"+s+"' is illegal for syntax!");
+                    logError(scripted,"FOR","Syntax","'"+s+"' is illegal for syntax!");
                     tickStatus=Tickable.STATUS_END;
                     return null;
                 }
@@ -5323,7 +5334,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String to=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,4).trim()).trim();
                 if((!CMath.isInteger(from))||(!CMath.isInteger(to)))
                 {
-                    scriptableError(scripted,"FOR","Syntax","'"+from+"-"+to+"' is illegal range!");
+                    logError(scripted,"FOR","Syntax","'"+from+"-"+to+"' is illegal range!");
                     tickStatus=Tickable.STATUS_END;
                     return null;
                 }
@@ -5363,7 +5374,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 if(!foundnext)
                 {
-                    scriptableError(scripted,"FOR","Syntax"," Without NEXT!");
+                    logError(scripted,"FOR","Syntax"," Without NEXT!");
                     tickStatus=Tickable.STATUS_END;
                     return null;
                 }
@@ -5388,7 +5399,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             if(response!=null) break;
                             if(System.currentTimeMillis()>tm)
                             {
-                                scriptableError(scripted,"FOR","Runtime","For loop violates 10 second rule: " +s);
+                                logError(scripted,"FOR","Runtime","For loop violates 10 second rule: " +s);
                                 break;
                             }
                         }
@@ -5478,7 +5489,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(A!=null)
                     {
                         if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
-                            Log.sysOut("Scriptable",newTarget.Name()+" was MPUNAFFECTED by "+A.Name());
+                            Log.sysOut("Scripting",newTarget.Name()+" was MPUNAFFECTED by "+A.Name());
                         A.unInvoke();
                         if(newTarget.fetchEffect(which)==A)
                             newTarget.delEffect(A);
@@ -5501,7 +5512,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(newTarget!=null)
                 {
                     if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
-                        Log.sysOut("Scriptable",newTarget.Name()+" has "+arg2+" MPSETTED to "+arg3);
+                        Log.sysOut("Scripting",newTarget.Name()+" has "+arg2+" MPSETTED to "+arg3);
                     boolean found=false;
                     for(int i=0;i<newTarget.getStatCodes().length;i++)
                     {
@@ -5573,7 +5584,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
                     if(!found)
                     {
-                        scriptableError(scripted,"MPSET","Syntax","Unknown stat: "+arg2+" for "+newTarget.Name());
+                        logError(scripted,"MPSET","Syntax","Unknown stat: "+arg2+" for "+newTarget.Name());
                         break;
                     }
                     if(newTarget instanceof MOB)
@@ -5600,7 +5611,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String arg2=CMParms.getPastBitClean(s,1);
                 if((arg1.length()!=2)||(!arg1.startsWith("$")))
                 {
-                    scriptableError(scripted,"MPARGSET","Syntax","Invalid argument var: "+arg1+" for "+scripted.Name());
+                    logError(scripted,"MPARGSET","Syntax","Invalid argument var: "+arg1+" for "+scripted.Name());
                     break;
                 }
                 Object O=getArgumentMOB(arg2,source,monster,target,primaryItem,secondaryItem,msg,tmp);
@@ -5640,7 +5651,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 case 'd':
                 case 'D': if(O instanceof Room) lastKnownLocation=(Room)O; break;
                 default:
-                    scriptableError(scripted,"MPARGSET","Syntax","Invalid argument var: "+arg1+" for "+scripted.Name());
+                    logError(scripted,"MPARGSET","Syntax","Invalid argument var: "+arg1+" for "+scripted.Name());
                     break;
                 }
                 break;
@@ -5653,7 +5664,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(newTarget!=null)
                 {
                     if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
-                        Log.sysOut("Scriptable",newTarget.Name()+" has "+arg2+" MPGSETTED to "+arg3);
+                        Log.sysOut("Scripting",newTarget.Name()+" has "+arg2+" MPGSETTED to "+arg3);
                     boolean found=false;
                     for(int i=0;i<newTarget.getStatCodes().length;i++)
                     {
@@ -5763,7 +5774,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
                     if(!found)
                     {
-                        scriptableError(scripted,"MPGSET","Syntax","Unknown stat: "+arg2+" for "+newTarget.Name());
+                        logError(scripted,"MPGSET","Syntax","Unknown stat: "+arg2+" for "+newTarget.Name());
                         break;
                     }
                     if(newTarget instanceof MOB)
@@ -5819,7 +5830,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(val.startsWith("--")&&(CMath.isNumber(val.substring(2).trim())))
                         ((MOB)newTarget).setQuestPoint(((MOB)newTarget).getQuestPoint()-CMath.s_int(val.substring(2).trim()));
                     else
-                        scriptableError(scripted,"QUESTPOINTS","Syntax","Bad syntax "+val+" for "+scripted.Name());
+                        logError(scripted,"QUESTPOINTS","Syntax","Bad syntax "+val+" for "+scripted.Name());
                 }
                 break;
             }
@@ -5831,12 +5842,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,2));
                 Quest Q=getQuest(qstr);
                 if(Q==null)
-                    scriptableError(scripted,"MPQSET","Syntax","Unknown quest "+qstr+" for "+scripted.Name());
+                    logError(scripted,"MPQSET","Syntax","Unknown quest "+qstr+" for "+scripted.Name());
                 else
                 if(var.equalsIgnoreCase("QUESTOBJ"))
                 {
                     if(obj==null)
-                        scriptableError(scripted,"MPQSET","Syntax","Unknown object "+CMParms.getPastBitClean(s,2)+" for "+scripted.Name());
+                        logError(scripted,"MPQSET","Syntax","Unknown object "+CMParms.getPastBitClean(s,2)+" for "+scripted.Name());
                     else
                     {
                         obj.baseEnvStats().setDisposition(obj.baseEnvStats().disposition()|EnvStats.IS_UNSAVABLE);
@@ -5863,7 +5874,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 else
                 if(type.startsWith("D")) Log.debugOut(head,val);
                 else
-                    scriptableError(scripted,"MPLOG","Syntax","Unknown log type "+type+" for "+scripted.Name());
+                    logError(scripted,"MPLOG","Syntax","Unknown log type "+type+" for "+scripted.Name());
                 break;
             }
             case 67: // MPCHANNEL
@@ -5873,7 +5884,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(sysmsg) channel=channel.substring(1);
                 String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
                 if(CMLib.channels().getChannelCodeNumber(channel)<0)
-                    scriptableError(scripted,"MPCHANNEL","Syntax","Unknown channel "+channel+" for "+scripted.Name());
+                    logError(scripted,"MPCHANNEL","Syntax","Unknown channel "+channel+" for "+scripted.Name());
                 else
                     CMLib.commands().postChannel(monster,channel,val,sysmsg);
                 break;
@@ -5882,7 +5893,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             {
                 String scriptname=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
                 if(!new CMFile(Resources.makeFileResourceName(scriptname),null,false,true).exists())
-                    scriptableError(scripted,"MPUNLOADSCRIPT","Runtime","File does not exist: "+Resources.makeFileResourceName(scriptname));
+                    logError(scripted,"MPUNLOADSCRIPT","Runtime","File does not exist: "+Resources.makeFileResourceName(scriptname));
                 else
                 {
                     Vector delThese=new Vector();
@@ -5918,7 +5929,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(val.startsWith("--")&&(CMath.isNumber(val.substring(2).trim())))
                         ((MOB)newTarget).setTrains(((MOB)newTarget).getTrains()-CMath.s_int(val.substring(2).trim()));
                     else
-                        scriptableError(scripted,"TRAINS","Syntax","Bad syntax "+val+" for "+scripted.Name());
+                        logError(scripted,"TRAINS","Syntax","Bad syntax "+val+" for "+scripted.Name());
                 }
                 break;
             }
@@ -5937,7 +5948,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(val.startsWith("--")&&(CMath.isNumber(val.substring(2).trim())))
                         ((MOB)newTarget).setPractices(((MOB)newTarget).getPractices()-CMath.s_int(val.substring(2).trim()));
                     else
-                        scriptableError(scripted,"PRACS","Syntax","Bad syntax "+val+" for "+scripted.Name());
+                        logError(scripted,"PRACS","Syntax","Bad syntax "+val+" for "+scripted.Name());
                 }
                 break;
             }
@@ -6131,7 +6142,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         if(A!=null)
                             CMLib.map().resetArea(A);
                         else
-                            scriptableError(scripted,"MPRESET","Syntax","Unknown location: "+arg+" for "+scripted.Name());
+                            logError(scripted,"MPRESET","Syntax","Unknown location: "+arg+" for "+scripted.Name());
                     }
                 }
                 break;
@@ -6175,7 +6186,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             for(Enumeration e=A.getProperMap();e.hasMoreElements();)
                                 CMLib.threads().rejuv((Room)e.nextElement(),tickID);
                         else
-                            scriptableError(scripted,"MPREJUV","Syntax","Unknown location: "+next+" for "+scripted.Name());
+                            logError(scripted,"MPREJUV","Syntax","Unknown location: "+next+" for "+scripted.Name());
                     }
                 }
                 break;
@@ -6386,7 +6397,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if((newTarget!=null)&&(A!=null))
                 {
                     if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
-                        Log.sysOut("Scriptable",newTarget.Name()+" was MPAFFECTED by "+A.Name());
+                        Log.sysOut("Scripting",newTarget.Name()+" was MPAFFECTED by "+A.Name());
                     A.setMiscText(m2);
                     if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
                         newTarget.addNonUninvokableEffect(A);
@@ -6409,7 +6420,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if((newTarget!=null)&&(A!=null))
                 {
                     if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
-                        Log.sysOut("Scriptable",newTarget.Name()+" was MPBEHAVED with "+A.name());
+                        Log.sysOut("Scripting",newTarget.Name()+" was MPBEHAVED with "+A.name());
                     A.setParms(m2);
                     if(newTarget.fetchBehavior(A.ID())==null)
                         newTarget.addBehavior(A);
@@ -6425,7 +6436,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     Behavior A=newTarget.fetchBehavior(cast);
                     if(A!=null) newTarget.delBehavior(A);
                     if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster())&&(A!=null))
-                        Log.sysOut("Scriptable",newTarget.Name()+" was MPUNBEHAVED with "+A.name());
+                        Log.sysOut("Scripting",newTarget.Name()+" was MPUNBEHAVED with "+A.name());
                 }
                 break;
             }
@@ -6464,10 +6475,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(trigger.equalsIgnoreCase(progs[i]))
                         triggerCode=i;
                 if(triggerCode<0)
-                    scriptableError(scripted,"MPNOTRIGGER","RunTime",trigger+" is not a valid trigger name.");
+                    logError(scripted,"MPNOTRIGGER","RunTime",trigger+" is not a valid trigger name.");
                 else
                 if(!CMath.isInteger(time.trim()))
-                    scriptableError(scripted,"MPNOTRIGGER","RunTime",time+" is not a valid milisecond time.");
+                    logError(scripted,"MPNOTRIGGER","RunTime",time+" is not a valid milisecond time.");
                 else
                 {
                     noTrigger.remove(new Integer(triggerCode));
@@ -6502,7 +6513,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             { FR=FR2; break;}
                         }
                         if(FR==null)
-                            scriptableError(scripted,"MPFACTION","RunTime",range+" is not a valid range for "+F.name()+".");
+                            logError(scripted,"MPFACTION","RunTime",range+" is not a valid range for "+F.name()+".");
                         else
                             themob.addFaction(F.factionID(),FR.low()+((FR.high()-FR.low())/2));
                     }
@@ -6583,7 +6594,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     case 15: nosave=true; break; // memberlist
                     case 16: nosave=true; break; // topmember
                     default:
-                        scriptableError(scripted,"MPSETCLANDATA","RunTime",clanvar+" is not a valid clan variable.");
+                        logError(scripted,"MPSETCLANDATA","RunTime",clanvar+" is not a valid clan variable.");
                         nosave=true;
                         break;
                     }
@@ -6994,7 +7005,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     }
                 }
                 else
-                    scriptableError(scripted,"MPM2I2M","RunTime",arg1+" is not a mob or a caged item.");
+                    logError(scripted,"MPM2I2M","RunTime",arg1+" is not a mob or a caged item.");
                 break;
             }
             case 28: // mpdamage
@@ -7083,7 +7094,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Quest Q=getQuest(s);
                 if(Q!=null) Q.stopQuest();
                 else
-                    scriptableError(scripted,"MPENDQUEST","Unknown","Quest: "+s);
+                    logError(scripted,"MPENDQUEST","Unknown","Quest: "+s);
                 break;
             }
             case 69: // MPSTEPQUEST
@@ -7092,7 +7103,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Quest Q=getQuest(s);
                 if(Q!=null) Q.stepQuest();
                 else
-                    scriptableError(scripted,"MPSTEPQUEST","Unknown","Quest: "+s);
+                    logError(scripted,"MPSTEPQUEST","Unknown","Quest: "+s);
                 break;
             }
             case 23: //MPSTARTQUEST
@@ -7101,7 +7112,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Quest Q=getQuest(s);
                 if(Q!=null) Q.startQuest();
                 else
-                    scriptableError(scripted,"MPSTARTQUEST","Unknown","Quest: "+s);
+                    logError(scripted,"MPSTARTQUEST","Unknown","Quest: "+s);
                 break;
             }
             case 64: //MPLOADQUESTOBJ
@@ -7111,19 +7122,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Quest Q=getQuest(questName);
                 if(Q==null)
                 {
-                    scriptableError(scripted,"MPLOADQUESTOBJ","Unknown","Quest: "+questName);
+                    logError(scripted,"MPLOADQUESTOBJ","Unknown","Quest: "+questName);
                     break;
                 }
                 Object O=Q.getQuestObject(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2)));
                 if(O==null)
                 {
-                    scriptableError(scripted,"MPLOADQUESTOBJ","Unknown","Unknown var "+CMParms.getCleanBit(s,2)+" for Quest: "+questName);
+                    logError(scripted,"MPLOADQUESTOBJ","Unknown","Unknown var "+CMParms.getCleanBit(s,2)+" for Quest: "+questName);
                     break;
                 }
                 String varArg=CMParms.getPastBit(s,2);
                 if((varArg.length()!=2)||(!varArg.startsWith("$")))
                 {
-                    scriptableError(scripted,"MPLOADQUESTOBJ","Syntax","Invalid argument var: "+varArg+" for "+scripted.Name());
+                    logError(scripted,"MPLOADQUESTOBJ","Syntax","Invalid argument var: "+varArg+" for "+scripted.Name());
                     break;
                 }
 
@@ -7152,7 +7163,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 case 'd':
                 case 'D': if(O instanceof Room) lastKnownLocation=(Room)O; break;
                 default:
-                    scriptableError(scripted,"MPLOADQUESTOBJ","Syntax","Invalid argument var: "+varArg+" for "+scripted.Name());
+                    logError(scripted,"MPLOADQUESTOBJ","Syntax","Invalid argument var: "+varArg+" for "+scripted.Name());
                     break;
                 }
                 break;
@@ -7172,7 +7183,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(Q!=null)
                         Q.declareWinner(whoName);
                     else
-                        scriptableError(scripted,"MYQUESTWIN","Unknown","Quest: "+s);
+                        logError(scripted,"MYQUESTWIN","Unknown","Quest: "+s);
                 }
                 break;
             }
@@ -7207,7 +7218,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     }
                 }
                 if(!found)
-                    scriptableError(scripted,"MPCALLFUNC","Unknown","Function: "+named);
+                    logError(scripted,"MPCALLFUNC","Unknown","Function: "+named);
                 break;
             }
             case 27: // MPWHILE
@@ -7216,7 +7227,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 int x=conditionStr.indexOf("(");
                 if(x<0)
                 {
-                    scriptableError(scripted,"MPWHILE","Unknown","Condition: "+s);
+                    logError(scripted,"MPWHILE","Unknown","Condition: "+s);
                     break;
                 }
                 conditionStr=conditionStr.substring(x+1);
@@ -7233,7 +7244,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     }
                 if(x<0)
                 {
-                    scriptableError(scripted,"MPWHILE","Syntax"," no closing ')': "+s);
+                    logError(scripted,"MPWHILE","Syntax"," no closing ')': "+s);
                     break;
                 }
                 String cmd2=conditionStr.substring(x+1).trim();
@@ -7246,7 +7257,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     execute(scripted,source,target,monster,primaryItem,secondaryItem,vscript,msg,tmp);
                 if((System.currentTimeMillis()-time)>=4000)
                 {
-                    scriptableError(scripted,"MPWHILE","RunTime","4 second limit exceeded: "+conditionStr);
+                    logError(scripted,"MPWHILE","RunTime","4 second limit exceeded: "+conditionStr);
                     break;
                 }
                 break;
@@ -7257,12 +7268,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String parms=CMParms.getPastBit(s,1).trim();
                 if(CMath.s_int(time.trim())<=0)
                 {
-                    scriptableError(scripted,"MPALARM","Syntax","Bad time "+time);
+                    logError(scripted,"MPALARM","Syntax","Bad time "+time);
                     break;
                 }
                 if(parms.length()==0)
                 {
-                    scriptableError(scripted,"MPALARM","Syntax","No command!");
+                    logError(scripted,"MPALARM","Syntax","No command!");
                     break;
                 }
                 Vector vscript=new Vector();
@@ -7286,7 +7297,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     {
                         ExpertiseLibrary.ExpertiseDefinition D=CMLib.expertises().findDefinition(cast,false);
                         if(D==null)
-                            scriptableError(scripted,"MPENABLE","Syntax","Unknown skill/expertise: "+cast);
+                            logError(scripted,"MPENABLE","Syntax","Unknown skill/expertise: "+cast);
                         else
                         if((newTarget!=null)&&(newTarget instanceof MOB))
                             ((MOB)newTarget).addExpertise(D.ID);
@@ -7297,7 +7308,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(newTarget instanceof MOB))
                 {
                     if(!((MOB)newTarget).isMonster())
-                        Log.sysOut("Scriptable",newTarget.Name()+" was MPENABLED with "+A.Name());
+                        Log.sysOut("Scripting",newTarget.Name()+" was MPENABLED with "+A.Name());
                     if(p2.trim().startsWith("++"))
                         p2=""+(CMath.s_int(p2.trim().substring(2))+A.proficiency());
                     else
@@ -7319,7 +7330,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     Ability A=((MOB)newTarget).findAbility(cast);
                     if(A!=null)((MOB)newTarget).delAbility(A);
                     if((!((MOB)newTarget).isMonster())&&(A!=null))
-                        Log.sysOut("Scriptable",newTarget.Name()+" was MPDISABLED with "+A.Name());
+                        Log.sysOut("Scripting",newTarget.Name()+" was MPDISABLED with "+A.Name());
                     ExpertiseLibrary.ExpertiseDefinition D=CMLib.expertises().findDefinition(cast,false);
                     if((newTarget instanceof MOB)&&(D!=null))
                         ((MOB)newTarget).delExpertise(D.ID);
@@ -7344,7 +7355,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
     protected Vector getScripts()
     {
-        if(CMSecurity.isDisabled("SCRIPTABLE"))
+        if(CMSecurity.isDisabled("SCRIPTABLE")||CMSecurity.isDisabled("SCRIPTING"))
             return empty;
         Vector scripts=null;
         if(getScript().length()>100)
@@ -7455,7 +7466,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             if(tryIt)
             {
-                MOB monster=getScriptableMOB(affecting);
+                MOB monster=getMakeMOB(affecting);
                 if(lastKnownLocation==null) lastKnownLocation=msg.source().location();
                 if((monster==null)||(monster.amDead())||(lastKnownLocation==null)) return true;
                 Item defaultItem=(affecting instanceof Item)?(Item)affecting:null;
@@ -7483,7 +7494,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         if((affecting==null)||(msg.source()==null))
             return;
 
-        MOB monster=getScriptableMOB(affecting);
+        MOB monster=getMakeMOB(affecting);
 
         if(lastKnownLocation==null) lastKnownLocation=msg.source().location();
         if((monster==null)||(monster.amDead())||(lastKnownLocation==null)) return;
@@ -8499,7 +8510,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return I.intValue();
     }
 
-    public MOB getScriptableMOB(Tickable ticking)
+    public MOB getMakeMOB(Tickable ticking)
     {
         MOB mob=null;
         if(ticking instanceof MOB)
@@ -8554,7 +8565,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
             return false;
 
-        MOB mob=getScriptableMOB(ticking);
+        MOB mob=getMakeMOB(ticking);
         Item defaultItem=(ticking instanceof Item)?(Item)ticking:null;
 
         if((mob==null)||(lastKnownLocation==null))
@@ -8762,7 +8773,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     que.removeElement(SB);
                 }
             }
-        }catch(Exception e){Log.errOut("Scriptable",e);}
+        }catch(Exception e){Log.errOut("DefaultScriptingEngine",e);}
     }
     
     protected static class JScriptEvent extends ScriptableObject
