@@ -46,8 +46,8 @@ public class StdRoom implements Room
 	public Room[] doors=new Room[Directions.NUM_DIRECTIONS];
 	protected Vector affects=null;
 	protected Vector behaviors=null;
-	protected Vector contents=new Vector();
-	protected Vector inhabitants=new Vector();
+	protected Vector contents=new Vector(1);
+	protected Vector inhabitants=new Vector(1);
 	protected boolean mobility=true;
 	protected GridLocale gridParent=null;
 	protected long tickStatus=Tickable.STATUS_NOT;
@@ -128,8 +128,8 @@ public class StdRoom implements Room
 		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();
 		envStats=(EnvStats)E.envStats().copyOf();
 
-		contents=new Vector();
-		inhabitants=new Vector();
+		contents=new Vector(1);
+		inhabitants=new Vector(1);
 		affects=null;
 		behaviors=null;
 		exits=new Exit[Directions.NUM_DIRECTIONS];
@@ -660,8 +660,8 @@ public class StdRoom implements Room
 						||CMSecurity.isSaveFlag("ROOMSHOPS")))
 				{
 					MOB M=null;
-					Vector shopmobs=new Vector();
-					Vector bodies=new Vector();
+					Vector shopmobs=new Vector(1);
+					Vector bodies=new Vector(1);
 			        if(CMSecurity.isSaveFlag("ROOMMOBS"))
 			        {
 			            for(int m=0;m<numInhabitants();m++)
@@ -1390,8 +1390,8 @@ public class StdRoom implements Room
         doors=new Room[Directions.NUM_DIRECTIONS];
         affects=null;
         behaviors=null;
-        contents=new Vector();
-        inhabitants=new Vector();
+        contents=new Vector(1);
+        inhabitants=new Vector(1);
         gridParent=null;
         amDestroyed=true;
 	}
@@ -1722,7 +1722,7 @@ public class StdRoom implements Room
 	{
 		if(to==null) return;
 		if(fetchEffect(to.ID())!=null) return;
-		if(affects==null) affects=new Vector();
+		if(affects==null) affects=new Vector(1);
 		if(affects.contains(to)) return;
 		affects.addElement(to);
 		to.setAffectedOne(this);
@@ -1731,7 +1731,7 @@ public class StdRoom implements Room
 	{
 		if(to==null) return;
 		if(fetchEffect(to.ID())!=null) return;
-		if(affects==null) affects=new Vector();
+		if(affects==null) affects=new Vector(1);
 		to.makeNonUninvokable();
 		to.makeLongLasting();
 		affects.addElement(to);
@@ -1743,7 +1743,11 @@ public class StdRoom implements Room
 		int size=affects.size();
 		affects.removeElement(to);
 		if(affects.size()<size)
+		{
 			to.setAffectedOne(null);
+			if(affects.size()==0)
+			    affects=new Vector(1);
+		}
 	}
 	public int numEffects()
 	{
@@ -1777,7 +1781,7 @@ public class StdRoom implements Room
 	public void addBehavior(Behavior to)
 	{
 		if(to==null) return;
-		if(behaviors==null) behaviors=new Vector();
+		if(behaviors==null) behaviors=new Vector(1);
 		for(int b=0;b<numBehaviors();b++)
 		{
 			Behavior B=fetchBehavior(b);
@@ -1792,9 +1796,16 @@ public class StdRoom implements Room
 	public void delBehavior(Behavior to)
 	{
 		if(behaviors==null) return;
+		int size=behaviors.size();
 		behaviors.removeElement(to);
-		if(behaviors.size()==0)
-			CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
+		if(behaviors.size()<size)
+		{
+    		if(behaviors.size()==0)
+    		{
+    		    behaviors=new Vector(1);
+    			CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
+    		}
+		}
 	}
 	public int numBehaviors()
 	{

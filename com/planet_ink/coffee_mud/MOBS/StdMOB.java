@@ -3122,7 +3122,13 @@ public class StdMOB implements MOB
 	}
 	public void delAbility(Ability to)
 	{
+	    int size=abilities.size();
 		abilities.removeElement(to);
+        if(abilities.size()<size)
+        {
+            if(abilities.size()==0)
+                abilities=new Vector(1);
+        }
 	}
 	public int numLearnedAbilities()
 	{
@@ -3204,7 +3210,11 @@ public class StdMOB implements MOB
 		int size=affects.size();
 		affects.removeElement(to);
 		if(affects.size()<size)
+		{
 			to.setAffectedOne(null);
+            if(affects.size()==0)
+                affects=new Vector(1);
+        }
 	}
     protected Vector cloneEffects(){return (Vector)((affects.size()==0)?null:affects.clone());}
 
@@ -3252,7 +3262,13 @@ public class StdMOB implements MOB
 	}
 	public void delBehavior(Behavior to)
 	{
+	    int size=behaviors.size();
 		behaviors.removeElement(to);
+        if(behaviors.size()<size)
+        {
+            if(behaviors.size()==0)
+                behaviors=new Vector(1);
+        }
 	}
 	public int numBehaviors()
 	{
@@ -3288,7 +3304,9 @@ public class StdMOB implements MOB
 	public void delExpertise(String of)
 	{
 		of=fetchExpertise(of);
-		if(of!=null) expertises.removeElement(of);
+		if(of!=null){
+		    expertises.removeElement(of);
+		}
 	}
 	public int numExpertises(){return (expertises==null)?0:expertises.size();}
 	public Enumeration uniqueExpertises()

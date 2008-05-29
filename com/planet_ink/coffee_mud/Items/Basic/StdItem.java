@@ -1208,7 +1208,7 @@ public class StdItem implements Item
 	{
 		if(to==null) return;
 		if(fetchEffect(to.ID())!=null) return;
-		if(affects==null) affects=new Vector();
+		if(affects==null) affects=new Vector(1);
 		to.makeNonUninvokable();
 		to.makeLongLasting();
 		affects.addElement(to);
@@ -1218,7 +1218,7 @@ public class StdItem implements Item
 	{
 		if(to==null) return;
 		if(fetchEffect(to.ID())!=null) return;
-		if(affects==null) affects=new Vector();
+		if(affects==null) affects=new Vector(1);
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
@@ -1228,7 +1228,11 @@ public class StdItem implements Item
 		int size=affects.size();
 		affects.removeElement(to);
 		if(affects.size()<size)
+		{
 			to.setAffectedOne(null);
+    		if(affects.size()==0)
+    		    affects=new Vector(1);
+		}
 	}
 	public int numEffects()
 	{
@@ -1262,7 +1266,7 @@ public class StdItem implements Item
 	public void addBehavior(Behavior to)
 	{
 		if(to==null) return;
-		if(behaviors==null) behaviors=new Vector();
+		if(behaviors==null) behaviors=new Vector(1);
 		for(int b=0;b<numBehaviors();b++)
 		{
 			Behavior B=fetchBehavior(b);
@@ -1279,9 +1283,16 @@ public class StdItem implements Item
 	public void delBehavior(Behavior to)
 	{
 		if(behaviors==null) return;
+		int size=behaviors.size();
 		behaviors.removeElement(to);
-		if(behaviors.size()==0)
-			CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
+		if(behaviors.size()<size)
+		{
+    		if(behaviors.size()==0)
+    		{
+    			CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
+    			behaviors=new Vector(1);
+    		}
+		}
 	}
 	public int numBehaviors()
 	{
