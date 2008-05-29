@@ -6142,6 +6142,50 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                 }
                 break;
             }
+            case 71: // mprejuv
+            {
+                String next=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
+                String rest=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
+                int tickID=0;
+                if(rest.equalsIgnoreCase("item")||rest.equalsIgnoreCase("items"))
+                    tickID=Tickable.TICKID_ROOM_ITEM_REJUV;
+                else
+                if(rest.equalsIgnoreCase("mob")||rest.equalsIgnoreCase("mobs"))
+                    tickID=Tickable.TICKID_MOB;
+                else
+                {
+                    next=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0));
+                    rest="";
+                }
+                if(next.equalsIgnoreCase("area"))
+                {
+                    if(lastKnownLocation!=null)
+                        for(Enumeration e=lastKnownLocation.getArea().getProperMap();e.hasMoreElements();)
+                            CMLib.threads().rejuv((Room)e.nextElement(),tickID);
+                }
+                else
+                if(next.equalsIgnoreCase("room"))
+                {
+                    if(lastKnownLocation!=null)
+                        CMLib.threads().rejuv(lastKnownLocation,tickID);
+                }
+                else
+                {
+                    Room R=CMLib.map().getRoom(next);
+                    if(R!=null)
+                        CMLib.threads().rejuv(R,tickID);
+                    else
+                    {
+                        Area A=CMLib.map().findArea(next);
+                        if(A!=null)
+                            for(Enumeration e=A.getProperMap();e.hasMoreElements();)
+                                CMLib.threads().rejuv((Room)e.nextElement(),tickID);
+                        else
+                            scriptableError(scripted,"MPREJUV","Syntax","Unknown location: "+next+" for "+scripted.Name());
+                    }
+                }
+                break;
+            }
             case 56: // mpstop
             {
             	Vector V=new Vector();

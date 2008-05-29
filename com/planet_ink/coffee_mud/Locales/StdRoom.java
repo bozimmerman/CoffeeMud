@@ -726,7 +726,8 @@ public class StdRoom implements Room
 			{
 				ItemTicker I=(ItemTicker)CMClass.getAbility("ItemRejuv");
 				I.unloadIfNecessary(item);
-				if((item.envStats().rejuv()<Integer.MAX_VALUE)&&(item.envStats().rejuv()>0))
+				if((item.envStats().rejuv()<Integer.MAX_VALUE)
+				&&(item.envStats().rejuv()>0))
 					I.loadMeUp(item,this);
 			}
 		}

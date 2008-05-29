@@ -236,10 +236,44 @@ public class Reset extends StdCommand
 		commands.removeElementAt(0);
 		if(commands.size()<1)
 		{
-			mob.tell("Reset this Room, or the whole Area?");
+			mob.tell("Reset this ROOM, the whole AREA, or REJUV?");
 			return false;
 		}
 		String s=(String)commands.elementAt(0);
+        String rest=(commands.size()>1)?CMParms.combine(commands,1):"";
+        if(s.equalsIgnoreCase("rejuv"))
+        {
+            commands.removeElementAt(0);
+            if(commands.size()<1)
+            {
+                mob.tell("Rejuv this ROOM, or the whole AREA?  You can also specify ITEMS or MOBS after ROOM/AREA.");
+                return false;
+            }
+            s=(String)commands.elementAt(0);
+            rest=(commands.size()>1)?CMParms.combine(commands,1):"";
+            int tickID=0;
+            if(rest.startsWith("MOB")) tickID=Tickable.TICKID_MOB;
+            if(rest.startsWith("ITEM")) tickID=Tickable.TICKID_ROOM_ITEM_REJUV;
+            if(s.equalsIgnoreCase("room"))
+            {
+                CMLib.threads().rejuv(mob.location(),tickID);
+                mob.tell("Done.");
+            }
+            else
+            if(s.equalsIgnoreCase("area"))
+            {
+                Area A=mob.location().getArea();
+                for(Enumeration e=A.getProperMap();e.hasMoreElements();)
+                    CMLib.threads().rejuv((Room)e.nextElement(),tickID);
+                mob.tell("Done.");
+            }
+            else
+            {
+                mob.tell("Rejuv this ROOM, or the whole AREA?");
+                return false;
+            }
+        }
+        else
 		if(s.equalsIgnoreCase("room"))
 		{
             String warning=resetWarning(mob, mob.location());

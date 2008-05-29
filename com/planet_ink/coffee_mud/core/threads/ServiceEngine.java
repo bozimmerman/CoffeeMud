@@ -388,6 +388,50 @@ public class ServiceEngine implements ThreadEngine
 		return "";
 	}
 
+    public void rejuv(Room here, int tickID)
+    {
+        Tick almostTock=null;
+        TockClient C=null;
+        Tickable E2=null;
+        boolean doItems=((tickID==0)||(tickID==Tickable.TICKID_ROOM_ITEM_REJUV));
+        boolean doMobs=((tickID==0)||(tickID==Tickable.TICKID_MOB));
+        for(Enumeration v=tickGroup.elements();v.hasMoreElements();)
+        {
+            almostTock=(Tick)v.nextElement();
+            try
+            {
+                for(Iterator e=almostTock.tickers();e.hasNext();)
+                {
+                    C=(TockClient)e.next();
+                    E2=C.clientObject;
+                    if((doItems)
+                    &&(E2 instanceof ItemTicker)
+                    &&((here==null)||(((ItemTicker)E2).properLocation()==here)))
+                    {
+                        C.tickDown=0;
+                        if(Tick.tickTicker(C,false))
+                            almostTock.delTicker(C);
+                    }
+                    else
+                    if((doMobs)
+                    &&(E2 instanceof MOB)
+                    &&(((MOB)E2).amDead())
+                    &&((here==null)||(((MOB)E2).getStartRoom()==here))
+                    &&(((MOB)E2).baseEnvStats().rejuv()>0)
+                    &&(((MOB)E2).baseEnvStats().rejuv()<Integer.MAX_VALUE)
+                    &&(((MOB)E2).envStats().rejuv()>0))
+                    {
+                        C.tickDown=0;
+                        ((MOB)E2).envStats().setRejuv(0);
+                        if(Tick.tickTicker(C,false))
+                            almostTock.delTicker(C);
+                    }
+                }
+            }catch(NoSuchElementException e){}
+        }
+    }
+	
+	
 	public void tickAllTickers(Room here)
 	{
         Tick almostTock=null;

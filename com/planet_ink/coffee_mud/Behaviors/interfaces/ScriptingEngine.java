@@ -301,6 +301,7 @@ public interface ScriptingEngine extends Behavior
         "MPUNLOADSCRIPT", //68
         "MPSTEPQUEST", //69
         "SWITCH", //70
+        "MPREJUV", //71
     };
 
     public final static String[] clanVars={

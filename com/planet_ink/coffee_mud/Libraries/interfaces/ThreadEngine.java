@@ -48,6 +48,7 @@ public interface ThreadEngine extends CMLibrary
 	public void clearDebri(Room room, int taskCode);
 	public String tickInfo(String which);
 	public void tickAllTickers(Room here);
+    public void rejuv(Room here, int tickID);
 	public String systemReport(String itemCode);
 	public boolean isTicking(Tickable E, int tickID);
 	public void shutdownAll();
