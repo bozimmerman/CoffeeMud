@@ -655,6 +655,36 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         return false;
     }
     
+    public boolean canActAtAll(Tickable affecting)
+    {
+        if(affecting instanceof MOB)
+        {
+            MOB monster=(MOB)affecting;
+            if((monster.amDead())
+            ||(monster.location()==null)
+            ||(!aliveAwakeMobile(monster,true)) 
+            ||(!isInTheGame(monster,true)))
+                return false;
+            return true;
+        }
+        return false;
+    }
+
+    public boolean canFreelyBehaveNormal(Tickable affecting)
+    {
+        if(affecting instanceof MOB)
+        {
+            MOB monster=(MOB)affecting;
+            if((!canActAtAll(monster))
+            ||(monster.isInCombat()) 
+            ||(monster.amFollowing()!=null)
+            ||(monster.curState().getHitPoints()<((int)Math.round(monster.maxState().getHitPoints()/2.0))))
+                return false;
+            return true;
+        }
+        return false;
+    }
+
 	public StringBuffer colorCodes(Environmental seen , MOB seer)
 	{
 		String[] ambiances=seen.envStats().ambiances();

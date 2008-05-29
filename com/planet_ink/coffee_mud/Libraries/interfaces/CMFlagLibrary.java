@@ -137,4 +137,6 @@ public interface CMFlagLibrary extends CMLibrary
     public int getAbilityDomain(String name);
 	public int getDetectScore(MOB seer);
 	public int getHideScore(Environmental seen);
+    public boolean canActAtAll(Tickable affecting);
+    public boolean canFreelyBehaveNormal(Tickable affecting);
 }
