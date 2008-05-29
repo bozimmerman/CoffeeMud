@@ -688,7 +688,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 81: // -expertises
 					{
-						buf.append((skipFirstWord?"The":"Requires")+" following expertises(s): ");
+						buf.append((skipFirstWord?"The":"Requires")+" following expertise(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
@@ -707,7 +707,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				break;
 				case 82: // +expertises
 					{
-						buf.append("Disallows the following expertises(s): ");
+						buf.append("Disallows the following expertise(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
@@ -1095,7 +1095,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     
                 case 104: // +weather
                 {
-                    buf.append("Disallowed during the following weather conditions(s): ");
+                    buf.append("Disallowed during the following weather condition(s): ");
                     for(int v2=v+1;v2<V.size();v2++)
                     {
                         String str2=(String)V.elementAt(v2);
@@ -1122,7 +1122,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 break;
             case 105: // -weather
                 {
-                    buf.append((skipFirstWord?"Only ":"Allowed only ")+"during the following weather conditions(s): ");
+                    buf.append((skipFirstWord?"Only ":"Allowed only ")+"during the following weather condition(s): ");
                     for(int v2=v+1;v2<V.size();v2++)
                     {
                         String str2=(String)V.elementAt(v2);
@@ -1297,7 +1297,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     break;
                 case 52: // -Resource
                     {
-                        buf.append((skipFirstWord?"C":"Requires c")+"onstruction from the following materials(s): ");
+                        buf.append((skipFirstWord?"C":"Requires c")+"onstruction from the following material(s): ");
                         for(int v2=v+1;v2<V.size();v2++)
                         {
                             String str2=(String)V.elementAt(v2);
@@ -1739,7 +1739,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 break;
 				case 42: // +Effects
 					{
-						buf.append("Disallows the following activities/effects(s): ");
+						buf.append("Disallows the following activities/effect(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
@@ -1755,7 +1755,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 43: // -Effects
 					{
-						buf.append((skipFirstWord?"P":"Requires p")+"articipation in the following activities/effects(s): ");
+						buf.append((skipFirstWord?"P":"Requires p")+"articipation in the following activities/effect(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
 						{
 							String str2=(String)V.elementAt(v2);
