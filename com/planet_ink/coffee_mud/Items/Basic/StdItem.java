@@ -1123,6 +1123,7 @@ public class StdItem implements Item
 		}
 		for(int b=numBehaviors()-1;b>=0;b--)
 			delBehavior(fetchBehavior(b));
+        CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
 		
 		riding=null;
 		destroyed=true;
