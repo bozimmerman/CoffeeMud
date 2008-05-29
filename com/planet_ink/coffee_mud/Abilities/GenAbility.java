@@ -114,9 +114,9 @@ public class GenAbility extends StdAbility
 	        O2[varNum]=O;
         }
     }
-    private Behavior scriptObj=null;
+    private ScriptingEngine scriptObj=null;
     private long scriptParmHash=0;
-    public Behavior getScriptable(){
+    public ScriptingEngine getScripter(){
         if(((String)V(ID,V_SCRP)).hashCode()!=scriptParmHash)
         {
             String parm=(String)V(ID,V_SCRP);
@@ -125,9 +125,9 @@ public class GenAbility extends StdAbility
                 scriptObj=null;
             else
             {
-                scriptObj=CMClass.getBehavior("Scriptable");
+                scriptObj=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
                 if(scriptObj!=null)
-                	scriptObj.setParms(parm);
+                	scriptObj.setScript(parm);
                 else
                 	scriptParmHash=-1;
             }
@@ -159,11 +159,11 @@ public class GenAbility extends StdAbility
         {
             GenAbility A=(GenAbility)this.getClass().newInstance();
             A.ID=ID;
-            getScriptable();
+            getScripter();
             A.scriptParmHash=scriptParmHash;
             if(scriptObj!=null){ 
-                A.scriptObj=CMClass.getBehavior("Scriptable"); 
-                A.scriptObj.setParms(scriptObj.getParms());
+                A.scriptObj=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine"); 
+                A.scriptObj.setScript(scriptObj.getScript());
             }
             else
                 A.scriptObj=null;
@@ -183,8 +183,8 @@ public class GenAbility extends StdAbility
             GenAbility A=(GenAbility)E;
             A.scriptParmHash=scriptParmHash;
             if(A.scriptObj!=null){ 
-                scriptObj=CMClass.getBehavior("Scriptable"); 
-                scriptObj.setParms(A.scriptObj.getParms());
+                scriptObj=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine"); 
+                scriptObj.setScript(A.scriptObj.getScript());
             }
             else
                 scriptObj=null;
@@ -424,12 +424,12 @@ public class GenAbility extends StdAbility
                     }
                     if(CMLib.flags().isInTheGame(mob,true)&&((target==null)||CMLib.flags().isInTheGame(target,true)))
                     {
-                        Behavior B=getScriptable();
-                        if((success)&&(B!=null))
+                        ScriptingEngine S=getScripter();
+                        if((success)&&(S!=null))
                         {
                             msg2=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,null,null,ID);
-                            B.executeMsg(mob, msg2);
-                            ((ScriptingEngine)B).dequeResponses();
+                            S.executeMsg(mob, msg2);
+                            S.dequeResponses();
                         }
                         mob.location().recoverRoomStats();
                     }
@@ -464,9 +464,9 @@ public class GenAbility extends StdAbility
     
     public void executeMsg(Environmental myHost, CMMsg msg)
     {
-        Behavior B=getScriptable();
-        if(B!=null)
-            B.executeMsg(myHost,msg);
+        ScriptingEngine S=getScripter();
+        if(S!=null)
+            S.executeMsg(myHost,msg);
         return;
     }
 
@@ -489,9 +489,9 @@ public class GenAbility extends StdAbility
 
     public boolean okMessage(Environmental myHost, CMMsg msg)
     {
-        Behavior B=getScriptable();
-        if(B!=null)
-            if(!B.okMessage(myHost,msg))
+        ScriptingEngine S=getScripter();
+        if(S!=null)
+            if(!S.okMessage(myHost,msg))
                 return false;
         return true;
     }
@@ -502,9 +502,9 @@ public class GenAbility extends StdAbility
             return false;
         if(!super.tick(ticking,tickID))
             return false;
-        Behavior B=getScriptable();
-        if(B!=null)
-            if(!B.tick(ticking,tickID))
+        ScriptingEngine S=getScripter();
+        if(S!=null)
+            if(!S.tick(ticking,tickID))
                 return false;
         return true;
     }
