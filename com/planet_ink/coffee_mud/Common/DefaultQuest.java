@@ -2598,7 +2598,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         if(q.envObject==null)
                         {
-                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give script, no mob set.");
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give script, no object set.");
                             break;
                         }
                         boolean proceed=true;
@@ -2633,27 +2633,24 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give script, script not given.");
                             break;
                         }
-                        String val=CMParms.combineWithQuotes(p,3);
+                        String val=CMParms.combineWithQuotes(p,2);
                         Vector toSet=new Vector();
                         if(q.envObject instanceof Vector)
                             toSet=(Vector)q.envObject;
                         else
-                        if((q.envObject!=null)&&(q.envObject instanceof MOB)) 
+                        if(q.envObject!=null) 
                             toSet.addElement(q.envObject);
                         for(int i=0;i<toSet.size();i++)
                         {
                             Environmental E2=(Environmental)toSet.elementAt(i);
-                            if(E2 instanceof MOB)
-                            {
-                                ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
-                                S.setSavable(savable);
-                                S.registerDefaultQuest(name());
-                                S.setScopeValues(scope);
-                                S.setScript(val);
-                                ((MOB)E2).addScript(S);
-                                runtimeRegisterObject(E2);
-                                questState.addons.addElement(CMParms.makeVector(E2,S),new Integer(questState.preserveState));
-                            }
+                            ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+                            S.setSavable(savable);
+                            S.registerDefaultQuest(name());
+                            S.setScopeValues(scope);
+                            S.setScript(val);
+                            E2.addScript(S);
+                            runtimeRegisterObject(E2);
+                            questState.addons.addElement(CMParms.makeVector(E2,S),new Integer(questState.preserveState));
                         }
                     }
                     else

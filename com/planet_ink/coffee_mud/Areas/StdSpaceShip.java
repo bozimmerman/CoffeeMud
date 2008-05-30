@@ -98,6 +98,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
         imageName=null;
         affects=null;
         behaviors=null;
+        scripts=null;
         author=null;
         currency=null;
         parents=null;
@@ -123,8 +124,9 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	protected EnvStats baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 
-	protected Vector affects=new Vector();
-	protected Vector behaviors=new Vector();
+	protected Vector affects=new Vector(1);
+	protected Vector behaviors=new Vector(1);
+    protected Vector scripts=new Vector(1);
 	public int climateType(){return Area.CLIMASK_NORMAL;}
 	public void setClimateType(int newClimateType){}
 
@@ -208,8 +210,9 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();
 		envStats=(EnvStats)E.envStats().copyOf();
 
-		affects=new Vector();
-		behaviors=new Vector();
+		affects=new Vector(1);
+		behaviors=new Vector(1);
+        scripts=new Vector(1);
 		parents=null;
 		if(E.parents!=null)
 			parents=(Vector)E.parents.clone();
@@ -225,6 +228,13 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 			if(A!=null)
 				affects.addElement(A.copyOf());
 		}
+        ScriptingEngine S=null;
+        for(int i=0;i<E.numScripts();i++)
+        {
+            S=E.fetchScript(i);
+            if(S!=null)
+                addScript((ScriptingEngine)S.copyOf());
+        }
 		setTimeObj((TimeClock)CMClass.getCommon("DefaultTimeClock"));
 	}
 	public CMObject copyOf()
@@ -266,18 +276,26 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		for(int b=0;b<numBehaviors();b++)
-		{
-			Behavior B=fetchBehavior(b);
-			if((B!=null)&&(!B.okMessage(this,msg)))
-				return false;
-		}
-		for(int a=0;a<numEffects();a++)
-		{
-			Ability A=fetchEffect(a);
-			if((A!=null)&&(!A.okMessage(this,msg)))
-				return false;
-		}
+        MsgListener N=null;
+        for(int b=0;b<numBehaviors();b++)
+        {
+            N=fetchBehavior(b);
+            if((N!=null)&&(!N.okMessage(this,msg)))
+                return false;
+        }
+        for(int s=0;s<numScripts();s++)
+        {
+            N=fetchScript(s);
+            if((N!=null)&&(!N.okMessage(this,msg)))
+                return false;
+        }
+        for(int i=0;i<numEffects();i++)
+        {
+            N=fetchEffect(i);
+            if((N!=null)&&(!N.okMessage(this,msg)))
+                return false;
+        }
+        
 		if((flag>=Area.FLAG_FROZEN)||(!CMLib.flags().allowsMovement(this)))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
@@ -393,18 +411,27 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
     
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		for(int b=0;b<numBehaviors();b++)
-		{
-			Behavior B=fetchBehavior(b);
-			if(B!=null)
-				B.executeMsg(this,msg);
-		}
-		for(int a=0;a<numEffects();a++)
-		{
-			Ability A=fetchEffect(a);
-			if(A!=null)
-				A.executeMsg(this,msg);
-		}
+        MsgListener N=null;
+        for(int b=0;b<numBehaviors();b++)
+        {
+            N=fetchBehavior(b);
+            if(N!=null)
+                N.executeMsg(this,msg);
+        }
+        
+        for(int s=0;s<numScripts();s++)
+        {
+            N=fetchScript(s);
+            if(N!=null)
+                N.executeMsg(this,msg);
+        }
+        
+        for(int a=0;a<numEffects();a++)
+        {
+            N=fetchEffect(a);
+            if(N!=null)
+                N.executeMsg(this,msg);
+        }
 	}
 
 	public Enumeration getCompleteMap(){return getProperMap();}
@@ -435,6 +462,13 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 				if(B!=null)
 					B.tick(ticking,tickID);
 			}
+            for(int s=0;s<numScripts();s++)
+            {
+                ScriptingEngine S=fetchScript(s);
+                tickStatus=Tickable.STATUS_SCRIPT+s;
+                if(S!=null) 
+                    S.tick(ticking,tickID);
+            }
 
 			int a=0;
 			while(a<numEffects())
@@ -713,6 +747,29 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		return null;
 	}
 
+    /** Manipulation of the scripts list */
+    public void addScript(ScriptingEngine S)
+    {
+        if(scripts==null) scripts=new Vector(1);
+        if(!scripts.contains(S)) {
+            for(int s=0;s<scripts.size();s++)
+                if(((ScriptingEngine)S).getScript().equalsIgnoreCase(S.getScript()))
+                    return;
+            scripts.addElement(S);
+        }
+    }
+    public void delScript(ScriptingEngine S)
+    {
+        if(scripts!=null)
+        {
+            scripts.removeElement(S);
+            if(scripts.size()==0)
+                scripts=new Vector(1);
+        }
+    }
+    public int numScripts(){return (scripts==null)?0:scripts.size();}
+    public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
+    
     public void addProperRoom(Room R)
     {
         if(R==null) return;

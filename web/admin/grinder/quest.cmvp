@@ -68,7 +68,7 @@ set name MyQuest
 #set mobtype ShopKeeper
 #   load up any mob from the above area of type shopkeeper. 
 #   This command will set a room!
-#give behavior Scriptable LOAD=quests/robbed/shopkeeper.script
+#give script LOAD=quests/robbed/shopkeeper.script
 #   load the above behavior into the last mob 
 #   (in this case, the shopkeeper)
 #set locale CityStreet 
@@ -77,7 +77,7 @@ set name MyQuest
 #   load up any mob from area with that name.  
 #   Since a room was set above,  this will move the mob into 
 #   the room (locale CityStreet)
-#give behavior Scriptable "LOAD=quests/robbed/thief.script"
+#give script "LOAD=quests/robbed/thief.script"
 #   load the above behavior into the last mob 
 #   (in this case, the thief)
 </TEXTAREA>

@@ -229,7 +229,7 @@ public class MOBloader
                             
                             String xml=DBConnections.getRes(R,"CMABTX");
                             if(xml.length()>0)
-                                CMLib.coffeeMaker().setGenMobScripts(mob,CMLib.xml().parseAllXML(xml),true);
+                                CMLib.coffeeMaker().setGenScripts(mob,CMLib.xml().parseAllXML(xml),true);
                         }
                     }
                     else
@@ -851,7 +851,7 @@ public class MOBloader
                 V.addElement(str);
             }
         }
-        String scriptStuff = CMLib.coffeeMaker().getGenMobScripts(mob,true);
+        String scriptStuff = CMLib.coffeeMaker().getGenScripts(mob,true);
         if(scriptStuff.length()>0)
         {
             String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"

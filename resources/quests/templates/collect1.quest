@@ -171,7 +171,7 @@ set room
 import items $QUEST_ID_items.xml
 load itemgroup $COLLECTABLES_CREATED any
 set item
-give behavior Scriptable LOAD=$QUEST_ID_item.script
+give script LOAD=$QUEST_ID_item.script
 
 set duration $DURATION
 

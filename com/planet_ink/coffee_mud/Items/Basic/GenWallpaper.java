@@ -290,6 +290,10 @@ public class GenWallpaper implements Item
 	public int numBehaviors(){return 0;}
 	public Behavior fetchBehavior(int index){return null;}
 	public Behavior fetchBehavior(String ID){return null;}
+    public void addScript(ScriptingEngine S){}
+    public void delScript(ScriptingEngine S) {}
+    public int numScripts(){return 0;}
+    public ScriptingEngine fetchScript(int x){ return null;}
 	public int maxRange(){return 0;}
 	public int minRange(){return 0;}
 

@@ -192,7 +192,7 @@ set area
 import items $QUEST_ID_items.xml
 set itemgroup loadeditems
 set item
-give behavior Scriptable LOAD=$QUEST_ID_item.script
+give script LOAD=$QUEST_ID_item.script
 give item
 set item
 set mobgroup

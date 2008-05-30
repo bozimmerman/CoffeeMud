@@ -163,7 +163,7 @@ set area $DESTINATION_AREA
 set room $DESTINATION_ROOM
 set mobgroup
 set mob $DESTINATION_NAME
-give behavior Scriptable LOAD=$QUEST_ID_destination.script
+give script LOAD=$QUEST_ID_destination.script
 
 set duration $DURATION
 

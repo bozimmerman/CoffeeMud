@@ -42,7 +42,7 @@ public class StdArea implements Area
 	protected int techLevel=0;
 	protected int climateID=Area.CLIMASK_NORMAL;
 	protected Vector properRooms=new Vector();
-    protected Vector blurbFlags=new Vector();
+    protected Vector blurbFlags=new Vector(1);
 	//protected Vector metroRooms=new Vector();
 	protected long tickStatus=Tickable.STATUS_NOT;
 	protected long expirationDate=0;
@@ -53,8 +53,8 @@ public class StdArea implements Area
 
     protected Vector children=null;
     protected Vector parents=null;
-    protected Vector childrenToLoad=new Vector();
-    protected Vector parentsToLoad=new Vector();
+    protected Vector childrenToLoad=new Vector(1);
+    protected Vector parentsToLoad=new Vector(1);
 
 	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	protected EnvStats baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
@@ -162,9 +162,10 @@ public class StdArea implements Area
     
 	public long expirationDate(){return expirationDate;}
 	public void setExpirationDate(long time){expirationDate=time;}
-	protected Vector affects=new Vector();
-	protected Vector behaviors=new Vector();
-	protected Vector subOps=new Vector();
+	protected Vector affects=new Vector(1);
+	protected Vector behaviors=new Vector(1);
+    protected Vector scripts=new Vector(1);
+	protected Vector subOps=new Vector(1);
 	protected Climate climateObj=(Climate)CMClass.getCommon("DefaultClimate");
 	public void setClimateObj(Climate obj){climateObj=obj;}
 	public Climate getClimateObj()
@@ -194,6 +195,7 @@ public class StdArea implements Area
         imageName=null;
         affects=null;
         behaviors=null;
+        scripts=null;
         author=null;
         currency=null;
         children=null;
@@ -391,8 +393,9 @@ public class StdArea implements Area
 		children=null;
 		if(E.children!=null)
 			children=(Vector)E.children.clone();
-		affects=new Vector();
-		behaviors=new Vector();
+		affects=new Vector(1);
+		behaviors=new Vector(1);
+        scripts=new Vector(1);
 		for(int b=0;b<E.numBehaviors();b++)
 		{
 			Behavior B=E.fetchBehavior(b);
@@ -405,6 +408,13 @@ public class StdArea implements Area
 			if(A!=null)
 				affects.addElement(A);
 		}
+        ScriptingEngine S=null;
+        for(int i=0;i<E.numScripts();i++)
+        {
+            S=E.fetchScript(i);
+            if(S!=null)
+                addScript((ScriptingEngine)S.copyOf());
+        }
 		setSubOpList(E.getSubOpList());
 	}
 	public CMObject copyOf()
@@ -540,18 +550,25 @@ public class StdArea implements Area
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		for(int b=0;b<numBehaviors();b++)
-		{
-			Behavior B=fetchBehavior(b);
-			if((B!=null)&&(!B.okMessage(this,msg)))
-				return false;
-		}
-		for(int a=0;a<numEffects();a++)
-		{
-			Ability A=fetchEffect(a);
-			if((A!=null)&&(!A.okMessage(this,msg)))
-				return false;
-		}
+        MsgListener N=null;
+        for(int b=0;b<numBehaviors();b++)
+        {
+            N=fetchBehavior(b);
+            if((N!=null)&&(!N.okMessage(this,msg)))
+                return false;
+        }
+        for(int s=0;s<numScripts();s++)
+        {
+            N=fetchScript(s);
+            if((N!=null)&&(!N.okMessage(this,msg)))
+                return false;
+        }
+        for(int i=0;i<numEffects();i++)
+        {
+            N=fetchEffect(i);
+            if((N!=null)&&(!N.okMessage(this,msg)))
+                return false;
+        }
         if(!msg.source().isMonster())
         {
             lastPlayerTime=System.currentTimeMillis();
@@ -648,18 +665,28 @@ public class StdArea implements Area
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		for(int b=0;b<numBehaviors();b++)
-		{
-			Behavior B=fetchBehavior(b);
-			if(B!=null)
-				B.executeMsg(this,msg);
-		}
-		for(int a=0;a<numEffects();a++)
-		{
-			Ability A=fetchEffect(a);
-			if(A!=null)
-				A.executeMsg(this,msg);
-		}
+        MsgListener N=null;
+        for(int b=0;b<numBehaviors();b++)
+        {
+            N=fetchBehavior(b);
+            if(N!=null)
+                N.executeMsg(this,msg);
+        }
+        
+        for(int s=0;s<numScripts();s++)
+        {
+            N=fetchScript(s);
+            if(N!=null)
+                N.executeMsg(this,msg);
+        }
+        
+        for(int a=0;a<numEffects();a++)
+        {
+            N=fetchEffect(a);
+            if(N!=null)
+                N.executeMsg(this,msg);
+        }
+        
 		if((msg.sourceMinor()==CMMsg.TYP_RETIRE)
 		&&(amISubOp(msg.source().Name())))
 			delSubOp(msg.source().Name());
@@ -697,6 +724,13 @@ public class StdArea implements Area
 				if(B!=null)
 					B.tick(ticking,tickID);
 			}
+            for(int s=0;s<numScripts();s++)
+            {
+                ScriptingEngine S=fetchScript(s);
+                tickStatus=Tickable.STATUS_SCRIPT+s;
+                if(S!=null) 
+                    S.tick(ticking,tickID);
+            }
 
 			int a=0;
 			while(a<numEffects())
@@ -871,6 +905,30 @@ public class StdArea implements Area
 	{
 		return behaviors.size();
 	}
+    
+    /** Manipulation of the scripts list */
+    public void addScript(ScriptingEngine S)
+    {
+        if(scripts==null) scripts=new Vector(1);
+        if(!scripts.contains(S)) {
+            for(int s=0;s<scripts.size();s++)
+                if(((ScriptingEngine)S).getScript().equalsIgnoreCase(S.getScript()))
+                    return;
+            scripts.addElement(S);
+        }
+    }
+    public void delScript(ScriptingEngine S)
+    {
+        if(scripts!=null)
+        {
+            scripts.removeElement(S);
+            if(scripts.size()==0)
+                scripts=new Vector(1);
+        }
+    }
+    public int numScripts(){return (scripts==null)?0:scripts.size();}
+    public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
+    
 	public int maxRange(){return Integer.MAX_VALUE;}
 	public int minRange(){return Integer.MIN_VALUE;}
 
@@ -1358,7 +1416,7 @@ public class StdArea implements Area
 	{
 	    if(children==null)
 		{
-	        children=new Vector();
+	        children=new Vector(1);
 	        for(int i=0;i<childrenToLoad.size();i++)
 			{
 	          Area A=CMLib.map().getArea((String)childrenToLoad.elementAt(i));

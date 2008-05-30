@@ -56,6 +56,7 @@ public class StdItem implements Item
 
 	protected Vector affects=null;
 	protected Vector behaviors=null;
+    protected Vector scripts=null;
 
 	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	protected EnvStats baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
@@ -156,11 +157,17 @@ public class StdItem implements Item
 
 		affects=null;
 		behaviors=null;
+        scripts=null;
 		for(int b=0;b<E.numBehaviors();b++)
 		{
 			Behavior B=E.fetchBehavior(b);
 			if(B!=null)	addBehavior((Behavior)B.copyOf());
 		}
+        for(int s=0;s<E.numScripts();s++)
+        {
+            ScriptingEngine S=E.fetchScript(s);
+            if(S!=null) addScript((ScriptingEngine)S.copyOf());
+        }
 
 		for(int a=0;a<E.numEffects();a++)
 		{
@@ -451,16 +458,24 @@ public class StdItem implements Item
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_ITEM_BEHAVIOR)
 		{
-            int num=numBehaviors();
-			if(num==0) return false;
-            Behavior B=null;
-			for(int b=0;b<num;b++)
+            int numB=numBehaviors();
+            Tickable T=null;
+			for(int b=0;b<numB;b++)
 			{
 				tickStatus=Tickable.STATUS_BEHAVIOR+b;
-				B=fetchBehavior(b);
-				if(B!=null)
-					B.tick(ticking,tickID);
+				T=fetchBehavior(b);
+				if(T!=null)
+					T.tick(ticking,tickID);
 			}
+            int numS=numScripts();
+            if((numB<=0)&&(numS<=0)) return false;
+            for(int s=0;s<numS;s++)
+            {
+                tickStatus=Tickable.STATUS_SCRIPT+s;
+                T=fetchScript(s);
+                if(T!=null)
+                    T.tick(ticking,tickID);
+            }
 		}
 		else
 		if(tickID!=Tickable.TICKID_CLANITEM)
@@ -479,7 +494,7 @@ public class StdItem implements Item
             }
 		}
 		tickStatus=Tickable.STATUS_NOT;
-		return true;
+		return !amDestroyed();
 	}
 
 	public Item ultimateContainer()
@@ -633,17 +648,25 @@ public class StdItem implements Item
 		// the order that these things are checked in should
 		// be holy, and etched in stone.
         int num=numBehaviors();
+        MsgListener N=null;
 		for(int b=0;b<num;b++)
 		{
-			Behavior B=fetchBehavior(b);
-			if((B!=null)&&(!B.okMessage(this,msg)))
+			N=fetchBehavior(b);
+			if((N!=null)&&(!N.okMessage(this,msg)))
 				return false;
 		}
+        num=numScripts();
+        for(int s=0;s<num;s++)
+        {
+            N=fetchScript(s);
+            if((N!=null)&&(!N.okMessage(this,msg)))
+                return false;
+        }
         num=numEffects();
 		for(int a=0;a<num;a++)
 		{
-			Ability A=fetchEffect(a);
-			if((A!=null)&&(!A.okMessage(this,msg)))
+			N=fetchEffect(a);
+			if((N!=null)&&(!N.okMessage(this,msg)))
 				return false;
 		}
 
@@ -1009,18 +1032,24 @@ public class StdItem implements Item
 	{
 		// the order that these things are checked in should
 		// be holy, and etched in stone.
+        MsgListener N=null;
 		for(int b=0;b<numBehaviors();b++)
 		{
-			Behavior B=fetchBehavior(b);
-			if(B!=null)
-				B.executeMsg(this,msg);
+			N=fetchBehavior(b);
+			if(N!=null)
+				N.executeMsg(this,msg);
 		}
-
+        for(int s=0;s<numScripts();s++)
+        {
+            N=fetchScript(s);
+            if(N!=null)
+                N.executeMsg(this,msg);
+        }
 		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchEffect(a);
-			if(A!=null)
-				A.executeMsg(this,msg);
+			N=fetchEffect(a);
+			if(N!=null)
+				N.executeMsg(this,msg);
 		}
 
 		MOB mob=msg.source();
@@ -1123,6 +1152,8 @@ public class StdItem implements Item
 		}
 		for(int b=numBehaviors()-1;b>=0;b--)
 			delBehavior(fetchBehavior(b));
+        for(int s=numScripts()-1;s>=0;s--)
+            delScript(fetchScript(s));
         CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
 		
 		riding=null;
@@ -1166,6 +1197,7 @@ public class StdItem implements Item
         owner=null;
         affects=null;
         behaviors=null;
+        scripts=null;
 	}
 
 	public void removeFromOwnerContainer()
@@ -1320,6 +1352,39 @@ public class StdItem implements Item
 		}
 		return null;
 	}
+    
+    /** Manipulation of the scripts list */
+    public void addScript(ScriptingEngine S)
+    {
+        if(scripts==null) scripts=new Vector(1);
+        if(!scripts.contains(S)) {
+            for(int s=0;s<scripts.size();s++)
+                if(((ScriptingEngine)S).getScript().equalsIgnoreCase(S.getScript()))
+                    return;
+            if(scripts.size()==0)
+                CMLib.threads().startTickDown(this,Tickable.TICKID_ITEM_BEHAVIOR,1);
+            scripts.addElement(S);
+        }
+    }
+    public void delScript(ScriptingEngine S)
+    {
+        if(scripts!=null)
+        {
+            int size=scripts.size();
+            scripts.removeElement(S);
+            if(scripts.size()<size)
+            {
+                if(scripts.size()==0)
+                {
+                    scripts=new Vector(1);
+                    CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
+                }
+            }
+        }
+    }
+    public int numScripts(){return (scripts==null)?0:scripts.size();}
+    public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
+    
 	protected String tackOns()
 	{
 		String identity="";

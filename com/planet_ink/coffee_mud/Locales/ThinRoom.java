@@ -224,6 +224,10 @@ public class ThinRoom implements Room {
 	public int numBehaviors(){return 0;}
 	public Behavior fetchBehavior(int index){return null;}
 	public Behavior fetchBehavior(String ID){return null;}
+    public void addScript(ScriptingEngine S){}
+    public void delScript(ScriptingEngine S) {}
+    public int numScripts(){return 0;}
+    public ScriptingEngine fetchScript(int x){ return null;}
 	public boolean isGeneric(){return false;}
 	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS"};

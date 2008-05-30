@@ -183,8 +183,9 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			if(E instanceof GridLocale)
 				return CMLib.xml().convertXMLtoTag("XGRID",((GridLocale)E).xGridSize())
 					  +CMLib.xml().convertXMLtoTag("YGRID",((GridLocale)E).yGridSize())
-					  +getExtraEnvPropertiesStr(E);
-			return getExtraEnvPropertiesStr(E);
+					  +getExtraEnvPropertiesStr(E)
+                      +getGenScripts(E,false);
+			return getExtraEnvPropertiesStr(E)+getGenScripts(E,false);
 		}
 		else
 		if(E instanceof Area)
@@ -211,6 +212,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		    }
 		    str.append(CMLib.xml().convertXMLtoTag("CHILDREN",childrenstr.toString()));
 		    str.append(getExtraEnvPropertiesStr(E));
+            str.append(getGenScripts(E,false));
 			str.append(CMLib.xml().convertXMLtoTag("AUTHOR",myArea.getAuthorID()));
 			str.append(CMLib.xml().convertXMLtoTag("CURRENCY",myArea.getCurrency()));
             Vector V=new Vector();
@@ -275,12 +277,12 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		return (CMLib.xml().convertXMLtoTag("ABLTYS",abilitystr.toString()));
 	}
 
-    public String getGenMobScripts(MOB M, boolean includeVars)
+    public String getGenScripts(Environmental E, boolean includeVars)
     {
         StringBuffer scriptstr=new StringBuffer("");
-        for(int b=0;b<M.numScripts();b++)
+        for(int b=0;b<E.numScripts();b++)
         {
-            ScriptingEngine S=M.fetchScript(b);
+            ScriptingEngine S=E.fetchScript(b);
             if((S!=null)&&(S.isSavable()))
             {
                 scriptstr.append("<SCRPT>");
@@ -475,7 +477,6 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
             text.append(getFactionXML((MOB)E));
 			text.append(getGenMobInventory((MOB)E));
 			text.append(getGenMobAbilities((MOB)E));
-            text.append(getGenMobScripts((MOB)E,false));
 
 			if(E instanceof Banker)
 			{
@@ -1734,6 +1735,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		if(E instanceof Room)
 		{
 			setExtraEnvProperties(E,V);
+            setGenScripts(E,V,false);
 			if(E instanceof GridLocale)
 			{
 				((GridLocale)E).setXGridSize(CMLib.xml().getIntFromPieces(V,"XGRID"));
@@ -1785,6 +1787,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				((GridZones)E).setYGridSize(CMLib.xml().getIntFromPieces(V,"YGRID"));
 			}
 			setExtraEnvProperties(E,V);
+            setGenScripts(E,V,false);
 		}
 		else
 		if(E instanceof Ability)
@@ -1853,7 +1856,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		}
 	}
 
-    public void setGenMobScripts(MOB M, Vector buf, boolean restoreVars)
+    public void setGenScripts(Environmental E, Vector buf, boolean restoreVars)
     {
         Vector V=CMLib.xml().getRealContentsFromPieces(buf,"SCRPTS");
         if(V==null) return;
@@ -1863,7 +1866,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
             XMLLibrary.XMLpiece sblk=(XMLLibrary.XMLpiece)V.elementAt(i);
             if((!sblk.tag.equalsIgnoreCase("SCRPT"))||(sblk.contents==null))
             {
-                Log.errOut("CoffeeMaker","Error parsing 'SCRPT' of "+identifier(M,null)+".  Load aborted");
+                Log.errOut("CoffeeMaker","Error parsing 'SCRPT' of "+identifier(E,null)+".  Load aborted");
                 return;
             }
             ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
@@ -1871,7 +1874,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
             String script=CMLib.xml().getValFromPieces(sblk.contents,"SCRIPT");
             if(script==null)
             {
-                Log.errOut("CoffeeMaker","Error parsing 'SCRIPT' of "+identifier(M,null)+".  Load aborted");
+                Log.errOut("CoffeeMaker","Error parsing 'SCRIPT' of "+identifier(E,null)+".  Load aborted");
                 continue;
             }
             S.setScript(CMLib.xml().restoreAngleBrackets(script));
@@ -1889,7 +1892,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
                 if((svars!=null)&&(svars.length()>0))
                     S.setScopeValues(svars);
             }
-            M.addScript(S);
+            E.addScript(S);
         }
     }
 
@@ -2067,12 +2070,6 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				while(((Deity)E).numPowers()>0)
 					((Deity)E).delPower(((Deity)E).fetchPower(0));
 			}
-	        while(((MOB)E).numScripts()>0)
-	        {
-	            ScriptingEngine scrpt=((MOB)E).fetchScript(0);
-	            if(scrpt!=null)
-	                ((MOB)E).delScript(scrpt);
-	        }
 		}
 		while(E.numEffects()>0)
 		{
@@ -2086,16 +2083,15 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			if(behav!=null)
 				E.delBehavior(behav);
 		}
+        while(E.numScripts()>0)
+        {
+            ScriptingEngine scrpt=E.fetchScript(0);
+            if(scrpt!=null)
+                E.delScript(scrpt);
+        }
 
 		if(E instanceof MOB)
 		{
-	        while(((MOB)E).numScripts()>0)
-	        {
-	            ScriptingEngine scrpt=((MOB)E).fetchScript(0);
-	            if(scrpt!=null)
-	                ((MOB)E).delScript(scrpt);
-	        }
-	        
 			MOB mob=(MOB)E;
 			mob.baseCharStats().setStat(CharStats.STAT_GENDER,CMLib.xml().getValFromPieces(buf,"GENDER").charAt(0));
 			mob.setClanID(CMLib.xml().getValFromPieces(buf,"CLAN"));
@@ -2292,7 +2288,6 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			CMLib.beanCounter().setMoney(mob,CMLib.xml().getIntFromPieces(buf,"MONEY"));
 			setGenMobInventory((MOB)E,buf);
 			setGenMobAbilities((MOB)E,buf);
-            setGenMobScripts((MOB)E,buf,false);
             setFactionFromXML((MOB)E,buf);
 
 			if(E instanceof Banker)
@@ -2521,7 +2516,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 
 		str.append(getGenMobAbilities(mob));
 
-        str.append(getGenMobScripts(mob,true));
+        str.append(getGenScripts(mob,true));
         
 		str.append(getGenMobInventory(mob));
 
@@ -2642,7 +2637,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 
 			setGenMobAbilities(mob,mblk.contents);
 
-            setGenMobScripts(mob,mblk.contents,true);
+            setGenScripts(mob,mblk.contents,true);
             
 			setGenMobInventory(mob,mblk.contents);
 
@@ -2717,7 +2712,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			}
 		}
 		text.append(CMLib.xml().convertXMLtoTag("BEHAVES",behaviorstr.toString()));
-
+        
 		StringBuffer affectstr=new StringBuffer("");
 		for(int a=0;a<E.numEffects();a++)
 		{
@@ -2759,16 +2754,16 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			Ability A=E.fetchEffect(a);
 			if((A!=null)&&(A.savable())) fillFileSet(A.externalFiles(),H);
 		}
+        for(int m=0;m<E.numScripts();m++)
+        {
+            ScriptingEngine S=E.fetchScript(m);
+            if(S!=null) fillFileSet(S.externalFiles(),H);
+        }
 		if(E instanceof MOB)
 		{
 		    MOB M=(MOB)E;
 		    for(int i=0;i<M.inventorySize();i++)
 		        fillFileSet(M.fetchInventory(i),H);
-		    for(int m=0;m<M.numScripts();m++)
-		    {
-		        ScriptingEngine S=M.fetchScript(m);
-		        if(S!=null) fillFileSet(S.externalFiles(),H);
-		    }
 		}
 		if(E instanceof ShopKeeper)
 		{
@@ -2816,8 +2811,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		text.append(CMLib.xml().convertXMLtoTag("DESC",E.description()));
 		text.append(CMLib.xml().convertXMLtoTag("DISP",E.displayText()));
 		text.append(CMLib.xml().convertXMLtoTag("PROP",getEnvStatsStr(E.baseEnvStats())));
-
 		text.append(getExtraEnvPropertiesStr(E));
+        text.append(getGenScripts(E,false));
 		return text.toString();
 	}
 
@@ -2900,6 +2895,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		E.setDisplayText(CMLib.xml().getValFromPieces(buf,"DISP"));
 		setEnvStats(E.baseEnvStats(),CMLib.xml().getValFromPieces(buf,"PROP"));
 		setExtraEnvProperties(E,buf);
+        setGenScripts(E,buf,false);
 	}
 
     public String identifier(Environmental E, Environmental parent)
@@ -3048,6 +3044,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		case 20: return ""+I.baseEnvStats().attackAdjustment();
 		case 21: return I.readableText();
 		case 22: return I.rawImage();
+        case 23: return getGenScripts(I,false);
 		}
 		return "";
 	}
@@ -3091,6 +3088,16 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		case 20: I.baseEnvStats().setAttackAdjustment(CMath.s_int(val)); break;
 		case 21: I.setReadableText(val); break;
 		case 22: I.setImage(val); break;
+        case 23:
+        {
+            while(I.numScripts()>0)
+            {
+                ScriptingEngine S=I.fetchScript(0);
+                if(S!=null) I.delScript(S);
+            }
+            setGenScripts(I,CMLib.xml().parseAllXML(val),false);
+            break;
+        }
 		}
 	}
 
@@ -3164,7 +3171,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				}
 		case 20: return M.rawImage();
 		case 21: return M.getFactionListing();
-        case 22: return getGenMobScripts(M,false);
+        case 22: return getGenScripts(M,false);
 		}
 		return "";
 	}
@@ -3262,7 +3269,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
                 ScriptingEngine S=M.fetchScript(0);
                 if(S!=null) M.delScript(S);
             }
-            setGenMobScripts(M,CMLib.xml().parseAllXML(val),false);
+            setGenScripts(M,CMLib.xml().parseAllXML(val),false);
             break;
         }
 		}

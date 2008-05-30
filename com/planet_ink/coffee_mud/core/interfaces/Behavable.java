@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.core.interfaces;
 
 import com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior;
+import com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine;
 
 /*
 Copyright 2000-2008 Bo Zimmerman
@@ -34,6 +35,7 @@ public interface Behavable {
      * @param to The behavior object to add.
      */
 	public void addBehavior(Behavior to);
+    
     /**
      * Delete a behavior from this object.  After calling this method,
      * recoverEnvStats() should be called next in case this behavior object modified the stats.
@@ -42,12 +44,14 @@ public interface Behavable {
      * @param to The behavior object to remove.
      */
 	public void delBehavior(Behavior to);
+    
     /**
      * The number of behaviors this object has.
      * @see com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior
      * @return the number of behaviors
      */
 	public int numBehaviors();
+    
     /**
      * Returns a behavior object on this object. May return null even if the index
      * is correct to mark a race condition.
@@ -57,6 +61,7 @@ public interface Behavable {
      * @return the behavior object
      */
 	public Behavior fetchBehavior(int index);
+    
     /**
      * Returns a behavior object listed on this object. The object will
      * be the one with the same ID() string as passed in.
@@ -66,4 +71,35 @@ public interface Behavable {
      */
 	public Behavior fetchBehavior(String ID);
 
+
+    /**
+     * Add a new runnable script to this object.  Objects which are
+     * not mobs or areas will gain a temporary tick service for
+     * this script.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine
+     * @param s the scripting engine, fully populated, to add
+     */
+    public void addScript(ScriptingEngine s);
+    
+    /**
+     * Remove a running script from this object.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine
+     * @param s the specific scripting engine to remove
+     */
+    public void delScript(ScriptingEngine s);
+    
+    /**
+     * Return the number of scripts running on this object
+     * @return number of scripts
+     */
+    public int numScripts();
+    
+    /**
+     * Retreive one of the enumerated scripts running on this
+     * object
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine
+     * @param x which script to return
+     * @return the scripting engine
+     */
+    public ScriptingEngine fetchScript(int x);
 }

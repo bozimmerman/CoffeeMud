@@ -208,7 +208,7 @@ set area $DISPELEE_AREA
 set room $DISPELEE_ROOM
 set $DISPELEE_TYPE $DISPELEE_NAME
 give affect $DISPEL_SPELL $DISPEL_SPELL_PARMS
-give behavior Scriptable LOAD=$QUEST_ID_dispel.script
+give script LOAD=$QUEST_ID_dispel.script
 
 set duration $DURATION
 

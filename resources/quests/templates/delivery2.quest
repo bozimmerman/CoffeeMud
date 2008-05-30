@@ -163,11 +163,11 @@ give script LOAD=$QUEST_ID_deliverer.script
 load item any
 give item
 set item ITEM
-give behavior Scriptable LOAD=$QUEST_ID_deliverable.script
+give script LOAD=$QUEST_ID_deliverable.script
 
 set area $DESTINATION_AREA
 set room $DESTINATION_ROOM
-give behavior Scriptable LOAD=$QUEST_ID_deliveree.script
+give script LOAD=$QUEST_ID_deliveree.script
 set item $DESTINATION_CONTAINER
 give affect Property
 

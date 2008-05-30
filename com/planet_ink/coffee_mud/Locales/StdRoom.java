@@ -46,6 +46,7 @@ public class StdRoom implements Room
 	public Room[] doors=new Room[Directions.NUM_DIRECTIONS];
 	protected Vector affects=null;
 	protected Vector behaviors=null;
+    protected Vector scripts=null;
 	protected Vector contents=new Vector(1);
 	protected Vector inhabitants=new Vector(1);
 	protected boolean mobility=true;
@@ -121,6 +122,7 @@ public class StdRoom implements Room
 	    behaviors=DVector.softCopy(behaviors);
 	    contents=DVector.softCopy(contents);
 	    inhabitants=DVector.softCopy(inhabitants);
+        scripts=DVector.softCopy(scripts);
 	}
 	
 	protected void cloneFix(Room E)
@@ -132,6 +134,7 @@ public class StdRoom implements Room
 		inhabitants=new Vector(1);
 		affects=null;
 		behaviors=null;
+        scripts=null;
 		exits=new Exit[Directions.NUM_DIRECTIONS];
 		doors=new Room[Directions.NUM_DIRECTIONS];
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
@@ -185,6 +188,11 @@ public class StdRoom implements Room
 			if(B!=null)
 				addBehavior((Behavior)B.copyOf());
 		}
+        for(int s=0;s<E.numScripts();s++)
+        {
+            ScriptingEngine S=E.fetchScript(s);
+            if(S!=null) addScript((ScriptingEngine)S.copyOf());
+        }
 	}
 	public CMObject copyOf()
 	{
@@ -493,33 +501,39 @@ public class StdRoom implements Room
 		if(isInhabitant(msg.source()))
 			if(!msg.source().okMessage(this,msg))
 				return false;
-			
+	    MsgListener N=null;
 		for(int i=0;i<numInhabitants();i++)
 		{
-			MOB inhab=fetchInhabitant(i);
-			if((inhab!=null)
-			&&(inhab!=msg.source())
-			&&(!inhab.okMessage(this,msg)))
+			N=fetchInhabitant(i);
+			if((N!=null)
+			&&(N!=msg.source())
+			&&(!N.okMessage(this,msg)))
 				return false;
 		}
 		for(int i=0;i<numItems();i++)
 		{
-			Item content=fetchItem(i);
-			if((content!=null)&&(!content.okMessage(this,msg)))
+			N=fetchItem(i);
+			if((N!=null)&&(!N.okMessage(this,msg)))
 				return false;
 		}
 		for(int i=0;i<numEffects();i++)
 		{
-			Ability A=fetchEffect(i);
-			if((A!=null)&&(!A.okMessage(this,msg)))
+			N=fetchEffect(i);
+			if((N!=null)&&(!N.okMessage(this,msg)))
 				return false;
 		}
 		for(int b=0;b<numBehaviors();b++)
 		{
-			Behavior B=fetchBehavior(b);
-			if((B!=null)&&(!B.okMessage(this,msg)))
+			N=fetchBehavior(b);
+			if((N!=null)&&(!N.okMessage(this,msg)))
 				return false;
 		}
+        for(int s=0;s<numScripts();s++)
+        {
+            N=fetchScript(s);
+            if((N!=null)&&(!N.okMessage(this,msg)))
+                return false;
+        }
 
 		for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
 		{
@@ -583,35 +597,42 @@ public class StdRoom implements Room
 				break;
 			}
 		}
-
+		MsgListener N=null;
 		for(int i=0;i<numItems();i++)
 		{
-			Item content=fetchItem(i);
-			if(content!=null)
-				content.executeMsg(this,msg);
+			N=fetchItem(i);
+			if(N!=null)
+				N.executeMsg(this,msg);
 		}
 
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
-			Exit thisExit=rawExits()[d];
-			if(thisExit!=null)
-				thisExit.executeMsg(this,msg);
+			N=rawExits()[d];
+			if(N!=null)
+				N.executeMsg(this,msg);
 		}
 
 		for(int b=0;b<numBehaviors();b++)
 		{
-			Behavior B=fetchBehavior(b);
-			if(B!=null)
-				B.executeMsg(this,msg);
+			N=fetchBehavior(b);
+			if(N!=null)
+				N.executeMsg(this,msg);
 		}
-
+        
+        for(int s=0;s<numScripts();s++)
+        {
+            N=fetchScript(s);
+            if(N!=null)
+                N.executeMsg(this,msg);
+        }
+        
 		for(int a=0;a<numEffects();a++)
 		{
-			Ability A=fetchEffect(a);
-			if(A!=null)
-				A.executeMsg(this,msg);
+			N=fetchEffect(a);
+			if(N!=null)
+				N.executeMsg(this,msg);
 		}
-		
+        
 		if(msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 		{
 		    try
@@ -739,13 +760,24 @@ public class StdRoom implements Room
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_ROOM_BEHAVIOR)
 		{
-			if(numBehaviors()==0) return false;
-			for(int b=0;b<numBehaviors();b++)
-			{
-				tickStatus=Tickable.STATUS_BEHAVIOR+b;
-				Behavior B=fetchBehavior(b);
-				if(B!=null) B.tick(ticking,tickID);
-			}
+            int numB=numBehaviors();
+            Tickable T=null;
+            for(int b=0;b<numB;b++)
+            {
+                tickStatus=Tickable.STATUS_BEHAVIOR+b;
+                T=fetchBehavior(b);
+                if(T!=null)
+                    T.tick(ticking,tickID);
+            }
+            int numS=numScripts();
+            if((numB<=0)&&(numS<=0)) return false;
+            for(int s=0;s<numS;s++)
+            {
+                tickStatus=Tickable.STATUS_SCRIPT+s;
+                T=fetchScript(s);
+                if(T!=null)
+                    T.tick(ticking,tickID);
+            }
 		}
 		else
 		{
@@ -767,7 +799,7 @@ public class StdRoom implements Room
 			}
 		}
 		tickStatus=Tickable.STATUS_NOT;
-		return true;
+		return !amDestroyed();
 	}
 
 	public EnvStats envStats()
@@ -1353,6 +1385,9 @@ public class StdRoom implements Room
 		}catch(Exception e){}
 		while(numBehaviors()>0)
 			delBehavior(fetchBehavior(0));
+        while(numScripts()>0)
+            delScript(fetchScript(0));
+        CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
 		try{
             Vector V=new Vector();
             for(int v=0;v<numItems();v++)
@@ -1390,6 +1425,7 @@ public class StdRoom implements Room
         doors=new Room[Directions.NUM_DIRECTIONS];
         affects=null;
         behaviors=null;
+        scripts=null;
         contents=new Vector(1);
         inhabitants=new Vector(1);
         gridParent=null;
@@ -1833,6 +1869,38 @@ public class StdRoom implements Room
 		}
 		return null;
 	}
+
+    /** Manipulation of the scripts list */
+    public void addScript(ScriptingEngine S)
+    {
+        if(scripts==null) scripts=new Vector(1);
+        if(!scripts.contains(S)) {
+            for(int s=0;s<scripts.size();s++)
+                if(((ScriptingEngine)S).getScript().equalsIgnoreCase(S.getScript()))
+                    return;
+            if(scripts.size()==0)
+                CMLib.threads().startTickDown(this,Tickable.TICKID_ROOM_BEHAVIOR,1);
+            scripts.addElement(S);
+        }
+    }
+    public void delScript(ScriptingEngine S)
+    {
+        if(scripts!=null)
+        {
+            int size=scripts.size();
+            scripts.removeElement(S);
+            if(scripts.size()<size)
+            {
+                if(scripts.size()==0)
+                {
+                    scripts=new Vector(1);
+                    CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
+                }
+            }
+        }
+    }
+    public int numScripts(){return (scripts==null)?0:scripts.size();}
+    public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
     
 	public int getSaveStatIndex(){return getStatCodes().length;}
 	private static final String[] CODES={"CLASS","DISPLAY","DESCRIPTION","TEXT"};

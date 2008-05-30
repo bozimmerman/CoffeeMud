@@ -345,7 +345,7 @@ public class StdMOB implements MOB
         for(int i=0;i<E.numScripts();i++)
         {
             S=E.fetchScript(i);
-            if(A!=null)
+            if(S!=null)
                 addScript((ScriptingEngine)S.copyOf());
         }
 	}
@@ -3425,16 +3425,21 @@ public class StdMOB implements MOB
 	}
 
     /** Manipulation of the scripts list */
-    public void addScript(ScriptingEngine s)
+    public void addScript(ScriptingEngine S)
     {
         if(scripts==null) scripts=new Vector(1);
-        if(!scripts.contains(s)) scripts.addElement(s);
+        if(!scripts.contains(S)) {
+            for(int s=0;s<scripts.size();s++)
+                if(((ScriptingEngine)S).getScript().equalsIgnoreCase(S.getScript()))
+                    return;
+            scripts.addElement(S);
+        }
     }
-    public void delScript(ScriptingEngine s)
+    public void delScript(ScriptingEngine S)
     {
         if(scripts!=null)
         {
-            scripts.removeElement(s);
+            scripts.removeElement(S);
             if(scripts.size()==0)
                 scripts=new Vector(1);
         }

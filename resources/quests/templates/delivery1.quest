@@ -162,7 +162,7 @@ give script LOAD=$QUEST_ID_deliverer.script
 load item any
 give item
 set item ITEM
-give behavior Scriptable LOAD=$QUEST_ID_deliverable.script
+give script LOAD=$QUEST_ID_deliverable.script
 
 set area $DELIVEREE_AREA
 set room $DELIVEREE_ROOM

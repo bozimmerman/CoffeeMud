@@ -42,6 +42,7 @@ public class StdExit implements Exit
 	protected String imageName=null;
 	protected Vector affects=null;
 	protected Vector behaviors=null;
+    protected Vector scripts=null;
     protected boolean amDestroyed=false;
     
 	public StdExit()
@@ -104,6 +105,8 @@ public class StdExit implements Exit
         imageName=null;
         affects=null;
         behaviors=null;
+        scripts=null;
+        CMLib.threads().deleteTick(this,Tickable.TICKID_EXIT_BEHAVIOR);
         amDestroyed=true;
     }
     public boolean amDestroyed(){return amDestroyed;}
@@ -149,12 +152,18 @@ public class StdExit implements Exit
 
 		affects=null;
 		behaviors=null;
+        scripts=null;
 		for(int b=0;b<E.numBehaviors();b++)
 		{
 			Behavior B=E.fetchBehavior(b);
 			if(B!=null)
 				addBehavior((Behavior)B.copyOf());
 		}
+        for(int s=0;s<E.numScripts();s++)
+        {
+            ScriptingEngine S=E.fetchScript(s);
+            if(S!=null) addScript((ScriptingEngine)S.copyOf());
+        }
 	}
 	public CMObject copyOf()
 	{
@@ -237,18 +246,25 @@ public class StdExit implements Exit
 	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		for(int b=0;b<numBehaviors();b++)
-		{
-			Behavior B=fetchBehavior(b);
-			if((B!=null)&&(!B.okMessage(this,msg)))
-				return false;
-		}
-		for(int a=0;a<numEffects();a++)
-		{
-			Ability A=fetchEffect(a);
-			if((A!=null)&&(!A.okMessage(this,msg)))
-				return false;
-		}
+        MsgListener N=null;
+        for(int b=0;b<numBehaviors();b++)
+        {
+            N=fetchBehavior(b);
+            if((N!=null)&&(!N.okMessage(this,msg)))
+                return false;
+        }
+        for(int s=0;s<numScripts();s++)
+        {
+            N=fetchScript(s);
+            if((N!=null)&&(!N.okMessage(this,msg)))
+                return false;
+        }
+        for(int i=0;i<numEffects();i++)
+        {
+            N=fetchEffect(i);
+            if((N!=null)&&(!N.okMessage(this,msg)))
+                return false;
+        }
 
 		MOB mob=msg.source();
 		if((!msg.amITarget(this))&&(msg.tool()!=this))
@@ -458,18 +474,27 @@ public class StdExit implements Exit
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		for(int b=0;b<numBehaviors();b++)
-		{
-			Behavior B=fetchBehavior(b);
-			if(B!=null)
-				B.executeMsg(this,msg);
-		}
-		for(int a=0;a<numEffects();a++)
-		{
-			Ability A=fetchEffect(a);
-			if(A!=null)
-				A.executeMsg(this,msg);
-		}
+        MsgListener N=null;
+        for(int b=0;b<numBehaviors();b++)
+        {
+            N=fetchBehavior(b);
+            if(N!=null)
+                N.executeMsg(this,msg);
+        }
+        
+        for(int s=0;s<numScripts();s++)
+        {
+            N=fetchScript(s);
+            if(N!=null)
+                N.executeMsg(this,msg);
+        }
+        
+        for(int a=0;a<numEffects();a++)
+        {
+            N=fetchEffect(a);
+            if(N!=null)
+                N.executeMsg(this,msg);
+        }
 
 		MOB mob=msg.source();
 		if((!msg.amITarget(this))&&(msg.tool()!=this))
@@ -530,13 +555,23 @@ public class StdExit implements Exit
 		else
 		if(tickID==Tickable.TICKID_EXIT_BEHAVIOR)
 		{
-			for(int b=0;b<numBehaviors();b++)
-			{
-				Behavior B=fetchBehavior(b);
-				if(B!=null)
-					B.tick(ticking,tickID);
-			}
-			return true;
+            int numB=numBehaviors();
+            Tickable T=null;
+            for(int b=0;b<numB;b++)
+            {
+                T=fetchBehavior(b);
+                if(T!=null)
+                    T.tick(ticking,tickID);
+            }
+            int numS=numScripts();
+            if((numB<=0)&&(numS<=0)) return false;
+            for(int s=0;s<numS;s++)
+            {
+                T=fetchScript(s);
+                if(T!=null)
+                    T.tick(ticking,tickID);
+            }
+			return !amDestroyed();
 		}
 		else
 		{
@@ -610,7 +645,7 @@ public class StdExit implements Exit
 	{
 		if(to==null) return;
 		if(fetchEffect(to.ID())!=null) return;
-		if(affects==null) affects=new Vector();
+		if(affects==null) affects=new Vector(1);
 		to.makeNonUninvokable();
 		to.makeLongLasting();
 		affects.addElement(to);
@@ -620,7 +655,7 @@ public class StdExit implements Exit
 	{
 		if(to==null) return;
 		if(fetchEffect(to.ID())!=null) return;
-		if(affects==null) affects=new Vector();
+		if(affects==null) affects=new Vector(1);
 		affects.addElement(to);
 		to.setAffectedOne(this);
 	}
@@ -664,7 +699,7 @@ public class StdExit implements Exit
 	public void addBehavior(Behavior to)
 	{
 		if(behaviors==null)
-			behaviors=new Vector();
+			behaviors=new Vector(1);
 		if(to==null) return;
 		for(int b=0;b<numBehaviors();b++)
 		{
@@ -714,6 +749,39 @@ public class StdExit implements Exit
 		}
 		return null;
 	}
+    
+    /** Manipulation of the scripts list */
+    public void addScript(ScriptingEngine S)
+    {
+        if(scripts==null) scripts=new Vector(1);
+        if(!scripts.contains(S)) {
+            for(int s=0;s<scripts.size();s++)
+                if(((ScriptingEngine)S).getScript().equalsIgnoreCase(S.getScript()))
+                    return;
+            if(scripts.size()==0)
+                CMLib.threads().startTickDown(this,Tickable.TICKID_EXIT_BEHAVIOR,1);
+            scripts.addElement(S);
+        }
+    }
+    public void delScript(ScriptingEngine S)
+    {
+        if(scripts!=null)
+        {
+            int size=scripts.size();
+            scripts.removeElement(S);
+            if(scripts.size()<size)
+            {
+                if(scripts.size()==0)
+                {
+                    scripts=new Vector(1);
+                    CMLib.threads().deleteTick(this,Tickable.TICKID_EXIT_BEHAVIOR);
+                }
+            }
+        }
+    }
+    public int numScripts(){return (scripts==null)?0:scripts.size();}
+    public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
+    
 	public int openDelayTicks()	{ return 45;}
 	public void setOpenDelayTicks(int numTicks){}
 
