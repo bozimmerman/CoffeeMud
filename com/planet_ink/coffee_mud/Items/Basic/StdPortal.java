@@ -159,14 +159,14 @@ public class StdPortal extends StdContainer implements Rideable, Exit
                     Room oldR=thisRoom.rawDoors()[Directions.GATE];
                     Exit oldE2=R.rawExits()[Directions.GATE];
 					thisRoom.rawDoors()[Directions.GATE]=R;
-					thisRoom.rawExits()[Directions.GATE]=E;
+					thisRoom.setExit(Directions.GATE,E);
                     Exit E2=CMClass.getExit("OpenNameable");
                     E2.baseEnvStats().setDisposition(EnvStats.IS_NOT_SEEN);
-                    R.rawExits()[Directions.GATE]=E2;
+                    R.setExit(Directions.GATE,E2);
 					CMLib.tracking().move(msg.source(),Directions.GATE,false,false,false);
 					thisRoom.rawDoors()[Directions.GATE]=oldR;
-					thisRoom.rawExits()[Directions.GATE]=oldE;
-                    R.rawExits()[Directions.GATE]=oldE2;
+					thisRoom.setExit(Directions.GATE,oldE);
+                    R.setExit(Directions.GATE,oldE2);
                     E.destroy();
                     E2.destroy();
 				}

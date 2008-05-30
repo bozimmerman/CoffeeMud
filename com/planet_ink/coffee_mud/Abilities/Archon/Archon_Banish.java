@@ -82,7 +82,7 @@ public class Archon_Banish extends ArchonSkill
 		}
 		for(int d=0;d<Directions.DIRECTIONS_BASE.length;d++)
 		{
-			prisonRoom.rawExits()[Directions.DIRECTIONS_BASE[d]]=CMClass.getExit("Open");
+			prisonRoom.setExit(Directions.DIRECTIONS_BASE[d],CMClass.getExit("Open"));
 			prisonRoom.rawDoors()[Directions.DIRECTIONS_BASE[d]]=prisonRoom;
 		}
 		return prisonRoom;

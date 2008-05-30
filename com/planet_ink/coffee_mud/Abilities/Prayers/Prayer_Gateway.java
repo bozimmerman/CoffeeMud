@@ -51,13 +51,13 @@ public class Prayer_Gateway extends Prayer
 			{
 				newRoom.showHappens(CMMsg.MSG_OK_VISUAL,"The divine gateway closes.");
 				newRoom.rawDoors()[Directions.GATE]=null;
-				newRoom.rawExits()[Directions.GATE]=null;
+				newRoom.setExit(Directions.GATE,null);
 			}
 			if(oldRoom!=null)
 			{
 				oldRoom.showHappens(CMMsg.MSG_OK_VISUAL,"The divine gateway closes.");
 				oldRoom.rawDoors()[Directions.GATE]=null;
-				oldRoom.rawExits()[Directions.GATE]=null;
+				oldRoom.setExit(Directions.GATE,null);
 			}
 		}
 		super.unInvoke();
@@ -137,8 +137,8 @@ public class Prayer_Gateway extends Prayer
 				e.setName("a divine gateway");
 				mob.location().rawDoors()[Directions.GATE]=newRoom;
 				newRoom.rawDoors()[Directions.GATE]=mob.location();
-				mob.location().rawExits()[Directions.GATE]=e;
-				newRoom.rawExits()[Directions.GATE]=e;
+				mob.location().setExit(Directions.GATE,e);
+				newRoom.setExit(Directions.GATE,e);
 				oldRoom=mob.location();
 				beneficialAffect(mob,e,asLevel,5);
 			}

@@ -328,8 +328,8 @@ public class Test extends StdCommand
             Exit upExit=R.rawExits()[Directions.UP];
             Room R2=CMClass.getLocale("StoneRoom");
             R2.setArea(R.getArea());
-            R.rawExits()[Directions.UP]=CMClass.getExit("Open");
-            R2.rawExits()[Directions.DOWN]=CMClass.getExit("Open");
+            R.setExit(Directions.UP,CMClass.getExit("Open"));
+            R2.setExit(Directions.DOWN,CMClass.getExit("Open"));
             R.rawDoors()[Directions.UP]=R2;
             R2.rawDoors()[Directions.DOWN]=R;
             MOB[] mobs=new MOB[2];
@@ -1004,7 +1004,7 @@ public class Test extends StdCommand
             CMLib.map().emptyRoom(R2,null);
             R2.destroy();
             R.rawDoors()[Directions.UP]=upRoom;
-            R.rawExits()[Directions.UP]=upExit;
+            R.setExit(Directions.UP,upExit);
             mobs[0].destroy();
             mobs[1].destroy();
             R.recoverRoomStats();

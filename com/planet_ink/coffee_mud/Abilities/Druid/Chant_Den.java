@@ -68,9 +68,7 @@ public class Chant_Den extends Chant
 				}
 				R.destroy();
 				room.rawDoors()[Directions.UP]=null;
-				if(room.rawExits()[Directions.UP]!=null)
-				    room.rawExits()[Directions.UP].destroy();
-				room.rawExits()[Directions.UP]=null;
+				room.setExit(Directions.UP,null);
 			}
 			room.clearSky();
 		}
@@ -134,7 +132,7 @@ public class Chant_Den extends Chant
 				newRoom.setDescription("You are in a dark rocky den!");
 				newRoom.setArea(mob.location().getArea());
 				mob.location().rawDoors()[d]=newRoom;
-				mob.location().rawExits()[d]=CMClass.getExit("HiddenWalkway");
+				mob.location().setExit(d,CMClass.getExit("HiddenWalkway"));
 				newRoom.rawDoors()[Directions.getOpDirectionCode(d)]=mob.location();
 				Ability A=CMClass.getAbility("Prop_RoomView");
 				A.setMiscText(CMLib.map().getExtendedRoomID(mob.location()));
@@ -151,7 +149,7 @@ public class Chant_Den extends Chant
 				A=CMClass.getAbility("Prop_NoTeleportOut");
 				if(A!=null) newRoom.addEffect(A);
 
-				newRoom.rawExits()[Directions.getOpDirectionCode(d)]=E;
+				newRoom.setExit(Directions.getOpDirectionCode(d),E);
 				newRoom.getArea().fillInAreaRoom(newRoom);
 				beneficialAffect(mob,mob.location(),asLevel,CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH));
 			}

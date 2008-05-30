@@ -214,17 +214,35 @@ public class StdRoom implements Room
 	public long expirationDate(){return expirationDate;}
 	public void setExpirationDate(long time){expirationDate=time;}
 	
-    public void destroyExits(){
-        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+    public void setExit(int direction, Environmental to)
+    {
+        Exit E=rawExits()[direction];
+        if(E!=null)
         {
-            if(rawExits()[d]!=null)
+            boolean destroy=true;
+            if((rawDoors()[direction]!=null)
+            &&(!(rawDoors()[direction].amDestroyed()))
+            &&(rawDoors()[direction].rawExits()[Directions.getOpDirectionCode(direction)]==E))
+                destroy=false;
+            
+            if(to instanceof Room)
             {
-                if((rawDoors()[d]!=null)
-                &&(rawDoors()[d].rawExits()[Directions.getOpDirectionCode(d)]!=rawExits()[d]))
-                    rawExits()[d].destroy();
-                rawExits()[d]=null;
+                Room copiedRoom=(Room)to;
+                if((copiedRoom.rawDoors()[direction]!=null)
+                &&(!(copiedRoom.rawDoors()[direction].amDestroyed()))
+                &&(copiedRoom.rawDoors()[direction].rawExits()[Directions.getOpDirectionCode(direction)]==E))
+                    destroy=false;
             }
+            if(destroy)
+                rawExits()[direction].destroy();
         }
+        if(to instanceof Room)
+            rawExits()[direction]=((Room)to).rawExits()[direction];
+        else
+        if(to instanceof Exit)
+            rawExits()[direction]=(Exit)to;
+        else
+            rawExits()[direction]=null;
     }
 
 	public String displayText()
@@ -340,9 +358,9 @@ public class StdRoom implements Room
 			sky.setRoomID("");
 			sky.setArea(getArea());
 			rawDoors()[Directions.UP]=sky;
-			rawExits()[Directions.UP]=upE;
+			setExit(Directions.UP,upE);
 			sky.rawDoors()[Directions.DOWN]=this;
-			sky.rawExits()[Directions.DOWN]=dnE;
+			sky.setExit(Directions.DOWN,dnE);
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				if((d!=Directions.UP)&&(d!=Directions.DOWN))
 				{
@@ -359,11 +377,11 @@ public class StdRoom implements Room
 						sky.rawDoors()[d]=thatSky;
 						Exit xo=rawExits()[d];
 						if((xo==null)||(xo.hasADoor())) xo=dnE;
-						sky.rawExits()[d]=dnE;
+						sky.setExit(d,dnE);
 						thatSky.rawDoors()[Directions.getOpDirectionCode(d)]=sky;
 						xo=thatRoom.rawExits()[Directions.getOpDirectionCode(d)];
 						if((xo==null)||(xo.hasADoor())) xo=dnE;
-						thatSky.rawExits()[Directions.getOpDirectionCode(d)]=xo;
+						thatSky.setExit(Directions.getOpDirectionCode(d),xo);
 						((GridLocale)thatSky).clearGrid(null);
 					}
 				}
@@ -381,9 +399,9 @@ public class StdRoom implements Room
 		{
 			((GridLocale)skyGridRoom).clearGrid(null);
 			rawDoors()[Directions.UP]=null;
-			rawExits()[Directions.UP]=null;
+			setExit(Directions.UP,null);
             skyGridRoom.rawDoors()[Directions.DOWN]=null;
-            skyGridRoom.rawExits()[Directions.DOWN]=null;
+            skyGridRoom.setExit(Directions.DOWN,null);
             skyGridRoom.destroy();
 			skyedYet=false;
 		}
@@ -1425,9 +1443,7 @@ public class StdRoom implements Room
 	                if(roomDir.rawDoors()[d2]==this)
 	                {
 	                	roomDir.rawDoors()[d2]=null;
-	                	if(roomDir.rawExits()[d2]!=null)
-	                	    roomDir.rawExits()[d2].destroy();
-	                	roomDir.rawExits()[d2]=null;
+	                	roomDir.setExit(d2,null);
 	                }
 			}
 		}
@@ -1436,7 +1452,8 @@ public class StdRoom implements Room
         setArea(null); // this actually deletes the room from the cache map
         baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
         envStats=baseEnvStats;
-        destroyExits();
+        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+            setExit(d,null);
         exits=new Exit[Directions.NUM_DIRECTIONS];
         doors=new Room[Directions.NUM_DIRECTIONS];
         affects=null;

@@ -81,7 +81,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 					if((R2!=null)&&(isCleanRoom(R,R2)))
 					{
 						R.rawDoors()[d]=null;
-						R.rawExits()[d]=null;
+						R.setExit(d,null);
 						updateExits=true;
 						CMLib.map().obliterateRoom(R2);
 					}
@@ -136,9 +136,9 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 							R2.addNonUninvokableEffect((Ability)newTitle);
 						}
 						R.rawDoors()[d]=R2;
-						R.rawExits()[d]=CMClass.getExit("Open");
+						R.setExit(d,CMClass.getExit("Open"));
 						R2.rawDoors()[Directions.getOpDirectionCode(d)]=R;
-						R2.rawExits()[Directions.getOpDirectionCode(d)]=CMClass.getExit("Open");
+						R2.setExit(Directions.getOpDirectionCode(d),CMClass.getExit("Open"));
 						updateExits=true;
 						if(CMSecurity.isDebugging("PROPERTY"))
                             Log.debugOut("Lots4Sale",R2.roomID()+" created and put up for sale.");

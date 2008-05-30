@@ -96,7 +96,7 @@ public class EndlessThinSky extends StdThinGrid
 		&&(rawExits()[Directions.UP]!=null))
 		{
 		    R.rawDoors()[Directions.UP]=null;
-		    R.rawExits()[Directions.UP]=null;
+		    R.setExit(Directions.UP,null);
 			linkRoom(R,rawDoors()[Directions.UP],Directions.UP,rawExits()[Directions.UP],rawExits()[Directions.UP]);
 		}
 		else
@@ -128,7 +128,7 @@ public class EndlessThinSky extends StdThinGrid
 	    &&(rawExits()[Directions.DOWN]!=null))
 		{
 		    R.rawDoors()[Directions.DOWN]=null;
-		    R.rawExits()[Directions.DOWN]=null;
+		    R.setExit(Directions.DOWN,null);
 			linkRoom(R,rawDoors()[Directions.DOWN],Directions.DOWN,rawExits()[Directions.DOWN],rawExits()[Directions.DOWN]);
 		}
 		else

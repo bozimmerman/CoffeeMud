@@ -211,7 +211,8 @@ public class Masonry extends CraftingSkill
 								{
 									if((R.rawDoors()[d]==null)
 									||(R.rawDoors()[d].roomID().length()>0))
-										R.rawExits()[d]=room.rawExits()[d];
+                                        if(room.rawExits()[d]!=null)
+                                            R.setExit(d, (Exit)room.rawExits()[d].copyOf());
 								}
 	
 								R.startItemRejuv();
@@ -252,9 +253,9 @@ public class Masonry extends CraftingSkill
 									R2.setDescription("You are swimming around under the water.");
 									R2.setArea(R.getArea());
 									R2.rawDoors()[Directions.UP]=R;
-									R2.rawExits()[Directions.UP]=CMClass.getExit("Open");
+									R2.setExit(Directions.UP,CMClass.getExit("Open"));
 									R.rawDoors()[Directions.DOWN]=R2;
-									R.rawExits()[Directions.DOWN]=CMClass.getExit("Open");
+									R.setExit(Directions.DOWN,CMClass.getExit("Open"));
 									LandTitle title=CMLib.law().getLandTitle(R);
 									if((title!=null)&&(CMLib.law().getLandTitle(R2)==null))
 									{
@@ -292,10 +293,10 @@ public class Masonry extends CraftingSkill
 								x2.setDescription("A portcullis lies this way.");
 								x2.setExitParams("portcullis","lower","raise","A portcullis blocks your way.");
 								x2.setDoorsNLocks(true,false,true,false,false,false);
-								room.rawExits()[dir]=x;
+								room.setExit(dir,x);
 								if(room.rawDoors()[dir]!=null)
 								{
-									room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=x2;
+									room.rawDoors()[dir].setExit(Directions.getOpDirectionCode(dir),x2);
 									CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
 								}
 								CMLib.database().DBUpdateExits(room);
@@ -313,10 +314,10 @@ public class Masonry extends CraftingSkill
 								x.setDescription("A majestic archway towers above you.");
 								x2.setName("an archway");
 								x2.setDescription("A majestic archway towers above you.");
-								room.rawExits()[dir]=x;
+                                room.setExit(dir,x);
 								if(room.rawDoors()[dir]!=null)
 								{
-									room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=x2;
+                                    room.rawDoors()[dir].setExit(Directions.getOpDirectionCode(dir),x2);
 									CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
 								}
 								CMLib.database().DBUpdateExits(room);
@@ -328,10 +329,10 @@ public class Masonry extends CraftingSkill
 							synchronized(("SYNC"+room.roomID()).intern())
 							{
 								room=CMLib.map().getRoom(room);
-								room.rawExits()[dir]=null;
+								room.setExit(dir,null);
 								if(room.rawDoors()[dir]!=null)
 								{
-									room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=null;
+                                    room.rawDoors()[dir].setExit(Directions.getOpDirectionCode(dir),null);
 									CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
 								}
 								CMLib.database().DBUpdateExits(room);
@@ -390,7 +391,7 @@ public class Masonry extends CraftingSkill
 									if((!E.isGeneric())&&(room.rawExits()[workingOn]==E))
 									{
 										E=generify(E);
-										room.rawExits()[workingOn]=E;
+										room.setExit(workingOn,E);
 									}
 									Ability A=CMClass.getAbility("Prop_Crawlspace");
 									if(A!=null) E.addNonUninvokableEffect(A);
@@ -410,7 +411,7 @@ public class Masonry extends CraftingSkill
 									if((!E.isGeneric())&&(room.rawExits()[workingOn]==E))
 									{
 										E=generify(E);
-										room.rawExits()[workingOn]=E;
+										room.setExit(workingOn,E);
 									}
 									Room R2=room.getRoomInDir(workingOn);
 									if(R2!=null)
@@ -440,11 +441,11 @@ public class Masonry extends CraftingSkill
 									if(R2.rawDoors()[Directions.UP]==room)
 									{
 										R2.rawDoors()[Directions.UP]=null;
-										R2.rawExits()[Directions.UP]=null;
+										R2.setExit(Directions.UP,null);
 									}
 									CMLib.map().obliterateRoom(R2);
 									room.rawDoors()[Directions.DOWN]=null;
-									room.rawExits()[Directions.DOWN]=null;
+									room.setExit(Directions.DOWN,null);
 								}
 								Room R=CMClass.getLocale("Plains");
 								R.setRoomID(room.roomID());
@@ -482,7 +483,8 @@ public class Masonry extends CraftingSkill
 								for(int d=0;d<R.rawDoors().length;d++)
 									R.rawDoors()[d]=room.rawDoors()[d];
 								for(int d=0;d<R.rawExits().length;d++)
-									R.rawExits()[d]=room.rawExits()[d];
+                                    if(room.rawExits()[d]!=null)
+                                        R.setExit(d, (Exit)room.rawExits()[d].copyOf());
 								R.startItemRejuv();
 								try
 								{
@@ -505,10 +507,10 @@ public class Masonry extends CraftingSkill
 							}
 							else
 							{
-								room.rawExits()[dir]=CMClass.getExit("Open");
+								room.setExit(dir,CMClass.getExit("Open"));
 								if(room.rawDoors()[dir]!=null)
 								{
-									room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=CMClass.getExit("Open");
+									room.rawDoors()[dir].setExit(Directions.getOpDirectionCode(dir),CMClass.getExit("Open"));
 									CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
 								}
 								CMLib.database().DBUpdateExits(room);

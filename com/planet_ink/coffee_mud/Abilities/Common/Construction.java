@@ -203,7 +203,7 @@ public class Construction extends CraftingSkill
 								{
 									if((R.rawDoors()[d]==null)
 									||(R.rawDoors()[d].roomID().length()>0))
-										R.rawExits()[d]=room.rawExits()[d];
+									    R.setExit(d,room);
 								}
 								R.clearSky();
 								R.startItemRejuv();
@@ -255,10 +255,10 @@ public class Construction extends CraftingSkill
 							synchronized(("SYNC"+room.roomID()).intern())
 							{
 								room=CMLib.map().getRoom(room);
-								room.rawExits()[dir]=null;
+								room.setExit(dir,null);
 								if(room.rawDoors()[dir]!=null)
 								{
-									room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=null;
+								    room.rawDoors()[dir].setExit(Directions.getOpDirectionCode(dir),null);
 									CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
 								}
 								CMLib.database().DBUpdateExits(room);
@@ -286,7 +286,7 @@ public class Construction extends CraftingSkill
 									if((!E.isGeneric())&&(room.rawExits()[workingOn]==E))
 									{
 										E=generify(E);
-										room.rawExits()[workingOn]=E;
+										room.setExit(workingOn,E);
 									}
 									E.setDescription(designDescription);
 									CMLib.database().DBUpdateExits(room);
@@ -310,7 +310,7 @@ public class Construction extends CraftingSkill
 									if((!E.isGeneric())&&(room.rawExits()[workingOn]==E))
 									{
 										E=generify(E);
-										room.rawExits()[workingOn]=E;
+										room.setExit(workingOn,E);
 									}
 									Ability A=CMClass.getAbility("Prop_Crawlspace");
 									if(A!=null) E.addNonUninvokableEffect(A);
@@ -330,7 +330,7 @@ public class Construction extends CraftingSkill
 									if((!E.isGeneric())&&(room.rawExits()[workingOn]==E))
 									{
 										E=generify(E);
-										room.rawExits()[workingOn]=E;
+                                        room.setExit(workingOn,E);
 									}
 									Room R2=room.getRoomInDir(workingOn);
 									if(R2!=null)
@@ -360,11 +360,11 @@ public class Construction extends CraftingSkill
 								X.setExitParams("gate","close","open","a closed gate");
 								X.setDoorsNLocks(true,false,true,false,false,false);
 								X.text();
-								room.rawExits()[dir]=X;
+                                room.setExit(dir,X);
 								if(room.rawDoors()[dir]!=null)
 								{
 									Exit X2=(Exit)X.copyOf();
-									room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=X2;
+									room.rawDoors()[dir].setExit(Directions.getOpDirectionCode(dir),X2);
 									CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
 								}
 								CMLib.database().DBUpdateExits(room);
@@ -388,7 +388,7 @@ public class Construction extends CraftingSkill
 								X.setDoorsNLocks(true,false,true,false,false,false);
 								X.recoverEnvStats();
 								X.text();
-								room.rawExits()[dir]=X;
+								room.setExit(dir,X);
 								if(room.rawDoors()[dir]!=null)
 								{
 									Exit X2=(Exit)X.copyOf();
@@ -396,7 +396,7 @@ public class Construction extends CraftingSkill
 										X2.baseEnvStats().setDisposition(EnvStats.IS_HIDDEN);
 									X2.recoverEnvStats();
 									X2.text();
-									room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=X2;
+									room.rawDoors()[dir].setExit(Directions.getOpDirectionCode(dir),X2);
 									CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
 								}
 								CMLib.database().DBUpdateExits(room);
@@ -447,7 +447,7 @@ public class Construction extends CraftingSkill
 									for(int d=0;d<R.rawDoors().length;d++)
 										R.rawDoors()[d]=room.rawDoors()[d];
 									for(int d=0;d<R.rawExits().length;d++)
-										R.rawExits()[d]=room.rawExits()[d];
+									    R.setExit(d,room);
 									R.startItemRejuv();
 									try
 									{
@@ -470,10 +470,10 @@ public class Construction extends CraftingSkill
 								}
 								else
 								{
-									room.rawExits()[dir]=CMClass.getExit("Open");
+									room.setExit(dir,CMClass.getExit("Open"));
 									if(room.rawDoors()[dir]!=null)
 									{
-										room.rawDoors()[dir].rawExits()[Directions.getOpDirectionCode(dir)]=CMClass.getExit("Open");
+										room.rawDoors()[dir].setExit(Directions.getOpDirectionCode(dir),CMClass.getExit("Open"));
 										CMLib.database().DBUpdateExits(room.rawDoors()[dir]);
 									}
 									CMLib.database().DBUpdateExits(room);

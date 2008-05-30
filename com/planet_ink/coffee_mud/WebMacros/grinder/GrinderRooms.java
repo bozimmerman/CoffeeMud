@@ -102,7 +102,7 @@ public class GrinderRooms
 				{
 				    Exit E=oldR.rawExits()[d];
 				    if(E!=null)
-				        R.rawExits()[d]=(Exit)E.copyOf();
+				        R.setExit(d,(Exit)E.copyOf());
 				}
 				redoAllMyDamnRooms=true;
                 if(R.image().equalsIgnoreCase(CMProps.getDefaultMXPImage(oldR)))
@@ -354,7 +354,7 @@ public class GrinderRooms
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
 				newRoom.rawDoors()[d]=null;
-				newRoom.rawExits()[d]=null;
+				newRoom.setExit(d,null);
 			}
 		}
 		else
@@ -368,7 +368,7 @@ public class GrinderRooms
 		if(linkTo!=null)
 		{
 			newRoom.rawDoors()[Directions.getOpDirectionCode(dir)]=linkTo;
-			newRoom.rawExits()[Directions.getOpDirectionCode(dir)]=CMClass.getExit("StdOpenDoorway");
+			newRoom.setExit(Directions.getOpDirectionCode(dir),CMClass.getExit("StdOpenDoorway"));
 		}
 		CMLib.database().DBCreateRoom(newRoom,CMClass.classID(newRoom));
 		CMLib.database().DBUpdateExits(newRoom);
@@ -388,7 +388,7 @@ public class GrinderRooms
 		Room newRoom=createLonelyRoom(R.getArea(),R,dir,copyThisOne);
 		R.rawDoors()[dir]=newRoom;
 		if(R.rawExits()[dir]==null)
-			R.rawExits()[dir]=CMClass.getExit("StdOpenDoorway");
+			R.setExit(dir,CMClass.getExit("StdOpenDoorway"));
 		CMLib.database().DBUpdateExits(R);
 		R.getArea().fillInAreaRoom(R);
 		return "";
@@ -436,7 +436,7 @@ public class GrinderRooms
 						{
 							R2.rawDoors()[opD]=R;
 							if(R2.rawExits()[opD]==null)
-								R2.rawExits()[opD]=CMClass.getExit("StdOpenDoorway");
+								R2.setExit(opD,CMClass.getExit("StdOpenDoorway"));
 							if(deferredExitSaves!=null)
 							{
 								if(!deferredExitSaves.contains(R2.roomID()))
@@ -449,7 +449,7 @@ public class GrinderRooms
 						{
 							R.rawDoors()[d]=R2;
 							if(R.rawExits()[d]==null)
-								R.rawExits()[d]=CMClass.getExit("StdOpenDoorway");
+								R.setExit(d,CMClass.getExit("StdOpenDoorway"));
 							resaveMyExits=true;
 						}
 					}

@@ -419,7 +419,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		{
 			if(ox==null) ox=CMClass.getExit("Open");
 			linkFrom.rawDoors()[EX.dir]=linkTo;
-			linkFrom.rawExits()[EX.dir]=ox;
+			linkFrom.setExit(EX.dir,ox);
 		}
 	}
 	
@@ -578,7 +578,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		}
 		if(o==null) o=CMClass.getExit("Open");
 		room.rawDoors()[dirCode]=alternativeLink(room,loc,dirCode);
-		room.rawExits()[dirCode]=o;
+		room.setExit(dirCode,o);
 	}
 
 	protected void linkRoom(Room room, Room loc, int dirCode, Exit o, Exit ao)
@@ -596,7 +596,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		}
 		if(o==null) o=CMClass.getExit("Open");
 		room.rawDoors()[dirCode]=alternativeLink(room,loc,dirCode);
-		room.rawExits()[dirCode]=o;
+		room.setExit(dirCode,o);
 		if(loc.rawDoors()[opCode]!=null)
 		{
 			if(loc.rawDoors()[opCode].getGridParent()==null)
@@ -607,7 +607,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		}
 		if(ao==null) ao=CMClass.getExit("Open");
 		loc.rawDoors()[opCode]=alternativeLink(loc,room,opCode);
-		loc.rawExits()[opCode]=ao;
+		loc.setExit(opCode,ao);
 	}
 
 	public void buildGrid()
@@ -726,7 +726,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
                         if(R2.rawDoors()[d]==R)
                         {
                             R2.rawDoors()[d]=null;
-                            R2.rawExits()[d]=null;
+                            R2.setExit(d,null);
                         }
                 }
 			}

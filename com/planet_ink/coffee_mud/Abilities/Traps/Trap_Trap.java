@@ -230,17 +230,17 @@ public class Trap_Trap extends StdAbility implements Trap
 				myPit.baseEnvStats().setDisposition(myPit.baseEnvStats().disposition()|EnvStats.IS_DARK);
 				myPit.setDisplayText("Inside a dark pit");
 				myPit.setDescription("The walls here are slick and tall.  You can barely see the closed trap door well above you.");
-				myPit.rawExits()[Directions.UP]=CMClass.getExit("StdOpenDoorway");
+				myPit.setExit(Directions.UP,CMClass.getExit("StdOpenDoorway"));
 				myPit.rawDoors()[Directions.UP]=myPitUp;
 				myPitUp.recoverEnvStats();
 
 			}
-			myPitUp.rawExits()[Directions.UP]=CMClass.getExit("StdClosedDoorway");
+			myPitUp.setExit(Directions.UP,CMClass.getExit("StdClosedDoorway"));
 			myPitUp.rawDoors()[Directions.UP]=mob.location();
 			if((mob.location().getRoomInDir(Directions.DOWN)==null)
 			&&(mob.location().getExitInDir(Directions.DOWN)==null))
 			{
-				mob.location().rawExits()[Directions.DOWN]=CMClass.getExit("StdClosedDoorway");
+				mob.location().setExit(Directions.DOWN,CMClass.getExit("StdClosedDoorway"));
 				mob.location().rawDoors()[Directions.DOWN]=myPitUp;
 			}
 			myPit.bringMobHere(mob,false);
@@ -314,7 +314,7 @@ public class Trap_Trap extends StdAbility implements Trap
 			if((R!=null)&&(R.getRoomInDir(Directions.DOWN)==myPitUp))
 			{
 				R.rawDoors()[Directions.DOWN]=null;
-				R.rawExits()[Directions.DOWN]=null;
+				R.setExit(Directions.DOWN,null);
 			}
 			/**
 			don't do this, cuz someone might still be down there.

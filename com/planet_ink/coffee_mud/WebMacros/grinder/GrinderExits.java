@@ -66,7 +66,7 @@ public class GrinderExits
 			if((newClassID!=null)&&(!CMClass.classID(E).equals(newClassID)))
 			{
 				E=CMClass.getExit(newClassID);
-				R.rawExits()[dir]=E;
+				R.setExit(dir,E);
 			}
 			
 			for(int o=0;o<okparms.length;o++)
@@ -186,7 +186,7 @@ public class GrinderExits
 					Exit oldE2=E2;
 					E2=(Exit)E.copyOf();
 					E2.setDisplayText(oldE2.displayText());
-					R2.rawExits()[Directions.getOpDirectionCode(dir)]=E2;
+					R2.setExit(Directions.getOpDirectionCode(dir),E2);
 					CMLib.database().DBUpdateExits(R2);
 					R.getArea().fillInAreaRoom(R2);
 				}
@@ -201,7 +201,7 @@ public class GrinderExits
 		{
 			R=CMLib.map().getRoom(R);
 			R.rawDoors()[dir]=null;
-			R.rawExits()[dir]=null;
+			R.setExit(dir,null);
 			CMLib.database().DBUpdateExits(R);
 			if(R instanceof GridLocale)
 				((GridLocale)R).buildGrid();
@@ -221,7 +221,7 @@ public class GrinderExits
 			if(R.rawDoors()[dir]==null) R.rawDoors()[dir]=R2;
 				
 			if(R.rawExits()[dir]==null)
-				R.rawExits()[dir]=CMClass.getExit("StdOpenDoorway");
+				R.setExit(dir,CMClass.getExit("StdOpenDoorway"));
 			
 			CMLib.database().DBUpdateExits(R);
 				
@@ -235,7 +235,7 @@ public class GrinderExits
 				((GridLocale)R2).clearGrid(null);
 			if(R2.rawDoors()[dir2]==null) R2.rawDoors()[dir2]=R;
 			if(R2.rawExits()[dir2]==null)
-				R2.rawExits()[dir2]=CMClass.getExit("StdOpenDoorway");
+                R2.setExit(dir2,CMClass.getExit("StdOpenDoorway"));
 			R.getArea().fillInAreaRoom(R2);
 			CMLib.database().DBUpdateExits(R2);
 		}

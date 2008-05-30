@@ -79,7 +79,7 @@ public class Chant_PlantMaze extends Chant
 		if((canBeUninvoked())&&(room instanceof GridLocale)&&(oldRoom!=null))
 			((GridLocale)room).clearGrid(oldRoom);
         for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-            room.rawExits()[d]=null;
+            room.setExit(d,null);
         super.unInvoke();
         room.destroy();
 	}
@@ -159,7 +159,7 @@ public class Chant_PlantMaze extends Chant
 					if((R!=null)&&(R.roomID().length()>0))
 					{
 						newRoom.rawDoors()[d]=R;
-						newRoom.rawExits()[d]=E;
+						newRoom.setExit(d,E);
 					}
 				}
 				newRoom.getArea().fillInAreaRoom(newRoom);

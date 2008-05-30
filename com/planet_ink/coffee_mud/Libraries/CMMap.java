@@ -253,7 +253,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			if(thisExit==null)
 			{
 				thisExit=CMClass.getExit("StdOpenDoorway");
-				from.rawExits()[direction]=thisExit;
+				from.setExit(direction,thisExit);
 			}
 			CMLib.database().DBUpdateExits(from);
 		}
@@ -263,7 +263,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			if(room.rawDoors()[Directions.getOpDirectionCode(direction)]==null)
 			{
 				room.rawDoors()[Directions.getOpDirectionCode(direction)]=from;
-				room.rawExits()[Directions.getOpDirectionCode(direction)]=thisExit;
+				room.setExit(Directions.getOpDirectionCode(direction),thisExit);
 				CMLib.database().DBUpdateExits(room);
 			}
 		}

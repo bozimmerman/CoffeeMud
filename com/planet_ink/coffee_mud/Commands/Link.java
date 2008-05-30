@@ -130,7 +130,7 @@ public class Link extends At
 		if(thisExit==null)
 		{
 			thisExit=CMClass.getExit("StdOpenDoorway");
-			mob.location().rawExits()[direction]=thisExit;
+			mob.location().setExit(direction,thisExit);
 		}
 		if(thereGL!=null)
 		{
@@ -175,7 +175,7 @@ public class Link extends At
 				}
 				else
 					room.rawDoors()[opDir]=mob.location();
-				room.rawExits()[opDir]=thisExit;
+				room.setExit(opDir,thisExit);
 			}
 		}
 		else
@@ -197,7 +197,7 @@ public class Link extends At
 			}
 			else
 				room.rawDoors()[opDir]=mob.location();
-			room.rawExits()[opDir]=thisExit;
+			room.setExit(opDir,thisExit);
 		}
 		if(hereGL!=null)
 			CMLib.database().DBUpdateExits(hereGL);

@@ -605,7 +605,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 			if(airLockRoom.rawDoors()[airLockDir]==null)
 				airLockRoom.rawDoors()[airLockDir]=R;
 			if(airLockRoom.rawExits()[airLockDir]==null)
-				airLockRoom.rawExits()[airLockDir]=CMClass.getExit("GenAirLock");
+				airLockRoom.setExit(airLockDir,CMClass.getExit("GenAirLock"));
 			Item portal=CMClass.getMiscTech("GenSSPortal");
 			portal.setName(Name());
 			portal.setDisplayText(Name());

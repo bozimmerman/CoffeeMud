@@ -264,7 +264,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		}
 		if(o==null) o=CMClass.getExit("Open");
 		room.rawDoors()[dirCode]=alternativeLink(room,loc,dirCode);
-		room.rawExits()[dirCode]=o;
+		room.setExit(dirCode,o);
 	}
 
 	protected Room alternativeLink(Room room, Room defaultRoom, int dir)
@@ -310,7 +310,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		}
 		if(o==null) o=CMClass.getExit("Open");
 		room.rawDoors()[dirCode]=alternativeLink(room,loc,dirCode);
-		room.rawExits()[dirCode]=o;
+		room.setExit(dirCode,o);
 		if(loc.rawDoors()[opCode]!=null)
 		{
 			if(loc.rawDoors()[opCode].getGridParent()==null)
@@ -321,7 +321,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		}
 		if(ao==null) ao=CMClass.getExit("Open");
 		loc.rawDoors()[opCode]=alternativeLink(loc,room,opCode);
-		loc.rawExits()[opCode]=ao;
+		loc.setExit(opCode,ao);
 	}
 
     protected int[] initCenterRoomXY(int dirCode)
@@ -514,7 +514,7 @@ public class StdGrid extends StdRoom implements GridLocale
 			{
 				if(ox==null) ox=CMClass.getExit("Open");
 				linkFrom.rawDoors()[EX.dir]=linkTo;
-				linkFrom.rawExits()[EX.dir]=ox;
+				linkFrom.setExit(EX.dir,ox);
 			}
 		}
 	}

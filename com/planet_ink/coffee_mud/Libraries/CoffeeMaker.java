@@ -658,7 +658,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 						if((!CE.out)&&(link!=null)&&(!(link instanceof GridLocale)))
 						{
 						    link.rawDoors()[CE.dir]=newRoom;
-						    link.rawExits()[CE.dir]=CMClass.getExit("Open");
+						    link.setExit(CE.dir,CMClass.getExit("Open"));
 							CMLib.database().DBUpdateExits(link);
 						}
 					}
@@ -676,7 +676,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					exit=CMClass.getExit(CMLib.xml().getValFromPieces(xxV,"EXID"));
 					if(exit==null) return unpackErr("Room","null 'exit' in room "+newRoom.roomID());
 					exit.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xxV,"EXDAT")));
-					newRoom.rawExits()[dir]=exit;
+					newRoom.setExit(dir,exit);
 				}
 				else
 					exit=CMClass.getExit("GenExit");
@@ -688,7 +688,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 						newRoom.rawDoors()[dir]=link;
 					else
 					{
-						newRoom.rawExits()[dir]=exit; // get will get the fake one too!
+						newRoom.setExit(dir,exit); // get will get the fake one too!
 						exit.setTemporaryDoorLink(doorID);
 					}
 				}

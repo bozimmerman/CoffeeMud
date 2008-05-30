@@ -64,6 +64,15 @@ public class ThinRoom implements Room {
 	public boolean getMobility(){return true;}
 	private boolean recurse=false;
 	public boolean isHere(Environmental E){return false;}
+	public void setExit(int direction, Environmental E){
+	    if(E instanceof Room)
+	        exits[direction]=((Room)E).rawExits()[direction];
+	    else
+	    if(E instanceof Exit)
+            exits[direction]=(Exit)E;
+	    else
+	        exits[direction]=null;
+	}
 	
 	public Room prepareRoomInDir(Room R, int direction)
 	{

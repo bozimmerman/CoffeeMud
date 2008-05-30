@@ -304,7 +304,7 @@ public class RoomLoader
                             if((!CE.out)&&(!(newRoom instanceof GridLocale)))
                             {
                                 newRoom.rawDoors()[CE.dir]=thisRoom;
-                                newRoom.rawExits()[CE.dir]=CMClass.getExit("Open");
+                                newRoom.setExit(CE.dir,CMClass.getExit("Open"));
                             }
                         }
                     }
@@ -317,7 +317,7 @@ public class RoomLoader
                         else
                         {
                             thisRoom.rawDoors()[direction]=newRoom;
-                            thisRoom.rawExits()[direction]=newExit;
+                            thisRoom.setExit(direction,newExit);
                         }
                     }
                 }

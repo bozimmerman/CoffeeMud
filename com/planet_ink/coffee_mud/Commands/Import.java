@@ -4994,7 +4994,7 @@ public class Import extends StdCommand
 						}
 						E.setExitParams(name,E.closeWord(),E.openWord(),E.Name()+", closed");
 						E.setDescription(descStr);
-						R.rawExits()[dirCode]=E;
+						R.setExit(dirCode,E);
 						Exit opExit=null;
 						if(((linkRoom==null)||(linkRoom.getArea().Name()!=R.getArea().Name()))&&(linkRoomID>=0))
 						{
@@ -5602,7 +5602,7 @@ public class Import extends StdCommand
 				{
 					Exit E2=CMClass.getExit("OpenDescriptable");
 					E2.setMiscText(E.displayText());
-					saveRoom.rawExits()[d]=E2;
+					saveRoom.setExit(d,E2);
 				}
 			}
 			CMLib.threads().clearDebri(saveRoom,0);
