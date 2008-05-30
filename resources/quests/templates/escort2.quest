@@ -179,11 +179,11 @@ set area $ANNOUNCER_AREA
 set room $ANNOUNCER_ROOM
 set mobgroup
 set mob $ANNOUNCER_NAME
-give behavior Scriptable LOAD=$QUEST_ID_announcer.script
+give script LOAD=$QUEST_ID_announcer.script
 import mobs $QUEST_ID_escorted.xml
 load mobgroup any
 set mob
-give behavior Scriptable LOAD=$QUEST_ID_escorted.script
+give script LOAD=$QUEST_ID_escorted.script
 
 set duration $DURATION
 

@@ -166,7 +166,7 @@ set area $ANNOUNCER_AREA
 set room $ANNOUNCER_ROOM
 set mobgroup
 set mob $ANNOUNCER_NAME
-give behavior Scriptable LOAD=$QUEST_ID_announcer.script
+give script LOAD=$QUEST_ID_announcer.script
 
 set area $KILLABLES_AREA
 set roomgroup $KILLABLES_ROOMS
@@ -176,7 +176,7 @@ set room
 import mobs $QUEST_ID_mobs.xml
 load mobgroup $KILLABLES_CREATED any
 set mob
-give behavior Scriptable LOAD=$QUEST_ID_killable.script
+give script LOAD=$QUEST_ID_killable.script
 
 set duration $DURATION
 

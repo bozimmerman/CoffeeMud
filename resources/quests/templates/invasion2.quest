@@ -188,14 +188,14 @@ set area $ANNOUNCER_AREA
 set room $ANNOUNCER_ROOM
 set mobgroup
 set mob $ANNOUNCER_NAME
-give behavior Scriptable LOAD=$QUEST_ID_announcer.script
+give script LOAD=$QUEST_ID_announcer.script
 
 set area $INVADER_AREA
 set room $INVADER_ROOM
 set mob
 set mobgroup $INVADER_NAMES
 set mob
-give behavior Scriptable LOAD=$QUEST_ID_invader.script
+give script LOAD=$QUEST_ID_invader.script
 give behavior Mobile min=1 max=10 chance=99
 
 set duration $DURATION

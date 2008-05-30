@@ -184,7 +184,7 @@ set area $ANNOUNCER_AREA
 set room $ANNOUNCER_ROOM
 set mobgroup
 set mob $ANNOUNCER_NAME
-give behavior Scriptable LOAD=$QUEST_ID_announcer.script
+give script LOAD=$QUEST_ID_announcer.script
 give stat charisma 100
 
 set area $CAPTURABLES_AREA
@@ -193,7 +193,7 @@ set room
 set mobgroup
 set mobgroup $CAPTURABLES_NAMES
 set mob
-give behavior Scriptable LOAD=$QUEST_ID_capturable.script
+give script LOAD=$QUEST_ID_capturable.script
 
 set duration $DURATION
 

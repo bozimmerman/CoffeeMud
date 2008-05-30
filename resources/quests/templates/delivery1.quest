@@ -158,7 +158,7 @@ set area $DELIVERER_AREA
 set room $DELIVERER_ROOM
 set mobgroup
 set mob $DELIVERER_NAME
-give behavior Scriptable LOAD=$QUEST_ID_deliverer.script
+give script LOAD=$QUEST_ID_deliverer.script
 load item any
 give item
 set item ITEM
@@ -168,7 +168,7 @@ set area $DELIVEREE_AREA
 set room $DELIVEREE_ROOM
 set mobgroup
 set mob $DELIVEREE_NAME
-give behavior Scriptable LOAD=$QUEST_ID_deliveree.script
+give script LOAD=$QUEST_ID_deliveree.script
 
 set duration $DURATION
 

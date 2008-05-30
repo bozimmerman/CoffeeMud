@@ -2594,6 +2594,69 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }
                     }
                     else
+                    if(cmd.equals("SCRIPT"))
+                    {
+                        if(q.envObject==null)
+                        {
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give script, no mob set.");
+                            break;
+                        }
+                        boolean proceed=true;
+                        boolean savable=false;
+                        String word=null;
+                        String scope=CMStrings.replaceAll(name()," ","_").toUpperCase().trim();
+                        while(proceed&&(p.size()>2))
+                        {
+                            word=(String)p.elementAt(2);
+                            proceed=false;
+                            if(word.equalsIgnoreCase("SAVABLE"))
+                            {
+                                savable=true;
+                                proceed=true;
+                            }
+                            else
+                            if(word.equalsIgnoreCase("GLOBAL"))
+                            {
+                                scope="";
+                                proceed=true;
+                            }
+                            else
+                            if(word.equalsIgnoreCase("INDIVIDUAL"))
+                            {
+                                scope="*";
+                                proceed=true;
+                            }
+                            if(proceed) p.removeElementAt(2);
+                        }
+                        if(p.size()<3)
+                        {
+                            errorOccurred(q,isQuiet,"Quest '"+name()+"', cannot give script, script not given.");
+                            break;
+                        }
+                        String val=CMParms.combineWithQuotes(p,3);
+                        Vector toSet=new Vector();
+                        if(q.envObject instanceof Vector)
+                            toSet=(Vector)q.envObject;
+                        else
+                        if((q.envObject!=null)&&(q.envObject instanceof MOB)) 
+                            toSet.addElement(q.envObject);
+                        for(int i=0;i<toSet.size();i++)
+                        {
+                            Environmental E2=(Environmental)toSet.elementAt(i);
+                            if(E2 instanceof MOB)
+                            {
+                                ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+                                S.setSavable(savable);
+                                S.registerDefaultQuest(name());
+                                S.setScopeValues(scope);
+                                S.setScript(val);
+                                ((MOB)E2).addScript(S);
+                                runtimeRegisterObject(E2);
+                                questState.addons.addElement(CMParms.makeVector(E2,S),new Integer(questState.preserveState));
+                            }
+                        }
+                    }
+                    else
                     if(cmd.equals("AFFECT"))
                     {
                         if(q.envObject==null)
@@ -2952,6 +3015,16 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     else
                     if(B!=null)
                         E.delBehavior(B);
+                }
+                else
+                if(O instanceof ScriptingEngine)
+                {
+                    ScriptingEngine S=(ScriptingEngine)O;
+                    if((E instanceof MOB)&&(!S.isSavable()))
+                    {
+                        S.endQuest(E,(MOB)E,name());
+                        ((MOB)E).delScript(S);
+                    }
                 }
                 else
                 if(O instanceof Ability)

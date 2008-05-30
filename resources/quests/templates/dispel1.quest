@@ -202,7 +202,7 @@ set area $ANNOUNCER_AREA
 set room $ANNOUNCER_ROOM
 set mobgroup
 set mob $ANNOUNCER_NAME
-give behavior Scriptable LOAD=$QUEST_ID_dispelannouncer.script
+give script LOAD=$QUEST_ID_dispelannouncer.script
 
 set area $DISPELEE_AREA
 set room $DISPELEE_ROOM

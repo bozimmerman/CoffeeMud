@@ -2768,7 +2768,8 @@ public class StdMOB implements MOB
             {
                 S=fetchScript(s);
                 tickStatus=Tickable.STATUS_SCRIPT+s;
-                if(B!=null) B.tick(ticking,tickID);
+                if(S!=null) 
+                    S.tick(ticking,tickID);
             }
             
             num=charStats().numClasses();

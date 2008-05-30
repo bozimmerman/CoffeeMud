@@ -266,7 +266,7 @@ set room $ANNOUNCER_ROOM
 set mobgroup
 set mob $ANNOUNCER_NAME
 take behavior MudChat
-give behavior Scriptable LOAD=$QUEST_ID_announcer.script~
+give script LOAD=$QUEST_ID_announcer.script~
 
 # Set up the victim
 set area $VICTIM_AREA
@@ -276,7 +276,7 @@ set mobgroup
 set mob $VICTIM_NAME
 set target mob
 give stat rejuv 999999
-give behavior Scriptable +ONCE_PROG\;IF EVAL('$VICTIM_DIES' == 'TRUE')\;MPDAMAGE $i 99999999 99999999 kill\;ENDIF\;~\;GREET_PROG 100\;if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)\;if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)\;sayto "$n" $VICTIM_GREETING\;ENDIF\;ENDIF\;~\;
+give script +ONCE_PROG\;IF EVAL('$VICTIM_DIES' == 'TRUE')\;MPDAMAGE $i 99999999 99999999 kill\;ENDIF\;~\;GREET_PROG 100\;if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)\;if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)\;sayto "$n" $VICTIM_GREETING\;ENDIF\;ENDIF\;~\;
 set wherehappened room
 set whenhappened -1?-10
 
