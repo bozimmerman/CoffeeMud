@@ -236,7 +236,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     	{
     		B=E.fetchBehavior(b);
     		if(B instanceof ScriptingEngine)
-    			((ScriptingEngine)B).registerDefaultQuest(this);
+    			((ScriptingEngine)B).registerDefaultQuest(this.name());
     	}
     }
     private Vector sortSelect(Environmental E, String str,

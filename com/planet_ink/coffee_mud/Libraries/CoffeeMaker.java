@@ -275,6 +275,28 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		return (CMLib.xml().convertXMLtoTag("ABLTYS",abilitystr.toString()));
 	}
 
+    public String getGenMobScripts(MOB M, boolean includeVars)
+    {
+        StringBuffer scriptstr=new StringBuffer("");
+        for(int b=0;b<M.numScripts();b++)
+        {
+            ScriptingEngine S=M.fetchScript(b);
+            if((S!=null)&&(S.isSavable()))
+            {
+                scriptstr.append("<SCRPT>");
+                scriptstr.append(CMLib.xml().convertXMLtoTag("SCRIPT",CMLib.xml().parseOutAngleBrackets(S.getScript())));
+                scriptstr.append(CMLib.xml().convertXMLtoTag("SQN",""+S.defaultQuestName()));
+                scriptstr.append(CMLib.xml().convertXMLtoTag("SSCOP",S.getVarScope()));
+                if((includeVars)&&(S.getVarScope().equals("*")))
+                    scriptstr.append(CMLib.xml().convertXMLtoTag("SSVAR",S.getScopeValues()));
+                scriptstr.append("</SCRPT>");
+            }
+        }
+        if(scriptstr.length()>0)
+            return (CMLib.xml().convertXMLtoTag("SCRPTS",scriptstr.toString()));
+        return "";
+    }
+
 	public String getGenMobInventory(MOB M)
 	{
 		StringBuffer itemstr=new StringBuffer("");
@@ -453,6 +475,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
             text.append(getFactionXML((MOB)E));
 			text.append(getGenMobInventory((MOB)E));
 			text.append(getGenMobAbilities((MOB)E));
+            text.append(getGenMobScripts((MOB)E,false));
 
 			if(E instanceof Banker)
 			{
@@ -1830,6 +1853,46 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		}
 	}
 
+    public void setGenMobScripts(MOB M, Vector buf, boolean restoreVars)
+    {
+        Vector V=CMLib.xml().getRealContentsFromPieces(buf,"SCRPTS");
+        if(V==null) return;
+        
+        for(int i=0;i<V.size();i++)
+        {
+            XMLLibrary.XMLpiece sblk=(XMLLibrary.XMLpiece)V.elementAt(i);
+            if((!sblk.tag.equalsIgnoreCase("SCRPT"))||(sblk.contents==null))
+            {
+                Log.errOut("CoffeeMaker","Error parsing 'SCRPT' of "+identifier(M,null)+".  Load aborted");
+                return;
+            }
+            ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+            S.setSavable(true);
+            String script=CMLib.xml().getValFromPieces(sblk.contents,"SCRIPT");
+            if(script==null)
+            {
+                Log.errOut("CoffeeMaker","Error parsing 'SCRIPT' of "+identifier(M,null)+".  Load aborted");
+                continue;
+            }
+            S.setScript(CMLib.xml().restoreAngleBrackets(script));
+            String sq=CMLib.xml().getValFromPieces(sblk.contents,"SQN");
+            if(sq.length()>0)
+                S.registerDefaultQuest(sq);
+            
+            String scope=CMLib.xml().getValFromPieces(sblk.contents,"SSCOP");
+            if(scope.length()>0)
+                S.setVarScope(scope);
+            
+            if(restoreVars)
+            {
+                String svars=CMLib.xml().getValFromPieces(sblk.contents,"SSVAR");
+                if((svars!=null)&&(svars.length()>0))
+                    S.setScopeValues(svars);
+            }
+            M.addScript(S);
+        }
+    }
+
 	public void setGenMobInventory(MOB M, Vector buf)
 	{
 		Vector V=CMLib.xml().getRealContentsFromPieces(buf,"INVEN");
@@ -2004,6 +2067,12 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				while(((Deity)E).numPowers()>0)
 					((Deity)E).delPower(((Deity)E).fetchPower(0));
 			}
+	        while(((MOB)E).numScripts()>0)
+	        {
+	            ScriptingEngine scrpt=((MOB)E).fetchScript(0);
+	            if(scrpt!=null)
+	                ((MOB)E).delScript(scrpt);
+	        }
 		}
 		while(E.numEffects()>0)
 		{
@@ -2020,6 +2089,13 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 
 		if(E instanceof MOB)
 		{
+	        while(((MOB)E).numScripts()>0)
+	        {
+	            ScriptingEngine scrpt=((MOB)E).fetchScript(0);
+	            if(scrpt!=null)
+	                ((MOB)E).delScript(scrpt);
+	        }
+	        
 			MOB mob=(MOB)E;
 			mob.baseCharStats().setStat(CharStats.STAT_GENDER,CMLib.xml().getValFromPieces(buf,"GENDER").charAt(0));
 			mob.setClanID(CMLib.xml().getValFromPieces(buf,"CLAN"));
@@ -2216,6 +2292,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			CMLib.beanCounter().setMoney(mob,CMLib.xml().getIntFromPieces(buf,"MONEY"));
 			setGenMobInventory((MOB)E,buf);
 			setGenMobAbilities((MOB)E,buf);
+            setGenMobScripts((MOB)E,buf,false);
             setFactionFromXML((MOB)E,buf);
 
 			if(E instanceof Banker)
@@ -2444,6 +2521,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 
 		str.append(getGenMobAbilities(mob));
 
+        str.append(getGenMobScripts(mob,true));
+        
 		str.append(getGenMobInventory(mob));
 
 		str.append(getFactionXML(mob));
@@ -2563,6 +2642,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 
 			setGenMobAbilities(mob,mblk.contents);
 
+            setGenMobScripts(mob,mblk.contents,true);
+            
 			setGenMobInventory(mob,mblk.contents);
 
 			setFactionFromXML(mob,mblk.contents);
@@ -2602,7 +2683,6 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 	{
 		StringBuffer text=new StringBuffer("");
 
-
         if(E instanceof Economics)
         {
             text.append(CMLib.xml().convertXMLtoTag("PREJFC",((Economics)E).prejudiceFactors()));
@@ -2623,6 +2703,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
         }
 
 		text.append(CMLib.xml().convertXMLtoTag("IMG",E.rawImage()));
+		
 		StringBuffer behaviorstr=new StringBuffer("");
 		for(int b=0;b<E.numBehaviors();b++)
 		{
@@ -2683,6 +2764,11 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		    MOB M=(MOB)E;
 		    for(int i=0;i<M.inventorySize();i++)
 		        fillFileSet(M.fetchInventory(i),H);
+		    for(int m=0;m<M.numScripts();m++)
+		    {
+		        ScriptingEngine S=M.fetchScript(m);
+		        if(S!=null) fillFileSet(S.externalFiles(),H);
+		    }
 		}
 		if(E instanceof ShopKeeper)
 		{
@@ -3078,6 +3164,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				}
 		case 20: return M.rawImage();
 		case 21: return M.getFactionListing();
+        case 22: return getGenMobScripts(M,false);
 		}
 		return "";
 	}
@@ -3168,6 +3255,16 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		    	}
 		    	break;
 		    }
+        case 22:
+        {
+            while(M.numScripts()>0)
+            {
+                ScriptingEngine S=M.fetchScript(0);
+                if(S!=null) M.delScript(S);
+            }
+            setGenMobScripts(M,CMLib.xml().parseAllXML(val),false);
+            break;
+        }
 		}
 	}
 

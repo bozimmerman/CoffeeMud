@@ -49,8 +49,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         return Tickable.STATUS_NOT;
     }
 
-    public void registerDefaultQuest(Quest Q){
-        engine().registerDefaultQuest(Q);
+    public void registerDefaultQuest(String questName){
+        engine().registerDefaultQuest(questName);
     }
     
     public boolean endQuest(Environmental hostObj, MOB mob, String quest)

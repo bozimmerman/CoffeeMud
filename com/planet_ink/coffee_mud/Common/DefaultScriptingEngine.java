@@ -61,12 +61,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
     protected Hashtable lastDayProgsDone=new Hashtable();
     protected HashSet registeredSpecialEvents=new HashSet();
     protected Hashtable noTrigger=new Hashtable();
-    protected Quest defaultQuest=null;
     protected MOB backupMOB=null;
     protected CMMsg lastMsg=null;
     protected Resources resources=Resources.instance();
     protected Environmental lastLoaded=null;
     protected String myScript="";
+    protected String defaultQuestName="";
 
     public DefaultScriptingEngine()
     {
@@ -77,7 +77,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
     public boolean isSavable(){ return isSavable;}
     public void setSavable(boolean truefalse){isSavable=truefalse;}
     
-    public String defaultQuestName(){ return defaultQuest!=null?defaultQuest.name():"";}
+    public String defaultQuestName(){ return defaultQuestName;}
+    
+    protected Quest defaultQuest() {
+        if(defaultQuestName.length()==0)
+            return null;
+        return CMLib.quests().fetchQuest(defaultQuestName);
+    }
     
     public void setVarScope(String newScope){
         if((newScope==null)||(newScope.trim().length()==0))
@@ -151,8 +157,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
     
     private Quest getQuest(String named)
     {
-        if((defaultQuest!=null)&&(named.equals("*")||named.equalsIgnoreCase(defaultQuest.name())))
-            return defaultQuest;
+        if((defaultQuestName.length()>0)&&(named.equals("*")||named.equalsIgnoreCase(defaultQuestName)))
+            return defaultQuest();
         
         Quest Q=null;
         for(int i=0;i<CMLib.quests().numQuests();i++)
@@ -174,8 +180,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return tickStatus;
     }
 
-    public void registerDefaultQuest(Quest Q){
-        defaultQuest=Q;
+    public void registerDefaultQuest(String qName){
+        if((qName==null)||(qName.trim().length()==0))
+            defaultQuestName="";
+        else
+            defaultQuestName=qName.trim();
     }
     
     public CMObject newInstance()

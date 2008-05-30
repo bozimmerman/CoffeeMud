@@ -66,7 +66,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
     
     public Vector externalFiles();
     
-    public void registerDefaultQuest(Quest Q);
+    public void registerDefaultQuest(String questName);
     
     public String defaultQuestName();
     

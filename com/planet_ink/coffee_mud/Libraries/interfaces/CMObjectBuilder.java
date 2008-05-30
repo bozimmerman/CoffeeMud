@@ -38,7 +38,7 @@ public interface CMObjectBuilder extends CMLibrary
             "WORNAND","BASEGOLD","ISREADABLE","ISDROPPABLE",
             "ISREMOVABLE","MATERIAL","AFFBEHAV",
             "DISPOSITION","WEIGHT","ARMOR",
-            "DAMAGE","ATTACK","READABLETEXT","IMG"};
+            "DAMAGE","ATTACK","READABLETEXT","IMG","SCRIPTS"};
     public final static String[] GENMOBCODES={
             "CLASS","RACE","LEVEL","ABILITY","NAME",
             "DISPLAY","DESCRIPTION","MONEY","ALIGNMENT",
@@ -55,6 +55,7 @@ public interface CMObjectBuilder extends CMLibrary
     public String getPropertiesStr(Environmental E, boolean fromTop);
     public String getOrdPropertiesStr(Environmental E);
     public String getGenMobAbilities(MOB M);
+    public String getGenMobScripts(MOB M, boolean includeVars);
     public String getGenMobInventory(MOB M);
     public String getGenPropertiesStr(Environmental E);
     public String unpackErr(String where, String msg);
@@ -88,6 +89,7 @@ public interface CMObjectBuilder extends CMLibrary
     public void setPropertiesStr(Environmental E, Vector V, boolean fromTop);
     public void setOrdPropertiesStr(Environmental E, Vector V);
     public void setGenMobAbilities(MOB M, Vector buf);
+    public void setGenMobScripts(MOB M, Vector buf, boolean restoreVars);
     public void setGenMobInventory(MOB M, Vector buf);
     public void populateShops(Environmental E, Vector buf);
     public void setGenPropertiesStr(Environmental E, Vector buf);

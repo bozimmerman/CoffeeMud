@@ -220,15 +220,31 @@ public class MOBloader
                 int proficiency=(int)DBConnections.getLongRes(R,"CMABPF");
                 if(proficiency==Integer.MIN_VALUE)
                 {
-                    Behavior newBehavior=CMClass.getBehavior(abilityID);
-                    if(newBehavior==null)
-                        Log.errOut("MOB","Couldn't find behavior '"+abilityID+"'");
+                    if(abilityID.equalsIgnoreCase("ScriptingEngine"))
+                    {
+                        if(CMClass.getCommon("DefaultScriptingEngine")==null)
+                            Log.errOut("MOB","Couldn't find scripting engine!");
+                        else
+                        {
+                            
+                            String xml=DBConnections.getRes(R,"CMABTX");
+                            if(xml.length()>0)
+                                CMLib.coffeeMaker().setGenMobScripts(mob,CMLib.xml().parseAllXML(xml),true);
+                        }
+                    }
                     else
                     {
-                        newBehavior.setParms(DBConnections.getRes(R,"CMABTX"));
-                        mob.addBehavior(newBehavior);
+                        Behavior newBehavior=CMClass.getBehavior(abilityID);
+                        if(newBehavior==null)
+                            Log.errOut("MOB","Couldn't find behavior '"+abilityID+"'");
+                        else
+                        {
+                            newBehavior.setParms(DBConnections.getRes(R,"CMABTX"));
+                            mob.addBehavior(newBehavior);
+                        }
                     }
-                }else
+                }
+                else
                 {
                     Ability newAbility=CMClass.getAbility(abilityID);
                     if(newAbility==null)
@@ -835,6 +851,15 @@ public class MOBloader
                 V.addElement(str);
             }
         }
+        String scriptStuff = CMLib.coffeeMaker().getGenMobScripts(mob,true);
+        if(scriptStuff.length()>0)
+        {
+            String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
+            +") values ('"+mob.Name()+"','ScriptingEngine',"+Integer.MIN_VALUE+",'"+scriptStuff+"'"
+            +")";
+            V.addElement(str);
+        }
+        
         for(int v=0;v<V.size();v++)
             DB.update((String)V.elementAt(v));
     }
