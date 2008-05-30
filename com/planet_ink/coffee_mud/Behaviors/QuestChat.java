@@ -35,9 +35,9 @@ public class QuestChat extends MudChat
 
 	public String ID(){return "QuestChat";}
 	private Hashtable alreadySaid=new Hashtable();
-	private Quest myQuest=null;
+	private String myQuestName=null;
 	
-    public void registerDefaultQuest(Quest Q){ myQuest=Q;}
+    public void registerDefaultQuest(String questName){ myQuestName=questName;}
     
     public void startBehavior(Environmental E)
     {
@@ -74,11 +74,15 @@ public class QuestChat extends MudChat
 						 if(super.match(speaker,expression,message,rest))
 						 {
 							 V.addElement(codeStr);
-							 if(myQuest!=null)
+							 if((myQuestName!=null)&&(myQuestName.length()>0))
 							 {
-								 String stat=myQuest.getStat("CHAT:"+speaker.Name().toUpperCase());
-								 if(stat.length()>0) stat+=" ";
-								 myQuest.setStat("CHAT:"+speaker.Name().toUpperCase(),stat+codeStr);
+							     Quest myQuest=CMLib.quests().fetchQuest(myQuestName);
+							     if(myQuest!=null)
+							     {
+    								 String stat=myQuest.getStat("CHAT:"+speaker.Name().toUpperCase());
+    								 if(stat.length()>0) stat+=" ";
+    								 myQuest.setStat("CHAT:"+speaker.Name().toUpperCase(),stat+codeStr);
+							     }
 							 }
 							 return true;
 						 }

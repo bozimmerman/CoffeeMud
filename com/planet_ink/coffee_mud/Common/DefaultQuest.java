@@ -239,6 +239,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     			((ScriptingEngine)B).registerDefaultQuest(this.name());
     	}
     }
+    
     private Vector sortSelect(Environmental E, String str,
                              Vector choices,
                              Vector choices0,
@@ -725,7 +726,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         	break;
                         }
                         if(reselect) q.reselectable.add(q.mob);
+                        
+                        // why is this being done -- atm, this is a simple map mob, minding his own business.
                         questifyScriptableBehavs(q.mob);
+                        
                         if(q.room!=null)
                             q.room.bringMobHere(q.mob,false);
                         else
@@ -976,7 +980,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         	errorOccurred(q,isQuiet,"Quest '"+name()+"', !item '"+p+"'.");
                         	break;
                         }
-                        questifyScriptableBehavs(q.item);
+                        questifyScriptableBehavs(q.item); // this really makes little sense, though is harmless
                         if(reselect) q.reselectable.add(q.item);
                         if(q.room!=null)
                             q.room.bringItemHere(q.item,-1,true);
@@ -1333,7 +1337,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             break;
                         }
                         if(reselect) q.reselectable.addElement(q.mob);
-                        questifyScriptableBehavs(q.mob);
+                        questifyScriptableBehavs(q.mob);  // just wierd
                         if(q.room!=null)
                             q.room.bringMobHere(q.mob,false);
                         else
@@ -1425,7 +1429,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             break;
                         }
                         if(reselect) q.reselectable.add(q.item);
-                        questifyScriptableBehavs(q.item);
+                        questifyScriptableBehavs(q.item); // here we go again
                         if(q.room!=null)
                             q.room.bringItemHere(q.item,-1,true);
                         else
@@ -1454,7 +1458,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             errorOccurred(q,isQuiet,"Quest '"+name()+"', agent !mob.");
                             break;
                         }
-                        questifyScriptableBehavs(q.mob);
+                        questifyScriptableBehavs(q.mob);  // should be done to loaded or q-scripted mobs only
                     	q.mysteryData.agent=q.mob;
                         q.mob=q.mysteryData.agent;
                         q.envObject=q.mob;
@@ -2019,7 +2023,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         {
 	                        q.mobGroup=(Vector)V2.clone();
 	                        q.mob=(MOB)finalE;
-	                        questifyScriptableBehavs(q.mob);
+	                        questifyScriptableBehavs(q.mob); // i just dont get it
                         }
                         else
                         if(finalE instanceof Item)
@@ -2088,7 +2092,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     	if(q.envObject instanceof MOB)
                     	{
                     		q.mob=(MOB)q.envObject;
-                            questifyScriptableBehavs(q.mob);
+                            questifyScriptableBehavs(q.mob);  // useless, but harmless
                     	}
                     	else
                     	if(q.envObject instanceof Item)
@@ -2260,7 +2264,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         for(int m=0;m<mobsToDo.size();m++)
                         {
                         	q.mob=(MOB)mobsToDo.elementAt(m);
-                            questifyScriptableBehavs(q.mob);
 	                        q.room=choiceRoom;
 	                        if(q.room==null)
 	                        {
@@ -2281,6 +2284,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                            q.mob.text();
 	                            q.mob.bringToLife(q.room,true);
 	                        }
+                            questifyScriptableBehavs(q.mob);
 	                        runtimeRegisterObject(q.mob);
 	                        q.room.recoverRoomStats();
 	                        q.room.showHappens(CMMsg.MSG_OK_ACTION,null);
@@ -2345,7 +2349,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         for(int m=0;m<itemsToDo.size();m++)
                         {
                         	q.item=(Item)itemsToDo.elementAt(m);
-                            questifyScriptableBehavs(q.item);
 	                        q.room=choiceRoom;
 	                        if(q.room==null)
 	                        {
@@ -2367,6 +2370,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                            q.room.recoverRoomStats();
 	                            q.room.showHappens(CMMsg.MSG_OK_ACTION,null);
 	                        }
+                            questifyScriptableBehavs(q.item);
 	                        runtimeRegisterObject(q.item);
                         }
                         if(q.room!=null)
@@ -2466,14 +2470,18 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                            for(int i3=0;i3<itemSet.size();i3++)
 	                            {
 	                            	Item I3=(Item)itemSet.elementAt(i3);
-	                                questifyScriptableBehavs(I3);
 		                            if(q.item==I3)
 		                            {
 			                            M2.giveItem(I3);
 			                            q.item=(Item)q.item.copyOf();
+	                                    questifyScriptableBehavs(q.item);
 		                            }
 		                            else
-			                            M2.giveItem((Item)I3.copyOf());
+		                            {
+		                                I3=(Item)I3.copyOf();
+	                                    questifyScriptableBehavs(I3);
+			                            M2.giveItem(I3);
+		                            }
 	                            }
                             }
                             else
@@ -2485,9 +2493,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                            {
 		                            M2.giveItem(I3);
 		                            q.item=(Item)q.item.copyOf();
+                                    questifyScriptableBehavs(q.item);
 	                            }
 	                            else
-		                            M2.giveItem((Item)I3.copyOf());
+                                {
+                                    I3=(Item)I3.copyOf();
+                                    questifyScriptableBehavs(I3);
+		                            M2.giveItem(I3);
+                                }
                             }
                         }
                     }
@@ -3383,7 +3396,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             B.setParms(parms);
             behaving.addBehavior(B);
         }
-        B.registerDefaultQuest(this);
+        B.registerDefaultQuest(name());
         questState.addons.addElement(V,new Integer(questState.preserveState));
     }
     

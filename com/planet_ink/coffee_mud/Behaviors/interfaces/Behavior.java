@@ -58,9 +58,9 @@ public interface Behavior extends Tickable, MsgListener, CMObject
 	 * The point is to register a quest objet, should it be needed or
 	 * be useful to the quest.
 	 * @see com.planet_ink.coffee_mud.common.interfaces.Quest
-	 * @param Q the Quest object
+	 * @param questName the Quest name
 	 */
-    public void registerDefaultQuest(Quest Q);
+    public void registerDefaultQuest(String questName);
 
 	/**
 	 * Returns the raw parameter string for this behavior.

@@ -78,7 +78,7 @@ public class StdBehavior implements Behavior
 			return new StdBehavior();
 		}
 	}
-    public void registerDefaultQuest(Quest Q){}
+    public void registerDefaultQuest(String questName){}
 	public void startBehavior(Environmental forMe){}
     protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_BEHAVIOR);}
     public void setSavable(boolean truefalse){isSavableBehavior=truefalse;}
