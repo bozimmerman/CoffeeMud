@@ -99,7 +99,11 @@ public class GrinderRooms
 				for(int d=0;d<R.rawDoors().length;d++)
 					R.rawDoors()[d]=oldR.rawDoors()[d];
 				for(int d=0;d<R.rawExits().length;d++)
-					R.rawExits()[d]=oldR.rawExits()[d];
+				{
+				    Exit E=oldR.rawExits()[d];
+				    if(E!=null)
+				        R.rawExits()[d]=(Exit)E.copyOf();
+				}
 				redoAllMyDamnRooms=true;
                 if(R.image().equalsIgnoreCase(CMProps.getDefaultMXPImage(oldR)))
                 {

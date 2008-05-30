@@ -213,6 +213,19 @@ public class StdRoom implements Room
 	public int domainConditions(){return Room.CONDITION_NORMAL;}
 	public long expirationDate(){return expirationDate;}
 	public void setExpirationDate(long time){expirationDate=time;}
+	
+    public void destroyExits(){
+        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+        {
+            if(rawExits()[d]!=null)
+            {
+                if((rawDoors()[d]!=null)
+                &&(rawDoors()[d].rawExits()[Directions.getOpDirectionCode(d)]!=rawExits()[d]))
+                    rawExits()[d].destroy();
+                rawExits()[d]=null;
+            }
+        }
+    }
 
 	public String displayText()
 	{
@@ -1412,6 +1425,8 @@ public class StdRoom implements Room
 	                if(roomDir.rawDoors()[d2]==this)
 	                {
 	                	roomDir.rawDoors()[d2]=null;
+	                	if(roomDir.rawExits()[d2]!=null)
+	                	    roomDir.rawExits()[d2].destroy();
 	                	roomDir.rawExits()[d2]=null;
 	                }
 			}
@@ -1421,6 +1436,7 @@ public class StdRoom implements Room
         setArea(null); // this actually deletes the room from the cache map
         baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
         envStats=baseEnvStats;
+        destroyExits();
         exits=new Exit[Directions.NUM_DIRECTIONS];
         doors=new Room[Directions.NUM_DIRECTIONS];
         affects=null;

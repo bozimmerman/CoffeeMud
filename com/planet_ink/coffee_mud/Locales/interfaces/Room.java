@@ -138,6 +138,7 @@ public interface Room extends Environmental, Affectable, Behavable
 
 	public Exit[] rawExits();
 	public Room[] rawDoors();
+	public void destroyExits();
 	public Exit getReverseExit(int direction);
 	public Exit getPairedExit(int direction);
 	public Room getRoomInDir(int direction);
