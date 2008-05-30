@@ -78,7 +78,10 @@ public class Chant_PlantMaze extends Chant
 		Room room=(Room)affected;
 		if((canBeUninvoked())&&(room instanceof GridLocale)&&(oldRoom!=null))
 			((GridLocale)room).clearGrid(oldRoom);
-		super.unInvoke();
+        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+            room.rawExits()[d]=null;
+        super.unInvoke();
+        room.destroy();
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

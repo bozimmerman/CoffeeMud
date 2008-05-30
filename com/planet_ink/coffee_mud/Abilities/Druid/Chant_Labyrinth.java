@@ -53,7 +53,10 @@ public class Chant_Labyrinth extends Chant
 		Room room=(Room)affected;
 		if((canBeUninvoked())&&(room instanceof GridLocale)&&(oldRoom!=null))
 			((GridLocale)room).clearGrid(oldRoom);
+		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		    room.rawExits()[d]=null;
 		super.unInvoke();
+		room.destroy();
 	}
 
     public boolean okMessage(Environmental host, CMMsg msg)

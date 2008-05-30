@@ -66,13 +66,10 @@ public class Chant_Den extends Chant
 					Item I=R.fetchItem(0);
 					if(I!=null) room.bringItemHere(I,-1,false);
 				}
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-				{
-					R.rawDoors()[d]=null;
-					R.rawExits()[d]=null;
-				}
 				R.destroy();
 				room.rawDoors()[Directions.UP]=null;
+				if(room.rawExits()[Directions.UP]!=null)
+				    room.rawExits()[Directions.UP].destroy();
 				room.rawExits()[Directions.UP]=null;
 			}
 			room.clearSky();
