@@ -389,6 +389,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 	public boolean containsString(String toSrchStr, String srchStr)
 	{
+	    if((toSrchStr==null)||(srchStr==null)) return false;
+	    if((toSrchStr.length()==0)&&(srchStr.length()>0)) return false;
 		if(srchStr.equalsIgnoreCase("all")) return true;
 		if(srchStr.equalsIgnoreCase(toSrchStr)) return true;
         if(CMStrings.stripPunctuation(srchStr).trim().equalsIgnoreCase(CMStrings.stripPunctuation(toSrchStr).trim())) 
@@ -531,7 +533,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		srchStr=(String)flags[FLAG_STR];
 		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
-		
+        Environmental thisThang=null;
 		if(exactOnly)
 		{
 			if(srchStr.startsWith("$")) srchStr=srchStr.substring(1);
@@ -540,7 +542,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			{
 				for(int i=0;i<list.size();i++)
 				{
-					Environmental thisThang=(Environmental)list.elementAt(i);
+					thisThang=(Environmental)list.elementAt(i);
 					if(thisThang.ID().equalsIgnoreCase(srchStr)
 					   ||thisThang.name().equalsIgnoreCase(srchStr)
 					   ||thisThang.Name().equalsIgnoreCase(srchStr))
@@ -556,9 +558,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 			try
 			{
-				for(int i=0;i<list.size();i++)
-				{
-					Environmental thisThang=(Environmental)list.elementAt(i);
+                for(int i=0;i<list.size();i++)
+                {
+                    thisThang=(Environmental)list.elementAt(i);
 					if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
 					   &&((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0))))
 						if((--myOccurrance)<=0)
@@ -571,10 +573,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			{
 				for(int i=0;i<list.size();i++)
 				{
-					Environmental thisThang=(Environmental)list.elementAt(i);
+					thisThang=(Environmental)list.elementAt(i);
 					if((!(thisThang instanceof Ability))
-					&&(thisThang.displayText()!=null)
-					&&(thisThang.displayText().length()>0)
 					&&(containsString(thisThang.displayText(),srchStr)
                         ||((thisThang instanceof MOB)&&containsString(((MOB)thisThang).genericName(),srchStr))))
     						if((--myOccurrance)<=0)
@@ -597,13 +597,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 		if(list.get(srchStr)!=null)
 			return (Environmental)list.get(srchStr);
+        Environmental thisThang=null;
 		if(exactOnly)
 		{
 			if(srchStr.startsWith("$")) srchStr=srchStr.substring(1);
 			if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
 			for(Enumeration e=list.elements();e.hasMoreElements();)
 			{
-				Environmental thisThang=(Environmental)e.nextElement();
+				thisThang=(Environmental)e.nextElement();
 				if(thisThang.ID().equalsIgnoreCase(srchStr)
 				||thisThang.Name().equalsIgnoreCase(srchStr)
 				||thisThang.name().equalsIgnoreCase(srchStr))
@@ -615,19 +616,19 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		else
 		{
 			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-			for(Enumeration e=list.elements();e.hasMoreElements();)
-			{
-				Environmental thisThang=(Environmental)e.nextElement();
+            for(Enumeration e=list.elements();e.hasMoreElements();)
+            {
+                thisThang=(Environmental)e.nextElement();
 				if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
 				&&((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0))))
 					if((--myOccurrance)<=0)
 						return thisThang;
 			}
 			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-			for(Enumeration e=list.elements();e.hasMoreElements();)
-			{
-				Environmental thisThang=(Environmental)e.nextElement();
-				if(((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)&&(containsString(thisThang.displayText(),srchStr)))
+            for(Enumeration e=list.elements();e.hasMoreElements();)
+            {
+                thisThang=(Environmental)e.nextElement();
+				if((containsString(thisThang.displayText(),srchStr))
                 ||((thisThang instanceof MOB)&&containsString(((MOB)thisThang).genericName(),srchStr)))
 					if((--myOccurrance)<=0)
 						return thisThang;
@@ -702,14 +703,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		srchStr=(String)flags[FLAG_STR];
 		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
-		
+		Environmental thisThang=null;
 		if(exactOnly)
 		{
 			if(srchStr.startsWith("$")) srchStr=srchStr.substring(1);
 			if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
 			for(int i=0;i<list.length;i++)
 			{
-				Environmental thisThang=list[i];
+				thisThang=list[i];
 				if(thisThang!=null)
 					if(thisThang.ID().equalsIgnoreCase(srchStr)
 					||thisThang.Name().equalsIgnoreCase(srchStr)
@@ -722,9 +723,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		else
 		{
 			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-			for(int i=0;i<list.length;i++)
-			{
-				Environmental thisThang=list[i];
+            for(int i=0;i<list.length;i++)
+            {
+                thisThang=list[i];
 				if(thisThang!=null)
 					if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
 					   &&((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0))))
@@ -732,11 +733,11 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 							return thisThang;
 			}
 			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
-			for(int i=0;i<list.length;i++)
-			{
-				Environmental thisThang=list[i];
+            for(int i=0;i<list.length;i++)
+            {
+                thisThang=list[i];
                 if(thisThang==null) continue;
-                if(((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)&&(containsString(thisThang.displayText(),srchStr)))
+                if((containsString(thisThang.displayText(),srchStr))
                 ||((thisThang instanceof MOB)&&containsString(((MOB)thisThang).genericName(),srchStr)))
 						if((--myOccurrance)<=0)
 							return thisThang;
@@ -798,13 +799,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 			try
 			{
+                Item thisThang=null;
 				for(int i=0;i<list.size();i++)
 				{
-					Item thisThang=(Item)list.elementAt(i);
+					thisThang=(Item)list.elementAt(i);
 					boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 					if((thisThang.container()==goodLocation)
-					&&(thisThang.displayText()!=null)
-					&&(thisThang.displayText().length()>0)
 					&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
 					&&(containsString(thisThang.displayText(),srchStr)))
 						if((--myOccurrance)<=0)
@@ -900,15 +900,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					    thisThang=(Item)E;
 						boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 						if((thisThang.container()==goodLocation)
-						&&(thisThang.displayText()!=null)
-						&&(thisThang.displayText().length()>0)
 						&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
 						&&(containsString(thisThang.displayText(),srchStr)))
 							if((--myOccurrance)<=0)
 								return thisThang;
 					}
 					else
-					if(((E.displayText()!=null)&&(E.displayText().length()>0)&&(containsString(E.displayText(),srchStr)))
+					if((containsString(E.displayText(),srchStr))
                     ||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
 						if((--myOccurrance)<=0)
 							return E;
