@@ -544,7 +544,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if(thisThang.ID().equalsIgnoreCase(srchStr)
 					   ||thisThang.name().equalsIgnoreCase(srchStr)
 					   ||thisThang.Name().equalsIgnoreCase(srchStr))
-						if((!allFlag)||(thisThang.displayText().length()>0))
+						if((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))
 							if((--myOccurrance)<=0)
 								return thisThang;
 				}
@@ -560,7 +560,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				{
 					Environmental thisThang=(Environmental)list.elementAt(i);
 					if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
-					   &&((!allFlag)||(thisThang.displayText().length()>0)))
+					   &&((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0))))
 						if((--myOccurrance)<=0)
 							return thisThang;
 				}
@@ -573,6 +573,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				{
 					Environmental thisThang=(Environmental)list.elementAt(i);
 					if((!(thisThang instanceof Ability))
+					&&(thisThang.displayText()!=null)
 					&&(thisThang.displayText().length()>0)
 					&&(containsString(thisThang.displayText(),srchStr)
                         ||((thisThang instanceof MOB)&&containsString(((MOB)thisThang).genericName(),srchStr))))
@@ -606,7 +607,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				if(thisThang.ID().equalsIgnoreCase(srchStr)
 				||thisThang.Name().equalsIgnoreCase(srchStr)
 				||thisThang.name().equalsIgnoreCase(srchStr))
-					if((!allFlag)||(thisThang.displayText().length()>0))
+					if((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))
 						if((--myOccurrance)<=0)
 							return thisThang;
 			}
@@ -618,7 +619,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			{
 				Environmental thisThang=(Environmental)e.nextElement();
 				if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
-				&&((!allFlag)||(thisThang.displayText().length()>0)))
+				&&((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0))))
 					if((--myOccurrance)<=0)
 						return thisThang;
 			}
@@ -626,7 +627,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			for(Enumeration e=list.elements();e.hasMoreElements();)
 			{
 				Environmental thisThang=(Environmental)e.nextElement();
-				if(((thisThang.displayText().length()>0)&&(containsString(thisThang.displayText(),srchStr)))
+				if(((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)&&(containsString(thisThang.displayText(),srchStr)))
                 ||((thisThang instanceof MOB)&&containsString(((MOB)thisThang).genericName(),srchStr)))
 					if((--myOccurrance)<=0)
 						return thisThang;
@@ -713,7 +714,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if(thisThang.ID().equalsIgnoreCase(srchStr)
 					||thisThang.Name().equalsIgnoreCase(srchStr)
 					||thisThang.name().equalsIgnoreCase(srchStr))
-						if((!allFlag)||(thisThang.displayText().length()>0))
+						if((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))
 							if((--myOccurrance)<=0)
 								return thisThang;
 			}
@@ -726,7 +727,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				Environmental thisThang=list[i];
 				if(thisThang!=null)
 					if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
-					   &&((!allFlag)||(thisThang.displayText().length()>0)))
+					   &&((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0))))
 						if((--myOccurrance)<=0)
 							return thisThang;
 			}
@@ -735,7 +736,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			{
 				Environmental thisThang=list[i];
                 if(thisThang==null) continue;
-                if(((thisThang.displayText().length()>0)&&(containsString(thisThang.displayText(),srchStr)))
+                if(((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)&&(containsString(thisThang.displayText(),srchStr)))
                 ||((thisThang instanceof MOB)&&containsString(((MOB)thisThang).genericName(),srchStr)))
 						if((--myOccurrance)<=0)
 							return thisThang;
@@ -769,7 +770,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					&&(thisThang.ID().equalsIgnoreCase(srchStr)
 					   ||(thisThang.Name().equalsIgnoreCase(srchStr))
 					   ||(thisThang.name().equalsIgnoreCase(srchStr))))
-						if((!allFlag)||(thisThang.displayText().length()>0))
+						if((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))
 							if((--myOccurrance)<=0)
 								return thisThang;
 				}
@@ -788,7 +789,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if((thisThang.container()==goodLocation)
 					&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
 					&&((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
-					   &&((!allFlag)||(thisThang.displayText().length()>0))))
+					   &&((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))))
 						if((--myOccurrance)<=0)
 							return thisThang;
 				}
@@ -802,6 +803,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					Item thisThang=(Item)list.elementAt(i);
 					boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 					if((thisThang.container()==goodLocation)
+					&&(thisThang.displayText()!=null)
 					&&(thisThang.displayText().length()>0)
 					&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
 					&&(containsString(thisThang.displayText(),srchStr)))
@@ -844,7 +846,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						&&(thisThang.ID().equalsIgnoreCase(srchStr)
 						   ||(thisThang.Name().equalsIgnoreCase(srchStr))
 						   ||(thisThang.name().equalsIgnoreCase(srchStr))))
-							if((!allFlag)||(thisThang.displayText().length()>0))
+							if((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))
 								if((--myOccurrance)<=0)
 									return thisThang;
 				    }
@@ -852,7 +854,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if(E.ID().equalsIgnoreCase(srchStr)
 					||E.Name().equalsIgnoreCase(srchStr)
 					||E.name().equalsIgnoreCase(srchStr))
-						if((!allFlag)||(E.displayText().length()>0))
+						if((!allFlag)||((thisThang.displayText()!=null)&&(E.displayText().length()>0)))
 							if((--myOccurrance)<=0)
 								return E;
 				    }
@@ -874,13 +876,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 						if((thisThang.container()==goodLocation)
 						&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
 						&&((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
-						   &&((!allFlag)||(thisThang.displayText().length()>0))))
+						   &&((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))))
 							if((--myOccurrance)<=0)
 								return thisThang;
 					}
 					else
 					if((containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
-				    &&((!allFlag)||(E.displayText().length()>0)))
+				    &&((!allFlag)||((thisThang.displayText()!=null)&&(E.displayText().length()>0))))
 						if((--myOccurrance)<=0)
 							return E;
 					    
@@ -898,6 +900,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					    thisThang=(Item)E;
 						boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
 						if((thisThang.container()==goodLocation)
+						&&(thisThang.displayText()!=null)
 						&&(thisThang.displayText().length()>0)
 						&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
 						&&(containsString(thisThang.displayText(),srchStr)))
@@ -905,7 +908,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 								return thisThang;
 					}
 					else
-					if(((E.displayText().length()>0)&&(containsString(E.displayText(),srchStr)))
+					if(((E.displayText()!=null)&&(E.displayText().length()>0)&&(containsString(E.displayText(),srchStr)))
                     ||((E instanceof MOB)&&containsString(((MOB)E).genericName(),srchStr)))
 						if((--myOccurrance)<=0)
 							return E;
