@@ -1490,7 +1490,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
     }
 
 
-    protected void mpsetvar(String name, String key, String val)
+    public void setVar(String name, String key, String val)
     {
         DVector V=getScriptVarSet(name,key);
         for(int v=0;v<V.size();v++)
@@ -6507,7 +6507,56 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         Log.sysOut("Scripting",newTarget.Name()+" was MPBEHAVED with "+A.name());
                     A.setParms(m2);
                     if(newTarget.fetchBehavior(A.ID())==null)
+                    {
                         newTarget.addBehavior(A);
+                        if((defaultQuestName()!=null)&&(defaultQuestName().length()>0))
+                        A.registerDefaultQuest(defaultQuestName());
+                    }
+                }
+                break;
+            }
+            case 72: // mpscript
+            {
+                
+                Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                String m2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
+                boolean proceed=true;
+                boolean savable=false;
+                String scope=getVarScope();
+                while(proceed)
+                {
+                    proceed=false;
+                    if(m2.toUpperCase().startsWith("SAVABLE"))
+                    {
+                        savable=true;
+                        m2=m2.substring(8).trim();
+                        proceed=true;
+                    }
+                    else
+                    if(m2.toUpperCase().startsWith("GLOBAL"))
+                    {
+                        scope="";
+                        proceed=true;
+                        m2=m2.substring(6).trim();
+                    }
+                    else
+                    if(m2.toUpperCase().startsWith("INDIVIDUAL"))
+                    {
+                        scope="*";
+                        proceed=true;
+                        m2=m2.substring(10).trim();
+                    }
+                }
+                if((newTarget!=null)&&(m2.length()>0))
+                {
+                    if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
+                        Log.sysOut("Scripting",newTarget.Name()+" was MPSCRIPTED: "+defaultQuestName);
+                    ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+                    S.setSavable(savable);
+                    S.setVarScope(scope);
+                    if((defaultQuestName()!=null)&&(defaultQuestName().length()>0))
+                        S.registerDefaultQuest(defaultQuestName());
+                    newTarget.addScript(S);
                 }
                 break;
             }
@@ -6990,7 +7039,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         which=E.Name();
                 }
                 if((which.length()>0)&&(arg2.length()>0))
-                    mpsetvar(which,arg2,arg3);
+                    setVar(which,arg2,arg3);
                 break;
             }
             case 36: // mpsavevar
@@ -7043,7 +7092,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             String varName=(String)VAR.elementAt(2);
                             if(varName.startsWith(which.toUpperCase()+"_SCRIPTABLEVARS_"))
                                 varName=varName.substring((which+"_SCRIPTABLEVARS_").length());
-                            mpsetvar(which,varName,(String)VAR.elementAt(3));
+                            setVar(which,varName,(String)VAR.elementAt(3));
                         }
                     }
                 }
@@ -7176,7 +7225,26 @@ public class DefaultScriptingEngine implements ScriptingEngine
             {
                 s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
                 Quest Q=getQuest(s);
-                if(Q!=null) Q.stopQuest();
+                if(Q!=null)
+                    Q.stopQuest();
+                else
+                if((s.length()>0)&&(defaultQuestName!=null)&&(defaultQuestName.length()>0))
+                {
+                    Environmental newTarget=getArgumentMOB(CMParms.getPastBitClean(s,0).trim(),source,monster,target,primaryItem,secondaryItem,msg,tmp);
+                    if(newTarget==null)
+                        logError(scripted,"MPENDQUEST","Unknown","Quest or MOB: "+s);
+                    else
+                    {
+                        for(int i=newTarget.numScripts()-1;i>=0;i--)
+                        {
+                            ScriptingEngine S=newTarget.fetchScript(i);
+                            if((S!=null)
+                            &&(S.defaultQuestName()!=null)
+                            &&(S.defaultQuestName().equalsIgnoreCase(defaultQuestName)))
+                                newTarget.delScript(S);
+                        }
+                    }
+                }
                 else
                     logError(scripted,"MPENDQUEST","Unknown","Quest: "+s);
                 break;
@@ -8879,7 +8947,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         public String message(){return message;}
         public void setVar(String host, String var, String value)
         {
-            c.mpsetvar(host.toString(),var.toString().toUpperCase(),value.toString());
+            c.setVar(host.toString(),var.toString().toUpperCase(),value.toString());
         }
         public String getVar(String host, String var)
         { return c.getVar(host,var);}

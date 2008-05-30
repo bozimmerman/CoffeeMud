@@ -36,6 +36,7 @@ public interface QuestManager extends CMLibrary
     public int numQuests();
     public Quest fetchQuest(int i);
     public Quest fetchQuest(String qname);
+    public Quest findQuest(String qname);
     public void addQuest(Quest Q);
     public void shutdown();
     public void delQuest(Quest Q);

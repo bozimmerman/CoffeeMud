@@ -405,6 +405,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         q.done=false;
         if(vStart>=script.size())
             return;
+        q.startLine=vStart;
         for(int v=vStart;v<script.size();v++)
         {
             if(startLine>=0) q.lastLine=v;
@@ -466,6 +467,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                     {
                         q.lastLine=script.size();
                         q.done=true;
+                    }
+                    else
+                    if((p.size()>1)&&(((String)p.elementAt(1)).equalsIgnoreCase("BACK")))
+                    {
+                        if(startLine>=0) q.lastLine=q.startLine;
                     }
                     else
                         if(startLine>=0) q.lastLine=v+1;
@@ -3876,6 +3882,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         public boolean beQuiet=false;
         protected int preserveState=0;
         protected int lastLine=0;
+        protected int startLine;
         // key 1=vector, below.  key 2=preserveState
         public DVector stuff=new DVector(2);
         // contains a set of vectors, vectors are formatted as such:

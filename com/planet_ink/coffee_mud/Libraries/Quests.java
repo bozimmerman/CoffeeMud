@@ -70,6 +70,27 @@ public class Quests extends StdLibrary implements QuestManager
 		}
 		return null;
 	}
+    public Quest findQuest(String qname)
+    {
+        Quest Q=fetchQuest(qname);
+        if(Q!=null) return Q;
+        for(int i=0;i<numQuests();i++)
+        {
+            Q=fetchQuest(i);
+            if((Q.displayName().trim().length()>0)
+            &&(Q.displayName().equalsIgnoreCase(qname)))
+                return Q;
+        }
+        for(int i=0;i<numQuests();i++)
+        {
+            Q=fetchQuest(i);
+            if((Q.displayName().trim().length()>0)
+            &&(CMLib.english().containsString(Q.displayName(),qname)))
+                return Q;
+        }
+        return null;
+    }
+	
 	public void addQuest(Quest Q)
 	{
 		if(!quests.contains(Q))

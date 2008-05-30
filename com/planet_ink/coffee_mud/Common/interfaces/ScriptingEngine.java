@@ -82,6 +82,10 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
     
     public void setSavable(boolean truefalse);
     
+    public String getVar(String context, String variable);
+    
+    public void setVar(String context, String variable, String value);
+    
     public static class ScriptableResponse
     {
         private int tickDelay=0;
@@ -331,6 +335,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         "MPSTEPQUEST", //69
         "SWITCH", //70
         "MPREJUV", //71
+        "MPADDSCRIPT", //72
     };
 
     public final static String[] clanVars={

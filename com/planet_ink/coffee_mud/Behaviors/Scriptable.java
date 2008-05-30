@@ -72,6 +72,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         super.setParms("");
     }
 
+    public String getVar(String context, String variable){ return engine().getVar(context, variable);}
+    
+    public void setVar(String context, String variable, String value){ engine().setVar(context, variable, value);}
+    
     public String defaultQuestName() { return engine().defaultQuestName();}
     
     public void setVarScope(String scope){ engine().setVarScope(scope); }
