@@ -368,6 +368,7 @@ public class Stat extends BaseAbleLister
 			str.deleteCharAt(str.length()-1);
 			str.append("\n\r");
 		}
+        else
         if(ableTypes==-7)
         {
             str.append("Scripts covered:\n\r");
