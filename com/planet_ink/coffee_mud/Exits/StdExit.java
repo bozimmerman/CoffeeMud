@@ -101,8 +101,6 @@ public class StdExit implements Exit
     {
         envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
         baseEnvStats=envStats;
-        miscText=null;
-        imageName=null;
         affects=null;
         behaviors=null;
         scripts=null;

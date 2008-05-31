@@ -217,7 +217,7 @@ public class StdRoom implements Room
     public void setExit(int direction, Environmental to)
     {
         Exit E=rawExits()[direction];
-        if(E!=null)
+        if((E!=null)&&(E!=to))
         {
             boolean destroy=true;
             if((rawDoors()[direction]!=null)
