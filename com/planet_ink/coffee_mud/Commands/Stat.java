@@ -286,6 +286,12 @@ public class Stat extends BaseAbleLister
 				ableTypes=-6;
 				commands.removeElementAt(0);
 			}
+            else
+            if("SCRIPTS".equals(s))
+            {
+                ableTypes=-7;
+                commands.removeElementAt(0);
+            }
 			else
 			if("INVENTORY".equals(s)||"INVEN".equals(s)||"INV".equals(s))
 			{
@@ -362,6 +368,22 @@ public class Stat extends BaseAbleLister
 			str.deleteCharAt(str.length()-1);
 			str.append("\n\r");
 		}
+        if(ableTypes==-7)
+        {
+            str.append("Scripts covered:\n\r");
+            for(int q=0;q<target.numScripts();q++)
+            {
+                ScriptingEngine E=target.fetchScript(q);
+                str.append("Script #"+q+"\n\r");
+                str.append("Quest: "+E.defaultQuestName()+"\n\r");
+                str.append("Savable: "+E.isSavable()+"\n\r");
+                str.append("Scope: "+E.getVarScope()+"\n\r");
+                str.append("Vars: "+E.getScopeValues()+"\n\r");
+                str.append("Script: "+E.getScript()+"\n\r");
+                str.append("\n\r");
+            }
+            str.append("\n\r");
+        }
 		else
 		if(ableTypes==-5)
 		{

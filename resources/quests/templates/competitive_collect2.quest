@@ -170,6 +170,7 @@ set interval 1
 
 set minplayers 1
 set playermask $QUEST_CRITERIA
+set instructions $QUEST_INSTRUCTIONSSTRING
 
 set area $ANNOUNCER_AREA
 set room $ANNOUNCER_ROOM
@@ -306,6 +307,7 @@ SPEECH_PROG p i accept
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if VAR($n $QUEST_ID_ACCEPTED == '')
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
+                mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
 				mpqset * REMAINING $DURATION
 				MPSETVAR $i $QUEST_ID_ACCEPTED '$<$i $QUEST_ID_ACCEPTED> $n'
 				mpsetvar $n $QUEST_ID_ACCEPTED 'YES'
@@ -335,3 +337,16 @@ DROP_PROG all
 ~
 </DATA>
 </FILE>
+<FILE><NAME>$QUEST_ID_playertrack.script</NAME>
+<DATA>
+ONCE_PROG 100
+    mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+~
+RAND_PROG 99
+    if QVAR(* REMAINING == '')
+        MPENDQUEST $i
+    else
+        mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+    endif
+~
+</DATA></FILE>

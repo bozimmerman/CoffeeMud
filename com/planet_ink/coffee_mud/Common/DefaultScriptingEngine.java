@@ -280,14 +280,34 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
     public String getVar(String host, String var)
     {
-        Hashtable H=(Hashtable)resources._getResource("SCRIPTVAR-"+host);
-        String val="";
-        if(H!=null)
+        if(host.equalsIgnoreCase("*"))
         {
-            val=(String)H.get(var.toUpperCase());
-            if(val==null) val="";
+            Vector V=resources._findResourceKeys("SCRIPTVAR-");
+            String val=null;
+            Hashtable H=null;
+            String key=null;
+            var=var.toUpperCase();
+            for(int v=0;v<V.size();v++)
+            {
+                key=(String)V.elementAt(v);
+                if(key.startsWith("SCRIPTVAR-"))
+                {
+                    H=(Hashtable)resources._getResource(key);
+                    val=(String)H.get(var);
+                    if(val!=null) return val;
+                }
+            }
+            return "";
         }
-        return val;
+        else
+        {
+            Hashtable H=(Hashtable)resources._getResource("SCRIPTVAR-"+host);
+            String val=null;
+            if(H!=null)
+                val=(String)H.get(var.toUpperCase());
+            if(val==null) return "";
+            return val;
+        }
     }
 
     private StringBuffer getResourceFileData(String named)
@@ -6554,6 +6574,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
                     S.setSavable(savable);
                     S.setVarScope(scope);
+                    S.setScript(m2);
                     if((defaultQuestName()!=null)&&(defaultQuestName().length()>0))
                         S.registerDefaultQuest(defaultQuestName());
                     newTarget.addScript(S);
@@ -7223,8 +7244,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 21: //MPENDQUEST
             {
-                s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
-                Quest Q=getQuest(s);
+                String q=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0).trim());
+                Quest Q=getQuest(q);
                 if(Q!=null)
                     Q.stopQuest();
                 else

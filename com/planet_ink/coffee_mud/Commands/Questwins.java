@@ -116,8 +116,14 @@ public class Questwins extends StdCommand
             String name=Q.displayName().trim().length()>0?Q.displayName():Q.name();
             if(!Q.name().equals(name))
                 name+=" ("+Q.name()+")";
-            StringBuffer str=new StringBuffer("^HQuest Information: ^w"+name+"^N\n\r");
-            String instructions=Q.isStat("INSTRUCTIONS")?Q.getStat("INSTRUCTIONS"):"No further information available.";
+            mob.tell("^HQuest Information: ^w"+name+"^N");
+            String instructions=null;
+            if((instructions==null)||(instructions.length()==0))
+                instructions=foundS.getVar("*","INSTRUCTIONS");
+            if((instructions==null)||(instructions.length()==0))
+                instructions=Q.isStat("INSTRUCTIONS")?Q.getStat("INSTRUCTIONS"):null;
+            if((instructions==null)||(instructions.length()==0))
+                instructions="No further information available.";
             String timeRemaining=foundS.getVar("*","TIME_REMAINING");
             if((timeRemaining!=null)&&(timeRemaining.length()>0))
             {
@@ -128,7 +134,7 @@ public class Questwins extends StdCommand
                     long ticks=CMath.s_int(timeRemaining);
                     ticks*=Tickable.TIME_TICK;
                     if(ticks>60000)
-                        timeRemaining=(ticks/6000)+" minutes";
+                        timeRemaining=(ticks/60000)+" minutes";
                     else
                         timeRemaining=(ticks/1000)+" seconds";
                 }

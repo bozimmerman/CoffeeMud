@@ -586,9 +586,9 @@ public class QuestMaker extends StdWebMacro
                             if(I3!=null)
                             {
                                 if(CMLib.flags().isCataloged(I3))
-                                    newVal+="CATALOG-"+I3.Name()+";";
+                                    newVal="CATALOG-"+I3.Name()+";";
                                 else
-                                    newVal+=RoomData.getItemCode(rawitemlist, I3)+";";
+                                    newVal=RoomData.getItemCode(rawitemlist, I3)+";";
                             }
                         }
                         httpReq.addRequestParameters(httpKeyName,newVal);
@@ -663,9 +663,9 @@ public class QuestMaker extends StdWebMacro
                             if(M3!=null)
                             {
                                 if(CMLib.flags().isCataloged(M3))
-                                    newVal+="CATALOG-"+M3.Name()+";";
+                                    newVal="CATALOG-"+M3.Name()+";";
                                 else
-                                    newVal+=RoomData.getMOBCode(rawmoblist, M3)+";";
+                                    newVal=RoomData.getMOBCode(rawmoblist, M3)+";";
                             }
                         }
                         httpReq.addRequestParameters(httpKeyName,newVal);
@@ -722,24 +722,7 @@ public class QuestMaker extends StdWebMacro
                         	case QuestManager.QM_COMMAND_$UNIQUE_QUEST_NAME:
                                 name=val;
                         		break;
-                        	case QuestManager.QM_COMMAND_$ITEMXML:
-                        		if(val.length()>0)
-                        		{
-                        		    Item I=RoomData.getItemFromCode(RoomData.items,val);
-                        		    if(I==null) I=RoomData.getItemFromCatalog(val);
-                        		    if(I!=null)
-                        		        val=CMLib.coffeeMaker().getItemXML(I).toString();
-                        		}
-                        		break;
-                        	case QuestManager.QM_COMMAND_$MOBXML:
-                        		if(val.length()>0)
-                        		{
-                        		    MOB M2=RoomData.getMOBFromCode(RoomData.mobs,val);
-                        		    if(M2==null) M2=RoomData.getMOBFromCatalog(val);
-                        		    if(M2!=null)
-                        		        val=CMLib.coffeeMaker().getMobXML(M2).toString();
-                        		}
-                        		break;
+                            case QuestManager.QM_COMMAND_$ITEMXML:
                         	case QuestManager.QM_COMMAND_$ITEMXML_ONEORMORE:
                         	{
                         		Vector V=CMParms.parseSemicolons(val,true);
@@ -747,12 +730,14 @@ public class QuestMaker extends StdWebMacro
                         		for(int v1=0;v1<V.size();v1++)
                         		{
                                     Item I=RoomData.getItemFromCode(RoomData.items,(String)V.elementAt(v1));
+                                    if(I==null) I=RoomData.getItemFromAnywhere(RoomData.items,(String)V.elementAt(v1));
                                     if(I==null) I=RoomData.getItemFromCatalog((String)V.elementAt(v1));
                                     if(I!=null)
                                         val+=CMLib.coffeeMaker().getItemXML(I).toString();
                         		}
                         		break;
                         	}
+                            case QuestManager.QM_COMMAND_$MOBXML:
                         	case QuestManager.QM_COMMAND_$MOBXML_ONEORMORE:
                         	{
                         		Vector V=CMParms.parseSemicolons(val,true);

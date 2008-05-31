@@ -983,7 +983,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }
                         if(q.item==null)
                         {
-                        	errorOccurred(q,isQuiet,"Quest '"+name()+"', !item '"+p+"'.");
+                        	errorOccurred(q,isQuiet,"Quest '"+name()+"', !itemtype '"+p+"'.");
                         	break;
                         }
                         questifyScriptableBehavs(q.item); // this really makes little sense, though is harmless
@@ -2652,7 +2652,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
                             S.setSavable(savable);
                             S.registerDefaultQuest(name());
-                            S.setScopeValues(scope);
+                            S.setVarScope(scope);
                             S.setScript(val);
                             E2.addScript(S);
                             runtimeRegisterObject(E2);
