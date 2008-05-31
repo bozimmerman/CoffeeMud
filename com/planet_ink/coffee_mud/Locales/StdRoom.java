@@ -234,7 +234,7 @@ public class StdRoom implements Room
                     destroy=false;
             }
             if(destroy)
-                rawExits()[direction].destroy();
+                E.destroy();
         }
         if(to instanceof Room)
             rawExits()[direction]=((Room)to).rawExits()[direction];
