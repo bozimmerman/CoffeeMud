@@ -35,9 +35,9 @@ import java.util.*;
 public class StdThinGrid extends StdRoom implements GridLocale
 {
 	public String ID(){return "StdThinGrid";}
-	protected Vector descriptions=new Vector();
-	protected Vector displayTexts=new Vector();
-	protected Vector gridexits=new Vector();
+	protected Vector descriptions=new Vector(1);
+	protected Vector displayTexts=new Vector(1);
+	protected Vector gridexits=new Vector(1);
 	
 	protected int xsize=5;
 	protected int ysize=5;
@@ -80,9 +80,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			if(R!=null) R.destroy();
 		}
 		rooms.clear();
-		descriptions=null;
-		displayTexts=null;
-		gridexits=null;
+        descriptions=new Vector(1);
+        displayTexts=new Vector(1);
+        gridexits=new Vector(1);
 	}
 	
 	public void setDescription(String newDescription)
