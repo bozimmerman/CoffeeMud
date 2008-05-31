@@ -150,7 +150,8 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
 	public boolean isStat(String code);
 	
 	public final static String[] QCODES={"CLASS", "NAME", "DURATION", "WAIT", "MINPLAYERS", "PLAYERMASK",
-										 "RUNLEVEL", "DATE", "MUDDAY", "INTERVAL","SPAWNABLE", "DISPLAY"};
+										 "RUNLEVEL", "DATE", "MUDDAY", "INTERVAL","SPAWNABLE", "DISPLAY", 
+                                         "INSTRUCTIONS"};
 	public static final String[] SPECIAL_QCODES={"AREA","MOBTYPE","MOBGROUP","ITEMTYPE","LOCALE",
 												 "ROOM","MOB","ITEM","ITEMGROUP","ROOMGROUP","LOCALEGROUP",
 												 "ROOMGROUPAROUND","LOCALEGROUPAROUND","PRESERVE",

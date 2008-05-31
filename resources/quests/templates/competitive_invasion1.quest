@@ -173,7 +173,7 @@ set interval 1
 
 set minplayers 1
 set playermask $QUEST_CRITERIA
-set instructions $QUEST_INSTRUCTIONSSTRING
+
 
 set area $ANNOUNCER_AREA
 set room $ANNOUNCER_ROOM
@@ -327,6 +327,7 @@ DEATH_PROG
 ONCE_PROG 100
     mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
 ~
+
 RAND_PROG 99
     if QVAR(* REMAINING == '')
         MPENDQUEST $i
@@ -334,4 +335,6 @@ RAND_PROG 99
         mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
     endif
 ~
+
+
 </DATA></FILE>

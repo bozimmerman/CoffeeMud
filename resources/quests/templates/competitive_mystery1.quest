@@ -287,7 +287,7 @@ set interval 1
 #quiet
 set minplayers 1
 set playermask $QUEST_CRITERIA
-set instructions $QUEST_INSTRUCTIONSSTRING
+
 
 # Set up the announcer
 set area $ANNOUNCER_AREA

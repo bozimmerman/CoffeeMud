@@ -152,7 +152,7 @@ set interval 1
 
 set minplayers 1
 set playermask $QUEST_CRITERIA
-set instructions $QUEST_INSTRUCTIONSSTRING
+
 
 set area $ANNOUNCER_AREA
 set room $ANNOUNCER_ROOM
