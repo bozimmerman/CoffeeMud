@@ -99,9 +99,8 @@ public class StdExit implements Exit
 
     public void destroy()
     {
-        envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-        baseEnvStats=envStats;
         affects=null;
+        imageName=null;
         behaviors=null;
         scripts=null;
         CMLib.threads().deleteTick(this,Tickable.TICKID_EXIT_BEHAVIOR);
