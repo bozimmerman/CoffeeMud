@@ -1,19 +1,19 @@
-#!QUESTMAKER_START_SCRIPT Mystery #2
-#A 2-Level mystery where players must question existing mobs from your world to
-#discover WHO did something and what their MOTIVE was.
+#!QUESTMAKER_START_SCRIPT Competitive Mystery #1
+#A 3-Level mystery where players must question existing mobs from your world to
+#discover WHO did something, what ITEM they did it with, and what their MOTIVE was.
 #The victim and quest-announcer/manager are also existing mobs, and the victim
-#may optionally start off dead.  The suspects are CREATED by you.
+#may optionally start off dead.  The suspects and items are CREATED by you.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=mystery_2
+#$QUEST_ID=$UNIQUE_QUEST_NAME=competitive_mystery_1
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=My New Quest
+#$QUEST_NAME=$STRING=Competitive Mystery #1
 #
 #Quest Frequency:
 #A quest starts and stops on timed intervals.  Enter the amount of time 
@@ -43,7 +43,7 @@
 #be an existing mob in your world.  They will announce the quest to players
 #once, and then mark whether the player says they accept the quest.  The player
 #will then return to the announcer to make their guesses on WHO did the thing,
-#and what their MOTIVE was.  If the guesses are correct,
+#WHAT they did it with, and what their MOTIVE was.  If the guesses are correct,
 #the announcer will optionally reward the player.
 #
 #Announcer Area/Room: 
@@ -109,7 +109,7 @@
 #the quest into the string.  $TARGET is the victim, $WHEREHAPPENED is where the
 #victim (alive or dead) is, $WHENHAPPENED is a random time.  You can also include
 #things like $WHEREAT to say where the suspects started off at, or even give
-#away some answers by mentioning the $AGENT, or $MOTIVE.
+#away some answers by mentioning the $AGENT, $TOOL, or $MOTIVE.
 #$VICTIM_GREETING=$LONG_STRING=Something was done to or for me at $WHEREHAPPENED on $WHENHAPPENED.  Go see the announcer about it.
 #
 #!QUESTMAKER_PAGE Announcer greetings/instructions
@@ -122,14 +122,14 @@
 #the quest into the string.  $TARGET is the victim, $WHEREHAPPENED is where the
 #victim (alive or dead) is, $WHENHAPPENED is a random time.  You can also include
 #things like $WHEREAT to say where the suspects started off at, or even give
-#away some answers by mentioning the $AGENT, or $MOTIVE.
+#away some answers by mentioning the $AGENT, $TOOL, or $MOTIVE.
 #$QUEST_NOTIFYSTRING=$LONG_STRING=We have a mystery that needs solving! Something was done to or for $TARGET at $WHEREHAPPENED on $WHENHAPPENED.
 #
 #Announcer instructions: 
 #Specify what the announcer says to people who have accepted the quest.  This 
 #should give some details about what is to be done.  You can leave this blank
 #if you like.  You may use the same sort of variables as were used in the greeting.
-#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=What's the world coming to? Something was done to or for $TARGET at $WHEREHAPPENED on $WHENHAPPENED.  You should go there and starting asking the folks in nearby rooms about the suspects, and any other clues you gather.  Then come back here and announce WHO you think did it, and what their MOTIVE was.  No wrong guesses are allowed.  Questioning the people around that room will reveal all the clues you need.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=What's the world coming to? Something was done to or for $TARGET at $WHEREHAPPENED on $WHENHAPPENED.  The possible items are probably still there. You should go there and starting asking the folks in nearby rooms about those items, and any other clues you gather.  Then come back here and announce WHO you think did it, their MOTIVE, and what ITEM they used.  No wrong guesses are allowed.  Questioning the people around that room will reveal all the clues you need.
 #
 #Announcer announcement:
 #Select what type of annoucement the Announcer will make when the quest starts.
@@ -144,7 +144,7 @@
 #Select what type of speech the Announcer will make when the answers to the mystery are successfully given to the announcer.
 #$SOLVED_RESPONSE_TYPE=$CHOOSE=QUESTCHAT,MPECHO,SAY,YELL
 #This is what the congratulations says.
-#$SOLVED_RESPONSE_TEXT=($LONG_STRING)=$n has solved the mystery! $AGENT did it for $MOTIVE!
+#$SOLVED_RESPONSE_TEXT=($LONG_STRING)=$n has solved the mystery! $AGENT did it with $TOOL for $MOTIVE!
 #
 #Announcer warning message:
 #Select what type of speech the Announcer will make when 5 minutes remain in the quest, and there still isn't a winner
@@ -156,11 +156,39 @@
 #Select what type of speech the Announcer will make when the answers to the mystery are never guessed by a player.
 #$UNSOLVED_RESPONSE_TYPE=$CHOOSE=QUESTCHAT,MPECHO,SAY,YELL
 #This is what the failure message says.
-#$UNSOLVED_RESPONSE_TEXT=($LONG_STRING)=I had to solve the mystery myself.  It appears $AGENT did it for $MOTIVE!
+#$UNSOLVED_RESPONSE_TEXT=($LONG_STRING)=I had to solve the mystery myself.  It appears $AGENT did it with $TOOL for $MOTIVE!
+#
+#!QUESTMAKER_PAGE Specify the Tools
+#The Tools are the items that comprise the list of things the action might have
+#been done with.  In other words, one of these items was used to commit
+#the crime, or do the action to the victim.
+#
+#The Tools: List here all possible tools for your mystery.  You may list more
+#than are actually used in the mystery to mix things up.
+#$TOOLS_ITEMS=$ITEMXML_ONEORMORE
+#
+#Number of Tools: Specify how many of the above tools will be chosen for use in the mystery.
+#The higher this number, the more complex the mystery will be and more difficult to solve.
+#You should never enter a number that might be larger than the number of total items above.
+#You may, however, use math expressions: For instance, 1 + 1?3 would generate a number of 2-4 tools.
+#$NUM_TOOLS=$EXPRESSION=3
+#
+#Tools Area/Room: 
+#Specify below the name of the place that your Tools will be created in.
+#Use double-quotes around multi-word areas and room ids/names.  
+#If you want the tools to be created where the victim is, leave the AREA 
+#blank and use WHEREHAPPENED as the room.
+#If you want the tools to be created where the suspects are, leave the AREA 
+#blank and use WHEREAT as the room id.
+#  
+#Tools Area:
+#$TOOLS_AREA=($AREA)
+#Tools Room ID:
+#$TOOLS_ROOM=($ROOMID)
 #
 #!QUESTMAKER_PAGE Specify the Suspects
-#The Suspects are the mobs that comprise the list of possible mobs who did the action.
-#One of the suspects will be chosen as the WHO did it mob.
+#The Suspects are the mobs that comprise the list of possible mobs who did the action
+#with the above tool to the victim.  One of the suspects will be chosen as the WHO did it mob.
 #
 #The Suspects: List here all possible suspects for your mystery.  You may create more
 #than are actually used in the mystery to mix things up.
@@ -206,12 +234,12 @@
 #
 #!QUESTMAKER_PAGE The Motives
 #The motives are a simple list of space-delimited phrases that describe the possible motives for
-#the action done by the suspect against the victim.
+#the action done by the suspect against the victim with the item/tool.
 #
 #The Motive List: List here the possible motives for the action taken.  Each motive should be
 #separated by spaces.  If a motive includes more than one word, put the motive in "double quotes".
 #A valid motive should answer the question: The act was done because of X.
-#$MOTIVE_LIST=$LONG_STRING="insurance money" "jealousy" "hatred" 
+#$MOTIVE_LIST=$LONG_STRING="drunken anger" "jealous love" "insulted honor" 
 #
 #Number of Motives: Specify how many of the above motives will be chosen for use in the mystery.
 #The higher this number, the more complex the mystery will be and more difficult to solve.
@@ -247,8 +275,9 @@
 #$WHENHAPPENED=$HIDDEN=$%QVAR(* WHENHAPPENED)%
 #$TARGET=$HIDDEN=$%QVAR(* TARGET)%
 #$AGENT=$HIDDEN=$%QVAR(* AGENT)%
+#$TOOL=$HIDDEN=$%QVAR(* TOOL)%
 #$MOTIVE=$HIDDEN=$%QVAR(* MOTIVE)%
-#!QUESTMAKER_END_SCRIPT Mystery #2
+#!QUESTMAKER_END_SCRIPT Mystery #1
 
 set name $QUEST_ID
 set display $QUEST_NAME
@@ -300,18 +329,42 @@ give affect Prop_SafePet
 # Set a motives, will automatically set a motive
 set motivegroup $NUM_MOTIVES $MOTIVE_LIST
 
+# Assign the tools
+set mob
+set mobgroup
+set roomgroup
+set area $TOOLS_AREA
+set room $TOOLS_ROOM
+import items $QUEST_ID_tools.cmare
+load itemgroup $NUM_TOOLS any
+set toolgroup $NUM_TOOLS
+set itemgroup toolgroup
+give script LOAD=$QUEST_ID_evidence.script
+
 set area
 set roomgroup
 set mobgroup
 set mob
 # Now set up all the evidence
+LOAD=$QUEST_ID_toolagentmap.quest wherehappened toolgroup-tool agentgroup-agent
+LOAD=$QUEST_ID_toolagentmap.quest wherehappened tool agentgroup-agent 
+LOAD=$QUEST_ID_toolagentmap.quest wherehappened toolgroup-tool agent
 LOAD=$QUEST_ID_agentmotivemap.quest wherehappened agentgroup-agent motivegroup-motive
 LOAD=$QUEST_ID_agentmotivemap.quest wherehappened agent motivegroup-motive
 LOAD=$QUEST_ID_agentmotivemap.quest wherehappened agentgroup-agent motive
+LOAD=$QUEST_ID_toolmotivemap.quest wherehappened toolgroup-tool motivegroup-motive
+LOAD=$QUEST_ID_toolmotivemap.quest wherehappened tool motivegroup-motive
+LOAD=$QUEST_ID_toolmotivemap.quest wherehappened toolgroup-tool motive
 # Now install a second set to make things easier.
+LOAD=$QUEST_ID_toolagentmap.quest wherehappened toolgroup-tool agentgroup-agent
+LOAD=$QUEST_ID_toolagentmap.quest wherehappened tool agentgroup-agent 
+LOAD=$QUEST_ID_toolagentmap.quest wherehappened toolgroup-tool agent
 LOAD=$QUEST_ID_agentmotivemap.quest wherehappened agentgroup-agent motivegroup-motive
 LOAD=$QUEST_ID_agentmotivemap.quest wherehappened agent motivegroup-motive
 LOAD=$QUEST_ID_agentmotivemap.quest wherehappened agentgroup-agent motive
+LOAD=$QUEST_ID_toolmotivemap.quest wherehappened toolgroup-tool motivegroup-motive
+LOAD=$QUEST_ID_toolmotivemap.quest wherehappened tool motivegroup-motive
+LOAD=$QUEST_ID_toolmotivemap.quest wherehappened toolgroup-tool motive
 
 set duration $DURATION
 
@@ -331,6 +384,7 @@ GREET_PROG 100
 
 ONCE_PROG
 	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
+	mpsetvar * $QUEST_ID_TOOL ''
 	mpsetvar * $QUEST_ID_REWARDED ''
 	mpsetvar * $QUEST_ID_LOST ''
 	mpsetvar * $QUEST_ID_AGENT ''
@@ -393,6 +447,36 @@ SPEECH_PROG all
 				ENDIF
 			ENDIF
 			IF EVAL($9 == '')
+				MPARGSET $3 '$%QVAR(* TOOL)%'
+				IF STRCONTAINS($g "$3")
+					MPARGSET $9 $g
+					if VAR($n $QUEST_ID_TOOL != '')
+						sayto $n You've already made a guess on the what-was-used question.
+					else
+						MPSETVAR $n $QUEST_ID_TOOL '$%QVAR(* TOOL)%'
+						sayto $n Ok, so you think it was done with $%QVAR(* TOOL)%.
+						MPSETVAR $n $QUEST_ID_CORRECT ++
+						MPCALLFUNC winner
+					endif
+				ELSE
+					mpargset $0 '$%QVAR(* TOOLGROUP)%'
+					for $1 = 1 to $0
+						mpargset $2 'TOOLGROUP#$1'
+						mpargset $3 '$%QVAR(* $2)%'
+						IF STRCONTAINS($g "$3") AND EVAL($9 == '')
+							MPARGSET $9 $g
+							if VAR($n $QUEST_ID_TOOL != '')
+								sayto $n You've already made a guess on the what-was-used question.
+							else
+								MPSETVAR $n $QUEST_ID_TOOL '$3'
+								sayto $n Ok, so you think it was done with $3.
+								MPCALLFUNC winner
+							endif
+						endif
+					next
+				ENDIF
+			ENDIF
+			IF EVAL($9 == '')
 				MPARGSET $3 '$%QVAR(* MOTIVE)%'
 				IF STRCONTAINS($g "$3")
 					MPARGSET $9 $g
@@ -429,7 +513,7 @@ SPEECH_PROG all
 FUNCTION_PROG winner
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if VAR($n $QUEST_ID_CORRECT >= 2)
+			if VAR($n $QUEST_ID_CORRECT >= 3)
 				if EVAL('$EXP' != '')
 					mpexp $n $EXP
 				endif
@@ -452,7 +536,7 @@ FUNCTION_PROG winner
 					mpstartquest $NEXT_QUEST
 				ENDIF
 			else
-				if VAR($n $QUEST_ID_AGENT != '') AND VAR($n $QUEST_ID_MOTIVE != '')
+				if VAR($n $QUEST_ID_TOOL != '') AND VAR($n $QUEST_ID_AGENT != '') AND VAR($n $QUEST_ID_MOTIVE != '')
 					if VAR($n $QUEST_ID_LOST == '')
 						sayto $n I'm sorry $n, your guesses were incorrect.  Thanks for trying.
 						MPSETVAR $n $QUEST_ID_LOST 'YEP'
@@ -477,10 +561,19 @@ QUEST_TIME_PROG * -1
 	endif
 	mpsetvar * $QUEST_ID_REWARDED ''
 	MPSETVAR * $QUEST_ID_ACCEPTED ''
+	mpsetvar * $QUEST_ID_TOOL ''
 	mpsetvar * $QUEST_ID_LOST ''
 	mpsetvar * $QUEST_ID_AGENT ''
 	mpsetvar * $QUEST_ID_MOTIVE ''
 	mpsetvar * $QUEST_ID_ALREADY_TOLD ''
+~
+</DATA></FILE>
+<FILE><NAME>$QUEST_ID_evidence.script</NAME><DATA>
+CNCLMSG_PROG GET all
+if EVAL($i == $t)
+	mpechoat $n That's EVIDENCE -- you can't do that!
+	return CANCEL
+endif
 ~
 </DATA></FILE>
 <FILE><NAME>$QUEST_ID_agentmotivemap.quest</NAME><DATA>
@@ -499,7 +592,7 @@ QUEST_TIME_PROG * -1
 	set room
 	set mob reselect $WITNESS_NAMES
 	take behavior MudChat
-	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG2 was not one to be into $ARG3.
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG2 was not one to be involved with $ARG3.
 	give affect Spell_LedFoot
 </OPTION>
 <OPTION>
@@ -571,7 +664,7 @@ QUEST_TIME_PROG * -1
 	set room
 	set mob reselect $WITNESS_NAMES
 	take behavior MudChat
-	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG2 doesn't know $ARG3.
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG2 doesn't know anything of $ARG3.
 	give affect Spell_LedFoot
 </OPTION>
 <OPTION>
@@ -580,7 +673,7 @@ QUEST_TIME_PROG * -1
 	set room
 	set mob reselect $WITNESS_NAMES
 	take behavior MudChat
-	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG2 is too dumb to understand $ARG3.
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG2 is too dumb for $ARG3.
 	give affect Spell_LedFoot
 </OPTION>
 <OPTION>
@@ -589,8 +682,184 @@ QUEST_TIME_PROG * -1
 	set room
 	set mob reselect $WITNESS_NAMES
 	take behavior MudChat
-	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 is far too silly a motive for $ARG2.
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG2 is far too silly a motive for $ARG3.
+	give affect Spell_LedFoot
+</OPTION>
+</DATA></FILE>
+<FILE><NAME>$QUEST_ID_toolmotivemap.quest</NAME><DATA>
+<OPTION>
+	set room ARG1
+	set roomgrouparound $WITNESS_RADIUS ANY
+	set room
+	set mob reselect $WITNESS_NAMES
+	take behavior MudChat
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG2 is hardly the right tool for $ARG3.
+	give affect Spell_LedFoot
+</OPTION>
+<OPTION>
+	set room ARG1
+	set roomgrouparound $WITNESS_RADIUS ANY
+	set room
+	set mob reselect $WITNESS_NAMES
+	take behavior MudChat
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG2 is never used when one is into $ARG3
+	give affect Spell_LedFoot
+</OPTION>
+<OPTION>
+	set room ARG1
+	set roomgrouparound $WITNESS_RADIUS ANY
+	set room
+	set mob reselect $WITNESS_NAMES
+	take behavior MudChat
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9Noone would use $ARG2 if $ARG3 was involved.
+	give affect Spell_LedFoot
+</OPTION>
+<OPTION>
+	set room ARG1
+	set roomgrouparound $WITNESS_RADIUS ANY
+	set room
+	set mob reselect $WITNESS_NAMES
+	take behavior MudChat
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9Everyone knows $ARG2 isn't used for acts motivated by $ARG3.
+	give affect Spell_LedFoot
+</OPTION>
+<OPTION>
+	set room ARG1
+	set roomgrouparound $WITNESS_RADIUS ANY
+	set room
+	set mob reselect $WITNESS_NAMES
+	take behavior MudChat
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG3 is not going to make one reach for $ARG2.
+	give affect Spell_LedFoot
+</OPTION>
+<OPTION>
+	set room ARG1
+	set roomgrouparound $WITNESS_RADIUS ANY
+	set room
+	set mob reselect $WITNESS_NAMES
+	take behavior MudChat
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$_ARG3 is no state for using a $ARG2.
+	give affect Spell_LedFoot
+</OPTION>
+<OPTION>
+	set room ARG1
+	set roomgrouparound $WITNESS_RADIUS ANY
+	set room
+	set mob reselect $WITNESS_NAMES
+	take behavior MudChat
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9If $ARG3 was involved, you can be sure $ARG2 was not.
+	give affect Spell_LedFoot
+</OPTION>
+</DATA></FILE>
+<FILE><NAME>$QUEST_ID_toolagentmap.quest</NAME><DATA>
+<OPTION>
+	set room ARG1
+	set roomgrouparound $WITNESS_RADIUS ANY
+	set room
+	set mob reselect $WITNESS_NAMES
+	take behavior MudChat
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9I've heard $ARG3 is scared of $ARG2.
+	give affect Spell_LedFoot
+</OPTION>
+<OPTION>
+	set room ARG1
+	set roomgrouparound $WITNESS_RADIUS ANY
+	set room
+	set mob reselect $WITNESS_NAMES
+	take behavior MudChat
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9I've heard $ARG3 hates $ARG2.
+	give affect Spell_LedFoot
+</OPTION>
+<OPTION>
+	set room ARG1
+	set roomgrouparound $WITNESS_RADIUS ANY
+	set room
+	set mob reselect $WITNESS_NAMES
+	take behavior MudChat
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9I've heard $ARG3 thinks $ARG2 is creepy.
+	give affect Spell_LedFoot
+</OPTION>
+<OPTION>
+	set room ARG1
+	set roomgrouparound $WITNESS_RADIUS ANY
+	set room
+	set mob reselect $WITNESS_NAMES
+	take behavior MudChat
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 thinks $ARG2 clumsy and awkward.
+	give affect Spell_LedFoot
+</OPTION>
+<OPTION>
+	set room ARG1
+	set roomgrouparound $WITNESS_RADIUS ANY
+	set room
+	set mob reselect $WITNESS_NAMES +NAMES "-tax collector"
+	take behavior MudChat
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 never touches $ARG2.
+	give affect Spell_LedFoot
+</OPTION>
+<OPTION>
+	set room ARG1
+	set roomgrouparound $WITNESS_RADIUS ANY
+	set room
+	set mob reselect $WITNESS_NAMES
+	take behavior MudChat
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 won't use $ARG2.
+	give affect Spell_LedFoot
+</OPTION>
+<OPTION>
+	set room ARG1
+	set roomgrouparound $WITNESS_RADIUS ANY
+	set room
+	set mob reselect $WITNESS_NAMES
+	take behavior MudChat
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 doesn't like $ARG2.
+	give affect Spell_LedFoot
+</OPTION>
+<OPTION>
+	set room ARG1
+	set roomgrouparound $WITNESS_RADIUS ANY
+	set room
+	set mob reselect $WITNESS_NAMES
+	take behavior MudChat
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 wouldn't be caught dead using $ARG2.
+	give affect Spell_LedFoot
+</OPTION>
+<OPTION>
+	set room ARG1
+	set roomgrouparound $WITNESS_RADIUS ANY
+	set room
+	set mob reselect $WITNESS_NAMES
+	take behavior MudChat
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 is too proud to use $ARG2.
+	give affect Spell_LedFoot
+</OPTION>
+<OPTION>
+	set room ARG1
+	set roomgrouparound $WITNESS_RADIUS ANY
+	set room
+	set mob reselect $WITNESS_NAMES
+	take behavior MudChat
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 doesn't know how to use $ARG2.
+	give affect Spell_LedFoot
+</OPTION>
+<OPTION>
+	set room ARG1
+	set roomgrouparound $WITNESS_RADIUS ANY
+	set room
+	set mob reselect $WITNESS_NAMES
+	take behavior MudChat
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 is too dumb to figure out $ARG2.
+	give affect Spell_LedFoot
+</OPTION>
+<OPTION>
+	set room ARG1
+	set roomgrouparound $WITNESS_RADIUS ANY
+	set room
+	set mob reselect $WITNESS_NAMES
+	take behavior MudChat
+	give behavior QuestChat +( $|ARG2 |  $|ARG3 ::$ARG2_$ARG3)\;9$ARG3 is far too skilled for $ARG2.
 	give affect Spell_LedFoot
 </OPTION>
 </DATA></FILE>
 <FILE><NAME>$QUEST_ID_suspects.cmare</NAME><DATA><MOBS>$SUSPECTS_MOBS</MOBS></DATA></FILE>
+<FILE><NAME>$QUEST_ID_tools.cmare</NAME><DATA><ITEMS>$TOOLS_ITEMS</ITEMS></DATA></FILE>

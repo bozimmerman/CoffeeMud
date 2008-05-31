@@ -1,4 +1,4 @@
-#!QUESTMAKER_START_SCRIPT Delivery #1
+#!QUESTMAKER_START_SCRIPT Competitive Delivery #1
 #The player delivers a custom-Item from one existing mob in your world
 #to another.  A reward is given upon delivery.
 #
@@ -7,11 +7,11 @@
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=delivery_1
+#$QUEST_ID=$UNIQUE_QUEST_NAME=competitive_delivery_1
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=My New Quest
+#$QUEST_NAME=$STRING=Competitive Delivery #1
 #
 #Quest Frequency:
 #A quest starts and stops on timed intervals.  Enter the amount of time 

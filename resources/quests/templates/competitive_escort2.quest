@@ -1,4 +1,4 @@
-#!QUESTMAKER_START_SCRIPT Escort #2
+#!QUESTMAKER_START_SCRIPT Competitive Escort #2
 #The player must escort a mob or mobs that you will create from the location of
 #an existing Announcer mob on the map to any room in an AREA of your
 #choosing.  You may also optionally create a mob or mobs to attack the player
@@ -9,11 +9,11 @@
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=escort_2
+#$QUEST_ID=$UNIQUE_QUEST_NAME=competitive_escort_2
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=My New Quest
+#$QUEST_NAME=$STRING=Competitive Escort #2
 #
 #Quest Frequency:
 #A quest starts and stops on timed intervals.  Enter the amount of time 

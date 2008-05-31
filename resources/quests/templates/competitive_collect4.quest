@@ -1,18 +1,18 @@
-#!QUESTMAKER_START_SCRIPT Collect #1
-#An existing mob in your world needs one or more items which you will create brought back to him/her. 
-#The items will be scattered on the ground at locations you will select.
-#A reward is given upon completion of the task and returning the items to the announcer.
+#!QUESTMAKER_START_SCRIPT Competitive Collect #4
+#An existing mob in your world needs one or more items which you will DESCRIBE as a Zapper-Mask brought to him/her. 
+#The items will have to be obtained from your existing world, or generated with common skills.
+#A reward is given upon completion of the task and bringing the items to the announcer.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=collect_1
+#$QUEST_ID=$UNIQUE_QUEST_NAME=competitive_collect_4
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=My New Quest
+#$QUEST_NAME=$STRING=Competitive Collect #4
 #
 #Quest Frequency:
 #A quest starts and stops on timed intervals.  Enter the amount of time 
@@ -72,55 +72,44 @@
 #Select what type of annoucement the announcer will make when the quest starts.
 #$QUEST_ANNOUNCEMENT_TYPE=$CHOOSE=YELL,QUESTCHAT,MPECHO,SAY
 #This is what the announcement says.  Leave it blank if you only want him to talk to people who enter the room with him.
-#$QUEST_ANNOUNCEMENT=($STRING)=I have some things I need collected
+#$QUEST_ANNOUNCEMENT=($STRING)=I have some things I need
 #
 #Announcer Notification: 
 #Specify some additional bit of speech the announcer mob will say to players when they enter the room.
-#$QUEST_NOTIFYSTRING=($LONG_STRING)=I have some things I need collected
+#$QUEST_NOTIFYSTRING=($LONG_STRING)=I have some things I need badly
 #
 #Announcer Instructions: 
 #Specify some additional bit of speech the announcer mob will say to players when the quest is accepted.
-#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to collect some things.  They are somewhere around somewhere.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to find or make me some things.
 #
 #Announcer success:
-#Select what type of speech the announcer will make when a player returns to him after collecting the items.
+#Select what type of speech the announcer will make when after a player gives him the items.
 #$QUEST_WINSPEECH_TYPE=$CHOOSE=SAY,MPECHO,QUESTCHAT,YELL
 #This is what the announcement says.
-#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Congratulations!
+#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Fantastic!
 #
 #Announcer failure:
-#Select what type of speech the announcer will make when noone returns having collecting the items
+#Select what type of speech the announcer will make when noone gives him the items he needs.
 #$QUEST_LOSESPEECH_TYPE=$CHOOSE=QUESTCHAT,MPECHO,SAY,YELL
 #This is what the announcement says.
-#$QUEST_LOSESPEECH_TEXT=($LONG_STRING)=Looks like I'll have fetch them myself
+#$QUEST_LOSESPEECH_TEXT=($LONG_STRING)=Looks like I'll have get them myself
 #
-#!QUESTMAKER_PAGE Specify the Collectable Item or Items
-#The Collectables are the item or items which must be collected
-#
-#Collectables Area/Room: 
-#Specify below the name of the area that your collectable item or items will be created
-#in and/or the rooms in which the item or items will be created.  You may leave both blank
-#to force the quest manager to create the items randomly throughout the world if you like.
-#Use double-quotes around multi-word areas and room ids/names.
-#
-#Collectables Area:
-#$COLLECTABLES_AREA=($AREA)
-#Collectables Room:
-#$COLLECTABLES_ROOMS=($ROOMID)
+#!QUESTMAKER_PAGE Specify the Collectables
+#The Collectables are the items that must be found or created and given to announcer.
 #
 #Collectables items: 
-#Specify the items who will act as the collectable item or items.
-#$COLLECTABLES_ITEMS=$ITEMXML_ONEORMORE
-#
-#Num Items created:
-#Specify how many of the above items will be created for the quest.  If this number is larger than
-#the number of items available, duplicates will be made.  If it is smaller, the choices will be random
-#from the list.
-#$COLLECTABLES_CREATED=($EXPRESSION)=10
+#Describe the items that the player must give to the announcer.  This is described as a zapper mask.
+#If you want to specify items with particular names, use -NAME "+the named item" and similar masks.
+#$COLLECTABLE_ITEMS=$ZAPPERMASK=-JAVACLASS +GenResource -MATERIAL +WOODEN -WEIGHT 1 +WEIGHT 1
 #
 #Num Collectables:
-#Specify how many of the collectable items must be collected.
+#Specify how many of the items must be given to the announcer to complete the quest.
 #$NUM_COLLECTABLES=($EXPRESSION)=1
+#
+#Wrong Collectable speech
+#Specify what the announcer says to players who HAVE accepted the quest, but give the announcer
+#something other than what is described by your mask.
+#$WRONG_COLLECTABLE_SAY=$STRING=This is not what I asked for.
 #
 #!QUESTMAKER_PAGE Quest Completion
 #Select some rewards for bringing back the items.
@@ -145,7 +134,7 @@
 #If this is what you want, enter the next quests name here:
 #$NEXT_QUEST=($EXISTING_QUEST_NAME)
 #
-#!QUESTMAKER_END_SCRIPT Collect #1
+#!QUESTMAKER_END_SCRIPT Collect #4
 
 set name $QUEST_ID
 set display $QUEST_NAME
@@ -163,16 +152,6 @@ set mobgroup
 set mob $ANNOUNCER_NAME
 give script LOAD=$QUEST_ID_announcer.script
 
-set area $COLLECTABLES_AREA
-set roomgroup $COLLECTABLES_ROOMS
-set itemgroup
-set item
-set room
-import items $QUEST_ID_items.xml
-load itemgroup $COLLECTABLES_CREATED any
-set item
-give script LOAD=$QUEST_ID_item.script
-
 set duration $DURATION
 
 <?xml version="1.0"?>
@@ -185,7 +164,6 @@ ONCE_PROG 100
 	MPSETVAR * $QUEST_ID_WARNED ''
 	MPSETVAR * $QUEST_ID_ACCEPTED ''
 	MPSETVAR * $QUEST_ID_COLLECTED ''
-	MPSETVAR * $QUEST_ID_GOT ''
 	MPSETVAR * $QUEST_ID_NUMACCEPTED ''
 	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
 ~
@@ -213,7 +191,6 @@ QUEST_TIME_PROG * -1
 	MPSETVAR * $QUEST_ID_REWARDED ''
 	MPSETVAR * $QUEST_ID_WARNED ''
 	MPSETVAR * $QUEST_ID_COLLECTED ''
-	MPSETVAR * $QUEST_ID_GOT ''
 ~
 
 ALL_GREET_PROG 100
@@ -239,7 +216,7 @@ GIVE_PROG all
 			sayto "$n" Not YOU again
 			return
 		endif
-		if questobj($o *)
+		if islike($o '$COLLECTABLE_ITEMS')
 			mpsetvar $n $QUEST_ID_COLLECTED ++
 			mpjunk $o
 			if var($n $QUEST_ID_COLLECTED >= $NUM_COLLECTABLES)
@@ -268,7 +245,7 @@ GIVE_PROG all
 				sayto "$n" That's $<$n $QUEST_ID_COLLECTED>/$NUM_COLLECTABLES.
 			endif
 		else
-			sayto "$n" What's this?
+			sayto "$n" $WRONG_COLLECTABLE_SAY
 			give "$o" "$n"
 		endif
 	else
@@ -286,7 +263,6 @@ SPEECH_PROG p i accept
 				MPSETVAR $i $QUEST_ID_ACCEPTED '$<$i $QUEST_ID_ACCEPTED> $n'
 				mpsetvar $n $QUEST_ID_ACCEPTED 'YES'
 				mpsetvar $n $QUEST_ID_COLLECTED 0
-				MPSETVAR * $QUEST_ID_GOT 0
 			else
 				sayto "$n" Yes, yes, I know .. now off with you.
 			endif
@@ -294,20 +270,3 @@ SPEECH_PROG p i accept
 	endif
 ~
 </DATA></FILE>
-<FILE><NAME>$QUEST_ID_item.script</NAME>
-<DATA>
-GET_PROG all
-	if VAR($n $QUEST_ID_ACCEPTED != '')
-		MPSETVAR $n $QUEST_ID_GOT ++
-		mpechoat $n Picked up: $<$n $QUEST_ID_GOT>/$NUM_COLLECTABLES.
-	endif
-	
-~
-DROP_PROG all
-	if VAR($n $QUEST_ID_ACCEPTED != '')
-		MPSETVAR $n $QUEST_ID_GOT --
-	endif
-	
-~
-</DATA>
-</FILE>

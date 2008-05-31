@@ -136,9 +136,12 @@ public class Questwins extends StdCommand
                 if(timeRemainingType.length()>0)
                     timeRemaining+=" "+timeRemainingType;
             }
+            String progress=foundS.getVar("*","PROGRESS");
             mob.tell("^w"+instructions+"^N");
             if((timeRemaining!=null)&&(timeRemaining.length()>0))
                 mob.tell("\n\r^yTime Remaining: ^w"+timeRemaining+"^N");
+            if((progress!=null)&&(progress.length()>0))
+                mob.tell("\n\r^yProgress: ^w"+progress+"^N");
 	    }
 		return false;
 	}

@@ -1,6 +1,6 @@
-#!QUESTMAKER_START_SCRIPT Collect #2
+#!QUESTMAKER_START_SCRIPT Competitive Collect #3
 #An existing mob in your world needs one or more items which you will create brought back to him/her. 
-#The items will be scattered among existing mobs whom you will designate.
+#The items will be scattered among mobs which you will create for the task
 #A reward is given upon completion of the task and returning the items to the announcer.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
@@ -8,11 +8,11 @@
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=collect_2
+#$QUEST_ID=$UNIQUE_QUEST_NAME=competitive_collect_3
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=My New Quest
+#$QUEST_NAME=$STRING=Competitive Collect #3
 #
 #Quest Frequency:
 #A quest starts and stops on timed intervals.  Enter the amount of time 
@@ -94,42 +94,43 @@
 #This is what the announcement says.
 #$QUEST_LOSESPEECH_TEXT=($LONG_STRING)=Looks like I'll have fetch them myself
 #
+#
 #!QUESTMAKER_PAGE Specify the Holders
-#The Holders are the mobs who will be holding the items jto collect. These must
-#be existing mobs in your world.  
+#The Holders are the mobs who will be holding the items to collect. 
 #
 #Holders Area/Room: 
-#Specify below the name of the area that your holders mobs will be located
-#in and/or the room in which the mobs can be found.  You may leave both blank
-#to force the quest manager to find the mobs everywhere in the world, but this
-#will hurt the performance of your mud, so use with care.
-#Use double-quotes around multi-word areas and room ids/names.
-#  
+#Specify below the name of the area that your holder mob or mobs will be created
+#in and/or the rooms in which the mob or mobs will be created.  You may leave both blank
+#to force the quest manager to create the mobs randomly throughout the world if you link.
+#Use double-quotes around multi-word areas and room ids/names.  
+#
 #Holders Area:
 #$HOLDERS_AREA=($AREA)
-#Holders Room ID:
+#Holders Room:
 #$HOLDERS_ROOMS=($ROOMID)
 #
-#Holders mob names: 
-#Specify the names of the mobs who will act as the holders mobs.  
-#Use double-quotes around multi-word names.
-#If you specified an area or room above, then the mobs must be located there.
-#You may optionally have the quest manager select mobs by entering
-#a mob name of ANY MASK= followed by a Zapper Mask (see help on 
-#ZAPPERMASKS for information on zapper mask syntax).
-#Remember, if the quest manager can not find your mobs, the quest will not
-#be started.
-#$HOLDERS_NAMES=$NAME
+#Holders mobs: 
+#Specify the mobs who will act as the holder mob or mobs.  You might want to mix things
+#up by making them aggressive and/or mobile.
+#$HOLDERS_MOBS=$MOBXML_ONEORMORE
+#
+#Num Mobs created:
+#Specify how many of the above mobs will be created for the quest.  If this number is larger than
+#the number of mobs available, duplicates will be made.  If it is smaller, the choices will be random
+#from the list.
+#$HOLDERS_CREATED=($EXPRESSION)=10
 #
 #!QUESTMAKER_PAGE Specify the Collectables
-#The Collectables are the items that will be given to holders you specified.
+#The Collectables are the items that will be given to holders you created.
 #
 #Collectables items: 
 #Specify the items who will act as the collectable item or items.
 #$COLLECTABLES_ITEMS=$ITEMXML_ONEORMORE
 #
 #Collectables to create:
-#Specify how many collectable items will be created among the holders.
+#Specify how many collectable items will be created among the holders.  This number
+#should never be larger than the total number of holders, as it will do no good --
+#a holder can not have more than one of the items at a time.
 #$COLLECTABLES_TOTAL=($EXPRESSION)=1
 #
 #Num Collectables:
@@ -159,7 +160,7 @@
 #If this is what you want, enter the next quests name here:
 #$NEXT_QUEST=($EXISTING_QUEST_NAME)
 #
-#!QUESTMAKER_END_SCRIPT Collect #2
+#!QUESTMAKER_END_SCRIPT Collect #3
 
 set name $QUEST_ID
 set display $QUEST_NAME
@@ -179,13 +180,16 @@ give script LOAD=$QUEST_ID_announcer.script
 
 set area $HOLDERS_AREA
 set roomgroup $HOLDERS_ROOMS
-set room
-set mobgroup $HOLDERS_NAMES
+set mobgroup
 set mob
-set roomgroup
+set room
+import mobs $QUEST_ID_mobs.xml
+load mobgroup $HOLDERS_CREATED any
+set mob
 set agentgroup $COLLECTABLES_TOTAL 
 set mobgroup agentgroup
 set mob
+set roomgroup
 set item
 set room
 set area
@@ -335,3 +339,4 @@ DROP_PROG all
 ~
 </DATA>
 </FILE>
+<FILE><NAME>$QUEST_ID_mobs.xml</NAME><DATA><MOBS>$HOLDERS_MOBS</MOBS></DATA></FILE>

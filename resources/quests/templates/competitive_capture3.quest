@@ -1,17 +1,19 @@
-#!QUESTMAKER_START_SCRIPT Killer #2
-#An existing mob in your world needs one or more mobs which you will create killed. 
-#A reward is given upon completion of the task and returning to the announcer.
+#!QUESTMAKER_START_SCRIPT Competitive Capture #3
+#An existing mob in your world needs one existing mob captured 
+#and brought to him.  Finding and defeating the mob in combat will 
+#cause the captured mob to follow the player peacefully.  There is also
+#a peaceful mode for finding lost mobs. A reward is given upon delivery.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=killer_2
+#$QUEST_ID=$UNIQUE_QUEST_NAME=competitive_capture_3
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=My New Quest
+#$QUEST_NAME=$STRING=Competitive Capture #3
 #
 #Quest Frequency:
 #A quest starts and stops on timed intervals.  Enter the amount of time 
@@ -24,7 +26,7 @@
 #Quest Duration:
 #Enter the amount of time that this quest will run and remain available 
 #after it is started.  This time is also the amount of time a player has 
-#to kill the mobs after they have accepted the quest.
+#to delivery the mob after they have accepted the quest.
 #This time is expressed in "ticks" (4 second periods).  You may enter math 
 #expressions, and use the special ? operator to generate random numbers.
 #For instance, 5 + 3?10 would generate a duration of 8-15 ticks.
@@ -38,7 +40,7 @@
 #$QUEST_CRITERIA=$ZAPPERMASK
 #
 #!QUESTMAKER_PAGE Specify the Announcer
-#The Announcer is the mob who will be wanting the other mobs killed. This must
+#The Announcer is the mob who will be wanting the other mob captured. This must
 #be an existing mob in your world.  
 #
 #Announcer Area/Room: 
@@ -71,64 +73,74 @@
 #Select what type of annoucement the announcer will make when the quest starts.
 #$QUEST_ANNOUNCEMENT_TYPE=$CHOOSE=YELL,QUESTCHAT,MPECHO,SAY
 #This is what the announcement says.  Leave it blank if you only want him to talk to people who enter the room with him.
-#$QUEST_ANNOUNCEMENT=($STRING)=I have someones I need killed!
+#$QUEST_ANNOUNCEMENT=($STRING)=I have someone I need captured!
 #
 #Announcer Notification: 
 #Specify some additional bit of speech the announcer mob will say to players when they enter the room.
-#$QUEST_NOTIFYSTRING=($LONG_STRING)=I have someones I need killed!  Are you game?
+#$QUEST_NOTIFYSTRING=($LONG_STRING)=I have someone I need captured!  Are you game?
 #
 #Announcer Instructions: 
 #Specify some additional bit of speech the announcer mob will say to players when the quest is accepted.
-#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to kill some folks.  They are somewhere around somewhere.  Just beat them senseless.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to capture some folks.  They are somewhere around somewhere.  Just beat them senseless, and they will yield to you.
 #
 #Announcer success:
-#Select what type of speech the announcer will make when a player returns to him after killing the mobs.
+#Select what type of speech the announcer will make when a player returns to him with the captured mobs.
 #$QUEST_WINSPEECH_TYPE=$CHOOSE=SAY,MPECHO,QUESTCHAT,YELL
 #This is what the announcement says.
-#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Congratulations! They're dead!
+#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Aha, we got them! Congratulations!
 #
 #Announcer failure:
-#Select what type of speech the announcer will make when noone returns having killed the mobs.
+#Select what type of speech the announcer will make when noone returns with the captured mobs.
 #$QUEST_LOSESPEECH_TYPE=$CHOOSE=QUESTCHAT,MPECHO,SAY,YELL
 #This is what the announcement says.
 #$QUEST_LOSESPEECH_TEXT=($LONG_STRING)=Looks like I'll have wait for the law to get after them.
 #
-#!QUESTMAKER_PAGE Specify the Killable Mob or Mobs
-#The Killables are the mob or mobs which must be defeated.
+#!QUESTMAKER_PAGE Specify the Capturable Mob or Mobs
+#The Capturables are the mob or mobs which must be defeated and captured.
 #
-#Killables Area/Room: 
-#Specify below the name of the area that your killerable mob or mobs will be created
-#in and/or the rooms in which the mob or mobs will be created.  You may leave both blank
-#to force the quest manager to create the mobs randomly throughout the world if you link.
-#Use double-quotes around multi-word areas and room ids/names.  
+#Capturables Area/Room: 
+#Specify below the name of the area that your capturable mob or mobs will be located
+#in and/or the room in which the mob or mobs can be found.  You may leave both blank
+#to force the quest manager to find the mobs somewhere in the world, but this
+#will hurt the performance of your mud, so use with care.  
+#Use double-quotes around multi-word areas and room ids/names.
 #
-#Killables Area:
-#$KILLABLES_AREA=($AREA)
-#Killables Room:
-#$KILLABLES_ROOMS=($ROOMID)
+#Capturables Area:
+#$CAPTURABLES_AREA=($AREA)
+#Capturables Room:
+#$CAPTURABLES_ROOMS=($ROOMID)
 #
-#Killables mobs: 
-#Specify the mobs who will act as the killables mob or mobs.  You might want to mix things
-#up by making them aggressive and/or mobile.
-#$KILLABLES_MOBS=$MOBXML_ONEORMORE
+#Capturables mob names: 
+#Specify the names of the mobs who will act as the capturables mob or mobs.  
+#Use double-quotes around multi-word names. ONE will be chosen at random from this group.
+#If you specified an area or rooms above, then the mobs must be located there. 
+#You may optionally have the quest manager select a random mobs by entering
+#a mob name of ANY MASK= followed by a Zapper Mask (see help on 
+#Prop_HaveZapper for information on zapper mask syntax).
+#Remember, if the quest manager can not find your mobs, the quest will not
+#be started.
+#$CAPTURABLES_NAMES=$NAME
 #
-#Num Mobs created:
-#Specify how many of the above mobs will be created for the quest.  If this number is larger than
-#the number of mobs available, duplicates will be made.  If it is smaller, the choices will be random
-#from the list.
-#$KILLABLES_CREATED=($EXPRESSION)=10
+#!QUESTMAKER_PAGE Capturables Behavior
+#Select some details about the capturable mobs
 #
-#Num Killables:
-#Specify how many of the killable mobs must be killed.
-#$NUM_KILLABLES=($EXPRESSION)=1
+#Capturables follow: 
+#Set this to PEACEFUL if the capturable mobs will follow the player who discovers
+#them, and VIOLENT if the capturable mobs must be defeated in combat first.
+#$CAPTURABLES_FOLLOW=$CHOOSE=VIOLENT,PEACEFUL
 #
-#Killables response: 
-#You may optionally specify some additional bit of speech the killables 
+#Capturables response: 
+#You may optionally specify some additional bit of speech the capturables 
 #mobs will say to the players when they enter the room with them. 
-#$KILLABLES_RESPONSE=($STRING)=So, you've come for me.  Come and get me.
+#$CAPTURABLES_RESPONSE=($STRING)=So, you've come for me.  Come and get me.
+#
+#Capturables surrender: 
+#You may optionally specify some additional bit of speech the capturables 
+#mobs will say to the players when they are defeated in combat.
+#$CAPTURABLES_SURRENDER=($STRING)=I surrender
 #
 #!QUESTMAKER_PAGE Quest Completion
-#Select some rewards for killing the mobs:
+#Select some rewards for delivering the mobs:
 #
 #Quest Point?
 #$QUEST_POINT=$CHOOSE=YES,NO
@@ -150,7 +162,7 @@
 #If this is what you want, enter the next quests name here:
 #$NEXT_QUEST=($EXISTING_QUEST_NAME)
 #
-#!QUESTMAKER_END_SCRIPT Killer #2
+#!QUESTMAKER_END_SCRIPT Capture #1
 
 set name $QUEST_ID
 set display $QUEST_NAME
@@ -167,21 +179,19 @@ set room $ANNOUNCER_ROOM
 set mobgroup
 set mob $ANNOUNCER_NAME
 give script LOAD=$QUEST_ID_announcer.script
+give stat charisma 100
 
-set area $KILLABLES_AREA
-set roomgroup $KILLABLES_ROOMS
+set area $CAPTURABLES_AREA
+set roomgroup $CAPTURABLES_ROOMS
+set room
 set mobgroup
 set mob
-set room
-import mobs $QUEST_ID_mobs.xml
-load mobgroup $KILLABLES_CREATED any
-set mob
-give script LOAD=$QUEST_ID_killable.script
+set mobgroup $CAPTURABLES_NAMES
+give script LOAD=$QUEST_ID_capturable.script
 
 set duration $DURATION
 
 <?xml version="1.0"?>
-<FILE><NAME>$QUEST_ID_mobs.xml</NAME><DATA><MOBS>$KILLABLES_MOBS</MOBS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
 ONCE_PROG 100
@@ -189,7 +199,7 @@ ONCE_PROG 100
 	MPSETVAR * $QUEST_ID_REWARDED ''
 	MPSETVAR * $QUEST_ID_WARNED ''
 	MPSETVAR * $QUEST_ID_ACCEPTED ''
-	MPSETVAR * $QUEST_ID_KILLED ''
+	MPSETVAR * $QUEST_ID_CAPTURED ''
 	MPSETVAR * $QUEST_ID_NUMACCEPTED ''
 	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
 ~
@@ -198,7 +208,7 @@ QUEST_TIME_PROG * 1
 	mpsetvar $i $QUEST_ID_NUMACCEPTED '$<$i $QUEST_ID_ACCEPTED>.LENGTH#'
 	for $0 = 0 to< '$<$i $QUEST_ID_NUMACCEPTED>'
 		tell "$<$i $QUEST_ID_ACCEPTED>.$0" You have 1 minute to complete my quest.
-	next
+	NEXT
 ~
 
 QUEST_TIME_PROG * -1
@@ -216,7 +226,7 @@ QUEST_TIME_PROG * -1
 	MPSETVAR * $QUEST_ID_ACCEPTED ''
 	MPSETVAR * $QUEST_ID_REWARDED ''
 	MPSETVAR * $QUEST_ID_WARNED ''
-	MPSETVAR * $QUEST_ID_KILLED ''
+	MPSETVAR * $QUEST_ID_CAPTURED ''
 ~
 
 ALL_GREET_PROG 100
@@ -231,39 +241,44 @@ ALL_GREET_PROG 100
 		endif
 	endif
 
-	IF VAR($n $QUEST_ID_ACCEPTED != '') AND ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
-		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
-			sayto "$n" Not YOU again
-			return
-		endif
-		if  VAR($i $QUEST_ID_REWARDED == $n)
-			sayto "$n" Not YOU again
-			return
-		endif
-		if var($n $QUEST_ID_KILLED >= $NUM_KILLABLES)
-			mpsetvar $i $QUEST_ID_REWARDED $n
-			if EVAL('$EXP' != '')
-				mpexp $n $EXP
+	IF isnpc($n) and questmob($n *) and isfollow($n)
+		mpargset $9 '$%ISFOLLOW($n)%'
+		if ISLIKE($9 '$QUEST_CRITERIA') and ISPC($9)
+			if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($9 *)
+				sayto "$9" Not YOU again
+				return
 			endif
-			if EVAL('$FACTION' != '')
-				mpfaction $n $FACTION $NUMFACTION
+			if  VAR($i $QUEST_ID_REWARDED == $9)
+				sayto "$9" Not YOU again
+				return
 			endif
-			if EVAL('$QUEST_POINT' == 'YES')
-				mpoload QuestPoint
-				give "a quest point" "$n"
+			mpforce $n follow self
+			mpforce $n follow $i
+			mpsetvar $9 $QUEST_ID_CAPTURED ++;
+			if var($9 $QUEST_ID_CAPTURED >= 1)
+				mpsetvar $i $QUEST_ID_REWARDED $9
+				if EVAL('$EXP' != '')
+					mpexp $9 $EXP
+				endif
+				if EVAL('$FACTION' != '')
+					mpfaction $9 $FACTION $NUMFACTION
+				endif
+				if EVAL('$QUEST_POINT' == 'YES')
+					mpoload QuestPoint
+					give "a quest point" "$9"
+				endif
+				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+					mpoload $GOLD
+					give $GOLD "$9"
+				endif
+				mpquestwin $9 *
+				$QUEST_WINSPEECH_TYPE $QUEST_WINSPEECH_TEXT
+				mpendquest *
+				IF EVAL('$NEXT_QUEST' != '')
+					mpstartquest $NEXT_QUEST
+				ENDIF
 			endif
-			if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
-				mpoload $GOLD
-				give $GOLD "$n"
-			endif
-			mpquestwin $n *
-			$QUEST_WINSPEECH_TYPE $QUEST_WINSPEECH_TEXT
-			mpendquest *
-			IF EVAL('$NEXT_QUEST' != '')
-				mpstartquest $NEXT_QUEST
-			ENDIF
-		else
-		endif
+		ENDIF
 	endif
 ~
 
@@ -275,7 +290,7 @@ SPEECH_PROG p i accept
 				mpqset * REMAINING $DURATION
 				MPSETVAR $i $QUEST_ID_ACCEPTED '$<$i $QUEST_ID_ACCEPTED> $n'
 				mpsetvar $n $QUEST_ID_ACCEPTED 'YES'
-				mpsetvar $n $QUEST_ID_KILLED 0
+				mpsetvar $n $QUEST_ID_CAPTURED 0
 			else
 				sayto "$n" Yes, yes, I know .. now off with you.
 			endif
@@ -283,24 +298,28 @@ SPEECH_PROG p i accept
 	endif
 ~
 </DATA></FILE>
-<FILE><NAME>$QUEST_ID_killable.script</NAME>
+<FILE><NAME>$QUEST_ID_capturable.script</NAME>
 <DATA>
 GREET_PROG 100
-	if VAR($n $QUEST_ID_ACCEPTED != '')
-		sayto "$n" $KILLABLES_RESPONSE
+	if VAR($n $QUEST_ID_ACCEPTED != '') and !isfollow($i)
+		sayto "$n" $CAPTURABLES_RESPONSE
+		if EVAL('$CAPTURABLES_FOLLOW' == 'PEACEFUL')
+			sayto "$n" $CAPTURABLES_SURRENDER
+			mpstop all
+			follow "$n"
+		endif
 	endif
 ~
 	
-DEATH_PROG
-	mpargset $9 $n
-	if isfollow($n) and isnpc($n)
-		mpargset $9 $%ISFOLLOW($n)%
-	endif
-	if VAR($9 $QUEST_ID_ACCEPTED != '')
-		mpsetvar $9 $QUEST_ID_KILLED ++;
-		if EVAL($NUM_KILLABLES > 1)
-			mpechoat $9 Killed $<$9 $QUEST_ID_KILLED>/$NUM_KILLABLES
-		else
+CNCLMSG_PROG DEATH ALL
+	if ISFIGHT($i)
+		mpargset $9 '$%ISFIGHT($i)%'
+		if VAR($9 $QUEST_ID_ACCEPTED != '')
+			mpgset $i HITS 1
+			mpstop all
+			sayto "$9" $CAPTURABLES_SURRENDER
+			follow "$9"
+			RETURN CANCEL
 		endif
 	endif
 ~

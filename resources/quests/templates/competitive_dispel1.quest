@@ -1,4 +1,4 @@
-#!QUESTMAKER_START_SCRIPT Dispel #1
+#!QUESTMAKER_START_SCRIPT Competitive Dispel #1
 #The player must dispel or otherwise remove a spell, disease, poison, or
 #other affect from 1 or more affected mobs on your map.
 #
@@ -7,11 +7,11 @@
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=dispel_1
+#$QUEST_ID=$UNIQUE_QUEST_NAME=competitive_dispel_1
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=My New Quest
+#$QUEST_NAME=$STRING=Competitive Dispel #1
 #
 #Quest Frequency:
 #A quest starts and stops on timed intervals.  Enter the amount of time 

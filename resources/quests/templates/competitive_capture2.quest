@@ -1,20 +1,19 @@
-#!QUESTMAKER_START_SCRIPT Capture #1
-#An existing mob in your world needs one or more other existing mobs captured 
+#!QUESTMAKER_START_SCRIPT Competitive Capture #2
+#An existing mob in your world needs one or more mobs which you will create captured 
 #and brought to him.  Finding and defeating the mob or mobs in combat will 
-#cause the captured mob to follow the player peacefully.  There is also
-#a peaceful mode for finding lost mobs.
-#A reward is given upon delivery.
+#cause the captured mob to follow the player peacefully.    There is also
+#a peaceful mode for finding lost mobs. A reward is given upon delivery.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=capture_1
+#$QUEST_ID=$UNIQUE_QUEST_NAME=competitive_capture_2
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=My New Quest
+#$QUEST_NAME=$STRING=Competitive Capture #2
 #
 #Quest Frequency:
 #A quest starts and stops on timed intervals.  Enter the amount of time 
@@ -30,7 +29,7 @@
 #to delivery the mob after they have accepted the quest.
 #This time is expressed in "ticks" (4 second periods).  You may enter math 
 #expressions, and use the special ? operator to generate random numbers.
-#For instance, 5 + 3?10 would generate a duration of 8-15 ticks. 
+#For instance, 5 + 3?10 would generate a duration of 8-15 ticks.
 #A duration of 0 will cause the quest to run until your server is shut down.
 #$DURATION=$EXPRESSION=1350
 #
@@ -82,7 +81,7 @@
 #
 #Announcer Instructions: 
 #Specify some additional bit of speech the announcer mob will say to players when the quest is accepted.
-#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to capture some folks.  They are somewhere around somewhere.  Just beat them senseless, and they will yield to you.
+#$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to capture some folks.  They are somewhere around somewhere. Just beat them senseless, and they will yield to you.
 #
 #Announcer success:
 #Select what type of speech the announcer will make when a player returns to him with the captured mobs.
@@ -100,10 +99,9 @@
 #The Capturables are the mob or mobs which must be defeated and captured.
 #
 #Capturables Area/Room: 
-#Specify below the name of the area that your capturable mob or mobs will be located
-#in and/or the room in which the mob or mobs can be found.  You may leave both blank
-#to force the quest manager to find the mobs somewhere in the world, but this
-#will hurt the performance of your mud, so use with care.  
+#Specify below the name of the area that your capturable mob or mobs will be created
+#in and/or the rooms in which the mob or mobs will be created.  You may leave both blank
+#to force the quest manager to create the mobs randomly throughout the world if you link.
 #Use double-quotes around multi-word areas and room ids/names.
 #
 #Capturables Area:
@@ -111,26 +109,25 @@
 #Capturables Room:
 #$CAPTURABLES_ROOMS=($ROOMID)
 #
-#Capturables mob names: 
-#Specify the names of the mobs who will act as the capturables mob or mobs.  
-#Use double-quotes around multi-word names.
-#If you specified an area or rooms above, then the mobs must be located there. 
-#You may optionally have the quest manager select a random mobs by entering
-#a mob name of ANY MASK= followed by a Zapper Mask (see help on 
-#Prop_HaveZapper for information on zapper mask syntax).
-#Remember, if the quest manager can not find your mobs, the quest will not
-#be started.
-#$CAPTURABLES_NAMES=$NAME
+#Capturables mobs: 
+#Specify the mobs who will act as the capturables mob or mobs.  You might want to mix things
+#up by making them aggressive and/or mobile.
+#$CAPTURABLES_MOBS=$MOBXML_ONEORMORE
+#
+#Num Mobs created:
+#Specify how many of the above mobs will be created for the quest.  If this number is larger than
+#the number of mobs available, duplicates will be made.  If it is smaller, the choices will be random
+#from the list.
+#$CAPTURABLES_CREATED=($EXPRESSION)=10
 #
 #Num Capturables:
-#Specify how many of the capturable mobs must be brought and presented to the announcer
-#in order to complete the quest.
-#$NUM_CAPTURABLES=($EXPRESSION)=1
+#Specify how many of the capturable mobs must be brought in to complete the quest.
+#$NUM_CAPTURABLES=($EXPRESSION)=5
 #
 #!QUESTMAKER_PAGE Capturables Behavior
 #Select some details about the capturable mobs
 #
-#Capturables follow: 
+#Capturables peaceful: 
 #Set this to PEACEFUL if the capturable mobs will follow the player who discovers
 #them, and VIOLENT if the capturable mobs must be defeated in combat first.
 #$CAPTURABLES_FOLLOW=$CHOOSE=VIOLENT,PEACEFUL
@@ -168,7 +165,7 @@
 #If this is what you want, enter the next quests name here:
 #$NEXT_QUEST=($EXISTING_QUEST_NAME)
 #
-#!QUESTMAKER_END_SCRIPT Capture #1
+#!QUESTMAKER_END_SCRIPT Capture #2
 
 set name $QUEST_ID
 set display $QUEST_NAME
@@ -189,15 +186,18 @@ give stat charisma 100
 
 set area $CAPTURABLES_AREA
 set roomgroup $CAPTURABLES_ROOMS
-set room
 set mobgroup
-set mobgroup $CAPTURABLES_NAMES
+set mob
+set room
+import mobs $QUEST_ID_mobs.xml
+load mobgroup $CAPTURABLES_CREATED any
 set mob
 give script LOAD=$QUEST_ID_capturable.script
 
 set duration $DURATION
 
 <?xml version="1.0"?>
+<FILE><NAME>$QUEST_ID_mobs.xml</NAME><DATA><MOBS>$CAPTURABLES_MOBS</MOBS></DATA></FILE>
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
 ONCE_PROG 100
@@ -326,8 +326,8 @@ CNCLMSG_PROG DEATH ALL
 		mpargset $9 '$%ISFIGHT($i)%'
 		if VAR($9 $QUEST_ID_ACCEPTED != '')
 			mpgset $i HITS 1
-			mpstop all
 			sayto "$9" $CAPTURABLES_SURRENDER
+			mpstop all
 			follow "$9"
 			RETURN CANCEL
 		endif

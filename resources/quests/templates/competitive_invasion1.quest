@@ -1,5 +1,5 @@
-#!QUESTMAKER_START_SCRIPT Invasion #2
-#The player must repel an invasion by a set of existing mobs, from elsewhere in your world, 
+#!QUESTMAKER_START_SCRIPT Competitive Invasion #1
+#The player must repel an invasion by a set of mobs, which you will create, 
 #who will enter an existing area and behave aggressively towards the inhabitants.
 #An Announcer mob will offer an optional prize to the first player who 
 #accepts the quest and kills X of the mobs.
@@ -9,11 +9,11 @@
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=invasion_2
+#$QUEST_ID=$UNIQUE_QUEST_NAME=competitive_invasion_1
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=My New Quest
+#$QUEST_NAME=$STRING=Competitive Invasion #1
 #
 #Quest Frequency:
 #A quest starts and stops on timed intervals.  Enter the amount of time 
@@ -92,29 +92,19 @@
 #Here's where you specify the invader mobs and where they launch their invasion
 #from.
 #
-#Invaders Area/Room: 
-#Specify below the name of the area that your Invader mobs will be located
-#in and/or the room in which the mobs can be found.  You may leave both blank
-#to force the quest manager to find the mobs somewhere in the world, but this
-#will hurt the performance of your mud, so use with care.
-#Use double-quotes around multi-word areas and room ids/names.
-#  
-#Invaders Area:
-#$INVADER_AREA=($AREA)
-#Invaders Room ID:
-#$INVADER_ROOM=($ROOMID)
+#Invader Room: 
+#Specify below the name of the area or room that your Invader mobs will start off 
+#in.  This room MAY be outside the Announcer's area, but should be very close by to
+#allow the invasion to happen quickly.  The further this room is from the invaded area, 
+#the longer it will take for your mobs to reach it.
+#Use double-quotes around multi-word room ids/names.
+#$INVADER_ROOM=$ROOMID
 #
-#Invader mobs names: 
-#Specify the names of the mobs who will act as the Invader mobs. 
-#They will work their way from their current location to the Announcers area. 
-#Use double-quotes around multi-word names.
-#If you specified an area or room above, then the mob must be located there.
-#You may optionally have the quest manager select a 'random' mob by entering
-#a mob name of ANY MASK= followed by a Zapper Mask (see help on 
-#ZAPPERMASKS for information on zapper mask syntax).
-#Remember, if the quest manager can not find your mobs, the quest will not
-#be started.
-#$INVADER_NAMES=$NAME
+#Invader mobs: 
+#Create or select the mobs below that the player must kill.  These mobs
+#will be aggressive, and will automatically track to random rooms in the
+#invaded area.  Include multiples of the same mobs to ensure duplicates.
+#$INVADER_MOBS=$MOBXML_ONEORMORE
 #
 #Invaders To Kill:
 #Enter the total number of invaders that the player must kill to complete
@@ -172,7 +162,7 @@
 #If this is what you want, enter the next quests name here:
 #$NEXT_QUEST=($EXISTING_QUEST_NAME)
 #
-#!QUESTMAKER_END_SCRIPT Invasion #2
+#!QUESTMAKER_END_SCRIPT Invasion #1
 
 set name $QUEST_ID
 set display $QUEST_NAME
@@ -190,10 +180,12 @@ set mobgroup
 set mob $ANNOUNCER_NAME
 give script LOAD=$QUEST_ID_announcer.script
 
-set area $INVADER_AREA
-set room $INVADER_ROOM
+set area 
+set mobgroup
 set mob
-set mobgroup $INVADER_NAMES
+set room $INVADER_ROOM
+import mobs $QUEST_ID_invaders.xml
+load mobgroup all
 set mob
 give script LOAD=$QUEST_ID_invader.script
 give behavior Mobile min=1 max=10 chance=99
@@ -267,14 +259,15 @@ SPEECH_PROG p i accept
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			if VAR($n $QUEST_ID_ACCEPTED == '')
-				mpsetvar $n $QUEST_ID_ACCEPTED 'YES'
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
+				mpsetvar $n $QUEST_ID_ACCEPTED 'TRUE'
 			else
 				sayto "$n" Yes, yes, I know .. now off with you.
 			endif
 		endif
 	endif
 ~
+
 </DATA></FILE>
 <FILE><NAME>$QUEST_ID_invader.script</NAME>
 <DATA>
