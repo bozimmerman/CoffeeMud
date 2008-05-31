@@ -1256,7 +1256,8 @@ public class Quests extends StdLibrary implements QuestManager
         if((!tempF.exists())||(!tempF.isDirectory()))
             return null;
         CMFile[] files=tempF.listFiles();
-        DVector templatesDV=new DVector(5);
+        DVector templatesDV=new DVector(6);
+        Vector catagories=new Vector();
         boolean parsePages=fileToGet!=null;
         if(files.length==0) return null;
         for(int f=0;f<files.length;f++)
@@ -1285,9 +1286,18 @@ public class Quests extends StdLibrary implements QuestManager
                             if(s.startsWith("QUESTMAKER_START_SCRIPT"))
                             {
                                 String name=s.substring(23).trim();
+                                String catagory="Templates";
+                                int x=name.indexOf("::");
+                                if(x>=0)
+                                {
+                                    catagory=name.substring(0,x).trim();
+                                    name=name.substring(x+2).trim();
+                                    if(!catagories.contains(catagory.toUpperCase()))
+                                        catagories.add(catagory.toUpperCase());
+                                }
                                 foundStart=true;
                                 script=new StringBuffer("");
-                                templatesDV.addElement(name,"",files[f].getName(),new Vector(),script);
+                                templatesDV.addElement(name,"",files[f].getName(),new Vector(),script,catagory);
                             }
                             else
                             if(s.startsWith("QUESTMAKER_END_SCRIPT")&&(foundStart))
@@ -1383,7 +1393,7 @@ public class Quests extends StdLibrary implements QuestManager
         }
         if(templatesDV.size()==0)
             return null;
-        DVector sortedTemplatesDV=new DVector(5);
+        DVector sortedTemplatesDV=new DVector(6);
         while(templatesDV.size()>0)
         {
             int maxRow=0;
@@ -1394,8 +1404,30 @@ public class Quests extends StdLibrary implements QuestManager
                                          templatesDV.elementAt(maxRow,2),
                                          templatesDV.elementAt(maxRow,3),
                                          templatesDV.elementAt(maxRow,4),
-                                         templatesDV.elementAt(maxRow,5));
+                                         templatesDV.elementAt(maxRow,5),
+                                         templatesDV.elementAt(maxRow,6));
             templatesDV.removeElementsAt(maxRow);
+        }
+        templatesDV=sortedTemplatesDV;
+        sortedTemplatesDV=new DVector(6);
+        if(catagories.size()==0)
+            catagories.addElement("");
+        for(int c=0;c<catagories.size();c++)
+        {
+            String cat=(String)catagories.elementAt(c);
+            for(int d=0;d<templatesDV.size();d++)
+            {
+                if(((String)templatesDV.elementAt(d,6)).equalsIgnoreCase(cat))
+                {
+                    sortedTemplatesDV.addElement(templatesDV.elementAt(d,1),
+                                                 templatesDV.elementAt(d,2),
+                                                 templatesDV.elementAt(d,3),
+                                                 templatesDV.elementAt(d,4),
+                                                 templatesDV.elementAt(d,5),
+                                                 templatesDV.elementAt(d,6));
+                    d--;
+                }
+            }
         }
         return sortedTemplatesDV;
     }
