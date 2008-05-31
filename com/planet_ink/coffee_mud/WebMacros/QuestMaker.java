@@ -33,7 +33,7 @@ public class QuestMaker extends StdWebMacro
 {
     public String name()    {return "QuestMaker";}
 
-    public DVector getPage(MOB mob, ExternalHTTPRequests httpReq, String template, String page)
+    public DVector getPage(MOB mob, ExternalHTTPRequests httpReq, String template, String page, String fileToGet)
     {
     	DVector pageList=(DVector)httpReq.getRequestObjects().get("QM_PAGE_LIST");
     	DVector filePages=(DVector)httpReq.getRequestObjects().get("QM_FILE_PAGES");
@@ -42,7 +42,7 @@ public class QuestMaker extends StdWebMacro
     		httpReq.removeRequestParameter("QM_FILE_PAGES"); 
     		filePages=null;
     		if(pageList!=null) return pageList;
-    		pageList=CMLib.quests().getQuestTemplate(mob, null);
+    		pageList=CMLib.quests().getQuestTemplate(mob, fileToGet);
     		httpReq.getRequestObjects().put("QM_PAGE_LIST",pageList);
     		return pageList;
     	}
@@ -132,30 +132,36 @@ public class QuestMaker extends StdWebMacro
 		MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
 		if(M==null) return "[error -- no authenticated mob!]";
 		
+        String qFileToGet=null;
+        if(parms.containsKey("QMFILETOGET"))
+            qFileToGet=(String)parms.get("QMFILETOGET");
+        
         String qTemplate=httpReq.getRequestParameter("QMTEMPLATE");
         if((qTemplate==null)||(qTemplate.length()==0)) qTemplate="";
+        
         String qPageStr=httpReq.getRequestParameter("QMPAGE");
         if((qPageStr==null)||(qPageStr.length()==0)) qPageStr="";
+        
         String qPageErrors=httpReq.getRequestParameter("QMPAGEERRORS");
         if((qPageErrors==null)||(qPageErrors.length()==0)) qPageErrors="";
         
         if(parms.containsKey("QMPAGETITLE"))
         {
-        	DVector pageData=getPage(M,httpReq,qTemplate,qPageStr);
+        	DVector pageData=getPage(M,httpReq,qTemplate,qPageStr,null);
         	if(pageData==null) return "[error -- no page selected!]";
             return (String)pageData.elementAt(0,2);
         }
         else
         if(parms.containsKey("QMPAGEINSTR"))
         {
-        	DVector pageData=getPage(M,httpReq,qTemplate,qPageStr);
+        	DVector pageData=getPage(M,httpReq,qTemplate,qPageStr,null);
         	if(pageData==null) return "[error -- no page selected!]";
             return (String)pageData.elementAt(0,3);
         }
         else
         if(parms.containsKey("QMPAGEFIELDS"))
         {
-        	DVector pageData=getPage(M,httpReq,qTemplate,qPageStr);
+        	DVector pageData=getPage(M,httpReq,qTemplate,qPageStr,qFileToGet);
         	if(pageData==null) return "[error - no page data?!]";
     		String labelColor=(String)parms.get("LABELCOLOR");
     		if(labelColor==null) labelColor="<FONT COLOR=YELLOW><B>";
@@ -226,7 +232,7 @@ public class QuestMaker extends StdWebMacro
         			list.append("<TR><TD COLSPAN=2><BR></TD></TR>\n\r");
         			list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
         			list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
-        			list.append("<TD><INPUT TYPE=TEXT SIZE=10 NAME="+httpKeyName+" ");
+        			list.append("<TD><INPUT TYPE=TEXT SIZE=20 NAME="+httpKeyName+" ");
         			list.append(" VALUE=\""+htmlOutgoingFilter(oldValue)+"\"></TD></TR>");
                 	break;
                 }
@@ -461,7 +467,7 @@ public class QuestMaker extends StdWebMacro
         else
         if(parms.containsKey("QMLASTPAGE"))
         {
-        	DVector pageData=getPage(M,httpReq,qTemplate,qPageStr);
+        	DVector pageData=getPage(M,httpReq,qTemplate,qPageStr,null);
         	if(pageData==null) return "false";
         	DVector filePages=(DVector)httpReq.getRequestObjects().get("QM_FILE_PAGES");
             if(filePages==null) return "false";
@@ -486,7 +492,7 @@ public class QuestMaker extends StdWebMacro
         		return "";
         	}
         	if(qTemplate.length()==0) return "[error - no template chosen?!]";
-        	DVector pageData=getPage(M,httpReq,qTemplate,qPageStr);
+        	DVector pageData=getPage(M,httpReq,qTemplate,qPageStr,null);
         	if(pageData==null) return "[error - no page data?!]";
             StringBuffer errors=new StringBuffer("");
             for(int step=1;step<pageData.size();step++)
