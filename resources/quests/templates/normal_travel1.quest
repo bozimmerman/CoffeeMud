@@ -156,14 +156,6 @@ ONCE_PROG 100
     mpsetvar $i MYROOM '$%QVAR(* WHEREHAPPENED_ROOMID)%'
 ~
 
-RAND_PROG 99
-    if QVAR(* REMAINING == '')
-        MPENDQUEST $i
-    else
-        mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
-    endif
-~
-
 ENTRY_PROG 100
 	if EVAL($n == $i) AND INROOM($i == '$<$i MYROOM>') AND VAR($i $QUEST_ID_REWARDED == '')
 		mpsetvar $n $QUEST_ID_REWARDED 'REWARDED'
