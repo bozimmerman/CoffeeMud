@@ -97,10 +97,6 @@
 #Select whether a player may complete this quest multiple times:
 #$MULTIPLE=$CHOOSE=YES,NO
 #
-#If you choose, you may have completion of this quest automatically start another.
-#If this is what you want, enter the next quests name here:
-#$NEXT_QUEST=($EXISTING_QUEST_NAME)
-#
 #Travel response Type: 
 #Specify what sort of emote occurs after the player successfully travels
 #to the designated room.
@@ -191,9 +187,6 @@ ENTRY_PROG 100
 			mpquestwin $i *
 			$TRAVEL_RESPONSE_TYPE $TRAVEL_RESPONSE
 			mpendquest $i
-			IF EVAL('$NEXT_QUEST' != '')
-				mpstartquest $NEXT_QUEST
-			ENDIF
 		endif
 	endif
 ~
