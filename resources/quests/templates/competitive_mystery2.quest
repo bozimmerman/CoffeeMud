@@ -266,6 +266,7 @@ set roomgroup
 set room $ANNOUNCER_ROOM
 set mobgroup
 set mob $ANNOUNCER_NAME
+give stat keyplayer true
 take behavior MudChat
 give script LOAD=$QUEST_ID_announcer.script~
 

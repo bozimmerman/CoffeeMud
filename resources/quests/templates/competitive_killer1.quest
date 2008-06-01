@@ -168,6 +168,7 @@ set area $ANNOUNCER_AREA
 set room $ANNOUNCER_ROOM
 set mobgroup
 set mob $ANNOUNCER_NAME
+give stat keyplayer true
 give script LOAD=$QUEST_ID_announcer.script
 
 set area $KILLABLES_AREA

@@ -114,12 +114,13 @@ set display $QUEST_NAME
 set wait 1
 set interval 1
 set duration 0
-#quiet
+quiet
 
 set area $ANNOUNCER_AREA
 set room $ANNOUNCER_ROOM
 set mobgroup
 set mob $ANNOUNCER_NAME
+give stat keyplayer true
 give script LOAD=$QUEST_ID_announcer.script
 
 set mobgroup
@@ -143,7 +144,6 @@ SPEECH_PROG p i accept $QUEST_NAME
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			sayto "$n" $QUEST_INSTRUCTIONSSTRING
-			mpqset * REMAINING $DURATION
             mpscript $n INDIVIDUAL SAVABLE LOAD=$QUEST_ID_playertrack.script
 		endif
 	endif

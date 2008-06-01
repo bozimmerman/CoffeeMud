@@ -203,11 +203,13 @@ set area $ANNOUNCER_AREA
 set room $ANNOUNCER_ROOM
 set mobgroup
 set mob $ANNOUNCER_NAME
+give stat keyplayer true
 give script LOAD=$QUEST_ID_dispelannouncer.script
 
 set area $DISPELEE_AREA
 set room $DISPELEE_ROOM
 set $DISPELEE_TYPE $DISPELEE_NAME
+give stat keyplayer true
 give affect $DISPEL_SPELL $DISPEL_SPELL_PARMS
 give script LOAD=$QUEST_ID_dispel.script
 

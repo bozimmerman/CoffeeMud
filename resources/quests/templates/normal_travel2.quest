@@ -1,4 +1,4 @@
-#!QUESTMAKER_START_SCRIPT Competitive Travel #2
+#!QUESTMAKER_START_SCRIPT Normal Travel #2
 #The player travels at the behest of one existing mob in your world
 #to another existing mob somewhere else in your world.  A reward
 #is optionally given upon arrival.
@@ -8,29 +8,11 @@
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=competitive_travel_2
+#$QUEST_ID=$UNIQUE_QUEST_NAME=normal_travel_2
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=Competitive Travel #2
-#
-#Quest Frequency:
-#A quest starts and stops on timed intervals.  Enter the amount of time 
-#that this quest will remain unavailable between runs. This number is in 
-#"ticks" (4 second periods).  You may enter math expressions, and use the 
-# special ? operator to generate random numbers.  A frequency of
-#5 + 3?10 would generate a frequency of 8-15 ticks.
-#$FREQUENCY=$EXPRESSION=1350
-#
-#Quest Duration:
-#Enter the amount of time that this quest will run and remain available 
-#after it is started.  This time is also the amount of time a player has 
-#to complete their travel after accepting the quest.
-#This time is expressed in "ticks" (4 second periods).  You may enter math 
-#expressions, and use the special ? operator to generate random numbers.
-#For instance, 5 + 3?10 would generate a duration of 8-15 ticks.
-#A duration of 0 will cause the quest to run until your server is shut down.
-#$DURATION=$EXPRESSION=1350
+#$QUEST_NAME=$STRING=Normal Travel #2
 #
 #Quest-Player Criterium:
 #You may leave this entry blank, or enter a Zapper Mask to describe what
@@ -80,13 +62,6 @@
 #should give some details about what is to be done.  You can leave this blank
 #if you like.  Use the code ${2 *} to designate the name of the mob to find.
 #$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=Find ${2 *} at that one place.  Be careful!
-#
-#Announcer announcement:
-#Select what type of annoucement the Announcer will make when the quest starts.
-#Use the code ${2 *} to designate the name of the mob to find.
-#$QUEST_ANNOUNCEMENT_TYPE=$CHOOSE=YELL,QUESTCHAT,MPECHO,SAY
-#This is what the announcement says.  Leave it blank if you only want him to talk to people who enter the room with him.
-#$QUEST_ANNOUNCEMENT=($STRING)
 #
 #!QUESTMAKER_PAGE Specify the Destination Mob
 #The Destination Mob is the mob to which the player must travel.
@@ -138,22 +113,14 @@
 #Select whether a player may complete this quest multiple times:
 #$MULTIPLE=$CHOOSE=YES,NO
 #
-#If you choose, you may have completion of this quest automatically start another.
-#If this is what you want, enter the next quests name here:
-#$NEXT_QUEST=($EXISTING_QUEST_NAME)
-#
-#!QUESTMAKER_END_SCRIPT Competitive Travel #2
+#!QUESTMAKER_END_SCRIPT Normal Travel #2
 
 set name $QUEST_ID
 set display $QUEST_NAME
 
-set wait $FREQUENCY
+set wait 1
 set interval 1
-#quiet
-
-set minplayers 1
-set playermask $QUEST_CRITERIA
-
+quiet
 
 set area $ANNOUNCER_AREA
 set room $ANNOUNCER_ROOM
@@ -169,73 +136,33 @@ set mob $DESTINATION_NAME
 give stat keyplayer true
 give script LOAD=$QUEST_ID_destination.script
 
-set duration $DURATION
+set duration 0
 
 <?xml version="1.0"?>
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
-ONCE_PROG 100
-	MPSETVAR * $QUEST_ID_ALREADY_TOLD ''
-	MPSETVAR * $QUEST_ID_REWARDED ''
-	MPSETVAR * $QUEST_ID_ACCEPTED ''
-	MPSETVAR * $QUEST_ID_NUMACCEPTED ''
-	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
-~
-
-QUEST_TIME_PROG * -1
-	mpsetvar $i $QUEST_ID_NUMACCEPTED '$<$i $QUEST_ID_ACCEPTED>.LENGTH#'
-	for $0 = 0 to< '$<$i $QUEST_ID_NUMACCEPTED>'
-		if !QUESTWINNER('$<$i $QUEST_ID_ACCEPTED>.$0' *)
-			tell "$<$i $QUEST_ID_ACCEPTED>.$0" You failed to complete your quest in time.
-	    endif
-	next
-	MPSETVAR * $QUEST_ID_NUMACCEPTED ''
-	MPSETVAR * $QUEST_ID_ALREADY_TOLD ''
-	MPSETVAR * $QUEST_ID_ACCEPTED ''
-	MPSETVAR * $QUEST_ID_REWARDED ''
-~
-
 GREET_PROG 100
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if !STRIN('$<$i $QUEST_ID_ALREADY_TOLD>' '$n')
-				if VAR($n $QUEST_ID_ACCEPTED == '')
-					sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept' to take on this quest.
-					MPSETVAR $i $QUEST_ID_ALREADY_TOLD '$<$i $QUEST_ID_ALREADY_TOLD> "$n"'
-				endif
-			endif
+			sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept $QUEST_NAME' to take on this quest.
+			MPSETVAR $i $QUEST_ID_ALREADY_TOLD '$<$i $QUEST_ID_ALREADY_TOLD> "$n"'
 		endif
 	endif
 ~
 
-SPEECH_PROG p i accept
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+SPEECH_PROG p i accept $QUEST_NAME
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if VAR($n $QUEST_ID_ACCEPTED == '')
-				sayto "$n" $QUEST_INSTRUCTIONSSTRING
-				mpqset * REMAINING $DURATION
-				mpsetvar $i $QUEST_ID_ACCEPTED $n
-				mpsetvar $n $QUEST_ID_ACCEPTED 'YES'
-                mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
-			else
-				sayto "$n" Yes, yes, I know .. now off with you.
-			endif
+			sayto "$n" $QUEST_INSTRUCTIONSSTRING
+            mpscript $n INDIVIDUAL SAVABLE LOAD=$QUEST_ID_playertrack.script
 		endif
 	endif
-~
-QUEST_TIME_PROG * 1
-	mpsetvar $i $QUEST_ID_NUMACCEPTED '$<$i $QUEST_ID_ACCEPTED>.LENGTH#'
-	for $0 = 0 to< '$<$i $QUEST_ID_NUMACCEPTED>'
-		if !QUESTWINNER('$<$i $QUEST_ID_ACCEPTED>.$0' *)
-			tell "$<$i $QUEST_ID_ACCEPTED>.$0"  You have less than a minute left to find ${2 *} and complete your quest.
-		endif
-	next
 ~
 </DATA></FILE>
 <FILE><NAME>$QUEST_ID_destination.script</NAME>
 <DATA>
 GREET_PROG 100
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) AND VAR($n $QUEST_ID_ACCEPTED == 'YES')
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) AND QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
 		else
 			if EVAL('$EXP' != '')
@@ -254,10 +181,7 @@ GREET_PROG 100
 			endif
 			mpquestwin $n *
 			sayto $n $DESTINATION_RESPONSE
-			mpendquest *
-			IF EVAL('$NEXT_QUEST' != '')
-				mpstartquest $NEXT_QUEST
-			ENDIF
+			mpendquest $n
 		endif
 	endif
 ~

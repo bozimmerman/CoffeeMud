@@ -6710,10 +6710,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 {
                     MOB themob=(MOB)newTarget;
                     if((range.startsWith("--"))&&(CMath.isInteger(range.substring(2).trim())))
-                        range=""+(themob.fetchFaction(faction)-CMath.s_int(range.substring(2).trim()));
+                    {
+                        int amt=CMath.s_int(range.substring(2).trim());
+                        themob.tell("You lose "+amt+" faction with "+F.name()+".");
+                        range=""+(themob.fetchFaction(faction)-amt);
+                    }
                     else
                     if((range.startsWith("+"))&&(CMath.isInteger(range.substring(1).trim())))
-                        range=""+(themob.fetchFaction(faction)+CMath.s_int(range.substring(1).trim()));
+                    {
+                        int amt=CMath.s_int(range.substring(1).trim());
+                        themob.tell("You gain "+amt+" faction with "+F.name()+".");
+                        range=""+(themob.fetchFaction(faction)+amt);
+                    }
+                    else
+                    if(CMath.isInteger(range.trim()))
+                        themob.tell("Your faction with "+F.name()+" is now "+CMath.s_int(range.trim())+".");
                     if(CMath.isInteger(range.trim()))
                         themob.addFaction(F.factionID(),CMath.s_int(range.trim()));
                     else
@@ -6729,7 +6740,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         if(FR==null)
                             logError(scripted,"MPFACTION","RunTime",range+" is not a valid range for "+F.name()+".");
                         else
+                        {
+                            themob.tell("Your faction with "+F.name()+" is now "+FR.name()+".");
                             themob.addFaction(F.factionID(),FR.low()+((FR.high()-FR.low())/2));
+                        }
                     }
                 }
                 break;
