@@ -2808,7 +2808,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 17: // inroom
             {
-                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
                 String comp="==";
                 Environmental E=monster;
                 if((" == >= > < <= => =< != ".indexOf(" "+CMParms.getCleanBit(evaluable.substring(y+1,z),1)+" ")>=0))
@@ -2816,11 +2816,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     E=getArgumentItem(CMParms.getCleanBit(evaluable.substring(y+1,z),0),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                     comp=CMParms.getCleanBit(evaluable.substring(y+1,z),1);
                     arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(evaluable.substring(y+1,z),1));
-                }
-                else
-                {
-                    logError(scripted,"INROOM","Syntax",evaluable);
-                    return returnable;
                 }
                 Room R=null;
                 if(arg2.startsWith("$"))

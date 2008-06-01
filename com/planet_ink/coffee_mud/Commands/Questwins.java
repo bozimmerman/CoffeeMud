@@ -62,6 +62,37 @@ public class Questwins extends StdCommand
     			mob.tell(msg.toString());
         }
 	    else
+        if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("DROP")))
+        {
+            String rest=CMParms.combine(commands,2);
+            Quest Q=CMLib.quests().findQuest(rest);
+            if(Q==null)
+            {
+                mob.tell("There is no such quest as '"+rest+"'.");
+                return false;
+            }
+            ScriptingEngine foundS=null;
+            for(int s=0;s<mob.numScripts();s++)
+            {
+                ScriptingEngine S=mob.fetchScript(s);
+                if(S==null) continue;
+                if((S.defaultQuestName().length()>0)
+                &&(S.defaultQuestName().equalsIgnoreCase(Q.name())))
+                    foundS=S;
+            }
+            if(foundS==null)
+            {
+                mob.tell("You have not accepted a quest called '"+rest+"'.  Enter QUESTS for a list.");
+                return false;
+            }
+            if((!mob.isMonster()&&(mob.session().confirm("Drop the quest '"+Q.name()+"', are you sure (y/N)?","N"))))
+            {
+                mob.delScript(foundS);
+                mob.tell("Quest dropped.");
+                return false;
+            }
+        }
+        else
 	    if(commands.size()==1)
 	    {
             Vector qVec=new Vector();

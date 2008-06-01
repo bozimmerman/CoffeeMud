@@ -4089,22 +4089,54 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         case 10: return SPAWN_DESCS[getSpawn()];
         case 11: return displayName();
 		default: 
-            if((code.toUpperCase().trim().equalsIgnoreCase("REMAINING"))&&(running()))
+        {
+            code=code.toUpperCase().trim();
+            if((code.equalsIgnoreCase("REMAINING"))&&(running()))
                 return ""+ticksRemaining;
-			int x=questState.vars.indexOf(code.toUpperCase().trim());
+			int x=questState.vars.indexOf(code);
 			if(x>=0) 
 				return (String)questState.vars.elementAt(x,2);
-			else
-			if(questState.isStat(code))
-			{
-				Object O=questState.getStat(code);
-				if(O instanceof Room) return ((Room)O).roomTitle();
-				if(O instanceof TimeClock) return ((TimeClock)O).getShortTimeDescription();
-				if(O instanceof Environmental) return ((Environmental)O).Name();
-				if(O instanceof Vector) return ""+((Vector)O).size();
-				if(O!=null) return O.toString();
-			}
+            if(questState.isStat(code))
+            {
+                Object O=questState.getStat(code);
+                if(O instanceof Room) return ((Room)O).roomTitle();
+                if(O instanceof TimeClock) return ((TimeClock)O).getShortTimeDescription();
+                if(O instanceof Environmental) return ((Environmental)O).Name();
+                if(O instanceof Vector) return ""+((Vector)O).size();
+                if(O!=null) return O.toString();
+            }
+            else
+            if(code.endsWith("_ROOMID")&&(questState.isStat(code.substring(0,code.length()-7))))
+            {
+                code=code.substring(0,code.length()-7);
+                Object O=questState.getStat(code);
+                if(O instanceof Vector){
+                    if(((Vector)O).size()>0)
+                        O=((Vector)O).elementAt(CMLib.dice().roll(1,((Vector)O).size(),-1));
+                }
+                if(O instanceof Environmental)
+                {
+                    Room R=CMLib.map().roomLocation((Environmental)O);
+                    if(R!=null) return CMLib.map().getExtendedRoomID(R);
+                }
+            }
+            else
+            if(code.endsWith("_CLASS")&&(questState.isStat(code.substring(0,code.length()-6))))
+            {
+                code=code.substring(0,code.length()-6);
+                Object O=questState.getStat(code);
+                if(O instanceof Vector){
+                    if(((Vector)O).size()>0)
+                        O=((Vector)O).elementAt(CMLib.dice().roll(1,((Vector)O).size(),-1));
+                }
+                if(O instanceof CMObject)
+                    return ((CMObject)O).ID();
+                else
+                if(O!=null)
+                    return O.getClass().getName();
+            }
 			return "";
+        }
 		}
 	}
 	
