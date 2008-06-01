@@ -2599,7 +2599,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             if(stat.equalsIgnoreCase("KEYPLAYER"))
                             {
                                 Ability A=E2.fetchEffect("QuestBound");
-                                if(A!=null) A.setStat(stat,val);
+                                if(A!=null) A.setStat("KEY",val);
                             }
                             else
                                 runtimeRegisterStat(E2,stat,val,true);
