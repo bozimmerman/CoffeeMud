@@ -165,7 +165,7 @@
 #mobs to the designated room.  You may leave this blank if you like.
 #$ESCORTED_RESPONSE=($LONG_STRING)=The escort is complete.
 #
-#!QUESTMAKER_END_SCRIPT Escort #1
+#!QUESTMAKER_END_SCRIPT Competitive Escort #1
 
 set name $QUEST_ID
 set display $QUEST_NAME
@@ -315,7 +315,7 @@ RAND_PROG 99
 				if EVAL('$FACTION' != '')
 					mpfaction $f $FACTION $NUMFACTION
 				endif
-				if EVAL('$QUEST_POINT' == 'YES')
+				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($f *)
 					mpoloadroom QuestPoint
 					mpforce $f GET "a quest point"
 				endif

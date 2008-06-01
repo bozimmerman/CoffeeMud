@@ -151,7 +151,7 @@
 #If this is what you want, enter the next quests name here:
 #$NEXT_QUEST=($EXISTING_QUEST_NAME)
 #
-#!QUESTMAKER_END_SCRIPT Killer #1
+#!QUESTMAKER_END_SCRIPT Competitive Killer #1
 
 set name $QUEST_ID
 set display $QUEST_NAME
@@ -247,7 +247,7 @@ ALL_GREET_PROG 100
 			if EVAL('$FACTION' != '')
 				mpfaction $n $FACTION $NUMFACTION
 			endif
-			if EVAL('$QUEST_POINT' == 'YES')
+			if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
 				mpoload QuestPoint
 				give "a quest point" "$n"
 			endif

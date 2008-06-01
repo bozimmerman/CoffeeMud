@@ -854,7 +854,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					if(E.ID().equalsIgnoreCase(srchStr)
 					||E.Name().equalsIgnoreCase(srchStr)
 					||E.name().equalsIgnoreCase(srchStr))
-						if((!allFlag)||((thisThang.displayText()!=null)&&(E.displayText().length()>0)))
+						if((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0)))
 							if((--myOccurrance)<=0)
 								return E;
 				    }
@@ -881,8 +881,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 								return thisThang;
 					}
 					else
-					if((containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
-				    &&((!allFlag)||((thisThang.displayText()!=null)&&(E.displayText().length()>0))))
+                    if((containsString(E.name(),srchStr)||containsString(E.Name(),srchStr))
+				    &&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
 						if((--myOccurrance)<=0)
 							return E;
 					    

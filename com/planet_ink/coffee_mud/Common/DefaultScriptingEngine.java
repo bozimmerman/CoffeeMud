@@ -2222,7 +2222,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             {
                 String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
                 String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
-                Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                Environmental E=getArgumentMOB(CMParms.getCleanBit(evaluable.substring(y+1,z),0),source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 Quest Q=getQuest(arg2);
                 if(Q==null)
                     returnable=false;
@@ -2230,6 +2230,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 {
                     if(E!=null) arg1=E.Name();
                     returnable=Q.wasWinner(arg1);
+                }
+                break;
+            }
+            case 93: // questscripted
+            {
+                Environmental E=getArgumentMOB(CMParms.getCleanBit(evaluable.substring(y+1,z),0),source,monster,target,primaryItem,secondaryItem,msg,tmp);
+                String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
+                Quest Q=getQuest(arg2);
+                returnable=false;
+                if((Q!=null)&&(E!=null))
+                {
+                    for(int i=0;i<E.numScripts();i++)
+                    {
+                        ScriptingEngine S=E.fetchScript(i);
+                        if((S!=null)&&(S.defaultQuestName().equalsIgnoreCase(Q.name())))
+                            returnable=true;
+                    }
                 }
                 break;
             }
@@ -4261,6 +4278,39 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 break;
             }
             case 28: // questwinner
+            {
+                String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
+                Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+                if((E!=null)&&(E instanceof MOB)&&(!((MOB)E).isMonster()))
+                    for(int q=0;q<CMLib.quests().numQuests();q++)
+                    {
+                        Quest Q=CMLib.quests().fetchQuest(q);
+                        if((Q!=null)&&(Q.wasWinner(E.Name())))
+                            results.append(Q.name()+" ");
+                    }
+                break;
+            }
+            case 93: // questscripted
+            {
+                String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
+                Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
+                if((E!=null)&&(E instanceof MOB)&&(!((MOB)E).isMonster()))
+                {
+                    for(int s=0;s<E.numScripts();s++)
+                    {
+                        ScriptingEngine S=E.fetchScript(s);
+                        if((S!=null)&&(S.defaultQuestName()!=null)&&(S.defaultQuestName().length()>0))
+                        {
+                            Quest Q=CMLib.quests().fetchQuest(S.defaultQuestName());
+                            if(Q!=null)
+                                results.append(Q.name()+" ");
+                            else
+                                results.append(S.defaultQuestName()+" ");
+                        }
+                    }
+                }
+                break;
+            }
             case 29: // questmob
             case 31: // isquestmobalive
                 results.append("[unimplemented function]");

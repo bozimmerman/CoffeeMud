@@ -142,7 +142,7 @@
 #If this is what you want, enter the next quests name here:
 #$NEXT_QUEST=($EXISTING_QUEST_NAME)
 #
-#!QUESTMAKER_END_SCRIPT Delivery #2
+#!QUESTMAKER_END_SCRIPT Competitive Delivery #2
 
 set name $QUEST_ID
 set display $QUEST_NAME
@@ -259,7 +259,7 @@ PUT_PROG all
 					if EVAL('$FACTION' != '')
 						mpfaction $n $FACTION $NUMFACTION
 					endif
-					if EVAL('$QUEST_POINT' == 'YES')
+					if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
 						mpoload QuestPoint
 						mpforce $n GET "a quest point"
 					endif
@@ -294,7 +294,7 @@ DROP_PROG all
 				if EVAL('$FACTION' != '')
 					mpfaction $n $FACTION $NUMFACTION
 				endif
-				if EVAL('$QUEST_POINT' == 'YES')
+				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
 					mpoload QuestPoint
 					mpforce $n GET "a quest point"
 				endif

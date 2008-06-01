@@ -1,4 +1,4 @@
-#!QUESTMAKER_START_SCRIPT Competitive Travel #1
+#!QUESTMAKER_START_SCRIPT Normal Travel #1
 #The player must travel to some location on your map at the behest
 #of an existing announcer mob.
 #
@@ -7,29 +7,11 @@
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=competitive_travel_1
+#$QUEST_ID=$UNIQUE_QUEST_NAME=normal_travel_1
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=Competitive Travel #1
-#
-#Quest Frequency:
-#A quest starts and stops on timed intervals.  Enter the amount of time 
-#that this quest will remain unavailable between runs. This number is in 
-#"ticks" (4 second periods).  You may enter math expressions, and use the 
-# special ? operator to generate random numbers.  A frequency of
-#5 + 3?10 would generate a frequency of 8-15 ticks.
-#$FREQUENCY=$EXPRESSION=1350
-#
-#Quest Duration:
-#Enter the amount of time that this quest will run and remain available 
-#after it is started.  This time is also the amount of time a player has 
-#to complete the quest after they have accepted it from the announcer mob.
-#This time is expressed in "ticks" (4 second periods).  You may enter math 
-#expressions, and use the special ? operator to generate random numbers.
-#For instance, 5 + 3?10 would generate a duration of 8-15 ticks.
-#A duration of 0 will cause the quest to run until your server is shut down.
-#$DURATION=$EXPRESSION=1350
+#$QUEST_NAME=$STRING=Normal Travel #1
 #
 #Quest-Player Criterium:
 #You may leave this entry blank, or enter a Zapper Mask to describe what
@@ -96,12 +78,6 @@
 #if you like.
 #$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=Go to that one place.
 #
-#Announcer announcement:
-#Select what type of annoucement the Announcer will make when the quest starts.
-#$QUEST_ANNOUNCEMENT_TYPE=$CHOOSE=YELL,QUESTCHAT,MPECHO,SAY
-#This is what the announcement says.  Leave it blank if you only want him to talk to people who enter the room with him.
-#$QUEST_ANNOUNCEMENT=($STRING)
-#
 #!QUESTMAKER_PAGE Quest Completion
 #Select some rewards for completing the quest:
 #
@@ -134,18 +110,15 @@
 #to the designated room.  You may leave this blank if you like.
 #$TRAVEL_RESPONSE=($LONG_STRING)=Your journey is complete.
 #
-#!QUESTMAKER_END_SCRIPT Competitive Travel #1
+#!QUESTMAKER_END_SCRIPT Normal Travel #1
 
 set name $QUEST_ID
 set display $QUEST_NAME
 
-set wait $FREQUENCY
+set wait 1
 set interval 1
+set duration 0
 #quiet
-
-set minplayers 1
-set playermask $QUEST_CRITERIA
-
 
 set area $ANNOUNCER_AREA
 set room $ANNOUNCER_ROOM
@@ -157,96 +130,25 @@ set mobgroup
 set mob
 set area $DESTINATION_AREA
 set room $DESTINATION_ROOM
-give script LOAD=$QUEST_ID_travelroom.script
-
-set duration $DURATION
+set wherehappened ROOM
 
 <?xml version="1.0"?>
 <FILE><NAME>$QUEST_ID_announcer.script</NAME>
 <DATA>
-ONCE_PROG 100
-	MPSETVAR * $QUEST_ID_ALREADY_TOLD ''
-	MPSETVAR * $QUEST_ID_REWARDED ''
-	MPSETVAR * $QUEST_ID_ACCEPTED ''
-	MPSETVAR * $QUEST_ID_NUMACCEPTED ''
-	$QUEST_ANNOUNCEMENT_TYPE $QUEST_ANNOUNCEMENT
-~
-
-QUEST_TIME_PROG * -1
-	mpsetvar $i $QUEST_ID_NUMACCEPTED '$<$i $QUEST_ID_ACCEPTED>.LENGTH#'
-	for $0 = 0 to< '$<$i $QUEST_ID_NUMACCEPTED>'
-		if !QUESTWINNER('$<$i $QUEST_ID_ACCEPTED>.$0' *)
-			tell "$<$i $QUEST_ID_ACCEPTED>.$0" You failed to complete your quest in time.
-	    endif
-	next
-	MPSETVAR * $QUEST_ID_NUMACCEPTED ''
-	MPSETVAR * $QUEST_ID_ALREADY_TOLD ''
-	MPSETVAR * $QUEST_ID_ACCEPTED ''
-	MPSETVAR * $QUEST_ID_REWARDED ''
-~
-
 GREET_PROG 100
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if !STRIN('$<$i $QUEST_ID_ALREADY_TOLD>' '$n')
-				sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept' to take on this quest.
-				MPSETVAR $i $QUEST_ID_ALREADY_TOLD '$<$i $QUEST_ID_ALREADY_TOLD> "$n"'
-			endif
+			sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept $QUEST_NAME' to take on this quest.
 		endif
 	endif
 ~
 
-SPEECH_PROG p i accept
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+SPEECH_PROG p i accept $QUEST_NAME
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
-			if !STRIN('$<$i $QUEST_ID_ACCEPTED>' '$n')
-				sayto "$n" $QUEST_INSTRUCTIONSSTRING
-				mpqset * REMAINING $DURATION
-				MPSETVAR $i $QUEST_ID_ACCEPTED '$<$i $QUEST_ID_ACCEPTED> $n'
-				mpsetvar $n $QUEST_ID_ACCEPTED 'TRUE'
-                mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
-			else
-				sayto "$n" Yes, yes, I know .. now off with you.
-			endif
-		endif
-	endif
-~
-QUEST_TIME_PROG * 1
-	mpsetvar $i $QUEST_ID_NUMACCEPTED '$<$i $QUEST_ID_ACCEPTED>.LENGTH#'
-	for $0 = 0 to< '$<$i $QUEST_ID_NUMACCEPTED>'
-		tell "$<$i $QUEST_ID_ACCEPTED>.$0" You have less than a minute left to complete your quest.
-	next
-~
-
-</DATA></FILE>
-<FILE><NAME>$QUEST_ID_travelroom.script</NAME>
-<DATA>
-ENTRY_PROG 100
-	if VAR($n $QUEST_ID_ACCEPTED != '') AND ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) AND VAR($n $QUEST_ID_REWARDED == '')
-		mpsetvar $n $QUEST_ID_REWARDED 'REWARDED'
-		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($n *)
-			# do nothing
-		else
-			if EVAL('$EXP' != '')
-				mpexp $n $EXP
-			endif
-			if EVAL('$FACTION' != '')
-				mpfaction $n $FACTION $NUMFACTION
-			endif
-			if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
-				mpoloadroom QuestPoint
-				mpforce $n GET "a quest point"
-			endif
-			if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
-				mpoloadroom $GOLD
-				mpforce $n GET $GOLD
-			endif
-			mpquestwin $n *
-			$TRAVEL_RESPONSE_TYPE $TRAVEL_RESPONSE
-			mpendquest *
-			IF EVAL('$NEXT_QUEST' != '')
-				mpstartquest $NEXT_QUEST
-			ENDIF
+			sayto "$n" $QUEST_INSTRUCTIONSSTRING
+			mpqset * REMAINING $DURATION
+            mpscript $n INDIVIDUAL SAVABLE LOAD=$QUEST_ID_playertrack.script
 		endif
 	endif
 ~
@@ -255,12 +157,44 @@ ENTRY_PROG 100
 <DATA>
 ONCE_PROG 100
     mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+    mpsetvar $i MYROOM '$%QVAR(* WHEREHAPPENED)%'
 ~
+
 RAND_PROG 99
     if QVAR(* REMAINING == '')
         MPENDQUEST $i
     else
         mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
     endif
+~
+
+ENTRY_PROG 100
+	if EVAL($n == $i) AND INROOM($i == '$<$i MYROOM>') AND VAR($i $QUEST_ID_REWARDED == '')
+		mpsetvar $n $QUEST_ID_REWARDED 'REWARDED'
+		if  EVAL('$MULTIPLE' != 'YES') AND QUESTWINNER($i *)
+			# do nothing
+		else
+			if EVAL('$EXP' != '')
+				mpexp $i $EXP
+			endif
+			if EVAL('$FACTION' != '')
+				mpfaction $i $FACTION $NUMFACTION
+			endif
+			if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($i *)
+				mpoloadroom QuestPoint
+				mpforce $i GET "a quest point"
+			endif
+			if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+				mpoloadroom $GOLD
+				mpforce $i GET $GOLD
+			endif
+			mpquestwin $i *
+			$TRAVEL_RESPONSE_TYPE $TRAVEL_RESPONSE
+			mpendquest $i
+			IF EVAL('$NEXT_QUEST' != '')
+				mpstartquest $NEXT_QUEST
+			ENDIF
+		endif
+	endif
 ~
 </DATA></FILE>

@@ -186,7 +186,7 @@
 #If this is what you want, enter the next quests name here:
 #$NEXT_QUEST=($EXISTING_QUEST_NAME)
 #
-#!QUESTMAKER_END_SCRIPT Dispel #1
+#!QUESTMAKER_END_SCRIPT Competitive Dispel #1
 
 set name $QUEST_ID
 set display $QUEST_NAME
@@ -305,7 +305,7 @@ RAND_PROG 99
 				if EVAL('$FACTION' != '')
 					mpfaction $1 $FACTION $NUMFACTION
 				endif
-				if EVAL('$QUEST_POINT' == 'YES')
+				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($1 *)
 					mpoload QuestPoint
 					give "a quest point" "$1"
 				endif

@@ -248,7 +248,7 @@
 #$TARGET=$HIDDEN=$%QVAR(* TARGET)%
 #$AGENT=$HIDDEN=$%QVAR(* AGENT)%
 #$MOTIVE=$HIDDEN=$%QVAR(* MOTIVE)%
-#!QUESTMAKER_END_SCRIPT Mystery #2
+#!QUESTMAKER_END_SCRIPT Competitive Mystery #2
 
 set name $QUEST_ID
 set display $QUEST_NAME
@@ -438,7 +438,7 @@ FUNCTION_PROG winner
 				if EVAL('$FACTION' != '')
 					mpfaction $n $FACTION $NUMFACTION
 				endif
-				if EVAL('$QUEST_POINT' == 'YES')
+				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
 					mpoload QuestPoint
 					give "a quest point" "$n"
 				endif
