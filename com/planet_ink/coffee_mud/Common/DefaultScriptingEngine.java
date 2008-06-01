@@ -6587,6 +6587,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String m2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
                 boolean proceed=true;
                 boolean savable=false;
+                boolean execute=false;
                 String scope=getVarScope();
                 while(proceed)
                 {
@@ -6594,6 +6595,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(m2.toUpperCase().startsWith("SAVABLE"))
                     {
                         savable=true;
+                        m2=m2.substring(8).trim();
+                        proceed=true;
+                    }
+                    else
+                    if(m2.toUpperCase().startsWith("EXECUTE"))
+                    {
+                        execute=true;
                         m2=m2.substring(8).trim();
                         proceed=true;
                     }
@@ -6623,6 +6631,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if((defaultQuestName()!=null)&&(defaultQuestName().length()>0))
                         S.registerDefaultQuest(defaultQuestName());
                     newTarget.addScript(S);
+                    if(execute)
+                    {
+                        S.tick(newTarget,Tickable.TICKID_MOB);
+                        for(int i=0;i<5;i++)
+                            S.dequeResponses();
+                        newTarget.delScript(S);
+                    }
                 }
                 break;
             }
