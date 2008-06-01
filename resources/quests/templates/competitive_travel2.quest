@@ -1,6 +1,7 @@
 #!QUESTMAKER_START_SCRIPT Competitive Travel #2
 #The player travels at the behest of one existing mob in your world
-#to another somewhere else.  A reward is optionally given upon arrival.
+#to another existing mob somewhere else in your world.  A reward
+#is optionally given upon arrival.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
