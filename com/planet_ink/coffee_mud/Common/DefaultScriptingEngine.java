@@ -5634,6 +5634,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 else
                 {
+                    Ability A2=CMClass.findAbility(which);
+                    if(A2!=null) which=A2.ID();
                     Ability A=newTarget.fetchEffect(which);
                     if(A!=null)
                     {
