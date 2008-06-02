@@ -101,8 +101,8 @@ public class UnderWaterThinGrid extends StdThinGrid
 		Room R2=null;
 		if(R.rawDoors()[Directions.UP]==null)
 		{
-			if((y==0)&&(rawDoors()[Directions.UP]!=null)&&(rawExits()[Directions.UP]!=null))
-				linkRoom(R,rawDoors()[Directions.UP],Directions.UP,rawExits()[Directions.UP],rawExits()[Directions.UP]);
+			if((y==0)&&(rawDoors()[Directions.UP]!=null)&&(exits[Directions.UP]!=null))
+				linkRoom(R,rawDoors()[Directions.UP],Directions.UP,exits[Directions.UP],exits[Directions.UP]);
 			else
 			if(y>0)
 			{
@@ -127,8 +127,8 @@ public class UnderWaterThinGrid extends StdThinGrid
 		
 		if(R.rawDoors()[Directions.DOWN]==null)
 		{
-			if((y==yGridSize()-1)&&(rawDoors()[Directions.DOWN]!=null)&&(rawExits()[Directions.DOWN]!=null))
-				linkRoom(R,rawDoors()[Directions.DOWN],Directions.DOWN,rawExits()[Directions.DOWN],rawExits()[Directions.DOWN]);
+			if((y==yGridSize()-1)&&(rawDoors()[Directions.DOWN]!=null)&&(exits[Directions.DOWN]!=null))
+				linkRoom(R,rawDoors()[Directions.DOWN],Directions.DOWN,exits[Directions.DOWN],exits[Directions.DOWN]);
 			else
 			if(y<yGridSize()-1)
 			{

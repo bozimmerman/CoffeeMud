@@ -86,7 +86,7 @@ public class ExitData extends StdWebMacro
 		int link=Directions.getGoodDirectionCode(linkdir);
 		if((link<0)||(link>=Directions.NUM_DIRECTIONS)) return " @break@";
 
-		Exit E=R.rawExits()[link];
+		Exit E=R.getRawExit(link);
 
 		// important generic<->non generic swap!
 		String newClassID=httpReq.getRequestParameter("CLASSES");

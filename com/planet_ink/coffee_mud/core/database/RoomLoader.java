@@ -304,7 +304,7 @@ public class RoomLoader
                             if((!CE.out)&&(!(newRoom instanceof GridLocale)))
                             {
                                 newRoom.rawDoors()[CE.dir]=thisRoom;
-                                newRoom.setExit(CE.dir,CMClass.getExit("Open"));
+                                newRoom.setRawExit(CE.dir,CMClass.getExit("Open"));
                             }
                         }
                     }
@@ -317,7 +317,7 @@ public class RoomLoader
                         else
                         {
                             thisRoom.rawDoors()[direction]=newRoom;
-                            thisRoom.setExit(direction,newExit);
+                            thisRoom.setRawExit(direction,newExit);
                         }
                     }
                 }
@@ -856,7 +856,7 @@ public class RoomLoader
 			Log.errOut("Failed to update exits for room "+room.roomID()+".");
 		for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
 		{
-			Exit thisExit=room.rawExits()[e];
+			Exit thisExit=room.getRawExit(e);
 			Room thisRoom=room.rawDoors()[e];
 			if(((thisRoom!=null)||(thisExit!=null))
 			   &&((thisRoom==null)||(thisRoom.savable())))

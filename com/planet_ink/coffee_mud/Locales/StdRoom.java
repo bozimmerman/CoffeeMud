@@ -66,7 +66,11 @@ public class StdRoom implements Room
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();
 	}
-    protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_LOCALE);}
+    protected void finalize(){
+        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+            setRawExit(d,null);
+        CMClass.unbumpCounter(this,CMClass.OBJECT_LOCALE);
+    }
     public void initializeClass(){}
 	public CMObject newInstance()
 	{
@@ -139,8 +143,8 @@ public class StdRoom implements Room
 		doors=new Room[Directions.NUM_DIRECTIONS];
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
-			if(E.rawExits()[d]!=null)
-				exits[d]=(Exit)E.rawExits()[d].copyOf();
+			if(E.getRawExit(d)!=null)
+				exits[d]=(Exit)E.getRawExit(d).copyOf();
 			if(E.rawDoors()[d]!=null)
 				doors[d]=E.rawDoors()[d];
 		}
@@ -214,35 +218,31 @@ public class StdRoom implements Room
 	public long expirationDate(){return expirationDate;}
 	public void setExpirationDate(long time){expirationDate=time;}
 	
-    public void setExit(int direction, Environmental to)
+    public void setRawExit(int direction, Environmental to)
     {
-        Exit E=rawExits()[direction];
-        if((E!=null)&&(E!=to))
-        {
-            boolean destroy=true;
-            if((rawDoors()[direction]!=null)
-            &&(!(rawDoors()[direction].amDestroyed()))
-            &&(rawDoors()[direction].rawExits()[Directions.getOpDirectionCode(direction)]==E))
-                destroy=false;
-            
-            if(to instanceof Room)
-            {
-                Room copiedRoom=(Room)to;
-                if((copiedRoom.rawDoors()[direction]!=null)
-                &&(!(copiedRoom.rawDoors()[direction].amDestroyed()))
-                &&(copiedRoom.rawDoors()[direction].rawExits()[Directions.getOpDirectionCode(direction)]==E))
-                    destroy=false;
-            }
-            if(destroy)
-                E.destroy();
-        }
+        if((direction<0)||(direction>=exits.length)) 
+            return;
+        Exit E=exits[direction];
         if(to instanceof Room)
-            rawExits()[direction]=((Room)to).rawExits()[direction];
-        else
+            to=((Room)to).getRawExit(direction);
+        
+        if(E==to) return;
+        if(E!=null) E.exitUsage((short)-1);
+        
         if(to instanceof Exit)
-            rawExits()[direction]=(Exit)to;
+        {
+            ((Exit)to).exitUsage((short)1);
+            exits[direction]=(Exit)to;
+        }
         else
-            rawExits()[direction]=null;
+            exits[direction]=null;
+        
+        /**
+         * cant be done
+         * 
+        if((E!=null)&&(E.exitUsage((short)0)==0))
+            E.destroy();
+         */
     }
 
 	public String displayText()
@@ -358,15 +358,15 @@ public class StdRoom implements Room
 			sky.setRoomID("");
 			sky.setArea(getArea());
 			rawDoors()[Directions.UP]=sky;
-			setExit(Directions.UP,upE);
+			setRawExit(Directions.UP,upE);
 			sky.rawDoors()[Directions.DOWN]=this;
-			sky.setExit(Directions.DOWN,dnE);
+			sky.setRawExit(Directions.DOWN,dnE);
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				if((d!=Directions.UP)&&(d!=Directions.DOWN))
 				{
 					Room thatRoom=rawDoors()[d];
 					Room thatSky=null;
-					if((thatRoom!=null)&&(rawExits()[d]!=null))
+					if((thatRoom!=null)&&(getRawExit(d)!=null))
 					{
 						thatRoom.giveASky(depth+1);
 						thatSky=thatRoom.rawDoors()[Directions.UP];
@@ -375,13 +375,13 @@ public class StdRoom implements Room
 					&&((thatSky instanceof EndlessThinSky)||(thatSky instanceof EndlessSky)))
 					{
 						sky.rawDoors()[d]=thatSky;
-						Exit xo=rawExits()[d];
+						Exit xo=getRawExit(d);
 						if((xo==null)||(xo.hasADoor())) xo=dnE;
-						sky.setExit(d,dnE);
+						sky.setRawExit(d,dnE);
 						thatSky.rawDoors()[Directions.getOpDirectionCode(d)]=sky;
-						xo=thatRoom.rawExits()[Directions.getOpDirectionCode(d)];
+						xo=thatRoom.getRawExit(Directions.getOpDirectionCode(d));
 						if((xo==null)||(xo.hasADoor())) xo=dnE;
-						thatSky.setExit(Directions.getOpDirectionCode(d),xo);
+						thatSky.setRawExit(Directions.getOpDirectionCode(d),xo);
 						((GridLocale)thatSky).clearGrid(null);
 					}
 				}
@@ -399,9 +399,9 @@ public class StdRoom implements Room
 		{
 			((GridLocale)skyGridRoom).clearGrid(null);
 			rawDoors()[Directions.UP]=null;
-			setExit(Directions.UP,null);
+			setRawExit(Directions.UP,null);
             skyGridRoom.rawDoors()[Directions.DOWN]=null;
-            skyGridRoom.setExit(Directions.DOWN,null);
+            skyGridRoom.setRawExit(Directions.DOWN,null);
             skyGridRoom.destroy();
 			skyedYet=false;
 		}
@@ -568,7 +568,7 @@ public class StdRoom implements Room
 
 		for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
 		{
-			Exit thisExit=rawExits()[i];
+			Exit thisExit=getRawExit(i);
 			if(thisExit!=null)
 				if(!thisExit.okMessage(this,msg))
 					return false;
@@ -638,7 +638,7 @@ public class StdRoom implements Room
 
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
-			N=rawExits()[d];
+			N=getRawExit(d);
 			if(N!=null)
 				N.executeMsg(this,msg);
 		}
@@ -1205,8 +1205,8 @@ public class StdRoom implements Room
 	{
 		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS))
 			return null;
-		if((gridParent!=null)&&(rawExits()[direction]==null)) getRoomInDir(direction);
-		return rawExits()[direction];
+		if((gridParent!=null)&&(getRawExit(direction)==null)) getRoomInDir(direction);
+		return getRawExit(direction);
 	}
 
     protected void reallyReallySend(MOB source, CMMsg msg)
@@ -1384,9 +1384,11 @@ public class StdRoom implements Room
 		return true;
 	}
 
-	public Exit[] rawExits()
+	public Exit getRawExit(int dir)
 	{
-		return exits;
+	    if(dir<exits.length)
+	        return exits[dir];
+	    return null;
 	}
 	public Room[] rawDoors()
 	{
@@ -1443,7 +1445,7 @@ public class StdRoom implements Room
 	                if(roomDir.rawDoors()[d2]==this)
 	                {
 	                	roomDir.rawDoors()[d2]=null;
-	                	roomDir.setExit(d2,null);
+	                	roomDir.setRawExit(d2,null);
 	                }
 			}
 		}
@@ -1453,7 +1455,7 @@ public class StdRoom implements Room
         baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
         envStats=baseEnvStats;
         for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-            setExit(d,null);
+            setRawExit(d,null);
         exits=new Exit[Directions.NUM_DIRECTIONS];
         doors=new Room[Directions.NUM_DIRECTIONS];
         affects=null;
@@ -1477,7 +1479,7 @@ public class StdRoom implements Room
 		if(E instanceof Exit)
 		{
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-				if(rawExits()[d]==E) return true;
+				if(getRawExit(d)==E) return true;
 		}
 		else
 		if(E instanceof Room)
@@ -1604,8 +1606,8 @@ public class StdRoom implements Room
 	{
 		if(E instanceof Exit)
 		{
-			for(int e=0;e<rawExits().length;e++)
-				if(rawExits()[e]==E)
+			for(int e=0;e<exits.length;e++)
+				if(exits[e]==E)
 					return Directions.getDirectionName(e);
 			return E.Name();
 		}

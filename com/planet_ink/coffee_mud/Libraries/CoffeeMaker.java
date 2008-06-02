@@ -658,7 +658,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 						if((!CE.out)&&(link!=null)&&(!(link instanceof GridLocale)))
 						{
 						    link.rawDoors()[CE.dir]=newRoom;
-						    link.setExit(CE.dir,CMClass.getExit("Open"));
+						    link.setRawExit(CE.dir,CMClass.getExit("Open"));
 							CMLib.database().DBUpdateExits(link);
 						}
 					}
@@ -676,7 +676,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					exit=CMClass.getExit(CMLib.xml().getValFromPieces(xxV,"EXID"));
 					if(exit==null) return unpackErr("Room","null 'exit' in room "+newRoom.roomID());
 					exit.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xxV,"EXDAT")));
-					newRoom.setExit(dir,exit);
+					newRoom.setRawExit(dir,exit);
 				}
 				else
 					exit=CMClass.getExit("GenExit");
@@ -688,7 +688,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 						newRoom.rawDoors()[dir]=link;
 					else
 					{
-						newRoom.setExit(dir,exit); // get will get the fake one too!
+						newRoom.setRawExit(dir,exit); // get will get the fake one too!
 						exit.setTemporaryDoorLink(doorID);
 					}
 				}
@@ -707,7 +707,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					boolean changed=false;
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 					{
-						Exit exit=R.rawExits()[d];
+						Exit exit=R.getRawExit(d);
 						if((exit!=null)&&(exit.temporaryDoorLink().equalsIgnoreCase(newRoom.roomID())))
 						{
 							exit.setTemporaryDoorLink("");
@@ -1509,7 +1509,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
 		{
 			Room door=room.rawDoors()[e];
-			Exit exit=room.rawExits()[e];
+			Exit exit=room.getRawExit(e);
 			if(((door!=null)&&(door.roomID().length()>0))||((door==null)&&(exit!=null)))
 			{
 				buf.append("<REXIT>");

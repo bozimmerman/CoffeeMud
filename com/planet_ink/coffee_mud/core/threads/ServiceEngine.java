@@ -188,7 +188,7 @@ public class ServiceEngine implements ThreadEngine
 		if(E2 instanceof Exit)
 		{
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-				if(here.rawExits()[d]==E2)
+				if(here.getRawExit(d)==E2)
 					return true;
 		}
 		return false;

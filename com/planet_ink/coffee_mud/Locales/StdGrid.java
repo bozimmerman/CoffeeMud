@@ -264,7 +264,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		}
 		if(o==null) o=CMClass.getExit("Open");
 		room.rawDoors()[dirCode]=alternativeLink(room,loc,dirCode);
-		room.setExit(dirCode,o);
+		room.setRawExit(dirCode,o);
 	}
 
 	protected Room alternativeLink(Room room, Room defaultRoom, int dir)
@@ -310,7 +310,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		}
 		if(o==null) o=CMClass.getExit("Open");
 		room.rawDoors()[dirCode]=alternativeLink(room,loc,dirCode);
-		room.setExit(dirCode,o);
+		room.setRawExit(dirCode,o);
 		if(loc.rawDoors()[opCode]!=null)
 		{
 			if(loc.rawDoors()[opCode].getGridParent()==null)
@@ -321,7 +321,7 @@ public class StdGrid extends StdRoom implements GridLocale
 		}
 		if(ao==null) ao=CMClass.getExit("Open");
 		loc.rawDoors()[opCode]=alternativeLink(loc,room,opCode);
-		loc.setExit(opCode,ao);
+		loc.setRawExit(opCode,ao);
 	}
 
     protected int[] initCenterRoomXY(int dirCode)
@@ -447,12 +447,12 @@ public class StdGrid extends StdRoom implements GridLocale
 		{
 		    if(d==Directions.GATE) continue;
 			Room dirRoom=rawDoors()[d];
-			Exit dirExit=rawExits()[d];
+			Exit dirExit=getRawExit(d);
 			if((dirExit==null)||(dirExit.hasADoor()))
 				dirExit=ox;
 			if(dirRoom!=null)
 			{
-				Exit altExit=dirRoom.rawExits()[Directions.getOpDirectionCode(d)];
+				Exit altExit=dirRoom.getRawExit(Directions.getOpDirectionCode(d));
 				if(altExit==null) altExit=ox;
 				switch(d)
 				{
@@ -514,7 +514,7 @@ public class StdGrid extends StdRoom implements GridLocale
 			{
 				if(ox==null) ox=CMClass.getExit("Open");
 				linkFrom.rawDoors()[EX.dir]=linkTo;
-				linkFrom.setExit(EX.dir,ox);
+				linkFrom.setRawExit(EX.dir,ox);
 			}
 		}
 	}

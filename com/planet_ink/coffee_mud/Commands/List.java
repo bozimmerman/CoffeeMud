@@ -903,7 +903,7 @@ public class List extends StdCommand
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
 					Room R2=R.rawDoors()[d];
-					Exit E2=R.rawExits()[d];
+					Exit E2=R.getRawExit(d);
 					if((R2==null)&&(E2!=null))
 						str.append(CMStrings.padRight(R.roomID(),30)+": "+Directions.getDirectionName(d)+" to "+E2.temporaryDoorLink()+" ("+E2.displayText()+")\n\r");
 				}

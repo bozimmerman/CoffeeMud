@@ -69,7 +69,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	public String mountString(int commandType, Rider R){ return "enter(s)";}
 	public String dismountString(Rider R){	return "emerge(s) from";}
 	public String stateStringSubject(Rider R){return "occupied by";	}
-    public byte exitUsage(short change){ return 0;}
+    public short exitUsage(short change){ return 0;}
 	public String displayText(){return displayText;}
 	public boolean amRiding(Rider mob){ return false;}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -155,18 +155,18 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 					if(R==null) R=thisRoom;
                     Exit E=CMClass.getExit("OpenNameable");
                     E.setMiscText(name());
-                    Exit oldE=thisRoom.rawExits()[Directions.GATE];
+                    Exit oldE=thisRoom.getRawExit(Directions.GATE);
                     Room oldR=thisRoom.rawDoors()[Directions.GATE];
-                    Exit oldE2=R.rawExits()[Directions.GATE];
+                    Exit oldE2=R.getRawExit(Directions.GATE);
 					thisRoom.rawDoors()[Directions.GATE]=R;
-					thisRoom.setExit(Directions.GATE,E);
+					thisRoom.setRawExit(Directions.GATE,E);
                     Exit E2=CMClass.getExit("OpenNameable");
                     E2.baseEnvStats().setDisposition(EnvStats.IS_NOT_SEEN);
-                    R.setExit(Directions.GATE,E2);
+                    R.setRawExit(Directions.GATE,E2);
 					CMLib.tracking().move(msg.source(),Directions.GATE,false,false,false);
 					thisRoom.rawDoors()[Directions.GATE]=oldR;
-					thisRoom.setExit(Directions.GATE,oldE);
-                    R.setExit(Directions.GATE,oldE2);
+					thisRoom.setRawExit(Directions.GATE,oldE);
+                    R.setRawExit(Directions.GATE,oldE2);
                     E.destroy();
                     E2.destroy();
 				}

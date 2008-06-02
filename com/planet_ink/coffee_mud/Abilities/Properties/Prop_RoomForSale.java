@@ -346,7 +346,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	            for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 	            {
 	                Room R2=R.rawDoors()[d];
-	                Exit E=R.rawExits()[d];
+	                Exit E=R.getRawExit(d);
 	                if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
 	                {
 	                    E.setKeyName("");
@@ -354,7 +354,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	                    updateExits=true;
 	                    if(R2!=null)
 	                    {
-	                        E=R2.rawExits()[Directions.getOpDirectionCode(d)];
+	                        E=R2.getRawExit(Directions.getOpDirectionCode(d));
 	                        if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
 	                        {
 	                            E.setKeyName("");

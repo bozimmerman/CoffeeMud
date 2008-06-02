@@ -240,13 +240,13 @@ public class Copy extends StdCommand
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 					{
 						newRoom.rawDoors()[d]=null;
-						newRoom.setExit(d,null);
+						newRoom.setRawExit(d,null);
 					}
 					room.rawDoors()[dirCode]=newRoom;
 					newRoom.rawDoors()[Directions.getOpDirectionCode(dirCode)]=room;
-					if(room.rawExits()[dirCode]==null)
-						room.setExit(dirCode,CMClass.getExit("Open"));
-					newRoom.setExit(Directions.getOpDirectionCode(dirCode),(Exit)(room.rawExits()[dirCode].copyOf()));
+					if(room.getRawExit(dirCode)==null)
+						room.setRawExit(dirCode,CMClass.getExit("Open"));
+					newRoom.setRawExit(Directions.getOpDirectionCode(dirCode),(Exit)(room.getRawExit(dirCode).copyOf()));
 					newRoom.setRoomID(room.getArea().getNewRoomID(room,dirCode));
 					if(newRoom.roomID().length()==0)
 					{

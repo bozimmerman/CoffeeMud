@@ -599,7 +599,7 @@ public class Reset extends StdCommand
 					if(R.roomID().length()>0)
 					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 					{
-						Exit E=R.rawExits()[d];
+						Exit E=R.getRawExit(d);
 						if((E!=null)&&E.hasADoor()&&E.name().equalsIgnoreCase("the ground"))
 						{
 							E.setName("a door");

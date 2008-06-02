@@ -44,7 +44,7 @@ public class StdExit implements Exit
 	protected Vector behaviors=null;
     protected Vector scripts=null;
     protected boolean amDestroyed=false;
-    protected byte usage=0;
+    protected short usage=0;
     
 	public StdExit()
 	{
@@ -68,17 +68,16 @@ public class StdExit implements Exit
 	public String closeWord(){return "close";}
 	public String openWord(){return "open";}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
-	public byte exitUsage(short change){
+	public short exitUsage(short change){
 	    if(change<0)
 	    {
-	        byte b=(byte)-change;
-	        if(b>usage)
+	        if((-change)>usage)
 	            usage=0;
 	        else
-	            usage-=b;
+	            usage+=change;
 	    }
 	    else
-	    if(change>0)
+	    if(Short.MAX_VALUE-change>usage)
 	        usage+=change;
 	    return usage;
 	}
@@ -114,11 +113,12 @@ public class StdExit implements Exit
 
     public void destroy()
     {
+        CMLib.threads().deleteTick(this,-1);
         affects=null;
         imageName=null;
         behaviors=null;
         scripts=null;
-        CMLib.threads().deleteTick(this,Tickable.TICKID_EXIT_BEHAVIOR);
+        miscText=null;
         amDestroyed=true;
     }
     public boolean amDestroyed(){return amDestroyed;}
@@ -553,6 +553,10 @@ public class StdExit implements Exit
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
+	    if(amDestroyed()) return false;
+	    
+	    if(usage<=0){ destroy(); return false;}
+	    
 		if(tickID==Tickable.TICKID_EXIT_REOPEN)
 		{
 			if(defaultsClosed())

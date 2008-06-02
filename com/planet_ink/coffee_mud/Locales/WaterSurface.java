@@ -75,14 +75,14 @@ public class WaterSurface extends StdRoom implements Drink
 			sea.setRoomID("");
 			sea.setArea(getArea());
 			rawDoors()[Directions.DOWN]=sea;
-			setExit(Directions.DOWN,dnE);
+			setRawExit(Directions.DOWN,dnE);
 			sea.rawDoors()[Directions.UP]=this;
-			sea.setExit(Directions.UP,upE);
+			sea.setRawExit(Directions.UP,upE);
 			for(int d=0;d<4;d++)
 			{
 				Room thatRoom=rawDoors()[d];
 				Room thatSea=null;
-				if((thatRoom!=null)&&(rawExits()[d]!=null))
+				if((thatRoom!=null)&&(getRawExit(d)!=null))
 				{
 					thatRoom.giveASky(depth+1);
 					thatSea=thatRoom.rawDoors()[Directions.DOWN];
@@ -92,11 +92,11 @@ public class WaterSurface extends StdRoom implements Drink
 				&&((thatSea instanceof UnderWaterGrid)||(thatSea instanceof UnderWaterThinGrid)))
 				{
 					sea.rawDoors()[d]=thatSea;
-					sea.setExit(d,rawExits()[d]);
+					sea.setRawExit(d,getRawExit(d));
 					thatSea.rawDoors()[Directions.getOpDirectionCode(d)]=sea;
-					Exit xo=thatRoom.rawExits()[Directions.getOpDirectionCode(d)];
+					Exit xo=thatRoom.getRawExit(Directions.getOpDirectionCode(d));
 					if((xo==null)||(xo.hasADoor())) xo=upE;
-					thatSea.setExit(Directions.getOpDirectionCode(d),xo);
+					thatSea.setRawExit(Directions.getOpDirectionCode(d),xo);
 					((GridLocale)thatSea).clearGrid(null);
 				}
 			}
@@ -115,7 +115,7 @@ public class WaterSurface extends StdRoom implements Drink
 		{
 			((GridLocale)room).clearGrid(null);
 			rawDoors()[Directions.UP]=null;
-			setExit(Directions.UP,null);
+			setRawExit(Directions.UP,null);
 			room.destroy();
 			skyedYet=false;
 		}

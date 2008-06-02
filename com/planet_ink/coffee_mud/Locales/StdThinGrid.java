@@ -290,8 +290,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				linkRoom(R,R2,Directions.NORTH,ox,ox);
 		}
 		else
-		if((rawDoors()[Directions.NORTH]!=null)&&(rawExits()[Directions.NORTH]!=null))
-			linkRoom(R,rawDoors()[Directions.NORTH],Directions.NORTH,rawExits()[Directions.NORTH],rawExits()[Directions.NORTH]);
+		if((rawDoors()[Directions.NORTH]!=null)&&(exits[Directions.NORTH]!=null))
+			linkRoom(R,rawDoors()[Directions.NORTH],Directions.NORTH,exits[Directions.NORTH],exits[Directions.NORTH]);
 		
 		if(x>0)
 		{
@@ -300,8 +300,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				linkRoom(R,R2,Directions.WEST,ox,ox);
 		}
 		else
-		if((rawDoors()[Directions.WEST]!=null)&&(rawExits()[Directions.WEST]!=null))
-			linkRoom(R,rawDoors()[Directions.WEST],Directions.WEST,rawExits()[Directions.WEST],rawExits()[Directions.WEST]);
+		if((rawDoors()[Directions.WEST]!=null)&&(exits[Directions.WEST]!=null))
+			linkRoom(R,rawDoors()[Directions.WEST],Directions.WEST,exits[Directions.WEST],exits[Directions.WEST]);
 		if(y<(yGridSize()-1))
 		{
 			R2=getMakeSingleGridRoom(x,y+1);
@@ -309,8 +309,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				linkRoom(R,R2,Directions.SOUTH,ox,ox);
 		}
 		else
-		if((rawDoors()[Directions.SOUTH]!=null)&&(rawExits()[Directions.SOUTH]!=null))
-			linkRoom(R,rawDoors()[Directions.SOUTH],Directions.SOUTH,rawExits()[Directions.SOUTH],rawExits()[Directions.SOUTH]);
+		if((rawDoors()[Directions.SOUTH]!=null)&&(exits[Directions.SOUTH]!=null))
+			linkRoom(R,rawDoors()[Directions.SOUTH],Directions.SOUTH,exits[Directions.SOUTH],exits[Directions.SOUTH]);
 		
 		if(x<(xGridSize()-1))
 		{
@@ -319,8 +319,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				linkRoom(R,R2,Directions.EAST,ox,ox);
 		}
 		else
-		if((rawDoors()[Directions.EAST]!=null)&&(rawExits()[Directions.EAST]!=null))
-			linkRoom(R,rawDoors()[Directions.EAST],Directions.EAST,rawExits()[Directions.EAST],rawExits()[Directions.EAST]);
+		if((rawDoors()[Directions.EAST]!=null)&&(exits[Directions.EAST]!=null))
+			linkRoom(R,rawDoors()[Directions.EAST],Directions.EAST,exits[Directions.EAST],exits[Directions.EAST]);
 		
 		if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS)
 		{
@@ -331,8 +331,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 					linkRoom(R,R2,Directions.NORTHWEST,ox,ox);
 			}
 			else
-			if((rawDoors()[Directions.NORTHWEST]!=null)&&(rawExits()[Directions.NORTHWEST]!=null))
-				linkRoom(R,rawDoors()[Directions.NORTHWEST],Directions.NORTHWEST,rawExits()[Directions.NORTHWEST],rawExits()[Directions.NORTHWEST]);
+			if((rawDoors()[Directions.NORTHWEST]!=null)&&(exits[Directions.NORTHWEST]!=null))
+				linkRoom(R,rawDoors()[Directions.NORTHWEST],Directions.NORTHWEST,exits[Directions.NORTHWEST],exits[Directions.NORTHWEST]);
 			
 			if((x>0)&&(y<(yGridSize()-1)))
 			{
@@ -341,8 +341,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 					linkRoom(R,R2,Directions.SOUTHWEST,ox,ox);
 			}
 			else
-			if((rawDoors()[Directions.SOUTHWEST]!=null)&&(rawExits()[Directions.SOUTHWEST]!=null))
-				linkRoom(R,rawDoors()[Directions.SOUTHWEST],Directions.SOUTHWEST,rawExits()[Directions.SOUTHWEST],rawExits()[Directions.SOUTHWEST]);
+			if((rawDoors()[Directions.SOUTHWEST]!=null)&&(exits[Directions.SOUTHWEST]!=null))
+				linkRoom(R,rawDoors()[Directions.SOUTHWEST],Directions.SOUTHWEST,exits[Directions.SOUTHWEST],exits[Directions.SOUTHWEST]);
 			
 			if((x<(xGridSize()-1))&&(y>0))
 			{
@@ -351,8 +351,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 					linkRoom(R,R2,Directions.NORTHEAST,ox,ox);
 			}
 			else
-			if((rawDoors()[Directions.NORTHEAST]!=null)&&(rawExits()[Directions.NORTHEAST]!=null))
-				linkRoom(R,rawDoors()[Directions.NORTHEAST],Directions.NORTHEAST,rawExits()[Directions.NORTHEAST],rawExits()[Directions.NORTHEAST]);
+			if((rawDoors()[Directions.NORTHEAST]!=null)&&(exits[Directions.NORTHEAST]!=null))
+				linkRoom(R,rawDoors()[Directions.NORTHEAST],Directions.NORTHEAST,exits[Directions.NORTHEAST],exits[Directions.NORTHEAST]);
 			if((x<(xGridSize()-1))&&(y<(yGridSize()-1)))
 			{
 				R2=getMakeSingleGridRoom(x+1,y+1);
@@ -360,8 +360,8 @@ public class StdThinGrid extends StdRoom implements GridLocale
 					linkRoom(R,R2,Directions.SOUTHEAST,ox,ox);
 			}
 			else
-			if((rawDoors()[Directions.SOUTHEAST]!=null)&&(rawExits()[Directions.SOUTHEAST]!=null))
-				linkRoom(R,rawDoors()[Directions.SOUTHEAST],Directions.SOUTHEAST,rawExits()[Directions.SOUTHEAST],rawExits()[Directions.SOUTHEAST]);
+			if((rawDoors()[Directions.SOUTHEAST]!=null)&&(exits[Directions.SOUTHEAST]!=null))
+				linkRoom(R,rawDoors()[Directions.SOUTHEAST],Directions.SOUTHEAST,exits[Directions.SOUTHEAST],exits[Directions.SOUTHEAST]);
 		}
 		
 		for(int d=0;d<gridexits.size();d++)
@@ -419,7 +419,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		{
 			if(ox==null) ox=CMClass.getExit("Open");
 			linkFrom.rawDoors()[EX.dir]=linkTo;
-			linkFrom.setExit(EX.dir,ox);
+			linkFrom.setRawExit(EX.dir,ox);
 		}
 	}
 	
@@ -578,7 +578,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		}
 		if(o==null) o=CMClass.getExit("Open");
 		room.rawDoors()[dirCode]=alternativeLink(room,loc,dirCode);
-		room.setExit(dirCode,o);
+		room.setRawExit(dirCode,o);
 	}
 
 	protected void linkRoom(Room room, Room loc, int dirCode, Exit o, Exit ao)
@@ -596,7 +596,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		}
 		if(o==null) o=CMClass.getExit("Open");
 		room.rawDoors()[dirCode]=alternativeLink(room,loc,dirCode);
-		room.setExit(dirCode,o);
+		room.setRawExit(dirCode,o);
 		if(loc.rawDoors()[opCode]!=null)
 		{
 			if(loc.rawDoors()[opCode].getGridParent()==null)
@@ -607,7 +607,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		}
 		if(ao==null) ao=CMClass.getExit("Open");
 		loc.rawDoors()[opCode]=alternativeLink(loc,room,opCode);
-		loc.setExit(opCode,ao);
+		loc.setRawExit(opCode,ao);
 	}
 
 	public void buildGrid()
@@ -726,7 +726,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
                         if(R2.rawDoors()[d]==R)
                         {
                             R2.rawDoors()[d]=null;
-                            R2.setExit(d,null);
+                            R2.setRawExit(d,null);
                         }
                 }
 			}

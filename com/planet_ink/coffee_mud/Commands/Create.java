@@ -72,12 +72,12 @@ public class Create extends BaseGenerics
 			return;
 		}
 
-		Exit opExit=mob.location().rawExits()[direction];
+		Exit opExit=mob.location().getRawExit(direction);
 		Room opRoom=mob.location().rawDoors()[direction];
 
 		Exit reverseExit=null;
 		if(opRoom!=null)
-			reverseExit=opRoom.rawExits()[Directions.getOpDirectionCode(direction)];
+			reverseExit=opRoom.getRawExit(Directions.getOpDirectionCode(direction));
 		if(reverseExit!=null)
 		{
 			if((thisExit.isGeneric())&&(reverseExit.isGeneric()))
@@ -88,7 +88,7 @@ public class Create extends BaseGenerics
 		}
 
 
-		mob.location().setExit(direction,thisExit);
+		mob.location().setRawExit(direction,thisExit);
 		if(mob.location() instanceof GridLocale)
 			((GridLocale)mob.location()).buildGrid();
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"Suddenly a portal opens up "+Directions.getInDirectionName(direction)+".\n\r");
@@ -96,9 +96,9 @@ public class Create extends BaseGenerics
 		if((reverseExit!=null)&&(opExit!=null)&&(opRoom!=null))
 		{
 			int revDirCode=Directions.getOpDirectionCode(direction);
-			if(opRoom.rawExits()[revDirCode]==reverseExit)
+			if(opRoom.getRawExit(revDirCode)==reverseExit)
 			{
-				opRoom.setExit(revDirCode,(Exit)thisExit.copyOf());
+				opRoom.setRawExit(revDirCode,(Exit)thisExit.copyOf());
 				CMLib.database().DBUpdateExits(opRoom);
 			}
 		}
@@ -106,9 +106,9 @@ public class Create extends BaseGenerics
 		if((reverseExit==null)&&(opExit==null)&&(opRoom!=null))
 		{
 			int revDirCode=Directions.getOpDirectionCode(direction);
-			if((opRoom.rawExits()[revDirCode]==null)&&(opRoom.rawDoors()[revDirCode]==mob.location()))
+			if((opRoom.getRawExit(revDirCode)==null)&&(opRoom.rawDoors()[revDirCode]==mob.location()))
 			{
-				opRoom.setExit(revDirCode,(Exit)thisExit.copyOf());
+				opRoom.setRawExit(revDirCode,(Exit)thisExit.copyOf());
 				CMLib.database().DBUpdateExits(opRoom);
 			}
 		}

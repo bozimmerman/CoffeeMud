@@ -576,9 +576,9 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 			if(R2!=null)
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
-				if((R2.rawExits()[d]!=null)
+				if((R2.getRawExit(d)!=null)
 				&&((R2.rawDoors()[d]==null)||(R2.rawDoors()[d].getArea()!=this))
-				&&(R2.rawExits()[d].ID().endsWith("AirLock")))
+				&&(R2.getRawExit(d).ID().endsWith("AirLock")))
 				{ 
 					airLockRoom=R2; 
 					R2.rawDoors()[d]=null; 
@@ -604,8 +604,8 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		{
 			if(airLockRoom.rawDoors()[airLockDir]==null)
 				airLockRoom.rawDoors()[airLockDir]=R;
-			if(airLockRoom.rawExits()[airLockDir]==null)
-				airLockRoom.setExit(airLockDir,CMClass.getExit("GenAirLock"));
+			if(airLockRoom.getRawExit(airLockDir)==null)
+				airLockRoom.setRawExit(airLockDir,CMClass.getExit("GenAirLock"));
 			Item portal=CMClass.getMiscTech("GenSSPortal");
 			portal.setName(Name());
 			portal.setDisplayText(Name());

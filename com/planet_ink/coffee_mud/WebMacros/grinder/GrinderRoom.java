@@ -63,7 +63,7 @@ public class GrinderRoom
             if(R2!=null)
             {
                 D.room=R2.roomID();
-				Exit E2=R.rawExits()[d];
+				Exit E2=R.getRawExit(d);
                 if(E2!=null)
 					D.exit=E2;
             }

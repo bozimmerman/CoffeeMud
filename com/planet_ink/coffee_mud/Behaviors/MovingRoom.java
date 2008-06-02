@@ -309,16 +309,16 @@ public class MovingRoom extends ActiveTicker
 							if ((currentStop==0)||(currentStop==(listOfRooms.size()-1)))
 							{
 								currentStopRoom.rawDoors()[Directions.getOpDirectionCode(normalVec.elementAt(1).toString())]=null;
-								currentStopRoom.setExit(Directions.getOpDirectionCode(normalVec.elementAt(1).toString()),null);
+								currentStopRoom.setRawExit(Directions.getOpDirectionCode(normalVec.elementAt(1).toString()),null);
 								subwayRoom.rawDoors()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]=null;
-								subwayRoom.setExit(Directions.getGoodDirectionCode(normalVec.elementAt(1).toString()),null);
+								subwayRoom.setRawExit(Directions.getGoodDirectionCode(normalVec.elementAt(1).toString()),null);
 							}
 							else
 							{
 								currentStopRoom.rawDoors()[Directions.getOpDirectionCode(reverseVec.elementAt(1).toString())]=null;
-								currentStopRoom.setExit(Directions.getOpDirectionCode(reverseVec.elementAt(1).toString()),null);
+								currentStopRoom.setRawExit(Directions.getOpDirectionCode(reverseVec.elementAt(1).toString()),null);
 								subwayRoom.rawDoors()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]=null;
-								subwayRoom.setExit(Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString()),null);
+								subwayRoom.setRawExit(Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString()),null);
 							}
 							CMLib.database().DBUpdateExits(subwayRoom);
 							CMLib.database().DBUpdateExits(currentStopRoom);
@@ -352,16 +352,16 @@ public class MovingRoom extends ActiveTicker
 							if ((currentStop==0)||(currentStop==(listOfRooms.size()-1)))
 							{
 								currentStopRoom.rawDoors()[Directions.getOpDirectionCode(reverseVec.elementAt(1).toString())]=null;
-								currentStopRoom.setExit(Directions.getOpDirectionCode(reverseVec.elementAt(1).toString()),null);
+								currentStopRoom.setRawExit(Directions.getOpDirectionCode(reverseVec.elementAt(1).toString()),null);
 								subwayRoom.rawDoors()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]=null;
-								subwayRoom.setExit(Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString()),null);
+								subwayRoom.setRawExit(Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString()),null);
 							}
 							else
 							{
 								currentStopRoom.rawDoors()[Directions.getOpDirectionCode(normalVec.elementAt(1).toString())]=null;
-								currentStopRoom.setExit(Directions.getOpDirectionCode(normalVec.elementAt(1).toString()),null);
+								currentStopRoom.setRawExit(Directions.getOpDirectionCode(normalVec.elementAt(1).toString()),null);
 								subwayRoom.rawDoors()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]=null;
-								subwayRoom.setExit(Directions.getGoodDirectionCode(normalVec.elementAt(1).toString()),null);
+								subwayRoom.setRawExit(Directions.getGoodDirectionCode(normalVec.elementAt(1).toString()),null);
 							}
 							CMLib.database().DBUpdateExits(subwayRoom);
 							CMLib.database().DBUpdateExits(currentStopRoom);
@@ -395,9 +395,9 @@ public class MovingRoom extends ActiveTicker
 						{
 							Exit thisNewExit=CMClass.getExit("StdOpenDoorway");
 							subwayRoom.rawDoors()[Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString())]=nextStopRoom;
-							subwayRoom.setExit(Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString()),thisNewExit);
+							subwayRoom.setRawExit(Directions.getGoodDirectionCode(reverseVec.elementAt(1).toString()),thisNewExit);
 							nextStopRoom.rawDoors()[Directions.getOpDirectionCode(reverseVec.elementAt(1).toString())]=subwayRoom;
-							nextStopRoom.setExit(Directions.getOpDirectionCode(reverseVec.elementAt(1).toString()),thisNewExit);
+							nextStopRoom.setRawExit(Directions.getOpDirectionCode(reverseVec.elementAt(1).toString()),thisNewExit);
 							CMLib.database().DBUpdateExits(subwayRoom);
 							CMLib.database().DBUpdateExits(nextStopRoom);
 							subwayRoom.getArea().fillInAreaRoom(subwayRoom);
@@ -427,9 +427,9 @@ public class MovingRoom extends ActiveTicker
 						{
 							Exit thisNewExit=CMClass.getExit("StdOpenDoorway");
 							subwayRoom.rawDoors()[Directions.getGoodDirectionCode(normalVec.elementAt(1).toString())]=nextStopRoom;
-							subwayRoom.setExit(Directions.getGoodDirectionCode(normalVec.elementAt(1).toString()),thisNewExit);
+							subwayRoom.setRawExit(Directions.getGoodDirectionCode(normalVec.elementAt(1).toString()),thisNewExit);
 							nextStopRoom.rawDoors()[Directions.getOpDirectionCode(normalVec.elementAt(1).toString())]=subwayRoom;
-							nextStopRoom.setExit(Directions.getOpDirectionCode(normalVec.elementAt(1).toString()),thisNewExit);
+							nextStopRoom.setRawExit(Directions.getOpDirectionCode(normalVec.elementAt(1).toString()),thisNewExit);
 							CMLib.database().DBUpdateExits(subwayRoom);
 							CMLib.database().DBUpdateExits(nextStopRoom);
 							subwayRoom.getArea().fillInAreaRoom(subwayRoom);

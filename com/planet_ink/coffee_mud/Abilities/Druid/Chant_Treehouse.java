@@ -68,7 +68,7 @@ public class Chant_Treehouse extends Chant
 				}
 				R.destroy();
 				room.rawDoors()[Directions.UP]=null;
-                room.setExit(Directions.UP,null);
+                room.setRawExit(Directions.UP,null);
 			}
 			room.clearSky();
 		}
@@ -128,7 +128,7 @@ public class Chant_Treehouse extends Chant
 				newRoom.setDescription("You are up in the treehouse. The view is great from up here!");
 				newRoom.setArea(mob.location().getArea());
 				mob.location().rawDoors()[Directions.UP]=newRoom;
-				mob.location().setExit(Directions.UP,CMClass.getExit("ClimbableExit"));
+				mob.location().setRawExit(Directions.UP,CMClass.getExit("ClimbableExit"));
 				newRoom.rawDoors()[Directions.DOWN]=mob.location();
 				Ability A=CMClass.getAbility("Prop_RoomView");
 				A.setMiscText(CMLib.map().getExtendedRoomID(mob.location()));
@@ -145,7 +145,7 @@ public class Chant_Treehouse extends Chant
 				A=CMClass.getAbility("Prop_NoTeleportOut");
 				if(A!=null) newRoom.addEffect(A);
 
-				newRoom.setExit(Directions.DOWN,E);
+				newRoom.setRawExit(Directions.DOWN,E);
 				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
 					Room R=mob.location().rawDoors()[d];
@@ -160,7 +160,7 @@ public class Chant_Treehouse extends Chant
 						A.setMiscText(CMLib.map().getExtendedRoomID(R));
 						E=CMClass.getExit("Impassable");
 						E.addNonUninvokableEffect(A);
-						newRoom.setExit(d,E);
+						newRoom.setRawExit(d,E);
 					}
 				}
 				newRoom.getArea().fillInAreaRoom(newRoom);

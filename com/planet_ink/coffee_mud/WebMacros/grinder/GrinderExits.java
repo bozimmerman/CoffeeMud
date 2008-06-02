@@ -58,7 +58,7 @@ public class GrinderExits
 		synchronized(("SYNC"+R.roomID()).intern())
 		{
 			R=CMLib.map().getRoom(R);
-			Exit E=R.rawExits()[dir];
+			Exit E=R.getRawExit(dir);
 			if(E==null) return "No Exit to edit?!";
 			
 			// important generic<->non generic swap!
@@ -66,7 +66,7 @@ public class GrinderExits
 			if((newClassID!=null)&&(!CMClass.classID(E).equals(newClassID)))
 			{
 				E=CMClass.getExit(newClassID);
-				R.setExit(dir,E);
+				R.setRawExit(dir,E);
 			}
 			
 			for(int o=0;o<okparms.length;o++)
@@ -180,13 +180,13 @@ public class GrinderExits
 				Room R2=R.rawDoors()[dir];
 				Exit E2=null;
 				if((R2!=null)&&(R2.rawDoors()[Directions.getOpDirectionCode(dir)]==R))
-					E2=R2.rawExits()[Directions.getOpDirectionCode(dir)];
+					E2=R2.getRawExit(Directions.getOpDirectionCode(dir));
 				if(E2!=null)
 				{
 					Exit oldE2=E2;
 					E2=(Exit)E.copyOf();
 					E2.setDisplayText(oldE2.displayText());
-					R2.setExit(Directions.getOpDirectionCode(dir),E2);
+					R2.setRawExit(Directions.getOpDirectionCode(dir),E2);
 					CMLib.database().DBUpdateExits(R2);
 					R.getArea().fillInAreaRoom(R2);
 				}
@@ -201,7 +201,7 @@ public class GrinderExits
 		{
 			R=CMLib.map().getRoom(R);
 			R.rawDoors()[dir]=null;
-			R.setExit(dir,null);
+			R.setRawExit(dir,null);
 			CMLib.database().DBUpdateExits(R);
 			if(R instanceof GridLocale)
 				((GridLocale)R).buildGrid();
@@ -220,8 +220,8 @@ public class GrinderExits
 			
 			if(R.rawDoors()[dir]==null) R.rawDoors()[dir]=R2;
 				
-			if(R.rawExits()[dir]==null)
-				R.setExit(dir,CMClass.getExit("StdOpenDoorway"));
+			if(R.getRawExit(dir)==null)
+				R.setRawExit(dir,CMClass.getExit("StdOpenDoorway"));
 			
 			CMLib.database().DBUpdateExits(R);
 				
@@ -234,8 +234,8 @@ public class GrinderExits
 			if(R2 instanceof GridLocale)
 				((GridLocale)R2).clearGrid(null);
 			if(R2.rawDoors()[dir2]==null) R2.rawDoors()[dir2]=R;
-			if(R2.rawExits()[dir2]==null)
-                R2.setExit(dir2,CMClass.getExit("StdOpenDoorway"));
+			if(R2.getRawExit(dir2)==null)
+                R2.setRawExit(dir2,CMClass.getExit("StdOpenDoorway"));
 			R.getArea().fillInAreaRoom(R2);
 			CMLib.database().DBUpdateExits(R2);
 		}

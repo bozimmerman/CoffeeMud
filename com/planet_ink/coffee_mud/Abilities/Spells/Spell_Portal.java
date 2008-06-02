@@ -51,13 +51,13 @@ public class Spell_Portal extends Spell
 			{
 				newRoom.showHappens(CMMsg.MSG_OK_VISUAL,"The swirling portal closes.");
 				newRoom.rawDoors()[Directions.GATE]=null;
-				newRoom.setExit(Directions.GATE,null);
+				newRoom.setRawExit(Directions.GATE,null);
 			}
 			if(oldRoom!=null)
 			{
 				oldRoom.showHappens(CMMsg.MSG_OK_VISUAL,"The swirling portal closes.");
 				oldRoom.rawDoors()[Directions.GATE]=null;
-				oldRoom.setExit(Directions.GATE,null);
+				oldRoom.setRawExit(Directions.GATE,null);
 			}
 		}
 		super.unInvoke();
@@ -169,8 +169,8 @@ public class Spell_Portal extends Spell
 				}
 				mob.location().rawDoors()[Directions.GATE]=newRoom;
 				newRoom.rawDoors()[Directions.GATE]=mob.location();
-				mob.location().setExit(Directions.GATE,e);
-				newRoom.setExit(Directions.GATE,e2);
+				mob.location().setRawExit(Directions.GATE,e);
+				newRoom.setRawExit(Directions.GATE,e2);
 				oldRoom=mob.location();
 				beneficialAffect(mob,e,asLevel,5);
 			}

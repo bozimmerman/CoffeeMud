@@ -277,12 +277,12 @@ public class Destroy extends BaseItemParser
 				}
 				CMLib.database().DBUpdateExits(GL);
 				mob.location().rawDoors()[direction]=null;
-				mob.location().setExit(direction,null);
+				mob.location().setRawExit(direction,null);
 			}
 			else
 			{
 				mob.location().rawDoors()[direction]=null;
-                mob.location().setExit(direction,null);
+                mob.location().setRawExit(direction,null);
 				CMLib.database().DBUpdateExits(mob.location());
 			}
 			if(unRoom instanceof GridLocale)
@@ -334,7 +334,7 @@ public class Destroy extends BaseItemParser
 			return;
 
 		}
-		mob.location().setExit(direction,null);
+		mob.location().setRawExit(direction,null);
 		CMLib.database().DBUpdateExits(mob.location());
 		mob.location().getArea().fillInAreaRoom(mob.location());
 		if(mob.location() instanceof GridLocale)

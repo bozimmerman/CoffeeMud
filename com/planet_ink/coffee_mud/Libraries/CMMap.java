@@ -249,11 +249,11 @@ public class CMMap extends StdLibrary implements WorldMap
 				from.rawDoors()[direction]=null;
 	
 			from.rawDoors()[direction]=room;
-			thisExit=from.rawExits()[direction];
+			thisExit=from.getRawExit(direction);
 			if(thisExit==null)
 			{
 				thisExit=CMClass.getExit("StdOpenDoorway");
-				from.setExit(direction,thisExit);
+				from.setRawExit(direction,thisExit);
 			}
 			CMLib.database().DBUpdateExits(from);
 		}
@@ -263,7 +263,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			if(room.rawDoors()[Directions.getOpDirectionCode(direction)]==null)
 			{
 				room.rawDoors()[Directions.getOpDirectionCode(direction)]=from;
-				room.setExit(Directions.getOpDirectionCode(direction),thisExit);
+				room.setRawExit(Directions.getOpDirectionCode(direction),thisExit);
 				CMLib.database().DBUpdateExits(room);
 			}
 		}
@@ -981,9 +981,9 @@ public class CMMap extends StdLibrary implements WorldMap
 						{
 							R.rawDoors()[dir]=null;
 							changes=true;
-							if((R.rawExits()[dir]!=null)&&(R.rawExits()[dir].isGeneric()))
+							if((R.getRawExit(dir)!=null)&&(R.getRawExit(dir).isGeneric()))
 							{
-								Exit GE=R.rawExits()[dir];
+								Exit GE=R.getRawExit(dir);
 								GE.setTemporaryDoorLink(deadRoom.roomID());
 							}
 						}

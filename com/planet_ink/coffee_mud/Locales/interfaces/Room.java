@@ -136,9 +136,9 @@ public interface Room extends Environmental, Affectable, Behavable
 	public void setGridParent(GridLocale room);
 	public GridLocale getGridParent();
 
-	public Exit[] rawExits();
 	public Room[] rawDoors();
-	public void setExit(int direction, Environmental E);
+	public void setRawExit(int direction, Environmental E);
+    public Exit getRawExit(int direction);
 	public Exit getReverseExit(int direction);
 	public Exit getPairedExit(int direction);
 	public Room getRoomInDir(int direction);

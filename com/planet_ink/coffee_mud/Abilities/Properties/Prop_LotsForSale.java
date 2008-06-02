@@ -77,11 +77,11 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 				{
 					Room R2=R.rawDoors()[d];
 					foundOne=foundOne||(R2!=null);
-	                Exit E=R.rawExits()[d];
+	                Exit E=R.getRawExit(d);
 					if((R2!=null)&&(isCleanRoom(R,R2)))
 					{
 						R.rawDoors()[d]=null;
-						R.setExit(d,null);
+						R.setRawExit(d,null);
 						updateExits=true;
 						CMLib.map().obliterateRoom(R2);
 					}
@@ -93,7 +93,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 	                    updateExits=true;
 	                    if(R2!=null)
 	                    {
-	                        E=R2.rawExits()[Directions.getOpDirectionCode(d)];
+	                        E=R2.getRawExit(Directions.getOpDirectionCode(d));
 	                        if((E!=null)&&(E.hasALock())&&(E.isGeneric()))
 	                        {
 	                            E.setKeyName("");
@@ -136,9 +136,9 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 							R2.addNonUninvokableEffect((Ability)newTitle);
 						}
 						R.rawDoors()[d]=R2;
-						R.setExit(d,CMClass.getExit("Open"));
+						R.setRawExit(d,CMClass.getExit("Open"));
 						R2.rawDoors()[Directions.getOpDirectionCode(d)]=R;
-						R2.setExit(Directions.getOpDirectionCode(d),CMClass.getExit("Open"));
+						R2.setRawExit(Directions.getOpDirectionCode(d),CMClass.getExit("Open"));
 						updateExits=true;
 						if(CMSecurity.isDebugging("PROPERTY"))
                             Log.debugOut("Lots4Sale",R2.roomID()+" created and put up for sale.");

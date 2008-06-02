@@ -98,11 +98,11 @@ public class GrinderRooms
 				R.setArea(area);
 				for(int d=0;d<R.rawDoors().length;d++)
 					R.rawDoors()[d]=oldR.rawDoors()[d];
-				for(int d=0;d<R.rawExits().length;d++)
+				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 				{
-				    Exit E=oldR.rawExits()[d];
+				    Exit E=oldR.getRawExit(d);
 				    if(E!=null)
-				        R.setExit(d,(Exit)E.copyOf());
+				        R.setRawExit(d,(Exit)E.copyOf());
 				}
 				redoAllMyDamnRooms=true;
                 if(R.image().equalsIgnoreCase(CMProps.getDefaultMXPImage(oldR)))
@@ -354,7 +354,7 @@ public class GrinderRooms
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
 				newRoom.rawDoors()[d]=null;
-				newRoom.setExit(d,null);
+				newRoom.setRawExit(d,null);
 			}
 		}
 		else
@@ -368,7 +368,7 @@ public class GrinderRooms
 		if(linkTo!=null)
 		{
 			newRoom.rawDoors()[Directions.getOpDirectionCode(dir)]=linkTo;
-			newRoom.setExit(Directions.getOpDirectionCode(dir),CMClass.getExit("StdOpenDoorway"));
+			newRoom.setRawExit(Directions.getOpDirectionCode(dir),CMClass.getExit("StdOpenDoorway"));
 		}
 		CMLib.database().DBCreateRoom(newRoom,CMClass.classID(newRoom));
 		CMLib.database().DBUpdateExits(newRoom);
@@ -387,8 +387,8 @@ public class GrinderRooms
 			((GridLocale)R).clearGrid(null);
 		Room newRoom=createLonelyRoom(R.getArea(),R,dir,copyThisOne);
 		R.rawDoors()[dir]=newRoom;
-		if(R.rawExits()[dir]==null)
-			R.setExit(dir,CMClass.getExit("StdOpenDoorway"));
+		if(R.getRawExit(dir)==null)
+			R.setRawExit(dir,CMClass.getExit("StdOpenDoorway"));
 		CMLib.database().DBUpdateExits(R);
 		R.getArea().fillInAreaRoom(R);
 		return "";
@@ -435,8 +435,8 @@ public class GrinderRooms
 						if(R2.rawDoors()[opD]==null)
 						{
 							R2.rawDoors()[opD]=R;
-							if(R2.rawExits()[opD]==null)
-								R2.setExit(opD,CMClass.getExit("StdOpenDoorway"));
+							if(R2.getRawExit(opD)==null)
+								R2.setRawExit(opD,CMClass.getExit("StdOpenDoorway"));
 							if(deferredExitSaves!=null)
 							{
 								if(!deferredExitSaves.contains(R2.roomID()))
@@ -448,8 +448,8 @@ public class GrinderRooms
 						if(R.rawDoors()[d]==null)
 						{
 							R.rawDoors()[d]=R2;
-							if(R.rawExits()[d]==null)
-								R.setExit(d,CMClass.getExit("StdOpenDoorway"));
+							if(R.getRawExit(d)==null)
+								R.setRawExit(d,CMClass.getExit("StdOpenDoorway"));
 							resaveMyExits=true;
 						}
 					}

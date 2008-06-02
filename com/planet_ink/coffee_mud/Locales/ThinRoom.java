@@ -64,9 +64,9 @@ public class ThinRoom implements Room {
 	public boolean getMobility(){return true;}
 	private boolean recurse=false;
 	public boolean isHere(Environmental E){return false;}
-	public void setExit(int direction, Environmental E){
+	public void setRawExit(int direction, Environmental E){
 	    if(E instanceof Room)
-	        exits[direction]=((Room)E).rawExits()[direction];
+	        exits[direction]=((Room)E).getRawExit(direction);
 	    else
 	    if(E instanceof Exit)
             exits[direction]=(Exit)E;
@@ -122,9 +122,14 @@ public class ThinRoom implements Room {
 	public void setArea(Area newArea){myArea=newArea;}
 	public void setGridParent(GridLocale room){}
 	public GridLocale getGridParent(){return null;}
-
-	public Exit[] rawExits(){return exits;}
 	public Room[] rawDoors(){return rooms;}
+    public Exit getRawExit(int dir)
+    {
+        if(dir<exits.length)
+            return exits[dir];
+        return null;
+    }
+    
 	public Exit getReverseExit(int direction){return null;}
 	public Exit getPairedExit(int direction){return null;}
 	public Room getRoomInDir(int direction){return null;}

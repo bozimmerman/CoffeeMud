@@ -86,12 +86,12 @@ public class EndlessSky extends StdGrid
 		{
 		    if(d==Directions.GATE) continue;
 			Room dirRoom=rawDoors()[d];
-			Exit dirExit=rawExits()[d];
+			Exit dirExit=getRawExit(d);
 			if((dirExit==null)||(dirExit.hasADoor()))
 				dirExit=ox;
 			if(dirRoom!=null)
 			{
-				Exit altExit=dirRoom.rawExits()[Directions.getOpDirectionCode(d)];
+				Exit altExit=dirRoom.getRawExit(Directions.getOpDirectionCode(d));
 				if(altExit==null) altExit=ox;
 				switch(d)
 				{

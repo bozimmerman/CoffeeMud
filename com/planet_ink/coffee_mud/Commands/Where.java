@@ -206,7 +206,7 @@ public class Where extends StdCommand
                             {
                                 for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
                                 {
-                                    Exit E=R.rawExits()[d];
+                                    Exit E=R.getRawExit(d);
                                     if((E!=null)
                                     &&(((E.Name().length()>0)&&(CMLib.english().containsString(E.Name(),who)))
                                             ||((E.doorName().length()>0)&& CMLib.english().containsString(E.doorName(),who))

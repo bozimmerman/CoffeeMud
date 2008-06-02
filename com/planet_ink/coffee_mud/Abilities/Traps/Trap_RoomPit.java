@@ -68,14 +68,14 @@ public class Trap_RoomPit extends StdTrap
 			if((R!=null)&&(R.getRoomInDir(Directions.DOWN)==R2))
 			{
 				R.rawDoors()[Directions.DOWN]=null;
-				R.setExit(Directions.DOWN,null);
+				R.setRawExit(Directions.DOWN,null);
 			}
 			R2.rawDoors()[Directions.UP]=null;
-			R2.setExit(Directions.UP,null);
+			R2.setRawExit(Directions.UP,null);
 			R2.rawDoors()[Directions.DOWN]=null;
-			R2.setExit(Directions.DOWN,null);
+			R2.setRawExit(Directions.DOWN,null);
 			R1.rawDoors()[Directions.UP]=null;
-			R1.setExit(Directions.UP,null);
+			R1.setRawExit(Directions.UP,null);
 			pit=null;
             R1.destroy();
             R2.destroy();
@@ -136,9 +136,9 @@ public class Trap_RoomPit extends StdTrap
 			myPit.baseEnvStats().setDisposition(myPit.baseEnvStats().disposition()|EnvStats.IS_DARK);
 			myPit.setDisplayText("Inside a dark pit");
 			myPit.setDescription("The walls here are slick and tall.  You can barely see the closed trap door well above you.");
-			myPit.setExit(Directions.UP,CMClass.getExit("StdOpenDoorway"));
+			myPit.setRawExit(Directions.UP,CMClass.getExit("StdOpenDoorway"));
 			myPit.rawDoors()[Directions.UP]=myPitUp;
-			myPitUp.setExit(Directions.DOWN,CMClass.getExit("StdOpenDoorway"));
+			myPitUp.setRawExit(Directions.DOWN,CMClass.getExit("StdOpenDoorway"));
 			myPitUp.rawDoors()[Directions.DOWN]=myPit;
 			myPitUp.recoverEnvStats();
 			V.addElement(myPit);
@@ -197,12 +197,12 @@ public class Trap_RoomPit extends StdTrap
 			{
 				super.spring(target);
 				makePit(target);
-				((Room)pit.lastElement()).setExit(Directions.UP,CMClass.getExit("StdClosedDoorway"));
+				((Room)pit.lastElement()).setRawExit(Directions.UP,CMClass.getExit("StdClosedDoorway"));
 				((Room)pit.lastElement()).rawDoors()[Directions.UP]=target.location();
 				if((target.location().getRoomInDir(Directions.DOWN)==null)
 				&&(target.location().getExitInDir(Directions.DOWN)==null))
 				{
-					target.location().setExit(Directions.DOWN,CMClass.getExit("StdClosedDoorway"));
+					target.location().setRawExit(Directions.DOWN,CMClass.getExit("StdClosedDoorway"));
 					target.location().rawDoors()[Directions.DOWN]=((Room)pit.lastElement());
 				}
 				((Room)pit.firstElement()).bringMobHere(target,false);

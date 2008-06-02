@@ -449,8 +449,8 @@ public class BaseGenerics extends StdCommand
 			R.setArea(A);
 			for(int d=0;d<R.rawDoors().length;d++)
 				R.rawDoors()[d]=oldR.rawDoors()[d];
-			for(int d=0;d<R.rawExits().length;d++)
-			    R.setExit(d,oldR);
+			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			    R.setRawExit(d,oldR);
 			R.setDisplayText(oldR.displayText());
 			R.setDescription(oldR.description());
             if(R.image().equalsIgnoreCase(CMProps.getDefaultMXPImage(oldR))) R.setImage(null);

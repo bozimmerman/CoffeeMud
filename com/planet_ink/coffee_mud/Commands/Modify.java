@@ -770,7 +770,7 @@ public class Modify extends BaseGenerics
 			return;
 		}
 		
-		Exit thisExit=mob.location().rawExits()[direction];
+		Exit thisExit=mob.location().getRawExit(direction);
 		if(thisExit==null)
 		{
 			mob.tell("You have failed to specify a valid exit '"+((String)commands.elementAt(2))+"'.\n\r");
@@ -814,7 +814,7 @@ public class Modify extends BaseGenerics
 				Room room=(Room)r.nextElement();
 				for(int e2=0;e2<Directions.NUM_DIRECTIONS;e2++)
 				{
-					Exit exit=room.rawExits()[e2];
+					Exit exit=room.getRawExit(e2);
 					if((exit!=null)&&(exit==thisExit))
 					{
 						CMLib.database().DBUpdateExits(room);
@@ -1521,7 +1521,7 @@ public class Modify extends BaseGenerics
 			if((Directions.getGoodDirectionCode(allWord)>=0)||(thang instanceof Exit))
 			{
 				if(Directions.getGoodDirectionCode(allWord)>=0)
-					thang=mob.location().rawExits()[Directions.getGoodDirectionCode(allWord)];
+					thang=mob.location().getRawExit(Directions.getGoodDirectionCode(allWord));
 
 				if(thang!=null)
 				{
@@ -1540,7 +1540,7 @@ public class Modify extends BaseGenerics
 				    			room=CMLib.map().getRoom(room);
 								for(int e2=0;e2<Directions.NUM_DIRECTIONS;e2++)
 								{
-									Exit exit=room.rawExits()[e2];
+									Exit exit=room.getRawExit(e2);
 									if((exit!=null)&&(exit==thang))
 									{
 										CMLib.database().DBUpdateExits(room);

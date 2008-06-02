@@ -4924,7 +4924,7 @@ public class Import extends StdCommand
 							returnAnError(session,"Room: "+R.roomID()+", Malformed exit codeStr "+codeStr+".  Aborting exit, area="+areaName,compileErrors,commands);
 							continue;
 						}
-						if((R.rawExits()[dirCode]!=null)||(R.rawDoors()[dirCode]!=null))
+						if((R.getRawExit(dirCode)!=null)||(R.rawDoors()[dirCode]!=null))
 						{
 							returnAnError(session,"Room: "+R.roomID()+", Redundant exit codeStr "+nextLine+"/"+codeStr+", dircode="+dirCode+".  Aborting exit, area="+areaName,compileErrors,commands);
 							continue;
@@ -4994,7 +4994,7 @@ public class Import extends StdCommand
 						}
 						E.setExitParams(name,E.closeWord(),E.openWord(),E.Name()+", closed");
 						E.setDescription(descStr);
-						R.setExit(dirCode,E);
+						R.setRawExit(dirCode,E);
 						Exit opExit=null;
 						if(((linkRoom==null)||(linkRoom.getArea().Name()!=R.getArea().Name()))&&(linkRoomID>=0))
 						{
@@ -5010,7 +5010,7 @@ public class Import extends StdCommand
 							    			R2=CMLib.map().getRoom(R2);
 											for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 											{
-												Exit E3=R2.rawExits()[d];
+												Exit E3=R2.getRawExit(d);
 												if((E3!=null)
 												&&(E3.temporaryDoorLink().length()>0)
 												&&(R.roomID().endsWith(E3.temporaryDoorLink())))
@@ -5414,8 +5414,8 @@ public class Import extends StdCommand
 						case 8:
 						case 9:
 							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-								if((R.rawExits()[d]!=null)
-								&&(!R.rawExits()[d].hasADoor()))
+								if((R.getRawExit(d)!=null)
+								&&(!R.getRawExit(d).hasADoor()))
 								{
 									dirCode=d;
 									break;
@@ -5427,7 +5427,7 @@ public class Import extends StdCommand
 						}
 						if(dirCode<Directions.NUM_DIRECTIONS)
 						{
-							Exit E=R.rawExits()[dirCode];
+							Exit E=R.getRawExit(dirCode);
 							if(E==null)
 								returnAnError(session,"Room: "+R.roomID()+", Unknown exit in dir: "+dirCode+" very confusing!, area="+areaName,compileErrors,commands);
 							else
@@ -5588,7 +5588,7 @@ public class Import extends StdCommand
 			// final exit clean-up optimization
 			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 			{
-				Exit E=saveRoom.rawExits()[d];
+				Exit E=saveRoom.getRawExit(d);
 				if((E!=null)
 				&&(E.isGeneric())
 				&&(!E.hasADoor())
@@ -5602,7 +5602,7 @@ public class Import extends StdCommand
 				{
 					Exit E2=CMClass.getExit("OpenDescriptable");
 					E2.setMiscText(E.displayText());
-					saveRoom.setExit(d,E2);
+					saveRoom.setRawExit(d,E2);
 				}
 			}
 			CMLib.threads().clearDebri(saveRoom,0);
@@ -5641,7 +5641,7 @@ public class Import extends StdCommand
 					if(dir<Directions.NUM_DIRECTIONS)
 					{
 						RR=R1.rawDoors()[dir];
-						RE=R1.rawExits()[dir];
+						RE=R1.getRawExit(dir);
 					}
 					Room TR=CMLib.map().getRoom(doneRooms,"NOAREA",dcode);
 					if((RR==null)&&(TR==null))
