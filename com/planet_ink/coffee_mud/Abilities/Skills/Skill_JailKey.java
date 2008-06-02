@@ -74,7 +74,25 @@ public class Skill_JailKey extends StdSkill
 		
 		if(unlockThis==null) 
 	    {
-		    mob.tell("You must specify a jail door direction.");
+		    if(dirCode<0)
+    		    mob.tell("You should specify a direction.");
+		    else
+		    {
+		        Exit E=mob.location().getExitInDir(dirCode);
+		        if(E==null)
+	                mob.tell("You must specify a jail door direction.");
+		        else
+		        if(!E.hasADoor())
+                    mob.tell("You must specify a jail **DOOR** direction.");
+		        else
+		        if(!E.hasALock())
+                    mob.tell("You must specify a **JAIL** door direction.");
+		        else
+		        if(E.isOpen())
+                    mob.tell(E.name()+" is open already.");
+		        else
+                    mob.tell("That's not a jail door.");
+		    }
 		    return false;
 	    }
 

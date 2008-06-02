@@ -1236,14 +1236,15 @@ public class CMMap extends StdLibrary implements WorldMap
 			   deadMOB=S.mob();
 		}
 		CMMsg msg=CMClass.getMsg(deadMOB,null,CMMsg.MSG_RETIRE,(quiet)?null:"A horrible death cry is heard throughout the land.");
-		if(deadMOB.location()!=null)
-			deadMOB.location().send(deadMOB,msg);
+		Room deadLoc=deadMOB.location();
+		if(deadLoc!=null)
+		    deadLoc.send(deadMOB,msg);
 		try
 		{
 			for(Enumeration r=rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if((R!=null)&&(R!=deadMOB.location()))
+				if((R!=null)&&(R!=deadLoc))
 				{
 					if(R.okMessage(deadMOB,msg))
 						R.sendOthers(deadMOB,msg);
