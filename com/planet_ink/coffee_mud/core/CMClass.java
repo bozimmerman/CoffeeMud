@@ -557,6 +557,15 @@ public class CMClass extends ClassLoader
 		return A;
 	}
 	
+    public static Behavior findBehavior(String calledThis)
+    {
+        Behavior B=(Behavior)getGlobal(behaviors,calledThis);
+        if(B==null) B=getBehaviorByName(calledThis,true);
+        if(B==null) B=getBehaviorByName(calledThis,false);
+        if(B!=null) B=(Behavior)B.copyOf();
+        return B;
+    }
+    
     public static Behavior getBehaviorByName(String calledThis, boolean exact)
     {
         if(calledThis==null) return null;
@@ -565,14 +574,14 @@ public class CMClass extends ClassLoader
         {
             B=(Behavior)e.nextElement();
             if(B.name().equalsIgnoreCase(calledThis))
-                return B;
+                return (Behavior)B.copyOf();
         }
         if(exact) return null;
         for(Enumeration e=behaviors();e.hasMoreElements();)
         {
             B=(Behavior)e.nextElement();
             if(CMLib.english().containsString(B.name(),calledThis))
-                return B;
+                return (Behavior)B.copyOf();
         }
         return null;
     }

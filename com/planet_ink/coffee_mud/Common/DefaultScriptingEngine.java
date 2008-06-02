@@ -2192,7 +2192,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(E==null)
                     returnable=false;
                 else
+                {
+                    Ability A=CMClass.findAbility(arg2);
+                    if(A!=null) arg2=A.ID();
                     returnable=(E.fetchEffect(arg2)!=null);
+                }
                 break;
             }
             case 69: // isbehave
@@ -2203,7 +2207,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(E==null)
                     returnable=false;
                 else
+                {
+                    Behavior B=CMClass.findBehavior(arg2);
+                    if(B!=null) arg2=B.ID();
                     returnable=(E.fetchBehavior(arg2)!=null);
+                }
                 break;
             }
             case 70: // ipaddress
@@ -6562,22 +6570,24 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String cast=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
                 Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,2),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String m2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,2));
-                Behavior A=null;
+                Behavior B=null;
+                Behavior B2=(cast==null)?null:CMClass.findBehavior(cast);
+                if(B2!=null) cast=B2.ID();
                 if((cast!=null)&&(newTarget!=null))
                 {
-                    A=newTarget.fetchBehavior(cast);
-                    if(A==null) A=CMClass.getBehavior(cast);
+                    B=newTarget.fetchBehavior(cast);
+                    if(B==null) B=CMClass.getBehavior(cast);
                 }
-                if((newTarget!=null)&&(A!=null))
+                if((newTarget!=null)&&(B!=null))
                 {
                     if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster()))
-                        Log.sysOut("Scripting",newTarget.Name()+" was MPBEHAVED with "+A.name());
-                    A.setParms(m2);
-                    if(newTarget.fetchBehavior(A.ID())==null)
+                        Log.sysOut("Scripting",newTarget.Name()+" was MPBEHAVED with "+B.name());
+                    B.setParms(m2);
+                    if(newTarget.fetchBehavior(B.ID())==null)
                     {
-                        newTarget.addBehavior(A);
+                        newTarget.addBehavior(B);
                         if((defaultQuestName()!=null)&&(defaultQuestName().length()>0))
-                        A.registerDefaultQuest(defaultQuestName());
+                        B.registerDefaultQuest(defaultQuestName());
                     }
                 }
                 break;
@@ -6647,12 +6657,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
             {
                 String cast=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,1));
                 Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,2),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-                if(newTarget!=null)
+                if((newTarget!=null)&&(cast!=null))
                 {
-                    Behavior A=newTarget.fetchBehavior(cast);
-                    if(A!=null) newTarget.delBehavior(A);
-                    if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster())&&(A!=null))
-                        Log.sysOut("Scripting",newTarget.Name()+" was MPUNBEHAVED with "+A.name());
+                    Behavior B=CMClass.findBehavior(cast);
+                    if(B!=null) cast=B.ID();
+                    B=newTarget.fetchBehavior(cast);
+                    if(B!=null) newTarget.delBehavior(B);
+                    if((newTarget instanceof MOB)&&(!((MOB)newTarget).isMonster())&&(B!=null))
+                        Log.sysOut("Scripting",newTarget.Name()+" was MPUNBEHAVED with "+B.name());
                 }
                 break;
             }
