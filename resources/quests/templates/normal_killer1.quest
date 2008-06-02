@@ -74,8 +74,15 @@
 #See help on ZAPPERMAN for information on zapper mask syntax.
 #$KILLABLES_NAMES=$ZAPPERMASK
 #
+#Killables attack:
+#Will the mobs attack if they spot the player?  Keep in mind this is above and
+#beyond any aggressive behaviors they may have, and will neither modify or 
+#supress their natural aggressive behaviors.
+#$KILLABLES_ATTACK=$CHOOSE=YES-ATTACK-ON-SIGHT,NO-USE-DEFAULT_BEHAVIOR
+#
 #Num Killables:
-#Specify how many of the killable mobs must be killed.
+#Specify how many of the killable mobs must be killed.  Make sure there are 
+#enough of them in your world to make this goal reachable!
 #$NUM_KILLABLES=($EXPRESSION)=1
 #
 #Killables response: 
@@ -169,16 +176,21 @@ ONCE_PROG 100
 ~
 
 GREET_PROG 100
-	if ISLIKE($n $KILLABLES_NAMES)
-		mpforce '%ROOMMOB($0)%' sayto "$i" $KILLABLES_RESPONSE
-	endif
+    if EVAL('$KILLABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
+    	if ISLIKE($n $KILLABLES_NAMES)
+            mpforce $n kill $i
+    	endif
+    endif
 ~
 
 ENTRY_PROG 100
 	for $0 = 1 to '%NUMMOBSROOM(*)%'
 		if ISLIKE('%ROOMMOB($0)%' $KILLABLES_NAMES)
 			mpforce '%ROOMMOB($0)%' sayto "$i" $KILLABLES_RESPONSE
-			break
+            if EVAL('$KILLABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
+                mpforce '%ROOMMOB($0)%' kill $i
+            endif
+            break
 		endif
 	next
 ~
