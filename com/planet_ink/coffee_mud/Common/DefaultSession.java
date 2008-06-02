@@ -1272,7 +1272,8 @@ public class DefaultSession extends Thread implements Session
                 case 'G': { buf.append(CMLib.beanCounter().nameCurrencyShort(mob(),CMLib.beanCounter().getTotalAbsoluteNativeValue(mob()))); c++; break;}
 				case 'h': { buf.append("^<Hp^>"+mob().curState().getHitPoints()+"^</Hp^>"); c++; break;}
 				case 'H': { buf.append("^<MaxHp^>"+mob().maxState().getHitPoints()+"^</MaxHp^>"); c++; break;}
-                case 'I': {   if((CMLib.flags().isCloaked(mob()))&&(!CMLib.flags().isSeen(mob())))
+                case 'I': {   if((CMLib.flags().isCloaked(mob()))
+                              &&(((mob().envStats().disposition()&EnvStats.IS_NOT_SEEN)!=0)))
                                   buf.append("Wizinvisible");
                               else
                               if(CMLib.flags().isCloaked(mob()))
