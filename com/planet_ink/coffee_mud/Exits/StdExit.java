@@ -44,6 +44,7 @@ public class StdExit implements Exit
 	protected Vector behaviors=null;
     protected Vector scripts=null;
     protected boolean amDestroyed=false;
+    protected byte usage=0;
     
 	public StdExit()
 	{
@@ -67,6 +68,20 @@ public class StdExit implements Exit
 	public String closeWord(){return "close";}
 	public String openWord(){return "open";}
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
+	public byte exitUsage(short change){
+	    if(change<0)
+	    {
+	        byte b=(byte)-change;
+	        if(b>usage)
+	            usage=0;
+	        else
+	            usage-=b;
+	    }
+	    else
+	    if(change>0)
+	        usage+=change;
+	    return usage;
+	}
 
 	public void setName(String newName){}
 	public String name()

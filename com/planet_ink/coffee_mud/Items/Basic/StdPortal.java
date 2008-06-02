@@ -69,7 +69,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	public String mountString(int commandType, Rider R){ return "enter(s)";}
 	public String dismountString(Rider R){	return "emerge(s) from";}
 	public String stateStringSubject(Rider R){return "occupied by";	}
-
+    public byte exitUsage(short change){ return 0;}
 	public String displayText(){return displayText;}
 	public boolean amRiding(Rider mob){ return false;}
 	public boolean okMessage(Environmental myHost, CMMsg msg)

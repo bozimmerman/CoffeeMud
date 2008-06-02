@@ -49,6 +49,7 @@ public interface Exit extends Environmental
 	public boolean isReadable();
 	public void setReadable(boolean isTrue);
 	public void setReadableText(String text);
+	public byte exitUsage(short change);
 	
 	public StringBuffer viewableText(MOB mob, Room myRoom);
 	
