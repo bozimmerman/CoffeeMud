@@ -96,7 +96,7 @@ public class Decay extends ActiveTicker
 				{
 					if(E instanceof MOB)
 					{
-						((MOB)E).tell(item.name()+answer);
+						((MOB)E).tell(item.name()+" "+answer);
 						((MOB)E).recoverEnvStats();
 						((MOB)E).recoverCharStats();
 						((MOB)E).recoverMaxState();
