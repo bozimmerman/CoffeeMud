@@ -147,25 +147,6 @@ set duration 0
 <DATA>
 ALL_GREET_PROG 100
 IF QUESTSCRIPTED($n *)
-	if var($n $QUEST_ID_KILLED >= $NUM_CAPTUREABLES)
-		if EVAL('$EXP' != '')
-			mpexp $n $EXP
-		endif
-		if EVAL('$FACTION' != '')
-			mpfaction $n $FACTION $NUMFACTION
-		endif
-		if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
-			mpoload QuestPoint
-			give "a quest point" "$n"
-		endif
-		if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
-			mpoload $GOLD
-			give $GOLD "$n"
-		endif
-		mpquestwin $n *
-		sayto $n $QUEST_WINSPEECH_TEXT
-		mpendquest $n
-	endif
 else
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
@@ -257,7 +238,7 @@ ENTRY_PROG 100
 ~
 	
 CNCLMSG_PROG STO=DEATH ALL
-	if ISNPC($n) AND ISLIKE($n $CAPTUREABLES_NAMES) AND !ISFOLLOW($n) AND ISFIGHT(%n)
+	if ISNPC($n) AND ISLIKE($n $CAPTUREABLES_NAMES) AND !ISFOLLOW($n) AND ISFIGHT($n)
 		mpargset $9 '$%ISFIGHT($i)%'
 		if EVAL($9 == $i)
 			mpgset $n HITS 1
