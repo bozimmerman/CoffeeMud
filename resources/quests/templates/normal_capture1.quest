@@ -1,6 +1,8 @@
 #!QUESTMAKER_START_SCRIPT Normal Capture #1
 #An existing mob in your world needs one or more other existing mobs captured. 
 #A reward is given upon completion of the task and returning to the announcer.
+#*******************THIS TEMPLATE IS NOT YET TESTED OR COMPLETE ***********
+#*******************THIS TEMPLATE IS NOT YET TESTED OR COMPLETE ***********
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
