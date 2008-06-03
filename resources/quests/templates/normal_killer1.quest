@@ -58,9 +58,7 @@
 #$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to kill some folks.  They are somewhere around somewhere.  Just beat them senseless.
 #
 #Announcer success:
-#Select what type of speech the announcer will make when a player returns to him after killing the mobs.
-#$QUEST_WINSPEECH_TYPE=$CHOOSE=SAY,MPECHO,QUESTCHAT,YELL
-#This is what the announcement says.
+#This is what the announcement says when the player returns after finishing the quest.
 #$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Congratulations! They're dead!
 #
 #!QUESTMAKER_PAGE Specify the Killable Mob or Mobs
@@ -148,7 +146,7 @@ IF QUESTSCRIPTED($n *)
 			give $GOLD "$n"
 		endif
 		mpquestwin $n *
-		$QUEST_WINSPEECH_TYPE $QUEST_WINSPEECH_TEXT
+		sayto $n $QUEST_WINSPEECH_TEXT
 		mpendquest $n
 	endif
 else
