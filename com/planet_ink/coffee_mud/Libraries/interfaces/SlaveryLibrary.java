@@ -232,6 +232,9 @@ public interface SlaveryLibrary extends CMLibrary
         public String step()
         {
             MOB me=mySteps.me;
+            if(me==null) return "DONE";
+            Room R=me.location();
+            if(R==null) return "HOLD";
             if(que.size()==0)
             {
                 step=STEP_ALLDONE;
@@ -284,7 +287,7 @@ public interface SlaveryLibrary extends CMLibrary
                     return "HOLD";
                 }
                 // is it just sitting around?
-                I=me.location().fetchItem(null,item);
+                I=R.fetchItem(null,item);
                 if((I!=null)&&(CMLib.flags().canBeSeenBy(I,me)))
                 {
                     step=STEP_EVAL;
@@ -292,7 +295,7 @@ public interface SlaveryLibrary extends CMLibrary
                     return "HOLD";
                 }
                 // is it in a container?
-                I=me.location().fetchAnyItem(item);
+                I=R.fetchAnyItem(item);
                 if((I!=null)&&(I.container()!=null)
                    &&(I.container() instanceof Container)
                    &&(((Container)I.container()).isOpen()))
@@ -302,9 +305,9 @@ public interface SlaveryLibrary extends CMLibrary
                     return "HOLD";
                 }
                 // is it up for sale?
-                for(int m=0;m<me.location().numInhabitants();m++)
+                for(int m=0;m<R.numInhabitants();m++)
                 {
-                    MOB M=me.location().fetchInhabitant(m);
+                    MOB M=R.fetchInhabitant(m);
                     if((M!=null)&&(M!=me)&&(CMLib.flags().canBeSeenBy(M,me)))
                     {
                         I=M.fetchInventory(null,item);
@@ -386,8 +389,8 @@ public interface SlaveryLibrary extends CMLibrary
                     if(name.equals("my")) name=you.name();
                 }
 
-                MOB M=me.location().fetchInhabitant(name);
-                if(M==me) M=me.location().fetchInhabitant(name+".2");
+                MOB M=R.fetchInhabitant(name);
+                if(M==me) M=R.fetchInhabitant(name+".2");
                 if((M!=null)&&(M!=me)&&(CMLib.flags().canBeSeenBy(M,me)))
                 {
                     if(CMSecurity.isDebugging("GEAS"))
@@ -426,7 +429,7 @@ public interface SlaveryLibrary extends CMLibrary
                     if(name.equals("my")) name=you.name();
                 }
                 int dirCode=Directions.getGoodDirectionCode((String)CMParms.parse(name).firstElement());
-                if((dirCode>=0)&&(me.location()!=null)&&(me.location().getRoomInDir(dirCode)!=null))
+                if((dirCode>=0)&&(R!=null)&&(R.getRoomInDir(dirCode)!=null))
                 {
                     if(CMParms.parse(name).size()>1)
                         cur.setElementAt(CMParms.combine(CMParms.parse(name),1),1);
@@ -435,15 +438,15 @@ public interface SlaveryLibrary extends CMLibrary
                     return "HOLD";
                 }
 
-                if(CMLib.english().containsString(me.location().name(),name)
-                   ||CMLib.english().containsString(me.location().displayText(),name)
-                   ||CMLib.english().containsString(me.location().description(),name))
+                if(CMLib.english().containsString(R.name(),name)
+                   ||CMLib.english().containsString(R.displayText(),name)
+                   ||CMLib.english().containsString(R.description(),name))
                 {
                     step=STEP_EVAL;
                     que.removeElementAt(0);
                     return "HOLD";
                 }
-                MOB M=me.location().fetchInhabitant(name);
+                MOB M=R.fetchInhabitant(name);
                 if((M!=null)&&(M!=me)&&(CMLib.flags().canBeSeenBy(M,me)))
                 {
                     step=STEP_EVAL;
@@ -451,7 +454,7 @@ public interface SlaveryLibrary extends CMLibrary
                     return "HOLD";
                 }
                 // is it just sitting around?
-                Item I=me.location().fetchItem(null,name);
+                Item I=R.fetchItem(null,name);
                 if((I!=null)&&(CMLib.flags().canBeSeenBy(I,me)))
                 {
                     step=STEP_EVAL;
