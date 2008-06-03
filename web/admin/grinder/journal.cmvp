@@ -20,6 +20,7 @@
 		{
 			document.JOURNAL.JOURNAL.value=journal;
 			document.JOURNAL.JOURNALMESSAGE.value='';
+            document.JOURNAL.JOURNALMESSAGESEARCH.value='';
 			document.JOURNAL.FUNCTION.value='';
 			document.JOURNAL.action="journal.cmvp#"+journal;
 			document.JOURNAL.submit();
@@ -107,6 +108,8 @@
 					</a>
 				@back@
 				</UL>
+				<BR><INPUT TYPE=TEXT NAME=JOURNALMESSAGESEARCH SIZE=10 VALUE="@RequestParameter?JOURNALMESSAGESEARCH@">
+				<INPUT TYPE=BUTTON NAME=SEARCH VALUE="Filter" ONCLICK="Clicked2('@JournalName@','');">
 				</TD>
 				<TD WIDTH=70% VALIGN=TOP>
 				@AddRequestParameter?JOURNALMESSAGE=@@RequestParameter?OLDMESSAGE@@ @

@@ -106,13 +106,15 @@ public class JournalMessageNext extends StdWebMacro
             }
             Vector V=(Vector)info.elementAt(CMath.s_int(last));
             String to=((String)V.elementAt(DatabaseEngine.JOURNAL_TO));
+            if((srch!=null)
+            &&(srch.length()>0)
+            &&((to.toLowerCase().indexOf(srch)<0)
+            &&(((String)V.elementAt(DatabaseEngine.JOURNAL_FROM)).toLowerCase().indexOf(srch)<0)
+            &&(((String)V.elementAt(DatabaseEngine.JOURNAL_SUBJ)).toLowerCase().indexOf(srch)<0)
+            &&(((String)V.elementAt(DatabaseEngine.JOURNAL_MSG)).toLowerCase().indexOf(srch)<0)))
+                continue;
+            
             if(to.equalsIgnoreCase("all")
-            ||((srch!=null)
-              &&(srch.length()>0)
-              &&((to.toLowerCase().indexOf(srch)>=0)
-                 ||(((String)V.elementAt(DatabaseEngine.JOURNAL_FROM)).toLowerCase().indexOf(srch)>=0)
-                 ||(((String)V.elementAt(DatabaseEngine.JOURNAL_SUBJ)).toLowerCase().indexOf(srch)>=0)
-                 ||(((String)V.elementAt(DatabaseEngine.JOURNAL_MSG)).toLowerCase().indexOf(srch)>=0)))
             ||((M!=null)
                 &&(priviledged
                         ||to.equalsIgnoreCase(M.Name())
