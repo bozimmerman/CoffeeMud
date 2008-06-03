@@ -73,6 +73,8 @@ public class JournalMessageNext extends StdWebMacro
 			info=CMLib.database().DBReadJournal(journal);
 			httpReq.getRequestObjects().put("JOURNAL: "+journal,info);
 		}
+        String srch=httpReq.getRequestParameter("JOURNALMESSAGESEARCH");
+        if(srch!=null) srch=srch.toLowerCase();
 		String last=httpReq.getRequestParameter("JOURNALMESSAGE");
 		if(parms.containsKey("RESET"))
 		{	
@@ -102,8 +104,15 @@ public class JournalMessageNext extends StdWebMacro
                     return "<!--EMPTY-->";
                 return " @break@";
             }
-            String to=((String)((Vector)info.elementAt(CMath.s_int(last))).elementAt(DatabaseEngine.JOURNAL_TO));
+            Vector V=(Vector)info.elementAt(CMath.s_int(last));
+            String to=((String)V.elementAt(DatabaseEngine.JOURNAL_TO));
             if(to.equalsIgnoreCase("all")
+            ||((srch!=null)
+              &&(srch.length()>0)
+              &&((to.toLowerCase().indexOf(srch)>=0)
+                 ||(((String)V.elementAt(DatabaseEngine.JOURNAL_FROM)).toLowerCase().indexOf(srch)>=0)
+                 ||(((String)V.elementAt(DatabaseEngine.JOURNAL_SUBJ)).toLowerCase().indexOf(srch)>=0)
+                 ||(((String)V.elementAt(DatabaseEngine.JOURNAL_MSG)).toLowerCase().indexOf(srch)>=0)))
             ||((M!=null)
                 &&(priviledged
                         ||to.equalsIgnoreCase(M.Name())
