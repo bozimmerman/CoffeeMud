@@ -123,7 +123,7 @@
 			</TR>
 			</TABLE>
 			<HR>
-			<FONT COLOR=WHITE>@JournalInfo?MESSAGE@</FONT><P>
+			<FONT COLOR=BLACK>@JournalInfo?MESSAGE@</FONT><P>
 			<INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete Message" ONCLICK="if(confirm('Delete this message?'))Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','DELETE');">
 			</TD>
 			</TR>
