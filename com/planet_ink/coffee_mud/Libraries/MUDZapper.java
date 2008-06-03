@@ -126,7 +126,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			zapCodes.put("-ADJCHA",new Integer(30));
 			zapCodes.put("-ADJCHARISMA",new Integer(30));
 			zapCodes.put("-AREA",new Integer(31));
+            zapCodes.put("-AREAS",new Integer(31));
 			zapCodes.put("+AREA",new Integer(32));
+            zapCodes.put("+AREAS",new Integer(32));
 			zapCodes.put("+ITEM",new Integer(33));
             zapCodes.put("-ITEM",new Integer(33));
 			zapCodes.put("+CLASS",new Integer(34));  // for compiled use ONLY
@@ -1641,7 +1643,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
                     buf.append((skipFirstWord?"An":"Requires an")+" attack bonus of at least "+val+".  ");
                     break;
-				case 31: // +Area
+				case 32: // +Area
 					{
 						buf.append("Disallows the following area(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
@@ -1657,7 +1659,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.append(".  ");
 					}
 					break;
-				case 32: // -Area
+				case 31: // -Area
 					{
 						buf.append((skipFirstWord?"The":"Requires the")+" following area(s): ");
 						for(int v2=v+1;v2<V.size();v2++)
@@ -2234,7 +2236,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 14: // -Clan
 				case 44: // -Deity
 				case 9: // -Names
-				case 32: // -Area
+				case 31: // -Area
                 case 100: // -Home
                 case 53: // -JavaClass
 					{
@@ -2283,7 +2285,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 15: // +Clan
 				case 45: // +Deity
 				case 16: // +Names
-				case 31: // +Area
+				case 32: // +Area
                 case 99: // +Home
                 case 54: // +JavaClass
 					{
