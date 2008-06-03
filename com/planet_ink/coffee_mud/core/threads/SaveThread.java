@@ -430,7 +430,7 @@ public class SaveThread extends Thread
                         milliTotal+=(lastStop-lastStart);
                         tickTotal++;
                         status("stopped at "+lastStop+", prev was "+(lastStop-lastStart)+"ms");
-                        status("sleeping)");
+                        status("sleeping");
                         Thread.sleep(MudHost.TIME_SAVETHREAD_SLEEP);
                         lastStart=System.currentTimeMillis();
                         status("starting run at: "+lastStart);

@@ -16,3 +16,5 @@
 # Player titles are updated every mud-hour (10 mins) automatically by 
 # the system for all players on-line and in memory.
 #
+
+{* the dude}=-area "+new area" +midgaard
