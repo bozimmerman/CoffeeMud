@@ -39,6 +39,8 @@ public class BaseAbleLister extends StdCommand
 	}
 	protected boolean parsedOutIndividualSkill(MOB mob, String qual, Vector acodes)
 	{
+	    if((qual==null)||(qual.length()==0)||(qual.equalsIgnoreCase("all")))
+	        return false;
 		Ability A=CMClass.findAbility(qual);
 		if((A!=null)
 		&&(CMLib.ableMapper().qualifiesByAnyCharClass(A.ID()))
@@ -114,10 +116,10 @@ public class BaseAbleLister extends StdCommand
     
     
 	protected StringBuffer getAbilities(MOB able,
-											int ofType,
-											int ofDomain,
-											boolean addQualLine,
-											int maxLevel)
+										int ofType,
+										int ofDomain,
+										boolean addQualLine,
+										int maxLevel)
 	{
 		Vector V=new Vector();
 		int mask=Ability.ALL_ACODES;
@@ -129,11 +131,12 @@ public class BaseAbleLister extends StdCommand
 		V.addElement(new Integer(ofType));
 		return getAbilities(able,V,mask,addQualLine,maxLevel);
 	}
+	
 	protected StringBuffer getAbilities(MOB able,
-									 Vector ofTypes,
-									 int mask,
-									 boolean addQualLine,
-									 int maxLevel)
+									    Vector ofTypes,
+									    int mask,
+									    boolean addQualLine,
+									    int maxLevel)
 	{
 		int highestLevel=0;
 		int lowestLevel=able.envStats().level()+1;
