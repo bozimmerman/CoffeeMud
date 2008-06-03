@@ -10,7 +10,7 @@
 # [ZAPPER MASK] is a standard mask denoting players who will be given 
 # this title.  Players who gain the title can have it taken away should 
 # they no longer meet the criterium of the mask.  See archon help on 
-# Prop_HaveZapper (AHELP Prop_HaveZapper) from the command line for 
+# Zapper Masks (AHELP ZAPPERMASKS) from the command line for 
 # syntax on zapper-masks.
 #
 # Player titles are updated every mud-hour (10 mins) automatically by 

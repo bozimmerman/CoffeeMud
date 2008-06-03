@@ -456,7 +456,7 @@
 			<TEXTAREA COLS=80 ROWS=2 NAME=ICHANNELS>@INIValue?MASK=ICHANNELS&VALUE@</TEXTAREA>
 			<BR>
 			<FONT COLOR=WHITE>@INIValue?MASK=ICHANNELS&INIHELP@
-			<P><A HREF="javascript:openUp('Prop_HaveZapper')">Click here for Prop_HaveZapper help</a>
+			<P><A HREF="javascript:openUp('ZAPPERMASKS')">Click here for ZAPPERMASK help</a>
 			</TD></TR>
 		</TABLE>
 		<HR>
@@ -496,7 +496,7 @@
 			<TEXTAREA COLS=80 ROWS=2 NAME=IMC2CHANNELS>@INIValue?MASK=IMC2CHANNELS&VALUE@</TEXTAREA>
 			<BR>
 			<FONT COLOR=WHITE>@INIValue?MASK=IMC2CHANNELS&INIHELP@
-			<P><A HREF="javascript:openUp('Prop_HaveZapper')">Click here for Prop_HaveZapper help</a>
+			<P><A HREF="javascript:openUp('ZAPPERMASKS')">Click here for ZAPPERMASKS help</a>
 			</TD></TR>
 		</TABLE>
 		<HR>
@@ -505,7 +505,7 @@
 		<P>
 		<FONT COLOR=WHITE>@INIValue?MASK=COMMANDJOURNALS&INIHELP@</FONT>
 		<P>
-		<A HREF="javascript:openUp('Prop_HaveZapper')">Click here for Prop_HaveZapper help</a>
+		<A HREF="javascript:openUp('ZAPPERMASKS')">Click here for ZAPPERMASKS help</a>
 		<P>
 	@endif@
 	@if?CheckReqParm?INIPAGE=ABILITIES@

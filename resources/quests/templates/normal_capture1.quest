@@ -60,27 +60,27 @@
 #$QUEST_INSTRUCTIONSSTRING=($LONG_STRING)=I need you to capture some folks.  They are somewhere around somewhere.  You might have to get rough with them.
 #
 #Announcer success:
-#This is what the announcement says when the player returns with all the captureable mobs.
-#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Congratulations! They're dead!
+#This is what the announcement says when the player returns with all the capturable mobs.
+#$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Congratulations! You got them!
 #
 #!QUESTMAKER_PAGE Specify the Captureable Mob or Mobs
-#The Captureables are the mob or mobs which must be defeated.
+#The Capturables are the mob or mobs which must be defeated.
 #
 #Captureable mobs: 
 #Specify below the mobs that the player must capture to get credit for this quest.
 #
-#Captureables mob names: 
+#Capturables mob names: 
 #Specify the mobs who will act as the capturable mob or mobs.  
 #See help on ZAPPERMASK for information on zapper mask syntax.
 #$CAPTUREABLES_NAMES=$ZAPPERMASK
 #
-#Num Captureables:
+#Num Capturables:
 #Specify how many of the capturable mobs must be captured.  Make sure there are 
 #enough of them in your world to make this goal reachable!
 #$NUM_CAPTUREABLES=($EXPRESSION)=1
 #
-#Captureables response: 
-#You may optionally specify some additional bit of speech the captureables 
+#Capturables response: 
+#You may optionally specify some additional bit of speech the capturables 
 #mobs will say to the players when they enter the room with them. 
 #$CAPTUREABLES_RESPONSE=($STRING)=So, you've come for me.  Come and get me.
 #
@@ -92,7 +92,7 @@
 #them, and VIOLENT if the capturable mobs must be defeated in combat first.
 #$CAPTURABLES_FOLLOW=$CHOOSE=VIOLENT,PEACEFUL
 #
-#Captureables attack:
+#Capturables attack:
 #Will the mobs attack if they spot the player?  Keep in mind this is above and
 #beyond any aggressive behaviors they may have, and will neither modify or 
 #supress their natural aggressive behaviors.  Obviously attacking makes no

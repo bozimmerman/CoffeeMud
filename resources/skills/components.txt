@@ -14,7 +14,7 @@
 #   an item name for a string match (like "a long crooked stick" or "stick" or "crooked"
 # * NOTE! If you use && or || conjunctions, the same item may be found multiple times!
 # [MASK] is the zapper mask for which players in which conditions require this component.
-#     See the help entry for Prop_HaveZapper for more information on creating zapper masks.
+#     See the help entry for ZAPPERMASKS for more information on creating zapper masks.
 # Examples:
 # Spell_Sleep=(held:consumed:1:cotton:-CLASS +MAGE) || (inventory:consumed:10:sand:-CLASS +MAGE)
 #   (the above requires either cotton in hand, or 10 sand in inventory to cast sleep -- applies only to mages)

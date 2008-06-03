@@ -114,7 +114,7 @@
 #If you specified an area or rooms above, then the mobs must be located there. 
 #You may optionally have the quest manager select a random mobs by entering
 #a mob name of ANY MASK= followed by a Zapper Mask (see help on 
-#Prop_HaveZapper for information on zapper mask syntax).
+#ZAPPERMASKS for information on zapper mask syntax).
 #Remember, if the quest manager can not find your mobs, the quest will not
 #be started.
 #$KILLABLES_NAMES=$NAME

@@ -1478,7 +1478,7 @@ the syntax for this field. Entering ? will show you that help.</td>
 
 
                     <td>a mask to determine if the invoker is allowed, under the circumstances, to use this skill. Enter ? or help on
-                    Prop_HaveZapper for more information on the syntax for CoffeeMud "Zapper" masks.</td>
+                    ZAPPERMASKS for more information on the syntax for CoffeeMud "Zapper" masks.</td>
 
 
 
@@ -1547,7 +1547,7 @@ skills that do damage.</td>
 
 
                     <td>a mask to determine if the target is allowed, under the circumstances, to be targeted by this skill. Enter ? or help on
-                    Prop_HaveZapper for more information on the syntax for CoffeeMud "Zapper" masks.</td>
+                    ZAPPERMASKS for more information on the syntax for CoffeeMud "Zapper" masks.</td>
 
 
 
@@ -4498,7 +4498,7 @@ STEP and SET PRESERVE commands below.</p>
 - If this string is empty or not specified, then anyone is considered a
 player for the purposes of the MINPLAYERS setting above. However, you
 can specify a "zapper mask" to narrow down the definition of a player.
-See HELP Prop_HaveZapper for the list of valid mask values to put here.</p>
+See HELP ZAPPERMASKS for the list of valid mask values to put here.</p>
 
 
 
@@ -4959,8 +4959,8 @@ one from the group will be chosen.</p>
       <p><span style="color: rgb(51, 102, 102);">SET MOBGROUP</span> <span style="color: rgb(102, 51, 102);">(RESELECT) ([MOB
               NAME])</span>
 - will designate a set of mobs with the given name. If the name ends
-with MASK=..., then a mask similar in functionality to the one
-described in the Prop_HaveZapper will apply in addition to the name
+with MASK=..., then a mask as described by the help entry for
+ZAPPERMASKS will apply in addition to the name
 mask entered before the MASK= string. Use a name of ALL to select all
 appropriate mobs.&nbsp;The mobs chosen will be selected from those in
 the designated ROOMGROUP (if one is designated), AREA (if one is
@@ -5001,8 +5001,8 @@ MOBTYPE command.</p>
       
       <p><span style="color: rgb(51, 102, 102);">SET MOB</span> <span style="color: rgb(102, 51, 102);">(RESELECT)</span> <span style="color: rgb(102, 51, 102);">([MOB NAME])</span>
 - will set the current mob to one with the given mob name. If the name
-ends with MASK=..., then a mask similar in functionality to the one
-described in the Prop_HaveZapper will apply in addition to the mob name
+ends with MASK=..., then a mask as described by the help entry for
+ZAPPERMASKS will apply in addition to the mob name
 entered before the MASK= string. Ths mob chosen will be selected from a
 MOBGROUP if one has been set. Otherwise, the mob chosen will be
 selected from those in the designated ROOMGROUP (if one is designated),
@@ -5094,8 +5094,8 @@ one from the group will be chosen.</p>
       
       <p><span style="color: rgb(51, 102, 102);">SET ITEMGROUP</span> <span style="color: rgb(102, 51, 102);">(RESELECT)</span> <span style="color: rgb(102, 51, 102);">([ITEM NAME])</span>
 - will designate a set of items with the given name. If the name ends
-with MASK=..., then a mask similar in functionality to the one
-described in the Prop_HaveZapper will apply in addition to the item
+with MASK=..., then a mask as described by the help entry for
+ZAPPERMASKS will apply in addition to the item
 name entered before the MASK= string. Use an item name of ALL to select
 all appropriate items. &nbsp;The items chosen will be selected from
 those in the designated ROOMGROUP (if one is designated), the AREA (if
@@ -5209,8 +5209,8 @@ also used in the previous SET ITEM or SET ITEMTYPE command.</p>
 - will instantiate all (or optionally, the given number) mobs of the
 given name from the set of mobs imported using the IMPORT MOBS command
 above. Use a name of ANY or ALL to load them all. If the mob name ends
-with MASK=..., then a mask similar in functionality to the one
-described in the Prop_HaveZapper will apply in addition to the mob name
+with MASK=..., then a mask as described by the help entry for
+ZAPPERMASKS will apply in addition to the mob name
 entered before MASK= string. This selected mobs will be set as the
 current MOBGROUP. If a room, roomgroup, or area has been previously
 designated, then this command will create each mob in that room or
@@ -5233,8 +5233,8 @@ This command will also designate the current mob to the last one loaded.</p>
       <p><span style="color: rgb(51, 102, 102);">LOAD MOB</span> <span style="color: rgb(102, 51, 102);">[MOB NAME]</span>
 - will instantiate a mob of the given name from the list of mobs
 imported using the IMPORT MOBS command above.Use a name of ANY to load
-a random one. If the name ends with MASK=..., then a mask similar in
-functionality to the one described in the Prop_HaveZapper will apply in
+a random one. If the name ends with MASK=..., then a mask as 
+described by the help entry for ZAPPERMASKS will apply in
 addition to the name mask entered. This selected mob will be set as the
 current mob. If a room, roomgroup, or area has been previously
 designated, then this command will create the mob in that room. If a
@@ -6888,7 +6888,7 @@ generate a random number. 1?5 would mean a random number between 1-5.</td>
 
 
                     <td>A zapper-mask that determines which mobs inside the designated area will benefit from the changes specified below. See
-                    Prop_HaveZapper for an example of a zapper mask, or just hit ? at the prompt here.</td>
+                    ZAPPERMASKS for an example of a zapper mask, or just hit ? at the prompt here.</td>
 
 
 
@@ -8891,8 +8891,7 @@ during the login process and/or via the use of the POLL command.</p>
 
 
 
-                    <td>a mask to limit the participants in your poll. This string is similar in functionality to the one described in the
-                    Prop_HaveZapper. Enter HELP Prop_HaveZapper for information on masking your poll participants.</td>
+                    <td>a mask to limit the participants in your poll. Enter HELP ZAPPERMASKS for information on masking your poll participants.</td>
 
 
 
