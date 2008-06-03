@@ -71,7 +71,7 @@
 #
 #Killables mob names: 
 #Specify the mobs who will act as the killable mob or mobs.  
-#See help on ZAPPERMAN for information on zapper mask syntax.
+#See help on ZAPPERMASK for information on zapper mask syntax.
 #$KILLABLES_NAMES=$ZAPPERMASK
 #
 #Killables attack:
@@ -152,7 +152,7 @@ IF QUESTSCRIPTED($n *)
 		mpendquest $n
 	endif
 else
-	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
+	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
 		if EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
 			sayto "$n" $QUEST_NOTIFYSTRING -- just say 'i accept $QUEST_NAME' to take on this quest.
 		endif
@@ -184,25 +184,24 @@ GREET_PROG 100
 ~
 
 ENTRY_PROG 100
-	for $0 = 1 to '%NUMMOBSROOM(*)%'
-		if ISLIKE('%ROOMMOB($0)%' $KILLABLES_NAMES)
-			mpforce '%ROOMMOB($0)%' sayto "$i" $KILLABLES_RESPONSE
+	for $0 = 1 to '$%NUMMOBSROOM(*)%'
+		if ISLIKE('$%ROOMMOB($0)%' $KILLABLES_NAMES)
+			mpforce '$%ROOMMOB($0)%' sayto "$i" $KILLABLES_RESPONSE
             if EVAL('$KILLABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
-                mpforce '%ROOMMOB($0)%' kill $i
+                mpforce '$%ROOMMOB($0)%' kill $i
             endif
-            break
 		endif
 	next
 ~
 	
-CNCLMSG_PROG DEATH ALL
+CNCLMSG_PROG STO=DEATH ALL
 	if ISNPC($n) AND ISLIKE($n $KILLABLES_NAMES)
 		mpsetvar $i $QUEST_ID_KILLED ++;
 		if EVAL($NUM_KILLABLES > 1)
-			mpechoat $i Killed $<$9 $QUEST_ID_KILLED>/$NUM_KILLABLES
+			mpechoat $i Killed $<$i $QUEST_ID_KILLED>/$NUM_KILLABLES
 		else
 		endif
-		mpsetvar $i PROGRESS Killed $<$9 $QUEST_ID_KILLED>/$NUM_KILLABLES
+		mpsetvar $i PROGRESS Killed $<$i $QUEST_ID_KILLED>/$NUM_KILLABLES
 	endif
 ~
 </DATA></FILE>

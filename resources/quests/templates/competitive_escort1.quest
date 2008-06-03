@@ -245,7 +245,7 @@ SPEECH_PROG p i accept
 				MPSETVAR $i $QUEST_ID_ACCEPTED '$<$i $QUEST_ID_ACCEPTED> $n'
 				mpsetvar $n $QUEST_ID_ACCEPTED 'YES'
                 mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
-				for $0 = 0 to< '$%NUMMOBSROOM(*)%'
+				for $0 = 1 to '$%NUMMOBSROOM(*)%'
 				   if QUESTMOB('$%ROOMMOB($0)%' *) AND EVAL('$%ROOMMOB($0)%' != $i)
 				   		mpforce '$%ROOMMOB($0)%' follow $n
 				   		if !isfollow($%ROOMMOB($0)%)

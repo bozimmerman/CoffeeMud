@@ -305,6 +305,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
             String val=null;
             if(H!=null)
                 val=(String)H.get(var.toUpperCase());
+            else
+            if((defaultQuestName!=null)&&(defaultQuestName.length()>0))
+            {
+                MOB M=CMLib.map().getPlayer(host);
+                if(M!=null)
+                    for(int s=0;s<M.numScripts();s++)
+                    {
+                        ScriptingEngine E=M.fetchScript(s);
+                        if((E!=null)&&(E!=this)&&(defaultQuestName.equalsIgnoreCase(E.defaultQuestName())))
+                            return E.getVar(host,var);
+                    }
+            }
             if(val==null) return "";
             return val;
         }
@@ -4474,9 +4486,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
                 Environmental which=null;
                 if(lastKnownLocation!=null)
+                {
                     which=lastKnownLocation.fetchInhabitant(CMath.s_int(arg1.trim())-1);
-                if(which!=null)
-                    results.append(which.name());
+                    if(which!=null)
+                    {
+                        Vector list=new Vector();
+                        for(int i=0;i<lastKnownLocation.numInhabitants();i++)
+                        {
+                            MOB M=lastKnownLocation.fetchInhabitant(i);
+                            if(M!=null) list.addElement(M);
+                        }
+                        results.append(CMLib.english().getContextName(list,which));
+                    }
+                }
                 break;
             }
             case 44: // roomitem
@@ -4485,18 +4507,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental which=null;
                 int ct=1;
                 if(lastKnownLocation!=null)
-                for(int i=0;i<lastKnownLocation.numItems();i++)
                 {
-                    Item I=lastKnownLocation.fetchItem(i);
-                    if((I!=null)&&(I.container()==null))
+                    Vector list=new Vector();
+                    for(int i=0;i<lastKnownLocation.numItems();i++)
                     {
-                        if(ct==CMath.s_int(arg1.trim()))
-                        { which=I; break;}
-                        ct++;
+                        Item I=lastKnownLocation.fetchItem(i);
+                        if((I!=null)&&(I.container()==null))
+                        {
+                            list.addElement(I);
+                            if(ct==CMath.s_int(arg1.trim()))
+                            { which=I; break;}
+                            ct++;
+                        }
                     }
+                    if(which!=null)
+                        results.append(CMLib.english().getContextName(list,which));
                 }
-                if(which!=null)
-                    results.append(which.name());
                 break;
             }
             case 45: // nummobsroom
@@ -7692,7 +7718,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 {
                     trigger=trigger.substring(12).trim();
                     String command=CMParms.getCleanBit(trigger,0).toUpperCase().trim();
-                    if(msg.isSource(command)||msg.isTarget(command)||msg.isOthers(command))
+                    boolean chk=false;
+                    int x=command.indexOf('=');
+                    if(x>0)
+                    {
+                        chk=true;
+                        for(int i=0;i<x;i++)
+                            switch(command.charAt(i)) {
+                                case 'S': chk=chk&&msg.isSource(command.substring(x+1)); break;
+                                case 'T': chk=chk&&msg.isTarget(command.substring(x+1)); break;
+                                case 'O': chk=chk&&msg.isOthers(command.substring(x+1)); break;
+                                default: chk=false; break;
+                            }
+                    }
+                    else
+                        chk=msg.isSource(command)||msg.isTarget(command)||msg.isOthers(command);
+                    if(chk)
                     {
                         trigger=CMParms.getPastBit(trigger.trim(),0).trim().toUpperCase();
                         str="";
@@ -7945,7 +7986,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 {
                     trigger=trigger.substring(12).trim();
                     String command=CMParms.getCleanBit(trigger,0).toUpperCase().trim();
-                    if(msg.isSource(command)||msg.isTarget(command)||msg.isOthers(command))
+                    boolean chk=false;
+                    int x=command.indexOf('=');
+                    if(x>0)
+                    {
+                        chk=true;
+                        for(int i=0;i<x;i++)
+                            switch(command.charAt(i)) {
+                                case 'S': chk=chk&&msg.isSource(command.substring(x+1)); break;
+                                case 'T': chk=chk&&msg.isTarget(command.substring(x+1)); break;
+                                case 'O': chk=chk&&msg.isOthers(command.substring(x+1)); break;
+                                default: chk=false; break;
+                            }
+                    }
+                    else
+                        chk=msg.isSource(command)||msg.isTarget(command)||msg.isOthers(command);
+                    if(chk)
                     {
                         trigger=CMParms.getPastBit(trigger.trim(),0).trim().toUpperCase();
                         String str="";
@@ -8454,6 +8510,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     int prcnt=CMath.s_int(CMParms.getCleanBit(trigger,1).trim());
                     if(CMLib.dice().rollPercentage()<prcnt)
                     {
+                        Vector V=(Vector)que.clone();
+                        ScriptableResponse SB=null;
+                        for(int q=0;q<V.size();q++)
+                        {
+                            SB=(ScriptableResponse)V.elementAt(q);
+                            if((SB.scr==script)&&(SB.s==msg.source()))
+                            {
+                                if(que.removeElement(SB))
+                                    execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,new Object[12]);
+                                break;
+                            }
+                        }
                         que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
                         return;
                     }
@@ -8468,6 +8536,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     int prcnt=CMath.s_int(CMParms.getCleanBit(trigger,1).trim());
                     if(CMLib.dice().rollPercentage()<prcnt)
                     {
+                        Vector V=(Vector)que.clone();
+                        ScriptableResponse SB=null;
+                        for(int q=0;q<V.size();q++)
+                        {
+                            SB=(ScriptableResponse)V.elementAt(q);
+                            if((SB.scr==script)&&(SB.s==msg.source()))
+                            {
+                                if(que.removeElement(SB))
+                                    execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,new Object[12]);
+                                break;
+                            }
+                        }
                         que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
                         return;
                     }
