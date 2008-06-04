@@ -763,16 +763,29 @@ public class CMProps extends Properties
         return " !!SOUND("+soundName+" V="+volume+" P="+priority+") ";
     }
 
-    public static String mxpImagePath(String fileName)
+    public static String[] mxpImagePath(String fileName)
     {
         if((fileName==null)||(fileName.trim().length()==0))
-            return "";
+            return new String[]{"",""};
         if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
         ||(CMSecurity.isDisabled("MXP")))
-            return "";
+            return new String[]{"",""};
+        int x=fileName.lastIndexOf('=');
+        String preFilename="";
+        if(x>=0)
+        {
+            preFilename=fileName.substring(0,x+1);
+            fileName=fileName.substring(x+1);
+        }
+        x=fileName.lastIndexOf('/');
+        if(x>=0)
+        {
+            preFilename+=fileName.substring(0,x+1);
+            fileName=fileName.substring(x+1);
+        }
         if(getVar(SYSTEM_MXPIMAGEPATH).endsWith("/"))
-            return getVar(SYSTEM_MXPIMAGEPATH);
-        return getVar(SYSTEM_MXPIMAGEPATH)+"/";
+            return new String[]{getVar(SYSTEM_MXPIMAGEPATH)+preFilename,fileName};
+        return new String[]{getVar(SYSTEM_MXPIMAGEPATH)+"/"+preFilename,fileName};
     }
 
     public static String mxpImage(Environmental E, String parms)
@@ -782,9 +795,9 @@ public class CMProps extends Properties
             return "";
         String image=E.image();
         if(image.length()==0) return "";
-        String path=mxpImagePath(image);
-        if(path.length()==0) return "";
-        return "^<IMAGE '"+image+"' URL=\""+path+"\" "+parms+"^>^N";
+        String[] fixedFilenames=mxpImagePath(image);
+        if(fixedFilenames[0].length()==0) return "";
+        return "^<IMAGE '"+fixedFilenames[1]+"' URL=\""+fixedFilenames[0]+"\" "+parms+"^>^N";
     }
 
     public static String mxpImage(Environmental E, String parms, String pre, String post)
@@ -794,9 +807,9 @@ public class CMProps extends Properties
             return "";
         String image=E.image();
         if(image.length()==0) return "";
-        String path=mxpImagePath(image);
-        if(path.length()==0) return "";
-        return pre+"^<IMAGE '"+image+"' URL=\""+path+"\" "+parms+"^>^N"+post;
+        String[] fixedFilenames=mxpImagePath(image);
+        if(fixedFilenames[0].length()==0) return "";
+        return pre+"^<IMAGE '"+fixedFilenames[1]+"' URL=\""+fixedFilenames[0]+"\" "+parms+"^>^N"+post;
     }
 
     public static String getHashedMXPImage(String key)

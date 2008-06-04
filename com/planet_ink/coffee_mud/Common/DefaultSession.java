@@ -161,11 +161,11 @@ public class DefaultSession extends Thread implements Session
                 ||((mxpSupportSet.contains("+IMAGE"))&&(!mxpSupportSet.contains("-IMAGE.URL")))))
             { 
                 // also the intro page
-                String path=CMProps.mxpImagePath("intro.jpg");
-                if(path.length()>0)
+                String[] paths=CMProps.mxpImagePath("intro.jpg");
+                if(paths[0].length()>0)
                 {
                     CMFile introDir=new CMFile("/web/pub/images/mxp",null,false,true);
-                    String introFilename="intro.jpg";
+                    String introFilename=paths[1];
                     if(introDir.isDirectory())
                     {
                         CMFile[] files=introDir.listFiles();
@@ -176,7 +176,7 @@ public class DefaultSession extends Thread implements Session
                                 choices.addElement(files[f].getName());
                         if(choices.size()>0) introFilename=(String)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                     }
-                    println("\n\r\n\r\n\r<IMAGE '"+introFilename+"' URL='"+path+"' H=400 W=400>\n\r\n\r");
+                    println("\n\r\n\r\n\r<IMAGE '"+introFilename+"' URL='"+paths[0]+"' H=400 W=400>\n\r\n\r");
                 }
             }
             preliminaryRead(100);

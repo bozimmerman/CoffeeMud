@@ -1252,7 +1252,7 @@ public class Modify extends BaseGenerics
         if(commandType.equals("TITLE"))
         {
             if(!CMSecurity.isAllowed(mob,mob.location(),"TITLES")) return errorOut(mob);
-            mob.tell("You can't modify components, you can only LIST, CREATE, and DESTROY them.");
+            mob.tell("You can't modify titles, you can only LIST, CREATE, and DESTROY them.");
             return false;
         }
 		else

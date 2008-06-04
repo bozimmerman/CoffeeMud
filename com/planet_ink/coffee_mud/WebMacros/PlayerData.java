@@ -222,12 +222,12 @@ public class PlayerData extends StdWebMacro
         case 47: str.append(M.maxItems()+", "); break;
         case 48:
         {
-                 String image=M.image();
-                 if(image.length()>0)
-                     str.append(CMProps.mxpImagePath(image)+image+", ");
+                 String[] paths=CMProps.mxpImagePath(M.image());
+                 if(paths[0].length()>0)
+                     str.append(paths[0]+paths[1]+", ");
                  break;
         }
-        case 49: if(CMProps.mxpImagePath(M.image()).length()>0)
+        case 49: if(CMProps.mxpImagePath(M.image())[0].length()>0)
                     str.append("true, ");
                  else
                      str.append("false, ");
