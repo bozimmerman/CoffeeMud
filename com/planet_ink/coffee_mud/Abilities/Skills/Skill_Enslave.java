@@ -43,6 +43,7 @@ public class Skill_Enslave extends StdSkill
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	private static final String[] triggerStrings = {"ENSLAVE"};
 	public String[] triggerStrings(){return triggerStrings;}
+	public String displayText(){ return "(Enslaved)";}
     public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_CRIMINAL; }
 	
 	protected MOB myMaster=null;

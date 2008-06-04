@@ -1064,7 +1064,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         {
             mask=(Vector)autoTitles.elementAt(t,3);
             title=(String)autoTitles.elementAt(t,1);
-            pdex=PT.contains(title)?t:-1;
+            pdex=PT.indexOf(title);
             if(CMLib.masking().maskCheck(mask,mob,true))
             {
                 if(pdex<0)
@@ -1077,7 +1077,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 }
             }
             else
-            if(pdex>=0){ somethingDone=true; PT.removeElementAt(pdex);}
+            if(pdex>=0)
+            { 
+                somethingDone=true; 
+                PT.removeElementAt(pdex);
+            }
         }
         return somethingDone;
     }
