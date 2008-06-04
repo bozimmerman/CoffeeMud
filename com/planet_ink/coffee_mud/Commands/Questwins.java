@@ -64,6 +64,19 @@ public class Questwins extends StdCommand
 	    else
         if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("DROP")))
         {
+            ScriptingEngine foundS=null;
+            for(int s=0;s<mob.numScripts();s++)
+            {
+                ScriptingEngine S=mob.fetchScript(s);
+                if(S==null) continue;
+                if((S.defaultQuestName().length()>0)
+                &&(CMLib.quests().findQuest(S.defaultQuestName())==null))
+                    foundS=S;
+            }
+            if(foundS!=null)
+                mob.delScript(foundS);
+            foundS=null;
+            
             String rest=CMParms.combine(commands,2);
             Quest Q=CMLib.quests().findQuest(rest);
             if(Q==null)
@@ -71,7 +84,6 @@ public class Questwins extends StdCommand
                 mob.tell("There is no such quest as '"+rest+"'.");
                 return false;
             }
-            ScriptingEngine foundS=null;
             for(int s=0;s<mob.numScripts();s++)
             {
                 ScriptingEngine S=mob.fetchScript(s);

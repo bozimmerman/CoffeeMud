@@ -770,10 +770,15 @@ public class StdExit implements Exit
     public void addScript(ScriptingEngine S)
     {
         if(scripts==null) scripts=new Vector(1);
+        if(S==null) return;
         if(!scripts.contains(S)) {
+            ScriptingEngine S2=null;
             for(int s=0;s<scripts.size();s++)
-                if(((ScriptingEngine)S).getScript().equalsIgnoreCase(S.getScript()))
+            {
+                S2=(ScriptingEngine)scripts.elementAt(s);
+                if((S2!=null)&&(S2.getScript().equalsIgnoreCase(S.getScript())))
                     return;
+            }
             if(scripts.size()==0)
                 CMLib.threads().startTickDown(this,Tickable.TICKID_EXIT_BEHAVIOR,1);
             scripts.addElement(S);

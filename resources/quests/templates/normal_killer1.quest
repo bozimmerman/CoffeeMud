@@ -76,7 +76,7 @@
 #Will the mobs attack if they spot the player?  Keep in mind this is above and
 #beyond any aggressive behaviors they may have, and will neither modify or 
 #supress their natural aggressive behaviors.
-#$KILLABLES_ATTACK=$CHOOSE=YES-ATTACK-ON-SIGHT,NO-USE-DEFAULT_BEHAVIOR
+#$KILLABLES_ATTACK=$CHOOSE=NO-USE-DEFAULT_BEHAVIOR,YES-ATTACK-ON-SIGHT
 #
 #Num Killables:
 #Specify how many of the killable mobs must be killed.  Make sure there are 
@@ -182,14 +182,16 @@ GREET_PROG 100
 ~
 
 ENTRY_PROG 100
-	for $0 = 1 to '$%NUMMOBSROOM(*)%'
-		if ISLIKE('$%ROOMMOB($0)%' $KILLABLES_NAMES)
-			mpforce '$%ROOMMOB($0)%' sayto "$i" $KILLABLES_RESPONSE
-            if EVAL('$KILLABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
-                mpforce '$%ROOMMOB($0)%' kill $i
-            endif
-		endif
-	next
+    if INROOM($i == $g)
+    	for $0 = 1 to '$%NUMMOBSROOM(*)%'
+    		if ISLIKE('$%ROOMMOB($0)%' $KILLABLES_NAMES)
+    			mpforce '$%ROOMMOB($0)%' sayto "$i" $KILLABLES_RESPONSE
+                if EVAL('$KILLABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
+                    mpforce '$%ROOMMOB($0)%' kill $i
+                endif
+    		endif
+    	next
+    endif
 ~
 	
 CNCLMSG_PROG STO=DEATH ALL

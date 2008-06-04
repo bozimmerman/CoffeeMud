@@ -1,8 +1,6 @@
 #!QUESTMAKER_START_SCRIPT Normal Capture #1
 #An existing mob in your world needs one or more other existing mobs captured. 
 #A reward is given upon completion of the task and returning to the announcer.
-#*******************THIS TEMPLATE IS NOT YET TESTED OR COMPLETE ***********
-#*******************THIS TEMPLATE IS NOT YET TESTED OR COMPLETE ***********
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
@@ -72,17 +70,17 @@
 #Capturables mob names: 
 #Specify the mobs who will act as the capturable mob or mobs.  
 #See help on ZAPPERMASK for information on zapper mask syntax.
-#$CAPTUREABLES_NAMES=$ZAPPERMASK
+#$CAPTURABLES_NAMES=$ZAPPERMASK
 #
 #Num Capturables:
 #Specify how many of the capturable mobs must be captured.  Make sure there are 
 #enough of them in your world to make this goal reachable!
-#$NUM_CAPTUREABLES=($EXPRESSION)=1
+#$NUM_CAPTURABLES=($EXPRESSION)=1
 #
 #Capturables response: 
 #You may optionally specify some additional bit of speech the capturables 
 #mobs will say to the players when they enter the room with them. 
-#$CAPTUREABLES_RESPONSE=($STRING)=So, you've come for me.  Come and get me.
+#$CAPTURABLES_RESPONSE=($STRING)=So, you've come for me.  Come and get me.
 #
 #!QUESTMAKER_PAGE Capturables Behavior
 #Select some details about the capturable mobs
@@ -98,7 +96,7 @@
 #supress their natural aggressive behaviors.  Obviously attacking makes no
 #sense if they surrender peacefully, but requiring a violent capture doesn't
 #necessarily mean the mobs start the fight either.
-#$CAPTUREABLES_ATTACK=$CHOOSE=YES-ATTACK-ON-SIGHT,NO-USE-DEFAULT_BEHAVIOR
+#$CAPTURABLES_ATTACK=$CHOOSE=NO-USE-DEFAULT_BEHAVIOR,YES-ATTACK-ON-SIGHT
 #
 #Capturables surrender: 
 #You may optionally specify some additional bit of speech the capturables 
@@ -174,8 +172,8 @@ ONCE_PROG 100
 ~
 
 GREET_PROG 100
-	if ISLIKE($n $CAPTUREABLES_NAMES) AND !ISFOLLOW('$n')
-	    if EVAL('$CAPTUREABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
+	if ISLIKE($n $CAPTURABLES_NAMES) AND !ISFOLLOW('$n')
+	    if EVAL('$CAPTURABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
             mpforce $n kill $i
         else
 			if EVAL('$CAPTURABLES_FOLLOW' == 'PEACEFUL')
@@ -188,67 +186,70 @@ GREET_PROG 100
 ~
 
 ENTRY_PROG 100
-	if INROOM($i == '${2 *}')
-		mpargset $9 '${2 *}'
-		for $0 = 1 to '$%NUMMOBSROOM(*)%'
-			mpargset $1 '$%ROOMMOB($0)%'
-			if ISLIKE($1 $CAPTUREABLES_NAMES) AND ISNPC('$1') AND ISFOLLOW('$1')
-				mpsetvar $i $QUEST_ID_RETURNED ++
-				mpsetvar $i PROGRESS Captured $<$i $QUEST_ID_CAPTURED>, Returned $<$i $QUEST_ID_RETURNED>/$NUM_CAPTUREABLES
-				mpechoat $i You've brought in $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
-				mpforce $1 follow self
-				mppurge $1
-			endif
-		next
-		if var($9 $QUEST_ID_RETURNED >= $NUM_CAPTURABLES)
-			if EVAL('$EXP' != '')
-				mpexp $i $EXP
-			endif
-			if EVAL('$FACTION' != '')
-				mpfaction $i $FACTION $NUMFACTION
-			endif
-			if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($i *)
-				mpforce $9 mpoload QuestPoint
-				mpforce $9 give "a quest point" "$i"
-			endif
-			if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
-				mpforce $9 mpoload $GOLD
-				mpforce $9 give $GOLD "$i"
-			endif
-			mpquestwin $i *
-			mpforce $9 sayto $i $QUEST_WINSPEECH_TEXT
-			mpendquest $i
-		ENDIF
-	else
-		for $0 = 1 to '$%NUMMOBSROOM(*)%'
-			if ISLIKE('$%ROOMMOB($0)%' $CAPTUREABLES_NAMES) AND !ISFOLLOW('$%ROOMMOB($0)%')
-				mpforce '$%ROOMMOB($0)%' sayto "$i" $CAPTUREABLES_RESPONSE
-	            if EVAL('$CAPTUREABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
-	                mpforce '$%ROOMMOB($0)%' kill $i
-	            else
-					if EVAL('$CAPTURABLES_FOLLOW' == 'PEACEFUL')
-						mpforce '$%ROOMMOB($0)%' sayto "$i" $CAPTURABLES_SURRENDER
-						mpforce '$%ROOMMOB($0)%' mpstop all
-						mpforce '$%ROOMMOB($0)%' follow "$i"
-					endif
-	            endif
-			endif
-		next
-	endif
+if INROOM($i == $g)
+    if INROOM($i == '${1 *}')
+        mpargset $9 '${1 *}'
+        for $0 = '$%NUMMOBSROOM(*)%' to 1
+            mpargset $1 '$%ROOMMOB($0)%'
+            if ISLIKE($1 $CAPTURABLES_NAMES) AND ISNPC('$1') AND ISFOLLOW('$1')
+                mpsetvar $i $QUEST_ID_RETURNED ++
+                mpsetvar $i PROGRESS Captured $<$i $QUEST_ID_CAPTURED>, Returned $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
+                mpechoat $i You've brought in $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
+                mpforce $1 follow self
+                mppurge $1
+            endif
+        next
+        if var($i $QUEST_ID_RETURNED >= $NUM_CAPTURABLES)
+            if EVAL('$EXP' != '')
+                mpexp $i $EXP
+            endif
+            if EVAL('$FACTION' != '')
+                mpfaction $i $FACTION $NUMFACTION
+            endif
+            if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($i *)
+                mpforce $9 mpoload QuestPoint
+                mpforce $9 give "a quest point" "$i"
+            endif
+            if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+                mpforce $9 mpoload $GOLD
+                mpforce $9 give $GOLD "$i"
+            endif
+            mpquestwin $i *
+            mpforce $9 sayto $i $QUEST_WINSPEECH_TEXT
+            mpendquest $i
+        ENDIF
+    else
+        for $0 = 1 to '$%NUMMOBSROOM(*)%'
+            if ISLIKE('$%ROOMMOB($0)%' $CAPTURABLES_NAMES) AND !ISFOLLOW('$%ROOMMOB($0)%')
+                mpforce '$%ROOMMOB($0)%' sayto "$i" $CAPTURABLES_RESPONSE
+                if EVAL('$CAPTURABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
+                    mpforce '$%ROOMMOB($0)%' kill $i
+                else
+                    if EVAL('$CAPTURABLES_FOLLOW' == 'PEACEFUL')
+                        mpforce '$%ROOMMOB($0)%' sayto "$i" $CAPTURABLES_SURRENDER
+                        mpforce '$%ROOMMOB($0)%' mpstop all
+                        mpforce '$%ROOMMOB($0)%' follow "$i"
+                    endif
+                endif
+            endif
+        next
+    endif
+endif
 ~
-	
+
 CNCLMSG_PROG STO=DEATH ALL
-	if ISNPC($n) AND ISLIKE($n $CAPTUREABLES_NAMES) AND !ISFOLLOW($n) AND ISFIGHT($n)
-		mpargset $9 '$%ISFIGHT($i)%'
+	if ISNPC($n) AND ISLIKE($n $CAPTURABLES_NAMES) AND !ISFOLLOW($n) AND ISFIGHT($n)
+        mpargset $9 '$%ISFIGHT($n)%'
 		if EVAL($9 == $i)
 			mpgset $n HITS 1
 			mpforce $n mpstop all
+            mpstop all
 			mpforce $n sayto "$i" $CAPTURABLES_SURRENDER
 			mpforce $n follow "$i"
 			mpsetvar $i $QUEST_ID_CAPTURED ++
 			RETURN CANCEL
 		endif
-		mpsetvar $i PROGRESS Captured $<$i $QUEST_ID_CAPTURED>, Returned $<$i $QUEST_ID_RETURNED>/$NUM_CAPTUREABLES
+		mpsetvar $i PROGRESS Captured $<$i $QUEST_ID_CAPTURED>, Returned $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
 	endif
 ~
 </DATA></FILE>

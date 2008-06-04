@@ -8512,6 +8512,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     {
                         Vector V=(Vector)que.clone();
                         ScriptableResponse SB=null;
+                        String roomID=null;
+                        if(msg.target()!=null) 
+                            roomID=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(msg.target()));
                         for(int q=0;q<V.size();q++)
                         {
                             SB=(ScriptableResponse)V.elementAt(q);
@@ -8522,7 +8525,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                 break;
                             }
                         }
-                        que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
+                        que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID));
                         return;
                     }
                 }
@@ -8538,6 +8541,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     {
                         Vector V=(Vector)que.clone();
                         ScriptableResponse SB=null;
+                        String roomID=null;
+                        if(msg.target()!=null) 
+                            roomID=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(msg.target()));
                         for(int q=0;q<V.size();q++)
                         {
                             SB=(ScriptableResponse)V.elementAt(q);
@@ -8548,7 +8554,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                 break;
                             }
                         }
-                        que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
+                        que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID));
                         return;
                     }
                 }
