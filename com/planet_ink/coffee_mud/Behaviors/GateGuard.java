@@ -69,11 +69,13 @@ public class GateGuard extends StdBehavior
 	{
 		if(!CMLib.flags().isInTheGame(mob,false))
 			return -1;
+		Room R=mob.location();
+		if(R!=null)
 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
 		{
-			if(mob.location().getRoomInDir(d)!=null)
+			if(R.getRoomInDir(d)!=null)
 			{
-				Exit e=mob.location().getExitInDir(d);
+				Exit e=R.getExitInDir(d);
 				if((e!=null)&&(e.hasADoor()))
 					return d;
 			}
