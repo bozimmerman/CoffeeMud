@@ -257,6 +257,7 @@ public class Catalog extends StdCommand
 							    CMLib.database().DBUpdateMOBs(R);
                             if(dirtyItems)
                                 CMLib.database().DBUpdateItems(R);
+                            R.destroy();
 						}
 					}
 				}
