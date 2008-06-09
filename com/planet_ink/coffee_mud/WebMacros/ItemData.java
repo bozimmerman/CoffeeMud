@@ -148,6 +148,7 @@ public class ItemData extends StdWebMacro
 						StringBuffer str=new StringBuffer("No MOB?!");
 						str.append(" Got: "+mobNum);
 						str.append(", Includes: ");
+						if(R!=null)
 						for(int m=0;m<R.numInhabitants();m++)
 						{
 							MOB M2=R.fetchInhabitant(m);

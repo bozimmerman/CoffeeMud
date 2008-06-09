@@ -284,7 +284,7 @@ public class Reset extends StdCommand
                 {
                     S=CMLib.sessions().elementAt(x);
                     if((S!=null)&&(S.mob()!=null)&&(S.mob().location()!=null)&&(S.mob().location()==mob.location()))
-                        S.mob().tell("<S-NAME> order(s) this room to normalcy.");
+                        S.mob().tell(mob,null,null,"<S-NAME> order(s) this room to normalcy.");
                 }
     			CMLib.map().resetRoom(mob.location());
                 mob.tell("Done.");

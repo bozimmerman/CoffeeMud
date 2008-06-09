@@ -2500,30 +2500,28 @@ public class StdMOB implements MOB
                 CMLib.combat().handleObserveDeath(this,victim,msg);
 		}
 
-		Item I=null;
+		MsgListener ML=null;
         int num=inventorySize();
 		for(int i=num-1;i>=0;i--)
 		{
-			I=fetchInventory(i);
-			if(I!=null)
-				I.executeMsg(this,msg);
+		    ML=fetchInventory(i);
+			if(ML!=null)
+			    ML.executeMsg(this,msg);
 		}
 
-		Ability A=null;
         num=numAllEffects();
         for(int i=0;i<num;i++)
 		{
-			A=fetchEffect(i);
-			if(A!=null)
-				A.executeMsg(this,msg);
+            ML=fetchEffect(i);
+			if(ML!=null)
+			    ML.executeMsg(this,msg);
 		}
 
-        Faction F=null;
         for(Enumeration e=fetchFactions();e.hasMoreElements();)
         {
-            F=CMLib.factions().getFaction((String)e.nextElement());
-            if(F!=null)
-                F.executeMsg(this,msg);
+            ML=CMLib.factions().getFaction((String)e.nextElement());
+            if(ML!=null)
+                ML.executeMsg(this,msg);
         }
 	}
 

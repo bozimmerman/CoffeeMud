@@ -782,6 +782,7 @@ public class GrinderMobs
                     else
                         CMLib.database().DBCreateThisMOB("CATALOG_MOBS",M);
                     copyMOB=M;
+                    Log.infoOut("GrinderItems",whom.Name()+" updated catalog MOB "+M.Name());
 			    }
 			    else 
 			    {

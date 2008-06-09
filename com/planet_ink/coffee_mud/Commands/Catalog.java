@@ -362,8 +362,8 @@ public class Catalog extends StdCommand
 				if(E instanceof MOB)
 				{
 					String prefix="";
-					if(usage[0]>0)
-						prefix="Catalog MOB '"+((MOB)E).Name()+" is currently listed as being in use '"+usage[0]+" times.  ";
+					//if(usage[0]>0)
+					//	prefix="Catalog MOB '"+((MOB)E).Name()+"' is currently listed as being in use '"+usage[0]+" times.  ";
 					if((mob.session()!=null)
 					&&(mob.session().confirm(prefix+"This will permanently delete mob '"+((MOB)E).Name()+"' from the catalog.  Are you sure (y/N)?","N")))
 					{
@@ -376,8 +376,8 @@ public class Catalog extends StdCommand
 				if(E instanceof Item)
 				{
 					String prefix="";
-					if(usage[0]>0)
-						prefix="Catalog Item '"+((Item)E).Name()+" is currently listed as being in use '"+usage[0]+" times.  ";
+					//if(usage[0]>0)
+					//	prefix="Catalog Item '"+((Item)E).Name()+"' is currently listed as being in use '"+usage[0]+" times.  ";
 					if((mob.session()!=null)
 					&&(mob.session().confirm(prefix+"This will permanently delete item '"+((Item)E).Name()+"' from the catalog.  Are you sure (y/N)?","N")))
 					{
@@ -476,7 +476,7 @@ public class Catalog extends StdCommand
 			}
 		}
 		else
-			mob.tell("Catalog huh? Try CATALOG LIST (MOBS/ITEMS) (MASK), CATALOG <mob/item name>, CATALOG DELETE <mob/item name>, CATALOG EDIT <item name>.");
+			mob.tell("Catalog huh? Try CATALOG LIST (MOBS/ITEMS) (MASK), CATALOG [mob/item name], CATALOG DELETE [mob/item name], CATALOG EDIT [item name].");
 		return false;
 	}
 	

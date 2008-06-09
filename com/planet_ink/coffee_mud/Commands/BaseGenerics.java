@@ -45,17 +45,24 @@ public class BaseGenerics extends StdCommand
 	{
 		String newName=CMLib.english().prompt(mob,E.Name(),showNumber,showFlag,"Name",false,false);
 		if(newName.equals(E.Name())) return;
-		if((!CMLib.flags().isCataloged(E))
-		||((!(E instanceof MOB))&&(!(E instanceof Item)))
-		||(mob.session()==null))
-		{ E.setName(newName); return;}
-		int oldIndex=(E instanceof MOB)?
-				 	 CMLib.catalog().getCatalogMobIndex(E.Name()):
-				 	 CMLib.catalog().getCatalogItemIndex(E.Name());
-		if(oldIndex<0) return;
-		int[] usage=(E instanceof MOB)?
-				 	 CMLib.catalog().getCatalogMobUsage(oldIndex):
-				 	 CMLib.catalog().getCatalogItemUsage(oldIndex);
+        if((mob.session()==null)
+        ||((!(E instanceof MOB))&&(!(E instanceof Item)))
+        ||(!CMLib.flags().isCataloged(E)))
+        { 
+            E.setName(newName); 
+            return;
+        }
+        int catIndex=(E instanceof MOB)?
+                    CMLib.catalog().getCatalogMobIndex(E.Name()):
+                    CMLib.catalog().getCatalogItemIndex(E.Name());
+        if(catIndex<0) {
+            E.setName(newName);
+            CMLib.flags().setCataloged(E,false);
+            return;
+        }
+        int[] usage=(E instanceof MOB)?
+                CMLib.catalog().getCatalogMobUsage(catIndex):
+                CMLib.catalog().getCatalogItemUsage(catIndex);
 		if(mob.session().confirm("This object is cataloged.  Changing its name will detach it from the cataloged version, are you sure (y/N)?","N"))
 		{
 			E.setName(newName);
@@ -100,6 +107,7 @@ public class BaseGenerics extends StdCommand
 			CMLib.flags().setCataloged(E,true);
 			CMLib.catalog().propogateCatalogChange(cataE);
 			mob.tell("Catalog update complete.");
+			Log.infoOut("BaseGenerics",mob.Name()+" updated catalog "+((E instanceof MOB)?"MOB":"ITEM")+" "+E.Name());
 		}
 		else
 		{
@@ -1608,7 +1616,13 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if(CMLib.flags().isCataloged(E))
-			mob.tell("*** This object is Cataloged **\n\r");
+		{
+		    if(CMLib.catalog().isCatalogObj(E.Name()))
+    			mob.tell("*** This object is Cataloged **\n\r");
+		    else
+                mob.tell("*** This object WAS cataloged and is still tied **\n\r");
+		}
+	            
 		if(E instanceof ShopKeeper)
 			modifyGenShopkeeper(mob,(ShopKeeper)E);
 		else

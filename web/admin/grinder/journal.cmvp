@@ -72,6 +72,9 @@
 <TABLE WIDTH=100% BORDER=1>
 	<TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Journal Browser<a href="javascript:sfideas();"><FONT COLOR=WHITE>.</FONT></a></H2></FONT></TD></TR>
 		@AddRequestParameter?OLDJOURNAL=@@RequestParameter?JOURNAL@@ @
+		@if?CheckReqParm?JOURNAL=@
+		<INPUT TYPE=HIDDEN NAME=JOURNALMESSAGESEARCH VALUE="@RequestParameter?JOURNALMESSAGESEARCH@">
+		@endif@
 		@AddRequestParameter?OLDMESSAGE=@@RequestParameter?JOURNALMESSAGE@@ @
 		@JournalNext?RESET@
 		@loop@

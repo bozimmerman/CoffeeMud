@@ -572,6 +572,7 @@ public class GrinderItems
                     CMLib.database().DBUpdateItem("CATALOG_ITEMS",I);
                 else
                     CMLib.database().DBCreateThisItem("CATALOG_ITEMS",I);
+                Log.infoOut("GrinderItems",whom.Name()+" updated catalog ITEM "+I.Name());
                 copyItem=I;
 			}
 			else
