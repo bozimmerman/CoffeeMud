@@ -58,13 +58,16 @@ public class Spell_Clairevoyance extends Spell
 		super.executeMsg(myHost,msg);
 		if((affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
-		&&((msg.sourceMinor()==CMMsg.TYP_LOOK)||(msg.sourceMinor()==CMMsg.TYP_EXAMINE))
-		&&(invoker!=null)
-		&&(msg.target()!=null)
-		&&((invoker.location()!=((MOB)affected).location())||(!(msg.target() instanceof Room))))
+		&&((msg.sourceMinor()==CMMsg.TYP_LOOK)||(msg.sourceMinor()==CMMsg.TYP_EXAMINE)))
 		{
-			CMMsg newAffect=CMClass.getMsg(invoker,msg.target(),msg.sourceMinor(),null);
-			msg.target().executeMsg(msg.target(),newAffect);
+		    Environmental target=msg.target();
+    		if((invoker!=null)
+    		&&(target!=null)
+    		&&((invoker.location()!=((MOB)affected).location())||(!(target instanceof Room))))
+    		{
+    			CMMsg newAffect=CMClass.getMsg(invoker,target,msg.sourceMinor(),null);
+    			target.executeMsg(target,newAffect);
+    		}
 		}
 	}
 
@@ -102,7 +105,7 @@ public class Spell_Clairevoyance extends Spell
 		MOB target=null;
 		if(givenTarget instanceof MOB)
 			target=(MOB)givenTarget;
-		if(target!=null)
+		if(target==null)
 			target=mob.location().fetchInhabitant(mobName);
 		if(target==null)
 		{
@@ -128,8 +131,12 @@ public class Spell_Clairevoyance extends Spell
 			mob.tell("You can't seem to focus on '"+mobName+"'.");
 			return false;
 		}
-
-
+		
+		if(mob==target) {
+		    mob.tell("You can't cast this on yourself!");
+		    return false;
+		}
+		
 		Ability A=target.fetchEffect(ID());
 		if((A!=null)&&(A.invoker()==mob))
 		{
