@@ -322,9 +322,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 							   ||(source==mob)
 							   ||(CMLib.flags().canBeHeardBy(source,mob))))
 							{
-								loop=y;
-								if(wrap>0)
+                                if(wrap>0)
                                     len=len+(y-loop)+1;
+								loop=y;
 							}
 							else
 							{

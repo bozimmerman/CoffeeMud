@@ -202,13 +202,36 @@ public class CMStrings
     
     public static String capitalizeAndLower(String name)
     {
-    	if((name==null)||(name.length()==0)) return "";
-        return (Character.toUpperCase(name.charAt(0))+name.substring(1).toLowerCase()).trim();
+        if((name==null)||(name.length()==0)) return "";
+        char[] c=name.toCharArray();
+        int i=0;
+        for(;i<c.length;i++)
+            if(c[i]=='^')
+                i++;
+            else
+            if(Character.isLetter(c[i]))
+                break;
+        if(i<c.length)
+            c[i++]=Character.toUpperCase(c[i]);
+        for(;i<c.length;i++)
+            if(!Character.isLowerCase(c[i]))
+                c[i]=Character.toLowerCase(c[i]);
+        return new String(c).trim();
     }
     public static String capitalizeFirstLetter(String name)
     {
-    	if((name==null)||(name.length()==0)) return "";
-        return (Character.toUpperCase(name.charAt(0))+name.substring(1)).trim();
+        if((name==null)||(name.length()==0)) return "";
+        char[] c=name.toCharArray();
+        int i=0;
+        for(;i<c.length;i++)
+            if(c[i]=='^')
+                i++;
+            else
+            if(Character.isLetter(c[i]))
+                break;
+        if(i<c.length)
+            c[i++]=Character.toUpperCase(c[i]);
+        return new String(c).trim();
     }
     
     public static String lastWordIn(String thisStr)
