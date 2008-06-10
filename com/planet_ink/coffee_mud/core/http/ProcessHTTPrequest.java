@@ -1153,6 +1153,9 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		}
 		catch (Exception e)	{}
         }
+        catch (Throwable t) {
+            Log.errOut("ProcessHTTPrequest", t);
+        }
         finally
         {
             synchronized(this.webServer.activeRequests){

@@ -291,12 +291,14 @@ public class StdDeity extends StdMOB implements Deity
     
 	public void destroy()
 	{
+        Log.debugOut("StdDeity","Deleting "+Name()+": "+this);
 		super.destroy();
 		CMLib.map().delDeity(this);
 	}
 	public void bringToLife(Room newLocation, boolean resetStats)
 	{
 		super.bringToLife(newLocation,resetStats);
+		Log.debugOut("StdDeity","Adding "+Name()+": "+this);
 		CMLib.map().addDeity(this);
 	}
 
