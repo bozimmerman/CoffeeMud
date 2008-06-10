@@ -212,7 +212,8 @@ public class CMStrings
             if(Character.isLetter(c[i]))
                 break;
         if(i<c.length)
-            c[i++]=Character.toUpperCase(c[i]);
+            c[i]=Character.toUpperCase(c[i]);
+        i++;
         for(;i<c.length;i++)
             if(!Character.isLowerCase(c[i]))
                 c[i]=Character.toLowerCase(c[i]);
@@ -230,7 +231,7 @@ public class CMStrings
             if(Character.isLetter(c[i]))
                 break;
         if(i<c.length)
-            c[i++]=Character.toUpperCase(c[i]);
+            c[i]=Character.toUpperCase(c[i]);
         return new String(c).trim();
     }
     
