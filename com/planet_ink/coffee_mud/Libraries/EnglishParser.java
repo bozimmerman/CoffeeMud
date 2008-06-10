@@ -157,7 +157,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		social=CMLib.socials().fetchSocial(commands,false);
 		if(social!=null)
 		{
-			commands.setElementAt(social.ID(),0);
+			commands.setElementAt(social.baseName(),0);
 			return social;
 		}
 		

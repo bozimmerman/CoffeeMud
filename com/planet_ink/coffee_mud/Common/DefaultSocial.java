@@ -47,6 +47,11 @@ public class DefaultSocial implements Social
 	public String ID() { return "DefaultSocial"; }
 	public String name(){ return Social_name;}
 	public String Name(){return name();}
+	public String baseName() {
+	    int x=name().indexOf(' ');
+	    if(x<0) return name();
+	    return name().substring(0,x);
+	}
 	public void setName(String newName){Social_name=newName;}
 	public String You_see(){return You_see;}
 	public String Third_party_sees(){return Third_party_sees;}

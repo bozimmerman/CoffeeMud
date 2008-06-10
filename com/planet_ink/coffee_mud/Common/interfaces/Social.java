@@ -34,6 +34,7 @@ public interface Social extends Environmental, CMCommon
 {
     public String Name();
     public void setName(String newName);
+    public String baseName();
     public String You_see();
     public String Third_party_sees();
     public String Target_sees();
