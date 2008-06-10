@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Items.Basic;
+package com.planet_ink.coffee_mud.Abilities.Properties;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 
 import java.util.*;
 
@@ -30,48 +31,17 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class QuestPoint extends StdItem
+public class Prop_ItemNoRuin extends Property
 {
-	public String ID(){	return "QuestPoint";}
-	public QuestPoint()
-	{
-		super();
-		setName("a quest point");
-		setDisplayText("A shiny blue coin has been left here.");
-		myContainer=null;
-		setDescription("A shiny blue coin with magical script around the edges.");
-		myUses=Integer.MAX_VALUE;
-		myWornCode=0;
-		material=0;
-		baseEnvStats.setWeight(0);
-        baseEnvStats.setSensesMask(baseEnvStats().sensesMask()|EnvStats.SENSE_ITEMNORUIN);
-		recoverEnvStats();
-	}
+    public String ID() { return "Prop_ItemNoRuin"; }
+    public String name(){ return "Prevents deletion/corruption from corpses";}
+    protected int canAffectCode(){return Ability.CAN_ITEMS;}
 
+    public String accountForYourself()
+    { return "A Prize";    }
 
-	public void executeMsg(Environmental myHost, CMMsg msg)
-	{
-		if(msg.amITarget(this))
-		{
-			MOB mob=msg.source();
-			switch(msg.targetMinor())
-			{
-			case CMMsg.TYP_GET:
-			case CMMsg.TYP_REMOVE:
-			{
-                unWear();
-				setContainer(null);
-				if(!mob.isMine(this))
-					mob.setQuestPoint(mob.getQuestPoint()+1);
-				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
-					mob.location().recoverRoomStats();
-                destroy();
-				return;
-			}
-			default:
-				break;
-			}
-		}
-		super.executeMsg(myHost,msg);
-	}
+    public void affectEnvStats(Environmental affected, EnvStats affectableStats)
+    {
+        affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.SENSE_ITEMNORUIN);
+    }
 }

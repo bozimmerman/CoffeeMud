@@ -520,6 +520,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
     {
         if(I==null) return null;
         if((CMath.bset(I.envStats().disposition(),EnvStats.IS_UNSAVABLE))
+        ||(CMath.bset(I.envStats().sensesMask(), EnvStats.SENSE_ITEMNORUIN))
         ||(I instanceof Coins))
             return I;
         if(I.name().toLowerCase().indexOf("ruined ")>=0)
