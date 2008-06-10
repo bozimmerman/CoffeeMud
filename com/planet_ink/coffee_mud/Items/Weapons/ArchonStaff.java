@@ -108,7 +108,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 					}
 				}
 				else
-                if(message.startsWith("LEVEL ")&&message.endsWith(" UP"))
+                if(message.toUpperCase().startsWith("LEVEL ")&&message.toUpperCase().endsWith(" UP"))
                 {
                     message=message.substring(6).trim();
                     message=message.substring(0,message.length()-2).trim();
@@ -132,7 +132,7 @@ public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
                     return;
                 }
                 else
-                if(message.startsWith("LEVEL ")&&message.endsWith(" DOWN"))
+                if(message.toUpperCase().startsWith("LEVEL ")&&message.toUpperCase().endsWith(" DOWN"))
                 {
                     message=message.substring(6).trim();
                     message=message.substring(0,message.length()-4).trim();
