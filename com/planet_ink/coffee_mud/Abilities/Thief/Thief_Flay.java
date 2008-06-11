@@ -134,7 +134,7 @@ public class Thief_Flay extends ThiefSkill
 			if(target.fetchEffect(ID())!=null)
 			{
 				Ability A=CMClass.getAbility("Bleeding");
-				if(A!=null) A.invoke(mob,mob,true,asLevel);
+				if(A!=null) A.invoke(mob,target,true,asLevel);
 				if(makePeace)
 				{
 					mob.makePeace();

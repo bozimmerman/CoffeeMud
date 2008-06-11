@@ -194,21 +194,25 @@ public class Gaoler extends StdCharClass
             {
                 int xp=(int)Math.round(10.0*CMath.div(msg.target().envStats().level(),((MOB)host).charStats().getClassLevel(this)));
                 int[] done=(int[])mudHourMOBXPMap.get(host.Name()+"/"+msg.tool().ID());
-                if(done==null){ done=new int[2]; mudHourMOBXPMap.put(host.Name()+"/"+msg.tool().ID(),done);}
-                TimeClock clock =CMLib.map().getStartArea(host).getTimeObj(); 
-                if(done[0]!=clock.getTimeOfDay())
-                    done[1]=0;
-                done[0]=clock.getTimeOfDay();
-                
-                if(done[1]<(90+(10*((MOB)host).envStats().level())))
+                if(done==null){ done=new int[3]; mudHourMOBXPMap.put(host.Name()+"/"+msg.tool().ID(),done);}
+                if(Calendar.getInstance().get(Calendar.SECOND)!=done[2])
                 {
-                    done[1]+=xp;
-                    CMLib.leveler().postExperience((MOB)host,null,null,xp,true);
-                    msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"The sweet screams of your victim earns you "+xp+" experience points.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+                    TimeClock clock =CMLib.map().getStartArea(host).getTimeObj(); 
+                    if(done[0]!=clock.getTimeOfDay())
+                        done[1]=0;
+                    done[0]=clock.getTimeOfDay();
+                    done[2]=Calendar.getInstance().get(Calendar.SECOND);
+                    
+                    if(done[1]<(90+(10*((MOB)host).envStats().level())))
+                    {
+                        done[1]+=xp;
+                        CMLib.leveler().postExperience((MOB)host,null,null,xp,true);
+                        msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"The sweet screams of your victim earns you "+xp+" experience points.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+                    }
+                    else
+                        msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"The screams of your victims bore you now.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+                    msg.addTrailerMsg(msg2);
                 }
-                else
-                    msg2.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"The screams of your victims bore you now.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
-                msg.addTrailerMsg(msg2);
             }
         }
     }
