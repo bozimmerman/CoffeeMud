@@ -1,10 +1,0 @@
-damage_prog
-say I have taken $g damage.
-~
-act_prog calm flee peace
-pray calm
-~
-fight_prog 10
-pray calm
-~
-
