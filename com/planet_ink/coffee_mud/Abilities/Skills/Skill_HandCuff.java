@@ -248,7 +248,7 @@ public class Skill_HandCuff extends StdSkill
 								target.setBitmap(CMath.unsetb(target.getBitmap(),MOB.ATT_AUTOGUARD));
 							boolean oldNOFOL=CMath.bset(target.getBitmap(),MOB.ATT_NOFOLLOW);
 							if(target.numFollowers()>0)
-								CMLib.commands().doStandardCommand(target,"NoFollow",CMParms.makeVector("UNFOLLOW","QUIETLY"));
+								CMLib.commands().forceStandardCommand(target,"NoFollow",CMParms.makeVector("UNFOLLOW","QUIETLY"));
 							target.setBitmap(CMath.unsetb(target.getBitmap(),MOB.ATT_NOFOLLOW));
 							CMLib.commands().postFollow(target,mob,true);
 							if(oldNOFOL)

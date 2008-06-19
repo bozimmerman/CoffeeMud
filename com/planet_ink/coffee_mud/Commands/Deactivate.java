@@ -37,7 +37,7 @@ public class Deactivate extends BaseItemParser
 
 	private String[] access={"DEACTIVATE","DEACT","DEA","<"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)

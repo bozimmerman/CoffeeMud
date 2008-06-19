@@ -69,7 +69,7 @@ public class GetsAllEquipped extends ActiveTicker
             Vector stuffIHad=new Vector();
             for(int i=0;i<mob.inventorySize();i++)
                 stuffIHad.addElement(mob.fetchInventory(i));
-            mob.enqueCommand(CMParms.makeVector("GET","ALL"),0);
+            mob.enqueCommand(CMParms.makeVector("GET","ALL"),Command.METAFLAG_FORCED,0);
             Item I=null;
             Vector dropThisStuff=new Vector();
             for(int i=0;i<mob.inventorySize();i++)
@@ -85,8 +85,8 @@ public class GetsAllEquipped extends ActiveTicker
                 }
             }
             for(int d=0;d<dropThisStuff.size();d++)
-                mob.enqueCommand(CMParms.makeVector("DROP",((Item)dropThisStuff.elementAt(d)).Name()),0);
-			mob.enqueCommand(CMParms.makeVector("WEAR","ALL"),0);
+                mob.enqueCommand(CMParms.makeVector("DROP",((Item)dropThisStuff.elementAt(d)).Name()),Command.METAFLAG_FORCED,0);
+			mob.enqueCommand(CMParms.makeVector("WEAR","ALL"),Command.METAFLAG_FORCED,0);
 		}
 		return true;
 	}

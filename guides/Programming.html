@@ -8166,7 +8166,7 @@ functions designated by the "IMMORT" security code.</p>
       
       
       
-      <pre>  public boolean preExecute(MOB mob, Vector commands, int secondsElapsed, double actionsRemaining)<br />    throws java.io.IOException;<br />  {<br />    if( secondsElapsed == 0 )<br />    {<br />      mob.tell( "You are preparing to do nothing." );<br />    }<br /><br />    if( secondsElapsed == 3 )<br />    {<br />      mob.tell( "You almost ready to do nothing." );<br />    }<br />  }<br /></pre>
+      <pre>  public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)<br />    throws java.io.IOException;<br />  {<br />    if( secondsElapsed == 0 )<br />    {<br />      mob.tell( "You are preparing to do nothing." );<br />    }<br /><br />    if( secondsElapsed == 3 )<br />    {<br />      mob.tell( "You almost ready to do nothing." );<br />    }<br />  }<br /></pre>
 
 
 
@@ -8192,7 +8192,7 @@ proceed.</p>
       
       
       
-      <pre>  public boolean execute( MOB mob, Vector commands )<br />    throws java.io.IOException<br />  {<br />    String parameters = CMParms.combine( commands, 1 );<br />    if( parameters.length() == 0 )<br />    {<br />      mob.tell( "Nothing done." );<br />    }<br />    else<br />    {<br />      mob.tell( "Nothing, not even '" + parameters + "', done." );<br />    }<br />    return false;<br /><br />  }<br /> <br /></pre>
+      <pre>  public boolean execute( MOB mob, Vector commands, int metaFlags )<br />    throws java.io.IOException<br />  {<br />    String parameters = CMParms.combine( commands, 1 );<br />    if( parameters.length() == 0 )<br />    {<br />      mob.tell( "Nothing done." );<br />    }<br />    else<br />    {<br />      mob.tell( "Nothing, not even '" + parameters + "', done." );<br />    }<br />    return false;<br /><br />  }<br /> <br /></pre>
 
 
 

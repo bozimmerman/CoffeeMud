@@ -59,7 +59,7 @@ public class AutoAffects extends StdCommand
         return msg.toString();
     }
 
-    public boolean execute(MOB mob, Vector commands)
+    public boolean execute(MOB mob, Vector commands, int metaFlags)
         throws java.io.IOException
     {
         Session S=mob.session();

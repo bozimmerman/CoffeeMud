@@ -39,7 +39,7 @@ public class Email extends StdCommand
 	private String[] access={"EMAIL"};
 	public String[] getAccessWords(){return access;}
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.session()==null)	return true;
@@ -76,7 +76,9 @@ public class Email extends StdCommand
                                     +"\n\r");
                         }
                     }
-                    if(mymsgs.size()==0)
+                    if((mymsgs.size()==0)
+                    ||(CMath.bset(metaFlags,Command.METAFLAG_POSSESSED))
+                    ||(CMath.bset(metaFlags,Command.METAFLAG_AS)))
                     {
                         if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
                             mob.tell("You have no email waiting, but then, it's probably been forwarded to you already.");
@@ -84,7 +86,13 @@ public class Email extends StdCommand
                             mob.tell("You have no email waiting.");
                         return false;
                     }
-                    mob.tell(messages.toString());
+                    Session S=mob.session();
+                    try {
+                        if(S!=null) S.snoopSuspension(1);
+                        mob.tell(messages.toString());
+                    } finally {
+                        if(S!=null) S.snoopSuspension(-1);
+                    }
                     String s=mob.session().prompt("Enter a message #","");
                     if((!CMath.isInteger(s))||(mob.session().killFlag()))
                         return false;
@@ -108,7 +116,12 @@ public class Email extends StdCommand
                         messages.append("^XSubject :^?^."+subj+"\n\r");
                         messages.append("^X------------------------------------------------^?^.\n\r");
                         messages.append(message+"\n\r\n\r");
-                        mob.tell(messages.toString());
+                        try {
+                            if(S!=null) S.snoopSuspension(1);
+                            mob.tell(messages.toString());
+                        } finally {
+                            if(S!=null) S.snoopSuspension(-1);
+                        }
                         s=mob.session().choose("Would you like to D)elete, H)old, or R)eply (D/H/R)? ","DHR","H");
                         if(s.equalsIgnoreCase("H"))
                             break;
@@ -118,7 +131,7 @@ public class Email extends StdCommand
                             &&(!from.equals(mob.Name()))
                             &&(!from.equalsIgnoreCase("BOX"))
                             &&(CMLib.map().getLoadPlayer(from)!=null))
-                                execute(mob,CMParms.makeVector(getAccessWords()[0],from));
+                                execute(mob,CMParms.makeVector(getAccessWords()[0],from),metaFlags);
                             else
                                 mob.tell("You can not reply to this email.");
                         }

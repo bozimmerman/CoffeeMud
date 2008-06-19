@@ -63,7 +63,7 @@ public class Draw extends Get
 		return sheaths;
 	}
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean quiet=false;

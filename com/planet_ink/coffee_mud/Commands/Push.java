@@ -37,7 +37,7 @@ public class Push extends Go
 
 	private String[] access={"PUSH"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Environmental pushThis=null;

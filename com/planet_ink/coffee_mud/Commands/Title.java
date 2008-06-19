@@ -34,7 +34,7 @@ public class Title extends StdCommand
 {
 	private String[] access={"TITLE"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 	    if((mob.playerStats()==null)||(mob.playerStats().getTitles().size()==0))

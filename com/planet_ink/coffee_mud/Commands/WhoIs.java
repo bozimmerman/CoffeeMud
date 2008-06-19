@@ -37,7 +37,7 @@ public class WhoIs extends Who
 	private String[] access={"WHOIS"};
 	public String[] getAccessWords(){return access;}
 	
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String mobName=CMParms.combine(commands,1);

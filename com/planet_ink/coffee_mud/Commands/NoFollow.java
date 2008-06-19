@@ -37,7 +37,7 @@ public class NoFollow extends Follow
 	private String[] access={"NOFOLLOW","NOFOL"};
 	public String[] getAccessWords(){return access;}
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if((commands.size()>1)&&(commands.elementAt(0) instanceof String))

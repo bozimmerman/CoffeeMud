@@ -225,7 +225,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     {
         reloadTerminal(mob);
         Command C=CMClass.getCommand("PollCmd");
-        try{ C.execute(mob,null);}catch(Exception e){}
+        try{ C.execute(mob,null,0);}catch(Exception e){}
         
         if((mob.session()==null)
         ||(mob.isMonster())
@@ -233,7 +233,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             return;
 
         C=CMClass.getCommand("MOTD");
-        try{ C.execute(mob,CMParms.parse("MOTD NEW PAUSE"));}catch(Exception e){}
+        try{ C.execute(mob,CMParms.parse("MOTD NEW PAUSE"),0);}catch(Exception e){}
     }
 
     public boolean checkExpiration(MOB mob)
@@ -780,7 +780,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     Command C=CMClass.getCommand("Email");
                     if(C!=null)
                     {
-                        if(!C.execute(mob,null))
+                        if(!C.execute(mob,null,0))
                             return 0;
                     }
                     CMLib.database().DBUpdateEmail(mob);
@@ -864,7 +864,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     {
                         Command C=CMClass.getCommand("WizInv");
                         if((C!=null)&&(C.securityCheck(mob)||C.securityCheck(mob)))
-                            C.execute(mob,CMParms.makeVector("WIZINV"));
+                            C.execute(mob,CMParms.makeVector("WIZINV"),0);
                     }
                     showTheNews(mob);
                     mob.bringToLife(mob.location(),false);
@@ -897,7 +897,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     {
                         Command C=CMClass.getCommand("WizInv");
                         if((C!=null)&&(C.securityCheck(mob)||C.securityCheck(mob)))
-                            C.execute(mob,CMParms.makeVector("WIZINV"));
+                            C.execute(mob,CMParms.makeVector("WIZINV"),0);
                     }
                     showTheNews(mob);
                     mob.bringToLife(mob.location(),true);

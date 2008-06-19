@@ -87,10 +87,11 @@ public interface Command extends CMObject
 	 * @see Command#securityCheck(MOB)
 	 * @param mob the mob or player issueing the command
 	 * @param commands usually the command words and parameters; a set of strings
+     * @param metaFlags flags denoting how the command is being executed
 	 * @return whether the command was successfully executed.  Is almost meaningless.
 	 * @throws java.io.IOException usually means the player has dropped carrier
 	 */
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException;
 	/**
 	 * This method is only called when the mob invoking this command
@@ -101,10 +102,24 @@ public interface Command extends CMObject
 	 * @see Command#execute(MOB, Vector)
 	 * @param mob the player or mob invoking the command
 	 * @param commands the parameters entered for the command (including the trigger word)
+	 * @param metaFlags flags denoting how the command is being executed
 	 * @param secondsElapsed 0 at first, and increments every second
 	 * @param actionsRemaining number of free actions the player is defficient.
 	 * @return whether the command should be allowed to go forward. false cancels altogether.
 	 */
-    public boolean preExecute(MOB mob, Vector commands, int secondsElapsed, double actionsRemaining)
+    public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
         throws java.io.IOException;
+    
+    /** constant mask for the metaflags parameter for execute and preexecute, means being mpforced*/
+    public static final int METAFLAG_MPFORCED=1;
+    /** constant mask for the metaflags parameter for execute and preexecute, means being ordered*/
+    public static final int METAFLAG_ORDER=2;
+    /** constant mask for the metaflags parameter for execute and preexecute, means being possessed*/
+    public static final int METAFLAG_POSSESSED=4;
+    /** constant mask for the metaflags parameter for execute and preexecute, means being snooped*/
+    public static final int METAFLAG_SNOOPED=8;
+    /** constant mask for the metaflags parameter for execute and preexecute, means being forced with AS*/
+    public static final int METAFLAG_AS=16;
+    /** constant mask for the metaflags parameter for execute and preexecute, means being forced with spells*/
+    public static final int METAFLAG_FORCED=32;
 }

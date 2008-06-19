@@ -36,7 +36,7 @@ public class PlayerKill extends StdCommand
 
 	private String[] access={"PLAYERKILL","PKILL"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ALWAYS")

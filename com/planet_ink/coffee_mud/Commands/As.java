@@ -37,7 +37,7 @@ public class As extends StdCommand
 	private String[] access={"AS"};
 	public String[] getAccessWords(){return access;}
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		commands.removeElementAt(0);
@@ -116,7 +116,7 @@ public class As extends StdCommand
 		    inside=false;
 			mob.location().bringMobHere(M,false);
 		}
-		M.doCommand(commands);
+		M.doCommand(commands,metaFlags|Command.METAFLAG_AS);
 		if(M.playerStats()!=null) M.playerStats().setLastUpdated(0);
 		if((oldRoom!=null)&&(inside)&&(!oldRoom.isInhabitant(M)))
 			oldRoom.bringMobHere(M,false);

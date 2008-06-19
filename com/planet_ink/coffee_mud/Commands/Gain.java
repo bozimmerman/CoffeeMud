@@ -36,7 +36,7 @@ public class Gain extends StdCommand
 
 	private String[] access={"GAIN"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()==1)
@@ -45,7 +45,7 @@ public class Gain extends StdCommand
 			return false;
 		}
 		commands.insertElementAt("SAY",0);
-		mob.doCommand(commands);
+		mob.doCommand(commands,metaFlags);
 		return false;
 	}
     public double combatActionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}

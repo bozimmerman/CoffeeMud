@@ -36,7 +36,7 @@ public class Sleep extends StdCommand
 
 	private String[] access={"SLEEP","SL"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(CMLib.flags().isSleeping(mob))

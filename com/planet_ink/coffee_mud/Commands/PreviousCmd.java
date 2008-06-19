@@ -36,12 +36,12 @@ public class PreviousCmd extends StdCommand
 
 	private String[] access={"!"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(!mob.isMonster())
 		{
-			mob.enqueCommand(CMParms.copyVector(mob.session().previousCMD()),0);
+			mob.enqueCommand(CMParms.copyVector(mob.session().previousCMD()),metaFlags,0);
 		}
 		return false;
 	}

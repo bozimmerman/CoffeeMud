@@ -36,7 +36,7 @@ public class Ban extends StdCommand
 
 	private String[] access={"BAN"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		commands.removeElementAt(0);

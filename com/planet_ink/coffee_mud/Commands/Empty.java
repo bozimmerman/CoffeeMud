@@ -38,7 +38,7 @@ public class Empty extends Drop
 	private String[] access={"EMPTY","EMP"};
 	public String[] getAccessWords(){return access;}
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String whatToDrop=null;
@@ -162,7 +162,7 @@ public class Empty extends Drop
                 if(target instanceof Drink)
                 {
                     Command C2=CMClass.getCommand("Pour");
-                    C2.execute(mob,CMParms.makeVector("POUR","$"+C.Name()+"$","$"+target.Name()+"$"));
+                    C2.execute(mob,CMParms.makeVector("POUR","$"+C.Name()+"$","$"+target.Name()+"$"),metaFlags);
                     skipMessage=true;
                 }
                 else

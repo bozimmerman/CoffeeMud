@@ -160,7 +160,7 @@ public class Thief_Con extends ThiefSkill
             &&(mob.location().show(mob,target,CMMsg.MSG_ORDER,null)))
 			{
 				mob.location().send(mob,msg);
-				target.enqueCommand(commands,0);
+				target.enqueCommand(commands,Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,0);
 			}
 			target.recoverEnvStats();
 		}

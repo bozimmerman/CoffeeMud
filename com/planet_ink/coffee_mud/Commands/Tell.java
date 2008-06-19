@@ -36,7 +36,7 @@ public class Tell extends StdCommand
 
 	private String[] access={"TELL","T"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if((!mob.isMonster())&&CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))
@@ -57,14 +57,22 @@ public class Tell extends StdCommand
 		   &&(mob.playerStats()!=null))
 		{
 			Vector V=mob.playerStats().getTellStack();
-			if(V.size()==0)
+			if((V.size()==0)
+			||(CMath.bset(metaFlags,Command.METAFLAG_AS))
+	        ||(CMath.bset(metaFlags,Command.METAFLAG_POSSESSED)))
 				mob.tell("No telling.");
 			else
 			{
 				int num=CMath.s_int(CMParms.combine(commands,1));
 				if(num>V.size()) num=V.size();
-				for(int i=V.size()-num;i<V.size();i++)
-					mob.tell((String)V.elementAt(i));
+		        Session S=mob.session();
+		        try {
+    		        if(S!=null) S.snoopSuspension(1);
+    				for(int i=V.size()-num;i<V.size();i++)
+    					mob.tell((String)V.elementAt(i));
+		        } finally {
+		            if(S!=null) S.snoopSuspension(-1);
+		        }
 			}
 			return false;
 		}
@@ -131,9 +139,16 @@ public class Tell extends StdCommand
 			return false;
 		}
 		
-		CMLib.commands().postSay(mob,target,combinedCommands,true,true);
-		if((target.session()!=null)
-		&&(target.session().afkFlag()))
+		
+		Session ts=target.session();
+		try{
+            if(ts!=null) ts.snoopSuspension(1);
+            CMLib.commands().postSay(mob,target,combinedCommands,true,true);
+		} finally {
+		    if(ts!=null) ts.snoopSuspension(-1);
+		}
+        
+		if((target.session()!=null)&&(target.session().afkFlag()))
 			mob.tell(target.session().afkMessage());
 		return false;
 	}

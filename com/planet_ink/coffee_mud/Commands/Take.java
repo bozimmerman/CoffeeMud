@@ -37,7 +37,7 @@ public class Take extends BaseItemParser
 
 	private String[] access={"TAKE"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(CMSecurity.isAllowed(mob,mob.location(),"ORDER")
@@ -152,19 +152,19 @@ public class Take extends BaseItemParser
 			{
 				commands.removeElementAt(commands.size()-1);
 				Command C=CMClass.getCommand("Remove");
-				if(C!=null) C.execute(mob,commands);
+				if(C!=null) C.execute(mob,commands,metaFlags);
 			}
 			else
 			if((commands.size()>1)&&(((String)commands.elementAt(1)).equalsIgnoreCase("off")))
 			{
 				commands.removeElementAt(1);
 				Command C=CMClass.getCommand("Remove");
-				if(C!=null) C.execute(mob,commands);
+				if(C!=null) C.execute(mob,commands,metaFlags);
 			}
 			else
 			{
 				Command C=CMClass.getCommand("Get");
-				if(C!=null) C.execute(mob,commands);
+				if(C!=null) C.execute(mob,commands,metaFlags);
 			}
 		}
 		return false;

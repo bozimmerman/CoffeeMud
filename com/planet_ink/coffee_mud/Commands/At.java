@@ -194,7 +194,7 @@ public class At extends StdCommand
 		return room;
 	}
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		commands.removeElementAt(0);
@@ -221,7 +221,7 @@ public class At extends StdCommand
 		}
 		Room R=mob.location();
 		if(R!=room)	room.bringMobHere(mob,false);
-		mob.doCommand(commands);
+		mob.doCommand(commands,metaFlags);
 		if(mob.location()!=R) R.bringMobHere(mob,false);
 		return false;
 	}

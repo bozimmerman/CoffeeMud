@@ -242,7 +242,7 @@ public class MUDGrinder extends StdWebMacro
     		V.addElement(buf);
     		Command C=CMClass.getCommand("Import");
     		if(C==null) return null;
-    		try{C.execute(mob,V);}catch(Exception e){return e.getMessage();}
+    		try{C.execute(mob,V,0);}catch(Exception e){return e.getMessage();}
     		if((V.size()==0)||(V.lastElement() instanceof StringBuffer))
     			return "<FONT COLOR=LIGHTGREEN>Your file was successfully imported.</FONT>";
     		StringBuffer error=new StringBuffer("");

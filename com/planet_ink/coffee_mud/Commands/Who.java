@@ -105,7 +105,7 @@ public class Who extends StdCommand
 		return msg;
 	}
 	
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String mobName=CMParms.combine(commands,1);

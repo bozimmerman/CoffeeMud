@@ -36,7 +36,7 @@ public class Enter extends Go
 
 	private String[] access={"ENTER","EN"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()<=1)
@@ -52,7 +52,7 @@ public class Enter extends Go
 			if((getThis!=null)&&(getThis instanceof Rideable))
 			{
 				Command C=CMClass.getCommand("Sit");
-				if(C!=null) return C.execute(mob,commands);
+				if(C!=null) return C.execute(mob,commands,metaFlags);
 			}
 			dir=CMLib.tracking().findExitDir(mob,mob.location(),enterWhat);
 			if(dir<0)

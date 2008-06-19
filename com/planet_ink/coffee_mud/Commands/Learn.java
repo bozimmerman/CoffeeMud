@@ -37,7 +37,7 @@ public class Learn extends StdCommand
 
 	private String[] access={"LEARN"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.location().numInhabitants()==1)
@@ -70,16 +70,16 @@ public class Learn extends StdCommand
 		if(V.contains(what.toUpperCase().trim()))
 		{
 			Vector CC=CMParms.makeVector("SAY","I would like to be trained in "+what);
-			mob.doCommand(CC);
+			mob.doCommand(CC,metaFlags);
 			if(teacherName.length()>0) commands.addElement(teacherName.trim());
 			Command C=CMClass.getCommand("TRAIN");
-			if(C!=null) C.execute(mob, commands);
+			if(C!=null) C.execute(mob, commands,metaFlags);
 			return true;
 		}
 		if(CMClass.findAbility(what+teacherName, mob)!=null)
 		{
 			Vector CC=CMParms.makeVector("SAY","I would like you to teach me "+what);
-			mob.doCommand(CC);
+			mob.doCommand(CC,metaFlags);
 			return true;
 		}
         ExpertiseLibrary.ExpertiseDefinition theExpertise=null;
@@ -107,7 +107,7 @@ public class Learn extends StdCommand
         if(theExpertise!=null)
         {
             Vector CC=CMParms.makeVector("SAY","I would like you to teach me "+theExpertise.name);
-            mob.doCommand(CC);
+            mob.doCommand(CC,metaFlags);
             return true;
         }
         
@@ -115,15 +115,15 @@ public class Learn extends StdCommand
 			if(((String)V.elementAt(v)).startsWith(what.toUpperCase().trim()))
 			{
 				Vector CC=CMParms.makeVector("SAY","I would like to be trained in "+what);
-				mob.doCommand(CC);
+				mob.doCommand(CC,metaFlags);
 				if(teacherName.length()>0) commands.addElement(teacherName.trim());
 				Command C=CMClass.getCommand("TRAIN");
-				if(C!=null) C.execute(mob, commands);
+				if(C!=null) C.execute(mob, commands,metaFlags);
 				return true;
 				
 			}
 		Vector CC=CMParms.makeVector("SAY","I would like you to teach me "+what+teacherName);
-		mob.doCommand(CC);
+		mob.doCommand(CC,metaFlags);
 		return false;
 	}
     public double combatActionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}

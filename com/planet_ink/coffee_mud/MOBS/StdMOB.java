@@ -75,7 +75,7 @@ public class StdMOB implements MOB
 	protected Vector expertises=new Vector(1);
     protected Hashtable factions=new Hashtable(1);
 
-	protected DVector commandQue=new DVector(5);
+	protected DVector commandQue=new DVector(6);
 
 	// gained attributes
 	protected int Experience=0;
@@ -671,7 +671,7 @@ public class StdMOB implements MOB
         tattoos=new Vector(1);
         expertises=new Vector(1);
         factions=new Hashtable(1);
-        commandQue=new DVector(5);
+        commandQue=new DVector(6);
         scripts=new Vector(1);
         curState=maxState;
         WorshipCharID="";
@@ -1348,7 +1348,7 @@ public class StdMOB implements MOB
             if(doCommand!=null)
             {
                 lastCommandTime=System.currentTimeMillis();
-                doCommand(doCommand[0],(Vector)doCommand[1]);
+                doCommand(doCommand[0],(Vector)doCommand[1],((Integer)doCommand[5]).intValue());
                 synchronized(commandQue)
                 {
 	                if(commandQue.size()>0)
@@ -1375,11 +1375,12 @@ public class StdMOB implements MOB
                 ((long[])ROW[3])[0]=((long[])ROW[3])[0]+1000;
                 ((int[])ROW[4])[0]+=1;
                 int secondsElapsed=((int[])ROW[4])[0];
+                int metaFlags=((Integer)ROW[5]).intValue();
                 try
                 {
 	                if(O instanceof Command)
 	                {
-	                    if(!((Command)O).preExecute(this,commands,secondsElapsed,-diff))
+	                    if(!((Command)O).preExecute(this,commands,metaFlags,secondsElapsed,-diff))
 	                    {
 	                        commandQue.removeElementsAt(0);
 	                        return true;
@@ -1404,21 +1405,21 @@ public class StdMOB implements MOB
         return false;
 	}
 
-	public void doCommand(Vector commands)
+	public void doCommand(Vector commands, int metaFlags)
 	{
 		Object O=CMLib.english().findCommand(this,commands);
 		if(O!=null)
-			doCommand(O,commands);
+			doCommand(O,commands, metaFlags);
 		else
 			CMLib.commands().handleUnknownCommand(this,commands);
 	}
 
-    protected void doCommand(Object O, Vector commands)
+    protected void doCommand(Object O, Vector commands, int metaFlags)
 	{
 		try
 		{
 			if(O instanceof Command)
-				((Command)O).execute(this,commands);
+				((Command)O).execute(this,commands, metaFlags);
 			else
 			if(O instanceof Social)
 				((Social)O).invoke(this,commands,null,false);
@@ -1461,7 +1462,7 @@ public class StdMOB implements MOB
         return tickDelay;
     }
 
-    public void prequeCommand(Vector commands, double tickDelay)
+    public void prequeCommand(Vector commands, int metaFlags, double tickDelay)
     {
         if(commands==null) return;
         Object O=CMLib.english().findCommand(this,commands);
@@ -1469,7 +1470,7 @@ public class StdMOB implements MOB
         tickDelay=calculateTickDelay(O,commands,tickDelay);
         if(tickDelay<0.0) return;
         if(tickDelay==0.0)
-            doCommand(O,commands);
+            doCommand(O,commands,metaFlags);
         else
         synchronized(commandQue)
         {
@@ -1477,12 +1478,12 @@ public class StdMOB implements MOB
             next[0]=System.currentTimeMillis()-1;
             int[] seconds=new int[1];
             seconds[0]=-1;
-            commandQue.insertElementAt(0,O,commands,new Double(tickDelay),next,seconds);
+            commandQue.insertElementAt(0,O,commands,new Double(tickDelay),next,seconds,new Integer(metaFlags));
         }
         dequeCommand();
     }
 
-	public void enqueCommand(Vector commands, double tickDelay)
+	public void enqueCommand(Vector commands, int metaFlags, double tickDelay)
 	{
 		if(commands==null) return;
         Object O=CMLib.english().findCommand(this,commands);
@@ -1490,7 +1491,7 @@ public class StdMOB implements MOB
         tickDelay=calculateTickDelay(O,commands,tickDelay);
         if(tickDelay<0.0) return;
         if(tickDelay==0.0)
-            doCommand(commands);
+            doCommand(commands,metaFlags);
         else
         synchronized(commandQue)
         {
@@ -1498,7 +1499,7 @@ public class StdMOB implements MOB
             next[0]=System.currentTimeMillis()-1;
             int[] seconds=new int[1];
             seconds[0]=-1;
-            commandQue.addElement(O,commands,new Double(tickDelay),next,seconds);
+            commandQue.addElement(O,commands,new Double(tickDelay),next,seconds,new Integer(metaFlags));
         }
         dequeCommand();
 	}

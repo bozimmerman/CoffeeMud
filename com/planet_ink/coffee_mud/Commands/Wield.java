@@ -38,7 +38,7 @@ public class Wield extends BaseItemParser
 	private String[] access={"WIELD"};
 	public String[] getAccessWords(){return access;}
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)

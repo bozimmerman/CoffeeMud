@@ -79,7 +79,7 @@ public class Chant_FindMate extends Chant
 					if((mob.fetchFirstWornItem(Item.WORN_WAIST)!=null)
 					||(mob.fetchFirstWornItem(Item.WORN_LEGS)!=null))
 						unInvoke();
-					mob.doCommand(CMParms.parse("MATE \""+mate.name()+"$\""));
+					mob.doCommand(CMParms.parse("MATE \""+mate.name()+"$\""),Command.METAFLAG_FORCED);
 					unInvoke();
 				}
 			}

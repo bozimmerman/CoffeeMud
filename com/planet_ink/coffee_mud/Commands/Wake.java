@@ -36,7 +36,7 @@ public class Wake extends StdCommand
 
 	private String[] access={"WAKE"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands!=null)
@@ -70,7 +70,7 @@ public class Wake extends StdCommand
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				execute(M,null);
+				execute(M,null,metaFlags|Command.METAFLAG_ORDER);
 			}
 		}
 		return false;

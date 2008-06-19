@@ -64,7 +64,7 @@ public class Put extends BaseItemParser
 		}
 	}
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)
@@ -77,7 +77,7 @@ public class Put extends BaseItemParser
 		{
 			commands.removeElementAt(commands.size()-1);
 			Command C=CMClass.getCommand("Wear");
-			if(C!=null) C.execute(mob,commands);
+			if(C!=null) C.execute(mob,commands,metaFlags);
 			return false;
 		}
 
@@ -85,7 +85,7 @@ public class Put extends BaseItemParser
 		{
 			commands.removeElementAt(1);
 			Command C=CMClass.getCommand("Wear");
-			if(C!=null) C.execute(mob,commands);
+			if(C!=null) C.execute(mob,commands,metaFlags);
 			return false;
 		}
 

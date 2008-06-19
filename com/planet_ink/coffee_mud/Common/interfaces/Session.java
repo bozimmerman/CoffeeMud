@@ -103,6 +103,7 @@ public interface Session extends CMCommon
 	public void startBeingSnoopedBy(Session S);
 	public void stopBeingSnoopedBy(Session S);
 	public boolean amBeingSnoopedBy(Session S);
+	public int snoopSuspension(int change);
 	
 	public void cmdExit(MOB mob, Vector commands)
 		throws Exception;

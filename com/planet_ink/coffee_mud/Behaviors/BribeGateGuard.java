@@ -486,8 +486,8 @@ public class BribeGateGuard extends StdBehavior
 		    try {
 		      if (dir >= 0)
 		        observer.doCommand(CMParms.parse("OPEN " +
-		                                          Directions.getDirectionName(dir)));
-		      observer.doCommand(CMParms.parse("BOW " + source.Name()));
+		                                          Directions.getDirectionName(dir)),Command.METAFLAG_FORCED);
+		      observer.doCommand(CMParms.parse("BOW " + source.Name()),Command.METAFLAG_FORCED);
 		    }
 		    catch (Exception e1) {}
 		  }
@@ -499,8 +499,8 @@ public class BribeGateGuard extends StdBehavior
 		    try {
 		      if (dir >= 0)
 		        observer.doCommand(CMParms.parse("OPEN " +
-		                                          Directions.getDirectionName(dir)));
-		      observer.doCommand(CMParms.parse("BOW " + source.Name()));
+		                                          Directions.getDirectionName(dir)),Command.METAFLAG_FORCED);
+		      observer.doCommand(CMParms.parse("BOW " + source.Name()),Command.METAFLAG_FORCED);
 		    }
 		    catch (Exception e1) {}
 		  }
@@ -555,7 +555,7 @@ public class BribeGateGuard extends StdBehavior
 		    if (dir >= 0)
 				mob.doCommand(CMParms.parse("OPEN " +
 				                Directions.
-				                getDirectionName(dir)));
+				                getDirectionName(dir)),Command.METAFLAG_FORCED);
 		    }
 		    else {
 		      if(toldAlready.containsKey(M.Name()))
@@ -601,7 +601,7 @@ public class BribeGateGuard extends StdBehavior
 		  tickTock = 0;
 		  if ( (e.isOpen()) && (paidPlayers.isEmpty())) {
 		      mob.doCommand(CMParms.parse("CLOSE " +
-		                                        Directions.getDirectionName(dir)));
+		                                        Directions.getDirectionName(dir)),Command.METAFLAG_FORCED);
 		  }
 		}
 		return true;

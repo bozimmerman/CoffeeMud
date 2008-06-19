@@ -38,7 +38,7 @@ public class Kill extends StdCommand
 
 	private String[] access={"KILL","K","ATTACK"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
         if(commands==null)
@@ -148,7 +148,7 @@ public class Kill extends StdCommand
                     if(possibleOtherWeapon.amWearingAt(Item.IN_INVENTORY))
                     {
                         Command C=CMClass.getCommand("Wield");
-                        if(C!=null) C.execute(mob,CMParms.makeVector("WIELD",possibleOtherWeapon));
+                        if(C!=null) C.execute(mob,CMParms.makeVector("WIELD",possibleOtherWeapon),metaFlags);
                     }
                 }
             }

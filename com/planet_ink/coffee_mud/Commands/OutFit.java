@@ -36,7 +36,7 @@ public class OutFit extends StdCommand
 
 	private String[] access={"OUTFIT"};
 	public String[] getAccessWords(){return access;}
-    public boolean preExecute(MOB mob, Vector commands, int secondsElapsed, double actionsRemaining)
+    public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
     throws java.io.IOException
 	{
     	if(secondsElapsed>8.0)
@@ -49,7 +49,7 @@ public class OutFit extends StdCommand
     		mob.tell("You invoke a plea for mystical outfitting and await the answer.");
 	    return true;
 	}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob==null) return false;
@@ -62,7 +62,7 @@ public class OutFit extends StdCommand
 			CMLib.utensils().outfit(mob,R.outfit(mob));
 		mob.tell("\n\r");
 		Command C2=CMClass.getCommand("Equipment");
-		if(C2!=null) C2.execute(mob,CMParms.parse("EQUIPMENT"));
+		if(C2!=null) C2.execute(mob,CMParms.parse("EQUIPMENT"),metaFlags);
 		mob.tell("\n\rUseful equipment appears mysteriously out of the java plain.");
 		return false;
 	}

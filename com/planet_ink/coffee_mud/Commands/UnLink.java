@@ -36,13 +36,13 @@ public class UnLink extends StdCommand
 
 	private String[] access={"UNLINK"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		commands.setElementAt("DESTROY",0);
 		commands.insertElementAt("ROOM",1);
 		Command C=CMClass.getCommand("Destroy");
-		C.execute(mob,commands);
+		C.execute(mob,commands,metaFlags);
 		return false;
 	}
 	

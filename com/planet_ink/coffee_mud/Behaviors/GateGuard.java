@@ -186,11 +186,11 @@ public class GateGuard extends StdBehavior
 				}
 				if((numPlayers>0)&&(!e.isOpen())&&(!e.isLocked()))
 				{
-					mob.doCommand(CMParms.parse("OPEN "+Directions.getDirectionName(dir)));
+					mob.doCommand(CMParms.parse("OPEN "+Directions.getDirectionName(dir)),Command.METAFLAG_FORCED);
 				}
 				if((numPlayers==0)&&(e.isOpen()))
 				{
-					mob.doCommand(CMParms.parse("CLOSE "+Directions.getDirectionName(dir)));
+					mob.doCommand(CMParms.parse("CLOSE "+Directions.getDirectionName(dir)),Command.METAFLAG_FORCED);
 				}
 				if((numPlayers==0)&&(!e.isOpen())&&(!e.isLocked())&&(e.hasALock())&&(keepLocked))
 				{

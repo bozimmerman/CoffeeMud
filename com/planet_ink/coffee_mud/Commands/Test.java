@@ -201,7 +201,7 @@ public class Test extends StdCommand
         mobs[1].bringToLife(R,true);
     }
     
-    public boolean execute(MOB mob, Vector commands)
+    public boolean execute(MOB mob, Vector commands, int metaFlags)
         throws java.io.IOException
     {
         if(commands.size()>1)
@@ -601,7 +601,7 @@ public class Test extends StdCommand
                 I=CMClass.getItem("StdFood");
                 mobs[0].addInventory(I);
                 C=CMClass.getCommand("Put");
-                C.execute(mobs[0],CMParms.makeVector("Put","Food","Sack"));
+                C.execute(mobs[0],CMParms.makeVector("Put","Food","Sack"),metaFlags);
                 if(!effectCheck(mobs[0])){ mob.tell("Error9-1"); return false;}
                 R.recoverRoomStats();
                 
@@ -612,12 +612,12 @@ public class Test extends StdCommand
                 I=CMClass.getItem("StdFood");
                 mobs[0].addInventory(I);
                 C=CMClass.getCommand("Put");
-                C.execute(mobs[0],CMParms.makeVector("Put","Food","Sack"));
+                C.execute(mobs[0],CMParms.makeVector("Put","Food","Sack"),metaFlags);
                 if(!effectCheck(mobs[0])){ mob.tell("Error9-2"); return false;}
                 I=CMClass.getItem("StdFood");
                 mobs[1].addInventory(I);
                 C=CMClass.getCommand("Put");
-                C.execute(mobs[1],CMParms.makeVector("Put","Food","Sack"));
+                C.execute(mobs[1],CMParms.makeVector("Put","Food","Sack"),metaFlags);
                 if(effectCheck(mobs[1])){ mob.tell("Error9-3"); return false;}
                 R.recoverRoomStats();
             }
@@ -630,7 +630,7 @@ public class Test extends StdCommand
                 mob.tell("Test#10-1: "+UseSpellCast2.accountForYourself());
                 IS=giveTo(CMClass.getItem("StdFood"),UseSpellCast2,mobs[0],null,0);
                 C=CMClass.getCommand("Eat");
-                C.execute(mobs[0],CMParms.makeVector("Eat","ALL"));
+                C.execute(mobs[0],CMParms.makeVector("Eat","ALL"),metaFlags);
                 if(!effectCheck(mobs[0])){ mob.tell("Error10-1"); return false;}
                 R.recoverRoomStats();
                 
@@ -639,12 +639,29 @@ public class Test extends StdCommand
                 mob.tell("Test#10-2: "+UseSpellCast2.accountForYourself());
                 IS=giveTo(CMClass.getItem("StdFood"),UseSpellCast2,mobs[0],mobs[1],0);
                 C=CMClass.getCommand("Eat");
-                C.execute(mobs[0],CMParms.makeVector("Eat","ALL"));
+                C.execute(mobs[0],CMParms.makeVector("Eat","ALL"),metaFlags);
                 if(!effectCheck(mobs[0])){ mob.tell("Error10-2"); return false;}
                 C=CMClass.getCommand("Eat");
-                C.execute(mobs[1],CMParms.makeVector("Eat","ALL"));
+                C.execute(mobs[1],CMParms.makeVector("Eat","ALL"),metaFlags);
                 if(effectCheck(mobs[1])){ mob.tell("Error10-3"); return false;}
                 R.recoverRoomStats();
+            }
+            if(what.equalsIgnoreCase("metaflags"))
+            {
+                StringBuffer str=new StringBuffer("");
+                if(CMath.bset(metaFlags,Command.METAFLAG_AS))
+                    str.append(" AS ");
+                if(CMath.bset(metaFlags,Command.METAFLAG_FORCED))
+                    str.append(" FORCED ");
+                if(CMath.bset(metaFlags,Command.METAFLAG_MPFORCED))
+                    str.append(" MPFORCED ");
+                if(CMath.bset(metaFlags,Command.METAFLAG_ORDER))
+                    str.append(" ORDERED ");
+                if(CMath.bset(metaFlags,Command.METAFLAG_POSSESSED))
+                    str.append(" POSSESSED ");
+                if(CMath.bset(metaFlags,Command.METAFLAG_SNOOPED))
+                    str.append(" SNOOPED ");
+                mob.tell(str.toString());
             }
             if((what.equalsIgnoreCase("all_properties"))
             ||(what.equalsIgnoreCase("Prop_FightSpellCast")))

@@ -38,7 +38,7 @@ public class MOTD extends StdCommand
 
 	private String[] access={"MOTD"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean pause=((commands!=null)&&(commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("PAUSE")));

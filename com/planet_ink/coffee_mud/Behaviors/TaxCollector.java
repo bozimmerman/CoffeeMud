@@ -358,7 +358,7 @@ public class TaxCollector extends StdBehavior
 							V.addElement("GIVE");
 							V.addElement(""+Math.round(owe[OWE_TOTAL]));
 							V.addElement(mob.name());
-							M.doCommand(V);
+							M.doCommand(V,Command.METAFLAG_FORCED);
                             
 						}
 				    }

@@ -76,7 +76,7 @@ public class Group extends StdCommand
 		return msg;
 	}
 	
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		mob.tell(mob.name()+"'s group:\n\r");

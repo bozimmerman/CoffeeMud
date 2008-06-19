@@ -97,6 +97,19 @@ public class WandArchon extends StdWand implements ArchonOnly
 		return true;
 	}
 
+	public boolean safetyCheck(MOB mob, String message)
+	{
+        if((!mob.isMonster())
+        &&(message.length()>0)
+        &&(mob.session().previousCMD()!=null)
+        &&(CMParms.combine(mob.session().previousCMD(),0).toUpperCase().indexOf(message)<0))
+        {
+            mob.tell("The wand fizzles in an irritating way.");
+            return false;
+        }
+        return true;
+	}
+	
 	public void waveIfAble(MOB mob,
 						   Environmental afftarget,
 						   String message)
@@ -113,6 +126,7 @@ public class WandArchon extends StdWand implements ArchonOnly
                 message=message.trim();
 				if(message.equals("LEVEL ALL UP"))
 				{
+				    if(!safetyCheck(mob,message.toUpperCase())) return;
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
 					int destLevel=CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL);
 					if(destLevel==0) destLevel=30;
@@ -136,6 +150,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 				else
 				if(message.startsWith("LEVEL ")&&message.endsWith(" UP"))
 				{
+                    if(!safetyCheck(mob,message)) return;
 					message=message.substring(6).trim();
 					message=message.substring(0,message.length()-2).trim();
 					int num=1;
@@ -160,6 +175,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 				else
 				if(message.startsWith("LEVEL ")&&message.endsWith(" DOWN"))
 				{
+                    if(!safetyCheck(mob,message)) return;
 					message=message.substring(6).trim();
 					message=message.substring(0,message.length()-4).trim();
 					int num=1;
@@ -184,6 +200,7 @@ public class WandArchon extends StdWand implements ArchonOnly
                 else
                 if(message.equals("RESTORE"))
                 {
+                    if(!safetyCheck(mob,message)) return;
                     mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
                     java.util.Vector diseaseV=CMLib.flags().domainAffects(target,Ability.ACODE_DISEASE);
                     if(diseaseV.size()>0){ Ability A=CMClass.getAbility("Prayer_CureDisease"); if(A!=null) A.invoke(mob,target,true,0);}
@@ -200,6 +217,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 				else
 				if(message.equals("REFRESH"))
 				{
+                    if(!safetyCheck(mob,message)) return;
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
                     Ability bleed=target.fetchEffect("Bleeding"); if(bleed!=null){ bleed.unInvoke(); target.delEffect(bleed);}
 					target.recoverMaxState();
@@ -210,6 +228,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 				else
 				if(message.equals("BLAST"))
 				{
+                    if(!safetyCheck(mob,message)) return;
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" zaps <T-NAME> with unworldly energy.");
 					target.curState().setHitPoints(1);
 					target.curState().setMana(1);
@@ -219,6 +238,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 				else
 				if(message.equals("BURN"))
 				{
+                    if(!safetyCheck(mob,message)) return;
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" wielded by <S-NAME> shoots forth magical green flames at <T-NAME>.");
 					int flameDamage = (int) Math.round( Math.random() * 6 );
 					flameDamage *= 3;

@@ -7153,7 +7153,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if((newTarget!=null)&&(newTarget instanceof MOB))
                 {
                     Vector V=CMParms.parse(s);
-                    ((MOB)newTarget).doCommand(V);
+                    ((MOB)newTarget).doCommand(V,Command.METAFLAG_MPFORCED);
                 }
                 break;
             }
@@ -7629,7 +7629,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 {
                     Vector V=CMParms.parse(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s));
                     if(V.size()>0)
-                        monster.doCommand(V);
+                        monster.doCommand(V,Command.METAFLAG_MPFORCED);
                 }
                 break;
             }

@@ -81,7 +81,7 @@ public class AreaXML extends StdWebMacro
 		V.addElement(pickedA);
 		Command C=CMClass.getCommand("Export");
 		if(C==null) return null;
-		try{if(!C.execute(mob,V)) return null;}catch(Exception e){return null;}
+		try{if(!C.execute(mob,V,0)) return null;}catch(Exception e){return null;}
 		if((V.size()==0)||(!(V.firstElement() instanceof String))) return null;
 		return ((String)V.firstElement()).getBytes();
     }

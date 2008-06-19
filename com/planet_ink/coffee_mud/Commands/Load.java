@@ -36,7 +36,7 @@ public class Load extends StdCommand
 
 	private String[] access={"LOAD"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String list="RESOURCE, FACTION, "+CMParms.toStringList(CMClass.OBJECT_DESCS);

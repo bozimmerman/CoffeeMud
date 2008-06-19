@@ -36,7 +36,7 @@ public class Report extends BaseAbleLister
 
 	private String[] access={"REPORT"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)
@@ -54,7 +54,7 @@ public class Report extends BaseAbleLister
 			   buf.append(", and need "+mob.getExpNeededLevel()+" to level");
 			buf.append(".\"");
 			Command C=CMClass.getCommand("Say");
-			if(C!=null) C.execute(mob,CMParms.parse(buf.toString()));
+			if(C!=null) C.execute(mob,CMParms.parse(buf.toString()),metaFlags);
 		}
 		else
 		{
@@ -66,7 +66,7 @@ public class Report extends BaseAbleLister
                 
                 StringBuffer aff=new StringBuffer("\n\r^!I am affected by:^? ");
                 Command C=CMClass.getCommand("Affect");
-                if(C!=null) C.execute(mob,CMParms.makeVector(aff));
+                if(C!=null) C.execute(mob,CMParms.makeVector(aff),metaFlags);
                 say.append(aff.toString());
             }
 			if("STATS".startsWith(s)||(s.equalsIgnoreCase("ALL")))

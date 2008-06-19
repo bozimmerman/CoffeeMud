@@ -43,14 +43,14 @@ public class Run extends Go
 	{
 		return super.actionsCost(mob, cmds) / 4.0;
 	}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 	throws java.io.IOException
 	{
 		if(mob==null)
-			return super.execute(mob, commands);
+			return super.execute(mob, commands,metaFlags);
 		boolean wasSet = CMath.bset(mob.getBitmap(),MOB.ATT_AUTORUN);
 		mob.setBitmap(mob.getBitmap() | MOB.ATT_AUTORUN);
-		boolean returnValue = super.execute(mob, commands);
+		boolean returnValue = super.execute(mob, commands,metaFlags);
 		if(!wasSet)
 			mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTORUN));
 		return returnValue;

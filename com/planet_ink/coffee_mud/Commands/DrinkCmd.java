@@ -36,7 +36,7 @@ public class DrinkCmd extends StdCommand
 
 	private String[] access={"DRINK","DR","DRI"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if((commands.size()<2)&&(!(mob.location() instanceof Drink)))

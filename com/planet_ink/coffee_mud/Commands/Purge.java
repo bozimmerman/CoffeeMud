@@ -146,7 +146,7 @@ public class Purge extends BaseItemParser
 	}
 
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String commandType="";
@@ -173,7 +173,7 @@ public class Purge extends BaseItemParser
 			if((thang!=null)&&(thang instanceof Item))
 			{
 				commands.insertElementAt("ITEM",1);
-				execute(mob,commands);
+				execute(mob,commands,metaFlags);
 			}
 			else
 			if((thang!=null)&&(thang instanceof MOB))
@@ -185,7 +185,7 @@ public class Purge extends BaseItemParser
 					mob.tell(thang.name()+" is a player!");
 					return false;
 				}
-				execute(mob,commands);
+				execute(mob,commands,metaFlags);
 			}
 			else
 			{

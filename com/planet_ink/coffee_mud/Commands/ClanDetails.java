@@ -36,7 +36,7 @@ public class ClanDetails extends BaseClanner
 
 	private String[] access={"CLANDETAILS","CLAN"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String qual=CMParms.combine(commands,1).toUpperCase();

@@ -112,7 +112,7 @@ public class Qualify extends BaseAbleLister
 		return msg;
 	}
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");

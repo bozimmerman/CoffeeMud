@@ -216,6 +216,7 @@ public class Archon_Record extends ArchonSkill
 		public void startBeingSnoopedBy(Session S){}
 		public void stopBeingSnoopedBy(Session S){}
 		public boolean amBeingSnoopedBy(Session S){return false;}
+        public int snoopSuspension(int x){return 0;}
 		
 		public void cmdExit(MOB mob, Vector commands)
 			throws Exception{}

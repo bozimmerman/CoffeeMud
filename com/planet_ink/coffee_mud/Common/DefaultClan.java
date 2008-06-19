@@ -1261,7 +1261,7 @@ public class DefaultClan implements Clan
                                             mob.setLocation(CMLib.map().getRandomRoom());
                                     }
                                     Vector V=CMParms.parse(CV.matter);
-                                    mob.doCommand(V);
+                                    mob.doCommand(V,Command.METAFLAG_FORCED);
                                     mob.destroy();
                                 }
                             }

@@ -357,7 +357,7 @@ public class Mood extends StdAbility
 						if((M!=null)
 						&&(lastOne!=M))
 						{
-							msg.source().doCommand(CMParms.makeVector("HANDSHAKE",M.Name()));
+							msg.source().doCommand(CMParms.makeVector("HANDSHAKE",M.Name()),Command.METAFLAG_FORCED);
 							lastOne=M;
 						}
 						switch(CMLib.dice().roll(1,5,0))
@@ -373,15 +373,15 @@ public class Mood extends StdAbility
 							if(msg.source().charStats().getStat(CharStats.STAT_GENDER)=='F')
 							{
 								if(M!=null)
-									msg.source().doCommand(CMParms.makeVector("CURTSEY",M.Name()));
+									msg.source().doCommand(CMParms.makeVector("CURTSEY",M.Name()),Command.METAFLAG_FORCED);
 								else
-									msg.source().doCommand(CMParms.makeVector("CURTSEY"));
+									msg.source().doCommand(CMParms.makeVector("CURTSEY"),Command.METAFLAG_FORCED);
 							}
 							else
 							if(M!=null)
-								msg.source().doCommand(CMParms.makeVector("BOW",M.Name()));
+								msg.source().doCommand(CMParms.makeVector("BOW",M.Name()),Command.METAFLAG_FORCED);
 							else
-								msg.source().doCommand(CMParms.makeVector("BOW"));
+								msg.source().doCommand(CMParms.makeVector("BOW"),Command.METAFLAG_FORCED);
 							break;
 						}
 						switch(CMLib.dice().roll(1,5,0))
@@ -400,7 +400,7 @@ public class Mood extends StdAbility
 						if((M!=null)
 						&&(lastOne!=M))
 						{
-							msg.source().doCommand(CMParms.makeVector("SMILE",M.Name()));
+							msg.source().doCommand(CMParms.makeVector("SMILE",M.Name()),Command.METAFLAG_FORCED);
 							lastOne=M;
 						}
 						switch(CMLib.dice().roll(1,7,0))
@@ -420,7 +420,7 @@ public class Mood extends StdAbility
 						if((M!=null)
 						&&(lastOne!=M))
 						{
-							msg.source().doCommand(CMParms.makeVector("CRY",M.Name()));
+							msg.source().doCommand(CMParms.makeVector("CRY",M.Name()),Command.METAFLAG_FORCED);
 							lastOne=M;
 						}
 						switch(CMLib.dice().roll(1,10,0))
@@ -450,9 +450,9 @@ public class Mood extends StdAbility
 						case 7: changeAllSays(msg,"angrily say(s)"); break;
 						case 8:
                             if(M!=null)
-								msg.source().doCommand(CMParms.makeVector("GRUMBLE",M.Name()));
+								msg.source().doCommand(CMParms.makeVector("GRUMBLE",M.Name()),Command.METAFLAG_FORCED);
 							else
-								msg.source().doCommand(CMParms.makeVector("GRUMBLE"));
+								msg.source().doCommand(CMParms.makeVector("GRUMBLE"),Command.METAFLAG_FORCED);
 							break;
 						default:
 							break;
@@ -505,9 +505,9 @@ public class Mood extends StdAbility
 						else
 						{
                             if(M!=null)
-								msg.source().doCommand(CMParms.makeVector("WHAP",M.Name()));
+								msg.source().doCommand(CMParms.makeVector("WHAP",M.Name()),Command.METAFLAG_FORCED);
 							else
-								msg.source().doCommand(CMParms.makeVector("WHAP"));
+								msg.source().doCommand(CMParms.makeVector("WHAP"),Command.METAFLAG_FORCED);
 						}
 						if((M!=null)
 						&&(CMLib.dice().roll(1,10,0)==1)
@@ -522,7 +522,7 @@ public class Mood extends StdAbility
 						if((M!=null)
 						&&(lastOne!=M))
 						{
-							msg.source().doCommand(CMParms.makeVector("FLEX",M.Name()));
+							msg.source().doCommand(CMParms.makeVector("FLEX",M.Name()),Command.METAFLAG_FORCED);
 							lastOne=M;
 						}
 						switch(CMLib.dice().roll(1,5,0))
@@ -540,7 +540,7 @@ public class Mood extends StdAbility
 						if((M!=null)
 						&&(lastOne!=M))
 						{
-							msg.source().doCommand(CMParms.makeVector("GRUMBLE"));
+							msg.source().doCommand(CMParms.makeVector("GRUMBLE"),Command.METAFLAG_FORCED);
 							lastOne=M;
 						}
 						switch(CMLib.dice().roll(1,2,0))
@@ -557,7 +557,7 @@ public class Mood extends StdAbility
 						if((M!=null)
 						&&(lastOne!=M))
 						{
-							msg.source().doCommand(CMParms.makeVector("EXCITED",M.Name()));
+							msg.source().doCommand(CMParms.makeVector("EXCITED",M.Name()),Command.METAFLAG_FORCED);
 							lastOne=M;
 						}
 						switch(CMLib.dice().roll(1,5,0))
@@ -568,9 +568,9 @@ public class Mood extends StdAbility
 						case 4: changeAllSays(msg,"excitedly say(s)"); break;
 						case 5:
 							if(M!=null)
-								msg.source().doCommand(CMParms.makeVector("FIDGET",M.Name()));
+								msg.source().doCommand(CMParms.makeVector("FIDGET",M.Name()),Command.METAFLAG_FORCED);
 							else
-								msg.source().doCommand(CMParms.makeVector("FIDGET"));
+								msg.source().doCommand(CMParms.makeVector("FIDGET"),Command.METAFLAG_FORCED);
 							break;
 						default:
 							break;
@@ -587,7 +587,7 @@ public class Mood extends StdAbility
 						if((M!=null)
 						&&(lastOne!=M))
 						{
-							msg.source().doCommand(CMParms.makeVector("COWER",M.Name()));
+							msg.source().doCommand(CMParms.makeVector("COWER",M.Name()),Command.METAFLAG_FORCED);
 							lastOne=M;
 						}
 						switch(CMLib.dice().roll(1,6,0))
@@ -599,9 +599,9 @@ public class Mood extends StdAbility
 						case 5: changeAllSays(msg,"barely say(s)"); break;
 						case 6:
 							if(M!=null)
-								msg.source().doCommand(CMParms.makeVector("WINCE",M.Name()));
+								msg.source().doCommand(CMParms.makeVector("WINCE",M.Name()),Command.METAFLAG_FORCED);
 							else
-								msg.source().doCommand(CMParms.makeVector("WINCE"));
+								msg.source().doCommand(CMParms.makeVector("WINCE"),Command.METAFLAG_FORCED);
 							break;
 						default:
 							break;
@@ -613,7 +613,7 @@ public class Mood extends StdAbility
 						if((M!=null)
 						&&(lastOne!=M))
 						{
-							msg.source().doCommand(CMParms.makeVector("SIGH",M.Name()));
+							msg.source().doCommand(CMParms.makeVector("SIGH",M.Name()),Command.METAFLAG_FORCED);
 							lastOne=M;
 						}
 						switch(CMLib.dice().roll(1,5,0))
@@ -683,7 +683,7 @@ public class Mood extends StdAbility
 					default:
 						break;
 					}
-					((MOB)affected).doCommand(CMParms.makeVector(CHANNELS[channelC],"*I* just killed "+msg.source().Name()+addOn));
+					((MOB)affected).doCommand(CMParms.makeVector(CHANNELS[channelC],"*I* just killed "+msg.source().Name()+addOn),Command.METAFLAG_FORCED);
 				}
 			}
 			break;

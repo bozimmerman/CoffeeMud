@@ -37,7 +37,7 @@ public class Order extends StdCommand
 	private String[] access={"ORDER"};
 	public String[] getAccessWords(){return access;}
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()<3)
@@ -162,7 +162,7 @@ public class Order extends StdCommand
 		for(int v=0;v<doV.size();v++)
 		{
 			target=(MOB)doV.elementAt(v);
-			target.enqueCommand((Vector)commands.clone(),0);
+			target.enqueCommand((Vector)commands.clone(),metaFlags|Command.METAFLAG_ORDER,0);
 		}
 		return false;
 	}

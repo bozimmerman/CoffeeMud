@@ -39,7 +39,7 @@ public class AutoGuard extends StdCommand
 	private String[] access={"AUTOGUARD","GUARD"};
 	public String[] getAccessWords(){return access;}
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if((!CMath.bset(mob.getBitmap(),MOB.ATT_AUTOGUARD))

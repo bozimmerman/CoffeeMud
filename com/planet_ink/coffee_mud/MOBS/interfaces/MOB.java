@@ -86,11 +86,11 @@ public interface MOB extends Environmental, Rider
 	/** Primary mob communication */
 	public void tell(MOB source, Environmental target, Environmental tool, String msg);
 	public void tell(String msg);
-	public void enqueCommand(Vector commands, double tickDelay);
-    public void prequeCommand(Vector commands, double tickDelay);
+	public void enqueCommand(Vector commands, int metaFlags, double tickDelay);
+    public void prequeCommand(Vector commands, int metaFlags, double tickDelay);
 	public boolean dequeCommand();
     public int commandQueSize();
-	public void doCommand(Vector commands);
+	public void doCommand(Vector commands, int metaFlags);
     public double actions();
     public void setActions(double remain);
 

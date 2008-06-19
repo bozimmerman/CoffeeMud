@@ -36,7 +36,7 @@ public class Close extends StdCommand
 
 	private String[] access={"CLOSE","CLOS","CLO","CL"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String whatToClose=CMParms.combine(commands,1);

@@ -36,7 +36,7 @@ public class ClanApply extends BaseClanner
 
 	private String[] access={"CLANAPPLY"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		commands.setElementAt(getAccessWords()[0],0);

@@ -465,7 +465,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
             if(status!=null)status[0]=Tickable.STATUS_MISC7+15;
 			if(!nextExit.isOpen())
 			{
-				mob.doCommand(CMParms.parse("OPEN "+Directions.getDirectionName(direction)));
+				mob.doCommand(CMParms.parse("OPEN "+Directions.getDirectionName(direction)),Command.METAFLAG_FORCED);
 				if(nextExit.isOpen())
 					reclose=true;
 			}
@@ -544,7 +544,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			&&(opExit.isOpen()))
 			{
                 if(status!=null)status[0]=Tickable.STATUS_MISC7+22;
-				mob.doCommand(CMParms.parse("CLOSE "+Directions.getDirectionName(opDirection)));
+				mob.doCommand(CMParms.parse("CLOSE "+Directions.getDirectionName(opDirection)),Command.METAFLAG_FORCED);
 				if((opExit.hasALock())&&(relock))
 				{
                     if(status!=null)status[0]=Tickable.STATUS_MISC7+23;
@@ -627,7 +627,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				V.addElement(new Boolean(flee));
 				V.addElement(new Boolean(nolook));
 				V.addElement(new Boolean(noriders));
-				return C.execute(mob,V);
+				return C.execute(mob,V,Command.METAFLAG_FORCED);
 			}
 		}
 		catch(Exception e)

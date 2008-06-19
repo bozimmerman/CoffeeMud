@@ -60,7 +60,7 @@ public class Dance_Square extends Dance
                 {
                     Object O=CMLib.english().findCommand(M,CMParms.parse(cmd));
                     if((O!=null)&&((!(O instanceof Command))||(((Command)O).canBeOrdered())))
-						M.enqueCommand(CMParms.parse(cmd),0);
+						M.enqueCommand(CMParms.parse(cmd),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,0);
                 }
 			}
 		}

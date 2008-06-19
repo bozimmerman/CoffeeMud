@@ -32,7 +32,7 @@ import java.util.*;
 */
 public interface CommonCommands extends CMLibrary
 {
-    public boolean doStandardCommand(MOB mob, String command, Vector parms);
+    public boolean forceStandardCommand(MOB mob, String command, Vector parms);
     public StringBuffer getScore(MOB mob);
     public StringBuffer getEquipment(MOB viewer, MOB mob);
     public StringBuffer getInventory(MOB viewer, MOB mob);

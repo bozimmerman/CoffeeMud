@@ -67,7 +67,7 @@ public class Announce extends StdCommand
 	  	S.stdPrintln(Message.toString());
 	}
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
         

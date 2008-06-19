@@ -1461,7 +1461,7 @@ public class Quests extends StdLibrary implements QuestManager
         if((M!=null)&&(newMobs.contains(M)))
         {
             Command C=CMClass.getCommand("Modify");
-            if(C!=null) C.execute(mob,CMParms.makeVector("MODIFY",M));
+            if(C!=null) C.execute(mob,CMParms.makeVector("MODIFY",M),0);
             // modify it!
         }
         String newValue=(M!=null)?CMLib.coffeeMaker().getMobXML(M).toString():showValue;
@@ -1529,7 +1529,7 @@ public class Quests extends StdLibrary implements QuestManager
         if((I!=null)&&(newItems.contains(I)))
         {
             Command C=CMClass.getCommand("Modify");
-            if(C!=null) C.execute(mob,CMParms.makeVector("MODIFY",I));
+            if(C!=null) C.execute(mob,CMParms.makeVector("MODIFY",I),0);
             // modify it!
         }
         String newValue=(I!=null)?CMLib.coffeeMaker().getItemXML(I).toString():showValue;

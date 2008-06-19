@@ -38,6 +38,7 @@ import java.net.*;
 public class DefaultSession extends Thread implements Session
 {
 	protected int status=0;
+	protected int snoopSuspensionStack=0;
     protected Socket sock;
     protected BufferedReader in;
     protected PrintWriter out;
@@ -326,7 +327,16 @@ public class DefaultSession extends Thread implements Session
 		if(S==null) return snoops.size()==0;
 		return(snoops.contains(S));
 	}
+    public synchronized int snoopSuspension(int change){
+        snoopSuspensionStack+=change;
+        return snoopSuspensionStack;
+    }
 
+	private int metaFlags() {
+	    return ((snoops.size()>0)?Command.METAFLAG_SNOOPED:0)
+	           |(((mob!=null)&&(mob.soulMate()!=null))?Command.METAFLAG_POSSESSED:0);
+	}
+	
 	public void setPreviousCmd(Vector cmds)
 	{
 		if(cmds==null) return;
@@ -408,7 +418,7 @@ public class DefaultSession extends Thread implements Session
 		try
 		{
 			try{
-				if(snoops.size()>0)
+				if((snoops.size()>0)&&(snoopSuspensionStack<=0))
                 {
                     String msgColored=CMStrings.replaceAll(msg,"\n\r",CMLib.coffeeFilter().colorOnlyFilter("\n\r^Z"+((mob==null)?"?":mob.Name())+":^N ",this));
 					for(int s=0;s<snoops.size();s++)
@@ -840,7 +850,7 @@ public class DefaultSession extends Thread implements Session
                         killFlag=true;
                         out.write("\n\n\033[1z<Executing Shutdown...\n\n");
                         M.setSession(this);
-                        if(C!=null) C.execute(M,cmd);
+                        if(C!=null) C.execute(M,cmd,0);
                     }
                 }
             }
@@ -1496,7 +1506,7 @@ public class DefaultSession extends Thread implements Session
                                     Vector MORE_CMDS=CMLib.lang().preCommandParser(CMDS);
                                     for(int m=0;m<MORE_CMDS.size();m++)
                                     	if(mob!=null)
-		    								mob.enqueCommand((Vector)MORE_CMDS.elementAt(m),0);
+		    								mob.enqueCommand((Vector)MORE_CMDS.elementAt(m),metaFlags(),0);
     								lastStop=System.currentTimeMillis();
                                 }
 							}

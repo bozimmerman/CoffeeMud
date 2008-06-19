@@ -36,7 +36,7 @@ public class Deities extends StdCommand
 
 	private String[] access={"DEITIES","GODS"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String str=CMParms.combine(commands,1).toUpperCase();

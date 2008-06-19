@@ -65,7 +65,7 @@ public class ATopics extends StdCommand
 	}
 
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Properties arcHelpFile=CMLib.help().getArcHelpFile();

@@ -36,7 +36,7 @@ public class Transfer extends At
 
 	private String[] access={"TRANSFER"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Room room=null;

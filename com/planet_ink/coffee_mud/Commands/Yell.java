@@ -36,11 +36,11 @@ public class Yell extends StdCommand
 
 	private String[] access={"YELL","Y"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Command C=CMClass.getCommand("Say");
-		if(C!=null) C.execute(mob,CMParms.parse(CMParms.combine(commands,0).toUpperCase()));
+		if(C!=null) C.execute(mob,CMParms.parse(CMParms.combine(commands,0).toUpperCase()),metaFlags);
 		return false;
 	}
     public double combatActionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}

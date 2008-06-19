@@ -36,7 +36,7 @@ public class ANSI extends StdCommand
 
 	private String[] access={"ANSI","COLOR","COLOUR"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(!mob.isMonster())

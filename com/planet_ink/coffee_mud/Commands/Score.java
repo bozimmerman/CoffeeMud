@@ -259,7 +259,7 @@ public class Score extends Affect
 		return msg;
 	}
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		StringBuffer msg=getScore(mob);

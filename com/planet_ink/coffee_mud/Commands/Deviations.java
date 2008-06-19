@@ -298,7 +298,7 @@ public class Deviations extends StdCommand
 		return str;
 	}
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		mob.tell(deviations(mob,CMParms.combine(commands,1)).toString());

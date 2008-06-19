@@ -1434,7 +1434,7 @@ public class List extends StdCommand
 		}
 	}
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector V=new Vector();

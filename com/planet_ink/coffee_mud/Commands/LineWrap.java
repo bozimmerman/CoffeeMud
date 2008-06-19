@@ -37,7 +37,7 @@ public class LineWrap extends StdCommand
 	private String[] access={"LINEWRAP"};
 	public String[] getAccessWords(){return access;}
 	
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 	    if((mob==null)||(mob.playerStats()==null))

@@ -36,7 +36,7 @@ public class ClanVote extends BaseClanner
 
 	private String[] access={"CLANVOTE"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");
@@ -195,7 +195,7 @@ public class ClanVote extends BaseClanner
 										mob2.setLocation(CMLib.map().getRandomRoom());
 								}
 								Vector V=CMParms.parse(CV.matter);
-								mob2.doCommand(V);
+								mob2.doCommand(V,metaFlags|Command.METAFLAG_FORCED);
                                 mob2.destroy();
 							}
 						}

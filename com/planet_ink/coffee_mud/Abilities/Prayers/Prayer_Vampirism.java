@@ -171,7 +171,7 @@ public class Prayer_Vampirism extends Prayer
 					CMLib.commands().postGet(M,null,(Item)D,false);
 					if(M.isMine(D))
 					{
-						M.doCommand(CMParms.parse("DRINK "+D.Name()));
+						M.doCommand(CMParms.parse("DRINK "+D.Name()),Command.METAFLAG_FORCED);
 						if(M.isMine(D))
 							((Item)D).destroy();
 					}

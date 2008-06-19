@@ -623,7 +623,7 @@ public class MudChat extends StdBehavior
 				{
 					que.removeElementAt(0);
 					responseQue.removeElementAt(t);
-					((MOB)ticking).doCommand(que);
+					((MOB)ticking).doCommand(que,Command.METAFLAG_FORCED);
 					lastReactedTo=null;
 					// you've done one, so get out before doing another!
 					break;

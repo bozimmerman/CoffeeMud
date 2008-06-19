@@ -36,7 +36,7 @@ public class Ver extends StdCommand
 
 	private String[] access={"VERSION","VER"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		mob.tell("CoffeeMud v"+CMProps.getVar(CMProps.SYSTEM_MUDVER));

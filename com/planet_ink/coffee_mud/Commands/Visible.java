@@ -62,7 +62,7 @@ public class Visible extends StdCommand
         return offenders;
     }
 
-    public boolean execute(MOB mob, Vector commands)
+    public boolean execute(MOB mob, Vector commands, int metaFlags)
         throws java.io.IOException
     {
         String str="Prop_WizInvis";
@@ -74,7 +74,7 @@ public class Visible extends StdCommand
             if((C!=null)&&(C.securityCheck(mob)))
             {
                 didSomething=true;
-                C.execute(mob,CMParms.makeVector("WIZINV","OFF"));
+                C.execute(mob,CMParms.makeVector("WIZINV","OFF"),metaFlags);
             }
         }
         Vector V=returnOffensiveAffects(mob);

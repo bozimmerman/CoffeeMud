@@ -37,10 +37,10 @@ public class Down extends Go
 	private String[] access={"DOWN","D"};
 	public String[] getAccessWords(){return access;}
 	
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		standIfNecessary(mob);
+		standIfNecessary(mob,metaFlags);
 		if((CMLib.flags().isSitting(mob))||(CMLib.flags().isSleeping(mob)))
 		{
 			mob.tell("You need to stand up first.");

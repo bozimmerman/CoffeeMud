@@ -43,7 +43,7 @@ public class IMC2 extends StdCommand
 			mob.tell("Try IMC2 LIST, IMC2 INFO [MUD], IMC2 LOCATE, or IMC2 CHANNELS.");
 	}
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(!(CMLib.intermud().imc2online()))

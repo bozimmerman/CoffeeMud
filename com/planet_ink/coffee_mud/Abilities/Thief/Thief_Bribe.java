@@ -122,7 +122,7 @@ public class Thief_Bribe extends ThiefSkill
 			{
 				mob.location().send(mob,msg);
                 mob.location().send(mob,msg2);
-				target.doCommand(commands);
+				target.doCommand(commands,Command.METAFLAG_FORCED);
 			}
 			CMLib.beanCounter().addMoney(mob,currency,amountRequired);
 			target.recoverEnvStats();

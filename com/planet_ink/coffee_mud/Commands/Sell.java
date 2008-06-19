@@ -36,7 +36,7 @@ public class Sell extends BaseItemParser
 
 	private String[] access={"SELL"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
         Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Sell what to whom?");

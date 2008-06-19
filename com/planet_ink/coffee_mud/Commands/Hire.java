@@ -36,7 +36,7 @@ public class Hire extends StdCommand
 
 	private String[] access={"HIRE"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String rest=CMParms.combine(commands,1);

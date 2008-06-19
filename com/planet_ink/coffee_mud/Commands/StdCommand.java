@@ -47,14 +47,14 @@ public class StdCommand implements Command
 	private String[] access=null;
 	public String[] getAccessWords(){return access;}
     public void initializeClass(){}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		// accepts the mob executing, and a Vector of Strings as a parm.
 		// the return value is arbitrary, though false is conventional.
 		return false;
 	}
-    public boolean preExecute(MOB mob, Vector commands, int secondsElapsed, double actionsRemaining)
+    public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
         throws java.io.IOException
     {
         return true;

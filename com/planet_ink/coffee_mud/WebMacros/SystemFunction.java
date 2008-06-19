@@ -48,7 +48,7 @@ public class SystemFunction extends StdWebMacro
 				MOB M=((MOB)CMClass.sampleMOB().copyOf());
 				Command C=CMClass.getCommand("Announce");
 				try{
-					C.execute(M,CMParms.parse("all "+s.trim()));
+					C.execute(M,CMParms.parse("all "+s.trim()),0);
 				}catch(Exception e){}
 			}
 		}

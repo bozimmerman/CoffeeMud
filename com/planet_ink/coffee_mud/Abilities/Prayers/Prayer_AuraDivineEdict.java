@@ -96,7 +96,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 			noRecurse=true;
 			String oldLiege=((MOB)msg.target()).getLiegeID();
 			((MOB)msg.target()).setLiegeID(msg.source().Name());
-			msg.source().doCommand(V);
+			msg.source().doCommand(V,Command.METAFLAG_FORCED);
 			((MOB)msg.target()).setLiegeID(oldLiege);
 			noRecurse=false;
 			return false;

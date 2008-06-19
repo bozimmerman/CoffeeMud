@@ -36,7 +36,7 @@ public class Sit extends StdCommand
 
 	private String[] access={"SIT","REST","R"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(CMLib.flags().isSitting(mob))
@@ -64,7 +64,7 @@ public class Sit extends StdCommand
 			if(E instanceof MOB)
 			{
 				Command C=CMClass.getCommand("Mount");
-				if(C!=null) return C.execute(mob,commands);
+				if(C!=null) return C.execute(mob,commands,metaFlags);
 			}
 		}
 		String mountStr=null;

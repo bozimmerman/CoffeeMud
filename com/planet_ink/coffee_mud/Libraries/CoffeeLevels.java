@@ -293,7 +293,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
         {
         	Command C=CMClass.getCommand("GTell");
         	try{
-        		if(C!=null) C.execute(mob,CMParms.makeVector("GTELL",",<S-HAS-HAVE> gained a level."));
+        		if(C!=null) C.execute(mob,CMParms.makeVector("GTELL",",<S-HAS-HAVE> gained a level."),Command.METAFLAG_FORCED);
         	}catch(Exception e){}
         }
 		StringBuffer theNews=new StringBuffer("^xYou have L E V E L E D ! ! ! ! ! ^.^N\n\r\n\r"+CMProps.msp("level_gain.wav",60));

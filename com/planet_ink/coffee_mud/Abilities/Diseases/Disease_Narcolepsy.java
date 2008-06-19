@@ -66,7 +66,7 @@ public class Disease_Narcolepsy extends Disease
 			if(!CMLib.flags().isSleeping(mob))
 			{
 				Command C=CMClass.getCommand("Sleep");
-				try{if(C!=null) C.execute(mob,CMParms.parse("Sleep"));}catch(Exception e){}
+				try{if(C!=null) C.execute(mob,CMParms.parse("Sleep"),Command.METAFLAG_FORCED);}catch(Exception e){}
 			}
 			return true;
 		}

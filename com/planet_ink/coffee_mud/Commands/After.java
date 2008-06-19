@@ -41,7 +41,7 @@ public class After extends StdCommand implements Tickable
 
 	private String[] access={"AFTER"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean every=false;
@@ -111,6 +111,7 @@ public class After extends StdCommand implements Tickable
 		V.addElement(new Boolean(every));
 		V.addElement(mob);
 		V.addElement(commands);
+		V.addElement(new Integer(metaFlags));
 		afterCmds.addElement(V);
 		CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
 		mob.tell("Ok.");
@@ -136,6 +137,7 @@ public class After extends StdCommand implements Tickable
 				boolean every=((Boolean)V.elementAt(2)).booleanValue();
 				MOB mob=((MOB)V.elementAt(3));
 				Vector command=(Vector)V.elementAt(4);
+				Integer metaFlag=(Integer)V.elementAt(5);
 				if(every)
 				{
 					V.setElementAt(new Long(System.currentTimeMillis()),0);
@@ -143,7 +145,7 @@ public class After extends StdCommand implements Tickable
 				}
 				else
 					afterCmds.removeElementAt(s);
-				mob.doCommand((Vector)command.clone());
+				mob.doCommand((Vector)command.clone(),metaFlag.intValue());
 			}
 			else
 				s++;

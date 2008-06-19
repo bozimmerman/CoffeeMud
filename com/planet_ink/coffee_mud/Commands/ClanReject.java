@@ -36,7 +36,7 @@ public class ClanReject extends BaseClanner
 
 	private String[] access={"CLANREJECT"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean skipChecks=mob.Name().equals(mob.getClanID());

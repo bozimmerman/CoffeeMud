@@ -1178,7 +1178,7 @@ public class Modify extends BaseGenerics
 		return false;
 	}
 	
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String commandType="";
@@ -1557,14 +1557,14 @@ public class Modify extends BaseGenerics
 				else
 				{
 					commands.insertElementAt("EXIT",1);
-					execute(mob,commands);
+					execute(mob,commands,metaFlags);
 				}
 			}
 			else
 			if(CMLib.socials().fetchSocial(allWord,true)!=null)
 			{
 				commands.insertElementAt("SOCIAL",1);
-				execute(mob,commands);
+				execute(mob,commands,metaFlags);
 			}
 			else
 				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, RACE, CLASS, ABILITY, AREA, EXIT, COMPONENT, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, or ROOM.");

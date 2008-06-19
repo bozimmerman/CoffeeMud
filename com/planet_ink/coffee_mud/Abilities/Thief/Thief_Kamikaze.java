@@ -183,7 +183,7 @@ public class Thief_Kamikaze extends ThiefSkill
 				commands=new Vector();
 				commands.addElement("GO");
 				commands.addElement(s);
-				target.enqueCommand(commands,0);
+				target.enqueCommand(commands,Command.METAFLAG_FORCED,0);
 			}
 		}
 		return success;

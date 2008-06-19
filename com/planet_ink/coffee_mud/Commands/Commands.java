@@ -36,7 +36,7 @@ public class Commands extends StdCommand
 
 	private String[] access={"COMMANDS"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(!mob.isMonster())

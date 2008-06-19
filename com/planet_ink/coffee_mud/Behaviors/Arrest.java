@@ -1897,20 +1897,20 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					mob.setVictim(officer);
 				else
 				if(!CMLib.flags().isAnimalIntelligence(mob))
-					mob.enqueCommand(CMParms.parse("FLEE"),1);
+					mob.enqueCommand(CMParms.parse("FLEE"),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,1);
 			}
 			else
 			if((good||neutral)
 			&&(!CMLib.flags().isAnimalIntelligence(mob)))
 			{
 				mob.makePeace();
-				mob.doCommand(CMParms.parse("SIT"));
+				mob.doCommand(CMParms.parse("SIT"),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER);
 			}
 			else
 			if((CMLib.flags().isAnimalIntelligence(mob))&&(CMLib.dice().rollPercentage()>50))
 			{
 				mob.makePeace();
-				mob.doCommand(CMParms.parse("SIT"));
+				mob.doCommand(CMParms.parse("SIT"),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER);
 			}
 		}
 	}

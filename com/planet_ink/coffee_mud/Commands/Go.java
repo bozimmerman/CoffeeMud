@@ -358,7 +358,7 @@ public class Go extends StdCommand
 
     protected Command stander=null;
 	protected Vector ifneccvec=null;
-	public void standIfNecessary(MOB mob)
+	public void standIfNecessary(MOB mob, int metaFlags)
 		throws java.io.IOException
 	{
 		if((ifneccvec==null)||(ifneccvec.size()!=2))
@@ -369,13 +369,13 @@ public class Go extends StdCommand
 		}
 		if(stander==null) stander=CMClass.getCommand("Stand");
 		if((stander!=null)&&(ifneccvec!=null))
-			stander.execute(mob,ifneccvec);
+			stander.execute(mob,ifneccvec,metaFlags);
 	}
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		standIfNecessary(mob);
+		standIfNecessary(mob,metaFlags);
 		if((commands.size()>3)
 		&&(commands.firstElement() instanceof Integer))
 		{
@@ -425,7 +425,7 @@ public class Go extends StdCommand
 			if(E instanceof Rideable)
 			{
 				Command C=CMClass.getCommand("Enter");
-				return C.execute(mob,commands);
+				return C.execute(mob,commands,metaFlags);
 			}
 			if(E instanceof Exit)
 			{
@@ -476,7 +476,7 @@ public class Go extends StdCommand
 								Vector V=new Vector();
 								V.addElement(doing);
 								V.addElement(Directions.getDirectionName(direction));
-								mob.enqueCommand(V,0);
+								mob.enqueCommand(V,metaFlags,0);
 							}
 						}
 					}

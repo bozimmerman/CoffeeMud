@@ -88,7 +88,7 @@ public class Archon_Wrath extends ArchonSkill
                 {
                 	Command C=CMClass.getCommand("Announce");
                 	try{
-	            		C.execute(mob,CMParms.makeVector("ANNOUNCE",target.name()+"is knocked out of "+target.charStats().hisher()+" shoes!!!"));
+	            		C.execute(mob,CMParms.makeVector("ANNOUNCE",target.name()+"is knocked out of "+target.charStats().hisher()+" shoes!!!"),Command.METAFLAG_FORCED);
                 	}catch(Exception e){}
                 }
 			}

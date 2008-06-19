@@ -36,7 +36,7 @@ public class Open extends BaseItemParser
 
 	private String[] access={"OPEN","OP","O"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String whatToOpen=CMParms.combine(commands,1);

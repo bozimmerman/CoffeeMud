@@ -38,7 +38,7 @@ public class AutoInvoke extends StdCommand
 	private String[] access={"AUTOINVOKE"};
 	public String[] getAccessWords(){return access;}
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 	    Vector abilities=new Vector();

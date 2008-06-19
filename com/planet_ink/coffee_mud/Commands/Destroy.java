@@ -727,7 +727,7 @@ public class Destroy extends BaseItemParser
 	}
 
 	
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if((!CMSecurity.isAllowedStartsWith(mob,"CMD"))
@@ -745,7 +745,7 @@ public class Destroy extends BaseItemParser
 			{
 				Command C=CMClass.getCommand("Kill");
 				commands.insertElementAt("KILL",0);
-				if(C!=null) C.execute(mob,commands);
+				if(C!=null) C.execute(mob,commands,metaFlags);
 				return false;
 			}
 
@@ -1223,7 +1223,7 @@ public class Destroy extends BaseItemParser
 			if((thang!=null)&&(thang instanceof Item))
 			{
 				commands.insertElementAt("ITEM",1);
-				execute(mob,commands);
+				execute(mob,commands,metaFlags);
 			}
 			else
 			if((thang!=null)&&(thang instanceof MOB))
@@ -1232,7 +1232,7 @@ public class Destroy extends BaseItemParser
 					commands.insertElementAt("MOB",1);
 				else
 					commands.insertElementAt("USER",1);
-				execute(mob,commands);
+				execute(mob,commands,metaFlags);
 			}
 			else
 			{
@@ -1258,7 +1258,7 @@ public class Destroy extends BaseItemParser
 					commands.addElement("DESTROY");
 					commands.addElement("ROOM");
 					commands.addElement(theRoom.roomID());
-					execute(mob,commands);
+					execute(mob,commands,metaFlags);
 				}
 				else
 				{
@@ -1268,19 +1268,19 @@ public class Destroy extends BaseItemParser
 						commands.addElement("DESTROY");
 						commands.addElement("ROOM");
 						commands.addElement(allWord);
-						execute(mob,commands);
+						execute(mob,commands,metaFlags);
 
 						commands=new Vector();
 						commands.addElement("DESTROY");
 						commands.addElement("EXIT");
 						commands.addElement(allWord);
-						execute(mob,commands);
+						execute(mob,commands,metaFlags);
 					}
 					else
 					if(CMLib.socials().fetchSocial(allWord,true)!=null)
 					{
 						commands.insertElementAt("SOCIAL",1);
-						execute(mob,commands);
+						execute(mob,commands,metaFlags);
 					}
 					else
 					mob.tell(

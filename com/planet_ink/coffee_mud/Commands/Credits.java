@@ -36,7 +36,7 @@ public class Credits extends StdCommand
 
 	private String[] access={"CREDITS"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		StringBuffer credits=new CMFile(Resources.buildResourcePath("text")+"credits.txt",null,true).text();

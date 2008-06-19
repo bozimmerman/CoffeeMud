@@ -303,7 +303,7 @@ public class CombatAbilities extends StdBehavior
             }
             if(wieldMe!=null)
             {
-                CMLib.commands().doStandardCommand(mob,"WIELD",CMParms.makeVector("WIELD",wieldMe.Name()));
+                CMLib.commands().forceStandardCommand(mob,"WIELD",CMParms.makeVector("WIELD",wieldMe.Name()));
                 if(mob.fetchWieldedItem()==null) chkDown=10;
             }
         }
@@ -496,7 +496,7 @@ public class CombatAbilities extends StdBehavior
 				Vector V=new Vector();
 				V.addElement("hold");
 				V.addElement(backupWand.name());
-				mob.doCommand(V);
+				mob.doCommand(V,Command.METAFLAG_FORCED);
 			}
 			else
 			if(myWand!=null)
@@ -523,7 +523,7 @@ public class CombatAbilities extends StdBehavior
 						V.addElement("sayto");
 						V.addElement(victim.name());
 						V.addElement(((Wand)myWand).magicWord());
-						mob.doCommand(V);
+						mob.doCommand(V,Command.METAFLAG_FORCED);
 					}
 				}
 			}

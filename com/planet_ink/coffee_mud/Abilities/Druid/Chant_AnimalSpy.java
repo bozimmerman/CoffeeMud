@@ -116,7 +116,7 @@ public class Chant_AnimalSpy extends Chant
 				{
 					String msg2=msg.sourceMessage().substring(start+1,end).trim();
 					if(msg2.length()>0)
-						spy.enqueCommand(CMParms.parse(msg2.trim()),0);
+						spy.enqueCommand(CMParms.parse(msg2.trim()),Command.METAFLAG_FORCED,0);
 				}
 			}
 		}

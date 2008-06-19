@@ -36,7 +36,7 @@ public class Reply extends StdCommand
 
 	private String[] access={"REPLY","REP","RE"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob==null) return false;
@@ -82,7 +82,7 @@ public class Reply extends StdCommand
 				if((C!=null)&&(C.securityCheck(mob)))
 				{
 					commands.setElementAt("Yell",0);
-					C.execute(mob, commands);
+					C.execute(mob, commands,metaFlags);
 				}
 				break;
 			}

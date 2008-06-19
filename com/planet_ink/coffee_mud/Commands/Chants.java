@@ -36,7 +36,7 @@ public class Chants extends BaseAbleLister
 
 	private String[] access={"CHANTS"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");

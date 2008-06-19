@@ -63,7 +63,7 @@ public class Consider extends StdCommand
 	}
 
 
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Room R=mob.location();

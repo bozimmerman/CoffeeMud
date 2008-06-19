@@ -36,7 +36,7 @@ public class Songs extends BaseAbleLister
 
 	private String[] access={"SONGS"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");

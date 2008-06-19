@@ -106,7 +106,7 @@ public class Disease_Depression extends Disease
         &&((CMLib.dice().rollPercentage()==1)||(CMLib.flags().isSitting(mob))))
         {
 		    Command C=CMClass.getCommand("Sleep");
-		    try{C.execute(mob,CMParms.makeVector("Sleep"));}catch(Exception e){}
+		    try{C.execute(mob,CMParms.makeVector("Sleep"),Command.METAFLAG_FORCED);}catch(Exception e){}
         }
 		if(mob.curState().getFatigue()<CharState.FATIGUED_MILLIS)
 			mob.curState().setFatigue(CharState.FATIGUED_MILLIS);

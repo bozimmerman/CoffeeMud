@@ -720,7 +720,7 @@ public class Create extends BaseGenerics
 		return false;
 	}
 	
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String commandType="";
@@ -823,7 +823,7 @@ public class Create extends BaseGenerics
                 mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
             }
             else
-                mob.doCommand(CMParms.makeVector("MODIFY","HOLIDAY",named));
+                mob.doCommand(CMParms.makeVector("MODIFY","HOLIDAY",named),metaFlags);
         }
         else
         if(commandType.equals("FACTION"))
@@ -962,7 +962,7 @@ public class Create extends BaseGenerics
 			||(CMLib.catalog().getCatalogItemIndex(allWord)>=0))
 			{
 				commands.insertElementAt("ITEM",1);
-				execute(mob,commands);
+				execute(mob,commands,metaFlags);
 			}
 			else
 			{
@@ -971,7 +971,7 @@ public class Create extends BaseGenerics
 				||(CMLib.catalog().getCatalogMobIndex(allWord)>=0))
 				{
 					commands.insertElementAt("MOB",1);
-					execute(mob,commands);
+					execute(mob,commands,metaFlags);
 				}
 				else
 				if((lastWord!=null)&&(Directions.getGoodDirectionCode(lastWord)>=0))
@@ -991,7 +991,7 @@ public class Create extends BaseGenerics
 						commands.addElement("ROOM");
 						commands.addElement(lastWord);
 						commands.addElement(allWord);
-						execute(mob,commands);
+						execute(mob,commands,metaFlags);
 					}
 					else
 					if((E!=null)&&(E instanceof Exit))
@@ -1001,7 +1001,7 @@ public class Create extends BaseGenerics
 						commands.addElement("EXIT");
 						commands.addElement(lastWord);
 						commands.addElement(allWord);
-						execute(mob,commands);
+						execute(mob,commands,metaFlags);
 					}
 					else
 					if((E!=null)&&(E instanceof Area))
@@ -1011,7 +1011,7 @@ public class Create extends BaseGenerics
 						commands.addElement("AREA");
 						commands.addElement(lastWord);
 						commands.addElement(allWord);
-						execute(mob,commands);
+						execute(mob,commands,metaFlags);
 					}
 					else
 						mob.tell("\n\rYou cannot create a '"+commandType+"'. However, you might try an EXIT, ITEM, QUEST, FACTION, COMPONENT, HOLIDAY, CLAN, MOB, RACE, ABILITY, CLASS, POLL, USER, or ROOM.");

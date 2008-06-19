@@ -36,7 +36,7 @@ public class FactionList extends StdCommand
 
 	private String[] access={"FACTIONS","FAC"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("\n\r^HFaction Standings:^?^N\n\r");
