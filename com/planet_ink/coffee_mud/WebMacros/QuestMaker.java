@@ -770,7 +770,7 @@ public class QuestMaker extends StdWebMacro
                     httpReq.addRequestParameters("QMPAGEERRORS","Unable to create your quest.  One of that name already exists!");
                     return "";
                 }
-                Log.sysOut("QuestMgr",name+" created quest '"+Q.name()+"'");
+                Log.sysOut("QuestMgr",M.Name()+" created quest '"+Q.name()+"'");
                 CMLib.quests().addQuest(Q);
                 CMLib.quests().save();
             }

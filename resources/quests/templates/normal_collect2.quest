@@ -1,6 +1,6 @@
-#!QUESTMAKER_START_SCRIPT Normal Collect #1
+#!QUESTMAKER_START_SCRIPT Normal Collect #2
 #An existing mob in your world needs one or more items which you will create brought back to him/her. 
-#The items will be scattered among existing mobs whom you will designate.
+#The items will be scattered among rooms which you will designate.
 #A reward is given upon completion of the task and returning the items to the announcer.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
@@ -8,11 +8,11 @@
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
-#$QUEST_ID=$UNIQUE_QUEST_NAME=normal_collect_1
+#$QUEST_ID=$UNIQUE_QUEST_NAME=normal_collect_2
 #
 #Quest Name:
 #Enter a friendly displayable name for your quest:
-#$QUEST_NAME=$STRING=Normal Collect #1
+#$QUEST_NAME=$STRING=Normal Collect #2
 #
 #Quest-Player Criterium:
 #You may leave this entry blank, or enter a Zapper Mask to describe what
@@ -108,7 +108,7 @@
 #Select whether a player may complete this quest multiple times:
 #$MULTIPLE=$CHOOSE=YES,NO
 #
-#!QUESTMAKER_END_SCRIPT Normal Collect #1
+#!QUESTMAKER_END_SCRIPT Normal Collect #2
 
 set name $QUEST_ID
 set display $QUEST_NAME

@@ -104,6 +104,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
     
     public String getVarScope() { return scope;}
     
+    protected Object[] newObjs() { return new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];}
+    
     public String getScopeValues() 
     {
         if((scope==null)||(scope.length()==0)) return "";
@@ -234,7 +236,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(CMath.s_int(CMParms.getCleanBit(trigger,2).trim())<0))
                 {
                     oncesDone.addElement(script);
-                    execute(hostObj,mob,mob,mob,null,null,script,null,new Object[12]);
+                    execute(hostObj,mob,mob,mob,null,null,script,null,newObjs());
                     return true;
                 }
             }
@@ -273,11 +275,41 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return rawHost;
     }
 
+    public boolean isVar(String host, String var) {
+        if(host.equalsIgnoreCase("*"))
+        {
+            Vector V=resources._findResourceKeys("SCRIPTVAR-");
+            String val=null;
+            Hashtable H=null;
+            String key=null;
+            var=var.toUpperCase();
+            for(int v=0;v<V.size();v++)
+            {
+                key=(String)V.elementAt(v);
+                if(key.startsWith("SCRIPTVAR-"))
+                {
+                    H=(Hashtable)resources._getResource(key);
+                    val=(String)H.get(var);
+                    if(val!=null) return true;
+                }
+            }
+            return false;
+        }
+        else
+        {
+            Hashtable H=(Hashtable)resources._getResource("SCRIPTVAR-"+host);
+            String val=null;
+            if(H!=null)
+                val=(String)H.get(var.toUpperCase());
+            return (val!=null);
+        }
+    }
+    
     public String getVar(Environmental E, String rawHost, String var, MOB source, Environmental target,
                          Environmental scripted, MOB monster, Item primaryItem, Item secondaryItem, String msg,
                          Object[] tmp)
     { return getVar(getVarHost(E,rawHost,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp),var); }
-
+    
     public String getVar(String host, String var)
     {
         if(host.equalsIgnoreCase("*"))
@@ -313,7 +345,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     for(int s=0;s<M.numScripts();s++)
                     {
                         ScriptingEngine E=M.fetchScript(s);
-                        if((E!=null)&&(E!=this)&&(defaultQuestName.equalsIgnoreCase(E.defaultQuestName())))
+                        if((E!=null)
+                        &&(E!=this)
+                        &&(defaultQuestName.equalsIgnoreCase(E.defaultQuestName()))
+                        &&(E.isVar(host,var)))
                             return E.getVar(host,var);
                     }
             }
@@ -1530,6 +1565,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
             name=(String)V.elementAt(v,1);
             key=((String)V.elementAt(v,2)).toUpperCase();
             Hashtable H=(Hashtable)resources._getResource("SCRIPTVAR-"+name);
+            if((H==null)&&(defaultQuestName!=null)&&(defaultQuestName.length()>0))
+            {
+                MOB M=CMLib.map().getPlayer(name);
+                if(M!=null)
+                    for(int s=0;s<M.numScripts();s++)
+                    {
+                        ScriptingEngine E=M.fetchScript(s);
+                        if((E!=null)
+                        &&(E!=this)
+                        &&(defaultQuestName.equalsIgnoreCase(E.defaultQuestName()))
+                        &&(E.isVar(name,key)))
+                        {
+                            E.setVar(name,key,val);
+                            return;
+                        }
+                    }
+            }
             if(H==null)
             {
                 if(val.length()==0)
@@ -5215,7 +5267,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
     protected MOB getRandPC(MOB monster, Object[] tmp, Room room)
     {
-        if((tmp[10]==null)||(tmp[10]==monster)) {
+        if((tmp[SPECIAL_RANDPC]==null)||(tmp[SPECIAL_RANDPC]==monster)) {
             MOB M=null;
             if(room!=null) {
                 Vector choices = new Vector();
@@ -5234,14 +5286,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     }
                 }
                 if(choices.size() > 0)
-                    tmp[10] = choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+                    tmp[SPECIAL_RANDPC] = choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
             }
         }
-        return (MOB)tmp[10];
+        return (MOB)tmp[SPECIAL_RANDPC];
     }
     protected MOB getRandAnyone(MOB monster, Object[] tmp, Room room)
     {
-        if((tmp[11]==null)||(tmp[11]==monster)) {
+        if((tmp[SPECIAL_RANDANYONE]==null)||(tmp[SPECIAL_RANDANYONE]==monster)) {
             MOB M=null;
             if(room!=null) {
                 Vector choices = new Vector();
@@ -5260,10 +5312,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     }
                 }
                 if(choices.size() > 0)
-                    tmp[11] = choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+                    tmp[SPECIAL_RANDANYONE] = choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
             }
         }
-        return (MOB)tmp[11];
+        return (MOB)tmp[SPECIAL_RANDANYONE];
     }
 
     public String execute(Environmental scripted,
@@ -7150,10 +7202,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
             {
                 Environmental newTarget=getArgumentMOB(CMParms.getCleanBit(s,1),source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1));
-                if((newTarget!=null)&&(newTarget instanceof MOB))
+                if(newTarget!=null)
                 {
-                    Vector V=CMParms.parse(s);
-                    ((MOB)newTarget).doCommand(V,Command.METAFLAG_MPFORCED);
+                    Vector vscript=new Vector();
+                    vscript.addElement("FUNCTION_PROG MPFORCE_"+System.currentTimeMillis()+Math.random());
+                    vscript.addElement(s);
+                    monster=getMakeMOB(newTarget);
+                    execute(newTarget, source, target, monster, primaryItem, secondaryItem, vscript, msg, tmp);
                 }
                 break;
             }
@@ -7778,12 +7833,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(Tool==null) Tool=defaultItem;
                 String resp=null;
                 if(msg.target() instanceof MOB)
-                    resp=execute(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,str,new Object[12]);
+                    resp=execute(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,str,newObjs());
                 else
                 if(msg.target() instanceof Item)
-                    resp=execute(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,str,new Object[12]);
+                    resp=execute(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,str,newObjs());
                 else
-                    resp=execute(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,str,new Object[12]);
+                    resp=execute(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,str,newObjs());
                 if((resp!=null)&&(resp.equalsIgnoreCase("CANCEL")))
                     return false;
             }
@@ -8142,7 +8197,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             if(lastMsg==msg) break;
                             lastMsg=msg;
                             if(msg.target() instanceof Coins)
-                                execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,new Object[12]);
+                                execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,newObjs());
                             else
                                 que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
                             return;
@@ -8161,7 +8216,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                 if(lastMsg==msg) break;
                                 lastMsg=msg;
                                 if(msg.target() instanceof Coins)
-                                    execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,new Object[12]);
+                                    execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,newObjs());
                                 else
                                     que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
                                 return;
@@ -8315,7 +8370,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             if(lastMsg==msg) break;
                             lastMsg=msg;
                             if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
-                                execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,new Object[12]);
+                                execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,newObjs());
                             else
                                 que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)msg.tool(),script,1,null));
                             return;
@@ -8334,7 +8389,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                 if(lastMsg==msg) break;
                                 lastMsg=msg;
                                 if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
-                                    execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,new Object[12]);
+                                    execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,newObjs());
                                 else
                                     que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)msg.tool(),script,1,null));
                                 return;
@@ -8361,7 +8416,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             Item product=makeCheapItem(msg.tool());
                             if((product instanceof Coins)
                             &&(product.owner() instanceof Room))
-                                execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,new Object[12]);
+                                execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,newObjs());
                             else
                                 que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,product,product,script,1,null));
                             return;
@@ -8380,7 +8435,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                 Item product=makeCheapItem(msg.tool());
                                 if((product instanceof Coins)
                                 &&(product.owner() instanceof Room))
-                                    execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,new Object[12]);
+                                    execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,newObjs());
                                 else
                                     que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,product,product,script,1,null));
                                 return;
@@ -8406,7 +8461,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             Item product=makeCheapItem(msg.tool());
                             if((product instanceof Coins)
                             &&(product.owner() instanceof Room))
-                                execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,new Object[12]);
+                                execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,newObjs());
                             else
                                 que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,product,product,script,1,null));
                             return;
@@ -8425,7 +8480,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                 Item product=makeCheapItem(msg.tool());
                                 if((product instanceof Coins)
                                 &&(product.owner() instanceof Room))
-                                    execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,new Object[12]);
+                                    execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,newObjs());
                                 else
                                     que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,product,product,script,1,null));
                                 return;
@@ -8521,7 +8576,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             if((SB.scr==script)&&(SB.s==msg.source()))
                             {
                                 if(que.removeElement(SB))
-                                    execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,new Object[12]);
+                                    execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());
                                 break;
                             }
                         }
@@ -8550,7 +8605,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             if((SB.scr==script)&&(SB.s==msg.source()))
                             {
                                 if(que.removeElement(SB))
-                                    execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,new Object[12]);
+                                    execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());
                                 break;
                             }
                         }
@@ -8569,7 +8624,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         src=(MOB)msg.tool();
                     if((src==null)||(src.location()!=monster.location()))
                        src=ded;
-                    execute(affecting,src,ded,ded,defaultItem,null,script,null,new Object[12]);
+                    execute(affecting,src,ded,ded,defaultItem,null,script,null,newObjs());
                     return;
                 }
                 break;
@@ -8583,7 +8638,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         src=(MOB)msg.tool();
                     if((src==null)||(src.location()!=monster.location()))
                        src=ded;
-                    execute(affecting,src,ded,ded,defaultItem,null,script,null,new Object[12]);
+                    execute(affecting,src,ded,ded,defaultItem,null,script,null,newObjs());
                     return;
                 }
                 break;
@@ -8594,7 +8649,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     Item I=null;
                     if(msg.tool() instanceof Item)
                         I=(Item)msg.tool();
-                    execute(affecting,msg.source(),msg.target(),eventMob,defaultItem,I,script,""+msg.value(),new Object[12]);
+                    execute(affecting,msg.source(),msg.target(),eventMob,defaultItem,I,script,""+msg.value(),newObjs());
                     return;
                 }
                 break;
@@ -8938,7 +8993,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 {
                     int prcnt=CMath.s_int(CMParms.getCleanBit(trigger,1).trim());
                     if(CMLib.dice().rollPercentage()<prcnt)
-                        execute(affecting,mob,mob,mob,defaultItem,null,script,null,new Object[12]);
+                        execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
                 }
                 break;
             case 16: // delay_prog
@@ -8962,7 +9017,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         delayProgCounters.put(new Integer(thisScriptIndex),new Integer(0));
                     if(delayProgCounter==targetTick)
                     {
-                        execute(affecting,mob,mob,mob,defaultItem,null,script,null,new Object[12]);
+                        execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
                         delayProgCounter=-1;
                     }
                     delayProgCounters.remove(new Integer(thisScriptIndex));
@@ -8974,7 +9029,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 {
                     int prcnt=CMath.s_int(CMParms.getCleanBit(trigger,1).trim());
                     if(CMLib.dice().rollPercentage()<prcnt)
-                        execute(affecting,mob.getVictim(),mob,mob,defaultItem,null,script,null,new Object[12]);
+                        execute(affecting,mob.getVictim(),mob,mob,defaultItem,null,script,null,newObjs());
                 }
                 else
                 if((ticking instanceof Item)
@@ -8987,7 +9042,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     {
                         MOB M=(MOB)((Item)ticking).owner();
                         if(!M.amDead())
-                            execute(affecting,M,mob.getVictim(),mob,defaultItem,null,script,null,new Object[12]);
+                            execute(affecting,M,mob.getVictim(),mob,defaultItem,null,script,null,newObjs());
                     }
                 }
                 break;
@@ -8996,7 +9051,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 {
                     int floor=(int)Math.round(CMath.mul(CMath.div(CMath.s_int(CMParms.getCleanBit(trigger,1).trim()),100.0),mob.maxState().getHitPoints()));
                     if(mob.curState().getHitPoints()<=floor)
-                        execute(affecting,mob.getVictim(),mob,mob,defaultItem,null,script,null,new Object[12]);
+                        execute(affecting,mob.getVictim(),mob,mob,defaultItem,null,script,null,newObjs());
                 }
                 else
                 if((ticking instanceof Item)
@@ -9009,7 +9064,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     {
                         int floor=(int)Math.round(CMath.mul(CMath.div(CMath.s_int(CMParms.getCleanBit(trigger,1).trim()),100.0),M.maxState().getHitPoints()));
                         if(M.curState().getHitPoints()<=floor)
-                            execute(affecting,M,mob.getVictim(),mob,defaultItem,null,script,null,new Object[12]);
+                            execute(affecting,M,mob.getVictim(),mob,defaultItem,null,script,null,newObjs());
                     }
                 }
                 break;
@@ -9017,7 +9072,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(!oncesDone.contains(script)&&canTrigger(6))
                 {
                     oncesDone.addElement(script);
-                    execute(affecting,mob,mob,mob,defaultItem,null,script,null,new Object[12]);
+                    execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
                 }
                 break;
             case 14: // time_prog
@@ -9037,7 +9092,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             if(time==CMath.s_int(CMParms.getCleanBit(trigger,i).trim()))
                             {
                                 done=true;
-                                execute(affecting,mob,mob,mob,defaultItem,null,script,null,new Object[12]);
+                                execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
                                 lastTimeProgsDone.remove(new Integer(thisScriptIndex));
                                 lastTimeProgsDone.put(new Integer(thisScriptIndex),new Integer(time));
                                 break;
@@ -9064,7 +9119,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             if(day==CMath.s_int(CMParms.getCleanBit(trigger,i).trim()))
                             {
                                 done=true;
-                                execute(affecting,mob,mob,mob,defaultItem,null,script,null,new Object[12]);
+                                execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
                                 lastDayProgsDone.remove(new Integer(thisScriptIndex));
                                 lastDayProgsDone.put(new Integer(thisScriptIndex),new Integer(day));
                                 break;
@@ -9085,7 +9140,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         if(time>=Q.minsRemaining())
                         {
                             oncesDone.addElement(script);
-                            execute(affecting,mob,mob,mob,defaultItem,null,script,null,new Object[12]);
+                            execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
                         }
                     }
                 }
@@ -9113,7 +9168,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 try{SB=(ScriptableResponse)que.elementAt(q);}catch(ArrayIndexOutOfBoundsException x){continue;}
                 if(SB.checkTimeToExecute())
                 {
-                    execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,new Object[12]);
+                    execute(SB.h,SB.s,SB.t,SB.m,SB.pi,SB.si,SB.scr,SB.message,newObjs());
                     que.removeElement(SB);
                 }
             }

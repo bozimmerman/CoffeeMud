@@ -68,9 +68,6 @@
 #
 #Holder Mobs: 
 #Specify the types of mobs that will be holding the items that must be collected.
-#
-#Holders mob names: 
-#Specify the mobs who will act as the capturable mob or mobs.  
 #See help on ZAPPERMASK for information on zapper mask syntax.
 #$HOLDERS_NAMES=$ZAPPERMASK
 #
@@ -81,9 +78,9 @@
 #Specify the items who will act as the collectable item or items.
 #$COLLECTABLES_ITEMS=$ITEMXML_ONEORMORE
 #
-#Collectables to create:
-#Specify how many collectable items will be created among the holders.
-#$COLLECTABLES_TOTAL=($EXPRESSION)=10
+#Collectables chance:
+#Specify the percent chance that a dead holder will have the item on his or her corpse.
+#$COLLECTABLES_CHANCE=($EXPRESSION)=10
 #
 #Num Collectables:
 #Specify how many of the collectable items must be collected to complete the quest.
@@ -132,7 +129,6 @@ set area
 import items $QUEST_ID_item.xml
 set itemgroup loadeditems
 set item
-give script LOAD=$QUEST_ID_announcer.script
 
 set duration 0
 
@@ -154,30 +150,26 @@ ALL_GREET_PROG 100
 GIVE_PROG all
 	IF QUESTSCRIPTED($n *) AND ISLIKE($n '$QUEST_CRITERIA') and ISPC($n)
 		if questobj($o *) OR QUESTSCRIPTED($o *)
-			mpsetvar $n $QUEST_ID_COLLECTED ++
+			mpsetvar $n $QUEST_ID_RETURNED ++
 			mpjunk $o
-			if var($n $QUEST_ID_COLLECTED >= $NUM_COLLECTABLES)
-				mpsetvar $i $QUEST_ID_REWARDED $n
-				if EVAL('$EXP' != '')
-					mpexp $n $EXP
-				endif
-				if EVAL('$FACTION' != '')
-					mpfaction $n $FACTION $NUMFACTION
-				endif
-				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
-					mpoload QuestPoint
-					give "a quest point" "$n"
-				endif
-				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
-					mpoload $GOLD
-					give $GOLD "$n"
-				endif
-				mpquestwin $n *
-				$QUEST_WINSPEECH_TYPE $QUEST_WINSPEECH_TEXT
-				mpendquest *
-				IF EVAL('$NEXT_QUEST' != '')
-					mpstartquest $NEXT_QUEST
-				ENDIF
+			if var($n $QUEST_ID_RETURNED >= $NUM_COLLECTABLES)
+                if EVAL('$EXP' != '')
+                    mpexp $n $EXP
+                endif
+                if EVAL('$FACTION' != '')
+                    mpfaction $n $FACTION $NUMFACTION
+                endif
+                if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
+                    mpoload QuestPoint
+                    give "a quest point" "$n"
+                endif
+                if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
+                    mpoload $GOLD
+                    give $GOLD "$n"
+                endif
+                mpquestwin $n *
+                sayto $n $QUEST_WINSPEECH_TEXT
+                mpendquest $n
 			else
 				sayto "$n" That's $<$n $QUEST_ID_COLLECTED>/$NUM_COLLECTABLES.
 			endif
@@ -204,33 +196,37 @@ SPEECH_PROG p i accept $QUEST_NAME
 	endif
 ~
 </DATA></FILE>
-<FILE><NAME>$QUEST_ID_item.script</NAME>
-<DATA>
-GET_PROG all
-	if VAR($n $QUEST_ID_ACCEPTED != '')
-		MPSETVAR $n $QUEST_ID_GOT ++
-		mpechoat $n Picked up: $<$n $QUEST_ID_GOT>/$NUM_COLLECTABLES.
-	endif
-	
-~
-DROP_PROG all
-	if VAR($n $QUEST_ID_ACCEPTED != '')
-		MPSETVAR $n $QUEST_ID_GOT --
-	endif
-	
-~
-</DATA>
-</FILE>
 <FILE><NAME>$QUEST_ID_playertrack.script</NAME>
 <DATA>
 ONCE_PROG 100
     mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+    mpsetvar $i QUEST_ID_GOT 0
+    mpsetvar $i QUEST_ID_RETURNED 0
+    mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
 ~
-RAND_PROG 99
-    if QVAR(* REMAINING == '')
-        MPENDQUEST $i
-    else
-        mpsetvar $i TIME_REMAINING $%QVAR(* REMAINING)%
+
+CNCLMSG_PROG STO=DEATH ALL
+    if ISNPC($n) AND ISLIKE($n $HOLDERS_NAMES)
+        if rand($COLLECTABLES_CHANCE)
+            mpforce $n mpoload fromfile $QUEST_ID_items.xml any
+        endif
     endif
+~
+
+GET_PROG all
+    if questobj($o *) and QUESTSCRIPTED($n)
+        MPSETVAR $n $QUEST_ID_GOT ++
+        mpechoat $n Picked up: $<$n $QUEST_ID_GOT>/$NUM_COLLECTABLES.
+        mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
+    endif
+    
+~
+DROP_PROG all
+    if questobj($o *) and QUESTSCRIPTED($n)
+        MPSETVAR $n $QUEST_ID_GOT --
+        mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
+        mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
+    endif
+    
 ~
 </DATA></FILE>

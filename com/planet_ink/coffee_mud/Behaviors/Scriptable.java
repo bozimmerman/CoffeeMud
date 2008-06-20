@@ -74,6 +74,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
 
     public String getVar(String context, String variable){ return engine().getVar(context, variable);}
     
+    public boolean isVar(String context, String variable){ return engine().isVar(context, variable);}
+    
     public void setVar(String context, String variable, String value){ engine().setVar(context, variable, value);}
     
     public String defaultQuestName() { return engine().defaultQuestName();}

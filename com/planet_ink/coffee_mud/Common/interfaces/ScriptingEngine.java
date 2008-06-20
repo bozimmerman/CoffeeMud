@@ -84,6 +84,8 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
     
     public String getVar(String context, String variable);
     
+    public boolean isVar(String context, String variable);
+    
     public void setVar(String context, String variable, String value);
     
     public static class ScriptableResponse
@@ -122,6 +124,10 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         public boolean checkTimeToExecute() { return ((--tickDelay)<=0); }
     }
 
+    public static final int SPECIAL_NUM_OBJECTS=12;
+    public static final int SPECIAL_RANDPC=10;
+    public static final int SPECIAL_RANDANYONE=11;
+    
     public static final String[] progs={
         "GREET_PROG", //1
         "ALL_GREET_PROG", //2
