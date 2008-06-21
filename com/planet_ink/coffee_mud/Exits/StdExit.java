@@ -733,7 +733,7 @@ public class StdExit implements Exit
 	{
 		if(behaviors==null) return;
 		behaviors.removeElement(to);
-		if(behaviors.size()==0)
+		if(((behaviors==null)||(behaviors.size()==0))&&((scripts==null)||(scripts.size()==0)))
 			CMLib.threads().deleteTick(this,Tickable.TICKID_EXIT_BEHAVIOR);
 	}
 
@@ -793,10 +793,9 @@ public class StdExit implements Exit
             if(scripts.size()<size)
             {
                 if(scripts.size()==0)
-                {
                     scripts=new Vector(1);
+                if(((behaviors==null)||(behaviors.size()==0))&&((scripts==null)||(scripts.size()==0)))
                     CMLib.threads().deleteTick(this,Tickable.TICKID_EXIT_BEHAVIOR);
-                }
             }
         }
     }

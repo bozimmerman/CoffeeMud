@@ -2054,4 +2054,33 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 26. New standard Exit type: UnseenWalkway
 27. Common crafting skills LIST command can now have simple word mask.  Also, Crafting skills allow player to win an XP-BONUS "lottery" if it determines that an item crafted was not found in the room after it was added.
 28. Infamous bugs found dead.  Paternity has not yet been established.
-
+# Build 5.4.0 Released June 21, 2008
+1. 
+2. 
+3. 
+4. 
+5. 
+6. 
+7. 
+8. 
+9. 
+10. 
+11. 
+12. 
+13. 
+14. 
+15. 
+16. 
+17. 
+18. 
+19. 
+20. 
+21. 
+22. 
+23. 
+24. 
+25. 
+26. 
+27. 
+28. 
+29. 

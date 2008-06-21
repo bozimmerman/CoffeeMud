@@ -1319,11 +1319,10 @@ public class StdItem implements Item
 		behaviors.removeElement(to);
 		if(behaviors.size()<size)
 		{
+            if(((behaviors==null)||(behaviors.size()==0))&&((scripts==null)||(scripts.size()==0)))
+                CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
     		if(behaviors.size()==0)
-    		{
-    			CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
     			behaviors=new Vector(1);
-    		}
 		}
 	}
 	public int numBehaviors()
@@ -1380,10 +1379,9 @@ public class StdItem implements Item
             if(scripts.size()<size)
             {
                 if(scripts.size()==0)
-                {
                     scripts=new Vector(1);
+                if(((behaviors==null)||(behaviors.size()==0))&&((scripts==null)||(scripts.size()==0)))
                     CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BEHAVIOR);
-                }
             }
         }
     }

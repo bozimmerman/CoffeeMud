@@ -1872,10 +1872,9 @@ public class StdRoom implements Room
 		if(behaviors.size()<size)
 		{
     		if(behaviors.size()==0)
-    		{
     		    behaviors=new Vector(1);
+            if(((behaviors==null)||(behaviors.size()==0))&&((scripts==null)||(scripts.size()==0)))
     			CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
-    		}
 		}
 	}
 	public int numBehaviors()
@@ -1932,10 +1931,9 @@ public class StdRoom implements Room
             if(scripts.size()<size)
             {
                 if(scripts.size()==0)
-                {
                     scripts=new Vector(1);
+                if(((behaviors==null)||(behaviors.size()==0))&&((scripts==null)||(scripts.size()==0)))
                     CMLib.threads().deleteTick(this,Tickable.TICKID_ROOM_BEHAVIOR);
-                }
             }
         }
     }
