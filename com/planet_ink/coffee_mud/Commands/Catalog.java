@@ -356,9 +356,9 @@ public class Catalog extends StdCommand
 				Environmental E=(foundData[1]==1)?
 								(Environmental)CMLib.catalog().getCatalogMob(foundData[0]):
 								(Environmental)CMLib.catalog().getCatalogItem(foundData[0]);
-				int[] usage=(foundData[1]==1)?
-							CMLib.catalog().getCatalogMobUsage(foundData[0]):
-							CMLib.catalog().getCatalogItemUsage(foundData[0]);
+				//int[] usage=(foundData[1]==1)?
+				//			CMLib.catalog().getCatalogMobUsage(foundData[0]):
+				//			CMLib.catalog().getCatalogItemUsage(foundData[0]);
 				if(E instanceof MOB)
 				{
 					String prefix="";

@@ -673,7 +673,7 @@ public class DefaultPlayerStats implements PlayerStats
     public void setLeveledDateTime(int level, Room R)
     {
         if(levelInfo.size()==0)
-        	levelInfo.addElement(new Integer(0),new Long(System.currentTimeMillis()));
+        	levelInfo.addElement(new Integer(0),new Long(System.currentTimeMillis()),"");
         long lastTime=0;
         for(int l=0;l<levelInfo.size();l++)
         {

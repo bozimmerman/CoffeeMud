@@ -295,14 +295,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             return false;
         }
-        else
-        {
-            Hashtable H=(Hashtable)resources._getResource("SCRIPTVAR-"+host);
-            String val=null;
-            if(H!=null)
-                val=(String)H.get(var.toUpperCase());
-            return (val!=null);
-        }
+        Hashtable H=(Hashtable)resources._getResource("SCRIPTVAR-"+host);
+        String val=null;
+        if(H!=null)
+            val=(String)H.get(var.toUpperCase());
+        return (val!=null);
     }
     
     public String getVar(Environmental E, String rawHost, String var, MOB source, Environmental target,
@@ -331,30 +328,27 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             return "";
         }
+        Hashtable H=(Hashtable)resources._getResource("SCRIPTVAR-"+host);
+        String val=null;
+        if(H!=null)
+            val=(String)H.get(var.toUpperCase());
         else
+        if((defaultQuestName!=null)&&(defaultQuestName.length()>0))
         {
-            Hashtable H=(Hashtable)resources._getResource("SCRIPTVAR-"+host);
-            String val=null;
-            if(H!=null)
-                val=(String)H.get(var.toUpperCase());
-            else
-            if((defaultQuestName!=null)&&(defaultQuestName.length()>0))
-            {
-                MOB M=CMLib.map().getPlayer(host);
-                if(M!=null)
-                    for(int s=0;s<M.numScripts();s++)
-                    {
-                        ScriptingEngine E=M.fetchScript(s);
-                        if((E!=null)
-                        &&(E!=this)
-                        &&(defaultQuestName.equalsIgnoreCase(E.defaultQuestName()))
-                        &&(E.isVar(host,var)))
-                            return E.getVar(host,var);
-                    }
-            }
-            if(val==null) return "";
-            return val;
+            MOB M=CMLib.map().getPlayer(host);
+            if(M!=null)
+                for(int s=0;s<M.numScripts();s++)
+                {
+                    ScriptingEngine E=M.fetchScript(s);
+                    if((E!=null)
+                    &&(E!=this)
+                    &&(defaultQuestName.equalsIgnoreCase(E.defaultQuestName()))
+                    &&(E.isVar(host,var)))
+                        return E.getVar(host,var);
+                }
         }
+        if(val==null) return "";
+        return val;
     }
 
     private StringBuffer getResourceFileData(String named)
