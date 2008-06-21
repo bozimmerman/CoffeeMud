@@ -2055,32 +2055,46 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 27. Common crafting skills LIST command can now have simple word mask.  Also, Crafting skills allow player to win an XP-BONUS "lottery" if it determines that an item crafted was not found in the room after it was added.
 28. Infamous bugs found dead.  Paternity has not yet been established.
 # Build 5.4.0 Released June 21, 2008
-1. 
-2. 
-3. 
-4. 
-5. 
-6. 
-7. 
-8. 
-9. 
-10. 
-11. 
-12. 
-13. 
-14. 
-15. 
-16. 
-17. 
-18. 
-19. 
-20. 
-21. 
-22. 
-23. 
-24. 
-25. 
-26. 
-27. 
-28. 
-29. 
+1. Internal: Command execution now knows some circumstances surrounding that execution.
+2. Internal: Environmental objects now sold internal MOBPROG Scripts.
+3. New Command: AUTORUN - a player will always be running around
+4. New Command: QUESTS - for listing, getting details on, and dropping saved quests
+5. WILLQUALIFY Command now accepts skill-types parameter
+6. Snoop/AS no longer functions for TELL receptions, TELL last and EMAIL reads
+7. Consider command can now be used to recommend healing for friendlies.
+8. New Command: Catalog, for managing mob/item catalog lists, and item auto-drop tables
+9. AFFECTS/AUTOAFFECTS can now be used by admins on a specified target.
+10. RESET command now supports REJUV parameter
+11. CREATE command directly supports catalog items/mobs
+12. GO command now supports OUT parameter
+13. Can now modify player clans/deities
+14. Internal: Scripting engine removed from Behavior to Common class, Scriptable is now a wrapper
+15. New Grinder Editor: Deities
+16. New Grinder Editor: Factions
+17. New Grinder Editor: CharClasses
+18. New Grinder Editor: Socials
+19. New Grinder Editor: AutoTitles
+20. New Grinder Editor: Catalog (mobs, items, item auto-drops)
+21. New Grinder Editor: Polls
+22. New Grinder Editor: Holidays
+23. New Grinder Editor: Races
+24. New Grinder Editor: GenAbilities
+25. Packages/Bundles now better preserve unique resources
+26. New Property: Prop_ItemNoRuin (purpose self explanatory :)
+27. Old Questmaker templates reworked and renamed Competitive
+28. Several new QuestMaker templates for persistant quests that players can complete at leisure.
+29. QuestManager now supports temporary Enable/Disable of quests
+30. Journal Browser now supports searches, and list ALL entries
+31. Internal: Languages now implement Language interface, StdLanguage base class
+32. GenCharClasses, Races, Abilities can now have custom HELP entries
+33. New Paladin aura: Purity
+34. New Archon skill: Stinkify
+35. Quests now have friendly display names, ability to run indefinitely, new STEP BACK and GIVE SCRIPT commands
+36. Default Prompt is now in the INI file
+37. Player image paths reimplemented to be more ZMUD friendly
+38. Expiration times are now in the INI file
+39. New Race: Svirfneblin
+40. New Script funcs: DATETIME, ISODD, QUESTSCRIPTED, QUESTROOM
+41. New Script cmds: MPSCRIPT, MPREJUV
+42. List command now supports parameters for list LOG to lessen the load
+43. Unlike prices, bugs are (hopefully) in decline.
