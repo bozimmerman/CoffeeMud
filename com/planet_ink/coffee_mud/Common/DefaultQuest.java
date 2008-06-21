@@ -88,7 +88,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultQuest();}}
     public void initializeClass(){}
-	public Object getQuestObject(String named)
+    
+	public Object getDesignatedObject(String named)
 	{
 		int code=-1;
 		for(int i=0;i<QCODES.length;i++)
@@ -740,11 +741,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             q.room.bringMobHere(q.mob,false);
                         else
                             q.room=q.mob.location();
-                        q.area=q.room.getArea();
                         q.envObject=q.mob;
                         runtimeRegisterObject(q.mob);
-                        q.room.recoverRoomStats();
-                        q.room.showHappens(CMMsg.MSG_OK_ACTION,null);
+                        if(q.room!=null)
+                        {
+                            q.area=q.room.getArea();
+                            q.room.recoverRoomStats();
+                            q.room.showHappens(CMMsg.MSG_OK_ACTION,null);
+                        }
                     }
                     else
                     if(cmd.equals("MOBGROUP"))
@@ -993,10 +997,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         else
                         if(q.item.owner() instanceof Room)
                             q.room=(Room)q.item.owner();
-                        q.area=q.room.getArea();
                         q.envObject=q.item;
-                        q.room.recoverRoomStats();
-                        q.room.showHappens(CMMsg.MSG_OK_ACTION,null);
+                        if(q.room!=null)
+                        {
+                            q.area=q.room.getArea();
+                            q.room.recoverRoomStats();
+                            q.room.showHappens(CMMsg.MSG_OK_ACTION,null);
+                        }
                     }
                     else
                     if(cmd.equals("PRESERVE"))
@@ -1441,10 +1448,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         else
                         if(q.item.owner() instanceof Room)
                             q.room=(Room)q.item.owner();
-                        q.area=q.room.getArea();
                         q.envObject=q.item;
-                        q.room.recoverRoomStats();
-                        q.room.showHappens(CMMsg.MSG_OK_ACTION,null);
+                        if(q.room!=null)
+                        {
+                            q.area=q.room.getArea();
+                            q.room.recoverRoomStats();
+                            q.room.showHappens(CMMsg.MSG_OK_ACTION,null);
+                        }
                     }
                     else
                     if(cmd.equals("AGENT"))
@@ -3530,88 +3540,139 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         questState.addons.addElement(V,new Integer(questState.preserveState));
     }
     
-    public int wasQuestMob(String name)
+    public int getQuestThingIndex(Vector V, String name, int type, int[] num)
     {
-        int num=1;
-        for(int i=0;i<questState.stuff.size();i++)
+        if(V==null) return -1;
+        for(int i=0;i<V.size();i++)
         {
-            Environmental E=(Environmental)questState.stuff.elementAt(i,1);
-            if(E instanceof MOB)
+            Environmental E=(Environmental)V.elementAt(i);
+            if(CMClass.isType(E,type))
             {
-                if(E.name().equalsIgnoreCase(name))
-                    return num;
-                num++;
+                switch(type)
+                {
+                case CMClass.OBJECT_LOCALE:
+                    if(CMLib.map().getExtendedRoomID((Room)E).equalsIgnoreCase(name))
+                        return num[0];
+                    break;
+                default:
+                    if(E.Name().equalsIgnoreCase(name))
+                        return num[0];
+                    break;
+                }
+                num[0]++;
             }
         }
         return -1;
+    }
+    
+    public int wasQuestMob(String name)
+    {
+        int[] num={1};
+        int x=-1;
+        if(questState.stuff!=null)
+            x=getQuestThingIndex(questState.stuff.getDimensionVector(1),name,CMClass.OBJECT_MOB,num);
+        if(x<0)
+            x=getQuestThingIndex(questState.mobGroup,name,CMClass.OBJECT_MOB,num);
+        if((x<0)&&(questState.mysteryData!=null))
+            x=getQuestThingIndex(questState.mysteryData.agentGroup,name,CMClass.OBJECT_MOB,num);
+        return x;
+    }
+    
+    public int wasQuestRoom(String roomID)
+    {
+        int[] num={1};
+        int x=-1;
+        if(questState.stuff!=null)
+            x=getQuestThingIndex(questState.stuff.getDimensionVector(1),roomID,CMClass.OBJECT_LOCALE,num);
+        if(x<0)
+            x=getQuestThingIndex(questState.roomGroup,roomID,CMClass.OBJECT_LOCALE,num);
+        if(questState.mysteryData!=null)
+        {
+            if(x<0)
+                x=getQuestThingIndex(questState.mysteryData.whereAtGroup,roomID,CMClass.OBJECT_LOCALE,num);
+            if(x<0)
+                x=getQuestThingIndex(questState.mysteryData.whereHappenedGroup,roomID,CMClass.OBJECT_LOCALE,num);
+        }
+        return x;
     }
     
     public int wasQuestItem(String name)
     {
-        int num=1;
-        for(int i=0;i<questState.stuff.size();i++)
+        int[] num={1};
+        int x=-1;
+        if(questState.stuff!=null)
+            x=getQuestThingIndex(questState.stuff.getDimensionVector(1),name,CMClass.OBJECT_ITEM,num);
+        if(x<0)
+            x=getQuestThingIndex(questState.itemGroup,name,CMClass.OBJECT_ITEM,num);
+        if(questState.mysteryData!=null)
         {
-            Environmental E=(Environmental)questState.stuff.elementAt(i,1);
-            if(E instanceof Item)
-            {
-                if(E.name().equalsIgnoreCase(name))
-                    return num;
-                num++;
-            }
+            if(x<0)
+                x=getQuestThingIndex(questState.mysteryData.toolGroup,name,CMClass.OBJECT_ITEM,num);
         }
-        return -1;
+        return x;
     }
     
-    public boolean isQuestObject(Environmental E)
-    { 
-    	return ((questState.stuff!=null)&&(questState.stuff.contains(E)));
-    }
-    
-    public String getQuestObjectName(int i)
+    public Environmental getQuestThing(Vector V, int dex, int type, int[] num)
     {
-        Environmental E=getQuestObject(i);
-        if(E!=null) return E.Name();
-        return "";
-    }
-    
-    public Environmental getQuestObject(int i)
-    {
-        i=i-1; // starts counting at 1
-        if((i>=0)&&(i<questState.stuff.size()))
+        if(V==null) return null;
+        for(int i=0;i<V.size();i++)
         {
-            Environmental E=(Environmental)questState.stuff.elementAt(i,1);
-            return E;
+            Environmental E=(Environmental)V.elementAt(i);
+            if(CMClass.isType(E,type))
+            {
+                if(dex==num[0]) return E;
+                num[0]++;
+            }
         }
         return null;
     }
     
+    
     public MOB getQuestMob(int i)
     {
-        int num=1;
-        for(int x=0;x<questState.stuff.size();x++)
-        {
-            Environmental E=(Environmental)questState.stuff.elementAt(x,1);
-            if(E instanceof MOB)
-            {
-                if(num==i) return (MOB)E;
-                num++;
-            }
-        }
+        int[] num={1};
+        Environmental E=null;
+        if(questState.stuff!=null)
+            E=getQuestThing(questState.stuff.getDimensionVector(1),i,CMClass.OBJECT_MOB,num);
+        if(E instanceof MOB) return (MOB)E;
+        E=getQuestThing(questState.mobGroup,i,CMClass.OBJECT_MOB,num);
+        if(E instanceof MOB) return (MOB)E;
+        if(questState.mysteryData!=null)
+            E=getQuestThing(questState.mysteryData.agentGroup,i,CMClass.OBJECT_MOB,num);
+        if(E instanceof MOB) return (MOB)E;
         return null;
     }
     
     public Item getQuestItem(int i)
     {
-        int num=1;
-        for(int x=0;x<questState.stuff.size();x++)
-        {
-            Environmental E=(Environmental)questState.stuff.elementAt(x,1);
-            if(E instanceof Item)
-            {
-                if(num==i) return (Item)E;
-                num++;
-            }
-        }
+        int[] num={1};
+        Environmental E=null;
+        if(questState.stuff!=null)
+            E=getQuestThing(questState.stuff.getDimensionVector(1),i,CMClass.OBJECT_ITEM,num);
+        if(E instanceof Item) return (Item)E;
+        E=getQuestThing(questState.itemGroup,i,CMClass.OBJECT_ITEM,num);
+        if(E instanceof Item) return (Item)E;
+        if(questState.mysteryData!=null)
+            E=getQuestThing(questState.mysteryData.toolGroup,i,CMClass.OBJECT_ITEM,num);
+        if(E instanceof Item) return (Item)E;
+        return null;
+    }
+    
+    public Room getQuestRoom(int i)
+    {
+        int[] num={1};
+        Environmental E=null;
+        if(questState.stuff!=null)
+            E=getQuestThing(questState.stuff.getDimensionVector(1),i,CMClass.OBJECT_LOCALE,num);
+        if(E instanceof Room) return (Room)E;
+        E=getQuestThing(questState.roomGroup,i,CMClass.OBJECT_LOCALE,num);
+        if(E instanceof Room) return (Room)E;
+        if(questState.mysteryData!=null)
+            E=getQuestThing(questState.mysteryData.whereAtGroup,i,CMClass.OBJECT_LOCALE,num);
+        if(E instanceof Room) return (Room)E;
+        if(questState.mysteryData!=null)
+            E=getQuestThing(questState.mysteryData.whereHappenedGroup,i,CMClass.OBJECT_LOCALE,num);
+        if(E instanceof Room) return (Room)E;
         return null;
     }
     
@@ -3629,7 +3690,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         return "";
     }
     
-    public int wasQuestObject(String name)
+    public String getQuestRoomID(int i)
+    {
+        Room R=getQuestRoom(i);
+        if(R!=null) return CMLib.map().getExtendedRoomID(R);
+        return "";
+    }
+    
+    public int wasObjectInUse(String name)
     {
         for(int i=0;i<questState.stuff.size();i++)
         {
@@ -3640,15 +3708,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         return -1;
     }
     
-    public boolean isQuestObject(String name, int i)
-    {
-        if((i>=0)&&(i<questState.stuff.size()))
-        {
-            Environmental E=(Environmental)questState.stuff.elementAt(i,1);
-            if(E.name().equalsIgnoreCase(name))
-                return true;
-        }
-        return false;
+    public boolean isObjectInUse(Environmental E)
+    { 
+        return ((questState.stuff!=null)&&(questState.stuff.contains(E)));
     }
     
     public Vector parseLoadScripts(String text, Vector oldArgs, Vector args)

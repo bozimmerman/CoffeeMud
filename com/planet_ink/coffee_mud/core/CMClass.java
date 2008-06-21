@@ -1,7 +1,7 @@
 package com.planet_ink.coffee_mud.core;
 import com.planet_ink.coffee_mud.WebMacros.interfaces.*;
 import com.planet_ink.coffee_mud.core.interfaces.*;
-import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -129,6 +129,34 @@ public class CMClass extends ClassLoader
         }
         OBJECT_CREATIONS[which]++;
     }
+    
+    public static boolean isType(Object O, int type)
+    {
+        switch(type)
+        {
+            case OBJECT_RACE: return O instanceof Race;
+            case OBJECT_CHARCLASS: return O instanceof CharClass;
+            case OBJECT_MOB: return O instanceof MOB;
+            case OBJECT_ABILITY: return O instanceof Ability;
+            case OBJECT_LOCALE: return O instanceof Room;
+            case OBJECT_EXIT: return O instanceof Exit;
+            case OBJECT_ITEM: return O instanceof Item;
+            case OBJECT_BEHAVIOR: return O instanceof Behavior;
+            case OBJECT_CLAN: return O instanceof Clan;
+            case OBJECT_WEAPON: return O instanceof Weapon;
+            case OBJECT_ARMOR: return O instanceof Armor;
+            case OBJECT_MISCMAGIC: return O instanceof MiscMagic;
+            case OBJECT_AREA: return O instanceof Area;
+            case OBJECT_COMMAND: return O instanceof Command;
+            case OBJECT_CLANITEMS: return O instanceof ClanItem;
+            case OBJECT_MISCTECH: return O instanceof Electronics;
+            case OBJECT_WEBMACROS: return O instanceof WebMacro;
+            case OBJECT_COMMON: return O instanceof CMCommon;
+            case OBJECT_LIBRARY: return O instanceof CMLibrary;
+        }
+        return false;
+    }
+    
     public static void unbumpCounter(Object O, int which)
     {
         if(KEEP_OBJECT_CACHE)

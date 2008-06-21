@@ -810,7 +810,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     V=loadItemsFromFile(null,CMParms.getCleanBit(thisName,1));
                 if(V!=null)
                 {
-                    String name=CMParms.getPastBit(thisName,1);
+                    String name=CMParms.getPastBitClean(thisName,1);
                     if(name.equalsIgnoreCase("ALL"))
                         OBJS=V;
                     else
@@ -2320,6 +2320,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             returnable=true;
                     }
                 }
+                break;
+            }
+            case 94: // questroom
+            {
+                String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(evaluable.substring(y+1,z),0));
+                String arg2=CMParms.getPastBitClean(evaluable.substring(y+1,z),0);
+                Quest Q=getQuest(arg2);
+                if(Q==null)
+                    returnable=false;
+                else
+                    returnable=(Q.wasQuestRoom(arg1)>=0);
                 break;
             }
             case 29: // questmob
@@ -4378,10 +4389,109 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 break;
             }
-            case 29: // questmob
-            case 31: // isquestmobalive
-                results.append("[unimplemented function]");
+            case 30: // questobj
+            {
+                String questName=CMParms.cleanBit(evaluable.substring(y+1,z));
+                questName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,questName);
+                Quest Q=getQuest(questName);
+                if(Q==null)
+                {
+                    logError(scripted,"QUESTOBJ","Unknown","Quest: "+questName);
+                    break;
+                }
+                StringBuffer list=new StringBuffer("");
+                int num=1;
+                Environmental E=Q.getQuestItem(num);
+                while(E!=null)
+                {
+                    if(E.Name().indexOf(' ')>=0)
+                        list.append("\""+E.Name()+"\" ");
+                    else
+                        list.append(E.Name()+" ");
+                    num++;
+                    E=Q.getQuestItem(num);
+                }
+                results.append(list.toString().trim());
                 break;
+            }
+            case 94: // questroom
+            {
+                String questName=CMParms.cleanBit(evaluable.substring(y+1,z));
+                questName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,questName);
+                Quest Q=getQuest(questName);
+                if(Q==null)
+                {
+                    logError(scripted,"QUESTOBJ","Unknown","Quest: "+questName);
+                    break;
+                }
+                StringBuffer list=new StringBuffer("");
+                int num=1;
+                Environmental E=Q.getQuestRoom(num);
+                while(E!=null)
+                {
+                    String roomID=CMLib.map().getExtendedRoomID((Room)E);
+                    if(roomID.indexOf(' ')>=0)
+                        list.append("\""+roomID+"\" ");
+                    else
+                        list.append(roomID+" ");
+                    num++;
+                    E=Q.getQuestRoom(num);
+                }
+                results.append(list.toString().trim());
+            }
+            case 29: // questmob
+            {
+                String questName=CMParms.cleanBit(evaluable.substring(y+1,z));
+                questName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,questName);
+                Quest Q=getQuest(questName);
+                if(Q==null)
+                {
+                    logError(scripted,"QUESTOBJ","Unknown","Quest: "+questName);
+                    break;
+                }
+                StringBuffer list=new StringBuffer("");
+                int num=1;
+                Environmental E=Q.getQuestMob(num);
+                while(E!=null)
+                {
+                    if(E.Name().indexOf(' ')>=0)
+                        list.append("\""+E.Name()+"\" ");
+                    else
+                        list.append(E.Name()+" ");
+                    num++;
+                    E=Q.getQuestMob(num);
+                }
+                results.append(list.toString().trim());
+                break;
+            }
+            case 31: // isquestmobalive
+            {
+                String questName=CMParms.cleanBit(evaluable.substring(y+1,z));
+                questName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,questName);
+                Quest Q=getQuest(questName);
+                if(Q==null)
+                {
+                    logError(scripted,"QUESTOBJ","Unknown","Quest: "+questName);
+                    break;
+                }
+                StringBuffer list=new StringBuffer("");
+                int num=1;
+                Environmental E=Q.getQuestMob(num);
+                while(E!=null)
+                {
+                    if(CMLib.flags().isInTheGame(E,true))
+                    {
+                        if(E.Name().indexOf(' ')>=0)
+                            list.append("\""+E.Name()+"\" ");
+                        else
+                            list.append(E.Name()+" ");
+                    }
+                    num++;
+                    E=Q.getQuestMob(num);
+                }
+                results.append(list.toString().trim());
+                break;
+            }
             case 32: // nummobsinarea
             {
                 String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.cleanBit(evaluable.substring(y+1,z)));
@@ -4488,9 +4598,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 results.append(num);
                 break;
             }
-            case 30: // questobj
-                results.append("[unimplemented function]");
-                break;
             case 16: // hitprcnt
             {
                 String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
@@ -5848,7 +5955,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String arg2=CMParms.getPastBitClean(s,1);
                 if((arg1.length()!=2)||(!arg1.startsWith("$")))
                 {
-                    logError(scripted,"MPARGSET","Syntax","Invalid argument var: "+arg1+" for "+scripted.Name());
+                    logError(scripted,"MPARGSET","Syntax","Mangled argument var: "+arg1+" for "+scripted.Name());
                     break;
                 }
                 Object O=getArgumentMOB(arg2,source,monster,target,primaryItem,secondaryItem,msg,tmp);
@@ -5887,6 +5994,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 case 'p': if(O instanceof Item) secondaryItem=(Item)O; break;
                 case 'd':
                 case 'D': if(O instanceof Room) lastKnownLocation=(Room)O; break;
+                case 'g':
+                case 'G': if(O instanceof String) msg=(String)O; break;
                 default:
                     logError(scripted,"MPARGSET","Syntax","Invalid argument var: "+arg1+" for "+scripted.Name());
                     break;
@@ -6947,10 +7056,37 @@ public class DefaultScriptingEngine implements ScriptingEngine
             {
                 if(lastKnownLocation!=null)
                 {
-                    String s2=CMParms.getPastBitClean(s,0).trim();
+                    int flag=0;
+                    String s2=CMParms.getCleanBit(s,1);
+                    if(s2.equalsIgnoreCase("room"))
+                    {
+                        flag=1;
+                        s2=CMParms.getPastBitClean(s,1).trim();
+                    }
+                    else
+                    if(s2.equalsIgnoreCase("my"))
+                    {
+                        flag=2;
+                        s2=CMParms.getPastBitClean(s,1).trim();
+                    }
+                    else
+                        s2=CMParms.getPastBitClean(s,0).trim();
                     Environmental E=null;
                     if(s2.equalsIgnoreCase("self")||s2.equalsIgnoreCase("me"))
                         E=scripted;
+                    else
+                    if(flag==1)
+                    {
+                        s2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s2);
+                        E=lastKnownLocation.fetchFromRoomFavorItems(null,s2,Item.WORNREQ_ANY);
+                    }
+                    else
+                    if(flag==2)
+                    {
+                        s2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s2);
+                        if(monster!=null)
+                            E=monster.fetchInventory(s2);
+                    }
                     else
                         E=getArgumentItem(s2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                     if(E!=null)
@@ -7467,7 +7603,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     logError(scripted,"MPLOADQUESTOBJ","Unknown","Quest: "+questName);
                     break;
                 }
-                Object O=Q.getQuestObject(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2)));
+                Object O=Q.getDesignatedObject(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(s,2)));
                 if(O==null)
                 {
                     logError(scripted,"MPLOADQUESTOBJ","Unknown","Unknown var "+CMParms.getCleanBit(s,2)+" for Quest: "+questName);

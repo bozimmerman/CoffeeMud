@@ -269,6 +269,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         "DATETIME", //91
         "ISODD", // 92
         "QUESTSCRIPTED", //93
+        "QUESTROOM", // 94
     };
     public static final String[] methods={
         "MPASOUND", //1

@@ -87,18 +87,19 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
     public StringBuffer getResourceFileData(String named);
     
 	// these refer the objects designated during the quest
-	public int wasQuestMob(String name);
-	public int wasQuestItem(String name);
-	public int wasQuestObject(String name);
-	public boolean isQuestObject(String name, int i);
-	public boolean isQuestObject(Environmental E);
-	public String getQuestObjectName(int i);
+    public int wasObjectInUse(String name);
+	public boolean isObjectInUse(Environmental E);
+    public Object getDesignatedObject(String named);
+    
+    public int wasQuestMob(String name);
+    public MOB getQuestMob(int i);
 	public String getQuestMobName(int i);
+    public int wasQuestItem(String name);
+    public Item getQuestItem(int i);
 	public String getQuestItemName(int i);
-	public Environmental getQuestObject(int i);
-	public MOB getQuestMob(int i);
-	public Item getQuestItem(int i);
-	public Object getQuestObject(String named);
+    public int wasQuestRoom(String roomID);
+    public Room getQuestRoom(int i);
+    public String getQuestRoomID(int i);
 	
     // these methods should only be used WHILE a quest script is running
     // they are called when you want the quest engine to be aware of a

@@ -3,7 +3,7 @@
 #A reward is given upon completion of the task and returning to the announcer.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
-#Enter the unique name and starting time/duration for your new quest.
+#Enter the unique name and player criteria for your new quest.
 #
 #Quest ID:
 #Enter a unique name/id for your quest:

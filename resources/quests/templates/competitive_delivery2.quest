@@ -261,7 +261,7 @@ PUT_PROG all
 						mpfaction $n $FACTION $NUMFACTION
 					endif
 					if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
-						mpoload QuestPoint
+						mpoloadroom QuestPoint
 						mpforce $n GET "a quest point"
 					endif
 					if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)
@@ -296,7 +296,7 @@ DROP_PROG all
 					mpfaction $n $FACTION $NUMFACTION
 				endif
 				if EVAL('$QUEST_POINT' == 'YES') AND !QUESTWINNER($n *)
-					mpoload QuestPoint
+					mpoloadroom QuestPoint
 					mpforce $n GET "a quest point"
 				endif
 				if EVAL('$GOLD' != '') AND EVAL('$GOLD' > 0)

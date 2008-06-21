@@ -4,7 +4,7 @@
 #A reward is given upon completion of the task and returning the items to the announcer.
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
-#Enter the unique name and starting time/duration for your new quest.
+#Enter the unique name and player criteria for your new quest.
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
@@ -63,7 +63,7 @@
 #$QUEST_WINSPEECH_TEXT=($LONG_STRING)=Congratulations!
 #
 #!QUESTMAKER_PAGE Specify the Holders
-#The Holders are the mobs who will be holding the items jto collect. These must
+#The Holders are the mobs who will be holding the items to collect. These must
 #be existing mobs in your world.  
 #
 #Holder Mobs: 
@@ -126,7 +126,7 @@ set mob
 set item
 set room
 set area
-import items $QUEST_ID_item.xml
+import items $QUEST_ID_items.xml
 set itemgroup loadeditems
 set item
 
@@ -171,7 +171,8 @@ GIVE_PROG all
                 sayto $n $QUEST_WINSPEECH_TEXT
                 mpendquest $n
 			else
-				sayto "$n" That's $<$n $QUEST_ID_COLLECTED>/$NUM_COLLECTABLES.
+				sayto "$n" That's $<$n $QUEST_ID_RETURNED>/$NUM_COLLECTABLES.
+                mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
 			endif
 		else
 			sayto "$n" What's this?
@@ -200,8 +201,8 @@ SPEECH_PROG p i accept $QUEST_NAME
 <DATA>
 ONCE_PROG 100
     mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
-    mpsetvar $i QUEST_ID_GOT 0
-    mpsetvar $i QUEST_ID_RETURNED 0
+    mpsetvar $i $QUEST_ID_GOT 0
+    mpsetvar $i $QUEST_ID_RETURNED 0
     mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
 ~
 
@@ -213,18 +214,18 @@ CNCLMSG_PROG STO=DEATH ALL
     endif
 ~
 
-GET_PROG all
-    if questobj($o *) and QUESTSCRIPTED($n)
+EXECMSG_PROG GET ALL
+    if questobj($t *) and QUESTSCRIPTED($n *) and EVAL($n == $i)
         MPSETVAR $n $QUEST_ID_GOT ++
         mpechoat $n Picked up: $<$n $QUEST_ID_GOT>/$NUM_COLLECTABLES.
         mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
     endif
     
 ~
-DROP_PROG all
-    if questobj($o *) and QUESTSCRIPTED($n)
+EXECMSG_PROG DROP ALL
+    if questobj($t *) and QUESTSCRIPTED($n *) and EVAL($n == $i)
         MPSETVAR $n $QUEST_ID_GOT --
-        mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES
+        mpechoat $n Picked up: $<$n $QUEST_ID_GOT>/$NUM_COLLECTABLES.
         mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES
     endif
     
