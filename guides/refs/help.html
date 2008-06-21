@@ -58,6 +58,8 @@
 
 			<li> <a href="#AUCTION">AUCTION</a>
 
+			<li> <a href="#AUCTIONS">AUCTIONS</a>
+
 			<li> <a href="#AUTOAFFECTS">AUTOAFFECTS</a>
 
 			<li> <a href="#AUTOASSIST">AUTOASSIST</a>
@@ -82,6 +84,8 @@
 
 			<li> <a href="#AUTONOTIFY">AUTONOTIFY</a>
 
+			<li> <a href="#AUTORUN">AUTORUN</a>
+
 			<li> <a href="#AUTOSAC">AUTOSAC</a>
 
 			<li> <a href="#AUTOWEATHER">AUTOWEATHER</a>
@@ -99,6 +103,8 @@
 			<li> <a href="#BEACON">BEACON</a>
 
 			<li> <a href="#BEASTMASTER">BEASTMASTER</a>
+
+			<li> <a href="#BID">BID</a>
 
 			<li> <a href="#BLESSINGS">BLESSINGS</a>
 
@@ -618,8 +624,6 @@
 
 			<li> <a href="#QUESTS">QUESTS</a>
 
-			<li> <a href="#QUESTWINS">QUESTWINS</a>
-
 			<li> <a href="#QUEST_POINTS">QUEST_POINTS</a>
 
 			<li> <a href="#QUIET">QUIET</a>
@@ -834,6 +838,8 @@
 
 			<li> <a href="#WITHDRAW">WITHDRAW</a>
 
+			<li> <a href="#WIZARD">WIZARD</a>
+
 			<li> <a href="#WIZLIST">WIZLIST</a>
 
 			<li> <a href="#WORSHIP">WORSHIP</a>
@@ -1021,7 +1027,15 @@
 			<br>
 			<br>
 			<br>
-			<pre>Command : AUCTION<BR>Usage   : AUCTION (CLOSE)/(CHANNEL [MSG])/[BID]/[ITEM] ([OPENING BID])<BR>Example : auction ring<BR>Example : auction ring 100<BR>Example : auction 150<BR>Example : auction channel the ring is really great!<BR>Example : auction close<BR>Short(s): <BR>This versatile command is used by players wishing to auction items, as well as<BR>by those wishing to bid on items up for auction.  To start an auction, the player<BR>enters auction plus the name of the item, and an optional starting bid.  If there<BR>is no other auction going on at the time, the auction will begin.  Auctions last<BR>for a silent 5 minutes, plus 1 minute for each going once/twice/sold.  If no bids<BR>have been received after the first 3 minutes, the item will proceed directly to the<BR>going once/twice/sold period. The person putting on the auction may, at any time,<BR>close the auction without penalty by entering "auction close", or communicate on<BR>the auction channel (to give a better item description perhaps) using "auction<BR>channel [message]".<BR><BR>To place a bid on an auction that is ongoing, a player need only enter "auction<BR>[amount]".  Where amount is the maximum amount the player will pay for the item.  A<BR>proxy bidding system is in place for all auctions.  The current bid on the item<BR>will always be less than or equal to the bid of the high bidder, and at least 1<BR>gold more than the bid of the previous high bidder.  This means that, if the<BR>current bid on an item is 5, and a player bids 10, the new bid will become 6 (one<BR>more than the previous high bid).  If another player then bids 20, the new bid will<BR>become 11.<BR><BR>When an auction ends, the system will attempt to automatically complete the<BR>transaction for both the bidder and the auctioneer.  The proper money will be<BR>transferred (in converted notes) from the high bidder to the auctioneer.  The item<BR>up for auction will be automatically transferred from the auctioneer to the high<BR>bidder.</pre>
+			<pre>Command : AUCTION<BR>Usage   : AUCTION UP [ITEM] ([OPENING BID])<BR>Usage   : AUCTION BID [AMOUNT]<BR>Usage   : AUCTION LIST<BR>Usage   : AUCTION INFO<BR>Usage   : AUCTION CLOSE<BR>Usage   : AUCTION CHANNEL [MSG])<BR>Example : auction up ring<BR>Example : auction up ring 100<BR>Example : auction bid 150<BR>Example : auction channel the ring is really great!<BR>Example : auction close<BR>Example : auction list<BR>Example : auction info<BR>Short(s): <BR>This versatile command is used by players wishing to auction items at real time<BR>over the AUCTION channel, as well as by those wishing to bid on items up for<BR>auction.  To start an auction, the player enters AUCTION UP plus the name of the<BR>item, and an optional starting bid.  If there is no other auction going on at the<BR>time, the auction will begin.  Auctions last for a silent 5 minutes, plus 1 minute<BR>for each going once/twice/sold.  If no bids have been received after the first 3<BR>minutes, the item will proceed directly to the going once/twice/sold period. The<BR>person putting on the auction may, at any time, close the auction without penalty<BR>by entering "auction close", or communicate on the auction channel (to give a<BR>better item description perhaps) using "auction channel [message]".<BR><BR>To place a bid on an auction that is ongoing, a player need only enter "auction<BR>bid [amount]".  Where amount is the maximum amount the player will pay for the<BR>item.  A proxy bidding system is in place for all auctions.  The current bid on the<BR>item will always be less than or equal to the bid of the high bidder, and at least<BR>1 gold more than the bid of the previous high bidder.  This means that, if the<BR>current bid on an item is 5, and a player bids 10, the new bid will become 6 (one<BR>more than the previous high bid).  If another player then bids 20, the new bid will<BR>become 11.<BR><BR>Players can also get information on a live auction while it is going on by<BR>entering AUCTION INFO or AUCTION LIST.<BR><BR>When an auction ends, the system will attempt to automatically complete the<BR>transaction for both the bidder and the auctioneer.  The proper money will be<BR>transferred (in converted notes) from the high bidder to the auctioneer.  The item<BR>up for auction will be automatically transferred from the auctioneer to the high<BR>bidder.  The auction house may take a cut both when then auction is placed up, and<BR>on the final price. <BR><BR>See also help on AUCTIONS</pre>
+			</P>
+
+			<p>
+			<a name="AUCTIONS"><B>AUCTIONS</B></a>
+			<br>
+			<br>
+			<br>
+			<pre>Auctions are a system whereby players can buy and sell items from each other<BR>using an open bidding system.  In this system, a bidder places a bid which<BR>represents the most they will pay for the item.  However, a bidder must only end up<BR>paying an amount equal to the most anyone ELSE would also pay, so long as it is<BR>less than their own maximum bid. <BR><BR>This game supports two kinds of auctions.  One is a multi-game-day auction,<BR>which requires that you find an auctioneer mob and use commmands like BUY, SELL,<BR>VIEW, and BID. The game also supports a live auction system, which is managed using<BR>the AUCTION command.  Only one such live auction is allowed at any one time.  See<BR>help on the above commands for more information.</pre>
 			</P>
 
 			<p>
@@ -1121,6 +1135,14 @@
 			</P>
 
 			<p>
+			<a name="AUTORUN"><B>AUTORUN</B></a>
+			<br>
+			<br>
+			<br>
+			<pre>Command : AUTORUN<BR>Usage   : AUTORUN<BR>Example : autorun<BR>Short(s): <BR>Toggles whether or not you automatically run when using the standard movement<BR>commands. Running consumes movement points far more quickly than standard movement<BR>does.</pre>
+			</P>
+
+			<p>
 			<a name="AUTOSAC"><B>AUTOSAC</B></a>
 			<br>
 			<br>
@@ -1193,6 +1215,14 @@
 			</P>
 
 			<p>
+			<a name="BID"><B>BID</B></a>
+			<br>
+			<br>
+			<br>
+			<pre>Command : BID<BR>Usage   : BID [AMOUNT] [ITEM NAME] ([SHOPKEEPER NAME])<BR>Example : bid 100 sword<BR>Example : bid 100 sword mrauctioneer<BR>Example : bid "100 golden notes" "sword of the ancients" mrauctioneer<BR>Short(s): <BR>When an auctioneer is present in the same room or area as your character, this<BR>command will allow you to place a bid on an item from that auctioneer.  Placing a<BR>bid automatically removes coin from your person.<BR><BR>If your maximum bid is beat by another bidder (you are outbid), then you will<BR>automatically receive a refund.  You must then return to the auctioneer to place<BR>another bid.<BR><BR>If you win the auction, you will be notified after the auction ends.  You must<BR>then return to the auctioneer and use the BUY command to claim your merchandise. <BR>You will not be charged for claiming an item you won in auction.  If the item sold<BR>for less then your maximum bid, the auctioneer will give you a refund of the<BR>difference when you claim the item.<BR><BR>See also LIST, BUY, SELL, DEPOSIT, WITHDRAW, VIEW.</pre>
+			</P>
+
+			<p>
 			<a name="BLESSINGS"><B>BLESSINGS</B></a>
 			<br>
 			<br>
@@ -1261,7 +1291,7 @@
 			<br>
 			<br>
 			<br>
-			<pre>Command : BUY<BR>Usage   : BUY [ITEM NAME] ([SHOPKEEPER NAME]) (FOR [NAME])<BR>Example : buy sword<BR>Example : buy sword weaponsmith<BR>Example : buy sword weaponsmith for bob<BR>Short(s): <BR>When a shopkeeper is present in the same room or area as your character, this<BR>command will allow you to purchase an item from that shopkeeper.  The price for the<BR>item, as well as the availability of certain items can be determined by using the<BR>'LIST' command. If more than one shopkeeper is in the room, you may have to specify<BR>the shopkeeper name in the parameters.  You may also purchase items for someone<BR>else by adding the "for" syntax to the end of the command.</pre>
+			<pre>Command : BUY<BR>Usage   : BUY [ITEM NAME] ([SHOPKEEPER NAME]) (FOR [NAME])<BR>Example : buy sword<BR>Example : buy sword weaponsmith<BR>Example : buy sword weaponsmith for bob<BR>Short(s): <BR>When a shopkeeper is present in the same room or area as your character, this<BR>command will allow you to purchase an item from that shopkeeper, or close an<BR>auction you started.<BR><BR>The price for the item, as well as the availability of certain items can be<BR>determined by using the 'LIST' command. If more than one shopkeeper is in the room,<BR>you may have to specify the shopkeeper name in the parameters.  You may also<BR>purchase items for someone else by adding the "for" syntax to the end of the<BR>command. See also LIST, SELL, DEPOSIT, WITHDRAW, VIEW, BID.</pre>
 			</P>
 
 			<p>
@@ -1677,7 +1707,7 @@
 			<br>
 			<br>
 			<br>
-			<pre>Command : CONSIDER<BR>Usage   : CONSIDER [MOB NAME]<BR>Example : consider dragon<BR>Short(s): <BR>Sizes up a monster or character against your own, so that you can determine<BR>whether a fight with such a creature is wise, or just a waste of time. Related<BR>topics: HELP GCONSIDER</pre>
+			<pre>Command : CONSIDER<BR>Usage   : CONSIDER [MOB NAME]/[ITEM NAME]<BR>Example : consider dragon<BR>Example : consider sword<BR>Short(s): <BR>Sizes up a monster or character against your own, so that you can determine<BR>first whether the creature measures up in experience worth, and then whether a<BR>fight with such a creature is wise, or just a waste of time.  This command will<BR>also tell you if you have any skills that might be helpful to the item or<BR>character. See also HELP GCONSIDER.</pre>
 			</P>
 
 			<p>
@@ -1797,7 +1827,7 @@
 			<br>
 			<br>
 			<br>
-			<pre>Command : DEPOSIT<BR>Usage   : DEPOSIT [ITEM NAME] ([CLERK NAME])<BR>Example : deposit 1000<BR>Example : deposit jewel<BR>Example : deposit letter<BR>Short(s): <BR>When a banker or postal clerk is present in the same room as your character,<BR>this command will allow you to deposit an item into your account with that banker,<BR>or to deposit a letter or item to ship with the postal clerk.</pre>
+			<pre>Command : DEPOSIT<BR>Usage   : DEPOSIT [ITEM NAME] ([CLERK NAME])<BR>Example : deposit 1000<BR>Example : deposit jewel<BR>Example : deposit letter<BR>Short(s): <BR>When a banker or postal clerk is present in the same room as your character,<BR>this command will allow you to deposit an item into your account with that banker,<BR>or to deposit a letter or item to ship with the postal clerk. See also LIST, BUY,<BR>SELL, WITHDRAW, VIEW, BID.</pre>
 			</P>
 
 			<p>
@@ -2197,7 +2227,7 @@
 			<br>
 			<br>
 			<br>
-			<pre>The Gaian is the druid of the green earth, watching over the plants, trees and<BR>all growing things.  The gaian has a very special relationship with the plants and<BR>trees, having special abilities to make almost any location he steps into a<BR>sanctuary for his leafed friends.  So in tune with green things is the gaian that<BR>sunlight can actually give his green tinted skin additional powers.  The gaian can<BR>also call on the plants and trees around him to aid in him combat, to hide him from<BR>foes, or even to provide him with the things one would normally have to seek<BR>civilization for.  <BR><BR>How to play: The Gaian, so long as he stays around green plants, is a<BR>formidable foe to all enemies of nature.  The gaian can call all aspects of the<BR>plants to his aid, and can always find sanctuary in the green plants during times<BR>of trouble.  The gaian is weak in native combat abilities, like the other druids,<BR>but can make up for it with creative pre-casting, and good use of the power of<BR>nature during combat.</pre>
+			<pre>The Gaian is the druid of the green earth, watching over the plants, trees and<BR>all growing things.  The gaian has a very special relationship with the plants and<BR>trees, having special abilities to make almost any location he steps into a<BR>sanctuary for his leafed friends.  So in tune with green things is the gaian that<BR>sunlight can actually give his green tinted skin additional powers, though the<BR>darkness will slightly weaken his chanting stamina.  The gaian can also call on the<BR>plants and trees around him to aid in him combat, to hide him from foes, or even to<BR>provide him with the things one would normally have to seek civilization for.  <BR><BR>How to play: The Gaian, so long as he stays around green plants, is a<BR>formidable foe to all enemies of nature.  The gaian can call all aspects of the<BR>plants to his aid, and can always find sanctuary in the green plants during times<BR>of trouble.  The gaian is weak in native combat abilities, like the other druids,<BR>but can make up for it with creative pre-casting, and good use of the power of<BR>nature during combat.</pre>
 			</P>
 
 			<p>
@@ -2725,7 +2755,7 @@
 			<br>
 			<br>
 			<br>
-			<pre>Command : LIST<BR>Usage   : LIST ([SHOPKEEPER])<BR>Example : list<BR>Short(s): <BR>The normal player version of this commannd will display the items which a<BR>particular shopkeeper MOB may be selling, along with the prices being offered to<BR>your characters. If more than one shopkeeper is in the room, you may have to<BR>specify the shopkeeper name in the parameters.</pre>
+			<pre>Command : LIST<BR>Usage   : LIST ([SHOPKEEPER]) (FOR [ITEMNAME])<BR>Example : list<BR>Example : list weaponsmith<BR>Example : list for shield<BR>Short(s): <BR>The normal player version of this command will display the items which a<BR>particular shopkeeper MOB may be selling, along with the prices being offered to<BR>your characters. If more than one shopkeeper is in the room, you may have to<BR>specify the shopkeeper name in the parameters.  You may add the key word FOR and an<BR>item name to the end to filter the results.  See also BUY, SELL, DEPOSIT, WITHDRAW,<BR>VIEW, BID.</pre>
 			</P>
 
 			<p>
@@ -2757,7 +2787,7 @@
 			<br>
 			<br>
 			<br>
-			<pre>Mages are masters of magic, and wielders of the great elemental powers.  While<BR>weak in hit points and in fighting skill, their spells are the most widely prized<BR>and powerful of all the classes.  They may not wear any metal or leather armors, or<BR>use most weapons.  However, the sting of their magic missiles and the armor of<BR>magic they wear makes up for any loss.<BR><BR>Mage is the basis for numerous sub-classes which the player may choose to gain<BR>levels in at any time.  These sub-classes include: Abjurer, Alterer, Conjurer,<BR>Diviner, Enchanter, Evoker, Illusionist, and Transmuter.<BR><BR>How to play: Mages are easily the most versatile of classes, being able to make<BR>spell choices which carve out the path the Mage would like to take.  For the loner<BR>Mage, the emphasis on offensive magic will make him a powerful opponent in battle. <BR>In groups, the mage may focus on protective magic to make him a more desirable<BR>companion.  And even the playful mage may focus on the role-playing magic to make<BR>his mudding as fun as possible!<BR><BR>The mage is almost useless in weapon combat.  The mage must be smart and<BR>creative to use his spells to give him the edge.  But the versatility of the mage<BR>gives him the ability to do just that, using magic and guile to trick monsters to<BR>their death, granting experience for the mage.<BR></pre>
+			<pre>Mages are masters of magic, and wielders of the great elemental powers.  While<BR>weak in hit points and in fighting skill, their spells are the most widely prized<BR>and powerful of all the classes.  They may not wear any metal or leather armors, or<BR>use most weapons.  However, the sting of their magic missiles and the armor of<BR>magic they wear makes up for any loss.<BR><BR>Mage is the basis for numerous sub-classes which the player may choose to gain<BR>levels in at any time.  These sub-classes include: Abjurer, Alterer, Conjurer,<BR>Diviner, Enchanter, Evoker, Illusionist, Transmuter, and Wizard.<BR><BR>How to play: Mages are among the most versatile of classes, being able to make<BR>spell choices which carve out the path the Mage would like to take.  For the loner<BR>Mage, the emphasis on offensive magic will make him a powerful opponent in battle. <BR>In groups, the mage may focus on protective magic to make him a more desirable<BR>companion.  And even the playful mage may focus on the role-playing magic to make<BR>his mudding as fun as possible!<BR><BR>The mage is almost useless in weapon combat.  The mage must be smart and<BR>creative to use his spells to give him the edge.  But the versatility of the mage<BR>gives him the ability to do just that, using magic and guile to trick monsters to<BR>their death, granting experience for the mage.<BR></pre>
 			</P>
 
 			<p>
@@ -3197,7 +3227,7 @@
 			<br>
 			<br>
 			<br>
-			<pre>Command : PROMPT<BR>Usage   : PROMPT ([NEW PROMPT STRING])<BR>Example : prompt </I></U></BLINK></B></FONT>&lt;%hhp %mm %vmv</I></U></BLINK></B></FONT>><BR>Example : prompt default<BR>Short(s): <BR>Display or change your prompt string.  Typing PROMPT DEFAULT will reset your<BR>prompt to the default setting.<BR>Valid embedded codes for custom prompts include:<BR>%h  :  Display your current hits<BR>%H  :  Display your maximum hits<BR>%m  :  Display your current mana<BR>%M  :  Display your maximum mana<BR>%v  :  Display your current moves<BR>%V  :  Display your maximum moves<BR>%x  :  Display your current experience<BR>%X  :  Display your needed experience<BR>%G  :  Display the amount and name of your money<BR>%g  :  Display the value of your money<BR>%a  :  Display your alignment in numbers<BR>%A  :  Display your alignment as text<BR>%w  :  Display your weight encumbrance<BR>%W  :  Display the maximum weight you can carry<BR>%c  :  Display your item encumbrance<BR>%C  :  Display the maximum items you can carry<BR>%r  :  Display the room name you are in<BR>%R  :  Display the room number you are in (ARCHON ONLY)<BR>%z  :  Display the area name you are in (ARCHON ONLY)<BR>%e  :  Display name of person under attack<BR>%E  :  Display state of person under attack<BR>%I  :  Display hidden/invisibility status<BR>%B  :  Go to a new line<BR>%d  :  Display range to the person you are fighting<BR>%t  :  Display the time of day<BR>%T  :  Display the hour of the day<BR>%@  :  Display the weather where you are<BR>%Kh :  Display the tanks current hits<BR>%KH :  Display the tanks maximum hits<BR>%Km :  Display the tanks current mana<BR>%KM :  Display the tanks maximum mana<BR>%Kv :  Display the tanks current moves<BR>%KV :  Display the tanks maximum moves<BR>%Ke :  Display the tanks name<BR>%KE :  Display the tanks health condition<BR>^N :  Normal color<BR>^w :  White<BR>^g :  Light green<BR>^b :  Light blue<BR>^r :  Light red<BR>^y :  Yellow<BR>^c :  Cyan<BR>^p :  Light purple<BR>^W :  Grey<BR>^G :  Dark Green<BR>^B :  Dark Blue<BR>^R :  Maroon<BR>^Y :  Dark yellow<BR>^C :  Dark Cyan<BR>^P :  Dark Purple<BR>^? :  Previous color/End color<BR></pre>
+			<pre>Command : PROMPT<BR>Usage   : PROMPT ([NEW PROMPT STRING])<BR>Example : prompt </I></U></BLINK></B></FONT><FONT COLOR=CYAN>%hhp <FONT COLOR=CYAN>%mm <FONT COLOR=CYAN>%vmv</I></U></BLINK></B></FONT>><BR>Example : prompt default<BR>Short(s): <BR>Display or change your prompt string.  Typing PROMPT DEFAULT will reset your<BR>prompt to the default setting.<BR>Valid embedded codes for custom prompts include:<BR>%h  :  Display your current hits<BR>%H  :  Display your maximum hits<BR>%m  :  Display your current mana<BR>%M  :  Display your maximum mana<BR>%v  :  Display your current moves<BR>%V  :  Display your maximum moves<BR>%x  :  Display your current experience<BR>%X  :  Display your needed experience<BR>%G  :  Display the amount and name of your money<BR>%g  :  Display the value of your money<BR>%a  :  Display your alignment in numbers<BR>%A  :  Display your alignment as text<BR>%w  :  Display your weight encumbrance<BR>%W  :  Display the maximum weight you can carry<BR>%c  :  Display your item encumbrance<BR>%C  :  Display the maximum items you can carry<BR>%r  :  Display the room name you are in<BR>%R  :  Display the room number you are in (ARCHON ONLY)<BR>%z  :  Display the area name you are in (ARCHON ONLY)<BR>%e  :  Display name of person under attack<BR>%E  :  Display state of person under attack<BR>%I  :  Display hidden/invisibility status<BR>%B  :  Go to a new line<BR>%d  :  Display range to the person you are fighting<BR>%t  :  Display the time of day<BR>%T  :  Display the hour of the day<BR>%@  :  Display the weather where you are<BR>%Kh :  Display the tanks current hits<BR>%KH :  Display the tanks maximum hits<BR>%Km :  Display the tanks current mana<BR>%KM :  Display the tanks maximum mana<BR>%Kv :  Display the tanks current moves<BR>%KV :  Display the tanks maximum moves<BR>%Ke :  Display the tanks name<BR>%KE :  Display the tanks health condition<BR>^h :  Standard hit point color<BR>^m :  Standard mana color<BR>^v :  Standard movement color<BR>^N :  Normal color<BR>^w :  White<BR>^g :  Light green<BR>^b :  Light blue<BR>^r :  Light red<BR>^y :  Yellow<BR>^c :  Cyan<BR>^p :  Light purple<BR>^W :  Grey<BR>^G :  Dark Green<BR>^B :  Dark Blue<BR>^R :  Maroon<BR>^Y :  Dark yellow<BR>^C :  Dark Cyan<BR>^P :  Dark Purple<BR>^? :  Previous color/End color<BR></pre>
 			</P>
 
 			<p>
@@ -3262,14 +3292,6 @@
 			<br>
 			<br>
 			<pre>Quests are tasks which can be completed by players for prizes, typically quest<BR>points, experience, money, or all three.  Some quests are driven by Archons, while<BR>others are automated by the system.  See also QUESTCHAT and QUESTWINS.  Archons<BR>should enter AHELP QUESTS for more information on creating automated quests.</pre>
-			</P>
-
-			<p>
-			<a name="QUESTWINS"><B>QUESTWINS</B></a>
-			<br>
-			<br>
-			<br>
-			<pre>Command : QUESTWINS<BR>Usage   : QUESTWINS<BR>Example : questwins<BR>Short(s): <BR>Lists which of the existing Quests you are listed as having won.  Having a<BR>quest on this list does not necessarily mean you can not complete it again, but<BR>usually it does.</pre>
 			</P>
 
 			<p>
@@ -3389,7 +3411,7 @@
 			<br>
 			<br>
 			<br>
-			<pre>Command : REPORT<BR>Usage   : REPORT ([SONGS/SPELLS/PRAYERS/CHANTS/SKILLS/AFFECTS/STATS])<BR>Example : report<BR>Example : report spells<BR>Short(s): <BR>Quickly say outloud your hit points, mana, movement, and experience, or list<BR>out your spells, skills, or other abilities.</pre>
+			<pre>Command : REPORT<BR>Usage   : REPORT ([SONGS/SPELLS/PRAYERS/CHANTS/SKILLS/AFFECTS/STATS/ALL])<BR>Example : report<BR>Example : report spells<BR>Short(s): <BR>Quickly say outloud your hit points, mana, movement, and experience, or list<BR>out your spells, skills, stats, or other abilities.</pre>
 			</P>
 
 			<p>
@@ -3533,7 +3555,7 @@
 			<br>
 			<br>
 			<br>
-			<pre>Command : SELL<BR>Usage   : SELL [ITEM NAME] ([SHOPKEEPER])<BR>Example : sell sword<BR>Short(s): <BR>If you are in the same room as a shopkeeper who is selling and buying goods,<BR>this command will sell the specified item in your carried inventory to the<BR>shopkeeper for the price he names. If more than one shopkeeper is in the room, you<BR>may have to specify the shopkeeper name in the parameters.<BR><BR>Shopkeepers will only buy the items they are interested in.  This usually means<BR>the kinds of items they sell.  Shopkeepers may refuse an item because of its low<BR>worth, or because the shopkeeper has enough of them.  See the PACKAGE command for<BR>help in selling items of low worth.</pre>
+			<pre>Command : SELL<BR>Usage   : SELL [ITEM NAME] ([SHOPKEEPER])<BR>Example : sell sword<BR>Short(s): <BR>If you are in the same room as a shopkeeper who is selling and buying goods,<BR>this command will sell the specified item in your carried inventory to the<BR>shopkeeper for the price he names. This is also the command used with an auctioneer<BR>to auction an item. If more than one shopkeeper is in the room, you may have to<BR>specify the shopkeeper name in the parameters.<BR><BR>Shopkeepers will only buy the items they are interested in.  This usually means<BR>the kinds of items they sell.  Shopkeepers may refuse an item because of its low<BR>worth, or because the shopkeeper has enough of them.  See the PACKAGE command for<BR>help in selling items of low worth. See also LIST, BUY, DEPOSIT, WITHDRAW, VIEW,<BR>BID.</pre>
 			</P>
 
 			<p>
@@ -3813,7 +3835,7 @@
 			<br>
 			<br>
 			<br>
-			<pre>See the help entry on CLANS for more generic clan information.<BR><BR>Organization type: THEOCRACY<BR>The theocracy is an organization that is always run by the highest level<BR>cleric.  All other clerics enjoy second-in-command privileges.  All members are<BR>required to workship the clans deity, which is the deity of the high priest. The<BR>high priest has all the powers and authority mentioned above, and can assign<BR>leaders, treasurers, or staff to assist with some menial clan chores.  All members<BR>have the authority to maintain discipline in the ranks using the ORDER command.<BR><BR>Theocracies have a unique benefit among all other clan types.  They are the<BR>only clan type that can attain conquest control points by converting the area<BR>inhabitants to their religion.  They are also uniquely allowed to sanctify churches<BR>in conquered areas and hold services. <BR><BR>Theocracy Authority Chart<BR>--------------------<BR>Command        !Member   !Staff    !Enchanter!Treasurer!Leader   !Boss   <BR>---------------+---------+---------+---------+---------+---------+-------<BR>ClanAccept     !         !         !         !         !    X    ! X     <BR>---------------+---------+---------+---------+---------+---------+-------<BR>ClanAssign     !         !         !         !         !         ! X     <BR>---------------+---------+---------+---------+---------+---------+-------<BR>ClanExile      !         !         !         !         !    X    ! X     <BR>---------------+---------+---------+---------+---------+---------+-------<BR>ClanHomeSet    !         !         !         !         !         ! X     <BR>---------------+---------+---------+---------+---------+---------+-------<BR>ClanMorgueSet  !         !         !         !         !         ! X     <BR>---------------+---------+---------+---------+---------+---------+-------<BR>ClanDeclare    !         !         !         !         !         ! X     <BR>---------------+---------+---------+---------+---------+---------+-------<BR>ClanTax        !         !         !         !         !         ! X     <BR>---------------+---------+---------+---------+---------+---------+-------<BR>ClanDonateSet  !         !         !         !         !         ! X     <BR>---------------+---------+---------+---------+---------+---------+-------<BR>ClanReject     !         !         !         !         !    X    ! X     <BR>---------------+---------+---------+---------+---------+---------+-------<BR>ClanPremise    !         !         !         !         !         ! X     <BR>---------------+---------+---------+---------+---------+---------+-------<BR>Buy Property   !         !         !         !         !    X    ! X     <BR>---------------+---------+---------+---------+---------+---------+-------<BR>Spend Clan Exp !         !         !    X    !         !         !       <BR>---------------+---------+---------+---------+---------+---------+-------<BR>Withdraw Funds !         !         !         !    X    !         ! X     <BR>---------------+---------+---------+---------+---------+---------+-------<BR>List Funds     !         !         !         !    X    !         !       <BR>---------------+---------+---------+---------+---------+---------+-------<BR>Order Members  !    X    !    X    !    X    !    X    !    X    ! X     <BR>---------------+---------+---------+---------+---------+---------+-------<BR>Order Conquered!    X    !    X    !    X    !    X    !    X    ! X     <BR>---------------+---------+---------+---------+---------+---------+-------</pre>
+			<pre>See the help entry on CLANS for more generic clan information.<BR><BR>Organization type: THEOCRACY<BR>The theocracy is an organization that is always run by the highest level<BR>cleric.  All other clerics enjoy second-in-command privileges.  All members are<BR>required to workship the clans deity, which is the deity of the high priest. The<BR>high priest has all the powers and authority mentioned above, and can assign<BR>leaders, treasurers, or staff to assist with some menial clan chores.  All members<BR>have the authority to maintain discipline in the ranks using the ORDER command.<BR><BR>Theocracies have a unique benefit among all other clan types.  They are the<BR>only clan type that can attain conquest control points by converting the area<BR>inhabitants to their religion.  They are also uniquely allowed to sanctify churches<BR>in conquered areas and hold services. <BR><BR>Theocracy Authority Chart<BR>--------------------<BR>Command        !Believer !Crusader !Enchanter!Treasurer!Priest!HighPriest<BR>---------------+---------+---------+---------+---------+------+----------<BR>ClanAccept     !         !         !         !         !  X   !   X      <BR>---------------+---------+---------+---------+---------+------+----------<BR>ClanAssign     !         !         !         !         !      !   X      <BR>---------------+---------+---------+---------+---------+------+----------<BR>ClanExile      !         !         !         !         !  X   !   X      <BR>---------------+---------+---------+---------+---------+------+----------<BR>ClanHomeSet    !         !         !         !         !      !   X      <BR>---------------+---------+---------+---------+---------+------+----------<BR>ClanMorgueSet  !         !         !         !         !      !   X      <BR>---------------+---------+---------+---------+---------+------+----------<BR>ClanDeclare    !         !         !         !         !      !   X      <BR>---------------+---------+---------+---------+---------+------+----------<BR>ClanTax        !         !         !         !         !      !   X      <BR>---------------+---------+---------+---------+---------+------+----------<BR>ClanDonateSet  !         !         !         !         !      !   X      <BR>---------------+---------+---------+---------+---------+------+----------<BR>ClanReject     !         !         !         !         !  X   !   X      <BR>---------------+---------+---------+---------+---------+------+----------<BR>ClanPremise    !         !         !         !         !      !   X      <BR>---------------+---------+---------+---------+---------+------+----------<BR>Buy Property   !         !         !         !         !  X   !   X      <BR>---------------+---------+---------+---------+---------+------+----------<BR>Spend Clan Exp !         !         !    X    !         !      !          <BR>---------------+---------+---------+---------+---------+------+----------<BR>Withdraw Funds !         !         !         !    X    !      !   X      <BR>---------------+---------+---------+---------+---------+------+----------<BR>List Funds     !         !         !         !    X    !      !          <BR>---------------+---------+---------+---------+---------+------+----------<BR>Order Members  !    X    !    X    !    X    !    X    !  X   !   X      <BR>---------------+---------+---------+---------+---------+------+----------<BR>Order Conquered!    X    !    X    !    X    !    X    !  X   !   X      <BR>---------------+---------+---------+---------+---------+------+----------</pre>
 			</P>
 
 			<p>
@@ -3997,7 +4019,7 @@
 			<br>
 			<br>
 			<br>
-			<pre>Command : VIEW<BR>Usage   : VIEW [ITEM NAME] ([SHOPKEEPER NAME])<BR>Example : view sword<BR>Short(s): <BR>When a shopkeeper is present in the same room or area as your character, this<BR>command will allow you to ask about an item being sold by that shopkeeper.  The<BR>level of the item, as well as any available descriptive information will be given.<BR>If more than one shopkeeper is in the room, you may have to specify the shopkeeper<BR>name in the parameters.</pre>
+			<pre>Command : VIEW<BR>Usage   : VIEW [ITEM NAME] ([SHOPKEEPER NAME])<BR>Example : view sword<BR>Short(s): <BR>When a shopkeeper is present in the same room or area as your character, this<BR>command will allow you to ask about an item being sold by that shopkeeper.  The<BR>level of the item, as well as any available descriptive information will be given.<BR>If more than one shopkeeper is in the room, you may have to specify the shopkeeper<BR>name in the parameters. See also LIST, BUY, SELL, DEPOSIT, WITHDRAW, BID.</pre>
 			</P>
 
 			<p>
@@ -4101,7 +4123,7 @@
 			<br>
 			<br>
 			<br>
-			<pre>Command : WILLQUALIFY<BR>Usage   : WILLQUALIFY [LEVEL] ([CLASS NAME])<BR>Example : willqualify 10<BR>Example : willqualify 30 fighter<BR>Short(s): qual<BR>Lists all of the skills, spells, languages, prayers, and/or songs which the<BR>class will qualify for, along with the requirements to gain the new skill.</pre>
+			<pre>Command : WILLQUALIFY<BR>Usage   : WILLQUALIFY ([LEVEL]) ([CLASS NAME]) ([SKILLTYPE]/EXPERTISE)...<BR>Example : willqualify 10<BR>Example : willqualify 30 fighter<BR>Example : willqualify expertise<BR>Example : willqualify 50 divination invocation/evocation expertise<BR>Short(s): qual<BR>Lists all of the skills, spells, languages, prayers, expertises, and/or songs<BR>which will be qualified for by the given class, level, and skill type, along with<BR>the requirements to gain the new skill.  The default is the players highest level,<BR>the players own class, and all skills/expertises.</pre>
 			</P>
 
 			<p>
@@ -4125,7 +4147,15 @@
 			<br>
 			<br>
 			<br>
-			<pre>Command : WITHDRAW<BR>Usage   : WITHDRAW [ITEM NAME] ([CLERK NAME])<BR>Example : withdraw 1000<BR>Example : withdraw "jewel sword"<BR>Example : withdraw "10 gold coins" "Joe Banker"<BR>Example : withdraw "500 archon notes" banker<BR>Example : withdraw letter clerk<BR>Short(s): <BR>When a banker or postal clerk is present in the same room or area as your<BR>character, this command will allow you to withdraw an item from your account or<BR>postal box with that banker.  You should use the LIST command to review items in<BR>your account or postal box.</pre>
+			<pre>Command : WITHDRAW<BR>Usage   : WITHDRAW [ITEM NAME] ([CLERK NAME])<BR>Example : withdraw 1000<BR>Example : withdraw "jewel sword"<BR>Example : withdraw "10 gold coins" "Joe Banker"<BR>Example : withdraw "500 archon notes" banker<BR>Example : withdraw letter clerk<BR>Short(s): <BR>When a banker or postal clerk is present in the same room or area as your<BR>character, this command will allow you to withdraw an item from your account or<BR>postal box with that banker. See also LIST, BUY, SELL, DEPOSIT, VIEW, BID.</pre>
+			</P>
+
+			<p>
+			<a name="WIZARD"><B>WIZARD</B></a>
+			<br>
+			<br>
+			<br>
+			<pre>Wizards are great specialist scholar mages who have mastered the study (but not<BR>the art) of arcane magic.  They are capable of memorizing and casting any basic<BR>arcane spell, but their lack of mastery means they forget the spell as soon as it<BR>is cast.  This means that the wizard is constantly engaged in study, carrying<BR>around and/or creating numerous arcane scrolls to serve as the source for their<BR>next bit of magic.  Since they don't specialize or train in particular arcane<BR>spells, but can learn any spell, the Wizard is the most versitile Mage, though not<BR>necessarily the easiest to engage in combat with. <BR><BR>The Wizards manner of study requires that he expend his spell-casting mana when<BR>he learns or memorizes a spell, but this mana is released for use after the spell<BR>is cast.  Wizards can be invaluable as group members, and as clan members, but will<BR>struggle adventuring alone. A wizards lack of need to expend training time on<BR>individual spells means he can work on other aspects of himself, including stats or<BR>expertises, making the Wizard very powerful in the long run.</pre>
 			</P>
 
 			<p>
