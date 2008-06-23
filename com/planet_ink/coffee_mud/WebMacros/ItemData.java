@@ -465,23 +465,23 @@ public class ItemData extends StdWebMacro
 				case 22: // weapon type
 					if((firstTime)&&(I instanceof Weapon))
 						old=""+((Weapon)I).weaponType();
-					for(int r=0;r<Weapon.typeDescription.length;r++)
+					for(int r=0;r<Weapon.TYPE_DESCS.length;r++)
 					{
 						str.append("<OPTION VALUE=\""+r+"\"");
 						if(r==CMath.s_int(old))
 							str.append(" SELECTED");
-						str.append(">"+Weapon.typeDescription[r]);
+						str.append(">"+Weapon.TYPE_DESCS[r]);
 					}
 					break;
 				case 23: // weapon class
 					if((firstTime)&&(I instanceof Weapon))
 						old=""+((Weapon)I).weaponClassification();
-					for(int r=0;r<Weapon.classifictionDescription.length;r++)
+					for(int r=0;r<Weapon.CLASS_DESCS.length;r++)
 					{
 						str.append("<OPTION VALUE=\""+r+"\"");
 						if(r==CMath.s_int(old))
 							str.append(" SELECTED");
-						str.append(">"+Weapon.classifictionDescription[r]);
+						str.append(">"+Weapon.CLASS_DESCS[r]);
 					}
 					break;
 				case 24: // attack

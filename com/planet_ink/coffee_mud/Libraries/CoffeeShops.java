@@ -121,8 +121,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             str.append("\n\rWeight     : "+I.envStats().weight()+" pounds");
             if(I instanceof Weapon)
             {
-                str.append("\n\rWeap. Type : "+CMStrings.capitalizeAndLower(Weapon.typeDescription[((Weapon)I).weaponType()]));
-                str.append("\n\rWeap. Class: "+CMStrings.capitalizeAndLower(Weapon.classifictionDescription[((Weapon)I).weaponClassification()]));
+                str.append("\n\rWeap. Type : "+CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)I).weaponType()]));
+                str.append("\n\rWeap. Class: "+CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)I).weaponClassification()]));
             }
             else
             if(I instanceof Armor)

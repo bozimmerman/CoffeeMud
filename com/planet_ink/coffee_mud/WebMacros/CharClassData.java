@@ -596,11 +596,11 @@ public class CharClassData extends StdWebMacro
                         for(int i=0;httpReq.isRequestParameter("NOWEAPS"+id);id=""+(++i))
                             set.addElement(httpReq.getRequestParameter("NOWEAPS"+id));
                     }
-                    for(int i=0;i<Weapon.classifictionDescription.length;i++)
+                    for(int i=0;i<Weapon.CLASS_DESCS.length;i++)
                     {
                         str.append("<OPTION VALUE="+i);
                         if(set.contains(""+i)) str.append(" SELECTED");
-                        str.append(">"+Weapon.classifictionDescription[i]);
+                        str.append(">"+Weapon.CLASS_DESCS[i]);
                     }
                     str.append(", ");
                 }

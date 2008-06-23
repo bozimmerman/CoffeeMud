@@ -213,9 +213,9 @@ public class StdCharClass implements CharClass
 			return null;
 		int[] set=CharClass.WEAPONS_SETS[lvl];
 		HashSet H=new HashSet();
-		if(set[0]>Weapon.classifictionDescription.length)
+		if(set[0]>Weapon.CLASS_DESCS.length)
 			return null;
-		for(int i=0;i<Weapon.classifictionDescription.length;i++)
+		for(int i=0;i<Weapon.CLASS_DESCS.length;i++)
 		{
 			boolean found=false;
 			for(int s=0;s<set.length;s++)
@@ -229,7 +229,7 @@ public class StdCharClass implements CharClass
 		if(allowedWeaponLevel()==CharClass.WEAPONS_ANY)
 			return null;
 		int[] set=CharClass.WEAPONS_SETS[allowedWeaponLevel()];
-		if(set[0]>Weapon.classifictionDescription.length)
+		if(set[0]>Weapon.CLASS_DESCS.length)
 		{
 			HashSet H=new HashSet();
 			for(int s=0;s<set.length;s++)

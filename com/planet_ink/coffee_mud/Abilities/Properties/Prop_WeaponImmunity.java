@@ -108,8 +108,8 @@ public class Prop_WeaponImmunity extends Property
 
 			if((foundPlusMinus==null)&&(msg.tool() instanceof Weapon))
 			{
-			    foundPlusMinus=(Character)flags.get(Weapon.typeDescription[((Weapon)msg.tool()).weaponType()]);
-			    foundPlusMinus=(Character)flags.get(Weapon.classifictionDescription[((Weapon)msg.tool()).weaponClassification()]);
+			    foundPlusMinus=(Character)flags.get(Weapon.TYPE_DESCS[((Weapon)msg.tool()).weaponType()]);
+			    foundPlusMinus=(Character)flags.get(Weapon.CLASS_DESCS[((Weapon)msg.tool()).weaponClassification()]);
 			    foundPlusMinus=(Character)flags.get((CMLib.flags().isABonusItems(msg.tool()))?"MAGIC":"NONMAGIC");
 			    foundPlusMinus=(Character)flags.get(RawMaterial.RESOURCE_DESCS[((Weapon)msg.tool()).material()&RawMaterial.RESOURCE_MASK]);
 				if(foundPlusMinus!=null)

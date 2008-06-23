@@ -114,18 +114,18 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 
 	protected int specClass(String weaponClass)
 	{
-		for(int i=0;i<Weapon.classifictionDescription.length;i++)
+		for(int i=0;i<Weapon.CLASS_DESCS.length;i++)
 		{
-			if(Weapon.classifictionDescription[i].equalsIgnoreCase(weaponClass))
+			if(Weapon.CLASS_DESCS[i].equalsIgnoreCase(weaponClass))
 				return i;
 		}
 		return -1;
 	}
 	protected int specType(String weaponType)
 	{
-		for(int i=0;i<Weapon.typeDescription.length;i++)
+		for(int i=0;i<Weapon.TYPE_DESCS.length;i++)
 		{
-			if(Weapon.typeDescription[i].equalsIgnoreCase(weaponType))
+			if(Weapon.TYPE_DESCS[i].equalsIgnoreCase(weaponType))
 				return i;
 		}
 		return -1;

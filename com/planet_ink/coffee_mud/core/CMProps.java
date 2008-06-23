@@ -105,7 +105,8 @@ public class CMProps extends Properties
     public static final int SYSTEM_ITEMLOOTPOLICY=56;
     public static final int SYSTEM_AUCTIONRATES=57;
     public static final int SYSTEM_DEFAULTPROMPT=58;
-    public static final int NUM_SYSTEM=59;
+    public static final int SYSTEM_LISTFILE=59;
+    public static final int NUM_SYSTEM=60;
 
     public static final int SYSTEMI_EXPRATE=0;
     public static final int SYSTEMI_SKYSIZE=1;
@@ -180,12 +181,36 @@ public class CMProps extends Properties
     public static final int SYSTEMB_INTRODUCTIONSYSTEM=10;
     public static final int NUMB_SYSTEM=11;
 
+    public static final int SYSTEML_DAMAGE_WORDS_THRESHOLDS=0;
+    public static final int SYSTEML_DAMAGE_WORDS=1;
+    public static final int SYSTEML_HEALTH_CHART=2;
+    public static final int SYSTEML_MISS_DESCS=3;
+    public static final int SYSTEML_WEAPON_MISS_DESCS=4;
+    public static final int SYSTEML_PROWESS_DESCS_CEILING=5;
+    public static final int SYSTEML_PROWESS_DESCS=6;
+    public static final int SYSTEML_ARMOR_DESCS_CEILING=7;
+    public static final int SYSTEML_ARMOR_DESCS=8;
+    public static final String[] SYSTEML_KEYS={
+                                    "DAMAGE_WORDS_THRESHOLDS",
+                                    "DAMAGE_WORDS",
+                                    "HEALTH_CHART",
+                                    "MISS_DESCS",
+                                    "WEAPON_MISS_DESCS",
+                                    "PROWESS_DESCS_CEILING",
+                                    "PROWESS_DESCS",
+                                    "ARMOR_DESCS_CEILING",
+                                    "ARMOR_DESCS",
+    };
+    public static final int NUML_SYSTEM=9;
+    
+    
     protected String[] sysVars=new String[NUM_SYSTEM];
     protected Integer[] sysInts=new Integer[NUMI_SYSTEM];
     protected Boolean[] sysBools=new Boolean[NUMB_SYSTEM];
     protected Vector sayFilter=new Vector();
     protected Vector channelFilter=new Vector();
     protected Vector emoteFilter=new Vector();
+    protected Object[] listData=new Object[NUML_SYSTEM];
     protected DVector newusersByIP=new DVector(2);
     protected DVector skillMaxManaExceptions=new DVector(2);
     protected DVector skillMinManaExceptions=new DVector(2);
@@ -319,6 +344,12 @@ public class CMProps extends Properties
 		return strArray;
 	}
 
+    /** retrieve a particular .ini file entry as a boolean
+    *
+    * <br><br><b>Usage:</b>  boolean i=getBoolean("TAG");
+    * @param tagToGet   the property tag to retreive.
+    * @return int   the value of the .ini file tag
+    */
 	public boolean getBoolean(String tagToGet)
 	{
 		String thisVal=getStr(tagToGet);
@@ -329,7 +360,7 @@ public class CMProps extends Properties
 
 	/** retrieve a particular .ini file entry as a double
 	*
-	* <br><br><b>Usage:</b>  int i=propertyGetterOfInteger(p,"TAG");
+	* <br><br><b>Usage:</b>  double i=getDouble("TAG");
 	* @param tagToGet	the property tag to retreive.
 	* @return int	the value of the .ini file tag
 	*/
@@ -347,7 +378,7 @@ public class CMProps extends Properties
 
 	/** retrieve a particular .ini file entry as an integer
 	*
-	* <br><br><b>Usage:</b>  int i=propertyGetterOfInteger(p,"TAG");
+	* <br><br><b>Usage:</b>  int i=getInt("TAG");
 	* @param tagToGet	the property tag to retreive.
 	* @return int	the value of the .ini file tag
 	*/
@@ -495,7 +526,70 @@ public class CMProps extends Properties
     	return endVal;
     }
 
+    public static String getListValue(String key) {
+        synchronized(getVar(SYSTEM_LISTFILE).intern())
+        {
+            Properties rawListData=(Properties)Resources.getResource(getVar(SYSTEM_LISTFILE));
+            if(rawListData==null)
+            {
+                rawListData=new Properties();
+                CMFile F=new CMFile(getVar(SYSTEM_LISTFILE),null,true);
+                if(F.exists())
+                {
+                    try{
+                        rawListData.load(new ByteArrayInputStream(F.raw()));
+                    } catch(IOException e){}
+                }
+                Resources.submitResource(getVar(SYSTEM_LISTFILE), rawListData);
+            }
+            return rawListData.getProperty(key);
+        }
+    }
+    
+    public static int getIListVar(int var)
+    {
+        if((var<0)||(var>=NUML_SYSTEM)) return -1;
+        if(p().listData[var]==null)
+            p().listData[var]=new int[]{(CMath.s_int(getListValue(SYSTEML_KEYS[var])))};
+        return ((int[])p().listData[var])[0];
+    }
 
+    public static int[] getI1ListVar(int var)
+    {
+        if((var<0)||(var>=NUML_SYSTEM)) return new int[0];
+        if(p().listData[var]==null)
+        {
+            Vector V=CMParms.parseCommas(getListValue(SYSTEML_KEYS[var]), true);
+            int[] set=new int[V.size()];
+            for(int v=0;v<V.size();v++)
+                set[v]=CMath.s_int((String)V.elementAt(v));
+            p().listData[var]=set;
+        }
+        return ((int[])p().listData[var]);
+    }
+
+    public static String[] getSListVar(int var)
+    {
+        if((var<0)||(var>=NUML_SYSTEM)) return new String[0];
+        if(p().listData[var]==null)
+            p().listData[var]=CMParms.toStringArray(CMParms.parseCommas(getListValue(SYSTEML_KEYS[var]),true));
+        return (String[])p().listData[var];
+    }
+    
+    public static String[][] getS2ListVar(int var)
+    {
+        if((var<0)||(var>=NUML_SYSTEM)) return new String[0][0];
+        if(p().listData[var]==null)
+        {
+            Vector V=CMParms.parseSemicolons(getListValue(SYSTEML_KEYS[var]),true);
+            String[][] set=new String[V.size()][];
+            for(int v=0;v<V.size();v++)
+                set[v]=CMParms.toStringArray(CMParms.parseCommas((String)V.elementAt(v),true));
+            p().listData[var]=set;
+        }
+        return (String[][])p().listData[var];
+    }
+    
     public void resetSystemVars()
     {
         if(CMLib.lang()!=null)
@@ -537,6 +631,11 @@ public class CMProps extends Properties
         setVar(SYSTEM_INVRESETRATE,getStr("INVRESETRATE"));
         setVar(SYSTEM_AUCTIONRATES,getStr("AUCTIONRATES"));
         setUpLowVar(SYSTEM_DEFAULTPROMPT,getStr("DEFAULTPROMPT"));
+        String listFile=getStr("LISTFILE");
+        if((listFile==null)||(listFile.length()==0))
+            listFile="/resources/lists.ini";
+        setUpLowVar(SYSTEM_LISTFILE,listFile);
+        listData=new Object[NUML_SYSTEM];
         if(getVar(SYSTEM_AUCTIONRATES).length()==0) setVar(SYSTEM_AUCTIONRATES,"0,10,0.1%,10%,5%,1,168");
         setVar(SYSTEM_EMOTEFILTER,getStr("EMOTEFILTER"));
         p().emoteFilter=CMParms.parse((getStr("EMOTEFILTER")).toUpperCase());
@@ -691,6 +790,7 @@ public class CMProps extends Properties
         CMSecurity.setSaveFlags(getStr("SAVE"));
         
         statCodeExtensions = getStrsStarting("EXTVAR_");
+        
     }
 
     public static String applyINIFilter(String msg, int whichFilter)
@@ -1071,8 +1171,8 @@ public class CMProps extends Properties
         else
         if(O instanceof Weapon)
         {
-            image=getHashedMXPImage(H,"WEAPON_"+Weapon.classifictionDescription[((Weapon)O).weaponClassification()]);
-            if(image==null) image=getHashedMXPImage(H,"WEAPON_"+Weapon.typeDescription[((Weapon)O).weaponType()]);
+            image=getHashedMXPImage(H,"WEAPON_"+Weapon.CLASS_DESCS[((Weapon)O).weaponClassification()]);
+            if(image==null) image=getHashedMXPImage(H,"WEAPON_"+Weapon.TYPE_DESCS[((Weapon)O).weaponType()]);
             if(image==null) image=getHashedMXPImage(H,"WEAPON_"+((Weapon)O).ammunitionType().toUpperCase().replace(' ','_'));
             if(image==null) image=getHashedMXPImage(H,"WEAPON_*");
         }

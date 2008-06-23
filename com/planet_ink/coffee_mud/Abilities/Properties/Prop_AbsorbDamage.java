@@ -82,7 +82,7 @@ public class Prop_AbsorbDamage extends Property
 
 			if((x<0)&&(msg.tool() instanceof Weapon))
 			{
-				x=text.indexOf(Weapon.typeDescription[((Weapon)msg.tool()).weaponType()]);
+				x=text.indexOf(Weapon.TYPE_DESCS[((Weapon)msg.tool()).weaponType()]);
 				if(x<0) x=(CMLib.flags().isABonusItems(msg.tool()))?text.indexOf("MAGIC"):-1;
 				if(x<0) x=text.indexOf(RawMaterial.RESOURCE_DESCS[((Weapon)msg.tool()).material()&RawMaterial.RESOURCE_MASK]);
 				if(x>0)

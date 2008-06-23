@@ -37,6 +37,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     public String ID(){return "MUDFight";}
     public String lastStr="";
     public long lastRes=0;
+    public String[][] hitWordIndex=null;
+    public String[][] hitWordsChanged=null;
 
 	public HashSet allPossibleCombatants(MOB mob, boolean beRuthless)
 	{
@@ -665,43 +667,63 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return null;
 	}
 
-    public int[] damageThresholds(){return CombatLibrary.DEFAULT_DAMAGE_THRESHHOLDS;}
-    public String[][] hitWords(){return CombatLibrary.DEFAULT_DAMAGE_WORDS;}
-    public String[] armorDescs(){return CombatLibrary.DEFAULT_ARMOR_DESCS;}
-    public String[] prowessDescs(){return CombatLibrary.DEFAULT_PROWESS_DESCS;}
-    public String[] missWeaponDescs(){return CombatLibrary.DEFAULT_WEAPON_MISS_DESCS;}
-    public String[] missDescs(){return CombatLibrary.DEFAULT_MISS_DESCS;}
+    private int[] damageThresholds(){return CMProps.getI1ListVar(CMProps.SYSTEML_DAMAGE_WORDS_THRESHOLDS);}
+    private String[][] hitWords(){ return CMProps.getS2ListVar(CMProps.SYSTEML_DAMAGE_WORDS); }
+    private String[] armorDescs(){return CMProps.getSListVar(CMProps.SYSTEML_ARMOR_DESCS);}
+    private String[] prowessDescs(){return CMProps.getSListVar(CMProps.SYSTEML_PROWESS_DESCS);}
+    private String[] missWeaponDescs(){return CMProps.getSListVar(CMProps.SYSTEML_WEAPON_MISS_DESCS);}
+    private String[] missDescs(){return CMProps.getSListVar(CMProps.SYSTEML_MISS_DESCS);}
     
     public String standardHitWord(int type, int damage)
     {
-        if(type<0) type=Weapon.TYPE_BURSTING;
+        if((type<0)||(type>=Weapon.TYPE_DESCS.length)) 
+            type=Weapon.TYPE_BURSTING;
         int[] thresholds=damageThresholds();
-        String[][] hitwords=hitWords();
         int damnCode=thresholds.length-2;
         for(int i=0;i<thresholds.length;i++)
             if(damage<=thresholds[i]){ damnCode=i; break;}
         damnCode++; // always add 1 because index into hitwords is type=0, annoy=1;
-        String[] ALL=null;
-        String[] MINE=null;
-        for(int i=0;i<hitwords.length;i++)
+        if(hitWords() != hitWordsChanged)
         {
-            if(hitwords[i][0].equalsIgnoreCase("ALL"))
-                ALL=hitwords[i];
-            else
-            if(hitwords[i][0].equals(""+type))
-            { MINE=hitwords[i]; break;}
+            hitWordsChanged=hitWords();
+            hitWordIndex=null;
         }
+        if(hitWordIndex==null)
+        {
+            String[][] newWordIndex=new String[Weapon.TYPE_DESCS.length][];
+            String[][] hitWords=hitWords();
+            for(int w=0;w<Weapon.TYPE_DESCS.length;w++)
+            {
+                String[] ALL=null;
+                String[] MINE=null;
+                for(int i=0;i<hitWords.length;i++)
+                {
+                    if(hitWords[i][0].equalsIgnoreCase("ALL"))
+                        ALL=hitWords[i];
+                    else
+                    if(hitWords[i][0].equalsIgnoreCase(Weapon.TYPE_DESCS[w]))
+                    { MINE=hitWords[i]; break;}
+                }
+                if(MINE!=null)
+                    newWordIndex[w]=MINE;
+                else
+                    newWordIndex[w]=ALL;
+            }
+            hitWordIndex=newWordIndex;
+        }
+        String[] HIT_WORDS=hitWordIndex[type];
         if(damnCode<1) damnCode=1;
-        if((MINE==null)||(damnCode>=MINE.length)) MINE=ALL;
-        if(damnCode<MINE.length) return MINE[damnCode];
-        return MINE[MINE.length-1];
+        if(damnCode<HIT_WORDS.length) return HIT_WORDS[damnCode];
+        return HIT_WORDS[HIT_WORDS.length-1];
     }
 
     public String armorStr(int armor){
+        int ARMOR_CEILING=CMProps.getIListVar(CMProps.SYSTEML_ARMOR_DESCS_CEILING);
         return (armor<0)?armorDescs()[0]:(
                (armor>=ARMOR_CEILING)?armorDescs()[armorDescs().length-1]+(CMStrings.repeat("!",(armor-ARMOR_CEILING)/100))+" ("+armor+")":(
                        armorDescs()[(int)Math.round(Math.floor(CMath.mul(CMath.div(armor,ARMOR_CEILING),armorDescs().length)))]+" ("+armor+")"));}
     public String fightingProwessStr(int prowess){
+        int PROWESS_CEILING=CMProps.getIListVar(CMProps.SYSTEML_PROWESS_DESCS_CEILING);
         return (prowess<0)?prowessDescs()[0]:(
                (prowess>=PROWESS_CEILING)?prowessDescs()[prowessDescs().length-1]+(CMStrings.repeat("!",(prowess-PROWESS_CEILING)/100))+" ("+prowess+")":(
                 prowessDescs()[(int)Math.round(Math.floor(CMath.mul(CMath.div(prowess,PROWESS_CEILING),prowessDescs().length)))]+" ("+prowess+")"));}
@@ -749,7 +771,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         }
     }
 
-    public String[] healthDescs(){return DEFAULT_HEALTH_CHART;}
+    public String[] healthDescs(){return CMProps.getSListVar(CMProps.SYSTEML_HEALTH_CHART);}
     public String standardMobCondition(MOB viewer,MOB mob)
     {
         int pct=(int)Math.round(Math.floor((CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()))*10));

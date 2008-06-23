@@ -143,7 +143,7 @@ public class Spell_AchillesArmor extends Spell
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				vulnerability=CMLib.dice().roll(1,Weapon.typeDescription.length,-1);
+				vulnerability=CMLib.dice().roll(1,Weapon.TYPE_DESCS.length,-1);
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

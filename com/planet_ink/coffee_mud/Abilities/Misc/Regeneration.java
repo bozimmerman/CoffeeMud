@@ -97,7 +97,7 @@ public class Regeneration extends StdAbility
 				boolean hurts=false;
 				if(msg.tool() instanceof Weapon)
 				{
-					int x=text.indexOf(Weapon.typeDescription[((Weapon)msg.tool()).weaponType()]);
+					int x=text.indexOf(Weapon.TYPE_DESCS[((Weapon)msg.tool()).weaponType()]);
 					if((x>=0)&&((x==0)||(text.charAt(x-1)=='+')))
 						hurts=true;
 					if(CMLib.flags().isABonusItems(msg.tool()))

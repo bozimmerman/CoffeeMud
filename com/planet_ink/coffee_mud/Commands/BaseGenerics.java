@@ -1965,7 +1965,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Weapon Attack Type: '"+Weapon.typeDescription[E.weaponType()]+"'.");
+		mob.tell(showNumber+". Weapon Attack Type: '"+Weapon.TYPE_DESCS[E.weaponType()]+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean q=false;
 		String sel="NSPBFMR";
@@ -1975,7 +1975,7 @@ public class BaseGenerics extends StdCommand
 			if(newType.equals("?"))
 			{
 				for(int i=0;i<sel.length();i++)
-					mob.tell(sel.charAt(i)+") "+Weapon.typeDescription[i]);
+					mob.tell(sel.charAt(i)+") "+Weapon.TYPE_DESCS[i]);
 				q=false;
 			}
 			else
@@ -2208,7 +2208,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Weapon Classification: '"+Weapon.classifictionDescription[E.weaponClassification()]+"'.");
+		mob.tell(showNumber+". Weapon Classification: '"+Weapon.CLASS_DESCS[E.weaponClassification()]+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		boolean q=false;
 		String sel=("ABEFHKPRSDTN");
@@ -2218,7 +2218,7 @@ public class BaseGenerics extends StdCommand
 			if(newType.equals("?"))
 			{
 				for(int i=0;i<sel.length();i++)
-					mob.tell(sel.charAt(i)+") "+Weapon.classifictionDescription[i]);
+					mob.tell(sel.charAt(i)+") "+Weapon.CLASS_DESCS[i]);
 				q=false;
 			}
 			else
@@ -3606,7 +3606,7 @@ public class BaseGenerics extends StdCommand
 		Vector set=CMParms.parseCommas(E.getStat(Field),true);
 		StringBuffer str=new StringBuffer("");
 		for(int v=0;v<set.size();v++)
-			str.append(" "+Weapon.classifictionDescription[CMath.s_int((String)set.elementAt(v))].toLowerCase());
+			str.append(" "+Weapon.CLASS_DESCS[CMath.s_int((String)set.elementAt(v))].toLowerCase());
 
 		mob.tell(showNumber+". "+FieldDisp+": '"+str.toString()+"'.");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
@@ -3616,13 +3616,13 @@ public class BaseGenerics extends StdCommand
 		{
 			newName=mob.session().prompt("Enter a weapon class to add/remove (?)\n\r:","");
 			if(newName.equals("?"))
-				mob.tell(CMParms.toStringList(Weapon.classifictionDescription));
+				mob.tell(CMParms.toStringList(Weapon.CLASS_DESCS));
 			else
 			if(newName.length()>0)
 			{
 				int foundCode=-1;
-				for(int i=0;i<Weapon.classifictionDescription.length;i++)
-					if(Weapon.classifictionDescription[i].equalsIgnoreCase(newName))
+				for(int i=0;i<Weapon.CLASS_DESCS.length;i++)
+					if(Weapon.CLASS_DESCS[i].equalsIgnoreCase(newName))
 						foundCode=i;
 				if(foundCode<0)
 				{

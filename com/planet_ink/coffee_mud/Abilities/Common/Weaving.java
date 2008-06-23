@@ -359,9 +359,9 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			if(building instanceof Weapon)
 			{
 				((Weapon)building).setWeaponClassification(Weapon.CLASS_FLAILED);
-				for(int cl=0;cl<Weapon.classifictionDescription.length;cl++)
+				for(int cl=0;cl<Weapon.CLASS_DESCS.length;cl++)
 				{
-					if(misctype.equalsIgnoreCase(Weapon.classifictionDescription[cl]))
+					if(misctype.equalsIgnoreCase(Weapon.CLASS_DESCS[cl]))
 						((Weapon)building).setWeaponClassification(cl);
 				}
 				building.baseEnvStats().setDamage(armordmg);

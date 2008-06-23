@@ -146,7 +146,7 @@ public class GenCharClass extends StdCharClass
     		for(Iterator i=disallowedWeaponClasses(null).iterator();i.hasNext();)
     		{
     			Integer I=(Integer)i.next();
-    			str.append(CMStrings.capitalizeAndLower(Weapon.classifictionDescription[I.intValue()])+" ");
+    			str.append(CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[I.intValue()])+" ");
     		}
             str.append(".  ");
         }

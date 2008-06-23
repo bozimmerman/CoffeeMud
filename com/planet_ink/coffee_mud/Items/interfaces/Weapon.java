@@ -42,7 +42,7 @@ public interface Weapon extends Item
 	public final static int TYPE_GASSING=8;
 	public final static int TYPE_MELTING=9;
 	public final static int TYPE_STRIKING=10;
-	public final static String[] typeDescription={
+	public final static String[] TYPE_DESCS={
 	"NATURAL",
 	"SLASHING",
 	"PIERCING",
@@ -69,7 +69,7 @@ public interface Weapon extends Item
 	public final static int CLASS_DAGGER=9;
 	public final static int CLASS_STAFF=10;
 	public final static int CLASS_THROWN=11;
-	public final static String[] classifictionDescription={
+	public final static String[] CLASS_DESCS={
 	"AXE",
 	"BLUNT",
 	"EDGED",

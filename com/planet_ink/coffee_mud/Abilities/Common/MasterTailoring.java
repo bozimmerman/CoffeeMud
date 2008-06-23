@@ -315,9 +315,9 @@ public class MasterTailoring extends EnhancedCraftingSkill implements ItemCrafto
 			{
 				((Weapon)building).setWeaponType(Weapon.TYPE_BASHING);
 				((Weapon)building).setWeaponClassification(Weapon.CLASS_NATURAL);
-				for(int cl=0;cl<Weapon.classifictionDescription.length;cl++)
+				for(int cl=0;cl<Weapon.CLASS_DESCS.length;cl++)
 				{
-					if(misctype.equalsIgnoreCase(Weapon.classifictionDescription[cl]))
+					if(misctype.equalsIgnoreCase(Weapon.CLASS_DESCS[cl]))
 						((Weapon)building).setWeaponClassification(cl);
 				}
 				building.baseEnvStats().setDamage(armordmg);

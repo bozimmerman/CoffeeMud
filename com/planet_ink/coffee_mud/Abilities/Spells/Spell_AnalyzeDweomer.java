@@ -110,8 +110,8 @@ public class Spell_AnalyzeDweomer extends Spell
 				if(target instanceof Weapon)
 				{
 					Weapon w=(Weapon)target;
-					str.append("It is a "+Weapon.classifictionDescription[w.weaponClassification()].toLowerCase()+" weapon.  ");
-					str.append("It does "+Weapon.typeDescription[w.weaponType()].toLowerCase()+" damage.  ");
+					str.append("It is a "+Weapon.CLASS_DESCS[w.weaponClassification()].toLowerCase()+" weapon.  ");
+					str.append("It does "+Weapon.TYPE_DESCS[w.weaponType()].toLowerCase()+" damage.  ");
 					if(w.minRange()>0)
 						str.append("It has a minimum range of "+w.minRange()+".  ");
 					if(w.maxRange()>w.minRange())
