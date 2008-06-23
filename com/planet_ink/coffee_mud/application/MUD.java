@@ -771,7 +771,11 @@ public class MUD extends Thread implements MudHost
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutdown: you are the special lucky chosen one!");
 		for(int m=CMLib.hosts().size()-1;m>=0;m--)
             if(CMLib.hosts().elementAt(m) instanceof Thread)
-    			CMLib.killThread((Thread)CMLib.hosts().elementAt(m),100,1);
+            {
+                try{
+        			CMLib.killThread((Thread)CMLib.hosts().elementAt(m),100,1);
+                } catch(Throwable t){}
+            }
 		if(!keepItDown)
 			CMProps.setBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN,false);
 	}
