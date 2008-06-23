@@ -118,7 +118,7 @@ public class AutoTitleData extends StdWebMacro
             if((mask==null)&&(last.length()>0))
                 mask=CMLib.login().getAutoTitleMask(last);
             if(mask!=null)
-                str.append(mask+", ");
+                str.append(CMStrings.replaceAll(mask,"\"","&quot;")+", ");
         }
         if(parms.containsKey("TITLE"))
         {
