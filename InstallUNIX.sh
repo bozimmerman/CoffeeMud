@@ -29,9 +29,9 @@ read yesnofullcompile
 echo "3. What have you decided to name your MUD (you can change this later by editing the mudUNIX.sh file) ?"
 read MUDname
 
-echo "Alright, we're good to go, compiling will begin in 10 seconds."
+echo "Alright, we're good to go, compiling will begin in 5 seconds."
 
-sleep 10
+sleep 5
 #Next we will set up some needed variables for compiling.... and then run an if statement
 
 JAVACPATH="$Java_Home/bin/javac -nowarn -g -deprecation -classpath .:./lib/js.jar:./lib/jzlib.jar" 
@@ -128,15 +128,16 @@ else
 
 echo "What!? No main compile for you...maybe you just wanted to compile the docs? Or change your MUD's name...any ways...I'll make this more intuitive in the future!"
 fi
-
-#the following replaces ur mud name in the mudUNIX.sh, putting output in mudUNIX.new - then it copies mudUNIX.new to mudUNIX.sh
-#mudUNIX.new gets deleted.....
-echo "About to change the default name of the MUD in mudUNIX.sh to:"
-echo $MUDname
-sed -e 's/Your Muds Name Here/'$MUDname'/g' < mudUNIX.sh > mudUNIX.new
-mv mudUNIX.new mudUNIX.sh
-echo "Your MUD's name has been written..."
-echo "In order to change the name again, you must MANUALLY edit mudUNIX.sh.....sorry thats not built in yet (to this script...)"
+echo "Writing your new mudUNIX.sh..."
+rm mudUNIX.sh
+echo "#You should really input a name for your MUD below...." >> mudUNIX.sh
+echo "#Before using this on a UNIX machine, you must 'chmod 755 mudUNIX.sh' to make this file executable by the UNIX machine" >> mudUNIX.sh
+echo "#FYI - the nohup command will make a nohup.out file, usually in the CofferMud (directory where you start this from) directory - it will log the server messages..." >> mudUNIX.sh
+echo "" >> mudUNIX.sh
+echo "nohup $Java_Home/bin/java -classpath \".:./lib/js.jar:./lib/jzlib.jar\" -Xms65535000 -Xmx115535000 com.planet_ink.coffee_mud.application.MUD \"$MUDname\" &" >> mudUNIX.sh
+chmod 755 mudUNIX.sh
+echo "Your mudUNIX.sh script has been written."
+echo "To change memory or other settings, you must MANUALLY edit mudUNIX.sh after every time you run this script."
 echo "Would you like to start your mud up? [y/n]"
 read startyeanay
 
