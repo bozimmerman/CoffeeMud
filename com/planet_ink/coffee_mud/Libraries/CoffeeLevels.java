@@ -250,26 +250,14 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		return true;
 	}
 	
-	private static final int breakLevel=25;
-	private static int[] levelingCharts=new int[1000];
-	public synchronized int getLevelExperience(int level)
+	public int getLevelExperience(int level)
 	{
-		if(level<=0) return 0;
-		if(level>=levelingCharts.length)
-		{
-			int[] oldCharts=(int[])levelingCharts.clone();
-			levelingCharts=new int[level+1];
-			for(int i=0;i<oldCharts.length;i++)
-				levelingCharts[i]=oldCharts[i];
-		}
-		if(levelingCharts[level]==0)
-		{
-            levelingCharts[1]=1000;
-            for(int i=2;i<=level;i++)
-                if(levelingCharts[i]==0)
-                    levelingCharts[i]=levelingCharts[i-1]+1000+((i<breakLevel)?((i-1)*100):(100*(breakLevel-1))+((i-breakLevel)*25));
-		}
-		return levelingCharts[level];
+		if(level<0) return 0;
+		int[] levelingChart = CMProps.getI1ListVar(CMProps.SYSTEML_EXP_CHART);
+		if(level<levelingChart.length)
+		    return levelingChart[level];
+		int lastDiff=levelingChart[levelingChart.length-1] - levelingChart[levelingChart.length-2];
+		return levelingChart[levelingChart.length-1] + ((1+(level-levelingChart.length)) * lastDiff);
 	}
 	
 	public void level(MOB mob)

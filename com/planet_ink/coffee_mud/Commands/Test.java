@@ -231,6 +231,14 @@ public class Test extends StdCommand
             	}
             }
             else
+            if(what.equalsIgnoreCase("levelcharts"))
+            {
+                StringBuffer str=new StringBuffer("");
+                for(int i=0;i<110;i++)
+                    str.append(i+"="+CMLib.leveler().getLevelExperience(i)+"\r");
+                mob.tell(str.toString());
+            }
+            else
             if(what.equalsIgnoreCase("statcreationspeed"))
             {
             	int times=CMath.s_int(CMParms.combine(commands,2));
