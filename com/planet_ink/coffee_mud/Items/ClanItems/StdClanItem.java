@@ -264,8 +264,8 @@ public class StdClanItem extends StdItem implements ClanItem
 			{
 				LegalBehavior theLaw=CMLib.law().getLegalBehavior(startRoom.getArea());
 				if((theLaw!=null)
-                &&(theLaw.rulingClan()!=null)
-                &&(theLaw.rulingClan().equals(targetMOB.getClanID())))
+                &&(theLaw.rulingOrganization()!=null)
+                &&(theLaw.rulingOrganization().equals(targetMOB.getClanID())))
 				{
 					if(giver!=null)
 						giver.tell("You can only give a clan item to a conquered mob within the conquered area.");
@@ -335,12 +335,12 @@ public class StdClanItem extends StdItem implements ClanItem
                 if((room!=null)&&(room.getArea()!=null))
                 {
                     LegalBehavior theLaw=CMLib.law().getLegalBehavior(room.getArea());
-                    if((theLaw!=null)&&(theLaw.rulingClan()!=null)&&(theLaw.rulingClan().equals(((ClanItem)myHost).clanID())))
+                    if((theLaw!=null)&&(theLaw.rulingOrganization()!=null)&&(theLaw.rulingOrganization().equals(((ClanItem)myHost).clanID())))
                     {
                         msg.source().tell("You'll need to conquer this area to do that.");
                         return false;
                     }
-                    if((theLaw!=null)&&(!theLaw.isFullyControlledByClan()))
+                    if((theLaw!=null)&&(!theLaw.isFullyControlled()))
                     {
                         msg.source().tell("Your clan does not yet fully control the area.");
                         return false;

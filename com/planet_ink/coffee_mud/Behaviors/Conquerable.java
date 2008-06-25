@@ -52,7 +52,7 @@ public class Conquerable extends Arrest
     protected boolean REVOLTNOW=false;
     protected long waitToReload=0;
     protected long conquestDate=0;
-    public boolean isFullyControlledByClan(){
+    public boolean isFullyControlled(){
         return ((holdingClan.length()>0)&&((System.currentTimeMillis()-conquestDate)>CONTROLTIME));
     }
 
@@ -65,7 +65,7 @@ public class Conquerable extends Arrest
     protected int fightDown=0;
     protected static final int FIGHTFREQ=2;
 
-    public String rulingClan()
+    public String rulingOrganization()
     {
         return holdingClan;
     }
@@ -82,7 +82,7 @@ public class Conquerable extends Arrest
             Clan C=CMLib.clans().getClan(holdingClan);
             if(C!=null)
             {
-                if(isFullyControlledByClan())
+                if(isFullyControlled())
                     str.append("Area '"+myArea.name()+"' is controlled by "+C.typeName()+" "+C.name()+".\n\r");
                 else
                 {

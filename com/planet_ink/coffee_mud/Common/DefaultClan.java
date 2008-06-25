@@ -192,7 +192,7 @@ public class DefaultClan implements Clan
             LegalBehavior B=CMLib.law().getLegalBehavior(A);
             if(B!=null)
             {
-                String controller=B.rulingClan();
+                String controller=B.rulingOrganization();
                 Area A2=CMLib.law().getLegalObject(A);
                 if(controller.equals(clanID())&&(!done.contains(A2)))
                     done.addElement(A2);

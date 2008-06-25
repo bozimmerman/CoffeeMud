@@ -3040,7 +3040,7 @@ public class StdMOB implements MOB
 				&&(getStartRoom()!=null))
 				{
 					LegalBehavior B=CMLib.law().getLegalBehavior(getStartRoom());
-					if((B!=null)&&(B.rulingClan().equals(mob.getClanID())))
+					if((B!=null)&&(B.rulingOrganization().equals(mob.getClanID())))
 						return true;
 				}
 			}

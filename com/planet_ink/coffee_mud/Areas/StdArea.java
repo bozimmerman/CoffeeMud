@@ -1048,7 +1048,7 @@ public class StdArea implements Area
             LegalBehavior B=CMLib.law().getLegalBehavior(this);
 			if(B!=null)
 			{
-                String ruler=B.rulingClan();
+                String ruler=B.rulingOrganization();
                 if(ruler.length()>0)
 				{
 					Clan C=CMLib.clans().getClan(ruler);

@@ -175,8 +175,8 @@ public class List extends StdCommand
 				LegalBehavior law=CMLib.law().getLegalBehavior(thisThang);
 				if(law!=null)
 				{
-					controller=law.rulingClan();
-					fully=""+((controller.length()>0)&&law.isFullyControlledByClan());
+					controller=law.rulingOrganization();
+					fully=""+((controller.length()>0)&&law.isFullyControlled());
 				}
 				lines.append(CMStrings.padRight(controller,40)+": ");
 				lines.append(fully+"\n\r");

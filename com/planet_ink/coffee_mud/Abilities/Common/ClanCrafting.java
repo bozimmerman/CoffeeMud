@@ -311,7 +311,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
                 commonTell(mob,"This area is controlled by the Archons -- you can't build that here.");
                 return false;
             }
-            if((B.rulingClan().length()==0)||(!mob.getClanID().equalsIgnoreCase(B.rulingClan())))
+            if((B.rulingOrganization().length()==0)||(!mob.getClanID().equalsIgnoreCase(B.rulingOrganization())))
             {
                 commonTell(mob,"This area is not controlled by "+mob.getClanID()+" -- you can't build that here.");
                 return false;

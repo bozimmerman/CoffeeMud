@@ -102,7 +102,7 @@ public class StdClanCard extends StdClanItem
             if(((MOB)owner()).getClanID().length()==0)
             {
                 LegalBehavior B=CMLib.law().getLegalBehavior(R);
-                if(B!=null) rulingClan=B.rulingClan();
+                if(B!=null) rulingClan=B.rulingOrganization();
             }
             if((rulingClan!=null)&&(rulingClan.length()>0)
             &&(rulingClan.equals(clanID()))

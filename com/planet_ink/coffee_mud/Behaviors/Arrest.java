@@ -45,7 +45,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	protected String getLawParms(){ return getParms();}
     protected Hashtable finesAssessed=new Hashtable();
-    public boolean isFullyControlledByClan(){return true;}
+    public boolean isFullyControlled(){return true;}
 
     public boolean frame(Area myArea, MOB accused, MOB framed)
     {
@@ -176,7 +176,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
         }
         return false;
     }
-    public String rulingClan()
+    public String rulingOrganization()
     {
         return "";
     }
@@ -202,7 +202,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
             if((isStillACrime(W,debugging))
             &&((name==null)||(CMLib.english().containsString(W.criminal().name(),name))))
             {
-                W.setLastOffense(System.currentTimeMillis()+EXPIRATION_MILLIS+10);
+                //W.setLastOffense(System.currentTimeMillis()+EXPIRATION_MILLIS+10);
                 V.addElement(W);
             }
         }
