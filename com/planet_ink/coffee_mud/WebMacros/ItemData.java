@@ -346,6 +346,9 @@ public class ItemData extends StdWebMacro
 							sorted=(new TreeSet(sortMe)).toArray();
 							Resources.submitResource("MUDGRINDER-ITEMS2",sorted);
 						}
+                        if(parms.containsKey("CLASSESID"))
+                            str.append(old);
+                        else
 						for(int r=0;r<sorted.length;r++)
 						{
 							String cnam=(String)sorted[r];

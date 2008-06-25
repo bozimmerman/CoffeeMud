@@ -1073,6 +1073,9 @@ public class MobData extends StdWebMacro
 						sorted=(new TreeSet(sortMe)).toArray();
 						Resources.submitResource("MUDGRINDER-MOBS",sorted);
 					}
+                    if(parms.containsKey("CLASSESID"))
+                        str.append(old);
+                    else
 					for(int r=0;r<sorted.length;r++)
 					{
 						String cnam=(String)sorted[r];
