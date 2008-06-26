@@ -195,7 +195,7 @@ public class TaxCollector extends StdBehavior
 				    if((B!=null)&&(!msg.source().isMonster()))
 				    {
 						Area A2=CMLib.law().getLegalObject(mob.location().getArea());
-                        B.aquit(A2,msg.source(),CMParms.makeVector("TAXEVASION"));
+                        B.aquit(A2,msg.source(),new String[]{"TAXEVASION"});
 				    }
 				}
 				
@@ -326,7 +326,7 @@ public class TaxCollector extends StdBehavior
                     else
 				    if(B!=null)
 				    {
-                        B.accuse(CMLib.law().getLegalObject(R),M,mob,CMParms.makeVector("TAXEVASION"));
+                        B.accuse(CMLib.law().getLegalObject(R),M,mob,new String[]{"TAXEVASION"});
 						CMLib.commands().postSay(mob,M,"Can't pay huh?  Well, you'll be hearing from the law -- THAT's for sure!",false,false);
 				    }
 				    else

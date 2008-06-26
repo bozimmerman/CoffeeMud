@@ -57,9 +57,12 @@ public class Prayer_Forgive extends Prayer
 			mob.tell("Forgive whom?");
 			return false;
 		}
-		Vector warrants=new Vector();
-		if(B!=null)
-            warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),name);
+        Vector warrants=new Vector();
+		Vector criminals=new Vector();
+        if(B!=null)
+            criminals=B.getCriminals(CMLib.law().getLegalObject(mob.location()),name);
+        if(criminals.size()>0)
+            warrants=B.getWarrantsOf(CMLib.law().getLegalObject(mob.location()),(MOB)criminals.firstElement());
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

@@ -133,6 +133,25 @@ public class Conquerable extends Arrest
         if(totalControlPoints>=0) return totalControlPoints;
         return 0;
     }
+    
+    public int getControlPoints(String clanID){
+        if((clanID==null)||(clanID.length()==0)) return 0;
+        synchronized(clanControlPoints)
+        {
+            for(int i=0;i<clanControlPoints.size();i++)
+            {
+                String clanID2=(String)clanControlPoints.elementAt(i,1);
+                int[] ic=(int[])clanControlPoints.elementAt(i,2);
+                if(clanID2.equalsIgnoreCase(clanID))
+                {
+                    Clan C=CMLib.clans().getClan(clanID);
+                    if(C!=null) return ic[0];
+                }
+            }
+        }
+        return 0;
+    }
+
     public int revoltChance()
     {
     	if(myArea==null) return 100;

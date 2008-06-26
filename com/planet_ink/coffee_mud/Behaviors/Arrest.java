@@ -176,21 +176,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
         }
         return false;
     }
-    public String rulingOrganization()
-    {
-        return "";
-    }
-    public String conquestInfo(Area myArea)
-    {
-        return "";
-    }
-    public int controlPoints()
-    {
-        return 0;
-    }
+    
+    public String rulingOrganization() { return ""; }
+    public String conquestInfo(Area myArea) { return ""; }
+    public int controlPoints() { return 0; }
 	public void setControlPoints(String clanID, int newControlPoints){}
+    public int getControlPoints(String clanID){ return 0;}
 	
-	public Vector getWarrantsOf(Area myArea, String name)
+	public Vector getCriminals(Area myArea, String searchStr)
     {
         Vector V=new Vector();
         if(!theLawIsEnabled()) return V;
@@ -200,14 +193,13 @@ public class Arrest extends StdBehavior implements LegalBehavior
         {
             LegalWarrant W=(LegalWarrant)laws.warrants().elementAt(i);
             if((isStillACrime(W,debugging))
-            &&((name==null)||(CMLib.english().containsString(W.criminal().name(),name))))
-            {
-                //W.setLastOffense(System.currentTimeMillis()+EXPIRATION_MILLIS+10);
-                V.addElement(W);
-            }
+            &&((searchStr==null)||(CMLib.english().containsString(W.criminal().name(),searchStr)))
+            &&(!V.contains(W.criminal())))
+                V.addElement(W.criminal());
         }
         return V;
     }
+	
     public Vector getWarrantsOf(Area myArea, MOB accused)
     {
         Vector V=new Vector();
@@ -264,7 +256,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
         }
         return false;
     }
-    public boolean aquit(Area myArea, MOB accused, Vector lawStrings)
+    public boolean aquit(Area myArea, MOB accused, String[] acquittableLaws)
     {
         if(!theLawIsEnabled()) return false;
         Law laws=getLaws(myArea,false);
@@ -272,9 +264,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
         {
             boolean debugging=CMSecurity.isDebugging("ARREST");
             String[] info=null;
-            for(int v=0;v<lawStrings.size();v++)
+            for(int v=0;v<acquittableLaws.length;v++)
             {
-                String brokenLaw=(String)lawStrings.elementAt(v);
+                String brokenLaw=acquittableLaws[v];
                 if((laws.basicCrimes().containsKey(brokenLaw))&&(laws.basicCrimes().get(brokenLaw) instanceof String[]))
                 {   info=(String[])laws.basicCrimes().get(brokenLaw);   break; }
                 else
@@ -313,16 +305,16 @@ public class Arrest extends StdBehavior implements LegalBehavior
         }
         return false;
     }
-    public boolean accuse(Area myArea, MOB accused, MOB victim, Vector lawStrings)
+    public boolean accuse(Area myArea, MOB accused, MOB victim, String[] accusableLaws)
     {
         if(!theLawIsEnabled()) return false;
         Law laws=getLaws(myArea,false);
         if(laws!=null)
         {
-            String[] info=null;
-            for(int v=0;v<lawStrings.size();v++)
+            for(int v=0;v<accusableLaws.length;v++)
             {
-                String brokenLaw=(String)lawStrings.elementAt(v);
+                String[] info=null;
+                String brokenLaw=accusableLaws[v];
                 if((laws.basicCrimes().containsKey(brokenLaw))&&(laws.basicCrimes().get(brokenLaw) instanceof String[]))
                     info=(String[])laws.basicCrimes().get(brokenLaw);
                 else
@@ -335,21 +327,22 @@ public class Arrest extends StdBehavior implements LegalBehavior
                 {
                     if((info[Law.BIT_CRIMENAME]!=null)
                     &&(info[Law.BIT_CRIMENAME].length()>0))
-                        break;
-                    info=null;
+                    {
+                        boolean kaplah=
+                            fillOutWarrant(accused,
+                                    laws,
+                                    myArea,
+                                    (victim==accused)?null:victim,
+                                    info[Law.BIT_CRIMELOCS],
+                                    info[Law.BIT_CRIMEFLAGS],
+                                    info[Law.BIT_CRIMENAME],
+                                    info[Law.BIT_SENTENCE],
+                                    info[Law.BIT_WARNMSG]);
+                        if(kaplah)
+                            return true;
+                    }
                 }
             }
-            if(info==null) return false;
-            fillOutWarrant(accused,
-                            laws,
-                            myArea,
-                            (victim==accused)?null:victim,
-                            info[Law.BIT_CRIMELOCS],
-                            info[Law.BIT_CRIMEFLAGS],
-                            info[Law.BIT_CRIMENAME],
-                            info[Law.BIT_SENTENCE],
-                            info[Law.BIT_WARNMSG]);
-            return true;
         }
         return false;
     }

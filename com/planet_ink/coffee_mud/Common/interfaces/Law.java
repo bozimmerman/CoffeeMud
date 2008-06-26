@@ -47,6 +47,7 @@ public interface Law extends CMCommon
 	public static final int ACTION_EXECUTE=10;
 	public static final int ACTION_HIGHEST=10;
     public static final int ACTION_MASK=255;
+    
 	public static final String[] ACTION_DESCS={
 		"WARNING",
 		"THREAT",

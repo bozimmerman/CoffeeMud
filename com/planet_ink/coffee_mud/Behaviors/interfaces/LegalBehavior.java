@@ -62,17 +62,24 @@ public interface LegalBehavior extends Behavior
     public boolean isStillACrime(LegalWarrant W, boolean debugging);
     
     /**
-     * 
-     * @param mob
-     * @param laws
-     * @param myArea
-     * @param target
-     * @param crimeLocs
-     * @param crimeFlags
-     * @param crime
-     * @param sentence
-     * @param warnMsg
-     * @return
+     * Inspects the circumstances of, and if necessary, assigns a warrant to
+     * be handled by local law enforcement and judges.  Call this method
+     * if you want to add a warrant for a custom crime with your own qualifying
+     * flags.  For recognized crimes with crime keys, however, use the accuse
+     * command. 
+     * @see com.planet_ink.coffee_mud.Behaviors.interfaces.LegalBehavior#accuse(Area, MOB, MOB, String[])
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Law
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Law#ACTION_DESCS
+     * @param mob the accused character
+     * @param laws the system of laws to use as a basis
+     * @param myArea the geographical domain that the laws apply to
+     * @param target the victim of a crime, if any
+     * @param crimeLocs string of location flags, e.g. !indoors !home keyword !keyword
+     * @param crimeFlags string of crime situation flags, e.g. !recently !combat
+     * @param crime string description of the crime, e.g. robbing <T-NAME>
+     * @param sentence string sentence action, e.g. warn, parole1, jail1, death
+     * @param warnMsg string the officer will say to explain the seriousness of the crime
+     * @return whether or not the warrant was successfully issued
      */
     public boolean fillOutWarrant(MOB mob,
                                   Law laws,
@@ -83,199 +90,262 @@ public interface LegalBehavior extends Behavior
                                   String crime,
                                   String sentence,
                                   String warnMsg);
+    
     /**
-     * 
-     * @param myArea
-     * @param accused
-     * @param framed
-     * @return
+     * A method that transfers a warrant out on the accused to a different
+     * framed individual
+     * @param myArea the geographical legal area
+     * @param accused the mob with actual warrants out on him/her
+     * @param framed the person to transfer the first warrant to.
+     * @return whether warrants were actually transferred from the accused to the framed
      */
     public boolean frame(Area myArea, MOB accused, MOB framed);
     
     /**
-     * 
-     * @param myArea
-     * @param officer
-     * @param mob
-     * @return
+     * Assigns an officer and begins the automated arresting procedure. The
+     * target criminal must have a warrant out for this to end well for the
+     * state.
+     * @param myArea the geographic legal area
+     * @param officer the mob to assign as the arresting officer
+     * @param mob the mob to arrest
+     * @return whether the arrest began successfully.
      */
     public boolean arrest(Area myArea, MOB officer, MOB mob);
     
     /**
-     * 
-     * @param myArea
-     * @return
+     * Generates a Vector of Vectors containing information about
+     * all warrants currently at issue in the geographic legal area
+     * given.  The returned Vector contains one Vector per legal
+     * warrant.  Each Warrant Vector contains the following data in
+     * this order: Criminal name, Victim name, Witness name, Crime
+     * @param myArea the geographic legal area 
+     * @return the Vector of Vectors
      */
     public Vector warrantInfo(Area myArea);
     
     /**
-     * 
-     * @param myArea
-     * @return
+     * Returns the set of laws governing the given geographic legal area,
+     * assuming that this LegalBehavior is the behavior governing the same.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Law
+     * @param myArea  the geographic legal area
+     * @return the Law object that governs the area and behavior
      */
     public Law legalInfo(Area myArea);
     
     /**
-     * 
-     * @param myArea
-     * @param mob
-     * @return
+     * Returns whether the given mob is both an officer of the law, and not
+     * otherwise engaged in an arrest, and so is available to make one
+     * @param myArea the geographic legal area
+     * @param mob the pc/npc to test 
+     * @return whether the mob is an officer of the law
      */
     public boolean isElligibleOfficer(Area myArea, MOB mob);
     
     /**
-     * 
-     * @param myArea
-     * @param accused
-     * @return
+     * Returns whether the given mob has a valid warrant out for his/her arrest.
+     * @param myArea the geographic legal area
+     * @param accused the mob to test
+     * @return whether a warrant is available for the accused
      */
     public boolean hasWarrant(Area myArea, MOB accused);
     
     /**
-     * 
-     * @param myArea
-     * @param mob
-     * @return
+     * Returns whether the given mob qualifies as an arresting officer of any
+     * sort in the given legal area.
+     * @param myArea the geographic legal area
+     * @param mob the mob to test for officerhood
+     * @return true if the mob is an officer, false otherwise
      */
     public boolean isAnyOfficer(Area myArea, MOB mob);
     
     /**
-     * 
-     * @param myArea
-     * @param mob
-     * @return
+     * Returns whether the given mob qualifies as the judge in the given legal
+     * area.
+     * @param myArea the geographic legal area
+     * @param mob the mob to test for judgehood
+     * @return true if the mob is a judge, false otherwise
      */
     public boolean isJudge(Area myArea, MOB mob);
     
     /**
-     * 
-     * @param d
-     * @param mob
+     * A method to change the amount of base currency currently 
+     * listed as fines owed by the given mob.  A value of 0 erases.
+     * @param d the amount of base currency the mob owes
+     * @param mob the mob who owes money to the state
      */
     public void modifyAssessedFines(double d, MOB mob);
     
     /**
-     * 
-     * @param mob
-     * @return
+     * Returns the amount of base currency owed by the given mob, if any.
+     * @param mob the mob who might owe money
+     * @return the amount owed, or 0 if none.
      */
     public double finesOwed(MOB mob);
     
     /**
-     * 
-     * @param myArea
-     * @return
+     * This method notifies the legal behavior that its laws have changed 
+     * and need to be updated.  Call this method whenever the behaviors/
+     * areas laws have changed.  
+     * @param myArea the geographic legal area
+     * @return Whether the update was necessary due to the legal parameters
      */
     public boolean updateLaw(Area myArea);
     
     /**
-     * 
-     * @return
+     * Get the name of the clan that currently rules this area, if applicable.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Clan
+     * @return Empty string if the area is unruled, or ruled by the system. ClanID otherwise.
      */
     public String rulingOrganization();
     
     /**
-     * 
-     * @param myArea
-     * @return
+     * If the legal behavior and area are conquerable by clans or foreign organizations,
+     * this method will return the name of the current controlling clan, and some information
+     * about the state of the conquest, such as control points achieved.
+     * @param myArea the geographic legal area
+     * @return information about the conquest of this area, in readable form.
      */
     public String conquestInfo(Area myArea);
     
     /**
-     * 
-     * @return
+     * Returns whether this legalbehavior governs an area that is presently 
+     * legally stable.  Unconquerable areas are always stable, and areas conquered
+     * and controlled for a sufficient amount of time are also stable.
+     * @return Whether order has been restored.
      */
     public boolean isFullyControlled();
     
     /**
-     * 
-     * @return
+     * Returns the number of control points necessary to conquer the area governed
+     * by this legal behavior.  Not applicable if the legal behavior doesn't permit
+     * government changes or conquest.
+     * @see com.planet_ink.coffee_mud.Behaviors.interfaces.LegalBehavior#setControlPoints(String, int)
+     * @see com.planet_ink.coffee_mud.Behaviors.interfaces.LegalBehavior#getControlPoints(String)
+     * @return the number of control points needed to control this legal behavior
      */
     public int controlPoints();
     
     /**
-     * 
-     * @return
+     * The present chance (percent) that the area may collapse into revolt and 
+     * remove itself from control.  Not applicable if the legal behavior doesn't permit
+     * government changes or conquest.
+     * @return the percent chance of revolt
      */
     public int revoltChance();
     
     /**
-     * 
-     * @param clanID
-     * @param newControlPoints
+     * Modify the number of control points earned by the given clanID. Not 
+     * applicable if the legal behavior doesn't permit government changes or conquest. 
+     * @see com.planet_ink.coffee_mud.Behaviors.interfaces.LegalBehavior#controlPoints()
+     * @see com.planet_ink.coffee_mud.Behaviors.interfaces.LegalBehavior#getControlPoints(String)
+     * @param clanID the clan to assign the control points to
+     * @param newControlPoints the number of points to assign
      */
     public void setControlPoints(String clanID, int newControlPoints);
     
-    /**
-     * 
-     * @param myArea
-     * @param name
-     * @return
-     */
-    public Vector getWarrantsOf(Area myArea, String name);
     
     /**
-     * 
-     * @param myArea
-     * @param accused
-     * @return
+     * Returns the number of control points earned by the given clanID. Not 
+     * applicable if the legal behavior doesn't permit government changes or conquest. 
+     * @see com.planet_ink.coffee_mud.Behaviors.interfaces.LegalBehavior#controlPoints()
+     * @see com.planet_ink.coffee_mud.Behaviors.interfaces.LegalBehavior#setControlPoints(String, int)
+     * @param clanID the clan to assign the control points to
+     * @return The number of control points earned by this clan/organization
+     */
+    public int getControlPoints(String clanID);
+    
+    /**
+     * Searches the list of warrants, returning those criminal mobs whose names
+     * match the search string, and still have legal warrants available for them.
+     * Use a search name of NULL to return all criminals.
+     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB
+     * @param myArea the geographic legal area
+     * @param searchStr the name/search string to use
+     * @return a Vector of MOB objects
+     */
+    public Vector getCriminals(Area myArea, String searchStr);
+    
+    /**
+     * Returns a Vector of all active legal warrants available on the given
+     * mob.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant
+     * @param myArea the geographic legal area
+     * @param accused the mob to look for warrants for
+     * @return a Vector of LegalWarrant objects
      */
     public Vector getWarrantsOf(Area myArea, MOB accused);
     
     /**
-     * 
-     * @param myArea
-     * @param W
-     * @return
+     * Puts a warrant on the official docket so that officers can act
+     * on them.  This method is called by other methods to finish off
+     * their work.  Any WARRANTS channels are also notified.
+     * @see com.planet_ink.coffee_mud.Behaviors.interfaces.LegalBehavior#fillOutWarrant(MOB, Law, Area, Environmental, String, String, String, String, String)
+     * @see com.planet_ink.coffee_mud.Behaviors.interfaces.LegalBehavior#addWarrant(Area, MOB, MOB, String, String, String, String, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant
+     * @param myArea the geographic legal area
+     * @param W the LegalWarrant to put on the docket
+     * @return whether the warrant was successfully added
      */
     public boolean addWarrant(Area myArea, LegalWarrant W);
     
     /**
-     * 
-     * @param myArea
-     * @param accused
-     * @param victim
-     * @param crimeLocs
-     * @param crimeFlags
-     * @param crime
-     * @param sentence
-     * @param warnMsg
-     * @return
+     * Fills out and, if possible, issues a warrant for arrest using the given
+     * crime data.  Calls fillOutWarrant to do its work.
+     * @see com.planet_ink.coffee_mud.Behaviors.interfaces.LegalBehavior#fillOutWarrant(MOB, Law, Area, Environmental, String, String, String, String, String)
+     * @param myArea the geographic legal area
+     * @param accused the accused character
+     * @param victim the victim of a crime, if any
+     * @param crimeLocs string of location flags, e.g. !indoors !home keyword !keyword
+     * @param crimeFlags string of crime situation flags, e.g. !recently !combat
+     * @param crime string description of the crime, e.g. robbing <T-NAME>
+     * @param sentence string sentence action, e.g. warn, parole1, jail1, death
+     * @param warnMsg string the officer will say to explain the seriousness of the crime
+     * @return whether or not the warrant was successfully issued
      */
     public boolean addWarrant(Area myArea, MOB accused, MOB victim, String crimeLocs, String crimeFlags, String crime, String sentence, String warnMsg);
     
     /**
-     * 
-     * @param myArea
-     * @param W
-     * @return
+     * Removes the given warrants from the list of issued warrants.  Does not update
+     * the old-warrants (prior convictions) record, but erases the warrant completely.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant
+     * @param myArea the geographic legal area
+     * @param W the legal warrant to remove
+     * @return true if the warrant was found to remove, false otherwise
      */
     public boolean deleteWarrant(Area myArea, LegalWarrant W);
     
     /**
-     * 
-     * @param myArea
-     * @param accused
-     * @param lawStrings
-     * @return
+     * Removes the first warrant for the given accused criminal, for any one of
+     * the given list of official crime KEYS.  Crime KEYS are the key names of
+     * crimed, such as TAXEVASION.
+     * @param myArea the geographic legal area
+     * @param accused the mob possible accused of one of the crimes
+     * @param acquittableLaws the list of crime keys.
+     * @return whether an acquittable crime was found, and removed
      */
-    public boolean aquit(Area myArea, MOB accused, Vector lawStrings);
+    public boolean aquit(Area myArea, MOB accused, String[] acquittableLaws);
     
     /**
-     * 
-     * @param myArea
-     * @param jails
-     * @return
+     * Returns whether any of the given Room objects in the jails Vector
+     * is indeed an official Jail room as defined by this legal behavior.
+     * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
+     * @param myArea the geographic legal area
+     * @param jails a Vector of Room objects to inspect
+     * @return whether any one of the room objects is, in fact, a jail
      */
     public boolean isJailRoom(Area myArea, Vector jails);
     
     /**
-     * 
-     * @param myArea
-     * @param accused
-     * @param victim
-     * @param lawStrings
-     * @return
+     * Issues a LegalWarrant against the accused on behalf of the given 
+     * victim, for a crime listed in the list of crime keys.  
+     * Calls fillOutWarrant after retreiving the remaining information about
+     * the crime key described by the parameter accusableLaws.
+     * @see com.planet_ink.coffee_mud.Behaviors.interfaces.LegalBehavior#fillOutWarrant(MOB, Law, Area, Environmental, String, String, String, String, String)
+     * @param myArea the geographic legal area
+     * @param accused the accused mob
+     * @param victim the victim of the crime
+     * @param accusableLaws a crime key, such as TAXEVASION 
+     * @return whether one of the laws was found, and a warrant successfully filled out
      */
-    public boolean accuse(Area myArea, MOB accused, MOB victim, Vector lawStrings);
+    public boolean accuse(Area myArea, MOB accused, MOB victim, String[] accusableLaws);
 }

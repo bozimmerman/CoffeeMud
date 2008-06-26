@@ -186,7 +186,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				    else
 				        D=CMLib.map().getLoadPlayer(A.landOwner());
 				    if(D==null) return true;
-                    B.accuse(CMLib.law().getLegalObject(R),msg.source(),D,CMParms.makeVector("PROPERTYROB","THIEF_ROBBERY"));
+                    B.accuse(CMLib.law().getLegalObject(R),msg.source(),D,new String[]{"PROPERTYROB","THIEF_ROBBERY"});
 				}
 		    }
 			return true;
