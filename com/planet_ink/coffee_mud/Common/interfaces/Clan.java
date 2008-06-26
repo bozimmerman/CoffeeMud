@@ -625,7 +625,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 	public static final int GVT_REPUBLIC=2;
 	/** constant for the getGovernment @see Clan#getGovernment() method. Denotes Democracy. */
 	public static final int GVT_DEMOCRACY=3;
-	/** descriptor strings for the Clan.GVT_* constants, ordered by their value.  @see Clan */
+    /** constant for the getGovernment @see Clan#getGovernment() method. Denotes Theocracy. */
     public static final int GVT_THEOCRACY=4;
     /** descriptor strings for the Clan.GVT_* constants, ordered by their value.  @see Clan */
 	public static final String[] GVT_DESCS={

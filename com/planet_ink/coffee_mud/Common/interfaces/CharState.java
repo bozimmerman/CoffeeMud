@@ -35,12 +35,19 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  */
 public interface CharState extends CMCommon, CMModifiable
 {
+    /** stat constant for hit points */
     public final static int STAT_HITPOINTS=0;
+    /** stat constant for mana */
     public final static int STAT_MANA=1;
+    /** stat constant for movement */
     public final static int STAT_MOVE=2;
+    /** stat constant for hunger */
     public final static int STAT_HUNGER=3;
+    /** stat constant for thirst */
     public final static int STAT_THIRST=4;
+    /** stat constant for number of other stat constants */
     public final static int STAT_NUMSTATS=5;
+    /** stat constant for number of base stat constants */
     public final static int STAT_NUM_BASE_STATS=5;
     
     /** constant representing how many ticks between hunger/thirst messages*/
