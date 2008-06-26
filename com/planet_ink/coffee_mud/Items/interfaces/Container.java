@@ -35,8 +35,6 @@ public interface Container extends Item
 	public boolean isOpen();
 	public boolean hasALid();
 	public void setLidsNLocks(boolean newHasALid, boolean newIsOpen, boolean newHasALock, boolean newIsLocked);
-	public String keyName();
-	public void setKeyName(String newKeyName);
 	public Vector getContents();
 	public int capacity();
 	public void setCapacity(int newValue);
@@ -45,6 +43,22 @@ public interface Container extends Item
 	public void setContainTypes(long containTypes);
 	public void emptyPlease();
 	
+    /**
+     * For containers with lids and locks, this returns the unique string
+     * representing the key code required to unlock/lock the lid.
+     * @see com.planet_ink.coffee_mud.Items.interfaces.Container#setKeyName(String)
+     * @return the key code
+     */
+    public String keyName();
+    
+    /**
+     * For containers with lids and locks, this sets the unique string
+     * representing the key code required to unlock/lock the lid.
+     * @see com.planet_ink.coffee_mud.Items.interfaces.Container#keyName()
+     * @param keyName the new key code
+     */
+    public void setKeyName(String keyName);
+    
 	public static final int CONTAIN_ANYTHING=0;
 	public static final int CONTAIN_LIQUID=1;
 	public static final int CONTAIN_COINS=2;

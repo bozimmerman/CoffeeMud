@@ -28,8 +28,25 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * The interface for an item or mob which ride a Rideable
+ * @see com.planet_ink.coffee_mud.core.interfaces.Rideable
+ * @author Bo Zimmerman
+ *
+ */
 public interface Rider extends Environmental
 {
+    /**
+     * Sets the Rideable upon which this Rider is Riding.
+     * @see com.planet_ink.coffee_mud.core.interfaces.Rideable
+     * @param ride the Rideable to ride upon
+     */
 	public void setRiding(Rideable ride);
+	
+	/**
+	 * Returns the Rideable upon which this Rider is Riding.
+     * @see com.planet_ink.coffee_mud.core.interfaces.Rideable
+	 * @return the Rideable upon which this Rider is Riding.
+	 */
 	public Rideable riding();
 }

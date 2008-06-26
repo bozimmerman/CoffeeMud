@@ -35,14 +35,6 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-/**
- * @author Owner
- *
- */
-/**
- * @author Owner
- *
- */
 public interface Item extends Environmental, Rider
 {
     /** a constant used in the Locale item search classes to filter on only items being worn */
@@ -566,6 +558,9 @@ public interface Item extends Environmental, Rider
         WORN_BACK,
 	};
 	
+	/** 
+	 * A Chart, indexed by WORN_CODE, showing the other parts dependent on that one.
+	 */
 	public final static long[] WORN_DEPENDENCYGRID={
 	    -1, // inventory
 		WORN_EYES|WORN_EARS|WORN_MOUTH, // head
