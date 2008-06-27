@@ -318,7 +318,7 @@ public class Shell extends StdCommand
                         target=target+"/"+name;
                     else
                         target=name;
-                    target=(DD.isLocalFile())?"//"+target:"::"+target;
+                    target=(SF.isLocalFile()&&DD.canLocalEquiv())?"//"+target:"::"+target;
                     DF=new CMFile(target,mob,false);
                 }
                 else
@@ -761,7 +761,7 @@ public class Shell extends StdCommand
                         target=target+"/"+name;
                     else
                         target=name;
-                    target=(DD.isLocalFile())?"//"+target:"::"+target;
+                    target=(SF.isLocalFile()&&DD.canLocalEquiv())?"//"+target:"::"+target;
                     DF=new CMFile(target,mob,false);
                 }
                 else
