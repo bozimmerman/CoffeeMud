@@ -133,7 +133,7 @@ public class DefaultMessage implements CMMsg
     public void modify(MOB source,
     				   Environmental target,
     				   Environmental tool,
-    				   int newSourceCode,
+    				   int newAllCode,
     				   String sourceMessage,
     				   String targetMessage,
     				   String othersMessage)
@@ -143,9 +143,9 @@ public class DefaultMessage implements CMMsg
 		myTool=tool;
 		sourceMsg=sourceMessage;
 		targetMsg=targetMessage;
-		targetCode=newSourceCode;
-		sourceCode=newSourceCode;
-		othersCode=newSourceCode;
+		targetCode=newAllCode;
+		sourceCode=newAllCode;
+		othersCode=newAllCode;
 		othersMsg=othersMessage;
 	}
 
@@ -208,17 +208,17 @@ public class DefaultMessage implements CMMsg
     				   int newSourceCode,
     				   int newTargetCode,
     				   int newOthersCode,
-    				   String Message)
+    				   String allMessage)
 	{
 		myAgent=source;
 		myTarget=target;
 		myTool=tool;
-		targetMsg=Message;
-		sourceMsg=Message;
+		targetMsg=allMessage;
+		sourceMsg=allMessage;
 		targetCode=newTargetCode;
 		sourceCode=newSourceCode;
 		othersCode=newOthersCode;
-		othersMsg=Message;
+		othersMsg=allMessage;
 	}
 	public MOB source(){ return myAgent; }
     public void setSource(MOB mob){myAgent=mob;}
