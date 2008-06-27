@@ -1012,17 +1012,24 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     
     public String evaluateAutoTitle(String row, boolean addIfPossible)
     {
-        if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0)) return null;
+        if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0)) 
+            return null;
         int x=row.indexOf("=");
         while((x>=1)&&(row.charAt(x-1)=='\\')) x=row.indexOf("=",x+1);
-        if(x<0) return "Error: Invalid line! Not comment, whitespace, and does not contain an = sign!"; 
+        if(x<0) 
+            return "Error: Invalid line! Not comment, whitespace, and does not contain an = sign!"; 
         String title=row.substring(0,x).trim();
         String mask=row.substring(x+1).trim();
         
         if(title.length()==0)return "Error: Blank title: "+title+"="+mask+"!";
         if(mask.length()==0)return "Error: Blank mask: "+title+"="+mask+"!";
-        if(autoTitles.contains(title)) return "Error: Duplicate title: "+title+"="+mask+"!";
-        autoTitles.addElement(title,mask,CMLib.masking().maskCompile(mask));
+        if(addIfPossible)
+        {
+            if(autoTitles==null) reloadAutoTitles();
+            if(autoTitles.contains(title)) 
+                return "Error: Duplicate title: "+title+"="+mask+"!";
+            autoTitles.addElement(title,mask,CMLib.masking().maskCompile(mask));
+        }
         return null;
     }
     public boolean isExistingAutoTitle(String title)
