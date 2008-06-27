@@ -3044,7 +3044,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		case 20: return ""+I.baseEnvStats().attackAdjustment();
 		case 21: return I.readableText();
 		case 22: return I.rawImage();
-        case 23: return getGenScripts(I,false);
+        //case 23: return getGenScripts(I,false);
 		}
 		return "";
 	}
@@ -3088,7 +3088,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		case 20: I.baseEnvStats().setAttackAdjustment(CMath.s_int(val)); break;
 		case 21: I.setReadableText(val); break;
 		case 22: I.setImage(val); break;
-        case 23:
+        /*case 23:
         {
             while(I.numScripts()>0)
             {
@@ -3098,6 +3098,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
             setGenScripts(I,CMLib.xml().parseAllXML(val),false);
             break;
         }
+        */
 		}
 	}
 
@@ -3171,7 +3172,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				}
 		case 20: return M.rawImage();
 		case 21: return M.getFactionListing();
-        case 22: return getGenScripts(M,false);
+        //case 22: return getGenScripts(M,false);
 		}
 		return "";
 	}
@@ -3262,7 +3263,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		    	}
 		    	break;
 		    }
-        case 22:
+        /*case 22:
         {
             while(M.numScripts()>0)
             {
@@ -3271,7 +3272,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
             }
             setGenScripts(M,CMLib.xml().parseAllXML(val),false);
             break;
-        }
+        }*/
 		}
 	}
 

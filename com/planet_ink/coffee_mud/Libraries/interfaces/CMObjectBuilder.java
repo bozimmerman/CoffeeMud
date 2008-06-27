@@ -38,14 +38,14 @@ public interface CMObjectBuilder extends CMLibrary
             "WORNAND","BASEGOLD","ISREADABLE","ISDROPPABLE",
             "ISREMOVABLE","MATERIAL","AFFBEHAV",
             "DISPOSITION","WEIGHT","ARMOR",
-            "DAMAGE","ATTACK","READABLETEXT","IMG","SCRIPTS"};
+            "DAMAGE","ATTACK","READABLETEXT","IMG"};
     public final static String[] GENMOBCODES={
             "CLASS","RACE","LEVEL","ABILITY","NAME",
             "DISPLAY","DESCRIPTION","MONEY","ALIGNMENT",
             "DISPOSITION","SENSES","ARMOR",
             "DAMAGE","ATTACK","SPEED","AFFBEHAV",
             "ABLES","INVENTORY","TATTS","EXPS","IMG",
-            "FACTIONS","SCRIPTS"};
+            "FACTIONS"};
     
     public boolean get(int x, int m);
     public String getGenMOBTextUnpacked(MOB mob, String newText);
