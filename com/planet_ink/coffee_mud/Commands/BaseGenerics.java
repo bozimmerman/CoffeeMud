@@ -1221,10 +1221,10 @@ public class BaseGenerics extends StdCommand
 			for(int i=0;i<disps.length;i++)
 			{
 				int mask=disps[i];
-				for(int num=0;num<EnvStats.dispositionsDesc.length;num++)
+				for(int num=0;num<EnvStats.IS_DESCS.length;num++)
 					if(mask==CMath.pow(2,num))
 					{
-						mob.session().println("    "+letter+") "+CMStrings.padRight(EnvStats.dispositionsDesc[num],20)+":"+((E.disposition()&mask)!=0));
+						mob.session().println("    "+letter+") "+CMStrings.padRight(EnvStats.IS_DESCS[num],20)+":"+((E.disposition()&mask)!=0));
 						letters+=letter;
 						break;
 					}
@@ -1417,11 +1417,11 @@ public class BaseGenerics extends StdCommand
 			for(int i=0;i<senses.length;i++)
 			{
 				int mask=senses[i];
-				for(int num=0;num<EnvStats.sensesDesc.length;num++)
+				for(int num=0;num<EnvStats.CAN_SEE_DESCS.length;num++)
 					if(mask==CMath.pow(2,num))
 					{
 						letters+=letter;
-						mob.session().println("    "+letter+") "+CMStrings.padRight(EnvStats.sensesDesc[num],20)+":"+((E.sensesMask()&mask)!=0));
+						mob.session().println("    "+letter+") "+CMStrings.padRight(EnvStats.CAN_SEE_DESCS[num],20)+":"+((E.sensesMask()&mask)!=0));
 						break;
 					}
 				letter++;

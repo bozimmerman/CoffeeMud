@@ -49,11 +49,11 @@ public class ExitData extends StdWebMacro
 									  Hashtable parms)
 	{
 		StringBuffer str=new StringBuffer("");
-		for(int d=0;d<EnvStats.dispositionsNames.length;d++)
+		for(int d=0;d<EnvStats.IS_CODES.length;d++)
 		{
-			if(parms.containsKey(EnvStats.dispositionsNames[d]))
+			if(parms.containsKey(EnvStats.IS_CODES[d]))
 			{
-				String parm=httpReq.getRequestParameter(EnvStats.dispositionsNames[d]);
+				String parm=httpReq.getRequestParameter(EnvStats.IS_CODES[d]);
 				if(firstTime)
 					parm=(((E.baseEnvStats().disposition()&(1<<d))>0)?"on":"");
 				if((parm!=null)&&(parm.length()>0))

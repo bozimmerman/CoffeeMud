@@ -44,9 +44,9 @@ public class GrinderExits
 	public static String dispositions(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		E.baseEnvStats().setDisposition(0);
-		for(int d=0;d<EnvStats.dispositionsNames.length;d++)
+		for(int d=0;d<EnvStats.IS_CODES.length;d++)
 		{
-			String parm=httpReq.getRequestParameter(EnvStats.dispositionsNames[d]);
+			String parm=httpReq.getRequestParameter(EnvStats.IS_CODES[d]);
 			if((parm!=null)&&(parm.equals("on")))
 			   E.baseEnvStats().setDisposition(E.baseEnvStats().disposition()|(1<<d));
 		}

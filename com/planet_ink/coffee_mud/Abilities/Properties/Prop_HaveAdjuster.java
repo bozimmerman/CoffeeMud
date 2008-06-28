@@ -261,9 +261,9 @@ public class Prop_HaveAdjuster extends Property
 			if((val!=0)&&(y>x))
 			{
 				StringBuffer middle=new StringBuffer("");
-				for(int num=0;num<EnvStats.dispositionsVerb.length;num++)
+				for(int num=0;num<EnvStats.IS_VERBS.length;num++)
 					if(CMath.bset(val,CMath.pow(2,num)))
-						middle.append(EnvStats.dispositionsVerb[num]+" ");
+						middle.append(EnvStats.IS_VERBS[num]+" ");
 				id=id.substring(0,x)+middle.toString().trim()+id.substring(y+((""+val).length()));
 			}
 		}
@@ -275,9 +275,9 @@ public class Prop_HaveAdjuster extends Property
 			if((val!=0)&&(y>x))
 			{
 				StringBuffer middle=new StringBuffer("");
-				for(int num=0;num<EnvStats.sensesVerb.length;num++)
+				for(int num=0;num<EnvStats.CAN_SEE_VERBS.length;num++)
 					if(CMath.bset(val,CMath.pow(2,num)))
-						middle.append(EnvStats.sensesVerb[num]+" ");
+						middle.append(EnvStats.CAN_SEE_VERBS[num]+" ");
 				id=id.substring(0,x)+middle.toString().trim()+id.substring(y+((""+val).length()));
 			}
 		}

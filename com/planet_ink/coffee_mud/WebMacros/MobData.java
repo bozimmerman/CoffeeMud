@@ -66,11 +66,11 @@ public class MobData extends StdWebMacro
 								Hashtable parms)
 	{
 		StringBuffer str=new StringBuffer("");
-		for(int d=0;d<EnvStats.sensesNames.length;d++)
+		for(int d=0;d<EnvStats.CAN_SEE_CODES.length;d++)
 		{
-			if(parms.containsKey(EnvStats.sensesNames[d]))
+			if(parms.containsKey(EnvStats.CAN_SEE_CODES[d]))
 			{
-				String parm=httpReq.getRequestParameter(EnvStats.sensesNames[d]);
+				String parm=httpReq.getRequestParameter(EnvStats.CAN_SEE_CODES[d]);
 				if(firstTime)
 					parm=(((E.baseEnvStats().sensesMask()&(1<<d))>0)?"on":"");
 				if((parm!=null)&&(parm.length()>0))

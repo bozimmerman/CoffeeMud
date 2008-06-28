@@ -1188,14 +1188,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         StringBuffer buf=new StringBuffer("");
         if(useVerbs)
         {
-            for(int i=0;i<EnvStats.dispositionsVerb.length;i++)
+            for(int i=0;i<EnvStats.IS_VERBS.length;i++)
                 if(CMath.isSet(disposition,i))
-                    buf.append(EnvStats.dispositionsVerb[i]+", ");
+                    buf.append(EnvStats.IS_VERBS[i]+", ");
         }
         else
-        for(int i=0;i<EnvStats.dispositionsNames.length;i++)
+        for(int i=0;i<EnvStats.IS_CODES.length;i++)
             if(CMath.isSet(disposition,i))
-                buf.append(EnvStats.dispositionsNames[i]+", ");
+                buf.append(EnvStats.IS_CODES[i]+", ");
         String buff=buf.toString();
         if(buff.endsWith(", ")) buff=buff.substring(0,buff.length()-2).trim();
         return buff;
@@ -1206,14 +1206,14 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         StringBuffer buf=new StringBuffer("");
         if(useVerbs)
         {
-            for(int i=0;i<EnvStats.sensesVerb.length;i++)
+            for(int i=0;i<EnvStats.CAN_SEE_VERBS.length;i++)
                 if(CMath.isSet(disposition,i))
-                    buf.append(EnvStats.sensesVerb[i]+", ");
+                    buf.append(EnvStats.CAN_SEE_VERBS[i]+", ");
         }
         else
-        for(int i=0;i<EnvStats.sensesNames.length;i++)
+        for(int i=0;i<EnvStats.CAN_SEE_CODES.length;i++)
             if(CMath.isSet(disposition,i))
-                buf.append(EnvStats.sensesNames[i]+", ");
+                buf.append(EnvStats.CAN_SEE_CODES[i]+", ");
         String buff=buf.toString();
         if(buff.endsWith(", ")) buff=buff.substring(0,buff.length()-2).trim();
         return buff;
@@ -1222,8 +1222,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
     public int getDispositionCode(String name)
     {
         name=name.toUpperCase().trim();
-        for(int code=0;code<EnvStats.dispositionsNames.length-1;code++)
-            if(EnvStats.dispositionsNames[code].endsWith(name))
+        for(int code=0;code<EnvStats.IS_CODES.length-1;code++)
+            if(EnvStats.IS_CODES[code].endsWith(name))
                 return code;
         return -1;
     }
@@ -1231,8 +1231,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
     public int getSensesCode(String name)
     {
         name=name.toUpperCase().trim();
-        for(int code=0;code<EnvStats.sensesNames.length-1;code++)
-            if(EnvStats.sensesNames[code].endsWith(name))
+        for(int code=0;code<EnvStats.CAN_SEE_CODES.length-1;code++)
+            if(EnvStats.CAN_SEE_CODES[code].endsWith(name))
                 return code;
         return -1;
     }

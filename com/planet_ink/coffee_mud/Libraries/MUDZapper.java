@@ -980,7 +980,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.flags().getSensesCode(str2.substring(1));
                                 if(code>=0)
-                                    buf.append(EnvStats.sensesDesc[code]+", ");
+                                    buf.append(EnvStats.CAN_SEE_DESCS[code]+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -1000,7 +1000,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.flags().getSensesCode(str2.substring(1));
                                 if(code>=0)
-                                    buf.append(EnvStats.sensesDesc[code]+", ");
+                                    buf.append(EnvStats.CAN_SEE_DESCS[code]+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -1269,7 +1269,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.flags().getDispositionCode(str2.substring(1));
                                 if(code>=0)
-                                    buf.append(EnvStats.dispositionsDesc[code]+", ");
+                                    buf.append(EnvStats.IS_DESCS[code]+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))
@@ -1289,7 +1289,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             {
                                 int code=CMLib.flags().getDispositionCode(str2.substring(1));
                                 if(code>=0)
-                                    buf.append(EnvStats.dispositionsDesc[code]+", ");
+                                    buf.append(EnvStats.IS_DESCS[code]+", ");
                             }
                         }
                         if(buf.toString().endsWith(", "))

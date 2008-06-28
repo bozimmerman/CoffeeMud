@@ -53,9 +53,9 @@ public class GrinderMobs
 	public static String senses(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		E.baseEnvStats().setSensesMask(0);
-		for(int d=0;d<EnvStats.sensesNames.length;d++)
+		for(int d=0;d<EnvStats.CAN_SEE_CODES.length;d++)
 		{
-			String parm=httpReq.getRequestParameter(EnvStats.sensesNames[d]);
+			String parm=httpReq.getRequestParameter(EnvStats.CAN_SEE_CODES[d]);
 			if((parm!=null)&&(parm.equals("on")))
 			   E.baseEnvStats().setSensesMask(E.baseEnvStats().sensesMask()|(1<<d));
 		}
