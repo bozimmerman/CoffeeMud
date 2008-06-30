@@ -107,15 +107,17 @@ public class Spell_Delude extends Spell
                             which=1;
                         else 
                             which=2;
+                        Enumeration e;
                         switch(which) 
                         {
                             case 1:
                                 // find a good range, set them within that
                                 int newAlign=0;
-                                Vector v=CMLib.factions().getRanges(CMLib.factions().AlignID());
-                                for(int i=0;i<v.size();i++) 
+                                e=CMLib.factions().getRanges(CMLib.factions().AlignID());
+                                if(e!=null)
+                                for(;e.hasMoreElements();) 
                                 {
-                                    Faction.FactionRange R=(Faction.FactionRange)v.elementAt(i);
+                                    Faction.FactionRange R=(Faction.FactionRange)e.nextElement();
                                     if(R.alignEquiv()==Faction.ALIGN_GOOD) 
                                     {
                                         newAlign = R.random();
@@ -127,10 +129,11 @@ public class Spell_Delude extends Spell
                             case 2:
                                 // find an evil range, set them within that
                                 newAlign=0;
-                                v=CMLib.factions().getRanges(CMLib.factions().AlignID());
-                                for(int i=0;i<v.size();i++) 
+                                e=CMLib.factions().getRanges(CMLib.factions().AlignID());
+                                if(e!=null)
+                                for(;e.hasMoreElements();) 
                                 {
-                                    Faction.FactionRange R=(Faction.FactionRange)v.elementAt(i);
+                                    Faction.FactionRange R=(Faction.FactionRange)e.nextElement();
                                     if(R.alignEquiv()==Faction.ALIGN_EVIL) 
                                     {
                                         newAlign = R.random();

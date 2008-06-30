@@ -44,7 +44,7 @@ public class FactionList extends StdCommand
         for(Enumeration e=mob.fetchFactions();e.hasMoreElements();) {
             String name=(String)e.nextElement();
             Faction F=CMLib.factions().getFaction(name);
-            if((F!=null)&&(F.showinfactionscommand()))
+            if((F!=null)&&(F.showInFactionsCommand()))
             {
                 none=false;
                 msg.append(formatFactionLine(name,mob.fetchFaction(name)));

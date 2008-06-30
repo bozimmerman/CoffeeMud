@@ -57,19 +57,20 @@ public class GrinderFactions {
         F.setName(old==null?"NAME":old);
         
         old=httpReq.getRequestParameter("SHOWINSCORE");
-        F.setShowinscore((old!=null)&&(old.equalsIgnoreCase("on")));
+        F.setShowInScore((old!=null)&&(old.equalsIgnoreCase("on")));
         
         old=httpReq.getRequestParameter("SHOWINFACTIONS");
-        F.setShowinfactionscommand((old!=null)&&(old.equalsIgnoreCase("on")));
+        F.setShowInFactionsCommand((old!=null)&&(old.equalsIgnoreCase("on")));
         
         old=httpReq.getRequestParameter("SHOWINEDITOR");
-        F.setShowineditor((old!=null)&&(old.equalsIgnoreCase("on")));
+        F.setShowInEditor((old!=null)&&(old.equalsIgnoreCase("on")));
         
         old=httpReq.getRequestParameter("SHOWINREPORTS");
-        F.setShowinspecialreported((old!=null)&&(old.equalsIgnoreCase("on")));
+        F.setShowInSpecialReported((old!=null)&&(old.equalsIgnoreCase("on")));
         
         int num=0;
-        F.ranges().clear();
+        for(Enumeration e=F.ranges();e.hasMoreElements();)
+            F.delRange((Faction.FactionRange)e.nextElement());
         while(httpReq.getRequestParameter("RANGENAME"+num)!=null)
         {
             old=httpReq.getRequestParameter("RANGENAME"+num);
@@ -82,7 +83,7 @@ public class GrinderFactions {
                 int high=CMath.s_int(httpReq.getRequestParameter("RANGEHIGH"+num));
                 if(high<low) high=low;
                 String flag=httpReq.getRequestParameter("RANGEFLAG"+num);
-                F.ranges().addElement(F.newRange(low+";"+high+";"+old+";"+code+";"+flag));
+                F.addRange(low+";"+high+";"+old+";"+code+";"+flag);
             }
             num++;
         }
@@ -94,11 +95,12 @@ public class GrinderFactions {
         for(int i=0;i<prefixes.length;i++)
         {
             String prefix=prefixes[i];
+            Vector V=new Vector();
             switch(i)
             {
-            case 0: F.autoDefaults().clear(); break;
-            case 1: F.defaults().clear(); break;
-            case 2: F.choices().clear(); break;
+            case 0: F.setAutoDefaults(V); break;
+            case 1: F.setDefaults(V); break;
+            case 2: F.setChoices(V); break;
             }
             num=0;
             while(httpReq.getRequestParameter(prefix+num)!=null)
@@ -107,18 +109,14 @@ public class GrinderFactions {
                 if(value.length()>0)
                 {
                     String mask=httpReq.getRequestParameter(prefix+"MASK"+num);
-                    switch(i)
-                    {
-                    case 0: F.autoDefaults().addElement((CMath.s_long(value)+" "+mask).trim()); break;
-                    case 1: F.defaults().addElement((CMath.s_long(value)+" "+mask).trim()); break;
-                    case 2: F.choices().addElement((CMath.s_long(value)+" "+mask).trim()); break;
-                    }
+                    V.addElement((CMath.s_long(value)+" "+mask).trim());
                 }
                 num++;
             }
         }
         
-        F.Changes().clear();
+        for(Enumeration e=F.changeEventKeys();e.hasMoreElements();)
+            F.delChangeEvent((String)e.nextElement());
         num=0;
         while(httpReq.getRequestParameter("CHANGESTRIGGER"+num)!=null)
         {
@@ -136,39 +134,40 @@ public class GrinderFactions {
                     old+=" "+httpReq.getRequestParameter("CHANGESFLAGS"+num+"_"+id).toUpperCase();
                 old+=";";
                 old+=httpReq.getRequestParameter("CHANGESMASK"+num);
-                FactionChangeEvent FC=F.newChangeEvent(old);
-                F.Changes().put(FC.eventID().toUpperCase(),FC);
+                F.addChangeEvent(old);
             }
             num++;
         }
         
-        F.factors().clear();
+        for(Enumeration e=F.factors();e.hasMoreElements();)
+            F.delFactor((Object[])e.nextElement());
         num=0;
         while(httpReq.getRequestParameter("ADJFACTOR"+num)!=null)
         {
             old=httpReq.getRequestParameter("ADJFACTOR"+num);
             if(old.length()>0)
             {
-                Double gain=new Double(CMath.s_pct(httpReq.getRequestParameter("ADJFACTORGAIN"+num)));
-                Double loss=new Double(CMath.s_pct(httpReq.getRequestParameter("ADJFACTORLOSS"+num)));
-                F.factors().addElement(CMParms.makeVector(gain,loss,old));
+                double gain=CMath.s_pct(httpReq.getRequestParameter("ADJFACTORGAIN"+num));
+                double loss=CMath.s_pct(httpReq.getRequestParameter("ADJFACTORLOSS"+num));
+                F.addFactor(gain,loss,old);
             }
             num++;
         }
         
         num=0;
-        F.relations().clear();
+        for(Enumeration e=F.relationFactions();e.hasMoreElements();)
+            F.delRelation((String)e.nextElement());
         while(httpReq.getRequestParameter("RELATIONS"+num)!=null)
         {
             old=httpReq.getRequestParameter("RELATIONS"+num);
             if(old.length()>0)
-                F.relations().put(old,
-                                  new Double(CMath.s_pct(httpReq.getRequestParameter("RELATIONSAMT"+num))));
+                F.addRelation(old,CMath.s_pct(httpReq.getRequestParameter("RELATIONSAMT"+num)));
             num++;
         }
         
         num=0;
-        F.abilityUsages().clear();
+        for(Enumeration e=F.abilityUsages();e.hasMoreElements();)
+            F.delAbilityUsage((Faction.FactionAbilityUsage)e.nextElement());
         while(httpReq.getRequestParameter("ABILITYUSE"+num)!=null)
         {
             old=httpReq.getRequestParameter("ABILITYUSE"+num);
@@ -192,7 +191,7 @@ public class GrinderFactions {
                 }
                 old+=";"+CMath.s_int(httpReq.getRequestParameter("ABILITYMIN"+num));
                 old+=";"+CMath.s_int(httpReq.getRequestParameter("ABILITYMAX"+num));
-                F.abilityUsages().addElement(F.newAbilityUsage(old));
+                F.addAbilityUsage(old);
             }
             num++;
         }

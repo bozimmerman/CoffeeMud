@@ -2103,10 +2103,9 @@ public class BaseGenerics extends StdCommand
 		Faction.FactionRange myFR=CMLib.factions().getRange(F.factionID(),E.fetchFaction(F.factionID()));
 		mob.tell(showNumber+". "+F.name()+": "+((myFR!=null)?myFR.name():"UNDEFINED")+" ("+E.fetchFaction(F.factionID())+")");
 	    if((showFlag!=showNumber)&&(showFlag>-999)) return;
-	    if(F.ranges()!=null)
-	    for(int v=0;v<F.ranges().size();v++)
+	    for(Enumeration e=F.ranges();e.hasMoreElements();)
 	    {
-	        Faction.FactionRange FR=(Faction.FactionRange)F.ranges().elementAt(v);
+	        Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
 	        mob.tell(CMStrings.padRight(FR.name(),20)+": "+FR.low()+" - "+FR.high()+")");
 	    }
 		String newOne=mob.session().prompt("Enter a new value\n\r:");
@@ -2115,15 +2114,15 @@ public class BaseGenerics extends StdCommand
 		    E.addFaction(F.factionID(),CMath.s_int(newOne));
 	        return;
 		}
-	    for(int v=0;v<F.ranges().size();v++)
-	    {
-	        Faction.FactionRange FR=(Faction.FactionRange)F.ranges().elementAt(v);
+        for(Enumeration e=F.ranges();e.hasMoreElements();)
+        {
+            Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
 	        if(FR.name().toUpperCase().startsWith(newOne.toUpperCase()))
 	        {
-	            if(FR.low()==F.lowest())
+	            if(FR.low()==F.minimum())
 	                E.addFaction(F.factionID(),FR.low());
 	            else
-	            if(FR.high()==F.highest())
+	            if(FR.high()==F.maximum())
 	                E.addFaction(F.factionID(),FR.high());
 	            else
 	                E.addFaction(F.factionID(),FR.low()+((FR.high()-FR.low())/2));
@@ -6226,7 +6225,7 @@ public class BaseGenerics extends StdCommand
 			    F=(Faction)e.nextElement();
 			    if((!F.hasFaction(me))&&(F.findAutoDefault(me)!=Integer.MAX_VALUE))
 			        mob.addFaction(F.factionID(),F.findAutoDefault(me));
-			    if(F.showineditor())
+			    if(F.showInEditor())
 				    genSpecialFaction(mob,me,++showNumber,showFlag,F);
 			}
 			genGender(mob,me,++showNumber,showFlag);
@@ -6329,7 +6328,7 @@ public class BaseGenerics extends StdCommand
 			    F=(Faction)e.nextElement();
 			    if((!F.hasFaction(me))&&(F.findAutoDefault(me)!=Integer.MAX_VALUE))
 			        mob.addFaction(F.factionID(),F.findAutoDefault(me));
-			    if(F.showineditor())
+			    if(F.showInEditor())
 				    genSpecialFaction(mob,me,++showNumber,showFlag,F);
 			}
 			genGender(mob,me,++showNumber,showFlag);
@@ -6662,7 +6661,7 @@ public class BaseGenerics extends StdCommand
 			    F=(Faction)e.nextElement();
 			    if((!F.hasFaction((MOB)me))&&(F.findAutoDefault((MOB)me)!=Integer.MAX_VALUE))
 			        mob.addFaction(F.factionID(),F.findAutoDefault((MOB)me));
-			    if(F.showineditor())
+			    if(F.showInEditor())
 				    genSpecialFaction(mob,(MOB)me,++showNumber,showFlag,F);
 			}
 			genGender(mob,mme,++showNumber,showFlag);

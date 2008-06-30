@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionRange;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -19,7 +20,7 @@ import java.util.*;
 import java.lang.reflect.*;
 /**
  * <p>Portions Copyright (c) 2003 Jeremy Vyska</p>
- * <p>Portions Copyright (c) 2004 Bo Zimmerman</p>
+ * <p>Portions Copyright (c) 2004-2008 Bo Zimmerman</p>
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
  * <p>you may not use this file except in compliance with the License.
  * <p>You may obtain a copy of the License at
@@ -50,20 +51,19 @@ public class DefaultFaction implements Faction, MsgListener
     public int highest=Integer.MAX_VALUE;
     public int lowest=Integer.MIN_VALUE;
     public String experienceFlag="";
-    public boolean showinscore=false;
-    public boolean showinspecialreported=false;
-    public boolean showineditor=false;
-    public boolean showinfactionscommand=true;
+    public boolean showInScore=false;
+    public boolean showInSpecialReported=false;
+    public boolean showInEditor=false;
+    public boolean showInFactionsCommand=true;
     public Vector ranges=new Vector();
     public Vector defaults=new Vector();
     public Vector autoDefaults=new Vector();
     public double rateModifier=1.0;
-    public Hashtable Changes=new Hashtable();
+    public Hashtable changes=new Hashtable();
     public Vector factors=new Vector();
     public Hashtable relations=new Hashtable();
     public Vector abilityUsages=new Vector();
     public Vector choices=new Vector();
-
 
     public String factionID(){return ID;}
     public String name(){return name;}
@@ -75,38 +75,56 @@ public class DefaultFaction implements Faction, MsgListener
     public int highest(){return highest;}
     public int lowest(){return lowest;}
     public String experienceFlag(){return experienceFlag;}
-    public boolean showinscore(){return showinscore;}
-    public boolean showinspecialreported(){return showinspecialreported;}
-    public boolean showineditor(){return showineditor;}
-    public boolean showinfactionscommand(){return showinfactionscommand;}
-    public Vector ranges(){return ranges;}
-    public Vector defaults(){return defaults;}
-    public Vector autoDefaults(){return autoDefaults;}
+    public boolean showInScore(){return showInScore;}
+    public boolean showInSpecialReported(){return showInSpecialReported;}
+    public boolean showInEditor(){return showInEditor;}
+    public boolean showInFactionsCommand(){return showInFactionsCommand;}
+    public Enumeration ranges(){ return ((Vector)ranges.clone()).elements(); }
+    public Enumeration defaults(){return ((Vector)defaults.clone()).elements();}
+    public Enumeration autoDefaults(){return ((Vector)autoDefaults.clone()).elements();}
     public double rateModifier(){return rateModifier;}
-    public Hashtable Changes(){return  Changes;}
-    public Vector factors(){return  factors;}
-    public Hashtable relations(){return  relations;}
-    public Vector abilityUsages(){return  abilityUsages;}
-    public Vector choices(){return  choices;}
+    public Enumeration changeEventKeys(){return  ((Hashtable)changes.clone()).keys();}
+    public Enumeration factors(){return  ((Vector)factors.clone()).elements();}
+    public Enumeration relationFactions(){return  ((Hashtable)relations.clone()).keys();}
+    public Enumeration abilityUsages(){return  ((Vector)abilityUsages.clone()).elements();}
+    public Enumeration choices(){return  ((Vector)choices.clone()).elements();}
     
     public void setFactionID(String newStr){ID=newStr;}
     public void setName(String newStr){name=newStr;}
     public void setChoiceIntro(String newStr){choiceIntro=newStr;}
-    public void setMinimum(int newVal){minimum=newVal;}
-    public void setMiddle(int newVal){middle=newVal;}
-    public void setDifference(int newVal){difference=newVal;}
-    public void setMaximum(int newVal){maximum=newVal;}
-    public void setHighest(int newVal){highest=newVal;}
-    public void setLowest(int newVal){lowest=newVal;}
     public void setExperienceFlag(String newStr){experienceFlag=newStr;}
-    public void setShowinscore(boolean truefalse){showinscore=truefalse;}
-    public void setShowinspecialreported(boolean truefalse){showinspecialreported=truefalse;}
-    public void setShowineditor(boolean truefalse){showineditor=truefalse;}
-    public void setShowinfactionscommand(boolean truefalse){showinfactionscommand=truefalse;}
-    public void setChoices(Vector v){choices=v;}
-    public void setAutoDefaults(Vector v){autoDefaults=v;}
-    public void setDefaults(Vector v){defaults=v;}
+    public void setShowInScore(boolean truefalse){showInScore=truefalse;}
+    public void setShowInSpecialReported(boolean truefalse){showInSpecialReported=truefalse;}
+    public void setShowInEditor(boolean truefalse){showInEditor=truefalse;}
+    public void setShowInFactionsCommand(boolean truefalse){showInFactionsCommand=truefalse;}
+    public void setChoices(Vector v){choices=(v==null)?new Vector():v;}
+    public void setAutoDefaults(Vector v){autoDefaults=(v==null)?new Vector():v;}
+    public void setDefaults(Vector v){defaults=(v==null)?new Vector():v;}
     public void setRateModifier(double d){rateModifier=d;}
+    public Faction.FactionAbilityUsage getAbilityUsage(int x){ 
+        return ((x>=0)&&(x<abilityUsages.size()))
+                ?(Faction.FactionAbilityUsage)abilityUsages.elementAt(x)
+                :null;
+    }
+    public boolean delFactor(Object[] o){ return factors.remove(o); }
+    public Object[] getFactor(int x){ return ((x>=0)&&(x<factors.size()))?(Object[])factors.elementAt(x):null;}
+    public Object[] addFactor(double gain, double loss, String mask){
+        Object[] o=new Object[]{new Double(gain),new Double(loss),mask};
+        factors.addElement(o);
+        return o;
+    }
+    public boolean delRelation(String factionID) { return relations.remove(factionID)!=null;}
+    public boolean addRelation(String factionID, double relation) {
+        if(relations.containsKey(factionID))
+            return false;
+        relations.put(factionID,new Double(relation));
+        return true;
+    }
+    public double getRelation(String factionID) { 
+        if(relations.containsKey(factionID))
+            return ((Double)relations.get(factionID)).doubleValue();
+        return 0.0;
+    }
     
     public DefaultFaction(){super();}
     public void initializeFaction(String aname)
@@ -120,7 +138,7 @@ public class DefaultFaction implements Faction, MsgListener
         lowest=0;
         difference=CMath.abs(maximum-minimum);
         experienceFlag="EXTREME";
-        ranges.addElement(newRange("0;100;Sample Range;SAMPLE;"));
+        addRange("0;100;Sample Range;SAMPLE;");
         defaults.addElement("0");
     }
 
@@ -140,25 +158,22 @@ public class DefaultFaction implements Faction, MsgListener
             minimum=maximum;
             maximum=alignProp.getInt("MINIMUM");
         }
-        middle=minimum+(int)Math.round(CMath.div(maximum-minimum,2.0));
-        difference=CMath.abs(maximum-minimum);
+        recalc();
         experienceFlag=alignProp.getStr("EXPERIENCE").toUpperCase().trim();
         if(experienceFlag.length()==0) experienceFlag="NONE";
         rateModifier=alignProp.getDouble("RATEMODIFIER");
-        showinscore=alignProp.getBoolean("SCOREDISPLAY");
-        showinfactionscommand=alignProp.getBoolean("SHOWINFACTIONSCMD");
-        showinspecialreported=alignProp.getBoolean("SPECIALREPORTED");
-        showineditor=alignProp.getBoolean("EDITALONE");
+        showInScore=alignProp.getBoolean("SCOREDISPLAY");
+        showInFactionsCommand=alignProp.getBoolean("SHOWINFACTIONSCMD");
+        showInSpecialReported=alignProp.getBoolean("SPECIALREPORTED");
+        showInEditor=alignProp.getBoolean("EDITALONE");
         defaults =CMParms.parseSemicolons(alignProp.getStr("DEFAULT"),true);
         autoDefaults =CMParms.parseSemicolons(alignProp.getStr("AUTODEFAULTS"),true);
         choices =CMParms.parseSemicolons(alignProp.getStr("AUTOCHOICES"),true);
         ranges=new Vector();
-        Changes=new Hashtable();
+        changes=new Hashtable();
         factors=new Vector();
         relations=new Hashtable();
         abilityUsages=new Vector();
-        highest=Integer.MIN_VALUE;
-        lowest=Integer.MAX_VALUE;
         for(Enumeration e=alignProp.keys();e.hasMoreElements();)
         {
             if(debug) Log.sysOut("FACTIONS","Starting Key Loop");
@@ -167,17 +182,9 @@ public class DefaultFaction implements Faction, MsgListener
             String words = (String) alignProp.get(key);
             if(debug) Log.sysOut("FACTIONS","  Words Found   :"+words);
             if(key.startsWith("RANGE"))
-            {
-                FactionRange R=newRange(words);
-                ranges.add(R);
-                if(R.low()<lowest) lowest=R.low();
-                if(R.high()>highest) highest=R.high();
-            }
+                addRange(words);
             if(key.startsWith("CHANGE"))
-            {
-                FactionChangeEvent C=newChangeEvent(words);
-                Changes.put(C.eventID().toUpperCase(),C);
-            }
+                addChangeEvent(words);
             if(key.startsWith("FACTOR"))
             {
                 Vector factor=CMParms.parseSemicolons(words,false);
@@ -202,31 +209,48 @@ public class DefaultFaction implements Faction, MsgListener
                 }
             }
             if(key.startsWith("ABILITY"))
-            {
-                FactionAbilityUsage A=newAbilityUsage(words);
-                abilityUsages.add(A);
-            }
+                addAbilityUsage(words);
         }
     }
 
+    private void recalc() {
+        minimum=Integer.MAX_VALUE;
+        maximum=Integer.MIN_VALUE;
+        for(Enumeration e=ranges();e.hasMoreElements();)
+        {
+            Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
+            if(FR.high()>maximum) maximum=FR.high();
+            if(FR.low()<minimum) minimum=FR.low();
+        }
+        if(minimum==Integer.MAX_VALUE) minimum=Integer.MIN_VALUE;
+        if(maximum==Integer.MIN_VALUE) maximum=Integer.MAX_VALUE;
+        if(maximum<minimum)
+        {
+            int oldMin=minimum;
+            minimum=maximum;
+            maximum=oldMin;
+        }
+        middle=minimum+(int)Math.round(CMath.div(maximum-minimum,2.0));
+        difference=CMath.abs(maximum-minimum);
+    }
     
     public String getTagValue(String tag)
     {
         int tagRef=CMLib.factions().isFactionTag(tag);
         if(tagRef<0) return "";
         int numCall=-1;
-        if((tagRef<ALL_TAGS.length)&&(ALL_TAGS[tagRef].endsWith("*")))
-            if(CMath.isInteger(tag.substring(ALL_TAGS[tagRef].length()-1)))
-                numCall=CMath.s_int(tag.substring(ALL_TAGS[tagRef].length()-1));
+        if((tagRef<TAG_NAMES.length)&&(TAG_NAMES[tagRef].endsWith("*")))
+            if(CMath.isInteger(tag.substring(TAG_NAMES[tagRef].length()-1)))
+                numCall=CMath.s_int(tag.substring(TAG_NAMES[tagRef].length()-1));
         switch(tagRef)
         {
         case TAG_NAME: return name;
         case TAG_MINIMUM: return ""+minimum;
         case TAG_MAXIMUM: return ""+maximum;
-        case TAG_SCOREDISPLAY: return Boolean.toString(showinscore).toUpperCase();
-        case TAG_SHOWINFACTIONSCMD: return Boolean.toString(showinfactionscommand).toUpperCase();
-        case TAG_SPECIALREPORTED: return Boolean.toString(showinspecialreported).toUpperCase();
-        case TAG_EDITALONE: return Boolean.toString(showineditor).toUpperCase();
+        case TAG_SCOREDISPLAY: return Boolean.toString(showInScore).toUpperCase();
+        case TAG_SHOWINFACTIONSCMD: return Boolean.toString(showInFactionsCommand).toUpperCase();
+        case TAG_SPECIALREPORTED: return Boolean.toString(showInSpecialReported).toUpperCase();
+        case TAG_EDITALONE: return Boolean.toString(showInEditor).toUpperCase();
         case TAG_DEFAULT: return CMParms.toSemicolonList(defaults);
         case TAG_AUTODEFAULTS: return CMParms.toSemicolonList(autoDefaults);
         case TAG_CHOICEINTRO: return choiceIntro;
@@ -241,10 +265,10 @@ public class DefaultFaction implements Faction, MsgListener
         }
         case TAG_CHANGE_:
         {
-            if((numCall<0)||(numCall>=Changes.size()))
-                return ""+Changes.size();
+            if((numCall<0)||(numCall>=changes.size()))
+                return ""+changes.size();
             int i=0;
-            for(Enumeration e=Changes.elements();e.hasMoreElements();)
+            for(Enumeration e=changes.elements();e.hasMoreElements();)
             {
                 FactionChangeEvent FC=(FactionChangeEvent)e.nextElement();
                 if(i==numCall)
@@ -289,8 +313,8 @@ public class DefaultFaction implements Faction, MsgListener
         int tagRef=CMLib.factions().isFactionTag(tag);
         if(tagRef<0)
             return "";
-        String rawTagName=ALL_TAGS[tagRef];
-        if(ALL_TAGS[tagRef].endsWith("*"))
+        String rawTagName=TAG_NAMES[tagRef];
+        if(TAG_NAMES[tagRef].endsWith("*"))
         {
             int number=CMath.s_int(getTagValue(rawTagName));
             StringBuffer str=new StringBuffer("");
@@ -304,31 +328,30 @@ public class DefaultFaction implements Faction, MsgListener
         return rawTagName+"="+getTagValue(tag)+delimeter;
     }
     
-    public FactionChangeEvent findChangeEvent(String key) 
+    public FactionChangeEvent getChangeEvent(String key) 
     {
-        if(Changes.containsKey(key)) 
-            return (FactionChangeEvent)Changes.get(key.toUpperCase());
+        if(changes.containsKey(key)) 
+            return (FactionChangeEvent)changes.get(key);
         return null;
     }
 
     public Vector findChoices(MOB mob)
     {
         Vector mine=new Vector();
-        if(choices!=null) 
+        String s;
+        for(Enumeration e=choices.elements();e.hasMoreElements();) 
         {
-            for(int i=0;i<choices.size();i++) 
+            s=(String)e.nextElement();
+            if(CMath.isInteger(s))
+                mine.addElement(new Integer(CMath.s_int(s)));
+            else
+            if(CMLib.masking().maskCheck(s, mob,false)) 
             {
-                if(CMath.isInteger((String)choices.elementAt(i)))
-                    mine.addElement(new Integer(CMath.s_int((String)choices.elementAt(i))));
-                else
-                if(CMLib.masking().maskCheck((String)choices.elementAt(i), mob,false)) 
+                Vector v=CMParms.parse(s);
+                for(int j=0;j<v.size();j++) 
                 {
-                    Vector v=CMParms.parse((String)choices.elementAt(i));
-                    for(int j=0;j<v.size();j++) 
-                    {
-                        if(CMath.isInteger((String)v.elementAt(j)))
-                            mine.addElement(new Integer(CMath.s_int((String)v.elementAt(j))));
-                    }
+                    if(CMath.isInteger((String)v.elementAt(j)))
+                        mine.addElement(new Integer(CMath.s_int((String)v.elementAt(j))));
                 }
             }
         }
@@ -340,11 +363,11 @@ public class DefaultFaction implements Faction, MsgListener
     {
         if(key==null) return null;
         // Direct ability ID's
-        if(Changes.containsKey(key.ID()))
-            return (FactionChangeEvent)Changes.get(key.ID().toUpperCase());
+        if(changes.containsKey(key.ID()))
+            return (FactionChangeEvent)changes.get(key.ID().toUpperCase());
         // By TYPE or FLAGS
         FactionChangeEvent C =null;
-        for (Enumeration e=Changes.elements();e.hasMoreElements();) 
+        for (Enumeration e=changes.elements();e.hasMoreElements();) 
         {
             C= (FactionChangeEvent)e.nextElement();
             if((key.classificationCode()&Ability.ALL_ACODES)==C.IDclassFilter())
@@ -357,34 +380,23 @@ public class DefaultFaction implements Faction, MsgListener
         return null;
     }
 
-    public Vector fetchRanges() 
-    {
-        return ranges;
-    }
-
     public FactionRange fetchRange(int faction) 
     {
-        if(ranges!=null) 
+        for (Enumeration e=ranges.elements();e.hasMoreElements();) 
         {
-            for (int i = 0; i < ranges.size(); i++) 
-            {
-                FactionRange R = (FactionRange) ranges.elementAt(i);
-                if ( (faction >= R.low()) && (faction <= R.high()))
-                    return R;
-            }
+            FactionRange R = (FactionRange)e.nextElement();
+            if ( (faction >= R.low()) && (faction <= R.high()))
+                return R;
         }
         return null;
     }
     public String fetchRangeName(int faction) 
     {
-        if(ranges!=null) 
+        for (Enumeration e=ranges.elements();e.hasMoreElements();) 
         {
-            for (int i = 0; i < ranges.size(); i++) 
-            {
-                FactionRange R = (FactionRange) ranges.elementAt(i);
-                if ( (faction >= R.low()) && (faction <= R.high()))
-                    return R.name();
-            }
+            FactionRange R = (FactionRange)e.nextElement();
+            if ( (faction >= R.low()) && (faction <= R.high()))
+                return R.name();
         }
         return "";
     }
@@ -409,23 +421,20 @@ public class DefaultFaction implements Faction, MsgListener
 
     public int findDefault(MOB mob) 
     {
-        if(defaults!=null) 
+        String s;
+        for(Enumeration e=defaults.elements();e.hasMoreElements();) 
         {
-            for(int i=0;i<defaults.size();i++) 
+            s=(String)e.nextElement();
+            if(CMath.isNumber(s))
+                return CMath.s_int(s);
+            else
+            if(CMLib.masking().maskCheck(s, mob,false)) 
             {
-                if(CMLib.masking().maskCheck((String)defaults.elementAt(i), mob,false)) 
+                Vector v=CMParms.parse(s);
+                for(int j=0;j<v.size();j++) 
                 {
-                    Vector v=CMParms.parse((String)defaults.elementAt(i));
-                    for(int j=0;j<v.size();j++) 
-                    {
-                        if(CMath.isNumber((String)v.elementAt(j)))
-                            return CMath.s_int((String)v.elementAt(j));
-                    }
-                }
-                else
-                {
-                    if(CMath.isNumber((String)defaults.elementAt(i)))
-                         return CMath.s_int((String)defaults.elementAt(i));
+                    if(CMath.isNumber((String)v.elementAt(j)))
+                        return CMath.s_int((String)v.elementAt(j));
                 }
             }
         }
@@ -434,23 +443,20 @@ public class DefaultFaction implements Faction, MsgListener
 
     public int findAutoDefault(MOB mob) 
     {
-        if(autoDefaults!=null) 
+        String s;
+        for(Enumeration e=autoDefaults.elements();e.hasMoreElements();) 
         {
-            for(int i=0;i<autoDefaults.size();i++) 
+            s=(String)e.nextElement();
+            if(CMath.isNumber(s))
+                return CMath.s_int(s);
+            else
+            if(CMLib.masking().maskCheck(s, mob,false)) 
             {
-                if(CMLib.masking().maskCheck((String)autoDefaults.elementAt(i), mob,false)) 
+                Vector v=CMParms.parse(s);
+                for(int j=0;j<v.size();j++) 
                 {
-                    Vector v=CMParms.parse((String)autoDefaults.elementAt(i));
-                    for(int j=0;j<v.size();j++) 
-                    {
-                        if(CMath.isNumber((String)v.elementAt(j)))
-                            return CMath.s_int((String)v.elementAt(j));
-                    }
-                }
-                else
-                {
-                    if(CMath.isNumber((String)autoDefaults.elementAt(i)))
-                         return CMath.s_int((String)autoDefaults.elementAt(i));
+                    if(CMath.isNumber((String)v.elementAt(j)))
+                        return CMath.s_int((String)v.elementAt(j));
                 }
             }
         }
@@ -520,7 +526,7 @@ public class DefaultFaction implements Faction, MsgListener
 		&&(msg.source()==myHost)
 		&&(msg.tool() instanceof MOB))
         {
-            FactionChangeEvent eventC=findChangeEvent("MURDER");
+            FactionChangeEvent eventC=getChangeEvent("MURDER");
             if(eventC!=null)
             {
                 CharClass combatCharClass=CMLib.combat().getCombatDominantClass((MOB)msg.tool(),msg.source());
@@ -767,8 +773,29 @@ public class DefaultFaction implements Faction, MsgListener
          return _ALL_TYPES;
      }
      
-     public Faction.FactionChangeEvent newChangeEvent(String key){return new DefaultFaction.DefaultFactionChangeEvent(key);}
-     public Faction.FactionChangeEvent newChangeEvent(){return new DefaultFaction.DefaultFactionChangeEvent();}
+     public Faction.FactionChangeEvent addChangeEvent(String key)
+     {
+         Faction.FactionChangeEvent event;
+         if(key==null)
+             event=new DefaultFaction.DefaultFactionChangeEvent();
+         else
+         if(key.indexOf(';')<0)
+         {
+             event=new DefaultFaction.DefaultFactionChangeEvent();
+             if(!event.setEventID(key))
+                 return null;
+         }
+         else
+             event=new DefaultFaction.DefaultFactionChangeEvent(key);
+         changes.put(event.eventID().toUpperCase().trim(),event);
+         return event;
+     }
+     
+     public boolean delChangeEvent(String eventKey)
+     {
+         return changes.remove(eventKey)!=null;
+     }
+     
      public static class DefaultFactionChangeEvent implements Faction.FactionChangeEvent
      {
         public String ID="";
@@ -794,17 +821,9 @@ public class DefaultFaction implements Faction, MsgListener
         public boolean outsiderTargetOK(){return outsiderTargetOK;}
         public boolean selfTargetOK(){return selfTargetOK;}
         public boolean just100(){return just100;}
-        public void setEventID(String newVal){ID=newVal;}
-        public void setFlagCache(String newVal){flagCache=newVal;}
-        public void setIDclassFilter(int newVal){IDclassFilter=newVal;}
-        public void setIDflagFilter(int newVal){IDflagFilter=newVal;}
-        public void setIDdomainFilter(int newVal){IDdomainFilter=newVal;}
         public void setDirection(int newVal){direction=newVal;}
         public void setFactor(double newVal){factor=newVal;}
         public void setZapper(String newVal){zapper=newVal;}
-        public void setOutsiderTargetOK(boolean newVal){outsiderTargetOK=newVal;}
-        public void setSelfTargetOK(boolean newVal){selfTargetOK=newVal;}
-        public void setJust100(boolean newVal){just100=newVal;}
 
         public static final int FACTION_UP = 0;
         public static final int FACTION_DOWN = 1;
@@ -843,7 +862,7 @@ public class DefaultFaction implements Faction, MsgListener
         public DefaultFactionChangeEvent(String key) 
         {
             Vector v = CMParms.parseSemicolons(key,false);
-            setFilterID((String)v.elementAt(0));
+            setEventID((String)v.elementAt(0));
             setDirection((String)v.elementAt(1));
             String amt=((String)v.elementAt(2)).trim();
             if(amt.endsWith("%"))
@@ -857,7 +876,7 @@ public class DefaultFaction implements Faction, MsgListener
                 zapper = (String)v.elementAt(4);
         }
         
-        public boolean setFilterID(String newID)
+        public boolean setEventID(String newID)
         {
             for(int i=0;i<MISC_TRIGGERS.length;i++) 
                 if(MISC_TRIGGERS[i].equalsIgnoreCase(newID))
@@ -932,7 +951,19 @@ public class DefaultFaction implements Faction, MsgListener
     }
 
     
-    public Faction.FactionRange newRange(String key){return new DefaultFaction.DefaultFactionRange(this,key);}
+    public Faction.FactionRange addRange(String key){
+        Faction.FactionRange FR=new DefaultFaction.DefaultFactionRange(this,key);
+        ranges.addElement(FR);
+        recalc();
+        return FR;
+    }
+    public boolean delRange(FactionRange FR)
+    {
+        if(!ranges.contains(FR)) return false;
+        ranges.removeElement(FR);
+        recalc();
+        return true;
+    }
     public static class DefaultFactionRange implements Faction.FactionRange
     {
         public String ID="";
@@ -951,7 +982,6 @@ public class DefaultFaction implements Faction, MsgListener
         public int alignEquiv(){return AlignEquiv;}
         public Faction myFaction(){return myFaction;}
         
-        public void setRangeID(String newVal){ID=newVal;}
         public void setLow(int newVal){low=newVal;}
         public void setHigh(int newVal){high=newVal;}
         public void setName(String newVal){Name=newVal;}
@@ -984,8 +1014,15 @@ public class DefaultFaction implements Faction, MsgListener
         }
     }
 
-    public Faction.FactionAbilityUsage newAbilityUsage(String key){return new DefaultFaction.DefaultFactionAbilityUsage(key);}
-    public Faction.FactionAbilityUsage newAbilityUsage(){return new DefaultFaction.DefaultFactionAbilityUsage();}
+    public Faction.FactionAbilityUsage addAbilityUsage(String key){
+        Faction.FactionAbilityUsage usage=
+            (key==null)?new DefaultFaction.DefaultFactionAbilityUsage()
+                       : new DefaultFaction.DefaultFactionAbilityUsage(key);
+        abilityUsages.addElement(usage);
+        return usage;
+    }
+    public boolean delAbilityUsage(Faction.FactionAbilityUsage usage){return abilityUsages.remove(usage);}
+    
     public static class DefaultFactionAbilityUsage implements Faction.FactionAbilityUsage
     {
         public String ID="";
@@ -1005,14 +1042,8 @@ public class DefaultFaction implements Faction, MsgListener
         public int low(){return low;}
         public int high(){return high;}
         public int notflag(){return notflag;}
-        public void setUsageID(String newVal){ID=newVal;}
-        public void setPossibleAbilityID(boolean truefalse){possibleAbilityID=truefalse;}
-        public void setType(int newVal){type=newVal;}
-        public void setDomain(int newVal){domain=newVal;}
-        public void setFlag(int newVal){flag=newVal;}
         public void setLow(int newVal){low=newVal;}
         public void setHigh(int newVal){high=newVal;}
-        public void setNotflag(int newVal){notflag=newVal;}
         
         public DefaultFactionAbilityUsage(){} 
         public DefaultFactionAbilityUsage(String key) 

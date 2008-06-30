@@ -281,7 +281,7 @@ public class List extends StdCommand
 	    for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
 	    {
 	        Faction F=(Faction)e.nextElement();
-	        if(F.showinspecialreported()) useFaction=F;
+	        if(F.showInSpecialReported()) useFaction=F;
 	    }
 		StringBuffer buf=new StringBuffer("Links: \n\r");
 		Vector areaLinkGroups=new Vector();

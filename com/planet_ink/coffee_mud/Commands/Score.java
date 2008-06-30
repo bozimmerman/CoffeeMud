@@ -184,7 +184,7 @@ public class Score extends Affect
 		{
 		    String factionID=(String)e.nextElement();
 		    Faction.FactionRange FR=CMLib.factions().getRange(factionID,mob.fetchFaction(factionID));
-		    if((FR!=null)&&(FR.myFaction().showinscore()))
+		    if((FR!=null)&&(FR.myFaction().showInScore()))
 	            msg.append("Your "+CMStrings.padRight("^<HELP^>"+FR.myFaction().name()+"^</HELP^> is",18)+": ^H"+FR.name()+"^?.\n\r");
 		}
 		msg.append("Your ^<HELP^>armored defence^</HELP^> is: ^H"+CMLib.combat().armorStr(adjustedArmor)+"^?.\n\r");

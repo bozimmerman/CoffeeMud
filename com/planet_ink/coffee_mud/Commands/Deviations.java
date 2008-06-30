@@ -171,7 +171,7 @@ public class Deviations extends StdCommand
 		for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
 		{
 		    Faction F=(Faction)e.nextElement();
-		    if(F.showinspecialreported()) useFaction=F;
+		    if(F.showInSpecialReported()) useFaction=F;
 		        
 		}
 		String where=((String)V.elementAt(1)).toLowerCase();

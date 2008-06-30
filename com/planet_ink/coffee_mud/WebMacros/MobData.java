@@ -402,12 +402,12 @@ public class MobData extends StdWebMacro
 				Faction.FactionRange FR=CMLib.factions().getRange(F.factionID(),CMath.s_int(theparm));
 				if(FR==null)
 					str.append("<OPTION VALUE=\""+CMath.s_int(theparm)+"\">"+CMath.s_int(theparm));
-				for(int r=0;r<F.ranges().size();r++)
-				{
-				    Faction.FactionRange FR2=(Faction.FactionRange)F.ranges().elementAt(r);
+                for(Enumeration e=F.ranges();e.hasMoreElements();)
+                {
+                    Faction.FactionRange FR2=(Faction.FactionRange)e.nextElement();
 				    int value=FR2.low()+(FR2.high()-FR2.low());
-				    if(FR2.low()==F.lowest()) value=FR2.low();
-				    if(FR2.high()==F.highest()) value=FR2.high();
+				    if(FR2.low()==F.minimum()) value=FR2.low();
+				    if(FR2.high()==F.maximum()) value=FR2.high();
 				    if(FR2==FR) value=CMath.s_int(theparm);
 					str.append("<OPTION VALUE=\""+value+"\"");
 					if(FR2==FR) str.append(" SELECTED");

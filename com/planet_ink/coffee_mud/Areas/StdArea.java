@@ -952,7 +952,7 @@ public class StdArea implements Area
 			for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
 			{
 			    Faction F=(Faction)e.nextElement();
-			    if(F.showinspecialreported())
+			    if(F.showInSpecialReported())
 			        theFaction=F;
 			}
 			statData=new int[Area.AREASTAT_NUMBER];
@@ -1029,7 +1029,7 @@ public class StdArea implements Area
 		for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
 		{
 		    Faction F=(Faction)e.nextElement();
-		    if(F.showinspecialreported())
+		    if(F.showInSpecialReported())
 		        theFaction=F;
 		}
 		if(statData[Area.AREASTAT_POPULATION]==0)

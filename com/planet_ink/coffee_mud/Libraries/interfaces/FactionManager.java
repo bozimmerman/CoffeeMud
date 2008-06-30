@@ -53,9 +53,8 @@ public interface FactionManager extends CMLibrary, Tickable
     public int getPercent(String factionID, int faction);
     public int getPercentFromAvg(String factionID, int faction);
     public Faction.FactionRange getRange(String factionID, int faction);
-    public Vector getRanges(String factionID);
+    public Enumeration getRanges(String factionID);
     public double getRangePercent(String factionID, int faction); 
-    public double getRateModifier(String factionID);
     public int getTotal(String factionID);
     public int getRandom(String factionID);
     public String AlignID();

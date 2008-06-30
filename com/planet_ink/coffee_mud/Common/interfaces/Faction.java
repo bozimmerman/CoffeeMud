@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Common.interfaces;
+
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -13,7 +14,6 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -21,28 +21,838 @@ import java.util.Iterator;
 import java.util.Random;
 import java.util.Vector;
 
-/* 
-   Copyright 2000-2008 Bo Zimmerman
-
-   Licensed under the Apache License, Version 2.0 (the "License");
-   you may not use this file except in compliance with the License.
-   You may obtain a copy of the License at
-
-       http://www.apache.org/licenses/LICENSE-2.0
-
-   Unless required by applicable law or agreed to in writing, software
-   distributed under the License is distributed on an "AS IS" BASIS,
-   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-   See the License for the specific language governing permissions and
-   limitations under the License.
-*/
+/*
+ * Copyright 2000-2008 Bo Zimmerman Licensed under the Apache License, Version
+ * 2.0 (the "License"); you may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at
+ * http://www.apache.org/licenses/LICENSE-2.0 Unless required by applicable law
+ * or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+ * KIND, either express or implied. See the License for the specific language
+ * governing permissions and limitations under the License.
+ */
+/**
+ * A Faction is an arbitrary numeric range, where different mobs/players can be
+ * within that range, if they have the faction at all. Factions can be
+ * programmatically set to change due to events that occur to/around the mob,
+ * and adjust themselves relative to other factions. Subsets of the faction can
+ * be given readable names for display to the user.
+ * 
+ * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#fetchFaction(String)
+ * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#addFaction(String, int)
+ */
 public interface Faction extends CMCommon, MsgListener
 {
+    /**
+     * Initializes a new faction with default values
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#initializeFaction(StringBuffer, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#factionID()
+     * @param aname the factionID (and default name)
+     */
+    public void initializeFaction(String aname);
+
+    /**
+     * Initializes a new faction from a faction.ini properties formatted document, 
+     * and a given new faction ID
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#initializeFaction(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#factionID()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#getINIDef(String, String)
+     * @param file the ini properties style document
+     * @param fID the new factionID
+     */
+    public void initializeFaction(StringBuffer file, String fID);
+
+    /**
+     * Returns the value of a given internal faction variable.  
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#TAG_NAMES
+     * @param tag the tag to get the value of
+     * @return the value of the given tag
+     */
+    public String getTagValue(String tag);
+
+    /**
+     * Retreives an entry for an ini properties definition document that describes this faction.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#getINIDef(String, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#initializeFaction(StringBuffer, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#TAG_NAMES
+     * @param tag the tag to retreive a properties definition for
+     * @param delimeter if the tag represents a list, this is the delimiter for entries.
+     * @return the ini properties definition entry for the tag
+     */
+    public String getINIDef(String tag, String delimeter);
+
+    /**
+     * Checks to see if the given mob has this faction.  Same as checking if
+     * mob.fetchFaction(this.factionID())!=Integer.MAX_VALUE.
+     * @param mob the mob to check
+     * @return true if the mob has this faction, false otherwise
+     */
+    public boolean hasFaction(MOB mob);
+
+    /**
+     * Returns the given faction value, as a percent from minimum of the range
+     * of this faction
+     * @param faction the faction value to convert to a percent
+     * @return the percentage value (0-100)
+     */
+    public int asPercent(int faction);
+
+    /**
+     * Returns the given value faction value, as a percent from average of the
+     * range values of this faction.
+     * @param faction the faction value to convert to a percent
+     * @return the percentage value (0-100)
+     */
+    public int asPercentFromAvg(int faction);
+
+    /**
+     * Returns a random value within the valid range of this faction
+     * @return a random valid value
+     */
+    public int randomFaction();
+
+    /**
+     * The official, unique faction id of this faction.  FactionIDs are usually
+     * the CoffeeMud VFS path from the resources directory, of the properties ini
+     * file that defines the faction.  The ID (and therefore the properties file location)
+     * should not be changed once a faction is "deployed".
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setFactionID(String)
+     * @return the unique id of this faction
+     */
+    public String factionID();
+
+    /**
+     * Sets the official, unique faction id of this faction.  FactionIDs are usually
+     * the CoffeeMud VFS path from the resources directory, of the properties ini
+     * file that defines the faction.  The ID (and therefore the properties file location)
+     * should not be changed once a faction is "deployed".
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#factionID()
+     * @param newStr the new unique id of this faction
+     */
+    public void setFactionID(String newStr);
+
+    /**
+     * The friendly, displayable name of this faction.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setName(String)
+     * @return the name of this faction
+     */
+    public String name();
+
+    /**
+     * Sets the friendly, displayable name of this faction.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#name()
+     * @param newStr the new name of this faction
+     */
+    public void setName(String newStr);
+
+    /**
+     * Gets the filename of a file, from the resources directory,
+     * that is displayed to users when they are given the choice
+     * of a starting value to this faction.  Requires more than
+     * one choice range be available.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#findChoices(MOB)
+     * @return the filename of the choice description file
+     */
+    public String choiceIntro();
+
+    /**
+     * Sets the filename of a file, from the resources directory,
+     * that is displayed to users when they are given the choice
+     * of a starting value to this faction.  Requires more than
+     * one choice range be available.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#findChoices(MOB)
+     * @param newStr the new filename of the choice description file
+     */
+    public void setChoiceIntro(String newStr);
+
+    /**
+     * Gets the lowest absolute range value 
+     * @return the lowest absolute range value
+     */
+    public int minimum();
+
+    /**
+     * Gets the median absolute range value
+     * @return the median absolute range value
+     */
+    public int middle();
+
+    /**
+     * Returns the difference between the highest and lowest range value
+     * @return the difference between the highest and lowest range value
+     */
+    public int difference();
+
+    /**
+     * Returns the highest absolute range value
+     * @return the highest absolute range value
+     */
+    public int maximum();
+
+    /**
+     * Returns the string code describing how a faction-holders experience
+     * changes from killing another faction holder affect his own faction value.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#EXPAFFECT_NAMES
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#EXPAFFECT_DESCS
+     * @return the string code for xp changes->faction changes
+     */
+    public String experienceFlag();
+
+    /**
+     * Sets the string code describing how a faction-holders experience
+     * changes from killing another faction holder affect his own faction value.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#EXPAFFECT_NAMES
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#EXPAFFECT_DESCS
+     * @param newStr the new string code for xp changes->faction changes
+     */
+    public void setExperienceFlag(String newStr);
+
+    /**
+     * Returns whether this faction is displayed in the player Score command.
+     * @return true if displayed in Score, false otherwise
+     */
+    public boolean showInScore();
+
+    /**
+     * Sets whether this faction is displayed in the player Score command.
+     * @param truefalse true if displayed in Score, false otherwise
+     */
+    public void setShowInScore(boolean truefalse);
+
+    /**
+     * Returns whether this factions value is shown in certain special admins commands.
+     * @return true if displayed in special admin commands, false otherwise
+     */
+    public boolean showInSpecialReported();
+
+    /**
+     * Sets whether this factions value is shown in certain special admins commands.
+     * @param truefalse true if displayed in special admin commands, false otherwise
+     */
+    public void setShowInSpecialReported(boolean truefalse);
+
+    /**
+     * Returns whether this factions value is shown as a line item in mob editors
+     * @return true if displayed in mob editors, false otherwise
+     */
+    public boolean showInEditor();
+
+    /**
+     * Sets whether this factions value is shown as a line item in mob editors
+     * @param truefalse true if displayed in mob editors, false otherwise
+     */
+    public void setShowInEditor(boolean truefalse);
+
+    /**
+     * Returns whether this factions value is shown in player Factions command
+     * @return true if displayed in factions command, false otherwise
+     */
+    public boolean showInFactionsCommand();
+
+    /**
+     * Sets whether this factions value is shown in player Factions command
+     * @param truefalse true if displayed in factions command, false otherwise
+     */
+    public void setShowInFactionsCommand(boolean truefalse);
+
+    /**
+     * Returns the default faction mask/value list, which is applied whenever
+     * a Faction Change Event applies a Faction Add command.
+     * A default faction mask/value is defined as a number, along with an
+     * optional Zapper mask describing to whom the value is applied.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changes()
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+     * @return the default faction mask/value list
+     */
+    public Enumeration defaults();
+
+    /**
+     * Returns the default faction value that applies to the given mob.
+     * This method is called when a Faction Change event applies a 
+     * Faction Add command. Returns Integer.MAX_VALUE if no default
+     * value applies to this mob.
+     * @param mob the mob to find a default faction value for
+     * @return the faction value that applies, or Integer.MAX_VALUE
+     */
+    public int findDefault(MOB mob);
+
+    /**
+     * Sets the default faction mask/value list, which is applied whenever
+     * a Faction Change Event applies a Faction Add command.
+     * A default faction mask/value is defined as a number, along with an
+     * optional Zapper mask describing to whom the value is applied.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changes()
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+     * @param v the new default faction mask/value list
+     */
+    public void setDefaults(Vector v);
+
+    /**
+     * Returns the automatic default faction mask/value list, which is 
+     * possibly applied whenever a mob or player is brought to life for
+     * the first time. An automatic default faction mask/value is defined 
+     * as a number, along with an optional Zapper mask describing to whom 
+     * the value is applied.
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+     * @return the automatic default faction mask/value list
+     */
+    public Enumeration autoDefaults();
+
+    /**
+     * Returns the automatic default faction value that applies to the
+     * given mob.  This method is called when a mob is brought into the
+     * world.  Returns Integer.MAX_VALUE if no default value applies 
+     * to this mob.
+     * @param mob the mob to find a default value of this faction for.
+     * @return the value to give to the given mob, or Integer.MAX_VALUE
+     */
+    public int findAutoDefault(MOB mob);
+
+    /**
+     * Sets the automatic default faction mask/value list, which is 
+     * possibly applied whenever a mob or player is brought to life for
+     * the first time. An automatic default faction mask/value is defined 
+     * as a number, along with an optional Zapper mask describing to whom 
+     * the value is applied.
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+     * @param v the new automatic default faction mask/value list
+     */
+    public void setAutoDefaults(Vector v);
+
+    /**
+     * A modifier of the base amount of faction value change, namely 100.
+     * @return a modifier of the base amount of faction change
+     */
+    public double rateModifier();
+
+    /**
+     * Sets the modifier of the base amount of faction value change, namely 100.
+     * @param d the new modifier of the base amount of faction value change
+     */
+    public void setRateModifier(double d);
+
+    /**
+     * 
+     * @return
+     */
+    public Enumeration choices();
+
+    /**
+     * 
+     * @param mob
+     * @return
+     */
+    public Vector findChoices(MOB mob);
+
+    /**
+     * 
+     * @param v
+     */
+    public void setChoices(Vector v);
+
+    /**
+     * 
+     * @return
+     */
+    public Enumeration ranges();
+
+    /**
+     * 
+     * @param faction
+     * @return
+     */
+    public FactionRange fetchRange(int faction);
+
+    /**
+     * 
+     * @param faction
+     * @return
+     */
+    public String fetchRangeName(int faction);
+
+    /**
+     * 
+     * @param key
+     * @return
+     */
+    public FactionRange addRange(String key);
+
+    /**
+     * 
+     * @param FR
+     * @return
+     */
+    public boolean delRange(FactionRange FR);
+    
+    /**
+     * 
+     * @return
+     */
+    public Enumeration changeEventKeys();
+
+    /**
+     * 
+     * @param key
+     * @return
+     */
+    public FactionChangeEvent findChangeEvent(Ability key);
+
+    /**
+     * 
+     * @param key
+     * @return
+     */
+    public FactionChangeEvent getChangeEvent(String key);
+
+    /**
+     * 
+     * @param key
+     * @return
+     */
+    public FactionChangeEvent addChangeEvent(String key);
+
+    /**
+     * 
+     * @param eventKey
+     * @return
+     */
+    public boolean delChangeEvent(String eventKey);
+
+    /**
+     * 
+     * @return
+     */
+    public Enumeration factors();
+    
+    /**
+     * 
+     * @param o
+     */
+    public boolean delFactor(Object[] o);
+
+    /**
+     * 
+     * @param x
+     */
+    public Object[] getFactor(int x);
+    
+    /**
+     * 
+     * @param o
+     */
+    public Object[] addFactor(double gain, double loss, String mask);
+    
+    /**
+     * 
+     * @param mob
+     * @param gain
+     * @return
+     */
+    public double findFactor(MOB mob, boolean gain);
+
+    /**
+     * 
+     * @return
+     */
+    public Enumeration relationFactions();
+
+    /**
+     * 
+     * @param factionID
+     * @return
+     */
+    public boolean delRelation(String factionID);
+    
+    /**
+     * 
+     * @param factionID
+     * @param relation
+     * @return
+     */
+    public boolean addRelation(String factionID, double relation);
+    
+    /**
+     * 
+     * @param factionID
+     * @return
+     */
+    public double getRelation(String factionID); 
+    
+    /**
+     * 
+     * @return
+     */
+    public Enumeration abilityUsages();
+
+    /**
+     * 
+     * @param A
+     * @return
+     */
+    public String usageFactors(Ability A);
+
+    /**
+     * 
+     * @param A
+     * @return
+     */
+    public boolean hasUsage(Ability A);
+
+    /**
+     * 
+     * @param mob
+     * @param A
+     * @return
+     */
+    public boolean canUse(MOB mob, Ability A);
+
+    /**
+     * 
+     * @param key
+     * @return
+     */
+    public FactionAbilityUsage addAbilityUsage(String key);
+
+    /**
+     * 
+     * @param x
+     * @return
+     */
+    public FactionAbilityUsage getAbilityUsage(int x);
+    
+    /**
+     * 
+     * @param usage
+     * @return
+     */
+    public boolean delAbilityUsage(FactionAbilityUsage usage);
+
+    /**
+     * 
+     * @param source
+     * @param target
+     * @param event
+     */
+    public void executeChange(MOB source, MOB target, FactionChangeEvent event);
+
+    /**
+     * 
+     * @return
+     */
+    public String ALL_CHANGE_EVENT_TYPES();
+    
+    /**
+     * 
+     * @author Bo Zimmerman
+     *
+     */
+    public static interface FactionChangeEvent
+    {
+        /**
+         * 
+         * @return
+         */
+        public String eventID();
+
+        /**
+         * 
+         * @return
+         */
+        public String flagCache();
+
+        /**
+         * 
+         * @return
+         */
+        public int IDclassFilter();
+
+        /**
+         * 
+         * @return
+         */
+        public int IDflagFilter();
+
+        /**
+         * 
+         * @return
+         */
+        public int IDdomainFilter();
+
+        /**
+         * 
+         * @return
+         */
+        public int direction();
+
+        /**
+         * 
+         * @return
+         */
+        public double factor();
+
+        /**
+         * 
+         * @return
+         */
+        public String zapper();
+
+        /**
+         * 
+         * @return
+         */
+        public boolean outsiderTargetOK();
+
+        /**
+         * 
+         * @return
+         */
+        public boolean selfTargetOK();
+
+        /**
+         * 
+         * @return
+         */
+        public boolean just100();
+
+        /**
+         * 
+         * @param newVal
+         */
+        public void setDirection(int newVal);
+
+        /**
+         * 
+         * @param newVal
+         */
+        public void setFactor(double newVal);
+
+        /**
+         * 
+         * @param newVal
+         */
+        public void setZapper(String newVal);
+
+
+        /**
+         * 
+         * @return
+         */
+        public String toString();
+
+        /**
+         * 
+         * @param newID
+         * @return
+         */
+        public boolean setEventID(String newID);
+
+        /**
+         * 
+         * @param newFlagCache
+         */
+        public void setFlags(String newFlagCache);
+
+        /**
+         * 
+         * @param mob
+         * @return
+         */
+        public boolean applies(MOB mob);
+        
+        public static final int FACTION_UP=0;
+        public static final int FACTION_DOWN=1;
+        public static final int FACTION_OPPOSITE=2;
+        public static final int FACTION_MINIMUM=3;
+        public static final int FACTION_MAXIMUM=4;
+        public static final int FACTION_REMOVE=5;
+        public static final int FACTION_ADD=6;
+        public static final int FACTION_AWAY=7;
+        public static final int FACTION_TOWARD=8;
+        public static final String[] FACTION_DIRECTIONS={"UP","DOWN","OPPOSITE","MINIMUM","MAXIMUM","REMOVE","ADD","AWAY","TOWARD"};
+        public static final String[] VALID_FLAGS={"OUTSIDER","SELFOK","JUST100"};
+        public static final String[] MISC_TRIGGERS={"MURDER","TIME","ADDOUTSIDER"};
+    }
+    
+
+    /**
+     * 
+     * @author Bo Zimmerman
+     *
+     */    
+    public static interface FactionRange
+    {
+        /**
+         * 
+         * @return
+         */
+        public String rangeID();
+
+        /**
+         * 
+         * @return
+         */
+        public int low();
+
+        /**
+         * 
+         * @return
+         */
+        public int high();
+
+        /**
+         * 
+         * @return
+         */
+        public String name();
+
+        /**
+         * 
+         * @return
+         */
+        public String codeName();
+
+        /**
+         * 
+         * @return
+         */
+        public int alignEquiv();
+
+        /**
+         * 
+         * @return
+         */
+        public Faction myFaction();
+
+        /**
+         * 
+         * @param newVal
+         */
+        public void setLow(int newVal);
+
+        /**
+         * 
+         * @param newVal
+         */
+        public void setHigh(int newVal);
+
+        /**
+         * 
+         * @param newVal
+         */
+        public void setName(String newVal);
+
+        /**
+         * 
+         * @param newVal
+         */
+        public void setCodeName(String newVal);
+
+        /**
+         * 
+         * @param newVal
+         */
+        public void setAlignEquiv(int newVal);
+
+        /**
+         * 
+         * @return
+         */
+        public String toString();
+
+        /**
+         * 
+         * @return
+         */
+        public int random();
+    }
+    
+    /**
+     * 
+     * @author Bo Zimmerman
+     *
+     */
+    public static interface FactionAbilityUsage
+    {
+        /**
+         * 
+         * @return
+         */
+        public String usageID();
+
+        /**
+         * 
+         * @return
+         */
+        public boolean possibleAbilityID();
+
+        /**
+         * 
+         * @return
+         */
+        public int type();
+
+        /**
+         * 
+         * @return
+         */
+        public int domain();
+
+        /**
+         * 
+         * @return
+         */        
+        public int flag();
+
+        /**
+         * 
+         * @return
+         */
+        public int low();
+
+        /**
+         * 
+         * @return
+         */
+        public int high();
+
+        /**
+         * 
+         * @return
+         */
+        public int notflag();
+
+        /**
+         * 
+         * @param newVal
+         */
+        public void setLow(int newVal);
+
+        /**
+         * 
+         * @param newVal
+         */
+        public void setHigh(int newVal);
+        
+        /**
+         * 
+         * @param str
+         * @return
+         */
+        public Vector setAbilityFlag(String str);
+        /**
+         * 
+         * @return
+         */
+        public String toString();
+    }
+    
     public final static int ALIGN_INDIFF=0;
     public final static int ALIGN_EVIL=1;
     public final static int ALIGN_NEUTRAL=2;
     public final static int ALIGN_GOOD=3;
+    
     public final static String[] ALIGN_NAMES={"","EVIL","NEUTRAL","GOOD"};
+    
     public final static String[] EXPAFFECT_NAMES={"NONE","EXTREME","HIGHER","LOWER","FOLLOWHIGHER","FOLLOWLOWER"};
     public final static String[] EXPAFFECT_DESCS={"None","Proportional (Extreme)","Higher (mine)","Lower (mine)","Higher (other)","Lower (other)"};
     public final static int TAG_NAME=0;
@@ -63,179 +873,6 @@ public interface Faction extends CMCommon, MsgListener
     public final static int TAG_FACTOR_=15;
     public final static int TAG_RELATION_=16;
     public final static int TAG_SHOWINFACTIONSCMD=17;
-    public final static String[] ALL_TAGS={"NAME","MINIMUM","MAXIMUM","SCOREDISPLAY","SPECIALREPORTED","EDITALONE","DEFAULT",
-        "AUTODEFAULTS","AUTOCHOICES","CHOICEINTRO","RATEMODIFIER","EXPERIENCE","RANGE*","CHANGE*","ABILITY*","FACTOR*","RELATION*",
-        "SHOWINFACTIONSCMD"};
-
-    public void initializeFaction(String aname);
-    public void initializeFaction(StringBuffer file, String fID);
-    public void setFactionID(String newStr);
-    public void setName(String newStr);
-    public void setChoiceIntro(String newStr);
-    public void setMinimum(int newVal);
-    public void setMiddle(int newVal);
-    public void setDifference(int newVal);
-    public void setMaximum(int newVal);
-    public void setHighest(int newVal);
-    public void setLowest(int newVal);
-    public String factionID();
-    public String name();
-    public String choiceIntro();
-    public int minimum();
-    public int middle();
-    public int difference();
-    public int maximum();
-    public int highest();
-    public int lowest();
-    public String experienceFlag();
-    public boolean showinscore();
-    public boolean showinspecialreported();
-    public boolean showineditor();
-    public boolean showinfactionscommand();
-    public Vector ranges();
-    public Vector defaults();
-    public Vector autoDefaults();
-    public double rateModifier();
-    public Hashtable Changes();
-    public Vector factors();
-    public Hashtable relations();
-    public Vector abilityUsages();
-    public Vector choices();
-    public void setExperienceFlag(String newStr);
-    public void setShowinscore(boolean truefalse);
-    public void setShowinspecialreported(boolean truefalse);
-    public void setShowineditor(boolean truefalse);
-    public void setShowinfactionscommand(boolean truefalse);
-    public void setChoices(Vector v);
-    public void setAutoDefaults(Vector v);
-    public void setDefaults(Vector v);
-    public void setRateModifier(double d);
-    
-    
-    public String getTagValue(String tag);
-    public String getINIDef(String tag, String delimeter);
-    public FactionChangeEvent findChangeEvent(Ability key); 
-    public FactionChangeEvent findChangeEvent(String key);
-    public FactionRange fetchRange(int faction);
-    public String fetchRangeName(int faction);
-    public int asPercent(int faction);
-    public int asPercentFromAvg(int faction);
-    public int randomFaction();
-    public int findDefault(MOB mob);
-    public int findAutoDefault(MOB mob);
-    public boolean hasFaction(MOB mob);
-    public boolean hasUsage(Ability A);
-    public boolean canUse(MOB mob, Ability A);
-    public double findFactor(MOB mob, boolean gain);
-    public Vector findChoices(MOB mob);
-    public void executeChange(MOB source, MOB target, FactionChangeEvent event);
-    public String usageFactors(Ability A); 
-    public String ALL_CHANGE_EVENT_TYPES();
-    
-    public FactionChangeEvent newChangeEvent(String key);
-    public FactionChangeEvent newChangeEvent();
-    public static interface FactionChangeEvent 
-    {
-        public String eventID();
-        public String flagCache();
-        public int IDclassFilter();
-        public int IDflagFilter();
-        public int IDdomainFilter();
-        public int direction();
-        public double factor();
-        public String zapper();
-        public boolean outsiderTargetOK();
-        public boolean selfTargetOK();
-        public boolean just100();
-        public void setEventID(String newVal);
-        public void setFlagCache(String newVal);
-        public void setIDclassFilter(int newVal);
-        public void setIDflagFilter(int newVal);
-        public void setIDdomainFilter(int newVal);
-        public void setDirection(int newVal);
-        public void setFactor(double newVal);
-        public void setZapper(String newVal);
-        public void setOutsiderTargetOK(boolean newVal);
-        public void setSelfTargetOK(boolean newVal);
-        public void setJust100(boolean newVal);
-        public String toString();
-        public boolean setFilterID(String newID);
-        public boolean setDirection(String d);
-        public void setFlags(String newFlagCache);
-        public boolean applies(MOB mob);
-
-        public static final int FACTION_UP = 0;
-        public static final int FACTION_DOWN = 1;
-        public static final int FACTION_OPPOSITE = 2;
-        public static final int FACTION_MINIMUM = 3;
-        public static final int FACTION_MAXIMUM = 4;
-        public static final int FACTION_REMOVE = 5;
-        public static final int FACTION_ADD = 6;
-        public static final int FACTION_AWAY = 7;
-        public static final int FACTION_TOWARD= 8;
-        public static final String[] FACTION_DIRECTIONS={
-            "UP",
-            "DOWN",
-            "OPPOSITE",
-            "MINIMUM",
-            "MAXIMUM",
-            "REMOVE",
-            "ADD",
-            "AWAY",
-            "TOWARD"
-        };
-        public static final String[] VALID_FLAGS={
-            "OUTSIDER","SELFOK","JUST100"
-        };
-        public static final String[] MISC_TRIGGERS={
-            "MURDER","TIME","ADDOUTSIDER"
-        };
-    }
-    
-    public FactionRange newRange(String key);
-    public static interface FactionRange
-    {
-        public String rangeID();
-        public int low();
-        public int high();
-        public String name();
-        public String codeName();
-        public int alignEquiv();
-        public Faction myFaction();
-        public void setRangeID(String newVal);
-        public void setLow(int newVal);
-        public void setHigh(int newVal);
-        public void setName(String newVal);
-        public void setCodeName(String newVal);
-        public void setAlignEquiv(int newVal);
-
-        public String toString();
-        public int random();
-    }
-    
-    public FactionAbilityUsage newAbilityUsage(String key);
-    public FactionAbilityUsage newAbilityUsage();
-    public static interface FactionAbilityUsage
-    {
-        public String usageID();
-        public boolean possibleAbilityID();
-        public int type();
-        public int domain();
-        public int flag();
-        public int low();
-        public int high();
-        public int notflag();
-        
-        public void setUsageID(String newVal);
-        public void setPossibleAbilityID(boolean truefalse);
-        public void setType(int newVal);
-        public void setDomain(int newVal);
-        public void setFlag(int newVal);
-        public void setLow(int newVal);
-        public void setHigh(int newVal);
-        public void setNotflag(int newVal);
-        
-        public String toString();
-        public Vector setAbilityFlag(String str);
-    }
+    public final static String[] TAG_NAMES={"NAME","MINIMUM","MAXIMUM","SCOREDISPLAY","SPECIALREPORTED","EDITALONE","DEFAULT","AUTODEFAULTS",
+            "AUTOCHOICES","CHOICEINTRO","RATEMODIFIER","EXPERIENCE","RANGE*","CHANGE*","ABILITY*","FACTOR*","RELATION*","SHOWINFACTIONSCMD"};
 }

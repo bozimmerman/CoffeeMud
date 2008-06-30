@@ -89,25 +89,25 @@ public class FactionData extends StdWebMacro
                 if(parms.containsKey("SHOWINSCORE"))
                 {
                     String old=httpReq.getRequestParameter("SHOWINSCORE");
-                    if(old==null) old=F.showinscore()?"on":"";
+                    if(old==null) old=F.showInScore()?"on":"";
                     str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
                 }
                 if(parms.containsKey("SHOWINFACTIONS"))
                 {
                     String old=httpReq.getRequestParameter("SHOWINFACTIONS");
-                    if(old==null) old=F.showinfactionscommand()?"on":"";
+                    if(old==null) old=F.showInFactionsCommand()?"on":"";
                     str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
                 }
                 if(parms.containsKey("SHOWINEDITOR"))
                 {
                     String old=httpReq.getRequestParameter("SHOWINEDITOR");
-                    if(old==null) old=F.showineditor()?"on":"";
+                    if(old==null) old=F.showInEditor()?"on":"";
                     str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
                 }
                 if(parms.containsKey("SHOWINREPORTS"))
                 {
                     String old=httpReq.getRequestParameter("SHOWINREPORTS");
-                    if(old==null) old=F.showinspecialreported()?"on":"";
+                    if(old==null) old=F.showInSpecialReported()?"on":"";
                     str.append((old.equalsIgnoreCase("on")?"CHECKED":"")+", ");
                 }
                 if(parms.containsKey("RANGES"))
@@ -117,16 +117,20 @@ public class FactionData extends StdWebMacro
                     String oldHigh=null;
                     String code=null;
                     String align=null;
-                    if((oldName==null)&&(F.ranges()!=null))
-	        		    for(int v=0;v<F.ranges().size();v++)
-	        		    {
-            		        Faction.FactionRange FR=(Faction.FactionRange)F.ranges().elementAt(v);
+                    if(oldName==null)
+                    {
+                        int v=0;
+                        for(Enumeration e=F.ranges();e.hasMoreElements();)
+                        {
+                            Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
 	        		    	httpReq.addRequestParameters("RANGENAME"+v,FR.name());
 	        		    	httpReq.addRequestParameters("RANGELOW"+v,""+FR.low());
 	        		    	httpReq.addRequestParameters("RANGEHIGH"+v,""+FR.high());
                             httpReq.addRequestParameters("RANGECODE"+v,""+FR.codeName());
                             httpReq.addRequestParameters("RANGEFLAG"+v,""+Faction.ALIGN_NAMES[FR.alignEquiv()]);
+                            v++;
 	        		    }
+                    }
                     
                     int num=0;
                     int showNum=-1;
@@ -193,7 +197,7 @@ public class FactionData extends StdWebMacro
                 || parms.containsKey("PLAYERCHOICES"))
                 {
                     String prefix="";
-                    Vector Fset=null;
+                    Enumeration Fset=null;
                     if(parms.containsKey("AUTOVALUES"))
                     {
                         prefix="AUTOVALUE";
@@ -215,10 +219,11 @@ public class FactionData extends StdWebMacro
                     
                     String value=httpReq.getRequestParameter(prefix+"0");
                     String mask="";
-                    if((value==null)&&(Fset!=null))
-                        for(int v=0;v<Fset.size();v++)
+                    int v=0;
+                    if(value==null)
+                        for(;Fset.hasMoreElements();)
                         {
-                            String def=(String)Fset.elementAt(v);
+                            String def=(String)Fset.nextElement();
                             int lastSp=0;
                             int spDex=def.indexOf(' ',lastSp+1);
                             int finalValue=-1;
@@ -240,6 +245,7 @@ public class FactionData extends StdWebMacro
                             }
                             httpReq.addRequestParameters(prefix+v,""+finalValue);
                             httpReq.addRequestParameters(prefix+"MASK"+v,def);
+                            v++;
                         }
                     
                     int num=0;
@@ -270,13 +276,13 @@ public class FactionData extends StdWebMacro
                 if(parms.containsKey("ADJUSTMENTCHANGES"))
                 {
                     String trigger=httpReq.getRequestParameter("CHANGESTRIGGER0");
-                    if((trigger==null)&&(F.Changes()!=null))
+                    if(trigger==null)
                     {
                         int v=0;
-                        for(Enumeration e=F.Changes().keys();e.hasMoreElements();v++)
+                        for(Enumeration e=F.changeEventKeys();e.hasMoreElements();v++)
                         {
                             String def=(String)e.nextElement();
-                            Faction.FactionChangeEvent E=(Faction.FactionChangeEvent)F.Changes().get(def);
+                            Faction.FactionChangeEvent E=(Faction.FactionChangeEvent)F.getChangeEvent(def);
                             httpReq.addRequestParameters("CHANGESTRIGGER"+v,def);
                             httpReq.addRequestParameters("CHANGESDIR"+v,""+E.direction());
                             httpReq.addRequestParameters("CHANGESFACTOR"+v,CMath.toPct(E.factor()));
@@ -381,16 +387,20 @@ public class FactionData extends StdWebMacro
                     String gain="";
                     String loss="";
                     if((mask==null)&&(F.factors()!=null))
-                        for(int v=0;v<F.factors().size();v++)
+                    {
+                        int v=0;
+                        for(Enumeration e=F.factors();e.hasMoreElements();)
                         {
-                            Vector factor=(Vector)F.factors().elementAt(v);
-                            if(factor.size()==3)
+                            Object[] factor=(Object[])e.nextElement();
+                            if(factor.length==3)
                             {
-                                httpReq.addRequestParameters("ADJFACTOR"+v,(String)factor.elementAt(2));
-                                httpReq.addRequestParameters("ADJFACTORGAIN"+v,CMath.toPct(((Double)factor.elementAt(0)).doubleValue()));
-                                httpReq.addRequestParameters("ADJFACTORLOSS"+v,CMath.toPct(((Double)factor.elementAt(1)).doubleValue()));
+                                httpReq.addRequestParameters("ADJFACTOR"+v,(String)factor[2]);
+                                httpReq.addRequestParameters("ADJFACTORGAIN"+v,CMath.toPct(((Double)factor[0]).doubleValue()));
+                                httpReq.addRequestParameters("ADJFACTORLOSS"+v,CMath.toPct(((Double)factor[1]).doubleValue()));
+                                v++;
                             }
                         }
+                    }
                     
                     int num=0;
                     int showNum=-1;
@@ -425,13 +435,13 @@ public class FactionData extends StdWebMacro
                 {
                     String faction=httpReq.getRequestParameter("RELATIONS0");
                     int x=0;
-                    if((faction==null)&&(F.relations()!=null))
-                        for(Enumeration e=F.relations().keys();e.hasMoreElements();x++)
+                    if(faction==null)
+                        for(Enumeration e=F.relationFactions();e.hasMoreElements();x++)
                         {
                             String def=(String)e.nextElement();
-                            Double pctD=(Double)F.relations().get(def);
+                            double pctD=F.getRelation(def);
                             httpReq.addRequestParameters("RELATIONS"+x,""+def);
-                            httpReq.addRequestParameters("RELATIONSAMT"+x,CMath.toPct(pctD.doubleValue()));
+                            httpReq.addRequestParameters("RELATIONSAMT"+x,CMath.toPct(pctD));
                         }
                     
                     int num=0;
@@ -477,7 +487,7 @@ public class FactionData extends StdWebMacro
                     if((abilityID==null)&&(F.abilityUsages()!=null))
                     {
                         int v=0;
-                        for(Enumeration e=F.abilityUsages().elements();e.hasMoreElements();v++)
+                        for(Enumeration e=F.abilityUsages();e.hasMoreElements();v++)
                         {
                             Faction.FactionAbilityUsage E=(Faction.FactionAbilityUsage)e.nextElement();
                             if(!E.possibleAbilityID()||CMClass.getAbility(E.usageID())==null)

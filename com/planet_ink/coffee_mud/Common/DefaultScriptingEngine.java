@@ -6924,11 +6924,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         themob.addFaction(F.factionID(),CMath.s_int(range.trim()));
                     else
                     {
-                        Vector V=CMLib.factions().getRanges(F.factionID());
                         Faction.FactionRange FR=null;
-                        for(int v=0;v<V.size();v++)
+                        Enumeration e=CMLib.factions().getRanges(CMLib.factions().AlignID());
+                        if(e!=null)
+                        for(;e.hasMoreElements();) 
                         {
-                            Faction.FactionRange FR2=(Faction.FactionRange)V.elementAt(v);
+                            Faction.FactionRange FR2=(Faction.FactionRange)e.nextElement();
                             if(FR2.name().equalsIgnoreCase(range))
                             { FR=FR2; break;}
                         }
