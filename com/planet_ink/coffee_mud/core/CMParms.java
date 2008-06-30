@@ -1012,6 +1012,14 @@ public class CMParms
         return str.toString();
     }
 
+    public static String toSemicolonList(Object[] bytes)
+    {
+        StringBuffer str=new StringBuffer("");
+        for(int b=0;b<bytes.length;b++)
+            str.append(bytes[b]+(b<(bytes.length-1)?";":""));
+        return str.toString();
+    }
+
     public static String toSemicolonList(Enumeration bytes)
     {
         StringBuffer str=new StringBuffer("");

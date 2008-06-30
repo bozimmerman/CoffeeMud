@@ -189,9 +189,9 @@ public class DefaultFaction implements Faction, MsgListener
             {
                 Vector factor=CMParms.parseSemicolons(words,false);
                 if(factor.size()>2)
-                    factors.add(CMParms.makeVector(new Double(CMath.s_double((String)factor.elementAt(0))),
-                                                   new Double(CMath.s_double((String)factor.elementAt(1))),
-                                                   (String)factor.elementAt(2)));
+                    factors.add(new Object[]{new Double(CMath.s_double((String)factor.elementAt(0))),
+                                             new Double(CMath.s_double((String)factor.elementAt(1))),
+                                             (String)factor.elementAt(2)});
             }
             if(key.startsWith("RELATION"))
             {
@@ -287,7 +287,7 @@ public class DefaultFaction implements Faction, MsgListener
         {
             if((numCall<0)||(numCall>=factors.size()))
                 return ""+factors.size();
-            return CMParms.toSemicolonList((Vector)factors.elementAt(numCall));
+            return CMParms.toSemicolonList((Object[])factors.elementAt(numCall));
         }
         case TAG_RELATION_:
         {
@@ -506,15 +506,15 @@ public class DefaultFaction implements Faction, MsgListener
 
     public double findFactor(MOB mob, boolean gain) 
     {
+        Object[] factor=null;
         for(int i=0;i<factors.size();i++)
         {
-            Vector factor=(Vector)factors.elementAt(i);
-            if((factor.size()>2)
-            &&(CMLib.masking().maskCheck(((String)factor.elementAt(2)),mob,false))) 
+            factor=(Object[])factors.elementAt(i);
+            if(CMLib.masking().maskCheck(((String)factor[2]),mob,false)) 
             {
                  if(gain)
-                     return ((Double)factor.elementAt(0)).doubleValue();
-                 return ((Double)factor.elementAt(1)).doubleValue();
+                     return ((Double)factor[0]).doubleValue();
+                 return ((Double)factor[1]).doubleValue();
              }
         }
         return 1.0;

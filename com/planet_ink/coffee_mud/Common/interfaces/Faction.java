@@ -261,6 +261,7 @@ public interface Faction extends CMCommon, MsgListener
      * A default faction mask/value is defined as a number, along with an
      * optional Zapper mask describing to whom the value is applied.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changes()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setDefaults(Vector)
      * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
      * @return the default faction mask/value list
      */
@@ -271,6 +272,8 @@ public interface Faction extends CMCommon, MsgListener
      * This method is called when a Faction Change event applies a 
      * Faction Add command. Returns Integer.MAX_VALUE if no default
      * value applies to this mob.
+     * Each list item is a string.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#defaults()
      * @param mob the mob to find a default faction value for
      * @return the faction value that applies, or Integer.MAX_VALUE
      */
@@ -281,8 +284,10 @@ public interface Faction extends CMCommon, MsgListener
      * a Faction Change Event applies a Faction Add command.
      * A default faction mask/value is defined as a number, along with an
      * optional Zapper mask describing to whom the value is applied.
+     * Each list item is a string.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changes()
      * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#defaults()
      * @param v the new default faction mask/value list
      */
     public void setDefaults(Vector v);
@@ -292,8 +297,9 @@ public interface Faction extends CMCommon, MsgListener
      * possibly applied whenever a mob or player is brought to life for
      * the first time. An automatic default faction mask/value is defined 
      * as a number, along with an optional Zapper mask describing to whom 
-     * the value is applied.
+     * the value is applied. Each list item is a string.
      * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setAutoDefaults(Vector)
      * @return the automatic default faction mask/value list
      */
     public Enumeration autoDefaults();
@@ -303,6 +309,7 @@ public interface Faction extends CMCommon, MsgListener
      * given mob.  This method is called when a mob is brought into the
      * world.  Returns Integer.MAX_VALUE if no default value applies 
      * to this mob.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#defaults()
      * @param mob the mob to find a default value of this faction for.
      * @return the value to give to the given mob, or Integer.MAX_VALUE
      */
@@ -313,7 +320,8 @@ public interface Faction extends CMCommon, MsgListener
      * possibly applied whenever a mob or player is brought to life for
      * the first time. An automatic default faction mask/value is defined 
      * as a number, along with an optional Zapper mask describing to whom 
-     * the value is applied.
+     * the value is applied. Each list item is a string.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#defaults()
      * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
      * @param v the new automatic default faction mask/value list
      */
@@ -321,132 +329,207 @@ public interface Faction extends CMCommon, MsgListener
 
     /**
      * A modifier of the base amount of faction value change, namely 100.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setRateModifier(double)
      * @return a modifier of the base amount of faction change
      */
     public double rateModifier();
 
     /**
      * Sets the modifier of the base amount of faction value change, namely 100.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#rateModifier()
      * @param d the new modifier of the base amount of faction value change
      */
     public void setRateModifier(double d);
 
     /**
-     * 
-     * @return
+     * Returns the player choosable faction mask/value list, which is 
+     * possibly presented whenever a player creates a new character.
+     * An faction mask/value is defined as a number, along with an 
+     * optional Zapper mask describing to whom the value is applied.
+     * Each list item is a string.
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setChoices(Vector)
+     * @return the choosable faction mask/value list
      */
     public Enumeration choices();
 
     /**
-     * 
-     * @param mob
-     * @return
+     * Returns a vector of Integer objects representing the choosable
+     * faction values available to the given mob when they create 
+     * a new character.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#choices()
+     * @param mob the player mob to evaluate
+     * @return a vector of integer faction values that applies
      */
     public Vector findChoices(MOB mob);
 
     /**
-     * 
-     * @param v
+     * Sets the player choosable faction mask/value list, which is 
+     * possibly presented whenever a player creates a new character.
+     * An faction mask/value is defined as a number, along with an 
+     * optional Zapper mask describing to whom the value is applied.
+     * Each list item is a string.
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#choices()
+     * @param v the list of choosable faction mask/values
      */
     public void setChoices(Vector v);
 
     /**
-     * 
-     * @return
+     * Returns an enumeration of all available Faction.FactionRange objects,
+     * representing the entire score of available values valid for this faction.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addRange(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delRange(com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionRange)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionRange
+     * @return an enumeration of all available ranges
      */
     public Enumeration ranges();
 
     /**
-     * 
-     * @param faction
-     * @return
+     * Returns the Faction.FactionRange object that applies to the given faction
+     * value.  
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionRange
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ranges()
+     * @param faction the value to find a matching range object for
+     * @return the range object that matches the given faction value
      */
     public FactionRange fetchRange(int faction);
 
     /**
-     * 
-     * @param faction
-     * @return
+     * Returns the name of the Faction.FactionRange object that applies to 
+     * the given faction value.  
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ranges()
+     * @param faction the value to find a matching range object for
+     * @return the name of the given faction object
      */
     public String fetchRangeName(int faction);
 
     /**
-     * 
-     * @param key
-     * @return
+     * Adds a new Faction.FactionRange object to this faction using an encoded key.
+     * The key is encoded as semicolon separated values of low, high, name, code name,
+     * and alignment flag.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionRange
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ranges()
+     * @param key the encoded values for the new faction range
+     * @return the faction range object created and added.
      */
     public FactionRange addRange(String key);
 
     /**
-     * 
-     * @param FR
-     * @return
+     * Removes the given FactionRange object from the faction.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionRange
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#ranges()
+     * @param FR the faction range object to remove
+     * @return whether a removal was necessary
      */
     public boolean delRange(FactionRange FR);
     
     /**
-     * 
-     * @return
+     * Returns an enumeration of change event keys, which are the code names of
+     * the triggers that cause faction values to change automatically.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addChangeEvent(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delChangeEvent(String)
+     * @return an enumeration of the event keys (triggers)
      */
     public Enumeration changeEventKeys();
 
     /**
-     * 
-     * @param key
-     * @return
+     * Returns a FactionChangeEvent that applies when the given Ability is used
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
+     * @param key the Ability to find a change event for.
+     * @return the FactionChangeEvent that applies, or null.
      */
     public FactionChangeEvent findChangeEvent(Ability key);
 
     /**
-     * 
-     * @param key
-     * @return
+     * Returns a FactionChangeEvent that applies when the given event name (a trigger
+     * code) occurs in the game.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#MISC_TRIGGERS
+     * @param key the code name of the event that occurred
+     * @return the FactionChangeEvent triggered by that event
      */
     public FactionChangeEvent getChangeEvent(String key);
 
     /**
-     * 
-     * @param key
-     * @return
+     * Adds a new FactionChangeEvent object to this faction using the given event code
+     * name, or fully encoded event string.  The key must be either a single event
+     * trigger code (an ability name, event code name), or a fully encoded string
+     * which is a semicolon delimited field consisting of event (trigger) id, direction
+     * code, and amount 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#MISC_TRIGGERS
+     * @param key the field used to create the new FactionChangeEvent
+     * @return the FactionChangeEvent object created and added to this faction, or null
      */
     public FactionChangeEvent addChangeEvent(String key);
 
     /**
-     * 
-     * @param eventKey
-     * @return
+     * Removes a FactionChangeEvent of the given event (trigger) id.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#MISC_TRIGGERS
+     * @param eventKey the event id to remove from the list of change events
+     * @return whether the event id was found to remove
      */
     public boolean delChangeEvent(String eventKey);
 
     /**
-     * 
-     * @return
+     * Returns an enumeration of Object arrays referring to the a factor to multiply
+     * times the base amount (100) of faction change (up or down) for particular
+     * mobs who match a given Zapper mask.  Each Object array consists of a factor
+     * to apply on faction gains, a factor to apply on factor drops, and the zapper
+     * mask to decide which mobs it applies to (or mob states).
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addFactor(double, double, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delFactor(Object[])
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#findFactor(MOB, boolean)
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+     * @return the enumeration of change factor object arrays
      */
     public Enumeration factors();
     
     /**
-     * 
-     * @param o
+     * Removes the given change factor from this faction.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#factors()
+     * @param o the factor to remove
+     * @return whether the given factor was found to remove
      */
     public boolean delFactor(Object[] o);
 
     /**
-     * 
-     * @param x
+     * Returns the given enumerated change factor
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#factors()
+     * @param x which factor (0-number) to return
+     * @return the given factor, or null.
      */
     public Object[] getFactor(int x);
     
     /**
-     * 
-     * @param o
+     * Adds a new change factor to this Faction.  A change factor is a state
+     * dependent multiplier by a change in faction.  It consists of a Zapper
+     * mask to determine whether the factor applies to the given mob/player
+     * state, and a factor to apply on gains in faction or losses in faction.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#factors()
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+     * @param gain the factor to apply on gains in faction
+     * @param loss the factor to apply on losses of faction
+     * @param mask the zapper mask to use to determine if this factor applies to a mob
+     * @return the newly created factor Object[] array
      */
     public Object[] addFactor(double gain, double loss, String mask);
     
     /**
-     * 
-     * @param mob
-     * @param gain
-     * @return
+     * Returns the applicable change factor for the given mob, and the
+     * whether the faction change was a gain or loss (not a gain).
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#factors()
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+     * @param mob the mob to compare against the zapper masks of the various factors
+     * @param gain return the gain factor if true, or the loss factor if false
+     * @return the factor value that applies, or 1.0 (meaning no change).
      */
     public double findFactor(MOB mob, boolean gain);
 
