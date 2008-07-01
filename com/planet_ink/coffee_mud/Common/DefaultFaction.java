@@ -55,7 +55,7 @@ public class DefaultFaction implements Faction, MsgListener
     public boolean showInSpecialReported=false;
     public boolean showInEditor=false;
     public boolean showInFactionsCommand=true;
-    public Vector ranges=new Vector();
+    public Hashtable ranges=new Hashtable();
     public Vector defaults=new Vector();
     public Vector autoDefaults=new Vector();
     public double rateModifier=1.0;
@@ -79,7 +79,7 @@ public class DefaultFaction implements Faction, MsgListener
     public boolean showInSpecialReported(){return showInSpecialReported;}
     public boolean showInEditor(){return showInEditor;}
     public boolean showInFactionsCommand(){return showInFactionsCommand;}
-    public Enumeration ranges(){ return ((Vector)ranges.clone()).elements(); }
+    public Enumeration ranges(){ return ((Hashtable)ranges.clone()).elements(); }
     public Enumeration defaults(){return ((Vector)defaults.clone()).elements();}
     public Enumeration autoDefaults(){return ((Vector)autoDefaults.clone()).elements();}
     public double rateModifier(){return rateModifier;}
@@ -169,7 +169,7 @@ public class DefaultFaction implements Faction, MsgListener
         defaults =CMParms.parseSemicolons(alignProp.getStr("DEFAULT"),true);
         autoDefaults =CMParms.parseSemicolons(alignProp.getStr("AUTODEFAULTS"),true);
         choices =CMParms.parseSemicolons(alignProp.getStr("AUTOCHOICES"),true);
-        ranges=new Vector();
+        ranges=new Hashtable();
         changes=new Hashtable();
         factors=new Vector();
         relations=new Hashtable();
@@ -261,7 +261,14 @@ public class DefaultFaction implements Faction, MsgListener
         {
             if((numCall<0)||(numCall>=ranges.size()))
                 return ""+ranges.size();
-            return ((FactionRange)ranges.elementAt(numCall)).toString();
+            int x=0;
+            for(Enumeration e=ranges();e.hasMoreElements();)
+            {
+                Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
+                if(x==numCall) return FR.toString();
+                x++;
+            }
+            return "";
         }
         case TAG_CHANGE_:
         {
@@ -380,6 +387,11 @@ public class DefaultFaction implements Faction, MsgListener
         return null;
     }
 
+    public Faction.FactionRange fetchRange(String codeName)
+    {
+        return (FactionRange)ranges.get(codeName.toUpperCase().trim());
+    }
+    
     public FactionRange fetchRange(int faction) 
     {
         for (Enumeration e=ranges.elements();e.hasMoreElements();) 
@@ -474,7 +486,7 @@ public class DefaultFaction implements Faction, MsgListener
         for(int i=0;i<abilityUsages.size();i++) 
         {
             usage=(FactionAbilityUsage)abilityUsages.elementAt(i);
-            if((usage.possibleAbilityID()&&usage.usageID().equalsIgnoreCase(A.ID()))
+            if((usage.possibleAbilityID()&&usage.abilityFlags().equalsIgnoreCase(A.ID()))
             ||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_ACODES)==usage.type()))
                 &&((usage.flag()<0)||(CMath.bset(A.flags(),usage.flag())))
                 &&((usage.notflag()<0)||(!CMath.bset(A.flags(),usage.notflag())))
@@ -490,7 +502,7 @@ public class DefaultFaction implements Faction, MsgListener
         for(int i=0;i<abilityUsages.size();i++) 
         {
             usage=(FactionAbilityUsage)abilityUsages.elementAt(i);
-            if((usage.possibleAbilityID()&&usage.usageID().equalsIgnoreCase(A.ID()))
+            if((usage.possibleAbilityID()&&usage.abilityFlags().equalsIgnoreCase(A.ID()))
             ||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_ACODES)==usage.type()))
                 &&((usage.flag()<0)||(CMath.bset(A.flags(),usage.flag())))
                 &&((usage.notflag()<0)||(!CMath.bset(A.flags(),usage.notflag())))
@@ -628,19 +640,19 @@ public class DefaultFaction implements Faction, MsgListener
         int changeDir=0;
         switch(event.direction()) 
         {
-        case FactionChangeEvent.FACTION_MAXIMUM:
+        case FactionChangeEvent.CHANGE_DIRECTION_MAXIMUM:
             factionAdj=maximum-sourceFaction;
         	break;
-        case FactionChangeEvent.FACTION_MINIMUM:
+        case FactionChangeEvent.CHANGE_DIRECTION_MINIMUM:
             factionAdj=minimum-sourceFaction;
         	break;
-        case FactionChangeEvent.FACTION_UP:
+        case FactionChangeEvent.CHANGE_DIRECTION_UP:
             changeDir=1;  
         	break;
-        case FactionChangeEvent.FACTION_DOWN:
+        case FactionChangeEvent.CHANGE_DIRECTION_DOWN:
             changeDir=-1; 
         	break;
-        case FactionChangeEvent.FACTION_OPPOSITE:
+        case FactionChangeEvent.CHANGE_DIRECTION_OPPOSITE:
 	        if(source!=target)
 	        {
 	        	if(targetFaction==middle)
@@ -656,22 +668,22 @@ public class DefaultFaction implements Faction, MsgListener
 	        else
 	            factionAdj=0;
         	break;
-        case FactionChangeEvent.FACTION_AWAY:
+        case FactionChangeEvent.CHANGE_DIRECTION_AWAY:
 	        if(source!=target)
 	            changeDir=targetFaction>=sourceFaction?-1:1;
 	        else
 	            factionAdj=0;
         	break;
-        case FactionChangeEvent.FACTION_TOWARD:
+        case FactionChangeEvent.CHANGE_DIRECTION_TOWARD:
 	        if(source!=target)
 	            changeDir=targetFaction>=sourceFaction?1:-1;
 	        else
 	            factionAdj=0;
         	break;
-        case FactionChangeEvent.FACTION_REMOVE:
+        case FactionChangeEvent.CHANGE_DIRECTION_REMOVE:
             factionAdj=Integer.MAX_VALUE;
         	break;
-        case FactionChangeEvent.FACTION_ADD:
+        case FactionChangeEvent.CHANGE_DIRECTION_ADD:
         	factionAdj=findDefault(source);
             if(!hasFaction(source))
                 source.addFaction(ID,0);
@@ -725,7 +737,7 @@ public class DefaultFaction implements Faction, MsgListener
             source.adjustFaction(ID,factionAdj);
     }
 
-	 public String usageFactors(Ability A) 
+	 public String usageFactorRangeDescription(Ability A) 
 	 { 
          StringBuffer rangeStr=new StringBuffer(); 
          FactionAbilityUsage usage=null;
@@ -733,15 +745,15 @@ public class DefaultFaction implements Faction, MsgListener
          for(int i=0;i<abilityUsages.size();i++) 
          {
              usage=(FactionAbilityUsage)abilityUsages.elementAt(i);
-             if((usage.possibleAbilityID()&&usage.usageID().equalsIgnoreCase(A.ID()))
+             if((usage.possibleAbilityID()&&usage.abilityFlags().equalsIgnoreCase(A.ID()))
              ||(((usage.type()<0)||((A.classificationCode()&Ability.ALL_ACODES)==usage.type()))
                  &&((usage.flag()<0)||(CMath.bset(A.flags(),usage.flag())))
                  &&((usage.notflag()<0)||(!CMath.bset(A.flags(),usage.notflag())))
                  &&((usage.domain()<0)||((A.classificationCode()&Ability.ALL_DOMAINS)==usage.domain()))))
              {
-                for(int r=0;r<ranges.size();r++)
+                for(Enumeration e=ranges();e.hasMoreElements();)
                 { 
-                     FactionRange R=(FactionRange)ranges.elementAt(r);
+                     FactionRange R=(FactionRange)e.nextElement();
                      if((((R.high()<=usage.high())&&(R.high()>=usage.low()))
                          ||((R.low()>=usage.low()))&&(R.low()<=usage.high()))
                      &&(!namesAdded.contains(R.name())))
@@ -878,6 +890,9 @@ public class DefaultFaction implements Faction, MsgListener
         
         public boolean setEventID(String newID)
         {
+            IDclassFilter=-1;
+            IDflagFilter=-1;
+            IDdomainFilter=-1;
             for(int i=0;i<MISC_TRIGGERS.length;i++) 
                 if(MISC_TRIGGERS[i].equalsIgnoreCase(newID))
                 { ID=newID;    return true;}
@@ -953,20 +968,19 @@ public class DefaultFaction implements Faction, MsgListener
     
     public Faction.FactionRange addRange(String key){
         Faction.FactionRange FR=new DefaultFaction.DefaultFactionRange(this,key);
-        ranges.addElement(FR);
+        ranges.put(FR.codeName().toUpperCase().trim(),FR);
         recalc();
         return FR;
     }
     public boolean delRange(FactionRange FR)
     {
-        if(!ranges.contains(FR)) return false;
-        ranges.removeElement(FR);
+        if(!ranges.containsKey(FR.codeName().toUpperCase().trim())) return false;
+        ranges.remove(FR.codeName().toUpperCase().trim());
         recalc();
         return true;
     }
     public static class DefaultFactionRange implements Faction.FactionRange
     {
-        public String ID="";
         public int low;
         public int high;
         public String Name="";
@@ -974,7 +988,6 @@ public class DefaultFaction implements Faction, MsgListener
         public int AlignEquiv;
         public Faction myFaction=null;
 
-        public String rangeID(){return ID;}
         public int low(){return low;}
         public int high(){return high;}
         public String name(){return Name;}
@@ -985,7 +998,6 @@ public class DefaultFaction implements Faction, MsgListener
         public void setLow(int newVal){low=newVal;}
         public void setHigh(int newVal){high=newVal;}
         public void setName(String newVal){Name=newVal;}
-        public void setCodeName(String newVal){CodeName=newVal;}
         public void setAlignEquiv(int newVal){AlignEquiv=newVal;}
         
         public DefaultFactionRange(Faction F, String key) 
@@ -1034,7 +1046,7 @@ public class DefaultFaction implements Faction, MsgListener
         public int high=0;
         public int notflag=-1;
 
-        public String usageID(){return ID;}
+        public String abilityFlags(){return ID;}
         public boolean possibleAbilityID(){return possibleAbilityID;}
         public int type(){return type;}
         public int domain(){return domain;}

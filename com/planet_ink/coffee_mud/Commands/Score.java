@@ -183,9 +183,13 @@ public class Score extends Affect
 		for(Enumeration e=mob.fetchFactions();e.hasMoreElements();)
 		{
 		    String factionID=(String)e.nextElement();
-		    Faction.FactionRange FR=CMLib.factions().getRange(factionID,mob.fetchFaction(factionID));
-		    if((FR!=null)&&(FR.myFaction().showInScore()))
-	            msg.append("Your "+CMStrings.padRight("^<HELP^>"+FR.myFaction().name()+"^</HELP^> is",18)+": ^H"+FR.name()+"^?.\n\r");
+		    Faction F=CMLib.factions().getFaction(factionID);
+		    if(F!=null)
+		    {
+    		    Faction.FactionRange FR=CMLib.factions().getRange(factionID,mob.fetchFaction(factionID));
+    		    if((FR!=null)&&(F.showInScore()))
+    	            msg.append("Your "+CMStrings.padRight("^<HELP^>"+F.name()+"^</HELP^> is",18)+": ^H"+FR.name()+"^?.\n\r");
+		    }
 		}
 		msg.append("Your ^<HELP^>armored defence^</HELP^> is: ^H"+CMLib.combat().armorStr(adjustedArmor)+"^?.\n\r");
 		msg.append("Your ^<HELP^>combat prowess^</HELP^> is : ^H"+CMLib.combat().fightingProwessStr(adjustedAttack)+"^?.\n\r");

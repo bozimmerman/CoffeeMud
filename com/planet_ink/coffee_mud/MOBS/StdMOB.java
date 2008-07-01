@@ -3575,7 +3575,7 @@ public class StdMOB implements MOB
             F=CMLib.factions().getFaction((String)e.nextElement());
             if(F==null) continue;
             FR=CMLib.factions().getRange(F.factionID(),fetchFaction(F.factionID()));
-            if(FR!=null) V.addElement(FR.rangeID());
+            if(FR!=null) V.addElement(FR.codeName());
         }
         return V;
     }

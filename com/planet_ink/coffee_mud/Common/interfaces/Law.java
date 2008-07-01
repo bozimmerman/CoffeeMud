@@ -34,6 +34,51 @@ import java.util.*;
 */
 public interface Law extends CMCommon
 {
+    
+    public void initialize(LegalBehavior details, Properties laws, boolean modifiableNames, boolean modifiableLaws);
+    public void changeStates(LegalWarrant W, int state);
+    public Vector otherCrimes();
+    public Vector otherBits();
+    public Vector bannedSubstances();
+    public Vector bannedBits();
+    public Hashtable abilityCrimes();
+    public Hashtable basicCrimes();
+    public Hashtable taxLaws();
+    public Vector chitChat();
+    public Vector chitChat2();
+    public Vector chitChat3();
+    public Vector jailRooms();
+    public Vector releaseRooms();
+    public Vector officerNames();
+    public Vector judgeNames();
+    public String[] messages();
+    public Vector oldWarrants();
+    public Vector warrants();
+    public boolean arrestMobs();
+    public String[] paroleMessages();
+    public Integer[] paroleTimes();
+    public String[] jailMessages();
+    public Integer[] jailTimes();
+    public String getMessage(int which);
+    public String paroleMessages(int which);
+    public int paroleTimes(int which);
+    public String jailMessages(int which);
+    public int jailTimes(int which);
+    public LegalWarrant getCopkiller(Area A, LegalBehavior behav, MOB mob);
+    public LegalWarrant getLawresister(Area A, LegalBehavior behav, MOB mob);
+    public LegalWarrant getWarrant(MOB mob, int which);
+    public LegalWarrant getOldWarrant(MOB criminal, String crime, boolean pull);
+    public void resetLaw();
+    public boolean hasModifiableNames();
+    public boolean hasModifiableLaws();
+    public String getInternalStr(String msg);
+    public boolean isInternalStr(String msg);
+    public void setInternalStr(String tag, String value);
+    public String rawLawString();
+    public boolean lawIsActivated();
+    public void propertyTaxTick(Area A, boolean debugging);
+    public Environmental[] getTreasuryNSafe(Area A);
+    
 	public static final int ACTION_WARN=0;
 	public static final int ACTION_THREATEN=1;
 	public static final int ACTION_PAROLE1=2;
@@ -184,48 +229,4 @@ public interface Law extends CMCommon
 		"POISON_ALCOHOL=!home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n"+
 		"POISON_FIREBREATHER=!home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n"+
 		"POISON_LIQUOR=!home !pub !tavern !inn !bar;!recently;public intoxication;parole1;Drunkenness is a demeaning and intolerable state.\n";
-	
-        public void initialize(LegalBehavior details, Properties laws, boolean modifiableNames, boolean modifiableLaws);
-		public void changeStates(LegalWarrant W, int state);
-		public Vector otherCrimes();
-		public Vector otherBits();
-		public Vector bannedSubstances();
-		public Vector bannedBits();
-		public Hashtable abilityCrimes();
-		public Hashtable basicCrimes();
-		public Hashtable taxLaws();
-		public Vector chitChat();
-		public Vector chitChat2();
-        public Vector chitChat3();
-		public Vector jailRooms();
-		public Vector releaseRooms();
-		public Vector officerNames();
-		public Vector judgeNames();
-		public String[] messages();
-		public Vector oldWarrants();
-		public Vector warrants();
-		public boolean arrestMobs();
-		public String[] paroleMessages();
-		public Integer[] paroleTimes();
-		public String[] jailMessages();
-		public Integer[] jailTimes();
-		public String getMessage(int which);
-		public String paroleMessages(int which);
-		public int paroleTimes(int which);
-		public String jailMessages(int which);
-		public int jailTimes(int which);
-	    public LegalWarrant getCopkiller(Area A, LegalBehavior behav, MOB mob);
-        public LegalWarrant getLawresister(Area A, LegalBehavior behav, MOB mob);
-		public LegalWarrant getWarrant(MOB mob, int which);
-		public LegalWarrant getOldWarrant(MOB criminal, String crime, boolean pull);
-		public void resetLaw();
-		public boolean hasModifiableNames();
-		public boolean hasModifiableLaws();
-		public String getInternalStr(String msg);
-	    public boolean isInternalStr(String msg);
-		public void setInternalStr(String tag, String value);
-		public String rawLawString();
-		public boolean lawIsActivated();
-		public void propertyTaxTick(Area A, boolean debugging);
-		public Environmental[] getTreasuryNSafe(Area A);
 }

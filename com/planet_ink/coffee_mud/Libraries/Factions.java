@@ -57,19 +57,22 @@ public class Factions extends StdLibrary implements FactionManager
 	public boolean isRangeCodeName(String key){ return rangeCodeNames().containsKey(key.toUpperCase());}
 	public boolean isFactionedThisWay(MOB mob, String rangeCodeName)
 	{
-	    Faction.FactionRange FR=(Faction.FactionRange)rangeCodeNames().get(rangeCodeName.toUpperCase());
+	    Faction F=(Faction)rangeCodeNames().get(rangeCodeName.toUpperCase());
+	    if(F==null) return false;
+	    Faction.FactionRange FR=(Faction.FactionRange)F.fetchRange(rangeCodeName.toUpperCase().trim());
 	    if(FR==null) return false;
-	    Faction.FactionRange FR2=FR.myFaction().fetchRange(mob.fetchFaction(FR.myFaction().factionID()));
+	    Faction.FactionRange FR2=F.fetchRange(mob.fetchFaction(F.factionID()));
 	    if(FR2==null) return false;
 	    return FR2.codeName().equalsIgnoreCase(FR.codeName());
 	}
 	public String rangeDescription(String rangeCodeName, String andOr)
 	{
-	    Faction.FactionRange FR=(Faction.FactionRange)rangeCodeNames().get(rangeCodeName.toUpperCase());
-	    if((FR==null)||(FR.myFaction()==null))
-	        return "";
+        Faction F=(Faction)rangeCodeNames().get(rangeCodeName.toUpperCase());
+        if(F==null) return "";
+        Faction.FactionRange FR=(Faction.FactionRange)F.fetchRange(rangeCodeName.toUpperCase().trim());
+        if(FR==null) return "";
 	    Vector relevantFactions=new Vector();
-        for(Enumeration e=FR.myFaction().ranges();e.hasMoreElements();)
+        for(Enumeration e=F.ranges();e.hasMoreElements();)
 	    {
             Faction.FactionRange FR2=(Faction.FactionRange)e.nextElement();
 	        if(FR2.codeName().equalsIgnoreCase(FR.codeName()))
@@ -77,8 +80,8 @@ public class Factions extends StdLibrary implements FactionManager
 	    }
 	    if(relevantFactions.size()==0) return "";
 	    if(relevantFactions.size()==1)
-	        return FR.myFaction().name()+" of "+((Faction.FactionRange)relevantFactions.firstElement()).name();
-	    StringBuffer buf=new StringBuffer(FR.myFaction().name()+" of ");
+	        return F.name()+" of "+((Faction.FactionRange)relevantFactions.firstElement()).name();
+	    StringBuffer buf=new StringBuffer(F.name()+" of ");
 	    for(int i=0;i<relevantFactions.size()-1;i++)
 	        buf.append(((Faction.FactionRange)relevantFactions.elementAt(i)).name()+", ");
         buf.append(andOr+((Faction.FactionRange)relevantFactions.lastElement()).name());
@@ -104,7 +107,7 @@ public class Factions extends StdLibrary implements FactionManager
                 Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
                 String CodeName=(FR.codeName().length()>0)?FR.codeName().toUpperCase():FR.name().toUpperCase();
                 if(!hashedFactionRanges.containsKey(CodeName))
-                    hashedFactionRanges.put(CodeName,FR);
+                    hashedFactionRanges.put(CodeName,F);
             }
             factionSet.put(factionID.toUpperCase(),F);
             return F;
@@ -411,18 +414,18 @@ public class Factions extends StdLibrary implements FactionManager
                 String which=mob.session().prompt("Enter a name to add, remove, or modify:","");
                 if(which.length()==0)
                     break;
-                Faction.FactionRange FR=null;
-                for(Enumeration e=me.ranges();e.hasMoreElements();)
+                which=which.trim().toUpperCase();
+                if(which.indexOf(' ')>=0)
                 {
-                    Faction.FactionRange FR2=(Faction.FactionRange)e.nextElement();
-                    if(FR2.name().equalsIgnoreCase(which))
-                        FR=FR2;
+                    mob.tell("Faction Range code names may not contain spaces.");
+                    break;
                 }
+                Faction.FactionRange FR=me.fetchRange(which);
                 if(FR==null)
                 {
-                    if(mob.session().confirm("Create a new range called '"+which+"' (y/N): ","N"))
+                    if(mob.session().confirm("Create a new range code named '"+which+"' (y/N): ","N"))
                     {
-                        FR=me.addRange("0;100;"+which+";CHANGEMYCODENAME;");
+                        FR=me.addRange("0;100;Change My Name;"+which+";");
                     }
                 }
                 else
@@ -459,17 +462,6 @@ public class Factions extends StdLibrary implements FactionManager
                         mob.tell("(no change)");
                     else
                         FR.setHigh(CMath.s_int(newName));
-                    newName=mob.session().prompt("Enter a code-name ("+FR.codeName()+")\n\r: ",""+FR.codeName());
-                    if(newName.trim().length()==0)
-                        mob.tell("(no change)");
-                    else
-                    {
-                        Faction FC=CMLib.factions().getFactionByRangeCodeName(newName.toUpperCase().trim());
-                        if((FC!=null)&&(FC!=me))
-                            mob.tell("That code name is already being used in another faction.  Value not accepted.");
-                        else
-                            FR.setCodeName(newName.toUpperCase().trim());
-                    }
                     StringBuffer prompt=new StringBuffer("Select the 'virtue' (if any) of this range:\n\r");
                     StringBuffer choices=new StringBuffer("");
                     for(int r=0;r<Faction.ALIGN_NAMES.length;r++)
@@ -714,7 +706,7 @@ public class Factions extends StdLibrary implements FactionManager
                     {
                         list.append("    ");
                         list.append(CMStrings.padRight(CE.eventID(),15)+" ");
-                        list.append(CMStrings.padRight(Faction.FactionChangeEvent.FACTION_DIRECTIONS[CE.direction()],10)+" ");
+                        list.append(CMStrings.padRight(Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[CE.direction()],10)+" ");
                         list.append(CMStrings.padRight(CMath.toPct(CE.factor()),10)+" ");
                         list.append(CMStrings.padRight(CE.flagCache(),20)+" ");
                         list.append(CE.zapper()+"\n\r");
@@ -759,12 +751,12 @@ public class Factions extends StdLibrary implements FactionManager
                 {
                     StringBuffer directions=new StringBuffer("Valid directions:\n\r");
                     StringBuffer cmds=new StringBuffer("");
-                    for(int i=0;i<Faction.FactionChangeEvent.FACTION_DIRECTIONS.length;i++)
+                    for(int i=0;i<Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS.length;i++)
                     {
-                        directions.append(((char)('A'+i))+") "+Faction.FactionChangeEvent.FACTION_DIRECTIONS[i]+"\n\r");
+                        directions.append(((char)('A'+i))+") "+Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[i]+"\n\r");
                         cmds.append((char)('A'+i));
                     }
-                    String str=mob.session().choose(directions+"\n\rSelect a new direction ("+Faction.FactionChangeEvent.FACTION_DIRECTIONS[CE.direction()]+"): ",cmds.toString()+"\n\r","");
+                    String str=mob.session().choose(directions+"\n\rSelect a new direction ("+Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[CE.direction()]+"): ",cmds.toString()+"\n\r","");
                     if((str.length()==0)||str.equals("\n")||str.equals("\r")||(cmds.toString().indexOf(str.charAt(0))<0))
                         mob.tell("(no change)");
                     else
@@ -782,7 +774,7 @@ public class Factions extends StdLibrary implements FactionManager
                 }
                 if(CE!=null)
                 {
-                    mob.tell("Valid flags include: "+CMParms.toStringList(Faction.FactionChangeEvent.VALID_FLAGS)+"\n\r");
+                    mob.tell("Valid flags include: "+CMParms.toStringList(Faction.FactionChangeEvent.FLAG_DESCS)+"\n\r");
                     String newFlags=mob.session().prompt("Enter new flag(s) ("+CE.flagCache()+"): "+CE.flagCache());
                     if((newFlags.length()==0)||(newFlags.equals(CE.flagCache())))
                         mob.tell("(no change)");
@@ -818,7 +810,7 @@ public class Factions extends StdLibrary implements FactionManager
                     if(CA!=null)
                     {
                         list.append("    "+((char)('A'+numUsages)+") "));
-                        list.append(CMStrings.padRight(CA.usageID(),40)+" ");
+                        list.append(CMStrings.padRight(CA.abilityFlags(),40)+" ");
                         list.append(CMStrings.padRight(CA.low()+"",10)+" ");
                         list.append(CMStrings.padRight(CA.high()+"",10)+" ");
                         list.append("\n\r");
@@ -863,7 +855,7 @@ public class Factions extends StdLibrary implements FactionManager
                     boolean cont=false;
                     while((!cont)&&(!mob.session().killFlag()))
                     {
-                        String newFlags=mob.session().prompt("Ability determinate masks or ? ("+CA.usageID()+"): "+CA.usageID());
+                        String newFlags=mob.session().prompt("Ability determinate masks or ? ("+CA.abilityFlags()+"): "+CA.abilityFlags());
                         if(newFlags.equalsIgnoreCase("?"))
                         {
                             StringBuffer vals=new StringBuffer("Valid masks: \n\r");
@@ -880,7 +872,7 @@ public class Factions extends StdLibrary implements FactionManager
                         else
                         {
                             cont=true;
-                            if((newFlags.length()==0)||(newFlags.equals(CA.usageID())))
+                            if((newFlags.length()==0)||(newFlags.equals(CA.abilityFlags())))
                                 mob.tell("(no change)");
                             else
                             {

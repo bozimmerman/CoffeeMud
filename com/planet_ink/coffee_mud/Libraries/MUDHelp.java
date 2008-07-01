@@ -388,11 +388,13 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 					appendAllowed(prepend,A.ID());
 					if(type==Ability.ACODE_PRAYER)
 					{
+					    String rangeDescs=null;
 					    for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
 					    {
 					        Faction F=(Faction)e.nextElement();
-					        if(F.usageFactors(A).length()>0)
-					            prepend.append("\n\r"+CMStrings.capitalizeAndLower(F.name())+": "+F.usageFactors(A));
+					        rangeDescs=F.usageFactorRangeDescription(A);
+					        if(rangeDescs.length()>0)
+					            prepend.append("\n\r"+CMStrings.capitalizeAndLower(F.name())+": "+rangeDescs);
 					    }
 					}
 					

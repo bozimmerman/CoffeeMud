@@ -314,12 +314,12 @@ public class FactionData extends StdWebMacro
                             str.append("</TD><TD>");
                             val=""+CMath.s_int(httpReq.getRequestParameter("CHANGESDIR"+num));
                             str.append("<SELECT NAME=CHANGESDIR"+showNum+">");
-                            for(int f=0;f<Faction.FactionChangeEvent.FACTION_DIRECTIONS.length;f++)
+                            for(int f=0;f<Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS.length;f++)
                             {
                                 str.append("<OPTION VALUE=\""+f+"\"");
                                 if(f==CMath.s_int(val))
                                     str.append(" SELECTED");
-                                str.append(">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.FACTION_DIRECTIONS[f]));
+                                str.append(">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[f]));
                             }
                             str.append("</SELECT>");
                             str.append("</TD><TD>");
@@ -332,12 +332,12 @@ public class FactionData extends StdWebMacro
                             for(;httpReq.isRequestParameter("CHANGESFLAGS"+num+"_"+id);id=""+(++x))
                                 flags.addElement(httpReq.getRequestParameter("CHANGESFLAGS"+num+"_"+id).toUpperCase());
                             str.append("<SELECT NAME=CHANGESFLAGS"+showNum+"_ MULTIPLE>");
-                            for(int f=0;f<Faction.FactionChangeEvent.VALID_FLAGS.length;f++)
+                            for(int f=0;f<Faction.FactionChangeEvent.FLAG_DESCS.length;f++)
                             {
-                                str.append("<OPTION VALUE=\""+Faction.FactionChangeEvent.VALID_FLAGS[f]+"\"");
-                                if(flags.contains(Faction.FactionChangeEvent.VALID_FLAGS[f]))
+                                str.append("<OPTION VALUE=\""+Faction.FactionChangeEvent.FLAG_DESCS[f]+"\"");
+                                if(flags.contains(Faction.FactionChangeEvent.FLAG_DESCS[f]))
                                     str.append(" SELECTED");
-                                str.append(">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.VALID_FLAGS[f]));
+                                str.append(">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.FLAG_DESCS[f]));
                             }
                             str.append("</SELECT>");
                             str.append("</TD><TD>");
@@ -367,15 +367,15 @@ public class FactionData extends StdWebMacro
                     str.append("</SELECT>");
                     str.append("</TD><TD>");
                     str.append("<SELECT NAME=CHANGESDIR"+showNum+">");
-                    for(int f=0;f<Faction.FactionChangeEvent.FACTION_DIRECTIONS.length;f++)
-                        str.append("<OPTION VALUE=\""+f+"\">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.FACTION_DIRECTIONS[f]));
+                    for(int f=0;f<Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS.length;f++)
+                        str.append("<OPTION VALUE=\""+f+"\">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.CHANGE_DIRECTION_DESCS[f]));
                     str.append("</SELECT>");
                     str.append("</TD><TD>");
                     str.append("<INPUT TYPE=TEXT NAME=CHANGESFACTOR"+showNum+" SIZE=4 VALUE=\"\">");
                     str.append("</TD><TD>");
                     str.append("<SELECT NAME=CHANGESFLAGS"+showNum+"_ MULTIPLE>");
-                    for(int f=0;f<Faction.FactionChangeEvent.VALID_FLAGS.length;f++)
-                        str.append("<OPTION VALUE=\""+Faction.FactionChangeEvent.VALID_FLAGS[f]+"\">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.VALID_FLAGS[f]));
+                    for(int f=0;f<Faction.FactionChangeEvent.FLAG_DESCS.length;f++)
+                        str.append("<OPTION VALUE=\""+Faction.FactionChangeEvent.FLAG_DESCS[f]+"\">"+CMStrings.capitalizeAndLower(Faction.FactionChangeEvent.FLAG_DESCS[f]));
                     str.append("</SELECT>");
                     str.append("</TD><TD>");
                     str.append("<INPUT TYPE=TEXT NAME=CHANGESMASK"+showNum+" SIZE=20 MAXLENGTH=255 VALUE=\"\">");
@@ -490,16 +490,16 @@ public class FactionData extends StdWebMacro
                         for(Enumeration e=F.abilityUsages();e.hasMoreElements();v++)
                         {
                             Faction.FactionAbilityUsage E=(Faction.FactionAbilityUsage)e.nextElement();
-                            if(!E.possibleAbilityID()||CMClass.getAbility(E.usageID())==null)
+                            if(!E.possibleAbilityID()||CMClass.getAbility(E.abilityFlags())==null)
                             {
-                                Vector V=CMParms.parse(E.usageID());
+                                Vector V=CMParms.parse(E.abilityFlags());
                                 String id="";
                                 int x=-1;
                                 for(Enumeration e2=V.elements();e2.hasMoreElements();id="_"+(++x))
                                     httpReq.addRequestParameters("ABILITYUSE"+v+id,(String)e2.nextElement());
                             }
                             else
-                                httpReq.addRequestParameters("ABILITYUSE"+v,CMClass.getAbility(E.usageID()).ID());
+                                httpReq.addRequestParameters("ABILITYUSE"+v,CMClass.getAbility(E.abilityFlags()).ID());
                             httpReq.addRequestParameters("ABILITYMIN"+v,""+E.low());
                             httpReq.addRequestParameters("ABILITYMAX"+v,""+E.high());
                         }
