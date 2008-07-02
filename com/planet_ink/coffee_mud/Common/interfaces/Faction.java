@@ -82,6 +82,15 @@ public interface Faction extends CMCommon, MsgListener
     public String getINIDef(String tag, String delimeter);
 
     /**
+     * Returns an object array, with the first index being 1 (index 0 is reserved)
+     * of any Faction affects or behaviors appropriate to the mob due to this faction.
+     * Any parameters should be set on the affects or behaviors before returning them.
+     * @param mob the mob to generate affects and behaviors for
+     * @return an Object array of the appropriate affects and behaviors
+     */
+    public Object[] makeAffBehavs(MOB mob);
+    
+    /**
      * Checks to see if the given mob has this faction.  Same as checking if
      * mob.fetchFaction(this.factionID())!=Integer.MAX_VALUE.
      * @param mob the mob to check
@@ -622,6 +631,58 @@ public interface Faction extends CMCommon, MsgListener
      * @return the factor to multiply a change in the other faction by
      */
     public double getRelation(String factionID); 
+    
+    /**
+     * Returns an enumeration of Abilities or Behavior IDs that are
+     * automatically but conditionally added to mobs (not players) with this faction. 
+     * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
+     * @see com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addAffectBehav(String, String, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delAffectBehav(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#getAffectBehav(String)
+     * @return an enumeration of Abilities or Behavior ID
+     */
+    public Enumeration affectsBehavs();
+
+    /**
+     * Removes the given ability or behavior from this Faction.  It will require the
+     * mob be reset or rejuved in order for this to take affect.
+     * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
+     * @see com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#affectsBehavs()
+     * @param ID the Abilities or Behavior ID to remove
+     * @return whether the Abilities or Behavior ID was found and removed
+     */
+    public boolean delAffectBehav(String ID);
+    
+    /**
+     * Adds a new Ability or Behavior to this Faction.  The ID must match a 
+     * Behavior or, if one is not found, an Ability.  The parms are any
+     * parameters required by the Behavior or Ability.  The gainMask is
+     * a simple mask to further narrow what kind of mobs receive the 
+     * given Ability or Behavior when first receiving this Faction.  It 
+     * will require the mob be reset or rejuved in order for this to take affect.
+     * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
+     * @see com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#affectsBehavs()
+     * @param ID the Abilities or Behavior ID to add
+     * @param relation the relation factor to use as a multiplier
+     * @return whether the new Abilities or Behavior ID was successfully added
+     */
+    public boolean addAffectBehav(String ID, String parms, String gainMask);
+    
+    
+    /**
+     * Returns a string array containing the parms at index 0, and the gainMask at 1.  
+     * See addAffectBehav for more information.
+     * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
+     * @see com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#affectsBehavs()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addAffectBehav(String, String, String)
+     * @param ID the Abilities or Behavior ID
+     * @return a string array containing the parms at index 0, and the gainMask at 1
+     */
+    public String[] getAffectBehav(String ID); 
     
     /**
      * Returns an enumeration of Faction.FactionAbilityUsage objects for this Faction.
@@ -1203,7 +1264,12 @@ public interface Faction extends CMCommon, MsgListener
     public final static int TAG_RELATION_=16;
     /** index constant for tag names in {@link Faction#TAG_NAMES} denoting the SHOWINFACTIONSCMD tag */
     public final static int TAG_SHOWINFACTIONSCMD=17;
+    /** index constant for tag names in {@link Faction#TAG_NAMES} denoting the AFFBEHAV tag */
+    public final static int TAG_AFFBEHAV=18;
     /** list of valid tag names for internal faction data, retrieved by {@link Faction#getTagValue(String)} */
-    public final static String[] TAG_NAMES={"NAME","MINIMUM","MAXIMUM","SCOREDISPLAY","SPECIALREPORTED","EDITALONE","DEFAULT","AUTODEFAULTS",
-            "AUTOCHOICES","CHOICEINTRO","RATEMODIFIER","EXPERIENCE","RANGE*","CHANGE*","ABILITY*","FACTOR*","RELATION*","SHOWINFACTIONSCMD"};
+    public final static String[] TAG_NAMES={"NAME","MINIMUM","MAXIMUM","SCOREDISPLAY",
+                                            "SPECIALREPORTED","EDITALONE","DEFAULT","AUTODEFAULTS",
+                                            "AUTOCHOICES","CHOICEINTRO","RATEMODIFIER","EXPERIENCE",
+                                            "RANGE*","CHANGE*","ABILITY*","FACTOR*","RELATION*",
+                                            "SHOWINFACTIONSCMD","AFFBEHAV*"};
 }

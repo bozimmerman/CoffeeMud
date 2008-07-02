@@ -221,9 +221,8 @@ public interface MOB extends Environmental, Rider
 	public String fetchTattoo(String of);
 
     /** Manipulation of the factions list */
-    public void addFaction(String of);
-    public void addFaction(String of,int start);
-    public void adjustFaction(String of,int amount);
+    public void addFaction(String of, int start);
+    public void adjustFaction(String of, int amount);
     public Enumeration fetchFactions();
     public Vector fetchFactionRanges();
     public boolean hasFaction(String which);

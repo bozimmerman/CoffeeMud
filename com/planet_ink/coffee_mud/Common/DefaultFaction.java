@@ -56,6 +56,7 @@ public class DefaultFaction implements Faction, MsgListener
     public boolean showInEditor=false;
     public boolean showInFactionsCommand=true;
     public Hashtable ranges=new Hashtable();
+    public Hashtable affBehavs=new Hashtable();
     public Vector defaults=new Vector();
     public Vector autoDefaults=new Vector();
     public double rateModifier=1.0;
@@ -333,6 +334,54 @@ public class DefaultFaction implements Faction, MsgListener
             return str.toString();
         }
         return rawTagName+"="+getTagValue(tag)+delimeter;
+    }
+    
+    public Object[] makeAffBehavs(MOB mob)
+    {
+        Vector V=new Vector();
+        V.addElement(new Integer(0));
+        String ID=null;
+        String[] stuff=null;
+        if(mob.isMonster())
+        for(Enumeration e=affectsBehavs();e.hasMoreElements();)
+        {
+            ID=(String)e.nextElement();
+            stuff=getAffectBehav(ID);
+            if(CMLib.masking().maskCheck(stuff[1],mob,true))
+            {
+                Behavior B=CMClass.getBehavior(ID);
+                if(B!=null)
+                {
+                    B.setParms(stuff[0]);
+                    V.addElement(B);
+                }
+                else
+                {
+                    Ability A=CMClass.getAbility(ID);
+                    A.setMiscText(stuff[0]);
+                    V.addElement(A);
+                }
+            }
+        }
+        return V.toArray();
+    }
+    
+    public Enumeration affectsBehavs(){return  ((Hashtable)affBehavs.clone()).keys();}
+
+    public boolean delAffectBehav(String ID) { return affBehavs.remove(ID.toUpperCase().trim())!=null; }
+    
+    public boolean addAffectBehav(String ID, String parms, String gainMask) {
+        if(affBehavs.containsKey(ID.toUpperCase().trim())) return false;
+        if((CMClass.getBehavior(ID)==null)&&(CMClass.getAbility(ID)==null))
+            return false;
+        affBehavs.put(ID.toUpperCase().trim(),new String[]{parms,gainMask});
+        return true;
+    }
+    
+    public String[] getAffectBehav(String ID) {
+        if(affBehavs.containsKey(ID.toUpperCase().trim()))
+            return (String[])affBehavs.get(ID.toUpperCase().trim());
+        return null;
     }
     
     public FactionChangeEvent getChangeEvent(String key) 

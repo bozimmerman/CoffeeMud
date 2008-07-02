@@ -1518,48 +1518,55 @@ public class StdMOB implements MOB
 				return false;
 		}
 
-		Ability A=null;
+		MsgListener ML=null;
         int num=numAllEffects();
         for(int i=0;i<num;i++)
 		{
-			A=fetchEffect(i);
-			if((A!=null)&&(!A.okMessage(this,msg)))
+            ML=fetchEffect(i);
+			if((ML!=null)&&(!ML.okMessage(this,msg)))
 				return false;
 		}
 
-		Item I=null;
         num=inventorySize();
         for(int i=num-1;i>=0;i--)
 		{
-			I=fetchInventory(i);
-			if((I!=null)&&(!I.okMessage(this,msg)))
+			ML=fetchInventory(i);
+            if((ML!=null)&&(!ML.okMessage(this,msg)))
 				return false;
 		}
 
-		Behavior B=null;
         num=numBehaviors();
         for(int b=0;b<num;b++)
 		{
-			B=fetchBehavior(b);
-			if((B!=null)&&(!B.okMessage(this,msg)))
+			ML=fetchBehavior(b);
+            if((ML!=null)&&(!ML.okMessage(this,msg)))
 				return false;
 		}
         
-        ScriptingEngine S=null;
         num=numScripts();
         for(int s=0;s<num;s++)
         {
-            S=fetchScript(s);
-            if((S!=null)&&(!S.okMessage(this, msg)))
+            ML=fetchScript(s);
+            if((ML!=null)&&(!ML.okMessage(this,msg)))
                 return false;
         }
 
-		Faction F=null;
+        Object[] factionML=null;
+        String factionID=null;
         for(Enumeration e=fetchFactions();e.hasMoreElements();)
         {
-            F=CMLib.factions().getFaction((String)e.nextElement());
-            if ((F!=null)&&(!F.okMessage(this, msg)))
-                return false;
+            factionID=(String)e.nextElement();
+            ML=CMLib.factions().getFaction(factionID);
+            if(ML!=null)
+            {
+                if(!ML.okMessage(this,msg))
+                    return false;
+                factionML=(Object[])factions.get(factionID);
+                if(factionML!=null)
+                    for(int i=1;i<factionML.length;i++)
+                        if(!((MsgListener)factionML[i]).okMessage(myHost,msg))
+                            return false;
+            }
         }
 
 		MOB mob=msg.source();
@@ -2222,7 +2229,7 @@ public class StdMOB implements MOB
 				&&(CMLib.dice().rollPercentage()==1)
 			    &&(fetchEffect("Disease_Depression")==null))
 				{
-				    A=CMClass.getAbility("Disease_Depression");
+				    Ability A=CMClass.getAbility("Disease_Depression");
 				    if(A!=null) A.invoke(this,this,true,0);
 				}
 			}
@@ -2257,20 +2264,19 @@ public class StdMOB implements MOB
 			charStats().getMyRace().executeMsg(this,msg);
 		}
 
-		Behavior B=null;
+        MsgListener ML=null;
         for(int b=0;b<numBehaviors();b++)
 		{
-			B=fetchBehavior(b);
-			if(B!=null)	B.executeMsg(this,msg);
+			ML=fetchBehavior(b);
+			if(ML!=null) ML.executeMsg(this,msg);
 		}
         
-        ScriptingEngine S=null;
         for(int s=0;s<numScripts();s++)
         {
-            S=fetchScript(s);
-            if(S!=null) S.executeMsg(this, msg);
+            ML=fetchScript(s);
+            if(ML!=null) ML.executeMsg(this,msg);
         }
-
+        
 		MOB mob=msg.source();
 
 		boolean asleep=CMLib.flags().isSleeping(this);
@@ -2501,7 +2507,6 @@ public class StdMOB implements MOB
                 CMLib.combat().handleObserveDeath(this,victim,msg);
 		}
 
-		MsgListener ML=null;
         int num=inventorySize();
 		for(int i=num-1;i>=0;i--)
 		{
@@ -2518,11 +2523,20 @@ public class StdMOB implements MOB
 			    ML.executeMsg(this,msg);
 		}
 
+        Object[] factionML=null;
+        String factionID=null;
         for(Enumeration e=fetchFactions();e.hasMoreElements();)
         {
-            ML=CMLib.factions().getFaction((String)e.nextElement());
+            factionID=(String)e.nextElement();
+            ML=CMLib.factions().getFaction(factionID);
             if(ML!=null)
+            {
                 ML.executeMsg(this,msg);
+                factionML=(Object[])factions.get(factionID);
+                if(factionML!=null)
+                    for(int i=1;i<factionML.length;i++)
+                        ((MsgListener)factionML[i]).executeMsg(myHost,msg);
+            }
         }
 	}
 
@@ -2738,37 +2752,42 @@ public class StdMOB implements MOB
 			}
 
             Vector aff=cloneEffects();
+            Tickable T=null;
             if(aff!=null)
-            {
-                Ability A=null;
                 for(int a=0;a<aff.size();a++)
     			{
-    				A=(Ability)aff.elementAt(a);
+    				T=(Tickable)aff.elementAt(a);
     				tickStatus=Tickable.STATUS_AFFECT+a;
-    				if(!A.tick(ticking,tickID))
-    					A.unInvoke();
+    				if(!T.tick(ticking,tickID))
+    					((Ability)T).unInvoke();
     			}
-            }
 
             manaConsumeCounter=CMLib.commands().tickManaConsumption(this,manaConsumeCounter);
 
             int num=numBehaviors();
-            Behavior B=null;
 			for(int b=0;b<num;b++)
 			{
-				B=fetchBehavior(b);
+				T=fetchBehavior(b);
 				tickStatus=Tickable.STATUS_BEHAVIOR+b;
-				if(B!=null) B.tick(ticking,tickID);
+				if(T!=null) T.tick(ticking,tickID);
 			}
 
             num=numScripts();
-            ScriptingEngine S=null;
             for(int s=0;s<num;s++)
             {
-                S=fetchScript(s);
+                T=fetchScript(s);
                 tickStatus=Tickable.STATUS_SCRIPT+s;
-                if(S!=null) 
-                    S.tick(ticking,tickID);
+                if(T!=null) T.tick(ticking,tickID);
+            }
+            
+            Object[] factionML=null;
+            for(Enumeration e=fetchFactions();e.hasMoreElements();)
+            {
+                factionML=(Object[])factions.get((String)e.nextElement());
+                tickStatus=Tickable.STATUS_OTHER;
+                if(factionML!=null)
+                    for(int i=1;i<factionML.length;i++)
+                        ((Tickable)T).tick(ticking,tickID);
             }
             
             num=charStats().numClasses();
@@ -3515,30 +3534,36 @@ public class StdMOB implements MOB
     /** Manipulation of the factions list */
     public void addFaction(String which, int start)
     {
+        which=which.toUpperCase();
         Faction F=CMLib.factions().getFaction(which);
         if(F==null) return;
         if(start>F.maximum()) start=F.maximum();
         if(start<F.minimum()) start=F.minimum();
-        factions.put(F.factionID().toUpperCase(),new Integer(start));
+        Object[] parms=(Object[])factions.get(which);
+        if(parms==null)
+            parms=F.makeAffBehavs(this);
+        parms[0]=new Integer(start);
+        factions.put(which,parms);
     }
-    public void adjustFaction(String which,int amount)
+    public void adjustFaction(String which, int amount)
     {
+        which=which.toUpperCase();
         Faction F=CMLib.factions().getFaction(which);
         if(F==null) return;
-        if(!factions.containsKey(F.factionID().toUpperCase()))
-            addFaction(F.factionID().toUpperCase(),amount);
+        if(!factions.containsKey(which))
+            addFaction(which,amount);
         else
-            addFaction(F.factionID().toUpperCase(),((Integer)factions.get(F.factionID().toUpperCase())).intValue()+amount);
+            addFaction(which,fetchFaction(which) + amount);
     }
     public Enumeration fetchFactions()
     {
-        return factions.keys();
+        return ((Hashtable)factions.clone()).keys();
     }
     public int fetchFaction(String which)
     {
 		which=which.toUpperCase();
         if(!factions.containsKey(which)) return Integer.MAX_VALUE;
-        return ((Integer)factions.get(which)).intValue();
+        return ((Integer)((Object[])factions.get(which))[0]).intValue();
     }
     public void removeFaction(String which)
     {
