@@ -161,12 +161,13 @@
                 <TD WIDTH=35%><FONT COLOR=WHITE>Name</FONT></TD>
                 <TD WIDTH=15%><FONT COLOR=WHITE>Low</FONT></TD>
                 <TD WIDTH=15%><FONT COLOR=WHITE>High</FONT></TD>
-                <TD WIDTH=20%><FONT COLOR=WHITE>Code</FONT></TD>
+                <TD WIDTH=20%><FONT COLOR=WHITE>* Code</FONT></TD>
                 <TD WIDTH=15%><FONT COLOR=WHITE>Align</FONT></TD>
             </TR>
             @FactionData?RANGES@
-            <TR><TD WIDTH=100% COLSPAN=3><INPUT TYPE=BUTTON VALUE="Add" NAME=BUTT1 ONCLICK="ReShow()"></TD></TR>
+            <TR><TD WIDTH=100% COLSPAN=5><INPUT TYPE=BUTTON VALUE="Add" NAME=BUTT1 ONCLICK="ReShow()"></TD></TR>
             </TABLE>
+            <FONT COLOR=WHITE SIZE=-1>* This code must be unique among Ranges</FONT>
             </TD>
         </TR>
         <TR>
