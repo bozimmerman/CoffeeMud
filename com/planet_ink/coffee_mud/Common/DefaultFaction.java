@@ -535,18 +535,18 @@ public class DefaultFaction implements Faction, MsgListener
     public void executeMsg(Environmental myHost, CMMsg msg) 
     {
 		if((msg.sourceMinor()==CMMsg.TYP_DEATH)    // A death occured
-		&&(msg.source()==myHost)
-		&&(msg.tool() instanceof MOB))
+		&&(msg.tool() instanceof MOB)
+		&&(myHost instanceof MOB))
         {
             FactionChangeEvent eventC=getChangeEvent("MURDER");
             if(eventC!=null)
             {
                 CharClass combatCharClass=CMLib.combat().getCombatDominantClass((MOB)msg.tool(),msg.source());
                 HashSet combatBeneficiaries=CMLib.combat().getCombatBeneficiaries((MOB)msg.tool(),msg.source(),combatCharClass);
-                for(Iterator I=combatBeneficiaries.iterator();I.hasNext();)
+                if(combatBeneficiaries.contains(myHost))
                 {
-                    MOB killer=(MOB)I.next();
-                    if(eventC.applies(killer))
+                    MOB killer=(MOB)myHost;
+                    if(eventC.applies(msg.source()))
                         executeChange(killer,msg.source(),eventC);
                 }
             }
