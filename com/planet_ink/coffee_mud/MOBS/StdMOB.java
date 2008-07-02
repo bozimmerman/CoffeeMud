@@ -3513,14 +3513,7 @@ public class StdMOB implements MOB
 	}
 
     /** Manipulation of the factions list */
-    public void addFaction(String which)
-    {
-        if(factions==null) factions=new Hashtable();
-        Faction F=CMLib.factions().getFaction(which);
-        if(F==null) return;
-        addFaction(F.factionID().toUpperCase(),F.findDefault(this));
-    }
-    public void addFaction(String which,int start)
+    public void addFaction(String which, int start)
     {
         Faction F=CMLib.factions().getFaction(which);
         if(F==null) return;
