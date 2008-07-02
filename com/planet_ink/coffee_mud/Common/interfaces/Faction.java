@@ -1265,7 +1265,7 @@ public interface Faction extends CMCommon, MsgListener
     /** index constant for tag names in {@link Faction#TAG_NAMES} denoting the SHOWINFACTIONSCMD tag */
     public final static int TAG_SHOWINFACTIONSCMD=17;
     /** index constant for tag names in {@link Faction#TAG_NAMES} denoting the AFFBEHAV tag */
-    public final static int TAG_AFFBEHAV=18;
+    public final static int TAG_AFFBEHAV_=18;
     /** list of valid tag names for internal faction data, retrieved by {@link Faction#getTagValue(String)} */
     public final static String[] TAG_NAMES={"NAME","MINIMUM","MAXIMUM","SCOREDISPLAY",
                                             "SPECIALREPORTED","EDITALONE","DEFAULT","AUTODEFAULTS",

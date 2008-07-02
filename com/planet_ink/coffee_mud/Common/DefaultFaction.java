@@ -186,6 +186,12 @@ public class DefaultFaction implements Faction, MsgListener
                 addRange(words);
             if(key.startsWith("CHANGE"))
                 addChangeEvent(words);
+            if(key.startsWith("AFFBEHAV"))
+            {
+                Object[] O=CMParms.parseSafeSemicolonList(words,false).toArray();
+                if(O.length==3)
+                    addAffectBehav((String)O[0],(String)O[1],(String)O[2]);
+            }
             if(key.startsWith("FACTOR"))
             {
                 Vector factor=CMParms.parseSemicolons(words,false);
@@ -308,6 +314,21 @@ public class DefaultFaction implements Faction, MsgListener
                 Double D=(Double)relations.get(factionName);
                 if(i==numCall)
                     return factionName+" "+CMath.toPct(D.doubleValue());
+                i++;
+            }
+            return "";
+        }
+        case TAG_AFFBEHAV_:
+        {
+            if((numCall<0)||(numCall>=affBehavs.size()))
+                return ""+affBehavs.size();
+            int i=0;
+            for(Enumeration e=affBehavs.keys();e.hasMoreElements();)
+            {
+                String ID=(String)e.nextElement();
+                String[] data=(String[])relations.get(ID);
+                if(i==numCall)
+                    return ID+";"+CMParms.toSafeSemicolonList(data);
                 i++;
             }
             return "";
