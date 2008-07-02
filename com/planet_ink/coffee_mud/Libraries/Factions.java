@@ -377,6 +377,15 @@ public class Factions extends StdLibrary implements FactionManager
             return  Faction.ALIGN_INDIFF;
     }
     
+    private String getWordAffOrBehav(String ID)
+    {
+        if(CMClass.getBehavior(ID)!=null)
+            return "behavior";
+        if(CMClass.getAbility(ID)!=null)
+            return "ability";
+        return null;
+    }
+    
     
     public void modifyFaction(MOB mob, Faction me) throws IOException
     {
@@ -399,19 +408,19 @@ public class Factions extends StdLibrary implements FactionManager
             while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 StringBuffer list=new StringBuffer(showNumber+". Faction Division/Ranges List:\n\r");
-                list.append(CMStrings.padRight("   Name",21)+CMStrings.padRight("Min",11)+CMStrings.padRight("Max",11)+CMStrings.padRight("Code",16)+CMStrings.padRight("Align",6)+"\n\r");
+                list.append(CMStrings.padRight("   Code",16)+CMStrings.padRight("Name",21)+CMStrings.padRight("Min",11)+CMStrings.padRight("Max",11)+CMStrings.padRight("Align",6)+"\n\r");
                 for(Enumeration e=me.ranges();e.hasMoreElements();)
                 {
                     Faction.FactionRange FR=(Faction.FactionRange)e.nextElement();
-                    list.append(CMStrings.padRight("   "+FR.name(),20)+" ");
+                    list.append(CMStrings.padRight("   "+FR.codeName(),15)+" ");
+                    list.append(CMStrings.padRight(FR.name(),20)+" ");
                     list.append(CMStrings.padRight(""+FR.low(),10)+" ");
                     list.append(CMStrings.padRight(""+FR.high(),10)+" ");
-                    list.append(CMStrings.padRight(FR.codeName(),15)+" ");
                     list.append(CMStrings.padRight(Faction.ALIGN_NAMES[FR.alignEquiv()],5)+"\n\r");
                 }
                 mob.tell(list.toString());
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
-                String which=mob.session().prompt("Enter a name to add, remove, or modify:","");
+                String which=mob.session().prompt("Enter a CODE to add, remove, or modify:","");
                 if(which.length()==0)
                     break;
                 which=which.trim().toUpperCase();
@@ -903,6 +912,144 @@ public class Factions extends StdLibrary implements FactionManager
                 }
             }
 
+
+            // Affects/Behaviors
+            ++showNumber;
+            while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
+            {
+                if((showFlag>0)&&(showFlag!=showNumber)) break;
+                StringBuffer list=new StringBuffer(showNumber+". Affects/Behaviors:\n\r");
+                list.append("    #) "
+                        +CMStrings.padRight("Ability/Behavior ID",25)
+                        +" "+CMStrings.padRight("MOB Mask",20)
+                        +" "+CMStrings.padRight("Parameters",20)
+                        +"\n\r");
+                int numAffBehavs=0;
+                StringBuffer choices=new StringBuffer("0\n\r");
+                Vector IDs=new Vector();
+                String ID=null;
+                for(Enumeration e=me.affectsBehavs();e.hasMoreElements();)
+                {
+                    ID=(String)e.nextElement();
+                    String[] parms=me.getAffectBehav(ID);
+                    list.append("    "+((char)('A'+numAffBehavs)+") "));
+                    list.append(CMStrings.padRight(ID,25)+" ");
+                    list.append(CMStrings.padRight(parms[1]+"",20)+" ");
+                    list.append(CMStrings.padRight(parms[0]+"",20)+" ");
+                    list.append("\n\r");
+                    choices.append((char)('A'+numAffBehavs));
+                    IDs.addElement(ID);
+                    numAffBehavs++;
+                }
+                mob.tell(list.toString());
+                if((showFlag!=showNumber)&&(showFlag>-999)) break;
+                String which=mob.session().choose("Select an ability/behavior ID to remove or modify, or enter 0 to Add:",choices.toString(),"");
+                if(which.length()!=1)
+                    break;
+                which=which.toUpperCase().trim();
+                Faction.FactionAbilityUsage CA=null;
+                if(!which.equalsIgnoreCase("0"))
+                {
+                    int num=(which.charAt(0)-'A');
+                    if((num<0)||(num>=IDs.size()))
+                        break;
+                    ID=(String)IDs.elementAt(num);
+                    String type=getWordAffOrBehav(ID);
+                    if(mob.session().choose("Would you like to M)odify or D)elete this "+type+" (M/d): ","MD","M").toUpperCase().startsWith("D"))
+                    {
+                        me.delAffectBehav(ID);
+                        mob.tell(CMStrings.capitalizeAndLower(type)+" deleted.");
+                        ID=null;
+                    }
+                }
+                else
+                {
+                    boolean cont=true;
+                    while((cont)&&(!mob.session().killFlag()))
+                    {
+                        cont=false;
+                        ID=mob.session().prompt("Enter a new Ability or Behavior ID or ?: ");
+                        if(ID.equalsIgnoreCase("?"))
+                        {
+                            StringBuffer vals=new StringBuffer("Valid IDs: \n\r");
+                            vals.append(CMParms.toStringList(CMClass.abilities()));
+                            mob.tell(vals.toString());
+                            cont=true;
+                        }
+                        else
+                        {
+                            if((ID.length()==0)||(me.getAffectBehav(ID)!=null))
+                            {
+                                mob.tell("(nothing done)");
+                                ID=null;
+                                break;
+                            }
+                            else
+                            {
+                                String type=getWordAffOrBehav(ID);
+                                if(type==null)
+                                {
+                                    mob.tell("'"+ID+" is neither a valid behavior ID or ability ID.  Use ? for a list.");
+                                    cont=true;
+                                }
+                                else
+                                if(!mob.session().confirm("Create a new "+type+" (y/N): ","N"))
+                                {
+                                    ID=null;
+                                    break;
+                                }
+                                else
+                                    me.addAffectBehav(ID,"","");
+                            }
+                        }
+                    }
+                }
+                if(ID!=null)
+                {
+                    String type=getWordAffOrBehav(ID);
+                    String[] oldData=me.getAffectBehav(ID);
+                    String[] newData=new String[2];
+                    boolean cont=true;
+                    while((cont)&&(!mob.session().killFlag()))
+                    {
+                        cont=false;
+                        String mask=mob.session().prompt("Enter a new Zapper Mask or ? ("+oldData[1]+")\n\r: ");
+                        if(mask.equalsIgnoreCase("?"))
+                        {
+                            mob.tell(CMLib.masking().maskHelp("\n\r","disallow"));
+                            cont=true;
+                        }
+                        else
+                        if(!mask.equals(oldData[1]))
+                            newData[1]=mask;
+                    }
+                    
+                    cont=true;
+                    while((cont)&&(!mob.session().killFlag()))
+                    {
+                        cont=false;
+                        String parms=mob.session().prompt("Enter new "+type+" parameters for "+ID+" or ? ("+oldData[0]+")\n\r: ");
+                        if(parms.equalsIgnoreCase("?"))
+                        {
+                            mob.tell(CMLib.help().getHelpText(ID,mob,true).toString());
+                            cont=true;
+                        }
+                        else
+                            if(!parms.equals(oldData[0]))
+                                newData[0]=parms;
+                    }
+                    if((newData[0]==null)&&(newData[1]!=null))
+                        newData[0]=oldData[0];
+                    else
+                    if((newData[0]!=null)&&(newData[1]==null))
+                        newData[1]=oldData[1];
+                    if((newData[0]!=null)&&(newData[1]!=null))
+                    {
+                        me.delAffectBehav(ID);
+                        me.addAffectBehav(ID,newData[0],newData[1]);
+                    }
+                }
+            }
             if(showFlag<-900){ ok=true; break;}
             if(showFlag>0){ showFlag=-1; continue;}
             showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));

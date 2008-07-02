@@ -1551,7 +1551,7 @@ public class StdMOB implements MOB
                 return false;
         }
 
-        Object[] factionML=null;
+        Faction.FactionData factionData=null;
         String factionID=null;
         for(Enumeration e=fetchFactions();e.hasMoreElements();)
         {
@@ -1561,10 +1561,10 @@ public class StdMOB implements MOB
             {
                 if(!ML.okMessage(this,msg))
                     return false;
-                factionML=(Object[])factions.get(factionID);
-                if(factionML!=null)
-                    for(int i=1;i<factionML.length;i++)
-                        if(!((MsgListener)factionML[i]).okMessage(myHost,msg))
+                factionData=(Faction.FactionData)factions.get(factionID);
+                if(factionData!=null)
+                    for(Enumeration e2=factionData.listeners();e2.hasMoreElements();)
+                        if(!((MsgListener)e2.nextElement()).okMessage(myHost,msg))
                             return false;
             }
         }
@@ -2523,7 +2523,7 @@ public class StdMOB implements MOB
 			    ML.executeMsg(this,msg);
 		}
 
-        Object[] factionML=null;
+        Faction.FactionData factionData=null;
         String factionID=null;
         for(Enumeration e=fetchFactions();e.hasMoreElements();)
         {
@@ -2532,10 +2532,10 @@ public class StdMOB implements MOB
             if(ML!=null)
             {
                 ML.executeMsg(this,msg);
-                factionML=(Object[])factions.get(factionID);
-                if(factionML!=null)
-                    for(int i=1;i<factionML.length;i++)
-                        ((MsgListener)factionML[i]).executeMsg(myHost,msg);
+                factionData=(Faction.FactionData)factions.get(factionID);
+                if(factionData!=null)
+                    for(Enumeration e2=factionData.listeners();e2.hasMoreElements();)
+                        ((MsgListener)e2.nextElement()).executeMsg(myHost,msg);
             }
         }
 	}
@@ -2780,14 +2780,31 @@ public class StdMOB implements MOB
                 if(T!=null) T.tick(ticking,tickID);
             }
             
-            Object[] factionML=null;
+            Faction.FactionData factionData=null;
+            String factionID=null;
             for(Enumeration e=fetchFactions();e.hasMoreElements();)
             {
-                factionML=(Object[])factions.get((String)e.nextElement());
+                factionID=(String)e.nextElement();
+                factionData=(Faction.FactionData)factions.get(factionID);
                 tickStatus=Tickable.STATUS_OTHER;
-                if(factionML!=null)
-                    for(int i=1;i<factionML.length;i++)
-                        ((Tickable)T).tick(ticking,tickID);
+                if(factionData!=null)
+                {
+                    if(isMonster()&&factionData.requiresUpdating())
+                    {
+                        Faction F=CMLib.factions().getFaction(factionID);
+                        if(F!=null)
+                        {
+                            Faction.FactionData newFactionData=F.makeFactionData(this);
+                            newFactionData.setValue(factionData.value());
+                            factions.put(factionID,newFactionData);
+                            factionData=newFactionData;
+                        }
+                        else
+                            removeFaction(factionID);
+                    }
+                    for(Enumeration e2=factionData.tickers();e2.hasMoreElements();)
+                        ((Tickable)e2.nextElement()).tick(ticking,tickID);
+                }
             }
             
             num=charStats().numClasses();
@@ -3539,11 +3556,11 @@ public class StdMOB implements MOB
         if(F==null) return;
         if(start>F.maximum()) start=F.maximum();
         if(start<F.minimum()) start=F.minimum();
-        Object[] parms=(Object[])factions.get(which);
-        if(parms==null)
-            parms=F.makeAffBehavs(this);
-        parms[0]=new Integer(start);
-        factions.put(which,parms);
+        Faction.FactionData data=(Faction.FactionData)factions.get(which);
+        if(data==null)
+            data=F.makeFactionData(this);
+        data.setValue(start);
+        factions.put(which,data);
     }
     public void adjustFaction(String which, int amount)
     {
@@ -3563,7 +3580,7 @@ public class StdMOB implements MOB
     {
 		which=which.toUpperCase();
         if(!factions.containsKey(which)) return Integer.MAX_VALUE;
-        return ((Integer)((Object[])factions.get(which))[0]).intValue();
+        return ((Faction.FactionData)factions.get(which)).value();
     }
     public void removeFaction(String which)
     {

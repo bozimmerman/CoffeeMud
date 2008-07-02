@@ -54,6 +54,23 @@ public class Resources
     public static boolean saveFileResource(String filename, MOB whom, StringBuffer myRsc){return inst._saveFileResource(filename,whom,myRsc);}
     public static boolean findRemoveProperty(CMFile F, String match){return inst._findRemoveProperty(F,match);}
     
+    public static String getLineMarker(StringBuffer buf)
+    {
+        for(int i=0;i<buf.length()-1;i++)
+            switch(buf.charAt(i))
+            {
+            case '\n':
+                if(buf.charAt(i+1)=='\r')
+                    return "\n\r";
+                return "\n";
+            case '\r':
+                if(buf.charAt(i+1)=='\n')
+                    return "\r\n";
+                return "\r";
+            }
+        return "\n\r";
+    }
+    
     public static Vector getFileLineVector(StringBuffer buf)
     {
         Vector V=new Vector();

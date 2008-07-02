@@ -1040,6 +1040,56 @@ public class CMParms
         return str.toString();
     }
 
+    public static String toSafeSemicolonList(Vector list)
+    {
+        return toSafeSemicolonList(list.toArray());
+    }
+    
+    public static String toSafeSemicolonList(Object[] list)
+    {
+        StringBuffer buf1=new StringBuffer("");
+        StringBuffer s=null;
+        for(int l=0;l<list.length;l++)
+        {
+            s=new StringBuffer(list[l].toString());
+            for(int i=0;i<s.length();i++)
+                switch(s.charAt(i))
+                {
+                case '\\':
+                case ';':
+                    s.insert(i,'\\');
+                    i++;
+                    break;
+                }
+            buf1.append(s.toString());
+            if(l<list.length-1)
+                buf1.append(';');
+        }
+        return buf1.toString();
+    }
+
+    public static Vector parseSafeSemicolonList(String list, boolean ignoreNulls)
+    {
+        StringBuffer buf1=new StringBuffer(list);
+        int lastDex=0;
+        Vector V=new Vector();
+        for(int l=0;l<buf1.length();l++)
+            switch(buf1.charAt(l))
+            {
+            case '\\':
+                buf1.delete(l,l+1);
+                break;
+            case ';':
+                if((!ignoreNulls)||(lastDex<l))
+                    V.addElement(buf1.substring(lastDex,l));
+                lastDex=l+1;
+                break;
+            }
+        if((!ignoreNulls)||(lastDex<buf1.length()));
+            V.addElement(buf1.substring(lastDex,buf1.length()));
+        return V;
+    }
+
     public static byte[] fromByteList(String str)
     {
         Vector V=CMParms.parseSemicolons(str,true);

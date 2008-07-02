@@ -82,13 +82,16 @@ public interface Faction extends CMCommon, MsgListener
     public String getINIDef(String tag, String delimeter);
 
     /**
-     * Returns an object array, with the first index being 1 (index 0 is reserved)
-     * of any Faction affects or behaviors appropriate to the mob due to this faction.
+     * Returns a FactionData object for the given mob to store his faction
+     * information in.  It will contain all the affects and behaviors, 
+     * and other information necessary to maintain a relationship between
+     * the given mob and this faction.
      * Any parameters should be set on the affects or behaviors before returning them.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionData
      * @param mob the mob to generate affects and behaviors for
-     * @return an Object array of the appropriate affects and behaviors
+     * @return a FactionData object with all the appropriate affects and behaviors
      */
-    public Object[] makeAffBehavs(MOB mob);
+    public FactionData makeFactionData(MOB mob);
     
     /**
      * Checks to see if the given mob has this faction.  Same as checking if
@@ -665,12 +668,12 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
      * @see com.planet_ink.coffee_mud.Behaviors.interfaces.Behavior
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#affectsBehavs()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delAffectBehav(String)
      * @param ID the Abilities or Behavior ID to add
      * @param relation the relation factor to use as a multiplier
      * @return whether the new Abilities or Behavior ID was successfully added
      */
     public boolean addAffectBehav(String ID, String parms, String gainMask);
-    
     
     /**
      * Returns a string array containing the parms at index 0, and the gainMask at 1.  
@@ -697,7 +700,7 @@ public interface Faction extends CMCommon, MsgListener
      * @return an enumeration of Faction.FactionAbilityUsage objects for this Faction
      */
     public Enumeration abilityUsages();
-
+    
     /**
      * Returns the list of faction ranges that apply based on Faction.FactionAbilityUsage 
      * usage factor that apply to the given ability.  An empty string means it does not
@@ -1090,6 +1093,58 @@ public interface Faction extends CMCommon, MsgListener
          * @return a random numeric value within this faction range
          */
         public int random();
+    }
+    
+    /**
+     * A FactionData object is stored inside other objects that keep track
+     * of their own faction.  The object stores the faction value, any
+     * event listeners or tickers, and a method to determine when it is
+     * time to refresh the object.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#makeFactionData(MOB)
+     * @author bzimmerman
+     */
+    public static interface FactionData
+    {
+        /**
+         * Returns true if this object requires updating by the parent
+         * faction for some reason.
+         * @return true if an update is necessary, false otherwise.
+         */
+        public boolean requiresUpdating();
+        
+        /**
+         * Returns the actual value that the holding object has in this faction.
+         * @return the faction value
+         */
+        public int value();
+        
+        /**
+         * Sets the actual value that the holding object has in this faction.
+         * @param newValue the faction value
+         */
+        public void setValue(int newValue);
+        
+        /**
+         * Clears and re-adds all the necessary message listeners and tickers
+         * for this object.
+         * @param listeners a vector of msglisteners
+         * @param tickers a vector of msglisteners
+         */
+        public void addListenersNTickers(Vector listeners, Vector tickers);
+        
+        /**
+         * Returns an enumeration of specific message listeners for this holder
+         * of the faction.
+         * @return an enumeration of specific message listeners
+         */
+        public Enumeration listeners();
+        
+        /**
+         * Returns an enumeration of specific ticking objects for this holder 
+         * of the faction.
+         * @return an enumeration of specific ticking objects
+         */
+        public Enumeration tickers();
     }
     
     /**

@@ -559,7 +559,10 @@ public class Shell extends StdCommand
                 mob.tell("^xError: You are not authorized to create/modify that file.^N");
                 return false;
             }
-            Vector vbuf=Resources.getFileLineVector(file.textUnformatted());
+            StringBuffer buf=file.textUnformatted();
+            String CR=Resources.getLineMarker(buf);
+            Vector vbuf=Resources.getFileLineVector(buf);
+            buf=null;
             mob.tell(desc(file)+" has been loaded.\n\r\n\r");
             final String help=
                 "^HCoffeeMud Message Maker Options:^N\n\r"+
@@ -594,7 +597,7 @@ public class Shell extends StdCommand
                         {
                             StringBuffer text=new StringBuffer("");
                             for(int i=0;i<vbuf.size();i++)
-                                text.append(((String)vbuf.elementAt(i))+"\n");
+                                text.append(((String)vbuf.elementAt(i))+CR);
                             if(file.saveText(text))
                                 mob.tell("File saved.");
                             else

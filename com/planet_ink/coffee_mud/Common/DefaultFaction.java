@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
+import com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionData;
 import com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionRange;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -41,30 +42,31 @@ public class DefaultFaction implements Faction, MsgListener
     public void initializeClass(){}
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-	public String ID="";
-    public String name="";
-    public String choiceIntro="";
-    public int minimum=Integer.MIN_VALUE;
-    public int middle=0;
-    public int difference;
-    public int maximum=Integer.MAX_VALUE;
-    public int highest=Integer.MAX_VALUE;
-    public int lowest=Integer.MIN_VALUE;
-    public String experienceFlag="";
-    public boolean showInScore=false;
-    public boolean showInSpecialReported=false;
-    public boolean showInEditor=false;
-    public boolean showInFactionsCommand=true;
-    public Hashtable ranges=new Hashtable();
-    public Hashtable affBehavs=new Hashtable();
-    public Vector defaults=new Vector();
-    public Vector autoDefaults=new Vector();
-    public double rateModifier=1.0;
-    public Hashtable changes=new Hashtable();
-    public Vector factors=new Vector();
-    public Hashtable relations=new Hashtable();
-    public Vector abilityUsages=new Vector();
-    public Vector choices=new Vector();
+	protected String ID="";
+	protected String name="";
+	protected String choiceIntro="";
+	protected long[] lastAffectBehaviorChange=new long[1];
+	protected int minimum=Integer.MIN_VALUE;
+	protected int middle=0;
+	protected int difference;
+	protected int maximum=Integer.MAX_VALUE;
+	protected int highest=Integer.MAX_VALUE;
+	protected int lowest=Integer.MIN_VALUE;
+	protected String experienceFlag="";
+	protected boolean showInScore=false;
+	protected boolean showInSpecialReported=false;
+	protected boolean showInEditor=false;
+	protected boolean showInFactionsCommand=true;
+	protected Hashtable ranges=new Hashtable();
+	protected Hashtable affBehavs=new Hashtable();
+	protected Vector defaults=new Vector();
+	protected Vector autoDefaults=new Vector();
+	protected double rateModifier=1.0;
+    protected Hashtable changes=new Hashtable();
+    protected Vector factors=new Vector();
+    protected Hashtable relations=new Hashtable();
+    protected Vector abilityUsages=new Vector();
+    protected Vector choices=new Vector();
 
     public String factionID(){return ID;}
     public String name(){return name;}
@@ -326,7 +328,7 @@ public class DefaultFaction implements Faction, MsgListener
             for(Enumeration e=affBehavs.keys();e.hasMoreElements();)
             {
                 String ID=(String)e.nextElement();
-                String[] data=(String[])relations.get(ID);
+                String[] data=(String[])affBehavs.get(ID);
                 if(i==numCall)
                     return ID+";"+CMParms.toSafeSemicolonList(data);
                 i++;
@@ -357,10 +359,10 @@ public class DefaultFaction implements Faction, MsgListener
         return rawTagName+"="+getTagValue(tag)+delimeter;
     }
     
-    public Object[] makeAffBehavs(MOB mob)
+    public FactionData makeFactionData(MOB mob)
     {
+        FactionData data=new DefaultFactionData(lastAffectBehaviorChange);
         Vector V=new Vector();
-        V.addElement(new Integer(0));
         String ID=null;
         String[] stuff=null;
         if(mob.isMonster())
@@ -380,28 +382,35 @@ public class DefaultFaction implements Faction, MsgListener
                 {
                     Ability A=CMClass.getAbility(ID);
                     A.setMiscText(stuff[0]);
+                    A.setAffectedOne(mob);
                     V.addElement(A);
                 }
             }
         }
-        return V.toArray();
+        data.addListenersNTickers(V,V);
+        return data;
     }
     
     public Enumeration affectsBehavs(){return  ((Hashtable)affBehavs.clone()).keys();}
 
-    public boolean delAffectBehav(String ID) { return affBehavs.remove(ID.toUpperCase().trim())!=null; }
+    public boolean delAffectBehav(String ID) {
+        boolean b=affBehavs.remove(ID.toUpperCase().trim())!=null;
+        if(b) lastAffectBehaviorChange[0]=System.currentTimeMillis();
+        return b;
+    }
     
     public boolean addAffectBehav(String ID, String parms, String gainMask) {
         if(affBehavs.containsKey(ID.toUpperCase().trim())) return false;
         if((CMClass.getBehavior(ID)==null)&&(CMClass.getAbility(ID)==null))
             return false;
         affBehavs.put(ID.toUpperCase().trim(),new String[]{parms,gainMask});
+        lastAffectBehaviorChange[0]=System.currentTimeMillis();
         return true;
     }
     
     public String[] getAffectBehav(String ID) {
         if(affBehavs.containsKey(ID.toUpperCase().trim()))
-            return (String[])affBehavs.get(ID.toUpperCase().trim());
+            return CMParms.toStringArray(CMParms.makeVector((String[])affBehavs.get(ID.toUpperCase().trim())));
         return null;
     }
     
@@ -1112,6 +1121,34 @@ public class DefaultFaction implements Faction, MsgListener
         return usage;
     }
     public boolean delAbilityUsage(Faction.FactionAbilityUsage usage){return abilityUsages.remove(usage);}
+    
+    public static class DefaultFactionData implements FactionData
+    {
+        private boolean noListeners=false;
+        private boolean noTickers=false;
+        private static Enumeration empty=new Vector().elements();
+        public DefaultFactionData(long[] factionLastUpdated) {
+            this.factionLastUpdated=factionLastUpdated;
+        }
+        public long lastUpdated=System.currentTimeMillis();
+        public long[] factionLastUpdated=new long[0];
+        public Vector listeners=new Vector();
+        public Vector tickers=listeners;
+        public int value=0;
+        
+        public int value() { return value;}
+        public void setValue(int newValue){ this.value=newValue;}
+        public Enumeration listeners() { return noListeners?empty:((Vector)listeners.clone()).elements(); }
+        public Enumeration tickers() { return noTickers?empty:((Vector)tickers.clone()).elements(); }
+        public void addListenersNTickers(Vector listeners, Vector tickers) {
+            this.listeners=listeners;
+            this.tickers=tickers;
+            noListeners=listeners.size()==0;
+            noTickers=tickers.size()==0;
+        }
+        public boolean requiresUpdating() { return factionLastUpdated[0] > lastUpdated; }
+    }
+    
     
     public static class DefaultFactionAbilityUsage implements Faction.FactionAbilityUsage
     {
