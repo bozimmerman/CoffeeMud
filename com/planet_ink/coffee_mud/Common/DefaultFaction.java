@@ -538,16 +538,17 @@ public class DefaultFaction implements Faction, MsgListener
 		&&(msg.tool() instanceof MOB)
 		&&(myHost instanceof MOB))
         {
+            MOB killedM=msg.source();
             FactionChangeEvent eventC=getChangeEvent("MURDER");
-            if(eventC!=null)
+            if((eventC!=null)&&eventC.applies(msg.source()))
             {
-                CharClass combatCharClass=CMLib.combat().getCombatDominantClass((MOB)msg.tool(),msg.source());
-                HashSet combatBeneficiaries=CMLib.combat().getCombatBeneficiaries((MOB)msg.tool(),msg.source(),combatCharClass);
+                MOB killingBlowM=(MOB)msg.tool();
+                CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
+                HashSet combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
                 if(combatBeneficiaries.contains(myHost))
                 {
-                    MOB killer=(MOB)myHost;
-                    if(eventC.applies(msg.source()))
-                        executeChange(killer,msg.source(),eventC);
+                    MOB killerM=(MOB)myHost;
+                    executeChange(killerM,killedM,eventC);
                 }
             }
         }
