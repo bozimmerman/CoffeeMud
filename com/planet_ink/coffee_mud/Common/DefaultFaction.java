@@ -618,24 +618,28 @@ public class DefaultFaction implements Faction, MsgListener
 		&&(myHost instanceof MOB))
         {
             MOB killedM=msg.source();
-            FactionChangeEvent eventC=getChangeEvent("MURDER");
-            if((eventC!=null)&&eventC.applies(msg.source()))
+            final String[] murders={"MURDER","MURDER2","MURDER3","MURDER4","MURDER5"};
+            for(int m=0;m<murders.length;m++)
             {
-                MOB killingBlowM=(MOB)msg.tool();
-                CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
-                HashSet combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
-                if(combatBeneficiaries.contains(myHost))
+                FactionChangeEvent eventC=getChangeEvent(murders[m]);
+                if((eventC!=null)&&eventC.applies(killedM))
                 {
-                    MOB killerM=(MOB)myHost;
-                    executeChange(killerM,killedM,eventC);
-                }
-                if(myHost==msg.source())
-                    for(Iterator i=combatBeneficiaries.iterator();i.hasNext();)
+                    MOB killingBlowM=(MOB)msg.tool();
+                    CharClass combatCharClass=CMLib.combat().getCombatDominantClass(killingBlowM,killedM);
+                    HashSet combatBeneficiaries=CMLib.combat().getCombatBeneficiaries(killingBlowM,killedM,combatCharClass);
+                    if(combatBeneficiaries.contains(myHost))
                     {
-                        MOB killerM=(MOB)i.next();
-                        if(!hasFaction(killerM))
-                            executeChange(killerM,killedM,eventC);
+                        MOB killerM=(MOB)myHost;
+                        executeChange(killerM,killedM,eventC);
                     }
+                    if(myHost==msg.source())
+                        for(Iterator i=combatBeneficiaries.iterator();i.hasNext();)
+                        {
+                            MOB killerM=(MOB)i.next();
+                            if(!hasFaction(killerM))
+                                executeChange(killerM,killedM,eventC);
+                        }
+                }
             }
         }
 
@@ -924,36 +928,9 @@ public class DefaultFaction implements Faction, MsgListener
         public void setFactor(double newVal){factor=newVal;}
         public void setZapper(String newVal){zapper=newVal;}
 
-        public static final int FACTION_UP = 0;
-        public static final int FACTION_DOWN = 1;
-        public static final int FACTION_OPPOSITE = 2;
-        public static final int FACTION_MINIMUM = 3;
-        public static final int FACTION_MAXIMUM = 4;
-        public static final int FACTION_REMOVE = 5;
-        public static final int FACTION_ADD = 6;
-        public static final int FACTION_AWAY = 7;
-        public static final int FACTION_TOWARD= 8;
-        public static final String[] FACTION_DIRECTIONS={
-            "UP",
-            "DOWN",
-            "OPPOSITE",
-            "MINIMUM",
-            "MAXIMUM",
-            "REMOVE",
-            "ADD",
-            "AWAY",
-            "TOWARD"
-        };
-        public static final String[] VALID_FLAGS={
-            "OUTSIDER","SELFOK","JUST100"
-        };
-        public static final String[] MISC_TRIGGERS={
-            "MURDER","TIME","ADDOUTSIDER"
-        };
-        
         public String toString()
         {
-            return ID+";"+FACTION_DIRECTIONS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+zapper;
+            return ID+";"+CHANGE_DIRECTION_DESCS[direction]+";"+((int)Math.round(factor*100.0))+"%;"+flagCache+";"+zapper;
         }
 
         public DefaultFactionChangeEvent(){}
@@ -999,39 +976,39 @@ public class DefaultFaction implements Faction, MsgListener
         public boolean setDirection(String d)
         {
             if(d.startsWith("U")) {
-                direction = FACTION_UP;
+                direction = CHANGE_DIRECTION_UP;
             }
             else
             if(d.startsWith("D")) {
-                direction = FACTION_DOWN;
+                direction = CHANGE_DIRECTION_DOWN;
             }
             else
             if(d.startsWith("OPP")) {
-                direction = FACTION_OPPOSITE;
+                direction = CHANGE_DIRECTION_OPPOSITE;
             }
             else
             if(d.startsWith("REM")) {
-                direction = FACTION_REMOVE;
+                direction = CHANGE_DIRECTION_REMOVE;
             }
             else
             if(d.startsWith("MIN")) {
-                direction = FACTION_MINIMUM;
+                direction = CHANGE_DIRECTION_MINIMUM;
             }
             else
             if(d.startsWith("MAX")) {
-                direction = FACTION_MAXIMUM;
+                direction = CHANGE_DIRECTION_MAXIMUM;
             }
             else
             if(d.startsWith("ADD")) {
-                direction = FACTION_ADD;
+                direction = CHANGE_DIRECTION_ADD;
             }
             else
             if(d.startsWith("TOW")) {
-                direction = FACTION_TOWARD;
+                direction = CHANGE_DIRECTION_TOWARD;
             }
             else
             if(d.startsWith("AWA")) {
-                direction = FACTION_AWAY;
+                direction = CHANGE_DIRECTION_AWAY;
             }
             else
                 return false;
