@@ -66,6 +66,46 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         return s;
     }
     
+    
+    public String startWithAorAn(String str)
+    {
+        if((str==null)||(str.length()==0)) return str;
+        if((!str.toUpperCase().startsWith("A "))
+        &&(!str.toUpperCase().startsWith("AN "))
+        &&(!str.toUpperCase().startsWith("THE "))
+        &&(!str.toUpperCase().startsWith("SOME ")))
+        {
+            if("aeiouAEIOU".indexOf(str.charAt(0))>=0) 
+                return "an "+str;
+            return "a "+str;
+        }
+        return str;
+    }
+    
+    
+    public String insertUnColoredAdjective(String str, String adjective)
+    {
+        if(str.length()==0) 
+            return str;
+        str=CMStrings.removeColors(str.trim());
+        if((str.toUpperCase().startsWith("A "))
+        ||(str.toUpperCase().startsWith("AN ")))
+        {
+            if("aeiouAEIOU".indexOf(adjective.charAt(0))>=0) 
+                return "an "+adjective+" "+str.substring(2).trim();
+            return "a "+adjective+" "+str.substring(2).trim();
+        }
+        if((!str.toUpperCase().startsWith("THE "))
+        &&(!str.toUpperCase().startsWith("SOME ")))
+        {
+            if("aeiouAEIOU".indexOf(adjective.charAt(0))>=0) 
+                return "an "+adjective+" "+str.trim();
+            return "a "+adjective+" "+str.trim();
+        }
+        int x=str.indexOf(' ');
+        return str.substring(0,x)+" "+adjective+" "+str.substring(x+1);
+    }
+    
 	public Object findCommand(MOB mob, Vector commands)
 	{
 		if((mob==null)

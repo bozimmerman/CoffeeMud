@@ -291,7 +291,7 @@ public class LockSmith extends CraftingSkill
                 return false;
     		CMLib.materials().destroyResources(mob.location(),woodRequired,data[0][FOUND_CODE],0,null);
             itemName=(RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]+" key").toLowerCase();
-            itemName=CMStrings.startWithAorAn(itemName);
+            itemName=CMLib.english().startWithAorAn(itemName);
             makeResource=data[0][FOUND_CODE];
         }
 		building=getBuilding(workingOn);

@@ -1,282 +1,365 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
-  <head>
-    <meta name="generator" content="HTML Tidy, see www.w3.org" />
+<head>
 
-    <title>MUDChat Tutorial</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-    <!-- Modified by Josh Mueller, 2006-5-5, add index, and fix spelling errors -->
-  </head>
+    
+  <meta name="generator" content="HTML Tidy, see www.w3.org" />
+
+
+    
+    
+  <title>MUDChat Tutorial</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    
+  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
+<!-- Modified by Josh Mueller, 2006-5-5, add index, and fix spelling errors -->
+</head>
+
+
 
   <body>
-    <center>
-      <table border="1" cellpadding="10" cellspacing="0" width="90%">
+
+    
+<center>
+      
+<table border="1" cellpadding="10" cellspacing="0" width="90%">
+
         <tbody>
-          <tr>
-            <td colspan="2" align="left" bgcolor="#dfdfdf" width="100%">
-              <h1>The Ways of the Power of MUDChat</h1>
-            </td>
-          </tr>
 
           <tr>
+
+            <td colspan="2" align="left" bgcolor="#dfdfdf" width="100%">
+              
+      <h1>The Ways of the Power of MUDChat</h1>
+
+            </td>
+
+          </tr>
+
+
+          <tr>
+
             <td align="left" valign="top" width="20%">
-              <ul>
+              
+      <ul>
+
                 <li>
                   <a href="#basics">Basic Chat.Dat Information</a> 
 
-                  <ul>
+                  
+          <ul>
+
                     <li><a href="#groups">ChatGroups</a></li>
-                  </ul>
+
+                  
+          </ul>
+
                 </li>
+
 
                 <li>
                   <a href="#apply">Applying MUDChat Behaviors</a> 
 
-                  <ul>
+                  
+          <ul>
+
                     <li><a href="#grinder">Grinder Method</a></li>
 
+
                     <li><a href="#mob">Create/Modify MOB Method</a></li>
-                  </ul>
+
+                  
+          </ul>
+
                 </li>
+
 
                 <li><a href="#power">Some MUDChat Power Tricks</a></li>
-              </ul>
+
+              
+      </ul>
+
             </td>
 
+
             <td align="left" valign="top">
-              <p>The purpose of this document is to understand the MUDChat behavior and the richness it can add to a world. No programming is
+              
+      <p>The purpose of this document is to understand the MUDChat behavior and the richness it can add to a world. No programming is
               needed.</p>
 
-              <h2><a name="basics" id="basics">Basic Chat.Dat Information</a></h2>
 
-              <p>If you've ever popped open the resources/chat.dat file and tried to read the instructions, you'll be familiar with this:</p>
-<pre>
-#There are several "operators" available:
-# pattern matching: Which work only in ( string | string &amp; (str ~ str))
-# | or
-# &amp; and
-# ~ and-not
-# special pattern matching:
-# ^ match start This anchors the match to the beginning of the
-# input string.
-# = exact match This must match the input string entirely.
-# pass 1 scan operators:
-# ( beginning of a 'say' expression
-# [ beginning of a non-say expression targeted
-# { beginning of a non-say expression not targeted
-# * combat expression, must preceed (, [, or {
-# # remark
-# " output to stderr
-# ' output to stdout
-# &gt; start of named database, there can be more than one name
-# to a database '&gt; dragon red_dragon' The _ here is treated
-# as a space in the name.
-# % include another file inline Ex: %talk.data
-# @ adds a continue jump to link to the database. Ex: @dog
-# will make a continue link to the dog database. Use @default
-# to link to the default database. Only 1 @ per database.
-# @ cannot do forward links!!!
-# @ is more memory efficient than % but less flexible.
-# You must avoid circularities with @.
-# response operators:
-# 1-9 weights are the numerals. First column only. Mandatory.
-# " Issue response as "say". Muds and 2nd column only. Optional.
-# : Issue response as "emote". Muds and 2nd column only. Optional.
-# ! Issue response as command. Muds and 2nd column only. Optional.
-# Note, you do not need a space after an :,", or !
-#
-# $? Are variables where ? is a case sensitive letter.
-# $r is rest of sentence, $n is its name, $t is target's name.
-# They may appear anywhere in the response, multiple times.
-#
-#Some special notes:
-# #,',",weights, and the first (,[,or { must be in column one.
-#
-#Syntax of a simple pattern match:
-#
-#( A | B &amp; C ~ ( D | E | F)) 'say command targeted at the mob
-#[ A | B &amp; C ~ ( D | E | F)] 'another action targeted at the mob
-#{ A | B &amp; C ~ ( D | E | F)} 'another action not targeted at mob
-#
-#The above would mean if A or B and C and-not D or E or F was in the
-#sentence then pick one of the responses.
-#
-#The responses take on the form:
-#
-#9this is most likely
-#4somewhat likely
-#1least likely
-#
-#Responses or pattern match strings may not span more than one line.
-#The guaranteed line length is a magic 80 characters (letters) wide.
-#
-#Please note the system will return the first match found. So
-#please put more ambiguous matches last!!
-#
-</pre>
+              
+      <h2><a name="basics" id="basics">Basic Chat.Dat Information</a></h2>
 
-              <p>Helpful and clear, eh? Here's a better breakdown.</p>
 
-              <p>The chat.dat file is basically a giant text file that is used for pattern-matching, with a couple of extra features. What this
-              means is that you enter 'trigger' text and when the MOB hears someone say it, they'll respond with whatever you set for them to
-              say. An example is warranted:</p>
+              
+      <p>If you've ever popped open the resources/chat.dat file and tried to read the instructions, you'll be familiar with this:</p>
 
-              <p>Bo decides he wants MOBs to praise CoffeeMud in a couple ways when it's mentioned. He opens up his chat.dat file. He would
+      <pre>#There are several "operators" available:<br /># pattern matching: Which work only in ( string | string &amp; (str ~ str))<br /># | or<br /># &amp; and<br /># ~ and-not<br /># special pattern matching:<br /># ^ match start This anchors the match to the beginning of the<br /># input string.<br /># = exact match This must match the input string entirely.<br /># / beginning and end of a coffeemud specific zappermask<br /># pass 1 scan operators:<br /># ( beginning of a 'say' expression<br /># [ beginning of a non-say expression targeted<br /># { beginning of a non-say expression not targeted<br /># * combat expression, must preceed (, [, or {<br /># # remark<br /># " output to stderr<br /># ' output to stdout<br /># &gt; start of named database, there can be more than one name<br /># to a database '&gt; dragon red_dragon' The _ here is treated<br /># as a space in the name.   You may also use the / operator.<br /># % include another file inline Ex: %talk.data<br /># @ adds a continue jump to link to the database. Ex: @dog<br /># will make a continue link to the dog database. Use @default<br /># to link to the default database. Only 1 @ per database.<br /># @ cannot do forward links!!!<br /># @ is more memory efficient than % but less flexible.<br /># You must avoid circularities with @.<br /># response operators:<br /># 1-9 weights are the numerals. First column only. Mandatory.<br /># " Issue response as "say". Muds and 2nd column only. Optional.<br /># : Issue response as "emote". Muds and 2nd column only. Optional.<br /># ! Issue response as command. Muds and 2nd column only. Optional.<br /># Note, you do not need a space after an :,", or !<br />#<br /># $? Are variables where ? is a case sensitive letter.<br /># $r is rest of sentence, $n is its name, $t is target's name.<br /># They may appear anywhere in the response, multiple times.<br />#<br />#Some special notes:<br /># #,',",weights, and the first (,[,or { must be in column one.<br />#<br />#Syntax of a simple pattern match:<br />#<br />#( A | B &amp; C ~ ( D | E | F)) 'say command targeted at the mob<br />#[ A | B &amp; C ~ ( D | E | F)] 'another action targeted at the mob<br />#{ A | B &amp; C ~ ( D | E | F)} 'another action not targeted at mob<br />#<br />#The above would mean if A or B and C and-not D or E or F was in the<br />#sentence then pick one of the responses.<br />#<br />#The responses take on the form:<br />#<br />#9this is most likely<br />#4somewhat likely<br />#1least likely<br />#<br />#Responses or pattern match strings may not span more than one line.<br />#The guaranteed line length is a magic 80 characters (letters) wide.<br />#<br />#Please note the system will return the first match found. So<br />#please put more ambiguous matches last!!<br />#<br /></pre>
+
+
+              
+      <p>Helpful and clear, eh? Here's a better breakdown.</p>
+
+
+              
+      <p>The chat.dat file is basically a giant text file that is used
+for pattern-matching, with a couple of extra features. What this means
+is that you enter 'trigger' text and when the MOB hears someone say it,
+they'll respond with whatever you set for them to say. An example is
+warranted:</p>
+
+
+              
+      <p>Bo decides he wants MOBs to praise CoffeeMud in a couple ways when it's mentioned. He opens up his chat.dat file. He would
               enter this:</p>
-<pre>
-(coffeemud)
-9I've heard of CoffeeMud. Isn't that that slick Java MUD codebase?
-6CoffeeMud? What the heck is that?
-2:smiles warmly.
-</pre>
 
-              <p>There's a few different things to understand there. Let's break it down by lines:</p>
+      <pre>(coffeemud)<br />9I've heard of CoffeeMud. Isn't that that slick Java MUD codebase?<br />6CoffeeMud? What the heck is that?<br />2:smiles warmly.<br /></pre>
 
-              <ul>
+
+              
+      <p>There's a few different things to understand there. Let's break it down by lines:</p>
+
+
+              
+      <ul>
+
                 <li>
-                  <p>(coffeemud)- This is the trigger text. Anyone saying "Hey - how do you feel about CoffeeMud?", "whats coffeemud", or
+                  
+          <p>(coffeemud)- This is the trigger text. Anyone saying "Hey - how do you feel about CoffeeMud?", "whats coffeemud", or
                   anything else with (case insensitive) 'coffeemud' in it will trigger the following response lines.</p>
+
                 </li>
 
+
                 <li>
-                  <p>9I've heard of... 2:smiles warmly.- These are the possible responses. This is where things get a little trickier. The
+                  
+          <p>9I've heard of... 2:smiles warmly.- These are the possible responses. This is where things get a little trickier. The
                   system is looking for what's in the first two columns:</p>
 
-                  <p>The first column <b>must</b> be a number (the weight), from 1-9. It's not exactly a percentage type thing, but just
-                  understand that 9 means it's really likely and 1 means highly unlikely. You can have as many possible responses as you'd like
-                  at whatever weight you'd like.</p>
 
-                  <p>The second column <b>optionally</b> can be either ':' or '!'. If it's neither, the MOB will simply say the line. If it's
-                  ':', then the MOB will emote the line. If it's '!', the MOB will treat the line as a command. (Don't worry, examples of those
-                  are included as well.) The other thing to note here is that you don't need a space after either the 1st or 2nd columns.</p>
+                  
+          <p>The first column <b>must</b> be a number (the weight),
+from 1-9. It's not exactly a percentage type thing, but just understand
+that 9 means it's really likely and 1 means highly unlikely. You can
+have as many possible responses as you'd like at whatever weight you'd
+like.</p>
 
-                  <p>So, bearing that in mind, it's most likely the MOB, upon hearing 'coffeemud', will say 'I've heard of CoffeeMud. Isn't
-                  that that slick Java MUD codebase?', may say 'CoffeeMud? What the heck is that?', or (least likely, it will emote 'smiles
-                  warmly').</p>
+
+                  
+          <p>The second column <b>optionally</b> can be either ':' or
+'!'. If it's neither, the MOB will simply say the line. If it's ':',
+then the MOB will emote the line. If it's '!', the MOB will treat the
+line as a command. (Don't worry, examples of those are included as
+well.) The other thing to note here is that you don't need a space
+after either the 1st or 2nd columns.</p>
+
+
+                  
+          <p>So, bearing that in mind, it's most likely the MOB, upon
+hearing 'coffeemud', will say 'I've heard of CoffeeMud. Isn't that that
+slick Java MUD codebase?', may say 'CoffeeMud? What the heck is that?',
+or (least likely, it will emote 'smiles warmly').</p>
+
                 </li>
-              </ul>
 
-              <p>So, with those basics of responses clear, you can do some fancier things pattern matching that just one word patterns. There
+              
+      </ul>
+
+
+              
+      <p>So, with those basics of responses clear, you can do some fancier things pattern matching that just one word patterns. There
               are and, or, and and-not characters you can use in the pattern matching.</p>
 
-              <ul>
+
+              
+      <ul>
+
                 <li>&amp; - This is the obvious and character. So (java&amp;mud) would trigger on anyone saying both 'java' and 'mud' in the
                 same sentence.</li>
 
+
                 <li>| - This is the or character. So (hello|hi) would trigger on anyone saying either 'hello' or 'hi'</li>
+
 
                 <li>~ - This is the and-not character. So, "c1"&gt;(kill~yourself) would trigger on anyone saying 'kill' but would if anyone
                 said 'kill him yourself' etc..</li>
-              </ul>
+        <li>/ - This is the zapper mask character, so
+(coffeemud&amp;/-GENDER +FEMALE/) would trigger only if a female says
+coffeemud. &nbsp;See help on ZAPPERMASK for more information.</li>
 
-              <p>Note: You can also use all of the &lt;S-HIS-HER&gt; type codes that Bo setup. (See Programming Guide)</p>
+              
+      </ul>
 
-              <h3><a name="groups">ChatGroups</a></h3>
 
-              <p>There's some very unhelpful sentences in there about databases. This is a better explanation.</p>
+              
+      <p>Note: You can also use all of the &lt;S-HIS-HER&gt; type codes that Bo setup. (See Programming Guide)</p>
 
-              <p>There are several ChatGroups defined in the distribution copy of chat.dat. Some are pretty clear. Here's one (shortened a
+
+              
+      <h3><a name="groups">ChatGroups</a></h3>
+
+
+              
+      <p>There's some very unhelpful sentences in there about databases. This is a better explanation.</p>
+
+
+              
+      <p>There are several ChatGroups defined in the distribution copy of chat.dat. Some are pretty clear. Here's one (shortened a
               bit):</p>
-<pre>
-############################################################
-&gt;healer cleric doctor
 
-(hi|hello)
-9hello $t, how may I help you?
-2I could heal you.
+      <pre>############################################################<br />&gt;healer cleric doctor<br /><br />(hi|hello)<br />9hello $t, how may I help you?<br />2I could heal you.<br /><br />(help &amp; (healer|cleric|doctor) | hurt | pain | sick)<br />7:prays for you<br />2Please undress, so I can see your injuries.<br />5You look great.<br /><br />(job|career)<br />7I cure the pitiful<br />1I am a healer<br /><br />@default<br /></pre>
 
-(help &amp; (healer|cleric|doctor) | hurt | pain | sick)
-7:prays for you
-2Please undress, so I can see your injuries.
-5You look great.
 
-(job|career)
-7I cure the pitiful
-1I am a healer
+              
+      <p>You'll find this pretty much at the end of the file. What this
+means, is the ChatGroup is named "healer", "cleric", and "doctor" (the
+line of #'s is just remark characters, marking it up a bit for
+readability - it's the '&gt;' that marks a ChatGroup). So, any MOB set
+to the ChatGroups 'healer', 'cleric', or 'doctor' will respond with
+these patterns. &nbsp;&nbsp;</p>
+      <p>Another trick you can use to narrow matches on a ChatGroup
+with the &gt; command is to include a CoffeeMud Zapper Mask. In that
+case the zapper masks would be included in your set of matching words
+by surrounding it with '/' characters like so:&nbsp;<br />
+      </p>
+      <pre>&gt;healer cleric doctor /-GENDER +female/<br /></pre>
+      <p>Adding the mask at the end will give the additional
+requirement that the healer be a female before the chat group is
+matched. &nbsp;Check the Archon help files on ZAPPERMASK for more
+information on the kinds of values you can put in there.<br />
+      </p>
+      <p>At the bottom of our original ChatGroup is a linking
+character, @, pointing to default. That means that this group will
+respond with the pattern you see here first, and if nothing matches,
+will then go on to check in the default for matches.</p>
 
-@default
-</pre>
 
-              <p>You'll find this pretty much at the end of the file. What this means, is the ChatGroup is named "healer", "cleric", and
-              "doctor" (the line of #'s is just remark characters, marking it up a bit for readability - it's the '&gt;' that marks a
-              ChatGroup). So, any MOB set to the ChatGroups 'healer', 'cleric', or 'doctor' will respond with these patterns. Also, at the
-              bottom of this ChatGroup is a linking character, @, pointing to default. So, this group will respond with these patterns first,
-              and if nothing matches, will then go on to check in the default for matches.</p>
-
-              <blockquote>
-                <p>The default ChatGroup is simply any patterns entered BEFORE any other ChatGroups are defined, hence why all the ChatGroups
+              
+      <blockquote>
+                
+        <p>The default ChatGroup is simply any patterns entered BEFORE any other ChatGroups are defined, hence why all the ChatGroups
                 are, and should be, towards the bottom.</p>
+
               </blockquote>
 
-              <p>There are some caveats to using @. You can only link to groups that were defined before the link. So, if you wanted a
-              ChatGroup called 'clericforhire' that included some of its own patterns, plus the 'cleric' patterns, you would need to create
-              &gt;clericforhire in the file AFTER &gt;healer cleric doctor, and put @cleric at the bottom of &gt;clericforhire. (More tricks
-              with ChatGroups are in the Power Tricks section).</p>
 
-              <blockquote>
-                <p class="bold">Important Note: The files are loaded as part of the startup process - changes made to chat.dat while the MUD is
-                running are not applied until the next startup, or until the UNLOAD command is used against the chat RESOURCES (LIST RESOURCES
-                command)</p>
+              
+      <p>There are some caveats to using @. You can only link to groups
+that were defined before the link. So, if you wanted a ChatGroup called
+'clericforhire' that included some of its own patterns, plus the
+'cleric' patterns, you would need to create &gt;clericforhire in the
+file AFTER &gt;healer cleric doctor, and put @cleric at the bottom of
+&gt;clericforhire. (More tricks with ChatGroups are in the Power Tricks
+section).</p>
+
+
+              
+      <blockquote>
+                
+        <p class="bold">Important Note: The files are loaded as part of
+the startup process - changes made to chat.dat while the MUD is running
+are not applied until the next startup, or until the UNLOAD command is
+used against the chat RESOURCES (LIST RESOURCES command)</p>
+
               </blockquote>
 
-              <h2><a name="apply" id="apply">Applying MUDChat Behaviors</a></h2>
 
-              <p>Applying the MUDChat Behavior to MOBs is super easy, and setting the MOB to use a particular ChatGroup is straight-forward as
+              
+      <h2><a name="apply" id="apply">Applying MUDChat Behaviors</a></h2>
+
+
+              
+      <p>Applying the MUDChat Behavior to MOBs is super easy, and setting the MOB to use a particular ChatGroup is straight-forward as
               well.</p>
 
-              <h3><a name="grinder">Grinder Method</a></h3>
 
-              <p>Edit/Create a MOB as usual. In the Behavior list, put MUDChat. If you leave the options box empty, the MOB will only use
-              patterns in the @default ChatGroup. If you want to specify which ChatGroup, type its name in the options box. So, if you were
-              setting up a cleric, you would put 'cleric' in the options text.</p>
+              
+      <h3><a name="grinder">Grinder Method</a></h3>
 
-              <h3><a name="mob">Create/Modify MOB Method</a></h3>
 
-              <p>Edit/Create a MOB as usual. In the Behavior list, add MUDChat. It will ask you for any parameters. If you specifiy no
-              parameters, the MOB will only use patterns in the @default ChatGroup. If you want to specify which ChatGroup, type its name
-              in.</p>
+              
+      <p>Edit/Create a MOB as usual. In the Behavior list, put MUDChat.
+If you leave the options box empty, the MOB will only use patterns in
+the @default ChatGroup. If you want to specify which ChatGroup, type
+its name in the options box. So, if you were setting up a cleric, you
+would put 'cleric' in the options text.</p>
 
-              <h2><a name="power" id="power">Some MUDChat Power Tricks</a></h2>
 
-              <p>This is the original email posting about a clever use of the % feature (includes another file in-line):</p>
+              
+      <h3><a name="mob">Create/Modify MOB Method</a></h3>
 
-              <blockquote>
-                <p>We have a city called Yares. In this city are various mobs - guards, shopkeepers, commoners, bankers, etc.. We setup groups
-                in the chat.dat called guard, shopkeeper, banker, commoner, etc... Gave them each appropriate patterns and responses for their
-                type.</p>
 
-                <p>Then, we setup two more .DAT files, Yares and World. In Yares, we put a bunch of patterns in relevant to getting around in
+              
+      <p>Edit/Create a MOB as usual. In the Behavior list, add MUDChat.
+It will ask you for any parameters. If you specifiy no parameters, the
+MOB will only use patterns in the @default ChatGroup. If you want to
+specify which ChatGroup, type its name in.</p>
+
+
+              
+      <h2><a name="power" id="power">Some MUDChat Power Tricks</a></h2>
+
+
+              
+      <p>This is the original email posting about a clever use of the % feature (includes another file in-line):</p>
+
+
+              
+      <blockquote>
+                
+        <p>We have a city called Yares. In this city are various mobs -
+guards, shopkeepers, commoners, bankers, etc.. We setup groups in the
+chat.dat called guard, shopkeeper, banker, commoner, etc... Gave them
+each appropriate patterns and responses for their type.</p>
+
+
+                
+        <p>Then, we setup two more .DAT files, Yares and World. In Yares, we put a bunch of patterns in relevant to getting around in
                 the city (like 'weapons'<br />
-                 or 'inn' - both trigger directions to relevant shops). In World, we put more global geography (IE, 'avalon' gets 'avalon is
-                west of yares').</p>
+or 'inn' - both trigger directions to relevant shops). In World, we put
+more global geography (IE, 'avalon' gets 'avalon is west of yares').</p>
 
-                <p>Now, back in Chat.dat, we created more groups, called YaresGuard, YaresShopkeeper, etc... The only lines that went into each
+
+                
+        <p>Now, back in Chat.dat, we created more groups, called YaresGuard, YaresShopkeeper, etc... The only lines that went into each
                 were:</p>
-<pre>
-    %Yares.dat
-    %World.dat
-    @guard (or @banker or @default or whatever)
-</pre>
 
-                <p>%filename includes the filename's contents in-line (as if it were typed in)</p>
+        <pre>    %Yares.dat<br />    %World.dat<br />    @guard (or @banker or @default or whatever)<br /></pre>
 
-                <p>This setup each type to know a little about their city, something about the world, and gave them some text for their
+
+                
+        <p>%filename includes the filename's contents in-line (as if it were typed in)</p>
+
+
+                
+        <p>This setup each type to know a little about their city, something about the world, and gave them some text for their
                 profession.</p>
 
-                <p>So, in our system, if a new player is walking around Yares, they can ask a cityguard where Market Street is or where they
+
+                
+        <p>So, in our system, if a new player is walking around Yares, they can ask a cityguard where Market Street is or where they
                 can find a healer and get useful answers (well, not if you want to code misinformation for a chuckle)</p>
+
               </blockquote>
 
-              <p>Be aware, the section about using the '[' and '{' characters instead of '(' is not operational in CoffeeMud at this time.
-              However, using $r, $s, and $n does work.</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </center>
-  </body>
-</html>
 
+              
+      <p>Be aware, the section about using the '[' and '{' characters instead of '(' is not operational in CoffeeMud at this time.
+              However, using $r, $s, and $n does work.</p>
+
+            </td>
+
+          </tr>
+
+        
+  </tbody>
+      
+</table>
+
+    </center>
+
+  
+</body>
+</html>

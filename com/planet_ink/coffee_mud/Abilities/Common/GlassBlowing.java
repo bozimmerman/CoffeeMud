@@ -204,7 +204,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		if(bundling)
 			itemName="a "+woodRequired+"# "+itemName;
 		else
-			itemName=CMStrings.startWithAorAn(itemName);
+			itemName=CMLib.english().startWithAorAn(itemName);
 		building.setName(itemName);
 		startStr="<S-NAME> start(s) blowing "+building.name()+".";
 		displayText="You are blowing "+building.name();

@@ -269,7 +269,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
-				itemName=CMStrings.startWithAorAn(itemName);
+				itemName=CMLib.english().startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) sculpting "+building.name()+".";
 			displayText="You are sculpting "+building.name();

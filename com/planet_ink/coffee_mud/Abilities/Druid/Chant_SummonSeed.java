@@ -104,7 +104,7 @@ public class Chant_SummonSeed extends Chant
 					String name=foundShortName.toLowerCase();
 					if(name.endsWith("ies")) name=name.substring(0,name.length()-3)+"y";
 					if(name.endsWith("s")) name=name.substring(0,name.length()-1);
-					newItem.setName(CMStrings.startWithAorAn(name+" seed"));
+					newItem.setName(CMLib.english().startWithAorAn(name+" seed"));
 					newItem.setDisplayText(newItem.name()+" is here.");
 					newItem.setDescription("");
 					newItem.setMaterial(material);

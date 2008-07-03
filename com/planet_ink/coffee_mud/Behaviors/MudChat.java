@@ -231,43 +231,37 @@ public class MudChat extends StdBehavior
 		for(int i=1;i<chatGroups.size();i++)
 		{
 			Vector V=(Vector)chatGroups.elementAt(i);
-			Vector Names=new Vector();
 			if(V.size()>0)
 				if(((String)V.elementAt(0)).length()>0)
 				{
 					String names=((String)V.elementAt(0));
-					while(names.length()>0)
+                    int lastDex=0;
+                    for(int s=0;s<=names.length();s++)
 					{
-                        int firstSpace=names.indexOf(' ');
-						int firstSlash=names.indexOf('/');
-                        if((firstSlash>=0)&&((firstSpace<0)||(firstSlash<firstSpace)))
+                        if((s>=names.length())||(names.charAt(s)==' '))
                         {
-                            int nextSlash=names.indexOf('/',firstSlash+1);
-                            if(nextSlash<0) nextSlash=names.length();
-                            String mask=names.substring(firstSlash+1,nextSlash);
-                            if((meM!=null)&&(!CMLib.masking().maskCheck(mask,meM,true)))
-                            {
-                                Names.clear();
-                                break;
-                            }
-                            names=names.substring(nextSlash+1);
+                            if(names.substring(lastDex,s).equalsIgnoreCase(myName))
+                                return V;
                         }
                         else
-						if(firstSpace>=0)
-						{
-							Names.addElement(names.substring(0,firstSpace).trim().toUpperCase());
-							names=names.substring(firstSpace+1);
-						}
-						else
-						{
-							Names.addElement(names.trim().toUpperCase());
-							names="";
-						}
-					}
-					for(int j=0;j<Names.size();j++)
-					{
-						if(((String)Names.elementAt(j)).equalsIgnoreCase(myName))
-							return V;
+                        if(names.charAt(s)=='/')
+                        {
+                            int nextSlash=names.indexOf('/',s+1);
+                            if(nextSlash<0) nextSlash=names.length();
+                            String mask=names.substring(s+1,nextSlash);
+                            if((meM!=null)&&(!CMLib.masking().maskCheck(mask,meM,true)))
+                                break;
+                            s=nextSlash+1;
+                        }
+                        else
+                            continue;
+                        
+                        lastDex=s;
+                        while(lastDex<names.length()&&Character.isWhitespace(names.charAt(lastDex)))
+                        {
+                            lastDex++;
+                            s=lastDex-1;
+                        }
 					}
 				}
 		}
@@ -279,23 +273,22 @@ public class MudChat extends StdBehavior
 		if((myChatGroup!=null)&&(myOldName.equals(forMe.Name())))
 			return myChatGroup;
 		myOldName=forMe.Name();
-		Vector V=matchChatGroup(forMe,myOldName.toUpperCase(),chatGroups);
+		Vector V=null;
+        if(getParms().length()>0)
+        {
+            int x=getParms().indexOf("=");
+            if(x<0)
+                V=matchChatGroup(forMe,getParms(),chatGroups);
+            else
+            if(getParms().substring(x+1).trim().length()>0)
+                V=matchChatGroup(forMe,getParms().substring(x+1),chatGroups);
+        }
+        if(V!=null) return V;
+        V=matchChatGroup(forMe,CMLib.english().cleanArticles(CMStrings.removeColors(myOldName.toUpperCase())),chatGroups);
 		if(V!=null) return V;
-		V=matchChatGroup(forMe,forMe.description(),chatGroups);
-		if(V!=null) return V;
-		V=matchChatGroup(forMe,forMe.displayText(),chatGroups);
-		if(V!=null) return V;
-		V=matchChatGroup(forMe,CMClass.classID(forMe),chatGroups);
-		if(V!=null) return V;
-		if(getParms().length()>0)
-		{
-			int x=getParms().indexOf("=");
-			if(x<0)
-				V=matchChatGroup(forMe,getParms(),chatGroups);
-			else
-			if(getParms().substring(x+1).trim().length()>0)
-				V=matchChatGroup(forMe,getParms().substring(x+1),chatGroups);
-		}
+		V=matchChatGroup(forMe,forMe.charStats().raceName(),chatGroups);
+        if(V!=null) return V;
+        V=matchChatGroup(forMe,forMe.charStats().getCurrentClass().name(),chatGroups);
 		if(V!=null) return V;
 		return (Vector)chatGroups.elementAt(0);
 	}

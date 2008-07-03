@@ -320,7 +320,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),"of "+A2.name()).toLowerCase();
 			building.setReadableText(A2.name());
 		}
-		itemName=CMStrings.startWithAorAn(itemName);
+		itemName=CMLib.english().startWithAorAn(itemName);
 		building.setName(itemName);
 		startStr="<S-NAME> start(s) crafting "+building.name()+".";
 		displayText="You are crafting "+building.name();

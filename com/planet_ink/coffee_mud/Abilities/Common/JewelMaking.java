@@ -277,7 +277,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			}
 			else
 			{
-				materialName=CMStrings.startWithAorAn(materialName).toLowerCase();
+				materialName=CMLib.english().startWithAorAn(materialName).toLowerCase();
 				beingDone.addElement(CMStrings.capitalizeAndLower(building.name())+" has "+materialName+" mounted on it.");
 				startStr="<S-NAME> start(s) mounting "+materialName+" onto "+building.name()+".";
 				displayText="You are mounting "+materialName+" onto "+building.name();
@@ -419,7 +419,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
-				itemName=CMStrings.startWithAorAn(itemName);
+				itemName=CMLib.english().startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) making "+building.name()+".";
 			displayText="You are making "+building.name();

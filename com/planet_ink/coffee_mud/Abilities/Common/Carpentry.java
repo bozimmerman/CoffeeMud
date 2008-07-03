@@ -313,7 +313,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
-				itemName=CMStrings.startWithAorAn(itemName);
+				itemName=CMLib.english().startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) carving "+building.name()+".";
 			displayText="You are carving "+building.name();

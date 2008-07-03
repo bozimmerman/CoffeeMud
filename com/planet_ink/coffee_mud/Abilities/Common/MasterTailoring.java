@@ -292,7 +292,7 @@ public class MasterTailoring extends EnhancedCraftingSkill implements ItemCrafto
 			if(itemName.endsWith("s"))
 				itemName="some "+itemName;
 			else
-				itemName=CMStrings.startWithAorAn(itemName);
+				itemName=CMLib.english().startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) knitting "+building.name()+".";
 			displayText="You are knitting "+building.name();

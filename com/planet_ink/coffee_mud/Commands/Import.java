@@ -4978,7 +4978,7 @@ public class Import extends StdCommand
 						}
 
 						if(name.length()>0)
-							E.setName(CMStrings.startWithAorAn(name));
+							E.setName(CMLib.english().startWithAorAn(name));
 						else
 						{
 							if(E.hasADoor())

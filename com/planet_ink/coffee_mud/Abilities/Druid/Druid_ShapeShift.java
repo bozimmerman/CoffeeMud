@@ -98,7 +98,7 @@ public class Druid_ShapeShift extends StdAbility
 		if((newRace!=null)&&(affected instanceof MOB))
 		{
             int xlvl=getXLEVELLevel(invoker());
-			affectableStats.setName(CMStrings.startWithAorAn(raceName.toLowerCase()));
+			affectableStats.setName(CMLib.english().startWithAorAn(raceName.toLowerCase()));
 			int oldAdd=affectableStats.weight()-affected.baseEnvStats().weight();
 			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.STAT_GENDER));
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
@@ -339,7 +339,7 @@ public class Druid_ShapeShift extends StdAbility
 				mob.location().send(mob,msg);
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
 				beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE);
-				raceName=CMStrings.capitalizeAndLower(CMStrings.startWithAorAn(raceName.toLowerCase()));
+				raceName=CMStrings.capitalizeAndLower(CMLib.english().startWithAorAn(raceName.toLowerCase()));
 				mob.confirmWearability();
 			}
 		}

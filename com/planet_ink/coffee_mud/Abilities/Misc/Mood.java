@@ -38,7 +38,7 @@ public class Mood extends StdAbility
 {
 	public String ID() { return "Mood"; }
 	public String name(){ return "Mood";}
-	public String displayText(){ return (moodCode<=0)?"":"(In "+CMStrings.startWithAorAn(MOODS[moodCode][0].toLowerCase())+" mood)";}
+	public String displayText(){ return (moodCode<=0)?"":"(In "+CMLib.english().startWithAorAn(MOODS[moodCode][0].toLowerCase())+" mood)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
@@ -711,7 +711,7 @@ public class Mood extends StdAbility
 		}
 		if(entered.trim().length()==0)
 		{
-			mob.tell("You are currently in "+CMStrings.startWithAorAn(MOOD.text().toLowerCase())+" mood.");
+			mob.tell("You are currently in "+CMLib.english().startWithAorAn(MOOD.text().toLowerCase())+" mood.");
 			return false;
 		}
         if(entered.equalsIgnoreCase("RANDOM"))
@@ -760,7 +760,7 @@ public class Mood extends StdAbility
         {
             if(origEntered.equalsIgnoreCase("RANDOM"))
                 return false;
-            mob.tell("You are already in "+CMStrings.startWithAorAn(choice.toLowerCase())+" mood.");
+            mob.tell("You are already in "+CMLib.english().startWithAorAn(choice.toLowerCase())+" mood.");
             return false;
         }
 		
@@ -777,7 +777,7 @@ public class Mood extends StdAbility
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> appear(s) to be in "+CMStrings.startWithAorAn(choice.toLowerCase())+" mood.");
+			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_OK_VISUAL,"<T-NAME> appear(s) to be in "+CMLib.english().startWithAorAn(choice.toLowerCase())+" mood.");
 			if(target.location()!=null)
 			{
 				if(target.location().okMessage(target,msg))

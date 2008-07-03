@@ -335,7 +335,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			if(itemName.endsWith("s"))
 				itemName="some "+itemName;
 			else
-				itemName=CMStrings.startWithAorAn(itemName);
+				itemName=CMLib.english().startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) weaving "+building.name()+".";
 			displayText="You are weaving "+building.name();

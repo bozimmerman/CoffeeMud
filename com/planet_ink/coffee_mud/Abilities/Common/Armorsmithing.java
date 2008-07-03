@@ -321,7 +321,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			if(itemName.endsWith("s"))
 				itemName="some "+itemName;
 			else
-				itemName=CMStrings.startWithAorAn(itemName);
+				itemName=CMLib.english().startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) smithing "+building.name()+".";
 			displayText="You are smithing "+building.name();

@@ -1416,7 +1416,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
         O=req.elementAt(r,5);
         disp=(Integer)req.elementAt(r,2);
         if(O instanceof String)
-            itemDesc=((amt>1)?(amt+" "+((String)O)+"s"):CMStrings.startWithAorAn((String)O));
+            itemDesc=((amt>1)?(amt+" "+((String)O)+"s"):CMLib.english().startWithAorAn((String)O));
         else
         if(O instanceof Long)
             itemDesc=amt+((amt>1)?" pounds":" pound")+" of "+RawMaterial.MATERIAL_DESCS[((Long)O).intValue()>>8].toLowerCase();

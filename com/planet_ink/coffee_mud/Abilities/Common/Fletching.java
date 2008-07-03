@@ -278,7 +278,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 			}
 			duration=getDuration(CMath.s_int((String)foundRecipe.elementAt(RCP_TICKS)),mob,CMath.s_int((String)foundRecipe.elementAt(RCP_LEVEL)),4);
 			String itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),RawMaterial.RESOURCE_DESCS[(data[0][FOUND_CODE]&RawMaterial.RESOURCE_MASK)]).toLowerCase();
-			itemName=CMStrings.startWithAorAn(itemName);
+			itemName=CMLib.english().startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) making "+building.name()+".";
 			displayText="You are making "+building.name();

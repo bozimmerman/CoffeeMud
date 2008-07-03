@@ -1158,7 +1158,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 &&(!viewedmob.charStats().getCurrentClass().leveless())
                 &&(!viewedmob.charStats().getMyRace().leveless())
                 &&(!CMSecurity.isDisabled("LEVELS")))
-                    levelStr=CMStrings.startWithAorAn(viewedmob.charStats().displayClassLevel(viewedmob,false));
+                    levelStr=CMLib.english().startWithAorAn(viewedmob.charStats().displayClassLevel(viewedmob,false));
                 else
                 if((!CMSecurity.isDisabled("LEVELS"))
                 &&(!viewedmob.charStats().getCurrentClass().leveless())
@@ -1167,7 +1167,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 else
                 if((!CMSecurity.isDisabled("CLASSES"))
                 &&(!viewedmob.charStats().getMyRace().classless()))
-                    levelStr=CMStrings.startWithAorAn(viewedmob.charStats().displayClassName());
+                    levelStr=CMLib.english().startWithAorAn(viewedmob.charStats().displayClassName());
                 if((!CMSecurity.isDisabled("RACES"))
                 &&(!viewedmob.charStats().getCurrentClass().raceless()))
                 {

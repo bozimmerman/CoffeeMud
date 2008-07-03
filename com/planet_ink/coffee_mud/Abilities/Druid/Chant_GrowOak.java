@@ -48,7 +48,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		int material=RawMaterial.RESOURCE_OAK;
 		int code=material&RawMaterial.RESOURCE_MASK;
 		Item newItem=CMClass.getBasicItem("GenItem");
-		String name=CMStrings.startWithAorAn(RawMaterial.RESOURCE_DESCS[code].toLowerCase()+" tree");
+		String name=CMLib.english().startWithAorAn(RawMaterial.RESOURCE_DESCS[code].toLowerCase()+" tree");
 		newItem.setName(name);
 		newItem.setDisplayText(newItem.name()+" grows here.");
 		newItem.setDescription("");

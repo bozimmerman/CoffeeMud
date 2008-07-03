@@ -266,7 +266,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 			if(misctype.equalsIgnoreCase("BUNDLE"))
 				itemName="a "+woodRequired+"# "+itemName;
 			else
-				itemName=CMStrings.startWithAorAn(itemName);
+				itemName=CMLib.english().startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) carving "+building.name()+".";
 			displayText="You are carving "+building.name();

@@ -210,7 +210,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		if(bundling)
 			itemName="a "+woodRequired+"# "+itemName;
 		else
-			itemName=CMStrings.startWithAorAn(itemName);
+			itemName=CMLib.english().startWithAorAn(itemName);
 		building.setName(itemName);
 		startStr="<S-NAME> start(s) making "+building.name()+".";
 		displayText="You are making "+building.name();

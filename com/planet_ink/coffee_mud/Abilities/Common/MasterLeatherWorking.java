@@ -430,7 +430,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			if(itemName.endsWith("s"))
 				itemName="some "+itemName;
 			else
-				itemName=CMStrings.startWithAorAn(itemName);
+				itemName=CMLib.english().startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) making "+building.name()+".";
 			displayText="You are making "+building.name();

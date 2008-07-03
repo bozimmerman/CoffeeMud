@@ -259,7 +259,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if(bundling)
 				itemName="a "+woodRequired+"# "+itemName;
 			else
-				itemName=CMStrings.startWithAorAn(itemName);
+				itemName=CMLib.english().startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) scrimshawing "+building.name()+".";
 			displayText="You are scrimshawing "+building.name();

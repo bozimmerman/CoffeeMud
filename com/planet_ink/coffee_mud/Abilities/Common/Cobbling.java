@@ -309,7 +309,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 			if(itemName.endsWith("s"))
 				itemName="some "+itemName;
 			else
-				itemName=CMStrings.startWithAorAn(itemName);
+				itemName=CMLib.english().startWithAorAn(itemName);
 			building.setName(itemName);
 			startStr="<S-NAME> start(s) cobbling "+building.name()+".";
 			displayText="You are cobbling "+building.name();
