@@ -315,7 +315,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		int trainGain=1;
 		if(trainGain<=0)trainGain=1;
 		mob.setTrains(mob.getTrains()+trainGain);
-		theNews.append("and ^H"+trainGain+"^N training "+ (practiceGain != 1? "sessions" : "session" )+".\n\r^N");
+		theNews.append("and ^H"+trainGain+"^N training "+ (trainGain != 1? "sessions" : "session" )+".\n\r^N");
 
 		mob.tell(theNews.toString());
 		curClass=mob.baseCharStats().getCurrentClass();
