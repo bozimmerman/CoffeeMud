@@ -51,6 +51,7 @@ public class MobData extends StdWebMacro
       "LOANINT","SVCRIT","AUCCHAIN","LIVELIST","TIMELIST",
       "TIMELISTPCT","LIVECUT","TIMECUT","MAXDAYS",
       "MINDAYS","ISAUCTION","DEITYID"};
+    
 	public static int getShopCardinality(ShopKeeper E, Environmental O)
 	{
 		Vector V=E.getShop().getStoreInventory();

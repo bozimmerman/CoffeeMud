@@ -405,7 +405,7 @@ public class GrinderMobs
 					break;
 				case 12: // speed
 					double d=CMath.s_double(old);
-					if(d==0.0) d=1.0;
+					if(d<0.0) d=1.0;
 					M.baseEnvStats().setSpeed(d);
 					break;
 				case 13: // attack
