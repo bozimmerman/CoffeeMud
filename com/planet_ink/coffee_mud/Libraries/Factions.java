@@ -918,7 +918,7 @@ public class Factions extends StdLibrary implements FactionManager
             while((mob.session()!=null)&&(!mob.session().killFlag())&&(!((showFlag>0)&&(showFlag!=showNumber))))
             {
                 if((showFlag>0)&&(showFlag!=showNumber)) break;
-                StringBuffer list=new StringBuffer(showNumber+". Affects/Behaviors:\n\r");
+                StringBuffer list=new StringBuffer(showNumber+". Effects/Behaviors:\n\r");
                 list.append("    #) "
                         +CMStrings.padRight("Ability/Behavior ID",25)
                         +" "+CMStrings.padRight("MOB Mask",20)

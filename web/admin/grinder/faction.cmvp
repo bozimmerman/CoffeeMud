@@ -276,6 +276,19 @@
             </TABLE>
             </TD>
         </TR>
+        <TR>
+            <TD><FONT COLOR=YELLOW>Effects / Behaviors: </FONT></TD>
+            <TD>
+            <TABLE WIDTH=100% BORDER=1>
+            <TR>
+                <TD WIDTH=50%><FONT COLOR=WHITE>Ability or Behavior</FONT></TD>
+                <TD WIDTH=25%><FONT COLOR=WHITE>Parameters</FONT></TD>
+                <TD WIDTH=25%><FONT COLOR=WHITE>MOB Mask</FONT></TD>
+            </TR>
+            @FactionData?AFFECTSBEHAVIORS&FONT=COLOR=WHITE@
+            </TABLE>
+            </TD>
+        </TR>
     </TABLE>
 @endif@
 <BR>

@@ -166,6 +166,37 @@ public class GrinderFactions {
         }
         
         num=0;
+        DVector affBehav=new DVector(3);
+        HashSet affBehavKeepers=new HashSet();
+        // its done this strange way to minimize impact on mob recalculations.
+        while(httpReq.getRequestParameter("AFFBEHAV"+num)!=null)
+        {
+            old=httpReq.getRequestParameter("AFFBEHAV"+num);
+            if(old.length()>0)
+            {
+                String parm=""+httpReq.getRequestParameter("AFFBEHAVPARM"+num);
+                String mask=""+httpReq.getRequestParameter("AFFBEHAVMASK"+num);
+                String[] oldParms=F.getAffectBehav(old);
+                if((oldParms==null)||(!oldParms[0].equals(parm))||(!oldParms[1].equals(mask)))
+                    affBehav.addElement(old.toUpperCase().trim(),parm,mask);
+                else
+                    affBehavKeepers.add(old.toUpperCase().trim());
+            }
+            num++;
+        }
+        for(Enumeration e=F.affectsBehavs();e.hasMoreElements();)
+        {
+            old=(String)e.nextElement();
+            if(!affBehavKeepers.contains(old.toUpperCase().trim()))
+                F.delAffectBehav(old);
+        }
+        for(int d=0;d<affBehav.size();d++)
+        {
+            F.delAffectBehav((String)affBehav.elementAt(d,1));
+            F.addAffectBehav((String)affBehav.elementAt(d,1),(String)affBehav.elementAt(d,2),(String)affBehav.elementAt(d,3));
+        }
+        
+        num=0;
         for(Enumeration e=F.abilityUsages();e.hasMoreElements();)
             F.delAbilityUsage((Faction.FactionAbilityUsage)e.nextElement());
         while(httpReq.getRequestParameter("ABILITYUSE"+num)!=null)

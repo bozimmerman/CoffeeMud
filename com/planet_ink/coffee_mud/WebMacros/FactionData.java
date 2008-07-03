@@ -594,6 +594,83 @@ public class FactionData extends StdWebMacro
                     str.append("<INPUT TYPE=TEXT NAME=ABILITYMAX"+showNum+" SIZE=5 VALUE=\"\">");
                     str.append("</TD></TR>");
                 }
+                if(parms.containsKey("AFFECTSBEHAVIORS"))
+                {
+                    String abilityID="";
+                    abilityID=httpReq.getRequestParameter("AFFBEHAV0");
+                    if((abilityID==null)&&(F.affectsBehavs()!=null))
+                    {
+                        int v=0;
+                        for(Enumeration e=F.affectsBehavs();e.hasMoreElements();v++)
+                        {
+                            String ID=(String)e.nextElement();
+                            httpReq.addRequestParameters("AFFBEHAV"+v,ID);
+                            String[] affBehavParms=F.getAffectBehav(ID);
+                            httpReq.addRequestParameters("AFFBEHAVPARM"+v,affBehavParms[0]);
+                            httpReq.addRequestParameters("AFFBEHAVMASK"+v,affBehavParms[1]);
+                        }
+                    }
+                    
+                    String sfont=(parms.containsKey("FONT"))?("<FONT "+((String)parms.get("FONT"))+">"):"";
+                    String efont=(parms.containsKey("FONT"))?"</FONT>":"";
+                    int num=0;
+                    int showNum=-1;
+                    while(httpReq.getRequestParameter("AFFBEHAV"+num)!=null)
+                    {
+                        abilityID=httpReq.getRequestParameter("AFFBEHAV"+num);
+                        if(abilityID.length()>0)
+                        {
+                            showNum++;
+                            String val=abilityID;
+                            str.append("<TR><TD>");
+                            str.append("<SELECT NAME=AFFBEHAV"+showNum+" ONCHANGE=\"DelItem(this);\">");
+                            str.append("<OPTION VALUE=\"\">Delete This Row");
+                            String name=null;
+                            Behavior B=CMClass.getBehavior(val);
+                            if(B==null)
+                            {
+                                Ability A=CMClass.getAbility(val);
+                                if(A!=null) name=A.name();
+                            }
+                            else
+                                name=B.name();
+                            if(name!=null) {
+                                str.append("<OPTION VALUE=\""+val+"\" SELECTED>"+name);
+                                str.append("</SELECT>");
+                                str.append("</TD><TD VALIGN=TOP>");
+                                val=""+httpReq.getRequestParameter("AFFBEHAVPARM"+num);
+                                val=CMStrings.replaceAll(val,"\"","&quot;");
+                                str.append("<INPUT TYPE=TEXT NAME=AFFBEHAVPARM"+showNum+" SIZE=20 VALUE=\""+val+"\">");
+                                str.append("</TD><TD VALIGN=TOP>");
+                                val=""+httpReq.getRequestParameter("AFFBEHAVMASK"+num);
+                                val=CMStrings.replaceAll(val,"\"","&quot;");
+                                str.append("<INPUT TYPE=TEXT NAME=AFFBEHAVMASK"+showNum+" SIZE=20 VALUE=\""+val+"\">");
+                                str.append("</TD></TR>");
+                            }
+                        }
+                        num++;
+                    }
+                    ++showNum;
+                    str.append("<TR><TD>");
+                    str.append("<SELECT NAME=AFFBEHAV"+showNum+" ONCHANGE=\"AddItem(this);\">");
+                    str.append("<OPTION VALUE=\"\" SELECTED>Select an ability/behavior");
+                    for(Enumeration e=CMClass.behaviors();e.hasMoreElements();)
+                    {
+                        Behavior B=(Behavior)e.nextElement();
+                        str.append("<OPTION VALUE=\""+B.ID()+"\">"+B.name());
+                    }
+                    for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                    {
+                        Ability A=(Ability)e.nextElement();
+                        str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.name());
+                    }
+                    str.append("</SELECT>");
+                    str.append("</TD><TD VALIGN=TOP>");
+                    str.append("<INPUT TYPE=TEXT NAME=AFFBEHAVPARM"+showNum+" SIZE=20 VALUE=\"\">");
+                    str.append("</TD><TD VALIGN=TOP>");
+                    str.append("<INPUT TYPE=TEXT NAME=AFFBEHAVMASK"+showNum+" SIZE=20 VALUE=\"\">");
+                    str.append("</TD></TR>");
+                }
                 if(parms.containsKey("RATEMODIFIER"))
                 {
                     String old=httpReq.getRequestParameter("RATEMODIFIER");
