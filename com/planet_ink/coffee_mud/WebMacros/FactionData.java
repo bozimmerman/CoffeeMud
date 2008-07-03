@@ -611,8 +611,6 @@ public class FactionData extends StdWebMacro
                         }
                     }
                     
-                    String sfont=(parms.containsKey("FONT"))?("<FONT "+((String)parms.get("FONT"))+">"):"";
-                    String efont=(parms.containsKey("FONT"))?"</FONT>":"";
                     int num=0;
                     int showNum=-1;
                     while(httpReq.getRequestParameter("AFFBEHAV"+num)!=null)

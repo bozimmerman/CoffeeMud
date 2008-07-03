@@ -2996,7 +2996,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 4: // -gender
 			{
 		        base=getBaseCharStats(base,mob);
-				if(!V.contains(actual?(""+((char)base.getStat(CharStats.STAT_GENDER))):(""+(mob.charStats().genderName().charAt(0)))))
+				if(!V.contains(actual?(""+((char)base.getStat(CharStats.STAT_GENDER))):(""+(Character.toUpperCase(mob.charStats().genderName().charAt(0))))))
 					return false;
 				break;
 			}
@@ -3817,7 +3817,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				break;
 			case 36: // +gender
 		        base=getBaseCharStats(base,mob);
-				if(V.contains(actual?(""+((char)base.getStat(CharStats.STAT_GENDER))):(""+mob.charStats().genderName().charAt(0))))
+				if(V.contains(actual?(""+((char)base.getStat(CharStats.STAT_GENDER))):(""+Character.toUpperCase(mob.charStats().genderName().charAt(0)))))
 					return false;
 				break;
 			case 37: // +lvlgr

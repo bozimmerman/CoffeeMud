@@ -947,7 +947,6 @@ public class Factions extends StdLibrary implements FactionManager
                 if(which.length()!=1)
                     break;
                 which=which.toUpperCase().trim();
-                Faction.FactionAbilityUsage CA=null;
                 if(!which.equalsIgnoreCase("0"))
                 {
                     int num=(which.charAt(0)-'A');
@@ -984,23 +983,20 @@ public class Factions extends StdLibrary implements FactionManager
                                 ID=null;
                                 break;
                             }
-                            else
+                            String type=getWordAffOrBehav(ID);
+                            if(type==null)
                             {
-                                String type=getWordAffOrBehav(ID);
-                                if(type==null)
-                                {
-                                    mob.tell("'"+ID+" is neither a valid behavior ID or ability ID.  Use ? for a list.");
-                                    cont=true;
-                                }
-                                else
-                                if(!mob.session().confirm("Create a new "+type+" (y/N): ","N"))
-                                {
-                                    ID=null;
-                                    break;
-                                }
-                                else
-                                    me.addAffectBehav(ID,"","");
+                                mob.tell("'"+ID+" is neither a valid behavior ID or ability ID.  Use ? for a list.");
+                                cont=true;
                             }
+                            else
+                            if(!mob.session().confirm("Create a new "+type+" (y/N): ","N"))
+                            {
+                                ID=null;
+                                break;
+                            }
+                            else
+                                me.addAffectBehav(ID,"","");
                         }
                     }
                 }

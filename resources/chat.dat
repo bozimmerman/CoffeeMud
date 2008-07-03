@@ -14,6 +14,7 @@
 #        ^       match start  This anchors the match to the beginning of the 
 #                             input string.
 #        =       exact match  This must match the input string entirely.
+#        /       beginning and end of a coffeemud specific zappermask
 #  pass 1 scan operators:
 #		 (		 beginning of a 'say' expression
 #		 [		 beginning of a non-say expression targeted
@@ -24,7 +25,7 @@
 #        '       output to stdout
 #        >       start of named database, there can be more than one name
 #                 to a database '> dragon red_dragon'  The _ here is treated
-#                 as a space in the name.
+#                 as a space in the name.  You may also use the / operator.
 #        %       include another file inline Ex: %talk.data
 #		 @       adds a continue jump to link to the database. Ex: @dog
 #                 will make a continue link to the dog database.  Use @default
@@ -359,7 +360,7 @@
 9:nods her head vigorously
 9men are not sheep.  each one is an individual
 
-(all women are )
+(all women are &/-GENDER +MALE/)
 9there are men who are $r too
 9:pouts, I'm not $r
 9my sister is not $r

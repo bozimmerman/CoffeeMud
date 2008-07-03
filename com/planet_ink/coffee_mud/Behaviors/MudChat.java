@@ -149,7 +149,7 @@ public class MudChat extends StdBehavior
 				currentChatPattern=null;
 				break;
 			case '@':
-				otherChatGroup=matchChatGroup(str.substring(1).trim(),chatGroups);
+				otherChatGroup=matchChatGroup(null,str.substring(1).trim(),chatGroups);
 				if(otherChatGroup==null)
 					otherChatGroup=(Vector)chatGroups.elementAt(0);
 				for(int v1=1;v1<otherChatGroup.size();v1++)
@@ -226,7 +226,7 @@ public class MudChat extends StdBehavior
 	}
 
 
-	protected static Vector matchChatGroup(String myName, Vector chatGroups)
+	protected static Vector matchChatGroup(MOB meM, String myName, Vector chatGroups)
 	{
 		for(int i=1;i<chatGroups.size();i++)
 		{
@@ -238,11 +238,25 @@ public class MudChat extends StdBehavior
 					String names=((String)V.elementAt(0));
 					while(names.length()>0)
 					{
-						int y=names.indexOf(" ");
-						if(y>=0)
+                        int firstSpace=names.indexOf(' ');
+						int firstSlash=names.indexOf('/');
+                        if((firstSlash>=0)&&((firstSpace<0)||(firstSlash<firstSpace)))
+                        {
+                            int nextSlash=names.indexOf('/',firstSlash+1);
+                            if(nextSlash<0) nextSlash=names.length();
+                            String mask=names.substring(firstSlash+1,nextSlash);
+                            if((meM!=null)&&(!CMLib.masking().maskCheck(mask,meM,true)))
+                            {
+                                Names.clear();
+                                break;
+                            }
+                            names=names.substring(nextSlash+1);
+                        }
+                        else
+						if(firstSpace>=0)
 						{
-							Names.addElement(names.substring(0,y).trim().toUpperCase());
-							names=names.substring(y+1);
+							Names.addElement(names.substring(0,firstSpace).trim().toUpperCase());
+							names=names.substring(firstSpace+1);
 						}
 						else
 						{
@@ -265,22 +279,22 @@ public class MudChat extends StdBehavior
 		if((myChatGroup!=null)&&(myOldName.equals(forMe.Name())))
 			return myChatGroup;
 		myOldName=forMe.Name();
-		Vector V=matchChatGroup(myOldName.toUpperCase(),chatGroups);
+		Vector V=matchChatGroup(forMe,myOldName.toUpperCase(),chatGroups);
 		if(V!=null) return V;
-		V=matchChatGroup(forMe.description(),chatGroups);
+		V=matchChatGroup(forMe,forMe.description(),chatGroups);
 		if(V!=null) return V;
-		V=matchChatGroup(forMe.displayText(),chatGroups);
+		V=matchChatGroup(forMe,forMe.displayText(),chatGroups);
 		if(V!=null) return V;
-		V=matchChatGroup(CMClass.classID(forMe),chatGroups);
+		V=matchChatGroup(forMe,CMClass.classID(forMe),chatGroups);
 		if(V!=null) return V;
 		if(getParms().length()>0)
 		{
 			int x=getParms().indexOf("=");
 			if(x<0)
-				V=matchChatGroup(getParms(),chatGroups);
+				V=matchChatGroup(forMe,getParms(),chatGroups);
 			else
 			if(getParms().substring(x+1).trim().length()>0)
-				V=matchChatGroup(getParms().substring(x+1),chatGroups);
+				V=matchChatGroup(forMe,getParms().substring(x+1),chatGroups);
 		}
 		if(V!=null) return V;
 		return (Vector)chatGroups.elementAt(0);
@@ -409,6 +423,15 @@ public class MudChat extends StdBehavior
 				rest[0]=message.substring(check.substring(1).trim().length());
 		}
 		else
+        if(check.startsWith("/"))
+        {
+            int expEnd=0;
+            while((++expEnd)<check.length())
+                if(check.charAt(expEnd)=='/')
+                    break;
+            response=CMLib.masking().maskCheck(check.substring(1,expEnd).trim(),speaker,false);
+        }
+        else
 		if(check.length()>0)
 		{
 			int x=message.toUpperCase().indexOf(check.toUpperCase().trim());
@@ -452,7 +475,6 @@ public class MudChat extends StdBehavior
 			else
 			if(expression.startsWith("~"))
 				return response&&(!match(speaker,expression.substring(1).trim(),message,rest));
-
 		}
 		return response;
 	}
