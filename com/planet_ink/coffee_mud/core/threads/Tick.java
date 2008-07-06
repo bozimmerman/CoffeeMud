@@ -47,7 +47,6 @@ public class Tick extends Thread implements TickableGroup, Cloneable
     public long TICK_TIME=Tickable.TIME_TICK;
 	protected Vector tickers=new Vector();
 	protected int numTickers=0; 
-	protected Vector localItems=new Vector();
 	protected boolean shutdown=false;
 	
 	public Tick(ThreadEngine theEngine, long sleep)
@@ -135,7 +134,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 	{
 		synchronized(tickers)
 		{
-			localItems.clear();
+            Vector localItems=null;
 			TockClient C;
 			for(Iterator e=tickers.iterator();e.hasNext();)
 			{
@@ -146,28 +145,38 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 					if(C.clientObject instanceof MOB)
 					{
 						if(((MOB)C.clientObject).getStartRoom()==R)
+                        {
+                            if(localItems==null) localItems=new Vector(1);
 							localItems.addElement(C);
+                        }
 					}
 					else
 					if((C.clientObject instanceof ItemTicker)
 					&&((((ItemTicker)C.clientObject).properLocation()==R)))
+                    {
+                        if(localItems==null) localItems=new Vector(1);
 						localItems.addElement(C);
+                    }
 					break;
 				case 1:
 					if((C.clientObject instanceof ItemTicker)
 					&&((((ItemTicker)C.clientObject).properLocation()==R)))
+                    {
+                        if(localItems==null) localItems=new Vector(1);
 						localItems.addElement(C);
+                    }
 					break;
 				case 2:
 					if((C.clientObject instanceof MOB)
 					&&(((MOB)C.clientObject).getStartRoom()==R))
+                    {
+                        if(localItems==null) localItems=new Vector(1);
 						localItems.addElement(C);
+                    }
 					break;
 				}
 			}
-			if(localItems.size()>0)
-				return (Vector)localItems.clone();
-			return null;
+			return localItems;
 		}
 	}
 	
@@ -301,10 +310,10 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 				if((CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
                 &&(!CMLib.threads().isAllSuspended()))
 				{
-                    
+                    TockClient client=null;
 					for(Iterator i=tickers();i.hasNext();)
 					{
-						TockClient client=(TockClient)i.next();
+						client=(TockClient)i.next();
 						lastClient=client;
 						if((client.lastStart!=0)&&(client.lastStop!=0))
 						{
