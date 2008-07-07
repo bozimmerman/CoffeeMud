@@ -488,7 +488,7 @@ public class Socials extends StdLibrary implements SocialsList
 		for(Enumeration e=soc.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
-			if(key.toUpperCase().startsWith(name))
+			if(key.startsWith(name))
 				return fetchSocial(V,name,false);
 		}
 		return null;
@@ -516,16 +516,17 @@ public class Socials extends StdLibrary implements SocialsList
 		{
             Hashtable soc=getSocialHash();
 			String backupSocialName=null;
+            String socName=socialName.toUpperCase();
 			for(Enumeration e=soc.keys();e.hasMoreElements();)
 			{
 				String key=(String)e.nextElement();
-				if((key.startsWith(socialName.toUpperCase()))&&(key.indexOf(" ")<0))
+				if((key.startsWith(socName))&&(key.indexOf(" ")<0))
 				{	
 					socialName=key; 
 					break;
 				}
 				else
-				if(key.startsWith(socialName.toUpperCase()))
+				if(key.startsWith(socName))
 				{	
 					backupSocialName=key; 
 					break;

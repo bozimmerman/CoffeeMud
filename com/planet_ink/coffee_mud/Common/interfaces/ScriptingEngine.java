@@ -42,7 +42,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
                           MOB monster,
                           Item primaryItem,
                           Item secondaryItem,
-                          Vector script,
+                          DVector script,
                           String msg,
                           Object[] tmp);
     
@@ -97,7 +97,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         public MOB m=null;
         public Item pi=null;
         public Item si=null;
-        public Vector scr;
+        public DVector scr;
         public String message=null;
 
         public ScriptableResponse(Environmental host,
@@ -106,7 +106,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
                                   MOB monster,
                                   Item primaryItem,
                                   Item secondaryItem,
-                                  Vector script,
+                                  DVector script,
                                   int ticks,
                                   String msg)
         {

@@ -68,7 +68,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     public void delDefinition(String ID){
     	completeEduMap.remove(ID);
     }
-    public Enumeration definitions(){ return ((Hashtable)completeEduMap.clone()).elements();}
+    public Enumeration definitions(){ return DVector.s_enum(completeEduMap,false);}
     public ExpertiseDefinition getDefinition(String ID){ return (ID==null)?null:(ExpertiseDefinition)completeEduMap.get(ID.trim().toUpperCase());}
     public ExpertiseDefinition findDefinition(String ID, boolean exactOnly)
     {

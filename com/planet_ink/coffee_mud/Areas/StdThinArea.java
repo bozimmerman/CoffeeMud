@@ -63,7 +63,7 @@ public class StdThinArea extends StdArea
     	}
     	return R;
     }
-	public Enumeration getProperMap(){return ((Vector)properRooms.clone()).elements();}
+	public Enumeration getProperMap(){return DVector.s_enum(properRooms);}
     public boolean isRoom(String roomID){ return getProperRoomnumbers().contains(roomID); }
     public boolean isRoom(Room R)
     {

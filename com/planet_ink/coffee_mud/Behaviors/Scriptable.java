@@ -115,7 +115,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                           MOB monster,
                           Item primaryItem,
                           Item secondaryItem,
-                          Vector script,
+                          DVector script,
                           String msg,
                           Object[] tmp)
     {

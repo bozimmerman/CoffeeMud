@@ -474,9 +474,9 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         return null;
     }
-    public Enumeration postOffices() { return ((Vector)postOfficeList.clone()).elements(); }
+    public Enumeration postOffices() { return DVector.s_enum(postOfficeList); }
     
-    public Enumeration auctionHouses() { return ((Vector)auctionHouseList.clone()).elements(); }
+    public Enumeration auctionHouses() { return DVector.s_enum(auctionHouseList); }
     public int numAuctionHouses() { return auctionHouseList.size(); }
     public void addAuctionHouse(Auctioneer newOne)
     {
@@ -540,7 +540,7 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         return null;
     }
-    public Enumeration banks() { return ((Vector)bankList.clone()).elements(); }
+    public Enumeration banks() { return DVector.s_enum(bankList); }
 	public Iterator bankChains(Area AreaOrNull)
 	{
 		HashSet H=new HashSet();
@@ -618,8 +618,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return M;
 	}
 
-	public Enumeration players() { return ((Vector)playersList.clone()).elements(); }
-
+	public Enumeration players() { return DVector.s_enum(playersList); }
     
 	public Room getDefaultStartRoom(MOB mob)
 	{
@@ -1124,9 +1123,9 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		Area A=getArea(areaName);
 		if(A==null) return;
-		Enumeration e=A.getCompleteMap();
-		Vector rooms=new Vector();
+		Vector rooms=new Vector(100);
 		Room R=null;
+        Enumeration e=A.getCompleteMap();
 		while(e.hasMoreElements())
 		{
 			for(int i=0;(i<100)&&e.hasMoreElements();i++)
@@ -1134,10 +1133,9 @@ public class CMMap extends StdLibrary implements WorldMap
 				R=(Room)e.nextElement();
 				rooms.addElement(R);
 			}
-			while(rooms.size()>0)
+			for(Enumeration e2=rooms.elements();e2.hasMoreElements();)
 			{
-				R=(Room)rooms.elementAt(0);
-				rooms.removeElementAt(0);
+				R=(Room)e2.nextElement();
 				if((R!=null)&&(R.roomID().length()>0))
 					obliterateRoom(R);
 			}

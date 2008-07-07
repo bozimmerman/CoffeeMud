@@ -32,14 +32,6 @@ public class CMStrings
         return str.toString();
     }
     
-    public static String stripPunctuation(String str)
-    {
-        if((str==null)||(str.length()==0)) return str;
-        for(int x=str.length()-1;x>=0;x--)
-            if("`~!@#$%^&*()_-+=[]{}\\|;:'\",<.>/?".indexOf(str.charAt(x))>=0)
-                str=str.substring(0,x)+str.substring(x+1);
-        return str;
-    }
     public static String endWithAPeriod(String str)
     {
         if((str==null)||(str.length()==0)) return str;

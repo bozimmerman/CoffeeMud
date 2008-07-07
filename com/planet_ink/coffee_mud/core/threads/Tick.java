@@ -93,7 +93,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 		}
 	}
 	
-	public Iterator tickers(){return ((Vector)tickers.clone()).iterator();}
+	public Iterator tickers(){return DVector.s_iter(tickers);}
 	public int numTickers(){return numTickers;}
 	public TockClient fetchTicker(int i){
 		try{
@@ -322,7 +322,16 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 						}
 						client.lastStart=System.currentTimeMillis();
 						if(tickTicker(client,CMLib.threads().isAllSuspended()))
-							delTicker(client);
+                        {
+                            delTicker(client);
+                            /*
+                            synchronized(tickers)
+                            {
+                                i.remove();
+                                numTickers=tickers.size();
+                            }
+                            //*/
+                        }
 						client.lastStop=System.currentTimeMillis();
 					}
 				}

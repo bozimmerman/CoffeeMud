@@ -2751,38 +2751,37 @@ public class StdMOB implements MOB
 				}
 			}
 
-            Vector aff=cloneEffects();
             Tickable T=null;
-            if(aff!=null)
-                for(int a=0;a<aff.size();a++)
-    			{
-    				T=(Tickable)aff.elementAt(a);
-    				tickStatus=Tickable.STATUS_AFFECT+a;
-    				if(!T.tick(ticking,tickID))
-    					((Ability)T).unInvoke();
-    			}
+            int c=0;
+            Enumeration e=null;
+            for(e=DVector.s_enum(affects);e.hasMoreElements();c++)
+			{
+				T=(Tickable)e.nextElement();
+				tickStatus=Tickable.STATUS_AFFECT+c;
+				if(!T.tick(ticking,tickID))
+					((Ability)T).unInvoke();
+			}
 
             manaConsumeCounter=CMLib.commands().tickManaConsumption(this,manaConsumeCounter);
 
-            int num=numBehaviors();
-			for(int b=0;b<num;b++)
-			{
-				T=fetchBehavior(b);
-				tickStatus=Tickable.STATUS_BEHAVIOR+b;
+            for(e=DVector.s_enum(behaviors);e.hasMoreElements();c++)
+            {
+				T=(Tickable)e.nextElement();
+				tickStatus=Tickable.STATUS_BEHAVIOR+c;
 				if(T!=null) T.tick(ticking,tickID);
 			}
 
-            num=numScripts();
-            for(int s=0;s<num;s++)
+            for(e=DVector.s_enum(scripts);e.hasMoreElements();c++)
             {
-                T=fetchScript(s);
-                tickStatus=Tickable.STATUS_SCRIPT+s;
+                T=(Tickable)e.nextElement();
+                tickStatus=Tickable.STATUS_SCRIPT+c;
                 if(T!=null) T.tick(ticking,tickID);
             }
+            e=null;
             
             Faction.FactionData factionData=null;
             String factionID=null;
-            for(Enumeration e=fetchFactions();e.hasMoreElements();)
+            for(e=DVector.s_enum(factions,true);e.hasMoreElements();c++)
             {
                 factionID=(String)e.nextElement();
                 factionData=(Faction.FactionData)factions.get(factionID);
@@ -2807,9 +2806,9 @@ public class StdMOB implements MOB
                 }
             }
             
-            num=charStats().numClasses();
+            int num=charStats().numClasses();
 			tickStatus=Tickable.STATUS_CLASS;
-			for(int c=0;c<num;c++)
+			for(c=0;c<num;c++)
 				charStats().getMyClass(c).tick(ticking,tickID);
 			tickStatus=Tickable.STATUS_RACE;
 			charStats().getMyRace().tick(ticking,tickID);
@@ -2840,10 +2839,10 @@ public class StdMOB implements MOB
 						}
 					}
 				}
-				catch(Exception e)
+				catch(Exception ex)
 				{
 					Log.errOut("StdMOB","Ticking tattoos.");
-					Log.errOut("StdMOB",e);
+					Log.errOut("StdMOB",ex);
 				}
 			}
 		}

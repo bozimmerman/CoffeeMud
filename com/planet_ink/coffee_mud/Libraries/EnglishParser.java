@@ -39,6 +39,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 {
     public String ID(){return "EnglishParser";}
     private final static String[] articles={"a","an","all of","some one","a pair of","one of","all","the","some"};
+    public static boolean[] PUNCTUATION_TABLE=null;
+    public final static char[] ALL_CHRS="ALL".toCharArray();
     
     public boolean isAnArticle(String s)
     {
@@ -54,14 +56,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         while(didSomething)
         {
             didSomething=false;
+            String lowStr=s.toLowerCase();
             for(int a=0;a<articles.length;a++)
-            {
-                if(s.toLowerCase().startsWith(articles[a]+" "))
-                {
-                    didSomething=true;
-                    s=s.substring(articles[a].length()+1);
-                }
-            }
+                if(lowStr.startsWith(articles[a]+" "))
+                    return s.substring(articles[a].length()+1);
         }
         return s;
     }
@@ -70,12 +68,13 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
     public String startWithAorAn(String str)
     {
         if((str==null)||(str.length()==0)) return str;
-        if((!str.toUpperCase().startsWith("A "))
-        &&(!str.toUpperCase().startsWith("AN "))
-        &&(!str.toUpperCase().startsWith("THE "))
-        &&(!str.toUpperCase().startsWith("SOME ")))
+        String uppStr=str.toUpperCase();
+        if((!uppStr.startsWith("A "))
+        &&(!uppStr.startsWith("AN "))
+        &&(!uppStr.startsWith("THE "))
+        &&(!uppStr.startsWith("SOME ")))
         {
-            if("aeiouAEIOU".indexOf(str.charAt(0))>=0) 
+            if("AEIOU".indexOf(uppStr.charAt(0))>=0) 
                 return "an "+str;
             return "a "+str;
         }
@@ -88,15 +87,16 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         if(str.length()==0) 
             return str;
         str=CMStrings.removeColors(str.trim());
-        if((str.toUpperCase().startsWith("A "))
-        ||(str.toUpperCase().startsWith("AN ")))
+        String uppStr=str.toUpperCase();
+        if((uppStr.startsWith("A "))
+        ||(uppStr.startsWith("AN ")))
         {
             if("aeiouAEIOU".indexOf(adjective.charAt(0))>=0) 
                 return "an "+adjective+" "+str.substring(2).trim();
             return "a "+adjective+" "+str.substring(2).trim();
         }
-        if((!str.toUpperCase().startsWith("THE "))
-        &&(!str.toUpperCase().startsWith("SOME ")))
+        if((!uppStr.startsWith("THE "))
+        &&(!uppStr.startsWith("SOME ")))
         {
             if("aeiouAEIOU".indexOf(adjective.charAt(0))>=0) 
                 return "an "+adjective+" "+str.trim();
@@ -427,36 +427,121 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		evokableAbility.invoke(mob,commands,null,false,0);
 	}
 
+    public boolean[] PUNCTUATION_TABLE() {
+        if(PUNCTUATION_TABLE==null)
+        {
+            boolean[] PUNCTUATION_TEMP_TABLE=new boolean[255];
+            for(int c=0;c<255;c++)
+                switch(c)
+                {
+                case '`': case '~': case '!': case '@': case '#': case '$': case '%':
+                case '^': case '&': case '*': case '(': case ')': case '_': case '-':
+                case '+': case '=': case '[': case ']': case '{': case '}': case '\\':
+                case '|': case ';': case ':': case '\'': case '\"': case ',': case '<':
+                case '.': case '>': case '/': case '?':
+                    PUNCTUATION_TEMP_TABLE[c]=true;
+                    break;
+                default:
+                    PUNCTUATION_TEMP_TABLE[c]=false;
+                }
+            PUNCTUATION_TABLE=PUNCTUATION_TEMP_TABLE;
+        }
+        return PUNCTUATION_TABLE;
+    }
+    
+    public String stripPunctuation(String str)
+    {
+        if((str==null)||(str.length()==0)) return str;
+        boolean puncFound=false;
+        PUNCTUATION_TABLE();
+        for(int x=0;x<str.length();x++)
+            if(PUNCTUATION_TABLE[(byte)str.charAt(x)])
+            {
+                puncFound=true;
+                break;
+            }
+        if(!puncFound) return str;
+        char[] strc=str.toCharArray();
+        char[] str2=new char[strc.length];
+        int s=0;
+        for(int x=0;x<strc.length;x++)
+            if(!PUNCTUATION_TABLE[(byte)strc[x]])
+            {
+                str2[s]=strc[x];
+                s++;
+            }
+        return new String(str2,0,s);
+    }
+    
+    public boolean equalsPunctuationless(char[] strC, char[] str2C)
+    {
+        if((strC.length==0)&&(str2C.length==0)) return true;
+        PUNCTUATION_TABLE();
+        int s1=0;
+        int s2=0;
+        int s1len=strC.length;
+        while((s1len>0)&&(Character.isWhitespace(strC[s1len-1])||PUNCTUATION_TABLE[(byte)strC[s1len-1]]))
+            s1len--;
+        int s2len=str2C.length;
+        while((s2len>0)&&(Character.isWhitespace(str2C[s2len-1])||PUNCTUATION_TABLE[(byte)str2C[s2len-1]]))
+            s2len--;
+        while(s1<s1len)
+        {
+            while((s1<s1len)&&(PUNCTUATION_TABLE[(byte)strC[s1]]))
+                s1++;
+            while((s2<s2len)&&(PUNCTUATION_TABLE[(byte)str2C[s2]]))
+                s2++;
+            if(s1==s1len)
+            {
+                if(s2==s2len)
+                    return true;
+                return false;
+            }
+            if(s2==s2len)
+                return false;
+            if(strC[s1]!=str2C[s2])
+                return false;
+            s1++;
+            s2++;
+        }
+        if(s2==s2len)
+            return true;
+        return false;
+    }
+    
 	public boolean containsString(String toSrchStr, String srchStr)
 	{
 	    if((toSrchStr==null)||(srchStr==null)) return false;
 	    if((toSrchStr.length()==0)&&(srchStr.length()>0)) return false;
-		if(srchStr.equalsIgnoreCase("all")) return true;
-		if(srchStr.equalsIgnoreCase(toSrchStr)) return true;
-        if(CMStrings.stripPunctuation(srchStr).trim().equalsIgnoreCase(CMStrings.stripPunctuation(toSrchStr).trim())) 
-            return true;
+        char[] srchC=srchStr.toCharArray();
+        char[] toSrchC=toSrchStr.toCharArray();
+        for(int c=0;c<srchC.length;c++)
+            srchC[c]=Character.toUpperCase(srchC[c]);
+        for(int c=0;c<toSrchC.length;c++)
+            toSrchC[c]=Character.toUpperCase(toSrchC[c]);
+		if(java.util.Arrays.equals(srchC,ALL_CHRS)) return true;
+		if(java.util.Arrays.equals(srchC,toSrchC)) return true;
+        if(equalsPunctuationless(srchC,toSrchC)) return true;
         boolean topOnly=false;
-        if(srchStr.startsWith("$")&&(srchStr.length()>1))
+        if((srchC.length>1)&&(srchC[0]=='$'))
         {
-            srchStr=srchStr.substring(1);
+            srchC=new String(srchC,1,srchC.length-1).toCharArray();
             topOnly=true;
         }
 		int tos=0;
-		int tolen=toSrchStr.length();
-		int srlen=srchStr.length();
 		boolean found=false;
-		while((!found)&&(tos<tolen))
+		while((!found)&&(tos<toSrchC.length))
 		{
-			for(int x=0;x<srlen;x++)
+			for(int x=0;x<srchC.length;x++)
 			{
-				if(tos>=tolen)
+				if(tos>=toSrchC.length)
 				{
-					if(srchStr.charAt(x)=='$')
+					if(srchC[x]=='$')
 						found=true;
 					break;
 				}
 
-				switch(toSrchStr.charAt(tos))
+				switch(toSrchC[tos])
 				{
 				case '^':
 					tos=tos+2;
@@ -469,7 +554,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					tos++;
 					break;
 				}
-				switch(srchStr.charAt(x))
+				switch(srchC[x])
 				{
 				case '^': x=x+2;
 					break;
@@ -480,20 +565,20 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				case ';': x++;
 					break;
 				}
-				if(x<srlen)
+				if(x<srchC.length)
 				{
-					if(tos<tolen)
+					if(tos<toSrchC.length)
 					{
-						if(Character.toUpperCase(srchStr.charAt(x))!=Character.toUpperCase(toSrchStr.charAt(tos)))
+						if(srchC[x]!=toSrchC[tos])
 							break;
 						else
-						if(x==(srlen-1))
+						if(x==(srchC.length-1))
 						   found=true;
 						else
 							tos++;
 					}
 					else
-					if(srchStr.charAt(x)=='$')
+					if(srchC[x]=='$')
 						found=true;
 					else
 						break;
@@ -505,7 +590,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 			}
             if((topOnly)&&(!found)) break;
-			while((!found)&&(tos<tolen)&&(Character.isLetter(toSrchStr.charAt(tos))))
+			while((!found)&&(tos<toSrchC.length)&&(Character.isLetter(toSrchC[tos])))
 				tos++;
 			tos++;
 		}

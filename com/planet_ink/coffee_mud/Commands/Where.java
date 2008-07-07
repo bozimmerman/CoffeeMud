@@ -463,18 +463,18 @@ public class Where extends StdCommand
 				Area A=(Area)a.nextElement();
 				if(CMLib.flags().canAccess(mob,A))
 				{
-					int index=levelsVec.getIndex(A.name());
+					int index=levelsVec.indexOf(A.name());
 					if(index>=0)
 					{
 						Integer I=(Integer)levelsVec.elementAt(index,2);
 						if((I!=null)&&(I.intValue()!=0))
 						{
 							int score=(index+1);
-							index=mobsVec.getIndex(A.name());
+							index=mobsVec.indexOf(A.name());
 							if(index>=0)
 								score+=(index+1);
 
-							index=alignVec.getIndex(A.name());
+							index=alignVec.indexOf(A.name());
 							if(index>=0)
 								score+=(index+1);
 							whereAdd(scores,A.name(),score);

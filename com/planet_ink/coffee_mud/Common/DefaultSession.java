@@ -981,7 +981,13 @@ public class DefaultSession extends Thread implements Session
             }
             fakeInput=null;
         }
-        return in.read();
+        if(in.ready()) return in.read();
+        int times=sock.getSoTimeout()/100;
+        for(int i=0;i<times;i++) {
+            if(in.ready()) return in.read();
+            try { Thread.sleep(100); } catch(Exception e){}
+        }
+        throw new java.io.InterruptedIOException(".");
     }
     
     public char hotkey(long maxWait)

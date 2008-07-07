@@ -44,6 +44,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
     protected static final Hashtable progH=new Hashtable();
     protected static final HashSet SIGNS=CMParms.makeHashSet(CMParms.parseCommas("==,>=,>,<,<=,=>,=<,!=",true));
     protected static Hashtable patterns=new Hashtable();
+    protected boolean noDelay=CMSecurity.isDisabled("SCRIPTABLEDELAY");
     
     protected String scope="";
     
@@ -218,26 +219,94 @@ public class DefaultScriptingEngine implements ScriptingEngine
     }
     protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_COMMON);}
     
+    /**
+     * c=clean bit, r=pastbitclean, p=pastbit, s=remaining clean bits, t=trigger
+     */
+    protected String[] compileLine(DVector script, int row, String instructions)
+    {
+        String line=(String)script.elementAt(0,1);
+        String[] newLine=new String[instructions.length()];
+        for(int i=0;i<instructions.length();i++)
+            switch(instructions.charAt(i))
+            {
+            case 'c': newLine[i]=CMParms.getCleanBit(line,i); break;
+            case 'C': newLine[i]=CMParms.getCleanBit(line,i).toUpperCase().trim(); break;
+            case 'r': newLine[i]=CMParms.getPastBitClean(line,i-1); break;
+            case 'R': newLine[i]=CMParms.getPastBitClean(line,i-1).toUpperCase().trim(); break;
+            case 'p': newLine[i]=CMParms.getPastBit(line,i-1); break;
+            case 'P': newLine[i]=CMParms.getPastBit(line,i-1).toUpperCase().trim(); break;
+            case 'S': line=line.toUpperCase();
+            case 's': 
+            {
+                String s=CMParms.getPastBit(line,i-1);
+                int numBits=CMParms.numBits(s);
+                String[] newNewLine=new String[newLine.length-1+numBits];
+                for(int x=0;x<i;x++) 
+                    newNewLine[x]=newLine[x];
+                for(int x=0;x<numBits;x++)
+                    newNewLine[i+x]=CMParms.getCleanBit(s,i-1);
+                newLine=newNewLine;
+                i=instructions.length();
+                break;
+            }
+            case 'T': line=line.toUpperCase();
+            case 't': 
+            {
+                String s=CMParms.getPastBit(line,i-1);
+                String[] newNewLine=null;
+                if(CMParms.getCleanBit(s,0).equalsIgnoreCase("P"))
+                {
+                    newNewLine=new String[newLine.length+1];
+                    for(int x=0;x<i;x++) 
+                        newNewLine[x]=newLine[x];
+                    newNewLine[i]="P";
+                    newNewLine[i+1]=CMParms.getPastBitClean(s,0);
+                }
+                else
+                {
+                    int numBits=CMParms.numBits(s);
+                    newNewLine=new String[newLine.length-1+numBits];
+                    for(int x=0;x<i;x++) 
+                        newNewLine[x]=newLine[x];
+                    for(int x=0;x<numBits;x++)
+                        newNewLine[i+x]=CMParms.getCleanBit(s,x);
+                }
+                newLine=newNewLine;
+                i=instructions.length();
+                break;
+            }
+            }
+        script.setElementAt(row,2,newLine);
+        return newLine;
+    }
+    
     public boolean endQuest(Environmental hostObj, MOB mob, String quest)
     {
         if(mob!=null)
         {
             Vector scripts=getScripts();
             if(!mob.amDead()) lastKnownLocation=mob.location();
+            String trigger="";
+            String[] t=null;
             for(int v=0;v<scripts.size();v++)
             {
-                Vector script=(Vector)scripts.elementAt(v);
-                String trigger="";
+                DVector script=(DVector)scripts.elementAt(v);
                 if(script.size()>0)
-                    trigger=((String)script.elementAt(0)).toUpperCase().trim();
-                if((getTriggerCode(trigger)==13) //questtimeprog
-                &&(!oncesDone.contains(script))
-                &&(CMParms.getCleanBit(trigger,1).equalsIgnoreCase(quest)||(CMParms.getCleanBit(trigger,1).equalsIgnoreCase("*")))
-                &&(CMath.s_int(CMParms.getCleanBit(trigger,2).trim())<0))
                 {
-                    oncesDone.addElement(script);
-                    execute(hostObj,mob,mob,mob,null,null,script,null,newObjs());
-                    return true;
+                    trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
+                    t=(String[])script.elementAt(0,2);
+                    if((getTriggerCode(trigger,t)==13) //questtimeprog
+                    &&(!oncesDone.contains(script)))
+                    {
+                        if(t==null) t=compileLine(script,0,"CCC");
+                        if((t[1].equals(quest)||(t[1].equals("*")))
+                        &&(CMath.s_int(t[2])<0))
+                        {
+                            oncesDone.addElement(script);
+                            execute(hostObj,mob,mob,mob,null,null,script,null,newObjs());
+                            return true;
+                        }
+                    }
                 }
             }
         }
@@ -512,7 +581,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         for(int v=0;v<V.size();v++)
         {
             String s=(String)V.elementAt(v);
-            Vector script=new Vector();
+            DVector script=new DVector(2);
             while(s.length()>0)
             {
                 y=-1;
@@ -539,7 +608,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 {
                     cmd=CMStrings.replaceAll(cmd,"\\~","~");
                     cmd=CMStrings.replaceAll(cmd,"\\=","=");
-                    script.addElement(CMStrings.replaceAll(cmd,"\\;",";"));
+                    script.addElement(CMStrings.replaceAll(cmd,"\\;",";"),null);
                 }
             }
             V.setElementAt(script,v);
@@ -2210,12 +2279,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String found=null;
                 boolean validFunc=false;
                 Vector scripts=getScripts();
+                String trigger=null;
+                String[] ttrigger=null;
                 for(int v=0;v<scripts.size();v++)
                 {
-                    Vector script2=(Vector)scripts.elementAt(v);
+                    DVector script2=(DVector)scripts.elementAt(v);
                     if(script2.size()<1) continue;
-                    String trigger=((String)script2.elementAt(0)).toUpperCase().trim();
-                    if(getTriggerCode(trigger)==17)
+                    trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
+                    ttrigger=(String[])script2.elementAt(0,2);
+                    if(getTriggerCode(trigger,ttrigger)==17)
                     {
                         String fnamed=CMParms.getCleanBit(trigger,1);
                         if(fnamed.equalsIgnoreCase(arg1))
@@ -4213,12 +4285,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String found=null;
                 boolean validFunc=false;
                 Vector scripts=getScripts();
+                String trigger=null;
+                String[] ttrigger=null;
                 for(int v=0;v<scripts.size();v++)
                 {
-                    Vector script2=(Vector)scripts.elementAt(v);
+                    DVector script2=(DVector)scripts.elementAt(v);
                     if(script2.size()<1) continue;
-                    String trigger=((String)script2.elementAt(0)).toUpperCase().trim();
-                    if(getTriggerCode(trigger)==17)
+                    trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
+                    ttrigger=(String[])script2.elementAt(0,2);
+                    if(getTriggerCode(trigger,ttrigger)==17)
                     {
                         String fnamed=CMParms.getCleanBit(trigger,1);
                         if(fnamed.equalsIgnoreCase(arg1))
@@ -5425,15 +5500,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
                           MOB monster,
                           Item primaryItem,
                           Item secondaryItem,
-                          Vector script,
+                          DVector script,
                           String msg,
                           Object[] tmp)
     {
         tickStatus=Tickable.STATUS_START;
+        String s=null;
+        String[] ss=null;
+        String cmd=null;
         for(int si=1;si<script.size();si++)
         {
-            String s=((String)script.elementAt(si)).trim();
-            String cmd=CMParms.getCleanBit(s,0).toUpperCase();
+            s=((String)script.elementAt(si,1)).trim();
+            ss=(String[])script.elementAt(si,2);
+            if(ss!=null)
+                cmd=ss[0];
+            else
+                cmd=CMParms.getCleanBit(s,0).toUpperCase();
             if(cmd.length()==0) continue;
                 
             Integer methCode=(Integer)methH.get(cmd);
@@ -5450,8 +5532,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 StringBuffer jscript=new StringBuffer("");
                 while((++si)<script.size())
                 {
-                    s=((String)script.elementAt(si)).trim();
-                    cmd=CMParms.getCleanBit(s,0).toUpperCase();
+                    s=((String)script.elementAt(si,1)).trim();
+                    ss=(String[])script.elementAt(si,2);
+                    if(ss!=null)
+                        cmd=ss[0];
+                    else
+                        cmd=CMParms.getCleanBit(s,0).toUpperCase();
                     if(cmd.equalsIgnoreCase("</SCRIPT>"))
                         break;
                     jscript.append(s+"\n");
@@ -5486,16 +5572,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
             {
                 String conditionStr=(s.substring(2).trim());
                 boolean condition=eval(scripted,source,target,monster,primaryItem,secondaryItem,msg,tmp,conditionStr);
-                Vector V=new Vector();
-                V.addElement("");
+                DVector V=new DVector(2);
+                V.addElement("",null);
                 int depth=0;
                 boolean foundendif=false;
                 boolean ignoreUntilEndScript=false;
                 si++;
                 while(si<script.size())
                 {
-                    s=((String)script.elementAt(si)).trim();
-                    cmd=CMParms.getCleanBit(s,0).toUpperCase();
+                    s=((String)script.elementAt(si,1)).trim();
+                    ss=(String[])script.elementAt(si,2);
+                    if(ss!=null)
+                        cmd=ss[0];
+                    else
+                        cmd=CMParms.getCleanBit(s,0).toUpperCase();
                     if(cmd.equals("<SCRIPT>"))
                         ignoreUntilEndScript=true;
                     else
@@ -5515,14 +5605,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         condition=!condition;
                         if(s.substring(4).trim().length()>0)
                         {
-                            script.setElementAt("ELSE",si);
-                            script.insertElementAt(s.substring(4).trim(),si+1);
+                            script.setElementAt(si,1,"ELSE");
+                            script.setElementAt(si,2,new String[]{"ELSE"});
+                            script.insertElementAt(si+1,s.substring(4).trim(),null);
                         }
                     }
                     else
                     {
                         if(condition)
-                            V.addElement(s);
+                            V.addElement(s,ss);
                         if(cmd.equals("IF"))
                             depth++;
                         else
@@ -5555,8 +5646,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 70: // switch
             {
                 String var=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,0)).trim();
-                Vector V=new Vector();
-                V.addElement("");
+                DVector V=new DVector(2);
+                V.addElement("",null);
                 int depth=0;
                 boolean foundendif=false;
                 boolean ignoreUntilEndScript=false;
@@ -5566,8 +5657,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String s2=null;
                 while(si<script.size())
                 {
-                    s=((String)script.elementAt(si)).trim();
-                    cmd=CMParms.getCleanBit(s,0).toUpperCase();
+                    s=((String)script.elementAt(si,1)).trim();
+                    ss=(String[])script.elementAt(si,2);
+                    if(ss!=null)
+                        cmd=ss[0];
+                    else
+                        cmd=CMParms.getCleanBit(s,0).toUpperCase();
                     if(cmd.equals("<SCRIPT>"))
                         ignoreUntilEndScript=true;
                     else
@@ -5596,7 +5691,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     else
                     {
                         if(inCase)
-                            V.addElement(s);
+                            V.addElement(s,null);
                         if(cmd.equals("SWITCH"))
                             depth++;
                         else
@@ -5674,16 +5769,20 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     tickStatus=Tickable.STATUS_END;
                     return null;
                 }
-                Vector V=new Vector();
-                V.addElement("");
+                DVector V=new DVector(2);
+                V.addElement("",null);
                 int depth=0;
                 boolean foundnext=false;
                 boolean ignoreUntilEndScript=false;
                 si++;
                 while(si<script.size())
                 {
-                    s=((String)script.elementAt(si)).trim();
-                    cmd=CMParms.getCleanBit(s,0).toUpperCase();
+                    s=((String)script.elementAt(si,1)).trim();
+                    ss=(String[])script.elementAt(si,2);
+                    if(ss!=null)
+                        cmd=ss[0];
+                    else
+                        cmd=CMParms.getCleanBit(s,0).toUpperCase();
                     if(cmd.equals("<SCRIPT>"))
                         ignoreUntilEndScript=true;
                     else
@@ -5699,7 +5798,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     }
                     else
                     {
-                        V.addElement(s);
+                        V.addElement(s,ss);
                         if(cmd.equals("FOR"))
                             depth++;
                         else
@@ -7157,11 +7256,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(goHere!=null)
                     {
                         goHere.bringMobHere(monster,true);
-                        Vector V=new Vector();
-                        V.addElement("");
-                        V.addElement(s.trim());
+                        DVector DV=new DVector(2);
+                        DV.addElement("",null);
+                        DV.addElement(s.trim(),null);
                         lastKnownLocation=goHere;
-                        execute(scripted,source,target,monster,primaryItem,secondaryItem,V,msg,tmp);
+                        execute(scripted,source,target,monster,primaryItem,secondaryItem,DV,msg,tmp);
                         lastKnownLocation=lastPlace;
                         lastPlace.bringMobHere(monster,true);
                         if(!(scripted instanceof MOB))
@@ -7335,9 +7434,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 s=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1));
                 if(newTarget!=null)
                 {
-                    Vector vscript=new Vector();
-                    vscript.addElement("FUNCTION_PROG MPFORCE_"+System.currentTimeMillis()+Math.random());
-                    vscript.addElement(s);
+                    DVector vscript=new DVector(2);
+                    vscript.addElement("FUNCTION_PROG MPFORCE_"+System.currentTimeMillis()+Math.random(),null);
+                    vscript.addElement(s,null);
                     monster=getMakeMOB(newTarget);
                     execute(newTarget, source, target, monster, primaryItem, secondaryItem, vscript, msg, tmp);
                 }
@@ -7656,7 +7755,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(Q!=null)
                         Q.declareWinner(whoName);
                     else
-                        logError(scripted,"MYQUESTWIN","Unknown","Quest: "+s);
+                        logError(scripted,"MPQUESTWIN","Unknown","Quest: "+s);
                 }
                 break;
             }
@@ -7668,10 +7767,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Vector scripts=getScripts();
                 for(int v=0;v<scripts.size();v++)
                 {
-                    Vector script2=(Vector)scripts.elementAt(v);
+                    DVector script2=(DVector)scripts.elementAt(v);
                     if(script2.size()<1) continue;
-                    String trigger=((String)script2.elementAt(0)).toUpperCase().trim();
-                    if(getTriggerCode(trigger)==17)
+                    String trigger=((String)script2.elementAt(0,1)).toUpperCase().trim();
+                    String[] ttrigger=(String[])script2.elementAt(0,2);
+                    if(getTriggerCode(trigger,ttrigger)==17)
                     {
                         String fnamed=CMParms.getCleanBit(trigger,1);
                         if(fnamed.equalsIgnoreCase(named))
@@ -7722,9 +7822,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 String cmd2=conditionStr.substring(x+1).trim();
                 conditionStr=conditionStr.substring(0,x);
-                Vector vscript=new Vector();
-                vscript.addElement("FUNCTION_PROG MPWHILE_"+Math.random());
-                vscript.addElement(cmd2);
+                DVector vscript=new DVector(2);
+                vscript.addElement("FUNCTION_PROG MPWHILE_"+Math.random(),null);
+                vscript.addElement(cmd2,null);
                 long time=System.currentTimeMillis();
                 while((eval(scripted,source,target,monster,primaryItem,secondaryItem,msg,tmp,conditionStr))&&((System.currentTimeMillis()-time)<4000))
                     execute(scripted,source,target,monster,primaryItem,secondaryItem,vscript,msg,tmp);
@@ -7749,10 +7849,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     logError(scripted,"MPALARM","Syntax","No command!");
                     break;
                 }
-                Vector vscript=new Vector();
-                vscript.addElement("FUNCTION_PROG ALARM_"+time+Math.random());
-                vscript.addElement(parms);
-                que.insertElementAt(new ScriptableResponse(scripted,source,target,monster,primaryItem,secondaryItem,vscript,CMath.s_int(time.trim()),msg),0);
+                DVector vscript=new DVector(2);
+                vscript.addElement("FUNCTION_PROG ALARM_"+time+Math.random(),null);
+                vscript.addElement(parms,null);
+                prequeResponse(scripted,source,target,monster,primaryItem,secondaryItem,vscript,CMath.s_int(time.trim()),msg);
                 break;
             }
             case 37: // mpenable
@@ -7884,26 +7984,28 @@ public class DefaultScriptingEngine implements ScriptingEngine
             return true;
 
         Vector scripts=getScripts();
-        Vector script=null;
+        DVector script=null;
         boolean tryIt=false;
         String trigger=null;
+        String[] t=null;
         int triggerCode=0;
         String str=null;
         for(int v=0;v<scripts.size();v++)
         {
             tryIt=false;
-            script=(Vector)scripts.elementAt(v);
+            script=(DVector)scripts.elementAt(v);
             if(script.size()<1) continue;
 
-            trigger=((String)script.elementAt(0)).toUpperCase().trim();
-            triggerCode=getTriggerCode(trigger);
+            trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
+            t=(String[])script.elementAt(0,2);
+            triggerCode=getTriggerCode(trigger,t);
             switch(triggerCode)
             {
             case 42: // cnclmsg_prog
                 if(canTrigger(42))
                 {
-                    trigger=trigger.substring(12).trim();
-                    String command=CMParms.getCleanBit(trigger,0).toUpperCase().trim();
+                    if(t==null) t=compileLine(script,0,"CCT");
+                    String command=t[1];
                     boolean chk=false;
                     int x=command.indexOf('=');
                     if(x>0)
@@ -7921,31 +8023,25 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         chk=msg.isSource(command)||msg.isTarget(command)||msg.isOthers(command);
                     if(chk)
                     {
-                        trigger=CMParms.getPastBit(trigger.trim(),0).trim().toUpperCase();
                         str="";
                         if((msg.source().session()!=null)&&(msg.source().session().previousCMD()!=null))
                             str=" "+CMParms.combine(msg.source().session().previousCMD(),0).toUpperCase()+" ";
-                        if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+                        if((t[2].length()==0)||(t[2].equals("ALL")))
+                            tryIt=true;
+                        else
+                        if((t[2].equals("P"))&&(t.length>3))
                         {
-                            trigger=trigger.substring(1).trim();
-                            if(match(str.trim(),trigger))
+                            if(match(str.trim(),t[3]))
                                 tryIt=true;
                         }
                         else
-                        if((trigger.length()==0)||(trigger.equalsIgnoreCase("all")))
-                            tryIt=true;
-                        else
+                        for(int i=2;i<t.length;i++)
                         {
-                            int num=CMParms.numBits(trigger);
-                            for(int i=0;i<num;i++)
+                            if(str.indexOf(" "+t[i]+" ")>=0)
                             {
-                                String t=CMParms.getCleanBit(trigger,i).trim();
-                                if(str.indexOf(" "+t+" ")>=0)
-                                {
-                                    str=(t.trim()+" "+str.trim()).trim();
-                                    tryIt=true;
-                                    break;
-                                }
+                                str=(t[i].trim()+" "+str.trim()).trim();
+                                tryIt=true;
+                                break;
                             }
                         }
                     }
@@ -7976,6 +8072,29 @@ public class DefaultScriptingEngine implements ScriptingEngine
         }
         return true;
     }
+    
+    protected String standardTriggerCheck(DVector script, String[] t, Environmental E) {
+        if(E==null) return null;
+        if(t==null) t=compileLine(script,0,"CT");
+        String NAME=E.Name().toUpperCase();
+        if((t[1].length()==0)
+        ||(t[1].equals("ALL"))
+        ||(t[1].equals("P")
+            &&(t.length>2)
+            &&((t[2].indexOf(NAME)>=0)
+                ||(E.ID().equalsIgnoreCase(t[2]))
+                ||(t[2].equalsIgnoreCase("ALL")))))
+            return t[1];
+        for(int i=1;i<t.length;i++)
+        {
+            if(((" "+NAME+" ").indexOf(" "+t[i]+" ")>=0)
+            ||(E.ID().equalsIgnoreCase(t[i]))
+            ||(t[i].equalsIgnoreCase("ALL")))
+                return t[i];
+        }
+        return null;
+        
+    }
 
     public void executeMsg(Environmental affecting, CMMsg msg)
     {
@@ -7999,14 +8118,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
         &&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
         &&(msg.source()!=monster))
             lastToHurtMe=msg.source();
-        Vector script=null;
+        DVector script=null;
+        String trigger=null;
+        String[] t=null;
         for(int v=0;v<scripts.size();v++)
         {
-            script=(Vector)scripts.elementAt(v);
+            script=(DVector)scripts.elementAt(v);
             if(script.size()<1) continue;
 
-            String trigger=((String)script.elementAt(0)).toUpperCase().trim();
-            int triggerCode=getTriggerCode(trigger);
+            trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
+            t=(String[])script.elementAt(0,2);
+            int triggerCode=getTriggerCode(trigger,t);
             int targetMinorTrigger=-1;
             switch(triggerCode)
             {
@@ -8018,10 +8140,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&canTrigger(1)
                 &&((!(affecting instanceof MOB))||CMLib.flags().canSenseMoving(msg.source(),(MOB)affecting)))
                 {
-                    int prcnt=CMath.s_int(CMParms.getCleanBit(trigger,1).trim());
+                    if(t==null) t=compileLine(script,0,"CR");
+                    int prcnt=CMath.s_int(t[1]);
                     if(CMLib.dice().rollPercentage()<prcnt)
                     {
-                        que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
+                        enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
                         return;
                     }
                 }
@@ -8032,10 +8155,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(!msg.amISource(eventMob))
                 &&(canActAtAll(monster)))
                 {
-                    int prcnt=CMath.s_int(CMParms.getCleanBit(trigger,1).trim());
+                    if(t==null) t=compileLine(script,0,"CR");
+                    int prcnt=CMath.s_int(t[1]);
                     if(CMLib.dice().rollPercentage()<prcnt)
                     {
-                        que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
+                        enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
                         return;
                     }
                 }
@@ -8048,6 +8172,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                    ||((msg.target()==monster)&&(msg.targetMessage()!=null)&&(msg.tool()==null)))
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
                 {
+                    if(t==null) t=compileLine(script,0,"CT");
                     String str=null;
                     if(msg.othersMessage()!=null)
                         str=CMStrings.replaceAll(CMStrings.getSayFromMessage(msg.othersMessage().toUpperCase()),"`","'");
@@ -8056,34 +8181,28 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     str=(" "+str+" ").toUpperCase();
                     str=CMStrings.removeColors(str);
                     str=CMStrings.replaceAll(str,"\n\r"," ");
-                    trigger=trigger.substring(11).trim();
-                    if((trigger.length()==0)||(trigger.equalsIgnoreCase("all")))
+                    if((t[1].length()==0)||(t[1].equals("ALL")))
                     {
-                        que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str));
+                        enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str);
                         return;
                     }
                     else
-                    if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+                    if((t[1].equals("P"))&&(t.length>2))
                     {
-                        trigger=trigger.substring(1).trim();
-                        if(match(str.trim(),trigger))
+                        if(match(str.trim(),t[2]))
                         {
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str));
+                            enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str);
                             return;
                         }
                     }
                     else
+                    for(int i=1;i<t.length;i++)
                     {
-                        int num=CMParms.numBits(trigger);
-                        for(int i=0;i<num;i++)
+                        int x=str.indexOf(" "+t[i]+" ");
+                        if(x>=0)
                         {
-                            String t=CMParms.getCleanBit(trigger,i);
-                            int x=str.indexOf(" "+t+" ");
-                            if(x>=0)
-                            {
-                                que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str.substring(x).trim()));
-                                return;
-                            }
+                            enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,null,script,1,str.substring(x).trim());
+                            return;
                         }
                     }
                 }
@@ -8099,36 +8218,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(msg.tool() instanceof Item)
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
                 {
-                    trigger=trigger.substring(9).trim();
-                    if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+                    String check=standardTriggerCheck(script,t,msg.tool());
+                    if(check!=null)
                     {
-                        trigger=trigger.substring(1).trim().toUpperCase();
-                        if((trigger.equalsIgnoreCase(msg.tool().Name()))
-                        ||(msg.tool().ID().equalsIgnoreCase(trigger))
-                        ||(trigger.equalsIgnoreCase("ALL")))
-                        {
-                            if(lastMsg==msg) break;
-                            lastMsg=msg;
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null));
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        int num=CMParms.numBits(trigger);
-                        for(int i=0;i<num;i++)
-                        {
-                            String t=CMParms.getCleanBit(trigger,i).toUpperCase();
-                            if(((" "+msg.tool().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
-                            ||(msg.tool().ID().equalsIgnoreCase(t))
-                            ||(t.equalsIgnoreCase("ALL")))
-                            {
-                                if(lastMsg==msg) break;
-                                lastMsg=msg;
-                                que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null));
-                                return;
-                            }
-                        }
+                        if(lastMsg==msg) break;
+                        lastMsg=msg;
+                        enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,check);
+                        return;
                     }
                 }
                 break;
@@ -8138,40 +8234,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(!msg.amISource(monster))
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
                 {
-                    trigger=trigger.substring(10).trim();
-                    if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+                    String check=standardTriggerCheck(script,t,msg.target());
+                    if(check!=null)
                     {
-                        trigger=trigger.substring(1).trim().toUpperCase();
-                        if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
-                        ||(msg.target().ID().equalsIgnoreCase(trigger))
-                        ||(trigger.equalsIgnoreCase("ALL")))
-                        {
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        int num=CMParms.numBits(trigger);
-                        for(int i=0;i<num;i++)
-                        {
-                            String t=CMParms.getCleanBit(trigger,i).toUpperCase();
-                            if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
-                            ||(msg.target().ID().equalsIgnoreCase(t))
-                            ||(t.equalsIgnoreCase("ALL")))
-                            {
-                                que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
-                                return;
-                            }
-                        }
+                        enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,check);
+                        return;
                     }
                 }
                 break;
             case 41: // execmsg_prog
                 if(canTrigger(41))
                 {
-                    trigger=trigger.substring(12).trim();
-                    String command=CMParms.getCleanBit(trigger,0).toUpperCase().trim();
+                    if(t==null) t=compileLine(script,0,"CCT");
+                    String command=t[1];
                     boolean chk=false;
                     int x=command.indexOf('=');
                     if(x>0)
@@ -8189,32 +8264,26 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         chk=msg.isSource(command)||msg.isTarget(command)||msg.isOthers(command);
                     if(chk)
                     {
-                        trigger=CMParms.getPastBit(trigger.trim(),0).trim().toUpperCase();
                         String str="";
                         if((msg.source().session()!=null)&&(msg.source().session().previousCMD()!=null))
                             str=" "+CMParms.combine(msg.source().session().previousCMD(),0).toUpperCase()+" ";
                         boolean doIt=false;
-                        if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+                        if((t[2].length()==0)||(t[2].equals("ALL")))
+                            doIt=true;
+                        else
+                        if((t[2].equals("P"))&&(t.length>3))
                         {
-                            trigger=trigger.substring(1).trim();
-                            if(match(str.trim(),trigger))
+                            if(match(str.trim(),t[3]))
                                 doIt=true;
                         }
                         else
-                        if(trigger.trim().equalsIgnoreCase("ALL")||(trigger.trim().length()==0))
-                            doIt=true;
-                        else
+                        for(int i=2;i<t.length;i++)
                         {
-                            int num=CMParms.numBits(trigger);
-                            for(int i=0;i<num;i++)
+                            if(str.indexOf(" "+t[i]+" ")>=0)
                             {
-                                String t=CMParms.getCleanBit(trigger,i).trim();
-                                if(str.indexOf(" "+t+" ")>=0)
-                                {
-                                    str=(t.trim()+" "+str.trim()).trim();
-                                    doIt=true;
-                                    break;
-                                }
+                                str=(t[i].trim()+" "+str.trim()).trim();
+                                doIt=true;
+                                break;
                             }
                         }
                         if(doIt)
@@ -8224,12 +8293,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                 Tool=(Item)msg.tool();
                             if(Tool==null) Tool=defaultItem;
                             if(msg.target() instanceof MOB)
-                                que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str));
+                                enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
                             else
                             if(msg.target() instanceof Item)
-                                que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str));
+                                enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str);
                             else
-                                que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str));
+                                enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
                             return;
                         }
                     }
@@ -8241,32 +8310,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(!msg.amISource(monster))
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
                 {
-                    trigger=trigger.substring(9).trim();
-                    if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+                    String check=standardTriggerCheck(script,t,msg.target());
+                    if(check!=null)
                     {
-                        trigger=trigger.substring(1).trim().toUpperCase();
-                        if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
-                        ||(msg.target().ID().equalsIgnoreCase(trigger))
-                        ||(trigger.equalsIgnoreCase("ALL")))
-                        {
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        int num=CMParms.numBits(trigger);
-                        for(int i=0;i<num;i++)
-                        {
-                            String t=CMParms.getCleanBit(trigger,i).toUpperCase();
-                            if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
-                            ||(msg.target().ID().equalsIgnoreCase(t))
-                            ||(t.equalsIgnoreCase("ALL")))
-                            {
-                                que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
-                                return;
-                            }
-                        }
+                        enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,check);
+                        return;
                     }
                 }
                 break;
@@ -8277,36 +8325,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(msg.target() instanceof Item)
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
                 {
-                    trigger=trigger.substring(8).trim();
-                    if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+                    String check=standardTriggerCheck(script,t,msg.target());
+                    if(check!=null)
                     {
-                        trigger=trigger.substring(1).trim().toUpperCase();
-                        if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
-                        ||(msg.target().ID().equalsIgnoreCase(trigger))
-                        ||(trigger.equalsIgnoreCase("ALL")))
-                        {
-                            if(lastMsg==msg) break;
-                            lastMsg=msg;
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        int num=CMParms.numBits(trigger);
-                        for(int i=0;i<num;i++)
-                        {
-                            String t=CMParms.getCleanBit(trigger,i).toUpperCase();
-                            if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
-                            ||(msg.target().ID().equalsIgnoreCase(t))
-                            ||(t.equalsIgnoreCase("ALL")))
-                            {
-                                if(lastMsg==msg) break;
-                                lastMsg=msg;
-                                que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
-                                return;
-                            }
-                        }
+                        if(lastMsg==msg) break;
+                        lastMsg=msg;
+                        enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,check);
+                        return;
                     }
                 }
                 break;
@@ -8317,42 +8342,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(msg.target() instanceof Item)
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
                 {
-                    trigger=trigger.substring(9).trim();
-                    if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+                    String check=standardTriggerCheck(script,t,msg.target());
+                    if(check!=null)
                     {
-                        trigger=trigger.substring(1).trim().toUpperCase();
-                        if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
-                        ||(msg.target().ID().equalsIgnoreCase(trigger))
-                        ||(trigger.equalsIgnoreCase("ALL")))
-                        {
-                            if(lastMsg==msg) break;
-                            lastMsg=msg;
-                            if(msg.target() instanceof Coins)
-                                execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,newObjs());
-                            else
-                                que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        int num=CMParms.numBits(trigger);
-                        for(int i=0;i<num;i++)
-                        {
-                            String t=CMParms.getCleanBit(trigger,i).toUpperCase();
-                            if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
-                            ||(msg.target().ID().equalsIgnoreCase(t))
-                            ||(t.equalsIgnoreCase("ALL")))
-                            {
-                                if(lastMsg==msg) break;
-                                lastMsg=msg;
-                                if(msg.target() instanceof Coins)
-                                    execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,newObjs());
-                                else
-                                    que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
-                                return;
-                            }
-                        }
+                        if(lastMsg==msg) break;
+                        lastMsg=msg;
+                        if(msg.target() instanceof Coins)
+                            execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
+                        else
+                            enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,check);
+                        return;
                     }
                 }
                 break;
@@ -8363,32 +8362,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(msg.target() instanceof Item)
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
                 {
-                    trigger=trigger.substring(11).trim();
-                    if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+                    String check=standardTriggerCheck(script,t,msg.target());
+                    if(check!=null)
                     {
-                        trigger=trigger.substring(1).trim().toUpperCase();
-                        if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
-                        ||(msg.target().ID().equalsIgnoreCase(trigger))
-                        ||(trigger.equalsIgnoreCase("ALL")))
-                        {
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        int num=CMParms.numBits(trigger);
-                        for(int i=0;i<num;i++)
-                        {
-                            String t=CMParms.getCleanBit(trigger,i).toUpperCase();
-                            if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
-                            ||(msg.target().ID().equalsIgnoreCase(t))
-                            ||(t.equalsIgnoreCase("ALL")))
-                            {
-                                que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
-                                return;
-                            }
-                        }
+                        enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,check);
+                        return;
                     }
                 }
                 break;
@@ -8406,42 +8384,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(!msg.amISource(monster))
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
                 {
-                    switch(triggerCode)
-                    {
-                    case 34:
-                    case 36:
-                        trigger=trigger.substring(9).trim(); break;
-                    case 35:
-                        trigger=trigger.substring(10).trim(); break;
-                    case 37:
-                        trigger=trigger.substring(11).trim(); break;
-                    }
                     Item I=(msg.target() instanceof Item)?(Item)msg.target():defaultItem;
-                    if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+                    String check=standardTriggerCheck(script,t,msg.target());
+                    if(check!=null)
                     {
-                        trigger=trigger.substring(1).trim().toUpperCase();
-                        if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
-                        ||(msg.target().ID().equalsIgnoreCase(trigger))
-                        ||(trigger.equalsIgnoreCase("ALL")))
-                        {
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,I,defaultItem,script,1,null));
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        int num=CMParms.numBits(trigger);
-                        for(int i=0;i<num;i++)
-                        {
-                            String t=CMParms.getCleanBit(trigger,i).toUpperCase();
-                            if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
-                            ||(msg.target().ID().equalsIgnoreCase(t))
-                            ||(t.equalsIgnoreCase("ALL")))
-                            {
-                                que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,I,defaultItem,script,1,null));
-                                return;
-                            }
-                        }
+                        enqueResponse(affecting,msg.source(),msg.target(),monster,I,defaultItem,script,1,check);
+                        return;
                     }
                 }
                 break;
@@ -8453,32 +8401,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(msg.target() instanceof Item)
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
                 {
-                    trigger=trigger.substring(12).trim();
-                    if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+                    String check=standardTriggerCheck(script,t,msg.target());
+                    if(check!=null)
                     {
-                        trigger=trigger.substring(1).trim().toUpperCase();
-                        if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
-                        ||(msg.target().ID().equalsIgnoreCase(trigger))
-                        ||(trigger.equalsIgnoreCase("ALL")))
-                        {
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        int num=CMParms.numBits(trigger);
-                        for(int i=0;i<num;i++)
-                        {
-                            String t=CMParms.getCleanBit(trigger,i).toUpperCase();
-                            if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
-                            ||(msg.target().ID().equalsIgnoreCase(t))
-                            ||(t.equalsIgnoreCase("ALL")))
-                            {
-                                que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
-                                return;
-                            }
-                        }
+                        enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,check);
+                        return;
                     }
                 }
                 break;
@@ -8490,42 +8417,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(msg.target() instanceof Item)
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
                 {
-                    trigger=trigger.substring(8).trim();
-                    if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+                    String check=standardTriggerCheck(script,t,msg.tool());
+                    if(check!=null)
                     {
-                        trigger=trigger.substring(1).trim().toUpperCase();
-                        if(((" "+trigger+" ").indexOf(msg.tool().Name().toUpperCase())>=0)
-                        ||(msg.tool().ID().equalsIgnoreCase(trigger))
-                        ||(trigger.equalsIgnoreCase("ALL")))
-                        {
-                            if(lastMsg==msg) break;
-                            lastMsg=msg;
-                            if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
-                                execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,newObjs());
-                            else
-                                que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)msg.tool(),script,1,null));
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        int num=CMParms.numBits(trigger);
-                        for(int i=0;i<num;i++)
-                        {
-                            String t=CMParms.getCleanBit(trigger,i).toUpperCase();
-                            if(((" "+msg.tool().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
-                            ||(msg.tool().ID().equalsIgnoreCase(t))
-                            ||(t.equalsIgnoreCase("ALL")))
-                            {
-                                if(lastMsg==msg) break;
-                                lastMsg=msg;
-                                if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
-                                    execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,null,newObjs());
-                                else
-                                    que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)msg.tool(),script,1,null));
-                                return;
-                            }
-                        }
+                        if(lastMsg==msg) break;
+                        lastMsg=msg;
+                        if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
+                            execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
+                        else
+                            enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)msg.tool(),script,1,check);
+                        return;
                     }
                 }
                 break;
@@ -8536,42 +8437,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(!msg.amISource(monster))
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
                 {
-                    trigger=trigger.substring(8).trim();
-                    if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+                    String check=standardTriggerCheck(script,t,msg.tool());
+                    if(check!=null)
                     {
-                        trigger=trigger.substring(1).trim().toUpperCase();
-                        if(((" "+trigger+" ").indexOf(msg.tool().Name().toUpperCase())>=0)
-                        ||(msg.tool().ID().equalsIgnoreCase(trigger))
-                        ||(trigger.equalsIgnoreCase("ALL")))
-                        {
-                            Item product=makeCheapItem(msg.tool());
-                            if((product instanceof Coins)
-                            &&(product.owner() instanceof Room))
-                                execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,newObjs());
-                            else
-                                que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,product,product,script,1,null));
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        int num=CMParms.numBits(trigger);
-                        for(int i=0;i<num;i++)
-                        {
-                            String t=CMParms.getCleanBit(trigger,i).toUpperCase();
-                            if(((" "+msg.tool().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
-                            ||(msg.tool().ID().equalsIgnoreCase(t))
-                            ||(t.equalsIgnoreCase("ALL")))
-                            {
-                                Item product=makeCheapItem(msg.tool());
-                                if((product instanceof Coins)
-                                &&(product.owner() instanceof Room))
-                                    execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,newObjs());
-                                else
-                                    que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,product,product,script,1,null));
-                                return;
-                            }
-                        }
+                        Item product=makeCheapItem(msg.tool());
+                        if((product instanceof Coins)
+                        &&(product.owner() instanceof Room))
+                            execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,check,newObjs());
+                        else
+                            enqueResponse(affecting,msg.source(),monster,monster,product,product,script,1,check);
+                        return;
                     }
                 }
                 break;
@@ -8581,42 +8456,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(!msg.amISource(monster))
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
                 {
-                    trigger=trigger.substring(8).trim();
-                    if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+                    String check=standardTriggerCheck(script,t,msg.tool());
+                    if(check!=null)
                     {
-                        trigger=trigger.substring(1).trim().toUpperCase();
-                        if(((" "+trigger+" ").indexOf(msg.tool().Name().toUpperCase())>=0)
-                        ||(msg.tool().ID().equalsIgnoreCase(trigger))
-                        ||(trigger.equalsIgnoreCase("ALL")))
-                        {
-                            Item product=makeCheapItem(msg.tool());
-                            if((product instanceof Coins)
-                            &&(product.owner() instanceof Room))
-                                execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,newObjs());
-                            else
-                                que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,product,product,script,1,null));
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        int num=CMParms.numBits(trigger);
-                        for(int i=0;i<num;i++)
-                        {
-                            String t=CMParms.getCleanBit(trigger,i).toUpperCase();
-                            if(((" "+msg.tool().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
-                            ||(msg.tool().ID().equalsIgnoreCase(t))
-                            ||(t.equalsIgnoreCase("ALL")))
-                            {
-                                Item product=makeCheapItem(msg.tool());
-                                if((product instanceof Coins)
-                                &&(product.owner() instanceof Room))
-                                    execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,newObjs());
-                                else
-                                    que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,product,product,script,1,null));
-                                return;
-                            }
-                        }
+                        Item product=makeCheapItem(msg.tool());
+                        if((product instanceof Coins)
+                        &&(product.owner() instanceof Room))
+                            execute(affecting,msg.source(),monster,monster,product,(Item)product.copyOf(),script,null,newObjs());
+                        else
+                            enqueResponse(affecting,msg.source(),monster,monster,product,product,script,1,check);
+                        return;
                     }
                 }
                 break;
@@ -8629,32 +8478,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(msg.target() instanceof Item)
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
                 {
-                    trigger=trigger.substring(9).trim();
-                    if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+                    String check=standardTriggerCheck(script,t,msg.target());
+                    if(check!=null)
                     {
-                        trigger=trigger.substring(1).trim().toUpperCase();
-                        if(((" "+trigger+" ").indexOf(msg.target().Name().toUpperCase())>=0)
-                        ||(msg.target().ID().equalsIgnoreCase(trigger))
-                        ||(trigger.equalsIgnoreCase("ALL")))
-                        {
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
-                            return;
-                        }
-                    }
-                    else
-                    {
-                        int num=CMParms.numBits(trigger);
-                        for(int i=0;i<num;i++)
-                        {
-                            String t=CMParms.getCleanBit(trigger,i).toUpperCase();
-                            if(((" "+msg.target().Name().toUpperCase()+" ").indexOf(" "+t+" ")>=0)
-                            ||(msg.target().ID().equalsIgnoreCase(t))
-                            ||(t.equalsIgnoreCase("ALL")))
-                            {
-                                que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,null));
-                                return;
-                            }
-                        }
+                        enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,check);
+                        return;
                     }
                 }
                 break;
@@ -8665,22 +8493,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(msg.tool() instanceof Coins)
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
                 {
-                    trigger=trigger.substring(10).trim();
-                    if(trigger.toUpperCase().startsWith("ANY")||trigger.toUpperCase().startsWith("ALL"))
-                        trigger=trigger.substring(3).trim();
+                    if(t==null) t=compileLine(script,0,"CR");
+                    if(t[1].startsWith("ANY")||t[1].startsWith("ALL"))
+                        t[1]=t[1].trim();
                     else
                     if(!((Coins)msg.tool()).getCurrency().equals(CMLib.beanCounter().getCurrency(monster)))
                         break;
-                    double t=0.0;
-                    if(CMath.isDouble(trigger.trim()))
-                        t=CMath.s_double(trigger.trim());
+                    double d=0.0;
+                    if(CMath.isDouble(t[1]))
+                        d=CMath.s_double(t[1]);
                     else
-                        t=new Integer(CMath.s_int(trigger.trim())).doubleValue();
-                    if((((Coins)msg.tool()).getTotalValue()>=t)
-                    ||(trigger.equalsIgnoreCase("ALL"))
-                    ||(trigger.equalsIgnoreCase("ANY")))
+                        d=new Integer(CMath.s_int(t[1])).doubleValue();
+                    if((((Coins)msg.tool()).getTotalValue()>=d)
+                    ||(t[1].equals("ALL"))
+                    ||(t[1].equals("ANY")))
                     {
-                        que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null));
+                        enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.tool(),defaultItem,script,1,null);
                         return;
                     }
                 }
@@ -8693,7 +8521,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     ||(affecting instanceof Item))
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
                 {
-                    int prcnt=CMath.s_int(CMParms.getCleanBit(trigger,1).trim());
+                    if(t==null) t=compileLine(script,0,"CR");
+                    int prcnt=CMath.s_int(t[1]);
                     if(CMLib.dice().rollPercentage()<prcnt)
                     {
                         Vector V=(Vector)que.clone();
@@ -8711,7 +8540,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                 break;
                             }
                         }
-                        que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID));
+                        enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID);
                         return;
                     }
                 }
@@ -8722,7 +8551,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(!msg.amISource(eventMob))
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
                 {
-                    int prcnt=CMath.s_int(CMParms.getCleanBit(trigger,1).trim());
+                    if(t==null) t=compileLine(script,0,"CR");
+                    int prcnt=CMath.s_int(t[1]);
                     if(CMLib.dice().rollPercentage()<prcnt)
                     {
                         Vector V=(Vector)que.clone();
@@ -8740,7 +8570,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                 break;
                             }
                         }
-                        que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID));
+                        enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,roomID);
                         return;
                     }
                 }
@@ -8749,6 +8579,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if((msg.sourceMinor()==CMMsg.TYP_DEATH)&&canTrigger(10)
                 &&(msg.amISource(eventMob)||(!(affecting instanceof MOB))))
                 {
+                    if(t==null) t=compileLine(script,0,"C");
                     MOB ded=msg.source();
                     MOB src=lastToHurtMe;
                     if(msg.tool() instanceof MOB)
@@ -8763,6 +8594,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if((msg.sourceMinor()==CMMsg.TYP_DEATH)&&canTrigger(44)
                 &&((msg.tool()==affecting)||(!(affecting instanceof MOB))))
                 {
+                    if(t==null) t=compileLine(script,0,"C");
                     MOB ded=msg.source();
                     MOB src=lastToHurtMe;
                     if(msg.tool() instanceof MOB)
@@ -8777,6 +8609,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if((msg.targetMinor()==CMMsg.TYP_DAMAGE)&&canTrigger(26)
                 &&(msg.amITarget(eventMob)||(msg.tool()==affecting)))
                 {
+                    if(t==null) t=compileLine(script,0,"C");
                     Item I=null;
                     if(msg.tool() instanceof Item)
                         I=(Item)msg.tool();
@@ -8794,10 +8627,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
                 &&(!CMLib.flags().isCloaked(msg.source())))
                 {
-                    int prcnt=CMath.s_int(CMParms.getCleanBit(trigger,1).trim());
+                    if(t==null) t=compileLine(script,0,"CR");
+                    int prcnt=CMath.s_int(t[1]);
                     if(CMLib.dice().rollPercentage()<prcnt)
                     {
-                        que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
+                        enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
                         return;
                     }
                 }
@@ -8812,10 +8646,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
                 &&(!CMLib.flags().isCloaked(msg.source())))
                 {
-                    int prcnt=CMath.s_int(CMParms.getCleanBit(trigger,1).trim());
+                    if(t==null) t=compileLine(script,0,"CR");
+                    int prcnt=CMath.s_int(t[1]);
                     if(CMLib.dice().rollPercentage()<prcnt)
                     {
-                        que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
+                        enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
                         return;
                     }
                 }
@@ -8825,10 +8660,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB)))
                 &&(!CMLib.flags().isCloaked(msg.source())))
                 {
-                    int prcnt=CMath.s_int(CMParms.getCleanBit(trigger,1).trim());
+                    if(t==null) t=compileLine(script,0,"CR");
+                    int prcnt=CMath.s_int(t[1]);
                     if(CMLib.dice().rollPercentage()<prcnt)
                     {
-                        que.addElement(new ScriptableResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null));
+                        enqueResponse(affecting,msg.source(),monster,monster,defaultItem,null,script,1,null);
                         return;
                     }
                 }
@@ -8843,6 +8679,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 43: // imask_prog
                 if((triggerCode!=43)||(msg.amISource(monster)&&canTrigger(43)))
                 {
+                    if(t==null) t=compileLine(script,0,"CT");
                     boolean doIt=false;
                     String str=msg.othersMessage();
                     if(str==null) str=msg.targetMessage();
@@ -8851,30 +8688,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     str=CMLib.coffeeFilter().fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false);
                     str=CMStrings.removeColors(str);
                     str=" "+CMStrings.replaceAll(str,"\n\r"," ").toUpperCase().trim()+" ";
-                    trigger=CMParms.getPastBit(trigger.trim(),0).trim().toUpperCase();
-                    if((trigger.length()==0)||(trigger.equalsIgnoreCase("all")))
+                    if((t[1].length()==0)||(t[1].equals("ALL")))
                         doIt=true;
                     else
-                    if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+                    if((t[1].equals("P"))&&(t.length>2))
                     {
-                        trigger=trigger.substring(1).trim();
-                        if(match(str.trim(),trigger))
+                        if(match(str.trim(),t[2]))
                             doIt=true;
                     }
                     else
-                    {
-                        int num=CMParms.numBits(trigger);
-                        for(int i=0;i<num;i++)
+                    for(int i=1;i<t.length;i++)
+                        if(str.indexOf(" "+t[i]+" ")>=0)
                         {
-                            String t=CMParms.getCleanBit(trigger,i).trim();
-                            if(str.indexOf(" "+t+" ")>=0)
-                            {
-                                str=t;
-                                doIt=true;
-                                break;
-                            }
+                            str=t[i];
+                            doIt=true;
+                            break;
                         }
-                    }
                     if(doIt)
                     {
                         Item Tool=null;
@@ -8882,12 +8711,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             Tool=(Item)msg.tool();
                         if(Tool==null) Tool=defaultItem;
                         if(msg.target() instanceof MOB)
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str));
+                            enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
                         else
                         if(msg.target() instanceof Item)
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,1,str));
+                            enqueResponse(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,1,str);
                         else
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,defaultItem,script,1,str));
+                            enqueResponse(affecting,msg.source(),null,monster,Tool,defaultItem,script,1,str);
                         return;
                     }
                 }
@@ -8897,17 +8726,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&canTrigger(38)
                 &&(msg.tool() instanceof Social))
                 {
-                    trigger=CMParms.getPastBit(trigger.trim(),0);
-                    if(((Social)msg.tool()).Name().toUpperCase().startsWith(trigger.toUpperCase()))
+                    if(t==null) t=compileLine(script,0,"CR");
+                    if(((Social)msg.tool()).Name().toUpperCase().startsWith(t[1]))
                     {
                         Item Tool=defaultItem;
                         if(msg.target() instanceof MOB)
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,msg.tool().Name()));
+                            enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,msg.tool().Name());
                         else
                         if(msg.target() instanceof Item)
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,1,msg.tool().Name()));
+                            enqueResponse(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,1,msg.tool().Name());
                         else
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,defaultItem,script,1,msg.tool().Name()));
+                            enqueResponse(affecting,msg.source(),null,monster,Tool,defaultItem,script,1,msg.tool().Name());
                         return;
                     }
                 }
@@ -8922,8 +8751,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(CMath.bset(msg.othersMajor(),CMMsg.MASK_CHANNEL))
                 &&canTrigger(33))
                 {
+                    if(t==null) t=compileLine(script,0,"CCT");
                     boolean doIt=false;
-                    String channel=CMParms.getBit(trigger.trim(),1);
+                    String channel=t[1];
                     int channelInt=msg.othersMinor()-CMMsg.TYP_CHANNEL;
                     String str=null;
                     if(channel.equalsIgnoreCase(CMLib.channels().getChannelName(channelInt)))
@@ -8944,30 +8774,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         }
                         str=" "+CMStrings.removeColors(str)+" ";
                         str=CMStrings.replaceAll(str,"\n\r"," ");
-                        trigger=CMParms.getPastBit(trigger.trim(),1);
-                        if((trigger.length()==0)||(trigger.equalsIgnoreCase("all")))
+                        if((t[2].length()==0)||(t[2].equals("ALL")))
                             doIt=true;
                         else
-                        if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
+                        if(t[2].equals("P")&&(t.length>2))
                         {
-                            trigger=trigger.substring(1).trim().toUpperCase();
-                            if(match(str.trim(),trigger))
+                            if(match(str.trim(),t[3]))
                                 doIt=true;
                         }
                         else
-                        {
-                            int num=CMParms.numBits(trigger);
-                            for(int i=0;i<num;i++)
+                        for(int i=2;i<t.length;i++)
+                            if(str.indexOf(" "+t[i]+" ")>=0)
                             {
-                                String t=CMParms.getCleanBit(trigger,i).trim();
-                                if(str.indexOf(" "+t+" ")>=0)
-                                {
-                                    str=t;
-                                    doIt=true;
-                                    break;
-                                }
+                                str=t[i];
+                                doIt=true;
+                                break;
                             }
-                        }
                     }
                     if(doIt)
                     {
@@ -8976,12 +8798,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             Tool=(Item)msg.tool();
                         if(Tool==null) Tool=defaultItem;
                         if(msg.target() instanceof MOB)
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str));
+                            enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
                         else
                         if(msg.target() instanceof Item)
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,1,str));
+                            enqueResponse(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,1,str);
                         else
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,defaultItem,script,1,str));
+                            enqueResponse(affecting,msg.source(),null,monster,Tool,defaultItem,script,1,str);
                         return;
                     }
                 }
@@ -8995,16 +8817,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(str==null) str=msg.sourceMessage();
                     if(str==null) break;
                     str=CMLib.coffeeFilter().fullOutFilter(null,monster,msg.source(),msg.target(),msg.tool(),str,false);
-                    trigger=CMParms.getPastBit(trigger.trim(),0);
-                    if(CMParms.getCleanBit(trigger,0).equalsIgnoreCase("p"))
-                        doIt=str.trim().equals(trigger.substring(1).trim());
+                    if(t==null) t=compileLine(script,0,"Cp");
+                    if(CMParms.getCleanBit(t[1],0).equalsIgnoreCase("p"))
+                        doIt=str.trim().equals(t[1].substring(1).trim());
                     else
                     {
-                        Pattern P=(Pattern)patterns.get(trigger);
+                        Pattern P=(Pattern)patterns.get(t[1]);
                         if(P==null)
                         {
                             P=Pattern.compile(trigger, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
-                            patterns.put(trigger,P);
+                            patterns.put(t[1],P);
                         }
                         Matcher M=P.matcher(str);
                         doIt=M.find();
@@ -9017,12 +8839,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             Tool=(Item)msg.tool();
                         if(Tool==null) Tool=defaultItem;
                         if(msg.target() instanceof MOB)
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str));
+                            enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
                         else
                         if(msg.target() instanceof Item)
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,1,str));
+                            enqueResponse(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,1,str);
                         else
-                            que.addElement(new ScriptableResponse(affecting,msg.source(),null,monster,Tool,defaultItem,script,1,str));
+                            enqueResponse(affecting,msg.source(),null,monster,Tool,defaultItem,script,1,str);
                         return;
                     }
                 }
@@ -9031,14 +8853,19 @@ public class DefaultScriptingEngine implements ScriptingEngine
         }
     }
 
-    protected int getTriggerCode(String trigger)
+    protected int getTriggerCode(String trigger, String[] ttrigger)
     {
-        int x=trigger.indexOf(" ");
         Integer I=null;
-        if(x<0)
-            I=(Integer)progH.get(trigger.toUpperCase().trim());
+        if((ttrigger!=null)&&(ttrigger.length>0))
+            I=(Integer)progH.get(ttrigger[0]);
         else
-            I=(Integer)progH.get(trigger.substring(0,x).toUpperCase().trim());
+        {
+            int x=trigger.indexOf(" ");
+            if(x<0)
+                I=(Integer)progH.get(trigger.toUpperCase().trim());
+            else
+                I=(Integer)progH.get(trigger.substring(0,x).toUpperCase().trim());
+        }
         if(I==null) return 0;
         return I.intValue();
     }
@@ -9109,20 +8936,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
         Vector scripts=getScripts();
 
         int triggerCode=-1;
+        String trigger="";
+        String[] t=null;
         for(int thisScriptIndex=0;thisScriptIndex<scripts.size();thisScriptIndex++)
         {
-            Vector script=(Vector)scripts.elementAt(thisScriptIndex);
-            String trigger="";
-            if(script.size()>0)
-                trigger=((String)script.elementAt(0)).toUpperCase().trim();
-            triggerCode=getTriggerCode(trigger);
+            DVector script=(DVector)scripts.elementAt(thisScriptIndex);
+            if(script.size()<2) continue;
+            trigger=((String)script.elementAt(0,1)).toUpperCase().trim();
+            t=(String[])script.elementAt(0,2);
+            triggerCode=getTriggerCode(trigger,t);
             tickStatus=Tickable.STATUS_SCRIPT+triggerCode;
             switch(triggerCode)
             {
             case 5: // rand_Prog
                 if((!mob.amDead())&&canTrigger(5))
                 {
-                    int prcnt=CMath.s_int(CMParms.getCleanBit(trigger,1).trim());
+                    if(t==null) t=compileLine(script,0,"CR");
+                    int prcnt=CMath.s_int(t[1]);
                     if(CMLib.dice().rollPercentage()<prcnt)
                         execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
                 }
@@ -9135,8 +8965,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         targetTick=((Integer)delayTargetTimes.get(new Integer(thisScriptIndex))).intValue();
                     else
                     {
-                        int low=CMath.s_int(CMParms.getCleanBit(trigger,1).trim());
-                        int high=CMath.s_int(CMParms.getCleanBit(trigger,2).trim());
+                        if(t==null) t=compileLine(script,0,"CCR");
+                        int low=CMath.s_int(t[1]);
+                        int high=CMath.s_int(t[2]);
                         if(high<low) high=low;
                         targetTick=CMLib.dice().roll(1,high-low+1,low-1);
                         delayTargetTimes.put(new Integer(thisScriptIndex),new Integer(targetTick));
@@ -9158,7 +8989,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 7: // fightProg
                 if((mob.isInCombat())&&(!mob.amDead())&&canTrigger(7))
                 {
-                    int prcnt=CMath.s_int(CMParms.getCleanBit(trigger,1).trim());
+                    if(t==null) t=compileLine(script,0,"CR");
+                    int prcnt=CMath.s_int(t[1]);
                     if(CMLib.dice().rollPercentage()<prcnt)
                         execute(affecting,mob.getVictim(),mob,mob,defaultItem,null,script,null,newObjs());
                 }
@@ -9168,7 +9000,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(((Item)ticking).owner() instanceof MOB)
                 &&(((MOB)((Item)ticking).owner()).isInCombat()))
                 {
-                    int prcnt=CMath.s_int(CMParms.getCleanBit(trigger,1).trim());
+                    if(t==null) t=compileLine(script,0,"CR");
+                    int prcnt=CMath.s_int(t[1]);
                     if(CMLib.dice().rollPercentage()<prcnt)
                     {
                         MOB M=(MOB)((Item)ticking).owner();
@@ -9180,7 +9013,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 11: // hitprcnt
                 if((mob.isInCombat())&&(!mob.amDead())&&canTrigger(11))
                 {
-                    int floor=(int)Math.round(CMath.mul(CMath.div(CMath.s_int(CMParms.getCleanBit(trigger,1).trim()),100.0),mob.maxState().getHitPoints()));
+                    if(t==null) t=compileLine(script,0,"CR");
+                    int prcnt=CMath.s_int(t[1]);
+                    int floor=(int)Math.round(CMath.mul(CMath.div(prcnt,100.0),mob.maxState().getHitPoints()));
                     if(mob.curState().getHitPoints()<=floor)
                         execute(affecting,mob.getVictim(),mob,mob,defaultItem,null,script,null,newObjs());
                 }
@@ -9193,7 +9028,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     MOB M=(MOB)((Item)ticking).owner();
                     if(!M.amDead())
                     {
-                        int floor=(int)Math.round(CMath.mul(CMath.div(CMath.s_int(CMParms.getCleanBit(trigger,1).trim()),100.0),M.maxState().getHitPoints()));
+                        if(t==null) t=compileLine(script,0,"CR");
+                        int prcnt=CMath.s_int(t[1]);
+                        int floor=(int)Math.round(CMath.mul(CMath.div(prcnt,100.0),M.maxState().getHitPoints()));
                         if(M.curState().getHitPoints()<=floor)
                             execute(affecting,M,mob.getVictim(),mob,defaultItem,null,script,null,newObjs());
                     }
@@ -9202,6 +9039,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 6: // once_prog
                 if(!oncesDone.contains(script)&&canTrigger(6))
                 {
+                    if(t==null) t=compileLine(script,0,"C");
                     oncesDone.addElement(script);
                     execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
                 }
@@ -9211,6 +9049,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&canTrigger(14)
                 &&(!mob.amDead()))
                 {
+                    if(t==null) t=compileLine(script,0,"CT");
                     int lastTimeProgDone=-1;
                     if(lastTimeProgsDone.containsKey(new Integer(thisScriptIndex)))
                         lastTimeProgDone=((Integer)lastTimeProgsDone.get(new Integer(thisScriptIndex))).intValue();
@@ -9218,12 +9057,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(lastTimeProgDone!=time)
                     {
                         boolean done=false;
-                        for(int i=1;i<CMParms.numBits(trigger);i++)
+                        for(int i=1;i<t.length;i++)
                         {
-                            if(time==CMath.s_int(CMParms.getCleanBit(trigger,i).trim()))
+                            if(time==CMath.s_int(t[i]))
                             {
                                 done=true;
-                                execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
+                                execute(affecting,mob,mob,mob,defaultItem,null,script,""+time,newObjs());
                                 lastTimeProgsDone.remove(new Integer(thisScriptIndex));
                                 lastTimeProgsDone.put(new Integer(thisScriptIndex),new Integer(time));
                                 break;
@@ -9238,6 +9077,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if((mob.location()!=null)&&canTrigger(15)
                 &&(!mob.amDead()))
                 {
+                    if(t==null) t=compileLine(script,0,"CT");
                     int lastDayProgDone=-1;
                     if(lastDayProgsDone.containsKey(new Integer(thisScriptIndex)))
                         lastDayProgDone=((Integer)lastDayProgsDone.get(new Integer(thisScriptIndex))).intValue();
@@ -9245,9 +9085,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(lastDayProgDone!=day)
                     {
                         boolean done=false;
-                        for(int i=1;i<CMParms.numBits(trigger);i++)
+                        for(int i=1;i<t.length;i++)
                         {
-                            if(day==CMath.s_int(CMParms.getCleanBit(trigger,i).trim()))
+                            if(day==CMath.s_int(t[i]))
                             {
                                 done=true;
                                 execute(affecting,mob,mob,mob,defaultItem,null,script,null,newObjs());
@@ -9264,10 +9104,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
             case 13: // quest time prog
                 if(!oncesDone.contains(script)&&canTrigger(13))
                 {
-                    Quest Q=getQuest(CMParms.getCleanBit(trigger,1));
+                    if(t==null) t=compileLine(script,0,"CCC");
+                    Quest Q=getQuest(t[1]);
                     if((Q!=null)&&(Q.running())&&(!Q.stopping()))
                     {
-                        int time=CMath.s_int(CMParms.getCleanBit(trigger,2).trim());
+                        int time=CMath.s_int(t[2]);
                         if(time>=Q.minsRemaining())
                         {
                             oncesDone.addElement(script);
@@ -9288,6 +9129,38 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
     public void initializeClass(){};
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    
+    public void enqueResponse(Environmental host,
+                              MOB source,
+                              Environmental target,
+                              MOB monster,
+                              Item primaryItem,
+                              Item secondaryItem,
+                              DVector script,
+                              int ticks,
+                              String msg)
+    {
+        if(noDelay)
+            execute(host,source,target,monster,primaryItem,secondaryItem,script,msg,newObjs());
+        else
+            que.addElement(new ScriptableResponse(host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg));
+    }
+    
+    public void prequeResponse(Environmental host,
+                               MOB source,
+                               Environmental target,
+                               MOB monster,
+                               Item primaryItem,
+                               Item secondaryItem,
+                               DVector script,
+                               int ticks,
+                               String msg)
+    {
+        if(noDelay)
+            execute(host,source,target,monster,primaryItem,secondaryItem,script,msg,newObjs());
+        else
+            que.insertElementAt(new ScriptableResponse(host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg),0);
+    }
     
     public void dequeResponses()
     {

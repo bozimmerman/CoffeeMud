@@ -45,7 +45,7 @@ public class ServiceEngine implements ThreadEngine
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     
 	protected Vector tickGroup=new Vector();
-	public Enumeration tickGroups(){return ((Vector)tickGroup.clone()).elements();}
+	public Enumeration tickGroups(){return DVector.s_enum(tickGroup);}
     private boolean isSuspended=false;
 	
 	public void delTickGroup(Tick tock)

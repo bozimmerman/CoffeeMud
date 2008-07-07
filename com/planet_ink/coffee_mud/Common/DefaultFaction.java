@@ -82,15 +82,15 @@ public class DefaultFaction implements Faction, MsgListener
     public boolean showInSpecialReported(){return showInSpecialReported;}
     public boolean showInEditor(){return showInEditor;}
     public boolean showInFactionsCommand(){return showInFactionsCommand;}
-    public Enumeration ranges(){ return ((Hashtable)ranges.clone()).elements(); }
-    public Enumeration defaults(){return ((Vector)defaults.clone()).elements();}
-    public Enumeration autoDefaults(){return ((Vector)autoDefaults.clone()).elements();}
+    public Enumeration ranges(){ return DVector.s_enum(ranges,false); }
+    public Enumeration defaults(){return DVector.s_enum(defaults);}
+    public Enumeration autoDefaults(){return DVector.s_enum(autoDefaults);}
     public double rateModifier(){return rateModifier;}
-    public Enumeration changeEventKeys(){return  ((Hashtable)changes.clone()).keys();}
-    public Enumeration factors(){return  ((Vector)factors.clone()).elements();}
-    public Enumeration relationFactions(){return  ((Hashtable)relations.clone()).keys();}
-    public Enumeration abilityUsages(){return  ((Vector)abilityUsages.clone()).elements();}
-    public Enumeration choices(){return  ((Vector)choices.clone()).elements();}
+    public Enumeration changeEventKeys(){return  DVector.s_enum(changes,true);}
+    public Enumeration factors(){return  DVector.s_enum(factors);}
+    public Enumeration relationFactions(){return  DVector.s_enum(relations,true);}
+    public Enumeration abilityUsages(){return  DVector.s_enum(abilityUsages);}
+    public Enumeration choices(){return  DVector.s_enum(choices);}
     
     public void setFactionID(String newStr){ID=newStr;}
     public void setName(String newStr){name=newStr;}
@@ -391,7 +391,7 @@ public class DefaultFaction implements Faction, MsgListener
         return data;
     }
     
-    public Enumeration affectsBehavs(){return  ((Hashtable)affBehavs.clone()).keys();}
+    public Enumeration affectsBehavs(){return  DVector.s_enum(affBehavs,true);}
 
     public boolean delAffectBehav(String ID) {
         boolean b=affBehavs.remove(ID.toUpperCase().trim())!=null;
@@ -1115,8 +1115,8 @@ public class DefaultFaction implements Faction, MsgListener
         
         public int value() { return value;}
         public void setValue(int newValue){ this.value=newValue;}
-        public Enumeration listeners() { return noListeners?empty:((Vector)listeners.clone()).elements(); }
-        public Enumeration tickers() { return noTickers?empty:((Vector)tickers.clone()).elements(); }
+        public Enumeration listeners() { return noListeners?empty:DVector.s_enum(listeners); }
+        public Enumeration tickers() { return noTickers?empty:DVector.s_enum(tickers); }
         public void addListenersNTickers(Vector listeners, Vector tickers) {
             this.listeners=listeners;
             this.tickers=tickers;
