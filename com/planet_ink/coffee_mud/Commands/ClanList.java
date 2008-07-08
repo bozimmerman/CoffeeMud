@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -76,7 +76,7 @@ public class ClanList extends BaseClanner
 				break;
 			}
 			msg.append(CMStrings.padRight(status,8)+"   ");
-			msg.append(CMStrings.padRight(new Integer(thisClan.getSize()).toString(),7)+"   ");
+			msg.append(CMStrings.padRight(Integer.toString(thisClan.getSize()),7)+"   ");
 			if(trophySystemActive)
 				for(int i=0;i<Clan.TROPHY_DESCS_SHORT.length;i++)
 				    if((Clan.TROPHY_DESCS_SHORT[i].length()>0)&&(CMath.bset(thisClan.getTrophies(),i)))
@@ -86,8 +86,8 @@ public class ClanList extends BaseClanner
 		mob.tell(head.toString()+msg.toString());
 		return false;
 	}
-	
+
 	public boolean canBeOrdered(){return true;}
 
-	
+
 }

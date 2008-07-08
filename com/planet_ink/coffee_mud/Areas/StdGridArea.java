@@ -37,18 +37,18 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 	protected int xSize=100;
 	protected int ySize=100;
 	protected int yLength=3;
-	
+
 	public CMObject newInstance()
 	{
 		if(CMSecurity.isDisabled("FATAREAS")
 		&&(ID().equals("StdGridArea")))
-		{   
-			Area A=CMClass.getAreaType("StdThinGridArea"); 
+		{
+			Area A=CMClass.getAreaType("StdThinGridArea");
 			if(A!=null) return A;
 		}
 		return super.newInstance();
 	}
-	
+
 	public String getNewRoomID(Room startRoom, int direction)
 	{
 		int[] xy=posFromRoomID(startRoom);
@@ -92,11 +92,11 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 		// not even a next in line exists!
 		return "";
 	}
-	
+
 	protected String roomIDFromPos(int x, int y)
 	{
 		if((x<0)||(y<0)||(y>=yGridSize())||(x>=xGridSize())) return null;
-		String s=new Integer(y).toString();
+		String s=Integer.toString(y);
 		if(x>0) return x+(ZEROES.substring(ZEROES.length()-(yLength-s.length())))+s;
 		return s;
 	}
@@ -132,7 +132,7 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 		while(yStr.startsWith("0")) yStr=yStr.substring(1);
 		xy[0]=CMath.s_int(xStr);
 		xy[1]=CMath.s_int(yStr);
-		if((xy[0]<0)||(xy[1]<0)||(xy[1]>=xGridSize())||(xy[0]>=yGridSize())) 
+		if((xy[0]<0)||(xy[1]<0)||(xy[1]>=xGridSize())||(xy[0]>=yGridSize()))
 			return null;
 		return xy;
 	}
@@ -152,5 +152,5 @@ public class StdGridArea extends StdArea implements Area, GridZones {
 	public int xGridSize(){ return xSize;}
 	public int yGridSize(){ return ySize;}
 	public void setXGridSize(int x){xSize=x;}
-	public void setYGridSize(int y){ySize=y; yLength=new Integer(ySize).toString().length();}
+	public void setYGridSize(int y){ySize=y; yLength=Integer.toString(ySize).length();}
 }

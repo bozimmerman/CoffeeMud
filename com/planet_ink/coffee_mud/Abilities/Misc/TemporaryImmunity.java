@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,8 +44,14 @@ public class TemporaryImmunity extends StdAbility
 	public boolean canBeUninvoked(){return true;}
 	public boolean isAutoInvoked(){return true;}
 	public final static long IMMUNITY_TIME=Tickable.TIME_MILIS_PER_MUDHOUR*60;
-    protected int tickDown=10;
     protected DVector set=new DVector(2);
+
+    public TemporaryImmunity()
+    {
+        super();
+
+        tickDown = 10;
+    }
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

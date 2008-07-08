@@ -1688,7 +1688,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					recoverEnvironmental(E);
 					return;
 				}
-				
+
 			}
 			if(E.isGeneric())
 				setGenPropertiesStr(E,V);
@@ -1860,7 +1860,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
     {
         Vector V=CMLib.xml().getRealContentsFromPieces(buf,"SCRPTS");
         if(V==null) return;
-        
+
         for(int i=0;i<V.size();i++)
         {
             XMLLibrary.XMLpiece sblk=(XMLLibrary.XMLpiece)V.elementAt(i);
@@ -1881,11 +1881,11 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
             String sq=CMLib.xml().getValFromPieces(sblk.contents,"SQN");
             if(sq.length()>0)
                 S.registerDefaultQuest(sq);
-            
+
             String scope=CMLib.xml().getValFromPieces(sblk.contents,"SSCOP");
             if(scope.length()>0)
                 S.setVarScope(scope);
-            
+
             if(restoreVars)
             {
                 String svars=CMLib.xml().getValFromPieces(sblk.contents,"SSVAR");
@@ -2517,7 +2517,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		str.append(getGenMobAbilities(mob));
 
         str.append(getGenScripts(mob,true));
-        
+
 		str.append(getGenMobInventory(mob));
 
 		str.append(getFactionXML(mob));
@@ -2638,7 +2638,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			setGenMobAbilities(mob,mblk.contents);
 
             setGenScripts(mob,mblk.contents,true);
-            
+
 			setGenMobInventory(mob,mblk.contents);
 
 			setFactionFromXML(mob,mblk.contents);
@@ -2698,7 +2698,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
         }
 
 		text.append(CMLib.xml().convertXMLtoTag("IMG",E.rawImage()));
-		
+
 		StringBuffer behaviorstr=new StringBuffer("");
 		for(int b=0;b<E.numBehaviors();b++)
 		{
@@ -2712,7 +2712,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			}
 		}
 		text.append(CMLib.xml().convertXMLtoTag("BEHAVES",behaviorstr.toString()));
-        
+
 		StringBuffer affectstr=new StringBuffer("");
 		for(int a=0;a<E.numEffects();a++)
 		{
@@ -2827,7 +2827,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			}
 			catch(Exception e)
 			{
-				E.setStat(x,new Integer(CMath.s_int(props.substring(0,y))).intValue());
+				E.setStat(x,CMath.s_int(props.substring(0,y)));
 			}
 			x++;
 			props=props.substring(y+1);
@@ -2845,7 +2845,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			}
 			catch(Exception e)
 			{
-				nums[x]=new Integer(CMath.s_int(props.substring(0,y))).intValue();
+				nums[x]=CMath.s_int(props.substring(0,y));
 			}
 			x++;
 			props=props.substring(y+1);
@@ -2866,14 +2866,14 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			if(props.charAt(y)=='|')
 			{
 				try{nums[x]=Double.valueOf(props.substring(lastBar,y)).doubleValue();}
-				catch(Exception e){nums[x]=new Integer(CMath.s_int(props.substring(lastBar,y))).doubleValue();}
+				catch(Exception e){nums[x]=(double)CMath.s_int(props.substring(lastBar,y));}
 				x++;
 				lastBar=y+1;
 			}
 		if(lastBar<props.length())
 		{
 			try{nums[x]=Double.valueOf(props.substring(lastBar)).doubleValue();}
-			catch(Exception e){nums[x]=new Integer(CMath.s_int(props.substring(lastBar))).doubleValue();}
+			catch(Exception e){nums[x]=(double)CMath.s_int(props.substring(lastBar));}
 		}
 		E.setAbility((int)Math.round(nums[0]));
 		E.setArmor((int)Math.round(nums[1]));

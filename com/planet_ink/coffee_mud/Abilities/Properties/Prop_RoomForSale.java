@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,19 +61,19 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			    break;
 		}
 		int price=CMath.s_int(s.substring(index+1).trim());
-			    
+
 		if(price<=0) price=100000;
 		return price;
 	}
-	
+
 	public void setLandPrice(int price)
-	{   
+	{
 	    setMiscText(landOwner()+"/"
 	        +(rentalProperty()?"RENTAL ":"")
 	        +((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
 	        +price);
 	}
-	
+
 	public String landOwner()
 	{
 		if(text().indexOf("/")<0) return "";
@@ -81,7 +81,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	}
 
 	public void setLandOwner(String owner)
-	{   
+	{
         if((owner.length()==0)&&(landOwner().length()>0))
             scheduleReset=true;
 	    setMiscText(owner+"/"
@@ -99,20 +99,20 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		return CMath.s_int(s.substring(0,s.length()-1));
     }
 	public void setBackTaxes(int tax)
-	{	
+	{
 	    setMiscText(landOwner()+"/"
 		        +(rentalProperty()?"RENTAL ":"")
 		        +((tax!=0)?"TAX"+tax+"X ":"")
 		        +landPrice());
 	}
-	
+
 	public boolean rentalProperty()
 	{
 		if(text().indexOf("/")<0) return text().indexOf("RENTAL")>=0;
 	    return text().indexOf("RENTAL",text().indexOf("/"))>0;
     }
 	public void setRentalProperty(boolean truefalse)
-	{	
+	{
 	    setMiscText(landOwner()+"/"
 		        +(truefalse?"RENTAL ":"")
 		        +((backTaxes()!=0)?"TAX"+backTaxes()+"X ":"")
@@ -153,7 +153,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	    }
 	    return false;
 	}
-	
+
 	public static boolean robberyCheck(LandTitle A, CMMsg msg)
 	{
 		if(msg.targetMinor()==CMMsg.TYP_GET)
@@ -193,7 +193,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
         }
 		return false;
 	}
-	
+
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -236,7 +236,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		Prop_RoomForSale.robberyCheck(this,msg);
 		return true;
 	}
-	
+
 	public static void colorForSale(Room R, boolean rental, boolean reset)
 	{
 		synchronized(("SYNC"+R.roomID()).intern())
@@ -377,7 +377,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				colorForSale(R,T.rentalProperty(),resetRoomName);
 				return -1;
 			}
-            
+
 			if((lastNumItems<0)
             &&(!CMSecurity.isDisabled("PROPERTYOWNERCHECKS"))
             &&(optPlayerList!=null))
@@ -396,7 +396,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					return -1;
 				}
 			}
-	
+
 			int x=R.description().indexOf(SALESTR);
 			if(x>=0)
 			{
@@ -409,14 +409,14 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				R.setDescription(R.description().substring(0,x));
 				CMLib.database().DBUpdateRoom(R);
 			}
-			
+
 			// this works on the priciple that
 			// 1. if an item has ONLY been removed, the lastNumItems will be != current # items
 			// 2. if an item has ONLY been added, the dispossessiontime will be != null
 			// 3. if an item has been added AND removed, the dispossession time will be != null on the added
 			if((lastNumItems>=0)&&(R.numItems()!=lastNumItems))
 				updateItems=true;
-	
+
 			for(int i=0;i<R.numItems();i++)
 			{
 				Item I=R.fetchItem(i);
@@ -427,7 +427,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 					I.setExpirationDate(0);
 					updateItems=true;
 				}
-	
+
 				if((I.envStats().rejuv()!=Integer.MAX_VALUE)
 				&&(I.envStats().rejuv()!=0))
 				{
@@ -497,10 +497,10 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		                    int lastDay=CMath.s_int((String)V.firstElement());
 		                    while(!needsToPay)
 		                    {
-			                    if(lastYear<year) 
+			                    if(lastYear<year)
 			                        needsToPay=true;
 			                    else
-			                    if((lastYear==year)&&(lastMonth<month)&&(day>=lastDay)) 
+			                    if((lastYear==year)&&(lastMonth<month)&&(day>=lastDay))
 			                        needsToPay=true;
 			                    if(needsToPay)
 			                    {
@@ -508,7 +508,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 			                                owner,
 			                                CMLib.utensils().getFormattedDate(A)+":Withdrawl of "+rent+": Rent for "+ID,
 			                                CMLib.beanCounter().getCurrency(A),
-			                                new Integer(-rent).doubleValue()))
+			                                (double)(-rent)))
 			                        {
 			                            lastMonth++;
 			                            if(lastMonth>A.getTimeObj().getMonthsInYear())
@@ -552,7 +552,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	    }
 	    return false;
 	}
-	
+
 	// update lot, since its called by the savethread, ONLY worries about itself
 	public void updateLot(Vector optPlayerList)
 	{

@@ -21,7 +21,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -47,7 +47,7 @@ public class SMTPserver extends Thread implements Tickable
 	public long tickStatus=STATUS_NOT;
 	public long getTickStatus(){return tickStatus;}
 	public long lastAllProcessing=System.currentTimeMillis();
-	
+
 	public CMProps page=null;
 
 	public static final float HOST_VERSION_MAJOR=(float)1.0;
@@ -60,9 +60,9 @@ public class SMTPserver extends Thread implements Tickable
 	private static boolean displayedBlurb=false;
 	private static String domain="coffeemud";
 	private static DVector journals=null;
-	
+
 	private HashSet oldEmailComplaints=new HashSet();
-											 
+
 	public final static String ServerVersionString = "CoffeeMud SMTPserver/" + HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR;
 
     public SMTPserver(){super("SMTP"); mud=null;isOK=false;setDaemon(true);}
@@ -111,15 +111,15 @@ public class SMTPserver extends Thread implements Tickable
 			Log.errOut(getName(),"Set your coffeemud.ini parameter: PORT");
 			return false;
 		}
-		
+
 		domain=CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN).toLowerCase();
 		String mailbox=page.getStr("MAILBOX");
 		if(mailbox==null) mailbox="";
 		CMProps.setVar(CMProps.SYSTEM_MAILBOX,mailbox.trim());
         CMProps.setIntVar(CMProps.SYSTEMI_MAXMAILBOX,getMaxMsgs());
-		
+
 		CMProps.setBoolVar(CMProps.SYSTEMB_EMAILFORWARDING,CMath.s_bool(page.getStr("FORWARD")));
-		
+
 		String journalStr=page.getStr("JOURNALS");
 		if((journalStr==null)||(journalStr.length()>0))
 		{
@@ -158,7 +158,7 @@ public class SMTPserver extends Thread implements Tickable
 							else
 								crit.append(s+" ");
 						}
-						journals.addElement(s,new Boolean(forward),new Boolean(subscribeOnly),new Boolean(keepAll),crit.toString().trim());
+						journals.addElement(s,Boolean.valueOf(forward),Boolean.valueOf(subscribeOnly),Boolean.valueOf(keepAll),crit.toString().trim());
 					}
 				}
 			}
@@ -174,7 +174,7 @@ public class SMTPserver extends Thread implements Tickable
 
 		return true;
 	}
-	
+
 	public String getAnEmailJournal(String journal)
 	{
 		if(journals==null) return null;
@@ -354,8 +354,8 @@ public class SMTPserver extends Thread implements Tickable
 	}
 
 	public void shutdown()	{shutdown(null);}
-	
-	
+
+
 	protected boolean rightTimeToSendEmail(long email)
 	{
 		long curr=System.currentTimeMillis();
@@ -366,34 +366,34 @@ public class SMTPserver extends Thread implements Tickable
 		if(CMath.absDiff(email,curr)<(30*60*1000)) return true;
 		while(IQE.before(IQC))
 		{
-			if(CMath.absDiff(IQE.getTimeInMillis(),IQC.getTimeInMillis())<(30*60*1000)) 
+			if(CMath.absDiff(IQE.getTimeInMillis(),IQC.getTimeInMillis())<(30*60*1000))
 				return true;
 			IQE.add(Calendar.DATE,1);
 		}
 		return false;
 	}
 
-	
+
 	public Hashtable getMailingLists(Hashtable oldH)
 	{
 		if(oldH!=null) return oldH;
 		return Resources.getMultiLists("mailinglists.txt");
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(tickStatus!=STATUS_NOT) return true;
-		
+
 		boolean updatedMailingLists=false;
 		Hashtable lists=null;
-		
+
 		tickStatus=STATUS_START;
 		if((tickID==Tickable.TICKID_READYTOSTOP)||(tickID==Tickable.TICKID_EMAIL))
 		{
 			// this is where it should attempt any mail forwarding
 			// remember, a 5 day old private mail message is a goner
 			// remember that new to all messages need to be parsed
-			// for subscribe/unsubscribe and deleted, or then 
+			// for subscribe/unsubscribe and deleted, or then
 			// forwarded to all members private boxes.  Lots of work to do!
 			if(journals!=null)
 			for(int j=0;j<journals.size();j++)
@@ -518,7 +518,7 @@ public class SMTPserver extends Thread implements Tickable
 					}
 				}
 			}
-		
+
 			// here is where the mail is actually sent
 			if((tickID==Tickable.TICKID_EMAIL)
 			&&(CMProps.getBoolVar(CMProps.SYSTEMB_EMAILFORWARDING)))
@@ -552,7 +552,7 @@ public class SMTPserver extends Thread implements Tickable
 		return true;
 	}
 
-	public void processEmails(Vector emails, 
+	public void processEmails(Vector emails,
 							  String overrideReplyTo,
 							  boolean usePrivateRules)
 	{
@@ -566,20 +566,20 @@ public class SMTPserver extends Thread implements Tickable
 			long date=CMath.s_long((String)mail.elementAt(DatabaseEngine.JOURNAL_DATE2));
 			String subj=((String)mail.elementAt(DatabaseEngine.JOURNAL_SUBJ)).trim();
 			String msg=((String)mail.elementAt(DatabaseEngine.JOURNAL_MSG)).trim();
-			
+
 			if(to.equalsIgnoreCase("ALL")||(to.toUpperCase().trim().startsWith("MASK="))) continue;
-			
+
 			if(!rightTimeToSendEmail(date)) continue;
-			
+
 			// check for valid recipient
 			MOB toM=CMLib.map().getLoadPlayer(to);
 			if(toM==null)
-			{ 
+			{
 				Log.errOut("SMTPServer","Invalid to address '"+to+"' in email: "+msg);
 				CMLib.database().DBDeleteJournal(key);
 				continue;
 			}
-			
+
 			// check to see if the sender is ignored
 			if((toM.playerStats()!=null)
 			&&(toM.playerStats().getIgnored().contains(from)))
@@ -588,7 +588,7 @@ public class SMTPserver extends Thread implements Tickable
 				CMLib.database().DBDeleteJournal(key);
 				continue;
 			}
-			
+
 			// check email age
 			if(usePrivateRules)
 			{
@@ -602,14 +602,14 @@ public class SMTPserver extends Thread implements Tickable
 					continue;
 				}
 			}
-			
+
 			if(CMath.bset(toM.getBitmap(),MOB.ATT_AUTOFORWARD)) // forwarding OFF
 				continue;
 
 			if((toM.playerStats()==null)
 			||(toM.playerStats().getEmail().length()==0)) // no email addy to forward TO
 				continue;
-			
+
 			SMTPLibrary.SMTPClient SC=null;
 			try
 			{
@@ -647,10 +647,10 @@ public class SMTPserver extends Thread implements Tickable
 				}
 				continue;
 			}
-			
+
 			// one way or another, this email is HISTORY!
 			CMLib.database().DBDeleteJournal(key);
-			
+
 			String replyTo=(overrideReplyTo!=null)?(overrideReplyTo):from;
 			try
 			{
@@ -665,12 +665,12 @@ public class SMTPserver extends Thread implements Tickable
 			{
 				Log.errOut("SMTPServer","Unable to send to '"+toM.playerStats().getEmail()+"' for user '"+toM.name()+"': "+ioe.getMessage()+".");
 			}
-			
+
 			// kaplah! On to next...
 		}
 	}
-	
-	
+
+
 	// interrupt does NOT interrupt the ServerSocket.accept() call...
 	//  override it so it does
 	public void interrupt()

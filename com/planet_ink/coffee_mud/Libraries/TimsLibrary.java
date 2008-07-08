@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,7 +34,7 @@ import java.util.*;
 public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 {
     public String ID(){return "TimsLibrary";}
-    
+
 	public int timsLevelCalculator(Item I)
 	{
 		int[] castMul=new int[1];
@@ -61,13 +61,13 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 			otherDam=CMParms.getParmPlus(ADJ.text(),"dam");
 		}
 		int curArmor=savedI.baseEnvStats().armor()+otherArm;
-		double curAttack=new Integer(savedI.baseEnvStats().attackAdjustment()+otherAtt).doubleValue();
-		double curDamage=new Integer(savedI.baseEnvStats().damage()+otherDam).doubleValue();
+		double curAttack=(double)(savedI.baseEnvStats().attackAdjustment()+otherAtt);
+		double curDamage=(double)(savedI.baseEnvStats().damage()+otherDam);
 		if(I instanceof Weapon)
 		{
-			double weight=new Integer(I.baseEnvStats().weight()).doubleValue();
+			double weight=(double)I.baseEnvStats().weight();
 			if(weight<1.0) weight=1.0;
-			double range=new Integer(savedI.maxRange()).doubleValue();
+			double range=(double)savedI.maxRange();
 			level=(int)Math.round(Math.floor((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)))+1;
 		}
 		else
@@ -156,8 +156,8 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 				level+=(dam*3);
 			}
 			level+=ab*5;
-			
-			
+
+
 			int dis=CMParms.getParmPlus(newText,"dis");
 			if(dis!=0) level+=5;
 			int sen=CMParms.getParmPlus(newText,"sen");
@@ -180,7 +180,7 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 		}
 		return level;
 	}
-	
+
 	public boolean fixRejuvItem(Item I)
 	{
 		Ability A=I.fetchEffect("ItemRejuv");
@@ -194,7 +194,7 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 		}
 		return false;
 	}
-	
+
 	public Ability[] getTimsAdjResCast(Item I, int[] castMul)
 	{
 		Ability ADJ=I.fetchEffect("Prop_WearAdjuster");
@@ -214,7 +214,7 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 		RET[2]=CAST;
 		return RET;
 	}
-	
+
 	public boolean itemFix(Item I)
 	{
 		if((I instanceof Weapon)||(I instanceof Armor))
@@ -329,7 +329,7 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
         }
         return false;
     }
-    
+
 	public void balanceItemByLevel(Item I)
 	{
 		int hands=0;
@@ -357,14 +357,14 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 			I.recoverEnvStats();
 		}
 	}
-	
-	public Hashtable timsItemAdjustments(Item I, 
-										 int level, 
-										 int material, 
-										 int weight, 
-										 int hands, 
+
+	public Hashtable timsItemAdjustments(Item I,
+										 int level,
+										 int material,
+										 int weight,
+										 int hands,
 										 int wclass,
-										 int reach, 
+										 int reach,
 										 long worndata)
 	{
 		Hashtable vals=new Hashtable();
@@ -376,7 +376,7 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 		level-=levelsFromAbility(I);
 		level-=levelsFromAdjuster(I,ADJ);
 		level-=levelsFromCaster(I,CAST);
-		
+
 		if(I instanceof Weapon)
 		{
 			int baseattack=0;
@@ -564,14 +564,14 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 				break;
 			}
 			if(level>=useArray[useArray.length-1])
-				pts=new Integer(useArray.length-2).doubleValue();
+				pts=(double)(useArray.length-2);
 			else
 			for(int i=0;i<useArray.length;i++)
 			{
 				int lvl=useArray[i];
 				if(lvl>level)
 				{
-					pts=new Integer(i-1).doubleValue();
+					pts=(double)(i-1);
 					break;
 				}
 			}
@@ -608,7 +608,7 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 					if(hands==1) break;
 				}
 			}
-			int cost=(int)Math.round(((pts*pts) + new Integer(materialvalue).doubleValue())
+			int cost=(int)Math.round(((pts*pts) + (double)materialvalue)
 									 * ( weightpts / 2));
 			int armor=(int)Math.round(totalpts);
 			switch(material)
@@ -636,11 +636,11 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 			}
 			vals.put("ARMOR",""+armor);
 			vals.put("VALUE",""+cost);
-			vals.put("WEIGHT",""+(int)Math.round(new Integer(armor).doubleValue()/wornweights*weightpts));
+			vals.put("WEIGHT",""+(int)Math.round(((double)armor)/wornweights*weightpts));
 		}
 		return vals;
 	}
-	
+
 	public void toneDownWeapon(Weapon W, Ability ADJ)
 	{
 		boolean fixdam=true;
@@ -696,7 +696,7 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 			A.recoverEnvStats();
 		}
 	}
-	
+
 	public void toneDownAdjuster(Item I, Ability ADJ)
 	{
 		String s=ADJ.text();
@@ -720,10 +720,10 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 					{
 						boolean proceed=true;
 						String wd=s.substring(spacebefore,plusminus).trim().toUpperCase();
-						if(wd.startsWith("DIS")) 
+						if(wd.startsWith("DIS"))
 							proceed=false;
 						else
-						if(wd.startsWith("SEN")) 
+						if(wd.startsWith("SEN"))
 							proceed=false;
 						else
 						if(wd.startsWith("ARM")&&(I instanceof Armor))
@@ -755,7 +755,7 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 		}
 		ADJ.setMiscText(s);
 	}
-	
+
 	public int[] getItemLevels(Item I, Ability ADJ, Ability RES, Ability CAST)
 	{
 		int[] LVLS=new int[4];
@@ -765,21 +765,21 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 		LVLS[3]=levelsFromAdjuster(I,ADJ);
 		return LVLS;
 	}
-	
+
 	public int totalLevels(int[] levels)
-	{ 
-		int lvl=levels[0]; 
-		for(int i=1;i<levels.length;i++) 
-		    lvl+=levels[i]; 
+	{
+		int lvl=levels[0];
+		for(int i=1;i<levels.length;i++)
+		    lvl+=levels[i];
 		return lvl;
 	}
-	
+
 	public int timsBaseLevel(Item I)
 	{
 		Ability[] RET=getTimsAdjResCast(I,new int[1]);
 		return timsBaseLevel(I,RET[0]);
 	}
-	
+
 	public int timsBaseLevel(Item I, Ability ADJ)
 	{
 		int level=0;
@@ -793,13 +793,13 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 			otherDam=CMParms.getParmPlus(ADJ.text(),"dam");
 		}
 		int curArmor=I.baseEnvStats().armor()+otherArm;
-		double curAttack=new Integer(I.baseEnvStats().attackAdjustment()+otherAtt).doubleValue();
-		double curDamage=new Integer(I.baseEnvStats().damage()+otherDam).doubleValue();
+		double curAttack=(double)(I.baseEnvStats().attackAdjustment()+otherAtt);
+		double curDamage=(double)(I.baseEnvStats().damage()+otherDam);
 		if(I instanceof Weapon)
 		{
-			double weight=new Integer(I.baseEnvStats().weight()).doubleValue();
+			double weight=(double)(I.baseEnvStats().weight());
 			if(weight<1.0) weight=1.0;
-			double range=new Integer(I.maxRange()).doubleValue();
+			double range=(double)(I.maxRange());
 			level=(int)Math.round(Math.floor((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)))+1;
 		}
 		else
@@ -849,7 +849,7 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 
 	public int levelsFromAbility(Item savedI)
 	{ return savedI.baseEnvStats().ability()*5;}
-	
+
 	public int levelsFromAdjuster(Item savedI, Ability ADJ)
 	{
 		int level=0;
@@ -891,7 +891,7 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 		}
 		return level;
 	}
-	
+
 	public int levelsFromCaster(Item savedI, Ability CAST)
 	{
 		int level=0;
@@ -946,7 +946,7 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 		}
 		return spellSet;
 	}
-	
+
 	public Ability getCombatSpell(boolean malicious)
 	{
 		Vector spellSet=getCombatSpellSet();
@@ -964,7 +964,7 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 		}
 		return null;
 	}
-	
+
 	public Item enchant(Item I, int pct)
 	{
 		if(CMLib.dice().rollPercentage()>pct) return I;
@@ -1079,5 +1079,5 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 		}
 		return I;
 	}
-	
+
 }

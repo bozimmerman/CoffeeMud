@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,12 +38,12 @@ public interface SlaveryLibrary extends CMLibrary
     public final static int STEP_INT4=4;
     public final static int STEP_INT5=5;
     public final static int STEP_ALLDONE=-999;
-    
+
     public Vector findMatch(MOB mob, Vector prereq);
     public String cleanWord(String s);
     public geasSteps processRequest(MOB you, MOB me, String req);
-    
-    
+
+
     public static class geasSteps extends Vector
     {
         public static final long serialVersionUID=Long.MAX_VALUE;
@@ -51,13 +51,13 @@ public interface SlaveryLibrary extends CMLibrary
         public boolean done=false;
         public MOB you=null;
         public MOB me=null;
-        
+
         public geasSteps(MOB you1, MOB me1)
         {
             you=you1;
             me=me1;
         }
-        
+
         public void step()
         {
             String say=null;
@@ -65,7 +65,7 @@ public interface SlaveryLibrary extends CMLibrary
             boolean holdFlag=false;
             String ss=null;
             geasStep sg=null;
-            
+
             if(!done)
             for(int s=0;s<size();s++)
             {
@@ -101,7 +101,7 @@ public interface SlaveryLibrary extends CMLibrary
                         sg=G;
                     }
                 }
-            
+
             }
             if(!holdFlag)
             {
@@ -149,7 +149,7 @@ public interface SlaveryLibrary extends CMLibrary
             return false;
         }
     }
-    
+
     public static class geasStep
     {
         public Vector que=new Vector();
@@ -157,7 +157,7 @@ public interface SlaveryLibrary extends CMLibrary
         public MOB bothering=null;
         public geasSteps mySteps=null;
         public MOB you=null;
-        
+
         public geasStep(geasSteps gs)
         {
             mySteps=gs;
@@ -167,7 +167,7 @@ public interface SlaveryLibrary extends CMLibrary
         {
             MOB me=mySteps.me;
             bothering=null;
-            if((me==null)||(me.location()==null)) 
+            if((me==null)||(me.location()==null))
                 return false;
             if((msgOrQ!=null)&&(!CMLib.flags().isAnimalIntelligence(me)))
                 for(int m=0;m<me.location().numInhabitants();m++)
@@ -188,7 +188,7 @@ public interface SlaveryLibrary extends CMLibrary
                 }
             return false;
         }
-        
+
         public boolean sayResponse(MOB speaker, MOB target, String response)
         {
             MOB me=mySteps.me;
@@ -257,7 +257,7 @@ public interface SlaveryLibrary extends CMLibrary
                     Log.debugOut("GEAS","ITEMFIND: "+item);
                 if((CMath.isNumber(item)&&(CMath.s_int(item)>0)))
                 {
-                    if(CMLib.beanCounter().getTotalAbsoluteNativeValue(me)>=new Integer(CMath.s_int(item)).doubleValue())
+                    if(CMLib.beanCounter().getTotalAbsoluteNativeValue(me)>=((double)CMath.s_int(item)))
                     {
                         step=STEP_EVAL;
                         que.removeElementAt(0);
@@ -402,10 +402,10 @@ public interface SlaveryLibrary extends CMLibrary
 
                 // if asked someone something, give them time to respond.
                 if((bothering!=null)&&(step>STEP_EVAL)&&(step<=STEP_INT4)&&(!bothering.isMonster()))
-                {   
+                {
                     if(CMSecurity.isDebugging("GEAS"))
                         Log.debugOut("GEAS","MOBFIND-RESPONSEWAIT: "+bothering.name());
-                    step++; 
+                    step++;
                     return "HOLD";
                 }
                 step=STEP_EVAL;

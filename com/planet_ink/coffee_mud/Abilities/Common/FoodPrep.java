@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2004 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,7 +42,14 @@ public class FoodPrep extends Cooking
 	public String cookWord(){return "making";}
 	public boolean honorHerbs(){return false;}
 	public boolean requireFire(){return false;}
-    protected String defaultFoodSound="chopchop.wav";
-    
+
     protected Vector loadRecipes(){return super.loadRecipes("foodprep.txt");}
+
+    public FoodPrep()
+    {
+        super();
+
+        defaultFoodSound = "chopchop.wav";
+    }
+
 }

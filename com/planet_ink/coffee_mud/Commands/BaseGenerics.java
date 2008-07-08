@@ -48,8 +48,8 @@ public class BaseGenerics extends StdCommand
         if((mob.session()==null)
         ||((!(E instanceof MOB))&&(!(E instanceof Item)))
         ||(!CMLib.flags().isCataloged(E)))
-        { 
-            E.setName(newName); 
+        {
+            E.setName(newName);
             return;
         }
         int catIndex=(E instanceof MOB)?
@@ -78,7 +78,7 @@ public class BaseGenerics extends StdCommand
 		||((!(E instanceof MOB))&&(!(E instanceof Item)))
 		||(mob.session()==null))
 			return;
-		
+
 		int oldIndex=(E instanceof MOB)?
 				 	 CMLib.catalog().getCatalogMobIndex(E.Name()):
 				 	 CMLib.catalog().getCatalogItemIndex(E.Name());
@@ -86,9 +86,9 @@ public class BaseGenerics extends StdCommand
 		Environmental cataE=(E instanceof MOB)?
 			 	 			(Environmental)CMLib.catalog().getCatalogMob(oldIndex):
 			 	 			(Environmental)CMLib.catalog().getCatalogItem(oldIndex);
-			 
+
 		CMLib.flags().setCataloged(E,false);
-		if(cataE.sameAs(E)) 
+		if(cataE.sameAs(E))
 		{
 			CMLib.flags().setCataloged(E,true);
 			return;
@@ -98,7 +98,7 @@ public class BaseGenerics extends StdCommand
 				 	 CMLib.catalog().getCatalogItemUsage(oldIndex);
 		if(mob.session().confirm("This object is cataloged.  Enter Y to update the cataloged version, or N to detach this object from the catalog (Y/n)?","Y"))
 		{
-			
+
 			cataE.setMiscText(E.text());
 			if(E instanceof MOB)
 				CMLib.database().DBUpdateMOB("CATALOG_MOBS",(MOB)cataE);
@@ -111,12 +111,12 @@ public class BaseGenerics extends StdCommand
 		}
 		else
 		{
-			
+
 			CMLib.flags().setCataloged(E,false);
 			usage[0]--;
 		}
 	}
-	
+
 	protected void genImage(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException
     {   E.setImage(CMLib.english().prompt(mob,E.rawImage(),showNumber,showFlag,"MXP Image filename",true,false,"This is the path/filename of your MXP image file for this object."));}
 
@@ -1622,7 +1622,7 @@ public class BaseGenerics extends StdCommand
 		    else
                 mob.tell("*** This object WAS cataloged and is still tied **\n\r");
 		}
-	            
+
 		if(E instanceof ShopKeeper)
 			modifyGenShopkeeper(mob,(ShopKeeper)E);
 		else
@@ -1901,7 +1901,7 @@ public class BaseGenerics extends StdCommand
 			CMLib.beanCounter().subtractMoney(E,d);
 			E.setMoney((int)Math.round(d));
 		}
-		CMLib.beanCounter().setMoney(E,CMLib.english().prompt(mob,E.getMoney(),showNumber,showFlag,"Money")); 
+		CMLib.beanCounter().setMoney(E,CMLib.english().prompt(mob,E.getMoney(),showNumber,showFlag,"Money"));
 	}
 
 	protected void genWeaponAmmo(MOB mob, Weapon E, int showNumber, int showFlag)
@@ -1944,7 +1944,7 @@ public class BaseGenerics extends StdCommand
 		throws IOException
 	{
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
-		mob.tell(showNumber+". Minimum/Maximum Ranges: "+Math.round(E.minRange())+"/"+Math.round(E.maxRange())+".");
+		mob.tell(showNumber+". Minimum/Maximum Ranges: "+E.minRange()+"/"+E.maxRange()+".");
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newMinStr=mob.session().prompt("Enter a new minimum range\n\r:","");
 		String newMaxStr=mob.session().prompt("Enter a new maximum range\n\r:","");
@@ -2156,7 +2156,7 @@ public class BaseGenerics extends StdCommand
 		            else
 		            {
 		            	String howMuch = mob.session().prompt("How much faction ("+lookedUp.findDefault(E)+")?",
-						           new Integer(lookedUp.findDefault(E)).toString());
+						           Integer.toString(lookedUp.findDefault(E)));
 		            	if(CMath.isInteger(howMuch)) {
 							int value =new Integer(howMuch).intValue();
 				            if(value<lookedUp.minimum()) value=lookedUp.minimum();
@@ -5005,8 +5005,8 @@ public class BaseGenerics extends StdCommand
         if(origLevelIndex<0)
         {
             prof=new Integer(0);
-            secret=new Boolean(false);
-            gained=new Boolean(false);
+            secret=Boolean.FALSE;
+            gained=Boolean.FALSE;
             parms="";
             preqs="";
             masks="";
@@ -5035,8 +5035,8 @@ public class BaseGenerics extends StdCommand
         else
             levelSet=(DVector)sets.elementAt(newlevelIndex,2);
         prof=new Integer(CMath.s_int(mob.session().prompt("Enter the (default) proficiency level ("+prof.toString()+"): ",prof.toString())));
-        gained=new Boolean(mob.session().confirm("Is this skill automatically gained (Y/N)?",""+gained.toString()));
-        secret=new Boolean(mob.session().confirm("Is this skill secret (N/y)?",secret.toString()));
+        gained=Boolean.valueOf(mob.session().confirm("Is this skill automatically gained (Y/N)?",""+gained.toString()));
+        secret=Boolean.valueOf(mob.session().confirm("Is this skill secret (N/y)?",secret.toString()));
         parms=mob.session().prompt("Enter any properties ("+parms+")\n\r: ",parms);
         String s="?";
         while(s.equalsIgnoreCase("?"))
@@ -5080,10 +5080,10 @@ public class BaseGenerics extends StdCommand
 				Ability A=CMClass.getAbility(E.getStat("GETCABLE"+v));
 				if(A!=null)
 				{
-                    Boolean gain=new Boolean(CMath.s_bool(E.getStat("GETCABLEGAIN"+v)));
+                    Boolean gain=Boolean.valueOf(CMath.s_bool(E.getStat("GETCABLEGAIN"+v)));
                     Integer defProf=new Integer(CMath.s_int(E.getStat("GETCABLEPROF"+v)));
                     Integer lvl=new Integer(CMath.s_int(E.getStat("GETCABLELVL"+v)));
-                    Boolean secret=new Boolean(CMath.s_bool(E.getStat("GETCABLESECR"+v)));
+                    Boolean secret=Boolean.valueOf(CMath.s_bool(E.getStat("GETCABLESECR"+v)));
                     String parm=E.getStat("GETCABLEPARM"+v);
                     String preq=E.getStat("GETCABLEPREQ"+v);
                     String mask=E.getStat("GETCABLEMASK"+v);
@@ -5226,7 +5226,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
-	
+
 	protected void genCulturalAbilities(MOB mob, Race E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -5307,7 +5307,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
-	
+
 	protected void modifyGenClass(MOB mob, CharClass me)
 		throws IOException
 	{
@@ -5768,7 +5768,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
-	
+
 	protected void modifyGenDrink(MOB mob, Drink me)
 		throws IOException
 	{
@@ -6040,7 +6040,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
-	
+
 	protected void modifyGenArmor(MOB mob, Armor me)
 		throws IOException
 	{
@@ -6281,7 +6281,7 @@ public class BaseGenerics extends StdCommand
 				me.recoverMaxState();
 				me.recoverEnvStats();
 				me.resetToMaxState();
-				
+
 				if(me.text().length()>=maxLength)
 				{
 					mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
@@ -6450,7 +6450,7 @@ public class BaseGenerics extends StdCommand
 			}
 		}
 	}
-	
+
 	protected double genAuctionPrompt(MOB mob, double oldVal, int showNumber, int showFlag, String msg, boolean pct)
 	throws IOException
 	{
@@ -6466,7 +6466,7 @@ public class BaseGenerics extends StdCommand
 		if(pct) return CMath.s_pct(newStr);
 		return CMath.s_double(newStr);
 	}
-	
+
 	protected int genAuctionPrompt(MOB mob, int oldVal, int showNumber, int showFlag, String msg)
 	throws IOException
 	{
@@ -6478,7 +6478,7 @@ public class BaseGenerics extends StdCommand
 			return -1;
 		return CMath.s_int(newStr);
 	}
-	
+
 
 	protected void genClanRole(MOB mob, Clan C, int showNumber, int showFlag)
 	throws IOException

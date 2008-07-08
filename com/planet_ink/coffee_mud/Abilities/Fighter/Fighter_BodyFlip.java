@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -160,7 +160,8 @@ public class Fighter_BodyFlip extends FighterSkill
 			levelDiff=levelDiff*5;
 		else
 			levelDiff=0;
-		int adjustment=(-levelDiff)+(-((int)Math.round((new Integer(target.charStats().getStat(CharStats.STAT_STRENGTH)).doubleValue()-9.0)*3.0)));
+		int adjustment = ( -levelDiff ) +
+		                 ( -( (int)Math.round ( ( (double)(target.charStats().getStat( CharStats.STAT_STRENGTH) ) - 9.0 ) * 3.0 ) ) );
 		boolean success=proficiencyCheck(mob,adjustment,auto);
 		success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 		if(success)

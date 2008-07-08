@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,7 +41,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 	public String[] triggerStrings(){return triggerStrings;}
 	public String supportedResourceString(){return "WOODEN";}
 	// inherets its enhanced crafting support from superclass -- you can make ANYTHING with this badboy!
-	
+
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -349,7 +349,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 				if(misctype.equalsIgnoreCase("LOCK"))
 				{
 					((Container)building).setLidsNLocks(true,false,true,false);
-					((Container)building).setKeyName(new Double(Math.random()).toString());
+					((Container)building).setKeyName(Double.toString(Math.random()));
 					key=CMClass.getItem("GenKey");
 					((Key)key).setKey(((Container)building).keyName());
 					key.setName("a key");

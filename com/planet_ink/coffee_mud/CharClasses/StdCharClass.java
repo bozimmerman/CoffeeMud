@@ -37,7 +37,7 @@ public class StdCharClass implements CharClass
 {
 	public String ID(){return "StdCharClass";}
 	public String name(){return "mob";}
-    
+
     public String name(int classLevel){return name();}
 	public String baseClass(){return ID();}
 	public int getBonusPracLevel(){return 0;}
@@ -205,7 +205,7 @@ public class StdCharClass implements CharClass
 	public String otherLimitations(){return "";}
 	public String otherBonuses(){return "";}
 	public String statQualifications(){return "";}
-	
+
 	protected HashSet buildDisallowedWeaponClasses(){return buildDisallowedWeaponClasses(allowedWeaponLevel());}
 	protected HashSet buildDisallowedWeaponClasses(int lvl)
 	{
@@ -257,10 +257,10 @@ public class StdCharClass implements CharClass
 		}
 		return false;
 	}
-	
-	
+
+
 	protected boolean armorCheck(MOB mob, int sourceCode, Environmental E)
-	{   
+	{
 		if(!(E instanceof Ability)) return true;
 		if((allowedArmorLevel()!=CharClass.ARMOR_ANY)
 		&&((requiredArmorSourceMinor()<0)||(sourceCode&CMMsg.MINOR_MASK)==requiredArmorSourceMinor())
@@ -370,7 +370,7 @@ public class StdCharClass implements CharClass
 			}
         }
 	}
-    
+
     public CharClass makeGenCharClass()
     {
         if(isGeneric()) return this;
@@ -394,7 +394,7 @@ public class StdCharClass implements CharClass
         CR.setStat("STRBON",""+otherBonuses());
         CR.setStat("PLAYER",""+availabilityCode());
         CR.setStat("HELP",""+CMLib.help().getHelpText(name(),null,false));
-        
+
         StringBuffer quals=new StringBuffer("");
         String q=statQualifications().toUpperCase();
         if(q.length()>0)
@@ -418,33 +418,33 @@ public class StdCharClass implements CharClass
                     }
                 }
         CR.setStat("QUAL",quals.toString().trim());
-        
+
         MOB fakeMOB=CMClass.getMOB("StdMOB");
-        fakeMOB.baseCharStats().setMyClasses(ID());        
+        fakeMOB.baseCharStats().setMyClasses(ID());
         fakeMOB.baseCharStats().setMyLevels("0");
         fakeMOB.recoverCharStats();
-        
+
         EnvStats RS=(EnvStats)CMClass.getCommon("DefaultEnvStats");
         RS.setAllValues(0);
         affectEnvStats(fakeMOB,RS);
         RS.setRejuv(0);
         CR.setStat("ESTATS",CMLib.coffeeMaker().getEnvStatsStr(RS));
-        
-        CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats"); 
-        S1.setMyClasses(ID());        
+
+        CharStats S1=(CharStats)CMClass.getCommon("DefaultCharStats");
+        S1.setMyClasses(ID());
         S1.setMyLevels("0");
         S1.setAllValues(0);
-        CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        CharStats S2=(CharStats)CMClass.getCommon("DefaultCharStats");
         S2.setAllValues(10);
-        S2.setMyClasses(ID());        
+        S2.setMyClasses(ID());
         S2.setMyLevels("0");
-        CharStats S3=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        CharStats S3=(CharStats)CMClass.getCommon("DefaultCharStats");
         S3.setAllValues(11);
-        S3.setMyClasses(ID());        
+        S3.setMyClasses(ID());
         S3.setMyLevels("0");
-        CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        CharStats SETSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
         SETSTAT.setAllValues(0);
-        CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats"); 
+        CharStats ADJSTAT=(CharStats)CMClass.getCommon("DefaultCharStats");
         ADJSTAT.setAllValues(0);
         affectCharStats(fakeMOB,S1);
         affectCharStats(fakeMOB,S2);
@@ -484,13 +484,13 @@ public class StdCharClass implements CharClass
             completeSet.addElement(aID,
                                    new Integer(CMLib.ableMapper().getQualifyingLevel(ID(),false,aID)),
                                    new Integer(CMLib.ableMapper().getDefaultProficiency(ID(),false,aID)),
-                                   new Boolean(CMLib.ableMapper().getDefaultGain(ID(),false,aID)),
-                                   new Boolean(CMLib.ableMapper().getSecretSkill(ID(),false,aID)),
+                                   Boolean.valueOf(CMLib.ableMapper().getDefaultGain(ID(),false,aID)),
+                                   Boolean.valueOf(CMLib.ableMapper().getSecretSkill(ID(),false,aID)),
                                    CMLib.ableMapper().getDefaultParm(ID(),false,aID),
                                    CMLib.ableMapper().getPreReqStrings(ID(),false,aID),
                                    CMLib.ableMapper().getExtraMask(ID(),false,aID));
         }
-        
+
         if(completeSet.size()>0)
             CR.setStat("NUMCABLE",""+completeSet.size());
         else
@@ -507,7 +507,7 @@ public class StdCharClass implements CharClass
             // GETCABLE -- MUST BE LAST --
             CR.setStat("GETCABLE"+i,completeSet.elementAt(i,1).toString());
         }
-        
+
         HashSet H=disallowedWeaponClasses(null);
         if((H==null)||(H.size()==0))
             CR.setStat("NUMWEAP","");
@@ -516,7 +516,7 @@ public class StdCharClass implements CharClass
             CR.setStat("NUMWEAP",""+H.size());
             CR.setStat("GETWEAP",""+CMParms.toStringList(H));
         }
-        
+
         Vector outfit=outfit(null);
         if(outfit==null) outfit=new Vector();
         CR.setStat("NUMOFT",""+outfit.size());
@@ -524,7 +524,7 @@ public class StdCharClass implements CharClass
             CR.setStat("GETOFTID"+i,((Item)outfit.elementAt(i)).ID());
         for(int i=0;i<outfit.size();i++)
             CR.setStat("GETOFTPARM"+i,((Item)outfit.elementAt(i)).text());
-        
+
         CR.setStat("HPDIE",""+getHPDie());
         CR.setStat("MANADICE",""+getManaDice());
         CR.setStat("MANADIE",""+getManaDie());
@@ -535,8 +535,8 @@ public class StdCharClass implements CharClass
         //this.startCharacter(mob,isBorrowedClass,verifyOnly)
         //CR.setStat("STARTASTATE",CMLib.coffeeMaker().getCharStateStr(STARTCS));
         String[] names=nameSet();
-        Vector securitySets=new Vector(); 
-        Vector securityLvls=new Vector(); 
+        Vector securitySets=new Vector();
+        Vector securityLvls=new Vector();
         CR.setStat("NUMNAME",""+names.length);
         for(int n=0;n<names.length;n++)
             CR.nameSet()[n]=names[n];
@@ -595,15 +595,15 @@ public class StdCharClass implements CharClass
             CR.setStat("NUMWEP",""+H.size());
             CR.setStat("GETWEP",""+CMParms.toStringList(H));
         }
-        
+
         CR.setStat("ARMORMINOR",""+requiredArmorSourceMinor());
         CR.setStat("STATCLASS",this.getClass().getName());
         CR.setStat("EVENTCLASS",this.getClass().getName());
         fakeMOB.destroy();
         return CR;
     }
-    
-    
+
+
 	public void endCharacter(MOB mob)
 	{
 	}
@@ -618,7 +618,7 @@ public class StdCharClass implements CharClass
 	}
 
 	public Vector outfit(MOB myChar){return outfitChoices;}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 
@@ -652,7 +652,7 @@ public class StdCharClass implements CharClass
 		}
 		return true;
 	}
-	
+
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
@@ -695,7 +695,7 @@ public class StdCharClass implements CharClass
 	public void level(MOB mob, Vector gainedAbilityIDs){}
 
 	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount) { return amount;}
-	
+
 	public int getLevelMana(MOB mob)
 	{
 		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(CMath.div(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE),getManaDivisor())))+(getManaDie()*(getManaDice()+1)/2));
@@ -736,7 +736,7 @@ public class StdCharClass implements CharClass
 	{
 		return isValidClassBeneficiary(killer,killed,mob,followers);
 	}
-	
+
 	public boolean isValidClassBeneficiary(MOB killer, MOB killed, MOB mob, HashSet followers)
 	{
 		if((mob!=null)
@@ -748,7 +748,7 @@ public class StdCharClass implements CharClass
 			return true;
 		return false;
 	}
-    
+
 	public String classParms(){ return "";}
 	public void setClassParms(String parms){}
 	protected static String[] CODES={"CLASS","PARMS"};

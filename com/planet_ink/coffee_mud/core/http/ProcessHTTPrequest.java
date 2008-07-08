@@ -22,7 +22,7 @@ import org.mozilla.javascript.*;
 import java.io.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 
-/* 
+/*
    Portions Copyright 2002 Jeff Kamenek
    Portions Copyright 2002-2008 Bo Zimmerman
 
@@ -145,10 +145,10 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			return null;
 		}
 	}
-	
+
 	public String getMimeType(String a_extension)
 	{
-		return page.getStr(new String (mimePrefix + a_extension).toUpperCase());
+		return page.getStr( (mimePrefix + a_extension).toUpperCase() );
 	}
 
 	protected boolean process(String inLine) throws Exception
@@ -306,7 +306,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		if(key==null) return null;
 		return (String)getRequestParameters().get(key);
 	}
-    
+
     public Vector getAllRequestParameterKeys(String keyMask)
     {
         Hashtable H=getRequestParameters();
@@ -334,7 +334,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		if (requestParametersEncoded == null)
 			return requestParametersTable;
 
-		String pStr = new String(requestParametersEncoded);
+		String pStr = requestParametersEncoded;
 		String thisParam;
 		String thisParamName;
 		String thisParamValue;
@@ -397,9 +397,9 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
     				requestParametersTable.put(thisParamName.toUpperCase(),thisParamValue);
     			else
     			for(int i=1;;i++)
-    				if(!requestParametersTable.containsKey(thisParamName.toUpperCase()+(new Integer(i).toString())))
+    				if(!requestParametersTable.containsKey(thisParamName.toUpperCase()+(Integer.toString(i))))
     				{
-    					requestParametersTable.put(thisParamName.toUpperCase()+(new Integer(i).toString()),thisParamValue);
+    					requestParametersTable.put(thisParamName.toUpperCase()+(Integer.toString(i)),thisParamValue);
     					break;
     				}
             }
@@ -586,7 +586,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
             if(W.preferBinary())
             {
                 byte[] bin=W.runBinaryMacro(this,(parms==null)?null:parms.toString());
-                if(bin==null) 
+                if(bin==null)
                     q=" @break@";
                 else
                     q=new String(bin);
@@ -632,7 +632,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	//  I'm probably gonna replace it soon
 	public byte [] doVirtualPage(byte [] data) throws HTTPRedirectException
 	{
-        return doVirtualPage(new String(data)).toString().getBytes();
+        return doVirtualPage(new String(data)).getBytes();
 	}
 
 
@@ -643,7 +643,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
         StringBuffer s2 = new StringBuffer(data);
         return doVirtualPage(s2).toString();
     }
-    
+
     // OK - this parser is getting a bit ugly now;
     //  I'm probably gonna replace it soon
     public StringBuffer doVirtualPage(StringBuffer s) throws HTTPRedirectException
@@ -730,7 +730,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
                                     String script=s.substring(i+l,v);
                                     JScriptablePage scope = new JScriptablePage(this);
                                     cx.initStandardObjects(scope);
-                                    scope.defineFunctionProperties(JScriptablePage.functions, 
+                                    scope.defineFunctionProperties(JScriptablePage.functions,
                                                                    JScriptablePage.class,
                                                                    ScriptableObject.DONTENUM);
                                     cx.evaluateString(scope, script,"<cmd>", 1, null);
@@ -856,7 +856,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
         return s;
     }
-    
+
 	// if the client's browser does not support or honour 3xx redirects,
 	//  then this attached page attempts to use javascript to redirect
 	// if that doesn't work, the meta refresh will hopefully refresh to the new url;
@@ -882,7 +882,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
         {
 		String hdrRedirectTo = null;
 		processStartTime=System.currentTimeMillis();
-		
+
 		DataOutputStream sout = null;
 		ByteArrayOutputStream bout=null;
 
@@ -906,8 +906,8 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			if (processOK)
 			{
 				if(requestMain==null) requestMain="";
-				String filename = new String(requestMain);
-                
+				String filename = requestMain;
+
                 // now do the web path macro check, complete
                 // with zmud correction;
                 int lastSlash=filename.lastIndexOf("/");
@@ -932,7 +932,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
                 }
                 else
     				requestedFile = webServer.pageGrabber.grabFile(filename);
-                
+
                 if(W!=null) contentHeader=W.getSpecialContentHeader(filename);
 
                 if(requestedFile!=null)
@@ -1088,7 +1088,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 			sout.writeBytes("Server: " + HTTPserver.ServerVersionString + cr);
 			sout.writeBytes("MIME-Version: 1.0" + cr);
-			if(contentHeader!=null) 
+			if(contentHeader!=null)
 				sout.writeBytes(contentHeader);
 			else
 				sout.writeBytes("Content-Type: " + mimetype + cr);
@@ -1121,7 +1121,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 					Log.errOut(getName(),e);
 			}
 		}
-		
+
 		if((Log.debugChannelOn())&&(CMSecurity.isDebugging("HTTPREQ")))
 			Log.debugOut(getName(), sock.getInetAddress().getHostAddress() + ":" + (command==null?"(null)":command + " " + (request==null?"(null)":request)) +
 					":" + status +" ("+replyData.length+")");
@@ -1131,7 +1131,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		{
 			if (sout != null)
 			{
-				
+
 				sout.flush();
 				OutputStream o=sock.getOutputStream();
 				o.write(bout.toByteArray());
@@ -1330,13 +1330,13 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
                 return false;
         return true;
     }
-    
+
     public String getHTTPRequest(InputStream sin)
 	{
 		try
 		{
 			Vector inData = getData(sin);
-            
+
 			//Log.sysOut("HTTP",inLine);
 
 			if((inData==null)||(inData.size()==0)||(!(inData.elementAt(0) instanceof String)))
@@ -1473,7 +1473,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
         public static String[] functions = { "request", "write", "toJavaString"};
         public String toJavaString(Object O){return Context.toString(O);}
     }
-    
+
 	public String ServerVersionString(){return HTTPserver.ServerVersionString;}
 	public String getWebServerPortStr(){return getWebServer().getPortStr();}
 	public String getWebServerPartialName(){ return getWebServer().getPartialName();}

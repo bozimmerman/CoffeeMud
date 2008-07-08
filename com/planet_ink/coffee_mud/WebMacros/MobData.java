@@ -242,7 +242,7 @@ public class MobData extends StdWebMacro
 					if(behav.length()>0)
                     {
 						theclasses.addElement(behav);
-                        theclerics.addElement(new Boolean(clericOnly));
+                        theclerics.addElement(Boolean.valueOf(clericOnly));
                     }
 					num++;
 					behav=httpReq.getRequestParameter("BLESS"+num);
@@ -255,7 +255,7 @@ public class MobData extends StdWebMacro
 				if(Able!=null)
                 {
 					theclasses.addElement(CMClass.classID(Able));
-                    theclerics.addElement(new Boolean(E.fetchBlessingCleric(a)));
+                    theclerics.addElement(Boolean.valueOf(E.fetchBlessingCleric(a)));
                 }
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
@@ -303,7 +303,7 @@ public class MobData extends StdWebMacro
 					if(behav.length()>0)
                     {
 						theclasses.addElement(behav);
-                        theclerics.addElement(new Boolean(clericOnly));
+                        theclerics.addElement(Boolean.valueOf(clericOnly));
                     }
 					num++;
 					behav=httpReq.getRequestParameter("CURSE"+num);
@@ -316,7 +316,7 @@ public class MobData extends StdWebMacro
 				if(Able!=null)
                 {
 					theclasses.addElement(CMClass.classID(Able));
-                    theclerics.addElement(new Boolean(E.fetchCurseCleric(a)));
+                    theclerics.addElement(Boolean.valueOf(E.fetchCurseCleric(a)));
                 }
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
@@ -382,7 +382,7 @@ public class MobData extends StdWebMacro
 				if(f!=null)
 				{
 					theclasses.addElement(f.factionID());
-					theparms.addElement(new Integer(E.fetchFaction(f.factionID())).toString());
+					theparms.addElement(Integer.toString(E.fetchFaction(f.factionID())));
 				}
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
@@ -485,7 +485,7 @@ public class MobData extends StdWebMacro
                         if(lvl>=0)
                         {
                             theclasses.addElement(C.ID());
-                            theparms.addElement(new Integer(lvl).toString());
+                            theparms.addElement(Integer.toString(lvl));
                         }
 			        }
 			    }
@@ -844,10 +844,10 @@ public class MobData extends StdWebMacro
                     String WORN=httpReq.getRequestParameter("ITEMWORN"+i);
 					if(MATCHING==null) break;
 					Item I2=RoomData.getItemFromAnywhere(M,MATCHING);
-					if(I2!=null) 
+					if(I2!=null)
 					{
 						classes.addElement(I2);
-                        beingWorn.addElement(new Boolean((WORN!=null)&&(WORN.equalsIgnoreCase("on"))));
+                        beingWorn.addElement(Boolean.valueOf((WORN!=null)&&(WORN.equalsIgnoreCase("on"))));
                         String CONTAINER=httpReq.getRequestParameter("ITEMCONT"+i);
                         cstrings.addElement((CONTAINER==null)?"":CONTAINER);
 					}
@@ -875,7 +875,7 @@ public class MobData extends StdWebMacro
                         }
                         classes.addElement(I2);
                         containers.addElement((I2.container()==null)?"":(Object)I2.container());
-                        beingWorn.addElement(new Boolean(!I2.amWearingAt(Item.IN_INVENTORY)));
+                        beingWorn.addElement(Boolean.valueOf(!I2.amWearingAt(Item.IN_INVENTORY)));
                     }
 				}
 				itemlist=RoomData.contributeItems(classes);
@@ -980,7 +980,7 @@ public class MobData extends StdWebMacro
 			    if(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
 			    {
 			        int m=CMLib.catalog().getCatalogMobIndex(mobCode.substring(8));
-			        if(m>=0) 
+			        if(m>=0)
 			            M=CMLib.catalog().getCatalogMob(m);
 			        else
 	                    M=CMClass.getMOB("GenMob");
@@ -1429,7 +1429,7 @@ public class MobData extends StdWebMacro
             case 57: // timed list pct
                 if((firstTime)&&(M instanceof Auctioneer))
                     old=""+(((Auctioneer)M).timedListingPct()*100.0)+"%";
-                if(CMath.s_pct(old)<0.0) 
+                if(CMath.s_pct(old)<0.0)
                 	old="";
                 str.append(old);
                 break;

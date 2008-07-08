@@ -91,7 +91,7 @@ public class StdAbility implements Ability
 	public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public int enchantQuality(){return abstractQuality();}
     public void initializeClass(){}
-    
+
     public int castingQuality(MOB mob, Environmental target)
 	{
 		if((target!=null)&&(target.fetchEffect(ID())!=null))
@@ -114,7 +114,7 @@ public class StdAbility implements Ability
 			return Ability.QUALITY_INDIFFERENT;
 		}
 	}
-    
+
     protected synchronized int expertise(MOB mob, int code)
     {
     	if((mob!=null)&&(this.isNowAnAutoEffect()||(this.canBeUninvoked())))
@@ -138,13 +138,13 @@ public class StdAbility implements Ability
     protected int getXMAXRANGELevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_MAXRANGE);}
     protected int getXTIMELevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_TIME);}
     protected int getXPCOSTLevel(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_XPCOST);}
-    
+
     protected int getXPCOSTAdjustment(MOB mob, int xpLoss){
     	int xLevel=getXPCOSTLevel(mob);
     	if(xLevel<=0) return xpLoss;
     	return xpLoss-(int)Math.round(CMath.mul(xpLoss,CMath.mul(.05,xLevel)));
     }
-    
+
     public int adjustedMaxInvokerRange(int max)
     {
         if(invoker==null) return max;
@@ -152,11 +152,11 @@ public class StdAbility implements Ability
         if(level<=0) return  max;
         return max+(int)Math.round(Math.ceil(CMath.mul(max,CMath.mul(level,0.2))));
     }
-    
-    
-    
+
+
+
 	/**
-	 * Designates whether, when used as a property/effect, what sort of objects this 
+	 * Designates whether, when used as a property/effect, what sort of objects this
 	 * ability can affect. Uses the Ability.CAN_* constants.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
 	 * @return a mask showing the type of objects this ability can affect
@@ -167,7 +167,7 @@ public class StdAbility implements Ability
 										 Ability.CAN_ROOMS|
 										 Ability.CAN_EXITS;}
 	/**
-	 * Designates whether, when invoked as a skill, what sort of objects this 
+	 * Designates whether, when invoked as a skill, what sort of objects this
 	 * ability can effectively target. Uses the Ability.CAN_* constants.
 	 * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
 	 * @return a mask showing the type of objects this ability can target
@@ -215,10 +215,10 @@ public class StdAbility implements Ability
 	public EnvStats envStats(){return envStats;}
 	public EnvStats baseEnvStats(){return envStats;}
 
-	
+
 	public long expirationDate()
 	{
-	    return new Long(tickDown).longValue() * Tickable.TIME_TICK;
+	    return ((long)tickDown) * Tickable.TIME_TICK;
 	}
 	public void setExpirationDate(long time){
 		if(time>System.currentTimeMillis())
@@ -254,7 +254,7 @@ public class StdAbility implements Ability
 	{
 		return (int)Math.round(CMath.mul(baseTickTime,CMath.mul(getXTIMELevel(invokerMOB),0.20)));
 	}
-	
+
 	public void startTickDown(MOB invokerMOB, Environmental affected, int tickTime)
 	{
 		if(invokerMOB!=null) invoker=invokerMOB;
@@ -269,7 +269,7 @@ public class StdAbility implements Ability
 		{
 			MOB mob=(MOB)affected;
 			if(mob.location()==null) return;
-			if(affected.fetchEffect(ID())==null) 
+			if(affected.fetchEffect(ID())==null)
 				affected.addEffect(this);
 			mob.location().recoverRoomStats();
 			if(invoker()!=affected)
@@ -296,8 +296,8 @@ public class StdAbility implements Ability
 				||(mob.isMonster())
 				||(CMLib.ableMapper().qualifiesByLevel(mob,this)));
 	}
-	
-	
+
+
 	public int adjustedLevel(MOB caster, int asLevel)
 	{
 		if(caster==null) return 1;
@@ -437,23 +437,23 @@ public class StdAbility implements Ability
 		return target;
 	}
 
-	
-	public Environmental getAnyTarget(MOB mob, 
-									  Vector commands, 
-									  Environmental givenTarget, 
+
+	public Environmental getAnyTarget(MOB mob,
+									  Vector commands,
+									  Environmental givenTarget,
 									  int wornReqCode)
 	{ return getAnyTarget(mob,commands,givenTarget,wornReqCode,false,false);}
-	
-	public Environmental getAnyTarget(MOB mob, 
-						  Vector commands, 
-						  Environmental givenTarget, 
+
+	public Environmental getAnyTarget(MOB mob,
+						  Vector commands,
+						  Environmental givenTarget,
 						  int wornReqCode,
 						  boolean checkOthersInventory)
 	{ return getAnyTarget(mob,commands,givenTarget,wornReqCode,checkOthersInventory,false);}
-	
-	public Environmental getAnyTarget(MOB mob, 
-									  Vector commands, 
-									  Environmental givenTarget, 
+
+	public Environmental getAnyTarget(MOB mob,
+									  Vector commands,
+									  Environmental givenTarget,
 									  int wornReqCode,
 									  boolean checkOthersInventory,
 									  boolean alreadyAffOk)
@@ -502,7 +502,7 @@ public class StdAbility implements Ability
 				}
 		}
 		if(target!=null) targetName=target.name();
-		
+
 		if((target==null)
 		||((givenTarget==null)
 		   &&(!CMLib.flags().canBeSeenBy(target,mob))
@@ -580,7 +580,7 @@ public class StdAbility implements Ability
             }
 		}
 		if(target!=null) targetName=target.name();
-		
+
 		if((target==null)
 		||(!(target instanceof Item))
 		||((givenTarget==null)&&(!CMLib.flags().canBeSeenBy(target,mob))))
@@ -629,7 +629,7 @@ public class StdAbility implements Ability
 			setProficiency(100);
 			return true;
 		}
-		
+
 		if((mob!=null)&&CMSecurity.isAllowed(mob,mob.location(),"SUPERSKILL"))
 		   return true;
 
@@ -709,7 +709,7 @@ public class StdAbility implements Ability
 		if(consumed>2)
 		{
 			costDown=getXLOWCOSTLevel(mob);
-			if(costDown>=consumed) 
+			if(costDown>=consumed)
 				costDown=consumed/2;
             minimum=minimum-costDown;
             if(minimum<5) minimum=5;
@@ -815,11 +815,11 @@ public class StdAbility implements Ability
 		if(consumed==Integer.MIN_VALUE) consumed=CMProps.getIntVar(CMProps.SYSTEMI_MANACOST);
 		if(consumed<0) consumed=50+lowest;
 		int minimum=CMProps.getMinManaException(ID());
-		if(minimum==Integer.MIN_VALUE) 
+		if(minimum==Integer.MIN_VALUE)
             minimum=CMProps.getIntVar(CMProps.SYSTEMI_MANAMINCOST);
 		if(minimum<0){ minimum=lowest; if(minimum<5) minimum=5;}
 		if(diff>0) consumed=consumed - (consumed /10 * diff);
-		if(consumed<minimum) 
+		if(consumed<minimum)
 			consumed=minimum;
 		if(overrideMana()>=0) consumed=overrideMana();
 		if((costOverrides!=null)&&(costOverrides[AbilityMapper.AbilityMapping.COST_MANA]!=null))
@@ -837,17 +837,17 @@ public class StdAbility implements Ability
 		if((A==null)||(!A.savable())) return;
 
         if(!mob.isMonster()) CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_SKILLUSE);
-        
+
 		if((System.currentTimeMillis()
 		-((StdAbility)A).lastCastHelp)<300000)
 			return;
-        
+
         if(!A.appropriateToMyFactions(mob))
             return;
-        
+
 		if(A.proficiency()<100)
 		{
-			if(((int)Math.round(Math.sqrt(new Integer(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)).doubleValue())*34.0*Math.random()))>=A.proficiency())
+			if(((int)Math.round(Math.sqrt(((double)mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)))*34.0*Math.random()))>=A.proficiency())
 			{
 			    int qualLevel=CMLib.ableMapper().qualifyingLevel(mob,A);
 			    if((qualLevel<0)||(qualLevel>30)||(CMLib.dice().rollPercentage()<(int)Math.round(100.0*CMath.div(31-qualLevel,30+qualLevel))))
@@ -881,7 +881,7 @@ public class StdAbility implements Ability
 	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
 	{
 		expertise=null;
-        if((mob!=null)&&(getXMAXRANGELevel(mob)>0)) 
+        if((mob!=null)&&(getXMAXRANGELevel(mob)>0))
             invoker=mob;
 		if(!auto)
 		{
@@ -890,14 +890,14 @@ public class StdAbility implements Ability
 			// if you can't move, you can't cast! Not even verbal!
 			if(!CMLib.flags().aliveAwakeMobile(mob,false))
 				return false;
-			
+
 			if(CMath.bset(usageType(),Ability.USAGE_MOVEMENT)
 			   &&(CMLib.flags().isBound(mob)))
 			{
 				mob.tell("You are bound!");
 				return false;
 			}
-			
+
 			int[] consumed=usageCost(mob,false);
 			if(mob.curState().getMana()<consumed[Ability.USAGEINDEX_MANA])
 			{
@@ -923,7 +923,7 @@ public class StdAbility implements Ability
 					mob.tell("You don't have enough hit points to do that.");
 				return false;
 			}
-            
+
             if((minCastWaitTime()>0)&&(lastCastHelp>0))
             {
                 if((System.currentTimeMillis()-lastCastHelp)<minCastWaitTime())
@@ -949,7 +949,7 @@ public class StdAbility implements Ability
 			isAnAutoEffect=true;
 		return true;
 	}
-    
+
     public boolean checkComponents(MOB mob)
     {
         if((mob!=null)
@@ -1020,7 +1020,7 @@ public class StdAbility implements Ability
         }
         return tickAdjustmentFromStandard;
     }
-    
+
 
 	public boolean maliciousAffect(MOB mob,
 								   Environmental target,
@@ -1138,7 +1138,7 @@ public class StdAbility implements Ability
 		}
 		A.setMiscText("+"+ID());
 	}
-	
+
 	public boolean autoInvocation(MOB mob)
 	{
 		if(isAutoInvoked())
@@ -1339,7 +1339,7 @@ public class StdAbility implements Ability
 		    teacher.tell(student.name()+" needs to stand up to be taught about that.");
 		    return false;
 		}
-		
+
 		String extraMask=CMLib.ableMapper().getApplicableMask(student,this);
 		if((extraMask.length()>0)&&(!CMLib.masking().maskCheck(extraMask,student,true)))
 		{
@@ -1348,7 +1348,7 @@ public class StdAbility implements Ability
 			teacher.tell(student.name()+" does not fit the '"+name()+"' "+reason+".");
 			return false;
 		}
-		
+
 		DVector prereqs=CMLib.ableMapper().getUnmetPreRequisites(student,this);
 		if((prereqs!=null)&&(prereqs.size()>0))
 		{
@@ -1357,7 +1357,7 @@ public class StdAbility implements Ability
 			teacher.tell(student.name()+" has net learned the pre-requisites to "+name()+" yet.");
 			return false;
 		}
-		
+
 		return true;
 	}
 
@@ -1383,7 +1383,7 @@ public class StdAbility implements Ability
 	}
     protected int somanticCastMask(MOB mob,Environmental target, boolean auto)
     { return somanticCastCode(mob,target,auto)&CMMsg.MAJOR_MASK;}
-	
+
 	public boolean canBePracticedBy(MOB teacher, MOB student)
 	{
 		if((practicesToPractice(student)>0)&&(student.getPractices()<practicesToPractice(student)))
@@ -1539,13 +1539,13 @@ public class StdAbility implements Ability
 		return true;
 	}
 
-    public boolean appropriateToMyFactions(MOB mob) 
+    public boolean appropriateToMyFactions(MOB mob)
     {
-        for(Enumeration e=mob.fetchFactions();e.hasMoreElements();) 
+        for(Enumeration e=mob.fetchFactions();e.hasMoreElements();)
         {
             String factionID=(String)e.nextElement();
             Faction F=CMLib.factions().getFaction(factionID);
-            if((F!=null)&&F.hasUsage(this)) 
+            if((F!=null)&&F.hasUsage(this))
                 return F.canUse(mob,this);
         }
         return true;

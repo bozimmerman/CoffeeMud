@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,10 +40,16 @@ public class Chant_FindGem extends Chant_FindPlant
 	public String displayText(){return "(Finding "+lookingFor+")";}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	public long flags(){return Ability.FLAG_TRACKING;}
-	protected String lookingFor="gem";
 
 	private int[] myMats={RawMaterial.MATERIAL_PRECIOUS,
 						  RawMaterial.MATERIAL_GLASS};
 	protected int[] okMaterials(){	return myMats;}
 	protected int[] okResources(){	return null;}
+
+	public Chant_FindGem()
+	{
+	    super();
+
+	    lookingFor = "gem";
+	}
 }

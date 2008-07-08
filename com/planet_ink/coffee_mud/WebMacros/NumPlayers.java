@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,7 +39,7 @@ public class NumPlayers extends StdWebMacro
 		Hashtable parms=parseParms(parm);
 		if(parms.containsKey("ALL"))
 			return ""+CMLib.sessions().size();
-		
+
 		int numPlayers=0;
 		for(int s=0;s<CMLib.sessions().size();s++)
 		{
@@ -47,7 +47,7 @@ public class NumPlayers extends StdWebMacro
 			if((S.mob()!=null)&&(!CMLib.flags().isCloaked(S.mob())))
 			   numPlayers++;
 		}
-		return new Integer(numPlayers).toString();
+		return Integer.toString(numPlayers);
 	}
 
 }

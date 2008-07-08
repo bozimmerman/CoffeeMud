@@ -18,7 +18,7 @@ import java.util.*;
 
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,14 +33,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class GrinderRaces 
+public class GrinderRaces
 {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
     public static String getEStats(char c, ExternalHTTPRequests httpReq)
     {
         boolean changes = false;
-        EnvStats adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats"); 
+        EnvStats adjEStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
         adjEStats.setAllValues(0);
         if(httpReq.isRequestParameter(c+"ESTATS1"))
         {
@@ -62,16 +62,16 @@ public class GrinderRaces
                 behav=httpReq.getRequestParameter(c+"ESTATS"+num);
             }
         }
-        if(!changes) 
+        if(!changes)
             return "";
         return CMLib.coffeeMaker().getEnvStatsStr(adjEStats);
     }
-    
+
     public static String getCStats(char c, ExternalHTTPRequests httpReq)
     {
         boolean changes = false;
-        CharStats adjCStats=(CharStats)CMClass.getCommon("DefaultCharStats"); 
-        adjCStats.setAllValues(0); 
+        CharStats adjCStats=(CharStats)CMClass.getCommon("DefaultCharStats");
+        adjCStats.setAllValues(0);
         if(httpReq.isRequestParameter(c+"CSTATS1"))
         {
             int num=1;
@@ -91,15 +91,15 @@ public class GrinderRaces
                 behav=httpReq.getRequestParameter(c+"CSTATS"+num);
             }
         }
-        if(!changes) 
+        if(!changes)
             return "";
         return CMLib.coffeeMaker().getCharStatsStr(adjCStats);
     }
-    
+
     public static String getCState(char c, ExternalHTTPRequests httpReq)
     {
         boolean changes = false;
-        CharState adjCState=(CharState)CMClass.getCommon("DefaultCharState");  
+        CharState adjCState=(CharState)CMClass.getCommon("DefaultCharState");
         adjCState.setAllValues(0);
         if(httpReq.isRequestParameter(c+"CSTATE1"))
         {
@@ -121,12 +121,12 @@ public class GrinderRaces
                 behav=httpReq.getRequestParameter(c+"CSTATE"+num);
             }
         }
-        if(!changes) 
+        if(!changes)
             return "";
         return CMLib.coffeeMaker().getCharStateStr(adjCState);
     }
-    
-    
+
+
     public static Vector itemList(Vector items, char c, ExternalHTTPRequests httpReq, boolean one)
     {
         if(items==null) items=new Vector();
@@ -154,7 +154,7 @@ public class GrinderRaces
         }
         return classes;
     }
-    
+
     public static DVector rabilities(ExternalHTTPRequests httpReq)
     {
         DVector theclasses=new DVector(4);
@@ -181,7 +181,7 @@ public class GrinderRaces
         return theclasses;
     }
 
-    
+
     public static DVector cabilities(ExternalHTTPRequests httpReq)
     {
         DVector theclasses=new DVector(2);
@@ -207,7 +207,7 @@ public class GrinderRaces
     public static String modifyRace(ExternalHTTPRequests httpReq, Hashtable parms, Race oldR, Race R)
     {
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
-        if((replaceCommand != null) 
+        if((replaceCommand != null)
         && (replaceCommand.length()>0)
         && (replaceCommand.indexOf('=')>0))
         {
@@ -218,7 +218,7 @@ public class GrinderRaces
             httpReq.addRequestParameters("REPLACE","");
         }
         String old;
-        
+
         old=httpReq.getRequestParameter("NAME");
         R.setStat("NAME",(old==null)?"NAME":old);
         old=httpReq.getRequestParameter("CAT");
@@ -254,12 +254,12 @@ public class GrinderRaces
         R.setStat("BODY",bodyOld.toString());
         old=httpReq.getRequestParameter("WEARID");
         long mask=0;
-        if(old!=null) 
+        if(old!=null)
         {
             mask|=CMath.s_long(old);
             for(int i=1;;i++)
-                if(httpReq.isRequestParameter("WEARID"+(new Integer(i).toString())))
-                    mask|=CMath.s_long(httpReq.getRequestParameter("WEARID"+(new Integer(i).toString())));
+                if(httpReq.isRequestParameter("WEARID"+(Integer.toString(i))))
+                    mask|=CMath.s_long(httpReq.getRequestParameter("WEARID"+(Integer.toString(i))));
                 else
                     break;
         }

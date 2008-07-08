@@ -20,7 +20,7 @@ import java.util.Hashtable;
 import java.util.Properties;
 import java.util.Vector;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -56,7 +56,7 @@ public class DefaultLawSet implements Law
     private boolean namesModifiable=false;
     private boolean lawsModifiable=false;
     private LegalBehavior legalDetails=null;
-    
+
     private Vector otherCrimes=new Vector();
     private Vector otherBits=new Vector();
     private Vector bannedSubstances=new Vector();
@@ -239,11 +239,11 @@ public class DefaultLawSet implements Law
                         properties.append(T.landPropertyID());
                     else
                         properties.append("around "+CMLib.map().getExtendedRoomID((Room)propertyRooms.firstElement()));
-                    totalValue+=new Integer(T.landPrice()).doubleValue();
+                    totalValue+=(double)T.landPrice();
                     if(T.backTaxes()>0)
                     {
-                        totalValue+=new Integer(T.backTaxes()).doubleValue();
-                        owed+=new Integer(T.backTaxes()).doubleValue();
+                        totalValue+=(double)T.backTaxes();
+                        owed+=(double)T.backTaxes();
                     }
                 }
                 owed+=CMath.mul(totalValue,tax);
@@ -257,11 +257,11 @@ public class DefaultLawSet implements Law
                         if((-T.backTaxes())>=owed)
                         {
                             paid+=owed;
-                            T.setBackTaxes((int)Math.round(new Integer(T.backTaxes()).doubleValue()+owed));
+                            T.setBackTaxes((int)Math.round(((double)T.backTaxes())+owed));
                             T.updateTitle();
                             break;
                         }
-                        paid+=new Integer(-T.backTaxes()).doubleValue();
+                        paid+=(double)(-T.backTaxes());
                         T.setBackTaxes(0);
                         T.updateTitle();
                     }
@@ -283,7 +283,7 @@ public class DefaultLawSet implements Law
                             owedOnThisLand-=(paid/particulars.size());
                             if(owedOnThisLand>0)
                             {
-                                T.setBackTaxes((int)Math.round(new Integer(T.backTaxes()).doubleValue()+owedOnThisLand));
+                                T.setBackTaxes((int)Math.round(((double)T.backTaxes())+owedOnThisLand));
                                 if((T.landPrice()/T.backTaxes())<4)
                                 {
                                     if(CMLib.clans().getClan(T.landOwner())!=null)
@@ -568,8 +568,8 @@ public class DefaultLawSet implements Law
         return bits;
     }
 
-    public LegalWarrant getWarrant(MOB criminal, 
-                                   String crime, 
+    public LegalWarrant getWarrant(MOB criminal,
+                                   String crime,
                                    boolean pull,
                                    boolean debugging)
     {
@@ -605,7 +605,7 @@ public class DefaultLawSet implements Law
         }
         return null;
     }
-    
+
     public LegalWarrant getLawresister(Area A, LegalBehavior behav, MOB mob)
     {
         String[] lawResistInfo=(String[])basicCrimes().get("RESISTINGARREST");
@@ -622,8 +622,8 @@ public class DefaultLawSet implements Law
         }
         return null;
     }
-    
-    
+
+
     public LegalWarrant getWarrant(MOB mob, int which)
     {
         int one=0;

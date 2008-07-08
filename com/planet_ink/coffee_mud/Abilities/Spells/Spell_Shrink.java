@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -82,7 +82,7 @@ public class Spell_Shrink extends Spell
 	public void affectEnvStats(Environmental host, EnvStats affectedStats)
 	{
 		super.affectEnvStats(host,affectedStats);
-		int height=(int)Math.round(new Integer(affectedStats.height()).doubleValue()*0.10);
+		int height=(int)Math.round(affectedStats.height()*0.10);
 		if(height==0) height=1;
 		affectedStats.setHeight(height);
 	}
@@ -122,7 +122,7 @@ public class Spell_Shrink extends Spell
                         isJustUnInvoking=true;
                     }
                 }
-                
+
                 if((!isJustUnInvoking)&&(msg.value()<=0))
                 {
     				beneficialAffect(mob,target,asLevel,0);

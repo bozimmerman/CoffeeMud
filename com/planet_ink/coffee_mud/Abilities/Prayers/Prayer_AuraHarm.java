@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,7 +42,13 @@ public class Prayer_AuraHarm extends Prayer
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_VEXING;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-    protected int tickDown=4;
+
+    public Prayer_AuraHarm()
+    {
+        super();
+
+        tickDown = 4;
+    }
 
 
 	public void unInvoke()

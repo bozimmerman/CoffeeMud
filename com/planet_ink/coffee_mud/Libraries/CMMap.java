@@ -33,7 +33,7 @@ import java.util.*;
 */
 public class CMMap extends StdLibrary implements WorldMap
 {
-    
+
     public String ID(){return "CMMap";}
 	public Vector areasList = new Vector();
 	//public Vector roomsList = new Vector();
@@ -70,7 +70,7 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         return -1;
     }
-    
+
 	// areas
 	public int numAreas() { return areasList.size(); }
 	public void addArea(Area newOne)
@@ -84,7 +84,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		sortedAreas=null;
 		areasList.remove(oneToDel);
 	}
-	
+
 	public Enumeration sortedAreas()
 	{
 		if(sortedAreas==null)
@@ -106,7 +106,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		return (sortedAreas==null)?sortedAreas():sortedAreas.elements();
 	}
-	
+
 	public Area getArea(String calledThis)
 	{
 		for(Enumeration a=areas();a.hasMoreElements();)
@@ -129,7 +129,7 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         return null;
     }
-    
+
     public Area findArea(String calledThis)
     {
         Area A=findAreaStartsWith(calledThis);
@@ -176,14 +176,14 @@ public class CMMap extends StdLibrary implements WorldMap
         if(!V.contains(E))
             V.add(E);
     }
-    
+
     public void delGlobalHandler(Environmental E, int category)
     {
         Vector V=(Vector)globalHandlers.get(new Integer(category));
         if(V==null) return;
         V.removeElement(E);
     }
-    
+
     public MOB god(Room R){
         MOB everywhereMOB=CMClass.getMOB("StdMOB");
         everywhereMOB.setName("somebody");
@@ -194,7 +194,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public boolean isObjectInSpace(SpaceObject O){return space.contains(O);}
 	public void delObjectInSpace(SpaceObject O){	space.removeElement(O);}
 	public void addObjectToSpace(SpaceObject O){	space.addElement(O);}
-	
+
 	public long getDistanceFrom(SpaceObject O1, SpaceObject O2)
 	{
 		return Math.round(Math.sqrt(CMath.mul((O1.coordinates()[0]-O2.coordinates()[0]),(O1.coordinates()[0]-O2.coordinates()[0]))
@@ -204,14 +204,14 @@ public class CMMap extends StdLibrary implements WorldMap
 	public double[] getDirection(SpaceObject FROM, SpaceObject TO)
 	{
 		double[] dir=new double[2];
-		double x=new Long(TO.coordinates()[0]-FROM.coordinates()[0]).doubleValue();
-		double y=new Long(TO.coordinates()[1]-FROM.coordinates()[1]).doubleValue();
-		double z=new Long(TO.coordinates()[2]-FROM.coordinates()[2]).doubleValue();
+		double x=(double)(TO.coordinates()[0]-FROM.coordinates()[0]);
+		double y=(double)(TO.coordinates()[1]-FROM.coordinates()[1]);
+		double z=(double)(TO.coordinates()[2]-FROM.coordinates()[2]);
 		dir[0]=Math.toDegrees(Math.acos(x/Math.sqrt((x*x)+(y*y))));
 		dir[1]=Math.toDegrees(Math.acos(z/Math.sqrt((z*z)+(y*y))));
 		return dir;
 	}
-	
+
 	public void moveSpaceObject(SpaceObject O)
 	{
 		double x1=Math.cos(Math.toRadians(O.direction()[0]))*Math.sin(Math.toRadians(O.direction()[1]));
@@ -221,14 +221,14 @@ public class CMMap extends StdLibrary implements WorldMap
 		O.coordinates()[1]=O.coordinates()[1]+Math.round(CMath.mul(O.velocity(),y1));
 		O.coordinates()[2]=O.coordinates()[2]+Math.round(CMath.mul(O.velocity(),z1));
 	}
-	
+
 	public long getRelativeVelocity(SpaceObject O1, SpaceObject O2)
 	{
-		return Math.round(Math.sqrt(new Long(((O1.velocity()*O1.coordinates()[0])-(O2.velocity()*O2.coordinates()[0])*(O1.velocity()*O1.coordinates()[0])-(O2.velocity()*O2.coordinates()[0]))
+		return Math.round(Math.sqrt((double)(((O1.velocity()*O1.coordinates()[0])-(O2.velocity()*O2.coordinates()[0])*(O1.velocity()*O1.coordinates()[0])-(O2.velocity()*O2.coordinates()[0]))
 									+((O1.velocity()*O1.coordinates()[1])-(O2.velocity()*O2.coordinates()[1])*(O1.velocity()*O1.coordinates()[1])-(O2.velocity()*O2.coordinates()[1]))
-									+((O1.velocity()*O1.coordinates()[2])-(O2.velocity()*O2.coordinates()[2])*(O1.velocity()*O1.coordinates()[2])-(O2.velocity()*O2.coordinates()[2]))).doubleValue()));
+									+((O1.velocity()*O1.coordinates()[2])-(O2.velocity()*O2.coordinates()[2])*(O1.velocity()*O1.coordinates()[2])-(O2.velocity()*O2.coordinates()[2])))));
 	}
-	
+
 	public String createNewExit(Room from, Room room, int direction)
 	{
 		Room opRoom=from.rawDoors()[direction];
@@ -247,7 +247,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			from=CMLib.map().getRoom(from);
 			if(opRoom!=null)
 				from.rawDoors()[direction]=null;
-	
+
 			from.rawDoors()[direction]=room;
 			thisExit=from.getRawExit(direction);
 			if(thisExit==null)
@@ -277,7 +277,7 @@ public class CMMap extends StdLibrary implements WorldMap
             total+=((Area)e.nextElement()).properSize();
         return total;
     }
-    
+
     public boolean sendGlobalMessage(MOB host, int category, CMMsg msg)
     {
         Vector V=(Vector)globalHandlers.get(new Integer(category));
@@ -362,7 +362,7 @@ public class CMMap extends StdLibrary implements WorldMap
         catch(java.util.NoSuchElementException x){}
         return null;
     }
-    
+
 	public Room getRoom(Hashtable hashedRoomSet, String areaName, String calledThis)
 	{
 		if(calledThis.startsWith("#"))
@@ -388,13 +388,13 @@ public class CMMap extends StdLibrary implements WorldMap
 
     public Room getRoom(Room room)
     {
-    	if(room==null) 
+    	if(room==null)
     		return null;
     	if(room.amDestroyed())
     		return getRoom(CMLib.map().getExtendedRoomID(room));
     	return room;
     }
-    
+
 	public Room getRoom(String calledThis){ return getRoom(null,calledThis); }
 	public Enumeration rooms(){ return new AreaEnumerator(false); }
     public Enumeration roomsFilled(){ return new AreaEnumerator(true); }
@@ -475,8 +475,9 @@ public class CMMap extends StdLibrary implements WorldMap
         return null;
     }
     public Enumeration postOffices() { return DVector.s_enum(postOfficeList); }
-    
+
     public Enumeration auctionHouses() { return DVector.s_enum(auctionHouseList); }
+    
     public int numAuctionHouses() { return auctionHouseList.size(); }
     public void addAuctionHouse(Auctioneer newOne)
     {
@@ -508,7 +509,7 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         return null;
     }
-    
+
     public int numBanks() { return bankList.size(); }
     public void addBank(Banker newOne)
     {
@@ -548,7 +549,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		for(Enumeration e=banks();e.hasMoreElements();)
 		{
 			B=(Banker)e.nextElement();
-			if((!H.contains(B.bankChain())) 
+			if((!H.contains(B.bankChain()))
 			&&((AreaOrNull==null)
 				||(getStartArea(B)==AreaOrNull)
 				||(AreaOrNull.isChild(getStartArea(B)))))
@@ -556,17 +557,17 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		return H.iterator();
 	}
-	
-    
+
+
 	public int numPlayers() { return playersList.size(); }
-	public void addPlayer(MOB newOne) 
-	{ 
+	public void addPlayer(MOB newOne)
+	{
 		synchronized(playersList)
 		{
 			if(getPlayer(newOne.Name())!=null) return;
 			if(playersList.contains(newOne)) return;
 			playersList.add(newOne);
-		} 
+		}
 	}
 	public void delPlayer(MOB oneToDel) { synchronized(playersList){playersList.remove(oneToDel);} }
 	public MOB getPlayer(String calledThis)
@@ -593,14 +594,14 @@ public class CMMap extends StdLibrary implements WorldMap
 		{
 			M=getPlayer(last);
 			if(M!=null) return M;
-	
+
 			for(Enumeration p=players();p.hasMoreElements();)
 			{
 				MOB mob2=(MOB)p.nextElement();
 				if(mob2.Name().equalsIgnoreCase(last))
 				{ return mob2;}
 			}
-	
+
 			MOB TM=CMClass.getMOB("StdMOB");
 			if(CMLib.database().DBUserSearch(TM,last))
 			{
@@ -619,7 +620,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 	public Enumeration players() { return DVector.s_enum(playersList); }
-    
+
 	public Room getDefaultStartRoom(MOB mob)
 	{
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
@@ -844,7 +845,7 @@ public class CMMap extends StdLibrary implements WorldMap
     			return d;
     	return -1;
     }
-    
+
     public Room findConnectingRoom(Room room)
     {
     	if(room==null) return null;
@@ -878,7 +879,7 @@ public class CMMap extends StdLibrary implements WorldMap
     		return (Room)otherChoices.firstElement();
     	return null;
     }
-    
+
 	public boolean isClearableRoom(Room R)
 	{
 		if((R==null)||(R.amDestroyed())) return true;
@@ -908,10 +909,10 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		return true;
 	}
-    
+
     public boolean explored(Room R, Vector areas)
     {
-        if((R==null) 
+        if((R==null)
         ||(CMath.bset(R.envStats().sensesMask(),EnvStats.SENSE_ROOMUNEXPLORABLE))
         ||(R.getArea()==null))
             return false;
@@ -952,7 +953,7 @@ public class CMMap extends StdLibrary implements WorldMap
             return curRoomEnumeration.nextElement();
         }
     }
-    
+
 	public void obliterateRoom(Room deadRoom)
 	{
 		for(int a=deadRoom.numEffects()-1;a>=0;a--)
@@ -1031,11 +1032,11 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(R==null) return null;
 		return R.getArea();
 	}
-	
+
     public Room getStartRoom(Environmental E)
     {
         if(E ==null) return null;
-        if(E instanceof MOB) 
+        if(E instanceof MOB)
         {
         	return ((MOB)E).getStartRoom();
         }
@@ -1071,7 +1072,7 @@ public class CMMap extends StdLibrary implements WorldMap
            return (((MOB)((Item)E).owner()).location()).getArea();
         return null;
     }
-    
+
 	public void emptyRoom(Room room, Room bringBackHere)
 	{
 		if(room==null) return;
@@ -1170,8 +1171,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			room.toggleMobility(mobile);
 		}
 	}
-    
-    
+
+
     private DVector getAllPlayersHere(Area area, boolean includeLocalFollowers)
     {
         DVector playersHere=new DVector(2);
@@ -1200,7 +1201,7 @@ public class CMMap extends StdLibrary implements WorldMap
             }
         }
         return playersHere;
-        
+
     }
     public void resetArea(Area area)
     {
@@ -1219,7 +1220,7 @@ public class CMMap extends StdLibrary implements WorldMap
         area.setAreaFlags(oldFlag);
     }
 
-    
+
 	public void obliteratePlayer(MOB deadMOB, boolean quiet)
 	{
 		if(getPlayer(deadMOB.Name())!=null)
@@ -1270,10 +1271,10 @@ public class CMMap extends StdLibrary implements WorldMap
             if(somethingDone)
             {
     			Resources.updateResource("protectedplayers.ini",newNoPurge);
-    			Resources.saveFileResource("::protectedplayers.ini");		
+    			Resources.saveFileResource("::protectedplayers.ini");
             }
 		}
-		
+
 		CMLib.database().DBDeleteMOB(deadMOB);
 		if(deadMOB.session()!=null)
 			deadMOB.session().setKillFlag(true);

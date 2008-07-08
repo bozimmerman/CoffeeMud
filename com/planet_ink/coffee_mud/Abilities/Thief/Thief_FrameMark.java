@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -74,7 +74,7 @@ public class Thief_FrameMark extends ThiefSkill
 			mob.tell("You aren't wanted for anything here.");
 			return false;
 		}
-		double goldRequired=new Integer(target.envStats().level()*1000).doubleValue();
+		double goldRequired=target.envStats().level() * 1000.0;
 		String localCurrency=CMLib.beanCounter().getCurrency(mob.location());
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
 		{

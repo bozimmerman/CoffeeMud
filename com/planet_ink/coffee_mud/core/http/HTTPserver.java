@@ -17,7 +17,7 @@ import java.io.IOException;
 import java.util.*;
 
 
-/* 
+/*
    Portions Copyright 2002 Jeff Kamenek
    Portions Copyright 2002-2008 Bo Zimmerman
 
@@ -130,7 +130,7 @@ public class HTTPserver extends Thread implements MudHost
 
 		if (page.getStr("BASEDIRECTORY").length()==0)
 		{
-			serverDir = new String ("web/"+partialName);
+			serverDir = "web/" + partialName;
 		}
 		else
 		{
@@ -147,7 +147,7 @@ public class HTTPserver extends Thread implements MudHost
 		}
 
 		if (page.getStr("TEMPLATEDIRECTORY").length()==0)
-			serverTemplateDir = new String (serverDir + ".templates");
+			serverTemplateDir = serverDir + ".templates";
 		else
 			serverTemplateDir = page.getStr("TEMPLATEDIRECTORY");
 
@@ -350,7 +350,7 @@ public class HTTPserver extends Thread implements MudHost
         return STATUS_STRINGS[state];
     }
     public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
-    
+
     public Vector getOverdueThreads()
     {
     	Vector V=new Vector();
@@ -370,7 +370,7 @@ public class HTTPserver extends Thread implements MudHost
     	}
     	return V;
     }
-    
+
     public String executeCommand(String cmd)
         throws Exception
     {

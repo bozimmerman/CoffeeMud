@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,7 +41,7 @@ public class Disease_Anthrax extends Disease
 	public boolean putInCommandlist(){return false;}
 	public int difficultyLevel(){return 2;}
 
-	protected int DISEASE_TICKS(){return new Long(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*10).intValue();}
+	protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*10;}
 	protected int DISEASE_DELAY(){return 15;}
 	protected int lastHP=Integer.MAX_VALUE;
 	protected String DISEASE_DONE(){return "Your anthrax wounds clear up.";}

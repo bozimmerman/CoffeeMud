@@ -82,8 +82,6 @@ public class GenRace extends StdRace
 	protected EnvStats adjEStats=null;
 	protected CharState adjState=null;
 	protected CharState startAdjState=null;
-	protected Weapon naturalWeapon=null;
-	protected Vector naturalWeaponChoices=null;
 	protected Vector resourceChoices=null;
 	protected Race healthBuddy=null;
 	protected Race eventBuddy=null;
@@ -199,7 +197,7 @@ public class GenRace extends StdRace
 			return R.ID();
 		return R.getClass().getName();
 	}
-	
+
 	public String racialParms()
 	{
 		StringBuffer str=new StringBuffer("");
@@ -632,7 +630,7 @@ public class GenRace extends StdRace
 		&&(!eventBuddy.okMessage(myHost, msg)))
 			return false;
 		return super.okMessage(myHost, msg);
-		
+
 	}
 
 	public void startRacing(MOB mob, boolean verifyOnly)

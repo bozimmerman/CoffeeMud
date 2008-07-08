@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -41,8 +41,8 @@ public class Disease_Vampirism extends Disease
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public boolean putInCommandlist(){return false;}
 
-	protected int DISEASE_TICKS(){return new Long(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*6).intValue();}
-	protected int DISEASE_DELAY(){return new Long(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).intValue();}
+	protected int DISEASE_TICKS(){return CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)*6;}
+	protected int DISEASE_DELAY(){return CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);}
 	protected String DISEASE_DONE(){return "Your vampirism lifts.";}
 	protected String DISEASE_START(){return "^G<S-NAME> seem(s) pale and cold.^?";}
 	protected String DISEASE_AFFECT(){return "";}

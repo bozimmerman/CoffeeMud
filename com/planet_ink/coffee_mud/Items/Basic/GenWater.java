@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,10 +34,12 @@ import java.util.*;
 public class GenWater extends GenDrink
 {
 	public String ID(){	return "GenWater";}
-	protected String	readableText="";
+
 	public GenWater()
 	{
 		super();
+		readableText = "";
+
 		setName("a generic puddle of water");
 		baseEnvStats.setWeight(2);
 		setDisplayText("a generic puddle of water sits here.");

@@ -47,10 +47,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
     protected boolean noDelay=CMSecurity.isDisabled("SCRIPTABLEDELAY");
     
     protected String scope="";
-    
+
     protected long tickStatus=Tickable.STATUS_NOT;
     protected boolean isSavable=true;
-    
+
     protected MOB lastToHurtMe=null;
     protected Room lastKnownLocation=null;
     protected Tickable altStatusTickable=null;
@@ -77,15 +77,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
     public boolean isSavable(){ return isSavable;}
     public void setSavable(boolean truefalse){isSavable=truefalse;}
-    
+
     public String defaultQuestName(){ return defaultQuestName;}
-    
+
     protected Quest defaultQuest() {
         if(defaultQuestName.length()==0)
             return null;
         return CMLib.quests().fetchQuest(defaultQuestName);
     }
-    
+
     public void setVarScope(String newScope){
         if((newScope==null)||(newScope.trim().length()==0))
         {
@@ -102,12 +102,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
             Resources.submitResource("VARSCOPE-"+scope,resources);
         }
     }
-    
+
     public String getVarScope() { return scope;}
-    
+
     protected Object[] newObjs() { return new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];}
-    
-    public String getScopeValues() 
+
+    public String getScopeValues()
     {
         if((scope==null)||(scope.length()==0)) return "";
         StringBuffer str=new StringBuffer("");
@@ -130,8 +130,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
         }
         return str.toString();
     }
-    
-    public void setScopeValues(String xml) 
+
+    public void setScopeValues(String xml)
     {
         Vector V=resources._findResourceKeys("SCRIPTVAR-");
         for(int v=0;v<V.size();v++)
@@ -157,12 +157,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
         }
     }
-    
+
     private Quest getQuest(String named)
     {
         if((defaultQuestName.length()>0)&&(named.equals("*")||named.equalsIgnoreCase(defaultQuestName)))
             return defaultQuest();
-        
+
         Quest Q=null;
         for(int i=0;i<CMLib.quests().numQuests();i++)
         {
@@ -189,7 +189,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         else
             defaultQuestName=qName.trim();
     }
-    
+
     public CMObject newInstance()
     {
         try
@@ -202,7 +202,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         }
         return new DefaultScriptingEngine();
     }
-    
+
     public CMObject copyOf()
     {
         try
@@ -218,7 +218,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         }
     }
     protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_COMMON);}
-    
+
     /**
      * c=clean bit, r=pastbitclean, p=pastbit, s=remaining clean bits, t=trigger
      */
@@ -370,12 +370,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
             val=(String)H.get(var.toUpperCase());
         return (val!=null);
     }
-    
+
     public String getVar(Environmental E, String rawHost, String var, MOB source, Environmental target,
                          Environmental scripted, MOB monster, Item primaryItem, Item secondaryItem, String msg,
                          Object[] tmp)
     { return getVar(getVarHost(E,rawHost,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp),var); }
-    
+
     public String getVar(String host, String var)
     {
         if(host.equalsIgnoreCase("*"))
@@ -427,7 +427,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
     }
 
     public String getScript(){ return myScript;}
-    
+
     public void setScript(String newParms)
     {
         newParms=CMStrings.replaceAll(newParms,"'","`");
@@ -458,7 +458,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
     public boolean canFreelyBehaveNormal(Tickable affecting)
     { return CMLib.flags().canFreelyBehaveNormal(affecting);}
-    
+
     protected void parseParmFilenames(String parse, Vector filenames, int depth)
     {
         if(depth>10) return;  // no including off to infinity
@@ -778,7 +778,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             return false;
         }
     }
-    
+
     protected Vector loadMobsFromFile(Environmental scripted, String filename)
     {
         filename=filename.trim();
@@ -1657,14 +1657,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
             {
                 String num=(String)H.get(key);
                 if(num==null) num="0";
-                val=new Integer(CMath.s_int(num.trim())+1).toString();
+                val=Integer.toString(CMath.s_int(num.trim())+1);
             }
             else
             if(val.equals("--"))
             {
                 String num=(String)H.get(key);
                 if(num==null) num="0";
-                val=new Integer(CMath.s_int(num.trim())-1).toString();
+                val=Integer.toString(CMath.s_int(num.trim())-1);
             }
             else
             if(val.startsWith("+"))
@@ -1674,7 +1674,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 int amount=CMath.s_int(val.trim());
                 String num=(String)H.get(key);
                 if(num==null) num="0";
-                val=new Integer(CMath.s_int(num.trim())+amount).toString();
+                val=Integer.toString(CMath.s_int(num.trim())+amount);
             }
             else
             if(val.startsWith("-"))
@@ -1684,7 +1684,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 int amount=CMath.s_int(val.trim());
                 String num=(String)H.get(key);
                 if(num==null) num="0";
-                val=new Integer(CMath.s_int(num.trim())-amount).toString();
+                val=Integer.toString(CMath.s_int(num.trim())-amount);
             }
             else
             if(val.startsWith("*"))
@@ -1694,7 +1694,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 int amount=CMath.s_int(val.trim());
                 String num=(String)H.get(key);
                 if(num==null) num="0";
-                val=new Integer(CMath.s_int(num.trim())*amount).toString();
+                val=Integer.toString(CMath.s_int(num.trim())*amount);
             }
             else
             if(val.startsWith("/"))
@@ -1704,7 +1704,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 int amount=CMath.s_int(val.trim());
                 String num=(String)H.get(key);
                 if(num==null) num="0";
-                val=new Integer(CMath.s_int(num.trim())/amount).toString();
+                val=Integer.toString(CMath.s_int(num.trim())/amount);
             }
             if(H.containsKey(key))
                 H.remove(key);
@@ -2580,7 +2580,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 returnable = isodd;
                 break;
-            }            
+            }
             case 16: // hitprcnt
             {
                 String arg1=CMParms.getCleanBit(evaluable.substring(y+1,z),0);
@@ -2812,7 +2812,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 {
                     int myfac=M.fetchFaction(F.factionID());
                     if(CMath.isNumber(arg2.trim()))
-                        value=new Integer(myfac).toString();
+                        value=Integer.toString(myfac);
                     else
                     {
                         Faction.FactionRange FR=CMLib.factions().getRange(F.factionID(),myfac);
@@ -5113,7 +5113,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     results.append( CMath.s_long( val.trim() ) );
                 }
                 break;
-            }           
+            }
             case 82: // pracs
             {
                 String arg1=CMParms.cleanBit(evaluable.substring(y+1,z));
@@ -5517,7 +5517,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             else
                 cmd=CMParms.getCleanBit(s,0).toUpperCase();
             if(cmd.length()==0) continue;
-                
+
             Integer methCode=(Integer)methH.get(cmd);
             if((methCode==null)&&(cmd.startsWith("MP")))
                 for(int i=0;i<methods.length;i++)
@@ -5747,7 +5747,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     tickStatus=Tickable.STATUS_END;
                     return null;
                 }
-                
+
                 int toAdd=0;
                 if(CMParms.getBit(s,4).equalsIgnoreCase("to<"))
                     toAdd=-1;
@@ -6874,7 +6874,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 72: // mpscript
             {
-                
+
                 Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String m2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(s,1));
                 boolean proceed=true;
@@ -7026,7 +7026,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         Faction.FactionRange FR=null;
                         Enumeration e=CMLib.factions().getRanges(CMLib.factions().AlignID());
                         if(e!=null)
-                        for(;e.hasMoreElements();) 
+                        for(;e.hasMoreElements();)
                         {
                             Faction.FactionRange FR2=(Faction.FactionRange)e.nextElement();
                             if(FR2.name().equalsIgnoreCase(range))
@@ -8503,7 +8503,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(CMath.isDouble(t[1]))
                         d=CMath.s_double(t[1]);
                     else
-                        d=new Integer(CMath.s_int(t[1])).doubleValue();
+                        d=(double)CMath.s_int(t[1]);
                     if((((Coins)msg.tool()).getTotalValue()>=d)
                     ||(t[1].equals("ALL"))
                     ||(t[1].equals("ANY")))
@@ -8528,7 +8528,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         Vector V=(Vector)que.clone();
                         ScriptableResponse SB=null;
                         String roomID=null;
-                        if(msg.target()!=null) 
+                        if(msg.target()!=null)
                             roomID=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(msg.target()));
                         for(int q=0;q<V.size();q++)
                         {
@@ -8558,7 +8558,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         Vector V=(Vector)que.clone();
                         ScriptableResponse SB=null;
                         String roomID=null;
-                        if(msg.target()!=null) 
+                        if(msg.target()!=null)
                             roomID=CMLib.map().getExtendedRoomID(CMLib.map().roomLocation(msg.target()));
                         for(int q=0;q<V.size();q++)
                         {
@@ -9129,7 +9129,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
     public void initializeClass(){};
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-    
+
     public void enqueResponse(Environmental host,
                               MOB source,
                               Environmental target,
@@ -9178,7 +9178,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
         }catch(Exception e){Log.errOut("DefaultScriptingEngine",e);}
     }
-    
+
     protected static class JScriptEvent extends ScriptableObject
     {
         public String getClassName(){ return "JScriptEvent";}
@@ -9201,13 +9201,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
         public String message(){return message;}
         public void setVar(String host, String var, String value)
         {
-            c.setVar(host.toString(),var.toString().toUpperCase(),value.toString());
+            c.setVar(host,var.toUpperCase(),value);
         }
         public String getVar(String host, String var)
         { return c.getVar(host,var);}
         public String toJavaString(Object O){return Context.toString(O);}
 
-        public JScriptEvent(DefaultScriptingEngine scrpt, 
+        public JScriptEvent(DefaultScriptingEngine scrpt,
                             Environmental host,
                             MOB source,
                             Environmental target,

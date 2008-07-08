@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,13 +38,13 @@ public class Prop_Retainable extends Property
 	public String name(){ return "Ability to set Price/Retainability of a pet.";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
     protected Room lastRoom=null;
-	
+
 	protected long payPeriodLengthInMilliseconds=0;
 	protected int payPeriodLengthInMudDays=0;
 	protected int payAmountPerPayPeriod=0;
 	protected long lastPayDayTimestamp=0;
     protected long lastMoveIn=0;
-	
+
 	public String accountForYourself()
 	{ return "Retainable";	}
 
@@ -75,17 +75,17 @@ public class Prop_Retainable extends Property
 			}
 		}
 	}
-	
-	
+
+
 	public void quit(MOB mob, String msg)
 	{
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))
 			return false;
-		
+
 		if((affected!=null)&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
@@ -105,7 +105,7 @@ public class Prop_Retainable extends Property
                 }
 				if(payPeriodLengthInMudDays>0)
 				{
-					if(lastPayDayTimestamp==0) 
+					if(lastPayDayTimestamp==0)
 					{
 						lastPayDayTimestamp=System.currentTimeMillis();
 						miscText=payAmountPerPayPeriod+";"+payPeriodLengthInMudDays+";"+lastPayDayTimestamp;
@@ -138,7 +138,7 @@ public class Prop_Retainable extends Property
 						else
 						if((t!=null)&&(t.landOwner().length()>0))
 							owner=t.landOwner();
-						
+
 						if(owner.length()==0)
 						{
 							CMLib.commands().postSay(mob,null,"Argh! I quit!",false,false);
@@ -147,11 +147,11 @@ public class Prop_Retainable extends Property
 							mob.destroy();
 							return false;
 						}
-						boolean paid=CMLib.beanCounter().modifyLocalBankGold(mob.location().getArea(), 
-						        owner, 
+						boolean paid=CMLib.beanCounter().modifyLocalBankGold(mob.location().getArea(),
+						        owner,
 						        CMLib.utensils().getFormattedDate(mob)+": Withdrawl of "+CMLib.beanCounter().nameCurrencyShort(mob,payAmountPerPayPeriod)+": Payroll: "+Name(),
 						        CMLib.beanCounter().getCurrency(mob),
-						        new Integer(-payAmountPerPayPeriod).doubleValue());
+						        (double)(-payAmountPerPayPeriod));
 						if(paid)
 							CMLib.commands().postSay(mob,null,"Payday!",false,false);
 						else
@@ -168,7 +168,7 @@ public class Prop_Retainable extends Property
 		}
 		return true;
 	}
-	
+
     public void tellSkills(MOB me, MOB toMe)
     {
         StringBuffer skills = new StringBuffer("");
@@ -186,7 +186,7 @@ public class Prop_Retainable extends Property
         if(skills.length()>2)
             CMLib.commands().postSay(me, toMe, "My skills include: " + skills.substring(2) + ".",false,false);
     }
-    
+
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -200,7 +200,7 @@ public class Prop_Retainable extends Property
                 {
                     tellSkills(mob,msg.source());
                     if(payPeriodLengthInMudDays>0)
-                        CMLib.commands().postSay(mob,msg.source(),"I accept your terms of employment, and I understand I will be paid "+CMLib.beanCounter().abbreviatedPrice(mob,new Integer(payAmountPerPayPeriod).doubleValue())+" every "+payPeriodLengthInMudDays+" days.",false,false);
+                        CMLib.commands().postSay(mob,msg.source(),"I accept your terms of employment, and I understand I will be paid "+CMLib.beanCounter().abbreviatedPrice(mob,(double)payAmountPerPayPeriod)+" every "+payPeriodLengthInMudDays+" days.",false,false);
                     else
                         CMLib.commands().postSay(mob,msg.source(),"I accept your terms of employment.",false,false);
                     CMLib.commands().postSay(mob,msg.source(),"Please show me the way to my permanent post.",false,false);

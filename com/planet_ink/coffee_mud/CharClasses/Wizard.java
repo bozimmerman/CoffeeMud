@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,12 +48,12 @@ public class Wizard extends Mage
         CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Papermaking",75,true);
         CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_ReadMagic",100,true);
 
-        
+
         CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_MagicMissile",false);
         CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_ResistMagicMissiles",false);
         CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_Shield",false);
         CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_IronGrip",false);
-        
+
         for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
         {
             Ability A=(Ability)a.nextElement();
@@ -64,7 +64,7 @@ public class Wizard extends Mage
                 if(level>0)
                 {
 	                AbilityMapper.AbilityMapping able=CMLib.ableMapper().getAbleMap(ID(),A.ID());
-	                if((able!=null) 
+	                if((able!=null)
 	                &&(!CMLib.ableMapper().getDefaultGain(ID(),true,A.ID())))
 	                {
 	                    able.costOverrides=new Integer[]{new Integer(0),new Integer(0),new Integer(0),new Integer(0)};
@@ -84,11 +84,6 @@ public class Wizard extends Mage
     public String otherLimitations()
     {
         return "Unable to learn spells permanently; can only memorize them.";
-    }
-
-    public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-    {
-        return super.qualifiesForThisClass(mob,quiet);
     }
 
     public void executeMsg(Environmental myHost, CMMsg msg)
@@ -112,7 +107,7 @@ public class Wizard extends Mage
             else
             if(msg.tool().ID().equalsIgnoreCase("Skill_ScrollCopy"))
             {
-                
+
             }
         }
     }
@@ -148,10 +143,10 @@ public class Wizard extends Mage
             	mob.curState().setMana(state.getMana());
         }
     }
-    
+
     public boolean okMessage(Environmental myHost, CMMsg msg)
     {
-        if(!(myHost instanceof MOB)) 
+        if(!(myHost instanceof MOB))
             return super.okMessage(myHost,msg);
         MOB myChar=(MOB)myHost;
         if((msg.tool()==null)||(!(msg.tool() instanceof Ability)))

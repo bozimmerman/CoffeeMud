@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Vector;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,7 +40,13 @@ public class Chant_CheetahBurst extends Chant
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
-	protected int tickDown=3;
+
+	public Chant_CheetahBurst()
+	{
+	    super();
+
+	    tickDown = 3;
+	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

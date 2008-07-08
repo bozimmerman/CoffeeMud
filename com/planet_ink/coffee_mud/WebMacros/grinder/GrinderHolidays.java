@@ -18,7 +18,7 @@ import java.util.*;
 
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ import java.util.*;
 public class GrinderHolidays {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-    
+
     protected static String setText(DVector sets, String var, String newVAL)
     {
         if(newVAL==null) newVAL="";
@@ -53,7 +53,7 @@ public class GrinderHolidays {
         return newVAL;
     }
 
-    
+
     public static String createModifyHoliday(ExternalHTTPRequests httpReq, Hashtable parms, String holidayName)
     {
         int index=CMLib.quests().getHolidayIndex(holidayName);
@@ -74,7 +74,7 @@ public class GrinderHolidays {
         else
         if(resp instanceof String)
             return (String)resp;
-        if(steps!=null) 
+        if(steps!=null)
             encodedData=CMLib.quests().getEncodedHolidayData((String)steps.elementAt(index));
         if(encodedData==null)
             return "Error reading holiday data (code: "+((resp instanceof Vector)?"T":"F")+":"+((steps==null)?"F":"T")+":"+((encodedData==null)?"F":"T")+")";
@@ -84,13 +84,13 @@ public class GrinderHolidays {
         DVector stats=(DVector)encodedData.elementAt(3);
         //Vector stepV=(Vector)encodedData.elementAt(4);
         //int pricingMobIndex=((Integer)encodedData.elementAt(5)).intValue();
-        
+
         String name=setText(settings,"NAME",httpReq.getRequestParameter("NAME"));
         if((name==null)||(name.trim().length()==0)) return "A name is required.";
-        
+
         String duration=setText(settings,"DURATION",httpReq.getRequestParameter("DURATION"));
         if((duration==null)||(!CMath.isMathExpression(duration))) return "Duration is mal-formed.";
-        
+
         if(!httpReq.isRequestParameter("SCHEDULETYPE")) return "Schedule not found.";
         int typeIndex=CMath.s_int(httpReq.getRequestParameter("SCHEDULETYPE"));
         int mudDayIndex=settings.indexOf("MUDDAY");
@@ -111,7 +111,7 @@ public class GrinderHolidays {
                 return "Wait expression is invalid.";
             break;
             }
-        case 1: 
+        case 1:
         case 2: {
             int dash=newWait.indexOf('-');
             if(dash < 0) return "Given date is invalid. Use Month#-Day# format";
@@ -122,13 +122,13 @@ public class GrinderHolidays {
             break;
             }
         }
-        
+
         StringBuffer areaGroup = new StringBuffer("");
         HashSet areaCodes=new HashSet();
         String id="";
-        for(int i=0;httpReq.isRequestParameter("AREAGROUP"+id);id=new Integer(++i).toString())
+        for(int i=0;httpReq.isRequestParameter("AREAGROUP"+id);id=Integer.toString(++i))
             areaCodes.add(httpReq.getRequestParameter("AREAGROUP"+id));
-        if(areaCodes.contains("AREAGROUP1")) 
+        if(areaCodes.contains("AREAGROUP1"))
             areaGroup.append("ANY");
         else
         {
@@ -145,10 +145,10 @@ public class GrinderHolidays {
             if(reallyAll)
                 areaGroup.setLength(0);
         }
-        
+
         setText(settings,"AREAGROUP",areaGroup.toString().trim());
         setText(settings,"MOBGROUP",httpReq.getRequestParameter("MOBGROUP"));
-        
+
         behaviors.clear();
         setText(behaviors,"AGGRESSIVE",httpReq.getRequestParameter("AGGRESSIVE"));
         for(int i=1;httpReq.isRequestParameter("BEHAV"+i);i++)
@@ -175,14 +175,14 @@ public class GrinderHolidays {
         for(int i=1;httpReq.isRequestParameter("AFFECT"+i);i++)
             if(httpReq.getRequestParameter("AFFECT"+i).trim().length()>0)
                 setText(properties,httpReq.getRequestParameter("AFFECT"+i),httpReq.getRequestParameter("ADATA"+i));
-        
-        
+
+
         Vector priceFV=new Vector();
         for(int i=1;httpReq.isRequestParameter("PRCFAC"+i);i++)
             if(CMath.isPct(httpReq.getRequestParameter("PRCFAC"+i).trim()))
                 priceFV.add(((String)(CMath.s_pct(httpReq.getRequestParameter("PRCFAC"+i).trim())+" "+httpReq.getRequestParameter("PMASK"+i).trim())).trim());
         setText(stats,"PRICEMASKS",CMParms.toStringList(priceFV));
-        
+
         String err=CMLib.quests().alterHoliday(holidayName, encodedData);
         if(err.length()==0)
             httpReq.addRequestParameters("HOLIDAY",name);

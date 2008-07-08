@@ -53,7 +53,7 @@ public class DefaultClan implements Clan
     protected Vector clanKills=new Vector();
     protected String lastClanKillRecord=null;
     protected double taxRate=0.0;
-    
+
     //*****************
     public Hashtable relations=new Hashtable();
     public int government=GVT_DICTATORSHIP;
@@ -92,7 +92,7 @@ public class DefaultClan implements Clan
             }
         }
     }
-    
+
     private void updateClanKills()
     {
         Long date=null;
@@ -111,7 +111,7 @@ public class DefaultClan implements Clan
             CMLib.database().DBReCreateData(clanID(),"CLANKILLS",clanID()+"/CLANKILLS",str.toString());
         }
     }
-    
+
     public void updateVotes()
     {
         StringBuffer str=new StringBuffer("");
@@ -165,7 +165,7 @@ public class DefaultClan implements Clan
         clanKills();
         return clanKills.size();
     }
-    
+
     public long calculateMapPoints()
     {
         return calculateMapPoints(getControlledAreas());
@@ -236,7 +236,7 @@ public class DefaultClan implements Clan
                             continue;
                         String userID=CMLib.xml().getValFromPieces(iblk.contents,"BY");
                         boolean yn=CMLib.xml().getBoolFromPieces(iblk.contents,"YN");
-                        CV.votes.addElement(userID,new Boolean(yn));
+                        CV.votes.addElement(userID,Boolean.valueOf(yn));
                     }
                 }
                 voteList.addElement(CV);
@@ -247,7 +247,7 @@ public class DefaultClan implements Clan
 
     public int getAutoPosition(){return autoPosition;}
     public void setAutoPosition(int pos){autoPosition=pos;}
-    
+
     public long getExp(){return exp;}
     public void setExp(long newexp){exp=newexp;}
     public void adjExp(int howMuch)
@@ -264,7 +264,7 @@ public class DefaultClan implements Clan
         taxRate=rate;
     }
     public double getTaxes(){return taxRate;}
-    
+
     public int getClanRelations(String id)
     {
         long i[]=(long[])relations.get(id.toUpperCase());
@@ -300,7 +300,7 @@ public class DefaultClan implements Clan
     {
         CMLib.database().DBUpdateClan(this);
     }
-    
+
     public void addMember(MOB M, int role)
     {
         M.setClanID(clanID());
@@ -375,7 +375,7 @@ public class DefaultClan implements Clan
             did=true;
             M.delAbility(M.fetchAbility("Spell_Flagportation"));
         }
-        
+
         if(M.playerStats()!=null)
         for(int i=0;i<POSORDER.length;i++)
         {
@@ -460,7 +460,7 @@ public class DefaultClan implements Clan
 		if(C==null)C=CMClass.findCharClass(clanClass);
     	return C;
     }
-    
+
     public String getDetail(MOB mob)
     {
         StringBuffer msg=new StringBuffer("");
@@ -612,7 +612,7 @@ public class DefaultClan implements Clan
         }
         return "Clan";
     }
-    
+
 	public boolean canBeAssigned(MOB mob, int role)
 	{
         if(mob==null) return false;
@@ -892,7 +892,7 @@ public class DefaultClan implements Clan
 
     public String getAcceptanceSettings() { return AcceptanceSettings; }
     public void setAcceptanceSettings(String newSettings) { AcceptanceSettings=newSettings; }
-    
+
     public String getClanClass(){return clanClass;}
     public void setClanClass(String newClass){clanClass=newClass;}
 
@@ -1134,7 +1134,7 @@ public class DefaultClan implements Clan
                         {
                             String s=(String)members.elementAt(i,1);
                             MOB M2=CMLib.map().getLoadPlayer(s);
-                            if(M2!=null) 
+                            if(M2!=null)
                             {
                                 clanAnnounce(s+" is now a "+CMLib.clans().getRoleName(getGovernment(),max,true,false)+" of the "+typeName()+" "+name()+".");
                                 Log.sysOut("Clans",s+" of clan "+name()+" was autopromoted to "+CMLib.clans().getRoleName(getGovernment(),max,true,false)+".");
@@ -1279,7 +1279,7 @@ public class DefaultClan implements Clan
                 if(updateVotes)
                     updateVotes();
             }
-            
+
             if(CMLib.clans().trophySystemActive())
             {
                 // calculate winner of the exp contest
@@ -1307,7 +1307,7 @@ public class DefaultClan implements Clan
                         clanAnnounce("The "+typeName()+" "+name()+" has lost control of the trophy for "+TROPHY_DESCS[TROPHY_EXP]+".");
                     }
                 }
-                
+
                 // calculate winner of the pk contest
                 if(CMProps.getVar(CMProps.SYSTEM_CLANTROPPK).length()>0)
                 {
@@ -1334,7 +1334,7 @@ public class DefaultClan implements Clan
                         clanAnnounce("The "+typeName()+" "+name()+" has lost control of the trophy for "+TROPHY_DESCS[TROPHY_PK]+".");
                     }
                 }
-                
+
                 // calculate winner of the conquest contests
                 if((CMProps.getVar(CMProps.SYSTEM_CLANTROPAREA).length()>0)
                 ||(CMProps.getVar(CMProps.SYSTEM_CLANTROPCP).length()>0))
@@ -1464,7 +1464,7 @@ public class DefaultClan implements Clan
         int newPos=-1;
         for(int i=0;i<DV.size();i++)
             if(((Integer)DV.elementAt(i,2)).intValue()>newPos)
-            {    
+            {
                 mob=CMLib.map().getLoadPlayer((String)DV.elementAt(i,1));
                 if(mob!=null)
                     break;
@@ -1472,5 +1472,5 @@ public class DefaultClan implements Clan
         return mob;
     }
 
-    
+
 }

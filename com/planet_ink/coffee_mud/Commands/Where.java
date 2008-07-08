@@ -116,7 +116,7 @@ public class Where extends StdCommand
                     areaFlag=true;
                     who=who.substring(5).trim();
                 }
-                
+
 				if((who.toUpperCase().startsWith("ROOM "))
 				||(who.toUpperCase().startsWith("ROOMS ")))
 				{
@@ -178,14 +178,14 @@ public class Where extends StdCommand
                     mob.tell("^xMask used:^?^.^N "+CMLib.masking().maskDesc(who)+"\n\r");
                     who=who.substring(10).trim();
                 }
-				
+
                 Enumeration r=(roomOnly||exitOnly)?CMLib.map().rooms():CMLib.map().roomsFilled();
                 if(who.toUpperCase().startsWith("AREA ")||areaFlag)
                     r=(roomOnly||exitOnly)?mob.location().getArea().getProperMap():mob.location().getArea().getFilledProperMap();
                 if(who.toUpperCase().startsWith("AREA "))
                     who=who.substring(5).trim();
                 Room R = null;
-				
+
 				try
 				{
 					for(;r.hasMoreElements();)
@@ -450,7 +450,7 @@ public class Where extends StdCommand
 					whereAdd(mobsVec,A.name(),A.getAreaIStats()[Area.AREASTAT_POPULATION]);
 
 					int align=A.getAreaIStats()[Area.AREASTAT_MEDALIGN];
-					int alignDiff=((int)Math.abs(new Integer(alignment-align).doubleValue()));
+					int alignDiff=((int)Math.abs((double)(alignment-align)));
 					whereAdd(alignVec,A.name(),alignDiff);
 				}
 			}
@@ -491,8 +491,8 @@ public class Where extends StdCommand
 		}
 		return false;
 	}
-	
+
 	public boolean canBeOrdered(){return true;}
 
-	
+
 }

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,7 +46,7 @@ public class Prop_TicketTaker extends Property
     protected double cost(){
 		int amount=CMath.s_int(text());
 		if(amount==0) amount=10;
-		return new Integer(amount).doubleValue();
+		return (double)amount;
 	}
 
     protected boolean isMine(Environmental host, Rideable R)

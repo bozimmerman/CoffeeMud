@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,7 +53,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 	protected static final int RCP_SPELL=8;
 
 	protected Item key=null;
-	
+
     public Vector fetchRecipeFormat() {
         // not yet implemented
         return null;
@@ -303,7 +303,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 				if(misctype.equalsIgnoreCase("LOCK"))
 				{
 					((Container)building).setLidsNLocks(true,false,true,false);
-					((Container)building).setKeyName(new Double(Math.random()).toString());
+					((Container)building).setKeyName(Double.toString(Math.random()));
 					key=CMClass.getItem("GenKey");
 					((Key)key).setKey(((Container)building).keyName());
 					key.setName("a key");

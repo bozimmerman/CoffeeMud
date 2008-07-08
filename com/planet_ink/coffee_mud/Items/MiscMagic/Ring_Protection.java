@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,11 +36,12 @@ import java.util.*;
 public class Ring_Protection extends Ring_Ornamental implements MiscMagic
 {
 	public String ID(){	return "Ring_Protection";}
-	protected int lastLevel=-1;
-	
+
 	public Ring_Protection()
 	{
 		super();
+
+		lastLevel = -1;
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -72,7 +72,7 @@ public class GrinderItems
                 R=CMLib.map().getRoom(R);
                 CMLib.map().resetRoom(R);
             }
-	
+
 			Item I=null;
 			MOB M=null;
             if(playerM!=null)
@@ -106,7 +106,7 @@ public class GrinderItems
 				I=RoomData.getItemFromCode(M,itemCode);
 			else
 				I=RoomData.getItemFromCode(R,itemCode);
-	
+
 			if(I==null)
 			{
 				StringBuffer str=new StringBuffer("No Item?!");
@@ -136,9 +136,9 @@ public class GrinderItems
 				I=CMClass.getItem(newClassID);
                 if(I==null) Log.errOut("GrinderItems","Error: bad class id: "+newClassID);
             }
-			
+
 			CatalogLibrary.CataData cataData=null;
-	
+
 			for(int o=0;o<okparms.length;o++)
 			{
 				String parm=okparms[o];
@@ -155,10 +155,10 @@ public class GrinderItems
 				&&(!parm.equalsIgnoreCase("CONTAINER"))
 				&&(!parm.equalsIgnoreCase("BEINGWORN")))
 				    continue;
-				
+
 				String old=httpReq.getRequestParameter(parm);
 				if(old==null) old="";
-	
+
 				if((I.isGeneric()||(!generic)))
 				switch(o)
 				{
@@ -229,8 +229,8 @@ public class GrinderItems
 					{
 						int climate=CMath.s_int(httpReq.getRequestParameter("WORNDATA"));
 						for(int i=1;;i++)
-							if(httpReq.isRequestParameter("WORNDATA"+(new Integer(i).toString())))
-								climate=climate|CMath.s_int(httpReq.getRequestParameter("WORNDATA"+(new Integer(i).toString())));
+							if(httpReq.isRequestParameter("WORNDATA"+(Integer.toString(i))))
+								climate=climate|CMath.s_int(httpReq.getRequestParameter("WORNDATA"+(Integer.toString(i))));
 							else
 								break;
 						I.setRawProperLocationBitmap(climate);
@@ -292,8 +292,8 @@ public class GrinderItems
 						{
 							old=";"+httpReq.getRequestParameter("READABLESPELLS");
 							for(int i=1;;i++)
-								if(httpReq.isRequestParameter("READABLESPELLS"+(new Integer(i).toString())))
-									old+=";"+httpReq.getRequestParameter("READABLESPELLS"+(new Integer(i).toString()));
+								if(httpReq.isRequestParameter("READABLESPELLS"+(Integer.toString(i))))
+									old+=";"+httpReq.getRequestParameter("READABLESPELLS"+(Integer.toString(i)));
 								else
 									break;
 						}
@@ -321,8 +321,8 @@ public class GrinderItems
 						{
 							old=";"+httpReq.getRequestParameter("MAPAREAS");
 							for(int i=1;;i++)
-								if(httpReq.isRequestParameter("MAPAREAS"+(new Integer(i).toString())))
-									old+=";"+httpReq.getRequestParameter("MAPAREAS"+(new Integer(i).toString()));
+								if(httpReq.isRequestParameter("MAPAREAS"+(Integer.toString(i))))
+									old+=";"+httpReq.getRequestParameter("MAPAREAS"+(Integer.toString(i)));
 								else
 									break;
 						}
@@ -424,8 +424,8 @@ public class GrinderItems
 						long content=CMath.s_long(httpReq.getRequestParameter("CONTENTTYPES"));
 						if(content>0)
 						for(int i=1;;i++)
-							if(httpReq.isRequestParameter("CONTENTTYPES"+(new Integer(i).toString())))
-								content=content|CMath.s_int(httpReq.getRequestParameter("CONTENTTYPES"+(new Integer(i).toString())));
+							if(httpReq.isRequestParameter("CONTENTTYPES"+(Integer.toString(i))))
+								content=content|CMath.s_int(httpReq.getRequestParameter("CONTENTTYPES"+(Integer.toString(i))));
 							else
 								break;
 						((Container)I).setContainTypes(content);
@@ -540,7 +540,7 @@ public class GrinderItems
 				error=GrinderAreas.doAffectsNBehavs(I,httpReq,parms);
 				if(error.length()>0) return error;
 			}
-	
+
 			I.recoverEnvStats();
 			I.text();
 			if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
@@ -582,7 +582,7 @@ public class GrinderItems
 				{
 					if(R==null)
 					{
-						
+
 					}
 					else
 					{
@@ -606,7 +606,7 @@ public class GrinderItems
 				{
 					if(R==null)
 					{
-						
+
 					}
 					else
 					{

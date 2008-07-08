@@ -60,10 +60,10 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
         recoverEnvStats();
         recoverCharStats();
     }
-    
+
     public AuctionData lastMsgData=null;
     protected static final Hashtable lastCheckTimes=new Hashtable();
-    
+
     public CoffeeShop getShop(){
     	CoffeeShop shop=(CoffeeShop)CMClass.getCommon("AuctionCoffeeShop");
     	shop.addStoreInventory(null,this);
@@ -72,7 +72,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 
     public String auctionHouse(){return text();}
     public void setAuctionHouse(String name){setMiscText(name);}
-    
+
     protected double timedListingPrice=-1.0;
     public double timedListingPrice(){return timedListingPrice;}
     public void setTimedListingPrice(double d){timedListingPrice=d;}
@@ -106,7 +106,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 
     public int whatIsSold(){return ShopKeeper.DEAL_AUCTIONEER;}
     public void setWhatIsSold(int newSellCode){ }
-    
+
 
     public boolean tick(Tickable ticking, int tickID)
     {
@@ -173,8 +173,8 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
         }
         return null;
     }
-    
-    
+
+
     public boolean okMessage(Environmental myHost, CMMsg msg)
     {
         MOB mob=msg.source();
@@ -228,7 +228,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
                         return false;
                     }
                     double deposit=aRates.timeListPrice;
-                    deposit+=(aRates.timeListPct*new Integer(CMath.mul(days,I.baseGoldValue())).doubleValue());
+                    deposit+=(aRates.timeListPct*((double)CMath.mul(days,I.baseGoldValue())));
                     String depositAmt=CMLib.beanCounter().nameCurrencyLong(mob, deposit);
                     if(CMLib.beanCounter().getTotalAbsoluteValue(mob,CMLib.beanCounter().getCurrency(mob))<deposit)
                     {
@@ -250,7 +250,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
             case CMMsg.TYP_BID:
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
                 {
-                    if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this)) 
+                    if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
                         return false;
                     if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
                         return false;
@@ -328,7 +328,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
             case CMMsg.TYP_BUY:
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
                 {
-                    if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this)) 
+                    if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
                         return false;
                     if((msg.targetMinor()==CMMsg.TYP_BUY)&&(msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
                         return false;
@@ -369,7 +369,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 					{
 						if(data.highBidderM==msg.source())
 						{
-							
+
 						}
 						else
 						{
@@ -398,7 +398,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
             case CMMsg.TYP_VALUE:
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
                 {
-                    if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this)) 
+                    if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
                         return false;
                     return super.okMessage(myHost, msg);
                 }
@@ -406,7 +406,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
             case CMMsg.TYP_VIEW:
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
                 {
-                    if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this)) 
+                    if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
                         return false;
                     return super.okMessage(myHost, msg);
                 }
@@ -417,7 +417,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
         }
         return super.okMessage(myHost,msg);
     }
-    
+
     public void executeMsg(Environmental myHost, CMMsg msg)
     {
         MOB mob=msg.source();
@@ -450,7 +450,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 						CMLib.commands().postChannel(this,"AUCTION","New "+thisData.daysRemaining(thisData.auctioningM,msg.source())+" day auction: "+thisData.auctioningI.name(),true);
 	                    AuctionRates aRates=new AuctionRates(this);
 	                    double deposit=aRates.timeListPrice;
-	                    deposit+=(aRates.timeListPct*new Integer(CMath.mul(thisData.daysRemaining(mob,this),thisData.auctioningI.baseGoldValue())).doubleValue());
+	                    deposit+=(aRates.timeListPct*((double)CMath.mul(thisData.daysRemaining(mob,this),thisData.auctioningI.baseGoldValue())));
 	                    CMLib.beanCounter().subtractMoney(mob,deposit);
 						thisData.auctioningI.destroy();
 						CMLib.commands().postSay(this,mob,"Your auction for "+thisData.auctioningI.name()+" is now open.  When it is done, you will receive either your winnings automatically, or the returned item automatically.",true,false);
@@ -551,7 +551,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 							String[] resp=CMLib.coffeeShops().bid(mob, bid, myCurrency,data, data.auctioningI,new Vector());
 							if(resp!=null)
 							{
-					            if(resp[0]!=null) 
+					            if(resp[0]!=null)
 					            	mob.tell(resp[0]);
 					            if((resp[1]!=null)&&(M!=null))
 					            	CMLib.coffeeShops().auctionNotify(M,resp[1],data.auctioningI.name());
@@ -612,7 +612,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
         else
 	        super.executeMsg(myHost,msg);
     }
-    
+
     public String storeKeeperString(){return CMLib.coffeeShops().storeKeeperString(whatIsSold());}
 	public boolean doISellThis(Environmental thisThang){return CMLib.coffeeShops().doISellThis(thisThang,this);}
     protected Area getStartArea(){
@@ -621,43 +621,43 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
         if(A==null) A=(Area)CMLib.map().areas().nextElement();
         return A;
     }
-    
-    public String finalPrejudiceFactors(){ 
+
+    public String finalPrejudiceFactors(){
         if(prejudiceFactors().length()>0) return prejudiceFactors();
         return getStartArea().finalPrejudiceFactors();
     }
 	public String prejudiceFactors(){return CMLib.encoder().decompressString(miscText);}
 	public void setPrejudiceFactors(String factors){miscText=CMLib.encoder().compressString(factors);}
-    
-    public String finalIgnoreMask(){ 
+
+    public String finalIgnoreMask(){
         if(ignoreMask().length()>0) return ignoreMask();
         return getStartArea().finalIgnoreMask();
     }
     public String ignoreMask(){return "";}
     public void setIgnoreMask(String factors){}
 
-    public String[] finalItemPricingAdjustments(){ 
+    public String[] finalItemPricingAdjustments(){
         if((itemPricingAdjustments()!=null)&&(itemPricingAdjustments().length>0))
             return itemPricingAdjustments();
         return getStartArea().finalItemPricingAdjustments();
     }
     public String[] itemPricingAdjustments(){ return new String[0];}
     public void setItemPricingAdjustments(String[] factors){}
-    
-    public String finalBudget(){ 
+
+    public String finalBudget(){
         if(budget().length()>0) return budget();
         return getStartArea().finalBudget();
     }
 	public String budget(){return "";}
 	public void setBudget(String factors){}
-	
+
     public String finalDevalueRate(){
         if(devalueRate().length()>0) return devalueRate();
         return getStartArea().finalDevalueRate();
     }
 	public String devalueRate(){return "";}
 	public void setDevalueRate(String factors){}
-	
+
     public int finalInvResetRate(){
         if(invResetRate()!=0) return invResetRate();
         return getStartArea().finalInvResetRate();

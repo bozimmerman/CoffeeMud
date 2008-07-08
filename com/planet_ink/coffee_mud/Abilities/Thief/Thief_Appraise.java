@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -75,7 +75,7 @@ public class Thief_Appraise extends ThiefSkill
 			if(target instanceof Coins)
 				realValue = ((Coins)target).getTotalValue();
 			else
-				realValue=new Integer(target.value()).doubleValue();
+				realValue=(double)target.value();
 			int materialCode=target.material();
 			int weight=target.baseEnvStats().weight();
 			int height=target.baseEnvStats().height();

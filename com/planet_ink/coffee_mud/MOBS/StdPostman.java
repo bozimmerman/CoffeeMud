@@ -16,7 +16,7 @@ import java.util.*;
 
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -80,7 +80,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
     public void setFeeForNewBox(double d){feeForNewBox=d;}
     public int maxMudMonthsHeld(){return maxMudMonthsHeld;}
     public void setMaxMudMonthsHeld(int months){maxMudMonthsHeld=months;}
-    
+
     public void destroy()
     {
         super.destroy();
@@ -91,7 +91,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         super.bringToLife(newLocation,resetStats);
         CMLib.map().addPostOffice(this);
     }
-    
+
     public int whatIsSold(){return whatISell;}
     public void setWhatIsSold(int newSellCode){
         if(newSellCode!=ShopKeeper.DEAL_CLANPOSTMAN)
@@ -301,7 +301,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         }
         return V;
     }
-    
+
     protected Item makeItem(Vector data)
     {
         if(data.size()<NUM_PIECES)
@@ -316,7 +316,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         }
         return null;
     }
-    
+
     protected int getChargeableWeight(Item I)
     {
         if(I==null) return 0;
@@ -325,13 +325,13 @@ public class StdPostman extends StdShopKeeper implements PostOffice
             chargeableWeight=(I.envStats().weight()-1);
         return chargeableWeight;
     }
-    
+
     protected double getSimplePostage(int chargeableWeight)
     {
         if(getStartRoom()==null) return 0.0;
         return minimumPostage()+CMath.mul(postagePerPound(),chargeableWeight);
     }
-    
+
     protected double getHoldingCost(Vector data, int chargeableWeight)
     {
         if(data.size()<NUM_PIECES)
@@ -345,8 +345,8 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         amt+=CMath.mul(CMath.mul(Math.floor(CMath.div(time,millisPerMudMonth)),holdFeePerPound()),chargeableWeight);
         return amt;
     }
-    
-    
+
+
     protected double getCODChargeForPiece(Vector data)
     {
         if(data.size()<NUM_PIECES)
@@ -354,11 +354,11 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         int chargeableWeight=getChargeableWeight(makeItem(data));
         double COD=CMath.s_double((String)data.elementAt(PIECE_COD));
         double amt=0.0;
-        if(COD>0.0) 
+        if(COD>0.0)
             amt=getSimplePostage(chargeableWeight)+COD;
         return amt+getHoldingCost(data,chargeableWeight);
     }
-    
+
     protected String getBranchPostableTo(String toWhom, String branch, Hashtable allBranchBoxes)
     {
         String forward=(String)allBranchBoxes.get(branch);
@@ -374,7 +374,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         }
         return null;
     }
-    
+
     public String findProperBranch(String toWhom)
     {
         if(CMLib.map().getLoadPlayer(toWhom)!=null)
@@ -433,21 +433,21 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         	postalWaitTime=10038;
         else
         if((postalWaitTime==10038)&&(getStartRoom()!=null))
-            postalWaitTime=new Long((getStartRoom().getArea().getTimeObj().getHoursInDay())*Tickable.TIME_MILIS_PER_MUDHOUR).longValue();
+            postalWaitTime=(getStartRoom().getArea().getTimeObj().getHoursInDay())*Tickable.TIME_MILIS_PER_MUDHOUR;
         return postalWaitTime;
     }
-    
+
     public boolean tick(Tickable ticking, int tickID)
     {
         if(!super.tick(ticking,tickID))
             return false;
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)) return true;
-		
+
         if((tickID==Tickable.TICKID_MOB)&&(getStartRoom()!=null))
         {
             boolean proceed=false;
             // handle interest by watching the days go by...
-            // each chain is handled by one branch, 
+            // each chain is handled by one branch,
             // since pending mail all looks the same.
             Long L=(Long)postalTimes.get(postalChain()+"/"+postalBranch());
             if((L==null)||(L.longValue()<System.currentTimeMillis()))
@@ -543,7 +543,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         msg2=CMClass.getMsg(tgt,I,null,CMMsg.MSG_GET,null,CMMsg.MSG_GET,"GIVE",CMMsg.MSG_GET,null);
         location().send(this,msg2);
     }
-    
+
     public void executeMsg(Environmental myHost, CMMsg msg)
     {
         MOB mob=msg.source();
@@ -651,7 +651,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                         double totalCharge=getCODChargeForPiece(data);
                         if((totalCharge>0.0)&&(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),this)>=totalCharge))
                         {
-                            
+
                             CMLib.beanCounter().subtractMoney(msg.source(),totalCharge);
                             double COD=CMath.s_double((String)data.elementAt(PIECE_COD));
                             Coins returnMoney=null;
@@ -805,7 +805,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	                            CMParms.addToVector(V2,V);
 	                    }
 	                }
-	
+
 	                TimeClock C=CMClass.globalClock();
 	                if(getStartRoom()!=null) C=getStartRoom().getArea().getTimeObj();
 	                boolean codCharge=false;
@@ -875,7 +875,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
             case CMMsg.TYP_GIVE:
             case CMMsg.TYP_DEPOSIT:
                 {
-                    if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this)) 
+                    if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
                         return false;
                     if(msg.tool()==null) return false;
                     if((whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
@@ -894,7 +894,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                 return true;
             case CMMsg.TYP_WITHDRAW:
                 {
-                    if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this)) 
+                    if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
                         return false;
                     String thename=msg.source().Name();
                     if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
@@ -947,7 +947,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                 return super.okMessage(myHost,msg);
             case CMMsg.TYP_LIST:
             {
-                if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this)) 
+                if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
                     return false;
                 String thename=msg.source().Name();
                 if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)

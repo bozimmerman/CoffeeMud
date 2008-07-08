@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,7 +40,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"BLACKSMITH","BLACKSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "METAL|MITHRIL";}
-    
+
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
 	protected static final int RCP_TICKS=2;
@@ -257,7 +257,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			if(misctype.equalsIgnoreCase("LOCK"))
 			{
 				((Container)building).setLidsNLocks(true,false,true,false);
-				((Container)building).setKeyName(new Double(Math.random()).toString());
+				((Container)building).setKeyName(Double.toString(Math.random()));
 			}
 			else
 				((Container)building).setContainTypes(CMath.s_long(misctype));

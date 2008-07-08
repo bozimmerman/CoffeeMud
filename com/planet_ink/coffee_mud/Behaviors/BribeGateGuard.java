@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -51,7 +51,7 @@ public class BribeGateGuard extends StdBehavior
 
 	protected double price()
 	{
-		return new Integer(getVal(getParms(), "price", 5)).doubleValue();
+		return (double)getVal(getParms(), "price", 5);
 	}
 
 	protected String gates()
@@ -434,7 +434,7 @@ public class BribeGateGuard extends StdBehavior
 		  // check if the msg.source() has paid enough.  if so, time to react
 		  if (checkBalance(price(), source)) {
 		    paidPlayers.addElement(source);
-		    toldAlready.put(source.Name(),new Boolean(false));
+		    toldAlready.put(source.Name(),Boolean.FALSE);
 		  }
 		}
 		else
@@ -466,7 +466,7 @@ public class BribeGateGuard extends StdBehavior
 		    && (!msg.amISource(observer))
 		    && (msg.targetMinor() == CMMsg.TYP_GIVE)
 		    && (msg.tool() != null)
-		    && (msg.tool()instanceof Coins)) 
+		    && (msg.tool()instanceof Coins))
 		{
 		  payment( (Coins) msg.tool(), observer, msg.source());
 		  CMLib.commands().postSay(observer, source, "Thank you very much.", true, false);
@@ -479,7 +479,7 @@ public class BribeGateGuard extends StdBehavior
 		    CMLib.commands().postSay(observer, source,
 		                          "I'll hang on to the additional "+difference+" for you", true, false);
 		    paidPlayers.addElement(source);
-		    toldAlready.put(source.Name(),new Boolean(false));
+		    toldAlready.put(source.Name(),Boolean.FALSE);
 		    if (debug)  // debugging
 		      CMLib.commands().postSay(observer, source,
 		                            "I'm telling you this from execute", true, false);
@@ -495,7 +495,7 @@ public class BribeGateGuard extends StdBehavior
 		  if(getBalance(source) == price())
 		  {
 		    paidPlayers.addElement(source);
-		    toldAlready.put(source.Name(),new Boolean(false));
+		    toldAlready.put(source.Name(),Boolean.FALSE);
 		    try {
 		      if (dir >= 0)
 		        observer.doCommand(CMParms.parse("OPEN " +
@@ -551,7 +551,7 @@ public class BribeGateGuard extends StdBehavior
 		                              balanceStr +
 		                              " before if you're heading through", true, false);
 		      }
-		      toldAlready.put(M.Name(), new Boolean(true));
+		      toldAlready.put(M.Name(), Boolean.TRUE);
 		    if (dir >= 0)
 				mob.doCommand(CMParms.parse("OPEN " +
 				                Directions.
@@ -566,7 +566,7 @@ public class BribeGateGuard extends StdBehavior
 		      CMLib.commands().postSay(mob, M,
 		          "I'll let you through here if you pay the fee of " + priceStr +
 		          ".", true, false);
-		      toldAlready.put(M.Name(), new Boolean(true));
+		      toldAlready.put(M.Name(), Boolean.TRUE);
 		      if (debug)  // debugging
 		        CMLib.commands().postSay(mob, M,
 		                              "I'm telling you this from tick", true, false);

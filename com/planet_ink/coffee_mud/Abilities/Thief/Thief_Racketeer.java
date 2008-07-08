@@ -128,7 +128,7 @@ public class Thief_Racketeer extends ThiefSkill
             return false;
         }
         if(!super.invoke(mob,commands,givenTarget,auto,asLevel)) return false;
-        double amount=new Long(CMLib.dice().roll(proficiency(),target.envStats().level(),0)).doubleValue();
+        double amount=(double)CMLib.dice().roll(proficiency(),target.envStats().level(),0);
         boolean success=proficiencyCheck(mob,-(levelDiff),auto);
         if(success)
         {
@@ -137,9 +137,13 @@ public class Thief_Racketeer extends ThiefSkill
             if(mob.location().okMessage(mob,msg))
             {
                 mob.location().send(mob,msg);
-                beneficialAffect(mob,target,asLevel,new Long(
-                        ((Tickable.TIME_MILIS_PER_MUDHOUR*mob.location().getArea().getTimeObj().getHoursInDay()*mob.location().getArea().getTimeObj()
-                                .getDaysInMonth())/Tickable.TIME_TICK)).intValue());
+                beneficialAffect( mob,
+                                  target,
+                                  asLevel,
+                                  (int)((((long)Tickable.TIME_MILIS_PER_MUDHOUR) *
+                                         ((long)mob.location().getArea().getTimeObj().getHoursInDay()) *
+                                         ((long)mob.location().getArea().getTimeObj().getDaysInMonth()) ) /
+                                             ((long)Tickable.TIME_TICK) ));
                 Coins C=CMLib.beanCounter().makeBestCurrency(mob,amount);
                 if(C!=null)
                 {

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,7 +43,7 @@ public class Disease_Gangrene extends Disease
 	public boolean putInCommandlist(){return false;}
 	public int difficultyLevel(){return 4;}
 
-	protected int DISEASE_TICKS(){return new Long(100*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).intValue();}
+	protected int DISEASE_TICKS(){return 100*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY);}
 	protected int DISEASE_DELAY(){return 5;}
 	protected int lastHP=Integer.MAX_VALUE;
 	protected String DISEASE_DONE(){return "Your gangrous wounds feel better.";}

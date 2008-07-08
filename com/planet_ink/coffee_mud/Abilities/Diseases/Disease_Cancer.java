@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,7 +42,7 @@ public class Disease_Cancer extends Disease
 	public int difficultyLevel(){return 5;}
 
 	protected int DISEASE_TICKS(){return 99999;}
-	protected int DISEASE_DELAY(){return new Long(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).intValue();}
+	protected int DISEASE_DELAY(){return CMProps.getIntVar( CMProps.SYSTEMI_TICKSPERMUDDAY );}
 	protected String DISEASE_DONE(){return "Your cancer is cured!";}
 	protected String DISEASE_START(){return "^G<S-NAME> seem(s) ill.^?";}
 	protected String DISEASE_AFFECT(){return "<S-NAME> <S-IS-ARE> getting sicker...";}

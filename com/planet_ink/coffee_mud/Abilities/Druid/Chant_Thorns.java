@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -84,7 +84,9 @@ public class Chant_Thorns extends Chant
 						if(invoker==null) invoker=source;
 						if(msg2.value()<=0)
 						{
-							int damage = CMLib.dice().roll(1,(int)Math.round(new Integer(adjustedLevel(invoker(),0)).doubleValue()/3.0),1);
+							int damage = CMLib.dice().roll( 1,
+							                                (int)Math.round( ((double) adjustedLevel( invoker(), 0 ) ) / 3.0 ),
+							                                1 );
 							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_PIERCING,"The thorns around <S-NAME> <DAMAGE> <T-NAME>!");
 						}
 					}

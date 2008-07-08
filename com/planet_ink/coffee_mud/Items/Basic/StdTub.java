@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -247,7 +247,7 @@ public class StdTub extends StdRideable implements Drink
             amountToTake=theSource.liquidRemaining();
         return amountToTake;
     }
-    
+
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 	    if((msg.source().riding()==this)
@@ -259,7 +259,7 @@ public class StdTub extends StdRideable implements Drink
 	    &&(msg.source().playerStats().getHygiene()>0)
 	    &&(msg.source().soulMate()==null))
 		    msg.source().playerStats().adjHygiene(PlayerStats.HYGIENE_WATERCLEAN);
-	    
+
 		if(msg.amITarget(this))
 		{
 			MOB mob=msg.source();
@@ -288,7 +288,7 @@ public class StdTub extends StdRideable implements Drink
 					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
 					if(amountOfLiquidRemaining<=0)
 						setLiquidType(thePuddle.liquidType());
-					if((amountOfLiquidRemaining+amountToTake)<=Integer.MAX_VALUE)
+					if( ( (long)amountOfLiquidRemaining + (long)amountToTake ) <= (long)Integer.MAX_VALUE )
 						amountOfLiquidRemaining+=amountToTake;
 					if(amountOfLiquidRemaining>amountOfLiquidHeld)
 						amountOfLiquidRemaining=amountOfLiquidHeld;

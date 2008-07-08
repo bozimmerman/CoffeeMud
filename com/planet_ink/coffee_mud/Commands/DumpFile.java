@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -56,7 +56,7 @@ public class DumpFile extends StdCommand
 			commands.removeElementAt(0);
 		}
 
-		String targetName = new String((String)commands.elementAt(0));
+		String targetName = (String)commands.elementAt(0);
 		boolean allFlag=(targetName.equalsIgnoreCase("all"));
 
 		commands.removeElementAt(0);
@@ -72,7 +72,7 @@ public class DumpFile extends StdCommand
 		while (commands.size() > 0)
 		{
 			boolean wipeAfter = true;
-			String fn = new String ( (String)commands.elementAt(0) );
+			String fn = (String)commands.elementAt(0);
 
 			if (Resources.getResource(fn) != null)
 				wipeAfter = false;
@@ -113,9 +113,9 @@ public class DumpFile extends StdCommand
 		mob.tell("dumped " + numFiles + " files to " + numSessions + " user(s)");
 		return false;
 	}
-	
+
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"DUMPFILE");}
 
-	
+
 }

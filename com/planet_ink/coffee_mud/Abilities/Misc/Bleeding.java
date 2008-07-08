@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,15 +42,8 @@ public class Bleeding extends StdAbility
     protected int hpToKeep=-1;
     protected int lastDir=-1;
     protected Room lastRoom=null;
-    
+
     public double healthPct(MOB mob){ return CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints());}
-    
-    public void affectEnvStats(Environmental affected, EnvStats affectedStats)
-    {
-        super.affectEnvStats(affected,affectedStats);
-        //if(affected instanceof MOB)
-        //    affectedStats.setSpeed(affectedStats.speed()*healthPct((MOB)affected));
-    }
 
     public void unInvoke()
     {
@@ -60,13 +53,6 @@ public class Bleeding extends StdAbility
         &&(CMLib.flags().isInTheGame(affected,true)))
             ((MOB)affected).location().show((MOB)affected,null,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> stop(s) bleeding.");
         super.unInvoke();
-    }
-    
-    public void affectCharState(MOB affected, CharState affectedState)
-    {
-        super.affectCharState(affected,affectedState);
-        //affectedState.setMovement((int)Math.round(affectedState.getMovement()*CMath.div(affected.curState().getHitPoints(),affected.maxState().getHitPoints())));
-        //affectedState.setMana((int)Math.round(affectedState.getMana()*CMath.div(affected.curState().getHitPoints(),affected.maxState().getHitPoints())));
     }
 
     public void  executeMsg(Environmental myHost, CMMsg msg)
@@ -139,7 +125,7 @@ public class Bleeding extends StdAbility
         }
         return true;
     }
-    
+
     public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
     {
     	if(target==null) target=mob;

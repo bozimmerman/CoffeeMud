@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -58,11 +58,6 @@ public class Spell_HeatMetal extends Spell
 			return false;
 		}
 		return true;
-	}
-
-	public void affectCharStats(MOB affected, CharStats affectableStats)
-	{
-		super.affectCharStats(affected,affectableStats);
 	}
 
 	public boolean tick(Tickable ticking, int tickID)

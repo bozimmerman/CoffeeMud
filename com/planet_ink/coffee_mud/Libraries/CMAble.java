@@ -1166,7 +1166,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return "";
 	}
-    
+
     public String getPreReqStrings(String ID, boolean checkAll, String ability)
     {
         if(completeAbleMap.containsKey(ID))
@@ -1325,9 +1325,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
         for(int i=0;i<6;i++)
             s[i]=(String)decodedDV.elementAt(i,2);
         if(s[0].equalsIgnoreCase("||"))
-            codedDV.setElementAt(row,1,new Boolean(false));
+            codedDV.setElementAt(row,1,Boolean.FALSE);
         else
-            codedDV.setElementAt(row,1,new Boolean(true));
+            codedDV.setElementAt(row,1,Boolean.TRUE);
         if(s[1].equalsIgnoreCase("held"))
             codedDV.setElementAt(row,2,new Integer(1));
         else
@@ -1336,9 +1336,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
         else
             codedDV.setElementAt(row,2,new Integer(0));
         if(s[2].equalsIgnoreCase("consumed"))
-            codedDV.setElementAt(row,3,new Boolean(true));
+            codedDV.setElementAt(row,3,Boolean.TRUE);
         else
-            codedDV.setElementAt(row,3,new Boolean(false));
+            codedDV.setElementAt(row,3,Boolean.FALSE);
         codedDV.setElementAt(row,4,new Integer(CMath.s_int(s[3])));
         int depth=CMLib.materials().getResourceCode(s[4],false);
         if(depth>=0)
@@ -1368,7 +1368,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 
     public void addBlankAbilityComponent(DVector codedDV)
     {
-        codedDV.addElement(new Boolean(true),new Integer(0),new Boolean(false),new Integer(1),new String("resource-material-item name"),"");
+        codedDV.addElement(Boolean.TRUE,new Integer(0),Boolean.FALSE,new Integer(1),"resource-material-item name","");
     }
 
     public String getAbilityComponentCodedString(String AID)
@@ -1458,9 +1458,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		while(parms.length()>0)
 		{
 			build=new Object[6];
-			build[0]=new Boolean(true);
+			build[0]=Boolean.TRUE;
 			if(parms.startsWith("||"))
-			{ build[0]=new Boolean(false); parms=parms.substring(2).trim();}
+			{ build[0]=Boolean.FALSE; parms=parms.substring(2).trim();}
 			else
 			if(parms.startsWith("&&"))
 			{ parms=parms.substring(2).trim();}
@@ -1494,10 +1494,10 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			{error="Malformed component line (code 0-2): "+parmS; continue;}
 			parmS=parmS.substring(x+1);
 
-			build[2]=new Boolean(true);
+			build[2]=Boolean.TRUE;
 			x=parmS.indexOf(":");
 			if(x<0){error="Malformed component line (code 1-1): "+parmS; continue;}
-			if(parmS.substring(0,x).equalsIgnoreCase("kept")) build[2]=new Boolean(false);
+			if(parmS.substring(0,x).equalsIgnoreCase("kept")) build[2]=Boolean.FALSE;
 			else
 			if((x>0)&&(!parmS.substring(0,x).equalsIgnoreCase("consumed")))
 			{error="Malformed component line (code 1-2): "+parmS; continue;}
@@ -1511,7 +1511,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			if(x>0) build[3]=new Integer(CMath.s_int(parmS.substring(0,x)));
 			parmS=parmS.substring(x+1);
 
-			build[4]=new String("");
+			build[4]="";
 			x=parmS.indexOf(":");
 			if(x<=0){error="Malformed component line (code 3-1): "+parmS; continue;}
 			rsc=parmS.substring(0,x);

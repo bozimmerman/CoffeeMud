@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,10 +42,10 @@ public class GConsider extends StdCommand
 		if((mob1==null)||(mobs==null)) return 0;
 	    MOB mob2=(MOB)mobs.iterator().next();
         if(mob2.amFollowing()!=null) mob2=mob2.amUltimatelyFollowing();
-	    
+
 		int mob2Armor=mob2.adjustedArmor();
 		int mob1Armor=mob1.adjustedArmor();
-        double mob1Attack=new Integer(mob1.adjustedAttackBonus(mob2)).doubleValue();
+        double mob1Attack=(double)mob1.adjustedAttackBonus(mob2);
 		int mob1Dmg=mob1.envStats().damage();
 		int mob2Hp=mob2.baseState().getHitPoints();
 		int mob1Hp=mob1.baseState().getHitPoints();
@@ -54,7 +54,7 @@ public class GConsider extends StdCommand
 		for(Iterator i=mobs.iterator();i.hasNext();)
 		{
 		    MOB mob=(MOB)i.next();
-            double mob2Attack=new Integer(mob.adjustedAttackBonus(mob1)).doubleValue();
+            double mob2Attack=(double)mob.adjustedAttackBonus(mob1);
 			int mob2Dmg=mob.envStats().damage();
 			mob2HitRound+=(((CMath.div(CMLib.dice().normalizeBy5((int)Math.round(50.0*mob2Attack/mob1Armor)),100.0))*CMath.div(mob2Dmg,2.0))+1.0)*CMath.mul(mob.envStats().speed(),1.0);
 		}
@@ -158,5 +158,5 @@ public class GConsider extends StdCommand
     public double actionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
 	public boolean canBeOrdered(){return true;}
 
-	
+
 }

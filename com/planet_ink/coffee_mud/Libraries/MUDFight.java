@@ -89,14 +89,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         if((attacker==null)||(defender==null)) return false;
         return rollToHit(attacker.adjustedAttackBonus(defender),defender.adjustedArmor());
     }
-    
+
     public boolean rollToHit(int attack, int defence)
     {
-        double myArmor=new Integer(-(defence-100)).doubleValue();
+        double myArmor=( -( ( (double)defence) - 100.0 ) );
         if(myArmor==0) myArmor=1.0;
         else
         if(myArmor<0.0) myArmor=-CMath.div(1.0,myArmor);
-        double hisAttack=new Integer(attack+50).doubleValue();
+        double hisAttack=((double)attack) + 50.0;
         if(hisAttack==0.0) hisAttack=1.0;
         else
         if(hisAttack<0.0) hisAttack=-CMath.div(1.0,myArmor);
@@ -395,7 +395,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	public MOB getFollowedLeader(MOB mob)
 	{
 		MOB leader=mob;
-        if(leader.amFollowing()!=null) 
+        if(leader.amFollowing()!=null)
             leader=leader.amUltimatelyFollowing();
 	    return leader;
 	}
@@ -403,7 +403,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	public Vector[] getFormation(MOB mob)
 	{
 		MOB leader=mob;
-        if(leader.amFollowing()!=null) 
+        if(leader.amFollowing()!=null)
             leader=leader.amUltimatelyFollowing();
 		Vector[] done=new Vector[20];
 		processFormation(done,leader,0);
@@ -439,11 +439,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	    }
 	    return 0;
 	}
-    
+
     public CharClass getCombatDominantClass(MOB killer, MOB killed)
     {
         CharClass C=null;
-        
+
         if((killer!=null)&&(killer.charStats()!=null))
         {
             C=killer.charStats().getCurrentClass();
@@ -481,9 +481,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         }
         if((killer!=null)&&(!beneficiaries.contains(killer))&&(killer!=killed)&&(CMLib.flags().isInTheGame(killer,true)))
             beneficiaries.add(killer);
-        return beneficiaries; 
+        return beneficiaries;
     }
-    
+
     public HashSet getCombatBeneficiaries(MOB killer, MOB killed, CharClass combatCharClass)
     {
         if((killer==null)||(killed==null)) return new HashSet();
@@ -494,8 +494,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         if((R!=null)&&(R!=killer.location())) getCombatBeneficiaries(killer,killed,R,beneficiaries,combatCharClass);
         return beneficiaries;
     }
-    
-    
+
+
     protected HashSet getCombatDividers(MOB killer, MOB killed, Room deathRoom, HashSet dividers, CharClass combatCharClass)
     {
         HashSet followers=(killer!=null)?killer.getGroupMembers(new HashSet()):(new HashSet());
@@ -512,9 +512,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         }
         if((killer!=null)&&(!dividers.contains(killer))&&(killer!=killed)&&(CMLib.flags().isInTheGame(killer,true)))
         	dividers.add(killer);
-        return dividers; 
+        return dividers;
     }
-    
+
     public HashSet getCombatDividers(MOB killer, MOB killed, CharClass combatCharClass)
     {
         if((killer==null)||(killed==null)) return new HashSet();
@@ -525,7 +525,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         if((R!=null)&&(R!=killer.location())) getCombatDividers(killer,killed,R,dividers,combatCharClass);
         return dividers;
     }
-    
+
 	public DeadBody justDie(MOB source, MOB target)
 	{
 		if(target==null) return null;
@@ -534,9 +534,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         CharClass combatCharClass=getCombatDominantClass(source,target);
 		HashSet beneficiaries=getCombatBeneficiaries(source,target,combatCharClass);
 		HashSet dividers=getCombatDividers(source,target,combatCharClass);
-		
+
         dispenseExperience(beneficiaries,dividers,target);
-        
+
 	    String currency=CMLib.beanCounter().getCurrency(target);
 		double deadMoney=CMLib.beanCounter().getTotalAbsoluteValue(target,currency);
 		double myAmountOfDeadMoney=0.0;
@@ -565,7 +565,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		else
 			whatToDo=CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH);
 		CMLib.combat().handleConsequences(target,source,whatToDo,expLost,"^*You lose @x1 experience points.^?^.");
-		
+
 		if(!CMLib.combat().isKnockedOutUponDeath(target,source))
 		{
 			DeadBody body=null;
@@ -579,14 +579,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	            body.setKillerName(source.Name());
 	            body.setKillerPlayer(!source.isMonster());
 	        }
-	
+
 			if((!target.isMonster())&&(CMLib.dice().rollPercentage()==1))
 			{
 				Ability A=CMClass.getAbility("Disease_Amnesia");
 				if((A!=null)&&(target.fetchEffect(A.ID())==null))
 					A.invoke(target,target,true,0);
 			}
-	
+
 			if(target.soulMate()!=null)
 			{
 				Session s=target.session();
@@ -597,7 +597,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				CMLib.commands().postLook(target.soulMate(),true);
 				target.setSoulMate(null);
 			}
-	
+
 			if((source!=null)
 	        &&(bodyRoom!=null)
 	        &&(body!=null)
@@ -624,7 +624,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				if(body.destroyAfterLooting())
 					bodyRoom.recoverRoomStats();
 			}
-	
+
 			Coins C=null;
 			if((deadMoney>0)&&(myAmountOfDeadMoney>0)&&(body!=null))
 			for(int g=0;g<goldLooters.size();g++)
@@ -649,7 +649,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 					}
 			    }
 			}
-	
+
 			if((body!=null)&&body.destroyAfterLooting())
 			{
 				for(int i=bodyRoom.numItems()-1;i>=0;i--)
@@ -673,10 +673,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     private String[] prowessDescs(){return CMProps.getSListVar(CMProps.SYSTEML_PROWESS_DESCS);}
     private String[] missWeaponDescs(){return CMProps.getSListVar(CMProps.SYSTEML_WEAPON_MISS_DESCS);}
     private String[] missDescs(){return CMProps.getSListVar(CMProps.SYSTEML_MISS_DESCS);}
-    
+
     public String standardHitWord(int type, int damage)
     {
-        if((type<0)||(type>=Weapon.TYPE_DESCS.length)) 
+        if((type<0)||(type>=Weapon.TYPE_DESCS.length))
             type=Weapon.TYPE_BURSTING;
         int[] thresholds=damageThresholds();
         int damnCode=thresholds.length-2;
@@ -727,7 +727,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         return (prowess<0)?prowessDescs()[0]:(
                (prowess>=PROWESS_CEILING)?prowessDescs()[prowessDescs().length-1]+(CMStrings.repeat("!",(prowess-PROWESS_CEILING)/100))+" ("+prowess+")":(
                 prowessDescs()[(int)Math.round(Math.floor(CMath.mul(CMath.div(prowess,PROWESS_CEILING),prowessDescs().length)))]+" ("+prowess+")"));}
-    
+
     public String standardMissString(int weaponType, int weaponClassification, String weaponName, boolean useExtendedMissString)
     {
         int dex=3;
@@ -828,7 +828,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         }
         msg.setValue(msg.value()+1);
     }
-    
+
     public void handleBeingHealed(CMMsg msg)
     {
         if(!(msg.target() instanceof MOB)) return;
@@ -859,7 +859,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     	else
     		return true;
     }
-    
+
     public void handleBeingDamaged(CMMsg msg)
     {
         if(!(msg.target() instanceof MOB)) return;
@@ -906,11 +906,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             }
         }
     }
-    
+
     public void handleDeath(CMMsg msg)
     {
         MOB deadmob=msg.source();
-        
+
         if(!deadmob.amDead())
         {
             if((!deadmob.isMonster())&&(deadmob.soulMate()==null))
@@ -967,7 +967,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             if(deadmob.riding()!=null) deadmob.riding().delRider(deadmob);
         }
     }
-    
+
     public void handleObserveDeath(MOB observer, MOB fighting, CMMsg msg)
     {
         MOB deadmob=msg.source();
@@ -1012,13 +1012,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 observer.setVictim(newTargetM);
         }
     }
-    
+
     public void handleBeingAssaulted(CMMsg msg)
     {
         if(!(msg.target() instanceof MOB)) return;
         MOB attacker=msg.source();
         MOB target=(MOB)msg.target();
-        
+
         if((!target.isInCombat())
         &&(target.location()!=null)
         &&(target.location().isInhabitant(attacker))
@@ -1050,7 +1050,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 }
                 if((target.soulMate()==null)&&(target.playerStats()!=null)&&(target.location()!=null))
                     target.playerStats().adjHygiene(PlayerStats.HYGIENE_FIGHTDIRTY);
-                
+
                 if((attacker.isMonster())&&(!attacker.isInCombat()))
                     attacker.setVictim(target);
             }
@@ -1062,7 +1062,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         if(CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target))
             CMLib.commands().postStand(target,true);
     }
-    
+
     public void makeFollowersFight(MOB observer, MOB target, MOB source)
     {
         if((source==null)||(target==null)||observer==null) return;
@@ -1107,10 +1107,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     	for(int x=0;x<map.length;x++)
         	for(int y=0;y<map.length;y++)
         		map[x][y]=-1;
-    	
+
     	return V;
     }
-    
+
     public void establishRange(MOB source, MOB target, Environmental tool)
     {
         // establish and enforce range
@@ -1218,7 +1218,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                     }
                 }
             }
-               
+
             if((!inminrange)&&(fighter.curState().getMovement()>=25))
             {
                 CMMsg msg=CMClass.getMsg(fighter,fighter.getVictim(),CMMsg.MSG_RETREAT,"<S-NAME> retreat(s) before <T-NAME>.");
@@ -1230,7 +1230,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 CMLib.combat().postAttack(fighter,fighter.getVictim(),weapon);
         }
     }
-    
+
     protected void subtickBeforeAttack(MOB fighter)
     {
         // combat que system eats up standard commands
@@ -1268,7 +1268,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 fighter.setVictim(nextVictimM);
         }
     }
-    
+
     public void dispenseExperience(HashSet killers, HashSet dividers, MOB killed)
     {
         int totalLevels=0;
@@ -1290,7 +1290,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			CMLib.leveler().postExperience(mob,killed,"",myAmount,false);
 		}
 	}
-    
+
     public void tickCombat(MOB fighter)
     {
         Item weapon=fighter.fetchWieldedItem();
@@ -1301,7 +1301,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             weapon=fighter.fetchWieldedItem();
         }
 
-        
+
         subtickBeforeAttack(fighter);
         int combatSystem=CMProps.getIntVar(CMProps.SYSTEMI_COMBATSYSTEM);
         int saveAction=(combatSystem!=CombatLibrary.COMBAT_DEFAULT)?0:1;
@@ -1362,7 +1362,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		return false;
     }
-    
+
     public boolean handleConsequences(MOB mob, MOB fighting, String whatToDo, int[] lostExperience, String message)
     {
 		if(whatToDo==null) return false;

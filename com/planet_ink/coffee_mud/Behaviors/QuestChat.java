@@ -30,22 +30,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class QuestChat extends MudChat 
+public class QuestChat extends MudChat
 {
 
 	public String ID(){return "QuestChat";}
 	private Hashtable alreadySaid=new Hashtable();
 	private String myQuestName=null;
-	
+
     public void registerDefaultQuest(String questName){ myQuestName=questName;}
-    
-    public void startBehavior(Environmental E)
-    {
-    	super.startBehavior(E);
-    	//Behavior B=E.fetchBehavior("MudChat");
-    	//if(B!=null)E.delBehavior(B);
-    }
-    
+
+
 	protected boolean match(MOB speaker, String expression, String message, String[] rest)
 	{
 		if(expression.indexOf("::")>=0)

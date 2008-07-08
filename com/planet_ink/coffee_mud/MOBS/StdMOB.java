@@ -218,7 +218,7 @@ public class StdMOB implements MOB
 
 	public void setDatabaseID(String id){databaseID=id;}
 	public String databaseID(){return databaseID;}
-	
+
 	public String Name()
 	{
 		return Username;
@@ -349,7 +349,7 @@ public class StdMOB implements MOB
                 addScript((ScriptingEngine)S.copyOf());
         }
 	}
-	
+
 	public CMObject copyOf()
 	{
 		try
@@ -447,8 +447,8 @@ public class StdMOB implements MOB
 	{
         if(CMSecurity.isAllowed(this,location(),"CARRYALL"))
             return Integer.MAX_VALUE/2;
-		double str=new Integer(charStats().getStat(CharStats.STAT_STRENGTH)).doubleValue();
-		double bodyWeight=new Integer(baseWeight()).doubleValue();
+		double str=(double)charStats().getStat(CharStats.STAT_STRENGTH);
+		double bodyWeight=(double)baseWeight();
 		return (int)Math.round(bodyWeight + ((str+10.0)*str*bodyWeight/150.0) + (str*5.0));
 	}
     public int maxItems()
@@ -819,14 +819,14 @@ public class StdMOB implements MOB
             destroy();
             return;
         }
-        
+
         if(isMonster())
         {
             Item dropItem=CMLib.catalog().getDropItem(this,true);
             if(dropItem!=null)
                 addInventory(dropItem);
         }
-        
+
         location().showOthers(this,null,CMMsg.MSG_BRINGTOLIFE,null);
 		if(CMLib.flags().isSleeping(this))
 			tell("(You are asleep)");
@@ -918,9 +918,9 @@ public class StdMOB implements MOB
 	}
 	public int adjustedAttackBonus(MOB mob)
 	{
-		double att=new Integer(
+		double att=(double)(
 				envStats().attackAdjustment()
-				+((charStats().getStat(CharStats.STAT_STRENGTH)-9)*3)).doubleValue();
+				+((charStats().getStat(CharStats.STAT_STRENGTH)-9)*3));
 		if(curState().getHunger()<1) att=att*.9;
 		if(curState().getThirst()<1) att=att*.9;
 		if(curState().getFatigue()>CharState.FATIGUED_MILLIS) att=att*.8;
@@ -933,8 +933,8 @@ public class StdMOB implements MOB
 
 	public int adjustedArmor()
 	{
-		double arm=new Integer(((charStats().getStat(CharStats.STAT_DEXTERITY)-9)*3)
-							   +50).doubleValue();
+		double arm=(double)(((charStats().getStat(CharStats.STAT_DEXTERITY)-9)*3)
+							   +50);
 		if((envStats().disposition()&EnvStats.IS_SLEEPING)>0) arm=0.0;
 		if(arm>0.0)
 		{
@@ -952,9 +952,9 @@ public class StdMOB implements MOB
 		if(target!=null)
 		{
 			if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
-				damageAmount = new Integer(CMLib.dice().roll(1, weapon.envStats().damage(),1)).doubleValue();
+				damageAmount = (double)(CMLib.dice().roll(1, weapon.envStats().damage(),1));
 			else
-				damageAmount = new Integer(CMLib.dice().roll(1, envStats().damage(), (charStats().getStat(CharStats.STAT_STRENGTH) / 3)-2)).doubleValue();
+				damageAmount = (double)(CMLib.dice().roll(1, envStats().damage(), (charStats().getStat(CharStats.STAT_STRENGTH) / 3)-2));
 			if(!CMLib.flags().canBeSeenBy(target,this)) damageAmount *=.5;
 			if(CMLib.flags().isSleeping(target)) damageAmount *=1.5;
 			else
@@ -962,9 +962,9 @@ public class StdMOB implements MOB
 		}
 		else
 		if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
-			damageAmount = new Integer(weapon.envStats().damage()+1).doubleValue();
+			damageAmount = (double)(weapon.envStats().damage()+1);
 		else
-			damageAmount = new Integer(envStats().damage()+(charStats().getStat(CharStats.STAT_STRENGTH) / 3)-2).doubleValue();
+			damageAmount = (double)(envStats().damage()+(charStats().getStat(CharStats.STAT_STRENGTH) / 3)-2);
 		if(curState().getHunger() < 1) damageAmount *= .8;
 		if(curState().getFatigue()>CharState.FATIGUED_MILLIS) damageAmount *=.8;
 		if(curState().getThirst() < 1) damageAmount *= .9;
@@ -1542,7 +1542,7 @@ public class StdMOB implements MOB
             if((ML!=null)&&(!ML.okMessage(this,msg)))
 				return false;
 		}
-        
+
         num=numScripts();
         for(int s=0;s<num;s++)
         {
@@ -2270,7 +2270,7 @@ public class StdMOB implements MOB
 			ML=fetchBehavior(b);
 			if(ML!=null) ML.executeMsg(this,msg);
 		}
-        
+
         for(int s=0;s<numScripts();s++)
         {
             ML=fetchScript(s);
@@ -2776,6 +2776,7 @@ public class StdMOB implements MOB
                 T=(Tickable)e.nextElement();
                 tickStatus=Tickable.STATUS_SCRIPT+c;
                 if(T!=null) T.tick(ticking,tickID);
+
             }
             e=null;
             
@@ -3486,7 +3487,7 @@ public class StdMOB implements MOB
     }
     public int numScripts(){return (scripts==null)?0:scripts.size();}
     public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
-    
+
 	/** Manipulation of the tatoo list */
 	public void addTattoo(String of)
 	{

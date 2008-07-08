@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -118,7 +118,7 @@ public class Prayer_Rockskin extends Prayer
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> skin turn hard as rock!");
-				HitsRemaining=5+Math.round(adjustedLevel(mob,asLevel)/2);
+				HitsRemaining=5+(adjustedLevel(mob,asLevel)/2);
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

@@ -47,7 +47,7 @@ public class ClanCreate extends BaseClanner
 				int cost=CMProps.getIntVar(CMProps.SYSTEMI_CLANCOST);
 				if(cost>0)
 				{
-					if(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob)<new Integer(cost).doubleValue())
+					if(CMLib.beanCounter().getTotalAbsoluteNativeValue(mob)<((double)cost))
 					{
 						mob.tell("It costs "+CMLib.beanCounter().nameCurrencyShort(mob,cost)+" to create a clan.  You don't have it.");
 						return false;
@@ -121,8 +121,8 @@ public class ClanCreate extends BaseClanner
 		mob.tell(msg.toString());
 		return false;
 	}
-	
+
 	public boolean canBeOrdered(){return false;}
 
-	
+
 }

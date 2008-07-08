@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,9 +35,15 @@ public class VeryAggressive extends Aggressive
 {
 	public String ID(){return "VeryAggressive";}
 	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
-	protected int tickWait=0;
-	protected int tickDown=0;
-	
+
+	public VeryAggressive()
+	{
+	    super();
+
+	    tickWait = 0;
+	    tickDown = 0;
+	}
+
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);

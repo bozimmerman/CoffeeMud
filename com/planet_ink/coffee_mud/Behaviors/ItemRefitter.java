@@ -73,9 +73,9 @@ public class ItemRefitter extends StdBehavior
 				CMLib.commands().postSay(observer,source,"This already looks your size!",true,false);
 				return false;
 			}
-			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<new Integer(cost).doubleValue())
+			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<((double)cost))
 			{
-			    String costStr=CMLib.beanCounter().nameCurrencyShort(observer,new Integer(cost).doubleValue());
+			    String costStr=CMLib.beanCounter().nameCurrencyShort(observer,(double)cost);
 				CMLib.commands().postSay(observer,source,"You'll need "+costStr+" for me to refit that.",true,false);
 				return false;
 			}
@@ -101,8 +101,8 @@ public class ItemRefitter extends StdBehavior
 		&&(msg.tool() instanceof Armor))
 		{
 			int cost=cost((Item)msg.tool());
-			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),new Integer(cost).doubleValue());
-			String costStr=CMLib.beanCounter().nameCurrencyLong(observer,new Integer(cost).doubleValue());
+			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),(double)cost);
+			String costStr=CMLib.beanCounter().nameCurrencyLong(observer,(double)cost);
 			source.recoverEnvStats();
 			((Item)msg.tool()).baseEnvStats().setHeight(0);
 			((Item)msg.tool()).recoverEnvStats();

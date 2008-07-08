@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,7 +44,7 @@ public class Disease_FrostBite extends Disease
     public boolean putInCommandlist(){return false;}
     public int difficultyLevel(){return 1;}
     public int[] limbsAffectable={Race.BODY_EAR,Race.BODY_ANTENEA,Race.BODY_FOOT,Race.BODY_HAND,Race.BODY_NOSE};
-    protected int DISEASE_TICKS(){return new Long(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)/2).intValue();}
+    protected int DISEASE_TICKS(){return (CMProps.getIntVar( CMProps.SYSTEMI_TICKSPERMUDDAY ) / 2);}
     protected int DISEASE_DELAY(){return 50;}
     protected String DISEASE_DONE()
     {
@@ -76,7 +76,7 @@ public class Disease_FrostBite extends Disease
         else
             super.unInvoke();
     }
-    
+
     public void affectCharStats(MOB affected, CharStats affectableStats)
     {
         super.affectCharStats(affected,affectableStats);
@@ -96,7 +96,7 @@ public class Disease_FrostBite extends Disease
                 where=Race.BODYPARTSTR[((Integer)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1))).intValue()];
         }
     }
-    
+
     public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         where=null;

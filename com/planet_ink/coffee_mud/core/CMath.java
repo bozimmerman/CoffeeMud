@@ -2,7 +2,7 @@ package com.planet_ink.coffee_mud.core;
 import java.util.*;
 import java.io.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,13 +26,13 @@ public class CMath
     private static final String[] ROMAN_TENS={"X","XX","XXX","XL","L","LX","LXX","LXXX","XC","C"};
     private static final String[] ROMAN_ONES={"I","II","III","IV","V","VI","VII","VIII","IX","X"};
     private static final String   ROMAN_ALL="CDMPXLIV";
-    
-    
+
+
     /** Convert an integer to its Roman Numeral equivalent
-     * 
+     *
      * Usage: Return=MiscFunc.convertToRoman(Number)+".";
      * @param i Integer to convert
-     * 
+     *
      * @return String Converted integer
      */
     public static String convertToRoman(int i)
@@ -46,7 +46,7 @@ public class CMath
         if(i>=100)
         {
             int x=i%100;
-            int y=Math.round((i-x)/100);
+            int y=(i-x)/100;
             if(y>0)
                 roman.append(ROMAN_HUNDREDS[y-1]);
             i=x;
@@ -54,7 +54,7 @@ public class CMath
         if(i>=10)
         {
             int x=i%10;
-            int y=Math.round((i-x)/10);
+            int y=(i-x)/10;
             if(y>0)
                 roman.append(ROMAN_TENS[y-1]);
         }
@@ -65,10 +65,10 @@ public class CMath
     }
 
     /** Convert an integer to its Roman Numeral equivalent
-     * 
+     *
      * Usage: Return=MiscFunc.convertToRoman(Number)+".";
      * @param s String to convert
-     * 
+     *
      * @return String Converted integer
      */
     public static int convertFromRoman(String s)
@@ -113,25 +113,25 @@ public class CMath
 	}
 
     public static boolean isRomanDigit(char c){ return ROMAN_ALL.indexOf(c)>=0;}
-    
+
     public static boolean isRomanNumeral(String s)
     {
-        if(s==null) return false; 
+        if(s==null) return false;
         s=s.toUpperCase().trim();
-        if(s.length()==0) return false; 
+        if(s.length()==0) return false;
         for(int c=0;c<s.length();c++)
             if(!isRomanDigit(s.charAt(c)))
                 return false;
         return true;
     }
-    
+
     public static long absDiff(long x, long y)
     {
         long d=x-y;
         if(d<0) return d*-1;
         return d;
     }
-    
+
     public static boolean isNumber(String s)
     {
         if(s==null) return false;
@@ -144,47 +144,47 @@ public class CMath
                 return false;
         return true;
     }
-    
+
     public static double div(double a, double b)
     {
         return a/b;
     }
     public static double div(double a, int b)
     {
-        return a/new Integer(b).doubleValue();
+        return a/((double)b);
     }
     public static double div(int a, double b)
     {
-        return new Integer(a).doubleValue()/b;
+        return ((double)a)/b;
     }
     public static double div(double a, long b)
     {
-        return a/new Long(b).doubleValue();
+        return a/((double)b);
     }
     public static double div(long a, double b)
     {
-        return new Long(a).doubleValue()/b;
+        return ((double)a)/b;
     }
-    
+
     public static double mul(double a, double b)
     {
         return a*b;
     }
     public static double mul(double a, int b)
     {
-        return a*new Integer(b).doubleValue();
+        return a*((double)b);
     }
     public static double mul(int a, double b)
     {
-        return new Integer(a).doubleValue()*b;
+        return ((double)a)*b;
     }
     public static double mul(double a, long b)
     {
-        return a*new Long(b).doubleValue();
+        return a*((double)b);
     }
     public static double mul(long a, double b)
     {
-        return new Long(a).doubleValue()*b;
+        return ((double)a)*b;
     }
     public static long mul(long a, long b)
     {
@@ -196,19 +196,19 @@ public class CMath
     }
     public static double div(long a, long b)
     {
-        return new Long(a).doubleValue()/new Long(b).doubleValue();
+        return ((double)a)/((double)b);
     }
     public static double div(int a, int b)
     {
-        return new Integer(a).doubleValue()/new Integer(b).doubleValue();
+        return ((double)a)/((double)b);
     }
     public static long pow(long x, long y)
     {
-        return Math.round(Math.pow(new Long(x).doubleValue(),new Long(y).doubleValue()));
+        return Math.round(Math.pow(((double)x),((double)y)));
     }
     public static int squared(int x)
     {
-        return (int)Math.round(Math.pow(new Integer(x).doubleValue(),new Integer(x).doubleValue()));
+        return (int)Math.round(Math.pow(((double)x),((double)x)));
     }
     public static boolean bset(short num, short bitmask)
     {
@@ -292,10 +292,10 @@ public class CMath
         String s=twoPlaces.format(d);
         if(s.endsWith("%%")) return s.substring(0,s.length()-1);
         return s;
-        
+
     }
     public static String toPct(String s) { return toPct(s_pct(s)); }
-    
+
     public static boolean isSet(long number, int bitnumber)
     {
         if((number&(pow(2,bitnumber)))==(pow(2,bitnumber)))
@@ -311,7 +311,7 @@ public class CMath
     public static double s_parseMathExpression(String st){ try{ return parseMathExpression(st);}catch(Exception e){ return 0.0;}}
     public static long s_parseLongExpression(String st){ try{ return parseLongExpression(st);}catch(Exception e){ return 0;}}
     public static int s_parseIntExpression(String st){ try{ return parseIntExpression(st);}catch(Exception e){ return 0;}}
-    
+
     private static double parseMathExpression(StreamTokenizer st)
     	throws ArithmeticException
     {
@@ -353,20 +353,20 @@ public class CMath
 		catch(IOException e){}
 		return finalValue;
     }
-    
+
     public static long parseLongExpression(String formula)
     {return Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes())))));}
-    
+
     public static int parseIntExpression(String formula) throws ArithmeticException
     {return (int)Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes())))));}
-    
+
     public static double parseMathExpression(String formula) throws ArithmeticException
     {return parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))));}
-    
-    
+
+
     /**
      * Returns the long value of a string without crashing
-     * 
+     *
      * <br><br><b>Usage:</b> lSize = WebIQBase.s_long(WebIQBase.getRes(AttStatsRes,"BlobSize"));
      * @param LONG String to convert
      * @return long Long value of the string
@@ -378,10 +378,10 @@ public class CMath
         catch(Exception e){ return 0;}
         return slong;
     }
-    
+
     /**
      * Returns the floating point value of a string without crashing
-     * 
+     *
      * <br><br><b>Usage:</b> lSize = WebIQBase.s_float(WebIQBase.getRes(AttStatsRes,"BlobSize"));
      * @param FLOAT String to convert
      * @return Float value of the string
@@ -393,10 +393,10 @@ public class CMath
         catch(Exception e){ return 0;}
         return sfloat;
     }
-    
+
     /**
      * Returns the double value of a string without crashing
-     * 
+     *
      * <br><br><b>Usage:</b> dSize = WebIQBase.s_double(WebIQBase.getRes(AttStatsRes,"BlobSize"));
      * @param DOUBLE String to convert
      * @return double Double value of the string
@@ -408,35 +408,35 @@ public class CMath
         catch(Exception e){ return 0;}
         return sdouble;
     }
-    
-    
+
+
     public static int abs(int val)
     {
         if(val>=0) return val;
         return val*-1;
     }
-    
+
     public static long abs(long val)
     {
         if(val>=0) return val;
         return val*-1;
     }
-    
+
     /**
      * Returns the boolean value of a string without crashing
-     * 
+     *
      * <br><br><b>Usage:</b> int num=s_bool(CMD.substring(14));
      * @param BOOL Boolean value of string
      * @return int Boolean value of the string
      */
     public static boolean s_bool(String BOOL)
     {
-        return Boolean.valueOf(BOOL).booleanValue(); 
+        return Boolean.valueOf(BOOL).booleanValue();
     }
-    
+
     /**
      * Returns whether the given string is a boolean value
-     * 
+     *
      * <br><br><b>Usage:</b> if(isBool(CMD.substring(14)));
      * @param BOOL Boolean value of string
      * @return whether it is a boolean
@@ -445,10 +445,10 @@ public class CMath
     {
         return BOOL.equalsIgnoreCase("true")||BOOL.equalsIgnoreCase("false");
     }
-    
+
     /**
      * Returns the integer value of a string without crashing
-     * 
+     *
      * <br><br><b>Usage:</b> int num=s_int(CMD.substring(14));
      * @param INT Integer value of string
      * @return int Integer value of the string
@@ -462,7 +462,7 @@ public class CMath
     }
     /**
      * Returns the short value of a string without crashing
-     * 
+     *
      * <br><br><b>Usage:</b> int num=s_short(CMD.substring(14));
      * @param SHORT Short value of string
      * @return short Short value of the string
@@ -474,7 +474,7 @@ public class CMath
         catch(Exception e){ return 0;}
         return sint;
     }
-    
+
     public static boolean isLong(String INT){return isInteger(INT);}
     public static boolean isInteger(String INT)
     {
@@ -487,7 +487,7 @@ public class CMath
                 return false;
         return true;
     }
-    
+
     public static boolean isFloat(String DBL){return isDouble(DBL);}
     public static boolean isDouble(String DBL)
     {
@@ -510,7 +510,7 @@ public class CMath
             }
         return alreadyDot;
     }
-    
+
     public long round(double d){return Math.round(d);}
     public long round(float d){return Math.round(d);}
     public double abs(double d){return Math.abs(d);}

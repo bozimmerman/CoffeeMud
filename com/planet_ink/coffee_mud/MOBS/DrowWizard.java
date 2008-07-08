@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Lee H. Fox
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,13 +34,14 @@ import java.util.*;
 public class DrowWizard extends DrowElf
 {
 	public String ID(){return "DrowWizard";}
-	public int darkDown=4;
 	public int spellDown=2;
     private int magicResistance = 50;
 
 	public DrowWizard()
 	{
 		super();
+
+		darkDown = 4;
 
 		baseEnvStats().setLevel(CMLib.dice().roll(4,6,1));
 

@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,7 +40,7 @@ public class StatRejuvCharts extends StdWebMacro
 		if(s==null) s="";
 		return s;
 	}
-	
+
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		StringBuffer buf=new StringBuffer("");
@@ -65,7 +65,7 @@ public class StatRejuvCharts extends StdWebMacro
 			buf.append("<BR>Chart: Hit Points<BR>");
 		buf.append("Flags: ");
 		int disposition=0;
-		
+
 		if((getReq(httpReq,"SITTING").length()>0))
 		{ disposition=EnvStats.IS_SITTING; buf.append("Sitting ");}
 		if((getReq(httpReq,"SLEEPING").length()>0))
@@ -82,7 +82,7 @@ public class StatRejuvCharts extends StdWebMacro
 		if(thirsty){ buf.append("Thirsty ");		mob.curState().setThirst(0);}
 		mob.baseEnvStats().setDisposition(disposition);
 		mob.recoverEnvStats();
-		
+
 		buf.append("<P><TABLE WIDTH=100% BORDER=1>");
 		buf.append("<TR><TD><B>STATS:</B></TD>");
 		for(int stats=4;stats<=25;stats++)
@@ -103,9 +103,9 @@ public class StatRejuvCharts extends StdWebMacro
 				mob.curState().setMovement(0);
 				mob.curState().setHitPoints(0);
 
-				double con=new Integer(mob.charStats().getStat(CharStats.STAT_CONSTITUTION)).doubleValue();
-				double man=new Integer((mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)+mob.charStats().getStat(CharStats.STAT_WISDOM))).doubleValue();
-				double str=new Integer(mob.charStats().getStat(CharStats.STAT_STRENGTH)).doubleValue();
+				double con=(double)mob.charStats().getStat(CharStats.STAT_CONSTITUTION);
+				double man=(double)(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)+mob.charStats().getStat(CharStats.STAT_WISDOM));
+				double str=(double)mob.charStats().getStat(CharStats.STAT_STRENGTH);
 				if(mob.curState().getHunger()<1)
 				{
 					con=con*0.85;
@@ -120,8 +120,8 @@ public class StatRejuvCharts extends StdWebMacro
 				}
 				if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)
 					man=man*.5;
-		
-				double lvl=new Integer(mob.envStats().level()).doubleValue();
+
+				double lvl=(double)mob.envStats().level();
 				double lvlby1p5=CMath.div(lvl,1.5);
 				//double lvlby2=CMath.div(lvl,2.0);
 				//double lvlby3=CMath.div(lvl,3.0);
@@ -129,7 +129,7 @@ public class StatRejuvCharts extends StdWebMacro
 				double hpGain=(con>1.0)?((con/40.0)*lvlby1p5)+(con/4.5)+2.0:1.0;
 				double manaGain=(man>2.0)?((man/80.0)*lvl)+(man/4.5)+2.0:1.0;
 				double moveGain=(str>1.0)?((str/40.0)*lvl)+(str/3.0)+5.0:1.0;
-		
+
 				if(CMLib.flags().isSleeping(mob))
 				{
 					hpGain+=(hpGain/2.0);
@@ -167,7 +167,7 @@ public class StatRejuvCharts extends StdWebMacro
 						moveGain-=(moveGain/2.0);
 					}
 				}
-		
+
 				if((!mob.isInCombat())
 				&&(!CMLib.flags().isClimbing(mob)))
 				{
@@ -178,7 +178,7 @@ public class StatRejuvCharts extends StdWebMacro
 					if(moveGain>0)
 						mob.curState().adjMovement((int)Math.round(moveGain),mob.maxState());
 				}
-				
+
 				if((which!=null)&&(which.equals("HP")))
 					buf.append("<TD>"+mob.curState().getHitPoints()+"</TD>");
 				else

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -80,7 +80,7 @@ public class Chant_SummonLightning extends Chant
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				int maxDie =  (int)Math.round(new Integer(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob))).doubleValue());
+				int maxDie =  adjustedLevel( mob, asLevel ) + ( 2 * super.getX1Level( mob ) );
 				int damage = CMLib.dice().roll(maxDie,8,maxDie);
 				if((msg.value()>0)||(msg2.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));

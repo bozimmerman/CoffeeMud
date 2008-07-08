@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -111,7 +111,7 @@ public class Skill_Trip extends StdSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -152,7 +152,7 @@ public class Skill_Trip extends StdSkill
 		else
 			levelDiff=0;
 		levelDiff-=(abilityCode()*mob.charStats().getStat(CharStats.STAT_DEXTERITY));
-		int adjustment=(-levelDiff)+(-(35+((int)Math.round((new Integer(target.charStats().getStat(CharStats.STAT_DEXTERITY)).doubleValue()-9.0)*3.0))));
+		int adjustment=(-levelDiff)+(-(35+((int)Math.round((target.charStats().getStat(CharStats.STAT_DEXTERITY)-9.0)*3.0))));
 		boolean success=proficiencyCheck(mob,adjustment,auto);
 		success=success&&(target.charStats().getBodyPart(Race.BODY_LEG)>0);
 		if(success)

@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,6 +32,13 @@ import java.util.*;
 */
 public class StdPlanet extends StdTimeZone implements SpaceObject
 {
+    public StdPlanet()
+    {
+        super();
+
+        myClock = (TimeClock)CMClass.getCommon("DefaultTimeClock");
+    }
+
 	public String ID(){	return "StdPlanet";}
 	public long[] coordinates=new long[3];
 	public long[] coordinates(){return coordinates;}
@@ -44,14 +51,12 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	public void setVelocity(long v){velocity=v;}
 	public long accelleration(){return 0;}
 	public void setAccelleration(long x){}
-	protected TimeClock myClock=(TimeClock)CMClass.getCommon("DefaultTimeClock");
-	public TimeClock getTimeObj(){return myClock;}
 	public void setName(String newName)
 	{
 		super.setName(newName);
 		myClock.setLoadName(newName);
 	}
-	
+
 	public SpaceObject knownTarget(){return null;}
 	public void setKnownTarget(SpaceObject O){}
 	public SpaceObject knownSource(){return null;}
@@ -59,7 +64,7 @@ public class StdPlanet extends StdTimeZone implements SpaceObject
 	public SpaceObject orbiting=null;
 	public SpaceObject orbiting(){return orbiting;}
 	public void setOrbiting(SpaceObject O){orbiting=O;}
-	
+
 	public void addChild(Area Adopted) {
 		super.addChild(Adopted);
 		Adopted.setTimeObj(getTimeObj());

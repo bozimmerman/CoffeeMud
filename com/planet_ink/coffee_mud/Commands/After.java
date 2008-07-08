@@ -108,7 +108,7 @@ public class After extends StdCommand implements Tickable
 		Vector V=new Vector();
 		V.addElement(new Long(System.currentTimeMillis()));
 		V.addElement(new Long(time));
-		V.addElement(new Boolean(every));
+		V.addElement(Boolean.valueOf(every));
 		V.addElement(mob);
 		V.addElement(commands);
 		V.addElement(new Integer(metaFlags));
@@ -117,11 +117,11 @@ public class After extends StdCommand implements Tickable
 		mob.tell("Ok.");
 		return false;
 	}
-	
+
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"AFTER");}
 
-	
+
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

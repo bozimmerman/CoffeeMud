@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -210,7 +210,7 @@ public class Thief_ContractHit extends ThiefSkill
 
 		int level=target.envStats().level();
 		if(level>(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))) level=(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
-		double goldRequired=new Integer(100*level).doubleValue();
+		double goldRequired=100.0*level;
 		String localCurrency=CMLib.beanCounter().getCurrency(mob.location());
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
 		{

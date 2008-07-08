@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -62,7 +62,7 @@ public class Mood extends StdAbility
 		/*10*/{"SCARED","","^yscared","scaredly"},
 		/*11*/{"LONELY","","^Clonely","lonely"},
 	};
-	
+
 	public final static String[] uglyPhrases={
 	"orc-brain",
 	"jerk",
@@ -80,7 +80,7 @@ public class Mood extends StdAbility
 	"ugly yokle",
 	"brainless goop",
 	"stupid noodle",
-	"stupid ugly-bottom",	
+	"stupid ugly-bottom",
 	"pig-dog",
 	"son of a silly person",
 	"silly K...kanigget",
@@ -93,7 +93,7 @@ public class Mood extends StdAbility
 	"bed-wetting type",
 	"tiny-brained wiper of other people`s bottoms"
 	};
-	
+
 	public void setMiscText(String newText)
 	{
 	    // this checks the input, and allows us to get mood
@@ -119,24 +119,24 @@ public class Mood extends StdAbility
 	    }
         super.setMiscText(newText);
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 	    if(!super.tick(ticking,tickID))
 	        return false;
 	    switch(moodCode)
 	    {
-	    
+
 	    }
 	    return true;
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats stats)
 	{
 		super.affectEnvStats(affected,stats);
 		if(moodCode>=0) stats.addAmbiance(MOODS[moodCode][2].toLowerCase());
 	}
-	
+
 	private String changeSay(String msg, String to)
 	{
 		if(msg==null) return null;
@@ -187,7 +187,7 @@ public class Mood extends StdAbility
         if(mobs.size()==1) return (MOB)mobs.firstElement();
         return null;
     }
-    
+
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(affected instanceof MOB)
@@ -220,7 +220,7 @@ public class Mood extends StdAbility
 								msg.setSourceMessage(CMStrings.replaceFirst(msg.sourceMessage(),tag,tag+" "+MOODS[moodCode][3]));
 						}
 					}
-                    String oldStr=str.toString();
+                    String oldStr=str;
 					switch(moodCode)
 					{
 					case 0: // formal
@@ -693,7 +693,7 @@ public class Mood extends StdAbility
 		}
 		super.executeMsg(myHost,msg);
 	}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String entered=CMParms.combine(commands,0);
@@ -724,7 +724,7 @@ public class Mood extends StdAbility
         }
 		String choice=null;
 		String mask="";
-		if(entered.equalsIgnoreCase("NORMAL")) 
+		if(entered.equalsIgnoreCase("NORMAL"))
 			choice="NORMAL";
 		else
 		for(int i=0;i<MOODS.length;i++)
@@ -735,7 +735,7 @@ public class Mood extends StdAbility
 			}
 		if((choice==null)&&(entered.length()>0)&&(Character.isLetter(entered.charAt(0))))
 		{
-			if("NORMAL".startsWith(entered.toUpperCase())) 
+			if("NORMAL".startsWith(entered.toUpperCase()))
 				choice="NORMAL";
 			else
 			for(int i=0;i<MOODS.length;i++)
@@ -763,7 +763,7 @@ public class Mood extends StdAbility
             mob.tell("You are already in "+CMLib.english().startWithAorAn(choice.toLowerCase())+" mood.");
             return false;
         }
-		
+
 		if((mask.length()>0)&&(!CMLib.masking().maskCheck(mask,mob,true)))
 		{
             if(origEntered.equalsIgnoreCase("RANDOM"))
@@ -771,7 +771,7 @@ public class Mood extends StdAbility
 			mob.tell("You must meet the following criteria to be in that mood: "+CMLib.masking().maskDesc(mask,true));
 			return false;
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 		boolean success=proficiencyCheck(mob,0,auto);

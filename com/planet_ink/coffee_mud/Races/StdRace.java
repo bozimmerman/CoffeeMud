@@ -299,7 +299,7 @@ public class StdRace implements Race
                         &&(!CMLib.flags().isChild(mob))
                         &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
 						{
-						    
+
 							if(A.proficiency()>0) A.setProficiency(100);
 							A.invoke(mob,mob,false,0);
 							if(CMLib.flags().isChild(mob))
@@ -469,7 +469,8 @@ public class StdRace implements Race
                     if(thisItem.container()!=null)
                         containerMap.put(thisItem,thisItem.container());
 					newItem.setContainer(null);
-					newItem.setExpirationDate(System.currentTimeMillis()+Math.round(CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_MONSTER_EQ)*TimeManager.MILI_HOUR));
+					newItem.setExpirationDate( System.currentTimeMillis() +
+					                           CMProps.getIntVar( CMProps.SYSTEMI_EXPIRE_MONSTER_EQ )* TimeManager.MILI_HOUR );
 					newItem.recoverEnvStats();
 					thisItem=newItem;
 					i++;
@@ -489,7 +490,7 @@ public class StdRace implements Race
 			else
 				i++;
 		}
-		
+
 		Item dropItem=CMLib.catalog().getDropItem(mob,false);
 		if(dropItem!=null)
 		{
@@ -500,7 +501,7 @@ public class StdRace implements Race
                 room.addItem(dropItem);
             items.addElement(dropItem);
 		}
-		
+
         for(Enumeration e=itemMap.keys();e.hasMoreElements();)
         {
             Item oldItem=(Item)e.nextElement();

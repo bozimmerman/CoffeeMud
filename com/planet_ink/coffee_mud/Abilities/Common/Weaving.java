@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,11 +53,17 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	protected static final int RCP_CONTAINMASK=9;
 	protected static final int RCP_SPELL=10;
 
-	protected Item building=null;
-	protected boolean mending=false;
-	protected boolean refitting=false;
-	protected boolean messedUp=false;
 	protected Item key=null;
+
+	public Weaving()
+	{
+	    super();
+
+	    building = null;
+	    mending = false;
+	    refitting = false;
+	    messedUp = false;
+	}
 
 
     public Vector fetchRecipeFormat() {
@@ -350,7 +356,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			int capacity=CMath.s_int((String)foundRecipe.elementAt(RCP_CAPACITY));
 			int canContain=CMath.s_int((String)foundRecipe.elementAt(RCP_CONTAINMASK));
 			int armordmg=CMath.s_int((String)foundRecipe.elementAt(RCP_ARMORDMG));
-			if(bundling) 
+			if(bundling)
 			{
 			    building.setBaseValue(lostValue);
 				building.baseEnvStats().setWeight(woodRequired);
@@ -419,7 +425,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 				if(misctype.equalsIgnoreCase("LOCK"))
 				{
 					((Container)building).setLidsNLocks(true,false,true,false);
-					((Container)building).setKeyName(new Double(Math.random()).toString());
+					((Container)building).setKeyName(Double.toString(Math.random()));
 					key=CMClass.getItem("GenKey");
 					((Key)key).setKey(((Container)building).keyName());
 					key.setName("a key");

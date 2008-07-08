@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,11 +35,17 @@ public class MobileAggressive extends Mobile
 {
 	public String ID(){return "MobileAggressive";}
 	protected int tickWait=0;
-	protected int tickDown=0;
 	public long flags(){return Behavior.FLAG_POTENTIALLYAGGRESSIVE|Behavior.FLAG_TROUBLEMAKING;}
 	protected boolean mobkill=false;
 	protected boolean misbehave=false;
 	protected String attackMsg=null;
+
+	public MobileAggressive()
+	{
+	    super();
+
+	    tickDown = 0;
+	}
 
 	public void setParms(String newParms)
 	{

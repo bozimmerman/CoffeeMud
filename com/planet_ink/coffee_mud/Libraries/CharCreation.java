@@ -18,7 +18,7 @@ import java.io.PrintWriter;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -49,15 +49,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         // Make sure there are enough points
         if (points < ((basemin + 1) * CharStats.NUM_BASE_STATS))
             points = (basemin + 1) * CharStats.NUM_BASE_STATS;
-        
+
         // Make sure there aren't too many points
-        if (points > (basemax - 1) * CharStats.NUM_BASE_STATS) 
+        if (points > (basemax - 1) * CharStats.NUM_BASE_STATS)
                 points = (basemax - 1) * CharStats.NUM_BASE_STATS;
-       
+
         int[] stats=new int[CharStats.NUM_BASE_STATS];
         for(int i=0;i<stats.length;i++)
             stats[i]=basemin;
-       
+
         // Subtract stat minimums from point total to get distributable points
         int pointsLeft = points - (basemin * CharStats.NUM_BASE_STATS);
 
@@ -183,10 +183,10 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     public void reloadTerminal(MOB mob)
     {
         if(mob==null) return;
-        
+
         Session S=mob.session();
         if(S==null) return;
-        
+
         S.initTelnetMode(mob.getBitmap());
         if((CMath.bset(mob.getBitmap(),MOB.ATT_MXP))
         &&(!CMSecurity.isDisabled("MXP")))
@@ -206,7 +206,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             S.changeTelnetMode(Session.TELNET_MXP,false);
             S.setClientTelnetMode(Session.TELNET_MXP,false);
         }
-        
+
         if((CMath.bset(mob.getBitmap(),MOB.ATT_SOUND))
         &&(!CMSecurity.isDisabled("MSP")))
         {
@@ -220,13 +220,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             S.setClientTelnetMode(Session.TELNET_MSP,false);
         }
     }
-    
+
     public void showTheNews(MOB mob)
     {
         reloadTerminal(mob);
         Command C=CMClass.getCommand("PollCmd");
         try{ C.execute(mob,null,0);}catch(Exception e){}
-        
+
         if((mob.session()==null)
         ||(mob.isMonster())
         ||(CMath.bset(mob.getBitmap(),MOB.ATT_DAILYMESSAGE)))
@@ -260,7 +260,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         {
             login=CMStrings.capitalizeAndLower(login.trim());
             session.println(null,null,null,"\n\r\n\r"+new CMFile(Resources.buildResourcePath("text")+"newchar.txt",null,true).text().toString());
-            
+
             boolean emailPassword=((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))&&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0));
 
             String password="";
@@ -301,7 +301,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                    pendingLogins.remove(mob.Name().toUpperCase());
                 return false;
             }
-            
+
             Log.sysOut("FrontDoor","Creating user: "+mob.Name());
 
             mob.setBitmap(MOB.ATT_AUTOEXITS|MOB.ATT_AUTOWEATHER);
@@ -449,7 +449,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             mob.baseCharStats().getMyRace().startRacing(mob,false);
 
             if((CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))&&(mob.playerStats()!=null))
-                mob.playerStats().setAccountExpiration(System.currentTimeMillis()+(1000*60*60*24*CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS)));
+                mob.playerStats().setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*((long)CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
 
             session.println(null,null,null,"\n\r\n\r"+new CMFile(Resources.buildResourcePath("text")+"stats.txt",null,true).text().toString());
 
@@ -717,7 +717,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             pendingLogins.remove(mob.Name().toUpperCase());
          return false;
     }
-    
+
     private boolean loginsDisabled(MOB mob)
     {
         if((CMSecurity.isDisabled("LOGINS"))&&(!CMSecurity.isASysOp(mob)))
@@ -733,8 +733,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         }
         return false;
     }
-    
-    
+
+
     // 0=no login, 1=normal login, 2=swap
     public int login(MOB mob, int attempt)
         throws java.io.IOException
@@ -754,7 +754,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             login=login.trim();
             wizi=true;
         }
-        
+
         boolean found=CMLib.database().DBUserSearch(mob,login);
         if(found)
         {
@@ -839,7 +839,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                         numAtAddress++;
                 }
                 }catch(Exception e){}
-                
+
                 if((CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERIP)>0)
                 &&(numAtAddress>=CMProps.getIntVar(CMProps.SYSTEMI_MAXCONNSPERIP))
                 &&(!CMSecurity.isDisabled("MAXCONNSPERIP")))
@@ -849,7 +849,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                         pendingLogins.remove(mob.Name().toUpperCase());
                     return 0;
                 }
-                
+
                 MOB oldMOB=mob;
                 if(CMLib.map().getPlayer(oldMOB.Name())!=null)
                 {
@@ -858,7 +858,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     mob.setSession(oldMOB.session());
                     if(mob!=oldMOB)
                         oldMOB.setSession(null);
-                    if(loginsDisabled(mob)) 
+                    if(loginsDisabled(mob))
                     	return 0;
                     if(wizi)
                     {
@@ -891,7 +891,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 else
                 {
                     CMLib.database().DBReadPlayer(mob);
-                    if(loginsDisabled(mob)) 
+                    if(loginsDisabled(mob))
                     	return 0;
                     if(wizi)
                     {
@@ -1009,24 +1009,24 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
            pendingLogins.remove(mob.Name().toUpperCase());
         return 1;
     }
-    
+
     public String evaluateAutoTitle(String row, boolean addIfPossible)
     {
-        if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0)) 
+        if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0))
             return null;
         int x=row.indexOf("=");
         while((x>=1)&&(row.charAt(x-1)=='\\')) x=row.indexOf("=",x+1);
-        if(x<0) 
-            return "Error: Invalid line! Not comment, whitespace, and does not contain an = sign!"; 
+        if(x<0)
+            return "Error: Invalid line! Not comment, whitespace, and does not contain an = sign!";
         String title=row.substring(0,x).trim();
         String mask=row.substring(x+1).trim();
-        
+
         if(title.length()==0)return "Error: Blank title: "+title+"="+mask+"!";
         if(mask.length()==0)return "Error: Blank mask: "+title+"="+mask+"!";
         if(addIfPossible)
         {
             if(autoTitles==null) reloadAutoTitles();
-            if(autoTitles.contains(title)) 
+            if(autoTitles.contains(title))
                 return "Error: Duplicate title: "+title+"="+mask+"!";
             autoTitles.addElement(title,mask,CMLib.masking().maskCompile(mask));
         }
@@ -1040,13 +1040,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 return true;
         return false;
     }
-    
+
     public Enumeration autoTitles()
     {
         if(autoTitles==null) reloadAutoTitles();
         return autoTitles.getDimensionVector(1).elements();
     }
-    
+
     public String getAutoTitleMask(String title)
     {
         if(autoTitles==null) reloadAutoTitles();
@@ -1054,8 +1054,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         if(x<0) return "";
         return (String)autoTitles.elementAt(x,2);
     }
-    
-    
+
+
     public boolean evaluateAutoTitles(MOB mob)
     {
         if(mob==null) return false;
@@ -1085,14 +1085,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             }
             else
             if(pdex>=0)
-            { 
-                somethingDone=true; 
+            {
+                somethingDone=true;
                 PT.removeElementAt(pdex);
             }
         }
         return somethingDone;
     }
-    
+
     public void dispossesTitle(String title)
     {
     	Vector list=CMLib.database().getUserList();
@@ -1107,7 +1107,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             }
         }
     }
-    
+
     public void reloadAutoTitles()
     {
         autoTitles=new DVector(3);

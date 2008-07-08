@@ -17,7 +17,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -36,7 +36,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 {
     public String ID(){return "MUDZapper";}
 	public Hashtable zapCodes=new Hashtable();
-    
+
     protected MOB nonCrashingMOB=null;
     protected MOB nonCrashingMOB(){
         if(nonCrashingMOB!=null)
@@ -46,7 +46,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
     }
 
     public String rawMaskHelp(){return DEFAULT_MASK_HELP;}
-    
+
     protected Vector preCompiled(String str)
     {
         Hashtable H=(Hashtable)Resources.getResource("SYSTEM_HASHED_MASKS");
@@ -60,7 +60,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         }
         return V;
     }
-    
+
     public Hashtable getMaskCodes()
 	{
 		if(zapCodes.size()==0)
@@ -163,7 +163,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             zapCodes.put("-WORNON",new Integer(58));
             zapCodes.put("+VALUE",new Integer(59));
             zapCodes.put("-VALUE",new Integer(60));
-            zapCodes.put("+WEIGHT",new Integer(61)); 
+            zapCodes.put("+WEIGHT",new Integer(61));
             zapCodes.put("-WEIGHT",new Integer(62));
             zapCodes.put("+ARMOR",new Integer(63));
             zapCodes.put("-ARMOR",new Integer(64));
@@ -244,7 +244,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 
 	public String maskHelp(String CR, String word)
 	{
-		String copy=new String(rawMaskHelp());
+		String copy=rawMaskHelp();
 		if((CR!=null)&&(!CR.equalsIgnoreCase("<BR>")))
 			copy=CMStrings.replaceAll(copy,"<BR>",CR);
 		if((word==null)||(word.length()==0))
@@ -268,7 +268,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 if(s.startsWith("!"))
                 {
                     V.setElementAt(s.substring(1),v);
-                    V.insertElementAt(new Boolean(false),v);
+                    V.insertElementAt(Boolean.FALSE,v);
                     v++;
                 }
             }
@@ -279,7 +279,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 else
                     o2[v]=V.elementAt(v);
             for(int i=0;i<o2.length;i++)
-                if((o2[i]!=null)&&(!(o2[i] instanceof Boolean))) 
+                if((o2[i]!=null)&&(!(o2[i] instanceof Boolean)))
                 { o=o2; break;}
         }
         if(o==null)
@@ -312,10 +312,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             }
         return o;
 	}
-	
+
 	protected boolean evaluateSkillFlagObject(Object o, Ability A)
 	{
-        if(A!=null) 
+        if(A!=null)
         {
             if(o instanceof Object[])
             {
@@ -357,8 +357,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         }
         return false;
 	}
-	
-	
+
+
 	protected boolean skillFlagCheck(Vector V, char plusMinus, int fromHere, MOB mob)
     {
         Ability A=null;
@@ -370,7 +370,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             if(str.length()==0) continue;
             if(getMaskCodes().containsKey(str))
                 return false;
-            o=makeSkillFlagObject(str); 
+            o=makeSkillFlagObject(str);
             if(o==null) continue;
             for(int a=0;a<mob.numAbilities();a++)
             {
@@ -416,7 +416,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		}
 		return entry;
 	}
-	
+
 	protected StringBuffer levelHelp(String lvl, char c, String append)
 	{
 		if(lvl.startsWith(c+">=")&&(CMath.isNumber(lvl.substring(3).trim())))
@@ -435,7 +435,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			return new StringBuffer(append+"level "+lvl.substring(2).trim()+" players.  ");
 		return new StringBuffer("");
 	}
-	
+
 	protected int levelMinHelp(String lvl, char c, int minMinLevel, boolean reversed)
     {
         if(lvl.startsWith(c+">=")&&(CMath.isNumber(lvl.substring(3).trim())))
@@ -454,7 +454,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             return reversed?minMinLevel:CMath.s_int(lvl.substring(2).trim());
         return Integer.MIN_VALUE;
     }
-	
+
 	protected boolean fromHereEqual(Vector V, char plusMinus, int fromHere, String find)
 	{
 		for(int v=fromHere;v<V.size();v++)
@@ -494,9 +494,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         }
         return false;
     }
-	
+
 	public String maskDesc(String text){return maskDesc(text,false);}
-	
+
 	public String maskDesc(String text, boolean skipFirstWord)
 	{
 		if(text.trim().length()==0) return "Anyone";
@@ -745,7 +745,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             			buf.append("not "+str3.substring(1));
                                     else
                                         buf.append(str3);
-                                    if(v3<(V3.size()-1)) 
+                                    if(v3<(V3.size()-1))
                                         buf.append(" and ");
                                     else
                                         buf.append(", ");
@@ -844,7 +844,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                         buf.append("not "+str3.substring(1));
                                     else
                                         buf.append(str3);
-                                    if(v3<(V3.size()-1)) 
+                                    if(v3<(V3.size()-1))
                                         buf.append(" and ");
                                     else
                                         buf.append(", ");
@@ -1094,7 +1094,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         buf.append(".  ");
                     }
                     break;
-                    
+
                 case 104: // +weather
                 {
                     buf.append("Disallowed during the following weather condition(s): ");
@@ -1149,7 +1149,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     buf.append(".  ");
                 }
                 break;
-                
+
                 case 77: // +month
                     {
                         buf.append("Disallowed during the following month(s): ");
@@ -1214,7 +1214,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         buf.append(".  ");
                     }
                     break;
-                        
+
                 case 85: // +quallvl
                     if((v+1)<V.size())
 	                {
@@ -1855,7 +1855,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	public Vector getAbilityEduReqs(String text)
 	{
 		Vector preReqs=new Vector();
-		if(text.trim().length()==0) 
+		if(text.trim().length()==0)
 			return preReqs;
         Hashtable zapCodes=getMaskCodes();
 		Vector V=CMParms.parse(text.toUpperCase());
@@ -1915,7 +1915,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                         {
                         	str2=str2.substring(1);
                         	o=this.makeSkillFlagObject(str2);
-                        	if(o!=null) 
+                        	if(o!=null)
                         		objs.addElement(o);
                         }
 					}
@@ -2039,7 +2039,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         }
         return level;
     }
-    
+
 	public Vector maskCompile(String text)
 	{
 		Vector buf=new Vector();
@@ -2908,7 +2908,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		buf.trimToSize();
 		return buf;
 	}
-    
+
 	protected Room outdoorRoom(Area A)
     {
         Room R=null;
@@ -2924,12 +2924,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	{
         if(base==null)
         {
-        	base=(CharStats)mob.baseCharStats().copyOf(); 
+        	base=(CharStats)mob.baseCharStats().copyOf();
         	base.getMyRace().affectCharStats(mob,base);
         }
 		return base;
 	}
-	
+
 	public boolean maskCheck(String text, Environmental E, boolean actual){ return maskCheck(preCompiled(text),E,actual);}
 	public boolean maskCheck(Vector cset, Environmental E, boolean actual)
 	{
@@ -2940,7 +2940,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         MOB mob=(E instanceof MOB)?(MOB)E:nonCrashingMOB();
         Item item=(E instanceof Item)?(Item)E:null;
         Room R=(E instanceof Area)?outdoorRoom((Area)E):CMLib.map().roomLocation(E);
-        
+
 		for(int c=0;c<cset.size();c++)
 		{
 			Vector V=(Vector)cset.elementAt(c);
@@ -3123,7 +3123,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						if((mob.fetchTattoo((String)V.elementAt(v))!=null)
                         ||((R!=null)&&(R.getArea().getBlurbFlag((String)V.elementAt(v))!=null)))
 						{ found=true; break;}
-                    
+
 					if(!found) return false;
 				}
 				break;
@@ -3277,7 +3277,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			case 14: // -clan
 				{
                     String clanID=(mob!=null)?mob.getClanID():(E instanceof ClanItem)?((ClanItem)E).clanID():"";
-					if(clanID.length()==0) 
+					if(clanID.length()==0)
 						return false;
 					boolean found=false;
 					for(int v=1;v<V.size();v++)
@@ -3288,7 +3288,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				break;
 			case 15: // +clan
                 String clanID=(mob!=null)?mob.getClanID():(E instanceof ClanItem)?((ClanItem)E).clanID():"";
-				if(clanID.length()>0) 
+				if(clanID.length()>0)
 					for(int v=1;v<V.size();v++)
 						if(clanID.equalsIgnoreCase((String)V.elementAt(v)))
 						{ return false;}
@@ -3475,7 +3475,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 break;
 			case 44: // -deity
 				{
-					if(mob.getWorshipCharID().length()==0) 
+					if(mob.getWorshipCharID().length()==0)
 						return false;
 					boolean found=false;
 					for(int v=1;v<V.size();v++)
@@ -3485,7 +3485,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				}
 				break;
 			case 45: // +deity
-				if(mob.getWorshipCharID().length()>0) 
+				if(mob.getWorshipCharID().length()>0)
 					for(int v=1;v<V.size();v++)
 						if(mob.getWorshipCharID().equalsIgnoreCase((String)V.elementAt(v)))
 						{ return false;}
@@ -3845,5 +3845,5 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		}
 		return true;
 	}
-	
+
 }

@@ -20,7 +20,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.regex.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -49,7 +49,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         		return true;
         return false;
     }
-    
+
     public String cleanArticles(String s)
     {
         boolean didSomething=true;
@@ -63,7 +63,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         }
         return s;
     }
-    
+
     
     public String startWithAorAn(String str)
     {
@@ -115,19 +115,19 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			return null;
 
 		String firstWord=((String)commands.elementAt(0)).toUpperCase();
-        
+
 		if((firstWord.length()>1)&&(!Character.isLetterOrDigit(firstWord.charAt(0))))
 		{
 			commands.insertElementAt(((String)commands.elementAt(0)).substring(1),1);
 			commands.setElementAt(""+firstWord.charAt(0),0);
 			firstWord=""+firstWord.charAt(0);
 		}
-		
+
 		// first, exacting pass
 		Command C=CMClass.findCommandByTrigger(firstWord,true);
 		if((C!=null)
         &&(C.securityCheck(mob))
-        &&(!CMSecurity.isDisabled("COMMAND_"+CMClass.classID(C).toUpperCase()))) 
+        &&(!CMSecurity.isDisabled("COMMAND_"+CMClass.classID(C).toUpperCase())))
             return C;
 
         Ability A=getToEvoke(mob,(Vector)commands.clone());
@@ -137,7 +137,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
         if(getAnEvokeWord(mob,firstWord)!=null)
             return null;
-        
+
 		Social social=CMLib.socials().fetchSocial(commands,true);
 		if(social!=null) return social;
 
@@ -155,7 +155,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				if((C!=null)&&(C.securityCheck(mob))) return C;
 			}
 		}
-		
+
         for(int c=0;c<CMLib.journals().getNumCommandJournals();c++)
         {
             if(CMLib.journals().getCommandJournalName(c).equalsIgnoreCase(firstWord))
@@ -164,7 +164,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
                 if((C!=null)&&(C.securityCheck(mob))) return C;
             }
         }
-        
+
 		// second, inexacting pass
 		for(int a=0;a<mob.numAbilities();a++)
 		{
@@ -190,7 +190,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		C=CMClass.findCommandByTrigger(firstWord,false);
         if((C!=null)
         &&(C.securityCheck(mob))
-        &&(!CMSecurity.isDisabled("COMMAND_"+CMClass.classID(C).toUpperCase()))) 
+        &&(!CMSecurity.isDisabled("COMMAND_"+CMClass.classID(C).toUpperCase())))
             return C;
 
 
@@ -200,7 +200,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			commands.setElementAt(social.baseName(),0);
 			return social;
 		}
-		
+
 		for(int c=0;c<CMLib.channels().getNumChannels();c++)
 		{
 			if(CMLib.channels().getChannelName(c).startsWith(firstWord))
@@ -217,7 +217,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				if((C!=null)&&(C.securityCheck(mob))) return C;
 			}
 		}
-        
+
         for(int c=0;c<CMLib.journals().getNumCommandJournals();c++)
         {
             if(CMLib.journals().getCommandJournalName(c).startsWith(firstWord))
@@ -246,7 +246,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			return CMStrings.replaceAll(thisAbility.name()," ","");
 		return thisAbility.Name();
 	}
-	
+
 	public boolean evokedBy(Ability thisAbility, String thisWord, String secondWord)
 	{
 		for(int i=0;i<thisAbility.triggerStrings().length;i++)
@@ -281,7 +281,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         }
         return null;
     }
-    
+
 	public Ability getToEvoke(MOB mob, Vector commands)
 	{
 		String evokeWord=((String)commands.elementAt(0)).toUpperCase();
@@ -522,6 +522,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(java.util.Arrays.equals(srchC,ALL_CHRS)) return true;
 		if(java.util.Arrays.equals(srchC,toSrchC)) return true;
         if(equalsPunctuationless(srchC,toSrchC)) return true;
+        
         boolean topOnly=false;
         if((srchC.length>1)&&(srchC[0]=='$'))
         {
@@ -596,7 +597,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		return found;
 	}
-	
+
 	public String bumpDotNumber(String srchStr)
 	{
 		Object[] flags=fetchFlags(srchStr);
@@ -607,14 +608,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			return "1."+((String)flags[FLAG_STR]);
 		return (((Integer)flags[FLAG_DOT]).intValue()+1)+"."+((String)flags[FLAG_STR]);
 	}
-	
+
 	public Object[] fetchFlags(String srchStr)
 	{
 		if(srchStr.length()==0) return null;
 		if((srchStr.length()<2)||(srchStr.equalsIgnoreCase("THE")))
 		   return null;
 		Object[] flags=new Object[3];
-		
+
 		boolean allFlag=false;
 		if(srchStr.toUpperCase().startsWith("ALL "))
 		{
@@ -646,7 +647,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		flags[0]=srchStr;
 		flags[1]=new Integer(occurrance);
-		flags[2]=new Boolean(allFlag);
+		flags[2]=Boolean.valueOf(allFlag);
 		return flags;
 	}
 
@@ -654,7 +655,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		Object[] flags=fetchFlags(srchStr);
 		if(flags==null) return null;
-		
+
 		srchStr=(String)flags[FLAG_STR];
 		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
@@ -715,7 +716,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		Object[] flags=fetchFlags(srchStr);
 		if(flags==null) return null;
-		
+
 		srchStr=(String)flags[FLAG_STR];
 		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
@@ -809,7 +810,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         if(number<2) return E.name();
         return E.name()+"."+number;
     }
-    
+
     public String getContextSameName(Object[] list, Environmental E){ return getContextName(CMParms.makeVector(list),E);}
     public String getContextSameName(Vector list, Environmental E)
     {
@@ -819,12 +820,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         if(number<2) return E.name();
         return E.name()+"."+number;
     }
-    
+
 	public Environmental fetchEnvironmental(Environmental[] list, String srchStr, boolean exactOnly)
 	{
 		Object[] flags=fetchFlags(srchStr);
 		if(flags==null) return null;
-		
+
 		srchStr=(String)flags[FLAG_STR];
 		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
@@ -875,11 +876,11 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		Object[] flags=fetchFlags(srchStr);
 		if(flags==null) return null;
-		
+
 		srchStr=(String)flags[FLAG_STR];
 		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
-		
+
 		if(exactOnly)
 		{
 			try
@@ -945,11 +946,11 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	{
 		Object[] flags=fetchFlags(srchStr);
 		if(flags==null) return null;
-		
+
 		srchStr=(String)flags[FLAG_STR];
 		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
 		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
-		
+
 	    Environmental E=null;
 	    Item thisThang=null;
 		if(exactOnly)
@@ -965,7 +966,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				    {
 						thisThang=(Item)E;
 						boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
-	
+
 						if((thisThang.container()==goodLocation)
 						&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
 						&&(thisThang.ID().equalsIgnoreCase(srchStr)
@@ -997,7 +998,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 					{
 					    thisThang=(Item)E;
 						boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
-	
+
 						if((thisThang.container()==goodLocation)
 						&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
 						&&((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
@@ -1010,7 +1011,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				    &&((!allFlag)||((E.displayText()!=null)&&(E.displayText().length()>0))))
 						if((--myOccurrance)<=0)
 							return E;
-					    
+
 				}
 			}
 			catch(java.lang.ArrayIndexOutOfBoundsException x){}
@@ -1065,7 +1066,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				return null;
 			}
             String what=(String)commands.lastElement();
-            
+
             Environmental shopkeeper=fetchEnvironmental(V,what,false);
             if((shopkeeper==null)&&(what.equals("shop")||what.equals("the shop")))
                 for(int v=0;v<V.size();v++)
@@ -1092,7 +1093,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		return shopkeeper;
 	}
-	
+
 	public Vector fetchItemList(Environmental from,
 							    MOB mob,
                                 Item container,
@@ -1103,7 +1104,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		int addendum=1;
 		String addendumStr="";
 		Vector V=new Vector();
-		
+
 		int maxToItem=Integer.MAX_VALUE;
 		if((commands.size()>1)
 		&&(CMath.s_int((String)commands.firstElement())>0))
@@ -1111,7 +1112,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			maxToItem=CMath.s_int((String)commands.firstElement());
 			commands.setElementAt("all",0);
 		}
-		
+
 		String name=CMParms.combine(commands,0);
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(name.toUpperCase().startsWith("ALL.")){ allFlag=true; name="ALL "+name.substring(4);}
@@ -1190,7 +1191,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		return V;
 	}
-	
+
 	public long numPossibleGold(Environmental mine, String itemID)
 	{
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
@@ -1273,8 +1274,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	        return matchAnyCurrencySet(CMParms.combine(V,0));
 		return CMLib.beanCounter().getCurrency(mine);
 	}
-    
-    
+
+
 	public double numPossibleGoldDenomination(Environmental mine, String currency, String itemID)
 	{
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
@@ -1302,7 +1303,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	        return matchAnyDenomination(currency,CMParms.combine(V,0));
 		return 0;
 	}
-	
+
 	public String matchAnyCurrencySet(String itemID)
 	{
 	    Vector V=CMLib.beanCounter().getAllCurrencies();
@@ -1313,7 +1314,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	        for(int v2=0;v2<V2.size();v2++)
 	        {
 	            String s=(String)V2.elementAt(v2);
-	            if(s.toLowerCase().endsWith("(s)")) 
+	            if(s.toLowerCase().endsWith("(s)"))
 	                s=s.substring(0,s.length()-3)+"s";
 	            if(containsString(s,itemID))
 	                return (String)V.elementAt(v);
@@ -1321,7 +1322,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	    }
 	    return null;
 	}
-	
+
 	public double matchAnyDenomination(String currency, String itemID)
 	{
         DVector V2=CMLib.beanCounter().getCurrencySet(currency);
@@ -1331,7 +1332,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         for(int v2=0;v2<V2.size();v2++)
         {
             s=((String)V2.elementAt(v2,2)).toUpperCase();
-            if(s.endsWith("(S)")) 
+            if(s.endsWith("(S)"))
                 s=s.substring(0,s.length()-3)+"S";
             if(containsString(s,itemID))
                 return ((Double)V2.elementAt(v2,1)).doubleValue();
@@ -1342,7 +1343,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         }
 	    return 0.0;
 	}
-	
+
 	public Item possibleRoomGold(MOB seer, Room room, Item container, String itemID)
 	{
 		if(itemID.toUpperCase().trim().startsWith("A PILE OF "))
@@ -1473,8 +1474,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		int containerDex=commands.size()-1;
 		for(int i=commands.size()-2;i>0;i--)
 		    if(((String)commands.elementAt(i)).equalsIgnoreCase("from"))
-		    { 
-		        fromDex=i; 
+		    {
+		        fromDex=i;
 			    containerDex=i+1;
 			    if(((containerDex+1)<commands.size())
 			    &&((((String)commands.elementAt(containerDex)).equalsIgnoreCase("all"))
@@ -1482,9 +1483,9 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			        containerDex++;
 			    break;
 			}
-		
+
 		String possibleContainerID=CMParms.combine(commands,containerDex);
-		    
+
 		boolean allFlag=false;
 		String preWord="";
 		if(possibleContainerID.equalsIgnoreCase("all"))
@@ -1548,7 +1549,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		    if(((String)commands.elementAt(i)).equalsIgnoreCase("from"))
 		    { fromDex=i; containerDex=i+1;  break;}
 		String possibleContainerID=CMParms.combine(commands,containerDex);
-		
+
 		Environmental thisThang=mob.location().fetchFromMOBRoomFavorsItems(mob,null,possibleContainerID,wornReqCode);
 		if((thisThang!=null)
 		&&(thisThang instanceof Item)
@@ -1564,19 +1565,19 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
-    public void promptStatInt(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field) 
+    public void promptStatInt(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field)
     throws IOException
     { promptStatInt(mob,E,null,showNumber,showFlag,FieldDisp,Field);}
     public void promptStatInt(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field)
     throws IOException
     { E.setStat(Field,""+prompt(mob,CMath.s_long(E.getStat(Field)),showNumber,showFlag,FieldDisp,help)); }
-    public void promptStatBool(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field) 
+    public void promptStatBool(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field)
     throws IOException
     { promptStatBool(mob,E,null,showNumber,showFlag,FieldDisp,Field);}
     public void promptStatBool(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field)
     throws IOException
     { E.setStat(Field,""+prompt(mob,CMath.s_bool(E.getStat(Field)),showNumber,showFlag,FieldDisp,help)); }
-    public void promptStatStr(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field) 
+    public void promptStatStr(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field)
     throws IOException
     { promptStatStr(mob,E,null,showNumber,showFlag,FieldDisp,Field,true);}
     public void promptStatStr(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, boolean emptyOK)
@@ -1612,10 +1613,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
     public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp)
     throws IOException
     { return prompt(mob,oldVal,showNumber,showFlag,FieldDisp,null);}
-    
-    
-    
-    public boolean promptToggle(MOB mob, int showNumber, int showFlag, String FieldDisp) 
+
+
+
+    public boolean promptToggle(MOB mob, int showNumber, int showFlag, String FieldDisp)
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return false;
@@ -1625,15 +1626,15 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             return mob.session().confirm("Toggle (y/N)?","N");
         return true;
     }
-    
-    public String prompt(MOB mob, 
-                         String oldVal, 
-                         int showNumber, 
-                         int showFlag, 
-                         String FieldDisp, 
-                         boolean emptyOK, 
-                         boolean rawPrint, 
-                         String help, 
+
+    public String prompt(MOB mob,
+                         String oldVal,
+                         int showNumber,
+                         int showFlag,
+                         String FieldDisp,
+                         boolean emptyOK,
+                         boolean rawPrint,
+                         String help,
                          CMEval eval,
                          Object[] choices)
     throws IOException
@@ -1653,12 +1654,12 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             else
             {
                 boolean noEntry=(newName.trim().length()==0);
-                if(noEntry) 
+                if(noEntry)
                     newName=oldVal;
                 else
-                if((newName.equalsIgnoreCase("null"))&&(emptyOK)) 
+                if((newName.equalsIgnoreCase("null"))&&(emptyOK))
                     newName="";
-                
+
                 if(eval!=null)
                 try
                 {
@@ -1680,7 +1681,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         mob.tell("(no change)");
         return oldVal;
     }
-    
+
     public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp, String help)
     throws IOException
     {
@@ -1705,7 +1706,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         mob.tell("(no change)");
         return oldVal;
     }
-    
+
     public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp, String help)
     throws IOException
     {
@@ -1727,7 +1728,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         mob.tell("(no change)");
         return oldVal;
     }
-    
+
     public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, String help)
     throws IOException
     {
@@ -1749,7 +1750,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         mob.tell("(no change)");
         return oldVal;
     }
-    
+
     public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp, String help)
     throws IOException
     {
@@ -1771,7 +1772,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         mob.tell("(no change)");
         return oldVal;
     }
-    
+
     public String returnTime(long millis, long ticks)
     {
         String avg="";
@@ -1791,7 +1792,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         hours-=(days*24);
         return days+"d "+hours+"h "+minutes+"m "+seconds+"s "+millis+"ms"+avg;
     }
-    
+
 	public Object[] parseMoneyStringSDL(MOB mob, String amount, String correctCurrency)
 	{
 		double b=0;

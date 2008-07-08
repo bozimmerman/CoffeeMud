@@ -61,7 +61,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		Trap T=(Trap)copyOf();
 		T.setInvoker(mob);
 		E.addEffect(T);
-		CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,new Long(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)+(2*getXLEVELLevel(mob))).intValue());
+		CMLib.threads().startTickDown(T,Tickable.TICKID_TRAP_DESTRUCTION,(int)(CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)+(2*getXLEVELLevel(mob))));
 		return T;
 	}
 
@@ -70,7 +70,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		if((!sprung)&&(CMLib.dice().rollPercentage()+(2*getXLEVELLevel(invoker()))>M.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 			CMLib.combat().postDeath(invoker(),M,null);
 	}
-	
+
 	public MOB invoker()
 	{
 		if(super.miscText.length()==0)
@@ -78,13 +78,13 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		MOB M=super.invoker();
 		if((M!=null)&&(M.Name().equals(miscText))) return M;
 		M=CMLib.map().getLoadPlayer(miscText);
-		if(M==null) 
+		if(M==null)
 			miscText="";
 		else
 			invoker=M;
 		return super.invoker();
 	}
-	
+
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
@@ -128,7 +128,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		if(resource == null)
 			resource=CMLib.materials().findMostOfMaterial(mob.location(),RawMaterial.MATERIAL_MITHRIL);
 		int amount=0;
-		if(resource!=null) 
+		if(resource!=null)
 			amount=CMLib.materials().findNumberOfResource(mob.location(),resource.material());
 		if(amount<100)
 		{
@@ -144,7 +144,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		CMLib.materials().destroyResources(mob.location(),100, resource.material(), -1, null);
-		
+
 		CMMsg msg=CMClass.getMsg(mob,trapThis,this,auto?CMMsg.MSG_OK_ACTION:CMMsg.MSG_THIEF_ACT,CMMsg.MASK_ALWAYS|CMMsg.MSG_DELICATE_HANDS_ACT,CMMsg.MSG_OK_ACTION,(auto?trapThis.name()+" begins to glow!":"<S-NAME> attempt(s) to lay a trap here."));
 		if(mob.location().okMessage(mob,msg))
 		{

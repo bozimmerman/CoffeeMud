@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -79,21 +79,21 @@ public class Thief_Bribe extends ThiefSkill
 				return false;
 			}
 		}
-		
+
 		if(((String)commands.elementAt(0)).toUpperCase().startsWith("FOL"))
 		{
 			mob.tell("You can't bribe someone to following you.");
 			return false;
 		}
-		
+
 		int oldProficiency=proficiency();
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		
+
 		double amountRequired=CMLib.beanCounter().getTotalAbsoluteNativeValue(target)
-						+new Long(((100-((mob.charStats().getStat(CharStats.STAT_CHARISMA)+(2*getXLEVELLevel(mob)))*2)))*target.envStats().level()).doubleValue();
+						+((double)((100l-((mob.charStats().getStat(CharStats.STAT_CHARISMA)+(2l*getXLEVELLevel(mob)))*2)))*target.envStats().level());
 
 		String currency=CMLib.beanCounter().getCurrency(target);
 		boolean success=proficiencyCheck(mob,0,auto);

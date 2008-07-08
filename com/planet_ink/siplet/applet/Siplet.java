@@ -6,7 +6,7 @@ import java.awt.*;
 import java.net.*;
 import java.io.*;
 
-/* 
+/*
 Copyright 2000-2008 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -21,11 +21,11 @@ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.
 */
-public class Siplet extends Applet 
+public class Siplet extends Applet
 {
     public final static boolean debugDataOut=false;
-    
-    
+
+
     public final static long serialVersionUID=6;
     public static final float VERSION_MAJOR=(float)2.0;
     public static final long  VERSION_MINOR=5;
@@ -38,12 +38,12 @@ public class Siplet extends Applet
     protected DataOutputStream out;
     protected boolean connected=false;
     protected TelnetFilter Telnet=new TelnetFilter(this);
-    
+
     protected StringBuffer buffer;
     protected int sillyCounter=0;
-    
 
-    public void init() 
+
+    public void init()
     {
         buffer = new StringBuffer();
     }
@@ -52,29 +52,29 @@ public class Siplet extends Applet
     {
         return "Siplet V"+VERSION_MAJOR+"."+VERSION_MINOR+" (C)2005-2008 Bo Zimmerman";
     }
-    
-    public void start() 
+
+    public void start()
     {
         //addItem("starting siplet "+VERSION_MAJOR+"."+VERSION_MINOR+" ");
     }
 
-    public void stop() 
+    public void stop()
     {
         //addItem("!stopped siplet!");
     }
 
-    public void destroy() 
+    public void destroy()
     {
     }
 
-    public void addItem(String newWord) 
+    public void addItem(String newWord)
     {
         System.out.println(newWord);
         buffer.append(newWord);
         repaint();
     }
 
-    public void paint(Graphics g) 
+    public void paint(Graphics g)
     {
         g.drawRect(0, 0, getSize().width - 1, getSize().height - 1);
         g.drawString(buffer.toString(), 5, 15);
@@ -134,7 +134,7 @@ public class Siplet extends Applet
         {
             try
             {
-                if(sock.isClosed()) 
+                if(sock.isClosed())
                     disconnectFromURL();
                 else
                 if(!sock.isConnected())
@@ -153,7 +153,7 @@ public class Siplet extends Applet
     }
     public String getJScriptCommands()
     { return Telnet.getEnquedJScript();}
-    
+
     public String getURLData()
     {
         synchronized(buf)
@@ -168,7 +168,7 @@ public class Siplet extends Applet
             if(Telnet.isUIonHold()) return "";
             if(endAt<buf.length())
             {
-                data=buf.substring(0,endAt).toString();
+                data=buf.substring(0,endAt);
                 buf.delete(0,endAt);
             }
             else
@@ -180,10 +180,10 @@ public class Siplet extends Applet
             return data;
         }
     }
-    
-    
+
+
     public boolean isConnectedToURL(){return connected;}
-    
+
     public void readURLData()
     {
         try
@@ -217,7 +217,7 @@ public class Siplet extends Applet
                     }
                 }
             }
-            if(sock.isClosed()) 
+            if(sock.isClosed())
                 disconnectFromURL();
             else
             if(!sock.isConnected())

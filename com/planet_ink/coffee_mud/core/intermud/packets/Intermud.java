@@ -56,7 +56,7 @@ import java.util.Vector;
  * @see com.planet_ink.coffee_mud.core.intermud.packets.ImudServices
  * @see com.planet_ink.coffee_mud.core.intermud.persist.PersistentPeer
  */
-public class Intermud implements Runnable, Persistent, Serializable 
+public class Intermud implements Runnable, Persistent, Serializable
 {
 	public static final long serialVersionUID=0;
     static private Intermud thread = null;
@@ -162,7 +162,7 @@ public class Intermud implements Runnable, Persistent, Serializable
     public Vector              name_servers;
     public int                 password;
 
-    private Intermud(ImudServices imud, PersistentPeer p) 
+    private Intermud(ImudServices imud, PersistentPeer p)
     {
         super();
         intermud = imud;
@@ -273,10 +273,10 @@ public class Intermud implements Runnable, Persistent, Serializable
                     input_thread.setName("Intermud");
                     input_thread.start();
                     Enumeration e = intermud.getChannels();
-    
+
                     while( e.hasMoreElements() ) {
                         String chan = (String)e.nextElement();
-    
+
     					send("({\"channel-listen\",5,\"" + intermud.getMudName() + "\",0,\"" +
                              n.name + "\",0,\"" + chan + "\",1,})");
                     }
@@ -289,7 +289,7 @@ public class Intermud implements Runnable, Persistent, Serializable
             }
         }
         catch( Exception e ) {
-            try { Thread.sleep(attempts * 100); }
+            try { Thread.sleep(((long)attempts) * 100l); }
             catch( InterruptedException ignore )
 			{
 				if(shutdown)
@@ -597,19 +597,19 @@ public class Intermud implements Runnable, Persistent, Serializable
     }
 
     // Send a formatted mud mode packet to the router
-    private void send(String str) 
+    private void send(String str)
     {
         if(CMSecurity.isDebugging("I3"))
             Log.sysOut("Intermud","Sending: "+str);
-        try 
+        try
         {
             // Remove non-printables, as required by the I3 specification
             // (Contributed by David Green <green@couchpotato.net>)
             byte[] packet = str.getBytes("ISO-8859-1");
-            for (int i = 0; i < packet.length; i++) 
+            for (int i = 0; i < packet.length; i++)
             {
                 // 160 is a non-breaking space. We'll consider that "printable".
-                if (packet[i] < 32 || (packet[i] >= 127 && packet[i] <= 159)) 
+                if ( (packet[i]&0xFF) < 32 || ((packet[i]&0xFF) >= 127 && (packet[i]&0xFF) <= 159))
                 {
                     // Java uses it as a replacement character,
                     // so it's probably ok for us too.

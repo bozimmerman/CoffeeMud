@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,10 +40,10 @@ public class Prop_Doppleganger extends Property
     private int maxLevel=Integer.MAX_VALUE;
     private int minLevel=Integer.MIN_VALUE;
     protected Environmental lastOwner=null;
-    
+
 	public String accountForYourself()
 	{ return "Level Changer";	}
-	
+
     public void setMiscText(String text)
     {
         super.setMiscText(text);
@@ -73,7 +73,7 @@ public class Prop_Doppleganger extends Property
     	}
     	super.executeMsg(myHost,msg);
     }
-    
+
     public boolean qualifies(MOB mob, Room R)
     {
         if((mob==affected)||(mob==null)) return false;
@@ -151,16 +151,5 @@ public class Prop_Doppleganger extends Property
 			}
 		}
 		return super.okMessage(myHost,msg);
-	}
-
-	public boolean tick(Tickable ticking, int tickID)
-	{
-		/*if((ticking==affected)
-		&&(tickID==Tickable.TICKID_MOB)
-		&&(affected instanceof MOB))
-			lastLevelChangers=true;
-        */
-		return super.tick(ticking,tickID);
-        
 	}
 }

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,7 +42,7 @@ public class Skill_CollectBounty extends StdSkill
 	public String[] triggerStrings(){return triggerStrings;}
     public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
 	public int usageType(){return USAGE_MANA;}
-	
+
 	public Vector getWarrantsOf(MOB target, Room R)
 	{
 	    return getWarrantsOf(target,CMLib.law().getLegalObject(R));
@@ -64,7 +64,7 @@ public class Skill_CollectBounty extends StdSkill
 		}
 		return warrants;
 	}
-	
+
 	public MOB findElligibleOfficer(Area myArea, Area legalA)
 	{
         LegalBehavior B=null;
@@ -95,7 +95,7 @@ public class Skill_CollectBounty extends StdSkill
 		}
 		return null;
 	}
-	
+
 	public MOB getJudgeIfHere(MOB mob, MOB target, Room R)
 	{
         LegalBehavior B=null;
@@ -110,8 +110,8 @@ public class Skill_CollectBounty extends StdSkill
 			}
 		return null;
 	}
-	
-	
+
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -122,15 +122,15 @@ public class Skill_CollectBounty extends StdSkill
 		    mob.tell("You are already collecting a bounty.  Be patient.");
 		    return false;
 		}
-		
+
 		MOB judge=getJudgeIfHere(mob,target,R);
-			
+
 		if(judge==null)
 		{
 		    mob.tell("You must present "+target.name()+" to the judge.");
 		    return false;
 		}
-			
+
 		Vector warrants=getWarrantsOf(target,R);
 		if(warrants.size()==0)
 		{
@@ -151,7 +151,7 @@ public class Skill_CollectBounty extends StdSkill
 		        return false;
 		    }
 		}
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -189,7 +189,7 @@ public class Skill_CollectBounty extends StdSkill
 				}
 				mob.location().show(judge,mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> pay(s) <T-NAMESELF> the bounty of "+CMLib.beanCounter().nameCurrencyShort(judge,gold)+" on "+target.Name()+".");
 				String currency=CMLib.beanCounter().getCurrency(judge);
-				CMLib.beanCounter().giveSomeoneMoney(judge,mob,currency,new Integer(gold).doubleValue());
+				CMLib.beanCounter().giveSomeoneMoney(judge,mob,currency,(double)gold);
 			}
 		}
 		else
@@ -199,4 +199,5 @@ public class Skill_CollectBounty extends StdSkill
 	}
 
 }
+
 

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,7 +37,7 @@ public class StdCoins extends StdItem implements Coins
 	public int value(){	return envStats().ability();}
 	double denomination=1.0;
 	String currency="";
-	
+
 	public StdCoins()
 	{
 		super();
@@ -58,7 +58,7 @@ public class StdCoins extends StdItem implements Coins
 	{
         return CMLib.beanCounter().getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins())+((getNumberOfCoins()==1)?" lies here.":" lie here.");
 	}
-	
+
 	public void setDynamicMaterial()
 	{
 	    if((CMLib.english().containsString(name(),"note"))
@@ -96,7 +96,7 @@ public class StdCoins extends StdItem implements Coins
 	    currency=named;
 	    setMiscText(named+"/"+getDenomination());
 	}
-	
+
 	public void setMiscText(String text)
 	{
 	    super.setMiscText(text);
@@ -117,7 +117,7 @@ public class StdCoins extends StdItem implements Coins
 	{
 		if(((material&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
 		&&((material&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER))
-			baseEnvStats.setWeight((int)Math.round((new Integer(baseEnvStats().ability()).doubleValue()/100.0)));
+			baseEnvStats.setWeight((int)Math.round((baseEnvStats().ability()/100.0)));
 		baseEnvStats.copyInto(envStats);
 		// import not to sup this, otherwise 'ability' makes it magical!
 		for(int a=0;a<numEffects();a++)
@@ -126,10 +126,10 @@ public class StdCoins extends StdItem implements Coins
             if(A!=null)	A.affectEnvStats(this,envStats);
 		}
 	}
-	
+
 	public boolean putCoinsBack()
 	{
-	    if(amDestroyed()) 
+	    if(amDestroyed())
 	        return false;
 		Coins alternative=null;
 		if(owner() instanceof Room)

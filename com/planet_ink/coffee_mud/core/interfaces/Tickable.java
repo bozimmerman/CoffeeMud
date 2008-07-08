@@ -13,7 +13,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +30,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 /**
  * This interface is implemented by any object which wishes to get periodic thread time from
- * the threads engine.  Almost all CoffeeMud objects implement this interface 
+ * the threads engine.  Almost all CoffeeMud objects implement this interface
  * @author Bo Zimmerman
  *
  */
@@ -46,7 +46,7 @@ public interface Tickable extends CMObject
      * its tick method is being called. The statis is defined,
      * at least in part, by constants in this interface STATUS_*.
      * STATUS_NOT should be returned when the objects tick method
-     * is not currently in execution.  It should never return 
+     * is not currently in execution.  It should never return
      * STATUS_NOT when the objects tick method is in execution.
      * @see Tickable#tick(Tickable, int)
      * @return the numeric status of this object
@@ -57,7 +57,7 @@ public interface Tickable extends CMObject
      * this is the method which is called periodically by the threading engine.  How often it
      * is called depends on the parameters passed to the threadding engine when it is submitted
      * for thread access.  Typically the period is once per TIME_TICK period, but that is
-     * determined when the object is submitted to the thread engine.  
+     * determined when the object is submitted to the thread engine.
      * @see Tickable
      * @see com.planet_ink.coffee_mud.core.threads.ServiceEngine
      * @see TickableGroup
@@ -66,15 +66,15 @@ public interface Tickable extends CMObject
      * @return true always, unless this object no longer wishes to ever tick again, in which case false
      */
     public boolean tick(Tickable ticking, int tickID);
-    
+
     /** the number of miliseconds for each tick/round.*/
     public final static long TIME_TICK=4000;
     /** the number of milliseconds for each game-mud-hour */
     public final static long TIME_MILIS_PER_MUDHOUR=10*60000;
     /** the number of game/rounds for each real minute of time */
-    public final static long TICKS_PER_RLMIN=(int)Math.round(60000.0/new Long(TIME_TICK).doubleValue());
+    public final static long TICKS_PER_RLMIN=(int)Math.round(60000.0/(double)TIME_TICK);
     /** TIME_TICK as a double */
-    public final static double TIME_TICK_DOUBLE=new Long(TIME_TICK).doubleValue();
+    public final static double TIME_TICK_DOUBLE=(double)TIME_TICK;
 
     /** a mask for tickids */
     public final static int TICKMASK_SOLITARY=65536;

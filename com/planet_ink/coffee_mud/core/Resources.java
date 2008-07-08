@@ -17,7 +17,7 @@ import java.util.*;
 
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -39,9 +39,9 @@ public class Resources
     private static boolean compress=false;
     public static Resources instance(){return inst;}
     public static Resources newResources(){ return new Resources();}
-	
+
 	private DVector resources=new DVector(3);
-    
+
     public static void clearResources(){inst._clearResources();}
     public static void removeResource(String ID){ inst._removeResource(ID);}
     public static Vector findResourceKeys(String srch){return inst._findResourceKeys(srch);}
@@ -53,7 +53,7 @@ public class Resources
     public static boolean saveFileResource(String filename){return inst._saveFileResource(filename);}
     public static boolean saveFileResource(String filename, MOB whom, StringBuffer myRsc){return inst._saveFileResource(filename,whom,myRsc);}
     public static boolean findRemoveProperty(CMFile F, String match){return inst._findRemoveProperty(F,match);}
-    
+
     public static String getLineMarker(StringBuffer buf)
     {
         for(int i=0;i<buf.length()-1;i++)
@@ -100,13 +100,13 @@ public class Resources
         V.trimToSize();
         return V;
     }
-    
+
     public static String buildResourcePath(String path)
     {
         if((path==null)||(path.length()==0)) return "resources/";
         return "resources/"+path+"/";
     }
-    
+
     public static void updateMultiList(String filename, Hashtable lists)
     {
         StringBuffer str=new StringBuffer("");
@@ -122,7 +122,7 @@ public class Resources
         }
         new CMFile(filename,null,false).saveText(str);
     }
-    
+
     public static Hashtable getMultiLists(String filename)
     {
         Hashtable oldH=new Hashtable();
@@ -152,17 +152,17 @@ public class Resources
         }
         return oldH;
     }
-    
+
     public static String makeFileResourceName(String filename)
     {
         return "resources/"+filename;
     }
-    
+
     public static void setCompression(boolean truefalse)
     {   compress=truefalse;}
-    
+
     public static boolean _compressed(){return compress;}
-    
+
 	public void _clearResources()
 	{
 		synchronized(resources)
@@ -170,7 +170,7 @@ public class Resources
 			resources.clear();
 		}
 	}
-    
+
 	public Vector _findResourceKeys(String srch)
 	{
 		synchronized(resources)
@@ -185,7 +185,7 @@ public class Resources
 			return V;
 		}
 	}
-	
+
 	private Object _fetchResource(int x)
 	{
 		synchronized(resources)
@@ -201,7 +201,7 @@ public class Resources
 			return null;
 		}
 	}
-	
+
     public int _getResourceIndex(String ID)
     {
         synchronized(resources)
@@ -243,7 +243,7 @@ public class Resources
 			return CMLib.encoder().compressString(((StringBuffer)obj).toString());
 		return obj;
 	}
-	
+
 	public void _submitResource(String ID, Object obj)
 	{
 		synchronized(resources)
@@ -294,7 +294,7 @@ public class Resources
             }
         }
 	}
-	
+
 	public void _updateResource(String ID, Object obj)
 	{
 		synchronized(resources)
@@ -306,7 +306,7 @@ public class Resources
             resources.setElementAt(index,3,new Boolean(prepared!=obj));
 		}
 	}
-	
+
 	public void _removeResource(String ID)
 	{
 		synchronized(resources)
@@ -318,7 +318,7 @@ public class Resources
 			}catch(ArrayIndexOutOfBoundsException e){}
 		}
 	}
-	
+
 	public boolean _isFileResource(String filename)
 	{
 	    if(_getResource(filename)!=null) return true;
@@ -338,15 +338,15 @@ public class Resources
 			if(rsc instanceof String)
 				return new StringBuffer((String)rsc);
 		}
-		
+
 		StringBuffer buf=new CMFile(makeFileResourceName(filename),null,reportErrors).text();
 		_submitResource(filename,buf);
 		return buf;
 	}
-	
+
     public boolean _saveFileResource(String filename)
     {return _saveFileResource(filename,null,_getFileResource(CMFile.vfsifyFilename(filename),false));}
-    
+
 	public boolean _saveFileResource(String filename, MOB whom, StringBuffer myRsc)
 	{
         boolean vfsFile=filename.trim().startsWith("::");
@@ -357,7 +357,7 @@ public class Resources
         filename=(vfsFile?"::":localFile?"//":"")+filename;
         return new CMFile(filename,whom,false).saveRaw(myRsc);
 	}
-	
+
     public boolean _findRemoveProperty(CMFile F, String match)
     {
         boolean removed=false;
@@ -375,7 +375,7 @@ public class Resources
                 int ze1=text.indexOf("\n",x);
                 int ze2=text.indexOf("\r",x);
                 int ze=ze2+1;
-                if((ze1>zb)&&(ze1==ze2+1)) ze=ze1+1; 
+                if((ze1>zb)&&(ze1==ze2+1)) ze=ze1+1;
                 else
                 if((ze2<0)&&(ze1>0)) ze=ze1+1;
                 if(ze<=0) ze=text.length();

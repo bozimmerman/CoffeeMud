@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,8 +43,8 @@ public class Consider extends StdCommand
 		if((mob1==null)||(mob2==null)) return 0;
 		int mob2Armor=mob2.adjustedArmor();
 		int mob1Armor=mob1.adjustedArmor();
-		double mob1Attack=new Integer(mob1.adjustedAttackBonus(mob2)).doubleValue();
-        double mob2Attack=new Integer(mob2.adjustedAttackBonus(mob1)).doubleValue();
+		double mob1Attack=(double)mob1.adjustedAttackBonus(mob2);
+        double mob2Attack=(double)mob2.adjustedAttackBonus(mob1);
 		int mob2Dmg=mob2.envStats().damage();
 		int mob1Dmg=mob1.envStats().damage();
 		int mob2Hp=mob2.baseState().getHitPoints();
@@ -99,7 +99,7 @@ public class Consider extends StdCommand
 			int relDiff=relativeLevelDiff(targetMOB,mob);
 			int lvlDiff=(target.envStats().level()-mob.envStats().level());
 			int realDiff=relDiff;//(relDiff+lvlDiff)/2;
-	
+
 			int theDiff=2;
 			if(mob.envStats().level()>20) theDiff=3;
 			if(mob.envStats().level()>40) theDiff=4;
@@ -137,7 +137,7 @@ public class Consider extends StdCommand
 				else
 					levelMsg=targetMOB.charStats().HeShe()+" is superior to you";
 			}
-			
+
 			int levelDiff=Math.abs(realDiff);
 			if(levelDiff<theDiff)
 			{
@@ -194,7 +194,7 @@ public class Consider extends StdCommand
 			else
 				withWhat.append(" or your "+A.name()+" skill");
 		}
-		
+
 		if(withWhat.length()>0)
 			mob.tell(withWhat.toString()+".");
 		else
@@ -206,5 +206,5 @@ public class Consider extends StdCommand
     public double actionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
 	public boolean canBeOrdered(){return true;}
 
-	
+
 }

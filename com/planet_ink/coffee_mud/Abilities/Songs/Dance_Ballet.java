@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,6 +43,6 @@ public class Dance_Ballet extends Dance
 		super.affectCharStats(affected,affectableStats);
 		if(invoker==null) return;
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,
-				Math.round(affectableStats.getStat(CharStats.STAT_DEXTERITY)+(super.adjustedLevel(invoker(),0)/3)));
+				(affectableStats.getStat(CharStats.STAT_DEXTERITY)+(super.adjustedLevel(invoker(),0)/3)));
 	}
 }

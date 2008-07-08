@@ -31,7 +31,7 @@ import java.io.IOException;
  *  support for virtual directory remappings
  */
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -50,14 +50,14 @@ public class FileGrabber
 {
 	private static char sep=java.io.File.separatorChar;
 	private static String sepStr = java.io.File.separator;
-	
+
 //	protected Vector permittedDirectories = new Vector();
 	private Hashtable virtualDirectories = new Hashtable();
-	
+
 //	protected String baseDir = null;
-	
+
 	private HTTPserver webServer = null;
-	
+
 	public FileGrabber(HTTPserver a_webServer)
 	{
 		webServer = a_webServer;
@@ -75,7 +75,7 @@ public class FileGrabber
 		}
 		return fn;
 	}
-	
+
 	public Hashtable getVirtualDirectories()
 	{
 		return virtualDirectories;
@@ -87,12 +87,12 @@ public class FileGrabber
 	{
         virtPath=virtPath.replace(File.separatorChar,'/');
 		if (!virtPath.endsWith("/")) virtPath += "/";
-	
+
 		String cn;
 		try
 		{
 			CMFile f = new CMFile(actPath,null,false);
-            
+
 			if (!f.exists())
 				throw new IOException("path '" + f.getVFSPathAndName() + "' does not exist!");
 
@@ -100,7 +100,7 @@ public class FileGrabber
 				throw new IOException("path '" + f.getVFSPathAndName() + "' is not a directory!");
 
 			cn = CMFile.vfsifyFilename(f.getCanonicalPath());
-		
+
 			if (!cn.endsWith(sepStr))
 				cn += sep;
 		}
@@ -108,31 +108,31 @@ public class FileGrabber
 		{
 			Log.errOut(webServer.getName(),e);
 			return false;
-		}	
+		}
 
 		cn=cn.replace(File.separatorChar,'/');
 		virtualDirectories.put( virtPath, cn );
 		return true;
 	}
-	
+
 
 
 	public boolean setBaseDirectory(String basePath)
 	{
 		return addPermittedDirectory("/",fixDirName(basePath));
 	}
-	
+
 	public boolean addVirtualDirectory(String virtPath, String actPath)
 	{
 		return addPermittedDirectory(virtPath,fixDirName(actPath));
 	}
-	
+
 	public GrabbedFile grabFile(String fn)
 	{
 		GrabbedFile gf = new GrabbedFile();
         fn=fn.replace(File.separatorChar,'/');
 		if (!fn.startsWith("/")) fn = '/' + fn;
-		
+
 		String baseDir = "";
 		String fn2="";
 		try
@@ -148,7 +148,7 @@ public class FileGrabber
 				{
                     x=searchPath.lastIndexOf('/',searchPath.lastIndexOf('/')-1);
                     ssp=searchPath.substring(x);
-                    if(fn2.startsWith("/")&&(ssp.endsWith("/"))) 
+                    if(fn2.startsWith("/")&&(ssp.endsWith("/")))
     					fn2 = searchPath.substring(x) + fn2.substring(1);
                     else
                         fn2 = searchPath.substring(x) + fn2;
@@ -175,7 +175,7 @@ public class FileGrabber
 			{
                 String fullFilename=null;
                 if(filename.startsWith("/")&&baseDir.endsWith("/"))
-                    fullFilename = new String(baseDir.substring(0,baseDir.length()-1) + filename);
+                    fullFilename = ( baseDir.substring( 0, baseDir.length() - 1 ) + filename );
                 else
                     fullFilename=baseDir+filename;
                 if(fullFilename.endsWith("/")) fullFilename=fullFilename.substring(0,fullFilename.length()-1);
@@ -187,13 +187,13 @@ public class FileGrabber
 				gf.state = GrabbedFile.STATE_BAD_FILENAME;
 				return gf;
 			}
-			
+
 			if (gf.file == null)	//?
 			{
 				gf.state = GrabbedFile.STATE_NOT_FOUND;
 				return gf;
 			}
-			
+
 
 
 			String canonName = baseDir+CMFile.vfsifyFilename(gf.file.getCanonicalPath());
@@ -216,21 +216,21 @@ public class FileGrabber
 				gf.state = GrabbedFile.STATE_NOT_FOUND;
 				return gf;
 			}
-	
-			
-			
+
+
+
 			if (gf.file.isDirectory())
 				gf.state = GrabbedFile.STATE_IS_DIRECTORY;
 			else
 				gf.state = GrabbedFile.STATE_OK;
-			
+
 		}
 		catch (Exception e)
 		{
 			gf.file = null;
 			gf.state = GrabbedFile.STATE_INTERNAL_ERROR;
 		}
-			
+
 		return gf;
 	}
 }

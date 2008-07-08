@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -146,7 +146,7 @@ public class Emoter extends ActiveTicker
 				if(thisEmote.length()>0)
 				{
 					thisEmoteV.addElement(new Integer(emoteType));
-					thisEmoteV.addElement(new Boolean(broadcast));
+					thisEmoteV.addElement(Boolean.valueOf(broadcast));
 					thisEmoteV.addElement(thisEmote);
 					if(emoteType==EMOTE_SMELL)
 					{
@@ -197,10 +197,10 @@ public class Emoter extends ActiveTicker
 			}
 		}
 	}
-	
-    protected void emoteHere(Room room, 
-	        			   MOB emoter, 
-	        			   Vector emote, 
+
+    protected void emoteHere(Room room,
+	        			   MOB emoter,
+	        			   Vector emote,
 	        			   MOB emoteTo,
 	        			   boolean Wrapper)
 	{
@@ -220,7 +220,7 @@ public class Emoter extends ActiveTicker
         {
             Social S=CMLib.socials().fetchSocial(str,true);
             if(S==null) S=CMLib.socials().fetchSocial(str,false);
-            if(S!=null) 
+            if(S!=null)
             {
                 S.invoke(emoter,CMParms.parse(str),emoteTo,false);
                 return;
@@ -344,4 +344,5 @@ public class Emoter extends ActiveTicker
 		return true;
 	}
 }
+
 

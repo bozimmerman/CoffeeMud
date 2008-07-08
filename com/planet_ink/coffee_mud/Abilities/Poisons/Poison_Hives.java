@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -52,7 +52,13 @@ public class Poison_Hives extends Poison
 	protected String POISON_CAST(){return "^F^<FIGHT^><S-NAME> poison(s) <T-NAMESELF>!^</FIGHT^>^?";}
 	protected String POISON_FAIL(){return "<S-NAME> attempt(s) to poison <T-NAMESELF>, but fail(s).";}
 	protected int POISON_DAMAGE(){return 0;}
-    protected int poisonTick=0;
+
+    public Poison_Hives()
+    {
+        super();
+
+        poisonTick = 0;
+    }
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -81,4 +87,5 @@ public class Poison_Hives extends Poison
 			affectableStats.setStat(CharStats.STAT_DEXTERITY,1);
 	}
 }
+
 

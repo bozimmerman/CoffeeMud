@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import org.mozilla.javascript.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,7 +48,7 @@ public class JRun extends StdCommand
         }
         commands.removeElementAt(0);
 
-        String fn = new String ( (String)commands.elementAt(0) );
+        String fn = (String)commands.elementAt(0);
         StringBuffer ft = new CMFile(fn,mob,true).text();
         if((ft==null)||(ft.length()==0))
         {
@@ -61,7 +61,7 @@ public class JRun extends StdCommand
         {
             JScriptWindow scope = new JScriptWindow(mob,commands);
             cx.initStandardObjects(scope);
-            scope.defineFunctionProperties(JScriptWindow.functions, 
+            scope.defineFunctionProperties(JScriptWindow.functions,
                                            JScriptWindow.class,
                                            ScriptableObject.DONTENUM);
             cx.evaluateString(scope, ft.toString(),"<cmd>", 1, null);
@@ -73,7 +73,7 @@ public class JRun extends StdCommand
         Context.exit();
         return false;
     }
-    
+
     protected static class JScriptWindow extends ScriptableObject
     {
         public String getClassName(){ return "JScriptWindow";}
@@ -93,11 +93,11 @@ public class JRun extends StdCommand
         public JScriptWindow(MOB executor, Vector parms){s=executor; v=parms;}
         public String toJavaString(Object O){return Context.toString(O);}
     }
-    
-    
+
+
     public boolean canBeOrdered(){return false;}
     public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"JSCRIPTS");}
 
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-    
+
 }

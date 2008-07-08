@@ -74,7 +74,7 @@ public class MOBloader
                 state.setMovement(CMath.s_int(DBConnections.getRes(R,"CMMOVE")));
                 mob.setDescription(DBConnections.getRes(R,"CMDESC"));
                 int align=(CMath.s_int(DBConnections.getRes(R,"CMALIG")));
-                if((CMLib.factions().getFaction(CMLib.factions().AlignID())!=null)&&(align>=0)) 
+                if((CMLib.factions().getFaction(CMLib.factions().AlignID())!=null)&&(align>=0))
                     CMLib.factions().setAlignmentOldRange(mob,align);
                 mob.setExperience(CMath.s_int(DBConnections.getRes(R,"CMEXPE")));
                 //mob.setExpNextLevel(CMath.s_int(DBConnections.getRes(R,"CMEXLV")));
@@ -123,7 +123,7 @@ public class MOBloader
                     mob.delExpertise(mob.fetchExpertise(0));
                 for(int v=0;v<V9.size();v++)
                     mob.addExpertise((String)V9.elementAt(v));
-                if(pstats.getBirthday()==null) 
+                if(pstats.getBirthday()==null)
                     stats.setStat(CharStats.STAT_AGE,
                         pstats.initializeBirthday((int)Math.round(CMath.div(mob.getAgeHours(),60.0)),stats.getMyRace()));
                 mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
@@ -226,7 +226,7 @@ public class MOBloader
                             Log.errOut("MOB","Couldn't find scripting engine!");
                         else
                         {
-                            
+
                             String xml=DBConnections.getRes(R,"CMABTX");
                             if(xml.length()>0)
                                 CMLib.coffeeMaker().setGenScripts(mob,CMLib.xml().parseAllXML(xml),true);
@@ -365,7 +365,7 @@ public class MOBloader
                         x=lvl.indexOf(";");
                     }
                     if(lvl.length()>0) level+=CMath.s_int(lvl);
-                    thisUser.addElement(new Integer(level).toString());
+                    thisUser.addElement(Integer.toString(level));
                     thisUser.addElement(DBConnections.getRes(R,"CMAGEH"));
                     MOB M=CMLib.map().getPlayer((String)thisUser.firstElement());
                     if((M!=null)&&(M.lastTickedDateTime()>0))
@@ -529,7 +529,7 @@ public class MOBloader
                     if((newMOB.getStartRoom()!=null)
                     &&(CMLib.law().doesHavePriviledgesHere(mob,newMOB.getStartRoom()))
                     &&((newMOB.location()==null)
-                            ||(!CMLib.law().doesHavePriviledgesHere(mob,newMOB.location())))) 
+                            ||(!CMLib.law().doesHavePriviledgesHere(mob,newMOB.location()))))
                         newMOB.setLocation(newMOB.getStartRoom());
                     if(bringToLife)
                     {
@@ -746,9 +746,9 @@ public class MOBloader
             for(int c=0;c<contents.size();c++)
                 addFollowerDependent((Environmental)contents.elementAt(c),list,"@"+myCode+"C");
         }
-        
+
     }
-    
+
     public void DBUpdateFollowers(MOB mob)
     {
         if((mob==null)||(mob.Name().length()==0)) return;
@@ -859,7 +859,7 @@ public class MOBloader
             +")";
             V.addElement(str);
         }
-        
+
         for(int v=0;v<V.size();v++)
             DB.update((String)V.elementAt(v));
     }

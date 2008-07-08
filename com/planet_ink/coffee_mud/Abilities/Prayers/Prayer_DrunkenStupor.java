@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -69,7 +69,7 @@ public class Prayer_DrunkenStupor extends Prayer
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,Math.round(affectableStats.getStat(CharStats.STAT_DEXTERITY)-3));
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,(affectableStats.getStat(CharStats.STAT_DEXTERITY)-3));
 	}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -91,7 +91,7 @@ public class Prayer_DrunkenStupor extends Prayer
 		super.executeMsg(myHost, msg);
 	}
 
-	
+
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
@@ -100,7 +100,7 @@ public class Prayer_DrunkenStupor extends Prayer
 		Ability A=getInebriation();
 		if((A==null)||(!A.okMessage(myHost, msg)))
 			return false;
-		
+
 		if(msg.source()!=affected)
 			return true;
 		if(msg.source().location()==null)

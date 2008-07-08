@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,15 +44,7 @@ public class Thief_TapRoom extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 	public boolean norecurse=false;
-	
-	public boolean tick(Tickable ticking, int tickID)
-	{
-		if(tickID==Tickable.TICKID_MOB)
-		{
-		}
-		return super.tick(ticking,tickID);
-	}
-	
+
 	public boolean isMyPair(Vector myParsedTextV, Item I)
 	{
 		Thief_TapRoom A=null;
@@ -71,7 +63,7 @@ public class Thief_TapRoom extends ThiefSkill
 		}
 		return false;
 	}
-	
+
 	public Item getMyPair()
 	{
 		Vector p=getParsedText();
@@ -82,7 +74,7 @@ public class Thief_TapRoom extends ThiefSkill
 		for(int i=0;i<R.numItems();i++)
 		{
 			I=R.fetchItem(i);
-			if(isMyPair(p,I)) 
+			if(isMyPair(p,I))
 				return I;
 		}
 		MOB M=null;
@@ -99,7 +91,7 @@ public class Thief_TapRoom extends ThiefSkill
 		}
 		return null;
 	}
-	
+
 	public void unInvoke()
 	{
 		if(canBeUninvoked)
@@ -121,7 +113,7 @@ public class Thief_TapRoom extends ThiefSkill
 		else
 			super.unInvoke();
 	}
-	
+
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 		if(!super.okMessage(host,msg)) return false;
@@ -150,9 +142,9 @@ public class Thief_TapRoom extends ThiefSkill
 		}
 		return true;
 	}
-	
+
 	public int maxRange(){return(invoker()==null)?50:adjustedLevel(invoker(),0);}
-	
+
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		synchronized(this)
@@ -257,7 +249,7 @@ public class Thief_TapRoom extends ThiefSkill
 			norecurse=false;
 		}
 	}
-	
+
 	public Item[] getCups(MOB mob)
 	{
 		Item I=null;
@@ -286,7 +278,7 @@ public class Thief_TapRoom extends ThiefSkill
 			return null;
 		return returnI;
 	}
-	
+
 	public Vector getAvailableLine(MOB mob)
 	{
 		Item I=null;
@@ -304,7 +296,7 @@ public class Thief_TapRoom extends ThiefSkill
 		}
 		return available;
 	}
-	
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -312,9 +304,9 @@ public class Thief_TapRoom extends ThiefSkill
 		&&((!(affected instanceof Drink))||(!text().startsWith("DST;"))))
 			affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_HIDDEN);
 	}
-	
+
 	public Vector getParsedText(){return CMParms.parseSemicolons(text(),false);}
-	
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
@@ -325,7 +317,7 @@ public class Thief_TapRoom extends ThiefSkill
 			mob.tell(mob,null,null,"Not while <S-NAME> <S-IS-ARE> fighting.");
 			return false;
 		}
-		
+
 		boolean abort=false;
 		Item[] cups=getCups(mob);
 		if((!auto)&&(cups==null))
@@ -340,7 +332,7 @@ public class Thief_TapRoom extends ThiefSkill
 			abort=true;
 		}
 		if(abort) return false;
-		
+
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
@@ -350,7 +342,7 @@ public class Thief_TapRoom extends ThiefSkill
 		{
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,target,asLevel,0);
-			
+
 			String code=""+System.currentTimeMillis()+Math.random();
 			Thief_TapRoom TR=(Thief_TapRoom)copyOf();
 			int level=1+(adjustedLevel(mob,asLevel)/5)+(getXLEVELLevel(mob)*5);

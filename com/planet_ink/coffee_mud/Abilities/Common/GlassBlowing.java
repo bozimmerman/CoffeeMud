@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -235,7 +235,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 			if(misctype.equalsIgnoreCase("LOCK"))
 			{
 				((Container)building).setLidsNLocks(true,false,true,false);
-				((Container)building).setKeyName(new Double(Math.random()).toString());
+				((Container)building).setKeyName(Double.toString(Math.random()));
 			}
             ((Container)building).setContainTypes(Container.CONTAIN_ANYTHING);
 		}

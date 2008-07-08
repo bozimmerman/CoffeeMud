@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -80,11 +80,6 @@ public class SpecialistMage extends Mage
 	{
 		String opposed=CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[opposed()>>5].replace('_',' '));
 		return "Unable to cast "+opposed+" spells.  Receives 2%/lvl penalty damage from "+opposed+".  Receives double duration from malicious "+opposed+" magic, half duration on other "+opposed+" effects.";
-	}
-
-	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
-	{
-		return super.qualifiesForThisClass(mob,quiet);
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

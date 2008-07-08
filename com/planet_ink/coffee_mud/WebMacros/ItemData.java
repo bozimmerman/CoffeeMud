@@ -16,7 +16,7 @@ import java.util.*;
 
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,7 +35,7 @@ public class ItemData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
     public static DVector sortedResources=new DVector(2);
-    
+
     private static final String[] okparms={
       "NAME","CLASSES","DISPLAYTEXT","DESCRIPTION",
       "LEVEL","ABILITY","REJUV","MISCTEXT",
@@ -62,7 +62,7 @@ public class ItemData extends StdWebMacro
     public ItemData()
     {
         super();
-        
+
         if(sortedResources.size()==0)
         for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
         {
@@ -72,13 +72,13 @@ public class ItemData extends StdWebMacro
             for(putHere=0;putHere<sortedResources.size();putHere++)
                 if(S.compareTo((String)sortedResources.elementAt(putHere,2))<0)
                     break;
-            if(putHere>=sortedResources.size())    
+            if(putHere>=sortedResources.size())
                 sortedResources.addElement(L,S);
             else
                 sortedResources.insertElementAt(putHere,L,S);
         }
     }
-    
+
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
@@ -94,7 +94,7 @@ public class ItemData extends StdWebMacro
 		String mobNum=httpReq.getRequestParameter("MOB");
 		MOB playerM=null;
         Room R=null;
-        if(player!=null) 
+        if(player!=null)
             playerM=CMLib.map().getLoadPlayer(player);
         else
             R=(Room)httpReq.getRequestObjects().get(last);
@@ -115,7 +115,7 @@ public class ItemData extends StdWebMacro
     	synchronized(sync.intern())
     	{
     		if(R!=null) R=CMLib.map().getRoom(R);
-	
+
             if((playerM!=null)&&(R==null))
             {
                 I=(Item)httpReq.getRequestObjects().get("PLAYER/"+player+"/"+itemCode);
@@ -203,7 +203,7 @@ public class ItemData extends StdWebMacro
 	                if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 	                {
 	                    int i=CMLib.catalog().getCatalogItemIndex(itemCode.substring(8));
-	                    if(i>=0) 
+	                    if(i>=0)
 	                        I=CMLib.catalog().getCatalogItem(i);
 	                    else
 	                        I=CMClass.getItem("GenItem");
@@ -217,7 +217,7 @@ public class ItemData extends StdWebMacro
 						httpReq.getRequestObjects().put(itemCode,I);
 				}
 			}
-				
+
     	}
 
 		if(I==null)
@@ -289,8 +289,8 @@ public class ItemData extends StdWebMacro
 				{
 					worndata=CMath.s_int(httpReq.getRequestParameter("WORNDATA"));
 					for(int i=1;;i++)
-						if(httpReq.isRequestParameter("WORNDATA"+(new Integer(i).toString())))
-							worndata=worndata|CMath.s_int(httpReq.getRequestParameter("WORNDATA"+(new Integer(i).toString())));
+						if(httpReq.isRequestParameter("WORNDATA"+(Integer.toString(i))))
+							worndata=worndata|CMath.s_int(httpReq.getRequestParameter("WORNDATA"+(Integer.toString(i))));
 						else
 							break;
 				}
@@ -397,7 +397,7 @@ public class ItemData extends StdWebMacro
 					}
 					break;
 				case 9: // is generic
-					if(I.isGeneric()) 
+					if(I.isGeneric())
                         return "true";
                     return "false";
 				case 10: // is food
@@ -443,8 +443,8 @@ public class ItemData extends StdWebMacro
 					{
 						climate=CMath.s_int(httpReq.getRequestParameter("WORNDATA"));
 						for(int i=1;;i++)
-							if(httpReq.isRequestParameter("WORNDATA"+(new Integer(i).toString())))
-								climate=climate|CMath.s_int(httpReq.getRequestParameter("WORNDATA"+(new Integer(i).toString())));
+							if(httpReq.isRequestParameter("WORNDATA"+(Integer.toString(i))))
+								climate=climate|CMath.s_int(httpReq.getRequestParameter("WORNDATA"+(Integer.toString(i))));
 							else
 								break;
 					}
@@ -549,8 +549,8 @@ public class ItemData extends StdWebMacro
 						{
 							old=";"+httpReq.getRequestParameter("READABLESPELLS");
 							for(int i=1;;i++)
-								if(httpReq.isRequestParameter("READABLESPELLS"+(new Integer(i).toString())))
-									old+=";"+httpReq.getRequestParameter("READABLESPELLS"+(new Integer(i).toString()));
+								if(httpReq.isRequestParameter("READABLESPELLS"+(Integer.toString(i))))
+									old+=";"+httpReq.getRequestParameter("READABLESPELLS"+(Integer.toString(i)));
 								else
 									break;
 						}
@@ -590,8 +590,8 @@ public class ItemData extends StdWebMacro
 					{
 						mask=";"+httpReq.getRequestParameter("MAPAREAS");
 						for(int i=1;;i++)
-							if(httpReq.isRequestParameter("MAPAREAS"+(new Integer(i).toString())))
-								mask+=";"+httpReq.getRequestParameter("MAPAREAS"+(new Integer(i).toString()));
+							if(httpReq.isRequestParameter("MAPAREAS"+(Integer.toString(i))))
+								mask+=";"+httpReq.getRequestParameter("MAPAREAS"+(Integer.toString(i)));
 							else
 								break;
 					}
@@ -707,7 +707,7 @@ public class ItemData extends StdWebMacro
 					str.append(old);
 					break;
 				case 55: // is wallpaper
-					if(CMClass.classID(I).indexOf("Wallpaper")>=0) 
+					if(CMClass.classID(I).indexOf("Wallpaper")>=0)
 						return "true";
                     return "false";
 				case 56: // readabletext
@@ -772,8 +772,8 @@ public class ItemData extends StdWebMacro
 							contains=CMath.s_long(httpReq.getRequestParameter("CONTENTTYPES"));
 							if(contains>0)
 							for(int i=1;;i++)
-								if(httpReq.isRequestParameter("CONTENTTYPES"+(new Integer(i).toString())))
-									contains=contains|CMath.s_int(httpReq.getRequestParameter("CONTENTTYPES"+(new Integer(i).toString())));
+								if(httpReq.isRequestParameter("CONTENTTYPES"+(Integer.toString(i))))
+									contains=contains|CMath.s_int(httpReq.getRequestParameter("CONTENTTYPES"+(Integer.toString(i))));
 								else
 									break;
 						}
@@ -980,7 +980,7 @@ public class ItemData extends StdWebMacro
 			    I.setContainer(oldI.container());
 			    I.setRawWornCode(oldI.rawWornCode());
 			}
-			
+
 			String strstr=str.toString();
 			if(strstr.endsWith(", "))
 				strstr=strstr.substring(0,strstr.length()-2);

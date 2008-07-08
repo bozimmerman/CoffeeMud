@@ -16,7 +16,7 @@ import java.util.*;
 
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -54,9 +54,9 @@ public class HolidayData extends StdWebMacro
                     Object resp=CMLib.quests().getHolidayFile();
                     if(resp instanceof Vector)
                         steps=(Vector)resp;
-                    if(steps!=null) 
+                    if(steps!=null)
                         encodedData=CMLib.quests().getEncodedHolidayData((String)steps.elementAt(index));
-                } 
+                }
                 else
                 {
                     StringBuffer data=CMLib.quests().getDefaultHoliData(last, "ALL");
@@ -73,7 +73,7 @@ public class HolidayData extends StdWebMacro
                 DVector stats=(DVector)encodedData.elementAt(3);
                 //Vector stepV=(Vector)encodedData.elementAt(4);
                 //int pricingMobIndex=((Integer)encodedData.elementAt(5)).intValue();
-                
+
                 StringBuffer str=new StringBuffer("");
                 if(parms.containsKey("EXISTS"))
                 {
@@ -131,13 +131,13 @@ public class HolidayData extends StdWebMacro
                     } else {
                         HashSet areaCodes=new HashSet();
                         String id="";
-                        for(int i=0;httpReq.isRequestParameter("AREAGROUP"+id);id=new Integer(++i).toString())
+                        for(int i=0;httpReq.isRequestParameter("AREAGROUP"+id);id=Integer.toString(++i))
                             areaCodes.add(httpReq.getRequestParameter("AREAGROUP"+id));
                         areaNames=new Vector();
-                        if(areaCodes.contains("AREAGROUP0")) 
+                        if(areaCodes.contains("AREAGROUP0"))
                             areaNames.add("ALL");
                         else
-                        if(areaCodes.contains("AREAGROUP1")) 
+                        if(areaCodes.contains("AREAGROUP1"))
                             areaNames.add("ANY");
                         else
                         {
@@ -230,10 +230,10 @@ public class HolidayData extends StdWebMacro
                     {
                         int mudDayIndex=settings.indexOf("MUDDAY");
                         int dateIndex=settings.indexOf("DATE");
-                        if(mudDayIndex>=0) 
+                        if(mudDayIndex>=0)
                             old=TYPES[1];
                         else
-                        if(dateIndex>=0) 
+                        if(dateIndex>=0)
                             old=TYPES[2];
                         else
                             old=TYPES[0];
@@ -263,7 +263,7 @@ public class HolidayData extends StdWebMacro
                         old=TYPES[1]+": "+old;
                     }
                     else
-                    if(dateIndex>=0) 
+                    if(dateIndex>=0)
                     {
                         int dex=settings.indexOf("DATE");
                         if(dex>=0)
@@ -335,7 +335,7 @@ public class HolidayData extends StdWebMacro
         }
         return "";
     }
-    
+
     public static StringBuffer behaviors(DVector behaviors, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
@@ -415,7 +415,7 @@ public class HolidayData extends StdWebMacro
         }
         return str;
     }
-    
+
     public static StringBuffer properties(DVector properties, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
@@ -485,7 +485,7 @@ public class HolidayData extends StdWebMacro
         }
         return str;
     }
-    
+
     public static StringBuffer priceFactors(DVector stats, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
@@ -568,7 +568,7 @@ public class HolidayData extends StdWebMacro
         }
         return str;
     }
-    
+
     public static StringBuffer mudChat(DVector behaviors, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
@@ -610,7 +610,7 @@ public class HolidayData extends StdWebMacro
             }
             else
                 mudchats=CMLib.quests().breakOutMudChatVs("MUDCHAT",behaviors);
-            
+
             str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
             String sfont=(parms.containsKey("FONT"))?("<FONT "+((String)parms.get("FONT"))+">"):"";
             String efont=(parms.containsKey("FONT"))?"</FONT>":"";
@@ -622,7 +622,7 @@ public class HolidayData extends StdWebMacro
                     str.append("<TD WIDTH=75%>");
                     str.append("<TABLE WIDTH=100% BORDER=0 CELLSPACING=0 CELLPADDING=0>");
                     str.append("<TR><TD WIDTH=20% VALIGN=TOP>"+sfont+((String)parms.get("HEADERCOL2"))+efont+"</TD>");
-                    if(parms.containsKey("HEADERCOL3")) 
+                    if(parms.containsKey("HEADERCOL3"))
                         str.append("<TD WIDTH=80%>"+sfont+((String)parms.get("HEADERCOL3"))+efont+"</TD>");
                     else
                         str.append("<TD WIDTH=80%></TD>");
@@ -633,7 +633,7 @@ public class HolidayData extends StdWebMacro
                     str.append("<TD WIDTH=75%></TD>");
                 str.append("</TR>");
             }
-                
+
             for(int i=0;i<mudchats.size();i++)
             {
                 Vector mudChat=(Vector)mudchats.elementAt(i);
@@ -688,7 +688,7 @@ public class HolidayData extends StdWebMacro
         }
         return str;
     }
-    
+
     protected Vector getMoodList()
     {
         Vector V=new Vector();

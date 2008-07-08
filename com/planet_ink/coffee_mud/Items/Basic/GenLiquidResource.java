@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,17 +48,13 @@ public class GenLiquidResource extends GenDrink implements RawMaterial, Drink
 		recoverEnvStats();
 	}
 	protected static Ability rot=null;
-	
+
 	public void setMaterial(int newValue)
 	{
 	    super.setMaterial(newValue);
 	    decayTime=0;
 	}
-	
-	public void setCapacity(int cap){
-		super.setCapacity(cap);
-	}
-	
+
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
         super.executeMsg(host,msg);

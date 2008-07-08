@@ -63,11 +63,11 @@ public class Poison_Alcohol extends Poison
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		if(affected instanceof MOB)
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-Math.round(drunkness+((MOB)affected).envStats().level()));
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-(drunkness+((MOB)affected).envStats().level()));
 	}
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.STAT_DEXTERITY,Math.round(affectableStats.getStat(CharStats.STAT_DEXTERITY)-drunkness));
+		affectableStats.setStat(CharStats.STAT_DEXTERITY,(affectableStats.getStat(CharStats.STAT_DEXTERITY)-drunkness));
 		if(affectableStats.getStat(CharStats.STAT_DEXTERITY)<=0)
 			affectableStats.setStat(CharStats.STAT_DEXTERITY,1);
 	}
@@ -310,7 +310,7 @@ public class Poison_Alcohol extends Poison
 				}
 				return false;
 			}
-            
+
 			for(int i=0;i<remove.size();i++)
 				givenTarget.delEffect((Ability)remove.elementAt(i));
 		}

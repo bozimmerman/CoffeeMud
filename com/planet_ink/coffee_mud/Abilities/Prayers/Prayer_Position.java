@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -89,7 +89,7 @@ public class Prayer_Position extends Prayer
 		{
 			Room R=(Room)trailV.elementAt(s);
 			Room RA=(Room)trailV.elementAt(s-1);
-			theDirTrail.addElement(new Character(Directions.getDirectionName(getRoomDirection(R,RA,empty)).charAt(0)).toString()+" ");
+			theDirTrail.addElement(Character.toString(Directions.getDirectionName(getRoomDirection(R,RA,empty)).charAt(0))+" ");
 		}
 		StringBuffer theTrail=new StringBuffer("");
 		char lastDir='\0';
@@ -108,19 +108,19 @@ public class Prayer_Position extends Prayer
 			else
 			{
 				if(lastNum==1)
-					theTrail.append(new Character(lastDir).toString()+" ");
+					theTrail.append(Character.toString(lastDir)+" ");
 				else
-					theTrail.append(new Integer(lastNum).toString()+new Character(lastDir).toString()+" ");
+					theTrail.append(Integer.toString(lastNum)+Character.toString(lastDir)+" ");
 				lastDir=s.charAt(0);
 				lastNum=1;
 			}
 			theDirTrail.removeElementAt(0);
 		}
 		if(lastNum==1)
-			theTrail.append(new Character(lastDir).toString());
+			theTrail.append(Character.toString(lastDir));
 		else
 		if(lastNum>0)
-			theTrail.append(new Integer(lastNum).toString()+new Character(lastDir).toString());
+			theTrail.append(Integer.toString(lastNum)+Character.toString(lastDir));
 		return theTrail.toString();
 	}
 

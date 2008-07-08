@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.Vector;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -37,13 +37,13 @@ public class DefaultEnvStats implements EnvStats
 	protected String replacementName=null;
 	protected String[] ambiances=null;
 	private final static String[] empty=new String[0];
-	
+
 	public DefaultEnvStats(){}
 	public void setAllValues(int def)
 	{
 		for(int i=0;i<NUM_STATS;i++)
 			stats[i]=def;
-		Speed=new Integer(def).doubleValue();
+		Speed=(double)def;
 	}
 
 	public int sensesMask(){return stats[STAT_SENSES];}
@@ -111,7 +111,7 @@ public class DefaultEnvStats implements EnvStats
                 return;
             }
 	}
-	
+
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultEnvStats();}}
     public void initializeClass(){}
     public void copyInto(EnvStats intoStats)
@@ -159,7 +159,7 @@ public class DefaultEnvStats implements EnvStats
 			   return false;
 		return true;
 	}
-	
+
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code)){

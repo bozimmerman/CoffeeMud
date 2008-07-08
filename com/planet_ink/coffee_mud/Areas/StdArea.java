@@ -98,7 +98,7 @@ public class StdArea implements Area
         }
         return V;
     }
-    
+
     public String getBlurbFlag(String flag)
     {
         if((flag==null)||(flag.trim().length()==0))
@@ -131,7 +131,7 @@ public class StdArea implements Area
         if(flagPlusDesc.length()==0) return;
         int x=flagPlusDesc.indexOf(' ');
         String flag=null;
-        if(x>=0) 
+        if(x>=0)
         {
             flag=flagPlusDesc.substring(0,x).toUpperCase();
             flagPlusDesc=flagPlusDesc.substring(x).trim();
@@ -159,7 +159,7 @@ public class StdArea implements Area
                 }
         }catch(Exception e){}
     }
-    
+
 	public long expirationDate(){return expirationDate;}
 	public void setExpirationDate(long time){expirationDate=time;}
 	protected Vector affects=new Vector(1);
@@ -214,7 +214,7 @@ public class StdArea implements Area
     }
     public boolean amDestroyed(){return amDestroyed;}
     public boolean savable(){return !amDestroyed;}
-    
+
 	public String name()
 	{
 		if(envStats().newName()!=null) return envStats().newName();
@@ -282,7 +282,7 @@ public class StdArea implements Area
         flag=flagBits;
     }
     public int getAreaFlags(){return flag;}
-    
+
 	public boolean amISubOp(String username)
 	{
 		for(int s=subOps.size()-1;s>=0;s--)
@@ -349,7 +349,7 @@ public class StdArea implements Area
 		if(highest<0)
 			for(int i=0;i<Integer.MAX_VALUE;i++)
 			{
-				if((CMLib.map().getRoom(Name()+"#"+i))==null)			
+				if((CMLib.map().getRoom(Name()+"#"+i))==null)
 					return Name()+"#"+i;
 			}
 		if(lowest>highest) lowest=highest+1;
@@ -366,9 +366,9 @@ public class StdArea implements Area
 	public CMObject newInstance()
 	{
 		if(CMSecurity.isDisabled("FATAREAS")
-		&&(ID().equals("StdArea"))) 
-		{   
-			Area A=CMClass.getAreaType("StdThinArea"); 
+		&&(ID().equals("StdArea")))
+		{
+			Area A=CMClass.getAreaType("StdThinArea");
 			if(A!=null) return A;
 		}
 		try
@@ -518,7 +518,7 @@ public class StdArea implements Area
         int x=finalInvResetRate(this);
         if(x!=0) return x;
         return CMath.s_int(CMProps.getVar(CMProps.SYSTEM_INVRESETRATE));
-        
+
     }
     protected int finalInvResetRate(Area A){
         if(A.invResetRate()!=0) return A.invResetRate();
@@ -672,21 +672,21 @@ public class StdArea implements Area
             if(N!=null)
                 N.executeMsg(this,msg);
         }
-        
+
         for(int s=0;s<numScripts();s++)
         {
             N=fetchScript(s);
             if(N!=null)
                 N.executeMsg(this,msg);
         }
-        
+
         for(int a=0;a<numEffects();a++)
         {
             N=fetchEffect(a);
             if(N!=null)
                 N.executeMsg(this,msg);
         }
-        
+
 		if((msg.sourceMinor()==CMMsg.TYP_RETIRE)
 		&&(amISubOp(msg.source().Name())))
 			delSubOp(msg.source().Name());
@@ -700,7 +700,7 @@ public class StdArea implements Area
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(flag>=Area.FLAG_STOPPED) 
+		if(flag>=Area.FLAG_STOPPED)
             return false;
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_AREA)
@@ -728,7 +728,7 @@ public class StdArea implements Area
             {
                 ScriptingEngine S=fetchScript(s);
                 tickStatus=Tickable.STATUS_SCRIPT+s;
-                if(S!=null) 
+                if(S!=null)
                     S.tick(ticking,tickID);
             }
 
@@ -905,7 +905,7 @@ public class StdArea implements Area
 	{
 		return behaviors.size();
 	}
-    
+
     /** Manipulation of the scripts list */
     public void addScript(ScriptingEngine S)
     {
@@ -933,7 +933,7 @@ public class StdArea implements Area
     }
     public int numScripts(){return (scripts==null)?0:scripts.size();}
     public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
-    
+
 	public int maxRange(){return Integer.MAX_VALUE;}
 	public int minRange(){return Integer.MIN_VALUE;}
 
@@ -1006,9 +1006,9 @@ public class StdArea implements Area
 				statData[Area.AREASTAT_MEDLEVEL]=((Integer)levelRanges.elementAt((int)Math.round(Math.floor(CMath.div(levelRanges.size(),2.0))))).intValue();
 				statData[Area.AREASTAT_MEDALIGN]=((Integer)alignRanges.elementAt((int)Math.round(Math.floor(CMath.div(alignRanges.size(),2.0))))).intValue();
 				statData[Area.AREASTAT_AVGLEVEL]=(int)Math.round(CMath.div(statData[Area.AREASTAT_TOTLEVEL],statData[Area.AREASTAT_POPULATION]));
-				statData[Area.AREASTAT_AVGALIGN]=(int)Math.round(new Long(totalAlignments).doubleValue()/new Integer(statData[Area.AREASTAT_POPULATION]).doubleValue());
+				statData[Area.AREASTAT_AVGALIGN]=(int)Math.round(((double)totalAlignments)/((double)statData[Area.AREASTAT_POPULATION]));
 			}
-	        
+
 			Resources.submitResource("STATS_"+Name().toUpperCase(),statData);
 		}
 		return statData;
@@ -1148,7 +1148,7 @@ public class StdArea implements Area
         {
         	int insertAt=0;
     		String roomID=R.roomID();
-            if(roomID.length()==0) 
+            if(roomID.length()==0)
             {
                 if((R.getGridParent()!=null)
                 &&(R.getGridParent().roomID().length()>0))
@@ -1182,12 +1182,12 @@ public class StdArea implements Area
         	}
         }
     }
-    
+
 	public void addMetroRoom(Room R)
 	{
 		if(R!=null)
 		{
-        	if(R.roomID().length()==0) 
+        	if(R.roomID().length()==0)
         	{
         		if((R.getGridParent()!=null)
         		&&(R.getGridParent().roomID().length()>0))
@@ -1201,7 +1201,7 @@ public class StdArea implements Area
 	{
 		if(R!=null)
 		{
-        	if(R.roomID().length()==0) 
+        	if(R.roomID().length()==0)
         	{
         		if((R.getGridParent()!=null)
         		&&(R.getGridParent().roomID().length()>0))
@@ -1253,7 +1253,7 @@ public class StdArea implements Area
     public boolean isRoom(Room R)
     {
         if(R==null) return false;
-        if(R.roomID().length()>0) 
+        if(R.roomID().length()>0)
         	return getProperRoomnumbers().contains(R.roomID());
         return properRooms.contains(R);
     }
@@ -1281,7 +1281,7 @@ public class StdArea implements Area
             }
         }
     }
-    
+
     public Room getRoom(String roomID)
     {
         if(properRooms.size()==0) return null;
@@ -1307,7 +1307,7 @@ public class StdArea implements Area
         }
         return null;
     }
-    
+
 	public int metroSize()
 	{
 		int num=properSize();
@@ -1329,8 +1329,8 @@ public class StdArea implements Area
 		}
 		return num;
 	}
-	public Room getRandomProperRoom() 
-	{ 
+	public Room getRandomProperRoom()
+	{
 		String roomID=getProperRoomnumbers().random();
 		Room R=CMLib.map().getRoom(roomID);
 		if(R instanceof GridLocale) return ((GridLocale)R).getRandomGridChild();
@@ -1347,7 +1347,7 @@ public class StdArea implements Area
 			return R;
 		}*/
 		String roomID=metroRoomIDSet.random();
-		Room R=CMLib.map().getRoom(roomID); 
+		Room R=CMLib.map().getRoom(roomID);
 		if(R instanceof GridLocale) return ((GridLocale)R).getRandomGridChild();
 		if(R==null) Log.errOut("StdArea","Unable to random-metro-find: "+roomID);
 		return R;
@@ -1365,7 +1365,7 @@ public class StdArea implements Area
 		}
 		return V.elements();
 	}
-	
+
     public Enumeration getFilledProperMap()
     {
         Enumeration r=getProperMap();
@@ -1404,7 +1404,7 @@ public class StdArea implements Area
 		for(int c=getNumChildren()-1;c>=0;c--)
 			V.addAll(getChild(c).getMetroCollection());
 		return V;
-		
+
 	}
 	public Enumeration getCompleteMap(){return getProperMap();}
 	public Enumeration getMetroMap(){return getMetroCollection().elements();}
@@ -1537,7 +1537,7 @@ public class StdArea implements Area
         }
         return V;
     }
-    
+
 	public String getParentsList() {
 	        initParents();
 	        StringBuffer str=new StringBuffer("");

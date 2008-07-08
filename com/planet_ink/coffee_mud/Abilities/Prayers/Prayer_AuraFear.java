@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,7 +42,13 @@ public class Prayer_AuraFear extends Prayer
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ROOMS|Ability.CAN_ITEMS;}
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
-    protected int tickDown=4;
+
+    public Prayer_AuraFear()
+    {
+        super();
+
+        tickDown = 4;
+    }
 
 
 	public void unInvoke()
@@ -56,13 +62,13 @@ public class Prayer_AuraFear extends Prayer
 		if((canBeUninvoked())&&(R!=null)&&(E!=null))
 			R.showHappens(CMMsg.MSG_OK_VISUAL,"The fearful aura around "+E.name()+" fades.");
 	}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(affected==null)
 			return super.tick(ticking,tickID);
 
-		if((--tickDown)>=0) 
+		if((--tickDown)>=0)
 		    return super.tick(ticking,tickID);
 		tickDown=4;
 		Room R=CMLib.map().roomLocation(affected);
@@ -184,4 +190,5 @@ public class Prayer_AuraFear extends Prayer
 		return success;
 	}
 }
+
 

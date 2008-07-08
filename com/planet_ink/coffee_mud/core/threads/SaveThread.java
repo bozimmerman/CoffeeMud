@@ -19,7 +19,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -46,7 +46,7 @@ public class SaveThread extends Thread
 	private static boolean debugging=false;
     private static SaveThread inst=new SaveThread();
     public static SaveThread instance(){return inst;}
-	
+
 	public SaveThread()
 	{
 		super("SaveThread");
@@ -59,7 +59,7 @@ public class SaveThread extends Thread
 		status=s;
 		if(debugging) Log.debugOut("SaveThread",s);
 	}
-	
+
 	public void titleSweep()
 	{
 		status("title sweeping");
@@ -79,7 +79,7 @@ public class SaveThread extends Thread
 			}
 	    }catch(NoSuchElementException nse){}
 	}
-    
+
     public void commandJournalSweep()
     {
         status("command journal sweeping");
@@ -111,7 +111,7 @@ public class SaveThread extends Thread
             }
         }catch(NoSuchElementException nse){}
     }
-    
+
 	public void shutdown()
 	{
 		shutDown=true;
@@ -228,13 +228,13 @@ public class SaveThread extends Thread
 			long last=CMath.s_long((String)user.elementAt(5));
 			long when=Long.MAX_VALUE;
 			long warn=Long.MAX_VALUE;
-			if(level>levels.length) 
+			if(level>levels.length)
             {
 				when=levels[levels.length-1];
 				warn=prePurgeLevels[prePurgeLevels.length-1];
 			}
 			else
-			if(level>=0) 
+			if(level>=0)
             {
 				when=levels[level];
 				warn=prePurgeLevels[level];
@@ -338,12 +338,12 @@ public class SaveThread extends Thread
 		String textTimeLeft="";
 		if(timeLeft>(1000*60*60*24*2))
 		{
-			int days=new Double(CMath.div((double)timeLeft,1000*60*60*24)).intValue();
+			int days=(int)CMath.div((double)timeLeft,1000*60*60*24);
 			textTimeLeft = days + " days";
 		}
 		else
 		{
-			int hours=new Double(CMath.div((double)timeLeft,1000*60*60)).intValue();
+			int hours=(int)CMath.div((double)timeLeft,1000*60*60);
 			textTimeLeft = hours + " hours";
 		}
 		String msg="Your character, "+to+", is going to be autopurged by the system in "+textTimeLeft+".  If you would like to keep this character active, please re-login.  This is an automated message, please do not reply.";
@@ -391,7 +391,7 @@ public class SaveThread extends Thread
 			return;
 		}
 	}
-	
+
 	public void run()
 	{
         lastStart=System.currentTimeMillis();

@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -51,7 +51,7 @@ public class DefaultCharState implements CharState
     		states[i]=def;
 		Fatigue=def;
 	}
-    
+
     public void copyInto(CharState intoState)
     {
     	if(intoState instanceof DefaultCharState)
@@ -152,7 +152,7 @@ public class DefaultCharState implements CharState
 	        return Integer.MAX_VALUE;
         return (int)factor;
 	}
-	
+
 	public String getCombatStats(){return "H"+states[STAT_HITPOINTS]+":M"+states[STAT_MANA]+":V"+states[STAT_MOVE]+":F"+Fatigue;}
 	public int getMana(){return states[STAT_MANA];}
 	public void setMana(int newVal){ states[STAT_MANA]=newVal;}
@@ -196,9 +196,9 @@ public class DefaultCharState implements CharState
 
 		botherCycle=0;
 		CharStats charStats=mob.charStats();
-		double con=new Integer(charStats.getStat(CharStats.STAT_CONSTITUTION)).doubleValue();
-		double man=new Integer((charStats.getStat(CharStats.STAT_INTELLIGENCE)+charStats.getStat(CharStats.STAT_WISDOM))).doubleValue();
-		double str=new Integer(charStats.getStat(CharStats.STAT_STRENGTH)).doubleValue();
+		double con=(double)charStats.getStat(CharStats.STAT_CONSTITUTION);
+		double man=(double)((charStats.getStat(CharStats.STAT_INTELLIGENCE)+charStats.getStat(CharStats.STAT_WISDOM)));
+		double str=(double)charStats.getStat(CharStats.STAT_STRENGTH);
 		if(getHunger()<1)
 		{
 			con=con*.85;
@@ -214,7 +214,7 @@ public class DefaultCharState implements CharState
 		if(getFatigue()>FATIGUED_MILLIS)
 			man=man*.5;
 
-		double lvl=new Integer(mob.envStats().level()).doubleValue();
+		double lvl=(double)mob.envStats().level();
 		double lvlby1p5=CMath.div(lvl,1.5);
 		//double lvlby2=CMath.div(lvl,2.0);
 		//double lvlby3=CMath.div(lvl,3.0);

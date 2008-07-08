@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -128,7 +128,7 @@ public class Bard extends StdCharClass
 	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,5.0);}
     public static int bardAdjustExperienceGain(MOB host, MOB mob, MOB victim, int amount, double rate)
     {
-        double theAmount=new Integer(amount).doubleValue();
+        double theAmount=(double)amount;
         if((mob!=null)&&(victim!=null)&&(theAmount>10.0))
         {
 	    	if(host == mob)
@@ -157,7 +157,7 @@ public class Bard extends StdCharClass
     	}
         return (int)Math.round(theAmount);
     }
-    
+
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
     public void executeMsg(Environmental host, CMMsg msg)
@@ -198,8 +198,8 @@ public class Bard extends StdCharClass
                                 for(int v=V2.size()-1;v>=0;v--)
                                     if((((Ability)V2.elementAt(v)).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_POISON)
                                         V2.removeElementAt(v);
-                                
-                                
+
+
                             }
                             if(V.elementAt(i) instanceof Drink)
                                 V2.addAll(CMLib.flags().domainAffects((Environmental)V.elementAt(i),Ability.ACODE_POISON));
@@ -243,11 +243,11 @@ public class Bard extends StdCharClass
                             msg.addTrailerMsg(CMClass.getMsg((MOB)host,null,null,CMMsg.MSG_OK_VISUAL,"^HYou have explored '"+A.name()+"', you gain "+xp+" experience.^?",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
                     }
                 }
-                    
+
             }
         }
     }
-    
+
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);

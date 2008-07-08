@@ -16,7 +16,7 @@ import java.util.*;
 
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -224,8 +224,8 @@ public class AreaData extends StdWebMacro
 					{
 						climate=CMath.s_int(httpReq.getRequestParameter("CLIMATE"));
 						for(int i=1;;i++)
-							if(httpReq.isRequestParameter("CLIMATE"+(new Integer(i).toString())))
-								climate=climate|CMath.s_int(httpReq.getRequestParameter("CLIMATE"+(new Integer(i).toString())));
+							if(httpReq.isRequestParameter("CLIMATE"+(Integer.toString(i))))
+								climate=climate|CMath.s_int(httpReq.getRequestParameter("CLIMATE"+(Integer.toString(i))));
 							else
 								break;
 					}
@@ -374,7 +374,7 @@ public class AreaData extends StdWebMacro
 						str.append(">"+cnam);
 					}
 				}
-                
+
                 if(parms.containsKey("BLURBS"))
                 {
                     Vector theprices=new Vector();
@@ -423,9 +423,9 @@ public class AreaData extends StdWebMacro
                     str.append("<INPUT TYPE=TEXT SIZE=50 NAME=BLURB"+(theprices.size()+1)+">");
                     str.append("</TD></TR>");
                     str.append("</TABLE>");
-                    
+
                 }
-                
+
 				if(parms.containsKey("TESTSTUFF"))
 					str.append(A.text());
 
@@ -438,8 +438,8 @@ public class AreaData extends StdWebMacro
 						subOps=A.getSubOpList();
 					else
 					for(int i=1;;i++)
-						if(httpReq.isRequestParameter("SUBOPS"+(new Integer(i).toString())))
-							subOps+=";"+httpReq.getRequestParameter("SUBOPS"+(new Integer(i).toString()));
+						if(httpReq.isRequestParameter("SUBOPS"+(Integer.toString(i))))
+							subOps+=";"+httpReq.getRequestParameter("SUBOPS"+(Integer.toString(i)));
 						else
 							break;
 					Vector V=CMLib.database().getUserList();
@@ -469,8 +469,8 @@ public class AreaData extends StdWebMacro
                         parents=A.getParentsList();
                     else
                     for(int i=1;;i++)
-                        if(httpReq.isRequestParameter("PARENT"+(new Integer(i).toString())))
-                            parents+=";"+httpReq.getRequestParameter("PARENT"+(new Integer(i).toString()));
+                        if(httpReq.isRequestParameter("PARENT"+(Integer.toString(i))))
+                            parents+=";"+httpReq.getRequestParameter("PARENT"+(Integer.toString(i)));
                         else
                             break;
                     for(Enumeration e=CMLib.map().sortedAreas();e.hasMoreElements();)
@@ -492,8 +492,8 @@ public class AreaData extends StdWebMacro
                         children=A.getChildrenList();
                     else
                     for(int i=1;;i++)
-                        if(httpReq.isRequestParameter("CHILDREN"+(new Integer(i).toString())))
-                            children+=";"+httpReq.getRequestParameter("CHILDREN"+(new Integer(i).toString()));
+                        if(httpReq.isRequestParameter("CHILDREN"+(Integer.toString(i))))
+                            children+=";"+httpReq.getRequestParameter("CHILDREN"+(Integer.toString(i)));
                         else
                             break;
                     for(Enumeration e=CMLib.map().sortedAreas();e.hasMoreElements();)

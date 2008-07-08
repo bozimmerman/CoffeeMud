@@ -204,7 +204,7 @@ public class CMProps extends Properties
                                     "EXP_CHART"
     };
     public static final int NUML_SYSTEM=10;
-    
+
     protected String[] sysVars=new String[NUM_SYSTEM];
     protected Integer[] sysInts=new Integer[NUMI_SYSTEM];
     protected Boolean[] sysBools=new Boolean[NUMB_SYSTEM];
@@ -423,7 +423,7 @@ public class CMProps extends Properties
     public static void setBoolVar(int varNum, boolean val)
     {
         if((varNum<0)||(varNum>=NUMB_SYSTEM)) return ;
-        p().sysBools[varNum]=new Boolean(val);
+        p().sysBools[varNum]=Boolean.valueOf(val);
     }
 
     public static void setIntVar(int varNum, int val)
@@ -546,7 +546,7 @@ public class CMProps extends Properties
             return rawListData.getProperty(key);
         }
     }
-    
+
     public static int getIListVar(int var)
     {
         if((var<0)||(var>=NUML_SYSTEM)) return -1;
@@ -576,7 +576,7 @@ public class CMProps extends Properties
             p().listData[var]=CMParms.toStringArray(CMParms.parseCommas(getListValue(SYSTEML_KEYS[var]),true));
         return (String[])p().listData[var];
     }
-    
+
     public static String[][] getS2ListVar(int var)
     {
         if((var<0)||(var>=NUML_SYSTEM)) return new String[0][0];
@@ -590,7 +590,7 @@ public class CMProps extends Properties
         }
         return (String[][])p().listData[var];
     }
-    
+
     public void resetSystemVars()
     {
         if(CMLib.lang()!=null)
@@ -682,10 +682,10 @@ public class CMProps extends Properties
             setIntVar(SYSTEMI_EQVIEW,1);
         else
             setIntVar(SYSTEMI_EQVIEW,0);
-        
+
         s=getStr("EXPIRATIONS");
         Vector V=CMParms.parseCommas(s,false);
-        for(int i=0;i<5;i++) 
+        for(int i=0;i<5;i++)
         {
             if(V.size()>0)
             {
@@ -702,7 +702,7 @@ public class CMProps extends Properties
             case SYSTEMI_EXPIRE_PLAYER_BODY: setIntVar(SYSTEMI_EXPIRE_PLAYER_BODY,"1330"); break;
             }
         }
-        
+
 
         setIntVar(SYSTEMI_MANACONSUMETIME,getStr("MANACONSUMETIME"));
         setIntVar(SYSTEMI_PAGEBREAK,getStr("PAGEBREAK"));
@@ -789,9 +789,9 @@ public class CMProps extends Properties
         }
         CMSecurity.setDebugVars(getStr("DEBUG"));
         CMSecurity.setSaveFlags(getStr("SAVE"));
-        
+
         statCodeExtensions = getStrsStarting("EXTVAR_");
-        
+
     }
 
     public static String applyINIFilter(String msg, int whichFilter)
@@ -1275,7 +1275,7 @@ public class CMProps extends Properties
     			return CMParms.parseCommas(statCodeExtensions[i][1],true);
     	return null;
     }
-    
+
     public static String[] getExtraStatCodesHolder(String myClassName)
     {
     	Vector addedStatCodesV = getStatCodeExtentions(myClassName);
@@ -1285,13 +1285,13 @@ public class CMProps extends Properties
     		statHolder[s]="";
     	return statHolder;
     }
-    
+
     public static String[] getStatCodesList(String[] baseStatCodes, String myClassName)
     {
     	Vector addedStatCodesV = getStatCodeExtentions(myClassName);
     	if(addedStatCodesV == null)
     		return baseStatCodes;
-    	
+
 		String[] newStatCodes = new String[baseStatCodes.length + addedStatCodesV.size()];
 		for(int x=0;x<baseStatCodes.length;x++)
 			newStatCodes[x] = baseStatCodes[x];

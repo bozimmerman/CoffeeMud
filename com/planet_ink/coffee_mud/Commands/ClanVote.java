@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -152,12 +152,12 @@ public class ClanVote extends BaseClanner
 							{
 							case 'Y':
 								msg.append("Your YEA vote is recorded.");
-								CV.votes.addElement(mob.Name(),new Boolean(true));
+								CV.votes.addElement(mob.Name(),Boolean.TRUE);
 								updateVote=true;
 								yeas++;
 								break;
 							case 'N':
-								CV.votes.addElement(mob.Name(),new Boolean(false));
+								CV.votes.addElement(mob.Name(),Boolean.FALSE);
 								msg.append("Your NAY vote is recorded.");
 								updateVote=true;
 								nays++;
@@ -207,8 +207,8 @@ public class ClanVote extends BaseClanner
 		mob.tell(msg.toString());
 		return false;
 	}
-	
+
 	public boolean canBeOrdered(){return false;}
 
-	
+
 }

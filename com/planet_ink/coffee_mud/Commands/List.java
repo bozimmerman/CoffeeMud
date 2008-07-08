@@ -146,7 +146,7 @@ public class List extends StdCommand
 				lines.append(CMStrings.padRight(thisOne,30)+": ");
 				lines.append(CMStrings.padRight(thisThang.ID(),15)+": ");
 				String thisRsc="-";
-				if(thisThang.myResource()>=0) 
+				if(thisThang.myResource()>=0)
 					thisRsc=RawMaterial.RESOURCE_DESCS[thisThang.myResource()&RawMaterial.RESOURCE_MASK];
 				lines.append(thisRsc+"\n\r");
 			}
@@ -154,7 +154,7 @@ public class List extends StdCommand
 		lines.append("\n\r");
 		return lines;
 	}
-	
+
 	public StringBuffer areaConquests(Enumeration these)
 	{
 		StringBuffer lines=new StringBuffer(CMStrings.padRight("Area",26)+"| "
@@ -185,7 +185,7 @@ public class List extends StdCommand
 		lines.append("\n\r");
 		return lines;
 	}
-	
+
 	public void dumpThreadGroup(StringBuffer lines,ThreadGroup tGroup, boolean ignoreZeroTickThreads)
 	{
 		int ac = tGroup.activeCount();
@@ -209,7 +209,7 @@ public class List extends StdCommand
                 if((tArray[i] instanceof Tickable)
                 &&(((Tickable)tArray[i]).getTickStatus()==0))
                     continue;
-                
+
                 lines.append(tArray[i].isAlive()? "  ok   " : " BAD!  ");
                 lines.append(CMStrings.padRight(tArray[i].getName(),20)+": ");
                 if(tArray[i] instanceof Session)
@@ -229,7 +229,7 @@ public class List extends StdCommand
                     lines.append("Tick "+tArray[i].getName()+" "
                             +((TickableGroup)tArray[i]).lastTicked().ID()
                             +"-"+((TickableGroup)tArray[i]).lastTicked().name()
-                            +"-"+((TickableGroup)tArray[i]).lastTicked().getTickStatus() 
+                            +"-"+((TickableGroup)tArray[i]).lastTicked().getTickStatus()
                             +" ("+CMLib.threads().getTickStatusSummary(((TickableGroup)tArray[i]).lastTicked())+")\n\r");
                 else
                 {
@@ -271,9 +271,9 @@ public class List extends StdCommand
 		return lines;
 
 	}
-    
-    
-    
+
+
+
 
 	public StringBuffer listLinkages(MOB mob)
 	{
@@ -365,7 +365,7 @@ public class List extends StdCommand
 						numMobs++;
 						if((useFaction!=null)
 						&&(CMLib.factions().getFaction(useFaction.factionID())!=null)
-						&&(M.fetchFaction(useFaction.factionID())!=Integer.MAX_VALUE)) 
+						&&(M.fetchFaction(useFaction.factionID())!=Integer.MAX_VALUE))
 						    totalAlignment+=M.fetchFaction(useFaction.factionID());
 						totalLevels+=M.envStats().level();
 					}
@@ -593,11 +593,11 @@ public class List extends StdCommand
 		head.append(CMStrings.padRight("Lvl",4)+" ");
 		head.append(CMStrings.padRight("Hours",5)+" ");
 		switch(sortBy){
-		case 6: head.append(CMStrings.padRight("E-Mail",23)+" "); break; 
-		case 7: head.append(CMStrings.padRight("IP Address",23)+" "); break; 
+		case 6: head.append(CMStrings.padRight("E-Mail",23)+" "); break;
+		case 7: head.append(CMStrings.padRight("IP Address",23)+" "); break;
 		default: head.append(CMStrings.padRight("Last",18)+" "); break;
 		}
-			
+
 		head.append("] Character name\n\r");
 		Vector allUsers=CMLib.database().getExtendedUserList();
 		Vector oldSet=allUsers;
@@ -648,8 +648,8 @@ public class List extends StdCommand
 			long age=Math.round(CMath.div(CMath.s_long((String)U.elementAt(4)),60.0));
 			head.append(CMStrings.padRight(""+age,5)+" ");
 			switch(showBy){
-			case 6: head.append(CMStrings.padRight((String)U.elementAt(6),23)+" "); break; 
-			case 7: head.append(CMStrings.padRight((String)U.elementAt(7),23)+" "); break; 
+			case 6: head.append(CMStrings.padRight((String)U.elementAt(6),23)+" "); break;
+			case 7: head.append(CMStrings.padRight((String)U.elementAt(7),23)+" "); break;
 			default: head.append(CMStrings.padRight(CMLib.time().date2String(CMath.s_long((String)U.elementAt(5))),18)+" "); break;
 			}
 			head.append("] "+CMStrings.padRight("^<LSTUSER^>"+((String)U.elementAt(0))+"^</LSTUSER^>",15));
@@ -721,7 +721,7 @@ public class List extends StdCommand
         lines.append("\n\r");
         return lines;
     }
-    
+
 	public StringBuffer listQuests()
 	{
 		StringBuffer buf=new StringBuffer("");
@@ -742,7 +742,7 @@ public class List extends StdCommand
 					    String minsLeft="("+Q.minsRemaining()+" mins left)";
 					    if(Q.duration()==0)
 					        minsLeft="(Eternal)";
-					    
+
 						if(Q.isCopy())
 							buf.append("copy running "+minsLeft);
 						else
@@ -778,7 +778,7 @@ public class List extends StdCommand
     {
         StringBuffer buf=new StringBuffer("");
         Vector journals=CMLib.database().DBReadJournal(null);
-        
+
         if(journals.size()==0)
             buf.append("No journals exits.");
         else
@@ -812,7 +812,7 @@ public class List extends StdCommand
 		int col=0;
 		int numGroups=CMath.s_int(CMLib.threads().tickInfo("tickGroupSize"));
 		int whichTick=-1;
-		if(CMath.isInteger(whichTickTock)&&(whichTickTock.length()>0)) 
+		if(CMath.isInteger(whichTickTock)&&(whichTickTock.length()>0))
 		    whichTick=CMath.s_int(whichTickTock);
 		else
 		if(whichTickTock.length()>0)
@@ -827,7 +827,7 @@ public class List extends StdCommand
 			{
 				long tickerlaststartdate=CMath.s_long(CMLib.threads().tickInfo("tickerlaststartmillis"+v+"-"+t));
 				long tickerlaststopdate=CMath.s_long(CMLib.threads().tickInfo("tickerlaststopmillis"+v+"-"+t));
-				boolean isActive=(tickerlaststopdate<tickerlaststartdate);			
+				boolean isActive=(tickerlaststopdate<tickerlaststartdate);
 				if((!activeOnly)||(isActive))
 				{
 					String name=CMLib.threads().tickInfo("tickerName"+v+"-"+t);
@@ -921,7 +921,7 @@ public class List extends StdCommand
 		if(keySet.size()==1)
 		{
 			String key=(String)keySet.firstElement();
-			StringBuffer str=new StringBuffer("^x"+key.toString()+"^?\n\r");
+			StringBuffer str=new StringBuffer("^x"+key+"^?\n\r");
 			Object o=Resources.getResource(key);
 			if(o instanceof Vector) str.append(CMParms.toStringList((Vector)o));
 			else
@@ -949,7 +949,7 @@ public class List extends StdCommand
 		Enumeration keys=keySet.elements();
 		return CMLib.lister().reallyList2Cols(keys,-1,null).toString();
 	}
-	
+
     public String listMaterials()
     {
         return CMParms.toStringList(RawMaterial.MATERIAL_DESCS);
@@ -1053,7 +1053,7 @@ public class List extends StdCommand
                 return 29;
 		return -1;
 	}
-	
+
     public String listComponents(){
         StringBuffer buf=new StringBuffer("^xAll Defined Spells and required components: ^N\n\r");
         for(Enumeration e=CMLib.ableMapper().getAbilityComponentMap().keys();e.hasMoreElements();)
@@ -1066,7 +1066,7 @@ public class List extends StdCommand
         if(buf.length()==0) return "None defined.";
         return buf.toString();
     }
-    
+
     public String listExpertises()
     {
         StringBuffer buf=new StringBuffer("^xAll Defined Expertise Codes: ^N\n\r");
@@ -1078,7 +1078,7 @@ public class List extends StdCommand
         if(buf.length()==0) return "None defined.";
         return buf.toString();
     }
-    
+
     public String listTitles()
     {
         StringBuffer buf=new StringBuffer("^xAll Defined Auto-Titles: ^N\n\r");
@@ -1091,7 +1091,7 @@ public class List extends StdCommand
         if(buf.length()==0) return "None defined.";
         return buf.toString();
     }
-    
+
 	public final static String[][] SECURITY_LISTMAP={
 		/*00*/{"UNLINKEDEXITS","CMDEXITS","CMDROOMS","CMDAREAS"},
 		/*01*/{"ITEMS","CMDITEMS"},
@@ -1223,7 +1223,7 @@ public class List extends StdCommand
         }
         return buf;
     }
-    
+
     public void listPolls(MOB mob, Vector commands)
     {
         Vector V=CMLib.polls().getPollList();
@@ -1239,7 +1239,7 @@ public class List extends StdCommand
                 if(!CMath.bset(P.getFlags(),Poll.FLAG_ACTIVE))
                     str.append(" (inactive)");
                 else
-                if(P.getExpiration()>0) 
+                if(P.getExpiration()>0)
                     str.append(" (expires: "+CMLib.time().date2String(P.getExpiration())+")");
                 str.append("\n\r");
             }
@@ -1252,7 +1252,7 @@ public class List extends StdCommand
         StringBuffer log=Log.getLog();
         if(commands.size()<2)
             return log.toString();
-        
+
         Vector logV=new Vector();
         int start=0;
         for(int l=0;l<log.length();l++)
@@ -1269,7 +1269,7 @@ public class List extends StdCommand
             }
         if(start<log.length())
             logV.addElement(log.subSequence(start,log.length()));
-        
+
         start=0;
         int end=logV.size();
         for(int i=1;i<commands.size();i++)
@@ -1315,7 +1315,7 @@ public class List extends StdCommand
             newLog.append(logV.elementAt(i)).append("\r\n");
         return newLog.toString();
     }
-    
+
 	public void archonlist(MOB mob, Vector commands)
 	{
 		if(commands.size()==0)
@@ -1406,7 +1406,7 @@ public class List extends StdCommand
 			break;
 		}
         case 33: s.wraplessPrintln(listRaceCats(CMClass.races(),rest.equalsIgnoreCase("SHORT")).toString()); break;
-		case 34: s.wraplessPrintln(listLog(mob,commands)); break; 
+		case 34: s.wraplessPrintln(listLog(mob,commands)); break;
 		case 35: listUsers(mob,commands); break;
 		case 36: s.println(listLinkages(mob).toString()); break;
 		case 37: s.println(listReports(mob).toString()); break;
@@ -1427,7 +1427,7 @@ public class List extends StdCommand
         case 52: s.wraplessPrintln(listTitles()); break;
 		case 53: s.wraplessPrintln(roomResources(mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
 		case 54: s.wraplessPrintln(areaConquests(CMLib.map().sortedAreas()).toString()); break;
-        case 55: s.wraplessPrintln(CMLib.quests().listHolidays(mob.location().getArea(),CMParms.combine(commands,1)).toString()); break;
+        case 55: s.wraplessPrintln(CMLib.quests().listHolidays(mob.location().getArea(),CMParms.combine(commands,1))); break;
         default:
 			s.println("List?!");
 			break;
@@ -1504,8 +1504,8 @@ public class List extends StdCommand
 		}
 		return false;
 	}
-	
+
 	public boolean canBeOrdered(){return true;}
 
-	
+
 }

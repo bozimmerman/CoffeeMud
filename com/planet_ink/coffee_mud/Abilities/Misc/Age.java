@@ -112,8 +112,8 @@ public class Age extends StdAbility
         }
         return following;
     }
-    
-    
+
+
     protected void doThang()
 	{
 		if(affected==null) return;
@@ -125,8 +125,10 @@ public class Age extends StdAbility
 		norecurse=true;
 
 		if(divisor==0.0)
-		    divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
-		
+		    divisor = (double)( CMClass.globalClock().getMonthsInYear() *
+		                           CMClass.globalClock().getDaysInMonth() *
+		                           CMProps.getIntVar( CMProps.SYSTEMI_TICKSPERMUDDAY ) );
+
 		int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor)));
 		if((affected instanceof Item)&&(affected instanceof CagedAnimal))
 		{
@@ -158,7 +160,7 @@ public class Age extends StdAbility
 						norecurse=false;
 						return;
 					}
-							
+
 					CagedAnimal C=(CagedAnimal)affected;
 					MOB babe=C.unCageMe();
 					if((babe==null)||(babe.baseCharStats()==null))
@@ -260,7 +262,7 @@ public class Age extends StdAbility
 				Ability A=babe.fetchEffect("Prop_SafePet");
 				if(A!=null)babe.delEffect(A);
                 CMLib.database().DBDeleteData(following.Name(),"HEAVEN",following.Name()+"/HEAVEN/"+text());
-                
+
 				Room R=CMLib.map().roomLocation(affected);
 				if((R!=null)&&(affected.Name().indexOf(" ")<0)&&(!CMLib.database().DBUserSearch(null,affected.Name())))
 				{
@@ -344,11 +346,11 @@ public class Age extends StdAbility
 						&&((S.mob().playerStats().getFriends().contains(newMan.Name())||S.mob().playerStats().getFriends().contains("All"))))
 							S.mob().tell("^X"+newMan.Name()+" has just been created.^.^?");
 					}
-                    
+
                     Vector channels=CMLib.channels().getFlaggedChannelNames("NEWPLAYERS");
                     for(int i=0;i<channels.size();i++)
                         CMLib.commands().postChannel((String)channels.elementAt(i),newMan.getClanID(),newMan.Name()+" has just been created.",true);
-                    
+
 					if(liege!=babe.amFollowing())
 						babe.amFollowing().tell(newMan.Name()+" has just grown up! "+CMStrings.capitalizeAndLower(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
 					liege.tell(newMan.Name()+" has just grown up! "+CMStrings.capitalizeAndLower(newMan.baseCharStats().hisher())+" password is the same as "+liege.Name()+"'s.");
@@ -405,7 +407,9 @@ public class Age extends StdAbility
                 &&(affected.description().toUpperCase().indexOf(msg.source().name().toUpperCase())>=0))
                 {
                     if(divisor==0.0)
-                        divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
+                        divisor = (double)( CMClass.globalClock().getMonthsInYear() *
+                                            CMClass.globalClock().getDaysInMonth() *
+                                            CMProps.getIntVar( CMProps.SYSTEMI_TICKSPERMUDDAY ) );
                     long l=CMath.s_long(text());
                     if((l>0)&&(l<Long.MAX_VALUE))
                     {
@@ -433,8 +437,8 @@ public class Age extends StdAbility
 						baby.addBehavior(B);
 				}
 				if(baby.owner() instanceof Room)
-				{ 
-					if(!B.getParms().equalsIgnoreCase(downBabyEmoter)) 
+				{
+					if(!B.getParms().equalsIgnoreCase(downBabyEmoter))
 						B.setParms(downBabyEmoter);
 				}
 				else
@@ -442,13 +446,13 @@ public class Age extends StdAbility
 				{
 					Environmental o=baby.owner();
 					if(baby.description().toUpperCase().indexOf(o.name().toUpperCase())<0)
-					{ 
-						if(!B.getParms().equalsIgnoreCase(otherBabyEmoter)) 
+					{
+						if(!B.getParms().equalsIgnoreCase(otherBabyEmoter))
 							B.setParms(otherBabyEmoter);
 					}
 					else
-					{ 
-						if(!B.getParms().equalsIgnoreCase(happyBabyEmoter)) 
+					{
+						if(!B.getParms().equalsIgnoreCase(happyBabyEmoter))
 							B.setParms(happyBabyEmoter);
 					}
 				}
@@ -467,7 +471,9 @@ public class Age extends StdAbility
 				        mob=(MOB)affected;
 					    if(myRace==null) myRace=((MOB)affected).charStats().getMyRace();
 						if(divisor==0.0)
-						    divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
+						    divisor = (double)( CMClass.globalClock().getMonthsInYear() *
+						                        CMClass.globalClock().getDaysInMonth() *
+						                        CMProps.getIntVar( CMProps.SYSTEMI_TICKSPERMUDDAY ) );
 						long l=CMath.s_long(text());
 						if((l>0)&&(l<Long.MAX_VALUE))
 						{
@@ -483,7 +489,7 @@ public class Age extends StdAbility
 				        mob=(MOB)((Item)affected).owner();
                     if((mob==null)&&(((Item)affected).owner() instanceof Room))
                         mob=((Room)((Item)affected).owner()).fetchInhabitant(0);
-                        
+
 				    if((soil)&&(affected.fetchEffect("Soiled")==null)&&(mob!=null))
 				    {
 				        Ability A=CMClass.getAbility("Soiled");
@@ -512,7 +518,9 @@ public class Age extends StdAbility
 		else
 		{
 			if(divisor==0.0)
-			    divisor=new Integer(CMClass.globalClock().getMonthsInYear()*CMClass.globalClock().getDaysInMonth()*CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY)).doubleValue();
+			    divisor = (double)( CMClass.globalClock().getMonthsInYear() *
+			                        CMClass.globalClock().getDaysInMonth() *
+			                        CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY ) );
             int age=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor)));
             if((age>=Short.MAX_VALUE)||(age<0))
                 Log.errOut("Age","Recorded, on "+affected.name()+", age of "+age+", from tick values (("+System.currentTimeMillis()+"-"+l+")/4000)/"+divisor);

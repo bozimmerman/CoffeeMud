@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -85,7 +85,7 @@ public class Thief_Swipe extends ThiefSkill
 			mob.tell(mob,mob.getVictim(),null,"Not while you are fighting <T-NAME>!");
 			return false;
 		}
-		
+
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
 		if((!target.mayIFight(mob))||(levelDiff>15))
 		{
@@ -137,11 +137,11 @@ public class Thief_Swipe extends ThiefSkill
 			if(levelDiff>5) pct=0.10;
 			if(levelDiff>10) pct=0.05;
 			double goldTaken=CMLib.beanCounter().getTotalAbsoluteNativeValue(target)*pct*Math.random();
-			if(goldTaken<new Integer(CMLib.ableMapper().qualifyingClassLevel(mob,this)).doubleValue())
-				goldTaken=new Integer(CMLib.ableMapper().qualifyingClassLevel(mob,this)).doubleValue();
+			if(goldTaken<((double)CMLib.ableMapper().qualifyingClassLevel(mob,this)))
+				goldTaken=(double)CMLib.ableMapper().qualifyingClassLevel(mob,this);
 			if(goldTaken>CMLib.beanCounter().getTotalAbsoluteNativeValue(target)) goldTaken=CMLib.beanCounter().getTotalAbsoluteNativeValue(target);
 			String goldTakenStr=CMLib.beanCounter().nameCurrencyShort(target,goldTaken);
-			
+
 			String str=null;
 			int code=CMMsg.MSG_THIEF_ACT;
 			if(!auto)
@@ -168,7 +168,7 @@ public class Thief_Swipe extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				
+
 				if((!target.isMonster())&&(mob.isMonster())&&(!alreadyFighting))
 				{
 					if(target.getVictim()==mob)

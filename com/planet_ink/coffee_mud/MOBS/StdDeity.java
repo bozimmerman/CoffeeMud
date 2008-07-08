@@ -14,7 +14,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -288,7 +288,7 @@ public class StdDeity extends StdMOB implements Deity
     {
         return "The services of "+name()+" are the following: "+getTriggerDesc(serviceTriggers)+".";
     }
-    
+
 	public void destroy()
 	{
 		super.destroy();
@@ -626,7 +626,7 @@ public class StdDeity extends StdMOB implements Deity
 					   yup=true;
 					break;
                 case TRIGGER_YOUSAY:
-                    if(v<=0) 
+                    if(v<=0)
                         yup=true;
                     else
                     {
@@ -644,7 +644,7 @@ public class StdDeity extends StdMOB implements Deity
                     }
                     break;
                 case TRIGGER_ALLSAY:
-                    if(v<=0) 
+                    if(v<=0)
                         yup=true;
                     else
                     {
@@ -670,7 +670,7 @@ public class StdDeity extends StdMOB implements Deity
                     }
                     break;
                 case TRIGGER_OTHERSAY:
-                    if(v<=0) 
+                    if(v<=0)
                         yup=true;
                     else
                     {
@@ -697,7 +697,7 @@ public class StdDeity extends StdMOB implements Deity
                     break;
                 case TRIGGER_WAIT:
                 {
-                    if(v<=0) 
+                    if(v<=0)
                         yup=true;
                     else
                     {
@@ -880,7 +880,7 @@ public class StdDeity extends StdMOB implements Deity
 				if((V!=null)&&(V.size()>0))
 				{
 					boolean recheck=triggerCheck(msg,V,trigBlessingParts,trigBlessingTimes);
-	
+
 					if((recheck)&&(!norecurse)&&(!alreadyBlessed(msg.source())))
 					{
 						boolean[] checks=(boolean[])trigBlessingParts.get(msg.source().Name());
@@ -937,7 +937,7 @@ public class StdDeity extends StdMOB implements Deity
 				if((V!=null)&&(V.size()>0))
 				{
 					boolean recheck=triggerCheck(msg,V,trigPowerParts,trigPowerTimes);
-	
+
 					if((recheck)&&(!norecurse)&&(!alreadyPowered(msg.source())))
 					{
 						boolean[] checks=(boolean[])trigPowerParts.get(msg.source().Name());
@@ -958,7 +958,7 @@ public class StdDeity extends StdMOB implements Deity
 					}
 				}
 			}
-            
+
             if((msg.source().charStats().getCurrentClass().baseClass().equals("Cleric")
                 ||(CMSecurity.isASysOp(msg.source())))
             &&(CMLib.law().getClericInfused(msg.source().location())==this))
@@ -967,7 +967,7 @@ public class StdDeity extends StdMOB implements Deity
 				if((V!=null)&&(V.size()>0))
 				{
 	                boolean recheck=triggerCheck(msg,V,trigServiceParts,trigServiceTimes);
-	
+
 	                if((recheck)&&(!norecurse)&&(!alreadyServiced(msg.source(),msg.source().location())))
 	                {
 	                    boolean[] checks=(boolean[])trigServiceParts.get(msg.source().Name());
@@ -1043,7 +1043,7 @@ public class StdDeity extends StdMOB implements Deity
             CMLib.tracking().wanderAway(M,false,true);
         }
     }
-    
+
     protected boolean alreadyServiced(MOB mob, Room room)
     {
         synchronized(services)
@@ -1089,7 +1089,7 @@ public class StdDeity extends StdMOB implements Deity
                 if((!M.isMonster())&&(M!=mob))
                     CMLib.leveler().postExperience(M,null,null,50,false);
                 totalLevels+=M.envStats().level();
-                if(!M.isMonster()) 
+                if(!M.isMonster())
                     totalLevels+=(M.envStats().level()*2);
                 Ability A=M.fetchEffect("Skill_Convert");
                 if(A!=null) A.makeLongLasting();
@@ -1130,13 +1130,13 @@ public class StdDeity extends StdMOB implements Deity
                                 CMMsg msg=CMClass.getMsg(M,this,null,CMMsg.MSG_REBUKE,"<S-NAME> <S-HAS-HAVE> been rebuked by <T-NAME>!!");
                                 if((M.location()!=null)&&(M.okMessage(M,msg)))
                                     M.location().send(M,msg);
-                                blackmarks=0; 
-                                blacklist=null; 
+                                blackmarks=0;
+                                blacklist=null;
                                 lastBlackmark=0;
                             }
                             else
                             {
-                                if(blacklist!=M) 
+                                if(blacklist!=M)
                                     blackmarks=0;
                                 blacklist=M;
                                 blackmarks++;
@@ -1159,7 +1159,7 @@ public class StdDeity extends StdMOB implements Deity
                         }
                         else
                         {
-                            if(blacklist!=M) 
+                            if(blacklist!=M)
                                 blackmarks=0;
                             blacklist=M;
                             blackmarks++;
@@ -1239,7 +1239,7 @@ public class StdDeity extends StdMOB implements Deity
 			if((A!=null)&&(A.ID().equals(to.ID())))
 				return;
 		}
-		blessings.addElement(to,new Boolean(clericOnly));
+		blessings.addElement(to,Boolean.valueOf(clericOnly));
 	}
 	public void delBlessing(Ability to)
 	{
@@ -1627,7 +1627,7 @@ public class StdDeity extends StdMOB implements Deity
 			if((A!=null)&&(A.ID().equals(to.ID())))
 				return;
 		}
-		curses.addElement(to, new Boolean(clericOnly));
+		curses.addElement(to, Boolean.valueOf(clericOnly));
 	}
 	public void delCurse(Ability to)
 	{

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,10 +34,13 @@ import java.util.*;
 public class Bed extends GenRideable
 {
 	public String ID(){	return "Bed";}
-	protected String	readableText="";
+
 	public Bed()
 	{
 		super();
+
+		readableText = "";
+
 		setName("a bed");
 		baseEnvStats.setWeight(150);
 		setDisplayText("a bed is here.");

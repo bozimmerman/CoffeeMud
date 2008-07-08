@@ -16,7 +16,7 @@ import java.util.*;
 
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -71,7 +71,7 @@ public class HelpTopics extends StdWebMacro
 				return " @break@";
 			}
 			else
-				fletter=new Character((char)(fletter.charAt(0)+1)).toString();
+				fletter=Character.toString((char)(fletter.charAt(0)+1));
 			httpReq.addRequestParameters("HELPFIRSTLETTER",fletter);
 		}
 		else

@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -180,7 +180,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 		}
 		return true;
 	}
-    
+
     public int amountTakenToFillMe(Drink theSource)
     {
         int amountToTake=amountOfLiquidHeld-amountOfLiquidRemaining;
@@ -219,7 +219,7 @@ public class StdDrink extends StdContainer implements Drink,Item
 					thePuddle.setLiquidRemaining(thePuddle.liquidRemaining()-amountToTake);
 					if(amountOfLiquidRemaining<=0)
 						setLiquidType(thePuddle.liquidType());
-					if((amountOfLiquidRemaining+amountToTake)<=Integer.MAX_VALUE)
+					if( ( (long)amountOfLiquidRemaining + (long)amountToTake ) <= (long)Integer.MAX_VALUE )
 						amountOfLiquidRemaining+=amountToTake;
 					if(amountOfLiquidRemaining>amountOfLiquidHeld)
 						amountOfLiquidRemaining=amountOfLiquidHeld;

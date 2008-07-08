@@ -47,7 +47,7 @@ import java.util.*;
  * <p>
  * Company: http://www.falserealities.com
  * </p>
- * 
+ *
  * @author FR - Jeremy Vyska; CM - Bo Zimmerman
  * @version 1.0.0.0
  */
@@ -209,7 +209,7 @@ public class Prop_ClanEquipment extends Property
         manaRequired=(int)CMath.div(mob.maxState().getMana(),10);
         manaRequired-=(5*level);
         if(manaRequired<5) manaRequired=5;
-        
+
         if(manaRequired>mob.curState().getMana())
         {
             mob.tell("You don't have enough mana.");
@@ -347,7 +347,7 @@ public class Prop_ClanEquipment extends Property
                 &&(msg.target() instanceof MOB)&&(msg.tool() instanceof Weapon)&&(!(msg.tool() instanceof Wand))&&(TypeOfEffect<1000)
                 &&(!((MOB)msg.target()).amDead()))
         {
-            double flameDamage=new Integer(CMLib.dice().roll(1,6*PowerLevel,1*PowerLevel)).doubleValue();
+            double flameDamage=(double)CMLib.dice().roll(1,6*PowerLevel,1*PowerLevel);
             String str="^F^<FIGHT^>The magic of "+clanName+" <DAMAGE> <T-NAME>!^</FIGHT^>^?";
             CMLib.combat().postDamage(msg.source(),(MOB)msg.target(),null,(int)Math.round(flameDamage),
                     CMMsg.MASK_MALICIOUS|CMMsg.MASK_ALWAYS|TypeOfEffect,WeaponType,str);

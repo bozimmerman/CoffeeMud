@@ -2,7 +2,7 @@ package com.planet_ink.siplet.support;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -20,7 +20,7 @@ import java.util.*;
 public class Util
 {
 	public final static String SPACES="                                                                     ";
-	
+
 	public static String toSemicolonList(byte[] bytes)
 	{
 		StringBuffer str=new StringBuffer("");
@@ -28,7 +28,7 @@ public class Util
 			str.append(Byte.toString(bytes[b])+(b<(bytes.length-1)?";":""));
 		return str.toString();
 	}
-	
+
     public static String toSemicolonList(String[] bytes)
     {
         StringBuffer str=new StringBuffer("");
@@ -36,7 +36,7 @@ public class Util
             str.append(bytes[b]+(b<(bytes.length-1)?";":""));
         return str.toString();
     }
-    
+
     public static String toSemicolonList(Vector bytes)
     {
         StringBuffer str=new StringBuffer("");
@@ -44,7 +44,7 @@ public class Util
             str.append(bytes.elementAt(b)+(b<(bytes.size()-1)?";":""));
         return str.toString();
     }
-    
+
 	public static byte[] fromByteList(String str)
 	{
 		Vector V=parseSemicolons(str,true);
@@ -57,14 +57,14 @@ public class Util
 		}
 		return new byte[0];
 	}
-	
+
 	public static long absDiff(long x, long y)
 	{
 		long d=x-y;
 		if(d<0) return d*-1;
 		return d;
 	}
-	
+
 	public static String repeat(String str1, int times)
 	{
 		if(times<=0) return "";
@@ -73,38 +73,38 @@ public class Util
 			str.append(str1);
 		return str.toString();
 	}
-	
+
     public static String endWithAPeriod(String str)
     {
         if(str.length()==0) return str;
         int x=str.length()-1;
         while((x>=0)
         &&((Character.isWhitespace(str.charAt(x)))
-            ||((x>0)&&((str.charAt(x)!='^')&&(str.charAt(x-1)=='^')&&((--x)>=0))))) 
+            ||((x>0)&&((str.charAt(x)!='^')&&(str.charAt(x-1)=='^')&&((--x)>=0)))))
                 x--;
         if(x<0) return str;
-        if((str.charAt(x)=='.')||(str.charAt(x)=='!')||(str.charAt(x)=='?')) 
+        if((str.charAt(x)=='.')||(str.charAt(x)=='!')||(str.charAt(x)=='?'))
         	return str.trim()+" ";
         return str.substring(0,x+1)+". "+str.substring(x+1).trim();
     }
-    
+
 	public static String startWithAorAn(String str)
 	{
-		if(str.length()==0) 
+		if(str.length()==0)
 			return str;
 		if((!str.toUpperCase().startsWith("A "))
 		&&(!str.toUpperCase().startsWith("AN "))
 		&&(!str.toUpperCase().startsWith("THE "))
 		&&(!str.toUpperCase().startsWith("SOME ")))
         {
-			if("aeiouAEIOU".indexOf(str.charAt(0))>=0) 
+			if("aeiouAEIOU".indexOf(str.charAt(0))>=0)
 				return "an "+str;
 			return "a "+str;
         }
 		return str;
 	}
-	
-	
+
+
 	public static int getParmInt(String text, String key, int defaultValue)
 	{
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
@@ -138,10 +138,10 @@ public class Util
 		}
 		return defaultValue;
 	}
-	
+
 	public static boolean isVowel(char c)
 	{ return (("aeiou").indexOf(Character.toLowerCase(c))>=0);}
-	
+
 	public static int getParmPlus(String text, String key)
 	{
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
@@ -209,8 +209,8 @@ public class Util
 						if(text.substring(0,x).indexOf(".")<0)
 						{
 							if(pm=='+')
-								return new Integer(Util.s_int(text.substring(0,x))).doubleValue();
-							return new Integer(-Util.s_int(text.substring(0,x))).doubleValue();
+								return (double)Util.s_int(text.substring(0,x));
+							return (double)-Util.s_int(text.substring(0,x));
 						}
 						if(pm=='+')
 							return Util.s_double(text.substring(0,x));
@@ -224,7 +224,7 @@ public class Util
 		}
 		return 0.0;
 	}
-	
+
 	public static double getParmDouble(String text, String key, double defaultValue)
 	{
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
@@ -248,7 +248,7 @@ public class Util
 						&&((Character.isDigit(text.charAt(x)))||(text.charAt(x)=='.')))
 							x++;
 						if(text.substring(0,x).indexOf(".")<0)
-							return new Long(Util.s_long(text.substring(0,x))).doubleValue();
+							return (double)Util.s_long(text.substring(0,x));
 						return Util.s_double(text.substring(0,x));
 					}
 				}
@@ -259,7 +259,7 @@ public class Util
 		}
 		return defaultValue;
 	}
-	
+
 	public static String getParmStr(String text, String key, String defaultVal)
 	{
 		int x=text.toUpperCase().indexOf(key.toUpperCase());
@@ -279,9 +279,9 @@ public class Util
 					while((x<text.length())&&(!Character.isLetterOrDigit(text.charAt(x))))
                     {
 						if(text.charAt(x)=='\"')
-                        { 
-                            endWithQuote=true; 
-                            x++; 
+                        {
+                            endWithQuote=true;
+                            x++;
                             break;
                         }
 						x++;
@@ -317,7 +317,7 @@ public class Util
 			s[v]=V.elementAt(v).toString();
 		return s;
 	}
-	
+
 	public static long[] toLongArray(Vector V)
 	{
 		if((V==null)||(V.size()==0)){
@@ -340,7 +340,7 @@ public class Util
 			s[v]=Util.s_int(V.elementAt(v).toString());
 		return s;
 	}
-	
+
 	public static String[] toStringArray(HashSet V)
 	{
 		if((V==null)||(V.size()==0)){
@@ -353,7 +353,7 @@ public class Util
 			s[v++]=(i.next()).toString();
 		return s;
 	}
-	
+
 	public static String toStringList(String[] V)
 	{
 		if((V==null)||(V.length==0)){
@@ -365,7 +365,7 @@ public class Util
 		if(s.length()==0) return "";
 		return s.toString().substring(2);
 	}
-	
+
 	public static String toStringList(long[] V)
 	{
 		if((V==null)||(V.length==0)){
@@ -377,7 +377,7 @@ public class Util
 		if(s.length()==0) return "";
 		return s.toString().substring(2);
 	}
-	
+
 	public static String toStringList(int[] V)
 	{
 		if((V==null)||(V.length==0)){
@@ -389,8 +389,8 @@ public class Util
 		if(s.length()==0) return "";
 		return s.toString().substring(2);
 	}
-	
-	
+
+
 	public static String toStringList(Vector V)
 	{
 		if((V==null)||(V.size()==0)){
@@ -402,7 +402,7 @@ public class Util
 		if(s.length()==0) return "";
 		return s.toString().substring(2);
 	}
-	
+
 	public static String toStringList(HashSet V)
 	{
 		if((V==null)||(V.size()==0)){
@@ -414,9 +414,9 @@ public class Util
 		if(s.length()==0) return "";
 		return s.toString().substring(2);
 	}
-	
+
 	public static Vector makeVector(String[] O)
-	{ 
+	{
 		Vector V=new Vector();
 		if(O!=null)
 		for(int s=0;s<O.length;s++)
@@ -433,7 +433,7 @@ public class Util
 	{ Vector V=new Vector(); V.addElement(O); V.addElement(O2); V.addElement(O3); return V;}
 	public static Vector makeVector(Object O, Object O2, Object O3, Object O4)
 	{ Vector V=new Vector(); V.addElement(O); V.addElement(O2); V.addElement(O3); V.addElement(O4); return V;}
-		
+
 	public static HashSet makeHashSet(){return new HashSet();}
 	public static HashSet makeHashSet(Object O)
 	{HashSet H=new HashSet(); H.add(O); return H;}
@@ -443,7 +443,7 @@ public class Util
 	{HashSet H=new HashSet(); H.add(O); H.add(O2); H.add(O3); return H;}
 	public static HashSet makeHashSet(Object O, Object O2, Object O3, Object O4)
 	{HashSet H=new HashSet(); H.add(O); H.add(O2); H.add(O3); H.add(O4); return H;}
-	
+
 	public static String[] toStringArray(Hashtable V)
 	{
 		if((V==null)||(V.size()==0)){
@@ -460,14 +460,14 @@ public class Util
 		}
 		return s;
 	}
-	
+
 	public static void addToVector(Vector from, Vector to)
 	{
 		if(from!=null)
 		for(int i=0;i<from.size();i++)
 			to.addElement(from.elementAt(i));
 	}
-	
+
 	public static String toStringList(Hashtable V)
 	{
 		if((V==null)||(V.size()==0)){
@@ -481,7 +481,7 @@ public class Util
 		}
 		return s.toString();
 	}
-	
+
 	public static String replaceAll(String str, String thisStr, String withThisStr)
 	{
 		if((str==null)
@@ -498,7 +498,7 @@ public class Util
 		}
 		return str;
 	}
-    
+
     public static String replaceAllIgnoreCase(String str, String thisStr, String withThisStr)
     {
         if((str==null)
@@ -539,7 +539,7 @@ public class Util
 		}
 		return str;
 	}
-	
+
 	public static boolean isInteger(String INT)
 	{
 		if(INT.length()==0) return false;
@@ -550,7 +550,7 @@ public class Util
 				return false;
 		return true;
 	}
-	
+
 	public static boolean isDouble(String DBL)
 	{
 		if(DBL.length()==0) return false;
@@ -571,7 +571,7 @@ public class Util
 			}
 		return alreadyDot;
 	}
-	
+
     public static String capitalizeAndLower(String name)
     {
         return (Character.toUpperCase(name.charAt(0))+name.substring(1).toLowerCase()).trim();
@@ -580,22 +580,22 @@ public class Util
 	{
 		return (Character.toUpperCase(name.charAt(0))+name.substring(1)).trim();
 	}
-	
+
 	/**
 	 * Returns the boolean value of a string without crashing
- 	 * 
+ 	 *
 	 * <br><br><b>Usage:</b> int num=s_bool(CMD.substring(14));
 	 * @param INT Boolean value of string
 	 * @return int Boolean value of the string
 	 */
 	public static boolean s_bool(String BOOL)
 	{
-		return Boolean.valueOf(BOOL).booleanValue(); 
+		return Boolean.valueOf(BOOL).booleanValue();
 	}
-    
+
 	/**
 	 * Returns the integer value of a string without crashing
- 	 * 
+ 	 *
 	 * <br><br><b>Usage:</b> int num=s_int(CMD.substring(14));
 	 * @param INT Integer value of string
 	 * @return int Integer value of the string
@@ -607,10 +607,10 @@ public class Util
 		catch(Exception e){ return 0;}
 		return sint;
 	}
-	
+
     /**
      * Returns the integer value of a string without crashing
-     * 
+     *
      * <br><br><b>Usage:</b> int num=s0_int(CMD.substring(14));
      * @param INT Integer value of string
      * @return int Integer value of the string
@@ -624,7 +624,7 @@ public class Util
         catch(Exception e){ return 0;}
         return sint;
     }
-    
+
 	public static String lastWordIn(String thisStr)
 	{
 		int x=thisStr.lastIndexOf(' ');
@@ -632,7 +632,7 @@ public class Util
 			return thisStr.substring(x+1);
 		return thisStr;
 	}
-	
+
 	public static String removeColors(String s)
 	{
 		StringBuffer str=new StringBuffer(s);
@@ -666,7 +666,7 @@ public class Util
 					            if(i>=(str.length()-1))
 					            {
 					                i=tagStart;
-								    str.delete(i,i+2); 
+								    str.delete(i,i+2);
 								    i--;
 					                break;
 					            }
@@ -684,13 +684,13 @@ public class Util
 				    }
 					else
 					{
-					    str.delete(i,i+2); 
+					    str.delete(i,i+2);
 						i--;
 					}
 				}
 				else
 				{
-				    str.delete(i,i+2); 
+				    str.delete(i,i+2);
 					i--;
 				}
 			    break;
@@ -698,7 +698,7 @@ public class Util
 		}
 		return str.toString();
 	}
-	
+
 	public static String returnTime(long millis, long ticks)
 	{
 		String avg="";
@@ -717,9 +717,9 @@ public class Util
 		long days=hours/24;
 		hours-=(days*24);
 		return days+"d "+hours+"h "+minutes+"m "+seconds+"s "+millis+"ms"+avg;
-		
+
 	}
-	
+
 	public static Vector copyVector(Vector V)
 	{
 		Vector V2=new Vector();
@@ -733,7 +733,7 @@ public class Util
 		}
 		return V2;
 	}
-	
+
 	public static int numBits(String s)
 	{
 		int i=0;
@@ -775,9 +775,9 @@ public class Util
 			return num+1;
 		return num;
 	}
-	
+
 	public static String cleanBit(String s)
-	{ 
+	{
 		while(s.startsWith(" "))
 			s=s.substring(1);
 		while(s.endsWith(" "))
@@ -792,10 +792,10 @@ public class Util
 	}
 	public static String getCleanBit(String s, int which)
 	{ return cleanBit(getBit(s,which));}
-	
+
 	public static String getPastBitClean(String s, int which)
 	{ return cleanBit(getPastBit(s,which));}
-	
+
 	public static String getPastBit(String s, int which)
 	{
 		int i=0;
@@ -846,7 +846,7 @@ public class Util
 		}
 		return "";
 	}
-	
+
 	public static String getBit(String s, int which)
 	{
 		int i=0;
@@ -893,10 +893,10 @@ public class Util
 			return t;
 		return "";
 	}
-	
+
 	/**
 	 * Returns the long value of a string without crashing
- 	 * 
+ 	 *
 	 * <br><br><b>Usage:</b> lSize = WebIQBase.s_long(WebIQBase.getRes(AttStatsRes,"BlobSize"));
 	 * @param long String to convert
 	 * @return long Long value of the string
@@ -908,10 +908,10 @@ public class Util
 		catch(Exception e){ return 0;}
 		return slong;
 	}
-	
+
 	/**
 	 * Returns the double value of a string without crashing
- 	 * 
+ 	 *
 	 * <br><br><b>Usage:</b> dSize = WebIQBase.s_double(WebIQBase.getRes(AttStatsRes,"BlobSize"));
 	 * @param double String to convert
 	 * @return double Double value of the string
@@ -923,7 +923,7 @@ public class Util
 		catch(Exception e){ return 0;}
 		return sdouble;
 	}
-	
+
 	public static String combine(Vector commands, int startAt, int endAt)
 	{
 		StringBuffer Combined=new StringBuffer("");
@@ -932,7 +932,7 @@ public class Util
 			Combined.append((String)commands.elementAt(commandIndex)+" ");
 		return Combined.toString().trim();
 	}
-	
+
 	public static String combineWithQuotes(Vector commands, int startAt, int endAt)
 	{
 		StringBuffer Combined=new StringBuffer("");
@@ -945,7 +945,7 @@ public class Util
 		}
 		return Combined.toString().trim();
 	}
-	
+
     public static String combineAfterIndexWithQuotes(Vector commands, String match)
     {
         StringBuffer Combined=new StringBuffer("");
@@ -958,7 +958,7 @@ public class Util
         }
         return Combined.toString().trim();
     }
-    
+
 	public static String combineWithQuotes(Vector commands, int startAt)
 	{
 		StringBuffer Combined=new StringBuffer("");
@@ -971,7 +971,7 @@ public class Util
 		}
 		return Combined.toString().trim();
 	}
-	
+
 	public static String combine(Vector commands, int startAt)
 	{
 		StringBuffer Combined=new StringBuffer("");
@@ -980,11 +980,11 @@ public class Util
 			Combined.append((String)commands.elementAt(commandIndex)+" ");
 		return Combined.toString().trim();
 	}
-	
+
 	public static Vector parse(String str)
 	{	return parse(str,-1);	}
-	
-	
+
+
 	public static Vector paramParse(String str)
 	{
 		Vector commands=parse(str);
@@ -1018,7 +1018,7 @@ public class Util
 		}
 		return commands;
 	}
-	
+
 	public static Vector parse(String str, int upTo)
 	{
 		Vector commands=new Vector();
@@ -1063,7 +1063,7 @@ public class Util
 						commands.addElement(str);
 					break;
 				}
-					
+
 			}
 		}
 		return commands;
@@ -1126,7 +1126,7 @@ public class Util
         }
         return buf.toString();
     }
-    
+
 	public static Vector parseCommas(String s, boolean ignoreNulls)
 	{
 		Vector V=new Vector();
@@ -1144,7 +1144,7 @@ public class Util
 			V.addElement(s.trim());
 		return V;
 	}
-	
+
     public static Vector parsePipes(String s, boolean ignoreNulls)
     {
         Vector V=new Vector();
@@ -1162,7 +1162,7 @@ public class Util
             V.addElement(s.trim());
         return V;
     }
-    
+
 	public static Vector parseSquiggles(String s)
 	{
 		Vector V=new Vector();
@@ -1177,7 +1177,7 @@ public class Util
 		}
 		return V;
 	}
-	
+
 	public static Vector parseSentences(String s)
 	{
 		Vector V=new Vector();
@@ -1192,7 +1192,7 @@ public class Util
 		}
 		return V;
 	}
-	
+
 	public static Vector parseSquiggleDelimited(String s, boolean ignoreNulls)
 	{
 		Vector V=new Vector();
@@ -1210,7 +1210,7 @@ public class Util
 			V.addElement(s);
 		return V;
 	}
-	
+
 	public static Vector parseSemicolons(String s, boolean ignoreNulls)
 	{
 		Vector V=new Vector();
@@ -1228,19 +1228,19 @@ public class Util
 			V.addElement(s.trim());
 		return V;
 	}
-	
+
 	public static int abs(int val)
 	{
 	    if(val>=0) return val;
 	    return val*-1;
 	}
-	
+
 	public static long abs(long val)
 	{
 	    if(val>=0) return val;
 	    return val*-1;
 	}
-	
+
 	public static Vector parseSpaces(String s, boolean ignoreNulls)
 	{
 		Vector V=new Vector();
@@ -1258,7 +1258,7 @@ public class Util
 			V.addElement(s.trim());
 		return V;
 	}
-	
+
 	public static int lengthMinusColors(String thisStr)
 	{
 		int size=0;
@@ -1297,12 +1297,12 @@ public class Util
 		}
 		return size;
 	}
-	
+
 	/** Convert an integer to its Roman Numeral equivalent
-	 * 
+	 *
 	 * <br><br><b>Usage:</b> Return=MiscFunc.convertToRoman(Number)+".";
 	 * @param i Integer to convert
-	 * 
+	 *
 	 * @return String Converted integer
 	 */
 	public static String convertToRoman(int i)
@@ -1319,7 +1319,7 @@ public class Util
 		if(i>=100)
 		{
 			int x=i%100;
-			int y=Math.round((i-x)/100);
+			int y=(i-x)/100;
 			if(y>0)
 				Roman+=Hundreds[y-1];
 			i=x;
@@ -1327,7 +1327,7 @@ public class Util
 		if(i>=10)
 		{
 			int x=i%10;
-			int y=Math.round((i-x)/10);
+			int y=(i-x)/10;
 			if(y>0)
 				Roman+=Tens[y-1];
 		}
@@ -1336,7 +1336,7 @@ public class Util
 			Roman+=Ones[i-1];
 		return Roman;
 	}
-	
+
 	public static String padLeft(String thisStr, int thisMuch)
 	{
 	    int lenMinusColors=lengthMinusColors(thisStr);
@@ -1395,7 +1395,7 @@ public class Util
 			return removeColors(thisStr);
 		return SPACES.substring(0,thisMuch-lenMinusColors)+thisStr;
 	}
-	
+
 	public static boolean isNumber(String s)
 	{
 		if(s==null) return false;
@@ -1408,47 +1408,47 @@ public class Util
 				return false;
 		return true;
 	}
-	
+
 	public static double div(double a, double b)
 	{
 		return a/b;
 	}
 	public static double div(double a, int b)
 	{
-		return a/new Integer(b).doubleValue();
+		return a/(double)b;
 	}
 	public static double div(int a, double b)
 	{
-		return new Integer(a).doubleValue()/b;
+		return ((double)a)/b;
 	}
 	public static double div(double a, long b)
 	{
-		return a/new Long(b).doubleValue();
+		return a/(double)b;
 	}
 	public static double div(long a, double b)
 	{
-		return new Long(a).doubleValue()/b;
+		return ((double)a)/b;
 	}
-	
+
 	public static double mul(double a, double b)
 	{
 		return a*b;
 	}
 	public static double mul(double a, int b)
 	{
-		return a*new Integer(b).doubleValue();
+		return a*((double)b);
 	}
 	public static double mul(int a, double b)
 	{
-		return new Integer(a).doubleValue()*b;
+		return ((double)a)*b;
 	}
 	public static double mul(double a, long b)
 	{
-		return a*new Long(b).doubleValue();
+		return a*((double)b);
 	}
 	public static double mul(long a, double b)
 	{
-		return new Long(a).doubleValue()*b;
+		return ((double)a)*b;
 	}
 	public static long mul(long a, long b)
 	{
@@ -1460,19 +1460,19 @@ public class Util
 	}
 	public static double div(long a, long b)
 	{
-		return new Long(a).doubleValue()/new Long(b).doubleValue();
+		return ((double)a)/((double)b);
 	}
 	public static double div(int a, int b)
 	{
-		return new Integer(a).doubleValue()/new Integer(b).doubleValue();
+		return ((double)a)/((double)b);
 	}
 	public static int pow(int x, int y)
 	{
-		return (int)Math.round(Math.pow(new Integer(x).doubleValue(),new Integer(y).doubleValue()));
+		return (int)Math.round(Math.pow((double)x,(double)y));
 	}
 	public static int squared(int x)
 	{
-		return (int)Math.round(Math.pow(new Integer(x).doubleValue(),new Integer(x).doubleValue()));
+		return (int)Math.round(Math.pow((double)x,(double)x));
 	}
 	public static boolean bset(int num, int bitmask)
 	{
@@ -1540,14 +1540,14 @@ public class Util
 			return true;
 		return false;
 	}
-	
+
 	public static String sameCase(String str, char c)
 	{
 		if(Character.isUpperCase(c))
 			return str.toUpperCase();
 		return str.toLowerCase();
 	}
-	
+
 	public static Vector denumerate(Enumeration e)
 	{
 		Vector V=new Vector();

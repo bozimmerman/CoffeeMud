@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,7 @@ public class GenCoins extends GenItem implements Coins
 	public int value(){	return envStats().ability();}
 	protected String currency="";
 	protected double denomination=1.0;
-	
+
 	public GenCoins()
 	{
 		super();
@@ -49,7 +49,7 @@ public class GenCoins extends GenItem implements Coins
 		setDenomination(CMLib.beanCounter().getLowestDenomination(""));
 		setDescription("");
 	}
-	
+
 	public String Name()
 	{
         return CMLib.beanCounter().getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins());
@@ -58,7 +58,7 @@ public class GenCoins extends GenItem implements Coins
 	{
         return CMLib.beanCounter().getDenominationName(getCurrency(),getDenomination(),getNumberOfCoins())+((getNumberOfCoins()==1)?" lies here.":" lie here.");
 	}
-	
+
     protected boolean abilityImbuesMagic(){return false;}
 	public void setDynamicMaterial()
 	{
@@ -79,9 +79,9 @@ public class GenCoins extends GenItem implements Coins
 	public void setNumberOfCoins(long number)
 	{
 	    if(number<Integer.MAX_VALUE)
-		    baseEnvStats().setAbility((int)number); 
+		    baseEnvStats().setAbility((int)number);
 	    else
-		    baseEnvStats().setAbility(Integer.MAX_VALUE); 
+		    baseEnvStats().setAbility(Integer.MAX_VALUE);
 	    recoverEnvStats();
 	}
 	public double getDenomination(){return denomination;}
@@ -89,7 +89,7 @@ public class GenCoins extends GenItem implements Coins
 	{
 	    if(valuePerCoin==0.0)
 	        valuePerCoin=1.0;
-	    denomination=valuePerCoin; 
+	    denomination=valuePerCoin;
 	    setDynamicMaterial();
 	}
 	public double getTotalValue(){return CMath.mul(getDenomination(),getNumberOfCoins());}
@@ -101,7 +101,7 @@ public class GenCoins extends GenItem implements Coins
 	{
 		if(((material&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_CLOTH)
 		&&((material&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_PAPER))
-			baseEnvStats.setWeight((int)Math.round((new Integer(baseEnvStats().ability()).doubleValue()/100.0)));
+			baseEnvStats.setWeight((int)Math.round((baseEnvStats().ability()/100.0)));
 		baseEnvStats.copyInto(envStats);
 		// import not to sup this, otherwise 'ability' makes it magical!
 		for(int a=0;a<numEffects();a++)
@@ -113,7 +113,7 @@ public class GenCoins extends GenItem implements Coins
 
 	public boolean putCoinsBack()
 	{
-	    if(amDestroyed()) 
+	    if(amDestroyed())
 	        return false;
 		Coins alternative=null;
 		if(owner() instanceof Room)

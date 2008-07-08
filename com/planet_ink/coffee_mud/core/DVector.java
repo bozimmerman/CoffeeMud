@@ -393,7 +393,6 @@ public class DVector implements Cloneable, java.io.Serializable
                 } catch(Exception e) {
                     more=false;
                     O=null;
-                    V=null;
                 }
                 return prevO;
             }

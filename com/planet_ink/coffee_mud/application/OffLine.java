@@ -12,13 +12,13 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
-    
+
     import java.net.*;
     import java.util.*;
     import java.sql.*;
 import java.io.*;
-    
-    /* 
+
+    /*
     Copyright 2000-2008 Bo Zimmerman
 
     Licensed under the Apache License, Version 2.0 (the "License");
@@ -136,17 +136,33 @@ public class OffLine extends Thread implements MudHost
         if(offLineText==null)
         {
         	offLineText=new StringBuffer("");
+        	FileInputStream fin = null;
         	try{
-	        	FileInputStream fin=new FileInputStream(fileName);
+	        	fin = new FileInputStream(fileName);
 	        	while(fin.available()>0)
 	        		offLineText.append((char)fin.read());
 	        	Resources.submitResource(fileName,offLineText);
         	}
         	catch(Exception e){e.printStackTrace();}
+        	finally
+        	{
+        	    try
+        	    {
+        	        if ( fin != null )
+        	        {
+        	            fin.close();
+        	            fin = null;
+        	        }
+        	    }
+        	    catch( final IOException ignore )
+        	    {
+
+        	    }
+        	}
         }
         return offLineText;
     }
-    
+
     public void run()
     {
         int q_len = 6;
@@ -224,7 +240,7 @@ public class OffLine extends Thread implements MudHost
                             proceed=2;
                         }
                     }catch(java.lang.ArrayIndexOutOfBoundsException e){}
-    
+
                     accessed.addElement(address,new Long(System.currentTimeMillis()));
                     if(proceed!=0)
                     {
@@ -233,7 +249,7 @@ public class OffLine extends Thread implements MudHost
                         out.println("\n\rOFFLINE: Blocked\n\r");
                         out.flush();
                         if(proceed==2)
-                            out.println("\n\rYour address has been blocked temporarily due to excessive invalid connections.  Please try back in "+(Math.round(LastConnectionDelay/60000))+" minutes, and not before.\n\r\n\r");
+                            out.println("\n\rYour address has been blocked temporarily due to excessive invalid connections.  Please try back in " + (LastConnectionDelay/60000) + " minutes, and not before.\n\r\n\r");
                         else
                             out.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
                         out.flush();
@@ -261,7 +277,7 @@ public class OffLine extends Thread implements MudHost
                             PrintWriter out;
                             out = new PrintWriter(new OutputStreamWriter(rawout,"iso-8859-1"));
                             in = new BufferedReader(new InputStreamReader(rawin,"iso-8859-1"));
-                            
+
                             if(offLineText!=null) out.print(offLineText);
                             out.flush();
                             try{Thread.sleep(250);}catch(Exception e){}
@@ -359,7 +375,7 @@ public class OffLine extends Thread implements MudHost
     public static void main(String a[])
     {
         CMProps page=null;
-        
+
         String nameID="";
         String iniFile="coffeemud.ini";
         if(a.length>0)
@@ -391,7 +407,7 @@ public class OffLine extends Thread implements MudHost
                     System.out.println("ERROR: Unable to read ini file: '"+iniFile+"'.");
                     System.exit(-1);
                 }
-                
+
                 isOK = true;
                 bind=page.getStr("BIND");
 
@@ -429,7 +445,7 @@ public class OffLine extends Thread implements MudHost
                     str.append(" "+mud.getPort());
                 }
                 ports=str.toString();
-                
+
                 if(initHost(Thread.currentThread()))
                     ((OffLine)mudThreads.firstElement()).join();
 

@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -215,7 +215,7 @@ public class TrailTo extends StdCommand
 		{
 			Room R=(Room)trailV.elementAt(s);
 			Room RA=(Room)trailV.elementAt(s-1);
-			theDirTrail.addElement(new Character(Directions.getDirectionName(getRoomDirection(R,RA,empty)).charAt(0)).toString()+" ");
+			theDirTrail.addElement(Character.toString(Directions.getDirectionName(getRoomDirection(R,RA,empty)).charAt(0))+" ");
 		}
 		StringBuffer theTrail=new StringBuffer("");
 		if(confirm)	theTrail.append("\n\r"+CMStrings.padRight("Trail",30)+": ");
@@ -235,19 +235,19 @@ public class TrailTo extends StdCommand
 			else
 			{
 				if(lastNum==1)
-					theTrail.append(new Character(lastDir).toString()+" ");
+					theTrail.append(Character.toString(lastDir)+" ");
 				else
-					theTrail.append(new Integer(lastNum).toString()+new Character(lastDir).toString()+" ");
+					theTrail.append(Integer.toString(lastNum)+Character.toString(lastDir)+" ");
 				lastDir=s.charAt(0);
 				lastNum=1;
 			}
 			theDirTrail.removeElementAt(0);
 		}
 		if(lastNum==1)
-			theTrail.append(new Character(lastDir).toString());
+			theTrail.append(Character.toString(lastDir));
 		else
 		if(lastNum>0)
-			theTrail.append(new Integer(lastNum).toString()+new Character(lastDir).toString());
+			theTrail.append(Integer.toString(lastNum)+Character.toString(lastDir));
 
 		if((confirm)&&(trailV.size()>1))
 		{
@@ -290,9 +290,9 @@ public class TrailTo extends StdCommand
 			mob.session().rawPrintln(trailTo(mob.location(),commands));
 		return false;
 	}
-	
+
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"TRAILTO");}
 
-	
+
 }

@@ -3,7 +3,7 @@ import java.applet.*;
 import java.net.*;
 import java.util.*;
 
-/* 
+/*
 Copyright 2000-2008 Bo Zimmerman
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -22,15 +22,15 @@ public class MSP
 {
 
     public MSP(){super();}
-    
+
     private static Hashtable cache=new Hashtable();
-    
+
     private String defMusicPath=null;
     private String defSoundPath=null;
     private String defPath=null;
     private MSPplayer musicClip = null;
     private MSPplayer soundClip = null;
-    
+
     public String trimQuotes(String s)
     {
         s=s.trim();
@@ -42,7 +42,7 @@ public class MSP
         }
         return s.trim();
     }
-    
+
     public int process(StringBuffer buf, int i, Applet applet)
     {
         int oldI=i;
@@ -84,10 +84,10 @@ public class MSP
         MSPplayer currentClip=tag.equals("MUSIC")?musicClip:soundClip;
         if((currentClip!=null)&&(!currentClip.playing))
         {
-            if(tag.equals("MUSIC")) 
+            if(tag.equals("MUSIC"))
                 musicClip=null;
             else
-            if(tag.equals("SOUND")) 
+            if(tag.equals("SOUND"))
                 soundClip=null;
             currentClip=null;
         }
@@ -149,10 +149,10 @@ public class MSP
         if(currentClip!=null)
         {
             currentClip.stopPlaying();
-            if(tag.equals("MUSIC")) 
+            if(tag.equals("MUSIC"))
                 musicClip=null;
             else
-            if(tag.equals("SOUND")) 
+            if(tag.equals("SOUND"))
                 soundClip=null;
             currentClip=null;
         }
@@ -168,13 +168,13 @@ public class MSP
             if(newOne.repeats!=1) currentClip.repeats=newOne.repeats;
             if(newOne.priority!=50) currentClip.priority=newOne.priority;
             if(newOne.continueValue!=1) currentClip.continueValue=newOne.continueValue;
-            if(newOne.url!=defaultUrl) currentClip.url=newOne.url;
+            if( !newOne.url.equals( defaultUrl ) ) currentClip.url=newOne.url;
         }
         currentClip.startPlaying();
-        if(tag.equals("MUSIC")) 
+        if(tag.equals("MUSIC"))
             musicClip=currentClip;
         else
-        if(tag.equals("SOUND")) 
+        if(tag.equals("SOUND"))
             soundClip=currentClip;
         return -1;
     }

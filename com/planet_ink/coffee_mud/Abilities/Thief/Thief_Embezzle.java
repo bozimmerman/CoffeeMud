@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -161,7 +161,7 @@ public class Thief_Embezzle extends ThiefSkill
 		int classLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
 		if((classLevel>0)
 		&&(Math.round(hisAmount)>(1000*(classLevel)+(2*getXLEVELLevel(mob)))))
-		   hisAmount=new Long(1000*(classLevel+(2*getXLEVELLevel(mob)))).doubleValue();
+		   hisAmount=(double)(1000l*(classLevel+(2l*getXLEVELLevel(mob))));
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -174,7 +174,7 @@ public class Thief_Embezzle extends ThiefSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,target,asLevel,new Long(((Tickable.TIME_MILIS_PER_MUDHOUR*mob.location().getArea().getTimeObj().getHoursInDay()*mob.location().getArea().getTimeObj().getDaysInMonth())/Tickable.TIME_TICK)).intValue());
+				beneficialAffect(mob,target,asLevel,(int)(((Tickable.TIME_MILIS_PER_MUDHOUR*mob.location().getArea().getTimeObj().getHoursInDay()*mob.location().getArea().getTimeObj().getDaysInMonth())/Tickable.TIME_TICK)));
 				bank.delDepositInventory(victim,hisCoins);
 				hisCoins=CMLib.beanCounter().makeBestCurrency(target,hisCoins.getTotalValue()-(hisAmount/3.0));
 				if(hisCoins.getNumberOfCoins()>0)

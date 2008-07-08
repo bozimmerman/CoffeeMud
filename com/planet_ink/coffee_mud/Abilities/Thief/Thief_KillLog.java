@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -93,7 +93,7 @@ public class Thief_KillLog extends ThiefSkill
                 CMLib.leveler().postExperience(mob,null,null,mark.envStats().level(),false);
 			}
 			set[1]=""+mark.envStats().level();
-			set[3]=new Integer(CMath.s_int(set[3])+1).toString();
+			set[3]=Integer.toString(CMath.s_int(set[3])+1);
 			mark=null;
 			if((affected!=null)&&(affected instanceof MOB))
 			{
@@ -149,7 +149,7 @@ public class Thief_KillLog extends ThiefSkill
 					theList.put(mark.Name(),set);
 				}
 				set[1]=""+mark.envStats().level();
-				set[2]=new Integer(CMath.s_int(set[2])+1).toString();
+				set[2]=Integer.toString(CMath.s_int(set[2])+1);
 				if((affected!=null)&&(affected instanceof MOB))
 				{
 					Ability A=((MOB)affected).fetchAbility(ID());

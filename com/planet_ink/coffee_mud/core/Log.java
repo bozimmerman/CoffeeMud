@@ -38,7 +38,7 @@ public class Log
     private static Log inst=new Log();
     public static Log instance(){return inst;}
     public static SimpleDateFormat dateFormat=new SimpleDateFormat("yyyyMMdd.HHmm.ssSS");
-    
+
 	/**	always to "log" */
 	private static PrintWriter fileOutWriter=null;
 	/** always to systemout */
@@ -50,10 +50,10 @@ public class Log
 	/** log name */
 	private static String logName = "application";
 	private static String LOGNAME = "APPLICATION";
-    
+
     private static Hashtable FLAGS=new Hashtable();
     private static Hashtable WRITERS=new Hashtable();
-    
+
 	/** totally optional, this is the list of maskable error message types.  Useful for internet apps */
 	private final static String[] maskErrMsgs={
     	"broken pipe",
@@ -102,7 +102,7 @@ public class Log
 		return sint;
 	}
 
-    
+
     private static boolean isWriterOn(String name)
     {
         String flag=prop(name);
@@ -193,7 +193,7 @@ public class Log
         }
 		return s;
 	}
-	
+
 	/**
 	* Reset all of the log files
 	* ON, OFF, FILE, BOTH
@@ -311,10 +311,13 @@ public class Log
 	{
 
 		StringBuffer buf=new StringBuffer("");
+
+		BufferedReader reader = null;
 		try
 		{
 			FileReader F=new FileReader(logName+".log");
-			BufferedReader reader=new BufferedReader(F);
+			reader = new BufferedReader(F);
+
 			String line="";
 			while((line!=null)&&(reader.ready()))
 			{
@@ -322,11 +325,25 @@ public class Log
 				if(line!=null)
 					buf.append(line+"\n\r");
 			}
-			F.close();
 		}
 		catch(Exception e)
 		{
 			Log.errOut("Log",e.getMessage());
+		}
+		finally
+		{
+		    try
+		    {
+		        if ( reader != null )
+		        {
+		            reader.close();
+		            reader = null;
+		        }
+		    }
+		    catch ( final IOException ignore )
+		    {
+
+		    }
 		}
 		return buf;
 	}
@@ -475,7 +492,7 @@ public class Log
 	/**
 	* Handles raw info logging entries.  Sends them to System.out,
 	* the log file, or nowhere.
- 	* 
+ 	*
 	* <br><br><b>Usage:</b> rawStandardOut("Info","REQ-OUT:"+REQ);
 	* @param Type The type of message
 	* @param Message The message to print
@@ -496,7 +513,7 @@ public class Log
 			}
 		}
 	}
-	
+
 	/**
 	* Handles debug logging entries.  Sends them to System.out,
 	* the log file, or nowhere.
@@ -522,7 +539,7 @@ public class Log
 			}
 		}
 	}
-	
+
 	/**
 	* Handles debug timing entries.  Sends them to System.out,
 	* the log file, or nowhere.
@@ -562,7 +579,7 @@ public class Log
 			pr.close();
 		return null;
 	}
-	
+
 	/**
 	 * Shut down this class forever
 	 */

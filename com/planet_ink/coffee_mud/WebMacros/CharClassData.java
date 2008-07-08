@@ -17,7 +17,7 @@ import java.util.*;
 
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -35,8 +35,8 @@ import java.util.*;
 public class CharClassData extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-	
-	
+
+
     private String classDropDown(String old)
     {
         StringBuffer str=new StringBuffer("");
@@ -60,8 +60,8 @@ public class CharClassData extends StdWebMacro
         }
         return str.toString();
     }
-    
-    
+
+
     public static StringBuffer cabilities(CharClass E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize, String font)
     {
         StringBuffer str=new StringBuffer("");
@@ -123,7 +123,7 @@ public class CharClassData extends StdWebMacro
                         aID=(String)sortedData1.elementAt(i,1);
                         theclasses.addElement(aID,
                                               qLvl.toString(),
-                                              new Integer(CMLib.ableMapper().getDefaultProficiency(E.ID(),false,aID)).toString(),
+                                              Integer.toString(CMLib.ableMapper().getDefaultProficiency(E.ID(),false,aID)),
                                               CMLib.ableMapper().getDefaultGain(E.ID(),false,aID)?"":"on",
                                               CMLib.ableMapper().getSecretSkill(E.ID(),false,aID)?"on":"",
                                               CMLib.ableMapper().getDefaultParm(E.ID(),false,aID),
@@ -227,9 +227,9 @@ public class CharClassData extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		Hashtable parms=parseParms(parm);
-        
+
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
-        if((replaceCommand != null) 
+        if((replaceCommand != null)
         && (replaceCommand.length()>0)
         && (replaceCommand.indexOf('=')>0))
         {
@@ -239,8 +239,8 @@ public class CharClassData extends StdWebMacro
             httpReq.addRequestParameters(field, value);
             httpReq.addRequestParameters("REPLACE","");
         }
-        
-        
+
+
 		String last=httpReq.getRequestParameter("CLASS");
 		if(last==null) return " @break@";
 		if(last.length()>0)
@@ -250,7 +250,7 @@ public class CharClassData extends StdWebMacro
                 CharClass C2=CMClass.getCharClass(last);
                 return ""+((C2!=null)&&(C2.isGeneric()));
             }
-            
+
 			CharClass C=null;
             String newClassID=httpReq.getRequestParameter("NEWCLASS");
             if(C==null)
@@ -299,7 +299,7 @@ public class CharClassData extends StdWebMacro
                     {
                         while(httpReq.isRequestParameter("NAME"+(numNames+1)))
                             numNames++;
-                        
+
                     }
                     if(numNames<=0)
                         nameSet.addElement(new Integer(0),C.name());
@@ -376,7 +376,7 @@ public class CharClassData extends StdWebMacro
                 if(parms.containsKey("BASE"))
                 {
                     String old=httpReq.getRequestParameter("BASE");
-                    if(old==null) 
+                    if(old==null)
                         old=C.baseClass();
                     else
                     {
@@ -495,7 +495,7 @@ public class CharClassData extends StdWebMacro
                     str.append(old+", ");
                 }
                 if(parms.containsKey("ARMOR"))
-                { 
+                {
                     String old=httpReq.getRequestParameter("ARMOR");
                     if(old==null) {
                         C=C.makeGenCharClass();
@@ -531,7 +531,7 @@ public class CharClassData extends StdWebMacro
                 {
                     String old=httpReq.getRequestParameter("PLAYER");
                     long mask=0;
-                    if(old==null) 
+                    if(old==null)
                         mask=C.availabilityCode();
                     else
                         mask|=CMath.s_long(old);
@@ -542,7 +542,7 @@ public class CharClassData extends StdWebMacro
                 if(parms.containsKey("ESTATS")||parms.containsKey("CSTATS")||parms.containsKey("ASTATS")||parms.containsKey("ASTATE")||parms.containsKey("STARTASTATE"))
                 {
                     C=C.makeGenCharClass();
-                    
+
                     if(parms.containsKey("ESTATS"))
                     {
                         String eStats=C.getStat("ESTATS");
@@ -583,7 +583,7 @@ public class CharClassData extends StdWebMacro
                 {
                     String old=httpReq.getRequestParameter("NOWEAPS");
                     Vector set=null;
-                    if(old==null) 
+                    if(old==null)
                     {
                         C=C.makeGenCharClass();
                         String weapList=C.getStat("GETWEP");
@@ -639,7 +639,7 @@ public class CharClassData extends StdWebMacro
                     {
                         while(httpReq.isRequestParameter("SSET"+(numSSet+1)))
                             numSSet++;
-                        
+
                     }
                     for(int i=0;i<numSSet;i++)
                     {
@@ -715,12 +715,12 @@ public class CharClassData extends StdWebMacro
                     str.append("</TABLE>");
                     str.append(", ");
                 }
-                
+
                 if(parms.containsKey("WEAPMATS"))
                 {
                     String old=httpReq.getRequestParameter("WEAPMATS");
                     Vector set=null;
-                    if(old==null) 
+                    if(old==null)
                     {
                         C=C.makeGenCharClass();
                         String matList=C.getStat("GETWMAT");
@@ -749,7 +749,7 @@ public class CharClassData extends StdWebMacro
                 {
                     String old=httpReq.getRequestParameter("ARMORMINOR");
                     int armorMinor=-1;
-                    if(old==null) 
+                    if(old==null)
                     {
                         C=C.makeGenCharClass();
                         armorMinor=CMath.s_int(C.getStat("ARMORMINOR"));
@@ -868,14 +868,14 @@ public class CharClassData extends StdWebMacro
 						domains.remove(winner);
 					}
 				}
-				
+
 				if(parms.containsKey("HITPOINTS"))
 					str.append("20 at first, plus (Constitution/"+C.getHPDivisor()+")+"+C.getHPDice()+"d"+C.getHPDie()+" per level thereafter, ");
 				if(parms.containsKey("MANA"))
 					str.append("100 plus (Intelligence/"+C.getManaDivisor()+")+"+C.getManaDice()+"d"+C.getManaDie()+" per level after first, ");
 				if(parms.containsKey("MOVEMENT"))
 					str.append("100 plus ((Strength/18)*"+C.getMovementMultiplier()+") per level after first, ");
-				
+
 				if(parms.containsKey("AVGHITPOINTS"))
 				{
 					int maxCon=18+C.maxStatAdjustments()[CharStats.STAT_CONSTITUTION];
@@ -883,7 +883,7 @@ public class CharClassData extends StdWebMacro
 					str.append("("+avgMath2(50,20,10,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(50,20,18,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(50,20,maxCon,C.getHPDivisor(),C.getHPDice())+") ");
 					str.append("("+avgMath2(90,20,10,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(90,20,18,C.getHPDivisor(),C.getHPDice())+"/"+avgMath2(90,20,maxCon,C.getHPDivisor(),C.getHPDice())+") ");
 				}
-					
+
 				if(parms.containsKey("AVGMANA"))
 				{
 					int maxInt=18+C.maxStatAdjustments()[CharStats.STAT_INTELLIGENCE];
@@ -899,7 +899,7 @@ public class CharClassData extends StdWebMacro
 					str.append("("+avgMath(10,ah,50,100)+"/"+avgMath(18,ah,50,100)+"/"+avgMath(maxStrength,ah,50,100)+") ");
 					str.append("("+avgMath(10,ah,90,100)+"/"+avgMath(18,ah,90,100)+"/"+avgMath(maxStrength,ah,90,100)+") ");
 				}
-				
+
 				StringBuffer preReqName=new StringBuffer(CharStats.STAT_DESCS[C.getAttackAttribute()].toLowerCase());
 				preReqName.setCharAt(0,Character.toUpperCase(preReqName.charAt(0)));
 				if(parms.containsKey("PRIME"))
@@ -957,7 +957,7 @@ public class CharClassData extends StdWebMacro
 		}
 		return "";
 	}
-	
+
 	public String balanceChart(CharClass C)
 	{
 		MOB M=CMClass.getMOB("StdMOB");
@@ -1011,8 +1011,8 @@ public class CharClassData extends StdWebMacro
 					}
 				}
 				if(numOthers==0)
-				{ 
-					uniqueClassSkills++; 
+				{
+					uniqueClassSkills++;
 					uncommonClassSkills++;
 				}
 				else
@@ -1020,7 +1020,7 @@ public class CharClassData extends StdWebMacro
 					totalCrossClassLevelDiffs+=(thisCrossClassLevelDiffs/numOthers);
 					totalCrossClassSkills++;
 				}
-				if(numOthers==1) 
+				if(numOthers==1)
 					uncommonClassSkills++;
 				boolean gained=(M.fetchAbility(able)!=null);
 				if(gained)
@@ -1058,7 +1058,7 @@ public class CharClassData extends StdWebMacro
         M.destroy();
 		return str.toString();
 	}
-	
+
 	public int avgMath2(int level, int add, int stat, int divisor, int hpdice )
 	{
 		return add+(level*((int)Math.round(CMath.div(stat,divisor)))+(hpdice*(hpdice+1)/2));
@@ -1067,5 +1067,5 @@ public class CharClassData extends StdWebMacro
 	{
 		return add+(int)Math.round(CMath.mul(CMath.div(stat,18),avg)*lvl);
 	}
-	
+
 }

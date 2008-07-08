@@ -19,7 +19,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -99,7 +99,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		{
 			int index=CMLib.catalog().getCatalogMobIndex(E.Name());
 			if(index<0) return true;
-			
+
 			Environmental E2=CMLib.catalog().getCatalogMob(index);
 			if(E2==null) return true;
 			setCataloged(E,false);
@@ -305,12 +305,12 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         return false;
     }
 
-    
+
 	public String getAlignmentName(Environmental E)
 	{
 		if((E.envStats().disposition()&EnvStats.IS_GOOD)==EnvStats.IS_GOOD)
 		    return Faction.ALIGN_NAMES[Faction.ALIGN_GOOD];
-		if((E.envStats().disposition()&EnvStats.IS_GOOD)==EnvStats.IS_EVIL)
+		if((E.envStats().disposition()&EnvStats.IS_EVIL)==EnvStats.IS_EVIL)
 		    return Faction.ALIGN_NAMES[Faction.ALIGN_EVIL];
         if(E instanceof MOB)
         {
@@ -333,12 +333,12 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         }
         return Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL];
 	}
-	
+
     public boolean isNeutral(Environmental E)
     {
         if(E==null) return false;
 		if(((E.envStats().disposition()&EnvStats.IS_GOOD)==EnvStats.IS_GOOD)
-		|| ((E.envStats().disposition()&EnvStats.IS_GOOD)==EnvStats.IS_EVIL))
+		|| ((E.envStats().disposition()&EnvStats.IS_EVIL)==EnvStats.IS_EVIL))
 			return false;
         if(E instanceof MOB)
         {
@@ -391,7 +391,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{ return (E instanceof MOB)&&(((MOB)E).session()!=null)&&((System.currentTimeMillis()-((MOB)E).session().lastLoopTime())>30000);}
 
 	public boolean isSwimmingInWater(Environmental E)
-	{ 
+	{
 		if(!isSwimming(E)) return false;
 		Room R=CMLib.map().roomLocation(E);
 		if(R==null) return false;
@@ -425,7 +425,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		   return false;
 		return (canBeHeardBy(sensed,sensor)||canBeSeenBy(sensed,sensor));
 	}
-	
+
     public boolean aliveAwakeMobileUnbound(MOB mob, boolean quiet)
     {
         if(!aliveAwakeMobile(mob,quiet))
@@ -444,7 +444,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         }
         return true;
     }
-    
+
 	public boolean aliveAwakeMobile(MOB mob, boolean quiet)
 	{
 		if(mob==null) return false;
@@ -516,7 +516,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
             {
                 hideFactor+=((MOB)seen).charStats().getSave(CharStats.STAT_SAVE_DETECTION);
                 if(seen.envStats().height()>=0)
-	            	hideFactor-=(int)Math.round(Math.sqrt(new Integer(seen.envStats().height()).doubleValue()));
+	            	hideFactor-=(int)Math.round(Math.sqrt((double)seen.envStats().height()));
             }
             else
                 hideFactor+=100;
@@ -524,7 +524,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         }
 		return 0;
 	}
-	
+
 	public int getDetectScore(MOB seer)
 	{
 		if((seer!=null)&&(canSeeHidden(seer)))
@@ -535,12 +535,12 @@ public class Sense extends StdLibrary implements CMFlagLibrary
             else // the 100 represents proff, and level represents time searching.
                 detectFactor+=seer.charStats().getSave(CharStats.STAT_SAVE_OVERLOOKING);
             if(seer.envStats().height()>=0)
-	            detectFactor-=(int)Math.round(Math.sqrt(new Integer(seer.envStats().height()).doubleValue()));
+	            detectFactor-=(int)Math.round(Math.sqrt((double)seer.envStats().height()));
             return detectFactor;
 		}
 		return 0;
 	}
-	
+
 	public boolean canBeSeenBy(Environmental seen , MOB seer)
 	{
 		if(seer==seen) return true;
@@ -594,7 +594,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return true;
 		}
 		else
-		if(isInDark(seen)) 
+		if(isInDark(seen))
 		{
             if((seen instanceof Room)
             &&(((Room)seen).getArea().getClimateObj().canSeeTheMoon(((Room)seen),null)))
@@ -605,7 +605,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
                 case TimeClock.PHASE_WANEGIBBOUS:
                     return true;
                 }
-            
+
 			if(isLightSource(seer))
 				return true;
 			if(canSeeInDark(seer))
@@ -614,7 +614,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		}
 		return true;
 	}
-    
+
     public boolean canBarelyBeSeenBy(Environmental seen , MOB seer)
     {
         if(!canBeSeenBy(seen,seer))
@@ -636,7 +636,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
             }
         }
         else
-        if(isInDark(seen)) 
+        if(isInDark(seen))
         {
             if((seen instanceof Room)
             &&(((Room)seen).getArea().getClimateObj().canSeeTheMoon(((Room)seen),null)))
@@ -648,13 +648,13 @@ public class Sense extends StdLibrary implements CMFlagLibrary
                     return false;
                 case TimeClock.PHASE_NEW:
                     return false;
-                default: 
+                default:
                     return true;
                 }
         }
         return false;
     }
-    
+
     public boolean canActAtAll(Tickable affecting)
     {
         if(affecting instanceof MOB)
@@ -662,7 +662,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
             MOB monster=(MOB)affecting;
             if((monster.amDead())
             ||(monster.location()==null)
-            ||(!aliveAwakeMobile(monster,true)) 
+            ||(!aliveAwakeMobile(monster,true))
             ||(!isInTheGame(monster,true)))
                 return false;
             return true;
@@ -676,7 +676,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         {
             MOB monster=(MOB)affecting;
             if((!canActAtAll(monster))
-            ||(monster.isInCombat()) 
+            ||(monster.isInCombat())
             ||(monster.amFollowing()!=null)
             ||(monster.curState().getHitPoints()<((int)Math.round(monster.maxState().getHitPoints()/2.0))))
                 return false;
@@ -717,7 +717,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 					else
 					if((((Item)seen).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)
 						Say.append(" (^wmithril aura^?)");
-		
+
 				if((isGlowing(seen))&&(!(seen instanceof Room))&&(!CMStrings.contains(ambiances,"-GLOWING")))
 					Say.append(" (^gglowing^?)");
 				if(isBusy(seen)&&(!CMStrings.contains(ambiances,"-BUSY")))
@@ -927,7 +927,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return V;
 	}
 
-	
+
     public Vector domainAnyAffects(Environmental E, int domain)
 	{
 		Vector V=new Vector();
@@ -1056,7 +1056,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return true;
 		return false;
 	}
-	
+
 	public boolean isMetal(Environmental E)
 	{
 		if(E instanceof Item)
@@ -1065,7 +1065,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		return false;
 	}
 
-	
+
 	public int burnStatus(Environmental E)
 	{
 		if(E instanceof Item)
@@ -1099,7 +1099,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		}
 		return 0;
 	}
-	
+
 	public boolean isInTheGame(Environmental E, boolean reqInhabitation)
 	{
 		if(E instanceof Room)
@@ -1126,9 +1126,9 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			return CMLib.map().getArea(E.Name())==E;
 		else
 			return true;
-		
+
 	}
-	
+
 	public boolean enchanted(Item I)
 	{
 		// poison is not an enchantment.
@@ -1144,7 +1144,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		}
 		return false;
 	}
-	
+
 	public boolean isAgingThing(Environmental E)
 	{
 		if(E==null) return false;
@@ -1156,7 +1156,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 
 	public boolean isChild(Environmental E){ return isBaby(E)||((E instanceof MOB)&&(((MOB)E).isMonster())&&(isAgingThing(E)));}
 	public boolean isBaby(Environmental E){ return ((E instanceof CagedAnimal)&&(isAgingThing(E)));}
-	
+
 	public String wornLocation(long wornCode)
 	{
 		for(int wornNum=0;wornNum<Item.WORN_DESCS.length-1;wornNum++)
@@ -1166,23 +1166,23 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 		}
 		return "";
 	}
-	
+
 	public boolean stillAffectedBy(Environmental obj, Vector oneOf, boolean anyTallF)
 	{
 		for(int a=oneOf.size()-1;a>=0;a--)
 			if(obj.fetchEffect(((Ability)oneOf.elementAt(a)).ID())==null)
 			{
-				if(!anyTallF) 
+				if(!anyTallF)
 					return false;
 			}
 			else
 			{
-				if(anyTallF) 
+				if(anyTallF)
 					return true;
 			}
 		return !anyTallF;
 	}
-    
+
     public String dispositionList(int disposition, boolean useVerbs)
     {
         StringBuffer buf=new StringBuffer("");
@@ -1200,7 +1200,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         if(buff.endsWith(", ")) buff=buff.substring(0,buff.length()-2).trim();
         return buff;
     }
-    
+
     public String sensesList(int disposition, boolean useVerbs)
     {
         StringBuffer buf=new StringBuffer("");
@@ -1218,7 +1218,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
         if(buff.endsWith(", ")) buff=buff.substring(0,buff.length()-2).trim();
         return buff;
     }
-    
+
     public int getDispositionCode(String name)
     {
         name=name.toUpperCase().trim();
@@ -1227,7 +1227,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
                 return code;
         return -1;
     }
-    
+
     public int getSensesCode(String name)
     {
         name=name.toUpperCase().trim();
@@ -1236,7 +1236,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
                 return code;
         return -1;
     }
-    
+
     public String getAbilityType(Ability A)
     {
         if(A==null) return "";
@@ -1261,6 +1261,6 @@ public class Sense extends StdLibrary implements CMFlagLibrary
                 return i<<5;
         return -1;
     }
-    
-    
+
+
 }

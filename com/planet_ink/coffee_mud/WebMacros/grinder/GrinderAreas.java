@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -159,8 +159,8 @@ public class GrinderAreas
 		{
 			int climate=CMath.s_int(httpReq.getRequestParameter("CLIMATE"));
 			for(int i=1;;i++)
-				if(httpReq.isRequestParameter("CLIMATE"+(new Integer(i).toString())))
-					climate=climate|CMath.s_int(httpReq.getRequestParameter("CLIMATE"+(new Integer(i).toString())));
+				if(httpReq.isRequestParameter("CLIMATE"+(Integer.toString(i))))
+					climate=climate|CMath.s_int(httpReq.getRequestParameter("CLIMATE"+(Integer.toString(i))));
 				else
 					break;
 			A.setClimateType(climate);
@@ -179,8 +179,8 @@ public class GrinderAreas
 		{
 			A.addSubOp(subOps);
 			for(int i=1;;i++)
-				if(httpReq.isRequestParameter("SUBOPS"+(new Integer(i).toString())))
-					A.addSubOp(httpReq.getRequestParameter("SUBOPS"+(new Integer(i).toString())));
+				if(httpReq.isRequestParameter("SUBOPS"+(Integer.toString(i))))
+					A.addSubOp(httpReq.getRequestParameter("SUBOPS"+(Integer.toString(i))));
 				else
 					break;
 		}
@@ -213,7 +213,7 @@ public class GrinderAreas
 		String img=httpReq.getRequestParameter("IMAGE");
 		if(img==null)img="";
 		A.setImage(CMLib.coffeeFilter().safetyFilter(img));
-		
+
 		// gridy
 		String gridy=httpReq.getRequestParameter("GRIDY");
 		if((gridy!=null)&&(A instanceof GridZones))
@@ -222,32 +222,32 @@ public class GrinderAreas
 		String gridx=httpReq.getRequestParameter("GRIDX");
 		if((gridx!=null)&&(A instanceof GridZones))
 			((GridZones)A).setXGridSize(CMath.s_int(gridx));
-		
+
 		// author
 		String author=httpReq.getRequestParameter("AUTHOR");
 		if(author==null)author="";
 		A.setAuthorID(CMLib.coffeeFilter().safetyFilter(author));
-		
+
 		// currency
 		String currency=httpReq.getRequestParameter("CURRENCY");
 		if(currency==null)currency="";
 		A.setCurrency(CMLib.coffeeFilter().safetyFilter(currency));
-		
+
         // SHOPPREJ
         String SHOPPREJ=httpReq.getRequestParameter("SHOPPREJ");
         if(SHOPPREJ==null)SHOPPREJ="";
         A.setPrejudiceFactors(CMLib.coffeeFilter().safetyFilter(SHOPPREJ));
-        
+
         // BUDGET
         String BUDGET=httpReq.getRequestParameter("BUDGET");
         if(BUDGET==null)BUDGET="";
         A.setBudget(CMLib.coffeeFilter().safetyFilter(BUDGET));
-        
+
         // DEVALRATE
         String DEVALRATE=httpReq.getRequestParameter("DEVALRATE");
         if(DEVALRATE==null)DEVALRATE="";
         A.setDevalueRate(CMLib.coffeeFilter().safetyFilter(DEVALRATE));
-        
+
         // INVRESETRATE
         String INVRESETRATE=httpReq.getRequestParameter("INVRESETRATE");
         if(INVRESETRATE==null)INVRESETRATE="0";
@@ -257,7 +257,7 @@ public class GrinderAreas
         String IGNOREMASK=httpReq.getRequestParameter("IGNOREMASK");
         if(IGNOREMASK==null)IGNOREMASK="";
         A.setIgnoreMask(CMLib.coffeeFilter().safetyFilter(IGNOREMASK));
-        
+
         // PRICEFACTORS
         num=1;
         if((A instanceof Economics)
@@ -277,7 +277,7 @@ public class GrinderAreas
             }
             ((Economics)A).setItemPricingAdjustments(CMParms.toStringArray(prics));
         }
-        
+
         // modify Child Area list
         String parents=httpReq.getRequestParameter("PARENT");
         for(int v=0;v<A.getNumParents();v++)
@@ -297,11 +297,11 @@ public class GrinderAreas
                     return "The area, '"+parent.Name()+"', cannot be added as a parent, as this would create a circular reference.";
             }
             for(int i=1;;i++)
-                if(httpReq.isRequestParameter("PARENT"+(new Integer(i).toString())))
+                if(httpReq.isRequestParameter("PARENT"+(Integer.toString(i))))
 				{
-                    parent=CMLib.map().getArea(httpReq.getRequestParameter("PARENT"+(new Integer(i).toString())));
+                    parent=CMLib.map().getArea(httpReq.getRequestParameter("PARENT"+(Integer.toString(i))));
                     if(parent==null)
-						Log.errOut("Grinder", "Error - Area '"+httpReq.getRequestParameter("PARENT"+(new Integer(i).toString()))+"' not found by CMMap");
+						Log.errOut("Grinder", "Error - Area '"+httpReq.getRequestParameter("PARENT"+(Integer.toString(i)))+"' not found by CMMap");
                     else
 					{
 						if(A.canParent(parent))
@@ -337,11 +337,11 @@ public class GrinderAreas
 				    return "The area, '"+child.Name()+"', cannot be added as a child, as this would create a circular reference.";
 			}
 			for(int i=1;;i++)
-			    if(httpReq.isRequestParameter("CHILDREN"+(new Integer(i).toString())))
+			    if(httpReq.isRequestParameter("CHILDREN"+(Integer.toString(i))))
 				{
-			        child=CMLib.map().getArea(httpReq.getRequestParameter("CHILDREN"+(new Integer(i).toString())));
+			        child=CMLib.map().getArea(httpReq.getRequestParameter("CHILDREN"+(Integer.toString(i))));
 			        if(child==null)
-						Log.errOut("Grinder", "Error - Area '"+httpReq.getRequestParameter("CHILDREN"+(new Integer(i).toString()))+"' not found by CMMap");
+						Log.errOut("Grinder", "Error - Area '"+httpReq.getRequestParameter("CHILDREN"+(Integer.toString(i)))+"' not found by CMMap");
 			        else
 					{
 			            if(A.canChild(child))

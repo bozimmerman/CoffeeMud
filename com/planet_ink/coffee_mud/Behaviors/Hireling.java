@@ -57,7 +57,7 @@ public class Hireling extends StdBehavior
 	{
 		double price=100.0;
 		if(dex>=0)
-			price=new Integer(CMath.s_int(getParms().substring(0,dex))).doubleValue();
+			price=(double)CMath.s_int(getParms().substring(0,dex));
 		return price;
 	}
 

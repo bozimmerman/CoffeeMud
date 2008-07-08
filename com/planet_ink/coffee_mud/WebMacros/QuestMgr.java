@@ -16,7 +16,7 @@ import java.util.*;
 
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -53,7 +53,7 @@ public class QuestMgr extends StdWebMacro
 			Log.sysOut("QuestMgr",name+" created quest '"+Q.name()+"'");
 			return "Quest '"+Q.name()+"' created.";
 		}
-		
+
 		String last=httpReq.getRequestParameter("QUEST");
 		if(last==null) return "";
 		if(last.length()>0)
@@ -129,7 +129,7 @@ public class QuestMgr extends StdWebMacro
 		}
 		return "";
 	}
-	
+
 	public String populateQuest(ExternalHTTPRequests httpReq, Quest Q, boolean redirect)
 	{
 		Q.script();
@@ -137,18 +137,18 @@ public class QuestMgr extends StdWebMacro
 		String unRedirectedScript=script;
 		CMFile redirectF=null;
 		if(redirect
-		&&(Q.script().toString().toUpperCase().trim().startsWith("LOAD=")))
+		&&(Q.script().toUpperCase().trim().startsWith("LOAD=")))
 		{
-			String fileName=Q.script().toString().trim().substring(5);
+			String fileName=Q.script().trim().substring(5);
 			redirectF=new CMFile(Resources.makeFileResourceName(fileName),null,true);
 			if((!redirectF.exists())||(!redirectF.canRead()))
 				return "Unable to load redirected file '"+fileName+"'";
 		}
 		else
 			redirect=false;
-        
+
         script=CMStrings.replaceAll(script,"&amp;","&");
-        
+
         String postFix="";
         int x=script.toUpperCase().indexOf("<?XML");
         if(x>=0) {

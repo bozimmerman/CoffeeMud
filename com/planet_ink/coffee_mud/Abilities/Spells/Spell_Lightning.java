@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -68,7 +68,7 @@ public class Spell_Lightning extends Spell
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-				int maxDie =  (int)Math.round(new Integer(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob))).doubleValue()/2.0);
+				int maxDie =  (int)Math.round((adjustedLevel(mob,asLevel)+(2.0*super.getX1Level(mob)))/2.0);
 				int damage = CMLib.dice().roll(maxDie,10,maxDie);
 				if((msg.value()>0)||(msg2.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));

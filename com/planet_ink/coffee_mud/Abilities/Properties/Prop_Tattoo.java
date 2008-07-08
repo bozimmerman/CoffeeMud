@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -61,35 +61,5 @@ public class Prop_Tattoo extends Property
 				M.addTattoo((String)V.elementAt(v));
 		}
 		savable=false;
-	}
-
-	public void executeMsg(Environmental myHost, CMMsg msg)
-	{
-		/*if((affected!=null)&&(affected instanceof MOB))
-		{
-			MOB mob=(MOB)affected;
-
-			if((msg.amITarget(mob))
-			   &&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
-			   &&(text().length()>0))
-			{
-				Vector V=getTattoos(msg.source());
-				String tattoos="";
-				if(V.size()==1)
-				   tattoos=(String)V.elementAt(0);
-				else
-				for(int v=0;v<V.size();v++)
-					if(v==0)
-						tattoos+=(String)V.elementAt(v);
-					else
-					if(v==(V.size()-1))
-					   tattoos+=", and "+(String)V.elementAt(v);
-					else
-					   tattoos+=", "+(String)V.elementAt(v);
-				if(tattoos.length()>0)
-					msg.addTrailerMsg(CMClass.getMsg(msg.source(),mob,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> has the following tattoos: "+tattoos.toLowerCase(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
-			}
-		}*/
-		super.executeMsg(myHost,msg);
 	}
 }

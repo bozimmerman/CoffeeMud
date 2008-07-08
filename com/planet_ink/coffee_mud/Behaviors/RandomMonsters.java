@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -42,7 +42,7 @@ public class RandomMonsters extends ActiveTicker
 	protected int avgMonsters=1;
 	protected Vector restrictedLocales=null;
 	protected boolean alreadyTriedLoad=false;
-	
+
 	public Vector externalFiles()
 	{
         Vector xmlfiles=new Vector();
@@ -62,7 +62,7 @@ public class RandomMonsters extends ActiveTicker
 	    }
 		return null;
 	}
-	
+
 
 	public void setParms(String newParms)
 	{
@@ -177,7 +177,7 @@ public class RandomMonsters extends ActiveTicker
 			monsters=(Vector)Resources.getResource("RANDOMMONSTERS-XML/"+filename.length()+"/"+filename.hashCode());
 			if(monsters!=null) return monsters;
 			monsters=new Vector();
-			String error=CMLib.coffeeMaker().addMOBsFromXML(filename.toString(),monsters,null);
+			String error=CMLib.coffeeMaker().addMOBsFromXML(filename,monsters,null);
 			String thangName="null";
 			if(thang instanceof Room)
 			    thangName=CMLib.map().getExtendedRoomID((Room)thang);
@@ -218,7 +218,7 @@ public class RandomMonsters extends ActiveTicker
 				else
 				if(thang!=null)
 				    thangName=thang.name();
-				
+
 				if((buf==null)||(buf.length()<20))
 				{
 					Log.errOut("RandomMonsters","Unknown XML file: '"+filename+"' for '"+thangName+"'.");
@@ -241,7 +241,7 @@ public class RandomMonsters extends ActiveTicker
 					Log.errOut("RandomMonsters","No mobs loaded: '"+filename+"' for '"+thangName+"'.");
 					return null;
 				}
-				
+
 				Resources.submitResource("RANDOMMONSTERS-"+filename,monsters);
 			}
 		}
@@ -262,7 +262,7 @@ public class RandomMonsters extends ActiveTicker
 
 	protected long tickStatus=0;
 	public long getTickStatus(){return tickStatus;}
-	
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		tickStatus=Tickable.STATUS_START;

@@ -854,8 +854,8 @@ public class CMParms
                         if(text.substring(0,x).indexOf(".")<0)
                         {
                             if(pm=='+')
-                                return new Integer(CMath.s_int(text.substring(0,x))).doubleValue();
-                            return new Integer(-CMath.s_int(text.substring(0,x))).doubleValue();
+                                return (double)CMath.s_int(text.substring(0,x));
+                            return (double)(-CMath.s_int(text.substring(0,x)));
                         }
                         if(pm=='+')
                             return CMath.s_double(text.substring(0,x));
@@ -893,7 +893,7 @@ public class CMParms
                         &&((Character.isDigit(text.charAt(x)))||(text.charAt(x)=='.')))
                             x++;
                         if(text.substring(0,x).indexOf(".")<0)
-                            return new Long(CMath.s_long(text.substring(0,x))).doubleValue();
+                            return (double)CMath.s_long(text.substring(0,x));
                         return CMath.s_double(text.substring(0,x));
                     }
                 }

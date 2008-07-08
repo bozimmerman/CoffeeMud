@@ -185,7 +185,7 @@ public class MudChat extends StdBehavior
 		chatGroups.trimToSize();
 		return chatGroups;
 	}
-	
+
 	protected static Vector loadChatData(String resourceName, Vector chatGroups)
 	{
 		StringBuffer rsc=new CMFile(Resources.makeFileResourceName(resourceName),null,true).text();
@@ -308,8 +308,8 @@ public class MudChat extends StdBehavior
         chatGrp.trimToSize();
         return chatGrp;
     }
-    
-    
+
+
 	protected void queResponse(Vector responses, MOB source, MOB target, String rest)
 	{
 		int total=0;
@@ -455,7 +455,7 @@ public class MudChat extends StdBehavior
 					}
 				if(expEnd<expression.length()&&(parenCount<=0))
 				{
-					return response&match(speaker,expression.substring(1,expEnd).trim(),message,rest);
+					return response && match(speaker,expression.substring(1,expEnd).trim(),message,rest);
 				}
 				return response;
 			}

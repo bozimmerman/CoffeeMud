@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -130,11 +130,11 @@ public class Chant_CaveIn extends Chant
 				if(target instanceof MOB)
 				{
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"A cave-in drops rocks on <T-NAME>!");
-					int maxDie =  (int)Math.round(new Integer(adjustedLevel(mob,asLevel)).doubleValue()/3.0);
+					int maxDie =  (int)Math.round( ((double) adjustedLevel( mob, asLevel ) ) / 3.0);
 					int damage = CMLib.dice().roll(maxDie,3,maxDie);
 					if(msg.value()>0)
 						damage = (int)Math.round(CMath.div(damage,1.5));
-                    
+
 					if(((MOB)target).location()==mob.location())
 						CMLib.combat().postDamage(mob,(MOB)target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BASHING,"The falling rubble <DAMAGE> <T-NAME>!");
 				}

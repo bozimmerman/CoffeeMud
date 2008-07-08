@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -80,7 +80,7 @@ public class Thief_TrophyCount extends ThiefSkill
 					set[1]="0";
 					theList.put(R.name(),set);
 				}
-				set[1]=new Integer(CMath.s_int(set[1])+1).toString();
+				set[1]=Integer.toString(CMath.s_int(set[1])+1);
 				if((affected!=null)&&(affected instanceof MOB))
 				{
 					Ability A=((MOB)affected).fetchAbility(ID());

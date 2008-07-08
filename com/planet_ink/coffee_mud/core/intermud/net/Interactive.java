@@ -52,7 +52,7 @@ public abstract class Interactive implements ServerUser {
      */
     static public String createKeyName(String nom) throws InvalidNameException {
         StringBuffer buff = new StringBuffer(nom.toLowerCase());
-        String key = new String();
+        String key = "";
         int i;
 
         for(i=0; i<buff.length(); i++) {
@@ -626,4 +626,5 @@ class InputThread implements Runnable {
         return msg;
     }
 }
+
 

@@ -33,8 +33,8 @@ import java.util.*;
 
 public class GenAbility extends StdAbility
 {
-    // data should be stored in a common instance object .. something common to all genability of same id, 
-    // but diff to others.n  I'm thinking like a DVector, and just have 
+    // data should be stored in a common instance object .. something common to all genability of same id,
+    // but diff to others.n  I'm thinking like a DVector, and just have
     private String ID="GenAbility";
     public String ID() { return ID; }
     private static final Hashtable vars=new Hashtable();
@@ -73,7 +73,7 @@ public class GenAbility extends StdAbility
         O[V_TRIG]=new String[]{"CAST","CA","C"};
         O[V_MAXR]=new Integer(0);
         O[V_MINR]=new Integer(0);
-        O[V_AUTO]=new Boolean(false);
+        O[V_AUTO]=Boolean.FALSE;
         O[V_FLAG]=new Integer(0);
         O[V_CLAS]=new Integer(Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION);
         O[V_OMAN]=new Integer(-1);
@@ -121,7 +121,7 @@ public class GenAbility extends StdAbility
         {
             String parm=(String)V(ID,V_SCRP);
             scriptParmHash=parm.hashCode();
-            if(parm.trim().length()==0) 
+            if(parm.trim().length()==0)
                 scriptObj=null;
             else
             {
@@ -134,8 +134,8 @@ public class GenAbility extends StdAbility
         }
         return scriptObj;
     }
-    
-    
+
+
     public String Name(){return name();}
     public String name(){ return (String)V(ID,V_NAME);}
     public String description(){return "&";}
@@ -151,8 +151,8 @@ public class GenAbility extends StdAbility
     protected int canAffectCode(){return ((Integer)V(ID,V_CAFF)).intValue(); }
     protected int canTargetCode(){return ((Integer)V(ID,V_CTAR)).intValue(); }
     public int abstractQuality(){return ((Integer)V(ID,V_QUAL)).intValue();}
-    
-    
+
+
     public CMObject newInstance()
     {
         try
@@ -161,8 +161,8 @@ public class GenAbility extends StdAbility
             A.ID=ID;
             getScripter();
             A.scriptParmHash=scriptParmHash;
-            if(scriptObj!=null){ 
-                A.scriptObj=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine"); 
+            if(scriptObj!=null){
+                A.scriptObj=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
                 A.scriptObj.setScript(scriptObj.getScript());
             }
             else
@@ -175,24 +175,24 @@ public class GenAbility extends StdAbility
         }
         return new GenAbility();
     }
-    
+
     protected void cloneFix(Ability E)
     {
         if(E instanceof GenAbility)
         {
             GenAbility A=(GenAbility)E;
             A.scriptParmHash=scriptParmHash;
-            if(A.scriptObj!=null){ 
-                scriptObj=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine"); 
+            if(A.scriptObj!=null){
+                scriptObj=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
                 scriptObj.setScript(A.scriptObj.getScript());
             }
             else
                 scriptObj=null;
         }
     }
-    
+
     public boolean isGeneric(){return true;}
-    
+
     public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
     	if((!auto)
@@ -266,7 +266,7 @@ public class GenAbility extends StdAbility
     		mob.tell("The target is invalid: "+CMLib.masking().maskDesc((String)V(ID,V_TMSK)));
     		return false;
     	}
-    	
+
     	int armorCheck=0;
     	switch(classificationCode()&Ability.ALL_ACODES)
     	{
@@ -299,7 +299,7 @@ public class GenAbility extends StdAbility
 		}
 		if(!super.invoke(mob,commands,givenTarget, auto, asLevel))
 			return false;
-    	
+
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		if(success)
@@ -330,7 +330,7 @@ public class GenAbility extends StdAbility
 			if(castingQuality(mob,target)==Ability.QUALITY_MALICIOUS)
 				castCode|=CMMsg.MASK_MALICIOUS;
 			if(auto) castCode|=CMMsg.MASK_ALWAYS;
-			
+
 			CMMsg msg = CMClass.getMsg(mob, target, this, castCode, (auto?(String)V(ID,V_ACST):(String)V(ID,V_CAST)));
 			CMMsg msg2= null;
 			Integer OTH=(Integer)V(ID,V_ATT2);
@@ -355,7 +355,7 @@ public class GenAbility extends StdAbility
                     if((afterAffect.length()>0)&&(success))
                     {
                         Ability P=CMClass.getAbility("Prop_SpellAdder");
-                        if(P!=null) 
+                        if(P!=null)
                         {
                             Vector V=CMParms.makeVector(afterAffect);
                             P.invoke(mob,V,null,true,asLevel); // spell adder will return addable affects
@@ -433,7 +433,7 @@ public class GenAbility extends StdAbility
                         }
                         mob.location().recoverRoomStats();
                     }
-                        
+
 				}
                 if(((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
                 &&(CMLib.flags().isInTheGame(mob,true)&&((target==null)||CMLib.flags().isInTheGame(target,true))))
@@ -446,22 +446,22 @@ public class GenAbility extends StdAbility
                     }
                 }
 			}
-			
+
 		}
 		else
 		if(abstractQuality()==Ability.QUALITY_MALICIOUS)
 			return maliciousFizzle(mob,target,(String)V(ID,V_FZZL));
 		else
 			return beneficialVisualFizzle(mob,target,(String)V(ID,V_FZZL));
-		
+
         return true;
     }
-    
+
     public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
     {
         return true;
     }
-    
+
     public void executeMsg(Environmental myHost, CMMsg msg)
     {
         ScriptingEngine S=getScripter();
@@ -479,7 +479,7 @@ public class GenAbility extends StdAbility
     {
         if(((Ability)V(ID,V_HERE))!=null)
             ((Ability)V(ID,V_HERE)).affectCharStats(affectedMob,affectableStats);
-        
+
     }
     public void affectCharState(MOB affectedMob, CharState affectableMaxState)
     {
@@ -508,7 +508,7 @@ public class GenAbility extends StdAbility
                 return false;
         return true;
     }
-    
+
     // lots of work to be done here
     public int getSaveStatIndex(){return getStatCodes().length;}
     private static final String[] CODES={"CLASS",//0
@@ -598,9 +598,9 @@ public class GenAbility extends StdAbility
         case 0:
         if(val.trim().length()>0)
         {
-        	V(ID,V_NAME); // force creation, if necc 
-        	Object[] O=(Object[])vars.get(ID); 
-        	vars.remove(ID); 
+        	V(ID,V_NAME); // force creation, if necc
+        	Object[] O=(Object[])vars.get(ID);
+        	vars.remove(ID);
         	vars.put(val,O);
         	if(num!=9)
         	    CMClass.delClass("ABILITY",this);
@@ -610,7 +610,7 @@ public class GenAbility extends StdAbility
         }
     	break;
         case 1: setMiscText(val); break;
-        case 2: SV(ID,V_NAME,val); 
+        case 2: SV(ID,V_NAME,val);
                 if(ID.equalsIgnoreCase("GenAbility"))
                     break;
                 break;
@@ -618,7 +618,7 @@ public class GenAbility extends StdAbility
         case 4: SV(ID,V_TRIG,CMParms.toStringArray(CMParms.parseCommas(val.toUpperCase(),true))); break;
         case 5: SV(ID,V_MAXR,new Integer(convert(Ability.RANGE_CHOICES,val,false))); break;
         case 6: SV(ID,V_MINR,new Integer(convert(Ability.RANGE_CHOICES,val,false))); break;
-        case 7: SV(ID,V_AUTO,new Boolean(CMath.s_bool(val))); break;
+        case 7: SV(ID,V_AUTO,Boolean.valueOf(CMath.s_bool(val))); break;
         case 8: SV(ID,V_FLAG,new Integer(convert(Ability.FLAG_DESCS,val,true))); break;
         case 9: SV(ID,V_CLAS,new Integer(convertClassAndDomain(val))); break;
         case 10: SV(ID,V_OMAN,new Integer(CMath.s_int(val))); break;
@@ -644,7 +644,7 @@ public class GenAbility extends StdAbility
         	break;
         }
     }
-    
+
     private String convert(String[] options, int val, boolean mask)
     {
     	if(mask)
@@ -661,11 +661,11 @@ public class GenAbility extends StdAbility
         	}
     	}
     	else
-    	if((val>=0)&&(val<options.length)) 
+    	if((val>=0)&&(val<options.length))
     		return options[val];
     	return ""+val;
     }
-    
+
     private int convertClassAndDomain(String val)
     {
     	if(CMath.isInteger(val)) return CMath.s_int(val);
@@ -703,7 +703,7 @@ public class GenAbility extends StdAbility
     	}
     	return acod|dom;
     }
-    
+
     private String convertClassAndDomain(int val)
     {
     	int dom=(val&Ability.ALL_DOMAINS)>>5;
@@ -713,7 +713,7 @@ public class GenAbility extends StdAbility
     		return Ability.ACODE_DESCS[acod]+","+Ability.DOMAIN_DESCS[dom];
     	return ""+val;
     }
-    
+
     private int convert(String[] options, String val, boolean mask)
     {
     	if(CMath.isInteger(val)) return CMath.s_int(val);
@@ -733,7 +733,7 @@ public class GenAbility extends StdAbility
     	}
     	return 0;
     }
-    
+
     public boolean sameAs(Environmental E)
     {
         if(!(E instanceof GenAbility)) return false;
@@ -741,7 +741,7 @@ public class GenAbility extends StdAbility
         if(!((GenAbility)E).text().equals(text())) return false;
         return true;
     }
-    
+
     private void parseAllXML(String xml)
     {
     	Vector V=CMLib.xml().parseAllXML(xml);

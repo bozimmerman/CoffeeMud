@@ -17,7 +17,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -126,8 +126,8 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
         }
         return null;
    }
-    
-    
+
+
 	public Vector findBastardTheBestWay(Room location,
 									    Vector destRooms,
 									    boolean openOnly,
@@ -137,7 +137,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 									    boolean noWater,
 									    int maxRadius)
 	{
-	    
+
 	    Vector finalTrail=null;
         Room destRoom=null;
         int pick=0;
@@ -216,7 +216,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 		return -1;
 	}
-	
+
 	public Vector getRadiantRooms(Room room,
 								  boolean openOnly,
 								  boolean areaOnly,
@@ -254,7 +254,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		Room R1=null;
 		Room R=null;
 		Exit E=null;
-        
+
         int r=0;
         int d=0;
 		while(depth<maxDepth)
@@ -266,7 +266,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				{
 					R=R1.getRoomInDir(d);
 					E=R1.getExitInDir(d);
-					
+
 					if((R==null)
 					||(E==null)
                     ||((ignoreRooms!=null)&&(ignoreRooms.contains(R)))
@@ -309,7 +309,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
     public boolean beMobile(MOB mob,
                             boolean dooropen,
                             boolean wander,
-                            boolean roomprefer, 
+                            boolean roomprefer,
                             boolean roomobject,
                             long[] status,
                             Vector rooms)
@@ -320,14 +320,14 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	private boolean beMobile(MOB mob,
 						     boolean dooropen,
 						     boolean wander,
-						     boolean roomprefer, 
+						     boolean roomprefer,
                              boolean roomobject,
                              boolean sneakIfAble,
                              long[] status,
                             Vector rooms)
 	{
         if(status!=null)status[0]=Tickable.STATUS_MISC7+0;
-        
+
 		// ridden and following things aren't mobile!
 		if(((mob instanceof Rideable)&&(((Rideable)mob).numRiders()>0))
 		||((mob.amFollowing()!=null)&&(mob.location()==mob.amFollowing().location())))
@@ -420,7 +420,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 
         if(status!=null)status[0]=Tickable.STATUS_MISC7+10;
-        
+
 		if(direction<0)
         {
             if(status!=null)status[0]=Tickable.STATUS_NOT;
@@ -430,15 +430,15 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		Room nextRoom=oldRoom.getRoomInDir(direction);
 		Exit nextExit=oldRoom.getExitInDir(direction);
 		int opDirection=Directions.getOpDirectionCode(direction);
-        
+
 		if((nextRoom==null)||(nextExit==null))
         {
             if(status!=null)status[0]=Tickable.STATUS_NOT;
             return false;
         }
-		
+
         if(status!=null)status[0]=Tickable.STATUS_MISC7+11;
-        
+
 		if((CMLib.law().getLandTitle(nextRoom)!=null)
 		&&(CMLib.law().getLandTitle(nextRoom).landOwner().length()>0))
 			dooropen=false;
@@ -581,7 +581,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		    wanderAway(M,mindPCs,false);
 	    wanderIn(M,toHere);
 	}
-	
+
 	public void wanderIn(MOB M, Room toHere)
 	{
 	    if(toHere==null) return;
@@ -624,9 +624,9 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			{
 				Vector V=new Vector();
 				V.addElement(new Integer(directionCode));
-				V.addElement(new Boolean(flee));
-				V.addElement(new Boolean(nolook));
-				V.addElement(new Boolean(noriders));
+				V.addElement(Boolean.valueOf(flee));
+				V.addElement(Boolean.valueOf(nolook));
+				V.addElement(Boolean.valueOf(noriders));
 				return C.execute(mob,V,Command.METAFLAG_FORCED);
 			}
 		}
@@ -682,7 +682,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 	public int findRoomDir(MOB mob, Room R)
 	{
-	    if((mob==null)||(R==null)) 
+	    if((mob==null)||(R==null))
 	        return -1;
 	    Room R2=mob.location();
 	    if(R2==null)
@@ -726,7 +726,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 		return finalSets;
 	}
-	
+
 	public Vector findAllTrails(Room from, Vector tos, Vector radiantTrail)
 	{
 		Vector finalSets=new Vector();
@@ -739,5 +739,5 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		}
 		return finalSets;
 	}
-    
+
 }

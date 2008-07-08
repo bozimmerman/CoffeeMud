@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,7 +44,7 @@ public class Prop_EnlargeRoom extends Property
 	{
 		if(s.indexOf(".")>=0)
 			return CMath.s_double(s);
-		return new Integer(CMath.s_int(s)).doubleValue();
+		return (double)CMath.s_int(s);
 	}
 
 	protected int ival(String s)

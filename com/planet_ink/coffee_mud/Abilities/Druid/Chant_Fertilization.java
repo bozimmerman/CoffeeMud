@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -86,7 +86,11 @@ public class Chant_Fertilization extends Chant
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				beneficialAffect(mob,mob.location(),asLevel,CMLib.ableMapper().qualifyingClassLevel(mob,this)*new Long(((Tickable.TIME_MILIS_PER_MUDHOUR*mob.location().getArea().getTimeObj().getHoursInDay())/Tickable.TIME_TICK)).intValue());
+				beneficialAffect( mob,
+				                  mob.location(),
+				                  asLevel,
+				                  (int)( CMLib.ableMapper().qualifyingClassLevel( mob, this ) *
+				                      ( ( ( Tickable.TIME_MILIS_PER_MUDHOUR * mob.location().getArea().getTimeObj().getHoursInDay() ) / Tickable.TIME_TICK ) ) ) );
 			}
 
 		}

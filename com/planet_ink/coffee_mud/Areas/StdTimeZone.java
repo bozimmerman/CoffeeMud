@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -33,20 +33,28 @@ import java.util.*;
 public class StdTimeZone extends StdArea
 {
 	public String ID(){	return "StdTimeZone";}
+
+	public StdTimeZone()
+	{
+	    super();
+
+	    myClock = (TimeClock)CMClass.getCommon("DefaultTimeClock");
+	}
+
 	public CMObject copyOf()
 	{
         CMObject O=super.copyOf();
         if(O instanceof Area) ((Area)O).setTimeObj((TimeClock)CMClass.getCommon("DefaultTimeClock"));
         return O;
 	}
-	protected TimeClock myClock=(TimeClock)CMClass.getCommon("DefaultTimeClock");
+
 	public TimeClock getTimeObj(){return myClock;}
 	public void setName(String newName)
 	{
 		super.setName(newName);
 		myClock.setLoadName(newName);
 	}
-	
+
 	public void addChild(Area Adopted) {
 		super.addChild(Adopted);
 		Adopted.setTimeObj(getTimeObj());

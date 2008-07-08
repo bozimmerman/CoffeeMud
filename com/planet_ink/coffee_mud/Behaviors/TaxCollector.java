@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -54,12 +54,12 @@ public class TaxCollector extends StdBehavior
 		waitTime=CMParms.getParmInt(newParms,"WAIT",1000*60*2);
 		graceTime=CMParms.getParmInt(newParms,"GRACE",1000*60*60);
 	}
-    
+
     public final static int OWE_TOTAL=0;
     public final static int OWE_CITIZENTAX=1;
     public final static int OWE_BACKTAXES=2;
     public final static int OWE_FINES=3;
-	
+
 	public double[] totalMoneyOwed(MOB collector,MOB M)
 	{
 	    double[] owed=new double[4];
@@ -72,7 +72,7 @@ public class TaxCollector extends StdBehavior
 			    if((T.landOwner().equals(M.Name())
 			            ||((M.getClanID().length()>0)&&T.landOwner().equals(M.getClanID())))
 	            &&(T.backTaxes()>0))
-	                owed[OWE_BACKTAXES]+=new Integer(T.backTaxes()).doubleValue();
+	                owed[OWE_BACKTAXES]+=(double)T.backTaxes();
 	        }
 	    }
         LegalBehavior B=CMLib.law().getLegalBehavior(M.location());
@@ -96,7 +96,7 @@ public class TaxCollector extends StdBehavior
 		else
 			owed[OWE_CITIZENTAX]=CMath.div(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(M,collector),10.0);
 		owed[OWE_TOTAL]=owed[OWE_CITIZENTAX]+owed[OWE_BACKTAXES]+owed[OWE_FINES];
-		owed[OWE_TOTAL]=new Long(Math.round(owed[OWE_TOTAL])).doubleValue();
+		owed[OWE_TOTAL]=(double)Math.round(owed[OWE_TOTAL]);
 		return owed;
 	}
 
@@ -122,7 +122,7 @@ public class TaxCollector extends StdBehavior
 	    				if(COIN!=null) COIN.putCoinsBack();
 		            }
 			    }
-	            
+
 				if((demanded!=null)&&(demanded.contains(msg.source())))
 				{
 					int demanDex=demanded.indexOf(msg.source());
@@ -134,7 +134,7 @@ public class TaxCollector extends StdBehavior
 				}
 				if(paid.contains(msg.source())) paid.removeElement(msg.source());
 				paid.addElement(msg.source(),new Long(System.currentTimeMillis()));
-				
+
                 if(owed[OWE_FINES]>0)
                 {
                     LegalBehavior B=CMLib.law().getLegalBehavior(msg.source().location());
@@ -154,7 +154,7 @@ public class TaxCollector extends StdBehavior
                         }
                     }
                 }
-                
+
 				int numProperties=0;
 				int numBackTaxesUnpaid=0;
 				boolean paidBackTaxes=false;
@@ -198,7 +198,7 @@ public class TaxCollector extends StdBehavior
                         B.aquit(A2,msg.source(),new String[]{"TAXEVASION"});
 				    }
 				}
-				
+
 				if((paidAmount>0)&&(numProperties>0))
 				for(int i=0;i<taxableProperties.size();i++)
 				{
@@ -259,7 +259,7 @@ public class TaxCollector extends StdBehavior
 		MOB mob=(MOB)ticking;
 		if(demanded==null) demanded=new DVector(2);
 		if(paid==null) paid=new DVector(2);
-		
+
 		for(int i=paid.size()-1;i>=0;i--)
 		{
 			Long L=(Long)paid.elementAt(i,2);
@@ -291,13 +291,13 @@ public class TaxCollector extends StdBehavior
 				}
 				else
 					taxableProperties.clear();
-				
+
 				Environmental[] Treas=theLaw.getTreasuryNSafe(A2);
 				treasuryRoomID=CMLib.map().getExtendedRoomID((Room)Treas[0]);
 				treasuryItem=(Item)Treas[1];
 			}
 		}
-		
+
 		if((R!=null)
 		&&(!mob.isInCombat())
 		&&(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
@@ -359,7 +359,7 @@ public class TaxCollector extends StdBehavior
 							V.addElement(""+Math.round(owe[OWE_TOTAL]));
 							V.addElement(mob.name());
 							M.doCommand(V,Command.METAFLAG_FORCED);
-                            
+
 						}
 				    }
 				}

@@ -58,9 +58,9 @@ public class ItemIdentifier extends StdBehavior
 		&&(msg.tool() instanceof Item))
 		{
 			int cost=cost((Item)msg.tool());
-			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<new Integer(cost).doubleValue())
+			if(CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(msg.source(),observer)<((double)cost))
 			{
-			    String costStr=CMLib.beanCounter().nameCurrencyShort(observer,new Integer(cost).doubleValue());
+			    String costStr=CMLib.beanCounter().nameCurrencyShort(observer,(double)cost);
 				CMLib.commands().postSay(observer,source,"You'll need "+costStr+" for me to identify that.",true,false);
 				return false;
 			}
@@ -86,8 +86,8 @@ public class ItemIdentifier extends StdBehavior
 		&&(msg.tool() instanceof Item))
 		{
 			int cost=cost((Item)msg.tool());
-			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),new Integer(cost).doubleValue());
-			String costStr=CMLib.beanCounter().nameCurrencyLong(observer,new Integer(cost).doubleValue());
+			CMLib.beanCounter().subtractMoney(source,CMLib.beanCounter().getCurrency(observer),(double)cost);
+			String costStr=CMLib.beanCounter().nameCurrencyLong(observer,(double)cost);
 			source.recoverEnvStats();
 			CMMsg newMsg=CMClass.getMsg(msg.source(),observer,null,CMMsg.MSG_OK_ACTION,"<S-NAME> give(s) "+costStr+" to <T-NAMESELF>.");
 			msg.addTrailerMsg(newMsg);

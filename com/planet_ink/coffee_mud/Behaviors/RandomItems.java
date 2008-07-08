@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -43,7 +43,7 @@ public class RandomItems extends ActiveTicker
 	protected boolean favorMobs=false;
 	protected Vector restrictedLocales=null;
 	protected boolean alreadyTriedLoad=false;
-	
+
 	public Vector externalFiles()
 	{
         Vector xmlfiles=new Vector();
@@ -63,7 +63,7 @@ public class RandomItems extends ActiveTicker
 	    }
 		return null;
 	}
-	
+
 
 	public void setParms(String newParms)
 	{
@@ -162,7 +162,7 @@ public class RandomItems extends ActiveTicker
 		if(restrictedLocales==null) return true;
 		return !restrictedLocales.contains(new Integer(newRoom.domainType()));
 	}
-	
+
 	public boolean isStillMaintained(Environmental thang, ShopKeeper SK, Item I)
 	{
 		if((I==null)||(I.amDestroyed())) return false;
@@ -203,7 +203,7 @@ public class RandomItems extends ActiveTicker
 			items=(Vector)Resources.getResource("RANDOMITEMS-XML/"+filename.length()+"/"+filename.hashCode());
 			if(items!=null) return items;
 			items=new Vector();
-			String error=CMLib.coffeeMaker().addItemsFromXML(filename.toString(),items,null);
+			String error=CMLib.coffeeMaker().addItemsFromXML(filename,items,null);
 			String thangName="null";
 			if(thang instanceof Room)
 			    thangName=CMLib.map().getExtendedRoomID((Room)thang);
@@ -244,7 +244,7 @@ public class RandomItems extends ActiveTicker
 				else
 				if(thang!=null)
 				    thangName=thang.name();
-				
+
 				if((buf==null)||(buf.length()<20))
 				{
 					Log.errOut("RandomItems","Unknown XML file: '"+filename+"' for '"+thangName+"'.");
@@ -267,7 +267,7 @@ public class RandomItems extends ActiveTicker
 					Log.errOut("RandomItems","No items loaded: '"+filename+"' for '"+thangName+"'.");
 					return null;
 				}
-				
+
 				Resources.submitResource("RANDOMITEMS-"+filename,items);
 			}
 		}
@@ -300,7 +300,7 @@ public class RandomItems extends ActiveTicker
 			if(items==null) return true;
 			int attempts=10;
 			if((ticking instanceof Environmental)&&(((Environmental)ticking).amDestroyed()))
-				return false; 
+				return false;
 			while((maintained.size()<avgItems)&&(((--attempts)>0)))
 			{
 				I=(Item)items.elementAt(CMLib.dice().roll(1,items.size(),-1));
@@ -373,7 +373,7 @@ public class RandomItems extends ActiveTicker
 							room=CMLib.map().roomLocation((Environmental)ticking);
 						else
 							break;
-							
+
 						if(room instanceof GridLocale)
 							room=((GridLocale)room).getRandomGridChild();
 						if(room!=null)

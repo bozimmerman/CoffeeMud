@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Lee H. Fox
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -32,11 +32,12 @@ import java.util.*;
 */
 public class PegasusGreater extends StdRideable
 {
-    protected int rideBasis=Rideable.RIDEABLE_AIR;
-
     public PegasusGreater()
     {
         super();
+
+        rideBasis = Rideable.RIDEABLE_AIR;
+
         Random randomizer = new Random(System.currentTimeMillis());
 
         Username="a Greater Pegasus";

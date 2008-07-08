@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -66,7 +66,7 @@ public class Spell_Fatigue extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					target.curState().adjFatigue(CharState.FATIGUED_MILLIS+(mob.envStats().level() * 5 * Tickable.TIME_TICK),target.maxState());
+					target.curState().adjFatigue(CharState.FATIGUED_MILLIS+(((long)mob.envStats().level()) * 5l * Tickable.TIME_TICK),target.maxState());
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> feel(s) incredibly fatigued!");
 				}
 			}

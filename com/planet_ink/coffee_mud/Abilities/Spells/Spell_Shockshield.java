@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -84,7 +84,7 @@ public class Spell_Shockshield extends Spell
 						if(invoker==null) invoker=source;
 						if(msg2.value()<=0)
 						{
-							int damage = CMLib.dice().roll(1,(int)Math.round(new Integer(invoker.envStats().level()+super.getXLEVELLevel(invoker())+(2*super.getX1Level(invoker()))).doubleValue()/3.0),1);
+							int damage = CMLib.dice().roll(1,(int)Math.round((invoker.envStats().level()+super.getXLEVELLevel(invoker())+(2.0*super.getX1Level(invoker())))/3.0),1);
 							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The shock shield around <S-NAME> sparks and <DAMAGES> <T-NAME>!");
 						}
 					}

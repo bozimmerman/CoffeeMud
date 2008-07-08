@@ -244,7 +244,7 @@ public class MUD extends Thread implements MudHost
 		Log.sysOut(Thread.currentThread().getName(),"Loading catalog...");
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: loading catalog....");
 		CMLib.database().DBReadCatalogs();
-		
+
 		Log.sysOut(Thread.currentThread().getName(),"Loading map...");
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: loading rooms....");
 		CMLib.database().DBReadAllRooms(null);
@@ -459,7 +459,7 @@ public class MUD extends Thread implements MudHost
 						out.println("\n\rOFFLINE: Blocked\n\r");
 						out.flush();
 						if(proceed==2)
-							out.println("\n\rYour address has been blocked temporarily due to excessive invalid connections.  Please try back in "+(Math.round(LastConnectionDelay/60000))+" minutes, and not before.\n\r\n\r");
+							out.println("\n\rYour address has been blocked temporarily due to excessive invalid connections.  Please try back in " + (LastConnectionDelay/60000) + " minutes, and not before.\n\r\n\r");
 						else
 							out.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
 						out.flush();

@@ -61,7 +61,7 @@ public class DefaultSession extends Thread implements Session
 	protected Vector snoops=new Vector();
 	protected Vector prevMsgs=new Vector();
 	protected StringBuffer curPrevMsg=null;
-	
+
 	protected boolean lastWasCR=false;
 	protected boolean lastWasLF=false;
 	protected boolean suspendCommandLine=false;
@@ -90,11 +90,11 @@ public class DefaultSession extends Thread implements Session
     private static final Hashtable mxpVersionInfo=new Hashtable();
     private boolean bNextByteIs255=false;
     private boolean connectionComplete=false;
-    
+
     private int currentColor='N';
     private int lastColor=-1;
     protected static int sessionCounter=0;
-    
+
     public String ID(){return "DefaultSession";}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultSession();}}
     public void initializeClass(){}
@@ -106,7 +106,7 @@ public class DefaultSession extends Thread implements Session
         super("DefaultSession."+sessionCounter);
         ++sessionCounter;
     }
-    
+
 	public void initializeSession(Socket s, String introTextStr)
 	{
 		sock=s;
@@ -121,7 +121,7 @@ public class DefaultSession extends Thread implements Session
 			requestSubOption(rawout,TELNET_TERMTYPE);
 			if(!CMSecurity.isDisabled("MCCP"))
 			    changeTelnetMode(rawout,TELNET_COMPRESS2,true);
-			
+
 			if(!CMSecurity.isDisabled("MXP"))
 			    changeTelnetMode(rawout,TELNET_MXP,true);
 			if(!CMSecurity.isDisabled("MSP"))
@@ -134,12 +134,12 @@ public class DefaultSession extends Thread implements Session
 			    changeTelnetModeBackwards(TELNET_ECHO,false);
 			rawout.flush();
 			preliminaryRead(250);
-			
+
             //out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(rawout, "UTF-8")));
             //in = new BufferedReader(new InputStreamReader(rawin, "UTF-8"));
 			out = new PrintWriter(new OutputStreamWriter(rawout,"iso-8859-1"));
 			in = new BufferedReader(new InputStreamReader(rawin,"iso-8859-1"));
-			
+
 			preliminaryRead(250);
 			if(clientTelnetMode(TELNET_COMPRESS2))
 			{
@@ -155,12 +155,12 @@ public class DefaultSession extends Thread implements Session
 			if(clientTelnetMode(Session.TELNET_MXP))
 			    print("\n\033[6z\n<SUPPORT IMAGE IMAGE.URL>\n");
 			preliminaryRead(500);
-			if(introTextStr!=null) 
+			if(introTextStr!=null)
                 print(introTextStr);
             if((clientTelnetMode(Session.TELNET_MXP))
             &&((mxpSupportSet.contains("+IMAGE.URL"))
                 ||((mxpSupportSet.contains("+IMAGE"))&&(!mxpSupportSet.contains("-IMAGE.URL")))))
-            { 
+            {
                 // also the intro page
                 String[] paths=CMProps.mxpImagePath("intro.jpg");
                 if(paths[0].length()>0)
@@ -196,7 +196,7 @@ public class DefaultSession extends Thread implements Session
 
     private void preliminaryRead(long timeToWait)
     {
-        try{ 
+        try{
             long time=System.currentTimeMillis();
             while((System.currentTimeMillis()-time)<timeToWait)
             {
@@ -206,7 +206,7 @@ public class DefaultSession extends Thread implements Session
             }
         }catch(Exception e){}
     }
-    
+
     private void requestSubOption(OutputStream out, int optionCode)
     throws IOException
     {
@@ -224,7 +224,7 @@ public class DefaultSession extends Thread implements Session
         }
         out.flush();
     }
-    
+
     private boolean mightSupportTelnetMode(int telnetCode)
     {
         if(telnetSupportSet.size()==0)
@@ -242,7 +242,7 @@ public class DefaultSession extends Thread implements Session
         }
         return telnetSupportSet.contains(new Integer(telnetCode));
     }
-    
+
     public void setServerTelnetMode(int telnetCode, boolean onOff)
     { serverTelnetCodes[telnetCode]=onOff; }
     public boolean serverTelnetMode(int telnetCode)
@@ -276,7 +276,7 @@ public class DefaultSession extends Thread implements Session
         if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
     }
-    
+
     public void initTelnetMode(int mobbitmap)
     {
         setServerTelnetMode(TELNET_ANSI,CMath.bset(mobbitmap,MOB.ATT_ANSI));
@@ -297,7 +297,7 @@ public class DefaultSession extends Thread implements Session
 	public long getIdleMillis(){ return System.currentTimeMillis()-lastKeystroke;}
 	public long getTotalTicks(){ return tickTotal;}
     public long getMillisOnline(){ return System.currentTimeMillis()-onlineTime;}
-    
+
 	public long lastLoopTime(){ return lastLoopTop;}
     public long getLastPKFight(){return lastPKFight;}
     public void setLastPKFight(){lastPKFight=System.currentTimeMillis();}
@@ -336,7 +336,7 @@ public class DefaultSession extends Thread implements Session
 	    return ((snoops.size()>0)?Command.METAFLAG_SNOOPED:0)
 	           |(((mob!=null)&&(mob.soulMate()!=null))?Command.METAFLAG_POSSESSED:0);
 	}
-	
+
 	public void setPreviousCmd(Vector cmds)
 	{
 		if(cmds==null) return;
@@ -346,7 +346,7 @@ public class DefaultSession extends Thread implements Session
 
 		previousCmd.removeAllElements();
 		for(int i=0;i<cmds.size();i++)
-			previousCmd.addElement(((String)cmds.elementAt(i)).toString());
+			previousCmd.addElement(((String)cmds.elementAt(i)));
 	}
 
 	public boolean afkFlag(){return afkFlag;}
@@ -384,7 +384,7 @@ public class DefaultSession extends Thread implements Session
 		if(time==0) return false;
 		return ((System.currentTimeMillis()-time)>10000);
 	}
-    
+
 	public void out(char[] c){
 		try{
 			if((out!=null)&&(c!=null)&&(c.length>0))
@@ -401,7 +401,7 @@ public class DefaultSession extends Thread implements Session
                 {
     				writeStartTime=System.currentTimeMillis()+c.length;
     				out.write(c);
-    				if(out.checkError()) 
+    				if(out.checkError())
     					logoff(true);
                 }
 			}
@@ -428,7 +428,7 @@ public class DefaultSession extends Thread implements Session
 
             String newMsg=CMLib.lang().finalTranslation(msg);
             if(newMsg!=null) msg=newMsg;
-            
+
 			if(msg.endsWith("\n\r")
 			&&(msg.equals(lastStr))
 			&&(msg.length()>2)
@@ -447,7 +447,7 @@ public class DefaultSession extends Thread implements Session
 				lastStr=msg.substring(2);
 			else
 				lastStr=msg;
-			
+
 			if(pageBreak<0)	pageBreak=CMProps.getIntVar(CMProps.SYSTEMI_PAGEBREAK);
 			if((pageBreak>0)&&(this==Thread.currentThread()))
 			{
@@ -470,8 +470,8 @@ public class DefaultSession extends Thread implements Session
 					}
 				}
 			}
-			
-			// handle line cache -- 
+
+			// handle line cache --
 			if(!noCache)
 			for(int i=0;i<msg.length();i++)
 			{
@@ -575,7 +575,7 @@ public class DefaultSession extends Thread implements Session
 		throws IOException
 	{
 		String Msg=prompt(Message,maxTime).trim();
-		if(Msg.equals("")) 
+		if(Msg.equals(""))
             return Default;
         return Msg;
 	}
@@ -584,7 +584,7 @@ public class DefaultSession extends Thread implements Session
 		throws IOException
 	{
 		String Msg=prompt(Message,-1).trim();
-		if(Msg.equals("")) 
+		if(Msg.equals(""))
             return Default;
 		return Msg;
 	}
@@ -744,7 +744,7 @@ public class DefaultSession extends Thread implements Session
     				if(terminalType.equalsIgnoreCase("ANSI"))
         			    changeTelnetMode(rawout,TELNET_ECHO,true);
                 }
-                else 
+                else
                 if (suboptionData[0] == 1) // Request for data.
                 {/* No idea how to handle this, ignore it for now.*/}
             }
@@ -763,14 +763,14 @@ public class DefaultSession extends Thread implements Session
             break;
         }
     }
-    
+
     public void handleEscape()
     throws IOException, InterruptedIOException
     {
         if((in==null)||(out==null)) return;
         int c=read();
         if((char)c!='[') return;
-        
+
         boolean quote=false;
         StringBuffer escapeStr=new StringBuffer("");
         while(((c=read())!=-1)
@@ -856,7 +856,7 @@ public class DefaultSession extends Thread implements Session
             }
         }
     }
-    
+
 	public void handleIAC()
 		throws IOException, InterruptedIOException
 	{
@@ -884,7 +884,7 @@ public class DefaultSession extends Thread implements Session
                     last = read();
                     if (last == TELNET_IAC)
                         subOptionData[numBytes++] = TELNET_IAC;
-                    else 
+                    else
                     if (last == TELNET_SE)
                         break;
                 }
@@ -989,7 +989,7 @@ public class DefaultSession extends Thread implements Session
         }
         throw new java.io.InterruptedIOException(".");
     }
-    
+
     public char hotkey(long maxWait)
     {
         if((in==null)||(out==null)) return '\0';
@@ -1014,7 +1014,7 @@ public class DefaultSession extends Thread implements Session
         catch(java.io.IOException e) { }
         return '\0';
     }
-    
+
 	public int nonBlockingIn(boolean appendInputFlag)
 	throws IOException
 	{
@@ -1046,11 +1046,11 @@ public class DefaultSession extends Thread implements Session
                         c=-1;
                         if(!lastWasCR)
                         {
-                            lastWasLF = true; 
+                            lastWasLF = true;
                             rv = true;
                         }
                         else
-                            lastWasLF = false; 
+                            lastWasLF = false;
                         lastWasCR = false;
                         if (clientTelnetMode(TELNET_ECHO))
                             out(""+(char)13+(char)10);  // CR
@@ -1126,7 +1126,7 @@ public class DefaultSession extends Thread implements Session
 		}
 		return 1;
 	}
-	
+
 	public String blockingIn(long maxTime)
 		throws IOException
 	{
@@ -1138,12 +1138,12 @@ public class DefaultSession extends Thread implements Session
 			suspendCommandLine=true;
 			while((!killFlag)
 			&&((maxTime<=0)||((System.currentTimeMillis()-start)<maxTime)))
-			    if(nonBlockingIn(true)==0) 
+			    if(nonBlockingIn(true)==0)
 			        break;
 			suspendCommandLine=false;
 			if((maxTime>0)&&((System.currentTimeMillis()-start)>=maxTime))
 				throw new java.io.InterruptedIOException("Timed Out.");
-		
+
 			StringBuffer inStr=CMLib.coffeeFilter().simpleInFilter(input,CMSecurity.isAllowed(mob,(mob!=null)?mob.location():null,"MXPTAGS"));
 			input=new StringBuffer("");
 			if(inStr==null) return null;
@@ -1154,7 +1154,7 @@ public class DefaultSession extends Thread implements Session
 			suspendCommandLine=false;
 		}
 	}
-	
+
 	public String blockingIn()
 		throws IOException
 	{
@@ -1172,9 +1172,9 @@ public class DefaultSession extends Thread implements Session
 		    code=nonBlockingIn(true);
 		    if(code==1)
 		        continue;
-		    if(code==0) 
+		    if(code==0)
 		        break;
-		    if(code==-1) 
+		    if(code==-1)
 		        return null;
 		}
 
@@ -1206,7 +1206,7 @@ public class DefaultSession extends Thread implements Session
 	public String choose(String Message, String Choices, String Default)
 	throws IOException
 	{ return choose(Message,Choices,Default,-1);}
-	
+
 	public String choose(String Message, String Choices, String Default, long maxTime)
 	throws IOException
 	{
@@ -1325,7 +1325,7 @@ public class DefaultSession extends Thread implements Session
                                     case 'M': { buf.append(tank.maxState().getMana()); c++; break;}
                                     case 'v': { buf.append(tank.curState().getMovement()); c++; break;}
                                     case 'V': { buf.append(tank.maxState().getMovement()); c++; break;}
-                                    case 'e': {   buf.append(tank.displayName(mob())); c++; break;} 
+                                    case 'e': {   buf.append(tank.displayName(mob())); c++; break;}
                                     case 'E': {   if((mob().isInCombat())&&(CMLib.flags().canBeSeenBy(tank,mob)))
                                                       buf.append(tank.healthText(mob())+"\n\r");
                                                   c++;
@@ -1502,14 +1502,14 @@ public class DefaultSession extends Thread implements Session
                                     CMDS=(Vector)ALL_CMDS.elementAt(v);
     								setPreviousCmd(CMDS);
     								milliTotal+=(lastStop-lastStart);
-    								
+
     								if(snoops.size()>0)
                                     {
                                         String msgColored=CMStrings.replaceAll(input,"\n\r",CMLib.coffeeFilter().colorOnlyFilter("\n\r^Z"+((mob==null)?"?":mob.Name())+":^N ",this));
     									for(int s=0;s<snoops.size();s++)
     										((Session)snoops.elementAt(s)).rawPrintln(msgColored);
                                     }
-    								
+
     								lastStart=System.currentTimeMillis();
                                     if(echoOn) rawPrintln(CMParms.combineWithQuotes(CMDS,0));
                                     Vector MORE_CMDS=CMLib.lang().preCommandParser(CMDS);
@@ -1546,7 +1546,7 @@ public class DefaultSession extends Thread implements Session
 									println(mob(),null,null,"\n\r^ZIf you don't do something, you will be logged out in "+remain+" minute(s)!^?");
 								}
 							}
-							
+
 							if(!afkFlag())
 							{
 								if(getIdleMillis()>=600000)
@@ -1645,16 +1645,16 @@ public class DefaultSession extends Thread implements Session
 			if(mob!=null) mob.setSession(null);
 			mob=null;
 		}
-		
+
 		status=Session.STATUS_LOGOUT4;
 		killFlag=true;
 		waiting=false;
 		needPrompt=false;
 		snoops.clear();
-		
+
 		closeSocks();
-		
-		
+
+
 		status=Session.STATUS_LOGOUT5;
 		CMLib.sessions().removeElement(this);
 
@@ -1663,7 +1663,7 @@ public class DefaultSession extends Thread implements Session
 		//}
 		status=Session.STATUS_LOGOUTFINAL;
 	}
-    
+
     private static class loginLogoutThread extends Thread implements Tickable
     {
         public String name(){return (theMOB==null)?"Dead LLThread":"LLThread for "+theMOB.Name();}
@@ -1713,7 +1713,7 @@ public class DefaultSession extends Thread implements Session
                 }catch(Exception e){}
             }
         }
-        
+
         public void run()
         {
             if((!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN))

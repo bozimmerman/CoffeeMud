@@ -16,7 +16,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -34,10 +34,13 @@ import java.util.*;
 public class GenChair extends GenRideable
 {
 	public String ID(){	return "GenChair";}
-	protected String	readableText="";
+
 	public GenChair()
 	{
 		super();
+
+		readableText = "";
+
 		setName("a generic chair");
 		baseEnvStats.setWeight(150);
 		setDisplayText("a generic chair is here.");

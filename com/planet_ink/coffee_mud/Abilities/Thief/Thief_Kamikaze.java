@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -130,7 +130,7 @@ public class Thief_Kamikaze extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		double goldRequired=new Integer((Math.round((100-((mob.charStats().getStat(CharStats.STAT_CHARISMA)+(2*getXLEVELLevel(mob)))*2)))*target.envStats().level())).doubleValue();
+		double goldRequired=(double)(( Math.round( ( 100.0 - ( ( mob.charStats().getStat( CharStats.STAT_CHARISMA ) + ( 2.0 * getXLEVELLevel( mob ) ) ) * 2.0 ) ) ) * target.envStats().level() ) );
 		String localCurrency=CMLib.beanCounter().getCurrency(target);
 	    String costWords=CMLib.beanCounter().nameCurrencyShort(localCurrency,goldRequired);
 		if(CMLib.beanCounter().getTotalAbsoluteValue(mob,localCurrency)<goldRequired)
@@ -170,7 +170,7 @@ public class Thief_Kamikaze extends ThiefSkill
 		else
 		{
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_SPEAK,"^T<S-NAME> pay(s) <T-NAMESELF> to Kamikaze "+s+" for "+costWords+".^?");
-			
+
 			CMLib.beanCounter().subtractMoney(mob,localCurrency,goldRequired);
 			mob.recoverEnvStats();
 			if(mob.location().okMessage(mob,msg))

@@ -18,7 +18,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -73,7 +73,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         Vector V=new Vector();
         if(here!=null)
         {
-            if(getShopKeeper(here)!=null) 
+            if(getShopKeeper(here)!=null)
                 V.addElement(here);
             Area A=here.getArea();
             if(getShopKeeper(A)!=null)
@@ -82,7 +82,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             for(int v2=0;v2<V2.size();v2++)
                 if(getShopKeeper((Area)V2.elementAt(v2))!=null)
                     V.addElement(V2.elementAt(v2));
-            
+
             for(int i=0;i<here.numInhabitants();i++)
             {
                 MOB thisMOB=here.fetchInhabitant(i);
@@ -153,7 +153,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         str.append("\n\rDescription: "+E.description());
         return str.toString();
     }
-    
+
     public boolean shownInInventory(Environmental product, MOB buyer)
     {
         if(!(product instanceof Item)) return true;
@@ -163,9 +163,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         if(!CMLib.flags().canBeSeenBy(product,buyer)) return false;
         return true;
     }
-    
-    public double rawSpecificGoldPrice(Environmental product, 
-                                       int whatISell, 
+
+    public double rawSpecificGoldPrice(Environmental product,
+                                       int whatISell,
                                        double numberOfThem)
     {
         double price=0.0;
@@ -190,7 +190,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     if(CMath.isDouble(A.text()))
                         price=CMath.s_double(A.text());
                     else
-                        price=new Integer(CMath.s_int(A.text())).doubleValue();
+                        price=(double)CMath.s_int(A.text());
                 }
                 else
                 {
@@ -198,7 +198,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     if(CMath.isDouble(s2))
                         price=CMath.s_double(s2);
                     else
-                        price=new Integer(CMath.s_int(s2)).doubleValue();
+                        price=(double)CMath.s_int(s2);
                 }
             }
             if(price==0.0)
@@ -208,7 +208,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             price=CMLib.ableMapper().lowestQualifyingLevel(product.ID())*25;
         return price;
     }
-    
+
     public double prejudiceValueFromPart(MOB customer, boolean pawnTo, String part)
     {
         int x=part.indexOf("=");
@@ -250,11 +250,11 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         return 0.0;
 
     }
-    
+
     public double prejudiceFactor(MOB customer, String factors, boolean pawnTo)
     {
         factors=factors.toUpperCase();
-        if(factors.length()==0) 
+        if(factors.length()==0)
         {
             factors=CMProps.getVar(CMProps.SYSTEM_PREJUDICE).trim();
             if(factors.length()==0)
@@ -325,11 +325,11 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             return val;
         }
         if(stockPrice>=0)
-            val.absoluteGoldPrice=new Integer(stockPrice).doubleValue();
+            val.absoluteGoldPrice=(double)stockPrice;
         else
             val.absoluteGoldPrice=rawSpecificGoldPrice(product,shop.whatIsSold(),number);
 
-        if(buyer==null) 
+        if(buyer==null)
         {
             if(val.absoluteGoldPrice>0.0)
                 val.absoluteGoldPrice=CMLib.beanCounter().abbreviatedRePrice(seller,val.absoluteGoldPrice);
@@ -350,21 +350,21 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             double salesTax=getSalesTax(seller.getStartRoom(),seller);
             val.absoluteGoldPrice+=((salesTax>0.0)?(CMath.mul(val.absoluteGoldPrice,CMath.div(salesTax,100.0))):0.0);
         }
-        if(val.absoluteGoldPrice<=0.0) 
+        if(val.absoluteGoldPrice<=0.0)
             val.absoluteGoldPrice=1.0;
         else
             val.absoluteGoldPrice=CMLib.beanCounter().abbreviatedRePrice(seller,val.absoluteGoldPrice);
-        
+
         // the magical aura discount for miscmagic (potions, anything else.. MUST be baseEnvStats tho!
         if((CMath.bset(buyer.baseEnvStats().disposition(),EnvStats.IS_BONUS))
         &&(product instanceof MiscMagic)
         &&(val.absoluteGoldPrice>2.0))
         	val.absoluteGoldPrice/=2;
-        	
+
         return val;
     }
 
-    
+
     public double devalue(ShopKeeper shop, Environmental product)
     {
         int num=shop.getShop().numberInStock(product);
@@ -392,7 +392,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         if(rate<0.0) rate=0.0;
         return rate;
     }
-    
+
     public ShopKeeper.ShopPrice pawningPrice(MOB seller,
                                              MOB buyer,
                                              Environmental product,
@@ -401,17 +401,17 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         double number=1.0;
         if(product instanceof PackagedItems)
         {
-            number=new Integer(((PackagedItems)product).numberOfItemsInPackage()).doubleValue();
+            number=(double)((PackagedItems)product).numberOfItemsInPackage();
             product=((PackagedItems)product).getItem();
         }
         ShopKeeper.ShopPrice val=new ShopKeeper.ShopPrice();
-        if(product==null) 
+        if(product==null)
             return val;
         int stockPrice=shop.getShop().stockPrice(product);
         if(stockPrice<=-100) return val;
 
         if(stockPrice>=0.0)
-            val.absoluteGoldPrice=new Integer(stockPrice).doubleValue();
+            val.absoluteGoldPrice=(double)stockPrice;
         else
             val.absoluteGoldPrice=rawSpecificGoldPrice(product,shop.whatIsSold(),number);
 
@@ -426,7 +426,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         double buyPrice=CMath.div(CMath.mul(val.absoluteGoldPrice,buyer.charStats().getStat(CharStats.STAT_CHARISMA)),60.0);
         if(!(product instanceof Ability))
             buyPrice=CMath.mul(buyPrice,1.0-devalue(shop,product));
-        
+
 
         // the price is 200% at 0 charisma, and 100% at 30
         double sellPrice=sellingPrice(seller,buyer,product,shop,false).absoluteGoldPrice;
@@ -436,12 +436,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         else
             val.absoluteGoldPrice=buyPrice;
 
-        if(val.absoluteGoldPrice<=0.0) 
+        if(val.absoluteGoldPrice<=0.0)
             val.absoluteGoldPrice=1.0;
         return val;
     }
 
-    
+
     public double getSalesTax(Room homeRoom, MOB seller)
     {
         if((seller==null)||(homeRoom==null)) return 0.0;
@@ -453,7 +453,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 return CMath.s_double(taxs);
         }
         return 0.0;
-        
+
     }
 
     public boolean standardSellEvaluation(MOB seller,
@@ -657,8 +657,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         return false;
     }
 
-    public String getListInventory(MOB seller, 
-                                   MOB buyer, 
+    public String getListInventory(MOB seller,
+                                   MOB buyer,
                                    Vector rawInventory,
                                    int limit,
                                    ShopKeeper shop,
@@ -675,7 +675,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             &&((mask==null)||(mask.length()==0)||(CMLib.english().containsString(E.name(),mask))))
             	inventory.addElement(E);
         }
-        
+
         if(inventory.size()>0)
         {
             int totalCols=((shop.whatIsSold()==ShopKeeper.DEAL_LANDSELLER)
@@ -745,7 +745,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 +((salesTax<=0.0)?"":"\n\r\n\rPrices above include a "+salesTax+"% sales tax.")
                 +"^T";
     }
-    
+
     public String findInnRoom(InnKey key, String addThis, Room R)
     {
         if(R==null) return null;
@@ -761,7 +761,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         }
         return null;
     }
-    
+
     public MOB parseBuyingFor(MOB buyer, String message)
     {
         MOB mobFor=buyer;
@@ -773,13 +773,13 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 String s=(String)V.lastElement();
                 if(s.endsWith(".")) s=s.substring(0,s.length()-1);
                 MOB M=buyer.location().fetchInhabitant("$"+s+"$");
-                if(M!=null) 
+                if(M!=null)
                     mobFor=M;
             }
         }
         return mobFor;
     }
-    
+
     public double transactPawn(MOB shopkeeper,
                                MOB pawner,
                                ShopKeeper shop,
@@ -850,7 +850,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         }
         return Double.MIN_VALUE;
     }
-    
+
     public void transactMoneyOnly(MOB seller,
                                   MOB buyer,
                                   ShopKeeper shop,
@@ -861,7 +861,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             return;
         Room room=seller.location();
         ShopKeeper.ShopPrice price=sellingPrice(seller,buyer,product,shop,true);
-        if(price.absoluteGoldPrice>0.0) 
+        if(price.absoluteGoldPrice>0.0)
         {
             CMLib.beanCounter().subtractMoney(buyer,CMLib.beanCounter().getCurrency(seller),price.absoluteGoldPrice);
             double totalFunds=price.absoluteGoldPrice;
@@ -902,7 +902,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         if(price.experiencePrice>0) CMLib.leveler().postExperience(buyer,null,null,-price.experiencePrice,false);
         buyer.recoverEnvStats();
     }
-    
+
     public boolean purchaseItems(Item baseProduct,
                                  Vector products,
                                  MOB seller,
@@ -929,7 +929,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         }
         return false;
     }
-    
+
     public boolean purchaseMOB(MOB product,
                                MOB seller,
                                ShopKeeper shop,
@@ -970,8 +970,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         }
         return true;
     }
-    
-    public void purchaseAbility(Ability A, 
+
+    public void purchaseAbility(Ability A,
                                 MOB seller,
                                 ShopKeeper shop,
                                 MOB mobFor)
@@ -1029,7 +1029,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 ((MOB)victims[x][0]).setVictim((MOB)victims[x][1]);
         }
     }
-    
+
     public Vector addRealEstateTitles(Vector V, MOB buyer, int whatISell, Room myRoom)
     {
         if((myRoom==null)||(buyer==null)) return V;
@@ -1116,7 +1116,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                             if(L2.landOwner().length()>0)
                                 skipThisOne=true;
                         }
-                    if(skipThisOne) 
+                    if(skipThisOne)
                         continue;
                     Item I=CMClass.getItem("GenTitle");
                     if(R instanceof Room)
@@ -1153,7 +1153,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             }
             else
             {
-                
+
                 int lowest=CMath.s_int(L.landPropertyID().substring(x+1).trim());
                 for(int v=1;v<V.size();v++)
                     if(V.elementAt(v) instanceof LandTitle)
@@ -1172,7 +1172,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         }
         return V2;
     }
-    
+
     public boolean ignoreIfNecessary(MOB mob, String ignoreMask, MOB whoIgnores)
     {
         if((ignoreMask.length()>0)&&(!CMLib.masking().maskCheck(ignoreMask,mob,false)))
@@ -1182,8 +1182,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         }
         return true;
     }
-    
-    
+
+
     public String storeKeeperString(int whatISell)
     {
         switch(whatISell)
@@ -1359,7 +1359,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			if(!CMLib.flags().isInTheGame(to,true))
 				CMLib.database().DBUpdatePlayerItems(to);
 	}
-	
+
 	public String[] bid(MOB mob, double bid, String bidCurrency, Auctioneer.AuctionData auctionData, Item I, Vector auctionAnnounces)
 	{
 		String bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
@@ -1369,7 +1369,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 
 		if(!bidCurrency.equals(auctionData.currency))
 		    return new String[]{"This auction is being bid in "+currencyName+" only.",null};
-		
+
 		if(bid>CMLib.beanCounter().getTotalAbsoluteValue(mob,auctionData.currency))
 			return new String[]{"You don't have enough "+currencyName+" on hand to cover that bid.",null};
 
@@ -1462,16 +1462,16 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         xml.append("</AUCTIONITEM>");
         xml.append("</AUCTION>");
         if(!updateOnly)
-			CMLib.database().DBWriteJournal("SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim(), 
-											data.auctioningM.Name(), 
+			CMLib.database().DBWriteJournal("SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim(),
+											data.auctioningM.Name(),
 											""+data.tickDown,
-											CMStrings.limit(data.auctioningI.name(),38), 
-											xml.toString(), 
+											CMStrings.limit(data.auctioningI.name(),38),
+											xml.toString(),
 											-1);
         else
         	CMLib.database().DBUpdateJournal(data.auctionDBKey, data.auctioningI.Name(),xml.toString());
 	}
-	
+
     public Vector getAuctions(Object ofLike, String auctionHouse)
     {
     	Vector auctions=new Vector();
@@ -1523,7 +1523,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	    }
 	    return auctions;
     }
-    
+
     public String getListForMask(String targetMessage)
     {
     	if(targetMessage==null) return null;
@@ -1536,7 +1536,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 		}
 		return null;
     }
-    
+
     public String getAuctionInventory(MOB seller,
     								  MOB buyer,
     								  Auctioneer auction,
@@ -1578,7 +1578,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         }
         return "\n\r"+str.toString();
     }
-    
+
 	public void auctionNotify(MOB M, String resp, String regardingItem)
 	{
 		try{
@@ -1596,7 +1596,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 	    	}
 		}catch(Exception e){}
 	}
-	
+
     public void cancelAuction(Auctioneer.AuctionData data)
     {
     	data.auctioningM.giveItem(data.auctioningI);

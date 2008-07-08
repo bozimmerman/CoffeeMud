@@ -17,7 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -62,7 +62,7 @@ public class Spell_KnowValue extends Spell
 				if(target.value()==0)
 					str=target.name()+" is worth hardly anything at all";
 				else
-					str=target.name()+" is worth "+CMLib.beanCounter().nameCurrencyShort(mob,new Integer(target.value()).doubleValue())+" ";
+					str=target.name()+" is worth "+CMLib.beanCounter().nameCurrencyShort(mob,(double)target.value())+" ";
 				if(mob.isMonster())
 					CMLib.commands().postSay(mob,null,str,false,false);
 				else

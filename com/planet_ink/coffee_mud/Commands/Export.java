@@ -15,7 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
-/* 
+/*
    Copyright 2000-2008 Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -76,7 +76,7 @@ public class Export extends StdCommand
 			        mob.Name(),
 			        mob.Name(),
 			        "Exported XML",
-			        xml.toString(),
+			        xml,
 			        -1);
 			if(S!=null) mob.tell("XML emailed to "+mob.playerStats().getEmail());
 		}
@@ -432,9 +432,9 @@ public class Export extends StdCommand
 		reallyExport(mob,S,fileName,xml);
 		return true;
 	}
-	
+
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowedStartsWith(mob,mob.location(),"EXPORT");}
 
-	
+
 }
