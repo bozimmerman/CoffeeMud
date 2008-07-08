@@ -56,10 +56,19 @@ BUY_PROG p a small dagger
 	endif 
 ~
 
-BUY_PROG p a small dagger
-	if var($i BUY_PROG2_TEST == 'TEST')
-		mpsetvar $i BUY_PROG2_TEST TRUE
+CHANNEL_PROG GOSSIP p ooobie doobie
+	if var($i CHANNEL_PROG_TEST == 'TEST')
+		mpsetvar $i BCHANNEL_PROG_TEST TRUE
 	else
-		mpsetvar $i ERRORS $<$i ERRORS> ERROR: BUY_PROG2 
+		mpsetvar $i ERRORS $<$i ERRORS> ERROR: CHANNEL_PROG 
 	endif 
 ~
+
+CHANNEL_PROG GOSSIP eooobie edoobie
+	if var($i CHANNEL_PROG2_TEST == 'TEST')
+		mpsetvar $i CHANNEL_PROG2_TEST TRUE
+	else
+		mpsetvar $i ERRORS $<$i ERRORS> ERROR: CHANNEL_PROG2 
+	endif 
+~
+
