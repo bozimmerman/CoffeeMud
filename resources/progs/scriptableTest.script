@@ -1,5 +1,65 @@
-#
+# this script is loaded by the TEST SCRIPTABLE command for Archons
 
 ONCE_PROG
 
+~
+
+ALL_GREET_PROG 100
+	if var($i ALL_GREET_PROG_TEST == 'TEST')
+		mpsetvar $i ALL_GREET_PROG_TEST TRUE
+	else
+		mpsetvar $i ERRORS $<$i ERRORS> ERROR: ALL_GREET_PROG 
+	endif 
+~
+
+MASK_PROG zoober
+	if var($i MASK_PROG_TEST == 'TEST')
+		mpsetvar $i MASK_PROG_TEST TRUE
+	else
+		mpsetvar $i ERRORS $<$i ERRORS> ERROR: MASK_PROG 
+	endif 
+~
+
+ACT_PROG p zoobie doobie doo
+	if var($i ACT_PROG_TEST == 'TEST')
+		mpsetvar $i ACT_PROG_TEST TRUE
+	else
+		mpsetvar $i ERRORS $<$i ERRORS> ERROR: ACT_PROG 
+	endif 
+~
+
+BRIBE_PROG 100
+	if var($i BRIBE_PROG_TEST == 'TEST')
+		if goldamt($o == 100)
+			mpsetvar $i BRIBE_PROG_TEST TRUE
+		else
+			mpsetvar $i ERRORS $<$i ERRORS> ERROR: BRIBE_PROG $%goldamt($o)%
+		endif 
+	else
+		mpsetvar $i ERRORS $<$i ERRORS> ERROR: BRIBE_PROG 
+	endif 
+~
+
+BUY_PROG sword dagger
+	if var($i BUY_PROG_TEST == 'TEST')
+		mpsetvar $i BUY_PROG_TEST TRUE
+	else
+		mpsetvar $i ERRORS $<$i ERRORS> ERROR: BUY_PROG 
+	endif 
+~
+
+BUY_PROG p a small dagger
+	if var($i BUY_PROG2_TEST == 'TEST')
+		mpsetvar $i BUY_PROG2_TEST TRUE
+	else
+		mpsetvar $i ERRORS $<$i ERRORS> ERROR: BUY_PROG2 
+	endif 
+~
+
+BUY_PROG p a small dagger
+	if var($i BUY_PROG2_TEST == 'TEST')
+		mpsetvar $i BUY_PROG2_TEST TRUE
+	else
+		mpsetvar $i ERRORS $<$i ERRORS> ERROR: BUY_PROG2 
+	endif 
 ~
