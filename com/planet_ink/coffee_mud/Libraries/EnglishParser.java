@@ -1401,26 +1401,17 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		if(CMath.isInteger(itemID))
 		{
 		    gold=CMath.s_long(itemID);
-	        Vector V=CMLib.beanCounter().getStandardCurrency(mob,CMLib.beanCounter().getCurrency(mob));
-	        boolean skipNextCheck=false;
-	        for(int v=0;v<V.size();v++)
-	            if(((Coins)V.elementAt(v)).getNumberOfCoins()>=gold)
-	            {
-	                currency=((Coins)V.elementAt(v)).getCurrency();
-	                denomination=((Coins)V.elementAt(v)).getDenomination();
-	                break;
-	            }
-	        if(!skipNextCheck)
-	        {
-		        V=CMLib.beanCounter().getStandardCurrency(mob,null);
-		        for(int v=0;v<V.size();v++)
-		            if(((Coins)V.elementAt(v)).getNumberOfCoins()>=gold)
-		            {
-		                currency=((Coins)V.elementAt(v)).getCurrency();
-		                denomination=((Coins)V.elementAt(v)).getDenomination();
-		                break;
-		            }
-	        }
+            double totalAmount=CMLib.beanCounter().getTotalAbsoluteValue(mob,currency);
+            double bestDenomination=CMLib.beanCounter().getBestDenomination(currency,(int)gold,totalAmount);
+	        if(bestDenomination==0.0)
+            {
+                bestDenomination=CMLib.beanCounter().getBestDenomination(null,(int)gold,totalAmount);
+                if(bestDenomination>0.0)
+                    currency=null;
+            }
+            if(bestDenomination==0.0)
+                return null;
+            denomination=bestDenomination;
 		}
 		else
 		{
@@ -1444,7 +1435,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		if(gold>0)
 		{
-			if(CMLib.beanCounter().getNumberOfCoins(mob,currency,denomination)>=gold)
+			if(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)>=CMath.mul(denomination,gold))
 			{
 			    CMLib.beanCounter().subtractMoney(mob,currency,denomination,CMath.mul(denomination,gold));
 			    Coins C=(Coins)CMClass.getItem("StdCoins");
@@ -1455,7 +1446,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				mob.addInventory(C);
 				return C;
 			}
-			mob.tell("You don't have that many "+CMLib.beanCounter().getDenominationName(currency,denomination)+".");
+			mob.tell("You don't have that much "+CMLib.beanCounter().getDenominationName(currency,denomination)+".");
 			Vector V=CMLib.beanCounter().getStandardCurrency(mob,currency);
 			for(int v=0;v<V.size();v++)
 			    if(((Coins)V.elementAt(v)).getDenomination()==denomination)

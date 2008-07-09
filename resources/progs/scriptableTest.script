@@ -84,7 +84,7 @@ BRIBE_PROG 100
 	endif 
 ~
 
-BUY_PROG sword dagger
+BUY_PROG sword whistle
 	if var($i BUY_PROG_TEST == 'TEST')
 		mpsetvar $i BUY_PROG_TEST TRUE
 	else
@@ -102,7 +102,7 @@ BUY_PROG p a small dagger
 
 CHANNEL_PROG GOSSIP p ooobie doobie
 	if var($i CHANNEL_PROG_TEST == 'TEST')
-		mpsetvar $i BCHANNEL_PROG_TEST TRUE
+		mpsetvar $i CHANNEL_PROG_TEST TRUE
 	else
 		mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:CHANNEL_PROG 
 	endif 
@@ -204,7 +204,7 @@ GET_PROG swash shield claw
     endif 
 ~
 
-GIVE_PROG p a small dagger
+GIVE_PROG p a shield
     if var($i GIVE_PROG_TEST == 'TEST')
         mpsetvar $i GIVE_PROG_TEST TRUE
     else
@@ -449,7 +449,7 @@ FUNCTION_PROG TEST2
     ENDIF
     mpsetvar $i SUCCESS $<$i SUCCESS> ACT_PROG_TEST 
 
-    MPGSET Orc MONEY 1000
+    MPGSET Orc MONEY 800
     mpsetvar $i BRIBE_PROG_TEST TEST
     MPFORCE Orc GIVE 100 Shoppy  
     IF VAR($i BRIBE_PROG_TEST != 'TRUE')
@@ -471,7 +471,7 @@ FUNCTION_PROG TEST2
     mpsetvar $i SUCCESS $<$i SUCCESS> BUY_PROG_TEST 
     
     mpsetvar $i BUY_PROG2_TEST TEST
-    MPFORCE Orc BUY shoppy dagger
+    MPFORCE Orc BUY dagger shoppy
     IF VAR($i BUY_PROG2_TEST != 'TRUE')
         mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:BUY_PROG2
     ENDIF
@@ -481,6 +481,7 @@ FUNCTION_PROG TEST2
     mpsetvar $i SUCCESS $<$i SUCCESS> BUY_PROG2_TEST 
     
     mpsetvar $i CHANNEL_PROG_TEST TEST
+    MPFORCE Orc Speak Common
     MPFORCE Orc GOSSIP ooobie doobie
     IF VAR($i CHANNEL_PROG_TEST != 'TRUE')
         mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:CHANNEL_PROG
@@ -627,15 +628,25 @@ FUNCTION_PROG TEST2
     mpsetvar $i SUCCESS $<$i SUCCESS> GIVE_PROG_TEST 
     
     mpsetvar $i HITPRCNT_PROG_TEST TEST
-    for $i = 1 to 100
-        MPFORCE Orc MPDAMAGE Shoppy 10 10
+    kill orc
+    for $0 = 1 to 10
+	    mpsetvar $i DAMAGE_PROG_TEST TEST
+        MPFORCE Orc MPDAMAGE Shoppy 100 100
+        tell zac $i=$%hitprcnt($i)%
     next
+    MPALARM 1 MPCALLFUNC TEST3
+~
+
+FUNCTION_PROG TEST3
     IF VAR($i HITPRCNT_PROG_TEST != 'TRUE')
         mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:HITPRCNT_PROG_TEST
     ENDIF
     IF VAR($i ERRORS != '')
         RETURN
     ENDIF
+    mppurge Orc
+    mppurge Orc
+    mpmload Orc
     mpsetvar $i SUCCESS $<$i SUCCESS> HITPRCNT_PROG_TEST 
     
     mpsetvar $i IMASK_PROG_TEST TEST

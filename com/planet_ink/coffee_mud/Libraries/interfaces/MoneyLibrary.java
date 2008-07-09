@@ -60,6 +60,7 @@ public interface MoneyLibrary extends CMLibrary
     public String getDenominationName(String currency);
     public String getDenominationName(String currency,  double denomination, long number);
     public double getBestDenomination(String currency, double absoluteValue);
+    public double getBestDenomination(String currency, int numberOfCoins, double absoluteValue);
     public Vector getBestDenominations(String currency, double absoluteValue);
     public String getConvertableDescription(String currency, double denomination);
     public String getDenominationName(String currency, double denomination);

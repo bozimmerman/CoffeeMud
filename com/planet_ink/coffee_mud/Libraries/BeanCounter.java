@@ -263,6 +263,23 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		}
 		return denom;
 	}
+    public double getBestDenomination(String currency, int numberOfCoins, double absoluteValue)
+    {
+        DVector DV=getCurrencySet(currency);
+        double bestDenom=0.0;
+        if(DV!=null)
+        {
+            for(int d=DV.size()-1;d>=0;d--)
+            {
+                double denom=((Double)DV.elementAt(d,1)).doubleValue();
+                if(((denom*((double)numberOfCoins))<=absoluteValue)
+                &&(denom>bestDenom))
+                    bestDenom=denom;
+            }
+        }
+        return bestDenom;
+    }
+    
 	public Vector getBestDenominations(String currency, double absoluteValue)
 	{
 		DVector DV=getCurrencySet(currency);
