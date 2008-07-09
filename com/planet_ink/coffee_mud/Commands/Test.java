@@ -283,6 +283,48 @@ public class Test extends StdCommand
             	mob.tell("Picked "+(num-numNull)+"/"+num+" rooms in this area.");
             }
             else
+            if(what.equalsIgnoreCase("scriptable"))
+            {
+                Area A=CMClass.getAreaType("StdArea");
+                A.setName("UNKNOWNAREA");
+                Room R=CMClass.getLocale("WoodRoom");
+                R.setRoomID("UNKNOWN1");
+                R.setArea(A);
+                MOB M=CMClass.getMOB("GenShopkeeper");
+                M.setName("Shoppy");
+                ShopKeeper SK=(ShopKeeper)M;
+                Item I=CMClass.getWeapon("Dagger");
+                SK.getShop().addStoreInventory(I,10,5,SK);
+                I=CMClass.getWeapon("Shortsword");
+                SK.getShop().addStoreInventory(I,10,5,SK);
+                Room R2=CMClass.getLocale("WoodRoom");
+                R2.setRoomID("UNKNOWN2");
+                R2.setArea(A);
+                R.rawDoors()[Directions.NORTH]=R2;
+                R2.rawDoors()[Directions.SOUTH]=R;
+                R.setRawExit(Directions.NORTH,CMClass.getExit("Open"));
+                R2.setRawExit(Directions.SOUTH,CMClass.getExit("Open"));
+                Behavior B=CMClass.getBehavior("Scriptable");
+                B.setParms("LOAD=progs/scriptableTest.script");
+                M.addBehavior(B);
+                ScriptingEngine S=(ScriptingEngine)B;
+                M.bringToLife(R,true);
+                M.setStartRoom(null);
+                for(int i=0;i<1000;i++)
+                {
+                    try{ Thread.sleep(1000); } catch(Exception e){}
+                    if(S.getVar("Shoppy","ERRORS").length()>0)
+                        break;
+                }
+                mob.tell("Successes: "+S.getVar("Shoppy","SUCCESS"));
+                mob.tell("Errors: "+S.getVar("Shoppy","ERRORS"));
+                M.destroy();
+                R2.destroy();
+                R.destroy();
+                A.destroy();
+                Resources.removeResource("PARSEDPRG: LOAD=progs/scriptableTest.script");
+            }
+            else
             if(what.equalsIgnoreCase("mudhourstil"))
             {
                 String startDate=CMParms.combine(commands,2);

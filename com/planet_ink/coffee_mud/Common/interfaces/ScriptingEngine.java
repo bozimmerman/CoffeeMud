@@ -344,6 +344,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         "SWITCH", //70
         "MPREJUV", //71
         "MPSCRIPT", //72
+        "MPSETINTERNAL", // 73
     };
 
     public final static String[] clanVars={

@@ -5941,6 +5941,25 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     CMLib.combat().postDeath(monster,(MOB)newTarget,null);
                 break;
             }
+            case 73: // mpsetinternal
+            {
+                String arg2=CMParms.getCleanBit(s,1).toUpperCase();
+                String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(s,1));
+                if(arg2.equals("SCOPE"))
+                    setVarScope(arg3);
+                else
+                if(arg2.equals("NODELAY"))
+                    noDelay=CMath.s_bool(arg3);
+                else
+                if(arg2.equals("DEFAULTQUEST"))
+                    registerDefaultQuest(arg3);
+                else
+                if(arg2.equals("SAVABLE"))
+                    setSavable(CMath.s_bool(arg3));
+                else
+                    logError(scripted,"MPSETINTERNAL","Syntax","Unknown stat: "+arg2);
+                break;
+            }
             case 16: // mpset
             {
                 Environmental newTarget=getArgumentItem(CMParms.getCleanBit(s,1),source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -7437,8 +7456,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     DVector vscript=new DVector(2);
                     vscript.addElement("FUNCTION_PROG MPFORCE_"+System.currentTimeMillis()+Math.random(),null);
                     vscript.addElement(s,null);
-                    monster=getMakeMOB(newTarget);
-                    execute(newTarget, source, target, monster, primaryItem, secondaryItem, vscript, msg, tmp);
+                    execute(newTarget, source, target, getMakeMOB(newTarget), primaryItem, secondaryItem, vscript, msg, tmp);
                 }
                 break;
             }
@@ -9156,10 +9174,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                int ticks,
                                String msg)
     {
-        if(noDelay)
-            execute(host,source,target,monster,primaryItem,secondaryItem,script,msg,newObjs());
-        else
-            que.insertElementAt(new ScriptableResponse(host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg),0);
+        que.insertElementAt(new ScriptableResponse(host,source,target,monster,primaryItem,secondaryItem,script,ticks,msg),0);
     }
     
     public void dequeResponses()

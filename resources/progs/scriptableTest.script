@@ -1,14 +1,58 @@
 # this script is loaded by the TEST SCRIPTABLE command for Archons
+# requires a shopkeeper called shoppy
+# requires shoppy be in a room
+# requires shoppy sell ID()=Dagger "a small dagger"
+# requires shoppy sell ID()=Shortsword "a short sword"
+# requires room have another room to the NORTH
+# requires all rooms and all contents be DESTROYED after test is run
+# requires check on var Shoppy ERRORS for any return values
+# requires check on var Shoppy SUCCESS for any success values
 
 ONCE_PROG
+    mpsetinternal NODELAY TRUE
+    mpsetinternal SCOPE *
+    mpgset $i NAME Shoppy
+    mpsetvar $i ERRORS ''
+    mpsetvar $i SUCCESS ''
+    mpsetvar $i DAY_PROG_TEST TEST
+    mpsetvar $i RAND_PROG_TEST TEST
+    mpsetvar $i DELAY_PROG_TEST TEST
+    mpsetvar $i TIME_PROG_TEST TEST
+    mpalarm 2 mpcallfunc TEST2
 
+~
+
+DAY_PROG 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30
+    if var($i DAY_PROG_TEST == 'TEST')
+        mpsetvar $i DAY_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:DAY_PROG 
+    endif 
+~
+
+DELAY_PROG 1 1
+    if var($i DELAY_PROG_TEST == 'TEST')
+        mpsetvar $i DELAY_PROG_TEST TRUE
+    else
+        if var($i DELAY_PROG_TEST != 'TRUE')
+            mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:DELAY_PROG
+        endif
+    endif 
+~
+
+TIME_PROG 0 1 2 3 4 5 6 7 8 9 
+    if var($i TIME_PROG_TEST == 'TEST')
+        mpsetvar $i TIME_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:TIME_PROG 
+    endif 
 ~
 
 ALL_GREET_PROG 100
 	if var($i ALL_GREET_PROG_TEST == 'TEST')
 		mpsetvar $i ALL_GREET_PROG_TEST TRUE
 	else
-		mpsetvar $i ERRORS $<$i ERRORS> ERROR: ALL_GREET_PROG 
+		mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:ALL_GREET_PROG 
 	endif 
 ~
 
@@ -16,7 +60,7 @@ MASK_PROG zoober
 	if var($i MASK_PROG_TEST == 'TEST')
 		mpsetvar $i MASK_PROG_TEST TRUE
 	else
-		mpsetvar $i ERRORS $<$i ERRORS> ERROR: MASK_PROG 
+		mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:MASK_PROG 
 	endif 
 ~
 
@@ -24,7 +68,7 @@ ACT_PROG p zoobie doobie doo
 	if var($i ACT_PROG_TEST == 'TEST')
 		mpsetvar $i ACT_PROG_TEST TRUE
 	else
-		mpsetvar $i ERRORS $<$i ERRORS> ERROR: ACT_PROG 
+		mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:ACT_PROG 
 	endif 
 ~
 
@@ -33,10 +77,10 @@ BRIBE_PROG 100
 		if goldamt($o == 100)
 			mpsetvar $i BRIBE_PROG_TEST TRUE
 		else
-			mpsetvar $i ERRORS $<$i ERRORS> ERROR: BRIBE_PROG $%goldamt($o)%
+			mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:BRIBE_PROG $%goldamt($o)%
 		endif 
 	else
-		mpsetvar $i ERRORS $<$i ERRORS> ERROR: BRIBE_PROG 
+		mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:BRIBE_PROG 
 	endif 
 ~
 
@@ -44,7 +88,7 @@ BUY_PROG sword dagger
 	if var($i BUY_PROG_TEST == 'TEST')
 		mpsetvar $i BUY_PROG_TEST TRUE
 	else
-		mpsetvar $i ERRORS $<$i ERRORS> ERROR: BUY_PROG 
+		mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:BUY_PROG 
 	endif 
 ~
 
@@ -52,7 +96,7 @@ BUY_PROG p a small dagger
 	if var($i BUY_PROG2_TEST == 'TEST')
 		mpsetvar $i BUY_PROG2_TEST TRUE
 	else
-		mpsetvar $i ERRORS $<$i ERRORS> ERROR: BUY_PROG2 
+		mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:BUY_PROG2 
 	endif 
 ~
 
@@ -60,7 +104,7 @@ CHANNEL_PROG GOSSIP p ooobie doobie
 	if var($i CHANNEL_PROG_TEST == 'TEST')
 		mpsetvar $i BCHANNEL_PROG_TEST TRUE
 	else
-		mpsetvar $i ERRORS $<$i ERRORS> ERROR: CHANNEL_PROG 
+		mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:CHANNEL_PROG 
 	endif 
 ~
 
@@ -68,7 +112,682 @@ CHANNEL_PROG GOSSIP eooobie edoobie
 	if var($i CHANNEL_PROG2_TEST == 'TEST')
 		mpsetvar $i CHANNEL_PROG2_TEST TRUE
 	else
-		mpsetvar $i ERRORS $<$i ERRORS> ERROR: CHANNEL_PROG2 
+		mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:CHANNEL_PROG2 
 	endif 
+~
+
+CLOSE_PROG all
+    if var($i CLOSE_PROG_TEST == 'TEST')
+        mpsetvar $i CLOSE_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:CLOSE_PROG 
+    endif 
+~
+
+CNCLMSG_PROG FOLLOW all
+    if var($i CNCLMSG_PROG_TEST == 'TEST')
+        mpsetvar $i CNCLMSG_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:CNCLMSG_PROG 
+    endif 
+~
+
+CONSUME_PROG p a generic blob of food
+    if var($i CONSUME_PROG_TEST == 'TEST')
+        mpsetvar $i CONSUME_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:CONSUME_PROG 
+    endif 
+~
+
+DAMAGE_PROG
+    if var($i DAMAGE_PROG_TEST == 'TEST')
+        mpsetvar $i DAMAGE_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:DAMAGE_PROG 
+    endif 
+~
+
+DEATH_PROG
+    if var($i DEATH_PROG_TEST == 'TEST')
+        mpsetvar $i DEATH_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:DEATH_PROG 
+    endif 
+~
+
+DROP_PROG p a small dagger
+    if var($i DROP_PROG_TEST == 'TEST')
+        mpsetvar $i DROP_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:DROP_PROG 
+    endif 
+~
+
+ENTRY_PROG 100
+    if var($i ENTRY_PROG_TEST == 'TEST')
+        mpsetvar $i ENTRY_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:ENTRY_PROG 
+    endif 
+~
+
+EXECMSG_PROG FOLLOW ALL
+    if var($i EXECMSG_PROG_TEST == 'TEST')
+        mpsetvar $i EXECMSG_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:EXECMSG_PROG 
+    endif 
+~
+
+EXIT_PROG 100
+    if var($i EXIT_PROG_TEST == 'TEST')
+        mpsetvar $i EXIT_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:EXIT_PROG 
+    endif 
+~
+
+FUNCTION_PROG DOMEDOMEDOO
+    if var($i FUNCTION_PROG_TEST == 'TEST')
+        mpsetvar $i FUNCTION_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:FUNCTION_PROG 
+    endif 
+~
+
+GET_PROG swash shield claw
+    if var($i GET_PROG_TEST == 'TEST')
+        mpsetvar $i GET_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:GET_PROG 
+    endif 
+~
+
+GIVE_PROG p a small dagger
+    if var($i GIVE_PROG_TEST == 'TEST')
+        mpsetvar $i GIVE_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:GIVE_PROG 
+    endif 
+~
+
+GREET_PROG 100
+    if var($i GREET_PROG_TEST == 'TEST')
+        mpsetvar $i GREET_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:GREET_PROG 
+    endif 
+~
+
+HITPRCNT_PROG 10
+    if var($i HITPRCNT_PROG_TEST == 'TEST')
+        mpsetvar $i HITPRCNT_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:HITPRCNT_PROG 
+    endif 
+~
+
+IMASK_PROG p zoobie doobie doo
+    if var($i IMASK_PROG_TEST == 'TEST')
+        mpsetvar $i IMASK_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:IMASK_PROG 
+    endif 
+~
+
+KILL_PROG
+    if var($i KILL_PROG_TEST == 'TEST')
+        mpsetvar $i KILL_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:KILL_PROG 
+    endif 
+~
+
+LEVEL_PROG 100
+    if var($i LEVEL_PROG_TEST == 'TEST')
+        mpsetvar $i LEVEL_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:LEVEL_PROG 
+    endif 
+~
+
+LOCK_PROG all
+    if var($i LOCK_PROG_TEST == 'TEST')
+        mpsetvar $i LOCK_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:LOCK_PROG 
+    endif 
+~
+
+LOGIN_PROG 100
+    if var($i LOGIN_PROG_TEST == 'TEST')
+        mpsetvar $i LOGIN_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:LOGIN_PROG 
+    endif 
+~
+
+LOGOFF_PROG 100
+    if var($i LOGOFF_PROG_TEST == 'TEST')
+        mpsetvar $i LOGOFF_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:LOGOFF_PROG 
+    endif 
+~
+
+LOOK_PROG p a small dagger
+    if var($i LOOK_PROG_TEST == 'TEST')
+        mpsetvar $i LOOK_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:LOOK_PROG 
+    endif 
+~
+
+LLOOK_PROG sword dagger shield
+    if var($i LOOK_PROG_TEST == 'TEST')
+        mpsetvar $i LOOK_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:LOOK_PROG 
+    endif 
+~
+
+OPEN_PROG all
+    if var($i OPEN_PROG_TEST == 'TEST')
+        mpsetvar $i OPEN_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:OPEN_PROG 
+    endif 
+~
+
+QUEST_TIME_PROG * 10
+    if var($i QUEST_TIME_PROG_TEST == 'TEST')
+        mpsetvar $i QUEST_TIME_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:QUEST_TIME_PROG 
+    endif 
+~
+
+PUT_PROG container
+    if var($i PUT_PROG_TEST == 'TEST')
+        mpsetvar $i PUT_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:PUT_PROG 
+    endif 
+~
+
+RAND_PROG 100
+    if var($i RAND_PROG_TEST == 'TEST')
+        mpsetvar $i RAND_PROG_TEST TRUE
+    else
+    endif 
+~
+
+REGMASK_PROG z*zitlee
+    if var($i REGMASK_PROG_TEST == 'TEST')
+        mpsetvar $i REGMASK_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:REGMASK_PROG 
+    endif 
+~
+
+REMOVE_PROG all
+    if var($i REMOVE_PROG_TEST == 'TEST')
+        mpsetvar $i REMOVE_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:REMOVE_PROG 
+    endif 
+~
+
+SELL_PROG all
+    if var($i SELL_PROG_TEST == 'TEST')
+        mpsetvar $i SELL_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:SELL_PROG 
+    endif 
+~
+
+SOCIAL_PROG wiggy
+    if var($i SOCIAL_PROG_TEST == 'TEST')
+        mpsetvar $i SOCIAL_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:SOCIAL_PROG 
+    endif 
+~
+
+SPEECH_PROG wabloo babbllooo a;lsdkjf
+    if var($i SPEECH_PROG_TEST == 'TEST')
+        mpsetvar $i SPEECH_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:SPEECH_PROG 
+    endif 
+~
+
+SPEECH_PROG p asd7f098asdyf0asdfhasdfslhd a0s9d8f7yashdfj asd78yfoahsj
+    if var($i SPEECH_PROG2_TEST == 'TEST')
+        mpsetvar $i SPEECH_PROG2_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:SPEECH_PROG2 
+    endif 
+~
+
+UNLOCK_PROG p a container
+    if var($i UNLOCK_PROG_TEST == 'TEST')
+        mpsetvar $i UNLOCK_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:UNLOCK_PROG 
+    endif 
+~
+
+WEAR_PROG p a small dagger
+    if var($i WEAR_PROG_TEST == 'TEST')
+        mpsetvar $i WEAR_PROG_TEST TRUE
+    else
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:WEAR_PROG 
+    endif 
+~
+
+FUNCTION_PROG TEST2
+    IF VAR($i DAY_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:DAY_PROG 
+    ENDIF
+    IF VAR($i DELAY_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:DELAY_PROG
+    ENDIF
+    IF VAR($i TIME_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:TIME_PROG
+    ENDIF
+    IF VAR($i RAND_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:RAND_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> DAY_PROG_TEST 
+    mpsetvar $i SUCCESS $<$i SUCCESS> DELAY_PROG_TEST 
+    mpsetvar $i SUCCESS $<$i SUCCESS> TIME_PROG_TEST 
+    mpsetvar $i SUCCESS $<$i SUCCESS> RAND_PROG_TEST 
+    
+    
+    MPMLOAD Orc
+    MPGSET Orc SPEED 100
+    mpsetvar $i ALL_GREET_PROG_TEST TEST
+    mpsetvar $i GREET_PROG_TEST TEST
+    mpsetvar $i EXIT_PROG_TEST TEST
+    MPFORCE Orc GO N S 
+    IF VAR($i ALL_GREET_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:ALL_GREET_PROG 
+    ENDIF
+    IF VAR($i EXIT_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:EXIT_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> ALL_GREET_PROG_TEST 
+    mpsetvar $i SUCCESS $<$i SUCCESS> ENTRY_PROG_TEST 
+    
+### skip greet-prog test
+    
+    mpsetvar $i MASK_PROG_TEST TEST
+    MPFORCE Orc MPECHO zouober2 zoober zogobuyer
+    IF VAR($i MASK_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:MASK_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> MASK_PROG_TEST 
+    
+    mpsetvar $i ACT_PROG_TEST TEST
+    MPFORCE Orc MPECHO zoobie doobie doo
+    IF VAR($i ACT_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:ACT_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> ACT_PROG_TEST 
+
+    MPGSET Orc MONEY 1000
+    mpsetvar $i BRIBE_PROG_TEST TEST
+    MPFORCE Orc GIVE 100 Shoppy  
+    IF VAR($i BRIBE_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:BRIBE_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> BRIBE_PROG_TEST 
+    
+    mpsetvar $i BUY_PROG_TEST TEST
+    MPFORCE Orc BUY "short sword" shoppy
+    IF VAR($i BUY_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:BUY_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> BUY_PROG_TEST 
+    
+    mpsetvar $i BUY_PROG2_TEST TEST
+    MPFORCE Orc BUY shoppy dagger
+    IF VAR($i BUY_PROG2_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:BUY_PROG2
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> BUY_PROG2_TEST 
+    
+    mpsetvar $i CHANNEL_PROG_TEST TEST
+    MPFORCE Orc GOSSIP ooobie doobie
+    IF VAR($i CHANNEL_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:CHANNEL_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> CHANNEL_PROG_TEST 
+    
+    mpsetvar $i CHANNEL_PROG2_TEST TEST
+    MPFORCE Orc GOSSIP ooobie edoobie
+    IF VAR($i CHANNEL_PROG2_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:CHANNEL_PROG2
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> CHANNEL_PROG2_TEST 
+    
+    MPOLOADROOM LockableContainer
+    MPOPEN Container
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i CLOSE_PROG_TEST TEST
+    MPFORCE Orc CLOSE Container
+    IF VAR($i CLOSE_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:CLOSE_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> CLOSE_PROG_TEST 
+    
+    mpsetvar $i CNCLMSG_PROG_TEST TEST
+    mpsetvar $i EXECMSG_PROG_TEST TEST
+    MPFORCE Orc FOLLOW Shoppy
+    IF VAR($i CNCLMSG_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:CNCLMSG_PROG
+    ENDIF
+    IF VAR($i EXECMSG_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:EXECMSG_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> CNCLMSG_PROG_TEST 
+    mpsetvar $i SUCCESS $<$i SUCCESS> EXECMSG_PROG_TEST 
+    
+    MPOLOAD GenFood
+    GIVE food Orc
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i CONSUME_PROG_TEST TEST
+    MPFORCE Orc EAT food
+    IF VAR($i CONSUME_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:CONSUME_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> CONSUME_PROG_TEST 
+    
+    mpsetvar $i DAMAGE_PROG_TEST TEST
+    MPFORCE Orc MPDAMAGE Shoppy 1 1
+    IF VAR($i DAMAGE_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:DAMAGE_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> DAMAGE_PROG_TEST 
+    
+################ Skipping Death test    
+    
+    mpsetvar $i DROP_PROG_TEST TEST
+    MPFORCE Orc drop dagger
+    IF VAR($i DROP_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:DROP_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> DROP_PROG_TEST 
+
+    MPPURGE Orc
+
+    mpsetvar $i ENTRY_PROG_TEST TEST
+    mpsetvar $i EXIT_PROG_TEST TEST
+    GO N
+    IF VAR($i ENTRY_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:ENTRY_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> ENTRY_PROG_TEST 
+        
+    mpsetvar $i ENTRY_PROG_TEST TEST
+    mpsetvar $i EXIT_PROG_TEST TEST
+    GO S
+    IF VAR($i ENTRY_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:ENTRY_PROG_TEST
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> ENTRY_PROG_TEST 
+    
+    mpsetvar $i FUNCTION_PROG_TEST TEST
+    MPCALLFUNC DOMEDOMEDOO
+    IF VAR($i FUNCTION_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:FUNCTION_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> FUNCTION_PROG_TEST 
+    
+    MPMLOAD Orc
+    MPOLOADROOM StdShield
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i GET_PROG_TEST TEST
+    MPFORCE Orc get shield
+    IF VAR($i GET_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:GET_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> GET_PROG_TEST 
+
+    mpsetvar $i GIVE_PROG_TEST TEST
+    MPFORCE Orc give shield Shoppy
+    IF VAR($i GIVE_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:GIVE_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> GIVE_PROG_TEST 
+    
+    mpsetvar $i HITPRCNT_PROG_TEST TEST
+    for $i = 1 to 100
+        MPFORCE Orc MPDAMAGE Shoppy 10 10
+    next
+    IF VAR($i HITPRCNT_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:HITPRCNT_PROG_TEST
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> HITPRCNT_PROG_TEST 
+    
+    mpsetvar $i IMASK_PROG_TEST TEST
+    mpecho zoobie doobie doo
+    IF VAR($i IMASK_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:IMASK_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> IMASK_PROG_TEST 
+    
+    mpsetvar $i KILL_PROG_TEST TEST
+    mpkill Orc
+    IF VAR($i KILL_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:KILL_PROG
+    ENDIF
+    mpmload Orc
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> KILL_PROG_TEST 
+    
+    mpsetvar $i LOCK_PROG_TEST TEST
+    mpforce Orc mpoload StdKey
+    mpforce Orc lock Container
+    IF VAR($i LOCK_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:LOCK_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> LOCK_PROG_TEST 
+    
+################ Skipping Logon test    
+################ Skipping Logoff test    
+
+    mpsetvar $i LOOK_PROG_TEST TEST
+    mpforce Orc mpoload Dagger
+    mpforce Orc look Dagger
+    IF VAR($i LOOK_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:LOOK_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> LOOK_PROG_TEST 
+    
+    mpsetvar $i LLOOK_PROG_TEST TEST
+    mpforce Orc llook Shield
+    IF VAR($i LLOOK_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:LLOOK_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> LLOOK_PROG_TEST 
+    
+    mpsetvar $i UNLOCK_PROG_TEST TEST
+    mpforce Orc unlock Container
+    IF VAR($i UNLOCK_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:UNLOCK_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> UNLOCK_PROG_TEST 
+    
+    mpsetvar $i OPEN_PROG_TEST TEST
+    mpforce Orc open Container
+    IF VAR($i OPEN_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:OPEN_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> OPEN_PROG_TEST 
+    
+################ Skipping quest time test    
+
+    mpsetvar $i PUT_PROG_TEST TEST
+    mpforce Orc put key Container
+    IF VAR($i PUT_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:PUT_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> PUT_PROG_TEST 
+    
+    mpsetvar $i REGMASK_PROG_TEST TEST
+    mpforce Orc mpecho zsdklfkjdflzitlee
+    IF VAR($i REGMASK_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:REGMASK_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> REGMASK_PROG_TEST 
+    
+    mpsetvar $i WEAR_PROG_TEST TEST
+    mpforce Orc mpoload Dagger
+    mpforce Orc wear Dagger
+    IF VAR($i WEAR_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:WEAR_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> WEAR_PROG_TEST 
+    
+    mpsetvar $i REMOVE_PROG_TEST TEST
+    mpforce Orc mpoload Dagger
+    mpforce Orc wear Dagger
+    IF VAR($i REMOVE_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:REMOVE_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> REMOVE_PROG_TEST 
+    
+################ Skipping sell prog test    
+
+    mpsetvar $i SOCIAL_PROG_TEST TEST
+    mpforce Orc wiggy
+    IF VAR($i SOCIAL_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:SOCIAL_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> SOCIAL_PROG_TEST 
+
+    mpsetvar $i SPEECH_PROG_TEST TEST
+    mpforce Orc sayto Shoppy babbllooo
+    IF VAR($i SPEECH_PROG_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:SPEECH_PROG
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> SPEECH_PROG_TEST 
+    
+    mpsetvar $i SPEECH_PROG2_TEST TEST
+    mpforce Orc sayto Shoppy asd7f098asdyf0asdfhasdfslhd a0s9d8f7yashdfj asd78yfoahsj
+    IF VAR($i SPEECH_PROG2_TEST != 'TRUE')
+        mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:SPEECH_PROG2
+    ENDIF
+    IF VAR($i ERRORS != '')
+        RETURN
+    ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> SPEECH_PROG2_TEST 
 ~
 
