@@ -297,6 +297,7 @@ public class Test extends StdCommand
                 SK.getShop().addStoreInventory(I,10,5,SK);
                 I=CMClass.getWeapon("Shortsword");
                 SK.getShop().addStoreInventory(I,10,5,SK);
+                SK.setInvResetRate(999999999);
                 Room R2=CMClass.getLocale("WoodRoom");
                 R2.setRoomID("UNKNOWN2");
                 R2.setArea(A);
@@ -308,6 +309,7 @@ public class Test extends StdCommand
                 B.setParms("LOAD=progs/scriptableTest.script");
                 M.addBehavior(B);
                 ScriptingEngine S=(ScriptingEngine)B;
+                M.text();
                 M.bringToLife(R,true);
                 M.setStartRoom(null);
                 for(int i=0;i<1000;i++)
