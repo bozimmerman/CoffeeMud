@@ -308,10 +308,10 @@ public class Test extends StdCommand
                 Behavior B=CMClass.getBehavior("Scriptable");
                 B.setParms("LOAD=progs/scriptableTest.script");
                 M.addBehavior(B);
-                ScriptingEngine S=(ScriptingEngine)B;
                 M.text();
                 M.bringToLife(R,true);
                 M.setStartRoom(null);
+                ScriptingEngine S=(ScriptingEngine)M.fetchBehavior("Scriptable");
                 for(int i=0;i<1000;i++)
                 {
                     try{ Thread.sleep(1000); } catch(Exception e){}

@@ -7589,17 +7589,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 {
                     if(newTarget instanceof MOB)
                     {
-                        MOB E=(MOB)newTarget;
+                        MOB deadM=(MOB)newTarget;
+                        MOB killerM=(MOB)newTarget;
+                        if(arg4.equalsIgnoreCase("MEKILL")||arg4.equalsIgnoreCase("ME"))
+                            killerM=monster;
                         int min=CMath.s_int(arg2.trim());
                         int max=CMath.s_int(arg3.trim());
                         if(max<min) max=min;
                         if(min>0)
                         {
                             int dmg=(max==min)?min:CMLib.dice().roll(1,max-min,min);
-                            if((dmg>=E.curState().getHitPoints())&&(!arg4.equalsIgnoreCase("kill")))
-                                dmg=E.curState().getHitPoints()-1;
+                            if((dmg>=deadM.curState().getHitPoints())
+                            &&(!arg4.equalsIgnoreCase("KILL"))
+                            &&(!arg4.equalsIgnoreCase("MEKILL")))
+                                dmg=deadM.curState().getHitPoints()-1;
                             if(dmg>0)
-                                CMLib.combat().postDamage(E,E,null,dmg,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,-1,null);
+                                CMLib.combat().postDamage(killerM,deadM,null,dmg,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,-1,null);
                         }
                     }
                     else
@@ -8248,7 +8253,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 break;
             case 40: // llook_prog
                 if((msg.targetMinor()==CMMsg.TYP_EXAMINE)&&canTrigger(40)
-                &&((msg.amITarget(affecting))||(affecting instanceof Area))
                 &&(!msg.amISource(monster))
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
                 {
@@ -8324,7 +8328,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 break;
             case 39: // look_prog
                 if((msg.targetMinor()==CMMsg.TYP_LOOK)&&canTrigger(39)
-                &&((msg.amITarget(affecting))||(affecting instanceof Area))
                 &&(!msg.amISource(monster))
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
                 {
@@ -8435,7 +8438,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(msg.target() instanceof Item)
                 &&(canFreelyBehaveNormal(monster)||(!(affecting instanceof MOB))))
                 {
-                    String check=standardTriggerCheck(script,t,msg.tool());
+                    String check=standardTriggerCheck(script,t,msg.target());
                     if(check!=null)
                     {
                         if(lastMsg==msg) break;
@@ -8843,7 +8846,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         Pattern P=(Pattern)patterns.get(t[1]);
                         if(P==null)
                         {
-                            P=Pattern.compile(trigger, Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
+                            P=Pattern.compile(t[1], Pattern.CASE_INSENSITIVE | Pattern.DOTALL);
                             patterns.put(t[1],P);
                         }
                         Matcher M=P.matcher(str);

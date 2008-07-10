@@ -149,11 +149,11 @@ DAMAGE_PROG
 ~
 
 DEATH_PROG
-    if var($i DEATH_PROG_TEST == 'TEST')
-        mpsetvar $i DEATH_PROG_TEST TRUE
-    else
-        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:DEATH_PROG 
-    endif 
+#    if var($i DEATH_PROG_TEST == 'TEST')
+#        mpsetvar $i DEATH_PROG_TEST TRUE
+#    else
+#        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:DEATH_PROG 
+#    endif 
 ~
 
 DROP_PROG p a small dagger
@@ -285,10 +285,10 @@ LOOK_PROG p a small dagger
 ~
 
 LLOOK_PROG sword dagger shield
-    if var($i LOOK_PROG_TEST == 'TEST')
-        mpsetvar $i LOOK_PROG_TEST TRUE
+    if var($i LLOOK_PROG_TEST == 'TEST')
+        mpsetvar $i LLOOK_PROG_TEST TRUE
     else
-        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:LOOK_PROG 
+        mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:LLOOK_PROG 
     endif 
 ~
 
@@ -323,7 +323,7 @@ RAND_PROG 100
     endif 
 ~
 
-REGMASK_PROG z*zitlee
+REGMASK_PROG Z*zitlee
     if var($i REGMASK_PROG_TEST == 'TEST')
         mpsetvar $i REGMASK_PROG_TEST TRUE
     else
@@ -481,7 +481,7 @@ FUNCTION_PROG TEST2
     mpsetvar $i SUCCESS $<$i SUCCESS> BUY_PROG2_TEST 
     
     mpsetvar $i CHANNEL_PROG_TEST TEST
-    MPFORCE Orc Speak Common
+    mpunaffect Orc Orcish
     MPFORCE Orc GOSSIP ooobie doobie
     IF VAR($i CHANNEL_PROG_TEST != 'TRUE')
         mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:CHANNEL_PROG
@@ -632,7 +632,6 @@ FUNCTION_PROG TEST2
     for $0 = 1 to 10
 	    mpsetvar $i DAMAGE_PROG_TEST TEST
         MPFORCE Orc MPDAMAGE Shoppy 100 100
-        tell zac $i=$%hitprcnt($i)%
     next
     MPALARM 1 MPCALLFUNC TEST3
 ~
@@ -648,6 +647,7 @@ FUNCTION_PROG TEST3
     mppurge Orc
     mpmload Orc
     mpsetvar $i SUCCESS $<$i SUCCESS> HITPRCNT_PROG_TEST 
+    mpgset $i HITS 9999
     
     mpsetvar $i IMASK_PROG_TEST TEST
     mpecho zoobie doobie doo
@@ -660,15 +660,16 @@ FUNCTION_PROG TEST3
     mpsetvar $i SUCCESS $<$i SUCCESS> IMASK_PROG_TEST 
     
     mpsetvar $i KILL_PROG_TEST TEST
-    mpkill Orc
+    mpdamage Orc 99999 99999 mekill
     IF VAR($i KILL_PROG_TEST != 'TRUE')
         mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:KILL_PROG
     ENDIF
-    mpmload Orc
     IF VAR($i ERRORS != '')
         RETURN
     ENDIF
     mpsetvar $i SUCCESS $<$i SUCCESS> KILL_PROG_TEST 
+    
+    mpmload Orc
     
     mpsetvar $i LOCK_PROG_TEST TEST
     mpforce Orc mpoload StdKey
@@ -696,7 +697,8 @@ FUNCTION_PROG TEST3
     mpsetvar $i SUCCESS $<$i SUCCESS> LOOK_PROG_TEST 
     
     mpsetvar $i LLOOK_PROG_TEST TEST
-    mpforce Orc llook Shield
+    mpforce Orc mpoload StdShield
+    mpforce Orc examine Shield
     IF VAR($i LLOOK_PROG_TEST != 'TRUE')
         mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:LLOOK_PROG
     ENDIF
@@ -738,7 +740,7 @@ FUNCTION_PROG TEST3
     mpsetvar $i SUCCESS $<$i SUCCESS> PUT_PROG_TEST 
     
     mpsetvar $i REGMASK_PROG_TEST TEST
-    mpforce Orc mpecho zsdklfkjdflzitlee
+    mpforce Orc mpecho ZZZZZzitlee
     IF VAR($i REGMASK_PROG_TEST != 'TRUE')
         mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:REGMASK_PROG
     ENDIF
@@ -748,25 +750,19 @@ FUNCTION_PROG TEST3
     mpsetvar $i SUCCESS $<$i SUCCESS> REGMASK_PROG_TEST 
     
     mpsetvar $i WEAR_PROG_TEST TEST
+    mpsetvar $i REMOVE_PROG_TEST TEST
     mpforce Orc mpoload Dagger
     mpforce Orc wear Dagger
     IF VAR($i WEAR_PROG_TEST != 'TRUE')
         mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:WEAR_PROG
     ENDIF
-    IF VAR($i ERRORS != '')
-        RETURN
-    ENDIF
-    mpsetvar $i SUCCESS $<$i SUCCESS> WEAR_PROG_TEST 
-    
-    mpsetvar $i REMOVE_PROG_TEST TEST
-    mpforce Orc mpoload Dagger
-    mpforce Orc wear Dagger
     IF VAR($i REMOVE_PROG_TEST != 'TRUE')
         mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:REMOVE_PROG
     ENDIF
     IF VAR($i ERRORS != '')
         RETURN
     ENDIF
+    mpsetvar $i SUCCESS $<$i SUCCESS> WEAR_PROG_TEST 
     mpsetvar $i SUCCESS $<$i SUCCESS> REMOVE_PROG_TEST 
     
 ################ Skipping sell prog test    
@@ -781,6 +777,7 @@ FUNCTION_PROG TEST3
     ENDIF
     mpsetvar $i SUCCESS $<$i SUCCESS> SOCIAL_PROG_TEST 
 
+    mpunaffect Orc Orcish
     mpsetvar $i SPEECH_PROG_TEST TEST
     mpforce Orc sayto Shoppy babbllooo
     IF VAR($i SPEECH_PROG_TEST != 'TRUE')
@@ -800,5 +797,7 @@ FUNCTION_PROG TEST3
         RETURN
     ENDIF
     mpsetvar $i SUCCESS $<$i SUCCESS> SPEECH_PROG2_TEST 
+    
+    mpsetvar $i ERRORS $<$i ERRORS> NONE!
 ~
 
