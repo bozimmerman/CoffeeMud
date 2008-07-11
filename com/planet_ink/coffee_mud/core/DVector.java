@@ -116,6 +116,24 @@ public class DVector implements Cloneable, java.io.Serializable
 		return V;
 	}
 	
+    public void addSharedElements(Object[] O)
+    {
+        if(dimensions!=O.length) throw new java.lang.IndexOutOfBoundsException();
+        synchronized(stuff)
+        {
+            stuff.addElement(O);
+        }
+    }
+    
+    public void addElements(Object[] O)
+    {
+        if(dimensions!=O.length) throw new java.lang.IndexOutOfBoundsException();
+        synchronized(stuff)
+        {
+            stuff.addElement((Object[])O.clone());
+        }
+    }
+    
 	public void addElement(Object O)
 	{
 		if(dimensions!=1) throw new java.lang.IndexOutOfBoundsException();
