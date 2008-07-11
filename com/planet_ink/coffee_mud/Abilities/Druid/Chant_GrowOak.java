@@ -107,6 +107,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 					if(invoker!=null)
 						CMLib.combat().postDeath(invoker,null,null);
 					unInvoke();
+					return false;
 				}
 			}
 		}
