@@ -100,9 +100,10 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
                         Item secondaryItem,
                         String msg,
                         Object[] tmp,
-                        String evaluable)
+                        String[][] eval,
+                        int startEval)
     {
-        return engine().eval(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, evaluable);
+        return engine().eval(scripted, source, target, monster, primaryItem, secondaryItem, msg, tmp, eval, startEval);
     }
 
     public String getScript() { return engine().getScript();}

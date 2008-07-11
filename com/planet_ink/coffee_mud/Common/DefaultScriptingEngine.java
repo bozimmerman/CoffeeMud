@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Common;
 import com.planet_ink.coffee_mud.core.interfaces.*;
+import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
@@ -42,6 +43,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
     protected static final Hashtable funcH=new Hashtable();
     protected static final Hashtable methH=new Hashtable();
     protected static final Hashtable progH=new Hashtable();
+    protected static final Hashtable connH=new Hashtable();
     protected static final HashSet SIGNS=CMParms.makeHashSet(CMParms.parseCommas("==,>=,>,<,<=,=>,=<,!=",true));
     protected static Hashtable patterns=new Hashtable();
     protected boolean noDelay=CMSecurity.isDisabled("SCRIPTABLEDELAY");
@@ -95,11 +97,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
         scope=newScope.toUpperCase().trim();
         if(scope.equalsIgnoreCase("*"))
             resources = Resources.newResources();
-        resources=(Resources)Resources.getResource("VARSCOPE-"+scope);
-        if(resources==null)
+        else
         {
-            resources = Resources.newResources();
-            Resources.submitResource("VARSCOPE-"+scope,resources);
+            resources=(Resources)Resources.getResource("VARSCOPE-"+scope);
+            if(resources==null)
+            {
+                resources = Resources.newResources();
+                Resources.submitResource("VARSCOPE-"+scope,resources);
+            }
         }
     }
 
@@ -225,6 +230,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
     protected String[] parseBits(DVector script, int row, String instructions)
     {
         String line=(String)script.elementAt(row,1);
+        String[] newLine=parseBits(line,instructions);
+        script.setElementAt(row,2,newLine);
+        return newLine;
+    }
+    
+    /**
+     * c=clean bit, r=pastbitclean, p=pastbit, s=remaining clean bits, t=trigger
+     */
+    protected String[] parseBits(String line, String instructions)
+    {
         String[] newLine=new String[instructions.length()];
         for(int i=0;i<instructions.length();i++)
             switch(instructions.charAt(i))
@@ -276,10 +291,33 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 break;
             }
             }
-        script.setElementAt(row,2,newLine);
         return newLine;
     }
     
+    /**
+     * c=clean bit, r=pastbitclean, p=pastbit, s=remaining clean bits, t=trigger
+     */
+    protected String[] parseBits(String[][] oldBits, int start, String instructions)
+    {
+        String[] tt=(String[])oldBits[0];
+        String parseMe=tt[start];
+        String[] parsed=parseBits(parseMe,instructions);
+        if(parsed.length==1)
+        {
+            tt[start]=parsed[0];
+            return tt;
+        }
+        String[] newLine=new String[tt.length+parsed.length-1];
+        for(int i=0;i<start;i++)
+            newLine[i]=tt[i];
+        for(int i=0;i<parsed.length;i++)
+            newLine[start+i]=parsed[i];
+        for(int i=0;i<tt.length-start;i++)
+            newLine[start+parsed.length+i]=tt[start+i+1];
+        oldBits[0]=newLine;
+        return newLine;
+        
+    }
     public boolean endQuest(Environmental hostObj, MOB mob, String quest)
     {
         if(mob!=null)
@@ -554,6 +592,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     methH.put(methods[i],new Integer(i+1));
                 for(int i=0;i<progs.length;i++)
                     progH.put(progs[i],new Integer(i+1));
+                for(int i=0;i<CONNECTORS.length;i++)
+                    connH.put(CONNECTORS[i],new Integer(i));
             }
         }
         Vector V=new Vector();
@@ -1715,7 +1755,273 @@ public class DefaultScriptingEngine implements ScriptingEngine
         }
     }
 
+    public String[] parseEval(String evaluable) throws ScriptParseException
+    {
+        final int STATE_MAIN=0;
+        final int STATE_INFUNCTION=1;
+        final int STATE_INFUNCQUOTE=2;
+        final int STATE_POSTFUNCTION=3;
+        final int STATE_POSTFUNCEVAL=4;
+        final int STATE_POSTFUNCQUOTE=5;
+        
+        Vector V=new Vector();
+        if((evaluable==null)||(evaluable.trim().length()==0))
+            return new String[]{};
+        char[] evalC=evaluable.toCharArray();
+        int state=0;
+        int dex=0;
+        char lastQuote='\0';
+        String s=null;
+        int depth=0;
+        for(int c=0;c<evalC.length;c++)
+            switch(state) {
+            case STATE_MAIN:
+            {
+                if(Character.isWhitespace(evalC[c]))
+                {
+                    s=new String(evalC,dex,c-dex).trim();
+                    if(s.length()>0)
+                    {
+                        s=s.toUpperCase();
+                        V.addElement(s);
+                        dex=c+1;
+                        if((!funcH.containsKey(s))
+                        &&(!connH.containsKey(s)))
+                            throw new ScriptParseException("Unknown keyword: "+s);
+                    }
+                }
+                else
+                if(Character.isLetter(evalC[c]))
+                { /* move along */ }
+                else
+                switch(evalC[c])
+                {
+                case '!':
+                {
+                    if(c==evalC.length-1)
+                        throw new ScriptParseException("Bad Syntax on last !");
+                    V.addElement("NOT");
+                    dex=c+1;
+                    break;
+                }
+                case '(':
+                {
+                    s=new String(evalC,dex,c-dex).trim();
+                    if(s.length()>0)
+                    {
+                        s=s.toUpperCase();
+                        V.addElement(s);
+                        V.addElement("(");
+                        dex=c+1;
+                        if(funcH.containsKey(s))
+                            state=STATE_INFUNCTION;
+                        else
+                        if(connH.containsKey(s))
+                            state=STATE_INFUNCTION;
+                        else
+                            throw new ScriptParseException("Unknown keyword: "+s);
+                    }
+                    else
+                    {
+                        V.addElement("(");
+                        depth++;
+                        dex=c+1;
+                    }
+                    break;
+                }
+                case ')':
+                    s=new String(evalC,dex,c-dex).trim();
+                    if(s.length()>0)
+                        throw new ScriptParseException("Bad syntax before ) at: "+s);
+                    if(depth==0)
+                        throw new ScriptParseException("Unmatched ) character");
+                    V.addElement(")");
+                    depth++;
+                    dex=c+1;
+                    break;
+                default:
+                    throw new ScriptParseException("Unknown character at: "+new String(evalC,dex,c-dex+1).trim());
+                }
+                break;
+            }
+            case STATE_POSTFUNCTION:
+            {
+                if(!Character.isWhitespace(evalC[c]))
+                    switch(evalC[c])
+                    {
+                    case '=': case '>': case '<': case '!':
+                    {
+                        if(c==evalC.length-1)
+                            throw new ScriptParseException("Bad Syntax on last "+evalC[c]);
+                        if(!Character.isWhitespace(evalC[c+1]))
+                        {
+                            s=new String(evalC,c,2);
+                            if((!SIGNS.contains(s))&&(evalC[c]!='!'))
+                                s=""+evalC[c];
+                        }
+                        else
+                            s=""+evalC[c];
+                        if(!SIGNS.contains(s))
+                        {
+                            c=dex-1;
+                            state=STATE_MAIN;
+                            break;
+                        }
+                        V.addElement(s);
+                        dex=c+(s.length());
+                        c=c+(s.length()-1);
+                        state=STATE_POSTFUNCEVAL;
+                        break;
+                    }
+                    default:
+                        c=dex-1;
+                        state=STATE_MAIN;
+                        break;
+                    }
+                break;
+            }
+            case STATE_INFUNCTION:
+            {
+                if(evalC[c]==')')
+                {
+                    V.addElement(new String(evalC,dex,c-dex));
+                    V.addElement(")");
+                    dex=c+1;
+                    state=STATE_POSTFUNCTION;
+                }
+                else
+                if((evalC[c]=='\'')||(evalC[c]=='`'))
+                {
+                    lastQuote=evalC[c];
+                    state=STATE_INFUNCQUOTE;
+                }
+                break;
+            }
+            case STATE_INFUNCQUOTE:
+            {
+                if(evalC[c]==lastQuote)
+                    state=STATE_INFUNCTION;
+                break;
+            }
+            case STATE_POSTFUNCQUOTE:
+            {
+                if(evalC[c]==lastQuote)
+                {
+                    if((V.size()>2)
+                    &&(SIGNS.contains((String)V.lastElement()))
+                    &&(((String)V.elementAt(V.size()-2)).equals(")")))
+                    {
+                        String sign=(String)V.lastElement();
+                        V.removeElementAt(V.size()-1);
+                        V.removeElementAt(V.size()-1);
+                        String prev=(String)V.lastElement();
+                        if(prev.equals("("))
+                            s=sign+" "+new String(evalC,dex+1,c-dex);
+                        else
+                        {
+                            V.removeElementAt(V.size()-1);
+                            s=prev+" "+sign+" "+new String(evalC,dex+1,c-dex);
+                        }
+                        V.addElement(s);
+                        V.addElement(")");
+                        dex=c+1;
+                        state=STATE_MAIN;
+                    }
+                    else
+                        throw new ScriptParseException("Bad postfunc Eval somewhere");
+                }
+                break;
+            }
+            case STATE_POSTFUNCEVAL:
+            {
+                if(Character.isWhitespace(evalC[c]))
+                {
+                    s=new String(evalC,dex,c-dex).trim();
+                    if(s.length()>0)
+                    {
+                        if((V.size()>1)
+                        &&(SIGNS.contains((String)V.lastElement()))
+                        &&(((String)V.elementAt(V.size()-2)).equals(")")))
+                        {
+                            String sign=(String)V.lastElement();
+                            V.removeElementAt(V.size()-1);
+                            V.removeElementAt(V.size()-1);
+                            String prev=(String)V.lastElement();
+                            if(prev.equals("("))
+                                s=sign+" "+new String(evalC,dex+1,c-dex);
+                            else
+                            {
+                                V.removeElementAt(V.size()-1);
+                                s=prev+" "+sign+" "+new String(evalC,dex+1,c-dex);
+                            }
+                            V.addElement(s);
+                            V.addElement(")");
+                            dex=c+1;
+                            state=STATE_MAIN;
+                        }
+                        else
+                            throw new ScriptParseException("Bad postfunc Eval somewhere");
+                    }
+                }
+                else
+                if(Character.isLetterOrDigit(evalC[c]))
+                { /* move along */ }
+                else
+                if((evalC[c]=='\'')||(evalC[c]=='`'))
+                {
+                    s=new String(evalC,dex,c-dex).trim();
+                    if(s.length()==0)
+                    {
+                        lastQuote=evalC[c];
+                        state=STATE_POSTFUNCQUOTE;
+                    }
+                }
+                break;
+            }
+            }
+        if((state==STATE_POSTFUNCQUOTE)
+        ||(state==STATE_INFUNCQUOTE))
+            throw new ScriptParseException("Unclosed "+lastQuote+" somewhere");
+        if(depth>0)
+            throw new ScriptParseException("Unclosed ( somewhere");
+        return CMParms.toStringArray(V);
+    }
 
+    public void pushEvalBoolean(Vector stack, boolean trueFalse)
+    {
+        if(stack.size()>0)
+        {
+            Object O=stack.elementAt(stack.size()-1);
+            if(O instanceof Integer)
+            {
+                int connector=((Integer)O).intValue();
+                stack.removeElementAt(stack.size()-1);
+                boolean preTrueFalse=false;
+                if((stack.elementAt(stack.size()-1) instanceof Boolean))
+                {
+                    preTrueFalse=((Boolean)stack.elementAt(stack.size()-1)).booleanValue();
+                    stack.removeElementAt(stack.size()-1);
+                }
+                switch(connector)
+                {
+                case CONNECTOR_AND: trueFalse=preTrueFalse&&trueFalse; break;
+                case CONNECTOR_OR: trueFalse=preTrueFalse||trueFalse; break;
+                case CONNECTOR_ANDNOT: trueFalse=preTrueFalse&&(!trueFalse); break;
+                case CONNECTOR_NOT: 
+                case CONNECTOR_ORNOT: trueFalse=preTrueFalse||(!trueFalse); break;
+                }
+            }
+            else
+            if(O instanceof Boolean)
+            {
+                boolean preTrueFalse=((Boolean)stack.elementAt(stack.size()-1)).booleanValue();
+                stack.removeElementAt(stack.size()-1);
+                trueFalse=preTrueFalse&&trueFalse;
+            }
+        }
+        stack.addElement(trueFalse?Boolean.TRUE:Boolean.FALSE);
+    }
+    
     public boolean eval(Environmental scripted,
                         MOB source,
                         Environmental target,
@@ -1724,143 +2030,68 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         Item secondaryItem,
                         String msg,
                         Object[] tmp,
-                        String evaluable)
+                        String[][] eval,
+                        int startEval)
     {
-        boolean anythingChanged=false;
-        Vector formatCheck=CMParms.parse(evaluable);
-        for(int i=1;i<(formatCheck.size()-1);i++)
-            if((SIGNS.contains(formatCheck.elementAt(i)))
-            &&(((String)formatCheck.elementAt(i-1)).endsWith(")")))
-            {
-                anythingChanged=true;
-                String ps=(String)formatCheck.elementAt(i-1);
-                ps=ps.substring(0,ps.length()-1);
-                if(ps.length()==0) ps=" ";
-                formatCheck.setElementAt(ps,i-1);
-
-                String os=null;
-                if((((String)formatCheck.elementAt(i+1)).startsWith("'")
-                   ||((String)formatCheck.elementAt(i+1)).startsWith("`")))
-                {
-                    os="";
-                    while((i<(formatCheck.size()-1))
-                    &&((!((String)formatCheck.elementAt(i+1)).endsWith("'"))
-                    &&(!((String)formatCheck.elementAt(i+1)).endsWith("`"))))
-                    {
-                        os+=((String)formatCheck.elementAt(i+1))+" ";
-                        formatCheck.removeElementAt(i+1);
-                    }
-                    os=(os+((String)formatCheck.elementAt(i+1))).trim();
-                }
-                else
-                if((i==(formatCheck.size()-3))
-                &&(((String)formatCheck.lastElement()).indexOf("(")<0))
-                {
-                    os=((String)formatCheck.elementAt(i+1))
-                    +" "+((String)formatCheck.elementAt(i+2));
-                    formatCheck.removeElementAt(i+2);
-                }
-                else
-                    os=(String)formatCheck.elementAt(i+1);
-                os=os+")";
-                formatCheck.setElementAt(os,i+1);
-                i+=2;
-            }
-        if(anythingChanged)
-            evaluable=CMParms.combine(formatCheck,0);
-        String uevaluable=evaluable.toUpperCase().trim();
-        boolean returnable=false;
-        boolean lastreturnable=true;
-        int joined=0;
-        while(evaluable.length()>0)
+        String[] tt=(String[])eval[0];
+        Vector stack=new Vector();
+        for(int t=startEval;t<tt.length;t++)
+        if(tt[t].equals("("))
+            stack.addElement(tt[t]);
+        else
+        if(tt[t].equals(")"))
         {
-            int y=evaluable.indexOf("(");
-            int z=y+1;
-            int numy=1;
-            while((y>=0)&&(numy>0)&&(z<evaluable.length()))
+            if((!(stack.lastElement() instanceof Boolean))
+            ||(stack.size()==1)
+            ||(!(stack.elementAt(stack.size()-2)).equals("(")))
             {
-                if(evaluable.charAt(z)=='(')
-                    numy++;
-                else
-                if(evaluable.charAt(z)==')')
-                    numy--;
-                z++;
-            }
-            if((y<0)||(numy>0)||(z<=y))
-            {
-                logError(scripted,"EVAL","Format",evaluable);
+                logError(scripted,"EVAL","SYNTAX",") Format error: "+CMParms.toStringList(tt));
                 return false;
             }
-            z--;
-            String preFab=uevaluable.substring(0,y).trim();
-            Integer funcCode=(Integer)funcH.get(preFab);
-            if(funcCode==null)
-                funcCode=new Integer(0);
-            if(y==0)
+            boolean b=((Boolean)stack.lastElement()).booleanValue();
+            stack.removeElementAt(stack.size()-1);
+            stack.removeElementAt(stack.size()-1);
+            pushEvalBoolean(stack,b);
+        }
+        else
+        if(connH.containsKey(tt[t]))
+        {
+            Integer curr=(Integer)connH.get(tt[t]);
+            if((stack.size()>0)&&(stack.lastElement() instanceof String))
             {
-                int depth=0;
-                int i=0;
-                while((++i)<evaluable.length())
-                {
-                    char c=evaluable.charAt(i);
-                    if((c==')')&&(depth==0))
-                    {
-                        String expr=evaluable.substring(1,i);
-                        evaluable=evaluable.substring(i+1).trim();
-                        uevaluable=uevaluable.substring(i+1).trim();
-                        returnable=eval(scripted,source,target,monster,primaryItem,secondaryItem,msg,tmp,expr);
-                        switch(joined)
-                        {
-                        case 1: returnable=lastreturnable&&returnable; break;
-                        case 2: returnable=lastreturnable||returnable; break;
-                        case 4: returnable=!returnable; break;
-                        case 5: returnable=lastreturnable&&(!returnable); break;
-                        case 6: returnable=lastreturnable||(!returnable); break;
-                        default: break;
-                        }
-                        joined=0;
-                        break;
-                    }
-                    else
-                    if(c=='(') depth++;
-                    else
-                    if(c==')') depth--;
-                }
-                z=evaluable.indexOf(")");
+                logError(scripted,"EVAL","SYNTAX","Connector in wrong place: "+tt[t]+": "+CMParms.toStringList(tt));
+                return false;
             }
-            else
-            if(evaluable.startsWith("!"))
+            if((stack.size()>0)&&(stack.lastElement() instanceof Integer))
             {
-                joined=joined|4;
-                evaluable=evaluable.substring(1).trim();
-                uevaluable=uevaluable.substring(1).trim();
+                int old=((Integer)stack.lastElement()).intValue();
+                stack.removeElementAt(stack.size()-1);
+                curr=new Integer(CONNECTOR_MAP[old][curr.intValue()]);
             }
-            else
-            if(uevaluable.startsWith("AND "))
+            stack.addElement(curr);
+        }
+        else
+        if(funcH.containsKey(tt[t]))
+        {
+            Integer funcCode=(Integer)funcH.get(tt[t]);
+            if((t==tt.length-1)
+            ||(!tt[t+1].equals("(")))
             {
-                joined=1;
-                lastreturnable=returnable;
-                evaluable=evaluable.substring(4).trim();
-                uevaluable=uevaluable.substring(4).trim();
+                logError(scripted,"EVAL","SYNTAX","No ( for fuction "+tt[t]+": "+CMParms.toStringList(tt));
+                return false;
             }
-            else
-            if(uevaluable.startsWith("OR "))
+            t+=2;
+            int tlen=0;
+            while((tlen<tt.length)&&(!tt[t+tlen].equals(")")))
+                tlen++;
+            if((t+tlen)==tt.length)
             {
-                joined=2;
-                lastreturnable=returnable;
-                evaluable=evaluable.substring(3).trim();
-                uevaluable=uevaluable.substring(3).trim();
+                logError(scripted,"EVAL","SYNTAX","No ) for fuction "+tt[t-1]+": "+CMParms.toStringList(tt));
+                return false;
             }
-            else
-            if((y<0)||(z<y))
-            {
-                logError(scripted,"()","Syntax",evaluable);
-                break;
-            }
-            else
-            {
             tickStatus=Tickable.STATUS_MISC+funcCode.intValue();
-            String funcParms=evaluable.substring(y+1,z).trim();
+            String funcParms=tt[t];
+            boolean returnable=false;
             switch(funcCode.intValue())
             {
             case 1: // rand
@@ -1876,12 +2107,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 2: // has
             {
-                String arg1=CMParms.getCleanBit(funcParms,0);
-                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,0));
+                if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t] */
+                String arg1=tt[t+0];
+                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if(arg2.length()==0)
                 {
-                    logError(scripted,"HAS","Syntax",evaluable);
+                    logError(scripted,"HAS","Syntax",funcParms);
                     return returnable;
                 }
                 Environmental E2=getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
@@ -1912,14 +2144,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 74: // hasnum
             {
-                String arg1=CMParms.getCleanBit(funcParms,0);
-                String item=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(funcParms,1));
-                String cmp=CMParms.getCleanBit(funcParms,2);
-                String value=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,2));
+                if(tlen==1) tt=parseBits(eval,t,"cccr"); /* tt[t] */
+                String arg1=tt[t+0];
+                String item=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
+                String cmp=tt[t+2];
+                String value=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((value.length()==0)||(item.length()==0)||(cmp.length()==0))
                 {
-                    logError(scripted,"HASNUM","Syntax",evaluable);
+                    logError(scripted,"HASNUM","Syntax",funcParms);
                     return returnable;
                 }
                 Item I=null;
@@ -1966,12 +2199,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 67: // hastitle
             {
-                String arg1=CMParms.getCleanBit(funcParms,0);
-                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,0));
+                if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t] */
+                String arg1=tt[t+0];
+                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if(arg2.length()==0)
                 {
-                    logError(scripted,"HASTITLE","Syntax",evaluable);
+                    logError(scripted,"HASTITLE","Syntax",funcParms);
                     return returnable;
                 }
                 if(E instanceof MOB)
@@ -1985,12 +2219,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 3: // worn
             {
-                String arg1=CMParms.getCleanBit(funcParms,0);
-                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,0));
+                if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+                String arg1=tt[t+0];
+                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if(arg2.length()==0)
                 {
-                    logError(scripted,"WORN","Syntax",evaluable);
+                    logError(scripted,"WORN","Syntax",funcParms);
                     return returnable;
                 }
                 if(E==null)
@@ -2096,8 +2331,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 58: // isable
             {
-                String arg1=CMParms.getCleanBit(funcParms,0);
-                String arg2=CMParms.getPastBitClean(funcParms,0);
+                if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+                String arg1=tt[t+0];
+                String arg2=tt[t+1];
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((E!=null)&&((E instanceof MOB))&&(!((MOB)E).amDead()))
                 {
@@ -2243,9 +2479,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 56: // name
             {
-                String arg1=CMParms.getCleanBit(funcParms,0);
-                String arg2=CMParms.getCleanBit(funcParms,1);
-                String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(funcParms,1));
+                if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+                String arg1=tt[t+0];
+                String arg2=tt[t+1];
+                String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if(E==null)
                     returnable=false;
@@ -2255,9 +2492,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 75: // currency
             {
-                String arg1=CMParms.getCleanBit(funcParms,0);
-                String arg2=CMParms.getCleanBit(funcParms,1);
-                String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(funcParms,1));
+                if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+                String arg1=tt[t+0];
+                String arg2=tt[t+1];
+                String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if(E==null)
                     returnable=false;
@@ -2267,16 +2505,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 61: // strin
             {
-                String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(funcParms,0));
-                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,0));
+                if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+                String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
                 Vector V=CMParms.parse(arg1.toUpperCase());
                 returnable=V.contains(arg2.toUpperCase());
                 break;
             }
             case 62: // callfunc
             {
-                String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(funcParms,0));
-                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,0));
+                if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+                String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
+                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
                 String found=null;
                 boolean validFunc=false;
                 Vector scripts=getScripts();
@@ -2290,7 +2530,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     ttrigger=(String[])script2.elementAt(0,2);
                     if(getTriggerCode(trigger,ttrigger)==17)
                     {
-                        String fnamed=CMParms.getCleanBit(trigger,1);
+                        String fnamed=
+                            (ttrigger!=null)
+                            ?ttrigger[1]
+                            :CMParms.getCleanBit(trigger,1);
                         if(fnamed.equalsIgnoreCase(arg1))
                         {
                             validFunc=true;
@@ -2590,7 +2833,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    logError(scripted,"HITPRCNT","Syntax",evaluable);
+                    logError(scripted,"HITPRCNT","Syntax",funcParms);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -2878,7 +3121,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if(arg2.length()==0)
                 {
-                    logError(scripted,"HASTATTOO","Syntax",evaluable);
+                    logError(scripted,"HASTATTOO","Syntax",funcParms);
                     break;
                 }
                 else
@@ -3000,7 +3243,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 else
                 {
-                    logError(scripted,"INAREA","Syntax",evaluable);
+                    logError(scripted,"INAREA","Syntax",funcParms);
                     return returnable;
                 }
                 Room R=null;
@@ -3036,7 +3279,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 else
                 {
-                    logError(scripted,"ISRECALL","Syntax",evaluable);
+                    logError(scripted,"ISRECALL","Syntax",funcParms);
                     return returnable;
                 }
                 Room R=null;
@@ -3104,7 +3347,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    logError(scripted,"SEX","Syntax",evaluable);
+                    logError(scripted,"SEX","Syntax",funcParms);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3119,7 +3362,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         returnable=!arg3.startsWith(sex);
                     else
                     {
-                        logError(scripted,"SEX","Syntax",evaluable);
+                        logError(scripted,"SEX","Syntax",funcParms);
                         return returnable;
                     }
                 }
@@ -3159,7 +3402,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    logError(scripted,"STAT","Syntax",evaluable);
+                    logError(scripted,"STAT","Syntax",funcParms);
                     break;
                 }
                 if(E==null)
@@ -3192,7 +3435,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    logError(scripted,"GSTAT","Syntax",evaluable);
+                    logError(scripted,"GSTAT","Syntax",funcParms);
                     break;
                 }
                 if(E==null)
@@ -3224,7 +3467,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    logError(scripted,"POSITION","Syntax",evaluable);
+                    logError(scripted,"POSITION","Syntax",funcParms);
                     return returnable;
                 }
                 if(E==null)
@@ -3244,7 +3487,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         returnable=!sex.startsWith(arg3);
                     else
                     {
-                        logError(scripted,"POSITION","Syntax",evaluable);
+                        logError(scripted,"POSITION","Syntax",funcParms);
                         return returnable;
                     }
                 }
@@ -3258,7 +3501,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    logError(scripted,"LEVEL","Syntax",evaluable);
+                    logError(scripted,"LEVEL","Syntax",funcParms);
                     return returnable;
                 }
                 if(E==null)
@@ -3278,7 +3521,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    logError(scripted,"QUESTPOINTS","Syntax",evaluable);
+                    logError(scripted,"QUESTPOINTS","Syntax",funcParms);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3299,7 +3542,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Quest Q=getQuest(arg1);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    logError(scripted,"QVAR","Syntax",evaluable);
+                    logError(scripted,"QVAR","Syntax",funcParms);
                     return returnable;
                 }
                 if(Q==null)
@@ -3315,12 +3558,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,1));
                 if(!CMath.isMathExpression(arg1))
                 {
-                    logError(scripted,"MATH","Syntax",evaluable);
+                    logError(scripted,"MATH","Syntax",funcParms);
                     return returnable;
                 }
                 if(!CMath.isMathExpression(arg3))
                 {
-                    logError(scripted,"MATH","Syntax",evaluable);
+                    logError(scripted,"MATH","Syntax",funcParms);
                     return returnable;
                 }
                 returnable=simpleExpressionEval(scripted,arg1,arg3,arg2,"MATH");
@@ -3334,7 +3577,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    logError(scripted,"TRAINS","Syntax",evaluable);
+                    logError(scripted,"TRAINS","Syntax",funcParms);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3354,7 +3597,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    logError(scripted,"PRACS","Syntax",evaluable);
+                    logError(scripted,"PRACS","Syntax",funcParms);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3374,7 +3617,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    logError(scripted,"CLANRANK","Syntax",evaluable);
+                    logError(scripted,"CLANRANK","Syntax",funcParms);
                     return returnable;
                 }
                 if(E==null)
@@ -3394,7 +3637,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if(arg2.length()==0)
                 {
-                    logError(scripted,"DEITY","Syntax",evaluable);
+                    logError(scripted,"DEITY","Syntax",funcParms);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3409,7 +3652,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         returnable=!sex.equalsIgnoreCase(arg3);
                     else
                     {
-                        logError(scripted,"DEITY","Syntax",evaluable);
+                        logError(scripted,"DEITY","Syntax",funcParms);
                         return returnable;
                     }
                 }
@@ -3424,7 +3667,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    logError(scripted,"CLANDATA","Syntax",evaluable);
+                    logError(scripted,"CLANDATA","Syntax",funcParms);
                     return returnable;
                 }
                 String clanID=null;
@@ -3494,7 +3737,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if(arg2.length()==0)
                 {
-                    logError(scripted,"CLAN","Syntax",evaluable);
+                    logError(scripted,"CLAN","Syntax",funcParms);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3509,7 +3752,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         returnable=!sex.equalsIgnoreCase(arg3);
                     else
                     {
-                        logError(scripted,"CLAN","Syntax",evaluable);
+                        logError(scripted,"CLAN","Syntax",funcParms);
                         return returnable;
                     }
                 }
@@ -3523,7 +3766,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if(arg2.length()==0)
                 {
-                    logError(scripted,"MOOD","Syntax",evaluable);
+                    logError(scripted,"MOOD","Syntax",funcParms);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3539,7 +3782,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         returnable=!sex.equalsIgnoreCase(arg3);
                     else
                     {
-                        logError(scripted,"MOOD","Syntax",evaluable);
+                        logError(scripted,"MOOD","Syntax",funcParms);
                         return returnable;
                     }
                 }
@@ -3553,7 +3796,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    logError(scripted,"CLASS","Syntax",evaluable);
+                    logError(scripted,"CLASS","Syntax",funcParms);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3568,7 +3811,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         returnable=!sex.startsWith(arg3);
                     else
                     {
-                        logError(scripted,"CLASS","Syntax",evaluable);
+                        logError(scripted,"CLASS","Syntax",funcParms);
                         return returnable;
                     }
                 }
@@ -3582,7 +3825,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    logError(scripted,"CLASS","Syntax",evaluable);
+                    logError(scripted,"CLASS","Syntax",funcParms);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3597,7 +3840,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         returnable=!sex.startsWith(arg3);
                     else
                     {
-                        logError(scripted,"CLASS","Syntax",evaluable);
+                        logError(scripted,"CLASS","Syntax",funcParms);
                         return returnable;
                     }
                 }
@@ -3611,7 +3854,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    logError(scripted,"RACE","Syntax",evaluable);
+                    logError(scripted,"RACE","Syntax",funcParms);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3626,7 +3869,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         returnable=!sex.startsWith(arg3);
                     else
                     {
-                        logError(scripted,"RACE","Syntax",evaluable);
+                        logError(scripted,"RACE","Syntax",funcParms);
                         return returnable;
                     }
                 }
@@ -3640,7 +3883,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    logError(scripted,"RACECAT","Syntax",evaluable);
+                    logError(scripted,"RACECAT","Syntax",funcParms);
                     return returnable;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3655,7 +3898,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         returnable=!sex.startsWith(arg3);
                     else
                     {
-                        logError(scripted,"RACECAT","Syntax",evaluable);
+                        logError(scripted,"RACECAT","Syntax",funcParms);
                         return returnable;
                     }
                 }
@@ -3669,7 +3912,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    logError(scripted,"GOLDAMT","Syntax",evaluable);
+                    logError(scripted,"GOLDAMT","Syntax",funcParms);
                     break;
                 }
                 if(E==null)
@@ -3687,7 +3930,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         val1=((Item)E).value();
                     else
                     {
-                        logError(scripted,"GOLDAMT","Syntax",evaluable);
+                        logError(scripted,"GOLDAMT","Syntax",funcParms);
                         return returnable;
                     }
 
@@ -3703,7 +3946,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentMOB(arg1,source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    logError(scripted,"EXP","Syntax",evaluable);
+                    logError(scripted,"EXP","Syntax",funcParms);
                     break;
                 }
                 if((E==null)||(!(E instanceof MOB)))
@@ -3724,7 +3967,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,2));
                 if((arg2.length()==0)||(arg3.length()==0)||(arg4.length()==0))
                 {
-                    logError(scripted,"VALUE","Syntax",evaluable);
+                    logError(scripted,"VALUE","Syntax",funcParms);
                     break;
                 }
                 if(!CMLib.beanCounter().getAllCurrencies().contains(arg2.toUpperCase()))
@@ -3750,7 +3993,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         val1=((Item)E).value();
                     else
                     {
-                        logError(scripted,"VALUE","Syntax",evaluable);
+                        logError(scripted,"VALUE","Syntax",funcParms);
                         return returnable;
                     }
 
@@ -3766,7 +4009,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    logError(scripted,"OBJTYPE","Syntax",evaluable);
+                    logError(scripted,"OBJTYPE","Syntax",funcParms);
                     return returnable;
                 }
                 if(E==null)
@@ -3781,7 +4024,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         returnable=sex.indexOf(arg3)<0;
                     else
                     {
-                        logError(scripted,"OBJTYPE","Syntax",evaluable);
+                        logError(scripted,"OBJTYPE","Syntax",funcParms);
                         return returnable;
                     }
                 }
@@ -3796,7 +4039,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
-                    logError(scripted,"VAR","Syntax",evaluable);
+                    logError(scripted,"VAR","Syntax",funcParms);
                     return returnable;
                 }
                 String val=getVar(E,arg1,arg2,source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp);
@@ -3819,7 +4062,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     returnable=CMath.s_int(val.trim())<=CMath.s_int(arg4.trim());
                 else
                 {
-                    logError(scripted,"VAR","Syntax",evaluable);
+                    logError(scripted,"VAR","Syntax",funcParms);
                     return returnable;
                 }
                 break;
@@ -3831,7 +4074,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(funcParms,1));
                 if(arg3.length()==0)
                 {
-                    logError(scripted,"EVAL","Syntax",evaluable);
+                    logError(scripted,"EVAL","Syntax",funcParms);
                     return returnable;
                 }
                 if(arg3.equals("=="))
@@ -3853,7 +4096,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     returnable=CMath.s_int(val.trim())<=CMath.s_int(arg4.trim());
                 else
                 {
-                    logError(scripted,"EVAL","Syntax",evaluable);
+                    logError(scripted,"EVAL","Syntax",funcParms);
                     return returnable;
                 }
                 break;
@@ -3941,27 +4184,25 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 break;
             }
             default:
-                logError(scripted,"Unknown Eval",preFab,evaluable);
-                return returnable;
+                logError(scripted,"EVAL","UNKNOWN",CMParms.toStringList(tt));
+                return false;
             }
-            if((z>=0)&&(z<=evaluable.length()))
-            {
-                evaluable=evaluable.substring(z+1).trim();
-                uevaluable=uevaluable.substring(z+1).trim();
-            }
-            switch(joined)
-            {
-            case 1: returnable=lastreturnable&&returnable; break;
-            case 2: returnable=lastreturnable||returnable; break;
-            case 4: returnable=!returnable; break;
-            case 5: returnable=lastreturnable&&(!returnable); break;
-            case 6: returnable=lastreturnable||(!returnable); break;
-            default: break;
-            }
-            joined=0;
+            pushEvalBoolean(stack,returnable);
+            while((t<tt.length)&&(!tt[t].equals(")")))
+                t++;
         }
+        else
+        {
+            logError(scripted,"EVAL","SYNTAX","BAD CONJUCTOR "+tt[t]+": "+CMParms.toStringList(tt));
+            return false;
         }
-        return returnable;
+        
+        if((stack.size()!=1)||(!(stack.firstElement() instanceof Boolean)))
+        {
+            logError(scripted,"EVAL","SYNTAX","Unmatched (: "+CMParms.toStringList(tt));
+            return false;
+        }
+        return ((Boolean)stack.firstElement()).booleanValue();
     }
 
     protected String functify(Environmental scripted,
@@ -4066,7 +4307,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String item=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(funcParms,1));
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((item.length()==0)||(E==null))
-                    logError(scripted,"HASNUM","Syntax",evaluable);
+                    logError(scripted,"HASNUM","Syntax",funcParms);
                 else
                 {
                     Item I=null;
@@ -5286,7 +5527,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         val1=((Item)E).value();
                     else
                     {
-                        logError(scripted,"GOLDAMT","Syntax",evaluable);
+                        logError(scripted,"GOLDAMT","Syntax",funcParms);
                         return results.toString();
                     }
                     results.append(val1);
@@ -5336,7 +5577,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         val1=((Item)E).value();
                     else
                     {
-                        logError(scripted,"GOLDAMT","Syntax",evaluable);
+                        logError(scripted,"GOLDAMT","Syntax",funcParms);
                         return results.toString();
                     }
                     results.append(val1);
@@ -5576,8 +5817,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 19: // if
             {
-                String conditionStr=(s.substring(2).trim());
-                boolean condition=eval(scripted,source,target,monster,primaryItem,secondaryItem,msg,tmp,conditionStr);
+                if(tt==null){
+                    try {
+                        String[] ttParms=parseEval(s.substring(2));
+                        tt=new String[ttParms.length+1];
+                        tt[0]="IF";
+                        for(int i=0;i<ttParms.length;i++)
+                            tt[i+1]=ttParms[i];
+                        script.setElementAt(si,2,tt);
+                    } catch(Exception e) {
+                        logError(scripted,"IF","Syntax",e.getMessage());
+                        tickStatus=Tickable.STATUS_END;
+                        return null;
+                    }
+                }
+                String[][] EVAL={tt};
+                boolean condition=eval(scripted,source,target,monster,primaryItem,secondaryItem,msg,tmp,EVAL,1);
                 DVector V=new DVector(2);
                 V.addElement("",null);
                 int depth=0;
@@ -7923,41 +8178,72 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 27: // MPWHILE
             {
-                String conditionStr=(s.substring(2).trim());
-                int x=conditionStr.indexOf("(");
-                if(x<0)
+                String[] EVAL=null;
+                String DO=null;
+                String DOT=null;
+                if(tt!=null)
                 {
-                    logError(scripted,"MPWHILE","Unknown","Condition: "+s);
-                    break;
+                    int x=1;
+                    while((x<tt.length)&&(!tt[x].equals(")")))
+                        x++;
+                    EVAL=new String[x-1];
+                    for(int y=1;y<x;y++)
+                        EVAL[y-1]=tt[y];
+                    DO=tt[x+1];
                 }
-                conditionStr=conditionStr.substring(x+1);
-                x=-1;
-                int depth=0;
-                for(int i=0;i<conditionStr.length();i++)
-                    if(conditionStr.charAt(i)=='(')
-                        depth++;
-                    else
-                    if((conditionStr.charAt(i)==')')&&((--depth)<0))
+                else
+                {
+                    Vector V=new Vector();
+                    V.addElement("MPWHILE");
+                    String conditionStr=(s.substring(7).trim());
+                    if(!conditionStr.startsWith("("))
                     {
-                        x=i;
+                        logError(scripted,"MPWHILE","Syntax"," NO Starting (: "+s);
                         break;
                     }
-                if(x<0)
-                {
-                    logError(scripted,"MPWHILE","Syntax"," no closing ')': "+s);
-                    break;
+                    conditionStr=conditionStr.substring(1).trim();
+                    int x=-1;
+                    int depth=0;
+                    for(int i=0;i<conditionStr.length();i++)
+                        if(conditionStr.charAt(i)=='(')
+                            depth++;
+                        else
+                        if((conditionStr.charAt(i)==')')&&((--depth)<0))
+                        {
+                            x=i;
+                            break;
+                        }
+                    if(x<0)
+                    {
+                        logError(scripted,"MPWHILE","Syntax"," no closing ')': "+s);
+                        break;
+                    }
+                    DO=conditionStr.substring(x+1).trim();
+                    conditionStr=conditionStr.substring(0,x);
+                    try {
+                        EVAL=parseEval(conditionStr);
+                        V.addElement("(");
+                        Vector V2=CMParms.makeVector(EVAL);
+                        V.addAll(V2);
+                        V.addElement(")");
+                        V.addElement(DO);
+                        tt=CMParms.toStringArray(V);
+                        script.setElementAt(si,2,tt);
+                    } catch(Exception e) {
+                        logError(scripted,"MPWHILE","Syntax",e.getMessage());
+                        break;
+                    }
                 }
-                String cmd2=conditionStr.substring(x+1).trim();
-                conditionStr=conditionStr.substring(0,x);
+                String[][] EVALO={EVAL};
                 DVector vscript=new DVector(2);
                 vscript.addElement("FUNCTION_PROG MPWHILE_"+Math.random(),null);
-                vscript.addElement(cmd2,null);
+                vscript.addElement(DO,DOT);
                 long time=System.currentTimeMillis();
-                while((eval(scripted,source,target,monster,primaryItem,secondaryItem,msg,tmp,conditionStr))&&((System.currentTimeMillis()-time)<4000))
+                while((eval(scripted,source,target,monster,primaryItem,secondaryItem,msg,tmp,EVALO,0))&&((System.currentTimeMillis()-time)<4000))
                     execute(scripted,source,target,monster,primaryItem,secondaryItem,vscript,msg,tmp);
                 if((System.currentTimeMillis()-time)>=4000)
                 {
-                    logError(scripted,"MPWHILE","RunTime","4 second limit exceeded: "+conditionStr);
+                    logError(scripted,"MPWHILE","RunTime","4 second limit exceeded: "+s);
                     break;
                 }
                 break;

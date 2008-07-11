@@ -56,7 +56,8 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
                         Item secondaryItem,
                         String msg,
                         Object[] tmp,
-                        String evaluable);
+                        String[][] eval,
+                        int startEval);
     
     public boolean endQuest(Environmental hostObj, MOB mob, String quest);
 
@@ -368,4 +369,17 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
     };
 
     public final static String[] DATETIME_ARGS={"HOUR","TIME","DAY","DATE","MONTH","YEAR"};
+    public final static String[] CONNECTORS={"AND","OR","NOT","ANDNOT","ORNOT"};
+    public final static int CONNECTOR_AND=0;
+    public final static int CONNECTOR_OR=1;
+    public final static int CONNECTOR_NOT=2;
+    public final static int CONNECTOR_ANDNOT=3;
+    public final static int CONNECTOR_ORNOT=4;
+    public final static int[][] CONNECTOR_MAP={
+        {CONNECTOR_AND,CONNECTOR_OR,CONNECTOR_ANDNOT,CONNECTOR_AND,CONNECTOR_ORNOT}, //and
+        {CONNECTOR_OR,CONNECTOR_OR,CONNECTOR_ORNOT,CONNECTOR_ORNOT,CONNECTOR_ORNOT}, //or
+        {CONNECTOR_ANDNOT,CONNECTOR_ORNOT,CONNECTOR_AND,CONNECTOR_AND,CONNECTOR_OR}, //not
+        {CONNECTOR_ANDNOT,CONNECTOR_ORNOT,CONNECTOR_AND,CONNECTOR_AND,CONNECTOR_ORNOT}, //andnot
+        {CONNECTOR_ORNOT,CONNECTOR_ORNOT,CONNECTOR_OR,CONNECTOR_ORNOT,CONNECTOR_ORNOT}, //ornot
+    };
 }

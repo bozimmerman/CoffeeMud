@@ -400,6 +400,9 @@ FUNCTION_PROG TEST2
     IF VAR($i RAND_PROG_TEST != 'TRUE')
         mpsetvar $i ERRORS $<$i ERRORS> NOFIRE:RAND_PROG
     ENDIF
+    IF VAR($i DAY_PROG_TEST == 'TRUE') OR VAR($i DAY_PROG_TEST == 'TRUE') AND VAR($i DAY_PROG_TEST == 'TRUE')
+        #do nothing
+    ENDIF
     IF VAR($i ERRORS != '')
         RETURN
     ENDIF
@@ -633,6 +636,8 @@ FUNCTION_PROG TEST2
 	    mpsetvar $i DAMAGE_PROG_TEST TEST
         MPFORCE Orc MPDAMAGE Shoppy 100 100
     next
+    mpsetvar $i SCRIPTABLETESTTEST 0
+    mpwhile (VAR($i SCRIPTABLETESTTEST < 10)) mpsetvar $i SCRIPTABLETESTTEST ++
     MPALARM 1 MPCALLFUNC TEST3
 ~
 
