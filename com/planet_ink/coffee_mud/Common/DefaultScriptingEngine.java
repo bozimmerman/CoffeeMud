@@ -312,8 +312,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
             newLine[i]=tt[i];
         for(int i=0;i<parsed.length;i++)
             newLine[start+i]=parsed[i];
-        for(int i=0;i<tt.length-start;i++)
-            newLine[start+parsed.length+i]=tt[start+i+1];
+        for(int i=start+1;i<tt.length;i++)
+            newLine[parsed.length+i-1]=tt[i];
         oldBits[0]=newLine;
         return newLine;
         
@@ -2082,7 +2082,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             t+=2;
             int tlen=0;
-            while((tlen<tt.length)&&(!tt[t+tlen].equals(")")))
+            while(((t+tlen)<tt.length)&&(!tt[t+tlen].equals(")")))
                 tlen++;
             if((t+tlen)==tt.length)
             {
@@ -4032,10 +4032,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 27: // var
             {
-                String arg1=CMParms.getCleanBit(funcParms,0);
-                String arg2=CMParms.getCleanBit(funcParms,1).toUpperCase();
-                String arg3=CMParms.getCleanBit(funcParms,2);
-                String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBit(funcParms,2));
+                if(tlen==1) tt=parseBits(eval,t,"cCcp"); /* tt[t] */
+                String arg1=tt[t+0];
+                String arg2=tt[t+1];
+                String arg3=tt[t+2];
+                String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+3]);
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((arg2.length()==0)||(arg3.length()==0))
                 {
@@ -5833,6 +5834,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 String[][] EVAL={tt};
                 boolean condition=eval(scripted,source,target,monster,primaryItem,secondaryItem,msg,tmp,EVAL,1);
+                if(EVAL[0]!=tt)
+                {
+                    tt=EVAL[0];
+                    script.setElementAt(si,2,tt);
+                }
                 DVector V=new DVector(2);
                 V.addElement("",null);
                 int depth=0;
@@ -5883,8 +5889,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     }
                     else
                     {
-                        if(condition)
-                            V.addElement(s,tt);
                         if(cmd.equals("IF"))
                             depth++;
                         else
@@ -5894,6 +5898,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                 tt=parseBits(script,si,"C");
                             depth--;
                         }
+                        if(condition)
+                            V.addSharedElements(script.elementsAt(si));
                     }
                     si++;
                 }
@@ -6075,10 +6081,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     else
                         cmd=CMParms.getCleanBit(s,0).toUpperCase();
                     if(cmd.equals("<SCRIPT>"))
+                    {
+                        if(tt==null) tt=parseBits(script,si,"C");
                         ignoreUntilEndScript=true;
+                    }
                     else
                     if(cmd.equals("</SCRIPT>"))
+                    {
+                        if(tt==null) tt=parseBits(script,si,"C");
                         ignoreUntilEndScript=false;
+                    }
                     else
                     if(ignoreUntilEndScript){}
                     else
@@ -6090,7 +6102,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     }
                     else
                     {
-                        V.addElement(s,tt);
                         if(cmd.equals("FOR"))
                         {
                             if(tt==null) tt=parseBits(script,si,"CcccCr");
@@ -6102,6 +6113,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             if(tt==null) tt=parseBits(script,si,"C");
                             depth--;
                         }
+                        V.addSharedElements(script.elementsAt(si));
                     }
                     si++;
                 }
@@ -7811,6 +7823,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     DVector vscript=new DVector(2);
                     vscript.addElement("FUNCTION_PROG MPFORCE_"+System.currentTimeMillis()+Math.random(),null);
                     vscript.addElement(force,null);
+                    // this can not be permanently parsed because it is variable
                     execute(newTarget, source, target, getMakeMOB(newTarget), primaryItem, secondaryItem, vscript, msg, tmp);
                 }
                 break;
@@ -8178,20 +8191,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 27: // MPWHILE
             {
-                String[] EVAL=null;
-                String DO=null;
-                String DOT=null;
-                if(tt!=null)
-                {
-                    int x=1;
-                    while((x<tt.length)&&(!tt[x].equals(")")))
-                        x++;
-                    EVAL=new String[x-1];
-                    for(int y=1;y<x;y++)
-                        EVAL[y-1]=tt[y];
-                    DO=tt[x+1];
-                }
-                else
+                if(tt==null)
                 {
                     Vector V=new Vector();
                     V.addElement("MPWHILE");
@@ -8218,10 +8218,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         logError(scripted,"MPWHILE","Syntax"," no closing ')': "+s);
                         break;
                     }
-                    DO=conditionStr.substring(x+1).trim();
+                    String DO=conditionStr.substring(x+1).trim();
                     conditionStr=conditionStr.substring(0,x);
                     try {
-                        EVAL=parseEval(conditionStr);
+                        String[] EVAL=parseEval(conditionStr);
                         V.addElement("(");
                         Vector V2=CMParms.makeVector(EVAL);
                         V.addAll(V2);
@@ -8234,6 +8234,37 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         break;
                     }
                 }
+                int evalEnd=2;
+                int depth=0;
+                while((evalEnd<tt.length)&&((!tt[evalEnd].equals(")"))||(depth>0)))
+                {
+                    if(tt[evalEnd].equals("("))
+                        depth++;
+                    else
+                    if(tt[evalEnd].equals(")"))
+                        depth--;
+                    evalEnd++;
+                }
+                if(evalEnd==tt.length)
+                {
+                    logError(scripted,"MPWHILE","Syntax"," no closing ')': "+s);
+                    break;
+                }
+                String[] EVAL=new String[evalEnd-2];
+                for(int y=2;y<evalEnd;y++)
+                    EVAL[y-2]=tt[y];
+                String DO=tt[evalEnd+1];
+                String[] DOT=null;
+                int doLen=(tt.length-evalEnd)-1;
+                if(doLen>1)
+                {
+                    DOT=new String[doLen];
+                    for(int y=0;y<DOT.length;y++)
+                    {
+                        DOT[y]=tt[evalEnd+y+1];
+                        if(y>0) DO+=" "+tt[evalEnd+y+1];
+                    }
+                }
                 String[][] EVALO={EVAL};
                 DVector vscript=new DVector(2);
                 vscript.addElement("FUNCTION_PROG MPWHILE_"+Math.random(),null);
@@ -8241,6 +8272,32 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 long time=System.currentTimeMillis();
                 while((eval(scripted,source,target,monster,primaryItem,secondaryItem,msg,tmp,EVALO,0))&&((System.currentTimeMillis()-time)<4000))
                     execute(scripted,source,target,monster,primaryItem,secondaryItem,vscript,msg,tmp);
+                if(vscript.elementAt(1,2)!=DOT)
+                {
+                    int oldDotLen=(DOT==null)?1:DOT.length;
+                    String[] newDOT=(String[])vscript.elementAt(1,2);
+                    String[] newTT=new String[tt.length-oldDotLen+newDOT.length];
+                    int end=0;
+                    for(end=0;end<tt.length-oldDotLen;end++)
+                        newTT[end]=tt[end];
+                    for(int y=0;y<newDOT.length;y++)
+                        newTT[end+y]=newDOT[y];
+                    tt=newTT;
+                    script.setElementAt(si,2,tt);
+                }
+                if(EVALO[0]!=EVAL)
+                {
+                    Vector lazyV=new Vector();
+                    lazyV.addElement("MPWHILE");
+                    lazyV.addElement("(");
+                    String[] newEVAL=EVALO[0];
+                    for(int y=0;y<newEVAL.length;y++)
+                        lazyV.addElement(newEVAL[y]);
+                    for(int i=evalEnd;i<tt.length;i++)
+                        lazyV.addElement(tt[i]);
+                    tt=CMParms.toStringArray(lazyV);
+                    script.setElementAt(si,2,tt);
+                }
                 if((System.currentTimeMillis()-time)>=4000)
                 {
                     logError(scripted,"MPWHILE","RunTime","4 second limit exceeded: "+s);
