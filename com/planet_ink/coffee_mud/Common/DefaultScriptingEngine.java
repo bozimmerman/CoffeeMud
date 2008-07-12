@@ -1862,7 +1862,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             state=STATE_INFUNCTION;
                         else
                         if(connH.containsKey(s))
-                            state=STATE_INFUNCTION;
+                            state=STATE_MAIN;
                         else
                             throw new ScriptParseException("Unknown keyword: "+s);
                     }
@@ -1881,7 +1881,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(depth==0)
                         throw new ScriptParseException("Unmatched ) character");
                     V.addElement(")");
-                    depth++;
+                    depth--;
                     dex=c+1;
                     break;
                 default:
