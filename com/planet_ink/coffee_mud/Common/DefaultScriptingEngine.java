@@ -2042,7 +2042,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 int connector=((Integer)O).intValue();
                 stack.removeElementAt(stack.size()-1);
                 boolean preTrueFalse=false;
-                if((stack.elementAt(stack.size()-1) instanceof Boolean))
+                if((stack.size()>0)
+                &&((stack.elementAt(stack.size()-1) instanceof Boolean)))
                 {
                     preTrueFalse=((Boolean)stack.elementAt(stack.size()-1)).booleanValue();
                     stack.removeElementAt(stack.size()-1);
