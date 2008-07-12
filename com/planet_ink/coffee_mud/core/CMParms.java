@@ -340,46 +340,7 @@ public class CMParms
     }
 
     public static int numBits(String s)
-    {
-        int i=0;
-        int num=0;
-        boolean in=false;
-        char c=(char)0;
-        char fc=(char)0;
-        char lc=(char)0;
-        s=s.trim();
-        while(i<s.length())
-        {
-            c=s.charAt(i);
-            boolean white=(Character.isWhitespace(c)||(c==' ')||(c=='\t'));
-            if(white&&in&&(((fc=='\'')&&(lc!='\''))||((fc=='`')&&(lc!='`'))))
-                white=false;
-            if(white&&in)
-            {
-                num++;
-                c=(char)0;
-                lc=(char)0;
-                fc=(char)0;
-                in=false;
-            }
-            else
-            if(!white)
-            {
-                if(!in)
-                {
-                    in=true;
-                    fc=c;
-                    lc=(char)0;
-                }
-                else
-                    lc=c;
-            }
-            i++;
-        }
-        if(in)
-            return num+1;
-        return num;
-    }
+    { return ((Integer)getBitWork(s,Integer.MAX_VALUE,2)).intValue(); }
 
     public static String cleanBit(String s)
     {
@@ -387,11 +348,14 @@ public class CMParms
             s=s.substring(1);
         while(s.endsWith(" "))
             s=s.substring(0,s.length()-1);
-        if((s.startsWith("'"))||(s.startsWith("`")))
+        if(s.length()==0) return s;
+        if((s.charAt(0)=='\'')||(s.charAt(0)=='`'))
         {
-            s=s.substring(1);
-            if((s.endsWith("'"))||(s.endsWith("`")))
-                s=s.substring(0,s.length()-1);
+            if(s.length()==1) return s;
+            if((s.charAt(s.length()-1)=='\'')||(s.charAt(s.length()-1)=='`'))
+                return s.substring(1,s.length()-1);
+            else
+                return s.substring(1);
         }
         return s;
     }
@@ -402,103 +366,76 @@ public class CMParms
     { return cleanBit(getPastBit(s,which));}
 
     public static String getPastBit(String s, int which)
-    {
-        int i=0;
-        int w=0;
-        boolean in=false;
-        s=s.trim();
-        String t="";
-        char c=(char)0;
-        char lc=(char)0;
-        char fc=(char)0;
-        while(i<s.length())
-        {
-            c=s.charAt(i);
-            boolean white=(Character.isWhitespace(c)||(c==' ')||(c=='\t'));
-            if(white&&in&&(((fc=='\'')&&(lc!='\''))||((fc=='`')&&(lc!='`'))))
-                white=false;
-            if(white&&in)
-            {
-                if(w==which)
-                {
-                    String ts=s.substring(i+1).trim();
-                    if((ts.length()>1)
-                    &&((ts.startsWith("'"))||(ts.startsWith("`")))
-                    &&((ts.endsWith("'"))||(ts.endsWith("`"))))
-                        return ts.substring(1,ts.length()-1);
-                    return s.substring(i+1);
-                }
-                w++;
-                in=false;
-                c=(char)0;
-                lc=(char)0;
-                fc=(char)0;
-            }
-            else
-            if(!white)
-            {
-                if(!in)
-                {
-                    t="";
-                    fc=c;
-                    lc=(char)0;
-                    in=true;
-                }
-                else
-                    lc=c;
-                t+=c;
-            }
-            i++;
-        }
-        return "";
-    }
-
+    { return (String)getBitWork(s,which,1); }
 
     public static String getBit(String s, int which)
+    { return (String)getBitWork(s,which,0); }
+
+    public static Object getBitWork(String s, int which, int op)
     {
-        int i=0;
-        int w=0;
-        boolean in=false;
-        s=s.trim();
-        String t="";
-        char c=(char)0;
-        char lc=(char)0;
-        char fc=(char)0;
-        while(i<s.length())
-        {
-            c=s.charAt(i);
-            boolean white=(Character.isWhitespace(c)||(c==' ')||(c=='\t'));
-            if(white&&in&&(((fc=='\'')&&(lc!='\''))||((fc=='`')&&(lc!='`'))))
-                white=false;
-            if(white&&in)
+        int currOne=0;
+        int start=-1;
+        char q=' ';
+        char lastC=' ';
+        char[] cs=s.toCharArray();
+        for(int c=0;c<cs.length;c++)
+            switch(start)
             {
-                if(w==which)
-                    return t;
-                w++;
-                in=false;
-                c=(char)0;
-                lc=(char)0;
-                fc=(char)0;
-            }
-            else
-            if(!white)
-            {
-                if(!in)
+            case -1:
+                switch(cs[c])
                 {
-                    t="";
-                    fc=c;
-                    lc=(char)0;
-                    in=true;
+                case ' ': case '\t': case '\n': case '\r':
+                    break;
+                case '\'': case '`':
+                    lastC=' ';
+                    q=cs[c];
+                    start=c;
+                    break;
+                default:
+                    q=' ';
+                    start=c;
+                    break;
                 }
-                else
-                    lc=c;
-                t+=c;
+                break;
+            default:
+                if(cs[c]==q)
+                {
+                    if((q!=' ')
+                    &&(c<cs.length-1)
+                    &&(!Character.isWhitespace(cs[c+1])))
+                        break;
+                    if(which==currOne)
+                    {
+                        switch(op)
+                        {
+                        case 0:
+                            if(q==' ')
+                                return new String(cs,start,c-start);
+                            return new String(cs,start,c-start+1);
+                        case 1:
+                            return new String(cs,c+1,cs.length-c-1).trim();
+                        }
+                    }
+                    currOne++;
+                    start=-1;
+                }
+                lastC=cs[c];
+                break;
             }
-            i++;
+        switch(op)
+        {
+        case 0:
+            if(start<0)
+                return "";
+            return new String(cs,start,cs.length-start);
+        case 1:
+            return "";
+        default:
+            if(start<0)
+                return new Integer(currOne);
+            else
+                return new Integer(currOne+1);
         }
-        if(in)
-            return t;
-        return "";
     }
 
     public static String getParmStr(String text, String key, String defaultVal)

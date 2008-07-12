@@ -2638,7 +2638,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 70: // ipaddress
             {
-                if(tlen==1) tt=parseBits(eval,t,"ccp"); /* tt[t+0] */
+                if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
                 String arg1=tt[t+0];
                 String arg2=tt[t+1];
                 String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -4128,7 +4128,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 27: // var
             {
-                if(tlen==1) tt=parseBits(eval,t,"cCcp"); /* tt[t+0] */
+                if(tlen==1) tt=parseBits(eval,t,"cCcr"); /* tt[t+0] */
                 String arg1=tt[t+0];
                 String arg2=tt[t+1];
                 String arg3=tt[t+2];
@@ -4166,7 +4166,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 41: // eval
             {
-                if(tlen==1) tt=parseBits(eval,t,"ccp"); /* tt[t+0] */
+                if(tlen==1) tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
                 String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
                 String arg3=tt[t+1];
                 String arg4=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+2]);
@@ -6281,7 +6281,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 4: // mpjunk
             {
-                if(tt==null) tt=parseBits(script,si,"CP");
+                if(tt==null) tt=parseBits(script,si,"CR");
                 if(tt[1].equals("ALL"))
                 {
                     while(monster.inventorySize()>0)
@@ -6359,7 +6359,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 73: // mpsetinternal
             {
-                if(tt==null) tt=parseBits(script,si,"CCp");
+                if(tt==null) tt=parseBits(script,si,"CCr");
                 String arg2=tt[1];
                 String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
                 if(arg2.equals("SCOPE"))
@@ -6379,7 +6379,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 16: // mpset
             {
-                if(tt==null) tt=parseBits(script,si,"CCcp");
+                if(tt==null) tt=parseBits(script,si,"CCcr");
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String arg2=tt[2];
                 String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
@@ -6535,7 +6535,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 35: // mpgset
             {
-                if(tt==null) tt=parseBits(script,si,"Cccp");
+                if(tt==null) tt=parseBits(script,si,"Cccr");
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String arg2=tt[2];
                 String arg3=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
@@ -7215,7 +7215,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 break;
             }
             case 48: // return
-                if(tt==null) tt=parseBits(script,si,"Cp");
+                if(tt==null) tt=parseBits(script,si,"Cr");
                 tickStatus=Tickable.STATUS_END;
                 return varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
             case 7: // mpechoat
@@ -7602,7 +7602,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 52: // mpplayerclass
             {
-                if(tt==null) tt=parseBits(script,si,"Ccp");
+                if(tt==null) tt=parseBits(script,si,"Ccr");
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((newTarget!=null)&&(newTarget instanceof MOB))
                 {
@@ -7761,7 +7761,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             break;
             case 17: // mptransfer
             {
-                if(tt==null) tt=parseBits(script,si,"Ccp");
+                if(tt==null) tt=parseBits(script,si,"Ccr");
                 String mobName=tt[1];
                 String roomName=tt[2].trim();
                 Room newRoom=null;
@@ -7875,7 +7875,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 25: // mpbeacon
             {
-                if(tt==null) tt=parseBits(script,si,"Ccp");
+                if(tt==null) tt=parseBits(script,si,"Ccr");
                 String roomName=tt[1];
                 Room newRoom=null;
                 if((roomName.length()>0)&&(lastKnownLocation!=null))
@@ -7930,7 +7930,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 20: // mpsetvar
             {
-                if(tt==null) tt=parseBits(script,si,"Cccp");
+                if(tt==null) tt=parseBits(script,si,"Cccr");
                 String which=tt[1];
                 Environmental E=getArgumentItem(which,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
@@ -8009,7 +8009,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 40: // MPM2I2M
             {
-                if(tt==null) tt=parseBits(script,si,"Cccp");
+                if(tt==null) tt=parseBits(script,si,"Cccr");
                 String arg1=tt[1];
                 Environmental E=getArgumentItem(arg1,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if(E instanceof MOB)
@@ -8108,7 +8108,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 29: // mptrackto
             {
-                if(tt==null) tt=parseBits(script,si,"Cp");
+                if(tt==null) tt=parseBits(script,si,"Cr");
                 String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                 Ability A=CMClass.getAbility("Skill_Track");
                 if(A!=null)
@@ -8183,7 +8183,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 64: //MPLOADQUESTOBJ
             {
-                if(tt==null) tt=parseBits(script,si,"Cccp");
+                if(tt==null) tt=parseBits(script,si,"Cccr");
                 String questName=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1].trim());
                 Quest Q=getQuest(questName);
                 if(Q==null)
@@ -8255,7 +8255,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 24: // MPCALLFUNC
             {
-                if(tt==null) tt=parseBits(script,si,"Ccp");
+                if(tt==null) tt=parseBits(script,si,"Ccr");
                 String named=tt[1];
                 String parms=tt[2].trim();
                 boolean found=false;
