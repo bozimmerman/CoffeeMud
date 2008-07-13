@@ -690,8 +690,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
         if(thisName.length()==0) return null;
         if((imHere!=null)&&(imHere.roomID().equalsIgnoreCase(thisName)))
             return imHere;
-        if((imHere!=null)&&(imHere.getArea().Name().equalsIgnoreCase(thisName)))
-            return imHere;
         Room room=CMLib.map().getRoom(thisName);
         if((room!=null)&&(room.roomID().equalsIgnoreCase(thisName)))
             return room;
@@ -775,31 +773,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         inAreaRoom=R;
                     else
                         room=R;
-                }
-            }
-        }catch(NoSuchElementException nse){}
-        if(inAreaRoom!=null) return inAreaRoom;
-        if(room!=null) return room;
-        try
-        {
-            for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
-            {
-                Area A=(Area)a.nextElement();
-                if((A!=null)&&(A.Name().equalsIgnoreCase(thisName)))
-                {
-                    if((imHere!=null)&&(imHere.getArea().Name().equals(A.Name())))
-                        return imHere;
-                    return A.getRandomProperRoom();
-                }
-            }
-            for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
-            {
-                Area A=(Area)a.nextElement();
-                if((A!=null)&&(CMLib.english().containsString(A.Name(),thisName)))
-                {
-                    if((imHere!=null)&&(imHere.getArea().Name().equals(A.Name())))
-                        return imHere;
-                    return A.getRandomProperRoom();
                 }
             }
         }catch(NoSuchElementException nse){}
@@ -3395,6 +3368,35 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     R=CMLib.map().roomLocation(this.getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
                 if(R==null)
                     R=getRoom(arg2,lastKnownLocation);
+                if(R==null)
+                try
+                {
+                    if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().Name().equalsIgnoreCase(arg2)))
+                        R=lastKnownLocation;
+                    if(R==null)
+                    for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+                    {
+                        Area A=(Area)a.nextElement();
+                        if((A!=null)&&(A.Name().equalsIgnoreCase(arg2)))
+                        {
+                            if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().Name().equals(A.Name())))
+                                R=lastKnownLocation;
+                            else
+                                R=A.getRandomProperRoom();
+                        }
+                    }
+                    for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+                    {
+                        Area A=(Area)a.nextElement();
+                        if((A!=null)&&(CMLib.english().containsString(A.Name(),arg2)))
+                        {
+                            if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().Name().equals(A.Name())))
+                                R=lastKnownLocation;
+                            else
+                                R=A.getRandomProperRoom();
+                        }
+                    }
+                }catch(NoSuchElementException nse){}
                 if(E==null)
                     returnable=false;
                 else
