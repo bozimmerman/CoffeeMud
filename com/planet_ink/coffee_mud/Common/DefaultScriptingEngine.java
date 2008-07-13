@@ -3367,8 +3367,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(arg2.startsWith("$"))
                     R=CMLib.map().roomLocation(this.getArgumentItem(arg2,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp));
                 if(R==null)
-                    R=getRoom(arg2,lastKnownLocation);
-                if(R==null)
                 try
                 {
                     if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().Name().equalsIgnoreCase(arg2)))
@@ -3397,6 +3395,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         }
                     }
                 }catch(NoSuchElementException nse){}
+                if(R==null)
+                    R=getRoom(arg2,lastKnownLocation);
                 if(E==null)
                     returnable=false;
                 else
