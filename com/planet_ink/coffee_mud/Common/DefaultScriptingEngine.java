@@ -44,7 +44,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
     protected static final Hashtable methH=new Hashtable();
     protected static final Hashtable progH=new Hashtable();
     protected static final Hashtable connH=new Hashtable();
-    protected static final HashSet SIGNS=CMParms.makeHashSet(CMParms.parseCommas("==,>=,>,<,<=,=>,=<,!=",true));
+    protected static final Hashtable signH=new Hashtable();
     protected static Hashtable patterns=new Hashtable();
     protected boolean noDelay=CMSecurity.isDisabled("SCRIPTABLEDELAY");
     
@@ -235,31 +235,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return newLine;
     }
 
-    protected String[] parseSpecialPartBits(String[][] eval, int t, int numBits, String instructions)
-    {
-        String[] tt=eval[0];
-        String funcParms=tt[t];
-        if(CMParms.numBits(funcParms)>1)
-            tt=parseBits(eval,t,instructions); /* tt[t+0] */
-        else
-        {
-            String[] parsed=null;
-            if(CMParms.cleanBit(funcParms).equals(funcParms))
-                parsed=parseBits("'"+funcParms+"'"+CMStrings.repeat(" .",numBits-1),instructions);
-            else
-                parsed=parseBits(funcParms+CMStrings.repeat(" .",numBits-1),instructions);
-            tt=insertStringArray(tt,parsed,t);
-            eval[0]=tt;
-        }
-        return tt;
-    }
-    
     protected String[] parseSpecial3PartEval(String[][] eval, int t)
     {
         String[] tt=eval[0];
         String funcParms=tt[t];
         String[] tryTT=parseBits(funcParms,"ccr");
-        if(SIGNS.contains(tryTT[1]))
+        if(signH.containsKey(tryTT[1]))
             tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
         else
         {
@@ -639,6 +620,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     progH.put(progs[i],new Integer(i+1));
                 for(int i=0;i<CONNECTORS.length;i++)
                     connH.put(CONNECTORS[i],new Integer(i));
+                for(int i=0;i<SIGNS.length;i++)
+                   signH.put(SIGNS[i],new Integer(i));
             }
         }
         Vector V=new Vector();
@@ -705,6 +688,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
     protected Room getRoom(String thisName, Room imHere)
     {
         if(thisName.length()==0) return null;
+        if((imHere!=null)&&(imHere.roomID().equalsIgnoreCase(thisName)))
+            return imHere;
+        if((imHere!=null)&&(imHere.getArea().Name().equalsIgnoreCase(thisName)))
+            return imHere;
         Room room=CMLib.map().getRoom(thisName);
         if((room!=null)&&(room.roomID().equalsIgnoreCase(thisName)))
             return room;
@@ -792,6 +779,32 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
         }catch(NoSuchElementException nse){}
         if(inAreaRoom!=null) return inAreaRoom;
+        if(room!=null) return room;
+        try
+        {
+            for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+            {
+                Area A=(Area)a.nextElement();
+                if((A!=null)&&(A.Name().equalsIgnoreCase(thisName)))
+                {
+                    if((imHere!=null)&&(imHere.getArea().Name().equals(A.Name())))
+                        return imHere;
+                    return A.getRandomProperRoom();
+                }
+            }
+            for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+            {
+                Area A=(Area)a.nextElement();
+                if((A!=null)&&(CMLib.english().containsString(A.Name(),thisName)))
+                {
+                    if((imHere!=null)&&(imHere.getArea().Name().equals(A.Name())))
+                        return imHere;
+                    return A.getRandomProperRoom();
+                }
+            }
+        }catch(NoSuchElementException nse){}
+                
+        if(inAreaRoom!=null) return inAreaRoom;
         return room;
     }
 
@@ -816,16 +829,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                     String cmdName)
     {
         int x=arg1.compareToIgnoreCase(arg2);
-        if(cmp.equalsIgnoreCase("==")) return (x==0);
-        else if(cmp.equalsIgnoreCase(">=")) return (x==0)||(x>0);
-        else if(cmp.equalsIgnoreCase("<=")) return (x==0)||(x<0);
-        else if(cmp.equalsIgnoreCase(">"))  return (x>0);
-        else if(cmp.equalsIgnoreCase("<"))  return (x<0);
-        else if(cmp.equalsIgnoreCase("!=")) return (x!=0);
-        else
+        Integer SIGN=(Integer)signH.get(cmp);
+        if(SIGN==null)
         {
             logError(scripted,cmdName,"Syntax",arg1+" "+cmp+" "+arg2);
             return false;
+        }
+        switch(SIGN.intValue())
+        {
+        case SIGN_EQUL: return (x==0);
+        case SIGN_EQGT:
+        case SIGN_GTEQ: return (x==0)||(x>0);
+        case SIGN_EQLT:
+        case SIGN_LTEQ: return (x==0)||(x<0);
+        case SIGN_GRAT: return (x>0);
+        case SIGN_LEST: return (x<0);
+        case SIGN_NTEQ: return (x!=0);
+        default: return (x==0);
         }
     }
 
@@ -834,16 +854,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
     {
         long val1=CMath.s_long(arg1.trim());
         long val2=CMath.s_long(arg2.trim());
-        if(cmp.equalsIgnoreCase("=="))      return (val1==val2);
-        else if(cmp.equalsIgnoreCase(">=")) return val1>=val2;
-        else if(cmp.equalsIgnoreCase("<=")) return val1<=val2;
-        else if(cmp.equalsIgnoreCase(">"))  return (val1>val2);
-        else if(cmp.equalsIgnoreCase("<"))  return (val1<val2);
-        else if(cmp.equalsIgnoreCase("!=")) return (val1!=val2);
-        else
+        Integer SIGN=(Integer)signH.get(cmp);
+        if(SIGN==null)
         {
             logError(scripted,cmdName,"Syntax",val1+" "+cmp+" "+val2);
             return false;
+        }
+        switch(SIGN.intValue())
+        {
+        case SIGN_EQUL: return (val1==val2);
+        case SIGN_EQGT:
+        case SIGN_GTEQ: return val1>=val2;
+        case SIGN_EQLT:
+        case SIGN_LTEQ: return val1<=val2;
+        case SIGN_GRAT: return (val1>val2);
+        case SIGN_LEST: return (val1<val2);
+        case SIGN_NTEQ: return (val1!=val2);
+        default: return (val1==val2);
         }
     }
 
@@ -851,16 +878,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
     {
         double val1=CMath.s_parseMathExpression(arg1.trim());
         double val2=CMath.s_parseMathExpression(arg2.trim());
-        if(cmp.equalsIgnoreCase("=="))      return (val1==val2);
-        else if(cmp.equalsIgnoreCase(">=")) return val1>=val2;
-        else if(cmp.equalsIgnoreCase("<=")) return val1<=val2;
-        else if(cmp.equalsIgnoreCase(">"))  return (val1>val2);
-        else if(cmp.equalsIgnoreCase("<"))  return (val1<val2);
-        else if(cmp.equalsIgnoreCase("!=")) return (val1!=val2);
-        else
+        Integer SIGN=(Integer)signH.get(cmp);
+        if(SIGN==null)
         {
             logError(scripted,cmdName,"Syntax",val1+" "+cmp+" "+val2);
             return false;
+        }
+        switch(SIGN.intValue())
+        {
+        case SIGN_EQUL: return (val1==val2);
+        case SIGN_EQGT:
+        case SIGN_GTEQ: return val1>=val2;
+        case SIGN_EQLT:
+        case SIGN_LTEQ: return val1<=val2;
+        case SIGN_GRAT: return (val1>val2);
+        case SIGN_LEST: return (val1<val2);
+        case SIGN_NTEQ: return (val1!=val2);
+        default: return (val1==val2);
         }
     }
 
@@ -1808,6 +1842,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         final int STATE_POSTFUNCTION=3;
         final int STATE_POSTFUNCEVAL=4;
         final int STATE_POSTFUNCQUOTE=5;
+        final int STATE_MAYFUNCTION=6;
         
         Vector V=new Vector();
         if((evaluable==null)||(evaluable.trim().length()==0))
@@ -1830,8 +1865,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         s=s.toUpperCase();
                         V.addElement(s);
                         dex=c+1;
-                        if((!funcH.containsKey(s))
-                        &&(!connH.containsKey(s)))
+                        if(funcH.containsKey(s))
+                            state=STATE_MAYFUNCTION;
+                        else
+                        if(!connH.containsKey(s))
                             throw new ScriptParseException("Unknown keyword: "+s);
                     }
                 }
@@ -1885,8 +1922,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     dex=c+1;
                     break;
                 default:
-                    throw new ScriptParseException("Unknown character at: "+new String(evalC,dex,c-dex+1).trim());
+                    throw new ScriptParseException("Unknown character at: "+new String(evalC,dex,c-dex+1).trim()+": "+evaluable);
                 }
+                break;
+            }
+            case STATE_MAYFUNCTION:
+            {
+                if(evalC[c]=='(')
+                {
+                    V.addElement("(");
+                    dex=c+1;
+                    state=STATE_INFUNCTION;
+                }
+                else
+                if(!Character.isWhitespace(evalC[c]))
+                    throw new ScriptParseException("Expected ( at "+evalC[c]+": "+evaluable);
                 break;
             }
             case STATE_POSTFUNCTION:
@@ -1901,12 +1951,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         if(!Character.isWhitespace(evalC[c+1]))
                         {
                             s=new String(evalC,c,2);
-                            if((!SIGNS.contains(s))&&(evalC[c]!='!'))
+                            if((!signH.containsKey(s))&&(evalC[c]!='!'))
                                 s=""+evalC[c];
                         }
                         else
                             s=""+evalC[c];
-                        if(!SIGNS.contains(s))
+                        if(!signH.containsKey(s))
                         {
                             c=dex-1;
                             state=STATE_MAIN;
@@ -1953,7 +2003,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(evalC[c]==lastQuote)
                 {
                     if((V.size()>2)
-                    &&(SIGNS.contains((String)V.lastElement()))
+                    &&(signH.containsKey((String)V.lastElement()))
                     &&(((String)V.elementAt(V.size()-2)).equals(")")))
                     {
                         String sign=(String)V.lastElement();
@@ -1985,7 +2035,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(s.length()>0)
                     {
                         if((V.size()>1)
-                        &&(SIGNS.contains((String)V.lastElement()))
+                        &&(signH.containsKey((String)V.lastElement()))
                         &&(((String)V.elementAt(V.size()-2)).equals(")")))
                         {
                             String sign=(String)V.lastElement();
@@ -2041,20 +2091,27 @@ public class DefaultScriptingEngine implements ScriptingEngine
             {
                 int connector=((Integer)O).intValue();
                 stack.removeElementAt(stack.size()-1);
-                boolean preTrueFalse=false;
                 if((stack.size()>0)
                 &&((stack.elementAt(stack.size()-1) instanceof Boolean)))
                 {
-                    preTrueFalse=((Boolean)stack.elementAt(stack.size()-1)).booleanValue();
+                    boolean preTrueFalse=((Boolean)stack.elementAt(stack.size()-1)).booleanValue();
                     stack.removeElementAt(stack.size()-1);
+                    switch(connector)
+                    {
+                    case CONNECTOR_AND: trueFalse=preTrueFalse&&trueFalse; break;
+                    case CONNECTOR_OR: trueFalse=preTrueFalse||trueFalse; break;
+                    case CONNECTOR_ANDNOT: trueFalse=preTrueFalse&&(!trueFalse); break;
+                    case CONNECTOR_NOT: 
+                    case CONNECTOR_ORNOT: trueFalse=preTrueFalse||(!trueFalse); break;
+                    }
                 }
+                else
                 switch(connector)
                 {
-                case CONNECTOR_AND: trueFalse=preTrueFalse&&trueFalse; break;
-                case CONNECTOR_OR: trueFalse=preTrueFalse||trueFalse; break;
-                case CONNECTOR_ANDNOT: trueFalse=preTrueFalse&&(!trueFalse); break;
+                case CONNECTOR_ANDNOT:
                 case CONNECTOR_NOT: 
-                case CONNECTOR_ORNOT: trueFalse=preTrueFalse||(!trueFalse); break;
+                case CONNECTOR_ORNOT: trueFalse=!trueFalse; break;
+                default: break;
                 }
             }
             else
@@ -2655,7 +2712,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
                 String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
                 String arg2=tt[t+1];
-                Environmental E=getArgumentMOB(CMParms.getCleanBit(funcParms,0),source,monster,target,primaryItem,secondaryItem,msg,tmp);
+                Environmental E=getArgumentMOB(tt[t+0],source,monster,target,primaryItem,secondaryItem,msg,tmp);
                 Quest Q=getQuest(arg2);
                 if(Q==null)
                     returnable=false;
@@ -2989,15 +3046,21 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 45: // nummobsroom
             {
+                if(tlen==1)
+                {
+                    if(CMParms.numBits(funcParms)>2)
+                        tt=parseBits(eval,t,"ccr"); /* tt[t+0] */
+                    else
+                        tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+                }
                 int num=0;
                 int startbit=0;
                 if(lastKnownLocation!=null)
                 {
                     num=lastKnownLocation.numInhabitants();
-                    if((CMParms.numBits(funcParms)>2)
-                    &&(!CMath.isInteger(CMParms.getCleanBit(funcParms,1).trim())))
+                    if(signH.containsKey(tt[t+1]))
                     {
-                        String name=CMParms.getCleanBit(funcParms,0);
+                        String name=tt[t+0];
                         startbit++;
                         if(!name.equalsIgnoreCase("*"))
                         {
@@ -3026,10 +3089,17 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         }
                     }
                 }
-                String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(funcParms,startbit));
-                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,startbit));
+                else
+                if(!signH.containsKey(tt[t+0]))
+                {
+                    logError(scripted,"NUMMOBSROOM","Syntax","No SIGN found: "+funcParms);
+                    return returnable;
+                }
+                
+                String comp=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+startbit]);
+                String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+startbit+1]);
                 if(lastKnownLocation!=null)
-                    returnable=simpleEval(scripted,""+num,arg2,arg1,"NUMMOBSROOM");
+                    returnable=simpleEval(scripted,""+num,arg2,comp,"NUMMOBSROOM");
                 break;
             }
             case 63: // numpcsroom
@@ -3278,7 +3348,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String comp="==";
                 Environmental E=monster;
                 String arg2;
-                if(SIGNS.contains(tt[t+1]))
+                if(signH.containsKey(tt[t+1]))
                 {
                     E=getArgumentItem(tt[t+0],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                     comp=tt[t+1];
@@ -3312,7 +3382,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String comp="==";
                 Environmental E=monster;
                 String arg2;
-                if(SIGNS.contains(tt[t+1]))
+                if(signH.containsKey(tt[t+1]))
                 {
                     E=getArgumentItem(tt[t+0],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                     comp=tt[t+1];
@@ -3346,7 +3416,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String comp="==";
                 Environmental E=monster;
                 String arg2;
-                if(SIGNS.contains(tt[t+1]))
+                if(signH.containsKey(tt[t+1]))
                 {
                     E=getArgumentItem(tt[t+0],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                     comp=tt[t+1];
@@ -3376,8 +3446,22 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
             case 37: // inlocale
             {
-                if(tlen==1) tt=parseSpecialPartBits(eval,t,2,"cr");
-                String parms=funcParms;
+                if(tlen==1)
+                {
+                    if(CMParms.numBits(funcParms)>1)
+                        tt=parseBits(eval,t,"cr"); /* tt[t+0] */
+                    else
+                    {
+                        int numBits=2;
+                        String[] parsed=null;
+                        if(CMParms.cleanBit(funcParms).equals(funcParms))
+                            parsed=parseBits("'"+funcParms+"'"+CMStrings.repeat(" .",numBits-1),"cr");
+                        else
+                            parsed=parseBits(funcParms+CMStrings.repeat(" .",numBits-1),"cr");
+                        tt=insertStringArray(tt,parsed,t);
+                        eval[0]=tt;
+                    }
+                }
                 String arg2=null;
                 Environmental E=monster;
                 if(tt[t+1].equals("."))

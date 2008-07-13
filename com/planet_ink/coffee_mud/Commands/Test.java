@@ -319,7 +319,8 @@ public class Test extends StdCommand
                         break;
                 }
                 mob.tell("Successes: "+S.getVar("Shoppy","SUCCESS"));
-                mob.tell("Errors: "+S.getVar("Shoppy","ERRORS"));
+                mob.tell("\n\rUntested: "+S.getVar("Shoppy","UNTESTED"));
+                mob.tell("\n\rErrors: "+S.getVar("Shoppy","ERRORS"));
                 M.destroy();
                 R2.destroy();
                 R.destroy();

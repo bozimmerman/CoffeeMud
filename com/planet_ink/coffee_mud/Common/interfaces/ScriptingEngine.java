@@ -369,12 +369,26 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
     };
 
     public final static String[] DATETIME_ARGS={"HOUR","TIME","DAY","DATE","MONTH","YEAR"};
+    
+    public final static String[] SIGNS={"==",">=",">","<","<=","=>","=<","!="};
+    
+    public final static int SIGN_EQUL=0;
+    public final static int SIGN_GTEQ=1;
+    public final static int SIGN_GRAT=2;
+    public final static int SIGN_LEST=3;
+    public final static int SIGN_LTEQ=4;
+    public final static int SIGN_EQGT=5;
+    public final static int SIGN_EQLT=6;
+    public final static int SIGN_NTEQ=7;
+    
     public final static String[] CONNECTORS={"AND","OR","NOT","ANDNOT","ORNOT"};
+    
     public final static int CONNECTOR_AND=0;
     public final static int CONNECTOR_OR=1;
     public final static int CONNECTOR_NOT=2;
     public final static int CONNECTOR_ANDNOT=3;
     public final static int CONNECTOR_ORNOT=4;
+    
     public final static int[][] CONNECTOR_MAP={
         {CONNECTOR_AND,CONNECTOR_OR,CONNECTOR_ANDNOT,CONNECTOR_AND,CONNECTOR_ORNOT}, //and
         {CONNECTOR_OR,CONNECTOR_OR,CONNECTOR_ORNOT,CONNECTOR_ORNOT,CONNECTOR_ORNOT}, //or
