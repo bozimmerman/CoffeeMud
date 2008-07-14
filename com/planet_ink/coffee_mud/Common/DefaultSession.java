@@ -984,7 +984,7 @@ public class DefaultSession extends Thread implements Session
         if(in.ready()) return in.read();
         int times=sock.getSoTimeout()/100;
         for(int i=0;i<times;i++) {
-            if(in.ready()) return in.read();
+            if((in!=null)&&(in.ready())) return in.read();
             try { Thread.sleep(100); } catch(Exception e){}
         }
         throw new java.io.InterruptedIOException(".");
