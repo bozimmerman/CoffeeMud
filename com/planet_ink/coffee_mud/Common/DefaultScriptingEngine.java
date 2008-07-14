@@ -44,7 +44,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
     protected static final Hashtable methH=new Hashtable();
     protected static final Hashtable progH=new Hashtable();
     protected static final Hashtable connH=new Hashtable();
+    protected static final Hashtable gstatH=new Hashtable();
     protected static final Hashtable signH=new Hashtable();
+    
     protected static Hashtable patterns=new Hashtable();
     protected boolean noDelay=CMSecurity.isDisabled("SCRIPTABLEDELAY");
     
@@ -620,6 +622,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     progH.put(progs[i],new Integer(i+1));
                 for(int i=0;i<CONNECTORS.length;i++)
                     connH.put(CONNECTORS[i],new Integer(i));
+                for(int i=0;i<GSTATCODES_ADDITIONAL.length;i++)
+                    gstatH.put(GSTATCODES_ADDITIONAL[i],new Integer(i));
                 for(int i=0;i<SIGNS.length;i++)
                    signH.put(SIGNS[i],new Integer(i));
             }
@@ -1623,6 +1627,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         found=true;
                         break;
                     }
+            if((!found)&&(gstatH.containsKey(arg2.toUpperCase()))) {
+                found=true;
+                switch(((Integer)gstatH.get(arg2.toUpperCase())).intValue()) {
+                case GSTATADD_DEITY: val=M.getWorshipCharID(); break;
+                case GSTATADD_CLAN: val=M.getClanID(); break;
+                case GSTATADD_CLANROLE: val=""+M.getClanRole(); break;
+                }
+            }
         }
         if(!found)return null;
         return val;
@@ -1693,6 +1705,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             found=true;
                             break;
                         }
+                if((!found)&&(gstatH.containsKey(arg2.toUpperCase()))) {
+                    found=true;
+                    switch(((Integer)gstatH.get(arg2.toUpperCase())).intValue()) {
+                    case GSTATADD_DEITY: val=M.getWorshipCharID(); break;
+                    case GSTATADD_CLAN: val=M.getClanID(); break;
+                    case GSTATADD_CLANROLE: val=""+M.getClanRole(); break;
+                    }
+                }
             }
         }
         else
@@ -6541,6 +6561,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                     found=true;
                                     break;
                                 }
+                        if((!found)&&(gstatH.containsKey(arg2.toUpperCase()))) {
+                            found=true;
+                            switch(((Integer)gstatH.get(arg2.toUpperCase())).intValue()) {
+                            case GSTATADD_DEITY: M.setWorshipCharID(arg3); break;
+                            case GSTATADD_CLAN: M.setClanID(arg3); break;
+                            case GSTATADD_CLANROLE: M.setClanRole(CMath.s_int(arg3)); break;
+                            }
+                        }
                     }
 
                     if(!found)
@@ -6719,6 +6747,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                         found=true;
                                         break;
                                     }
+                            if((!found)&&(gstatH.containsKey(arg2.toUpperCase()))) {
+                                found=true;
+                                switch(((Integer)gstatH.get(arg2.toUpperCase())).intValue()) {
+                                case GSTATADD_DEITY: M.setWorshipCharID(arg3); break;
+                                case GSTATADD_CLAN: M.setClanID(arg3); break;
+                                case GSTATADD_CLANROLE: M.setClanRole(CMath.s_int(arg3)); break;
+                                }
+                            }
                         }
                     }
                     else

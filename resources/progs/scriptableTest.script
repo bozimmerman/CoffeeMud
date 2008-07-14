@@ -115,6 +115,15 @@ CHANNEL_PROG GOSSIP eooobie edoobie
 	else
 		mpsetvar $i ERRORS $<$i ERRORS> MISFIRE:CHANNEL_PROG2 
 	endif 
+    if STRCONTAINS('$g' '(edoobie)')
+    ELSE   
+        mpsetvar $i ERRORS $<$i ERRORS> FAIL:STRCONTAINS1
+    ENDIF
+    if STRCONTAINS('$g' '(ooobie) > (edoobie)')
+        mpsetvar $i SUCCESS $<$i SUCCESS> STRCONTAINS
+    ELSE
+        mpsetvar $i ERRORS $<$i ERRORS> FAIL:STRCONTAINS2
+    ENDIF
 ~
 
 CLOSE_PROG all

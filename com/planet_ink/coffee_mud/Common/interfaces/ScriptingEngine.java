@@ -368,6 +368,11 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         "TOPMEMBER" // 16
     };
 
+    public final static String[] GSTATCODES_ADDITIONAL={"DEITY","CLAN","CLANROLE"};
+    public final static int GSTATADD_DEITY=0;
+    public final static int GSTATADD_CLAN=1;
+    public final static int GSTATADD_CLANROLE=2;
+    
     public final static String[] DATETIME_ARGS={"HOUR","TIME","DAY","DATE","MONTH","YEAR"};
     
     public final static String[] SIGNS={"==",">=",">","<","<=","=>","=<","!="};
