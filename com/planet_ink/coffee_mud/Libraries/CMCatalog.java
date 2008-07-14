@@ -33,6 +33,7 @@ import java.util.*;
 */
 public class CMCatalog extends StdLibrary implements CatalogLibrary
 {
+    public String ID(){return "CMCatalog";}
     public DVector icatalog=new DVector(3);
     public DVector mcatalog=new DVector(3);
 
