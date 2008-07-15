@@ -33,6 +33,57 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public interface Poll extends CMCommon
 {
+    public String getName();
+    
+    public void setName(String newname);
+    
+    public String getSubject();
+    
+    public void setSubject(String newsubject);
+    
+    public String getDescription();
+    
+    public void setDescription(String newdescription);
+    
+    public String getAuthor();
+    
+    public void setAuthor(String newname);
+    
+    public long getFlags();
+    
+    public void setFlags(long flag);
+    
+    public String getQualZapper();
+    
+    public void setQualZapper(String newZap);
+    
+    public long getExpiration();
+    
+    public void setExpiration(long time);
+    
+    public Vector getOptions();
+    
+    public void setOptions(Vector V);
+    
+    public Vector getResults();
+    
+    public void setResults(Vector V);
+    
+    public String getOptionsXML();
+    
+    public String getResultsXML();
+    
+    public boolean loaded();
+    
+    public void setLoaded(boolean truefalse);
+    
+    public PollResult getMyVote(MOB mob);
+    
+    public void addVoteResult(PollResult R);
+    
+    public boolean mayIVote(MOB mob);
+    
+    public boolean mayISeeResults(MOB mob);
 
     public static class PollOption
     {
@@ -58,31 +109,4 @@ public interface Poll extends CMCommon
     public static final int FLAG_VOTEBYIP=8;
     public static final int FLAG_HIDERESULTS=16;
     public static final int FLAG_NOTATLOGIN=32;
-    
-    public String getName();
-    public void setName(String newname);
-    public String getSubject();
-    public void setSubject(String newsubject);
-    public String getDescription();
-    public void setDescription(String newdescription);
-    public String getAuthor();
-    public void setAuthor(String newname);
-    public long getFlags();
-    public void setFlags(long flag);
-    public String getQualZapper();
-    public void setQualZapper(String newZap);
-    public long getExpiration();
-    public void setExpiration(long time);
-    public Vector getOptions();
-    public void setOptions(Vector V);
-    public Vector getResults();
-    public void setResults(Vector V);
-    public String getOptionsXML();
-    public String getResultsXML();
-    public boolean loaded();
-    public void setLoaded(boolean truefalse);
-    public PollResult getMyVote(MOB mob);
-    public void addVoteResult(PollResult R);
-    public boolean mayIVote(MOB mob);
-    public boolean mayISeeResults(MOB mob);
 }
