@@ -281,9 +281,9 @@ public class StdLawBook extends StdItem
 			case 4:
 				{
 					StringBuffer msg=new StringBuffer("Sentences ( ");
-					for(int i=0;i<Law.ACTION_DESCS.length;i++)
+					for(int i=0;i<Law.PUNISHMENT_DESCS.length;i++)
                     {
-                        String sentence=Law.ACTION_DESCS[i];
+                        String sentence=Law.PUNISHMENT_DESCS[i];
 						msg.append(sentence.toLowerCase()+" ");
                     }
                     String oldSentence="";
@@ -293,9 +293,9 @@ public class StdLawBook extends StdItem
                     {
                         String t=(String)V.elementAt(v);
                         boolean sent=false;
-                        for(int i=0;i<Law.ACTION_DESCS.length;i++)
+                        for(int i=0;i<Law.PUNISHMENT_DESCS.length;i++)
                         {
-                            if(Law.ACTION_DESCS[i].startsWith(t.toUpperCase()))
+                            if(Law.PUNISHMENT_DESCS[i].startsWith(t.toUpperCase()))
                             {
                                 oldSentence=t.toLowerCase();
                                 sent=true;
@@ -305,15 +305,15 @@ public class StdLawBook extends StdItem
                         }
                         if(!sent)
                         {
-                            for(int i=0;i<Law.ACTIONMASK_DESCS.length;i++)
+                            for(int i=0;i<Law.PUNISHMENTMASK_DESCS.length;i++)
                             {
-                                if(t.toUpperCase().startsWith(Law.ACTIONMASK_DESCS[i]))
+                                if(t.toUpperCase().startsWith(Law.PUNISHMENTMASK_DESCS[i]))
                                 {
                                     int x1=t.indexOf("=");
                                     if(x1>0)
-                                        V2.addElement(Law.ACTIONMASK_DESCS[i].toLowerCase(),t.substring(x1+1));
+                                        V2.addElement(Law.PUNISHMENTMASK_DESCS[i].toLowerCase(),t.substring(x1+1));
                                     else
-                                        V2.addElement(Law.ACTIONMASK_DESCS[i].toLowerCase(),"");
+                                        V2.addElement(Law.PUNISHMENTMASK_DESCS[i].toLowerCase(),"");
                                     break;
                                 }
                             }
@@ -321,12 +321,12 @@ public class StdLawBook extends StdItem
                     }
 					msg.append("\n\rSelect a sentence ("+oldSentence+"): ");
 					String t=mob.session().prompt(msg.toString(),oldSentence);
-					for(int i=0;i<Law.ACTION_DESCS.length;i++)
+					for(int i=0;i<Law.PUNISHMENT_DESCS.length;i++)
 					{
-						if(Law.ACTION_DESCS[i].startsWith(t.toUpperCase()))
+						if(Law.PUNISHMENT_DESCS[i].startsWith(t.toUpperCase()))
 						{
                             int x1=V2.indexOf(oldSentence);
-                            oldSentence=Law.ACTION_DESCS[i].toLowerCase();
+                            oldSentence=Law.PUNISHMENT_DESCS[i].toLowerCase();
                             V2.setElementAt(x1,1,oldSentence);
                             V2.setElementAt(x1,2,"");
                             t=null;
@@ -338,9 +338,9 @@ public class StdLawBook extends StdItem
                         while(t==null)
                         {
                             msg=new StringBuffer("Sentence Flags ( ");
-                            for(int i=0;i<Law.ACTIONMASK_DESCS.length;i++)
+                            for(int i=0;i<Law.PUNISHMENTMASK_DESCS.length;i++)
                             {
-                                String sentence=Law.ACTIONMASK_DESCS[i];
+                                String sentence=Law.PUNISHMENTMASK_DESCS[i];
                                 if(sentence.indexOf("=")>0) sentence=sentence.substring(0,sentence.indexOf("="));
                                 msg.append(sentence.toLowerCase()+" ");
                             }
@@ -356,12 +356,12 @@ public class StdLawBook extends StdItem
                             t=mob.session().prompt(msg.toString(),"");
                             if(t.length()==0) break;
                             int indexIfExists=-1;
-                            for(int i=0;i<Law.ACTIONMASK_DESCS.length;i++)
+                            for(int i=0;i<Law.PUNISHMENTMASK_DESCS.length;i++)
                             {
-                                if(Law.ACTIONMASK_DESCS[i].startsWith(t.toUpperCase()))
+                                if(Law.PUNISHMENTMASK_DESCS[i].startsWith(t.toUpperCase()))
                                 {
                                     selectedMask=i;
-                                    indexIfExists=V2.indexOf(Law.ACTIONMASK_DESCS[selectedMask].toLowerCase());
+                                    indexIfExists=V2.indexOf(Law.PUNISHMENTMASK_DESCS[selectedMask].toLowerCase());
                                     t=null;
                                     break;
                                 }
@@ -377,9 +377,9 @@ public class StdLawBook extends StdItem
                                 {
                                     String parm="";
                                     boolean abort=false;
-                                    switch(Law.ACTIONMASK_CODES[selectedMask])
+                                    switch(Law.PUNISHMENTMASK_CODES[selectedMask])
                                     {
-                                    case Law.ACTIONMASK_DETAIN:
+                                    case Law.PUNISHMENTMASK_DETAIN:
                                         if(!CMLib.law().getLegalObject(A).inMyMetroArea(mob.location().getArea()))
                                         {
                                             mob.tell("You can not add this room as a detention center, as it is not in the area.");
@@ -400,7 +400,7 @@ public class StdLawBook extends StdItem
                                         else
                                             abort=true;
                                         break;
-                                    case Law.ACTIONMASK_FINE:
+                                    case Law.PUNISHMENTMASK_FINE:
                                     {
                                         String fine=mob.session().prompt("Enter the amount of the fine in base-gold value: ","");
                                         if((fine.length()==0)||(!CMath.isNumber(fine))||(CMath.s_double(fine)<0)||(CMath.s_double(fine)>100000.0))
@@ -415,7 +415,7 @@ public class StdLawBook extends StdItem
                                     }
                                     if(!abort)
                                     {
-                                        V2.addElement(Law.ACTIONMASK_DESCS[selectedMask],parm);
+                                        V2.addElement(Law.PUNISHMENTMASK_DESCS[selectedMask],parm);
                                         mob.tell("'"+V2.elementAt(V2.size()-1,1)+parm+"' has been added.");
                                     }
                                     else

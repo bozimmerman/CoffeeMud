@@ -606,7 +606,7 @@ public class DefaultLawSet implements Law
         return null;
     }
 
-    public LegalWarrant getLawresister(Area A, LegalBehavior behav, MOB mob)
+    public LegalWarrant getLawResister(Area A, LegalBehavior behav, MOB mob)
     {
         String[] lawResistInfo=(String[])basicCrimes().get("RESISTINGARREST");
         if(lawResistInfo!=null)

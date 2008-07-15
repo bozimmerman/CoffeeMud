@@ -69,8 +69,8 @@ public class Prayer_Condemnation extends Prayer
 				for(int i=0;i<warrants.size();i++)
 				{
 					LegalWarrant W=(LegalWarrant)warrants.elementAt(i);
-					if(W.actionCode()<Law.ACTION_HIGHEST)
-						W.setActionCode(W.actionCode()+1);
+					if(W.punishment()<Law.PUNISHMENT_HIGHEST)
+						W.setPunishment(W.punishment()+1);
 				}
 			}
 

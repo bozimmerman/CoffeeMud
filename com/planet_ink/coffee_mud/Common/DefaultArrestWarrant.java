@@ -60,8 +60,8 @@ public class DefaultArrestWarrant implements LegalWarrant
     private Room jail=null;
     private Room releaseRoom=null;
     private String crime="";
-    private DVector actionParms=new DVector(2);
-    private int actionCode=-1;
+    private DVector punishmentParms=new DVector(2);
+    private int punishment=-1;
     private int jailTime=0;
     private int state=0;
     private int offenses=0;
@@ -88,19 +88,19 @@ public class DefaultArrestWarrant implements LegalWarrant
     public Room jail(){ return CMLib.map().getRoom(jail);}
     public Room releaseRoom(){ return CMLib.map().getRoom(releaseRoom);}
     public String crime(){ return crime;}
-    public int actionCode(){ return actionCode;}
-    public String getActionParm(int code)
+    public int punishment(){ return punishment;}
+    public String getPunishmentParm(int code)
     {
-        int index=actionParms.indexOf(new Integer(code));
+        int index=punishmentParms.indexOf(new Integer(code));
         if(index<0) return "";
-        return (String)actionParms.elementAt(index,2);
+        return (String)punishmentParms.elementAt(index,2);
     }
-    public void addActionParm(int code, String parm)
+    public void addPunishmentParm(int code, String parm)
     {
-        int index=actionParms.indexOf(new Integer(code));
+        int index=punishmentParms.indexOf(new Integer(code));
         if(index>=0)
-            actionParms.removeElementAt(index);
-        actionParms.addElement(new Integer(code),parm);
+            punishmentParms.removeElementAt(index);
+        punishmentParms.addElement(new Integer(code),parm);
     }
     public int jailTime(){ return jailTime;}
     public int state(){ return state;}
@@ -114,7 +114,7 @@ public class DefaultArrestWarrant implements LegalWarrant
     public void setJail(Room R){ jail=R;}
     public void setReleaseRoom(Room R){ releaseRoom=R;}
     public void setCrime(String newcrime){ crime=newcrime;}
-    public void setActionCode(int code){ actionCode=code;}
+    public void setPunishment(int code){ punishment=code;}
     public void setJailTime(int time){ jailTime=time;}
     public void setState(int newstate){ state=newstate;}
     public void setOffenses(int num){ offenses=num;}

@@ -38,9 +38,9 @@ public interface LegalWarrant extends CMCommon
 	public Room jail();
 	public Room releaseRoom();
 	public String crime();
-	public int actionCode();
-    public String getActionParm(int code);
-    public void addActionParm(int code, String parm);
+	public int punishment();
+    public String getPunishmentParm(int code);
+    public void addPunishmentParm(int code, String parm);
 	public int jailTime();
 	public int state();
 	public int offenses();
@@ -53,7 +53,7 @@ public interface LegalWarrant extends CMCommon
 	public void setJail(Room R);
 	public void setReleaseRoom(Room R);
 	public void setCrime(String crime);
-	public void setActionCode(int code);
+	public void setPunishment(int code);
 	public void setJailTime(int time);
 	public void setState(int state);
 	public void setOffenses(int num);

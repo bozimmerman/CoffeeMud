@@ -89,8 +89,8 @@ public class Prayer_Heresy extends Prayer
 					int me=CMLib.ableMapper().qualifyingClassLevel(mob,this);
 					int lvl=(me-low)/5;
 					if(lvl<0) lvl=0;
-					if(lvl>Law.ACTION_HIGHEST) lvl=Law.ACTION_HIGHEST;
-                    String sentence=Law.ACTION_DESCS[lvl];
+					if(lvl>Law.PUNISHMENT_HIGHEST) lvl=Law.PUNISHMENT_HIGHEST;
+                    String sentence=Law.PUNISHMENT_DESCS[lvl];
 					B.addWarrant(CMLib.law().getLegalObject(mob.location()),target,D,crimeLocs,crimeFlags,crime,sentence,desc);
 				}
 			}
