@@ -2153,11 +2153,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
         if(connH.containsKey(tt[t]))
         {
             Integer curr=(Integer)connH.get(tt[t]);
-            if((stack.size()>0)&&(stack.lastElement() instanceof String))
-            {
-                logError(scripted,"EVAL","SYNTAX","Connector in wrong place: "+tt[t]+": "+CMParms.toStringList(tt));
-                return false;
-            }
             if((stack.size()>0)&&(stack.lastElement() instanceof Integer))
             {
                 int old=((Integer)stack.lastElement()).intValue();
