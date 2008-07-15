@@ -110,7 +110,8 @@ public class DVector implements Cloneable, java.io.Serializable
 		{
 			synchronized(stuff)
 			{
-				V.stuff=(Vector)stuff.clone();
+			    for(Enumeration s=stuff.elements();s.hasMoreElements();)
+			        V.stuff.addElement(((Object[])s.nextElement()).clone());
 			}
 		}
 		return V;
