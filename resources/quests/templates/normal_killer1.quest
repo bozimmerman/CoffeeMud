@@ -70,7 +70,7 @@
 #Killables mob names: 
 #Specify the mobs who will act as the killable mob or mobs.  
 #See help on ZAPPERMASK for information on zapper mask syntax.
-#$KILLABLES_NAMES=$ZAPPERMASK
+#$KILLABLES_MASK=$ZAPPERMASK
 #
 #Killables attack:
 #Will the mobs attack if they spot the player?  Keep in mind this is above and
@@ -175,7 +175,7 @@ ONCE_PROG 100
 
 GREET_PROG 100
     if EVAL('$KILLABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
-    	if ISLIKE($n $KILLABLES_NAMES)
+    	if ISLIKE($n $KILLABLES_MASK)
             mpforce $n kill $i
     	endif
     endif
@@ -184,7 +184,7 @@ GREET_PROG 100
 ENTRY_PROG 100
     if INROOM($i == $g)
     	for $0 = 1 to '$%NUMMOBSROOM(*)%'
-    		if ISLIKE('$%ROOMMOB($0)%' $KILLABLES_NAMES)
+    		if ISLIKE('$%ROOMMOB($0)%' $KILLABLES_MASK)
     			mpforce '$%ROOMMOB($0)%' sayto "$i" $KILLABLES_RESPONSE
                 if EVAL('$KILLABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
                     mpforce '$%ROOMMOB($0)%' kill $i
@@ -195,7 +195,7 @@ ENTRY_PROG 100
 ~
 	
 CNCLMSG_PROG STO=DEATH ALL
-	if ISNPC($n) AND ISLIKE($n $KILLABLES_NAMES)
+	if ISNPC($n) AND ISLIKE($n $KILLABLES_MASK)
 		mpsetvar $i $QUEST_ID_KILLED ++;
 		if EVAL($NUM_KILLABLES > 1)
 			mpechoat $i Killed $<$i $QUEST_ID_KILLED>/$NUM_KILLABLES

@@ -70,7 +70,7 @@
 #Capturables mob names: 
 #Specify the mobs who will act as the capturable mob or mobs.  
 #See help on ZAPPERMASK for information on zapper mask syntax.
-#$CAPTURABLES_NAMES=$ZAPPERMASK
+#$CAPTURABLES_MASK=$ZAPPERMASK
 #
 #Num Capturables:
 #Specify how many of the capturable mobs must be captured.  Make sure there are 
@@ -172,7 +172,7 @@ ONCE_PROG 100
 ~
 
 GREET_PROG 100
-	if ISLIKE($n $CAPTURABLES_NAMES) AND !ISFOLLOW('$n')
+	if ISLIKE($n $CAPTURABLES_MASK) AND !ISFOLLOW('$n')
 	    if EVAL('$CAPTURABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
             mpforce $n kill $i
         else
@@ -191,7 +191,7 @@ if INROOM($i == $g)
         mpargset $9 '${1 *}'
         for $0 = '$%NUMMOBSROOM(*)%' to 1
             mpargset $1 '$%ROOMMOB($0)%'
-            if ISLIKE($1 $CAPTURABLES_NAMES) AND ISNPC('$1') AND ISFOLLOW('$1')
+            if ISLIKE($1 $CAPTURABLES_MASK) AND ISNPC('$1') AND ISFOLLOW('$1')
                 mpsetvar $i $QUEST_ID_RETURNED ++
                 mpsetvar $i PROGRESS Captured $<$i $QUEST_ID_CAPTURED>, Returned $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
                 mpechoat $i You've brought in $<$i $QUEST_ID_RETURNED>/$NUM_CAPTURABLES
@@ -220,7 +220,7 @@ if INROOM($i == $g)
         ENDIF
     else
         for $0 = 1 to '$%NUMMOBSROOM(*)%'
-            if ISLIKE('$%ROOMMOB($0)%' $CAPTURABLES_NAMES) AND !ISFOLLOW('$%ROOMMOB($0)%')
+            if ISLIKE('$%ROOMMOB($0)%' $CAPTURABLES_MASK) AND !ISFOLLOW('$%ROOMMOB($0)%')
                 mpforce '$%ROOMMOB($0)%' sayto "$i" $CAPTURABLES_RESPONSE
                 if EVAL('$CAPTURABLES_ATTACK' == 'YES-ATTACK-ON-SIGHT')
                     mpforce '$%ROOMMOB($0)%' kill $i
@@ -238,7 +238,7 @@ endif
 ~
 
 CNCLMSG_PROG STO=DEATH ALL
-	if ISNPC($n) AND ISLIKE($n $CAPTURABLES_NAMES) AND !ISFOLLOW($n) AND ISFIGHT($n)
+	if ISNPC($n) AND ISLIKE($n $CAPTURABLES_MASK) AND !ISFOLLOW($n) AND ISFIGHT($n)
         mpargset $9 '$%ISFIGHT($n)%'
 		if EVAL($9 == $i)
 			mpgset $n HITS 1

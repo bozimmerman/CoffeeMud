@@ -69,7 +69,7 @@
 #Holder Mobs: 
 #Specify the types of mobs that will be holding the items that must be collected.
 #See help on ZAPPERMASK for information on zapper mask syntax.
-#$HOLDERS_NAMES=$ZAPPERMASK
+#$HOLDERS_MASK=$ZAPPERMASK
 #
 #!QUESTMAKER_PAGE Specify the Collectables
 #The Collectables are the items that will be given to holders you specified.
@@ -207,7 +207,7 @@ ONCE_PROG 100
 ~
 
 CNCLMSG_PROG STO=DEATH ALL
-    if ISNPC($n) AND ISLIKE($n $HOLDERS_NAMES)
+    if ISNPC($n) AND ISLIKE($n $HOLDERS_MASK)
         if rand($COLLECTABLES_CHANCE)
             mpforce $n mpoload fromfile $QUEST_ID_items.xml any
         endif
