@@ -54,6 +54,20 @@ public class Chant_ChantWard extends Chant
 
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                MOB victim=((MOB)target).getVictim();
+                if((victim!=null)&&(CMLib.flags().domainAbilities(victim,Ability.ACODE_CHANT).size()==0))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

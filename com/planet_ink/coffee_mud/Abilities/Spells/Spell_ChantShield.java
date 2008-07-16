@@ -76,7 +76,20 @@ public class Spell_ChantShield extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
-
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                MOB victim=((MOB)target).getVictim();
+                if((victim!=null)&&(CMLib.flags().domainAbilities(victim,Ability.ACODE_CHANT).size()==0))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

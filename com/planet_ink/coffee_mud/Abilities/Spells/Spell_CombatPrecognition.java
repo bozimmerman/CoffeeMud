@@ -113,6 +113,7 @@ public class Spell_CombatPrecognition extends Spell
 		}
 		return true;
 	}
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -123,6 +124,7 @@ public class Spell_CombatPrecognition extends Spell
 
 		mob.tell("Your combat precognition fades away.");
 	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

@@ -43,8 +43,11 @@ public class Dance_Butoh extends Dance
     {
         if(mob!=null)
         {
-            if(mob.curState().getMana()>=mob.maxState().getMana()/2)
-                return Ability.QUALITY_INDIFFERENT;
+            if(target instanceof MOB)
+            {
+                if(((MOB)target).curState().getMana()>=((MOB)target).maxState().getMana()/2)
+                    return Ability.QUALITY_INDIFFERENT;
+            }
         }
         return super.castingQuality(mob,target);
     }

@@ -65,6 +65,19 @@ public class Spell_Awe extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                if(((MOB)target).isInCombat())
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public void unInvoke()
 	{
 		// undo the affects of this spell

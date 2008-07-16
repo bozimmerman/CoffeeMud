@@ -42,8 +42,11 @@ public class Song_Health extends Song
     {
         if(mob!=null)
         {
-            if(mob.curState().getHitPoints()>mob.maxState().getHitPoints()/2)
-                return Ability.QUALITY_INDIFFERENT;
+            if(target instanceof MOB)
+            {
+                if(((MOB)target).curState().getHitPoints()>=((MOB)target).maxState().getHitPoints()/2)
+                    return Ability.QUALITY_INDIFFERENT;
+            }
         }
         return super.castingQuality(mob,target);
     }

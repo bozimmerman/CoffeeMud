@@ -44,9 +44,12 @@ public class Dance_Foxtrot extends Dance
     {
         if(mob!=null)
         {
-            if((mob.curState().getMana()>=mob.maxState().getMana()/2)
-            &&(mob.curState().getMovement()>=mob.maxState().getMovement()/2))
-                return Ability.QUALITY_INDIFFERENT;
+            if(target instanceof MOB)
+            {
+                if((((MOB)target).curState().getMana()>=((MOB)target).maxState().getMana()/2)
+                &&(((MOB)target).curState().getMovement()>=((MOB)target).maxState().getMovement()/2)))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
         }
         return super.castingQuality(mob,target);
     }
