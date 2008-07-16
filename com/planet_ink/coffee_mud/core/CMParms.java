@@ -354,8 +354,7 @@ public class CMParms
             if(s.length()==1) return s;
             if((s.charAt(s.length()-1)=='\'')||(s.charAt(s.length()-1)=='`'))
                 return s.substring(1,s.length()-1);
-            else
-                return s.substring(1);
+            return s.substring(1);
         }
         return s;
     }
@@ -376,7 +375,6 @@ public class CMParms
         int currOne=0;
         int start=-1;
         char q=' ';
-        char lastC=' ';
         char[] cs=s.toCharArray();
         for(int c=0;c<cs.length;c++)
             switch(start)
@@ -387,7 +385,6 @@ public class CMParms
                 case ' ': case '\t': case '\n': case '\r':
                     break;
                 case '\'': case '`':
-                    lastC=' ';
                     q=cs[c];
                     start=c;
                     break;
@@ -419,7 +416,6 @@ public class CMParms
                     currOne++;
                     start=-1;
                 }
-                lastC=cs[c];
                 break;
             }
         switch(op)
@@ -433,8 +429,7 @@ public class CMParms
         default:
             if(start<0)
                 return new Integer(currOne);
-            else
-                return new Integer(currOne+1);
+            return new Integer(currOne+1);
         }
     }
 

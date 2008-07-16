@@ -42,6 +42,22 @@ public class Skill_TurnUndead extends StdSkill
 	private static final String[] triggerStrings = {"TURN"};
 	public String[] triggerStrings(){return triggerStrings;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if((mob!=null)&&(target!=null))
+        {
+            if(!(target instanceof MOB)) return Ability.QUALITY_INDIFFERENT;
+            MOB targetM=(MOB)target;
+            if((targetM.baseCharStats().getMyRace()==null)
+            ||(!targetM.baseCharStats().getMyRace().racialCategory().equals("Undead")))
+                return Ability.QUALITY_INDIFFERENT;
+            if(CMLib.flags().isEvil(mob))
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
