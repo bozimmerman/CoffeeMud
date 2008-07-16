@@ -47,4 +47,15 @@ public class Play_Harmony extends Play
 		if(victim!=null) victim.makePeace();
 		mob.makePeace();
 	}
+	
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 }

@@ -41,6 +41,16 @@ public class Play_Spiritual extends Play
 	protected String songOf(){return name()+" Music";}
     protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if((mob.isInCombat())&&(mob.isMonster()))
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

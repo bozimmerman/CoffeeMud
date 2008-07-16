@@ -39,6 +39,16 @@ public class Play_Tempo extends Play
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
     protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

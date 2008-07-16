@@ -38,6 +38,16 @@ public class Song_Health extends Song
 	public String name(){ return "Health";}
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.curState().getHitPoints()>mob.maxState().getHitPoints()/2)
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public void affectCharState(MOB affectedMOB, CharState affectedState)
 	{
 		if(invoker!=null)

@@ -47,6 +47,21 @@ public class Prayer_CureSerious extends Prayer implements MendingSkill
 				&&((((MOB)E).curState()).getHitPoints()<(((MOB)E).maxState()).getHitPoints());
 	}
 	
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                if(!supportsMending(target))
+                    return Ability.QUALITY_INDIFFERENT;
+                if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
+                    return Ability.QUALITY_MALICIOUS;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

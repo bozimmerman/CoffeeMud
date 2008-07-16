@@ -85,6 +85,20 @@ public class Fighter_Tumble extends FighterSkill
 		return true;
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.fetchEffect(this.ID())!=null)
+                return Ability.QUALITY_INDIFFERENT;
+            if(!mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+            if(!CMLib.flags().aliveAwakeMobile(mob,true))
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.fetchEffect(this.ID())!=null)

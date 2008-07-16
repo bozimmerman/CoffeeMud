@@ -257,6 +257,17 @@ public class Dance extends StdAbility
 		super.executeMsg(host,msg);
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            for(int e=0;e<mob.numAllEffects();e++)
+                if(mob.fetchEffect(e) instanceof Dance)
+                    return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         steadyDown=-1;

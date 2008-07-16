@@ -154,6 +154,17 @@ public class Play extends StdAbility
 		return true;
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            for(int e=0;e<mob.numAllEffects();e++)
+                if(mob.fetchEffect(e) instanceof Play)
+                    return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
 		super.executeMsg(host,msg);

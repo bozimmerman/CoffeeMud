@@ -88,6 +88,17 @@ public class Song extends StdAbility
 		}
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            for(int e=0;e<mob.numAllEffects();e++)
+                if(mob.fetchEffect(e) instanceof Song)
+                    return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((!super.tick(ticking,tickID))||(!(affected instanceof MOB)))

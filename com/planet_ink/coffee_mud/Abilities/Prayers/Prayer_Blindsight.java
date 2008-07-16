@@ -65,6 +65,20 @@ public class Prayer_Blindsight extends Prayer
 			affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_SEE);
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                if((!CMLib.flags().isInDark((MOB)target))
+                &&(CMLib.flags().canSee((MOB)target)))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

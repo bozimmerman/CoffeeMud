@@ -242,6 +242,16 @@ public class Song_Ode extends Song
 		super.executeMsg(myHost,msg);
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if((mob.isMonster())&&(mob.isInCombat()))
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		MOB mob=(MOB)affected;

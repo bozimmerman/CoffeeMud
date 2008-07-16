@@ -76,6 +76,16 @@ public class Fighter_ArmorTweaking extends FighterSkill
 			stats.setArmor(stats.armor()+CMath.s_int(text()));
 	}
 	
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
@@ -93,6 +103,11 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		{
 			mob.tell(armor.name()+" can not be tweaked to provide any more benefit.");
 			return false;
+		}
+		if((!auto)&&(mob.isInCombat()))
+		{
+		    mob.tell("You are a bit too busy to do that right now.");
+		    return false;
 		}
 		int bonus=(int)Math.round(CMath.mul(0.10+(0.10*getXLEVELLevel(mob)),armor.envStats().armor()));
 		if(bonus<1)

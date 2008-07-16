@@ -96,6 +96,7 @@ public class StdAbility implements Ability
 	{
 		if((target!=null)&&(target.fetchEffect(ID())!=null))
 			return Ability.QUALITY_INDIFFERENT;
+		if(isAutoInvoked()) return Ability.QUALITY_INDIFFERENT;
 		if((minRange()>0)&&(mob!=null)&&(target!=null)&&(mob.getVictim()==target)&&(mob.rangeToTarget()<minRange()))
 			return Ability.QUALITY_INDIFFERENT;
 		if((mob!=null)&&(target!=null)&&(mob.getVictim()==target)&&(mob.rangeToTarget()>maxRange()))

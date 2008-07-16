@@ -41,6 +41,17 @@ public class Dance_Cotillon extends Dance
     protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 	protected MOB whichLast=null;
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if((!mob.isInCombat())
+            ||(mob.getGroupMembers(new HashSet()).size()<2))
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking, tickID))

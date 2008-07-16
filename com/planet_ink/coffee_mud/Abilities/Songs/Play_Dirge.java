@@ -43,6 +43,16 @@ public class Play_Dirge extends Play
 	protected String songOf(){return "a "+name();}
     protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		steadyDown=-1;

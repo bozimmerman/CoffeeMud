@@ -42,8 +42,25 @@ public class Prayer_Christen extends Prayer
 	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+            if(mob.isMonster())
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+	    if(mob.isInCombat())
+	    {
+	        mob.tell("Not while you're fighting!");
+	        return false;
+	    }
 		if(commands.size()<2)
 		{
 			mob.tell("Christen whom what?");

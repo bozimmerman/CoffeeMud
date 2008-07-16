@@ -58,4 +58,15 @@ public class Play_Accompaniment extends Play
             stats.setClassLevel(stats.getCurrentClass(),stats.getCurrentClassLevel()+lvl);
         }
     }
+    
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.getGroupMembers(new HashSet()).size()<2)
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 }

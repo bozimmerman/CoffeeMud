@@ -51,6 +51,16 @@ public class Play_Charge extends Play
         }
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Ability A=CMClass.getAbility("Fighter_Charge");
+            if(A!=null) return A.castingQuality(mob, target);
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()==0)&&(!mob.isInCombat()))

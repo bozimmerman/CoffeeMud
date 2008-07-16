@@ -40,6 +40,16 @@ public class Play_Reveille extends Play
 	protected int canAffectCode(){return 0;}
 	protected boolean skipStandardSongTick(){return true;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		steadyDown=-1;

@@ -61,8 +61,6 @@ public class Prayer_HolyAura extends Prayer implements MendingSkill
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+10+(2*xlvl));
 	}
 
-
-
 	public void unInvoke()
 	{
 		// undo the affects of this spell

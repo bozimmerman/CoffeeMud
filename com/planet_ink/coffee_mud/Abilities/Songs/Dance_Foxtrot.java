@@ -40,6 +40,17 @@ public class Dance_Foxtrot extends Dance
 	protected int ticks=1;
 	protected int increment=1;
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if((mob.curState().getMana()>=mob.maxState().getMana()/2)
+            &&(mob.curState().getMovement()>=mob.maxState().getMovement()/2))
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID))

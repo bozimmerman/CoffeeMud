@@ -76,6 +76,16 @@ public class Play_Solo extends Play
 		return true;
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if((!mob.isInCombat())||(CMLib.flags().domainAffects(mob.getVictim(), Ability.ACODE_SONG).size()==0))
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		steadyDown=-1;
