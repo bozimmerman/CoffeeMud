@@ -58,7 +58,6 @@ public class Spell_Charm extends Spell
 		return charmer;
 	}
 
-
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
@@ -164,8 +163,6 @@ public class Spell_Charm extends Spell
 			}
 		}
 	}
-
-
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

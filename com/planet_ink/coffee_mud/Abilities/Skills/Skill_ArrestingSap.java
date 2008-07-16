@@ -98,6 +98,21 @@ public class Skill_ArrestingSap extends StdSkill
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_SLEEPING);
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if((mob!=null)&&(target!=null))
+        {
+            if(!(target instanceof MOB)) return Ability.QUALITY_INDIFFERENT;
+            MOB targetM=(MOB)target;
+            if(mob.baseWeight()<(targetM.baseWeight()-450))
+                return Ability.QUALITY_INDIFFERENT;
+            if(Skill_Arrest.getWarrantsOf(targetM, CMLib.law().getLegalObject(mob.location().getArea())).size()==0)
+                return Ability.QUALITY_INDIFFERENT;
+            return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell

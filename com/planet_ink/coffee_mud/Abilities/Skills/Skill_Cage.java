@@ -44,6 +44,12 @@ public class Skill_Cage extends StdSkill
     public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ANIMALAFFINITY;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if((mob!=null)&&(target!=null)&&(mob.isInCombat()))
+            return Ability.QUALITY_INDIFFERENT;
+        return super.castingQuality(mob,target);
+    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
