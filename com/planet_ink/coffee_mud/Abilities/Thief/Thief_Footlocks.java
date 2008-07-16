@@ -85,6 +85,24 @@ public class Thief_Footlocks extends ThiefSkill
 		super.unInvoke();
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if((mob!=null)&&(target!=null))
+        {
+            if(CMLib.flags().isSleeping(mob))
+                return Ability.QUALITY_INDIFFERENT;
+            if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+                return Ability.QUALITY_INDIFFERENT;
+            Item cloth=CMLib.materials().findMostOfMaterial(mob,RawMaterial.MATERIAL_CLOTH);
+            if((cloth==null)||CMLib.materials().findNumberOfResource(mob,cloth.material())<1)
+                return Ability.QUALITY_INDIFFERENT;
+            Item wood=CMLib.materials().findMostOfMaterial(mob,RawMaterial.MATERIAL_WOODEN);
+            if((wood==null)||CMLib.materials().findNumberOfResource(mob,wood.material())<2)
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

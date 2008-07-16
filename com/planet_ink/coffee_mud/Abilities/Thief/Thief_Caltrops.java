@@ -69,6 +69,19 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		// does not set sprung flag -- as this trap never goes out of use
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if((target!=null)&&(!(target instanceof Room)))
+                return Ability.QUALITY_INDIFFERENT;
+            target=(target!=null)?target:mob.location();
+            if(target.fetchEffect(ID())!=null)
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(affected==null) return super.okMessage(myHost,msg);

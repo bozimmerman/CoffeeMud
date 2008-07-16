@@ -83,7 +83,24 @@ public class Thief_EscapeBonds extends ThiefSkill
 				M.tell("You stop trying to slip free of your bonds.");
 		}
 	}
-	
+
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.fetchEffect(this.ID())!=null)
+                return Ability.QUALITY_INDIFFERENT;
+            if((!CMLib.flags().aliveAwakeMobile(mob,true))||(!CMLib.flags().isBound(mob)))
+                return Ability.QUALITY_INDIFFERENT;
+            Vector V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING);
+            if(V.size()==0)
+                return Ability.QUALITY_INDIFFERENT;
+            return Ability.QUALITY_BENEFICIAL_SELF;
+        }
+        return super.castingQuality(mob,target);
+    }
+
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

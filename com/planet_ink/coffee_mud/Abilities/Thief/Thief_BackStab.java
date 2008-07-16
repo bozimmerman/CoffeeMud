@@ -53,6 +53,22 @@ public class Thief_BackStab extends ThiefSkill
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+100+(10*super.getXLEVELLevel(invoker())));
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if((mob!=null)&&(target!=null))
+        {
+            if(!(target instanceof MOB))
+                return Ability.QUALITY_INDIFFERENT;
+            if(mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+            if(CMLib.flags().canBeSeenBy(mob,(MOB)target))
+                return Ability.QUALITY_INDIFFERENT;
+            if(lastMOB.equals(target+""))
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()<1)&&(givenTarget==null))

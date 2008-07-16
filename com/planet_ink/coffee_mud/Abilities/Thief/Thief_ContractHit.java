@@ -162,6 +162,22 @@ public class Thief_ContractHit extends ThiefSkill
 		}
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(!(target instanceof MOB))
+                return Ability.QUALITY_INDIFFERENT;
+            if(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_CITY)
+                return Ability.QUALITY_INDIFFERENT;
+            if(mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+            if(target==mob)
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
@@ -175,6 +191,12 @@ public class Thief_ContractHit extends ThiefSkill
 			mob.tell("You need to be on the streets to put out a hit.");
 			return false;
 		}
+        if(mob.isInCombat())
+        {
+            mob.tell("You are too busy to get that done right now.");
+            return false;
+        }
+
 		Vector V=new Vector();
 		try
 		{

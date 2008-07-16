@@ -45,6 +45,16 @@ public class Thief_Trap extends ThiefSkill
 
 	protected int maxLevel(){return Integer.MAX_VALUE;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Trap theTrap=null;
@@ -95,6 +105,12 @@ public class Thief_Trap extends ThiefSkill
 		}
 		else
 		{
+            if(mob.isInCombat())
+            {
+                mob.tell("You are too busy to be laying traps at the moment!");
+                return false;
+            }
+            
 			String cmdWord=triggerStrings()[0].toLowerCase();
 			if(commands.size()<2)
 			{

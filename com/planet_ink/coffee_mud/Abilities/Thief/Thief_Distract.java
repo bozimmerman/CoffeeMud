@@ -95,6 +95,20 @@ public class Thief_Distract extends ThiefSkill
 		super.unInvoke();
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if((mob!=null)&&(target!=null))
+        {
+            if((CMLib.flags().isSitting(mob)||CMLib.flags().isSleeping(mob)))
+                return Ability.QUALITY_INDIFFERENT;
+            if(!CMLib.flags().aliveAwakeMobileUnbound(mob,true))
+                return Ability.QUALITY_INDIFFERENT;
+            if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -106,11 +120,6 @@ public class Thief_Distract extends ThiefSkill
 			return false;
 		}
 
-        if(CMLib.flags().isSitting(mob))
-        {
-            mob.tell("You need to stand up!");
-            return false;
-        }
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))

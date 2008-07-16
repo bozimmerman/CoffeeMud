@@ -120,6 +120,20 @@ public class Thief_Bind extends ThiefSkill
 			CMLib.commands().postStand(mob,true);
 		}
 	}
+    
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if((mob!=null)&&(target!=null))
+        {
+            if(!(target instanceof MOB))
+                return Ability.QUALITY_INDIFFERENT;
+            if(mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+            if((!CMLib.flags().isSleeping(target))&&(CMLib.flags().canMove((MOB)target)))
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

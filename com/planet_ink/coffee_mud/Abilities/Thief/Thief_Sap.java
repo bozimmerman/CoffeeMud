@@ -101,7 +101,21 @@ public class Thief_Sap extends ThiefSkill
 		}
 	}
 
-
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+            if(!(target instanceof MOB))
+                return Ability.QUALITY_INDIFFERENT;
+            if(CMLib.flags().canBeSeenBy(mob,(MOB)target))
+                return Ability.QUALITY_INDIFFERENT;
+            if(mob.baseWeight()<(((MOB)target).baseWeight()-100))
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

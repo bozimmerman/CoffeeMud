@@ -86,6 +86,22 @@ public class Thief_Robbery extends ThiefSkill
 		return super.okMessage(myHost,msg);
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+            if(!(target instanceof MOB))
+                return Ability.QUALITY_INDIFFERENT;
+            if((target==null)||(((MOB)target).amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
+                return Ability.QUALITY_INDIFFERENT;
+            if((!((MOB)target).mayIFight(mob))||(CMLib.coffeeShops().getShopKeeper(target)==null))
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
@@ -101,8 +117,11 @@ public class Thief_Robbery extends ThiefSkill
 
 		String itemToSteal=(String)commands.elementAt(0);
 
-		MOB target=mob.location().fetchInhabitant(CMParms.combine(commands,1));
-		if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) target=(MOB)givenTarget;
+        MOB target=null;
+        if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+            target=(MOB)givenTarget;
+        else
+            target=mob.location().fetchInhabitant(CMParms.combine(commands,1));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");

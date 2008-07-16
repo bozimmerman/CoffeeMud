@@ -86,6 +86,15 @@ public class Thief_Embezzle extends ThiefSkill
 		return super.okMessage(myHost,msg);
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -94,9 +103,11 @@ public class Thief_Embezzle extends ThiefSkill
 			mob.tell("Embezzle money from whose accounts?");
 			return false;
 		}
-		MOB target=mob.location().fetchInhabitant(CMParms.combine(commands,0));
-		if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
-			target=(MOB)givenTarget;
+        MOB target=null;
+        if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+            target=(MOB)givenTarget;
+        else
+            target=mob.location().fetchInhabitant(CMParms.combine(commands,0));
 		if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
 		{
 			mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
@@ -107,6 +118,11 @@ public class Thief_Embezzle extends ThiefSkill
 			mob.tell("You can't embezzle from "+target.name()+"'s accounts.");
 			return false;
 		}
+        if(mob.isInCombat())
+        {
+            mob.tell("You are too busy to embezzle.");
+            return false;
+        }
 		Banker bank=(Banker)target;
 		Ability A=target.fetchEffect(ID());
 		if(A!=null)

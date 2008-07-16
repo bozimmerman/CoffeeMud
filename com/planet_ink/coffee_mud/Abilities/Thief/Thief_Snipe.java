@@ -45,6 +45,34 @@ public class Thief_Snipe extends ThiefSkill
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
     public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+            if(CMLib.flags().isSitting(mob))
+                return Ability.QUALITY_INDIFFERENT;
+            if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+                return Ability.QUALITY_INDIFFERENT;
+            if(target instanceof MOB)
+            {
+                if(CMLib.flags().canBeSeenBy(mob,(MOB)target))
+                    return Ability.QUALITY_INDIFFERENT;
+                Item w=mob.fetchWieldedItem();
+                if((w==null)
+                ||(!(w instanceof Weapon)))
+                    return Ability.QUALITY_INDIFFERENT;
+                Weapon ww=(Weapon)w;
+                if(((ww.weaponClassification()!=Weapon.CLASS_RANGED)&&(ww.weaponClassification()!=Weapon.CLASS_THROWN))
+                ||(w.maxRange()<=0))
+                    return Ability.QUALITY_INDIFFERENT;
+                return Ability.QUALITY_MALICIOUS;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat())

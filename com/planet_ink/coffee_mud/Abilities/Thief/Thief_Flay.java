@@ -61,6 +61,25 @@ public class Thief_Flay extends ThiefSkill
 	    return true;
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+            if(CMLib.flags().isSitting(mob))
+                return Ability.QUALITY_INDIFFERENT;
+            if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
+                return Ability.QUALITY_INDIFFERENT;
+            if(target != null)
+            {
+                if((!CMLib.flags().isBoundOrHeld(target))&&(!CMLib.flags().isSleeping(target)))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat())

@@ -79,6 +79,25 @@ public class Thief_Detection extends ThiefSkill
 		return true;
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.fetchEffect(this.ID())!=null)
+                return  Ability.QUALITY_INDIFFERENT;
+            
+            Room R=mob.location();
+            if(R!=null)
+                for(int r=0;r<R.numInhabitants();r++)
+                {
+                    MOB M=R.fetchInhabitant(r);
+                    if((M!=null)&&(M!=mob)&&(CMLib.flags().isHidden(M)))
+                        return Ability.QUALITY_BENEFICIAL_SELF;
+                }
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

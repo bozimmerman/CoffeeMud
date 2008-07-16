@@ -87,6 +87,27 @@ public class Thief_Racketeer extends ThiefSkill
         return true;
     }
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+            if(target != null)
+            {
+                if((CMLib.coffeeShops().getShopKeeper(target)==null)&&(target.fetchBehavior("MoneyChanger")==null)
+                &&(target.fetchBehavior("ItemMender")==null)&&(target.fetchBehavior("ItemIdentifier")==null)
+                &&(target.fetchBehavior("ItemRefitter")==null))
+                    return Ability.QUALITY_INDIFFERENT;
+                if(target.fetchEffect(ID())!=null)
+                    return Ability.QUALITY_INDIFFERENT;
+                if((target instanceof MOB)&&(!((MOB)target).mayIFight(mob)))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+
     public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         if((commands.size()<1)&&(givenTarget==null))
@@ -94,11 +115,19 @@ public class Thief_Racketeer extends ThiefSkill
             mob.tell("Get protection money from whom?");
             return false;
         }
-        MOB target=mob.location().fetchInhabitant(CMParms.combine(commands,0));
-        if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) target=(MOB)givenTarget;
+        MOB target=null;
+        if((target==null)&&(givenTarget!=null)&&(givenTarget instanceof MOB)) 
+            target=(MOB)givenTarget;
+        else
+            target=mob.location().fetchInhabitant(CMParms.combine(commands,0));
         if((target==null)||(target.amDead())||(!CMLib.flags().canBeSeenBy(target,mob)))
         {
             mob.tell("You don't see '"+CMParms.combine(commands,1)+"' here.");
+            return false;
+        }
+        if(mob.isInCombat())
+        {
+            mob.tell("You are too busy to racketeer right now.");
             return false;
         }
         if((CMLib.coffeeShops().getShopKeeper(target)==null)&&(target.fetchBehavior("MoneyChanger")==null)

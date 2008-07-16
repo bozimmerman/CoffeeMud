@@ -119,6 +119,15 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 		return true;
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -135,11 +144,14 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 			mob.tell("You need 100 pounds of raw metal to build this trap.");
 			return false;
 		}
-
+        if(mob.isInCombat())
+        {
+            mob.tell("You are too busy to get that done right now.");
+            return false;
+        }
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
-
 
 		boolean success=proficiencyCheck(mob,0,auto);
 

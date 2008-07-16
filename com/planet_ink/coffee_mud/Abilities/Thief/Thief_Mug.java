@@ -47,6 +47,16 @@ public class Thief_Mug extends ThiefSkill
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(!mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob.getVictim();
@@ -55,12 +65,16 @@ public class Thief_Mug extends ThiefSkill
 			mob.tell("You can only mug someone you are fighting!");
 			return false;
 		}
-		if(commands.size()<1)
-		{
-			mob.tell("Mug what from "+target.name()+"?");
-			return false;
-		}
-		String itemToSteal=CMParms.combine(commands,0);
+        String itemToSteal="all";
+        if(!auto)
+        {
+    		if(commands.size()<1)
+    		{
+    			mob.tell("Mug what from "+target.name()+"?");
+    			return false;
+    		}
+    		itemToSteal=CMParms.combine(commands,0);
+        }
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+abilityCode()+(getXLEVELLevel(mob)*2));
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
