@@ -175,7 +175,9 @@ public class Catalog extends StdCommand
 				
 				if((mob.session()!=null)
 				&&(mob.session().confirm("You are about to auto-catalog (and auto-save) all "+which+" "+type+".\n\r"
-			        +"This command, if used improperly, may alter "+type+" in this "+which+".\n\rAre you absolutely sure (y/N)?","N")))
+			        +"This command, if used improperly, may alter "+type+" in this "+which+".\n\rAre you absolutely sure (y/N)?","N"))
+                &&(mob.session().confirm("I'm serious now.  You can't abort this, and it WILL modify stuff.\n\r"
+                    +"Have you tested this command on small areas and know what you're doing?.\n\rAre you absolutely POSITIVELY sure (y/N)?","N")))
 				{
 					Item I=null;
 					MOB M=null;
