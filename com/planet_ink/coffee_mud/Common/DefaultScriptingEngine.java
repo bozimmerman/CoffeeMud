@@ -301,11 +301,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 else
                 {
-                    int numBits=CMParms.numBits(s);
-                    newNewLine=new String[newLine.length-1+numBits];
+                    
+                    int numNewBits=(s.trim().length()==0)?1:CMParms.numBits(s);
+                    newNewLine=new String[newLine.length-1+numNewBits];
                     for(int x=0;x<i;x++) 
                         newNewLine[x]=newLine[x];
-                    for(int x=0;x<numBits;x++)
+                    for(int x=0;x<numNewBits;x++)
                         newNewLine[i+x]=CMParms.getCleanBit(s,x);
                 }
                 newLine=newNewLine;
