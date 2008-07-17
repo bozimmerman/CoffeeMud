@@ -40,6 +40,30 @@ public class Prayer_Anger extends Prayer
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 
+	private boolean anyoneIsFighting(Room R)
+	{
+	    if(R==null) return false;
+        for(int i=0;i<R.numInhabitants();i++)
+        {
+            MOB inhab=R.fetchInhabitant(i);
+            if((inhab!=null)&&(inhab.isInCombat()))
+                return true;
+        }
+        return false;
+	}
+	
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(!anyoneIsFighting(mob.location()))
+                return Ability.QUALITY_INDIFFERENT;
+            if(mob.location().numInhabitants()>3)
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -47,13 +71,7 @@ public class Prayer_Anger extends Prayer
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		boolean someoneIsFighting=false;
-		for(int i=0;i<mob.location().numInhabitants();i++)
-		{
-			MOB inhab=mob.location().fetchInhabitant(i);
-			if((inhab!=null)&&(inhab.isInCombat()))
-				someoneIsFighting=true;
-		}
+		boolean someoneIsFighting=anyoneIsFighting(mob.location());
 
 		if((success)&&(!someoneIsFighting)&&(mob.location().numInhabitants()>3))
 		{

@@ -63,6 +63,18 @@ public class Prayer_Silence extends Prayer
 			mob.tell("Your silence is lifted.");
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                if(!CMLib.flags().canSpeak(((MOB)target)))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

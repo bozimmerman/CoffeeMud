@@ -67,6 +67,26 @@ public class Prayer_GodLight extends Prayer
 	}
 
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isInCombat())
+            {
+                if(CMLib.flags().isInDark(((MOB)affected).location()))
+                    return Ability.QUALITY_INDIFFERENT;
+                if(target instanceof MOB)
+                {
+                    if(((MOB)target).charStats().getBodyPart(Race.BODY_EYE)==0)
+                        return Ability.QUALITY_INDIFFERENT;
+                    if(!CMLib.flags().canSee((MOB)target))
+                        return Ability.QUALITY_INDIFFERENT;
+                }
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 

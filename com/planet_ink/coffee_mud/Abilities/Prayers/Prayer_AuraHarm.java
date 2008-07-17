@@ -98,6 +98,22 @@ public class Prayer_AuraHarm extends Prayer
 		}
 		return super.tick(ticking,tickID);
 	}
+	
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
+                return Ability.QUALITY_BENEFICIAL_SELF;
+            if((target instanceof MOB)&&(target!=mob))
+            {
+                if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
+                    return Ability.QUALITY_BENEFICIAL_OTHERS;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

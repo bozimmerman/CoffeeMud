@@ -49,6 +49,19 @@ public class Prayer_MassDeafness extends Prayer
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_HEAR);
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                if(!CMLib.flags().canHear((MOB)target))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public void unInvoke()
 	{
 		// undo the affects of this spell

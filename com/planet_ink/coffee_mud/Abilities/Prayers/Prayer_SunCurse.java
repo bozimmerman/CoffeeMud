@@ -85,7 +85,16 @@ public class Prayer_SunCurse extends Prayer
 			mob.tell("Your sun curse is lifted.");
 	}
 
-
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(!mob.location().getArea().getClimateObj().canSeeTheSun(mob.location()))
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

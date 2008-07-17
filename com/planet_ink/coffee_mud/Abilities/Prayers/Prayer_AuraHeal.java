@@ -39,7 +39,7 @@ public class Prayer_AuraHeal extends Prayer
 	public String displayText(){ return "(Heal Aura)";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+	public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
 
@@ -104,6 +104,23 @@ public class Prayer_AuraHeal extends Prayer
 		}
 		return super.tick(ticking,tickID);
 	}
+	
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
+                return Ability.QUALITY_INDIFFERENT;
+            if((target instanceof MOB)&&(target!=mob))
+            {
+                if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
+                    return Ability.QUALITY_MALICIOUS;
+            }
+            return Ability.QUALITY_BENEFICIAL_SELF;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

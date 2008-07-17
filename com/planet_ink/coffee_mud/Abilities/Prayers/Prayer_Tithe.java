@@ -96,6 +96,19 @@ public class Prayer_Tithe extends Prayer
 		super.executeMsg(myHost,msg);
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+            if(target instanceof MOB)
+            {
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

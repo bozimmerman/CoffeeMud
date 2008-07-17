@@ -93,7 +93,19 @@ public class Prayer_SanctifyRoom extends Prayer
 		return super.okMessage(myHost,msg);
 	}
 
-
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+            if(target instanceof MOB)
+            {
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=mob.location();

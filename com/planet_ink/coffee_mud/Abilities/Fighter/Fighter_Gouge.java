@@ -103,6 +103,8 @@ public class Fighter_Gouge extends FighterSkill
 				return Ability.QUALITY_INDIFFERENT;
 			if((target instanceof MOB)&&(((MOB)target).charStats().getBodyPart(Race.BODY_EYE)<=0))
 				return Ability.QUALITY_INDIFFERENT;
+			if((target instanceof MOB)&&(!CMLib.flags().canSee((MOB)target)))
+                return Ability.QUALITY_INDIFFERENT;
 			if(anyWeapons(mob))
 				return Ability.QUALITY_INDIFFERENT;
 			if(target.fetchEffect(ID())!=null)
@@ -110,7 +112,6 @@ public class Fighter_Gouge extends FighterSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

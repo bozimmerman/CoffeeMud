@@ -71,6 +71,26 @@ public class Prayer_EarthMud extends Prayer
 
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Room R=mob.location();
+            if(R!=null)
+            {
+                int type=mob.location().domainType();
+                if(((type&Room.INDOORS)>0)
+                    ||(type==Room.DOMAIN_OUTDOORS_AIR)
+                    ||(type==Room.DOMAIN_OUTDOORS_CITY)
+                    ||(type==Room.DOMAIN_OUTDOORS_SPACEPORT)
+                    ||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
+                    ||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+                        return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 

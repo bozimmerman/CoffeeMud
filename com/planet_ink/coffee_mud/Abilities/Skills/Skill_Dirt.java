@@ -89,6 +89,8 @@ public class Skill_Dirt extends StdSkill
 				return Ability.QUALITY_INDIFFERENT;
 			if((target instanceof MOB)&&(((MOB)target).charStats().getBodyPart(Race.BODY_EYE)==0))
 				return Ability.QUALITY_INDIFFERENT;
+            if((target instanceof MOB)&&(!CMLib.flags().canSee((MOB)target)))
+                return Ability.QUALITY_INDIFFERENT;
 	        if(CMLib.flags().isSleeping(target))
 				return Ability.QUALITY_INDIFFERENT;
 			if(CMLib.flags().isFlying(mob))

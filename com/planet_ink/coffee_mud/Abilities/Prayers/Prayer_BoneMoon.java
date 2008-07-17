@@ -86,7 +86,27 @@ public class Prayer_BoneMoon extends Prayer
 		return super.tick(ticking,tickID);
 	}
 
-
+   public int castingQuality(MOB mob, Environmental target)
+   {
+        if(mob!=null)
+        {
+            if((mob.isMonster())&&(mob.isInCombat()))
+                return Ability.QUALITY_INDIFFERENT;
+            Room R=mob.location();
+            if(R!=null)
+            {
+                for(int a=0;a<R.numEffects();a++)
+                {
+                    Ability A=R.fetchEffect(a);
+                    if((A!=null)
+                    &&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
+                        return Ability.QUALITY_INDIFFERENT;
+                }
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+   
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
@@ -106,7 +126,6 @@ public class Prayer_BoneMoon extends Prayer
 				return false;
 			}
 		}
-
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

@@ -39,6 +39,22 @@ public class Prayer_MassHarm extends Prayer
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
+                    if(mob==target)
+                        return Ability.QUALITY_BENEFICIAL_SELF;
+                    else
+                        return Ability.QUALITY_BENEFICIAL_OTHERS;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

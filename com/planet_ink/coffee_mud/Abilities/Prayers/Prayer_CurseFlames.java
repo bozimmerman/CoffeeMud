@@ -44,6 +44,45 @@ public class Prayer_CurseFlames extends Prayer
 	public int maxRange(){return adjustedMaxInvokerRange(5);}
 	public int minRange(){return 0;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                if(getFireSource((MOB)target)==null)
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
+	private Item getFireSource(MOB target)
+	{
+        Item fireSource=null;
+        for(int i=0;i<target.inventorySize();i++)
+        {
+            Item I=target.fetchInventory(i);
+            if((CMLib.flags().isOnFire(I))&&(I.container()==null))
+            {
+                fireSource=I;
+                break;
+            }
+        }
+
+        if(fireSource==null)
+        for(int i=0;i<target.location().numItems();i++)
+        {
+            Item I=target.location().fetchItem(i);
+            if((CMLib.flags().isOnFire(I))&&(I.container()==null))
+            {
+                fireSource=I;
+                break;
+            }
+        }
+        return null;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
@@ -58,28 +97,8 @@ public class Prayer_CurseFlames extends Prayer
 
 
 		boolean success=proficiencyCheck(mob,0,auto);
-
-		Item fireSource=null;
-		for(int i=0;i<target.inventorySize();i++)
-		{
-			Item I=target.fetchInventory(i);
-			if((CMLib.flags().isOnFire(I))&&(I.container()==null))
-			{
-				fireSource=I;
-				break;
-			}
-		}
-
-		if(fireSource==null)
-		for(int i=0;i<mob.location().numItems();i++)
-		{
-			Item I=mob.location().fetchItem(i);
-			if((CMLib.flags().isOnFire(I))&&(I.container()==null))
-			{
-				fireSource=I;
-				break;
-			}
-		}
+		
+		Item fireSource=getFireSource(target);
 
 		if((success)&&(fireSource!=null))
 		{

@@ -71,7 +71,17 @@ public class Prayer_BloodHearth extends Prayer
 		return super.okMessage(myHost,msg);
 	}
 
-
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if((!CMLib.law().doesOwnThisProperty(mob,mob.location()))
+            &&(!((mob.getClanID().length()>0)&&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target))))))
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=mob.location();
@@ -94,7 +104,8 @@ public class Prayer_BloodHearth extends Prayer
 				mob.location().send(mob,msg);
 				setMiscText(mob.Name());
 				if((target instanceof Room)
-				&&(CMLib.law().doesOwnThisProperty(mob,((Room)target))))
+				&&((CMLib.law().doesOwnThisProperty(mob,((Room)target)))
+                    ||((mob.getClanID().length()>0)&&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target))))))
 				{
                     if((mob.getClanID().length()>0)&&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target))))
                         setMiscText(mob.getClanID());

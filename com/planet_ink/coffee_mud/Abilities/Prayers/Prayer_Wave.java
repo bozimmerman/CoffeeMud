@@ -51,8 +51,22 @@ public class Prayer_Wave extends Prayer
 		int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));
 		if(dir<0)
 		{
-			mob.tell("Wash your opponents which direction?");
-			return false;
+		    if(mob.isMonster())
+		    {
+		        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		        {
+		            Room destRoom=mob.location().getRoomInDir(d);
+		            Exit exitRoom=mob.location().getExitInDir(d);
+		            if((destRoom!=null)||(exitRoom!=null)||(d!=Directions.UP))
+		            { dir=d; break;}
+		        }
+		        if(dir<0) return false;
+		    }
+		    else
+		    {
+    			mob.tell("Wash your opponents which direction?");
+    			return false;
+		    }
 		}
 		Room destRoom=mob.location().getRoomInDir(dir);
 		Exit exitRoom=mob.location().getExitInDir(dir);

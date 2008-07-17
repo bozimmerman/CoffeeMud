@@ -41,6 +41,27 @@ public class Prayer_NeutralizeLand extends Prayer
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return Ability.CAN_ROOMS;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Room R=mob.location();
+            if(R!=null)
+            {
+                boolean foundAny=false;
+                for(int e=0;e<R.numEffects();e++)
+                {
+                    Ability A=R.fetchEffect(e);
+                    if((A!=null)&&(A.invoker()!=mob))
+                        foundAny=true;
+                }
+                if(!foundAny)
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
