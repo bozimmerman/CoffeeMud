@@ -83,8 +83,40 @@ public class Chant_EelShock extends Chant
 		}
 		return super.okMessage(myHost,msg);
 	}
+    
+    private boolean roomWet(Room location)
+    {
+        if(location.domainType() == Room.DOMAIN_INDOORS_UNDERWATER ||
+           location.domainType() == Room.DOMAIN_INDOORS_WATERSURFACE ||
+           location.domainType() == Room.DOMAIN_OUTDOORS_UNDERWATER ||
+           location.domainType() == Room.DOMAIN_OUTDOORS_WATERSURFACE ||
+           location.domainType() == Room.DOMAIN_OUTDOORS_SWAMP)
+            return true;
 
+        Area currentArea = location.getArea();
+        if(currentArea.getClimateObj().weatherType(location) == Climate.WEATHER_RAIN ||
+           currentArea.getClimateObj().weatherType(location) == Climate.WEATHER_THUNDERSTORM)
+            return true;
+        return false;
+    }
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            HashSet h=CMLib.combat().properTargets(this,mob,false);
+            if(h==null)
+                return Ability.QUALITY_INDIFFERENT;
+            Room location=mob.location();
+            if(location!=null)
+            {
+                if(!roomWet(location))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=CMLib.combat().properTargets(this,mob,auto);
@@ -95,25 +127,8 @@ public class Chant_EelShock extends Chant
 		}
 
 		Room location = mob.location();
-		boolean roomWet = false;
 
-		if(location.domainType() == Room.DOMAIN_INDOORS_UNDERWATER ||
-		   location.domainType() == Room.DOMAIN_INDOORS_WATERSURFACE ||
-		   location.domainType() == Room.DOMAIN_OUTDOORS_UNDERWATER ||
-		   location.domainType() == Room.DOMAIN_OUTDOORS_WATERSURFACE ||
-		   location.domainType() == Room.DOMAIN_OUTDOORS_SWAMP)
-		{
-		   roomWet = true;
-		}
-
-		Area currentArea = location.getArea();
-		if(currentArea.getClimateObj().weatherType(location) == Climate.WEATHER_RAIN ||
-		   currentArea.getClimateObj().weatherType(location) == Climate.WEATHER_THUNDERSTORM)
-		{
-		   roomWet = true;
-		}
-
-		if(!roomWet)
+		if(!roomWet(location))
 		{
 				mob.tell("It's too dry to invoke this chant.");
 				return false;

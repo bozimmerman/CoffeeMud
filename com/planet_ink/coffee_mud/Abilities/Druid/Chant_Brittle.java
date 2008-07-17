@@ -42,6 +42,7 @@ public class Chant_Brittle extends Chant
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int oldCondition=-1;
 	protected boolean noRecurse=true;
+    
 	public void affectEnvStats(Environmental E, EnvStats stats)
 	{
 		super.affectEnvStats(E,stats);

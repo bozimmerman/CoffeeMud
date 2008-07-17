@@ -93,7 +93,30 @@ public class Chant_PlantSnare extends Chant
 			CMLib.commands().postStand(mob,true);
 		}
 	}
-
+    
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            HashSet h=properTargets(mob,target,false);
+            if(h==null)
+                return Ability.QUALITY_INDIFFERENT;
+            Room room=mob.location();
+            if(room!=null)
+            {
+                if((room.domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
+                &&(room.domainType()!=Room.DOMAIN_OUTDOORS_PLAINS)
+                &&((room.myResource()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
+                &&((room.myResource()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION)
+                &&(room.domainType()!=Room.DOMAIN_OUTDOORS_HILLS)
+                &&(room.domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE)
+                &&(room.domainType()!=Room.DOMAIN_OUTDOORS_SWAMP))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);

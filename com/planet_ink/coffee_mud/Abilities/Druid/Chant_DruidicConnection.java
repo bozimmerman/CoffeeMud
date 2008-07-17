@@ -37,7 +37,7 @@ public class Chant_DruidicConnection extends Chant
     public String ID() { return "Chant_DruidicConnection"; }
     public String name(){ return "Druidic Connection";}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
-    public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
     protected int canAffectCode(){return CAN_AREAS;}
     protected int canTargetCode(){return 0;}
     protected long lastTime=System.currentTimeMillis();

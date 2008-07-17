@@ -78,6 +78,33 @@ public class Chant_CharmArea extends Chant
 			msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,CMMsg.MSG_OK_VISUAL,CMMsg.NO_EFFECT,CMMsg.NO_EFFECT,"There is something charming about this place."));
 		}
 	}
+    
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isInCombat())
+                return Ability.QUALITY_INDIFFERENT;
+            Room R=mob.location();
+            if(R!=null)
+            {
+                if((R.domainType()&Room.INDOORS)>0)
+                    return Ability.QUALITY_INDIFFERENT;
+                if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
+                ||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+                ||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+                ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+                ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+                    return Ability.QUALITY_INDIFFERENT;
+                
+            }
+            if(target instanceof MOB)
+            {
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

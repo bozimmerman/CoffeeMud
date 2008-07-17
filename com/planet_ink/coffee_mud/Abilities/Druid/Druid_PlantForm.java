@@ -227,7 +227,7 @@ public class Druid_PlantForm extends StdAbility
         int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
         int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
         if(qualClassLevel<0) classLevel=30;
-		String choice=auto?getRaceName(classLevel-1):CMParms.combine(commands,0);
+		String choice=(mob.isMonster()||(commands.size()==0))?getRaceName(classLevel-1):CMParms.combine(commands,0);
 		if(choice.trim().length()>0)
 		{
 			StringBuffer buf=new StringBuffer("Plant Forms:\n\r");

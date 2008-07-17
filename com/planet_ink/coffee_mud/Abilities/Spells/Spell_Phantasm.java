@@ -120,7 +120,7 @@ public class Spell_Phantasm extends Spell
 			return false;
 
 		String type=null;
-		if(auto)
+		if(mob.isMonster())
 		{
 		    Race R=CMClass.randomRace();
 		    if(R!=null)

@@ -100,6 +100,27 @@ public class Chant_MoonCalf extends Chant
 			affectableStats.setStat(CharStats.STAT_INTELLIGENCE,1);
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Room R=mob.location();
+            if(R!=null)
+            {
+                if(!R.getArea().getClimateObj().canSeeTheMoon(R,null))
+                    return Ability.QUALITY_INDIFFERENT;
+                for(int a=0;a<R.numEffects();a++)
+                {
+                    Ability A=R.fetchEffect(a);
+                    if((A!=null)
+                    &&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
+                        return Ability.QUALITY_INDIFFERENT;
+                }
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
@@ -114,6 +135,16 @@ public class Chant_MoonCalf extends Chant
 			mob.tell("This place is already under the moon calf.");
 			return false;
 		}
+        for(int a=0;a<target.numEffects();a++)
+        {
+            Ability A=target.fetchEffect(a);
+            if((A!=null)
+            &&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
+            {
+                mob.tell("The moon is already under "+A.name()+", and can not be changed until this magic is gone.");
+                return false;
+            }
+        }
 
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

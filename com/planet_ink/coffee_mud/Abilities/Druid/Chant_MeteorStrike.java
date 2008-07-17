@@ -40,6 +40,24 @@ public class Chant_MeteorStrike extends Chant
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            HashSet h=properTargets(mob,target,false);
+            if(h==null)
+                return Ability.QUALITY_INDIFFERENT;
+            
+            Room R=mob.location();
+            if(R!=null)
+            {
+                if((R.domainType()&Room.INDOORS)>0)
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);

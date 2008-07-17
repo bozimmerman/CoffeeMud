@@ -114,6 +114,27 @@ public class Chant_PlantConstriction extends Chant
 		&&((Item)affected).amWearingAt(Item.WORN_LEGS))
 			affectableState.setMovement(affectableState.getMovement()/2);
 	}
+    
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
+            if(myPlant==null)
+                return Ability.QUALITY_INDIFFERENT;
+            if(target instanceof MOB)
+            {
+                Vector positionChoices=new Vector();
+                if(((MOB)target).getWearPositions(Item.WORN_ARMS)>0)
+                    positionChoices.addElement(new Long(Item.WORN_ARMS));
+                if(((MOB)target).getWearPositions(Item.WORN_LEGS)>0)
+                    positionChoices.addElement(new Long(Item.WORN_LEGS));
+                if(positionChoices.size()==0)
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

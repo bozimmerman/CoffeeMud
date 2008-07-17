@@ -83,7 +83,20 @@ public class Chant_PlantMaze extends Chant
         super.unInvoke();
         room.destroy();
 	}
-
+    
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
+            if(myPlant==null)
+                return Ability.QUALITY_INDIFFERENT;
+            if(mob.location().roomID().length()==0)
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		thePlants=Druid_MyPlants.myPlant(mob.location(),mob,0);

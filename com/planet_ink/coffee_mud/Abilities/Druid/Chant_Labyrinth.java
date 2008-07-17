@@ -73,6 +73,18 @@ public class Chant_Labyrinth extends Chant
         return super.okMessage(host,msg);
     }
     
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+                return Ability.QUALITY_INDIFFERENT;
+            if(mob.location().roomID().length()==0)
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
     
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -83,7 +95,7 @@ public class Chant_Labyrinth extends Chant
 		}
 		if(mob.location().roomID().length()==0)
 		{
-			mob.tell("You cannot invoke the plant maze here.");
+			mob.tell("You cannot invoke the labyrinth here.");
 			return false;
 		}
 

@@ -101,7 +101,24 @@ public class Chant_MagneticEarth extends Chant
 		}
 		super.executeMsg(host,msg);
 	}
-
+    
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Room R=mob.location();
+            if(R!=null)
+            {
+                if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
+                &&(R.domainType()!=Room.DOMAIN_OUTDOORS_CITY)
+                &&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
+                &&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

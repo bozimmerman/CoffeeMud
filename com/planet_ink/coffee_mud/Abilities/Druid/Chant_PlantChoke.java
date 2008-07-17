@@ -107,6 +107,22 @@ public class Chant_PlantChoke extends Chant
 			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_BREATHE);
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
+            if(myPlant==null)
+                return Ability.QUALITY_INDIFFERENT;
+            if(target instanceof MOB)
+            {
+                if(((MOB)target).getWearPositions(Item.WORN_NECK)==0)
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

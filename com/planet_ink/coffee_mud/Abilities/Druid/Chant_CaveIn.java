@@ -85,9 +85,24 @@ public class Chant_CaveIn extends Chant
 		}
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+                return Ability.QUALITY_INDIFFERENT;
+            if(mob.isMonster())
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=null;
+        if(mob.isMonster()&&(givenTarget instanceof MOB))
+            target=mob.location();
+        else
 		if((commands.size()>0)&&(givenTarget==null))
 		{
 			int dir=Directions.getGoodDirectionCode(CMParms.combine(commands,0));

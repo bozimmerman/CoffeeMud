@@ -50,7 +50,16 @@ public class Chant_ExplosiveDecompression extends Chant
 			stats.setSensesMask(stats.sensesMask()|EnvStats.CAN_NOT_BREATHE);
 	}
 
-
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if((mob.location().domainType()&Room.INDOORS)==0)
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

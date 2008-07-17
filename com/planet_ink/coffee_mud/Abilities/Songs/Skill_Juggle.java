@@ -352,7 +352,7 @@ public class Skill_Juggle extends BardSkill
 	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		String whatToJuggle=auto?"all":CMParms.combine(commands,0);
+		String whatToJuggle=(mob.isMonster()&&(givenTarget instanceof MOB))?"all":CMParms.combine(commands,0);
 		Skill_Juggle A=(Skill_Juggle)mob.fetchEffect("Skill_Juggle");
 		if(whatToJuggle.length()==0)
 		{

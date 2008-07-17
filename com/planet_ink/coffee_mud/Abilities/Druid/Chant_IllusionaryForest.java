@@ -55,7 +55,17 @@ public class Chant_IllusionaryForest extends Chant
 			room.showHappens(CMMsg.MSG_OK_VISUAL, "The appearance of this place changes...");
 		super.unInvoke();
 	}
-
+    
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isMonster())
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected!=null)
