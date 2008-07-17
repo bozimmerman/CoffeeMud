@@ -60,6 +60,19 @@ public class Spell_Blademouth extends Spell
 	    super.executeMsg(host,msg);
 	}
 	
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                if(((MOB)target).charStats().getMyRace().bodyMask()[Race.BODY_MOUTH]<=0)
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

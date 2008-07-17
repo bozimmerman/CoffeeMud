@@ -64,7 +64,16 @@ public class Spell_Darkness extends Spell
 		affectableStats.setDisposition(affectableStats.disposition() |  EnvStats.IS_DARK);
 	}
 
-
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(CMLib.flags().isInDark(mob.location()))
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		// the invoke method for spells receives as

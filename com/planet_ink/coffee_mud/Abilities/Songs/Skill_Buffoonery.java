@@ -65,12 +65,73 @@ public class Skill_Buffoonery extends BardSkill
 		return getFreeWearingPositions(target).size()>0;
 	}
 
+    public String correctItem(MOB mob)
+    {
+        for(int i=0;i<mob.inventorySize();i++)
+        {
+            Item I=mob.fetchInventory(i);
+            if((I!=null)
+            &&(CMLib.flags().canBeSeenBy(I,mob))
+            &&(I.amWearingAt(Item.IN_INVENTORY))
+            &&(!((((I instanceof Armor)&&(I.baseEnvStats().armor()>1))
+                ||((I instanceof Weapon)&&(I.baseEnvStats().damage()>1))))))
+                return I.Name();
+        }
+        return null;
+    }
+
+    public Item targetItem(MOB target)
+    {
+        Vector V=new Vector();
+        for(int i=0;i<target.inventorySize();i++)
+        {
+            Item I2=target.fetchInventory(i);
+            if((!I2.amWearingAt(Item.IN_INVENTORY))
+            &&(((I2 instanceof Weapon)&&(I2.baseEnvStats().damage()>1))
+               ||((I2 instanceof Armor)&&(I2.baseEnvStats().armor()>1)))
+            &&(I2.container()==null))
+                V.addElement(I2);
+        }
+        if(V.size()>0)
+            return (Item)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
+        return null;
+    }
+
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            String parm=correctItem(mob);
+            if(parm==null)
+                return Ability.QUALITY_INDIFFERENT;
+            if(target instanceof MOB)
+            {
+                Item targetItem=targetItem((MOB)target);
+                if(targetItem==null)
+                {
+                    if(!freePosition((MOB)target))
+                        return Ability.QUALITY_INDIFFERENT;
+                }
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
-			mob.tell("You must specify a target, and what item to swap on the target!");
-			return false;
+		    if(mob.isMonster()&&(commands.size()==1))
+		    {
+		        String parm=correctItem(mob);
+		        if(parm!=null)
+		            commands.addElement(parm);
+		    }
+	        if(commands.size()<2)
+		    {
+    			mob.tell("You must specify a target, and what item to swap on the target!");
+    			return false;
+		    }
 		}
 		Item I=mob.fetchInventory(null,(String)commands.lastElement());
 		if((I==null)||(!CMLib.flags().canBeSeenBy(I,mob)))
@@ -86,28 +147,17 @@ public class Skill_Buffoonery extends BardSkill
 		}
 		commands.removeElementAt(commands.size()-1);
 
-		MOB target=this.getTarget(mob,commands,givenTarget);
+		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		Item targetItem=null;
-		Vector V=new Vector();
-
-		for(int i=0;i<target.inventorySize();i++)
+		Item targetItem=targetItem(target);
+		if(targetItem==null)
 		{
-			Item I2=target.fetchInventory(i);
-			if((!I2.amWearingAt(Item.IN_INVENTORY))
-			&&(((I2 instanceof Weapon)&&(I.baseEnvStats().damage()>1))
-			   ||((I2 instanceof Armor)&&(I.baseEnvStats().armor()>1)))
-			&&(I2.container()==null))
-				V.addElement(I2);
-		}
-		if(V.size()>0)
-			targetItem=(Item)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
-		else
-		if(!freePosition(target))
-		{
-			mob.tell(target.name()+" has no free wearing positions!");
-			return false;
+    		if(!freePosition(target))
+    		{
+    			mob.tell(target.name()+" has no free wearing positions!");
+    			return false;
+    		}
 		}
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

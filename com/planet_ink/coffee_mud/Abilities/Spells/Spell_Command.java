@@ -52,10 +52,15 @@ public class Spell_Command extends Spell
 
 		if(commands.size()==0)
 		{
-			mob.tell("Command "+((String)V.elementAt(0))+" to do what?");
-			return false;
+	        if(mob.isMonster())
+	            commands.addElement("FLEE");
+	        else
+	        {
+    			mob.tell("Command "+((String)V.elementAt(0))+" to do what?");
+    			return false;
+	        }
 		}
-
+		
 		if(!target.mayIFight(mob))
 		{
 			mob.tell("You can't command "+target.name()+".");

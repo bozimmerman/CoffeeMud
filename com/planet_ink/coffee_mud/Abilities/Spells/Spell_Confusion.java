@@ -78,8 +78,16 @@ public class Spell_Confusion extends Spell
 		CMLib.commands().postStand(mob,true);
 	}
 
-
-
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.location().numInhabitants()<3)
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

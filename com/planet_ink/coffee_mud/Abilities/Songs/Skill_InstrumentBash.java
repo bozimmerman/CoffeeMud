@@ -43,6 +43,19 @@ public class Skill_InstrumentBash extends BardSkill
     public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Item instrument=Play.getInstrument(mob,-1,true);
+            if(instrument==null)
+                return Ability.QUALITY_INDIFFERENT;
+            if((CMLib.flags().isSitting(target)||CMLib.flags().isSleeping(target)))
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

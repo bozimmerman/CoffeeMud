@@ -83,6 +83,21 @@ public class Spell_Brainwash extends Spell
 	    return super.okMessage(host,msg);
 	}
 	
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if((mob.isInCombat())&&(mob.isMonster()))
+                return Ability.QUALITY_INDIFFERENT;
+            if(target instanceof MOB)
+            {
+                if(CMLib.flags().isAnimalIntelligence((MOB)target))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 	    String message="";

@@ -41,6 +41,16 @@ public class Dance_Square extends Dance
 	protected String danceOf(){return name()+" Dance";}
     protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isMonster())
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(msg.amISource(invoker())

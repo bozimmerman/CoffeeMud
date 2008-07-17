@@ -61,4 +61,14 @@ public class Song_Disgust extends Song
 		return true;
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.location().numInhabitants()<3)
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 }

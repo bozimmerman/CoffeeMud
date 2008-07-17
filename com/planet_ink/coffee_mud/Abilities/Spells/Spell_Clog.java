@@ -46,7 +46,6 @@ public class Spell_Clog extends Spell
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_TASTE);
 	}
 
-
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -60,8 +59,16 @@ public class Spell_Clog extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> mouth reverts to normal size.");
 	}
 
-
-
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if((mob.isMonster())&&(mob.isInCombat()))
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

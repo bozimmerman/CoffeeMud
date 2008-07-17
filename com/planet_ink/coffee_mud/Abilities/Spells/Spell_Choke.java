@@ -47,7 +47,6 @@ public class Spell_Choke extends Spell
 		affectableStats.setSpeed(CMath.div(affectableStats.speed(),2.0));
 	}
 
-
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -59,8 +58,6 @@ public class Spell_Choke extends Spell
 		if(canBeUninvoked())
 			mob.tell("You begin to breathe easier.");
 	}
-
-
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
