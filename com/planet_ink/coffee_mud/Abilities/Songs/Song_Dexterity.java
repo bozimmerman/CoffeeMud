@@ -36,7 +36,7 @@ public class Song_Dexterity extends Song
 {
 	public String ID() { return "Song_Dexterity"; }
 	public String name(){ return "Dexterity";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int amount=0;
 
 	public void affectCharStats(MOB affected, CharStats affectableStats)

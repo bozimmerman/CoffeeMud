@@ -103,14 +103,14 @@ public class StdAbility implements Ability
 			return Ability.QUALITY_INDIFFERENT;
 		switch(abstractQuality())
 		{
-		case  Ability.QUALITY_BENEFICIAL_OTHERS:
-			if(mob==target) return  Ability.QUALITY_BENEFICIAL_SELF;
-			return  Ability.QUALITY_BENEFICIAL_OTHERS;
+		case Ability.QUALITY_BENEFICIAL_OTHERS:
+			if(mob==target) return Ability.QUALITY_BENEFICIAL_SELF;
+			return Ability.QUALITY_BENEFICIAL_OTHERS;
 		case Ability.QUALITY_MALICIOUS:
 			return Ability.QUALITY_MALICIOUS;
-		case  Ability.QUALITY_BENEFICIAL_SELF:
+		case Ability.QUALITY_BENEFICIAL_SELF:
 			if((target instanceof MOB)&&(mob!=target)) return Ability.QUALITY_INDIFFERENT;
-			return  Ability.QUALITY_BENEFICIAL_SELF;
+			return Ability.QUALITY_BENEFICIAL_SELF;
 		default:
 			return Ability.QUALITY_INDIFFERENT;
 		}

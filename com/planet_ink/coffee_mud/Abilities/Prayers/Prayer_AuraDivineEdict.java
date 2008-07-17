@@ -40,7 +40,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_EVANGELISM;}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public long flags(){return Ability.FLAG_HOLY;}
     protected String godName="the gods";

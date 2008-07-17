@@ -37,7 +37,7 @@ public class Antidote extends StdAbility
 {
 	public String ID() { return "Antidote"; }
 	public String name(){ return "An Antidote";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_MOBS;}

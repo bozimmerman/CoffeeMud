@@ -36,7 +36,7 @@ public class Spell_MassFeatherfall extends Spell
 	public String ID() { return "Spell_MassFeatherfall"; }
 	public String name(){return "Mass FeatherFall";}
 	public String displayText(){return "";}
-	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 

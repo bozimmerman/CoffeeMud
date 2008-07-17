@@ -37,7 +37,7 @@ public class Prayer_CureExhaustion extends Prayer implements MendingSkill
     public String ID() { return "Prayer_CureExhaustion"; }
     public String name(){ return "Cure Exhaustion";}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
-    public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+    public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
     public long flags(){return Ability.FLAG_HOLY;}
     protected long minCastWaitTime(){return Tickable.TIME_TICK/2;}
 

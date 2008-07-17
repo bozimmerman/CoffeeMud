@@ -36,7 +36,7 @@ public class Dance_Jitterbug extends Dance
 {
 	public String ID() { return "Dance_Jitterbug"; }
 	public String name(){ return "Jitterbug";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

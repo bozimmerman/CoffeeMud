@@ -37,7 +37,7 @@ public class Spell_FindFamiliar extends Spell
 	public String ID() { return "Spell_FindFamiliar"; }
 	public String name(){return "Find Familiar";}
 	public String displayText(){return "(Find Familiar)";}
-	public int abstractQuality(){return  Ability.QUALITY_BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}

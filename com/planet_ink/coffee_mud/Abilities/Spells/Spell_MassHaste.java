@@ -36,7 +36,7 @@ public class Spell_MassHaste extends Spell
 	public String ID() { return "Spell_MassHaste"; }
 	public String name(){return "Mass Haste";}
 	public String displayText(){return "";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
 

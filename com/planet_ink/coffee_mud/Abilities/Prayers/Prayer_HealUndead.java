@@ -36,7 +36,7 @@ public class Prayer_HealUndead extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_HealUndead"; }
 	public String name(){ return "Heal Undead";}
-	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEALINGMAGIC;}
 

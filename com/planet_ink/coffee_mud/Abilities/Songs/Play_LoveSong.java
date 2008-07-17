@@ -36,7 +36,7 @@ public class Play_LoveSong extends Play
 {
 	public String ID() { return "Play_LoveSong"; }
 	public String name(){ return "Love Song";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected String songOf(){return "a "+name();}
 
 	public boolean tick(Tickable ticking, int tickID)

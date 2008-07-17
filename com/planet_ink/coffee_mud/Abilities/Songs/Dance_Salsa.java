@@ -36,7 +36,7 @@ public class Dance_Salsa extends Dance
 {
 	public String ID() { return "Dance_Salsa"; }
 	public String name(){ return "Salsa";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

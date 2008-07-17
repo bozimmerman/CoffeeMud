@@ -36,7 +36,7 @@ public class Spell_Flameshield extends Spell
 	public String ID() { return "Spell_Flameshield"; }
 	public String name(){return "Flameshield";}
 	public String displayText(){return "(Flameshield)";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	public long flags(){return Ability.FLAG_HEATING|Ability.FLAG_FIREBASED;}

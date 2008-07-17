@@ -36,7 +36,7 @@ public class Dance_Cotillon extends Dance
 {
 	public String ID() { return "Dance_Cotillon"; }
 	public String name(){ return "Cotillon";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected String danceOf(){return name()+" Dance";}
     protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 	protected MOB whichLast=null;

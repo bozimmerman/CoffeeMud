@@ -38,7 +38,7 @@ public class Prayer_Refresh extends Prayer implements MendingSkill
     public String ID() { return "Prayer_Refresh"; }
     public String name(){ return "Refresh";}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
-    public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+    public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
     public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
     protected long minCastWaitTime(){return Tickable.TIME_TICK/2;}
 

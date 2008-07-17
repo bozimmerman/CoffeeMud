@@ -36,7 +36,7 @@ public class Dance_Grass extends Dance
 {
 	public String ID() { return "Dance_Grass"; }
 	public String name(){ return "Grass";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	public static Ability kick=null;
 	protected String danceOf(){return name()+" Dance";}
 

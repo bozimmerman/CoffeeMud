@@ -36,7 +36,7 @@ public class Dance_Butoh extends Dance
 {
 	public String ID() { return "Dance_Butoh"; }
 	public String name(){ return "Butoh";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected String danceOf(){return name()+" Dance";}
 
     public int castingQuality(MOB mob, Environmental target)

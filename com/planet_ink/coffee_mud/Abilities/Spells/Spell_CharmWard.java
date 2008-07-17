@@ -36,7 +36,7 @@ public class Spell_CharmWard extends Spell
 	public String ID() { return "Spell_CharmWard"; }
 	public String name(){return "Charm Ward";}
 	public String displayText(){return "(Charm Ward)";}
-	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS|CAN_ROOMS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 

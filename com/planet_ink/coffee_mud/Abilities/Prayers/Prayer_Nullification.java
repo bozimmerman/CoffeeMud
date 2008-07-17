@@ -36,7 +36,7 @@ public class Prayer_Nullification extends Prayer
 	public String ID() { return "Prayer_Nullification"; }
 	public String name(){ return "Nullification";}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
-	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}

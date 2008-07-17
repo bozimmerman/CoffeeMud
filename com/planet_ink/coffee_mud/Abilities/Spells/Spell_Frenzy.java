@@ -36,7 +36,7 @@ public class Spell_Frenzy extends Spell
 	public String ID() { return "Spell_Frenzy"; }
 	public String name(){return "Frenzy";}
 	public String displayText(){return "(Frenzy spell)";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int hpAdjustment=0;
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}

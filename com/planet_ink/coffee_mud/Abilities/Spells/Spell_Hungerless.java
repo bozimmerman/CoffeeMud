@@ -36,7 +36,7 @@ public class Spell_Hungerless extends Spell
 	public String ID() { return "Spell_Hungerless"; }
 	public String name(){return "Hungerless";}
 	public String displayText(){return "(Hungerless)";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 

@@ -36,7 +36,7 @@ public class Spell_CombatPrecognition extends Spell
 	public String ID() { return "Spell_CombatPrecognition"; }
 	public String name(){return "Combat Precognition";}
 	public String displayText(){return "(Combat Precognition)";}
-	public int abstractQuality(){return  Ability.QUALITY_BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int overrideMana(){return 100;}
 	boolean lastTime=false;

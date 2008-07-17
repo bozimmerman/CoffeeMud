@@ -76,7 +76,7 @@ public class Play_Instrument extends Play
 	public int abstractQuality()
 	{
 		if(getSpell()!=null) return getSpell().abstractQuality();
-		return  Ability.QUALITY_BENEFICIAL_OTHERS;
+		return Ability.QUALITY_BENEFICIAL_OTHERS;
 	}
 	protected boolean persistantSong(){return false;}
 	public String displayText(){ return "";}

@@ -60,7 +60,7 @@ public interface Ability extends Environmental
 	 * constants are defined in the Ability interface and
 	 * called QUALITY_*
 	 * @see Ability
-	 * @return QUALITY_* constant classification
+	 * @return Ability.QUALITY_* constant classification
 	 */
 	public int abstractQuality();
 	
@@ -73,7 +73,7 @@ public interface Ability extends Environmental
 	 * Ability interface and called QUALITY_*
 	 * @see Ability#abstractQuality()
 	 * @see Ability
-	 * @return QUALITY_* constant classification
+	 * @return Ability.QUALITY_* constant classification
 	 */
 	public int enchantQuality();
 	
@@ -88,7 +88,7 @@ public interface Ability extends Environmental
 	 * @see Ability#abstractQuality()
 	 * @param mob the person to use the skill
 	 * @param target the potential target -- may be invoker
-	 * @return QUALITY_* constant classification
+	 * @return Ability.QUALITY_* constant classification
 	 */
 	public int castingQuality(MOB mob, Environmental target);
 

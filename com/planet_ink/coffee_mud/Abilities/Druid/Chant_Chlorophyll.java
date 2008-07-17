@@ -38,7 +38,7 @@ public class Chant_Chlorophyll extends Chant
 	public String name(){return "Chlorophyll";}
 	public String displayText(){return "(Chlorophyll)";}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
 

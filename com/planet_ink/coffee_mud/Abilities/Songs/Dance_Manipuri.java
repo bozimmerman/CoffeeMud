@@ -37,7 +37,7 @@ public class Dance_Manipuri extends Dance
 {
 	public String ID() { return "Dance_Manipuri"; }
 	public String name(){ return "Manipuri";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected String danceOf(){return name()+" Dance";}
 
 	protected Room lastRoom=null;

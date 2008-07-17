@@ -36,7 +36,7 @@ public class Play_Charge extends Play
 {
 	public String ID() { return "Play_Charge"; }
 	public String name(){ return "Charge!";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected boolean persistantSong(){return false;}
 	Vector chcommands=null;

@@ -37,7 +37,7 @@ public class Play_Mystical extends Play
 {
 	public String ID() { return "Play_Mystical"; }
 	public String name(){ return "Mystical";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected String songOf(){return name()+" Music";}
     protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 

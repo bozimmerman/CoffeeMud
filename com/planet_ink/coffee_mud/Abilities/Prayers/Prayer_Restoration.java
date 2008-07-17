@@ -35,7 +35,7 @@ public class Prayer_Restoration extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_Restoration"; }
 	public String name(){ return "Restoration";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}

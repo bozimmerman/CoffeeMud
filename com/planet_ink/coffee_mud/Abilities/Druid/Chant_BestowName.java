@@ -37,7 +37,7 @@ public class Chant_BestowName extends Chant
 	public String ID() { return "Chant_BestowName"; }
 	public String name(){ return "Bestow Name";}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
-	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	public String displayText(){return "";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS;}

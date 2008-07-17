@@ -37,7 +37,7 @@ public class DiseaseCure extends StdAbility
 {
 	public String ID() { return "DiseaseCure"; }
 	public String name(){ return "A Cure";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public String displayText(){ return "";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_MOBS;}

@@ -36,7 +36,7 @@ public class Prayer_MassMobility extends Prayer
 	public String ID() { return "Prayer_MassMobility"; }
 	public String name(){ return "Mass Mobility";}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Mass Mobility)";}
 

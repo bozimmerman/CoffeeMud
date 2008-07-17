@@ -36,7 +36,7 @@ public class Play_Ballad extends Play
 {
 	public String ID() { return "Play_Ballad"; }
 	public String name(){ return "Ballad";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected String songOf(){return "a "+name();}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)

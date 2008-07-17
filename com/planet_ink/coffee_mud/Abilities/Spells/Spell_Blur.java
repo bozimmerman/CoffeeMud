@@ -36,7 +36,7 @@ public class Spell_Blur extends Spell
 	public String ID() { return "Spell_Blur"; }
 	public String name(){return "Blur";}
 	public String displayText(){return "(Blur spell)";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 

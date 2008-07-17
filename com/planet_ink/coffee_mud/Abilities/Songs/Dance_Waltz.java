@@ -36,7 +36,7 @@ public class Dance_Waltz extends Dance
 {
 	public String ID() { return "Dance_Waltz"; }
 	public String name(){ return "Waltz";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	private int[] statadd=null;
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectedStats)

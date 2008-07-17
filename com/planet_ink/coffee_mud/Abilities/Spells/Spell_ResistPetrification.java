@@ -36,7 +36,7 @@ public class Spell_ResistPetrification extends Spell
 	public String ID() { return "Spell_ResistPetrification"; }
 	public String name(){return "Resist Petrification";}
 	public String displayText(){return "(Resist Petrification)";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 

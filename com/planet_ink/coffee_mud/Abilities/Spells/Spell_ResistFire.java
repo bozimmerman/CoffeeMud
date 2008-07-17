@@ -37,7 +37,7 @@ public class Spell_ResistFire extends Spell
 	public String ID() { return "Spell_ResistFire"; }
 	public String name(){return "Resist Fire";}
 	public String displayText(){return "(Resist Fire)";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 

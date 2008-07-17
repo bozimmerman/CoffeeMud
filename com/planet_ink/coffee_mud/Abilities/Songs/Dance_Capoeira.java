@@ -36,7 +36,7 @@ public class Dance_Capoeira extends Dance
 {
 	public String ID() { return "Dance_Capoeira"; }
 	public String name(){ return "Capoeira";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected String danceOf(){return name()+" Dance";}
 
     public int castingQuality(MOB mob, Environmental target)

@@ -86,7 +86,7 @@ public class Thief_Search extends ThiefSkill
         if(mob!=null)
         {
             if(mob.fetchEffect(this.ID())!=null)
-                return  Ability.QUALITY_INDIFFERENT;
+                return Ability.QUALITY_INDIFFERENT;
             
             Room R=mob.location();
             if(R!=null)

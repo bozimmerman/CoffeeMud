@@ -37,7 +37,7 @@ public class Spell_MirrorImage extends Spell
 	public String ID() { return "Spell_MirrorImage"; }
 	public String name(){return "Mirror Image";}
 	public String displayText(){return "(Mirror Image spell)";}
-	public int abstractQuality(){return  Ability.QUALITY_BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
 

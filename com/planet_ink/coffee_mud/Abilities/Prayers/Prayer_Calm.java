@@ -38,7 +38,7 @@ public class Prayer_Calm extends Prayer
 	public String name(){ return "Calm";}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
     public int castingQuality(MOB mob, Environmental target)

@@ -36,7 +36,7 @@ public class Spell_SpellTurning extends Spell
 	public String ID() { return "Spell_SpellTurning"; }
 	public String name(){return "Spell Turning";}
 	public String displayText(){return "(Spell Turning)";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 	protected boolean oncePerRound=false;

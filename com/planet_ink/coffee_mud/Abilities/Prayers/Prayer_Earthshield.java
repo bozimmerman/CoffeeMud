@@ -36,7 +36,7 @@ public class Prayer_Earthshield extends Prayer
 {
 	public String ID() { return "Prayer_Earthshield"; }
 	public String name(){ return "Earthshield";}
-	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(In Earthshield)";}

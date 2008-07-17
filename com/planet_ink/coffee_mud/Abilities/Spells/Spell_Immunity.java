@@ -36,7 +36,7 @@ public class Spell_Immunity extends Spell
 	public String ID() { return "Spell_Immunity"; }
 	public String name(){return "Immunity";}
 	public String displayText(){return "(Immunity to "+immunityName+")";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 
@@ -56,7 +56,6 @@ public class Spell_Immunity extends Spell
 
 	}
 
-
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))
@@ -74,7 +73,6 @@ public class Spell_Immunity extends Spell
 		}
 		return true;
 	}
-
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

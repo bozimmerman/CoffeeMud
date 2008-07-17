@@ -36,7 +36,7 @@ public class Play_Tempo extends Play
 {
 	public String ID() { return "Play_Tempo"; }
 	public String name(){ return "Tempo";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
     protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
     public int castingQuality(MOB mob, Environmental target)

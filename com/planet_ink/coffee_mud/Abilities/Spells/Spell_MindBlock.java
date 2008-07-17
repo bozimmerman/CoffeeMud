@@ -36,7 +36,7 @@ public class Spell_MindBlock extends Spell
 	public String ID() { return "Spell_MindBlock"; }
 	public String name(){return "Mind Block";}
 	public String displayText(){return "(Mind Block)";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
 

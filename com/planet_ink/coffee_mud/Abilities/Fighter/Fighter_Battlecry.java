@@ -37,7 +37,7 @@ public class Fighter_Battlecry extends FighterSkill
 	public String ID() { return "Fighter_Battlecry"; }
 	public String name(){ return "Battle Cry";}
 	public String displayText(){return "(Battle Cry)";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	private static final String[] triggerStrings = {"BATTLECRY"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int canAffectCode(){return 0;}

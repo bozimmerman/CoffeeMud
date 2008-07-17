@@ -38,12 +38,12 @@ public class Play_Symphony extends Play
 	public String name(){ return "Symphony";}
 	public int abstractQuality(){
 		if(toDoCode<0)
-			return  Ability.QUALITY_BENEFICIAL_OTHERS;
+			return Ability.QUALITY_BENEFICIAL_OTHERS;
 		else
 		if(toDoCode==CODE_DOWNSAVE)
 			return Ability.QUALITY_MALICIOUS;
 		else
-			return  Ability.QUALITY_BENEFICIAL_OTHERS;
+			return Ability.QUALITY_BENEFICIAL_OTHERS;
 	}
 	public final static int CODE_UPSAVE=1;
 	public final static int CODE_UPDAMAGEPER3=2;

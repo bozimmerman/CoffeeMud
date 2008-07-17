@@ -36,7 +36,7 @@ public class Prayer_CureSerious extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_CureSerious"; }
 	public String name(){ return "Cure Serious Wounds";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
     protected long minCastWaitTime(){return Tickable.TIME_TICK/2;}

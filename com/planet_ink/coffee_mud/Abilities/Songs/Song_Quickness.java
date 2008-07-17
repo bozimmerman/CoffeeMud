@@ -35,7 +35,7 @@ public class Song_Quickness extends Song
 {
 	public String ID() { return "Song_Quickness"; }
 	public String name(){ return "Quickness";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);

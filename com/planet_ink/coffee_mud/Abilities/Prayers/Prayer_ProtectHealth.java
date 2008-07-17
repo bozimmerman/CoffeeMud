@@ -36,7 +36,7 @@ public class Prayer_ProtectHealth extends Prayer
 	public String ID() { return "Prayer_ProtectHealth"; }
 	public String name(){ return "Protect Health";}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HOLYPROTECTION;}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public String displayText(){ return "(Protection of Health)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}

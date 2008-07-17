@@ -39,7 +39,7 @@ public class Prayer_FireHealing extends Prayer
 	public String displayText(){ return "(Fire Healing)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_HEALINGMAGIC;}
 

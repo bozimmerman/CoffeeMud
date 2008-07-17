@@ -36,7 +36,7 @@ public class Spell_GiantStrength extends Spell
 	public String ID() { return "Spell_GiantStrength"; }
 	public String name(){return "Giant Strength";}
 	public String displayText(){return "(Giant-Strength spell)";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
 
@@ -76,8 +76,6 @@ public class Spell_GiantStrength extends Spell
 			if((mob.location()!=null)&&(!mob.amDead()))
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-YOUPOSS> muscles shrink back to their normal size.");
 	}
-
-
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

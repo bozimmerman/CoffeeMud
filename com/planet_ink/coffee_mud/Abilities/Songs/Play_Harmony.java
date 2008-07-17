@@ -36,7 +36,7 @@ public class Play_Harmony extends Play
 {
 	public String ID() { return "Play_Harmony"; }
 	public String name(){ return "Harmony";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return 0;}
 	protected boolean persistantSong(){return false;}
     protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}

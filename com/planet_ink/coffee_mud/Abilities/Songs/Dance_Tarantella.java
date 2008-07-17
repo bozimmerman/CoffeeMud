@@ -36,7 +36,7 @@ public class Dance_Tarantella extends Dance
 {
 	public String ID() { return "Dance_Tarantella"; }
 	public String name(){ return "Tarantella";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int ticks=1;
 	protected String danceOf(){return name()+" Dance";}
 

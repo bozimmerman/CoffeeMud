@@ -36,7 +36,7 @@ public class Spell_Shield extends Spell
 	public String ID() { return "Spell_Shield"; }
 	public String name(){return "Shield";}
 	public String displayText(){return "(Shield spell)";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 

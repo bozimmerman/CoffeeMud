@@ -36,7 +36,7 @@ public class Prayer_CureLight extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_CureLight"; }
 	public String name(){ return "Cure Light Wounds";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
     protected long minCastWaitTime(){return Tickable.TIME_TICK/2;}

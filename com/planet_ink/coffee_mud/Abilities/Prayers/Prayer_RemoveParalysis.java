@@ -36,7 +36,7 @@ public class Prayer_RemoveParalysis extends Prayer implements MendingSkill
 	public String ID() { return "Prayer_RemoveParalysis"; }
 	public String name(){ return "Remove Paralysis";}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
-	public int abstractQuality(){ return QUALITY_OK_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
 	public boolean supportsMending(Environmental E)

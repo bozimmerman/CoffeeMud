@@ -35,7 +35,7 @@ public class Prayer_MassHeal extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_MassHeal"; }
 	public String name(){ return "Mass Heal";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_HEALING;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_HEALINGMAGIC;}
 

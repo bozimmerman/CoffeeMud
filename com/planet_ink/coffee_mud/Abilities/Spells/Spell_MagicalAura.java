@@ -37,7 +37,7 @@ public class Spell_MagicalAura extends Spell
 	public String ID() { return "Spell_MagicalAura"; }
 	public String name(){return "Magical Aura";}
 	public String displayText(){return "(Magical Aura)";}
-	public int abstractQuality(){return  Ability.QUALITY_BENEFICIAL_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}

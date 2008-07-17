@@ -36,7 +36,7 @@ public class Dance_RagsSharqi extends Dance
 {
 	public String ID() { return "Dance_RagsSharqi"; }
 	public String name(){ return "Rags Sharqi";}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected String danceOf(){return name()+" Dance";}
 
 	public void affectCharState(MOB affectedMOB, CharState affectedState)

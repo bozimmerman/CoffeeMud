@@ -38,7 +38,7 @@ public class Chant_CheetahBurst extends Chant
 	public String name(){return "Cheetah Burst";}
 	public String displayText(){return "(Cheetah Burst)";}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
-	public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 
 	public Chant_CheetahBurst()

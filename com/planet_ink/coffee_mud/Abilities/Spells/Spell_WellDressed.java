@@ -36,7 +36,7 @@ public class Spell_WellDressed extends Spell
     public String ID() { return "Spell_WellDressed"; }
     public String name(){return "Well Dressed";}
     public String displayText(){return "(Well Dressed)";}
-    public int abstractQuality(){ return  Ability.QUALITY_BENEFICIAL_OTHERS;}
+    public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
     protected int canAffectCode(){return CAN_MOBS;}
     public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
     protected int dressCode=1;
