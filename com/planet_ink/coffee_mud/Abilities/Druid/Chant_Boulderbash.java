@@ -42,6 +42,24 @@ public class Chant_Boulderbash extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_MOBS;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(!(target instanceof MOB))
+                return Ability.QUALITY_INDIFFERENT;
+            Room R=mob.location();
+            if(R!=null)
+            {
+                if((R.domainType()!=Room.DOMAIN_INDOORS_CAVE)
+                &&(R.domainType()!=Room.DOMAIN_OUTDOORS_MOUNTAINS)
+                &&(R.domainType()!=Room.DOMAIN_OUTDOORS_ROCKS))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((!auto)

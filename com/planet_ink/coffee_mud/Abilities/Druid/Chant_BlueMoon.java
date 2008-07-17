@@ -85,6 +85,34 @@ public class Chant_BlueMoon extends Chant
 		return true;
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(!CMLib.flags().isGood(mob))
+                return Ability.QUALITY_INDIFFERENT;
+            if((mob.isInCombat())&&CMLib.flags().isGood(mob.getVictim()))
+                return Ability.QUALITY_INDIFFERENT;
+            Room R=mob.location();
+            if(R!=null)
+            {
+                if(!R.getArea().getClimateObj().canSeeTheMoon(R,null))
+                    return Ability.QUALITY_INDIFFERENT;
+                if(R.fetchEffect(ID())!=null)
+                    return Ability.QUALITY_INDIFFERENT;
+                for(int a=0;a<R.numEffects();a++)
+                {
+                    Ability A=R.fetchEffect(a);
+                    if((A!=null)
+                    &&((A.classificationCode()&Ability.ALL_DOMAINS)==Ability.DOMAIN_MOONALTERING))
+                        return Ability.QUALITY_INDIFFERENT;
+                }
+                
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
