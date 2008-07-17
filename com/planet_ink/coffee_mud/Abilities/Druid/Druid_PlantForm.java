@@ -159,6 +159,34 @@ public class Druid_PlantForm extends StdAbility
 		return shapes[getRaceLevel(classLevel)];
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Room R=mob.location();
+            if(R!=null)
+            {
+                if((R.domainType()&Room.INDOORS)>0)
+                    return Ability.QUALITY_INDIFFERENT;
+                if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
+                ||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+            if(target instanceof MOB)
+            {
+                if((((MOB)target).isInCombat())
+                &&(!Druid_ShapeShift.isShapeShifted((MOB)target)))
+                {
+                    int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
+                    int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
+                    if(qualClassLevel<0) classLevel=30;
+                    if(getRaceLevel(classLevel)==3)
+                        return Ability.QUALITY_BENEFICIAL_SELF;
+                }
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
 
 	public static boolean isShapeShifted(MOB mob)
 	{
@@ -199,7 +227,7 @@ public class Druid_PlantForm extends StdAbility
         int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
         int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
         if(qualClassLevel<0) classLevel=30;
-		String choice=CMParms.combine(commands,0);
+		String choice=auto?getRaceName(classLevel-1):CMParms.combine(commands,0);
 		if(choice.trim().length()>0)
 		{
 			StringBuffer buf=new StringBuffer("Plant Forms:\n\r");

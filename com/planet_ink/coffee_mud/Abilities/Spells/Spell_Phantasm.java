@@ -119,18 +119,30 @@ public class Spell_Phantasm extends Spell
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		if(commands.size()==0)
+		String type=null;
+		if(auto)
 		{
-			mob.tell("You must specify the type of creature to create a phantasm of!");
-			return false;
+		    Race R=CMClass.randomRace();
+		    if(R!=null)
+		        type=R.name();
+		    else
+		        return false;
 		}
-		String type=CMStrings.capitalizeAndLower(CMParms.combine(commands,0));
-		Race R=CMClass.getRace(type);
-		if(R==null)
+		else
 		{
-			mob.tell("You don't know how to create a phantasm of a '"+type+"'.");
-			return false;
+    		if(commands.size()==0)
+    		{
+    			mob.tell("You must specify the type of creature to create a phantasm of!");
+    			return false;
+    		}
+    		type=CMStrings.capitalizeAndLower(CMParms.combine(commands,0));
 		}
+        Race R=CMClass.getRace(type);
+        if(R==null)
+        {
+            mob.tell("You don't know how to create a phantasm of a '"+type+"'.");
+            return false;
+        }
 
 		boolean success=proficiencyCheck(mob,0,auto);
 

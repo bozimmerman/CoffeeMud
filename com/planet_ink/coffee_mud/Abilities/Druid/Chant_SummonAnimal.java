@@ -68,6 +68,42 @@ public class Chant_SummonAnimal extends Chant
 			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
 		}
 	}
+	
+	public Vector outdoorChoices(Room R)
+	{
+        Vector choices=new Vector();
+        if(R==null) return choices;
+        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+        {
+            Room room=R.getRoomInDir(d);
+            Exit exit=R.getExitInDir(d);
+            Exit opExit=R.getReverseExit(d);
+            if((room!=null)
+            &&((room.domainType()&Room.INDOORS)==0)
+            &&(room.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
+            &&((exit!=null)&&(exit.isOpen()))
+            &&(opExit!=null)&&(opExit.isOpen()))
+                choices.addElement(new Integer(d));
+        }
+        return choices;
+	}
+
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Room R=mob.location();
+            if(R!=null)
+            {
+                if((R.domainType()&Room.INDOORS)>0)
+                    return Ability.QUALITY_INDIFFERENT;
+                Vector choices=outdoorChoices(mob.location());
+                if(choices.size()==0)
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -76,20 +112,8 @@ public class Chant_SummonAnimal extends Chant
 			mob.tell("You must be outdoors for this chant to work.");
 			return false;
 		}
-		Vector choices=new Vector();
+		Vector choices=outdoorChoices(mob.location());
 		int fromDir=-1;
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
-		{
-			Room room=mob.location().getRoomInDir(d);
-			Exit exit=mob.location().getExitInDir(d);
-			Exit opExit=mob.location().getReverseExit(d);
-			if((room!=null)
-			&&((room.domainType()&Room.INDOORS)==0)
-			&&(room.domainType()!=Room.DOMAIN_OUTDOORS_AIR)
-			&&((exit!=null)&&(exit.isOpen()))
-			&&(opExit!=null)&&(opExit.isOpen()))
-				choices.addElement(new Integer(d));
-		}
 		if(choices.size()==0)
 		{
 			mob.tell("You must be further outdoors to summon an animal.");

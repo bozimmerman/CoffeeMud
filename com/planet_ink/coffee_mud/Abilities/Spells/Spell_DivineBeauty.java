@@ -62,7 +62,19 @@ public class Spell_DivineBeauty extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to look like <S-HIS-HER> old ugly self.");
 	}
 
-
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                if((((MOB)target).isInCombat())
+                &&(!((MOB)target).charStats().getCurrentClass().baseClass().equalsIgnoreCase("Bard")))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

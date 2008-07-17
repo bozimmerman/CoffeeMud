@@ -104,6 +104,27 @@ public class Chant_SaplingWorkers extends Chant
 		}
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Room R=mob.location();
+            if(R!=null)
+            {
+                if((R.domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
+                &&((R.myResource()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
+                &&(R.domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+            if(target instanceof MOB)
+            {
+                if(((MOB)target).isInCombat())
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WOODS)

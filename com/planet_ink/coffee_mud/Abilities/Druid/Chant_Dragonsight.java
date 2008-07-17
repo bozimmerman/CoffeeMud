@@ -68,6 +68,28 @@ public class Chant_Dragonsight extends Chant
 			mob.tell("You lose your dragonsight.");
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                Room R=((MOB)target).location();
+                boolean found=CMLib.flags().isInDark((MOB)target);
+                if(R!=null)
+                    for(int r=0;r<R.numInhabitants();r++)
+                    {
+                        MOB M=R.fetchInhabitant(r);
+                        if((M!=null)&&(M!=mob)&&(M!=target)
+                        &&(CMLib.flags().isHidden(M)||CMLib.flags().isInvisible(M)))
+                        { found=true; break;}
+                    }
+                if(!found) return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

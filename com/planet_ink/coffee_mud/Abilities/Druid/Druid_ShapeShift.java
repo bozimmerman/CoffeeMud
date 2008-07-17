@@ -187,6 +187,26 @@ public class Druid_ShapeShift extends StdAbility
 		return false;
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                if((((MOB)target).isInCombat())
+                &&(!Druid_ShapeShift.isShapeShifted((MOB)target)))
+                {
+                    int qualClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(2*getXLEVELLevel(mob));
+                    int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
+                    if(qualClassLevel<0) classLevel=30;
+                    if(getRaceLevel(classLevel)>=3)
+                        return Ability.QUALITY_BENEFICIAL_SELF;
+                }
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		for(int a=mob.numEffects()-1;a>=0;a--)

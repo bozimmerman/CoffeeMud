@@ -160,6 +160,26 @@ public class Chant_SummonDustdevil extends Chant
 		}
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Room R=mob.location();
+            if(R!=null)
+            {
+                if((R.domainType()&Room.INDOORS)>0)
+                    return Ability.QUALITY_INDIFFERENT;
+                if((R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+                ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+                    return Ability.QUALITY_INDIFFERENT;
+                if(mob.isInCombat())
+                    return Ability.QUALITY_INDIFFERENT;
+                
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((!auto)&&(mob.location().domainType()&Room.INDOORS)>0)
@@ -174,7 +194,7 @@ public class Chant_SummonDustdevil extends Chant
 			return false;
 		}
 
-		int material=RawMaterial.RESOURCE_HEMP;
+		int material=RawMaterial.RESOURCE_ASH;
 
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

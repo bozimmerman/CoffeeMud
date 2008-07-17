@@ -92,6 +92,34 @@ public class Druid_PackCall extends StdAbility
 		}
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Room R=mob.location();
+            if(R!=null)
+            {
+                if((R.domainType()&Room.INDOORS)>0)
+                    return Ability.QUALITY_INDIFFERENT;
+                if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
+                ||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+            if(target instanceof MOB)
+            {
+                if(!(((MOB)target).isInCombat()))
+                    return Ability.QUALITY_INDIFFERENT;
+                
+                if(!Druid_ShapeShift.isShapeShifted((MOB)target))
+                    return Ability.QUALITY_INDIFFERENT;
+                
+                if(((MOB)target).totalFollowers()>=((MOB)target).maxFollowers())
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location().domainType()&Room.INDOORS)>0)

@@ -59,6 +59,26 @@ public class Spell_DetectInvisible extends Spell
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_INVISIBLE);
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                Room R=((MOB)target).location();
+                boolean found=false;
+                if(R!=null)
+                    for(int r=0;r<R.numInhabitants();r++)
+                    {
+                        MOB M=R.fetchInhabitant(r);
+                        if((M!=null)&&(M!=mob)&&(M!=target)&&(CMLib.flags().isInvisible(M)))
+                        { found=true; break;}
+                    }
+                if(!found) return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

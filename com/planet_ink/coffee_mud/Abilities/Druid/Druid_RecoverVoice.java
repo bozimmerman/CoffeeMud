@@ -37,7 +37,7 @@ public class Druid_RecoverVoice extends StdAbility
 {
 	public String ID() { return "Druid_RecoverVoice"; }
 	public String name(){ return "Recover Voice";}
-	public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
+	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	private static final String[] triggerStrings = {"VRECOVER","RECOVERVOICE"};
@@ -67,6 +67,19 @@ public class Druid_RecoverVoice extends StdAbility
         newMOB.destroy();
 		return offenders;
 	}
+
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                if(returnOffensiveAffects(mob,((MOB)target)).size()==0)
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

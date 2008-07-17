@@ -340,9 +340,19 @@ public class Skill_Juggle extends BardSkill
 		super.unInvoke();
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isInCombat()&&(mob.fetchCarried(null,"all")!=null))
+                return Ability.QUALITY_BENEFICIAL_SELF;
+        }
+        return super.castingQuality(mob,target);
+    }
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		String whatToJuggle=CMParms.combine(commands,0);
+		String whatToJuggle=auto?"all":CMParms.combine(commands,0);
 		Skill_Juggle A=(Skill_Juggle)mob.fetchEffect("Skill_Juggle");
 		if(whatToJuggle.length()==0)
 		{

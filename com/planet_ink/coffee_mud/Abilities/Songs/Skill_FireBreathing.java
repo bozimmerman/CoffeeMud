@@ -43,24 +43,35 @@ public class Skill_FireBreathing extends BardSkill
 	public int maxRange(){return adjustedMaxInvokerRange(5);}
 	public int minRange(){return 0;}
 
+	public Item getFireSource(MOB mob)
+	{
+        for(int i=0;i<mob.inventorySize();i++)
+        {
+            Item I=mob.fetchInventory(i);
+            if((CMLib.flags().isOnFire(I))
+            &&(!I.amWearingAt(Item.IN_INVENTORY))
+            &&(I.container()==null))
+                return I;
+        }
+        return null;
+	}
+	
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(getFireSource(mob)==null)
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		Item fireSource=null;
-		for(int i=0;i<mob.inventorySize();i++)
-		{
-			Item I=mob.fetchInventory(i);
-			if((CMLib.flags().isOnFire(I))
-			&&(!I.amWearingAt(Item.IN_INVENTORY))
-			&&(I.container()==null))
-			{
-				fireSource=I;
-				break;
-			}
-		}
-
+		Item fireSource=getFireSource(mob);
 		if((!auto)&&(fireSource==null))
 		{
 			mob.tell("You need to be holding some fire source to breathe fire.");

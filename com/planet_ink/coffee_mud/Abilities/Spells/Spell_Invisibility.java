@@ -62,6 +62,18 @@ public class Spell_Invisibility extends Spell
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_INVISIBLE);
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                if(((MOB)target).isInCombat())
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
 
 	public void unInvoke()
 	{

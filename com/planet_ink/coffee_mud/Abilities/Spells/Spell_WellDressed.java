@@ -70,9 +70,21 @@ public class Spell_WellDressed extends Spell
         */
     }
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                if((((MOB)target).isInCombat())
+                &&(!((MOB)target).charStats().getCurrentClass().baseClass().equalsIgnoreCase("Bard")))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
 
-
-    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         int newDressCode=1;
         MOB target=this.getTarget(mob,commands,givenTarget);

@@ -70,6 +70,26 @@ public class Chant_WindSnatcher extends Chant
 			mob.tell("Your wind snatcher fades away.");
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                MOB victim=((MOB)target).getVictim();
+                if(victim!=null)
+                {
+                    boolean found=false;
+                    for(int i=0;i<windSpells.length;i++)
+                        if(victim.fetchAbility(windSpells[i])!=null)
+                        { found=true; break;}
+                    if(!found) return Ability.QUALITY_INDIFFERENT;
+                }
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
 		if(!super.okMessage(myHost,msg))
