@@ -83,6 +83,20 @@ public class Chant_VolcanicChasm extends Chant
 		}
 		super.executeMsg(host,msg);
 	}
+    
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Room R=mob.location();
+            if(R!=null)
+            {
+                if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

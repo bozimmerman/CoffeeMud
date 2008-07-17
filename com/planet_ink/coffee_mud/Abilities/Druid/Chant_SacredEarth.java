@@ -78,6 +78,37 @@ public class Chant_SacredEarth extends Chant
 		return true;
 	}
 
+   public int castingQuality(MOB mob, Environmental target)
+   {
+        if(mob!=null)
+        {
+            Room R=mob.location();
+            if(R!=null)
+            {
+                if(((R.domainType()&Room.INDOORS)>0)
+                ||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+                ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
+                ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+            
+            if(mob.isInCombat())
+            {
+                MOB victim=mob.getVictim();
+                if(victim!=null)
+                {
+                    if(((((MOB)victim).charStats().getMyRace().racialCategory().equals("Vegetation"))
+                    ||(((MOB)victim).charStats().getMyRace().racialCategory().equals("Earth Elemental"))))
+                        return Ability.QUALITY_INDIFFERENT;
+                }
+                if(((!mob.charStats().getMyRace().racialCategory().equals("Vegetation"))
+                &&(!mob.charStats().getMyRace().racialCategory().equals("Earth Elemental"))))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }    
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

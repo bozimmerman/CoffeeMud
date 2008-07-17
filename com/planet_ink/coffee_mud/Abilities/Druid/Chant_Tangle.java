@@ -98,6 +98,17 @@ public class Chant_Tangle extends Chant
 		}
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Item thePlants=Druid_MyPlants.myPlant(mob.location(),mob,0);
+            if(thePlants==null)
+                 return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);

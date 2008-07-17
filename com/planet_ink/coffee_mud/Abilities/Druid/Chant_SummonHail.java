@@ -44,6 +44,24 @@ public class Chant_SummonHail extends Chant
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
     public long flags(){return Ability.FLAG_WEATHERAFFECTING;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+         if(mob!=null)
+         {
+             Room R=mob.location();
+             if(R!=null)
+             {
+                 if((R.domainType()&Room.INDOORS)>0)
+                     return Ability.QUALITY_INDIFFERENT;
+                 Area A=R.getArea();
+                 if((A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_WINTER_COLD)
+                 &&(A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_HAIL))
+                     return Ability.QUALITY_INDIFFERENT;
+             }
+         }
+         return super.castingQuality(mob,target);
+    }
+    
     public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         if(((mob.location().domainType()&Room.INDOORS)>0)&&(!auto))

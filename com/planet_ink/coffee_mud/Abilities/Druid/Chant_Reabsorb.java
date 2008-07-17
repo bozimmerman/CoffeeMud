@@ -37,10 +37,37 @@ public class Chant_Reabsorb extends Chant
 	public String ID() { return "Chant_Reabsorb"; }
 	public String name(){return "Reabsorb";}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_DEEPMAGIC;}
-	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
+	protected int canTargetCode(){return CAN_ITEMS;}
 	protected int canAffectCode(){return 0;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(!(target instanceof Item))
+                return Ability.QUALITY_INDIFFERENT;
+            Room R=mob.location();
+            if(R!=null)
+            {
+                int type=R.domainType();
+                if((type==Room.DOMAIN_INDOORS_STONE)
+                ||(type==Room.DOMAIN_INDOORS_WOOD)
+                ||(type==Room.DOMAIN_INDOORS_MAGIC)
+                ||(type==Room.DOMAIN_INDOORS_UNDERWATER)
+                ||(type==Room.DOMAIN_INDOORS_WATERSURFACE)
+                ||(type==Room.DOMAIN_OUTDOORS_AIR)
+                ||(type==Room.DOMAIN_OUTDOORS_CITY)
+                ||(type==Room.DOMAIN_OUTDOORS_SPACEPORT)
+                ||(type==Room.DOMAIN_OUTDOORS_UNDERWATER)
+                ||(type==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=this.getTarget(mob,mob.location(),givenTarget,null,commands,Item.WORNREQ_UNWORNONLY);

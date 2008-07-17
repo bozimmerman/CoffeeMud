@@ -72,6 +72,24 @@ public class Chant_Rockfeet extends Chant
 		return;
 	}
 
+   public int castingQuality(MOB mob, Environmental target)
+   {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                if((((MOB)target).getWearPositions(Item.WORN_HANDS)==0)
+                &&(((MOB)target).getWearPositions(Item.WORN_FEET)==0))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+            Room R=mob.location();
+            if(R!=null)
+            {
+            }
+        }
+        return super.castingQuality(mob,target);
+    }    
+   
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);

@@ -78,6 +78,21 @@ public class Chant_SummonInsects extends Chant
 				mob.location().show(mob,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> manage(s) to escape the insect swarm!");
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+         if(mob!=null)
+         {
+             if(!mob.isInCombat())
+                 return Ability.QUALITY_INDIFFERENT;
+             Room R=mob.location();
+             if(R!=null)
+             {
+                 if((R.domainType()&Room.INDOORS)>0)
+                     return Ability.QUALITY_INDIFFERENT;
+             }
+         }
+         return super.castingQuality(mob,target);
+    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

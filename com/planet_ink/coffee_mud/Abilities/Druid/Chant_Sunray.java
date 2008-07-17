@@ -62,6 +62,20 @@ public class Chant_Sunray extends Chant
 			mob.tell("Your vision returns.");
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+         if(mob!=null)
+         {
+             if(!mob.isInCombat())
+                 return Ability.QUALITY_INDIFFERENT;
+             if(target instanceof MOB)
+             {
+                if(((MOB)target).charStats().getBodyPart(Race.BODY_EYE)==0)
+                    return Ability.QUALITY_INDIFFERENT;
+             }
+         }
+         return super.castingQuality(mob,target);
+    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

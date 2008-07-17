@@ -43,6 +43,20 @@ public class Druid_Bite extends StdAbility
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
     public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_WEAPON_USE;}
 	public int usageType(){return USAGE_MOVEMENT;}
+    
+    public int castingQuality(MOB mob, Environmental target)
+    {
+         if(mob!=null)
+         {
+            if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+                 return Ability.QUALITY_INDIFFERENT;
+            if(!Druid_ShapeShift.isShapeShifted(mob))
+                return Ability.QUALITY_INDIFFERENT;
+            if(mob.charStats().getBodyPart(Race.BODY_MOUTH)<=0)
+                return Ability.QUALITY_INDIFFERENT;
+         }
+         return super.castingQuality(mob,target);
+    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

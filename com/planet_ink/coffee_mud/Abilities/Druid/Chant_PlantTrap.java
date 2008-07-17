@@ -86,6 +86,14 @@ public class Chant_PlantTrap extends Chant implements Trap
 		}
 	}
 
+    public boolean helpfulAbilityFound(MOB mob)
+    {
+        for(int i=0;i<choices.length;i++)
+            if(mob.fetchAbility(choices[i])!=null)
+             return true;
+        return false;
+    }
+    
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(msg.amITarget(affected)&&(msg.targetMinor()==CMMsg.TYP_ENTER)
@@ -94,7 +102,29 @@ public class Chant_PlantTrap extends Chant implements Trap
 			spring(msg.source());
 		super.executeMsg(myHost,msg);
 	}
-
+    
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(!helpfulAbilityFound(mob))
+                return Ability.QUALITY_INDIFFERENT;
+            Room R=mob.location();
+            if(R!=null)
+            {
+                if(((R.domainType()&Room.INDOORS)>0))
+                    return Ability.QUALITY_INDIFFERENT;
+                if((R.domainType()==Room.DOMAIN_OUTDOORS_CITY)
+                   ||(R.domainType()==Room.DOMAIN_OUTDOORS_SPACEPORT)
+                   ||(R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+                   ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+                   ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
@@ -104,11 +134,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 			mob.tell("This place is already trapped.");
 			return false;
 		}
-		boolean any=false;
-		for(int i=0;i<choices.length;i++)
-			if(mob.fetchAbility(choices[i])!=null)
-			{ any=true; break;}
-		if(!any)
+		if(!helpfulAbilityFound(mob))
 		{
 			mob.tell("You must know plant choke or plant constriction for this chant to work.");
 			return false;
