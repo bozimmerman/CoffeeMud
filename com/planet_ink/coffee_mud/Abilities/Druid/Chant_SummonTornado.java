@@ -60,6 +60,7 @@ public class Chant_SummonTornado extends Chant
                      return Ability.QUALITY_INDIFFERENT;
                  Area A=R.getArea();
                  if((A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_THUNDERSTORM)
+                 &&(A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_BLIZZARD)
                  &&(A.getClimateObj().weatherType(mob.location())!=Climate.WEATHER_WINDY))
                      return Ability.QUALITY_INDIFFERENT;
                  if(R.fetchEffect(this.ID())!=null)
@@ -78,9 +79,10 @@ public class Chant_SummonTornado extends Chant
 		}
 		if((mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_THUNDERSTORM)
 		&&(mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_WINDY)
+        &&(mob.location().getArea().getClimateObj().weatherType(mob.location())!=Climate.WEATHER_BLIZZARD)
         &&(!auto))
 		{
-			mob.tell("This chant requires a thunderstorm!");
+			mob.tell("This chant requires wind, a thunderstorm, or a blizzard!");
 			return false;
 		}
 
