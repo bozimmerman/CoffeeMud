@@ -35,12 +35,12 @@ public class CombatAbilities extends StdBehavior
 {
 	public String ID(){return "CombatAbilities";}
 
-
 	public int combatMode=0;
 	public DVector aggro=null;
 	public short chkDown=0;
 	public Vector skillsNever=null;
 	public Vector skillsAlways=null;
+	protected boolean[] wandUseCheck={false,false};
 
 	public final static int COMBAT_RANDOM=0;
 	public final static int COMBAT_DEFENSIVE=1;
@@ -241,6 +241,7 @@ public class CombatAbilities extends StdBehavior
 	{
 		super.startBehavior(forMe);
 		skillsNever=null;
+		wandUseCheck[0]=false;
 		Vector V=CMParms.parse(getParms());
 		String s=null;
 		Ability A=null;
@@ -275,41 +276,104 @@ public class CombatAbilities extends StdBehavior
 		}
 		MOB mob=(MOB)ticking;
 
-		if(!canActAtAll(mob)) return true;
-		if(!mob.isInCombat()){ if(aggro!=null)aggro=null; return true;}
+		if(!canActAtAll(mob)) 
+		    return true;
+		if(!mob.isInCombat())
+		{ 
+		    if(aggro!=null)
+		        aggro=null; 
+		    return true;
+		}
 		MOB victim=mob.getVictim();
 		if(victim==null) return true;
-        if((chkDown==0)&&(mob.inventorySize()>0))
+		
+        // insures we only try this once!
+		Behavior B;
+        for(int b=0;b<mob.numBehaviors();b++)
         {
-            Item wieldMe=null;
-            Item I=null;
-            int rtt=mob.rangeToTarget();
-            for(int i=0;i<mob.inventorySize();i++)
-            {
-                I=mob.fetchInventory(i);
-                if((!(I instanceof Weapon))
-                ||(((Weapon)I).minRange()>rtt)
-            	||(((Weapon)I).maxRange()<rtt))
-                    continue;
-                
-                if(I.amWearingAt(Item.WORN_WIELD))
-                {
-                    wieldMe=null;
-                    break;
-                }
-                else
-                if((wieldMe==null)||(I.amWearingAt(Item.WORN_HELD)))
-                    wieldMe=I;
-            }
-            if(wieldMe!=null)
-            {
-                CMLib.commands().forceStandardCommand(mob,"WIELD",CMParms.makeVector("WIELD",wieldMe.Name()));
-                if(mob.fetchWieldedItem()==null) chkDown=10;
+            B=mob.fetchBehavior(b);
+            if((B==null)||(B==this))
+                break;
+            else
+            if(B instanceof CombatAbilities)
+                return true;
+        }
+
+        Room R=mob.location();
+        
+        if(!wandUseCheck[0]) {
+            wandUseCheck[0]=true;
+            Ability wandUse=mob.fetchAbility("Skill_WandUse");
+            wandUseCheck[1]=false;
+            if(wandUse!=null)
+            { 
+                wandUseCheck[1]=true;
+                wandUse.setProficiency(100); 
+                wandUse.setInvoker(mob);
             }
         }
-        else
-        if(chkDown>0) chkDown--;
+        Item myWand=null;
+        Item backupWand=null;
+        Item wieldMe=null;
+        Item wieldedItem=null;
+        Item I=null;
+        int rtt=mob.rangeToTarget();
+        for(int i=0;i<mob.inventorySize();i++)
+        {
+            I=mob.fetchInventory(i);
+            if(I instanceof Wand)
+            {
+                if(!I.amWearingAt(Item.IN_INVENTORY))
+                    myWand=I;
+                else
+                    backupWand=I;
+            }
+            if(I instanceof Weapon)
+            {
+                if((((Weapon)I).minRange()>rtt)
+                ||(((Weapon)I).maxRange()<rtt))
+                {
+                    if(I.amWearingAt(Item.WORN_WIELD))
+                        wieldedItem=I;
+                    else
+                    if((wieldMe==null)||(I.amWearingAt(Item.WORN_HELD)))
+                        wieldMe=I;
+                }
+            }
+        }
         
+        // first look for an appropriate weapon to weild
+        if((wieldedItem==null)&&((--chkDown)<=0))
+        {
+            if((wieldMe==null)&&(R!=null))
+            {
+                Vector choices=new Vector(1);
+                for(int r=0;r<R.numItems();r++)
+                {
+                    I=R.fetchItem(r);
+                    if((!(I instanceof Weapon))
+                    ||(((Weapon)I).minRange()>rtt)
+                    ||(((Weapon)I).maxRange()<rtt)
+                    ||(I.container()!=null)
+                    ||(!CMLib.flags().isGettable(I))
+                    ||(I.envStats().level()>mob.envStats().level()))
+                        continue;
+                    choices.addElement(I);
+                }
+                I=(choices.size()==0)?null:(Item)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+                if(I!=null)
+                {
+                    CMLib.commands().forceStandardCommand(mob,"GET",CMParms.makeVector("GET",I.Name()));
+                    if(mob.isMine(I))
+                        wieldMe=I;
+                }
+            }
+            if(wieldMe!=null)
+                CMLib.commands().forceStandardCommand(mob,"WIELD",CMParms.makeVector("WIELD",wieldMe.Name()));
+            chkDown=5;
+        }
+        
+        // next deal with aggro changes
 		if(aggro!=null)
 		{
 			synchronized(aggro)
@@ -345,18 +409,7 @@ public class CombatAbilities extends StdBehavior
 		if(victim==null) return true;
 		
 		MOB leader=mob.amFollowing();
-		
-		// insures we only try this once!
-		for(int b=0;b<mob.numBehaviors();b++)
-		{
-			Behavior B=mob.fetchBehavior(b);
-			if((B==null)||(B==this))
-				break;
-			else
-			if(B instanceof CombatAbilities)
-				return true;
-		}
-
+		// now find a skill to use
 		int tries=0;
 		Ability tryThisOne=null;
 
@@ -422,12 +475,11 @@ public class CombatAbilities extends StdBehavior
 					break;
 				}
 			}
-
 			tries++;
 		}
 
 
-		boolean wandThis=true;
+		boolean skillUsed=true;
 		if(tryThisOne!=null)
 		{
 			if(CMath.bset(tryThisOne.usageType(),Ability.USAGE_MANA))
@@ -468,29 +520,17 @@ public class CombatAbilities extends StdBehavior
 			Vector V=new Vector();
 			V.addElement(victim.name());
 			if(tryThisOne.invoke(mob,V,victim,false,0))
-				wandThis=false;
+			    skillUsed=true;
 		}
-		if((wandThis)
+		
+		// if a skill use failed, take a stab at wanding
+		if((!skillUsed)
+        &&(wandUseCheck[1])
 		&&(victim.location()!=null)
 		&&(!victim.amDead())
-		&&(CMLib.dice().rollPercentage()<25)
-		&&(mob.fetchAbility("Skill_WandUse")!=null))
+		&&((myWand!=null)||(backupWand!=null)))
 		{
-			Ability A=mob.fetchAbility("Skill_WandUse");
-			if(A!=null){ A.setProficiency(100); A.setInvoker(mob);}
-			Item myWand=null;
-			Item backupWand=null;
-			for(int i=0;i<mob.inventorySize();i++)
-			{
-				Item I=mob.fetchInventory(i);
-				if((I!=null)&&(I instanceof Wand))
-				{
-					if(!I.amWearingAt(Item.IN_INVENTORY))
-						myWand=I;
-					else
-						backupWand=I;
-				}
-			}
+		    Ability A=null;
 			if((myWand==null)&&(backupWand!=null)&&(backupWand.canWear(mob,Item.WORN_HELD)))
 			{
 				Vector V=new Vector();
