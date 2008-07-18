@@ -41,6 +41,7 @@ public class CombatAbilities extends StdBehavior
 	public Vector skillsNever=null;
 	public Vector skillsAlways=null;
 	protected boolean[] wandUseCheck={false,false};
+	protected StringBuffer record=null;
 
 	public final static int COMBAT_RANDOM=0;
 	public final static int COMBAT_DEFENSIVE=1;
@@ -236,6 +237,8 @@ public class CombatAbilities extends StdBehavior
 		}
 		super.executeMsg(host,msg);
 	}
+	
+	
 	
 	public void startBehavior(Environmental forMe)
 	{
@@ -521,6 +524,9 @@ public class CombatAbilities extends StdBehavior
 			V.addElement(victim.name());
 			if(tryThisOne.invoke(mob,V,victim,false,0))
 			    skillUsed=true;
+			else
+            if(record!=null) record.append("!");
+			if(record!=null) record.append("!"+tryThisOne.ID()+";");
 		}
 		
 		// if a skill use failed, take a stab at wanding
@@ -570,4 +576,50 @@ public class CombatAbilities extends StdBehavior
 		}
 		return true;
 	}
+	
+	
+    protected static String[] CODES=null;
+    public String[] getStatCodes(){
+        if(this.CODES==null)
+        {
+            String[] superCodes=super.getStatCodes();
+            CODES=new String[superCodes.length+1];
+            for(int c=0;c<superCodes.length;c++)
+                CODES[c]=superCodes[c];
+            CODES[CODES.length-1]="RECORD";
+        }
+        return CODES;
+    }
+    protected int getCodeNum(String code){
+        for(int i=0;i<CODES.length;i++)
+            if(code.equalsIgnoreCase(CODES[i])) return i;
+        return -1;
+    }
+    public String getStat(String code){
+        int x=getCodeNum(code);
+        if(x<super.getStatCodes().length)
+            return super.getStat(code);
+        x=x-super.getStatCodes().length;
+        switch(getCodeNum(code))
+        {
+        case 0: return (record==null)?"":record.toString();
+        }
+        return "";
+    }
+    public void setStat(String code, String val)
+    {
+        int x=getCodeNum(code);
+        if(x<super.getStatCodes().length)
+            super.setStat(code,val);
+        x=x-super.getStatCodes().length;
+        switch(getCodeNum(code))
+        {
+        case 0:
+            if(val.length()==0)
+                record=null;
+            else
+                record=new StringBuffer(val.trim());
+            break;
+        }
+    }
 }
