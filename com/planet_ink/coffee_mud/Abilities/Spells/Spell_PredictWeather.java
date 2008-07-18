@@ -40,6 +40,7 @@ public class Spell_PredictWeather extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
+    public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 
 	String lastPrediction="";
 

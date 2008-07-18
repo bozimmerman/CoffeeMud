@@ -40,6 +40,7 @@ public class Spell_PassDoor extends Spell
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectedStats)
 	{

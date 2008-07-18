@@ -39,6 +39,7 @@ public class Spell_WizardsChest extends Spell
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

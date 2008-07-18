@@ -38,6 +38,7 @@ public class Spell_IllusoryWall extends Spell
 	protected int canAffectCode(){return CAN_EXITS;}
 	protected int canTargetCode(){return CAN_EXITS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -38,6 +38,7 @@ import java.util.*;
 public class Spell_CEqCold extends Spell_BaseClanEq {
   public String ID() { return "Spell_CEqCold"; }
   public String name(){return "ClanEnchant Cold";}
+  public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
   {

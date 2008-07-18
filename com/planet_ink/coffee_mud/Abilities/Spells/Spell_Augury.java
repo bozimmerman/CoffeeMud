@@ -35,6 +35,7 @@ public class Spell_Augury extends Spell
 {
 	public String ID() { return "Spell_Augury"; }
 	public String name(){return "Augury";}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 

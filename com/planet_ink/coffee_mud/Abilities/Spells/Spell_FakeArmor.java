@@ -39,6 +39,7 @@ public class Spell_FakeArmor extends Spell
 	protected Item myItem=null;
 	private static boolean notAgainThisRound=false;
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

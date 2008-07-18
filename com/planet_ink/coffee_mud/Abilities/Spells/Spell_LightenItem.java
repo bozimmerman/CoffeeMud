@@ -38,6 +38,7 @@ public class Spell_LightenItem extends Spell
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

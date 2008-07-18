@@ -42,6 +42,7 @@ public class Spell_SummonEnemy extends Spell
 	public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public void unInvoke()
 	{

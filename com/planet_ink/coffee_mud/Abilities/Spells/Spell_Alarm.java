@@ -37,12 +37,10 @@ public class Spell_Alarm extends Spell
 	public String name(){return "Alarm";}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
-	Room myRoomContainer=null;
-
-	boolean waitingForLook=false;
-
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public int classificationCode(){	return Ability.ACODE_SPELL | Ability.DOMAIN_ENCHANTMENT;}
-
+    Room myRoomContainer=null;
+    boolean waitingForLook=false;
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{

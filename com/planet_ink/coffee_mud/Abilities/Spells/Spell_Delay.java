@@ -42,6 +42,7 @@ public class Spell_Delay extends Spell
 	protected Vector parameters=null;
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public void unInvoke()
 	{

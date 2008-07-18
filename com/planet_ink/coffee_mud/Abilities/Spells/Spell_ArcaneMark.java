@@ -35,6 +35,7 @@ public class Spell_ArcaneMark extends Spell
 {
 	public String ID() { return "Spell_ArcaneMark"; }
 	public String name(){return "Arcane Mark";}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}

@@ -39,6 +39,7 @@ public class Spell_WizardLock extends Spell
 	protected int canAffectCode(){return CAN_ITEMS|CAN_EXITS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS|Ability.CAN_EXITS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

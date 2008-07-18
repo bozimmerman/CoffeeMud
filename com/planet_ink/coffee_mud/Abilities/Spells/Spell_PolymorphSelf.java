@@ -40,6 +40,7 @@ public class Spell_PolymorphSelf extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+    public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 
 	Race newRace=null;
 

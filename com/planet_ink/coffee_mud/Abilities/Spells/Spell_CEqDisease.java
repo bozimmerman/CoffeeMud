@@ -38,6 +38,7 @@ import java.util.*;
 public class Spell_CEqDisease extends Spell_BaseClanEq {
   public String ID() { return "Spell_CEqDisease"; }
   public String name(){return "ClanEnchant Disease";}
+  public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
   {

@@ -39,6 +39,7 @@ public class Spell_Portal extends Spell
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 	protected int overrideMana(){return Integer.MAX_VALUE-90;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
     Room newRoom=null;
     Room oldRoom=null;

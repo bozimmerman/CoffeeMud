@@ -38,6 +38,7 @@ public class Spell_Enlarge extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	private static final String addOnString=" of ENORMOUS SIZE!!!";
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

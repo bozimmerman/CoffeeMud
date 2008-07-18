@@ -35,6 +35,7 @@ public class Spell_Boomerang extends Spell
 {
 	public String ID() { return "Spell_Boomerang"; }
 	public String name(){return "Returning";}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}

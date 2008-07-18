@@ -35,6 +35,7 @@ public class Spell_AnimateWeapon extends Spell
 {
 	public String ID() { return "Spell_AnimateWeapon"; }
 	public String name(){return "Animate Weapon";}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	public int overrideMana(){return 100;}

@@ -35,6 +35,7 @@ public class Spell_Daydream extends Spell
 	public String ID() { return "Spell_Daydream"; }
 	public String name(){return "Daydream";}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

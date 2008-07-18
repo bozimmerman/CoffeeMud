@@ -40,6 +40,7 @@ public class Spell_FeignDeath extends Spell
 	public String displayText(){return "(Feign Death)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+    public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 
 	public DeadBody Body=null;
 	public Room deathRoom=null;

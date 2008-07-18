@@ -38,6 +38,7 @@ public class Spell_ConjureNexus extends Spell
 	protected int canTargetCode(){return 0;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public void unInvoke()
 	{

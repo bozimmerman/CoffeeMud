@@ -40,6 +40,7 @@ public class Spell_FaerieFog extends Spell
 	protected int canAffectCode(){return CAN_ROOMS;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode() {	return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	private Room theRoom=null;
 
 	public void unInvoke()

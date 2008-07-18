@@ -37,7 +37,7 @@ public class Spell_Disenchant extends Spell
 	public String name(){return "Disenchant";}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;	}
-
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public static int disenchantItem(Item target)
 	{

@@ -38,6 +38,7 @@ public class Spell_Knock extends Spell
 	public String displayText(){return "(Knock Spell)";}
 	protected int canTargetCode(){return CAN_ITEMS|CAN_EXITS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

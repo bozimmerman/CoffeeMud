@@ -40,6 +40,7 @@ public class Spell_Geas extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int maxRange(){return adjustedMaxInvokerRange(5);}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
+    public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	public SlaveryLibrary.geasSteps STEPS=null;
 
 	public void unInvoke()

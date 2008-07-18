@@ -37,6 +37,7 @@ public class Spell_Meld extends Spell
 	public String name(){return "Meld";}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean shinBone(Item one, Item two, long locationOne, long locationTwo)
 	{

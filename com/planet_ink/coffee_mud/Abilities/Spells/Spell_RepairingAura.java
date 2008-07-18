@@ -38,6 +38,7 @@ public class Spell_RepairingAura extends Spell
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ABJURATION;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public int overrideMana(){ return 50;}
 	public static final int REPAIR_MAX=30;
 	public int repairDown=REPAIR_MAX;

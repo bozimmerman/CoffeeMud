@@ -40,6 +40,7 @@ public class Spell_Permanency extends Spell
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS|CAN_EXITS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

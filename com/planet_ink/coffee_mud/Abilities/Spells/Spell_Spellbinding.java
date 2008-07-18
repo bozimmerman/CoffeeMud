@@ -51,6 +51,7 @@ public class Spell_Spellbinding extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected DVector spellbindings=new DVector(2);
 
 	public void affectCharState(MOB affected, CharState affectableState)

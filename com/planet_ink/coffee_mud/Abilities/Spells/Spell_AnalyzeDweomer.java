@@ -36,6 +36,7 @@ public class Spell_AnalyzeDweomer extends Spell
 {
 	public String ID() { return "Spell_AnalyzeDweomer"; }
 	public String name(){return "Analyze Item";}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 

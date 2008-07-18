@@ -38,6 +38,7 @@ public class Spell_Youth extends Spell
 	public String name(){return "Youth";}
 	public int overrideMana(){return Integer.MAX_VALUE;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+    public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

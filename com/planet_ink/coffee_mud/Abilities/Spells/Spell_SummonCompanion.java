@@ -40,6 +40,7 @@ public class Spell_SummonCompanion extends Spell
     public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
     public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
     public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {

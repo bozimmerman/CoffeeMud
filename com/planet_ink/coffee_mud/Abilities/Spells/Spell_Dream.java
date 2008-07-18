@@ -35,6 +35,7 @@ public class Spell_Dream extends Spell
 	public String ID() { return "Spell_Dream"; }
 	public String name(){return "Dream";}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

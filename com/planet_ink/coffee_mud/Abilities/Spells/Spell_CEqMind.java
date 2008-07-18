@@ -38,6 +38,7 @@ import java.util.*;
 public class Spell_CEqMind extends Spell_BaseClanEq {
   public String ID() { return "Spell_CEqMind"; }
   public String name(){return "ClanEnchant Mind";}
+  public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
   public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
   {

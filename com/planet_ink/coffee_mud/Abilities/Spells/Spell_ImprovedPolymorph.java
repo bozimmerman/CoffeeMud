@@ -38,6 +38,7 @@ public class Spell_ImprovedPolymorph extends Spell
 	public String displayText(){return "(Improved Polymorph)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
+    public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 
 	Race newRace=null;
 

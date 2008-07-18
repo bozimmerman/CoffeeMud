@@ -35,7 +35,6 @@ public class Spell_InsatiableThirst extends Spell
 {
 	public String ID() { return "Spell_InsatiableThirst"; }
 	public String name(){return "Insatiable Thirst";}
-	//blic String displayText(){return "123456789*123456789*12345";}
 	public String displayText(){return "(Insatiable Thirst)";}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}

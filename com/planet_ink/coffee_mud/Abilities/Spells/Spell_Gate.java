@@ -38,6 +38,7 @@ public class Spell_Gate extends Spell
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 	protected int overrideMana(){return Integer.MAX_VALUE-90;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

@@ -42,6 +42,7 @@ public class Spell_EnchantArrows extends Spell
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 	public long flags(){return Ability.FLAG_NOORDERING;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public void affectEnvStats(Environmental host, EnvStats affectableStats)
 	{

@@ -38,6 +38,7 @@ public class Spell_Cogniportive extends Spell
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 
 	public String establishHome(MOB mob, Item me, boolean beLoose)
