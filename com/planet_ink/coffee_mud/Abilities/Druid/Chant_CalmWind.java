@@ -57,6 +57,19 @@ public class Chant_CalmWind extends Chant
         }
     }
     
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Room R=mob.location();
+            if(R!=null)
+            {
+                if(CMath.bset(weatherQue(R),WEATHERQUE_CALM))
+                    return Ability.QUALITY_BENEFICIAL_SELF;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
     
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

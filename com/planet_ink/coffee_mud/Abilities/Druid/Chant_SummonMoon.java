@@ -71,6 +71,26 @@ public class Chant_SummonMoon extends Chant
 		return true;
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Room R=mob.location();
+            if((R!=null)&&(!R.getArea().getClimateObj().canSeeTheMoon(R,null)))
+            {
+                if((R.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_DUSK)
+                &&(R.getArea().getTimeObj().getTODCode()!=TimeClock.TIME_NIGHT))
+                    return Ability.QUALITY_INDIFFERENT;
+                if((R.domainType()&Room.INDOORS)==0)
+                    return Ability.QUALITY_INDIFFERENT;
+                if(R.fetchEffect(ID())!=null)
+                    return Ability.QUALITY_INDIFFERENT;
+                return Ability.QUALITY_BENEFICIAL_SELF;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();

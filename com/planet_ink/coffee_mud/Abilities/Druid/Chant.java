@@ -38,6 +38,15 @@ public class Chant extends StdAbility
 	public String name(){ return "a Druidic Chant";}
 	public String displayText(){return "(in the natural order)";}
     protected boolean renderedMundane=false;
+    
+    /** codes: -1=do nothing, 1=wind, 2=rain, 4=hot, 8=cold, 16=calm */
+    public final static int WEATHERQUE_NADA=0;
+    public final static int WEATHERQUE_WIND=1;
+    public final static int WEATHERQUE_RAIN=2;
+    public final static int WEATHERQUE_HOT=4;
+    public final static int WEATHERQUE_COLD=8;
+    public final static int WEATHERQUE_CALM=16;
+    
 	protected int verbalCastCode(MOB mob, Environmental target, boolean auto)
     {
         if(renderedMundane)
@@ -66,6 +75,32 @@ public class Chant extends StdAbility
     }
 	public int classificationCode()	{ return renderedMundane?Ability.ACODE_SKILL:Ability.ACODE_CHANT;}
 
+    /** codes: -1=do nothing, 1=wind, 2=rain, 4=hot, 8=cold, 16=calm */
+    public int weatherQue(Room R)
+    {
+        if(R==null) return 0;
+        if((R.domainType()&Room.INDOORS)>0) return 0;
+        switch(R.getArea().getClimateObj().weatherType(R))
+        {
+        case Climate.WEATHER_BLIZZARD:
+        case Climate.WEATHER_THUNDERSTORM:
+        case Climate.WEATHER_HEAT_WAVE:
+            return WEATHERQUE_NADA;
+        case Climate.WEATHER_CLEAR: return WEATHERQUE_WIND|WEATHERQUE_RAIN|WEATHERQUE_HOT|WEATHERQUE_COLD;
+        case Climate.WEATHER_CLOUDY: return WEATHERQUE_WIND|WEATHERQUE_RAIN;
+        case Climate.WEATHER_DROUGHT: return WEATHERQUE_RAIN|WEATHERQUE_COLD;
+        case Climate.WEATHER_DUSTSTORM: return WEATHERQUE_RAIN|WEATHERQUE_CALM|WEATHERQUE_COLD;
+        case Climate.WEATHER_HAIL: return WEATHERQUE_HOT|WEATHERQUE_CALM;
+        case Climate.WEATHER_RAIN: return WEATHERQUE_WIND|WEATHERQUE_RAIN;
+        case Climate.WEATHER_SLEET: return WEATHERQUE_HOT;
+        case Climate.WEATHER_SNOW: return WEATHERQUE_WIND;
+        case Climate.WEATHER_WINDY: return WEATHERQUE_RAIN;
+        case Climate.WEATHER_WINTER_COLD: return WEATHERQUE_RAIN;
+        default: return WEATHERQUE_CALM;
+        }
+        
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
