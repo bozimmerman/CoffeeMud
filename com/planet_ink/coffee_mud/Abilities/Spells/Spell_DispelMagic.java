@@ -39,6 +39,44 @@ public class Spell_DispelMagic extends Spell
 	public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Ability A=null;
+            if(target==mob)
+            {
+                for(int e=0;e<mob.numEffects();e++)
+                {
+                    A=mob.fetchEffect(e);
+                    if((A!=null)
+                    &&(A.canBeUninvoked())
+                    &&(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
+                    &&(A.invoker()!=mob)
+                    &&(A.invoker().envStats().level()<=mob.envStats().level()+5))
+                        return Ability.QUALITY_BENEFICIAL_SELF;
+                }
+            }
+            else
+            if(target instanceof MOB)
+            {
+                for(int e=0;e<((MOB)target).numEffects();e++)
+                {
+                    A=((MOB)target).fetchEffect(e);
+                    if((A!=null)
+                    &&((A.abstractQuality()==Ability.QUALITY_BENEFICIAL_OTHERS)
+                        ||(A.abstractQuality()==Ability.QUALITY_BENEFICIAL_SELF))
+                    &&(A.invoker()==((MOB)target))
+                    &&(A.invoker().envStats().level()<=mob.envStats().level()+5))
+                        return Ability.QUALITY_MALICIOUS;
+                }
+            }
+            if((mob.isMonster())&&(mob.isInCombat()))
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_ANY);

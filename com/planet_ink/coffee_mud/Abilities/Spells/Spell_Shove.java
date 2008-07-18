@@ -54,8 +54,19 @@ public class Spell_Shove extends Spell
 		}
 		if(dir<0)
 		{
-			mob.tell("Shove whom which direction?  Try north, south, east, or west...");
-			return false;
+		    if(mob.isMonster())
+		    {
+		        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		            if((mob.location().getRoomInDir(d)!=null)
+		            &&(mob.location().getExitInDir(d)!=null)
+		            &&(mob.location().getExitInDir(d).isOpen()))
+		                dir=d;
+		    }
+		    if(dir<0)
+		    {
+    			mob.tell("Shove whom which direction?  Try north, south, east, or west...");
+    			return false;
+		    }
 		}
 		if((mob.location().getRoomInDir(dir)==null)
 		   ||(mob.location().getExitInDir(dir)==null)

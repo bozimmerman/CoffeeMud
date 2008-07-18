@@ -91,6 +91,19 @@ public class Spell_Levitate extends Spell
 		}
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if((mob.isMonster())&&(mob.isInCombat()))
+                return Ability.QUALITY_INDIFFERENT;
+            if(target instanceof MOB)
+            {
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=super.getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY);

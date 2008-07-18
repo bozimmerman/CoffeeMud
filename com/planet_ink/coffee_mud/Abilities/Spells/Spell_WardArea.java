@@ -153,6 +153,19 @@ public class Spell_WardArea extends Spell implements Trap
 		}
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(mob.isMonster())
+                return Ability.QUALITY_INDIFFERENT;
+            if(target instanceof MOB)
+            {
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)

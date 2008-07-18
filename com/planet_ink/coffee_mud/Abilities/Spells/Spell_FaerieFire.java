@@ -62,7 +62,19 @@ public class Spell_FaerieFire extends Spell
 		affectableStats.setArmor(affectableStats.armor()+10);
 	}
 
-
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                if(!CMLib.flags().isInvisible(target))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         MOB target = getTarget(mob,commands,givenTarget);

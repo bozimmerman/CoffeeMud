@@ -56,6 +56,7 @@ public class Spell_Frailty extends Spell
 		}
 		return true;
 	}
+	
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -71,7 +72,6 @@ public class Spell_Frailty extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> seem(s) less frail.");
 		}
 	}
-
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
