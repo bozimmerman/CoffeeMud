@@ -40,6 +40,7 @@ public class Spell_Shelter extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_CONJURATION;}
 
 	public Room previousLocation=null;

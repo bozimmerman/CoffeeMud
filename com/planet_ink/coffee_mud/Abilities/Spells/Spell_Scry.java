@@ -36,6 +36,7 @@ public class Spell_Scry extends Spell
 	public String name(){return "Scry";}
 	public String displayText(){return "";}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 	public static final DVector scries=new DVector(2);
