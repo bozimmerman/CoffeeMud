@@ -40,6 +40,7 @@ public class Prayer_Weather extends Prayer
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	protected int canTargetCode(){return 0;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

@@ -41,6 +41,7 @@ public class Prayer_HuntGood extends Prayer_HuntEvil
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
 	public String displayText(){return "(Hunting Good)";}
 	protected String word(){return "good";}
+    public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 
 	protected MOB gameHere(Room room)
 	{

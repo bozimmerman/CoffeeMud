@@ -39,6 +39,7 @@ public class Prayer_Gateway extends Prayer
 	protected int canTargetCode(){return 0;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY|Ability.FLAG_TRANSPORTING;}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	Room newRoom=null;
 	Room oldRoom=null;

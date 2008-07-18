@@ -40,6 +40,7 @@ public class Prayer_Fertilize extends Prayer
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_CREATION;}
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

@@ -38,6 +38,7 @@ public class Prayer_RockFlesh extends Prayer implements MendingSkill
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_RESTORATION;}
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public long flags(){return Ability.FLAG_HOLY;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean supportsMending(Environmental E)
 	{ 

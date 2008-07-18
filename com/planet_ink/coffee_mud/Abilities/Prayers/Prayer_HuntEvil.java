@@ -41,6 +41,7 @@ public class Prayer_HuntEvil extends Prayer
 	public String displayText(){return "(Hunting Evil)";}
 	protected String word(){return "evil";}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_NEUTRALIZATION;}
+    public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 
 	protected Vector theTrail=null;
 	public int nextDirection=-2;
