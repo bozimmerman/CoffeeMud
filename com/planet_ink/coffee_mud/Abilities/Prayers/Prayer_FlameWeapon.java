@@ -113,29 +113,41 @@ public class Prayer_FlameWeapon extends Prayer
 			destroyMe.destroy();
 	}
 
-
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if((mob.fetchWieldedItem() instanceof Weapon)
+            &&(mob.fetchWieldedItem().fetchEffect(ID())==null))
+                return Ability.QUALITY_BENEFICIAL_SELF;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if((auto||mob.isMonster())&&(commands.size()==0)&&(givenTarget==null))
-		{
-			Item I=mob.fetchWieldedItem();
-			if(I==null)
-				for(int i=0;i<mob.location().numItems();i++)
-				{
-					Item I2=mob.location().fetchItem(i);
-					if((I2!=null)&&(I2.container()==null)&&(I2 instanceof Weapon))
-					{ I2=I; break;}
-				}
-			if(I!=null) commands.addElement(I.Name());
-		}
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
-		if(target==null) return false;
-
-		if(!(target instanceof Weapon))
-		{
-			mob.tell("You can only enflame weapons.");
-			return false;
-		}
+        Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
+        if(target==null) return false;
+        if(!(target instanceof Weapon))
+        {
+            if(auto||mob.isMonster())
+            {
+                target=mob.fetchWieldedItem();
+                if(target==null)
+                    for(int i=0;i<mob.location().numItems();i++)
+                    {
+                        Item I2=mob.location().fetchItem(i);
+                        if((I2!=null)&&(I2.container()==null)&&(I2 instanceof Weapon))
+                        { target=I2; break;}
+                    }
+            }
+            if(!(target instanceof Weapon))
+            {
+                mob.tell("You can only enflame weapons.");
+                return false;
+            }
+        }
+        
 		if(((Weapon)target).fetchEffect(this.ID())!=null)
 		{
 			mob.tell(target.name()+" is already enflamed.");

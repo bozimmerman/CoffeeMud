@@ -48,6 +48,16 @@ public class Prayer_HealingAura extends Prayer
     protected int tenDown=10;
     protected int twentyDown=20;
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if((mob.isInCombat())&&(!mob.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead")))
+                return Ability.QUALITY_BENEFICIAL_SELF;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;

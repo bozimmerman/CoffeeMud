@@ -66,11 +66,31 @@ public class Chant_Shillelagh extends Chant
 		super.unInvoke();
 	}
 
-
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if((mob.fetchWieldedItem() instanceof Weapon)
+            &&((((Weapon)mob.fetchWieldedItem()).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
+            &&((((Weapon)mob.fetchWieldedItem()).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION)
+            &&(mob.fetchWieldedItem().fetchEffect(ID())==null))
+                return Ability.QUALITY_BENEFICIAL_SELF;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
-		if(target==null) return false;
+		if(target==null) {
+		    if((mob.isMonster())
+		    &&(mob.fetchWieldedItem() instanceof Weapon)
+            &&((((Weapon)mob.fetchWieldedItem()).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
+            &&((((Weapon)mob.fetchWieldedItem()).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION))
+		        target=mob.fetchWieldedItem();
+		    else
+    		    return false;
+		}
 
 		if(!(target instanceof Weapon))
 		{

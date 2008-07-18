@@ -68,7 +68,6 @@ public class Spell_ImprovedPolymorph extends Spell
 		}
 	}
 
-
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -81,8 +80,19 @@ public class Spell_ImprovedPolymorph extends Spell
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> morph(s) back to <S-HIS-HER> normal form.");
 	}
 
-
-
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                if((mob.getVictim()==target)&&(target.fetchEffect(ID())==null))
+                    return Ability.QUALITY_MALICIOUS;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
@@ -102,8 +112,13 @@ public class Spell_ImprovedPolymorph extends Spell
 		Race R=CMClass.getRace(race);
 		if((R==null)&&(!auto))
 		{
-			mob.tell("You can't turn "+target.name()+" into a '"+race+"'!");
-			return false;
+		    if(mob.isMonster())
+		        R=CMClass.randomRace();
+		    else
+		    {
+    			mob.tell("You can't turn "+target.name()+" into a '"+race+"'!");
+    			return false;
+		    }
 		}
 		else
 		if(R==null)

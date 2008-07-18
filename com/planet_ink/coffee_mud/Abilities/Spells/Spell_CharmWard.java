@@ -98,7 +98,20 @@ public class Spell_CharmWard extends Spell
 		return super.okMessage(myHost,msg);
 	}
 
-
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                MOB victim=((MOB)target).getVictim();
+                if((victim!=null)&&(CMLib.flags().flaggedAbilities(victim,Ability.FLAG_CHARMING).size()>0))
+                    return Ability.QUALITY_BENEFICIAL_SELF;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=null;
@@ -118,7 +131,12 @@ public class Spell_CharmWard extends Spell
 		}
 		if(target==null)
 			target=getTarget(mob,commands,givenTarget);
-		if(target==null) return false;
+		if(target==null) {
+		    if(mob.isMonster())
+		        target=mob.location();
+		    else
+    		    return false;
+		}
 		if(target.fetchEffect(ID())!=null)
 		{
 			mob.tell("This place is already charmed.");

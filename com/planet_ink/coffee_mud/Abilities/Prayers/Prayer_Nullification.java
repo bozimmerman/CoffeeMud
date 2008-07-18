@@ -45,6 +45,26 @@ public class Prayer_Nullification extends Prayer
     {
         if(mob!=null)
         {
+            if(target instanceof MOB)
+            {
+                for(int a=0;a<target.numEffects();a++)
+                {
+                    Ability A=target.fetchEffect(a);
+                    if((A!=null)&&(A.canBeUninvoked())&&(!A.isAutoInvoked())
+                    &&(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SPELL)
+                       ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+                       ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
+                       ||((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SONG)))
+                    {
+                        if((A.invoker()!=null)&&((A.invoker().envStats().level()<=(mob.envStats().level()+(2*super.getXLEVELLevel(mob))))))
+                            if((mob==target)&&(A.invoker()!=mob)&&(A.abstractQuality()==Ability.QUALITY_MALICIOUS))
+                                return Ability.QUALITY_BENEFICIAL_SELF;
+                            else
+                            if((mob.getVictim()==target)&&(A.invoker()!=mob)&&(A.abstractQuality()!=Ability.QUALITY_MALICIOUS))
+                                return Ability.QUALITY_MALICIOUS;
+                    }
+                }
+            }
             if(mob.isInCombat())
                 return Ability.QUALITY_INDIFFERENT;
         }

@@ -41,6 +41,24 @@ public class Chant_GrowClub extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if((mob.isInCombat())&&(mob.fetchWieldedItem()==null))
+            {
+                Room R=mob.location();
+                if((R!=null)
+                &&(R.fetchItem(null,"club")==null)
+                &&((R.domainType()==Room.DOMAIN_OUTDOORS_WOODS)
+                ||((R.myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
+                ||(R.domainType()==Room.DOMAIN_OUTDOORS_JUNGLE)))
+                    return Ability.QUALITY_BENEFICIAL_SELF;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WOODS)

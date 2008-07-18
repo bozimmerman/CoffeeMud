@@ -46,7 +46,6 @@ public class Spell_DeadenSmell extends Spell
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_SMELL);
 	}
 
-
 	public void unInvoke()
 	{
 		// undo the affects of this spell
@@ -58,8 +57,6 @@ public class Spell_DeadenSmell extends Spell
 		if(canBeUninvoked())
 			mob.tell("You nose clears up.");
 	}
-
-
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

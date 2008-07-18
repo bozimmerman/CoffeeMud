@@ -37,7 +37,7 @@ public class Spell_DetectInvisible extends Spell
 	public String ID() { return "Spell_DetectInvisible"; }
 	public String name(){return "Detect Invisible";}
 	public String displayText(){return "(Detecting Invisible)";}
-	public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
+	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	public int enchantQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
@@ -79,6 +79,7 @@ public class Spell_DetectInvisible extends Spell
         }
         return super.castingQuality(mob,target);
     }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

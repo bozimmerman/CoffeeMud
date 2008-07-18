@@ -45,6 +45,31 @@ public class Song_Seeing extends Song
         affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,super.adjustedLevel(invoker(),0)+100+affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING));
     }
     
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if((mob.isInCombat())&&(!CMLib.flags().canBeSeenBy(mob.getVictim(),mob)))
+                return Ability.QUALITY_BENEFICIAL_OTHERS;
+            if(target instanceof MOB)
+            {
+                Room R=((MOB)target).location();
+                boolean found=false;
+                if(R!=null)
+                    for(int r=0;r<R.numInhabitants();r++)
+                    {
+                        MOB M=R.fetchInhabitant(r);
+                        if((M!=null)&&(M!=mob)&&(M!=target)
+                        &&(CMLib.flags().isHidden(M)))
+                        { found=true; break;}
+                    }
+                if(found)
+                    return Ability.QUALITY_BENEFICIAL_OTHERS;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
