@@ -202,6 +202,19 @@ public class Chant_SummonPlants extends Chant
 		return true;
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(!rightPlace(mob,false))
+                return Ability.QUALITY_INDIFFERENT;
+            Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
+            if(myPlant==null)
+                return Ability.QUALITY_BENEFICIAL_SELF;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!rightPlace(mob,auto)) return false;

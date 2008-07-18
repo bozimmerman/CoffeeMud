@@ -63,6 +63,16 @@ public class Spell_ContinualLight extends Spell
 			room.recoverRoomStats();
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if((mob==target)&&(!CMLib.flags().canBeSeenBy(mob.location(),mob)))
+                return Ability.QUALITY_BENEFICIAL_SELF;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=null;

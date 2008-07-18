@@ -100,6 +100,18 @@ public class Prayer_UndeadInvisibility extends Prayer
 			mob.tell("Your invisibility to undead fades.");
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            MOB victim=mob.getVictim();
+            if((victim!=null)
+            &&(victim.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead")))
+                return Ability.QUALITY_BENEFICIAL_SELF;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         Environmental target=mob;

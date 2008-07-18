@@ -39,6 +39,7 @@ public class Chant_Moonbeam extends Chant
 	public String name(){ return "Moonbeam";}
 	public String displayText(){return "(Moonbeam)";}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_MOONSUMMONING;}
+    public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -60,6 +61,16 @@ public class Chant_Moonbeam extends Chant
 		room.recoverRoomStats();
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(!CMLib.flags().canBeSeenBy(mob.location(), mob))
+                return Ability.QUALITY_BENEFICIAL_SELF;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

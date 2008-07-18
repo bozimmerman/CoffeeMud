@@ -41,6 +41,16 @@ public class Spell_Light extends Spell
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(!CMLib.flags().canBeSeenBy(mob.location(), mob))
+                return Ability.QUALITY_BENEFICIAL_SELF;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		if(!(affected instanceof Room))

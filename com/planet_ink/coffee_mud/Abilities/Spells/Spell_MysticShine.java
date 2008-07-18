@@ -61,6 +61,19 @@ public class Spell_MysticShine extends Spell
 			room.recoverRoomStats();
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(!CMLib.flags().canBeSeenBy(mob.location(),mob))
+                if(target!=mob)
+                    return Ability.QUALITY_BENEFICIAL_OTHERS;
+                else
+                    return Ability.QUALITY_BENEFICIAL_SELF;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=super.getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);

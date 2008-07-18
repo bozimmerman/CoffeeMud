@@ -116,6 +116,17 @@ public class Prayer_ProtEvil extends Prayer
 			mob.tell("Your protection from evil fades.");
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            MOB victim=mob.getVictim();
+            if((victim!=null)&&CMLib.flags().isEvil(victim)&&(!CMLib.flags().isEvil(mob)))
+                return Ability.QUALITY_BENEFICIAL_SELF;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         Environmental target=mob;

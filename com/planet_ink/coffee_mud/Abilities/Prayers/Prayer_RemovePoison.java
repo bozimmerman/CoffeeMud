@@ -59,6 +59,22 @@ public class Prayer_RemovePoison extends Prayer implements MendingSkill
 		return offenders;
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                if(supportsMending((MOB)target))
+                    if(mob==target)
+                        return Ability.QUALITY_BENEFICIAL_SELF;
+                    else
+                        return Ability.QUALITY_BENEFICIAL_OTHERS;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY);

@@ -47,7 +47,16 @@ public class Chant_Darkvision extends Chant
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_DARK);
 	}
 
-
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(!CMLib.flags().canBeSeenBy(mob.location(), mob))
+                return Ability.QUALITY_BENEFICIAL_SELF;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public void unInvoke()
 	{
 		// undo the affects of this spell
