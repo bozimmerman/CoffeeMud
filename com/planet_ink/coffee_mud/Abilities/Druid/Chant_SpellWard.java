@@ -37,7 +37,7 @@ public class Chant_SpellWard extends Chant
 	public String ID() { return "Chant_SpellWard"; }
 	public String name(){return "Spell Ward";}
 	public String displayText(){return "(Spell Ward)";}
-	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
+    public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_SELF;}
 	protected int canAffectCode(){return CAN_MOBS;}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
 

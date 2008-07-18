@@ -38,6 +38,7 @@ public class Chant_SummonFlower extends Chant_SummonPlants
 	public String ID() { return "Chant_SummonFlower"; }
 	public String name(){ return "Summon Flower";}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+    public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	protected boolean processing=false;

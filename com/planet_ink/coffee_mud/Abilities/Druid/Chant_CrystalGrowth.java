@@ -40,6 +40,7 @@ public class Chant_CrystalGrowth extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 50;}
+    public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

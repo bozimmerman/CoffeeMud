@@ -37,6 +37,7 @@ public class Chant_SummonWind extends Chant
 {
 	public String ID() { return "Chant_SummonWind"; }
 	public String name(){ return "Summon Wind";}
+    public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}

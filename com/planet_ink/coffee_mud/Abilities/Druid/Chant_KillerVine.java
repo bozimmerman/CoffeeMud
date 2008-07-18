@@ -39,6 +39,7 @@ public class Chant_KillerVine extends Chant_SummonVine
 	public String name(){ return "Killer Vine";}
 	public String displayText(){return "(Killer Vine)";}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
+    public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 
 	public MOB determineMonster(MOB caster, int material)
 	{

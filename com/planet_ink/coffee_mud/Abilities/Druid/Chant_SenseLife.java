@@ -38,6 +38,7 @@ public class Chant_SenseLife extends Chant
 	public String name(){ return "Life Echoes";}
 	public String displayText(){return "(Life Echoes)";}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_BREEDING;}
+    public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	protected Room lastRoom=null;
 
 	public void unInvoke()

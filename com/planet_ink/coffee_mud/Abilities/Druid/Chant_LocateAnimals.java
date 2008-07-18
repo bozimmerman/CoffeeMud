@@ -39,6 +39,7 @@ public class Chant_LocateAnimals extends Chant
 	public String name(){ return "Locate Animals";}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	protected String displayText="(Locating Animals)";
+    public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	public String displayText(){return displayText;}
 
 	protected Vector theTrail=null;

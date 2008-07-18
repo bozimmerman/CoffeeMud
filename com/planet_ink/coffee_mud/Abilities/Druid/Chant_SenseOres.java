@@ -39,6 +39,7 @@ public class Chant_SenseOres extends Chant_SensePlants
 	public String name(){ return "Sense Ores";}
 	public String displayText(){return "(Sensing Ores)";}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
+    public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	public long flags(){return Ability.FLAG_TRACKING;}
 	protected String word(){return "ores";}
 

@@ -37,6 +37,7 @@ public class Chant_GrowForest extends Chant
 	public String ID() { return "Chant_GrowForest"; }
 	public String name(){ return "Grow Forest";}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+    public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 

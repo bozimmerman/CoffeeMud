@@ -37,6 +37,7 @@ public class Chant_SweetScent extends Chant
 {
 	public String ID() { return "Chant_SweetScent"; }
 	public String name(){ return "Sweet Scent";}
+    public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}

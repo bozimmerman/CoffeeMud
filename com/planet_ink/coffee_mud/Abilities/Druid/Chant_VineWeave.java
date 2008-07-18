@@ -36,6 +36,7 @@ public class Chant_VineWeave extends Chant
 {
 	public String ID() { return "Chant_VineWeave"; }
 	public String name(){ return "Vine Weave";}
+    public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 50;}

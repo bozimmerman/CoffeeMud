@@ -39,6 +39,7 @@ public class Chant_Fertilization extends Chant
 	protected int canTargetCode(){return 0;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	protected int canAffectCode(){return Ability.CAN_ROOMS;}
+    public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean tick(Tickable ticking, int tickID)
 	{

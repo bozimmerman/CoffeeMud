@@ -43,7 +43,7 @@ public class Chant_ControlWeather extends Chant
 	public int controlCode=0;
     public int abilityCode(){return controlCode;}
     public void setAbilityCode(int code){ super.setAbilityCode(code); controlCode=code;}
-    
+    public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
     
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{

@@ -39,6 +39,7 @@ public class Chant_FindPlant extends Chant
 	public String name(){ return "Find Plant";}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	public String displayText(){return "(Finding "+lookingFor+")";}
+    public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	public long flags(){return Ability.FLAG_TRACKING;}
 	protected String lookingFor="plants";
 	protected Vector theTrail=null;

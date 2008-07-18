@@ -39,6 +39,7 @@ public class Chant_SummonRain extends Chant
 	public String name(){ return "Summon Rain";}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
+    public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
 	public long flags(){return Ability.FLAG_WEATHERAFFECTING;}
 

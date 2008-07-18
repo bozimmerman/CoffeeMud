@@ -37,6 +37,7 @@ public class Chant_PlantBed extends Chant
 	public String ID() { return "Chant_PlantBed"; }
 	public String name(){ return "Plant Bed";}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	protected Item peaPod=null;

@@ -40,6 +40,7 @@ public class Chant_VampireVine extends Chant_SummonVine
 	public String displayText(){return "(Vampire Vine)";}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
 	public long flags(){return Ability.FLAG_SUMMONING;}
+    public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)

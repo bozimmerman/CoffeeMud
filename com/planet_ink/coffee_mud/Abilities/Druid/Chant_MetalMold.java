@@ -38,6 +38,7 @@ public class Chant_MetalMold extends Chant
 	public String name(){return "Metal Mold";}
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+    public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

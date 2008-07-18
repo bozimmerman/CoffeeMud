@@ -37,6 +37,7 @@ public class Chant_GrowClub extends Chant
 	public String ID() { return "Chant_GrowClub"; }
 	public String name(){ return "Grow Club";}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+    public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return 0;}
 

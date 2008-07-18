@@ -39,6 +39,7 @@ public class Chant_SummonPool extends Chant
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_WEATHER_MASTERY;}
+    public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected Room SpringLocation=null;
 	protected Item littleSpring=null;
 

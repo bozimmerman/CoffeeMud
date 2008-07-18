@@ -37,6 +37,7 @@ public class Chant_SummonSeaweed extends Chant_SummonPlants
 {
 	public String ID() { return "Chant_SummonSeaweed"; }
 	public String name(){ return "Summon Seaweed";}
+    public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}

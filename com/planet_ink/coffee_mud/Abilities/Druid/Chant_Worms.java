@@ -41,7 +41,9 @@ public class Chant_Worms extends Chant implements DiseaseAffect
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	public int abilityCode(){return 0;}
 	public int difficultyLevel(){return 1;}
+    
 	int plagueDown=5;
+    
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected==null)||(!(affected instanceof MOB)))

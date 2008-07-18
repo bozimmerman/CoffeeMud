@@ -40,6 +40,7 @@ public class Chant_FindOre extends Chant_FindPlant
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
 	public String displayText(){return "(Finding "+lookingFor+")";}
 	public long flags(){return Ability.FLAG_TRACKING;}
+    public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 
 	private int[] myMats={RawMaterial.MATERIAL_ROCK, // mithril omitted
 						  RawMaterial.MATERIAL_METAL};

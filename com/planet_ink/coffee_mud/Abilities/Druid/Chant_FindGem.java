@@ -39,6 +39,7 @@ public class Chant_FindGem extends Chant_FindPlant
 	public String name(){ return "Find Gem";}
 	public String displayText(){return "(Finding "+lookingFor+")";}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ROCKCONTROL;}
+    public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 	public long flags(){return Ability.FLAG_TRACKING;}
 
 	private int[] myMats={RawMaterial.MATERIAL_PRECIOUS,

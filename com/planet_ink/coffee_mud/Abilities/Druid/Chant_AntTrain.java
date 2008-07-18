@@ -39,6 +39,7 @@ public class Chant_AntTrain extends Chant
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ANIMALAFFINITY;}
 	protected int canAffectCode(){return CAN_ITEMS;}
 	protected int canTargetCode(){return CAN_ITEMS;}
+    public int abstractQuality(){return Ability.QUALITY_OK_SELF;}
 
 	boolean wasntMine=false;
 

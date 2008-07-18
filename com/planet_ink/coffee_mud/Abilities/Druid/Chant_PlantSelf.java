@@ -38,6 +38,7 @@ public class Chant_PlantSelf extends Chant
 	public String name(){ return "Plant Self";}
 	public String displayText(){return "(Planted)";}
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_SHAPE_SHIFTING;}
+    public int abstractQuality(){ return Ability.QUALITY_OK_SELF;}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 	protected int canTargetCode(){return 0;}
 	long lastTime=0;

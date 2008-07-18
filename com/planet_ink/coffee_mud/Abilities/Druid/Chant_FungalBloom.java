@@ -39,6 +39,40 @@ public class Chant_FungalBloom extends Chant
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return Ability.CAN_ITEMS;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTCONTROL;}
+    public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
+
+    public Item getShroomHere(Room R)
+    {
+        for(int i=0;i<R.numItems();i++)
+        {
+            Item I=R.fetchItem(i);
+            if((I!=null)
+            &&(I.container()==null)
+            &&(I.material()!=RawMaterial.RESOURCE_MUSHROOMS)
+            &&(I.fetchEffect("Bomb_Poison")==null))
+                return I;
+        }
+        return null;
+    }
+    
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            Room R=mob.location();
+            if(R!=null)
+            {
+                if((R.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+                ||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)
+                ||(R.domainType()==Room.DOMAIN_INDOORS_AIR)
+                ||(R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE))
+                    return Ability.QUALITY_INDIFFERENT;
+                if(getShroomHere(mob.location())==null)
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
@@ -51,8 +85,17 @@ public class Chant_FungalBloom extends Chant
 			return false;
 		}
 
-		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
-		if(target==null) return false;
+        Item target=null;
+        if(commands.size()==0)
+            target=getShroomHere(mob.location());
+        else
+            target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
+		if(target==null) {
+            if(mob.isMonster())
+                target=getShroomHere(mob.location());
+            if(target==null)
+                return false;
+        }
 		if(target.material()!=RawMaterial.RESOURCE_MUSHROOMS)
 		{
 			mob.tell(target.name()+" is not a fungus!");

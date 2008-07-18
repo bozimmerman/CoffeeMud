@@ -38,6 +38,7 @@ public class Chant_Nectar extends Chant
 	public String name(){ return "Nectar";}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
+    public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 	protected int canTargetCode(){return 0;}
 	public Vector drank=null;
 	protected int lastNum=-1;

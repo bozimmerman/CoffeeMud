@@ -37,6 +37,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 	public String ID() { return "Chant_GrowOak"; }
 	public String name(){ return "Grow Oak";}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
+    public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 	protected int canAffectCode(){return Ability.CAN_ITEMS;}
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
