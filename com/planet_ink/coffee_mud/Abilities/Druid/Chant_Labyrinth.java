@@ -77,8 +77,6 @@ public class Chant_Labyrinth extends Chant
     {
         if(mob!=null)
         {
-            if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
-                return Ability.QUALITY_INDIFFERENT;
             if(mob.location().roomID().length()==0)
                 return Ability.QUALITY_INDIFFERENT;
         }
@@ -88,11 +86,6 @@ public class Chant_Labyrinth extends Chant
     
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
-		{
-			mob.tell("You must be in a cave to create a labyrinth.");
-			return false;
-		}
 		if(mob.location().roomID().length()==0)
 		{
 			mob.tell("You cannot invoke the labyrinth here.");
