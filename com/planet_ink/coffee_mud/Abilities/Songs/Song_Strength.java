@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Abilities.Songs;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.Abilities.Prayers.Prayer_Bless;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -51,14 +52,32 @@ public class Song_Strength extends Song
 			affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+amount+super.getXLEVELLevel(invoker()));
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                if(mob.getGroupMembers(new HashSet()).size()==0)
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		amount=CMath.s_int(CMParms.combine(commands,0));
 
 		if(amount<=0)
 		{
-			mob.tell("Sing about how much strength?");
-			return false;
+		    if(mob.isMonster())
+		        amount=mob.charStats().getStat(CharStats.STAT_STRENGTH)/2;
+		    else
+		    {
+    			mob.tell("Sing about how much strength?");
+    			return false;
+		    }
 		}
 
 		if(amount>=mob.charStats().getStat(CharStats.STAT_STRENGTH))

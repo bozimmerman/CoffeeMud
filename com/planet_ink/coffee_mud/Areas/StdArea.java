@@ -761,9 +761,11 @@ public class StdArea implements Area
 			&((Integer.MAX_VALUE-(EnvStats.IS_SLEEPING|EnvStats.IS_HIDDEN)));
 		if((affected instanceof Room)&&(CMLib.map().hasASky((Room)affected)))
 		{
-			if((getClimateObj().weatherType((Room)affected)==Climate.WEATHER_BLIZZARD)
-			   ||(getClimateObj().weatherType((Room)affected)==Climate.WEATHER_DUSTSTORM)
-			   ||(getTimeObj().getTODCode()==TimeClock.TIME_NIGHT))
+		    Climate C=getClimateObj();
+			if((C==null)
+		    ||(C.weatherType((Room)affected)==Climate.WEATHER_BLIZZARD)
+		    ||(C.weatherType((Room)affected)==Climate.WEATHER_DUSTSTORM)
+		    ||(getTimeObj().getTODCode()==TimeClock.TIME_NIGHT))
 				disposition=disposition|EnvStats.IS_DARK;
 		}
 		if(disposition>0)

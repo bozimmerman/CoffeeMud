@@ -197,6 +197,12 @@ public class CharGen extends StdCommand
 	public void combatRun(MOB mob, Vector commands) {
 	    int levelStart=1;
 	    int levelEnd=91;
+	    if(commands.size()==0)
+	    {
+	        mob.tell("USAGE: CHARGEN COMBAT ([CHARCLASS]...) (FAILCHECK) ([START LEVEL]) ([END LEVEL])");
+	        return;
+	    }
+	    Hashtable failSkillCheck=null;
 	    String[][] CAMATCH={
 	            {"Commoner","CombatAbilities"},
 	            {"Bard","Bardness"},
@@ -262,6 +268,9 @@ public class CharGen extends StdCommand
                         behav=CAMATCH[c][1];
                 classSet.addElement(C,behav);
 	        }
+	        else
+	        if(s.equalsIgnoreCase("FAILCHECK"))
+	            failSkillCheck=new Hashtable();
 	    }
 	    
         Area A=CMClass.getAreaType("StdArea");
@@ -296,6 +305,8 @@ public class CharGen extends StdCommand
                 int[] bestIterScore=new int[]{Integer.MAX_VALUE};
                 String[] bestIterSkill=new String[]{""};
                 int[] losses=new int[]{0};
+                long[] avgHits=new long[]{0};
+                int[] avgIters=new int[]{0};
                 
                 /*datum.addElements(new Object[]{
                         C,
@@ -321,6 +332,7 @@ public class CharGen extends StdCommand
 	                if((++roomRobin)>2) roomRobin=0;
 	                R.setRoomID("UNKNOWNAREA#0");
 	                R.setArea(A);
+	                A.getTimeObj().setTimeOfDay(CMLib.dice().roll(1,A.getTimeObj().getHoursInDay(),-1));
 	                
 	                MOB M1=CMClass.getMOB("StdMOB");
 	                M1.baseEnvStats().setLevel(level);
@@ -345,6 +357,7 @@ public class CharGen extends StdCommand
 	                M1.resetToMaxState();
                     B.setStat("RECORD"," ");
                     B.setStat("PROF","true");
+                    B.setStat("LASTSPELL","");
 	                
                     MOB M2=CMClass.getMOB("StdMOB");
                     M2.baseCharStats().setMyRace(CMClass.getRace("Human"));
@@ -360,7 +373,9 @@ public class CharGen extends StdCommand
                     M2.resetToMaxState();
                     M2.bringToLife(M2.location(),true);
                     M2.baseCharStats().getCurrentClass().fillOutMOB(M1,level);
-                    M2.baseState().setHitPoints(M2.baseCharStats().getCurrentClass().getLevelPlayerHP(M1));
+                    int hp=M2.baseCharStats().getCurrentClass().getLevelPlayerHP(M1);
+                    if(hp>M2.baseState().getHitPoints())
+                        M2.baseState().setHitPoints(hp);
                     M2.setWimpHitPoint(0);
                     M2.recoverMaxState();
                     M2.recoverCharStats();
@@ -384,21 +399,21 @@ public class CharGen extends StdCommand
                         
                         int h=h2-(M2.amDead()?0:M2.curState().getHitPoints());
                         h=h-(h1-(M1.amDead()?0:M1.curState().getHitPoints()));
+//System.out.println(level+"/"+tries+"/"+iterations+"/"+h+"/"+B.getStat("LASTSPELL"));
                         if(h>bestSingleHitScore[0])
                         {
                             bestSingleHitScore[0]=h;
-                            Vector V=CMParms.parseSemicolons(B.getStat("RECORD"),true);
-                            if(V.size()==0)
-                                bestSingleHitSkill[0]="";
-                            else
-                                bestSingleHitSkill[0]=(String)V.lastElement();
+                            bestSingleHitSkill[0]=B.getStat("LASTSPELL");
                         }
                         cumScore+=h;
                     }
                     if(M1.amDead())
                         losses[0]++;
                     else
+                    if(M2.amDead())
                     {
+                        avgHits[0]+=cumScore;
+                        avgIters[0]+=iterations;
                         if(cumScore>bestHitScore[0])
                         {
                             bestHitScore[0]=cumScore;
@@ -409,16 +424,59 @@ public class CharGen extends StdCommand
                             bestIterScore[0]=iterations;
                             bestIterSkill[0]=B.getStat("RECORD");
                         }
+                        if(failSkillCheck!=null)
+                        {
+                            Vector V=CMParms.parseSemicolons(B.getStat("RECORD"),true);
+                            for(int v=0;v<V.size();v++)
+                            {
+                                String s=((String)V.elementAt(v)).trim();
+                                boolean failed=false;
+                                if(s.startsWith("!"))
+                                {
+                                    failed=true;
+                                    s=s.substring(1);
+                                }
+                                int[] times=(int[])failSkillCheck.get(s);
+                                if(times==null)
+                                {
+                                    times=new int[2];
+                                    failSkillCheck.put(s,times);
+                                }
+                                times[0]++;
+                                if(failed)
+                                    times[1]++;
+                            }
+                        }
                     }
                     M1.destroy();
                     M2.destroy();
 	                A.delProperRoom(R);
 	                R.destroy();
 	            }
+                avgHits[0]/=TOTAL_ITERATIONS;
+                avgIters[0]/=TOTAL_ITERATIONS;
                 mob.tell("BEST ITER: "+bestIterScore[0]+": "+bestIterSkill[0]);
                 mob.tell("BEST HITS: "+bestHitScore[0]+": "+bestHitSkill[0]);
                 mob.tell("BEST ONE : "+bestSingleHitScore[0]+": "+bestSingleHitSkill[0]);
-                mob.tell("LOSSES   : "+losses[0]+"/"+TOTAL_ITERATIONS+"\n\r");
+                mob.tell("AVERAGES : HITS: "+avgHits[0]+", ITERS: "+avgIters[0]);
+                mob.tell("LOSSES   : "+losses[0]+"/"+TOTAL_ITERATIONS);
+                if((failSkillCheck!=null)&&(failSkillCheck.size()>0))
+                {
+                    StringBuffer fails=new StringBuffer("SKILLFAILS: ");
+                    for(Enumeration i=failSkillCheck.keys();i.hasMoreElements();)
+                    {
+                        String s=(String)i.nextElement();
+                        int[] times=(int[])failSkillCheck.get(s);
+                        if(times[1]>0) {
+                            int pct=(int)Math.round(100.0*CMath.div(times[1],times[0]));
+                            fails.append(s+"("+pct+"%) ");
+                        }
+                        
+                    }
+                    mob.tell(fails.toString());
+                    failSkillCheck.clear();
+                }
+                mob.tell("");
 	        }
 	    }
         CMLib.map().delArea(A);

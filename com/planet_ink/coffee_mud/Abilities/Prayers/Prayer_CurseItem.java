@@ -116,6 +116,21 @@ public class Prayer_CurseItem extends Prayer
 		return true;
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if((target instanceof MOB)&&(mob!=target))
+            {
+                Item I=Prayer_Curse.getSomething((MOB)target,true);
+                if(I==null)
+                    I=Prayer_Curse.getSomething((MOB)target,false);
+                if(I==null) return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);

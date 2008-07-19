@@ -72,15 +72,15 @@ public class Spell_SummonMonster extends Spell
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		if(success)
+        MOB monster = determineMonster(mob, mob.envStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))));
+		if((success)&&(monster!=null))
 		{
 			invoker=mob;
 			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> summon(s) help from the Java Plain....^?");
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				MOB target = determineMonster(mob, mob.envStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))));
-				beneficialAffect(mob,target,asLevel,0);
+				beneficialAffect(mob,monster,asLevel,0);
 			}
 		}
 		else
@@ -91,7 +91,8 @@ public class Spell_SummonMonster extends Spell
 	}
 	public MOB determineMonster(MOB caster, int level)
 	{
-
+	    Room R=caster.location();
+	    if(R==null) return null;
         MOB newMOB=null;
         Vector choices=new Vector();
         MOB M=null;
@@ -163,16 +164,16 @@ public class Spell_SummonMonster extends Spell
             newMOB.recoverCharStats();
         }
         newMOB.setMoney(0);
-		newMOB.setLocation(caster.location());
+		newMOB.setLocation(R);
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		newMOB.recoverCharStats();
 		newMOB.recoverEnvStats();
 		newMOB.recoverMaxState();
 		newMOB.resetToMaxState();
-		newMOB.bringToLife(caster.location(),true);
+		newMOB.bringToLife(R,true);
 		CMLib.beanCounter().clearZeroMoney(newMOB,null);
-		newMOB.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+		R.showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
         MOB victim=caster.getVictim();
         CMLib.commands().postFollow(newMOB,caster,true);
         if(newMOB.amFollowing()!=caster)
@@ -181,9 +182,11 @@ public class Spell_SummonMonster extends Spell
         if(victim!=null)
         {
             if(newMOB.getVictim()!=victim) newMOB.setVictim(victim);
-            newMOB.location().showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
+            R.showOthers(newMOB,victim,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) attacking <T-NAMESELF>!");
         }
 		newMOB.setStartRoom(null);
+        if(newMOB.amDead()||newMOB.amDestroyed()) 
+            return null;
 		return(newMOB);
 	}
 }

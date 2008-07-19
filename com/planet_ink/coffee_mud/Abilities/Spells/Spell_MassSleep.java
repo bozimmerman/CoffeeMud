@@ -40,6 +40,19 @@ public class Spell_MassSleep extends Spell
 	protected int canAffectCode(){return 0;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ENCHANTMENT;}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                if(((MOB)target).isInCombat())
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);

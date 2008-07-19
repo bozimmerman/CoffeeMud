@@ -49,14 +49,32 @@ public class Song_Dexterity extends Song
 			affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+(amount+super.getXLEVELLevel(invoker())));
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                if(mob.getGroupMembers(new HashSet()).size()==0)
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		amount=CMath.s_int(CMParms.combine(commands,0));
 
 		if(amount<=0)
 		{
-			mob.tell("Sing about how much dexterity?");
-			return false;
+            if(mob.isMonster())
+                amount=mob.charStats().getStat(CharStats.STAT_DEXTERITY)/2;
+            else
+            {
+    			mob.tell("Sing about how much dexterity?");
+    			return false;
+            }
 		}
 
 		if(amount>=mob.charStats().getStat(CharStats.STAT_DEXTERITY))

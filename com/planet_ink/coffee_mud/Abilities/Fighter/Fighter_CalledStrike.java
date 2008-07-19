@@ -89,10 +89,11 @@ public class Fighter_CalledStrike extends FighterSkill
 		return super.okMessage(myHost,msg);
 	}
 
-	protected boolean prereqs(MOB mob)
+	protected boolean prereqs(MOB mob, boolean quiet)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{
+		    if(!quiet)
 			mob.tell("You are too far away to perform a called strike!");
 			return false;
 		}
@@ -100,21 +101,33 @@ public class Fighter_CalledStrike extends FighterSkill
 		Item w=mob.fetchWieldedItem();
 		if((w==null)||(!(w instanceof Weapon)))
 		{
+            if(!quiet)
 			mob.tell("You need a weapon to perform a called strike!");
 			return false;
 		}
 		Weapon wp=(Weapon)w;
 		if(wp.weaponType()!=Weapon.TYPE_SLASHING)
 		{
+            if(!quiet)
 			mob.tell("You cannot amputate with "+wp.name()+"!");
 			return false;
 		}
 		return true;
 	}
-
+	
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(!prereqs(mob,true))
+                return Ability.QUALITY_INDIFFERENT;
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		if(!prereqs(mob)) return false;
+		if(!prereqs(mob,false)) return false;
 
 		gone="";
 		hpReq=9;

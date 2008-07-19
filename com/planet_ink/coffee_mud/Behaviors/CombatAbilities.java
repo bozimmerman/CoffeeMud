@@ -42,6 +42,7 @@ public class CombatAbilities extends StdBehavior
 	public Vector skillsAlways=null;
 	protected boolean[] wandUseCheck={false,false};
 	protected boolean proficient=false;
+	protected String lastSpell="";
 	protected StringBuffer record=null;
 
 	public final static int COMBAT_RANDOM=0;
@@ -305,6 +306,8 @@ public class CombatAbilities extends StdBehavior
         }
 
         Room R=mob.location();
+        if((lastSpell!=null)&&(lastSpell.length()>0))
+            lastSpell="";
         
         if(!wandUseCheck[0]) {
             wandUseCheck[0]=true;
@@ -417,72 +420,78 @@ public class CombatAbilities extends StdBehavior
 		// now find a skill to use
 		int tries=0;
 		Ability tryThisOne=null;
+		Ability A=null;
 
-		while((tryThisOne==null)&&(tries<100)&&((mob.numAbilities())>0))
+        int victimQuality=Ability.QUALITY_INDIFFERENT;
+        int selfQuality=Ability.QUALITY_INDIFFERENT;
+        int leaderQuality=Ability.QUALITY_INDIFFERENT;
+		while((tryThisOne==null)&&((++tries)<100)&&(mob.numAbilities()>0))
 		{
-			tryThisOne=mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
+			A=mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
+			
+            if((A==null)
+            ||(A.isAutoInvoked())
+            ||(A.triggerStrings()==null)
+            ||(A.triggerStrings().length==0)
+            ||((skillsAlways!=null)&&(!skillsAlways.contains(A.ID())))
+            ||((skillsNever!=null)&&(skillsNever.contains(A.ID()))))
+                continue;
+            
+			victimQuality=A.castingQuality(mob,victim);
+            selfQuality=A.castingQuality(mob,mob);
+            leaderQuality=((mob==leader)||(leader==null))?Ability.QUALITY_INDIFFERENT:A.castingQuality(mob,leader);
 
-			if((tryThisOne==null)
-			||(tryThisOne.isAutoInvoked())
-			||(tryThisOne.triggerStrings()==null)
-			||(tryThisOne.triggerStrings().length==0))
-				tryThisOne=null;
-			else
-		    if(((skillsAlways==null)||(!skillsAlways.contains(tryThisOne.ID())))
-			&&(((tryThisOne.castingQuality(mob,victim)!=Ability.QUALITY_MALICIOUS)
-				&&(tryThisOne.castingQuality(mob,mob)!=Ability.QUALITY_BENEFICIAL_SELF)
-				&&(tryThisOne.castingQuality(mob,leader)!=Ability.QUALITY_BENEFICIAL_OTHERS))
-			||((skillsNever!=null)&&(skillsNever.contains(tryThisOne.ID())))
-			||(victim.fetchEffect(tryThisOne.ID())!=null)))
-				tryThisOne=null;
-			else
-			if(tryThisOne.castingQuality(mob,victim)==Ability.QUALITY_MALICIOUS)
+			if(victimQuality==Ability.QUALITY_MALICIOUS)
 			{
 				switch(combatMode)
 				{
 				case COMBAT_RANDOM:
+	                tryThisOne=A;
 					break;
 				case COMBAT_DEFENSIVE:
-					if(CMLib.dice().rollPercentage()>5)
-						tryThisOne=null;
+					if(CMLib.dice().rollPercentage()<=5)
+		                tryThisOne=A;
 					break;
 				case COMBAT_OFFENSIVE:
+	                tryThisOne=A;
 					break;
 				case COMBAT_MIXEDOFFENSIVE:
-					if(CMLib.dice().rollPercentage()>75)
-						tryThisOne=null;
+					if(CMLib.dice().rollPercentage()<=75)
+		                tryThisOne=A;
 					break;
 				case COMBAT_MIXEDDEFENSIVE:
-					if(CMLib.dice().rollPercentage()>25)
-						tryThisOne=null;
+					if(CMLib.dice().rollPercentage()<=25)
+		                tryThisOne=A;
 					break;
 				}
 			}
 			else
+            if((selfQuality==Ability.QUALITY_BENEFICIAL_SELF)
+            ||(leaderQuality==Ability.QUALITY_BENEFICIAL_OTHERS))
 			{
 				switch(combatMode)
 				{
 				case COMBAT_RANDOM:
+	                tryThisOne=A;
 					break;
 				case COMBAT_DEFENSIVE:
+	                tryThisOne=A;
 					break;
 				case COMBAT_OFFENSIVE:
-					if(CMLib.dice().rollPercentage()>5)
-						tryThisOne=null;
+					if(CMLib.dice().rollPercentage()<=5)
+		                tryThisOne=A;
 					break;
 				case COMBAT_MIXEDOFFENSIVE:
-					if(CMLib.dice().rollPercentage()>25)
-						tryThisOne=null;
+					if(CMLib.dice().rollPercentage()<=25)
+		                tryThisOne=A;
 					break;
 				case COMBAT_MIXEDDEFENSIVE:
-					if(CMLib.dice().rollPercentage()>75)
-						tryThisOne=null;
+					if(CMLib.dice().rollPercentage()<=75)
+		                tryThisOne=A;
 					break;
 				}
 			}
-			tries++;
 		}
-
 
 		boolean skillUsed=true;
 		if(tryThisOne!=null)
@@ -514,11 +523,12 @@ public class CombatAbilities extends StdBehavior
 					return true;
 			}
 
-			if(tryThisOne.castingQuality(mob,mob)==Ability.QUALITY_BENEFICIAL_SELF)
-				victim=mob;
+			MOB target=victim;
+			if(selfQuality==Ability.QUALITY_BENEFICIAL_SELF)
+			    target=mob;
 			else
-			if(tryThisOne.castingQuality(mob,leader)==Ability.QUALITY_BENEFICIAL_OTHERS)
-			{ victim=((leader==null)||(mob.location()!=leader.location()))?mob:leader;}
+			if(leaderQuality==Ability.QUALITY_BENEFICIAL_OTHERS)
+			    target=((leader==null)||(mob.location()!=leader.location()))?mob:leader;
 	        
 
 			if(proficient)
@@ -526,12 +536,19 @@ public class CombatAbilities extends StdBehavior
 			else
     			tryThisOne.setProficiency(CMLib.dice().roll(1,70,mob.baseEnvStats().level()));
 			Vector V=new Vector();
-			V.addElement(victim.name());
-			if(tryThisOne.invoke(mob,V,victim,false,0))
+			V.addElement(target.name());
+			if(lastSpell!=null)
+			    lastSpell=tryThisOne.ID();
+			if(tryThisOne.invoke(mob,V,null,false,0))
 			    skillUsed=true;
 			else
-            if(record!=null) record.append("!");
-			if(record!=null) record.append(tryThisOne.ID()).append(";");
+			{
+	            if(lastSpell!=null)
+    	            lastSpell="!"+tryThisOne.ID();
+                if(record!=null) 
+                    record.append("!");
+			}
+			if(record!=null) record.append(tryThisOne.ID()).append("; ");
 		}
 		
 		// if a skill use failed, take a stab at wanding
@@ -541,7 +558,6 @@ public class CombatAbilities extends StdBehavior
 		&&(!victim.amDead())
 		&&((myWand!=null)||(backupWand!=null)))
 		{
-		    Ability A=null;
 			if((myWand==null)&&(backupWand!=null)&&(backupWand.canWear(mob,Item.WORN_HELD)))
 			{
 				Vector V=new Vector();
@@ -553,29 +569,25 @@ public class CombatAbilities extends StdBehavior
 			if(myWand!=null)
 			{
 				A=((Wand)myWand).getSpell();
-				if((A!=null)
-				&&((A.castingQuality(mob,mob.getVictim())==Ability.QUALITY_MALICIOUS)
-				||(A.castingQuality(mob,mob)==Ability.QUALITY_BENEFICIAL_SELF)
-				||(A.castingQuality(mob,leader)==Ability.QUALITY_BENEFICIAL_OTHERS)))
+                MOB target=null;
+				if(A!=null)
 				{
-					if(A.castingQuality(mob,mob)==Ability.QUALITY_BENEFICIAL_SELF)
-						victim=mob;
-					else
-					if(A.castingQuality(mob,leader)==Ability.QUALITY_BENEFICIAL_OTHERS)
-					{ victim=((leader==null)||(mob.location()!=leader.location()))?mob:leader;}
-					else
-					if(mob.getVictim()!=null)
-						victim=mob.getVictim();
-					else
-						victim=null;
-					if(victim!=null)
-					{
-						Vector V=new Vector();
-						V.addElement("sayto");
-						V.addElement(victim.name());
-						V.addElement(((Wand)myWand).magicWord());
-						mob.doCommand(V,Command.METAFLAG_FORCED);
-					}
+                    if(A.castingQuality(mob,mob)==Ability.QUALITY_BENEFICIAL_SELF)
+                        target=mob;
+                    else
+                    if(A.castingQuality(mob,victim)==Ability.QUALITY_MALICIOUS)
+                        target=victim;
+                    else
+                    if(((mob!=leader)&&(leader!=null))&&(A.castingQuality(mob,leader)==Ability.QUALITY_BENEFICIAL_OTHERS))
+                        target=((leader==null)||(mob.location()!=leader.location()))?mob:leader;
+				}
+				if(target!=null)
+				{
+					Vector V=new Vector();
+					V.addElement("sayto");
+					V.addElement(target.name());
+					V.addElement(((Wand)myWand).magicWord());
+					mob.doCommand(V,Command.METAFLAG_FORCED);
 				}
 			}
 		}
@@ -588,11 +600,12 @@ public class CombatAbilities extends StdBehavior
         if(this.CODES==null)
         {
             String[] superCodes=super.getStatCodes();
-            CODES=new String[superCodes.length+2];
+            CODES=new String[superCodes.length+3];
             for(int c=0;c<superCodes.length;c++)
                 CODES[c]=superCodes[c];
-            CODES[CODES.length-2]="RECORD";
-            CODES[CODES.length-1]="PROF";
+            CODES[CODES.length-3]="RECORD";
+            CODES[CODES.length-2]="PROF";
+            CODES[CODES.length-1]="LASTSPELL";
         }
         return CODES;
     }
@@ -611,6 +624,7 @@ public class CombatAbilities extends StdBehavior
         {
         case 0: return (record==null)?"":record.toString();
         case 1: return Boolean.toString(proficient);
+        case 2: return lastSpell!=null?lastSpell:"";
         }
         return "";
     }
@@ -630,6 +644,9 @@ public class CombatAbilities extends StdBehavior
             break;
         case 1:
             proficient=CMath.s_bool(val);
+            break;
+        case 2:
+            lastSpell=val;
             break;
         }
     }

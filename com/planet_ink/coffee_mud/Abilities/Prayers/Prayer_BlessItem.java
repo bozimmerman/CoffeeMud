@@ -82,6 +82,21 @@ public class Prayer_BlessItem extends Prayer implements MendingSkill
 					&&(CMLib.flags().domainAffects(E,Ability.DOMAIN_CURSING).size()>0);
 	}
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if(target instanceof MOB)
+            {
+                Item I=Prayer_Bless.getSomething((MOB)target,true);
+                if(I==null)
+                    I=Prayer_Bless.getSomething((MOB)target,false);
+                if(I==null) return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
