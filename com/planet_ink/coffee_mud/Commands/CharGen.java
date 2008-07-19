@@ -264,10 +264,36 @@ public class CharGen extends StdCommand
 	            }
 	            String behav="CombatAbilities";
                 for(int c=0;c<CAMATCH.length;c++)
-                    if(C.baseClass().equalsIgnoreCase(CAMATCH[c][0]))
+                    if(CAMATCH[c][1].equalsIgnoreCase(CAMATCH[c][0]))
                         behav=CAMATCH[c][1];
                 classSet.addElement(C,behav);
 	        }
+            else
+            if(s.endsWith("s"))
+            {
+                s=s.substring(0,s.length()-1);
+                for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+                {
+                    CharClass C=(CharClass)e.nextElement();
+                    if((CMath.bset(C.availabilityCode(),Area.THEME_FANTASY)
+                        ||CMath.bset(C.availabilityCode(),Area.THEME_HEROIC)
+                        ||CMath.bset(C.availabilityCode(),Area.THEME_TECHNOLOGY))
+                    &&(!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK))
+                    &&(C.baseClass().equalsIgnoreCase(s)))
+                    {
+                        if(!classCleared)
+                        {
+                            classCleared=true;
+                            classSet=new DVector(2);
+                        }
+                        String behav="CombatAbilities";
+                        for(int c=0;c<CAMATCH.length;c++)
+                            if(C.baseClass().equalsIgnoreCase(CAMATCH[c][0]))
+                                behav=CAMATCH[c][1];
+                        classSet.addElement(C,behav);
+                    }
+                }
+            }
 	        else
 	        if(s.equalsIgnoreCase("FAILCHECK"))
 	            failSkillCheck=new Hashtable();
