@@ -199,7 +199,7 @@ public class CharGen extends StdCommand
 	    int levelEnd=91;
 	    if(commands.size()==0)
 	    {
-	        mob.tell("USAGE: CHARGEN COMBAT ([CHARCLASS]...) (FAILCHECK) ([START LEVEL]) ([END LEVEL])");
+	        mob.tell("USAGE: CHARGEN COMBAT ([CHARCLASS(S)]...) (FAILCHECK) ([START LEVEL]) ([END LEVEL])");
 	        return;
 	    }
 	    Hashtable failSkillCheck=null;
