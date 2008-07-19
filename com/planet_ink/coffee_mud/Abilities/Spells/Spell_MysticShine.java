@@ -61,20 +61,12 @@ public class Spell_MysticShine extends Spell
 			room.recoverRoomStats();
 	}
 
-    public int castingQuality(MOB mob, Environmental target)
-    {
-        if(mob!=null)
-        {
-            if(!CMLib.flags().canBeSeenBy(mob.location(),mob))
-                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
-        }
-        return super.castingQuality(mob,target);
-    }
-    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=super.getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
-		if(target==null) return false;
+		if(target==null){
+		    return false;
+		}
 		if((!(target instanceof Item))
         ||(((((Item)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)
             &&((((Item)target).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_MITHRIL)))

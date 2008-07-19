@@ -70,7 +70,7 @@ public class Spell_LightSensitivity extends Spell
         {
             if(mob.isInCombat())
             {
-                if(CMLib.flags().isInDark(((MOB)affected).location()))
+                if(CMLib.flags().isInDark(mob.location()))
                     return Ability.QUALITY_INDIFFERENT;
                 if(target instanceof MOB)
                 {
