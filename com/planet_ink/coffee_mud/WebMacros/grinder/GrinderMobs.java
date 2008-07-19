@@ -213,7 +213,8 @@ public class GrinderMobs
 				if(aff.length()>0)
 				{
 					ExpertiseLibrary.ExpertiseDefinition def=CMLib.expertises().getDefinition(aff);
-					if(def==null) return "Unknown Expertise '"+aff+"'.";
+					if(def==null) 
+                        return "Unknown Expertise '"+aff+"'.";
 					E.addExpertise(def.ID);
 				}
 				num++;
