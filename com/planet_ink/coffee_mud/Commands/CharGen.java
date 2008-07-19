@@ -474,7 +474,8 @@ public class CharGen extends StdCommand
                         int[] times=(int[])failSkillCheck.get(s);
                         if(times[1]>0) {
                             int pct=(int)Math.round(100.0*CMath.div(times[1],times[0]));
-                            fails.append(s+"("+pct+"%) ");
+                            if(pct>20)
+                                fails.append(s+"("+pct+"%) ");
                         }
                         
                     }
