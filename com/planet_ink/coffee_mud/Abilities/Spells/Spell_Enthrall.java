@@ -171,6 +171,8 @@ public class Spell_Enthrall extends Spell
             {
                 if(!CMLib.flags().canBeHeardBy(mob,(MOB)target))
                     return Ability.QUALITY_INDIFFERENT;
+                if((mob.isMonster())&&(((MOB)target).isMonster()))
+                    return Ability.QUALITY_INDIFFERENT;
             }
         }
         return super.castingQuality(mob,target);

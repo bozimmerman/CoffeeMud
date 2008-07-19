@@ -38,32 +38,52 @@ public class Spell_Shatter extends Spell
 	protected int canTargetCode(){return CAN_MOBS|CAN_ITEMS;}
     public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
+    
+    public Item getItem(MOB mobTarget)
+    {
+        Vector goodPossibilities=new Vector();
+        Vector possibilities=new Vector();
+        for(int i=0;i<mobTarget.inventorySize();i++)
+        {
+            Item item=mobTarget.fetchInventory(i);
+            if((item!=null)
+               &&(item.subjectToWearAndTear()))
+            {
+                if(item.amWearingAt(Item.IN_INVENTORY))
+                    possibilities.addElement(item);
+                else
+                    goodPossibilities.addElement(item);
+            }
+        }
+        if(goodPossibilities.size()>0)
+            return (Item)goodPossibilities.elementAt(CMLib.dice().roll(1,goodPossibilities.size(),-1));
+        else
+        if(possibilities.size()>0)
+            return (Item)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
+        return null;
+    }
 
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if((target instanceof MOB)&&(mob!=target))
+            {
+                Item I=getItem((MOB)target);
+                if(I==null)
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+    
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
 		Item target=null;
 		if(mobTarget!=null)
 		{
-			Vector goodPossibilities=new Vector();
-			Vector possibilities=new Vector();
-			for(int i=0;i<mobTarget.inventorySize();i++)
-			{
-				Item item=mobTarget.fetchInventory(i);
-				if((item!=null)
-				   &&(item.subjectToWearAndTear()))
-				{
-					if(item.amWearingAt(Item.IN_INVENTORY))
-						possibilities.addElement(item);
-					else
-						goodPossibilities.addElement(item);
-				}
-				if(goodPossibilities.size()>0)
-					target=(Item)goodPossibilities.elementAt(CMLib.dice().roll(1,goodPossibilities.size(),-1));
-				else
-				if(possibilities.size()>0)
-					target=(Item)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
-			}
+            target=getItem(mob);
 			if(target==null)
 				return maliciousFizzle(mob,mobTarget,"<S-NAME> attempt(s) a shattering spell at <T-NAMESELF>, but nothing happens.");
 		}

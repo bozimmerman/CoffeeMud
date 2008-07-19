@@ -170,8 +170,13 @@ public class Spell_Charm extends Spell
         {
             if(!CMLib.flags().canSpeak(mob))
                 return Ability.QUALITY_INDIFFERENT;
-            if((target instanceof MOB)&&(!CMLib.flags().canBeHeardBy(mob,(MOB)target)))
-                return Ability.QUALITY_INDIFFERENT;
+            if(target instanceof MOB)
+            {
+                if(!CMLib.flags().canBeHeardBy(mob,(MOB)target))
+                    return Ability.QUALITY_INDIFFERENT;
+                if((mob.isMonster())&&(((MOB)target).isMonster()))
+                    return Ability.QUALITY_INDIFFERENT;
+            }
         }
         return super.castingQuality(mob,target);
     }

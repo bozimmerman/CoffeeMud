@@ -194,6 +194,8 @@ public class Skill_ControlUndead extends StdSkill
                 return Ability.QUALITY_INDIFFERENT;
             if(CMLib.flags().isGood(mob))
                 return Ability.QUALITY_INDIFFERENT;
+            if((mob.isMonster())&&(((MOB)target).isMonster()))
+                return Ability.QUALITY_INDIFFERENT;
         }
         return super.castingQuality(mob,target);
     }

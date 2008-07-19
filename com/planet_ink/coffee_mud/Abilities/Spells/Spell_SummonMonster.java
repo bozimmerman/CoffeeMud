@@ -72,14 +72,15 @@ public class Spell_SummonMonster extends Spell
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
+        Room R=mob.location();
         MOB monster = determineMonster(mob, mob.envStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob))));
 		if((success)&&(monster!=null))
 		{
 			invoker=mob;
 			CMMsg msg=CMClass.getMsg(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> summon(s) help from the Java Plain....^?");
-			if(mob.location().okMessage(mob,msg))
+			if(R.okMessage(mob,msg))
 			{
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
 				beneficialAffect(mob,monster,asLevel,0);
 			}
 		}

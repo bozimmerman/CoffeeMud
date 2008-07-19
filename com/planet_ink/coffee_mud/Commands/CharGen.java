@@ -387,10 +387,13 @@ public class CharGen extends StdCommand
 	                
                     int iterations=0;
                     int cumScore=0;
+                    long t1=System.currentTimeMillis();
                     while((M1.getVictim()==M2)
                          &&(M2.getVictim()==M1)
                          &&(!M1.amDead())
-                         &&(!M2.amDead()))
+                         &&(!M2.amDead())
+                         &&(M1.location()==M2.location())
+                         &&((System.currentTimeMillis()-t1)<20000))
                     {
                         iterations++;
                         int h1=M1.curState().getHitPoints();
@@ -399,7 +402,6 @@ public class CharGen extends StdCommand
                         
                         int h=h2-(M2.amDead()?0:M2.curState().getHitPoints());
                         h=h-(h1-(M1.amDead()?0:M1.curState().getHitPoints()));
-//System.out.println(level+"/"+tries+"/"+iterations+"/"+h+"/"+B.getStat("LASTSPELL"));
                         if(h>bestSingleHitScore[0])
                         {
                             bestSingleHitScore[0]=h;
@@ -407,6 +409,9 @@ public class CharGen extends StdCommand
                         }
                         cumScore+=h;
                     }
+                    if((System.currentTimeMillis()-t1)>=20000)
+                        Log.errOut("CharGen",level+"/"+tries+"/"+iterations+"/"+B.getStat("LASTSPELL"));
+                    else
                     if(M1.amDead())
                         losses[0]++;
                     else
