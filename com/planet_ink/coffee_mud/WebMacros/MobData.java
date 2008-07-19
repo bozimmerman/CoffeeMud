@@ -199,7 +199,8 @@ public class MobData extends StdWebMacro
 			for(int e=0;e<E.numExpertises();e++)
 			{
 				ExpertiseLibrary.ExpertiseDefinition X=CMLib.expertises().getDefinition(E.fetchExpertise(e));
-				theclasses.addElement(X.ID);
+                if(X!=null)
+                    theclasses.addElement(X.ID);
 			}
 			for(int i=0;i<theclasses.size();i++)
 			{
