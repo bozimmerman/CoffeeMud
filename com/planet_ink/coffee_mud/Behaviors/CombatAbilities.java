@@ -41,6 +41,7 @@ public class CombatAbilities extends StdBehavior
 	public Vector skillsNever=null;
 	public Vector skillsAlways=null;
 	protected boolean[] wandUseCheck={false,false};
+	protected boolean proficient=false;
 	protected StringBuffer record=null;
 
 	public final static int COMBAT_RANDOM=0;
@@ -245,6 +246,7 @@ public class CombatAbilities extends StdBehavior
 		super.startBehavior(forMe);
 		skillsNever=null;
 		wandUseCheck[0]=false;
+		proficient=false;
 		Vector V=CMParms.parse(getParms());
 		String s=null;
 		Ability A=null;
@@ -519,14 +521,17 @@ public class CombatAbilities extends StdBehavior
 			{ victim=((leader==null)||(mob.location()!=leader.location()))?mob:leader;}
 	        
 
-			tryThisOne.setProficiency(CMLib.dice().roll(1,70,mob.baseEnvStats().level()));
+			if(proficient)
+                tryThisOne.setProficiency(100);
+			else
+    			tryThisOne.setProficiency(CMLib.dice().roll(1,70,mob.baseEnvStats().level()));
 			Vector V=new Vector();
 			V.addElement(victim.name());
 			if(tryThisOne.invoke(mob,V,victim,false,0))
 			    skillUsed=true;
 			else
             if(record!=null) record.append("!");
-			if(record!=null) record.append("!"+tryThisOne.ID()+";");
+			if(record!=null) record.append(tryThisOne.ID()).append(";");
 		}
 		
 		// if a skill use failed, take a stab at wanding
@@ -583,14 +588,16 @@ public class CombatAbilities extends StdBehavior
         if(this.CODES==null)
         {
             String[] superCodes=super.getStatCodes();
-            CODES=new String[superCodes.length+1];
+            CODES=new String[superCodes.length+2];
             for(int c=0;c<superCodes.length;c++)
                 CODES[c]=superCodes[c];
-            CODES[CODES.length-1]="RECORD";
+            CODES[CODES.length-2]="RECORD";
+            CODES[CODES.length-1]="PROF";
         }
         return CODES;
     }
     protected int getCodeNum(String code){
+        String[] CODES=getStatCodes();
         for(int i=0;i<CODES.length;i++)
             if(code.equalsIgnoreCase(CODES[i])) return i;
         return -1;
@@ -600,9 +607,10 @@ public class CombatAbilities extends StdBehavior
         if(x<super.getStatCodes().length)
             return super.getStat(code);
         x=x-super.getStatCodes().length;
-        switch(getCodeNum(code))
+        switch(x)
         {
         case 0: return (record==null)?"":record.toString();
+        case 1: return Boolean.toString(proficient);
         }
         return "";
     }
@@ -612,13 +620,16 @@ public class CombatAbilities extends StdBehavior
         if(x<super.getStatCodes().length)
             super.setStat(code,val);
         x=x-super.getStatCodes().length;
-        switch(getCodeNum(code))
+        switch(x)
         {
         case 0:
             if(val.length()==0)
                 record=null;
             else
                 record=new StringBuffer(val.trim());
+            break;
+        case 1:
+            proficient=CMath.s_bool(val);
             break;
         }
     }

@@ -94,7 +94,7 @@ public class Thief_Search extends ThiefSkill
                 {
                     MOB M=R.fetchInhabitant(r);
                     if((M!=null)&&(M!=mob)&&(CMLib.flags().isHidden(M)))
-                        return Ability.QUALITY_BENEFICIAL_SELF;
+                        return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
                 }
         }
         return super.castingQuality(mob,target);

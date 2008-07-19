@@ -181,7 +181,7 @@ public class Druid_PlantForm extends StdAbility
                     int classLevel=qualClassLevel-CMLib.ableMapper().qualifyingLevel(mob,this);
                     if(qualClassLevel<0) classLevel=30;
                     if(getRaceLevel(classLevel)==3)
-                        return Ability.QUALITY_BENEFICIAL_SELF;
+                        return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
                 }
             }
         }

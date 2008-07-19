@@ -194,6 +194,236 @@ public class CharGen extends StdCommand
 		return avgMob;
 	}
 
+	public void combatRun(MOB mob, Vector commands) {
+	    int levelStart=1;
+	    int levelEnd=91;
+	    String[][] CAMATCH={
+	            {"Commoner","CombatAbilities"},
+	            {"Bard","Bardness"},
+                {"Cleric","Clericness"},
+                {"Druid","Druidness"},
+                {"Mage","Mageness"},
+                {"Thief","Thiefness"},
+                {"Fighter","Fighterness"},
+	    };
+	    final int TOTAL_ITERATIONS=1000;
+	    
+	    DVector classSet=new DVector(2);
+	    for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+	    {
+	        CharClass C=(CharClass)e.nextElement();
+	        if((CMath.bset(C.availabilityCode(),Area.THEME_FANTASY)
+                ||CMath.bset(C.availabilityCode(),Area.THEME_HEROIC)
+                ||CMath.bset(C.availabilityCode(),Area.THEME_TECHNOLOGY))
+	        &&(!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK)))
+	        {
+	            String behav="CombatAbilities";
+	            for(int c=0;c<CAMATCH.length;c++)
+	                if(C.baseClass().equalsIgnoreCase(CAMATCH[c][0]))
+	                    behav=CAMATCH[c][1];
+	            classSet.addElement(C,behav);
+	        }
+	    }
+	    
+	    // set the parameters
+	    boolean classCleared=false;
+	    boolean nextLevel=false;
+	    for(int i=0;i<commands.size();i++)
+	    {
+	        String s=(String)commands.elementAt(i);
+	        if(CMath.isInteger(s))
+	        {
+	            int x=CMath.s_int(s);
+	            if(x>=0)
+	            {
+	                if((nextLevel)&&(x>=levelStart))
+	                    levelEnd=x;
+	                else
+	                if(!nextLevel)
+	                {
+	                    levelStart=x;
+	                    levelEnd=x;
+	                    nextLevel=true;
+	                }
+	            }
+	        }
+	        else
+	        if(CMClass.findCharClass(s)!=null)
+	        {
+	            CharClass C=CMClass.findCharClass(s);
+	            if(!classCleared)
+	            {
+	                classCleared=true;
+	                classSet=new DVector(2);
+	            }
+	            String behav="CombatAbilities";
+                for(int c=0;c<CAMATCH.length;c++)
+                    if(C.baseClass().equalsIgnoreCase(CAMATCH[c][0]))
+                        behav=CAMATCH[c][1];
+                classSet.addElement(C,behav);
+	        }
+	    }
+	    
+        Area A=CMClass.getAreaType("StdArea");
+        A.setName("UNKNOWNAREA");
+        CMLib.map().addArea(A);
+        
+        /*final int DATUM_CLASS=0; 
+        final int DATUM_LEVEL=1;
+        final int DATUM_BESTSINGLEHITSCORE=2;
+        final int DATUM_BESTSINGLEHITSKILL=3;
+        final int DATUM_BESTHITSCORE=4;
+        final int DATUM_BESTHITSKILLS=5;
+        final int DATUM_BESTITERSCORE=6;
+        final int DATUM_BESTITERSKILLS=7;
+        final int DATUM_LOSSES=8;
+        
+        DVector datum=new DVector(9);*/
+        
+        for(int charClassDex=0;charClassDex<classSet.size();charClassDex++)
+        {
+            CharClass C=(CharClass)classSet.elementAt(charClassDex,1);
+    	    for(int level=levelStart;level<=levelEnd;level++)
+    	    {
+                mob.tell(C.ID()+": "+level);
+                int roomRobin=0;
+                Room R=null;
+                
+                int[] bestSingleHitScore=new int[]{0};
+                String[] bestSingleHitSkill=new String[]{""};
+                int[] bestHitScore=new int[]{0};
+                String[] bestHitSkill=new String[]{""};
+                int[] bestIterScore=new int[]{Integer.MAX_VALUE};
+                String[] bestIterSkill=new String[]{""};
+                int[] losses=new int[]{0};
+                
+                /*datum.addElements(new Object[]{
+                        C,
+                        new Integer(level),
+                        bestSingleHitScore,
+                        bestSingleHitSkill,
+                        bestHitScore,
+                        bestHitSkill,
+                        bestIterScore,
+                        bestIterSkill,
+                        losses
+                });*/
+	            for(int tries=0;tries<TOTAL_ITERATIONS;tries++)
+	            {
+	                Behavior B=CMClass.getBehavior((String)classSet.elementAt(charClassDex,2));
+                    B.setParms(C.ID());
+	                switch(roomRobin)
+	                {
+	                case 0: R=CMClass.getLocale("Woods"); break; 
+                    case 1: R=CMClass.getLocale("CaveRoom"); break; 
+                    case 2: R=CMClass.getLocale("CityStreet"); break; 
+	                }
+	                if((++roomRobin)>2) roomRobin=0;
+	                R.setRoomID("UNKNOWNAREA#0");
+	                R.setArea(A);
+	                
+	                MOB M1=CMClass.getMOB("StdMOB");
+	                M1.baseEnvStats().setLevel(level);
+                    M1.baseCharStats().setMyRace(CMClass.getRace("Human"));
+	                M1.setName("GOODGUY");
+	                M1.recoverCharStats();
+                    M1.recoverEnvStats();
+                    M1.setLocation(R);
+	                M1.addBehavior(B);
+	                M1.baseCharStats().getMyRace().setHeightWeight(M1.baseEnvStats(),(char)M1.baseCharStats().getStat(CharStats.STAT_GENDER));
+	                M1.recoverCharStats();
+	                M1.recoverEnvStats();
+	                M1.recoverMaxState();
+	                M1.resetToMaxState();
+	                M1.bringToLife(M1.location(),true);
+	                C.fillOutMOB(M1,level);
+	                M1.baseState().setHitPoints(C.getLevelPlayerHP(M1));
+	                M1.setWimpHitPoint(0);
+	                M1.recoverMaxState();
+	                M1.recoverCharStats();
+	                M1.recoverEnvStats();
+	                M1.resetToMaxState();
+                    B.setStat("RECORD"," ");
+                    B.setStat("PROF","true");
+	                
+                    MOB M2=CMClass.getMOB("StdMOB");
+                    M2.baseCharStats().setMyRace(CMClass.getRace("Human"));
+                    M2.baseEnvStats().setLevel(level);
+                    M2.setName("BADGUY");
+                    M2.recoverCharStats();
+                    M2.recoverEnvStats();
+                    M2.setLocation(R);
+                    M2.baseCharStats().getMyRace().setHeightWeight(M2.baseEnvStats(),(char)M2.baseCharStats().getStat(CharStats.STAT_GENDER));
+                    M2.recoverCharStats();
+                    M2.recoverEnvStats();
+                    M2.recoverMaxState();
+                    M2.resetToMaxState();
+                    M2.bringToLife(M2.location(),true);
+                    M2.baseCharStats().getCurrentClass().fillOutMOB(M1,level);
+                    M2.baseState().setHitPoints(M2.baseCharStats().getCurrentClass().getLevelPlayerHP(M1));
+                    M2.setWimpHitPoint(0);
+                    M2.recoverMaxState();
+                    M2.recoverCharStats();
+                    M2.recoverEnvStats();
+                    M2.resetToMaxState();
+                    
+                    M1.setVictim(M2);
+                    M2.setVictim(M1);
+	                
+                    int iterations=0;
+                    int cumScore=0;
+                    while((M1.getVictim()==M2)
+                         &&(M2.getVictim()==M1)
+                         &&(!M1.amDead())
+                         &&(!M2.amDead()))
+                    {
+                        iterations++;
+                        int h1=M1.curState().getHitPoints();
+                        int h2=M2.curState().getHitPoints();
+                        CMLib.threads().tickAllTickers(R);
+                        
+                        int h=h2-(M2.amDead()?0:M2.curState().getHitPoints());
+                        h=h-(h1-(M1.amDead()?0:M1.curState().getHitPoints()));
+                        if(h>bestSingleHitScore[0])
+                        {
+                            bestSingleHitScore[0]=h;
+                            Vector V=CMParms.parseSemicolons(B.getStat("RECORD"),true);
+                            if(V.size()==0)
+                                bestSingleHitSkill[0]="";
+                            else
+                                bestSingleHitSkill[0]=(String)V.lastElement();
+                        }
+                        cumScore+=h;
+                    }
+                    if(M1.amDead())
+                        losses[0]++;
+                    else
+                    {
+                        if(cumScore>bestHitScore[0])
+                        {
+                            bestHitScore[0]=cumScore;
+                            bestHitSkill[0]=B.getStat("RECORD");
+                        }
+                        if(iterations<bestIterScore[0])
+                        {
+                            bestIterScore[0]=iterations;
+                            bestIterSkill[0]=B.getStat("RECORD");
+                        }
+                    }
+                    M1.destroy();
+                    M2.destroy();
+	                A.delProperRoom(R);
+	                R.destroy();
+	            }
+                mob.tell("BEST ITER: "+bestIterScore[0]+": "+bestIterSkill[0]);
+                mob.tell("BEST HITS: "+bestHitScore[0]+": "+bestHitSkill[0]);
+                mob.tell("BEST ONE : "+bestSingleHitScore[0]+": "+bestSingleHitSkill[0]);
+                mob.tell("LOSSES   : "+losses[0]+"/"+TOTAL_ITERATIONS+"\n\r");
+	        }
+	    }
+        CMLib.map().delArea(A);
+        A.destroy();
+	}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
@@ -201,6 +431,15 @@ public class CharGen extends StdCommand
 		if(mob.isMonster())
 			return false;
 		commands.removeElementAt(0);
+		if(commands.size()>0)
+		{
+		    if(((String)commands.firstElement()).equalsIgnoreCase("COMBAT"))
+		    {
+		        commands.removeElementAt(0);
+		        combatRun(mob,commands);
+		        return true;
+		    }
+		}
 		CharClass C=null;
 		int level=-1;
 		String ClassName="";

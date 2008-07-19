@@ -58,10 +58,10 @@ public class Prayer_Nullification extends Prayer
                     {
                         if((A.invoker()!=null)&&((A.invoker().envStats().level()<=(mob.envStats().level()+(2*super.getXLEVELLevel(mob))))))
                             if((mob==target)&&(A.invoker()!=mob)&&(A.abstractQuality()==Ability.QUALITY_MALICIOUS))
-                                return Ability.QUALITY_BENEFICIAL_SELF;
+                                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
                             else
                             if((mob.getVictim()==target)&&(A.invoker()!=mob)&&(A.abstractQuality()!=Ability.QUALITY_MALICIOUS))
-                                return Ability.QUALITY_MALICIOUS;
+                                return super.castingQuality(mob, target,Ability.QUALITY_MALICIOUS);
                     }
                 }
             }

@@ -119,7 +119,7 @@ public class Prayer_FlameWeapon extends Prayer
         {
             if((mob.fetchWieldedItem() instanceof Weapon)
             &&(mob.fetchWieldedItem().fetchEffect(ID())==null))
-                return Ability.QUALITY_BENEFICIAL_SELF;
+                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
         }
         return super.castingQuality(mob,target);
     }

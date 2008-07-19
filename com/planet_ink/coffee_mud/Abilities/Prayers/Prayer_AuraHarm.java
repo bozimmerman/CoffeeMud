@@ -104,11 +104,11 @@ public class Prayer_AuraHarm extends Prayer
         if(mob!=null)
         {
             if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
-                return Ability.QUALITY_BENEFICIAL_SELF;
+                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
             if((target instanceof MOB)&&(target!=mob))
             {
                 if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
-                    return Ability.QUALITY_BENEFICIAL_OTHERS;
+                    return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
             }
         }
         return super.castingQuality(mob,target);

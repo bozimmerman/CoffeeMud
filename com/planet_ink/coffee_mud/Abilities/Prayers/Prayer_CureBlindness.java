@@ -85,10 +85,7 @@ public class Prayer_CureBlindness extends Prayer implements MendingSkill
             if(target instanceof MOB)
             {
                 if(supportsMending((MOB)target))
-                    if(mob==target)
-                        return Ability.QUALITY_BENEFICIAL_SELF;
-                    else
-                        return Ability.QUALITY_BENEFICIAL_OTHERS;
+                    return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
             }
         }
         return super.castingQuality(mob,target);

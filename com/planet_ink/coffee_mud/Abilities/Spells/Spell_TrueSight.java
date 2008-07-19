@@ -85,7 +85,7 @@ public class Spell_TrueSight extends Spell
         if(mob!=null)
         {
             if(mob.isInCombat()&&(!CMLib.flags().canBeSeenBy(mob.getVictim(),mob)))
-                return Ability.QUALITY_BENEFICIAL_SELF;
+                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
         }
         return super.castingQuality(mob,target);
     }

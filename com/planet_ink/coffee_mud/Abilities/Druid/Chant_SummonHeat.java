@@ -51,7 +51,7 @@ public class Chant_SummonHeat extends Chant
             if(R!=null)
             {
                 if(CMath.bset(weatherQue(R),WEATHERQUE_HOT))
-                    return Ability.QUALITY_BENEFICIAL_SELF;
+                    return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
             }
         }
         return super.castingQuality(mob,target);

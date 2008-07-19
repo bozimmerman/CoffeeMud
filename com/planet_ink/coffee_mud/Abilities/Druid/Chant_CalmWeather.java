@@ -77,7 +77,7 @@ public class Chant_CalmWeather extends Chant
             if(R!=null)
             {
                 if(CMath.bset(weatherQue(R),WEATHERQUE_CALM))
-                    return Ability.QUALITY_BENEFICIAL_SELF;
+                    return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
             }
         }
         return super.castingQuality(mob,target);

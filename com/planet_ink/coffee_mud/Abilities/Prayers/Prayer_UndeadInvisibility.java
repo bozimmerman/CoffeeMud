@@ -107,7 +107,7 @@ public class Prayer_UndeadInvisibility extends Prayer
             MOB victim=mob.getVictim();
             if((victim!=null)
             &&(victim.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead")))
-                return Ability.QUALITY_BENEFICIAL_SELF;
+                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
         }
         return super.castingQuality(mob,target);
     }

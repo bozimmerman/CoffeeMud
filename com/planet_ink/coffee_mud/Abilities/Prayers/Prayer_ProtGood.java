@@ -119,7 +119,7 @@ public class Prayer_ProtGood extends Prayer
         {
             MOB victim=mob.getVictim();
             if((victim!=null)&&(CMLib.flags().isGood(victim))&&(!CMLib.flags().isGood(mob)))
-                return Ability.QUALITY_BENEFICIAL_SELF;
+                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
         }
         return super.castingQuality(mob,target);
     }

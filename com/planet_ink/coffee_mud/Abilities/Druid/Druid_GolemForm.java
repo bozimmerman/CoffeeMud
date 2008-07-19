@@ -216,7 +216,7 @@ public class Druid_GolemForm extends StdAbility
             {
                 if((((MOB)target).isInCombat())
                 &&(!Druid_ShapeShift.isShapeShifted((MOB)target)))
-                    return Ability.QUALITY_BENEFICIAL_SELF;
+                    return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
             }
         }
         return super.castingQuality(mob,target);

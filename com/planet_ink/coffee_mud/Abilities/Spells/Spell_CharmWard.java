@@ -106,7 +106,7 @@ public class Spell_CharmWard extends Spell
             {
                 MOB victim=((MOB)target).getVictim();
                 if((victim!=null)&&(CMLib.flags().flaggedAbilities(victim,Ability.FLAG_CHARMING).size()>0))
-                    return Ability.QUALITY_BENEFICIAL_SELF;
+                    return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
             }
         }
         return super.castingQuality(mob,target);

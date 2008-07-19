@@ -53,7 +53,7 @@ public class Prayer_HealingAura extends Prayer
         if(mob!=null)
         {
             if((mob.isInCombat())&&(!mob.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead")))
-                return Ability.QUALITY_BENEFICIAL_SELF;
+                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
         }
         return super.castingQuality(mob,target);
     }

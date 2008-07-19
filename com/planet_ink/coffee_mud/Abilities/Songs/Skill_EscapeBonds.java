@@ -60,7 +60,7 @@ public class Skill_EscapeBonds extends BardSkill
             if(target instanceof MOB)
             {
                 if((CMLib.flags().isBound((MOB)target))&&(target==mob))
-                    return Ability.QUALITY_BENEFICIAL_SELF;
+                    return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
             }
         }
         return super.castingQuality(mob,target);

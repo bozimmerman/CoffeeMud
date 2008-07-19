@@ -66,7 +66,7 @@ public class Chant_Moonbeam extends Chant
         if(mob!=null)
         {
             if(!CMLib.flags().canBeSeenBy(mob.location(), mob))
-                return Ability.QUALITY_BENEFICIAL_SELF;
+                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
         }
         return super.castingQuality(mob,target);
     }

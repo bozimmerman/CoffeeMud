@@ -257,6 +257,13 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 */
 	public MOB fillOutMOB(MOB mob, int level);
 
+    /**
+     * Returns the amount of hp the given player would have being
+     * this class.
+     * @param mob the mob who would be this class
+     * @return the amount of hp a pc of this class should have
+     */
+	public int getLevelPlayerHP(MOB mob);
 	/**
 	 * Returns the amount of mana the given mob would have being
 	 * this class.

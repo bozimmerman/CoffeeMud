@@ -84,10 +84,7 @@ public class Prayer_Conviction extends Prayer
             {
                 if(!((MOB)target).getWorshipCharID().equals(mob.getWorshipCharID()))
                     return Ability.QUALITY_INDIFFERENT;
-                if(mob==target)
-                    return Ability.QUALITY_BENEFICIAL_SELF;
-                else
-                    return Ability.QUALITY_BENEFICIAL_OTHERS;
+                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
             }
         }
         return super.castingQuality(mob,target);

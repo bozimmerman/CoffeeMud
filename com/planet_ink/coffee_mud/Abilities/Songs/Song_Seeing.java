@@ -50,7 +50,7 @@ public class Song_Seeing extends Song
         if(mob!=null)
         {
             if((mob.isInCombat())&&(!CMLib.flags().canBeSeenBy(mob.getVictim(),mob)))
-                return Ability.QUALITY_BENEFICIAL_OTHERS;
+                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
             if(target instanceof MOB)
             {
                 Room R=((MOB)target).location();
@@ -64,7 +64,7 @@ public class Song_Seeing extends Song
                         { found=true; break;}
                     }
                 if(found)
-                    return Ability.QUALITY_BENEFICIAL_OTHERS;
+                    return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
             }
         }
         return super.castingQuality(mob,target);

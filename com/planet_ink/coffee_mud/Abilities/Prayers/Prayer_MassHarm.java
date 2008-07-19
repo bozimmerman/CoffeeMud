@@ -46,10 +46,7 @@ public class Prayer_MassHarm extends Prayer
             if(target instanceof MOB)
             {
                 if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
-                    if(mob==target)
-                        return Ability.QUALITY_BENEFICIAL_SELF;
-                    else
-                        return Ability.QUALITY_BENEFICIAL_OTHERS;
+                    return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
             }
         }
         return super.castingQuality(mob,target);

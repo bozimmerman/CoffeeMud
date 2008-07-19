@@ -211,7 +211,7 @@ public class Chant_SummonPlants extends Chant
                 return Ability.QUALITY_INDIFFERENT;
             Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
             if(myPlant==null)
-                return Ability.QUALITY_BENEFICIAL_SELF;
+                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
         }
         return super.castingQuality(mob,target);
     }

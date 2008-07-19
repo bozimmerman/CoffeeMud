@@ -95,7 +95,7 @@ public class Thief_EscapeBonds extends ThiefSkill
             Vector V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_BINDING);
             if(V.size()==0)
                 return Ability.QUALITY_INDIFFERENT;
-            return Ability.QUALITY_BENEFICIAL_SELF;
+            return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
         }
         return super.castingQuality(mob,target);
     }

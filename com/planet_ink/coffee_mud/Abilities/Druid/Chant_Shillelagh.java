@@ -74,7 +74,7 @@ public class Chant_Shillelagh extends Chant
             &&((((Weapon)mob.fetchWieldedItem()).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_WOODEN)
             &&((((Weapon)mob.fetchWieldedItem()).material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_VEGETATION)
             &&(mob.fetchWieldedItem().fetchEffect(ID())==null))
-                return Ability.QUALITY_BENEFICIAL_SELF;
+                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
         }
         return super.castingQuality(mob,target);
     }

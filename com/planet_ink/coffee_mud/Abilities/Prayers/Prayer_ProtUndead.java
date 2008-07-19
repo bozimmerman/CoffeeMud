@@ -101,7 +101,7 @@ public class Prayer_ProtUndead extends Prayer
             if((victim!=null)
             &&(victim.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead"))
             &&(!mob.charStats().getMyRace().racialCategory().equalsIgnoreCase("Undead")))
-                return Ability.QUALITY_BENEFICIAL_SELF;
+                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
         }
         return super.castingQuality(mob,target);
     }

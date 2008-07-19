@@ -53,7 +53,7 @@ public class Prayer_DarkSenses extends Prayer
         if(mob!=null)
         {
             if(!CMLib.flags().canBeSeenBy(mob.location(), mob))
-                return Ability.QUALITY_BENEFICIAL_SELF;
+                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
         }
         return super.castingQuality(mob,target);
     }

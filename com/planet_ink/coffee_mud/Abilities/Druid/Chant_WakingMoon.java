@@ -85,7 +85,7 @@ public class Chant_WakingMoon extends Chant
                     return Ability.QUALITY_INDIFFERENT;
                 if(R.fetchEffect(ID())!=null)
                     return Ability.QUALITY_INDIFFERENT;
-                return Ability.QUALITY_BENEFICIAL_SELF;
+                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
             }
         }
         return super.castingQuality(mob,target);

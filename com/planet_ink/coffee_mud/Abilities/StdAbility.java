@@ -92,28 +92,37 @@ public class StdAbility implements Ability
 	public int enchantQuality(){return abstractQuality();}
     public void initializeClass(){}
 
+    protected int castingQuality(MOB mob, Environmental target, int abstractQuality)
+    {
+        if((target!=null)&&(target.fetchEffect(ID())!=null))
+            return Ability.QUALITY_INDIFFERENT;
+        if(isAutoInvoked()) return Ability.QUALITY_INDIFFERENT;
+        if((mob!=null)&&(target!=null)&&(mob.getVictim()==target))
+        {
+            if((minRange()>0)&&(mob.rangeToTarget()<minRange()))
+                return Ability.QUALITY_INDIFFERENT;
+            if(mob.rangeToTarget()>maxRange())
+                return Ability.QUALITY_INDIFFERENT;
+            
+        }
+        switch(abstractQuality)
+        {
+        case Ability.QUALITY_BENEFICIAL_OTHERS:
+            if(mob==target) return Ability.QUALITY_BENEFICIAL_SELF;
+            return Ability.QUALITY_BENEFICIAL_OTHERS;
+        case Ability.QUALITY_MALICIOUS:
+            return Ability.QUALITY_MALICIOUS;
+        case Ability.QUALITY_BENEFICIAL_SELF:
+            if((target instanceof MOB)&&(mob!=target)) return Ability.QUALITY_INDIFFERENT;
+            return Ability.QUALITY_BENEFICIAL_SELF;
+        default:
+            return Ability.QUALITY_INDIFFERENT;
+        }
+    }
+
     public int castingQuality(MOB mob, Environmental target)
 	{
-		if((target!=null)&&(target.fetchEffect(ID())!=null))
-			return Ability.QUALITY_INDIFFERENT;
-		if(isAutoInvoked()) return Ability.QUALITY_INDIFFERENT;
-		if((minRange()>0)&&(mob!=null)&&(target!=null)&&(mob.getVictim()==target)&&(mob.rangeToTarget()<minRange()))
-			return Ability.QUALITY_INDIFFERENT;
-		if((mob!=null)&&(target!=null)&&(mob.getVictim()==target)&&(mob.rangeToTarget()>maxRange()))
-			return Ability.QUALITY_INDIFFERENT;
-		switch(abstractQuality())
-		{
-		case Ability.QUALITY_BENEFICIAL_OTHERS:
-			if(mob==target) return Ability.QUALITY_BENEFICIAL_SELF;
-			return Ability.QUALITY_BENEFICIAL_OTHERS;
-		case Ability.QUALITY_MALICIOUS:
-			return Ability.QUALITY_MALICIOUS;
-		case Ability.QUALITY_BENEFICIAL_SELF:
-			if((target instanceof MOB)&&(mob!=target)) return Ability.QUALITY_INDIFFERENT;
-			return Ability.QUALITY_BENEFICIAL_SELF;
-		default:
-			return Ability.QUALITY_INDIFFERENT;
-		}
+        return castingQuality(mob,target,abstractQuality());
 	}
 
     protected synchronized int expertise(MOB mob, int code)

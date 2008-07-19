@@ -54,7 +54,7 @@ public class Spell_DispelMagic extends Spell
                     &&(A.abstractQuality()==Ability.QUALITY_MALICIOUS)
                     &&(A.invoker()!=mob)
                     &&(A.invoker().envStats().level()<=mob.envStats().level()+5))
-                        return Ability.QUALITY_BENEFICIAL_SELF;
+                        return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
                 }
             }
             else
@@ -68,7 +68,7 @@ public class Spell_DispelMagic extends Spell
                         ||(A.abstractQuality()==Ability.QUALITY_BENEFICIAL_SELF))
                     &&(A.invoker()==((MOB)target))
                     &&(A.invoker().envStats().level()<=mob.envStats().level()+5))
-                        return Ability.QUALITY_MALICIOUS;
+                        return super.castingQuality(mob, target,Ability.QUALITY_MALICIOUS);
                 }
             }
             if((mob.isMonster())&&(mob.isInCombat()))

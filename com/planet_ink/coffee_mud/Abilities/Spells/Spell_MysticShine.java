@@ -66,10 +66,7 @@ public class Spell_MysticShine extends Spell
         if(mob!=null)
         {
             if(!CMLib.flags().canBeSeenBy(mob.location(),mob))
-                if(target!=mob)
-                    return Ability.QUALITY_BENEFICIAL_OTHERS;
-                else
-                    return Ability.QUALITY_BENEFICIAL_SELF;
+                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
         }
         return super.castingQuality(mob,target);
     }

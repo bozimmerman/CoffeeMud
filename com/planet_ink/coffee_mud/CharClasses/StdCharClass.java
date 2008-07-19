@@ -684,8 +684,8 @@ public class StdCharClass implements CharClass
 		mob.baseEnvStats().setAttackAdjustment(getLevelAttack(mob));
 		mob.setMoney(CMLib.dice().roll(1,level,0)+CMLib.dice().roll(1,10,0));
         mob.baseState().setHitPoints(CMLib.dice().rollHP(mob.baseEnvStats().level(),mob.baseEnvStats().ability()));
-        mob.baseState().setMana(mob.baseCharStats().getCurrentClass().getLevelMana(mob));
-        mob.baseState().setMovement(mob.baseCharStats().getCurrentClass().getLevelMove(mob));
+        mob.baseState().setMana(getLevelMana(mob));
+        mob.baseState().setMovement(getLevelMove(mob));
         if(mob.getWimpHitPoint()>0)
             mob.setWimpHitPoint((int)Math.round(CMath.mul(mob.curState().getHitPoints(),.10)));
         mob.setExperience(CMLib.leveler().getLevelExperience(mob.envStats().level()));
@@ -698,7 +698,8 @@ public class StdCharClass implements CharClass
 
 	public int getLevelMana(MOB mob)
 	{
-		return 100+((mob.baseEnvStats().level()-1)*((int)Math.round(CMath.div(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE),getManaDivisor())))+(getManaDie()*(getManaDice()+1)/2));
+		return CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA)+
+		    ((mob.baseEnvStats().level()-1)*((int)Math.round(CMath.div(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE),getManaDivisor())))+(getManaDie()*(getManaDice()+1)/2));
 	}
 
 	public int getLevelAttack(MOB mob)
@@ -724,13 +725,20 @@ public class StdCharClass implements CharClass
 
 	public int getLevelMove(MOB mob)
 	{
-		int move=100;
+		int move=CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE);
 		double lvlMul=1.0;//-CMath.div(mob.envStats().level(),100.0);
 		if(lvlMul<0.1) lvlMul=.1;
 		if(mob.baseEnvStats().level()>1)
 			move+=((int)Math.round(CMath.mul(mob.baseEnvStats().level()-1,CMath.mul(CMath.mul(lvlMul,CMath.div(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH),18.0)),getMovementMultiplier()))));
 		return move;
 	}
+
+    public int getLevelPlayerHP(MOB mob)
+    {
+        int hp=CMProps.getIntVar(CMProps.SYSTEMI_STARTHP);
+        int newHitPointGain=(int)Math.floor(CMath.div(10,this.getHPDivisor())+(this.getHPDice()*this.getHPDie()/2));
+        return hp+((mob.envStats().level()-1)*newHitPointGain);
+    }
 
 	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, HashSet followers)
 	{

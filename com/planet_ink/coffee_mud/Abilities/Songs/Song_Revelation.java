@@ -55,7 +55,7 @@ public class Song_Revelation extends Song
                         { found=true; break;}
                     }
                 if(found)
-                    return Ability.QUALITY_BENEFICIAL_OTHERS;
+                    return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
             }
         }
         return super.castingQuality(mob,target);

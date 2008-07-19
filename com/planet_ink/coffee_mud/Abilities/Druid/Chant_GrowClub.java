@@ -53,7 +53,7 @@ public class Chant_GrowClub extends Chant
                 &&((R.domainType()==Room.DOMAIN_OUTDOORS_WOODS)
                 ||((R.myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
                 ||(R.domainType()==Room.DOMAIN_OUTDOORS_JUNGLE)))
-                    return Ability.QUALITY_BENEFICIAL_SELF;
+                    return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
             }
         }
         return super.castingQuality(mob,target);
