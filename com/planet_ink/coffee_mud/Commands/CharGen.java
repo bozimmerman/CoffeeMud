@@ -199,7 +199,7 @@ public class CharGen extends StdCommand
 	    int levelEnd=91;
 	    if(commands.size()==0)
 	    {
-	        mob.tell("USAGE: CHARGEN COMBAT ([CHARCLASS(S)]...) (FAILCHECK) ([START LEVEL]) ([END LEVEL])");
+	        mob.tell("USAGE: CHARGEN COMBAT ([CHARCLASS(S)]...) (FAILCHECK) (ITERATIONS=[X])([START LEVEL]) ([END LEVEL])");
 	        return;
 	    }
 	    Hashtable failSkillCheck=null;
@@ -212,7 +212,7 @@ public class CharGen extends StdCommand
                 {"Thief","Thiefness"},
                 {"Fighter","Fighterness"},
 	    };
-	    final int TOTAL_ITERATIONS=1000;
+	    int TOTAL_ITERATIONS=1000;
 	    
 	    DVector classSet=new DVector(2);
 	    for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
@@ -254,6 +254,13 @@ public class CharGen extends StdCommand
 	            }
 	        }
 	        else
+            if(s.toUpperCase().startsWith("ITERATIONS="))
+            {
+                s=s.substring("ITERATIONS=".length());
+                if(CMath.isInteger(s))
+                    TOTAL_ITERATIONS=CMath.s_int(s);
+            }
+            else
 	        if(CMClass.findCharClass(s)!=null)
 	        {
 	            CharClass C=CMClass.findCharClass(s);
