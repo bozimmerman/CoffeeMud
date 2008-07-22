@@ -78,8 +78,8 @@ public class Chant extends StdAbility
     /** codes: -1=do nothing, 1=wind, 2=rain, 4=hot, 8=cold, 16=calm */
     public int weatherQue(Room R)
     {
-        if(R==null) return 0;
-        if((R.domainType()&Room.INDOORS)>0) return 0;
+        if(R==null) return WEATHERQUE_NADA;
+        if((R.domainType()&Room.INDOORS)>0) return WEATHERQUE_NADA;
         switch(R.getArea().getClimateObj().weatherType(R))
         {
         case Climate.WEATHER_BLIZZARD:
@@ -98,7 +98,6 @@ public class Chant extends StdAbility
         case Climate.WEATHER_WINTER_COLD: return WEATHERQUE_RAIN;
         default: return WEATHERQUE_CALM;
         }
-        
     }
     
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

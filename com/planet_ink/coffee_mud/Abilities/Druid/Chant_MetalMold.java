@@ -40,33 +40,47 @@ public class Chant_MetalMold extends Chant
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
     public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
+    private Item getItem(MOB mobTarget) {
+        Vector goodPossibilities=new Vector();
+        Vector possibilities=new Vector();
+        for(int i=0;i<mobTarget.inventorySize();i++)
+        {
+            Item item=mobTarget.fetchInventory(i);
+            if(item!=null)
+            {
+                if(item.amWearingAt(Item.IN_INVENTORY))
+                    possibilities.addElement(item);
+                else
+                    goodPossibilities.addElement(item);
+            }
+        }
+        if(goodPossibilities.size()>0)
+            return (Item)goodPossibilities.elementAt(CMLib.dice().roll(1,goodPossibilities.size(),-1));
+        else
+        if(possibilities.size()>0)
+            return (Item)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
+        return null;
+    }
+    
+    public int castingQuality(MOB mob, Environmental target)
+    {
+        if(mob!=null)
+        {
+            if((target instanceof MOB)&&(target!=mob))
+            {
+                if(getItem((MOB)target)==null)
+                    return Ability.QUALITY_INDIFFERENT;
+            }
+        }
+        return super.castingQuality(mob,target);
+    }
+
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB mobTarget=getTarget(mob,commands,givenTarget,true,false);
 		Item target=null;
 		if(mobTarget!=null)
-		{
-			Vector goodPossibilities=new Vector();
-			Vector possibilities=new Vector();
-			for(int i=0;i<mobTarget.inventorySize();i++)
-			{
-				Item item=mobTarget.fetchInventory(i);
-				if((item!=null)
-				&&(CMLib.flags().isMetal(item))
-				&&(item.subjectToWearAndTear()))
-				{
-					if(item.amWearingAt(Item.IN_INVENTORY))
-						possibilities.addElement(item);
-					else
-						goodPossibilities.addElement(item);
-				}
-				if(goodPossibilities.size()>0)
-					target=(Item)goodPossibilities.elementAt(CMLib.dice().roll(1,goodPossibilities.size(),-1));
-				else
-				if(possibilities.size()>0)
-					target=(Item)possibilities.elementAt(CMLib.dice().roll(1,possibilities.size(),-1));
-			}
-		}
+            target=getItem(mobTarget);
 
 		if(target==null)
 			target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
