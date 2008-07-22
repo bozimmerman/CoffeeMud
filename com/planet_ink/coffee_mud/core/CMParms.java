@@ -344,19 +344,23 @@ public class CMParms
 
     public static String cleanBit(String s)
     {
-        while(s.startsWith(" "))
-            s=s.substring(1);
-        while(s.endsWith(" "))
-            s=s.substring(0,s.length()-1);
-        if(s.length()==0) return s;
-        if((s.charAt(0)=='\'')||(s.charAt(0)=='`'))
-        {
-            if(s.length()==1) return s;
-            if((s.charAt(s.length()-1)=='\'')||(s.charAt(s.length()-1)=='`'))
-                return s.substring(1,s.length()-1);
-            return s.substring(1);
-        }
-        return s;
+        if(s.length()==0) 
+            return s;
+        if((s.charAt(0)==' ')||(s.charAt(s.length()-1)==' '))
+            s=s.trim();
+        if(s.length()<2) 
+            return s.replace('\'','`');
+        if(s.charAt(0)=='\'')
+            if(s.charAt(s.length()-1)=='\'')
+                return s.substring(1,s.length()-1).replace('\'','`');
+            else
+                return s.substring(1).replace('\'','`');
+        if(s.charAt(0)=='`')
+            if(s.charAt(s.length()-1)=='`')
+                return s.substring(1,s.length()-1).replace('\'','`');
+            else
+                return s.substring(1).replace('\'','`');
+        return s.replace('\'','`');
     }
     public static String getCleanBit(String s, int which)
     { return cleanBit(getBit(s,which));}
