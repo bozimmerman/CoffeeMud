@@ -455,6 +455,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
             boolean mayCont=true;
             StringBuffer listOfClasses=new StringBuffer("??? no classes ???");
+            if(CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT)>0)
+                mob.baseCharStats().setAllBaseValues(CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT));
+            else
             while(mayCont)
             {
                 reRollStats(mob,mob.baseCharStats());

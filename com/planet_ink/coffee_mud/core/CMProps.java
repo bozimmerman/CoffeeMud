@@ -165,8 +165,9 @@ public class CMProps extends Properties
     public static final int SYSTEMI_EXPIRE_RESOURCE=54;
     public static final int SYSTEMI_EXPIRE_MONSTER_BODY=55;
     public static final int SYSTEMI_EXPIRE_PLAYER_BODY=56;
+    public static final int SYSTEMI_STARTSTAT=57;
 
-    public static final int NUMI_SYSTEM=57;
+    public static final int NUMI_SYSTEM=58;
 
     public static final int SYSTEMB_MOBCOMPRESS=0;
     public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -715,6 +716,7 @@ public class CMProps extends Properties
             setIntVar(SYSTEMI_BASEMAXSTAT,18);
         else
             setIntVar(SYSTEMI_BASEMAXSTAT,getStr("BASEMAXSTAT"));
+        setIntVar(SYSTEMI_STARTSTAT,getStr("STARTSTAT"));
         setIntVar(SYSTEMI_MANACOST,CMProps.setExceptionSkillCosts(getStr("MANACOST"),p().skillMaxManaExceptions));
         setIntVar(SYSTEMI_MANAMINCOST,CMProps.setExceptionSkillCosts(getStr("MANAMINCOST"),p().skillMinManaExceptions));
         setIntVar(SYSTEMI_EDITORTYPE,0);
