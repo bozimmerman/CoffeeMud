@@ -61,8 +61,7 @@ public class Paladin_Goodness extends Paladin
 			    &&((invoker==null)||(invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false)))
 				{
 					
-					int baseDmg=(invoker!=null)?adjustedLevel(invoker,0):15;
-					int harming=CMLib.dice().roll(1,baseDmg+getXLEVELLevel(mob),0);
+					int harming=CMLib.dice().roll(1,(invoker!=null)?adjustedLevel(invoker,0):15,0);
 					if(CMLib.flags().isEvil(target))
 						CMLib.combat().postDamage(invoker,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.MASK_MALICIOUS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"^SThe aura of goodness around <S-NAME> <DAMAGES> <T-NAME>!^?");
 				}
