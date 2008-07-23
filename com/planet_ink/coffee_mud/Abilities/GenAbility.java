@@ -378,14 +378,9 @@ public class GenAbility extends StdAbility
                 String DMG=(String)V(ID,V_PDMG);
                 int dmg=0;
                 if(DMG.trim().length()>0)
-                {
-                    DMG=CMStrings.replaceAll(DMG,"@x1",""+mob.envStats().level());
-                    if(target!=null)
-                        DMG=CMStrings.replaceAll(DMG,"@x2",""+target.envStats().level());
-                    else
-                        DMG=CMStrings.replaceAll(DMG,"@x2",""+mob.envStats().level());
-                    dmg=CMath.parseIntExpression(DMG);
-                }
+                    dmg=CMath.parseIntExpression(DMG,
+                            new double[]{mob.envStats().level(),
+                            (target==null)?mob.envStats().level():target.envStats().level()});
                 if(((msg.value()<=0)&&((msg2==null)||(msg2.value()<=0)))
                 ||(dmg>0))
                 {

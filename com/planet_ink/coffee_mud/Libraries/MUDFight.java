@@ -1350,14 +1350,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     		whatToDo=CMProps.getVar(CMProps.SYSTEM_MOBDEATH).toUpperCase();
     	else
     		whatToDo=CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH).toUpperCase();
-		whatToDo=CMStrings.replaceAll(whatToDo,"@X1",""+mob.envStats().level());
-		if(fighting!=null) whatToDo=CMStrings.replaceAll(whatToDo,"@X2",""+fighting.envStats().level());
-		whatToDo=CMStrings.replaceAll(whatToDo,"@X3","1");
 		Vector whatsToDo=CMParms.parseCommas(whatToDo,true);
+		double[] fakeVarVals={1.0,1.0,1.0};
 		for(int w=0;w<whatsToDo.size();w++)
 		{
 			whatToDo=(String)whatsToDo.elementAt(w);
-			if(whatToDo.startsWith("OUT ")&&(CMath.isMathExpression(whatToDo.substring(4).trim())))
+			if(whatToDo.startsWith("OUT ")&&(CMath.isMathExpression(whatToDo.substring(4).trim(),fakeVarVals)))
 				return true;
 		}
 		return false;
@@ -1370,12 +1368,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(lostExperience==null) lostExperience=new int[1];
 		int baseExperience=lostExperience[0];
 		lostExperience[0]=0;
-		whatToDo=CMStrings.replaceAll(whatToDo,"@X1",""+mob.envStats().level());
-		if(fighting!=null) whatToDo=CMStrings.replaceAll(whatToDo,"@X2",""+fighting.envStats().level());
-		int rejuv=mob.envStats().rejuv();
-		if((rejuv==0)||(rejuv==Integer.MAX_VALUE)) rejuv=mob.envStats().level();
-		if(((!mob.isMonster())&&(mob.soulMate()==null))) rejuv=1;
-		whatToDo=CMStrings.replaceAll(whatToDo,"@X3",""+rejuv);
+        int rejuv=mob.envStats().rejuv();
+        if((rejuv==0)||(rejuv==Integer.MAX_VALUE)) rejuv=mob.envStats().level();
+        if(((!mob.isMonster())&&(mob.soulMate()==null))) rejuv=1;
+        double[] varVals={
+                mob.envStats().level(),
+                (fighting!=null)?fighting.envStats().level():0,
+                rejuv
+        };
 		Vector whatsToDo=CMParms.parseCommas(whatToDo,true);
 		for(int w=0;w<whatsToDo.size();w++)
 		{
@@ -1403,10 +1403,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				}
 			}
 			else
-			if(whatToDo.startsWith("OUT ")&&(CMath.isMathExpression(whatToDo.substring(4).trim())))
+			if(whatToDo.startsWith("OUT ")&&(CMath.isMathExpression(whatToDo.substring(4).trim(),varVals)))
 			{
 				Ability A=CMClass.getAbility("Skill_ArrestingSap");
-				int tickDown=CMath.s_parseIntExpression(whatToDo.substring(4).trim());
+				int tickDown=CMath.s_parseIntExpression(whatToDo.substring(4).trim(),varVals);
 				if((A!=null)&&(tickDown>0))
 				{
 					A.invoke(mob,CMParms.makeVector(""+tickDown,"SAFELY"),mob,true,0);
@@ -1443,9 +1443,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	            }
 	        }
 	        else
-			if(CMath.isMathExpression(whatToDo))
+			if(CMath.isMathExpression(whatToDo,varVals))
 			{
-				lostExperience[0]=CMath.s_parseIntExpression(whatToDo);
+				lostExperience[0]=CMath.s_parseIntExpression(whatToDo,varVals);
 				if(lostExperience[0]>0)
 				{
 					message=CMStrings.replaceAll(message,"@x1",""+lostExperience[0]);

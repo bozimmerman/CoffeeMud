@@ -304,64 +304,110 @@ public class CMath
     }
 
     public static boolean isMathExpression(String st){
-    	if((st==null)||(st.length()==0)) return false;
-    	try{ parseMathExpression(st);}catch(Exception e){ return false;}
-    	return true;
+        if((st==null)||(st.length()==0)) return false;
+        try{ parseMathExpression(st);}catch(Exception e){ return false;}
+        return true;
+    }
+    public static boolean isMathExpression(String st, double[] vars){
+        if((st==null)||(st.length()==0)) return false;
+        try{ parseMathExpression(st,vars);}catch(Exception e){ return false;}
+        return true;
     }
     public static double s_parseMathExpression(String st){ try{ return parseMathExpression(st);}catch(Exception e){ return 0.0;}}
+    public static double s_parseMathExpression(String st, double[] vars){ try{ return parseMathExpression(st,vars);}catch(Exception e){ return 0.0;}}
     public static long s_parseLongExpression(String st){ try{ return parseLongExpression(st);}catch(Exception e){ return 0;}}
+    public static long s_parseLongExpression(String st, double[] vars){ try{ return parseLongExpression(st,vars);}catch(Exception e){ return 0;}}
     public static int s_parseIntExpression(String st){ try{ return parseIntExpression(st);}catch(Exception e){ return 0;}}
+    public static int s_parseIntExpression(String st, double[] vars){ try{ return parseIntExpression(st,vars);}catch(Exception e){ return 0;}}
 
-    private static double parseMathExpression(StreamTokenizer st)
-    	throws ArithmeticException
+    private static double parseMathExpression(StreamTokenizer st, boolean inParen, double[] vars)
+        throws ArithmeticException
     {
-		double finalValue=0;
-		try{
-			int c=st.nextToken();
-			char lastOperation='+';
-			while(c!=StreamTokenizer.TT_EOF)
-			{
-				double curValue=0.0;
-				if(c==StreamTokenizer.TT_NUMBER)
-					curValue=st.nval;
-				else
-				if(c=='(')
-					curValue=parseMathExpression(st);
-				else
-				if(c==')')
-					return finalValue;
-				else
-				if("+-*\\?".indexOf((char)c)>=0)
-				{
-					lastOperation=(char)c;
-					c=st.nextToken();
-					continue;
-				}
-				else
-					throw new ArithmeticException("'"+c+"' is an illegal expression.");
-				switch(lastOperation)
-				{
-				case '+': finalValue+=curValue; break;
-				case '-': finalValue-=curValue; break;
-				case '*': finalValue*=curValue; break;
-				case '\\': finalValue/=curValue; break;
-				case '?': finalValue=((curValue-finalValue)*Math.random())+finalValue;
-				}
-				c=st.nextToken();
-			}
-		}
-		catch(IOException e){}
-		return finalValue;
+        if(!inParen) {
+            st.ordinaryChar('/');
+            st.ordinaryChar('x');
+            st.ordinaryChar('X');
+        }
+        double finalValue=0;
+        try{
+            int c=st.nextToken();
+            char lastOperation='+';
+            while(c!=StreamTokenizer.TT_EOF)
+            {
+                double curValue=0.0;
+                switch(c)
+                {
+                case StreamTokenizer.TT_NUMBER:
+                    curValue=st.nval;
+                    break;
+                case '(':
+                    curValue=parseMathExpression(st,true,vars);
+                    break;
+                case ')':
+                    if(!inParen)
+                        throw new ArithmeticException("')' is an unexpected token.");
+                    return finalValue;
+                case '@':
+                {
+                    c=st.nextToken();
+                    if((c!='x')&&(c!='X'))
+                        throw new ArithmeticException("'"+c+"' is an unexpected token after @.");
+                    c=st.nextToken();
+                    if(c!=StreamTokenizer.TT_NUMBER)
+                        throw new ArithmeticException("'"+c+"' is an unexpected token after @x.");
+                    if(vars==null)
+                        throw new ArithmeticException("vars have not been defined for @x"+st.nval);
+                    if((st.nval>vars.length)||(st.nval<1.0))
+                        throw new ArithmeticException("'"+st.nval+"/"+vars.length+"' is an illegal variable reference.");
+                    curValue=vars[((int)st.nval)-1];
+                    break;
+                }
+                case '+':
+                case '-':
+                case '*':
+                case '\\':
+                case '/':
+                case '?':
+                {
+                    lastOperation=(char)c;
+                    c=st.nextToken();
+                    continue;
+                }
+                default:
+                    throw new ArithmeticException("'"+c+"' is an illegal expression.");
+                }
+                switch(lastOperation)
+                {
+                case '+': finalValue+=curValue; break;
+                case '-': finalValue-=curValue; break;
+                case '*': finalValue*=curValue; break;
+                case '/':
+                case '\\': finalValue/=curValue; break;
+                case '?': finalValue=((curValue-finalValue)*Math.random())+finalValue;
+                }
+                c=st.nextToken();
+            }
+        }
+        catch(IOException e){}
+        if(inParen)
+            throw new ArithmeticException("')' was missing from this expression");
+        return finalValue;
     }
 
     public static long parseLongExpression(String formula)
-    {return Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes())))));}
+    {return Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,null));}
+    public static long parseLongExpression(String formula, double[] vars)
+    {return Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,vars));}
 
     public static int parseIntExpression(String formula) throws ArithmeticException
-    {return (int)Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes())))));}
+    {return (int)Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,null));}
+    public static int parseIntExpression(String formula, double[] vars) throws ArithmeticException
+    {return (int)Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,vars));}
 
     public static double parseMathExpression(String formula) throws ArithmeticException
-    {return parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))));}
+    {return parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,null);}
+    public static double parseMathExpression(String formula, double[] vars) throws ArithmeticException
+    {return parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,vars);}
 
 
     /**
