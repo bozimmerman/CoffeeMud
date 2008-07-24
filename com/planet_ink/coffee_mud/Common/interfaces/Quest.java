@@ -30,14 +30,6 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-/******************** NOT COMPLETED **************************/
-/******************** NOT COMPLETED **************************/
-/******************** NOT COMPLETED **************************/
-/******************** NOT COMPLETED **************************/
-/******************** NOT COMPLETED **************************/
-/******************** NOT COMPLETED **************************/
-/******************** NOT COMPLETED **************************/
-/******************** NOT COMPLETED **************************/
 /**
  * A quest object manages the details and text for a single
  * descriptive script that is scheduled and, when directed,
