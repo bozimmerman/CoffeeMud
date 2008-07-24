@@ -139,17 +139,23 @@ public interface Economics extends Environmental
      */
     public void setDevalueRate(String factors);
     /**
-     * Returns the number of ticks between totally resetting this ShopKeepers inventory back to what it was.
+     * Returns the number of ticks between totally resetting this ShopKeepers 
+     * inventory back to what it was.
+     * 
      * @return the number of ticks between total resets of inventory
      */
     public int finalInvResetRate();
     /**
-     * Returns the number of ticks between totally resetting this ShopKeepers inventory back to what it was.
+     * Returns the number of ticks between totally resetting this ShopKeepers 
+     * inventory back to what it was.
+     * 
      * @return the number of ticks between total resets of inventory
      */
     public int invResetRate();
     /**
-     * Sets the number of ticks between totally resetting this ShopKeepers inventory back to what it was.
+     * Sets the number of ticks between totally resetting this ShopKeepers 
+     * inventory back to what it was.
+     * 
      * @param ticks the number of ticks between total resets of inventory
      */
     public void setInvResetRate(int ticks);
