@@ -1213,7 +1213,7 @@ public class Quests extends StdLibrary implements QuestManager
         for(int v=startLine;v<script.size();v++)
         {
             lineStr=((String)script.elementAt(v)).trim();
-            if(lineStr.trim().equalsIgnoreCase(Quest.FILE_XML_BOUNDARY))
+            if(lineStr.trim().equalsIgnoreCase(XMLLibrary.FILE_XML_BOUNDARY))
             {
                 if(scr.toString().trim().length()>0)
                     parsed.addElement(scr.toString());

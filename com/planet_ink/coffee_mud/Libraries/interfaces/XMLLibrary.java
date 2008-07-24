@@ -33,6 +33,8 @@ public interface XMLLibrary extends CMLibrary
 {
     public final static String HEX_DIGITS="0123456789ABCDEF";
     
+    public static final String FILE_XML_BOUNDARY="<?xml version=\"1.0\"?>";
+    
     /**
      * Return the outer wrapper and contents of an XML tag <TNAME>Data</TNAME>
      * 
