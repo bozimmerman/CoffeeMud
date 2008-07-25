@@ -143,32 +143,40 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
 	public void setScript(String parm);
 	
 	/**
-	 * 
+	 * Accepts a pre-parsed quest script and extracts certain
+	 * non-iterative variables, such as the quest name and
+	 * similar variables.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @param script
-	 * @param startAtLine
+	 * @param script the parsed quest script
+	 * @param startAtLine which line of the script to start at
 	 */
     public void setVars(Vector script, int startAtLine);
     
     /**
-     * 
+     * Returns the unparsed quest script as a single happy string.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setScript(String)
-     * @return
+     * @return the unparsed quest script as a single happy string.
      */
 	public String script();
 	
 	/**
-	 * this will execute the quest script.  If the quest is running, it
-	 * will call stopQuest first to shut it down.  
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
+	 * This will execute the quest script.  If the quest is running, it
+	 * will call stopQuest first to shut it down.  It will spawn its
+	 * subquests and subsections if necessary.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuestOnTime()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stepQuest()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stopQuest()
 	 * @return whether the quest was successfully started
 	 */
 	public boolean startQuest();
     
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @return
+	 * This method is called every tick to check and see if the wait
+	 * is completed and its time to actually start the quest. This
+	 * method also checks run levels, player elligibility, etc.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuest()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stepQuest()
+	 * @return true if the quest was successfully started, false otherwise
 	 */
     public boolean startQuestOnTime();
 	
@@ -177,142 +185,180 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
      * any objects or mobs which may have been loaded, restoring map 
      * mobs to their previous state.  If the quest is autorandom, it 
      * will restart the waiting process
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuest()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stepQuest()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuestOnTime()
 	 */
 	public void stopQuest();
 
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
+	 * If any files are embedded and cached inside this quest
+	 * script, this method will clear them from resources and
+	 * memory.
 	 */
     public void internalQuestDelete();
     
     /**
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @return
+     * This method is called when a quest is done with a 
+     * particular step in a multi-step quest.  This method
+     * will clean up any objects from the current step or
+     * previous steps and attempt to start up the next
+     * step in the quest. If there are no more steps, or
+     * the quest is only 1 step, stopQuest() will be called.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuest()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stopQuest()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuestOnTime()
+     * @return true if another step was started, false otherwise
      */
     public boolean stepQuest();
 
     /**
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @return
+     * A dormant state is the state where a quest is no longer running, but
+     * is not, or has not yet, been scheduled to wait for another run time.
+     * This may result in a quest being deleted if it was a spawned temporary
+     * quest.
+     * @return true if it is in a dormant state, or false if quest was deleted
      */
     public boolean enterDormantState();
     
     /**
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @param truefalse
+     * Sets whether this quest object is a spawned copy 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#isCopy()
+     * @param truefalse true if this quest object is a spawned copy
      */
     public void setCopy(boolean truefalse);
     /**
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @return
+     * Returns whether this quest object is a spawned copy 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setCopy(boolean)
+     * @return whether this quest object is a spawned copy
      */
     public boolean isCopy();
     /**
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @param spawnFlag
+     * Sets the flag denoting whether this quest spawns new ones
+     * from its several steps and if so, by what method.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#SPAWN_ANY
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#SPAWN_FIRST
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#SPAWN_NO
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#SPAWN_DESCS
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getSpawn()
+     * @param spawnFlag the quest spawn flag info
      */
     public void setSpawn(int spawnFlag);
     /**
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @return
+     * Returns the flag denoting whether this quest spawns new ones
+     * from its several steps and if so, by what method.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#SPAWN_ANY
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#SPAWN_FIRST
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#SPAWN_NO
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#SPAWN_DESCS
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setSpawn(int)
+     * @return the quest spawn flag info
      */
     public int getSpawn();
     /**
-     * 
+     * Quest scripts can have files of various sorts embedded
+     * in them.  This method will return the text of any such
+     * files of the given name, if they were embedded, or if 
+     * not, it will attempt to open the file in the filesystem
+     * and return that one instead.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @param named
-     * @return
+     * @param named the name of the resource path file to return
+     * @return the text of the file, if found.
      */
     public StringBuffer getResourceFileData(String named);
     /**
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @param name
-     * @return
+     * Returns the index of a room, mob, or item of the given name
+     * in use by this quest.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#isObjectInUse(Environmental)
+     * @param name the given name
+     * @return the index of a room, mob, or item of the given name
      */
-    public int wasObjectInUse(String name);
+    public int getObjectInUseIndex(String name);
     /**
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @param E
-     * @return
+     * Returns whether the exact given object is in use by this quest.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getObjectInUseIndex(String)
+     * @param E the object to check
+     * @return true if its in use, false otherwise
      */
 	public boolean isObjectInUse(Environmental E);
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @param named
-	 * @return
+	 * From the given official quest variable name, it derives
+	 * either an object or a vector of objects that reflect it.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#QOBJS
+	 * @param named the code to return a string, object, or vector for
+	 * @return a string, mob, item, room, vector, etc..
 	 */
     public Object getDesignatedObject(String named);
     /**
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @param name
-     * @return
+     * Returns the index of a mob of the given name in use by this quest
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestMobName(int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestMob(int)
+     * @param name the given name
+     * @return the index of a mob of the given name in use by this quest
      */
-    public int wasQuestMob(String name);
+    public int getQuestMobIndex(String name);
     /**
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @param i
-     * @return
+     * Returns the mob in use by this quest at the given index
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestMobName(int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestMobIndex(String)
+     * @param i the index
+     * @return the mob in use by this quest at the given index
      */
     public MOB getQuestMob(int i);
     /**
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @param i
-     * @return
+     * Returns the name of the mob in use by this quest at the given index
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestMob(int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestMobIndex(String)
+     * @param i the index
+     * @return the name of the mob in use by this quest at the given index
      */
 	public String getQuestMobName(int i);
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @param name
-	 * @return
+	 * Returns the index of a item of the given name in use by this quest
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestItem(int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestItemName(int)
+	 * @param name the given name
+	 * @return the index of a item of the given name in use by this quest
 	 */
-    public int wasQuestItem(String name);
+    public int getQuestItemIndex(String name);
     /**
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @param i
-     * @return
+     * Returns the item in use by this quest at the given index
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestItemIndex(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestItemName(int)
+     * @param i the index
+     * @return the item in use by this quest at the given index
      */
     public Item getQuestItem(int i);
     /**
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @param i
-     * @return
+     * Returns the name of the item in use by this quest at the given index
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestItem(int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestItemIndex(String)
+     * @param i the index
+     * @return the name of the item in use by this quest at the given index
      */
 	public String getQuestItemName(int i);
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @param roomID
-	 * @return
+	 * Returns the index of a room of the given id in use by this quest
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestRoom(int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestRoomID(int)
+	 * @param roomID the given room id
+	 * @return the index of a room of the given id in use by this quest
 	 */
-    public int wasQuestRoom(String roomID);
+    public int getQuestRoomIndex(String roomID);
     /**
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @param i
-     * @return
+     * Returns the room in use by this quest at the given index
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestRoomIndex(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestRoomID(int)
+     * @param i the index
+     * @return the room in use by this quest at the given index
      */
     public Room getQuestRoom(int i);
     /**
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @param i
-     * @return
+     * Returns the id of the room in use by this quest at the given index
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestRoom(int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getQuestRoomIndex(String)
+     * @param i the index
+     * @return the id of the room in use by this quest at the given index
      */
     public String getQuestRoomID(int i);
 	
@@ -321,6 +367,9 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
      * a quest-specific object thats being added to the map, so that it
      * can be cleaned up later.  Ditto for abilities, affects, and behaviors.
      * this method should only be used WHILE a quest script is being interpreted
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterBehavior(Environmental, String, String, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterEffect(Environmental, String, String, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterObject(Environmental)
      * @param mob the mob receiving the ability
      * @param abilityID the id of the ability
      * @param parms any ability parameters
@@ -328,194 +377,264 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
      */
     public void runtimeRegisterAbility(MOB mob, String abilityID, String parms, boolean give);
     /**
-     * 
+     * Called when you want the quest engine to be aware of a quest specific object
+     * that is being added to the map, so that it can be cleaned up later.
+     * this method should only be used WHILE a quest script is being interpreted
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterAbility(MOB, String, String, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterBehavior(Environmental, String, String, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterEffect(Environmental, String, String, boolean)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @param object
+     * @param object the object added to the map
      */
     public void runtimeRegisterObject(Environmental object);
     /**
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @param affected
-     * @param abilityID
-     * @param parms
-     * @param give
+     * Called when you want the quest engine to be aware of a quest specific object
+     * that is being added to the map, so that it can be cleaned up later.  This is 
+     * called to add an effect to the given object.
+     * this method should only be used WHILE a quest script is being interpreted
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterAbility(MOB, String, String, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterBehavior(Environmental, String, String, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterObject(Environmental)
+     * @param affected the object receiving the effect
+     * @param abilityID the id of the effect
+     * @param parms any effect parameters
+     * @param give false to remove this effect, true to replace an existing one
      */
     public void runtimeRegisterEffect(Environmental affected, String abilityID, String parms, boolean give);
     /**
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @param behaving
-     * @param behaviorID
-     * @param parms
-     * @param give
+     * Called when you want the quest engine to be aware of a quest specific object
+     * that is being added to the map, so that it can be cleaned up later.  This is 
+     * called to add a behavior to the given object.
+     * this method should only be used WHILE a quest script is being interpreted
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterAbility(MOB, String, String, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterEffect(Environmental, String, String, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runtimeRegisterObject(Environmental)
+     * @param behaving the object receiving the behavior
+     * @param behaviorID the id of the behavior
+     * @param parms any behavior parameters
+     * @param give false to remove this behavior, true to replace an existing one
      */
     public void runtimeRegisterBehavior(Environmental behaving, String behaviorID, String parms, boolean give);
     
     /**
-     * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-     * @param mobName
+     * Registers the given player name as having won this quest.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getWinners()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getWinnerStr()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#wasWinner(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setWinners(String)
+     * @param mobName the player name
      */
 	public void declareWinner(String mobName);
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @return
+	 * Returns the names of all the winners of this quest
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#declareWinner(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getWinnerStr()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#wasWinner(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setWinners(String)
+	 * @return the names of all the winners of this quest
 	 */
 	public Vector getWinners();
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @return
+	 * Returns a semicolon delimited string of all the winners of this quest
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#declareWinner(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getWinners()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#wasWinner(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setWinners(String)
+	 * @return a semicolon delimited string of all the winners of this quest
 	 */
 	public String getWinnerStr();
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @param name
-	 * @return
+	 * Returns whether a player of the given name has won this quest
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#declareWinner(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getWinners()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getWinnerStr()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setWinners(String)
+	 * @param name the player name
+	 * @return true if a player of the given name has won this quest
 	 */
 	public boolean wasWinner(String name);
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @param list
+	 * Sets the list of player names that have won this quest
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#declareWinner(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getWinners()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#getWinnerStr()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#wasWinner(String)
+	 * @param list a semicolon delimtied list of player names
 	 */
 	public void setWinners(String list);
-	
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @return
+	 * The minimum number of players matching player criteria required before
+	 * this quest will start
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setMinPlayers(int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#playerMask()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setPlayerMask(String)
+	 * @return minimum number of players matching player criteria required 
 	 */
 	public int minPlayers();
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @param players
+     * Sets minimum number of players matching player criteria required before
+     * this quest will start
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#minPlayers()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#playerMask()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setPlayerMask(String)
+	 * @param players minimum number of players matching player criteria required
 	 */
 	public void setMinPlayers(int players);
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @return
+	 * Returns the run level. -1 means runs always, otherwise, 
+	 * this quest will always defer to running quests of equal
+	 * or lower run level.  Higher, therefore, is weaker.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setRunLevel(int)
+	 * @return the run level. -1 means runs always
 	 */
 	public int runLevel();
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @param level
+     * Sets the run level. -1 means runs always, otherwise, 
+     * this quest will always defer to running quests of equal
+     * or lower run level.  Higher, therefore, is weaker.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#runLevel()
+	 * @param level the run level. -1 means runs always
 	 */
 	public void setRunLevel(int level);
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @return
+	 * Returns the zappermask that determines who counts as an
+	 * elligible player for the purposes of the minPlayer setting.
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setMinPlayers(int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#minPlayers()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setPlayerMask(String)
+	 * @return the zappermask that determines who counts as a player
 	 */
 	public String playerMask();
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @param mask
+     * Sets the zappermask that determines who counts as an
+     * elligible player for the purposes of the minPlayer setting.
+     * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setMinPlayers(int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#minPlayers()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#playerMask()
+	 * @param mask the zappermask that determines who counts as a player
 	 */
 	public void setPlayerMask(String mask);
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @return
+	 * Returns the minimum number of ticks between attempts to run this quest.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setMinWait(int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#waitInterval()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setWaitInterval(int)
+	 * @return the minimum number of ticks between attempts to run this quest.
 	 */
 	public int minWait();
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @param wait
+     * Sets the minimum number of ticks between attempts to run this quest.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#minWait()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#waitInterval()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setWaitInterval(int)
+	 * @param wait the minimum number of ticks between attempts to run this quest.
 	 */
 	public void setMinWait(int wait);
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @return
+	 * Returns the maximum ticks, above the minimum wait, that must go by
+	 * before an attempt to run a quest.  This is therefore, the random part.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setMinWait(int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#minWait()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setWaitInterval(int)
+	 * @return the maximum ticks, above the minimum wait, that must go by
 	 */
 	public int waitInterval();
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @param wait
+     * Sets the maximum ticks, above the minimum wait, that must go by
+     * before an attempt to run a quest.  This is therefore, the random part.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setMinWait(int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#minWait()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#waitInterval()
+	 * @param wait the maximum ticks, above the minimum wait, that must go by
 	 */
 	public void setWaitInterval(int wait);
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
+	 * After a quest is added to the list of quests, this method is
+	 * called to put the quest into its initial wait state, and get
+	 * it thread time.
 	 */
 	public void autostartup();
 	
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @return
+	 * Returns whether this quest is in a running state
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#suspended()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#waiting()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuest()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuestOnTime()
+	 * @return true if the quest is running, false if stopped
 	 */
 	public boolean running();
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @return
+	 * Returns whether this quest is in a midway stopping state
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#suspended()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#waiting()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#running()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stopQuest()
+	 * @return true if the quest is in the processess of stopping
 	 */
 	public boolean stopping();
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @return
+	 * Returns whether this quest is in a wait state between runs
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#suspended()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#waiting()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#running()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stopQuest()
+	 * @return true if this quest is in a wait state between runs
 	 */
 	public boolean waiting();
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @return
+	 * Returns the number of ticks before this quest will go from
+	 * a running state to a stopped state.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#minsRemaining()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuest()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuestOnTime()
+	 * @return the numer of ticks the quest will keep running
 	 */
 	public int ticksRemaining();
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @return
+     * Returns the number of minutes before this quest will go from
+     * a running state to a stopped state.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#ticksRemaining()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuest()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuestOnTime()
+     * @return the numer of minutes the quest will keep running
 	 */
 	public int minsRemaining();
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @return
+	 * Returns the number of ticks before this quest will attempt to start.
+	 * A number >=0 means the quest is currently in a stopped state.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#resetWaitRemaining(long)
+	 * @return the number of ticks before this quest will attempt to start.
 	 */
 	public int waitRemaining();
 	/**
-	 * 
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest
-	 * @param minusEllapsed
-	 * @return
+     * Sets the number of ticks before this quest will attempt to start.
+     * A number >=0 means the quest is currently in a stopped state.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#waitRemaining()
+	 * @param minusEllapsed the number of miliseconds already ellapsed before wait began
+	 * @return true if the quest is successfully put into a non-running wait state
 	 */
     public boolean resetWaitRemaining(long minusEllapsed);
-	/** */
+	/** A quest spawn flag denoting that this quest does not spawn its steps */
     public final static int SPAWN_NO=0;
-    /** */
+    /** A quest spawn flag denoting that this quest spawns only its first step */
     public final static int SPAWN_FIRST=1;
-    /** */
+    /** A quest spawn flag denoting that this quest attempts to spawn every step at once */
     public final static int SPAWN_ANY=2;
-    /** */
+    /** Descriptions of the several quest step spawn flags */
     public final static String[] SPAWN_DESCS={"FALSE","TRUE","ALL"};
-    /** */
+    /** Returns whether the given code is a valid variable for this quest */
 	public boolean isStat(String code);
-    /** */
+    /** The list of BASIC non-iterative variable codes that pertain to a quest object */
 	public final static String[] QCODES={"CLASS", "NAME", "DURATION", "WAIT", "MINPLAYERS", "PLAYERMASK",
 										 "RUNLEVEL", "DATE", "MUDDAY", "INTERVAL","SPAWNABLE", "DISPLAY", 
                                          "INSTRUCTIONS"};
-    /** */
-	public static final String[] SPECIAL_QCODES={"AREA","MOBTYPE","MOBGROUP","ITEMTYPE","LOCALE",
-												 "ROOM","MOB","ITEM","ITEMGROUP","ROOMGROUP","LOCALEGROUP",
-												 "ROOMGROUPAROUND","LOCALEGROUPAROUND","PRESERVE",
-                                                 "AREAGROUP"};
-    /** */
+    /** The list of basic quest objects defined in an iterative fashion during quest script execution */
 	public final static String[] QOBJS={"LOADEDMOBS", "LOADEDITEMS", "AREA", "ROOM", "MOBGROUP", "ITEMGROUP", "ROOMGROUP",
 		 								"ITEM", "ENVOBJ", "STUFF", "MOB"};
-    /** */
+    /** The list of basic mystery quest objects defined in an iterative fashion during quest script execution */
 	public static final String[] MYSTERY_QCODES={"FACTION","FACTIONGROUP",
 												 "AGENT","AGENTGROUP",
 												 "ACTION","ACTIONGROUP",
@@ -526,7 +645,7 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
 												 "WHENHAPPENED","WHENHAPPENEDGROUP",
 												 "WHENAT","WHENATGROUP",
 												 "TOOL","TOOLGROUP"};
-    /** */
+    /** the list of room-related mystery quest objects defined in an iterative fashion during quest script execution */
 	public static final String[] ROOM_REFERENCE_QCODES={"WHEREHAPPENED","WHEREHAPPENEDGROUP",
                                                 		"WHEREAT","WHEREATGROUP",
                                                 		"ROOM","ROOMGROUP"

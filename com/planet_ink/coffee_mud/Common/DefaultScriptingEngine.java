@@ -2739,7 +2739,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(Q==null)
                     returnable=false;
                 else
-                    returnable=(Q.wasQuestRoom(arg1)>=0);
+                    returnable=(Q.getQuestRoomIndex(arg1)>=0);
                 break;
             }
             case 29: // questmob
@@ -2751,7 +2751,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(Q==null)
                     returnable=false;
                 else
-                    returnable=(Q.wasQuestMob(arg1)>=0);
+                    returnable=(Q.getQuestMobIndex(arg1)>=0);
                 break;
             }
             case 31: // isquestmobalive
@@ -2768,7 +2768,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(CMath.s_int(arg1.trim())>0)
                         M=Q.getQuestMob(CMath.s_int(arg1.trim()));
                     else
-                        M=Q.getQuestMob(Q.wasQuestMob(arg1));
+                        M=Q.getQuestMob(Q.getQuestMobIndex(arg1));
                     if(M==null) returnable=false;
                     else returnable=!M.amDead();
                 }
@@ -2899,7 +2899,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(Q==null)
                     returnable=false;
                 else
-                    returnable=(Q.wasQuestItem(arg1)>=0);
+                    returnable=(Q.getQuestItemIndex(arg1)>=0);
                 break;
             }
             case 85: // islike

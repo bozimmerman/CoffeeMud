@@ -3351,21 +3351,23 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             &&(Q.runLevel()<=runLevel()))
             { allowedToRun=false; break;}
         }
-        int numElligiblePlayers=CMLib.sessions().size();
-        if(playerMask.length()>0)
+        if(allowedToRun)
         {
-            numElligiblePlayers=0;
-            for(int s=CMLib.sessions().size()-1;s>=0;s--)
+            int numElligiblePlayers=CMLib.sessions().size();
+            if(playerMask.length()>0)
             {
-                Session S=CMLib.sessions().elementAt(s);
-                if((S.mob()!=null)&&(CMLib.masking().maskCheck(playerMask,S.mob(),true)))
-                    numElligiblePlayers++;
+                numElligiblePlayers=0;
+                for(int s=CMLib.sessions().size()-1;s>=0;s--)
+                {
+                    Session S=CMLib.sessions().elementAt(s);
+                    if((S.mob()!=null)&&(CMLib.masking().maskCheck(playerMask,S.mob(),true)))
+                        numElligiblePlayers++;
+                }
             }
+        	ticksRemaining=-1;
+            if((numElligiblePlayers>=minPlayers)||(duration()==0))
+                return startQuest();
         }
-    	ticksRemaining=-1;
-        if((allowedToRun)
-        &&((numElligiblePlayers>=minPlayers)||(duration()==0)))
-            return startQuest();
     	enterDormantState();
     	return false;
     }
@@ -3565,7 +3567,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         return -1;
     }
 
-    public int wasQuestMob(String name)
+    public int getQuestMobIndex(String name)
     {
         int[] num={1};
         int x=-1;
@@ -3578,7 +3580,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         return x;
     }
 
-    public int wasQuestRoom(String roomID)
+    public int getQuestRoomIndex(String roomID)
     {
         int[] num={1};
         int x=-1;
@@ -3596,7 +3598,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         return x;
     }
 
-    public int wasQuestItem(String name)
+    public int getQuestItemIndex(String name)
     {
         int[] num={1};
         int x=-1;
@@ -3697,7 +3699,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         return "";
     }
 
-    public int wasObjectInUse(String name)
+    public int getObjectInUseIndex(String name)
     {
         for(int i=0;i<questState.stuff.size();i++)
         {
