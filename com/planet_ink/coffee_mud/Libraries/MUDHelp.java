@@ -786,6 +786,10 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
         return new Properties();
 	}
 	
+    public boolean shutdown() {
+        unloadHelpFile(null);
+        return true;
+    }
 	public void unloadHelpFile(MOB mob)
 	{
 		if(Resources.getResource("PLAYER TOPICS")!=null)

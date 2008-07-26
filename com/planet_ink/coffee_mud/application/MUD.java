@@ -20,6 +20,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 import java.io.PrintWriter; // for writing to sockets
 import java.io.IOException;
@@ -49,12 +50,10 @@ public class MUD extends Thread implements MudHost
     private static final float HOST_VERSION_MAJOR=(float)5.4;
     private static final long  HOST_VERSION_MINOR=0;
 
-    private static boolean bringDown=false;
+    protected static boolean bringDown=false;
     private static String execExternalCommand=null;
     private static Server imserver=null;
     private static IMC2Driver imc2server=null;
-    private static Vector saveThreads=new Vector();
-    private static Vector utiliThreads=new Vector();
     private static Vector webServers=new Vector();
     private static SMTPserver smtpServerThread=null;
     private static DVector accessed=new DVector(2);
@@ -107,7 +106,6 @@ public class MUD extends Thread implements MudHost
         CMProps.setBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN,true);
 		CMLib.killThread(t,100,1);
 	}
-
 
 	protected static boolean initHost(Thread t)
 	{
@@ -284,19 +282,13 @@ public class MUD extends Thread implements MudHost
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: readying for connections.");
 		try
 		{
-		    SaveThread saveThread=new SaveThread();
-			saveThread.start();
-			saveThreads.addElement(saveThread);
-
-			UtiliThread utiliThread=new UtiliThread();
-			utiliThread.start();
-			utiliThreads.addElement(utiliThread);
-
+            CMLib.activateLibraries();
 			Log.sysOut(Thread.currentThread().getName(),"Utility threads started");
 		}
 		catch (Throwable th)
 		{
-			Log.sysOut(Thread.currentThread().getName(),"CoffeeMud Server initHost() failed");
+			Log.errOut(Thread.currentThread().getName(),"CoffeeMud Server initHost() failed");
+            Log.errOut(Thread.currentThread().getName(),th);
 			fatalStartupError(t,4);
 			return false;
 		}
@@ -570,8 +562,7 @@ public class MUD extends Thread implements MudHost
 		Log.sysOut(Thread.currentThread().getName(),"New Connections are now closed");
 		if(S!=null)S.println("Done.");
 
-		if((!CMSecurity.isSaveFlag("NOPLAYERS"))
-		&&(saveThread!=null))
+		if(!CMSecurity.isSaveFlag("NOPLAYERS"))
 		{
 			if(S!=null)S.print("Saving players...");
 			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Saving players...");
@@ -582,20 +573,21 @@ public class MUD extends Thread implements MudHost
                     if((S2!=null)&&(S2.mob()!=null)&&(S2.mob().playerStats()!=null))
                         S2.mob().playerStats().setLastDateTime(System.currentTimeMillis());
                 }
-			saveThread.savePlayers();
-            CMLib.coffeeTables().update();
+            for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_PLAYERS);e.hasMoreElements();)
+                ((PlayerLibrary)e.nextElement()).savePlayers();
 			if(S!=null)S.println("done");
 			Log.sysOut(Thread.currentThread().getName(),"All users saved.");
 		}
         if(S!=null)S.print("Saving stats...");
-        CMLib.coffeeTables().update();
+        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_STATS);e.hasMoreElements();)
+            ((StatisticsLibrary)e.nextElement()).update();
         if(S!=null)S.println("done");
         Log.sysOut(Thread.currentThread().getName(),"Stats saved.");
 
-		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down" + (keepItDown? "..." : " and restarting..."));
+		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down" + (keepItDown? "..." : " and restarting..."));
 		Log.sysOut(Thread.currentThread().getName(),"Notifying all objects of shutdown...");
 		if(S!=null)S.print("Notifying all objects of shutdown...");
-		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Notifying Objects");
+		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Notifying Objects");
 		MOB mob=null;
 		if(S!=null) mob=S.mob();
 		if(mob==null) mob=CMClass.getMOB("StdMOB");
@@ -603,57 +595,48 @@ public class MUD extends Thread implements MudHost
 		Vector roomSet=new Vector();
 		try
 		{
-			for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
-                ((Area)e.nextElement()).setAreaFlags(Area.FLAG_STOPPED);
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				R.send(mob,msg);
-				roomSet.addElement(R);
-			}
+            for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_MAP);e.hasMoreElements();)
+            {
+                WorldMap map=((WorldMap)e.nextElement());
+    			for(Enumeration a=map.areas();a.hasMoreElements();)
+                    ((Area)a.nextElement()).setAreaFlags(Area.FLAG_STOPPED);
+            }
+            for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_MAP);e.hasMoreElements();)
+            {
+                WorldMap map=((WorldMap)e.nextElement());
+    			for(Enumeration r=map.rooms();r.hasMoreElements();)
+    			{
+    				Room R=(Room)r.nextElement();
+    				R.send(mob,msg);
+    				roomSet.addElement(R);
+    			}
+            }
 	    }catch(NoSuchElementException e){}
 		if(S!=null)S.println("done");
-		if((saveThreads.size()==0)||(utiliThreads.size()==0))
-		{
-			CMProps.setBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN,false);
-            CMLib.threads().resumeAll();
-		    return;
-		}
-
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Quests");
-		CMLib.quests().shutdown();
+        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_QUEST);e.hasMoreElements();)
+            ((CMLibrary)e.nextElement()).shutdown();
 
-		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Save Thread");
-		while(saveThreads.size()>0)
-		{
-		    SaveThread saveThread=(SaveThread)saveThreads.firstElement();
-    		saveThread.shutdown();
-    		CMLib.killThread(saveThread,100,1);
-    		saveThreads.removeElement(saveThread);
-		}
 
 		if(S!=null)S.println("Save thread stopped");
-		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Utility Thread");
-        while(utiliThreads.size()>0)
-        {
-            UtiliThread utiliThread=(UtiliThread)utiliThreads.firstElement();
-    		utiliThread.shutdown();
-    		CMLib.killThread(utiliThread,100,1);
-    		utiliThreads.removeElement(utiliThread);
-        }
-		if(S!=null)S.println("Utility thread stopped");
-		Log.sysOut(Thread.currentThread().getName(),"Utility/Save Threads stopped.");
+		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Session Thread");
+        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_SESSIONS);e.hasMoreElements();)
+            ((CMLibrary)e.nextElement()).shutdown();
 
 		if(CMSecurity.isSaveFlag("ROOMMOBS")
 		||CMSecurity.isSaveFlag("ROOMITEMS")
 		||CMSecurity.isSaveFlag("ROOMSHOPS"))
 		{
 			if(S!=null)S.print("Saving room data...");
-			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Rejuving the dead");
+			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Rejuving the dead");
 			CMLib.threads().tickAllTickers(null);
-			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Map Update");
-			for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
-				((Area)e.nextElement()).setAreaFlags(Area.FLAG_STOPPED);
+			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Map Update");
+            for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_MAP);e.hasMoreElements();)
+            {
+                WorldMap map=((WorldMap)e.nextElement());
+    			for(Enumeration a=map.areas();a.hasMoreElements();)
+    				((Area)a.nextElement()).setAreaFlags(Area.FLAG_STOPPED);
+            }
 			int roomCounter=0;
 			Room R=null;
 			for(Enumeration e=roomSet.elements();e.hasMoreElements();)
@@ -661,7 +644,7 @@ public class MUD extends Thread implements MudHost
 			    if(((++roomCounter)%200)==0)
 			    {
 			        if(S!=null) S.print(".");
-					CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Map Update ("+roomCounter+")");
+					CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Map Update ("+roomCounter+")");
 			    }
 			    R=(Room)e.nextElement();
 			    if(R.roomID().length()>0)
@@ -674,7 +657,7 @@ public class MUD extends Thread implements MudHost
 
 		if(imserver!=null)
 		{
-			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...I3Server");
+			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...I3Server");
 			Server.shutdown();
 			imserver=null;
 			if(S!=null)S.println("I3Server stopped");
@@ -683,7 +666,7 @@ public class MUD extends Thread implements MudHost
 
 		if(imc2server!=null)
 		{
-			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...IMC2Server");
+			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...IMC2Server");
 			imc2server.shutdown();
 			imc2server=null;
 			if(S!=null)S.println("IMC2Server stopped");
@@ -691,27 +674,31 @@ public class MUD extends Thread implements MudHost
 		}
 
 		if(S!=null)S.print("Stopping player Sessions...");
-		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Stopping sessions");
-		while(CMLib.sessions().size()>0)
-		{
-			Session S2=CMLib.sessions().elementAt(0);
-			if((S!=null)&&(S2==S))
-				CMLib.sessions().removeElementAt(0);
-			else
-			{
-				CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Stopping session "+S2.getAddress());
-				S2.logoff(true);
-				CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Done stopping session "+S2.getAddress());
-			}
-			if(S!=null)S.print(".");
-		}
+		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Stopping sessions");
+        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_SESSIONS);e.hasMoreElements();)
+        {
+            SessionsList list=((SessionsList)e.nextElement());
+    		while(list.size()>0)
+    		{
+    			Session S2=list.elementAt(0);
+    			if((S!=null)&&(S2==S))
+                    list.removeElementAt(0);
+    			else
+    			{
+    				CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Stopping session "+S2.getAddress());
+    				S2.logoff(true);
+    				CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Done stopping session "+S2.getAddress());
+    			}
+    			if(S!=null)S.print(".");
+    		}
+        }
 		if(S!=null)S.println("All users logged off");
         try{Thread.sleep(3000);}catch(Exception e){/* give sessions a few seconds to inform the map */}
 		Log.sysOut(Thread.currentThread().getName(),"All users logged off.");
 
 		if(smtpServerThread!=null)
 		{
-			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...smtp server");
+			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...smtp server");
 			smtpServerThread.shutdown(S);
 			smtpServerThread = null;
 			Log.sysOut(Thread.currentThread().getName(),"SMTP Server stopped.");
@@ -719,32 +706,42 @@ public class MUD extends Thread implements MudHost
 		}
 
 		if(S!=null)S.print("Stopping all threads...");
-		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down service engine");
-		CMLib.threads().shutdownAll();
+		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down service engine");
+        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_THREADS);e.hasMoreElements();)
+            ((CMLibrary)e.nextElement()).shutdown();
 		if(S!=null)S.println("done");
 		Log.sysOut(Thread.currentThread().getName(),"Map Threads Stopped.");
 
-		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...closing db connections");
+		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...closing db connections");
 		for(int d=0;d<databases.size();d++)
 			((DBConnector)databases.elementAt(d)).killConnections();
 		if(S!=null)S.println("Database connections closed");
 		Log.sysOut(Thread.currentThread().getName(),"Database connections closed.");
 
-		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Clearing socials, clans, channels");
-		CMLib.socials().unloadSocials();
-		CMLib.clans().shutdownClans();
-        CMLib.channels().unloadChannels();
-        CMLib.journals().unloadCommandJournals();
-        CMLib.polls().unload();
+		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Clearing socials, clans, channels");
+        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_SOCIALS);e.hasMoreElements();)
+            ((CMLibrary)e.nextElement()).shutdown();
+        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_CLANS);e.hasMoreElements();)
+            ((CMLibrary)e.nextElement()).shutdown();
+        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_CHANNELS);e.hasMoreElements();)
+            ((CMLibrary)e.nextElement()).shutdown();
+        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_JOURNALS);e.hasMoreElements();)
+            ((CMLibrary)e.nextElement()).shutdown();
+        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_POLLS);e.hasMoreElements();)
+            ((CMLibrary)e.nextElement()).shutdown();
+        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_HELP);e.hasMoreElements();)
+            ((CMLibrary)e.nextElement()).shutdown();
 
-		CMLib.help().unloadHelpFile(null);
-
-		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...unloading classes");
+		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...unloading classes");
 		CMClass.unload();
-		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...unloading map");
-        CMLib.catalog().unLoad();
-		CMLib.map().unLoad();
-		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...unloading resources");
+		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...unloading map");
+        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_CATALOG);e.hasMoreElements();)
+            ((CMLibrary)e.nextElement()).shutdown();
+        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_MAP);e.hasMoreElements();)
+            ((CMLibrary)e.nextElement()).shutdown();
+        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_PLAYERS);e.hasMoreElements();)
+            ((CMLibrary)e.nextElement()).shutdown();
+		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...unloading resources");
 		Resources.clearResources();
 		Log.sysOut(Thread.currentThread().getName(),"Resources Cleared.");
 		if(S!=null)S.println("All resources unloaded");
@@ -753,16 +750,16 @@ public class MUD extends Thread implements MudHost
 		for(int i=0;i<webServers.size();i++)
 		{
 			HTTPserver webServerThread=(HTTPserver)webServers.elementAt(i);
-			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down web server "+webServerThread.getName()+"...");
+			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down web server "+webServerThread.getName()+"...");
 			webServerThread.shutdown(S);
 			Log.sysOut(Thread.currentThread().getName(),"Web server "+webServerThread.getName()+" stopped.");
 			if(S!=null)S.println("Web server "+webServerThread.getName()+" stopped");
 		}
 		webServers.clear();
 
-		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...unloading macros");
+		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...unloading macros");
 		CMLib.lang().clear();
-		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down" + (keepItDown? "..." : " and restarting..."));
+		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down" + (keepItDown? "..." : " and restarting..."));
 
 		try{Thread.sleep(500);}catch(Exception i){}
 		Log.sysOut(Thread.currentThread().getName(),"CoffeeMud shutdown complete.");
@@ -778,7 +775,7 @@ public class MUD extends Thread implements MudHost
 		try{Thread.sleep(500);}catch(Exception i){}
 
 		execExternalCommand=externalCommand;
-		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutdown: you are the special lucky chosen one!");
+		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutdown: you are the special lucky chosen one!");
 		for(int m=CMLib.hosts().size()-1;m>=0;m--)
             if(CMLib.hosts().elementAt(m) instanceof Thread)
             {
@@ -897,9 +894,7 @@ public class MUD extends Thread implements MudHost
 
 		public void run()
 		{
-		    new CMProps(); // necessary to tie a props to this thread.
-            CMProps.setBoolVar(CMProps.SYSTEMB_MUDSTARTED,false);
-            
+            new CMLib(); // initialize the lib
 			CMProps page=CMProps.loadPropPage("//"+iniFile);
             if ((page==null)||(!page.loaded))
             {
@@ -908,6 +903,7 @@ public class MUD extends Thread implements MudHost
                 CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"A terminal error has occured!");
                 return;
             }
+            CMProps.setBoolVar(CMProps.SYSTEMB_MUDSTARTED,false);
             
             DBConnector currentDBconnector=new DBConnector();
             CMLib.registerLibrary(new DBInterface(currentDBconnector));
@@ -1034,6 +1030,8 @@ public class MUD extends Thread implements MudHost
 			}
 			nameID=CMParms.combine(V,0);
 		}
+        new CMLib(); // initialize this threads libs
+        
 		if(iniFiles.size()==0) iniFiles.addElement("coffeemud.ini");
 		if(nameID.length()==0) nameID="Unnamed CoffeeMud";
 		String iniFile=(String)iniFiles.firstElement();
@@ -1107,6 +1105,7 @@ public class MUD extends Thread implements MudHost
         if(word.equalsIgnoreCase("FORCE"))
         {
             String rest=CMParms.combine(V,1);
+            /*
             if(rest.equalsIgnoreCase("SAVETHREAD"))
                 saveThread.forceTick();
             else
@@ -1114,6 +1113,7 @@ public class MUD extends Thread implements MudHost
                 utiliThread.forceTick();
             else
                 throw new CMException("Unknown parm: "+rest);
+            */
         }
         else
             throw new CMException("Unknown command: "+word);

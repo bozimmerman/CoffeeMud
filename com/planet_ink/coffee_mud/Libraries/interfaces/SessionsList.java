@@ -19,7 +19,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-public interface SessionsList extends CMLibrary
+public interface SessionsList extends CMLibrary, Runnable
 {
     public Vector all=new Vector();
     public Session elementAt(int x);

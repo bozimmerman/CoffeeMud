@@ -47,6 +47,8 @@ public class IMudClient implements I3Interface
     public void initializeClass(){}
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public boolean activate(){ return true;}
+    public boolean shutdown(){ return true;}
     
 	public IMC2Driver imc2=null;
 	public void registerIMC2(Object O)

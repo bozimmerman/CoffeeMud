@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface WorldMap extends CMLibrary
+public interface WorldMap extends CMLibrary, Runnable
 {
     /************************************************************************/
     /**							 AREAS		    							*/
@@ -152,7 +152,6 @@ public interface WorldMap extends CMLibrary
         }
     }
 	public final static long ROOM_EXPIRATION_MILLIS=2500000;
-    public void unLoad();
     
     public class CompleteRoomIDEnumerator implements Enumeration
     {

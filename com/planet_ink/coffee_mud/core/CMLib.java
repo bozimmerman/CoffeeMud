@@ -51,7 +51,7 @@ public class CMLib
     private static CMLib l(){ return libs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
     public static CMLib l(char c){return libs[c];}
     public static CMLib instance(){return l();}
-    private final CMObject[] libraries=new CMObject[LIBRARY_TOTAL];
+    private final CMLibrary[] libraries=new CMLibrary[LIBRARY_TOTAL];
     private boolean[] registered=new boolean[LIBRARY_TOTAL];
 
 
@@ -233,7 +233,7 @@ public class CMLib
         return -1;
     }
 
-    public static void registerLibrary(CMObject O)
+    public static void registerLibrary(CMLibrary O)
     {
         int code=convertToLibraryCode(O);
         if(code>=0)
@@ -267,10 +267,26 @@ public class CMLib
 
     }
 
+    public static void activateLibraries() {
+        CMLib lib=l();
+        for(int l=0;l<lib.libraries.length;l++)
+            lib.libraries[l].activate();
+    }
+    
+    public static Enumeration libraries(int code) {
+        Vector V=new Vector();
+        for(int l=0;l<libs.length;l++)
+            if((libs[l]!=null)
+            &&(libs[l].libraries[code]!=null)
+            &&(!V.contains(libs[l].libraries[code])))
+                V.addElement(libs[l].libraries[code]);
+        return V.elements();
+    }
+    
     public static void registerLibraries(Enumeration e)
     {
         for(;e.hasMoreElements();)
-            registerLibrary((CMObject)e.nextElement());
+            registerLibrary((CMLibrary)e.nextElement());
     }
     public static int countRegistered()
     {

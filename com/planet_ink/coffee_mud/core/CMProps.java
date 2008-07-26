@@ -37,13 +37,19 @@ import java.io.ByteArrayInputStream;
 public class CMProps extends Properties
 {
     private static CMProps[] props=new CMProps[256];
-    public CMProps(){
+    public CMProps()
+    {
     	super();
     	char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
     	if(props==null) props=new CMProps[256];
 	    if(props[c]==null) props[c]=this;
     }
-    public static CMProps instance(){return p();}
+    public static CMProps instance()
+    {
+        CMProps p=p();
+        if(p==null) p=new CMProps();
+        return p;
+    }
     private static CMProps p(){ return props[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
 
 	public static final long serialVersionUID=0;
@@ -452,21 +458,29 @@ public class CMProps extends Properties
         setUpLowVar(varNum,val.toUpperCase());
     }
 
-    public static void setUpLowVar(int varNum, String val)
+    private static void setUpLowVar(CMProps props, int varNum, String val)
     {
         if((varNum<0)||(varNum>=NUM_SYSTEM)) return ;
         if(val==null) val="";
-        p().sysVars[varNum]=val;
+        props.sysVars[varNum]=val;
         switch(varNum)
         {
         case SYSTEM_PKILL:
             {
                 int x=val.indexOf("-");
                 if(x>0)
-                    p().pkillLevelDiff=CMath.s_int(val.substring(x+1));
+                    props.pkillLevelDiff=CMath.s_int(val.substring(x+1));
             }
             break;
         }
+    }
+    public static void setUpLowVar(int varNum, String val)
+    { setUpLowVar(p(),varNum,val); }
+    public static void setUpAllLowVar(int varNum, String val)
+    { 
+        for(int p=0;p<props.length;p++)
+            if(props[p]!=null)
+               setUpLowVar(props[p],varNum,val);
     }
 
     public static int getCountNewUserByIP(String address)

@@ -156,7 +156,7 @@ public class Unload extends StdCommand
             	{
             		done++;
             		if(M.session()!=null) M.session().logoff(true);
-	            	CMLib.map().delPlayer(M);
+	            	CMLib.players().delPlayer(M);
 	            	M.destroy();
             	}
             }

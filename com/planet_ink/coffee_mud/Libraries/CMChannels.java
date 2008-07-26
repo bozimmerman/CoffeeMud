@@ -227,17 +227,23 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return channels;
 	}
 	
-	public void unloadChannels()
-	{
-		numChannelsLoaded=0;
-		numIChannelsLoaded=0;
+    private void clearChannels()
+    {
+        numChannelsLoaded=0;
+        numIChannelsLoaded=0;
         numImc2ChannelsLoaded=0;
-		channelNames=new Vector();
-		channelMasks=new Vector();
+        channelNames=new Vector();
+        channelMasks=new Vector();
         channelFlags=new Vector();
-		ichannelList=new Vector();
-		imc2channelList=new Vector();
-		channelQue=new Vector();
+        ichannelList=new Vector();
+        imc2channelList=new Vector();
+        channelQue=new Vector();
+    }
+    
+    public boolean shutdown()
+	{
+        clearChannels();
+        return true;
 	}
 
 	public String[][] imc2ChannelsArray()
@@ -337,6 +343,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
     
 	public int loadChannels(String list, String ilist, String imc2list)
 	{
+        clearChannels();
 		while(list.length()>0)
 		{
 			int x=list.indexOf(",");

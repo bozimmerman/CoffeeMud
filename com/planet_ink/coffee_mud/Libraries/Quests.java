@@ -99,7 +99,7 @@ public class Quests extends StdLibrary implements QuestManager
             Q.autostartup();
         }
     }
-    public void shutdown()
+    public boolean shutdown()
     {
         for(int i=numQuests();i>=0;i--)
         {
@@ -107,6 +107,7 @@ public class Quests extends StdLibrary implements QuestManager
             delQuest(Q);
         }
         quests.clear();
+        return true;
     }
     public void delQuest(Quest Q)
     {

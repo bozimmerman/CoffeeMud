@@ -114,10 +114,6 @@ public interface ChannelsLibrary extends CMLibrary
      */
     public Vector getFlaggedChannelNames(String flag);
     /**
-     * 
-     */
-    public void unloadChannels();
-    /**
      * @return
      */
     public String[][] imc2ChannelsArray();

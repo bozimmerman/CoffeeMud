@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface CatalogLibrary 
+public interface CatalogLibrary extends CMLibrary
 {
     public DVector getCatalogItems();
     public DVector getCatalogMobs();
@@ -51,7 +51,6 @@ public interface CatalogLibrary
     public void propogateCatalogChange(Environmental E);
     public void changeCatalogUsage(Environmental E, boolean add);
     public Item getDropItem(MOB M, boolean live);
-    public void unLoad();
     
     public static class CataData 
     {

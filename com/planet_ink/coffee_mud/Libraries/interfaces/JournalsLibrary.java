@@ -28,7 +28,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface JournalsLibrary extends CMLibrary
+public interface JournalsLibrary extends CMLibrary, Runnable
 {
     public int loadCommandJournals(String list);
     public int getNumCommandJournals();
@@ -36,7 +36,6 @@ public interface JournalsLibrary extends CMLibrary
     public String getCommandJournalName(int i);
     public Hashtable getCommandJournalFlags(int i);
     public String[] getCommandJournalNames();
-    public void unloadCommandJournals();
     public static final String[] ALLFLAGS={
         "DEFAULT","SAMEAREA","CLANONLY","READONLY",
         "EXECUTIONS","LOGINS","LOGOFFS","BIRTHS","MARRIAGES", 

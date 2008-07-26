@@ -39,6 +39,7 @@ import java.io.IOException;
 public class Socials extends StdLibrary implements SocialsList
 {
     public String ID(){return "Socials";}
+ 
     public Hashtable getSocialHash()
     {
         Hashtable soc=(Hashtable)Resources.getResource("PARSED: "+filename);
@@ -198,6 +199,12 @@ public class Socials extends StdLibrary implements SocialsList
     
     public int numSocialSets() {return getSocialHash().size();}
 
+    public void unloadSocials() 
+    {
+        Resources.removeResource("PARSED: "+filename);
+        unloadDerivedResources();
+    }
+    
     private void unloadDerivedResources()
     {
         Resources.removeResource("SOCIALS LIST");
@@ -205,10 +212,10 @@ public class Socials extends StdLibrary implements SocialsList
         Resources.removeResource("WEB SOCIALS TBL");
     }
     
-	public void unloadSocials()
+	public boolean shutdown()
 	{
-        Resources.removeResource("PARSED: "+filename);
-        unloadDerivedResources();
+        unloadSocials();
+        return true;
 	}
 
 

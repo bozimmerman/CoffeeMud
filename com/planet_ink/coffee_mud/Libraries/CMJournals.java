@@ -42,16 +42,11 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     public Vector commandJournalFlags=new Vector();
     public final Vector emptyVector=new Vector();
     
-    public void unloadCommandJournals()
-    {
-        numCommandJournalsLoaded=0;
-        commandJournalMasks=new Vector();
-        commandJournalFlags=new Vector();
-        commandJournalNames=new Vector();
-    }
-
+    private ThreadEngine.SupportThread thread=null;
+    
     public int loadCommandJournals(String list)
     {
+        clearJournals();
         while(list.length()>0)
         {
             int x=list.indexOf(",");
@@ -132,5 +127,68 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     {
         if(commandJournalNames.size()==0) return null;
         return CMParms.toStringArray(commandJournalNames);
+    }
+    
+    public void commandJournalSweep()
+    {
+        thread.status("command journal sweeping");
+        try
+        {
+            for(int j=0;j<getNumCommandJournals();j++)
+            {
+                String num=(String)getCommandJournalFlags(j).get("EXPIRE=");
+                if((num!=null)&&(CMath.isNumber(num)))
+                {
+                    thread.status("updating journal "+getCommandJournalName(j));
+                    Vector items=CMLib.database().DBReadJournal("SYSTEM_"+getCommandJournalName(j)+"S");
+                    if(items!=null)
+                    for(int i=items.size()-1;i>=0;i--)
+                    {
+                        Vector entry=(Vector)items.elementAt(i);
+                        long compdate=CMath.s_long((String)entry.elementAt(DatabaseEngine.JOURNAL_DATE2));
+                        compdate=compdate+Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
+                        if(System.currentTimeMillis()>compdate)
+                        {
+                            String from=(String)entry.elementAt(DatabaseEngine.JOURNAL_FROM);
+                            String message=(String)entry.elementAt(DatabaseEngine.JOURNAL_MSG);
+                            Log.sysOut("SaveThread","Expired "+getCommandJournalName(j)+" from "+from+": "+message);
+                            CMLib.database().DBDeleteJournal("SYSTEM_"+getCommandJournalName(j)+"S",i);
+                        }
+                    }
+                    thread.status("command journal sweeping");
+                }
+            }
+        }catch(NoSuchElementException nse){}
+    }
+    
+    public boolean activate() {
+        if(thread==null)
+            thread=new ThreadEngine.SupportThread("THJournals"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
+                    MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging("SAVETHREAD"));
+        if(!thread.started)
+            thread.start();
+        return true;
+    }
+    
+    private void clearJournals() {
+        numCommandJournalsLoaded=0;
+        commandJournalMasks=new Vector();
+        commandJournalFlags=new Vector();
+        commandJournalNames=new Vector();
+    }
+    
+    public boolean shutdown() {
+        clearJournals();
+        thread.shutdown();
+        return true;
+    }
+    
+    public void run()
+    {
+        if((!CMSecurity.isDisabled("SAVETHREAD"))
+        &&(!CMSecurity.isDisabled("JOURNALTHREAD")))
+        {
+            commandJournalSweep();
+        }
     }
 }

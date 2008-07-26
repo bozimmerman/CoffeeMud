@@ -60,11 +60,11 @@ public interface SocialsList extends CMLibrary
     public int numSocialSets();
     public Vector enumSocialSet(int index);
     
-    public void unloadSocials();
     public void save(MOB whom);
     public Vector getSocialsList();
     public String getSocialsHelp(MOB mob, String named);
     public String getSocialsTable();
     public Social makeDefaultSocial(String name, String type);
     
+    public void unloadSocials();
 }

@@ -242,10 +242,11 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
         addCatalogReplace(E);
     }
     
-    public void unLoad()
+    public boolean shutdown()
     {
         icatalog=new DVector(2);
         mcatalog=new DVector(2);
+        return true;
     }
     
     public void changeCatalogUsage(Environmental E, boolean add)

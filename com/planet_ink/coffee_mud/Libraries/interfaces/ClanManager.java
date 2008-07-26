@@ -39,10 +39,6 @@ public interface ClanManager extends CMLibrary
      */
     public int numClans();
     /**
-     * 
-     */
-    public void shutdownClans();
-    /**
      * @param id1
      * @param id2
      * @param relation

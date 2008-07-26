@@ -73,6 +73,8 @@ public class DBInterface implements DatabaseEngine
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public DBConnector getConnector(){ return DB;}
+    public boolean activate(){ return true;}
+    public boolean shutdown(){ return true;}
 	public void vassals(MOB mob, String liegeID)
 	{MOBloader.vassals(mob,liegeID);}
 	
@@ -354,7 +356,7 @@ public class DBInterface implements DatabaseEngine
 	
 	public String errorStatus()
 	{return DB.errorStatus().toString();}
-	
+    
 	public void resetconnections()
 	{DB.reconnect();}
     

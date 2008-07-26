@@ -28,7 +28,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public interface PlayerLibrary extends CMLibrary
+public interface PlayerLibrary extends CMLibrary, Runnable
 {
     public int numPlayers();
     public void addPlayer(MOB newOne);
@@ -37,5 +37,6 @@ public interface PlayerLibrary extends CMLibrary
     public MOB getLoadPlayer(String last);
     public Enumeration players();
     public void obliteratePlayer(MOB deadMOB, boolean quiet);
-    public void unLoad();
+    public void forceTick();
+    public int savePlayers();
 }

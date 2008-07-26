@@ -38,7 +38,6 @@ public interface QuestManager extends CMLibrary
     public Quest fetchQuest(String qname);
     public Quest findQuest(String qname);
     public void addQuest(Quest Q);
-    public void shutdown();
     public void delQuest(Quest Q);
     public void save();
     public Vector parseQuestSteps(Vector script, int startLine, boolean rawLineInput);

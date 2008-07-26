@@ -2,7 +2,11 @@ package com.planet_ink.coffee_mud.Libraries;
 import java.util.Vector;
 import com.planet_ink.coffee_mud.Common.interfaces.Session;
 import com.planet_ink.coffee_mud.Libraries.interfaces.SessionsList;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ThreadEngine;
 import com.planet_ink.coffee_mud.core.CMLib;
+import com.planet_ink.coffee_mud.core.CMSecurity;
+import com.planet_ink.coffee_mud.core.Log;
+import com.planet_ink.coffee_mud.core.interfaces.MudHost;
 
 /* 
    Copyright 2000-2008 Bo Zimmerman
@@ -22,7 +26,9 @@ import com.planet_ink.coffee_mud.core.CMLib;
 public class Sessions extends StdLibrary implements SessionsList
 {
     public String ID(){return "Sessions";}
+    private ThreadEngine.SupportThread thread=null;
     public Vector all=new Vector();
+    
 	public Session elementAt(int x)
 	{
 		return (Session)all.elementAt(x);
@@ -56,5 +62,105 @@ public class Sessions extends StdLibrary implements SessionsList
             try{Thread.sleep(100);}catch(Exception e){}
         }
         removeElement(S);
+    }
+    public boolean activate() {
+        if(thread==null)
+            thread=new ThreadEngine.SupportThread("THSessions"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
+                    MudHost.TIME_UTILTHREAD_SLEEP, this, CMSecurity.isDebugging("UTILITHREAD"));
+        if(!thread.started)
+            thread.start();
+        return true;
+    }
+    
+    public boolean shutdown() {
+        thread.shutdown();
+        return true;
+    }
+    
+    public void run()
+    {
+        if((CMSecurity.isDisabled("UTILITHREAD"))
+        ||(CMSecurity.isDisabled("SESSIONTHREAD")))
+            return;
+        thread.status("checking player sessions.");
+        for(int s=0;s<size();s++)
+        {
+            Session S=elementAt(s);
+            long time=System.currentTimeMillis()-S.lastLoopTime();
+            if(time>0)
+            {
+                if((S.mob()!=null))
+                {
+                    long check=60000;
+
+                    if((S.previousCMD()!=null)
+                    &&(S.previousCMD().size()>0)
+                    &&(((String)S.previousCMD().firstElement()).equalsIgnoreCase("IMPORT")
+                       ||((String)S.previousCMD().firstElement()).equalsIgnoreCase("EXPORT")
+                       ||((String)S.previousCMD().firstElement()).equalsIgnoreCase("MERGE")))
+                        check=check*60;
+                    else
+                    if(CMSecurity.isAllowed(S.mob(),S.mob().location(),"CMDROOMS"))
+                        check=check*15;
+                    else
+                    if(S.getStatus()==Session.STATUS_LOGIN)
+                        check=check*5;
+
+                    if(time>(check*10))
+                    {
+                        String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
+                        if((S.previousCMD()==null)||(S.previousCMD().size()==0))
+                            Log.errOut(thread.getName(),"Kicking out: "+((S.mob()==null)?"Unknown":S.mob().Name())+" who has spent "+time+" millis in creation (probably).");
+                        else
+                        {
+                            Log.errOut(thread.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
+                            Log.errOut(thread.getName(),"STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+                        }
+                        if(S instanceof Thread)
+                            thread.debugDumpStack((Thread)S);
+                        thread.status("killing session ");
+                        stopSessionAtAllCosts(S);
+                        thread.status("checking player sessions.");
+                    }
+                    else
+                    if(time>check)
+                    {
+                        if((S.mob()==null)||(S.mob().Name()==null)||(S.mob().Name().length()==0))
+                            stopSessionAtAllCosts(S);
+                        else
+                        if((S.previousCMD()!=null)&&(S.previousCMD().size()>0))
+                        {
+                            String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
+                            if((S.isLockedUpWriting())
+                            &&(CMLib.flags().isInTheGame(S.mob(),true)))
+                            {
+                                Log.errOut(thread.getName(),"LOGGED OFF Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time+": "+S.isLockedUpWriting());
+                                stopSessionAtAllCosts(S);
+                            }
+                            else
+                                Log.errOut(thread.getName(),"Suspect Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
+                            if((S.getStatus()!=1)||((S.previousCMD()!=null)&&(S.previousCMD().size()>0)))
+                                Log.errOut(thread.getName(),"STATUS  is :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+                            else
+                                Log.errOut(thread.getName(),"STATUS  is :"+S.getStatus()+", no last command available.");
+                        }
+                    }
+                }
+                else
+                if(time>(60000))
+                {
+                    String roomID=S.mob()!=null?CMLib.map().getExtendedRoomID(S.mob().location()):"";
+                    Log.errOut(thread.getName(),"KILLING DEAD Session: "+((S.mob()==null)?"Unknown":S.mob().Name())+" ("+roomID+"), out for "+time);
+                    if((S.getStatus()!=1)||((S.previousCMD()!=null)&&(S.previousCMD().size()>0)))
+                    Log.errOut(thread.getName(),"STATUS  was :"+S.getStatus()+", LASTCMD was :"+((S.previousCMD()!=null)?S.previousCMD().toString():""));
+                    thread.status("killing session ");
+                    if(S instanceof Thread)
+                        thread.debugDumpStack((Thread)S);
+                    stopSessionAtAllCosts(S);
+                    thread.status("checking player sessions");
+                }
+            }
+        }
+        
     }
 }

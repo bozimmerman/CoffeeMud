@@ -38,7 +38,7 @@ public class Clans extends StdLibrary implements ClanManager
 	public Hashtable all=new Hashtable();
 
     public String ID(){return "Clans";}
-	public void shutdownClans()
+	public boolean shutdown()
 	{
 		for(Enumeration e=all.elements();e.hasMoreElements();)
 		{
@@ -46,6 +46,7 @@ public class Clans extends StdLibrary implements ClanManager
 			CMLib.threads().deleteTick(C,Tickable.TICKID_CLAN);
 		}
 		all.clear();
+        return true;
 	}
 
     public boolean isCommonClanRelations(String id1, String id2, int relation)

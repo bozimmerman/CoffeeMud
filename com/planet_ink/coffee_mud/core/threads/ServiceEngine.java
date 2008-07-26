@@ -43,6 +43,7 @@ public class ServiceEngine implements ThreadEngine
     public void initializeClass(){}
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    private ThreadEngine.SupportThread thread=null;
     
 	protected Vector tickGroup=new Vector();
 	public Enumeration tickGroups(){return DVector.s_enum(tickGroup);}
@@ -67,13 +68,15 @@ public class ServiceEngine implements ThreadEngine
 	{
 		Tick tock=null;
         Tick almostTock=null;
+        char threadGroupNum=Thread.currentThread().getThreadGroup().getName().charAt(0);
 		for(Enumeration v=tickGroups();v.hasMoreElements();)
 		{
 			almostTock=(Tick)v.nextElement();
 			if((tock==null)
             &&(almostTock.TICK_TIME==TICK_TIME)
             &&(!almostTock.solitaryTicker)
-            &&(almostTock.numTickers()<TickableGroup.MAX_TICK_CLIENTS))
+            &&(almostTock.numTickers()<TickableGroup.MAX_TICK_CLIENTS)
+            &&(almostTock.getThreadGroup().getName().charAt(0)==threadGroupNum))
 				tock=almostTock;
         	if(almostTock.contains(E,tickID)) 
         		return null;
@@ -346,7 +349,7 @@ public class ServiceEngine implements ThreadEngine
 		else
 		if(itemCode.equalsIgnoreCase("topObjectGroup"))
 			return ""+topObjectGroup;
-		else
+		else/*
 		if(itemCode.equalsIgnoreCase("saveThreadMilliTotal"))
 			return ""+SaveThread.milliTotal;
 		else
@@ -376,7 +379,7 @@ public class ServiceEngine implements ThreadEngine
 		else
 		if(itemCode.equalsIgnoreCase("utilThreadTickTotal"))
 			return ""+UtiliThread.tickTotal;
-		else
+		else*/
 		if(itemCode.equalsIgnoreCase("topObjectClient"))
 		{
 			if(topObjectClient!=null)
@@ -564,8 +567,7 @@ public class ServiceEngine implements ThreadEngine
 		return "";
 	}
 
-	public void shutdownAll()
-	{
+    public boolean shutdown() {
 		//int numTicks=tickGroup.size();
 		int which=0;
 		while(tickGroup.size()>0)
@@ -577,8 +579,20 @@ public class ServiceEngine implements ThreadEngine
 			try{Thread.sleep(100);}catch(Exception e){}
 			which++;
 		}
+        thread.shutdown();
+        // force final time tick!
+        Vector timeObjects=new Vector();
+        for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+        {
+            Area A=((Area)e.nextElement());
+            if(!timeObjects.contains(A.getTimeObj()))
+                timeObjects.addElement(A.getTimeObj());
+        }
+        for(int t=0;t<timeObjects.size();t++)
+            ((TimeClock)timeObjects.elementAt(t)).save();
 		Log.sysOut("ServiceEngine","Shutdown complete.");
-	}
+        return true;
+    }
 
 	public synchronized void clearDebri(Room room, int taskCode)
 	{
@@ -729,11 +743,8 @@ public class ServiceEngine implements ThreadEngine
     }
     public String getServiceThreadSummary(Thread T)
     {
-        if(T instanceof UtiliThread)
-            return " ("+UtiliThread.status+")";
-        else
-        if(T instanceof SaveThread)
-            return " ("+SaveThread.status+")";
+        if(T instanceof ThreadEngine.SupportThread)
+            return " ("+((ThreadEngine.SupportThread)T).status+")";
         else
         if(T instanceof MudHost)
             return " ("+((MudHost)T).getStatus()+")";
@@ -743,4 +754,142 @@ public class ServiceEngine implements ThreadEngine
         return "";
         
     }
+    
+    public void insertOrderDeathInOrder(DVector DV, long lastStart, String msg, Tick tock)
+    {
+        if(DV.size()>0)
+        for(int i=0;i<DV.size();i++)
+        {
+            if(((Long)DV.elementAt(i,1)).longValue()>lastStart)
+            {
+                DV.insertElementAt(i,new Long(lastStart),msg,tock);
+                return;
+            }
+        }
+        DV.addElement(new Long(lastStart),msg,tock);
+    }
+
+    public void checkHealth()
+    {
+        long lastDateTime=System.currentTimeMillis()-(5*TimeManager.MILI_MINUTE);
+        long longerDateTime=System.currentTimeMillis()-(120*TimeManager.MILI_MINUTE);
+        thread.status("checking");
+
+        thread.status("checking tick groups.");
+        DVector orderedDeaths=new DVector(3);
+        try
+        {
+            for(Enumeration v=CMLib.threads().tickGroups();v.hasMoreElements();)
+            {
+                Tick almostTock=(Tick)v.nextElement();
+                if((almostTock.awake)
+                &&(almostTock.lastStop<lastDateTime))
+                {
+                    TockClient client=almostTock.lastClient;
+                    if(client==null)
+                        insertOrderDeathInOrder(orderedDeaths,0,"LOCKED GROUP "+almostTock.getCounter()+"! No further information.",almostTock);
+                    else
+                    if((!CMath.bset(client.tickID,Tickable.TICKID_LONGERMASK))||(almostTock.lastStop<longerDateTime))
+                    {
+                        if(client.clientObject==null)
+                            insertOrderDeathInOrder(orderedDeaths,0,"LOCKED GROUP "+almostTock.getCounter()+": NULL @"+CMLib.time().date2String(client.lastStart)+", tickID "+client.tickID,almostTock);
+                        else
+                        {
+                            StringBuffer str=null;
+                            Tickable obj=client.clientObject;
+                            long code=client.clientObject.getTickStatus();
+                            String codeWord=CMLib.threads().getTickStatusSummary(client.clientObject);
+                            String msg=null;
+                            if(obj instanceof Environmental)
+                                str=new StringBuffer("LOCKED GROUP "+almostTock.getCounter()+" : "+obj.name()+" ("+((Environmental)obj).ID()+") @"+CMLib.time().date2String(client.lastStart)+", status("+code+" ("+codeWord+"), tickID "+client.tickID);
+                            else
+                                str=new StringBuffer("LOCKED GROUP "+almostTock.getCounter()+": "+obj.name()+", status("+code+" ("+codeWord+") @"+CMLib.time().date2String(client.lastStart)+", tickID "+client.tickID);
+    
+                            if((obj instanceof MOB)&&(((MOB)obj).location()!=null))
+                                msg=str.toString()+" in "+((MOB)obj).location().roomID();
+                            else
+                            if((obj instanceof Item)&&(((Item)obj).owner()!=null)&&(((Item)obj).owner() instanceof Room))
+                                msg=str.toString()+" in "+((Room)((Item)obj).owner()).roomID();
+                            else
+                            if((obj instanceof Item)&&(((Item)obj).owner()!=null)&&(((Item)obj).owner() instanceof MOB))
+                                msg=str.toString()+" owned by "+((MOB)((Item)obj).owner()).name();
+                            else
+                            if(obj instanceof Room)
+                                msg=str.toString()+" is "+((Room)obj).roomID();
+                            else
+                                msg=str.toString();
+                            insertOrderDeathInOrder(orderedDeaths,client.lastStart,msg,almostTock);
+                        }
+                    }
+                    thread.debugDumpStack(almostTock);
+                }
+            }
+        }
+        catch(java.util.NoSuchElementException e){}
+        for(int i=0;i<orderedDeaths.size();i++)
+            Log.errOut(thread.getName(),(String)orderedDeaths.elementAt(i,2));
+            
+        thread.status("killing tick groups.");
+        for(int x=0;x<orderedDeaths.size();x++)
+        {
+            Tick almostTock=(Tick)orderedDeaths.elementAt(x,3);
+            Vector objs=new Vector();
+            try{
+                for(Iterator e=almostTock.tickers();e.hasNext();)
+                    objs.addElement(e.next());
+            }catch(NoSuchElementException e){}
+            almostTock.shutdown();
+            if(CMLib.threads() instanceof ServiceEngine)
+                ((ServiceEngine)CMLib.threads()).delTickGroup(almostTock);
+            for(int i=0;i<objs.size();i++)
+            {
+                TockClient c=(TockClient)objs.elementAt(i);
+                CMLib.threads().startTickDown(c.clientObject,c.tickID,c.reTickDown);
+            }
+        }
+
+        thread.status("Checking mud threads");
+        for(int m=0;m<CMLib.hosts().size();m++)
+        {
+            Vector badThreads=((MudHost)CMLib.hosts().elementAt(m)).getOverdueThreads();
+            if(badThreads.size()>0)
+            {
+                for(int b=0;b<badThreads.size();b++)
+                {
+                    Thread T=(Thread)badThreads.elementAt(b);
+                    String threadName=T.getName();
+                    if(T instanceof Tickable)
+                        threadName=((Tickable)T).name()+" ("+((Tickable)T).ID()+"): "+((Tickable)T).getTickStatus();
+                    thread.status("Killing "+threadName);
+                    Log.errOut("Killing stray thread: "+threadName);
+                    CMLib.killThread(T,100,1);
+                }
+            }
+        }
+        
+        thread.status("Done checking threads");
+    }
+
+    public void run()
+    {
+        while(isAllSuspended())
+            try{Thread.sleep(2000);}catch(Exception e){}
+            
+        if((!CMSecurity.isDisabled("UTILITHREAD"))
+        &&(!CMSecurity.isDisabled("THREADTHREAD")))
+        {
+            checkHealth();
+            Resources.removeResource("SYSTEM_HASHED_MASKS");
+        }
+    }
+    
+    public boolean activate() {
+        if(thread==null)
+            thread=new ThreadEngine.SupportThread("THThreads"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
+                    MudHost.TIME_UTILTHREAD_SLEEP, this, CMSecurity.isDebugging("UTILITHREAD"));
+        if(!thread.started)
+            thread.start();
+        return true;
+    }
+    
 }

@@ -40,7 +40,10 @@ public class Polls extends StdLibrary implements PollManager
     public String ID(){return "Polls";}
     
     public Vector pollCache=null;
-    public void unload(){pollCache=null;}
+    public boolean shutdown(){
+        pollCache=null;
+        return true;
+    }
     
     public void addPoll(Poll P){if(getCache()!=null) getCache().addElement(P);}
     public void removePoll(Poll P){if(getCache()!=null) getCache().removeElement(P);}

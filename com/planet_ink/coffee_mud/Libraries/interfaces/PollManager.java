@@ -31,7 +31,6 @@ import java.util.*;
 */
 public interface PollManager extends CMLibrary
 {
-    public void unload();
     public void addPoll(Poll P);
     public void removePoll(Poll P);
     public Poll getPoll(String named);

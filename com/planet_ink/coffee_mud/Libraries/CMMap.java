@@ -33,7 +33,6 @@ import java.util.*;
 */
 public class CMMap extends StdLibrary implements WorldMap
 {
-
     public String ID(){return "CMMap";}
 	public Vector areasList = new Vector();
 	//public Vector roomsList = new Vector();
@@ -48,6 +47,8 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Vector space=new Vector();
     public Hashtable globalHandlers=new Hashtable();
     public Vector sortedAreas=null;
+    private ThreadEngine.SupportThread thread=null;
+    public long lastVReset=0;
 
     protected int getGlobalIndex(Vector list, String name)
     {
@@ -243,7 +244,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		Exit thisExit=null;
 		synchronized(("SYNC"+from.roomID()).intern())
 		{
-			from=CMLib.map().getRoom(from);
+			from=getRoom(from);
 			if(opRoom!=null)
 				from.rawDoors()[direction]=null;
 
@@ -258,7 +259,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		synchronized(("SYNC"+room.roomID()).intern())
 		{
-			room=CMLib.map().getRoom(room);
+			room=getRoom(room);
 			if(room.rawDoors()[Directions.getOpDirectionCode(direction)]==null)
 			{
 				room.rawDoors()[Directions.getOpDirectionCode(direction)]=from;
@@ -391,7 +392,7 @@ public class CMMap extends StdLibrary implements WorldMap
     	if(room==null)
     		return null;
     	if(room.amDestroyed())
-    		return getRoom(CMLib.map().getExtendedRoomID(room));
+    		return getRoom(getExtendedRoomID(room));
     	return room;
     }
 
@@ -469,7 +470,7 @@ public class CMMap extends StdLibrary implements WorldMap
         {
             P = (PostOffice)i.nextElement();
             if((P.postalChain().equalsIgnoreCase(chain))
-            &&(CMLib.map().getStartArea(P)==A))
+            &&(getStartArea(P)==A))
                 return P;
         }
         return null;
@@ -504,7 +505,7 @@ public class CMMap extends StdLibrary implements WorldMap
         {
             C = (Auctioneer)i.nextElement();
             if((C.auctionHouse().equalsIgnoreCase(chain))
-            &&(CMLib.map().getStartArea(C)==A))
+            &&(getStartArea(C)==A))
                 return C;
         }
         return null;
@@ -536,7 +537,7 @@ public class CMMap extends StdLibrary implements WorldMap
         {
             B = (Banker)i.nextElement();
             if((B.bankChain().equalsIgnoreCase(chain))
-            &&(CMLib.map().getStartArea(B)==A))
+            &&(getStartArea(B)==A))
                 return B;
         }
         return null;
@@ -730,7 +731,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			Room R=(Room)allMyDamnRooms.elementAt(r);
 			synchronized(("SYNC"+R.roomID()).intern())
 			{
-				R=CMLib.map().getRoom(R);
+				R=getRoom(R);
 				R.setArea(A);
 				if(oldName!=null)
 				{
@@ -761,17 +762,6 @@ public class CMMap extends StdLibrary implements WorldMap
 				CMLib.database().DBReCreate(R,oldID);
 			}
 		}
-	}
-
-	public void unLoad()
-	{
-		areasList.clear();
-		deitiesList.clear();
-		space=new Vector();
-		bodyRooms=new Hashtable();
-		startRooms=new Hashtable();
-		deathRooms=new Hashtable();
-        globalHandlers.clear();
 	}
 
     public int getRoomDir(Room from, Room to)
@@ -910,7 +900,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				Room R=(Room)r.nextElement();
 				synchronized(("SYNC"+R.roomID()).intern())
 				{
-					R=CMLib.map().getRoom(R);
+					R=getRoom(R);
 					boolean changes=false;
 					for(int dir=0;dir<Directions.NUM_DIRECTIONS;dir++)
 					{
@@ -1124,7 +1114,7 @@ public class CMMap extends StdLibrary implements WorldMap
             R=(M!=null)?M.location():null;
             if((R!=null)&&(R.getArea()==area))
             {
-                playersHere.addElement(M,CMLib.map().getExtendedRoomID(R));
+                playersHere.addElement(M,getExtendedRoomID(R));
                 if(includeLocalFollowers)
                 {
                     MOB M2=null;
@@ -1133,7 +1123,7 @@ public class CMMap extends StdLibrary implements WorldMap
                     {
                         M2=(MOB)i.next();
                         if((M2!=M)&&(M2.location()==R))
-                            playersHere.addElement(M2,CMLib.map().getExtendedRoomID(R));
+                            playersHere.addElement(M2,getExtendedRoomID(R));
                     }
                 }
             }
@@ -1152,12 +1142,11 @@ public class CMMap extends StdLibrary implements WorldMap
         for(int p=0;p<playersHere.size();p++)
         {
             MOB M=(MOB)playersHere.elementAt(p,1);
-            Room R=CMLib.map().getRoom((String)playersHere.elementAt(p,2));
+            Room R=getRoom((String)playersHere.elementAt(p,2));
             if(R!=null) R.bringMobHere(M,false);
         }
         area.setAreaFlags(oldFlag);
     }
-
 
 	public boolean hasASky(Room room)
 	{
@@ -1167,4 +1156,173 @@ public class CMMap extends StdLibrary implements WorldMap
 			return false;
 		return true;
 	}
+    
+    public boolean activate() {
+        if(thread==null)
+            thread=new ThreadEngine.SupportThread("THMap"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
+                    MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging("SAVETHREAD"));
+        if(!thread.started)
+            thread.start();
+        return true;
+    }
+    
+    public boolean shutdown() {
+        areasList.clear();
+        deitiesList.clear();
+        space=new Vector();
+        bodyRooms=new Hashtable();
+        startRooms=new Hashtable();
+        deathRooms=new Hashtable();
+        globalHandlers.clear();
+        thread.shutdown();
+        return true;
+    }
+    
+    public void run()
+    {
+        if((CMSecurity.isDisabled("SAVETHREAD"))
+        ||(CMSecurity.isDisabled("MAPTHREAD")))
+            return;
+        
+        boolean corpsesOnly=CMSecurity.isSaveFlag("ROOMITEMS");
+        boolean noMobs=CMSecurity.isSaveFlag("ROOMMOBS");
+        thread.status("expiration sweep");
+        long currentTime=System.currentTimeMillis();
+        boolean debug=CMSecurity.isDebugging("VACUUM");
+        try
+        {
+            Vector stuffToGo=new Vector();
+            Item I=null;
+            MOB M=null;
+            Room R=null;
+            Vector roomsToGo=new Vector();
+            MOB expireM=CMLib.map().god(null);
+            CMMsg expireMsg=CMClass.getMsg(expireM,R,null,CMMsg.MSG_EXPIRE,null);
+            boolean vResetTime=false;
+            if((System.currentTimeMillis()-lastVReset)>(12 * 60 * 60 * 1000))
+            {
+                vResetTime=true;
+                lastVReset=System.currentTimeMillis();
+            }
+            for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+            {
+                R=(Room)r.nextElement();
+                expireM.setLocation(R);
+                expireMsg.setTarget(R);
+                if((R.expirationDate()!=0)
+                &&(currentTime>R.expirationDate())
+                &&(R.okMessage(R,expireMsg)))
+                    roomsToGo.addElement(R);
+                else
+                if(!R.amDestroyed())
+                {
+                    stuffToGo.clear();
+                    for(int i=0;i<R.numItems();i++)
+                    {
+                        I=R.fetchItem(i);
+                        if((I!=null)
+                        &&((!corpsesOnly)||(I instanceof DeadBody))
+                        &&(I.expirationDate()!=0)
+                        &&(I.owner()==R)
+                        &&(currentTime>I.expirationDate()))
+                            stuffToGo.add(I);
+                    }
+                    for(int i=0;i<R.numInhabitants();i++)
+                    {
+                        M=R.fetchInhabitant(i);
+                        if((M!=null)
+                        &&(!noMobs)
+                        &&(M.expirationDate()!=0)
+                        &&(currentTime>M.expirationDate()))
+                            stuffToGo.add(M);
+                        if(vResetTime && (M!=null) && (M.isMonster()))
+                            M.resetVectors();
+                    }
+                    
+                    if(R.numPCInhabitants()==0)
+                        R.resetVectors();
+                }
+                if(stuffToGo.size()>0)
+                {
+                    boolean success=true;
+                    for(int s=0;s<stuffToGo.size();s++)
+                    {
+                        Environmental E=(Environmental)stuffToGo.elementAt(s);
+                        thread.status("expiring "+E.Name());
+                        expireMsg.setTarget(E);
+                        if(R.okMessage(expireM,expireMsg))
+                            R.sendOthers(expireM,expireMsg);
+                        else
+                            success=false;
+                        if(debug) Log.sysOut("UTILITHREAD","Expired "+E.Name()+" in "+CMLib.map().getExtendedRoomID(R)+": "+success);
+                    }
+                    stuffToGo.clear();
+                }
+                if(vResetTime&&(R.numPCInhabitants()==0))
+                    R.resetVectors();
+            }
+            for(int r=0;r<roomsToGo.size();r++)
+            {
+                R=(Room)roomsToGo.elementAt(r);
+                expireM.setLocation(R);
+                expireMsg.setTarget(R);
+                thread.status("expirating room "+CMLib.map().getExtendedRoomID(R));
+                if(debug)
+                {
+                    String roomID=CMLib.map().getExtendedRoomID(R);
+                    if(roomID.length()==0) roomID="(unassigned grid room, probably in the air)";
+                    if(debug) Log.sysOut("UTILITHREAD","Expired "+roomID+".");
+                }
+                R.sendOthers(expireM,expireMsg);
+            }
+        }
+        catch(java.util.NoSuchElementException e){}
+        thread.status("title sweeping");
+        Vector playerList=CMLib.database().getUserList();
+        try
+        {
+            for(Enumeration r=rooms();r.hasMoreElements();)
+            {
+                Room R=(Room)r.nextElement();
+                LandTitle T=CMLib.law().getLandTitle(R);
+                if(T!=null)
+                {
+                    thread.status("checking title in "+R.roomID()+": "+Runtime.getRuntime().freeMemory());
+                    T.updateLot(playerList);
+                    thread.status("title sweeping");
+                }
+            }
+        }catch(NoSuchElementException nse){}
+        long lastDateTime=System.currentTimeMillis()-(5*TimeManager.MILI_MINUTE);
+        thread.status("checking");
+        try
+        {
+            for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+            {
+                Room R=(Room)r.nextElement();
+                for(int m=0;m<R.numInhabitants();m++)
+                {
+                    MOB mob=R.fetchInhabitant(m);
+                    if((mob!=null)&&(mob.lastTickedDateTime()>0)&&(mob.lastTickedDateTime()<lastDateTime))
+                    {
+                        boolean ticked=CMLib.threads().isTicking(mob,Tickable.TICKID_MOB);
+                        boolean isDead=mob.amDead();
+                        String wasFrom=((mob.getStartRoom()!=null)?mob.getStartRoom().roomID():"NULL");
+                        if(!ticked)
+                        {
+                            if(CMLib.players().getPlayer(mob.Name())==null)
+                                Log.errOut(thread.getName(),mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
+                            else
+                                Log.errOut(thread.getName(),"Player "+mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been put aside."));
+                            thread.status("destroying unticked mob "+mob.name());
+                            if(CMLib.players().getPlayer(mob.Name())==null) mob.destroy();
+                            R.delInhabitant(mob);
+                            thread.status("checking");
+                        }
+                    }
+                }
+            }
+        }
+        catch(java.util.NoSuchElementException e){}
+    }
 }
