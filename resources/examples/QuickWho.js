@@ -11,7 +11,7 @@ function getAccessWords() { return commands;}
 function execute(mob,commands) {
     var e;
     var M;
-    for(e=CMLib.map().players();e.hasMoreElements();)
+    for(e=CMLib.players().players();e.hasMoreElements();)
     {
         M=e.nextElement();
         if(M!=null)
