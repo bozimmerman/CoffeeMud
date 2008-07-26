@@ -37,7 +37,6 @@ public class CMMap extends StdLibrary implements WorldMap
     public String ID(){return "CMMap";}
 	public Vector areasList = new Vector();
 	//public Vector roomsList = new Vector();
-	public Vector playersList = new Vector();
 	public Vector deitiesList = new Vector();
     public Vector postOfficeList=new Vector();
     public Vector auctionHouseList=new Vector();
@@ -560,68 +559,6 @@ public class CMMap extends StdLibrary implements WorldMap
 	}
 
 
-	public int numPlayers() { return playersList.size(); }
-	public void addPlayer(MOB newOne)
-	{
-		synchronized(playersList)
-		{
-			if(getPlayer(newOne.Name())!=null) return;
-			if(playersList.contains(newOne)) return;
-			playersList.add(newOne);
-		}
-	}
-	public void delPlayer(MOB oneToDel) { synchronized(playersList){playersList.remove(oneToDel);} }
-	public MOB getPlayer(String calledThis)
-	{
-		MOB M = null;
-		synchronized(playersList)
-		{
-			for (Enumeration p=players(); p.hasMoreElements();)
-			{
-				M = (MOB)p.nextElement();
-				if (M.Name().equalsIgnoreCase(calledThis))
-					return M;
-			}
-		}
-		return null;
-	}
-
-	public MOB getLoadPlayer(String last)
-	{
-		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
-			return null;
-		MOB M=null;
-		synchronized(playersList)
-		{
-			M=getPlayer(last);
-			if(M!=null) return M;
-
-			for(Enumeration p=players();p.hasMoreElements();)
-			{
-				MOB mob2=(MOB)p.nextElement();
-				if(mob2.Name().equalsIgnoreCase(last))
-				{ return mob2;}
-			}
-
-			MOB TM=CMClass.getMOB("StdMOB");
-			if(CMLib.database().DBUserSearch(TM,last))
-			{
-				M=CMClass.getMOB("StdMOB");
-				M.setName(TM.Name());
-				CMLib.database().DBReadPlayer(M);
-				CMLib.database().DBReadFollowers(M,false);
-				if(M.playerStats()!=null)
-					M.playerStats().setLastUpdated(M.playerStats().lastDateTime());
-				M.recoverEnvStats();
-				M.recoverCharStats();
-			}
-	        TM.destroy();
-		}
-		return M;
-	}
-
-	public Enumeration players() { return DVector.s_enum(playersList); }
-
 	public Room getDefaultStartRoom(MOB mob)
 	{
 		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
@@ -830,7 +767,6 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		areasList.clear();
 		deitiesList.clear();
-		playersList.clear();
 		space=new Vector();
 		bodyRooms=new Hashtable();
 		startRooms=new Hashtable();
@@ -910,7 +846,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		return true;
 	}
-
+    
     public boolean explored(Room R, Vector areas)
     {
         if((R==null)
@@ -919,6 +855,7 @@ public class CMMap extends StdLibrary implements WorldMap
             return false;
         return false;
     }
+
     public static class AreaEnumerator implements Enumeration
     {
         private Enumeration curAreaEnumeration=null;
@@ -1221,67 +1158,6 @@ public class CMMap extends StdLibrary implements WorldMap
         area.setAreaFlags(oldFlag);
     }
 
-
-	public void obliteratePlayer(MOB deadMOB, boolean quiet)
-	{
-		if(getPlayer(deadMOB.Name())!=null)
-		{
-		   deadMOB=getPlayer(deadMOB.Name());
-		   delPlayer(deadMOB);
-		}
-		for(int s=0;s<CMLib.sessions().size();s++)
-		{
-			Session S=CMLib.sessions().elementAt(s);
-			if((!S.killFlag())&&(S.mob()!=null)&&(S.mob().Name().equals(deadMOB.Name())))
-			   deadMOB=S.mob();
-		}
-		CMMsg msg=CMClass.getMsg(deadMOB,null,CMMsg.MSG_RETIRE,(quiet)?null:"A horrible death cry is heard throughout the land.");
-		Room deadLoc=deadMOB.location();
-		if(deadLoc!=null)
-		    deadLoc.send(deadMOB,msg);
-		try
-		{
-			for(Enumeration r=rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				if((R!=null)&&(R!=deadLoc))
-				{
-					if(R.okMessage(deadMOB,msg))
-						R.sendOthers(deadMOB,msg);
-					else
-					{
-						addPlayer(deadMOB);
-						return;
-					}
-				}
-			}
-	    }catch(NoSuchElementException e){}
-		StringBuffer newNoPurge=new StringBuffer("");
-		Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
-        boolean somethingDone=false;
-		if((protectedOnes!=null)&&(protectedOnes.size()>0))
-		{
-			for(int b=0;b<protectedOnes.size();b++)
-			{
-				String B=(String)protectedOnes.elementAt(b);
-				if(!B.equalsIgnoreCase(deadMOB.name()))
-					newNoPurge.append(B+"\n");
-                else
-                    somethingDone=true;
-			}
-            if(somethingDone)
-            {
-    			Resources.updateResource("protectedplayers.ini",newNoPurge);
-    			Resources.saveFileResource("::protectedplayers.ini");
-            }
-		}
-
-		CMLib.database().DBDeleteMOB(deadMOB);
-		if(deadMOB.session()!=null)
-			deadMOB.session().setKillFlag(true);
-		Log.sysOut("Scoring",deadMOB.name()+" has been deleted.");
-        deadMOB.destroy();
-	}
 
 	public boolean hasASky(Room room)
 	{
