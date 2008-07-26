@@ -68,6 +68,8 @@ public class DBConnector
 		if(DBs.amIOk()) DBs.retryQueuedErrors();
 	}
 	
+	public String service(){ return DBService;}
+	
 	public int getRecordCount(DBConnection D, ResultSet R)
 	{
 		int recordCount=0;

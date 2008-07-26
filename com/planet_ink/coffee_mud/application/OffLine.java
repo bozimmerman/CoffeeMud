@@ -460,6 +460,7 @@ public class OffLine extends Thread implements MudHost
         }
     }
     public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
+    public boolean isAcceptingConnections(){ return acceptConnections;}
     public Vector getOverdueThreads(){return new Vector();}
     public String executeCommand(String cmd)
         throws Exception

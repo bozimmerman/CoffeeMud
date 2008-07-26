@@ -41,78 +41,6 @@ public class DataLoader
 	{
 		DB=newDB;
 	}
-	public Vector DBReadRaces()
-	{
-		DBConnection D=null;
-		Vector rows=new Vector();
-		try
-		{
-			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMGRAC");
-			while(R.next())
-			{
-				Vector V=new Vector();
-				V.addElement(DBConnections.getRes(R,"CMRCID"));
-				V.addElement(DBConnections.getRes(R,"CMRDAT"));
-				rows.addElement(V);
-			}
-		}
-		catch(Exception sqle)
-		{
-			Log.errOut("DataLoader",sqle);
-		}
-		if(D!=null) DB.DBDone(D);
-		// log comment
-		return rows;
-	}
-	public Vector DBReadClasses()
-	{
-		DBConnection D=null;
-		Vector rows=new Vector();
-		try
-		{
-			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMCCAC");
-			while(R.next())
-			{
-				Vector V=new Vector();
-				V.addElement(DBConnections.getRes(R,"CMCCID"));
-				V.addElement(DBConnections.getRes(R,"CMCDAT"));
-				rows.addElement(V);
-			}
-		}
-		catch(Exception sqle)
-		{
-			Log.errOut("DataLoader",sqle);
-		}
-		if(D!=null) DB.DBDone(D);
-		// log comment
-		return rows;
-	}
-	public Vector DBReadAbilities()
-	{
-		DBConnection D=null;
-		Vector rows=new Vector();
-		try
-		{
-			D=DB.DBFetch();
-			ResultSet R=D.query("SELECT * FROM CMGAAC");
-			while(R.next())
-			{
-				Vector V=new Vector();
-				V.addElement(DBConnections.getRes(R,"CMGAID"));
-				V.addElement(DBConnections.getRes(R,"CMGAAT"));
-				rows.addElement(V);
-			}
-		}
-		catch(Exception sqle)
-		{
-			Log.errOut("DataLoader",sqle);
-		}
-		if(D!=null) DB.DBDone(D);
-		// log comment
-		return rows;
-	}
 	public Vector DBRead(String playerID, String section)
 	{
 		DBConnection D=null;
@@ -511,57 +439,12 @@ public class DataLoader
 		}
 		if(D!=null) DB.DBDone(D);
 	}
-	public void DBDeleteRace(String raceID)
-	{
-		DB.update("DELETE FROM CMGRAC WHERE CMRCID='"+raceID+"'");
-	}
-	public void DBDeleteClass(String classID)
-	{
-		DB.update("DELETE FROM CMCCAC WHERE CMCCID='"+classID+"'");
-	}
-	public void DBDeleteAbility(String classID)
-	{
-		DB.update("DELETE FROM CMGAAC WHERE CMGAID='"+classID+"'");
-	}
 	public void DBDelete(String section)
 	{
 		DB.update("DELETE FROM CMPDAT WHERE CMSECT='"+section+"'");
 		try{Thread.sleep(500);}catch(Exception e){}
 		if(DB.queryRows("SELECT * FROM CMPDAT WHERE CMSECT='"+section+"'")>0)
 			Log.errOut("Failed to delete data from section "+section+".");
-	}
-	public void DBCreateRace(String raceID, String data)
-	{
-		DB.update(
-		 "INSERT INTO CMGRAC ("
-		 +"CMRCID, "
-		 +"CMRDAT "
-		 +") values ("
-		 +"'"+raceID+"',"
-		 +"'"+data+" '"
-		 +")");
-	}
-	public void DBCreateClass(String classID, String data)
-	{
-		DB.update(
-		 "INSERT INTO CMCCAC ("
-		 +"CMCCID, "
-		 +"CMCDAT "
-		 +") values ("
-		 +"'"+classID+"',"
-		 +"'"+data+" '"
-		 +")");
-	}
-	public void DBCreateAbility(String classID, String data)
-	{
-		DB.update(
-		 "INSERT INTO CMGAAC ("
-		 +"CMGAID, "
-		 +"CMGAAT "
-		 +") values ("
-		 +"'"+classID+"',"
-		 +"'"+data+" '"
-		 +")");
 	}
 	public void DBCreate(String player, String section, String key, String data)
 	{

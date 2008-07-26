@@ -53,8 +53,8 @@ public class MUD extends Thread implements MudHost
     private static String execExternalCommand=null;
     private static Server imserver=null;
     private static IMC2Driver imc2server=null;
-    private static SaveThread saveThread=null;
-    private static UtiliThread utiliThread=null;
+    private static Vector saveThreads=new Vector();
+    private static Vector utiliThreads=new Vector();
     private static Vector webServers=new Vector();
     private static SMTPserver smtpServerThread=null;
     private static DVector accessed=new DVector(2);
@@ -109,7 +109,7 @@ public class MUD extends Thread implements MudHost
 	}
 
 
-	protected static boolean initHost(Thread t, CMProps page)
+	protected static boolean initHost(Thread t)
 	{
 
 		if (!isOK)
@@ -118,6 +118,8 @@ public class MUD extends Thread implements MudHost
 			return false;
 		}
 
+		CMProps page=CMProps.instance();
+		
 		if ((page == null) || (!page.loaded))
 		{
 			fatalStartupError(t,1);
@@ -125,8 +127,7 @@ public class MUD extends Thread implements MudHost
 		}
 
 		while (!serverIsRunning && isOK)
-		{
-		}
+		{ try{ Thread.sleep(500); }catch(Exception e){ isOK=false;} }
 		if (!isOK)
 		{
 			fatalStartupError(t,5);
@@ -158,7 +159,7 @@ public class MUD extends Thread implements MudHost
 			if(DBTEST!=null) currentDBconnector.DBDone(DBTEST);
 			if((currentDBconnector.amIOk())&&(CMLib.database().isConnected()))
 			{
-				Log.sysOut(Thread.currentThread().getName(),"Database connection successful.");
+				Log.sysOut(Thread.currentThread().getName(),"Connected to "+currentDBconnector.service());
 				databases.addElement(currentDBconnector);
 			}
 			else
@@ -175,32 +176,28 @@ public class MUD extends Thread implements MudHost
 			System.exit(-1);
 		}
 
-		if(page.getStr("RUNWEBSERVERS").equalsIgnoreCase("true"))
+		String webServersList=page.getStr("RUNWEBSERVERS");
+		if(webServersList.equalsIgnoreCase("true"))
+		    webServersList="pub,admin";
+		if((webServersList.length()>0)&&(!webServersList.equalsIgnoreCase("false")))
 		{
-			HTTPserver webServerThread = new HTTPserver(CMLib.mud(0),"pub",0);
-			webServerThread.start();
-			webServers.addElement(webServerThread);
-			int numToDo=webServerThread.totalPorts();
-			while((--numToDo)>0)
-			{
-				webServerThread = new HTTPserver(CMLib.mud(0),"pub",numToDo);
-				webServerThread.start();
-				webServers.addElement(webServerThread);
-			}
-			webServerThread = new HTTPserver(CMLib.mud(0),"admin",0);
-			webServerThread.start();
-			webServers.addElement(webServerThread);
-			numToDo=webServerThread.totalPorts();
-			while((--numToDo)>0)
-			{
-				webServerThread = new HTTPserver(CMLib.mud(0),"admin",numToDo);
-				webServerThread.start();
-				webServers.addElement(webServerThread);
-			}
+		    Vector serverNames=CMParms.parseCommas(webServersList,true);
+		    for(int s=0;s<serverNames.size();s++)
+		    {
+		        String serverName=(String)serverNames.elementAt(s);
+    			HTTPserver webServerThread = new HTTPserver(CMLib.mud(0),serverName,0);
+    			webServerThread.start();
+    			webServers.addElement(webServerThread);
+    			int numToDo=webServerThread.totalPorts();
+    			while((--numToDo)>0)
+    			{
+    				webServerThread = new HTTPserver(CMLib.mud(0),"pub",numToDo);
+    				webServerThread.start();
+    				webServers.addElement(webServerThread);
+    			}
+		    }
 			CMLib.registerLibrary(new ProcessHTTPrequest(null,(webServers.size()>0)?(HTTPserver)webServers.firstElement():null,null,true));
 		}
-		else
-            CMLib.registerLibrary(new ProcessHTTPrequest(null,null,null,true));
 
 
 		if(page.getStr("RUNSMTPSERVER").equalsIgnoreCase("true"))
@@ -210,13 +207,16 @@ public class MUD extends Thread implements MudHost
 			CMLib.threads().startTickDown(smtpServerThread,Tickable.TICKID_EMAIL,60);
 		}
 
-		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: loading base classes");
-		if(!CMClass.loadClasses(page))
-		{
-			fatalStartupError(t,0);
-			return false;
+		char threadGroup=t.getThreadGroup().getName().charAt(0);
+		
+		if(threadGroup=='0') {
+    		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: loading base classes");
+    		if(!CMClass.loadClasses(page))
+    		{
+    			fatalStartupError(t,0);
+    			return false;
+    		}
 		}
-
         CMLib.lang().setLocale(CMLib.props().getStr("LANGUAGE"),CMLib.props().getStr("COUNTRY"));
         CMClass.globalClock().initializeINIClock(page);
         CMLib.factions().reloadFactions(CMProps.getVar(CMProps.SYSTEM_PREFACTIONS));
@@ -284,11 +284,13 @@ public class MUD extends Thread implements MudHost
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: readying for connections.");
 		try
 		{
-			saveThread=new SaveThread();
+		    SaveThread saveThread=new SaveThread();
 			saveThread.start();
+			saveThreads.addElement(saveThread);
 
-			utiliThread=new UtiliThread();
+			UtiliThread utiliThread=new UtiliThread();
 			utiliThread.start();
+			utiliThreads.addElement(utiliThread);
 
 			Log.sysOut(Thread.currentThread().getName(),"Utility threads started");
 		}
@@ -611,7 +613,7 @@ public class MUD extends Thread implements MudHost
 			}
 	    }catch(NoSuchElementException e){}
 		if(S!=null)S.println("done");
-		if((saveThread==null)||(utiliThread==null))
+		if((saveThreads.size()==0)||(utiliThreads.size()==0))
 		{
 			CMProps.setBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN,false);
             CMLib.threads().resumeAll();
@@ -622,15 +624,23 @@ public class MUD extends Thread implements MudHost
 		CMLib.quests().shutdown();
 
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Save Thread");
-		saveThread.shutdown();
-		CMLib.killThread(saveThread,100,1);
-		saveThread=null;
+		while(saveThreads.size()>0)
+		{
+		    SaveThread saveThread=(SaveThread)saveThreads.firstElement();
+    		saveThread.shutdown();
+    		CMLib.killThread(saveThread,100,1);
+    		saveThreads.removeElement(saveThread);
+		}
 
 		if(S!=null)S.println("Save thread stopped");
 		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Utility Thread");
-		utiliThread.shutdown();
-		CMLib.killThread(utiliThread,100,1);
-		utiliThread=null;
+        while(utiliThreads.size()>0)
+        {
+            UtiliThread utiliThread=(UtiliThread)utiliThreads.firstElement();
+    		utiliThread.shutdown();
+    		CMLib.killThread(utiliThread,100,1);
+    		utiliThreads.removeElement(utiliThread);
+        }
 		if(S!=null)S.println("Utility thread stopped");
 		Log.sysOut(Thread.currentThread().getName(),"Utility/Save Threads stopped.");
 
@@ -887,22 +897,37 @@ public class MUD extends Thread implements MudHost
 
 		public void run()
 		{
+		    new CMProps(); // necessary to tie a props to this thread.
+            CMProps.setBoolVar(CMProps.SYSTEMB_MUDSTARTED,false);
+            
 			CMProps page=CMProps.loadPropPage("//"+iniFile);
-			CMProps.setBoolVar(CMProps.SYSTEMB_MUDSTARTED,false);
-			CMProps.setVar(CMProps.SYSTEM_MUDVER,HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);
-			DBConnector currentDBconnector=new DBConnector();
-	        CMLib.registerLibrary(new DBInterface(currentDBconnector));
-	        CMLib.registerLibrary(new ServiceEngine());
-	        CMLib.registerLibrary(new IMudClient());
-			CMLib.registerLibrary(new ProcessHTTPrequest(null,null,null,true));
-			if ((page==null)||(!page.loaded))
-			{
-				Log.errOut(Thread.currentThread().getName(),"ERROR: Unable to read ini file: '"+iniFile+"'.");
-				System.out.println("MUD/ERROR: Unable to read ini file: '"+iniFile+"'.");
-				CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"A terminal error has occured!");
-				return;
-			}
-
+            if ((page==null)||(!page.loaded))
+            {
+                Log.errOut(Thread.currentThread().getName(),"ERROR: Unable to read ini file: '"+iniFile+"'.");
+                System.out.println("MUD/ERROR: Unable to read ini file: '"+iniFile+"'.");
+                CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"A terminal error has occured!");
+                return;
+            }
+            
+            DBConnector currentDBconnector=new DBConnector();
+            CMLib.registerLibrary(new DBInterface(currentDBconnector));
+            CMLib.registerLibrary(new ProcessHTTPrequest(null,null,null,true));
+            
+	        char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+	        if(c=='0') {
+    			CMProps.setVar(CMProps.SYSTEM_MUDVER,HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);
+    	        CMLib.registerLibrary(new ServiceEngine());
+    	        CMLib.registerLibrary(new IMudClient());
+	        } else {
+	            while(((CMLib.mud(0)==null)||(!CMLib.mud(0).isAcceptingConnections())||(CMLib.mud(0)==this))
+	            &&(!MUD.bringDown)) {
+	                try {Thread.sleep(500);}catch(Exception e){ break;}
+	            }
+	            if((CMLib.mud(0)==null)
+	            ||(!CMLib.mud(0).isAcceptingConnections())
+	            ||(MUD.bringDown))
+	                return;
+	        }
 			if(!logName.equals("mud"))
 			{
 				Log.startLogFiles(logName,page.getInt("NUMLOGS"));
@@ -919,7 +944,6 @@ public class MUD extends Thread implements MudHost
 
 				if(MUD.isOK)
 				{
-					CMLib.hosts().clear();
 					String ports=page.getProperty("PORT");
 					int pdex=ports.indexOf(",");
 					while(pdex>0)
@@ -954,7 +978,7 @@ public class MUD extends Thread implements MudHost
 		            }
 		        });
 
-				if(initHost(Thread.currentThread(),page))
+				if(initHost(Thread.currentThread()))
                 {
                     Thread joinable=null;
                     for(int i=0;i<CMLib.hosts().size();i++)
@@ -1032,6 +1056,7 @@ public class MUD extends Thread implements MudHost
 			Log.sysOut(Thread.currentThread().getName(),"(C) 2000-2008 Bo Zimmerman");
 			Log.sysOut(Thread.currentThread().getName(),"http://www.coffeemud.org");
 			HostGroup joinable=null;
+            CMLib.hosts().clear();
 			for(int i=0;i<iniFiles.size();i++)
 			{
 				iniFile=(String)iniFiles.elementAt(i);
@@ -1071,6 +1096,7 @@ public class MUD extends Thread implements MudHost
 	}
 
     public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
+    public boolean isAcceptingConnections(){ return acceptConnections;}
 
     public String executeCommand(String cmd)
         throws Exception

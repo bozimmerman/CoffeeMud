@@ -43,26 +43,36 @@ public class DBInterface implements DatabaseEngine
     VFSLoader VFSLoader=null;
     JournalLoader JournalLoader=null;
     QuestLoader QuestLoader=null;
+    GAbilityLoader GAbilityLoader=null;
+    GRaceLoader GRaceLoader=null;
+    GCClassLoader GCClassLoader=null;
     ClanLoader ClanLoader=null;
     DBConnector DB=null;
     public DBInterface(DBConnector DB)
     {
     	this.DB=DB;
-    	this.MOBloader=new MOBloader(DB);
-    	this.RoomLoader=new RoomLoader(DB);
-    	this.DataLoader=new DataLoader(DB);
-    	this.StatLoader=new StatLoader(DB);
-    	this.PollLoader=new PollLoader(DB);
-    	this.VFSLoader=new VFSLoader(DB);
-    	this.JournalLoader=new JournalLoader(DB);
-    	this.QuestLoader=new QuestLoader(DB);
-    	this.ClanLoader=new ClanLoader(DB);
+    	DBConnector oldBaseDB=DB;
+    	if((CMLib.database0()!=null)&&(CMLib.database0().getConnector()!=DB))
+    	    oldBaseDB=CMLib.database0().getConnector();
+        Vector sharedDBsV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_SHAREDLIBS).toUpperCase(),true);
+        this.GAbilityLoader=new GAbilityLoader(sharedDBsV.contains("DBABLES")?oldBaseDB:DB);
+        this.GCClassLoader=new GCClassLoader(sharedDBsV.contains("DBCCLASS")?oldBaseDB:DB);
+        this.GRaceLoader=new GRaceLoader(sharedDBsV.contains("DBRACES")?oldBaseDB:DB);
+    	this.MOBloader=new MOBloader(sharedDBsV.contains("DBPLAYERS")?oldBaseDB:DB);
+    	this.RoomLoader=new RoomLoader(sharedDBsV.contains("DBMAP")?oldBaseDB:DB);
+    	this.DataLoader=new DataLoader(sharedDBsV.contains("DBPLAYERS")?oldBaseDB:DB);
+    	this.StatLoader=new StatLoader(sharedDBsV.contains("DBSTATS")?oldBaseDB:DB);
+    	this.PollLoader=new PollLoader(sharedDBsV.contains("DBPOLLS")?oldBaseDB:DB);
+    	this.VFSLoader=new VFSLoader(sharedDBsV.contains("DBVFS")?oldBaseDB:DB);
+    	this.JournalLoader=new JournalLoader(sharedDBsV.contains("DBJOURNALS")?oldBaseDB:DB);
+    	this.QuestLoader=new QuestLoader(sharedDBsV.contains("DBQUESTS")?oldBaseDB:DB);
+    	this.ClanLoader=new ClanLoader(sharedDBsV.contains("DBCLANS")?oldBaseDB:DB);
     }
     public CMObject newInstance(){return new DBInterface(DB);}
     public void initializeClass(){}
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-    
+    public DBConnector getConnector(){ return DB;}
 	public void vassals(MOB mob, String liegeID)
 	{MOBloader.vassals(mob,liegeID);}
 	
@@ -298,31 +308,31 @@ public class DBInterface implements DatabaseEngine
 	{ DataLoader.DBCreate(player,section,key,data);}
 	
 	public Vector DBReadRaces()
-	{ return DataLoader.DBReadRaces();}
+	{ return GRaceLoader.DBReadRaces();}
 	
 	public void DBDeleteRace(String raceID)
-	{ DataLoader.DBDeleteRace(raceID);}
+	{ GRaceLoader.DBDeleteRace(raceID);}
 	
 	public void DBCreateRace(String raceID,String data)
-	{ DataLoader.DBCreateRace(raceID,data);}
+	{ GRaceLoader.DBCreateRace(raceID,data);}
 	
 	public Vector DBReadClasses()
-	{ return DataLoader.DBReadClasses();}
+	{ return GCClassLoader.DBReadClasses();}
 	
 	public void DBDeleteClass(String classID)
-	{ DataLoader.DBDeleteClass(classID);}
+	{ GCClassLoader.DBDeleteClass(classID);}
 	
 	public void DBCreateClass(String classID,String data)
-	{ DataLoader.DBCreateClass(classID,data);}
+	{ GCClassLoader.DBCreateClass(classID,data);}
 	
 	public Vector DBReadAbilities()
-	{ return DataLoader.DBReadAbilities();}
+	{ return GAbilityLoader.DBReadAbilities();}
 	
 	public void DBDeleteAbility(String classID)
-	{ DataLoader.DBDeleteAbility(classID);}
+	{ GAbilityLoader.DBDeleteAbility(classID);}
 	
 	public void DBCreateAbility(String classID,String data)
-	{ DataLoader.DBCreateAbility(classID,data);}
+	{ GAbilityLoader.DBCreateAbility(classID,data);}
 	
 	public void DBReadArtifacts()
 	{ DataLoader.DBReadArtifacts();}

@@ -34,6 +34,8 @@ public interface DatabaseEngine extends CMLibrary
 {
 	public String errorStatus();
 	public void resetconnections();
+    public DBConnector getConnector();
+	// DBABLES, DBCCLASS, DBRACES, DBPLAYERS, DBMAP, DBSTATS, DBPOLLS, DBVFS, DBJOURNALS, DBQUESTS, DBCLANS  
 	
 	public static final int JOURNAL_KEY=0;
 	public static final int JOURNAL_FROM=1;

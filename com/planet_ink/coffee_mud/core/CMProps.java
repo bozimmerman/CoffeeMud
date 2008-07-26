@@ -44,6 +44,7 @@ public class CMProps extends Properties
 	    if(props[c]==null) props[c]=this;
     }
     public static CMProps instance(){return p();}
+    private static CMProps p(){ return props[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
 
 	public static final long serialVersionUID=0;
     public static final int SYSTEM_PKILL=0;
@@ -106,7 +107,8 @@ public class CMProps extends Properties
     public static final int SYSTEM_AUCTIONRATES=57;
     public static final int SYSTEM_DEFAULTPROMPT=58;
     public static final int SYSTEM_LISTFILE=59;
-    public static final int NUM_SYSTEM=60;
+    public static final int SYSTEM_SHAREDLIBS=60;
+    public static final int NUM_SYSTEM=61;
 
     public static final int SYSTEMI_EXPRATE=0;
     public static final int SYSTEMI_SKYSIZE=1;
@@ -396,8 +398,6 @@ public class CMProps extends Properties
 		}
 	}
 
-    private static CMProps p(){ return props[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
-
     public static int getPKillLevelDiff(){return p().pkillLevelDiff;}
 
     public static String getVar(int varNum)
@@ -596,6 +596,7 @@ public class CMProps extends Properties
     {
         if(CMLib.lang()!=null)
             CMLib.lang().setLocale(getStr("LANGUAGE"),getStr("COUNTRY"));
+        setVar(SYSTEM_SHAREDLIBS,getStr("SHAREDLIBS"));
         setVar(SYSTEM_BADNAMES,getStr("BADNAMES"));
         setVar(SYSTEM_MULTICLASS,getStr("CLASSSYSTEM"));
         setVar(SYSTEM_PKILL,getStr("PLAYERKILL"));

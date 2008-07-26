@@ -381,9 +381,9 @@ public class UtiliThread extends Thread
 		}
 		
 		status("Checking mud threads");
-		for(int m=0;m<CMLib.mudThreads.size();m++)
+		for(int m=0;m<CMLib.hosts().size();m++)
 		{
-			Vector badThreads=((MudHost)CMLib.mudThreads.elementAt(m)).getOverdueThreads();
+			Vector badThreads=((MudHost)CMLib.hosts().elementAt(m)).getOverdueThreads();
 			if(badThreads.size()>0)
 			{
 				for(int b=0;b<badThreads.size();b++)

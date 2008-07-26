@@ -350,6 +350,7 @@ public class HTTPserver extends Thread implements MudHost
         return STATUS_STRINGS[state];
     }
     public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
+    public boolean isAcceptingConnections(){ return acceptConnections;}
 
     public Vector getOverdueThreads()
     {
