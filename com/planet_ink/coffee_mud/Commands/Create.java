@@ -213,7 +213,7 @@ public class Create extends BaseGenerics
 		}
 	
 		String mobID=CMParms.combine(commands,2);
-		MOB M=CMLib.map().getLoadPlayer(mobID);
+		MOB M=CMLib.players().getLoadPlayer(mobID);
 		if(M!=null)
 		{
 			mob.tell("There is already a player called '"+M.Name()+"'!");
@@ -230,7 +230,7 @@ public class Create extends BaseGenerics
 		M=CMClass.getMOB("StdMOB");
 		M.setName(mobID);
 		CMLib.login().createCharacter(M,mobID,mob.session());
-		M=CMLib.map().getLoadPlayer(mobID);
+		M=CMLib.players().getLoadPlayer(mobID);
 		if(M!=null)
 		{
 			if(CMLib.flags().isInTheGame(M,true))

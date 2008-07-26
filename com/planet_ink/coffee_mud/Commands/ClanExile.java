@@ -76,7 +76,7 @@ public class ClanExile extends BaseClanner
 					}
 					if(found)
 					{
-						MOB M=CMLib.map().getLoadPlayer(qual);
+						MOB M=CMLib.players().getLoadPlayer(qual);
 						if(M==null)
 						{
 							mob.tell(qual+" was not found.  Could not exile from "+C.typeName()+".");

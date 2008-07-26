@@ -191,7 +191,7 @@ public class StdJournal extends StdItem
 								else
 								if(s.equalsIgnoreCase("E"))
 								{
-									MOB M=CMLib.map().getLoadPlayer(from);
+									MOB M=CMLib.players().getLoadPlayer(from);
 									if((M==null)||(M.playerStats()==null)||(M.playerStats().getEmail().indexOf("@")<0))
 									{
 										mob.tell("Player '"+from+"' does not exist, or has no email address.");

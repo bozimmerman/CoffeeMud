@@ -73,7 +73,7 @@ public class Prayer_Annul extends Prayer
                 Vector channels=CMLib.channels().getFlaggedChannelNames("DIVORCES");
                 for(int i=0;i<channels.size();i++)
                     CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),target.name()+" and "+target.getLiegeID()+" just had their marriage annulled.",true);
-				MOB M=CMLib.map().getPlayer(target.getLiegeID());
+				MOB M=CMLib.players().getPlayer(target.getLiegeID());
 				if(M!=null) M.setLiegeID("");
 				target.setLiegeID("");
 			}

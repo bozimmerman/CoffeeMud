@@ -729,7 +729,7 @@ public class Nanny extends StdBehavior
 	        					continue;
 	        				else
 	        				{
-	        					O=CMLib.map().getLoadPlayer(oName);
+	        					O=CMLib.players().getLoadPlayer(oName);
 	        					if(O==null) 
 	        						parsedPlayers.put(oName,"");
 	        					else

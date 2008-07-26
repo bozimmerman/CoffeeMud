@@ -110,7 +110,7 @@ public class Destroy extends BaseItemParser
 
 		if(mob.session().confirm("This will complete OBLITERATE the user '"+deadMOB.Name()+"' forever.  Are you SURE?! (y/N)?","N"))
 		{
-			CMLib.map().obliteratePlayer(deadMOB,false);
+			CMLib.players().obliteratePlayer(deadMOB,false);
 			mob.tell("The user '"+CMParms.combine(commands,2)+"' is no more!\n\r");
 			Log.sysOut("Mobs",mob.Name()+" destroyed user "+deadMOB.Name()+".");
             deadMOB.destroy();

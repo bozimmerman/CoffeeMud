@@ -48,7 +48,7 @@ public class Reply extends StdCommand
 			return false;
 		}
 		if((pstats.replyTo().Name().indexOf("@")<0)
-		&&((CMLib.map().getPlayer(pstats.replyTo().Name())==null)
+		&&((CMLib.players().getPlayer(pstats.replyTo().Name())==null)
 			||(pstats.replyTo().isMonster())
 			||(!CMLib.flags().isInTheGame(pstats.replyTo(),true))))
 		{

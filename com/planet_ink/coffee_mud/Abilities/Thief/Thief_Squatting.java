@@ -137,7 +137,7 @@ public class Thief_Squatting extends ThiefSkill
 			Clan C=CMLib.clans().getClan(T.landOwner());
 			if(C==null)
 			{
-				MOB M=CMLib.map().getLoadPlayer(T.landOwner());
+				MOB M=CMLib.players().getLoadPlayer(T.landOwner());
 				if(M!=null)
 					warnMOB=M;
 			}

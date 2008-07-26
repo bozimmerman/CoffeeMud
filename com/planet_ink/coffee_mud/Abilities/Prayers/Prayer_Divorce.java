@@ -79,7 +79,7 @@ public class Prayer_Divorce extends Prayer
                 Vector channels=CMLib.channels().getFlaggedChannelNames("DIVORCES");
                 for(int i=0;i<channels.size();i++)
                     CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),maleName+" and "+femaleName+" are now divorced.",true);
-				MOB M=CMLib.map().getPlayer(target.getLiegeID());
+				MOB M=CMLib.players().getPlayer(target.getLiegeID());
 				if(M!=null) M.setLiegeID("");
 				target.setLiegeID("");
 				try

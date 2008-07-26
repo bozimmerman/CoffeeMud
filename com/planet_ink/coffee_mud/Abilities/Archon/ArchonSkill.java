@@ -85,7 +85,7 @@ public class ArchonSkill extends StdAbility
 		if((target==null)||((playerOnly)&&(target.isMonster())))
 		{
 			if(CMLib.database().DBUserSearch(null,targetName))
-				target=CMLib.map().getLoadPlayer(targetName);
+				target=CMLib.players().getLoadPlayer(targetName);
 		}
 		
 		if((target!=null)&&((!playerOnly)||(!target.isMonster())))

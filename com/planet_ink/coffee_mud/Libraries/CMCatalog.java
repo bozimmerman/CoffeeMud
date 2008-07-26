@@ -341,7 +341,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
             if(SK!=null) propogateShopChange(SK,thang);
         }
         if(!isMob)
-        for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
+        for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
         {
             M=(MOB)e.nextElement();
             for(i=0;i<M.inventorySize();i++)

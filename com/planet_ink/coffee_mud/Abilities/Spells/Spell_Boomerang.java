@@ -75,7 +75,7 @@ public class Spell_Boomerang extends Spell
 				&&(I.owner().Name().equals(text())))
 					owner=(MOB)I.owner();
 			    else
-			        owner=CMLib.map().getPlayer(text());
+			        owner=CMLib.players().getPlayer(text());
 			}
 			if((owner!=null)&&(I.owner()!=null)&&(I.owner()!=owner))
 			{

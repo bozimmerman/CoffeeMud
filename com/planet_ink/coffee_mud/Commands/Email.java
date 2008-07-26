@@ -130,7 +130,7 @@ public class Email extends StdCommand
                             if((from.length()>0)
                             &&(!from.equals(mob.Name()))
                             &&(!from.equalsIgnoreCase("BOX"))
-                            &&(CMLib.map().getLoadPlayer(from)!=null))
+                            &&(CMLib.players().getLoadPlayer(from)!=null))
                                 execute(mob,CMParms.makeVector(getAccessWords()[0],from),metaFlags);
                             else
                                 mob.tell("You can not reply to this email.");
@@ -148,7 +148,7 @@ public class Email extends StdCommand
             }
             else
             {
-                MOB M=CMLib.map().getLoadPlayer(name);
+                MOB M=CMLib.players().getLoadPlayer(name);
                 if(M==null)
                 {
                     mob.tell("There is no player called '"+name+"' to send email to.  If you were trying to read your mail, try EMAIL BOX.  If you were trying to change your email address, just enter EMAIL without any parameters.");

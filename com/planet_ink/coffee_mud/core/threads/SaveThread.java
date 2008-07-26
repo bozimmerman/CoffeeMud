@@ -121,7 +121,7 @@ public class SaveThread extends Thread
 	public int savePlayers()
 	{
 		int processed=0;
-		for(Enumeration p=CMLib.map().players();p.hasMoreElements();)
+		for(Enumeration p=CMLib.players().players();p.hasMoreElements();)
 		{
 			MOB mob=(MOB)p.nextElement();
 			if(!mob.isMonster())
@@ -276,7 +276,7 @@ public class SaveThread extends Thread
 						}
 					if((foundWarning<0)||(foundWarning<when))
 					{
-						MOB M=CMLib.map().getLoadPlayer(name);
+						MOB M=CMLib.players().getLoadPlayer(name);
 						if((M!=null)&&(M.playerStats()!=null))
 						{
 							warnStr.append(M.name()+" "+M.playerStats().getEmail()+" "+System.currentTimeMillis()+"\n");
@@ -307,10 +307,10 @@ public class SaveThread extends Thread
                 }
 				if(!protectedOne)
 				{
-					MOB M=CMLib.map().getLoadPlayer(name);
+					MOB M=CMLib.players().getLoadPlayer(name);
 					if(M!=null)
 					{
-						CMLib.map().obliteratePlayer(M,true);
+						CMLib.players().obliteratePlayer(M,true);
 						Log.sysOut("SaveThread","AutoPurged user "+name+". Last logged in "+(CMLib.time().date2String(last))+".");
 					}
 				}

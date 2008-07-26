@@ -611,7 +611,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
                         break;
                     }
             }
-            for(e=CMLib.map().players();e.hasMoreElements();)
+            for(e=CMLib.players().players();e.hasMoreElements();)
             {
                 MOB M=(MOB)e.nextElement();
                 for(int c=0;c<M.baseCharStats().numClasses();c++)
@@ -644,7 +644,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
                 if(M.charStats().getMyRace()==oldR)
                     M.charStats().setMyRace(newR);
             }
-            for(e=CMLib.map().players();e.hasMoreElements();)
+            for(e=CMLib.players().players();e.hasMoreElements();)
             {
                 MOB M=(MOB)e.nextElement();
                 if(M.baseCharStats().getMyRace()==oldR)

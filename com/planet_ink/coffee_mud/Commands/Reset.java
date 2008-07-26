@@ -317,9 +317,9 @@ public class Reset extends StdCommand
 			}
 		}
         else
-        if(CMLib.map().getPlayer(s)!=null)
+        if(CMLib.players().getPlayer(s)!=null)
         {
-            MOB M=CMLib.map().getPlayer(s);
+            MOB M=CMLib.players().getPlayer(s);
             String what="";
             if(commands.size()>0)
                 what=CMParms.combine(commands,1).toUpperCase();

@@ -4294,12 +4294,12 @@ public class Import extends StdCommand
 						if((session!=null)&&(!session.confirm("Player: \""+M.Name()+"\" exists, obliterate first?","Y")))
 							continue;
 						else
-							CMLib.map().obliteratePlayer(CMLib.map().getLoadPlayer(M.Name()),false);
+							CMLib.players().obliteratePlayer(CMLib.players().getLoadPlayer(M.Name()),false);
 					}
 					if(M.playerStats()!=null)
 						M.playerStats().setLastUpdated(System.currentTimeMillis());
 					CMLib.database().DBCreateCharacter(M);
-					CMLib.map().addPlayer(M);
+					CMLib.players().addPlayer(M);
 					Log.sysOut("Import","Imported user: "+M.Name());
 					for(int s=0;s<CMLib.sessions().size();s++)
 					{

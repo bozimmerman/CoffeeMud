@@ -51,7 +51,7 @@ public class Rebuke extends StdCommand
 			target=CMLib.map().getDeity(str);
 		if((target==null)&&(mob.getLiegeID().length()>0)
 		&&(CMLib.english().containsString(mob.getLiegeID(),str)))
-			target=CMLib.map().getLoadPlayer(mob.getLiegeID());
+			target=CMLib.players().getLoadPlayer(mob.getLiegeID());
 		if((target==null)&&(mob.numFollowers()>0))
 			target=mob.fetchFollower(str);
 		

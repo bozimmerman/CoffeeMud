@@ -201,12 +201,12 @@ public class UtiliThread extends Thread
 						String wasFrom=((mob.getStartRoom()!=null)?mob.getStartRoom().roomID():"NULL");
 						if(!ticked)
 						{
-                            if(CMLib.map().getPlayer(mob.Name())==null)
+                            if(CMLib.players().getPlayer(mob.Name())==null)
                                 Log.errOut("UtiliThread",mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been destroyed. May he rest in peace."));
                             else
                                 Log.errOut("UtiliThread","Player "+mob.name()+" in room "+R.roomID()+" unticked (is ticking="+(ticked)+", dead="+isDead+", Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."+(ticked?"":"  This mob has been put aside."));
 							status("destroying unticked mob "+mob.name());
-							if(CMLib.map().getPlayer(mob.Name())==null) mob.destroy();
+							if(CMLib.players().getPlayer(mob.Name())==null) mob.destroy();
 							R.delInhabitant(mob);
 							status("checking");
 						}
@@ -290,7 +290,7 @@ public class UtiliThread extends Thread
 		}
 
 		status("checking player titles.");
-        for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
+        for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
         {
             MOB M=(MOB)e.nextElement();
             if(M.playerStats()!=null)

@@ -76,7 +76,7 @@ public class ClanReject extends BaseClanner
 					}
 					if(found)
 					{
-						MOB M=CMLib.map().getLoadPlayer(qual);
+						MOB M=CMLib.players().getLoadPlayer(qual);
 						if(M==null)
 						{
 							mob.tell(qual+" was not found.  Could not reject from "+C.typeName()+".");

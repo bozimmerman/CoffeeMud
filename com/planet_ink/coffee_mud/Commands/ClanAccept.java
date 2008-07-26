@@ -78,7 +78,7 @@ public class ClanAccept extends BaseClanner
 					}
 					if(found)
 					{
-						MOB M=CMLib.map().getLoadPlayer(qual);
+						MOB M=CMLib.players().getLoadPlayer(qual);
 						if(M==null)
 						{
 							mob.tell(qual+" was not found.  Could not add to "+C.typeName()+".");

@@ -186,9 +186,9 @@ public class Save extends StdCommand
 			mob.tell("Quest list saved.");
 		}
 		else
-        if(CMLib.map().getPlayer(commandType)!=null)
+        if(CMLib.players().getPlayer(commandType)!=null)
         {
-            MOB M=CMLib.map().getPlayer(commandType);
+            MOB M=CMLib.players().getPlayer(commandType);
             CMLib.database().DBUpdatePlayer(M);
             if(CMLib.flags().isInTheGame(M,true))
                 CMLib.database().DBUpdateFollowers(M);

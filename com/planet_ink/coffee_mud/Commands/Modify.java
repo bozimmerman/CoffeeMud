@@ -1050,9 +1050,9 @@ public class Modify extends BaseGenerics
 		}
 
 		String mobID=CMParms.combine(commands,2);
-		MOB M=CMLib.map().getPlayer(mobID);
+		MOB M=CMLib.players().getPlayer(mobID);
 		if(M==null)
-			for(Enumeration p=CMLib.map().players();p.hasMoreElements();)
+			for(Enumeration p=CMLib.players().players();p.hasMoreElements();)
 			{
 				MOB mob2=(MOB)p.nextElement();
 				if(mob2.Name().equalsIgnoreCase(mobID))

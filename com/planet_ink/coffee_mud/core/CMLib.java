@@ -98,14 +98,15 @@ public class CMLib
     public static final int LIBRARY_LEGAL=40;
     public static final int LIBRARY_LANGUAGE=41;
     public static final int LIBRARY_CATALOG=42;
-    public static final int LIBRARY_TOTAL=43;
+    public static final int LIBRARY_PLAYERS=43;
+    public static final int LIBRARY_TOTAL=44;
     public static final String[] LIBRARY_DESCS={
         "DATABASE","THREADS","INTERMUD","HTTP","LISTER","MONEY","SHOPS","COMBAT",
         "HELP","TRACKING","MASKING","CHANNELS","COMMANDS","ENGLISH","SLAVERY","JOURNALS",
         "FLAGS","OBJBUILDERS","SESSIONS","TELNET","XML","SOCIALS","UTENSILS","STATS",
         "MAP","QUEST","ABLEMAP","ENCODER","SMTP","DICE","FACTIONS","CLANS","POLLS",
         "TIME","COLOR","LOGIN","TIMS","LEVELS","EXPERTISES","MATERIALS","LEGAL",
-        "LANGUAGE","CATALOG"};
+        "LANGUAGE","CATALOG","PLAYERS"};
 
     public static CMath math(){return CMath.instance();}
     public static CMParms parms(){return CMParms.instance();}
@@ -179,7 +180,9 @@ public class CMLib
     public static ColorLibrary color(){return (ColorLibrary)l().libraries[LIBRARY_COLOR];}
     public static CharCreationLibrary login(){return (CharCreationLibrary)l().libraries[LIBRARY_LOGIN];}
     public static ExpertiseLibrary expertises(){return (ExpertiseLibrary)l().libraries[LIBRARY_EXPERTISES];}
+    public static PlayerLibrary players(){return (PlayerLibrary)l().libraries[LIBRARY_PLAYERS];}
     public static CatalogLibrary catalog(){return (CatalogLibrary)l().libraries[LIBRARY_CATALOG];}
+    
 
     public static int convertToLibraryCode(Object O)
     {
@@ -226,6 +229,7 @@ public class CMLib
         if(O instanceof MaterialLibrary) return LIBRARY_MATERIALS;
         if(O instanceof LegalLibrary) return LIBRARY_LEGAL;
         if(O instanceof CatalogLibrary) return LIBRARY_CATALOG;
+        if(O instanceof PlayerLibrary) return LIBRARY_PLAYERS;
         return -1;
     }
 

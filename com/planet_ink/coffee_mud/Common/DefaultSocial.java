@@ -179,7 +179,7 @@ public class DefaultSocial implements Social
 		    if(targetStr.indexOf("@")>0)
 		        targetMud=targetStr.substring(targetStr.indexOf("@")+1);
 		    else
-				Target=CMLib.map().getPlayer(targetStr);
+				Target=CMLib.players().getPlayer(targetStr);
 			
 			if(((Target==null)&&(makeTarget))
 			||((targetMud.length()>0)

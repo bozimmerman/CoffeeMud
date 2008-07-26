@@ -89,7 +89,7 @@ public class ClanAssign extends BaseClanner
 					}
 					if(found)
 					{
-						MOB M=CMLib.map().getLoadPlayer(qual);
+						MOB M=CMLib.players().getLoadPlayer(qual);
 						if(M==null)
 						{
 							mob.tell(qual+" was not found.  Could not change "+C.typeName()+" role.");
@@ -129,7 +129,7 @@ public class ClanAssign extends BaseClanner
 									{
 										String s=(String)olds.elementAt(i);
 										clanAnnounce(mob," "+s+" of the "+C.typeName()+" "+C.clanID()+" is now a "+CMLib.clans().getRoleName(C.getGovernment(),Clan.POS_MEMBER,true,false)+".");
-										MOB M2=CMLib.map().getPlayer(s);
+										MOB M2=CMLib.players().getPlayer(s);
 										if(M2!=null) M2.setClanRole(Clan.POS_MEMBER);
 										CMLib.database().DBUpdateClanMembership(s, C.clanID(), Clan.POS_MEMBER);
 										C.updateClanPrivileges(M2);
@@ -145,7 +145,7 @@ public class ClanAssign extends BaseClanner
 											String s=(String)olds.elementAt(0);
 											apps.removeElementAt(0);
 											clanAnnounce(mob," "+s+" of the "+C.typeName()+" "+C.clanID()+" is now a "+CMLib.clans().getRoleName(C.getGovernment(),Clan.POS_MEMBER,true,false)+".");
-											MOB M2=CMLib.map().getPlayer(s);
+											MOB M2=CMLib.players().getPlayer(s);
 											if(M2!=null) M2.setClanRole(Clan.POS_MEMBER);
 											CMLib.database().DBUpdateClanMembership(s, C.clanID(), Clan.POS_MEMBER);
 											C.updateClanPrivileges(M2);

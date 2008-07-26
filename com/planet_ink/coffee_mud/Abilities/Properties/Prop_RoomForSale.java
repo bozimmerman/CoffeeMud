@@ -184,7 +184,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 				    if(C!=null)
 				        D=C.getResponsibleMember();
 				    else
-				        D=CMLib.map().getLoadPlayer(A.landOwner());
+				        D=CMLib.players().getLoadPlayer(A.landOwner());
 				    if(D==null) return true;
                     B.accuse(CMLib.law().getLegalObject(R),msg.source(),D,new String[]{"PROPERTYROB","THIEF_ROBBERY"});
 				}
@@ -382,7 +382,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
             &&(!CMSecurity.isDisabled("PROPERTYOWNERCHECKS"))
             &&(optPlayerList!=null))
 			{
-                boolean playerExists=(CMLib.map().getPlayer(T.landOwner())!=null);
+                boolean playerExists=(CMLib.players().getPlayer(T.landOwner())!=null);
                 if(!playerExists) playerExists=(CMLib.clans().getClan(T.landOwner())!=null);
                 if(!playerExists) playerExists=optPlayerList.contains(T.landOwner());
                 if(!playerExists)

@@ -471,7 +471,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         else
         if((defaultQuestName!=null)&&(defaultQuestName.length()>0))
         {
-            MOB M=CMLib.map().getPlayer(host);
+            MOB M=CMLib.players().getPlayer(host);
             if(M!=null)
                 for(int s=0;s<M.numScripts();s++)
                 {
@@ -701,7 +701,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         Room inAreaRoom=null;
         try
         {
-            for(Enumeration p=CMLib.map().players();p.hasMoreElements();)
+            for(Enumeration p=CMLib.players().players();p.hasMoreElements();)
             {
                 MOB M=(MOB)p.nextElement();
                 if((M.Name().equalsIgnoreCase(thisName))
@@ -710,7 +710,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     inAreaRoom=M.location();
             }
             if(inAreaRoom==null)
-            for(Enumeration p=CMLib.map().players();p.hasMoreElements();)
+            for(Enumeration p=CMLib.players().players();p.hasMoreElements();)
             {
                 MOB M=(MOB)p.nextElement();
                 if((M.name().equalsIgnoreCase(thisName))
@@ -1179,7 +1179,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             if(E==null) E=lastKnownLocation.fetchFromMOBRoomFavorsItems(monster,null,str,Item.WORNREQ_ANY);
             if(E==null) E=lastKnownLocation.fetchAnyItem(str);
             if((E==null)&&(monster!=null)) E=monster.fetchInventory(str);
-            if(E==null) E=CMLib.map().getPlayer(str);
+            if(E==null) E=CMLib.players().getPlayer(str);
             return E;
         }
         return null;
@@ -1743,7 +1743,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             Hashtable H=(Hashtable)resources._getResource("SCRIPTVAR-"+name);
             if((H==null)&&(defaultQuestName!=null)&&(defaultQuestName.length()>0))
             {
-                MOB M=CMLib.map().getPlayer(name);
+                MOB M=CMLib.players().getPlayer(name);
                 if(M!=null)
                     for(int s=0;s<M.numScripts();s++)
                     {
@@ -7928,7 +7928,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                 }
                                 if(findOne==null)
                                 {
-                                    findOne=CMLib.map().getPlayer(mobName);
+                                    findOne=CMLib.players().getPlayer(mobName);
                                     if((findOne!=null)&&(!CMLib.flags().isInTheGame(findOne,true)))
                                         findOne=null;
                                     if((findOne!=null)&&(findOne!=monster))
@@ -8360,7 +8360,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 MOB M=null;
                 if(lastKnownLocation!=null)
                     M=lastKnownLocation.fetchInhabitant(whoName);
-                if(M==null) M=CMLib.map().getPlayer(whoName);
+                if(M==null) M=CMLib.players().getPlayer(whoName);
                 if(M!=null) whoName=M.Name();
                 if(whoName.length()>0)
                 {

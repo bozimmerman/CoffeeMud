@@ -74,7 +74,7 @@ public class Prayer_RemoveDeathMark extends Prayer implements MendingSkill
 		if(E!=null) remove.put(E,target);
 		E=target.fetchEffect("Thief_ContractHit");
 		if(E!=null) remove.put(E,target);
-		for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
+		for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
 		{
 			MOB M=(MOB)e.nextElement();
 			if((M!=null)&&(M!=target))

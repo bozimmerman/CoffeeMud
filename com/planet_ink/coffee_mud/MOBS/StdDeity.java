@@ -1111,7 +1111,7 @@ public class StdDeity extends StdMOB implements Deity
 		&&((--checkDown)<0))
 		{
 			checkDown=10;
-			for(Enumeration p=CMLib.map().players();p.hasMoreElements();)
+			for(Enumeration p=CMLib.players().players();p.hasMoreElements();)
 			{
 				MOB M=(MOB)p.nextElement();
                 if((lastBlackmark>0)

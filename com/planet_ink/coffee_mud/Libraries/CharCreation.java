@@ -169,7 +169,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 return false;
         }
 
-        for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
+        for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
         {
             MOB tm=(MOB)e.nextElement();
             if((CMLib.english().containsString(tm.ID(),login))
@@ -239,7 +239,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     public boolean checkExpiration(MOB mob)
     {
         if(!CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION)) return true;
-        MOB newMob=CMLib.map().getLoadPlayer(mob.Name());
+        MOB newMob=CMLib.players().getLoadPlayer(mob.Name());
         if(CMSecurity.isASysOp(newMob)) return true;
         if((newMob.playerStats()!=null)
         &&(newMob.playerStats().getAccountExpiration()<=System.currentTimeMillis()))
@@ -683,7 +683,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             }
             mob.playerStats().leveledDateTime(0);
             CMLib.database().DBCreateCharacter(mob);
-            CMLib.map().addPlayer(mob);
+            CMLib.players().addPlayer(mob);
 
             if(mob.playerStats()==null) return false;
             mob.playerStats().setLastIP(session.getAddress());
@@ -854,9 +854,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 }
 
                 MOB oldMOB=mob;
-                if(CMLib.map().getPlayer(oldMOB.Name())!=null)
+                if(CMLib.players().getPlayer(oldMOB.Name())!=null)
                 {
-                    oldMOB.session().setMob(CMLib.map().getPlayer(oldMOB.Name()));
+                    oldMOB.session().setMob(CMLib.players().getPlayer(oldMOB.Name()));
                     mob=oldMOB.session().mob();
                     mob.setSession(oldMOB.session());
                     if(mob!=oldMOB)
@@ -1101,7 +1101,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     	Vector list=CMLib.database().getUserList();
     	for(int v=0;v<list.size();v++)
         {
-            MOB M=CMLib.map().getLoadPlayer((String)list.elementAt(v));
+            MOB M=CMLib.players().getLoadPlayer((String)list.elementAt(v));
             if((M.playerStats()!=null)&&(M.playerStats().getTitles().contains(title)))
             {
                 M.playerStats().getTitles().remove(title);
@@ -1124,7 +1124,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             if(WKID.startsWith("Error: "))
                 Log.errOut("CharCreation",WKID);
         }
-        for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
+        for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
         {
             MOB M=(MOB)e.nextElement();
             if(M.playerStats()!=null)

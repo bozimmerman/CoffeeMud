@@ -1416,10 +1416,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			else
 			if(whatToDo.startsWith("PUR"))
 			{
-				MOB deadMOB=CMLib.map().getLoadPlayer(mob.Name());
+				MOB deadMOB=CMLib.players().getLoadPlayer(mob.Name());
 				if(deadMOB!=null)
 				{
-					CMLib.map().obliteratePlayer(deadMOB,false);
+					CMLib.players().obliteratePlayer(deadMOB,false);
 					return false;
 				}
 			}

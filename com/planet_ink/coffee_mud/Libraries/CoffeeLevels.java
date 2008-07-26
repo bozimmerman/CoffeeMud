@@ -193,7 +193,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		}
         if((mob.getLiegeID().length()>0)&&(amount>2))
         {
-			MOB sire=CMLib.map().getPlayer(mob.getLiegeID());
+			MOB sire=CMLib.players().getPlayer(mob.getLiegeID());
 			if((sire!=null)&&(CMLib.flags().isInTheGame(sire,true)))
             {
                 int sireShare=(int)Math.round(CMath.div(amount,10.0));
@@ -422,7 +422,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
 		if((mob.getLiegeID().length()>0)&&(amount>2))
 		{
-			MOB sire=CMLib.map().getPlayer(mob.getLiegeID());
+			MOB sire=CMLib.players().getPlayer(mob.getLiegeID());
 			if((sire!=null)&&(CMLib.flags().isInTheGame(sire,true)))
 			{
 				int sireShare=(int)Math.round(CMath.div(amount,10.0));

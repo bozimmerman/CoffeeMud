@@ -149,7 +149,7 @@ public class Prayer_PeaceRitual extends Prayer
 		}
 		clan2=otherClan.clanID();
 		boolean found=false;
-		for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
+		for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
 		{
 			MOB M=(MOB)e.nextElement();
 			if(M.getClanID().equals(clan2))

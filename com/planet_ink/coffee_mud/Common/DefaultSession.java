@@ -833,7 +833,7 @@ public class DefaultSession extends Thread implements Session
                 else
                 if(tag.equals("SHUTDOWN"))
                 {
-                    MOB M=CMLib.map().getLoadPlayer((String)parts.elementAt(1));
+                    MOB M=CMLib.players().getLoadPlayer((String)parts.elementAt(1));
                     if((M!=null)&&(M.playerStats().password().equalsIgnoreCase((String)parts.elementAt(2)))&&(CMSecurity.isASysOp(M)))
                     {
                         boolean keepDown=parts.size()>3?CMath.s_bool((String)parts.elementAt(3)):true;

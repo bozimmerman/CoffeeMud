@@ -59,7 +59,7 @@ public class Retire extends StdCommand
 											  +"and are for administrative purposes only.\n\r: ","",120000);
 			Log.sysOut("Retire",mob.Name()+" retiring: "+reason);
 		}
-		CMLib.map().obliteratePlayer(mob,false);
+		CMLib.players().obliteratePlayer(mob,false);
 		return false;
 	}
     public double combatActionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}

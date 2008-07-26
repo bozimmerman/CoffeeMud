@@ -304,7 +304,7 @@ public class ProcessSMTPrequest extends Thread
 								||subject.toUpperCase().startsWith("MOTM")
 								||subject.toUpperCase().startsWith("MOTY"))
 								{
-									MOB M=CMLib.map().getLoadPlayer(from);
+									MOB M=CMLib.players().getLoadPlayer(from);
 									if((M==null)||(!CMSecurity.isAllowedAnywhere(M,"JOURNALS")))
 										subject=subject.substring(4);
 								}
@@ -323,7 +323,7 @@ public class ProcessSMTPrequest extends Thread
 										{
 											if(server.isASubscribeOnlyJournal(journal))
 											{
-												MOB M=CMLib.map().getLoadPlayer(from);
+												MOB M=CMLib.players().getLoadPlayer(from);
 												if((M==null)||(!CMSecurity.isAllowedAnywhere(M,"JOURNALS")))
 												{
 													replyData=("552 Mailbox '"+journal+"' only accepts subscribe/unsubscribe."+cr).getBytes();
@@ -737,7 +737,7 @@ public class ProcessSMTPrequest extends Thread
 											boolean jerror=false;
 											if(server.getJournalCriteria(name).length()>0)
 											{
-												MOB M=CMLib.map().getPlayer(from);
+												MOB M=CMLib.players().getPlayer(from);
 												if((M==null)
 												||(!CMLib.masking().maskCheck(server.getJournalCriteria(name),M,false)))
 												{

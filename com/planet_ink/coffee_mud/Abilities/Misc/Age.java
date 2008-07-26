@@ -268,7 +268,7 @@ public class Age extends StdAbility
 				{
 					MOB liege=null;
 					if(babe.getLiegeID().length()>0)
-						liege=CMLib.map().getLoadPlayer(babe.getLiegeID());
+						liege=CMLib.players().getLoadPlayer(babe.getLiegeID());
 					if(liege==null) liege=babe.amFollowing();
 					MOB newMan=CMClass.getMOB("StdMOB");
 					newMan.setAgeHours(babe.getAgeHours());
@@ -332,7 +332,7 @@ public class Age extends StdAbility
                         newMan.resetToMaxState();
                     }
 					CMLib.database().DBCreateCharacter(newMan);
-					CMLib.map().addPlayer(newMan);
+					CMLib.players().addPlayer(newMan);
 
 					newMan.playerStats().setLastIP(liege.session().getAddress());
 					Log.sysOut("Age","Created user: "+newMan.Name());
@@ -367,7 +367,7 @@ public class Age extends StdAbility
 				{
 					MOB liege=null;
 					if(babe.getLiegeID().length()>0)
-						liege=CMLib.map().getLoadPlayer(babe.getLiegeID());
+						liege=CMLib.players().getLoadPlayer(babe.getLiegeID());
 					if(liege==null) liege=babe.amFollowing();
 					if(babe.Name().indexOf(" ")>0)
 					{

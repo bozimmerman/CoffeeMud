@@ -77,7 +77,7 @@ public class Thief_DeathTrap extends ThiefSkill implements Trap
 			return super.invoker();
 		MOB M=super.invoker();
 		if((M!=null)&&(M.Name().equals(miscText))) return M;
-		M=CMLib.map().getLoadPlayer(miscText);
+		M=CMLib.players().getLoadPlayer(miscText);
 		if(M==null)
 			miscText="";
 		else

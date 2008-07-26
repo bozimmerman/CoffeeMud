@@ -210,7 +210,7 @@ public class Pregnancy extends StdAbility
 							if(z>y)
 							{
 								race2=text().substring(z+1).trim();
-                                otherParentM=CMLib.map().getLoadPlayer(text().substring(y+1,z));
+                                otherParentM=CMLib.players().getLoadPlayer(text().substring(y+1,z));
 								desc+=" and "+text().substring(y+1,z);
 							}
 							desc+=".";

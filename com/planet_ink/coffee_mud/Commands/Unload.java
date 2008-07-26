@@ -115,11 +115,11 @@ public class Unload extends StdCommand
             String which=CMParms.combine(commands,2);
             Vector users=new Vector();
             if(which.equalsIgnoreCase("all"))
-            	for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
+            	for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
             		users.addElement((MOB)e.nextElement());
             else
             {
-            	MOB M=CMLib.map().getPlayer(which);
+            	MOB M=CMLib.players().getPlayer(which);
             	if(M==null)
             	{
             		mob.tell("No such user as '"+which+"'!");

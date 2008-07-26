@@ -47,7 +47,7 @@ public class Expire extends StdCommand
         if(commands.size()==1)
         {
             String playerName=(String)commands.elementAt(0);
-            MOB player=CMLib.map().getLoadPlayer(playerName);
+            MOB player=CMLib.players().getLoadPlayer(playerName);
             if((player==null)||(player.playerStats()==null)) 
             {
                 mob.tell("No player named '"+playerName+"' was found.");
@@ -61,7 +61,7 @@ public class Expire extends StdCommand
         {
             String playerName=(String)commands.elementAt(0);
             long days=CMath.s_long((String)commands.elementAt(1))*1000*60*60*24;
-            MOB player=CMLib.map().getLoadPlayer(playerName);
+            MOB player=CMLib.players().getLoadPlayer(playerName);
             if((player==null)||(player.playerStats()==null)) 
             {
                 mob.tell("No player named '"+playerName+"' was found.");

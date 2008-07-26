@@ -243,7 +243,7 @@ public class IMudInterface implements ImudServices, Serializable
 				if(ck.type==Packet.CHAN_TARGET)
 				{
 				    if((ck.target_mud!=null)&&(ck.target_mud.equalsIgnoreCase(getMudName())))
-				        targetMOB=CMLib.map().getLoadPlayer(ck.target_name);
+				        targetMOB=CMLib.players().getLoadPlayer(ck.target_name);
 				    if((ck.target_visible_name!=null)&&(ck.target_mud!=null)&&(targetMOB==null))
 				    {
                         killtargetmob=true;
@@ -292,7 +292,7 @@ public class IMudInterface implements ImudServices, Serializable
 				String stat="online";
 				MOB smob=findSessMob(lk.user_name);
 				if(smob==null)
-				for(Enumeration p=CMLib.map().players();p.hasMoreElements();)
+				for(Enumeration p=CMLib.players().players();p.hasMoreElements();)
 				{
 					MOB M=(MOB)p.nextElement();
 					if(M.Name().equalsIgnoreCase(lk.user_name))

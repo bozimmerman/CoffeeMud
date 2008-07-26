@@ -391,7 +391,7 @@ public class Song_Ode extends Song
 				benefits=null;
 				whom=mob.location().fetchInhabitant(name);
 				if((whom==null)||(!whom.name().equals(name)))
-					whom=CMLib.map().getPlayer(name);
+					whom=CMLib.players().getPlayer(name);
 				if((whom==null)||(!whom.name().equals(name)))
 				{
 					whom=CMClass.getMOB("StdMOB");

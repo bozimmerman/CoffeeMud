@@ -334,7 +334,7 @@ public class Stat extends BaseAbleLister
 		    }catch(NoSuchElementException nse){}
 		}
 		if(target==null)
-			target=CMLib.map().getLoadPlayer(MOBname);
+			target=CMLib.players().getLoadPlayer(MOBname);
 		if(target==null)
 		{
 			mob.tell("You can't stat '"+MOBname+"'  -- he doesn't exist.");

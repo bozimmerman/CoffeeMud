@@ -440,7 +440,7 @@ public class DefaultClan implements Clan
         for(int m=0;m<members.size();m++)
         {
             String member=(String)members.elementAt(m,1);
-            MOB M=CMLib.map().getLoadPlayer(member);
+            MOB M=CMLib.players().getLoadPlayer(member);
             if(M!=null)
             {
                 M.setClanID("");
@@ -860,7 +860,7 @@ public class DefaultClan implements Clan
         for(int i=members.size()-1;i>=0;i--)
         {
             String member=(String)members.elementAt(i,1);
-            if(CMLib.map().getPlayer(member)!=null)
+            if(CMLib.players().getPlayer(member)!=null)
                 continue;
             if(CMLib.database().DBUserSearch(null,member))
                 continue;
@@ -1053,7 +1053,7 @@ public class DefaultClan implements Clan
                     if(((System.currentTimeMillis()-lastLogin)<deathMilis)||(deathMilis==0))
                     {
                         String s=(String)members.elementAt(j,1);
-                        MOB M2=CMLib.map().getLoadPlayer(s);
+                        MOB M2=CMLib.players().getLoadPlayer(s);
                         if((M2==null)||(M2.getClanRole()==Clan.POS_APPLICANT)) continue;
                         if(M2.charStats().getCurrentClass().baseClass().equals("Cleric")
                             ||CMSecurity.isASysOp(M2))
@@ -1108,7 +1108,7 @@ public class DefaultClan implements Clan
                     if(((System.currentTimeMillis()-lastLogin)<deathMilis)||(deathMilis==0))
                     {
                         String s=(String)members.elementAt(j,1);
-                        MOB M2=CMLib.map().getLoadPlayer(s);
+                        MOB M2=CMLib.players().getLoadPlayer(s);
                         if((M2==null)||(M2.getClanRole()==Clan.POS_APPLICANT)) continue;
                         if(!M2.getWorshipCharID().equals(highestClericM.getWorshipCharID()))
                         {
@@ -1133,7 +1133,7 @@ public class DefaultClan implements Clan
                         if(CMLib.clans().getRoleOrder(((Integer)members.elementAt(i,2)).intValue())==highest)
                         {
                             String s=(String)members.elementAt(i,1);
-                            MOB M2=CMLib.map().getLoadPlayer(s);
+                            MOB M2=CMLib.players().getLoadPlayer(s);
                             if(M2!=null)
                             {
                                 clanAnnounce(s+" is now a "+CMLib.clans().getRoleName(getGovernment(),max,true,false)+" of the "+typeName()+" "+name()+".");
@@ -1465,7 +1465,7 @@ public class DefaultClan implements Clan
         for(int i=0;i<DV.size();i++)
             if(((Integer)DV.elementAt(i,2)).intValue()>newPos)
             {
-                mob=CMLib.map().getLoadPlayer((String)DV.elementAt(i,1));
+                mob=CMLib.players().getLoadPlayer((String)DV.elementAt(i,1));
                 if(mob!=null)
                     break;
             }

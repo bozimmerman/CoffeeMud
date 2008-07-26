@@ -228,7 +228,7 @@ public class Construction extends CraftingSkill
 							    }catch(NoSuchElementException e){}
 							    try
 							    {
-									for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
+									for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
 									{
 										MOB M=(MOB)e.nextElement();
 										if(M.getStartRoom()==room)

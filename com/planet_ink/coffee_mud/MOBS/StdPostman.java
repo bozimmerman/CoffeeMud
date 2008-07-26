@@ -377,9 +377,9 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 
     public String findProperBranch(String toWhom)
     {
-        if(CMLib.map().getLoadPlayer(toWhom)!=null)
+        if(CMLib.players().getLoadPlayer(toWhom)!=null)
         {
-            MOB M=CMLib.map().getLoadPlayer(toWhom);
+            MOB M=CMLib.players().getLoadPlayer(toWhom);
             if(M.getStartRoom()!=null)
             {
                 Hashtable allBranchBoxes=getOurOpenBoxes(toWhom);
@@ -567,13 +567,13 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                             {
                                 String toWhom=S.prompt("Address this to whom? ","");
                                 if((toWhom!=null)&&(toWhom.length()>0)
-                                &&((CMLib.map().getLoadPlayer(toWhom)!=null)||(CMLib.clans().findClan(toWhom)!=null)))
+                                &&((CMLib.players().getLoadPlayer(toWhom)!=null)||(CMLib.clans().findClan(toWhom)!=null)))
                                 {
                                     String fromWhom=msg.source().Name();
                                     if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
                                         fromWhom=msg.source().getClanID();
-                                    if(CMLib.map().getLoadPlayer(toWhom)!=null)
-                                        toWhom=CMLib.map().getLoadPlayer(toWhom).Name();
+                                    if(CMLib.players().getLoadPlayer(toWhom)!=null)
+                                        toWhom=CMLib.players().getLoadPlayer(toWhom).Name();
                                     else
                                         toWhom=CMLib.clans().findClan(toWhom).name();
                                     double amt=getSimplePostage(getChargeableWeight((Item)msg.tool()));

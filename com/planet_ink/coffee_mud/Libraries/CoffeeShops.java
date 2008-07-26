@@ -1499,14 +1499,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             data.bid=oldBid;
             String highBidder=CMLib.xml().getValFromPieces(xmlV,"BIDDER");
             if(highBidder.length()>0)
-                data.highBidderM=CMLib.map().getLoadPlayer(highBidder);
+                data.highBidderM=CMLib.players().getLoadPlayer(highBidder);
             String maxBid=CMLib.xml().getValFromPieces(xmlV,"MAXBID");
             double oldMaxBid=CMath.s_double(maxBid);
             data.highBid=oldMaxBid;
             data.auctionDBKey=key;
             String buyOutPrice=CMLib.xml().getValFromPieces(xmlV,"BUYOUT");
             data.buyOutPrice=CMath.s_double(buyOutPrice);
-            data.auctioningM=CMLib.map().getLoadPlayer(from);
+            data.auctioningM=CMLib.players().getLoadPlayer(from);
             data.currency=CMLib.beanCounter().getCurrency(data.auctioningM);
             for(int v=0;v<xmlV.size();v++)
             {

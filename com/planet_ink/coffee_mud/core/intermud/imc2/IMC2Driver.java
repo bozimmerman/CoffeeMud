@@ -132,7 +132,7 @@ public final class IMC2Driver extends Thread {
 		}
 		else
 		{
-			MOB M=CMLib.map().getPlayer(name);
+			MOB M=CMLib.players().getPlayer(name);
 			if(M!=null) M.tell(text);
 		}
     }
@@ -995,7 +995,7 @@ public final class IMC2Driver extends Thread {
         out.to = sender;
         out.type = "whois-reply";
 
-		MOB M=CMLib.map().getPlayer(from.name);
+		MOB M=CMLib.players().getPlayer(from.name);
 		if(M==null) return;
         imc_addkey(out, "text", "imcpfind "+from.name+"@"+imc_name
 						+" is "+(CMLib.flags().isInTheGame(M,false) ? "online":"offline")+ ".");

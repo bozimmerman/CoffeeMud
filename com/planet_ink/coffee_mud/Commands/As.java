@@ -54,7 +54,7 @@ public class As extends StdCommand
 			return false;
 		}
 		Session mySession=mob.session();
-		MOB M=CMLib.map().getLoadPlayer(cmd);
+		MOB M=CMLib.players().getLoadPlayer(cmd);
 		if(M==null)
 			M=mob.location().fetchInhabitant(cmd);
 		if(M==null)

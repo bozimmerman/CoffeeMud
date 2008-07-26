@@ -146,7 +146,7 @@ public class MOBloader
         int oldDisposition=mob.baseEnvStats().disposition();
         mob.baseEnvStats().setDisposition(EnvStats.IS_NOT_SEEN|EnvStats.IS_SNEAKING);
         mob.envStats().setDisposition(EnvStats.IS_NOT_SEEN|EnvStats.IS_SNEAKING);
-        CMLib.map().addPlayer(mob);
+        CMLib.players().addPlayer(mob);
         DBReadUserOnly(mob);
         Room oldLoc=mob.location();
         boolean inhab=false;
@@ -367,7 +367,7 @@ public class MOBloader
                     if(lvl.length()>0) level+=CMath.s_int(lvl);
                     thisUser.addElement(Integer.toString(level));
                     thisUser.addElement(DBConnections.getRes(R,"CMAGEH"));
-                    MOB M=CMLib.map().getPlayer((String)thisUser.firstElement());
+                    MOB M=CMLib.players().getPlayer((String)thisUser.firstElement());
                     if((M!=null)&&(M.lastTickedDateTime()>0))
                         thisUser.addElement(""+M.lastTickedDateTime());
                     else
@@ -407,7 +407,7 @@ public class MOBloader
             if(R!=null) while(R.next())
             {
                 String username=DBConnections.getRes(R,"CMUSERID");
-                MOB M=CMLib.map().getPlayer(username);
+                MOB M=CMLib.players().getPlayer(username);
                 if(M==null)
                 {
                     done.add(username);
@@ -436,7 +436,7 @@ public class MOBloader
                     head.append("\n\r");
                 }
             }
-            for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
+            for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
             {
                 MOB M=(MOB)e.nextElement();
                 if((M.getLiegeID().equals(liegeID))&&(!done.contains(M.Name())))
@@ -566,7 +566,7 @@ public class MOBloader
                 int role=(int)DB.getLongRes(R,"CMCLRO");
                 members.addElement(username);
                 roles.addElement(new Integer(role));
-                MOB M=CMLib.map().getPlayer(username);
+                MOB M=CMLib.players().getPlayer(username);
                 if((M!=null)&&(M.lastTickedDateTime()>0))
                     lastDates.addElement(new Long(M.lastTickedDateTime()));
                 else
@@ -581,7 +581,7 @@ public class MOBloader
 
     public void DBUpdateClan(String name, String clan, int role)
     {
-        MOB M=CMLib.map().getPlayer(name);
+        MOB M=CMLib.players().getPlayer(name);
         if(M!=null)
         {
             M.setClanID(clan);
@@ -927,7 +927,7 @@ public class MOBloader
     public String[] DBFetchEmailData(String name)
     {
         String[] data=new String[2];
-        for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
+        for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
         {
             MOB M=(MOB)e.nextElement();
             if((M.Name().equalsIgnoreCase(name))&&(M.playerStats()!=null))
@@ -963,7 +963,7 @@ public class MOBloader
     public String DBEmailSearch(String email)
     {
         DBConnection D=null;
-        for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
+        for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
         {
             MOB M=(MOB)e.nextElement();
             if((M.playerStats()!=null)&&(M.playerStats().getEmail().equalsIgnoreCase(email))) return M.Name();

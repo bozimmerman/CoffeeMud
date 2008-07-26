@@ -196,7 +196,7 @@ public class Skill_Enslave extends StdSkill
 		        mob.curState().expendEnergy(mob,mob.maxState(),false);
 		        if((!mob.isInCombat())&&(CMLib.dice().rollPercentage()==1)&&(CMLib.dice().rollPercentage()<(masterAnger/10)))
 		        {
-		            if(myMaster==null) myMaster=CMLib.map().getPlayer(text());
+		            if(myMaster==null) myMaster=CMLib.players().getPlayer(text());
 		            if((myMaster!=null)&&(mob.location().isInhabitant(myMaster)))
 		            {
 		                mob.location().show(mob,myMaster,null,CMMsg.MSG_OK_ACTION,"<S-NAME> rebel(s) against <T-NAMESELF>!");
@@ -256,7 +256,7 @@ public class Skill_Enslave extends StdSkill
 			if(!mob.getLiegeID().equals(text()))
 			{
 			    mob.setLiegeID(text());
-	            if(myMaster==null) myMaster=CMLib.map().getPlayer(text());
+	            if(myMaster==null) myMaster=CMLib.players().getPlayer(text());
 	            if(myMaster!=null) mob.setClanID(myMaster.getClanID());
 			}
 		    if(STEPS!=null)

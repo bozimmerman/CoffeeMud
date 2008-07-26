@@ -156,7 +156,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 				mob.location().send(mob,msg);
 				if(playerCorpse)
 				{
-					MOB rejuvedMOB=CMLib.map().getPlayer(((DeadBody)body).mobName());
+					MOB rejuvedMOB=CMLib.players().getPlayer(((DeadBody)body).mobName());
 					if(rejuvedMOB!=null)
 					{
 						rejuvedMOB.tell("You are being resurrected.");

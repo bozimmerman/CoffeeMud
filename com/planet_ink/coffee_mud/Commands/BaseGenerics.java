@@ -546,7 +546,7 @@ public class BaseGenerics extends StdCommand
 		    }catch(NoSuchElementException e){}
 		    try
 		    {
-				for(Enumeration e=CMLib.map().players();e.hasMoreElements();)
+				for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
 				{
 					MOB M=(MOB)e.nextElement();
 					if(M.getStartRoom()==oldR)
@@ -3136,7 +3136,7 @@ public class BaseGenerics extends StdCommand
 				}
 				else
 				{
-					MOB M=CMLib.map().getLoadPlayer(behave);
+					MOB M=CMLib.players().getLoadPlayer(behave);
 					if(M!=null)
 					{
 						int oldNum=-1;
@@ -3188,7 +3188,7 @@ public class BaseGenerics extends StdCommand
 					String newName=(String)members.elementAt(m,1);
 					if(!membersCopy.contains(newName))
 					{
-						MOB M=CMLib.map().getLoadPlayer(newName);
+						MOB M=CMLib.players().getLoadPlayer(newName);
 						if(M!=null)
 						{
 							Clan oldC=CMLib.clans().getClan(M.getClanID());
@@ -3213,7 +3213,7 @@ public class BaseGenerics extends StdCommand
 					String newName=(String)members.elementAt(m,1);
 					if(membersCopy.contains(newName))
 					{
-						MOB M=CMLib.map().getLoadPlayer(newName);
+						MOB M=CMLib.players().getLoadPlayer(newName);
 						int newRole=((Integer)members.elementAt(m,2)).intValue();
 						if((M!=null)&&(newRole!=M.getClanRole()))
 						{
@@ -3229,7 +3229,7 @@ public class BaseGenerics extends StdCommand
 					String newName=(String)membersCopy.elementAt(m,1);
 					if(!members.contains(newName))
 					{
-						MOB M=CMLib.map().getLoadPlayer(newName);
+						MOB M=CMLib.players().getLoadPlayer(newName);
 						if(M!=null)
 						{
 							M.setClanID("");

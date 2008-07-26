@@ -572,7 +572,7 @@ public class SMTPserver extends Thread implements Tickable
 			if(!rightTimeToSendEmail(date)) continue;
 
 			// check for valid recipient
-			MOB toM=CMLib.map().getLoadPlayer(to);
+			MOB toM=CMLib.players().getLoadPlayer(to);
 			if(toM==null)
 			{
 				Log.errOut("SMTPServer","Invalid to address '"+to+"' in email: "+msg);

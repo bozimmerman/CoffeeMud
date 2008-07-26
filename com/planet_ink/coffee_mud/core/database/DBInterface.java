@@ -58,15 +58,15 @@ public class DBInterface implements DatabaseEngine
         this.GAbilityLoader=new GAbilityLoader(sharedDBsV.contains("DBABLES")?oldBaseDB:DB);
         this.GCClassLoader=new GCClassLoader(sharedDBsV.contains("DBCCLASS")?oldBaseDB:DB);
         this.GRaceLoader=new GRaceLoader(sharedDBsV.contains("DBRACES")?oldBaseDB:DB);
-    	this.MOBloader=new MOBloader(sharedDBsV.contains("DBPLAYERS")?oldBaseDB:DB);
-    	this.RoomLoader=new RoomLoader(sharedDBsV.contains("DBMAP")?oldBaseDB:DB);
-    	this.DataLoader=new DataLoader(sharedDBsV.contains("DBPLAYERS")?oldBaseDB:DB);
-    	this.StatLoader=new StatLoader(sharedDBsV.contains("DBSTATS")?oldBaseDB:DB);
-    	this.PollLoader=new PollLoader(sharedDBsV.contains("DBPOLLS")?oldBaseDB:DB);
+    	this.MOBloader=new MOBloader(sharedDBsV.contains("PLAYERS")?oldBaseDB:DB);
+    	this.RoomLoader=new RoomLoader(sharedDBsV.contains("MAP")?oldBaseDB:DB);
+    	this.DataLoader=new DataLoader(sharedDBsV.contains("PLAYERS")?oldBaseDB:DB);
+    	this.StatLoader=new StatLoader(sharedDBsV.contains("STATS")?oldBaseDB:DB);
+    	this.PollLoader=new PollLoader(sharedDBsV.contains("POLLS")?oldBaseDB:DB);
     	this.VFSLoader=new VFSLoader(sharedDBsV.contains("DBVFS")?oldBaseDB:DB);
-    	this.JournalLoader=new JournalLoader(sharedDBsV.contains("DBJOURNALS")?oldBaseDB:DB);
-    	this.QuestLoader=new QuestLoader(sharedDBsV.contains("DBQUESTS")?oldBaseDB:DB);
-    	this.ClanLoader=new ClanLoader(sharedDBsV.contains("DBCLANS")?oldBaseDB:DB);
+    	this.JournalLoader=new JournalLoader(sharedDBsV.contains("JOURNALS")?oldBaseDB:DB);
+    	this.QuestLoader=new QuestLoader(sharedDBsV.contains("QUEST")?oldBaseDB:DB);
+    	this.ClanLoader=new ClanLoader(sharedDBsV.contains("CLANS")?oldBaseDB:DB);
     }
     public CMObject newInstance(){return new DBInterface(DB);}
     public void initializeClass(){}

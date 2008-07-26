@@ -113,7 +113,7 @@ public class StdTrap extends StdAbility implements Trap
 		if(invoker==null)
 		{
 			if((invokerName!=null)&&(!invokerName.equalsIgnoreCase("null")))
-				invoker=CMLib.map().getLoadPlayer(invokerName);
+				invoker=CMLib.players().getLoadPlayer(invokerName);
 			if(invoker==null)
 			{
 				invoker=CMClass.getMOB("StdMOB");

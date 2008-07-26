@@ -216,7 +216,7 @@ public class Export extends StdCommand
 				{
 					String name=(String)V.elementAt(v);
 					if(S!=null) S.rawPrint(".");
-					MOB M=CMLib.map().getLoadPlayer(name);
+					MOB M=CMLib.players().getLoadPlayer(name);
 					if(M!=null)
 					{
 						x.append("\r\n<PLAYER>");

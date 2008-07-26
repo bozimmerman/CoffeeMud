@@ -219,7 +219,7 @@ public class DefaultLawSet implements Law
                 if(C!=null)
                     responsibleMob=C.getResponsibleMember();
                 else
-                    responsibleMob=CMLib.map().getLoadPlayer(owner);
+                    responsibleMob=CMLib.players().getLoadPlayer(owner);
                 Vector particulars=(Vector)owners.get(owner);
 
                 double totalValue=0;
@@ -293,8 +293,8 @@ public class DefaultLawSet implements Law
                                             CMLib.commands().postChannel((String)channels.elementAt(i),T.landOwner(),T.landOwner()+" has lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.",false);
                                     }
                                     else
-                                    if(CMLib.map().getPlayer(T.landOwner())!=null)
-                                        CMLib.map().getPlayer(T.landOwner()).tell("You have lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.");
+                                    if(CMLib.players().getPlayer(T.landOwner())!=null)
+                                        CMLib.players().getPlayer(T.landOwner()).tell("You have lost the title to "+T.landPropertyID()+" due to failure to pay property taxes.");
                                     T.setLandOwner("");
                                     T.updateTitle();
                                 }
