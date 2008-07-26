@@ -80,7 +80,8 @@ public interface WorldMap extends CMLibrary
     public boolean isClearableRoom(Room room);
     public String createNewExit(Room from, Room room, int direction);
     public Area areaLocation(Object E);
-    
+    public boolean explored(Room R, Vector areas);
+   
     /************************************************************************/
     /**							 MOB->ROOMS     							*/
     /************************************************************************/
@@ -117,18 +118,6 @@ public interface WorldMap extends CMLibrary
     public void delAuctionHouse(Auctioneer oneToDel);
     public Auctioneer getAuctionHouse(String chain, String areaNameOrBranch);
     public Enumeration auctionHouses();
-    
-    /************************************************************************/
-    /**							 PLAYERS 	     							*/
-    /************************************************************************/
-    public boolean explored(Room R, Vector areas);
-    public int numPlayers();
-    public void addPlayer(MOB newOne);
-    public void delPlayer(MOB oneToDel);
-    public MOB getPlayer(String calledThis);
-    public MOB getLoadPlayer(String last);
-    public Enumeration players();
-    public void obliteratePlayer(MOB deadMOB, boolean quiet);
     
     /************************************************************************/
     /**							 SPACE METHODS 								*/
