@@ -53,7 +53,7 @@ public class ChannelBackLogNext extends StdWebMacro
         String password=Authenticate.getPassword(httpReq);
         MOB mob=null;
         if(Authenticate.authenticated(httpReq,login,password))
-            mob=CMLib.map().getLoadPlayer(login);
+            mob=CMLib.players().getLoadPlayer(login);
         
 		if(mob!=null)
 		{

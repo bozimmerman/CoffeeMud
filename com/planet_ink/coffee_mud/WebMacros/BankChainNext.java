@@ -50,7 +50,7 @@ public class BankChainNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+		MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
 		if((player!=null)&&(player.length()>0))
 		{
 			if(((M==null)||(!M.Name().equalsIgnoreCase(player)))
@@ -68,7 +68,7 @@ public class BankChainNext extends StdWebMacro
 				destroyPlayer=true;
 			}
 			else
-				playerM=CMLib.map().getLoadPlayer(player);
+				playerM=CMLib.players().getLoadPlayer(player);
 			if(playerM==null) return "";
 		}
 		else

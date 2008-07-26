@@ -57,7 +57,7 @@ public class PollData extends StdWebMacro
 
         if(parms.containsKey("EDIT"))
         {
-            MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
             if(M==null) return "[authentication error]";
             if(!CMSecurity.isAllowed(M,M.location(),"POLLS")) return "[authentication error]";
             String newTitle=httpReq.getRequestParameter("TITLE");
@@ -142,7 +142,7 @@ public class PollData extends StdWebMacro
         else
         if(parms.containsKey("DELETE"))
         {
-            MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+            MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
             if(M==null) return "[authentication error]";
             if(!CMSecurity.isAllowed(M,M.location(),"POLLS")) return "[authentication error]";
             if(last==null) return " @break@";

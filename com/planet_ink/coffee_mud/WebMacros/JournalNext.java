@@ -53,7 +53,7 @@ public class JournalNext extends StdWebMacro
 		}
 		String lastID="";
 		HashSet H=JournalMessageNext.getProtectedJournals();
-		MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+		MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
 		for(int j=0;j<journals.size();j++)
 		{
 			String B=(String)journals.elementAt(j);

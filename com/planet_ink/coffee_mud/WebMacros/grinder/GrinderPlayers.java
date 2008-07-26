@@ -159,7 +159,7 @@ public class GrinderPlayers extends GrinderMobs
 			case 18: M.setTrains(CMath.s_int(old)); break;
 			case 19: CMLib.beanCounter().setMoney(M,CMath.s_int(old)); break;
 			case 20: if(CMLib.map().getDeity(old)!=null) M.setWorshipCharID(old); break;
-			case 21: if(CMLib.map().getPlayer(old)!=null) M.setLiegeID(old); break;
+			case 21: if(CMLib.players().getPlayer(old)!=null) M.setLiegeID(old); break;
 			case 22: if(CMLib.clans().getClan(old)!=null) M.setClanID(old); break;
 			case 23: M.setClanRole(CMath.s_int(old)); break;
 			case 24: CMLib.factions().setAlignment(M,CMath.s_int(old));break;

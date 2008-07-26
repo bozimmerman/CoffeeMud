@@ -47,7 +47,7 @@ public class GrinderClans
             {
                 if(aff.length()>0)
                 {
-                    MOB M=CMLib.map().getLoadPlayer(aff);
+                    MOB M=CMLib.players().getLoadPlayer(aff);
                     if(M==null) return "Unknown player '"+aff+"'.";
                     newMembersNames.addElement(M.Name());
                     int newRole=CMath.s_int(httpReq.getRequestParameter("ROLE"+num));
@@ -71,7 +71,7 @@ public class GrinderClans
             {
                 if(!newMembersNames.contains((String)DV.elementAt(d,1)))
                 {
-                    MOB M=CMLib.map().getLoadPlayer((String)DV.elementAt(d,1));
+                    MOB M=CMLib.players().getLoadPlayer((String)DV.elementAt(d,1));
                     if(M!=null) C.delMember(M);
                 }
             }

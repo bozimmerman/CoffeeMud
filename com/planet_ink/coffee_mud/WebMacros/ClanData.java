@@ -54,7 +54,7 @@ public class ClanData extends StdWebMacro
                 {
                     if(behav.length()>0)
                     {
-                        MOB M=CMLib.map().getLoadPlayer(behav);
+                        MOB M=CMLib.players().getLoadPlayer(behav);
                         if(M!=null)
                         {
                             themembers.addElement(behav);

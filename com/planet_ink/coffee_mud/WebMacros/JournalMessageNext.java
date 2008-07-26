@@ -63,7 +63,7 @@ public class JournalMessageNext extends StdWebMacro
 		if(journal==null) return " @break@";
 		if(isProtectedJournal(journal))
 		{
-			MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+			MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
 			if((M==null)||(!CMSecurity.isASysOp(M)))
 			    return " @break@";
 		}
@@ -81,7 +81,7 @@ public class JournalMessageNext extends StdWebMacro
 			if(last!=null) httpReq.removeRequestParameter("JOURNALMESSAGE");
 			return "";
 		}
-        MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+        MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
         boolean priviledged=CMSecurity.isAllowedAnywhere(M,"JOURNALS")&&(!parms.contains("NOPRIV"));
         while(true)
         {

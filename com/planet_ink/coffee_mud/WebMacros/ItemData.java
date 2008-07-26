@@ -95,7 +95,7 @@ public class ItemData extends StdWebMacro
 		MOB playerM=null;
         Room R=null;
         if(player!=null)
-            playerM=CMLib.map().getLoadPlayer(player);
+            playerM=CMLib.players().getLoadPlayer(player);
         else
             R=(Room)httpReq.getRequestObjects().get(last);
 		if((R==null)&&(player==null))

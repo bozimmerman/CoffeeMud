@@ -90,7 +90,7 @@ public class FileMgr extends StdWebMacro
 		if(path==null) path="";
 		String file=httpReq.getRequestParameter("FILE");
 		if(file==null) file="";
-        MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+        MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
         if(M==null) return "[authentication error]";
 		try
 		{

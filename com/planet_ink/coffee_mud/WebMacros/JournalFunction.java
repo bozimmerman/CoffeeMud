@@ -47,7 +47,7 @@ public class JournalFunction extends StdWebMacro
 			info=CMLib.database().DBReadJournal(last);
 			httpReq.getRequestObjects().put("JOURNAL: "+last,info);
 		}
-		MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+		MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
 		if(JournalMessageNext.isProtectedJournal(last))
 		{
 			if((M==null)||(!CMSecurity.isASysOp(M)))
@@ -121,7 +121,7 @@ public class JournalFunction extends StdWebMacro
                 String toName=((String)((Vector)info.elementAt(num)).elementAt(1));
                 if(replyMsg.length()==0)
                     return "Email not submitted -- No text!";
-                MOB toM=CMLib.map().getLoadPlayer(toName);
+                MOB toM=CMLib.players().getLoadPlayer(toName);
                 if((M==null)||(M.playerStats()==null)||(M.playerStats().getEmail().indexOf("@")<0))
                     return "Player '"+toName+"' does not exist, or has no email address.";
                 CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),

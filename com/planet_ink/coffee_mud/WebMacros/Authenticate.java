@@ -64,7 +64,7 @@ public class Authenticate extends StdWebMacro
 
 	public static boolean authenticated(ExternalHTTPRequests httpReq, String login, String password)
 	{
-		MOB mob=CMLib.map().getLoadPlayer(login);
+		MOB mob=CMLib.players().getLoadPlayer(login);
 		if(mob==null) return false;
 		if((mob.playerStats()!=null)
 		&&(mob.playerStats().password().equalsIgnoreCase(password))

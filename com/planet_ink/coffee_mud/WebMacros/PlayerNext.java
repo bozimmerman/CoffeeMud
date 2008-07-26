@@ -63,7 +63,7 @@ public class PlayerNext extends StdWebMacro
 				V=new Vector();
 				while(unV.size()>0)
 				{
-					MOB M=CMLib.map().getLoadPlayer((String)unV.firstElement());
+					MOB M=CMLib.players().getLoadPlayer((String)unV.firstElement());
 					if(M==null) return " @break@";
 					String loweStr=PlayerData.getBasic(M,code);
 					if(loweStr.endsWith(", ")) 
@@ -71,7 +71,7 @@ public class PlayerNext extends StdWebMacro
 					MOB lowestM=M;
 					for(int i=1;i<unV.size();i++)
 					{
-						M=CMLib.map().getLoadPlayer((String)unV.elementAt(i));
+						M=CMLib.players().getLoadPlayer((String)unV.elementAt(i));
 						if(M==null) return " @break@";
 						String val=PlayerData.getBasic(M,code);
 						if(val.endsWith(", "))

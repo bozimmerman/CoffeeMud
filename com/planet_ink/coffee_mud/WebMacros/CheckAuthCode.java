@@ -39,7 +39,7 @@ public class CheckAuthCode extends StdWebMacro
 		String login=Authenticate.getLogin(httpReq);
 		if(!Authenticate.authenticated(httpReq,login,Authenticate.getPassword(httpReq)))
 			return null;
-		MOB mob=CMLib.map().getLoadPlayer(login);
+		MOB mob=CMLib.players().getLoadPlayer(login);
 		if(mob==null) return null;
 		Hashtable auths=(Hashtable)httpReq.getRequestObjects().get("AUTHS_"+login.toUpperCase().trim());
 		if(auths==null)

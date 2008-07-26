@@ -129,7 +129,7 @@ public class QuestMaker extends StdWebMacro
     {
         Hashtable parms=parseParms(parm);
         if((parms==null)||(parms.size()==0)) return "";
-		MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+		MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
 		if(M==null) return "[error -- no authenticated mob!]";
 		
         String qFileToGet=null;

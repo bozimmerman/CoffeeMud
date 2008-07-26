@@ -43,7 +43,7 @@ public class AbilityGainReport extends StdWebMacro
         Hashtable profSpent=new Hashtable();
         for(int pl=0;pl<players.size();pl++)
         {
-            MOB player=CMLib.map().getLoadPlayer((String)((Vector)players.elementAt(pl)).firstElement());
+            MOB player=CMLib.players().getLoadPlayer((String)((Vector)players.elementAt(pl)).firstElement());
             for(int a=0;a<player.numLearnedAbilities();a++)
             {
                 Ability A=player.fetchAbility(a);

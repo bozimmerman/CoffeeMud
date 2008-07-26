@@ -45,7 +45,7 @@ public class AreaXML extends StdWebMacro
     
     public String getFilename(ExternalHTTPRequests httpReq, String filename)
     {
-		MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+		MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
 		if(mob==null) return "area.xml";
 		Area pickedA=getLoggedArea(httpReq,mob);
 		if(pickedA==null) return "area.xml";
@@ -73,7 +73,7 @@ public class AreaXML extends StdWebMacro
     
     public byte[] runBinaryMacro(ExternalHTTPRequests httpReq, String parm) throws HTTPServerException
     {
-		MOB mob=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+		MOB mob=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
 		if(mob==null) return null;
 		Area pickedA=getLoggedArea(httpReq,mob);
 		if(pickedA==null) return null;

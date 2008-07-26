@@ -47,7 +47,7 @@ public class PlayerOnline extends StdWebMacro
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{
-			MOB M=CMLib.map().getLoadPlayer(last);
+			MOB M=CMLib.players().getLoadPlayer(last);
 			if(M!=null)
 			{
                 String login=Authenticate.getLogin(httpReq);
@@ -57,7 +57,7 @@ public class PlayerOnline extends StdWebMacro
                     boolean canModify=false;
                     boolean canBoot=false;
                     
-                    MOB authM=CMLib.map().getLoadPlayer(login);
+                    MOB authM=CMLib.players().getLoadPlayer(login);
                     if((authM!=null)&&(authM.Name().equals(M.Name())))
                     {
                         canBan=true;

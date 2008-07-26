@@ -78,7 +78,7 @@ public class BankAccountInfo extends StdWebMacro
 		Hashtable parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("BANKCHAIN");
 		if(last==null) return " @break@";
-		MOB M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+		MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
 		String player=httpReq.getRequestParameter("PLAYER");
 		if((player==null)||(player.length()==0))
 			player=httpReq.getRequestParameter("CLAN");
@@ -101,7 +101,7 @@ public class BankAccountInfo extends StdWebMacro
 				destroyPlayer=true;
 			}
 			else
-				playerM=CMLib.map().getLoadPlayer(player);
+				playerM=CMLib.players().getLoadPlayer(player);
 			if(playerM!=null) playerA=CMLib.map().getStartArea(playerM);
 			if((playerM==null)||(playerA==null)) 
 				return "PLAYER not found!";

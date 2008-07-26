@@ -49,7 +49,7 @@ public class JournalInfo extends StdWebMacro
 		MOB M=null;
 		if(JournalMessageNext.isProtectedJournal(last))
 		{
-			M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+			M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
 			if((M==null)||(!CMSecurity.isASysOp(M)))
 			    return " @break@";
 		}
@@ -61,7 +61,7 @@ public class JournalInfo extends StdWebMacro
 		if((num<0)||(num>=info.size()))	return " @break@";
 		
 		if(M==null)
-			M=CMLib.map().getLoadPlayer(Authenticate.getLogin(httpReq));
+			M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
         boolean priviledged=CMSecurity.isAllowedAnywhere(M,"JOURNALS")&&(!parms.contains("NOPRIV"));
 		String to=((String)((Vector)info.elementAt(num)).elementAt(DatabaseEngine.JOURNAL_TO));
 		if(to.equalsIgnoreCase("all")
