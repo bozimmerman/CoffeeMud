@@ -645,8 +645,14 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 	            response.append("It is mostly made of a kind of "+RawMaterial.MATERIAL_NOUNDESCS[(item.material()&RawMaterial.MATERIAL_MASK)>>8].toLowerCase()+".  ");
 	        else
 	            response.append("It is mostly made of "+RawMaterial.RESOURCE_DESCS[(item.material()&RawMaterial.RESOURCE_MASK)].toLowerCase()+".  ");
-	        if((item instanceof Weapon)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
-	            response.append("It is a "+CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)item).weaponClassification()])+" class weapon that does "+CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)item).weaponType()])+" damage.  ");
+	        if((item instanceof Weapon)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10)) {
+	            response.append("It is a ");
+                if((item.rawLogicalAnd())&&CMath.bset(item.rawProperLocationBitmap(),Item.WORN_WIELD|Item.WORN_HELD))
+                    response.append("two handed ");
+                else
+                    response.append("one handed ");
+	            response.append(CMStrings.capitalizeAndLower(Weapon.CLASS_DESCS[((Weapon)item).weaponClassification()])+" class weapon that does "+CMStrings.capitalizeAndLower(Weapon.TYPE_DESCS[((Weapon)item).weaponType()])+" damage.  ");
+	        }
 	        else
 	        if((item instanceof Armor)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>10))
 	        {
