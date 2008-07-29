@@ -523,16 +523,18 @@ public class List extends StdCommand
 			buf.append("That object has consumed: ^H"+CMLib.english().returnTime(topObjectMillis,topObjectTicks)+"^?.\n\r");
 		}
 		buf.append("\n\r");
-		buf.append("^xSave Thread report:^.^N\n\r");
-		long saveThreadMilliTotal=CMath.s_long(CMLib.threads().systemReport("saveThreadMilliTotal"));
-		long saveThreadTickTotal=CMath.s_long(CMLib.threads().systemReport("saveThreadTickTotal"));
-		buf.append("The Save Thread has consumed: ^H"+CMLib.english().returnTime(saveThreadMilliTotal,saveThreadTickTotal)+" ("+CMLib.threads().systemReport("saveThreadStatus")+")^?.\n\r");
-		buf.append("\n\r");
-		buf.append("^xUtility Thread report:^.^N\n\r");
-		long utilThreadMilliTotal=CMath.s_long(CMLib.threads().systemReport("utilThreadMilliTotal"));
-		long utilThreadTickTotal=CMath.s_long(CMLib.threads().systemReport("utilThreadTickTotal"));
-		buf.append("The Utility Thread has consumed: ^H"+CMLib.english().returnTime(utilThreadMilliTotal,utilThreadTickTotal)+" ("+CMLib.threads().systemReport("utilThreadStatus")+")^?.\n\r");
-		buf.append("\n\r");
+        buf.append("^xThread reports:^.^N\n\r");
+        int threadNum=0;
+        String threadName=CMLib.threads().systemReport("Thread"+threadNum+"name");
+        while(threadName.trim().length()>0)
+        {
+    		long saveThreadMilliTotal=CMath.s_long(CMLib.threads().systemReport("Thread"+threadNum+"MilliTotal"));
+    		long saveThreadTickTotal=CMath.s_long(CMLib.threads().systemReport("Thread"+threadNum+"TickTotal"));
+    		buf.append("Thread '"+threadName+"' has consumed: ^H"+CMLib.english().returnTime(saveThreadMilliTotal,saveThreadTickTotal)+" ("+CMLib.threads().systemReport("Thread"+threadNum+"Status")+")^?.\n\r");
+    		buf.append("\n\r");
+            threadNum++;
+            threadName=CMLib.threads().systemReport("Thread"+threadNum+"name");
+        }
 		buf.append("^xSession report:^.^N\n\r");
 		long totalMOBMillis=CMath.s_long(CMLib.threads().systemReport("totalMOBMillis"));
 		long totalMOBTicks=CMath.s_long(CMLib.threads().systemReport("totalMOBTicks"));

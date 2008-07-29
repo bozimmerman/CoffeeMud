@@ -134,6 +134,8 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	public String getHTTPstatusInfo()	{return statusExtra==null?"":statusExtra;}
     public boolean activate(){ return true;}
     public boolean shutdown(){ return true;}
+    public ThreadEngine.SupportThread getSupportThread() { return null;}
+    
 	public CMFile grabFile(String fn)
 	{
 		GrabbedFile GF=getWebServer().pageGrabber.grabFile(fn);

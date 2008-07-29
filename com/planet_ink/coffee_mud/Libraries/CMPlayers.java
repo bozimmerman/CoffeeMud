@@ -39,6 +39,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
     
     private ThreadEngine.SupportThread thread=null;
     
+    public ThreadEngine.SupportThread getSupportThread() { return thread;}
+    
     public int numPlayers() { return playersList.size(); }
     public void addPlayer(MOB newOne)
     {

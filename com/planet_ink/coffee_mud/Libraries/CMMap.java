@@ -50,6 +50,8 @@ public class CMMap extends StdLibrary implements WorldMap
     private ThreadEngine.SupportThread thread=null;
     public long lastVReset=0;
 
+    public ThreadEngine.SupportThread getSupportThread() { return thread;}
+    
     protected int getGlobalIndex(Vector list, String name)
     {
         if(list.size()==0) return -1;

@@ -50,6 +50,7 @@ public class CMProps extends Properties
         if(p==null) p=new CMProps();
         return p;
     }
+    public static CMProps instance(char c){ return props[c];}
     private static CMProps p(){ return props[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
 
 	public static final long serialVersionUID=0;
@@ -113,7 +114,7 @@ public class CMProps extends Properties
     public static final int SYSTEM_AUCTIONRATES=57;
     public static final int SYSTEM_DEFAULTPROMPT=58;
     public static final int SYSTEM_LISTFILE=59;
-    public static final int SYSTEM_SHAREDLIBS=60;
+    public static final int SYSTEM_PRIVATERESOURCES=60;
     public static final int NUM_SYSTEM=61;
 
     public static final int SYSTEMI_EXPRATE=0;
@@ -307,6 +308,19 @@ public class CMProps extends Properties
 		}
 		return page;
 	}
+    /** retrieve whether a particular .ini file entry as a string
+    *
+    * <br><br><b>Usage:</b>  String s=propertyGetter(p,"TAG");
+    * @param tagToGet   the property tag to retreive.
+    * @return String   the value of the .ini file tag
+    */
+    public String getPrivateStr(String tagToGet)
+    {
+        String s=this.getProperty(tagToGet);
+        if(s==null) return "";
+        return s;
+    }
+    
 	/** retrieve a particular .ini file entry as a string
 	*
 	* <br><br><b>Usage:</b>  String s=propertyGetter(p,"TAG");
@@ -420,6 +434,13 @@ public class CMProps extends Properties
         return p().sysInts[varNum].intValue();
     }
 
+    public static boolean getBoolVar0(int varNum)
+    {
+        if((varNum<0)||(varNum>=NUMB_SYSTEM)) return false;
+        if(instance('0').sysBools[varNum]==null) return false;
+        return instance('0').sysBools[varNum].booleanValue();
+    }
+
     public static boolean getBoolVar(int varNum)
     {
         if((varNum<0)||(varNum>=NUMB_SYSTEM)) return false;
@@ -431,6 +452,12 @@ public class CMProps extends Properties
     {
         if((varNum<0)||(varNum>=NUMB_SYSTEM)) return ;
         p().sysBools[varNum]=Boolean.valueOf(val);
+    }
+
+    public static void setBoolVar0(int varNum, boolean val)
+    {
+        if((varNum<0)||(varNum>=NUMB_SYSTEM)) return ;
+        instance('0').sysBools[varNum]=Boolean.valueOf(val);
     }
 
     public static void setIntVar(int varNum, int val)
@@ -610,7 +637,7 @@ public class CMProps extends Properties
     {
         if(CMLib.lang()!=null)
             CMLib.lang().setLocale(getStr("LANGUAGE"),getStr("COUNTRY"));
-        setVar(SYSTEM_SHAREDLIBS,getStr("SHAREDLIBS"));
+        setVar(SYSTEM_PRIVATERESOURCES,getStr("PRIVATERESOURCES"));
         setVar(SYSTEM_BADNAMES,getStr("BADNAMES"));
         setVar(SYSTEM_MULTICLASS,getStr("CLASSSYSTEM"));
         setVar(SYSTEM_PKILL,getStr("PLAYERKILL"));

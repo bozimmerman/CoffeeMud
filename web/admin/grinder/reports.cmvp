@@ -55,11 +55,17 @@ The most active group, #<FONT COLOR=#CCFFFF>@SystemInfo?topGroupNumber@</FONT>, 
 The most active object has been '<FONT COLOR=#CCFFFF>@SystemInfo?topObjectClient@</FONT>', from group #<FONT COLOR=#CCFFFF>@SystemInfo?topObjectGroup@</FONT>.<BR>
 That object has consumed: <FONT COLOR=#CCFFFF>@SystemInfo?topObjectMillisTimePlusAverage@</FONT>.<BR>
 <BR>
-<FONT COLOR=#CCFFFF><B>Save Thread report:</B></FONT><BR>
-The Save Thread has consumed: <FONT COLOR=#CCFFFF>@SystemInfo?saveThreadMilliTotalTimePlusAverage@</FONT> (@SystemInfo?saveThreadStatus@).<BR>
-<BR>
-<FONT COLOR=#CCFFFF><B>Utility Thread report:</B></FONT><BR>
-The Utility Thread has consumed: <FONT COLOR=#CCFFFF>@SystemInfo?utilThreadMilliTotalTimePlusAverage@</FONT> (@SystemInfo?utilThreadStatus@).<BR>
+<FONT COLOR=#CCFFFF><B>Threads report:</B></FONT><BR>
+@AddRequestParameter?THREADNUM=0@
+@loop@
+	@AddRequestParameter?THREADNAME=@@SystemInfo?thread@@@RequestParameter?THREADNUM@@@name@@ @
+	@if?CheckReqParm?THREADNAME=@
+		@break@
+	@endif@
+	Thread @RequestParameter?THREADNAME@ has consumed: <FONT COLOR=#CCFFFF>@SystemInfo?thread@@RequestParameter?THREADNUM@@MilliTotalTimePlusAverage@</FONT> 
+	(@SystemInfo?threadStatus@).<BR>
+	@AddRequestParameter?THREADNUM=++@
+@back@
 <BR>
 <FONT COLOR=#CCFFFF><B>Session report:</B></FONT><BR>
 There are <FONT COLOR=#CCFFFF>@NumPlayers?ALL@</FONT> ticking players logged on.<BR>

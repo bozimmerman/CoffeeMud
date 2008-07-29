@@ -130,7 +130,13 @@ public class CMLib
     }
     public static Resources resources(){return Resources.instance();}
     public static CMProps props(){return CMProps.instance();}
-    public static CMLib libraries(){return CMLib.instance();}
+    public static Enumeration libraries(){
+        Vector V=new Vector();
+        for(int l=0;l<CMLib.LIBRARY_TOTAL;l++)
+            if(l().libraries[l]!=null)
+                V.addElement(l().libraries[l]);
+        return V.elements();
+    }
     public static CMFile newFile(String currentPath, String filename, boolean pleaseLogErrors)
     { return new CMFile(currentPath,filename,null,pleaseLogErrors,false); }
 
@@ -239,8 +245,8 @@ public class CMLib
         if(code>=0)
         {
             if(l()==null) new CMLib();
-            Vector sharedLibsV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_SHAREDLIBS).toUpperCase(), true);
-            if(((sharedLibsV.contains(LIBRARY_DESCS[code])||sharedLibsV.contains("ALL"))
+            Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
+            if((!privacyV.contains(LIBRARY_DESCS[code])
             &&(libs['0']!=l())))
             {
                 if(libs['0'].libraries[code]==null)
@@ -269,10 +275,20 @@ public class CMLib
 
     public static void activateLibraries() {
         CMLib lib=l();
+        Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
         for(int l=0;l<lib.libraries.length;l++)
-            lib.libraries[l].activate();
+            if((!privacyV.contains(LIBRARY_DESCS[l])
+            &&(libs['0']!=l())))
+                lib.libraries[l]=libs['0'].libraries[l];
+            else
+                lib.libraries[l].activate();
     }
     
+    public static CMLibrary library(char tcode, int lcode) {
+        if(libs[tcode]!=null)
+            return libs[tcode].libraries[lcode];
+        return null;
+    }
     public static Enumeration libraries(int code) {
         Vector V=new Vector();
         for(int l=0;l<libs.length;l++)

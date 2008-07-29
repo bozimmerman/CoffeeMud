@@ -4,4 +4,5 @@ public interface CMLibrary extends CMObject
 {
     public boolean activate();
     public boolean shutdown();
+    public ThreadEngine.SupportThread getSupportThread();
 }

@@ -29,6 +29,8 @@ public class Sessions extends StdLibrary implements SessionsList
     private ThreadEngine.SupportThread thread=null;
     public Vector all=new Vector();
     
+    public ThreadEngine.SupportThread getSupportThread() { return thread;}
+    
 	public Session elementAt(int x)
 	{
 		return (Session)all.elementAt(x);

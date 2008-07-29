@@ -43,6 +43,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     public final Vector emptyVector=new Vector();
     
     private ThreadEngine.SupportThread thread=null;
+    public ThreadEngine.SupportThread getSupportThread() { return thread;}
     
     public int loadCommandJournals(String list)
     {

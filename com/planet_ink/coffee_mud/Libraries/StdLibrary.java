@@ -25,4 +25,5 @@ public class StdLibrary implements CMLibrary
     public void initializeClass(){}
     public boolean activate(){ return true;}
     public boolean shutdown(){ return true;}
+    public ThreadEngine.SupportThread getSupportThread() { return null;}
 }

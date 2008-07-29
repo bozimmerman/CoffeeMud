@@ -34,7 +34,10 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 {
     public String ID(){return "CoffeeTables";}
 	public CoffeeTableRow todays=null;
-	
+    private ThreadEngine.SupportThread thread=null;
+    
+    public ThreadEngine.SupportThread getSupportThread() { return thread;}
+    
 	public void update()
 	{
 		if(CMSecurity.isDisabled("STATS"))
@@ -90,4 +93,28 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 		}
 		todays.bumpVal(E,type);
 	}
+    
+    public boolean activate() {
+        if(thread==null)
+            thread=new ThreadEngine.SupportThread("THStats"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
+                    MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging("SAVETHREAD"));
+        if(!thread.started)
+            thread.start();
+        return true;
+    }
+    
+    public boolean shutdown() {
+        thread.shutdown();
+        return true;
+    }
+    
+    public void run()
+    {
+        if((!CMSecurity.isDisabled("SAVETHREAD"))
+        &&(!CMSecurity.isDisabled("STATSTHREAD")))
+        {
+            CMLib.coffeeTables().bump(null,CoffeeTableRow.STAT_SPECIAL_NUMONLINE);
+            CMLib.coffeeTables().update();
+        }
+    }
 }

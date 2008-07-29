@@ -49,6 +49,8 @@ public class ServiceEngine implements ThreadEngine
 	public Enumeration tickGroups(){return DVector.s_enum(tickGroup);}
     private boolean isSuspended=false;
 	
+    public ThreadEngine.SupportThread getSupportThread() { return thread;}
+    
 	public void delTickGroup(Tick tock)
 	{
 		synchronized(tickGroup)
@@ -349,37 +351,47 @@ public class ServiceEngine implements ThreadEngine
 		else
 		if(itemCode.equalsIgnoreCase("topObjectGroup"))
 			return ""+topObjectGroup;
-		else/*
-		if(itemCode.equalsIgnoreCase("saveThreadMilliTotal"))
-			return ""+SaveThread.milliTotal;
 		else
-		if(itemCode.equalsIgnoreCase("saveThreadStatus"))
-			return ""+SaveThread.status;
-		else
-		if(itemCode.equalsIgnoreCase("saveThreadMilliTotalTime"))
-			return CMLib.english().returnTime(SaveThread.milliTotal,0);
-		else
-		if(itemCode.equalsIgnoreCase("utilThreadMilliTotal"))
-			return ""+UtiliThread.milliTotal;
-		else
-		if(itemCode.equalsIgnoreCase("utilThreadStatus"))
-			return ""+UtiliThread.status;
-		else
-		if(itemCode.equalsIgnoreCase("utilThreadMilliTotalTime"))
-			return CMLib.english().returnTime(UtiliThread.milliTotal,0);
-		else
-		if(itemCode.equalsIgnoreCase("saveThreadMilliTotalTimePlusAverage"))
-			return CMLib.english().returnTime(SaveThread.milliTotal,SaveThread.tickTotal);
-		else
-		if(itemCode.equalsIgnoreCase("saveThreadTickTotal"))
-			return ""+SaveThread.tickTotal;
-		else
-		if(itemCode.equalsIgnoreCase("utilThreadMilliTotalTimePlusAverage"))
-			return CMLib.english().returnTime(UtiliThread.milliTotal,UtiliThread.tickTotal);
-		else
-		if(itemCode.equalsIgnoreCase("utilThreadTickTotal"))
-			return ""+UtiliThread.tickTotal;
-		else*/
+        if(itemCode.toLowerCase().startsWith("thread"))
+        {
+            int xstart="thread".length();
+            int xend=xstart;
+            while((xend<itemCode.length())&&(Character.isDigit(itemCode.charAt(xend))))
+                xend++;
+            int threadNum=CMath.s_int(itemCode.substring(xstart,xend));
+            int curThreadNum=0;
+            for(Enumeration e=CMLib.libraries();e.hasMoreElements();)
+            {
+                CMLibrary lib=(CMLibrary)e.nextElement();
+                ThreadEngine.SupportThread thread=lib.getSupportThread();
+                if(thread!=null) {
+                    if(curThreadNum==threadNum) {
+                        String instrCode=itemCode.substring(xend);
+                        if(instrCode.equalsIgnoreCase("miliTotal"))
+                            return ""+thread.milliTotal;
+                        if(instrCode.equalsIgnoreCase("milliTotal"))
+                            return ""+thread.milliTotal;
+                        if(instrCode.equalsIgnoreCase("status"))
+                            return ""+thread.status;
+                        if(instrCode.equalsIgnoreCase("name"))
+                            return ""+thread.getName();
+                        if(instrCode.equalsIgnoreCase("MilliTotalTime"))
+                            return CMLib.english().returnTime(thread.milliTotal,0);
+                        if(instrCode.equalsIgnoreCase("MiliTotalTime"))
+                            return CMLib.english().returnTime(thread.milliTotal,0);
+                        if(instrCode.equalsIgnoreCase("MilliTotalTimePlusAverage"))
+                            return CMLib.english().returnTime(thread.milliTotal,thread.tickTotal);
+                        if(instrCode.equalsIgnoreCase("MiliTotalTimePlusAverage"))
+                            return CMLib.english().returnTime(thread.milliTotal,thread.tickTotal);
+                        if(instrCode.equalsIgnoreCase("TickTotal"))
+                            return ""+thread.tickTotal;
+                        break;
+                    }
+                    curThreadNum++;
+                }
+            }
+            
+        }
 		if(itemCode.equalsIgnoreCase("topObjectClient"))
 		{
 			if(topObjectClient!=null)

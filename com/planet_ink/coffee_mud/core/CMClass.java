@@ -39,7 +39,17 @@ public class CMClass extends ClassLoader
 {
 	protected static boolean debugging=false;
     protected static Hashtable classes=new Hashtable();
-    public static CMClass instance(){ return new CMClass();}
+    private static CMClass[] clss=new CMClass[256];
+    public CMClass(){
+        super();
+        char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+        if(clss==null) clss=new CMClass[256];
+        if(clss[c]==null) clss[c]=this;
+    }
+    private static CMClass c(){ return clss[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
+    public static CMClass c(char c){return clss[c];}
+    public static CMClass instance(){return c();}
+    public static boolean[] classLoaderSync={false};
 
     public static final int OBJECT_RACE=0;
     public static final int OBJECT_CHARCLASS=1;
@@ -64,25 +74,25 @@ public class CMClass extends ClassLoader
 
     public static int longestWebMacro=-1;
     protected static TimeClock globalClock=null;
-    protected static Hashtable common=new Hashtable();
-    protected static Vector races=new Vector();
-    protected static Vector charClasses=new Vector();
-    protected static Vector MOBs=new Vector();
-    protected static Vector abilities=new Vector();
-    protected static Vector locales=new Vector();
-    protected static Vector exits=new Vector();
-    protected static Vector items=new Vector();
-    protected static Vector behaviors=new Vector();
-    protected static Vector weapons=new Vector();
-    protected static Vector armor=new Vector();
-    protected static Vector miscMagic=new Vector();
-    protected static Vector miscTech=new Vector();
-    protected static Vector clanItems=new Vector();
-    protected static Vector areaTypes=new Vector();
-    protected static Vector commands=new Vector();
-    protected static Vector libraries=new Vector();
-    protected static Hashtable webMacros=new Hashtable();
-    protected static Hashtable CommandWords=new Hashtable();
+    protected Hashtable common=new Hashtable();
+    protected Vector races=new Vector();
+    protected Vector charClasses=new Vector();
+    protected Vector MOBs=new Vector();
+    protected Vector abilities=new Vector();
+    protected Vector locales=new Vector();
+    protected Vector exits=new Vector();
+    protected Vector items=new Vector();
+    protected Vector behaviors=new Vector();
+    protected Vector weapons=new Vector();
+    protected Vector armor=new Vector();
+    protected Vector miscMagic=new Vector();
+    protected Vector miscTech=new Vector();
+    protected Vector clanItems=new Vector();
+    protected Vector areaTypes=new Vector();
+    protected Vector commands=new Vector();
+    protected Vector libraries=new Vector();
+    protected Hashtable webMacros=new Hashtable();
+    protected Hashtable CommandWords=new Hashtable();
     protected static final long[] OBJECT_CREATIONS=new long[OBJECT_TOTAL];
     protected static final long[] OBJECT_DESTRUCTIONS=new long[OBJECT_TOTAL];
     protected static final java.util.WeakHashMap[] OBJECT_CACHE=new java.util.WeakHashMap[OBJECT_TOTAL];
@@ -170,45 +180,45 @@ public class CMClass extends ClassLoader
         }
         OBJECT_DESTRUCTIONS[which]++;
     }
-	public static Enumeration races(){return races.elements();}
-    public static Enumeration commonObjects(){return common.elements();}
-	public static Race randomRace(){return (Race)races.elementAt((int)Math.round(Math.floor(Math.random()*((double)races.size()))));}
-	public static Enumeration charClasses(){return charClasses.elements();}
-	public static CharClass randomCharClass(){return (CharClass)charClasses.elementAt((int)Math.round(Math.floor(Math.random()*((double)charClasses.size()))));}
-	public static Enumeration mobTypes(){return MOBs.elements();}
-    public static Enumeration libraries(){return libraries.elements();}
-	public static Enumeration locales(){return locales.elements();}
-	public static Enumeration exits(){return exits.elements();}
-	public static Enumeration behaviors(){return behaviors.elements();}
-	public static Enumeration basicItems(){return items.elements();}
-	public static Enumeration weapons(){return weapons.elements();}
-	public static Enumeration armor(){return armor.elements();}
-	public static Enumeration miscMagic(){return miscMagic.elements();}
-	public static Enumeration miscTech(){return miscTech.elements();}
-	public static Enumeration clanItems(){return clanItems.elements();}
-	public static Enumeration areaTypes(){return areaTypes.elements();}
-	public static Enumeration commands(){return commands.elements();}
-	public static Enumeration abilities(){return abilities.elements();}
-	public static Enumeration webmacros(){return new Vector(webMacros.entrySet()).elements();}
-	public static Ability randomAbility(){ return (Ability)abilities.elementAt((int)Math.round(Math.floor(Math.random()*((double)abilities.size()))));}
-    public static Room getLocale(String calledThis){ return (Room)getNewGlobal(locales,calledThis); }
-    public static CMObject getLibrary(String calledThis) { return (CMObject)getGlobal(libraries,calledThis); }
-    public static Area anyOldArea(){return (Area)areaTypes.elementAt(0);}
-    public static Area getAreaType(String calledThis) { return (Area)getNewGlobal(areaTypes,calledThis); }
-    public static Exit getExit(String calledThis) { return (Exit)getNewGlobal(exits,calledThis);}
-    public static MOB getMOB(String calledThis) { return (MOB)getNewGlobal(MOBs,calledThis); }
-    public static Weapon getWeapon(String calledThis) { return (Weapon)getNewGlobal(weapons,calledThis); }
-    public static Item getMiscMagic(String calledThis) { return (Item)getNewGlobal(miscMagic,calledThis); }
-    public static Item getMiscTech(String calledThis) { return (Item)getNewGlobal(miscTech,calledThis);}
-    public static Armor getArmor(String calledThis) { return (Armor)getNewGlobal(armor,calledThis); }
-    public static Item getBasicItem(String calledThis) { return (Item)getNewGlobal(items,calledThis); }
-    public static Behavior getBehavior(String calledThis) { return (Behavior)getNewGlobal(behaviors,calledThis); }
-    public static Ability getAbility(String calledThis) { return (Ability)getNewGlobal(abilities,calledThis); }
-    public static CharClass getCharClass(String calledThis){ return (CharClass)getGlobal(charClasses,calledThis);}
-    public static CMObject getCommon(String calledThis){return getNewGlobal(common,calledThis);}
-    public static Command getCommand(String word){return (Command)getGlobal(commands,word);}
-    public static WebMacro getWebMacro(String macroName){return (WebMacro)webMacros.get(macroName);}
-    public static Race getRace(String calledThis){return (Race)getGlobal(races,calledThis);}
+	public static Enumeration races(){return c().races.elements();}
+    public static Enumeration commonObjects(){return c().common.elements();}
+	public static Race randomRace(){return (Race)c().races.elementAt((int)Math.round(Math.floor(Math.random()*((double)c().races.size()))));}
+	public static Enumeration charClasses(){return c().charClasses.elements();}
+	public static CharClass randomCharClass(){return (CharClass)c().charClasses.elementAt((int)Math.round(Math.floor(Math.random()*((double)c().charClasses.size()))));}
+	public static Enumeration mobTypes(){return c().MOBs.elements();}
+    public static Enumeration libraries(){return c().libraries.elements();}
+	public static Enumeration locales(){return c().locales.elements();}
+	public static Enumeration exits(){return c().exits.elements();}
+	public static Enumeration behaviors(){return c().behaviors.elements();}
+	public static Enumeration basicItems(){return c().items.elements();}
+	public static Enumeration weapons(){return c().weapons.elements();}
+	public static Enumeration armor(){return c().armor.elements();}
+	public static Enumeration miscMagic(){return c().miscMagic.elements();}
+	public static Enumeration miscTech(){return c().miscTech.elements();}
+	public static Enumeration clanItems(){return c().clanItems.elements();}
+	public static Enumeration areaTypes(){return c().areaTypes.elements();}
+	public static Enumeration commands(){return c().commands.elements();}
+	public static Enumeration abilities(){return c().abilities.elements();}
+	public static Enumeration webmacros(){return new Vector(c().webMacros.entrySet()).elements();}
+	public static Ability randomAbility(){ return (Ability)c().abilities.elementAt((int)Math.round(Math.floor(Math.random()*((double)c().abilities.size()))));}
+    public static Room getLocale(String calledThis){ return (Room)getNewGlobal(c().locales,calledThis); }
+    public static CMObject getLibrary(String calledThis) { return (CMObject)getGlobal(c().libraries,calledThis); }
+    public static Area anyOldArea(){return (Area)c().areaTypes.elementAt(0);}
+    public static Area getAreaType(String calledThis) { return (Area)getNewGlobal(c().areaTypes,calledThis); }
+    public static Exit getExit(String calledThis) { return (Exit)getNewGlobal(c().exits,calledThis);}
+    public static MOB getMOB(String calledThis) { return (MOB)getNewGlobal(c().MOBs,calledThis); }
+    public static Weapon getWeapon(String calledThis) { return (Weapon)getNewGlobal(c().weapons,calledThis); }
+    public static Item getMiscMagic(String calledThis) { return (Item)getNewGlobal(c().miscMagic,calledThis); }
+    public static Item getMiscTech(String calledThis) { return (Item)getNewGlobal(c().miscTech,calledThis);}
+    public static Armor getArmor(String calledThis) { return (Armor)getNewGlobal(c().armor,calledThis); }
+    public static Item getBasicItem(String calledThis) { return (Item)getNewGlobal(c().items,calledThis); }
+    public static Behavior getBehavior(String calledThis) { return (Behavior)getNewGlobal(c().behaviors,calledThis); }
+    public static Ability getAbility(String calledThis) { return (Ability)getNewGlobal(c().abilities,calledThis); }
+    public static CharClass getCharClass(String calledThis){ return (CharClass)getGlobal(c().charClasses,calledThis);}
+    public static CMObject getCommon(String calledThis){return getNewGlobal(c().common,calledThis);}
+    public static Command getCommand(String word){return (Command)getGlobal(c().commands,word);}
+    public static WebMacro getWebMacro(String macroName){return (WebMacro)c().webMacros.get(macroName);}
+    public static Race getRace(String calledThis){return (Race)getGlobal(c().races,calledThis);}
 
 
     public static String getCounterReport()
@@ -268,28 +278,28 @@ public class CMClass extends ClassLoader
 
 	public static Item getItem(String calledThis)
 	{
-		Item thisItem=(Item)getNewGlobal(items,calledThis);
-		if(thisItem==null) thisItem=(Item)getNewGlobal(armor,calledThis);
-		if(thisItem==null) thisItem=(Item)getNewGlobal(weapons,calledThis);
-		if(thisItem==null) thisItem=(Item)getNewGlobal(miscMagic,calledThis);
-		if(thisItem==null) thisItem=(Item)getNewGlobal(clanItems,calledThis);
-		if(thisItem==null) thisItem=(Item)getNewGlobal(miscTech,calledThis);
+		Item thisItem=(Item)getNewGlobal(c().items,calledThis);
+		if(thisItem==null) thisItem=(Item)getNewGlobal(c().armor,calledThis);
+		if(thisItem==null) thisItem=(Item)getNewGlobal(c().weapons,calledThis);
+		if(thisItem==null) thisItem=(Item)getNewGlobal(c().miscMagic,calledThis);
+		if(thisItem==null) thisItem=(Item)getNewGlobal(c().clanItems,calledThis);
+		if(thisItem==null) thisItem=(Item)getNewGlobal(c().miscTech,calledThis);
 		return thisItem;
 	}
 
     protected static Item sampleItem=null;
 	public static Item sampleItem(){
-		if((sampleItem==null)&&(items.size()>0))
-			sampleItem= (Item)((Item)items.firstElement()).copyOf();
+		if((sampleItem==null)&&(c().items.size()>0))
+			sampleItem= (Item)((Item)c().items.firstElement()).copyOf();
 		return sampleItem;
 	}
 
     protected static MOB sampleMOB=null;
 	public static MOB sampleMOB()
 	{
-		if((sampleMOB==null)&&(MOBs.size()>0))
+		if((sampleMOB==null)&&(c().MOBs.size()>0))
 		{
-			sampleMOB=(MOB)((MOB)MOBs.firstElement()).copyOf();
+			sampleMOB=(MOB)((MOB)c().MOBs.firstElement()).copyOf();
 			sampleMOB.baseEnvStats().setDisposition(EnvStats.IS_NOT_SEEN);
 			sampleMOB.envStats().setDisposition(EnvStats.IS_NOT_SEEN);
 		}
@@ -301,24 +311,26 @@ public class CMClass extends ClassLoader
 	public static Command findCommandByTrigger(String word,
 											   boolean exactOnly)
 	{
-		Command C=(Command)CommandWords.get(word.trim().toUpperCase());
+		Command C=(Command)c().CommandWords.get(word.trim().toUpperCase());
 		if((exactOnly)||(C!=null)) return C;
 		word=word.toUpperCase();
-		for(Enumeration e=CommandWords.keys();e.hasMoreElements();)
+		for(Enumeration e=c().CommandWords.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
 			if(key.toUpperCase().startsWith(word))
-				return (Command)CommandWords.get(key);
+				return (Command)c().CommandWords.get(key);
 		}
 		return null;
 	}
 
-    public static int totalClasses(){
+    protected int totalLocalClasses(){
         return races.size()+charClasses.size()+MOBs.size()+abilities.size()+locales.size()+exits.size()
               +items.size()+behaviors.size()+weapons.size()+armor.size()+miscMagic.size()+clanItems.size()
               +miscTech.size()+areaTypes.size()+common.size()+libraries.size()+commands.size()
               +webMacros.size();
     }
+    
+    public static int totalClasses(){ return c().totalLocalClasses();}
 
 	public static boolean delClass(String type, CMObject O)
 	{
@@ -329,10 +341,8 @@ public class CMClass extends ClassLoader
 		if(set instanceof Vector)
 		{
 			((Vector)set).remove(O);
-            Vector newSet=new Vector(new TreeSet((Vector)set));
-            ((Vector)set).clear();
-            ((Vector)set).addAll(newSet);
-            if(set==commands) reloadCommandWords();
+            CMParms.sortVector((Vector)set);
+            if(set==c().commands) reloadCommandWords();
             //if(set==libraries) CMLib.registerLibraries(libraries.elements());
 		}
 		else
@@ -351,25 +361,25 @@ public class CMClass extends ClassLoader
 	{
 		switch(code)
 		{
-		case 0: return races;
-		case 1: return charClasses;
-		case 2: return MOBs;
-		case 3: return abilities;
-		case 4: return locales;
-		case 5: return exits;
-		case 6: return items;
-		case 7: return behaviors;
+		case 0: return c().races;
+		case 1: return c().charClasses;
+		case 2: return c().MOBs;
+		case 3: return c().abilities;
+		case 4: return c().locales;
+		case 5: return c().exits;
+		case 6: return c().items;
+		case 7: return c().behaviors;
 		case 8: return null;
-		case 9: return weapons;
-		case 10: return armor;
-		case 11: return miscMagic;
-		case 12: return areaTypes;
-		case 13: return commands;
-		case 14: return clanItems;
-		case 15: return miscTech;
-		case 16: return webMacros;
-        case 17: return common;
-        case 18: return libraries;
+		case 9: return c().weapons;
+		case 10: return c().armor;
+		case 11: return c().miscMagic;
+		case 12: return c().areaTypes;
+		case 13: return c().commands;
+		case 14: return c().clanItems;
+		case 15: return c().miscTech;
+		case 16: return c().webMacros;
+        case 17: return c().common;
+        case 18: return c().libraries;
 		}
 		return null;
 	}
@@ -381,11 +391,9 @@ public class CMClass extends ClassLoader
 		if(set instanceof Vector)
 		{
 			((Vector)set).addElement(O);
-            Vector newSet=new Vector(new TreeSet((Vector)set));
-            ((Vector)set).clear();
-            ((Vector)set).addAll(newSet);
-            if(set==commands) reloadCommandWords();
-            if(set==libraries) CMLib.registerLibraries(libraries.elements());
+            CMParms.sortVector((Vector)set);
+            if(set==c().commands) reloadCommandWords();
+            if(set==c().libraries) CMLib.registerLibraries(c().libraries.elements());
 }
 		else
 		if(set instanceof Hashtable)
@@ -432,11 +440,9 @@ public class CMClass extends ClassLoader
 
         if(set instanceof Vector)
         {
-            Vector newSet=new Vector(new TreeSet((Vector)set));
-            ((Vector)set).clear();
-            ((Vector)set).addAll(newSet);
-            if(set==commands) reloadCommandWords();
-            if(set==libraries) CMLib.registerLibraries(libraries.elements());
+            CMParms.sortVector((Vector)set);
+            if(set==c().commands) reloadCommandWords();
+            if(set==c().libraries) CMLib.registerLibraries(c().libraries.elements());
         }
 		return true;
 	}
@@ -508,15 +514,15 @@ public class CMClass extends ClassLoader
 
 	public static Environmental getUnknown(String calledThis)
 	{
-		Environmental thisItem=(Environmental)getNewGlobal(items,calledThis);
-		if(thisItem==null) thisItem=(Environmental)getNewGlobal(armor,calledThis);
-		if(thisItem==null) thisItem=(Environmental)getNewGlobal(weapons,calledThis);
-		if(thisItem==null) thisItem=(Environmental)getNewGlobal(miscMagic,calledThis);
-		if(thisItem==null) thisItem=(Environmental)getNewGlobal(miscTech,calledThis);
-		if(thisItem==null) thisItem=(Environmental)getNewGlobal(MOBs,calledThis);
-		if(thisItem==null) thisItem=(Environmental)getNewGlobal(abilities,calledThis);
-		if(thisItem==null) thisItem=(Environmental)getNewGlobal(clanItems,calledThis);
-		if((thisItem==null)&&(charClasses.size()>0)&&(calledThis.length()>0))
+		Environmental thisItem=(Environmental)getNewGlobal(c().items,calledThis);
+		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().armor,calledThis);
+		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().weapons,calledThis);
+		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().miscMagic,calledThis);
+		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().miscTech,calledThis);
+		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().MOBs,calledThis);
+		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().abilities,calledThis);
+		if(thisItem==null) thisItem=(Environmental)getNewGlobal(c().clanItems,calledThis);
+		if((thisItem==null)&&(c().charClasses.size()>0)&&(calledThis.length()>0))
 			Log.sysOut("CMClass","Unknown Unknown '"+calledThis+"'.");
 		return thisItem;
 	}
@@ -525,9 +531,9 @@ public class CMClass extends ClassLoader
     {
         Race thisItem=getRace(calledThis);
         if(thisItem!=null) return thisItem;
-        for(int i=0;i<races.size();i++)
+        for(int i=0;i<c().races.size();i++)
         {
-            Race R=(Race)races.elementAt(i);
+            Race R=(Race)c().races.elementAt(i);
             if(R.name().equalsIgnoreCase(calledThis))
                 return R;
         }
@@ -538,9 +544,9 @@ public class CMClass extends ClassLoader
     {
         CharClass thisItem=getCharClass(calledThis);
         if(thisItem!=null) return thisItem;
-        for(int i=0;i<charClasses.size();i++)
+        for(int i=0;i<c().charClasses.size();i++)
         {
-            CharClass C=(CharClass)charClasses.elementAt(i);
+            CharClass C=(CharClass)c().charClasses.elementAt(i);
             for(int n=0;n<C.nameSet().length;n++)
             if(C.nameSet()[n].equalsIgnoreCase(calledThis))
                 return C;
@@ -578,16 +584,16 @@ public class CMClass extends ClassLoader
 
 	public static Ability findAbility(String calledThis)
 	{
-		Ability A=(Ability)getGlobal(abilities,calledThis);
-		if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(abilities,calledThis,true);
-		if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(abilities,calledThis,false);
+		Ability A=(Ability)getGlobal(c().abilities,calledThis);
+		if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(c().abilities,calledThis,true);
+		if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(c().abilities,calledThis,false);
 		if(A!=null)A=(Ability)A.newInstance();
 		return A;
 	}
 
     public static Behavior findBehavior(String calledThis)
     {
-        Behavior B=(Behavior)getGlobal(behaviors,calledThis);
+        Behavior B=(Behavior)getGlobal(c().behaviors,calledThis);
         if(B==null) B=getBehaviorByName(calledThis,true);
         if(B==null) B=getBehaviorByName(calledThis,false);
         if(B!=null) B=(Behavior)B.copyOf();
@@ -650,7 +656,7 @@ public class CMClass extends ClassLoader
 		}
 		A=(Ability)CMLib.english().fetchEnvironmental(As,calledThis,true);
 		if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(As,calledThis,false);
-        if(A==null) A=(Ability)getGlobal(abilities,calledThis);
+        if(A==null) A=(Ability)getGlobal(c().abilities,calledThis);
 		if(A!=null)A=(Ability)A.newInstance();
 		return A;
 	}
@@ -668,7 +674,7 @@ public class CMClass extends ClassLoader
 		if(A==null)
 			A=(Ability)CMLib.english().fetchEnvironmental(As,calledThis,false);
         if(A==null)
-            A=(Ability)getGlobal(abilities,calledThis);
+            A=(Ability)getGlobal(c().abilities,calledThis);
 		if(A!=null)A=(Ability)A.newInstance();
 		return A;
 	}
@@ -698,44 +704,44 @@ public class CMClass extends ClassLoader
 
 	public static void addRace(Race GR)
 	{
-		for(int i=0;i<races.size();i++)
+		for(int i=0;i<c().races.size();i++)
 		{
-			Race R=(Race)races.elementAt(i);
+			Race R=(Race)c().races.elementAt(i);
 			if(R.ID().compareToIgnoreCase(GR.ID())>=0)
 			{
                 if(R.ID().compareToIgnoreCase(GR.ID())==0)
-    				races.setElementAt(GR,i);
+                    c().races.setElementAt(GR,i);
                 else
-                    races.insertElementAt(GR,i);
+                    c().races.insertElementAt(GR,i);
 				return;
 			}
 		}
-		races.addElement(GR);
+        c().races.addElement(GR);
 	}
 
 	public static void addCharClass(CharClass CR)
 	{
-		for(int i=0;i<charClasses.size();i++)
+		for(int i=0;i<c().charClasses.size();i++)
 		{
-			CharClass C=(CharClass)charClasses.elementAt(i);
+			CharClass C=(CharClass)c().charClasses.elementAt(i);
 			if(C.ID().compareToIgnoreCase(CR.ID())>=0)
 			{
                 if(C.ID().compareToIgnoreCase(CR.ID())==0)
-                    charClasses.setElementAt(CR,i);
+                    c().charClasses.setElementAt(CR,i);
                 else
-    				charClasses.insertElementAt(CR,i);
+                    c().charClasses.insertElementAt(CR,i);
 				return;
 			}
 		}
-		charClasses.addElement(CR);
+        c().charClasses.addElement(CR);
 	}
 	public static void delCharClass(CharClass C)
 	{
-        charClasses.removeElement(C);
+        c().charClasses.removeElement(C);
 	}
 	public static void delRace(Race R)
 	{
-		races.removeElement(R);
+        c().races.removeElement(R);
 	}
 
 
@@ -770,7 +776,7 @@ public class CMClass extends ClassLoader
         return false;
     }
 
-    public static Vector sortEnvironmentalsByID(Vector V) {
+    public static void sortEnvironmentalsByID(Vector V) {
         Hashtable hashed=new Hashtable();
         for(Enumeration e=V.elements();e.hasMoreElements();)
         {
@@ -781,10 +787,10 @@ public class CMClass extends ClassLoader
         Vector V2=new Vector(V.size());
         for(Enumeration e=idSet.elements();e.hasMoreElements();)
             V2.addElement(hashed.get((String)e.nextElement()));
-        return V2;
+        //return V2;
     }
 
-    public static Vector sortEnvironmentalsByName(Vector V) {
+    public static void sortEnvironmentalsByName(Vector V) {
         Hashtable nameHash=new Hashtable();
         Vector V3;
         for(Enumeration e=V.elements();e.hasMoreElements();)
@@ -803,7 +809,7 @@ public class CMClass extends ClassLoader
         Vector V2=new Vector(V.size());
         for(Enumeration e=idSet.elements();e.hasMoreElements();)
             V2.addAll(CMParms.makeVector((Object[])nameHash.get((String)e.nextElement())));
-        return V2;
+        //return V2;
     }
 
     public static CMMsg MsgFactory()
@@ -841,7 +847,12 @@ public class CMClass extends ClassLoader
     { CMMsg M=MsgFactory(); M.modify(source,target,tool,newSourceCode,sourceMessage,newTargetCode,targetMessage,newOthersCode,othersMessage); return M;}
 
 
-	public static void unload()
+    public static void shutdown() {
+        for(int c=0;c<clss.length;c++)
+            if(clss[c]!=null)
+                clss[c].unload();
+    }
+	public void unload()
 	{
         common=new Hashtable();
 		races=new Vector();
@@ -862,30 +873,20 @@ public class CMClass extends ClassLoader
 		webMacros=new Hashtable();
 		CommandWords=new Hashtable();
 	}
-    private static void initializeClassGroup(Vector V){ for(int v=0;v<V.size();v++) ((CMObject)V.elementAt(v)).initializeClass();}
-    private static void initializeClassGroup(Hashtable H){
+    private void initializeClassGroup(Vector V){ for(int v=0;v<V.size();v++) ((CMObject)V.elementAt(v)).initializeClass();}
+    private void initializeClassGroup(Hashtable H){
         for(Enumeration e=H.elements();e.hasMoreElements();) ((CMObject)e.nextElement()).initializeClass();}
-    public static void intializeClasses()
+    public void intializeClasses()
     {
-        initializeClassGroup(common);
-        initializeClassGroup(races);
-        initializeClassGroup(charClasses);
-        initializeClassGroup(MOBs);
-        initializeClassGroup(abilities);
-        initializeClassGroup(locales);
-        initializeClassGroup(exits);
-        initializeClassGroup(items);
-        initializeClassGroup(behaviors);
-        initializeClassGroup(weapons);
-        initializeClassGroup(armor);
-        initializeClassGroup(miscMagic);
-        initializeClassGroup(miscTech);
-        initializeClassGroup(areaTypes);
-        initializeClassGroup(clanItems);
-        initializeClassGroup(commands);
-        initializeClassGroup(webMacros);
-        initializeClassGroup(CommandWords);
-        initializeClassGroup(libraries);
+        char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
+        Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
+        for(int o=0;o<OBJECT_DESCS.length;o++)
+            if((tCode=='0')||(privacyV.contains(OBJECT_DESCS[o])))
+                if(CMClass.getClassSet(o) instanceof Vector)
+                    initializeClassGroup((Vector)CMClass.getClassSet(o));
+                else
+                if(CMClass.getClassSet(o) instanceof Hashtable)
+                    initializeClassGroup((Hashtable)CMClass.getClassSet(o));
     }
 
 	public static Hashtable loadHashListToObj(String filePath, String auxPath, String ancester)
@@ -1252,216 +1253,312 @@ public class CMClass extends ClassLoader
 
     protected static void reloadCommandWords()
     {
-    	CommandWords.clear();
-        for(int c=0;c<commands.size();c++)
+    	c().CommandWords.clear();
+        for(int c=0;c<c().commands.size();c++)
         {
-            Command C=(Command)commands.elementAt(c);
+            Command C=(Command)c().commands.elementAt(c);
             String[] wordList=C.getAccessWords();
             if(wordList!=null)
                 for(int w=0;w<wordList.length;w++)
-                    CommandWords.put(wordList[w].trim().toUpperCase(),C);
+                    c().CommandWords.put(wordList[w].trim().toUpperCase(),C);
         }
 
     }
 
     public static boolean loadClasses(CMProps page)
     {
+        CMClass c=c();
+        if(c==null) c=new CMClass();
+        CMClass baseC=clss['0'];
+        char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
+        // wait for baseC
+        while((tCode!='0')&&(!classLoaderSync[0]))
+        {try{Thread.sleep(500);}catch(Exception e){ break;}}
+        
+        Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
+        
         try
         {
             String prefix="com/planet_ink/coffee_mud/";
             debugging=CMSecurity.isDebugging("CLASSLOADER");
-            libraries=loadVectorListToObj(prefix+"Libraries/",page.getStr("LIBRARY"),ancestor("LIBRARY"));
-            if(libraries.size()==0) return false;
-            CMLib.registerLibraries(libraries.elements());
+            
+            c.libraries=loadVectorListToObj(prefix+"Libraries/",page.getStr("LIBRARY"),ancestor("LIBRARY"));
+            if(c.libraries.size()==0) return false;
+            CMLib.registerLibraries(c.libraries.elements());
             if(CMLib.unregistered().length()>0)
             {
                 Log.errOut("CMClass","Fatal Error: libraries are unregistered: "+CMLib.unregistered().substring(0,CMLib.unregistered().length()-2));
                 return false;
             }
 
-            common=loadHashListToObj(prefix+"Common/",page.getStr("COMMON"),ancestor("COMMON"));
-            if(common.size()==0) return false;
+            if((tCode!='0')&&(!privacyV.contains("COMMON")))
+                c.common=baseC.common;
+            else
+                c.common=loadHashListToObj(prefix+"Common/",page.getStr("COMMON"),ancestor("COMMON"));
+            if(c.common.size()==0) return false;
 
-            webMacros=CMClass.loadHashListToObj(prefix+"WebMacros/", "%DEFAULT%",ancestor("WEBMACROS"));
-            Log.sysOut(Thread.currentThread().getName(),"WebMacros loaded  : "+webMacros.size());
-            for(Enumeration e=webMacros.keys();e.hasMoreElements();)
+            if((tCode!='0')&&(!privacyV.contains("WEBMACROS")))
+                c.webMacros=baseC.webMacros;
+            else
             {
-                String key=(String)e.nextElement();
-                if(key.length()>longestWebMacro)
-                    longestWebMacro=key.length();
+                c.webMacros=CMClass.loadHashListToObj(prefix+"WebMacros/", "%DEFAULT%",ancestor("WEBMACROS"));
+                Log.sysOut(Thread.currentThread().getName(),"WebMacros loaded  : "+c.webMacros.size());
+                for(Enumeration e=c.webMacros.keys();e.hasMoreElements();)
+                {
+                    String key=(String)e.nextElement();
+                    if(key.length()>longestWebMacro)
+                        longestWebMacro=key.length();
+                }
             }
 
-            races=loadVectorListToObj(prefix+"Races/",page.getStr("RACES"),ancestor("RACE"));
-            Log.sysOut(Thread.currentThread().getName(),"Races loaded      : "+races.size());
-            if(races.size()==0) return false;
-
-            charClasses=loadVectorListToObj(prefix+"CharClasses/",page.getStr("CHARCLASSES"),ancestor("CHARCLASS"));
-            Log.sysOut(Thread.currentThread().getName(),"Classes loaded    : "+charClasses.size());
-            if(charClasses.size()==0) return false;
-
-            MOBs=loadVectorListToObj(prefix+"MOBS/",page.getStr("MOBS"),ancestor("MOB"));
-            Log.sysOut(Thread.currentThread().getName(),"MOB Types loaded  : "+MOBs.size());
-            if(MOBs.size()==0) return false;
-
-            exits=loadVectorListToObj(prefix+"Exits/",page.getStr("EXITS"),ancestor("EXIT"));
-            Log.sysOut(Thread.currentThread().getName(),"Exit Types loaded : "+exits.size());
-            if(exits.size()==0) return false;
-
-            areaTypes=loadVectorListToObj(prefix+"Areas/",page.getStr("AREAS"),ancestor("AREA"));
-            Log.sysOut(Thread.currentThread().getName(),"Area Types loaded : "+areaTypes.size());
-            if(areaTypes.size()==0) return false;
-
-            locales=loadVectorListToObj(prefix+"Locales/",page.getStr("LOCALES"),ancestor("LOCALE"));
-            Log.sysOut(Thread.currentThread().getName(),"Locales loaded    : "+locales.size());
-            if(locales.size()==0) return false;
-
-            abilities=loadVectorListToObj(prefix+"Abilities/",page.getStr("ABILITIES"),ancestor("ABILITY"));
-            if(abilities.size()==0) return false;
-
-            if((page.getStr("ABILITIES")!=null)
-            &&(page.getStr("ABILITIES").toUpperCase().indexOf("%DEFAULT%")>=0))
+            if((tCode!='0')&&(!privacyV.contains("RACE")))
+                c.races=baseC.races;
+            else
             {
-                Vector tempV;
-                int size=0;
-                tempV=loadVectorListToObj(prefix+"Abilities/Fighter/","%DEFAULT%",ancestor("ABILITY"));
-                size=tempV.size();
-                addV(tempV,abilities);
+                c.races=loadVectorListToObj(prefix+"Races/",page.getStr("RACES"),ancestor("RACE"));
+                Log.sysOut(Thread.currentThread().getName(),"Races loaded      : "+c.races.size());
+            }
+            if(c.races.size()==0) return false;
 
-                tempV=loadVectorListToObj(prefix+"Abilities/Ranger/","%DEFAULT%",ancestor("ABILITY"));
-                size+=tempV.size();
-                addV(tempV,abilities);
+            if((tCode!='0')&&(!privacyV.contains("CHARCLASS")))
+                c.charClasses=baseC.charClasses;
+            else
+            {
+                c.charClasses=loadVectorListToObj(prefix+"CharClasses/",page.getStr("CHARCLASSES"),ancestor("CHARCLASS"));
+                Log.sysOut(Thread.currentThread().getName(),"Classes loaded    : "+c.charClasses.size());
+            }
+            if(c.charClasses.size()==0) return false;
 
-                tempV=loadVectorListToObj(prefix+"Abilities/Paladin/","%DEFAULT%",ancestor("ABILITY"));
-                size+=tempV.size();
-                addV(tempV,abilities);
+            if((tCode!='0')&&(!privacyV.contains("MOB")))
+                c.MOBs=baseC.MOBs;
+            else
+            {
+                c.MOBs=loadVectorListToObj(prefix+"MOBS/",page.getStr("MOBS"),ancestor("MOB"));
+                Log.sysOut(Thread.currentThread().getName(),"MOB Types loaded  : "+c.MOBs.size());
+            }
+            if(c.MOBs.size()==0) return false;
 
-                size+=tempV.size();
-                if(size>0) Log.sysOut(Thread.currentThread().getName(),"Fighter Skills    : "+size);
-                addV(tempV,abilities);
+            if((tCode!='0')&&(!privacyV.contains("EXIT")))
+                c.exits=baseC.exits;
+            else
+            {
+                c.exits=loadVectorListToObj(prefix+"Exits/",page.getStr("EXITS"),ancestor("EXIT"));
+                Log.sysOut(Thread.currentThread().getName(),"Exit Types loaded : "+c.exits.size());
+            }
+            if(c.exits.size()==0) return false;
 
-                tempV=loadVectorListToObj(prefix+"Abilities/Druid/","%DEFAULT%",ancestor("ABILITY"));
-                if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Chants loaded     : "+tempV.size());
-                addV(tempV,abilities);
+            if((tCode!='0')&&(!privacyV.contains("AREA")))
+                c.areaTypes=baseC.areaTypes;
+            else
+            {
+                c.areaTypes=loadVectorListToObj(prefix+"Areas/",page.getStr("AREAS"),ancestor("AREA"));
+                Log.sysOut(Thread.currentThread().getName(),"Area Types loaded : "+c.areaTypes.size());
+            }
+            if(c.areaTypes.size()==0) return false;
 
-                tempV=loadVectorListToObj(prefix+"Abilities/Languages/","%DEFAULT%",ancestor("ABILITY"));
-                if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Languages loaded  : "+tempV.size());
-                addV(tempV,abilities);
+            if((tCode!='0')&&(!privacyV.contains("LOCALE")))
+                c.locales=baseC.locales;
+            else
+            {
+                c.locales=loadVectorListToObj(prefix+"Locales/",page.getStr("LOCALES"),ancestor("LOCALE"));
+                Log.sysOut(Thread.currentThread().getName(),"Locales loaded    : "+c.locales.size());
+            }
+            if(c.locales.size()==0) return false;
 
-                tempV=loadVectorListToObj(prefix+"Abilities/Properties/","%DEFAULT%",ancestor("ABILITY"));
-                size=tempV.size();
-                addV(tempV,abilities);
-
-                tempV=loadVectorListToObj(prefix+"Abilities/Diseases/","%DEFAULT%",ancestor("ABILITY"));
-                size+=tempV.size();
-                addV(tempV,abilities);
-
-                tempV=loadVectorListToObj(prefix+"Abilities/Poisons/","%DEFAULT%",ancestor("ABILITY"));
-                size+=tempV.size();
-                addV(tempV,abilities);
-
-                tempV=loadVectorListToObj(prefix+"Abilities/Misc/","%DEFAULT%",ancestor("ABILITY"));
-                size+=tempV.size();
-                Log.sysOut(Thread.currentThread().getName(),"Properties loaded : "+size);
-                addV(tempV,abilities);
-
-                tempV=loadVectorListToObj(prefix+"Abilities/Prayers/","%DEFAULT%",ancestor("ABILITY"));
-                Log.sysOut(Thread.currentThread().getName(),"Prayers loaded    : "+tempV.size());
-                addV(tempV,abilities);
-
-                tempV=loadVectorListToObj(prefix+"Abilities/Archon/","%DEFAULT%",ancestor("ABILITY"));
-                size+=tempV.size();
-                addV(tempV,abilities);
-
-                tempV=loadVectorListToObj(prefix+"Abilities/Skills/","%DEFAULT%",ancestor("ABILITY"));
-                size=tempV.size();
-                addV(tempV,abilities);
-
-                tempV=loadVectorListToObj(prefix+"Abilities/Thief/","%DEFAULT%",ancestor("ABILITY"));
-                size+=tempV.size();
-                addV(tempV,abilities);
-
-                tempV=loadVectorListToObj(prefix+"Abilities/Common/","%DEFAULT%",ancestor("ABILITY"));
-                size+=tempV.size();
-                addV(tempV,abilities);
-
-                tempV=loadVectorListToObj(prefix+"Abilities/Specializations/","%DEFAULT%",ancestor("ABILITY"));
-                size+=tempV.size();
-                addV(tempV,abilities);
-                if(size>0) Log.sysOut(Thread.currentThread().getName(),"Skills loaded     : "+size);
-
-                tempV=loadVectorListToObj(prefix+"Abilities/Songs/","%DEFAULT%",ancestor("ABILITY"));
-                if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Songs loaded      : "+tempV.size());
-                addV(tempV,abilities);
-
-                tempV=loadVectorListToObj(prefix+"Abilities/Spells/","%DEFAULT%",ancestor("ABILITY"));
-                if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Spells loaded     : "+tempV.size());
-                addV(tempV,abilities);
-
-                tempV=loadVectorListToObj(prefix+"Abilities/SuperPowers/","%DEFAULT%",ancestor("ABILITY"));
-                size=tempV.size();
-                addV(tempV,abilities);
-                if(size>0) Log.sysOut(Thread.currentThread().getName(),"Heroics loaded    : "+size);
-
-                tempV=loadVectorListToObj(prefix+"Abilities/Traps/","%DEFAULT%",ancestor("ABILITY"));
-                if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Traps loaded      : "+tempV.size());
-                addV(tempV,abilities);
-                abilities=new Vector(new TreeSet(abilities));
-
-                CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: reading genAbilities");
-                Vector genAbilities=CMLib.database().DBReadAbilities();
-                if(genAbilities.size()>0)
+            if((tCode!='0')&&(!privacyV.contains("ABILITY")))
+                c.abilities=baseC.abilities;
+            else
+            {
+                c.abilities=loadVectorListToObj(prefix+"Abilities/",page.getStr("ABILITIES"),ancestor("ABILITY"));
+                if(c.abilities.size()==0) return false;
+                if((page.getStr("ABILITIES")!=null)
+                &&(page.getStr("ABILITIES").toUpperCase().indexOf("%DEFAULT%")>=0))
                 {
-                    int loaded=0;
-                    for(int r=0;r<genAbilities.size();r++)
+                    Vector tempV;
+                    int size=0;
+                    tempV=loadVectorListToObj(prefix+"Abilities/Fighter/","%DEFAULT%",ancestor("ABILITY"));
+                    size=tempV.size();
+                    addV(tempV,c.abilities);
+    
+                    tempV=loadVectorListToObj(prefix+"Abilities/Ranger/","%DEFAULT%",ancestor("ABILITY"));
+                    size+=tempV.size();
+                    addV(tempV,c.abilities);
+    
+                    tempV=loadVectorListToObj(prefix+"Abilities/Paladin/","%DEFAULT%",ancestor("ABILITY"));
+                    size+=tempV.size();
+                    addV(tempV,c.abilities);
+    
+                    size+=tempV.size();
+                    if(size>0) Log.sysOut(Thread.currentThread().getName(),"Fighter Skills    : "+size);
+                    addV(tempV,c.abilities);
+    
+                    tempV=loadVectorListToObj(prefix+"Abilities/Druid/","%DEFAULT%",ancestor("ABILITY"));
+                    if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Chants loaded     : "+tempV.size());
+                    addV(tempV,c.abilities);
+    
+                    tempV=loadVectorListToObj(prefix+"Abilities/Languages/","%DEFAULT%",ancestor("ABILITY"));
+                    if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Languages loaded  : "+tempV.size());
+                    addV(tempV,c.abilities);
+    
+                    tempV=loadVectorListToObj(prefix+"Abilities/Properties/","%DEFAULT%",ancestor("ABILITY"));
+                    size=tempV.size();
+                    addV(tempV,c.abilities);
+    
+                    tempV=loadVectorListToObj(prefix+"Abilities/Diseases/","%DEFAULT%",ancestor("ABILITY"));
+                    size+=tempV.size();
+                    addV(tempV,c.abilities);
+    
+                    tempV=loadVectorListToObj(prefix+"Abilities/Poisons/","%DEFAULT%",ancestor("ABILITY"));
+                    size+=tempV.size();
+                    addV(tempV,c.abilities);
+    
+                    tempV=loadVectorListToObj(prefix+"Abilities/Misc/","%DEFAULT%",ancestor("ABILITY"));
+                    size+=tempV.size();
+                    Log.sysOut(Thread.currentThread().getName(),"Properties loaded : "+size);
+                    addV(tempV,c.abilities);
+    
+                    tempV=loadVectorListToObj(prefix+"Abilities/Prayers/","%DEFAULT%",ancestor("ABILITY"));
+                    Log.sysOut(Thread.currentThread().getName(),"Prayers loaded    : "+tempV.size());
+                    addV(tempV,c.abilities);
+    
+                    tempV=loadVectorListToObj(prefix+"Abilities/Archon/","%DEFAULT%",ancestor("ABILITY"));
+                    size+=tempV.size();
+                    addV(tempV,c.abilities);
+    
+                    tempV=loadVectorListToObj(prefix+"Abilities/Skills/","%DEFAULT%",ancestor("ABILITY"));
+                    size=tempV.size();
+                    addV(tempV,c.abilities);
+    
+                    tempV=loadVectorListToObj(prefix+"Abilities/Thief/","%DEFAULT%",ancestor("ABILITY"));
+                    size+=tempV.size();
+                    addV(tempV,c.abilities);
+    
+                    tempV=loadVectorListToObj(prefix+"Abilities/Common/","%DEFAULT%",ancestor("ABILITY"));
+                    size+=tempV.size();
+                    addV(tempV,c.abilities);
+    
+                    tempV=loadVectorListToObj(prefix+"Abilities/Specializations/","%DEFAULT%",ancestor("ABILITY"));
+                    size+=tempV.size();
+                    addV(tempV,c.abilities);
+                    if(size>0) Log.sysOut(Thread.currentThread().getName(),"Skills loaded     : "+size);
+    
+                    tempV=loadVectorListToObj(prefix+"Abilities/Songs/","%DEFAULT%",ancestor("ABILITY"));
+                    if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Songs loaded      : "+tempV.size());
+                    addV(tempV,c.abilities);
+    
+                    tempV=loadVectorListToObj(prefix+"Abilities/Spells/","%DEFAULT%",ancestor("ABILITY"));
+                    if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Spells loaded     : "+tempV.size());
+                    addV(tempV,c.abilities);
+    
+                    tempV=loadVectorListToObj(prefix+"Abilities/SuperPowers/","%DEFAULT%",ancestor("ABILITY"));
+                    size=tempV.size();
+                    addV(tempV,c.abilities);
+                    if(size>0) Log.sysOut(Thread.currentThread().getName(),"Heroics loaded    : "+size);
+    
+                    tempV=loadVectorListToObj(prefix+"Abilities/Traps/","%DEFAULT%",ancestor("ABILITY"));
+                    if(tempV.size()>0) Log.sysOut(Thread.currentThread().getName(),"Traps loaded      : "+tempV.size());
+                    addV(tempV,c.abilities);
+                    
+                    CMParms.sortVector(c.abilities);
+
+                    CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: reading genAbilities");
+                    Vector genAbilities=CMLib.database().DBReadAbilities();
+                    if(genAbilities.size()>0)
                     {
-                        Ability A=(Ability)(CMClass.getAbility("GenAbility").copyOf());
-                        A.setStat("ALLXML",(String)((Vector)genAbilities.elementAt(r)).lastElement());
-                        if(!A.ID().equals("GenAbility"))
+                        int loaded=0;
+                        for(int r=0;r<genAbilities.size();r++)
                         {
-                            abilities.addElement(A);
-                            loaded++;
+                            Ability A=(Ability)(CMClass.getAbility("GenAbility").copyOf());
+                            A.setStat("ALLXML",(String)((Vector)genAbilities.elementAt(r)).lastElement());
+                            if(!A.ID().equals("GenAbility"))
+                            {
+                                c.abilities.addElement(A);
+                                loaded++;
+                            }
+                        }
+                        if(loaded>0)
+                        {
+                            Log.sysOut(Thread.currentThread().getName(),"GenAbles loaded   : "+loaded);
+                            CMParms.sortVector(c.abilities);
                         }
                     }
-                    if(loaded>0)
-                    {
-                        Log.sysOut(Thread.currentThread().getName(),"GenAbles loaded   : "+loaded);
-                        abilities=new Vector(new TreeSet(abilities));
-                    }
                 }
-
             }
 
-            items=loadVectorListToObj(prefix+"Items/Basic/",page.getStr("ITEMS"),ancestor("ITEM"));
-            if(items.size()>0) Log.sysOut(Thread.currentThread().getName(),"Basic Items loaded: "+items.size());
+            if((tCode!='0')&&(!privacyV.contains("ITEM")))
+                c.items=baseC.items;
+            else
+            {
+                c.items=loadVectorListToObj(prefix+"Items/Basic/",page.getStr("ITEMS"),ancestor("ITEM"));
+                if(c.items.size()>0) Log.sysOut(Thread.currentThread().getName(),"Basic Items loaded: "+c.items.size());
+            }
 
-            weapons=loadVectorListToObj(prefix+"Items/Weapons/",page.getStr("WEAPONS"),ancestor("WEAPON"));
-            if(weapons.size()>0) Log.sysOut(Thread.currentThread().getName(),"Weapons loaded    : "+weapons.size());
+            if((tCode!='0')&&(!privacyV.contains("WEAPON")))
+                c.weapons=baseC.weapons;
+            else
+            {
+                c.weapons=loadVectorListToObj(prefix+"Items/Weapons/",page.getStr("WEAPONS"),ancestor("WEAPON"));
+                if(c.weapons.size()>0) Log.sysOut(Thread.currentThread().getName(),"Weapons loaded    : "+c.weapons.size());
+            }
 
-            armor=loadVectorListToObj(prefix+"Items/Armor/",page.getStr("ARMOR"),ancestor("ARMOR"));
-            if(armor.size()>0) Log.sysOut(Thread.currentThread().getName(),"Armor loaded      : "+armor.size());
+            if((tCode!='0')&&(!privacyV.contains("ARMOR")))
+                c.armor=baseC.armor;
+            else
+            {
+                c.armor=loadVectorListToObj(prefix+"Items/Armor/",page.getStr("ARMOR"),ancestor("ARMOR"));
+                if(c.armor.size()>0) Log.sysOut(Thread.currentThread().getName(),"Armor loaded      : "+c.armor.size());
+            }
 
-            miscMagic=loadVectorListToObj(prefix+"Items/MiscMagic/",page.getStr("MISCMAGIC"),ancestor("MISCMAGIC"));
-            if(miscMagic.size()>0) Log.sysOut(Thread.currentThread().getName(),"Magic Items loaded: "+miscMagic.size());
+            if((tCode!='0')&&(!privacyV.contains("MISCMAGIC")))
+                c.miscMagic=baseC.miscMagic;
+            else
+            {
+                c.miscMagic=loadVectorListToObj(prefix+"Items/MiscMagic/",page.getStr("MISCMAGIC"),ancestor("MISCMAGIC"));
+                if(c.miscMagic.size()>0) Log.sysOut(Thread.currentThread().getName(),"Magic Items loaded: "+c.miscMagic.size());
+            }
 
-            clanItems=loadVectorListToObj(prefix+"Items/ClanItems/",page.getStr("CLANITEMS"),ancestor("CLANITEMS"));
-            if(clanItems.size()>0) Log.sysOut(Thread.currentThread().getName(),"Clan Items loaded : "+clanItems.size());
+            if((tCode!='0')&&(!privacyV.contains("CLANITEMS")))
+                c.clanItems=baseC.clanItems;
+            else
+            {
+                c.clanItems=loadVectorListToObj(prefix+"Items/ClanItems/",page.getStr("CLANITEMS"),ancestor("CLANITEMS"));
+                if(c.clanItems.size()>0) Log.sysOut(Thread.currentThread().getName(),"Clan Items loaded : "+c.clanItems.size());
+            }
 
-            miscTech=loadVectorListToObj(prefix+"Items/MiscTech/",page.getStr("MISCTECH"),ancestor("MISCTECH"));
-            if(miscTech.size()>0) Log.sysOut(Thread.currentThread().getName(),"Electronics loaded: "+miscTech.size());
-            Vector tempV=loadVectorListToObj(prefix+"Items/Software/",page.getStr("SOFTWARE"),"com.planet_ink.coffee_mud.Items.interfaces.Software");
-            if(tempV.size()>0) addV(tempV,miscTech);
-            miscTech=new Vector(new TreeSet(miscTech));
+            if((tCode!='0')&&(!privacyV.contains("MISCTECH")))
+                c.miscTech=baseC.miscTech;
+            else
+            {
+                c.miscTech=loadVectorListToObj(prefix+"Items/MiscTech/",page.getStr("MISCTECH"),ancestor("MISCTECH"));
+                if(c.miscTech.size()>0) Log.sysOut(Thread.currentThread().getName(),"Electronics loaded: "+c.miscTech.size());
+                Vector tempV=loadVectorListToObj(prefix+"Items/Software/",page.getStr("SOFTWARE"),"com.planet_ink.coffee_mud.Items.interfaces.Software");
+                if(tempV.size()>0) addV(tempV,c.miscTech);
+                CMParms.sortVector(c.miscTech);
+            }
 
-            if((items.size()+weapons.size()+armor.size()+miscTech.size()+miscMagic.size()+clanItems.size())==0)
+            if((c.items.size()+c.weapons.size()+c.armor.size()+c.miscTech.size()+c.miscMagic.size()+c.clanItems.size())==0)
                 return false;
 
-            behaviors=loadVectorListToObj(prefix+"Behaviors/",page.getStr("BEHAVIORS"),ancestor("BEHAVIOR"));
-            Log.sysOut(Thread.currentThread().getName(),"Behaviors loaded  : "+behaviors.size());
-            if(behaviors.size()==0) return false;
+            if((tCode!='0')&&(!privacyV.contains("BEHAVIOR")))
+                c.behaviors=baseC.behaviors;
+            else
+            {
+                c.behaviors=loadVectorListToObj(prefix+"Behaviors/",page.getStr("BEHAVIORS"),ancestor("BEHAVIOR"));
+                Log.sysOut(Thread.currentThread().getName(),"Behaviors loaded  : "+c.behaviors.size());
+            }
+            if(c.behaviors.size()==0) return false;
 
-            commands=loadVectorListToObj(prefix+"Commands/",page.getStr("COMMANDS"),ancestor("COMMAND"));
-            Log.sysOut(Thread.currentThread().getName(),"Commands loaded   : "+commands.size());
-            if(commands.size()==0) return false;
+            if((tCode!='0')&&(!privacyV.contains("COMMAND")))
+            {
+                c.commands=baseC.commands;
+                c.CommandWords=baseC.CommandWords;
+            }
+            else
+            {
+                c.commands=loadVectorListToObj(prefix+"Commands/",page.getStr("COMMANDS"),ancestor("COMMAND"));
+                Log.sysOut(Thread.currentThread().getName(),"Commands loaded   : "+c.commands.size());
+            }
+            if(c.commands.size()==0) return false;
         }
         catch(Throwable t)
         {
@@ -1472,56 +1569,68 @@ public class CMClass extends ClassLoader
         reloadCommandWords();
 
         // misc startup stuff
-        for(int c=0;c<charClasses.size();c++)
-        {
-            CharClass C=(CharClass)charClasses.elementAt(c);
-            C.copyOf();
-        }
-        for(int r=0;r<races.size();r++)
-        {
-            Race R=(Race)races.elementAt(r);
-            R.copyOf();
-        }
-        CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: reading genRaces");
-        Vector genRaces=CMLib.database().DBReadRaces();
-        if(genRaces.size()>0)
-        {
-            int loaded=0;
-            for(int r=0;r<genRaces.size();r++)
+        if((tCode=='0')||(privacyV.contains("CHARCLASS")))
+            for(int i=0;i<c.charClasses.size();i++)
             {
-                Race GR=(Race)getRace("GenRace").copyOf();
-                GR.setRacialParms((String)((Vector)genRaces.elementAt(r)).elementAt(1));
-                if(!GR.ID().equals("GenRace"))
-                {
-                    addRace(GR);
-                    loaded++;
-                }
+                CharClass C=(CharClass)c.charClasses.elementAt(i);
+                C.copyOf();
             }
-            if(loaded>0)
-                Log.sysOut(Thread.currentThread().getName(),"GenRaces loaded   : "+loaded);
-        }
-        CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: reading genClasses");
-        Vector genClasses=CMLib.database().DBReadClasses();
-        if(genClasses.size()>0)
+        if((tCode=='0')||(privacyV.contains("RACE")))
         {
-            int loaded=0;
-            for(int r=0;r<genClasses.size();r++)
+            for(int r=0;r<c.races.size();r++)
             {
-                CharClass CR=(CharClass)(CMClass.getCharClass("GenCharClass").copyOf());
-                CR.setClassParms((String)((Vector)genClasses.elementAt(r)).elementAt(1));
-                if(!CR.ID().equals("GenCharClass"))
-                {
-                    addCharClass(CR);
-                    loaded++;
-                }
+                Race R=(Race)c.races.elementAt(r);
+                R.copyOf();
             }
-            if(loaded>0)
-                Log.sysOut(Thread.currentThread().getName(),"GenClasses loaded : "+loaded);
+            CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: reading genRaces");
+            Vector genRaces=CMLib.database().DBReadRaces();
+            if(genRaces.size()>0)
+            {
+                int loaded=0;
+                for(int r=0;r<genRaces.size();r++)
+                {
+                    Race GR=(Race)getRace("GenRace").copyOf();
+                    GR.setRacialParms((String)((Vector)genRaces.elementAt(r)).elementAt(1));
+                    if(!GR.ID().equals("GenRace"))
+                    {
+                        addRace(GR);
+                        loaded++;
+                    }
+                }
+                if(loaded>0)
+                    Log.sysOut(Thread.currentThread().getName(),"GenRaces loaded   : "+loaded);
+            }
+        }
+        if((tCode=='0')||(privacyV.contains("CHARCLASS")))
+        {
+            CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: reading genClasses");
+            Vector genClasses=CMLib.database().DBReadClasses();
+            if(genClasses.size()>0)
+            {
+                int loaded=0;
+                for(int r=0;r<genClasses.size();r++)
+                {
+                    CharClass CR=(CharClass)(CMClass.getCharClass("GenCharClass").copyOf());
+                    CR.setClassParms((String)((Vector)genClasses.elementAt(r)).elementAt(1));
+                    if(!CR.ID().equals("GenCharClass"))
+                    {
+                        addCharClass(CR);
+                        loaded++;
+                    }
+                }
+                if(loaded>0)
+                    Log.sysOut(Thread.currentThread().getName(),"GenClasses loaded : "+loaded);
+            }
         }
         CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: initializing classes");
-        intializeClasses();
-        CMLib.expertises().recompileExpertises();
-        Log.sysOut(Thread.currentThread().getName(),"Expertises defined: "+CMLib.expertises().numExpertises());
+        c.intializeClasses();
+        if((tCode=='0')||(privacyV.contains("EXPERTISES")))
+        {
+            CMLib.expertises().recompileExpertises();
+            Log.sysOut(Thread.currentThread().getName(),"Expertises defined: "+CMLib.expertises().numExpertises());
+        }
+        if(tCode=='0')
+            classLoaderSync[0]=true;
         return true;
     }
 

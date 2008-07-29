@@ -43,6 +43,13 @@ public class CMParms
         }
         return Combined.toString().trim();
     }
+    
+    public static void sortVector(Vector V) {
+        Vector V2=new Vector(new TreeSet(V));
+        V.clear();
+        V.addAll(V2);
+        V.trimToSize();
+    }
 
     public static String combineAfterIndexWithQuotes(Vector commands, String match)
     {
