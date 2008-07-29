@@ -330,8 +330,8 @@ public class CMProps extends Properties
 	public String getStr(String tagToGet)
 	{
 		String thisTag=this.getProperty(tagToGet);
-		if((thisTag==null)&&(props['0']!=null)&&(props['0']!=this))
-			return props['0'].getStr(tagToGet);
+		if((thisTag==null)&&(props[MudHost.MAIN_HOST]!=null)&&(props[MudHost.MAIN_HOST]!=this))
+			return props[MudHost.MAIN_HOST].getStr(tagToGet);
 		if(thisTag==null) return "";
 		return thisTag;
 	}
@@ -353,8 +353,8 @@ public class CMProps extends Properties
 			{
 				String subPropName = propName.substring(tagStartersToGet.length()).toUpperCase();
 				String thisTag=this.getProperty(propName);
-				if((thisTag==null)&&(props['0']!=null)&&(props['0']!=this))
-					thisTag = props['0'].getStr(propName);
+				if((thisTag==null)&&(props[MudHost.MAIN_HOST]!=null)&&(props[MudHost.MAIN_HOST]!=this))
+					thisTag = props[MudHost.MAIN_HOST].getStr(propName);
 				if(thisTag!=null)
 					strBag.addElement(subPropName,thisTag);
 			}
@@ -437,8 +437,8 @@ public class CMProps extends Properties
     public static boolean getBoolVar0(int varNum)
     {
         if((varNum<0)||(varNum>=NUMB_SYSTEM)) return false;
-        if(instance('0').sysBools[varNum]==null) return false;
-        return instance('0').sysBools[varNum].booleanValue();
+        if(instance(MudHost.MAIN_HOST).sysBools[varNum]==null) return false;
+        return instance(MudHost.MAIN_HOST).sysBools[varNum].booleanValue();
     }
 
     public static boolean getBoolVar(int varNum)
@@ -457,7 +457,7 @@ public class CMProps extends Properties
     public static void setBoolVar0(int varNum, boolean val)
     {
         if((varNum<0)||(varNum>=NUMB_SYSTEM)) return ;
-        instance('0').sysBools[varNum]=Boolean.valueOf(val);
+        instance(MudHost.MAIN_HOST).sysBools[varNum]=Boolean.valueOf(val);
     }
 
     public static void setIntVar(int varNum, int val)

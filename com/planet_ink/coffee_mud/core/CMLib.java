@@ -141,8 +141,8 @@ public class CMLib
     { return new CMFile(currentPath,filename,null,pleaseLogErrors,false); }
 
     public static DatabaseEngine database0(){
-        if(l('0')==null) return database();
-        return (DatabaseEngine)l('0').libraries[LIBRARY_DATABASE];
+        if(l(MudHost.MAIN_HOST)==null) return database();
+        return (DatabaseEngine)l(MudHost.MAIN_HOST).libraries[LIBRARY_DATABASE];
     }
     public static DatabaseEngine database(){return (DatabaseEngine)l().libraries[LIBRARY_DATABASE];}
     public static ThreadEngine threads(){return (ThreadEngine)l().libraries[LIBRARY_THREADS];}
@@ -247,12 +247,12 @@ public class CMLib
             if(l()==null) new CMLib();
             Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
             if((!privacyV.contains(LIBRARY_DESCS[code])
-            &&(libs['0']!=l())))
+            &&(libs[MudHost.MAIN_HOST]!=l())))
             {
-                if(libs['0'].libraries[code]==null)
-                    libs['0'].libraries[code]=O;
+                if(libs[MudHost.MAIN_HOST].libraries[code]==null)
+                    libs[MudHost.MAIN_HOST].libraries[code]=O;
                 else
-                    l().libraries[code]=libs['0'].libraries[code];
+                    l().libraries[code]=libs[MudHost.MAIN_HOST].libraries[code];
             }
             else
                 l().libraries[code]=O;
@@ -277,8 +277,8 @@ public class CMLib
         CMLib lib=l();
         Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
         for(int l=0;l<lib.libraries.length;l++)
-            if((!privacyV.contains(LIBRARY_DESCS[l])&&(libs['0']!=l())))
-                lib.libraries[l]=libs['0'].libraries[l];
+            if((!privacyV.contains(LIBRARY_DESCS[l])&&(libs[MudHost.MAIN_HOST]!=l())))
+                lib.libraries[l]=libs[MudHost.MAIN_HOST].libraries[l];
             else
             if(lib.libraries[l]==null)
                 Log.errOut("CMLib","Unable to find library "+CMLib.LIBRARY_DESCS[l]);

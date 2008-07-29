@@ -125,17 +125,18 @@ public class MUD extends Thread implements MudHost
 		}
 
         char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
-        Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
+        Vector privacyV=new Vector(1);
+        if(tCode!=MAIN_HOST)
+            privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
         
 		while (!serverIsRunning && isOK)
 		{ try{ Thread.sleep(500); }catch(Exception e){ isOK=false;} }
+		
 		if (!isOK)
 		{
 			fatalStartupError(t,5);
 			return false;
 		}
-
-		page.resetSystemVars();
 
 		Vector compress=CMParms.parseCommas(page.getStr("COMPRESS").toUpperCase(),true);
 		CMProps.setBoolVar(CMProps.SYSTEMB_ITEMDCOMPRESS,compress.contains("ITEMDESC"));
@@ -149,13 +150,13 @@ public class MUD extends Thread implements MudHost
 
 		DBConnector currentDBconnector=null;
         String dbClass=page.getStr("DBCLASS");
-        if(tCode!='0')
+        if(tCode!=MAIN_HOST)
         {
-            DatabaseEngine baseEngine=(DatabaseEngine)CMLib.library('0',CMLib.LIBRARY_DATABASE);
+            DatabaseEngine baseEngine=(DatabaseEngine)CMLib.library(MAIN_HOST,CMLib.LIBRARY_DATABASE);
             while((!MUD.bringDown)
             &&((baseEngine==null)||(!baseEngine.isConnected()))) {
                 try {Thread.sleep(500);}catch(Exception e){ break;}
-                baseEngine=(DatabaseEngine)CMLib.library('0',CMLib.LIBRARY_DATABASE);
+                baseEngine=(DatabaseEngine)CMLib.library(MAIN_HOST,CMLib.LIBRARY_DATABASE);
             }
             if(MUD.bringDown) return false;
             
@@ -236,27 +237,27 @@ public class MUD extends Thread implements MudHost
 		}
         CMLib.lang().setLocale(CMLib.props().getStr("LANGUAGE"),CMLib.props().getStr("COUNTRY"));
         CMClass.globalClock().initializeINIClock(page);
-        if((tCode=='0')||(privacyV.contains("FACTIONS")))
+        if((tCode==MAIN_HOST)||(privacyV.contains("FACTIONS")))
             CMLib.factions().reloadFactions(CMProps.getVar(CMProps.SYSTEM_PREFACTIONS));
-        if(tCode=='0') {
+        if(tCode==MAIN_HOST) {
     		CMSecurity.setSysOp(page.getStr("SYSOPMASK")); // requires all classes be loaded
     		CMSecurity.parseGroups(page);
         }
 
-        if((tCode=='0')||(privacyV.contains("CHANNELS"))||(privacyV.contains("JOURNALS")))
+        if((tCode==MAIN_HOST)||(privacyV.contains("CHANNELS"))||(privacyV.contains("JOURNALS")))
         {
     		int numChannelsLoaded=0;
             int numJournalsLoaded=0;
-            if((tCode=='0')||(privacyV.contains("CHANNELS")))
+            if((tCode==MAIN_HOST)||(privacyV.contains("CHANNELS")))
             numChannelsLoaded=CMLib.channels().loadChannels(page.getStr("CHANNELS"),
             												page.getStr("ICHANNELS"),
             												page.getStr("IMC2CHANNELS"));
-            if((tCode=='0')||(privacyV.contains("JOURNALS")))
+            if((tCode==MAIN_HOST)||(privacyV.contains("JOURNALS")))
             numJournalsLoaded=CMLib.journals().loadCommandJournals(page.getStr("COMMANDJOURNALS"));
     		Log.sysOut(Thread.currentThread().getName(),"Channels loaded   : "+(numChannelsLoaded+numJournalsLoaded));
         }
 
-        if((tCode=='0')||(privacyV.contains("SOCIALS")))
+        if((tCode==MAIN_HOST)||(privacyV.contains("SOCIALS")))
         {
             CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: loading socials");
     		CMLib.socials().unloadSocials();
@@ -266,23 +267,23 @@ public class MUD extends Thread implements MudHost
     			Log.sysOut(Thread.currentThread().getName(),"Socials loaded    : "+CMLib.socials().numSocialSets());
         }
 
-        if((tCode=='0')||(privacyV.contains("CLANS")))
+        if((tCode==MAIN_HOST)||(privacyV.contains("CLANS")))
         {
     		CMLib.database().DBReadAllClans();
     		Log.sysOut(Thread.currentThread().getName(),"Clans loaded      : "+CMLib.clans().size());
         }
 
-        if((tCode=='0')||(privacyV.contains("FACTIONS")))
+        if((tCode==MAIN_HOST)||(privacyV.contains("FACTIONS")))
     		CMLib.threads().startTickDown(CMLib.factions(),Tickable.TICKID_MOB,10);
 
-        if((tCode=='0')||(privacyV.contains("CATALOG")))
+        if((tCode==MAIN_HOST)||(privacyV.contains("CATALOG")))
         {
     		Log.sysOut(Thread.currentThread().getName(),"Loading catalog...");
     		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: loading catalog....");
     		CMLib.database().DBReadCatalogs();
         }
 
-        if((tCode=='0')||(privacyV.contains("MAP")))
+        if((tCode==MAIN_HOST)||(privacyV.contains("MAP")))
         {
     		Log.sysOut(Thread.currentThread().getName(),"Loading map...");
     		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: loading rooms....");
@@ -317,7 +318,7 @@ public class MUD extends Thread implements MudHost
     		}
         }
 
-        if((tCode=='0')||(privacyV.contains("QUESTS")))
+        if((tCode==MAIN_HOST)||(privacyV.contains("QUESTS")))
         {
     		CMLib.database().DBReadQuests(CMLib.mud(0));
     		if(CMLib.quests().numQuests()>0)
@@ -326,7 +327,7 @@ public class MUD extends Thread implements MudHost
 
 		try
 		{
-			if(page.getBoolean("RUNI3SERVER")&&(tCode=='0'))
+			if(page.getBoolean("RUNI3SERVER")&&(tCode==MAIN_HOST))
 			{
                 CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Starting I3");
 				String playstate=page.getStr("I3STATE");
@@ -352,7 +353,7 @@ public class MUD extends Thread implements MudHost
 
 		try
 		{
-			if(page.getBoolean("RUNIMC2CLIENT")&&(tCode=='0'))
+			if(page.getBoolean("RUNIMC2CLIENT")&&(tCode==MAIN_HOST))
 			{
                 CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Starting IMC2");
 				imc2server=new IMC2Driver();
@@ -382,7 +383,7 @@ public class MUD extends Thread implements MudHost
 			Log.errOut("IMC2",e.getMessage());
 		}
 
-        if(tCode!='0')
+        if(tCode!=MAIN_HOST)
         {
             CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Waiting for HOST0");
             while((!MUD.bringDown)
@@ -942,20 +943,32 @@ public class MUD extends Thread implements MudHost
 		private String name=null;
 		private String iniFile=null;
 		private String logName=null;
+        char threadCode=MAIN_HOST;
 		public HostGroup(ThreadGroup G, String mudName, String iniFileName)
 		{
-			super(G,"HOST"+grpid);
-			logName="mud"+((grpid>0)?("."+grpid):"");
-			grpid++;
-			iniFile=iniFileName;
-			name=mudName;
-			setDaemon(true);
+            super(G,"HOST"+grpid);
+            synchronized("HostGroupInit".intern()) {
+    			logName="mud"+((grpid>0)?("."+grpid):"");
+    			grpid++;
+    			iniFile=iniFileName;
+    			name=mudName;
+    			setDaemon(true);
+    			threadCode=G.getName().charAt(0);
+			}
 		}
 
 		public void run()
 		{
             new CMLib(); // initialize the lib
             new CMClass(); // initialize the classes
+            // wait for ini to be loaded, and for other matters
+            if(threadCode!=MAIN_HOST) {
+                while((CMLib.library(MAIN_HOST,CMLib.LIBRARY_INTERMUD)==null)&&(!MUD.bringDown)) {
+                    try {Thread.sleep(500);}catch(Exception e){ break;}
+                }
+                if(MUD.bringDown)
+                    return;
+            }
 			CMProps page=CMProps.loadPropPage("//"+iniFile);
             if ((page==null)||(!page.loaded))
             {
@@ -964,26 +977,21 @@ public class MUD extends Thread implements MudHost
                 CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"A terminal error has occured!");
                 return;
             }
+            page.resetSystemVars();
             CMProps.setBoolVar(CMProps.SYSTEMB_MUDSTARTED,false);
             
             DBConnector currentDBconnector=new DBConnector();
             CMLib.registerLibrary(new DBInterface(currentDBconnector));
             CMLib.registerLibrary(new ProcessHTTPrequest(null,null,null,true));
+            CMProps.setVar(CMProps.SYSTEM_MUDVER,HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);
             
-	        char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
-	        if(c=='0') {
-    			CMProps.setVar(CMProps.SYSTEM_MUDVER,HOST_VERSION_MAJOR + "." + HOST_VERSION_MINOR);
+            // an arbitrary dividing line. After threadCode 0 
+	        if(threadCode==MAIN_HOST) {
     	        CMLib.registerLibrary(new ServiceEngine());
     	        CMLib.registerLibrary(new IMudClient());
 	        } else {
-	            while((CMLib.library('0',CMLib.LIBRARY_INTERMUD)==null)
-	            &&(!MUD.bringDown)) {
-	                try {Thread.sleep(500);}catch(Exception e){ break;}
-	            }
-	            if(MUD.bringDown)
-	                return;
-                CMLib.registerLibrary(CMLib.library('0',CMLib.LIBRARY_THREADS));
-                CMLib.registerLibrary(CMLib.library('0',CMLib.LIBRARY_INTERMUD));
+                CMLib.registerLibrary(CMLib.library(MAIN_HOST,CMLib.LIBRARY_THREADS));
+                CMLib.registerLibrary(CMLib.library(MAIN_HOST,CMLib.LIBRARY_INTERMUD));
 	        }
 			if(!logName.equals("mud"))
 			{
