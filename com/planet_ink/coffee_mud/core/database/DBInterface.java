@@ -52,8 +52,9 @@ public class DBInterface implements DatabaseEngine
     {
     	this.DB=DB;
     	DBConnector oldBaseDB=DB;
-    	if((CMLib.database0()!=null)&&(CMLib.database0().getConnector()!=DB)&&(CMLib.database0().isConnected()))
-    	    oldBaseDB=CMLib.database0().getConnector();
+    	DatabaseEngine baseEngine=(DatabaseEngine)CMLib.library(MudHost.MAIN_HOST,CMLib.LIBRARY_DATABASE);
+    	if((baseEngine!=null)&&(baseEngine.getConnector()!=DB)&&(baseEngine.isConnected()))
+    	    oldBaseDB=baseEngine.getConnector();
         Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
         this.GAbilityLoader=new GAbilityLoader(privacyV.contains("ABILITY")?DB:oldBaseDB);
         this.GCClassLoader=new GCClassLoader(privacyV.contains("CHARCLASS")?DB:oldBaseDB);

@@ -140,10 +140,6 @@ public class CMLib
     public static CMFile newFile(String currentPath, String filename, boolean pleaseLogErrors)
     { return new CMFile(currentPath,filename,null,pleaseLogErrors,false); }
 
-    public static DatabaseEngine database0(){
-        if(l(MudHost.MAIN_HOST)==null) return database();
-        return (DatabaseEngine)l(MudHost.MAIN_HOST).libraries[LIBRARY_DATABASE];
-    }
     public static DatabaseEngine database(){return (DatabaseEngine)l().libraries[LIBRARY_DATABASE];}
     public static ThreadEngine threads(){return (ThreadEngine)l().libraries[LIBRARY_THREADS];}
     public static I3Interface intermud(){return (I3Interface)l().libraries[LIBRARY_INTERMUD];}
@@ -277,8 +273,11 @@ public class CMLib
         CMLib lib=l();
         Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
         for(int l=0;l<lib.libraries.length;l++)
-            if((!privacyV.contains(LIBRARY_DESCS[l])&&(libs[MudHost.MAIN_HOST]!=l())))
+            if((!privacyV.contains(LIBRARY_DESCS[l])&&(libs[MudHost.MAIN_HOST]!=lib)))
+            {
+                Log.debugOut("CMLib","HOST"+Thread.currentThread().getThreadGroup().getName().charAt(0)+" sharing library "+CMLib.LIBRARY_DESCS[l]);
                 lib.libraries[l]=libs[MudHost.MAIN_HOST].libraries[l];
+            }
             else
             if(lib.libraries[l]==null)
                 Log.errOut("CMLib","Unable to find library "+CMLib.LIBRARY_DESCS[l]);
