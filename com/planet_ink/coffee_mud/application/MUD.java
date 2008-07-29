@@ -1163,21 +1163,7 @@ public class MUD extends Thread implements MudHost
         Vector V=CMParms.parse(cmd);
         if(V.size()==0) throw new CMException("Unknown command!");
         String word=(String)V.firstElement();
-        if(word.equalsIgnoreCase("FORCE"))
-        {
-            String rest=CMParms.combine(V,1);
-            /*
-            if(rest.equalsIgnoreCase("SAVETHREAD"))
-                saveThread.forceTick();
-            else
-            if(rest.equalsIgnoreCase("UTILITHREAD"))
-                utiliThread.forceTick();
-            else
-                throw new CMException("Unknown parm: "+rest);
-            */
-        }
-        else
-            throw new CMException("Unknown command: "+word);
-        return "OK";
+        throw new CMException("Unknown command: "+word);
+        //return "OK";
     }
 }

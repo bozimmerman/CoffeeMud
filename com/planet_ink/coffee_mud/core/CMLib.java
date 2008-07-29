@@ -277,9 +277,11 @@ public class CMLib
         CMLib lib=l();
         Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
         for(int l=0;l<lib.libraries.length;l++)
-            if((!privacyV.contains(LIBRARY_DESCS[l])
-            &&(libs['0']!=l())))
+            if((!privacyV.contains(LIBRARY_DESCS[l])&&(libs['0']!=l())))
                 lib.libraries[l]=libs['0'].libraries[l];
+            else
+            if(lib.libraries[l]==null)
+                Log.errOut("CMLib","Unable to find library "+CMLib.LIBRARY_DESCS[l]);
             else
                 lib.libraries[l].activate();
     }

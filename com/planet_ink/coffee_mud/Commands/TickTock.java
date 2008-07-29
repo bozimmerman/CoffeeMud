@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -54,13 +55,15 @@ public class TickTock extends StdCommand
     		if(s.startsWith("clantick"))
     			CMLib.clans().tickAllClans();
     		else
-    		if(s.startsWith("savethread"))
-    			CMLib.mud(-1).executeCommand("FORCE savethread");
-            else
-            if(s.startsWith("utilithread"))
-                CMLib.mud(-1).executeCommand("FORCE utilithread");
-    		else
-    			mob.tell("Ticktock what?  Enter a number of mud-hours, or clanticks, savethread, or utilithread.");
+            {
+                for(Enumeration e=CMLib.libraries();e.hasMoreElements();)
+                {
+                    CMLibrary lib=(CMLibrary)e.nextElement();
+                    if((lib.getSupportThread()!=null)&&(s.equalsIgnoreCase(lib.getSupportThread().getName())))
+                        lib.getSupportThread().interrupt();
+                }
+    			mob.tell("Ticktock what?  Enter a number of mud-hours, or clanticks, or thread id.");
+            }
         }
         catch(Exception e)
         {

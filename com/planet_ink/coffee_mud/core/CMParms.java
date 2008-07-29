@@ -358,15 +358,16 @@ public class CMParms
         if(s.length()<2) 
             return s.replace('\'','`');
         if(s.charAt(0)=='\'')
+        {
             if(s.charAt(s.length()-1)=='\'')
                 return s.substring(1,s.length()-1).replace('\'','`');
-            else
-                return s.substring(1).replace('\'','`');
-        if(s.charAt(0)=='`')
+            return s.substring(1).replace('\'','`');
+        }
+        if(s.charAt(0)=='`') {
             if(s.charAt(s.length()-1)=='`')
                 return s.substring(1,s.length()-1).replace('\'','`');
-            else
-                return s.substring(1).replace('\'','`');
+            return s.substring(1).replace('\'','`');
+        }
         return s.replace('\'','`');
     }
     public static String getCleanBit(String s, int which)
