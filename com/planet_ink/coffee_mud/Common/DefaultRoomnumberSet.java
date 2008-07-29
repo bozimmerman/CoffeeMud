@@ -37,13 +37,12 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     }
     public void add(RoomnumberSet set)
     {
-    	Vector V=set.getAreaNames();
     	CMIntegerGrouper his=null;
     	CMIntegerGrouper mine=null;
     	String arName=null;
-    	for(int v=0;v<V.size();v++)
+    	for(Enumeration v=set.getAreaNames();v.hasMoreElements();)
     	{
-    		arName=(String)V.elementAt(v);
+    		arName=(String)v.nextElement();
     		his=set.getGrouper(arName);
     		mine=set.getGrouper(arName);
     		if(mine==null)
@@ -56,6 +55,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     			mine.add(his);
     	}
     }
+    
     public void remove(String str)
     {
         String areaName=str.toUpperCase().trim();
@@ -95,10 +95,6 @@ public class DefaultRoomnumberSet implements RoomnumberSet
         if(CI.roomCount()==0)
         	root.removeElement(areaName.toUpperCase());
     }
-    public void remove(RoomnumberSet set)
-    {
-    	
-    }
     
     public int roomCountAllAreas()
     {
@@ -115,12 +111,13 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     	return total;
     }
     
-    public int roomCount(String prefix)
+    public int roomCount(String areaName)
     {
-    	prefix=prefix.toUpperCase();
-        int x=prefix.indexOf("#");
+        int x=areaName.indexOf("#");
         if(x>0)
-        	prefix=prefix.substring(0,x);
+            areaName=areaName.substring(0,x).toUpperCase();
+        else
+            areaName=areaName.toUpperCase();
         int start=0;
         int end=root.size()-1;
         int comp=-1;
@@ -128,7 +125,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
         while(start<=end)
         {
             mid=(end+start)/2;
-            comp=prefix.compareTo((String)root.elementAt(mid,1));
+            comp=areaName.compareTo((String)root.elementAt(mid,1));
             if(comp==0)
             {
                 if(root.elementAt(mid,2)!=null)
@@ -223,7 +220,8 @@ public class DefaultRoomnumberSet implements RoomnumberSet
 		long firstID=(((coded&mask)>>30)&(CMIntegerGrouper.NEXT_BITSL-CMIntegerGrouper.GRID_FLAGL));
 		return prefix+"#"+firstID+"#("+secondID+","+thirdID+")";
     }
-    public Vector getAreaNames(){ return (Vector)root.getDimensionVector(1).clone();}
+    
+    public Enumeration getAreaNames(){ return ((Vector)root.getDimensionVector(1).clone()).elements();}
     
     private boolean isGrouper(String areaName)
     {
@@ -319,6 +317,7 @@ public class DefaultRoomnumberSet implements RoomnumberSet
         }
         return str.toString()+"</AREAS>";
     }
+
     public void parseXML(String xml)
     {
         Vector V=CMLib.xml().parseAllXML(xml);
@@ -342,7 +341,6 @@ public class DefaultRoomnumberSet implements RoomnumberSet
                 }
             }
     }
-    
     
     public void add(String str)
     {
@@ -417,10 +415,12 @@ public class DefaultRoomnumberSet implements RoomnumberSet
             }
         }
     }
+    
     public Enumeration getRoomIDs(){return new RoomnumberSetEnumeration();}
+    
     private class RoomnumberSetEnumeration implements Enumeration
     {
-    	Vector areaNames=null;
+    	Enumeration areaNames=null;
     	String areaName=null;
     	long[] nums=null;
     	String nextID=null;
@@ -441,10 +441,9 @@ public class DefaultRoomnumberSet implements RoomnumberSet
     		if(nums==null)
     		{
     			nextID=null;
-    			if((areaNames==null)||(areaNames.size()==0))
+    			if((areaNames==null)||(!areaNames.hasMoreElements()))
     				return;
-    			areaName=(String)areaNames.elementAt(0);
-    			areaNames.removeElementAt(0);
+    			areaName=(String)areaNames.nextElement();
     			CMIntegerGrouper grp=getGrouper(areaName);
     			if(grp==null){ nextID=areaName; return;}
     			nums=grp.allRoomNums();
