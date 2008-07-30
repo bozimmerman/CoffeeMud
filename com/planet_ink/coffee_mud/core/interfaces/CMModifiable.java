@@ -66,6 +66,15 @@ public interface CMModifiable
      */
     public String getStat(String code);
     /**
+     * An alternative means of retreiving the values of those fields on this object which are modifiable at
+     * run-time by builders.  See getStatCodes() for possible values for the code passed to this method.
+     * Values returned are always strings, even if the field itself is numeric or a list.
+     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#getStatCodes()
+     * @param code the name of the field to read.
+     * @return true if the code is a real value, false otherwise
+     */
+    public boolean isStat(String code);
+    /**
      * An alternative means of setting the values of those fields on this object which are modifiable at
      * run-time by builders.  See getStatCodes() for possible values for the code passed to this method.
      * The value passed in is always a string, even if the field itself is numeric or a list.

@@ -218,65 +218,86 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
     public void setSavable(boolean truefalse);
     
     /**
-     * 
-     * @param context
-     * @param variable
-     * @return
+     * Returns the value of one of the internal variables, determined by the scope
+     * of the script, the context of the variable, and the name of the variable.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setVarScope(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getVarScope()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setVar(String, String, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#isVar(String, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getLocalVarXML()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setLocalVarXML(String)
+     * @param context the context of the variable, usually a mob or object name
+     * @param variable the name of the variable
+     * @return the value of the variable
      */
     public String getVar(String context, String variable);
     
     /**
-     * 
-     * @param context
-     * @param variable
-     * @return
+     * Returns whether an internal variables, determined by the scope
+     * of the script, the context of the variable, and the name of the variable, is defined.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setVarScope(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getVarScope()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getVar(String, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setVar(String, String, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getLocalVarXML()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setLocalVarXML(String)
+     * @param context the context of the variable, usually a mob or object name
+     * @param variable the name of the variable
+     * @return true if the variable has been set in the past, false otherwise
      */
     public boolean isVar(String context, String variable);
     
     /**
-     * 
-     * @param context
-     * @param variable
-     * @param value
+     * Sets the value of one of the internal variables, determined by the scope
+     * of the script, the context of the variable, and the name of the variable.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setVarScope(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getVarScope()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getVar(String, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#isVar(String, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getLocalVarXML()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setLocalVarXML(String)
+     * @param context the context of the variable, usually a mob or object name
+     * @param variable the name of the variable
+     * @param value the value of the variable
      */
     public void setVar(String context, String variable, String value);
     
     /**
-     * 
+     * An object that holds the information about an event until it is
+     * time to execute its associated script.
      * @author bzimmerman
-     *
      */
     public static class ScriptableResponse
     {
         private int tickDelay=0;
-        /** */
+        /** (host) the object being scripted */
         public Environmental h=null;
-        /** */
+        /** (source) the source of the event */
         public MOB s=null;
-        /** */
+        /** (target) the target of the event */
         public Environmental t=null;
-        /** */
+        /** (host mob) a mob representation of the host (h)*/
         public MOB m=null;
-        /** */
+        /** (primary item) an item associated with this event */
         public Item pi=null;
-        /** */
+        /** (second item) a second item associated with this event */
         public Item si=null;
-        /** */
+        /** (script) the actual script to execute for this event */
         public DVector scr;
-        /** */
+        /** a string associated with this event */
         public String message=null;
 
         /**
-         * 
-         * @param host
-         * @param source
-         * @param target
-         * @param monster
-         * @param primaryItem
-         * @param secondaryItem
-         * @param script
-         * @param ticks
-         * @param msg
+         * Create an event response object
+         * @param host the object being scripted
+         * @param source the source of the event
+         * @param target the target of the event
+         * @param monster a mob representation of the host
+         * @param primaryItem an item associated with this event
+         * @param secondaryItem a second item associated with this event
+         * @param script the actual script to execute for this event
+         * @param ticks how many ticks to wait before executing the script
+         * @param msg a string associated with this event
          */
         public ScriptableResponse(Environmental host,
                                   MOB source,
@@ -300,20 +321,21 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         }
 
         /**
-         * 
-         * @return
+         * Decrements the internal tick counter and returns true if 
+         * the tick counter has dropped to or below 0
+         * @return true if its time to execute
          */
         public boolean checkTimeToExecute() { return ((--tickDelay)<=0); }
     }
 
-    /** */
+    /** The number of local variables associated with an execution of a script */
     public static final int SPECIAL_NUM_OBJECTS=12;
-    /** */
+    /** The index into the local variables array for a random pc */
     public static final int SPECIAL_RANDPC=10;
-    /** */
+    /** The index into the local variables array for a random pc or mob  */
     public static final int SPECIAL_RANDANYONE=11;
     
-    /** */
+    /** String list of all valid trigger keywords */
     public static final String[] progs={
         "GREET_PROG", //1
         "ALL_GREET_PROG", //2
@@ -361,7 +383,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         "KILL_PROG", //44
     };
 
-    /** */
+    /** String list of all valid mobprog functions for logical expressions or string functions */
     public static final String[] funcs={
         "RAND", //1
         "HAS", //2
@@ -459,7 +481,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         "QUESTROOM", // 94
     };
     
-    /** */
+    /** String list of all valid mobprog commands */
     public static final String[] methods={
         "MPASOUND", //1
         "MPECHO", //2
@@ -536,72 +558,51 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         "MPSETINTERNAL", // 73
     };
 
-    /** */
-    public final static String[] clanVars={
-        "ACCEPTANCE", // 0
-        "DETAIL", // 1
-        "DONATEROOM", // 2
-        "EXP", // 3
-        "GOVT", // 4
-        "MORGUE", // 5
-        "POLITICS", // 6
-        "PREMISE", // 7
-        "RECALL", // 8
-        "SIZE", // 9
-        "STATUS", // 10
-        "TAXES", // 11
-        "TROPHIES", // 12
-        "TYPE", // 13
-        "AREAS", // 14
-        "MEMBERLIST", // 15
-        "TOPMEMBER" // 16
-    };
-
-    /** */
+    /** a list of some some extra stat codes for mobs*/
     public final static String[] GSTATCODES_ADDITIONAL={"DEITY","CLAN","CLANROLE"};
-    /** */
+    /** index and equate for stat code for mob: deity*/
     public final static int GSTATADD_DEITY=0;
-    /** */
+    /** index and equate for stat code for mob: clan */
     public final static int GSTATADD_CLAN=1;
-    /** */
+    /** index and equate for stat code for mob: clan role */
     public final static int GSTATADD_CLANROLE=2;
     
-    /** */
+    /** a list of the different parts of a time clock */
     public final static String[] DATETIME_ARGS={"HOUR","TIME","DAY","DATE","MONTH","YEAR"};
     
-    /** */
+    /** List of evaluation signs ==, !=, >, etc.*/
     public final static String[] SIGNS={"==",">=",">","<","<=","=>","=<","!="};
     
-    /** */
+    /** Index and equate for == */
     public final static int SIGN_EQUL=0;
-    /** */
+    /** Index and equate for >= */
     public final static int SIGN_GTEQ=1;
-    /** */
+    /** Index and equate for > */
     public final static int SIGN_GRAT=2;
-    /** */
+    /** Index and equate for < */
     public final static int SIGN_LEST=3;
-    /** */
+    /** Index and equate for <= */
     public final static int SIGN_LTEQ=4;
-    /** */
+    /** Index and equate for => */
     public final static int SIGN_EQGT=5;
-    /** */
+    /** Index and equate for =< */
     public final static int SIGN_EQLT=6;
-    /** */
+    /** Index and equate for != */
     public final static int SIGN_NTEQ=7;
     
-    /** */
+    /** a list of logical connectors (and, or, etc)*/
     public final static String[] CONNECTORS={"AND","OR","NOT","ANDNOT","ORNOT"};
-    /** */
+    /** index and equate for logical connector AND*/
     public final static int CONNECTOR_AND=0;
-    /** */
+    /** index and equate for logical connector OR */
     public final static int CONNECTOR_OR=1;
-    /** */
+    /** index and equate for logical connector NOT */
     public final static int CONNECTOR_NOT=2;
-    /** */
+    /** index and equate for logical connector ANDNOT */
     public final static int CONNECTOR_ANDNOT=3;
-    /** */
+    /** index and equate for logical connector ORNOT */
     public final static int CONNECTOR_ORNOT=4;
-    /** */
+    /** A table to describe what happens when connectors are found sequentially (and and not or not and and, etc) */
     public final static int[][] CONNECTOR_MAP={
         {CONNECTOR_AND,CONNECTOR_OR,CONNECTOR_ANDNOT,CONNECTOR_AND,CONNECTOR_ORNOT}, //and
         {CONNECTOR_OR,CONNECTOR_OR,CONNECTOR_ORNOT,CONNECTOR_ORNOT,CONNECTOR_ORNOT}, //or

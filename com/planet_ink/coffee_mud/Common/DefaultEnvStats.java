@@ -147,6 +147,7 @@ public class DefaultEnvStats implements EnvStats
 		"ARMOR","DAMAGE","ATTACK", "AMBIANCES"};
     public int getSaveStatIndex(){return CODES.length;}
 	public String[] getStatCodes(){return CODES;}
+    public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code)
 	{
 		for(int i=0;i<CODES.length;i++)

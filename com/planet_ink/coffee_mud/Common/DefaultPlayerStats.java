@@ -133,6 +133,7 @@ public class DefaultPlayerStats implements PlayerStats
 	}
 	public int getSaveStatIndex(){return getStatCodes().length;}
 	public String[] getStatCodes(){return CODES;}
+    public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code){
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;

@@ -464,7 +464,8 @@ public class DefaultClan implements Clan
     public String getDetail(MOB mob)
     {
         StringBuffer msg=new StringBuffer("");
-        boolean member=mob.getClanID().equalsIgnoreCase(clanID())&&(mob.getClanRole()>Clan.POS_APPLICANT);
+        boolean member=(mob!=null)&&mob.getClanID().equalsIgnoreCase(clanID())&&(mob.getClanRole()>Clan.POS_APPLICANT);
+        boolean sysmsgs=(mob!=null)&&CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS);
         msg.append("^x"+typeName()+" Profile   :^.^N "+clanID()+"\n\r"
                   +"-----------------------------------------------------------------\n\r"
                   +getPremise()+"\n\r"
@@ -474,7 +475,7 @@ public class DefaultClan implements Clan
         CharClass clanC=getClanClassC();
         if(clanC!=null) msg.append("^xClass           :^.^N "+clanC.name()+"\n\r");
         msg.append("^xExp. Tax Rate   :^.^N "+((int)Math.round(getTaxes()*100))+"%\n\r");
-        if(member||(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
+        if(member||sysmsgs)
         {
             msg.append("^xExperience Pts. :^.^N "+getExp()+"\n\r");
             if(getMorgue().length()>0)
@@ -520,14 +521,13 @@ public class DefaultClan implements Clan
                 }
             }
         }
-        if(member||(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
+        if(member||sysmsgs)
         {
             if(member) updateClanPrivileges(mob);
             msg.append("-----------------------------------------------------------------\n\r"
                       +"^x"+CMStrings.padRight(CMLib.clans().getRoleName(getGovernment(),POS_MEMBER,true,true),16)
                       +":^.^N "+crewList(POS_MEMBER)+"\n\r");
-            if((allowedToDoThis(mob,FUNC_CLANACCEPT)>=0)
-            ||(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)))
+            if((allowedToDoThis(mob,FUNC_CLANACCEPT)>=0)||sysmsgs)
             {
                 msg.append("-----------------------------------------------------------------\n\r"
                         +"^x"+CMStrings.padRight(CMLib.clans().getRoleName(getGovernment(),POS_APPLICANT,true,true),16)+":^.^N "+crewList(POS_APPLICANT)+"\n\r");
@@ -1472,5 +1472,73 @@ public class DefaultClan implements Clan
         return mob;
     }
 
-
+    public String[] getStatCodes(){ return CLAN_STATS;}
+    public int getSaveStatIndex(){ return CLAN_STATS.length;}
+    public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
+    public String getStat(String code) {
+        int dex=CMParms.indexOf(getStatCodes(),code.toUpperCase().trim());
+        if(dex<0) return "";
+        switch(dex)
+        {
+        case 0: return getAcceptanceSettings();
+        case 1: return getDetail(null);
+        case 2: return getDonation();
+        case 3: return ""+getExp();
+        case 4: return Clan.GVT_DESCS[getGovernment()];
+        case 5: return getMorgue();
+        case 6: return getPolitics();
+        case 7: return getPremise();
+        case 8: return getRecall();
+        case 9: return ""+getSize();
+        case 10: return Clan.CLANSTATUS_DESC[getStatus()];
+        case 11: return ""+getTaxes();
+        case 12: return ""+getTrophies();
+        case 13: return ""+getType();
+        case 14: {
+             Vector areas=getControlledAreas();
+             StringBuffer list=new StringBuffer("");
+             for(int i=0;i<areas.size();i++)
+                 list.append("\""+((Environmental)areas.elementAt(i)).name()+"\" ");
+             return list.toString().trim();
+        }
+        case 15: {
+                 DVector members=getMemberList();
+                 StringBuffer list=new StringBuffer("");
+                 for(int i=0;i<members.size();i++)
+                     list.append("\""+((String)members.elementAt(i,1))+"\" ");
+                 return list.toString().trim();
+        }
+        case 16: {
+            MOB M=getResponsibleMember();
+            if(M!=null) return M.Name();
+            return "";
+        }
+        }
+        return "";
+    }
+    
+    public void setStat(String code, String val) {
+        int dex=CMParms.indexOf(getStatCodes(),code.toUpperCase().trim());
+        if(dex<0) return;
+        switch(dex) {
+        case 0: setAcceptanceSettings(val); break;
+        case 1: break; // detail
+        case 2: setDonation(val); break;
+        case 3: setExp(CMath.s_long(val.trim())); break;
+        case 4: setGovernment(CMath.s_int(val.trim())); break;
+        case 5: setMorgue(val); break;
+        case 6: setPolitics(val); break;
+        case 7: setPremise(val); break;
+        case 8: setRecall(val); break;
+        case 9: break; // size
+        case 10: setStatus(CMath.s_int(val.trim())); break;
+        case 11: setTaxes(CMath.s_double(val.trim())); break;
+        case 12: setTrophies(CMath.s_int(val.trim())); break;
+        case 13: break; // type
+        case 14: break; // areas
+        case 15: break; // memberlist
+        case 16: break; // topmember
+        }
+    }
+    
 }

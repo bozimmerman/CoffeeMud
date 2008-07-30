@@ -46,7 +46,7 @@ import java.util.*;
   * </ul>
   * @author=Bo Zimmerman, Jeremy Vyska
   */
-public interface Clan extends Cloneable, Tickable, CMCommon
+public interface Clan extends Cloneable, Tickable, CMCommon, CMModifiable
 {
 
 	/**
@@ -536,6 +536,28 @@ public interface Clan extends Cloneable, Tickable, CMCommon
 		"Passed"
 	};
 
+	
+    /** Stat variables associated with clan objects. */
+    public final static String[] CLAN_STATS={
+        "ACCEPTANCE", // 0
+        "DETAIL", // 1
+        "DONATEROOM", // 2
+        "EXP", // 3
+        "GOVT", // 4
+        "MORGUE", // 5
+        "POLITICS", // 6
+        "PREMISE", // 7
+        "RECALL", // 8
+        "SIZE", // 9
+        "STATUS", // 10
+        "TAXES", // 11
+        "TROPHIES", // 12
+        "TYPE", // 13
+        "AREAS", // 14
+        "MEMBERLIST", // 15
+        "TOPMEMBER" // 16
+    };
+	
 	/** Applicant constant for a clan members position. */
 	public static final int POS_APPLICANT=0;
 	/** Normal member constant for a clan members position. */

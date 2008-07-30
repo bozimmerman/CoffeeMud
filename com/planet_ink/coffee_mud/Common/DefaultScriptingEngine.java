@@ -3867,54 +3867,16 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Clan C=CMLib.clans().findClan(clanID);
                 if(C!=null)
                 {
-                    int whichVar=-1;
-                    for(int i=0;i<clanVars.length;i++)
-                        if(arg2.equalsIgnoreCase(clanVars[i]))
-                        { whichVar=i; break;}
-                    String whichVal="";
-                    switch(whichVar)
-                    {
-                    case 0: whichVal=C.getAcceptanceSettings(); break;
-                    case 1: whichVal=C.getDetail(monster); break;
-                    case 2: whichVal=C.getDonation(); break;
-                    case 3: whichVal=""+C.getExp(); break;
-                    case 4: whichVal=Clan.GVT_DESCS[C.getGovernment()]; break;
-                    case 5: whichVal=C.getMorgue(); break;
-                    case 6: whichVal=C.getPolitics(); break;
-                    case 7: whichVal=C.getPremise(); break;
-                    case 8: whichVal=C.getRecall(); break;
-                    case 9: whichVal=""+C.getSize(); break; // size
-                    case 10: whichVal=Clan.CLANSTATUS_DESC[C.getStatus()]; break;
-                    case 11: whichVal=""+C.getTaxes(); break;
-                    case 12: whichVal=""+C.getTrophies(); break;
-                    case 13: whichVal=""+C.getType(); break; // type
-                    case 14: {
-                         Vector areas=C.getControlledAreas();
-                         StringBuffer list=new StringBuffer("");
-                         for(int i=0;i<areas.size();i++)
-                             list.append("\""+((Environmental)areas.elementAt(i)).name()+"\" ");
-                         whichVal=list.toString().trim();
-                         break; // areas
-                    }
-                    case 15: {
-                             DVector members=C.getMemberList();
-                             StringBuffer list=new StringBuffer("");
-                             for(int i=0;i<members.size();i++)
-                                 list.append("\""+((String)members.elementAt(i,1))+"\" ");
-                             whichVal=list.toString().trim();
-                             break; // memberlist
-                    }
-                    case 16: MOB M=C.getResponsibleMember();
-                             if(M!=null) whichVal=M.Name();
-                             break; // topmember
-                    default:
+                    if(!C.isStat(arg2))
                         logError(scripted,"CLANDATA","RunTime",arg2+" is not a valid clan variable.");
-                        break;
-                    }
-                    if(CMath.isNumber(whichVal.trim())&&CMath.isNumber(arg4.trim()))
-                        returnable=simpleEval(scripted,whichVal,arg4,arg3,"CLANDATA");
                     else
-                        returnable=simpleEvalStr(scripted,whichVal,arg4,arg3,"CLANDATA");
+                    {
+                        String whichVal=C.getStat(arg2).trim();
+                        if(CMath.isNumber(whichVal)&&CMath.isNumber(arg4.trim()))
+                            returnable=simpleEval(scripted,whichVal,arg4,arg3,"CLANDATA");
+                        else
+                            returnable=simpleEvalStr(scripted,whichVal,arg4,arg3,"CLANDATA");
+                    }
                 }
                 break;
             }
@@ -5582,51 +5544,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Clan C=CMLib.clans().findClan(clanID);
                 if(C!=null)
                 {
-                    int whichVar=-1;
-                    for(int i=0;i<clanVars.length;i++)
-                        if(arg2.equalsIgnoreCase(clanVars[i]))
-                        { whichVar=i; break;}
-                    String whichVal="";
-                    switch(whichVar)
-                    {
-                    case 0: whichVal=C.getAcceptanceSettings(); break;
-                    case 1: whichVal=C.getDetail(monster); break;
-                    case 2: whichVal=C.getDonation(); break;
-                    case 3: whichVal=""+C.getExp(); break;
-                    case 4: whichVal=Clan.GVT_DESCS[C.getGovernment()]; break;
-                    case 5: whichVal=C.getMorgue(); break;
-                    case 6: whichVal=C.getPolitics(); break;
-                    case 7: whichVal=C.getPremise(); break;
-                    case 8: whichVal=C.getRecall(); break;
-                    case 9: whichVal=""+C.getSize(); break; // size
-                    case 10: whichVal=Clan.CLANSTATUS_DESC[C.getStatus()]; break;
-                    case 11: whichVal=""+C.getTaxes(); break;
-                    case 12: whichVal=""+C.getTrophies(); break;
-                    case 13: whichVal=""+C.getType(); break; // type
-                    case 14: {
-                         Vector areas=C.getControlledAreas();
-                         StringBuffer list=new StringBuffer("");
-                         for(int i=0;i<areas.size();i++)
-                             list.append("\""+((Environmental)areas.elementAt(i)).name()+"\" ");
-                         whichVal=list.toString().trim();
-                         break; // areas
-                    }
-                    case 15: {
-                             DVector members=C.getMemberList();
-                             StringBuffer list=new StringBuffer("");
-                             for(int i=0;i<members.size();i++)
-                                 list.append("\""+((String)members.elementAt(i,1))+"\" ");
-                             whichVal=list.toString().trim();
-                             break; // memberlist
-                    }
-                    case 16: MOB M=C.getResponsibleMember();
-                             if(M!=null) whichVal=M.Name();
-                             break; // topmember
-                    default:
+                    if(!C.isStat(arg2))
                         logError(scripted,"CLANDATA","RunTime",arg2+" is not a valid clan variable.");
-                        break;
-                    }
-                    results.append(whichVal);
+                    else
+                        results.append(C.getStat(arg2));
                 }
                 break;
             }
@@ -7686,36 +7607,14 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Clan C=CMLib.clans().getClan(clanID);
                 if(C!=null)
                 {
-                    int whichVar=-1;
-                    for(int i=0;i<clanVars.length;i++)
-                        if(clanvar.equalsIgnoreCase(clanVars[i]))
-                        { whichVar=i; break;}
-                    boolean nosave=false;
-                    switch(whichVar)
-                    {
-                    case 0: C.setAcceptanceSettings(clanval); break;
-                    case 1: nosave=true; break; // detail
-                    case 2: C.setDonation(clanval); break;
-                    case 3: C.setExp(CMath.s_long(clanval.trim())); break;
-                    case 4: C.setGovernment(CMath.s_int(clanval.trim())); break;
-                    case 5: C.setMorgue(clanval); break;
-                    case 6: C.setPolitics(clanval); break;
-                    case 7: C.setPremise(clanval); break;
-                    case 8: C.setRecall(clanval); break;
-                    case 9: nosave=true; break; // size
-                    case 10: C.setStatus(CMath.s_int(clanval.trim())); break;
-                    case 11: C.setTaxes(CMath.s_double(clanval.trim())); break;
-                    case 12: C.setTrophies(CMath.s_int(clanval.trim())); break;
-                    case 13: nosave=true; break; // type
-                    case 14: nosave=true; break; // areas
-                    case 15: nosave=true; break; // memberlist
-                    case 16: nosave=true; break; // topmember
-                    default:
+                    if(!C.isStat(clanvar))
                         logError(scripted,"MPSETCLANDATA","RunTime",clanvar+" is not a valid clan variable.");
-                        nosave=true;
-                        break;
+                    else
+                    {
+                        C.setStat(clanvar,clanval.trim());
+                        if(C.getStat(clanvar).equalsIgnoreCase(clanval))
+                            C.update();
                     }
-                    if(!nosave) C.update();
                 }
                 break;
             }

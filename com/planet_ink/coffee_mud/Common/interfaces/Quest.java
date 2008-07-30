@@ -625,8 +625,7 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
     public final static int SPAWN_ANY=2;
     /** Descriptions of the several quest step spawn flags */
     public final static String[] SPAWN_DESCS={"FALSE","TRUE","ALL"};
-    /** Returns whether the given code is a valid variable for this quest */
-	public boolean isStat(String code);
+    
     /** The list of BASIC non-iterative variable codes that pertain to a quest object */
 	public final static String[] QCODES={"CLASS", "NAME", "DURATION", "WAIT", "MINPLAYERS", "PLAYERMASK",
 										 "RUNLEVEL", "DATE", "MUDDAY", "INTERVAL","SPAWNABLE", "DISPLAY", 
