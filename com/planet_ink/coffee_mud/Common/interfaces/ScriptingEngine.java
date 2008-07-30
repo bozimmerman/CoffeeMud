@@ -34,8 +34,36 @@ import org.mozilla.javascript.ScriptableObject;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+
+/**
+ * The interface for the main CoffeeMud scripting engine, which implements 
+ * a scripting engine descended from the old mud codebases of the 90's 
+ * usually called MOBPROG.  Its main features include easy to understand
+ * event-oriented triggers, making all mud commands implicit scripting
+ * commands.  It also includes methods for embedding javascript.
+ * 
+ * @see com.planet_ink.coffee_mud.Behaviors.Scriptable
+ */
 public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 {
+    /**
+     * Executes a script in response to an event
+     * The scripts are formatted as a 2 dimensional DVector
+     * with the first row being the trigger information.  Each
+     * row consists of the String command, and a parsed String[]
+     * array as dimension 2.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine.ScriptableResponse
+     * @param scripted the object that is scripted
+     * @param source the source of the event
+     * @param target the target of the event
+     * @param monster a mob representation of the scripted object
+     * @param primaryItem an item involved in the event
+     * @param secondaryItem a second item involved in the event
+     * @param script 2 dimensional DVector, the script to execute
+     * @param msg a string message associated with the event
+     * @param tmp miscellaneous local variables
+     * @return N/A
+     */
     public String execute(Environmental scripted,
                           MOB source,
                           Environmental target,
@@ -46,8 +74,29 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
                           String msg,
                           Object[] tmp);
     
+    /**
+     * Forces any queued event responses to be immediately
+     * executed.
+     */
     public void dequeResponses();
 
+    /**
+     * Evaluates a scripting function.  Is called by the execute command
+     * to resolve IF, WHILE, and similar expressions that utilize the MOBPROG
+     * functions.  The expressions are passed in as a String array stored
+     * in a single string array entry (for replacement) in element 0.
+     * @param scripted the object that is scripted
+     * @param source the source of the event
+     * @param target the target of the event
+     * @param monster a mob representation of the scripted object
+     * @param primaryItem an item involved in the event
+     * @param secondaryItem a second item involved in the event
+     * @param msg a string message associated with the event
+     * @param tmp miscellaneous local variables
+     * @param eval the pre-parsed expression
+     * @param startEval while line to start evaluating on.
+     * @return true if the expression is true, false otherwise.
+     */
     public boolean eval(Environmental scripted,
                         MOB source,
                         Environmental target,
@@ -59,48 +108,176 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
                         String[][] eval,
                         int startEval);
     
+    /**
+     * Calling this method forces this script to look for a trigger
+     * dealing with the end of a quest (QUEST_TIME_PROG -1).
+     * @param hostObj the scripted object
+     * @param mob a mob representation of the host object
+     * @param quest the name of the quest being ended
+     * @return true if a quest ending trigger was found and run
+     */
     public boolean endQuest(Environmental hostObj, MOB mob, String quest);
 
+    /**
+     * Returns the script or load command(s).
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setScript(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#externalFiles()
+     * @return the script or load command(s)
+     */
     public String getScript();
     
+    /**
+     * Sets the script or load command(s).
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getScript()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#externalFiles()
+     * @param newParms the script or load command(s)
+     */
     public void setScript(String newParms);
     
+    /**
+     * If the script is a load command, this will return the
+     * list of loaded script files referenced by the load command
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getScript()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setScript(String)
+     * @return a list of loaded script files. 
+     */
     public Vector externalFiles();
     
+    /**
+     * If this script is associated with a particular quest, this 
+     * method is called to register that quest name.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#defaultQuestName()
+     * @param questName the quest associated with this script
+     */
     public void registerDefaultQuest(String questName);
     
+    /**
+     * If this script is associated with a particular quest, this 
+     * method is called to return that quest name.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#registerDefaultQuest(String)
+     * @return the quest associated with this script, if any
+     */
     public String defaultQuestName();
     
+    /**
+     * Sets the scope of any variables defined within the script.  Although the scope
+     * is somewhat modified if this script is quest-bound, it is usually honored.
+     * Valid scopes include: "" for global, "*" for local, or a shared named scope.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getVarScope()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getVar(String, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getLocalVarXML()
+     * @param scope the scope of variables
+     */
     public void setVarScope(String scope);
     
+    /**
+     * Returns the scope of any variables defined within the script.  Although the scope
+     * is somewhat modified if this script is quest-bound, it is usually honored.
+     * Valid scopes include: "" for global, "*" for local, or a shared named scope.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setVarScope(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setVar(String, String, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setLocalVarXML(String)
+     * @return the scope of variables
+     */
     public String getVarScope();
     
-    public String getScopeValues(); 
+    /**
+     * If the variable scope of this script is local, this will return all the variables 
+     * and values defined as an xml document for easy storage.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setVarScope(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setVar(String, String, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setLocalVarXML(String)
+     * @return the local variable values as xml
+     */
+    public String getLocalVarXML(); 
     
-    public void setScopeValues(String xml);
+    /**
+     * If the variable scope of this script is local, this will set all the variables 
+     * and values defined from a passed in xml document.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getVarScope()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getVar(String, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#getLocalVarXML()
+     * @param xml the local variable values as xml
+     */
+    public void setLocalVarXML(String xml);
     
+    /**
+     * Returns whether this script is a temporary attributed of the scripted object,
+     * or a permanent on that should be saved with the object.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#setSavable(boolean)
+     * @return whether this script is a saveable attribute of the scripted object
+     */
     public boolean isSavable();
     
+    /**
+     * Sets whether this script is a temporary attributed of the scripted object,
+     * or a permanent on that should be saved with the object.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.ScriptingEngine#isSavable()
+     * @param truefalse true if this script is a saveable attribute of the scripted object
+     */
     public void setSavable(boolean truefalse);
     
+    /**
+     * 
+     * @param context
+     * @param variable
+     * @return
+     */
     public String getVar(String context, String variable);
     
+    /**
+     * 
+     * @param context
+     * @param variable
+     * @return
+     */
     public boolean isVar(String context, String variable);
     
+    /**
+     * 
+     * @param context
+     * @param variable
+     * @param value
+     */
     public void setVar(String context, String variable, String value);
     
+    /**
+     * 
+     * @author bzimmerman
+     *
+     */
     public static class ScriptableResponse
     {
         private int tickDelay=0;
+        /** */
         public Environmental h=null;
+        /** */
         public MOB s=null;
+        /** */
         public Environmental t=null;
+        /** */
         public MOB m=null;
+        /** */
         public Item pi=null;
+        /** */
         public Item si=null;
+        /** */
         public DVector scr;
+        /** */
         public String message=null;
 
+        /**
+         * 
+         * @param host
+         * @param source
+         * @param target
+         * @param monster
+         * @param primaryItem
+         * @param secondaryItem
+         * @param script
+         * @param ticks
+         * @param msg
+         */
         public ScriptableResponse(Environmental host,
                                   MOB source,
                                   Environmental target,
@@ -122,13 +299,21 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
             message=msg;
         }
 
+        /**
+         * 
+         * @return
+         */
         public boolean checkTimeToExecute() { return ((--tickDelay)<=0); }
     }
 
+    /** */
     public static final int SPECIAL_NUM_OBJECTS=12;
+    /** */
     public static final int SPECIAL_RANDPC=10;
+    /** */
     public static final int SPECIAL_RANDANYONE=11;
     
+    /** */
     public static final String[] progs={
         "GREET_PROG", //1
         "ALL_GREET_PROG", //2
@@ -176,6 +361,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         "KILL_PROG", //44
     };
 
+    /** */
     public static final String[] funcs={
         "RAND", //1
         "HAS", //2
@@ -272,6 +458,8 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         "QUESTSCRIPTED", //93
         "QUESTROOM", // 94
     };
+    
+    /** */
     public static final String[] methods={
         "MPASOUND", //1
         "MPECHO", //2
@@ -348,6 +536,7 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         "MPSETINTERNAL", // 73
     };
 
+    /** */
     public final static String[] clanVars={
         "ACCEPTANCE", // 0
         "DETAIL", // 1
@@ -368,32 +557,51 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         "TOPMEMBER" // 16
     };
 
+    /** */
     public final static String[] GSTATCODES_ADDITIONAL={"DEITY","CLAN","CLANROLE"};
+    /** */
     public final static int GSTATADD_DEITY=0;
+    /** */
     public final static int GSTATADD_CLAN=1;
+    /** */
     public final static int GSTATADD_CLANROLE=2;
     
+    /** */
     public final static String[] DATETIME_ARGS={"HOUR","TIME","DAY","DATE","MONTH","YEAR"};
     
+    /** */
     public final static String[] SIGNS={"==",">=",">","<","<=","=>","=<","!="};
     
+    /** */
     public final static int SIGN_EQUL=0;
+    /** */
     public final static int SIGN_GTEQ=1;
+    /** */
     public final static int SIGN_GRAT=2;
+    /** */
     public final static int SIGN_LEST=3;
+    /** */
     public final static int SIGN_LTEQ=4;
+    /** */
     public final static int SIGN_EQGT=5;
+    /** */
     public final static int SIGN_EQLT=6;
+    /** */
     public final static int SIGN_NTEQ=7;
     
+    /** */
     public final static String[] CONNECTORS={"AND","OR","NOT","ANDNOT","ORNOT"};
-    
+    /** */
     public final static int CONNECTOR_AND=0;
+    /** */
     public final static int CONNECTOR_OR=1;
+    /** */
     public final static int CONNECTOR_NOT=2;
+    /** */
     public final static int CONNECTOR_ANDNOT=3;
+    /** */
     public final static int CONNECTOR_ORNOT=4;
-    
+    /** */
     public final static int[][] CONNECTOR_MAP={
         {CONNECTOR_AND,CONNECTOR_OR,CONNECTOR_ANDNOT,CONNECTOR_AND,CONNECTOR_ORNOT}, //and
         {CONNECTOR_OR,CONNECTOR_OR,CONNECTOR_ORNOT,CONNECTOR_ORNOT,CONNECTOR_ORNOT}, //or

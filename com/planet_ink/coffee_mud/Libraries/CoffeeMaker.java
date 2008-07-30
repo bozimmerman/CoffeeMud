@@ -290,7 +290,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
                 scriptstr.append(CMLib.xml().convertXMLtoTag("SQN",""+S.defaultQuestName()));
                 scriptstr.append(CMLib.xml().convertXMLtoTag("SSCOP",S.getVarScope()));
                 if((includeVars)&&(S.getVarScope().equals("*")))
-                    scriptstr.append(CMLib.xml().convertXMLtoTag("SSVAR",S.getScopeValues()));
+                    scriptstr.append(CMLib.xml().convertXMLtoTag("SSVAR",S.getLocalVarXML()));
                 scriptstr.append("</SCRPT>");
             }
         }
@@ -1890,7 +1890,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
             {
                 String svars=CMLib.xml().getValFromPieces(sblk.contents,"SSVAR");
                 if((svars!=null)&&(svars.length()>0))
-                    S.setScopeValues(svars);
+                    S.setLocalVarXML(svars);
             }
             E.addScript(S);
         }

@@ -114,7 +114,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
 
     protected Object[] newObjs() { return new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];}
 
-    public String getScopeValues()
+    public String getLocalVarXML()
     {
         if((scope==null)||(scope.length()==0)) return "";
         StringBuffer str=new StringBuffer("");
@@ -138,7 +138,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         return str.toString();
     }
 
-    public void setScopeValues(String xml)
+    public void setLocalVarXML(String xml)
     {
         Vector V=resources._findResourceKeys("SCRIPTVAR-");
         for(int v=0;v<V.size();v++)

@@ -84,11 +84,11 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
     
     public String getVarScope() { return engine().getVarScope(); }
     
-    public String getScopeValues(){ return engine().getScopeValues(); }
+    public String getLocalVarXML(){ return engine().getLocalVarXML(); }
     
-    public void setScopeValues(String xml){
+    public void setLocalVarXML(String xml){
         if(engine().getVarScope().length()>0)
-            engine().setScopeValues(xml);
+            engine().setLocalVarXML(xml);
     }
 
 

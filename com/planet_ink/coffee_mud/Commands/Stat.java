@@ -379,7 +379,7 @@ public class Stat extends BaseAbleLister
                 str.append("Quest: "+E.defaultQuestName()+"\n\r");
                 str.append("Savable: "+E.isSavable()+"\n\r");
                 str.append("Scope: "+E.getVarScope()+"\n\r");
-                str.append("Vars: "+E.getScopeValues()+"\n\r");
+                str.append("Vars: "+E.getLocalVarXML()+"\n\r");
                 str.append("Script: "+E.getScript()+"\n\r");
                 str.append("\n\r");
             }
