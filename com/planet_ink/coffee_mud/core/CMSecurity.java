@@ -53,6 +53,7 @@ cmditems, cmdmobs, cmdrooms, sessions, cmdareas, listadmin, stat
 
 public class CMSecurity
 {
+    protected final long startTime=System.currentTimeMillis();
     private static CMSecurity[] secs=new CMSecurity[256];
     public CMSecurity()
     {
@@ -69,7 +70,7 @@ public class CMSecurity
     }
     public static CMSecurity instance(char c){ return secs[c];}
     private static CMSecurity i(){ return secs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}  
-    protected final long startTime=System.currentTimeMillis();
+    
     protected Hashtable groups=new Hashtable();
     protected Vector compiledSysop=null;
     

@@ -34,25 +34,40 @@ import java.util.*;
 */
 public class Resources
 {
-    private Resources(){super();}
-    private static Resources inst=new Resources();
+    private static Resources[] rscs=new Resources[256];
+    public Resources()
+    {
+        super();
+        char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+        if(rscs==null) rscs=new Resources[256];
+        if(rscs[c]==null) rscs[c]=this;
+    }
+    public static Resources instance()
+    {
+        Resources r=r();
+        if(r==null) r=new Resources();
+        return r;
+    }
+    public static Resources instance(char c){ return rscs[c];}
+    private static Resources r(){ return rscs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
+
     private static boolean compress=false;
-    public static Resources instance(){return inst;}
+    
     public static Resources newResources(){ return new Resources();}
 
 	private DVector resources=new DVector(3);
 
-    public static void clearResources(){inst._clearResources();}
-    public static void removeResource(String ID){ inst._removeResource(ID);}
-    public static Vector findResourceKeys(String srch){return inst._findResourceKeys(srch);}
-    public static Object getResource(String ID){return inst._getResource(ID);}
-    public static void submitResource(String ID, Object obj){inst._submitResource(ID,obj);}
-    public static void updateResource(String ID, Object obj){inst._updateResource(ID,obj);}
-    public static boolean isFileResource(String filename){return inst._isFileResource(filename);}
-    public static StringBuffer getFileResource(String filename, boolean reportErrors){return inst._getFileResource(filename,reportErrors);}
-    public static boolean saveFileResource(String filename){return inst._saveFileResource(filename);}
-    public static boolean saveFileResource(String filename, MOB whom, StringBuffer myRsc){return inst._saveFileResource(filename,whom,myRsc);}
-    public static boolean findRemoveProperty(CMFile F, String match){return inst._findRemoveProperty(F,match);}
+    public static void clearResources(){r()._clearResources();}
+    public static void removeResource(String ID){ r()._removeResource(ID);}
+    public static Vector findResourceKeys(String srch){return r()._findResourceKeys(srch);}
+    public static Object getResource(String ID){return r()._getResource(ID);}
+    public static void submitResource(String ID, Object obj){r()._submitResource(ID,obj);}
+    public static void updateResource(String ID, Object obj){r()._updateResource(ID,obj);}
+    public static boolean isFileResource(String filename){return r()._isFileResource(filename);}
+    public static StringBuffer getFileResource(String filename, boolean reportErrors){return r()._getFileResource(filename,reportErrors);}
+    public static boolean saveFileResource(String filename){return r()._saveFileResource(filename);}
+    public static boolean saveFileResource(String filename, MOB whom, StringBuffer myRsc){return r()._saveFileResource(filename,whom,myRsc);}
+    public static boolean findRemoveProperty(CMFile F, String match){return r()._findRemoveProperty(F,match);}
 
     public static String getLineMarker(StringBuffer buf)
     {
