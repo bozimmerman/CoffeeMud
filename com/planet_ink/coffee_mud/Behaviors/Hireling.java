@@ -91,15 +91,15 @@ public class Hireling extends StdBehavior
 		CMLib.commands().postFollow(observer,null,false);
 		observer.setFollowing(null);
 		int direction=-1;
-		for(int d=0;d<Directions.DIRECTIONS_BASE.length;d++)
-			if(observer.location().getExitInDir(Directions.DIRECTIONS_BASE[d])!=null)
+		for(int d=0;d<Directions.DIRECTIONS_BASE().length;d++)
+			if(observer.location().getExitInDir(Directions.DIRECTIONS_BASE()[d])!=null)
             {
-				if(observer.location().getExitInDir(Directions.DIRECTIONS_BASE[d]).isOpen())
+				if(observer.location().getExitInDir(Directions.DIRECTIONS_BASE()[d]).isOpen())
 				{
-					direction=Directions.DIRECTIONS_BASE[d];
+					direction=Directions.DIRECTIONS_BASE()[d];
 					break;
 				}
-				direction=Directions.DIRECTIONS_BASE[d];
+				direction=Directions.DIRECTIONS_BASE()[d];
             }
 		if(direction>=0)
 			CMLib.tracking().move(observer,direction,false,false);

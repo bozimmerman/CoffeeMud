@@ -109,7 +109,6 @@ public class MUD extends Thread implements MudHost
 
 	protected static boolean initHost(Thread t)
 	{
-
 		if (!isOK)
 		{
 			CMLib.killThread(t,100,1);
@@ -123,12 +122,11 @@ public class MUD extends Thread implements MudHost
 			fatalStartupError(t,1);
 			return false;
 		}
-
+        
         char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
         Vector privacyV=new Vector(1);
         if(tCode!=MAIN_HOST)
             privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
-        
 		while (!serverIsRunning && isOK)
 		{ try{ Thread.sleep(500); }catch(Exception e){ isOK=false;} }
 		
@@ -138,6 +136,8 @@ public class MUD extends Thread implements MudHost
 			return false;
 		}
 
+        
+        
 		Vector compress=CMParms.parseCommas(page.getStr("COMPRESS").toUpperCase(),true);
 		CMProps.setBoolVar(CMProps.SYSTEMB_ITEMDCOMPRESS,compress.contains("ITEMDESC"));
 		CMProps.setBoolVar(CMProps.SYSTEMB_MOBCOMPRESS,compress.contains("GENMOBS"));
@@ -961,6 +961,8 @@ public class MUD extends Thread implements MudHost
 		{
             new CMLib(); // initialize the lib
             new CMClass(); // initialize the classes
+            Log.shareWith(MudHost.MAIN_HOST);
+            
             // wait for ini to be loaded, and for other matters
             if(threadCode!=MAIN_HOST) {
                 while((CMLib.library(MAIN_HOST,CMLib.LIBRARY_INTERMUD)==null)&&(!MUD.bringDown)) {
@@ -980,11 +982,18 @@ public class MUD extends Thread implements MudHost
             page.resetSystemVars();
             CMProps.setBoolVar(CMProps.SYSTEMB_MUDSTARTED,false);
             
-            Log.instance();
-            if((threadCode!=MAIN_HOST)&&(CMath.isInteger(page.getPrivateStr("NUMLOGS"))))
+            if(threadCode!=MAIN_HOST)
             {
-                Log.instance().startLogFiles(logName,page.getInt("NUMLOGS"));
-                Log.instance().setLogOutput(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("WRNMSGS"),page.getStr("DBGMSGS"),page.getStr("HLPMSGS"),page.getStr("KILMSGS"),page.getStr("CBTMSGS"));
+                if(CMath.isInteger(page.getPrivateStr("NUMLOGS")))
+                {
+                    Log.newInstance();
+                    Log.instance().startLogFiles(logName,page.getInt("NUMLOGS"));
+                    Log.instance().setLogOutput(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("WRNMSGS"),page.getStr("DBGMSGS"),page.getStr("HLPMSGS"),page.getStr("KILMSGS"),page.getStr("CBTMSGS"));
+                }
+                if(page.getRawPrivateStr("SYSOPMASK")!=null)
+                    page.resetSecurityVars();
+                else
+                    CMSecurity.instance().markShared();
             }
             
             if(page.getStr("DISABLE").trim().length()>0)
@@ -1125,6 +1134,7 @@ public class MUD extends Thread implements MudHost
 			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"A terminal error has occured!");
 			System.exit(-1);
 		}
+        Log.shareWith(MudHost.MAIN_HOST);
 		Log.instance().startLogFiles("mud",page.getInt("NUMLOGS"));
 		Log.instance().setLogOutput(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("WRNMSGS"),page.getStr("DBGMSGS"),page.getStr("HLPMSGS"),page.getStr("KILMSGS"),page.getStr("CBTMSGS"));
 		while(!bringDown)

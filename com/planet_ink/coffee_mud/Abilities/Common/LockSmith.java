@@ -98,9 +98,9 @@ public class LockSmith extends CraftingSkill
 						if((delock)||(!((Exit)workingOn).hasALock()))
 						{
 							int dir=-1;
-							for(int d=0;d<Directions.DIRECTIONS_BASE.length;d++)
-								if(mob.location().getExitInDir(Directions.DIRECTIONS_BASE[d])==workingOn)
-								{dir=Directions.DIRECTIONS_BASE[d]; break;}
+							for(int d=0;d<Directions.DIRECTIONS_BASE().length;d++)
+								if(mob.location().getExitInDir(Directions.DIRECTIONS_BASE()[d])==workingOn)
+								{dir=Directions.DIRECTIONS_BASE()[d]; break;}
 							if((messedUp)||(dir<0))
 							{
                                 if(delock)

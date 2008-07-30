@@ -54,7 +54,7 @@ public class CMFile
     private static final int VFS_INFO_DATA=4;
 
     private static final char pathSeparator=File.separatorChar;
-    private static Vector vfs=null;
+    private static Vector[] vfs=new Vector[256];
     private boolean logErrors=false;
 
     private int vfsBits=0;
@@ -78,6 +78,10 @@ public class CMFile
     public CMFile (String currentPath, String filename, MOB user, boolean pleaseLogErrors, boolean forceAllow)
     { super(); buildCMFile(incorporateBaseDir(currentPath,filename),user,pleaseLogErrors,forceAllow); }
 
+    private static Vector vfsV() {
+        return vfs[Thread.currentThread().getThreadGroup().getName().charAt(0)];
+    }
+    
     private void buildCMFile(String absolutePath, MOB user, boolean pleaseLogErrors, boolean forceAllow)
     {
         accessor=user;
@@ -574,7 +578,7 @@ public class CMFile
             if(info!=null)
             {
                 filename=(String)info.firstElement();
-                if(vfs!=null) vfs.removeElement(info);
+                if(vfs!=null) vfsV().removeElement(info);
                 CMLib.database().DBDeleteVFSFile(filename);
             }
             if(vfsBits<0) vfsBits=0;
@@ -584,7 +588,7 @@ public class CMFile
             info.addElement(new Integer(vfsBits&VFS_MASK_MASKSAVABLE));
             info.addElement(new Long(System.currentTimeMillis()));
             info.addElement(author());
-            vfs.addElement(info);
+            vfsV().addElement(info);
             CMLib.database().DBCreateVFSFile(filename,vfsBits,author(),O);
             return true;
         }
@@ -663,7 +667,7 @@ public class CMFile
             if(info!=null)
             {
                 filename=(String)info.firstElement();
-                if(vfs!=null) vfs.removeElement(info);
+                if(vfsV()!=null) vfsV().removeElement(info);
                 CMLib.database().DBDeleteVFSFile(filename);
             }
             if(vfsBits<0) vfsBits=0;
@@ -673,7 +677,7 @@ public class CMFile
             info.addElement(new Integer(vfsBits&VFS_MASK_MASKSAVABLE));
             info.addElement(new Long(System.currentTimeMillis()));
             info.addElement(author());
-            vfs.addElement(info);
+            vfsV().addElement(info);
             CMLib.database().DBCreateVFSFile(filename,vfsBits,author(),O);
             return true;
         }
@@ -742,7 +746,7 @@ public class CMFile
             info.addElement(new Integer(vfsBits&VFS_MASK_MASKSAVABLE));
             info.addElement(new Long(System.currentTimeMillis()));
             info.addElement(author());
-            vfs.addElement(info);
+            vfsV().addElement(info);
             CMLib.database().DBCreateVFSFile(filename,vfsBits,author(),new StringBuffer(""));
             return true;
         }
@@ -955,16 +959,33 @@ public class CMFile
 
     public static Vector getVFSDirectory()
     {
-        if(vfs==null)
+        Vector vvfs=vfsV();
+        if(vvfs==null)
         {
-        	if(CMLib.database()==null) return new Vector();
-    		vfs=CMLib.database().DBReadVFSDirectory();
+            if(CMLib.database()==null) return new Vector();
+            char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
+            if(threadCode==MudHost.MAIN_HOST)
+        		vvfs=vfs[threadCode]=CMLib.database().DBReadVFSDirectory();
+            else
+            {
+                Vector privateV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
+                if(privateV.contains("DBVFS"))
+                    vvfs=vfs[threadCode]=CMLib.database().DBReadVFSDirectory();
+                else
+                if(vfs[MudHost.MAIN_HOST]!=null)
+                {
+                    vfs[threadCode]=vfs[MudHost.MAIN_HOST];
+                    return vfs[threadCode];
+                }
+                else
+                    vvfs=vfs[threadCode]=vfs[MudHost.MAIN_HOST]=CMLib.database().DBReadVFSDirectory();
+            }
             HashSet dirs=new HashSet();
             String fname=null;
             int x=0;
-            for(int v=0;v<vfs.size();v++)
+            for(int v=0;v<vvfs.size();v++)
             {
-                fname=vfsifyFilename((String)((Vector)vfs.elementAt(v)).firstElement());
+                fname=vfsifyFilename((String)((Vector)vvfs.elementAt(v)).firstElement());
                 x=fname.indexOf("/");
                 while(x>=0)
                 {
@@ -981,7 +1002,7 @@ public class CMFile
                 filenameAsDir=(String)i.next();
                 file=(filenameAsDir.endsWith("/"))?filenameAsDir.substring(0,filenameAsDir.length()-1):filenameAsDir;
                 found=false;
-                for(Enumeration e=vfs.elements();e.hasMoreElements();)
+                for(Enumeration e=vvfs.elements();e.hasMoreElements();)
                 {
                     fname=(String)((Vector)e.nextElement()).firstElement();
                     if(fname.equalsIgnoreCase(file)||fname.equalsIgnoreCase(filenameAsDir))
@@ -994,11 +1015,11 @@ public class CMFile
                     V.addElement(new Integer(VFS_MASK_DIRECTORY));
                     V.addElement(new Long(System.currentTimeMillis()));
                     V.addElement("");
-                    vfs.addElement(V);
+                    vvfs.addElement(V);
                 }
             }
         }
-        return vfs;
+        return vvfs;
     }
 
     public static String vfsifyFilename(String filename)

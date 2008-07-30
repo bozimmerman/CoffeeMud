@@ -35,24 +35,38 @@ import java.util.*;
 public class Log
 {
     private static Log[] logs=new Log[256];
-    private static boolean firstInited=false;
     public Log(){
         super();
         char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
-        if(logs==null) logs=new Log[256];
+        if(logs==null) 
+            logs=new Log[256];
         if(logs[threadCode]==null)
-        {
             logs[threadCode]=this;
-            if(!firstInited)
-                logs['0']=this;
-        }
     }
     private static Log l(){ return logs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
     public static Log l(char threadCode){return logs[threadCode];}
     public static Log instance(){
         Log log=l();
-        if(log==null) log=new Log();
+        if(log==null) 
+            log=new Log();
         return log;
+    }
+    public static Log newInstance(){
+        char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
+        if(logs==null) 
+            logs=new Log[256];
+        logs[threadCode]=new Log();
+        return l();
+    }
+    public static void shareWith(char threadCode) {
+        char tc=Thread.currentThread().getThreadGroup().getName().charAt(0);
+        if(logs[threadCode]!=null)
+            logs[tc]=logs[threadCode];
+        else
+        if(logs[tc]!=null)
+            logs[threadCode]=logs[tc];
+        else
+            logs[tc]=logs[threadCode]=new Log();
     }
     
     /** final date format for headers */

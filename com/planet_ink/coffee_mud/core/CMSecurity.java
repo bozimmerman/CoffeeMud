@@ -31,42 +31,67 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * 
+supported: AFTER, AHELP, ANNOUNCE, AT, BAN, BEACON, BOOT, CHARGEN
+COPYMOBS, COPYITEMS, COPYROOMS, CMDQUESTS, CMDSOCIALS, CMDROOMS,
+CMDITEMS, CMDEXITS, CMDAREAS, CMDRACES, CMDCLASSES, NOPURGE, KILLBUGS,
+KILLIDEAS, KILLTYPOS, CMDCLANS, DUMPFILE, GOTO, LOADUNLOAD, CMDPLAYERS
+POSSESS, SHUTDOWN, SNOOP, STAT, SYSMSGS, TICKTOCK, TRANSFER, WHERE
+RESET, RESETUTILS, KILLDEAD, MERGE, IMPORTROOMS, IMPORTMOBS, IMPORTITEMS
+IMPORTPLAYERS, EXPORT, EXPORTPLAYERS, EXPORTFILE, RESTRING, PURGE, TASKS
+ORDER (includes TAKE, GIVE, DRESS, mob passivity, all follow)
+I3, ABOVELAW (also law books), WIZINV (includes see WIZINV), CMDABILITIES
+CMDMOBS (also prevents walkaways), KILLASSIST, ALLSKILLS, GMODIFY, CATALOG
+SUPERSKILL (never fails skills), IMMORT (never dies), MXPTAGS, IDLEOK
+JOURNALS, PKILL, SESSIONS, TRAILTO, CMDFACTIONS, COMPONENTS, EXPERTISES, TITLES
+FS:relative path from /coffeemud/ -- read/write access to regular file sys
+VFS:relative path from /coffeemud/ -- read/write access to virtual file sys
+LIST: (affected by killx, cmdplayers, loadunload, cmdclans, ban, nopurge,
+cmditems, cmdmobs, cmdrooms, sessions, cmdareas, listadmin, stat
+*/ 
+
 public class CMSecurity
 {
-	private CMSecurity(){super();}
-    private static CMSecurity inst=new CMSecurity();
-    public static CMSecurity instance(){return inst;}
+    private static CMSecurity[] secs=new CMSecurity[256];
+    public CMSecurity()
+    {
+        super();
+        char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+        if(secs==null) secs=new CMSecurity[256];
+        if(secs[c]==null) secs[c]=this;
+    }
+    public static CMSecurity instance()
+    {
+        CMSecurity p=i();
+        if(p==null) p=new CMSecurity();
+        return p;
+    }
+    public static CMSecurity instance(char c){ return secs[c];}
+    private static CMSecurity i(){ return secs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}  
+    protected final long startTime=System.currentTimeMillis();
+    protected Hashtable groups=new Hashtable();
+    protected Vector compiledSysop=null;
     
-    protected static final long startTime=System.currentTimeMillis();
-    protected static Hashtable groups=new Hashtable();
-    protected static Vector compiledSysop=null;
-	// supported: AFTER, AHELP, ANNOUNCE, AT, BAN, BEACON, BOOT, CHARGEN
-	// COPYMOBS, COPYITEMS, COPYROOMS, CMDQUESTS, CMDSOCIALS, CMDROOMS,
-	// CMDITEMS, CMDEXITS, CMDAREAS, CMDRACES, CMDCLASSES, NOPURGE, KILLBUGS,
-	// KILLIDEAS, KILLTYPOS, CMDCLANS, DUMPFILE, GOTO, LOADUNLOAD, CMDPLAYERS
-	// POSSESS, SHUTDOWN, SNOOP, STAT, SYSMSGS, TICKTOCK, TRANSFER, WHERE
-	// RESET, RESETUTILS, KILLDEAD, MERGE, IMPORTROOMS, IMPORTMOBS, IMPORTITEMS
-	// IMPORTPLAYERS, EXPORT, EXPORTPLAYERS, EXPORTFILE, RESTRING, PURGE, TASKS
-	// ORDER (includes TAKE, GIVE, DRESS, mob passivity, all follow)
-	// I3, ABOVELAW (also law books), WIZINV (includes see WIZINV), CMDABILITIES
-	// CMDMOBS (also prevents walkaways), KILLASSIST, ALLSKILLS, GMODIFY, CATALOG
-	// SUPERSKILL (never fails skills), IMMORT (never dies), MXPTAGS, IDLEOK
-	// JOURNALS, PKILL, SESSIONS, TRAILTO, CMDFACTIONS, COMPONENTS, EXPERTISES, TITLES
-    // FS:relative path from /coffeemud/ -- read/write access to regular file sys
-    // VFS:relative path from /coffeemud/ -- read/write access to virtual file sys
-	// LIST: (affected by killx, cmdplayers, loadunload, cmdclans, ban, nopurge,
-	//		cmditems, cmdmobs, cmdrooms, sessions, cmdareas, listadmin, stat
-	// 
-	
+    public void markShared() {
+        char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
+        if(threadCode==MudHost.MAIN_HOST)
+            return;
+        if(secs[MudHost.MAIN_HOST]==null)
+            secs[MudHost.MAIN_HOST]=this;
+        else
+            secs[threadCode]=secs[MudHost.MAIN_HOST];
+    }
+    
 	public static void setSysOp(String zapCheck)
 	{
 		if((zapCheck==null)||(zapCheck.trim().length()==0))
 			zapCheck="-ANYCLASS +Archon";
-		compiledSysop=CMLib.masking().maskCompile(zapCheck);
+		instance().compiledSysop=CMLib.masking().maskCompile(zapCheck);
 	}
 
 	
-	public static void clearGroups(){ groups.clear();}
+	public static void clearGroups(){ instance().groups.clear();}
 	
 	public static void parseGroups(Properties page)
 	{
@@ -85,8 +110,9 @@ public class CMSecurity
 	public static void addGroup(String name, HashSet set)
 	{
 		name=name.toUpperCase().trim();
-		if(groups.containsKey(name)) groups.remove(name);
-		groups.put(name,set);
+		if(instance().groups.containsKey(name)) 
+            i().groups.remove(name);
+        i().groups.put(name,set);
 	}
 	
 	public static void addGroup(String name, Vector set)
@@ -106,7 +132,7 @@ public class CMSecurity
 	
 	public static boolean isASysOp(MOB mob)
 	{
-		return CMLib.masking().maskCheck(compiledSysop,mob,true)
+		return CMLib.masking().maskCheck(i().compiledSysop,mob,true)
 				||((mob.soulMate()!=null)
 					&&(CMath.bset(mob.soulMate().getBitmap(),MOB.ATT_SYSOPMSGS))
 					&&(isASysOp(mob.soulMate())));
@@ -168,7 +194,7 @@ public class CMSecurity
             }
             else
             {
-                HashSet H=(HashSet)groups.get(set);
+                HashSet H=(HashSet)i().groups.get(set);
                 if(H==null) continue;
                 for(Iterator i=H.iterator();i.hasNext();)
                 {
@@ -277,7 +303,7 @@ public class CMSecurity
             }
             else
             {
-                HashSet H=(HashSet)groups.get(set);
+                HashSet H=(HashSet)i().groups.get(set);
                 if(H==null) continue;
                 for(Iterator i=H.iterator();i.hasNext();)
                 {
@@ -333,7 +359,7 @@ public class CMSecurity
                 set=set.substring(4).trim();
             else
             {
-                HashSet H=(HashSet)groups.get(set);
+                HashSet H=(HashSet)i().groups.get(set);
                 if(H==null) continue;
                 for(Iterator i=H.iterator();i.hasNext();)
                 {
@@ -399,7 +425,7 @@ public class CMSecurity
             }
             else
             {
-                HashSet H=(HashSet)groups.get(set);
+                HashSet H=(HashSet)i().groups.get(set);
                 if(H==null) continue;
                 for(Iterator i=H.iterator();i.hasNext();)
                 {
@@ -444,11 +470,11 @@ public class CMSecurity
 		Vector codes=(Vector)mob.playerStats().getSecurityGroups().clone();
         CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),codes);
 		HashSet tried=new HashSet();
-		for(Enumeration e=groups.keys();e.hasMoreElements();)
+		for(Enumeration e=i().groups.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
 			codes.addElement(key);
-			HashSet H=(HashSet)groups.get(key);
+			HashSet H=(HashSet)i().groups.get(key);
 			for(Iterator i=H.iterator();i.hasNext();)
 			{
 				String s=(String)i.next();
@@ -487,7 +513,7 @@ public class CMSecurity
 			String set=(String)V.elementAt(v);
 			if(set.startsWith(code)||(subop&&set.startsWith("AREA "+code)))
 			   return true;
-			HashSet H=(HashSet)groups.get(set);
+			HashSet H=(HashSet)i().groups.get(set);
 			if(H!=null)
 			{
 				for(Iterator i=H.iterator();i.hasNext();)
@@ -521,7 +547,7 @@ public class CMSecurity
 			String set=(String)V.elementAt(v);
 			if(set.equals(code)||((subop)&&(set.equals("AREA "+code))))
 			   return true;
-			HashSet H=(HashSet)groups.get(set);
+			HashSet H=(HashSet)i().groups.get(set);
 			if(H!=null)
 			{
 				if(H.contains(code))
@@ -548,7 +574,7 @@ public class CMSecurity
 			String set=(String)V.elementAt(v);
 			if(set.startsWith(code))
 			   return true;
-			HashSet H=(HashSet)groups.get(set);
+			HashSet H=(HashSet)i().groups.get(set);
 			if(H!=null)
 			{
 				for(Iterator i=H.iterator();i.hasNext();)
@@ -569,7 +595,7 @@ public class CMSecurity
 				String set=(String)V.elementAt(v);
 				if(set.startsWith("AREA "+code))
 				   return true;
-				HashSet H=(HashSet)groups.get(set);
+				HashSet H=(HashSet)i().groups.get(set);
 				if(H!=null)
 				{
 					for(Iterator i=H.iterator();i.hasNext();)
@@ -598,7 +624,7 @@ public class CMSecurity
 		{
 			String set=(String)V.elementAt(v);
 			if(set.equals(code)) return true;
-			HashSet H=(HashSet)groups.get(set);
+			HashSet H=(HashSet)i().groups.get(set);
 			if(H!=null)
 			{
 				if(H.contains(code))
@@ -623,7 +649,7 @@ public class CMSecurity
 			String set=(String)V.elementAt(v);
 			if(set.equals(code))
 			   return true;
-			HashSet H=(HashSet)groups.get(set);
+			HashSet H=(HashSet)i().groups.get(set);
 			if(H!=null)
 			{
 				if(H.contains(code))
@@ -639,7 +665,7 @@ public class CMSecurity
 			{
 				String set=(String)V.elementAt(v);
 				if(set.equals("AREA "+code)) return true;
-				HashSet H=(HashSet)groups.get(set);
+				HashSet H=(HashSet)i().groups.get(set);
 				if(H!=null)
 				{
 					if(H.contains("AREA "+code))
@@ -761,7 +787,7 @@ public class CMSecurity
     protected static HashSet dbgVars=new HashSet();
     protected static HashSet saveFlags=new HashSet();
 
-	public static long getStartTime(){return startTime;}
+	public static long getStartTime(){return i().startTime;}
 	
     public static boolean isBanned(String login)
     {

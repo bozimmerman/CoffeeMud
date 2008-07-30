@@ -30,18 +30,37 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public class Directions
 {
-    private Directions(){super();}
-    private static Directions inst=new Directions();
-    public static Directions instance(){return inst;}
-    private static int[] NUM_DIRECTIONS=new int[256];
-    static {
-        for(int i=0;i<256;i++) NUM_DIRECTIONS[i]=7;
+    public Directions(){
+        super();
+        char c=Thread.currentThread().getThreadGroup().getName().charAt(0);
+        if(dirs==null) dirs=new Directions[256];
+        if(dirs[c]==null) dirs[c]=this;
     }
+    private static Directions d(){ return dirs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
+    public static Directions d(char c){return dirs[c];}
+    public static Directions instance(){
+        Directions d=d();
+        if(d==null) d=new Directions();
+        return d;
+    }
+    private static Directions[] dirs=new Directions[256];
+    
+    private int[] DIRECTIONS_BASE={NORTH,SOUTH,EAST,WEST};
+    private String DIRECTIONS_DESC="N, S, E, W, U, D, or V";
+    private int NUM_DIRECTIONS=7;
 
 	public static int NUM_DIRECTIONS(){
-        return NUM_DIRECTIONS[Thread.currentThread().getThreadGroup().getName().charAt(0)];
+        return d().NUM_DIRECTIONS;
     };
 	
+    public static int[] DIRECTIONS_BASE(){
+        return d().DIRECTIONS_BASE;
+    };
+    
+    public static String DIRECTIONS_DESC(){
+        return d().DIRECTIONS_DESC;
+    };
+    
 	public static final int NORTH=0;
 	public static final int SOUTH=1;
 	public static final int EAST=2;
@@ -57,8 +76,6 @@ public class Directions
 	public static final int SOUTHWEST=10;
 	
 	public static final String[] DIRECTION_CHARS={"N","S","E","W","U","D","V","NE","NW","SE","SW"};
-	public static int[] DIRECTIONS_BASE={NORTH,SOUTH,EAST,WEST};
-	public static String DIRECTIONS_DESC="N, S, E, W, U, D, or V";
 	public static String[][] DIRECTIONS_FULL_CHART={
 	    {"UP",""+UP},
 	    {"ABOVE",""+UP},
@@ -87,9 +104,9 @@ public class Directions
 		return getDirectionName(getDirectionCode(theDir));
 	}
 
-	public static void reInitialize(int dirs)
+	public void reInitialize(int dirs)
 	{
-	    NUM_DIRECTIONS[Thread.currentThread().getThreadGroup().getName().charAt(0)]=dirs;
+	    NUM_DIRECTIONS=dirs;
 	    if(dirs<11)
 	    {
 	        DIRECTIONS_BASE=new int[4];

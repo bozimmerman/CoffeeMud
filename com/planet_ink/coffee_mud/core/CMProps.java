@@ -308,17 +308,28 @@ public class CMProps extends Properties
 		}
 		return page;
 	}
-    /** retrieve whether a particular .ini file entry as a string
+    /** retrieve a local .ini file entry as a string
     *
-    * <br><br><b>Usage:</b>  String s=propertyGetter(p,"TAG");
+    * <br><br><b>Usage:</b>  String s=getPrivateStr("TAG");
     * @param tagToGet   the property tag to retreive.
     * @return String   the value of the .ini file tag
     */
     public String getPrivateStr(String tagToGet)
     {
-        String s=this.getProperty(tagToGet);
+        String s=getProperty(tagToGet);
         if(s==null) return "";
         return s;
+    }
+    
+    /** retrieve raw local .ini file entry as a string
+    *
+    * <br><br><b>Usage:</b>  String s=getRawPrivateStr("TAG");
+    * @param tagToGet   the property tag to retreive.
+    * @return String   the value of the .ini file tag
+    */
+    public String getRawPrivateStr(String tagToGet)
+    {
+        return getProperty(tagToGet);
     }
     
 	/** retrieve a particular .ini file entry as a string
@@ -817,17 +828,20 @@ public class CMProps extends Properties
         if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
             setIntVar(SYSTEMI_STARTMOVE,CMath.s_int(stateVar));
 
-        Directions.reInitialize(getInt("DIRECTIONS"));
+        Directions.instance().reInitialize(getInt("DIRECTIONS"));
 
+        resetSecurityVars();
+        statCodeExtensions = getStrsStarting("EXTVAR_");
+
+    }
+    
+    public void resetSecurityVars() {
         String disable=getStr("DISABLE");
         if(getVar(SYSTEM_MULTICLASS).equalsIgnoreCase("DISABLED"))
             disable+=", CLASSES";
         CMSecurity.setDisableVars(disable);
         CMSecurity.setDebugVars(getStr("DEBUG"));
         CMSecurity.setSaveFlags(getStr("SAVE"));
-
-        statCodeExtensions = getStrsStarting("EXTVAR_");
-
     }
 
     public static String applyINIFilter(String msg, int whichFilter)
