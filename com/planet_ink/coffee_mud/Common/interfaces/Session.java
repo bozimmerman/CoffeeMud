@@ -40,22 +40,27 @@ public interface Session extends CMCommon
 {
     
     /**
-     * 
-     * @param s
-     * @param introTextStr
+     * Negotiates various telnet options (or attempts to), and 
+     * prints the introTextStr to the user.
+     * @param s the socket the user connected from
+     * @param introTextStr introductory text string (Hello!)
      */
     public void initializeSession(Socket s, String introTextStr);
     
     /**
-     * 
+     * There is no interface for Thread, so since DefaultSession
+     * implements thread, and this fact needs to be externatized,
+     * the thread start method is hereby externalized.  Not 
+     * required for most sessions, only for those acting as Threads.
      */
     public void start();
     
     /**
-     * 
-     * @return
+     * Returns a list of telnet coded strings indexed by coffeemud
+     * color code.  May be from the standard list, or read from 
+     * player records for a customized list.
+     * @return telnet coded color strings.
      */
-    
 	public String[] clookup();
     
     /**
@@ -64,7 +69,6 @@ public interface Session extends CMCommon
      * @param pageBreak
      * @param noCache
      */
-	
 	public void onlyPrint(String msg, int pageBreak, boolean noCache);
     
     /**
