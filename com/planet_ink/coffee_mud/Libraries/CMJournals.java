@@ -152,7 +152,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                         {
                             String from=(String)entry.elementAt(DatabaseEngine.JOURNAL_FROM);
                             String message=(String)entry.elementAt(DatabaseEngine.JOURNAL_MSG);
-                            Log.sysOut("SaveThread","Expired "+getCommandJournalName(j)+" from "+from+": "+message);
+                            Log.sysOut(Thread.currentThread().getName(),"Expired "+getCommandJournalName(j)+" from "+from+": "+message);
                             CMLib.database().DBDeleteJournal("SYSTEM_"+getCommandJournalName(j)+"S",i);
                         }
                     }
