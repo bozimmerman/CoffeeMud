@@ -239,7 +239,9 @@ public class MUD extends Thread implements MudHost
         CMClass.globalClock().initializeINIClock(page);
         if((tCode==MAIN_HOST)||(privacyV.contains("FACTIONS")))
             CMLib.factions().reloadFactions(CMProps.getVar(CMProps.SYSTEM_PREFACTIONS));
-        if(tCode==MAIN_HOST) {
+        
+        if((tCode==MAIN_HOST)||(page.getRawPrivateStr("SYSOPMASK")!=null))
+        {
     		CMSecurity.setSysOp(page.getStr("SYSOPMASK")); // requires all classes be loaded
     		CMSecurity.parseGroups(page);
         }
@@ -249,11 +251,11 @@ public class MUD extends Thread implements MudHost
     		int numChannelsLoaded=0;
             int numJournalsLoaded=0;
             if((tCode==MAIN_HOST)||(privacyV.contains("CHANNELS")))
-            numChannelsLoaded=CMLib.channels().loadChannels(page.getStr("CHANNELS"),
-            												page.getStr("ICHANNELS"),
-            												page.getStr("IMC2CHANNELS"));
+                numChannelsLoaded=CMLib.channels().loadChannels(page.getStr("CHANNELS"),
+                												page.getStr("ICHANNELS"),
+                												page.getStr("IMC2CHANNELS"));
             if((tCode==MAIN_HOST)||(privacyV.contains("JOURNALS")))
-            numJournalsLoaded=CMLib.journals().loadCommandJournals(page.getStr("COMMANDJOURNALS"));
+                numJournalsLoaded=CMLib.journals().loadCommandJournals(page.getStr("COMMANDJOURNALS"));
     		Log.sysOut(Thread.currentThread().getName(),"Channels loaded   : "+(numChannelsLoaded+numJournalsLoaded));
         }
 
@@ -296,10 +298,6 @@ public class MUD extends Thread implements MudHost
     			A.fillInAreaRooms();
     		}
     		Log.sysOut(Thread.currentThread().getName(),"Mapped rooms      : "+CMLib.map().numRooms()+" in "+CMLib.map().numAreas()+" areas");
-    		CMLib.map().initStartRooms(page);
-    		CMLib.map().initDeathRooms(page);
-    		CMLib.map().initBodyRooms(page);
-    
     
     		if(!CMLib.map().roomIDs().hasMoreElements())
     		{
@@ -316,6 +314,10 @@ public class MUD extends Thread implements MudHost
     			room.addItem(I);
     			CMLib.database().DBUpdateItems(room);
     		}
+    		
+            CMLib.login().initStartRooms(page);
+            CMLib.login().initDeathRooms(page);
+            CMLib.login().initBodyRooms(page);
         }
 
         if((tCode==MAIN_HOST)||(privacyV.contains("QUESTS")))

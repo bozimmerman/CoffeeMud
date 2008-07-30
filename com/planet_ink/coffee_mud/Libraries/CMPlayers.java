@@ -464,7 +464,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                 MOB M=(MOB)e.nextElement();
                 if(M.playerStats()!=null)
                 {
-                    if((CMLib.login().evaluateAutoTitles(M))&&(!CMLib.flags().isInTheGame(M,true)))
+                    if((CMLib.titles().evaluateAutoTitles(M))&&(!CMLib.flags().isInTheGame(M,true)))
                         CMLib.database().DBUpdatePlayerStatsOnly(M);
                 }
             }

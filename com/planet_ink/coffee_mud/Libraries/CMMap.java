@@ -40,9 +40,6 @@ public class CMMap extends StdLibrary implements WorldMap
     public Vector postOfficeList=new Vector();
     public Vector auctionHouseList=new Vector();
     public Vector bankList=new Vector();
-	public Hashtable startRooms=new Hashtable();
-	public Hashtable deathRooms=new Hashtable();
-	public Hashtable bodyRooms=new Hashtable();
 	public final int QUADRANT_WIDTH=10;
 	public Vector space=new Vector();
     public Hashtable globalHandlers=new Hashtable();
@@ -561,170 +558,6 @@ public class CMMap extends StdLibrary implements WorldMap
 		return H.iterator();
 	}
 
-
-	public Room getDefaultStartRoom(MOB mob)
-	{
-		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
-		race=race.replace(' ','_');
-		String charClass=mob.baseCharStats().getCurrentClass().ID().toUpperCase();
-		charClass=charClass.replace(' ','_');
-		String realrace=mob.baseCharStats().getMyRace().ID().toUpperCase();
-		realrace=realrace.replace(' ','_');
-		String deity=mob.getWorshipCharID().toUpperCase();
-		deity=deity.replace(' ','_');
-		String align=CMLib.flags().getAlignmentName(mob);
-		String roomID=(String)startRooms.get(race);
-		if((roomID==null)||(roomID.length()==0))
-			roomID=(String)startRooms.get(realrace);
-		if(((roomID==null)||(roomID.length()==0)))
-			roomID=(String)startRooms.get(align);
-		if(((roomID==null)||(roomID.length()==0)))
-			roomID=(String)startRooms.get(charClass);
-		if(((roomID==null)||(roomID.length()==0)))
-		{
-		    Vector V=mob.fetchFactionRanges();
-		    for(int v=0;v<V.size();v++)
-			    if(startRooms.containsKey(((String)V.elementAt(v)).toUpperCase()))
-			    { roomID=(String)startRooms.get(((String)V.elementAt(v)).toUpperCase()); break;}
-		}
-		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
-			roomID=(String)startRooms.get(deity);
-		if((roomID==null)||(roomID.length()==0))
-			roomID=(String)startRooms.get("ALL");
-
-		Room room=null;
-		if((roomID!=null)&&(roomID.length()>0))
-			room=getRoom(roomID);
-		if(room==null)
-			room=getRoom("START");
-		if((room==null)&&(numRooms()>0))
-			room=(Room)rooms().nextElement();
-		return room;
-	}
-
-	public Room getDefaultDeathRoom(MOB mob)
-	{
-		String charClass=mob.baseCharStats().getCurrentClass().ID().toUpperCase();
-		charClass=charClass.replace(' ','_');
-		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
-		race=race.replace(' ','_');
-		String deity=mob.getWorshipCharID().toUpperCase();
-		deity=deity.replace(' ','_');
-		String align=CMLib.flags().getAlignmentName(mob);
-		String roomID=(String)deathRooms.get(race);
-		if(((roomID==null)||(roomID.length()==0)))
-			roomID=(String)deathRooms.get(align);
-		if(((roomID==null)||(roomID.length()==0)))
-			roomID=(String)deathRooms.get(charClass);
-		if(((roomID==null)||(roomID.length()==0)))
-		{
-		    Vector V=mob.fetchFactionRanges();
-		    for(int v=0;v<V.size();v++)
-			    if(deathRooms.containsKey(((String)V.elementAt(v)).toUpperCase()))
-			    { roomID=(String)deathRooms.get(((String)V.elementAt(v)).toUpperCase()); break;}
-		}
-		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
-			roomID=(String)deathRooms.get(deity);
-		if((roomID==null)||(roomID.length()==0))
-			roomID=(String)deathRooms.get("ALL");
-
-		Room room=null;
-		if((roomID!=null)&&(roomID.equalsIgnoreCase("START")))
-			room=mob.getStartRoom();
-		if((room==null)&&(roomID!=null)&&(roomID.length()>0))
-			room=getRoom(roomID);
-		if(room==null)
-			room=mob.getStartRoom();
-		if((room==null)&&(numRooms()>0))
-			room=(Room)rooms().nextElement();
-		return room;
-	}
-
-	public Room getDefaultBodyRoom(MOB mob)
-	{
-	    if((mob.getClanID().length()>0)
-	    &&(mob.getClanRole()!=Clan.POS_APPLICANT)
-	    &&((!mob.isMonster())||(mob.getStartRoom()==null)))
-	    {
-	    	Clan C=CMLib.clans().getClan(mob.getClanID());
-		    if((C!=null)&&(C.getMorgue().length()>0))
-		    {
-		        Room room=getRoom(C.getMorgue());
-		        if((room!=null)&&(CMLib.law().doesHavePriviledgesHere(mob,room)))
-		            return room;
-		    }
-	    }
-		String charClass=mob.baseCharStats().getCurrentClass().ID().toUpperCase();
-		charClass=charClass.replace(' ','_');
-		String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
-		race=race.replace(' ','_');
-		String realrace=mob.baseCharStats().getMyRace().ID().toUpperCase();
-		realrace=realrace.replace(' ','_');
-		String deity=mob.getWorshipCharID().toUpperCase();
-		deity=deity.replace(' ','_');
-		String align=CMLib.flags().getAlignmentName(mob);
-		String roomID=(String)bodyRooms.get(race);
-		if((roomID==null)||(roomID.length()==0))
-			roomID=(String)bodyRooms.get(realrace);
-		if(((roomID==null)||(roomID.length()==0)))
-			roomID=(String)bodyRooms.get(align);
-		if(((roomID==null)||(roomID.length()==0)))
-			roomID=(String)bodyRooms.get(charClass);
-		if(((roomID==null)||(roomID.length()==0)))
-		{
-		    Vector V=mob.fetchFactionRanges();
-		    for(int v=0;v<V.size();v++)
-			    if(bodyRooms.containsKey(((String)V.elementAt(v)).toUpperCase()))
-			    { roomID=(String)bodyRooms.get(((String)V.elementAt(v)).toUpperCase()); break;}
-		}
-		if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
-			roomID=(String)bodyRooms.get(deity);
-		if((roomID==null)||(roomID.length()==0))
-			roomID=(String)bodyRooms.get("ALL");
-
-		Room room=null;
-		if((roomID!=null)&&(roomID.equalsIgnoreCase("START")))
-			room=mob.location();
-		if((room==null)&&(roomID!=null)&&(roomID.length()>0))
-			room=getRoom(roomID);
-		if(room==null)
-			room=mob.location();
-		if((room==null)&&(numRooms()>0))
-			room=(Room)rooms().nextElement();
-		return room;
-	}
-
-	public void pageRooms(CMProps page, Hashtable table, String start)
-	{
-		for(Enumeration i=page.keys();i.hasMoreElements();)
-		{
-			String k=(String)i.nextElement();
-			if(k.startsWith(start+"_"))
-				table.put(k.substring(start.length()+1),page.getProperty(k));
-		}
-		String thisOne=page.getProperty(start);
-		if((thisOne!=null)&&(thisOne.length()>0))
-			table.put("ALL",thisOne);
-	}
-
-	public void initStartRooms(CMProps page)
-	{
-		startRooms=new Hashtable();
-		pageRooms(page,startRooms,"START");
-	}
-
-	public void initDeathRooms(CMProps page)
-	{
-		deathRooms=new Hashtable();
-		pageRooms(page,deathRooms,"DEATH");
-	}
-
-	public void initBodyRooms(CMProps page)
-	{
-		bodyRooms=new Hashtable();
-		pageRooms(page,bodyRooms,"MORGUE");
-	}
-
 	public void renameRooms(Area A, String oldName, Vector allMyDamnRooms)
 	{
 		Vector onesToRenumber=new Vector();
@@ -1172,9 +1005,6 @@ public class CMMap extends StdLibrary implements WorldMap
         areasList.clear();
         deitiesList.clear();
         space=new Vector();
-        bodyRooms=new Hashtable();
-        startRooms=new Hashtable();
-        deathRooms=new Hashtable();
         globalHandlers.clear();
         thread.shutdown();
         return true;

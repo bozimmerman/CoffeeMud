@@ -75,6 +75,7 @@ public interface CharCreationLibrary extends CMLibrary
      */
     public boolean createCharacter(MOB mob, String login, Session session)
         throws java.io.IOException;
+    
     /**
      * 0=no login, 1=login, 2=swap login
      * @param mob
@@ -85,11 +86,44 @@ public interface CharCreationLibrary extends CMLibrary
     public int login(MOB mob, int attempt)
         throws java.io.IOException;
     
-    public Enumeration autoTitles();
-    public String getAutoTitleMask(String title);
-    public boolean isExistingAutoTitle(String title);
-    public String evaluateAutoTitle(String row, boolean addIfPossible);
-    public boolean evaluateAutoTitles(MOB mob);
-    public void reloadAutoTitles();
-    public void dispossesTitle(String title);
+    public void pageRooms(CMProps page, Hashtable table, String start);
+    
+    /**
+     * 
+     * @param page
+     */
+    public void initStartRooms(CMProps page);
+    
+    /**
+     * 
+     * @param page
+     */
+    public void initDeathRooms(CMProps page);
+    
+    /**
+     * 
+     * @param page
+     */
+    public void initBodyRooms(CMProps page);
+    
+    /**
+     * 
+     * @param mob
+     * @return
+     */
+    public Room getDefaultStartRoom(MOB mob);
+    
+    /**
+     * 
+     * @param mob
+     * @return
+     */
+    public Room getDefaultDeathRoom(MOB mob);
+    
+    /**
+     * 
+     * @param mob
+     * @return
+     */
+    public Room getDefaultBodyRoom(MOB mob);
 }

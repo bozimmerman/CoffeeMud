@@ -562,20 +562,20 @@ public class Destroy extends BaseItemParser
         }
 
         String classID=CMParms.combine(commands,2);
-        if(!CMLib.login().isExistingAutoTitle(classID))
+        if(!CMLib.titles().isExistingAutoTitle(classID))
         {
             mob.tell("'"+classID+"' is not an existing auto-title, try LIST TITLES.");
             mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
             return false;
         }
-        CMLib.login().dispossesTitle(classID);
+        CMLib.titles().dispossesTitle(classID);
         CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,true);
         boolean removed=Resources.findRemoveProperty(F, classID);
         if(removed)
         {
             mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The prestige of players just decreased!");
             Resources.removeResource("titles.txt");
-            CMLib.login().reloadAutoTitles();
+            CMLib.titles().reloadAutoTitles();
         }
         return true;
     }

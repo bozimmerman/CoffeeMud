@@ -83,18 +83,6 @@ public interface WorldMap extends CMLibrary, Runnable
     public boolean explored(Room R, Vector areas);
    
     /************************************************************************/
-    /**							 MOB->ROOMS     							*/
-    /************************************************************************/
-    public void pageRooms(CMProps page, Hashtable table, String start);
-    public void initStartRooms(CMProps page);
-    public void initDeathRooms(CMProps page);
-    public void initBodyRooms(CMProps page);
-    public Room getDefaultStartRoom(MOB mob);
-    public Room getDefaultDeathRoom(MOB mob);
-    public Room getDefaultBodyRoom(MOB mob);
-    
-    
-    /************************************************************************/
     /**							 QUICK-MAPPINGS    							*/
     /************************************************************************/
     public int numDeities();

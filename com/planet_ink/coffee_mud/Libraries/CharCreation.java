@@ -37,7 +37,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 {
     public String ID(){return "CharCreation";}
     public Hashtable pendingLogins=new Hashtable();
-    private DVector autoTitles=null;
+    public Hashtable startRooms=new Hashtable();
+    public Hashtable deathRooms=new Hashtable();
+    public Hashtable bodyRooms=new Hashtable();
 
     public void reRollStats(MOB mob, CharStats C)
     {
@@ -652,7 +654,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             }
             mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
             CMLib.utensils().outfit(mob,mob.baseCharStats().getCurrentClass().outfit(mob));
-            mob.setStartRoom(CMLib.map().getDefaultStartRoom(mob));
+            mob.setStartRoom(getDefaultStartRoom(mob));
             mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.playerStats().initializeBirthday(0,mob.baseCharStats().getMyRace()));
             session.println(null,null,null,"\n\r\n\r"+new CMFile(Resources.buildResourcePath("text")+"newchardone.txt",null,true).text().toString());
             session.prompt("");
@@ -1012,126 +1014,175 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
            pendingLogins.remove(mob.Name().toUpperCase());
         return 1;
     }
+    
 
-    public String evaluateAutoTitle(String row, boolean addIfPossible)
+    public Room getDefaultStartRoom(MOB mob)
     {
-        if(row.trim().startsWith("#")||row.trim().startsWith(";")||(row.trim().length()==0))
-            return null;
-        int x=row.indexOf("=");
-        while((x>=1)&&(row.charAt(x-1)=='\\')) x=row.indexOf("=",x+1);
-        if(x<0)
-            return "Error: Invalid line! Not comment, whitespace, and does not contain an = sign!";
-        String title=row.substring(0,x).trim();
-        String mask=row.substring(x+1).trim();
-
-        if(title.length()==0)return "Error: Blank title: "+title+"="+mask+"!";
-        if(mask.length()==0)return "Error: Blank mask: "+title+"="+mask+"!";
-        if(addIfPossible)
+        String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
+        race=race.replace(' ','_');
+        String charClass=mob.baseCharStats().getCurrentClass().ID().toUpperCase();
+        charClass=charClass.replace(' ','_');
+        String realrace=mob.baseCharStats().getMyRace().ID().toUpperCase();
+        realrace=realrace.replace(' ','_');
+        String deity=mob.getWorshipCharID().toUpperCase();
+        deity=deity.replace(' ','_');
+        String align=CMLib.flags().getAlignmentName(mob);
+        String roomID=(String)startRooms.get(race);
+        if((roomID==null)||(roomID.length()==0))
+            roomID=(String)startRooms.get(realrace);
+        if(((roomID==null)||(roomID.length()==0)))
+            roomID=(String)startRooms.get(align);
+        if(((roomID==null)||(roomID.length()==0)))
+            roomID=(String)startRooms.get(charClass);
+        if(((roomID==null)||(roomID.length()==0)))
         {
-            if(autoTitles==null) reloadAutoTitles();
-            if(autoTitles.contains(title))
-                return "Error: Duplicate title: "+title+"="+mask+"!";
-            autoTitles.addElement(title,mask,CMLib.masking().maskCompile(mask));
+            Vector V=mob.fetchFactionRanges();
+            for(int v=0;v<V.size();v++)
+                if(startRooms.containsKey(((String)V.elementAt(v)).toUpperCase()))
+                { roomID=(String)startRooms.get(((String)V.elementAt(v)).toUpperCase()); break;}
         }
-        return null;
-    }
-    public boolean isExistingAutoTitle(String title)
-    {
-        if(autoTitles==null) reloadAutoTitles();
-        for(int v=0;v<autoTitles.size();v++)
-            if(((String)autoTitles.elementAt(v,1)).toUpperCase().equalsIgnoreCase(title.trim()))
-                return true;
-        return false;
-    }
+        if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
+            roomID=(String)startRooms.get(deity);
+        if((roomID==null)||(roomID.length()==0))
+            roomID=(String)startRooms.get("ALL");
 
-    public Enumeration autoTitles()
-    {
-        if(autoTitles==null) reloadAutoTitles();
-        return autoTitles.getDimensionVector(1).elements();
+        Room room=null;
+        if((roomID!=null)&&(roomID.length()>0))
+            room=CMLib.map().getRoom(roomID);
+        if(room==null)
+            room=CMLib.map().getRoom("START");
+        if((room==null)&&(CMLib.map().numRooms()>0))
+            room=(Room)CMLib.map().rooms().nextElement();
+        return room;
     }
 
-    public String getAutoTitleMask(String title)
+    public Room getDefaultDeathRoom(MOB mob)
     {
-        if(autoTitles==null) reloadAutoTitles();
-        int x=autoTitles.indexOf(title);
-        if(x<0) return "";
-        return (String)autoTitles.elementAt(x,2);
-    }
-
-
-    public boolean evaluateAutoTitles(MOB mob)
-    {
-        if(mob==null) return false;
-        PlayerStats P=mob.playerStats();
-        if(P==null) return false;
-        if(autoTitles==null) reloadAutoTitles();
-        String title=null;
-        Vector mask=null;
-        int pdex=0;
-        Vector PT=P.getTitles();
-        boolean somethingDone=false;
-        for(int t=0;t<autoTitles.size();t++)
+        String charClass=mob.baseCharStats().getCurrentClass().ID().toUpperCase();
+        charClass=charClass.replace(' ','_');
+        String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
+        race=race.replace(' ','_');
+        String deity=mob.getWorshipCharID().toUpperCase();
+        deity=deity.replace(' ','_');
+        String align=CMLib.flags().getAlignmentName(mob);
+        String roomID=(String)deathRooms.get(race);
+        if(((roomID==null)||(roomID.length()==0)))
+            roomID=(String)deathRooms.get(align);
+        if(((roomID==null)||(roomID.length()==0)))
+            roomID=(String)deathRooms.get(charClass);
+        if(((roomID==null)||(roomID.length()==0)))
         {
-            mask=(Vector)autoTitles.elementAt(t,3);
-            title=(String)autoTitles.elementAt(t,1);
-            pdex=PT.indexOf(title);
-            if(CMLib.masking().maskCheck(mask,mob,true))
-            {
-                if(pdex<0)
-                {
-                    if(PT.size()>0)
-                        PT.insertElementAt(title,0);
-                    else
-                        PT.addElement(title);
-                    somethingDone=true;
-                }
-            }
-            else
-            if(pdex>=0)
-            {
-                somethingDone=true;
-                PT.removeElementAt(pdex);
-            }
+            Vector V=mob.fetchFactionRanges();
+            for(int v=0;v<V.size();v++)
+                if(deathRooms.containsKey(((String)V.elementAt(v)).toUpperCase()))
+                { roomID=(String)deathRooms.get(((String)V.elementAt(v)).toUpperCase()); break;}
         }
-        return somethingDone;
+        if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
+            roomID=(String)deathRooms.get(deity);
+        if((roomID==null)||(roomID.length()==0))
+            roomID=(String)deathRooms.get("ALL");
+
+        Room room=null;
+        if((roomID!=null)&&(roomID.equalsIgnoreCase("START")))
+            room=mob.getStartRoom();
+        if((room==null)&&(roomID!=null)&&(roomID.length()>0))
+            room=CMLib.map().getRoom(roomID);
+        if(room==null)
+            room=mob.getStartRoom();
+        if((room==null)&&(CMLib.map().numRooms()>0))
+            room=(Room)CMLib.map().rooms().nextElement();
+        return room;
     }
 
-    public void dispossesTitle(String title)
+    public Room getDefaultBodyRoom(MOB mob)
     {
-    	Vector list=CMLib.database().getUserList();
-    	for(int v=0;v<list.size();v++)
+        if((mob.getClanID().length()>0)
+        &&(mob.getClanRole()!=Clan.POS_APPLICANT)
+        &&((!mob.isMonster())||(mob.getStartRoom()==null)))
         {
-            MOB M=CMLib.players().getLoadPlayer((String)list.elementAt(v));
-            if((M.playerStats()!=null)&&(M.playerStats().getTitles().contains(title)))
+            Clan C=CMLib.clans().getClan(mob.getClanID());
+            if((C!=null)&&(C.getMorgue().length()>0))
             {
-                M.playerStats().getTitles().remove(title);
-                if(!CMLib.flags().isInTheGame(M,true))
-                    CMLib.database().DBUpdatePlayerStatsOnly(M);
+                Room room=CMLib.map().getRoom(C.getMorgue());
+                if((room!=null)&&(CMLib.law().doesHavePriviledgesHere(mob,room)))
+                    return room;
             }
         }
+        String charClass=mob.baseCharStats().getCurrentClass().ID().toUpperCase();
+        charClass=charClass.replace(' ','_');
+        String race=mob.baseCharStats().getMyRace().racialCategory().toUpperCase();
+        race=race.replace(' ','_');
+        String realrace=mob.baseCharStats().getMyRace().ID().toUpperCase();
+        realrace=realrace.replace(' ','_');
+        String deity=mob.getWorshipCharID().toUpperCase();
+        deity=deity.replace(' ','_');
+        String align=CMLib.flags().getAlignmentName(mob);
+        String roomID=(String)bodyRooms.get(race);
+        if((roomID==null)||(roomID.length()==0))
+            roomID=(String)bodyRooms.get(realrace);
+        if(((roomID==null)||(roomID.length()==0)))
+            roomID=(String)bodyRooms.get(align);
+        if(((roomID==null)||(roomID.length()==0)))
+            roomID=(String)bodyRooms.get(charClass);
+        if(((roomID==null)||(roomID.length()==0)))
+        {
+            Vector V=mob.fetchFactionRanges();
+            for(int v=0;v<V.size();v++)
+                if(bodyRooms.containsKey(((String)V.elementAt(v)).toUpperCase()))
+                { roomID=(String)bodyRooms.get(((String)V.elementAt(v)).toUpperCase()); break;}
+        }
+        if(((roomID==null)||(roomID.length()==0))&&(deity.length()>0))
+            roomID=(String)bodyRooms.get(deity);
+        if((roomID==null)||(roomID.length()==0))
+            roomID=(String)bodyRooms.get("ALL");
+
+        Room room=null;
+        if((roomID!=null)&&(roomID.equalsIgnoreCase("START")))
+            room=mob.location();
+        if((room==null)&&(roomID!=null)&&(roomID.length()>0))
+            room=CMLib.map().getRoom(roomID);
+        if(room==null)
+            room=mob.location();
+        if((room==null)&&(CMLib.map().numRooms()>0))
+            room=(Room)CMLib.map().rooms().nextElement();
+        return room;
     }
 
-    public void reloadAutoTitles()
+    public void pageRooms(CMProps page, Hashtable table, String start)
     {
-        autoTitles=new DVector(3);
-        Vector V=Resources.getFileLineVector(Resources.getFileResource("titles.txt",true));
-        String WKID=null;
-        for(int v=0;v<V.size();v++)
+        for(Enumeration i=page.keys();i.hasMoreElements();)
         {
-            String row=(String)V.elementAt(v);
-            WKID=evaluateAutoTitle(row,true);
-            if(WKID==null) continue;
-            if(WKID.startsWith("Error: "))
-                Log.errOut("CharCreation",WKID);
+            String k=(String)i.nextElement();
+            if(k.startsWith(start+"_"))
+                table.put(k.substring(start.length()+1),page.getProperty(k));
         }
-        for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
-        {
-            MOB M=(MOB)e.nextElement();
-            if(M.playerStats()!=null)
-            {
-                if((evaluateAutoTitles(M))&&(!CMLib.flags().isInTheGame(M,true)))
-                    CMLib.database().DBUpdatePlayerStatsOnly(M);
-            }
-        }
+        String thisOne=page.getProperty(start);
+        if((thisOne!=null)&&(thisOne.length()>0))
+            table.put("ALL",thisOne);
+    }
+
+    public void initStartRooms(CMProps page)
+    {
+        startRooms=new Hashtable();
+        pageRooms(page,startRooms,"START");
+    }
+
+    public void initDeathRooms(CMProps page)
+    {
+        deathRooms=new Hashtable();
+        pageRooms(page,deathRooms,"DEATH");
+    }
+
+    public void initBodyRooms(CMProps page)
+    {
+        bodyRooms=new Hashtable();
+        pageRooms(page,bodyRooms,"MORGUE");
+    }
+
+    public boolean shutdown() {
+        bodyRooms=new Hashtable();
+        startRooms=new Hashtable();
+        deathRooms=new Hashtable();
+        return true;
     }
 }

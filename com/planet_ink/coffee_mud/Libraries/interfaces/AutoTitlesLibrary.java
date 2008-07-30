@@ -1,11 +1,11 @@
-package com.planet_ink.coffee_mud.WebMacros;
+package com.planet_ink.coffee_mud.Libraries.interfaces;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -13,9 +13,6 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
-
-
-
 /* 
    Copyright 2000-2008 Bo Zimmerman
 
@@ -31,34 +28,52 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class AutoTitleNext extends StdWebMacro
+public interface AutoTitlesLibrary extends CMLibrary
 {
-	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
-
-	public String runMacro(ExternalHTTPRequests httpReq, String parm)
-	{
-		Hashtable parms=parseParms(parm);
-		String last=httpReq.getRequestParameter("AUTOTITLE");
-		if(parms.containsKey("RESET"))
-		{	
-			if(last!=null) httpReq.removeRequestParameter("AUTOTITLE");
-			return "";
-		}
-		String lastID="";
-		for(Enumeration r=CMLib.titles().autoTitles();r.hasMoreElements();)
-		{
-            String title=(String)r.nextElement();
-			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!title.equals(lastID))))
-			{
-				httpReq.addRequestParameters("AUTOTITLE",title);
-				return "";
-			}
-			lastID=title;
-		}
-		httpReq.addRequestParameters("AUTOTITLE","");
-		if(parms.containsKey("EMPTYOK"))
-			return "<!--EMPTY-->";
-		return " @break@";
-	}
-
+    
+    /**
+     * 
+     * @return
+     */
+    public Enumeration autoTitles();
+    
+    /**
+     * 
+     * @param title
+     * @return
+     */
+    public String getAutoTitleMask(String title);
+    
+    /**
+     * 
+     * @param title
+     * @return
+     */
+    public boolean isExistingAutoTitle(String title);
+    
+    /**
+     * 
+     * @param row
+     * @param addIfPossible
+     * @return
+     */
+    public String evaluateAutoTitle(String row, boolean addIfPossible);
+    
+    /**
+     * 
+     * @param mob
+     * @return
+     */
+    public boolean evaluateAutoTitles(MOB mob);
+    
+    /**
+     * 
+     */
+    public void reloadAutoTitles();
+    
+    /**
+     * 
+     * @param title
+     */
+    public void dispossesTitle(String title);
 }

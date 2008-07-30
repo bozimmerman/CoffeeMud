@@ -593,13 +593,13 @@ public class Create extends BaseGenerics
         }
         String parms=CMParms.combineWithQuotes(commands,2);
         String skillID=parms.substring(0,parms.indexOf("="));
-        if(CMLib.login().isExistingAutoTitle(skillID))
+        if(CMLib.titles().isExistingAutoTitle(skillID))
         {
             mob.tell("'"+skillID+"' already exists, you'll need to destroy it first.");
             mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
             return;
         }
-        String error=CMLib.login().evaluateAutoTitle(parms,false);
+        String error=CMLib.titles().evaluateAutoTitle(parms,false);
         if(error!=null)
         {
             mob.tell(error);
@@ -609,7 +609,7 @@ public class Create extends BaseGenerics
         CMFile F=new CMFile(Resources.makeFileResourceName("titles.txt"),null,true);
         F.saveText("\n"+parms,true);
         Resources.removeResource("titles.txt");
-        CMLib.login().reloadAutoTitles();
+        CMLib.titles().reloadAutoTitles();
         mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The prestige of the players just increased!");
     }
     

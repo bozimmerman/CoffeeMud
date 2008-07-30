@@ -54,7 +54,7 @@ public class Skill_Recall extends StdSkill
 			Room recallRoom=CMLib.map().getStartRoom(mob);
             if((recallRoom==null)&&(!mob.isMonster()))
             {
-                mob.setStartRoom(CMLib.map().getDefaultStartRoom(mob));
+                mob.setStartRoom(CMLib.login().getDefaultStartRoom(mob));
                 recallRoom=CMLib.map().getStartRoom(mob);
             }
             

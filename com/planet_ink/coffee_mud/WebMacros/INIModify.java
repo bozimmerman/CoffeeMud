@@ -156,11 +156,11 @@ public class INIModify extends StdWebMacro
 				if(modified(modified,"GROUP_*"))
 					CMSecurity.parseGroups(ipage);
 				if(modified(modified,"START")||(modified(modified,"START_*")))
-					CMLib.map().initStartRooms(ipage);
+					CMLib.login().initStartRooms(ipage);
 				if(modified(modified,"DEATH")||(modified(modified,"DEATH_*")))
-					CMLib.map().initDeathRooms(ipage);
+					CMLib.login().initDeathRooms(ipage);
 				if(modified(modified,"MORGUE")||(modified(modified,"MORGUE_*")))
-					CMLib.map().initBodyRooms(ipage);
+					CMLib.login().initBodyRooms(ipage);
                 if(modified(modified,"FACTIONS"))
                     CMLib.factions().reloadFactions(CMProps.getVar(CMProps.SYSTEM_PREFACTIONS));
 				if(modified(modified,"CHANNELS")

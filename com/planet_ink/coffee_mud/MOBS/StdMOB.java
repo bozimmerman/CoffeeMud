@@ -758,7 +758,7 @@ public class StdMOB implements MOB
 				CMLib.coffeeMaker().resetGenMOB(this,CMLib.coffeeMaker().getGenMOBTextUnpacked(this,CMStrings.bytesToStr(miscText)));
 		}
 		if(CMLib.map().getStartRoom(this)==null)
-			setStartRoom(isMonster()?newLocation:CMLib.map().getDefaultStartRoom(this));
+			setStartRoom(isMonster()?newLocation:CMLib.login().getDefaultStartRoom(this));
 		setLocation(newLocation);
 		if(location()==null)
 		{
@@ -1060,7 +1060,7 @@ public class StdMOB implements MOB
 		if(isMonster())
 			deathRoom=location();
 		else
-			deathRoom=CMLib.map().getDefaultBodyRoom(this);
+			deathRoom=CMLib.login().getDefaultBodyRoom(this);
 		if(location()!=null) location().delInhabitant(this);
 		DeadBody Body=null;
 		if(createBody)
@@ -1089,7 +1089,7 @@ public class StdMOB implements MOB
 			setFollowing(null);
 		}
 		if((!isMonster())&&(soulMate()==null))
-			bringToLife(CMLib.map().getDefaultDeathRoom(this),true);
+			bringToLife(CMLib.login().getDefaultDeathRoom(this),true);
 		if(deathRoom!=null)
 			deathRoom.recoverRoomStats();
 		return Body;

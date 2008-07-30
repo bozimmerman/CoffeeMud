@@ -1084,10 +1084,10 @@ public class List extends StdCommand
     public String listTitles()
     {
         StringBuffer buf=new StringBuffer("^xAll Defined Auto-Titles: ^N\n\r");
-        for(Enumeration e=CMLib.login().autoTitles();e.hasMoreElements();)
+        for(Enumeration e=CMLib.titles().autoTitles();e.hasMoreElements();)
         {
             String title=(String)e.nextElement();
-            String maskDesc=CMLib.masking().maskDesc(CMLib.login().getAutoTitleMask(title));
+            String maskDesc=CMLib.masking().maskDesc(CMLib.titles().getAutoTitleMask(title));
             buf.append(CMStrings.padRight(title,30)+": "+maskDesc+"\n\r");
         }
         if(buf.length()==0) return "None defined.";

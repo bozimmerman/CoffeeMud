@@ -4316,7 +4316,7 @@ public class Import extends StdCommand
                     for(int i=0;i<channels.size();i++)
                         CMLib.commands().postChannel((String)channels.elementAt(i),M.getClanID(),M.Name()+" has just been created.",true);
 					if(M.getStartRoom()==null)
-						M.setStartRoom(CMLib.map().getDefaultStartRoom(M));
+						M.setStartRoom(CMLib.login().getDefaultStartRoom(M));
 					if(M.location()==null)
 						M.setLocation(mob.location());
 					if(M.playerStats().getBirthday()==null)

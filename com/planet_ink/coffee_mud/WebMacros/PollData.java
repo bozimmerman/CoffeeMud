@@ -475,7 +475,7 @@ public class PollData extends StdWebMacro
                     {
                         String mask=httpReq.getRequestParameter("MASK");
                         if((mask==null)&&(last.length()>0))
-                            mask=CMLib.login().getAutoTitleMask(last);
+                            mask=CMLib.titles().getAutoTitleMask(last);
                         if(mask!=null)
                             str.append(CMLib.masking().maskDesc(mask)+", ");
                     }
