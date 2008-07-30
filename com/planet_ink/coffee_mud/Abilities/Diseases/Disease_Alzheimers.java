@@ -93,7 +93,7 @@ public class Disease_Alzheimers extends Disease
 				if((CMLib.flags().isStanding(mob))&&(R!=null)&&(CMLib.flags().isInTheGame(mob,true)))
 				{
 					Vector dirs=new Vector();
-					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						if((R.getRoomInDir(d)!=null)
 						&&(R.getExitInDir(d)!=null)
 						&&(R.getExitInDir(d).isOpen()))

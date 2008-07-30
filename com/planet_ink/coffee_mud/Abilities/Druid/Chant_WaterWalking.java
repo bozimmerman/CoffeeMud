@@ -81,7 +81,7 @@ public class Chant_WaterWalking extends Chant
 			&&(msg.tool()!=null)
 			&&(msg.tool() instanceof Exit))
 			{
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					Room R=mob.location().getRoomInDir(d);
 					if((R!=null)

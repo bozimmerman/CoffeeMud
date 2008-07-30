@@ -79,7 +79,7 @@ public class Bleeding extends StdAbility
         {
         	Room R=(Room)msg.target();
         	int dir=-1;
-        	for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+        	for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
         		if(msg.tool()==R.getReverseExit(d))
         			dir=d;
         	if((dir>=0)&&(R.fetchItem(null,"a trail of blood")==null))

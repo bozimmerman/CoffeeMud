@@ -493,9 +493,9 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if(M!=null) return M;
 
 		if(R!=null)
-		for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			Room R2=R.getRoomInDir(i);
+			Room R2=R.getRoomInDir(d);
 			M=getAWitnessHere(R2,accused);
 			if(M!=null) return M;
 		}
@@ -585,7 +585,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if((myArea!=null)&&(!myArea.inMyMetroArea(R.getArea()))) return null;
 		MOB M=getElligibleOfficerHere(laws,myArea,R,criminal,victim);
 		if(M!=null) return M;
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			Room R2=R.getRoomInDir(d);
 			if(R2!=null)

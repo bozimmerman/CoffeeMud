@@ -39,7 +39,7 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
     protected void fillCluster(Room R, Vector V)
 	{
 		V.addElement(R);
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			Room R2=R.getRoomInDir(d);
 			if((R2!=null)&&(R2.roomID().length()>0)&&(!V.contains(R2)))

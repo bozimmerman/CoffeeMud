@@ -71,7 +71,7 @@ public class Spell_PassDoor extends Spell
 		{
 			commands.clear();
 			int theDir=-1;
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				Exit E=mob.location().getExitInDir(d);
 				if((E!=null)

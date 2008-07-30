@@ -1132,7 +1132,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     int i=0;
                     Exit E=null;
                     while(((++i)<100)||(E!=null))
-                        E=lastKnownLocation.getExitInDir(CMLib.dice().roll(1,Directions.NUM_DIRECTIONS,-1));
+                        E=lastKnownLocation.getExitInDir(CMLib.dice().roll(1,Directions.NUM_DIRECTIONS(),-1));
                     return E;
                 }
                 return null;
@@ -1477,7 +1477,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         int i=0;
                         while(((++i)<100)||(E!=null))
                         {
-                            dir=CMLib.dice().roll(1,Directions.NUM_DIRECTIONS,-1);
+                            dir=CMLib.dice().roll(1,Directions.NUM_DIRECTIONS(),-1);
                             E=lastKnownLocation.getExitInDir(dir);
                         }
                     }
@@ -6294,7 +6294,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(tt==null) tt=parseBits(script,si,"Cp");
                 String echo=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[1]);
                 //lastKnownLocation.showSource(monster,null,CMMsg.MSG_OK_ACTION,echo);
-                for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+                for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
                 {
                     Room R2=lastKnownLocation.getRoomInDir(d);
                     Exit E2=lastKnownLocation.getExitInDir(d);

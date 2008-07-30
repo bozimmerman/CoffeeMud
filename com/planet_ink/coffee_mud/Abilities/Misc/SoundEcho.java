@@ -98,7 +98,7 @@ public class SoundEcho extends StdAbility
 							echoMsg.setOthersMessage("You hear an echo coming from "+Directions.getFromDirectionName(direction)+": "+str);
 						}
 						else
-							echoMsg.setOthersMessage("You hear an echo coming from "+Directions.getFromDirectionName(CMLib.dice().roll(1,Directions.NUM_DIRECTIONS,-1))+": "+str);
+							echoMsg.setOthersMessage("You hear an echo coming from "+Directions.getFromDirectionName(CMLib.dice().roll(1,Directions.NUM_DIRECTIONS(),-1))+": "+str);
 						room.sendOthers(msg.source(),echoMsg);
 					}
 				}
@@ -118,7 +118,7 @@ public class SoundEcho extends StdAbility
 								echoMsg.setOthersMessage("You hear a faint echo coming from "+Directions.getFromDirectionName(direction)+".");
 							}
 							else
-								echoMsg.setOthersMessage("You hear a faint echo coming from "+Directions.getDirectionName(CMLib.dice().roll(1,Directions.NUM_DIRECTIONS,-1))+".");
+								echoMsg.setOthersMessage("You hear a faint echo coming from "+Directions.getDirectionName(CMLib.dice().roll(1,Directions.NUM_DIRECTIONS(),-1))+".");
 							room.sendOthers(msg.source(),echoMsg);
 						}
 					}

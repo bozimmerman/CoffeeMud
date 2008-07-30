@@ -1074,17 +1074,17 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 if(msg.tool() instanceof Room)
                     room=(Room)msg.tool();
                 else
-                for(int r=0;r<Directions.NUM_DIRECTIONS;r++)
-                    if(mob.location().getExitInDir(r)==exit)
+                for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+                    if(mob.location().getExitInDir(d)==exit)
                     {
-                        room=mob.location().getRoomInDir(r);
+                        room=mob.location().getRoomInDir(d);
                         break;
                     }
                 if(room!=null)
-                for(int r=0;r<Directions.NUM_DIRECTIONS;r++)
-                    if((mob.location().getRoomInDir(r)==room)
-                    &&((mob.location().getExitInDir(r)==exit)))
-                        direction=r;
+                for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+                    if((mob.location().getRoomInDir(d)==room)
+                    &&((mob.location().getExitInDir(d)==exit)))
+                        direction=d;
                 mob.tell(exit.viewableText(mob,room).toString());
                 if(isAClearExitView(mob,room,exit)&&(direction>=0))
                 {
@@ -1435,10 +1435,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
 
         StringBuffer buf=new StringBuffer("^DObvious exits:^.^N\n\r");
         String Dir=null;
-        for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
+        for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
         {
-            Exit exit=room.getExitInDir(i);
-            Room room2=room.getRoomInDir(i);
+            Exit exit=room.getExitInDir(d);
+            Room room2=room.getRoomInDir(d);
             StringBuffer Say=new StringBuffer("");
             if(exit!=null)
                 Say=exit.viewableText(mob, room2);
@@ -1447,7 +1447,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 Say.append(room2.roomID()+" via NULL");
             if(Say.length()>0)
             {
-                Dir=CMStrings.padRightPreserve(Directions.getDirectionName(i),5);
+                Dir=CMStrings.padRightPreserve(Directions.getDirectionName(d),5);
                 if((mob!=null)
                 &&(mob.playerStats()!=null)
                 &&(room2!=null)
@@ -1480,11 +1480,11 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         if(!CMLib.flags().canSee(mob)) return;
 
         StringBuffer buf=new StringBuffer("^D[Exits: ");
-        for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
+        for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
         {
-            Exit exit=room.getExitInDir(i);
-            if((exit!=null)&&(exit.viewableText(mob, room.getRoomInDir(i)).length()>0))
-                buf.append("^<EX^>"+Directions.getDirectionName(i)+"^</EX^> ");
+            Exit exit=room.getExitInDir(d);
+            if((exit!=null)&&(exit.viewableText(mob, room.getRoomInDir(d)).length()>0))
+                buf.append("^<EX^>"+Directions.getDirectionName(d)+"^</EX^> ");
         }
         Item I=null;
         for(int i=0;i<room.numItems();i++)

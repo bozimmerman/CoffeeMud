@@ -33,8 +33,14 @@ public class Directions
     private Directions(){super();}
     private static Directions inst=new Directions();
     public static Directions instance(){return inst;}
-    
-	public static int NUM_DIRECTIONS=7;
+    private static int[] NUM_DIRECTIONS=new int[256];
+    static {
+        for(int i=0;i<256;i++) NUM_DIRECTIONS[i]=7;
+    }
+
+	public static int NUM_DIRECTIONS(){
+        return NUM_DIRECTIONS[Thread.currentThread().getThreadGroup().getName().charAt(0)];
+    };
 	
 	public static final int NORTH=0;
 	public static final int SOUTH=1;
@@ -81,9 +87,9 @@ public class Directions
 		return getDirectionName(getDirectionCode(theDir));
 	}
 
-	public static void ReInitialize(int dirs)
+	public static void reInitialize(int dirs)
 	{
-	    NUM_DIRECTIONS=dirs;
+	    NUM_DIRECTIONS[Thread.currentThread().getThreadGroup().getName().charAt(0)]=dirs;
 	    if(dirs<11)
 	    {
 	        DIRECTIONS_BASE=new int[4];
@@ -140,7 +146,7 @@ public class Directions
 
 	public static String getDirectionChar(int code)
 	{
-		if(code<NUM_DIRECTIONS)
+		if(code<NUM_DIRECTIONS())
 			return DIRECTION_CHARS[code];
 		return " ";
 	}
@@ -151,7 +157,7 @@ public class Directions
 	    if(code<0)
 	    {
 			theDir=theDir.toUpperCase();
-			for(int i=0;i<NUM_DIRECTIONS;i++)
+			for(int i=0;i<NUM_DIRECTIONS();i++)
 			    if(theDir.startsWith(DIRECTION_CHARS[i]))
 			        return i;
 	    }
@@ -164,7 +170,7 @@ public class Directions
 	    theDir=theDir.toUpperCase();
 	    for(int i=0;i<DIRECTIONS_FULL_CHART.length;i++)
 	        if((DIRECTIONS_FULL_CHART[i][0].startsWith(theDir))
-	        &&(CMath.s_int(DIRECTIONS_FULL_CHART[i][1])<NUM_DIRECTIONS))
+	        &&(CMath.s_int(DIRECTIONS_FULL_CHART[i][1])<NUM_DIRECTIONS()))
 	            return CMath.s_int(DIRECTIONS_FULL_CHART[i][1]); 
 		return -1;
 	}

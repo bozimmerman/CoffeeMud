@@ -85,7 +85,7 @@ public class Thief_Assassinate extends ThiefSkill
 				return true;
 			}
 
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				Room nextRoom=room.getRoomInDir(d);
 				Exit nextExit=room.getExitInDir(d);

@@ -58,7 +58,7 @@ public class Spell_Farsight extends Spell
 				Room thatRoom=mob.location();
 				if(commands.size()==0)
 				{
-					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						Exit exit=thatRoom.getExitInDir(d);
 						Room room=thatRoom.getRoomInDir(d);

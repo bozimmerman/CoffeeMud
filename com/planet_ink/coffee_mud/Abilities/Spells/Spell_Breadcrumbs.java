@@ -65,7 +65,7 @@ public class Spell_Breadcrumbs extends Spell
 				if(lastRoom!=null)
 				{
 					int dir=-1;
-					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						if(lastRoom.getRoomInDir(d)==R)
 						{ dir=d; break;}
@@ -107,7 +107,7 @@ public class Spell_Breadcrumbs extends Spell
 				}
 			}
 			if(kill) return;
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				Room adjacentRoom=newRoom.getRoomInDir(d);
 				if((adjacentRoom!=null)

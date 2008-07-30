@@ -367,13 +367,13 @@ public class StdGrid extends StdRoom implements GridLocale
     private static int[] XY_ADJUSTMENT_DEFAULT={1,1};
     protected int[] initCenterRoomAdjustsXY(int dirCode)
     {
-        if((dirCode<0)||(dirCode>=Directions.NUM_DIRECTIONS))
+        if((dirCode<0)||(dirCode>=Directions.NUM_DIRECTIONS()))
             return XY_ADJUSTMENT_DEFAULT;
         if((XY_ADJUSTMENT_CHART!=null)&&(dirCode<XY_ADJUSTMENT_CHART.length))
             return XY_ADJUSTMENT_CHART[dirCode];
         
-        int[][] xy=new int[Directions.NUM_DIRECTIONS][2];
-        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+        int[][] xy=new int[Directions.NUM_DIRECTIONS()][2];
+        for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
         {
             switch(d)
             {
@@ -443,7 +443,7 @@ public class StdGrid extends StdRoom implements GridLocale
 	protected void buildFinalLinks()
 	{
 		Exit ox=CMClass.getExit("Open");
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 		    if(d==Directions.GATE) continue;
 			Room dirRoom=rawDoors()[d];
@@ -583,7 +583,7 @@ public class StdGrid extends StdRoom implements GridLocale
 							linkRoom(newRoom,subMap[x][y-1],Directions.NORTH,ox,ox);
 						if((x>0)&&(subMap[x-1][y]!=null))
 							linkRoom(newRoom,subMap[x-1][y],Directions.WEST,ox,ox);
-						if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS)
+						if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS())
 						{
 						    if((y>0)&&(x>0)&&(subMap[x-1][y-1]!=null))
 								linkRoom(newRoom,subMap[x-1][y-1],Directions.NORTHWEST,ox,ox);
@@ -785,7 +785,7 @@ public class StdGrid extends StdRoom implements GridLocale
 			if((mob.location()!=null)&&(mob.location().roomID().length()>0))
 			{
 				int direction=-1;
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					if(mob.location().getRoomInDir(d)==this)
 						direction=d;

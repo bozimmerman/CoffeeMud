@@ -75,7 +75,7 @@ public class MobileGoodGuardian extends Mobile
 		victim=null;
 		int dirCode=-1;
         tickStatus=Tickable.STATUS_MISC+4;
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
             tickStatus=Tickable.STATUS_MISC+5+d;
 			Room room=thisRoom.getRoomInDir(d);

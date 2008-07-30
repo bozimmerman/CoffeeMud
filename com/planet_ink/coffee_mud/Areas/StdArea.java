@@ -1378,7 +1378,7 @@ public class StdArea implements Area
         {
             R=(Room)r.nextElement();
             V.addElement(R);
-            for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+            for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
             {
                 R2=R.rawDoors()[d];
                 if((R2 != null)&&((R2.roomID().length()==0)))

@@ -750,7 +750,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     {
         if(R==null) return null;
         String keyNum=key.getKey();
-        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+        for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
         {
             if((R.getExitInDir(d)!=null)&&(R.getExitInDir(d).keyName().equals(keyNum)))
             {

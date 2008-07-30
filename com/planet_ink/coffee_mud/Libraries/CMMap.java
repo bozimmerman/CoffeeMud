@@ -769,7 +769,7 @@ public class CMMap extends StdLibrary implements WorldMap
     public int getRoomDir(Room from, Room to)
     {
     	if((from==null)||(to==null)) return -1;
-    	for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+    	for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
     		if(from.getRoomInDir(d)==to)
     			return d;
     	return -1;
@@ -780,11 +780,11 @@ public class CMMap extends StdLibrary implements WorldMap
     	if(room==null) return null;
     	Room R=null;
     	Vector otherChoices=new Vector();
-    	for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+    	for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
     	{
     		R=room.getRoomInDir(d);
     		if(R!=null)
-    	    	for(int d1=0;d1<Directions.NUM_DIRECTIONS;d1++)
+    	    	for(int d1=Directions.NUM_DIRECTIONS()-1;d1>=0;d1--)
     	    		if(R.getRoomInDir(d1)==room)
     	    		{
     	    			if(R.getArea()==room.getArea())
@@ -796,7 +796,7 @@ public class CMMap extends StdLibrary implements WorldMap
     	{
     		R=(Room)e.nextElement();
     		if(R==room) continue;
-	    	for(int d1=0;d1<Directions.NUM_DIRECTIONS;d1++)
+            for(int d1=Directions.NUM_DIRECTIONS()-1;d1>=0;d1--)
 	    		if(R.getRoomInDir(d1)==room)
 	    		{
 	    			if(R.getArea()==room.getArea())
@@ -904,16 +904,16 @@ public class CMMap extends StdLibrary implements WorldMap
 				{
 					R=getRoom(R);
 					boolean changes=false;
-					for(int dir=0;dir<Directions.NUM_DIRECTIONS;dir++)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
-						Room thatRoom=R.rawDoors()[dir];
+						Room thatRoom=R.rawDoors()[d];
 						if(thatRoom==deadRoom)
 						{
-							R.rawDoors()[dir]=null;
+							R.rawDoors()[d]=null;
 							changes=true;
-							if((R.getRawExit(dir)!=null)&&(R.getRawExit(dir).isGeneric()))
+							if((R.getRawExit(d)!=null)&&(R.getRawExit(d).isGeneric()))
 							{
-								Exit GE=R.getRawExit(dir);
+								Exit GE=R.getRawExit(d);
 								GE.setTemporaryDoorLink(deadRoom.roomID());
 							}
 						}

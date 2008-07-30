@@ -71,12 +71,12 @@ public class Thief_StrategicRetreat extends ThiefSkill
 				if(where.length()==0)
 				{
 					Vector directions=new Vector();
-					for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
-						Exit thisExit=mob.location().getExitInDir(i);
-						Room thisRoom=mob.location().getRoomInDir(i);
+						Exit thisExit=mob.location().getExitInDir(d);
+						Room thisRoom=mob.location().getRoomInDir(d);
 						if((thisRoom!=null)&&(thisExit!=null)&&(thisExit.isOpen()))
-							directions.addElement(new Integer(i));
+							directions.addElement(new Integer(d));
 					}
 					// up is last resort
 					if(directions.size()>1)

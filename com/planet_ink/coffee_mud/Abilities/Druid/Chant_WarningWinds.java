@@ -103,7 +103,7 @@ public class Chant_WarningWinds extends Chant
 						if(dir>=0)
 						{
 							String far="far ";
-							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+							for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 								if(lastRoom.getRoomInDir(d)==R) far="";
 							dir=Directions.getOpDirectionCode(dir);
 							if(fighting)

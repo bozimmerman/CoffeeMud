@@ -199,7 +199,7 @@ public class Construction extends CraftingSkill
 									||(R.rawDoors()[d].roomID().length()>0))
 										R.rawDoors()[d]=room.rawDoors()[d];
 								}
-								for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 								{
 									if((R.rawDoors()[d]==null)
 									||(R.rawDoors()[d].roomID().length()>0))
@@ -446,7 +446,7 @@ public class Construction extends CraftingSkill
 									CMLib.threads().deleteTick(room,-1);
 									for(int d=0;d<R.rawDoors().length;d++)
 										R.rawDoors()[d]=room.rawDoors()[d];
-									for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+									for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 									    R.setRawExit(d,room);
 									R.startItemRejuv();
 									try

@@ -146,7 +146,7 @@ public class Chant_Treehouse extends Chant
 				if(A!=null) newRoom.addEffect(A);
 
 				newRoom.setRawExit(Directions.DOWN,E);
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					Room R=mob.location().rawDoors()[d];
 					if((R!=null)

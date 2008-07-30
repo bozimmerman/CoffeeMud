@@ -597,7 +597,7 @@ public class CombatAbilities extends StdBehavior
 	
     protected static String[] CODES=null;
     public String[] getStatCodes(){
-        if(this.CODES==null)
+        if(CombatAbilities.CODES==null)
         {
             String[] superCodes=super.getStatCodes();
             CODES=new String[superCodes.length+3];

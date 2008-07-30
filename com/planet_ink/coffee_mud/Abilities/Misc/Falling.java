@@ -73,7 +73,7 @@ public class Falling extends StdAbility
 
     protected boolean canFallFrom(Room fromHere, int direction)
 	{
-		if((fromHere==null)||(direction<0)||(direction>=Directions.NUM_DIRECTIONS))
+		if((fromHere==null)||(direction<0)||(direction>=Directions.NUM_DIRECTIONS()))
 			return false;
 
 		Room toHere=fromHere.getRoomInDir(direction);

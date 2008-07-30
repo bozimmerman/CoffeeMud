@@ -98,7 +98,7 @@ public class GrinderRooms
 				R.setArea(area);
 				for(int d=0;d<R.rawDoors().length;d++)
 					R.rawDoors()[d]=oldR.rawDoors()[d];
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 				    Exit E=oldR.getRawExit(d);
 				    if(E!=null)
@@ -351,7 +351,7 @@ public class GrinderRooms
 		{
 			CMLib.map().resetRoom(linkTo);
 			newRoom=(Room)linkTo.copyOf();
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				newRoom.rawDoors()[d]=null;
 				newRoom.setRawExit(d,null);
@@ -425,7 +425,7 @@ public class GrinderRooms
 			{
 				Room R2=null;
 				
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					int[] xy=Directions.adjustXYByDirections(x,y,d);
 					R2=GZ.getGridChild(xy[0],xy[1]);

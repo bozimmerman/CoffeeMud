@@ -82,7 +82,7 @@ public class Play_Reveille extends Play
 					for(int i=0;i<R.numInhabitants();i++)
 					{ MOB M=R.fetchInhabitant(i); h.put(M,M);}
 					
-					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						Room R3=R.getRoomInDir(d);
 						if((R3!=null)&&(!commonRoomSet.contains(R3)))

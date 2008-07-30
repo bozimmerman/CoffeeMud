@@ -65,7 +65,7 @@ public class BribeGateGuard extends StdBehavior
 			return -1;
         Room R=mob.location();
         if(R!=null)
-		for (int d = 0; d < Directions.NUM_DIRECTIONS; d++)
+		for (int d = 0; d < Directions.NUM_DIRECTIONS(); d++)
 		{
 			if (R.getRoomInDir(d) != null)
 			{

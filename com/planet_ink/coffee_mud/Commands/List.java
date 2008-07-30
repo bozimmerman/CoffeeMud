@@ -305,7 +305,7 @@ public class List extends StdCommand
 				{
 					Vector myVec=null;
 					Vector clearVec=null;
-					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						Room R2=R.rawDoors()[d];
 						if(R2!=null)
@@ -379,7 +379,7 @@ public class List extends StdCommand
 			{
 				Room R=(Room)r.nextElement();
 				if(R.roomID().length()>0)
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					Room R2=R.rawDoors()[d];
 					if((R2!=null)&&(R2.getArea()!=R.getArea()))
@@ -879,7 +879,7 @@ public class List extends StdCommand
 			{
 				Room R=(Room)r.nextElement();
 				if(R.roomID().length()>0)
-					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						Room R2=R.rawDoors()[d];
 						if((R2!=null)&&(R2.rawDoors()[Directions.getOpDirectionCode(d)]!=R))
@@ -902,7 +902,7 @@ public class List extends StdCommand
 			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					Room R2=R.rawDoors()[d];
 					Exit E2=R.getRawExit(d);
@@ -1251,7 +1251,7 @@ public class List extends StdCommand
 
     public String listLog(MOB mob, Vector commands)
     {
-        StringBuffer log=Log.getLog();
+        StringBuffer log=Log.instance().getLog();
         if(commands.size()<2)
             return log.toString();
 

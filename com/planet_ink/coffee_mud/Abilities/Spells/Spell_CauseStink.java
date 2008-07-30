@@ -80,7 +80,7 @@ public class Spell_CauseStink extends Spell
 						M2.executeMsg(M2,msg);
 				}
 			}
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				Room R=room.getRoomInDir(d);
 				if((R!=null)&&(R.numPCInhabitants()>0))

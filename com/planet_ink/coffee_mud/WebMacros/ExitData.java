@@ -84,7 +84,7 @@ public class ExitData extends StdWebMacro
 		String linkdir=httpReq.getRequestParameter("LINK");
 		if(linkdir==null) return "@break@";
 		int link=Directions.getGoodDirectionCode(linkdir);
-		if((link<0)||(link>=Directions.NUM_DIRECTIONS)) return " @break@";
+		if((link<0)||(link>=Directions.NUM_DIRECTIONS())) return " @break@";
 
 		Exit E=R.getRawExit(link);
 

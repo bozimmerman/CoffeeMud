@@ -83,7 +83,7 @@ public class EndlessOcean extends StdGrid
 				for(int i=0;i<subMap[0].length;i++)
 					if(subMap[0][i]!=null)
 						linkRoom(subMap[0][i],subMap[xGridSize()/2][i],Directions.WEST,ox,ox);
-            if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS)
+            if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS())
             {
                 if(rawDoors()[Directions.NORTHEAST]==null)
                 {

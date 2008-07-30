@@ -817,7 +817,7 @@ public class CMProps extends Properties
         if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
             setIntVar(SYSTEMI_STARTMOVE,CMath.s_int(stateVar));
 
-        Directions.ReInitialize(getInt("DIRECTIONS"));
+        Directions.reInitialize(getInt("DIRECTIONS"));
 
         String disable=getStr("DISABLE");
         if(getVar(SYSTEM_MULTICLASS).equalsIgnoreCase("DISABLED"))

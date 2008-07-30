@@ -68,7 +68,7 @@ public class Open extends BaseItemParser
 				mob.location().send(msg.source(),msg);
 
 				if(dirCode<0)
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					if(mob.location().getExitInDir(d)==openThis)
 					{dirCode=d; break;}
 				if((dirCode>=0)&&(mob.location().getRoomInDir(dirCode)!=null))

@@ -107,7 +107,7 @@ public class Thief_Safehouse extends ThiefSkill
     {
         if(target==null) return false;
         if((target.domainType()==Room.DOMAIN_INDOORS_WOOD)||(target.domainType()==Room.DOMAIN_INDOORS_STONE))
-            for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+            for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
             {
                 Room R=target.getRoomInDir(d);
                 if((R!=null)&&(R.domainType()==Room.DOMAIN_OUTDOORS_CITY))
@@ -154,7 +154,7 @@ public class Thief_Safehouse extends ThiefSkill
                 int dir=CMLib.tracking().trackNextDirectionFromHere(V,target,true);
                 while(target!=R)
                 {
-                    if((dir<0)||(dir>=Directions.NUM_DIRECTIONS)||(target==null)) break;
+                    if((dir<0)||(dir>=Directions.NUM_DIRECTIONS())||(target==null)) break;
                     trail.append(Directions.getDirectionName(dir));
                     if(target.getRoomInDir(dir)!=R) trail.append(", ");
                     target=target.getRoomInDir(dir);

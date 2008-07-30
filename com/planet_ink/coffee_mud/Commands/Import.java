@@ -370,7 +370,7 @@ public class Import extends StdCommand
 			{
 				Room R=(Room)r.nextElement();
 				if(!R.getArea().Name().equalsIgnoreCase(areaName))
-					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						Room dirR=R.rawDoors()[d];
 						if((dirR!=null)&&(dirR.getArea().Name().equalsIgnoreCase(areaName)))
@@ -4183,7 +4183,7 @@ public class Import extends StdCommand
 							{
 								Room R2=(Room)r.nextElement();
 								if(R2!=R)
-								for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 								{
 									Room dirR=R2.rawDoors()[d];
 									if((dirR!=null)&&(dirR==R))
@@ -4881,7 +4881,7 @@ public class Import extends StdCommand
 						String descStr=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
 						String nameStr=CMLib.coffeeFilter().safetyFilter(eatLineSquiggle(roomV));
 						String codeStr=eatLine(roomV);
-						if(dirCode<Directions.NUM_DIRECTIONS)
+						if(dirCode<Directions.NUM_DIRECTIONS())
 						switch(dirCode)
 						{
 						case 0: dirCode=Directions.NORTH; break;
@@ -4896,7 +4896,7 @@ public class Import extends StdCommand
 						case 9: dirCode=Directions.SOUTHEAST; break;
 						case 10: dirCode=Directions.GATE; break;
 						default: 
-							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+							for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 								if(R.rawDoors()[d]==null)
 								{
 									dirCode=d;
@@ -4905,16 +4905,16 @@ public class Import extends StdCommand
 							break;
 						}
 						else
-						if((dirCode==10)&&(Directions.NUM_DIRECTIONS<10))
+						if((dirCode==10)&&(Directions.NUM_DIRECTIONS()<10))
 						    dirCode=Directions.GATE;
 						else
-						for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 							if(R.rawDoors()[d]==null)
 							{
 								dirCode=d;
 								break;
 							}
-						if((dirCode<0)||(dirCode>=Directions.NUM_DIRECTIONS))
+						if((dirCode<0)||(dirCode>=Directions.NUM_DIRECTIONS()))
 						{
 							returnAnError(session,"Room: "+R.roomID()+", Unknown direction code: "+dirCode+", aborting exit, area="+areaName,compileErrors,commands);
 							continue;
@@ -5008,7 +5008,7 @@ public class Import extends StdCommand
 							    		synchronized(("SYNC"+R2.roomID()).intern())
 							    		{
 							    			R2=CMLib.map().getRoom(R2);
-											for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+											for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 											{
 												Exit E3=R2.getRawExit(d);
 												if((E3!=null)
@@ -5413,7 +5413,7 @@ public class Import extends StdCommand
 						case 7:
 						case 8:
 						case 9:
-							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+							for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 								if((R.getRawExit(d)!=null)
 								&&(!R.getRawExit(d).hasADoor()))
 								{
@@ -5425,7 +5425,7 @@ public class Import extends StdCommand
 						default:
 							returnAnError(session,"Room: "+R.roomID()+", Unknown direction code: "+dirCode+" (not so bad at this point, it was probably aborted earlier, area="+areaName,compileErrors,commands);
 						}
-						if(dirCode<Directions.NUM_DIRECTIONS)
+						if(dirCode<Directions.NUM_DIRECTIONS())
 						{
 							Exit E=R.getRawExit(dirCode);
 							if(E==null)
@@ -5586,7 +5586,7 @@ public class Import extends StdCommand
 			Room saveRoom=(Room)e.nextElement();
 			CMLib.database().DBCreateRoom(saveRoom,CMClass.classID(saveRoom));
 			// final exit clean-up optimization
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				Exit E=saveRoom.getRawExit(d);
 				if((E!=null)
@@ -5638,7 +5638,7 @@ public class Import extends StdCommand
 					int dir=CMath.s_int(dirID);
 					Room RR=null;
 					Exit RE=null;
-					if(dir<Directions.NUM_DIRECTIONS)
+					if(dir<Directions.NUM_DIRECTIONS())
 					{
 						RR=R1.rawDoors()[dir];
 						RE=R1.getRawExit(dir);

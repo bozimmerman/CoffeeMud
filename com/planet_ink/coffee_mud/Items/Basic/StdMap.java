@@ -348,7 +348,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 			return ' ';
 		}
 		dirCode=-1;
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 		    if(d==Directions.GATE) continue;
 			if(room.r.getRoomInDir(d)==nextRoom.r)
@@ -465,14 +465,14 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 			return false;
 
 		boolean ok=false;
-		for(int e=0;e<Directions.NUM_DIRECTIONS-1;e++)
+		for(int d=0;d<Directions.NUM_DIRECTIONS()-1;d++)
 		{
-			Exit exit=room.r.getExitInDir(e);
-			if(exit!=null)
+			Exit E=room.r.getExitInDir(d);
+			if(E!=null)
 			{
 				if(envStats().level()<2)
 				{
-					if((!CMLib.flags().isHidden(exit))&&(!CMLib.flags().isInvisible(exit))&&(!exit.defaultsLocked()))
+					if((!CMLib.flags().isHidden(E))&&(!CMLib.flags().isInvisible(E))&&(!E.defaultsLocked()))
 						ok=true;
 				}
 				else
@@ -506,7 +506,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
             MapRoom room=(MapRoom)e.nextElement();
             room.x=0;
             room.y=0;
-            for(int d=0;d<Directions.NUM_DIRECTIONS-1;d++)
+            for(int d=0;d<Directions.NUM_DIRECTIONS()-1;d++)
             {
                 Room dir=room.r.getRoomInDir(d);
                 if(dir!=null)
@@ -629,9 +629,9 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
                 {
                     MapRoom roomToBlame=(MapRoom)e.nextElement();
                     if(roomToBlame!=room)
-                        for(int rd=0;rd<Directions.NUM_DIRECTIONS;rd++)
+                        for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
                         {
-                            Room RD=roomToBlame.r.getRoomInDir(rd);
+                            Room RD=roomToBlame.r.getRoomInDir(d);
                             if((RD!=null)&&(RD==room.r))
 							{
 								MapRoom MR=getRoom(areaMap,RD);
@@ -658,7 +658,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
         // considered processed only once!
         processed.put(room.r,room);
 
-        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+        for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
         {
             MapRoom nextRoom=null;
             if(room.r.getRoomInDir(d)!=null)

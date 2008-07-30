@@ -71,7 +71,7 @@ public class Prayer_SenseTraps extends Prayer
 		{
 			msg.append(trapCheck(E));
 			Room R=(Room)E;
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				if(R.getExitInDir(d)==E)
 				{
@@ -142,7 +142,7 @@ public class Prayer_SenseTraps extends Prayer
 		{
 			String last="";
 			String dirs="";
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				Room R=mob.location().getRoomInDir(d);
 				Exit E=mob.location().getExitInDir(d);

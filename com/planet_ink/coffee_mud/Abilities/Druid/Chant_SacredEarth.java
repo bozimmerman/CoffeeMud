@@ -152,9 +152,9 @@ public class Chant_SacredEarth extends Chant
 				{
 					mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"The charm of the sacred earth begins here!");
 					beneficialAffect(mob,target,asLevel,0);
-					for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
-						Room R=mob.location().getRoomInDir(i);
+						Room R=mob.location().getRoomInDir(d);
 						if((R!=null)
 						&&(R.fetchEffect(ID())==null)
 						&&((R.domainType()&Room.INDOORS)==0)

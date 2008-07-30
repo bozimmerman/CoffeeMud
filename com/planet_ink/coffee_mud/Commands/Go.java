@@ -397,17 +397,17 @@ public class Go extends StdCommand
 				return false;
 			}
 			
-			for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
-				if((R.getExitInDir(e)!=null)
-				&&(R.getRoomInDir(e)!=null)
-				&&(!CMath.bset(R.getRoomInDir(e).domainType(),Room.INDOORS)))
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+				if((R.getExitInDir(d)!=null)
+				&&(R.getRoomInDir(d)!=null)
+				&&(!CMath.bset(R.getRoomInDir(d).domainType(),Room.INDOORS)))
 				{
 					if(direction>=0)
 					{
 						mob.tell("Which way out?  Try North, South, East, etc..");
 						return false;
 					}
-					direction=e;
+					direction=d;
 				}
 			if(direction<0)
 			{
@@ -429,9 +429,9 @@ public class Go extends StdCommand
 			}
 			if(E instanceof Exit)
 			{
-				for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
-					if(R.getExitInDir(e)==E)
-					{ direction=e; break;}
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+					if(R.getExitInDir(d)==E)
+					{ direction=d; break;}
 			}
 		}
 		String doing=(String)commands.elementAt(0);

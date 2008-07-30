@@ -43,7 +43,7 @@ public class Prayer_Position extends Prayer
 
 	protected int getRoomDirection(Room R, Room toRoom, Vector ignore)
 	{
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			if((R.getRoomInDir(d)==toRoom)
 			&&(R!=toRoom)
 			&&(!ignore.contains(R)))

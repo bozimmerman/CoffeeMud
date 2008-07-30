@@ -144,7 +144,7 @@ public class Skill_RegionalAwareness extends StdSkill
 						{
 							Room R2=rmap[i2][i3];
 							if(R2!=null)
-							for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+							for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 								if((R2.getRoomInDir(d)==R)
 								&&(!closedPaths.contains(R2))
 								&&(R2.getExitInDir(d)!=null))

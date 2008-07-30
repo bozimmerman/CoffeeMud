@@ -128,7 +128,7 @@ public class Chant_SummonTornado extends Chant
 					stuff.addElement(e.next());
 				Vector availableRooms=new Vector();
 				availableRooms.addElement(mob.location());
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					Room R=mob.location().getRoomInDir(d);
 					Exit E=mob.location().getExitInDir(d);

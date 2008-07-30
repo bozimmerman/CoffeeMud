@@ -61,7 +61,7 @@ public class Thief_AutoDetectTraps extends ThiefSkill
             dropem(msg.source(),R);
             Exit E=null;
             Item I=null;
-            for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+            for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
             {
                 R2=R.getRoomInDir(d);
                 E=R.getExitInDir(d);

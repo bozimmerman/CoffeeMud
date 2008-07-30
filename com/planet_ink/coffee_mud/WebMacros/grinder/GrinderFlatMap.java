@@ -494,7 +494,7 @@ public class GrinderFlatMap
             for(;s<size;s++)
             {
                 GrinderRoom R=(GrinderRoom)V.elementAt(s);
-                for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+                for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
                     if((R.doors[d]!=null)
                     &&(R.doors[d].room!=null)
                     &&(R.doors[d].room.length()>0)
@@ -566,7 +566,7 @@ public class GrinderFlatMap
 			{
 				GrinderRoom R=(GrinderRoom)V.elementAt(s);
 				xy=(int[])xys.get(R.roomID);
-		 		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		 			if((d!=Directions.UP)
 		 			&&(d!=Directions.DOWN)
 		 			&&(R.doors[d]!=null)
@@ -779,7 +779,7 @@ public class GrinderFlatMap
 
 	protected int findRelGridDir(GrinderRoom room, String roomID)
 	{
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			GrinderRoom possRoom=getRoomInDir(room,d);
 			if((possRoom!=null)&&(possRoom.roomID.equals(roomID)))

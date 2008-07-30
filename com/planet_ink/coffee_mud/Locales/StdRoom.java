@@ -42,8 +42,8 @@ public class StdRoom implements Room
 	protected Area myArea=null;
 	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	protected EnvStats baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
-	public Exit[] exits=new Exit[Directions.NUM_DIRECTIONS];
-	public Room[] doors=new Room[Directions.NUM_DIRECTIONS];
+	public Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
+	public Room[] doors=new Room[Directions.NUM_DIRECTIONS()];
 	protected Vector affects=null;
 	protected Vector behaviors=null;
     protected Vector scripts=null;
@@ -67,7 +67,7 @@ public class StdRoom implements Room
 		recoverEnvStats();
 	}
     protected void finalize(){
-        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+        for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
             setRawExit(d,null);
         CMClass.unbumpCounter(this,CMClass.OBJECT_LOCALE);
     }
@@ -139,9 +139,9 @@ public class StdRoom implements Room
 		affects=null;
 		behaviors=null;
         scripts=null;
-		exits=new Exit[Directions.NUM_DIRECTIONS];
-		doors=new Room[Directions.NUM_DIRECTIONS];
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		exits=new Exit[Directions.NUM_DIRECTIONS()];
+		doors=new Room[Directions.NUM_DIRECTIONS()];
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			if(E.getRawExit(d)!=null)
 				exits[d]=(Exit)E.getRawExit(d).copyOf();
@@ -361,7 +361,7 @@ public class StdRoom implements Room
 			setRawExit(Directions.UP,upE);
 			sky.rawDoors()[Directions.DOWN]=this;
 			sky.setRawExit(Directions.DOWN,dnE);
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				if((d!=Directions.UP)&&(d!=Directions.DOWN))
 				{
 					Room thatRoom=rawDoors()[d];
@@ -475,7 +475,7 @@ public class StdRoom implements Room
 				if((gridParent!=null)&&(!gridParent.okMessage(myHost,msg)))
 					return false;
 				if(!CMLib.map().isClearableRoom(this)) return false;
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					Room R2=rawDoors()[d];
 					if((R2!=null)&&(!CMLib.map().isClearableRoom(R2)))
@@ -566,9 +566,9 @@ public class StdRoom implements Room
                 return false;
         }
 
-		for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			Exit thisExit=getRawExit(i);
+			Exit thisExit=getRawExit(d);
 			if(thisExit!=null)
 				if(!thisExit.okMessage(this,msg))
 					return false;
@@ -636,7 +636,7 @@ public class StdRoom implements Room
 				N.executeMsg(this,msg);
 		}
 
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			N=getRawExit(d);
 			if(N!=null)
@@ -1150,7 +1150,7 @@ public class StdRoom implements Room
 	}
 	public Exit getReverseExit(int direction)
 	{
-		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS))
+		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS()))
 			return null;
 		Room opRoom=getRoomInDir(direction);
 		if(opRoom!=null)
@@ -1189,7 +1189,7 @@ public class StdRoom implements Room
 	
 	public Room getRoomInDir(int direction)
 	{
-		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS)||(amDestroyed))
+		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS())||(amDestroyed))
 			return null;
 		Room nextRoom=rawDoors()[direction];
 		if(gridParent!=null) nextRoom=gridParent.prepareGridLocale(this,nextRoom,direction);
@@ -1203,7 +1203,7 @@ public class StdRoom implements Room
 	}
 	public Exit getExitInDir(int direction)
 	{
-		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS))
+		if((direction<0)||(direction>=Directions.NUM_DIRECTIONS()))
 			return null;
 		if((gridParent!=null)&&(getRawExit(direction)==null)) getRoomInDir(direction);
 		return getRawExit(direction);
@@ -1437,11 +1437,11 @@ public class StdRoom implements Room
 		if((roomID().length()==0)&&(rawDoors()!=null))
 		{
 			Room roomDir=null;
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				roomDir=rawDoors()[d];
 	            if((roomDir!=null)&&(roomDir.rawDoors()!=null))
-	            for(int d2=0;d2<Directions.NUM_DIRECTIONS;d2++)
+	            for(int d2=Directions.NUM_DIRECTIONS()-1;d2>=0;d2--)
 	                if(roomDir.rawDoors()[d2]==this)
 	                {
 	                	roomDir.rawDoors()[d2]=null;
@@ -1454,10 +1454,10 @@ public class StdRoom implements Room
         setArea(null); // this actually deletes the room from the cache map
         baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
         envStats=baseEnvStats;
-        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+        for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
             setRawExit(d,null);
-        exits=new Exit[Directions.NUM_DIRECTIONS];
-        doors=new Room[Directions.NUM_DIRECTIONS];
+        exits=new Exit[Directions.NUM_DIRECTIONS()];
+        doors=new Room[Directions.NUM_DIRECTIONS()];
         affects=null;
         behaviors=null;
         scripts=null;
@@ -1478,7 +1478,7 @@ public class StdRoom implements Room
 		else
 		if(E instanceof Exit)
 		{
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				if(getRawExit(d)==E) return true;
 		}
 		else

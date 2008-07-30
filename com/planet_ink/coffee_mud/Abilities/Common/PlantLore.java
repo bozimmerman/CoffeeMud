@@ -100,7 +100,7 @@ public class PlantLore extends CommonSkill
 							else
 							{
 								int isAdjacent=-1;
-								for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 								{
 									Room room2=room.getRoomInDir(d);
 									if(room2==R) isAdjacent=d;

@@ -81,12 +81,12 @@ public class Flee extends Go
 			if(direction.length()==0)
 			{
 				Vector directions=new Vector();
-				for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					Exit thisExit=R.getExitInDir(i);
-					Room thisRoom=R.getRoomInDir(i);
+					Exit thisExit=R.getExitInDir(d);
+					Room thisRoom=R.getRoomInDir(d);
 					if((thisRoom!=null)&&(thisExit!=null)&&(thisExit.isOpen()))
-						directions.addElement(new Integer(i));
+						directions.addElement(new Integer(d));
 				}
 				// up is last resort
 				if(directions.size()>1)

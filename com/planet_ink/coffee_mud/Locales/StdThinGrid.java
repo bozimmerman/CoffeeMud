@@ -322,7 +322,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		if((rawDoors()[Directions.EAST]!=null)&&(exits[Directions.EAST]!=null))
 			linkRoom(R,rawDoors()[Directions.EAST],Directions.EAST,exits[Directions.EAST],exits[Directions.EAST]);
 
-		if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS)
+		if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS())
 		{
 			if((y>0)&&(x>0))
 			{
@@ -722,7 +722,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
                 for(int r=thisGridRooms.size()-1;r>=0;r--)
                 {
                     R2=(Room)thisGridRooms.elementAt(r,1);
-                    for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+                    for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
                         if(R2.rawDoors()[d]==R)
                         {
                             R2.rawDoors()[d]=null;
@@ -747,7 +747,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 				if((mob.location()!=null)&&(mob.location().roomID().length()>0))
 				{
 					int direction=-1;
-					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						if(mob.location().getRoomInDir(d)==this)
 							direction=d;

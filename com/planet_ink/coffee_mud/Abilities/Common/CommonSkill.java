@@ -179,7 +179,7 @@ public class CommonSkill extends StdAbility
 	protected int lookingFor(Vector materials, Room fromHere)
 	{
 		Vector possibilities=new Vector();
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			Room room=fromHere.getRoomInDir(d);
 			Exit exit=fromHere.getExitInDir(d);

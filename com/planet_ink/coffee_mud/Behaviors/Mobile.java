@@ -185,7 +185,7 @@ public class Mobile extends ActiveTicker
             &&(room.getArea().getAreaFlags()>=Area.FLAG_PASSIVE))
                 return true;
             
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
                 tickStatus=Tickable.STATUS_MISC2+3;
 				Room R=room.getRoomInDir(d);

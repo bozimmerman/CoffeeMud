@@ -53,7 +53,7 @@ public class Prayer_Wave extends Prayer
 		{
 		    if(mob.isMonster())
 		    {
-		        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		        for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		        {
 		            Room destRoom=mob.location().getRoomInDir(d);
 		            Exit exitRoom=mob.location().getExitInDir(d);

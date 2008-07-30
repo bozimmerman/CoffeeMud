@@ -47,8 +47,8 @@ public class ThinRoom implements Room {
 	protected String roomID="";
 	protected Area myArea=null;
 	protected static final Vector empty=new Vector();
-	protected static final Exit[] exits=new Exit[Directions.NUM_DIRECTIONS];
-	protected static final Room[] rooms=new Room[Directions.NUM_DIRECTIONS];
+	protected static final Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
+	protected static final Room[] rooms=new Room[Directions.NUM_DIRECTIONS()];
 	public String roomID(){return roomID;}
 	public void setRoomID(String newRoomID){roomID=newRoomID;}
     public void initializeClass(){}
@@ -100,7 +100,7 @@ public class ThinRoom implements Room {
 		}
 		if((myR!=null)
 		&&(direction>=0)
-		&&(direction<Directions.NUM_DIRECTIONS)
+		&&(direction<Directions.NUM_DIRECTIONS())
 		&&(R.rawDoors()[direction]==this))
 			R.rawDoors()[direction]=myR;
 		recurse=false;

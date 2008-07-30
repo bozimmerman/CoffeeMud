@@ -216,7 +216,7 @@ public class Prop_ClosedDayNight extends Property
 
 				if((mob.location()==mob.getStartRoom())
 				&&(lockupFlag))
-					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						Exit E=mob.location().getExitInDir(d);
 						Room R2=mob.location().getRoomInDir(d);
@@ -297,7 +297,7 @@ public class Prop_ClosedDayNight extends Property
 
 				if((mob.location()==mob.getStartRoom())
 				&&(lockupFlag))
-					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						Exit E=mob.location().getExitInDir(d);
 						Room R2=mob.location().getRoomInDir(d);

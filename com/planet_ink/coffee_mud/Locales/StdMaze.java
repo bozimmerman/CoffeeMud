@@ -118,7 +118,7 @@ public class StdMaze extends StdGrid
 		while(okRoom)
 		{
 			okRoom=false;
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 			    if(d==Directions.GATE) continue;
 				Room possRoom=roomDir(x,y,d);
@@ -135,7 +135,7 @@ public class StdMaze extends StdGrid
 				int dirCode=-1;
 				while(goRoom==null)
 				{
-					int d=CMLib.dice().roll(1,Directions.NUM_DIRECTIONS,0)-1;
+					int d=CMLib.dice().roll(1,Directions.NUM_DIRECTIONS(),0)-1;
 					Room possRoom=roomDir(x,y,d);
 					if(possRoom!=null)
 						if(visited.get(possRoom)==null)

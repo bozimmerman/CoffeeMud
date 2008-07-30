@@ -82,7 +82,7 @@ public class EndlessSky extends StdGrid
 	protected void buildFinalLinks()
 	{
 		Exit ox=CMClass.getExit("Open");
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 		    if(d==Directions.GATE) continue;
 			Room dirRoom=rawDoors()[d];
@@ -156,10 +156,10 @@ public class EndlessSky extends StdGrid
 						if((x>0)&&(subMap[x-1][y]!=null))
 							linkRoom(newRoom,subMap[x-1][y],Directions.WEST,ox,ox);
                         
-                        if((y>0)&&(x>0)&&(subMap[x-1][y-1]!=null)&&(Directions.NORTHWEST<Directions.NUM_DIRECTIONS))
+                        if((y>0)&&(x>0)&&(subMap[x-1][y-1]!=null)&&(Directions.NORTHWEST<Directions.NUM_DIRECTIONS()))
                             linkRoom(newRoom,subMap[x-1][y-1],Directions.NORTHWEST,ox,ox);
                         
-                        if((y>0)&&(x<subMap.length-1)&&(subMap[x+1][y-1]!=null)&&(Directions.NORTHEAST<Directions.NUM_DIRECTIONS))
+                        if((y>0)&&(x<subMap.length-1)&&(subMap[x+1][y-1]!=null)&&(Directions.NORTHEAST<Directions.NUM_DIRECTIONS()))
                             linkRoom(newRoom,subMap[x+1][y-1],Directions.NORTHEAST,ox,ox);
                         
 					}
@@ -175,9 +175,9 @@ public class EndlessSky extends StdGrid
 				linkRoom(subMap[x][0],subMap[x][subMap[x].length-1],Directions.NORTH,ox,ox);
 			for(int x=1;x<subMap.length;x++)
 				linkRoom(subMap[x][0],subMap[x-1][subMap[x-1].length-1],Directions.UP,ox,ox);
-            if(Directions.NORTHWEST<Directions.NUM_DIRECTIONS)
+            if(Directions.NORTHWEST<Directions.NUM_DIRECTIONS())
                 linkRoom(subMap[0][0],subMap[subMap.length-1][subMap[0].length-1],Directions.NORTHWEST,ox,ox);
-            if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS)
+            if(Directions.NORTHEAST<Directions.NUM_DIRECTIONS())
                 linkRoom(subMap[subMap.length-1][0],subMap[0][subMap[0].length-1],Directions.NORTHEAST,ox,ox);
 		}
 		catch(Exception e)

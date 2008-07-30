@@ -99,7 +99,7 @@ public class Chant_SummonMount extends Chant
 		}
 		Vector choices=new Vector();
 		int fromDir=-1;
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			Room room=mob.location().getRoomInDir(d);
 			Exit exit=mob.location().getExitInDir(d);

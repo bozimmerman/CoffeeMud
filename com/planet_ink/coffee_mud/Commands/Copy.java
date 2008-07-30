@@ -237,7 +237,7 @@ public class Copy extends StdCommand
 					newRoom.clearSky();
 					if(newRoom instanceof GridLocale)
 						((GridLocale)newRoom).clearGrid(null);
-					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						newRoom.rawDoors()[d]=null;
 						newRoom.setRawExit(d,null);

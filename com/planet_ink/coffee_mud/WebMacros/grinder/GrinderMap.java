@@ -246,7 +246,7 @@ public class GrinderMap extends GrinderFlatMap
 		{
 			GrinderRoom room = (GrinderRoom) areaMap.elementAt(i);
 			room.xy=new int[2];
-			for (int d = 0; d < Directions.NUM_DIRECTIONS; d++)
+			for (int d = 0; d < Directions.NUM_DIRECTIONS(); d++)
 			{
 				GrinderDir dir = room.doors[d];
 				if (dir != null)
@@ -594,7 +594,7 @@ public class GrinderMap extends GrinderFlatMap
 					GrinderRoom roomToBlame = (GrinderRoom) areaMap.elementAt(r);
 					if (roomToBlame != room)
 					{
-						for (int rd = 0; rd < Directions.NUM_DIRECTIONS; rd++)
+						for (int rd = 0; rd < Directions.NUM_DIRECTIONS(); rd++)
 						{
 						  GrinderDir RD = roomToBlame.doors[rd];
 						  if ( (RD != null)
@@ -627,7 +627,7 @@ public class GrinderMap extends GrinderFlatMap
 		// considered processed only once!
 		processed.put(room.roomID, room);
 
-		for (int d = 0; d < Directions.NUM_DIRECTIONS; d++)
+		for (int d = 0; d < Directions.NUM_DIRECTIONS(); d++)
 		{
 			String roomID = null;
 			if (room.doors[d] != null)

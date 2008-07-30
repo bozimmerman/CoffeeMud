@@ -718,7 +718,7 @@ public class MUDGrinder extends StdWebMacro
 				if(R==null) return "The room you entered ("+like+") could not be found.";
 				CMLib.map().resetRoom(R);
 				Room likeRoom=(Room)CMLib.map().getRoom(R).copyOf();
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++) likeRoom.rawDoors()[d]=null;
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--) likeRoom.rawDoors()[d]=null;
 				RS.addElement(likeRoom);
 			}
 			if(RS.size()==0) return "You did not specify a room or room list to paint from!";

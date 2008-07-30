@@ -101,7 +101,7 @@ public class Thief_Shadow extends ThiefSkill
         &&((shadowing.riding()==null)||(msg.source().riding()!=shadowing.riding())))
 		{
 			int dir=-1;
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				if(shadowing.location().getReverseExit(d)==msg.tool())
 					dir=d;
 			if((dir>=0)&&(msg.source().location()!=lastRoom))

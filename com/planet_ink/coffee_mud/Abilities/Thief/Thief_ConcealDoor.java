@@ -126,7 +126,7 @@ public class Thief_ConcealDoor extends ThiefSkill
                 A.setAbilityCode((adjustedLevel(mob,asLevel)*2)-E.envStats().level());
                 Room R=mob.location();
                 Room R2=null;
-                for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+                for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
                     if(R.getExitInDir(d)==E)
                     { R2=R.getRoomInDir(d); break;}
                 if((CMLib.law().doesOwnThisProperty(mob,R))

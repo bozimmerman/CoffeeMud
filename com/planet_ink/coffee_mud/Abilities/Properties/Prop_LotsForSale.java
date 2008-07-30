@@ -47,7 +47,7 @@ public class Prop_LotsForSale extends Prop_RoomForSale
 			||(CMLib.law().getLandTitle(theRoom).landOwner().length()>0)))
 			return false;
 
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			Room R=theRoom.rawDoors()[d];
 			if((R!=null)

@@ -73,9 +73,9 @@ public class Thief_ConcealWalkway extends ThiefSkill
         else
             chkE=mob.location().getExitInDir(Directions.getGoodDirectionCode(typed));
         int direction=-1;
-        for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
-            if(mob.location().getExitInDir(e)==chkE)
-                direction=e;
+        for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
+            if(mob.location().getExitInDir(d)==chkE)
+                direction=d;
         if((!(chkE instanceof Exit))||(!CMLib.flags().canBeSeenBy(chkE,mob))||(direction<0))
         {
             mob.tell("You don't see any directions called '"+typed+"' here.");

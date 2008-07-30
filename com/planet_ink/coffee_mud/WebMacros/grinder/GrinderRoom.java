@@ -47,7 +47,7 @@ public class GrinderRoom
 		return roomCache;
 	}
 	public boolean isRoomGood(){return ((roomCache!=null)&&(!roomCache.amDestroyed()));}
-    public GrinderDir[] doors=new GrinderDir[Directions.NUM_DIRECTIONS];
+    public GrinderDir[] doors=new GrinderDir[Directions.NUM_DIRECTIONS()];
 	public GrinderRoom(String newRoomID)
 	{
 		roomCache=null;
@@ -56,7 +56,7 @@ public class GrinderRoom
 	
 	public void fixExits(Room R)
 	{
-        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+        for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
         {
             GrinderDir D=new GrinderDir();
 			Room R2=R.rawDoors()[d];

@@ -56,5 +56,5 @@ public class Northwest extends Go
 	public boolean canBeOrdered(){return true;}
 
 	
-	public boolean securityCheck(MOB mob){return Directions.NUM_DIRECTIONS>6;}
+	public boolean securityCheck(MOB mob){return Directions.NUM_DIRECTIONS()>6;}
 }

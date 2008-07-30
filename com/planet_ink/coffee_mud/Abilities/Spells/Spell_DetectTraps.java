@@ -85,7 +85,7 @@ public class Spell_DetectTraps extends Spell
 		{
 			Room room=mob.location();
 			if(room!=null)
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				if(room.getExitInDir(d)==E)
 				{

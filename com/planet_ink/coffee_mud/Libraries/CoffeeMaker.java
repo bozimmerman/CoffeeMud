@@ -630,7 +630,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				return unpackErr("Room","??"+xblk.tag+" in room "+newRoom.roomID());
 			int dir=CMLib.xml().getIntFromPieces(xblk.contents,"XDIRE");
 			String doorID=CMLib.xml().getValFromPieces(xblk.contents,"XDOOR");
-			if((dir<0)||(dir>=Directions.NUM_DIRECTIONS))
+			if((dir<0)||(dir>=Directions.NUM_DIRECTIONS()))
 			{
 				if((dir>255)&&(!(newRoom instanceof GridLocale)))
 					return unpackErr("Room","Not GridLocale, tried "+dir+" exit for room '"+newRoom.roomID()+"'");
@@ -705,7 +705,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				{
 					R=CMLib.map().getRoom(R);
 					boolean changed=false;
-					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						Exit exit=R.getRawExit(d);
 						if((exit!=null)&&(exit.temporaryDoorLink().equalsIgnoreCase(newRoom.roomID())))
@@ -1506,14 +1506,14 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		buf.append(CMLib.xml().convertXMLtoTag("RTEXT",CMLib.xml().parseOutAngleBrackets(room.text())));
 		fillFileSet(room,files);
 		buf.append("<ROOMEXITS>");
-		for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			Room door=room.rawDoors()[e];
-			Exit exit=room.getRawExit(e);
+			Room door=room.rawDoors()[d];
+			Exit exit=room.getRawExit(d);
 			if(((door!=null)&&(door.roomID().length()>0))||((door==null)&&(exit!=null)))
 			{
 				buf.append("<REXIT>");
-				buf.append(CMLib.xml().convertXMLtoTag("XDIRE",e));
+				buf.append(CMLib.xml().convertXMLtoTag("XDIRE",d));
 				if(door==null)
 					buf.append("<XDOOR />");
 				else
@@ -3292,7 +3292,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				newRoom.clearSky();
 				if(newRoom instanceof GridLocale)
 					((GridLocale)newRoom).clearGrid(null);
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					newRoom.rawDoors()[d]=null;
 				newRoom.setRoomID(newArea.getNewRoomID(room,-1));
 				newRoom.setArea(newArea);
@@ -3314,7 +3314,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			synchronized(("SYNC"+newRoom.roomID()).intern())
 			{
 				newRoom=CMLib.map().getRoom(newRoom);
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					Room R=room.rawDoors()[d];
 					String myRID=null;

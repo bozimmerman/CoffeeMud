@@ -574,7 +574,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		{
 			Room R2=(Room)e.nextElement();
 			if(R2!=null)
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				if((R2.getRawExit(d)!=null)
 				&&((R2.rawDoors()[d]==null)||(R2.rawDoors()[d].getArea()!=this))
@@ -633,7 +633,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		{
 			Room R=(Room)e.nextElement();
 			if(R!=null)
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
 				if(R.rawDoors()[d]==dock)
 					R.rawDoors()[d]=null;

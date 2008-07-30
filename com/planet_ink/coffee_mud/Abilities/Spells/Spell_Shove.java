@@ -56,7 +56,7 @@ public class Spell_Shove extends Spell
 		{
 		    if(mob.isMonster())
 		    {
-		        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		        for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		            if((mob.location().getRoomInDir(d)!=null)
 		            &&(mob.location().getExitInDir(d)!=null)
 		            &&(mob.location().getExitInDir(d).isOpen()))

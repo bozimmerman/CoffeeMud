@@ -82,7 +82,7 @@ public class Speculate extends CommonSkill
 						StringBuffer str=new StringBuffer("");
 						String resourceStr=RawMaterial.RESOURCE_DESCS[resource];
 						str.append("You think this spot would be good for "+resourceStr.toLowerCase()+".\n\r");
-						for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+						for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						{
 							Room room2=room.getRoomInDir(d);
 							if((room2!=null)

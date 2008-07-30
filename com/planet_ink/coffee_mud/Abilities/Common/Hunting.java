@@ -52,7 +52,7 @@ public class Hunting extends CommonSkill
 	public Room nearByRoom()
 	{
 		Vector possibilities=new Vector();
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			if(d!=Directions.UP)
 			{
@@ -75,7 +75,7 @@ public class Hunting extends CommonSkill
 		if(found.location()==null) return;
 
 		Vector possibilities=new Vector();
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			if(d!=Directions.UP)
 			{
@@ -153,7 +153,7 @@ public class Hunting extends CommonSkill
 			&&(CMLib.flags().aliveAwakeMobile(mob,true))
 			&&(CMLib.flags().canSenseMoving(found,mob)))
 			{
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					Room R=mob.location().getRoomInDir(d);
 					if((R!=null)&&(R==found.location()))

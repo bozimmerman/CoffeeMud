@@ -64,7 +64,7 @@ public class Spell_Delirium extends Spell
 			while((++tries)<1000)
 			{
 				Room R=invoker.location().getArea().getRandomProperRoom();
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					Exit x=R.getExitInDir(d);
 					if((x!=null)&&(!x.name().equals(likeThisOne.name())))

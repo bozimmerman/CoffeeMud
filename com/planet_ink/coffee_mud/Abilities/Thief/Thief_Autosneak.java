@@ -59,7 +59,7 @@ public class Thief_Autosneak extends ThiefSkill
 		{
 			int dir=-1;
 			MOB mob=(MOB)affected;
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				if((mob.location().getRoomInDir(d)==msg.target())
 				||(mob.location().getReverseExit(d)==msg.tool())
 				||(mob.location().getExitInDir(d)==msg.tool()))

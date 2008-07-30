@@ -211,7 +211,7 @@ public class Song extends StdAbility
 		Room R2=null;
 		Exit E2=null;
 		int lowest=v;
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			R2=R.getRoomInDir(d);
 			E2=R.getExitInDir(d);

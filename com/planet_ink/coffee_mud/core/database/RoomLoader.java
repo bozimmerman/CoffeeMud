@@ -312,7 +312,7 @@ public class RoomLoader
                     {
                         if(newExit!=null)
                             newExit.setMiscText(exitMiscText);
-                        if(direction>=Directions.NUM_DIRECTIONS)
+                        if(direction>=Directions.NUM_DIRECTIONS())
                             Log.errOut("RoomLoader",CMLib.map().getExtendedRoomID(thisRoom)+" has an invalid direction #"+direction);
                         else
                         {
@@ -854,10 +854,10 @@ public class RoomLoader
 		DB.update("DELETE FROM CMROEX WHERE CMROID='"+room.roomID()+"'");
 		if(DB.queryRows("SELECT * FROM CMROEX  WHERE CMROID='"+room.roomID()+"'")>0)
 			Log.errOut("Failed to update exits for room "+room.roomID()+".");
-		for(int e=0;e<Directions.NUM_DIRECTIONS;e++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
-			Exit thisExit=room.getRawExit(e);
-			Room thisRoom=room.rawDoors()[e];
+			Exit thisExit=room.getRawExit(d);
+			Room thisRoom=room.rawDoors()[d];
 			if(((thisRoom!=null)||(thisExit!=null))
 			   &&((thisRoom==null)||(thisRoom.savable())))
 			{
@@ -870,7 +870,7 @@ public class RoomLoader
 				+"CMNRID"
 				+") values ("
 				+"'"+room.roomID()+"',"
-				+e+","
+				+d+","
 				+"'"+((thisExit==null)?" ":thisExit.ID())+"',"
 				+"'"+((thisExit==null)?" ":thisExit.text())+" ',"
 				+"'"+((thisRoom==null)?" ":thisRoom.roomID())+"')");

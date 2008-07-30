@@ -221,7 +221,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			&&(CMLib.flags().canAccess(target,R)))
 			{
 				Room checkR=null;
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					checkR=R.getRoomInDir(d);
 					if((checkR!=null)

@@ -343,7 +343,7 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	                    updateRoom=true;
 	                }
 	            }
-	            for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+	            for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 	            {
 	                Room R2=R.rawDoors()[d];
 	                Exit E=R.getRawExit(d);

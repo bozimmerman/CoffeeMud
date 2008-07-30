@@ -51,7 +51,7 @@ public class Play_Cymbals extends Play_Instrument
 		{
 			if((mob==invoker())&&(mob.location()!=null))
 			{
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					Exit e=mob.location().getExitInDir(d);
 					if((e!=null)&&(e.hasADoor())&&(e.hasALock())&&(e.isLocked()))

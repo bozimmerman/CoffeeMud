@@ -166,7 +166,7 @@ public class Spell_WizardLock extends Spell
 							if((R.fetchEffect(a) instanceof LandTitle)
 							   &&(((LandTitle)R.fetchEffect(a)).landOwner().length()>0))
 								lock.setMiscText("MALICIOUS");
-					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						if(R.getExitInDir(d)==target)
 						{ R2=R.getRoomInDir(d); break;}
 					if((CMLib.law().doesOwnThisProperty(mob,R))

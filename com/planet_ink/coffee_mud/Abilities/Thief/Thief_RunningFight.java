@@ -87,14 +87,14 @@ public class Thief_RunningFight extends ThiefSkill
 				return false;
 			}
 			int dir=-1;
-			for(int i=0;i<Directions.NUM_DIRECTIONS;i++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{
-				if(mob.location().getRoomInDir(i)!=null)
+				if(mob.location().getRoomInDir(d)!=null)
 				{
-					if((mob.location().getRoomInDir(i)!=null)
-					&&(mob.location().getReverseExit(i)==msg.tool()))
+					if((mob.location().getRoomInDir(d)!=null)
+					&&(mob.location().getReverseExit(d)==msg.tool()))
 					{
-						dir=i; break;
+						dir=d; break;
 					}
 				}
 			}

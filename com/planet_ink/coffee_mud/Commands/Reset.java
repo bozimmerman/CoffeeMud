@@ -357,7 +357,7 @@ public class Reset extends StdCommand
 								Room R2=(Room)r.nextElement();
 				    			R2=CMLib.map().getRoom(R2);
 								if(R2!=R)
-								for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 									if(R2.rawDoors()[d]==R)
 									{
 										CMLib.database().DBUpdateExits(R2);
@@ -597,7 +597,7 @@ public class Reset extends StdCommand
 					Room R=(Room)r.nextElement();
 					boolean changed=false;
 					if(R.roomID().length()>0)
-					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						Exit E=R.getRawExit(d);
 						if((E!=null)&&E.hasADoor()&&E.name().equalsIgnoreCase("the ground"))

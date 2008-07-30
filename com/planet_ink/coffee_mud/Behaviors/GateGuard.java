@@ -71,7 +71,7 @@ public class GateGuard extends StdBehavior
 			return -1;
 		Room R=mob.location();
 		if(R!=null)
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			if(R.getRoomInDir(d)!=null)
 			{

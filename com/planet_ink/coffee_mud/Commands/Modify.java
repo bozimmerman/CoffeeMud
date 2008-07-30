@@ -812,9 +812,9 @@ public class Modify extends BaseGenerics
 			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room room=(Room)r.nextElement();
-				for(int e2=0;e2<Directions.NUM_DIRECTIONS;e2++)
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
-					Exit exit=room.getRawExit(e2);
+					Exit exit=room.getRawExit(d);
 					if((exit!=null)&&(exit==thisExit))
 					{
 						CMLib.database().DBUpdateExits(room);
@@ -1538,9 +1538,9 @@ public class Modify extends BaseGenerics
 				    		synchronized(("SYNC"+room.roomID()).intern())
 				    		{
 				    			room=CMLib.map().getRoom(room);
-								for(int e2=0;e2<Directions.NUM_DIRECTIONS;e2++)
+								for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 								{
-									Exit exit=room.getRawExit(e2);
+									Exit exit=room.getRawExit(d);
 									if((exit!=null)&&(exit==thang))
 									{
 										CMLib.database().DBUpdateExits(room);

@@ -63,7 +63,7 @@ public class DoorwayGuardian extends StdBehavior
 					return exits;
 				}
 		}
-		for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			Exit E=room.getExitInDir(d);
 			if((E!=null)&&(E.hasADoor()))

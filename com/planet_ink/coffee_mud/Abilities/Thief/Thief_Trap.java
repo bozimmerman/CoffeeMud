@@ -177,7 +177,7 @@ public class Thief_Trap extends ThiefSkill
 				{
 					Room R=mob.location();
 					Room R2=null;
-					for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						if(R.getExitInDir(d)==trapThis)
 						{ R2=R.getRoomInDir(d); break;}
 					if((CMLib.law().doesOwnThisProperty(mob,R))

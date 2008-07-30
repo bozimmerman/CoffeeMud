@@ -78,7 +78,7 @@ public class Chant_PlantMaze extends Chant
 		Room room=(Room)affected;
 		if((canBeUninvoked())&&(room instanceof GridLocale)&&(oldRoom!=null))
 			((GridLocale)room).clearGrid(oldRoom);
-        for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+        for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
             room.setRawExit(d,null);
         super.unInvoke();
         room.destroy();
@@ -165,7 +165,7 @@ public class Chant_PlantMaze extends Chant
 				newRoom.setArea(mob.location().getArea());
 				oldRoom=mob.location();
 				newRoom.setDescription(desc.toString());
-				for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				{
 					Room R=mob.location().rawDoors()[d];
 					Exit E=mob.location().getRawExit(d);

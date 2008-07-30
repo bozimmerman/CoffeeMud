@@ -82,7 +82,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 		{
 			Room R2=null;
 			if(dirCode<0)
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				if(R.getExitInDir(d)==unlockThis){ dirCode=d; R2=R.getRoomInDir(d); break;}
 			if((CMLib.law().doesOwnThisProperty(mob,R))
 			||((R2!=null)&&(CMLib.law().doesOwnThisProperty(mob,R2))))

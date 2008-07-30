@@ -147,11 +147,11 @@ public class Spell_DetectWater extends Spell
 	{
 		String last="";
 		String dirs="";
-		for(int d=0;d<=Directions.NUM_DIRECTIONS;d++)
+		for(int d=Directions.NUM_DIRECTIONS();d>=0;d--)
 		{
 			Room R=null;
 			Exit E=null;
-			if(d<Directions.NUM_DIRECTIONS)
+			if(d<Directions.NUM_DIRECTIONS())
 			{
 				R=mob.location().getRoomInDir(d);
 				E=mob.location().getExitInDir(d);
@@ -178,7 +178,7 @@ public class Spell_DetectWater extends Spell
 				{
 					if(last.length()>0)
 						dirs+=", "+last;
-					if(d>=Directions.NUM_DIRECTIONS)
+					if(d>=Directions.NUM_DIRECTIONS())
 						last="here";
 					else
 						last=Directions.getFromDirectionName(d);

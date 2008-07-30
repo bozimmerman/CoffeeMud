@@ -74,7 +74,7 @@ public class Thief_DetectTraps extends ThiefSkill
 		if(unlockThis instanceof Exit)
 		{
 			if(dirCode<0)
-			for(int d=0;d<Directions.NUM_DIRECTIONS;d++)
+			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 				if(mob.location().getExitInDir(d)==unlockThis){ dirCode=d; break;}
 			if(dirCode>=0)
 			{
