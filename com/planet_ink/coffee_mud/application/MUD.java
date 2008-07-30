@@ -948,7 +948,7 @@ public class MUD extends Thread implements MudHost
 		{
             super(G,"HOST"+grpid);
             synchronized("HostGroupInit".intern()) {
-    			logName="mud";//+((grpid>0)?("."+grpid):"");
+    			logName="mud"+((grpid>0)?("."+grpid):"");
     			grpid++;
     			iniFile=iniFileName;
     			name=mudName;
@@ -980,6 +980,22 @@ public class MUD extends Thread implements MudHost
             page.resetSystemVars();
             CMProps.setBoolVar(CMProps.SYSTEMB_MUDSTARTED,false);
             
+            Log.instance();
+            if((threadCode!=MAIN_HOST)&&(CMath.isInteger(page.getPrivateStr("NUMLOGS"))))
+            {
+                Log.instance().startLogFiles(logName,page.getInt("NUMLOGS"));
+                Log.instance().setLogOutput(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("WRNMSGS"),page.getStr("DBGMSGS"),page.getStr("HLPMSGS"),page.getStr("KILMSGS"),page.getStr("CBTMSGS"));
+            }
+            
+            if(page.getStr("DISABLE").trim().length()>0)
+                Log.sysOut(Thread.currentThread().getName(),"Disabled subsystems: "+page.getStr("DISABLE"));
+            if(page.getStr("DEBUG").trim().length()>0)
+            {
+                Log.sysOut(Thread.currentThread().getName(),"Debugging messages: "+page.getStr("DEBUG"));
+                if(!Log.debugChannelOn())
+                    Log.errOut(Thread.currentThread().getName(),"Debug logging is disabled! Check your DBGMSGS flag!");
+            }
+            
             DBConnector currentDBconnector=new DBConnector();
             CMLib.registerLibrary(new DBInterface(currentDBconnector));
             CMLib.registerLibrary(new ProcessHTTPrequest(null,null,null,true));
@@ -993,11 +1009,6 @@ public class MUD extends Thread implements MudHost
                 CMLib.registerLibrary(CMLib.library(MAIN_HOST,CMLib.LIBRARY_THREADS));
                 CMLib.registerLibrary(CMLib.library(MAIN_HOST,CMLib.LIBRARY_INTERMUD));
 	        }
-			if(!logName.equals("mud"))
-			{
-				Log.startLogFiles(logName,page.getInt("NUMLOGS"));
-				Log.setLogOutput(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("WRNMSGS"),page.getStr("DBGMSGS"),page.getStr("HLPMSGS"),page.getStr("KILMSGS"),page.getStr("CBTMSGS"));
-			}
 			CMProps.setVar(CMProps.SYSTEM_INIPATH,iniFile,false);
 			CMProps.setUpLowVar(CMProps.SYSTEM_MUDNAME,name.replace('\'','`'));
 			try
@@ -1107,15 +1118,15 @@ public class MUD extends Thread implements MudHost
 		CMProps page=CMProps.loadPropPage("//"+iniFile);
 		if ((page==null)||(!page.loaded))
 		{
-			Log.startLogFiles("mud",1);
-			Log.setLogOutput("BOTH","BOTH","BOTH","BOTH","BOTH","BOTH","BOTH");
+		    Log.instance().startLogFiles("mud",1);
+		    Log.instance().setLogOutput("BOTH","BOTH","BOTH","BOTH","BOTH","BOTH","BOTH");
 			Log.errOut(Thread.currentThread().getName(),"ERROR: Unable to read ini file: '"+iniFile+"'.");
 			System.out.println("MUD/ERROR: Unable to read ini file: '"+iniFile+"'.");
 			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"A terminal error has occured!");
 			System.exit(-1);
 		}
-		Log.startLogFiles("mud",page.getInt("NUMLOGS"));
-		Log.setLogOutput(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("WRNMSGS"),page.getStr("DBGMSGS"),page.getStr("HLPMSGS"),page.getStr("KILMSGS"),page.getStr("CBTMSGS"));
+		Log.instance().startLogFiles("mud",page.getInt("NUMLOGS"));
+		Log.instance().setLogOutput(page.getStr("SYSMSGS"),page.getStr("ERRMSGS"),page.getStr("WRNMSGS"),page.getStr("DBGMSGS"),page.getStr("HLPMSGS"),page.getStr("KILMSGS"),page.getStr("CBTMSGS"));
 		while(!bringDown)
 		{
 			System.out.println();

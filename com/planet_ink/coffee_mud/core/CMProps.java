@@ -823,14 +823,6 @@ public class CMProps extends Properties
         if(getVar(SYSTEM_MULTICLASS).equalsIgnoreCase("DISABLED"))
             disable+=", CLASSES";
         CMSecurity.setDisableVars(disable);
-        if(getStr("DISABLE").trim().length()>0)
-            Log.sysOut(Thread.currentThread().getName(),"Disabled subsystems: "+getStr("DISABLE"));
-        if(getStr("DEBUG").trim().length()>0)
-        {
-            Log.sysOut(Thread.currentThread().getName(),"Debugging messages: "+getStr("DEBUG"));
-        	if(!Log.debugChannelOn())
-                Log.errOut(Thread.currentThread().getName(),"Debug logging is disabled! Check your DBGMSGS flag!");
-        }
         CMSecurity.setDebugVars(getStr("DEBUG"));
         CMSecurity.setSaveFlags(getStr("SAVE"));
 

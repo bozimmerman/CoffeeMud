@@ -34,40 +34,44 @@ import java.util.*;
 */
 public class Log
 {
-    private Log(){super();}
-    private static Log inst=new Log();
-    public static Log instance(){return inst;}
+    private static Log[] logs=new Log[256];
+    private static boolean firstInited=false;
+    public Log(){
+        super();
+        char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
+        if(logs==null) logs=new Log[256];
+        if(logs[threadCode]==null)
+        {
+            logs[threadCode]=this;
+            if(!firstInited)
+                logs['0']=this;
+        }
+    }
+    private static Log l(){ return logs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}
+    public static Log l(char threadCode){return logs[threadCode];}
+    public static Log instance(){
+        Log log=l();
+        if(log==null) log=new Log();
+        return log;
+    }
+    
+    /** final date format for headers */
     public static SimpleDateFormat dateFormat=new SimpleDateFormat("yyyyMMdd.HHmm.ssSS");
+    /** SPACES for headers */
+    private static final String SPACES="                                                                                               ";
 
 	/**	always to "log" */
-	private static PrintWriter fileOutWriter=null;
+	private PrintWriter fileOutWriter=null;
 	/** always to systemout */
-	private static PrintWriter systemOutWriter=new PrintWriter(System.out,true);
-	/** SPACES for headers */
-	private static final String SPACES="                                                                                               ";
+	private PrintWriter systemOutWriter=new PrintWriter(System.out,true);
 	/** The fully qualified file path */
-	private static String filePath = "";
+	private String filePath = "";
 	/** log name */
-	private static String logName = "application";
-	private static String LOGNAME = "APPLICATION";
+	private String logName = "application";
+	private String LOGNAME = "APPLICATION";
 
-    private static Hashtable FLAGS=new Hashtable();
-    private static Hashtable WRITERS=new Hashtable();
-
-	/** totally optional, this is the list of maskable error message types.  Useful for internet apps */
-	private final static String[] maskErrMsgs={
-    	"broken pipe",
-		"reset by peer",
-		"socket closed",
-		"connection abort",
-		"connection reset",
-		"network is unreachable",
-		"jvm_recv",
-		"timed out",
-		"stream closed",
-        "no route to host",
-		"protocol not available"
-	};
+    private Hashtable FLAGS=new Hashtable();
+    private Hashtable WRITERS=new Hashtable();
 
 	/**
 	 * Optional method to determine if message is a masked
@@ -103,7 +107,7 @@ public class Log
 	}
 
 
-    private static boolean isWriterOn(String name)
+    private boolean isWriterOn(String name)
     {
         String flag=prop(name);
         if(flag==null) return true;
@@ -118,7 +122,7 @@ public class Log
 	 * @param name code string
 	 * @return PrintWriter the writer
 	 */
-	private static PrintWriter getWriter(String name, int priority)
+	private PrintWriter getWriter(String name, int priority)
 	{
 		PrintWriter[] writers=(PrintWriter[])WRITERS.get(name);
 		if(priority<0) priority=0;
@@ -182,7 +186,7 @@ public class Log
 	 * @param name code string
 	 * @return PrintWriter the writer
 	 */
-	private static String prop(String type)
+	private String prop(String type)
 	{
         String s=(String)FLAGS.get(type);
         if(s==null)
@@ -204,13 +208,13 @@ public class Log
 	* @param newDBGMSGS code string to describe debug msgs
 	* @param newHLPMSGS code string to describe help msgs
 	*/
-	public static void setLogOutput(String newSYSMSGS,
-								    String newERRMSGS,
-								    String newWARNMSGS,
-								    String newDBGMSGS,
-								    String newHLPMSGS,
-								    String newKILMSGS,
-								    String newCBTMSGS)
+	public void setLogOutput(String newSYSMSGS,
+						     String newERRMSGS,
+						     String newWARNMSGS,
+						     String newDBGMSGS,
+						     String newHLPMSGS,
+						     String newKILMSGS,
+						     String newCBTMSGS)
 	{
 		System.setProperty("LOG."+LOGNAME+"_INFO",newSYSMSGS);
 		System.setProperty("LOG."+LOGNAME+"_ERROR",newERRMSGS);
@@ -219,8 +223,8 @@ public class Log
 		System.setProperty("LOG."+LOGNAME+"_HELP",newHLPMSGS);
 		System.setProperty("LOG."+LOGNAME+"_KILLS",newKILMSGS);
 		System.setProperty("LOG."+LOGNAME+"_COMBAT",newCBTMSGS);
-        FLAGS.clear();
-        WRITERS.clear();
+		FLAGS.clear();
+		WRITERS.clear();
 	}
 
 	/**
@@ -229,7 +233,7 @@ public class Log
 	* <br><br><b>Usage:</b>  startLogFiles(5);
 	* @param numberOfLogs maximum number of files
 	*/
-	public static void startLogFiles(String newLogName, int numberOfLogs)
+	public void startLogFiles(String newLogName, int numberOfLogs)
 	{
 		// ===== pass in a null to force the temp directory
 		startLogFiles(newLogName, "", numberOfLogs);
@@ -242,7 +246,7 @@ public class Log
 	* @param dirPath the place to create the file
 	* @param numberOfLogs maximum number of files
 	*/
-	public static void startLogFiles(String newLogName, String dirPath, int numberOfLogs)
+	public void startLogFiles(String newLogName, String dirPath, int numberOfLogs)
 	{
 		logName=newLogName;
 		LOGNAME=logName.toUpperCase().trim();
@@ -307,7 +311,7 @@ public class Log
 		}
 	}
 
-	public static StringBuffer getLog()
+	public StringBuffer getLog()
 	{
 
 		StringBuffer buf=new StringBuffer("");
@@ -353,7 +357,7 @@ public class Log
 	* <br><br><b>Usage:</b>  path = getLogLocation();
 	* @return the string representation of the file path
 	*/
-	public static String getLogLocation()
+	public String getLogLocation()
 	{
 		return filePath;
 	}
@@ -432,7 +436,7 @@ public class Log
 	{
 		synchronized(Type.intern())
 		{
-			PrintWriter outWriter=getWriter(Type,priority);
+			PrintWriter outWriter=l().getWriter(Type,priority);
 			if(outWriter!=null)
 			{
 			    if(e!=null)
@@ -443,7 +447,7 @@ public class Log
 			    }
 			    else
 			    	outWriter.println(getLogHeader(Type,Module,"Null/Unknown error occurred."));
-				if(prop(Type).startsWith("BOTH"))
+				if(l().prop(Type).startsWith("BOTH"))
 				{
 				    if(e!=null)
 				    {
@@ -454,7 +458,7 @@ public class Log
 				    else
 				    	System.out.println(getLogHeader(Type,Module,"Null/Unknown error occurred."));
 				}
-				close(outWriter);
+				l().close(outWriter);
 			}
 		}
 	}
@@ -472,19 +476,19 @@ public class Log
 	{
 		synchronized(Type.intern())
 		{
-			PrintWriter outWriter=getWriter(Type,priority);
+			PrintWriter outWriter=l().getWriter(Type,priority);
 			if(outWriter!=null)
 			{
 				outWriter.println(getLogHeader(Type,Module, e.getMessage()));
 				e.printStackTrace(outWriter);
 				outWriter.flush();
-				if(prop(Type).startsWith("BOTH"))
+				if(l().prop(Type).startsWith("BOTH"))
 				{
 					System.out.println(getLogHeader(Type,Module, e.getMessage()));
 					e.printStackTrace(System.out);
 					System.out.flush();
 				}
-				close(outWriter);
+				l().close(outWriter);
 			}
 		}
 	}
@@ -502,14 +506,14 @@ public class Log
 	{
 		synchronized(Type.intern())
 		{
-			PrintWriter outWriter=getWriter(Type,priority);
+			PrintWriter outWriter=l().getWriter(Type,priority);
 			if(outWriter!=null)
 			{
 				outWriter.println(Message);
 				outWriter.flush();
-				if(prop(Type).startsWith("BOTH"))
+				if(l().prop(Type).startsWith("BOTH"))
 					System.out.println(Message);
-				close(outWriter);
+				l().close(outWriter);
 			}
 		}
 	}
@@ -528,14 +532,14 @@ public class Log
 	{
 		synchronized(Type.intern())
 		{
-			PrintWriter outWriter=getWriter(Type,priority);
+			PrintWriter outWriter=l().getWriter(Type,priority);
 			if(outWriter!=null)
 			{
 				outWriter.println(getLogHeader(Type,Module, Message));
 				outWriter.flush();
-				if(prop(Type).startsWith("BOTH"))
+				if(l().prop(Type).startsWith("BOTH"))
 					System.out.println(getLogHeader(Type,Module, Message));
-				close(outWriter);
+				l().close(outWriter);
 			}
 		}
 	}
@@ -554,16 +558,16 @@ public class Log
 	{
 		synchronized(Type.intern())
 		{
-			PrintWriter outWriter=getWriter(Type,priority);
+			PrintWriter outWriter=l().getWriter(Type,priority);
 			if(outWriter!=null)
 			{
 				Calendar C=Calendar.getInstance();
 				Message=C.get(Calendar.MINUTE)+":"+C.get(Calendar.SECOND)+":"+C.get(Calendar.MILLISECOND)+": "+Message;
 				outWriter.println(getLogHeader("-time-",Module, Message));
 				outWriter.flush();
-				if(prop(Type).startsWith("BOTH"))
+				if(l().prop(Type).startsWith("BOTH"))
 					System.out.println(getLogHeader("-time-",Module, Message));
-				close(outWriter);
+				l().close(outWriter);
 			}
 		}
 	}
@@ -571,7 +575,7 @@ public class Log
 	/**
 	 * Close the given printwriter, if its an "ownfile".
 	 */
-	private static PrintWriter close(PrintWriter pr)
+	private PrintWriter close(PrintWriter pr)
 	{
 		if(pr==null) return null;
 		if((pr!=systemOutWriter)
@@ -583,24 +587,40 @@ public class Log
 	/**
 	 * Shut down this class forever
 	 */
-	public static void close()
+	public void close()
 	{
 		fileOutWriter.close();
 		fileOutWriter=null;
 	}
 
-	public static boolean errorChannelOn() { return isWriterOn("error");}
-	public static boolean helpChannelOn() { return isWriterOn("help");}
-	public static boolean debugChannelOn() { return isWriterOn("debug");}
-	public static boolean infoChannelOn() { return isWriterOn("info");}
-	public static boolean warnChannelOn() { return isWriterOn("warning");}
-	public static boolean killsChannelOn() { return isWriterOn("kills");}
-	public static boolean combatChannelOn() { return isWriterOn("combat");}
-	public static boolean errorChannelAt(int priority) { return getWriter("error",priority)!=null;}
-	public static boolean helpChannelAt(int priority) { return getWriter("help",priority)!=null;}
-	public static boolean debugChannelAt(int priority) { return getWriter("debug",priority)!=null;}
-	public static boolean infoChannelAt(int priority) { return getWriter("info",priority)!=null;}
-	public static boolean warnChannelAt(int priority) { return getWriter("warning",priority)!=null;}
-	public static boolean killsChannelAt(int priority) { return getWriter("kills",priority)!=null;}
-	public static boolean combatChannelAt(int priority) { return getWriter("combat",priority)!=null;}
+	public static boolean errorChannelOn() { return l().isWriterOn("error");}
+	public static boolean helpChannelOn() { return l().isWriterOn("help");}
+	public static boolean debugChannelOn() { return l().isWriterOn("debug");}
+	public static boolean infoChannelOn() { return l().isWriterOn("info");}
+	public static boolean warnChannelOn() { return l().isWriterOn("warning");}
+	public static boolean killsChannelOn() { return l().isWriterOn("kills");}
+	public static boolean combatChannelOn() { return l().isWriterOn("combat");}
+	public static boolean errorChannelAt(int priority) { return l().getWriter("error",priority)!=null;}
+	public static boolean helpChannelAt(int priority) { return l().getWriter("help",priority)!=null;}
+	public static boolean debugChannelAt(int priority) { return l().getWriter("debug",priority)!=null;}
+	public static boolean infoChannelAt(int priority) { return l().getWriter("info",priority)!=null;}
+	public static boolean warnChannelAt(int priority) { return l().getWriter("warning",priority)!=null;}
+	public static boolean killsChannelAt(int priority) { return l().getWriter("kills",priority)!=null;}
+	public static boolean combatChannelAt(int priority) { return l().getWriter("combat",priority)!=null;}
+	
+    /** totally optional, this is the list of maskable error message types.  Useful for internet apps */
+    private final static String[] maskErrMsgs={
+        "broken pipe",
+        "reset by peer",
+        "socket closed",
+        "connection abort",
+        "connection reset",
+        "network is unreachable",
+        "jvm_recv",
+        "timed out",
+        "stream closed",
+        "no route to host",
+        "protocol not available"
+    };
+
 }
