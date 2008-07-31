@@ -165,6 +165,7 @@ public class StdRace implements Race
 					int age=baseStats.getStat(CharStats.STAT_AGE)-chart[Race.AGE_ANCIENT];
 					int num=(diff>0)?(int)Math.abs(Math.floor(CMath.div(age,diff)))-1:1;
 					if(num==0) num=1;
+					if(num>16) num=16;
 				    charStats.setStat(CharStats.STAT_SAVE_MIND,charStats.getStat(CharStats.STAT_SAVE_MIND)+20+(5*num));
 				    charStats.setStat(CharStats.STAT_SAVE_UNDEAD,charStats.getStat(CharStats.STAT_SAVE_UNDEAD)-50+15+(5*num));
 				    charStats.setStat(CharStats.STAT_MAX_STRENGTH_ADJ,charStats.getStat(CharStats.STAT_MAX_STRENGTH_ADJ)-(3+(1*num)));
