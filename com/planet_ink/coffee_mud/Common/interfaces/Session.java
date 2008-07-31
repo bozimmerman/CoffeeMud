@@ -325,105 +325,153 @@ public interface Session extends CMCommon
     public char hotkey(long maxWait);
     
     /**
-     * 
+     * Prompts the user to enter a string, and then returns what
+     * the enter.  Does not time out, but may throw an exception
+     * on disconnnect.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#prompt(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#prompt(String, long)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#prompt(String, String, long)
      * @param Message the prompt message to display to the user
      * @param Default the default response if the user just hits enter
-     * @return
-     * @throws IOException
+     * @return the string entered by the user, or the Default
+     * @throws IOException a disconnect
      */
 	public String prompt(String Message, String Default)
 		throws IOException;
     
     /**
-     * 
+     * Prompts the user to enter a string, and then returns what
+     * the enter.  Possibly times out, and may throw an exception
+     * on disconnnect or time out.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#prompt(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#prompt(String, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#prompt(String, long)
      * @param Message the prompt message to display to the user
      * @param Default the default response if the user just hits enter
      * @param maxTime max number of milliseconds to wait before timing out
-     * @return
-     * @throws IOException
+     * @return the string entered by the user, or the Default
+     * @throws IOException a disconnect or time out
      */
 	public String prompt(String Message, String Default, long maxTime)
 		throws IOException;
     
     /**
-     * 
+     * Prompts the user to enter a string, and then returns what
+     * the enter.  Does not time out, but may throw an exception
+     * on disconnnect.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#prompt(String, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#prompt(String, long)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#prompt(String, String, long)
      * @param Message the prompt message to display to the user
-     * @return
-     * @throws IOException
+     * @return the string entered by the user
+     * @throws IOException a disconnect
      */
 	public String prompt(String Message)
 		throws IOException;
     
     /**
-     * 
+     * Prompts the user to enter a string, and then returns what
+     * the enter.  Possibly times out, and may throw an exception
+     * on disconnnect or time out.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#prompt(String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#prompt(String, String)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#prompt(String, String, long)
      * @param Message the prompt message to display to the user
      * @param maxTime max number of milliseconds to wait before timing out
-     * @return
-     * @throws IOException
+     * @return the string entered by the user
+     * @throws IOException a disconnect or time out
      */
 	public String prompt(String Message, long maxTime)
 		throws IOException;
     
     /**
-     * 
+     * Prompts the user to enter Y or N, and returns what they
+     * enter.  Will not time out, but may throw an exception on
+     * disconnect.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#confirm(String, String, long)
      * @param Message the prompt message to display to the user
      * @param Default the default response if the user just hits enter
-     * @return
-     * @throws IOException
+     * @return true if they entered Y, false otherwise
+     * @throws IOException a disconnect
      */
 	public boolean confirm(String Message, String Default)
 	    throws IOException;
     
     /**
-     * 
+     * Prompts the user to enter Y or N, and returns what they
+     * enter. Possibly times out, and may throw an exception
+     * on disconnnect or time out.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#confirm(String, String)
      * @param Message the prompt message to display to the user
      * @param Default the default response if the user just hits enter
      * @param maxTime max number of milliseconds to wait before timing out
-     * @return
-     * @throws IOException
+     * @return true if they entered Y, false otherwise
+     * @throws IOException a disconnect or time out
      */
 	public boolean confirm(String Message, String Default, long maxTime)
 	    throws IOException;
     
     /**
-     * 
+     * Prompts the user to enter one character responses from a set of
+     * valid choices.  Repeats the prompt if the user does not enter
+     * a valid choice.  ENTER is a valid choice for Default. Does not time out, 
+     * but may throw an exception on disconnnect.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#choose(String, String, String, long)
      * @param Message the prompt message to display to the user
      * @param Choices a list of uppercase characters that may be entered
      * @param Default the default response if the user just hits enter
-     * @return
-     * @throws IOException
+     * @return the character entered from the choices
+     * @throws IOException a disconnect
      */
 	public String choose(String Message, String Choices, String Default)
 	    throws IOException;
     
     /**
-     * 
+     * Prompts the user to enter one character responses from a set of
+     * valid choices.  Repeats the prompt if the user does not enter
+     * a valid choice.  ENTER is a valid choice for Default.   May time out, 
+     * and may throw an exception on disconnnect.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#choose(String, String, String)
      * @param Message the prompt message to display to the user
      * @param Choices a list of uppercase characters that may be entered
      * @param Default the default response if the user just hits enter
      * @param maxTime max number of milliseconds to wait before timing out
-     * @return
-     * @throws IOException
+     * @return the character entered from the choices
+     * @throws IOException a disconnect or time out
      */
 	public String choose(String Message, String Choices, String Default, long maxTime)
 	    throws IOException;
     
     /**
-     * 
-     * @param S
+     * Notifies this session that the given session is snooping it.  
+     * This session will manage said snooping.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#startBeingSnoopedBy(Session)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#stopBeingSnoopedBy(Session)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#amBeingSnoopedBy(Session)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#snoopSuspension(int)
+     * @param S the session to snoop on me.
      */
 	public void startBeingSnoopedBy(Session S);
     
     /**
-     * 
-     * @param S
+     * Notifies this session that the given session is no longer snooping it.
+     * This session will remove said snooping.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#startBeingSnoopedBy(Session)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#stopBeingSnoopedBy(Session)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#amBeingSnoopedBy(Session)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#snoopSuspension(int)
+     * @param S the session to stop snooping on me.
      */
 	public void stopBeingSnoopedBy(Session S);
     
     /**
-     * 
-     * @param S
-     * @return
+     * Checks to see if the given session is snooping on this one.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#startBeingSnoopedBy(Session)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#stopBeingSnoopedBy(Session)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#amBeingSnoopedBy(Session)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#snoopSuspension(int)
+     * @param S the session to check for a snoop on me.
+     * @return true if the given session is snooping on me, false otherwise
      */
 	public boolean amBeingSnoopedBy(Session S);
     
