@@ -181,6 +181,8 @@ public class StdBehavior implements Behavior
 		case 1: setParms(val); break;
 		}
 	}
+    public int getSaveStatIndex(){return getStatCodes().length;}
+    public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	public boolean sameAs(Behavior E)
 	{
 		if(!(E instanceof StdBehavior)) return false;

@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -61,6 +62,7 @@ public class StdMOB implements MOB
 	protected String displayText="";
 	protected String imageName=null;
 	protected byte[] miscText=null;
+    protected String[] xtraValues=null;
 
 	protected long tickStatus=Tickable.STATUS_NOT;
 
@@ -272,6 +274,7 @@ public class StdMOB implements MOB
         CMClass.bumpCounter(this,CMClass.OBJECT_MOB);
 		baseCharStats().setMyRace(CMClass.getRace("Human"));
 		baseEnvStats().setLevel(1);
+        xtraValues=CMProps.getExtraStatCodesHolder(ID());
 	}
 	public long expirationDate(){return expirationDate;}
 	public void setExpirationDate(long time){expirationDate=time;}
@@ -356,6 +359,7 @@ public class StdMOB implements MOB
 		{
 			StdMOB E=(StdMOB)this.clone();
             CMClass.bumpCounter(E,CMClass.OBJECT_MOB);
+            E.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			E.cloneFix(this);
 			return E;
 
@@ -3856,12 +3860,13 @@ public class StdMOB implements MOB
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
-	public boolean sameAs(Environmental E)
-	{
-		if(!(E instanceof StdMOB)) return false;
-		for(int i=0;i<CODES.length;i++)
-			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
-				return false;
-		return true;
-	}
+    public boolean sameAs(Environmental E)
+    {
+        if(!(E instanceof StdMOB)) return false;
+        String[] codes=getStatCodes();
+        for(int i=0;i<codes.length;i++)
+            if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+                return false;
+        return true;
+    }
 }

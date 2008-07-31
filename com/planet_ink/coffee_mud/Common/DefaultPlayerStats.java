@@ -45,6 +45,7 @@ public class DefaultPlayerStats implements PlayerStats
 	protected Vector gtellStack=new Vector();
 	protected Vector titles=new Vector();
     protected DVector alias=new DVector(2);
+    protected String[] xtraValues=null;
 	protected String lastIP="";
     protected long LastDateTime=System.currentTimeMillis();
     protected long lastUpdated=0;
@@ -71,6 +72,11 @@ public class DefaultPlayerStats implements PlayerStats
     protected DVector levelInfo=new DVector(3);
     protected HashSet introductions=new HashSet();
 
+    public DefaultPlayerStats() {
+        super();
+        xtraValues=CMProps.getExtraStatCodesHolder(ID());
+    }
+    
 	protected static String[] CODES={"CLASS","FRIENDS","IGNORE","TITLES",
 									 "ALIAS","LASTIP","LASTDATETIME",
 									 "CHANNELMASK",
@@ -167,6 +173,7 @@ public class DefaultPlayerStats implements PlayerStats
             O.gtellStack=(Vector)gtellStack.clone();
             O.titles=(Vector)titles.clone();
             O.alias=alias.copyOf();
+            O.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
             return O;
         }
         catch(CloneNotSupportedException e)

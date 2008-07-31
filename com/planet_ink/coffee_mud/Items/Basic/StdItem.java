@@ -50,6 +50,7 @@ public class StdItem implements Item
 	protected int		baseGoldValue=0;
 	protected int		material=RawMaterial.RESOURCE_COTTON;
 	protected Environmental owner=null;
+	protected String[] xtraValues=null;
 	protected long dispossessionTime=0;
 	protected long tickStatus=Tickable.STATUS_NOT;
 	protected String databaseID="";
@@ -69,6 +70,7 @@ public class StdItem implements Item
         CMClass.bumpCounter(this,CMClass.OBJECT_ITEM);
 		baseEnvStats().setWeight(1);
 		baseEnvStats().setArmor(0);
+		xtraValues=CMProps.getExtraStatCodesHolder(ID());
 	}
     protected boolean abilityImbuesMagic(){return true;}
     protected void finalize()
@@ -183,6 +185,7 @@ public class StdItem implements Item
 		{
 			StdItem E=(StdItem)this.clone();
             CMClass.bumpCounter(E,CMClass.OBJECT_ITEM);
+            E.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			E.cloneFix(this);
 			return E;
 
@@ -1427,7 +1430,7 @@ public class StdItem implements Item
 		case 4: setMiscText(val); break;
 		}
 	}
-	public int getSaveStatIndex(){return getStatCodes().length;}
+    public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
 	public String[] getStatCodes(){return CODES;}
     public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code){
@@ -1435,12 +1438,13 @@ public class StdItem implements Item
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
-	public boolean sameAs(Environmental E)
-	{
-		if(!(E instanceof StdItem)) return false;
-		for(int i=0;i<CODES.length;i++)
-			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
-				return false;
-		return true;
-	}
+    public boolean sameAs(Environmental E)
+    {
+        if(!(E instanceof StdItem)) return false;
+        String[] codes=getStatCodes();
+        for(int i=0;i<codes.length;i++)
+            if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+                return false;
+        return true;
+    }
 }

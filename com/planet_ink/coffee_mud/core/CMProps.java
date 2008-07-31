@@ -1310,6 +1310,21 @@ public class CMProps extends Properties
         }
         return page;
     }
+    
+    public static String getStatCodeExtensionValue(String[] codes, String[] xtraValues, String code) {
+        if(xtraValues!=null)
+            for(int x=0;x<xtraValues.length;x++)
+                if(codes[codes.length-x-1].equalsIgnoreCase(code))
+                    return xtraValues[xtraValues.length-x-1]; 
+        return "";
+    }
+
+    public static void setStatCodeExtensionValue(String[] codes, String[] xtraValues, String code, String val) {
+        if(xtraValues!=null)
+            for(int x=0;x<xtraValues.length;x++)
+                if(codes[codes.length-x-1].equalsIgnoreCase(code))
+                    xtraValues[xtraValues.length-x-1]=val; 
+    }
 
     public static Vector getStatCodeExtentions(String myClassName)
     {

@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -58,10 +59,14 @@ public class StdArea implements Area
 
 	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	protected EnvStats baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
+    protected String[] xtraValues=null;
+	
 	protected String author="";
 	public void setAuthorID(String authorID){author=authorID;}
 	public String getAuthorID(){return author;}
+	
 	protected String currency="";
+	
     public void initializeClass(){}
 	public void setCurrency(String newCurrency)
 	{
@@ -184,6 +189,7 @@ public class StdArea implements Area
 	{
         super();
         CMClass.bumpCounter(this,CMClass.OBJECT_AREA);
+        xtraValues=CMProps.getExtraStatCodesHolder(ID());
 	}
     protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_AREA);}
     protected boolean amDestroyed=false;
@@ -423,6 +429,7 @@ public class StdArea implements Area
 		{
 			StdArea E=(StdArea)this.clone();
             CMClass.bumpCounter(this,CMClass.OBJECT_AREA);
+            E.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			E.cloneFix(this);
 			return E;
 
@@ -1684,12 +1691,13 @@ public class StdArea implements Area
         case 11: setItemPricingAdjustments((val.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(val,true))); break;
 		}
 	}
-	public boolean sameAs(Environmental E)
-	{
-		if(!(E instanceof Area)) return false;
-		for(int i=0;i<CODES.length;i++)
-			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
-				return false;
-		return true;
-	}
+    public boolean sameAs(Environmental E)
+    {
+        if(!(E instanceof StdArea)) return false;
+        String[] codes=getStatCodes();
+        for(int i=0;i<codes.length;i++)
+            if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+                return false;
+        return true;
+    }
 }

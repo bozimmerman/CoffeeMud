@@ -145,7 +145,7 @@ public class DefaultEnvStats implements EnvStats
 		"SENSES","DISPOSITION","LEVEL",
 		"ABILITY","REJUV","WEIGHT","HEIGHT",
 		"ARMOR","DAMAGE","ATTACK", "AMBIANCES"};
-    public int getSaveStatIndex(){return CODES.length;}
+    public int getSaveStatIndex(){return getStatCodes().length;}
 	public String[] getStatCodes(){return CODES;}
     public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code)

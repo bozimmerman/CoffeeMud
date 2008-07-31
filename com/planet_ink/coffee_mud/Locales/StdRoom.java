@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.Basic.StdItem;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -44,6 +45,7 @@ public class StdRoom implements Room
 	protected EnvStats baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	public Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
 	public Room[] doors=new Room[Directions.NUM_DIRECTIONS()];
+    protected String[] xtraValues=null;
 	protected Vector affects=null;
 	protected Vector behaviors=null;
     protected Vector scripts=null;
@@ -63,6 +65,7 @@ public class StdRoom implements Room
 	{
         super();
         CMClass.bumpCounter(this,CMClass.OBJECT_LOCALE);
+        xtraValues=CMProps.getExtraStatCodesHolder(ID());
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();
 	}
@@ -204,6 +207,7 @@ public class StdRoom implements Room
 		{
 			StdRoom R=(StdRoom)this.clone();
             CMClass.bumpCounter(R,CMClass.OBJECT_LOCALE);
+            R.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			R.cloneFix(this);
 			return R;
 
@@ -1969,14 +1973,15 @@ public class StdRoom implements Room
 		case 3: setMiscText(val); break;
 		}
 	}
-	public boolean sameAs(Environmental E)
-	{
-		if(!(E instanceof StdRoom)) return false;
-		for(int i=0;i<CODES.length;i++)
-			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
-				return false;
-		return true;
-	}
+    public boolean sameAs(Environmental E)
+    {
+        if(!(E instanceof StdRoom)) return false;
+        String[] codes=getStatCodes();
+        for(int i=0;i<codes.length;i++)
+            if(!E.getStat(codes[i]).equals(getStat(codes[i])))
+                return false;
+        return true;
+    }
 	public boolean isSameRoom(Object O)
 	{
 	    if(O==this) return true;

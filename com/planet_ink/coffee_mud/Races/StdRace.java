@@ -1028,7 +1028,7 @@ public class StdRace implements Race
 	public String racialParms(){ return "";}
 	public void setRacialParms(String parms){}
 	protected static String[] CODES={"CLASS","PARMS"};
-    public int getSaveStatIndex(){return CODES.length;}
+    public int getSaveStatIndex(){return getStatCodes().length;}
 	public String getStat(String code){
 		switch(getCodeNum(code))
 		{

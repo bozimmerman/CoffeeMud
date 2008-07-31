@@ -320,42 +320,6 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, C
 	 */
 	public void agingAffects(MOB mob, CharStats baseStats, CharStats charStats);
 
-	/**
-     * Returns an array of the string names of those fields which are modifiable on this object at run-time by
-     * builders.
-     * @see Race#getStat(String)
-     * @see Race#setStat(String, String)
-     * @return list of the fields which may be set.
-     */
-	public String[] getStatCodes();
-    /**
-     * An alternative means of retreiving the values of those fields on this object which are modifiable at
-     * run-time by builders.  See getStatCodes() for possible values for the code passed to this method.
-     * Values returned are always strings, even if the field itself is numeric or a list.
-     * @see Race#getStatCodes()
-     * @param code the name of the field to read.
-     * @return the value of the field read
-     */
-	public String getStat(String code);
-    /**
-     * An alternative means of setting the values of those fields on this object which are modifiable at
-     * run-time by builders.  See getStatCodes() for possible values for the code passed to this method.
-     * The value passed in is always a string, even if the field itself is numeric or a list.
-     * @see Race#getStatCodes()
-     * @param code the name of the field to set
-     * @param val the value to set the field to
-     */
-	public void setStat(String code, String val);
-    /**
-     * Whether this object instance is functionally identical to the object passed in.  Works by repeatedly
-     * calling getStat on both objects and comparing the values.
-     * @see Race#getStatCodes()
-     * @see Race#getStat(String)
-     * @param E the race to compare this one to
-     * @return whether this object is the same as the one passed in
-     */
-	public boolean sameAs(Race E);
-
 	/** body part constant representing antenea*/
 	public final static int BODY_ANTENEA=0;
 	/** body part constant representing eyes */

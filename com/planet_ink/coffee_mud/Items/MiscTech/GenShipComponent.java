@@ -73,8 +73,9 @@ public class GenShipComponent extends StdShipComponent
 		{
 		case 0: return ""+fuelType();
 		case 1: return ""+powerCapacity();
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
-		return "";
 	}
 	public void setStat(String code, String val)
 	{
@@ -85,6 +86,9 @@ public class GenShipComponent extends StdShipComponent
 		{
 		case 0: setFuelType(CMath.s_int(val)); break;
 		case 1: setPowerCapacity(CMath.s_long(val)); break;
+		default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
+		    break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -93,9 +97,10 @@ public class GenShipComponent extends StdShipComponent
 		return -1;
 	}
 	private static String[] codes=null;
-	public String[] getStatCodes()
+    public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
+        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,ID());
 		String[] superCodes=CMObjectBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

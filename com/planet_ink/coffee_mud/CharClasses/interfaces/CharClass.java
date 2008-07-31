@@ -457,42 +457,6 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 */
 	public boolean expless();
 
-	/**
-     * Returns an array of the string names of those fields which are modifiable on this object at run-time by
-     * builders.
-     * @see CharClass#getStat(String)
-     * @see CharClass#setStat(String, String)
-     * @return list of the fields which may be set.
-     */
-	public String[] getStatCodes();
-    /**
-     * An alternative means of retreiving the values of those fields on this object which are modifiable at
-     * run-time by builders.  See getStatCodes() for possible values for the code passed to this method.
-     * Values returned are always strings, even if the field itself is numeric or a list.
-     * @see CharClass#getStatCodes()
-     * @param code the name of the field to read.
-     * @return the value of the field read
-     */
-	public String getStat(String code);
-    /**
-     * An alternative means of setting the values of those fields on this object which are modifiable at
-     * run-time by builders.  See getStatCodes() for possible values for the code passed to this method.
-     * The value passed in is always a string, even if the field itself is numeric or a list.
-     * @see CharClass#getStatCodes()
-     * @param code the name of the field to set
-     * @param val the value to set the field to
-     */
-	public void setStat(String code, String val);
-    /**
-     * Whether this object instance is functionally identical to the object passed in.  Works by repeatedly
-     * calling getStat on both objects and comparing the values.
-     * @see CharClass#getStatCodes()
-     * @see CharClass#getStat(String)
-     * @param E the CharClass to compare this one to
-     * @return whether this object is the same as the one passed in
-     */
-	public boolean sameAs(CharClass E);
-
 	/** constant returned by allowedArmorLevel() to designate any allowed armors. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedArmorLevel() */
 	public static final int ARMOR_ANY=0;
 	/** constant returned by allowedArmorLevel() to designate only cloth armors. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedArmorLevel() */
