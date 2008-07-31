@@ -64,64 +64,96 @@ public interface Session extends CMCommon
 	public String[] clookup();
     
     /**
-     * 
-     * @param msg
-     * @param pageBreak
-     * @param noCache
+     * Low level text output method.
+     * Implements such features as snoops, spam-stacking, page
+     * breaks, and line caching
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#out(char[])
+     * @param msg the string to send to the user
+     * @param pageBreak the number of lines to break on, -1=NO
+     * @param noCache true to disable line caching, false otherwise
      */
 	public void onlyPrint(String msg, int pageBreak, boolean noCache);
     
     /**
-     * 
-     * @param msg
+     * Low level text output method.
+     * Implements such features as snoops, spam-stacking.
+     * No page breaking, and Always line caching
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @param msg the string to send to the user
      */
 	public void onlyPrint(String msg);
     
     /**
-     * 
-     * @param msg
+     * Lowest level user-output method.  Does nothing
+     * but send the string to the user, period.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#out(char[])
+     * @param msg the string to send to the user
      */
 	
     public void rawOut(String msg);
     
     /**
-     * 
-     * @param msg
+     * Low level line-output method.  Sets the
+     * prompt flag after write, and inserts
+     * additional pre-linefeed if currently at
+     * the prompt.  Adds post linefeed of course.
+     * Does not do a page break.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrintln(String, int)
+     * @param msg the string to send to the user
      */
 	public void rawPrintln(String msg);
     
     /**
-     * 
-     * @param msg
-     * @param pageBreak
+     * Low level line-output method.  Sets the
+     * prompt flag after write, and inserts
+     * additional pre-linefeed if currently at
+     * the prompt.  Adds post linefeed of course.
+     * Does a page break of given value.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrint(String, int)
+     * @param msg the string to send to the user
+     * @param pageBreak  the number of lines to break on, -1=NO
      */
 	public void rawPrintln(String msg, int pageBreak);
     
     /**
-     * 
-     * @param msg
+     * Low level line-output method.  Sets the
+     * prompt flag after write, and inserts
+     * additional pre-linefeed if currently at
+     * the prompt.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrint(String, int)
+     * @param msg the string to send to the user
      */
 	public void rawPrint(String msg);
     
     /**
-     * 
-     * @param msg
-     * @param pageBreak
+     * Low level line-output method.  Sets the
+     * prompt flag after write, and inserts
+     * additional pre-linefeed if currently at
+     * the prompt.
+     * Does a page break of given value.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @param msg the string to send to the user
+     * @param pageBreak the number of lines to break on, -1=NO
      */
 	public void rawPrint(String msg, int pageBreak);
     
     /**
-     * 
-     * @param msg
+     * Higher-level line output method.  Does full
+     * filtering of special characters and codes.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrint(String, int)
+     * @param msg the string to send to the user
      */
 	public void stdPrint(String msg);
     
     /**
-     * 
-     * @param Source
-     * @param Target
-     * @param Tool
-     * @param msg
+     * Higher-level line output method.  Does full
+     * filtering of special characters and codes
+     * using given variable values.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrint(String, int)
+     * @param Source variable for special code parsing: Source
+     * @param Target variable for special code parsing: Target
+     * @param Tool variable for special code parsing: Tool
+     * @param msg the string to send to the user
      */
 	public void stdPrint(Environmental Source,
 						 Environmental Target,
@@ -129,17 +161,22 @@ public interface Session extends CMCommon
 						 String msg);
     
     /**
-     * 
-     * @param msg
+     * Higher-level line output method.  Does full
+     * filtering of special characters and codes.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrintln(String, int)
+     * @param msg the string to send to the user
      */
 	public void stdPrintln(String msg);
     
     /**
-     * 
-     * @param Source
-     * @param Target
-     * @param Tool
-     * @param msg
+     * Higher-level line output method.  Does full
+     * filtering of special characters and codes
+     * using given variable values.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrintln(String, int)
+     * @param Source variable for special code parsing: Source
+     * @param Target variable for special code parsing: Target
+     * @param Tool variable for special code parsing: Tool
+     * @param msg the string to send to the user
      */
 	public void stdPrintln(Environmental Source,
 						   Environmental Target,
@@ -147,29 +184,40 @@ public interface Session extends CMCommon
 						   String msg);
     
     /**
-     * 
-     * @param c
+     * Lowest level user-output method.  Does nothing
+     * but send the string to the user, period.
+     * @param c string (as char array) to send out to the user
      */
 	public void out(char[] c);
     
     /**
-     * 
-     * @return
+     * Checks whether this session is currently over its 
+     * time limit trying to write data to its socket. 
+     * For some reason this happens, and this method
+     * detects it.
+     * @return true if something bas happened, false otherwise
      */
 	public boolean isLockedUpWriting();
     
     /**
-     * 
-     * @param msg
+     * Medium-level text output method.  Does full
+     * filtering of special characters and codes.
+     * Does not manage the prompt.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @param msg the string to send to the user
      */
 	public void print(String msg);
     
     /**
-     * 
-     * @param Source
-     * @param Target
-     * @param Tool
-     * @param msg
+     * Medium-level text output method.  Does full
+     * filtering of special characters and codes
+     * using given variable values.
+     * Does not manage the prompt.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @param Source variable for special code parsing: Source
+     * @param Target variable for special code parsing: Target
+     * @param Tool variable for special code parsing: Tool
+     * @param msg the string to send to the user
      */
 	public void print(Environmental Source,
 					  Environmental Target,
@@ -177,17 +225,26 @@ public interface Session extends CMCommon
 					  String msg);
     
     /**
-     * 
-     * @param msg
+     * Medium-level text output method.  Does full
+     * filtering of special characters and codes.
+     * Does not manage the prompt.
+     * Adds a linefeed at the end though.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @param msg the string to send to the user
      */
 	public void println(String msg);
     
     /**
-     * 
-     * @param Source
-     * @param Target
-     * @param Tool
-     * @param msg
+     * Medium-level text output method.  Does full
+     * filtering of special characters and codes
+     * using given variable values.
+     * Does not manage the prompt.
+     * Adds a linefeed at the end though.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @param Source variable for special code parsing: Source
+     * @param Target variable for special code parsing: Target
+     * @param Tool variable for special code parsing: Tool
+     * @param msg the string to send to the user
      */
 	public void println(Environmental Source,
 						Environmental Target,
@@ -195,62 +252,82 @@ public interface Session extends CMCommon
 						String msg);
     
     /**
-     * 
-     * @param truefalse
+     * Notifies this session to output the users prompt
+     * again once it has reached a suitable lapse in
+     * text output.
+     * @param truefalse true to send another prompt, false otherwise
      */
 	public void setPromptFlag(boolean truefalse);
     
     /**
-     * 
-     * @param msg
+     * Medium-level text output method.  Does full
+     * filtering of special characters and codes.
+     * DOES manage the prompt, but turns OFF word wrap!
+     * Adds a linefeed at the end.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @param msg the string to send to the user
      */
 	public void wraplessPrintln(String msg);
     
     /**
-     * 
-     * @param msg
+     * Medium-level text output method.  Does full
+     * filtering of special characters and codes.
+     * DOES manage the prompt, but turns OFF word wrap!
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @param msg the string to send to the user
      */
 	public void wraplessPrint(String msg);
     
     /**
-     * 
-     * @param msg
-     * @param pageBreak
-     * @param noCache
+     * Lower-Medium-level text output method.  Does only the
+     * parsing of color codes, no word wrapping, no codes.
+     * Adds a linefeed at the end.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @param msg the string to send to the user
+     * @param pageBreak the number of lines to break on, -1=NO
+     * @param noCache true to disable line caching, false otherwise
      */
 	public void colorOnlyPrintln(String msg, int pageBreak, boolean noCache);
     
     /**
-     * 
-     * @param msg
-     * @param pageBreak
-     * @param noCache
+     * Lower-Medium-level text output method.  Does only the
+     * parsing of color codes, no word wrapping, no codes.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @param msg the string to send to the user
+     * @param pageBreak the number of lines to break on, -1=NO
+     * @param noCache true to disable line caching, false otherwise
      */
 	public void colorOnlyPrint(String msg, int pageBreak, boolean noCache);
     
     /**
-     * 
-     * @param msg
+     * Lower-Medium-level text output method.  Does only the
+     * parsing of color codes, no word wrapping, no codes.
+     * Adds a linefeed at the end.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @param msg the string to send to the user
      */
 	public void colorOnlyPrintln(String msg);
     
     /**
-     * 
-     * @param msg
+     * Lower-Medium-level text output method.  Does only the
+     * parsing of color codes, no word wrapping, no codes.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @param msg the string to send to the user
      */
 	public void colorOnlyPrint(String msg);
     
     /**
-     * 
-     * @param maxWait
-     * @return
+     * Waits the given milliseconds for a key to be pressed, after which
+     * it returns that key, or \0 if nothing pressed.
+     * @param maxWait the maximum milliseconds to wait
+     * @return the key pressed, or \0
      */
     public char hotkey(long maxWait);
     
     /**
      * 
-     * @param Message
-     * @param Default
+     * @param Message the prompt message to display to the user
+     * @param Default the default response if the user just hits enter
      * @return
      * @throws IOException
      */
@@ -259,9 +336,9 @@ public interface Session extends CMCommon
     
     /**
      * 
-     * @param Message
-     * @param Default
-     * @param maxTime
+     * @param Message the prompt message to display to the user
+     * @param Default the default response if the user just hits enter
+     * @param maxTime max number of milliseconds to wait before timing out
      * @return
      * @throws IOException
      */
@@ -270,7 +347,7 @@ public interface Session extends CMCommon
     
     /**
      * 
-     * @param Message
+     * @param Message the prompt message to display to the user
      * @return
      * @throws IOException
      */
@@ -279,8 +356,8 @@ public interface Session extends CMCommon
     
     /**
      * 
-     * @param Message
-     * @param maxTime
+     * @param Message the prompt message to display to the user
+     * @param maxTime max number of milliseconds to wait before timing out
      * @return
      * @throws IOException
      */
@@ -289,8 +366,8 @@ public interface Session extends CMCommon
     
     /**
      * 
-     * @param Message
-     * @param Default
+     * @param Message the prompt message to display to the user
+     * @param Default the default response if the user just hits enter
      * @return
      * @throws IOException
      */
@@ -299,9 +376,9 @@ public interface Session extends CMCommon
     
     /**
      * 
-     * @param Message
-     * @param Default
-     * @param maxTime
+     * @param Message the prompt message to display to the user
+     * @param Default the default response if the user just hits enter
+     * @param maxTime max number of milliseconds to wait before timing out
      * @return
      * @throws IOException
      */
@@ -310,9 +387,9 @@ public interface Session extends CMCommon
     
     /**
      * 
-     * @param Message
-     * @param Choices
-     * @param Default
+     * @param Message the prompt message to display to the user
+     * @param Choices a list of uppercase characters that may be entered
+     * @param Default the default response if the user just hits enter
      * @return
      * @throws IOException
      */
@@ -321,10 +398,10 @@ public interface Session extends CMCommon
     
     /**
      * 
-     * @param Message
-     * @param Choices
-     * @param Default
-     * @param maxTime
+     * @param Message the prompt message to display to the user
+     * @param Choices a list of uppercase characters that may be entered
+     * @param Default the default response if the user just hits enter
+     * @param maxTime max number of milliseconds to wait before timing out
      * @return
      * @throws IOException
      */

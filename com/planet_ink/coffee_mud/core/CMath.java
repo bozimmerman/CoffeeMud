@@ -208,7 +208,7 @@ public class CMath
     }
     public static int squared(int x)
     {
-        return (int)Math.round(Math.pow(((double)x),((double)x)));
+        return (int)Math.round(Math.pow(((double)x),2.0));
     }
     public static boolean bset(short num, short bitmask)
     {
@@ -521,28 +521,66 @@ public class CMath
         return sint;
     }
 
-    public static boolean isLong(String INT){return isInteger(INT);}
+    /**
+     * Returns whether the given string is a long value
+     *
+     * <br><br><b>Usage:</b> if(isLong(CMD.substring(14)));
+     * @param LONG Long value of string
+     * @return whether it is a long
+     */
+    public static boolean isLong(String LONG){return isInteger(LONG);}
+    
+    /**
+     * Returns whether the given string is a int value
+     *
+     * <br><br><b>Usage:</b> if(isInteger(CMD.substring(14)));
+     * @param INT Integer value of string
+     * @return whether it is a int
+     */
     public static boolean isInteger(String INT)
     {
         if(INT==null) return false;
         if(INT.length()==0) return false;
-        if(INT.startsWith("-")&&(INT.length()>1))
-            INT=INT.substring(1);
-        for(int i=0;i<INT.length();i++)
+        int i=0;
+        if(INT.charAt(0)=='-')
+            if(INT.length()>1)
+                i++;
+            else
+                return false;
+        for(;i<INT.length();i++)
             if(!Character.isDigit(INT.charAt(i)))
                 return false;
         return true;
     }
-
+    
+    /**
+     * Returns whether the given string is a float value
+     *
+     * <br><br><b>Usage:</b> if(isFloat(CMD.substring(14)));
+     * @param DBL float value of string
+     * @return whether it is a float
+     */
     public static boolean isFloat(String DBL){return isDouble(DBL);}
+    
+    /**
+     * Returns whether the given string is a double value
+     *
+     * <br><br><b>Usage:</b> if(isDouble(CMD.substring(14)));
+     * @param DBL double value of string
+     * @return whether it is a double
+     */
     public static boolean isDouble(String DBL)
     {
         if(DBL==null) return false;
         if(DBL.length()==0) return false;
-        if(DBL.startsWith("-")&&(DBL.length()>1))
-            DBL=DBL.substring(1);
+        int i=0;
+        if(DBL.charAt(0)=='-')
+            if(DBL.length()>1)
+                i++;
+            else
+                return false;
         boolean alreadyDot=false;
-        for(int i=0;i<DBL.length();i++)
+        for(;i<DBL.length();i++)
             if(!Character.isDigit(DBL.charAt(i)))
             {
                 if(DBL.charAt(i)=='.')
