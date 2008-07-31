@@ -74,7 +74,13 @@ public class GenBook extends StdBook
 	{ return CMLib.coffeeMaker().getGenItemStat(this,code);}
 	public void setStat(String code, String val)
 	{ CMLib.coffeeMaker().setGenItemStat(this,code,val);}
-	public String[] getStatCodes(){return CMObjectBuilder.GENITEMCODES;}
+    private static String[] codes=null;
+    public String[] getStatCodes()
+    {
+        if(codes==null)
+            codes=CMProps.getStatCodesList(CMObjectBuilder.GENITEMCODES,ID());
+        return codes; 
+    }
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenBook)) return false;

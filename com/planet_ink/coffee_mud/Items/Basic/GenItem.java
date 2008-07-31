@@ -65,11 +65,25 @@ public class GenItem extends StdItem
 		recoverEnvStats();
 	}
 
-	public String getStat(String code)
-	{ return CMLib.coffeeMaker().getGenItemStat(this,code);}
-	public void setStat(String code, String val)
-	{ CMLib.coffeeMaker().setGenItemStat(this,code,val);}
-	public String[] getStatCodes(){return CMObjectBuilder.GENITEMCODES;}
+    public String getStat(String code)
+    {
+        if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+            return CMLib.coffeeMaker().getGenItemStat(this,code);
+        return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+    }
+    public void setStat(String code, String val)
+    {
+        if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+            CMLib.coffeeMaker().setGenItemStat(this,code,val);
+        CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
+    }
+    private static String[] codes=null;
+    public String[] getStatCodes()
+    {
+        if(codes==null)
+            codes=CMProps.getStatCodesList(CMObjectBuilder.GENITEMCODES,ID());
+        return codes; 
+    }
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenItem)) return false;
