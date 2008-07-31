@@ -179,7 +179,7 @@ public interface Ability extends Environmental
 	 * is not in combat.
 	 * @see Ability#combatCastingTime(MOB, Vector)
 	 * @param mob the potential caster
-	 * @param cmds the potential command set
+	 * @param commands the potential command set
 	 * @return the number of player free actions required to do this
 	 */
 	public double castingTime(MOB mob, Vector commands);
@@ -191,7 +191,7 @@ public interface Ability extends Environmental
 	 * is in combat.
 	 * @see Ability#castingTime(MOB, Vector)
 	 * @param mob the potential caster
-	 * @param cmds the potential command set
+	 * @param commands the potential command set
 	 * @return the number of player free actions required to do this
 	 */
 	public double combatCastingTime(MOB mob, Vector commands);

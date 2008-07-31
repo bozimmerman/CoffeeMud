@@ -272,7 +272,7 @@ public interface Faction extends CMCommon, MsgListener
      * a Faction Change Event applies a Faction Add command.
      * A default faction mask/value is defined as a number, along with an
      * optional Zapper mask describing to whom the value is applied.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changes()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setDefaults(Vector)
      * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
      * @return the default faction mask/value list
@@ -297,7 +297,7 @@ public interface Faction extends CMCommon, MsgListener
      * A default faction mask/value is defined as a number, along with an
      * optional Zapper mask describing to whom the value is applied.
      * Each list item is a string.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changes()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#changeEventKeys()
      * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#defaults()
      * @param v the new default faction mask/value list
@@ -670,7 +670,8 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#affectsBehavs()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delAffectBehav(String)
      * @param ID the Abilities or Behavior ID to add
-     * @param relation the relation factor to use as a multiplier
+     * @param parms the parameters for the new affect or behavior
+     * @param gainMask the zapper mask to check to see who qualifies
      * @return whether the new Abilities or Behavior ID was successfully added
      */
     public boolean addAffectBehav(String ID, String parms, String gainMask);
@@ -694,7 +695,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionAbilityUsage
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#addAbilityUsage(String)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#delAbilityUsage(com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionAbilityUsage)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#usageFactors(Ability)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#usageFactorRangeDescription(Ability)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#hasUsage(Ability)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#canUse(MOB, Ability)
      * @return an enumeration of Faction.FactionAbilityUsage objects for this Faction
@@ -880,7 +881,7 @@ public interface Faction extends CMCommon, MsgListener
          * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#flagCache()
          * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#outsiderTargetOK()
          * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#just100()
-         * @return
+         * @return true if src and target are the same, false otherwise
          */
         public boolean selfTargetOK();
 
@@ -920,7 +921,7 @@ public interface Faction extends CMCommon, MsgListener
          * the amount of this faction changed by this event, in accordance with the given direction.
          * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#direction()
          * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent#setFactor(double)
-         * @return
+         * @return the factor to multiply the base amount of the faction by
          */
         public double factor();
 

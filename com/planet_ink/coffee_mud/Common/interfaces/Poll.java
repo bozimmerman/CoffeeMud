@@ -173,7 +173,7 @@ public interface Poll extends CMCommon
     /**
      * Sets a Vector of PollResult objects renoting all poll votes.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Poll#getResults()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Poll.PollResults
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Poll.PollResult
      * @param V a Vector of PollResult objects renoting all poll votes.
      */
     public void setResults(Vector V);

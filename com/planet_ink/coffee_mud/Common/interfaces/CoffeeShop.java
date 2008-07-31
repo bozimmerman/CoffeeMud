@@ -209,7 +209,7 @@ public interface CoffeeShop extends CMCommon
      * prepares it for sale by adding it to a Vector along with any necessary accessories,
      * such as necessary keys, or if a container, any contents of the container.
      * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#getStoreInventory()
-     * @param name the name of the item to search for
+     * @param named the name of the item to search for
      * @param mob the mob who is interested (stock can differ depending on customer)
      * @param whatISell reference to what kind of stuff the store sells
      * @param startRoom the shops start room, for determining jurisdiction

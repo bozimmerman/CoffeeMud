@@ -83,8 +83,8 @@ public interface Command extends CMObject
 	 * anything to be in the commands list, or even for the commands to be null.
 	 * This method is not allowed to be called until the player or mob has 
 	 * satisfied the actionsCost requirements and the securityCheck
-	 * @see Command#actionsCost()
-	 * @see Command#securityCheck(MOB)
+	 * @see com.planet_ink.coffee_mud.Commands.interfaces.Command#actionsCost(MOB, Vector)
+	 * @see com.planet_ink.coffee_mud.Commands.interfaces.Command#securityCheck(MOB)
 	 * @param mob the mob or player issueing the command
 	 * @param commands usually the command words and parameters; a set of strings
      * @param metaFlags flags denoting how the command is being executed

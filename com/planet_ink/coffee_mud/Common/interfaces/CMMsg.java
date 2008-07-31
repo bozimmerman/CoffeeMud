@@ -184,7 +184,7 @@ public interface CMMsg extends CMCommon
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYPE_DESCS
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_DESCS
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#targetCode()
-     * @param codeOrMask the target action code string, or mask string
+     * @param codeOrMaskDesc the target action code string, or mask string
      * @return whether there is a match 
      */
     public boolean isTarget(String codeOrMaskDesc);
@@ -257,7 +257,7 @@ public interface CMMsg extends CMCommon
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYPE_DESCS
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_DESCS
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#sourceCode()
-     * @param codeOrMask the source action code string, or mask string
+     * @param codeOrMaskDesc the source action code string, or mask string
      * @return whether there is a match 
      */
     public boolean isSource(String codeOrMaskDesc);
@@ -331,7 +331,7 @@ public interface CMMsg extends CMCommon
      * Returns low order action type integer for the others code
      * (Others are everyone not source, not target)
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#otherstMajor()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersMajor()
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYP_CAST_SPELL
      * @return low order action type integer for the others code
      */
@@ -367,7 +367,7 @@ public interface CMMsg extends CMCommon
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#TYPE_DESCS
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#MASK_DESCS
      * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#othersCode()
-     * @param codeOrMask the others action code string, or mask string
+     * @param codeOrMaskDesc the others action code string, or mask string
      * @return whether there is a match 
      */
     public boolean isOthers(String codeOrMaskDesc);
@@ -451,7 +451,7 @@ public interface CMMsg extends CMCommon
     
     /**
      * Returns the source of this event, a MOB object
-     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#setSource(Environmental)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#setSource(MOB)
      * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB
      * @return the source of this event
      */
@@ -459,7 +459,7 @@ public interface CMMsg extends CMCommon
 	
     /**
      * Sets the source of this event, a MOB object
-     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#setSource(Environmental)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CMMsg#source()
      * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB
 	 * @param mob the new source of this event
 	 */

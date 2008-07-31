@@ -96,7 +96,7 @@ public interface MudHost
     /**
      * Sets whether this mud is accepting connections
      * @see com.planet_ink.coffee_mud.core.interfaces.MudHost#setAcceptConnections(boolean)
-     * @param truefalse whether it is accepting connections
+     * return true/false whether it is accepting connections
      */
     public boolean isAcceptingConnections();
 }

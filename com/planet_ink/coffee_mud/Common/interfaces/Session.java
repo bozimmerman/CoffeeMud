@@ -476,9 +476,15 @@ public interface Session extends CMCommon
 	public boolean amBeingSnoopedBy(Session S);
     
     /**
-     * 
-     * @param change
-     * @return
+     * Increments or decrements the snoop suspension counter
+     * by the given amount.  Only when the counter is 0 does
+     * snooping of this session actually occur.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#startBeingSnoopedBy(Session)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#stopBeingSnoopedBy(Session)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#amBeingSnoopedBy(Session)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#snoopSuspension(int)
+     * @param change the amount to change the snoop suspension counter by
+     * @return the current value of the snoop suspension counter after the change
      */
 	public int snoopSuspension(int change);
     

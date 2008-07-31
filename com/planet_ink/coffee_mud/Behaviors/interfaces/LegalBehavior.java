@@ -69,7 +69,7 @@ public interface LegalBehavior extends Behavior
      * command. 
      * @see com.planet_ink.coffee_mud.Behaviors.interfaces.LegalBehavior#accuse(Area, MOB, MOB, String[])
      * @see com.planet_ink.coffee_mud.Common.interfaces.Law
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Law#ACTION_DESCS
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Law#PUNISHMENTMASK_DESCS
      * @param mob the accused character
      * @param laws the system of laws to use as a basis
      * @param myArea the geographical domain that the laws apply to

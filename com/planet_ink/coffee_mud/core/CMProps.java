@@ -334,7 +334,7 @@ public class CMProps extends Properties
     
 	/** retrieve a particular .ini file entry as a string
 	*
-	* <br><br><b>Usage:</b>  String s=propertyGetter(p,"TAG");
+	* <br><br><b>Usage:</b>  String s=getStr(p,"TAG");
 	* @param tagToGet	the property tag to retreive.
 	* @return String	the value of the .ini file tag
 	*/
@@ -349,8 +349,8 @@ public class CMProps extends Properties
 
 	/** retrieve particular .ini file entrys as a string array
 	*
-	* <br><br><b>Usage:</b>  String s=getStrs(p,"TAG");
-	* @param tagToGet	the property tag to retreive.
+	* <br><br><b>Usage:</b>  String s=getStrsStarting(p,"TAG");
+	* @param tagStartersToGet	the property tag to retreive.
 	* @return String	the value of the .ini file tag
 	*/
 	public String[][] getStrsStarting(String tagStartersToGet)

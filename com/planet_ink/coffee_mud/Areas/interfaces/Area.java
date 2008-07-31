@@ -561,7 +561,7 @@ public interface Area extends Environmental, Economics
     /**
      * Returns the named Parent Area object for this Area
      * A Parent Area passes down certain behaviors and property effects to its children
-     * @param named the name of an Area
+     * @param num the num of an Parent
      * @return an Area Parent object
      */
     public Area getParent(int num);
