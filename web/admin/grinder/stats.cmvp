@@ -16,7 +16,16 @@
 		function ClickedBox(which)
 		{
 			var newVal='';
-			if(which=='SKILLRPT') newVal='on';
+			if(which=='SKILLRPT') {
+			     if(confirm('Generating a skills report may require several minutes of intense calculation.  Are you sure?'))
+    			     newVal='on';
+    			 else
+    			 {
+    			     document.CONTROL.RPTTYP[0].checked=true;
+                     document.CONTROL.RPTTYP[1].checked=false;
+                     return;
+    			 }
+			} 
 			if(newVal!=document.CONTROL.SKILLRPT.value)
 			{
 				document.CONTROL.SKILLRPT.value=newVal;

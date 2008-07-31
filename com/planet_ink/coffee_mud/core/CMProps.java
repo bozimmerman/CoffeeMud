@@ -113,9 +113,8 @@ public class CMProps extends Properties
     public static final int SYSTEM_ITEMLOOTPOLICY=56;
     public static final int SYSTEM_AUCTIONRATES=57;
     public static final int SYSTEM_DEFAULTPROMPT=58;
-    public static final int SYSTEM_LISTFILE=59;
-    public static final int SYSTEM_PRIVATERESOURCES=60;
-    public static final int NUM_SYSTEM=61;
+    public static final int SYSTEM_PRIVATERESOURCES=59;
+    public static final int NUM_SYSTEM=60;
 
     public static final int SYSTEMI_EXPRATE=0;
     public static final int SYSTEMI_SKYSIZE=1;
@@ -581,20 +580,21 @@ public class CMProps extends Properties
     }
 
     public static String getListValue(String key) {
-        synchronized(getVar(SYSTEM_LISTFILE).intern())
+        final String listFileName="resources/lists.ini";
+        synchronized(listFileName.intern())
         {
-            Properties rawListData=(Properties)Resources.getResource(getVar(SYSTEM_LISTFILE));
+            Properties rawListData=(Properties)Resources.getResource(listFileName);
             if(rawListData==null)
             {
                 rawListData=new Properties();
-                CMFile F=new CMFile(getVar(SYSTEM_LISTFILE),null,true);
+                CMFile F=new CMFile(listFileName,null,true);
                 if(F.exists())
                 {
                     try{
                         rawListData.load(new ByteArrayInputStream(F.raw()));
                     } catch(IOException e){}
                 }
-                Resources.submitResource(getVar(SYSTEM_LISTFILE), rawListData);
+                Resources.submitResource(listFileName, rawListData);
             }
             return rawListData.getProperty(key);
         }
@@ -686,10 +686,6 @@ public class CMProps extends Properties
         setVar(SYSTEM_INVRESETRATE,getStr("INVRESETRATE"));
         setVar(SYSTEM_AUCTIONRATES,getStr("AUCTIONRATES"));
         setUpLowVar(SYSTEM_DEFAULTPROMPT,getStr("DEFAULTPROMPT"));
-        String listFile=getStr("LISTFILE");
-        if((listFile==null)||(listFile.length()==0))
-            listFile="/resources/lists.ini";
-        setUpLowVar(SYSTEM_LISTFILE,listFile);
         listData=new Object[NUML_SYSTEM];
         if(getVar(SYSTEM_AUCTIONRATES).length()==0) setVar(SYSTEM_AUCTIONRATES,"0,10,0.1%,10%,5%,1,168");
         setVar(SYSTEM_EMOTEFILTER,getStr("EMOTEFILTER"));
