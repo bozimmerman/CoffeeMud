@@ -114,7 +114,8 @@ public class CMProps extends Properties
     public static final int SYSTEM_AUCTIONRATES=57;
     public static final int SYSTEM_DEFAULTPROMPT=58;
     public static final int SYSTEM_PRIVATERESOURCES=59;
-    public static final int NUM_SYSTEM=60;
+    public static final int SYSTEM_CHARCREATIONSCRIPTS=60;
+    public static final int NUM_SYSTEM=61;
 
     public static final int SYSTEMI_EXPRATE=0;
     public static final int SYSTEMI_SKYSIZE=1;
@@ -707,6 +708,7 @@ public class CMProps extends Properties
         setBoolVar(SYSTEMB_ACCOUNTEXPIRATION,getStr("ACCOUNTEXPIRATION").equalsIgnoreCase("YES")?true:false);
         setBoolVar(SYSTEMB_INTRODUCTIONSYSTEM,getStr("INTRODUCTIONSYSTEM").equalsIgnoreCase("YES")?true:false);
         setUpLowVar(SYSTEM_PREFACTIONS,getStr("FACTIONS"));
+        setUpLowVar(SYSTEM_CHARCREATIONSCRIPTS,getStr("CHARCREATIONSCRIPTS"));
 
         if(CMLib.color()!=null) CMLib.color().clearLookups();
         if(getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))

@@ -1,0 +1,4 @@
+ONCE_PROG
+    MPPROMPT $i NEWDESCRIPTION Please describe your characters appearance and demeanor:
+    MPGSET $i DESCRIPTION '$<$i NEWDESCRIPTION>'
+~

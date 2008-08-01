@@ -255,11 +255,51 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         return true;
     }
 
+    private void executeScript(MOB mob, Vector scripts) {
+        if(scripts==null) return;
+        for(int s=0;s<scripts.size();s++) {
+            String script=(String)scripts.elementAt(s);
+            ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+            S.setSavable(false);
+            S.setVarScope("*");
+            S.setScript(script);
+            S.tick(mob,Tickable.TICKID_MOB);
+        }
+    }
+    
     public boolean createCharacter(MOB mob, String login, Session session)
         throws java.io.IOException
     {
         if(session.confirm("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
         {
+            Hashtable extraScripts=new Hashtable();
+            final String[] VALID_SCRIPT_CODES={"PASSWORD","EMAIL","ANSI","THEME","RACE","GENDER","STATS","CLASS","FACTIONS","END"};                    
+            Vector extras=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_CHARCREATIONSCRIPTS),true);
+            for(int e=0;e<extras.size();e++) {
+                String s=(String)extras.elementAt(e);
+                int x=s.indexOf(':');
+                String code="END";
+                if(x>0) {
+                    code=s.substring(0,x).toUpperCase().trim();
+                    boolean found=false;
+                    for(int v=0;v<VALID_SCRIPT_CODES.length;v++)
+                        if(VALID_SCRIPT_CODES[v].equals(code))
+                        { code=VALID_SCRIPT_CODES[v]; found=true; break;}
+                        else
+                        if(VALID_SCRIPT_CODES[v].startsWith(code))
+                        { code=VALID_SCRIPT_CODES[v]; found=true; break;}
+                    if(!found)
+                    {
+                        Log.errOut("CharCreation","Error in CHARCREATIONSCRIPTS, invalid code: "+code);
+                        continue;
+                    }
+                    s=s.substring(x+1);
+                }
+                Vector V=(Vector)extraScripts.get(code);
+                if(V==null){ V=new Vector(); extraScripts.put(code,V);}
+                V.addElement(s.trim());
+            }
+            
             login=CMStrings.capitalizeAndLower(login.trim());
             session.println(null,null,null,"\n\r\n\r"+new CMFile(Resources.buildResourcePath("text")+"newchar.txt",null,true).text().toString());
 
@@ -278,6 +318,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             mob.setPlayerStats((PlayerStats)CMClass.getCommon("DefaultPlayerStats"));
             mob.playerStats().setPassword(password);
 
+            executeScript(mob,(Vector)extraScripts.get("PASSWORD"));
+            
             boolean emailReq=(!CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"));
         	session.println(null,null,null,new CMFile(Resources.buildResourcePath("text")+"email.txt",null,true).text().toString());
             while(true)
@@ -305,6 +347,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             }
 
             Log.sysOut("FrontDoor","Creating user: "+mob.Name());
+            executeScript(mob,(Vector)extraScripts.get("EMAIL"));
 
             mob.setBitmap(MOB.ATT_AUTOEXITS|MOB.ATT_AUTOWEATHER);
             if(session.confirm("\n\rDo you want ANSI colors (Y/n)?","Y"))
@@ -322,6 +365,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             &&(!CMSecurity.isDisabled("MXP")))
                 mob.setBitmap(mob.getBitmap()|MOB.ATT_MXP);
 
+            executeScript(mob,(Vector)extraScripts.get("ANSI"));
+            
             int themeCode=CMProps.getIntVar(CMProps.SYSTEMI_MUDTHEME);
             int theme=Area.THEME_FANTASY;
             switch(themeCode)
@@ -357,6 +402,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     }
                     break;
             }
+            
+            executeScript(mob,(Vector)extraScripts.get("THEME"));
+            
             if(!CMSecurity.isDisabled("RACES"))
             	session.println(null,null,null,new CMFile(Resources.buildResourcePath("text")+"races.txt",null,true).text().toString());
 
@@ -443,6 +491,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             mob.baseState().setMovement(CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE));
             mob.baseState().setMana(CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA));
 
+            executeScript(mob,(Vector)extraScripts.get("RACE"));
+            
             String Gender="";
             while(Gender.length()==0)
                 Gender=session.choose("\n\r^!What is your gender (M/F)?^N","MF","");
@@ -453,12 +503,16 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             if((CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION))&&(mob.playerStats()!=null))
                 mob.playerStats().setAccountExpiration(System.currentTimeMillis()+(1000l*60l*60l*24l*((long)CMProps.getIntVar(CMProps.SYSTEMI_TRIALDAYS))));
 
+            executeScript(mob,(Vector)extraScripts.get("GENDER"));
+            
             session.println(null,null,null,"\n\r\n\r"+new CMFile(Resources.buildResourcePath("text")+"stats.txt",null,true).text().toString());
 
             boolean mayCont=true;
             StringBuffer listOfClasses=new StringBuffer("??? no classes ???");
-            if(CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT)>0)
+            if(CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT)>0) {
                 mob.baseCharStats().setAllBaseValues(CMProps.getIntVar(CMProps.SYSTEMI_STARTSTAT));
+                mob.recoverCharStats();
+            }
             else
             while(mayCont)
             {
@@ -505,6 +559,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                         mayCont=false;
                 }
             }
+            executeScript(mob,(Vector)extraScripts.get("STATS"));
+            
             if(!CMSecurity.isDisabled("CLASSES")
             &&!mob.baseCharStats().getMyRace().classless())
                 session.println(null,null,null,new CMFile(Resources.buildResourcePath("text")+"classes.txt",null,true).text().toString());
@@ -589,14 +645,17 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
             CMLib.utensils().outfit(mob,mob.baseCharStats().getMyRace().outfit(mob));
 
-            Ability A=CMClass.getAbility("Allergies");
-            if(A!=null) A.invoke(mob,mob,true,0);
+            if(!CMSecurity.isDisabled("ALLERGIES")) {
+                Ability A=CMClass.getAbility("Allergies");
+                if(A!=null) A.invoke(mob,mob,true,0);
+            }
 
             mob.recoverCharStats();
             mob.recoverEnvStats();
             mob.recoverMaxState();
             mob.resetToMaxState();
 
+            executeScript(mob,(Vector)extraScripts.get("CLASS"));
             Faction F=null;
             Vector mine=null;
             int defaultValue=0;
@@ -652,10 +711,14 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     }
                 }
             }
+            
+            executeScript(mob,(Vector)extraScripts.get("FACTIONS"));
+            
             mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
             CMLib.utensils().outfit(mob,mob.baseCharStats().getCurrentClass().outfit(mob));
             mob.setStartRoom(getDefaultStartRoom(mob));
             mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.playerStats().initializeBirthday(0,mob.baseCharStats().getMyRace()));
+            
             session.println(null,null,null,"\n\r\n\r"+new CMFile(Resources.buildResourcePath("text")+"newchardone.txt",null,true).text().toString());
             session.prompt("");
             boolean logoff=false;
@@ -687,6 +750,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             CMLib.database().DBCreateCharacter(mob);
             CMLib.players().addPlayer(mob);
 
+            executeScript(mob,(Vector)extraScripts.get("END"));
+            
             if(mob.playerStats()==null) return false;
             mob.playerStats().setLastIP(session.getAddress());
             Log.sysOut("FrontDoor","Created user: "+mob.Name());
