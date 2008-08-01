@@ -75,8 +75,9 @@ public class GenDeity extends StdDeity
 		case 2: return getWorshipRequirements();
 		case 3: return getWorshipRitual();
         case 4: return getServiceRitual();
-		}
-		return "";
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+        }
 	}
 	public void setStat(String code, String val)
 	{
@@ -90,6 +91,9 @@ public class GenDeity extends StdDeity
 		case 2: setWorshipRequirements(val); break;
 		case 3: setWorshipRitual(val); break;
         case 4: setServiceRitual(val); break;
+        default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+            break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -101,6 +105,7 @@ public class GenDeity extends StdDeity
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
+        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,ID());
 		String[] superCodes=CMObjectBuilder.GENMOBCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

@@ -80,8 +80,9 @@ public class GenShopkeeper extends StdShopKeeper
 		case 4: return ""+invResetRate();
         case 5: return ignoreMask();
         case 6: return CMParms.toStringList(itemPricingAdjustments());
-		}
-		return "";
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+        }
 	}
 	public void setStat(String code, String val)
 	{
@@ -97,6 +98,9 @@ public class GenShopkeeper extends StdShopKeeper
 		case 4: setInvResetRate(CMath.s_int(val)); break;
         case 5: setIgnoreMask(val); break;
         case 6: setItemPricingAdjustments((val.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(val,true))); break;
+        default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+            break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -108,6 +112,7 @@ public class GenShopkeeper extends StdShopKeeper
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
+        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,ID());
 		String[] superCodes=CMObjectBuilder.GENMOBCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

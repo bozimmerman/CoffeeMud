@@ -85,8 +85,9 @@ public class GenBanker extends StdBanker
         case 5: return ignoreMask();
 		case 6: return ""+getLoanInterest();
         case 7: return CMParms.toStringList(itemPricingAdjustments());
-		}
-		return "";
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+        }
 	}
 	public void setStat(String code, String val)
 	{
@@ -103,6 +104,9 @@ public class GenBanker extends StdBanker
         case 5: setIgnoreMask(val); break;
 		case 6: setLoanInterest(CMath.s_double(val)); break;
         case 7: setItemPricingAdjustments((val.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(val,true))); break;
+        default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+            break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -114,6 +118,7 @@ public class GenBanker extends StdBanker
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
+        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,ID());
 		String[] superCodes=CMObjectBuilder.GENMOBCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

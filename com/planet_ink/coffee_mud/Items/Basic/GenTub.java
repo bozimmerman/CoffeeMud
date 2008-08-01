@@ -79,8 +79,9 @@ public class GenTub extends StdTub
 		case 6: return ""+thirstQuenched();
 		case 7: return ""+liquidHeld();
 		case 8: return ""+liquidType();
-		}
-		return "";
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+        }
 	}
 	public void setStat(String code, String val)
 	{
@@ -98,6 +99,9 @@ public class GenTub extends StdTub
 		case 6: setThirstQuenched(CMath.s_int(val)); break;
 		case 7: setLiquidHeld(CMath.s_int(val)); break;
 		case 8: setLiquidType(CMath.s_int(val)); break;
+        default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+            break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -109,6 +113,7 @@ public class GenTub extends StdTub
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
+        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,ID());
 		String[] superCodes=CMObjectBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

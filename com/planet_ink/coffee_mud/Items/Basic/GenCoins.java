@@ -172,8 +172,9 @@ public class GenCoins extends GenItem implements Coins
 		case 0: return ""+getNumberOfCoins();
 		case 1: return ""+getCurrency();
 		case 2: return ""+getDenomination();
-		}
-		return "";
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+        }
 	}
 	public void setStat(String code, String val)
 	{
@@ -185,6 +186,9 @@ public class GenCoins extends GenItem implements Coins
 		case 0: setNumberOfCoins(CMath.s_int(val)); break;
 		case 1: setCurrency(val); break;
 		case 2: setDenomination(CMath.s_double(val)); break;
+        default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+            break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -196,6 +200,7 @@ public class GenCoins extends GenItem implements Coins
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
+        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,ID());
 		String[] superCodes=CMObjectBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

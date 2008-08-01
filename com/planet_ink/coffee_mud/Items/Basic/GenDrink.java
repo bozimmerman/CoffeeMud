@@ -99,8 +99,9 @@ public class GenDrink extends StdDrink
 		case 4: return ""+thirstQuenched();
 		case 5: return ""+liquidHeld();
 		case 6: return ""+liquidType();
-		}
-		return "";
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+        }
 	}
 	public void setStat(String code, String val)
 	{
@@ -116,6 +117,9 @@ public class GenDrink extends StdDrink
 		case 4: setThirstQuenched(CMath.s_int(val)); break;
 		case 5: setLiquidHeld(CMath.s_int(val)); break;
 		case 6: setLiquidType(CMath.s_int(val)); break;
+        default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+            break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -127,6 +131,7 @@ public class GenDrink extends StdDrink
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
+        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,ID());
 		String[] superCodes=CMObjectBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

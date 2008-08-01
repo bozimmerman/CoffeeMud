@@ -84,8 +84,9 @@ public class GenPortal extends StdPortal
 		case 5: return ""+riderCapacity();
 		case 6: return ""+doorName();
 		case 7: return ""+closedText();
-		}
-		return "";
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+        }
 	}
 	public void setStat(String code, String val)
 	{
@@ -102,6 +103,9 @@ public class GenPortal extends StdPortal
 		case 5: break;
 		case 6: setExitParams(val,closeWord(),openWord(),closedText()); break;
 		case 7: setExitParams(doorName(),closeWord(),openWord(),val); break;
+        default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+            break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -113,6 +117,7 @@ public class GenPortal extends StdPortal
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
+        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,ID());
 		String[] superCodes=CMObjectBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

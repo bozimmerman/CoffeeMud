@@ -65,11 +65,25 @@ public class GenMob extends StdMOB
 		super.setMiscText(newText);
 		CMLib.coffeeMaker().resetGenMOB(this,newText);
 	}
-	public String getStat(String code)
-	{ return CMLib.coffeeMaker().getGenMobStat(this,code);}
-	public void setStat(String code, String val)
-	{ CMLib.coffeeMaker().setGenMobStat(this,code,val);}
-	public String[] getStatCodes(){return CMObjectBuilder.GENMOBCODES;}
+    public String getStat(String code)
+    {
+        if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
+            return CMLib.coffeeMaker().getGenMobStat(this,code);
+        return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+    }
+    public void setStat(String code, String val)
+    {
+        if(CMLib.coffeeMaker().getGenMobCodeNum(code)>=0)
+            CMLib.coffeeMaker().setGenMobStat(this,code,val);
+        CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code,val);
+    }
+    private static String[] codes=null;
+    public String[] getStatCodes()
+    {
+        if(codes==null)
+            codes=CMProps.getStatCodesList(CMObjectBuilder.GENMOBCODES,ID());
+        return codes; 
+    }
 	public boolean sameAs(Environmental E)
 	{
 		if(!(E instanceof GenMob)) return false;

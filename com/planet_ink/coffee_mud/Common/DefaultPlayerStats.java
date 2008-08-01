@@ -108,8 +108,9 @@ public class DefaultPlayerStats implements PlayerStats
 		case 17: return CMParms.toStringList(birthday);
 		case 18: return ""+accountExpiration;
 		case 19: return "<INTROS>"+getPrivateList(introductions)+"</INTROS>";
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
-		return "";
 	}
 	public void setStat(String code, String val)
 	{
@@ -135,10 +136,18 @@ public class DefaultPlayerStats implements PlayerStats
 		case 17: setBirthday(val); break;
 		case 18: accountExpiration=CMath.s_long(val); break;
 		case 19: introductions=getHashFrom(CMLib.xml().returnXMLValue(val,"INTROS")); break;
+		default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+            break;
 		}
 	}
-	public int getSaveStatIndex(){return getStatCodes().length;}
-	public String[] getStatCodes(){return CODES;}
+	public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
+	private static String[] codes=null;
+	public String[] getStatCodes(){
+	    if(codes==null)
+	        codes=CMProps.getStatCodesList(CODES,ID());
+	    return codes;
+	}
     public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
 	protected int getCodeNum(String code){
 		for(int i=0;i<CODES.length;i++)
@@ -148,8 +157,8 @@ public class DefaultPlayerStats implements PlayerStats
 	public boolean sameAs(PlayerStats E)
 	{
 		if(!(E instanceof DefaultPlayerStats)) return false;
-		for(int i=0;i<CODES.length;i++)
-			if(!E.getStat(CODES[i]).equals(getStat(CODES[i])))
+		for(int i=0;i<getStatCodes().length;i++)
+			if(!E.getStat(getStatCodes()[i]).equals(getStat(getStatCodes()[i])))
 				return false;
 		return true;
 	}

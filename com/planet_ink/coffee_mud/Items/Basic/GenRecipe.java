@@ -65,8 +65,9 @@ public class GenRecipe extends GenReadable implements Recipe
 		{
 		case 0: return ""+getCommonSkillID();
 		case 1: return ""+getRecipeCodeLine();
-		}
-		return "";
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+        }
 	}
 	public void setStat(String code, String val)
 	{
@@ -77,6 +78,9 @@ public class GenRecipe extends GenReadable implements Recipe
 		{
 		case 0: setCommonSkillID(val); break;
 		case 1: setRecipeCodeLine(val); break;
+        default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+            break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -88,6 +92,7 @@ public class GenRecipe extends GenReadable implements Recipe
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
+        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,ID());
 		String[] superCodes=CMObjectBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

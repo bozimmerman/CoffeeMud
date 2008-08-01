@@ -90,8 +90,9 @@ public class GenPostman extends StdPostman
         case 7: return ""+maxMudMonthsHeld();
         case 8: return ignoreMask();
         case 9: return CMParms.toStringList(itemPricingAdjustments());
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
         }
-        return "";
     }
     public void setStat(String code, String val)
     {
@@ -110,6 +111,9 @@ public class GenPostman extends StdPostman
         case 7: setMaxMudMonthsHeld(CMath.s_int(val)); break;
         case 8: setIgnoreMask(val); break;
         case 9: setItemPricingAdjustments((val.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(val,true))); break;
+        default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+            break;
         }
     }
     protected int getCodeNum(String code){
@@ -121,6 +125,7 @@ public class GenPostman extends StdPostman
     public String[] getStatCodes()
     {
         if(codes!=null) return codes;
+        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,ID());
         String[] superCodes=CMObjectBuilder.GENMOBCODES;
         codes=new String[superCodes.length+MYCODES.length];
         int i=0;

@@ -55,6 +55,7 @@ public class GenCharClass extends StdCharClass
 	protected String otherLimitations="";
 	protected String otherBonuses="";
 	protected String qualifications="";
+    protected String[] xtraValues=null;
 	protected int selectability=0;
     public int getHPDivisor(){return hpDivisor;}
     public int getHPDice(){return hpDice;}
@@ -135,6 +136,7 @@ public class GenCharClass extends StdCharClass
     {
         names=new String[1];
         names[0]="genmob";
+        xtraValues=CMProps.getExtraStatCodesHolder("GenCharClass");
     }
 
 	public String weaponLimitations()
@@ -387,13 +389,17 @@ public class GenCharClass extends StdCharClass
             str.append(CMLib.xml().convertXMLtoTag("SSET"+i,CMParms.combineWithQuotes(securityGroups[i],0)));
             str.append(CMLib.xml().convertXMLtoTag("SSETLEVEL"+i,securityGroupLevels[i].intValue()));
         }
-
-		str.append("</CCLASS>");
         str.append(CMLib.xml().convertXMLtoTag("ARMORMINOR",""+requiredArmorSourceMinor));
         str.append(CMLib.xml().convertXMLtoTag("STATCLASS",getCharClassLocatorID(statBuddy)));
         str.append(CMLib.xml().convertXMLtoTag("EVENTCLASS",getCharClassLocatorID(eventBuddy)));
+        if(xtraValues==null)
+            xtraValues=CMProps.getExtraStatCodesHolder("GenCharClass");
+        for(int i=this.getSaveStatIndex();i<getStatCodes().length;i++)
+            str.append(CMLib.xml().convertXMLtoTag(getStatCodes()[i],getStat(getStatCodes()[i])));
+		str.append("</CCLASS>");
 		return str.toString();
 	}
+	
 	public void setClassParms(String parms)
 	{
 		if(parms.trim().length()==0) return;
@@ -585,6 +591,9 @@ public class GenCharClass extends StdCharClass
         requiredArmorSourceMinor=CMLib.xml().getIntFromPieces(classData,"ARMORMINOR");
         setStat("STATCLASS",CMLib.xml().getValFromPieces(classData,"STATCLASS"));
         setStat("EVENTCLASS",CMLib.xml().getValFromPieces(classData,"EVENTCLASS"));
+        xtraValues=CMProps.getExtraStatCodesHolder("GenCharClass");
+        for(int i=this.getSaveStatIndex();i<getStatCodes().length;i++)
+            setStat(getStatCodes()[i],CMLib.xml().getValFromPieces(classData, getStatCodes()[i]));
 	}
 
 	protected DVector getAbleSet()
@@ -693,7 +702,9 @@ public class GenCharClass extends StdCharClass
         case 51: return (String)getAbleSet().elementAt(num,7);
         case 52: return (String)getAbleSet().elementAt(num,8);
         case 53: return helpEntry;
-		}
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+        }
 		return "";
 	}
 	protected String[] tempables=new String[8];
@@ -886,7 +897,10 @@ public class GenCharClass extends StdCharClass
         case 51: tempables[6]=val; break;
         case 52: tempables[7]=val; break;
         case 53: helpEntry=val; break;
-		}
+        default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+            break;
+        }
 	}
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
 	{
@@ -901,7 +915,14 @@ public class GenCharClass extends StdCharClass
 			mob.baseState().setThirst(mob.baseState().getThirst()+startAdjState.getThirst());
 	    }
 	}
-	public String[] getStatCodes(){return CODES;}
+    public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
+    private static String[] codes=null;
+    public String[] getStatCodes()
+    {
+        if(codes!=null) return codes;
+        codes=CMProps.getStatCodesList(CODES,"GenCharClass");
+        return codes;
+    }
 	protected int getCodeNum(String code){
 		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
 			code=code.substring(0,code.length()-1);

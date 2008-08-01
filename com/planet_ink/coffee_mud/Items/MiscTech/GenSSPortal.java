@@ -86,8 +86,9 @@ public class GenSSPortal extends StdPortal implements Electronics
 		case 3: return ""+containTypes();
 		case 4: return ""+rideBasis();
 		case 5: return ""+riderCapacity();
-		}
-		return "";
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+        }
 	}
 	public void setStat(String code, String val)
 	{
@@ -102,6 +103,9 @@ public class GenSSPortal extends StdPortal implements Electronics
 		case 3: setContainTypes(CMath.s_long(val)); break;
 		case 4: break;
 		case 5: break;
+        default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+            break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -113,6 +117,7 @@ public class GenSSPortal extends StdPortal implements Electronics
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
+        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,ID());
 		String[] superCodes=CMObjectBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

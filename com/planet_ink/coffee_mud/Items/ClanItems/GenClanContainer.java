@@ -86,8 +86,9 @@ public class GenClanContainer extends StdClanContainer
 		case 3: return ""+containTypes();
 		case 4: return clanID();
 		case 5: return ""+ciType();
-		}
-		return "";
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+        }
 	}
 	public void setStat(String code, String val)
 	{
@@ -102,6 +103,9 @@ public class GenClanContainer extends StdClanContainer
 		case 3: setContainTypes(CMath.s_long(val)); break;
 		case 4: setClanID(val); break;
 		case 5: setCIType(CMath.s_int(val)); break;
+        default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+            break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -113,6 +117,7 @@ public class GenClanContainer extends StdClanContainer
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
+        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,ID());
 		String[] superCodes=CMObjectBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

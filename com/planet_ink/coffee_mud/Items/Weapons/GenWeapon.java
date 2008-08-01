@@ -85,8 +85,9 @@ public class GenWeapon extends StdWeapon
 		case 3: return ""+weaponClassification();
 		case 4: return ammunitionType();
 		case 5: return ""+ammunitionCapacity();
-		}
-		return "";
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+        }
 	}
 	public void setStat(String code, String val)
 	{
@@ -101,6 +102,9 @@ public class GenWeapon extends StdWeapon
 		case 3: setWeaponClassification(CMath.s_int(val)); break;
 		case 4: setAmmunitionType(val); break;
 		case 5: setAmmoCapacity(CMath.s_int(val)); break;
+		default:
+		    CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+		    break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -112,6 +116,7 @@ public class GenWeapon extends StdWeapon
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
+        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,ID());
 		String[] superCodes=CMObjectBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

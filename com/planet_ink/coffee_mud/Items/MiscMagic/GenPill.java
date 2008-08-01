@@ -82,8 +82,9 @@ public class GenPill extends StdPill
 		switch(getCodeNum(code))
 		{
 		case 0: return ""+nourishment();
-		}
-		return "";
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+        }
 	}
 	public void setStat(String code, String val)
 	{
@@ -93,6 +94,9 @@ public class GenPill extends StdPill
 		switch(getCodeNum(code))
 		{
 		case 0: setNourishment(CMath.s_int(val)); break;
+        default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+            break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -104,6 +108,7 @@ public class GenPill extends StdPill
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
+        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,ID());
 		String[] superCodes=CMObjectBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

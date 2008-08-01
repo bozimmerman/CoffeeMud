@@ -77,8 +77,9 @@ public class GenElecContainer extends StdElecContainer
 		case 3: return ""+containTypes();
 		case 4: return ""+fuelType();
 		case 5: return ""+powerCapacity();
-		}
-		return "";
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+        }
 	}
 	public void setStat(String code, String val)
 	{
@@ -93,6 +94,9 @@ public class GenElecContainer extends StdElecContainer
 		case 3: setContainTypes(CMath.s_long(val)); break;
 		case 4: setFuelType(CMath.s_int(val)); break;
 		case 5: setPowerCapacity(CMath.s_long(val)); break;
+        default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+            break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -104,6 +108,7 @@ public class GenElecContainer extends StdElecContainer
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
+        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,ID());
 		String[] superCodes=CMObjectBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

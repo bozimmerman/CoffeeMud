@@ -71,9 +71,17 @@ public class GenBook extends StdBook
 		recoverEnvStats();
 	}
 	public String getStat(String code)
-	{ return CMLib.coffeeMaker().getGenItemStat(this,code);}
+	{ 
+        if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+    	    return CMLib.coffeeMaker().getGenItemStat(this,code);
+        return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+	}
 	public void setStat(String code, String val)
-	{ CMLib.coffeeMaker().setGenItemStat(this,code,val);}
+	{ 
+        if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
+    	    CMLib.coffeeMaker().setGenItemStat(this,code,val);
+        CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+	}
     private static String[] codes=null;
     public String[] getStatCodes()
     {

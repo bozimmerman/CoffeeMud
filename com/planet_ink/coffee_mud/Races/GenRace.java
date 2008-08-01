@@ -43,6 +43,7 @@ public class GenRace extends StdRace
 	public int availability=0;
 	public int availabilityCode(){return availability;}
 	public int[] agingChart=null;
+    protected String[] xtraValues=null;
 	public int[] getAgingChart()
 	{
 	    if(agingChart==null)
@@ -111,6 +112,12 @@ public class GenRace extends StdRace
 	protected boolean destroyBodyAfterUse=false;
 	protected boolean destroyBodyAfterUse(){return destroyBodyAfterUse;}
 
+	public GenRace()
+	{
+	    super();
+	    xtraValues=CMProps.getExtraStatCodesHolder("GenRace");
+	}
+	
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new GenRace();}}
 	public CMObject copyOf()
 	{
@@ -324,6 +331,10 @@ public class GenRace extends StdRace
 			}
 			str.append("</CABILITIES>");
 		}
+        if(xtraValues==null)
+            xtraValues=CMProps.getExtraStatCodesHolder("GenRace");
+        for(int i=this.getSaveStatIndex();i<getStatCodes().length;i++)
+            str.append(CMLib.xml().convertXMLtoTag(getStatCodes()[i],getStat(getStatCodes()[i])));
 		str.append("</RACE>");
 		return str.toString();
 	}
@@ -532,6 +543,10 @@ public class GenRace extends StdRace
 				culturalAbilityProficiencies[x]=CMLib.xml().getIntFromPieces(iblk.contents,"CPROFF");
 			}
 		}
+		
+        xtraValues=CMProps.getExtraStatCodesHolder("GenRace");
+        for(int i=this.getSaveStatIndex();i<getStatCodes().length;i++)
+            setStat(getStatCodes()[i],CMLib.xml().getValFromPieces(raceData, getStatCodes()[i]));
 	}
 	protected static String[] CODES={"ID","NAME","CAT","WEAR","VWEIGHT","BWEIGHT",
 									 "VHEIGHT","FHEIGHT","MHEIGHT","AVAIL","LEAVE",
@@ -608,8 +623,9 @@ public class GenRace extends StdRace
 		case 42: return getRaceLocatorID(eventBuddy);
 		case 43: return getRaceLocatorID(weaponBuddy);
 		case 44: return helpEntry;
-		}
-		return "";
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+        }
 	}
 	public boolean tick(Tickable myChar, int tickID)
 	{
@@ -832,9 +848,19 @@ public class GenRace extends StdRace
 		    helpEntry=val;
 		    break;
 		}
-		}
+        default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+            break;
+        }
 	}
-	public String[] getStatCodes(){return CODES;}
+    public int getSaveStatIndex(){return (xtraValues==null)?getStatCodes().length:getStatCodes().length-xtraValues.length;}
+    private static String[] codes=null;
+    public String[] getStatCodes()
+    {
+        if(codes!=null) return codes;
+        codes=CMProps.getStatCodesList(CODES,"GenRace");
+        return codes;
+    }
 	protected int getCodeNum(String code){
 		while((code.length()>0)&&(Character.isDigit(code.charAt(code.length()-1))))
 			code=code.substring(0,code.length()-1);

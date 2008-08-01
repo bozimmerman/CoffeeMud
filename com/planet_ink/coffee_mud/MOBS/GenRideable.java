@@ -73,8 +73,9 @@ public class GenRideable extends StdRideable
 		{
 		case 0: return ""+rideBasis();
 		case 1: return ""+riderCapacity();
-		}
-		return "";
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+        }
 	}
 	public void setStat(String code, String val)
 	{
@@ -85,6 +86,9 @@ public class GenRideable extends StdRideable
 		{
 		case 0: setRideBasis(CMath.s_int(val)); break;
 		case 1: setRiderCapacity(CMath.s_int(val)); break;
+        default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+            break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -96,6 +100,7 @@ public class GenRideable extends StdRideable
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
+        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,ID());
 		String[] superCodes=CMObjectBuilder.GENMOBCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

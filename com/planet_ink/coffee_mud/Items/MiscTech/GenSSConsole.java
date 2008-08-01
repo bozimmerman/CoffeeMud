@@ -84,8 +84,9 @@ public class GenSSConsole extends StdShipConsole
 		case 5: return ""+riderCapacity();
 		case 6: return ""+fuelType();
 		case 7: return ""+powerCapacity();
-		}
-		return "";
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+        }
 	}
 	public void setStat(String code, String val)
 	{
@@ -102,6 +103,9 @@ public class GenSSConsole extends StdShipConsole
 		case 5: setRiderCapacity(CMath.s_int(val)); break;
 		case 6: setFuelType(CMath.s_int(val)); break;
 		case 7: setPowerCapacity(CMath.s_long(val)); break;
+        default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+            break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -113,6 +117,7 @@ public class GenSSConsole extends StdShipConsole
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
+        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,ID());
 		String[] superCodes=CMObjectBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

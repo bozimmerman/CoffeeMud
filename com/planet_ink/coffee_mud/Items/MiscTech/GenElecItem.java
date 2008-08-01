@@ -73,8 +73,9 @@ public class GenElecItem extends StdElecItem
 		{
 		case 0: return ""+fuelType();
 		case 1: return ""+powerCapacity();
-		}
-		return "";
+        default:
+            return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
+        }
 	}
 	public void setStat(String code, String val)
 	{
@@ -85,6 +86,9 @@ public class GenElecItem extends StdElecItem
 		{
 		case 0: setFuelType(CMath.s_int(val)); break;
 		case 1: setPowerCapacity(CMath.s_long(val)); break;
+        default:
+            CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
+            break;
 		}
 	}
 	protected int getCodeNum(String code){
@@ -96,6 +100,7 @@ public class GenElecItem extends StdElecItem
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
+        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,ID());
 		String[] superCodes=CMObjectBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
