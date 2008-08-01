@@ -480,10 +480,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         int s1=0;
         int s2=0;
         int s1len=strC.length;
-        while((s1len>0)&&(Character.isWhitespace(strC[s1len-1])||PUNCTUATION_TABLE[(byte)strC[s1len-1]]))
+        while((s1len>0)&&((Character.isWhitespace(strC[s1len-1])||PUNCTUATION_TABLE[(byte)strC[s1len-1]])))
             s1len--;
         int s2len=str2C.length;
-        while((s2len>0)&&(Character.isWhitespace(str2C[s2len-1])||PUNCTUATION_TABLE[(byte)str2C[s2len-1]]))
+        while((s2len>0)&&((Character.isWhitespace(str2C[s2len-1])||PUNCTUATION_TABLE[(byte)str2C[s2len-1]])))
             s2len--;
         while(s1<s1len)
         {
