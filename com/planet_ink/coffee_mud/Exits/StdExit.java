@@ -46,7 +46,6 @@ public class StdExit implements Exit
     protected Vector scripts=null;
     protected boolean amDestroyed=false;
     protected short usage=0;
-    protected String[] xtraValues=null;
     
 	public StdExit()
 	{
@@ -54,7 +53,6 @@ public class StdExit implements Exit
         CMClass.bumpCounter(this,CMClass.OBJECT_EXIT);
 		isOpen=!defaultsClosed();
 		isLocked=defaultsLocked();
-        xtraValues=CMProps.getExtraStatCodesHolder(ID());
 	}
 
     protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_EXIT);}
@@ -186,7 +184,6 @@ public class StdExit implements Exit
 		{
 			StdExit E=(StdExit)this.clone();
             CMClass.bumpCounter(this,CMClass.OBJECT_EXIT);
-            E.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			E.cloneFix(this);
 			return E;
 
