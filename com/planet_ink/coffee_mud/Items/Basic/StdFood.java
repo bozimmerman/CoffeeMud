@@ -86,7 +86,13 @@ public class StdFood extends StdItem implements Food
 				if((!CMath.bset(msg.targetMajor(),CMMsg.MASK_HANDS))
 				||(mob.isMine(this))
 				||(!CMLib.flags().isGettable(this)))
+				{
+	                int amountEaten=nourishmentPerBite;
+	                if((amountEaten<1)||(amountEaten>amountOfNourishment))
+	                    amountEaten=amountOfNourishment;
+	                msg.setValue((amountEaten<amountOfNourishment)?amountEaten:0);
 					return true;
+				}
 				mob.tell("You don't have that.");
 				return false;
 			}
@@ -113,13 +119,18 @@ public class StdFood extends StdItem implements Food
 				    Ability A=CMClass.getAbility("Disease_Obesity");
 				    if(A!=null){A.invoke(mob,mob,true,0);}
 				}
-				boolean full=!mob.curState().adjHunger(amountOfNourishment,mob.maxState().maxHunger(mob.baseWeight()));
+			    int amountEaten=nourishmentPerBite;
+			    if((amountEaten<1)||(amountEaten>amountOfNourishment))
+			        amountEaten=amountOfNourishment;
+			    amountOfNourishment-=amountEaten;
+				boolean full=!mob.curState().adjHunger(amountEaten,mob.maxState().maxHunger(mob.baseWeight()));
 				if((hungry)&&(mob.curState().getHunger()>0))
 					mob.tell("You are no longer hungry.");
 				else
 				if(full)
 					mob.tell("You are full.");
-				this.destroy();
+				if(amountOfNourishment<=0)
+    				this.destroy();
 				if(!CMath.bset(msg.targetCode(),CMMsg.MASK_OPTIMIZE))
 					mob.location().recoverRoomStats();
 				break;
