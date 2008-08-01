@@ -6432,7 +6432,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 }
                 break;
             }
-            case 76: // mpconfirm
+            case 76: // mpchoose
             {
                 if(tt==null) tt=parseBits(script,si,"CCCCCr");
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
