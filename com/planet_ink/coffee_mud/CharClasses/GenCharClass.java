@@ -136,7 +136,7 @@ public class GenCharClass extends StdCharClass
     {
         names=new String[1];
         names[0]="genmob";
-        xtraValues=CMProps.getExtraStatCodesHolder("GenCharClass");
+        xtraValues=CMProps.getExtraStatCodesHolder(this);
     }
 
 	public String weaponLimitations()
@@ -393,7 +393,7 @@ public class GenCharClass extends StdCharClass
         str.append(CMLib.xml().convertXMLtoTag("STATCLASS",getCharClassLocatorID(statBuddy)));
         str.append(CMLib.xml().convertXMLtoTag("EVENTCLASS",getCharClassLocatorID(eventBuddy)));
         if(xtraValues==null)
-            xtraValues=CMProps.getExtraStatCodesHolder("GenCharClass");
+            xtraValues=CMProps.getExtraStatCodesHolder(this);
         for(int i=this.getSaveStatIndex();i<getStatCodes().length;i++)
             str.append(CMLib.xml().convertXMLtoTag(getStatCodes()[i],getStat(getStatCodes()[i])));
 		str.append("</CCLASS>");
@@ -591,7 +591,7 @@ public class GenCharClass extends StdCharClass
         requiredArmorSourceMinor=CMLib.xml().getIntFromPieces(classData,"ARMORMINOR");
         setStat("STATCLASS",CMLib.xml().getValFromPieces(classData,"STATCLASS"));
         setStat("EVENTCLASS",CMLib.xml().getValFromPieces(classData,"EVENTCLASS"));
-        xtraValues=CMProps.getExtraStatCodesHolder("GenCharClass");
+        xtraValues=CMProps.getExtraStatCodesHolder(this);
         for(int i=this.getSaveStatIndex();i<getStatCodes().length;i++)
             setStat(getStatCodes()[i],CMLib.xml().getValFromPieces(classData, getStatCodes()[i]));
 	}
@@ -920,7 +920,7 @@ public class GenCharClass extends StdCharClass
     public String[] getStatCodes()
     {
         if(codes!=null) return codes;
-        codes=CMProps.getStatCodesList(CODES,"GenCharClass");
+        codes=CMProps.getStatCodesList(CODES,this);
         return codes;
     }
 	protected int getCodeNum(String code){

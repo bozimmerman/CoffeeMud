@@ -65,7 +65,7 @@ public class StdRoom implements Room
 	{
         super();
         CMClass.bumpCounter(this,CMClass.OBJECT_LOCALE);
-        xtraValues=CMProps.getExtraStatCodesHolder(ID());
+        xtraValues=CMProps.getExtraStatCodesHolder(this);
 		baseEnvStats.setWeight(2);
 		recoverEnvStats();
 	}

@@ -189,7 +189,7 @@ public class StdArea implements Area
 	{
         super();
         CMClass.bumpCounter(this,CMClass.OBJECT_AREA);
-        xtraValues=CMProps.getExtraStatCodesHolder(ID());
+        xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
     protected void finalize(){CMClass.unbumpCounter(this,CMClass.OBJECT_AREA);}
     protected boolean amDestroyed=false;

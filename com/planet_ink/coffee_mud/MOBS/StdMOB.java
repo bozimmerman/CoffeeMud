@@ -274,7 +274,7 @@ public class StdMOB implements MOB
         CMClass.bumpCounter(this,CMClass.OBJECT_MOB);
 		baseCharStats().setMyRace(CMClass.getRace("Human"));
 		baseEnvStats().setLevel(1);
-        xtraValues=CMProps.getExtraStatCodesHolder(ID());
+        xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
 	public long expirationDate(){return expirationDate;}
 	public void setExpirationDate(long time){expirationDate=time;}

@@ -81,7 +81,7 @@ public class GenMob extends StdMOB
     public String[] getStatCodes()
     {
         if(codes==null)
-            codes=CMProps.getStatCodesList(CMObjectBuilder.GENMOBCODES,ID());
+            codes=CMProps.getStatCodesList(CMObjectBuilder.GENMOBCODES,this);
         return codes; 
     }
 	public boolean sameAs(Environmental E)

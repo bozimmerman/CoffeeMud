@@ -70,7 +70,7 @@ public class StdItem implements Item
         CMClass.bumpCounter(this,CMClass.OBJECT_ITEM);
 		baseEnvStats().setWeight(1);
 		baseEnvStats().setArmor(0);
-		xtraValues=CMProps.getExtraStatCodesHolder(ID());
+		xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
     protected boolean abilityImbuesMagic(){return true;}
     protected void finalize()

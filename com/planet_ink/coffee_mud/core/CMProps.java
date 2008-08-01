@@ -1326,20 +1326,36 @@ public class CMProps extends Properties
                     xtraValues[xtraValues.length-x-1]=val; 
     }
 
-    public static Vector getStatCodeExtentions(String myClassName)
+    public static Vector getStatCodeExtentions(CMObject O)
     {
     	String[][] statCodeExtensions = p().statCodeExtensions;
     	if( statCodeExtensions == null) return null;
-    	myClassName = myClassName.toUpperCase();
-    	for(int i=0;i<statCodeExtensions.length;i++)
-    		if(statCodeExtensions[i][0].equals(myClassName))
-    			return CMParms.parseCommas(statCodeExtensions[i][1],true);
+    	Vector V=new Vector();
+        String myClassName=O.ID();
+    	V.addElement(myClassName.toUpperCase());
+        Class C=O.getClass();
+        for(;C!=null;C=C.getSuperclass())
+        {
+            myClassName=C.getName();
+            int x=myClassName.lastIndexOf('.');
+            if(x>=0)
+                V.addElement(myClassName.substring(x+1).toUpperCase());
+            else
+                V.addElement(myClassName.toUpperCase());
+        }
+        for(Enumeration v=V.elements();v.hasMoreElements();)
+        {
+        	myClassName = (String)v.nextElement();
+        	for(int i=0;i<statCodeExtensions.length;i++)
+        		if(statCodeExtensions[i][0].equals(myClassName))
+        			return CMParms.parseCommas(statCodeExtensions[i][1],true);
+        }
     	return null;
     }
 
-    public static String[] getExtraStatCodesHolder(String myClassName)
+    public static String[] getExtraStatCodesHolder(CMObject O)
     {
-    	Vector addedStatCodesV = getStatCodeExtentions(myClassName);
+    	Vector addedStatCodesV = getStatCodeExtentions(O);
     	if(addedStatCodesV == null) return null;
     	String[] statHolder= new String[addedStatCodesV.size()];
     	for(int s=0;s<statHolder.length;s++)
@@ -1347,9 +1363,9 @@ public class CMProps extends Properties
     	return statHolder;
     }
 
-    public static String[] getStatCodesList(String[] baseStatCodes, String myClassName)
+    public static String[] getStatCodesList(String[] baseStatCodes, CMObject O)
     {
-    	Vector addedStatCodesV = getStatCodeExtentions(myClassName);
+    	Vector addedStatCodesV = getStatCodeExtentions(O);
     	if(addedStatCodesV == null)
     		return baseStatCodes;
 

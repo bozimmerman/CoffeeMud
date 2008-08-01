@@ -74,7 +74,7 @@ public class DefaultPlayerStats implements PlayerStats
 
     public DefaultPlayerStats() {
         super();
-        xtraValues=CMProps.getExtraStatCodesHolder(ID());
+        xtraValues=CMProps.getExtraStatCodesHolder(this);
     }
     
 	protected static String[] CODES={"CLASS","FRIENDS","IGNORE","TITLES",
@@ -145,7 +145,7 @@ public class DefaultPlayerStats implements PlayerStats
 	private static String[] codes=null;
 	public String[] getStatCodes(){
 	    if(codes==null)
-	        codes=CMProps.getStatCodesList(CODES,ID());
+	        codes=CMProps.getStatCodesList(CODES,this);
 	    return codes;
 	}
     public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}

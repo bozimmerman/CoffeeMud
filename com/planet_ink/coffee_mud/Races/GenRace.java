@@ -115,7 +115,7 @@ public class GenRace extends StdRace
 	public GenRace()
 	{
 	    super();
-	    xtraValues=CMProps.getExtraStatCodesHolder("GenRace");
+	    xtraValues=CMProps.getExtraStatCodesHolder(this);
 	}
 	
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new GenRace();}}
@@ -332,7 +332,7 @@ public class GenRace extends StdRace
 			str.append("</CABILITIES>");
 		}
         if(xtraValues==null)
-            xtraValues=CMProps.getExtraStatCodesHolder("GenRace");
+            xtraValues=CMProps.getExtraStatCodesHolder(this);
         for(int i=this.getSaveStatIndex();i<getStatCodes().length;i++)
             str.append(CMLib.xml().convertXMLtoTag(getStatCodes()[i],getStat(getStatCodes()[i])));
 		str.append("</RACE>");
@@ -544,7 +544,7 @@ public class GenRace extends StdRace
 			}
 		}
 		
-        xtraValues=CMProps.getExtraStatCodesHolder("GenRace");
+        xtraValues=CMProps.getExtraStatCodesHolder(this);
         for(int i=this.getSaveStatIndex();i<getStatCodes().length;i++)
             setStat(getStatCodes()[i],CMLib.xml().getValFromPieces(raceData, getStatCodes()[i]));
 	}
@@ -858,7 +858,7 @@ public class GenRace extends StdRace
     public String[] getStatCodes()
     {
         if(codes!=null) return codes;
-        codes=CMProps.getStatCodesList(CODES,"GenRace");
+        codes=CMProps.getStatCodesList(CODES,this);
         return codes;
     }
 	protected int getCodeNum(String code){

@@ -86,7 +86,7 @@ public class GenJournal extends StdJournal
     public String[] getStatCodes()
     {
         if(codes==null)
-            codes=CMProps.getStatCodesList(CMObjectBuilder.GENITEMCODES,ID());
+            codes=CMProps.getStatCodesList(CMObjectBuilder.GENITEMCODES,this);
         return codes; 
     }
 	public boolean sameAs(Environmental E)
