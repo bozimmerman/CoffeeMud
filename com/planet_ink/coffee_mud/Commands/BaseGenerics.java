@@ -6240,6 +6240,7 @@ public class BaseGenerics extends StdCommand
 			genArmor(mob,me,++showNumber,showFlag);
 			genHitPoints(mob,me,++showNumber,showFlag);
 			genMoney(mob,me,++showNumber,showFlag);
+	        me.setMoneyVariation(CMath.s_double(CMLib.english().prompt(mob,""+me.getMoneyVariation(),++showNumber,showFlag,"Money Variation")));
 			genAbilities(mob,me,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);
@@ -6675,6 +6676,7 @@ public class BaseGenerics extends StdCommand
 			if(me instanceof MOB)
 				genHitPoints(mob,(MOB)me,++showNumber,showFlag);
 			genMoney(mob,mme,++showNumber,showFlag);
+			mme.setMoneyVariation(CMath.s_double(CMLib.english().prompt(mob,""+mme.getMoneyVariation(),++showNumber,showFlag,"Money Variation")));
 			genAbilities(mob,mme,++showNumber,showFlag);
 			genBehaviors(mob,me,++showNumber,showFlag);
 			genAffects(mob,me,++showNumber,showFlag);

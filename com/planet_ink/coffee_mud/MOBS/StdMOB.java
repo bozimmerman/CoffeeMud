@@ -85,6 +85,7 @@ public class StdMOB implements MOB
 	protected int Trains=0;
 	protected long AgeHours=0;
 	protected int Money=0;
+	protected double moneyVariation=0.0;
 	protected int attributesBitmap=MOB.ATT_NOTEACH;
 	protected String databaseID="";
 
@@ -159,6 +160,7 @@ public class StdMOB implements MOB
 	}
 	public int getTrains(){return Trains;}
 	public int getMoney(){return Money;}
+    public double getMoneyVariation() { return moneyVariation;}
 	public int getBitmap(){return attributesBitmap;}
 	public void setAgeHours(long newVal){ AgeHours=newVal;}
 	public void setExperience(int newVal){ Experience=newVal; }
@@ -166,6 +168,7 @@ public class StdMOB implements MOB
 	public void setPractices(int newVal){ Practices=newVal;}
 	public void setTrains(int newVal){ Trains=newVal;}
 	public void setMoney(int newVal){ Money=newVal;}
+    public void setMoneyVariation(double newVal){moneyVariation=newVal;}
 	public void setBitmap(int newVal){ attributesBitmap=newVal;}
     public String getFactionListing()
     {

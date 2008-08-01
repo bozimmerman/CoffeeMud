@@ -452,6 +452,11 @@ public class StdRace implements Race
 
 		Vector items=new Vector();
 		CMLib.beanCounter().getTotalAbsoluteNativeValue(mob); // converts mob.get-Money();
+		if(mob.getMoneyVariation()>0.0)
+            CMLib.beanCounter().addMoney(mob, Math.random()*mob.getMoneyVariation());
+        else
+        if(mob.getMoneyVariation()<0.0)
+    		CMLib.beanCounter().subtractMoney(mob, -(Math.random()*mob.getMoneyVariation()));
         Hashtable containerMap=new Hashtable();
         Hashtable itemMap=new Hashtable();
         DVector lootPolicies=CMLib.utensils().parseLootPolicyFor(mob);

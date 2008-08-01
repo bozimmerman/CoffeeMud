@@ -470,6 +470,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		if(E instanceof MOB)
 		{
 			text.append(CMLib.xml().convertXMLtoTag("MONEY",CMLib.beanCounter().getMoney((MOB)E)));
+            text.append(CMLib.xml().convertXMLtoTag("VARMONEY",""+((MOB)E).getMoneyVariation()));
 			CMLib.beanCounter().clearInventoryMoney((MOB)E,null);
 			text.append(CMLib.xml().convertXMLtoTag("CLAN",((MOB)E).getClanID()));
 			text.append(CMLib.xml().convertXMLtoTag("GENDER",""+(char)((MOB)E).baseCharStats().getStat(CharStats.STAT_GENDER)));
@@ -2286,6 +2287,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			if((alignStr.length()>0)&&(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null))
 			    CMLib.factions().setAlignmentOldRange(mob,CMath.s_int(alignStr));
 			CMLib.beanCounter().setMoney(mob,CMLib.xml().getIntFromPieces(buf,"MONEY"));
+            mob.setMoneyVariation(CMLib.xml().getDoubleFromPieces(buf,"VARMONEY"));
 			setGenMobInventory((MOB)E,buf);
 			setGenMobAbilities((MOB)E,buf);
             setFactionFromXML((MOB)E,buf);
@@ -3172,7 +3174,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				}
 		case 20: return M.rawImage();
 		case 21: return M.getFactionListing();
-        //case 22: return getGenScripts(M,false);
+		case 22: return ""+M.getMoneyVariation();
+        //case 23: return getGenScripts(M,false);
 		}
 		return "";
 	}
@@ -3263,7 +3266,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		    	}
 		    	break;
 		    }
-        /*case 22:
+		case 22: M.setMoneyVariation(CMath.s_double(val)); break;
+        /*case 23:
         {
             while(M.numScripts()>0)
             {

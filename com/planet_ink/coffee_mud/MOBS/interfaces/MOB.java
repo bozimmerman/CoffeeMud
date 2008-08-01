@@ -113,12 +113,14 @@ public interface MOB extends Environmental, Rider
 	public int getExpPrevLevel();
 	public int getTrains();
 	public int getMoney();
+	public double getMoneyVariation();
 	public void setAgeHours(long newVal);
 	public void setExperience(int newVal);
 	public void setExpNextLevel(int newVal);
 	public void setPractices(int newVal);
 	public void setTrains(int newVal);
 	public void setMoney(int newVal);
+    public void setMoneyVariation(double newVal);
 
 	// the core state values
 	public CharState curState();

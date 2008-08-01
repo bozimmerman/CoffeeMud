@@ -45,7 +45,7 @@ public interface CMObjectBuilder extends CMLibrary
             "DISPOSITION","SENSES","ARMOR",
             "DAMAGE","ATTACK","SPEED","AFFBEHAV",
             "ABLES","INVENTORY","TATTS","EXPS","IMG",
-            "FACTIONS"};
+            "FACTIONS","VARMONEY"};
     
     public boolean get(int x, int m);
     public String getGenMOBTextUnpacked(MOB mob, String newText);

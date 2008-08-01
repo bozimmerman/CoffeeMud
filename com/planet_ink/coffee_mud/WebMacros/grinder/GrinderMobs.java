@@ -634,6 +634,9 @@ public class GrinderMobs
                         M.setWorshipCharID(CMLib.map().getDeity(old).Name());
                     */
                     break;
+                case 66: // money variation
+                    M.setMoneyVariation(CMath.s_double(old));
+                    break;
 				}
 			}
 

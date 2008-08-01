@@ -50,7 +50,7 @@ public class MobData extends StdWebMacro
       "POSTHOLD","POSTNEW","POSTHELD","IGNOREMASK",
       "LOANINT","SVCRIT","AUCCHAIN","LIVELIST","TIMELIST",
       "TIMELISTPCT","LIVECUT","TIMECUT","MAXDAYS",
-      "MINDAYS","ISAUCTION","DEITYID"};
+      "MINDAYS","ISAUCTION","DEITYID","VARMONEY"};
     
 	public static int getShopCardinality(ShopKeeper E, Environmental O)
 	{
@@ -1474,6 +1474,10 @@ public class MobData extends StdWebMacro
                 }
                 break;
             }
+            case 64: // varmoney
+                if(firstTime) old=""+M.getMoneyVariation();
+                str.append(old);
+                break;
 			}
 			if(firstTime)
 				httpReq.addRequestParameters(okparms[o],old.equals("checked")?"on":old);
