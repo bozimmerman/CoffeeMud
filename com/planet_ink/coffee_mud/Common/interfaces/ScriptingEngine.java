@@ -556,6 +556,9 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
         "MPREJUV", //71
         "MPSCRIPT", //72
         "MPSETINTERNAL", // 73
+        "MPPROMPT", // 74
+        "MPCONFIRM", // 75
+        "MPCHOOSE", // 76
     };
 
     /** a list of some some extra stat codes for mobs*/

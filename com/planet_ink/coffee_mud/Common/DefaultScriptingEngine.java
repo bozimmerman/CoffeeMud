@@ -6401,6 +6401,54 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     logError(scripted,"MPSETINTERNAL","Syntax","Unknown stat: "+arg2);
                 break;
             }
+            case 74: // mpprompt
+            {
+                if(tt==null) tt=parseBits(script,si,"CCCr");
+                Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                String var=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
+                String promptStr=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
+                if((newTarget!=null)&&(newTarget instanceof MOB)&&((((MOB)newTarget).session()!=null)))
+                {
+                    try {
+                        String value=((MOB)newTarget).session().prompt(promptStr,600000);
+                        setVar(newTarget.Name(),var,value);
+                    } catch(Exception e) { return "";}
+                }
+                break;
+            }
+            case 75: // mpconfirm
+            {
+                if(tt==null) tt=parseBits(script,si,"CCCCr");
+                Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                String var=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
+                String defaultVal=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
+                String promptStr=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[4]);
+                if((newTarget!=null)&&(newTarget instanceof MOB)&&((((MOB)newTarget).session()!=null)))
+                {
+                    try {
+                        String value=((MOB)newTarget).session().confirm(promptStr,defaultVal,600000)?"Y":"N";
+                        setVar(newTarget.Name(),var,value);
+                    } catch(Exception e) { return "";}
+                }
+                break;
+            }
+            case 76: // mpconfirm
+            {
+                if(tt==null) tt=parseBits(script,si,"CCCCCr");
+                Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+                String var=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
+                String choices=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
+                String defaultVal=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[4]);
+                String promptStr=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[5]);
+                if((newTarget!=null)&&(newTarget instanceof MOB)&&((((MOB)newTarget).session()!=null)))
+                {
+                    try {
+                        String value=((MOB)newTarget).session().choose(promptStr,choices,defaultVal,600000);
+                        setVar(newTarget.Name(),var,value);
+                    } catch(Exception e) { return "";}
+                }
+                break;
+            }
             case 16: // mpset
             {
                 if(tt==null) tt=parseBits(script,si,"CCcr");
