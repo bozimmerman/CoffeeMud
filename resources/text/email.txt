@@ -1,6 +1,8 @@
+%0D
 We supports email!  By having a player in this mud, you automatically 
-have an email address that is like playername@domain.  Giving us a real email address 
-besides will allow you to have your player email forwarded to you (but only
-from other players).  Giving a real email address also allows you to retreive
-your password if you forget it.  Your real address is kept secret, of course, hidden
-behind the player email address mentioned above.
+have an email address that is like playername@domain.  Giving us a 
+real email address besides will allow you to have your player email 
+forwarded to you (but only from other players).  Giving a real email 
+address also allows you to retrieve your password if you forget it.  
+Your real address is kept secret, of course, hidden behind the player 
+email address mentioned above.

@@ -263,7 +263,13 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             S.setSavable(false);
             S.setVarScope("*");
             S.setScript(script);
+            Room oldRoom=mob.location();
+            mob.setLocation(CMLib.map().getRandomRoom());
+            CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"CHARCREATION");
+            S.executeMsg(mob, msg2);
+            S.dequeResponses();
             S.tick(mob,Tickable.TICKID_MOB);
+            mob.setLocation(oldRoom);
         }
     }
     
