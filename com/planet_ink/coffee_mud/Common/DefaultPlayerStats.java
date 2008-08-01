@@ -551,7 +551,7 @@ public class DefaultPlayerStats implements PlayerStats
         	levelInfo.addElement(new Integer(0),new Long(System.currentTimeMillis()),"");
         roomSet().parseXML(str);
         String[] codes=getStatCodes();
-        for(int i=getSaveStatIndex();i<getStatCodes().length;i++)
+        for(int i=getSaveStatIndex();i<codes.length;i++)
         {
         	String val=CMLib.xml().returnXMLValue(str,codes[i].toUpperCase());
         	if(val==null) val="";
