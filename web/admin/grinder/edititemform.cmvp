@@ -440,6 +440,11 @@
 	    <INPUT TYPE=HIDDEN NAME=ISREADABLE VALUE="">
 	    </TD>
 	</TR>
+    <TR>
+        <TD WIDTH=150><FONT COLOR="#66FFFF"><B>Bite Size (0=ALL):</B></FONT></TD>
+        <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=BITE SIZE=5 VALUE="@ItemData?BITE@">
+        </TD>
+    </TR>
 	@if?ItemData?ISSUPERPILL@
 	<TR>
 		<TD WIDTH=150><FONT COLOR="#66FFFF"><B>Spell Name or Parameters:</B></FONT></TD>

@@ -67,7 +67,7 @@ public class GenFood extends StdFood
 		CMLib.coffeeMaker().setPropertiesStr(this,newText,false);
 		recoverEnvStats();
 	}
-	private final static String[] MYCODES={"NOURISHMENT"};
+	private final static String[] MYCODES={"NOURISHMENT","BITE"};
 	public String getStat(String code)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -75,6 +75,7 @@ public class GenFood extends StdFood
 		switch(getCodeNum(code))
 		{
 		case 0: return ""+nourishment();
+        case 1: return ""+bite();
         default:
             return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
         }
@@ -87,6 +88,7 @@ public class GenFood extends StdFood
 		switch(getCodeNum(code))
 		{
 		case 0: setNourishment(CMath.s_int(val)); break;
+        case 1: setBite(CMath.s_int(val)); break;
         default:
             CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
             break;

@@ -51,7 +51,7 @@ public class GrinderItems
           "SMELLS","IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT",
           "NUMCOINS","CURRENCY","DENOM","ISRECIPE","RECIPESKILL",
           "RECIPEDATA", "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED",
-          "CATARATE","CATALIVE","CATAMASK"};
+          "CATARATE","CATALIVE","CATAMASK","BITE"};
 	public static String editItem(ExternalHTTPRequests httpReq,
 								  Hashtable parms,
 								  MOB whom,
@@ -530,6 +530,10 @@ public class GrinderItems
                         if(cataData==null) cataData=new CatalogLibrary.CataData("");
                         cataData.lmaskStr=old;
                     }
+                    break;
+                case 87: // bite
+                    if(I instanceof Food)
+                        ((Food)I).setBite(CMath.s_int(old));
                     break;
 				}
 			}

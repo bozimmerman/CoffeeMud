@@ -405,7 +405,10 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			text.append(CMLib.xml().convertXMLtoTag("DOMN",((RawMaterial)E).domainSource()+""));
 
 		if(E instanceof Food)
+		{
 			text.append(CMLib.xml().convertXMLtoTag("CAPA2",((Food)E).nourishment()));
+            text.append(CMLib.xml().convertXMLtoTag("BITE",((Food)E).bite()));
+		}
 
 		if(E instanceof Drink)
 		{
@@ -2205,7 +2208,10 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			((Perfume)E).setSmellList(CMLib.xml().getValFromPieces(buf,"SMELLLST"));
 
 		if(E instanceof Food)
+		{
 			((Food)E).setNourishment(CMLib.xml().getIntFromPieces(buf,"CAPA2"));
+            ((Food)E).setBite(CMLib.xml().getIntFromPieces(buf,"BITE"));
+		}
 
 		if(E instanceof RawMaterial)
 			((RawMaterial)E).setDomainSource(CMLib.xml().getIntFromPieces(buf,"DOMN"));

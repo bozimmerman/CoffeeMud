@@ -35,6 +35,7 @@ public class StdFood extends StdItem implements Food
 {
 	public String ID(){	return "StdFood";}
 	protected int amountOfNourishment=500;
+	protected int nourishmentPerBite=0;
 	protected long decayTime=0;
 
 	public StdFood()
@@ -59,6 +60,15 @@ public class StdFood extends StdItem implements Food
 	{
 		amountOfNourishment=amount;
 	}
+
+    public int bite()
+    {
+        return nourishmentPerBite;
+    }
+    public void setBite(int amount)
+    {
+        nourishmentPerBite=amount;
+    }
 
 	public long decayTime(){return decayTime;}
 	public void setDecayTime(long time){decayTime=time;}

@@ -58,7 +58,7 @@ public class ItemData extends StdWebMacro
       "IMAGE","ISEXIT","EXITNAME","EXITCLOSEDTEXT","NUMCOINS",
       "CURRENCY","DENOM","ISRECIPE","RECIPESKILL","RECIPEDATA",
       "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED","CATARATE",
-      "CATALIVE","CATAMASK"};
+      "CATALIVE","CATAMASK","BITE"};
     public ItemData()
     {
         super();
@@ -969,6 +969,11 @@ public class ItemData extends StdWebMacro
                             old=""+data.lmaskStr;
                     }
                     str.append(old+", ");
+                    break;
+                case 91: // bite
+                    if((firstTime)&&(I instanceof Food))
+                        old=""+((Food)I).bite();
+                    str.append(old);
                     break;
 				}
 				if(firstTime)

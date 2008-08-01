@@ -32,4 +32,6 @@ public interface Food extends Item, Decayable
 {
 	public int nourishment();
 	public void setNourishment(int amount);
+    public int bite();
+    public void setBite(int amount);
 }

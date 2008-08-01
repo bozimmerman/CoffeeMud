@@ -2240,6 +2240,9 @@ public class BaseGenerics extends StdCommand
 	protected void genNourishment(MOB mob, Food E, int showNumber, int showFlag) throws IOException
     { E.setNourishment(CMLib.english().prompt(mob,E.nourishment(),showNumber,showFlag,"Nourishment/Eat")); }
 
+    protected void genBiteSize(MOB mob, Food E, int showNumber, int showFlag) throws IOException
+    { E.setBite(CMLib.english().prompt(mob,E.bite(),showNumber,showFlag,"Bite/Eat (0=all)")); }
+
 	protected void genRace(MOB mob, MOB E, int showNumber, int showFlag)
 		throws IOException
 	{
@@ -5742,6 +5745,7 @@ public class BaseGenerics extends StdCommand
 			genWeight(mob,me,++showNumber,showFlag);
 			genMaterialCode(mob,me,++showNumber,showFlag);
 			genNourishment(mob,me,++showNumber,showFlag);
+            genBiteSize(mob,me,++showNumber,showFlag);
 			genDisposition(mob,me.baseEnvStats(),++showNumber,showFlag);
 			genGettable(mob,me,++showNumber,showFlag);
 			genReadable1(mob,me,++showNumber,showFlag);
