@@ -496,11 +496,10 @@ public class MOBloader
         return DV;
     }
 
-    public void DBReadFollowers(MOB mob, boolean bringToLife)
+    public Vector DBScanFollowers(MOB mob)
     {
-        Room location=mob.location();
-        if(location==null) location=mob.getStartRoom();
         DBConnection D=null;
+        Vector V=new Vector();
         // now grab the followers
         try
         {
@@ -514,9 +513,6 @@ public class MOBloader
                     Log.errOut("MOB","Couldn't find MOB '"+MOBID+"'");
                 else
                 {
-                    Room room=(location==null)?newMOB.getStartRoom():location;
-                    newMOB.setStartRoom(room);
-                    newMOB.setLocation(room);
                     newMOB.setMiscText(DBConnections.getResQuietly(R,"CMFOTX"));
                     newMOB.baseEnvStats().setLevel(((int)DBConnections.getLongRes(R,"CMFOLV")));
                     newMOB.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMFOAB"));
@@ -525,17 +521,7 @@ public class MOBloader
                     newMOB.recoverCharStats();
                     newMOB.recoverMaxState();
                     newMOB.resetToMaxState();
-                    newMOB.setFollowing(mob);
-                    if((newMOB.getStartRoom()!=null)
-                    &&(CMLib.law().doesHavePriviledgesHere(mob,newMOB.getStartRoom()))
-                    &&((newMOB.location()==null)
-                            ||(!CMLib.law().doesHavePriviledgesHere(mob,newMOB.location()))))
-                        newMOB.setLocation(newMOB.getStartRoom());
-                    if(bringToLife)
-                    {
-                        newMOB.bringToLife(mob.location(),true);
-                        mob.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
-                    }
+                    V.addElement(newMOB);
                 }
             }
         }catch(Exception sqle)
@@ -543,6 +529,31 @@ public class MOBloader
             Log.errOut("MOB",sqle);
         }
         if(D!=null) DB.DBDone(D);
+        return V;
+    }
+    
+    public void DBReadFollowers(MOB mob, boolean bringToLife)
+    {
+        Room location=mob.location();
+        if(location==null) location=mob.getStartRoom();
+        Vector V=DBScanFollowers(mob);
+        for(int v=0;v<V.size();v++) {
+            MOB newMOB=(MOB)V.elementAt(v);
+            Room room=(location==null)?newMOB.getStartRoom():location;
+            newMOB.setStartRoom(room);
+            newMOB.setLocation(room);
+            newMOB.setFollowing(mob);
+            if((newMOB.getStartRoom()!=null)
+            &&(CMLib.law().doesHavePriviledgesHere(mob,newMOB.getStartRoom()))
+            &&((newMOB.location()==null)
+                    ||(!CMLib.law().doesHavePriviledgesHere(mob,newMOB.location()))))
+                newMOB.setLocation(newMOB.getStartRoom());
+            if(bringToLife)
+            {
+                newMOB.bringToLife(mob.location(),true);
+                mob.location().showOthers(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
+            }
+        }
     }
 
     public void DBUpdateEmail(MOB mob)

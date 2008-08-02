@@ -97,6 +97,7 @@ public interface DatabaseEngine extends CMLibrary
 	public String DBEmailSearch(String email);
 	public Vector getExtendedUserList();
 	public Vector getUserList();
+    public Vector DBScanFollowers(MOB mob);
 	public void DBReadFollowers(MOB mob, boolean bringToLife);
 	public void DBDeleteMOB(MOB mob);
 	public void DBCreateCharacter(MOB mob);

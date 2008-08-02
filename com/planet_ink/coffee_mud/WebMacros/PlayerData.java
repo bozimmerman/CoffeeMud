@@ -99,7 +99,8 @@ public class PlayerData extends StdWebMacro
         "TITLES",
         "FACTIONNAMES",
         "ACCTEXPUSED",
-        "ACCTEXP"
+        "ACCTEXP",
+        "FOLLOWERNAMES"
 	};
 
 	public static int getBasicCode(String val)
@@ -315,6 +316,14 @@ public class PlayerData extends StdWebMacro
 		case 62: str.append(CMProps.getBoolVar(CMProps.SYSTEMB_ACCOUNTEXPIRATION)?"true":"false"); break;
 		case 63: if(M.playerStats()!=null)str.append(CMLib.time().date2String(M.playerStats().getAccountExpiration()));
 					break;
+		case 64: {
+		    for(int f=0;f<M.numFollowers();f++)
+	            str.append(M.fetchFollower(f).name()).append(", ");
+		    //Vector V=CMLib.database().DBScanFollowers(M);
+		    //for(int v=0;v<V.size();v++)
+		    //    str.append(((MOB)V.elementAt(v)).name()).append(", ");
+		    break;
+		}
 		}
 		return str.toString();
 	}

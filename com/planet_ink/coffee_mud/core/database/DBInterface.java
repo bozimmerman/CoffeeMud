@@ -264,6 +264,9 @@ public class DBInterface implements DatabaseEngine
 	public void DBReadFollowers(MOB mob, boolean bringToLife)
 	{MOBloader.DBReadFollowers(mob, bringToLife);}
 	
+    public Vector DBScanFollowers(MOB mob)
+    {return MOBloader.DBScanFollowers(mob);}
+	
 	public void DBDeleteMOB(MOB mob)
 	{MOBloader.DBDelete(mob);}
 	
