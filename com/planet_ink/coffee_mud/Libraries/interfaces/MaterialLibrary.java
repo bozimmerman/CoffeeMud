@@ -60,4 +60,5 @@ public interface MaterialLibrary extends CMLibrary
 	public Item findFirstResource(Room E, String other);
 	public Item findFirstResource(MOB E, String other);
     public void adjustResourceName(Item I);
+    public String genericType(Item I);
 }

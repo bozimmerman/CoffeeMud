@@ -174,9 +174,9 @@ public class CMProps extends Properties
     public static final int SYSTEMI_EXPIRE_RESOURCE=54;
     public static final int SYSTEMI_EXPIRE_MONSTER_BODY=55;
     public static final int SYSTEMI_EXPIRE_PLAYER_BODY=56;
-    public static final int SYSTEMI_STARTSTAT=57;
-
-    public static final int NUMI_SYSTEM=58;
+    public static final int SYSTEMI_MAXITEMSHOWN=57;
+    public static final int SYSTEMI_STARTSTAT=58;
+    public static final int NUMI_SYSTEM=59;
 
     public static final int SYSTEMB_MOBCOMPRESS=0;
     public static final int SYSTEMB_ITEMDCOMPRESS=1;
@@ -826,6 +826,8 @@ public class CMProps extends Properties
         if((stateVar.length()>0)&&(CMath.isNumber(stateVar)))
             setIntVar(SYSTEMI_STARTMOVE,CMath.s_int(stateVar));
 
+        setIntVar(SYSTEMI_MAXITEMSHOWN,getStr("MAXITEMSHOWN"));
+        
         Directions.instance().reInitialize(getInt("DIRECTIONS"));
 
         resetSecurityVars();

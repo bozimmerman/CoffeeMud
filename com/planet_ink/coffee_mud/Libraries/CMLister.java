@@ -106,6 +106,53 @@ public class CMLister extends StdLibrary implements ListingLibrary
             say.append(" ("+CMStrings.padLeftPreserve(""+(reps+1),2)+") ");
     }
     
+    public String summarizeTheRest(MOB mob, Vector things, boolean compress) 
+    {
+        HashSet restH=new HashSet();
+        Item I=null;
+        String name="";
+        boolean items=false;
+        for(int v=0;v<things.size();v++)
+        {
+            I=(Item)things.elementAt(v);
+            if(CMLib.flags().canBeSeenBy(I,mob)&&(I.displayText().length()>0))
+            {
+                name=CMLib.materials().genericType(I);
+                if(name.startsWith("item"))
+                {
+                    if(!items)
+                        items=true;
+                }
+                else
+                if(!restH.contains(name))
+                    restH.add(name);
+            }
+        }
+        if((restH.size()==0)&&(!items)) return "";
+        StringBuffer theRest=new StringBuffer("");
+        for(Iterator i=restH.iterator();i.hasNext();)
+        {
+            name=(String)i.next();
+            if(theRest.length()>0) {
+                if((items)||(restH.size()>2))
+                    theRest.append(", ");
+                if((!i.hasNext())&&(!items))
+                    theRest.append("and ");
+            }
+            theRest.append(name);
+        }
+        if(items) {
+            if(theRest.length()>0)
+            {
+                if(restH.size()>1)
+                    theRest.append(", ");
+                theRest.append("and ");
+            }
+            theRest.append("other items");
+        }
+        return "^IThere are also "+theRest.toString()+" here.^N"+(compress?"":"\n\r");
+    }
+    
     public StringBuffer lister(MOB mob, 
                                Vector things,
                                boolean useName, 
@@ -118,18 +165,27 @@ public class CMLister extends StdLibrary implements ListingLibrary
 		StringBuffer say=new StringBuffer("");
         Environmental item=null;
         boolean sysmsgs=(mob!=null)?CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS):false;
+        int numShown=0;
+        int maxToShow=CMProps.getIntVar(CMProps.SYSTEMI_MAXITEMSHOWN);
 		while(things.size()>0)
 		{
+            if((maxToShow>0)&&(!longLook)&&(!sysmsgs)&&(!useName)&&(numShown>=maxToShow))
+            {
+                say.append(summarizeTheRest(mob,things,compress));
+                things.clear();
+                break;
+            }
 			item=(Environmental)things.elementAt(0);
             things.removeElement(item);
             int reps=getReps(item,things,mob,useName,longLook);
 			if(CMLib.flags().canBeSeenBy(item,mob)
 			&&((item.displayText().length()>0)
-			    ||CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)
+			    ||sysmsgs
 				||useName))
 			{
+                numShown++;
                 appendReps(reps,say,compress);
-				if(CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS))
+				if(sysmsgs)
 					say.append("^H("+CMClass.classID(item)+")^N ");
                 if((!compress)&&(!mob.isMonster())&&(mob.session().clientTelnetMode(Session.TELNET_MXP)))
                     say.append(CMProps.mxpImage(item," H=10 W=10",""," "));
@@ -168,7 +224,7 @@ public class CMLister extends StdLibrary implements ListingLibrary
                         int reps2=getReps(item2,V,mob,useName,false);
                         if(CMLib.flags().canBeSeenBy(item2,mob)
                         &&((item2.displayText().length()>0)
-                            ||CMath.bset(mob.getBitmap(),MOB.ATT_SYSOPMSGS)
+                            ||sysmsgs
                             ||(useName)))
                         {
                             if(!compress) say.append("      ");

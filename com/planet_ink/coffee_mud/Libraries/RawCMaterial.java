@@ -537,6 +537,40 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		return null;
 	}
 	
+    public String genericType(Item I) {
+        if(I instanceof RawMaterial)
+            return CMStrings.capitalizeAndLower(getMaterialDesc(I.material()));
+        if(I instanceof Weapon)
+            return "weapons";
+        if(I instanceof Armor)
+            return "armor";
+        if(I instanceof Coins)
+            return "currency";
+        if(I instanceof Drink)
+            return "liquid";
+        if(I instanceof Food)
+            return "food";
+        if(I instanceof Pill)
+            return "pills";
+        if(I instanceof Light)
+            return "light sources";
+        if(I instanceof com.planet_ink.coffee_mud.Items.interfaces.Map)
+            return "papers";
+        if(I instanceof Scroll)
+            return "papers";
+        if(I instanceof Electronics)
+            return "technology";
+        if(I instanceof Key)
+            return "keys";
+        if((I.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PAPER)
+            return "papers";
+        if(I instanceof DeadBody)
+            return "corpses";
+        if((I instanceof Container)&&(((Container)I).capacity()>0))
+            return "containers";
+        return "items";
+    }
+    
     
     public void adjustResourceName(Item I)
     {
