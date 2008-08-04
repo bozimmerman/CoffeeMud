@@ -643,6 +643,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 						food.setNourishment(food.nourishment()+10);
 				}
 				if(timesTwo) food.setNourishment(food.nourishment()*2);
+                if(food.nourishment()>300)
+                    food.setBite((int)Math.round(Math.ceil(CMath.div(food.nourishment(),2))));
 			}
             ((Food)building).setMaterial(RawMaterial.RESOURCE_BEEF);
 			for(int v=0;v<contents.size();v++)
