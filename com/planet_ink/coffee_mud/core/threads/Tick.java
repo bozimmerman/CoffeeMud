@@ -45,6 +45,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 	private static int tickObjReference=0;
     private int tickObjectCounter=0;
     public long TICK_TIME=Tickable.TIME_TICK;
+    private long SUBTRACT_TIME=0;
 	protected Vector tickers=new Vector();
 	protected int numTickers=0; 
 	protected boolean shutdown=false;
@@ -300,10 +301,18 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 			try
 			{
 				lastStop=System.currentTimeMillis();
+				SUBTRACT_TIME=(lastStop-lastStart);
 				milliTotal+=(lastStop-lastStart);
 				tickTotal++;
 				awake=false;
-				Thread.sleep(TICK_TIME);
+                long timeToSleep=TICK_TIME;
+				if(SUBTRACT_TIME<timeToSleep)
+				{
+                    timeToSleep-=SUBTRACT_TIME;
+                    SUBTRACT_TIME=0;
+				}
+				if(timeToSleep>0)
+				    Thread.sleep(timeToSleep);
 				awake=true;
 				lastStart=System.currentTimeMillis();
 				lastClient=null;

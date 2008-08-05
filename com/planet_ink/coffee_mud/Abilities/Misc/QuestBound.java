@@ -223,7 +223,7 @@ public class QuestBound implements Ability
 		||(keyPlayer
 		   &&(msg.source()==affected)
 		   &&(msg.sourceMinor()==CMMsg.TYP_DEATH)))
-        stopQuest(msg.targetMinor());
+		    resetQuest(msg.targetMinor());
 		return true;
 	}
     public void executeMsg(Environmental myHost, CMMsg msg)
@@ -239,10 +239,10 @@ public class QuestBound implements Ability
         ||(keyPlayer
             &&(msg.source()==affected)
             &&(msg.sourceMinor()==CMMsg.TYP_DEATH)))
-        stopQuest(msg.targetMinor());
+            resetQuest(msg.targetMinor());
     }
     
-    private void stopQuest(int reason)
+    private void resetQuest(int reason)
     {
         if(text().length()>0)
         {
@@ -258,8 +258,8 @@ public class QuestBound implements Ability
                 affected.delEffect(this);
             else
             {
-                Log.sysOut("QuestBound",CMMsg.TYPE_DESCS[reason]+" message for "+(affected==null?"null":affected.name())+" caused "+Q.name()+" to stop.");
-                Q.stopQuest();
+                Log.sysOut("QuestBound",CMMsg.TYPE_DESCS[reason]+" message for "+(affected==null?"null":affected.name())+" caused "+Q.name()+" to reset.");
+                Q.resetQuest(5);
             }
         }
         else
@@ -272,7 +272,7 @@ public class QuestBound implements Ability
 	    &&(ticking instanceof MOB)
 	    &&(((MOB)ticking).amDead() || ((MOB)ticking).amDestroyed()))
 	    {
-            stopQuest(CMMsg.TYP_DEATH);
+	        resetQuest(CMMsg.TYP_DEATH);
             return false;
 	    }
 	    return true;	

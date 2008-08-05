@@ -46,6 +46,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     protected int duration=450; // about 30 minutes
     protected String rawScriptParameter="";
     protected Vector winners=new Vector();
+    protected boolean durable=false;
     protected int minWait=-1;
     protected int minPlayers=-1;
     protected String playerMask="";
@@ -61,6 +62,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     private boolean suspended=false;
     private Hashtable stepEllapsedTimes=new Hashtable();
     public DVector internalFiles=null;
+    private int[] resetData=null;
 
     // the unique name of the quest
     public String name(){return name;}
@@ -109,6 +111,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 9: return ""+waitInterval();
         case 10: return SPAWN_DESCS[getSpawn()];
         case 11: return displayName();
+        case 13: return Boolean.toString(durable);
+        case 12: break; // instructions should fall through
 		}
 		return questState.getStat(named);
 	}
@@ -186,6 +190,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         playerMask="";
         runLevel=-1;
         internalFiles=null;
+        durable=false;
         setVars(parseLoadScripts(parm,new Vector(),new Vector()),0);
         if(isCopy()) spawn=SPAWN_NO;
     }
@@ -213,7 +218,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             {
                 var=((String)parsedLine.elementAt(1)).toUpperCase();
                 val=CMParms.combine(parsedLine,2);
-                setStat(var,val);
+                if(isStat(var))
+                    setStat(var,val);
             }
         }
     }
@@ -2862,8 +2868,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     // will call stopQuest first to shut it down.
     public boolean startQuest()
     {
-        if(running())
+        if(running()) {
         	stopQuest();
+        	resetData=null;
+        }
 
         Vector args=new Vector();
         questState=new QuestState();
@@ -2892,11 +2900,27 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         if(questState.error)
         {
             if(!questState.beQuiet)
-                Log.errOut("Quest","One or more errors in '"+name()+"', quest not started");
+            {
+                int retry=0;
+                if((durable)&&(resetData==null))
+                    retry=10;
+                else
+                if(resetData!=null)
+                    retry=resetData[0];
+                Log.errOut("Quest","Errors starting '"
+                        +name()
+                        +"', quest not started"
+                        +((retry>0)?", retry in "+retry+".":"."));
+            }
+            if((durable)&&(resetData==null))
+            {
+                resetQuest(10);
+                return false;
+            }
         }
         else
         if(!questState.done)
-            Log.errOut("Quest","Nothing parsed in '"+name()+"', quest not started");
+            Log.errOut("Quest","Nothing parsed in '"+name()+"', quest not started.");
         else
         if(duration()<0)
         {
@@ -2920,9 +2944,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             if(duration()==0)
                 ticksRemaining=1;
             else
+            if((resetData!=null)&&(resetData[1]>0))
+                ticksRemaining=resetData[1];
+            else
                 ticksRemaining=duration();
             CMLib.threads().startTickDown(this,Tickable.TICKID_QUEST,1);
         }
+        resetData=null;
         lastStartDateTime=System.currentTimeMillis();
         stepEllapsedTimes.remove(script());
     }
@@ -3135,6 +3163,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         return false;
     }
 
+    public void resetQuest(int firstPauseTicks) {
+        if(stoppingQuest) return;
+        // ticksRemaining of -1 is OK, it will grab duration
+        resetData=new int[]{firstPauseTicks,ticksRemaining};
+        stopQuest();
+    }
+    
     // this will stop executing of the quest script.  It will clean up
     // any objects or mobs which may have been loaded, restoring map
     // mobs to their previous state.
@@ -3168,6 +3203,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
     public boolean resetWaitRemaining(long ellapsedTime)
     {
+        
+        if(resetData!=null) {
+            waitRemaining=resetData[0];
+            resetData[0]*=2;
+            return true;
+        }
+        
         if(((minWait()<0)||(maxWait<0))
         &&(startDate().trim().length()==0))
             return false;
@@ -4120,6 +4162,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             setSpawn(CMParms.indexOf(SPAWN_DESCS,val.toUpperCase().trim()));
             break;
         case 11: setDisplayName(val); break;
+        case 13: durable=CMath.s_bool(val); break;
+        case 12: // instructions can and should fall through the default
 		default:
             if((code.toUpperCase().trim().equalsIgnoreCase("REMAINING"))&&(running()))
                 ticksRemaining=CMath.s_parseIntExpression(val);
@@ -4158,6 +4202,8 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		case 9: return ""+waitInterval();
         case 10: return SPAWN_DESCS[getSpawn()];
         case 11: return displayName();
+        case 13: return Boolean.toString(durable);
+        case 12: // instructions can and should fall through the default
 		default:
         {
             code=code.toUpperCase().trim();

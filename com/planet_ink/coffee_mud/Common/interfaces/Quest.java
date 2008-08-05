@@ -164,6 +164,7 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
 	 * will call stopQuest first to shut it down.  It will spawn its
 	 * subquests and subsections if necessary.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuestOnTime()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#resetQuest(int)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stepQuest()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stopQuest()
 	 * @return whether the quest was successfully started
@@ -174,6 +175,7 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
 	 * This method is called every tick to check and see if the wait
 	 * is completed and its time to actually start the quest. This
 	 * method also checks run levels, player elligibility, etc.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#resetQuest(int)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuest()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stepQuest()
 	 * @return true if the quest was successfully started, false otherwise
@@ -187,10 +189,25 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
      * will restart the waiting process
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuest()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stepQuest()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#resetQuest(int)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuestOnTime()
 	 */
 	public void stopQuest();
 
+    /**
+     * this will stop executing of the quest script.  It will clean up 
+     * any objects or mobs which may have been loaded, restoring map 
+     * mobs to their previous state.  It will then enter a stopped-paused
+     * state for the given ticks.  Any start failures after that 
+     * will cause the pause time to be doubled before the next try.
+     * @param firstPauseTime ticks to remain in stopped state before restarting
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuest()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stepQuest()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stopQuest()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuestOnTime()
+     */
+    public void resetQuest(int firstPauseTicks);
+    
 	/**
 	 * If any files are embedded and cached inside this quest
 	 * script, this method will clear them from resources and
@@ -629,7 +646,7 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
     /** The list of BASIC non-iterative variable codes that pertain to a quest object */
 	public final static String[] QCODES={"CLASS", "NAME", "DURATION", "WAIT", "MINPLAYERS", "PLAYERMASK",
 										 "RUNLEVEL", "DATE", "MUDDAY", "INTERVAL","SPAWNABLE", "DISPLAY", 
-                                         "INSTRUCTIONS"};
+                                         "INSTRUCTIONS", "PERSISTANCE"};
     /** The list of basic quest objects defined in an iterative fashion during quest script execution */
 	public final static String[] QOBJS={"LOADEDMOBS", "LOADEDITEMS", "AREA", "ROOM", "MOBGROUP", "ITEMGROUP", "ROOMGROUP",
 		 								"ITEM", "ENVOBJ", "STUFF", "MOB"};

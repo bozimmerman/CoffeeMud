@@ -302,6 +302,7 @@ public class Quests extends StdLibrary implements QuestManager
         newHoliday.append("SET WAIT 900+(1?100)\n\r");
         newHoliday.append("SET INTERVAL 1\n\r");
         newHoliday.append("SET DURATION 900\n\r");
+        newHoliday.append("SET PERSISTANCE TRUE\n\r");
         newHoliday.append("SET AREAGROUP \""+area+"\"\n\r");
         newHoliday.append("QUIET\n\r");
         newHoliday.append("SET MOBGROUP RESELECT MASK=+INT 3\n\r");
