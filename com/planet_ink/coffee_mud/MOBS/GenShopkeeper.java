@@ -112,7 +112,7 @@ public class GenShopkeeper extends StdShopKeeper
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,this);
+        String[] MYCODES=CMProps.getStatCodesList(GenShopkeeper.MYCODES,this);
 		String[] superCodes=CMObjectBuilder.GENMOBCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

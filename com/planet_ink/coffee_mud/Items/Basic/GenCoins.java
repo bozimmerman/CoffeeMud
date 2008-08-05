@@ -200,7 +200,7 @@ public class GenCoins extends GenItem implements Coins
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,this);
+        String[] MYCODES=CMProps.getStatCodesList(GenCoins.MYCODES,this);
 		String[] superCodes=CMObjectBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

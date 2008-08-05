@@ -108,7 +108,7 @@ public class GenPill extends StdPill
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,this);
+        String[] MYCODES=CMProps.getStatCodesList(GenPill.MYCODES,this);
 		String[] superCodes=CMObjectBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

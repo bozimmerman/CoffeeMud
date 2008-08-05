@@ -111,7 +111,7 @@ public class GenContainer extends StdContainer
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,this);
+        String[] MYCODES=CMProps.getStatCodesList(GenContainer.MYCODES,this);
 		String[] superCodes=CMObjectBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;

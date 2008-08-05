@@ -131,7 +131,7 @@ public class GenDrink extends StdDrink
 	public String[] getStatCodes()
 	{
 		if(codes!=null) return codes;
-        String[] MYCODES=CMProps.getStatCodesList(this.MYCODES,this);
+        String[] MYCODES=CMProps.getStatCodesList(GenDrink.MYCODES,this);
 		String[] superCodes=CMObjectBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
