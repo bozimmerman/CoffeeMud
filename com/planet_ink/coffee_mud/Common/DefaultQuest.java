@@ -1266,24 +1266,6 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	                            q.room=(Room)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
 	                        if(q.room==null)
 	                        {
-if((names.size()==1)&&(CMLib.map().getRoom((String)names.firstElement())!=null))
-{
-    String localeName=(String)names.firstElement();
-    Log.errOut("QUESTDBG","'"+localeName+"', "+(useThese!=null)+", "+(localeName.equalsIgnoreCase("any")
-            ||localeName.equalsIgnoreCase("all"))+", "+(q.area!=null));
-    StringBuffer str=new StringBuffer("");
-    Enumeration e=null;
-    if(useThese!=null)
-        e=useThese.elements();
-    else
-    if(q.area!=null)
-        e=q.area.getMetroMap();
-    else
-        e=CMLib.map().rooms();
-    for(;e.hasMoreElements();)
-        str.append(":"+CMLib.map().getExtendedRoomID((Room)e.nextElement()));
-    Log.errOut("QUESTDBG",str.toString());
-}
                                 errorOccurred(q,isQuiet,"Quest '"+name()+"', !room '"+CMParms.combine(p,2)+"'.");
 	                            break;
 	                        }
