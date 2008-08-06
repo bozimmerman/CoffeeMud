@@ -2098,3 +2098,14 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 41. New Script cmds: MPSCRIPT, MPREJUV
 42. List command now supports parameters for list LOG to lessen the load
 43. Unlike prices, bugs are (hopefully) in decline.
+# Build 5.5.0 Released ?
+1. MUD supports multiple ini files/hosts at boot time, see new INI entry PRIVATERESOURCES and Inst. Guide
+2. New Quest script command: SET PERSISTANCE to force quests to make numerous start attempts
+3. New Scriptable commands: MPPROMPT, MPCONFIRM, MPCHOOSE (read guide first before using!)
+4. Change INI entry: RUNWEBSERVERS, now allows you to specify the servers to boot
+5. New INI entry: STARTSTAT, to override the new player char stats "rolling" with a set value.
+6. New INI entry: CHARCREATIONSCRIPTS, to add new stuff to the character creation process
+7. New INI entry: MAXITEMSHOWN, to help beautify player home rooms with hundreds of items
+8. New DISABLE INI flags: ALLERGIES, THREADTHREAD, JOURNALTHREAD, MAPTHREAD, PLAYERTHREAD, SESSIONTHREAD, STATSTHREAD
+9. New INI entries: EXTVAR_ to add your own custom variables to a limited set of classes
+10. Internal: Several code shuffles to support the new multi-hosts stuff.
