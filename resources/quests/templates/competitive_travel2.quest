@@ -15,22 +15,24 @@
 #$QUEST_NAME=$STRING=Competitive Travel #2
 #
 #Quest Frequency:
-#A quest starts and stops on timed intervals.  Enter the amount of time 
-#that this quest will remain unavailable between runs. This number is in 
-#"ticks" (4 second periods).  You may enter math expressions, and use the 
-# special ? operator to generate random numbers.  A frequency of
-#5 + 3?10 would generate a frequency of 8-15 ticks.
-#$FREQUENCY=$TIMEEXPRESSION=1350
+#This is the time between quest starts.  Enter a number or math expression
+#for a time in default ticks (4 second period), or follow the expression 
+#with the word seconds, minutes, hours, days, mudhours, muddays, mudweeks,
+#mudmonths, or mudyears.  Math expressions may include numbers, math 
+#symbols, or the ? operator to generate random numbers.  Example:
+#"5 + 3?10 minutes" would generate a frequency of 8-15 minutes.
+#$FREQUENCY=$TIMEEXPRESSION=90 minutes
 #
 #Quest Duration:
-#Enter the amount of time that this quest will run and remain available 
-#after it is started.  This time is also the amount of time a player has 
-#to complete their travel after accepting the quest.
-#This time is expressed in "ticks" (4 second periods).  You may enter math 
-#expressions, and use the special ? operator to generate random numbers.
-#For instance, 5 + 3?10 would generate a duration of 8-15 ticks.
+#This is how long your quest remains running-- how long the players
+#have to complete the quest. Enter a number or math expression
+#for a time in default ticks (4 second period), or follow the expression 
+#with the word seconds, minutes, hours, days, mudhours, muddays, mudweeks,
+#mudmonths, or mudyears.  Math expressions may include numbers, math 
+#symbols, or the ? operator to generate random numbers.  Example:
+#"5 + 3?10 minutes" would generate a duration of 8-15 minutes.
 #A duration of 0 will cause the quest to run until your server is shut down.
-#$DURATION=$TIMEEXPRESSION=1350
+#$DURATION=$TIMEEXPRESSION=90 minutes
 #
 #Quest-Player Criterium:
 #You may leave this entry blank, or enter a Zapper Mask to describe what
