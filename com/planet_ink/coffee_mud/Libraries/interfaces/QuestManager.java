@@ -78,6 +78,8 @@ public interface QuestManager extends CMLibrary
     public final static int QM_COMMAND_$EXISTING_QUEST_NAME=16;
     public final static int QM_COMMAND_$HIDDEN=17;
     public final static int QM_COMMAND_$FACTION=18;
+    public final static int QM_COMMAND_$TIMEEXPRESSION=19;
+    
     public final static int QM_COMMAND_MASK=127;
     public final static int QM_COMMAND_OPTIONAL=128;
     public final static String[] QM_COMMAND_TYPES={
@@ -99,7 +101,8 @@ public interface QuestManager extends CMLibrary
         "$ABILITY",
         "$EXISTING_QUEST_NAME",
         "$HIDDEN",
-        "$FACTION"
+        "$FACTION",
+        "$TIMEEXPRESSION"
     };
     public final static EnglishParsing.CMEval[] QM_COMMAND_TESTS={
         new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //title
@@ -278,7 +281,7 @@ public interface QuestManager extends CMLibrary
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             return str;
         }},
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //expression
+        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //ability
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             StringBuffer list=new StringBuffer("");
             for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
@@ -317,6 +320,16 @@ public interface QuestManager extends CMLibrary
             if(F==null)
                 throw new CMException("A faction of the name '"+((String)str).trim()+"' does not exist.  Enter another.");
             return F.factionID();
+        }},
+        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //timeexpression
+            if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+            if(((String)str).trim().length()==0){
+                if(emptyOK) return "";
+                throw new CMException("You must enter an expression!");
+            }
+            if(!CMLib.time().isTickExpression((String)str)) 
+                throw new CMException("Invalid time mathematical expression.  Use numbers,+,-,*,/,(), and ? only.  You may add ticks, minutes, hours, days, mudhours, muddays, mudweeks, mudmonths, mudyears."); 
+            return str;
         }},
     };
     

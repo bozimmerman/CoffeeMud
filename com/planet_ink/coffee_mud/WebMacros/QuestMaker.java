@@ -226,6 +226,7 @@ public class QuestMaker extends StdWebMacro
                 case QuestManager.QM_COMMAND_$TITLE: break;
                 case QuestManager.QM_COMMAND_$LABEL: lastLabel=defValue; break;
                 case QuestManager.QM_COMMAND_$EXPRESSION:
+                case QuestManager.QM_COMMAND_$TIMEEXPRESSION:
                 case QuestManager.QM_COMMAND_$UNIQUE_QUEST_NAME:
                 {
         			if(oldValue==null) oldValue=defValue;

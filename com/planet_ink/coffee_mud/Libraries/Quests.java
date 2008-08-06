@@ -1615,6 +1615,7 @@ public class Quests extends StdLibrary implements QuestManager
                             break;
                         case QM_COMMAND_$LABEL: lastLabel=defValue; break;
                         case QM_COMMAND_$EXPRESSION:
+                        case QM_COMMAND_$TIMEEXPRESSION:
                         case QM_COMMAND_$UNIQUE_QUEST_NAME:
                         case QM_COMMAND_$STRING:
                         case QM_COMMAND_$LONG_STRING:

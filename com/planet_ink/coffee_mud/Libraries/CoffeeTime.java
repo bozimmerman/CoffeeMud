@@ -719,53 +719,71 @@ public class CoffeeTime extends StdLibrary implements TimeManager
         }
         return globalClock;
     }
+    
+    private double getTickExpressionMultiPlier(String lastWord) {
+        lastWord=lastWord.toUpperCase().trim();
+        if(lastWord.startsWith("MINUTE")||lastWord.equals("MINS")||lastWord.equals("MIN"))
+            return CMath.div(TimeManager.MILI_MINUTE,Tickable.TIME_TICK_DOUBLE);
+        else
+        if(lastWord.startsWith("SECOND")||lastWord.equals("SECS")||lastWord.equals("SEC"))
+            return CMath.div(TimeManager.MILI_SECOND,Tickable.TIME_TICK_DOUBLE);
+        else
+        if(lastWord.startsWith("HOUR"))
+            return CMath.div(TimeManager.MILI_HOUR,Tickable.TIME_TICK_DOUBLE);
+        else
+        if(lastWord.startsWith("DAY")||lastWord.equals("DAYS"))
+            return CMath.div(TimeManager.MILI_DAY,Tickable.TIME_TICK_DOUBLE);
+        else
+        if(lastWord.startsWith("TICK"))
+            return 1.0;
+        else
+        if(lastWord.startsWith("MUDHOUR"))
+            return CMath.div(TimeClock.TIME_MILIS_PER_MUDHOUR,Tickable.TIME_TICK_DOUBLE);
+        else
+        if(lastWord.startsWith("MUDDAY"))
+            return CMath.div(TimeClock.TIME_MILIS_PER_MUDHOUR
+                    *globalClock().getHoursInDay()
+                    ,Tickable.TIME_TICK_DOUBLE);
+        else
+        if(lastWord.startsWith("MUDWEEK"))
+            return CMath.div(TimeClock.TIME_MILIS_PER_MUDHOUR
+                    *globalClock().getHoursInDay()
+                    *globalClock().getDaysInWeek()
+                    ,Tickable.TIME_TICK_DOUBLE);
+        else
+        if(lastWord.startsWith("MUDMONTH"))
+            return CMath.div(TimeClock.TIME_MILIS_PER_MUDHOUR
+                    *globalClock().getHoursInDay()
+                    *globalClock().getDaysInMonth()
+                    ,Tickable.TIME_TICK_DOUBLE);
+        else
+        if(lastWord.startsWith("MUDYEAR"))
+            return CMath.div(TimeClock.TIME_MILIS_PER_MUDHOUR
+                    *globalClock().getHoursInDay()
+                    *globalClock().getDaysInMonth()
+                    *globalClock().getMonthsInYear()
+                    ,Tickable.TIME_TICK_DOUBLE);
+        return 0.0;
+    }
 
+    public boolean isTickExpression(String val) {
+        val=val.trim();
+        if(CMath.isMathExpression(val)) return true;
+        int x=val.lastIndexOf(' ');
+        if(x<0) return CMath.isMathExpression(val);
+        double multiPlier=getTickExpressionMultiPlier(val.substring(x+1));
+        if(multiPlier==0.0) return CMath.isMathExpression(val);
+        return CMath.isMathExpression(val.substring(0,x).trim());
+    }
+
+    
     public int parseTickExpression(String val) {
         val=val.trim();
         if(CMath.isMathExpression(val))
             return CMath.s_parseIntExpression(val);
         int x=val.lastIndexOf(' ');
         if(x<0) return CMath.s_parseIntExpression(val);
-        String lastWord=val.substring(x+1).trim().toUpperCase();
-        double multiPlier=0.0;
-        if(lastWord.startsWith("MINUTE")||lastWord.equals("MINS")||lastWord.equals("MIN"))
-            multiPlier=CMath.div(TimeManager.MILI_MINUTE,Tickable.TIME_TICK_DOUBLE);
-        else
-        if(lastWord.startsWith("SECOND")||lastWord.equals("SECS")||lastWord.equals("SEC"))
-            multiPlier=CMath.div(TimeManager.MILI_SECOND,Tickable.TIME_TICK_DOUBLE);
-        else
-        if(lastWord.startsWith("HOUR"))
-            multiPlier=CMath.div(TimeManager.MILI_HOUR,Tickable.TIME_TICK_DOUBLE);
-        else
-        if(lastWord.startsWith("DAY")||lastWord.equals("DAYS"))
-            multiPlier=CMath.div(TimeManager.MILI_DAY,Tickable.TIME_TICK_DOUBLE);
-        else
-        if(lastWord.startsWith("MUDHOUR"))
-            multiPlier=CMath.div(TimeClock.TIME_MILIS_PER_MUDHOUR,Tickable.TIME_TICK_DOUBLE);
-        else
-        if(lastWord.startsWith("MUDDAY"))
-            multiPlier=CMath.div(TimeClock.TIME_MILIS_PER_MUDHOUR
-                    *globalClock().getHoursInDay()
-                    ,Tickable.TIME_TICK_DOUBLE);
-        else
-        if(lastWord.startsWith("MUDWEEK"))
-            multiPlier=CMath.div(TimeClock.TIME_MILIS_PER_MUDHOUR
-                    *globalClock().getHoursInDay()
-                    *globalClock().getDaysInWeek()
-                    ,Tickable.TIME_TICK_DOUBLE);
-        else
-        if(lastWord.startsWith("MUDMONTH"))
-            multiPlier=CMath.div(TimeClock.TIME_MILIS_PER_MUDHOUR
-                    *globalClock().getHoursInDay()
-                    *globalClock().getDaysInMonth()
-                    ,Tickable.TIME_TICK_DOUBLE);
-        else
-        if(lastWord.startsWith("MUDYEAR"))
-            multiPlier=CMath.div(TimeClock.TIME_MILIS_PER_MUDHOUR
-                    *globalClock().getHoursInDay()
-                    *globalClock().getDaysInMonth()
-                    *globalClock().getMonthsInYear()
-                    ,Tickable.TIME_TICK_DOUBLE);
+        double multiPlier=getTickExpressionMultiPlier(val.substring(x+1));
         if(multiPlier==0.0) return CMath.s_parseIntExpression(val);
         return (int)Math.round(CMath.mul(multiPlier,CMath.s_parseIntExpression(val.substring(0,x).trim())));
     }

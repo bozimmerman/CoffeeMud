@@ -243,6 +243,16 @@ public interface TimeManager extends CMLibrary
     public int parseTickExpression(String val);
     
     /**
+     * Parses whether a tick expression, or an
+     * expression ending with the word minutes,
+     * hours, seconds, days, mudhours, muddays,
+     * mudweeks, mudmonths, or mudyears 
+     * @param val the expression
+     * @return whether a number of ticks is represented by the string
+     */
+    public boolean isTickExpression(String val);
+    
+    /**
      * Returns the mud wide global time clock
      * object as defined by the coffeemud.ini
      * file.

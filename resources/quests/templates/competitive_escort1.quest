@@ -21,7 +21,7 @@
 #"ticks" (4 second periods).  You may enter math expressions, and use the 
 # special ? operator to generate random numbers.  A frequency of
 #5 + 3?10 would generate a frequency of 8-15 ticks.
-#$FREQUENCY=$EXPRESSION=1350
+#$FREQUENCY=$TIMEEXPRESSION=1350
 #
 #Quest Duration:
 #Enter the amount of time that this quest will run and remain available 
@@ -31,7 +31,7 @@
 #expressions, and use the special ? operator to generate random numbers.
 #For instance, 5 + 3?10 would generate a duration of 8-15 ticks.
 #A duration of 0 will cause the quest to run until your server is shut down.
-#$DURATION=$EXPRESSION=1350
+#$DURATION=$TIMEEXPRESSION=1350
 #
 #Quest-Player Criterium:
 #You may leave this entry blank, or enter a Zapper Mask to describe what
