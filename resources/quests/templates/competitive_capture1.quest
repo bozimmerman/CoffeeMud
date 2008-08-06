@@ -6,6 +6,12 @@
 #
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
+#Times are entered as a simple number or math expression to denote a
+#time in default ticks (4 second period), or you mayfollow the expression 
+#with the word seconds, minutes, hours, days, mudhours, muddays, mudweeks,
+#mudmonths, or mudyears.  Time expressions may include numbers, math 
+#symbols, or the ? operator to generate random numbers.  Example:
+#"5 + 3?10 minutes" would generate a frequency of 8-15 minutes.#
 #
 #Quest ID:
 #Enter a unique name/id for your quest:
@@ -16,23 +22,12 @@
 #$QUEST_NAME=$STRING=Competitive Capture #1
 #
 #Quest Frequency:
-#This is the time between quest starts.  Enter a number or math expression
-#for a time in default ticks (4 second period), or follow the expression 
-#with the word seconds, minutes, hours, days, mudhours, muddays, mudweeks,
-#mudmonths, or mudyears.  Math expressions may include numbers, math 
-#symbols, or the ? operator to generate random numbers.  Example:
-#"5 + 3?10 minutes" would generate a frequency of 8-15 minutes.
+#This is the time between quest starts.
 #$FREQUENCY=$TIMEEXPRESSION=90 minutes
 #
 #Quest Duration:
-#This is how long your quest remains running-- how long the players
-#have to complete the quest. Enter a number or math expression
-#for a time in default ticks (4 second period), or follow the expression 
-#with the word seconds, minutes, hours, days, mudhours, muddays, mudweeks,
-#mudmonths, or mudyears.  Math expressions may include numbers, math 
-#symbols, or the ? operator to generate random numbers.  Example:
-#"5 + 3?10 minutes" would generate a duration of 8-15 minutes.
-#A duration of 0 will cause the quest to run until your server is shut down.
+#This is how long your quest remains running, and how long a player 
+#accepting the quest has to complete the quest and report back in.
 #$DURATION=$TIMEEXPRESSION=90 minutes
 #
 #Quest-Player Criterium:
