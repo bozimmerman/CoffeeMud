@@ -3,7 +3,7 @@
 #to an existing container in your world, such as a pit or mailbox, or
 #a room where the item needs to be dropped.
 #
-#!QUESTMAKER_PAGE Quest Name/Duration
+#!QUESTMAKER_PAGE Quest Name/Criteria
 #Enter the unique name and player criteria for your new quest.
 #
 #Quest ID:

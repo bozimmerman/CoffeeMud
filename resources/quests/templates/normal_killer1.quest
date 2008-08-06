@@ -2,7 +2,7 @@
 #An existing mob in your world needs one or more other existing mobs killed. 
 #A reward is given upon completion of the task and returning to the announcer.
 #
-#!QUESTMAKER_PAGE Quest Name/Duration
+#!QUESTMAKER_PAGE Quest Name/Criteria
 #Enter the unique name and player criteria for your new quest.
 #
 #Quest ID:

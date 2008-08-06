@@ -2,7 +2,7 @@
 #The player must travel to some location on your map at the behest
 #of an existing announcer mob.
 #
-#!QUESTMAKER_PAGE Quest Name/Duration
+#!QUESTMAKER_PAGE Quest Name/Criteria
 #Enter the unique name and player criteria for your new quest.
 #
 #Quest ID:

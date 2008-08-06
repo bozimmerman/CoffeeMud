@@ -3,7 +3,7 @@
 #The items will be scattered among rooms or areas which you will designate.
 #A reward is given upon completion of the task and returning the items to the announcer.
 #
-#!QUESTMAKER_PAGE Quest Name/Duration
+#!QUESTMAKER_PAGE Quest Name/Criteria
 #Enter the unique name and player criteria for your new quest.
 #
 #Quest ID:
