@@ -1057,7 +1057,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 }
                                 else
                                 {
-                                    int season=CMClass.globalClock().determineSeason(str2.substring(1).trim());
+                                    int season=CMLib.time().globalClock().determineSeason(str2.substring(1).trim());
                                     if((season>=0)&&(season<TimeClock.SEASON_DESCS.length))
                                         buf.append(TimeClock.SEASON_DESCS[season]+", ");
                                 }
@@ -1084,7 +1084,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 }
                                 else
                                 {
-                                    int season=CMClass.globalClock().determineSeason(str2.substring(1).trim());
+                                    int season=CMLib.time().globalClock().determineSeason(str2.substring(1).trim());
                                     if((season>=0)&&(season<TimeClock.SEASON_DESCS.length))
                                         buf.append(TimeClock.SEASON_DESCS[season]+", ");
                                 }
@@ -2507,8 +2507,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 if(CMath.isInteger(str2.substring(1).trim()))
                                     entry.addElement(new Integer(CMath.s_int(str2.substring(1).trim())));
                                 else
-                                if(CMClass.globalClock().determineSeason(str2.substring(1).trim())>=0)
-                                    entry.addElement(new Integer(CMClass.globalClock().determineSeason(str2.substring(1).trim())));
+                                if(CMLib.time().globalClock().determineSeason(str2.substring(1).trim())>=0)
+                                    entry.addElement(new Integer(CMLib.time().globalClock().determineSeason(str2.substring(1).trim())));
                             }
                             v=V.size();
                         }

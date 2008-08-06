@@ -231,4 +231,23 @@ public interface TimeManager extends CMLibrary
      * @return String Formatted date
      */
     public String date2Date2String(long time);
+    
+    /**
+     * Parses either a tick expression, or an
+     * expression ending with the word minutes,
+     * hours, seconds, days, mudhours, muddays,
+     * mudweeks, mudmonths, or mudyears 
+     * @param val the expression
+     * @return the number of ticks represented by the string
+     */
+    public int parseTickExpression(String val);
+    
+    /**
+     * Returns the mud wide global time clock
+     * object as defined by the coffeemud.ini
+     * file.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.TimeClock
+     * @return the global clock
+     */
+    public TimeClock globalClock();
 }

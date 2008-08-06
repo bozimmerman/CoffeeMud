@@ -294,7 +294,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     private TimeClock getMysteryTimeNowFromState()
     {
     	TimeClock NOW=null;
-    	if(questState.mysteryData==null) return (TimeClock)CMClass.globalClock().copyOf();
+    	if(questState.mysteryData==null) return (TimeClock)CMLib.time().globalClock().copyOf();
         if((questState.mysteryData.whereAt!=null)&&(questState.mysteryData.whereAt.getArea()!=null))
         	NOW=(TimeClock)questState.mysteryData.whereAt.getArea().getTimeObj().copyOf();
         else
@@ -307,7 +307,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         if(questState.area!=null)
         	NOW=(TimeClock)questState.area.getTimeObj().copyOf();
         else
-        	NOW=(TimeClock)CMClass.globalClock().copyOf();
+        	NOW=(TimeClock)CMLib.time().globalClock().copyOf();
         return NOW;
     }
 
@@ -3225,7 +3225,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 int mudmonth=CMath.s_parseIntExpression(sd2.substring(0,x));
                 int mudday=CMath.s_parseIntExpression(sd2.substring(x+1));
                 TimeClock C=(TimeClock)CMClass.getCommon("DefaultTimeClock");
-                TimeClock NOW=CMClass.globalClock();
+                TimeClock NOW=CMLib.time().globalClock();
                 C.setMonth(mudmonth);
                 C.setDayOfMonth(mudday);
                 C.setTimeOfDay(0);
@@ -4150,14 +4150,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		switch(getCodeNum(code)){
 		case 0: break;
 		case 1: setName(val); break;
-		case 2: setDuration(CMath.s_parseIntExpression(val)); break;
-		case 3: setMinWait(CMath.s_parseIntExpression(val)); break;
+		case 2: setDuration(CMLib.time().parseTickExpression(val)); break;
+		case 3: setMinWait(CMLib.time().parseTickExpression(val)); break;
 		case 4: setMinPlayers(CMath.s_parseIntExpression(val)); break;
 		case 5: setPlayerMask(val); break;
 		case 6: setRunLevel(CMath.s_parseIntExpression(val)); break;
 		case 7: setStartDate(val); break;
 		case 8: setStartMudDate(val); break;
-		case 9: setWaitInterval(CMath.s_parseIntExpression(val)); break;
+		case 9: setWaitInterval(CMLib.time().parseTickExpression(val)); break;
         case 10:
             setSpawn(CMParms.indexOf(SPAWN_DESCS,val.toUpperCase().trim()));
             break;

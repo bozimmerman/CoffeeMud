@@ -181,7 +181,7 @@ public class StdArea implements Area
 	public void setTimeObj(TimeClock obj){myClock=obj;}
 	public TimeClock getTimeObj()
     {
-        if(myClock==null) myClock=CMClass.globalClock();
+        if(myClock==null) myClock=CMLib.time().globalClock();
         return myClock;
     }
 

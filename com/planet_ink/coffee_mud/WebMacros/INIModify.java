@@ -171,7 +171,7 @@ public class INIModify extends StdWebMacro
 					CMLib.channels().loadChannels(ipage.getStr("CHANNELS"),ipage.getStr("ICHANNELS"),ipage.getStr("IMC2CHANNELS"));
                     CMLib.journals().loadCommandJournals(ipage.getStr("COMMANDJOURNALS"));
 				}
-                CMClass.globalClock().initializeINIClock(ipage);
+                CMLib.time().globalClock().initializeINIClock(ipage);
 			}
 			return "";
 		}

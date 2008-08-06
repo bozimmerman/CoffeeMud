@@ -140,8 +140,8 @@ public class DefaultTimeClock implements TimeClock
                         CMath.s_int(page.getStr("DUSKHR")),
                         CMath.s_int(page.getStr("NIGHTHR")));
 
-        CMProps.setIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY,""+((Tickable.TIME_MILIS_PER_MUDHOUR*CMClass.globalClock().getHoursInDay()/Tickable.TIME_TICK)));
-        CMProps.setIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH,""+((Tickable.TIME_MILIS_PER_MUDHOUR*CMClass.globalClock().getHoursInDay()*CMClass.globalClock().getDaysInMonth()/Tickable.TIME_TICK)));
+        CMProps.setIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY,""+((Tickable.TIME_MILIS_PER_MUDHOUR*CMLib.time().globalClock().getHoursInDay()/Tickable.TIME_TICK)));
+        CMProps.setIntVar(CMProps.SYSTEMI_TICKSPERMUDMONTH,""+((Tickable.TIME_MILIS_PER_MUDHOUR*CMLib.time().globalClock().getHoursInDay()*CMLib.time().globalClock().getDaysInMonth()/Tickable.TIME_TICK)));
     }
     
 	public String timeDescription(MOB mob, Room room)
@@ -254,7 +254,7 @@ public class DefaultTimeClock implements TimeClock
         {
             
         }
-        return CMClass.globalClock();
+        return CMLib.time().globalClock();
     }
 
     public String deriveEllapsedTimeString(long millis)
@@ -456,21 +456,21 @@ public class DefaultTimeClock implements TimeClock
 				setDayOfMonth(CMLib.xml().getIntFromPieces(V,"DAY"));
 				setMonth(CMLib.xml().getIntFromPieces(V,"MONTH"));
 				setYear(CMLib.xml().getIntFromPieces(V,"YEAR"));
-				if(this!=CMClass.globalClock())
+				if(this!=CMLib.time().globalClock())
 				{
 					if((CMLib.xml().getValFromPieces(V,"HOURS").length()==0)
 					||(CMLib.xml().getValFromPieces(V,"DAYS").length()==0)
 					||(CMLib.xml().getValFromPieces(V,"MONTHS").length()==0))
 					{
-						setHoursInDay(CMClass.globalClock().getHoursInDay());
-						setDaysInMonth(CMClass.globalClock().getDaysInMonth());
-						setMonthsInYear(CMClass.globalClock().getMonthNames());
-						setDawnToDusk(CMClass.globalClock().getDawnToDusk()[TIME_DAWN],
-                                      CMClass.globalClock().getDawnToDusk()[TIME_DAY],
-                                      CMClass.globalClock().getDawnToDusk()[TIME_DUSK],
-                                      CMClass.globalClock().getDawnToDusk()[TIME_NIGHT]);
-						setDaysInWeek(CMClass.globalClock().getWeekNames());
-						setYearNames(CMClass.globalClock().getYearNames());
+						setHoursInDay(CMLib.time().globalClock().getHoursInDay());
+						setDaysInMonth(CMLib.time().globalClock().getDaysInMonth());
+						setMonthsInYear(CMLib.time().globalClock().getMonthNames());
+						setDawnToDusk(CMLib.time().globalClock().getDawnToDusk()[TIME_DAWN],
+                                      CMLib.time().globalClock().getDawnToDusk()[TIME_DAY],
+                                      CMLib.time().globalClock().getDawnToDusk()[TIME_DUSK],
+                                      CMLib.time().globalClock().getDawnToDusk()[TIME_NIGHT]);
+						setDaysInWeek(CMLib.time().globalClock().getWeekNames());
+						setYearNames(CMLib.time().globalClock().getYearNames());
 					}
 					else
 					{

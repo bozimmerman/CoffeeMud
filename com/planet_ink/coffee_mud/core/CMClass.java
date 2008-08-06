@@ -73,7 +73,6 @@ public class CMClass extends ClassLoader
     public static final int OBJECT_TOTAL=19;
 
     public static int longestWebMacro=-1;
-    protected static TimeClock globalClock=null;
     protected Hashtable common=new Hashtable();
     protected Vector races=new Vector();
     protected Vector charClasses=new Vector();
@@ -1086,16 +1085,6 @@ public class CMClass extends ClassLoader
 		}
 		return "";
 	}
-
-    public static final TimeClock globalClock()
-    {
-        if(globalClock==null)
-        {
-            globalClock=(TimeClock)getCommon("DefaultTimeClock");
-            if(globalClock!=null) globalClock.setLoadName("GLOBAL");
-        }
-        return globalClock;
-    }
 
     /**
      * This is a simple version for external clients since they

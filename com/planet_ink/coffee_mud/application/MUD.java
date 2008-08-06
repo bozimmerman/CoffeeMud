@@ -236,7 +236,7 @@ public class MUD extends Thread implements MudHost
 			return false;
 		}
         CMLib.lang().setLocale(CMLib.props().getStr("LANGUAGE"),CMLib.props().getStr("COUNTRY"));
-        CMClass.globalClock().initializeINIClock(page);
+        CMLib.time().globalClock().initializeINIClock(page);
         if((tCode==MAIN_HOST)||(privacyV.contains("FACTIONS")))
             CMLib.factions().reloadFactions(CMProps.getVar(CMProps.SYSTEM_PREFACTIONS));
         

@@ -241,7 +241,7 @@ public class BaseGenerics extends StdCommand
 		if((showFlag>0)&&(showFlag!=showNumber)) return;
 		TimeClock TC=A.getTimeObj();
 		StringBuffer report=new StringBuffer("");
-		if(TC==CMClass.globalClock())
+		if(TC==CMLib.time().globalClock())
 			report.append("Default -- Can't be changed.");
 		else
 		{
@@ -250,7 +250,7 @@ public class BaseGenerics extends StdCommand
 		    report.append(TC.getMonthsInYear()+" mnths-yr");
 		}
 		mob.tell(showNumber+". Calendar: '"+report.toString()+"'.");
-		if(TC==CMClass.globalClock()) return;
+		if(TC==CMLib.time().globalClock()) return;
 		if((showFlag!=showNumber)&&(showFlag>-999)) return;
 		String newName="";
 		while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.length()==0))
@@ -1363,7 +1363,7 @@ public class BaseGenerics extends StdCommand
 				{
 					E.baseCharStats().setStat(num,CMath.s_int(newVal));
 					if((num==CharStats.STAT_AGE)&&(E.playerStats()!=null)&&(E.playerStats().getBirthday()!=null))
-					    E.playerStats().getBirthday()[2]=CMClass.globalClock().getYear()-CMath.s_int(newVal);
+					    E.playerStats().getBirthday()[2]=CMLib.time().globalClock().getYear()-CMath.s_int(newVal);
 				}
 				else
 					mob.tell("(no change)");

@@ -49,8 +49,8 @@ public class Age extends StdAbility
 		long start=CMath.s_long(text());
 		if(start<Short.MAX_VALUE) return "";
 		long days=((System.currentTimeMillis()-start)/Tickable.TIME_TICK)/CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY); // down to days;
-		long months=days/CMClass.globalClock().getDaysInMonth();
-		long years=months/CMClass.globalClock().getMonthsInYear();
+		long months=days/CMLib.time().globalClock().getDaysInMonth();
+		long years=months/CMLib.time().globalClock().getMonthsInYear();
 		if(days<1)
 			return "(<1 day old)";
 		else
@@ -125,8 +125,8 @@ public class Age extends StdAbility
 		norecurse=true;
 
 		if(divisor==0.0)
-		    divisor = (double)( CMClass.globalClock().getMonthsInYear() *
-		                           CMClass.globalClock().getDaysInMonth() *
+		    divisor = (double)( CMLib.time().globalClock().getMonthsInYear() *
+		                           CMLib.time().globalClock().getDaysInMonth() *
 		                           CMProps.getIntVar( CMProps.SYSTEMI_TICKSPERMUDDAY ) );
 
 		int ellapsed=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor)));
@@ -407,8 +407,8 @@ public class Age extends StdAbility
                 &&(affected.description().toUpperCase().indexOf(msg.source().name().toUpperCase())>=0))
                 {
                     if(divisor==0.0)
-                        divisor = (double)( CMClass.globalClock().getMonthsInYear() *
-                                            CMClass.globalClock().getDaysInMonth() *
+                        divisor = (double)( CMLib.time().globalClock().getMonthsInYear() *
+                                            CMLib.time().globalClock().getDaysInMonth() *
                                             CMProps.getIntVar( CMProps.SYSTEMI_TICKSPERMUDDAY ) );
                     long l=CMath.s_long(text());
                     if((l>0)&&(l<Long.MAX_VALUE))
@@ -471,8 +471,8 @@ public class Age extends StdAbility
 				        mob=(MOB)affected;
 					    if(myRace==null) myRace=((MOB)affected).charStats().getMyRace();
 						if(divisor==0.0)
-						    divisor = (double)( CMClass.globalClock().getMonthsInYear() *
-						                        CMClass.globalClock().getDaysInMonth() *
+						    divisor = (double)( CMLib.time().globalClock().getMonthsInYear() *
+						                        CMLib.time().globalClock().getDaysInMonth() *
 						                        CMProps.getIntVar( CMProps.SYSTEMI_TICKSPERMUDDAY ) );
 						long l=CMath.s_long(text());
 						if((l>0)&&(l<Long.MAX_VALUE))
@@ -518,8 +518,8 @@ public class Age extends StdAbility
 		else
 		{
 			if(divisor==0.0)
-			    divisor = (double)( CMClass.globalClock().getMonthsInYear() *
-			                        CMClass.globalClock().getDaysInMonth() *
+			    divisor = (double)( CMLib.time().globalClock().getMonthsInYear() *
+			                        CMLib.time().globalClock().getDaysInMonth() *
 			                        CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY ) );
             int age=(int)Math.round(Math.floor(CMath.div(CMath.div(System.currentTimeMillis()-l,Tickable.TIME_TICK),divisor)));
             if((age>=Short.MAX_VALUE)||(age<0))

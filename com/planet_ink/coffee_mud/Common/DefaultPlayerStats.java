@@ -379,7 +379,7 @@ public class DefaultPlayerStats implements PlayerStats
 	public int initializeBirthday(int ageHours, Race R)
 	{
 	    birthday=new int[3];
-	    TimeClock C=CMClass.globalClock();
+	    TimeClock C=CMLib.time().globalClock();
 	    birthday[0]=C.getDayOfMonth();
 	    birthday[1]=C.getMonth();
 	    birthday[2]=C.getYear();

@@ -479,10 +479,10 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         &&((mob.getAgeHours()%20)==0))
         {
             int tage=mob.baseCharStats().getMyRace().getAgingChart()[Race.AGE_YOUNGADULT]
-                    +CMClass.globalClock().getYear()
+                    +CMLib.time().globalClock().getYear()
                     -mob.playerStats().getBirthday()[2];
-            int month=CMClass.globalClock().getMonth();
-            int day=CMClass.globalClock().getDayOfMonth();
+            int month=CMLib.time().globalClock().getMonth();
+            int day=CMLib.time().globalClock().getDayOfMonth();
             int bday=mob.playerStats().getBirthday()[0];
             int bmonth=mob.playerStats().getBirthday()[1];
             while((tage>mob.baseCharStats().getStat(CharStats.STAT_AGE))
