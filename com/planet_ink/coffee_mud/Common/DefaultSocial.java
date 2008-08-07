@@ -183,8 +183,8 @@ public class DefaultSocial implements Social
 			
 			if(((Target==null)&&(makeTarget))
 			||((targetMud.length()>0)
-					&&(I3channelName!=null)
-					&&((CMLib.intermud().i3online())&&(CMLib.intermud().isI3channel(I3channelName)))))
+				&&(I3channelName!=null)
+				&&((CMLib.intermud().i3online())&&(CMLib.intermud().isI3channel(I3channelName)))))
 			{
 				Target=CMClass.getMOB("StdMOB");
 				Target.setName(targetStr);
