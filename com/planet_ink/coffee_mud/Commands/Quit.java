@@ -77,7 +77,7 @@ public class Quit extends StdCommand
 			catch(Exception e)
 			{
 				if(mob.session()!=null)
-					mob.session().setKillFlag(true);
+					mob.session().logoff(false,false,false);
 			}
 		}
 		return false;

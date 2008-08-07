@@ -117,7 +117,7 @@ public class PlayerOnline extends StdWebMacro
     				{
                         if(canBoot&&(parms.containsKey("BOOT")))
     					{
-    						M.session().setKillFlag(true);
+    						M.session().logoff(false,false,false);
     						return "false";
     					}
     					return "true";

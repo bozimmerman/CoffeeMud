@@ -247,7 +247,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         &&(newMob.playerStats().getAccountExpiration()<=System.currentTimeMillis()))
         {
             mob.tell("\n\r"+CMProps.getVar(CMProps.SYSTEM_EXPCONTACTLINE)+"\n\r\n\r");
-            mob.session().setKillFlag(true);
+            mob.session().logoff(false,false,false);
             if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                pendingLogins.remove(mob.Name().toUpperCase());
             return false;
@@ -346,7 +346,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             {
                 session.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
                 if(mob.session()==session)
-                	session.setKillFlag(true);
+                	session.logoff(false,false,false);
                 if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                    pendingLogins.remove(mob.Name().toUpperCase());
                 return false;
@@ -743,7 +743,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 session.println("Your account has been created.  You will receive an email with your password shortly.");
                 try{Thread.sleep(2000);}catch(Exception e){}
                 if(mob.session()==session)
-	                session.setKillFlag(true);
+	                session.logoff(false,false,false);
             }
             else
             {
@@ -802,7 +802,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 			if((rejectText!=null)&&(rejectText.length()>0))
 				mob.session().println(rejectText.toString());
 			try{Thread.sleep(1000);}catch(Exception e){}
-            mob.session().setKillFlag(true);
+            mob.session().logoff(false,false,false);
             if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                pendingLogins.remove(mob.Name().toUpperCase());
             return true;
@@ -845,7 +845,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 if(CMSecurity.isBanned(mob.Name()))
                 {
                     mob.tell("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
-                    mob.session().setKillFlag(true);
+                    mob.session().logoff(false,false,false);
                     if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                        pendingLogins.remove(mob.Name().toUpperCase());
                     return 0;
@@ -864,7 +864,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 if((pstats.getEmail()!=null)&&CMSecurity.isBanned(pstats.getEmail()))
                 {
                     mob.tell("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
-                    mob.session().setKillFlag(true);
+                    mob.session().logoff(false,false,false);
                     if(pendingLogins.containsKey(mob.Name().toUpperCase()))
                        pendingLogins.remove(mob.Name().toUpperCase());
                     return 0;
@@ -894,7 +894,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                             mob.session().setMob(thisSession.mob());
                             thisSession.mob().setSession(mob.session());
                             thisSession.setMob(null);
-                            thisSession.setKillFlag(true);
+                            thisSession.logoff(false,false,false);
                             Log.sysOut("FrontDoor","Session swap for "+mob.session().mob().Name()+".");
                             reloadTerminal(mob.session().mob());
                             mob.session().mob().bringToLife(oldRoom,false);
@@ -1035,7 +1035,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                             mob.session().println("Email sent.\n\r");
                         else
                             mob.session().println("Error sending email.\n\r");
-                        mob.session().setKillFlag(true);
+                        mob.session().logoff(false,false,false);
                     }
                 }
                 return 0;

@@ -240,7 +240,7 @@ public class Email extends StdCommand
             if(mob.session()!=null)
             {
                 try{Thread.sleep(1000);}catch(Exception e){}
-                mob.session().setKillFlag(true);
+                mob.session().logoff(false,false,false);
             }
         }
 		return true;

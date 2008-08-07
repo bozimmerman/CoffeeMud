@@ -7742,7 +7742,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             {
                                 if(((MOB)E).getStartRoom()!=null)
                                     ((MOB)E).getStartRoom().bringMobHere((MOB)E,false);
-                                ((MOB)E).session().setKillFlag(true);
+                                ((MOB)E).session().logoff(false,false,false);
                             }
                             else
                             if(((MOB)E).getStartRoom()!=null)

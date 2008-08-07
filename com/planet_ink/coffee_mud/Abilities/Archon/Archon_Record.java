@@ -220,9 +220,8 @@ public class Archon_Record extends ArchonSkill
 		
 		public void cmdExit(MOB mob, Vector commands)
 			throws Exception{}
-		public void logoff(boolean tf){}
+		public void logoff(boolean t1, boolean t2, boolean t3){}
 		public boolean killFlag(){return false;}
-		public void setKillFlag(boolean truefalse){}
 		
 		public boolean afkFlag(){return false;}
 		public void setAfkFlag(boolean truefalse){}

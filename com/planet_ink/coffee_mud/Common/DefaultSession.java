@@ -393,8 +393,8 @@ public class DefaultSession extends Thread implements Session
                 {
                     String name=(mob!=null)?mob.Name():getAddress();
                     Log.errOut("DefaultSession","Kicked out "+name+" due to write-lock ("+out.getClass().getName()+".");
-                    logoff(true);
-                    logoff(true);
+                    logoff(true,true,true);
+                    logoff(true,true,true);
             		CMLib.killThread(this,500,1);
                 }
                 else
@@ -402,7 +402,7 @@ public class DefaultSession extends Thread implements Session
     				writeStartTime=System.currentTimeMillis()+c.length;
     				out.write(c);
     				if(out.checkError())
-    					logoff(true);
+                        logoff(true,true,true);
                 }
 			}
 		}
@@ -619,8 +619,10 @@ public class DefaultSession extends Thread implements Session
             CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_QUIT,null);
             Room R=mob.location();
             try{
-                if((R!=null)&&(R.okMessage(mob,msg)))
+                if((R!=null)&&(R.okMessage(mob,msg))) {
+                    CMLib.map().sendGlobalMessage(mob,CMMsg.TYP_QUIT, msg);
                     killFlag=true;
+                }
             }
             catch(Exception e){}
 		}
@@ -1223,26 +1225,29 @@ public class DefaultSession extends Thread implements Session
 		return YN;
 	}
 
-	public void logoff(boolean killThread)
+	public void logoff(boolean removeMOB, boolean dropSession, boolean killThread)
 	{
 		killFlag=true;
-        MOB M=mob;
-        if(M!=null)
-        {
-            boolean inTheGame=CMLib.flags().isInTheGame(M,true);
-            PlayerStats pstats=M.playerStats();
-            if(pstats!=null)
+		if(removeMOB) {
+            MOB M=mob;
+            if(M!=null)
             {
-                pstats.setLastDateTime(System.currentTimeMillis());
+                boolean inTheGame=CMLib.flags().isInTheGame(M,true);
+                PlayerStats pstats=M.playerStats();
+                if(pstats!=null) {
+                    pstats.setLastDateTime(System.currentTimeMillis());
+                }
+                if(inTheGame)
+    	            CMLib.database().DBUpdateFollowers(M);
+                M.removeFromGame(true);
             }
-            if(inTheGame)
-	            CMLib.database().DBUpdateFollowers(M);
-            M.removeFromGame(true);
-        }
-        status=Session.STATUS_LOGOUT3;
-        CMLib.sessions().removeElement(this);
-        status=Session.STATUS_LOGOUT4;
-        closeSocks();
+		}
+        if(dropSession) {
+            status=Session.STATUS_LOGOUT3;
+            CMLib.sessions().removeElement(this);
+            status=Session.STATUS_LOGOUT4;
+            closeSocks();
+		}
         status=Session.STATUS_LOGOUT5;
 		if(killThread) CMLib.killThread(this,1000,1);
 	}

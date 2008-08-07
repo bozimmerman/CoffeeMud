@@ -159,7 +159,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
         CMLib.database().DBDeleteMOB(deadMOB);
         if(deadMOB.session()!=null)
-            deadMOB.session().setKillFlag(true);
+            deadMOB.session().logoff(false,false,false);
         Log.sysOut("Scoring",deadMOB.name()+" has been deleted.");
         deadMOB.destroy();
     }
