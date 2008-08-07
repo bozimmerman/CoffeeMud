@@ -632,138 +632,172 @@ public interface Session extends CMCommon
     public int lastColor();
     
     /**
-     * Gets the wrap.
+     * Gets the column number for engine word-wrapping. 
+     * 0 Means disabled.
      * 
-     * @return the wrap
+     * @return the wrap column
      */
 	public int getWrap();
     
     /**
-     * Gets the address.
+     * Gets the current telnet clients ip address.
      * 
-     * @return the address
+     * @return the ip address
      */
 	public String getAddress();
     
     /**
-     * Gets the status.
+     * Gets the tick/thread status of this session object.
      * 
-     * @return the status
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#STATUS_LOGIN
+     * @return the tick status
      */
 	public int getStatus();
     
     /**
-     * Gets the total millis.
+     * Gets the total milliseconds consumed by this session objects thread.
      * 
-     * @return the total millis
+     * @return the total milliseconds consumed
      */
 	public long getTotalMillis();
     
     /**
-     * Gets the total ticks.
+     * Gets the total number of ticks consumed by this session object thread.
      * 
-     * @return the total ticks
+     * @return the total ticks consumed
      */
 	public long getTotalTicks();
     
     /**
-     * Gets the idle millis.
+     * Gets the number of milliseconds since a user entry was registered by this session
      * 
-     * @return the idle millis
+     * @return the idle milliseconds passed
      */
 	public long getIdleMillis();
     
     /**
-     * Gets the millis online.
+     * Gets the milliseconds elapsed since this user came online.
      * 
-     * @return the millis online
+     * @return the milliseconds online
      */
     public long getMillisOnline();
     
     /**
-     * Gets the last pk fight.
+     * Gets the milliseconds timestamp since this user last registered a pk fight.
      * 
-     * @return the last pk fight
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setLastPKFight()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setLastNPCFight()
+     * @return the last pk fight timestamp
      */
     public long getLastPKFight();
     
     /**
-     * Sets the last pk fight.
+     * Sets now as the milliseconds timestamp since this user last registered a pk fight.
+     * 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getLastPKFight()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getLastNPCFight()
      */
     public void setLastPKFight();
     
     /**
-     * Gets the last npc fight.
+     * Gets the milliseconds timestamp since this user last registered a npc fight.
      * 
-     * @return the last npc fight
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setLastPKFight()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setLastNPCFight()
+     * @return the last npc fight timestamp
      */
     public long getLastNPCFight();
     
     /**
-     * Sets the last npc fight.
+     * Sets now as the milliseconds timestamp since this user last registered a npc fight.
+     * 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getLastPKFight()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getLastNPCFight()
      */
     public void setLastNPCFight();
     
     /**
-     * Last loop time.
+     * Returns the last time in milliseconds that this session began its input loop.
+     * Is typically only held up by executing a user command, so it is an accurate
+     * gauge of a locked up user command.
      * 
-     * @return the long
+     * @return the last time in milliseconds that this session began its input loop
      */
     public long lastLoopTime();
     
     /**
-     * Gets the last msgs.
+     * Returns a Vector of the last several message strings received by this user.
+     * All are already previously filtered and parsed and ready to display.
      * 
-     * @return the last msgs
+     * @return a vector of string message strings
      */
     public Vector getLastMsgs();
 
     /**
-     * Sets the server telnet mode.
+     * Sets a server telnet mode flag.
      * 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#TELNET_ANSI
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#serverTelnetMode(int)
      * @param telnetCode the telnet code
-     * @param onOff the on off
+     * @param onOff true to turn on, false to turn off the flag
      */
     public void setServerTelnetMode(int telnetCode, boolean onOff);
     
     /**
-     * Server telnet mode.
+     * Gets a server telnet mode flag.
      * 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#TELNET_ANSI
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setServerTelnetMode(int, boolean)
      * @param telnetCode the telnet code
      * 
-     * @return true, if server telnet mode
+     * @return true, if server telnet mode is on, false otherwise
      */
     public boolean serverTelnetMode(int telnetCode);
     
     /**
-     * Sets the client telnet mode.
+     * Sets a client telnet mode flag.
+     * 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#TELNET_ANSI
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#clientTelnetMode(int)
      * 
      * @param telnetCode the telnet code
-     * @param onOff the on off
+     * @param onOff true to turn on, false to turn off the flag
      */
     public void setClientTelnetMode(int telnetCode, boolean onOff);
     
     /**
-     * Client telnet mode.
+     * Gets a client telnet mode flag.
+     * 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#TELNET_ANSI
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setClientTelnetMode(int, boolean)
      * 
      * @param telnetCode the telnet code
      * 
-     * @return true, if client telnet mode
+     * @return true, if client telnet mode is on, false otherwise
      */
     public boolean clientTelnetMode(int telnetCode);
     
     /**
-     * Change telnet mode.
+     * Change telnet mode by sending the appropriate command to the clients client.
+     * A response received later will trigger mode changed.
      * 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#TELNET_ANSI
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setClientTelnetMode(int, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setServerTelnetMode(int, boolean)
      * @param telnetCode the telnet code
-     * @param onOff the on off
+     * @param onOff true to turn on, false to turn off the flag
      */
     public void changeTelnetMode(int telnetCode, boolean onOff);
     
     /**
-     * Inits the telnet mode.
+     * Initializes a telnet mode between this session and the connected client by negotiating
+     * certain fundamental flags, like ANSI, MXP, and MSP.  It will use a bitmap of MOB flags
+     * passed in as a guide.
      * 
-     * @param mobbitmap the mobbitmap
+     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#getBitmap()
+     * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#ATT_MXP
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#changeTelnetMode(int, boolean)
+     * @param mobbitmap the mobbitmap the bitmap of mob flags to use as a guide in negotiation
      */
     public void initTelnetMode(int mobbitmap);
     
