@@ -18,8 +18,6 @@ import java.util.*;
 import java.sql.*;
 import java.net.*;
 
-
-
 /*
    Copyright 2000-2008 Bo Zimmerman
 

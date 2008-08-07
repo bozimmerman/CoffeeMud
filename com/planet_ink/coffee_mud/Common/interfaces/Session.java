@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.io.IOException;
 import java.net.Socket;
+import java.net.SocketException;
 /* 
    Copyright 2000-2008 Bo Zimmerman
 
@@ -489,230 +490,280 @@ public interface Session extends CMCommon
 	public int snoopSuspension(int change);
     
     /**
-     * 
-     * @param mob
-     * @param commands
-     * @throws Exception
+     * Queries and executes the quit command for the mob.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#logoff(boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#killFlag()
+     * @param mob the character quitting (sent in case the session went null)
+     * @param commands any command-line parameters given on quit
+     * @throws Exception any exception generated from trying to quit
      */
 	public void cmdExit(MOB mob, Vector commands)
 		throws Exception;
     
     /**
-     * 
-     * @param killThread
+     * Force the current player to logoff.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#cmdExit(MOB, Vector)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#killFlag()
+     * @param removeMOB true to remove the mob from the game
+     * @param dropSession true to force closed sockets, and removed session
+     * @param killThread true to force a thread death, and false to be more lenient
      */
-	public void logoff(boolean killThread);
+	public void logoff(boolean removeMOB, boolean dropSession, boolean killThread);
     
     /**
-     * 
-     * @return
+     * Returns whether this session is done, or slated to be done.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#logoff(boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#cmdExit(MOB, Vector)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#killFlag()
+     * @return true if this session needs to go, false otherwise
      */
 	public boolean killFlag();
     
     /**
-     * 
-     * @param truefalse
-     */
-	public void setKillFlag(boolean truefalse);
-    
-    /**
-     * 
-     * @return
+     * Returns whether this mob/session is currently Away From Keyboard
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setAfkFlag(boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setAFKMessage(String)
+     * @return true if they are AFK, false otherwise
      */
 	public boolean afkFlag();
     
     /**
-     * 
-     * @param truefalse
+     * Sets whether this mob/session is currently Away From Keyboard
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#afkFlag()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#afkMessage()
+     * @param truefalse true if they are AFK, false otherwise
      */
 	public void setAfkFlag(boolean truefalse);
     
     /**
-     * 
-     * @return
+     * Returns the reason given by the user that they are AFK.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setAfkFlag(boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setAFKMessage(String)
+     * @return  the reason given by the user that they are AFK.
      */
     public String afkMessage();
     
     /**
-     * 
-     * @param str
+     * Returns the reason given by the user that they are AFK.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setAfkFlag(boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#afkMessage()
+     * @param str the reason given by the user that they are AFK.
      */
     public void setAFKMessage(String str);
     
     /**
-     * 
-     * @return
-     * @throws IOException
+     * Blocks the current thread until the user attached to this session
+     * hits ENTER, returning the characters they enter.  Completely filtered input.
+     * @return the string entered by the user
+     * @throws IOException any exception generated during input
      */
 	public String blockingIn()
 		throws IOException;
     
     /**
-     * 
-     * @return
-     * @throws IOException
+     * Blocks for a short amount of time, returning an input
+     * string only if the user happens to have hit enter. 
+     * @return a string entered by the user
+     * @throws IOException exceptions thrown, typically a timeout
      */
 	public String readlineContinue()
-		throws IOException;
+		throws IOException, SocketException;
     
     /**
-     * 
-     * @return
+     * Returns a pre-parsed, pre-filtered Vector of strings
+     * representing the last command entered by the user 
+     * through this session.
+     * @return a vector of strings
      */
 	public Vector previousCMD();
     
     /**
-     * 
-     * @return
+     * Returns the player MOB attached to this session object.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setMob(MOB)
+     * @return  the player MOB attached to this session object.
      */
 	public MOB mob();
     
     /**
-     * 
-     * @param newmob
+     * Sets the player MOB attached to this session object.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#mob()
+     * @param newmob the player MOB attached to this session object.
      */
 	public void setMob(MOB newmob);
     
     /**
-     * 
-     * @param c
-     * @return
+     * Converts a character after the ^ sign (usually a color code)
+     * into an appropriate telnet escape sequence string for output.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getColor(char)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#currentColor()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#lastColor()
+     * @param c the ^ character code
+     * @return telnet escape sequence string for output
      */
 	public String makeEscape(int c);
     
     /**
-     * 
-     * @param c
-     * @return
+     * Returns the given color code, unless it is one that translates
+     * to another, such as ?
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#makeEscape(int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#currentColor()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#lastColor()
+     * @param c the color code
+     * @return the color code again
      */
 	public int getColor(char c);
     
     /**
-     * 
-     * @return
+     * Returns the current color code.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getColor(char)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#makeEscape(int)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#lastColor()
+     * @return the current color code.
      */
 	public int currentColor();
     
     /**
-     * 
-     * @return
+     * Returns the previous current color code.
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#getColor(char)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#currentColor()
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#makeEscape(int)
+     * @return the previous current color code.
      */
     public int lastColor();
     
     /**
+     * Gets the wrap.
      * 
-     * @return
+     * @return the wrap
      */
 	public int getWrap();
     
     /**
+     * Gets the address.
      * 
-     * @return
+     * @return the address
      */
 	public String getAddress();
     
     /**
+     * Gets the status.
      * 
-     * @return
+     * @return the status
      */
 	public int getStatus();
     
     /**
+     * Gets the total millis.
      * 
-     * @return
+     * @return the total millis
      */
 	public long getTotalMillis();
     
     /**
+     * Gets the total ticks.
      * 
-     * @return
+     * @return the total ticks
      */
 	public long getTotalTicks();
     
     /**
+     * Gets the idle millis.
      * 
-     * @return
+     * @return the idle millis
      */
 	public long getIdleMillis();
     
     /**
+     * Gets the millis online.
      * 
-     * @return
+     * @return the millis online
      */
     public long getMillisOnline();
     
     /**
+     * Gets the last pk fight.
      * 
-     * @return
+     * @return the last pk fight
      */
     public long getLastPKFight();
     
     /**
-     * 
+     * Sets the last pk fight.
      */
     public void setLastPKFight();
     
     /**
+     * Gets the last npc fight.
      * 
-     * @return
+     * @return the last npc fight
      */
     public long getLastNPCFight();
     
     /**
-     * 
+     * Sets the last npc fight.
      */
     public void setLastNPCFight();
     
     /**
+     * Last loop time.
      * 
-     * @return
+     * @return the long
      */
     public long lastLoopTime();
     
     /**
+     * Gets the last msgs.
      * 
-     * @return
+     * @return the last msgs
      */
     public Vector getLastMsgs();
 
     /**
+     * Sets the server telnet mode.
      * 
-     * @param telnetCode
-     * @param onOff
+     * @param telnetCode the telnet code
+     * @param onOff the on off
      */
     public void setServerTelnetMode(int telnetCode, boolean onOff);
     
     /**
+     * Server telnet mode.
      * 
-     * @param telnetCode
-     * @return
+     * @param telnetCode the telnet code
+     * 
+     * @return true, if server telnet mode
      */
     public boolean serverTelnetMode(int telnetCode);
     
     /**
+     * Sets the client telnet mode.
      * 
-     * @param telnetCode
-     * @param onOff
+     * @param telnetCode the telnet code
+     * @param onOff the on off
      */
     public void setClientTelnetMode(int telnetCode, boolean onOff);
     
     /**
+     * Client telnet mode.
      * 
-     * @param telnetCode
-     * @return
+     * @param telnetCode the telnet code
+     * 
+     * @return true, if client telnet mode
      */
     public boolean clientTelnetMode(int telnetCode);
     
     /**
+     * Change telnet mode.
      * 
-     * @param telnetCode
-     * @param onOff
+     * @param telnetCode the telnet code
+     * @param onOff the on off
      */
     public void changeTelnetMode(int telnetCode, boolean onOff);
     
     /**
+     * Inits the telnet mode.
      * 
-     * @param mobbitmap
+     * @param mobbitmap the mobbitmap
      */
     public void initTelnetMode(int mobbitmap);
     
