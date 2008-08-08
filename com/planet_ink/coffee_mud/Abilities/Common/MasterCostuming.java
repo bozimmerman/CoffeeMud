@@ -41,6 +41,7 @@ public class MasterCostuming extends EnhancedCraftingSkill implements ItemCrafto
 	private static final String[] triggerStrings = {"MASTERCOSTUME","MCOSTUME","MCOSTUMING","MASTERCOSTUMING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "CLOTH";}
+    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tMISCTYPE\tCAPACITY\tARMORDMG\tCONTAINMASK\tSPELL";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -54,11 +55,6 @@ public class MasterCostuming extends EnhancedCraftingSkill implements ItemCrafto
 	protected static final int RCP_CONTAINMASK=9;
 	protected static final int RCP_SPELL=10;
 
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -69,7 +65,8 @@ public class MasterCostuming extends EnhancedCraftingSkill implements ItemCrafto
 		return super.tick(ticking,tickID);
 	}
 
-    protected Vector loadRecipes(){return super.loadRecipes("mastercostume.txt");}
+    public String parametersFile(){ return "mastercostume.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

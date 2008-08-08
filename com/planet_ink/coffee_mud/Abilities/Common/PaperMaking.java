@@ -41,6 +41,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"PAPERMAKE","PAPERMAKING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN|HEMP|SILK|CLOTH";}
+    public String parametersFormat(){ return "NAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASS\tWOODTYPE\tCAPACITY\tSPELL";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -52,11 +53,6 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 	//private static final int RCP_CAPACITY=7;
 	protected static final int RCP_SPELL=9;
 
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -67,7 +63,8 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-    protected Vector loadRecipes(){return super.loadRecipes("papermaking.txt");}
+    public String parametersFile(){ return "papermaking.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

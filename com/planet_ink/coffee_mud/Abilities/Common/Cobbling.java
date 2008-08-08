@@ -41,6 +41,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 	private static final String[] triggerStrings = {"COBBLE","COBBLING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN|METAL|MITHRIL";}
+    public String parametersFormat(){ return "NAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tMISCTYPE\tCAPACITY\tCONTAINMASK\tSPELL";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -53,11 +54,6 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 	protected static final int RCP_ARMORDMG=8;
 	protected static final int RCP_CONTAINMASK=9;
 	protected static final int RCP_SPELL=10;
-
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -72,7 +68,8 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
 		return super.tick(ticking,tickID);
 	}
 
-    protected Vector loadRecipes(){return super.loadRecipes("cobbler.txt");}
+    public String parametersFile(){ return "cobbler.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

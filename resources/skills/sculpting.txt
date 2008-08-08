@@ -1,4 +1,3 @@
-#name,level,ticks,wood,value,classtype,misctype,capacity,containmask,spell
 % Plaque	1	10	10	50	GenItem		0	0	
 % Toy	1	10	5	1	GenItem		0	0	
 % Chessboard	1	80	30	250	GenItem		0	0	

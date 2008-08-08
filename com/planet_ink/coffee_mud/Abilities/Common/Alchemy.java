@@ -42,6 +42,7 @@ public class Alchemy extends CraftingSkill
 	protected int iniTrainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
 	protected int iniPracticesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
     public String supportedResourceString(){return "MISC";}
+    public String parametersFormat(){ return "SPELL_NAME\tRESOURCE";}
 
 	String oldName="";
     protected Ability theSpell=null;
@@ -78,7 +79,8 @@ public class Alchemy extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	protected Vector loadRecipes(){return super.loadRecipes("alchemy.txt");}
+    public String parametersFile(){ return "alchemy.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

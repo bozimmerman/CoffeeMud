@@ -1,4 +1,3 @@
-#spell,level,ingredient1,ingredient2,...
 Chant_PredictWeather	1	CARROTS	HERBS		
 Chant_HardenSkin	1	PINE	HERBS		
 Chant_LocatePlants	2	GREENS	HERBS		

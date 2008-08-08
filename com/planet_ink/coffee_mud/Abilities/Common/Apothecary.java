@@ -44,8 +44,10 @@ public class Apothecary extends Cooking
 	public boolean honorHerbs(){return false;}
 	protected int iniTrainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
 	protected int iniPracticesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
+    public String parametersFormat(){ return "FINALFOOD\tFOODDRINK\tBONUSSPELL\tLEVEL\tMAININGR\tMAINAMNT\tOTHERINGREDIENTS\tOTHERAMOUNTS\tOTHERINGREDIENTS\tOTHERAMOUNTS\tOTHERINGREDIENTS\tOTHERAMOUNTS\tOTHERINGREDIENTS\tOTHERAMOUNTS\tOTHERINGREDIENTS\tOTHERAMOUNTS\tOTHERINGREDIENTS\tOTHERAMOUNTS";}
 
-    protected Vector loadRecipes(){return super.loadRecipes("poisons.txt");}
+    public String parametersFile(){ return "poisons.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
     public Apothecary()
     {

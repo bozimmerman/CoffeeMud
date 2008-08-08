@@ -42,6 +42,8 @@ public class Baking extends Cooking
 	public String cookWord(){return "baking";}
 	public boolean honorHerbs(){return false;}
 	public boolean requireLid(){return true;}
+    public String parametersFormat(){ return "NAME\tFOODDRINK\tBONUSSPELL\tLEVEL\tMAININGR\tMAINAMNT\tOTHERINGREDIENT\tOTHERAMOUNT\tOTHERINGREDIENT\tOTHERAMOUNT\tOTHERINGREDIENT\tOTHERAMOUNT\tOTHERINGREDIENT\tOTHERAMOUNT\tOTHERINGREDIENT\tOTHERAMOUNT\tOTHERINGREDIENT\tOTHERAMOUNT";}
 
-    protected Vector loadRecipes(){return super.loadRecipes("bake.txt");}
+    public String parametersFile(){ return "bake.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 }

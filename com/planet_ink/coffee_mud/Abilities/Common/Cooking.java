@@ -45,6 +45,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	public boolean requireFire(){return true;}
 	public boolean requireLid(){return false;}
     public String supportedResourceString(){return "MISC";}
+    public String parametersFormat(){ return "FINALFOOD\tFOODDRINK\tBONUSSPELL\tLEVEL\tMAININGR\tMAINAMNT\tOTHERINGREDIENT\tOTHERAMOUNT\tOTHERINGREDIENT\tOTHERAMOUNT\tOTHERINGREDIENT\tOTHERAMOUNT\tOTHERINGREDIENT\tOTHERAMOUNT\tOTHERINGREDIENT\tOTHERAMOUNT\tOTHERINGREDIENT\tOTHERAMOUNT";}
 
 	public static int RCP_FINALFOOD=0;
 	public static int RCP_FOODDRINK=1;
@@ -61,11 +62,6 @@ public class Cooking extends CraftingSkill implements ItemCraftor
     protected String defaultFoodSound="sizzle.wav";
     protected String defaultDrinkSound="liquid.wav";
      
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
-
 	public Cooking()
 	{
 		super();
@@ -126,7 +122,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-    protected Vector loadRecipes(){return super.loadRecipes("recipes.txt");}
+    public String parametersFile(){ return "recipes.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

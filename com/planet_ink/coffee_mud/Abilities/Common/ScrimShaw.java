@@ -41,6 +41,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 	private static final String[] triggerStrings = {"SCRIM","SCRIMSHAWING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "BONE";}
+    public String parametersFormat(){ return "NAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASS\tMISC\tCAPACITY";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -54,11 +55,6 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 
 	protected Item key=null;
 
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -69,7 +65,8 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return super.tick(ticking,tickID);
 	}
 
-    protected Vector loadRecipes(){return super.loadRecipes("scrimshaw.txt");}
+    public String parametersFile(){ return "scrimshaw.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

@@ -40,6 +40,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"CARVE","CARPENTRY"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public String supportedResourceString(){return "WOODEN";}
+    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tMISCTYPE\tCAPACITY\tARMORDMG\tCONTAINMASK\tSPELL";}
 	// inherets its enhanced crafting support from superclass -- you can make ANYTHING with this badboy!
 
 
@@ -57,11 +58,6 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 
 	protected Item key=null;
 
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -72,7 +68,8 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-    protected Vector loadRecipes(){return super.loadRecipes("carpentry.txt");}
+    public String parametersFile(){ return "carpentry.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

@@ -41,6 +41,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 	private static final String[] triggerStrings = {"MASTERLEATHERWORKING","MLEATHERWORK","MLEATHERWORKING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "LEATHER";}
+    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tMISCTYPE\tCAPACITY\tARMORDMG\tCONTAINMASK\tSPELL";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -54,12 +55,8 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 	protected static final int RCP_CONTAINMASK=9;
 	protected static final int RCP_SPELL=10;
 
-    protected Vector loadRecipes(){return super.loadRecipes("masterleatherworking.txt");}
-
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
+    public String parametersFile(){ return "masterleatherworking.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

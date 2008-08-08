@@ -41,6 +41,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 	private static final String[] triggerStrings = {"JEWEL","JEWELMAKING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "GLASS|PRECIOUS|SAND";}
+    public String parametersFormat(){ return "NAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASS\tMISC\tCAPACITY\tARMORDMG\tEXTRAMATERIALREQUIREMENT";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -55,11 +56,6 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 	protected static final int RCP_SPELL=10;
 
 	protected Vector beingDone=null;
-
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -79,7 +75,8 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 		return super.tick(ticking,tickID);
 	}
 
-    protected Vector loadRecipes(){return super.loadRecipes("jewelmaking.txt");}
+    public String parametersFile(){ return "jewelmaking.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

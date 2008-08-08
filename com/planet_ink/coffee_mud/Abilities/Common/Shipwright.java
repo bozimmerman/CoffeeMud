@@ -41,6 +41,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 	private static final String[] triggerStrings = {"SHIPBUILD","SHIPBUILDING","SHIPWRIGHT"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN";}
+    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tMISCTYPE\tCAPACITY\tCONTAINMASK\tSPELL";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -55,11 +56,6 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 
 	protected Item key=null;
 
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -70,7 +66,8 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 		return super.tick(ticking,tickID);
 	}
 
-    protected Vector loadRecipes(){return super.loadRecipes("shipwright.txt");}
+    public String parametersFile(){ return "shipwright.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

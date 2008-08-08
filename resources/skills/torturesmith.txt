@@ -1,4 +1,3 @@
-#name,level,ticks,wood,value,class,misc,capacity,armordmg,materialtype,spell
 % Whipping Post	15	20	10	10	GenChair	CHAIR	1	0	wood	*Prop_RideSpellCast;Thief_Bind;Spell_Torture(HITONLY)
 % Torture Bed	15	50	100	200	GenBed	BED	1	0	wood	*Prop_RideSpellCast;Thief_Bind;Spell_Torture(HITONLY)
 % Stockade	16	100	50	50	GenChair	CHAIR	1	0	wood	*Prop_RideSpellCast;Thief_Bind;Spell_Torture(HITONLY)

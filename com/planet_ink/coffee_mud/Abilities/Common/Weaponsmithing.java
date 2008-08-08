@@ -42,6 +42,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "METAL|MITHRIL";}
     protected int displayColumns(){return 3;}
+    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tWEAPONCLASS\tWEAPONTYPE\tARMORDMG\tATTACK\tHANDS\tMAXRANGE\tEXTRAREQ\tSPELL";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -58,11 +59,6 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int RCP_EXTRAREQ=12;
 	protected static final int RCP_SPELL=13;
 
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -78,7 +74,8 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-    protected Vector loadRecipes(){return super.loadRecipes("weaponsmith.txt");}
+    public String parametersFile(){ return "weaponsmith.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

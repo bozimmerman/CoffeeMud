@@ -41,6 +41,7 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"WAINWRIGHTING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN";}
+    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tMISCTYPE\tCAPACITY\tNUMRIDERS\tCONTAINMASK\tSPELL";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -56,11 +57,6 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 
 	protected Item key=null;
 
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -71,7 +67,8 @@ public class Wainwrighting extends CraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-    protected Vector loadRecipes(){return super.loadRecipes("wainwright.txt");}
+    public String parametersFile(){ return "wainwright.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

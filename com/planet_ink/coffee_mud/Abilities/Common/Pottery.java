@@ -40,6 +40,7 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"POT","POTTERY"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "CLAY|CHINA";}
+    public String parametersFormat(){ return "NAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASS\tMISC\tCAPACITY\tSPELL";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -50,11 +51,6 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_MISCTYPE=6;
 	protected static final int RCP_CAPACITY=7;
 	protected static final int RCP_SPELL=8;
-
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -71,7 +67,8 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-    protected Vector loadRecipes(){return super.loadRecipes("pottery.txt");}
+    public String parametersFile(){ return "pottery.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

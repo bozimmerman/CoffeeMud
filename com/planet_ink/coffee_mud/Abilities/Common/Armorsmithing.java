@@ -40,6 +40,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 	private static final String[] triggerStrings = {"ARMORSMITH","ARMORSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "METAL|MITHRIL";}
+    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tRESOURCES\tVALUE\tCLASS\tLOCATION\tCAPACITY\tARMOR/DMG\tCONTAIN_TYPE\tSPELL";}
 	
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -52,11 +53,6 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 	protected static final int RCP_ARMORDMG=8;
 	protected static final int RCP_CONTAINMASK=9;
 	protected static final int RCP_SPELL=10;
-
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
 
 	protected String primeMaterialDesc(){return "metal";}
 
@@ -75,7 +71,8 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		return super.tick(ticking,tickID);
 	}
 
-    protected Vector loadRecipes(){return super.loadRecipes("armorsmith.txt");}
+    public String parametersFile(){ return "armorsmith.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

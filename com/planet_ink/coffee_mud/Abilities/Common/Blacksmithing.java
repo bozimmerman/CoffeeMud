@@ -40,6 +40,8 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"BLACKSMITH","BLACKSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "METAL|MITHRIL";}
+    public String parametersFormat(){ return "";}
+    FINALNAME,LEVEL,TICKS,WOOD,VALUE,CLASS,STATUE_LADDER,CAPACITY,ARMOR/DAMAGE,SPELL
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -50,11 +52,6 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int RCP_MISCTYPE=6;
 	protected static final int RCP_CAPACITY=7;
 	protected static final int RCP_SPELL=8;
-
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -74,7 +71,8 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-    protected Vector loadRecipes(){return super.loadRecipes("blacksmith.txt");}
+    public String parametersFile(){ return "blacksmith.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

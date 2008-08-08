@@ -41,6 +41,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"GLASSBLOW","GLASSBLOWING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "GLASS|SAND";}
+    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tMISCTYPE\tCAPACITY\tSPELL";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -51,11 +52,6 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_MISCTYPE=6;
 	protected static final int RCP_CAPACITY=7;
 	protected static final int RCP_SPELL=8;
-
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -72,7 +68,8 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-    protected Vector loadRecipes(){return super.loadRecipes("glassblowing.txt");}
+    public String parametersFile(){ return "glassblowing.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

@@ -41,6 +41,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 	private static final String[] triggerStrings = {"SCULPT","SCULPTING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "ROCK|STONE";}
+    public String parametersFormat(){ return "NAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tMISCTYPE\tCAPACITY\tCONTAINMASK\tSPELL";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -55,11 +56,6 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 
 	protected Item key=null;
 
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -70,7 +66,8 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return super.tick(ticking,tickID);
 	}
 
-    protected Vector loadRecipes(){return super.loadRecipes("sculpting.txt");}
+    public String parametersFile(){ return "sculpting.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

@@ -53,11 +53,6 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
         {"Even","Balanced","Counterbalanced"},
     };
 
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
-
 	protected int[][] fetchFoundResourceData(MOB mob,
 											 int req1Required,
 											 String req1Desc, int[] req1,

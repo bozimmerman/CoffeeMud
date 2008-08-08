@@ -43,8 +43,10 @@ public class Distilling extends Cooking
 	public String cookWord(){return "distilling";}
 	public boolean honorHerbs(){return false;}
     public String supportedResourceString(){return "MISC";}
+    public String parametersFormat(){ return "FINALFOOD\tFOODDRINK\tBONUSSPELL\tLEVEL\tMAININGR\tMAINAMNT\tOTHERINGREDIENT\tOTHERAMOUNT\tOTHERINGREDIENT\tOTHERAMOUNT\tOTHERINGREDIENT\tOTHERAMOUNT\tOTHERINGREDIENT\tOTHERAMOUNT\tOTHERINGREDIENT\tOTHERAMOUNT\tOTHERINGREDIENT\tOTHERAMOUNT";}
 
-    protected Vector loadRecipes(){return super.loadRecipes("liquors.txt");}
+    public String parametersFile(){ return "liquors.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
     public Distilling()
     {

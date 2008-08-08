@@ -41,6 +41,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"TORTURESMITH","TORTURESMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "METAL|MITHRIL|CLOTH";}
+    public String parametersFormat(){ return "NAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASS\tMISC\tCAPACITY\tARMORDMG\tMATERIALTYPE\tSPELL";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -54,12 +55,8 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_MATERIAL=9;
 	protected static final int RCP_SPELL=10;
 
-    protected Vector loadRecipes(){return super.loadRecipes("torturesmith.txt");}
-
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
+    public String parametersFile(){ return "torturesmith.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

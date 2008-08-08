@@ -41,6 +41,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"CLANCRAFT"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN|METAL|MITHRIL";}
+    public String parametersFormat(){ return "FINALNAME\tMATERIAL1\tMATERIAL2\tCITYPE\tLEVEL\tTICKS\tEXP\tVALUE\tCLASSTYPE\tMISCTYPE\tCAPACITY\tARMORDMG\tCONTAINMASK\tSPELL\tREQUIREDSKILL";}
     protected int expRequired = 0;
     protected Clan myClan=null;
 
@@ -60,12 +61,8 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_SPELL=13;
 	protected static final int RCP_REQUIREDSKILL=14;
 
-    protected Vector loadRecipes(){return super.loadRecipes("clancraft.txt");}
-
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
+    public String parametersFile(){ return "clancraft.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

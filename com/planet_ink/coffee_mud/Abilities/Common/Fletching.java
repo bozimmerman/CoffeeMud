@@ -41,6 +41,7 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 	private static final String[] triggerStrings = {"FLETCH","FLETCHING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN";}
+    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tAMMOTYPE\tAMOCAPACITY\tARMORDMG\tMAXRANGE\tEXTRAREQ\tSPELL";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -55,12 +56,8 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 	protected static final int RCP_EXTRAREQ=10;
 	protected static final int RCP_SPELL=11;
 
-    protected Vector loadRecipes(){return super.loadRecipes("fletching.txt");}
-
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
+    public String parametersFile(){ return "fletching.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

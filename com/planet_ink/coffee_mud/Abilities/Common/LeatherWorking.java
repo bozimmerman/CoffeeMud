@@ -41,6 +41,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"LEATHERWORK","LEATHERWORKING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "LEATHER";}
+    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tMISCTYPE\tCAPACITY\tARMORDMG\tCONTAINMASK\tSPELL";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -53,11 +54,6 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int RCP_ARMORDMG=8;
 	protected static final int RCP_CONTAINMASK=9;
 	protected static final int RCP_SPELL=10;
-
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
 
 	protected Vector loadRecipes()
 	{

@@ -40,6 +40,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	private static final String[] triggerStrings = {"WEAVING","WEAVE"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WHEAT|VINE|SEAWEED|HEMP|SILK|COTTON";}
+    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tMISCTYPE\tCAPACITY\tARMORDMG\tCONTAINMASK\tSPELL";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -66,11 +67,6 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	}
 
 
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -81,7 +77,8 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 		return super.tick(ticking,tickID);
 	}
 
-    protected Vector loadRecipes(){return super.loadRecipes("weaving.txt");}
+    public String parametersFile(){ return "weaving.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

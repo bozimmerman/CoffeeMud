@@ -1,4 +1,3 @@
-#name,level,ticks,wood,value,class,woodtype,capacity,spell
 a piece of paper	5	40	1	1	GenReadable	WOOD	0	
 a leaflet	5	40	1	1	GenReadable	WOOD	0	
 a flyer	5	40	1	1	GenReadable	WOOD	0	

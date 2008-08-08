@@ -41,6 +41,7 @@ public class Smelting extends CraftingSkill
 	private static final String[] triggerStrings = {"SMELT","SMELTING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "METAL|MITHRIL";}
+    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tWOOD_ALWAYSONEONE\tVALUE_DONTMATTER\tCLASSTYPE\tMETALONE\tMETALTWO";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -69,7 +70,8 @@ public class Smelting extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-    protected Vector loadRecipes(){return super.loadRecipes("smelting.txt");}
+    public String parametersFile(){ return "smelting.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

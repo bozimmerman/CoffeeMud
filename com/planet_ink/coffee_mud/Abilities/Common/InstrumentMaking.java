@@ -41,6 +41,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"INSTRUMENTMAKING","INSTRUMENTMAKE"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN";}
+    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tMISCTYPE\tMATERIAL\tRACE\tINSTRUMENTTYPE";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -53,11 +54,6 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_RACES=8;
 	protected static final int RCP_TYPE=9;
 
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
-
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -68,7 +64,8 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-    protected Vector loadRecipes(){return super.loadRecipes("instruments.txt");}
+    public String parametersFile(){ return "instruments.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

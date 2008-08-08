@@ -42,15 +42,11 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int iniTrainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
 	protected int iniPracticesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
+    public String parametersFormat(){ return "SPELL\tLEVEL\tINGREDIENT\tINGREDIENT\tINGREDIENT\tINGREDIENT\tINGREDIENT\tINGREDIENT";}
 
 	String oldName="";
 	private Ability theSpell=null;
 	private static final Hashtable usage=new Hashtable();
-
-    public Vector fetchRecipeFormat() {
-        // not yet implemented
-        return null;
-    }
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
@@ -74,7 +70,8 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 		return super.tick(ticking,tickID);
 	}
 
-    protected Vector loadRecipes(){return super.loadRecipes("herbalism.txt");}
+    public String parametersFile(){ return "herbalism.txt";}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{
