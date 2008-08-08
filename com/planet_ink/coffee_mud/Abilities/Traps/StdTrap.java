@@ -47,6 +47,7 @@ public class StdTrap extends StdAbility implements Trap
 	public boolean isABomb(){return false;}
 	public String requiresToSet(){return "";}
 	private String invokerName=null;
+	private static final Vector emptyV=new Vector();
 
 	public int baseRejuvTime(int level)
 	{
@@ -304,6 +305,7 @@ public class StdTrap extends StdAbility implements Trap
 		}
 		return true;
 	}
+    public Vector getTrapComponents() { return emptyV;}
 	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(E==null) return null;

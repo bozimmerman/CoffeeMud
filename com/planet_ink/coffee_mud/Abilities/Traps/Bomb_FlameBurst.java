@@ -37,6 +37,11 @@ public class Bomb_FlameBurst extends StdBomb
 	protected int trapLevel(){return 17;}
 	public String requiresToSet(){return "some lamp oil";}
 
+    public Vector getTrapComponents() {
+        Vector V=new Vector();
+        V.addElement(CMClass.getBasicItem("OilFlask"));
+        return V;
+    }
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;

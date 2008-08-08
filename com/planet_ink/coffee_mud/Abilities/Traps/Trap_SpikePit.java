@@ -71,6 +71,19 @@ public class Trap_SpikePit extends Trap_RoomPit
 		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel,perm);
 	}
 
+    public Vector getTrapComponents() {
+        Vector V=new Vector();
+        if((daggerDamages==null)||(daggerDamages.size()==0))
+            V.addElement(CMClass.getWeapon("Dagger"));
+        else
+        for(int d=0;d<daggerDamages.size();d++) {
+            Item I=CMClass.getWeapon("Dagger");
+            I.baseEnvStats().setDamage(((Integer)daggerDamages.elementAt(d)).intValue());
+            I.recoverEnvStats();
+            V.addElement(I);
+        }
+        return V;
+    }
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;

@@ -53,6 +53,11 @@ public class Trap_Tripline extends StdTrap
 		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel,perm);
 	}
 
+    public Vector getTrapComponents() {
+        Vector V=new Vector();
+        V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_COTTON));
+        return V;
+    }
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;

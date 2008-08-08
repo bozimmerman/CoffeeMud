@@ -37,6 +37,11 @@ public class Bomb_Water extends StdBomb
 	protected int trapLevel(){return 1;}
 	public String requiresToSet(){return "a water container";}
 
+    public Vector getTrapComponents() {
+        Vector V=new Vector();
+        V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_FRESHWATER));
+        return V;
+    }
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;

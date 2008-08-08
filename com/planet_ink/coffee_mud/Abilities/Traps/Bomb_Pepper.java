@@ -37,6 +37,11 @@ public class Bomb_Pepper extends StdBomb
 	protected int trapLevel(){return 7;}
 	public String requiresToSet(){return "some peppers";}
 
+    public Vector getTrapComponents() {
+        Vector V=new Vector();
+        V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_PEPPERS));
+        return V;
+    }
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;

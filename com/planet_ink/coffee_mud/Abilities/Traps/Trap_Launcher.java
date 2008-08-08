@@ -54,6 +54,12 @@ public class Trap_Launcher extends StdTrap
 		return null;
 	}
 
+    public Vector getTrapComponents() {
+        Vector V=new Vector();
+        Item I=CMClass.getWeapon("StdBow");
+        V.addElement(I);
+        return V;
+    }
 	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(E==null) return null;

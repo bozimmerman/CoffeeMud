@@ -51,6 +51,12 @@ public class Trap_Spark extends StdTrap
 		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel,perm);
 	}
 
+    public Vector getTrapComponents() {
+        Vector V=new Vector();
+        for(int i=0;i<10;i++)
+            V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON));
+        return V;
+    }
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;

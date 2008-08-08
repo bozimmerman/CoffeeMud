@@ -40,6 +40,12 @@ public class Trap_CaveIn extends StdTrap
 	public String requiresToSet(){return "100 pounds of wood";}
 	public int baseRejuvTime(int level){ return 6;}
 
+    public Vector getTrapComponents() {
+        Vector V=new Vector();
+        for(int i=0;i<100;i++)
+            V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_WOOD));
+        return V;
+    }
 	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(E==null) return null;

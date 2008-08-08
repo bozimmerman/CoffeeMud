@@ -37,6 +37,11 @@ public class Bomb_Smoke extends StdBomb
 	protected int trapLevel(){return 2;}
 	public String requiresToSet(){return "something wooden";}
 
+    public Vector getTrapComponents() {
+        Vector V=new Vector();
+        V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_WOOD));
+        return V;
+    }
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;

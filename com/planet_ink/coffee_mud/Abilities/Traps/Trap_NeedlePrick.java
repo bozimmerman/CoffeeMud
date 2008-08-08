@@ -83,6 +83,15 @@ public class Trap_NeedlePrick extends StdTrap
 		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel,perm);
 	}
 
+    public Vector getTrapComponents() {
+        Vector V=new Vector();
+        Item I=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_POISON);
+        Ability A=CMClass.getAbility(text());
+        if(A==null) A=CMClass.getAbility("Poison");
+        I.addNonUninvokableEffect(A);
+        V.addElement(I);
+        return V;
+    }
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;

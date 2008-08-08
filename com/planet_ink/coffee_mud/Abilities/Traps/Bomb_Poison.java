@@ -37,6 +37,15 @@ public class Bomb_Poison extends StdBomb
 	protected int trapLevel(){return 5;}
 	public String requiresToSet(){return "some poison";}
 
+    public Vector getTrapComponents() {
+        Vector V=new Vector();
+        Item I=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_POISON);
+        Ability A=CMClass.getAbility(text());
+        if(A==null) A=CMClass.getAbility("Poison");
+        I.addNonUninvokableEffect(A);
+        V.addElement(I);
+        return V;
+    }
 	public Vector returnOffensiveAffects(Environmental fromMe)
 	{
 		Vector offenders=new Vector();

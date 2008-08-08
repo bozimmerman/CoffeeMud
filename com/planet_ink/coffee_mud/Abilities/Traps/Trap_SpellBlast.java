@@ -56,6 +56,15 @@ public class Trap_SpellBlast extends StdTrap
 		return null;
 	}
 
+    public Vector getTrapComponents() {
+        Vector V=new Vector();
+        Scroll I=(Scroll)CMClass.getMiscMagic("StdScroll");
+        Ability A=CMClass.getAbility(text());
+        if(A==null) A=CMClass.getAbility("Spell_Fireball");
+        I.setSpellList(A.ID());
+        V.addElement(I);
+        return V;
+    }
 	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(E==null) return null;

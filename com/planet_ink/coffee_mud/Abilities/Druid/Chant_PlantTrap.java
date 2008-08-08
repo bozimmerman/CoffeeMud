@@ -46,6 +46,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 	public void setReset(int Reset){}
 	public int getReset(){return 0;}
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
+    public Vector getTrapComponents() { return new Vector(); }
 	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
 	public String requiresToSet(){return "";}
 	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean permanent)

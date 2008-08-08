@@ -54,6 +54,15 @@ public class Trap_FloodRoom extends StdTrap
 		return num;
 	}
 
+    public Vector getTrapComponents() {
+        Vector V=new Vector();
+        for(int i=0;i<100;i++)
+            V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_STONE));
+        for(int i=0;i<10;i++)
+            V.addElement(CMClass.getBasicItem("Waterskin"));
+        return V;
+    }
+    
     protected void killWaterskins(MOB mob)
 	{
 		if(mob==null) return;

@@ -70,6 +70,15 @@ public class Trap_PoisonGas extends StdTrap
 		return null;
 	}
 
+    public Vector getTrapComponents() {
+        Vector V=new Vector();
+        Item I=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_POISON);
+        Ability A=CMClass.getAbility(text());
+        if(A==null) A=CMClass.getAbility("Poison");
+        I.addNonUninvokableEffect(A);
+        V.addElement(I);
+        return V;
+    }
 	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{
 		if(E==null) return null;

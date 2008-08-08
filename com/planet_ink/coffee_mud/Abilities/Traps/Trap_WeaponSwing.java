@@ -53,6 +53,11 @@ public class Trap_WeaponSwing extends StdTrap
 		}
 		return null;
 	}
+    public Vector getTrapComponents() {
+        Vector V=new Vector();
+        V.addElement(CMClass.getWeapon("Sword"));
+        return V;
+    }
 
 	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{

@@ -50,6 +50,15 @@ public class Bomb_Spores extends StdBomb
 		return offenders;
 	}
 
+    public Vector getTrapComponents() {
+        Vector V=new Vector();
+        Item I=CMLib.materials().makeItemResource(RawMaterial.RESOURCE_MEAT);
+        Ability A=CMClass.getAbility(text());
+        if(A==null) A=CMClass.getAbility("Disease_Cold");
+        I.addNonUninvokableEffect(A);
+        V.addElement(I);
+        return V;
+    }
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;

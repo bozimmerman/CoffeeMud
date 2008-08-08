@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import java.util.*;
 
 /* 
    Copyright 2000-2008 Bo Zimmerman
@@ -110,6 +111,11 @@ public interface Trap extends Ability
 	 * @return true if the given trapper is allowed to set this trap, false otherwise
 	 */
 	public boolean maySetTrap(MOB mob, int asLevel);
+    /**
+     * Returns a sample set of the components used to make this trap.
+     * @return a vector of item objects
+     */
+    public Vector getTrapComponents();
 	/**
 	 * Returns whether the given trapper is currently in a position to set this
 	 * trap on the specified object.  Error messages should be delivered to the 

@@ -75,6 +75,16 @@ public class Trap_SnakePit extends Trap_RoomPit
 		return super.setTrap(mob,E,trapBonus,qualifyingClassLevel,perm);
 	}
 
+    public Vector getTrapComponents() {
+        Vector V=new Vector();
+        Item I=CMClass.getItem("GenCaged");
+        ((CagedAnimal)I).setCageText(text());
+        I.recoverEnvStats();
+        I.text();
+        V.addElement(I);
+        return V;
+    }
+    
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;

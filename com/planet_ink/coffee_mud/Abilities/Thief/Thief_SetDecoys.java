@@ -51,6 +51,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
 	public int getReset(){return 0;}
 	public boolean maySetTrap(MOB mob, int asLevel){return false;}
 	public boolean canSetTrapOn(MOB mob, Environmental E){return false;}
+    public Vector getTrapComponents() { return new Vector(); }
 	public String requiresToSet(){return "";}
 	public Trap setTrap(MOB mob, Environmental E, int trapBonus, int qualifyingClassLevel, boolean perm)
 	{maliciousAffect(mob,E,qualifyingClassLevel+trapBonus,0,-1); return (Trap)E.fetchEffect(ID());}

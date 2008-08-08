@@ -37,6 +37,11 @@ public class Bomb_Explosive extends StdBomb
 	protected int trapLevel(){return 10;}
 	public String requiresToSet(){return "a pound of coal";}
 
+    public Vector getTrapComponents() {
+        Vector V=new Vector();
+        V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_COAL));
+        return V;
+    }
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;

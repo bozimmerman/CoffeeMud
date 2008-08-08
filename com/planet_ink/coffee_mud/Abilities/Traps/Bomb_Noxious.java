@@ -37,6 +37,11 @@ public class Bomb_Noxious extends StdBomb
 	protected int trapLevel(){return 12;}
 	public String requiresToSet(){return "an egg";}
 
+    public Vector getTrapComponents() {
+        Vector V=new Vector();
+        V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_EGGS));
+        return V;
+    }
 	public boolean canSetTrapOn(MOB mob, Environmental E)
 	{
 		if(!super.canSetTrapOn(mob,E)) return false;
