@@ -102,6 +102,8 @@ public class CraftingSkill extends GatheringSkill
 	    return recipes;
 	}
 	
+    public Hashtable parametersFields(){ return new Hashtable();}
+    
 	protected int adjustWoodRequired(int woodRequired, MOB mob) {
         int newWoodRequired=woodRequired-(int)Math.round((0.05*(double)woodRequired*(double)getXPCOSTLevel(mob)));
         if(newWoodRequired<=0)
