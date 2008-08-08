@@ -455,7 +455,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         boolean puncFound=false;
         PUNCTUATION_TABLE();
         for(int x=0;x<str.length();x++)
-            if(PUNCTUATION_TABLE[(byte)str.charAt(x)])
+            if(isPunctuation((byte)str.charAt(x)))
             {
                 puncFound=true;
                 break;
@@ -465,12 +465,17 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         char[] str2=new char[strc.length];
         int s=0;
         for(int x=0;x<strc.length;x++)
-            if(!PUNCTUATION_TABLE[(byte)strc[x]])
+            if(!isPunctuation((byte)strc[x]))
             {
                 str2[s]=strc[x];
                 s++;
             }
         return new String(str2,0,s);
+    }
+    
+    private boolean isPunctuation(byte b) {
+        if((b<0)||(b>255)) return false;
+        return PUNCTUATION_TABLE[b];
     }
     
     public boolean equalsPunctuationless(char[] strC, char[] str2C)
@@ -480,16 +485,16 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
         int s1=0;
         int s2=0;
         int s1len=strC.length;
-        while((s1len>0)&&((Character.isWhitespace(strC[s1len-1])||PUNCTUATION_TABLE[(byte)strC[s1len-1]])))
+        while((s1len>0)&&(Character.isWhitespace(strC[s1len-1])||isPunctuation((byte)strC[s1len-1])))
             s1len--;
         int s2len=str2C.length;
-        while((s2len>0)&&((Character.isWhitespace(str2C[s2len-1])||PUNCTUATION_TABLE[(byte)str2C[s2len-1]])))
+        while((s2len>0)&&(Character.isWhitespace(str2C[s2len-1])||isPunctuation((byte)str2C[s2len-1])))
             s2len--;
         while(s1<s1len)
         {
-            while((s1<s1len)&&(PUNCTUATION_TABLE[(byte)strC[s1]]))
+            while((s1<s1len)&&(isPunctuation((byte)strC[s1])))
                 s1++;
-            while((s2<s2len)&&(PUNCTUATION_TABLE[(byte)str2C[s2]]))
+            while((s2<s2len)&&(isPunctuation((byte)str2C[s2])))
                 s2++;
             if(s1==s1len)
             {
