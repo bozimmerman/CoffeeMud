@@ -48,6 +48,9 @@ public class CraftingSkill extends GatheringSkill
 
 	public CraftingSkill(){super();}
 	
+    public String parametersFile(){ return "";}
+    public Hashtable parametersFields(){ return new Hashtable();}
+    
 	protected String replacePercent(String thisStr, String withThis)
 	{
 		if(withThis.length()==0)
@@ -102,8 +105,6 @@ public class CraftingSkill extends GatheringSkill
 	    return recipes;
 	}
 	
-    public Hashtable parametersFields(){ return new Hashtable();}
-    
 	protected int adjustWoodRequired(int woodRequired, MOB mob) {
         int newWoodRequired=woodRequired-(int)Math.round((0.05*(double)woodRequired*(double)getXPCOSTLevel(mob)));
         if(newWoodRequired<=0)

@@ -38,6 +38,9 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 	public String ID() { return "EnhancedCraftingSkill"; }
 	public String name(){ return "Enhanced Crafting Skill";}
 
+    public Hashtable parametersFields(){ return new Hashtable();}
+    public String parametersFormat(){ return ""; }
+    
 	protected int materialAdjustments=0;
     protected static final int TYPE_LITECRAFT=0;
     protected static final int TYPE_DURACRAFT=1;

@@ -61,6 +61,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_SPELL=13;
 	protected static final int RCP_REQUIREDSKILL=14;
 
+    public Hashtable parametersFields(){ return new Hashtable();}
     public String parametersFile(){ return "clancraft.txt";}
     protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 

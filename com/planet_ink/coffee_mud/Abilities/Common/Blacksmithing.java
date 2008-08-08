@@ -40,8 +40,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"BLACKSMITH","BLACKSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "METAL|MITHRIL";}
-    public String parametersFormat(){ return "";}
-    FINALNAME,LEVEL,TICKS,WOOD,VALUE,CLASS,STATUE_LADDER,CAPACITY,ARMOR/DAMAGE,SPELL
+    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASS\tSTATUE_LADDER\tCAPACITY\tARMOR/DAMAGE\tSPELL";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;

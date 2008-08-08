@@ -56,6 +56,17 @@ public interface ItemCraftor extends Ability
 	public String parametersFormat();
     
     /**
+     * A String containing the format of each field in each row in 
+     * the parameter file in a recipe.  The Hashtable is keyed by the
+     * field name, and the element is a two dimensional string array:
+     * 0=the field name
+     * 1=help field
+     * 2=coded type field
+     * @return a Hashtable of each field for each row, along with info about them
+     */
+    public Hashtable parametersFields();
+    
+    /**
      * A String naming the file where the recipes are found
      * @return a String naming the file where the recipes are found
      */

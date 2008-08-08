@@ -41,7 +41,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 	private static final String[] triggerStrings = {"COSTUME","COSTUMING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "CLOTH";}
-    public String parametersFormat(){ return "NAME\TLEVEL\TTICKS\TWOOD\TVALUE\TCLASS\TMISC\TCAPACITY\TARMOR\TCONTAINMASK\TSPELL";}
+    public String parametersFormat(){ return "NAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASS\tMISC\tCAPACITY\tARMOR\tCONTAINMASK\tSPELL";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
