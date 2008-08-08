@@ -31,13 +31,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Thief_SlipperyCaltrops extends Thief_Caltrops
+public class Thief_SlickCaltrops extends Thief_Caltrops
 {
-    public String ID() { return "Thief_SlipperyCaltrops"; }
-    public String name(){ return "Slippery Caltrops";}
-    private static final String[] triggerStrings = {"SLIPPERYCALTROPS"};
+    public String ID() { return "Thief_SlickCaltrops"; }
+    public String name(){ return "Slick Caltrops";}
+    private static final String[] triggerStrings = {"SLICKCALTROPS"};
     public String[] triggerStrings(){return triggerStrings;}
-    public String caltropTypeName(){return "slippery ";}
+    public String caltropTypeName(){return "slick ";}
     public void spring(MOB mob)
     {
         if((!invoker().mayIFight(mob))
