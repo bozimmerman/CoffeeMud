@@ -47,6 +47,12 @@ public class Thief_RemoveTraps extends ThiefSkill
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+        boolean saveTheTrap=false;
+        if((commands.size()>0)&&(commands.lastElement() instanceof Boolean))
+        {
+            saveTheTrap=((Boolean)commands.lastElement()).booleanValue();
+            commands.removeElementAt(commands.size()-1);
+        }
 		String whatTounlock=CMParms.combine(commands,0);
 		Environmental unlockThis=null;
 		int dirCode=Directions.getGoodDirectionCode(whatTounlock);
@@ -121,21 +127,35 @@ public class Thief_RemoveTraps extends ThiefSkill
 			if(success)
 			{
 				if(theTrap!=null)
+                {
 					theTrap.disable();
+                    if(saveTheTrap)
+                        commands.addElement(theTrap);
+                }
 				if(opTrap!=null)
+                {
 					opTrap.disable();
+                    if(saveTheTrap)
+                        commands.addElement(opTrap);
+                }
 				if(permanent)
 				{
 					for(int i=0;i<permSetV.size();i++)
 					{
-						if(theTrap!=null){ theTrap.unInvoke(); ((Environmental)permSetV.elementAt(i)).delEffect(theTrap);}
-						if(opTrap!=null){ opTrap.unInvoke(); ((Environmental)permSetV.elementAt(i)).delEffect(opTrap);}
+						if(theTrap!=null) { 
+                            theTrap.unInvoke(); 
+                            ((Environmental)permSetV.elementAt(i)).delEffect(theTrap);
+                        }
+						if(opTrap!=null) { 
+                            opTrap.unInvoke(); 
+                            ((Environmental)permSetV.elementAt(i)).delEffect(opTrap);
+                        }
 					}
 					CMLib.database().DBUpdateRoom(R);
 					CMLib.database().DBUpdateExits(R);
 				}
 			}
-			if(!auto)
+			if((!auto)&&(!saveTheTrap))
 				mob.tell("You have completed your attempt.");
 			lastChecked=unlockThis;
 		}

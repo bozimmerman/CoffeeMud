@@ -58,7 +58,7 @@ public class Trap_BearTrap extends StdTrap
 
     public Vector getTrapComponents() {
         Vector V=new Vector();
-        for(int i=0;i<100;i++)
+        for(int i=0;i<30;i++)
             V.addElement(CMLib.materials().makeItemResource(RawMaterial.RESOURCE_IRON));
         return V;
     }
