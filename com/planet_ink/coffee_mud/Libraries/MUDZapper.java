@@ -238,6 +238,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             zapCodes.put("+SUBOP",new Integer(110));
             zapCodes.put("-SUBOP",new Integer(111));
             zapCodes.put("+RACE",new Integer(112));  // for compiled use ONLY
+            zapCodes.put("-QUESTWIN",new Integer(113));
+            zapCodes.put("+QUESTWIN",new Integer(114));
 		}
 		return zapCodes;
 	}
@@ -1433,6 +1435,56 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						buf.append(".  ");
 					}
 					break;
+                case 113: // -Questwin
+                    {
+                        buf.append((skipFirstWord?"Completing":"Requires completing")+" the following quest(s): ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            String str2=(String)V.elementAt(v2);
+                            if(zapCodes.containsKey(str2))
+                                break;
+                            if(str2.startsWith("-"))
+                            {
+                                Quest Q=CMLib.quests().fetchQuest(str2.substring(1));
+                                if(Q==null)
+                                    buf.append(str2.substring(1)+", ");
+                                else
+                                if((Q.displayName()!=null)&&(Q.displayName().trim().length()==0))
+                                    buf.append(Q.displayName()+", ");
+                                else
+                                    buf.append(Q.name()+", ");
+                            }
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
+                case 114: // +Questwin
+                    {
+                        buf.append("Disallows those who`ve won the following quest(s): ");
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            String str2=(String)V.elementAt(v2);
+                            if(zapCodes.containsKey(str2))
+                                break;
+                            if(str2.startsWith("-"))
+                            {
+                                Quest Q=CMLib.quests().fetchQuest(str2.substring(1));
+                                if(Q==null)
+                                    buf.append(str2.substring(1)+", ");
+                                else
+                                if((Q.displayName()!=null)&&(Q.displayName().trim().length()==0))
+                                    buf.append(Q.displayName()+", ");
+                                else
+                                    buf.append(Q.name()+", ");
+                            }
+                        }
+                        if(buf.toString().endsWith(", "))
+                            buf=new StringBuffer(buf.substring(0,buf.length()-2));
+                        buf.append(".  ");
+                    }
+                    break;
 				case 10: // -Player
 					buf.append("Disallows players.  ");
 					break;
@@ -2236,6 +2288,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 14: // -Clan
 				case 44: // -Deity
 				case 9: // -Names
+                case 113: // -Questwin
 				case 31: // -Area
                 case 100: // -Home
                 case 53: // -JavaClass
@@ -2285,6 +2338,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 15: // +Clan
 				case 45: // +Deity
 				case 16: // +Names
+                case 114: // +Questwin
 				case 32: // +Area
                 case 99: // +Home
                 case 54: // +JavaClass
@@ -3151,6 +3205,28 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						{ return false;}
 				}
 				break;
+            case 113: // -questwin
+                {
+                    boolean found=false;
+                    for(int v=1;v<V.size();v++)
+                    {
+                        Quest Q=CMLib.quests().fetchQuest((String)V.elementAt(v));
+                        if((Q!=null)&&(Q.wasWinner(mob.Name())))
+                        { found=true; break;}
+                    }
+                    if(!found) return false;
+                }
+                break;
+            case 114: // +questwin
+                {
+                    for(int v=1;v<V.size();v++)
+                    {
+                        Quest Q=CMLib.quests().fetchQuest((String)V.elementAt(v));
+                        if((Q!=null)&&(Q.wasWinner(mob.Name())))
+                        { return false;}
+                    }
+                }
+                break;
 			case 83: // -skill
 				{
 					boolean found=false;

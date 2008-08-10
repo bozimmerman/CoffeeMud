@@ -171,6 +171,8 @@ public interface MaskingLibrary extends CMLibrary
         +"+DAY -X (<WORD> those whenever the day number is X)  <BR>"
         +"-WEATHER +DROUGHT (<WORD> those only when weather is DROUGHT)  <BR>"
         +"+WEATHER -BLIZZARD (<WORD> those whenever the weather is BLIZZARD) <BR>"
+        +"-QUESTWIN \"+MY QUEST\" (<WORD> those who have not my MY QUEST)  <BR>"
+        +"+QUESTWIN \"-MY QUEST\" (<WORD> those who have won MY QUEST) <BR>"
         +"-SKILLFLAG (<WORD> anyone, even those with no skills) <BR>"
         +"-SKILLFLAG +ENCHANTMENT etc.. (create exceptions to -skillflag) <BR>"
         +"+SKILLFLAG (do not <WORD> anyone, even non skilled people) <BR>"
