@@ -42,7 +42,7 @@ public class Alchemy extends CraftingSkill
 	protected int iniTrainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
 	protected int iniPracticesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
     public String supportedResourceString(){return "MISC";}
-    public String parametersFormat(){ return "SPELL_NAME\tRESOURCE";}
+    public String parametersFormat(){ return "SPELL_ID\tRESOURCE_NAME";}
 
 	String oldName="";
     protected Ability theSpell=null;

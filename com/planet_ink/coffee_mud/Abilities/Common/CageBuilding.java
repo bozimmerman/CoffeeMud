@@ -39,7 +39,6 @@ public class CageBuilding extends Wainwrighting
 	private static final String[] triggerStrings = {"BUILDCAGE","CAGEBUILDING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN";}
-    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tMISCTYPE\tCAPACITY\tNUMRIDERS\tCONTAINMASK\tSPELL";}
 
     public String parametersFile(){ return "cagebuilding.txt";}
     protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}

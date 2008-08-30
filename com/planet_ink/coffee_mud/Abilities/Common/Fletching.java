@@ -41,7 +41,10 @@ public class Fletching extends EnhancedCraftingSkill implements ItemCraftor, Men
 	private static final String[] triggerStrings = {"FLETCH","FLETCHING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN";}
-    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tAMMOTYPE\tAMOCAPACITY\tARMORDMG\tMAXRANGE\tEXTRAREQ\tSPELL";}
+    public String parametersFormat(){ return 
+        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\tITEM_BASE_VALUE\t"
+        +"ITEM_CLASS_ID\tAMMO_TYPE\tAMMO_CAPACITY\tBASE_DAMAGE\tMAXIMUM_RANGE\t"
+        +"RESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;

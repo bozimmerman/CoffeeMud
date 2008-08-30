@@ -204,6 +204,16 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				command = "GET";
 			}
 			else
+            if (command.equalsIgnoreCase("MUD"))
+            {
+                if(getWebServer() != null) {
+                    if(getWebServer().getMUD() != null) {
+                        getWebServer().getMUD().acceptConnection(sock);
+                    }
+                }
+                return false;
+            }
+            else
 			if((command.equalsIgnoreCase("GET"))
 			||(command.equalsIgnoreCase("POST")))
 			{
@@ -1020,6 +1030,9 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			// build error page
 			if (!processOK || replyData == null)
 			{
+			    if(totalRequest.equalsIgnoreCase("MUD"))
+			        return;
+			    
 				//mimetype = "text/html";
 				mimetype = getMimeType(page.getStr("VIRTUALPAGEEXTENSION"));
 
@@ -1346,7 +1359,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			if((inData==null)||(inData.size()==0)||(!(inData.elementAt(0) instanceof String)))
 				return "[400 -- no request received]";
 			String inLine=(String)inData.elementAt(0);
-			if((inLine.startsWith("GET")||inLine.startsWith("HEAD")))
+			if((inLine.startsWith("GET")||inLine.startsWith("HEAD")||inLine.equalsIgnoreCase("MUD")))
 				return inLine;
 			else
 			if(inLine.startsWith("POST"))
@@ -1479,6 +1492,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
     }
 
 	public String ServerVersionString(){return HTTPserver.ServerVersionString;}
+    public int getWebServerPort(){return getWebServer().getPort();}
 	public String getWebServerPortStr(){return getWebServer().getPortStr();}
 	public String getWebServerPartialName(){ return getWebServer().getPartialName();}
 	public MudHost getMUD(){return getWebServer().getMUD();}

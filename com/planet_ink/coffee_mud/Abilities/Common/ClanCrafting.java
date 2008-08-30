@@ -41,9 +41,13 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"CLANCRAFT"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN|METAL|MITHRIL";}
-    public String parametersFormat(){ return "FINALNAME\tMATERIAL1\tMATERIAL2\tCITYPE\tLEVEL\tTICKS\tEXP\tVALUE\tCLASSTYPE\tMISCTYPE\tCAPACITY\tARMORDMG\tCONTAINMASK\tSPELL\tREQUIREDSKILL";}
     protected int expRequired = 0;
     protected Clan myClan=null;
+    public String parametersFormat(){ return 
+        "ITEM_NAME\tRESOURCE_NAME/AMOUNT_MATERIAL_REQUIRED\tRESOURCE_NAME/AMOUNT_MATERIAL_REQUIRED\t"
+        +"CLAN_ITEM_CODENUMBER\tITEM_LEVEL\tBUILD_TIME_TICKS\tCLAN_EXPERIENCE_COST_AMOUNT\t"
+        +"ITEM_BASE_VALUE\tITEM_CLASS_ID\tCLAN_AREA_FLAG||CODED_WEAR_LOCATION||READABLE_TEXT\t"
+        +"CONTAINER_CAPACITY\tBASE_ARMOR_AMOUNT\tCONTAINER_TYPE\tCODED_SPELL_LIST\tREQUIRED_COMMON_SKILL_ID";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_MATERIAL1=1;
@@ -357,40 +361,10 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		addSpells(building,spell);
 		if(building instanceof Armor)
 		{
-			misctype=applyLayers((Armor)building,misctype);
-			((Armor)building).setRawProperLocationBitmap(0);
-			double hardBonus=0.0;
-			for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
-			{
-				String WO=Item.WORN_DESCS[wo].toUpperCase();
-				if(misctype.equalsIgnoreCase(WO))
-				{
-					hardBonus+=Item.WORN_WEIGHTS[wo];
-					((Armor)building).setRawProperLocationBitmap(CMath.pow(2,wo-1));
-					((Armor)building).setRawLogicalAnd(false);
-				}
-				else
-				if((misctype.toUpperCase().indexOf(WO+"||")>=0)
-				||(misctype.toUpperCase().endsWith("||"+WO)))
-				{
-					if(hardBonus==0.0)
-						hardBonus+=Item.WORN_WEIGHTS[wo];
-					((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
-					((Armor)building).setRawLogicalAnd(false);
-				}
-				else
-				if((misctype.toUpperCase().indexOf(WO+"&&")>=0)
-				||(misctype.toUpperCase().endsWith("&&"+WO)))
-				{
-					hardBonus+=Item.WORN_WEIGHTS[wo];
-					((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
-					((Armor)building).setRawLogicalAnd(true);
-				}
-			}
-			int hardPoints=(int)Math.round(CMath.mul(hardBonus,hardness));
-			((Armor)building).baseEnvStats().setArmor(0);
-			if(armordmg!=0)
-				((Armor)building).baseEnvStats().setArmor(armordmg+hardPoints+(abilityCode()-1));
+            ((Armor)building).baseEnvStats().setArmor(0);
+            if(armordmg!=0)
+                ((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1));
+            setWearLocation((Armor)building,misctype,hardness);
 		}
 
 		if(building instanceof Container)

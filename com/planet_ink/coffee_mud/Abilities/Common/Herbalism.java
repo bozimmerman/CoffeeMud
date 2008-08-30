@@ -42,7 +42,14 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int iniTrainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
 	protected int iniPracticesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
-    public String parametersFormat(){ return "SPELL\tLEVEL\tINGREDIENT\tINGREDIENT\tINGREDIENT\tINGREDIENT\tINGREDIENT\tINGREDIENT";}
+    public String parametersFormat(){ return 
+        "SPELL_ID\tITEM_LEVEL\t"
+        +"RESOURCE_NAME||HERB_NAME$\t"
+        +"RESOURCE_NAME||HERB_NAME$\t"
+        +"RESOURCE_NAME||HERB_NAME$\t"
+        +"RESOURCE_NAME||HERB_NAME$\t"
+        +"RESOURCE_NAME||HERB_NAME$\t"
+        +"RESOURCE_NAME||HERB_NAME$";}
 
 	String oldName="";
 	private Ability theSpell=null;

@@ -41,7 +41,9 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"INSTRUMENTMAKING","INSTRUMENTMAKE"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WOODEN";}
-    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tMISCTYPE\tMATERIAL\tRACE\tINSTRUMENTTYPE";}
+    public String parametersFormat(){ return 
+        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\tITEM_BASE_VALUE\t"
+        +"ITEM_CLASS_ID\tRIDE_CAPACITY||CODED_WEAR_LOCATION\tMETAL_OR_WOOD\tOPTIONAL_RACE_ID\tINSTRUMENT_TYPE";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -234,32 +236,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		}
 		else
 		{
-			if(building instanceof Armor)
-				misctype=applyLayers((Armor)building,misctype);
-			building.setRawProperLocationBitmap(0);
-			for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
-			{
-				String WO=Item.WORN_DESCS[wo].toUpperCase();
-				if(misctype.equalsIgnoreCase(WO))
-				{
-					building.setRawProperLocationBitmap(CMath.pow(2,wo-1));
-					building.setRawLogicalAnd(false);
-				}
-				else
-				if((misctype.toUpperCase().indexOf(WO+"||")>=0)
-				||(misctype.toUpperCase().endsWith("||"+WO)))
-				{
-					building.setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
-					building.setRawLogicalAnd(false);
-				}
-				else
-				if((misctype.toUpperCase().indexOf(WO+"&&")>=0)
-				||(misctype.toUpperCase().endsWith("&&"+WO)))
-				{
-					building.setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
-					building.setRawLogicalAnd(true);
-				}
-			}
+            setWearLocation((Armor)building,misctype,0);
 		}
 		if(bundling) building.setBaseValue(lostValue);
 		building.recoverEnvStats();

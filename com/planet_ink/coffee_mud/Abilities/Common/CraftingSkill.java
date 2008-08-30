@@ -271,7 +271,7 @@ public class CraftingSkill extends GatheringSkill
 	
 	public Vector fetchRecipes(){return loadRecipes();}
 	protected Vector loadRecipes(){ return new Vector();}
-	
+	 
 	protected int[][] fetchFoundResourceData(MOB mob,
 											 int req1Required,
 											 String req1Desc, int[] req1,
@@ -590,6 +590,43 @@ public class CraftingSkill extends GatheringSkill
 		return matches;
 	}
 
+	protected void setWearLocation(Item armor, String wearLocation, int hardnessMultiplier)
+	{
+	    if(armor instanceof Armor)
+	        wearLocation=applyLayers((Armor)armor,wearLocation);
+	    armor.setRawProperLocationBitmap(0);
+        double hardBonus=0.0;
+        for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
+        {
+            String WO=Item.WORN_DESCS[wo].toUpperCase();
+            if(wearLocation.equalsIgnoreCase(WO))
+            {
+                hardBonus+=Item.WORN_WEIGHTS[wo];
+                armor.setRawProperLocationBitmap(CMath.pow(2,wo-1));
+                armor.setRawLogicalAnd(false);
+            }
+            else
+            if((wearLocation.toUpperCase().indexOf(WO+"||")>=0)
+            ||(wearLocation.toUpperCase().endsWith("||"+WO)))
+            {
+                if(hardBonus==0.0)
+                    hardBonus+=Item.WORN_WEIGHTS[wo];
+                armor.setRawProperLocationBitmap(armor.rawProperLocationBitmap()|CMath.pow(2,wo-1));
+                armor.setRawLogicalAnd(false);
+            }
+            else
+            if((wearLocation.toUpperCase().indexOf(WO+"&&")>=0)
+            ||(wearLocation.toUpperCase().endsWith("&&"+WO)))
+            {
+                hardBonus+=Item.WORN_WEIGHTS[wo];
+                armor.setRawProperLocationBitmap(armor.rawProperLocationBitmap()|CMath.pow(2,wo-1));
+                armor.setRawLogicalAnd(true);
+            }
+        }
+        int hardPoints=(int)Math.round(CMath.mul(hardBonus,hardnessMultiplier));
+        armor.baseEnvStats().setArmor(armor.baseEnvStats().armor()+hardPoints);
+	}
+	
 	protected Vector getAllMendable(MOB mob, Environmental from, Item contained)
 	{
 		Vector V=new Vector();
@@ -677,7 +714,71 @@ public class CraftingSkill extends GatheringSkill
 		commonTell(mob,buf.toString());
 		return true;
 	}
+	
+    protected void setWeaponTypeClass(Weapon weapon, String weaponClass)
+    {
+        setWeaponTypeClass(weapon,weaponClass,Weapon.TYPE_BASHING,Weapon.TYPE_BASHING);
+    }
+    
+    protected void setWeaponTypeClass(Weapon weapon, String weaponClass, int flailedType)
+    {
+        setWeaponTypeClass(weapon,weaponClass,flailedType,Weapon.TYPE_BASHING);
+    }
+    
+	protected void setWeaponTypeClass(Weapon weapon, String weaponClass, int flailedType, int naturalType)
+	{
+	    weapon.setWeaponType(Weapon.TYPE_BASHING);
+        for(int cl=0;cl<Weapon.CLASS_DESCS.length;cl++)
+        {
+            if(weaponClass.equalsIgnoreCase(Weapon.CLASS_DESCS[cl]))
+                weapon.setWeaponClassification(cl);
+        }
+        switch(weapon.weaponClassification())
+        {
+        case Weapon.CLASS_AXE:
+            weapon.setWeaponType(Weapon.TYPE_SLASHING);
+            break;
+        case Weapon.CLASS_SWORD:
+        case Weapon.CLASS_DAGGER:
+        case Weapon.CLASS_EDGED:
+        case Weapon.CLASS_POLEARM:
+        case Weapon.CLASS_RANGED:
+        case Weapon.CLASS_THROWN:
+            weapon.setWeaponType(Weapon.TYPE_PIERCING);
+            break;
+        case Weapon.CLASS_FLAILED:
+            return flailedType;
+            break;
+        case Weapon.CLASS_NATURAL:
+            return naturalType;
+            break;
+        case Weapon.CLASS_NATURAL:
+        case Weapon.CLASS_BLUNT:
+        case Weapon.CLASS_HAMMER:
+        case Weapon.CLASS_STAFF:
+            weapon.setWeaponType(Weapon.TYPE_BASHING);
+            break;
+        }
+	}
 
+	protected void setRideBasis(Rideable rideable, String type)
+	{
+        if(type.equalsIgnoreCase("CHAIR"))
+            rideable.setRideBasis(Rideable.RIDEABLE_SIT);
+        else
+        if(type.equalsIgnoreCase("TABLE"))
+            rideable.setRideBasis(Rideable.RIDEABLE_TABLE);
+        else
+        if(type.equalsIgnoreCase("LADDER"))
+            rideable.setRideBasis(Rideable.RIDEABLE_LADDER);
+        else
+        if(type.equalsIgnoreCase("ENTER"))
+            rideable.setRideBasis(Rideable.RIDEABLE_ENTERIN);
+        else
+        if(type.equalsIgnoreCase("BED"))
+            rideable.setRideBasis(Rideable.RIDEABLE_SLEEP);
+	}
+	
 	protected boolean canMend(MOB mob, Environmental E, boolean quiet)
 	{
 		if(E==null) return false;

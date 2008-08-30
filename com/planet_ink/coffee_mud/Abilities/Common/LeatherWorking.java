@@ -41,7 +41,11 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"LEATHERWORK","LEATHERWORKING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "LEATHER";}
-    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tMISCTYPE\tCAPACITY\tARMORDMG\tCONTAINMASK\tSPELL";}
+    public String parametersFormat(){ return 
+        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\tITEM_BASE_VALUE\t"
+        +"ITEM_CLASS_ID\tWEAPON_CLASS||CODED_WEAR_LOCATION\t"
+        +"CONTAINER_CAPACITY||LIQUID_CAPACITY||WEAPON_HANDS_REQUIRED\tBASE_DAMAGE||BASE_ARMOR_AMOUNT\t"
+        +"CONTAINER_TYPE\tCODED_SPELL_LIST";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -362,73 +366,23 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			if(building instanceof Weapon)
 			{
 				((Weapon)building).baseEnvStats().setAttackAdjustment(abilityCode()+(hardness*5)+(abilityCode()-1)-1);
-				((Weapon)building).setWeaponType(Weapon.TYPE_SLASHING);
-				((Weapon)building).setWeaponClassification(Weapon.CLASS_FLAILED);
-				for(int cl=0;cl<Weapon.CLASS_DESCS.length;cl++)
-				{
-					if(misctype.equalsIgnoreCase(Weapon.CLASS_DESCS[cl]))
-						((Weapon)building).setWeaponClassification(cl);
-				}
-				switch(((Weapon)building).weaponClassification())
-				{
-				case Weapon.CLASS_AXE:
-				case Weapon.CLASS_FLAILED:
-					((Weapon)building).setWeaponType(Weapon.TYPE_SLASHING);
-					break;
-				case Weapon.CLASS_SWORD:
-				case Weapon.CLASS_DAGGER:
-				case Weapon.CLASS_EDGED:
-				case Weapon.CLASS_POLEARM:
-				case Weapon.CLASS_RANGED:
-				case Weapon.CLASS_THROWN:
-					((Weapon)building).setWeaponType(Weapon.TYPE_PIERCING);
-					break;
-				case Weapon.CLASS_NATURAL:
-				case Weapon.CLASS_BLUNT:
-				case Weapon.CLASS_HAMMER:
-				case Weapon.CLASS_STAFF:
-					((Weapon)building).setWeaponType(Weapon.TYPE_BASHING);
-					break;
-				}
+                ((Weapon)building).setWeaponClassification(Weapon.CLASS_FLAILED);
+                setWeaponTypeClass((Weapon)building,misctype,Weapon.TYPE_SLASHING);
 				building.baseEnvStats().setDamage(armordmg+hardness);
 				((Weapon)building).setRawProperLocationBitmap(Item.WORN_WIELD|Item.WORN_HELD);
 				((Weapon)building).setRawLogicalAnd((capacity>1));
 			}
 			if(building instanceof Armor)
 			{
-				misctype=applyLayers((Armor)building,misctype);
-				((Armor)building).baseEnvStats().setArmor(0);
-				if(armordmg!=0)
-					((Armor)building).baseEnvStats().setArmor(armordmg+hardness+(abilityCode()-1));
-				((Armor)building).setRawProperLocationBitmap(0);
 				if(capacity>0)
 				{
 					((Armor)building).setCapacity(capacity+woodRequired);
 					((Armor)building).setContainTypes(canContain);
 				}
-				for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
-				{
-					String WO=Item.WORN_DESCS[wo].toUpperCase();
-					if(misctype.equalsIgnoreCase(WO))
-					{
-						((Armor)building).setRawProperLocationBitmap(CMath.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(false);
-					}
-					else
-					if((misctype.toUpperCase().indexOf(WO+"||")>=0)
-					||(misctype.toUpperCase().endsWith("||"+WO)))
-					{
-						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(false);
-					}
-					else
-					if((misctype.toUpperCase().indexOf(WO+"&&")>=0)
-					||(misctype.toUpperCase().endsWith("&&"+WO)))
-					{
-						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(true);
-					}
-				}
+                ((Armor)building).baseEnvStats().setArmor(0);
+                if(armordmg!=0)
+                    ((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1)+hardness);
+                setWearLocation((Armor)building,misctype,0);
 			}
 			if(building instanceof Drink)
 			{

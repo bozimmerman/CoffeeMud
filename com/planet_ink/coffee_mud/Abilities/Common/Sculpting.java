@@ -41,7 +41,10 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 	private static final String[] triggerStrings = {"SCULPT","SCULPTING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "ROCK|STONE";}
-    public String parametersFormat(){ return "NAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tMISCTYPE\tCAPACITY\tCONTAINMASK\tSPELL";}
+    public String parametersFormat(){ return 
+        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\tITEM_BASE_VALUE\t"
+        +"ITEM_CLASS_ID\tSTATUE||LID_LOCK||RIDE_BASIS\tCONTAINER_CAPACITY||LIGHT_DURATION\t"
+        +"CONTAINER_TYPE\tCODED_SPELL_LIST";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -346,17 +349,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			}
 			if(building instanceof Rideable)
 			{
-				if(misctype.equalsIgnoreCase("CHAIR"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_SIT);
-				else
-				if(misctype.equalsIgnoreCase("TABLE"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_TABLE);
-				else
-				if(misctype.equalsIgnoreCase("LADDER"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_LADDER);
-				else
-				if(misctype.equalsIgnoreCase("BED"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_SLEEP);
+                setRideBasis((Rideable)building,misctype);
 			}
 			if(building instanceof Light)
 			{

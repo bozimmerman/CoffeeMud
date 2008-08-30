@@ -105,16 +105,6 @@ public class DefaultTimeClock implements TimeClock
         return timeDesc.toString();
     }
     
-    public int determineSeason(String str)
-    {
-        str=str.toUpperCase().trim();
-        if(str.length()==0) return -1;
-        for(int i=0;i<TimeClock.SEASON_DESCS.length;i++)
-            if(TimeClock.SEASON_DESCS[i].startsWith(str))
-                return i;
-        return -1;
-    }
-    
     public void initializeINIClock(CMProps page)
     {
         if(CMath.s_int(page.getStr("HOURSINDAY"))>0)

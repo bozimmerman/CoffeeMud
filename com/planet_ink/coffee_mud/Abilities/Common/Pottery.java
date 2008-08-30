@@ -40,7 +40,10 @@ public class Pottery extends CraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"POT","POTTERY"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "CLAY|CHINA";}
-    public String parametersFormat(){ return "NAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASS\tMISC\tCAPACITY\tSPELL";}
+    public String parametersFormat(){ return 
+        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\t"
+        +"ITEM_BASE_VALUE\tITEM_CLASS_ID\tLID_LOCK||STONE\t"
+        +"CONTAINER_CAPACITY||LIQUID_CAPACITY\tCODED_SPELL_LIST";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;

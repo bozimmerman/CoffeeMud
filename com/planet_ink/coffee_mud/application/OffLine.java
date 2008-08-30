@@ -163,6 +163,119 @@ public class OffLine extends Thread implements MudHost
         return offLineText;
     }
 
+    public void acceptConnection(Socket sock)
+    throws SocketException, IOException
+{
+        sock.setSoLinger(true,3);
+        state=1;
+
+        if (acceptConnections)
+        {
+            String address="unknown";
+            try{address=sock.getInetAddress().getHostAddress().trim();}catch(Exception e){}
+            System.out.println("Connection from "+address+": "+port);
+            // now see if they are banned!
+            int proceed=0;
+
+            int numAtThisAddress=0;
+            long ConnectionWindow=(180*1000);
+            long LastConnectionDelay=(5*60*1000);
+            boolean anyAtThisAddress=false;
+            int maxAtThisAddress=6;
+            try{
+                for(int a=accessed.size()-1;a>=0;a--)
+                {
+                    if((((Long)accessed.elementAt(a,2)).longValue()+LastConnectionDelay)<System.currentTimeMillis())
+                        accessed.removeElementAt(a);
+                    else
+                    if(((String)accessed.elementAt(a,1)).trim().equalsIgnoreCase(address))
+                    {
+                        anyAtThisAddress=true;
+                        if((((Long)accessed.elementAt(a,2)).longValue()+ConnectionWindow)>System.currentTimeMillis())
+                            numAtThisAddress++;
+                    }
+                }
+                if(autoblocked.contains(address.toUpperCase()))
+                {
+                    if(!anyAtThisAddress)
+                        autoblocked.remove(address.toUpperCase());
+                    else
+                        proceed=2;
+                }
+                else
+                if(numAtThisAddress>=maxAtThisAddress)
+                {
+                    autoblocked.addElement(address.toUpperCase());
+                    proceed=2;
+                }
+            }catch(java.lang.ArrayIndexOutOfBoundsException e){}
+
+            accessed.addElement(address,new Long(System.currentTimeMillis()));
+            if(proceed!=0)
+            {
+                System.out.println("Blocking a connection from "+address+" on port "+port);
+                PrintWriter out = new PrintWriter(sock.getOutputStream());
+                out.println("\n\rOFFLINE: Blocked\n\r");
+                out.flush();
+                if(proceed==2)
+                    out.println("\n\rYour address has been blocked temporarily due to excessive invalid connections.  Please try back in " + (LastConnectionDelay/60000) + " minutes, and not before.\n\r\n\r");
+                else
+                    out.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
+                out.flush();
+                out.close();
+                sock = null;
+            }
+            else
+            {
+                state=2;
+                String fileName="resources"+File.separator+"text"+File.separator+"down.txt";
+                StringBuffer offLineText=getFile(fileName);
+                try
+                {
+                    sock.setSoTimeout(300);
+                    OutputStream rawout=sock.getOutputStream();
+                    InputStream rawin=sock.getInputStream();
+                    rawout.write('\n');
+                    rawout.write('\n');
+                    rawout.flush();
+
+
+                    //out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(rawout, "UTF-8")));
+                    //in = new BufferedReader(new InputStreamReader(rawin, "UTF-8"));
+                    BufferedReader in;
+                    PrintWriter out;
+                    out = new PrintWriter(new OutputStreamWriter(rawout,"iso-8859-1"));
+                    in = new BufferedReader(new InputStreamReader(rawin,"iso-8859-1"));
+
+                    if(offLineText!=null) out.print(offLineText);
+                    out.flush();
+                    try{Thread.sleep(250);}catch(Exception e){}
+                    closeSocks(sock,in,out);
+                }
+                catch(SocketException e)
+                {
+                }
+                catch(IOException e)
+                {
+                }
+                closeSocks(sock,null,null);
+                sock=null;
+            }
+        }
+        else
+        {
+            String fileName="resources"+File.separator+"text"+File.separator+"offline.txt";
+            StringBuffer rejectText=getFile(fileName);
+            PrintWriter out = new PrintWriter(sock.getOutputStream());
+            out.flush();
+            out.println(rejectText);
+            out.flush();
+            out.close();
+            try{Thread.sleep(250);}catch(Exception e){}
+            sock = null;
+        }
+    }
+    
     public void run()
     {
         int q_len = 6;
@@ -197,114 +310,7 @@ public class OffLine extends Thread implements MudHost
             {
                 state=0;
                 sock=servsock.accept();
-                sock.setSoLinger(true,3);
-                state=1;
-
-                if (acceptConnections)
-                {
-                    String address="unknown";
-                    try{address=sock.getInetAddress().getHostAddress().trim();}catch(Exception e){}
-                    System.out.println("Connection from "+address+": "+port);
-                    // now see if they are banned!
-                    int proceed=0;
-
-                    int numAtThisAddress=0;
-                    long ConnectionWindow=(180*1000);
-                    long LastConnectionDelay=(5*60*1000);
-                    boolean anyAtThisAddress=false;
-                    int maxAtThisAddress=6;
-                    try{
-                        for(int a=accessed.size()-1;a>=0;a--)
-                        {
-                            if((((Long)accessed.elementAt(a,2)).longValue()+LastConnectionDelay)<System.currentTimeMillis())
-                                accessed.removeElementAt(a);
-                            else
-                            if(((String)accessed.elementAt(a,1)).trim().equalsIgnoreCase(address))
-                            {
-                                anyAtThisAddress=true;
-                                if((((Long)accessed.elementAt(a,2)).longValue()+ConnectionWindow)>System.currentTimeMillis())
-                                    numAtThisAddress++;
-                            }
-                        }
-                        if(autoblocked.contains(address.toUpperCase()))
-                        {
-                            if(!anyAtThisAddress)
-                                autoblocked.remove(address.toUpperCase());
-                            else
-                                proceed=2;
-                        }
-                        else
-                        if(numAtThisAddress>=maxAtThisAddress)
-                        {
-                            autoblocked.addElement(address.toUpperCase());
-                            proceed=2;
-                        }
-                    }catch(java.lang.ArrayIndexOutOfBoundsException e){}
-
-                    accessed.addElement(address,new Long(System.currentTimeMillis()));
-                    if(proceed!=0)
-                    {
-                        System.out.println("Blocking a connection from "+address+" on port "+port);
-                        PrintWriter out = new PrintWriter(sock.getOutputStream());
-                        out.println("\n\rOFFLINE: Blocked\n\r");
-                        out.flush();
-                        if(proceed==2)
-                            out.println("\n\rYour address has been blocked temporarily due to excessive invalid connections.  Please try back in " + (LastConnectionDelay/60000) + " minutes, and not before.\n\r\n\r");
-                        else
-                            out.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
-                        out.flush();
-                        out.close();
-                        sock = null;
-                    }
-                    else
-                    {
-                        state=2;
-                        String fileName="resources"+File.separator+"text"+File.separator+"down.txt";
-                        StringBuffer offLineText=getFile(fileName);
-                        try
-                        {
-                            sock.setSoTimeout(300);
-                            OutputStream rawout=sock.getOutputStream();
-                            InputStream rawin=sock.getInputStream();
-                            rawout.write('\n');
-                            rawout.write('\n');
-                            rawout.flush();
-
-
-                            //out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(rawout, "UTF-8")));
-                            //in = new BufferedReader(new InputStreamReader(rawin, "UTF-8"));
-                            BufferedReader in;
-                            PrintWriter out;
-                            out = new PrintWriter(new OutputStreamWriter(rawout,"iso-8859-1"));
-                            in = new BufferedReader(new InputStreamReader(rawin,"iso-8859-1"));
-
-                            if(offLineText!=null) out.print(offLineText);
-                            out.flush();
-                            try{Thread.sleep(250);}catch(Exception e){}
-                            closeSocks(sock,in,out);
-                        }
-                        catch(SocketException e)
-                        {
-                        }
-                        catch(IOException e)
-                        {
-                        }
-                        closeSocks(sock,null,null);
-                        sock=null;
-                    }
-                }
-                else
-                {
-                    String fileName="resources"+File.separator+"text"+File.separator+"offline.txt";
-                    StringBuffer rejectText=getFile(fileName);
-                    PrintWriter out = new PrintWriter(sock.getOutputStream());
-                    out.flush();
-                    out.println(rejectText);
-                    out.flush();
-                    out.close();
-                    try{Thread.sleep(250);}catch(Exception e){}
-                    sock = null;
-                }
+                acceptConnection(sock);
             }
         }
         catch(Throwable t)

@@ -41,7 +41,11 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 	private static final String[] triggerStrings = {"COSTUME","COSTUMING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "CLOTH";}
-    public String parametersFormat(){ return "NAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASS\tMISC\tCAPACITY\tARMOR\tCONTAINMASK\tSPELL";}
+    public String parametersFormat(){ return 
+        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\tITEM_BASE_VALUE\t"
+        +"ITEM_CLASS_ID\tWEAPON_CLASS||CODED_WEAR_LOCATION||RIDE_BASIS\t"
+        +"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED\tBASE_ARMOR_AMOUNT||BASE_DAMAGE\t"
+        +"CONTAINER_TYPE\tCODED_SPELL_LIST";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -159,7 +163,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			int toggler=1;
 			int toggleTop=2;
 			for(int r=0;r<toggleTop;r++)
-				buf.append(CMStrings.padRight("Item",20)+" Lvl "+CMStrings.padRight("Cloth",5)+" ");
+                buf.append(CMStrings.padRight("Item",27)+" Lvl "+CMStrings.padRight("Cloth",6)+" ");
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
@@ -173,7 +177,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 					if((level<=xlevel(mob))
 					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(item,mask)))
 					{
-						buf.append(CMStrings.padRight(item,20)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(""+wood,5)+((toggler!=toggleTop)?" ":"\n\r"));
+						buf.append(CMStrings.padRight(item,27)+" "+CMStrings.padRight(""+level,3)+" "+CMStrings.padRight(""+wood,6)+((toggler!=toggleTop)?" ":"\n\r"));
 						if(++toggler>toggleTop) toggler=1;
 					}
 				}
@@ -264,7 +268,7 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			}
 			if(foundRecipe==null)
 			{
-				commonTell(mob,"You don't know how to Costume a '"+recipeName+"'.  Try \"Costume list\" for a list.");
+				commonTell(mob,"You don't know how to make a '"+recipeName+"'.  Try \""+triggerStrings()[0].toLowerCase()+" list\" for a list.");
 				return false;
 			}
 			int woodRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_WOOD));
@@ -324,91 +328,27 @@ public class Costuming extends EnhancedCraftingSkill implements ItemCraftor, Men
 			addSpells(building,spell);
 			if(building instanceof Weapon)
 			{
-				((Weapon)building).setWeaponType(Weapon.TYPE_BASHING);
-				((Weapon)building).setWeaponClassification(Weapon.CLASS_NATURAL);
-				for(int cl=0;cl<Weapon.CLASS_DESCS.length;cl++)
-				{
-					if(misctype.equalsIgnoreCase(Weapon.CLASS_DESCS[cl]))
-						((Weapon)building).setWeaponClassification(cl);
-				}
-				switch(((Weapon)building).weaponClassification())
-				{
-				case Weapon.CLASS_AXE:
-					((Weapon)building).setWeaponType(Weapon.TYPE_SLASHING);
-					break;
-				case Weapon.CLASS_SWORD:
-				case Weapon.CLASS_DAGGER:
-				case Weapon.CLASS_EDGED:
-				case Weapon.CLASS_POLEARM:
-				case Weapon.CLASS_RANGED:
-				case Weapon.CLASS_THROWN:
-					((Weapon)building).setWeaponType(Weapon.TYPE_PIERCING);
-					break;
-				case Weapon.CLASS_NATURAL:
-				case Weapon.CLASS_BLUNT:
-				case Weapon.CLASS_FLAILED:
-				case Weapon.CLASS_HAMMER:
-				case Weapon.CLASS_STAFF:
-					((Weapon)building).setWeaponType(Weapon.TYPE_BASHING);
-					break;
-				}
+                ((Weapon)building).setWeaponClassification(Weapon.CLASS_NATURAL);
+                setWeaponTypeClass((Weapon)building,misctype);
 				building.baseEnvStats().setDamage(armordmg);
 				((Weapon)building).setRawProperLocationBitmap(Item.WORN_WIELD|Item.WORN_HELD);
 				((Weapon)building).setRawLogicalAnd((capacity>1));
 			}
 			if(building instanceof Armor)
 			{
-
-				misctype=applyLayers((Armor)building,misctype);
-				if(capacity>0)
-				{
-					((Armor)building).setCapacity(capacity+woodRequired);
-					((Armor)building).setContainTypes(canContain);
-				}
-				((Armor)building).baseEnvStats().setArmor(0);
-				if(armordmg!=0)
-					((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1)+hardness);
-				((Armor)building).setRawProperLocationBitmap(0);
-				for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
-				{
-					String WO=Item.WORN_DESCS[wo].toUpperCase();
-					if(misctype.equalsIgnoreCase(WO))
-					{
-						((Armor)building).setRawProperLocationBitmap(CMath.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(false);
-					}
-					else
-					if((misctype.toUpperCase().indexOf(WO+"||")>=0)
-					||(misctype.toUpperCase().endsWith("||"+WO)))
-					{
-						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(false);
-					}
-					else
-					if((misctype.toUpperCase().indexOf(WO+"&&")>=0)
-					||(misctype.toUpperCase().endsWith("&&"+WO)))
-					{
-						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(true);
-					}
-				}
+			    if(capacity>0)
+			    {
+			        ((Armor)building).setCapacity(capacity+woodRequired);
+			        ((Armor)building).setContainTypes(canContain);
+			    }
+			    ((Armor)building).baseEnvStats().setArmor(0);
+			    if(armordmg!=0)
+			        ((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1)+hardness);
+                setWearLocation((Armor)building,misctype,0);
 			}
 			if(building instanceof Rideable)
 			{
-				if(misctype.equalsIgnoreCase("CHAIR"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_SIT);
-				else
-				if(misctype.equalsIgnoreCase("TABLE"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_TABLE);
-				else
-				if(misctype.equalsIgnoreCase("LADDER"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_LADDER);
-				else
-				if(misctype.equalsIgnoreCase("ENTER"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_ENTERIN);
-				else
-				if(misctype.equalsIgnoreCase("BED"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_SLEEP);
+                setRideBasis((Rideable)building,misctype);
 			}
 			building.recoverEnvStats();
 			building.text();

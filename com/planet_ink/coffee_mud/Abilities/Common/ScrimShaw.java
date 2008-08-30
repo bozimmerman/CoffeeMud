@@ -41,7 +41,10 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 	private static final String[] triggerStrings = {"SCRIM","SCRIMSHAWING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "BONE";}
-    public String parametersFormat(){ return "NAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASS\tMISC\tCAPACITY";}
+    public String parametersFormat(){ return 
+        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\tITEM_BASE_VALUE\t"
+        +"ITEM_CLASS_ID\tSTATUE||LID_LOCK||WEAPON_CLASS||RIDE_BASIS\t"
+        +"CONTAINER_CAPACITY||BASE_DAMAGE||LIGHT_DURATION";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -313,48 +316,15 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			if(building instanceof Weapon)
 			{
 				((Weapon)building).baseEnvStats().setAttackAdjustment(abilityCode()-1);
-				((Weapon)building).setWeaponType(Weapon.TYPE_BASHING);
-				((Weapon)building).setWeaponClassification(Weapon.CLASS_BLUNT);
-				for(int cl=0;cl<Weapon.CLASS_DESCS.length;cl++)
-				{
-					if(misctype.equalsIgnoreCase(Weapon.CLASS_DESCS[cl]))
-						((Weapon)building).setWeaponClassification(cl);
-				}
-				switch(((Weapon)building).weaponClassification())
-				{
-				case Weapon.CLASS_AXE:
-					((Weapon)building).setWeaponType(Weapon.TYPE_SLASHING);
-					break;
-				case Weapon.CLASS_SWORD:
-				case Weapon.CLASS_DAGGER:
-				case Weapon.CLASS_EDGED:
-				case Weapon.CLASS_NATURAL:
-				case Weapon.CLASS_POLEARM:
-				case Weapon.CLASS_RANGED:
-				case Weapon.CLASS_THROWN:
-					((Weapon)building).setWeaponType(Weapon.TYPE_PIERCING);
-					break;
-				case Weapon.CLASS_BLUNT:
-				case Weapon.CLASS_FLAILED:
-				case Weapon.CLASS_HAMMER:
-				case Weapon.CLASS_STAFF:
-					((Weapon)building).setWeaponType(Weapon.TYPE_BASHING);
-					break;
-				}
+                ((Weapon)building).setWeaponClassification(Weapon.CLASS_FLAILED);
+                setWeaponTypeClass((Weapon)building,misctype,Weapon.TYPE_BASHING,Weapon.TYPE_PIERCING);
 				building.baseEnvStats().setDamage(capacity);
 				((Weapon)building).setRawProperLocationBitmap(Item.WORN_WIELD|Item.WORN_HELD);
 				((Weapon)building).setRawLogicalAnd(false);
 			}
 			if(building instanceof Rideable)
 			{
-				if(misctype.equalsIgnoreCase("CHAIR"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_SIT);
-				else
-				if(misctype.equalsIgnoreCase("TABLE"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_TABLE);
-				else
-				if(misctype.equalsIgnoreCase("BED"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_SLEEP);
+                setRideBasis((Rideable)building,misctype);
 			}
 			if(building instanceof Light)
 			{

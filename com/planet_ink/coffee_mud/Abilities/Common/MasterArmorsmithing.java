@@ -39,7 +39,6 @@ public class MasterArmorsmithing extends Armorsmithing implements ItemCraftor
 	public String name(){ return "Master Armorsmithing";}
 	private static final String[] triggerStrings = {"MARMORSMITH","MASTERARMORSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
-    public String parametersFormat(){ return "NAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASS\tMISC\tCAPACITY\tARMORDMG\tCONTAIN\tSPELL";}
 
     public String parametersFile(){ return "masterarmorsmith.txt";}
     protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}

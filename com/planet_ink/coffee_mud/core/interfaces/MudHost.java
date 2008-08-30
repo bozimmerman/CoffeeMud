@@ -12,6 +12,10 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
+import java.io.IOException;
+import java.net.Socket;
+import java.net.SocketException;
 import java.util.*;
 
 /* 
@@ -92,6 +96,12 @@ public interface MudHost
      * @param truefalse whether it is accepting connections
      */
     public void setAcceptConnections(boolean truefalse);
+    
+    /**
+     * Handles a connection from a user, and internal states
+     * @param sock the socket the connection was made on
+     */
+    public void acceptConnection(Socket sock) throws SocketException, IOException;
     
     /**
      * Sets whether this mud is accepting connections

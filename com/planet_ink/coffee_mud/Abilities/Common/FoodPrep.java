@@ -42,7 +42,6 @@ public class FoodPrep extends Cooking
 	public String cookWord(){return "making";}
 	public boolean honorHerbs(){return false;}
 	public boolean requireFire(){return false;}
-    public String parametersFormat(){ return "FINALFOOD\tFOODDRINK\tBONUSSPELL\tLEVEL\tMAININGR\tMAINAMNT\tOTHERINGREDIENT\tOTHERAMOUNT\tOTHERINGREDIENT\tOTHERAMOUNT\tOTHERINGREDIENT\tOTHERAMOUNT\tOTHERINGREDIENT\tOTHERAMOUNT\tOTHERINGREDIENT\tOTHERAMOUNT\tOTHERINGREDIENT\tOTHERAMOUNT";}
 
     public String parametersFile(){ return "foodprep.txt";}
     protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}

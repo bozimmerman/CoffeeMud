@@ -38,7 +38,7 @@ public class Taxidermy extends CraftingSkill
 	private static final String[] triggerStrings = {"STUFF","TAXIDERMY"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "BODIES";}
-    public String parametersFormat(){ return "NAME\nDESCRIPTION\n...\n";}
+    public String parametersFormat(){ return "POSE_NAME\nPOSE_DESCRIPTION\n...\n";}
 
 	protected String foundShortName="";
 

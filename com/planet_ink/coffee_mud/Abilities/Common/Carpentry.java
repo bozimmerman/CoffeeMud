@@ -40,10 +40,12 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"CARVE","CARPENTRY"};
 	public String[] triggerStrings(){return triggerStrings;}
 	public String supportedResourceString(){return "WOODEN";}
-    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tMISCTYPE\tCAPACITY\tARMORDMG\tCONTAINMASK\tSPELL";}
-	// inherets its enhanced crafting support from superclass -- you can make ANYTHING with this badboy!
-
-
+    public String parametersFormat(){ return 
+        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\t"
+       +"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
+       +"LID_LOCK||STATUE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION||SMOKE_FLAG\t"
+       +"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED||LIQUID_CAPACITY||LIGHT_DURATION\t"
+       +"BASE_ARMOR_AMOUNT||BASE_DAMAGE\tCONTAINER_TYPE\tCODED_SPELL_LIST";}
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
 	protected static final int RCP_TICKS=2;
@@ -369,48 +371,12 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			if(building instanceof Rideable)
 			{
-				if(misctype.equalsIgnoreCase("CHAIR"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_SIT);
-				else
-				if(misctype.equalsIgnoreCase("TABLE"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_TABLE);
-				else
-				if(misctype.equalsIgnoreCase("LADDER"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_LADDER);
-				else
-				if(misctype.equalsIgnoreCase("BED"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_SLEEP);
+			    setRideBasis((Rideable)building,misctype);
 			}
 			if(building instanceof Weapon)
 			{
-				((Weapon)building).setWeaponType(Weapon.TYPE_BASHING);
-				((Weapon)building).setWeaponClassification(Weapon.CLASS_BLUNT);
-				for(int cl=0;cl<Weapon.CLASS_DESCS.length;cl++)
-				{
-					if(misctype.equalsIgnoreCase(Weapon.CLASS_DESCS[cl]))
-						((Weapon)building).setWeaponClassification(cl);
-				}
-				switch(((Weapon)building).weaponClassification())
-				{
-				case Weapon.CLASS_AXE:
-				case Weapon.CLASS_FLAILED:
-					((Weapon)building).setWeaponType(Weapon.TYPE_SLASHING);
-					break;
-				case Weapon.CLASS_SWORD:
-				case Weapon.CLASS_DAGGER:
-				case Weapon.CLASS_EDGED:
-				case Weapon.CLASS_POLEARM:
-				case Weapon.CLASS_RANGED:
-					((Weapon)building).setWeaponType(Weapon.TYPE_PIERCING);
-					break;
-				case Weapon.CLASS_NATURAL:
-				case Weapon.CLASS_THROWN:
-				case Weapon.CLASS_BLUNT:
-				case Weapon.CLASS_HAMMER:
-				case Weapon.CLASS_STAFF:
-					((Weapon)building).setWeaponType(Weapon.TYPE_BASHING);
-					break;
-				}
+			    ((Weapon)building).setWeaponClassification(Weapon.CLASS_BLUNT);
+			    setWeaponTypeClass((Weapon)building,misctype,Weapon.TYPE_SLASHING);
 				building.baseEnvStats().setAttackAdjustment((abilityCode()+(hardness*5)-1));
 				building.baseEnvStats().setDamage(armordmg+hardness);
 				((Weapon)building).setRawProperLocationBitmap(Item.WORN_WIELD|Item.WORN_HELD);
@@ -418,40 +384,10 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 			}
 			if(building instanceof Armor)
 			{
-				double hardBonus=0.0;
-				misctype=applyLayers((Armor)building,misctype);
-				((Armor)building).setRawProperLocationBitmap(0);
-				for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
-				{
-					String WO=Item.WORN_DESCS[wo].toUpperCase();
-					if(misctype.equalsIgnoreCase(WO))
-					{
-						hardBonus+=Item.WORN_WEIGHTS[wo];
-						((Armor)building).setRawProperLocationBitmap(CMath.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(false);
-					}
-					else
-					if((misctype.toUpperCase().indexOf(WO+"||")>=0)
-					||(misctype.toUpperCase().endsWith("||"+WO)))
-					{
-						if(hardBonus==0.0)
-							hardBonus+=Item.WORN_WEIGHTS[wo];
-						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(false);
-					}
-					else
-					if((misctype.toUpperCase().indexOf(WO+"&&")>=0)
-					||(misctype.toUpperCase().endsWith("&&"+WO)))
-					{
-						hardBonus+=Item.WORN_WEIGHTS[wo];
-						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(true);
-					}
-				}
-				int hardPoints=(int)Math.round(CMath.mul(hardBonus,hardness));
-				((Armor)building).baseEnvStats().setArmor(0);
-				if(armordmg!=0)
-					((Armor)building).baseEnvStats().setArmor(armordmg+hardPoints+(abilityCode()-1));
+                ((Armor)building).baseEnvStats().setArmor(0);
+                if(armordmg!=0)
+                    ((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1));
+			    setWearLocation((Armor)building,misctype,hardness);
 			}
 			if(building instanceof Light)
 			{

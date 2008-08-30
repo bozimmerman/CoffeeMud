@@ -201,6 +201,22 @@ public class HTTPserver extends Thread implements MudHost
 		return true;
 	}
 
+    public void acceptConnection(Socket sock) 
+        throws SocketException, IOException
+    {
+        if(acceptConnections)
+        {
+            while(CMLib.threads().isAllSuspended()) {
+                try { Thread.sleep(1000); } catch(Exception e) { throw new IOException(e.getMessage());}
+            }
+            state=1;
+            ProcessHTTPrequest W=new ProcessHTTPrequest(sock,this,page,isAdminServer);
+            W.equals(W); // this prevents an initialized by never used error
+            // nb - ProcessHTTPrequest is a Thread, but it .start()s in the constructor
+            //  if succeeds - no need to .start() it here
+        }
+    }
+	
 	public void run()
 	{
 		int q_len = 6;
@@ -253,16 +269,7 @@ public class HTTPserver extends Thread implements MudHost
 			{
                 state=0;
 				sock=servsock.accept();
-                if(acceptConnections)
-                {
-                    while(CMLib.threads().isAllSuspended())
-                        Thread.sleep(1000);
-                    state=1;
-    				ProcessHTTPrequest W=new ProcessHTTPrequest(sock,this,page,isAdminServer);
-    				W.equals(W); // this prevents an initialized by never used error
-    				// nb - ProcessHTTPrequest is a Thread, but it .start()s in the constructor
-    				//  if succeeds - no need to .start() it here
-                }
+				acceptConnection(sock);
 				sock = null;
 			}
 		}

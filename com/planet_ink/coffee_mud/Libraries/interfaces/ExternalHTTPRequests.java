@@ -42,6 +42,7 @@ public interface ExternalHTTPRequests extends CMLibrary
         throws HTTPRedirectException;
 	public String ServerVersionString();
 	public String getWebServerPortStr();
+    public int getWebServerPort();
 	public String getHTTPstatus();
 	public String getHTTPstatusInfo();
 	public String getHTTPclientIP();

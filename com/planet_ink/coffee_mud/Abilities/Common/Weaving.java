@@ -40,7 +40,11 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	private static final String[] triggerStrings = {"WEAVING","WEAVE"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "WHEAT|VINE|SEAWEED|HEMP|SILK|COTTON";}
-    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tMISCTYPE\tCAPACITY\tARMORDMG\tCONTAINMASK\tSPELL";}
+    public String parametersFormat(){ return 
+        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\tITEM_BASE_VALUE\t"
+        +"ITEM_CLASS_ID\tWEAPON_CLASSIFICATION||CODED_WEAR_LOCATION||RIDE_BASIS||LID_LOCK\t"
+        +"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED\tBASE_ARMOR_AMOUNT||BASE_DAMAGE\t"
+        +"CONTAINER_TYPE\tCODED_SPELL_LIST";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -374,39 +378,15 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			key=null;
 			if(building instanceof Armor)
 			{
-				misctype=applyLayers((Armor)building,misctype);
 				if(capacity>0)
 				{
 					((Armor)building).setCapacity(capacity+woodRequired);
 					((Armor)building).setContainTypes(canContain);
 				}
-				((Armor)building).baseEnvStats().setArmor(0);
-				if(armordmg!=0)
-					((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1));
-				((Armor)building).setRawProperLocationBitmap(0);
-				for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
-				{
-					String WO=Item.WORN_DESCS[wo].toUpperCase();
-					if(misctype.equalsIgnoreCase(WO))
-					{
-						((Armor)building).setRawProperLocationBitmap(CMath.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(false);
-					}
-					else
-					if((misctype.toUpperCase().indexOf(WO+"||")>=0)
-					||(misctype.toUpperCase().endsWith("||"+WO)))
-					{
-						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(false);
-					}
-					else
-					if((misctype.toUpperCase().indexOf(WO+"&&")>=0)
-					||(misctype.toUpperCase().endsWith("&&"+WO)))
-					{
-						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(true);
-					}
-				}
+                ((Armor)building).baseEnvStats().setArmor(0);
+                if(armordmg!=0)
+                    ((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1));
+                setWearLocation((Armor)building,misctype,0);
 			}
 			else
 			if(building instanceof Container)
@@ -434,26 +414,12 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			}
 			if(building instanceof Rideable)
 			{
-				if(misctype.equalsIgnoreCase("CHAIR"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_SIT);
-				else
-				if(misctype.equalsIgnoreCase("TABLE"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_TABLE);
-				else
-				if(misctype.equalsIgnoreCase("LADDER"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_LADDER);
-				else
-				if(misctype.equalsIgnoreCase("ENTER"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_ENTERIN);
-				else
-				if(misctype.equalsIgnoreCase("BED"))
-					((Rideable)building).setRideBasis(Rideable.RIDEABLE_SLEEP);
+                setRideBasis((Rideable)building,misctype);
 			}
 			building.recoverEnvStats();
 			building.text();
 			building.recoverEnvStats();
 		}
-
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 

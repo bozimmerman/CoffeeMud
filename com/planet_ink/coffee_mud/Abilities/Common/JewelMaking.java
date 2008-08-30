@@ -41,7 +41,9 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 	private static final String[] triggerStrings = {"JEWEL","JEWELMAKING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "GLASS|PRECIOUS|SAND";}
-    public String parametersFormat(){ return "NAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASS\tMISC\tCAPACITY\tARMORDMG\tEXTRAMATERIALREQUIREMENT";}
+    public String parametersFormat(){ return 
+        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\tITEM_BASE_VALUE\t"
+        +"ITEM_CLASS_ID\tSTATUE||\t\tBASE_ARMOR_AMOUNT\tRESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -447,34 +449,10 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
 			addSpells(building,spell);
 			if(building instanceof Armor)
 			{
-				misctype=applyLayers((Armor)building,misctype);
-				((Armor)building).baseEnvStats().setArmor(0);
-				if(armordmg!=0)
-					((Armor)building).baseEnvStats().setArmor(armordmg);
-				((Armor)building).setRawProperLocationBitmap(0);
-				for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
-				{
-					String WO=Item.WORN_DESCS[wo].toUpperCase();
-					if(misctype.equalsIgnoreCase(WO))
-					{
-						((Armor)building).setRawProperLocationBitmap(CMath.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(false);
-					}
-					else
-					if((misctype.toUpperCase().indexOf(WO+"||")>=0)
-					||(misctype.toUpperCase().endsWith("||"+WO)))
-					{
-						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(false);
-					}
-					else
-					if((misctype.toUpperCase().indexOf(WO+"&&")>=0)
-					||(misctype.toUpperCase().endsWith("&&"+WO)))
-					{
-						((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
-						((Armor)building).setRawLogicalAnd(true);
-					}
-				}
+                ((Armor)building).baseEnvStats().setArmor(0);
+                if(armordmg!=0)
+                    ((Armor)building).baseEnvStats().setArmor(armordmg);
+                setWearLocation((Armor)building,misctype,0);
 			}
 			if((misctype.equalsIgnoreCase("statue"))&&(!mob.isMonster()))
 			{

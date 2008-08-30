@@ -420,6 +420,116 @@ public class MUD extends Thread implements MudHost
 		return true;
 	}
 
+	public void acceptConnection(Socket sock)
+	    throws SocketException, IOException
+	{
+        sock.setSoLinger(true,3);
+        state=1;
+
+        if (acceptConnections)
+        {
+            String address="unknown";
+            try{address=sock.getInetAddress().getHostAddress().trim();}catch(Exception e){}
+            Log.sysOut(Thread.currentThread().getName(),"Connection from "+address);
+            int proceed=0;
+            if(CMSecurity.isBanned(address))
+                proceed=1;
+            int numAtThisAddress=0;
+            long ConnectionWindow=(180*1000);
+            long LastConnectionDelay=(5*60*1000);
+            boolean anyAtThisAddress=false;
+            int maxAtThisAddress=6;
+            if(!CMSecurity.isDisabled("CONNSPAMBLOCK"))
+            {
+                try{
+                    for(int a=accessed.size()-1;a>=0;a--)
+                    {
+                        if((((Long)accessed.elementAt(a,2)).longValue()+LastConnectionDelay)<System.currentTimeMillis())
+                            accessed.removeElementAt(a);
+                        else
+                        if(((String)accessed.elementAt(a,1)).trim().equalsIgnoreCase(address))
+                        {
+                            anyAtThisAddress=true;
+                            if((((Long)accessed.elementAt(a,2)).longValue()+ConnectionWindow)>System.currentTimeMillis())
+                                numAtThisAddress++;
+                        }
+                    }
+                    if(autoblocked.contains(address.toUpperCase()))
+                    {
+                        if(!anyAtThisAddress)
+                            autoblocked.remove(address.toUpperCase());
+                        else
+                            proceed=2;
+                    }
+                    else
+                    if(numAtThisAddress>=maxAtThisAddress)
+                    {
+                        autoblocked.addElement(address.toUpperCase());
+                        proceed=2;
+                    }
+                }catch(java.lang.ArrayIndexOutOfBoundsException e){}
+
+                accessed.addElement(address,new Long(System.currentTimeMillis()));
+            }
+
+            if(proceed!=0)
+            {
+                Log.sysOut(Thread.currentThread().getName(),"Blocking a connection from "+address);
+                PrintWriter out = new PrintWriter(sock.getOutputStream());
+                out.println("\n\rOFFLINE: Blocked\n\r");
+                out.flush();
+                if(proceed==2)
+                    out.println("\n\rYour address has been blocked temporarily due to excessive invalid connections.  Please try back in " + (LastConnectionDelay/60000) + " minutes, and not before.\n\r\n\r");
+                else
+                    out.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
+                out.flush();
+                try{Thread.sleep(250);}catch(Exception e){}
+                out.close();
+                sock = null;
+            }
+            else
+            {
+                state=2;
+                // also the intro page
+                CMFile introDir=new CMFile(Resources.makeFileResourceName("text"),null,false,true);
+                String introFilename="text/intro.txt";
+                if(introDir.isDirectory())
+                {
+                    CMFile[] files=introDir.listFiles();
+                    Vector choices=new Vector();
+                    for(int f=0;f<files.length;f++)
+                        if(files[f].getName().toLowerCase().startsWith("intro")
+                        &&files[f].getName().toLowerCase().endsWith(".txt"))
+                            choices.addElement("text/"+files[f].getName());
+                    if(choices.size()>0) introFilename=(String)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+                }
+                StringBuffer introText=Resources.getFileResource(introFilename,true);
+                Session S=(Session)CMClass.getCommon("DefaultSession");
+                S.initializeSession(sock, introText != null ? introText.toString() : null);
+                S.start();
+                CMLib.sessions().addElement(S);
+                sock = null;
+            }
+        }
+        else
+        if((CMLib.database()!=null)&&(CMLib.database().isConnected())&&(CMLib.encoder()!=null))
+        {
+            StringBuffer rejectText=Resources.getFileResource("text/offline.txt",true);
+            PrintWriter out = new PrintWriter(sock.getOutputStream());
+            out.println("\n\rOFFLINE: " + CMProps.getVar(CMProps.SYSTEM_MUDSTATUS)+"\n\r");
+            out.println(rejectText);
+            out.flush();
+            try{Thread.sleep(1000);}catch(Exception e){}
+            out.close();
+            sock = null;
+        }
+        else
+        {
+            sock.close();
+            sock = null;
+        }
+	}
+	
 
 	public void run()
 	{
@@ -460,111 +570,7 @@ public class MUD extends Thread implements MudHost
                 state=0;
                 if(servsock==null) break;
 				sock=servsock.accept();
-				sock.setSoLinger(true,3);
-                state=1;
-
-				if (acceptConnections)
-				{
-					String address="unknown";
-					try{address=sock.getInetAddress().getHostAddress().trim();}catch(Exception e){}
-					Log.sysOut(Thread.currentThread().getName(),"Connection from "+address);
-                    int proceed=0;
-                    if(CMSecurity.isBanned(address))
-                        proceed=1;
-					int numAtThisAddress=0;
-					long ConnectionWindow=(180*1000);
-					long LastConnectionDelay=(5*60*1000);
-					boolean anyAtThisAddress=false;
-					int maxAtThisAddress=6;
-                    if(!CMSecurity.isDisabled("CONNSPAMBLOCK"))
-                    {
-    					try{
-    						for(int a=accessed.size()-1;a>=0;a--)
-    						{
-    							if((((Long)accessed.elementAt(a,2)).longValue()+LastConnectionDelay)<System.currentTimeMillis())
-    								accessed.removeElementAt(a);
-    							else
-    							if(((String)accessed.elementAt(a,1)).trim().equalsIgnoreCase(address))
-    							{
-    								anyAtThisAddress=true;
-    								if((((Long)accessed.elementAt(a,2)).longValue()+ConnectionWindow)>System.currentTimeMillis())
-    									numAtThisAddress++;
-    							}
-    						}
-    						if(autoblocked.contains(address.toUpperCase()))
-    						{
-    							if(!anyAtThisAddress)
-    								autoblocked.remove(address.toUpperCase());
-    							else
-    								proceed=2;
-    						}
-    						else
-    						if(numAtThisAddress>=maxAtThisAddress)
-    						{
-    							autoblocked.addElement(address.toUpperCase());
-    							proceed=2;
-    						}
-    					}catch(java.lang.ArrayIndexOutOfBoundsException e){}
-
-    					accessed.addElement(address,new Long(System.currentTimeMillis()));
-                    }
-
-					if(proceed!=0)
-					{
-						Log.sysOut(Thread.currentThread().getName(),"Blocking a connection from "+address);
-						PrintWriter out = new PrintWriter(sock.getOutputStream());
-						out.println("\n\rOFFLINE: Blocked\n\r");
-						out.flush();
-						if(proceed==2)
-							out.println("\n\rYour address has been blocked temporarily due to excessive invalid connections.  Please try back in " + (LastConnectionDelay/60000) + " minutes, and not before.\n\r\n\r");
-						else
-							out.println("\n\rYou are unwelcome.  No one likes you here. Go away.\n\r\n\r");
-						out.flush();
-                        try{Thread.sleep(250);}catch(Exception e){}
-						out.close();
-						sock = null;
-					}
-					else
-					{
-                        state=2;
-                        // also the intro page
-                        CMFile introDir=new CMFile(Resources.makeFileResourceName("text"),null,false,true);
-                        String introFilename="text/intro.txt";
-                        if(introDir.isDirectory())
-                        {
-                            CMFile[] files=introDir.listFiles();
-                            Vector choices=new Vector();
-                            for(int f=0;f<files.length;f++)
-                                if(files[f].getName().toLowerCase().startsWith("intro")
-                                &&files[f].getName().toLowerCase().endsWith(".txt"))
-                                    choices.addElement("text/"+files[f].getName());
-                            if(choices.size()>0) introFilename=(String)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
-                        }
-						StringBuffer introText=Resources.getFileResource(introFilename,true);
-                        Session S=(Session)CMClass.getCommon("DefaultSession");
-                        S.initializeSession(sock, introText != null ? introText.toString() : null);
-						S.start();
-						CMLib.sessions().addElement(S);
-						sock = null;
-					}
-				}
-				else
-                if((CMLib.database()!=null)&&(CMLib.database().isConnected())&&(CMLib.encoder()!=null))
-				{
-					StringBuffer rejectText=Resources.getFileResource("text/offline.txt",true);
-					PrintWriter out = new PrintWriter(sock.getOutputStream());
-					out.println("\n\rOFFLINE: " + CMProps.getVar(CMProps.SYSTEM_MUDSTATUS)+"\n\r");
-					out.println(rejectText);
-					out.flush();
-                    try{Thread.sleep(1000);}catch(Exception e){}
-					out.close();
-					sock = null;
-				}
-                else
-                {
-                    sock.close();
-                    sock = null;
-                }
+				acceptConnection(sock);
 			}
 		}
 		catch(Throwable t)

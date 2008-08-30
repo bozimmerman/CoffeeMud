@@ -438,6 +438,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return new StringBuffer("");
 	}
 
+	protected int determineSeason(String str)
+    {
+        str=str.toUpperCase().trim();
+        if(str.length()==0) return -1;
+        for(int i=0;i<TimeClock.SEASON_DESCS.length;i++)
+            if(TimeClock.SEASON_DESCS[i].startsWith(str))
+                return i;
+        return -1;
+    }
+    
 	protected int levelMinHelp(String lvl, char c, int minMinLevel, boolean reversed)
     {
         if(lvl.startsWith(c+">=")&&(CMath.isNumber(lvl.substring(3).trim())))
@@ -1059,7 +1069,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 }
                                 else
                                 {
-                                    int season=CMLib.time().globalClock().determineSeason(str2.substring(1).trim());
+                                    int season=determineSeason(str2.substring(1).trim());
                                     if((season>=0)&&(season<TimeClock.SEASON_DESCS.length))
                                         buf.append(TimeClock.SEASON_DESCS[season]+", ");
                                 }
@@ -1086,7 +1096,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 }
                                 else
                                 {
-                                    int season=CMLib.time().globalClock().determineSeason(str2.substring(1).trim());
+                                    int season=determineSeason(str2.substring(1).trim());
                                     if((season>=0)&&(season<TimeClock.SEASON_DESCS.length))
                                         buf.append(TimeClock.SEASON_DESCS[season]+", ");
                                 }
@@ -2561,8 +2571,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 if(CMath.isInteger(str2.substring(1).trim()))
                                     entry.addElement(new Integer(CMath.s_int(str2.substring(1).trim())));
                                 else
-                                if(CMLib.time().globalClock().determineSeason(str2.substring(1).trim())>=0)
-                                    entry.addElement(new Integer(CMLib.time().globalClock().determineSeason(str2.substring(1).trim())));
+                                if(determineSeason(str2.substring(1).trim())>=0)
+                                    entry.addElement(new Integer(determineSeason(str2.substring(1).trim())));
                             }
                             v=V.size();
                         }

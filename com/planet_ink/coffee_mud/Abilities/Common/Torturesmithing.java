@@ -41,7 +41,12 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 	private static final String[] triggerStrings = {"TORTURESMITH","TORTURESMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
     public String supportedResourceString(){return "METAL|MITHRIL|CLOTH";}
-    public String parametersFormat(){ return "NAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASS\tMISC\tCAPACITY\tARMORDMG\tMATERIALTYPE\tSPELL";}
+    public String parametersFormat(){ return 
+        "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\t"
+       +"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
+       +"LID_LOCK||CONTAINER_TYPE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION\t"
+       +"CONTAINER_CAPACITY||LIQUID_CAPACITY\t"
+       +"BASE_ARMOR_AMOUNT\tWOOD_METAL_CLOTH\tCODED_SPELL_LIST";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
@@ -232,55 +237,14 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		}
 		if(building instanceof Rideable)
 		{
-			if(misctype.equalsIgnoreCase("CHAIR"))
-				((Rideable)building).setRideBasis(Rideable.RIDEABLE_SIT);
-			else
-			if(misctype.equalsIgnoreCase("TABLE"))
-				((Rideable)building).setRideBasis(Rideable.RIDEABLE_TABLE);
-			else
-			if(misctype.equalsIgnoreCase("LADDER"))
-				((Rideable)building).setRideBasis(Rideable.RIDEABLE_LADDER);
-			else
-			if(misctype.equalsIgnoreCase("BED"))
-				((Rideable)building).setRideBasis(Rideable.RIDEABLE_SLEEP);
+            setRideBasis((Rideable)building,misctype);
 		}
 		if(building instanceof Armor)
 		{
-			double hardBonus=0.0;
-			misctype=applyLayers((Armor)building,misctype);
-			((Armor)building).setRawProperLocationBitmap(0);
-			for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
-			{
-			    ((Armor)building).baseEnvStats().setSensesMask(EnvStats.SENSE_ITEMNOREMOVE);
-				String WO=Item.WORN_DESCS[wo].toUpperCase();
-				if(misctype.equalsIgnoreCase(WO))
-				{
-					hardBonus+=Item.WORN_WEIGHTS[wo];
-					((Armor)building).setRawProperLocationBitmap(CMath.pow(2,wo-1));
-					((Armor)building).setRawLogicalAnd(false);
-				}
-				else
-				if((misctype.toUpperCase().indexOf(WO+"||")>=0)
-				||(misctype.toUpperCase().endsWith("||"+WO)))
-				{
-					if(hardBonus==0.0)
-						hardBonus+=Item.WORN_WEIGHTS[wo];
-					((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
-					((Armor)building).setRawLogicalAnd(false);
-				}
-				else
-				if((misctype.toUpperCase().indexOf(WO+"&&")>=0)
-				||(misctype.toUpperCase().endsWith("&&"+WO)))
-				{
-					hardBonus+=Item.WORN_WEIGHTS[wo];
-					((Armor)building).setRawProperLocationBitmap(building.rawProperLocationBitmap()|CMath.pow(2,wo-1));
-					((Armor)building).setRawLogicalAnd(true);
-				}
-			}
-			int hardPoints=(int)Math.round(CMath.mul(hardBonus,hardness));
-			((Armor)building).baseEnvStats().setArmor(0);
-			if(armordmg!=0)
-				((Armor)building).baseEnvStats().setArmor(armordmg+hardPoints+(abilityCode()-1));
+            ((Armor)building).baseEnvStats().setArmor(0);
+            if(armordmg!=0)
+                ((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1));
+            setWearLocation((Armor)building,misctype,hardness);
 		}
 		if(building instanceof Drink)
 		{

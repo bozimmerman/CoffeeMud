@@ -108,21 +108,27 @@ public class Prop_Familiar extends Property
 			if((!imthedaddy)
 		    &&(familiarTo==null)
 		    &&(familiarWith==null)
-		    &&(((MOB)affected).amFollowing()!=null))
+		    &&(CMLib.flags().isInTheGame(affected,true))
+		    &&(((MOB)affected).amFollowing()!=null)
+            &&(CMLib.flags().isInTheGame(((MOB)affected).amFollowing(),true)))
 			{
+			    MOB following=((MOB)affected).amFollowing();
 				familiarWith=(MOB)affected;
-				familiarTo=familiarWith.amFollowing();
+				familiarTo=following;
 				Prop_Familiar F=(Prop_Familiar)copyOf();
 				F.setSavable(false);
 				F.imthedaddy=true;
-				F.familiarWith=familiarWith;
-				familiarTo.addEffect(F);
-				familiarTo.recoverCharStats();
-				familiarTo.recoverEnvStats();
+				F.familiarWith=(MOB)affected;
+				F.familiarTo = following; // yes, points to self
+				following.delEffect(following.fetchEffect(F.ID()));
+				following.addEffect(F);
+				following.recoverCharStats();
+				following.recoverEnvStats();
 			}
 			if((familiarWith!=null)
             &&(familiarTo!=null)
-			&&((familiarWith.amFollowing()==null)||(familiarWith.amFollowing()!=familiarTo))
+			&&((familiarWith.amFollowing()==null)
+			        ||(familiarWith.amFollowing()!=familiarTo))
 			&&(CMLib.flags().isInTheGame(familiarWith,true)))
                 removeMeFromFamiliarTo();
 		}
@@ -132,7 +138,9 @@ public class Prop_Familiar extends Property
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
         
-        if((familiarWith!=null)&&(familiarTo!=null)&&(familiarWith.location()==familiarTo.location()))
+        if((familiarWith!=null)
+        &&(familiarTo!=null)
+        &&(familiarWith.location()==familiarTo.location()))
 		switch(familiarType)
 		{
 		case DOG:
@@ -142,7 +150,8 @@ public class Prop_Familiar extends Property
 				if(((affectableStats.sensesMask()&EnvStats.CAN_NOT_BREATHE)>0)
 				&&(affected instanceof MOB)
 				&&(((MOB)affected).location()!=null)
-				&&((((MOB)affected).location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)||(((MOB)affected).location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)))
+				&&((((MOB)affected).location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
+				    ||(((MOB)affected).location().domainType()==Room.DOMAIN_INDOORS_UNDERWATER)))
 					affectableStats.setSensesMask(affectableStats.sensesMask()-EnvStats.CAN_NOT_BREATHE);
 				break;
 		case CAT:
@@ -212,7 +221,9 @@ public class Prop_Familiar extends Property
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-        if((familiarWith!=null)&&(familiarTo!=null)&&(familiarWith.location()==familiarTo.location()))
+        if((familiarWith!=null)
+        &&(familiarTo!=null)
+        &&(familiarWith.location()==familiarTo.location()))
 		switch(familiarType)
 		{
 		case DOG:

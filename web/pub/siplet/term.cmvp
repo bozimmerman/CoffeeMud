@@ -182,7 +182,13 @@ function connect(url,port)
     var thespan=top.term.document.getElementById(myname+'namer');
     thespan.innerHTML=s
     gauges=new Array(0);
-    if(!theapplet.connectToURL(url,port))
+    var connectWorked = theapplet.connectToURL(url,port); 
+    if(!connectWorked)
+    {
+        connectWorked = theapplet.connectToURL(url,@WebServerPort?CURRENT@); 
+        if(connectWorked) sendData('MUD\n\n\r\r');
+    }
+    if(!connectWorked)
         alert('Could not connect.');
     else
     {

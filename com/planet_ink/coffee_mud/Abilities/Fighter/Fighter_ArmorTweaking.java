@@ -45,6 +45,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
 	public int maxRange(){return adjustedMaxInvokerRange(0);}
 	public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ARMORUSE;}
 	public int usageType(){return USAGE_MANA;}
+	private int armorBonus = 1;
     
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
@@ -57,6 +58,12 @@ public class Fighter_ArmorTweaking extends FighterSkill
 		}
 	}
 
+	public void setMiscText(String newMiscText) {
+	    super.setMiscText(newMiscText);
+	    if(newMiscText.length()>0)
+	        armorBonus=CMath.s_int(newMiscText);
+	}
+	
 	public void unInvoke()
 	{
 		if((affected instanceof Item)
@@ -72,8 +79,8 @@ public class Fighter_ArmorTweaking extends FighterSkill
 	
 	public void affectEnvStats(Environmental affected, EnvStats stats)
 	{
-		if((affected instanceof Item)&&(super.miscText.length()>0)&&(((Item)affected).owner() instanceof MOB))
-			stats.setArmor(stats.armor()+CMath.s_int(text()));
+		if((affected instanceof Item)&&(armorBonus>0)&&(((Item)affected).owner() instanceof MOB))
+			stats.setArmor(stats.armor()+armorBonus);
 	}
 	
     public int castingQuality(MOB mob, Environmental target)

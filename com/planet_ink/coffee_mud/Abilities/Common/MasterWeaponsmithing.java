@@ -40,7 +40,6 @@ public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
 	private static final String[] triggerStrings = {"MWEAPONSMITH","MASTERWEAPONSMITHING"};
 	public String[] triggerStrings(){return triggerStrings;}
     protected int displayColumns(){return 2;}
-    public String parametersFormat(){ return "FINALNAME\tLEVEL\tTICKS\tWOOD\tVALUE\tCLASSTYPE\tWEAPONCLASS\tWEAPONTYPE\tARMORDMG\tATTACK\tHANDS\tMAXRANGE\tEXTRAREQ\tSPELL";}
 
     public String parametersFile(){ return "masterweaponsmith.txt";}
     protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
