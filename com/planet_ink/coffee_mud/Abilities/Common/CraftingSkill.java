@@ -747,10 +747,10 @@ public class CraftingSkill extends GatheringSkill
             weapon.setWeaponType(Weapon.TYPE_PIERCING);
             break;
         case Weapon.CLASS_FLAILED:
-            return flailedType;
+            weapon.setWeaponType(flailedType);
             break;
         case Weapon.CLASS_NATURAL:
-            return naturalType;
+            weapon.setWeaponType(naturalType);
             break;
         case Weapon.CLASS_NATURAL:
         case Weapon.CLASS_BLUNT:
