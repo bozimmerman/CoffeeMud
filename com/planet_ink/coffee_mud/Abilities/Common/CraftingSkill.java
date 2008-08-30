@@ -752,7 +752,6 @@ public class CraftingSkill extends GatheringSkill
         case Weapon.CLASS_NATURAL:
             weapon.setWeaponType(naturalType);
             break;
-        case Weapon.CLASS_NATURAL:
         case Weapon.CLASS_BLUNT:
         case Weapon.CLASS_HAMMER:
         case Weapon.CLASS_STAFF:
