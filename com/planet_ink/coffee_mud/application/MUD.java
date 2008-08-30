@@ -199,6 +199,18 @@ public class MUD extends Thread implements MudHost
 			System.exit(-1);
 		}
 
+        // test the database
+        try {
+            CMFile F = new CMFile("/test.the.database",null,false);
+            if(F.exists())
+                Log.sysOut(Thread.currentThread().getName(),"Test file found .. hmm.. that was unexpected.");
+                
+        } catch(Throwable e) {
+            Log.errOut(Thread.currentThread().getName(),e.getMessage());
+            Log.errOut(Thread.currentThread().getName(),"Database error! Panic shutdown!");
+            System.exit(-1);
+        }
+        
 		String webServersList=page.getPrivateStr("RUNWEBSERVERS");
 		if(webServersList.equalsIgnoreCase("true"))
 		    webServersList="pub,admin";
