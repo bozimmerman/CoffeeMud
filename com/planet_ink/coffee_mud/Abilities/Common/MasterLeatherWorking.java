@@ -470,7 +470,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
                 ((Armor)building).baseEnvStats().setArmor(0);
                 if(armordmg!=0)
                     ((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1)+hardness);
-                setWearLocation((Armor)building,misctype,0);
+                setWearLocation(building,misctype,0);
 			}
 			if(building instanceof Drink)
 			{

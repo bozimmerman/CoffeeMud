@@ -38,8 +38,7 @@ public class WebServerPort extends StdWebMacro
 	    Hashtable parms=parseParms(parm);
 	    if(parms.containsKey("CURRENT"))
             return Integer.toString(httpReq.getWebServerPort());
-	    else
-    		return httpReq.getWebServerPortStr();
+		return httpReq.getWebServerPortStr();
 	}
 
 }

@@ -236,7 +236,7 @@ public class InstrumentMaking extends CraftingSkill implements ItemCraftor
 		}
 		else
 		{
-            setWearLocation((Armor)building,misctype,0);
+            setWearLocation(building,misctype,0);
 		}
 		if(bundling) building.setBaseValue(lostValue);
 		building.recoverEnvStats();

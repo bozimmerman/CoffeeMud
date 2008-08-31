@@ -334,7 +334,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
                 ((Armor)building).baseEnvStats().setArmor(0);
                 if(armordmg!=0)
                     ((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1));
-                setWearLocation((Armor)building,misctype,hardness);
+                setWearLocation(building,misctype,hardness);
 			}
 			if(building instanceof Container)
 				if(capacity>0)

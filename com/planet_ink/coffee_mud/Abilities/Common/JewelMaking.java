@@ -452,7 +452,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
                 ((Armor)building).baseEnvStats().setArmor(0);
                 if(armordmg!=0)
                     ((Armor)building).baseEnvStats().setArmor(armordmg);
-                setWearLocation((Armor)building,misctype,0);
+                setWearLocation(building,misctype,0);
 			}
 			if((misctype.equalsIgnoreCase("statue"))&&(!mob.isMonster()))
 			{

@@ -386,7 +386,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
                 ((Armor)building).baseEnvStats().setArmor(0);
                 if(armordmg!=0)
                     ((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1));
-                setWearLocation((Armor)building,misctype,0);
+                setWearLocation(building,misctype,0);
 			}
 			else
 			if(building instanceof Container)

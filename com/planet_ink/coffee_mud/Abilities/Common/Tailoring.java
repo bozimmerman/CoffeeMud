@@ -344,7 +344,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
                 ((Armor)building).baseEnvStats().setArmor(0);
                 if(armordmg!=0)
                     ((Armor)building).baseEnvStats().setArmor(armordmg+(abilityCode()-1)+hardness);
-                setWearLocation((Armor)building,misctype,0);
+                setWearLocation(building,misctype,0);
 			}
 			if(building instanceof Rideable)
 			{
