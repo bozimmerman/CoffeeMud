@@ -277,7 +277,31 @@ public class Age extends StdAbility
 					if(liege!=null)	newMan.copyFactions(liege);
 					newMan.baseEnvStats().setLevel(1);
 					newMan.setBitmap(babe.getBitmap());
-					newMan.setClanID(babe.getClanID());
+                    for(int t=0;t<babe.numTattoos();t++)
+                        newMan.addTattoo(babe.fetchTattoo(t));
+                    if(babe.getClanID().length()>0)
+                        newMan.setClanID(babe.getClanID());
+                    else
+                    {
+                        for(int t=0;t<newMan.numTattoos();t++)
+                        {
+                            String tattoo = newMan.fetchTattoo(t);
+                            if(tattoo.startsWith("PARENT:"))
+                            {
+                                MOB M=CMLib.players().getLoadPlayer(tattoo);
+                                if((M!=null)&&(M.getClanID().length()>0))
+                                {
+                                    newMan.setClanID(M.getClanID());
+                                    break;
+                                }
+                            }
+                        }
+                        if((newMan.getClanID().length()==0)
+                        &&(liege.getClanID().length()>0))
+                            newMan.setClanID(liege.getClanID());
+                    }
+                    if(newMan.getClanID().length()>0)
+                        newMan.setClanRole(Clan.POS_MEMBER);
 					newMan.setDescription(babe.description());
 					newMan.setDisplayText(babe.displayText());
 					newMan.setExperience(babe.getExperience());

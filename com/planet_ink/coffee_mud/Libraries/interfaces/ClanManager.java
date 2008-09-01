@@ -112,4 +112,11 @@ public interface ClanManager extends CMLibrary
      * @return
      */
     public boolean trophySystemActive();
+    /**
+     * 
+     * @param M
+     * @param members
+     * @return
+     */
+    public boolean isFamilyOfMembership(MOB M, DVector members);
 }

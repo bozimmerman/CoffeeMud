@@ -36,6 +36,7 @@ public class ClanApply extends BaseClanner
 
 	private String[] access={"CLANAPPLY"};
 	public String[] getAccessWords(){return access;}
+    
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
@@ -50,9 +51,16 @@ public class ClanApply extends BaseClanner
 				Clan C=CMLib.clans().findClan(qual);
 				if(C!=null)
 				{
+                    if((C.getGovernment()==Clan.GVT_FAMILY)
+                    &&(!CMLib.clans().isFamilyOfMembership(mob,C.getMemberList())))
+                    {
+                        msg.append("The clan  "+C.clanID()+" is a family.  You can not join a family, you must be born or married into it.");
+                        return false;
+                    }
 					if(CMLib.masking().maskCheck(C.getAcceptanceSettings(),mob,true))
 					{
-                        if(CMLib.masking().maskCheck("-<"+CMProps.getIntVar(CMProps.SYSTEMI_MINCLANLEVEL),mob,true))
+                        if((CMLib.masking().maskCheck("-<"+CMProps.getIntVar(CMProps.SYSTEMI_MINCLANLEVEL),mob,true))
+                        ||(C.getGovernment() == Clan.GVT_FAMILY))
                         {
                         	int maxMembers=CMProps.getIntVar(CMProps.SYSTEMI_MAXCLANMEMBERS);
                         	int numMembers=C.getSize();

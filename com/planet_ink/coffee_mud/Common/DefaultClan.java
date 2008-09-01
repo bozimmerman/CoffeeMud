@@ -19,7 +19,7 @@ import java.util.*;
 
 /**
  * <p>Portions Copyright (c) 2003 Jeremy Vyska</p>
- * <p>Portions Copyright (c) 2004 Bo Zimmerman</p>
+ * <p>Portions Copyright (c) 2004-2008 Bo Zimmerman</p>
  * <p>Licensed under the Apache License, Version 2.0 (the "License");
  * <p>you may not use this file except in compliance with the License.
  * <p>You may obtain a copy of the License at
@@ -637,6 +637,17 @@ public class DefaultClan implements Clan
     		return true;
         case GVT_DICTATORSHIP:
     		return true;
+        case GVT_FAMILY:
+            if((role == POS_LEADER)||(role == POS_TREASURER)) {
+                if(mob.baseCharStats().getStat(CharStats.STAT_GENDER)!='F')
+                    return false;
+            } 
+            else 
+            if((role == POS_BOSS)||(role == POS_ENCHANTER)) {
+                if(mob.baseCharStats().getStat(CharStats.STAT_GENDER) == 'F')
+                    return false;
+            }
+            return true; // technically requires some sort of familial check, but this will be enforced elsewhere.
         }
 		return false;
 	}
@@ -803,6 +814,47 @@ public class DefaultClan implements Clan
                 return ((role==POS_BOSS)||(role==POS_ENCHANTER)||(role==POS_LEADER)||(role==POS_TREASURER)||(role==POS_STAFF)||(role==POS_MEMBER))?1:-1;
             case FUNC_CLANCANORDERCONQUERED:
                 return ((role==POS_BOSS)||(role==POS_ENCHANTER)||(role==POS_LEADER)||(role==POS_TREASURER)||(role==POS_STAFF)||(role==POS_MEMBER))?1:-1;
+            case FUNC_CLANVOTEASSIGN:
+                return -1;
+            case FUNC_CLANVOTEOTHER:
+                return -1;
+            }
+        }
+        else
+        if(government==GVT_FAMILY)
+        {
+            switch(function)
+            {
+            case FUNC_CLANACCEPT:
+                return 1;
+            case FUNC_CLANASSIGN:
+                return ((role==POS_BOSS)||(role==POS_LEADER))?1:-1;
+            case FUNC_CLANEXILE:
+                return ((role==POS_BOSS)||(role==POS_LEADER))?1:-1;
+            case FUNC_CLANHOMESET:
+                return ((role==POS_BOSS)||(role==POS_LEADER))?1:-1;
+            case FUNC_CLANDECLARE:
+                return ((role==POS_BOSS)||(role==POS_LEADER))?1:-1;
+            case FUNC_CLANTAX:
+                return ((role==POS_BOSS)||(role==POS_LEADER))?1:-1;
+            case FUNC_CLANDONATESET:
+                return ((role==POS_BOSS)||(role==POS_LEADER))?1:-1;
+            case FUNC_CLANREJECT:
+                return ((role==POS_BOSS)||(role==POS_LEADER))?1:-1;
+            case FUNC_CLANPREMISE:
+                return ((role==POS_BOSS)||(role==POS_LEADER))?1:-1;
+            case FUNC_CLANPROPERTYOWNER:
+                return ((role==POS_BOSS)||(role==POS_LEADER))?1:-1;
+            case FUNC_CLANENCHANT:
+                return ((role==POS_BOSS)||(role==POS_LEADER)||(role==POS_ENCHANTER)||(role==POS_TREASURER))?1:-1;
+            case FUNC_CLANWITHDRAW:
+                return ((role==POS_BOSS)||(role==POS_LEADER)||(role==POS_ENCHANTER)||(role==POS_TREASURER))?1:-1;
+            case FUNC_CLANDEPOSITLIST:
+                return 1;
+            case FUNC_CLANCANORDERUNDERLINGS:
+                return 1;
+            case FUNC_CLANCANORDERCONQUERED:
+                return 1;
             case FUNC_CLANVOTEASSIGN:
                 return -1;
             case FUNC_CLANVOTEOTHER:
@@ -1017,10 +1069,15 @@ public class DefaultClan implements Clan
     }
 
 
-    public int getTopRank() {
+    public int getTopRank(MOB mob) {
         if((getGovernment()>=0)
         &&(getGovernment()<topRanks.length))
-            return topRanks[getGovernment()];
+        {
+            int topRank=topRanks[getGovernment()];
+            while((topRank > 0)&&(!canBeAssigned(mob,topRank)))
+                topRank--;
+            return topRank;
+        }
         return POS_BOSS;
     }
 
@@ -1120,13 +1177,14 @@ public class DefaultClan implements Clan
                 }
             }
             else
-            if((getGovernment()==GVT_DICTATORSHIP)||(getGovernment()==GVT_OLIGARCHY))
+            if((getGovernment()==GVT_DICTATORSHIP)
+            ||(getGovernment()==GVT_OLIGARCHY))
             {
                 int highest=0;
                 for(int i=numTypes.length-1;i>=0;i--)
                     if(numTypes[i]>0){ highest=i; break;}
-                int max=topRanks[getGovernment()];
-                if(highest<CMLib.clans().getRoleOrder(max))
+                int maxRank=topRanks[getGovernment()];
+                if(highest<CMLib.clans().getRoleOrder(maxRank))
                 {
                     for(int i=0;i<members.size();i++)
                     {
@@ -1136,10 +1194,39 @@ public class DefaultClan implements Clan
                             MOB M2=CMLib.players().getLoadPlayer(s);
                             if(M2!=null)
                             {
-                                clanAnnounce(s+" is now a "+CMLib.clans().getRoleName(getGovernment(),max,true,false)+" of the "+typeName()+" "+name()+".");
-                                Log.sysOut("Clans",s+" of clan "+name()+" was autopromoted to "+CMLib.clans().getRoleName(getGovernment(),max,true,false)+".");
-                                M2.setClanRole(max);
-                                CMLib.database().DBUpdateClanMembership(s, name(), max);
+                                int newRank = getTopRank(M2);
+                                clanAnnounce(s+" is now a "+CMLib.clans().getRoleName(getGovernment(),newRank,true,false)+" of the "+typeName()+" "+name()+".");
+                                Log.sysOut("Clans",s+" of clan "+name()+" was autopromoted to "+CMLib.clans().getRoleName(getGovernment(),newRank,true,false)+".");
+                                M2.setClanRole(newRank);
+                                CMLib.database().DBUpdateClanMembership(s, name(), newRank);
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+            else
+            if(getGovernment()==GVT_FAMILY)
+            {
+                int highest=0;
+                for(int i=numTypes.length-1;i>=0;i--)
+                    if(numTypes[i]>0){ highest=i; break;}
+                int maxRank=topRanks[getGovernment()];
+                if(highest<CMLib.clans().getRoleOrder(maxRank)-1)
+                {
+                    for(int i=0;i<members.size();i++)
+                    {
+                        if(CMLib.clans().getRoleOrder(((Integer)members.elementAt(i,2)).intValue())==highest)
+                        {
+                            String s=(String)members.elementAt(i,1);
+                            MOB M2=CMLib.players().getLoadPlayer(s);
+                            if(M2!=null)
+                            {
+                                int newRank = getTopRank(M2);
+                                clanAnnounce(s+" is now a "+CMLib.clans().getRoleName(getGovernment(),newRank,true,false)+" of the "+typeName()+" "+name()+".");
+                                Log.sysOut("Clans",s+" of clan "+name()+" was autopromoted to "+CMLib.clans().getRoleName(getGovernment(),newRank,true,false)+".");
+                                M2.setClanRole(newRank);
+                                CMLib.database().DBUpdateClanMembership(s, name(), newRank);
                             }
                             break;
                         }
@@ -1148,7 +1235,8 @@ public class DefaultClan implements Clan
             }
 
 
-            if(activeMembers<CMProps.getIntVar(CMProps.SYSTEMI_MINCLANMEMBERS))
+            int minimumMembers = (getGovernment()==Clan.GVT_FAMILY)?1:CMProps.getIntVar(CMProps.SYSTEMI_MINCLANMEMBERS);
+            if(activeMembers<minimumMembers)
             {
                 if(getStatus()==CLANSTATUS_FADING)
                 {
@@ -1186,7 +1274,10 @@ public class DefaultClan implements Clan
 
 
             // now do votes
-            if((getGovernment()!=GVT_DICTATORSHIP)&&(getGovernment()!=GVT_THEOCRACY)&&(votes()!=null))
+            if((getGovernment()!=GVT_DICTATORSHIP)
+            &&(getGovernment()!=GVT_THEOCRACY)
+            &&(getGovernment()!=GVT_FAMILY)
+            &&(votes()!=null))
             {
                 boolean updateVotes=false;
                 Vector votesToRemove=new Vector();

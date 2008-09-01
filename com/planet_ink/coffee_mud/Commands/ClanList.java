@@ -53,6 +53,16 @@ public class ClanList extends BaseClanner
 		for(Enumeration e=CMLib.clans().clans();e.hasMoreElements();)
 		{
 			Clan thisClan=(Clan)e.nextElement();
+            StringBuffer trophySet = new StringBuffer("");
+            if(trophySystemActive)
+                for(int i=0;i<Clan.TROPHY_DESCS_SHORT.length;i++)
+                    if((Clan.TROPHY_DESCS_SHORT[i].length()>0)&&(CMath.bset(thisClan.getTrophies(),i)))
+                        trophySet.append(Clan.TROPHY_DESCS_SHORT[i]+" ");
+            if((thisClan.getGovernment() == Clan.GVT_FAMILY)
+            &&(!mob.getClanID().equals(thisClan.clanID()))
+            &&(trophySet.length()==0))
+                continue;
+            
 			msg.append(" ");
 			msg.append(CMStrings.padRight("^<CLAN^>"+CMStrings.removeColors(thisClan.clanID())+"^</CLAN^>",24)+"   ");
 			msg.append(CMStrings.padRight(thisClan.typeName(),13)+"   ");
@@ -77,10 +87,7 @@ public class ClanList extends BaseClanner
 			}
 			msg.append(CMStrings.padRight(status,8)+"   ");
 			msg.append(CMStrings.padRight(Integer.toString(thisClan.getSize()),7)+"   ");
-			if(trophySystemActive)
-				for(int i=0;i<Clan.TROPHY_DESCS_SHORT.length;i++)
-				    if((Clan.TROPHY_DESCS_SHORT[i].length()>0)&&(CMath.bset(thisClan.getTrophies(),i)))
-				        msg.append(Clan.TROPHY_DESCS_SHORT[i]+" ");
+	        msg.append(trophySet);
 			msg.append("\n\r");
 		}
 		mob.tell(head.toString()+msg.toString());

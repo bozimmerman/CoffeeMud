@@ -87,6 +87,7 @@ public class BaseClanner extends StdCommand
 					break;
 				case Clan.GVT_DICTATORSHIP:
                 case Clan.GVT_THEOCRACY:
+                case Clan.GVT_FAMILY:
 					clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a vote -- lord only knows how.");
 					break;
 				case Clan.GVT_OLIGARCHY:

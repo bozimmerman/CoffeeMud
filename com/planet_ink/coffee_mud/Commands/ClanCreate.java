@@ -87,6 +87,7 @@ public class ClanCreate extends BaseClanner
 									+"UNION - Ruled by an elected set of leaders and staff.\n\r"
 									+"FELLOWSHIP - All decisions and staff are set through the vote.\n\r"
 									+"THEOCRACY - Clerics rule, can conquer through conversion.\n\r"
+                                    +"FAMILY - Patron or Matron rules an unlisted group only relations join.\n\r"
 									+": ","");
 									if(govt.length()==0){ mob.tell("Aborted."); return false;}
 									for(int i=0;i<Clan.GVT_DESCS.length;i++)
@@ -102,7 +103,7 @@ public class ClanCreate extends BaseClanner
 								newClan.setGovernment(govtType);
 								newClan.setStatus(Clan.CLANSTATUS_PENDING);
 								newClan.create();
-								CMLib.database().DBUpdateClanMembership(mob.Name(),newClan.getName(),newClan.getTopRank());
+								CMLib.database().DBUpdateClanMembership(mob.Name(),newClan.getName(),newClan.getTopRank(mob));
 								newClan.updateClanPrivileges(mob);
 								clanAnnounce(mob, "The "+newClan.typeName()+" "+newClan.clanID()+" is online and can now accept applicants.");
 							}

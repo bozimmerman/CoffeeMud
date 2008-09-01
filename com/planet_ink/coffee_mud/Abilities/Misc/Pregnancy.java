@@ -200,11 +200,13 @@ public class Pregnancy extends StdAbility
 							String race1=mob.baseCharStats().getMyRace().ID();
 							char gender='F';
 							String sondat="daughter";
+                            MOB babe=CMClass.getMOB("GenMOB");
 							if(CMLib.dice().rollPercentage()>50){
 								gender='M';
 								sondat="son";
 							}
 							String desc="The "+sondat+" of "+mob.Name();
+                            babe.addTattoo("PARENT:"+mob.Name());
 							String race2=mob.baseCharStats().getMyRace().ID();
                             MOB otherParentM=null;
 							if(z>y)
@@ -212,6 +214,8 @@ public class Pregnancy extends StdAbility
 								race2=text().substring(z+1).trim();
                                 otherParentM=CMLib.players().getLoadPlayer(text().substring(y+1,z));
 								desc+=" and "+text().substring(y+1,z);
+                                if(otherParentM != null)
+                                    babe.addTattoo("PARENT:"+otherParentM.Name());
 							}
 							desc+=".";
 							mob.curState().setMovement(0);
@@ -232,7 +236,6 @@ public class Pregnancy extends StdAbility
 									A=mob.fetchAbility(ID());
 								}
 							}
-							MOB babe=CMClass.getMOB("GenMOB");
 							Race R=getRace(babe,race1,race2);
 							if(R==null) R=mob.baseCharStats().getMyRace();
 							String name="a baby "+((gender=='M')?"boy":"girl")+" "+R.name().toLowerCase();

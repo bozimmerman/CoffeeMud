@@ -142,6 +142,29 @@ public class Clans extends StdLibrary implements ClanManager
 		}
 	}
 
+    public boolean isFamilyOfMembership(MOB M, DVector members) {
+        if(M == null)
+            return false;
+        if(members.contains(M.Name()))
+            return true;
+        if((M.getLiegeID().length()>0)
+        &&(M.isMarriedToLiege())
+        &&(members.contains(M.getLiegeID())))
+            return true;
+        for(int t = 0;t < M.numTattoos();t++) 
+        {
+            String tattoo = M.fetchTattoo(t);
+            if(tattoo.startsWith("PARENT:"))
+            {
+                String name=tattoo.substring("PARENT:".length());
+                MOB M2=CMLib.players().getLoadPlayer(name.toLowerCase());
+                if((M2 != null)&&isFamilyOfMembership(M2,members))
+                    return true;
+            }
+        }
+        return false;
+    }
+    
 	public int getRoleOrder(int role)
 	{
 		for(int i=0;i<Clan.POSORDER.length;i++)

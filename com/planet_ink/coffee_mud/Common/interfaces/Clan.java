@@ -454,9 +454,10 @@ public interface Clan extends Cloneable, Tickable, CMCommon, CMModifiable
 	 * Returns the Clan.POS_* constant representing the highest rank
 	 * in this clan type.
 	 * @see Clan
+     * @param mob the mob to check for a top rank
 	 * @return the Clan.POS_* constant
 	 */
-	public int getTopRank();
+	public int getTopRank(MOB mob);
 
     /**
      * Del a member from this clan
@@ -649,13 +650,16 @@ public interface Clan extends Cloneable, Tickable, CMCommon, CMModifiable
 	public static final int GVT_DEMOCRACY=3;
     /** constant for the getGovernment @see Clan#getGovernment() method. Denotes Theocracy. */
     public static final int GVT_THEOCRACY=4;
+    /** constant for the getGovernment @see Clan#getGovernment() method. Denotes Family. */
+    public static final int GVT_FAMILY=5;
     /** descriptor strings for the Clan.GVT_* constants, ordered by their value.  @see Clan */
 	public static final String[] GVT_DESCS={
 		"GANG",
 		"GUILD",
 		"UNION",
 		"FELLOWSHIP",
-        "THEOCRACY"
+        "THEOCRACY",
+        "FAMILY"
 	};
 	/** top ranks for each govt, ordered by the value of the Clan.GVT_* constants.  @see Clan */
 	public static final int[] topRanks={
@@ -663,6 +667,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, CMModifiable
 		POS_BOSS,
 		POS_BOSS,
 		POS_LEADER,
+        POS_BOSS,
         POS_BOSS
 	};
 
@@ -673,7 +678,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, CMModifiable
 		{"APPLICANT","MEMBER","CHIEF","ENCHANTER","TREASURER","SECRETARY","GUILDMASTER"},
 		{"APPLICANT","CITIZEN","SHERIFF","ENCHANTER","TREASURER","SECRETARY","SENATOR"},
 		{"APPLICANT","CITIZEN","SOLDIER","ENCHANTER","TREASURER","MANAGER","FIRST CITIZEN"},
-        {"APPLICANT","BELIEVER","CRUSADER","ENCHANTER","TREASURER","PRIEST","HIGH PRIEST"}
+        {"APPLICANT","BELIEVER","CRUSADER","ENCHANTER","TREASURER","PRIEST","HIGH PRIEST"},
+        {"BLACK-SHEEP","CHILD","COUSIN","MISTER","MISTRESS","MATRON","PATRON"}
 	};
 	/** table w/x axis being Clan.POS_* constants, y axis being Clan.GVT_* constants, denotes max members of the ranks. */
 	public static final int[][] ROL_MAX={
@@ -681,7 +687,8 @@ public interface Clan extends Cloneable, Tickable, CMCommon, CMModifiable
 		{Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,1,1,Integer.MAX_VALUE,5},
 		{Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,1,1,1,5},
 		{Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,1},
-        {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,1,1,Integer.MAX_VALUE,1}
+        {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,1,1,Integer.MAX_VALUE,1},
+        {Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,1,1},
 	};
 	/** meaningless variable-- means this clan is a clan -- does not denote government, or anything else. */
 	public static final int TYPE_CLAN=1;
