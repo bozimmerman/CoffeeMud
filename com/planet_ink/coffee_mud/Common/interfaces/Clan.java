@@ -692,6 +692,15 @@ public interface Clan extends Cloneable, Tickable, CMCommon, CMModifiable
 	};
 	/** meaningless variable-- means this clan is a clan -- does not denote government, or anything else. */
 	public static final int TYPE_CLAN=1;
+    /** chart of which roles can perform which functions for various clan types */
+    public static final String[][] FUNC_PROCEDURE={
+        /*GANG*/{"BL","B","B","B","B","BL","B","B","BT","BL","BELST","","","BT","B","B","BE"},
+        /*GILD*/{"BL","V","B","V","V","BL","V","BL","BT","BLETS","BLETSM","B","B","BT","V","V","BE"},
+        /*UNON*/{"V","V","V","V","V","V","V","L","T","","S","BLETSM","B","BLETSM","V","V","E"},
+        /*FELO*/{"V","V","V","V","V","V","V","L","T","","S","BLETSM","BLETSM","BLETSM","V","V","E"},
+        /*THEO*/{"BL","B","BL","B","B","BL","B","BL","BT","BLETSM","BLETSM","","","BLETSM","B","B","E"},
+        /*FAML*/{"A","BL","BL","BL","BL","BL","BL","BL","BLET","A","A","","","A","BL","BL","BLET"},
+        };
 	/** constant for the clan function of accepting new members. @see Clan#allowedToDoThis(MOB, int) */
 	public static final int FUNC_CLANACCEPT=0;
 	/** constant for the clan function of promoting or demoting members. @see Clan#allowedToDoThis(MOB, int) */

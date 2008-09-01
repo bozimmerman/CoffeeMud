@@ -84,7 +84,7 @@ public class Spell_Spellbinding extends Spell
 		}
 		catch(Exception e)
 		{
-			Log.errOut("Spell_Spellbinding",e);
+			Log.errOut("Spell_Spellbinding","Spell bindings are corrupt for "+((affected!=null)?affected.Name():"someone")+".");
 		}
 		return super.text();
 	}
