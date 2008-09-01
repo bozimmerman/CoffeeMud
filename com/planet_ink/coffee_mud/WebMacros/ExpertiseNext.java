@@ -97,7 +97,7 @@ public class ExpertiseNext extends StdWebMacro
             			{
             				qualLevel=(Integer)DV.elementAt(v,2);
                         	int minLevel=E.getMinimumLevel();
-                        	if((qualLevel==null)&&(minLevel<qualLevel.intValue()))
+                        	if((qualLevel!=null)&&(minLevel<qualLevel.intValue()))
                         		minLevel=qualLevel.intValue();
 		                    expertsAllows.put(xpertise,new Integer(minLevel));
             			}

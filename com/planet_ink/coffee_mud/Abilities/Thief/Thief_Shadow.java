@@ -256,8 +256,12 @@ public class Thief_Shadow extends ThiefSkill
 						A.lastTogether=System.currentTimeMillis();
 						mob.recoverEnvStats();
 					}
-					else
-						A.unInvoke();
+					else 
+					{
+						A=(Thief_Shadow)mob.fetchEffect(ID());
+						if(A!=null)
+							A.unInvoke();
+					}
 				}
 			}
 		}

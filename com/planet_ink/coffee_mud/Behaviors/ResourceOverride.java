@@ -120,13 +120,11 @@ public class ResourceOverride extends StdBehavior
 		}
 		else
 		if((tickID==Tickable.TICKID_AREA)
-		&&(ticking instanceof Room))
+		&&(ticking instanceof Area))
 		{
 			tickDown=5;
 			Area A=(Area)ticking;
 			Room R=null;
-			if(!rscs.contains(new Integer(R.myResource())))
-				R.setResource(((Integer)rscs.elementAt(CMLib.dice().roll(1,rscs.size(),-1))).intValue());
 			for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
 			{
 				R=(Room)e.nextElement();

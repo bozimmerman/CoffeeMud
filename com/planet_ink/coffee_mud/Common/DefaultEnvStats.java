@@ -102,14 +102,6 @@ public class DefaultEnvStats implements EnvStats
                 }
 				return;
 			}
-		if(i==ambis.length) return;
-        for(i=0;i<V.size();i++)
-            if(((String)V.elementAt(i)).equalsIgnoreCase(ambiance))
-            {
-                V.removeElementAt(i);
-                ambiances=CMParms.toStringArray(V);
-                return;
-            }
 	}
 
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultEnvStats();}}

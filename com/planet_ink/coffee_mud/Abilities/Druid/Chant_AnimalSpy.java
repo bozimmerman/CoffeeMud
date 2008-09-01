@@ -144,10 +144,16 @@ public class Chant_AnimalSpy extends Chant
 
 		Room newRoom=mob.location();
 		if(target!=null)
+		{
 			newRoom=target.location();
+			if((!CMLib.flags().isAnimalIntelligence(target))
+			||(target.amFollowing()!=mob))
+			{
+				mob.tell("You have no animal follower named '"+mobName+"' here.");
+				return false;
+			}
+		}
 		else
-		if((!CMLib.flags().isAnimalIntelligence(target))
-		||(target.amFollowing()!=mob))
 		{
 			mob.tell("You have no animal follower named '"+mobName+"' here.");
 			return false;
