@@ -590,7 +590,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			        {
 			            Coins C2=CMLib.beanCounter().makeCurrency(currency,denom,1);
 			            if((C2!=null)&&(C2.description().length()>0))
-			                return new StringBuffer(C.name()+" is "+C2.description().toLowerCase());
+			                return new StringBuffer(C2.name()+" is "+C2.description().toLowerCase());
 			        }
 			    }
 			}
