@@ -44,7 +44,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
     protected int displayColumns(){return 3;}
     public String parametersFormat(){ return 
         "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\tITEM_BASE_VALUE\t"
-        +"ITEM_CLASS_ID\tWEAPON_CLASSIFICATION\tWEAPON_TYPE\tBASE_DAMAGE\tATTACK_MODIFICATION\t"
+        +"ITEM_CLASS_ID\tWEAPON_CLASS\tWEAPON_TYPE\tBASE_DAMAGE\tATTACK_MODIFICATION\t"
         +"WEAPON_HANDS_REQUIRED\tMAXIMUM_RANGE\tRESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";}
 
 	protected static final int RCP_FINALNAME=0;

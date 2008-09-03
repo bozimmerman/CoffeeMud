@@ -1,6 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
 
 
 
@@ -38,11 +37,8 @@
   
   
   
-  <title>Programming for CoffeeMud 5.4</title>
-  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
-<!-- Modified by Josh Mueller, 2006-5-6, fix validation problems, reformat, fix spelling errors -->
-</head>
-
+  
+  <title>Programming for CoffeeMud 5.4</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-6, fix validation problems, reformat, fix spelling errors --></head>
 
 <body>
 
@@ -9210,7 +9206,7 @@ accessor class, CMLib, which we mentioned earlier.</p>
 
 
 
-                  <tr>
+                  <tr><td>CMAbleParms</td><td>AbilityParameters</td><td><span style="font-family: monospace;">ableParms()</span></td><td>Editors for Ability recipes/parms</td></tr><tr>
 
 
 
@@ -9228,7 +9224,7 @@ accessor class, CMLib, which we mentioned earlier.</p>
 
 
 
-            <td>catalog()</td>
+            <td style="font-family: monospace;">catalog()</td>
 
 
 
@@ -21692,7 +21688,7 @@ method we saw up in Character Class creation.</p>
       
       
       
-      <pre>  public static Vector wordLists = null;<br />  public Vector translationVector(String language)<br />  {<br />    if(wordLists==null)<br />    {<br />      String[] one = { "a", "e",<br />                      "i", "o",<br />                      "&aacute;", "&eacute;",<br />                      "&iacute;", "&oacute;"<br />                    };<br /><br />      String[] two = { "os", "vi",<br />                      "ne", "vo",<br />                      "li", "eh",<br />                      "no", "ai",<br />                      "by", "et",<br />                      "ce", "un",<br />                      "il"<br />                    };<br /><br />      String[] three = { "&aacute;na", "cil",<br />                        "sar", "tan",<br />                        "hel", "loa",<br />                        "sir", "hep",<br />                        "yur", "nol",<br />                        "hol", "qua",<br />                        "&eacute;th"<br />                      };<br /><br />      String[] four = { "s&eacute;ya", "qual", "quel",<br />                       "lara", "uqua", "sana",<br />                       "yava", "masse", "yanna",<br />                       "quettaparma", "manna", "manan",<br />                       "merme", "carma", "harno",<br />                       "harne", "varno", "essar",<br />                       "saira", "cilta", "veuma",<br />                       "norta", "turme", "saita"<br />                     };<br /><br />      String[] five = { "cuiva", "cuina", "nonwa",<br />                       "imire", "nauta", "cilta",<br />                       "entuc", "norta", "latin",<br />                       "l&ograve;tea", "veuya", "veuro",<br />                       "apama", "hampa", "nurta",<br />                       "firta", "saira", "holle",<br />                       "herwa", "uquen", "arcoa",<br />                       "calte", "cemma", "hanta",<br />                       "tanen"<br />                     };<br /><br />      String[] six = { "mahtale", "porisalque", "hairie",<br />                      "tararan", "ambarwa", "latina",<br />                      "ol&ograve;tie", "amawil", "apacen",<br />                      "yavinqua", "apalume", "linquilea",<br />                      "menelwa", "alassea", "nurmea",<br />                      "parmasse", "ceniril", "heldasse",<br />                      "imirin", "earina", "calatengew",<br />                      "lapselunga", "rianna", "eneques"<br />                    };<br /><br />      wordLists=new Vector();<br />      wordLists.addElement( one );<br />      wordLists.addElement( two );<br />      wordLists.addElement( three );<br />      wordLists.addElement( four );<br />      wordLists.addElement( five );<br />      wordLists.addElement( six );<br />    }<br />    return wordLists;<br />  }<br /></pre>
+      <pre>  public static Vector wordLists = null;<br />  public Vector translationVector(String language)<br />  {<br />    if(wordLists==null)<br />    {<br />      String[] one = { "a", "e",<br />                      "i", "o",<br />                      "á", "é",<br />                      "í", "ó"<br />                    };<br /><br />      String[] two = { "os", "vi",<br />                      "ne", "vo",<br />                      "li", "eh",<br />                      "no", "ai",<br />                      "by", "et",<br />                      "ce", "un",<br />                      "il"<br />                    };<br /><br />      String[] three = { "ána", "cil",<br />                        "sar", "tan",<br />                        "hel", "loa",<br />                        "sir", "hep",<br />                        "yur", "nol",<br />                        "hol", "qua",<br />                        "éth"<br />                      };<br /><br />      String[] four = { "séya", "qual", "quel",<br />                       "lara", "uqua", "sana",<br />                       "yava", "masse", "yanna",<br />                       "quettaparma", "manna", "manan",<br />                       "merme", "carma", "harno",<br />                       "harne", "varno", "essar",<br />                       "saira", "cilta", "veuma",<br />                       "norta", "turme", "saita"<br />                     };<br /><br />      String[] five = { "cuiva", "cuina", "nonwa",<br />                       "imire", "nauta", "cilta",<br />                       "entuc", "norta", "latin",<br />                       "lòtea", "veuya", "veuro",<br />                       "apama", "hampa", "nurta",<br />                       "firta", "saira", "holle",<br />                       "herwa", "uquen", "arcoa",<br />                       "calte", "cemma", "hanta",<br />                       "tanen"<br />                     };<br /><br />      String[] six = { "mahtale", "porisalque", "hairie",<br />                      "tararan", "ambarwa", "latina",<br />                      "olòtie", "amawil", "apacen",<br />                      "yavinqua", "apalume", "linquilea",<br />                      "menelwa", "alassea", "nurmea",<br />                      "parmasse", "ceniril", "heldasse",<br />                      "imirin", "earina", "calatengew",<br />                      "lapselunga", "rianna", "eneques"<br />                    };<br /><br />      wordLists=new Vector();<br />      wordLists.addElement( one );<br />      wordLists.addElement( two );<br />      wordLists.addElement( three );<br />      wordLists.addElement( four );<br />      wordLists.addElement( five );<br />      wordLists.addElement( six );<br />    }<br />    return wordLists;<br />  }<br /></pre>
 
 
 
@@ -21751,7 +21747,7 @@ said by counting letters.</p>
       
       
       
-      <pre>  private static final Hashtable hashwords = new Hashtable();<br />  public Hashtable translationHash(String language)<br />  {<br />    if( ( hashwords != null ) &amp;&amp; ( hashwords.size() &gt; 0 ) )<br />    {<br />      return hashwords;<br />    }<br /><br />    hashwords.put( "ABANDON", "avarta" );<br />    hashwords.put( "ABLE", "pol" );<br />    hashwords.put( "ACCOMMODATE", "camta" );<br />    hashwords.put( "ACT", "car" );<br /><br />    ...<br /><br />    hashwords.put( "WRONG", "raic&euml;" );<br />    hashwords.put( "YES", "y&eacute;" );<br />    hashwords.put( "YESTERDAY", "tellaur&euml;" );<br />    return hashwords;<br />  }<br />}<br /></pre>
+      <pre>  private static final Hashtable hashwords = new Hashtable();<br />  public Hashtable translationHash(String language)<br />  {<br />    if( ( hashwords != null ) &amp;&amp; ( hashwords.size() &gt; 0 ) )<br />    {<br />      return hashwords;<br />    }<br /><br />    hashwords.put( "ABANDON", "avarta" );<br />    hashwords.put( "ABLE", "pol" );<br />    hashwords.put( "ACCOMMODATE", "camta" );<br />    hashwords.put( "ACT", "car" );<br /><br />    ...<br /><br />    hashwords.put( "WRONG", "raicë" );<br />    hashwords.put( "YES", "yé" );<br />    hashwords.put( "YESTERDAY", "tellaurë" );<br />    return hashwords;<br />  }<br />}<br /></pre>
 
 
 
@@ -21825,5 +21821,4 @@ entry value. Correct casing is taken care of by the Language base class.</p>
 
 
   
-</body>
-</html>
+</body></html>

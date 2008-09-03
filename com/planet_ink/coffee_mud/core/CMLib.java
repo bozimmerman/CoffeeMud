@@ -100,14 +100,15 @@ public class CMLib
     public static final int LIBRARY_CATALOG=42;
     public static final int LIBRARY_PLAYERS=43;
     public static final int LIBRARY_TITLES=44;
-    public static final int LIBRARY_TOTAL=45;
+    public static final int LIBRARY_ABLEPARMS=45;
+    public static final int LIBRARY_TOTAL=46;
     public static final String[] LIBRARY_DESCS={
         "DATABASE","THREADS","INTERMUD","HTTP","LISTER","MONEY","SHOPS","COMBAT",
         "HELP","TRACKING","MASKING","CHANNELS","COMMANDS","ENGLISH","SLAVERY","JOURNALS",
         "FLAGS","OBJBUILDERS","SESSIONS","TELNET","XML","SOCIALS","UTENSILS","STATS",
         "MAP","QUEST","ABLEMAP","ENCODER","SMTP","DICE","FACTIONS","CLANS","POLLS",
         "TIME","COLOR","LOGIN","TIMS","LEVELS","EXPERTISES","MATERIALS","LEGAL",
-        "LANGUAGE","CATALOG","PLAYERS","TITLES"};
+        "LANGUAGE","CATALOG","PLAYERS","TITLES","ABLEPARMS"};
 
     public static CMath math(){return CMath.instance();}
     public static CMParms parms(){return CMParms.instance();}
@@ -186,6 +187,7 @@ public class CMLib
     public static PlayerLibrary players(){return (PlayerLibrary)l().libraries[LIBRARY_PLAYERS];}
     public static CatalogLibrary catalog(){return (CatalogLibrary)l().libraries[LIBRARY_CATALOG];}
     public static AutoTitlesLibrary titles(){return (AutoTitlesLibrary)l().libraries[LIBRARY_TITLES];}
+    public static AbilityParameters ableParms(){return (AbilityParameters)l().libraries[LIBRARY_ABLEPARMS];}
 
     public static int convertToLibraryCode(Object O)
     {
@@ -234,6 +236,7 @@ public class CMLib
         if(O instanceof CatalogLibrary) return LIBRARY_CATALOG;
         if(O instanceof PlayerLibrary) return LIBRARY_PLAYERS;
         if(O instanceof AutoTitlesLibrary) return LIBRARY_TITLES;
+        if(O instanceof AbilityParameters) return LIBRARY_ABLEPARMS;
         return -1;
     }
 

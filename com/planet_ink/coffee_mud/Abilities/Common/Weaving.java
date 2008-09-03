@@ -42,7 +42,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
     public String supportedResourceString(){return "WHEAT|VINE|SEAWEED|HEMP|SILK|COTTON";}
     public String parametersFormat(){ return 
         "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\tITEM_BASE_VALUE\t"
-        +"ITEM_CLASS_ID\tWEAPON_CLASSIFICATION||CODED_WEAR_LOCATION||RIDE_BASIS||LID_LOCK\t"
+        +"ITEM_CLASS_ID\tWEAPON_CLASS||CODED_WEAR_LOCATION||RIDE_BASIS||LID_LOCK\t"
         +"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED\tBASE_ARMOR_AMOUNT||BASE_DAMAGE\t"
         +"CONTAINER_TYPE\tCODED_SPELL_LIST";}
 
