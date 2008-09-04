@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ClanCreate extends BaseClanner
+public class ClanCreate extends StdCommand
 {
 	public ClanCreate(){}
 
@@ -105,7 +105,7 @@ public class ClanCreate extends BaseClanner
 								newClan.create();
 								CMLib.database().DBUpdateClanMembership(mob.Name(),newClan.getName(),newClan.getTopRank(mob));
 								newClan.updateClanPrivileges(mob);
-								clanAnnounce(mob, "The "+newClan.typeName()+" "+newClan.clanID()+" is online and can now accept applicants.");
+								CMLib.clans().clanAnnounce(mob, "The "+newClan.typeName()+" "+newClan.clanID()+" is online and can now accept applicants.");
 							}
 						}
 					}

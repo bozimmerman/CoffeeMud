@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ClanApply extends BaseClanner
+public class ClanApply extends StdCommand
 {
 	public ClanApply(){}
 
@@ -70,12 +70,12 @@ public class ClanApply extends BaseClanner
                                 C.addMember(mob,role);
 	    						if(mob.getClanRole()==Clan.POS_APPLICANT)
 	    						{
-	        						clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new Applicant: "+mob.Name());
+	        						CMLib.clans().clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new Applicant: "+mob.Name());
 		    						mob.tell("You have successfully applied for membership in clan "+C.clanID()+".  Your application will be reviewed by management.  Use SCORE to check for a change in status.");
 	    						}
 	    						else
 	    						{
-	        						clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new member: "+mob.Name());
+	        						CMLib.clans().clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has a new member: "+mob.Name());
 	    							mob.tell("You have successfully joined "+C.clanID()+".  Use CLANDETAILS for information.");
 	    						}
                         	}

@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ClanReject extends BaseClanner
+public class ClanReject extends StdCommand
 {
 	public ClanReject(){}
 
@@ -58,7 +58,7 @@ public class ClanReject extends BaseClanner
 					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
 					return false;
 				}
-				if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANREJECT,false))
+				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANREJECT,false))
 				{
 					DVector apps=C.getMemberList(Clan.POS_APPLICANT);
 					if(apps.size()<1)
@@ -82,7 +82,7 @@ public class ClanReject extends BaseClanner
 							mob.tell(qual+" was not found.  Could not reject from "+C.typeName()+".");
 							return false;
 						}
-						if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANREJECT,true))
+						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANREJECT,true))
 						{
                             C.delMember(M);
 							mob.tell(M.Name()+" has been denied acceptance to "+C.typeName()+" '"+C.clanID()+"'.");

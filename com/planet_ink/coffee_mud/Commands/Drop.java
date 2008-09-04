@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Drop extends BaseItemParser
+public class Drop extends StdCommand
 {
 	public Drop(){}
 
@@ -88,7 +88,7 @@ public class Drop extends BaseItemParser
 		//container=CMLib.english().possibleContainer(mob,commands,true,Item.WORNREQ_UNWORNONLY);
 
 
-		int maxToDrop=calculateMaxToGive(mob,commands,true,mob,false);
+		int maxToDrop=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
         if(maxToDrop<0) return false;
         
 		whatToDrop=CMParms.combine(commands,0);
@@ -97,7 +97,7 @@ public class Drop extends BaseItemParser
 		if(whatToDrop.toUpperCase().endsWith(".ALL")){ allFlag=true; whatToDrop="ALL "+whatToDrop.substring(0,whatToDrop.length()-4);}
 		int addendum=1;
 		String addendumStr="";
-        boolean onlyGoldFlag=hasOnlyGoldInInventory(mob);
+        boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();
         Item dropThis=CMLib.english().bestPossibleGold(mob,null,whatToDrop);
         if(dropThis!=null)
         {

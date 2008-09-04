@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ClanExile extends BaseClanner
+public class ClanExile extends StdCommand
 {
 	public ClanExile(){}
 
@@ -59,7 +59,7 @@ public class ClanExile extends BaseClanner
 					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
 					return false;
 				}
-				if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANEXILE,false))
+				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANEXILE,false))
 				{
 					DVector apps=C.getMemberList();
 					if(apps.size()<1)
@@ -82,9 +82,9 @@ public class ClanExile extends BaseClanner
 							mob.tell(qual+" was not found.  Could not exile from "+C.typeName()+".");
 							return false;
 						}
-						if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANEXILE,true))
+						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANEXILE,true))
 						{
-							clanAnnounce(mob,"Member exiled from "+C.typeName()+" "+C.name()+": "+M.Name());
+							CMLib.clans().clanAnnounce(mob,"Member exiled from "+C.typeName()+" "+C.name()+": "+M.Name());
                             mob.tell(M.Name()+" has been exiled from "+C.typeName()+" '"+C.clanID()+"'.");
                             M.tell("You have been exiled from "+C.typeName()+" '"+C.clanID()+"'.");
                             C.delMember(M);

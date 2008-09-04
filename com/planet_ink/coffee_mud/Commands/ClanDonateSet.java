@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ClanDonateSet extends BaseClanner
+public class ClanDonateSet extends StdCommand
 {
 	public ClanDonateSet(){}
 
@@ -69,19 +69,19 @@ public class ClanDonateSet extends BaseClanner
 			mob.tell("You cannot set a donation room.  Your "+C.typeName()+" does not have enough members to be considered active.");
 			return false;
 		}
-		if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANDONATESET,false))
+		if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANDONATESET,false))
 		{
 			if(!CMLib.law().doesOwnThisProperty(C.clanID(),R))
 			{
 				mob.tell("Your "+C.typeName()+" does not own this room.");
 				return false;
 			}
-			if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANDONATESET,true))
+			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANDONATESET,true))
 			{
 				C.setDonation(CMLib.map().getExtendedRoomID(R));
 				C.update();
 				mob.tell("The donation room for "+C.typeName()+" "+C.clanID()+" is now set to "+R.roomTitle()+".");
-				clanAnnounce(mob,"The donation room for "+C.typeName()+" "+C.clanID()+" is now set to "+R.roomTitle()+".");
+				CMLib.clans().clanAnnounce(mob,"The donation room for "+C.typeName()+" "+C.clanID()+" is now set to "+R.roomTitle()+".");
 				return true;
 			}
 		}

@@ -149,6 +149,27 @@ public interface ChannelsLibrary extends CMLibrary
      * @return
      */
     public int loadChannels(String list, String ilist, String imc2list);
+    
+    /**
+     * 
+     * @param ses
+     * @param areareq
+     * @param channelInt
+     * @param msg
+     * @param sender
+     * @return
+     */
+    public boolean channelTo(Session ses, boolean areareq, int channelInt, CMMsg msg, MOB sender);
+    
+    /**
+     * 
+     * @param mob
+     * @param channelName
+     * @param message
+     * @param systemMsg
+     */
+    public void reallyChannel(MOB mob, String channelName, String message, boolean systemMsg);
+    
     /**
      * 
      */

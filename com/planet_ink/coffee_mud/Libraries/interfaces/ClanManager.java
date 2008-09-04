@@ -119,4 +119,38 @@ public interface ClanManager extends CMLibrary
      * @return
      */
     public boolean isFamilyOfMembership(MOB M, DVector members);
+    
+    /**
+     * 
+     * @param mob
+     * @param msg
+     */
+    public void clanAnnounce(MOB mob, String msg);
+    
+    /**
+     * 
+     * @param mob
+     * @param C
+     * @param commands
+     * @param function
+     * @param voteIfNecessary
+     * @return
+     */
+    public boolean goForward(MOB mob, Clan C, Vector commands, int function, boolean voteIfNecessary);
+    
+    
+    /**
+     * 
+     * @param government
+     * @param position
+     * @return
+     */
+    public int getRoleFromName(int government, String position);
+    
+    /**
+     * 
+     * @param roleType
+     * @return
+     */
+    public int getIntFromRole(int roleType);
 }

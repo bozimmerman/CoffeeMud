@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Get extends BaseItemParser
+public class Get extends StdCommand
 {
 	public Get(){}
 
@@ -127,7 +127,7 @@ public class Get extends BaseItemParser
 		Vector containers=CMLib.english().possibleContainers(mob,commands,Item.WORNREQ_ANY,true);
 		int c=0;
 
-		int maxToGet=calculateMaxToGive(mob,commands,containers.size()==0,R,true);
+		int maxToGet=CMLib.english().calculateMaxToGive(mob,commands,containers.size()==0,R,true);
         if(maxToGet<0) return false;
 
 		String whatToGet=CMParms.combine(commands,0);

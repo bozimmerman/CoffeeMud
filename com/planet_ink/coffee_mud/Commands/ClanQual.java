@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ClanQual extends BaseClanner
+public class ClanQual extends StdCommand
 {
 	public ClanQual(){}
 
@@ -52,7 +52,7 @@ public class ClanQual extends BaseClanner
 		else
 		{
 			Clan C=CMLib.clans().getClan(mob.getClanID());
-			if((!skipChecks)&&(!goForward(mob,C,commands,Clan.FUNC_CLANPREMISE,false)))
+			if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANPREMISE,false)))
 			{
 				msg.append("You aren't in the right position to set the qualifications to your "+C.typeName()+".");
 			}
@@ -78,11 +78,11 @@ public class ClanQual extends BaseClanner
 							if((mob.session()!=null)&&(mob.session().confirm("Is this correct (Y/n)?","Y")))
 							{
 								commands.addElement(premise);
-								if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANPREMISE,true))
+								if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANPREMISE,true))
 								{
 									C.setAcceptanceSettings(premise);
 									C.update();
-									clanAnnounce(mob,"The qualifications of "+C.typeName()+" "+C.clanID()+" have been changed.");
+									CMLib.clans().clanAnnounce(mob,"The qualifications of "+C.typeName()+" "+C.clanID()+" have been changed.");
 									return false;
 								}
 							}

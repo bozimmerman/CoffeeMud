@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ClanResign extends BaseClanner
+public class ClanResign extends StdCommand
 {
 	public ClanResign(){}
 
@@ -56,7 +56,7 @@ public class ClanResign extends BaseClanner
 				if(check.equalsIgnoreCase("Y"))
 				{
 					if(C!=null)
-						clanAnnounce(mob,"Member resigned from "+C.typeName()+" "+C.name()+": "+mob.Name());
+                        CMLib.clans().clanAnnounce(mob,"Member resigned from "+C.typeName()+" "+C.name()+": "+mob.Name());
 					if(C!=null)
                         C.delMember(mob);
 					else

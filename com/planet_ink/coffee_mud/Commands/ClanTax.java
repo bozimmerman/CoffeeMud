@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ClanTax extends BaseClanner
+public class ClanTax extends StdCommand
 {
 	public ClanTax(){}
 
@@ -52,7 +52,7 @@ public class ClanTax extends BaseClanner
 		else
 		{
 			Clan C=CMLib.clans().getClan(mob.getClanID());
-			if((!skipChecks)&&(!goForward(mob,C,commands,Clan.FUNC_CLANTAX,false)))
+			if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANTAX,false)))
 			{
 				msg.append("You aren't in the right position to set the experience tax rate for your "+C.typeName()+".");
 			}
@@ -83,11 +83,11 @@ public class ClanTax extends BaseClanner
 						commands.addElement(t);
 						newRate=CMath.div(CMath.s_int(t),100);
 					}
-					if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANTAX,true))
+					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANTAX,true))
 					{
 						C.setTaxes(newRate);
 						C.update();
-						clanAnnounce(mob,"The experience tax rate of "+C.typeName()+" "+C.clanID()+" has been changed to "+((int)Math.round(C.getTaxes()*100.0)+"%."));
+						CMLib.clans().clanAnnounce(mob,"The experience tax rate of "+C.typeName()+" "+C.clanID()+" has been changed to "+((int)Math.round(C.getTaxes()*100.0)+"%."));
 						return false;
 					}
 				}

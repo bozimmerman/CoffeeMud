@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ClanAssign extends BaseClanner
+public class ClanAssign extends StdCommand
 {
 	public ClanAssign(){}
 
@@ -65,7 +65,7 @@ public class ClanAssign extends BaseClanner
 					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
 					return false;
 				}
-				if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANASSIGN,false))
+				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANASSIGN,false))
 				{
 					DVector apps=C.getMemberList();
 					if(apps.size()<1)
@@ -73,7 +73,7 @@ public class ClanAssign extends BaseClanner
 						mob.tell("There are no members in your "+C.typeName()+"");
 						return false;
 					}
-					int newPos=getRoleFromName(C.getGovernment(),pos);
+					int newPos=CMLib.clans().getRoleFromName(C.getGovernment(),pos);
 					if(newPos<0)
 					{
 						mob.tell("'"+pos+"' is not a valid role.");
@@ -100,10 +100,10 @@ public class ClanAssign extends BaseClanner
 							mob.tell(M.name()+" may not be assigned to "+CMLib.clans().getRoleName(C.getGovernment(),newPos,true,false)+".");
 							return false;
 						}
-						if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANASSIGN,true))
+						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANASSIGN,true))
 						{
 						    int oldPos=M.getClanRole();
-							int max=Clan.ROL_MAX[C.getGovernment()][getIntFromRole(newPos)];
+							int max=Clan.ROL_MAX[C.getGovernment()][CMLib.clans().getIntFromRole(newPos)];
 							Vector olds=new Vector();
 							for(int i=0;i<apps.size();i++)
 								if(((Integer)apps.elementAt(i,2)).intValue()==newPos)
@@ -128,7 +128,7 @@ public class ClanAssign extends BaseClanner
 									for(int i=0;i<olds.size();i++)
 									{
 										String s=(String)olds.elementAt(i);
-										clanAnnounce(mob," "+s+" of the "+C.typeName()+" "+C.clanID()+" is now a "+CMLib.clans().getRoleName(C.getGovernment(),Clan.POS_MEMBER,true,false)+".");
+										CMLib.clans().clanAnnounce(mob," "+s+" of the "+C.typeName()+" "+C.clanID()+" is now a "+CMLib.clans().getRoleName(C.getGovernment(),Clan.POS_MEMBER,true,false)+".");
 										MOB M2=CMLib.players().getPlayer(s);
 										if(M2!=null) M2.setClanRole(Clan.POS_MEMBER);
 										CMLib.database().DBUpdateClanMembership(s, C.clanID(), Clan.POS_MEMBER);
@@ -144,7 +144,7 @@ public class ClanAssign extends BaseClanner
 										{
 											String s=(String)olds.elementAt(0);
 											apps.removeElementAt(0);
-											clanAnnounce(mob," "+s+" of the "+C.typeName()+" "+C.clanID()+" is now a "+CMLib.clans().getRoleName(C.getGovernment(),Clan.POS_MEMBER,true,false)+".");
+											CMLib.clans().clanAnnounce(mob," "+s+" of the "+C.typeName()+" "+C.clanID()+" is now a "+CMLib.clans().getRoleName(C.getGovernment(),Clan.POS_MEMBER,true,false)+".");
 											MOB M2=CMLib.players().getPlayer(s);
 											if(M2!=null) M2.setClanRole(Clan.POS_MEMBER);
 											CMLib.database().DBUpdateClanMembership(s, C.clanID(), Clan.POS_MEMBER);
@@ -153,7 +153,7 @@ public class ClanAssign extends BaseClanner
 									}
 								}
 							}
-							clanAnnounce(mob,M.name()+" of the "+C.typeName()+" "+C.clanID()+" changed from "+CMLib.clans().getRoleName(C.getGovernment(),M.getClanRole(),true,false)+" to "+CMLib.clans().getRoleName(C.getGovernment(),newPos,true,false)+".");
+							CMLib.clans().clanAnnounce(mob,M.name()+" of the "+C.typeName()+" "+C.clanID()+" changed from "+CMLib.clans().getRoleName(C.getGovernment(),M.getClanRole(),true,false)+" to "+CMLib.clans().getRoleName(C.getGovernment(),newPos,true,false)+".");
                             C.addMember(M,newPos);
 							mob.tell(M.Name()+" of the "+C.typeName()+" "+C.clanID()+" has been assigned to be "+CMLib.english().startWithAorAn(CMLib.clans().getRoleName(C.getGovernment(),newPos,false,false))+". ");
 							M.tell("You have been assigned to be "+CMLib.english().startWithAorAn(CMLib.clans().getRoleName(C.getGovernment(),newPos,false,false))+" of "+C.typeName()+" "+C.clanID()+".");

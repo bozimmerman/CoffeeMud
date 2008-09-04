@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Sell extends BaseItemParser
+public class Sell extends StdCommand
 {
 	public Sell(){}
 
@@ -47,7 +47,7 @@ public class Sell extends BaseItemParser
 			return false;
 		}
 
-        int maxToDo=super.calculateMaxToGive(mob,commands,true,mob,false);
+        int maxToDo=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
         if(maxToDo<0) return false;
 
 

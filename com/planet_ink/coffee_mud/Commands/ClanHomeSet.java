@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ClanHomeSet extends BaseClanner
+public class ClanHomeSet extends StdCommand
 {
 	public ClanHomeSet(){}
 
@@ -69,19 +69,19 @@ public class ClanHomeSet extends BaseClanner
 			mob.tell("You cannot set a home.  Your "+C.typeName()+" does not have enough members to be considered active.");
 			return false;
 		}
-		if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,false))
+		if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,false))
 		{
 			if(!CMLib.law().doesOwnThisProperty(C.clanID(),R))
 			{
 				mob.tell("Your "+C.typeName()+" does not own this room.");
 				return false;
 			}
-			if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,true))
+			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,true))
 			{
 				C.setRecall(CMLib.map().getExtendedRoomID(R));
 				C.update();
 				mob.tell("The "+C.typeName()+" "+C.clanID()+" home is now set to "+R.roomTitle()+".");
-				clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" home is now set to "+R.roomTitle()+".");
+				CMLib.clans().clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" home is now set to "+R.roomTitle()+".");
 				return true;
 			}
 		}

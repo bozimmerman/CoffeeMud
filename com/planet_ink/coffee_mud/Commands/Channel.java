@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Channel extends BaseChanneler
+public class Channel extends StdCommand
 {
 	public Channel(){}
 	public static String[] access=null;
@@ -55,7 +55,7 @@ public class Channel extends BaseChanneler
 			boolean systemMsg=((Boolean)commands.firstElement()).booleanValue();
 			String channelName=(String)commands.elementAt(1);
 			String message=(String)commands.elementAt(2);
-			reallyChannel(mob,channelName,message,systemMsg);
+            CMLib.channels().reallyChannel(mob,channelName,message,systemMsg);
 			return true;
 		}
 		return channel(mob, commands, false);
@@ -123,7 +123,7 @@ public class Channel extends BaseChanneler
 				for(int i=que.size()-num;i<que.size();i++)
 				{
 					CMMsg msg=(CMMsg)que.elementAt(i);
-					showedAny=channelTo(mob.session(),areareq,channelInt,msg,msg.source())||showedAny;
+					showedAny=CMLib.channels().channelTo(mob.session(),areareq,channelInt,msg,msg.source())||showedAny;
 				}
 			}
 			if(!showedAny)
@@ -145,7 +145,7 @@ public class Channel extends BaseChanneler
             return false;
         }
         else
-			reallyChannel(mob,channelName,CMParms.combine(commands,0),systemMsg);
+            CMLib.channels().reallyChannel(mob,channelName,CMParms.combine(commands,0),systemMsg);
 		return false;
 	}
 

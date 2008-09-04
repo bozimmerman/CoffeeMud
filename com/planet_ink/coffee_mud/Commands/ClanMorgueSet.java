@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ClanMorgueSet extends BaseClanner
+public class ClanMorgueSet extends StdCommand
 {
 	public ClanMorgueSet(){}
 
@@ -69,19 +69,19 @@ public class ClanMorgueSet extends BaseClanner
 			mob.tell("You cannot set a morgue.  Your "+C.typeName()+" does not have enough members to be considered active.");
 			return false;
 		}
-		if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,false))
+		if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,false))
 		{
 			if(!CMLib.law().doesOwnThisProperty(C.clanID(),R))
 			{
 				mob.tell("Your "+C.typeName()+" does not own this room.");
 				return false;
 			}
-			if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,true))
+			if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANHOMESET,true))
 			{
 				C.setMorgue(CMLib.map().getExtendedRoomID(R));
 				C.update();
 				mob.tell("Your "+C.typeName()+" morgue is now set to "+R.roomTitle()+".");
-				clanAnnounce(mob, "The morgue of "+C.typeName()+" "+C.clanID()+" is now set to "+R.roomTitle()+".");
+				CMLib.clans().clanAnnounce(mob, "The morgue of "+C.typeName()+" "+C.clanID()+" is now set to "+R.roomTitle()+".");
 				return true;
 			}
 		}

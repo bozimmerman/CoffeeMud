@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ClanAccept extends BaseClanner
+public class ClanAccept extends StdCommand
 {
 	public ClanAccept(){}
 
@@ -60,7 +60,7 @@ public class ClanAccept extends BaseClanner
 					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
 					return false;
 				}
-				if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANACCEPT,false))
+				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANACCEPT,false))
 				{
 					DVector apps=C.getMemberList(Clan.POS_APPLICANT);
 					if(apps.size()<1)
@@ -84,10 +84,10 @@ public class ClanAccept extends BaseClanner
 							mob.tell(qual+" was not found.  Could not add to "+C.typeName()+".");
 							return false;
 						}
-						if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANACCEPT,true))
+						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANACCEPT,true))
 						{
                             C.addMember(M,Clan.POS_MEMBER);
-							clanAnnounce(mob,M.Name()+" is now a new member of "+C.typeName()+" "+C.name()+".");
+							CMLib.clans().clanAnnounce(mob,M.Name()+" is now a new member of "+C.typeName()+" "+C.name()+".");
 							mob.tell(M.Name()+" has been accepted into "+C.typeName()+" '"+C.clanID()+"'.");
 							M.tell(mob.Name()+" has accepted you as a member of "+C.typeName()+" '"+C.clanID()+"'.");
 							return false;

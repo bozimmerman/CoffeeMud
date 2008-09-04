@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Give extends BaseItemParser
+public class Give extends StdCommand
 {
 	public Give(){}
 
@@ -62,7 +62,7 @@ public class Give extends BaseItemParser
 		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("to")))
 			commands.removeElementAt(commands.size()-1);
 
-		int maxToGive=calculateMaxToGive(mob,commands,true,mob,false);
+		int maxToGive=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
         if(maxToGive<0) return false;
         
 		String thingToGive=CMParms.combine(commands,0);
@@ -72,7 +72,7 @@ public class Give extends BaseItemParser
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(thingToGive.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(4);}
 		if(thingToGive.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToGive="ALL "+thingToGive.substring(0,thingToGive.length()-4);}
-        boolean onlyGoldFlag=hasOnlyGoldInInventory(mob);
+        boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();
         Item giveThis=CMLib.english().bestPossibleGold(mob,null,thingToGive);
         if(giveThis!=null)
         {

@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ClanList extends BaseClanner
+public class ClanList extends StdCommand
 {
 	public ClanList(){}
 

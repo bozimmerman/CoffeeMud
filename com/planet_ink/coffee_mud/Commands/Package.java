@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Package extends BaseItemParser
+public class Package extends StdCommand
 {
     public Package(){}
 
@@ -50,7 +50,7 @@ public class Package extends BaseItemParser
         String whatName="";
         if(commands.size()>0)
             whatName=(String)commands.lastElement();
-        int maxToGet=super.calculateMaxToGive(mob,commands,true,mob,false);
+        int maxToGet=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
         if(maxToGet<0) return false;
         
         String whatToGet=CMParms.combine(commands,0);

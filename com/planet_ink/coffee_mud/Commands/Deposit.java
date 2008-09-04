@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Deposit extends BaseItemParser
+public class Deposit extends StdCommand
 {
 	public Deposit(){}
 

@@ -31,14 +31,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Put extends BaseItemParser
+public class Put extends StdCommand
 {
 	public Put(){}
 
 	private String[] access={"PUT","PU","P"};
 	public String[] getAccessWords(){return access;}
 
-	public static void putout(MOB mob, Vector commands, boolean quiet)
+	public void putout(MOB mob, Vector commands, boolean quiet)
 	{
 		if(commands.size()<3)
 		{
@@ -109,7 +109,7 @@ public class Put extends BaseItemParser
 			return false;
 		}
 
-		int maxToPut=super.calculateMaxToGive(mob,commands,true,mob,false);
+		int maxToPut=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
         if(maxToPut<0) return false;
         
 		String thingToPut=CMParms.combine(commands,0);
@@ -119,7 +119,7 @@ public class Put extends BaseItemParser
 		boolean allFlag=(commands.size()>0)?((String)commands.elementAt(0)).equalsIgnoreCase("all"):false;
 		if(thingToPut.toUpperCase().startsWith("ALL.")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(4);}
 		if(thingToPut.toUpperCase().endsWith(".ALL")){ allFlag=true; thingToPut="ALL "+thingToPut.substring(0,thingToPut.length()-4);}
-        boolean onlyGoldFlag=hasOnlyGoldInInventory(mob);
+        boolean onlyGoldFlag=mob.hasOnlyGoldInInventory();
         Item putThis=CMLib.english().bestPossibleGold(mob,null,thingToPut);
         if(putThis!=null)
         {

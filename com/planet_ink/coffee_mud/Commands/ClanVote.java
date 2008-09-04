@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ClanVote extends BaseClanner
+public class ClanVote extends StdCommand
 {
 	public ClanVote(){}
 
@@ -167,7 +167,7 @@ public class ClanVote extends BaseClanner
 								&&(mob.session().confirm("This will cancel this entire vote, are you sure (N/y)?","N")))
 								{
 									C.delVote(CV);
-									clanAnnounce(mob,"A prior vote for "+C.typeName()+" "+C.clanID()+" has been deleted.");
+									CMLib.clans().clanAnnounce(mob,"A prior vote for "+C.typeName()+" "+C.clanID()+" has been deleted.");
 									msg.append("The vote has been deleted.");
 									updateVote=true;
 								}

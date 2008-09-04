@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Fill extends BaseItemParser
+public class Fill extends StdCommand
 {
 	public Fill(){}
 
@@ -74,7 +74,7 @@ public class Fill extends BaseItemParser
     			commands.removeElementAt(commands.size()-1);
 		}
 
-        int maxToFill=super.calculateMaxToGive(mob,commands,true,mob,false);
+        int maxToFill=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
         if(maxToFill<0) return false;
 
 		String thingToFill=CMParms.combine(commands,0);

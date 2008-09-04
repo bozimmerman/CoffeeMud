@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ClanDeclare extends BaseClanner
+public class ClanDeclare extends StdCommand
 {
 	public ClanDeclare(){}
 
@@ -67,7 +67,7 @@ public class ClanDeclare extends BaseClanner
 					mob.tell("There is no longer a clan called "+mob.getClanID()+".");
 					return false;
 				}
-				if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANDECLARE,false))
+				if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANDECLARE,false))
 				{
 					int newRole=-1;
 					for(int i=0;i<Clan.REL_DESCS.length;i++)
@@ -105,9 +105,9 @@ public class ClanDeclare extends BaseClanner
 							return false;
 						}
 					}
-					if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANDECLARE,true))
+					if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANDECLARE,true))
 					{
-						clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has declared "+CMStrings.capitalizeAndLower(Clan.REL_STATES[newRole].toLowerCase())+" "+C2.name()+".");
+						CMLib.clans().clanAnnounce(mob,"The "+C.typeName()+" "+C.clanID()+" has declared "+CMStrings.capitalizeAndLower(Clan.REL_STATES[newRole].toLowerCase())+" "+C2.name()+".");
 						C.setClanRelations(C2.clanID(),newRole,System.currentTimeMillis());
 						C.update();
 						return false;

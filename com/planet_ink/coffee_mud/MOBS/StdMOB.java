@@ -3726,6 +3726,20 @@ public class StdMOB implements MOB
 		}
 		return V;
 	}
+    
+    public boolean hasOnlyGoldInInventory()
+    {
+        for(int i=0;i<inventorySize();i++)
+        {
+            Item I=fetchInventory(i);
+            if(I.amWearingAt(Item.IN_INVENTORY)
+            &&((I.container()==null)||(I.ultimateContainer().amWearingAt(Item.IN_INVENTORY)))
+            &&(!(I instanceof Coins)))
+                return false;
+        }
+        return true;
+    }
+    
 	public Item fetchFirstWornItem(long wornCode)
 	{
 		for(int i=0;i<inventorySize();i++)

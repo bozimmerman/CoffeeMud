@@ -169,6 +169,7 @@ public interface MOB extends Environmental, Rider
 	public Vector fetchWornItems(long wornCode, short aboveOrAroundLayer, short layerAttributes);
 	public Item fetchFirstWornItem(long wornCode);
 	public Item fetchWieldedItem();
+    public boolean hasOnlyGoldInInventory();
 
 
 	public int freeWearPositions(long wornCode, short belowLayer, short layerAttributes);

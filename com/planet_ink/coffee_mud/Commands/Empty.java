@@ -82,7 +82,7 @@ public class Empty extends Drop
 			return false;
 		}
 
-        int maxToDrop=super.calculateMaxToGive(mob,commands,true,mob,false);
+        int maxToDrop=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
         if(maxToDrop<0) return false;
 
 		whatToDrop=CMParms.combine(commands,0);

@@ -30,7 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class ClanPremise extends BaseClanner
+public class ClanPremise extends StdCommand
 {
 	public ClanPremise(){}
 
@@ -52,7 +52,7 @@ public class ClanPremise extends BaseClanner
 		else
 		{
 			Clan C=CMLib.clans().getClan(mob.getClanID());
-			if((!skipChecks)&&(!goForward(mob,C,commands,Clan.FUNC_CLANPREMISE,false)))
+			if((!skipChecks)&&(!CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANPREMISE,false)))
 			{
 				msg.append("You aren't in the right position to set the premise to your "+C.typeName()+".");
 			}
@@ -69,11 +69,11 @@ public class ClanPremise extends BaseClanner
 					if(premise.length()>0)
 					{
 						commands.addElement(premise);
-						if(skipChecks||goForward(mob,C,commands,Clan.FUNC_CLANPREMISE,true))
+						if(skipChecks||CMLib.clans().goForward(mob,C,commands,Clan.FUNC_CLANPREMISE,true))
 						{
 							C.setPremise(premise);
 							C.update();
-							clanAnnounce(mob,"The premise of "+C.typeName()+" "+C.clanID()+" has been changed.");
+							CMLib.clans().clanAnnounce(mob,"The premise of "+C.typeName()+" "+C.clanID()+" has been changed.");
 							return false;
 						}
 					}

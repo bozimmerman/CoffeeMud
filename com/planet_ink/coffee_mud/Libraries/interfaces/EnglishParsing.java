@@ -79,4 +79,5 @@ public interface EnglishParsing extends CMLibrary
     public Vector possibleContainers(MOB mob, Vector commands, int wornReqCode, boolean withContentOnly);
     public Item possibleContainer(MOB mob, Vector commands, boolean withStuff, int wornReqCode);
     public String returnTime(long millis, long ticks);
+    public int calculateMaxToGive(MOB mob, Vector commands, boolean breakPackages, Environmental checkWhat, boolean getOnly);
 }

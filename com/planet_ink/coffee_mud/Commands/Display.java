@@ -31,7 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Display extends BaseItemParser
+public class Display extends StdCommand
 {
 	public Display(){}
 
@@ -62,7 +62,7 @@ public class Display extends BaseItemParser
 		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("to")))
 			commands.removeElementAt(commands.size()-1);
 
-        int maxToGive=super.calculateMaxToGive(mob,commands,true,mob,false);
+        int maxToGive=CMLib.english().calculateMaxToGive(mob,commands,true,mob,false);
         if(maxToGive<0) return false;
 
 		String thingToGive=CMParms.combine(commands,0);

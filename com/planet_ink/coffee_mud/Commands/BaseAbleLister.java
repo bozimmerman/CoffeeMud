@@ -37,6 +37,7 @@ public class BaseAbleLister extends StdCommand
 	{
 		return parsedOutIndividualSkill(mob,qual,CMParms.makeVector(new Integer(acode)));
 	}
+    
 	protected boolean parsedOutIndividualSkill(MOB mob, String qual, Vector acodes)
 	{
 	    if((qual==null)||(qual.length()==0)||(qual.equalsIgnoreCase("all")))
@@ -64,6 +65,7 @@ public class BaseAbleLister extends StdCommand
 		}
 		return false;
 	}
+    
 	protected int parseOutLevel(Vector commands)
 	{
 		if((commands.size()>1)
@@ -115,11 +117,7 @@ public class BaseAbleLister extends StdCommand
     }
     
     
-	protected StringBuffer getAbilities(MOB able,
-										int ofType,
-										int ofDomain,
-										boolean addQualLine,
-										int maxLevel)
+	protected StringBuffer getAbilities(MOB able, int ofType, int ofDomain, boolean addQualLine, int maxLevel)
 	{
 		Vector V=new Vector();
 		int mask=Ability.ALL_ACODES;
@@ -132,11 +130,7 @@ public class BaseAbleLister extends StdCommand
 		return getAbilities(able,V,mask,addQualLine,maxLevel);
 	}
 	
-	protected StringBuffer getAbilities(MOB able,
-									    Vector ofTypes,
-									    int mask,
-									    boolean addQualLine,
-									    int maxLevel)
+	protected StringBuffer getAbilities(MOB able, Vector ofTypes, int mask, boolean addQualLine, int maxLevel)
 	{
 		int highestLevel=0;
 		int lowestLevel=able.envStats().level()+1;
