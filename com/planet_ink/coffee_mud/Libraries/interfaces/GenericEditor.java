@@ -47,6 +47,7 @@ public interface GenericEditor extends CMLibrary
     public void modifyPlayer(MOB mob, MOB me) throws IOException;
     
     public Room changeRoomType(Room R, Room newRoom);
+    public void spells(MOB mob, Vector V, int showNumber, int showFlag) throws IOException;
     public void genAbility(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException;
     public void genAffects(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException;
     public void genBehaviors(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException;

@@ -3432,6 +3432,65 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         }
     }
 
+    public void spells(MOB mob, Vector V, int showNumber, int showFlag) throws IOException
+    {
+        if((showFlag>0)&&(showFlag!=showNumber)) return;
+        String behave="NO";
+        while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+        {
+            String abilitiestr="";
+            for(int a=0;a<V.size();a++)
+            {
+                Ability A=(Ability)V.elementAt(a);
+                if((A!=null)&&(A.savable()))
+                    abilitiestr+=A.ID()+", ";
+            }
+            if(abilitiestr.length()>0)
+                abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
+            if((abilitiestr.length()>60)&&((showFlag!=showNumber)&&(showFlag>-999)))
+                abilitiestr=abilitiestr.substring(0,60)+"...";
+            mob.tell(showNumber+". Spells: '"+abilitiestr+"'.");
+            if((showFlag!=showNumber)&&(showFlag>-999)) return;
+            behave=mob.session().prompt("Enter a spell to add/remove (?)\n\r:","");
+            if(behave.length()>0)
+            {
+                if(behave.equalsIgnoreCase("?"))
+                    mob.tell(CMLib.lister().reallyList(CMClass.abilities(),-1).toString());
+                else
+                {
+                    Ability chosenOne=null;
+                    for(int a=0;a<V.size();a++)
+                    {
+                        Ability A=(Ability)V.elementAt(a);
+                        if((A!=null)&&(A.ID().equalsIgnoreCase(behave)))
+                            chosenOne=A;
+                    }
+                    if(chosenOne!=null)
+                    {
+                        mob.tell(chosenOne.ID()+" removed.");
+                        V.remove(chosenOne);
+                    }
+                    else
+                    {
+                        chosenOne=CMClass.getAbility(behave);
+                        if(chosenOne!=null)
+                        {
+                            mob.tell(chosenOne.ID()+" added.");
+                            chosenOne=(Ability)chosenOne.copyOf();
+                            V.add(chosenOne);
+                        }
+                        else
+                        {
+                            mob.tell("'"+behave+"' is not recognized.  Try '?'.");
+                        }
+                    }
+                }
+            }
+            else
+                mob.tell("(no change)");
+        }
+    }
+    
     protected void genClanMembers(MOB mob, Clan E, int showNumber, int showFlag)
     throws IOException
     {
