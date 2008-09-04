@@ -32,7 +32,7 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Modify extends BaseGenerics
+public class Modify extends StdCommand
 {
 	public Modify(){}
 
