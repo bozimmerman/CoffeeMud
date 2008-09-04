@@ -83,7 +83,7 @@ public class Create extends BaseGenerics
 			if((thisExit.isGeneric())&&(reverseExit.isGeneric()))
 			{
 				thisExit=(Exit)reverseExit.copyOf();
-				modifyGenExit(mob,thisExit);
+                CMLib.genEd().modifyGenExit(mob,thisExit);
 			}
 		}
 
@@ -197,7 +197,7 @@ public class Create extends BaseGenerics
 		}
 
 		if((newItem.isGeneric())&&(doGenerica))
-			genMiscSet(mob,newItem);
+			CMLib.genEd().genMiscSet(mob,newItem);
 		mob.location().recoverRoomStats();
 		Log.sysOut("Items",mob.Name()+" created item "+newItem.ID()+".");
 	}
@@ -235,7 +235,7 @@ public class Create extends BaseGenerics
 		{
 			if(CMLib.flags().isInTheGame(M,true))
 				M.removeFromGame(false);
-			modifyPlayer(mob,M);
+            CMLib.genEd().modifyPlayer(mob,M);
 			Log.sysOut("Mobs",mob.Name()+" created player "+M.Name()+".");
 		}
 	}
@@ -376,7 +376,7 @@ public class Create extends BaseGenerics
 		newMOB.recoverEnvStats();
 		mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,"Suddenly, "+newMOB.name()+" instantiates from the Java plain.");
 		if((newMOB.isGeneric())&&(doGenerica))
-			genMiscSet(mob,newMOB);
+			CMLib.genEd().genMiscSet(mob,newMOB);
 		Log.sysOut("Mobs",mob.Name()+" created mob "+newMOB.Name()+".");
 	}
 
@@ -421,7 +421,7 @@ public class Create extends BaseGenerics
 			GR.setRacialParms("<RACE><ID>"+CMStrings.capitalizeAndLower(raceID)+"</ID><NAME>"+CMStrings.capitalizeAndLower(raceID)+"</NAME></RACE>");
 		}
 		CMClass.addRace(GR);
-		modifyGenRace(mob,GR);
+        CMLib.genEd().modifyGenRace(mob,GR);
 		CMLib.database().DBCreateRace(GR.ID(),GR.racialParms());
 		if(R!=null)
             CMLib.utensils().swapRaces(GR,R);
@@ -499,7 +499,7 @@ public class Create extends BaseGenerics
         DVector DV=new DVector(6);
         CMLib.ableMapper().getAbilityComponentMap().put(skillID.toUpperCase().trim(),DV);
         CMLib.ableMapper().addBlankAbilityComponent(DV);
-        super.modifyComponents(mob,skillID);
+        CMLib.genEd().modifyComponents(mob,skillID);
         String parms=CMLib.ableMapper().getAbilityComponentCodedString(skillID);
 		String error=CMLib.ableMapper().addAbilityComponent(parms,CMLib.ableMapper().getAbilityComponentMap());
 		if(error!=null)
@@ -638,7 +638,7 @@ public class Create extends BaseGenerics
 		}
 		Ability CR=(Ability)CMClass.getAbility("GenAbility").copyOf();
 		CR.setStat("CLASS",classD);
-		modifyGenAbility(mob,CR);
+        CMLib.genEd().modifyGenAbility(mob,CR);
 		CMLib.database().DBCreateAbility(CR.ID(),CR.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The skill of the world just increased!");
 	}
@@ -685,7 +685,7 @@ public class Create extends BaseGenerics
     		CR.setClassParms("<CCLASS><ID>"+CMStrings.capitalizeAndLower(classD)+"</ID><NAME>"+CMStrings.capitalizeAndLower(classD)+"</NAME></CCLASS>");
         }
 		CMClass.addCharClass(CR);
-		modifyGenClass(mob,CR);
+        CMLib.genEd().modifyGenClass(mob,CR);
 		CMLib.database().DBCreateClass(CR.ID(),CR.classParms());
 		if(C!=null)
 		    CMLib.utensils().reloadCharClasses(C);

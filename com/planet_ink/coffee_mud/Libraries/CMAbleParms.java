@@ -42,18 +42,18 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
     {
         super();
         defaultFields = CMParms.makeVector(new Object[] {
-            new AbilityParmEditorImpl("SPELL_ID",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("SPELL_ID","Spell",PARMTYPE_CHOICES) {
                 public void createChoices() { createChoices(CMClass.abilities());}
             },
-            new AbilityParmEditorImpl("RESOURCE_NAME",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("RESOURCE_NAME","Resource",PARMTYPE_CHOICES) {
                 public void createChoices() { createChoices(RawMaterial.RESOURCE_DESCS);}
             },
-            new AbilityParmEditorImpl("ITEM_NAME",PARMTYPE_STRING){public void createChoices() {}}, 
-            new AbilityParmEditorImpl("ITEM_LEVEL",PARMTYPE_NUMBER){public void createChoices() {}},
-            new AbilityParmEditorImpl("BUILD_TIME_TICKS",PARMTYPE_NUMBER){public void createChoices() {}},
-            new AbilityParmEditorImpl("AMOUNT_MATERIAL_REQUIRED",PARMTYPE_NUMBER){public void createChoices() {}},
-            new AbilityParmEditorImpl("ITEM_BASE_VALUE",PARMTYPE_NUMBER){public void createChoices() {}},
-            new AbilityParmEditorImpl("ITEM_CLASS_ID",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("ITEM_NAME","Item Final Name",PARMTYPE_STRING){public void createChoices() {}}, 
+            new AbilityParmEditorImpl("ITEM_LEVEL","Lvl",PARMTYPE_NUMBER){public void createChoices() {}},
+            new AbilityParmEditorImpl("BUILD_TIME_TICKS","Time",PARMTYPE_NUMBER){public void createChoices() {}},
+            new AbilityParmEditorImpl("AMOUNT_MATERIAL_REQUIRED","Amt",PARMTYPE_NUMBER){public void createChoices() {}},
+            new AbilityParmEditorImpl("ITEM_BASE_VALUE","Value",PARMTYPE_NUMBER){public void createChoices() {}},
+            new AbilityParmEditorImpl("ITEM_CLASS_ID","Class ID",PARMTYPE_CHOICES) {
                 public void createChoices() { 
                     Vector V  = new Vector();
                     V.addAll(CMParms.makeVector(CMClass.clanItems()));
@@ -73,72 +73,72 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     createChoices(V2);
                 }
             },
-            new AbilityParmEditorImpl("CODED_WEAR_LOCATION",PARMTYPE_SPECIAL) {
+            new AbilityParmEditorImpl("CODED_WEAR_LOCATION","Wear Locs",PARMTYPE_SPECIAL) {
                 public boolean appliesToClass(Object o) { return o instanceof Armor;}
                 public void createChoices() {}
 //TODO: finish
             },
-            new AbilityParmEditorImpl("CONTAINER_CAPACITY",PARMTYPE_NUMBER) {
+            new AbilityParmEditorImpl("CONTAINER_CAPACITY","Cap.",PARMTYPE_NUMBER) {
                 public boolean appliesToClass(Object o) { return o instanceof Container;}
                 public void createChoices() {}
             },
-            new AbilityParmEditorImpl("BASE_ARMOR_AMOUNT",PARMTYPE_NUMBER) {
+            new AbilityParmEditorImpl("BASE_ARMOR_AMOUNT","Arm.",PARMTYPE_NUMBER) {
                 public boolean appliesToClass(Object o) { return o instanceof Armor;}
                 public void createChoices() {}
             },
-            new AbilityParmEditorImpl("CONTAINER_TYPE",PARMTYPE_MULTICHOICES) {
+            new AbilityParmEditorImpl("CONTAINER_TYPE","Typ.",PARMTYPE_MULTICHOICES) {
                 public void createChoices() { createBinaryChoices(Container.CONTAIN_DESCS);}
                 public boolean appliesToClass(Object o) { return o instanceof Container;}
             },
-            new AbilityParmEditorImpl("CODED_SPELL_LIST",PARMTYPE_SPECIAL) {
+            new AbilityParmEditorImpl("CODED_SPELL_LIST","Spells",PARMTYPE_SPECIAL) {
                 public void createChoices() {}
 //TODO: finish
             },
-            new AbilityParmEditorImpl("BASE_DAMAGE",PARMTYPE_NUMBER) {
+            new AbilityParmEditorImpl("BASE_DAMAGE","Dmg.",PARMTYPE_NUMBER) {
                 public boolean appliesToClass(Object o) { return o instanceof Weapon;}
                 public void createChoices() {}
             },
-            new AbilityParmEditorImpl("LID_LOCK",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("LID_LOCK","Lid.",PARMTYPE_CHOICES) {
                 public boolean appliesToClass(Object o) { return o instanceof Container;}
                 public void createChoices() { createChoices(new String[]{"","LID","LOCK"});}
             },
-            new AbilityParmEditorImpl("STATUE",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("STATUE","Statue",PARMTYPE_CHOICES) {
                 public void createChoices() { createChoices(new String[]{"","STATUE"});}
             },
-            new AbilityParmEditorImpl("RIDE_BASIS",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("RIDE_BASIS","Ride",PARMTYPE_CHOICES) {
                 public boolean appliesToClass(Object o) { return o instanceof Rideable;}
                 public void createChoices() { createChoices(new String[]{"","CHAIR","TABLE","LADDER","ENTER","BED"});}
             },
-            new AbilityParmEditorImpl("LIQUID_CAPACITY",PARMTYPE_NUMBER) {
+            new AbilityParmEditorImpl("LIQUID_CAPACITY","Liq.",PARMTYPE_NUMBER) {
                 public boolean appliesToClass(Object o) { return o instanceof Drink;}
                 public void createChoices() {}
             },
-            new AbilityParmEditorImpl("WEAPON_CLASS",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("WEAPON_CLASS","WClas",PARMTYPE_CHOICES) {
                 public boolean appliesToClass(Object o) { return o instanceof Weapon;}
                 public void createChoices() { createChoices(Weapon.CLASS_DESCS);}
             },
-            new AbilityParmEditorImpl("SMOKE_FLAG",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("SMOKE_FLAG","Smoke",PARMTYPE_CHOICES) {
                 public boolean appliesToClass(Object o) { return o instanceof Light;}
                 public void createChoices() { createChoices(new String[]{"","SMOKE"});}
             },
-            new AbilityParmEditorImpl("WEAPON_HANDS_REQUIRED",PARMTYPE_NUMBER) {
+            new AbilityParmEditorImpl("WEAPON_HANDS_REQUIRED","Hand",PARMTYPE_NUMBER) {
                 public boolean appliesToClass(Object o) { return o instanceof Weapon;}
                 public void createChoices() {}
             },
-            new AbilityParmEditorImpl("LIGHT_DURATION",PARMTYPE_NUMBER) {
+            new AbilityParmEditorImpl("LIGHT_DURATION","Dur.",PARMTYPE_NUMBER) {
                 public boolean appliesToClass(Object o) { return o instanceof Light;}
                 public void createChoices() {}
             },
-            new AbilityParmEditorImpl("CLAN_ITEM_CODENUMBER",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("CLAN_ITEM_CODENUMBER","Typ.",PARMTYPE_CHOICES) {
                 public boolean appliesToClass(Object o) { return o instanceof ClanItem;}
                 public void createChoices() { createNumberedChoices(ClanItem.CI_DESC);}
             },
-            new AbilityParmEditorImpl("CLAN_EXPERIENCE_COST",PARMTYPE_NUMBER) {public void createChoices() {}},
-            new AbilityParmEditorImpl("CLAN_AREA_FLAG",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("CLAN_EXPERIENCE_COST","Exp",PARMTYPE_NUMBER) {public void createChoices() {}},
+            new AbilityParmEditorImpl("CLAN_AREA_FLAG","Area",PARMTYPE_CHOICES) {
                 public void createChoices() { createChoices(new String[]{"","AREA"});}
             },
-            new AbilityParmEditorImpl("READABLE_TEXT",PARMTYPE_STRING) {public void createChoices() {}},
-            new AbilityParmEditorImpl("REQUIRED_COMMON_SKILL_ID",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("READABLE_TEXT","Read",PARMTYPE_STRINGORNULL) {public void createChoices() {}},
+            new AbilityParmEditorImpl("REQUIRED_COMMON_SKILL_ID","Common Skill",PARMTYPE_CHOICES) {
                 public void createChoices() {
                     Vector V  = new Vector();
                     Ability A = null;
@@ -151,65 +151,65 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     createChoices(V);
                 }
             },
-            new AbilityParmEditorImpl("FOOD_DRINK",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("FOOD_DRINK","Type",PARMTYPE_CHOICES) {
                 public void createChoices() { createChoices(new String[]{"","FOOD","DRINK"});}
             },
-            new AbilityParmEditorImpl("SMELL_LIST",PARMTYPE_SPECIAL) {
+            new AbilityParmEditorImpl("SMELL_LIST","Smells",PARMTYPE_SPECIAL) {
 //TODO:
                 public void createChoices() {}
                 public boolean appliesToClass(Object o) { return o instanceof Perfume;}
             },
-            new AbilityParmEditorImpl("RESOURCE_OR_KEYWORD",PARMTYPE_SPECIAL) {
+            new AbilityParmEditorImpl("RESOURCE_OR_KEYWORD","Resource",PARMTYPE_SPECIAL) {
 //TODO:
                 public void createChoices() {}
             },
-            new AbilityParmEditorImpl("AMMO_TYPE",PARMTYPE_STRING) {
+            new AbilityParmEditorImpl("AMMO_TYPE","Ammo",PARMTYPE_STRING) {
                 public void createChoices() {}
                 public boolean appliesToClass(Object o) { return o instanceof Weapon;}
             },
-            new AbilityParmEditorImpl("AMMO_CAPACITY",PARMTYPE_NUMBER) {
+            new AbilityParmEditorImpl("AMMO_CAPACITY","Ammo#",PARMTYPE_NUMBER) {
                 public void createChoices() {}
                 public boolean appliesToClass(Object o) { return o instanceof Weapon;}
             },
-            new AbilityParmEditorImpl("MAXIMUM_RANGE",PARMTYPE_NUMBER) { public void createChoices() {} },
-            new AbilityParmEditorImpl("RESOURCE_OR_MATERIAL",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("MAXIMUM_RANGE","Max",PARMTYPE_NUMBER) { public void createChoices() {} },
+            new AbilityParmEditorImpl("RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
                 public void createChoices() {
                     Vector V=CMParms.makeVector(RawMaterial.RESOURCE_DESCS);
                     V.addAll(CMParms.makeVector(RawMaterial.MATERIAL_DESCS));
                     createChoices(V);
                 }
             },
-            new AbilityParmEditorImpl("HERB_NAME$",PARMTYPE_STRING) {public void createChoices() {}},
-            new AbilityParmEditorImpl("RIDE_CAPACITY",PARMTYPE_NUMBER) {
+            new AbilityParmEditorImpl("HERB_NAME$","Herb Final Name",PARMTYPE_STRING) {public void createChoices() {}},
+            new AbilityParmEditorImpl("RIDE_CAPACITY","Ridrs",PARMTYPE_NUMBER) {
                 public void createChoices() {}
                 public boolean appliesToClass(Object o) { return o instanceof Rideable;}
             },
-            new AbilityParmEditorImpl("METAL_OR_WOOD",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("METAL_OR_WOOD","Metal",PARMTYPE_CHOICES) {
                 public void createChoices() { createChoices(new String[]{"METAL","WOOD"});}
             },
-            new AbilityParmEditorImpl("OPTIONAL_RACE_ID",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("OPTIONAL_RACE_ID","Race",PARMTYPE_CHOICES) {
                 public void createChoices() { 
                     createChoices(CMClass.races());
                     choices().addElement("","");
                 }
             },
-            new AbilityParmEditorImpl("INSTRUMENT_TYPE",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("INSTRUMENT_TYPE","Instrmnt",PARMTYPE_CHOICES) {
                 public void createChoices() { createChoices(MusicalInstrument.TYPE_DESC); }
                 public boolean appliesToClass(Object o) { return o instanceof MusicalInstrument;}
             },
-            new AbilityParmEditorImpl("STONE_FLAG",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("STONE_FLAG","Stone",PARMTYPE_CHOICES) {
                 public void createChoices() { createChoices(new String[]{"","STONE"});}
             },
-            new AbilityParmEditorImpl("POSE_NAME",PARMTYPE_STRING) {public void createChoices() {}},
-            new AbilityParmEditorImpl("POSE_DESCRIPTION",PARMTYPE_STRING) {public void createChoices() {}},
-            new AbilityParmEditorImpl("WOOD_METAL_CLOTH",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("POSE_NAME","Pose Word",PARMTYPE_ONEWORD) {public void createChoices() {}},
+            new AbilityParmEditorImpl("POSE_DESCRIPTION","Pose Description",PARMTYPE_STRING) {public void createChoices() {}},
+            new AbilityParmEditorImpl("WOOD_METAL_CLOTH","",PARMTYPE_CHOICES) {
                 public void createChoices() { createChoices(new String[]{"WOOD","METAL","CLOTH"});}
             },
-            new AbilityParmEditorImpl("WEAPON_TYPE",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("WEAPON_TYPE","W.Type",PARMTYPE_CHOICES) {
                 public boolean appliesToClass(Object o) { return o instanceof Weapon;}
                 public void createChoices() { createChoices(Weapon.TYPE_DESCS);}
             },
-            new AbilityParmEditorImpl("ATTACK_MODIFICATION",PARMTYPE_NUMBER) {
+            new AbilityParmEditorImpl("ATTACK_MODIFICATION","Att.",PARMTYPE_NUMBER) {
                 public void createChoices() {}
                 public boolean appliesToClass(Object o) { return o instanceof Weapon;}
             }
@@ -221,14 +221,58 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         private String ID;
         private DVector choices = null;
         private int fieldType;
-        public AbilityParmEditorImpl(String fieldName, int type) {
-            ID=fieldName; fieldType = type;
+        private String prompt = null;
+        private String header = null;
+        
+        public AbilityParmEditorImpl(String fieldName, String shortHeader, int type) {
+            ID=fieldName; 
+            fieldType = type;
+            header = shortHeader;
+            prompt = CMStrings.capitalizeAndLower(CMStrings.replaceAll(ID,"_"," "));
             createChoices();
         }
         public String ID(){ return ID;}
         public int parmType(){ return fieldType;}
-        public abstract void createChoices(); 
+        public String prompt() { return prompt; }
+        public String colHeader() { return header;}
         
+        public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag)
+            throws java.io.IOException
+        {
+            String str = null;
+            boolean emptyOK = false;
+            boolean spaceOK = fieldType != PARMTYPE_ONEWORD;
+            switch(fieldType) {
+                case PARMTYPE_STRINGORNULL:
+                    emptyOK = true;
+                case PARMTYPE_ONEWORD:
+                case PARMTYPE_STRING:
+                {
+                    ++showNumber[0];
+                    boolean proceed = true;
+                    while(proceed) {
+                        str = CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),emptyOK).trim();
+                        if((!spaceOK) && (str.indexOf(' ') >= 0))
+                            mob.tell("Spaces are not allowed here.");
+                        else
+                            proceed=false;
+                    }
+                    break;
+                }
+                case PARMTYPE_NUMBER:
+                    str = Integer.toString(CMLib.genEd().prompt(mob,Integer.parseInt(oldVal),++showNumber[0],showFlag,prompt()));
+                    break;
+                case PARMTYPE_CHOICES:
+                    str = CMLib.genEd().prompt(mob,oldVal,++showNumber[0],showFlag,prompt(),choices);
+                    break;
+                case PARMTYPE_MULTICHOICES:
+                    str = Integer.toString(CMLib.genEd().promptMulti(mob,Integer.parseInt(oldVal),++showNumber[0],showFlag,prompt(),choices));
+                    break;
+            }
+            return str;
+        }
+        
+        public abstract void createChoices(); 
         public DVector createChoices(Enumeration e) {
             if(choices != null) return choices;
             choices = new DVector(2);

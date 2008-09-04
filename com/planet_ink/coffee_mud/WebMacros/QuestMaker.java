@@ -508,7 +508,7 @@ public class QuestMaker extends StdWebMacro
                 boolean optionalEntry=CMath.bset(stepType.intValue(),QuestManager.QM_COMMAND_OPTIONAL);
                 int inputCode=stepType.intValue()&QuestManager.QM_COMMAND_MASK;
                 String oldValue=(String)httpReq.getRequestParameter(httpKeyName);
-                EnglishParsing.CMEval eval= QuestManager.QM_COMMAND_TESTS[inputCode];
+                GenericEditor.CMEval eval= QuestManager.QM_COMMAND_TESTS[inputCode];
                 try
                 {
                     switch(inputCode)

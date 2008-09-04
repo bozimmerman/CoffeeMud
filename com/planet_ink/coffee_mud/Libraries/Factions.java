@@ -399,7 +399,7 @@ public class Factions extends StdLibrary implements FactionManager
         {
             int showNumber=0;
             // name
-            me.setName(CMLib.english().prompt(mob,me.name(),++showNumber,showFlag,"Name"));
+            me.setName(CMLib.genEd().prompt(mob,me.name(),++showNumber,showFlag,"Name"));
 
             // ranges
             ++showNumber;
@@ -487,10 +487,10 @@ public class Factions extends StdLibrary implements FactionManager
 
 
             // show in score
-            me.setShowInScore(CMLib.english().prompt(mob,me.showInScore(),++showNumber,showFlag,"Show in 'Score'"));
+            me.setShowInScore(CMLib.genEd().prompt(mob,me.showInScore(),++showNumber,showFlag,"Show in 'Score'"));
 
             // show in factions
-            me.setShowInFactionsCommand(CMLib.english().prompt(mob,me.showInFactionsCommand(),++showNumber,showFlag,"Show in 'Factions' command"));
+            me.setShowInFactionsCommand(CMLib.genEd().prompt(mob,me.showInFactionsCommand(),++showNumber,showFlag,"Show in 'Factions' command"));
 
             // show in special reports
             boolean alreadyReporter=false;
@@ -500,14 +500,14 @@ public class Factions extends StdLibrary implements FactionManager
                 if(F2.showInSpecialReported()) alreadyReporter=true;
             }
             if(!alreadyReporter)
-                me.setShowInSpecialReported(CMLib.english().prompt(mob,me.showInSpecialReported(),++showNumber,showFlag,"Show in Reports"));
+                me.setShowInSpecialReported(CMLib.genEd().prompt(mob,me.showInSpecialReported(),++showNumber,showFlag,"Show in Reports"));
 
             // show in editor
-            me.setShowInEditor(CMLib.english().prompt(mob,me.showInEditor(),++showNumber,showFlag,"Show in MOB Editor"));
+            me.setShowInEditor(CMLib.genEd().prompt(mob,me.showInEditor(),++showNumber,showFlag,"Show in MOB Editor"));
 
             // auto defaults
             boolean error=true;
-            me.setAutoDefaults(CMParms.parseSemicolons(CMLib.english().prompt(mob,CMParms.toSemicolonList(me.autoDefaults()),++showNumber,showFlag,"Optional automatic assigned values with zapper masks (semicolon delimited).\n\r    "),true));
+            me.setAutoDefaults(CMParms.parseSemicolons(CMLib.genEd().prompt(mob,CMParms.toSemicolonList(me.autoDefaults()),++showNumber,showFlag,"Optional automatic assigned values with zapper masks (semicolon delimited).\n\r    "),true));
 
             // non-auto defaults
             error=true;
@@ -517,7 +517,7 @@ public class Factions extends StdLibrary implements FactionManager
             while(error&&(mob.session()!=null)&&(!mob.session().killFlag()))
             {
                 error=false;
-                String newDefaults=CMLib.english().prompt(mob,CMParms.toSemicolonList(me.defaults()),showNumber,showFlag,"Other default values with zapper masks (semicolon delimited).\n\r    ");
+                String newDefaults=CMLib.genEd().prompt(mob,CMParms.toSemicolonList(me.defaults()),showNumber,showFlag,"Other default values with zapper masks (semicolon delimited).\n\r    ");
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
                 Vector V=CMParms.parseSemicolons(newDefaults,true);
                 if(V.size()==0)
@@ -529,12 +529,12 @@ public class Factions extends StdLibrary implements FactionManager
             }
 
             // choices and choice intro
-            me.setChoices(CMParms.parseSemicolons(CMLib.english().prompt(mob,CMParms.toSemicolonList(me.choices()),++showNumber,showFlag,"Optional new player value choices (semicolon-delimited).\n\r    "),true));
+            me.setChoices(CMParms.parseSemicolons(CMLib.genEd().prompt(mob,CMParms.toSemicolonList(me.choices()),++showNumber,showFlag,"Optional new player value choices (semicolon-delimited).\n\r    "),true));
             if(me.choices().hasMoreElements())
-                me.setChoiceIntro(CMLib.english().prompt(mob,me.choiceIntro(),++showNumber,showFlag,"Optional choices introduction text. Filename"));
+                me.setChoiceIntro(CMLib.genEd().prompt(mob,me.choiceIntro(),++showNumber,showFlag,"Optional choices introduction text. Filename"));
 
             // rate modifier
-            String newModifier=CMLib.english().prompt(mob,CMath.toPct(me.rateModifier()),++showNumber,showFlag,"Rate modifier");
+            String newModifier=CMLib.genEd().prompt(mob,CMath.toPct(me.rateModifier()),++showNumber,showFlag,"Rate modifier");
             if((CMath.isNumber(newModifier))||(CMath.isPct(newModifier)))
                 me.setRateModifier(CMath.s_pct(newModifier));
 
@@ -559,7 +559,7 @@ public class Factions extends StdLibrary implements FactionManager
                     break;
                 }
                 String prompt="Affect on experience:  "+Faction.EXPAFFECT_NAMES[myval]+nextPrompt.toString()+"\n\rSelect a value: ";
-                int mynewval=CMLib.english().prompt(mob,myval+1,showNumber,showFlag,prompt);
+                int mynewval=CMLib.genEd().prompt(mob,myval+1,showNumber,showFlag,prompt);
                 if((showFlag!=showNumber)&&(showFlag>-999)) break;
                 if((mynewval<=0)||(mynewval>Faction.EXPAFFECT_NAMES.length))
                 {

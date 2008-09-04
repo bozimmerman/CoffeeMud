@@ -104,14 +104,14 @@ public interface QuestManager extends CMLibrary
         "$FACTION",
         "$TIMEEXPRESSION"
     };
-    public final static EnglishParsing.CMEval[] QM_COMMAND_TESTS={
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //title
+    public final static GenericEditor.CMEval[] QM_COMMAND_TESTS={
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //title
             return str;
         }},
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //label
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //label
             return str;
         }},
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //expression
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //expression
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
@@ -121,7 +121,7 @@ public interface QuestManager extends CMLibrary
                 throw new CMException("Invalid mathematical expression.  Use numbers,+,-,*,/,(), and ? only."); 
             return str;
         }},
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //quest name
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //quest name
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
@@ -136,7 +136,7 @@ public interface QuestManager extends CMLibrary
                 throw new CMException("A quest of that name already exists.  Enter another.");
             return ((String)str).trim();
         }},
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //choose
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //choose
             if((choices==null)||(choices.length==0)) throw new CMException("NO choices?!");
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             if(((String)str).trim().length()==0){
@@ -148,7 +148,7 @@ public interface QuestManager extends CMLibrary
                 throw new CMException("That is not a valid option.  Choices include: "+CMParms.toStringList(choices));
             return choices[x];
         }},
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //itemxml
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //itemxml
             if((choices==null)||(choices.length==0)) throw new CMException("NO choices?!");
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             StringBuffer choiceNames=new StringBuffer("");
@@ -166,7 +166,7 @@ public interface QuestManager extends CMLibrary
                 throw new CMException("'"+str+"' was not found.  You must enter one of the following: "+choiceNames.toString());
             return CMLib.english().getContextName(choices,E);
         }},
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //string
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //string
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
@@ -174,7 +174,7 @@ public interface QuestManager extends CMLibrary
             }
             return str;
         }},
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //roomid
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //roomid
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
@@ -208,7 +208,7 @@ public interface QuestManager extends CMLibrary
             }
             return str;
         }},
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //area
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //area
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
@@ -229,7 +229,7 @@ public interface QuestManager extends CMLibrary
             }
             return returnStr.toString().trim();
         }},
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //mobxml
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //mobxml
             if((choices==null)||(choices.length==0)) throw new CMException("NO choices?!");
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             StringBuffer choiceNames=new StringBuffer("");
@@ -247,7 +247,7 @@ public interface QuestManager extends CMLibrary
                 throw new CMException("'"+str+"' was not found.  You must enter one of the following: "+choiceNames.toString());
             return CMLib.english().getContextName(choices,E);
         }},
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //designame
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //designame
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
@@ -259,7 +259,7 @@ public interface QuestManager extends CMLibrary
                 throw new CMException("Multiple-word names must be grouped with double-quotes.  If this represents several names, put each name in double-quotes as so: \"name1\" \"name2\" \"multi word name\".");
             return str;
         }},
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //string
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //string
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
@@ -271,17 +271,17 @@ public interface QuestManager extends CMLibrary
             str=CMStrings.replaceAll((String)str,"\r"," ");
             return str;
         }},
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //mobxml_1ormore
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //mobxml_1ormore
         	return QuestManager.QM_COMMAND_TESTS[QM_COMMAND_$MOBXML].eval(str,choices,emptyOK);
         }},
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //itemxml_1ormore
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //itemxml_1ormore
         	return QuestManager.QM_COMMAND_TESTS[QM_COMMAND_$ITEMXML].eval(str,choices,emptyOK);
         }},
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //string
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //string
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             return str;
         }},
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //ability
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //ability
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             StringBuffer list=new StringBuffer("");
             for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
@@ -296,7 +296,7 @@ public interface QuestManager extends CMLibrary
                 throw new CMException("Invalid ability id, choose from the following: "+list.toString()); 
             return A.ID();
         }},
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //existing quest name
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //existing quest name
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
@@ -307,10 +307,10 @@ public interface QuestManager extends CMLibrary
                 throw new CMException("A quest of the name '"+((String)str).trim()+"' does not exist.  Enter another.");
             return Q.name();
         }},
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //hidden
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //hidden
             return str;
         }},
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //faction
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //faction
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             if(((String)str).trim().length()==0){
                 if(emptyOK) return "";
@@ -321,7 +321,7 @@ public interface QuestManager extends CMLibrary
                 throw new CMException("A faction of the name '"+((String)str).trim()+"' does not exist.  Enter another.");
             return F.factionID();
         }},
-        new EnglishParsing.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //timeexpression
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //timeexpression
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             if(((String)str).trim().length()==0){
                 if(emptyOK) return "";

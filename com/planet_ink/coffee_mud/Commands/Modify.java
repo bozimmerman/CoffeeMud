@@ -156,7 +156,7 @@ public class Modify extends BaseGenerics
 		if(command.equals("MISC"))
 		{
 			if(modItem.isGeneric())
-				genMiscSet(mob,modItem);
+				CMLib.genEd().genMiscSet(mob,modItem);
 			else
 				modItem.setMiscText(restStr);
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
@@ -164,7 +164,7 @@ public class Modify extends BaseGenerics
 		else
 		if((command.length()==0)&&(modItem.isGeneric()))
 		{
-			genMiscSet(mob,modItem);
+			CMLib.genEd().genMiscSet(mob,modItem);
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modItem.name()+" shake(s) under the transforming power.");
 		}
 		else
@@ -199,37 +199,8 @@ public class Modify extends BaseGenerics
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around the room.");
 		if(commands.size()==2)
 		{
-			int showFlag=-1;
-			if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
-				showFlag=-999;
-			boolean ok=false;
 			Room oldRoom=(Room)mob.location().copyOf();
-			while(!ok)
-			{
-				int showNumber=0;
-                Room R=mob.location();
-				genRoomType(mob,R,++showNumber,showFlag);
-				genDisplayText(mob,R,++showNumber,showFlag);
-				genDescription(mob,R,++showNumber,showFlag);
-				if(mob.location() instanceof GridZones)
-				{
-					genGridLocaleX(mob,(GridZones)R,++showNumber,showFlag);
-					genGridLocaleY(mob,(GridZones)R,++showNumber,showFlag);
-					//((GridLocale)mob.location()).buildGrid();
-				}
-				genBehaviors(mob,R,++showNumber,showFlag);
-				genAffects(mob,R,++showNumber,showFlag);
-                for(int x=R.getSaveStatIndex();x<R.getStatCodes().length;x++)
-                    R.setStat(R.getStatCodes()[x],CMLib.english().prompt(mob,R.getStat(R.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(R.getStatCodes()[x])));
-				if(showFlag<-900){ ok=true; break;}
-				if(showFlag>0){ showFlag=-1; continue;}
-				showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
-				if(showFlag<=0)
-				{
-					showFlag=-1;
-					ok=true;
-				}
-			}
+            CMLib.genEd().modifyRoom(mob,mob.location());
 			if((!oldRoom.sameAs(mob.location()))&&(!mob.location().amDestroyed()))
 			{
 				CMLib.database().DBUpdateRoom(mob.location());
@@ -328,7 +299,7 @@ public class Modify extends BaseGenerics
 				mob.tell("'"+restStr+"' is not a valid room locale.");
 				return;
 			}
-			changeRoomType(mob.location(),newRoom);
+			CMLib.genEd().changeRoomType(mob.location(),newRoom);
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"There is something different about this place...\n\r");
 		}
 		else
@@ -360,7 +331,7 @@ public class Modify extends BaseGenerics
 		else
 		if(command.equalsIgnoreCase("AFFECTS"))
 		{
-			genAffects(mob,mob.location(),1,1);
+            CMLib.genEd().genAffects(mob,mob.location(),1,1);
 			mob.location().recoverEnvStats();
 			CMLib.database().DBUpdateRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
@@ -368,7 +339,7 @@ public class Modify extends BaseGenerics
 		else
 		if(command.equalsIgnoreCase("BEHAVIORS"))
 		{
-			genBehaviors(mob,mob.location(),1,1);
+            CMLib.genEd().genBehaviors(mob,mob.location(),1,1);
 			mob.location().recoverEnvStats();
 			CMLib.database().DBUpdateRoom(mob.location());
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The very nature of reality changes.\n\r");
@@ -397,55 +368,7 @@ public class Modify extends BaseGenerics
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around wildly.");
 		Resources.removeResource("HELP_"+myArea.Name().toUpperCase());
 		if(commands.size()==2)
-		{
-			int showFlag=-1;
-			if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
-				showFlag=-999;
-			boolean ok=false;
-			while(!ok)
-			{
-				int showNumber=0;
-                mob.tell("*. Class: "+myArea.ID());
-				genName(mob,myArea,++showNumber,showFlag);
-				genDescription(mob,myArea,++showNumber,showFlag);
-				genAuthor(mob,myArea,++showNumber,showFlag);
-				genTechLevel(mob,myArea,++showNumber,showFlag);
-				genClimateType(mob,myArea,++showNumber,showFlag);
-				genTimeClock(mob,myArea,++showNumber,showFlag);
-				genArchivePath(mob,myArea,++showNumber,showFlag);
-                genParentAreas(mob,myArea,++showNumber,showFlag);
-                genChildAreas(mob,myArea,++showNumber,showFlag);
-				genSubOps(mob,myArea,++showNumber,showFlag);
-                genAreaBlurbs(mob,myArea,++showNumber,showFlag);
-				if(myArea instanceof GridZones)
-				{
-					genGridLocaleX(mob,(GridZones)myArea,++showNumber,showFlag);
-					genGridLocaleY(mob,(GridZones)myArea,++showNumber,showFlag);
-				}
-				genBehaviors(mob,myArea,++showNumber,showFlag);
-				genAffects(mob,myArea,++showNumber,showFlag);
-				genImage(mob,myArea,++showNumber,showFlag);
-                for(int x=myArea.getSaveStatIndex();x<myArea.getStatCodes().length;x++)
-                    myArea.setStat(myArea.getStatCodes()[x],CMLib.english().prompt(mob,myArea.getStat(myArea.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(myArea.getStatCodes()[x])));
-                if((showFlag<=0)||((showFlag>=showNumber)&&(showFlag<=showNumber+7)))
-                    mob.tell("*** Area Economics settings: ");
-                    genCurrency(mob,myArea,++showNumber,showFlag);
-                    genEconomics1(mob,myArea,++showNumber,showFlag);
-                    genEconomics2(mob,myArea,++showNumber,showFlag);
-                    genEconomics3(mob,myArea,++showNumber,showFlag);
-                    genEconomics4(mob,myArea,++showNumber,showFlag);
-                    genEconomics5(mob,myArea,++showNumber,showFlag);
-                    genEconomics6(mob,myArea,++showNumber,showFlag);
-				if(showFlag<-900){ ok=true; break;}
-				if(showFlag>0){ showFlag=-1; continue;}
-				showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
-				if(showFlag<=0)
-				{
-					showFlag=-1;
-					ok=true;
-				}
-			}
-		}
+            CMLib.genEd().modifyGenArea(mob,myArea);
 		else
 		{
 			if(commands.size()<3) { flunkCmd1(mob); return;}
@@ -539,13 +462,13 @@ public class Modify extends BaseGenerics
 			else
 			if(command.equalsIgnoreCase("AFFECTS"))
 			{
-				genAffects(mob,myArea,1,1);
+                CMLib.genEd().genAffects(mob,myArea,1,1);
 				myArea.recoverEnvStats();
 			}
 			else
 			if(command.equalsIgnoreCase("BEHAVIORS"))
 			{
-				genBehaviors(mob,myArea,1,1);
+                CMLib.genEd().genBehaviors(mob,myArea,1,1);
 				myArea.recoverEnvStats();
 			}
 			else
@@ -637,14 +560,14 @@ public class Modify extends BaseGenerics
                     int showNumber=0;
                     int doCmd=cmdDex;
                     String newScript=null;
-                    if((doCmd<0)&&(CMLib.english().promptToggle(mob,++showNumber,showFlag,"Started: "+Q.running())))
+                    if((doCmd<0)&&(CMLib.genEd().promptToggle(mob,++showNumber,showFlag,"Started: "+Q.running())))
                         doCmd=Q.running()?1:0;
-                    if((doCmd<0)&&(CMLib.english().promptToggle(mob,++showNumber,showFlag,"Enabled: "+(!Q.suspended()))))
+                    if((doCmd<0)&&(CMLib.genEd().promptToggle(mob,++showNumber,showFlag,"Enabled: "+(!Q.suspended()))))
                         doCmd=Q.suspended()?2:3;
                     if(doCmd<0)
                     {
                         String oldScript=Q.script();
-                        newScript=CMLib.english().prompt(mob,oldScript,++showNumber,showFlag,"Script",false,false,CMLib.help().getHelpText("QUESTS",mob,true).toString(),null,null);
+                        newScript=CMLib.genEd().prompt(mob,oldScript,++showNumber,showFlag,"Script",false,false,CMLib.help().getHelpText("QUESTS",mob,true).toString(),null,null);
                         if(!newScript.equals(oldScript))
                         {
                             Q.setScript(newScript);
@@ -781,7 +704,7 @@ public class Modify extends BaseGenerics
 
 		if(thisExit.isGeneric())
 		{
-			modifyGenExit(mob,thisExit);
+            CMLib.genEd().modifyGenExit(mob,thisExit);
 			return;
 		}
 		
@@ -796,7 +719,7 @@ public class Modify extends BaseGenerics
 		String restStr=CMParms.combine(commands,3);
 
 		if(thisExit.isGeneric())
-			modifyGenExit(mob,thisExit);
+            CMLib.genEd().modifyGenExit(mob,thisExit);
 		else
 		if(restStr.length()>0)
 			thisExit.setMiscText(restStr);
@@ -855,7 +778,7 @@ public class Modify extends BaseGenerics
 			return false;
 		}
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around all "+R.name()+"s.");
-		modifyGenRace(mob,R);
+        CMLib.genEd().modifyGenRace(mob,R);
 		CMLib.database().DBDeleteRace(R.ID());
 		CMLib.database().DBCreateRace(R.ID(),R.racialParms());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,R.name()+"'s everywhere shake under the transforming power!");
@@ -887,7 +810,7 @@ public class Modify extends BaseGenerics
 			return false;
 		}
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around all "+C.name()+"s.");
-		modifyGenClass(mob,C);
+        CMLib.genEd().modifyGenClass(mob,C);
 		CMLib.database().DBDeleteClass(C.ID());
 		CMLib.database().DBCreateClass(C.ID(),C.classParms());
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,C.name()+"'s everywhere shake under the transforming power!");
@@ -919,7 +842,7 @@ public class Modify extends BaseGenerics
 			return false;
 		}
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around all "+A.name()+"s.");
-		modifyGenAbility(mob,A);
+        CMLib.genEd().modifyGenAbility(mob,A);
 		CMLib.database().DBDeleteAbility(A.ID());
 		CMLib.database().DBCreateAbility(A.ID(),A.getStat("ALLXML"));
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,A.name()+"'s everywhere shake under the transforming power!");
@@ -950,7 +873,7 @@ public class Modify extends BaseGenerics
             mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a spell..");
             return;
         }
-        super.modifyComponents(mob,skillID);
+        CMLib.genEd().modifyComponents(mob,skillID);
         String parms=CMLib.ableMapper().getAbilityComponentCodedString(skillID);
         String error=CMLib.ableMapper().addAbilityComponent(parms,CMLib.ableMapper().getAbilityComponentMap());
         if(error!=null)
@@ -1079,7 +1002,7 @@ public class Modify extends BaseGenerics
 		}
 		mob.location().showOthers(mob,M,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 		MOB copyMOB=(MOB)M.copyOf();
-		modifyPlayer(mob,M);
+        CMLib.genEd().modifyPlayer(mob,M);
 		if(!copyMOB.sameAs(M))
 			Log.sysOut("Mobs",mob.Name()+" modified player "+M.Name()+".");
 	}
@@ -1158,7 +1081,7 @@ public class Modify extends BaseGenerics
 		if(command.equals("MISC"))
 		{
 			if(modMOB.isGeneric())
-				genMiscSet(mob,modMOB);
+				CMLib.genEd().genMiscSet(mob,modMOB);
 			else
 				modMOB.setMiscText(restStr);
 			mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,modMOB.name()+" shakes under the transforming power.");
@@ -1186,7 +1109,7 @@ public class Modify extends BaseGenerics
         {
             if(commands.elementAt(1) instanceof Environmental)
             {
-                genMiscSet(mob,(Environmental)commands.elementAt(1));
+                CMLib.genEd().genMiscSet(mob,(Environmental)commands.elementAt(1));
                 ((Environmental)commands.elementAt(1)).recoverEnvStats();
                 ((Environmental)commands.elementAt(1)).text();
                 return true;
@@ -1392,7 +1315,7 @@ public class Modify extends BaseGenerics
                 if(!mob.isMonster())
                 {
 					mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around "+C.name()+".");
-                    modifyClan(mob,C);
+                    CMLib.genEd().modifyClan(mob,C);
                     Log.sysOut("CreateEdit",mob.Name()+" modified Clan "+C.name()+".");
                 }
             }
@@ -1440,30 +1363,10 @@ public class Modify extends BaseGenerics
 				mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 				if(!thang.isGeneric())
 				{
-					int showFlag=-1;
-					if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
-						showFlag=-999;
-					boolean ok=false;
-					while(!ok)
-					{
-						int showNumber=0;
-						genLevel(mob,thang,++showNumber,showFlag);
-						genAbility(mob,thang,++showNumber,showFlag);
-						genRejuv(mob,thang,++showNumber,showFlag);
-						genUses(mob,(Item)thang,++showNumber,showFlag);
-						genMiscText(mob,thang,++showNumber,showFlag);
-						if(showFlag<-900){ ok=true; break;}
-						if(showFlag>0){ showFlag=-1; continue;}
-						showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
-						if(showFlag<=0)
-						{
-							showFlag=-1;
-							ok=true;
-						}
-					}
+                    CMLib.genEd().modifyStdItem(mob,(Item)thang);
 				}
 				else
-					genMiscSet(mob,thang);
+					CMLib.genEd().genMiscSet(mob,thang);
 				thang.recoverEnvStats();
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,thang.name()+" shake(s) under the transforming power.");
 				if(!copyItem.sameAs(thang))
@@ -1478,26 +1381,7 @@ public class Modify extends BaseGenerics
 				if((!thang.isGeneric())&&(((MOB)thang).isMonster()))
 				{
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
-					int showFlag=-1;
-					if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
-						showFlag=-999;
-					boolean ok=false;
-					while(!ok)
-					{
-						int showNumber=0;
-						genLevel(mob,thang,++showNumber,showFlag);
-						genAbility(mob,thang,++showNumber,showFlag);
-						genRejuv(mob,thang,++showNumber,showFlag);
-						genMiscText(mob,thang,++showNumber,showFlag);
-						if(showFlag<-900){ ok=true; break;}
-						if(showFlag>0){ showFlag=-1; continue;}
-						showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
-						if(showFlag<=0)
-						{
-							showFlag=-1;
-							ok=true;
-						}
-					}
+                    CMLib.genEd().modifyStdMob(mob,(MOB)thang);
 					if(!copyMOB.sameAs(thang))
 	                    Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(((MOB)thang).location())+".");
 				}
@@ -1510,7 +1394,7 @@ public class Modify extends BaseGenerics
 				else
                 {
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
-					genMiscSet(mob,thang);
+					CMLib.genEd().genMiscSet(mob,thang);
 					if(!copyMOB.sameAs(thang))
 	                    Log.sysOut("CreateEdit",mob.Name()+" modified mob "+thang.Name()+" ("+thang.ID()+") in "+CMLib.map().getExtendedRoomID(((MOB)thang).location())+".");
                 }
@@ -1528,7 +1412,7 @@ public class Modify extends BaseGenerics
 					if(!CMSecurity.isAllowed(mob,mob.location(),"CMDEXITS")) return errorOut(mob);
 					mob.location().showOthers(mob,thang,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around <T-NAMESELF>.");
 					Exit copyExit=(Exit)thang.copyOf();
-					genMiscText(mob,thang,1,1);
+                    CMLib.genEd().genMiscText(mob,thang,1,1);
 					thang.recoverEnvStats();
 					try
 					{

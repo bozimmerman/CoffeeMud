@@ -33,8 +33,10 @@ public interface AbilityParameters extends CMLibrary
     public static final int PARMTYPE_CHOICES=0;
     public static final int PARMTYPE_STRING=1;
     public static final int PARMTYPE_NUMBER=2;
-    public static final int PARMTYPE_MULTICHOICES=3;
-    public static final int PARMTYPE_SPECIAL=4;
+    public static final int PARMTYPE_STRINGORNULL=3;
+    public static final int PARMTYPE_ONEWORD=4;
+    public static final int PARMTYPE_MULTICHOICES=5;
+    public static final int PARMTYPE_SPECIAL=6;
     
     public static interface AbilityParmEditor 
     {

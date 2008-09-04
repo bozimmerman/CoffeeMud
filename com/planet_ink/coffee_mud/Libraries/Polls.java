@@ -212,31 +212,31 @@ public class Polls extends StdLibrary implements PollManager
         while(!ok)
         {
             int showNumber=0;
-            String possName=CMLib.english().prompt(mob,P.getName(),++showNumber,showFlag,"Name");
+            String possName=CMLib.genEd().prompt(mob,P.getName(),++showNumber,showFlag,"Name");
             while((!possName.equalsIgnoreCase(P.getName()))&&(CMLib.polls().getPoll(possName)!=null))
                 possName=possName+"!";
             P.setName(possName);
-            P.setDescription(CMLib.english().prompt(mob,P.getDescription(),++showNumber,showFlag,"Introduction"));
-            P.setSubject(CMLib.english().prompt(mob,P.getSubject(),++showNumber,showFlag,"Results Header"));
+            P.setDescription(CMLib.genEd().prompt(mob,P.getDescription(),++showNumber,showFlag,"Introduction"));
+            P.setSubject(CMLib.genEd().prompt(mob,P.getSubject(),++showNumber,showFlag,"Results Header"));
             if(P.getSubject().length()>250) P.setSubject(P.getSubject().substring(0,250));
             if(P.getAuthor().length()==0) P.setAuthor(mob.Name());
-            P.setQualZapper(CMLib.english().prompt(mob,P.getQualZapper(),++showNumber,showFlag,"Qual. Mask",true));
-            P.setFlags((CMLib.english().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_ACTIVE),++showNumber,showFlag,"Poll Active"))?
+            P.setQualZapper(CMLib.genEd().prompt(mob,P.getQualZapper(),++showNumber,showFlag,"Qual. Mask",true));
+            P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_ACTIVE),++showNumber,showFlag,"Poll Active"))?
                 CMath.setb(P.getFlags(),Poll.FLAG_ACTIVE):CMath.unsetb(P.getFlags(),Poll.FLAG_ACTIVE));
-            P.setFlags((CMLib.english().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_PREVIEWRESULTS),++showNumber,showFlag,"Preview Results"))?
+            P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_PREVIEWRESULTS),++showNumber,showFlag,"Preview Results"))?
                     CMath.setb(P.getFlags(),Poll.FLAG_PREVIEWRESULTS):CMath.unsetb(P.getFlags(),Poll.FLAG_PREVIEWRESULTS));
-            P.setFlags((CMLib.english().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN),++showNumber,showFlag,"Allow Abstention"))?
+            P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_ABSTAIN),++showNumber,showFlag,"Allow Abstention"))?
                     CMath.setb(P.getFlags(),Poll.FLAG_ABSTAIN):CMath.unsetb(P.getFlags(),Poll.FLAG_ABSTAIN));
-            P.setFlags((CMLib.english().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_VOTEBYIP),++showNumber,showFlag,"Use IP Addresses"))?
+            P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_VOTEBYIP),++showNumber,showFlag,"Use IP Addresses"))?
                     CMath.setb(P.getFlags(),Poll.FLAG_VOTEBYIP):CMath.unsetb(P.getFlags(),Poll.FLAG_VOTEBYIP));
-            P.setFlags((CMLib.english().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_HIDERESULTS),++showNumber,showFlag,"Hide Results"))?
+            P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_HIDERESULTS),++showNumber,showFlag,"Hide Results"))?
                     CMath.setb(P.getFlags(),Poll.FLAG_HIDERESULTS):CMath.unsetb(P.getFlags(),Poll.FLAG_HIDERESULTS));
-            P.setFlags((CMLib.english().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_NOTATLOGIN),++showNumber,showFlag,"POLL CMD only"))?
+            P.setFlags((CMLib.genEd().prompt(mob,CMath.bset(P.getFlags(),Poll.FLAG_NOTATLOGIN),++showNumber,showFlag,"POLL CMD only"))?
                     CMath.setb(P.getFlags(),Poll.FLAG_NOTATLOGIN):CMath.unsetb(P.getFlags(),Poll.FLAG_NOTATLOGIN));
             String expirationDate="NA";
             if(P.getExpiration()>0) expirationDate=CMLib.time().date2String(P.getExpiration());
             
-            expirationDate=CMLib.english().prompt(mob,expirationDate,++showNumber,showFlag,"Exp. Date (MM/DD/YYYY HH:MM AP)",true);
+            expirationDate=CMLib.genEd().prompt(mob,expirationDate,++showNumber,showFlag,"Exp. Date (MM/DD/YYYY HH:MM AP)",true);
             if((expirationDate.trim().length()==0)||(expirationDate.equalsIgnoreCase("NA")))
                 P.setExpiration(0);
             else
@@ -246,7 +246,7 @@ public class Polls extends StdLibrary implements PollManager
             for(int i=0;i<P.getOptions().size();i++)
             {
                 Poll.PollOption PO=(Poll.PollOption)P.getOptions().elementAt(i);
-                PO.text=CMLib.english().prompt(mob,PO.text,++showNumber,showFlag,"Vote Option",true);
+                PO.text=CMLib.genEd().prompt(mob,PO.text,++showNumber,showFlag,"Vote Option",true);
                 if(PO.text.length()==0) del.addElement(PO);
             }
             for(int i=0;i<del.size();i++)
@@ -256,7 +256,7 @@ public class Polls extends StdLibrary implements PollManager
             while(!mob.session().killFlag())
             {
                 PO=new Poll.PollOption(
-                        CMLib.english().prompt(mob,"",++showNumber,showFlag,"New Vote Option",true)
+                        CMLib.genEd().prompt(mob,"",++showNumber,showFlag,"New Vote Option",true)
                 );
                 if(PO.text.length()==0) 
                     break;

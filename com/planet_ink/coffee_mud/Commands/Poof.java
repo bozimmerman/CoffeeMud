@@ -55,10 +55,10 @@ public class Poof extends StdCommand
 		while((!ok)&&(mob.playerStats()!=null))
 		{
 			int showNumber=0;
-			String poofIn=CMLib.english().prompt(mob,mob.playerStats().poofIn(),++showNumber,showFlag,"Poof-in",true,true);
-			String poofOut=CMLib.english().prompt(mob,mob.playerStats().poofOut(),++showNumber,showFlag,"Poof-out",true,true);
-			String tranPoofIn=CMLib.english().prompt(mob,mob.playerStats().tranPoofIn(),++showNumber,showFlag,"Transfer-in",true,true);
-			String tranPoofOut=CMLib.english().prompt(mob,mob.playerStats().tranPoofOut(),++showNumber,showFlag,"Transfer-out",true,true);
+			String poofIn=CMLib.genEd().prompt(mob,mob.playerStats().poofIn(),++showNumber,showFlag,"Poof-in",true,true);
+			String poofOut=CMLib.genEd().prompt(mob,mob.playerStats().poofOut(),++showNumber,showFlag,"Poof-out",true,true);
+			String tranPoofIn=CMLib.genEd().prompt(mob,mob.playerStats().tranPoofIn(),++showNumber,showFlag,"Transfer-in",true,true);
+			String tranPoofOut=CMLib.genEd().prompt(mob,mob.playerStats().tranPoofOut(),++showNumber,showFlag,"Transfer-out",true,true);
 			mob.playerStats().setPoofs(poofIn,poofOut,tranPoofIn,tranPoofOut);
 			if(showFlag<-900){ ok=true; break;}
 			if(showFlag>0){ showFlag=-1; continue;}

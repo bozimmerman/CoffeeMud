@@ -101,14 +101,15 @@ public class CMLib
     public static final int LIBRARY_PLAYERS=43;
     public static final int LIBRARY_TITLES=44;
     public static final int LIBRARY_ABLEPARMS=45;
-    public static final int LIBRARY_TOTAL=46;
+    public static final int LIBRARY_GENEDITOR=46;
+    public static final int LIBRARY_TOTAL=47;
     public static final String[] LIBRARY_DESCS={
         "DATABASE","THREADS","INTERMUD","HTTP","LISTER","MONEY","SHOPS","COMBAT",
         "HELP","TRACKING","MASKING","CHANNELS","COMMANDS","ENGLISH","SLAVERY","JOURNALS",
         "FLAGS","OBJBUILDERS","SESSIONS","TELNET","XML","SOCIALS","UTENSILS","STATS",
         "MAP","QUEST","ABLEMAP","ENCODER","SMTP","DICE","FACTIONS","CLANS","POLLS",
         "TIME","COLOR","LOGIN","TIMS","LEVELS","EXPERTISES","MATERIALS","LEGAL",
-        "LANGUAGE","CATALOG","PLAYERS","TITLES","ABLEPARMS"};
+        "LANGUAGE","CATALOG","PLAYERS","TITLES","ABLEPARMS","GENEDITOR"};
 
     public static CMath math(){return CMath.instance();}
     public static CMParms parms(){return CMParms.instance();}
@@ -188,6 +189,7 @@ public class CMLib
     public static CatalogLibrary catalog(){return (CatalogLibrary)l().libraries[LIBRARY_CATALOG];}
     public static AutoTitlesLibrary titles(){return (AutoTitlesLibrary)l().libraries[LIBRARY_TITLES];}
     public static AbilityParameters ableParms(){return (AbilityParameters)l().libraries[LIBRARY_ABLEPARMS];}
+    public static GenericEditor genEd(){return (GenericEditor)l().libraries[LIBRARY_GENEDITOR];}
 
     public static int convertToLibraryCode(Object O)
     {
@@ -237,6 +239,7 @@ public class CMLib
         if(O instanceof PlayerLibrary) return LIBRARY_PLAYERS;
         if(O instanceof AutoTitlesLibrary) return LIBRARY_TITLES;
         if(O instanceof AbilityParameters) return LIBRARY_ABLEPARMS;
+        if(O instanceof GenericEditor) return LIBRARY_GENEDITOR;
         return -1;
     }
 

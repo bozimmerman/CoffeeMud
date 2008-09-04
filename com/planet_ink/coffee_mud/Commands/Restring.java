@@ -93,9 +93,9 @@ public class Restring extends BaseGenerics
 				while(!ok)
 				{
 					int showNumber=0;
-					genName(mob,thang,++showNumber,showFlag);
-					genDisplayText(mob,thang,++showNumber,showFlag);
-					genDescription(mob,thang,++showNumber,showFlag);
+                    CMLib.genEd().genName(mob,thang,++showNumber,showFlag);
+                    CMLib.genEd().genDisplayText(mob,thang,++showNumber,showFlag);
+                    CMLib.genEd().genDescription(mob,thang,++showNumber,showFlag);
 					if(showFlag<-900){ ok=true; break;}
 					if(showFlag>0){ showFlag=-1; continue;}
 					showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));

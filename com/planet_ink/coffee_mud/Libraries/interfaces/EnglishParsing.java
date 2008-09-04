@@ -39,8 +39,6 @@ public interface EnglishParsing extends CMLibrary
     public static final int FLAG_DOT=1;
     public static final int FLAG_ALL=2;
     
-    public static interface CMEval { public Object eval(Object val, Object[] choices, boolean emptyOK) throws CMException; }
-    
     public boolean isAnArticle(String s);
     public String cleanArticles(String s);
     public String insertUnColoredAdjective(String str, String adjective);
@@ -80,36 +78,5 @@ public interface EnglishParsing extends CMLibrary
     public Item bestPossibleGold(MOB mob, Container container, String itemID);
     public Vector possibleContainers(MOB mob, Vector commands, int wornReqCode, boolean withContentOnly);
     public Item possibleContainer(MOB mob, Vector commands, boolean withStuff, int wornReqCode);
-    public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException;
-    public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK) throws IOException;
-    public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint) throws IOException;
-    public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, String help) throws IOException;
-    public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException;
-    public String prompt(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, boolean emptyOK, boolean rawPrint, String help) throws IOException;
-    public boolean promptToggle(MOB mob, int showNumber, int showFlag, String FieldDisp) throws IOException;
-    public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException;
-    public boolean prompt(MOB mob, boolean oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException;
-    public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException;
-    public double prompt(MOB mob, double oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException;
-    public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException;
-    public int prompt(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException;
-    public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp) throws IOException;
-    public long prompt(MOB mob, long oldVal, int showNumber, int showFlag, String FieldDisp, String help) throws IOException;
-    public String prompt(MOB mob, 
-                        String oldVal, 
-                        int showNumber, 
-                        int showFlag, 
-                        String FieldDisp, 
-                        boolean emptyOK, 
-                        boolean rawPrint, 
-                        String help, 
-                        CMEval eval,
-                        Object[] choices) throws IOException;
-    public void promptStatStr(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
-    public void promptStatStr(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field, boolean emptyOK) throws IOException;
-    public void promptStatInt(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
-    public void promptStatInt(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
-    public void promptStatBool(MOB mob, CMModifiable E, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
-    public void promptStatBool(MOB mob, CMModifiable E, String help, int showNumber, int showFlag, String FieldDisp, String Field) throws IOException;
     public String returnTime(long millis, long ticks);
 }
