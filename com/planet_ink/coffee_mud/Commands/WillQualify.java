@@ -36,7 +36,8 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
-public class WillQualify extends BaseAbleLister{
+public class WillQualify  extends Skills
+{
 	public WillQualify() {}
 	private String[] access={"WILLQUALIFY"};
 	public String[] getAccessWords(){return access;}
