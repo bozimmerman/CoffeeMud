@@ -47,5 +47,9 @@ public interface AbilityParameters extends CMLibrary
         public DVector createChoices(String[] S);
         public DVector choices();
         public boolean appliesToClass(Object o);
+        public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException;
     }
+    
+    public Vector getCodedSpells(String spells);
+    public void parseWearLocation(short[] layerAtt, short[] layers, long[] wornLoc, boolean[] logicalAnd, double[] hardBonus, String wearLocation);
 }

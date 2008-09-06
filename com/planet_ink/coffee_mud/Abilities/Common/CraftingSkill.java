@@ -143,39 +143,32 @@ public class CraftingSkill extends GatheringSkill
 	{
 	    if(spells.length()==0) return;
 	    if(spells.equalsIgnoreCase("bundle")) return;
-	    if(spells.startsWith("*"))
-	    {
-	        spells=spells.substring(1);
-	        int x=spells.indexOf(";");
-	        if(x<0) x=spells.length();
-	        Ability A=CMClass.getAbility(spells.substring(0,x));
-	        if(A!=null)
-	        {
-	            if(x<spells.length())
-		            A.setMiscText(spells.substring(x+1));
-	            E.addNonUninvokableEffect(A);
-	            return;
-	        }
-	    }
-	    Vector V=CMParms.parseSemicolons(spells,true);
-	    Ability lastSpell=null;
-	    Ability A=null;
-	    for(int v=0;v<V.size();v++)
-	    {
-	        spells=(String)V.elementAt(v); 
-	        A=CMClass.getAbility(spells);
-	        if(A==null)
-	        {
-	            if(lastSpell!=null)
-	                lastSpell.setMiscText(spells);
-	        }
-	        else
-	        {
-	            lastSpell=A;
-	            E.addNonUninvokableEffect(A);
-	        }
-	    }
+        Vector V=CMLib.ableParms().getCodedSpells(spells);
+        for(int v=0;v<V.size();v++)
+            E.addNonUninvokableEffect((Ability)V.elementAt(v));
 	}
+    
+    protected void setWearLocation(Item I, String wearLocation, int hardnessMultiplier) {
+        short[] layerAtt = null;
+        short[] layers = null;
+        if(I instanceof Armor) {
+            layerAtt = new short[1];
+            layers = new short[1];
+        }
+        long[] wornLoc = new long[1];
+        boolean[] logicalAnd = new boolean[1];
+        double[] hardBonus=new double[]{(double)hardnessMultiplier};
+        CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,wearLocation);
+        if(I instanceof Armor) {
+            Armor armor = (Armor)I;
+            armor.setClothingLayer(layers[0]);
+            armor.setLayerAttributes(layerAtt[0]);
+        }
+        I.baseEnvStats().setArmor(I.baseEnvStats().armor()+(int)Math.round(hardBonus[0]));
+        I.setRawLogicalAnd(logicalAnd[0]);
+        I.setRawProperLocationBitmap(wornLoc[0]);
+    }
+    
 	protected Vector loadList(StringBuffer str)
 	{
 		Vector V=new Vector();
@@ -378,31 +371,6 @@ public class CraftingSkill extends GatheringSkill
 		return data;
 	}
 
-	protected String applyLayers(Armor armor, String misctype)
-	{
-		int colon=misctype.indexOf(":");
-		if(colon>=0)
-		{
-			short layer=0;
-			short layerAtt=0;
-			String layers=misctype.substring(0,colon).toUpperCase().trim();
-			misctype=misctype.substring(colon+1).trim();
-			if((layers.startsWith("MS"))
-			||(layers.startsWith("SM")))
-			{ layers=layers.substring(2); layerAtt=Armor.LAYERMASK_MULTIWEAR|Armor.LAYERMASK_SEETHROUGH;}
-			else
-			if(layers.startsWith("M"))
-			{ layers=layers.substring(1); layerAtt=Armor.LAYERMASK_MULTIWEAR;}
-			else
-			if(layers.startsWith("S"))
-			{ layers=layers.substring(1); layerAtt=Armor.LAYERMASK_SEETHROUGH;}
-			layer=CMath.s_short(layers);
-			armor.setClothingLayer(layer);
-			armor.setLayerAttributes(layerAtt);
-		}
-		return misctype;
-	}
-	
 	protected void randomRecipeFix(MOB mob, Vector recipes, Vector commands, int autoGeneration)
 	{
 		if(((mob.isMonster()&&(!CMLib.flags().isAnimalIntelligence(mob)))||(autoGeneration>0))
@@ -588,43 +556,6 @@ public class CraftingSkill extends GatheringSkill
     			}
 		}
 		return matches;
-	}
-
-	protected void setWearLocation(Item armor, String wearLocation, int hardnessMultiplier)
-	{
-	    if(armor instanceof Armor)
-	        wearLocation=applyLayers((Armor)armor,wearLocation);
-	    armor.setRawProperLocationBitmap(0);
-        double hardBonus=0.0;
-        for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
-        {
-            String WO=Item.WORN_DESCS[wo].toUpperCase();
-            if(wearLocation.equalsIgnoreCase(WO))
-            {
-                hardBonus+=Item.WORN_WEIGHTS[wo];
-                armor.setRawProperLocationBitmap(CMath.pow(2,wo-1));
-                armor.setRawLogicalAnd(false);
-            }
-            else
-            if((wearLocation.toUpperCase().indexOf(WO+"||")>=0)
-            ||(wearLocation.toUpperCase().endsWith("||"+WO)))
-            {
-                if(hardBonus==0.0)
-                    hardBonus+=Item.WORN_WEIGHTS[wo];
-                armor.setRawProperLocationBitmap(armor.rawProperLocationBitmap()|CMath.pow(2,wo-1));
-                armor.setRawLogicalAnd(false);
-            }
-            else
-            if((wearLocation.toUpperCase().indexOf(WO+"&&")>=0)
-            ||(wearLocation.toUpperCase().endsWith("&&"+WO)))
-            {
-                hardBonus+=Item.WORN_WEIGHTS[wo];
-                armor.setRawProperLocationBitmap(armor.rawProperLocationBitmap()|CMath.pow(2,wo-1));
-                armor.setRawLogicalAnd(true);
-            }
-        }
-        int hardPoints=(int)Math.round(CMath.mul(hardBonus,hardnessMultiplier));
-        armor.baseEnvStats().setArmor(armor.baseEnvStats().armor()+hardPoints);
 	}
 	
 	protected Vector getAllMendable(MOB mob, Environmental from, Item contained)

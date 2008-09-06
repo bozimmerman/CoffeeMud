@@ -41,7 +41,114 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
     public CMAbleParms()
     {
         super();
-        defaultFields = CMParms.makeVector(new Object[] {
+        defaultFields = initDefaultFields();
+    }
+    
+    public Vector getCodedSpells(String spells)
+    {
+        Vector spellsV=new Vector(); 
+        if(spells.length()==0) return spellsV;
+        if(spells.startsWith("*"))
+        {
+            spells=spells.substring(1);
+            int x=spells.indexOf(";");
+            if(x<0) x=spells.length();
+            Ability A=CMClass.getAbility(spells.substring(0,x));
+            if(A!=null)
+            {
+                if(x<spells.length())
+                    A.setMiscText(spells.substring(x+1));
+                spellsV.addElement(A);
+                return spellsV;
+            }
+        }
+        Vector V=CMParms.parseSemicolons(spells,true);
+        Ability lastSpell=null;
+        Ability A=null;
+        for(int v=0;v<V.size();v++)
+        {
+            spells=(String)V.elementAt(v); 
+            A=CMClass.getAbility(spells);
+            if(A==null)
+            {
+                if(lastSpell!=null)
+                    lastSpell.setMiscText(spells);
+            }
+            else
+            {
+                lastSpell=A;
+                spellsV.addElement(A);
+            }
+        }
+        return spellsV;
+    }
+    
+    protected String parseLayers(short[] layerAtt, short[] clothingLayers, String misctype)
+    {
+        int colon=misctype.indexOf(":");
+        if(colon>=0)
+        {
+            String layers=misctype.substring(0,colon).toUpperCase().trim();
+            misctype=misctype.substring(colon+1).trim();
+            if((layers.startsWith("MS"))
+            ||(layers.startsWith("SM")))
+            { layers=layers.substring(2); layerAtt[0]=Armor.LAYERMASK_MULTIWEAR|Armor.LAYERMASK_SEETHROUGH;}
+            else
+            if(layers.startsWith("M"))
+            { layers=layers.substring(1); layerAtt[0]=Armor.LAYERMASK_MULTIWEAR;}
+            else
+            if(layers.startsWith("S"))
+            { layers=layers.substring(1); layerAtt[0]=Armor.LAYERMASK_SEETHROUGH;}
+            clothingLayers[0]=CMath.s_short(layers);
+        }
+        return misctype;
+    }
+    
+    public void parseWearLocation(short[] layerAtt, short[] layers, long[] wornLoc, boolean[] logicalAnd, double[] hardBonus, String wearLocation)
+    {
+        if(layers != null)
+        {
+            layerAtt[0] = 0;
+            layers[0] = 0;
+            wearLocation=parseLayers(layerAtt,layers,wearLocation);
+        }
+        
+        double hardnessMultiplier = hardBonus[0];
+        wornLoc[0] = 0;
+        hardBonus[0]=0.0;
+        for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
+        {
+            String WO=Item.WORN_DESCS[wo].toUpperCase();
+            if(wearLocation.equalsIgnoreCase(WO))
+            {
+                hardBonus[0]+=Item.WORN_WEIGHTS[wo];
+                wornLoc[0]=CMath.pow(2,wo-1);
+                logicalAnd[0]=false;
+            }
+            else
+            if((wearLocation.toUpperCase().indexOf(WO+"||")>=0)
+            ||(wearLocation.toUpperCase().endsWith("||"+WO)))
+            {
+                if(hardBonus[0]==0.0)
+                    hardBonus[0]+=Item.WORN_WEIGHTS[wo];
+                wornLoc[0]=wornLoc[0]|CMath.pow(2,wo-1);
+                logicalAnd[0]=false;
+            }
+            else
+            if((wearLocation.toUpperCase().indexOf(WO+"&&")>=0)
+            ||(wearLocation.toUpperCase().endsWith("&&"+WO)))
+            {
+                hardBonus[0]+=Item.WORN_WEIGHTS[wo];
+                wornLoc[0]=wornLoc[0]|CMath.pow(2,wo-1);
+                logicalAnd[0]=true;
+            }
+        }
+        hardBonus[0]=(int)Math.round(hardBonus[0] * hardnessMultiplier);
+    }
+    
+    protected Vector initDefaultFields()
+    {
+        return CMParms.makeVector(new Object[] {
             new AbilityParmEditorImpl("SPELL_ID","Spell",PARMTYPE_CHOICES) {
                 public void createChoices() { createChoices(CMClass.abilities());}
             },
@@ -76,7 +183,38 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             new AbilityParmEditorImpl("CODED_WEAR_LOCATION","Wear Locs",PARMTYPE_SPECIAL) {
                 public boolean appliesToClass(Object o) { return o instanceof Armor;}
                 public void createChoices() {}
-//TODO: finish
+                public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
+                {
+                    short[] layerAtt = new short[1];
+                    short[] layers = new short[1];
+                    long[] wornLoc = new long[1];
+                    boolean[] logicalAnd = new boolean[1];
+                    double[] hardBonus=new double[1];
+                    CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,oldVal);
+                    CMLib.genEd().wornLayer(mob,layerAtt,layers,++showNumber[0],showFlag);
+                    CMLib.genEd().wornLocation(mob,wornLoc,logicalAnd,++showNumber[0],showFlag);
+                    StringBuffer newVal = new StringBuffer("");
+                    if((layerAtt[0]!=0)&&(layers[0]!=0))
+                    {
+                        if(CMath.bset(layerAtt[0],Armor.LAYERMASK_MULTIWEAR))
+                            newVal.append('M');
+                        if(CMath.bset(layerAtt[0],Armor.LAYERMASK_SEETHROUGH))
+                            newVal.append('S');
+                        newVal.append(':');
+                    }
+                    boolean needLink=false;
+                    for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
+                    {
+                        if(CMath.bset(wornLoc[0],CMath.pow(2,wo-1)))
+                        {
+                            if(needLink)
+                                newVal.append(logicalAnd[0]?"&&":"||");
+                            needLink = true;
+                            newVal.append(Item.WORN_DESCS[wo].toUpperCase());
+                        }
+                    }
+                    return newVal.toString();
+                }
             },
             new AbilityParmEditorImpl("CONTAINER_CAPACITY","Cap.",PARMTYPE_NUMBER) {
                 public boolean appliesToClass(Object o) { return o instanceof Container;}
@@ -92,7 +230,47 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             },
             new AbilityParmEditorImpl("CODED_SPELL_LIST","Spells",PARMTYPE_SPECIAL) {
                 public void createChoices() {}
-//TODO: finish
+                public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
+                {
+                    Vector spells=CMLib.ableParms().getCodedSpells(oldVal);
+                    StringBuffer rawCheck = new StringBuffer("");
+                    for(int s=0;s<spells.size();s++)
+                        rawCheck.append(((Ability)spells.elementAt(s)).ID()).append(";").append(((Ability)spells.elementAt(s)).text()).append(";");
+                    boolean okToProceed = true;
+                    ++showNumber[0];
+                    StringBuffer newVal = new StringBuffer("");
+                    while(okToProceed) {
+                        okToProceed = false;
+                        CMLib.genEd().spells(mob,spells,showNumber[0],showFlag);
+                        StringBuffer sameCheck = new StringBuffer("");
+                        for(int s=0;s<spells.size();s++)
+                            sameCheck.append(((Ability)spells.elementAt(s)).ID()).append(';').append(((Ability)spells.elementAt(s)).text()).append(';');
+                        if(sameCheck.toString().equals(rawCheck.toString())) 
+                            return oldVal;
+                        newVal.setLength(0);
+                        if(spells.size()==1)
+                            newVal.append("*" + ((Ability)spells.firstElement()).ID() + ";" + ((Ability)spells.firstElement()).text());
+                        else
+                        if(spells.size()>1) {
+                            for(int s=0;s<spells.size();s++)
+                            {
+                                String txt = ((Ability)spells.elementAt(s)).text().trim();
+                                if((txt.indexOf(';')>=0)||(CMClass.getAbility(txt)!=null))
+                                {
+                                    mob.tell("You may not have more than one spell when one of the spells parameters is a spell id or a ; character.");
+                                    okToProceed = true;
+                                    break;
+                                }
+                                newVal.append(((Ability)spells.firstElement()).ID());
+                                if(txt.length()>0)
+                                    rawCheck.append(";" + ((Ability)spells.firstElement()).text());
+                                if(s<(spells.size()-1))
+                                    newVal.append(";");
+                            }
+                        }
+                    }
+                    return newVal.toString();
+                }
             },
             new AbilityParmEditorImpl("BASE_DAMAGE","Dmg.",PARMTYPE_NUMBER) {
                 public boolean appliesToClass(Object o) { return o instanceof Weapon;}
@@ -154,14 +332,34 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             new AbilityParmEditorImpl("FOOD_DRINK","Type",PARMTYPE_CHOICES) {
                 public void createChoices() { createChoices(new String[]{"","FOOD","DRINK"});}
             },
-            new AbilityParmEditorImpl("SMELL_LIST","Smells",PARMTYPE_SPECIAL) {
-//TODO:
+            new AbilityParmEditorImpl("SMELL_LIST","Smells",PARMTYPE_STRING) {
                 public void createChoices() {}
                 public boolean appliesToClass(Object o) { return o instanceof Perfume;}
             },
             new AbilityParmEditorImpl("RESOURCE_OR_KEYWORD","Resource",PARMTYPE_SPECIAL) {
-//TODO:
                 public void createChoices() {}
+                public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
+                {
+                    ++showNumber[0];
+                    boolean proceed = true;
+                    String str = oldVal;
+                    while(proceed)
+                    {
+                        proceed = false;
+                        str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.RESOURCE_DESCS)).trim();
+                        if(str.equals(oldVal)) return oldVal;
+                        for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
+                            if(RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(str))
+                                str=(r>0)?RawMaterial.RESOURCE_DESCS[r]:"";
+                        if(str.equals(oldVal)) return oldVal;
+                        if(str.length()==0) return "";
+                        boolean isResource = CMParms.contains(RawMaterial.RESOURCE_DESCS,str);
+                        if((!isResource)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+                            if(!mob.session().confirm("You`ve entered a non-resource item keyword '"+str+"', ok (Y/n)?","Y"))
+                                proceed = true;
+                    }
+                    return str;
+                }
             },
             new AbilityParmEditorImpl("AMMO_TYPE","Ammo",PARMTYPE_STRING) {
                 public void createChoices() {}

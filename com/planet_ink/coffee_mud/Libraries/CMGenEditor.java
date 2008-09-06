@@ -2159,30 +2159,38 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     protected void genSize(MOB mob, Armor E, int showNumber, int showFlag) throws IOException
     { E.baseEnvStats().setHeight(CMLib.genEd().prompt(mob,E.baseEnvStats().height(),showNumber,showFlag,"Size")); }
 
-
-    protected void genLayer(MOB mob, Armor E, int showNumber, int showFlag)
+    public void wornLayer(MOB mob, short[] layerAtt, short[] clothingLayer, int showNumber, int showFlag)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber))  return;
-        boolean seeThroughBool=CMath.bset(E.getLayerAttributes(),Armor.LAYERMASK_SEETHROUGH);
-        boolean multiWearBool=CMath.bset(E.getLayerAttributes(),Armor.LAYERMASK_MULTIWEAR);
+        boolean seeThroughBool=CMath.bset(layerAtt[0],Armor.LAYERMASK_SEETHROUGH);
+        boolean multiWearBool=CMath.bset(layerAtt[0],Armor.LAYERMASK_MULTIWEAR);
         String seeThroughStr=(!seeThroughBool)?" (opaque)":" (see-through)";
         String multiWearStr=multiWearBool?" (multi)":"";
-        mob.tell(showNumber+". Layer: '"+E.getClothingLayer()+"'"+seeThroughStr+""+multiWearStr+".");
+        mob.tell(showNumber+". Layer: '"+clothingLayer[0]+"'"+seeThroughStr+""+multiWearStr+".");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         if((mob.session()!=null)&&(!mob.session().killFlag()))
-            E.setClothingLayer(CMath.s_short(mob.session().prompt("Enter a new layer\n\r:",""+E.getClothingLayer())));
+            clothingLayer[0] = CMath.s_short(mob.session().prompt("Enter a new layer\n\r:",""+clothingLayer[0]));
         boolean newSeeThrough=seeThroughBool;
         if((mob.session()!=null)&&(!mob.session().killFlag()))
             newSeeThrough=mob.session().confirm("Is see-through (Y/N)? ",""+seeThroughBool);
         boolean multiWear=multiWearBool;
         if((mob.session()!=null)&&(!mob.session().killFlag()))
             multiWear=mob.session().confirm("Is multi-wear (Y/N)? ",""+multiWearBool);
-        E.setLayerAttributes((short)0);
-        E.setLayerAttributes((short)(E.getLayerAttributes()|(newSeeThrough?Armor.LAYERMASK_SEETHROUGH:0)));
-        E.setLayerAttributes((short)(E.getLayerAttributes()|(multiWear?Armor.LAYERMASK_MULTIWEAR:0)));
+        layerAtt[0] = (short)0;
+        layerAtt[0] = (short)(layerAtt[0]|(newSeeThrough?Armor.LAYERMASK_SEETHROUGH:0));
+        layerAtt[0] = (short)(layerAtt[0]|(multiWear?Armor.LAYERMASK_MULTIWEAR:0));
     }
 
+    protected void genLayer(MOB mob, Armor E, int showNumber, int showFlag) throws IOException
+    {
+        if((showFlag>0)&&(showFlag!=showNumber))  return;
+        short[] layerAtt = new short[]{E.getLayerAttributes()};
+        short[] clothingLayer = new short[]{E.getClothingLayer()};
+        wornLayer(mob,layerAtt,clothingLayer,showNumber,showFlag);
+        E.setClothingLayer(clothingLayer[0]);
+        E.setLayerAttributes(layerAtt[0]);
+    }
 
     protected void genCapacity(MOB mob, Container E, int showNumber, int showFlag) throws IOException
     { E.setCapacity(CMLib.genEd().prompt(mob,E.capacity(),showNumber,showFlag,"Capacity")); }
@@ -3863,14 +3871,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     protected void genGridLocaleY(MOB mob, GridZones E, int showNumber, int showFlag) throws IOException
     { E.setYGridSize(CMLib.genEd().prompt(mob,E.yGridSize(),showNumber,showFlag,"Size (Y)")); }
 
-    protected void genWornLocation(MOB mob, Item E, int showNumber, int showFlag)
-        throws IOException
+    public void wornLocation(MOB mob, long[] oldWornLocation, boolean[] logicalAnd, int showNumber, int showFlag)
+    throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         if((showFlag!=showNumber)&&(showFlag>-999))
         {
             StringBuffer buf=new StringBuffer(showNumber+". ");
-            if(!E.rawLogicalAnd())
+            if(!logicalAnd[0])
                 buf.append("Wear on any one of: ");
             else
                 buf.append("Worn on all of: ");
@@ -3878,7 +3886,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 long wornCode=1<<l;
                 if((CMLib.flags().wornLocation(wornCode).length()>0)
-                &&(((E.rawProperLocationBitmap()&wornCode)==wornCode)))
+                &&((oldWornLocation[0]==wornCode)))
                     buf.append(CMLib.flags().wornLocation(wornCode)+", ");
             }
             if(buf.toString().endsWith(", "))
@@ -3891,7 +3899,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(codeVal!=0))
         {
             mob.tell("Wearing parameters\n\r0: Done");
-            if(!E.rawLogicalAnd())
+            if(!logicalAnd[0])
                 mob.tell("1: Able to worn on any ONE of these locations:");
             else
                 mob.tell("1: Must be worn on ALL of these locations:");
@@ -3900,7 +3908,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 long wornCode=1<<l;
                 if(CMLib.flags().wornLocation(wornCode).length()>0)
                 {
-                    String header=(l+2)+": ("+CMLib.flags().wornLocation(wornCode)+") : "+(((E.rawProperLocationBitmap()&wornCode)==wornCode)?"YES":"NO");
+                    String header=(l+2)+": ("+CMLib.flags().wornLocation(wornCode)+") : "+(((oldWornLocation[0]&wornCode)==wornCode)?"YES":"NO");
                     mob.tell(header);
                 }
             }
@@ -3908,17 +3916,28 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             if(codeVal>0)
             {
                 if(codeVal==1)
-                    E.setRawLogicalAnd(!E.rawLogicalAnd());
+                    logicalAnd[0]=!logicalAnd[0];
                 else
                 {
                     int wornCode=1<<(codeVal-2);
-                    if((E.rawProperLocationBitmap()&wornCode)==wornCode)
-                        E.setRawProperLocationBitmap(E.rawProperLocationBitmap()-wornCode);
+                    if((oldWornLocation[0]&wornCode)==wornCode)
+                        oldWornLocation[0]=(oldWornLocation[0]-wornCode);
                     else
-                        E.setRawProperLocationBitmap(E.rawProperLocationBitmap()|wornCode);
+                        oldWornLocation[0]=(oldWornLocation[0]|wornCode);
                 }
             }
         }
+    }
+    
+    protected void genWornLocation(MOB mob, Item E, int showNumber, int showFlag)
+        throws IOException
+    {
+        if((showFlag>0)&&(showFlag!=showNumber)) return;
+        long[] wornLoc = new long[]{E.rawProperLocationBitmap()};
+        boolean[] logicalAnd = new boolean[]{E.rawLogicalAnd()};
+        wornLocation(mob,wornLoc,logicalAnd,showNumber,showFlag);
+        E.setRawProperLocationBitmap(wornLoc[0]);
+        E.setRawLogicalAnd(logicalAnd[0]);
     }
 
     protected void genThirstQuenched(MOB mob, Drink E, int showNumber, int showFlag) throws IOException
