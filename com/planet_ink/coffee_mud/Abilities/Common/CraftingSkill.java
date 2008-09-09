@@ -49,7 +49,6 @@ public class CraftingSkill extends GatheringSkill
 	public CraftingSkill(){super();}
 	
     public String parametersFile(){ return "";}
-    public Hashtable parametersFields(){ return new Hashtable();}
     
 	protected String replacePercent(String thisStr, String withThis)
 	{

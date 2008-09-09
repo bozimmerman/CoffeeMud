@@ -36,12 +36,10 @@ import java.util.*;
 public class CMAbleParms extends StdLibrary implements AbilityParameters
 {
     public String ID(){return "CMAbleParms";}
-    private Vector defaultFields = new Vector();
     
     public CMAbleParms()
     {
         super();
-        defaultFields = initDefaultFields();
     }
     
     public Vector getCodedSpells(String spells)
@@ -145,10 +143,279 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         }
         hardBonus[0]=(int)Math.round(hardBonus[0] * hardnessMultiplier);
     }
+
+    public Vector parseRecipeFormatColumns(String recipeFormat) {
+        char C = '\0';
+        StringBuffer currentColumn = new StringBuffer("");
+        Vector currentColumns = null;
+        char[] recipeFmtC = recipeFormat.toCharArray();
+        Vector columnsV = new Vector();
+        for(int c=0;c<=recipeFmtC.length;c++) {
+            if(c==recipeFmtC.length) {
+                
+                break;
+            }
+            C = recipeFmtC[c];
+            if((C=='|')
+            &&(c<(recipeFmtC.length-1))
+            &&(recipeFmtC[c+1]=='|')
+            &&(currentColumn.length()>0))
+            {
+                if(currentColumn.length()>0) {
+                    if(currentColumns == null) {
+                        currentColumns = new Vector();
+                        columnsV.addElement(currentColumns);
+                    }
+                    currentColumns.addElement(currentColumn.toString());
+                    currentColumn.setLength(0);
+                }
+                c++;
+            }
+            else
+            if(Character.isLetter(C)||Character.isDigit(C)||(C=='_'))
+                currentColumn.append(C);
+            else
+            {
+                if(currentColumn.length()>0) {
+                    if(currentColumns == null) {
+                        currentColumns = new Vector();
+                        columnsV.addElement(currentColumns);
+                    }
+                    currentColumns.addElement(currentColumn.toString());
+                    currentColumn.setLength(0);
+                }
+                currentColumns = null;
+                if((C=='.')
+                &&(c<(recipeFmtC.length-2))
+                &&(recipeFmtC[c+1]=='.')
+                &&(recipeFmtC[c+2]=='.'))
+                {
+                    c+=2;
+                    columnsV.addElement("...");
+                }
+                else
+                if(columnsV.lastElement() instanceof String)
+                    columnsV.setElementAt(((String)columnsV.lastElement())+C,columnsV.size()-1);
+                else
+                    columnsV.addElement(""+C);
+            }
+        }
+        if(currentColumn.length()>0)
+        {
+            if(currentColumns == null) {
+                currentColumns = new Vector();
+                columnsV.addElement(currentColumns);
+            }
+            currentColumns.addElement(currentColumn.toString());
+        }
+        if((currentColumns != null) && (currentColumns.size()==0))
+            columnsV.remove(currentColumns);
+        return columnsV;
+    }
     
-    protected Vector initDefaultFields()
+    public String stripData(StringBuffer str, String div)
     {
-        return CMParms.makeVector(new Object[] {
+        StringBuffer data = new StringBuffer("");
+        while(str.length()>0)
+        {
+            if(str.length() < div.length())
+                return null;
+            for(int d=0;d<=div.length();d++)
+            {
+                if(d==div.length())
+                {
+                    str.delete(0,div.length());
+                    return data.toString();
+                } 
+                else
+                if(str.charAt(d)!=div.charAt(d))
+                    break;
+            }
+            if(str.charAt(0)=='\n')
+                return null;
+            data.append(str.charAt(0));
+            str.delete(0,1);
+        }
+        return null;
+    }
+    
+    public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) 
+    {
+        Hashtable defaultFields = initDefaultFields();
+        StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+recipeFilename,null,true).text();
+        Vector columnsV = parseRecipeFormatColumns(recipeFormat);
+        Vector rowsV = new Vector();
+        DVector dataRow = new DVector(2);
+        Vector currCol = null;
+        String lastDiv = null;
+        int numberOfDataColumns = 0;
+        for(int c = 0; c < columnsV.size(); c++)
+            if(columnsV.elementAt(c) instanceof Vector)
+                numberOfDataColumns++;
+        while((str.length() > 0)
+        &&(mob.session()!=null)
+        &&(!mob.session().killFlag()))
+        {
+            for(int c = 0; c <= columnsV.size(); c++)
+            {
+                if(c == columnsV.size())
+                    dataRow.addElement(currCol,stripData(str,"\n\r"));
+                else
+                if(columnsV.elementAt(c) instanceof Vector)
+                    currCol = (Vector)columnsV.elementAt(c);
+                else
+                if(currCol != null)
+                {
+                    String div = (String)columnsV.elementAt(c);
+                    if(!div.equals("..."))
+                    {
+                        lastDiv = div;
+                        String data = stripData(str,lastDiv);
+                        if(data == null) {
+                            Log.errOut("CMAbleParms","Unexpected end of line");
+                            break;
+                        }
+                        dataRow.addElement(currCol,data);
+                        currCol = null;
+                    } 
+                    else 
+                    {
+                        String data = stripData(str,lastDiv);
+                        if(data == null)
+                            break;
+                        dataRow.addElement(currCol,data);
+                    }
+                }
+                else
+                    Log.errOut("CMAbleParms","Divider with no column.");
+            }
+            if(dataRow.size() != numberOfDataColumns) {
+                Log.errOut("CMAbleParms","Unable to read file: "+recipeFilename+", row "+(rowsV.size()+1)+" has "+dataRow.size()+"/"+numberOfDataColumns);
+                return;
+            }
+            rowsV.addElement(dataRow);
+            dataRow = new DVector(2);
+        }
+        for(int r=0;r<rowsV.size();r++) {
+            dataRow=(DVector)rowsV.elementAt(r);
+            String classID = null;
+            Item classModelI = null;
+            boolean classIDRequired = false;
+            for(int d=0;d<dataRow.size();d++)
+                if(((Vector)dataRow.elementAt(d,1)).contains("ITEM_CLASS_ID"))
+                    classID=(String)dataRow.elementAt(d,2);
+                else
+                if((!classIDRequired)&&(((Vector)dataRow.elementAt(d,1)).size()>1))
+                    classIDRequired=true;
+            if(classID==null)
+            for(int d=0;d<dataRow.size();d++)
+                if(((Vector)dataRow.elementAt(d,1)).contains("FOOD_DRINK"))
+                    classID=(String)dataRow.elementAt(d,2);
+            if((classID!=null)&&(classID.length()>0))
+                if(classID.equalsIgnoreCase("FOOD"))
+                    classModelI = CMClass.sampleItem("GenFood");
+                else
+                if(classID.equalsIgnoreCase("DRINK"))
+                    classModelI = CMClass.sampleItem("GenDrink");
+                else
+                    classModelI = CMClass.sampleItem(classID);
+            if(classModelI == null) {
+                if(classIDRequired)
+                {
+                    Log.errOut("CMAbleParms","File: "+recipeFilename+", data row "+r+" discarded due to null/empty classID");
+                    rowsV.removeElementAt(r);
+                    r--;
+                    continue;
+                }
+            } 
+            boolean abortRow = false;
+            for(int d=0;d<dataRow.size();d++) {
+                Vector colV=(Vector)dataRow.elementAt(d,1);
+                if(colV.size()==1)
+                    dataRow.setElementAt(d,1,(String)colV.firstElement());
+                else
+                {
+                    AbilityParmEditor applicableA = null;
+                    for(int c=0;c<colV.size();c++)
+                    {
+                        AbilityParmEditor A = (AbilityParmEditor)defaultFields.get((String)colV.elementAt(c));
+                        if(A==null) 
+                        {
+                            Log.errOut("CMAbleParms","File: "+recipeFilename+", col name "+((String)colV.elementAt(c))+" is not defined.");
+                            return;
+                        }
+                        if((applicableA==null)
+                        ||(A.appliesToClass(classModelI) > applicableA.appliesToClass(classModelI)))
+                            applicableA = A;
+                    }
+                    if((applicableA == null)||(applicableA.appliesToClass(classModelI)<0))
+                        applicableA = (AbilityParmEditor)defaultFields.get("N/A");
+                    dataRow.setElementAt(d,1,applicableA.ID());
+                }
+                AbilityParmEditor A = (AbilityParmEditor)defaultFields.get((String)dataRow.elementAt(d,1));
+                if(A==null)
+                    Log.errOut("CMAbleParms","File: "+recipeFilename+", item id "+classID+" has no editor for "+((String)dataRow.elementAt(d,1)));
+                else
+                if(!A.confirmValue((String)dataRow.elementAt(d,2)))
+                    Log.errOut("CMAbleParms","File: "+recipeFilename+", item id "+classID+" has bad data '"+((String)dataRow.elementAt(d,2))+"' for column "+((String)dataRow.elementAt(d,1)));
+            }
+            if(abortRow)
+                continue;
+        }
+        int[] lens = new int[numberOfDataColumns];
+        String[] head = new String[numberOfDataColumns];
+        for(int r=0;r<rowsV.size();r++) {
+            dataRow=(DVector)rowsV.elementAt(r);
+            for(int c=0;c<dataRow.size();c++)
+            {
+                AbilityParmEditor A = (AbilityParmEditor)defaultFields.get((String)dataRow.elementAt(c,1));
+                if(head[c] == null)
+                {
+                    head[c] = A.colHeader();
+                    lens[c]=head[c].length()+1;
+                }
+                else
+                if((!head[c].startsWith("#"))
+                &&(!head[c].equalsIgnoreCase(A.colHeader())))
+                {
+                    head[c]="#"+c;
+                    lens[c]=head[c].length()+1;
+                }
+            }
+        }
+        int currLenTotal = 0;
+        for(int l=0;l<lens.length;l++)
+            currLenTotal+=lens[l];
+        int curCol = 0;
+        while(currLenTotal<74) {
+            lens[curCol]++;
+            currLenTotal++;
+            curCol++;
+            if(curCol >= lens.length)
+                curCol = 0;
+        }
+        StringBuffer list=new StringBuffer("");
+        list.append("### ");
+        for(int l=0;l<lens.length;l++)
+            list.append(CMStrings.padRight(head[l],lens[l])+" ");
+        list.append("\n\r");
+        for(int r=0;r<rowsV.size();r++) {
+            dataRow=(DVector)rowsV.elementAt(r);
+            list.append(CMStrings.padRight(""+r,3)+" ");
+            for(int c=0;c<dataRow.size();c++)
+                list.append(CMStrings.padRight((String)dataRow.elementAt(c,2),lens[c])+" ");
+            list.append("\n\r");
+        }
+        Log.sysOut("","\n\r" + list.toString());
+        //TODO: resave the file.
+        Log.sysOut("CMAbleParms","User: "+mob.Name()+" modified file "+recipeFilename);
+        Resources.removeResource("PARSED: "+recipeFilename);
+        
+    }
+    
+    protected Hashtable initDefaultFields()
+    {
+        Vector V=CMParms.makeVector(new Object[] {
             new AbilityParmEditorImpl("SPELL_ID","Spell",PARMTYPE_CHOICES) {
                 public void createChoices() { createChoices(CMClass.abilities());}
             },
@@ -181,8 +448,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 }
             },
             new AbilityParmEditorImpl("CODED_WEAR_LOCATION","Wear Locs",PARMTYPE_SPECIAL) {
-                public boolean appliesToClass(Object o) { return o instanceof Armor;}
+                public int appliesToClass(Object o) { return ((o instanceof Armor)||(o instanceof MusicalInstrument))?2:-1;}
                 public void createChoices() {}
+                public boolean confirmValue(String oldVal) { return oldVal.trim().length()>0;}
                 public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
                 {
                     short[] layerAtt = new short[1];
@@ -217,19 +485,30 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 }
             },
             new AbilityParmEditorImpl("CONTAINER_CAPACITY","Cap.",PARMTYPE_NUMBER) {
-                public boolean appliesToClass(Object o) { return o instanceof Container;}
+                public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
                 public void createChoices() {}
             },
             new AbilityParmEditorImpl("BASE_ARMOR_AMOUNT","Arm.",PARMTYPE_NUMBER) {
-                public boolean appliesToClass(Object o) { return o instanceof Armor;}
+                public int appliesToClass(Object o) { return (o instanceof Armor)?2:-1;}
                 public void createChoices() {}
             },
             new AbilityParmEditorImpl("CONTAINER_TYPE","Typ.",PARMTYPE_MULTICHOICES) {
                 public void createChoices() { createBinaryChoices(Container.CONTAIN_DESCS);}
-                public boolean appliesToClass(Object o) { return o instanceof Container;}
+                public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
             },
             new AbilityParmEditorImpl("CODED_SPELL_LIST","Spells",PARMTYPE_SPECIAL) {
                 public void createChoices() {}
+                public boolean confirmValue(String oldVal) {
+                    if(oldVal.length()==0) return true;
+                    if(oldVal.charAt(0)=='*')
+                        oldVal = oldVal.substring(1);
+                    int x=oldVal.indexOf('(');
+                    int y=oldVal.indexOf(';');
+                    if((x<y)&&(x>0)) y=x;
+                    if(y<0) 
+                        return CMClass.getAbility(oldVal)!=null;
+                    return CMClass.getAbility(oldVal.substring(0,y))!=null;
+                }
                 public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
                 {
                     Vector spells=CMLib.ableParms().getCodedSpells(oldVal);
@@ -273,42 +552,42 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 }
             },
             new AbilityParmEditorImpl("BASE_DAMAGE","Dmg.",PARMTYPE_NUMBER) {
-                public boolean appliesToClass(Object o) { return o instanceof Weapon;}
+                public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
                 public void createChoices() {}
             },
             new AbilityParmEditorImpl("LID_LOCK","Lid.",PARMTYPE_CHOICES) {
-                public boolean appliesToClass(Object o) { return o instanceof Container;}
+                public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
                 public void createChoices() { createChoices(new String[]{"","LID","LOCK"});}
             },
             new AbilityParmEditorImpl("STATUE","Statue",PARMTYPE_CHOICES) {
                 public void createChoices() { createChoices(new String[]{"","STATUE"});}
             },
             new AbilityParmEditorImpl("RIDE_BASIS","Ride",PARMTYPE_CHOICES) {
-                public boolean appliesToClass(Object o) { return o instanceof Rideable;}
+                public int appliesToClass(Object o) { return (o instanceof Rideable)?3:-1;}
                 public void createChoices() { createChoices(new String[]{"","CHAIR","TABLE","LADDER","ENTER","BED"});}
             },
             new AbilityParmEditorImpl("LIQUID_CAPACITY","Liq.",PARMTYPE_NUMBER) {
-                public boolean appliesToClass(Object o) { return o instanceof Drink;}
+                public int appliesToClass(Object o) { return (o instanceof Drink)?4:-1;}
                 public void createChoices() {}
             },
             new AbilityParmEditorImpl("WEAPON_CLASS","WClas",PARMTYPE_CHOICES) {
-                public boolean appliesToClass(Object o) { return o instanceof Weapon;}
+                public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
                 public void createChoices() { createChoices(Weapon.CLASS_DESCS);}
             },
             new AbilityParmEditorImpl("SMOKE_FLAG","Smoke",PARMTYPE_CHOICES) {
-                public boolean appliesToClass(Object o) { return o instanceof Light;}
+                public int appliesToClass(Object o) { return (o instanceof Light)?5:-1;}
                 public void createChoices() { createChoices(new String[]{"","SMOKE"});}
             },
             new AbilityParmEditorImpl("WEAPON_HANDS_REQUIRED","Hand",PARMTYPE_NUMBER) {
-                public boolean appliesToClass(Object o) { return o instanceof Weapon;}
+                public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
                 public void createChoices() {}
             },
             new AbilityParmEditorImpl("LIGHT_DURATION","Dur.",PARMTYPE_NUMBER) {
-                public boolean appliesToClass(Object o) { return o instanceof Light;}
+                public int appliesToClass(Object o) { return (o instanceof Light)?5:-1;}
                 public void createChoices() {}
             },
             new AbilityParmEditorImpl("CLAN_ITEM_CODENUMBER","Typ.",PARMTYPE_CHOICES) {
-                public boolean appliesToClass(Object o) { return o instanceof ClanItem;}
+                public int appliesToClass(Object o) { return (o instanceof ClanItem)?10:-1;}
                 public void createChoices() { createNumberedChoices(ClanItem.CI_DESC);}
             },
             new AbilityParmEditorImpl("CLAN_EXPERIENCE_COST","Exp",PARMTYPE_NUMBER) {public void createChoices() {}},
@@ -334,10 +613,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             },
             new AbilityParmEditorImpl("SMELL_LIST","Smells",PARMTYPE_STRING) {
                 public void createChoices() {}
-                public boolean appliesToClass(Object o) { return o instanceof Perfume;}
+                public int appliesToClass(Object o) { return (o instanceof Perfume)?5:-1;}
             },
             new AbilityParmEditorImpl("RESOURCE_OR_KEYWORD","Resource",PARMTYPE_SPECIAL) {
                 public void createChoices() {}
+                public boolean confirmValue(String oldVal) { return oldVal.trim().length()>0;}
                 public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
                 {
                     ++showNumber[0];
@@ -363,11 +643,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             },
             new AbilityParmEditorImpl("AMMO_TYPE","Ammo",PARMTYPE_STRING) {
                 public void createChoices() {}
-                public boolean appliesToClass(Object o) { return o instanceof Weapon;}
+                public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
             },
             new AbilityParmEditorImpl("AMMO_CAPACITY","Ammo#",PARMTYPE_NUMBER) {
                 public void createChoices() {}
-                public boolean appliesToClass(Object o) { return o instanceof Weapon;}
+                public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
             },
             new AbilityParmEditorImpl("MAXIMUM_RANGE","Max",PARMTYPE_NUMBER) { public void createChoices() {} },
             new AbilityParmEditorImpl("RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
@@ -380,7 +660,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             new AbilityParmEditorImpl("HERB_NAME$","Herb Final Name",PARMTYPE_STRING) {public void createChoices() {}},
             new AbilityParmEditorImpl("RIDE_CAPACITY","Ridrs",PARMTYPE_NUMBER) {
                 public void createChoices() {}
-                public boolean appliesToClass(Object o) { return o instanceof Rideable;}
+                public int appliesToClass(Object o) { return (o instanceof Rideable)?3:-1;}
             },
             new AbilityParmEditorImpl("METAL_OR_WOOD","Metal",PARMTYPE_CHOICES) {
                 public void createChoices() { createChoices(new String[]{"METAL","WOOD"});}
@@ -393,7 +673,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             },
             new AbilityParmEditorImpl("INSTRUMENT_TYPE","Instrmnt",PARMTYPE_CHOICES) {
                 public void createChoices() { createChoices(MusicalInstrument.TYPE_DESC); }
-                public boolean appliesToClass(Object o) { return o instanceof MusicalInstrument;}
+                public int appliesToClass(Object o) { return (o instanceof MusicalInstrument)?5:-1;}
             },
             new AbilityParmEditorImpl("STONE_FLAG","Stone",PARMTYPE_CHOICES) {
                 public void createChoices() { createChoices(new String[]{"","STONE"});}
@@ -404,14 +684,25 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 public void createChoices() { createChoices(new String[]{"WOOD","METAL","CLOTH"});}
             },
             new AbilityParmEditorImpl("WEAPON_TYPE","W.Type",PARMTYPE_CHOICES) {
-                public boolean appliesToClass(Object o) { return o instanceof Weapon;}
+                public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
                 public void createChoices() { createChoices(Weapon.TYPE_DESCS);}
             },
             new AbilityParmEditorImpl("ATTACK_MODIFICATION","Att.",PARMTYPE_NUMBER) {
                 public void createChoices() {}
-                public boolean appliesToClass(Object o) { return o instanceof Weapon;}
-            }
+                public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
+            },
+            new AbilityParmEditorImpl("N/A","N/A",PARMTYPE_STRING) {
+                public void createChoices() {}
+                public int appliesToClass(Object o) { return -1;}
+                public boolean confirmValue(String oldVal) { return oldVal.trim().length()==0;}
+            },
         });
+        Hashtable H = new Hashtable();
+        for(int v=0;v<V.size();v++) {
+            AbilityParmEditor A = (AbilityParmEditor)V.elementAt(v);
+            H.put(A.ID(),A);
+        }
+        return H;
     };
     
     public abstract class AbilityParmEditorImpl implements AbilityParmEditor 
@@ -434,6 +725,31 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         public String prompt() { return prompt; }
         public String colHeader() { return header;}
         
+        public boolean confirmValue(String oldVal)
+        {
+            boolean spaceOK = fieldType != PARMTYPE_ONEWORD;
+            boolean emptyOK = false;
+            switch(fieldType) {
+                case PARMTYPE_STRINGORNULL:
+                    emptyOK = true;
+                case PARMTYPE_ONEWORD:
+                case PARMTYPE_STRING:
+                {
+                    if((!spaceOK) && (oldVal.indexOf(' ') >= 0))
+                        return false;
+                    return (emptyOK)||(oldVal.trim().length()>0);
+                }
+                case PARMTYPE_NUMBER:
+                    return CMath.isInteger(oldVal);
+                case PARMTYPE_CHOICES:
+                    if(!choices.getDimensionVector(1).contains(oldVal))
+                        return choices.getDimensionVector(1).contains(oldVal.toUpperCase().trim());
+                    return true;
+                case PARMTYPE_MULTICHOICES:
+                    return CMath.isInteger(oldVal);
+            }
+            return false;
+        }
         public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag)
             throws java.io.IOException
         {
@@ -511,6 +827,6 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             return choices;
         }
         public DVector choices() { return choices; } 
-        public boolean appliesToClass(Object o) { return o instanceof Item;}
+        public int appliesToClass(Object o) { return o instanceof Item?0:-1;}
     }
 }

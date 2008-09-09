@@ -283,6 +283,20 @@ public class Test extends StdCommand
             	mob.tell("Picked "+(num-numNull)+"/"+num+" rooms in this area.");
             }
             else
+            if(what.equalsIgnoreCase("edrecipe"))
+            {
+                for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                {
+                    Ability A=(Ability)e.nextElement();
+                    if(A instanceof ItemCraftor)
+                    {
+                        ItemCraftor iA=(ItemCraftor)A;
+                        if(iA.parametersFormat().length()>0)
+                            CMLib.ableParms().modifyRecipesList(mob,iA.parametersFile(),iA.parametersFormat());
+                    }
+                }
+            }
+            else
             if(what.equalsIgnoreCase("scriptable"))
             {
                 Area A=CMClass.getAreaType("StdArea");

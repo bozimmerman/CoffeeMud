@@ -292,6 +292,15 @@ public class CMClass extends ClassLoader
 			sampleItem= (Item)((Item)c().items.firstElement()).copyOf();
 		return sampleItem;
 	}
+    public static Item sampleItem(String itemID){
+        Item thisItem=(Item)getNewGlobal(c().items,itemID);
+        if(thisItem==null) thisItem=(Item)getGlobal(c().armor,itemID);
+        if(thisItem==null) thisItem=(Item)getGlobal(c().weapons,itemID);
+        if(thisItem==null) thisItem=(Item)getGlobal(c().miscMagic,itemID);
+        if(thisItem==null) thisItem=(Item)getGlobal(c().clanItems,itemID);
+        if(thisItem==null) thisItem=(Item)getGlobal(c().miscTech,itemID);
+        return thisItem;
+    }
 
     protected static MOB sampleMOB=null;
 	public static MOB sampleMOB()
