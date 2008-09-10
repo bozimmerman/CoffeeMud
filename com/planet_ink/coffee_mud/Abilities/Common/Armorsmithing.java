@@ -43,7 +43,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
     public String parametersFormat(){ return 
           "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\t"
         + "ITEM_BASE_VALUE\tITEM_CLASS_ID\tCODED_WEAR_LOCATION\tCONTAINER_CAPACITY\t"
-        + "ARMOR_AMOUNT\tCONTAINER_TYPE\tCODED_SPELL_LIST";}
+        + "BASE_ARMOR_AMOUNT\tCONTAINER_TYPE\tCODED_SPELL_LIST";}
 	
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;

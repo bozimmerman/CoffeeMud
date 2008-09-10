@@ -43,7 +43,7 @@ public class JewelMaking extends EnhancedCraftingSkill implements ItemCraftor, M
     public String supportedResourceString(){return "GLASS|PRECIOUS|SAND";}
     public String parametersFormat(){ return 
         "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\tITEM_BASE_VALUE\t"
-        +"ITEM_CLASS_ID\tSTATUE||\t\tBASE_ARMOR_AMOUNT\tRESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";}
+        +"ITEM_CLASS_ID\tSTATUE||\t\tBASE_ARMOR_AMOUNT\tOPTIONAL_RESOURCE_OR_MATERIAL\tCODED_SPELL_LIST";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;

@@ -43,7 +43,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
     public String parametersFormat(){ return 
         "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\t"
        +"ITEM_BASE_VALUE\tITEM_CLASS_ID\tSTATUE||RIDE_BASIS||LID_LOCK||CONTAINER_TYPE\t"
-       +"CONTAINER_CAPACITY||LIQUID_CAPACITY\tBASE_ARMOR_AMOUNT||BASE_DAMAGE\tCODED_SPELL_LIST";}
+       +"CONTAINER_CAPACITY||LIQUID_CAPACITY\tCODED_SPELL_LIST";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;

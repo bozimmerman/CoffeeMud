@@ -232,7 +232,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     break;
             }
             if(str.charAt(0)=='\n')
+            {
+                if(data.length()>0)
+                    return data.toString();
                 return null;
+            }
             data.append(str.charAt(0));
             str.delete(0,1);
         }
@@ -256,38 +260,39 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         &&(mob.session()!=null)
         &&(!mob.session().killFlag()))
         {
-            for(int c = 0; c <= columnsV.size(); c++)
+            for(int c = 0; c < columnsV.size(); c++)
             {
-                if(c == columnsV.size())
-                    dataRow.addElement(currCol,stripData(str,"\n\r"));
+                String div = "\n\r";
+                currCol = null;
+                if(columnsV.elementAt(c) instanceof String)
+                    stripData(str,(String)columnsV.elementAt(c));
                 else
                 if(columnsV.elementAt(c) instanceof Vector)
-                    currCol = (Vector)columnsV.elementAt(c);
-                else
-                if(currCol != null)
                 {
-                    String div = (String)columnsV.elementAt(c);
-                    if(!div.equals("..."))
+                    currCol = (Vector)columnsV.elementAt(c);
+                    if(c<columnsV.size()-1)
                     {
-                        lastDiv = div;
-                        String data = stripData(str,lastDiv);
-                        if(data == null) {
-                            Log.errOut("CMAbleParms","Unexpected end of line");
-                            break;
-                        }
-                        dataRow.addElement(currCol,data);
-                        currCol = null;
-                    } 
-                    else 
-                    {
-                        String data = stripData(str,lastDiv);
-                        if(data == null)
-                            break;
-                        dataRow.addElement(currCol,data);
+                        div = (String)columnsV.elementAt(c+1);
+                        c++;
                     }
                 }
-                else
-                    Log.errOut("CMAbleParms","Divider with no column.");
+                if(!div.equals("..."))
+                {
+                    lastDiv = div;
+                    String data = null;
+                        data = stripData(str,lastDiv);
+                    if(data == null)
+                        data = "";
+                    dataRow.addElement(currCol,data);
+                    currCol = null;
+                } 
+                else 
+                {
+                    String data = stripData(str,lastDiv);
+                    if(data == null)
+                        break;
+                    dataRow.addElement(currCol,data);
+                }
             }
             if(dataRow.size() != numberOfDataColumns) {
                 Log.errOut("CMAbleParms","Unable to read file: "+recipeFilename+", row "+(rowsV.size()+1)+" has "+dataRow.size()+"/"+numberOfDataColumns);
@@ -329,10 +334,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 }
             } 
             boolean abortRow = false;
-            for(int d=0;d<dataRow.size();d++) {
+            for(int d=0;d<dataRow.size();d++) 
+            {
                 Vector colV=(Vector)dataRow.elementAt(d,1);
                 if(colV.size()==1)
-                    dataRow.setElementAt(d,1,(String)colV.firstElement());
+                {
+                    AbilityParmEditor A = (AbilityParmEditor)defaultFields.get((String)colV.firstElement());
+                    if((A == null)||(A.appliesToClass(classModelI)<0))
+                        A = (AbilityParmEditor)defaultFields.get("N/A");
+                    dataRow.setElementAt(d,1,A.ID());
+                }
                 else
                 {
                     AbilityParmEditor applicableA = null;
@@ -357,7 +368,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     Log.errOut("CMAbleParms","File: "+recipeFilename+", item id "+classID+" has no editor for "+((String)dataRow.elementAt(d,1)));
                 else
                 if(!A.confirmValue((String)dataRow.elementAt(d,2)))
-                    Log.errOut("CMAbleParms","File: "+recipeFilename+", item id "+classID+" has bad data '"+((String)dataRow.elementAt(d,2))+"' for column "+((String)dataRow.elementAt(d,1)));
+                    Log.errOut("CMAbleParms","File: "+recipeFilename+", item id "+classID+" has bad data '"+((String)dataRow.elementAt(d,2))+"' for column "+((String)dataRow.elementAt(d,1))+" at row "+r);
             }
             if(abortRow)
                 continue;
@@ -369,6 +380,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             for(int c=0;c<dataRow.size();c++)
             {
                 AbilityParmEditor A = (AbilityParmEditor)defaultFields.get((String)dataRow.elementAt(c,1));
+                if(A==null)
+                    Log.errOut("CMAbleParms","Inexplicable lack of a column: "+((String)dataRow.elementAt(c,1)));
                 if(head[c] == null)
                 {
                     head[c] = A.colHeader();
@@ -406,7 +419,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 list.append(CMStrings.padRight((String)dataRow.elementAt(c,2),lens[c])+" ");
             list.append("\n\r");
         }
-        Log.sysOut("","\n\r" + list.toString());
+        //Log.sysOut("","\n\r" + list.toString());
         //TODO: resave the file.
         Log.sysOut("CMAbleParms","User: "+mob.Name()+" modified file "+recipeFilename);
         Resources.removeResource("PARSED: "+recipeFilename);
@@ -425,7 +438,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             new AbilityParmEditorImpl("ITEM_NAME","Item Final Name",PARMTYPE_STRING){public void createChoices() {}}, 
             new AbilityParmEditorImpl("ITEM_LEVEL","Lvl",PARMTYPE_NUMBER){public void createChoices() {}},
             new AbilityParmEditorImpl("BUILD_TIME_TICKS","Time",PARMTYPE_NUMBER){public void createChoices() {}},
-            new AbilityParmEditorImpl("AMOUNT_MATERIAL_REQUIRED","Amt",PARMTYPE_NUMBER){public void createChoices() {}},
+            new AbilityParmEditorImpl("AMOUNT_MATERIAL_REQUIRED","Amt",PARMTYPE_NUMBER){
+                public void createChoices() {}
+                public boolean confirmValue(String oldVal) { return true;}
+            },
             new AbilityParmEditorImpl("ITEM_BASE_VALUE","Value",PARMTYPE_NUMBER){public void createChoices() {}},
             new AbilityParmEditorImpl("ITEM_CLASS_ID","Class ID",PARMTYPE_CHOICES) {
                 public void createChoices() { 
@@ -590,7 +606,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 public int appliesToClass(Object o) { return (o instanceof ClanItem)?10:-1;}
                 public void createChoices() { createNumberedChoices(ClanItem.CI_DESC);}
             },
-            new AbilityParmEditorImpl("CLAN_EXPERIENCE_COST","Exp",PARMTYPE_NUMBER) {public void createChoices() {}},
+            new AbilityParmEditorImpl("CLAN_EXPERIENCE_COST_AMOUNT","Exp",PARMTYPE_NUMBER) {public void createChoices() {}},
             new AbilityParmEditorImpl("CLAN_AREA_FLAG","Area",PARMTYPE_CHOICES) {
                 public void createChoices() { createChoices(new String[]{"","AREA"});}
             },
@@ -605,11 +621,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         if((A.classificationCode() & Ability.ALL_ACODES) == Ability.ACODE_COMMON_SKILL)
                             V.addElement(A);
                     }
+                    V.addElement("");
                     createChoices(V);
                 }
             },
             new AbilityParmEditorImpl("FOOD_DRINK","Type",PARMTYPE_CHOICES) {
-                public void createChoices() { createChoices(new String[]{"","FOOD","DRINK"});}
+                public void createChoices() { createChoices(new String[]{"","FOOD","DRINK","GenPerfume"});}
             },
             new AbilityParmEditorImpl("SMELL_LIST","Smells",PARMTYPE_STRING) {
                 public void createChoices() {}
@@ -617,7 +634,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             },
             new AbilityParmEditorImpl("RESOURCE_OR_KEYWORD","Resource",PARMTYPE_SPECIAL) {
                 public void createChoices() {}
-                public boolean confirmValue(String oldVal) { return oldVal.trim().length()>0;}
+                public boolean confirmValue(String oldVal) { return true;}
                 public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
                 {
                     ++showNumber[0];
@@ -641,13 +658,51 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     return str;
                 }
             },
+            new AbilityParmEditorImpl("RESOURCE_NAME_OR_HERB_NAME","Resrc/Herb",PARMTYPE_SPECIAL) {
+                public void createChoices() {}
+                public boolean confirmValue(String oldVal) {
+                    if(oldVal.trim().length()==0)
+                        return true;
+                    if(!oldVal.endsWith("$")) {
+                        return CMParms.contains(RawMaterial.RESOURCE_DESCS,oldVal);
+                    }
+                    return true;
+                }
+                public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
+                {
+                    ++showNumber[0];
+                    boolean proceed = true;
+                    String str = oldVal;
+                    while(proceed)
+                    {
+                        proceed = false;
+                        if(oldVal.trim().endsWith("$")) oldVal=oldVal.trim().substring(0,oldVal.trim().length()-1);
+                        str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.RESOURCE_DESCS)).trim();
+                        if(str.equals(oldVal)) return oldVal;
+                        for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
+                            if(RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(str))
+                                str=(r>0)?RawMaterial.RESOURCE_DESCS[r]:"";
+                        if(str.equals(oldVal)) return oldVal;
+                        if(str.length()==0) return "";
+                        boolean isResource = CMParms.contains(RawMaterial.RESOURCE_DESCS,str);
+                        if((!isResource)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+                        {
+                            if(!mob.session().confirm("You`ve entered a non-resource item keyword '"+str+"', ok (Y/n)?","Y"))
+                                proceed = true;
+                            else
+                                str=str+"$";
+                        }
+                    }
+                    return str;
+                }
+            },
             new AbilityParmEditorImpl("AMMO_TYPE","Ammo",PARMTYPE_STRING) {
                 public void createChoices() {}
-                public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
+                public int appliesToClass(Object o) { return ((o instanceof Weapon)||(o instanceof Ammunition))?2:-1;}
             },
             new AbilityParmEditorImpl("AMMO_CAPACITY","Ammo#",PARMTYPE_NUMBER) {
                 public void createChoices() {}
-                public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
+                public int appliesToClass(Object o) { return ((o instanceof Weapon)||(o instanceof Ammunition))?2:-1;}
             },
             new AbilityParmEditorImpl("MAXIMUM_RANGE","Max",PARMTYPE_NUMBER) { public void createChoices() {} },
             new AbilityParmEditorImpl("RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
@@ -657,7 +712,31 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     createChoices(V);
                 }
             },
-            new AbilityParmEditorImpl("HERB_NAME$","Herb Final Name",PARMTYPE_STRING) {public void createChoices() {}},
+            new AbilityParmEditorImpl("OPTIONAL_RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
+                public void createChoices() {
+                    Vector V=CMParms.makeVector(RawMaterial.RESOURCE_DESCS);
+                    V.addAll(CMParms.makeVector(RawMaterial.MATERIAL_DESCS));
+                    V.addElement("");
+                    createChoices(V);
+                }
+            },
+            new AbilityParmEditorImpl("HERB_NAME","Herb Final Name",PARMTYPE_STRING) {
+                public void createChoices() {}
+                public boolean confirmValue(String oldVal) {
+                    if(oldVal.trim().length()==0)
+                        return true;
+                    if(!oldVal.endsWith("$")) return false;
+                    return true;
+                }
+                public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
+                {
+                    if(oldVal.trim().endsWith("$")) oldVal=oldVal.trim().substring(0,oldVal.trim().length()-1);
+                    super.commandLinePrompt(mob,oldVal,showNumber,showFlag);
+                    if(oldVal.trim().length()>0)
+                        return oldVal.trim()+"$";
+                    return oldVal;
+                }
+            },
             new AbilityParmEditorImpl("RIDE_CAPACITY","Ridrs",PARMTYPE_NUMBER) {
                 public void createChoices() {}
                 public int appliesToClass(Object o) { return (o instanceof Rideable)?3:-1;}
@@ -665,10 +744,66 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             new AbilityParmEditorImpl("METAL_OR_WOOD","Metal",PARMTYPE_CHOICES) {
                 public void createChoices() { createChoices(new String[]{"METAL","WOOD"});}
             },
-            new AbilityParmEditorImpl("OPTIONAL_RACE_ID","Race",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("OPTIONAL_RACE_ID","Race",PARMTYPE_SPECIAL) {
                 public void createChoices() { 
                     createChoices(CMClass.races());
                     choices().addElement("","");
+                    for(int x=0;x<choices().size();x++)
+                        choices().setElementAt(x,1,((String)choices().elementAt(x,1)).toUpperCase());
+                }
+                public boolean confirmValue(String oldVal) {
+                    if(oldVal.trim().length()==0)
+                        return true;
+                    Vector parsedVals = CMParms.parse(oldVal.toUpperCase());
+                    for(int v=0;v<parsedVals.size();v++)
+                        if(CMClass.getRace((String)parsedVals.elementAt(v))==null)
+                            return false;
+                    return true;
+                }
+                public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
+                {
+                    if((showFlag>0)&&(showFlag!=showNumber[0])) return oldVal;
+                    String behave="NO";
+                    String newVal = oldVal;
+                    while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+                    {
+                        mob.tell(showNumber+". "+prompt()+": '"+newVal+"'.");
+                        if((showFlag!=showNumber[0])&&(showFlag>-999)) return newVal;
+                        Vector parsedVals = CMParms.parse(newVal.toUpperCase());
+                        behave=mob.session().prompt("Enter a race to add/remove (?)\n\r:","");
+                        if(behave.length()>0)
+                        {
+                            if(behave.equalsIgnoreCase("?"))
+                                mob.tell(CMLib.lister().reallyList(CMClass.races(),-1).toString());
+                            else
+                            {
+                                if(parsedVals.contains(behave.toUpperCase().trim()))
+                                {
+                                    mob.tell("'"+behave+"' removed.");
+                                    parsedVals.remove(behave.toUpperCase().trim());
+                                    newVal = CMParms.combine(parsedVals,0);
+                                }
+                                else
+                                {
+                                    Race R=CMClass.getRace(behave);
+                                    if(R!=null)
+                                    {
+                                        mob.tell(R.ID()+" added.");
+                                        parsedVals.addElement(R.ID().toUpperCase());
+                                        newVal = CMParms.combine(parsedVals,0);
+                                    }
+                                    else
+                                    {
+                                        mob.tell("'"+behave+"' is not a recognized race.  Try '?'.");
+                                    }
+                                }
+                            }
+                        }
+                        else
+                        if(oldVal.equalsIgnoreCase(newVal))
+                            mob.tell("(no change)");
+                    }
+                    return newVal;
                 }
             },
             new AbilityParmEditorImpl("INSTRUMENT_TYPE","Instrmnt",PARMTYPE_CHOICES) {
@@ -694,8 +829,40 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             new AbilityParmEditorImpl("N/A","N/A",PARMTYPE_STRING) {
                 public void createChoices() {}
                 public int appliesToClass(Object o) { return -1;}
-                public boolean confirmValue(String oldVal) { return oldVal.trim().length()==0;}
+                public boolean confirmValue(String oldVal) { return oldVal.trim().length()==0||oldVal.equals("0");}
             },
+            new AbilityParmEditorImpl("RESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED","Resrc/Amt",PARMTYPE_SPECIAL) {
+                public void createChoices() { 
+                    createChoices(RawMaterial.RESOURCE_DESCS); 
+                    choices().addElement("","");
+                }
+                public int appliesToClass(Object o) { return 0;}
+                public boolean confirmValue(String oldVal) { 
+                    if(oldVal.trim().length()==0) return true;
+                    int x=oldVal.indexOf('/');
+                    if(x<0) return false;
+                    if(!choices().getDimensionVector(1).contains(oldVal.substring(0,x)))
+                        return false;
+                    if(!CMath.isInteger(oldVal.substring(x+1)))
+                        return false;
+                    return true;
+                }
+                public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
+                {
+                    int x=oldVal.indexOf('/');
+                    String oldRsc = "";
+                    int oldAmt = 0;
+                    if(x>0) {
+                        oldRsc = oldVal.substring(0,x);
+                        oldAmt = CMath.s_int(oldVal.substring(x));
+                    }
+                    oldRsc = CMLib.genEd().prompt(mob,oldVal,++showNumber[0],showFlag,prompt(),choices());
+                    if(oldRsc.length()>0)
+                        return oldRsc+"/"+CMLib.genEd().prompt(mob,oldAmt,++showNumber[0],showFlag,prompt());
+                    return "";
+                }
+            },
+            
         });
         Hashtable H = new Hashtable();
         for(int v=0;v<V.size();v++) {
