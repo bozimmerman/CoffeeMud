@@ -584,7 +584,25 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 
     public void resaveRecipeFile(String recipeFilename, Vector rowsV, Vector columnsV)
     {
-        
+        StringBuffer saveBuf = new StringBuffer("");
+        for(int r=0;r<rowsV.size();r++)
+        {
+            DVector dataRow = (DVector)rowsV.elementAt(r);
+            int dataDex = 0;
+            for(int c=0;c<columnsV.size();c++)
+            {
+                if(columnsV.elementAt(c) instanceof String)
+                    saveBuf.append((String)columnsV.elementAt(c));
+                else
+                    saveBuf.append(dataRow.elementAt(dataDex++,2));
+            }
+            saveBuf.append("\n\r");
+        }
+        CMFile file = new CMFile(Resources.buildResourcePath("skills")+recipeFilename,null,true);
+        if(!file.canWrite())
+            Log.errOut("CMAbleParms","File: "+recipeFilename+" can not be written");
+        else
+            file.saveText(saveBuf);
     }
     
     
