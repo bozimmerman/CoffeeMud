@@ -262,7 +262,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
-        if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
         Vector oldVals = new Vector();
         if(CMath.s_int(oldVal) > 0) {
             for(int c=0;c<choices.size();c++)
@@ -273,6 +272,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if(choices.contains(oldVal.toUpperCase().trim()))    
             oldVals.addElement(oldVal);
         mob.tell(showNumber+". "+FieldDisp+": '"+CMParms.toStringList(oldVals)+"'.");
+        if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
         String newVal=oldVal;
         String thisVal="?";
         while(thisVal.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))

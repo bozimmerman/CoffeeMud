@@ -486,20 +486,21 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             if(curCol >= lens.length)
                 curCol = 0;
         }
-        StringBuffer list=new StringBuffer("");
-        list.append("### ");
-        for(int l=0;l<lens.length;l++)
-            list.append(CMStrings.padRight(head[l],lens[l])+" ");
-        list.append("\n\r");
-        for(int r=0;r<rowsV.size();r++) {
-            dataRow=(DVector)rowsV.elementAt(r);
-            list.append(CMStrings.padRight(""+(r+1),3)+" ");
-            for(int c=0;c<dataRow.size();c++)
-                list.append(CMStrings.padRight(CMStrings.limit((String)dataRow.elementAt(c,2),lens[c]),lens[c])+" ");
-            list.append("\n\r");
-        }
         while((mob.session()!=null)&&(!mob.session().killFlag()))
         {
+            StringBuffer list=new StringBuffer("");
+            list.append("### ");
+            for(int l=0;l<lens.length;l++)
+                list.append(CMStrings.padRight(head[l],lens[l])+" ");
+            list.append("\n\r");
+            for(int r=0;r<rowsV.size();r++) {
+                dataRow=(DVector)rowsV.elementAt(r);
+                list.append(CMStrings.padRight(""+(r+1),3)+" ");
+                for(int c=0;c<dataRow.size();c++)
+                    list.append(CMStrings.padRight(CMStrings.limit((String)dataRow.elementAt(c,2),lens[c]),lens[c])+" ");
+                    
+                list.append("\n\r");
+            }
             mob.tell(list.toString());
             String lineNum = mob.session().prompt("\n\rEnter a line to edit, A to add, or ENTER to exit: ","");
             if(lineNum.trim().length()==0) break;
@@ -555,12 +556,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 while(!ok)
                 {
                     int[] showNumber = {0};
+                    int keyIndex = getClassFieldIndex(editRow);
                     for(int a=0;a<editRow.size();a++)
-                    {
-                        AbilityParmEditor A = (AbilityParmEditor)defaultFields.get((String)editRow.elementAt(a,1));
-                        String newVal = A.commandLinePrompt(mob,(String)editRow.elementAt(a,2),showNumber,showFlag);
-                        editRow.setElementAt(a,2,newVal);
-                    }
+                        if(a!=keyIndex)
+                        {
+                            AbilityParmEditor A = (AbilityParmEditor)defaultFields.get((String)editRow.elementAt(a,1));
+                            String newVal = A.commandLinePrompt(mob,(String)editRow.elementAt(a,2),showNumber,showFlag);
+                            editRow.setElementAt(a,2,newVal);
+                        }
                     if(showFlag<-900){ ok=true; break;}
                     if(showFlag>0){ showFlag=-1; continue;}
                     showFlag=CMath.s_int(mob.session().prompt("Edit which? ",""));
@@ -596,7 +599,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 else
                     saveBuf.append(dataRow.elementAt(dataDex++,2));
             }
-            saveBuf.append("\n\r");
+            saveBuf.append("\r\n");
         }
         CMFile file = new CMFile(Resources.buildResourcePath("skills")+recipeFilename,null,true);
         if(!file.canWrite())
@@ -1209,7 +1212,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     str = Integer.toString(CMLib.genEd().prompt(mob,Integer.parseInt(oldVal),++showNumber[0],showFlag,prompt()));
                     break;
                 case PARMTYPE_CHOICES:
-                    str = CMLib.genEd().prompt(mob,oldVal,++showNumber[0],showFlag,prompt(),choices);
+                    str = CMLib.genEd().promptMultiOrExtra(mob,oldVal,++showNumber[0],showFlag,prompt(),choices);
                     break;
                 case PARMTYPE_MULTICHOICES:
                     str = CMLib.genEd().promptMultiOrExtra(mob,oldVal,++showNumber[0],showFlag,prompt(),choices);
