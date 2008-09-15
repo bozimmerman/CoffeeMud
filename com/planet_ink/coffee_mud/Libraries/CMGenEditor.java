@@ -3459,24 +3459,29 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         }
     }
 
-    public void spells(MOB mob, Vector V, int showNumber, int showFlag) throws IOException
+    public void spells(MOB mob, Vector V, int showNumber, int showFlag, boolean inParms) throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         String behave="NO";
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
         {
-            String abilitiestr="";
-            for(int a=0;a<V.size();a++)
+            String affectstr="";
+            for(int b=0;b<V.size();b++)
             {
-                Ability A=(Ability)V.elementAt(a);
+                Ability A=(Ability)V.elementAt(b);
                 if((A!=null)&&(A.savable()))
-                    abilitiestr+=A.ID()+", ";
+                {
+                    affectstr+=A.ID();
+                    if(A.text().trim().length()>0)
+                        affectstr+="("+A.text().trim()+"), ";
+                    else
+                        affectstr+=", ";
+                }
+
             }
-            if(abilitiestr.length()>0)
-                abilitiestr=abilitiestr.substring(0,abilitiestr.length()-2);
-            if((abilitiestr.length()>60)&&((showFlag!=showNumber)&&(showFlag>-999)))
-                abilitiestr=abilitiestr.substring(0,60)+"...";
-            mob.tell(showNumber+". Spells: '"+abilitiestr+"'.");
+            if(affectstr.length()>0)
+                affectstr=affectstr.substring(0,affectstr.length()-2);
+            mob.tell(showNumber+". Effects: '"+affectstr+"'.");
             if((showFlag!=showNumber)&&(showFlag>-999)) return;
             behave=mob.session().prompt("Enter a spell to add/remove (?)\n\r:","");
             if(behave.length()>0)
@@ -3502,9 +3507,19 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                         chosenOne=CMClass.getAbility(behave);
                         if(chosenOne!=null)
                         {
+                            if(inParms)
+                            {
+                                String parms="?";
+                                while(parms.equals("?"))
+                                {
+                                    parms=chosenOne.text();
+                                    parms=mob.session().prompt("Enter any effect parameters (?)\n\r:"+parms);
+                                    if(parms.equals("?")){ StringBuffer s2=CMLib.help().getHelpText(chosenOne.ID(),mob,true); if(s2!=null) mob.tell(s2.toString()); else mob.tell("no help!");}
+                                }
+                                chosenOne.setMiscText(parms.trim());
+                            }
                             mob.tell(chosenOne.ID()+" added.");
-                            chosenOne=(Ability)chosenOne.copyOf();
-                            V.add(chosenOne);
+                            V.addElement(chosenOne);
                         }
                         else
                         {

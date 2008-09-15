@@ -750,7 +750,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     StringBuffer newVal = new StringBuffer("");
                     while(okToProceed) {
                         okToProceed = false;
-                        CMLib.genEd().spells(mob,spells,showNumber[0],showFlag);
+                        CMLib.genEd().spells(mob,spells,showNumber[0],showFlag,true);
                         StringBuffer sameCheck = new StringBuffer("");
                         for(int s=0;s<spells.size();s++)
                             sameCheck.append(((Ability)spells.elementAt(s)).ID()).append(';').append(((Ability)spells.elementAt(s)).text()).append(';');
