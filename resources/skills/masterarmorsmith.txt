@@ -201,4 +201,3 @@ Sacred % Shirt	87	145	102	14739	GenArmor	1:TORSO	0	51	0
 Demonic % Hauberk	87	145	153	22108	GenArmor	1:TORSO&&ARMS	0	68	0	
 Sacred % Jacket	87	145	153	22108	GenArmor	1:TORSO&&ARMS	0	68	0	
 Sacred % Skirt	87	145	51	7369	GenArmor	S2:LEGS	0	34	0	
-

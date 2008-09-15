@@ -1,4 +1,4 @@
-% Brick	1	1	1	0	GenResource	STONE			
+% Brick	1	1	1	0	GenResource	STONE		
 % Cup	1	10	5	1	GenDrink		5	
 % Flask	1	10	5	1	GenDrink		5	
 % Mug	3	10	5	1	GenDrink		5	

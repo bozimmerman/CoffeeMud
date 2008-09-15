@@ -292,7 +292,7 @@ public class Test extends StdCommand
                     {
                         ItemCraftor iA=(ItemCraftor)A;
                         if(iA.parametersFormat().length()>0)
-                            CMLib.ableParms().modifyRecipesList(mob,iA.parametersFile(),iA.parametersFormat());
+                            CMLib.ableParms().testRecipeParsing(iA.parametersFile(),iA.parametersFormat());
                     }
                 }
             }

@@ -43,7 +43,7 @@ public class Cobbling extends EnhancedCraftingSkill implements ItemCraftor, Mend
     public String supportedResourceString(){return "WOODEN|METAL|MITHRIL";}
     public String parametersFormat(){ return 
         "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\tITEM_BASE_VALUE\t"
-        +"ITEM_CLASS_ID\tCODED_WEAR_LOCATION\tCONTAINER_CAPACITY\tCONTAINER_TYPE\tCODED_SPELL_LIST";}
+        +"ITEM_CLASS_ID\tCODED_WEAR_LOCATION\tCONTAINER_CAPACITY\tBASE_ARMOR_AMOUNT\tCONTAINER_TYPE\tCODED_SPELL_LIST";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;

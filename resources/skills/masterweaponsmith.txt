@@ -4,26 +4,26 @@ Master Double Axe	34	40	16	2048	GenWeapon	AXE	SLASHING	27	10	1	0	WOODEN
 Master Military Pick	35	50	11	1948	GenWeapon	AXE	PIERCING	32	-10	1	0	WOODEN
 % Master Axe	36	50	10	2013	GenWeapon	AXE	SLASHING	37	-25	1	0	WOODEN
 Master Hatchet	38	50	8	1987	GenWeapon	AXE	SLASHING	29	5	1	0	WOODEN
-Master Kama	39	50	6	2042	GenWeapon	AXE	PIERCING	31		1	0	WOODEN
+Master Kama	39	50	6	2042	GenWeapon	AXE	PIERCING	31	0	1	0	WOODEN
 Master Large Axe	40	60	18	5388	GenWeapon	AXE	SLASHING	66	-15	2	0	WOODEN
 Master Crowbill	42	70	14	2730	GenWeapon	AXE	PIERCING	35	0	1	0	WOODEN
 Master Broad Axe	43	90	22	6181	GenWeapon	AXE	SLASHING	69	-10	2	0	WOODEN
 Master War Axe	45	90	14	2953	GenWeapon	AXE	SLASHING	33	15	1	0	WOODEN
-Master Giant Axe	46	100	50	9632	GenWeapon	AXE	SLASHING	82		2	0	WOODEN
-Master Great Axe	47	110	27	7272	GenWeapon	AXE	SLASHING	72		2	0	WOODEN
+Master Giant Axe	46	100	50	9632	GenWeapon	AXE	SLASHING	82	0	2	0	WOODEN
+Master Great Axe	47	110	27	7272	GenWeapon	AXE	SLASHING	72	0	2	0	WOODEN
 Master Tabar	48	110	18	6859	GenWeapon	AXE	SLASHING	73	-10	2	0	WOODEN
 Master Battle Axe	50	120	25	6648	GenWeapon	AXE	SLASHING	64	20	2	0	WOODEN
 Master Bearded Axe	53	140	20	6267	GenWeapon	AXE	SLASHING	60	30	2	0	WOODEN
 Master Executioners Axe	55	150	25	10161	GenWeapon	AXE	SLASHING	91	-20	2	0	WOODEN
 % Master Club	32	20	12	1722	GenWeapon	BLUNT	BASHING	39	-40	1	0
-Master Short % Staff	31	20	10	2599	GenStaff	STAFF	BASHING	43		2	0
-Master % Shillelagh	31	20	8	1410	GenWeapon	BLUNT	BASHING	25		1	0
+Master Short % Staff	31	20	10	2599	GenStaff	STAFF	BASHING	43	0	2	0
+Master % Shillelagh	31	20	8	1410	GenWeapon	BLUNT	BASHING	25	0	1	0
 Master % Sai	31	20	5	1300	GenWeapon	BLUNT	PIERCING	30	-20	1	0
 Master % Cudgel	34	20	14	1962	GenWeapon	BLUNT	BASHING	29	0	1	0
-Master Long % Staff	35	20	16	3472	GenStaff	STAFF	BASHING	47		2	1
+Master Long % Staff	35	20	16	3472	GenStaff	STAFF	BASHING	47	0	2	1
 Master % Morning Star	37	30	16	2420	GenWeapon	BLUNT	PIERCING	35	-10	1	0
 Master Spiked % Club	39	30	15	2562	GenWeapon	BLUNT	PIERCING	39	-20	1	0
-Master % QuarterStaff	39	30	12	4048	GenStaff	STAFF	BASHING	54		2	0
+Master % QuarterStaff	39	30	12	4048	GenStaff	STAFF	BASHING	54	0	2	0
 Master % Jo Staff	41	40	8	3275	GenStaff	STAFF	BASHING	44	20	2	0
 Master % Mace	45	50	12	3040	GenWeapon	BLUNT	BASHING	40	-10	1	0
 Master % Bo Staff	47	60	14	4953	GenStaff	STAFF	BASHING	55	20	2	0
@@ -88,23 +88,23 @@ Master Ranseur	53	180	30	10459	GenWeapon	POLEARM	PIERCING	92	-30	2	1
 Master Scythe	54	200	20	8899	GenWeapon	POLEARM	SLASHING	83	-20	2	1
 Master Naginata	55	230	35	11139	GenWeapon	POLEARM	SLASHING	92	-20	2	1
 Master Khopesh	31	20	12	1697	GenWeapon	SWORD	SLASHING	31	-15	1	0
-Master Tulwar	32	20	14	1848	GenWeapon	SWORD	SLASHING	28		1	0
+Master Tulwar	32	20	14	1848	GenWeapon	SWORD	SLASHING	28	0	1	0
 Master Machete	33	20	6	1512	GenWeapon	SWORD	SLASHING	29	-10	1	0
-Master Short Sword	35	20	10	1882	GenWeapon	SWORD	SLASHING	29		1	0
-Master Flamberge	35	40	36	5441	GenWeapon	SWORD	SLASHING	61		2	0
+Master Short Sword	35	20	10	1882	GenWeapon	SWORD	SLASHING	29	0	1	0
+Master Flamberge	35	40	36	5441	GenWeapon	SWORD	SLASHING	61	0	2	0
 Master Orc Blade	35	40	16	2208	GenWeapon	SWORD	SLASHING	32	-5	1	0
-Master Long Sword	37	40	20	2578	GenWeapon	SWORD	SLASHING	33		1	0
-Master Cutlass	39	40	8	2082	GenWeapon	SWORD	SLASHING	31		1	0
+Master Long Sword	37	40	20	2578	GenWeapon	SWORD	SLASHING	33	0	1	0
+Master Cutlass	39	40	8	2082	GenWeapon	SWORD	SLASHING	31	0	1	0
 Master Gladius	39	40	10	2172	GenWeapon	SWORD	PIERCING	29	10	1	0
 Master Claymore	41	50	26	3408	GenWeapon	SWORD	SLASHING	38	0	1	0
 Master Bastard Sword	42	50	24	3280	GenWeapon	SWORD	SLASHING	35	10	1	0
-Master Shamshir	42	50	12	2690	GenWeapon	SWORD	SLASHING	35		1	0
-Master Falchion	44	50	12	2832	GenWeapon	SWORD	SLASHING	36		1	0
+Master Shamshir	42	50	12	2690	GenWeapon	SWORD	SLASHING	35	0	1	0
+Master Falchion	44	50	12	2832	GenWeapon	SWORD	SLASHING	36	0	1	0
 Master Giant Sword	45	60	50	10267	GenWeapon	SWORD	SLASHING	90	-20	2	0
-Master Scimitar	45	60	16	3208	GenWeapon	SWORD	SLASHING	38		1	0
+Master Scimitar	45	60	16	3208	GenWeapon	SWORD	SLASHING	38	0	1	0
 Master Sabre	51	60	8	3268	GenWeapon	SWORD	SLASHING	37	10	1	0
-Master Zweihander	55	70	36	10341	GenWeapon	SWORD	SLASHING	86		2	0
-Master TwoHanded Sword	57	70	30	10261	GenWeapon	SWORD	SLASHING	86		2	0
+Master Zweihander	55	70	36	10341	GenWeapon	SWORD	SLASHING	86	0	2	0
+Master TwoHanded Sword	57	70	30	10261	GenWeapon	SWORD	SLASHING	86	0	2	0
 Master Drussus	45	70	8	2428	GenWeapon	SWORD	PIERCING	27	30	1	0
 Master Wakazashi	39	80	10	2063	GenWeapon	SWORD	SLASHING	27	15	1	0
 Master Rapier	41	80	6	1992	GenWeapon	SWORD	PIERCING	26	20	1	0

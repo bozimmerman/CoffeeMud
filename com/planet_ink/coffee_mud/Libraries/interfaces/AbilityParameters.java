@@ -50,9 +50,12 @@ public interface AbilityParameters extends CMLibrary
         public boolean confirmValue(String oldVal);
         public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException;
         public String colHeader();
+        public String defaultValue();
     }
     
     public Vector getCodedSpells(String spells);
     public void parseWearLocation(short[] layerAtt, short[] layers, long[] wornLoc, boolean[] logicalAnd, double[] hardBonus, String wearLocation);
-    public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat);
+    public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException;
+    public void testRecipeParsing(String recipeFilename, String recipeFormat);
+    
 }

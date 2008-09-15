@@ -1,4 +1,3 @@
-#
 % Cap 	1	10	5	150	GenArmor	HEAD	0	2	0
 % Coif	1	10	5	150	GenArmor	HEAD	0	2	0
 % Skullcap	1	10	5	100	GenArmor	HEAD	0	2	0
@@ -40,4 +39,4 @@
 % Slippers	1	10	5	100	GenArmor	FEET	0	0	0
 % Greaves	3	49	5	100	GenArmor	s:FEET	0	2	0
 % Whip	5	10	10	272	GenWeapon	FLAILED	0	6	0
-% Waterskin	1	10	5	50	GenDrink	DRINK	100		0
+% Waterskin	1	10	5	50	GenDrink		100		0

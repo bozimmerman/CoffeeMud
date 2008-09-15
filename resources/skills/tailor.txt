@@ -1,13 +1,13 @@
 % Cushion	5	10	5	5	GenRideable	CHAIR	0	0	0
 % Sleeping Bag	5	30	15	10	GenRideable	ENTER	0	0	0
 % Tent	10	60	25	25	GenRideable	ENTER	5	0	0
-% Pillow	1	10	5	1	GenBoffWeapon	BASHING		0	0	Prop_NoDamage
+% Pillow	1	10	5	1	GenBoffWeapon	BASHING	0	0	0	Prop_NoDamage
 Large % Pillow	10	10	5	27	GenBoffWeapon	BASHING	0	0	0	Prop_NoDamage
 % Armbands	3	30	1	18	GenArmor	s-1:ARMS	0	1	0
 % Sleeves	7	20	3	1	GenArmor	-1:ARMS	0	2	0
 % Pauldrons	11	30	5	9	GenArmor	-1:ARMS	0	3	0
 % Housecoat	2	30	10	30	GenArmor	BODY	5	0	0
-% Blanket	5	10	15	9	GenArmor	M3:BODY	0	0	0	Propr_wearResister;cold 10%
+% Blanket	5	10	15	9	GenArmor	M3:BODY	0	0	0	Prop_wearResister;cold 10%
 % Sheet	5	10	5	3	GenArmor	1:BODY	0	0	0
 % Apron	8	30	6	50	GenArmor	1:BODY	20	9	0
 % Poncho	11	30	14	60	GenArmor	1:BODY	0	13	0

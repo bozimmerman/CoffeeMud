@@ -43,7 +43,7 @@ public class PaperMaking extends CraftingSkill implements ItemCraftor
     public String supportedResourceString(){return "WOODEN|HEMP|SILK|CLOTH";}
     public String parametersFormat(){ return 
         "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\tITEM_BASE_VALUE\t"
-        +"ITEM_CLASS_ID\tRESOURCE_OR_MATERIAL\t\tCODED_SPELL_LIST";}
+        +"ITEM_CLASS_ID\tRESOURCE_OR_MATERIAL\tN_A\tN_A\tCODED_SPELL_LIST";}
 
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;

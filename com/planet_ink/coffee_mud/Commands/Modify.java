@@ -1122,6 +1122,38 @@ public class Modify extends StdCommand
 			items(mob,commands);
 		}
 		else
+        if(commandType.equals("RECIPE"))
+        {
+            if(!CMSecurity.isAllowed(mob,mob.location(),"CMDRECIPES")) return errorOut(mob);
+            if(commands.size()<3)
+            {
+                mob.tell("Modify which recipe?  Name a common skill ID -- use list abilities to find one.");
+                return false;
+            }
+            String name=CMParms.combine(commands,2);
+            Ability A=CMClass.findAbility(name);
+            if(A==null)
+            {
+                mob.tell("'"+name+"' is not a valid skill id.");
+                return false;
+            }
+            if(!(A instanceof ItemCraftor))
+            {
+                mob.tell("'"+A.ID()+"' is not a common crafting skill.");
+                return false;
+            }
+            ItemCraftor iA = (ItemCraftor)A;
+            if((iA.parametersFormat()==null)
+            ||(iA.parametersFormat().length()==0)
+            ||(iA.parametersFile()==null)
+            ||(iA.parametersFile().length()==0))
+            {
+                mob.tell("'"+A.ID()+"' does not have modifiable recipes.");
+                return false;
+            }
+            CMLib.ableParms().modifyRecipesList(mob,iA.parametersFile(),iA.parametersFormat());
+        }
+        else
 		if(commandType.equals("ROOM"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS")) return errorOut(mob);
@@ -1451,7 +1483,7 @@ public class Modify extends StdCommand
 				execute(mob,commands,metaFlags);
 			}
 			else
-				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, RACE, CLASS, ABILITY, AREA, EXIT, COMPONENT, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, or ROOM.");
+				mob.tell("\n\rYou cannot modify a '"+commandType+"'. However, you might try an ITEM, RACE, CLASS, ABILITY, AREA, EXIT, COMPONENT, RECIPE, EXPERTISE, TITLE, QUEST, MOB, USER, HOLIDAY, JSCRIPT, FACTION, SOCIAL, CLAN, POLL, or ROOM.");
 		}
 		return false;
 	}

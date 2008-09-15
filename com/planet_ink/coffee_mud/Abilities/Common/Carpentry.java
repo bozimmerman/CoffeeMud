@@ -45,7 +45,7 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
        +"ITEM_BASE_VALUE\tITEM_CLASS_ID\t"
        +"LID_LOCK||STATUE||RIDE_BASIS||WEAPON_CLASS||CODED_WEAR_LOCATION||SMOKE_FLAG\t"
        +"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED||LIQUID_CAPACITY||LIGHT_DURATION\t"
-       +"BASE_ARMOR_AMOUNT||BASE_DAMAGE\tCONTAINER_TYPE\tCODED_SPELL_LIST";}
+       +"BASE_ARMOR_AMOUNT||BASE_DAMAGE\tCONTAINER_TYPE||ATTACK_MODIFICATION\tCODED_SPELL_LIST";}
 	protected static final int RCP_FINALNAME=0;
 	protected static final int RCP_LEVEL=1;
 	protected static final int RCP_TICKS=2;
@@ -381,6 +381,8 @@ public class Carpentry extends EnhancedCraftingSkill implements ItemCraftor
 				building.baseEnvStats().setDamage(armordmg+hardness);
 				((Weapon)building).setRawProperLocationBitmap(Item.WORN_WIELD|Item.WORN_HELD);
 				((Weapon)building).setRawLogicalAnd((capacity>1));
+                if(!(building instanceof Container))
+                    building.baseEnvStats().setAttackAdjustment(building.baseEnvStats().attackAdjustment()+canContain);
 			}
 			if(building instanceof Armor)
 			{

@@ -42,7 +42,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
     public String supportedResourceString(){return "METAL|MITHRIL";}
     public String parametersFormat(){ return 
         "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\t"
-       +"ITEM_BASE_VALUE\tITEM_CLASS_ID\tSTATUE||RIDE_BASIS||LID_LOCK||CONTAINER_TYPE\t"
+       +"ITEM_BASE_VALUE\tITEM_CLASS_ID\tSTATUE||RIDE_BASIS||CONTAINER_TYPE_OR_LIDLOCK\t"
        +"CONTAINER_CAPACITY||LIQUID_CAPACITY\tCODED_SPELL_LIST";}
 
 	protected static final int RCP_FINALNAME=0;

@@ -4,7 +4,7 @@
 % Cup	1	20	10	0	GenDrink		5	1	
 % Mug	1	20	10	0	GenDrink		5	1	
 % Plate	1	20	10	0	GenContainer		5	0	
-% Lamp	1	30	25	50	GenLantern		0	1	
+% Lamp	1	30	25	50	GenLantern		0	0	
 % Bowl	1	20	10	0	GenDrink		5	0	
 % Podium	1	30	80	15	GenRideable	TABLE	40	0	
 % Box	1	30	80	0	GenContainer		25	0	
@@ -32,4 +32,4 @@
 % Sink	15	120	1000	150	GenFountain		100	1	
 % Altar	10	100	300	200	GenRideable	TABLE	100	0	
 % Throne	25	40	150	150	GenRideable	CHAIR	1	0	
-% Bird Bath	18	100	200	80	GenContainer	100	1	0	
+% Bird Bath	18	100	200	80	GenContainer		100	1	

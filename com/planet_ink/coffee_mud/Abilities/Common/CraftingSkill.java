@@ -658,6 +658,14 @@ public class CraftingSkill extends GatheringSkill
 	protected void setWeaponTypeClass(Weapon weapon, String weaponClass, int flailedType, int naturalType)
 	{
 	    weapon.setWeaponType(Weapon.TYPE_BASHING);
+        for(int cl=0;cl<Weapon.TYPE_DESCS.length;cl++)
+        {
+            if(weaponClass.equalsIgnoreCase(Weapon.TYPE_DESCS[cl]))
+            {
+                weapon.setWeaponType(cl);
+                return;
+            }
+        }
         for(int cl=0;cl<Weapon.CLASS_DESCS.length;cl++)
         {
             if(weaponClass.equalsIgnoreCase(Weapon.CLASS_DESCS[cl]))

@@ -43,7 +43,7 @@ public class Tailoring extends EnhancedCraftingSkill implements ItemCraftor, Men
     public String supportedResourceString(){return "CLOTH";}
     public String parametersFormat(){ return 
         "ITEM_NAME\tITEM_LEVEL\tBUILD_TIME_TICKS\tAMOUNT_MATERIAL_REQUIRED\tITEM_BASE_VALUE\t"
-        +"ITEM_CLASS_ID\tWEAPON_CLASS||CODED_WEAR_LOCATION||RIDE_BASIS\t"
+        +"ITEM_CLASS_ID\tWEAPON_TYPE||CODED_WEAR_LOCATION||RIDE_BASIS\t"
         +"CONTAINER_CAPACITY||WEAPON_HANDS_REQUIRED\tBASE_ARMOR_AMOUNT||BASE_DAMAGE\t"
         +"CONTAINER_TYPE\tCODED_SPELL_LIST";}
 

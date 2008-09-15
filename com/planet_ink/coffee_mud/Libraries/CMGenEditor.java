@@ -253,18 +253,27 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     }
     
     public int promptMulti(MOB mob, int oldVal, int showNumber, int showFlag, String FieldDisp, DVector choices) 
+    throws IOException
+    {
+        return CMath.s_int(promptMultiOrExtra(mob,""+oldVal,showNumber,showFlag,FieldDisp,choices));
+    }
+    
+    public String promptMultiOrExtra(MOB mob, String oldVal, int showNumber, int showFlag, String FieldDisp, DVector choices) 
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
         if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;
         Vector oldVals = new Vector();
-        if(oldVal > 0) {
+        if(CMath.s_int(oldVal) > 0) {
             for(int c=0;c<choices.size();c++)
-                if(CMath.bset(oldVal,((Integer)choices.elementAt(c,1)).intValue()))
+                if(CMath.bset(CMath.s_int(oldVal),((Integer)choices.elementAt(c,1)).intValue()))
                     oldVals.addElement((String)choices.elementAt(c,2));
-        }
+        } 
+        else
+        if(choices.contains(oldVal.toUpperCase().trim()))    
+            oldVals.addElement(oldVal);
         mob.tell(showNumber+". "+FieldDisp+": '"+CMParms.toStringList(oldVals)+"'.");
-        int newVal=oldVal;
+        String newVal=oldVal;
         String thisVal="?";
         while(thisVal.equals("?")&&(mob.session()!=null)&&(!mob.session().killFlag()))
         {
@@ -276,19 +285,22 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 newVal = oldVal;
             else
             if(thisVal.equalsIgnoreCase("NULL")) {
-                newVal = 0;
+                if(choices.contains(""))
+                    newVal = "";
+                else
+                    newVal = "0";
                 oldVals.clear();
                 break;
             }
             else
             {
                 String foundChoice = null;
-                int foundVal = 0;
+                String foundVal = "";
                 for(int c=0;c<choices.size();c++)
                     if(((String)choices.elementAt(c,2)).equalsIgnoreCase(thisVal))
                     {
                         foundChoice = (String)choices.elementAt(c,2);
-                        foundVal = ((Integer)choices.elementAt(c,1)).intValue();
+                        foundVal = choices.elementAt(c,1).toString();
                     }
                 if(foundChoice == null)
                 {
@@ -296,16 +308,23 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     thisVal = "?";
                 }
                 else
-                if(foundVal == 0)
+                if(!CMath.isInteger(foundVal))
                 {
-                    newVal = 0;
+                    oldVals.clear();
+                    newVal = foundVal;
+                    oldVals.addElement(foundVal);
+                }
+                else
+                if(foundVal == "0")
+                {
+                    newVal = "0";
                     oldVals.clear();
                 }
                 else
                 {
                     if(oldVals.contains(foundChoice))
                     {
-                        newVal -= foundVal;
+                        newVal = Integer.toString(CMath.s_int(newVal) - CMath.s_int(foundVal));
                         oldVals.remove(foundChoice);
                         mob.tell("'"+foundChoice+"' removed.");
                         thisVal = "?";
@@ -313,12 +332,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                         oldVals.add(foundChoice);
                         mob.tell("'"+foundChoice+"' added.");
                         thisVal = "?";
-                        newVal |= foundVal;
+                        newVal = Integer.toString(CMath.s_int(newVal) | CMath.s_int(foundVal));
                     }
                 }
             }
         }
-        if(oldVal == newVal)
+        if(oldVal.equals(newVal))
             mob.tell("(no change)");
         return newVal;
     }

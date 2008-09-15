@@ -59,9 +59,10 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int RCP_CONTAINMASK=9;
 	protected static final int RCP_SPELL=10;
 
+    public String parametersFile(){ return "leatherworking.txt";}
 	protected Vector loadRecipes()
 	{
-        String filename="leatherworking.txt";
+        String filename=parametersFile();
 		Vector recipes=(Vector)Resources.getResource("PARSED: "+filename);
 		if(recipes==null)
 		{
