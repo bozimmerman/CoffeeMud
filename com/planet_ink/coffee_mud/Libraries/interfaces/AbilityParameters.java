@@ -51,11 +51,29 @@ public interface AbilityParameters extends CMLibrary
         public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException;
         public String colHeader();
         public String defaultValue();
+        public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName);
+        public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName);
     }
     
     public Vector getCodedSpells(String spells);
     public void parseWearLocation(short[] layerAtt, short[] layers, long[] wornLoc, boolean[] logicalAnd, double[] hardBonus, String wearLocation);
     public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException;
     public void testRecipeParsing(String recipeFilename, String recipeFormat);
+    public AbilityRecipeData parseRecipe(String recipeFilename, String recipeFormat);
+    public Hashtable getEditors();
+    public void resaveRecipeFile(String recipeFilename, Vector rowsV, Vector columnsV);
+    
+    public static interface AbilityRecipeData 
+    {
+        public String recipeFilename();
+        public String recipeFormat();
+        public Vector dataRows();
+        public Vector columns();
+        public int[] columnLengths();
+        public String[] columnHeaders();
+        public int numberOfDataColumns();
+        public String parseError();
+        public int[] getClassFieldIndexes();
+    }
     
 }

@@ -61,6 +61,7 @@ public class AbilityNext extends StdWebMacro
 		}
 		
 		String lastID="";
+        String className=httpReq.getRequestParameter("CLASS");
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
@@ -68,8 +69,13 @@ public class AbilityNext extends StdWebMacro
 			int classType=A.classificationCode()&Ability.ALL_ACODES;
 			if(parms.containsKey("GENERIC"))
 			    okToShow=A.isGeneric();
-			
-			String className=httpReq.getRequestParameter("CLASS");
+            else
+            if(parms.containsKey("PARMSEDITABLE"))
+                okToShow=((A instanceof ItemCraftor)
+                       &&(((ItemCraftor)A).parametersFile()!=null)
+                       &&(((ItemCraftor)A).parametersFile().length()>0)
+                       &&(((ItemCraftor)A).parametersFormat()!=null)
+                       &&(((ItemCraftor)A).parametersFormat().length()>0));
 			
 			if((className!=null)&&(className.length()>0))
 			{

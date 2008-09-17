@@ -38,6 +38,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 {
     public String ID(){return "CMAbleParms";}
     
+    protected Hashtable DEFAULT_EDITORS = null; 
+    
     public CMAbleParms()
     {
         super();
@@ -214,7 +216,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         return columnsV;
     }
     
-    public String stripData(StringBuffer str, String div)
+    protected String stripData(StringBuffer str, String div)
     {
         StringBuffer data = new StringBuffer("");
         while(str.length()>0)
@@ -244,7 +246,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         return null;
     }
 
-    public int getClassFieldIndex(DVector dataRow) {
+    protected int getClassFieldIndex(DVector dataRow) {
         for(int d=0;d<dataRow.size();d++)
             if(dataRow.elementAt(d,1) instanceof Vector) 
             {
@@ -290,7 +292,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         return CMClass.sampleItem("StdItem");
     }
 
-    public Vector parseDataRows(StringBuffer recipeData, Vector columnsV, int numberOfDataColumns)
+    protected Vector parseDataRows(StringBuffer recipeData, Vector columnsV, int numberOfDataColumns)
         throws CMException
     {
         StringBuffer str = new StringBuffer(recipeData.toString());
@@ -347,10 +349,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         return rowsV;
     }
         
-    public boolean fixDataColumn(DVector dataRow, int rowShow) throws CMException
+    protected boolean fixDataColumn(DVector dataRow, int rowShow) throws CMException
     {
         Item classModelI = getSampleItem(dataRow);
-        Hashtable defaultFields = initDefaultFields();
+        Hashtable editors = getEditors();
         if(classModelI == null) {
             Log.errOut("CMAbleParms","Data row "+rowShow+" discarded due to null/empty classID");
             return false;
@@ -360,9 +362,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             Vector colV=(Vector)dataRow.elementAt(d,1);
             if(colV.size()==1)
             {
-                AbilityParmEditor A = (AbilityParmEditor)defaultFields.get((String)colV.firstElement());
+                AbilityParmEditor A = (AbilityParmEditor)editors.get((String)colV.firstElement());
                 if((A == null)||(A.appliesToClass(classModelI)<0))
-                    A = (AbilityParmEditor)defaultFields.get("N_A");
+                    A = (AbilityParmEditor)editors.get("N_A");
                 dataRow.setElementAt(d,1,A.ID());
             }
             else
@@ -370,7 +372,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 AbilityParmEditor applicableA = null;
                 for(int c=0;c<colV.size();c++)
                 {
-                    AbilityParmEditor A = (AbilityParmEditor)defaultFields.get((String)colV.elementAt(c));
+                    AbilityParmEditor A = (AbilityParmEditor)editors.get((String)colV.elementAt(c));
                     if(A==null) 
                         throw new CMException("Col name "+((String)colV.elementAt(c))+" is not defined.");
                     if((applicableA==null)
@@ -378,10 +380,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         applicableA = A;
                 }
                 if((applicableA == null)||(applicableA.appliesToClass(classModelI)<0))
-                    applicableA = (AbilityParmEditor)defaultFields.get("N_A");
+                    applicableA = (AbilityParmEditor)editors.get("N_A");
                 dataRow.setElementAt(d,1,applicableA.ID());
             }
-            AbilityParmEditor A = (AbilityParmEditor)defaultFields.get((String)dataRow.elementAt(d,1));
+            AbilityParmEditor A = (AbilityParmEditor)editors.get((String)dataRow.elementAt(d,1));
             if(A==null)
             {
                 Log.errOut("CMAbleParms","Item id "+classModelI.ID()+" has no editor for "+((String)dataRow.elementAt(d,1)));
@@ -394,7 +396,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         return true;
     }
     
-    public void fixDataColumns(Vector rowsV) throws CMException
+    protected void fixDataColumns(Vector rowsV) throws CMException
     {
         DVector dataRow = new DVector(2);
         for(int r=0;r<rowsV.size();r++) {
@@ -424,80 +426,82 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         }
     }
     
-    public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException
+    protected void calculateRecipeCols(int[] lengths, String[] headers, Vector rowsV)
     {
-        Hashtable defaultFields = initDefaultFields();
-        StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+recipeFilename,null,true).text();
-        Vector columnsV = parseRecipeFormatColumns(recipeFormat);
-        int numberOfDataColumns = 0;
-        for(int c = 0; c < columnsV.size(); c++)
-            if(columnsV.elementAt(c) instanceof Vector)
-                numberOfDataColumns++;
-        Vector rowsV = null;
-        try {
-            rowsV = parseDataRows(str,columnsV,numberOfDataColumns);
-            fixDataColumns(rowsV);
-        } catch(CMException e) {
-            Log.errOut("CMAbleParms","File: "+recipeFilename+": "+e.getMessage());
-            return;
-        }
-        int[] lens = new int[numberOfDataColumns];
-        String[] head = new String[numberOfDataColumns];
+        Hashtable editors = getEditors();
         DVector dataRow = null;
         for(int r=0;r<rowsV.size();r++) {
             dataRow=(DVector)rowsV.elementAt(r);
             for(int c=0;c<dataRow.size();c++)
             {
-                AbilityParmEditor A = (AbilityParmEditor)defaultFields.get((String)dataRow.elementAt(c,1));
+                AbilityParmEditor A = (AbilityParmEditor)editors.get((String)dataRow.elementAt(c,1));
                 if(A==null)
                     Log.errOut("CMAbleParms","Inexplicable lack of a column: "+((String)dataRow.elementAt(c,1)));
-                if(head[c] == null)
+                if(headers[c] == null)
                 {
-                    head[c] = A.colHeader();
-                    lens[c]=head[c].length();
+                    headers[c] = A.colHeader();
+                    lengths[c]=headers[c].length();
                 }
                 else
-                if((!head[c].startsWith("#"))
-                &&(!head[c].equalsIgnoreCase(A.colHeader())))
+                if((!headers[c].startsWith("#"))
+                &&(!headers[c].equalsIgnoreCase(A.colHeader())))
                 {
-                    head[c]="#"+c;
-                    lens[c]=head[c].length();
+                    headers[c]="#"+c;
+                    lengths[c]=headers[c].length();
                 }
             }
         }
         int currLenTotal = 0;
-        for(int l=0;l<lens.length;l++)
-            currLenTotal+=lens[l];
+        for(int l=0;l<lengths.length;l++)
+            currLenTotal+=lengths[l];
         int curCol = 0;
-        while((currLenTotal+lens.length)>72) {
-            if(lens[curCol]>1)
+        while((currLenTotal+lengths.length)>72) {
+            if(lengths[curCol]>1)
             {
-                lens[curCol]--;
+                lengths[curCol]--;
                 currLenTotal--;
             }
             curCol++;
-            if(curCol >= lens.length)
+            if(curCol >= lengths.length)
                 curCol = 0;
         }
-        while((currLenTotal+lens.length)<72) {
-            lens[curCol]++;
+        while((currLenTotal+lengths.length)<72) {
+            lengths[curCol]++;
             currLenTotal++;
             curCol++;
-            if(curCol >= lens.length)
+            if(curCol >= lengths.length)
                 curCol = 0;
+        }
+    }
+
+    public AbilityRecipeData parseRecipe(String recipeFilename, String recipeFormat)
+    {
+        AbilityRecipeDataImpl recipe = new AbilityRecipeDataImpl(recipeFilename, recipeFormat);
+        return recipe;
+    }
+    
+    public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException
+    {
+        DVector dataRow = null;
+        Hashtable editors = getEditors();
+        AbilityRecipeData recipe = parseRecipe(recipeFilename, recipeFormat);
+        if(recipe.parseError() != null)
+        {
+            Log.errOut("CMAbleParms","File: "+recipeFilename+": "+recipe.parseError());
+            return;
         }
         while((mob.session()!=null)&&(!mob.session().killFlag()))
         {
             StringBuffer list=new StringBuffer("");
             list.append("### ");
-            for(int l=0;l<lens.length;l++)
-                list.append(CMStrings.padRight(head[l],lens[l])+" ");
+            for(int l=0;l<recipe.columnLengths().length;l++)
+                list.append(CMStrings.padRight(recipe.columnHeaders()[l],recipe.columnLengths()[l])+" ");
             list.append("\n\r");
-            for(int r=0;r<rowsV.size();r++) {
-                dataRow=(DVector)rowsV.elementAt(r);
+            for(int r=0;r<recipe.dataRows().size();r++) {
+                dataRow=(DVector)recipe.dataRows().elementAt(r);
                 list.append(CMStrings.padRight(""+(r+1),3)+" ");
                 for(int c=0;c<dataRow.size();c++)
-                    list.append(CMStrings.padRight(CMStrings.limit((String)dataRow.elementAt(c,2),lens[c]),lens[c])+" ");
+                    list.append(CMStrings.padRight(CMStrings.limit((String)dataRow.elementAt(c,2),recipe.columnLengths()[c]),recipe.columnLengths()[c])+" ");
                     
                 list.append("\n\r");
             }
@@ -508,12 +512,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             if(lineNum.equalsIgnoreCase("A"))
             {
                 editRow = new DVector(2);
-                for(int c=0;c<columnsV.size();c++)
-                    if(columnsV.elementAt(c) instanceof Vector)
-                        editRow.addElement((Vector)columnsV.elementAt(c),"");
+                for(int c=0;c<recipe.columns().size();c++)
+                    if(recipe.columns().elementAt(c) instanceof Vector)
+                        editRow.addElement((Vector)recipe.columns().elementAt(c),"");
                 int keyIndex = getClassFieldIndex(editRow);
                 if(keyIndex>=0) {
-                    AbilityParmEditor A = (AbilityParmEditor)defaultFields.get(((Vector)editRow.elementAt(keyIndex,1)).firstElement());
+                    AbilityParmEditor A = (AbilityParmEditor)editors.get(((Vector)editRow.elementAt(keyIndex,1)).firstElement());
                     if(A!=null)
                     {
                         String newVal = A.commandLinePrompt(mob,(String)editRow.elementAt(keyIndex,2),new int[]{0},-999);
@@ -534,7 +538,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 for(int i=0;i<editRow.size();i++)
                     if(i!=keyIndex)
                     {
-                        AbilityParmEditor A = (AbilityParmEditor)defaultFields.get((String)editRow.elementAt(i,1));
+                        AbilityParmEditor A = (AbilityParmEditor)editors.get((String)editRow.elementAt(i,1));
                         editRow.setElementAt(i,2,A.defaultValue());
                     }
             }
@@ -542,13 +546,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             if(CMath.isInteger(lineNum))
             {
                 int line = CMath.s_int(lineNum);
-                if((line<1)||(line>rowsV.size()))
+                if((line<1)||(line>recipe.dataRows().size()))
                     continue;
-                editRow = (DVector)rowsV.elementAt(line-1);
+                editRow = (DVector)recipe.dataRows().elementAt(line-1);
             }
             else
                 break;
-            if(editRow != null) {
+            if(editRow != null) 
+            {
                 int showFlag=-1;
                 if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
                     showFlag=-999;
@@ -560,7 +565,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     for(int a=0;a<editRow.size();a++)
                         if(a!=keyIndex)
                         {
-                            AbilityParmEditor A = (AbilityParmEditor)defaultFields.get((String)editRow.elementAt(a,1));
+                            AbilityParmEditor A = (AbilityParmEditor)editors.get((String)editRow.elementAt(a,1));
                             String newVal = A.commandLinePrompt(mob,(String)editRow.elementAt(a,2),showNumber,showFlag);
                             editRow.setElementAt(a,2,newVal);
                         }
@@ -575,14 +580,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 }
             }
         }
-        
         if((mob.session()!=null)&&(!mob.session().killFlag()))
         {
-            resaveRecipeFile(recipeFilename,rowsV,columnsV);
+            resaveRecipeFile(recipeFilename,recipe.dataRows(),recipe.columns());
             Log.sysOut("CMAbleParms","User: "+mob.Name()+" modified file "+recipeFilename);
             Resources.removeResource("PARSED: "+recipeFilename);
         }
-        
     }
 
     public void resaveRecipeFile(String recipeFilename, Vector rowsV, Vector columnsV)
@@ -609,8 +612,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
     }
     
     
-    protected Hashtable initDefaultFields()
+    public synchronized Hashtable getEditors()
     {
+        if(DEFAULT_EDITORS != null)
+            return DEFAULT_EDITORS;
+        
         Vector V=CMParms.makeVector(new Object[] {
             new AbilityParmEditorImpl("SPELL_ID","Spell",PARMTYPE_CHOICES) {
                 public void createChoices() { createChoices(CMClass.abilities());}
@@ -667,16 +673,62 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 public void createChoices() {}
                 public boolean confirmValue(String oldVal) { return oldVal.trim().length()>0;}
                 public String defaultValue(){ return "NECK";}
-                public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
-                {
+                public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
                     short[] layerAtt = new short[1];
                     short[] layers = new short[1];
                     long[] wornLoc = new long[1];
                     boolean[] logicalAnd = new boolean[1];
                     double[] hardBonus=new double[1];
                     CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,oldVal);
-                    CMLib.genEd().wornLayer(mob,layerAtt,layers,++showNumber[0],showFlag);
-                    CMLib.genEd().wornLocation(mob,wornLoc,logicalAnd,++showNumber[0],showFlag);
+                    if(httpReq.isRequestParameter(fieldName+"_WORNDATA"))
+                    {
+                        wornLoc[0]=CMath.s_long(httpReq.getRequestParameter(fieldName+"_WORNDATA"));
+                        for(int i=1;;i++)
+                            if(httpReq.isRequestParameter(fieldName+"_WORNDATA"+(Integer.toString(i))))
+                                wornLoc[0]=wornLoc[0]|CMath.s_long(httpReq.getRequestParameter(fieldName+"_WORNDATA"+(Integer.toString(i))));
+                            else
+                                break;
+                        logicalAnd[0] = httpReq.getRequestParameter(fieldName+"_ISTWOHANDED").equalsIgnoreCase("on");
+                        layers[0] = CMath.s_short(httpReq.getRequestParameter(fieldName+"_LAYER"));
+                        layerAtt[0] = 0;
+                        if(httpReq.getRequestParameter(fieldName+"_SEETHRU").equalsIgnoreCase("on"))
+                            layerAtt[0] |= Armor.LAYERMASK_SEETHROUGH;
+                        if(httpReq.getRequestParameter(fieldName+"_MULTIWEAR").equalsIgnoreCase("on"))
+                            layerAtt[0] |= Armor.LAYERMASK_MULTIWEAR;
+                    }
+                    return reconvert(layerAtt,layers,wornLoc,logicalAnd,hardBonus);
+                }
+                public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                    String value = webValue(httpReq,parms,oldVal,fieldName);
+                    short[] layerAtt = new short[1];
+                    short[] layers = new short[1];
+                    long[] wornLoc = new long[1];
+                    boolean[] logicalAnd = new boolean[1];
+                    double[] hardBonus=new double[1];
+                    CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,value);
+                    StringBuffer str = new StringBuffer("");
+                    str.append("\n\r<SELECT NAME="+fieldName+"_WORNDATA MULTIPLE>");
+                    for(int i=1;i<Item.WORN_DESCS.length;i++)
+                    {
+                        String climstr=Item.WORN_DESCS[i];
+                        int mask=(int)CMath.pow(2,i-1);
+                        str.append("<OPTION VALUE="+mask);
+                        if((wornLoc[0]&mask)>0) str.append(" SELECTED");
+                        str.append(">"+climstr);
+                    }
+                    str.append("</SELECT>");
+                    str.append("<BR>\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_ISTWOHANDED value=\"on\" "+(logicalAnd[0]?"CHECKED":"")+">Is worn on All above Locations.");
+                    str.append("<BR>\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_ISTWOHANDED value=\"\" "+(logicalAnd[0]?"":"CHECKED")+">Is worn on ANY of the above Locations.");
+                    str.append("<BR>\n\rLayer: <INPUT TYPE=TEXT NAME="+fieldName+"_LAYER SIZE=5 VALUE=\"\">");
+                    boolean seeThru = CMath.bset(layerAtt[0],Armor.LAYERMASK_SEETHROUGH);
+                    boolean multiWear = CMath.bset(layerAtt[0],Armor.LAYERMASK_MULTIWEAR);
+                    str.append("&nbsp;&nbsp;\n\r<INPUT TYPE=CHECKBOX NAME="+fieldName+"_SEETHRU value=\"on\" "+(seeThru?"CHECKED":"")+">Is see-through.");
+                    str.append("&nbsp;&nbsp;\n\r<INPUT TYPE=CHECKBOX NAME="+fieldName+"_MULTIWEAR value=\"on\" "+(multiWear?"CHECKED":"")+">Is multi-wear.");
+                    return str.toString();
+                }
+                
+                public String reconvert(short[] layerAtt, short[] layers, long[] wornLoc, boolean[] logicalAnd, double[] hardBonus)
+                {
                     StringBuffer newVal = new StringBuffer("");
                     if((layerAtt[0]!=0)&&(layers[0]!=0))
                     {
@@ -684,6 +736,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                             newVal.append('M');
                         if(CMath.bset(layerAtt[0],Armor.LAYERMASK_SEETHROUGH))
                             newVal.append('S');
+                        newVal.append(layers[0]);
                         newVal.append(':');
                     }
                     boolean needLink=false;
@@ -698,6 +751,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         }
                     }
                     return newVal.toString();
+                    
+                }
+                
+                public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
+                {
+                    short[] layerAtt = new short[1];
+                    short[] layers = new short[1];
+                    long[] wornLoc = new long[1];
+                    boolean[] logicalAnd = new boolean[1];
+                    double[] hardBonus=new double[1];
+                    CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,oldVal);
+                    CMLib.genEd().wornLayer(mob,layerAtt,layers,++showNumber[0],showFlag);
+                    CMLib.genEd().wornLocation(mob,wornLoc,logicalAnd,++showNumber[0],showFlag);
+                    return reconvert(layerAtt,layers,wornLoc,logicalAnd,hardBonus);
                 }
             },
             new AbilityParmEditorImpl("CONTAINER_CAPACITY","Cap.",PARMTYPE_NUMBER) {
@@ -739,6 +806,90 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     return CMClass.getAbility(oldVal.substring(0,y))!=null;
                 }
                 public String defaultValue(){ return "";}
+                public String rebuild(Vector spells) throws CMException
+                {
+                    StringBuffer newVal = new StringBuffer("");
+                    if(spells.size()==1)
+                        newVal.append("*" + ((Ability)spells.firstElement()).ID() + ";" + ((Ability)spells.firstElement()).text());
+                    else
+                    if(spells.size()>1) {
+                        for(int s=0;s<spells.size();s++)
+                        {
+                            String txt = ((Ability)spells.elementAt(s)).text().trim();
+                            if((txt.indexOf(';')>=0)||(CMClass.getAbility(txt)!=null))
+                                throw new CMException("You may not have more than one spell when one of the spells parameters is a spell id or a ; character.");
+                            newVal.append(((Ability)spells.firstElement()).ID());
+                            if(txt.length()>0)
+                                newVal.append(";" + ((Ability)spells.firstElement()).text());
+                            if(s<(spells.size()-1))
+                                newVal.append(";");
+                        }
+                    }
+                    return newVal.toString();
+                }
+                public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                    Vector spells=null;
+                    if(httpReq.isRequestParameter(fieldName+"_AFFECT1"))
+                    {
+                        spells = new Vector();
+                        int num=1;
+                        String behav=httpReq.getRequestParameter(fieldName+"_AFFECT"+num);
+                        String theparm=httpReq.getRequestParameter(fieldName+"_ADATA"+num);
+                        while((behav!=null)&&(theparm!=null))
+                        {
+                            if(behav.length()>0)
+                            {
+                                Ability A=CMClass.getAbility(behav);
+                                if(theparm.trim().length()>0)
+                                    A.setMiscText(theparm);
+                                spells.addElement(A);
+                            }
+                            num++;
+                            behav=httpReq.getRequestParameter(fieldName+"_AFFECT"+num);
+                            theparm=httpReq.getRequestParameter(fieldName+"_ADATA"+num);
+                        }
+                    }
+                    else
+                        spells = CMLib.ableParms().getCodedSpells(oldVal);
+                    try {
+                        return rebuild(spells);
+                    } catch(Exception e) {
+                        return oldVal;
+                    }
+                }
+                public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                    Vector spells=CMLib.ableParms().getCodedSpells(webValue(httpReq,parms,oldVal,fieldName));
+                    StringBuffer str = new StringBuffer("");
+                    str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>");
+                    for(int i=0;i<spells.size();i++)
+                    {
+                        Ability A=(Ability)spells.elementAt(i);
+                        str.append("<TR><TD WIDTH=50%>");
+                        str.append("\n\r<SELECT ONCHANGE=\"EditAffect(this);\" NAME="+fieldName+"_AFFECT"+(i+1)+">");
+                        str.append("<OPTION VALUE=\"\">Delete!");
+                        str.append("<OPTION VALUE=\""+A.ID()+"\" SELECTED>"+A.name());
+                        str.append("</SELECT>");
+                        str.append("</TD><TD WIDTH=50%>");
+                        String theparm=CMStrings.replaceAll(A.text(),"\"","&quot;");
+                        str.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME="+fieldName+"_ADATA"+(i+1)+" VALUE=\""+theparm+"\">");
+                        str.append("</TD></TR>");
+                    }
+                    str.append("<TR><TD WIDTH=50%>");
+                    str.append("\n\r<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+fieldName+"_AFFECT"+(spells.size()+1)+">");
+                    str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
+                    for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+                    {
+                        Ability A=(Ability)a.nextElement();
+                        String cnam=A.ID();
+                        str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+                    }
+                    str.append("</SELECT>");
+                    str.append("</TD><TD WIDTH=50%>");
+                    str.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME="+fieldName+"_ADATA"+(spells.size()+1)+" VALUE=\"\">");
+                    str.append("</TD></TR>");
+                    str.append("</TABLE>");
+                    return str.toString();
+                }
                 public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
                 {
                     Vector spells=CMLib.ableParms().getCodedSpells(oldVal);
@@ -747,7 +898,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         rawCheck.append(((Ability)spells.elementAt(s)).ID()).append(";").append(((Ability)spells.elementAt(s)).text()).append(";");
                     boolean okToProceed = true;
                     ++showNumber[0];
-                    StringBuffer newVal = new StringBuffer("");
+                    String newVal = null;
                     while(okToProceed) {
                         okToProceed = false;
                         CMLib.genEd().spells(mob,spells,showNumber[0],showFlag,true);
@@ -756,26 +907,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                             sameCheck.append(((Ability)spells.elementAt(s)).ID()).append(';').append(((Ability)spells.elementAt(s)).text()).append(';');
                         if(sameCheck.toString().equals(rawCheck.toString())) 
                             return oldVal;
-                        newVal.setLength(0);
-                        if(spells.size()==1)
-                            newVal.append("*" + ((Ability)spells.firstElement()).ID() + ";" + ((Ability)spells.firstElement()).text());
-                        else
-                        if(spells.size()>1) {
-                            for(int s=0;s<spells.size();s++)
-                            {
-                                String txt = ((Ability)spells.elementAt(s)).text().trim();
-                                if((txt.indexOf(';')>=0)||(CMClass.getAbility(txt)!=null))
-                                {
-                                    mob.tell("You may not have more than one spell when one of the spells parameters is a spell id or a ; character.");
-                                    okToProceed = true;
-                                    break;
-                                }
-                                newVal.append(((Ability)spells.firstElement()).ID());
-                                if(txt.length()>0)
-                                    rawCheck.append(";" + ((Ability)spells.firstElement()).text());
-                                if(s<(spells.size()-1))
-                                    newVal.append(";");
-                            }
+                        try {
+                            newVal = rebuild(spells);
+                        } catch(CMException e) {
+                            mob.tell(e.getMessage());
+                            okToProceed = true;
+                            break;
                         }
                     }
                     return newVal.toString();
@@ -871,6 +1008,42 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             new AbilityParmEditorImpl("RESOURCE_OR_KEYWORD","Resource",PARMTYPE_SPECIAL) {
                 public void createChoices() {}
                 public boolean confirmValue(String oldVal) { return true;}
+                public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                    if(httpReq.isRequestParameter(fieldName+"_WHICH"))
+                    {
+                        String which=httpReq.getRequestParameter(fieldName+"_WHICH");
+                        if(which.trim().length()>0)
+                            return httpReq.getRequestParameter(fieldName+"_RESOURCE");
+                        return httpReq.getRequestParameter(fieldName+"_WORD");
+                    }
+                    return oldVal;
+                }
+                public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                    String value=webValue(httpReq,parms,oldVal,fieldName);
+                    if(value.endsWith("$")) 
+                        value = value.substring(0,oldVal.length()-1);
+                    value = value.trim();
+                    StringBuffer str = new StringBuffer("");
+                    str.append("\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_WHICH ");
+                    boolean rsc=CMParms.containsIgnoreCase(RawMaterial.RESOURCE_DESCS,value);
+                    if(rsc) str.append("CHECKED");
+                    str.append("VALUE=\"RESOURCE\">");
+                    str.append("\n\r<SELECT NAME="+fieldName+"_RESOURCE>");
+                    for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
+                    {
+                        str.append("<OPTION VALUE=\""+RawMaterial.RESOURCE_DESCS[r]+"\"");
+                        if(rsc&&(value.equalsIgnoreCase(RawMaterial.RESOURCE_DESCS[r])))
+                            str.append(" CHECKED");
+                        str.append(">"+CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[r]));
+                    }
+                    str.append("</SELECT>");
+                    str.append("<BR>");
+                    str.append("\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_WHICH ");
+                    if(!rsc) str.append("CHECKED");
+                    str.append("VALUE=\"\">");
+                    str.append("\n\r<INPUT TYPE=TEXT NAME="+fieldName+"_WORD VALUE=\""+(rsc?"":value)+"\">");
+                    return str.toString();
+                }
                 public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
                 {
                     ++showNumber[0];
@@ -904,6 +1077,19 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         return CMParms.contains(RawMaterial.RESOURCE_DESCS,oldVal);
                     }
                     return true;
+                }
+                public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                    AbilityParmEditor A = (AbilityParmEditor)CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
+                    if(oldVal.endsWith("$")) oldVal = oldVal.substring(0,oldVal.length()-1);
+                    String value = A.webValue(httpReq,parms,oldVal,fieldName);
+                    for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
+                        if(RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(value))
+                            return RawMaterial.RESOURCE_DESCS[r];
+                    return (value.trim().length()==0)?"":(value+"$");
+                }
+                public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                    AbilityParmEditor A = (AbilityParmEditor)CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
+                    return A.webField(httpReq,parms,oldVal,fieldName);
                 }
                 public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
                 {
@@ -969,20 +1155,6 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             },
             new AbilityParmEditorImpl("HERB_NAME","Herb Final Name",PARMTYPE_STRING) {
                 public void createChoices() {}
-                public boolean confirmValue(String oldVal) {
-                    if(oldVal.trim().length()==0)
-                        return true;
-                    if(!oldVal.endsWith("$")) return false;
-                    return true;
-                }
-                public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
-                {
-                    if(oldVal.trim().endsWith("$")) oldVal=oldVal.trim().substring(0,oldVal.trim().length()-1);
-                    super.commandLinePrompt(mob,oldVal,showNumber,showFlag);
-                    if(oldVal.trim().length()>0)
-                        return oldVal.trim()+"$";
-                    return oldVal;
-                }
                 public String defaultValue(){ return "Herb Name";}
             },
             new AbilityParmEditorImpl("RIDE_CAPACITY","Ridrs",PARMTYPE_NUMBER) {
@@ -1010,6 +1182,38 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         if(CMClass.getRace((String)parsedVals.elementAt(v))==null)
                             return false;
                     return true;
+                }
+                public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                    Vector raceIDs=null;
+                    if(httpReq.isRequestParameter(fieldName+"_RACE1"))
+                    {
+                        raceIDs = new Vector();
+                        int num=1;
+                        String behav=httpReq.getRequestParameter(fieldName+"_RACE"+num);
+                        while(behav!=null)
+                        {
+                            if(behav.length()>0)
+                                raceIDs.addElement(behav);
+                            num++;
+                            behav=httpReq.getRequestParameter(fieldName+"_RACE"+num);
+                        }
+                    }
+                    else
+                        raceIDs = CMParms.parse(oldVal);
+                    return CMParms.combine(raceIDs,0);
+                }
+                public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                    Vector raceIDs=CMParms.parse(webValue(httpReq,parms,oldVal,fieldName).toUpperCase());
+                    StringBuffer str = new StringBuffer("");
+                    str.append("\n\r<SELECT NAME="+fieldName+"_RACE MULTIPLE>");
+                    str.append("<OPTION VALUE=\"\" "+((raceIDs.size()==0)?"CHECKED":"")+">");
+                    for(Enumeration e=CMClass.races();e.hasMoreElements();)
+                    {
+                        Race R=(Race)e.nextElement();
+                        str.append("<OPTION VALUE=\""+R.ID()+"\" "+((raceIDs.contains(R.ID().toUpperCase()))?"CHECKED":"")+">"+R.name());
+                    }
+                    str.append("</SELECT>");
+                    return str.toString();
                 }
                 public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
                 {
@@ -1103,6 +1307,38 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 }
                 public String defaultValue(){ return "";}
                 public int appliesToClass(Object o) { return 0;}
+                public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                    if(httpReq.isRequestParameter(fieldName+"_RESOURCE"))
+                    {
+                        String rsc=httpReq.getRequestParameter(fieldName+"_RESOURCE");
+                        String amt=httpReq.getRequestParameter(fieldName+"_AMOUNT");
+                        if((rsc.trim().length()==0)||(rsc.equalsIgnoreCase("NOTHING"))||(CMath.s_int(amt)<=0))
+                            return "";
+                        return rsc+"/"+amt;
+                    }
+                    return oldVal;
+                }
+                public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                    String value=webValue(httpReq,parms,oldVal,fieldName);
+                    String rsc = "";
+                    int amt = 0;
+                    int x=value.indexOf('/');
+                    if(x>0)
+                    {
+                        rsc = value.substring(0,x);
+                        amt = CMath.s_int(value.substring(x+1));
+                    }
+                    StringBuffer str=new StringBuffer("");
+                    str.append("\n\r<SELECT NAME="+fieldName+"_RESOURCE MULTIPLE>");
+                    for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
+                        str.append("<OPTION VALUE=\""+RawMaterial.RESOURCE_DESCS[r]+"\" "
+                                +((RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(rsc))?"CHECKED":"")+">"
+                                +CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[r]));
+                    str.append("</SELECT>");
+                    str.append("&nbsp;&nbsp;Amount: ");
+                    str.append("<INPUT TYPE=TEXT NAME="+fieldName+"_AMOUNT VALUE="+amt+">");
+                    return str.toString();
+                }
                 public boolean confirmValue(String oldVal) { 
                     if(oldVal.trim().length()==0) return true;
                     oldVal=oldVal.trim();
@@ -1132,15 +1368,62 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             },
             
         });
-        Hashtable H = new Hashtable();
+        DEFAULT_EDITORS = new Hashtable();
         for(int v=0;v<V.size();v++) {
             AbilityParmEditor A = (AbilityParmEditor)V.elementAt(v);
-            H.put(A.ID(),A);
+            DEFAULT_EDITORS.put(A.ID(),A);
         }
-        return H;
+        return DEFAULT_EDITORS;
     };
     
-    public abstract class AbilityParmEditorImpl implements AbilityParmEditor 
+    protected class AbilityRecipeDataImpl implements AbilityRecipeData 
+    {
+        private String recipeFilename;
+        private String recipeFormat;
+        private Vector columns;
+        private Vector dataRows;
+        private int numberOfDataColumns;
+        public String[] columnHeaders;
+        public int[] columnLengths;
+        public int[] classFieldIndexes;
+        private String parseError = null;
+        
+        public AbilityRecipeDataImpl(String recipeFilename, String recipeFormat)
+        {
+            this.recipeFilename = recipeFilename;
+            this.recipeFormat = recipeFormat;
+            StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+recipeFilename,null,true).text();
+            columns = parseRecipeFormatColumns(recipeFormat);
+            numberOfDataColumns = 0;
+            for(int c = 0; c < columns.size(); c++)
+                if(columns.elementAt(c) instanceof Vector)
+                    numberOfDataColumns++;
+            dataRows = null;
+            try {
+                dataRows = parseDataRows(str,columns,numberOfDataColumns);
+                classFieldIndexes = new int[dataRows.size()];
+                for(int c=0;c<classFieldIndexes.length;c++)
+                    classFieldIndexes[c] = getClassFieldIndex((DVector)dataRows.elementAt(c));
+                fixDataColumns(dataRows);
+            } catch(CMException e) {
+                parseError = e.getMessage();
+                return;
+            }
+            columnLengths = new int[numberOfDataColumns];
+            columnHeaders = new String[numberOfDataColumns];
+            calculateRecipeCols(columnLengths,columnHeaders,dataRows);
+        }
+        public int[] getClassFieldIndexes() { return classFieldIndexes;}
+        public String recipeFilename(){ return recipeFilename;}
+        public String recipeFormat(){ return recipeFormat;}
+        public Vector dataRows() { return dataRows;}
+        public Vector columns() { return columns;}
+        public int[] columnLengths() { return columnLengths;}
+        public String[] columnHeaders(){ return columnHeaders;}
+        public int numberOfDataColumns(){ return numberOfDataColumns;}
+        public String parseError(){ return parseError;}
+    }
+    protected abstract class AbilityParmEditorImpl implements AbilityParmEditor 
     {
         private String ID;
         private DVector choices = null;
@@ -1221,6 +1504,84 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     break;
             }
             return str;
+        }
+        
+        public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+            String webValue = httpReq.getRequestParameter(fieldName);
+            switch(fieldType) {
+                case PARMTYPE_ONEWORD:
+                case PARMTYPE_STRINGORNULL:
+                case PARMTYPE_STRING:
+                case PARMTYPE_NUMBER:
+                    return (webValue == null)?oldVal:webValue;
+                case PARMTYPE_MULTICHOICES:
+                {
+                    if(webValue == null) return oldVal;
+                    String id="";
+                    int num=0;
+                    for(;httpReq.isRequestParameter(fieldName+id);id=""+(++num))
+                    {
+                        String newVal = httpReq.getRequestParameter(fieldName+id); 
+                        if(CMath.s_int(newVal)<=0)
+                            return newVal;
+                        num |= CMath.s_int(newVal);
+                    }
+                    return ""+num;
+                }
+                case PARMTYPE_CHOICES:
+                    return (webValue == null)?oldVal:webValue;
+            }
+            return "";
+        }
+        
+        public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+            int textSize = 50;
+            String webValue = webValue(httpReq,parms,oldVal,fieldName);
+            String onChange = null;
+            Vector choiceValues = new Vector();
+            switch(fieldType) {
+                case PARMTYPE_ONEWORD:
+                    textSize = 10;
+                case PARMTYPE_STRINGORNULL:
+                case PARMTYPE_STRING:
+                    return "\n\r<INPUT TYPE=TEXT NAME=" + fieldName + " SIZE=" + textSize + " VALUE=\"" + webValue + "\">";
+                case PARMTYPE_NUMBER:
+                    return "\n\r<INPUT TYPE=TEXT NAME=" + fieldName + " SIZE=10 VALUE=\"" + webValue + "\">";
+                case PARMTYPE_MULTICHOICES:
+                {
+                    onChange = " MULTIPLE ONCHANGE=\"MultiSelect(this);\"";
+                    if(CMath.isInteger(webValue))
+                    {
+                        int bits = CMath.s_int(webValue);
+                        for(int i=0;i<choices.size();i++)
+                        {
+                            int bitVal =CMath.s_int((String)choices.elementAt(i,1)); 
+                            if((bitVal>0)&&(CMath.bset(bits,bitVal)))
+                                choiceValues.addElement((String)choices.elementAt(i,1));
+                        }
+                    }
+                }
+                case PARMTYPE_CHOICES:
+                {
+                    if(choiceValues.size()==0)
+                        choiceValues.addElement(webValue);
+                    if(onChange == null)
+                        onChange = " ONCHANGE=\"Select(this);\"";
+                    StringBuffer str= new StringBuffer("");
+                    str.append("\n\r<SELECT NAME="+fieldName+onChange+">");
+                    for(int i=0;i<choices.size();i++)
+                    {
+                        String option = ((String)choices.elementAt(i,1));
+                        str.append("<OPTION VALUE=\""+option+"\" ");
+                        for(int c=0;c<choiceValues.size();c++)
+                            if(option.equalsIgnoreCase((String)choiceValues.elementAt(c)))
+                                str.append("SELECTED");
+                        str.append(">"+((String)choices.elementAt(i,2)));
+                    }
+                    return str.toString()+"</SELECT>";
+                }
+            }
+            return "";
         }
         
         public abstract void createChoices(); 

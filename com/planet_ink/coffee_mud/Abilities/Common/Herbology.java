@@ -41,7 +41,7 @@ public class Herbology extends CommonSkill
 	private static final String[] triggerStrings = {"HERBOLOGY"};
 	public String[] triggerStrings(){return triggerStrings;}
     public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_NATURELORE; }
-    public String parametersFormat(){ return "ITEM_NAME";}
+    public String parametersFormat(){ return "HERB_NAME";}
 
 	protected Item found=null;
 	protected boolean messedUp=false;
