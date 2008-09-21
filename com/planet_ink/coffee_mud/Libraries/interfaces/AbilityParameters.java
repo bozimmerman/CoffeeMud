@@ -73,7 +73,9 @@ public interface AbilityParameters extends CMLibrary
         public String[] columnHeaders();
         public int numberOfDataColumns();
         public String parseError();
-        public int[] getClassFieldIndexes();
+        public int getClassFieldIndex();
+        public DVector newRow(String classFieldData);
+        public DVector blankRow();
     }
     
 }

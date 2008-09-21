@@ -136,6 +136,10 @@
         <A href="javascript:Clicked('abilities.cmvp')"><FONT COLOR=WHITE>Abilities</FONT></a>
         <BR>
         @endif@
+        @if?CheckAuthCode?AUTH_CMDRECIPES=true@
+        <A href="javascript:Clicked('recipes.cmvp')"><FONT COLOR=WHITE>Skill Recipes</FONT></a>
+        <BR>
+        @endif@
     	@if?CheckAuthCode?AUTH_CMDQUESTS=true@
     	<A href="javascript:Clicked('holidays.cmvp')"><FONT COLOR=WHITE>Holidays</FONT></a>
     	<BR>

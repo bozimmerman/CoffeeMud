@@ -62,15 +62,22 @@ public class AbilityNext extends StdWebMacro
 		
 		String lastID="";
         String className=httpReq.getRequestParameter("CLASS");
+        boolean genericOnly =parms.containsKey("GENERIC");
+        boolean parmsEditable=parms.containsKey("PARMSEDITABLE");
+        String levelName=httpReq.getRequestParameter("LEVEL");
+        boolean notFlag =parms.containsKey("NOT"); 
+        boolean allFlag =parms.containsKey("ALL");
+        boolean domainFlag=parms.containsKey("DOMAIN");
+        String domain=(String)parms.get("DOMAIN");
 		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			boolean okToShow=true;
 			int classType=A.classificationCode()&Ability.ALL_ACODES;
-			if(parms.containsKey("GENERIC"))
+			if(genericOnly)
 			    okToShow=A.isGeneric();
             else
-            if(parms.containsKey("PARMSEDITABLE"))
+            if(parmsEditable)
                 okToShow=((A instanceof ItemCraftor)
                        &&(((ItemCraftor)A).parametersFile()!=null)
                        &&(((ItemCraftor)A).parametersFile().length()>0)
@@ -90,13 +97,12 @@ public class AbilityNext extends StdWebMacro
 				    okToShow=false;
 				else
 				{
-					String levelName=httpReq.getRequestParameter("LEVEL");
 					if((levelName!=null)&&(levelName.length()>0)&&(CMath.s_int(levelName)!=level))
 						okToShow=false;
 				}
 			}
 			else
-			if(!parms.containsKey("ALL"))
+			if(!allFlag)
 			{
 				int level=CMLib.ableMapper().getQualifyingLevel("Archon",true,A.ID());
 				if(level<0)
@@ -109,19 +115,14 @@ public class AbilityNext extends StdWebMacro
 				    okToShow=false;
 				else
 				{
-					String levelName=httpReq.getRequestParameter("LEVEL");
 					if((levelName!=null)&&(levelName.length()>0)&&(CMath.s_int(levelName)!=level))
 						okToShow=false;
 				}
 			}
 			if(okToShow)
 			{
-				if(parms.containsKey("DOMAIN"))
-				{
-					String domain=(String)parms.get("DOMAIN");
-					if(!domain.equalsIgnoreCase(Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5]))
-					   okToShow=false;
-				}
+				if((domainFlag)&&(!domain.equalsIgnoreCase(Ability.DOMAIN_DESCS[(A.classificationCode()&Ability.ALL_DOMAINS)>>5])))
+				   okToShow=false;
 				boolean containsOne=false;
 				for(int i=0;i<Ability.ACODE_DESCS.length;i++)
 					if(parms.containsKey(Ability.ACODE_DESCS[i]))
@@ -129,7 +130,7 @@ public class AbilityNext extends StdWebMacro
 				if(containsOne&&(!parms.containsKey(Ability.ACODE_DESCS[classType])))
 					okToShow=false;
 			}
-			if(parms.containsKey("NOT")) okToShow=!okToShow;
+			if(notFlag) okToShow=!okToShow;
 			if(okToShow)
 			{
 				if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.ID().equals(lastID))))

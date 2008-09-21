@@ -246,7 +246,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         return null;
     }
 
-    protected int getClassFieldIndex(DVector dataRow) {
+    protected static int getClassFieldIndex(DVector dataRow) {
         for(int d=0;d<dataRow.size();d++)
             if(dataRow.elementAt(d,1) instanceof Vector) 
             {
@@ -511,36 +511,23 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             DVector editRow = null;
             if(lineNum.equalsIgnoreCase("A"))
             {
-                editRow = new DVector(2);
-                for(int c=0;c<recipe.columns().size();c++)
-                    if(recipe.columns().elementAt(c) instanceof Vector)
-                        editRow.addElement((Vector)recipe.columns().elementAt(c),"");
+                editRow = recipe.blankRow();
                 int keyIndex = getClassFieldIndex(editRow);
+                String classFieldData = null;
                 if(keyIndex>=0) {
                     AbilityParmEditor A = (AbilityParmEditor)editors.get(((Vector)editRow.elementAt(keyIndex,1)).firstElement());
                     if(A!=null)
                     {
-                        String newVal = A.commandLinePrompt(mob,(String)editRow.elementAt(keyIndex,2),new int[]{0},-999);
-                        if(A.confirmValue(newVal))
-                            editRow.setElementAt(keyIndex,2,newVal);
-                        else
+                        classFieldData = A.commandLinePrompt(mob,(String)editRow.elementAt(keyIndex,2),new int[]{0},-999);
+                        if(!A.confirmValue(classFieldData))
                         {
                             mob.tell("Invalid value.  Aborted.");
                             continue;
                         }
                     }
                 }
-                try {
-                    fixDataColumn(editRow,-1);
-                } catch(CMException cme) {
-                    continue;
-                }
-                for(int i=0;i<editRow.size();i++)
-                    if(i!=keyIndex)
-                    {
-                        AbilityParmEditor A = (AbilityParmEditor)editors.get((String)editRow.elementAt(i,1));
-                        editRow.setElementAt(i,2,A.defaultValue());
-                    }
+                editRow=recipe.newRow(classFieldData);
+                if(editRow==null) continue;
             }
             else
             if(CMath.isInteger(lineNum))
@@ -618,7 +605,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             return DEFAULT_EDITORS;
         
         Vector V=CMParms.makeVector(new Object[] {
-            new AbilityParmEditorImpl("SPELL_ID","Spell",PARMTYPE_CHOICES) {
+            new AbilityParmEditorImpl("SPELL_ID","The Spell ID",PARMTYPE_CHOICES) {
                 public void createChoices() { createChoices(CMClass.abilities());}
                 public String defaultValue(){ return "Spell_ID";}
             },
@@ -719,7 +706,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     str.append("</SELECT>");
                     str.append("<BR>\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_ISTWOHANDED value=\"on\" "+(logicalAnd[0]?"CHECKED":"")+">Is worn on All above Locations.");
                     str.append("<BR>\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_ISTWOHANDED value=\"\" "+(logicalAnd[0]?"":"CHECKED")+">Is worn on ANY of the above Locations.");
-                    str.append("<BR>\n\rLayer: <INPUT TYPE=TEXT NAME="+fieldName+"_LAYER SIZE=5 VALUE=\"\">");
+                    str.append("<BR>\n\rLayer: <INPUT TYPE=TEXT NAME="+fieldName+"_LAYER SIZE=5 VALUE=\""+layers[0]+"\">");
                     boolean seeThru = CMath.bset(layerAtt[0],Armor.LAYERMASK_SEETHROUGH);
                     boolean multiWear = CMath.bset(layerAtt[0],Armor.LAYERMASK_MULTIWEAR);
                     str.append("&nbsp;&nbsp;\n\r<INPUT TYPE=CHECKBOX NAME="+fieldName+"_SEETHRU value=\"on\" "+(seeThru?"CHECKED":"")+">Is see-through.");
@@ -792,7 +779,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
                 public String defaultValue(){ return "";}
             },
-            new AbilityParmEditorImpl("CODED_SPELL_LIST","Spells",PARMTYPE_SPECIAL) {
+            new AbilityParmEditorImpl("CODED_SPELL_LIST","Spell Affects",PARMTYPE_SPECIAL) {
                 public void createChoices() {}
                 public boolean confirmValue(String oldVal) {
                     if(oldVal.length()==0) return true;
@@ -1385,7 +1372,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         private int numberOfDataColumns;
         public String[] columnHeaders;
         public int[] columnLengths;
-        public int[] classFieldIndexes;
+        public int classFieldIndex;
         private String parseError = null;
         
         public AbilityRecipeDataImpl(String recipeFilename, String recipeFormat)
@@ -1401,9 +1388,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             dataRows = null;
             try {
                 dataRows = parseDataRows(str,columns,numberOfDataColumns);
-                classFieldIndexes = new int[dataRows.size()];
-                for(int c=0;c<classFieldIndexes.length;c++)
-                    classFieldIndexes[c] = getClassFieldIndex((DVector)dataRows.elementAt(c));
+                DVector editRow = new DVector(2);
+                for(int c=0;c<columns().size();c++)
+                    if(columns().elementAt(c) instanceof Vector)
+                        editRow.addElement((Vector)columns().elementAt(c),"");
+                classFieldIndex = CMAbleParms.getClassFieldIndex(editRow);
                 fixDataColumns(dataRows);
             } catch(CMException e) {
                 parseError = e.getMessage();
@@ -1413,7 +1402,32 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             columnHeaders = new String[numberOfDataColumns];
             calculateRecipeCols(columnLengths,columnHeaders,dataRows);
         }
-        public int[] getClassFieldIndexes() { return classFieldIndexes;}
+        public DVector newRow(String classFieldData)
+        {
+            DVector editRow = blankRow();
+            int keyIndex =classFieldIndex;
+            if((keyIndex>=0)&&(classFieldData!=null)) {
+                editRow.setElementAt(keyIndex,2,classFieldData);
+            }
+            try {
+                fixDataColumn(editRow,-1);
+            } catch(CMException cme) { return null;}
+            for(int i=0;i<editRow.size();i++)
+                if(i!=keyIndex)
+                {
+                    AbilityParmEditor A = (AbilityParmEditor)getEditors().get((String)editRow.elementAt(i,1));
+                    editRow.setElementAt(i,2,A.defaultValue());
+                }
+            return editRow;
+        }
+        public DVector blankRow() {
+            DVector editRow = new DVector(2);
+            for(int c=0;c<columns().size();c++)
+                if(columns().elementAt(c) instanceof Vector)
+                    editRow.addElement((Vector)columns().elementAt(c),"");
+            return editRow;
+        }
+        public int getClassFieldIndex() { return classFieldIndex;}
         public String recipeFilename(){ return recipeFilename;}
         public String recipeFormat(){ return recipeFormat;}
         public Vector dataRows() { return dataRows;}

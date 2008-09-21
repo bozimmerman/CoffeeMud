@@ -51,7 +51,7 @@ public class StdThinArea extends StdArea
     		if(roomID.toUpperCase().startsWith(Name().toUpperCase()+"#"))
 	    		roomID=Name()+roomID.substring(Name().length()); // for case sensitive situations
 			Vector V=CMLib.database().DBReadRoomData(roomID,false);
-			if(V.size()>0)
+			if((V!=null)&&(V.size()>0))
 			{
 				R=(Room)V.firstElement();
 				while(V.size()>1) V.removeElementAt(1);
