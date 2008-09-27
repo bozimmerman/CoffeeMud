@@ -78,7 +78,7 @@ public class Archon_Metacraft extends ArchonSkill
 		}
 		if(commands.size()<1)
 		{
-			mob.tell("Metacraft what, and (optionally) out of what material?");
+			mob.tell("Metacraft what (recipe, everything, every x) , and (optionally) out of what material?");
 			return false;
 		}
 		String mat=null;

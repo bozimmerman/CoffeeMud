@@ -48,7 +48,7 @@ public class Archon_Record extends ArchonSkill
 	public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ARCHON;}
 	public int maxRange(){return adjustedMaxInvokerRange(1);}
 	public int usageType(){return USAGE_MOVEMENT;}
-	FakeSession sess=null;
+	Session sess=null;
 
 	public void unInvoke()
 	{
@@ -104,8 +104,8 @@ public class Archon_Record extends ArchonSkill
 			if(mob.location().okMessage(mob,msg))
 			{
 				mob.location().send(mob,msg);
-				String filename=mob.Name()+System.currentTimeMillis()+".log";
-				CMFile file=new CMFile("/"+target.Name()+System.currentTimeMillis()+".log",null,true);
+				String filename="/"+target.Name()+System.currentTimeMillis()+".log";
+				CMFile file=new CMFile(filename,null,true);
 				if(!file.canWrite())
                 {
                     if(!CMSecurity.isASysOp(mob)||(CMSecurity.isASysOp(target)))
@@ -116,7 +116,8 @@ public class Archon_Record extends ArchonSkill
                     if(!CMSecurity.isASysOp(mob)||(CMSecurity.isASysOp(target)))
     	                Log.sysOut("Record",mob.name()+" started recording "+target.name()+" to /"+filename+".");
 					Archon_Record A2=(Archon_Record)copyOf();
-					FakeSession F=new FakeSession(file);
+					Session F=(Session)CMClass.getCommon("FakeSession");
+                    F.initializeSession(null,filename);
 					A2.sess=F;
 	                target.addNonUninvokableEffect(A2);
 	                mob.tell("Enter RECORD "+target.Name()+" again to stop recording.");
@@ -126,145 +127,5 @@ public class Archon_Record extends ArchonSkill
 		else
 			return beneficialVisualFizzle(mob,target,"<S-NAME> attempt(s) to hush <T-NAMESELF>, but fail(s).");
 		return success;
-	}
-	private class FakeSession implements Session
-	{
-		CMFile theFile=null;
-		public FakeSession(CMFile F){
-			theFile=F;
-		}
-        public boolean tick(Tickable ticking, int tickID){return false;}
-        public String ID(){return "FakeSession";}
-        public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new FakeSession(theFile);}}
-        public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
-        public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-        public long getTickStatus(){return 0;}
-	    public void initializeSession(Socket s, String introTextStr){}
-	    public boolean isLockedUpWriting(){return false;}
-        public void initializeClass(){}
-	    public void start(){}
-	    
-		public String[] clookup(){return new String[255];}
-		
-		public void onlyPrint(String msg, int pageBreak, boolean noCache){
-			synchronized(theFile)
-			{
-				theFile.saveText(msg,true);
-			}
-		}
-		public void onlyPrint(String msg){}
-		
-        public void rawOut(String msg){}
-		public void rawPrintln(String msg){}
-		public void rawPrintln(String msg, int pageBreak){}
-		public void rawPrint(String msg){}
-		public void rawPrint(String msg, int pageBreak){}
-		
-		public void stdPrint(String msg){}
-		public void stdPrint(Environmental Source,
-							 Environmental Target,
-							 Environmental Tool,
-							 String msg){}
-		public void stdPrintln(String msg){}
-		public void stdPrintln(Environmental Source,
-							   Environmental Target,
-							   Environmental Tool,
-							   String msg){}
-		
-		public void out(char[] c){}
-		
-		public void print(String msg){}
-		public void print(Environmental Source,
-						  Environmental Target,
-						  Environmental Tool,
-						  String msg){}
-		public void println(String msg){}
-		public void println(Environmental Source,
-							Environmental Target,
-							Environmental Tool,
-							String msg){}
-		
-		public void setPromptFlag(boolean truefalse){}
-		
-		
-		public void wraplessPrintln(String msg){}
-		public void wraplessPrint(String msg){}
-		
-		public void colorOnlyPrintln(String msg, int pageBreak,boolean noCache){}
-		public void colorOnlyPrint(String msg, int pageBreak,boolean noCache){}
-		public void colorOnlyPrintln(String msg){}
-		public void colorOnlyPrint(String msg){}
-		
-	    public char hotkey(long maxWait){return ' ';}
-		public String prompt(String Message, String Default)
-		{ return "";}
-		public String prompt(String Message, String Default, long maxTime)
-		{ return "";}
-		public String prompt(String Message)
-		{ return "";}
-		public String prompt(String Message, long maxTime)
-		{ return "";}
-		public boolean confirm(String Message, String Default)
-		{ return false;}
-		public boolean confirm(String Message, String Default, long maxTime)
-		{ return false;}
-		public String choose(String Message, String Choices, String Default)
-		{ return "";}
-		public String choose(String Message, String Choices, String Default, long maxTime)
-		{ return "";}
-		
-		public void startBeingSnoopedBy(Session S){}
-		public void stopBeingSnoopedBy(Session S){}
-		public boolean amBeingSnoopedBy(Session S){return false;}
-        public int snoopSuspension(int x){return 0;}
-		
-		public void cmdExit(MOB mob, Vector commands)
-			throws Exception{}
-		public void logoff(boolean t1, boolean t2, boolean t3){}
-		public boolean killFlag(){return false;}
-		
-		public boolean afkFlag(){return false;}
-		public void setAfkFlag(boolean truefalse){}
-	    public String afkMessage(){return "";}
-	    public void setAFKMessage(String str){}
-		
-		public String blockingIn()
-		{ return "";}
-		public String readlineContinue()
-		{ return "";}
-		
-		public Vector previousCMD()
-		{ return new Vector();}
-		
-		public MOB mob()
-		{ return invoker();}
-		public void setMob(MOB newmob){}
-		
-		public String makeEscape(int c){return "";}
-		public int getColor(char c){return ' ';}
-		public int currentColor(){return ' ';}
-	    public int lastColor(){return ' ';}
-		public int getWrap(){return 80;}
-		
-		public String getAddress(){return "";}
-		public int getStatus(){return 0;}
-		public long getTotalMillis(){return 0;}
-		public long getTotalTicks(){return 0;}
-		public long getIdleMillis(){return 0;}
-	    public long getMillisOnline(){return 0;}
-	    public long getLastPKFight(){return 0;}
-	    public void setLastPKFight(){}
-	    public long getLastNPCFight(){return 0;}
-	    public void setLastNPCFight(){}
-	    public long lastLoopTime(){return 0;}
-	    public Vector getLastMsgs(){return new Vector();}
-		
-	    public void setServerTelnetMode(int telnetCode, boolean onOff){}
-	    public boolean serverTelnetMode(int telnetCode){return false;}
-	    public void setClientTelnetMode(int telnetCode, boolean onOff){}
-	    public boolean clientTelnetMode(int telnetCode){return false;}
-	    public void changeTelnetMode(int telnetCode, boolean onOff){}
-	    public void initTelnetMode(int mobbitmap){}
-
 	}
 }

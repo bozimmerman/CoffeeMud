@@ -267,9 +267,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             for(int c=0;c<choices.size();c++)
                 if(CMath.bset(CMath.s_int(oldVal),((Integer)choices.elementAt(c,1)).intValue()))
                     oldVals.addElement((String)choices.elementAt(c,2));
-        } 
+        }
         else
-        if(choices.contains(oldVal.toUpperCase().trim()))    
+        if(choices.contains(oldVal.toUpperCase().trim()))
             oldVals.addElement(oldVal);
         mob.tell(showNumber+". "+FieldDisp+": '"+CMParms.toStringList(oldVals)+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return oldVal;

@@ -285,6 +285,7 @@ public class Test extends StdCommand
             else
             if(what.equalsIgnoreCase("edrecipe"))
             {
+                boolean save = CMParms.combine(commands,2).equalsIgnoreCase("save");
                 for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
                 {
                     Ability A=(Ability)e.nextElement();
@@ -292,7 +293,7 @@ public class Test extends StdCommand
                     {
                         ItemCraftor iA=(ItemCraftor)A;
                         if(iA.parametersFormat().length()>0)
-                            CMLib.ableParms().testRecipeParsing(iA.parametersFile(),iA.parametersFormat());
+                            CMLib.ableParms().testRecipeParsing(iA.parametersFile(),iA.parametersFormat(),save);
                     }
                 }
             }

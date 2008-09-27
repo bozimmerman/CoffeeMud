@@ -1,10 +1,12 @@
+
 package com.planet_ink.coffee_mud.Libraries;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityMapper.AbilityMapping;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AbilityParameters.AbilityParmEditor;
 import com.planet_ink.coffee_mud.core.exceptions.*;
-import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
+import com.planet_ink.coffee_mud.core.interfaces.*;
+
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -17,6 +19,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.net.Socket;
 import java.util.*;
 
 /*
@@ -33,7 +36,7 @@ import java.util.*;
    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
    See the License for the specific language governing permissions and
    limitations under the License.
-*/
+ */
 public class CMAbleParms extends StdLibrary implements AbilityParameters
 {
     public String ID(){return "CMAbleParms";}
@@ -92,14 +95,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             String layers=misctype.substring(0,colon).toUpperCase().trim();
             misctype=misctype.substring(colon+1).trim();
             if((layers.startsWith("MS"))
-            ||(layers.startsWith("SM")))
+                    ||(layers.startsWith("SM")))
             { layers=layers.substring(2); layerAtt[0]=Armor.LAYERMASK_MULTIWEAR|Armor.LAYERMASK_SEETHROUGH;}
             else
-            if(layers.startsWith("M"))
-            { layers=layers.substring(1); layerAtt[0]=Armor.LAYERMASK_MULTIWEAR;}
-            else
-            if(layers.startsWith("S"))
-            { layers=layers.substring(1); layerAtt[0]=Armor.LAYERMASK_SEETHROUGH;}
+                if(layers.startsWith("M"))
+                { layers=layers.substring(1); layerAtt[0]=Armor.LAYERMASK_MULTIWEAR;}
+                else
+                    if(layers.startsWith("S"))
+                    { layers=layers.substring(1); layerAtt[0]=Armor.LAYERMASK_SEETHROUGH;}
             clothingLayers[0]=CMath.s_short(layers);
         }
         return misctype;
@@ -127,26 +130,26 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 logicalAnd[0]=false;
             }
             else
-            if((wearLocation.toUpperCase().indexOf(WO+"||")>=0)
-            ||(wearLocation.toUpperCase().endsWith("||"+WO)))
-            {
-                if(hardBonus[0]==0.0)
-                    hardBonus[0]+=Item.WORN_WEIGHTS[wo];
-                wornLoc[0]=wornLoc[0]|CMath.pow(2,wo-1);
-                logicalAnd[0]=false;
-            }
-            else
-            if((wearLocation.toUpperCase().indexOf(WO+"&&")>=0)
-            ||(wearLocation.toUpperCase().endsWith("&&"+WO)))
-            {
-                hardBonus[0]+=Item.WORN_WEIGHTS[wo];
-                wornLoc[0]=wornLoc[0]|CMath.pow(2,wo-1);
-                logicalAnd[0]=true;
-            }
+                if((wearLocation.toUpperCase().indexOf(WO+"||")>=0)
+                        ||(wearLocation.toUpperCase().endsWith("||"+WO)))
+                {
+                    if(hardBonus[0]==0.0)
+                        hardBonus[0]+=Item.WORN_WEIGHTS[wo];
+                    wornLoc[0]=wornLoc[0]|CMath.pow(2,wo-1);
+                    logicalAnd[0]=false;
+                }
+                else
+                    if((wearLocation.toUpperCase().indexOf(WO+"&&")>=0)
+                            ||(wearLocation.toUpperCase().endsWith("&&"+WO)))
+                    {
+                        hardBonus[0]+=Item.WORN_WEIGHTS[wo];
+                        wornLoc[0]=wornLoc[0]|CMath.pow(2,wo-1);
+                        logicalAnd[0]=true;
+                    }
         }
         hardBonus[0]=(int)Math.round(hardBonus[0] * hardnessMultiplier);
     }
-
+    
     public Vector parseRecipeFormatColumns(String recipeFormat) {
         char C = '\0';
         StringBuffer currentColumn = new StringBuffer("");
@@ -160,9 +163,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             }
             C = recipeFmtC[c];
             if((C=='|')
-            &&(c<(recipeFmtC.length-1))
-            &&(recipeFmtC[c+1]=='|')
-            &&(currentColumn.length()>0))
+                    &&(c<(recipeFmtC.length-1))
+                    &&(recipeFmtC[c+1]=='|')
+                    &&(currentColumn.length()>0))
             {
                 if(currentColumn.length()>0) {
                     if(currentColumns == null) {
@@ -175,33 +178,33 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 c++;
             }
             else
-            if(Character.isLetter(C)||Character.isDigit(C)||(C=='_'))
-                currentColumn.append(C);
-            else
-            {
-                if(currentColumn.length()>0) {
-                    if(currentColumns == null) {
-                        currentColumns = new Vector();
-                        columnsV.addElement(currentColumns);
-                    }
-                    currentColumns.addElement(currentColumn.toString());
-                    currentColumn.setLength(0);
-                }
-                currentColumns = null;
-                if((C=='.')
-                &&(c<(recipeFmtC.length-2))
-                &&(recipeFmtC[c+1]=='.')
-                &&(recipeFmtC[c+2]=='.'))
+                if(Character.isLetter(C)||Character.isDigit(C)||(C=='_'))
+                    currentColumn.append(C);
+                else
                 {
-                    c+=2;
-                    columnsV.addElement("...");
+                    if(currentColumn.length()>0) {
+                        if(currentColumns == null) {
+                            currentColumns = new Vector();
+                            columnsV.addElement(currentColumns);
+                        }
+                        currentColumns.addElement(currentColumn.toString());
+                        currentColumn.setLength(0);
+                    }
+                    currentColumns = null;
+                    if((C=='.')
+                            &&(c<(recipeFmtC.length-2))
+                            &&(recipeFmtC[c+1]=='.')
+                            &&(recipeFmtC[c+2]=='.'))
+                    {
+                        c+=2;
+                        columnsV.addElement("...");
+                    }
+                    else
+                        if(columnsV.lastElement() instanceof String)
+                            columnsV.setElementAt(((String)columnsV.lastElement())+C,columnsV.size()-1);
+                        else
+                            columnsV.addElement(""+C);
                 }
-                else
-                if(columnsV.lastElement() instanceof String)
-                    columnsV.setElementAt(((String)columnsV.lastElement())+C,columnsV.size()-1);
-                else
-                    columnsV.addElement(""+C);
-            }
         }
         if(currentColumn.length()>0)
         {
@@ -231,8 +234,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     return data.toString();
                 } 
                 else
-                if(str.charAt(d)!=div.charAt(d))
-                    break;
+                    if(str.charAt(d)!=div.charAt(d))
+                        break;
             }
             if(str.charAt(0)=='\n')
             {
@@ -245,7 +248,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         }
         return null;
     }
-
+    
     protected static int getClassFieldIndex(DVector dataRow) {
         for(int d=0;d<dataRow.size();d++)
             if(dataRow.elementAt(d,1) instanceof Vector) 
@@ -255,12 +258,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     return d;
             }
             else
-            if(dataRow.elementAt(d,1) instanceof String)
-            {
-                String s=(String)dataRow.elementAt(d,1);
-                if(s.equalsIgnoreCase("ITEM_CLASS_ID")||s.equalsIgnoreCase("FOOD_DRINK"))
-                    return d;
-            }
+                if(dataRow.elementAt(d,1) instanceof String)
+                {
+                    String s=(String)dataRow.elementAt(d,1);
+                    if(s.equalsIgnoreCase("ITEM_CLASS_ID")||s.equalsIgnoreCase("FOOD_DRINK"))
+                        return d;
+                }
         return -1;
     }
     
@@ -271,8 +274,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         int fieldIndex = getClassFieldIndex(dataRow);
         for(int d=0;d<dataRow.size();d++)
             if((dataRow.elementAt(d,1) instanceof Vector) 
-            &&(!classIDRequired)
-            &&(((Vector)dataRow.elementAt(d,1)).size()>1))
+                    &&(!classIDRequired)
+                    &&(((Vector)dataRow.elementAt(d,1)).size()>1))
                 classIDRequired=true;
         if(fieldIndex >=0)
             classID=(String)dataRow.elementAt(fieldIndex,2);
@@ -280,20 +283,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             if(classID.equalsIgnoreCase("FOOD"))
                 return CMClass.sampleItem("GenFood");
             else
-            if(classID.equalsIgnoreCase("SOAP"))
-                return CMClass.sampleItem("GenItem");
-            else
-            if(classID.equalsIgnoreCase("DRINK"))
-                return CMClass.sampleItem("GenDrink");
-            else
-                return CMClass.sampleItem(classID);
+                if(classID.equalsIgnoreCase("SOAP"))
+                    return CMClass.sampleItem("GenItem");
+                else
+                    if(classID.equalsIgnoreCase("DRINK"))
+                        return CMClass.sampleItem("GenDrink");
+                    else
+                        return CMClass.sampleItem(classID);
         if(classIDRequired)
             return null;
         return CMClass.sampleItem("StdItem");
     }
-
+    
     protected Vector parseDataRows(StringBuffer recipeData, Vector columnsV, int numberOfDataColumns)
-        throws CMException
+    throws CMException
     {
         StringBuffer str = new StringBuffer(recipeData.toString());
         Vector rowsV = new Vector();
@@ -312,20 +315,20 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 if(columnsV.elementAt(c) instanceof String)
                     stripData(str,(String)columnsV.elementAt(c));
                 else
-                if(columnsV.elementAt(c) instanceof Vector)
-                {
-                    currCol = (Vector)columnsV.elementAt(c);
-                    if(c<columnsV.size()-1)
+                    if(columnsV.elementAt(c) instanceof Vector)
                     {
-                        div = (String)columnsV.elementAt(c+1);
-                        c++;
+                        currCol = (Vector)columnsV.elementAt(c);
+                        if(c<columnsV.size()-1)
+                        {
+                            div = (String)columnsV.elementAt(c+1);
+                            c++;
+                        }
                     }
-                }
                 if(!div.equals("..."))
                 {
                     lastDiv = div;
                     String data = null;
-                        data = stripData(str,lastDiv);
+                    data = stripData(str,lastDiv);
                     if(data == null)
                         data = "";
                     dataRow.addElement(currCol,data);
@@ -348,7 +351,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         }
         return rowsV;
     }
-        
+    
     protected boolean fixDataColumn(DVector dataRow, int rowShow) throws CMException
     {
         Item classModelI = getSampleItem(dataRow);
@@ -376,7 +379,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     if(A==null) 
                         throw new CMException("Col name "+((String)colV.elementAt(c))+" is not defined.");
                     if((applicableA==null)
-                    ||(A.appliesToClass(classModelI) > applicableA.appliesToClass(classModelI)))
+                            ||(A.appliesToClass(classModelI) > applicableA.appliesToClass(classModelI)))
                         applicableA = A;
                 }
                 if((applicableA == null)||(applicableA.appliesToClass(classModelI)<0))
@@ -390,8 +393,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 return false;
             }
             else
-            if(!A.confirmValue((String)dataRow.elementAt(d,2)))
-                Log.errOut("CMAbleParms","Item id "+classModelI.ID()+" has bad data '"+((String)dataRow.elementAt(d,2))+"' for column "+((String)dataRow.elementAt(d,1))+" at row "+rowShow);
+                if(!A.confirmValue((String)dataRow.elementAt(d,2)))
+                    Log.errOut("CMAbleParms","Item id "+classModelI.ID()+" has bad data '"+((String)dataRow.elementAt(d,2))+"' for column "+((String)dataRow.elementAt(d,1))+" at row "+rowShow);
         }
         return true;
     }
@@ -410,7 +413,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
     }
     
     
-    public void testRecipeParsing(String recipeFilename, String recipeFormat)
+    public void testRecipeParsing(String recipeFilename, String recipeFormat, boolean save)
     {
         StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+recipeFilename,null,true).text();
         Vector columnsV = parseRecipeFormatColumns(recipeFormat);
@@ -418,12 +421,41 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         for(int c = 0; c < columnsV.size(); c++)
             if(columnsV.elementAt(c) instanceof Vector)
                 numberOfDataColumns++;
+        Vector rowsV = null;
         try {
-            Vector rowsV = parseDataRows(str,columnsV,numberOfDataColumns);
+            rowsV = parseDataRows(str,columnsV,numberOfDataColumns);
             fixDataColumns(rowsV);
         } catch(CMException e) {
             Log.errOut("CMAbleParms","File: "+recipeFilename+": "+e.getMessage());
+            return;
         }
+        Hashtable editors = getEditors();
+        DVector editRow = null;
+        int[] showNumber = {0};
+        int showFlag =-999;
+        MOB mob = CMClass.getMOB("StdMOB");
+        Session fakeSession = (Session)CMClass.getCommon("FakeSession");
+        mob.setSession(fakeSession);
+        fakeSession.setMob(mob);
+        for(int r=0;r<rowsV.size();r++)
+        {
+            editRow = (DVector)rowsV.elementAt(r);
+            for(int a=0;a<editRow.size();a++)
+            {
+                AbilityParmEditor A = (AbilityParmEditor)editors.get((String)editRow.elementAt(a,1));
+                try{ 
+                    String oldVal = (String)editRow.elementAt(a,2);
+                    fakeSession.previousCMD().clear();
+                    fakeSession.previousCMD().addAll(CMParms.makeVector(A.fakeUserInput(oldVal)));
+                    String newVal = A.commandLinePrompt(mob,oldVal,showNumber,showFlag);
+                    editRow.setElementAt(a,2,newVal);
+                } catch(Exception e) {}
+            }
+        }
+        fakeSession.setMob(null);
+        mob.destroy();
+        if(save)
+            resaveRecipeFile(recipeFilename,rowsV,columnsV);
     }
     
     protected void calculateRecipeCols(int[] lengths, String[] headers, Vector rowsV)
@@ -443,12 +475,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     lengths[c]=headers[c].length();
                 }
                 else
-                if((!headers[c].startsWith("#"))
-                &&(!headers[c].equalsIgnoreCase(A.colHeader())))
-                {
-                    headers[c]="#"+c;
-                    lengths[c]=headers[c].length();
-                }
+                    if((!headers[c].startsWith("#"))
+                            &&(!headers[c].equalsIgnoreCase(A.colHeader())))
+                    {
+                        headers[c]="#"+c;
+                        lengths[c]=headers[c].length();
+                    }
             }
         }
         int currLenTotal = 0;
@@ -473,7 +505,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 curCol = 0;
         }
     }
-
+    
     public AbilityRecipeData parseRecipe(String recipeFilename, String recipeFormat)
     {
         AbilityRecipeDataImpl recipe = new AbilityRecipeDataImpl(recipeFilename, recipeFormat);
@@ -502,7 +534,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 list.append(CMStrings.padRight(""+(r+1),3)+" ");
                 for(int c=0;c<dataRow.size();c++)
                     list.append(CMStrings.padRight(CMStrings.limit((String)dataRow.elementAt(c,2),recipe.columnLengths()[c]),recipe.columnLengths()[c])+" ");
-                    
+                
                 list.append("\n\r");
             }
             mob.tell(list.toString());
@@ -530,15 +562,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 if(editRow==null) continue;
             }
             else
-            if(CMath.isInteger(lineNum))
-            {
-                int line = CMath.s_int(lineNum);
-                if((line<1)||(line>recipe.dataRows().size()))
-                    continue;
-                editRow = (DVector)recipe.dataRows().elementAt(line-1);
-            }
-            else
-                break;
+                if(CMath.isInteger(lineNum))
+                {
+                    int line = CMath.s_int(lineNum);
+                    if((line<1)||(line>recipe.dataRows().size()))
+                        continue;
+                    editRow = (DVector)recipe.dataRows().elementAt(line-1);
+                }
+                else
+                    break;
             if(editRow != null) 
             {
                 int showFlag=-1;
@@ -574,7 +606,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             Resources.removeResource("PARSED: "+recipeFilename);
         }
     }
-
+    
     public void resaveRecipeFile(String recipeFilename, Vector rowsV, Vector columnsV)
     {
         StringBuffer saveBuf = new StringBuffer("");
@@ -605,634 +637,651 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             return DEFAULT_EDITORS;
         
         Vector V=CMParms.makeVector(new Object[] {
-            new AbilityParmEditorImpl("SPELL_ID","The Spell ID",PARMTYPE_CHOICES) {
-                public void createChoices() { createChoices(CMClass.abilities());}
-                public String defaultValue(){ return "Spell_ID";}
-            },
-            new AbilityParmEditorImpl("RESOURCE_NAME","Resource",PARMTYPE_CHOICES) {
-                public void createChoices() { createChoices(RawMaterial.RESOURCE_DESCS);}
-                public String defaultValue(){ return "IRON";}
-            },
-            new AbilityParmEditorImpl("ITEM_NAME","Item Final Name",PARMTYPE_STRING){
-                public void createChoices() {}
-                public String defaultValue(){ return "Item Name";}
-            }, 
-            new AbilityParmEditorImpl("ITEM_LEVEL","Lvl",PARMTYPE_NUMBER){
-                public void createChoices() {}
-                public String defaultValue(){ return "1";}
-            },
-            new AbilityParmEditorImpl("BUILD_TIME_TICKS","Time",PARMTYPE_NUMBER){
-                public void createChoices() {}
-                public String defaultValue(){ return "20";}
-            },
-            new AbilityParmEditorImpl("AMOUNT_MATERIAL_REQUIRED","Amt",PARMTYPE_NUMBER){
-                public void createChoices() {}
-                public boolean confirmValue(String oldVal) { return true;}
-                public String defaultValue(){ return "10";}
-            },
-            new AbilityParmEditorImpl("ITEM_BASE_VALUE","Value",PARMTYPE_NUMBER){
-                public void createChoices() {}
-                public String defaultValue(){ return "5";}
-            },
-            new AbilityParmEditorImpl("ITEM_CLASS_ID","Class ID",PARMTYPE_CHOICES) {
-                public void createChoices() { 
-                    Vector V  = new Vector();
-                    V.addAll(CMParms.makeVector(CMClass.clanItems()));
-                    V.addAll(CMParms.makeVector(CMClass.armor()));
-                    V.addAll(CMParms.makeVector(CMClass.basicItems()));
-                    V.addAll(CMParms.makeVector(CMClass.miscMagic()));
-                    V.addAll(CMParms.makeVector(CMClass.miscTech()));
-                    V.addAll(CMParms.makeVector(CMClass.weapons()));
-                    Vector V2=new Vector();
-                    Item I;
-                    for(Enumeration e=V.elements();e.hasMoreElements();)
-                    {
-                        I=(Item)e.nextElement();
-                        if(I.isGeneric())
-                            V2.addElement(I);
-                    }
-                    createChoices(V2);
-                }
-                public String defaultValue(){ return "GenItem";}
-            },
-            new AbilityParmEditorImpl("CODED_WEAR_LOCATION","Wear Locs",PARMTYPE_SPECIAL) {
-                public int appliesToClass(Object o) { return ((o instanceof Armor)||(o instanceof MusicalInstrument))?2:-1;}
-                public void createChoices() {}
-                public boolean confirmValue(String oldVal) { return oldVal.trim().length()>0;}
-                public String defaultValue(){ return "NECK";}
-                public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
-                    short[] layerAtt = new short[1];
-                    short[] layers = new short[1];
-                    long[] wornLoc = new long[1];
-                    boolean[] logicalAnd = new boolean[1];
-                    double[] hardBonus=new double[1];
-                    CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,oldVal);
-                    if(httpReq.isRequestParameter(fieldName+"_WORNDATA"))
-                    {
-                        wornLoc[0]=CMath.s_long(httpReq.getRequestParameter(fieldName+"_WORNDATA"));
-                        for(int i=1;;i++)
-                            if(httpReq.isRequestParameter(fieldName+"_WORNDATA"+(Integer.toString(i))))
-                                wornLoc[0]=wornLoc[0]|CMath.s_long(httpReq.getRequestParameter(fieldName+"_WORNDATA"+(Integer.toString(i))));
-                            else
-                                break;
-                        logicalAnd[0] = httpReq.getRequestParameter(fieldName+"_ISTWOHANDED").equalsIgnoreCase("on");
-                        layers[0] = CMath.s_short(httpReq.getRequestParameter(fieldName+"_LAYER"));
-                        layerAtt[0] = 0;
-                        if(httpReq.getRequestParameter(fieldName+"_SEETHRU").equalsIgnoreCase("on"))
-                            layerAtt[0] |= Armor.LAYERMASK_SEETHROUGH;
-                        if(httpReq.getRequestParameter(fieldName+"_MULTIWEAR").equalsIgnoreCase("on"))
-                            layerAtt[0] |= Armor.LAYERMASK_MULTIWEAR;
-                    }
-                    return reconvert(layerAtt,layers,wornLoc,logicalAnd,hardBonus);
-                }
-                public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
-                    String value = webValue(httpReq,parms,oldVal,fieldName);
-                    short[] layerAtt = new short[1];
-                    short[] layers = new short[1];
-                    long[] wornLoc = new long[1];
-                    boolean[] logicalAnd = new boolean[1];
-                    double[] hardBonus=new double[1];
-                    CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,value);
-                    StringBuffer str = new StringBuffer("");
-                    str.append("\n\r<SELECT NAME="+fieldName+"_WORNDATA MULTIPLE>");
-                    for(int i=1;i<Item.WORN_DESCS.length;i++)
-                    {
-                        String climstr=Item.WORN_DESCS[i];
-                        int mask=(int)CMath.pow(2,i-1);
-                        str.append("<OPTION VALUE="+mask);
-                        if((wornLoc[0]&mask)>0) str.append(" SELECTED");
-                        str.append(">"+climstr);
-                    }
-                    str.append("</SELECT>");
-                    str.append("<BR>\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_ISTWOHANDED value=\"on\" "+(logicalAnd[0]?"CHECKED":"")+">Is worn on All above Locations.");
-                    str.append("<BR>\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_ISTWOHANDED value=\"\" "+(logicalAnd[0]?"":"CHECKED")+">Is worn on ANY of the above Locations.");
-                    str.append("<BR>\n\rLayer: <INPUT TYPE=TEXT NAME="+fieldName+"_LAYER SIZE=5 VALUE=\""+layers[0]+"\">");
-                    boolean seeThru = CMath.bset(layerAtt[0],Armor.LAYERMASK_SEETHROUGH);
-                    boolean multiWear = CMath.bset(layerAtt[0],Armor.LAYERMASK_MULTIWEAR);
-                    str.append("&nbsp;&nbsp;\n\r<INPUT TYPE=CHECKBOX NAME="+fieldName+"_SEETHRU value=\"on\" "+(seeThru?"CHECKED":"")+">Is see-through.");
-                    str.append("&nbsp;&nbsp;\n\r<INPUT TYPE=CHECKBOX NAME="+fieldName+"_MULTIWEAR value=\"on\" "+(multiWear?"CHECKED":"")+">Is multi-wear.");
-                    return str.toString();
-                }
-                
-                public String reconvert(short[] layerAtt, short[] layers, long[] wornLoc, boolean[] logicalAnd, double[] hardBonus)
-                {
-                    StringBuffer newVal = new StringBuffer("");
-                    if((layerAtt[0]!=0)&&(layers[0]!=0))
-                    {
-                        if(CMath.bset(layerAtt[0],Armor.LAYERMASK_MULTIWEAR))
-                            newVal.append('M');
-                        if(CMath.bset(layerAtt[0],Armor.LAYERMASK_SEETHROUGH))
-                            newVal.append('S');
-                        newVal.append(layers[0]);
-                        newVal.append(':');
-                    }
-                    boolean needLink=false;
-                    for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
-                    {
-                        if(CMath.bset(wornLoc[0],CMath.pow(2,wo-1)))
+                new AbilityParmEditorImpl("SPELL_ID","The Spell ID",PARMTYPE_CHOICES) {
+                    public void createChoices() { createChoices(CMClass.abilities());}
+                    public String defaultValue(){ return "Spell_ID";}
+                },
+                new AbilityParmEditorImpl("RESOURCE_NAME","Resource",PARMTYPE_CHOICES) {
+                    public void createChoices() { createChoices(RawMaterial.RESOURCE_DESCS);}
+                    public String defaultValue(){ return "IRON";}
+                },
+                new AbilityParmEditorImpl("ITEM_NAME","Item Final Name",PARMTYPE_STRING){
+                    public void createChoices() {}
+                    public String defaultValue(){ return "Item Name";}
+                }, 
+                new AbilityParmEditorImpl("ITEM_LEVEL","Lvl",PARMTYPE_NUMBER){
+                    public void createChoices() {}
+                    public String defaultValue(){ return "1";}
+                },
+                new AbilityParmEditorImpl("BUILD_TIME_TICKS","Time",PARMTYPE_NUMBER){
+                    public void createChoices() {}
+                    public String defaultValue(){ return "20";}
+                },
+                new AbilityParmEditorImpl("AMOUNT_MATERIAL_REQUIRED","Amt",PARMTYPE_NUMBER){
+                    public void createChoices() {}
+                    public boolean confirmValue(String oldVal) { return true;}
+                    public String defaultValue(){ return "10";}
+                },
+                new AbilityParmEditorImpl("ITEM_BASE_VALUE","Value",PARMTYPE_NUMBER){
+                    public void createChoices() {}
+                    public String defaultValue(){ return "5";}
+                },
+                new AbilityParmEditorImpl("ITEM_CLASS_ID","Class ID",PARMTYPE_CHOICES) {
+                    public void createChoices() { 
+                        Vector V  = new Vector();
+                        V.addAll(CMParms.makeVector(CMClass.clanItems()));
+                        V.addAll(CMParms.makeVector(CMClass.armor()));
+                        V.addAll(CMParms.makeVector(CMClass.basicItems()));
+                        V.addAll(CMParms.makeVector(CMClass.miscMagic()));
+                        V.addAll(CMParms.makeVector(CMClass.miscTech()));
+                        V.addAll(CMParms.makeVector(CMClass.weapons()));
+                        Vector V2=new Vector();
+                        Item I;
+                        for(Enumeration e=V.elements();e.hasMoreElements();)
                         {
-                            if(needLink)
-                                newVal.append(logicalAnd[0]?"&&":"||");
-                            needLink = true;
-                            newVal.append(Item.WORN_DESCS[wo].toUpperCase());
+                            I=(Item)e.nextElement();
+                            if(I.isGeneric())
+                                V2.addElement(I);
                         }
+                        createChoices(V2);
                     }
-                    return newVal.toString();
+                    public String defaultValue(){ return "GenItem";}
+                },
+                new AbilityParmEditorImpl("CODED_WEAR_LOCATION","Wear Locs",PARMTYPE_SPECIAL) {
+                    public int appliesToClass(Object o) { return ((o instanceof Armor)||(o instanceof MusicalInstrument))?2:-1;}
+                    public void createChoices() {}
+                    public boolean confirmValue(String oldVal) { return oldVal.trim().length()>0;}
+                    public String defaultValue(){ return "NECK";}
+                    public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                        short[] layerAtt = new short[1];
+                        short[] layers = new short[1];
+                        long[] wornLoc = new long[1];
+                        boolean[] logicalAnd = new boolean[1];
+                        double[] hardBonus=new double[1];
+                        CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,oldVal);
+                        if(httpReq.isRequestParameter(fieldName+"_WORNDATA"))
+                        {
+                            wornLoc[0]=CMath.s_long(httpReq.getRequestParameter(fieldName+"_WORNDATA"));
+                            for(int i=1;;i++)
+                                if(httpReq.isRequestParameter(fieldName+"_WORNDATA"+(Integer.toString(i))))
+                                    wornLoc[0]=wornLoc[0]|CMath.s_long(httpReq.getRequestParameter(fieldName+"_WORNDATA"+(Integer.toString(i))));
+                                else
+                                    break;
+                            logicalAnd[0] = httpReq.getRequestParameter(fieldName+"_ISTWOHANDED").equalsIgnoreCase("on");
+                            layers[0] = CMath.s_short(httpReq.getRequestParameter(fieldName+"_LAYER"));
+                            layerAtt[0] = 0;
+                            if(httpReq.getRequestParameter(fieldName+"_SEETHRU").equalsIgnoreCase("on"))
+                                layerAtt[0] |= Armor.LAYERMASK_SEETHROUGH;
+                            if(httpReq.getRequestParameter(fieldName+"_MULTIWEAR").equalsIgnoreCase("on"))
+                                layerAtt[0] |= Armor.LAYERMASK_MULTIWEAR;
+                        }
+                        return reconvert(layerAtt,layers,wornLoc,logicalAnd,hardBonus);
+                    }
+                    public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                        String value = webValue(httpReq,parms,oldVal,fieldName);
+                        short[] layerAtt = new short[1];
+                        short[] layers = new short[1];
+                        long[] wornLoc = new long[1];
+                        boolean[] logicalAnd = new boolean[1];
+                        double[] hardBonus=new double[1];
+                        CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,value);
+                        StringBuffer str = new StringBuffer("");
+                        str.append("\n\r<SELECT NAME="+fieldName+"_WORNDATA MULTIPLE>");
+                        for(int i=1;i<Item.WORN_DESCS.length;i++)
+                        {
+                            String climstr=Item.WORN_DESCS[i];
+                            int mask=(int)CMath.pow(2,i-1);
+                            str.append("<OPTION VALUE="+mask);
+                            if((wornLoc[0]&mask)>0) str.append(" SELECTED");
+                            str.append(">"+climstr);
+                        }
+                        str.append("</SELECT>");
+                        str.append("<BR>\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_ISTWOHANDED value=\"on\" "+(logicalAnd[0]?"CHECKED":"")+">Is worn on All above Locations.");
+                        str.append("<BR>\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_ISTWOHANDED value=\"\" "+(logicalAnd[0]?"":"CHECKED")+">Is worn on ANY of the above Locations.");
+                        str.append("<BR>\n\rLayer: <INPUT TYPE=TEXT NAME="+fieldName+"_LAYER SIZE=5 VALUE=\""+layers[0]+"\">");
+                        boolean seeThru = CMath.bset(layerAtt[0],Armor.LAYERMASK_SEETHROUGH);
+                        boolean multiWear = CMath.bset(layerAtt[0],Armor.LAYERMASK_MULTIWEAR);
+                        str.append("&nbsp;&nbsp;\n\r<INPUT TYPE=CHECKBOX NAME="+fieldName+"_SEETHRU value=\"on\" "+(seeThru?"CHECKED":"")+">Is see-through.");
+                        str.append("&nbsp;&nbsp;\n\r<INPUT TYPE=CHECKBOX NAME="+fieldName+"_MULTIWEAR value=\"on\" "+(multiWear?"CHECKED":"")+">Is multi-wear.");
+                        return str.toString();
+                    }
                     
-                }
-                
-                public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
-                {
-                    short[] layerAtt = new short[1];
-                    short[] layers = new short[1];
-                    long[] wornLoc = new long[1];
-                    boolean[] logicalAnd = new boolean[1];
-                    double[] hardBonus=new double[1];
-                    CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,oldVal);
-                    CMLib.genEd().wornLayer(mob,layerAtt,layers,++showNumber[0],showFlag);
-                    CMLib.genEd().wornLocation(mob,wornLoc,logicalAnd,++showNumber[0],showFlag);
-                    return reconvert(layerAtt,layers,wornLoc,logicalAnd,hardBonus);
-                }
-            },
-            new AbilityParmEditorImpl("CONTAINER_CAPACITY","Cap.",PARMTYPE_NUMBER) {
-                public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
-                public void createChoices() {}
-                public String defaultValue(){ return "20";}
-            },
-            new AbilityParmEditorImpl("BASE_ARMOR_AMOUNT","Arm.",PARMTYPE_NUMBER) {
-                public int appliesToClass(Object o) { return (o instanceof Armor)?2:-1;}
-                public void createChoices() {}
-                public String defaultValue(){ return "1";}
-            },
-            new AbilityParmEditorImpl("CONTAINER_TYPE","Typ.",PARMTYPE_MULTICHOICES) {
-                public void createChoices() { createBinaryChoices(Container.CONTAIN_DESCS);}
-                public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
-                public String defaultValue(){ return "0";}
-            },
-            new AbilityParmEditorImpl("CONTAINER_TYPE_OR_LIDLOCK","Typ.",PARMTYPE_MULTICHOICES) {
-                public void createChoices() { 
-                    createBinaryChoices(Container.CONTAIN_DESCS);
-                    choices().addElement("LID","Lid");
-                    choices().addElement("LOCK","Lock");
-                    choices().addElement("","");
-                }
-                public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
-                public String defaultValue(){ return "";}
-            },
-            new AbilityParmEditorImpl("CODED_SPELL_LIST","Spell Affects",PARMTYPE_SPECIAL) {
-                public void createChoices() {}
-                public boolean confirmValue(String oldVal) {
-                    if(oldVal.length()==0) return true;
-                    if(oldVal.charAt(0)=='*')
-                        oldVal = oldVal.substring(1);
-                    int x=oldVal.indexOf('(');
-                    int y=oldVal.indexOf(';');
-                    if((x<y)&&(x>0)) y=x;
-                    if(y<0) 
-                        return CMClass.getAbility(oldVal)!=null;
-                    return CMClass.getAbility(oldVal.substring(0,y))!=null;
-                }
-                public String defaultValue(){ return "";}
-                public String rebuild(Vector spells) throws CMException
-                {
-                    StringBuffer newVal = new StringBuffer("");
-                    if(spells.size()==1)
-                        newVal.append("*" + ((Ability)spells.firstElement()).ID() + ";" + ((Ability)spells.firstElement()).text());
-                    else
-                    if(spells.size()>1) {
-                        for(int s=0;s<spells.size();s++)
-                        {
-                            String txt = ((Ability)spells.elementAt(s)).text().trim();
-                            if((txt.indexOf(';')>=0)||(CMClass.getAbility(txt)!=null))
-                                throw new CMException("You may not have more than one spell when one of the spells parameters is a spell id or a ; character.");
-                            newVal.append(((Ability)spells.firstElement()).ID());
-                            if(txt.length()>0)
-                                newVal.append(";" + ((Ability)spells.firstElement()).text());
-                            if(s<(spells.size()-1))
-                                newVal.append(";");
-                        }
-                    }
-                    return newVal.toString();
-                }
-                public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
-                    Vector spells=null;
-                    if(httpReq.isRequestParameter(fieldName+"_AFFECT1"))
+                    public String reconvert(short[] layerAtt, short[] layers, long[] wornLoc, boolean[] logicalAnd, double[] hardBonus)
                     {
-                        spells = new Vector();
-                        int num=1;
-                        String behav=httpReq.getRequestParameter(fieldName+"_AFFECT"+num);
-                        String theparm=httpReq.getRequestParameter(fieldName+"_ADATA"+num);
-                        while((behav!=null)&&(theparm!=null))
+                        StringBuffer newVal = new StringBuffer("");
+                        if((layerAtt[0]!=0)&&(layers[0]!=0))
                         {
-                            if(behav.length()>0)
+                            if(CMath.bset(layerAtt[0],Armor.LAYERMASK_MULTIWEAR))
+                                newVal.append('M');
+                            if(CMath.bset(layerAtt[0],Armor.LAYERMASK_SEETHROUGH))
+                                newVal.append('S');
+                            newVal.append(layers[0]);
+                            newVal.append(':');
+                        }
+                        boolean needLink=false;
+                        for(int wo=1;wo<Item.WORN_DESCS.length;wo++)
+                        {
+                            if(CMath.bset(wornLoc[0],CMath.pow(2,wo-1)))
                             {
-                                Ability A=CMClass.getAbility(behav);
-                                if(theparm.trim().length()>0)
-                                    A.setMiscText(theparm);
-                                spells.addElement(A);
+                                if(needLink)
+                                    newVal.append(logicalAnd[0]?"&&":"||");
+                                needLink = true;
+                                newVal.append(Item.WORN_DESCS[wo].toUpperCase());
                             }
-                            num++;
-                            behav=httpReq.getRequestParameter(fieldName+"_AFFECT"+num);
-                            theparm=httpReq.getRequestParameter(fieldName+"_ADATA"+num);
+                        }
+                        return newVal.toString();
+                        
+                    }
+                    public String[] fakeUserInput(String oldVal) { return new String[]{"",""}; }
+                    public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
+                    {
+                        short[] layerAtt = new short[1];
+                        short[] layers = new short[1];
+                        long[] wornLoc = new long[1];
+                        boolean[] logicalAnd = new boolean[1];
+                        double[] hardBonus=new double[1];
+                        CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,oldVal);
+                        CMLib.genEd().wornLayer(mob,layerAtt,layers,++showNumber[0],showFlag);
+                        CMLib.genEd().wornLocation(mob,wornLoc,logicalAnd,++showNumber[0],showFlag);
+                        return reconvert(layerAtt,layers,wornLoc,logicalAnd,hardBonus);
+                    }
+                },
+                new AbilityParmEditorImpl("CONTAINER_CAPACITY","Cap.",PARMTYPE_NUMBER) {
+                    public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
+                    public void createChoices() {}
+                    public String defaultValue(){ return "20";}
+                },
+                new AbilityParmEditorImpl("BASE_ARMOR_AMOUNT","Arm.",PARMTYPE_NUMBER) {
+                    public int appliesToClass(Object o) { return (o instanceof Armor)?2:-1;}
+                    public void createChoices() {}
+                    public String defaultValue(){ return "1";}
+                },
+                new AbilityParmEditorImpl("CONTAINER_TYPE","Typ.",PARMTYPE_MULTICHOICES) {
+                    public void createChoices() { createBinaryChoices(Container.CONTAIN_DESCS);}
+                    public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
+                    public String defaultValue(){ return "0";}
+                },
+                new AbilityParmEditorImpl("CONTAINER_TYPE_OR_LIDLOCK","Typ.",PARMTYPE_MULTICHOICES) {
+                    public void createChoices() { 
+                        createBinaryChoices(Container.CONTAIN_DESCS);
+                        choices().addElement("LID","Lid");
+                        choices().addElement("LOCK","Lock");
+                        choices().addElement("","");
+                    }
+                    public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
+                    public String defaultValue(){ return "";}
+                },
+                new AbilityParmEditorImpl("CODED_SPELL_LIST","Spell Affects",PARMTYPE_SPECIAL) {
+                    public void createChoices() {}
+                    public boolean confirmValue(String oldVal) {
+                        if(oldVal.length()==0) return true;
+                        if(oldVal.charAt(0)=='*')
+                            oldVal = oldVal.substring(1);
+                        int x=oldVal.indexOf('(');
+                        int y=oldVal.indexOf(';');
+                        if((x<y)&&(x>0)) y=x;
+                        if(y<0) 
+                            return CMClass.getAbility(oldVal)!=null;
+                        return CMClass.getAbility(oldVal.substring(0,y))!=null;
+                    }
+                    public String defaultValue(){ return "";}
+                    public String[] fakeUserInput(String oldVal) { return new String[]{""};}
+                    public String rebuild(Vector spells) throws CMException
+                    {
+                        StringBuffer newVal = new StringBuffer("");
+                        if(spells.size()==1)
+                            newVal.append("*" + ((Ability)spells.firstElement()).ID() + ";" + ((Ability)spells.firstElement()).text());
+                        else
+                            if(spells.size()>1) {
+                                for(int s=0;s<spells.size();s++)
+                                {
+                                    String txt = ((Ability)spells.elementAt(s)).text().trim();
+                                    if((txt.indexOf(';')>=0)||(CMClass.getAbility(txt)!=null))
+                                        throw new CMException("You may not have more than one spell when one of the spells parameters is a spell id or a ; character.");
+                                    newVal.append(((Ability)spells.firstElement()).ID());
+                                    if(txt.length()>0)
+                                        newVal.append(";" + ((Ability)spells.firstElement()).text());
+                                    if(s<(spells.size()-1))
+                                        newVal.append(";");
+                                }
+                            }
+                        return newVal.toString();
+                    }
+                    public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                        Vector spells=null;
+                        if(httpReq.isRequestParameter(fieldName+"_AFFECT1"))
+                        {
+                            spells = new Vector();
+                            int num=1;
+                            String behav=httpReq.getRequestParameter(fieldName+"_AFFECT"+num);
+                            String theparm=httpReq.getRequestParameter(fieldName+"_ADATA"+num);
+                            while((behav!=null)&&(theparm!=null))
+                            {
+                                if(behav.length()>0)
+                                {
+                                    Ability A=CMClass.getAbility(behav);
+                                    if(theparm.trim().length()>0)
+                                        A.setMiscText(theparm);
+                                    spells.addElement(A);
+                                }
+                                num++;
+                                behav=httpReq.getRequestParameter(fieldName+"_AFFECT"+num);
+                                theparm=httpReq.getRequestParameter(fieldName+"_ADATA"+num);
+                            }
+                        }
+                        else
+                            spells = CMLib.ableParms().getCodedSpells(oldVal);
+                        try {
+                            return rebuild(spells);
+                        } catch(Exception e) {
+                            return oldVal;
                         }
                     }
-                    else
-                        spells = CMLib.ableParms().getCodedSpells(oldVal);
-                    try {
-                        return rebuild(spells);
-                    } catch(Exception e) {
-                        return oldVal;
-                    }
-                }
-                public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
-                    Vector spells=CMLib.ableParms().getCodedSpells(webValue(httpReq,parms,oldVal,fieldName));
-                    StringBuffer str = new StringBuffer("");
-                    str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>");
-                    for(int i=0;i<spells.size();i++)
-                    {
-                        Ability A=(Ability)spells.elementAt(i);
+                    public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                        Vector spells=CMLib.ableParms().getCodedSpells(webValue(httpReq,parms,oldVal,fieldName));
+                        StringBuffer str = new StringBuffer("");
+                        str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>");
+                        for(int i=0;i<spells.size();i++)
+                        {
+                            Ability A=(Ability)spells.elementAt(i);
+                            str.append("<TR><TD WIDTH=50%>");
+                            str.append("\n\r<SELECT ONCHANGE=\"EditAffect(this);\" NAME="+fieldName+"_AFFECT"+(i+1)+">");
+                            str.append("<OPTION VALUE=\"\">Delete!");
+                            str.append("<OPTION VALUE=\""+A.ID()+"\" SELECTED>"+A.name());
+                            str.append("</SELECT>");
+                            str.append("</TD><TD WIDTH=50%>");
+                            String theparm=CMStrings.replaceAll(A.text(),"\"","&quot;");
+                            str.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME="+fieldName+"_ADATA"+(i+1)+" VALUE=\""+theparm+"\">");
+                            str.append("</TD></TR>");
+                        }
                         str.append("<TR><TD WIDTH=50%>");
-                        str.append("\n\r<SELECT ONCHANGE=\"EditAffect(this);\" NAME="+fieldName+"_AFFECT"+(i+1)+">");
-                        str.append("<OPTION VALUE=\"\">Delete!");
-                        str.append("<OPTION VALUE=\""+A.ID()+"\" SELECTED>"+A.name());
+                        str.append("\n\r<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+fieldName+"_AFFECT"+(spells.size()+1)+">");
+                        str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
+                        for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+                        {
+                            Ability A=(Ability)a.nextElement();
+                            String cnam=A.ID();
+                            str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+                        }
                         str.append("</SELECT>");
                         str.append("</TD><TD WIDTH=50%>");
-                        String theparm=CMStrings.replaceAll(A.text(),"\"","&quot;");
-                        str.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME="+fieldName+"_ADATA"+(i+1)+" VALUE=\""+theparm+"\">");
+                        str.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME="+fieldName+"_ADATA"+(spells.size()+1)+" VALUE=\"\">");
                         str.append("</TD></TR>");
+                        str.append("</TABLE>");
+                        return str.toString();
                     }
-                    str.append("<TR><TD WIDTH=50%>");
-                    str.append("\n\r<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+fieldName+"_AFFECT"+(spells.size()+1)+">");
-                    str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
-                    for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+                    public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
                     {
-                        Ability A=(Ability)a.nextElement();
-                        String cnam=A.ID();
-                        str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
-                    }
-                    str.append("</SELECT>");
-                    str.append("</TD><TD WIDTH=50%>");
-                    str.append("\n\r<INPUT TYPE=TEXT SIZE=30 NAME="+fieldName+"_ADATA"+(spells.size()+1)+" VALUE=\"\">");
-                    str.append("</TD></TR>");
-                    str.append("</TABLE>");
-                    return str.toString();
-                }
-                public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
-                {
-                    Vector spells=CMLib.ableParms().getCodedSpells(oldVal);
-                    StringBuffer rawCheck = new StringBuffer("");
-                    for(int s=0;s<spells.size();s++)
-                        rawCheck.append(((Ability)spells.elementAt(s)).ID()).append(";").append(((Ability)spells.elementAt(s)).text()).append(";");
-                    boolean okToProceed = true;
-                    ++showNumber[0];
-                    String newVal = null;
-                    while(okToProceed) {
-                        okToProceed = false;
-                        CMLib.genEd().spells(mob,spells,showNumber[0],showFlag,true);
-                        StringBuffer sameCheck = new StringBuffer("");
+                        Vector spells=CMLib.ableParms().getCodedSpells(oldVal);
+                        StringBuffer rawCheck = new StringBuffer("");
                         for(int s=0;s<spells.size();s++)
-                            sameCheck.append(((Ability)spells.elementAt(s)).ID()).append(';').append(((Ability)spells.elementAt(s)).text()).append(';');
-                        if(sameCheck.toString().equals(rawCheck.toString())) 
-                            return oldVal;
-                        try {
-                            newVal = rebuild(spells);
-                        } catch(CMException e) {
-                            mob.tell(e.getMessage());
-                            okToProceed = true;
-                            break;
+                            rawCheck.append(((Ability)spells.elementAt(s)).ID()).append(";").append(((Ability)spells.elementAt(s)).text()).append(";");
+                        boolean okToProceed = true;
+                        ++showNumber[0];
+                        String newVal = null;
+                        while(okToProceed) {
+                            okToProceed = false;
+                            CMLib.genEd().spells(mob,spells,showNumber[0],showFlag,true);
+                            StringBuffer sameCheck = new StringBuffer("");
+                            for(int s=0;s<spells.size();s++)
+                                sameCheck.append(((Ability)spells.elementAt(s)).ID()).append(';').append(((Ability)spells.elementAt(s)).text()).append(';');
+                            if(sameCheck.toString().equals(rawCheck.toString())) 
+                                return oldVal;
+                            try {
+                                newVal = rebuild(spells);
+                            } catch(CMException e) {
+                                mob.tell(e.getMessage());
+                                okToProceed = true;
+                                break;
+                            }
                         }
+                        return newVal.toString();
                     }
-                    return newVal.toString();
-                }
-            },
-            new AbilityParmEditorImpl("BASE_DAMAGE","Dmg.",PARMTYPE_NUMBER) {
-                public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
-                public void createChoices() {}
-                public String defaultValue(){ return "1";}
-            },
-            new AbilityParmEditorImpl("LID_LOCK","Lid.",PARMTYPE_CHOICES) {
-                public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
-                public void createChoices() { createChoices(new String[]{"","LID","LOCK"});}
-                public String defaultValue(){ return "";}
-            },
-            new AbilityParmEditorImpl("STATUE","Statue",PARMTYPE_CHOICES) {
-                public int appliesToClass(Object o) { return ((!(o instanceof Armor))&&(!(o instanceof Container))&&(!(o instanceof Drink)))?1:-1;}
-                public void createChoices() { createChoices(new String[]{"","STATUE"});}
-                public String defaultValue(){ return "";}
-            },
-            new AbilityParmEditorImpl("RIDE_BASIS","Ride",PARMTYPE_CHOICES) {
-                public int appliesToClass(Object o) { return (o instanceof Rideable)?3:-1;}
-                public void createChoices() { createChoices(new String[]{"","CHAIR","TABLE","LADDER","ENTER","BED"});}
-                public String defaultValue(){ return "";}
-            },
-            new AbilityParmEditorImpl("LIQUID_CAPACITY","Liq.",PARMTYPE_NUMBER) {
-                public int appliesToClass(Object o) { return (o instanceof Drink)?4:-1;}
-                public void createChoices() {}
-                public String defaultValue(){ return "25";}
-            },
-            new AbilityParmEditorImpl("WEAPON_CLASS","WClas",PARMTYPE_CHOICES) {
-                public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
-                public void createChoices() { createChoices(Weapon.CLASS_DESCS);}
-                public String defaultValue(){ return "BLUNT";}
-            },
-            new AbilityParmEditorImpl("SMOKE_FLAG","Smoke",PARMTYPE_CHOICES) {
-                public int appliesToClass(Object o) { return (o instanceof Light)?5:-1;}
-                public void createChoices() { createChoices(new String[]{"","SMOKE"});}
-                public String defaultValue(){ return "";}
-            },
-            new AbilityParmEditorImpl("WEAPON_HANDS_REQUIRED","Hand",PARMTYPE_NUMBER) {
-                public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
-                public void createChoices() {}
-                public String defaultValue(){ return "1";}
-            },
-            new AbilityParmEditorImpl("LIGHT_DURATION","Dur.",PARMTYPE_NUMBER) {
-                public int appliesToClass(Object o) { return (o instanceof Light)?5:-1;}
-                public void createChoices() {}
-                public String defaultValue(){ return "10";}
-            },
-            new AbilityParmEditorImpl("CLAN_ITEM_CODENUMBER","Typ.",PARMTYPE_CHOICES) {
-                public int appliesToClass(Object o) { return (o instanceof ClanItem)?10:-1;}
-                public void createChoices() { createNumberedChoices(ClanItem.CI_DESC);}
-                public String defaultValue(){ return "1";}
-            },
-            new AbilityParmEditorImpl("CLAN_EXPERIENCE_COST_AMOUNT","Exp",PARMTYPE_NUMBER) {
-                public void createChoices() {}
-                public String defaultValue(){ return "100";}
-            },
-            new AbilityParmEditorImpl("CLAN_AREA_FLAG","Area",PARMTYPE_CHOICES) {
-                public int appliesToClass(Object o) { return o.getClass().getName().toString().indexOf("LawBook")>0?5:-1;}
-                public void createChoices() { createChoices(new String[]{"","AREA"});}
-                public String defaultValue(){ return "";}
-            },
-            new AbilityParmEditorImpl("READABLE_TEXT","Read",PARMTYPE_STRINGORNULL) {
-                public void createChoices() {}
-                public String defaultValue(){ return "";}
-            },
-            new AbilityParmEditorImpl("REQUIRED_COMMON_SKILL_ID","Common Skill",PARMTYPE_CHOICES) {
-                public void createChoices() {
-                    Vector V  = new Vector();
-                    Ability A = null;
-                    for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
-                    {
-                        A=(Ability)e.nextElement();
-                        if((A.classificationCode() & Ability.ALL_ACODES) == Ability.ACODE_COMMON_SKILL)
-                            V.addElement(A);
+                },
+                new AbilityParmEditorImpl("BASE_DAMAGE","Dmg.",PARMTYPE_NUMBER) {
+                    public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
+                    public void createChoices() {}
+                    public String defaultValue(){ return "1";}
+                },
+                new AbilityParmEditorImpl("LID_LOCK","Lid.",PARMTYPE_CHOICES) {
+                    public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
+                    public void createChoices() { createChoices(new String[]{"","LID","LOCK"});}
+                    public String defaultValue(){ return "";}
+                },
+                new AbilityParmEditorImpl("STATUE","Statue",PARMTYPE_CHOICES) {
+                    public int appliesToClass(Object o) { return ((!(o instanceof Armor))&&(!(o instanceof Container))&&(!(o instanceof Drink)))?1:-1;}
+                    public void createChoices() { createChoices(new String[]{"","STATUE"});}
+                    public String defaultValue(){ return "";}
+                },
+                new AbilityParmEditorImpl("RIDE_BASIS","Ride",PARMTYPE_CHOICES) {
+                    public int appliesToClass(Object o) { return (o instanceof Rideable)?3:-1;}
+                    public void createChoices() { createChoices(new String[]{"","CHAIR","TABLE","LADDER","ENTER","BED"});}
+                    public String defaultValue(){ return "";}
+                },
+                new AbilityParmEditorImpl("LIQUID_CAPACITY","Liq.",PARMTYPE_NUMBER) {
+                    public int appliesToClass(Object o) { return (o instanceof Drink)?4:-1;}
+                    public void createChoices() {}
+                    public String defaultValue(){ return "25";}
+                },
+                new AbilityParmEditorImpl("WEAPON_CLASS","WClas",PARMTYPE_CHOICES) {
+                    public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
+                    public void createChoices() { createChoices(Weapon.CLASS_DESCS);}
+                    public String defaultValue(){ return "BLUNT";}
+                },
+                new AbilityParmEditorImpl("SMOKE_FLAG","Smoke",PARMTYPE_CHOICES) {
+                    public int appliesToClass(Object o) { return (o instanceof Light)?5:-1;}
+                    public void createChoices() { createChoices(new String[]{"","SMOKE"});}
+                    public String defaultValue(){ return "";}
+                },
+                new AbilityParmEditorImpl("WEAPON_HANDS_REQUIRED","Hand",PARMTYPE_NUMBER) {
+                    public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
+                    public void createChoices() {}
+                    public String defaultValue(){ return "1";}
+                },
+                new AbilityParmEditorImpl("LIGHT_DURATION","Dur.",PARMTYPE_NUMBER) {
+                    public int appliesToClass(Object o) { return (o instanceof Light)?5:-1;}
+                    public void createChoices() {}
+                    public String defaultValue(){ return "10";}
+                },
+                new AbilityParmEditorImpl("CLAN_ITEM_CODENUMBER","Typ.",PARMTYPE_CHOICES) {
+                    public int appliesToClass(Object o) { return (o instanceof ClanItem)?10:-1;}
+                    public void createChoices() { createNumberedChoices(ClanItem.CI_DESC);}
+                    public String defaultValue(){ return "1";}
+                },
+                new AbilityParmEditorImpl("CLAN_EXPERIENCE_COST_AMOUNT","Exp",PARMTYPE_NUMBER) {
+                    public void createChoices() {}
+                    public String defaultValue(){ return "100";}
+                },
+                new AbilityParmEditorImpl("CLAN_AREA_FLAG","Area",PARMTYPE_CHOICES) {
+                    public int appliesToClass(Object o) { return o.getClass().getName().toString().indexOf("LawBook")>0?5:-1;}
+                    public void createChoices() { createChoices(new String[]{"","AREA"});}
+                    public String defaultValue(){ return "";}
+                },
+                new AbilityParmEditorImpl("READABLE_TEXT","Read",PARMTYPE_STRINGORNULL) {
+                    public void createChoices() {}
+                    public String defaultValue(){ return "";}
+                },
+                new AbilityParmEditorImpl("REQUIRED_COMMON_SKILL_ID","Common Skill",PARMTYPE_CHOICES) {
+                    public void createChoices() {
+                        Vector V  = new Vector();
+                        Ability A = null;
+                        for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                        {
+                            A=(Ability)e.nextElement();
+                            if((A.classificationCode() & Ability.ALL_ACODES) == Ability.ACODE_COMMON_SKILL)
+                                V.addElement(A);
+                        }
+                        V.addElement("");
+                        createChoices(V);
                     }
-                    V.addElement("");
-                    createChoices(V);
-                }
-                public String defaultValue(){ return "";}
-            },
-            new AbilityParmEditorImpl("FOOD_DRINK","Type",PARMTYPE_CHOICES) {
-                public void createChoices() { createChoices(new String[]{"","FOOD","DRINK","SOAP","GenPerfume"});}
-                public String defaultValue(){ return "";}
-            },
-            new AbilityParmEditorImpl("SMELL_LIST","Smells",PARMTYPE_STRING) {
-                public void createChoices() {}
-                public int appliesToClass(Object o) { return (o instanceof Perfume)?5:-1;}
-                public String defaultValue(){ return "";}
-            },
-            new AbilityParmEditorImpl("RESOURCE_OR_KEYWORD","Resource",PARMTYPE_SPECIAL) {
-                public void createChoices() {}
-                public boolean confirmValue(String oldVal) { return true;}
-                public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
-                    if(httpReq.isRequestParameter(fieldName+"_WHICH"))
-                    {
-                        String which=httpReq.getRequestParameter(fieldName+"_WHICH");
-                        if(which.trim().length()>0)
-                            return httpReq.getRequestParameter(fieldName+"_RESOURCE");
-                        return httpReq.getRequestParameter(fieldName+"_WORD");
+                    public String defaultValue(){ return "";}
+                },
+                new AbilityParmEditorImpl("FOOD_DRINK","Type",PARMTYPE_CHOICES) {
+                    public void createChoices() { createChoices(new String[]{"","FOOD","DRINK","SOAP","GenPerfume"});}
+                    public String defaultValue(){ return "";}
+                },
+                new AbilityParmEditorImpl("SMELL_LIST","Smells",PARMTYPE_STRING) {
+                    public void createChoices() {}
+                    public int appliesToClass(Object o) { return (o instanceof Perfume)?5:-1;}
+                    public String defaultValue(){ return "";}
+                },
+                new AbilityParmEditorImpl("RESOURCE_OR_KEYWORD","Resource",PARMTYPE_SPECIAL) {
+                    public void createChoices() {}
+                    public boolean confirmValue(String oldVal) { return true;}
+                    public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                        if(httpReq.isRequestParameter(fieldName+"_WHICH"))
+                        {
+                            String which=httpReq.getRequestParameter(fieldName+"_WHICH");
+                            if(which.trim().length()>0)
+                                return httpReq.getRequestParameter(fieldName+"_RESOURCE");
+                            return httpReq.getRequestParameter(fieldName+"_WORD");
+                        }
+                        return oldVal;
                     }
-                    return oldVal;
-                }
-                public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
-                    String value=webValue(httpReq,parms,oldVal,fieldName);
-                    if(value.endsWith("$")) 
-                        value = value.substring(0,oldVal.length()-1);
-                    value = value.trim();
-                    StringBuffer str = new StringBuffer("");
-                    str.append("\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_WHICH ");
-                    boolean rsc=CMParms.containsIgnoreCase(RawMaterial.RESOURCE_DESCS,value);
-                    if(rsc) str.append("CHECKED");
-                    str.append("VALUE=\"RESOURCE\">");
-                    str.append("\n\r<SELECT NAME="+fieldName+"_RESOURCE>");
-                    for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
-                    {
-                        str.append("<OPTION VALUE=\""+RawMaterial.RESOURCE_DESCS[r]+"\"");
-                        if(rsc&&(value.equalsIgnoreCase(RawMaterial.RESOURCE_DESCS[r])))
-                            str.append(" CHECKED");
-                        str.append(">"+CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[r]));
-                    }
-                    str.append("</SELECT>");
-                    str.append("<BR>");
-                    str.append("\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_WHICH ");
-                    if(!rsc) str.append("CHECKED");
-                    str.append("VALUE=\"\">");
-                    str.append("\n\r<INPUT TYPE=TEXT NAME="+fieldName+"_WORD VALUE=\""+(rsc?"":value)+"\">");
-                    return str.toString();
-                }
-                public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
-                {
-                    ++showNumber[0];
-                    boolean proceed = true;
-                    String str = oldVal;
-                    while(proceed)
-                    {
-                        proceed = false;
-                        str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.RESOURCE_DESCS)).trim();
-                        if(str.equals(oldVal)) return oldVal;
+                    public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                        String value=webValue(httpReq,parms,oldVal,fieldName);
+                        if(value.endsWith("$")) 
+                            value = value.substring(0,oldVal.length()-1);
+                        value = value.trim();
+                        StringBuffer str = new StringBuffer("");
+                        str.append("\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_WHICH ");
+                        boolean rsc=CMParms.containsIgnoreCase(RawMaterial.RESOURCE_DESCS,value);
+                        if(rsc) str.append("CHECKED");
+                        str.append("VALUE=\"RESOURCE\">");
+                        str.append("\n\r<SELECT NAME="+fieldName+"_RESOURCE>");
                         for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
-                            if(RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(str))
-                                str=(r>0)?RawMaterial.RESOURCE_DESCS[r]:"";
-                        if(str.equals(oldVal)) return oldVal;
-                        if(str.length()==0) return "";
-                        boolean isResource = CMParms.contains(RawMaterial.RESOURCE_DESCS,str);
-                        if((!isResource)&&(mob.session()!=null)&&(!mob.session().killFlag()))
-                            if(!mob.session().confirm("You`ve entered a non-resource item keyword '"+str+"', ok (Y/n)?","Y"))
-                                proceed = true;
+                        {
+                            str.append("<OPTION VALUE=\""+RawMaterial.RESOURCE_DESCS[r]+"\"");
+                            if(rsc&&(value.equalsIgnoreCase(RawMaterial.RESOURCE_DESCS[r])))
+                                str.append(" CHECKED");
+                            str.append(">"+CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[r]));
+                        }
+                        str.append("</SELECT>");
+                        str.append("<BR>");
+                        str.append("\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_WHICH ");
+                        if(!rsc) str.append("CHECKED");
+                        str.append("VALUE=\"\">");
+                        str.append("\n\r<INPUT TYPE=TEXT NAME="+fieldName+"_WORD VALUE=\""+(rsc?"":value)+"\">");
+                        return str.toString();
                     }
-                    return str;
-                }
-                public String defaultValue(){ return "";}
-            },
-            new AbilityParmEditorImpl("RESOURCE_NAME_OR_HERB_NAME","Resrc/Herb",PARMTYPE_SPECIAL) {
-                public void createChoices() {}
-                public boolean confirmValue(String oldVal) {
-                    if(oldVal.trim().length()==0)
-                        return true;
-                    if(!oldVal.endsWith("$")) {
-                        return CMParms.contains(RawMaterial.RESOURCE_DESCS,oldVal);
-                    }
-                    return true;
-                }
-                public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
-                    AbilityParmEditor A = (AbilityParmEditor)CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
-                    if(oldVal.endsWith("$")) oldVal = oldVal.substring(0,oldVal.length()-1);
-                    String value = A.webValue(httpReq,parms,oldVal,fieldName);
-                    for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
-                        if(RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(value))
-                            return RawMaterial.RESOURCE_DESCS[r];
-                    return (value.trim().length()==0)?"":(value+"$");
-                }
-                public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
-                    AbilityParmEditor A = (AbilityParmEditor)CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
-                    return A.webField(httpReq,parms,oldVal,fieldName);
-                }
-                public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
-                {
-                    ++showNumber[0];
-                    boolean proceed = true;
-                    String str = oldVal;
-                    while(proceed)
+                    public String[] fakeUserInput(String oldVal) { return  new String[]{oldVal}; }
+                    public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
                     {
-                        proceed = false;
-                        if(oldVal.trim().endsWith("$")) oldVal=oldVal.trim().substring(0,oldVal.trim().length()-1);
-                        str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.RESOURCE_DESCS)).trim();
-                        if(str.equals(oldVal)) return oldVal;
+                        ++showNumber[0];
+                        boolean proceed = true;
+                        String str = oldVal;
+                        while(proceed)
+                        {
+                            proceed = false;
+                            str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.RESOURCE_DESCS)).trim();
+                            if(str.equals(oldVal)) return oldVal;
+                            for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
+                                if(RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(str))
+                                    str=(r>0)?RawMaterial.RESOURCE_DESCS[r]:"";
+                                    if(str.equals(oldVal)) return oldVal;
+                                    if(str.length()==0) return "";
+                                    boolean isResource = CMParms.contains(RawMaterial.RESOURCE_DESCS,str);
+                                    if((!isResource)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+                                        if(!mob.session().confirm("You`ve entered a non-resource item keyword '"+str+"', ok (Y/n)?","Y"))
+                                            proceed = true;
+                        }
+                        return str;
+                    }
+                    public String defaultValue(){ return "";}
+                },
+                new AbilityParmEditorImpl("RESOURCE_NAME_OR_HERB_NAME","Resrc/Herb",PARMTYPE_SPECIAL) {
+                    public void createChoices() {}
+                    public boolean confirmValue(String oldVal) {
+                        if(oldVal.trim().length()==0)
+                            return true;
+                        if(!oldVal.endsWith("$")) {
+                            return CMParms.contains(RawMaterial.RESOURCE_DESCS,oldVal);
+                        }
+                        return true;
+                    }
+                    public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                        AbilityParmEditor A = (AbilityParmEditor)CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
+                        if(oldVal.endsWith("$")) oldVal = oldVal.substring(0,oldVal.length()-1);
+                        String value = A.webValue(httpReq,parms,oldVal,fieldName);
                         for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
-                            if(RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(str))
-                                str=(r>0)?RawMaterial.RESOURCE_DESCS[r]:"";
-                        if(str.equals(oldVal)) return oldVal;
-                        if(str.length()==0) return "";
-                        boolean isResource = CMParms.contains(RawMaterial.RESOURCE_DESCS,str);
-                        if((!isResource)&&(mob.session()!=null)&&(!mob.session().killFlag()))
-                        {
-                            if(!mob.session().confirm("You`ve entered a non-resource item keyword '"+str+"', ok (Y/n)?","Y"))
-                                proceed = true;
-                            else
-                                str=str+"$";
-                        }
+                            if(RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(value))
+                                return RawMaterial.RESOURCE_DESCS[r];
+                        return (value.trim().length()==0)?"":(value+"$");
                     }
-                    return str;
-                }
-                public String defaultValue(){ return "";}
-            },
-            new AbilityParmEditorImpl("AMMO_TYPE","Ammo",PARMTYPE_STRING) {
-                public void createChoices() {}
-                public int appliesToClass(Object o) { return ((o instanceof Weapon)||(o instanceof Ammunition))?2:-1;}
-                public String defaultValue(){ return "arrows";}
-            },
-            new AbilityParmEditorImpl("AMMO_CAPACITY","Ammo#",PARMTYPE_NUMBER) {
-                public void createChoices() {}
-                public int appliesToClass(Object o) { return ((o instanceof Weapon)||(o instanceof Ammunition))?2:-1;}
-                public String defaultValue(){ return "1";}
-            },
-            new AbilityParmEditorImpl("MAXIMUM_RANGE","Max",PARMTYPE_NUMBER) 
-            { 
-                public int appliesToClass(Object o) { return ((o instanceof Weapon)&&(!(o instanceof Ammunition)))?2:-1;}
-                public void createChoices() {} 
-                public String defaultValue(){ return "5";}
-            },
-            new AbilityParmEditorImpl("RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
-                public void createChoices() {
-                    Vector V=CMParms.makeVector(RawMaterial.RESOURCE_DESCS);
-                    V.addAll(CMParms.makeVector(RawMaterial.MATERIAL_DESCS));
-                    createChoices(V);
-                }
-                public String defaultValue(){ return "IRON";}
-            },
-            new AbilityParmEditorImpl("OPTIONAL_RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
-                public void createChoices() {
-                    Vector V=CMParms.makeVector(RawMaterial.RESOURCE_DESCS);
-                    V.addAll(CMParms.makeVector(RawMaterial.MATERIAL_DESCS));
-                    V.addElement("");
-                    createChoices(V);
-                }
-                public String defaultValue(){ return "";}
-            },
-            new AbilityParmEditorImpl("HERB_NAME","Herb Final Name",PARMTYPE_STRING) {
-                public void createChoices() {}
-                public String defaultValue(){ return "Herb Name";}
-            },
-            new AbilityParmEditorImpl("RIDE_CAPACITY","Ridrs",PARMTYPE_NUMBER) {
-                public void createChoices() {}
-                public int appliesToClass(Object o) { return (o instanceof Rideable)?3:-1;}
-                public String defaultValue(){ return "2";}
-            },
-            new AbilityParmEditorImpl("METAL_OR_WOOD","Metal",PARMTYPE_CHOICES) {
-                public void createChoices() { createChoices(new String[]{"METAL","WOOD"});}
-                public String defaultValue(){ return "METAL";}
-            },
-            new AbilityParmEditorImpl("OPTIONAL_RACE_ID","Race",PARMTYPE_SPECIAL) {
-                public void createChoices() { 
-                    createChoices(CMClass.races());
-                    choices().addElement("","");
-                    for(int x=0;x<choices().size();x++)
-                        choices().setElementAt(x,1,((String)choices().elementAt(x,1)).toUpperCase());
-                }
-                public String defaultValue(){ return "";}
-                public boolean confirmValue(String oldVal) {
-                    if(oldVal.trim().length()==0)
+                    public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                        AbilityParmEditor A = (AbilityParmEditor)CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
+                        return A.webField(httpReq,parms,oldVal,fieldName);
+                    }
+                    public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
+                    {
+                        ++showNumber[0];
+                        boolean proceed = true;
+                        String str = oldVal;
+                        while(proceed)
+                        {
+                            proceed = false;
+                            if(oldVal.trim().endsWith("$")) oldVal=oldVal.trim().substring(0,oldVal.trim().length()-1);
+                            str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.RESOURCE_DESCS)).trim();
+                            if(str.equals(oldVal)) return oldVal;
+                            for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
+                                if(RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(str))
+                                    str=(r>0)?RawMaterial.RESOURCE_DESCS[r]:"";
+                                    if(str.equals(oldVal)) return oldVal;
+                                    if(str.length()==0) return "";
+                                    boolean isResource = CMParms.contains(RawMaterial.RESOURCE_DESCS,str);
+                                    if((!isResource)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+                                    {
+                                        if(!mob.session().confirm("You`ve entered a non-resource item keyword '"+str+"', ok (Y/n)?","Y"))
+                                            proceed = true;
+                                        else
+                                            str=str+"$";
+                                    }
+                        }
+                        return str;
+                    }
+                    public String defaultValue(){ return "";}
+                },
+                new AbilityParmEditorImpl("AMMO_TYPE","Ammo",PARMTYPE_STRING) {
+                    public void createChoices() {}
+                    public int appliesToClass(Object o) { return ((o instanceof Weapon)||(o instanceof Ammunition))?2:-1;}
+                    public String defaultValue(){ return "arrows";}
+                },
+                new AbilityParmEditorImpl("AMMO_CAPACITY","Ammo#",PARMTYPE_NUMBER) {
+                    public void createChoices() {}
+                    public int appliesToClass(Object o) { return ((o instanceof Weapon)||(o instanceof Ammunition))?2:-1;}
+                    public String defaultValue(){ return "1";}
+                },
+                new AbilityParmEditorImpl("MAXIMUM_RANGE","Max",PARMTYPE_NUMBER) 
+                { 
+                    public int appliesToClass(Object o) { return ((o instanceof Weapon)&&(!(o instanceof Ammunition)))?2:-1;}
+                    public void createChoices() {} 
+                    public String defaultValue(){ return "5";}
+                },
+                new AbilityParmEditorImpl("RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
+                    public void createChoices() {
+                        Vector V=CMParms.makeVector(RawMaterial.RESOURCE_DESCS);
+                        V.addAll(CMParms.makeVector(RawMaterial.MATERIAL_DESCS));
+                        createChoices(V);
+                    }
+                    public String defaultValue(){ return "IRON";}
+                },
+                new AbilityParmEditorImpl("OPTIONAL_RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
+                    public void createChoices() {
+                        Vector V=CMParms.makeVector(RawMaterial.RESOURCE_DESCS);
+                        V.addAll(CMParms.makeVector(RawMaterial.MATERIAL_DESCS));
+                        V.addElement("");
+                        createChoices(V);
+                    }
+                    public String defaultValue(){ return "";}
+                },
+                new AbilityParmEditorImpl("HERB_NAME","Herb Final Name",PARMTYPE_STRING) {
+                    public void createChoices() {}
+                    public String defaultValue(){ return "Herb Name";}
+                },
+                new AbilityParmEditorImpl("RIDE_CAPACITY","Ridrs",PARMTYPE_NUMBER) {
+                    public void createChoices() {}
+                    public int appliesToClass(Object o) { return (o instanceof Rideable)?3:-1;}
+                    public String defaultValue(){ return "2";}
+                },
+                new AbilityParmEditorImpl("METAL_OR_WOOD","Metal",PARMTYPE_CHOICES) {
+                    public void createChoices() { createChoices(new String[]{"METAL","WOOD"});}
+                    public String defaultValue(){ return "METAL";}
+                },
+                new AbilityParmEditorImpl("OPTIONAL_RACE_ID","Race",PARMTYPE_SPECIAL) {
+                    public void createChoices() { 
+                        createChoices(CMClass.races());
+                        choices().addElement("","");
+                        for(int x=0;x<choices().size();x++)
+                            choices().setElementAt(x,1,((String)choices().elementAt(x,1)).toUpperCase());
+                    }
+                    public String defaultValue(){ return "";}
+                    public boolean confirmValue(String oldVal) {
+                        if(oldVal.trim().length()==0)
+                            return true;
+                        Vector parsedVals = CMParms.parse(oldVal.toUpperCase());
+                        for(int v=0;v<parsedVals.size();v++)
+                            if(CMClass.getRace((String)parsedVals.elementAt(v))==null)
+                                return false;
                         return true;
-                    Vector parsedVals = CMParms.parse(oldVal.toUpperCase());
-                    for(int v=0;v<parsedVals.size();v++)
-                        if(CMClass.getRace((String)parsedVals.elementAt(v))==null)
-                            return false;
-                    return true;
-                }
-                public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
-                    Vector raceIDs=null;
-                    if(httpReq.isRequestParameter(fieldName+"_RACE1"))
-                    {
-                        raceIDs = new Vector();
-                        int num=1;
-                        String behav=httpReq.getRequestParameter(fieldName+"_RACE"+num);
-                        while(behav!=null)
-                        {
-                            if(behav.length()>0)
-                                raceIDs.addElement(behav);
-                            num++;
-                            behav=httpReq.getRequestParameter(fieldName+"_RACE"+num);
-                        }
                     }
-                    else
-                        raceIDs = CMParms.parse(oldVal);
-                    return CMParms.combine(raceIDs,0);
-                }
-                public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
-                    Vector raceIDs=CMParms.parse(webValue(httpReq,parms,oldVal,fieldName).toUpperCase());
-                    StringBuffer str = new StringBuffer("");
-                    str.append("\n\r<SELECT NAME="+fieldName+"_RACE MULTIPLE>");
-                    str.append("<OPTION VALUE=\"\" "+((raceIDs.size()==0)?"CHECKED":"")+">");
-                    for(Enumeration e=CMClass.races();e.hasMoreElements();)
-                    {
-                        Race R=(Race)e.nextElement();
-                        str.append("<OPTION VALUE=\""+R.ID()+"\" "+((raceIDs.contains(R.ID().toUpperCase()))?"CHECKED":"")+">"+R.name());
-                    }
-                    str.append("</SELECT>");
-                    return str.toString();
-                }
-                public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
-                {
-                    if((showFlag>0)&&(showFlag!=showNumber[0])) return oldVal;
-                    String behave="NO";
-                    String newVal = oldVal;
-                    while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
-                    {
-                        mob.tell(showNumber+". "+prompt()+": '"+newVal+"'.");
-                        if((showFlag!=showNumber[0])&&(showFlag>-999)) return newVal;
-                        Vector parsedVals = CMParms.parse(newVal.toUpperCase());
-                        behave=mob.session().prompt("Enter a race to add/remove (?)\n\r:","");
-                        if(behave.length()>0)
+                    public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                        Vector raceIDs=null;
+                        if(httpReq.isRequestParameter(fieldName+"_RACE1"))
                         {
-                            if(behave.equalsIgnoreCase("?"))
-                                mob.tell(CMLib.lister().reallyList(CMClass.races(),-1).toString());
-                            else
+                            raceIDs = new Vector();
+                            int num=1;
+                            String behav=httpReq.getRequestParameter(fieldName+"_RACE"+num);
+                            while(behav!=null)
                             {
-                                if(parsedVals.contains(behave.toUpperCase().trim()))
-                                {
-                                    mob.tell("'"+behave+"' removed.");
-                                    parsedVals.remove(behave.toUpperCase().trim());
-                                    newVal = CMParms.combine(parsedVals,0);
-                                }
+                                if(behav.length()>0)
+                                    raceIDs.addElement(behav);
+                                num++;
+                                behav=httpReq.getRequestParameter(fieldName+"_RACE"+num);
+                            }
+                        }
+                        else
+                            raceIDs = CMParms.parse(oldVal);
+                        return CMParms.combine(raceIDs,0);
+                    }
+                    public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                        Vector raceIDs=CMParms.parse(webValue(httpReq,parms,oldVal,fieldName).toUpperCase());
+                        StringBuffer str = new StringBuffer("");
+                        str.append("\n\r<SELECT NAME="+fieldName+"_RACE MULTIPLE>");
+                        str.append("<OPTION VALUE=\"\" "+((raceIDs.size()==0)?"CHECKED":"")+">");
+                        for(Enumeration e=CMClass.races();e.hasMoreElements();)
+                        {
+                            Race R=(Race)e.nextElement();
+                            str.append("<OPTION VALUE=\""+R.ID()+"\" "+((raceIDs.contains(R.ID().toUpperCase()))?"CHECKED":"")+">"+R.name());
+                        }
+                        str.append("</SELECT>");
+                        return str.toString();
+                    }
+                    public String[] fakeUserInput(String oldVal) { 
+                        Vector parsedVals = CMParms.parse(oldVal.toUpperCase());
+                        if(parsedVals.size()==0)
+                            return new String[]{""};
+                        Vector races = new Vector();
+                        for(int p=0;p<parsedVals.size();p++) {
+                            Race R=CMClass.getRace((String)parsedVals.elementAt(p));
+                            races.addElement(R.name());
+                            races.addElement(R.name());
+                        }
+                        races.addElement("");
+                        return CMParms.toStringArray(races);
+                    }
+                    
+                    public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
+                    {
+                        if((showFlag>0)&&(showFlag!=showNumber[0])) return oldVal;
+                        String behave="NO";
+                        String newVal = oldVal;
+                        while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+                        {
+                            mob.tell(showNumber+". "+prompt()+": '"+newVal+"'.");
+                            if((showFlag!=showNumber[0])&&(showFlag>-999)) return newVal;
+                            Vector parsedVals = CMParms.parse(newVal.toUpperCase());
+                            behave=mob.session().prompt("Enter a race to add/remove (?)\n\r:","");
+                            if(behave.length()>0)
+                            {
+                                if(behave.equalsIgnoreCase("?"))
+                                    mob.tell(CMLib.lister().reallyList(CMClass.races(),-1).toString());
                                 else
                                 {
                                     Race R=CMClass.getRace(behave);
                                     if(R!=null)
                                     {
-                                        mob.tell(R.ID()+" added.");
-                                        parsedVals.addElement(R.ID().toUpperCase());
-                                        newVal = CMParms.combine(parsedVals,0);
+                                        if(parsedVals.contains(R.ID().toUpperCase()))
+                                        {
+                                            mob.tell("'"+behave+"' removed.");
+                                            parsedVals.remove(R.ID().toUpperCase().trim());
+                                            newVal = CMParms.combine(parsedVals,0);
+                                        }
+                                        else
+                                        {
+                                            mob.tell(R.ID()+" added.");
+                                            parsedVals.addElement(R.ID().toUpperCase());
+                                            newVal = CMParms.combine(parsedVals,0);
+                                        }
                                     }
                                     else
                                     {
@@ -1240,120 +1289,124 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                                     }
                                 }
                             }
+                            else
+                                if(oldVal.equalsIgnoreCase(newVal))
+                                    mob.tell("(no change)");
                         }
-                        else
-                        if(oldVal.equalsIgnoreCase(newVal))
-                            mob.tell("(no change)");
+                        return newVal;
                     }
-                    return newVal;
-                }
-            },
-            new AbilityParmEditorImpl("INSTRUMENT_TYPE","Instrmnt",PARMTYPE_CHOICES) {
-                public void createChoices() { createChoices(MusicalInstrument.TYPE_DESC); }
-                public int appliesToClass(Object o) { return (o instanceof MusicalInstrument)?5:-1;}
-                public String defaultValue(){ return "DRUMS";}
-            },
-            new AbilityParmEditorImpl("STONE_FLAG","Stone",PARMTYPE_CHOICES) {
-                public void createChoices() { createChoices(new String[]{"","STONE"});}
-                public String defaultValue(){ return "";}
-            },
-            new AbilityParmEditorImpl("POSE_NAME","Pose Word",PARMTYPE_ONEWORD) {
-                public void createChoices() {}
-                public String defaultValue(){ return "New Post";}
-            },
-            new AbilityParmEditorImpl("POSE_DESCRIPTION","Pose Description",PARMTYPE_STRING) {
-                public void createChoices() {}
-                public String defaultValue(){ return "<S-NAME> is standing here.";}
-            },
-            new AbilityParmEditorImpl("WOOD_METAL_CLOTH","",PARMTYPE_CHOICES) {
-                public void createChoices() { createChoices(new String[]{"WOOD","METAL","CLOTH"});}
-                public String defaultValue(){ return "WOOD";}
-            },
-            new AbilityParmEditorImpl("WEAPON_TYPE","W.Type",PARMTYPE_CHOICES) {
-                public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
-                public void createChoices() { createChoices(Weapon.TYPE_DESCS);}
-                public String defaultValue(){ return "BASHING";}
-            },
-            new AbilityParmEditorImpl("ATTACK_MODIFICATION","Att.",PARMTYPE_NUMBER) {
-                public void createChoices() {}
-                public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
-                public String defaultValue(){ return "0";}
-            },
-            new AbilityParmEditorImpl("N_A","N/A",PARMTYPE_STRING) {
-                public void createChoices() {}
-                public int appliesToClass(Object o) { return -1;}
-                public String defaultValue(){ return "";}
-                public boolean confirmValue(String oldVal) { return oldVal.trim().length()==0||oldVal.equals("0");}
-                public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
-                { return "";}
-            },
-            new AbilityParmEditorImpl("RESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED","Resrc/Amt",PARMTYPE_SPECIAL) {
-                public void createChoices() { 
-                    createChoices(RawMaterial.RESOURCE_DESCS); 
-                    choices().addElement("","");
-                }
-                public String defaultValue(){ return "";}
-                public int appliesToClass(Object o) { return 0;}
-                public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
-                    if(httpReq.isRequestParameter(fieldName+"_RESOURCE"))
+                },
+                new AbilityParmEditorImpl("INSTRUMENT_TYPE","Instrmnt",PARMTYPE_CHOICES) {
+                    public void createChoices() { createChoices(MusicalInstrument.TYPE_DESC); }
+                    public int appliesToClass(Object o) { return (o instanceof MusicalInstrument)?5:-1;}
+                    public String defaultValue(){ return "DRUMS";}
+                },
+                new AbilityParmEditorImpl("STONE_FLAG","Stone",PARMTYPE_CHOICES) {
+                    public void createChoices() { createChoices(new String[]{"","STONE"});}
+                    public String defaultValue(){ return "";}
+                },
+                new AbilityParmEditorImpl("POSE_NAME","Pose Word",PARMTYPE_ONEWORD) {
+                    public void createChoices() {}
+                    public String defaultValue(){ return "New Post";}
+                },
+                new AbilityParmEditorImpl("POSE_DESCRIPTION","Pose Description",PARMTYPE_STRING) {
+                    public void createChoices() {}
+                    public String defaultValue(){ return "<S-NAME> is standing here.";}
+                },
+                new AbilityParmEditorImpl("WOOD_METAL_CLOTH","",PARMTYPE_CHOICES) {
+                    public void createChoices() { createChoices(new String[]{"WOOD","METAL","CLOTH"});}
+                    public String defaultValue(){ return "WOOD";}
+                },
+                new AbilityParmEditorImpl("WEAPON_TYPE","W.Type",PARMTYPE_CHOICES) {
+                    public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
+                    public void createChoices() { createChoices(Weapon.TYPE_DESCS);}
+                    public String defaultValue(){ return "BASHING";}
+                },
+                new AbilityParmEditorImpl("ATTACK_MODIFICATION","Att.",PARMTYPE_NUMBER) {
+                    public void createChoices() {}
+                    public int appliesToClass(Object o) { return (o instanceof Weapon)?2:-1;}
+                    public String defaultValue(){ return "0";}
+                },
+                new AbilityParmEditorImpl("N_A","N/A",PARMTYPE_STRING) {
+                    public void createChoices() {}
+                    public int appliesToClass(Object o) { return -1;}
+                    public String defaultValue(){ return "";}
+                    public boolean confirmValue(String oldVal) { return oldVal.trim().length()==0||oldVal.equals("0");}
+                    public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
+                    { return "";}
+                },
+                new AbilityParmEditorImpl("RESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED","Resrc/Amt",PARMTYPE_SPECIAL) {
+                    public void createChoices() { 
+                        createChoices(RawMaterial.RESOURCE_DESCS); 
+                        choices().addElement("","");
+                    }
+                    public String defaultValue(){ return "";}
+                    public int appliesToClass(Object o) { return 0;}
+                    public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                        if(httpReq.isRequestParameter(fieldName+"_RESOURCE"))
+                        {
+                            String rsc=httpReq.getRequestParameter(fieldName+"_RESOURCE");
+                            String amt=httpReq.getRequestParameter(fieldName+"_AMOUNT");
+                            if((rsc.trim().length()==0)||(rsc.equalsIgnoreCase("NOTHING"))||(CMath.s_int(amt)<=0))
+                                return "";
+                            return rsc+"/"+amt;
+                        }
+                        return oldVal;
+                    }
+                    public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                        String value=webValue(httpReq,parms,oldVal,fieldName);
+                        String rsc = "";
+                        int amt = 0;
+                        int x=value.indexOf('/');
+                        if(x>0)
+                        {
+                            rsc = value.substring(0,x);
+                            amt = CMath.s_int(value.substring(x+1));
+                        }
+                        StringBuffer str=new StringBuffer("");
+                        str.append("\n\r<SELECT NAME="+fieldName+"_RESOURCE MULTIPLE>");
+                        for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
+                            str.append("<OPTION VALUE=\""+RawMaterial.RESOURCE_DESCS[r]+"\" "
+                                    +((RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(rsc))?"CHECKED":"")+">"
+                                    +CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[r]));
+                        str.append("</SELECT>");
+                        str.append("&nbsp;&nbsp;Amount: ");
+                        str.append("<INPUT TYPE=TEXT NAME="+fieldName+"_AMOUNT VALUE="+amt+">");
+                        return str.toString();
+                    }
+                    public boolean confirmValue(String oldVal) { 
+                        if(oldVal.trim().length()==0) return true;
+                        oldVal=oldVal.trim();
+                        int x=oldVal.indexOf('/');
+                        if(x<0) return false;
+                        if(!choices().getDimensionVector(1).contains(oldVal.substring(0,x)))
+                            return false;
+                        if(!CMath.isInteger(oldVal.substring(x+1)))
+                            return false;
+                        return true;
+                    }
+                    public String[] fakeUserInput(String oldVal) { 
+                        int x=oldVal.indexOf('/');
+                        if(x<=0) return new String[]{""};
+                        return new String[]{"",""};
+                    }
+                    public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
                     {
-                        String rsc=httpReq.getRequestParameter(fieldName+"_RESOURCE");
-                        String amt=httpReq.getRequestParameter(fieldName+"_AMOUNT");
-                        if((rsc.trim().length()==0)||(rsc.equalsIgnoreCase("NOTHING"))||(CMath.s_int(amt)<=0))
-                            return "";
-                        return rsc+"/"+amt;
+                        oldVal=oldVal.trim();
+                        int x=oldVal.indexOf('/');
+                        String oldRsc = "";
+                        int oldAmt = 0;
+                        if(x>0) {
+                            oldRsc = oldVal.substring(0,x);
+                            oldAmt = CMath.s_int(oldVal.substring(x));
+                        }
+                        oldRsc = CMLib.genEd().prompt(mob,oldVal,++showNumber[0],showFlag,prompt(),choices());
+                        if(oldRsc.length()>0)
+                            return oldRsc+"/"+CMLib.genEd().prompt(mob,oldAmt,++showNumber[0],showFlag,prompt());
+                        return "";
                     }
-                    return oldVal;
-                }
-                public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
-                    String value=webValue(httpReq,parms,oldVal,fieldName);
-                    String rsc = "";
-                    int amt = 0;
-                    int x=value.indexOf('/');
-                    if(x>0)
-                    {
-                        rsc = value.substring(0,x);
-                        amt = CMath.s_int(value.substring(x+1));
-                    }
-                    StringBuffer str=new StringBuffer("");
-                    str.append("\n\r<SELECT NAME="+fieldName+"_RESOURCE MULTIPLE>");
-                    for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
-                        str.append("<OPTION VALUE=\""+RawMaterial.RESOURCE_DESCS[r]+"\" "
-                                +((RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(rsc))?"CHECKED":"")+">"
-                                +CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[r]));
-                    str.append("</SELECT>");
-                    str.append("&nbsp;&nbsp;Amount: ");
-                    str.append("<INPUT TYPE=TEXT NAME="+fieldName+"_AMOUNT VALUE="+amt+">");
-                    return str.toString();
-                }
-                public boolean confirmValue(String oldVal) { 
-                    if(oldVal.trim().length()==0) return true;
-                    oldVal=oldVal.trim();
-                    int x=oldVal.indexOf('/');
-                    if(x<0) return false;
-                    if(!choices().getDimensionVector(1).contains(oldVal.substring(0,x)))
-                        return false;
-                    if(!CMath.isInteger(oldVal.substring(x+1)))
-                        return false;
-                    return true;
-                }
-                public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
-                {
-                    oldVal=oldVal.trim();
-                    int x=oldVal.indexOf('/');
-                    String oldRsc = "";
-                    int oldAmt = 0;
-                    if(x>0) {
-                        oldRsc = oldVal.substring(0,x);
-                        oldAmt = CMath.s_int(oldVal.substring(x));
-                    }
-                    oldRsc = CMLib.genEd().prompt(mob,oldVal,++showNumber[0],showFlag,prompt(),choices());
-                    if(oldRsc.length()>0)
-                        return oldRsc+"/"+CMLib.genEd().prompt(mob,oldAmt,++showNumber[0],showFlag,prompt());
-                    return "";
-                }
-            },
-            
+                },
+                
         });
         DEFAULT_EDITORS = new Hashtable();
         for(int v=0;v<V.size();v++) {
@@ -1462,60 +1515,110 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             boolean spaceOK = fieldType != PARMTYPE_ONEWORD;
             boolean emptyOK = false;
             switch(fieldType) {
-                case PARMTYPE_STRINGORNULL:
-                    emptyOK = true;
-                case PARMTYPE_ONEWORD:
-                case PARMTYPE_STRING:
-                {
-                    if((!spaceOK) && (oldVal.indexOf(' ') >= 0))
-                        return false;
-                    return (emptyOK)||(oldVal.trim().length()>0);
-                }
-                case PARMTYPE_NUMBER:
-                    return CMath.isInteger(oldVal);
-                case PARMTYPE_CHOICES:
-                    if(!choices.getDimensionVector(1).contains(oldVal))
-                        return choices.getDimensionVector(1).contains(oldVal.toUpperCase().trim());
-                    return true;
-                case PARMTYPE_MULTICHOICES:
-                    return CMath.isInteger(oldVal)||choices().contains(oldVal);
+            case PARMTYPE_STRINGORNULL:
+                emptyOK = true;
+            case PARMTYPE_ONEWORD:
+            case PARMTYPE_STRING:
+            {
+                if((!spaceOK) && (oldVal.indexOf(' ') >= 0))
+                    return false;
+                return (emptyOK)||(oldVal.trim().length()>0);
+            }
+            case PARMTYPE_NUMBER:
+                return CMath.isInteger(oldVal);
+            case PARMTYPE_CHOICES:
+                if(!choices.getDimensionVector(1).contains(oldVal))
+                    return choices.getDimensionVector(1).contains(oldVal.toUpperCase().trim());
+                return true;
+            case PARMTYPE_MULTICHOICES:
+                return CMath.isInteger(oldVal)||choices().contains(oldVal);
             }
             return false;
         }
+        public String[] fakeUserInput(String oldVal) {
+            boolean emptyOK = false;
+            switch(fieldType) {
+            case PARMTYPE_STRINGORNULL:
+                emptyOK = true;
+            case PARMTYPE_ONEWORD:
+            case PARMTYPE_STRING:
+            {
+                if(emptyOK && (oldVal.trim().length()==0))
+                    return new String[]{"NULL"};
+                return new String[]{oldVal};
+            }
+            case PARMTYPE_NUMBER:
+                return new String[]{oldVal};
+            case PARMTYPE_CHOICES:
+            {
+                if(oldVal.trim().length()==0) return new String[]{"NULL"};
+                Vector V = choices.getDimensionVector(1);
+                for(int v=0;v<V.size();v++)
+                    if(oldVal.equalsIgnoreCase((String)V.elementAt(v)))
+                        return new String[]{(String)choices.elementAt(v,2)};
+                return new String[]{oldVal};
+            }
+            case PARMTYPE_MULTICHOICES:
+                if(oldVal.trim().length()==0) return new String[]{"NULL"};
+                if(!CMath.isInteger(oldVal))
+                {
+                    Vector V = choices.getDimensionVector(1);
+                    for(int v=0;v<V.size();v++)
+                        if(oldVal.equalsIgnoreCase((String)V.elementAt(v)))
+                            return new String[]{(String)choices.elementAt(v,2),""};
+                } else {
+                    Vector V = new Vector();
+                    for(int c=0;c<choices.size();c++)
+                        if(CMath.bset(CMath.s_int(oldVal),((Integer)choices.elementAt(c,1)).intValue()))
+                        {
+                            V.addElement((String)choices.elementAt(c,2));
+                            V.addElement((String)choices.elementAt(c,2));
+                        }
+                    if(V.size()>0)
+                    {
+                        V.addElement("");
+                        return CMParms.toStringArray(V);
+                    }
+                }
+                return new String[]{"NULL"};
+            }
+            return new String[]{};
+        }
+        
         public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag)
-            throws java.io.IOException
+        throws java.io.IOException
         {
             String str = null;
             boolean emptyOK = false;
             boolean spaceOK = fieldType != PARMTYPE_ONEWORD;
             switch(fieldType) {
-                case PARMTYPE_STRINGORNULL:
-                    emptyOK = true;
-                case PARMTYPE_ONEWORD:
-                case PARMTYPE_STRING:
-                {
-                    ++showNumber[0];
-                    boolean proceed = true;
-                    while(proceed) {
-                        str = CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),emptyOK).trim();
-                        if((!spaceOK) && (str.indexOf(' ') >= 0))
-                            mob.tell("Spaces are not allowed here.");
-                        else
-                            proceed=false;
-                    }
-                    break;
+            case PARMTYPE_STRINGORNULL:
+                emptyOK = true;
+            case PARMTYPE_ONEWORD:
+            case PARMTYPE_STRING:
+            {
+                ++showNumber[0];
+                boolean proceed = true;
+                while(proceed) {
+                    str = CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),emptyOK).trim();
+                    if((!spaceOK) && (str.indexOf(' ') >= 0))
+                        mob.tell("Spaces are not allowed here.");
+                    else
+                        proceed=false;
                 }
-                case PARMTYPE_NUMBER:
-                    str = Integer.toString(CMLib.genEd().prompt(mob,Integer.parseInt(oldVal),++showNumber[0],showFlag,prompt()));
-                    break;
-                case PARMTYPE_CHOICES:
-                    str = CMLib.genEd().promptMultiOrExtra(mob,oldVal,++showNumber[0],showFlag,prompt(),choices);
-                    break;
-                case PARMTYPE_MULTICHOICES:
-                    str = CMLib.genEd().promptMultiOrExtra(mob,oldVal,++showNumber[0],showFlag,prompt(),choices);
-                    if(CMath.isInteger(str))
-                        str = Integer.toString(CMath.s_int(str));
-                    break;
+                break;
+            }
+            case PARMTYPE_NUMBER:
+                str = Integer.toString(CMLib.genEd().prompt(mob,Integer.parseInt(oldVal),++showNumber[0],showFlag,prompt()));
+                break;
+            case PARMTYPE_CHOICES:
+                str = CMLib.genEd().promptMultiOrExtra(mob,oldVal,++showNumber[0],showFlag,prompt(),choices);
+                break;
+            case PARMTYPE_MULTICHOICES:
+                str = CMLib.genEd().promptMultiOrExtra(mob,oldVal,++showNumber[0],showFlag,prompt(),choices);
+                if(CMath.isInteger(str))
+                    str = Integer.toString(CMath.s_int(str));
+                break;
             }
             return str;
         }
@@ -1523,27 +1626,27 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
             String webValue = httpReq.getRequestParameter(fieldName);
             switch(fieldType) {
-                case PARMTYPE_ONEWORD:
-                case PARMTYPE_STRINGORNULL:
-                case PARMTYPE_STRING:
-                case PARMTYPE_NUMBER:
-                    return (webValue == null)?oldVal:webValue;
-                case PARMTYPE_MULTICHOICES:
+            case PARMTYPE_ONEWORD:
+            case PARMTYPE_STRINGORNULL:
+            case PARMTYPE_STRING:
+            case PARMTYPE_NUMBER:
+                return (webValue == null)?oldVal:webValue;
+            case PARMTYPE_MULTICHOICES:
+            {
+                if(webValue == null) return oldVal;
+                String id="";
+                int num=0;
+                for(;httpReq.isRequestParameter(fieldName+id);id=""+(++num))
                 {
-                    if(webValue == null) return oldVal;
-                    String id="";
-                    int num=0;
-                    for(;httpReq.isRequestParameter(fieldName+id);id=""+(++num))
-                    {
-                        String newVal = httpReq.getRequestParameter(fieldName+id); 
-                        if(CMath.s_int(newVal)<=0)
-                            return newVal;
-                        num |= CMath.s_int(newVal);
-                    }
-                    return ""+num;
+                    String newVal = httpReq.getRequestParameter(fieldName+id); 
+                    if(CMath.s_int(newVal)<=0)
+                        return newVal;
+                    num |= CMath.s_int(newVal);
                 }
-                case PARMTYPE_CHOICES:
-                    return (webValue == null)?oldVal:webValue;
+                return ""+num;
+            }
+            case PARMTYPE_CHOICES:
+                return (webValue == null)?oldVal:webValue;
             }
             return "";
         }
@@ -1554,46 +1657,46 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             String onChange = null;
             Vector choiceValues = new Vector();
             switch(fieldType) {
-                case PARMTYPE_ONEWORD:
-                    textSize = 10;
-                case PARMTYPE_STRINGORNULL:
-                case PARMTYPE_STRING:
-                    return "\n\r<INPUT TYPE=TEXT NAME=" + fieldName + " SIZE=" + textSize + " VALUE=\"" + webValue + "\">";
-                case PARMTYPE_NUMBER:
-                    return "\n\r<INPUT TYPE=TEXT NAME=" + fieldName + " SIZE=10 VALUE=\"" + webValue + "\">";
-                case PARMTYPE_MULTICHOICES:
+            case PARMTYPE_ONEWORD:
+                textSize = 10;
+            case PARMTYPE_STRINGORNULL:
+            case PARMTYPE_STRING:
+                return "\n\r<INPUT TYPE=TEXT NAME=" + fieldName + " SIZE=" + textSize + " VALUE=\"" + webValue + "\">";
+            case PARMTYPE_NUMBER:
+                return "\n\r<INPUT TYPE=TEXT NAME=" + fieldName + " SIZE=10 VALUE=\"" + webValue + "\">";
+            case PARMTYPE_MULTICHOICES:
+            {
+                onChange = " MULTIPLE ONCHANGE=\"MultiSelect(this);\"";
+                if(CMath.isInteger(webValue))
                 {
-                    onChange = " MULTIPLE ONCHANGE=\"MultiSelect(this);\"";
-                    if(CMath.isInteger(webValue))
-                    {
-                        int bits = CMath.s_int(webValue);
-                        for(int i=0;i<choices.size();i++)
-                        {
-                            int bitVal =CMath.s_int((String)choices.elementAt(i,1)); 
-                            if((bitVal>0)&&(CMath.bset(bits,bitVal)))
-                                choiceValues.addElement((String)choices.elementAt(i,1));
-                        }
-                    }
-                }
-                case PARMTYPE_CHOICES:
-                {
-                    if(choiceValues.size()==0)
-                        choiceValues.addElement(webValue);
-                    if(onChange == null)
-                        onChange = " ONCHANGE=\"Select(this);\"";
-                    StringBuffer str= new StringBuffer("");
-                    str.append("\n\r<SELECT NAME="+fieldName+onChange+">");
+                    int bits = CMath.s_int(webValue);
                     for(int i=0;i<choices.size();i++)
                     {
-                        String option = ((String)choices.elementAt(i,1));
-                        str.append("<OPTION VALUE=\""+option+"\" ");
-                        for(int c=0;c<choiceValues.size();c++)
-                            if(option.equalsIgnoreCase((String)choiceValues.elementAt(c)))
-                                str.append("SELECTED");
-                        str.append(">"+((String)choices.elementAt(i,2)));
+                        int bitVal =CMath.s_int((String)choices.elementAt(i,1)); 
+                        if((bitVal>0)&&(CMath.bset(bits,bitVal)))
+                            choiceValues.addElement((String)choices.elementAt(i,1));
                     }
-                    return str.toString()+"</SELECT>";
                 }
+            }
+            case PARMTYPE_CHOICES:
+            {
+                if(choiceValues.size()==0)
+                    choiceValues.addElement(webValue);
+                if(onChange == null)
+                    onChange = " ONCHANGE=\"Select(this);\"";
+                StringBuffer str= new StringBuffer("");
+                str.append("\n\r<SELECT NAME="+fieldName+onChange+">");
+                for(int i=0;i<choices.size();i++)
+                {
+                    String option = ((String)choices.elementAt(i,1));
+                    str.append("<OPTION VALUE=\""+option+"\" ");
+                    for(int c=0;c<choiceValues.size();c++)
+                        if(option.equalsIgnoreCase((String)choiceValues.elementAt(c)))
+                            str.append("SELECTED");
+                    str.append(">"+((String)choices.elementAt(i,2)));
+                }
+                return str.toString()+"</SELECT>";
+            }
             }
             return "";
         }
@@ -1608,14 +1711,14 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 if(o instanceof String)
                     choices.addElement(o,CMStrings.capitalizeAndLower((String)o));
                 else
-                if(o instanceof Ability)
-                    choices.addElement(((Ability)o).ID(),((Ability)o).name());
-                else
-                if(o instanceof Race)
-                    choices.addElement(((Race)o).ID(),((Race)o).name());
-                else
-                if(o instanceof Environmental)
-                    choices.addElement(((Environmental)o).ID(),((Environmental)o).ID());
+                    if(o instanceof Ability)
+                        choices.addElement(((Ability)o).ID(),((Ability)o).name());
+                    else
+                        if(o instanceof Race)
+                            choices.addElement(((Race)o).ID(),((Race)o).name());
+                        else
+                            if(o instanceof Environmental)
+                                choices.addElement(((Environmental)o).ID(),((Environmental)o).ID());
             }
             return choices;
         }
@@ -1641,4 +1744,5 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         public DVector choices() { return choices; } 
         public int appliesToClass(Object o) { return 0;}
     }
+    
 }
