@@ -791,8 +791,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                             V.addElement("N");
                         V.addElement("1");
                         V.addElement("1");
-                        for(int i=0;i<Item.WORN_ORDER.length;i++)
-                            if(CMath.bset(wornLoc[0],Item.WORN_ORDER[i]))
+                        for(int i=0;i<Item.WORN_CODES.length;i++)
+                            if(CMath.bset(wornLoc[0],Item.WORN_CODES[i]))
                             {
                                 V.addElement(""+(i+2));
                                 V.addElement(""+(i+2));
@@ -852,7 +852,6 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         return CMClass.getAbility(oldVal.substring(0,y))!=null;
                     }
                     public String defaultValue(){ return "";}
-                    public String[] fakeUserInput(String oldVal) { return new String[]{""};}
                     public String rebuild(Vector spells) throws CMException
                     {
                         StringBuffer newVal = new StringBuffer("");
@@ -873,6 +872,19 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                                 }
                             }
                         return newVal.toString();
+                    }
+                    public String[] fakeUserInput(String oldVal) {
+                        Vector V = new Vector();
+                        Vector V2 = new Vector();
+                        Vector spells=CMLib.ableParms().getCodedSpells(oldVal);
+                        for(int s=0;s<spells.size();s++) {
+                            V.addElement(((Ability)spells.elementAt(s)).ID());
+                            V2.addElement(((Ability)spells.elementAt(s)).ID());
+                            V2.addElement(((Ability)spells.elementAt(s)).text());
+                        }
+                        V.addAll(V2);
+                        V.addElement("");
+                        return CMParms.toStringArray(V);
                     }
                     public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
                         Vector spells=null;
@@ -914,7 +926,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                             str.append("<TR><TD WIDTH=50%>");
                             str.append("\n\r<SELECT ONCHANGE=\"EditAffect(this);\" NAME="+fieldName+"_AFFECT"+(i+1)+">");
                             str.append("<OPTION VALUE=\"\">Delete!");
-                            str.append("<OPTION VALUE=\""+A.ID()+"\" SELECTED>"+A.name());
+                            str.append("<OPTION VALUE=\""+A.ID()+"\" SELECTED>"+A.ID());
                             str.append("</SELECT>");
                             str.append("</TD><TD WIDTH=50%>");
                             String theparm=CMStrings.replaceAll(A.text(),"\"","&quot;");
@@ -1126,6 +1138,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         }
                         return true;
                     }
+                    public String[] fakeUserInput(String oldVal) {
+                        if(oldVal.endsWith("$"))
+                            return new String[]{oldVal.substring(0,oldVal.length()-1)}; 
+                        return new String[]{oldVal}; 
+                    }
                     public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
                         AbilityParmEditor A = (AbilityParmEditor)CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
                         if(oldVal.endsWith("$")) oldVal = oldVal.substring(0,oldVal.length()-1);
@@ -1272,6 +1289,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         for(int p=0;p<parsedVals.size();p++) {
                             Race R=CMClass.getRace((String)parsedVals.elementAt(p));
                             races.addElement(R.name());
+                        }
+                        for(int p=0;p<parsedVals.size();p++) {
+                            Race R=CMClass.getRace((String)parsedVals.elementAt(p));
                             races.addElement(R.name());
                         }
                         races.addElement("");

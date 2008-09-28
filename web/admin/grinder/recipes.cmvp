@@ -24,9 +24,9 @@
                 w=window.open("recipe.cmvp?AUTH=@Authenticate?AUTH@&ABILITY="+recipeid,"Recipe",strFeatures, false);
             }
         }
-        function Select(box)
+        function Select(val)
         {
-        	document.RESOURCES.NEWCLASSFIELD1.value=box.options[box.selectedIndex];
+        	Recipe(val);
         }
         function AddRecipe() {
         	Recipe(-1);
@@ -58,14 +58,16 @@
     </TD>
     </TR>
     </TABLE>
-	<CENTER>
 	<FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="recipes.cmvp">
 	<INPUT TYPE=HIDDEN NAME=NEWCLASSFIELD1 VALUE="">
 	<INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 	@AddRequestParameter?THISABILITY=@@AbilityID@@ @
+	<FONT COLOR=YELLOW><B>Common Skill:
 	<SELECT NAME=ABILITY ONCHANGE="Refresh();">
+	<OPTION @if?CheckReqParm?THISABILITY=@SELECTED@endif@ VALUE="">Select a skill
 	@AbilityNext?RESET@	@loop@ @AbilityNext?PARMSEDITABLE@ <OPTION VALUE=@AbilityID@ @if?CheckReqParm?THISABILITY=@@AbilityID@@ @SELECTED@endif@>@AbilityName@ @back@
-	</SELECT>
+	</SELECT></B></FONT>
+	<CENTER>
 	@AddRequestParameter?ABILITY=@@RequestParameter?THISABILITY@@ @
 	@RequestParameter?ABILITY@
 	@if?CheckReqParm?ABILITY=@ @else@
