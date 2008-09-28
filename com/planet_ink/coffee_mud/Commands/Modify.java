@@ -1124,7 +1124,7 @@ public class Modify extends StdCommand
 		else
         if(commandType.equals("RECIPE"))
         {
-        	mob.tell("Not yet implemented"); if(true) return true;
+        	//mob.tell("Not yet implemented"); if(true) return true;
             if(!CMSecurity.isAllowed(mob,mob.location(),"CMDRECIPES")) return errorOut(mob);
             if(commands.size()<3)
             {

@@ -78,14 +78,46 @@ public class Archon_Metacraft extends ArchonSkill
 		}
 		if(commands.size()<1)
 		{
-			mob.tell("Metacraft what (recipe, everything, every x) , and (optionally) out of what material?");
+			mob.tell("Metacraft what (recipe, everything, every x), (optionally) out of what material, and (optionally) to self, to here, or to file [FILENAME]?");
 			return false;
 		}
 		String mat=null;
+        String toWHERE = "SELF";
 		if(commands.size()>1)
 		{
-			mat=((String)commands.lastElement()).toUpperCase();
-			commands.removeElementAt(commands.size()-1);
+            for(int x=1;x<commands.size()-1;x++)
+            {
+                if(((String)commands.elementAt(x)).equalsIgnoreCase("to"))
+                {
+                    if(((String)commands.elementAt(x+1)).equalsIgnoreCase("self"))
+                    {
+                        toWHERE="SELF";
+                        commands.removeElementAt(x);
+                        commands.removeElementAt(x);
+                        break;
+                    }
+                    if(((String)commands.elementAt(x+1)).equalsIgnoreCase("here"))
+                    {
+                        toWHERE="HERE";
+                        commands.removeElementAt(x);
+                        commands.removeElementAt(x);
+                        break;
+                    }
+                    if(((String)commands.elementAt(x+1)).equalsIgnoreCase("file")&&(x<commands.size()-2))
+                    {
+                        toWHERE=(String)commands.elementAt(x+2);
+                        commands.removeElementAt(x);
+                        commands.removeElementAt(x);
+                        commands.removeElementAt(x);
+                        break;
+                    }
+                }
+            }
+            if(commands.size()>1)
+            {
+    			mat=((String)commands.lastElement()).toUpperCase();
+    			commands.removeElementAt(commands.size()-1);
+            }
 		}
 		int material=-1;
 		if(mat!=null)
@@ -149,6 +181,8 @@ public class Archon_Metacraft extends ArchonSkill
 		}
 		
 		boolean success=false;
+        StringBuffer xml = new StringBuffer("<ITEMS>");
+        HashSet files = new HashSet();
 		for(int s=0;s<skillsToUse.size();s++)
 		{
 			skill=(ItemCraftor)skillsToUse.elementAt(s);
@@ -189,15 +223,58 @@ public class Archon_Metacraft extends ArchonSkill
 				items=skill.craftItem(recipe);
 			if((items==null)||(items.size()==0)) continue;
 			success=true;
-			for(int v=0;v<items.size();v++)
-			{
-				Item building=(Item)items.elementAt(v);
-				mob.giveItem(building);
-				mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,building.name()+" appears in <S-YOUPOSS> hands.");
-			}
+            if(toWHERE.equals("SELF")||toWHERE.equals("HERE"))
+    			for(int v=0;v<items.size();v++)
+    			{
+    				Item building=(Item)items.elementAt(v);
+                    if(toWHERE.equals("HERE"))
+                    {
+                        mob.location().addItemRefuse(building,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+                        mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,building.name()+" appears here.");
+                    }
+                    else
+                    {
+        				mob.giveItem(building);
+        				mob.location().show(mob,null,null,CMMsg.MSG_OK_ACTION,building.name()+" appears in <S-YOUPOSS> hands.");
+                    }
+    			}
+            else
+                xml.append(CMLib.coffeeMaker().getItemsXML(items,new Hashtable(),files,0));
 			mob.location().recoverEnvStats();
 			if(!everyFlag) break;
 		}
+        if(success
+        &&(!toWHERE.equals("SELF"))
+        &&(!toWHERE.equals("HERE")))
+        {
+            CMFile file = new CMFile(toWHERE,mob,false);
+            if(!file.canWrite())
+                mob.tell("Unable to open file '"+toWHERE+"' for writing.");
+            else
+            {
+                xml.append("</ITEMS>");
+                if(files.size()>0)
+                {
+                    StringBuffer str=new StringBuffer("<FILES>");
+                    for(Iterator i=files.iterator();i.hasNext();)
+                    {
+                        Object O=i.next();
+                        String filename=(String)O;
+                        StringBuffer buf=new CMFile(Resources.makeFileResourceName(filename),null,true).text();
+                        if((buf!=null)&&(buf.length()>0))
+                        {
+                            str.append("<FILE NAME=\""+filename+"\">");
+                            str.append(buf);
+                            str.append("</FILE>");
+                        }
+                    }
+                    str.append("</FILES>");
+                    xml.append(str);
+                }
+                file.saveText(xml);
+                mob.tell("File '"+file.getAbsolutePath()+"' written.");
+            }
+        }
 		if(!success)
 		{
 			mob.tell("The metacraft failed.");

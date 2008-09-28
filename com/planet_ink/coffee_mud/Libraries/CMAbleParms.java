@@ -98,11 +98,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     ||(layers.startsWith("SM")))
             { layers=layers.substring(2); layerAtt[0]=Armor.LAYERMASK_MULTIWEAR|Armor.LAYERMASK_SEETHROUGH;}
             else
-                if(layers.startsWith("M"))
-                { layers=layers.substring(1); layerAtt[0]=Armor.LAYERMASK_MULTIWEAR;}
-                else
-                    if(layers.startsWith("S"))
-                    { layers=layers.substring(1); layerAtt[0]=Armor.LAYERMASK_SEETHROUGH;}
+            if(layers.startsWith("M"))
+            { layers=layers.substring(1); layerAtt[0]=Armor.LAYERMASK_MULTIWEAR;}
+            else
+            if(layers.startsWith("S"))
+            { layers=layers.substring(1); layerAtt[0]=Armor.LAYERMASK_SEETHROUGH;}
             clothingLayers[0]=CMath.s_short(layers);
         }
         return misctype;
@@ -749,7 +749,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     public String reconvert(short[] layerAtt, short[] layers, long[] wornLoc, boolean[] logicalAnd, double[] hardBonus)
                     {
                         StringBuffer newVal = new StringBuffer("");
-                        if((layerAtt[0]!=0)&&(layers[0]!=0))
+                        if((layerAtt[0]!=0)||(layers[0]!=0))
                         {
                             if(CMath.bset(layerAtt[0],Armor.LAYERMASK_MULTIWEAR))
                                 newVal.append('M');
@@ -772,7 +772,34 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         return newVal.toString();
                         
                     }
-                    public String[] fakeUserInput(String oldVal) { return new String[]{"",""}; }
+                    public String[] fakeUserInput(String oldVal) {
+                        Vector V = new Vector();
+                        short[] layerAtt = new short[1];
+                        short[] layers = new short[1];
+                        long[] wornLoc = new long[1];
+                        boolean[] logicalAnd = new boolean[1];
+                        double[] hardBonus=new double[1];
+                        CMLib.ableParms().parseWearLocation(layerAtt,layers,wornLoc,logicalAnd,hardBonus,oldVal);
+                        V.addElement(""+layers[0]);
+                        if(CMath.bset(layerAtt[0],Armor.LAYERMASK_SEETHROUGH))
+                            V.addElement("Y");
+                        else
+                            V.addElement("N");
+                        if(CMath.bset(layerAtt[0],Armor.LAYERMASK_MULTIWEAR))
+                            V.addElement("Y");
+                        else
+                            V.addElement("N");
+                        V.addElement("1");
+                        V.addElement("1");
+                        for(int i=0;i<Item.WORN_ORDER.length;i++)
+                            if(CMath.bset(wornLoc[0],Item.WORN_ORDER[i]))
+                            {
+                                V.addElement(""+(i+2));
+                                V.addElement(""+(i+2));
+                            }
+                        V.addElement("0");
+                        return CMParms.toStringArray(V); 
+                    }
                     public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
                     {
                         short[] layerAtt = new short[1];
@@ -1117,25 +1144,26 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         ++showNumber[0];
                         boolean proceed = true;
                         String str = oldVal;
+                        String orig = oldVal;
                         while(proceed)
                         {
                             proceed = false;
                             if(oldVal.trim().endsWith("$")) oldVal=oldVal.trim().substring(0,oldVal.trim().length()-1);
                             str=CMLib.genEd().prompt(mob,oldVal,showNumber[0],showFlag,prompt(),true,CMParms.toStringList(RawMaterial.RESOURCE_DESCS)).trim();
-                            if(str.equals(oldVal)) return oldVal;
+                            if(str.equals(orig)) return orig;
                             for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
                                 if(RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(str))
                                     str=(r>0)?RawMaterial.RESOURCE_DESCS[r]:"";
-                                    if(str.equals(oldVal)) return oldVal;
-                                    if(str.length()==0) return "";
-                                    boolean isResource = CMParms.contains(RawMaterial.RESOURCE_DESCS,str);
-                                    if((!isResource)&&(mob.session()!=null)&&(!mob.session().killFlag()))
-                                    {
-                                        if(!mob.session().confirm("You`ve entered a non-resource item keyword '"+str+"', ok (Y/n)?","Y"))
-                                            proceed = true;
-                                        else
-                                            str=str+"$";
-                                    }
+                            if(str.equals(orig)) return orig;
+                            if(str.length()==0) return "";
+                            boolean isResource = CMParms.contains(RawMaterial.RESOURCE_DESCS,str);
+                            if((!isResource)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+                            {
+                                if(!mob.session().confirm("You`ve entered a non-resource item keyword '"+str+"', ok (Y/n)?","Y"))
+                                    proceed = true;
+                                else
+                                    str=str+"$";
+                            }
                         }
                         return str;
                     }
@@ -1388,7 +1416,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     public String[] fakeUserInput(String oldVal) { 
                         int x=oldVal.indexOf('/');
                         if(x<=0) return new String[]{""};
-                        return new String[]{"",""};
+                        return new String[]{oldVal.substring(0,x),oldVal.substring(x+1)};
                     }
                     public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
                     {
@@ -1400,7 +1428,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                             oldRsc = oldVal.substring(0,x);
                             oldAmt = CMath.s_int(oldVal.substring(x));
                         }
-                        oldRsc = CMLib.genEd().prompt(mob,oldVal,++showNumber[0],showFlag,prompt(),choices());
+                        oldRsc = CMLib.genEd().prompt(mob,oldRsc,++showNumber[0],showFlag,prompt(),choices());
                         if(oldRsc.length()>0)
                             return oldRsc+"/"+CMLib.genEd().prompt(mob,oldAmt,++showNumber[0],showFlag,prompt());
                         return "";

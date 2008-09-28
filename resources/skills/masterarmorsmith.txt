@@ -79,7 +79,7 @@ Featherweight % Chainmail Shirt	52	70	18	6591	GenArmor	TORSO	0	39	0
 Featherweight % Chainmail Jerkin	52	70	18	6591	GenArmor	TORSO	0	39	0	
 Featherweight % Chainmail Jacket	52	70	28	9886	GenArmor	TORSO&&ARMS	0	52	0	
 Featherweight % Chainmail Hauberk	52	70	28	9886	GenArmor	TORSO&&ARMS	0	52	0	
-Featherweight % Chainmail Vest	52	70	18	6591	GenArmor	S:TORSO	0	39	0	
+Featherweight % Chainmail Vest	52	70	18	6591	GenArmor	S0:TORSO	0	39	0	
 Featherweight % Chainmail Skirt	52	70	12	3295	GenArmor	S1:LEGS	0	26	0	
 Steam-Powered % Plate Jacket	52	101	175	9886	GenArmor	1:TORSO&&ARMS	0	52	0	Prop_WearAdjuster;Dam+2;STR+2;DEX-1
 Steam-Powered % Plate Vest	52	102	117	6591	GenArmor	1:TORSO	0	39	0	Prop_WearAdjuster;Dam+1;STR+1;DEX-1
@@ -129,7 +129,7 @@ Tower % Shield	55	145	90	40500	GenShield	HELD	0	30	0
 % Doublemail Jerkin	67	70	90	10125	GenArmor	TORSO	0	45	0	
 % Doublemail Jacket	67	70	135	15187	GenArmor	TORSO&&ARMS	0	60	0	
 % Doublemail Hauberk	67	70	135	15187	GenArmor	TORSO&&ARMS	0	60	0	
-% Doublemail Vest	67	70	90	10125	GenArmor	S:TORSO	0	45	0	
+% Doublemail Vest	67	70	90	10125	GenArmor	S0:TORSO	0	45	0	
 % Doublemail Skirt	67	70	45	5062	GenArmor	S1:LEGS	0	30	0	
 % Dragon helm	67	100	30	3375	GenArmor	3:HEAD	0	15	0	
 % Battleplate Sleeves	67	145	45	5062	GenArmor	1:ARMS	0	15	0	
@@ -175,8 +175,8 @@ Ancient % Jerkin	77	145	96	12288	GenArmor	1:TORSO	0	48	0
 Ancient % Jacket	77	145	144	18432	GenArmor	1:TORSO&&ARMS	0	64	0	
 Ancient % Hauberk	77	145	144	18432	GenArmor	1:TORSO&&ARMS	0	64	0	
 Ancient % Mitts	77	145	16	2048	GenArmor	2:HANDS	0	8	0	
-% Demon Armor	77	145	510	73695	GenArmor	2:HEAD&&NECK&&ARMS&&TORSO&&LEGS&&HANDS&&FEET&&EYES	0	170	0	*Prop_WearResister;-GOOD
-% Hallowed Vestments	77	145	510	73695	GenArmor	2:HEAD&&NECK&&ARMS&&TORSO&&LEGS&&HANDS&&FEET&&EYES	0	170	0	*Prop_WearResister;-Evil
+% Demon Armor	77	145	510	73695	GenArmor	2:HEAD&&NECK&&TORSO&&ARMS&&FEET&&HANDS&&LEGS&&EYES	0	170	0	*Prop_WearResister;-GOOD
+% Hallowed Vestments	77	145	510	73695	GenArmor	2:HEAD&&NECK&&TORSO&&ARMS&&FEET&&HANDS&&LEGS&&EYES	0	170	0	*Prop_WearResister;-Evil
 Ancient % Armbands	77	145	48	6144	GenArmor	S1:ARMS	0	16	0	
 Ancient % Skirt	77	145	48	6144	GenArmor	S2:LEGS	0	32	0	
 Ancient % Bracer	78	145	16	2048	GenArmor	S1:LEFT WRIST||RIGHT WRIST	25	8	8	

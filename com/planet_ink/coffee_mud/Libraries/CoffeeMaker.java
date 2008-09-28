@@ -1437,6 +1437,14 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		return "";
 	}
 
+    public StringBuffer getItemsXML(Vector items, Hashtable found, HashSet files, int type)
+    {
+        StringBuffer buf=new StringBuffer("");
+        for(int i=0;i<items.size();i++)
+            buf.append(getUniqueItemXML((Item)items.elementAt(i),type,found,files));
+        return buf;
+    }
+    
 	public StringBuffer getRoomItems(Room room,
 									 Hashtable found,
 									 HashSet files,
