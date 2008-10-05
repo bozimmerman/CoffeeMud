@@ -5,7 +5,7 @@
 <html>
 <head>
     <link rel="grinder icon" href="/images/grinder.ico" >
-    <title>Faction Manager</title>
+    <title>Recipe Row Editor</title>
     <script language=JavaScript>
     <!--
         function openUp2(named)
@@ -26,14 +26,11 @@
         }
         function Delete()
         {
-            if(confirm('Delete this faction?! Confirm!'))
+            if(confirm('Delete this recipe?! Confirm!'))
             {
-                if(confirm('Press OK to Delete this faction!'))
-                {
-                    document.RESOURCES.action='factiondo.cmvp';
-                    document.RESOURCES.FUNCTION.value='DELFACTION';
-                    document.RESOURCES.submit();
-                }
+                document.RESOURCES.action='recipedo.cmvp';
+                document.RESOURCES.FUNCTION.value='DELRECIPE';
+                document.RESOURCES.submit();
             }
         }
         function Select(box)
@@ -47,21 +44,15 @@
                 if(confirm('Submit your changes to this recipe?'))
             @endif@
                 {
-                    document.RESOURCES.action='factiondo.cmvp';
-                    document.RESOURCES.FUNCTION.value='EDITFACTION';
+                    document.RESOURCES.action='recipedo.cmvp';
+                    document.RESOURCES.FUNCTION.value='SAVE';
                     document.RESOURCES.submit();
                 }
         }
         function ReShow()
         {
             document.RESOURCES.FUNCTION.value='';
-            document.RESOURCES.action='/grinder/faction.cmvp';
-            document.RESOURCES.submit();
-        }
-        function ReFaction()
-        {
-            document.RESOURCES.FUNCTION.value='REFACTION';
-            document.RESOURCES.action='/grinder/factiondo.cmvp';
+            document.RESOURCES.action='/grinder/recipe.cmvp';
             document.RESOURCES.submit();
         }
         function Cancel()
@@ -98,7 +89,6 @@
     Select a row to modify.
 @else@
 @if?CheckReqParm?FUNCTION=SAVE@
-    @AbilityRecipeData?SAVEROW@
 @else@
 	@AbilityRecipeData?ROWTABLE&HFONT=COLOR=WHITE><B&FONT=COLOR=WHITE@
 @endif@

@@ -1,0 +1,39 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<META HTTP-EQUIV="Pragma" CONTENT="no-cache">
+@if?!Authenticate@ @AddFile?/grinder/failedlogin.cmvp@ @else@
+@if?!CheckAuthCode?AUTH_CMDRECIPES=true@ @AddFile?/grinder/nopriv.cmvp@ @else@
+<html>
+<head>
+    <link rel="grinder icon" href="/images/grinder.ico" >
+</head>
+<body BGCOLOR=BLACK>
+<SCRIPT LANGUAGE=JavaScript>
+<!--
+@if?CheckReqParm?FUNCTION=DELRECIPE@
+    var v='@AbilityRecipeData?DELROW@';
+    if(v != '')
+        alert(v);
+    else
+        alert('Recipe deleted.');
+    opener.Refresh();
+    window.close();
+@endif@
+@if?CheckReqParm?FUNCTION=SAVE@
+    var v='@AbilityRecipeData?SAVEROW@';
+    if(v != '')
+        alert(v);
+    else
+        alert('Recipe created/modified.');
+    opener.Refresh();
+    window.close();
+@endif@
+@if?CheckReqParm?FUNCTION=RERECIPE@
+    document.location.href='recipe.cmvp?AUTH=@Authenticate?AUTH@&RECIPE=@RequestParameterEncoded?RECIPE@';
+@endif@
+//-->
+</SCRIPT>
+
+</BODY>
+</HTML>
+@endif@
+@endif@
