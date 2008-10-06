@@ -952,6 +952,51 @@ public class List extends StdCommand
 		return CMLib.lister().reallyList2Cols(keys,-1,null).toString();
 	}
 
+    public String listRecipes(MOB mob, String rest)
+    {
+        StringBuffer str = new StringBuffer("");
+        if(rest.trim().length()==0)
+        {
+            str.append("Common Skills with editable recipes: ");
+            for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+            {
+                Ability A=(Ability)e.nextElement();
+                if(A instanceof ItemCraftor)
+                {
+                    ItemCraftor iA = (ItemCraftor)A;
+                    if((iA.parametersFormat()==null)
+                    ||(iA.parametersFormat().length()==0)
+                    ||(iA.parametersFile()==null)
+                    ||(iA.parametersFile().length()==0))
+                        continue;
+                    str.append(A.ID()).append(", ");
+                }
+            }
+            if(str.toString().endsWith(", "))
+                str.delete(str.length()-2,str.length());
+        }
+        else 
+        {
+            Ability A=CMClass.findAbility(rest);
+            if(A==null)
+                str.append("Ability '"+rest+"' does not exist -- try list recipes");
+            else
+            if(!(A instanceof ItemCraftor))
+                str.append("Ability '"+A.ID()+"' is not a proper ability -- try list recipes");
+            else
+            {
+                ItemCraftor iA = (ItemCraftor)A;
+                if((iA.parametersFormat()==null)
+                ||(iA.parametersFormat().length()==0)
+                ||(iA.parametersFile()==null)
+                ||(iA.parametersFile().length()==0))
+                    str.append("Ability '"+A.ID()+"' is not editable -- try list recipes");
+                else
+                    str.append(CMLib.ableParms().getRecipeList(iA));
+            }
+        }
+        return str.toString();
+    }
     public String listMaterials()
     {
         return CMParms.toStringList(RawMaterial.MATERIAL_DESCS);
@@ -1151,6 +1196,7 @@ public class List extends StdCommand
 		/*53*/{"AREARESOURCES","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 		/*54*/{"CONQUERED","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
         /*55*/{"HOLIDAYS","LISTADMIN","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
+        /*56*/{"RECIPES","LISTADMIN","CMDRECIPES"},
 	};
 
     public StringBuffer listContent(MOB mob, Vector commands)
@@ -1430,6 +1476,7 @@ public class List extends StdCommand
 		case 53: s.wraplessPrintln(roomResources(mob.location().getArea().getMetroMap(),mob.location()).toString()); break;
 		case 54: s.wraplessPrintln(areaConquests(CMLib.map().sortedAreas()).toString()); break;
         case 55: s.wraplessPrintln(CMLib.quests().listHolidays(mob.location().getArea(),CMParms.combine(commands,1))); break;
+        case 56: s.wraplessPrintln(listRecipes(mob,CMParms.combine(commands,1))); break;
         default:
 			s.println("List?!");
 			break;

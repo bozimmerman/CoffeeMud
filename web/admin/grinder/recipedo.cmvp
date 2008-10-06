@@ -27,9 +27,6 @@
     opener.Refresh();
     window.close();
 @endif@
-@if?CheckReqParm?FUNCTION=RERECIPE@
-    document.location.href='recipe.cmvp?AUTH=@Authenticate?AUTH@&RECIPE=@RequestParameterEncoded?RECIPE@';
-@endif@
 //-->
 </SCRIPT>
 

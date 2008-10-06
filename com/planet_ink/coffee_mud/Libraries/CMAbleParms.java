@@ -163,9 +163,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             }
             C = recipeFmtC[c];
             if((C=='|')
-                    &&(c<(recipeFmtC.length-1))
-                    &&(recipeFmtC[c+1]=='|')
-                    &&(currentColumn.length()>0))
+            &&(c<(recipeFmtC.length-1))
+            &&(recipeFmtC[c+1]=='|')
+            &&(currentColumn.length()>0))
             {
                 if(currentColumn.length()>0) {
                     if(currentColumns == null) {
@@ -192,9 +192,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     }
                     currentColumns = null;
                     if((C=='.')
-                            &&(c<(recipeFmtC.length-2))
-                            &&(recipeFmtC[c+1]=='.')
-                            &&(recipeFmtC[c+2]=='.'))
+                    &&(c<(recipeFmtC.length-2))
+                    &&(recipeFmtC[c+1]=='.')
+                    &&(recipeFmtC[c+2]=='.'))
                     {
                         c+=2;
                         columnsV.addElement("...");
@@ -217,36 +217,6 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         if((currentColumns != null) && (currentColumns.size()==0))
             columnsV.remove(currentColumns);
         return columnsV;
-    }
-    
-    protected String stripData(StringBuffer str, String div)
-    {
-        StringBuffer data = new StringBuffer("");
-        while(str.length()>0)
-        {
-            if(str.length() < div.length())
-                return null;
-            for(int d=0;d<=div.length();d++)
-            {
-                if(d==div.length())
-                {
-                    str.delete(0,div.length());
-                    return data.toString();
-                } 
-                else
-                    if(str.charAt(d)!=div.charAt(d))
-                        break;
-            }
-            if(str.charAt(0)=='\n')
-            {
-                if(data.length()>0)
-                    return data.toString();
-                return null;
-            }
-            data.append(str.charAt(0));
-            str.delete(0,1);
-        }
-        return null;
     }
     
     protected static int getClassFieldIndex(DVector dataRow) {
@@ -295,10 +265,41 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         return CMClass.sampleItem("StdItem");
     }
     
+    protected String stripData(StringBuffer str, String div)
+    {
+        StringBuffer data = new StringBuffer("");
+        while(str.length()>0)
+        {
+            if(str.length() < div.length())
+                return null;
+            for(int d=0;d<=div.length();d++)
+            {
+                if(d==div.length())
+                {
+                    str.delete(0,div.length());
+                    return data.toString();
+                } 
+                else
+                    if(str.charAt(d)!=div.charAt(d))
+                        break;
+            }
+            if(str.charAt(0)=='\n')
+            {
+                if(data.length()>0)
+                    return data.toString();
+                return null;
+            }
+            data.append(str.charAt(0));
+            str.delete(0,1);
+        }
+        return null;
+    }
+    
     protected Vector parseDataRows(StringBuffer recipeData, Vector columnsV, int numberOfDataColumns)
     throws CMException
     {
         StringBuffer str = new StringBuffer(recipeData.toString());
+        str = cleanDataRowEOLs(str);
         Vector rowsV = new Vector();
         DVector dataRow = new DVector(2);
         Vector currCol = null;
@@ -310,7 +311,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             lastLen = str.length();
             for(int c = 0; c < columnsV.size(); c++)
             {
-                String div = "\n\r";
+                String div = "\n";
                 currCol = null;
                 if(columnsV.elementAt(c) instanceof String)
                     stripData(str,(String)columnsV.elementAt(c));
@@ -349,6 +350,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             if(str.length()==lastLen)
                 throw new CMException("UNCHANGED: Row "+(rowsV.size()+1)+" has "+dataRow.size()+"/"+numberOfDataColumns);
         }
+        if(str.length()<2) str.setLength(0);
         return rowsV;
     }
     
@@ -393,7 +395,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 return false;
             }
             else
-                if(!A.confirmValue((String)dataRow.elementAt(d,2)))
+                if((rowShow>=0)&&(!A.confirmValue((String)dataRow.elementAt(d,2))))
                     Log.errOut("CMAbleParms","Item id "+classModelI.ID()+" has bad data '"+((String)dataRow.elementAt(d,2))+"' for column "+((String)dataRow.elementAt(d,1))+" at row "+rowShow);
         }
         return true;
@@ -412,6 +414,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         }
     }
     
+    protected StringBuffer cleanDataRowEOLs(StringBuffer str)
+    {
+        if(str.indexOf("\n")<0)
+            return new StringBuffer(str.toString().replace('\r','\n'));
+        for(int i=str.length()-1;i>=0;i--)
+            if(str.charAt(i)=='\r')
+                str.delete(i,i+1);
+        return str;
+    }
     
     public void testRecipeParsing(String recipeFilename, String recipeFormat, boolean save)
     {
@@ -455,7 +466,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         fakeSession.setMob(null);
         mob.destroy();
         if(save)
-            resaveRecipeFile(recipeFilename,rowsV,columnsV);
+            resaveRecipeFile(mob,recipeFilename,rowsV,columnsV,false);
     }
     
     protected void calculateRecipeCols(int[] lengths, String[] headers, Vector rowsV)
@@ -511,10 +522,36 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         AbilityRecipeDataImpl recipe = new AbilityRecipeDataImpl(recipeFilename, recipeFormat);
         return recipe;
     }
+
+    public StringBuffer getRecipeList(ItemCraftor iA)
+    {
+        AbilityRecipeData recipe = parseRecipe(iA.parametersFile(),iA.parametersFormat());
+        if(recipe.parseError() != null)
+            return new StringBuffer("File: "+iA.parametersFile()+": "+recipe.parseError());
+        return getRecipeList(recipe);
+    }
+    
+    private StringBuffer getRecipeList(AbilityRecipeData recipe)
+    {
+        StringBuffer list=new StringBuffer("");
+        DVector dataRow = null;
+        list.append("### ");
+        for(int l=0;l<recipe.columnLengths().length;l++)
+            list.append(CMStrings.padRight(recipe.columnHeaders()[l],recipe.columnLengths()[l])+" ");
+        list.append("\n\r");
+        for(int r=0;r<recipe.dataRows().size();r++) {
+            dataRow=(DVector)recipe.dataRows().elementAt(r);
+            list.append(CMStrings.padRight(""+(r+1),3)+" ");
+            for(int c=0;c<dataRow.size();c++)
+                list.append(CMStrings.padRight(CMStrings.limit((String)dataRow.elementAt(c,2),recipe.columnLengths()[c]),recipe.columnLengths()[c])+" ");
+            
+            list.append("\n\r");
+        }
+        return list;
+    }
     
     public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException
     {
-        DVector dataRow = null;
         Hashtable editors = getEditors();
         AbilityRecipeData recipe = parseRecipe(recipeFilename, recipeFormat);
         if(recipe.parseError() != null)
@@ -524,19 +561,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         }
         while((mob.session()!=null)&&(!mob.session().killFlag()))
         {
-            StringBuffer list=new StringBuffer("");
-            list.append("### ");
-            for(int l=0;l<recipe.columnLengths().length;l++)
-                list.append(CMStrings.padRight(recipe.columnHeaders()[l],recipe.columnLengths()[l])+" ");
-            list.append("\n\r");
-            for(int r=0;r<recipe.dataRows().size();r++) {
-                dataRow=(DVector)recipe.dataRows().elementAt(r);
-                list.append(CMStrings.padRight(""+(r+1),3)+" ");
-                for(int c=0;c<dataRow.size();c++)
-                    list.append(CMStrings.padRight(CMStrings.limit((String)dataRow.elementAt(c,2),recipe.columnLengths()[c]),recipe.columnLengths()[c])+" ");
-                
-                list.append("\n\r");
-            }
+            StringBuffer list=getRecipeList(recipe);
             mob.tell(list.toString());
             String lineNum = mob.session().prompt("\n\rEnter a line to edit, A to add, or ENTER to exit: ","");
             if(lineNum.trim().length()==0) break;
@@ -601,13 +626,13 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         }
         if((mob.session()!=null)&&(!mob.session().killFlag()))
         {
-            resaveRecipeFile(recipeFilename,recipe.dataRows(),recipe.columns());
-            Log.sysOut("CMAbleParms","User: "+mob.Name()+" modified file "+recipeFilename);
-            Resources.removeResource("PARSED: "+recipeFilename);
+            String prompt="Save to V)FS or F)ilesystem (" + (recipe.wasVFS()?"V/f":"v/F")+"): ";
+            boolean saveToVFS = mob.session().choose(prompt,"VF",recipe.wasVFS()?"V":"F").equalsIgnoreCase("V");
+            resaveRecipeFile(mob, recipeFilename,recipe.dataRows(),recipe.columns(),saveToVFS);
         }
     }
     
-    public void resaveRecipeFile(String recipeFilename, Vector rowsV, Vector columnsV)
+    public void resaveRecipeFile(MOB mob, String recipeFilename, Vector rowsV, Vector columnsV, boolean saveToVFS)
     {
         StringBuffer saveBuf = new StringBuffer("");
         for(int r=0;r<rowsV.size();r++)
@@ -621,13 +646,26 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 else
                     saveBuf.append(dataRow.elementAt(dataDex++,2));
             }
-            saveBuf.append("\r\n");
+            saveBuf.append("\n");
         }
-        CMFile file = new CMFile(Resources.buildResourcePath("skills")+recipeFilename,null,true);
+        CMFile file = new CMFile((saveToVFS?"::":"//")+Resources.buildResourcePath("skills")+recipeFilename,null,true);
         if(!file.canWrite())
             Log.errOut("CMAbleParms","File: "+recipeFilename+" can not be written");
         else
+        if((!file.exists())||(!file.text().equals(saveBuf)))
+        {
             file.saveText(saveBuf);
+            if(!saveToVFS)
+            {
+                file = new CMFile("::"+Resources.buildResourcePath("skills")+recipeFilename,null,true);
+                if((file.exists())&&(file.canWrite()))
+                {
+                    file.saveText(saveBuf);
+                }
+            }
+            Log.sysOut("CMAbleParms","User: "+mob.Name()+" modified "+(saveToVFS?"VFS":"Local")+" file "+recipeFilename);
+            Resources.removeResource("PARSED: "+recipeFilename);
+        }
     }
     
     
@@ -1475,12 +1513,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         public int[] columnLengths;
         public int classFieldIndex;
         private String parseError = null;
+        private boolean wasVFS = false;
         
         public AbilityRecipeDataImpl(String recipeFilename, String recipeFormat)
         {
             this.recipeFilename = recipeFilename;
             this.recipeFormat = recipeFormat;
-            StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+recipeFilename,null,true).text();
+            CMFile F = new CMFile(Resources.buildResourcePath("skills")+recipeFilename,null,true);
+            wasVFS=F.isVFSFile();
+            StringBuffer str=F.text();
             columns = parseRecipeFormatColumns(recipeFormat);
             numberOfDataColumns = 0;
             for(int c = 0; c < columns.size(); c++)
@@ -1503,6 +1544,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             columnHeaders = new String[numberOfDataColumns];
             calculateRecipeCols(columnLengths,columnHeaders,dataRows);
         }
+        public boolean wasVFS(){ return wasVFS;}
         public DVector newRow(String classFieldData)
         {
             DVector editRow = blankRow();
@@ -1714,7 +1756,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 return "\n\r<INPUT TYPE=TEXT NAME=" + fieldName + " SIZE=10 VALUE=\"" + webValue + "\">";
             case PARMTYPE_MULTICHOICES:
             {
-                onChange = " MULTIPLE ONCHANGE=\"MultiSelect(this);\"";
+                onChange = " MULTIPLE ";
+                if(!parms.containsKey("NOSELECT"))
+                    onChange+= "ONCHANGE=\"MultiSelect(this);\"";
                 if(CMath.isInteger(webValue))
                 {
                     int bits = CMath.s_int(webValue);
@@ -1730,8 +1774,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             {
                 if(choiceValues.size()==0)
                     choiceValues.addElement(webValue);
-                if(onChange == null)
+                if((onChange == null)&&(!parms.containsKey("NOSELECT")))
                     onChange = " ONCHANGE=\"Select(this);\"";
+                else
+                if(onChange==null)
+                    onChange="";
                 StringBuffer str= new StringBuffer("");
                 str.append("\n\r<SELECT NAME="+fieldName+onChange+">");
                 for(int i=0;i<choices.size();i++)

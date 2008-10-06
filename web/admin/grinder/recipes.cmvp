@@ -10,7 +10,7 @@
     <!--
         function Recipe(rownum)
         {
-            if(rownum>=0 || confirm('Create a new recipe?'))
+            if(rownum>=0 || window.confirm('Create a new recipe?'))
             {
 	            var recipeid=document.RESOURCES.ABILITY.value+'&ABILITYRECIPEROW='+rownum;
 	            if(rownum<0)
@@ -78,7 +78,7 @@
 		    </TR>
 		    <TR>
 		    <TD COLSPAN=4><FONT COLOR=WHITE><B>Create New:
-		    @AbilityRecipeData?ADDROW@
+		    @AbilityRecipeData?ADDROW&NOSELECT@
 		    <INPUT TYPE=BUTTON NAME=Add Value=Add ONCLICK="AddRecipe()">
 		    </B></FONT></TD>
 		    </TR>

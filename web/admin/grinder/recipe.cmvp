@@ -38,7 +38,7 @@
         }
         function EditDone()
         {
-            @if?FactionData?ISNEWFACTION@
+		    @if?CheckReqParm?ABILITYRECIPEROW=-1@
                 if(confirm('Create this new recipe?'))
             @else@
                 if(confirm('Submit your changes to this recipe?'))
@@ -76,7 +76,6 @@
 <body BGCOLOR=BLACK>
 <FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="recipe.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
-<INPUT TYPE=HIDDEN NAME=NEWFACTIONID VALUE="">
 <INPUT TYPE=HIDDEN NAME=REPLACE VALUE="">
 <INPUT TYPE=HIDDEN NAME=FUNCTION VALUE="">
 <INPUT TYPE=HIDDEN NAME=ABILITY VALUE="@RequestParameter?ABILITY@">
@@ -95,13 +94,22 @@
 @endif@
 @endif@
 <BR>
+</CENTER>
 <TABLE WIDTH=100% BORDER=0>
 <TR>
     @if?!CheckReqParm?ABILITY=@
 	    @if?CheckReqParm?ABILITYRECIPEROW=-1@
-        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();"></TD>
+        <TD ALIGN=CENTER>
+	        <FONT COLOR=YELLOW><INPUT TYPE=CHECKBOX NAME=SAVETOVFS VALUE=TRUE @AbilityRecipeData?SAVETOVFS@>Save to VFS</FONT>
+	        <BR>
+	        <INPUT TYPE=BUTTON NAME=FINISHED VALUE="Create" ONCLICK="EditDone();">
+        </TD>
         @else@
-        <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();"></TD>
+        <TD ALIGN=CENTER>
+	        <FONT COLOR=YELLOW><INPUT TYPE=CHECKBOX NAME=SAVETOVFS VALUE=TRUE @AbilityRecipeData?SAVETOVFS@>Save to VFS</FONT>
+	        <BR>
+        	<INPUT TYPE=BUTTON NAME=FINISHED VALUE="Modify" ONCLICK="EditDone();">
+        </TD>
         <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="Delete();"></TD>
         @endif@
         <TD ALIGN=CENTER><INPUT TYPE=BUTTON NAME=CANCEL VALUE="Cancel" ONCLICK="Cancel();"></TD>

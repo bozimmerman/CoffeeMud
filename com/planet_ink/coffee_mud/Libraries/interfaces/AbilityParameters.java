@@ -62,7 +62,8 @@ public interface AbilityParameters extends CMLibrary
     public void testRecipeParsing(String recipeFilename, String recipeFormat, boolean save);
     public AbilityRecipeData parseRecipe(String recipeFilename, String recipeFormat);
     public Hashtable getEditors();
-    public void resaveRecipeFile(String recipeFilename, Vector rowsV, Vector columnsV);
+    public void resaveRecipeFile(MOB mob, String recipeFilename, Vector rowsV, Vector columnsV, boolean saveVFS);
+    public StringBuffer getRecipeList(ItemCraftor iA);
     
     public static interface AbilityRecipeData 
     {
@@ -77,6 +78,7 @@ public interface AbilityParameters extends CMLibrary
         public int getClassFieldIndex();
         public DVector newRow(String classFieldData);
         public DVector blankRow();
+        public boolean wasVFS();
     }
     
 }

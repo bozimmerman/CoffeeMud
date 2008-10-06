@@ -92,6 +92,14 @@ public class AbilityRecipeData extends StdWebMacro
                 String hsfont=(parms.containsKey("HFONT"))?("<FONT "+((String)parms.get("HFONT"))+">"):"";
                 String hefont=(parms.containsKey("HFONT"))?"</FONT>":"";
                 
+                if(parms.containsKey("SAVETOVFS"))
+                {
+                    if(httpReq.isRequestParameter("SAVETOVFS"))
+                        str.append(CMath.s_bool(httpReq.getRequestParameter("SAVETOVFS"))?"CHECKED":"");
+                    else
+                        str.append(recipeData.wasVFS()?"CHECKED":"");
+                }
+                else
                 if(parms.containsKey("ROWTABLE")&&(CMath.isInteger(rownum)))
                 {
                     int row = CMath.s_int(rownum);
@@ -161,8 +169,25 @@ public class AbilityRecipeData extends StdWebMacro
                     }
                     MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
                     if(M==null) return " @break@";
-                    if(!CMSecurity.isAllowedAnywhere(M,"CMDRECIPES"))
-                        CMLib.ableParms().resaveRecipeFile(recipeData.recipeFilename(),recipeData.dataRows(),recipeData.columns());
+                    boolean saveToVFS = CMath.s_bool(httpReq.getRequestParameter("SAVETOVFS"));
+                    if(CMSecurity.isAllowedAnywhere(M,"CMDRECIPES"))
+                        CMLib.ableParms().resaveRecipeFile(M,recipeData.recipeFilename(),recipeData.dataRows(),recipeData.columns(), saveToVFS);
+                    else
+                        return " @break@";
+                }
+                else
+                if(parms.containsKey("DELROW")&&(CMath.isInteger(rownum)))
+                {
+                    int row = CMath.s_int(rownum);
+                    if((row-1>=0)&&(row-1<recipeData.dataRows().size()))
+                        recipeData.dataRows().removeElementAt(row-1);
+                    else
+                        return " @break@";
+                    MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
+                    if(M==null) return " @break@";
+                    boolean saveToVFS = CMath.s_bool(httpReq.getRequestParameter("SAVETOVFS"));
+                    if(CMSecurity.isAllowedAnywhere(M,"CMDRECIPES"))
+                        CMLib.ableParms().resaveRecipeFile(M,recipeData.recipeFilename(),recipeData.dataRows(),recipeData.columns(), saveToVFS);
                     else
                         return " @break@";
                 }
