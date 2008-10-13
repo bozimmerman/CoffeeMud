@@ -358,6 +358,12 @@ public class DefaultCharStats implements CharStats
 		}
 	}
 	
+    public boolean isLevelCapped(CharClass C) {
+        if((C==null)||(C.getLevelCap()<0)||(C.getLevelCap()==Integer.MAX_VALUE))
+            return false;
+        return getClassLevel(C) >= C.getLevelCap();
+    }
+    
     public void setCurrentClassLevel(int level)
     {
         CharClass currentClass=getCurrentClass();

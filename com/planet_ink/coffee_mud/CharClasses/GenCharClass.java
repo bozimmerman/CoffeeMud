@@ -44,6 +44,7 @@ public class GenCharClass extends StdCharClass
 	protected int manaDivisor=3;
 	protected int manaDice=1;
 	protected int manaDie=6;
+    protected int levelCap=-1;
 	protected int bonusPracLevel=0;
 	protected int bonusAttackLevel=1;
 	protected int attackAttribute=CharStats.STAT_STRENGTH;
@@ -292,6 +293,7 @@ public class GenCharClass extends StdCharClass
 		str.append(CMLib.xml().convertXMLtoTag("MANADIV",""+manaDivisor));
 		str.append(CMLib.xml().convertXMLtoTag("MANADICE",""+manaDice));
 		str.append(CMLib.xml().convertXMLtoTag("MANADIE",""+manaDie));
+        str.append(CMLib.xml().convertXMLtoTag("LEVELCAP",""+levelCap));
 		str.append(CMLib.xml().convertXMLtoTag("LVLATT",""+bonusAttackLevel));
 		str.append(CMLib.xml().convertXMLtoTag("ATTATT",""+attackAttribute));
 		str.append(CMLib.xml().convertXMLtoTag("FSTPRAC",""+pracsFirstLevel));
@@ -460,6 +462,7 @@ public class GenCharClass extends StdCharClass
 		if(manaDivisor==0) manaDivisor=3;
 		manaDice=CMLib.xml().getIntFromPieces(classData,"MANADICE");
 		manaDie=CMLib.xml().getIntFromPieces(classData,"MANADIE");
+        levelCap=CMLib.xml().getIntFromPieces(classData,"LEVELCAP");
 		bonusAttackLevel=CMLib.xml().getIntFromPieces(classData,"LVLATT");
 		attackAttribute=CMLib.xml().getIntFromPieces(classData,"ATTATT");
 		trainsFirstLevel=CMLib.xml().getIntFromPieces(classData,"FSTTRAN");
@@ -625,7 +628,7 @@ public class GenCharClass extends StdCharClass
 									 "GETOFTPARM","HPDIE","MANADICE","MANADIE","DISFLAGS",
 									 "STARTASTATE","NUMNAME","NAMELEVEL","NUMSSET","SSET",
                                      "SSETLEVEL","NUMWMAT","GETWMAT","ARMORMINOR","STATCLASS",
-                                     "EVENTCLASS","GETCABLEPREQ","GETCABLEMASK","HELP"
+                                     "EVENTCLASS","GETCABLEPREQ","GETCABLEMASK","HELP","LEVELCAP"
 									 }; 
     
 	public String getStat(String code)
@@ -702,6 +705,7 @@ public class GenCharClass extends StdCharClass
         case 51: return (String)getAbleSet().elementAt(num,7);
         case 52: return (String)getAbleSet().elementAt(num,8);
         case 53: return helpEntry;
+        case 54: return ""+levelCap;
         default:
             return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
         }
@@ -897,6 +901,7 @@ public class GenCharClass extends StdCharClass
         case 51: tempables[6]=val; break;
         case 52: tempables[7]=val; break;
         case 53: helpEntry=val; break;
+        case 54: levelCap=CMath.s_int(val); break;
         default:
             CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
             break;

@@ -430,6 +430,16 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @return a txt description of stat qualifications
 	 */
 	public String statQualifications();
+    
+    /**
+     * Returns the highest class level that can be achieved
+     * by a player who has this class.  Once this level is
+     * reached, the class behaves as it is were levelless.
+     * Default is -1, meaning the cap does not exist.
+     * @return highest class level for this class;
+     */
+    public int getLevelCap();
+    
 	/**
 	 * Returns a bonus or negative adjustments to the base
 	 * maximum for the CharStats.STAT_* base statistics.

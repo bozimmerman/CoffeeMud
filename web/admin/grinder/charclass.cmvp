@@ -158,6 +158,10 @@
             <TD><SELECT NAME=PLAYER>@CharClassData?PLAYER@</SELECT></TD>
         </TR>
         <TR>
+            <TD><FONT COLOR=YELLOW>Level Cap (-1 disables): </FONT></TD>
+            <TD><INPUT TYPE=TEXT SIZE=5 NAME=LEVELCAP VALUE="@CharClassData?LEVELCAP@"></TD>
+        </TR>
+        <TR>
             <TD><FONT COLOR=YELLOW>Hit Points / Level: </FONT></TD>
             <TD><FONT COLOR=WHITE>Roll&nbsp; 
                 <INPUT TYPE=TEXT SIZE=2 NAME=HPDICE VALUE="@CharClassData?HPDICE@">

@@ -90,30 +90,33 @@ public interface XMLLibrary extends CMLibrary
      */
     public String returnXMLBlock(String Blob, String Tag);
     
-    public static class XMLpiece
-    {
-        public String tag="";
-        public String value="";
-        public Vector contents=new Vector();
-        public Vector parms=contents;
-        public XMLpiece parent=null;
-        public int outerStart=-1;
-        public int innerStart=-1;
-        public int innerEnd=-1;
-        public int outerEnd=-1;
-        public void addContent(XMLpiece x)
-        {
-    		if (x == null) return;
-    		if (contents == null) contents = new Vector();
-    		x.parent=this;
-    		contents.addElement(x);
-        }
-    }
-    
-    public String parseOutParms(String blk, Vector parmList);
+    /**
+     * 
+     * @param V
+     * @param tag
+     * @return
+     */
     public String getValFromPieces(Vector V, String tag);
+    /**
+     * 
+     * @param V
+     * @param tag
+     * @return
+     */
     public Vector getContentsFromPieces(Vector V, String tag);
+    /**
+     * 
+     * @param V
+     * @param tag
+     * @return
+     */
     public Vector getRealContentsFromPieces(Vector V, String tag);
+    /**
+     * 
+     * @param V
+     * @param tag
+     * @return
+     */
     public XMLpiece getPieceFromPieces(Vector V, String tag);
     /**
      * Return the data value within a given XML block
@@ -170,15 +173,32 @@ public interface XMLLibrary extends CMLibrary
      */
     public double getDoubleFromPieces(Vector V, String tag);
     
-    public boolean acceptableTag(StringBuffer str, int start, int end);
-    
-    public XMLpiece nextXML(StringBuffer buf, XMLpiece parent, int start);
-    
+    /**
+     * 
+     * @param buf
+     * @return
+     */
     public Vector parseAllXML(String buf);
-        
+    
+    /**
+     * 
+     * @param buf
+     * @return
+     */
     public Vector parseAllXML(StringBuffer buf);
     
+    /**
+     * 
+     * @param numberedList
+     * @return
+     */
     public Vector parseXMLList(String numberedList);
+    
+    /**
+     * 
+     * @param V
+     * @return
+     */
     public String getXMLList(Vector V);
     
     /**
@@ -217,12 +237,12 @@ public interface XMLLibrary extends CMLibrary
      * Return a parameter value within an XML tag
      * <TAG Parameter="VALUE">
      * 
-     * <br><br><b>Usage:</b> String ThisColHead=ReturnXMLParm(ThisRow,"TD");
-     * @param Blob String to search
+     * <br><br><b>Usage:</b> String ThisColHead=getParmValue(parmSet,"TD");
+     * @param parmSet set of parms to search
      * @param Tag Tag to search for
      * @return String Parameter value
      */
-    public String returnXMLParm(String Blob, String Tag);
+    public String getParmValue(Hashtable parmSet, String Tag);
     
     /**
      * parse a tag value for safety
@@ -240,4 +260,30 @@ public interface XMLLibrary extends CMLibrary
      * @return String unparsed value
      */
 	public String restoreAngleBrackets(String s);
+    
+    /**
+     * 
+     * @author Bo Zimmerman
+     *
+     */
+    public static class XMLpiece
+    {
+        public String tag="";
+        public String value="";
+        public Vector contents=new Vector();
+        public Hashtable parms=new Hashtable();
+        public XMLpiece parent=null;
+        public int outerStart=-1;
+        public int innerStart=-1;
+        public int innerEnd=-1;
+        public int outerEnd=-1;
+        
+        public void addContent(XMLpiece x)
+        {
+            if (x == null) return;
+            if (contents == null) contents = new Vector();
+            x.parent=this;
+            contents.addElement(x);
+        }
+    }
 }

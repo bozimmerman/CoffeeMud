@@ -977,7 +977,7 @@ public class List extends StdCommand
         }
         else 
         {
-            Ability A=CMClass.findAbility(rest);
+            Ability A=CMClass.findAbility(rest,Ability.ACODE_COMMON_SKILL,-1);
             if(A==null)
                 str.append("Ability '"+rest+"' does not exist -- try list recipes");
             else

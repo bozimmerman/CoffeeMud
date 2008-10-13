@@ -903,8 +903,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				XMLLibrary.XMLpiece ablk=(XMLLibrary.XMLpiece)aV.elementAt(r);
 				if(!ablk.tag.equalsIgnoreCase("FILE"))
 					return unpackErr("Custom","Wrong tag in custome file! "+ablk.value);
-				String filename=((ablk.parms!=null)&&(ablk.parms.size()>0))?
-				    CMLib.xml().returnXMLParm((String)ablk.parms.firstElement(),"NAME"):"";
+				String filename=CMLib.xml().getParmValue(ablk.parms,"NAME");
 				if((filename==null)||(filename.length()==0))
 					return unpackErr("Custom","No custom file filename! "+ablk.value);
 				if(!externalFiles.containsKey(filename))
@@ -3365,7 +3364,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		   if (mV!=null) {
 			   for (int m=0;m<mV.size();m++) {
 				   XMLLibrary.XMLpiece mblk=(XMLLibrary.XMLpiece) mV.elementAt(m);
-				   mob.addFaction(CMLib.xml().returnXMLParm(mblk.parms.toString(),"ID"),new Integer(mblk.value).intValue());
+				   mob.addFaction(CMLib.xml().getParmValue(mblk.parms,"ID"),new Integer(mblk.value).intValue());
 			   }
 		   }
 	   }

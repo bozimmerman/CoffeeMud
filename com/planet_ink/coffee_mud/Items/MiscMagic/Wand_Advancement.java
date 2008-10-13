@@ -90,6 +90,7 @@ public class Wand_Advancement extends StdWand implements ArchonOnly
 						{
 							mob.location().send(mob,msg2);
 							if((target.charStats().getCurrentClass().leveless())
+                            ||(target.charStats().isLevelCapped(target.charStats().getCurrentClass()))
 							||(target.charStats().getMyRace().leveless())
 							||(CMSecurity.isDisabled("LEVELS")))
 							    mob.tell("The wand will not work on such as "+target.name()+".");

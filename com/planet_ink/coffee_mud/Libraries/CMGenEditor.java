@@ -4264,7 +4264,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         }
     }
 
-    void genClassAvailability(MOB mob, CharClass E, int showNumber, int showFlag)
+    protected void genClassAvailability(MOB mob, CharClass E, int showNumber, int showFlag)
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
@@ -5784,6 +5784,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                         break;
                 }
             }
+            CMLib.genEd().promptStatInt(mob,me,"Use -1 to disable a class Level Cap",++showNumber,showFlag,"Level Cap (?)","LEVELCAP");
             CMLib.genEd().promptStatStr(mob,me,++showNumber,showFlag,"Base Class","BASE");
             genClassAvailability(mob,me,++showNumber,showFlag);
             CMLib.genEd().promptStatInt(mob,me,++showNumber,showFlag,"HP Con Divisor","HPDIV");

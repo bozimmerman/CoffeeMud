@@ -153,6 +153,8 @@ public class GrinderClasses
         C.setStat("FSTPRAC",(old==null)?"0":old);
         old=httpReq.getRequestParameter("LVLDAM");
         C.setStat("LVLDAM",(old==null)?"10":old);
+        old=httpReq.getRequestParameter("LEVELCAP");
+        C.setStat("LEVELCAP",(old==null)?"-1":old);
         old=httpReq.getRequestParameter("LVLMOVE");
         C.setStat("LVLMOVE",(old==null)?"1":old);
         old=httpReq.getRequestParameter("ARMOR");

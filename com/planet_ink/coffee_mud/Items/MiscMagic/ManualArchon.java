@@ -77,6 +77,7 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 							CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_CLASSCHANGE);
 						mob.recoverCharStats();
 						if((!mob.charStats().getCurrentClass().leveless())
+                        &&(!mob.charStats().isLevelCapped(mob.charStats().getCurrentClass()))
 						&&(!mob.charStats().getMyRace().leveless())
 						&&(!CMSecurity.isDisabled("LEVELS")))
 						while(mob.baseEnvStats().level()<100)

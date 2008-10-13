@@ -40,6 +40,7 @@ public class StdCharClass implements CharClass
 
     public String name(int classLevel){return name();}
 	public String baseClass(){return ID();}
+    public int getLevelCap() {return -1;}
 	public int getBonusPracLevel(){return 0;}
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
@@ -528,6 +529,7 @@ public class StdCharClass implements CharClass
         CR.setStat("HPDIE",""+getHPDie());
         CR.setStat("MANADICE",""+getManaDice());
         CR.setStat("MANADIE",""+getManaDie());
+        CR.setStat("LEVELCAP",""+getLevelCap());
         CR.setStat("DISFLAGS",""+((raceless()?CharClass.GENFLAG_NORACE:0)
                                 |(leveless()?CharClass.GENFLAG_NOLEVELS:0)
                                 |(expless()?CharClass.GENFLAG_NOEXP:0)));

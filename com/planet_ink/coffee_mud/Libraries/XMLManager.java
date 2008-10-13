@@ -244,7 +244,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return Blob;
 	}
 
-	public String parseOutParms(String blk, Vector parmList)
+	protected String parseOutParms(String blk, Hashtable parmList)
 	{
 		blk=blk.trim();
 		for(int x=0;x<blk.length();x++)
@@ -252,7 +252,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			{
 			    if(!blk.substring(x).trim().startsWith("/"))
 			    {
-					parmList.addElement(blk.substring(x).trim());
+                    parmList.putAll(parseParms(blk.substring(x).trim()));
 			    	if(blk.endsWith("/"))
 				    	return blk.substring(0,x).trim()+" /";
 			    	return blk.substring(0,x).trim();
@@ -263,14 +263,6 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	}
 
 
-	/**
-	 * Parse parameter values
-	 * <TAG Parameter="VALUE">
-	 *
-  	 * <br><br><b>Usage:</b> Hashtable parms=parseParms(ThisRow);
-	 * @param Blob String to search
-	 * @return Hashtable Parameter keys/values
-	 */
 	protected Hashtable parseParms(String Blob)
 	{
 		Hashtable H=new Hashtable();
@@ -374,15 +366,6 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return null;
 	}
 
-	/**
-	 * Return the data value within a given XML block
-	 * <TAG>Data</TAG>
-	 *
-  	 * <br><br><b>Usage:</b> String ThisColHead=getBoolFromPieces(ThisRow,"TD");
-	 * @param V Vector of pieces
-	 * @param tag Tag to search for
-	 * @return boolean Information from XML block
-	 */
 	public boolean getBoolFromPieces(Vector V, String tag)
 	{
 		String val=getValFromPieces(V,tag);
@@ -393,63 +376,27 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return false;
 	}
 
-	/**
-	 * Return the data value within a given XML block
-	 * <TAG>Data</TAG>
-	 *
-  	 * <br><br><b>Usage:</b> String ThisColHead=getIntFromPieces(ThisRow,"TD");
-	 * @param V Vector of pieces
-	 * @param tag Tag to search for
-	 * @return int Information from XML block
-	 */
 	public int getIntFromPieces(Vector V, String tag)
 	{
 		return s_int(getValFromPieces(V,tag));
 	}
 
-	/**
-	 * Return the data value within a given XML block
-	 * <TAG>Data</TAG>
-	 *
-  	 * <br><br><b>Usage:</b> String ThisColHead=getShortFromPieces(ThisRow,"TD");
-	 * @param V Vector of pieces
-	 * @param tag Tag to search for
-	 * @return short Information from XML block
-	 */
 	public short getShortFromPieces(Vector V, String tag)
 	{
 		return s_short(getValFromPieces(V,tag));
 	}
 
-	/**
-	 * Return the data value within a given XML block
-	 * <TAG>Data</TAG>
-	 *
-  	 * <br><br><b>Usage:</b> String ThisColHead=getLongFromPieces(ThisRow,"TD");
-	 * @param V Vector of pieces
-	 * @param tag Tag to search for
-	 * @return long Information from XML block
-	 */
 	public long getLongFromPieces(Vector V, String tag)
 	{
 		return s_long(getValFromPieces(V,tag));
 	}
 
-	/**
-	 * Return the data value within a given XML block
-	 * <TAG>Data</TAG>
-	 *
-  	 * <br><br><b>Usage:</b> String ThisColHead=getDoubleFromPieces(ThisRow,"TD");
-	 * @param V Vector of pieces
-	 * @param tag Tag to search for
-	 * @return double Information from XML block
-	 */
 	public double getDoubleFromPieces(Vector V, String tag)
 	{
 		return s_double(getValFromPieces(V,tag));
 	}
 
-    public boolean acceptableTag(StringBuffer str, int start, int end)
+    protected boolean acceptableTag(StringBuffer str, int start, int end)
     {
         while(Character.isWhitespace(str.charAt(start)))
             start++;
@@ -465,7 +412,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
         return true;
     }
 
-    public XMLpiece nextXML(StringBuffer buf, XMLpiece parent, int start)
+    protected XMLpiece nextXML(StringBuffer buf, XMLpiece parent, int start)
     {
         int end=-1;
         start--;
@@ -490,7 +437,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
                 nextStart=buf.indexOf("<",start+1);
             }
         }
-        Vector parmList=new Vector();
+        Hashtable parmList = new Hashtable();
 		String tag=parseOutParms(buf.substring(start+1,end).trim(),parmList).toUpperCase().trim();
 
 		if(!tag.startsWith("/"))
@@ -540,7 +487,9 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 
 
 	public Vector parseAllXML(String buf)
-	{  return parseAllXML(new StringBuffer(buf));}
+	{  
+        return parseAllXML(new StringBuffer(buf));
+    }
 
 	public Vector parseAllXML(StringBuffer buf)
 	{
@@ -556,15 +505,6 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return V;
 	}
 
-
-	/**
-	 * Return the data value within the first XML block
-	 * <TAG>Data</TAG>
-	 *
-  	 * <br><br><b>Usage:</b> String ThisColHead=returnXMLValue(ThisRow);
-	 * @param Blob String to searh
-	 * @return String Information from first XML block
-	 */
 	public String returnXMLValue(String Blob)
 	{
 		int start=0;
@@ -578,15 +518,6 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	}
 
 
-	/**
-	 * Return the data value within a given XML block
-	 * <TAG>Data</TAG>
-	 *
-  	 * <br><br><b>Usage:</b> String ThisColHead=returnXMLValue(ThisRow,"TD");
-	 * @param Blob String to search
-	 * @param Tag Tag to search for
-	 * @return String Information from XML block
-	 */
 	public String returnXMLValue(String Blob, String Tag)
 	{
 		int start=0;
@@ -599,15 +530,6 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return Blob.substring(start+1).trim();
 	}
 
-	/**
-	 * Return the data value within a given XML block
-	 * <TAG>Data</TAG>
-	 *
-  	 * <br><br><b>Usage:</b> String ThisColHead=returnXMLValue(ThisRow,"TD");
-	 * @param Blob String to search
-	 * @param Tag Tag to search for
-	 * @return boolean Information from XML block
-	 */
 	public boolean returnXMLBoolean(String Blob, String Tag)
 	{
 		String val=returnXMLValue(Blob,Tag);
@@ -618,27 +540,15 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return false;
 	}
 
-
-	/**
-	 * Return a parameter value within an XML tag
-	 * <TAG Parameter="VALUE">
-	 *
-  	 * <br><br><b>Usage:</b> String ThisColHead=ReturnXMLParm(ThisRow,"TD");
-	 * @param Blob String to search
-	 * @param Tag Tag to search for
-	 * @return String Parameter value
-	 */
-	public String returnXMLParm(String Blob, String Tag)
+	public String getParmValue(Hashtable parmSet, String Tag)
 	{
-		int foundb=Blob.indexOf(Tag+"=");
-		if(foundb<0)foundb=Blob.indexOf(Tag+" =");
-		if(foundb<0)return"";
-		try{ while(Blob.charAt(foundb)!='\"') foundb++;
-		} catch(Throwable t){return "";}
-		foundb++;
-		int founde=Blob.indexOf('\"',foundb);
-		if(founde<foundb)return"";
-		return Blob.substring(foundb,founde);
+        if(parmSet != null)
+        {
+            String value = (String)parmSet.get(Tag.toUpperCase().trim());
+            if(value != null)
+                return value;
+        }
+        return "";
 	}
 
     public String getXMLList(Vector V)

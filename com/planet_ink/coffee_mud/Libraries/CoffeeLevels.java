@@ -264,6 +264,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	{
 	    if((CMSecurity.isDisabled("LEVELS"))
 		||(mob.charStats().getCurrentClass().leveless())
+        ||(mob.charStats().isLevelCapped(mob.charStats().getCurrentClass()))
 		||(mob.charStats().getMyRace().leveless()))
 	        return;
         Room room=mob.location();

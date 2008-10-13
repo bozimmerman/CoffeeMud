@@ -325,6 +325,15 @@ public interface CharStats extends CMCommon
      */
 	public int combinedSubLevels();
     /**
+     * Returns true if this user is capped by the given
+     * classes level cap (if one exists)
+     * @see com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass#getLevelCap()
+     * @param C the class to check
+     * @return true if the player is level capped, false otherwise
+     */
+    public boolean isLevelCapped(CharClass C);
+    
+    /**
      * Changes the number of class levels the mob has in the given character class
      * to the given level.  If the mob does not have any levels in the given
      * class, then setCurrentClass will be called first.

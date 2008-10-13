@@ -133,6 +133,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					if(destLevel<=target.baseEnvStats().level())
 						destLevel=100;
 					if((target.charStats().getCurrentClass().leveless())
+                    ||(target.charStats().isLevelCapped(target.charStats().getCurrentClass()))
 					||(target.charStats().getMyRace().leveless())
 					||(CMSecurity.isDisabled("LEVELS")))
 					    mob.tell("The wand will not work on such as "+target.name()+".");
@@ -157,6 +158,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					if(CMath.isInteger(message)) num=CMath.s_int(message);
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
 					if((target.charStats().getCurrentClass().leveless())
+                    ||(target.charStats().isLevelCapped(target.charStats().getCurrentClass()))
 					||(target.charStats().getMyRace().leveless())
 					||(CMSecurity.isDisabled("LEVELS")))
 					    mob.tell("The wand will not work on such as "+target.name()+".");
@@ -182,6 +184,7 @@ public class WandArchon extends StdWand implements ArchonOnly
 					if(CMath.isInteger(message)) num=CMath.s_int(message);
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,this.name()+" glows brightly at <T-NAME>.");
 					if((target.charStats().getCurrentClass().leveless())
+                    ||(target.charStats().isLevelCapped(target.charStats().getCurrentClass()))
 					||(target.charStats().getMyRace().leveless())
 					||(CMSecurity.isDisabled("LEVELS")))
 					    mob.tell("The wand will not work on such as "+target.name()+".");

@@ -478,6 +478,13 @@ public class CharClassData extends StdWebMacro
                     if(CMath.s_int(old)<=0) old="1";
                     str.append(old+", ");
                 }
+                if(parms.containsKey("LEVELCAP"))
+                {
+                    String old=httpReq.getRequestParameter("LEVELCAP");
+                    if(old==null) old=""+C.getLevelCap();
+                    if(CMath.s_int(old)<0) old="-1";
+                    str.append(old+", ");
+                }
                 if(parms.containsKey("LVLMOVE"))
                 { // movement multiplier?
                     String old=httpReq.getRequestParameter("LVLMOVE");
@@ -925,10 +932,17 @@ public class CharClassData extends StdWebMacro
 					else
 						str.append("Any, ");
 				if(parms.containsKey("LIMITS"))
+                {
+                    StringBuffer limits = new StringBuffer("");
 					if(C.otherLimitations().length()>0)
-						str.append(C.otherLimitations()+", ");
-					else
+                        limits.append("  "+C.otherLimitations());
+                    if(C.getLevelCap()>0)
+                        limits.append("  A player may not gain more than "+C.getLevelCap()+" levels in this class.");
+                    if(limits.length()==0)
 						str.append("None, ");
+                    else
+                        str.append(limits.toString().trim()).append(", ");
+                }
 				if(parms.containsKey("BONUSES"))
 					if(C.otherBonuses().length()>0)
 						str.append(C.otherBonuses()+", ");

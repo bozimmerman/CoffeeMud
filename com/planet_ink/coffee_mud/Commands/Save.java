@@ -68,12 +68,16 @@ public class Save extends StdCommand
 		    return false;
 		}
 		
-		String commandType="";
 		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
+        String firstCommand="";
+        String lastCommand = "";
 		if(commands.size()>1)
-			commandType=((String)commands.lastElement()).toUpperCase();
+        {
+            firstCommand=((String)commands.elementAt(1)).toUpperCase();
+            lastCommand=((String)commands.lastElement()).toUpperCase();
+        }
 		
-		if(commandType.equals("USERS"))
+		if(lastCommand.equals("USERS"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS"))
 			{
@@ -93,14 +97,14 @@ public class Save extends StdCommand
 			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes everyone.\n\r");
 		}
 		else
-		if(commandType.equals("ITEMS"))
+		if(lastCommand.equals("ITEMS"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS"))
 			{
 				mob.tell("You are not allowed to save the mobs here.");
 				return false;
 			}
-			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("AREA")))
+			if(firstCommand.equals("AREA"))
 			{
 				if((mob.session()!=null)&&(mob.session().confirm("Doing this assumes every item in every room in this area is correctly placed.  Are you sure (N/y)?","N")))
 				{
@@ -120,14 +124,14 @@ public class Save extends StdCommand
 			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
 		}
 		else
-		if(commandType.equals("ROOM"))
+		if(lastCommand.equals("ROOM"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS"))
 			{
 				mob.tell("You are not allowed to save the contents here.");
 				return false;
 			}
-			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("AREA")))
+			if(firstCommand.equals("AREA"))
 			{
 				if((mob.session()!=null)&&(mob.session().confirm("Doing this assumes every mob and item in every room in this area is correctly placed.  Are you sure (N/y)?","N")))
 				{
@@ -147,14 +151,14 @@ public class Save extends StdCommand
 			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
 		}
 		else
-		if(commandType.equals("MOBS"))
+		if(lastCommand.equals("MOBS"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDROOMS"))
 			{
 				mob.tell("You are not allowed to save the mobs here.");
 				return false;
 			}
-			if((commands.size()>2)&&(((String)commands.elementAt(1)).equalsIgnoreCase("AREA")))
+			if(firstCommand.equals("AREA"))
 			{
 				if((mob.session()!=null)&&(mob.session().confirm("Doing this assumes every mob in every room in this area is correctly placed.  Are you sure (N/y)?","N")))
 				{
@@ -175,7 +179,7 @@ public class Save extends StdCommand
 			Resources.removeResource("HELP_"+mob.location().getArea().Name().toUpperCase());
 		}
 		else
-		if(commandType.equals("QUESTS"))
+		if(firstCommand.equals("QUESTS")||lastCommand.equals("QUESTS"))
 		{
 			if(!CMSecurity.isAllowed(mob,mob.location(),"CMDQUESTS"))
 			{
@@ -186,17 +190,36 @@ public class Save extends StdCommand
 			mob.tell("Quest list saved.");
 		}
 		else
-        if(CMLib.players().getPlayer(commandType)!=null)
+        if(firstCommand.equals("USER"))
         {
-            MOB M=CMLib.players().getPlayer(commandType);
+            MOB M=CMLib.players().getPlayer(lastCommand);
             CMLib.database().DBUpdatePlayer(M);
             if(CMLib.flags().isInTheGame(M,true))
                 CMLib.database().DBUpdateFollowers(M);
+            mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes '"+M.name()+"'.\n\r");
+        }
+        else
+        if(CMLib.players().getPlayer(firstCommand)!=null)
+        {
+            MOB M=CMLib.players().getPlayer(firstCommand);
+            CMLib.database().DBUpdatePlayer(M);
+            if(CMLib.flags().isInTheGame(M,true))
+                CMLib.database().DBUpdateFollowers(M);
+            mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes '"+M.name()+"'.\n\r");
+        }
+        else
+        if(CMLib.players().getPlayer(lastCommand)!=null)
+        {
+            MOB M=CMLib.players().getPlayer(lastCommand);
+            CMLib.database().DBUpdatePlayer(M);
+            if(CMLib.flags().isInTheGame(M,true))
+                CMLib.database().DBUpdateFollowers(M);
+            mob.location().showHappens(CMMsg.MSG_OK_ACTION,"A feeling of permanency envelopes '"+M.name()+"'.\n\r");
         }
         else
 		{
 			mob.tell(
-				"\n\rYou cannot save '"+commandType+"'. "
+				"\n\rYou cannot save '"+firstCommand+"'. "
 				+"However, you might try "
 				+"ITEMS, USERS, [PLAYERNAME], QUESTS, MOBS, or ROOM.");
 		}

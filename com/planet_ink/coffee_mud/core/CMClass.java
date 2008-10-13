@@ -592,12 +592,38 @@ public class CMClass extends ClassLoader
 
 	public static Ability findAbility(String calledThis)
 	{
-		Ability A=(Ability)getGlobal(c().abilities,calledThis);
-		if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(c().abilities,calledThis,true);
-		if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(c().abilities,calledThis,false);
-		if(A!=null)A=(Ability)A.newInstance();
-		return A;
+        return findAbility(calledThis,-1,-1);
 	}
+
+    public static Ability findAbility(String calledThis, int ofClassDomain, long ofFlags)
+    {
+        Vector ableV;
+        Ability A;
+        if((ofClassDomain>=0)||(ofFlags>=0))
+        {
+            ableV = new Vector();
+            for(Enumeration e=c().abilities.elements();e.hasMoreElements();)
+            {
+                A=(Ability)e.nextElement();
+                if((ofClassDomain<0)
+                ||((A.classificationCode() & Ability.ALL_ACODES)==ofClassDomain)
+                ||((A.classificationCode() & Ability.ALL_DOMAINS)==ofClassDomain))
+                {
+                    if((ofFlags<0)
+                    ||(CMath.bset(A.flags(),ofFlags)))
+                        ableV.addElement(A);
+                }
+            }
+        } 
+        else
+            ableV = c().abilities;
+            
+        A=(Ability)getGlobal(ableV,calledThis);
+        if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(ableV,calledThis,true);
+        if(A==null) A=(Ability)CMLib.english().fetchEnvironmental(ableV,calledThis,false);
+        if(A!=null)A=(Ability)A.newInstance();
+        return A;
+    }
 
     public static Behavior findBehavior(String calledThis)
     {
