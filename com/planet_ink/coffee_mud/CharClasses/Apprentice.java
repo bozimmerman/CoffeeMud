@@ -98,7 +98,6 @@ public class Apprentice extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Embroidering",false,CMParms.parseSemicolons("Skill_Write",true),"+CHA 10");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Engraving",false,CMParms.parseSemicolons("Skill_Write",true),"+CHA 10");
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Lacquerring",false,"+CHA 8");
-		
 	}
 
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_HEROIC|Area.THEME_TECHNOLOGY;}

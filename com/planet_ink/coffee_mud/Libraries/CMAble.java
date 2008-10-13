@@ -422,6 +422,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	public Vector getLevelListings(String ID, boolean checkAll, int level)
 	{
 		Vector V=new Vector();
+        CharClass C=CMClass.getCharClass(ID);
+        if((C!=null)&&(C.getLevelCap()>=0)&&(level>C.getLevelCap()))
+            return V;
 		if(completeAbleMap.containsKey(ID))
 		{
 			Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
@@ -450,6 +453,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
 	public DVector getUpToLevelListings(String ID, int level, boolean ignoreAll, boolean gainedOnly)
 	{
 		DVector DV=new DVector(2);
+        CharClass C=CMClass.getCharClass(ID);
+        if((C!=null)&&(C.getLevelCap()>=0)&&(level>C.getLevelCap()))
+            return DV;
 		if(completeAbleMap.containsKey(ID))
 		{
 			Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
@@ -484,13 +490,18 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		{
 			Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
 			if(ableMap.containsKey(ability))
-				return ((AbilityMapping)ableMap.get(ability)).qualLevel;
+                return ((AbilityMapping)ableMap.get(ability)).qualLevel;
 		}
 		if((checkAll)&&(completeAbleMap.containsKey("All")))
 		{
 			Hashtable ableMap=(Hashtable)completeAbleMap.get("All");
 			if(ableMap.containsKey(ability))
-				return ((AbilityMapping)ableMap.get(ability)).qualLevel;
+            {
+                int qualLevel = ((AbilityMapping)ableMap.get(ability)).qualLevel;
+                CharClass C=CMClass.getCharClass(ID);
+                if((C!=null)&&(C.getLevelCap()>=0))
+                    return qualLevel>C.getLevelCap()?-1:qualLevel;
+            }
 		}
 		return -1;
 	}
