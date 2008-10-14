@@ -92,8 +92,144 @@ public class Generate extends StdCommand
     
     private String findString(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
     {
-        
+        String asParm = CMLib.xml().getParmValue(piece.parms,tagName.toUpperCase().trim());
+        if(asParm != null) return strFilter(asParm,defined);
+        Vector choices = getAllChoices(tagName, piece, defined);
+        if((choices==null)||(choices.size()==0)) throw new CMException("Unable to find tag '"+tagName+"' on piece '"+piece.tag+"', Data: "+piece.value);
+        choices = selectChoices(choices,piece,defined);
+        if(choices.size()==1) return findString("VALUE",(XMLLibrary.XMLpiece)choices.firstElement(),defined);
+        //TODO: Assemble the string from parts
         return "";
+    }
+
+    private Vector getAllChoices(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    {
+        Vector choices = new Vector();
+        for(int p=0;p<piece.contents.size();p++)
+            if(((XMLLibrary.XMLpiece)piece.contents.elementAt(p)).tag.equalsIgnoreCase(tagName))
+                choices.addElement(piece.contents.elementAt(p));
+        String inserter = CMLib.xml().getParmValue(piece.parms,"INSERT");
+        if(inserter!=null)
+        {
+            Vector V=CMParms.parseCommas(inserter,true);
+            for(int v=0;v<V.size();v++)
+            {
+                String s = (String)V.elementAt(v);
+                if(!s.startsWith("$"))
+                    throw new CMException("Insert missing $: '"+s+"' on piece '"+piece.tag+"', Data: "+piece.value);
+                XMLLibrary.XMLpiece insertPiece =(XMLLibrary.XMLpiece)defined.get(s.substring(1).toUpperCase().trim());
+                if(insertPiece == null)
+                    throw new CMException("Undefined insert: '"+s+"' on piece '"+piece.tag+"', Data: "+piece.value);
+                if(insertPiece.contents.size()==0)
+                {
+                    if(insertPiece.tag.equalsIgnoreCase(tagName))
+                        choices.addElement(insertPiece);
+                    else
+                        throw new CMException("Can't insert: '"+insertPiece.tag+"' as '"+tagName+"' on piece '"+piece.tag+"', Data: "+piece.value);
+                }
+                for(int i=0;i<insertPiece.contents.size();i++)
+                {
+                    XMLLibrary.XMLpiece insertPieceChild =(XMLLibrary.XMLpiece)insertPiece.contents.elementAt(i);
+                    if(insertPieceChild.tag.equalsIgnoreCase(tagName))
+                        choices.addElement(insertPieceChild);
+                    else
+                        throw new CMException("Can't insert: '"+insertPieceChild.tag+"' as '"+tagName+"' on piece '"+piece.tag+"', Data: "+piece.value);
+                }
+            }
+        }
+        for(int c=0;c<choices.size();c++)
+        {
+            XMLLibrary.XMLpiece lilP =(XMLLibrary.XMLpiece)choices.elementAt(c); 
+            String condition=CMLib.xml().getParmValue(lilP.parms,"CONDITION");
+            if(condition != null)
+            {
+                //TODO: eval a condition
+            }
+        }
+        return choices;
+    }
+    
+    private Vector selectChoices(Vector choices, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    {
+        String selection = CMLib.xml().getParmValue(piece.parms,"SELECT");
+        if(selection == null) return choices;
+        selection=selection.toUpperCase().trim();
+        if(selection.equals("NONE"))  return new Vector();
+        if(choices.size()==0) throw new CMException("Can't make selection among NONE: on piece '"+piece.tag+"', Data: "+piece.value);
+        if(selection.equals("ALL"))  return choices;
+        if(selection.equals("FIRST"))  return CMParms.makeVector(choices.firstElement());
+        if(selection.startsWith("FIRST-"))
+        {
+            int num=CMath.s_int(selection.substring(selection.indexOf('-')+1));
+            if((num<=0)||(num>choices.size())) throw new CMException("Can't pick first "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
+            Vector V=new Vector();
+            for(int v=0;v<num;v++)
+                V.addElement(choices.elementAt(v));
+            return V;
+        }
+        if(selection.equals("LAST"))  return CMParms.makeVector(choices.lastElement());
+        if(selection.startsWith("LAST-"))
+        {
+            int num=CMath.s_int(selection.substring(selection.indexOf('-')+1));
+            if((num<=0)||(num>choices.size())) throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
+            Vector V=new Vector();
+            for(int v=V.size()-num;v<V.size();v++)
+                V.addElement(choices.elementAt(v));
+            return V;
+        }
+        if(selection.startsWith("PICK-"))
+        {
+            int num=CMath.s_int(selection.substring(selection.indexOf('-')+1));
+            if((num<=0)||(num>choices.size())) throw new CMException("Can't pick "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
+            Vector V=new Vector();
+            Vector cV=(Vector)choices.clone();
+            for(int v=0;v<num;v++)
+            {
+                int[] weights=new int[cV.size()];
+                int total=0;
+                for(int c=0;c<cV.size();c++)
+                {
+                    XMLLibrary.XMLpiece lilP=(XMLLibrary.XMLpiece)cV.elementAt(c);
+                    int weight=CMath.s_int(CMLib.xml().getParmValue(lilP.parms,"WEIGHT"));
+                    if(weight<1) weight=1;
+                    weights[c]=weight;
+                    total+=weight;
+                }
+                
+                int choice=CMLib.dice().roll(1,total,0);
+                int c=-1;
+                while(choice>0)
+                {
+                    c++;
+                    choice-=weights[c];
+                }
+                V.addElement(cV.elementAt(c));
+                cV.removeElementAt(c);
+            }
+            return V;
+        }
+        if(selection.equals("ANY"))    return CMParms.makeVector(choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)));
+        if(selection.startsWith("ANY-"))
+        {
+            int num=CMath.s_int(selection.substring(selection.indexOf('-')+1));
+            if((num<=0)||(num>choices.size())) throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
+            Vector V=new Vector();
+            Vector cV=(Vector)choices.clone();
+            for(int v=0;v<num;v++)
+            {
+                int x=CMLib.dice().roll(1,cV.size(),-1);
+                V.addElement(cV.elementAt(x));
+                cV.removeElementAt(x);
+            }
+            return V;
+        }
+        throw new CMException("Illegal select type '"+selection+"' on piece '"+piece.tag+"', Data: "+piece.value);
+    }
+    
+    private String strFilter(String str, Hashtable defined) throws CMException
+    {
+        //TODO: something here
+        return str;
     }
     
     public boolean canBeOrdered(){return false;}
