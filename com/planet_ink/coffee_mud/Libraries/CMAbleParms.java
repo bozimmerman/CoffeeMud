@@ -585,6 +585,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 }
                 editRow=recipe.newRow(classFieldData);
                 if(editRow==null) continue;
+                recipe.dataRows().addElement(editRow);
             }
             else
                 if(CMath.isInteger(lineNum))
@@ -626,9 +627,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         }
         if((mob.session()!=null)&&(!mob.session().killFlag()))
         {
-            String prompt="Save to V)FS or F)ilesystem (" + (recipe.wasVFS()?"V/f":"v/F")+"): ";
-            boolean saveToVFS = mob.session().choose(prompt,"VF",recipe.wasVFS()?"V":"F").equalsIgnoreCase("V");
-            resaveRecipeFile(mob, recipeFilename,recipe.dataRows(),recipe.columns(),saveToVFS);
+            String prompt="Save to V)FS, F)ilesystem, or C)ancel (" + (recipe.wasVFS()?"V/f/c":"v/F/c")+"): ";
+            String choice=mob.session().choose(prompt,"VFC",recipe.wasVFS()?"V":"F");
+            if(choice.equalsIgnoreCase("C"))
+                mob.tell("Cancelled.");
+            else
+            {
+                boolean saveToVFS = choice.equalsIgnoreCase("V");
+                resaveRecipeFile(mob, recipeFilename,recipe.dataRows(),recipe.columns(),saveToVFS);
+            }
         }
     }
     
