@@ -542,13 +542,9 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 
 	public String getParmValue(Hashtable parmSet, String Tag)
 	{
-        if(parmSet != null)
-        {
-            String value = (String)parmSet.get(Tag.toUpperCase().trim());
-            if(value != null)
-                return value;
-        }
-        return "";
+        if((parmSet != null)&&(Tag != null))
+            return (String)parmSet.get(Tag.toUpperCase().trim());
+        return null;
 	}
 
     public String getXMLList(Vector V)

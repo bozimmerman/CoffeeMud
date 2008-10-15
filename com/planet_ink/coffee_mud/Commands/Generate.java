@@ -95,11 +95,31 @@ public class Generate extends StdCommand
         String asParm = CMLib.xml().getParmValue(piece.parms,tagName.toUpperCase().trim());
         if(asParm != null) return strFilter(asParm,defined);
         Vector choices = getAllChoices(tagName, piece, defined);
-        if((choices==null)||(choices.size()==0)) throw new CMException("Unable to find tag '"+tagName+"' on piece '"+piece.tag+"', Data: "+piece.value);
+        if((choices==null)||(choices.size()==0)) {
+            if((piece.tag.equalsIgnoreCase(tagName))&&(piece.contents.size()==0))
+                return piece.value;
+            throw new CMException("Unable to find tag '"+tagName+"' on piece '"+piece.tag+"', Data: "+piece.value);
+        }
         choices = selectChoices(choices,piece,defined);
-        if(choices.size()==1) return findString("VALUE",(XMLLibrary.XMLpiece)choices.firstElement(),defined);
-        //TODO: Assemble the string from parts
-        return "";
+        StringBuffer finalValue = new StringBuffer("");
+        for(int c=0;c<choices.size();c++)
+        {
+            XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
+            String value = findString("VALUE",valPiece,defined);
+            String action = CMLib.xml().getParmValue(valPiece.parms,"ACTION");
+            if((action==null)||(action.length()==0)) action="APPEND";
+            if(action.equalsIgnoreCase("REPLACE"))
+                finalValue = new StringBuffer(value);
+            else
+            if(action.equalsIgnoreCase("APPEND"))
+                finalValue.append(" ").append(value);
+            else
+            if(action.equalsIgnoreCase("PREPEND"))
+                finalValue.insert(0,' ').insert(0,value);
+            else
+                throw new CMException("Unknown action '"+action+" on subPiece "+valPiece.tag+" on piece '"+piece.tag+"', Data: "+piece.value);
+        }
+        return finalValue.toString().trim();
     }
 
     private Vector getAllChoices(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
@@ -141,9 +161,10 @@ public class Generate extends StdCommand
         {
             XMLLibrary.XMLpiece lilP =(XMLLibrary.XMLpiece)choices.elementAt(c); 
             String condition=CMLib.xml().getParmValue(lilP.parms,"CONDITION");
-            if(condition != null)
+            if((condition != null) && (!CMStrings.parseStringExpression(condition.toCharArray(),0,defined)))
             {
-                //TODO: eval a condition
+                choices.removeElementAt(c);
+                c--;
             }
         }
         return choices;

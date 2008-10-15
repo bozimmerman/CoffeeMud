@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!--
 <description select="any-1" tag=mytag action="replace">
-<value weight=2> My Description1 </value>
+<value weight=2 > My Description1 </value>
 <value weight=2> My Description2 </value>
 </description>
 <description tag="mytag2" action="append" select="any-1" condition="" insert="$mytag">

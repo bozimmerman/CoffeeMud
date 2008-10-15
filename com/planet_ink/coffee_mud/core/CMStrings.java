@@ -440,5 +440,74 @@ public class CMStrings
             return str.toUpperCase();
         return str.toLowerCase();
     }
+
+    // 0 = done after this one,-1 = done a char ago,-2 = eat & same state,-99 = error,  
+    // 254 = digit, 253 = letter, 255=eof
+    private static final int[][] STRING_EXP_SM={
+        {-1}, // 0 == done after this one, 1 == real first state
+        {' ',-2,'=',2,'>',4,'<',5,'!',2,'(',0,')',0,'\"',3,'+',0,'&',6,'|',7,'\'',8,'`',9,'$',10,253,12,-99,255,255}, // 1
+        {'=',0,-1}, // 2 -- starts with =
+        {'\"',0,255,-1,3}, // 3 -- starts with "
+        {'=',0,'>',0,-1}, // 4 -- starts with <
+        {'=',0,'<',0,-1}, // 5 -- starts with >
+        {'&',0,-1}, // 6 -- starts with &
+        {'|',0,-1}, // 7 -- starts with |
+        {'\'',0,255,-1,8}, // 8 -- starts with '
+        {'`',0,255,-1,9}, // 9 -- starts with `
+        {253,11,'_',11,-99}, // 10 == starts with $
+        {253,11,254,11,'_',11,255,-1,-1}, // 11=starts $Letter
+        {253,12,255,-1,-1} // 12=starts with letter
+    };
     
+    private static String nextStringToken(String expression, int[] index) throws Exception
+    {
+        int[] stateBlock=STRING_EXP_SM[1];
+        StringBuffer token = new StringBuffer("");
+        while(index[0]<expression.length())
+        {
+            char c=expression.charAt(index[0]);
+            int nextState=stateBlock[stateBlock.length-1];
+            boolean match=false;
+            for(int x=0;x<stateBlock.length-1;x+=2)
+            {
+                switch(stateBlock[x])
+                {
+                case 254: match=Character.isDigit(c); break;
+                case 253: match=Character.isLetter(c); break;
+                case 255: break; // nope, not yet
+                }
+                if(match)
+                {
+                    nextState = stateBlock[x+1];
+                    break;
+                }
+            }
+            switch(nextState) {
+                case 255: return null;
+                case -99: throw new Exception("Illegal character in expression: "+c);
+                case -2: break;
+                case -1: return token.toString();
+                case 0: { token.append(c); index[0]++; return token.toString();}
+                default: { token.append(c); index[0]++; stateBlock = STRING_EXP_SM[nextState]; break; }
+            }
+        }
+        int finalState = stateBlock[stateBlock.length-1];
+        for(int x=0;x<stateBlock.length-1;x+=2)
+            if(stateBlock[x]==255)
+            {
+                finalState=stateBlock[x+1];
+                break;
+            }
+        switch(finalState) {
+            case -99: throw new Exception("Expression ended prematurely");
+            case -1: case 0: return token.toString();
+            default: return null;
+        }
+    }
+    
+    public static boolean parseStringExpression(String expression, int index, Hashtable variables)
+    {
+        
+        return true;
+    }
 }
