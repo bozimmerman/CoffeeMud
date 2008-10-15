@@ -441,8 +441,8 @@ public class CMStrings
         return str.toLowerCase();
     }
 
-    // 0 = done after this one,-1 = done a char ago,-2 = eat & same state,-99 = error,  
-    // 254 = digit, 253 = letter, 255=eof
+    // states: 0 = done after this one,-1 = done a char ago,-2 = eat & same state,-99 = error,  
+    // chars: 254 = digit, 253 = letter, 255=eof
     private static final int[][] STRING_EXP_SM={
         {-1}, // 0 == done after this one, 1 == real first state
         {' ',-2,'=',2,'>',4,'<',5,'!',2,'(',0,')',0,'\"',3,'+',0,'&',6,'|',7,'\'',8,'`',9,'$',10,253,12,-99,255,255}, // 1
@@ -459,7 +459,33 @@ public class CMStrings
         {253,12,255,-1,-1} // 12=starts with letter
     };
     
-    private static String nextStringToken(String expression, int[] index) throws Exception
+    private static class StringExpToken {
+    	public int type=-1;
+    	public String value = "";
+    	public StringExpToken(int type, String value) {this.type=type; this.value=value;}
+    }
+    private static final int STRING_EXP_TOKEN_EVALUATOR=1;
+    private static final int STRING_EXP_TOKEN_OPENPAREN=2;
+    private static final int STRING_EXP_TOKEN_CLOSEPAREN=3;
+    private static final int STRING_EXP_TOKEN_WORD=4;
+    private static final int STRING_EXP_TOKEN_CONST=5;
+    private static final int STRING_EXP_TOKEN_VAR=6;
+    
+    private static StringExpToken makeTokenType(String token)
+    {
+    	if(token==null) return null;
+    	if(token.startsWith("\"")) return new StringExpToken(STRING_EXP_TOKEN_CONST,token.substring(1,token.length()-1));
+    	if(token.startsWith("\'")) return new StringExpToken(STRING_EXP_TOKEN_CONST,token.substring(1,token.length()-1));
+    	if(token.startsWith("`")) return new StringExpToken(STRING_EXP_TOKEN_CONST,token.substring(1,token.length()-1));
+    	if(token.equals("("))return new StringExpToken(STRING_EXP_TOKEN_OPENPAREN,token);
+    	if(token.equals(")"))return new StringExpToken(STRING_EXP_TOKEN_CLOSEPAREN,token);
+    	if(token.startsWith("$"))return new StringExpToken(STRING_EXP_TOKEN_VAR,token.substring(1));
+    	if((token.charAt(0)=='_')||(Character.isLetterOrDigit(token.charAt(0))))
+    		return new StringExpToken(STRING_EXP_TOKEN_WORD,token);
+		return new StringExpToken(STRING_EXP_TOKEN_EVALUATOR,token);
+    }
+    
+    private static StringExpToken nextStringToken(String expression, int[] index) throws Exception
     {
         int[] stateBlock=STRING_EXP_SM[1];
         StringBuffer token = new StringBuffer("");
@@ -486,8 +512,8 @@ public class CMStrings
                 case 255: return null;
                 case -99: throw new Exception("Illegal character in expression: "+c);
                 case -2: break;
-                case -1: return token.toString();
-                case 0: { token.append(c); index[0]++; return token.toString();}
+                case -1: return makeTokenType(token.toString());
+                case 0: { token.append(c); index[0]++; return makeTokenType(token.toString());}
                 default: { token.append(c); index[0]++; stateBlock = STRING_EXP_SM[nextState]; break; }
             }
         }
@@ -500,14 +526,24 @@ public class CMStrings
             }
         switch(finalState) {
             case -99: throw new Exception("Expression ended prematurely");
-            case -1: case 0: return token.toString();
+            case -1: case 0: return makeTokenType(token.toString());
             default: return null;
         }
     }
     
     public static boolean parseStringExpression(String expression, int index, Hashtable variables)
     {
-        
+        int[] i = {index};
+        StringExpToken token = null;
+        try {
+	        token = nextStringToken(expression,i);
+	        if(token != null)
+	        {
+	        	
+	        }
+        } catch(Exception e) {
+        	return false;
+        }
         return true;
     }
 }
