@@ -161,7 +161,7 @@ public class Generate extends StdCommand
         {
             XMLLibrary.XMLpiece lilP =(XMLLibrary.XMLpiece)choices.elementAt(c); 
             String condition=CMLib.xml().getParmValue(lilP.parms,"CONDITION");
-            if((condition != null) && (!CMStrings.parseStringExpression(condition.toCharArray(),0,defined)))
+            if((condition != null) && (!CMStrings.parseStringExpression(condition,0,defined)))
             {
                 choices.removeElementAt(c);
                 c--;
