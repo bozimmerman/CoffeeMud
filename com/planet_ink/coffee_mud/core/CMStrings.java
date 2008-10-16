@@ -507,6 +507,7 @@ public class CMStrings
                 case 254: match=Character.isDigit(c); break;
                 case 253: match=Character.isLetter(c); break;
                 case 255: break; // nope, not yet
+                default: match = (c ==stateBlock[x]); break;
                 }
                 if(match)
                 {
@@ -663,6 +664,7 @@ public class CMStrings
         	token = nextStringToken(expression,i,variables);
         	if(token.type != STRING_EXP_TOKEN_CLOSEPAREN)
         		return null;
+        	index[0]=i[0];
         	return testInside;
         }
         i = index.clone();
@@ -714,6 +716,7 @@ public class CMStrings
         	token = nextStringToken(expression,i,variables);
         	if(token.type != STRING_EXP_TOKEN_CLOSEPAREN)
         		return null;
+        	index[0]=i[0];
         	return testInside;
         }
         i = index.clone();
@@ -725,27 +728,10 @@ public class CMStrings
     
     public static boolean parseStringExpression(String expression, Hashtable variables) throws Exception
     {
+    	if(expression.trim().length()==0) return true;
         int[] i = {0};
         Boolean value = matchParenMultiExpression(expression,i,variables);
-        if(value == null) return true;
+        if(value==null) return false;
         return value.booleanValue();
-    }
-    
-    private void testExpressions()
-    {
-    	String X1="(('1'+(('22'))+'3')=('1'+('2'+'2'+(('3')))))";
-    	String X2="(('1'+(('22'))+'3')=('1'+('2'+('2'+(('3'))))))";
-    	String X3="(('1'+(('22'))+'3')!=('1'+('2'+'2'+(('3')))))";
-    	String X4="(('1'+(('22'))+'3')!=('1'+('2'+('2'+(('3'))))))";
-    	String X5="("+X1+")AND("+X2+")";
-    	try {
-	    	System.out.println("X1="+parseStringExpression(X1,new Hashtable()));
-	    	System.out.println("X2="+parseStringExpression(X2,new Hashtable()));
-	    	System.out.println("X3="+parseStringExpression(X3,new Hashtable()));
-	    	System.out.println("X4="+parseStringExpression(X4,new Hashtable()));
-	    	System.out.println("X5="+parseStringExpression(X5,new Hashtable()));
-    	}catch(Exception e){
-    		e.printStackTrace();
-    	}
     }
 }
