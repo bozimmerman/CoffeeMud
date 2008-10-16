@@ -70,13 +70,17 @@ public class Generate extends StdCommand
     
     private Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
     {
+    	defined = (Hashtable)defined.clone();
         String classID = findString("class",piece,defined);
         Room R = CMClass.getLocale(classID);
         if(R == null) throw new CMException("Unable to build room on classID '"+classID+"', Data: "+piece.value);
+        defined.put("ROOM_CLASS",classID);
         String title = findString("title",piece,defined);
-        String description = findString("description",piece,defined);
         R.setDisplayText(title);
+        defined.put("ROOM_TITLE",title);
+        String description = findString("description",piece,defined);
         R.setDescription(description);
+        defined.put("ROOM_DESCRIPTION",description);
         //TODO: items, mobs, behaviors, affects
         return R;
     }
@@ -257,7 +261,19 @@ public class Generate extends StdCommand
     
     private String strFilter(String str, Hashtable defined) throws CMException
     {
-        //TODO: something here
+    	int x=str.indexOf('$');
+    	while((x>=0)&&(x<str.length()-1))
+    	{
+    		int start=x;
+    		x++;
+    		while((x<str.length())&&((str.charAt(x)=='_')||Character.isLetterOrDigit(str.charAt(x))))
+    			x++;
+    		String var = str.substring(start+1,x);
+    		Object val = defined.get(var.toUpperCase().trim());
+    		if(val instanceof XMLLibrary.XMLpiece) val = findString(((XMLLibrary.XMLpiece)val).tag,(XMLLibrary.XMLpiece)val,defined);
+    		if(val == null) throw new CMException("Unknown variable '$"+var+"' in str '"+str+"'");
+    		str=str.substring(0,start)+val.toString()+str.substring(x);
+    	}
         return str;
     }
     
