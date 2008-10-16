@@ -546,66 +546,44 @@ public class CMStrings
     case STRING_EXP_TOKEN_CONST:
     case STRING_EXP_TOKEN_COMBINER:
     */
-    public static String matchValue(String expression, int[] index, Hashtable variables) throws Exception
+    public static String matchSimpleValue(String expression, int[] index, Hashtable variables) throws Exception
     {
-        int[] i = index.clone();
+        int[] i = (int[])index.clone();
         StringExpToken token = nextStringToken(expression,i,variables);
         if(token == null) return null;
-        switch(token.type)
-        {
-            case STRING_EXP_TOKEN_EVALUATOR: return null;
-            case STRING_EXP_TOKEN_OPENPAREN:
-            {
-            	String innerExpression = matchValue(expression,i,variables);
-            	if(innerExpression==null) return null;
-                token = nextStringToken(expression,i,variables);
-                if(token.type!=STRING_EXP_TOKEN_CLOSEPAREN)
-                	return null;
-                break;
-            }
-            case STRING_EXP_TOKEN_CLOSEPAREN:
-            	return null;
-            case STRING_EXP_TOKEN_WORD:
-            	return null;
-            case STRING_EXP_TOKEN_CONST:
-            	break;
-        }
+        if(token.type!=STRING_EXP_TOKEN_CONST) return null;
         index[0]=i[0];
         return token.value;
     }
     
     public static String matchParenValue(String expression, int[] index, Hashtable variables) throws Exception
     {
-        int[] i = index.clone();
+        int[] i = (int[])index.clone();
         StringExpToken token = nextStringToken(expression,i,variables);
         if(token == null) return null;
-        String value = token.value;
-        switch(token.type)
+        if(token.type == STRING_EXP_TOKEN_OPENPAREN)
         {
-            case STRING_EXP_TOKEN_OPENPAREN:
-            {
-            	String testInside = matchComplexValue(expression,i,variables);
-            	if(testInside == null) return null;
-            	token = nextStringToken(expression,i,variables);
-            	if(token.type != STRING_EXP_TOKEN_CLOSEPAREN)
-            		return null;
-            	value = testInside;
-            	break;
-            }
-            case STRING_EXP_TOKEN_CONST:
-            	break;
-            default: return null;
+            String testInside =  matchParenValue(expression,i,variables);
+            if(testInside == null) return null;
+            token = nextStringToken(expression,i,variables);
+            if(token.type != STRING_EXP_TOKEN_CLOSEPAREN)
+                return null;
+            index[0]=i[0];
+            return testInside;
         }
+        i = (int[])index.clone();
+        String value = matchSimpleValue(expression,i,variables);
+        if(value == null) return null;
         index[0]=i[0];
         return value;
     }
     
     public static String matchComplexValue(String expression, int[] index, Hashtable variables) throws Exception
     {
-        int[] i = index.clone();
+        int[] i = (int[])index.clone();
         String leftValue = matchParenValue(expression,i,variables);
         if(leftValue == null) return null;
-        int[] i2 = i.clone();
+        int[] i2 = (int[])i.clone();
         StringExpToken token = nextStringToken(expression,i2,variables);
         if((token==null)||(token.type != STRING_EXP_TOKEN_COMBINER))
         {
@@ -621,7 +599,7 @@ public class CMStrings
     
     public static Boolean matchSimpleExpression(String expression, int[] index, Hashtable variables) throws Exception
     {
-        int[] i = index.clone();
+        int[] i = (int[])index.clone();
     	String leftValue = matchComplexValue(expression,i,variables);
         if(leftValue == null) return null;
         StringExpToken token = nextStringToken(expression,i,variables);
@@ -654,7 +632,7 @@ public class CMStrings
     
     public static Boolean matchParenExpression(String expression, int[] index, Hashtable variables) throws Exception
     {
-        int[] i = index.clone();
+        int[] i = (int[])index.clone();
         StringExpToken token = nextStringToken(expression,i,variables);
         if(token == null) return null;
         if(token.type == STRING_EXP_TOKEN_OPENPAREN)
@@ -667,7 +645,7 @@ public class CMStrings
         	index[0]=i[0];
         	return testInside;
         }
-        i = index.clone();
+        i = (int[])index.clone();
         Boolean simpleExpression = matchSimpleExpression(expression,i,variables);
         if(simpleExpression == null) return null;
         index[0]=i[0];
@@ -676,10 +654,10 @@ public class CMStrings
     
     public static Boolean matchSimpleMultiExpression(String expression, int[] index, Hashtable variables) throws Exception
     {
-        int[] i = index.clone();
+        int[] i = (int[])index.clone();
     	Boolean leftExpression = matchParenExpression(expression,index,variables);
     	if(leftExpression == null) return null;
-    	int[] i2=i.clone();
+    	int[] i2=(int[])i.clone();
         StringExpToken token = nextStringToken(expression,i2,variables);
         if(token==null) return null;
         if(token.type != STRING_EXP_TOKEN_WORD) 
@@ -706,7 +684,7 @@ public class CMStrings
     
     public static Boolean matchParenMultiExpression(String expression, int[] index, Hashtable variables) throws Exception
     {
-        int[] i = index.clone();
+        int[] i = (int[])index.clone();
         StringExpToken token = nextStringToken(expression,i,variables);
         if(token == null) return null;
         if(token.type == STRING_EXP_TOKEN_OPENPAREN)
@@ -719,7 +697,7 @@ public class CMStrings
         	index[0]=i[0];
         	return testInside;
         }
-        i = index.clone();
+        i = (int[])index.clone();
         Boolean simpleExpression = matchSimpleMultiExpression(expression,i,variables);
         if(simpleExpression == null) return null;
         index[0]=i[0];
@@ -733,5 +711,28 @@ public class CMStrings
         Boolean value = matchParenMultiExpression(expression,i,variables);
         if(value==null) return false;
         return value.booleanValue();
+    }
+    
+    public static void main(String[] args)
+    { 
+        Hashtable vars=new Hashtable();  
+        String[] tests={
+            "'1'='1'",
+            "'1'!='2'",
+            "('1'='1')",
+            "('1'!='2')",
+            "'1'<'2'",
+            "'2'>'1'",
+            "((('1'))<('2'))",
+            "('2'>('1'))",
+        };
+        for(int t=0;t<tests.length;t++)
+        {
+            try{
+                System.out.println(tests[t]+": "+parseStringExpression(tests[t],vars));
+            }catch(Exception e){ 
+                System.out.println(tests[t]+":"+e.getMessage());
+            }
+        }
     }
 }

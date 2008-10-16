@@ -41,7 +41,7 @@ public class Generate extends StdCommand
     public boolean execute(MOB mob, Vector commands, int metaFlags)
         throws java.io.IOException
     {
-        CMFile file = new CMFile(CMLib.resources().buildResourcePath("randomdata.xml"),mob,false);
+        CMFile file = new CMFile(Resources.buildResourcePath("randomdata.xml"),mob,false);
         if(!file.canRead())
         {
             mob.tell("Can't comply. '"+file.getCanonicalPath()+"' not found.");
