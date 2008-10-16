@@ -479,9 +479,9 @@ public class CMStrings
 		private StringExpToken() { }
 	}
 
-	private static StringExpToken nextToken(Vector<StringExpToken> tokens, int[] index) {
+	private static StringExpToken nextToken(Vector tokens, int[] index) {
 		if(index[0]>=tokens.size()) return null;
-		return tokens.elementAt(index[0]++);
+		return (StringExpToken)tokens.elementAt(index[0]++);
 	}
 	
 	private static final int	STRING_EXP_TOKEN_EVALUATOR	= 1;
@@ -623,7 +623,7 @@ public class CMStrings
 	 * case STRING_EXP_TOKEN_EVALUATOR: case STRING_EXP_TOKEN_OPENPAREN: case STRING_EXP_TOKEN_CLOSEPAREN: case STRING_EXP_TOKEN_WORD: case
 	 * STRING_EXP_TOKEN_CONST: case STRING_EXP_TOKEN_COMBINER:
 	 */
-	public static String matchSimpleConst(Vector<StringExpToken> tokens, int[] index, Hashtable variables) throws Exception
+	public static String matchSimpleConst(Vector tokens, int[] index, Hashtable variables) throws Exception
 	{
 		int[] i = (int[]) index.clone();
 		StringExpToken token = nextToken(tokens, i);
@@ -635,7 +635,7 @@ public class CMStrings
 		return token.value;
 	}
 
-	public static Double matchSimpleNumber(Vector<StringExpToken> tokens, int[] index, Hashtable variables) throws Exception
+	public static Double matchSimpleNumber(Vector tokens, int[] index, Hashtable variables) throws Exception
 	{
 		int[] i = (int[]) index.clone();
 		StringExpToken token = nextToken(tokens, i);
@@ -644,10 +644,10 @@ public class CMStrings
 		if (token.type != STRING_EXP_TOKEN_NUMCONST)
 			return null;
 		index[0] = i[0];
-		return token.numValue;
+		return new Double(token.numValue);
 	}
 	
-	public static String matchCombinedString(Vector<StringExpToken> tokens, int[] index, Hashtable variables) throws Exception
+	public static String matchCombinedString(Vector tokens, int[] index, Hashtable variables) throws Exception
 	{
 		int[] i = (int[]) index.clone();
 		StringExpToken token = nextToken(tokens, i);
@@ -686,7 +686,7 @@ public class CMStrings
 		return leftValue + rightValue;
 	}
 
-	public static Double matchCombinedNum(Vector<StringExpToken> tokens, int[] index, Hashtable variables) throws Exception
+	public static Double matchCombinedNum(Vector tokens, int[] index, Hashtable variables) throws Exception
 	{
 		int[] i = (int[]) index.clone();
 		StringExpToken token = nextToken(tokens, i);
@@ -753,7 +753,7 @@ public class CMStrings
 			throw new Exception("Unknown math combiner "+token.value);
 	}
 	
-	public static Boolean matchStringEvaluation(Vector<StringExpToken> tokens, int[] index, Hashtable variables) throws Exception
+	public static Boolean matchStringEvaluation(Vector tokens, int[] index, Hashtable variables) throws Exception
 	{
 		int[] i = (int[]) index.clone();
 		StringExpToken token = nextToken(tokens, i);
@@ -820,7 +820,7 @@ public class CMStrings
 		return result;
 	}
 
-	public static Boolean matchNumEvaluation(Vector<StringExpToken> tokens, int[] index, Hashtable variables) throws Exception
+	public static Boolean matchNumEvaluation(Vector tokens, int[] index, Hashtable variables) throws Exception
 	{
 		int[] i = (int[]) index.clone();
 		StringExpToken token = nextToken(tokens, i);
@@ -886,7 +886,7 @@ public class CMStrings
 		return result;
 	}
 	
-	public static Boolean matchExpression(Vector<StringExpToken> tokens, int[] index, Hashtable variables) throws Exception
+	public static Boolean matchExpression(Vector tokens, int[] index, Hashtable variables) throws Exception
 	{
 		int[] i = (int[]) index.clone();
 		StringExpToken token = nextToken(tokens, i);
@@ -952,7 +952,7 @@ public class CMStrings
 
 	public static boolean parseStringExpression(String expression, Hashtable variables) throws Exception
 	{
-		Vector<StringExpToken> tokens = new Vector<StringExpToken>();
+		Vector tokens = new Vector();
 		int[] i = { 0 };
 		StringExpToken token = nextStringToken(expression,i,variables);
 		while(token != null) {
