@@ -518,9 +518,20 @@ public class CMStrings
 		if (token.startsWith("$"))
 		{
 			token = token.substring(1);
-			if (!variables.containsKey(token.toUpperCase().trim()))
+			Object value = variables.get(token);
+			if(!(value instanceof String))
+				value = variables.get(token.toUpperCase().trim());
+			if (!(value instanceof String))
 				throw new Exception("Undefined variable found: $" + token);
-			return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, (String) variables.get(token.toUpperCase().trim()));
+			if(value.toString().trim().length()==0)
+				return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, value.toString());
+			try 
+			{
+				Double.parseDouble(value.toString());
+				return StringExpToken.token(STRING_EXP_TOKEN_NUMCONST, value.toString());
+			} catch (Exception e) {
+				return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, value.toString());
+			}
 		}
 		if ((token.charAt(0) == '_') || (Character.isLetterOrDigit(token.charAt(0))) || (token.charAt(0) == '|') || (token.charAt(0) == '&'))
 			return StringExpToken.token(STRING_EXP_TOKEN_WORD, token);
