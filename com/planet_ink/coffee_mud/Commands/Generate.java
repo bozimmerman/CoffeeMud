@@ -51,6 +51,7 @@ public class Generate extends StdCommand
         Vector xmlRoot = CMLib.xml().parseAllXML(xml);
         Hashtable definedTags = new Hashtable();
         buildTagSet(xmlRoot,definedTags);
+        
         mob.tell("Not yet implemented");
         return false;
     }
@@ -67,7 +68,7 @@ public class Generate extends StdCommand
             buildTagSet(piece.contents,defined);
         }
     }
-    
+    // tags created: ROOM_CLASS, ROOM_TITLE, ROOM_DESCRIPTION
     private Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
     {
     	defined = (Hashtable)defined.clone();
@@ -84,6 +85,7 @@ public class Generate extends StdCommand
         //TODO: items, mobs, behaviors, affects
         return R;
     }
+    
     
     private String findOptionalString(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined)
     {
