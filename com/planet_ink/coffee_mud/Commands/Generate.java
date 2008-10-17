@@ -68,24 +68,272 @@ public class Generate extends StdCommand
             buildTagSet(piece.contents,defined);
         }
     }
-    // tags created: ROOM_CLASS, ROOM_TITLE, ROOM_DESCRIPTION
+    
+    // tags created: ROOM_CLASS, ROOM_TITLE, ROOM_DESCRIPTION, ROOM_CLASSES, ROOM_TITLES, ROOM_DESCRIPTIONS
+    // tags created: 
     private Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
     {
-    	defined = (Hashtable)defined.clone();
         String classID = findString("class",piece,defined);
         Room R = CMClass.getLocale(classID);
         if(R == null) throw new CMException("Unable to build room on classID '"+classID+"', Data: "+piece.value);
-        defined.put("ROOM_CLASS",classID);
+        addDefinition("ROOM_CLASS",classID,defined);
         String title = findString("title",piece,defined);
         R.setDisplayText(title);
-        defined.put("ROOM_TITLE",title);
+        addDefinition("ROOM_TITLE",title,defined);
         String description = findString("description",piece,defined);
         R.setDescription(description);
-        defined.put("ROOM_DESCRIPTION",description);
-        //TODO: items, mobs, behaviors, affects
+        addDefinition("ROOM_DESCRIPTION",description,defined);
+        Vector V;
+        V = findMobs(piece,defined);
+        for(int i=0;i<V.size();i++)
+        {
+        	MOB M=(MOB)V.elementAt(i);
+        	R.bringMobHere(M,false);
+        }
+        V = findItems(piece,defined);
+        for(int i=0;i<V.size();i++)
+        {
+        	Item I=(Item)V.elementAt(i);
+        	R.bringItemHere(I, 0,false);
+        }
+        V = findAffects(piece,defined);
+        for(int i=0;i<V.size();i++)
+        {
+        	Ability A=(Ability)V.elementAt(i);
+        	R.addNonUninvokableEffect(A);
+        }
+        V = findBehaviors(piece,defined);
+        for(int i=0;i<V.size();i++)
+        {
+        	Behavior B=(Behavior)V.elementAt(i);
+        	R.addBehavior(B);
+        }
         return R;
     }
     
+    private Vector findMobs(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    {
+    	Vector V = new Vector();
+    	String tagName="MOB";
+        Vector choices = getAllChoices(tagName, piece, defined);
+        if((choices==null)||(choices.size()==0)) return V;
+        choices = selectChoices(choices,piece,defined);
+        for(int c=0;c<choices.size();c++)
+        {
+            XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
+            MOB M=buildMob(valPiece,defined);
+            V.addElement(M);
+        }
+    	return V;
+    }
+    
+    private MOB buildMob(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    {
+        String classID = findString("class",piece,defined);
+        MOB M = CMClass.getMOB(classID);
+        if(M == null) throw new CMException("Unable to build mob on classID '"+classID+"', Data: "+piece.value);
+        addDefinition("MOB_CLASS",classID,defined);
+        String[] ignoreTags={"CLASS"};
+        String[] statCodes = M.getStatCodes();
+        for(int s=0;s<statCodes.length;s++)
+        {
+        	String stat=statCodes[s];
+        	if(!CMParms.contains(ignoreTags, stat))
+        	{
+	            String value = findOptionalString(stat,piece,defined);
+	            if(value != null)
+	            {
+	            	M.setStat(stat, value);
+		            addDefinition("MOB_"+stat,value,defined);
+	            }
+        	}
+        }
+        Vector items = findItems(piece,defined);
+        for(int i=0;i<items.size();i++)
+        {
+        	Item I=(Item)items.elementAt(i);
+        	M.addInventory(I);
+        	I.wearIfPossible(M);
+        }
+        Vector V = findAffects(piece,defined);
+        for(int i=0;i<V.size();i++)
+        {
+        	Ability A=(Ability)V.elementAt(i);
+        	M.addNonUninvokableEffect(A);
+        }
+        V = findBehaviors(piece,defined);
+        for(int i=0;i<V.size();i++)
+        {
+        	Behavior B=(Behavior)V.elementAt(i);
+        	M.addBehavior(B);
+        }
+        V = findAbilities(piece,defined);
+        for(int i=0;i<V.size();i++)
+        {
+        	Ability A=(Ability)V.elementAt(i);
+        	M.addAbility(A);
+        }
+        M.text();
+        M.setMiscText(M.text());
+        M.recoverCharStats();
+        M.recoverEnvStats();
+        M.recoverMaxState();
+        return M;
+    }
+    
+    private Vector findItems(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    {
+    	Vector V = new Vector();
+    	String tagName="ITEM";
+        Vector choices = getAllChoices(tagName, piece, defined);
+        if((choices==null)||(choices.size()==0)) return V;
+        choices = selectChoices(choices,piece,defined);
+        for(int c=0;c<choices.size();c++)
+        {
+            XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
+            V.addAll(buildItem(valPiece,defined));
+        }
+    	return V;
+    }
+
+    private Vector findContents(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    {
+    	Vector V = new Vector();
+    	String tagName="CONTENT";
+        Vector choices = getAllChoices(tagName, piece, defined);
+        if((choices==null)||(choices.size()==0)) return V;
+        choices = selectChoices(choices,piece,defined);
+        for(int c=0;c<choices.size();c++)
+        {
+            XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
+            V.addAll(findItems(valPiece,defined));
+        }
+    	return V;
+    }
+
+    private Vector buildItem(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    {
+        String classID = findString("class",piece,defined);
+        Item I = CMClass.getItem(classID);
+        if(I == null) throw new CMException("Unable to build item on classID '"+classID+"', Data: "+piece.value);
+        addDefinition("ITEM_CLASS",classID,defined);
+        String[] ignoreTags={"CLASS"};
+        String[] statCodes = I.getStatCodes();
+        for(int s=0;s<statCodes.length;s++)
+        {
+        	String stat=statCodes[s];
+        	if(!CMParms.contains(ignoreTags, stat))
+        	{
+	            String value = findOptionalString(stat,piece,defined);
+	            if(value != null)
+	            {
+	            	I.setStat(stat, value);
+		            addDefinition("ITEM_"+stat,value,defined);
+	            }
+        	}
+        }
+        Vector contents = new Vector();
+        contents.addElement(I);
+        Vector V;
+        if(I instanceof Container)
+        {
+            V= findContents(piece,defined);
+            for(int i=0;i<V.size();i++)
+            {
+            	Item I2=(Item)V.elementAt(i);
+            	I2.setContainer(I);
+            	contents.addElement(I2);
+            }
+        }
+        V= findAffects(piece,defined);
+        for(int i=0;i<V.size();i++)
+        {
+        	Ability A=(Ability)V.elementAt(i);
+        	I.addNonUninvokableEffect(A);
+        }
+        V = findBehaviors(piece,defined);
+        for(int i=0;i<V.size();i++)
+        {
+        	Behavior B=(Behavior)V.elementAt(i);
+        	I.addBehavior(B);
+        }
+        I.text();
+        I.setMiscText(I.text());
+        I.recoverEnvStats();
+        return contents;
+    }
+    
+    private Vector findAffects(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    { return findAbilities("AFFECT",piece,defined);}
+
+    private Vector findAbilities(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    { return findAbilities("ABILITY",piece,defined);}
+    
+    private Vector findAbilities(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    {
+    	Vector V = new Vector();
+        Vector choices = getAllChoices(tagName, piece, defined);
+        if((choices==null)||(choices.size()==0)) return V;
+        choices = selectChoices(choices,piece,defined);
+        for(int c=0;c<choices.size();c++)
+        {
+            XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
+            Ability A=buildAbility(valPiece,defined);
+            V.addElement(A);
+        }
+    	return V;
+    }
+
+    private Vector findBehaviors(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    {
+    	Vector V = new Vector();
+    	String tagName="BEHAVIOR";
+        Vector choices = getAllChoices(tagName, piece, defined);
+        if((choices==null)||(choices.size()==0)) return V;
+        choices = selectChoices(choices,piece,defined);
+        for(int c=0;c<choices.size();c++)
+        {
+            XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
+            Behavior B=buildBehavior(valPiece,defined);
+            V.addElement(B);
+        }
+    	return V;
+    }
+
+    private Ability buildAbility(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    {
+        String classID = findString("class",piece,defined);
+        Ability A=CMClass.getAbility(classID);
+        if(A == null) throw new CMException("Unable to build ability on classID '"+classID+"', Data: "+piece.value);
+        String value = findOptionalString("PARMS",piece,defined);
+        if(value != null)
+        	A.setMiscText(value);
+        return A;
+    }
+    
+    private Behavior buildBehavior(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    {
+        String classID = findString("class",piece,defined);
+        Behavior B=CMClass.getBehavior(classID);
+        if(B == null) throw new CMException("Unable to build behavior on classID '"+classID+"', Data: "+piece.value);
+        String value = findOptionalString("PARMS",piece,defined);
+        if(value != null)
+        	B.setParms(value);
+        return B;
+    }
+    
+    private void addDefinition(String definition, String value, Hashtable defined) 
+    {
+    	definition=definition.toUpperCase().trim();
+    	defined.put(definition, value);
+    	if(definition.toUpperCase().endsWith("S"))
+    		definition+="ES";
+    	else
+    		definition+="S";
+    	String def = (String)defined.get(definition);
+    	if(def==null) defined.put(definition, value);
+    	else defined.put(definition, def+","+value);
+    }
     
     private String findOptionalString(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined)
     {
