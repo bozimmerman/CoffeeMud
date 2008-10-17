@@ -63,9 +63,9 @@ public class Statement implements java.sql.Statement
    
    public boolean isClosed() throws SQLException  { return connection.isClosed(); }
    public void setPoolable(boolean isPoolable) {} 
-   //public boolean isPoolable() throws SQLException { return false;}
-   //public boolean isWrapperFor(Class<?> arg0) throws SQLException { return false; }
-   //public <T> T unwrap(Class<T> arg0) throws SQLException { return null; }
+   public boolean isPoolable() throws SQLException { return false;}
+   public boolean isWrapperFor(Class<?> arg0) throws SQLException { return false; }
+   public <T> T unwrap(Class<T> arg0) throws SQLException { return null; }
    
    public java.sql.ResultSet executeQuery(String sql) throws java.sql.SQLException
    {

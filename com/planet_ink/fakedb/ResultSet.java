@@ -541,58 +541,58 @@ class ResultSet implements java.sql.ResultSet
    public int getResultSetConcurrency() throws java.sql.SQLException { return statement.getResultSetConcurrency(); }
    public int getResultSetType() throws java.sql.SQLException { return statement.getResultSetType(); }
 
-    //public int getHoldability() throws SQLException { return 0; }
-    //public Reader getNCharacterStream(int arg0) throws SQLException { return null; }
-    //public Reader getNCharacterStream(String arg0) throws SQLException { return null; }
+    public int getHoldability() throws SQLException { return 0; }
+    public Reader getNCharacterStream(int arg0) throws SQLException { return null; }
+    public Reader getNCharacterStream(String arg0) throws SQLException { return null; }
     //public NClob getNClob(int arg0) throws SQLException { return null; }
     //public NClob getNClob(String arg0) throws SQLException { return null; }
-    //public String getNString(int arg0) throws SQLException { return null; }
-    //public String getNString(String arg0) throws SQLException { return null; }
-    public Object getObject(int arg0, Map arg1) throws SQLException { return getString(arg0); }
-    //public Object getObject(int arg0, Map<String, Class<?>> arg1) throws SQLException { return getString(arg0); }
-    //public Object getObject(String arg0, Map<String, Class<?>> arg1) throws SQLException { return getObject(findColumn(arg0),arg1); }
-    public Object getObject(String arg0, Map arg1) throws SQLException { return getObject(findColumn(arg0),arg1); }
+    public String getNString(int arg0) throws SQLException { return null; }
+    public String getNString(String arg0) throws SQLException { return null; }
+    //public Object getObject(int arg0, Map arg1) throws SQLException { return getString(arg0); }
+    public Object getObject(int arg0, Map<String, Class<?>> arg1) throws SQLException { return getString(arg0); }
+    public Object getObject(String arg0, Map<String, Class<?>> arg1) throws SQLException { return getObject(findColumn(arg0),arg1); }
+    //public Object getObject(String arg0, Map arg1) throws SQLException { return getObject(findColumn(arg0),arg1); }
     //public RowId getRowId(int arg0) throws SQLException { return null; }
     //public RowId getRowId(String arg0) throws SQLException { return null; }
     //public SQLXML getSQLXML(int arg0) throws SQLException { return null; }
     //public SQLXML getSQLXML(String arg0) throws SQLException { return null;}
-    //public boolean isClosed() throws SQLException { return false; }
-    //public void updateAsciiStream(int arg0, InputStream arg1) throws SQLException {}
-    //public void updateAsciiStream(String arg0, InputStream arg1) throws SQLException {}
-    //public void updateAsciiStream(int arg0, InputStream arg1, long arg2) throws SQLException {}
-    //public void updateAsciiStream(String arg0, InputStream arg1, long arg2) throws SQLException {}
-    //public void updateBinaryStream(int arg0, InputStream arg1) throws SQLException {}
-    //public void updateBinaryStream(String arg0, InputStream arg1) throws SQLException {}
-    //public void updateBinaryStream(int arg0, InputStream arg1, long arg2) throws SQLException {}
-    //public void updateBinaryStream(String arg0, InputStream arg1, long arg2) throws SQLException {}
-    //public void updateBlob(int arg0, InputStream arg1) throws SQLException {}
-    //public void updateBlob(String arg0, InputStream arg1) throws SQLException {}
-    //public void updateBlob(int arg0, InputStream arg1, long arg2) throws SQLException {}
-    //public void updateBlob(String arg0, InputStream arg1, long arg2) throws SQLException {}
-    //public void updateCharacterStream(int arg0, Reader arg1) throws SQLException {}
-    //public void updateCharacterStream(String arg0, Reader arg1) throws SQLException {}
-    //public void updateCharacterStream(int arg0, Reader arg1, long arg2) throws SQLException {}
-    //public void updateCharacterStream(String arg0, Reader arg1, long arg2) throws SQLException {}
-    //public void updateClob(int arg0, Reader arg1) throws SQLException {}
-    //public void updateClob(String arg0, Reader arg1) throws SQLException {}
-    //public void updateClob(int arg0, Reader arg1, long arg2) throws SQLException {}
-    //public void updateClob(String arg0, Reader arg1, long arg2) throws SQLException {}
-    //public void updateNCharacterStream(int arg0, Reader arg1) throws SQLException {}
-    //public void updateNCharacterStream(String arg0, Reader arg1) throws SQLException {}
-    //public void updateNCharacterStream(int arg0, Reader arg1, long arg2) throws SQLException {}
-    //public void updateNCharacterStream(String arg0, Reader arg1, long arg2) throws SQLException {}
+    public boolean isClosed() throws SQLException { return false; }
+    public void updateAsciiStream(int arg0, InputStream arg1) throws SQLException {}
+    public void updateAsciiStream(String arg0, InputStream arg1) throws SQLException {}
+    public void updateAsciiStream(int arg0, InputStream arg1, long arg2) throws SQLException {}
+    public void updateAsciiStream(String arg0, InputStream arg1, long arg2) throws SQLException {}
+    public void updateBinaryStream(int arg0, InputStream arg1) throws SQLException {}
+    public void updateBinaryStream(String arg0, InputStream arg1) throws SQLException {}
+    public void updateBinaryStream(int arg0, InputStream arg1, long arg2) throws SQLException {}
+    public void updateBinaryStream(String arg0, InputStream arg1, long arg2) throws SQLException {}
+    public void updateBlob(int arg0, InputStream arg1) throws SQLException {}
+    public void updateBlob(String arg0, InputStream arg1) throws SQLException {}
+    public void updateBlob(int arg0, InputStream arg1, long arg2) throws SQLException {}
+    public void updateBlob(String arg0, InputStream arg1, long arg2) throws SQLException {}
+    public void updateCharacterStream(int arg0, Reader arg1) throws SQLException {}
+    public void updateCharacterStream(String arg0, Reader arg1) throws SQLException {}
+    public void updateCharacterStream(int arg0, Reader arg1, long arg2) throws SQLException {}
+    public void updateCharacterStream(String arg0, Reader arg1, long arg2) throws SQLException {}
+    public void updateClob(int arg0, Reader arg1) throws SQLException {}
+    public void updateClob(String arg0, Reader arg1) throws SQLException {}
+    public void updateClob(int arg0, Reader arg1, long arg2) throws SQLException {}
+    public void updateClob(String arg0, Reader arg1, long arg2) throws SQLException {}
+    public void updateNCharacterStream(int arg0, Reader arg1) throws SQLException {}
+    public void updateNCharacterStream(String arg0, Reader arg1) throws SQLException {}
+    public void updateNCharacterStream(int arg0, Reader arg1, long arg2) throws SQLException {}
+    public void updateNCharacterStream(String arg0, Reader arg1, long arg2) throws SQLException {}
     //public void updateNClob(int arg0, NClob arg1) throws SQLException {}
     //public void updateNClob(String arg0, NClob arg1) throws SQLException {}
-    //public void updateNClob(int arg0, Reader arg1) throws SQLException {}
-    //public void updateNClob(String arg0, Reader arg1) throws SQLException {}
-    //public void updateNClob(int arg0, Reader arg1, long arg2) throws SQLException {}
-    //public void updateNClob(String arg0, Reader arg1, long arg2)throws SQLException {}
-    //public void updateNString(int arg0, String arg1) throws SQLException {}
-    //public void updateNString(String arg0, String arg1) throws SQLException {}
+    public void updateNClob(int arg0, Reader arg1) throws SQLException {}
+    public void updateNClob(String arg0, Reader arg1) throws SQLException {}
+    public void updateNClob(int arg0, Reader arg1, long arg2) throws SQLException {}
+    public void updateNClob(String arg0, Reader arg1, long arg2)throws SQLException {}
+    public void updateNString(int arg0, String arg1) throws SQLException {}
+    public void updateNString(String arg0, String arg1) throws SQLException {}
     //public void updateRowId(int arg0, RowId arg1) throws SQLException {}
     //public void updateRowId(String arg0, RowId arg1) throws SQLException {}
     //public void updateSQLXML(int arg0, SQLXML arg1) throws SQLException {}
     //public void updateSQLXML(String arg0, SQLXML arg1) throws SQLException {}
-    //public boolean isWrapperFor(Class<?> iface) throws SQLException {return false;}
-    //public <T> T unwrap(Class<T> iface) throws SQLException {return null;}
+    public boolean isWrapperFor(Class<?> iface) throws SQLException {return false;}
+    public <T> T unwrap(Class<T> iface) throws SQLException {return null;}
 }
