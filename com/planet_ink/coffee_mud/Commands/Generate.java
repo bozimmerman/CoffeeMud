@@ -10,10 +10,12 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CMLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+import com.planet_ink.coffee_mud.WebMacros.interfaces.WebMacro;
 
 import java.util.*;
 
@@ -51,7 +53,34 @@ public class Generate extends StdCommand
         Vector xmlRoot = CMLib.xml().parseAllXML(xml);
         Hashtable definedTags = new Hashtable();
         buildTagSet(xmlRoot,definedTags);
-        
+        if(commands.size()<3)
+        {
+        	mob.tell("Generate what? Try GENERATE CLASSTYPE [TAG LIST]");
+        	return false;
+        }
+        String typeName = (String)commands.elementAt(1);
+        int code = -1;
+        if(typeName.equalsIgnoreCase("STRING"))
+        {
+        	code=Integer.MAX_VALUE;
+        }
+        else
+        {
+	        code = CMClass.classCode(typeName);
+	        switch(code)
+	        {
+	            case CMClass.OBJECT_AREA: break;
+	            case CMClass.OBJECT_MOB: break;
+	            case CMClass.OBJECT_LOCALE: break;
+	            case CMClass.OBJECT_WEAPON:
+	            case CMClass.OBJECT_ARMOR:
+	            case CMClass.OBJECT_MISCMAGIC:
+	            case CMClass.OBJECT_CLANITEMS:
+	            case CMClass.OBJECT_MISCTECH: 
+	            case CMClass.OBJECT_ITEM: code = CMClass.OBJECT_ITEM; break;
+	            default: code=-1; break;
+	        }
+        }
         mob.tell("Not yet implemented");
         return false;
     }
