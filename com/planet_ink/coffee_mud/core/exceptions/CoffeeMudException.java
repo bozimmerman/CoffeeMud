@@ -19,6 +19,8 @@ import java.util.*;
 */
 public abstract class CoffeeMudException extends Exception
 {
+	private static final long serialVersionUID = 8932995125810826091L;
+
 	public CoffeeMudException(String s)
 	{
 		super(s);
