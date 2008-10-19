@@ -290,6 +290,9 @@ public class CMAble extends StdLibrary implements AbilityMapper
                                       Integer[] costOverrides)
 	{
 		delCharAbilityMapping(ID,ability);
+		
+    	if(CMSecurity.isDisabled("ABILITY_"+ID.toUpperCase())) return;
+    	
 		Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
 		AbilityMapping able=new AbilityMapping();
 		able.abilityName=ability;
