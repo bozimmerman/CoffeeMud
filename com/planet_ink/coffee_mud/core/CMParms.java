@@ -1206,6 +1206,22 @@ public class CMParms
         return true;
     }
 
+    public static Hashtable makeHashtable(String[][] O)
+    {
+    	Hashtable H =new Hashtable(O!=null?O.length:0);
+    	if(O!=null)
+    		for(int o=0;o<O.length;o++)
+    			H.put(O[o][0].toUpperCase().trim(),O[o][1]);
+    	return H;
+    }
+    public static Hashtable makeHashtable(Object[][] O)
+    {
+    	Hashtable H =new Hashtable(O!=null?O.length:0);
+    	if(O!=null)
+    		for(int o=0;o<O.length;o++)
+    			H.put(O[o][0],O[o][1]);
+    	return H;
+    }
     public static Vector makeVector(Object[] O)
     {
         Vector V=new Vector(O!=null?O.length:0);
@@ -1349,6 +1365,54 @@ public class CMParms
         for(int i=0;i<supported.length;i++)
             if(supported[i].equals(expertise))
                 return i;
+        return -1;
+    }
+    public static int indexOfIgnoreCase(Enumeration supported, String key)
+    {
+        if(supported==null) return -1;
+        int index = -1;
+        for(;supported.hasMoreElements();)
+        {
+            if(supported.nextElement().toString().equalsIgnoreCase(key))
+                return index;
+            index++;
+        }
+        return -1;
+    }
+    public static int indexOf(Enumeration supported, Object key)
+    {
+        if(supported==null) return -1;
+        int index = -1;
+        for(;supported.hasMoreElements();)
+        {
+            if(supported.nextElement().equals(key))
+                return index;
+            index++;
+        }
+        return -1;
+    }
+    public static int indexOfIgnoreCase(Iterator supported, String key)
+    {
+        if(supported==null) return -1;
+        int index = -1;
+        for(;supported.hasNext();)
+        {
+            if(supported.next().toString().equalsIgnoreCase(key))
+                return index;
+            index++;
+        }
+        return -1;
+    }
+    public static int indexOf(Iterator supported, Object key)
+    {
+        if(supported==null) return -1;
+        int index = -1;
+        for(;supported.hasNext();)
+        {
+            if(supported.next().equals(key))
+                return index;
+            index++;
+        }
         return -1;
     }
     public static int indexOfIgnoreCase(String[] supported, String expertise)

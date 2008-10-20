@@ -37,6 +37,13 @@ import java.util.*;
 public class Generate extends StdCommand
 {
     public Generate(){}
+    private static final Hashtable OBJECT_TYPES=CMParms.makeHashtable(new Object[][]{
+    		{"STRING",Integer.valueOf(Integer.MAX_VALUE)},
+    		{"AREA",Integer.valueOf(CMClass.OBJECT_AREA)},
+    		{"MOB",Integer.valueOf(CMClass.OBJECT_MOB)},
+    		{"ROOM",Integer.valueOf(CMClass.OBJECT_LOCALE)},
+    		{"ITEM",Integer.valueOf(CMClass.OBJECT_ITEM)},
+    });
 
     private String[] access={"GENERATE"};
     public String[] getAccessWords(){return access;}
@@ -55,32 +62,38 @@ public class Generate extends StdCommand
         buildTagSet(xmlRoot,definedTags);
         if(commands.size()<3)
         {
-        	mob.tell("Generate what? Try GENERATE CLASSTYPE [TAG LIST]");
+        	mob.tell("Generate what? Try GENERATE [TYPE] [TAG_NAME] ([TAG_PARMS]..)");
         	return false;
         }
         String typeName = (String)commands.elementAt(1);
-        int code = -1;
-        if(typeName.equalsIgnoreCase("STRING"))
+        String objectType = typeName.toUpperCase().trim();
+        Integer codeI=(Integer)OBJECT_TYPES.get(objectType);
+        if(codeI==null)
         {
-        	code=Integer.MAX_VALUE;
+        	for(Enumeration e=OBJECT_TYPES.keys();e.hasMoreElements();)
+        	{
+        		String key =(String)e.nextElement(); 
+        		if(key.startsWith(typeName.toUpperCase().trim()))
+        		{
+        			objectType = key;
+        			codeI=(Integer)OBJECT_TYPES.get(key);
+        		}
+        	}
+        	if(codeI==null)
+        	{
+        		mob.tell("'"+typeName+"' is an unknown object type.  Try: "+CMParms.toStringList(OBJECT_TYPES.keys()));
+        		return false;
+        	}
         }
-        else
+        int objectTypeIndex = CMParms.indexOf(OBJECT_TYPES.keys(),objectType);
+        String tagName = ((String)commands.elementAt(2)).toUpperCase().trim();
+        if(!definedTags.contains(tagName))
         {
-	        code = CMClass.classCode(typeName);
-	        switch(code)
-	        {
-	            case CMClass.OBJECT_AREA: break;
-	            case CMClass.OBJECT_MOB: break;
-	            case CMClass.OBJECT_LOCALE: break;
-	            case CMClass.OBJECT_WEAPON:
-	            case CMClass.OBJECT_ARMOR:
-	            case CMClass.OBJECT_MISCMAGIC:
-	            case CMClass.OBJECT_CLANITEMS:
-	            case CMClass.OBJECT_MISCTECH: 
-	            case CMClass.OBJECT_ITEM: code = CMClass.OBJECT_ITEM; break;
-	            default: code=-1; break;
-	        }
+        	mob.tell("No tag called '"+tagName+"' has been defined in the /resources/randomdata.xml file.");
+        	mob.tell("Found tags include: "+CMParms.toStringList(definedTags.keys()));
+        	return false;
         }
+        
         mob.tell("Not yet implemented");
         return false;
     }
