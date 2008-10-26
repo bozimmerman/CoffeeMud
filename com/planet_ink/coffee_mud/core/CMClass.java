@@ -38,7 +38,7 @@ import org.mozilla.javascript.optimizer.*;
 public class CMClass extends ClassLoader
 {
 	protected static boolean debugging=false;
-    protected static Hashtable classes=new Hashtable();
+    protected static Hashtable<String, Class> classes=new Hashtable<String, Class>();
     private static CMClass[] clss=new CMClass[256];
     public CMClass(){
         super();
@@ -73,30 +73,29 @@ public class CMClass extends ClassLoader
     public static final int OBJECT_TOTAL=19;
 
     public static int longestWebMacro=-1;
-    protected Hashtable common=new Hashtable();
-    protected Vector races=new Vector();
-    protected Vector charClasses=new Vector();
-    protected Vector MOBs=new Vector();
-    protected Vector abilities=new Vector();
-    protected Vector locales=new Vector();
-    protected Vector exits=new Vector();
-    protected Vector items=new Vector();
-    protected Vector behaviors=new Vector();
-    protected Vector weapons=new Vector();
-    protected Vector armor=new Vector();
-    protected Vector miscMagic=new Vector();
-    protected Vector miscTech=new Vector();
-    protected Vector clanItems=new Vector();
-    protected Vector areaTypes=new Vector();
-    protected Vector commands=new Vector();
-    protected Vector libraries=new Vector();
-    protected Hashtable webMacros=new Hashtable();
-    protected Hashtable CommandWords=new Hashtable();
+    protected Hashtable<String,CMCommon> common=new Hashtable<String,CMCommon>();
+    protected Vector<Race> races=new Vector<Race>();
+    protected Vector<CharClass> charClasses=new Vector<CharClass>();
+    protected Vector<MOB> MOBs=new Vector<MOB>();
+    protected Vector<Ability> abilities=new Vector<Ability>();
+    protected Vector<Room> locales=new Vector<Room>();
+    protected Vector<Exit> exits=new Vector<Exit>();
+    protected Vector<Item> items=new Vector<Item>();
+    protected Vector<Behavior> behaviors=new Vector<Behavior>();
+    protected Vector<Weapon> weapons=new Vector<Weapon>();
+    protected Vector<Armor> armor=new Vector<Armor>();
+    protected Vector<MiscMagic> miscMagic=new Vector<MiscMagic>();
+    protected Vector<Electronics> miscTech=new Vector<Electronics>();
+    protected Vector<ClanItem> clanItems=new Vector<ClanItem>();
+    protected Vector<Area> areaTypes=new Vector<Area>();
+    protected Vector<Command> commands=new Vector<Command>();
+    protected Vector<CMLibrary> libraries=new Vector<CMLibrary>();
+    protected Hashtable<String,WebMacro> webMacros=new Hashtable<String,WebMacro>();
+    protected Hashtable<String,Command> CommandWords=new Hashtable<String,Command>();
     protected static final long[] OBJECT_CREATIONS=new long[OBJECT_TOTAL];
     protected static final long[] OBJECT_DESTRUCTIONS=new long[OBJECT_TOTAL];
-    protected static final java.util.WeakHashMap[] OBJECT_CACHE=new java.util.WeakHashMap[OBJECT_TOTAL];
-    protected static final java.util.WeakHashMap MSGS_IN_USE=new java.util.WeakHashMap();
-    protected static final Vector MSGS_CACHE=new Vector();
+    protected static final java.util.WeakHashMap<Object,Object>[] OBJECT_CACHE=new java.util.WeakHashMap[OBJECT_TOTAL];
+    protected static final Vector<CMMsg> MSGS_CACHE=new Vector<CMMsg>();
     protected static final boolean KEEP_OBJECT_CACHE=false;
     static{ if(KEEP_OBJECT_CACHE) for(int i=0;i<OBJECT_TOTAL;i++)OBJECT_CACHE[i]=new java.util.WeakHashMap();}
     public static final String[] OBJECT_DESCS={
@@ -179,29 +178,29 @@ public class CMClass extends ClassLoader
         }
         OBJECT_DESTRUCTIONS[which]++;
     }
-	public static Enumeration races(){return c().races.elements();}
-    public static Enumeration commonObjects(){return c().common.elements();}
+	public static Enumeration<Race> races(){return c().races.elements();}
+    public static Enumeration<CMCommon> commonObjects(){return c().common.elements();}
 	public static Race randomRace(){return (Race)c().races.elementAt((int)Math.round(Math.floor(Math.random()*((double)c().races.size()))));}
-	public static Enumeration charClasses(){return c().charClasses.elements();}
+	public static Enumeration<CharClass> charClasses(){return c().charClasses.elements();}
 	public static CharClass randomCharClass(){return (CharClass)c().charClasses.elementAt((int)Math.round(Math.floor(Math.random()*((double)c().charClasses.size()))));}
-	public static Enumeration mobTypes(){return c().MOBs.elements();}
-    public static Enumeration libraries(){return c().libraries.elements();}
-	public static Enumeration locales(){return c().locales.elements();}
-	public static Enumeration exits(){return c().exits.elements();}
-	public static Enumeration behaviors(){return c().behaviors.elements();}
-	public static Enumeration basicItems(){return c().items.elements();}
-	public static Enumeration weapons(){return c().weapons.elements();}
-	public static Enumeration armor(){return c().armor.elements();}
-	public static Enumeration miscMagic(){return c().miscMagic.elements();}
-	public static Enumeration miscTech(){return c().miscTech.elements();}
-	public static Enumeration clanItems(){return c().clanItems.elements();}
-	public static Enumeration areaTypes(){return c().areaTypes.elements();}
-	public static Enumeration commands(){return c().commands.elements();}
-	public static Enumeration abilities(){return c().abilities.elements();}
-	public static Enumeration webmacros(){return new Vector(c().webMacros.entrySet()).elements();}
+	public static Enumeration<MOB> mobTypes(){return c().MOBs.elements();}
+    public static Enumeration<CMLibrary> libraries(){return c().libraries.elements();}
+	public static Enumeration<Room> locales(){return c().locales.elements();}
+	public static Enumeration<Exit> exits(){return c().exits.elements();}
+	public static Enumeration<Behavior> behaviors(){return c().behaviors.elements();}
+	public static Enumeration<Item> basicItems(){return c().items.elements();}
+	public static Enumeration<Weapon> weapons(){return c().weapons.elements();}
+	public static Enumeration<Armor> armor(){return c().armor.elements();}
+	public static Enumeration<MiscMagic> miscMagic(){return c().miscMagic.elements();}
+	public static Enumeration<Electronics> miscTech(){return c().miscTech.elements();}
+	public static Enumeration<ClanItem> clanItems(){return c().clanItems.elements();}
+	public static Enumeration<Area> areaTypes(){return c().areaTypes.elements();}
+	public static Enumeration<Command> commands(){return c().commands.elements();}
+	public static Enumeration<Ability> abilities(){return c().abilities.elements();}
+	public static Enumeration<WebMacro> webmacros(){return new Vector(c().webMacros.entrySet()).elements();}
 	public static Ability randomAbility(){ return (Ability)c().abilities.elementAt((int)Math.round(Math.floor(Math.random()*((double)c().abilities.size()))));}
     public static Room getLocale(String calledThis){ return (Room)getNewGlobal(c().locales,calledThis); }
-    public static CMObject getLibrary(String calledThis) { return (CMObject)getGlobal(c().libraries,calledThis); }
+    public static CMLibrary getLibrary(String calledThis) { return (CMLibrary)getGlobal(c().libraries,calledThis); }
     public static Area anyOldArea(){return (Area)c().areaTypes.elementAt(0);}
     public static Area getAreaType(String calledThis) { return (Area)getNewGlobal(c().areaTypes,calledThis); }
     public static Exit getExit(String calledThis) { return (Exit)getNewGlobal(c().exits,calledThis);}
@@ -214,7 +213,7 @@ public class CMClass extends ClassLoader
     public static Behavior getBehavior(String calledThis) { return (Behavior)getNewGlobal(c().behaviors,calledThis); }
     public static Ability getAbility(String calledThis) { return (Ability)getNewGlobal(c().abilities,calledThis); }
     public static CharClass getCharClass(String calledThis){ return (CharClass)getGlobal(c().charClasses,calledThis);}
-    public static CMObject getCommon(String calledThis){return getNewGlobal(c().common,calledThis);}
+    public static CMCommon getCommon(String calledThis){return (CMCommon)getNewGlobal(c().common,calledThis);}
     public static Command getCommand(String word){return (Command)getGlobal(c().commands,word);}
     public static WebMacro getWebMacro(String macroName){return (WebMacro)c().webMacros.get(macroName);}
     public static Race getRace(String calledThis){return (Race)getGlobal(c().races,calledThis);}
@@ -229,7 +228,7 @@ public class CMClass extends ClassLoader
         return str.toString();
     }
 
-	public static void addAllItemClassNames(Vector V, boolean NonArchon, boolean NonGeneric)
+	public static void addAllItemClassNames(Vector<String> V, boolean NonArchon, boolean NonGeneric)
 	{
 		for(Enumeration i=basicItems();i.hasMoreElements();)
 		{
@@ -398,17 +397,17 @@ public class CMClass extends ClassLoader
 		if(set==null) return false;
 		if(set instanceof Vector)
 		{
-			((Vector)set).addElement(O);
+			((Vector<CMObject>)set).addElement(O);
             CMParms.sortVector((Vector)set);
             if(set==c().commands) reloadCommandWords();
             if(set==c().libraries) CMLib.registerLibraries(c().libraries.elements());
 }
 		else
 		if(set instanceof Hashtable)
-			((Hashtable)set).put(O.ID().trim().toUpperCase(), O);
+			((Hashtable<String, CMObject>)set).put(O.ID().trim().toUpperCase(), O);
 		else
 		if(set instanceof HashSet)
-			((HashSet)set).add(O);
+			((HashSet<CMObject>)set).add(O);
 		else
 			return false;
 		return true;
@@ -469,7 +468,7 @@ public class CMClass extends ClassLoader
 			pathLess=pathLess.replace('/','.');
 			pathLess=pathLess.replace('\\','.');
 			if(classes.contains(pathLess))
-				return ((Class)classes.get(pathLess)).newInstance();
+				return classes.get(pathLess).newInstance();
 		}catch(Exception e){}
 		Vector V=new Vector();
 		if(classCode(classType)<0)
@@ -510,13 +509,13 @@ public class CMClass extends ClassLoader
 			set=getClassSet(i);
 			if(set==null) continue;
 			if(set instanceof Vector)
-				thisItem=getGlobal((Vector)set,shortThis);
+				thisItem=getGlobal((Vector<Environmental>)set,shortThis);
 			else
 			if(set instanceof Hashtable)
 				thisItem=getGlobal((Hashtable)set,shortThis);
 			if(thisItem!=null) return thisItem;
 		}
-        try{	return ((Class)classes.get(calledThis)).newInstance();}catch(Exception e){}
+        try{	return classes.get(calledThis).newInstance();}catch(Exception e){}
 		return thisItem;
 	}
 
@@ -562,14 +561,14 @@ public class CMClass extends ClassLoader
         return null;
     }
 
-    public static CMObject getNewGlobal(Vector list, String ID)
+    public static CMObject getNewGlobal(Vector<?> list, String ID)
     {
         CMObject O=(CMObject)getGlobal(list,ID);
         if(O!=null) return O.newInstance();
         return null;
     }
 
-	public static Object getGlobal(Vector list, String ID)
+	public static Object getGlobal(Vector<?> list, String ID)
 	{
 		if(list.size()==0) return null;
 		int start=0;
@@ -597,11 +596,11 @@ public class CMClass extends ClassLoader
 
     public static Ability findAbility(String calledThis, int ofClassDomain, long ofFlags)
     {
-        Vector ableV;
+        Vector<Ability> ableV;
         Ability A;
         if((ofClassDomain>=0)||(ofFlags>=0))
         {
-            ableV = new Vector();
+            ableV = new Vector<Ability>();
             for(Enumeration e=c().abilities.elements();e.hasMoreElements();)
             {
                 A=(Ability)e.nextElement();
@@ -677,7 +676,7 @@ public class CMClass extends ClassLoader
 	public static Ability findAbility(String calledThis, CharStats charStats)
 	{
 		Ability A=null;
-		Vector As=new Vector();
+		Vector<Ability> As=new Vector<Ability>();
 		for(Enumeration e=abilities();e.hasMoreElements();)
 		{
 			A=(Ability)e.nextElement();
@@ -697,7 +696,7 @@ public class CMClass extends ClassLoader
 
 	public static Ability findAbility(String calledThis, MOB mob)
 	{
-		Vector As=new Vector();
+		Vector<Ability> As=new Vector<Ability>();
         Ability A=null;
 		for(int a=0;a<mob.numAbilities();a++)
 		{
@@ -785,7 +784,7 @@ public class CMClass extends ClassLoader
 			toMe.addElement(addMe.elementAt(v));
 		return addMe.size();
 	}
-	public static int addH(Hashtable addMe, Hashtable toMe)
+	public static int addH(Hashtable addMe, Hashtable<Object, Object> toMe)
 	{
 		for(Enumeration e=addMe.keys();e.hasMoreElements();)
 		{
@@ -811,38 +810,38 @@ public class CMClass extends ClassLoader
     }
 
     public static void sortEnvironmentalsByID(Vector V) {
-        Hashtable hashed=new Hashtable();
+        Hashtable<String, Environmental> hashed=new Hashtable<String, Environmental>();
         for(Enumeration e=V.elements();e.hasMoreElements();)
         {
             Environmental E=(Environmental)e.nextElement();
             hashed.put(E.ID().toUpperCase(),E);
         }
-        Vector idSet=new Vector(new TreeSet(hashed.keySet()));
-        Vector V2=new Vector(V.size());
-        for(Enumeration e=idSet.elements();e.hasMoreElements();)
-            V2.addElement(hashed.get((String)e.nextElement()));
+        Vector<String> idSet=new Vector<String>(new TreeSet<String>(hashed.keySet()));
+        Vector<Environmental> V2=new Vector<Environmental>(V.size());
+        for(Enumeration<String> e=idSet.elements();e.hasMoreElements();)
+            V2.addElement(hashed.get(e.nextElement()));
         //return V2;
     }
 
     public static void sortEnvironmentalsByName(Vector V) {
-        Hashtable nameHash=new Hashtable();
-        Vector V3;
+        Hashtable<String, Object[]> nameHash=new Hashtable<String, Object[]>();
+        Vector<Environmental> V3;
         for(Enumeration e=V.elements();e.hasMoreElements();)
         {
             Environmental E=(Environmental)e.nextElement();
             if(nameHash.containsKey(E.Name().toUpperCase()))
             {
-                V3=CMParms.makeVector((Object[])nameHash.get(E.Name().toUpperCase()));
+                V3=CMParms.makeVector(nameHash.get(E.Name().toUpperCase()));
                 V3.addElement(E);
                 nameHash.put(E.Name().toUpperCase(),V3.toArray());
             }
             else
                 nameHash.put(E.Name().toUpperCase(),new Object[]{E});
         }
-        Vector idSet=new Vector(new TreeSet(nameHash.keySet()));
-        Vector V2=new Vector(V.size());
-        for(Enumeration e=idSet.elements();e.hasMoreElements();)
-            V2.addAll(CMParms.makeVector((Object[])nameHash.get((String)e.nextElement())));
+        Vector<String> idSet=new Vector<String>(new TreeSet<String>(nameHash.keySet()));
+        Vector<Environmental> V2=new Vector<Environmental>(V.size());
+        for(Enumeration<String> e=idSet.elements();e.hasMoreElements();)
+            V2.addAll(CMParms.makeVector(nameHash.get(e.nextElement())));
         //return V2;
     }
 
@@ -859,7 +858,7 @@ public class CMClass extends ClassLoader
                     MSGS_CACHE.addElement(msg);
                 }
             }
-            msg=(CMMsg)MSGS_CACHE.firstElement();
+            msg=MSGS_CACHE.firstElement();
             MSGS_CACHE.removeElementAt(0);
         }
         return msg;
@@ -888,27 +887,27 @@ public class CMClass extends ClassLoader
     }
 	public void unload()
 	{
-        common=new Hashtable();
-		races=new Vector();
-		charClasses=new Vector();
-		MOBs=new Vector();
-		abilities=new Vector();
-		locales=new Vector();
-		exits=new Vector();
-		items=new Vector();
-		behaviors=new Vector();
-		weapons=new Vector();
-		armor=new Vector();
-		miscMagic=new Vector();
-		miscTech=new Vector();
-		areaTypes=new Vector();
-		clanItems=new Vector();
-		commands=new Vector();
-		webMacros=new Hashtable();
-		CommandWords=new Hashtable();
+        common=new Hashtable<String, CMCommon>();
+		races=new Vector<Race>();
+		charClasses=new Vector<CharClass>();
+		MOBs=new Vector<MOB>();
+		abilities=new Vector<Ability>();
+		locales=new Vector<Room>();
+		exits=new Vector<Exit>();
+		items=new Vector<Item>();
+		behaviors=new Vector<Behavior>();
+		weapons=new Vector<Weapon>();
+		armor=new Vector<Armor>();
+		miscMagic=new Vector<MiscMagic>();
+		miscTech=new Vector<Electronics>();
+		areaTypes=new Vector<Area>();
+		clanItems=new Vector<ClanItem>();
+		commands=new Vector<Command>();
+		webMacros=new Hashtable<String, WebMacro>();
+		CommandWords=new Hashtable<String, Command>();
 	}
-    private void initializeClassGroup(Vector V){ for(int v=0;v<V.size();v++) ((CMObject)V.elementAt(v)).initializeClass();}
-    private void initializeClassGroup(Hashtable H){
+    private void initializeClassGroup(Vector<CMObject> V){ for(int v=0;v<V.size();v++) ((CMObject)V.elementAt(v)).initializeClass();}
+    private void initializeClassGroup(Hashtable<String,CMObject> H){
         for(Enumeration e=H.elements();e.hasMoreElements();) ((CMObject)e.nextElement()).initializeClass();}
     public void intializeClasses()
     {
@@ -985,7 +984,7 @@ public class CMClass extends ClassLoader
         }
 
         CMFile file=new CMFile(filePath,null,true);
-        Vector fileList=new Vector();
+        Vector<String> fileList=new Vector<String>();
         if(file.canRead())
         {
             if(file.isDirectory())
@@ -1011,7 +1010,7 @@ public class CMClass extends ClassLoader
         }
         for(int l=0;l<fileList.size();l++)
         {
-            String item=(String)fileList.elementAt(l);
+            String item=fileList.elementAt(l);
             if(item.startsWith("/")) item=item.substring(1);
             try
             {
@@ -1183,7 +1182,7 @@ public class CMClass extends ClassLoader
         }
         else
             pathName=className.replace('.','/')+".class";
-        Class result = (Class)classes.get(className);
+        Class result = classes.get(className);
         if (result!=null)
         {
             if(debugging) Log.debugOut("CMClass","Loaded: "+result.getName());
@@ -1219,7 +1218,7 @@ public class CMClass extends ClassLoader
                 throw new ClassNotFoundException("JavaScript file "+pathName+" not readable!");
             Vector V=Resources.getFileLineVector(str);
             Class extendsClass=null;
-            Vector implementsClasses=new Vector();
+            Vector<Class> implementsClasses=new Vector<Class>();
             String overPackage=null;
             for(int v=0;v<V.size();v++)
             {
@@ -1258,7 +1257,7 @@ public class CMClass extends ClassLoader
             if(implementsClasses.size()>0)
             {
                 Class[] CS=new Class[implementsClasses.size()];
-                for(int i=0;i<implementsClasses.size();i++) CS[i]=(Class)implementsClasses.elementAt(i);
+                for(int i=0;i<implementsClasses.size();i++) CS[i]=implementsClasses.elementAt(i);
                 cc.setTargetImplements(CS);
             }
             Object[] objs = cc.compileToClassFiles(str.toString(), "script", 1, name);
