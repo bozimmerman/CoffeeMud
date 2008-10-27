@@ -94,6 +94,7 @@ public class CMClass extends ClassLoader
     protected Hashtable<String,Command> CommandWords=new Hashtable<String,Command>();
     protected static final long[] OBJECT_CREATIONS=new long[OBJECT_TOTAL];
     protected static final long[] OBJECT_DESTRUCTIONS=new long[OBJECT_TOTAL];
+    @SuppressWarnings("unchecked")
     protected static final java.util.WeakHashMap<Object,Object>[] OBJECT_CACHE=new java.util.WeakHashMap[OBJECT_TOTAL];
     protected static final Vector<CMMsg> MSGS_CACHE=new Vector<CMMsg>();
     protected static final boolean KEEP_OBJECT_CACHE=false;
