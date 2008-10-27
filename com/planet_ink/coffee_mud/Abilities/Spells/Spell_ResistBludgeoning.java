@@ -78,7 +78,7 @@ public class Spell_ResistBludgeoning extends Spell
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

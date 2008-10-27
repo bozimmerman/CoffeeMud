@@ -66,7 +66,7 @@ public class Chant_PlantTrap extends Chant implements Trap
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if((!invoker().mayIFight(target))
-			||(invoker().getGroupMembers(new HashSet()).contains(target))
+			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
 			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) some agressive plants!");
 			else
@@ -126,7 +126,7 @@ public class Chant_PlantTrap extends Chant implements Trap
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
 		if(target==null) return false;

@@ -43,7 +43,7 @@ public class Skill_Warrants extends BardSkill
     public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         LegalBehavior B=null;
 		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());

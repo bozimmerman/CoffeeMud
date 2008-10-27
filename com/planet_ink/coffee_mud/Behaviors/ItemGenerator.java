@@ -54,7 +54,7 @@ public class ItemGenerator extends ActiveTicker
 		String parms=newParms;
 		if(parms.indexOf(";")>=0)
 			parms=parms.substring(0,parms.indexOf(";"));
-		Vector V=CMParms.parse(parms);
+		Vector<String> V=CMParms.parse(parms);
 		for(int v=0;v<V.size();v++)
 		{
 			String s=(String)V.elementAt(v);
@@ -163,14 +163,14 @@ public class ItemGenerator extends ActiveTicker
 		public CMObject newInstance(){return this;}
         public void initializeClass(){}
 		public CMObject copyOf(){return this;}
-		public int compareTo(Object O){return (O==this)?1:0;}
+		public int compareTo(CMObject o){return (o==this)?1:0;}
 		private int tickStatus=0;
 		public long getTickStatus(){return tickStatus;}
 		public boolean tick(Tickable host, int tickID)
 		{
 			Vector allItems=new Vector();
 		    Vector skills=new Vector();
-			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
 				Ability A=(Ability)e.nextElement();
 				if(A instanceof ItemCraftor)

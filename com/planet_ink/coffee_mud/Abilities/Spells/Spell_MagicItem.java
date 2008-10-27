@@ -43,7 +43,7 @@ public class Spell_MagicItem extends Spell
 	protected int overrideMana(){return Integer.MAX_VALUE;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{

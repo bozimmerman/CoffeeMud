@@ -40,7 +40,7 @@ public class PollID extends StdWebMacro
     {
         String last=httpReq.getRequestParameter("POLL");
         if(last==null) return " @break@";
-        Hashtable parms=parseParms(parm);
+        Hashtable<String,String> parms=parseParms(parm);
         try {
             if(parms.containsKey("ENCODED"))
                 return URLEncoder.encode(last,"UTF-8");

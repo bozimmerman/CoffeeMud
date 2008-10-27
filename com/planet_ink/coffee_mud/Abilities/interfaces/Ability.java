@@ -182,7 +182,7 @@ public interface Ability extends Environmental
 	 * @param commands the potential command set
 	 * @return the number of player free actions required to do this
 	 */
-	public double castingTime(MOB mob, Vector commands);
+	public double castingTime(MOB mob, Vector<Object> commands);
 	
 	/**
 	 * Returns the number of actions required to completely
@@ -194,7 +194,7 @@ public interface Ability extends Environmental
 	 * @param commands the potential command set
 	 * @return the number of player free actions required to do this
 	 */
-	public double combatCastingTime(MOB mob, Vector commands);
+	public double combatCastingTime(MOB mob, Vector<Object> commands);
 
 	/**
 	 * This method is only called when the mob invoking this skill
@@ -212,7 +212,7 @@ public interface Ability extends Environmental
 	 * @param actionsRemaining number of free actions the player is defficient.
 	 * @return whether the skill should be allowed to invoke.  false cancels altogether.
 	 */
-    public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining);
+    public boolean preInvoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining);
     
     /**
      * This method is called when a player or the system invokes this skill,  
@@ -242,7 +242,7 @@ public interface Ability extends Environmental
 	 * @param asLevel -1, unless being auto-invoked, when it is the level to invoke it at.
      * @return whether the skill successfully invoked.
      */
-	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel);
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental target, boolean auto, int asLevel);
 
 	/**
 	 * If this skill is uninvokable, this method will uninvoke it, remove it
@@ -378,7 +378,7 @@ public interface Ability extends Environmental
 	 * files returned by this method should not be base distrib files!
 	 * @return a Vector of local path names
 	 */
-	public Vector externalFiles();
+	public Vector<String> externalFiles();
 
 	/**
 	 * Returns whether the given teacher mob is able and allowed to teach

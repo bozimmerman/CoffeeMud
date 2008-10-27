@@ -49,7 +49,7 @@ public class Prayer_Purify extends Prayer
 		super.affectEnvStats(affecting,stats);
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
 		if(target==null) return false;

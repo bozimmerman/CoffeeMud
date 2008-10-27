@@ -44,7 +44,7 @@ public class Thief_Ambush extends ThiefSkill
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
     public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALTHY;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.fetchEffect("Thief_Hide")!=null)
 		{
@@ -61,7 +61,7 @@ public class Thief_Ambush extends ThiefSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		HashSet H=mob.getGroupMembers(new HashSet());
+		HashSet H=mob.getGroupMembers(new HashSet<MOB>());
 		if(!H.contains(mob)) H.add(mob);
 		int numBesidesMe=0;
 		for(Iterator e=H.iterator();e.hasNext();)

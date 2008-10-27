@@ -50,14 +50,14 @@ public class WereBear extends Bear
 	private int[] agingChart={0,4,8,12,16,24,30,38,50};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+8);
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+2);
 	}
 
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

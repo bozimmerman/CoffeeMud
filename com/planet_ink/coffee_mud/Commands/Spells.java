@@ -37,7 +37,7 @@ public class Spells  extends Skills
 	private String[] access={"SPELLS","SP"};
 	public String[] getAccessWords(){return access;}
     
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String qual=CMParms.combine(commands,1).toUpperCase();

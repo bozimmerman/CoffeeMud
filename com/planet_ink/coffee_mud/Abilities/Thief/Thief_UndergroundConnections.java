@@ -184,7 +184,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 		return R;
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -268,7 +268,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			if(underA!=null)
 			{
 				underA.currRoom=thisRoom;
-				HashSet H=target.getGroupMembers(new HashSet());
+				HashSet H=target.getGroupMembers(new HashSet<MOB>());
 				Vector group=new Vector();
 				group.addElement(target);
 				for(Iterator i=H.iterator();i.hasNext();)

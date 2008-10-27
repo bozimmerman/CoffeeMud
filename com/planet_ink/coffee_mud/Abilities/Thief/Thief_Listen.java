@@ -93,7 +93,7 @@ public class Thief_Listen extends ThiefSkill
 			unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String whom=CMParms.combine(commands,0);
 		int dirCode=Directions.getGoodDirectionCode(whom);

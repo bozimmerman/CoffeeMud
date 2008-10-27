@@ -1435,7 +1435,7 @@ public class Quests extends StdLibrary implements QuestManager
             }
         }
         Vector newMobs=new Vector();
-        for(Enumeration e=CMClass.mobTypes();e.hasMoreElements();)
+        for(Enumeration<MOB> e=CMClass.mobTypes();e.hasMoreElements();)
         {
             M=(MOB)e.nextElement();
             if(M.isGeneric())
@@ -1659,7 +1659,7 @@ public class Quests extends StdLibrary implements QuestManager
                         {
                             String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
                             StringBuffer label=new StringBuffer(((lastLabel==null)?"":lastLabel)+"\n\rChoices: ");
-                            for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                            for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
                                 label.append(((Ability)e.nextElement()).ID()+" ");
                             String s=CMLib.genEd().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,label.toString(),
                                                             QuestManager.QM_COMMAND_TESTS[inputCode],

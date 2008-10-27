@@ -485,9 +485,9 @@ public class BribeGateGuard extends StdBehavior
 		                            "I'm telling you this from execute", true, false);
 		    try {
 		      if (dir >= 0)
-		        observer.doCommand(CMParms.parse("OPEN " +
+		        observer.doCommand(CMParms.parseToObjV("OPEN " +
 		                                          Directions.getDirectionName(dir)),Command.METAFLAG_FORCED);
-		      observer.doCommand(CMParms.parse("BOW " + source.Name()),Command.METAFLAG_FORCED);
+		      observer.doCommand(CMParms.parseToObjV("BOW " + source.Name()),Command.METAFLAG_FORCED);
 		    }
 		    catch (Exception e1) {}
 		  }
@@ -498,9 +498,9 @@ public class BribeGateGuard extends StdBehavior
 		    toldAlready.put(source.Name(),Boolean.FALSE);
 		    try {
 		      if (dir >= 0)
-		        observer.doCommand(CMParms.parse("OPEN " +
+		        observer.doCommand(CMParms.parseToObjV("OPEN " +
 		                                          Directions.getDirectionName(dir)),Command.METAFLAG_FORCED);
-		      observer.doCommand(CMParms.parse("BOW " + source.Name()),Command.METAFLAG_FORCED);
+		      observer.doCommand(CMParms.parseToObjV("BOW " + source.Name()),Command.METAFLAG_FORCED);
 		    }
 		    catch (Exception e1) {}
 		  }
@@ -553,7 +553,7 @@ public class BribeGateGuard extends StdBehavior
 		      }
 		      toldAlready.put(M.Name(), Boolean.TRUE);
 		    if (dir >= 0)
-				mob.doCommand(CMParms.parse("OPEN " +
+				mob.doCommand(CMParms.parseToObjV("OPEN " +
 				                Directions.
 				                getDirectionName(dir)),Command.METAFLAG_FORCED);
 		    }
@@ -600,7 +600,7 @@ public class BribeGateGuard extends StdBehavior
 		if (tickTock > 2) {
 		  tickTock = 0;
 		  if ( (e.isOpen()) && (paidPlayers.isEmpty())) {
-		      mob.doCommand(CMParms.parse("CLOSE " +
+		      mob.doCommand(CMParms.parseToObjV("CLOSE " +
 		                                        Directions.getDirectionName(dir)),Command.METAFLAG_FORCED);
 		  }
 		}

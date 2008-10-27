@@ -55,7 +55,7 @@ public class StdWebMacro implements WebMacro
 		return "[Unimplemented macro!]";
 	}
 	
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	
     public String getFilename(ExternalHTTPRequests httpReq, String filename)
     {
@@ -435,9 +435,9 @@ public class StdWebMacro implements WebMacro
 		return buf;
 	}
 	
-	protected Hashtable parseParms(String parm)
+	protected Hashtable<String,String> parseParms(String parm)
 	{
-		Hashtable requestParms=new Hashtable();
+		Hashtable<String,String> requestParms=new Hashtable<String,String>();
 		if((parm!=null)&&(parm.length()>0))
 		{
 			while(parm.length()>0)

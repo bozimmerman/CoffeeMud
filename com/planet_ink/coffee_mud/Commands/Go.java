@@ -372,7 +372,7 @@ public class Go extends StdCommand
 			stander.execute(mob,ifneccvec,metaFlags);
 	}
 
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		standIfNecessary(mob,metaFlags);
@@ -488,7 +488,7 @@ public class Go extends StdCommand
 		}
 		return false;
 	}
-	public double actionsCost(MOB mob, Vector cmds){
+	public double actionsCost(MOB mob, Vector<Object> cmds){
 		double cost=CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);
 		if((mob!=null)&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTORUN)))
 			cost /= 4.0;

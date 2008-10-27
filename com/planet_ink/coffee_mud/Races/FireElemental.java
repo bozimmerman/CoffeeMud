@@ -50,7 +50,7 @@ public class FireElemental extends StdRace
 	public String[] culturalAbilityNames(){return culturalAbilityNames;}
 	public int[] culturalAbilityProficiencies(){return culturalAbilityProficiencies;}
 
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
@@ -114,7 +114,7 @@ public class FireElemental extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect condition.^N";
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

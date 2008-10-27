@@ -37,7 +37,7 @@ public class RoomNext extends StdWebMacro
 
     public String runMacro(ExternalHTTPRequests httpReq, String parm)
     {
-        Hashtable parms=parseParms(parm);
+        Hashtable<String,String> parms=parseParms(parm);
         String area=httpReq.getRequestParameter("AREA");
         if((area==null)||(CMLib.map().getArea(area)==null))
             return " @break@";

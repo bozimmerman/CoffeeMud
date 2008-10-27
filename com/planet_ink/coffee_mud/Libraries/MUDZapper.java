@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class MUDZapper extends StdLibrary implements MaskingLibrary
 {
     public String ID(){return "MUDZapper";}
-	public Hashtable zapCodes=new Hashtable();
+	public Hashtable<String,Integer> zapCodes=new Hashtable<String,Integer>();
 
     protected MOB nonCrashingMOB=null;
     protected MOB nonCrashingMOB(){
@@ -47,11 +47,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 
     public String rawMaskHelp(){return DEFAULT_MASK_HELP;}
 
-    protected Vector preCompiled(String str)
+    @SuppressWarnings("unchecked")
+	protected Vector<Vector<Object>> preCompiled(String str)
     {
-        Hashtable H=(Hashtable)Resources.getResource("SYSTEM_HASHED_MASKS");
-        if(H==null){ H=new Hashtable(); Resources.submitResource("SYSTEM_HASHED_MASKS",H); }
-        Vector V=(Vector)H.get(str.toLowerCase().trim());
+        Hashtable<String,Vector<Vector<Object>>> H=(Hashtable<String,Vector<Vector<Object>>>)Resources.getResource("SYSTEM_HASHED_MASKS");
+        if(H==null){ H=new Hashtable<String,Vector<Vector<Object>>>(); Resources.submitResource("SYSTEM_HASHED_MASKS",H); }
+        Vector<Vector<Object>> V=H.get(str.toLowerCase().trim());
         if(V==null)
         {
             V=maskCompile(str);
@@ -61,7 +62,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         return V;
     }
 
-    public Hashtable getMaskCodes()
+    public Hashtable<String,Integer> getMaskCodes()
 	{
 		if(zapCodes.size()==0)
 		{
@@ -262,7 +263,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         int x=str.indexOf("&");
         if(x>=0)
         {
-            Vector V=CMParms.parseAny(str,"&",true);
+            Vector<Object> V=CMParms.makeObjV(CMParms.parseAny(str,"&",true));
             String s=null;
             for(int v=0;v<V.size();v++)
             {
@@ -361,7 +362,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	}
 
 
-	protected boolean skillFlagCheck(Vector V, char plusMinus, int fromHere, MOB mob)
+	protected boolean skillFlagCheck(Vector<String> V, char plusMinus, int fromHere, MOB mob)
     {
         Ability A=null;
         Object o=null;
@@ -384,9 +385,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         return false;
     }
 
-	protected Vector levelCompiledHelper(String str, char c, Vector entry)
+	protected Vector<Object> levelCompiledHelper(String str, char c, Vector<Object> entry)
 	{
-		if(entry==null) entry=new Vector();
+		if(entry==null) entry=new Vector<Object>();
 		if(str.startsWith(c+">=")&&(CMath.isNumber(str.substring(3).trim())))
 		{
 			entry.addElement(getMaskCodes().get("+LVLGE"));
@@ -467,7 +468,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         return Integer.MIN_VALUE;
     }
 
-	protected boolean fromHereEqual(Vector V, char plusMinus, int fromHere, String find)
+	protected boolean fromHereEqual(Vector<String> V, char plusMinus, int fromHere, String find)
 	{
 		for(int v=fromHere;v<V.size();v++)
 		{
@@ -480,7 +481,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return false;
 	}
 
-	protected boolean fromHereStartsWith(Vector V, char plusMinus, int fromHere, String find)
+	protected boolean fromHereStartsWith(Vector<String> V, char plusMinus, int fromHere, String find)
 	{
 		for(int v=fromHere;v<V.size();v++)
 		{
@@ -493,7 +494,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return false;
 	}
 
-	protected boolean fromHereEndsWith(Vector V, char plusMinus, int fromHere, String find)
+	protected boolean fromHereEndsWith(Vector<String> V, char plusMinus, int fromHere, String find)
     {
         for(int v=fromHere;v<V.size();v++)
         {
@@ -513,8 +514,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	{
 		if(text.trim().length()==0) return "Anyone";
 		StringBuffer buf=new StringBuffer("");
-        Hashtable zapCodes=getMaskCodes();
-		Vector V=CMParms.parse(text.toUpperCase());
+        Hashtable<String,Integer> zapCodes=getMaskCodes();
+		Vector<String> V=CMParms.parse(text.toUpperCase());
 		for(int v=0;v<V.size();v++)
 		{
 			String str=(String)V.elementAt(v);
@@ -525,7 +526,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 0: // -class
 					{
 					buf.append(skipFirstWord?"Only ":"Allows only ");
-					for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+					for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 					{
 						CharClass C=(CharClass)c.nextElement();
 						if(fromHereStartsWith(V,'+',v+1,CMStrings.padRight(C.name(),4).toUpperCase().trim()))
@@ -539,7 +540,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 1: // -baseclass
 					{
 						buf.append(skipFirstWord?"Only ":"Allows only ");
-						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+						for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
 							if((C.ID().equals(C.baseClass()))
@@ -554,8 +555,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 2: // -Race
 					{
 						buf.append(skipFirstWord?"Only ":"Allows only ");
-						Vector cats=new Vector();
-						for(Enumeration r=CMClass.races();r.hasMoreElements();)
+						Vector<String> cats=new Vector<String>();
+						for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 						{
 							Race R=(Race)r.nextElement();
 							String cat=R.name().toUpperCase();
@@ -574,8 +575,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 12: // -Racecats
 					{
 						buf.append(skipFirstWord?"Only these racial categories ":"Allows only these racial categories ");
-						Vector cats=new Vector();
-						for(Enumeration r=CMClass.races();r.hasMoreElements();)
+						Vector<String> cats=new Vector<String>();
+						for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 						{
 							Race R=(Race)r.nextElement();
 							String cat=R.racialCategory().toUpperCase();
@@ -748,7 +749,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	                            break;
 	                        if(str2.startsWith("+"))
                             {
-                                Vector V3=CMParms.parseAny(str2.substring(1),"&",true);
+                                Vector<String> V3=CMParms.parseAny(str2.substring(1),"&",true);
                                 String str3=null;
                                 for(int v3=0;v3<V3.size();v3++)
                                 {
@@ -847,7 +848,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 break;
                             if(str2.startsWith("-"))
                             {
-                                Vector V3=CMParms.parseAny(str2.substring(1),"&",true);
+                                Vector<String> V3=CMParms.parseAny(str2.substring(1),"&",true);
                                 String str3=null;
                                 for(int v3=0;v3<V3.size();v3++)
                                 {
@@ -1536,7 +1537,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 17: // -anyclass
 					{
 						buf.append((skipFirstWord?"L":"Requires l")+"evels in one of the following:  ");
-						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+						for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
 							if(fromHereStartsWith(V,'+',v+1,CMStrings.padRight(C.name(),4).toUpperCase().trim()))
@@ -1550,7 +1551,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 18: // +anyclass
 					{
 						buf.append("Disallows any levels in any of the following:  ");
-						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+						for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
 							if(fromHereStartsWith(V,'-',v+1,CMStrings.padRight(C.name(),4).toUpperCase().trim()))
@@ -1870,14 +1871,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				}
 			else
 			{
-				for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+				for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 				{
 					CharClass C=(CharClass)c.nextElement();
 					if(str.startsWith("-"+CMStrings.padRight(C.name(),4).toUpperCase().trim()))
 						buf.append("Disallows "+C.name()+".  ");
 				}
-				Vector cats=new Vector();
-				for(Enumeration r=CMClass.races();r.hasMoreElements();)
+				Vector<String> cats=new Vector<String>();
+				for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 				{
 					Race R=(Race)r.nextElement();
 					String cat=R.racialCategory().toUpperCase();
@@ -1914,13 +1915,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return buf.toString();
 	}
 
-	public Vector getAbilityEduReqs(String text)
+	public Vector<String> getAbilityEduReqs(String text)
 	{
-		Vector preReqs=new Vector();
+		Vector<String> preReqs=new Vector<String>();
 		if(text.trim().length()==0)
 			return preReqs;
-        Hashtable zapCodes=getMaskCodes();
-		Vector V=CMParms.parse(text.toUpperCase());
+        Hashtable<String,Integer> zapCodes=getMaskCodes();
+		Vector<String> V=CMParms.parse(text.toUpperCase());
 		String str=null;
 		String str2=null;
 		for(int v=0;v<V.size();v++)
@@ -1966,7 +1967,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 101: // -skillflag
 				{
-					Vector objs=new Vector();
+					Vector<Object> objs=new Vector<Object>();
 					Object o=null;
 					for(int v2=v+1;v2<V.size();v2++)
 					{
@@ -1983,7 +1984,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					}
 					Ability A=null;
 					for(int v2=0;v2<objs.size();v2++)
-                    	for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                    	for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
                     	{
                         	A=(Ability)e.nextElement();
                         	if((evaluateSkillFlagObject(objs.elementAt(v2),A))
@@ -2003,10 +2004,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
     public int minMaskLevel(String text, int minMinLevel)
     {
         int level=minMinLevel;
-        Vector cset=preCompiled(text);
+        Vector<Vector<Object>> cset=preCompiled(text);
         for(int c=0;c<cset.size();c++)
         {
-            Vector V=(Vector)cset.elementAt(c);
+        	Vector<Object> V=cset.elementAt(c);
             if(V.size()>0)
             switch(((Integer)V.firstElement()).intValue())
             {
@@ -2102,12 +2103,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
         return level;
     }
 
-	public Vector maskCompile(String text)
+	public Vector<Vector<Object>> maskCompile(String text)
 	{
-		Vector buf=new Vector();
+		Vector<Vector<Object>> buf=new Vector<Vector<Object>>();
 		if(text.trim().length()==0) return buf;
-        Hashtable zapCodes=getMaskCodes();
-		Vector V=CMParms.parse(text.toUpperCase());
+        Hashtable<String,Integer> zapCodes=getMaskCodes();
+		Vector<String> V=CMParms.parse(text.toUpperCase());
 		for(int v=0;v<V.size();v++)
 		{
 			String str=(String)V.elementAt(v);
@@ -2117,10 +2118,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				{
 				case 0: // -class
 					{
-						Vector entry=new Vector();
+						Vector<Object> entry=new Vector<Object>();
 						buf.addElement(entry);
 						entry.addElement(zapCodes.get(str));
-						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+						for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
 							if(fromHereStartsWith(V,'+',v+1,CMStrings.padRight(C.name(),4).toUpperCase().trim()))
@@ -2130,11 +2131,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 1: // -baseclass
 					{
-						Vector entry=new Vector();
+						Vector<Object> entry=new Vector<Object>();
 						buf.addElement(entry);
 						entry.addElement(zapCodes.get(str));
-						HashSet seenBase=new HashSet();
-						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+						HashSet<String> seenBase=new HashSet<String>();
+						for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
 							if(!seenBase.contains(C.baseClass()))
@@ -2148,11 +2149,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 2: // -Race
 					{
-						Vector entry=new Vector();
+						Vector<Object> entry=new Vector<Object>();
 						buf.addElement(entry);
 						entry.addElement(zapCodes.get(str));
-						Vector cats=new Vector();
-						for(Enumeration r=CMClass.races();r.hasMoreElements();)
+						Vector<String> cats=new Vector<String>();
+						for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 						{
 							Race R=(Race)r.nextElement();
 							String cat=R.name().toUpperCase();
@@ -2167,11 +2168,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 12: // -Racecats
 					{
-						Vector entry=new Vector();
+						Vector<Object> entry=new Vector<Object>();
 						buf.addElement(entry);
 						entry.addElement(zapCodes.get(str));
-						Vector cats=new Vector();
-						for(Enumeration r=CMClass.races();r.hasMoreElements();)
+						Vector<String> cats=new Vector<String>();
+						for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 						{
 							Race R=(Race)r.nextElement();
 							String cat=R.racialCategory().toUpperCase();
@@ -2185,11 +2186,11 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 13: // +Racecats
 					{
-						Vector entry=new Vector();
+						Vector<Object> entry=new Vector<Object>();
 						buf.addElement(entry);
 						entry.addElement(zapCodes.get(str));
-						Vector cats=new Vector();
-						for(Enumeration r=CMClass.races();r.hasMoreElements();)
+						Vector<String> cats=new Vector<String>();
+						for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 						{
 							Race R=(Race)r.nextElement();
 							String cat=R.racialCategory().toUpperCase();
@@ -2203,10 +2204,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
                 case 112: // +Race
                     {
-                        Vector entry=new Vector();
+                        Vector<Object> entry=new Vector<Object>();
                         buf.addElement(entry);
                         entry.addElement(zapCodes.get(str));
-                        for(Enumeration r=CMClass.races();r.hasMoreElements();)
+                        for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
                         {
                             Race R=(Race)r.nextElement();
                             String cat=R.name().toUpperCase();
@@ -2217,7 +2218,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     break;
 				case 3: // -Alignment
 					{
-						Vector entry=new Vector();
+						Vector<Object> entry=new Vector<Object>();
 						buf.addElement(entry);
 						entry.addElement(zapCodes.get(str));
 						if(fromHereStartsWith(V,'+',v+1,Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3)))
@@ -2230,7 +2231,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 4: // -Gender
 					{
-						Vector entry=new Vector();
+						Vector<Object> entry=new Vector<Object>();
 						buf.addElement(entry);
 						entry.addElement(zapCodes.get(str));
 						if(fromHereStartsWith(V,'+',v+1,"MALE"))
@@ -2245,7 +2246,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 6: // -ClassLevels
                 case 103: // -MaxclassLevels
 					{
-						Vector entry=new Vector();
+						Vector<Object> entry=new Vector<Object>();
 						buf.addElement(entry);
 						entry.addElement(zapCodes.get(str));
 						for(int v2=v+1;v2<V.size();v2++)
@@ -2264,7 +2265,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 43: // -Effect
                 case 42: // +Effect
                     {
-                        Vector entry=new Vector();
+                        Vector<Object> entry=new Vector<Object>();
                         buf.addElement(entry);
                         entry.addElement(zapCodes.get(str));
                         for(int v2=v+1;v2<V.size();v2++)
@@ -2303,7 +2304,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 100: // -Home
                 case 53: // -JavaClass
 					{
-						Vector entry=new Vector();
+						Vector<Object> entry=new Vector<Object>();
 						buf.addElement(entry);
 						entry.addElement(zapCodes.get(str));
 						for(int v2=v+1;v2<V.size();v2++)
@@ -2323,7 +2324,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 46: // -Faction
 				{
-					Vector entry=new Vector();
+					Vector<Object> entry=new Vector<Object>();
 					buf.addElement(entry);
 					entry.addElement(zapCodes.get(str));
 					for(int v2=v+1;v2<V.size();v2++)
@@ -2353,7 +2354,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 99: // +Home
                 case 54: // +JavaClass
 					{
-						Vector entry=new Vector();
+						Vector<Object> entry=new Vector<Object>();
 						buf.addElement(entry);
 						entry.addElement(zapCodes.get(str));
 						for(int v2=v+1;v2<V.size();v2++)
@@ -2374,7 +2375,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 83: // +skills
                 case 84: // -skills
                     {
-                        Vector entry=new Vector();
+                        Vector<Object> entry=new Vector<Object>();
                         buf.addElement(entry);
                         entry.addElement(zapCodes.get(str));
                         for(int v2=v+1;v2<V.size();v2++)
@@ -2411,7 +2412,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 101: // -skillflag
                 case 102: // +skillflag
                     {
-                        Vector entry=new Vector();
+                        Vector<Object> entry=new Vector<Object>();
                         buf.addElement(entry);
                         entry.addElement(zapCodes.get(str));
                         for(int v2=v+1;v2<V.size();v2++)
@@ -2436,7 +2437,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 33: // -Item
                 case 48: // -Worn
                     {
-                        Vector entry=new Vector();
+                        Vector<Object> entry=new Vector<Object>();
                         buf.addElement(entry);
                         entry.addElement(zapCodes.get(str));
                         for(int v2=v+1;v2<V.size();v2++)
@@ -2457,7 +2458,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 49: // +Material
                 case 50: // -Material
                     {
-                        Vector entry=new Vector();
+                        Vector<Object> entry=new Vector<Object>();
                         buf.addElement(entry);
                         entry.addElement(zapCodes.get(str));
                         for(int v2=v+1;v2<V.size();v2++)
@@ -2482,7 +2483,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 57: // -WornOn
                 case 58: // +WornOn
                     {
-                        Vector entry=new Vector();
+                        Vector<Object> entry=new Vector<Object>();
                         buf.addElement(entry);
                         entry.addElement(zapCodes.get(str));
                         for(int v2=v+1;v2<V.size();v2++)
@@ -2506,7 +2507,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 69: // +Disposition
                 case 70: // -Disposition
                     {
-                        Vector entry=new Vector();
+                        Vector<Object> entry=new Vector<Object>();
                         buf.addElement(entry);
                         entry.addElement(zapCodes.get(str));
                         for(int v2=v+1;v2<V.size();v2++)
@@ -2530,7 +2531,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 71: // +Senses
                 case 72: // -Senses
                     {
-                        Vector entry=new Vector();
+                        Vector<Object> entry=new Vector<Object>();
                         buf.addElement(entry);
                         entry.addElement(zapCodes.get(str));
                         for(int v2=v+1;v2<V.size();v2++)
@@ -2554,7 +2555,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 75: // +Season
                 case 76: // -Season
                     {
-                        Vector entry=new Vector();
+                        Vector<Object> entry=new Vector<Object>();
                         buf.addElement(entry);
                         entry.addElement(zapCodes.get(str));
                         for(int v2=v+1;v2<V.size();v2++)
@@ -2581,7 +2582,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 104: // +weather
                 case 105: // -weather
                     {
-                        Vector entry=new Vector();
+                        Vector<Object> entry=new Vector<Object>();
                         buf.addElement(entry);
                         entry.addElement(zapCodes.get(str));
                         for(int v2=v+1;v2<V.size();v2++)
@@ -2612,7 +2613,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 106: // +DAY
                 case 107: // -DAY
                     {
-                        Vector entry=new Vector();
+                        Vector<Object> entry=new Vector<Object>();
                         buf.addElement(entry);
                         entry.addElement(zapCodes.get(str));
                         for(int v2=v+1;v2<V.size();v2++)
@@ -2640,7 +2641,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		                    int adjustment=0;
 		                    if(((v+2)<V.size())&&(CMath.isInteger((String)V.elementAt(v+2))))
 		                    	adjustment=CMath.s_int((String)V.elementAt(v+2));
-	                        Vector entry=new Vector();
+	                        Vector<Object> entry=new Vector<Object>();
 	                        buf.addElement(entry);
 	                        entry.addElement(zapCodes.get(str));
 	                        entry.addElement(A.ID());
@@ -2653,7 +2654,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 110: // +subop
                 case 111: // +subop
                 {
-                    Vector entry=new Vector();
+                    Vector<Object> entry=new Vector<Object>();
                     buf.addElement(entry);
                     entry.addElement(zapCodes.get(str));
                     break;
@@ -2661,7 +2662,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 51: // +Resource
                 case 52: // -Resource
                     {
-                        Vector entry=new Vector();
+                        Vector<Object> entry=new Vector<Object>();
                         buf.addElement(entry);
                         entry.addElement(zapCodes.get(str));
                         for(int v2=v+1;v2<V.size();v2++)
@@ -2686,17 +2687,17 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 10: // -Player
 				case 11: // -MOB
 					{
-						Vector entry=new Vector();
+						Vector<Object> entry=new Vector<Object>();
 						buf.addElement(entry);
 						entry.addElement(zapCodes.get(str));
 						break;
 					}
 				case 17: // -anyclass
 					{
-						Vector entry=new Vector();
+						Vector<Object> entry=new Vector<Object>();
 						buf.addElement(entry);
 						entry.addElement(zapCodes.get(str));
-						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+						for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
 							if(fromHereStartsWith(V,'+',v+1,CMStrings.padRight(C.name(),4).toUpperCase().trim()))
@@ -2706,10 +2707,10 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					break;
 				case 18: // +anyclass
 					{
-						Vector entry=new Vector();
+						Vector<Object> entry=new Vector<Object>();
 						buf.addElement(entry);
 						entry.addElement(zapCodes.get(str));
-						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+						for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
 							if(fromHereStartsWith(V,'-',v+1,CMStrings.padRight(C.name(),4).toUpperCase().trim()))
@@ -2755,7 +2756,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 68: // -attack
 					{
 						val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
-						Vector entry=new Vector();
+						Vector<Object> entry=new Vector<Object>();
 						buf.addElement(entry);
 						entry.addElement(zapCodes.get(str));
 						entry.addElement(new Integer(val));
@@ -2766,12 +2767,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			{
                 boolean found=false;
                 if(!found)
-                for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+                for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
                 {
                     CharClass C=(CharClass)c.nextElement();
                     if(str.equals("-"+C.name().toUpperCase().trim()))
                     {
-                        Vector entry=new Vector();
+                        Vector<Object> entry=new Vector<Object>();
                         buf.addElement(entry);
                         entry.addElement(zapCodes.get("+CLASS"));
                         entry.addElement(C.name());
@@ -2780,13 +2781,13 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                     }
                 }
                 if(!found)
-                for(Enumeration r=CMClass.races();r.hasMoreElements();)
+                for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
                 {
                     Race R=(Race)r.nextElement();
                     String race=R.name().toUpperCase();
                     if(str.equals("-"+race))
                     {
-                        Vector entry=new Vector();
+                        Vector<Object> entry=new Vector<Object>();
                         buf.addElement(entry);
                         entry.addElement(zapCodes.get("+RACE"));
                         entry.addElement(R.name());
@@ -2797,7 +2798,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 if((!found)
                 &&(str.equals("-"+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].toUpperCase())))
                 {
-                    Vector entry=new Vector();
+                    Vector<Object> entry=new Vector<Object>();
                     buf.addElement(entry);
                     entry.addElement(zapCodes.get("+ALIGNMENT"));
                     entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL]);
@@ -2806,7 +2807,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 if((!found)
                 &&(str.equals("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].toUpperCase())))
                 {
-                    Vector entry=new Vector();
+                    Vector<Object> entry=new Vector<Object>();
                     buf.addElement(entry);
                     entry.addElement(zapCodes.get("+ALIGNMENT"));
                     entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD]);
@@ -2815,7 +2816,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 if((!found)
                 &&(str.equals("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].toUpperCase())))
                 {
-                    Vector entry=new Vector();
+                    Vector<Object> entry=new Vector<Object>();
                     buf.addElement(entry);
                     entry.addElement(zapCodes.get("+ALIGNMENT"));
                     entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL]);
@@ -2823,7 +2824,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 }
                 if((!found)&&(str.equals("-MALE")))
                 {
-                    Vector entry=new Vector();
+                    Vector<Object> entry=new Vector<Object>();
                     buf.addElement(entry);
                     entry.addElement(zapCodes.get("+GENDER"));
                     entry.addElement("M");
@@ -2831,7 +2832,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 }
                 if((!found)&&(str.equals("-FEMALE")))
                 {
-                    Vector entry=new Vector();
+                    Vector<Object> entry=new Vector<Object>();
                     buf.addElement(entry);
                     entry.addElement(zapCodes.get("+GENDER"));
                     entry.addElement("F");
@@ -2839,7 +2840,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 }
                 if((!found)&&(str.equals("-NEUTER")))
                 {
-                    Vector entry=new Vector();
+                    Vector<Object> entry=new Vector<Object>();
                     buf.addElement(entry);
                     entry.addElement(zapCodes.get("+GENDER"));
                     entry.addElement("N");
@@ -2849,19 +2850,19 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 &&(str.startsWith("-"))
                 &&(CMLib.factions().isRangeCodeName(str.substring(1))))
                 {
-                    Vector entry=new Vector();
+                    Vector<Object> entry=new Vector<Object>();
                     buf.addElement(entry);
                     entry.addElement(zapCodes.get("+FACTION"));
                     entry.addElement(str.substring(1));
                     found=true;
                 }
                 if(!found)
-				for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+				for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 				{
 					CharClass C=(CharClass)c.nextElement();
 					if(str.startsWith("-"+CMStrings.padRight(C.name(),4).toUpperCase().trim()))
 					{
-						Vector entry=new Vector();
+						Vector<Object> entry=new Vector<Object>();
 						buf.addElement(entry);
 						entry.addElement(zapCodes.get("+CLASS"));
 						entry.addElement(C.name());
@@ -2870,12 +2871,12 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					}
 				}
                 if(!found)
-				for(Enumeration r=CMClass.races();r.hasMoreElements();)
+				for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 				{
 					Race R=(Race)r.nextElement();
 					if(str.startsWith("-"+CMStrings.padRight(R.name(),6).toUpperCase().trim()))
 					{
-						Vector entry=new Vector();
+						Vector<Object> entry=new Vector<Object>();
 						buf.addElement(entry);
 						entry.addElement(zapCodes.get("+RACE"));
 						entry.addElement(R.name());
@@ -2884,14 +2885,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					}
 				}
                 if(!found)
-                for(Enumeration r=CMClass.races();r.hasMoreElements();)
+                for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
                 {
                     Race R=(Race)r.nextElement();
                     String cat=R.racialCategory().toUpperCase();
                     if(cat.length()>6) cat=cat.substring(0,6);
                     if(str.startsWith("-"+cat))
                     {
-                        Vector entry=new Vector();
+                        Vector<Object> entry=new Vector<Object>();
                         buf.addElement(entry);
                         entry.addElement(zapCodes.get("+RACECAT"));
                         entry.addElement(R.racialCategory());
@@ -2900,7 +2901,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 if((!found)
 				&&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3))))
 				{
-					Vector entry=new Vector();
+					Vector<Object> entry=new Vector<Object>();
 					buf.addElement(entry);
 					entry.addElement(zapCodes.get("+ALIGNMENT"));
 					entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_EVIL]);
@@ -2909,7 +2910,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 if((!found)
 				&&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3))))
 				{
-					Vector entry=new Vector();
+					Vector<Object> entry=new Vector<Object>();
 					buf.addElement(entry);
 					entry.addElement(zapCodes.get("+ALIGNMENT"));
 					entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_GOOD]);
@@ -2918,7 +2919,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 if((!found)
 				&&(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3))))
 				{
-					Vector entry=new Vector();
+					Vector<Object> entry=new Vector<Object>();
 					buf.addElement(entry);
 					entry.addElement(zapCodes.get("+ALIGNMENT"));
 					entry.addElement(Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL]);
@@ -2927,7 +2928,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 if((!found)
 				&&(str.startsWith("-MALE")))
 				{
-					Vector entry=new Vector();
+					Vector<Object> entry=new Vector<Object>();
 					buf.addElement(entry);
 					entry.addElement(zapCodes.get("+GENDER"));
 					entry.addElement("M");
@@ -2936,7 +2937,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 if((!found)
 				&&(str.startsWith("-FEMALE")))
 				{
-					Vector entry=new Vector();
+					Vector<Object> entry=new Vector<Object>();
 					buf.addElement(entry);
 					entry.addElement(zapCodes.get("+GENDER"));
 					entry.addElement("F");
@@ -2945,7 +2946,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 if((!found)
                 &&(str.startsWith("-NEUTER")))
 				{
-					Vector entry=new Vector();
+					Vector<Object> entry=new Vector<Object>();
 					buf.addElement(entry);
 					entry.addElement(zapCodes.get("+GENDER"));
 					entry.addElement("N");
@@ -2955,7 +2956,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				&&(str.startsWith("-"))
  		        &&(CMLib.factions().isRangeCodeName(str.substring(1))))
 				{
-					Vector entry=new Vector();
+					Vector<Object> entry=new Vector<Object>();
 					buf.addElement(entry);
 					entry.addElement(zapCodes.get("+FACTION"));
 					entry.addElement(str.substring(1));
@@ -2963,7 +2964,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				}
                 if(!found)
                 {
-    				Vector entry=levelCompiledHelper(str,'-',null);
+    				Vector<Object> entry=levelCompiledHelper(str,'-',null);
     				if((entry!=null)&&(entry.size()>0))
     					buf.addElement(entry);
                 }
@@ -2976,7 +2977,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	protected Room outdoorRoom(Area A)
     {
         Room R=null;
-        for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+        for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
         {
             R=(Room)e.nextElement();
             if((R.domainType()&Room.INDOORS)==0) return R;
@@ -2995,7 +2996,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 	}
 
 	public boolean maskCheck(String text, Environmental E, boolean actual){ return maskCheck(preCompiled(text),E,actual);}
-	public boolean maskCheck(Vector cset, Environmental E, boolean actual)
+	public boolean maskCheck(Vector<Vector<Object>> cset, Environmental E, boolean actual)
 	{
 		if(E==null) return true;
 		if((cset==null)||(cset.size()==0)) return true;
@@ -3007,7 +3008,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 
 		for(int c=0;c<cset.size();c++)
 		{
-			Vector V=(Vector)cset.elementAt(c);
+			Vector<Object> V=(Vector<Object>)cset.elementAt(c);
             try
             {
 			if(V.size()>0)

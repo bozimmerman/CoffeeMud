@@ -1022,7 +1022,7 @@ public class CMProps extends Properties
         {
             String raceName=((MOB)O).charStats().raceName().toUpperCase();
             Race R=null;
-            for(Enumeration e=CMClass.races();e.hasMoreElements();)
+            for(Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
             {
                 R=(Race)e.nextElement();
                 if(raceName.equalsIgnoreCase(R.name()))
@@ -1330,14 +1330,14 @@ public class CMProps extends Properties
                     xtraValues[xtraValues.length-x-1]=val; 
     }
 
-    public static Vector getStatCodeExtentions(CMObject O)
+    public static Vector<String> getStatCodeExtentions(CMObject O)
     {
     	String[][] statCodeExtensions = p().statCodeExtensions;
     	if( statCodeExtensions == null) return null;
-    	Vector V=new Vector();
+    	Vector<String> V=new Vector<String>();
         String myClassName=O.ID();
     	V.addElement(myClassName.toUpperCase());
-        Class C=O.getClass();
+        Class<?> C=O.getClass();
         for(;C!=null;C=C.getSuperclass())
         {
             myClassName=C.getName();
@@ -1347,7 +1347,7 @@ public class CMProps extends Properties
             else
                 V.addElement(myClassName.toUpperCase());
         }
-        for(Enumeration v=V.elements();v.hasMoreElements();)
+        for(Enumeration<String> v=V.elements();v.hasMoreElements();)
         {
         	myClassName = (String)v.nextElement();
         	for(int i=0;i<statCodeExtensions.length;i++)

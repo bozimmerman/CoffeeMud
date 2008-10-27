@@ -50,7 +50,7 @@ public class Pachyderm extends StdRace
 	private int[] agingChart={0,4,8,16,28,60,80,82,84};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -108,7 +108,7 @@ public class Pachyderm extends StdRace
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
 
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

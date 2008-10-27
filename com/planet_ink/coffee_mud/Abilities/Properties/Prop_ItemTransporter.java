@@ -76,7 +76,7 @@ public class Prop_ItemTransporter extends Property
 			nextDestination=null;
 			try
 			{
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room room=(Room)r.nextElement();
 					Ability A=room.fetchEffect("Prop_ItemTransReceiver");

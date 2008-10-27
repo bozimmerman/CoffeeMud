@@ -238,7 +238,7 @@ public class DefaultSocial implements Social
 	public void setBaseEnvStats(EnvStats newBaseEnvStats){}
 	public CMObject newInstance() { return new DefaultSocial();}
     public void initializeClass(){}
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     protected boolean amDestroyed=false;
     public void destroy(){amDestroyed=true;}
     public boolean amDestroyed(){return amDestroyed;}
@@ -273,13 +273,30 @@ public class DefaultSocial implements Social
 	{
 		if(!(E instanceof Social)) return false;
 		String name=Social_name.toUpperCase().trim();
-		if(name.indexOf(" ")>=0)
-			name=name.substring(0,name.indexOf(" ")+1);
-		if(((Social)E).name().toUpperCase().startsWith(name))
-			return true;
-		if((((Social)E).name().toUpperCase().equals(name.trim())))
-		   return true;
-		return false;
+		if(!(((Social)E).name().toUpperCase().equals(name.trim())))
+		   return false;
+		if(((You_see == null)!=(((Social)E).You_see() == null))
+		||((You_see != null)&&(!You_see.equals(((Social)E).You_see()))))
+			return false;
+		if(this.sourceCode != ((Social)E).sourceCode())
+			return false;
+		if(this.targetCode != ((Social)E).targetCode())
+			return false;
+		if(this.othersCode != ((Social)E).othersCode())
+			return false;
+		if(((Third_party_sees == null)!=(((Social)E).Third_party_sees() == null))
+		||((Third_party_sees != null)&&(!Third_party_sees.equals(((Social)E).Third_party_sees()))))
+			return false;
+		if(((Target_sees == null)!=(((Social)E).Target_sees() == null))
+		||((Target_sees != null)&&(!Target_sees.equals(((Social)E).Target_sees()))))
+			return false;
+		if(((See_when_no_target == null)!=(((Social)E).See_when_no_target() == null))
+		||((See_when_no_target != null)&&(!See_when_no_target.equals(((Social)E).See_when_no_target()))))
+			return false;
+		if(((MSPfile == null)!=(((Social)E).MSPfile() == null))
+		||((MSPfile != null)&&(!MSPfile.equals(((Social)E).MSPfile()))))
+			return false;
+		return true;
 	}
     protected void cloneFix(Social E){}
 

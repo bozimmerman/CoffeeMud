@@ -713,5 +713,5 @@ public class DefaultCharStats implements CharStats
 				return i;
 		return -1;
 	}
-    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

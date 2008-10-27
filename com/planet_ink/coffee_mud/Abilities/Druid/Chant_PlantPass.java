@@ -42,7 +42,7 @@ public class Chant_PlantPass extends Chant
 	protected int canTargetCode(){return 0;}
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
 		{

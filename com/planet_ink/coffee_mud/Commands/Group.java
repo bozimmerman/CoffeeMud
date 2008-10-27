@@ -76,11 +76,11 @@ public class Group extends StdCommand
 		return msg;
 	}
 	
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		mob.tell(mob.name()+"'s group:\n\r");
-		HashSet group=mob.getGroupMembers(new HashSet());
+		HashSet group=mob.getGroupMembers(new HashSet<MOB>());
 		StringBuffer msg=new StringBuffer("");
 		for(Iterator e=group.iterator();e.hasNext();)
 		{

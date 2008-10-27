@@ -172,11 +172,11 @@ public class Charlatan extends StdCharClass
     
 	public String otherLimitations(){return "";}
 	public String otherBonuses(){return "Receives 2% resistance per level to mind affects, 4% resistance per level to divination spells.  Non-class skills become cheaper at 30th level.  Gains a random non-class skill or spell every other level! Receives exploration experience based on danger level.";}
-	public Vector outfit(MOB myChar)
+	public Vector<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			Weapon w=CMClass.getWeapon("Shortsword");
 			outfitChoices.addElement(w);
 		}
@@ -245,7 +245,7 @@ public class Charlatan extends StdCharClass
 			}
 			// now only give one, for current level, respecting alignment!
 			Vector choices=new Vector();
-			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
 				int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());

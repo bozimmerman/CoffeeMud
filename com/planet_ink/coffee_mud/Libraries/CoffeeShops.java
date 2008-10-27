@@ -221,7 +221,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
            return 0.0;
         if(part.trim().indexOf(" ")<0)
             return CMath.s_double(part.trim());
-        Vector V=CMParms.parse(part.trim());
+        Vector<String> V=CMParms.parse(part.trim());
         double d=0.0;
         boolean yes=false;
         Vector VF=customer.fetchFactionRanges();
@@ -372,7 +372,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         double resourceRate=0.0;
         double itemRate=0.0;
         String s=shop.finalDevalueRate();
-        Vector V=CMParms.parse(s.trim());
+        Vector<String> V=CMParms.parse(s.trim());
         if(V.size()<=0)
             return 0.0;
         else
@@ -767,7 +767,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         MOB mobFor=buyer;
         if((message!=null)&&(message.length()>0)&&(buyer.location()!=null))
         {
-            Vector V=CMParms.parse(message);
+            Vector<String> V=CMParms.parse(message);
             if(((String)V.elementAt(V.size()-2)).equalsIgnoreCase("for"))
             {
                 String s=(String)V.lastElement();

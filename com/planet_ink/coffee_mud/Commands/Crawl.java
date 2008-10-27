@@ -37,7 +37,7 @@ public class Crawl extends Go
 	private String[] access={"CRAWL","CR"};
 	public String[] getAccessWords(){return access;}
     
-    public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
+    public boolean preExecute(MOB mob, Vector<Object> commands, int metaFlags, int secondsElapsed, double actionsRemaining)
         throws java.io.IOException
     {
         if(secondsElapsed==0)
@@ -51,7 +51,7 @@ public class Crawl extends Go
         }
         return true;
     }
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		int direction=Directions.getGoodDirectionCode(CMParms.combine(commands,1));
@@ -72,7 +72,7 @@ public class Crawl extends Go
 		}
 		return false;
 	}
-    public double actionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),150.0);}
+    public double actionsCost(MOB mob, Vector<Object> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),150.0);}
 	public boolean canBeOrdered(){return true;}
 
 	

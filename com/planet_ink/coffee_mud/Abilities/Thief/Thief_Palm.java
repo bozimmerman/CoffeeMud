@@ -46,7 +46,7 @@ public class Thief_Palm extends ThiefSkill
 	public double castingTime(MOB mob, Vector cmds){return 0.0;}
     public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STEALING;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(!success)

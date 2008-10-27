@@ -51,7 +51,7 @@ public interface Command extends CMObject
      * @param cmds the parameters to be passed to the command, if any
 	 * @return the number of player free actions required to do this
 	 */
-    public double actionsCost(MOB mob, Vector cmds);
+    public double actionsCost(MOB mob, Vector<Object> cmds);
 	/**
 	 * Returns the number of actions required to completely
 	 * activate this command. A value of 0.0 means perform 
@@ -62,7 +62,7 @@ public interface Command extends CMObject
      * @param cmds the parameters to be passed to the command, if any
 	 * @return the number of player free actions required to do this
 	 */
-    public double combatActionsCost(MOB mob, Vector cmds);
+    public double combatActionsCost(MOB mob, Vector<Object> cmds);
     /**
      * Whether the a group leader or charmer can order their followers
      * to do this command.
@@ -91,7 +91,7 @@ public interface Command extends CMObject
 	 * @return whether the command was successfully executed.  Is almost meaningless.
 	 * @throws java.io.IOException usually means the player has dropped carrier
 	 */
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException;
 	/**
 	 * This method is only called when the mob invoking this command
@@ -107,7 +107,7 @@ public interface Command extends CMObject
 	 * @param actionsRemaining number of free actions the player is defficient.
 	 * @return whether the command should be allowed to go forward. false cancels altogether.
 	 */
-    public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
+    public boolean preExecute(MOB mob, Vector<Object> commands, int metaFlags, int secondsElapsed, double actionsRemaining)
         throws java.io.IOException;
     
     /** constant mask for the metaflags parameter for execute and preexecute, means being mpforced*/

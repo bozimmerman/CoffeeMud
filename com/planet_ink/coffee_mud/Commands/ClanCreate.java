@@ -36,7 +36,7 @@ public class ClanCreate extends StdCommand
 
 	private String[] access={"CLANCREATE"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");

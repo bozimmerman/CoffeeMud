@@ -43,7 +43,7 @@ public class Thief_IdentifyTraps extends ThiefSkill
     public String[] triggerStrings(){return triggerStrings;}
     protected Environmental lastChecked=null;
 
-    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         Vector savedCommands=(Vector)commands.clone();
         String whatTounlock=CMParms.combine(commands,0);

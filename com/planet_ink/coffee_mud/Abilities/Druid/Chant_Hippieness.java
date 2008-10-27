@@ -118,7 +118,7 @@ public class Chant_Hippieness extends Chant
 							smoke.setContainer(I);
 						}
 					}
-					mob.doCommand(CMParms.parse("WEAR \""+I.Name()+"\""),Command.METAFLAG_FORCED);
+					mob.doCommand(CMParms.parseToObjV("WEAR \""+I.Name()+"\""),Command.METAFLAG_FORCED);
 				}
 				else
 				if((I!=null)&&(!I.amWearingAt(Item.IN_INVENTORY))&&(!I.amWearingAt(Item.WORN_MOUTH)))
@@ -159,7 +159,7 @@ public class Chant_Hippieness extends Chant
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

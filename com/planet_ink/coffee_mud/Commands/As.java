@@ -37,7 +37,7 @@ public class As extends StdCommand
 	private String[] access={"AS"};
 	public String[] getAccessWords(){return access;}
 
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		commands.removeElementAt(0);
@@ -61,7 +61,7 @@ public class As extends StdCommand
 		{
 		    try
 		    {
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					M=R.fetchInhabitant(cmd);

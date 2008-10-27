@@ -50,7 +50,7 @@ public class Giant extends StdRace
 	private int[] agingChart={0,1,5,40,125,188,250,270,290};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -115,7 +115,7 @@ public class Giant extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in towering health^N";
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

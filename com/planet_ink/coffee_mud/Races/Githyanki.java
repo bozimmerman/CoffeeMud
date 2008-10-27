@@ -35,7 +35,7 @@ public class Githyanki extends Humanoid
 {
 	public String ID(){	return "Githyanki"; }
 	public String name(){ return "Githyanki"; }
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	public String racialCategory(){return "Gith";}
 

@@ -54,7 +54,7 @@ public class Elf extends StdRace
 	private int[] agingChart={0,2,20,110,175,263,350,390,430};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -71,11 +71,11 @@ public class Elf extends StdRace
 		affectableStats.setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)-1);
 		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)+10);
 	}
-	public Vector outfit(MOB myChar)
+	public Vector<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			// Have to, since it requires use of special constructor
 			Armor s1=CMClass.getArmor("GenShirt");
 			s1.setName("a delicate green shirt");
@@ -142,7 +142,7 @@ public class Elf extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

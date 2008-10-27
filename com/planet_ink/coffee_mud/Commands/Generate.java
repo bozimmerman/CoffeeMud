@@ -47,9 +47,14 @@ public class Generate extends StdCommand
 
     private String[] access={"GENERATE"};
     public String[] getAccessWords(){return access;}
-    public boolean execute(MOB mob, Vector commands, int metaFlags)
+    public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
         throws java.io.IOException
     {
+    	if(true)
+    	{
+            mob.tell("Not yet implemented");
+            return false;
+    	}
         CMFile file = new CMFile(Resources.buildResourcePath("randomdata.xml"),mob,false);
         if(!file.canRead())
         {
@@ -85,7 +90,7 @@ public class Generate extends StdCommand
         		return false;
         	}
         }
-        int objectTypeIndex = CMParms.indexOf(OBJECT_TYPES.keys(),objectType);
+        //int objectTypeIndex = CMParms.indexOf(OBJECT_TYPES.keys(),objectType);
         String tagName = ((String)commands.elementAt(2)).toUpperCase().trim();
         if(!definedTags.contains(tagName))
         {
@@ -113,7 +118,7 @@ public class Generate extends StdCommand
     
     // tags created: ROOM_CLASS, ROOM_TITLE, ROOM_DESCRIPTION, ROOM_CLASSES, ROOM_TITLES, ROOM_DESCRIPTIONS
     // tags created: 
-    private Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    private Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable<String,Object> defined) throws CMException
     {
         String classID = findString("class",piece,defined);
         Room R = CMClass.getLocale(classID);

@@ -732,7 +732,7 @@ public class Modify extends StdCommand
 		
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room room=(Room)r.nextElement();
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -957,9 +957,34 @@ public class Modify extends StdCommand
             mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
             return;
         }
+        Vector oldSocials = new Vector();
+        Vector allSocials = CMLib.socials().getSocialsSet(name);
+        for(int a = 0; a<allSocials.size();a++)
+        	oldSocials.add(((Social)allSocials.elementAt(a)).copyOf());
 		mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> wave(s) <S-HIS-HER> hands around the idea of  "+S.name()+"s.");
 		CMLib.socials().modifySocialInterface(mob,(name+" "+oldStuff).trim());
-		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just fluxuated!");
+        allSocials = CMLib.socials().getSocialsSet(name);
+        boolean changed = allSocials.size() != oldSocials.size();
+        if(!changed)
+        for(int a=0;a<oldSocials.size();a++)
+        {
+        	Social oldSocial = (Social)oldSocials.elementAt(a);
+        	boolean found = false;
+        	for(int a2=0;a2<allSocials.size();a2++)
+        	{
+        		Social newSocial = (Social)allSocials.elementAt(a2);
+        		if(oldSocial.name().equals(newSocial.name()))
+        		{
+        			found = true;
+        			changed = !oldSocial.sameAs(newSocial);
+        			break;
+        		}
+        	}
+        	if(!found) changed = true;
+        	if(changed) break;
+        }
+        if(changed)
+			mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The happiness of all mankind has just fluxuated!");
 	}
 
 	public void players(MOB mob, Vector commands)
@@ -1101,7 +1126,7 @@ public class Modify extends StdCommand
 		return false;
 	}
 	
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String commandType="";
@@ -1449,7 +1474,7 @@ public class Modify extends StdCommand
 					thang.recoverEnvStats();
 					try
 					{
-						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+						for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 						{
 							Room room=(Room)r.nextElement();
 				    		synchronized(("SYNC"+room.roomID()).intern())

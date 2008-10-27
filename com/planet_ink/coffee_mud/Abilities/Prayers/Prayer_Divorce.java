@@ -42,7 +42,7 @@ public class Prayer_Divorce extends Prayer
 	public long flags(){return Ability.FLAG_UNHOLY;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

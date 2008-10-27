@@ -55,7 +55,7 @@ public class Human extends StdRace
 	private int[] agingChart={0,1,3,15,35,53,70,74,78};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_TECHNOLOGY;}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -63,11 +63,11 @@ public class Human extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_JUSTICE,affectableStats.getStat(CharStats.STAT_SAVE_JUSTICE)+10);
 	}
 
-	public Vector outfit(MOB myChar)
+	public Vector<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			// Have to, since it requires use of special constructor
 			Armor s1=CMClass.getArmor("GenShirt");
 			outfitChoices.addElement(s1);
@@ -118,7 +118,7 @@ public class Human extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

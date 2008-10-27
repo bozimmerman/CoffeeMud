@@ -61,7 +61,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 	public void spring(MOB mob)
 	{
 		if((!invoker().mayIFight(mob))
-		||(invoker().getGroupMembers(new HashSet()).contains(mob))
+		||(invoker().getGroupMembers(new HashSet<MOB>()).contains(mob))
 		||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) some "+caltropTypeName()+"caltrops on the floor.");
 		else
@@ -100,7 +100,7 @@ public class Thief_Caltrops extends ThiefSkill implements Trap
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         Environmental target=(givenTarget!=null)?givenTarget:mob.location();
 		if(target.fetchEffect(ID())!=null)

@@ -262,7 +262,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return oldVal;
-        Vector oldVals = new Vector();
+        Vector<String> oldVals = new Vector<String>();
         if(CMath.s_int(oldVal) > 0) {
             for(int c=0;c<choices.size();c++)
                 if(CMath.bset(CMath.s_int(oldVal),((Integer)choices.elementAt(c,1)).intValue()))
@@ -874,7 +874,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 
             try
             {
-                for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+                for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
                 {
                     Room R2=(Room)r.nextElement();
                     for(int d=0;d<R2.rawDoors().length;d++)
@@ -888,7 +888,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             }catch(NoSuchElementException e){}
             try
             {
-                for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
+                for(Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
                 {
                     MOB M=(MOB)e.nextElement();
                     if(M.getStartRoom()==oldR)
@@ -1438,7 +1438,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 StringBuffer str=new StringBuffer("");
                 Ability A=null;
-                for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
                 {
                     A=(Ability)e.nextElement();
                     if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)
@@ -4309,7 +4309,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     found=true;
             }
             else
-            for(Enumeration r=CMClass.races();r.hasMoreElements();)
+            for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
             {
                 Race R=(Race)r.nextElement();
                 if(newName.equalsIgnoreCase(R.racialCategory()))
@@ -4322,8 +4322,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             if(!found)
             {
                 StringBuffer str=new StringBuffer("That category does not exist.  Valid categories include: ");
-                HashSet H=new HashSet();
-                for(Enumeration r=CMClass.races();r.hasMoreElements();)
+                HashSet<String> H=new HashSet<String>();
+                for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
                 {
                     Race R=(Race)r.nextElement();
                     if(!H.contains(R.racialCategory()))
@@ -5165,7 +5165,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 mob.tell("(no change)");
                 return;
             }
-            Vector V=CMParms.parseCommas(newName,true);
+            Vector<String> V=CMParms.parseCommas(newName,true);
             if(V.size()==9)
             {
                 int highest=-1;
@@ -6975,7 +6975,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             }
             CharClass newC=null;
             StringBuffer clss=new StringBuffer();
-            for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+            for(Enumeration<CharClass> e=CMClass.charClasses();e.hasMoreElements();)
             {
                 CC=(CharClass)e.nextElement();
                 clss.append(CC.name()+", ");

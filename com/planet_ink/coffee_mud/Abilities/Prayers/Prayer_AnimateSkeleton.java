@@ -108,7 +108,7 @@ public class Prayer_AnimateSkeleton extends Prayer
 		R.recoverRoomStats();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY);
 		if(target==null) return false;

@@ -226,7 +226,7 @@ public class Cleric extends StdCharClass
 				return;
 		}
 		// now only give one, for current level, respecting alignment!
-		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
@@ -352,9 +352,9 @@ public class Cleric extends StdCharClass
 		return true;
 	}
 
-	public Vector outfit(MOB myChar)
+	public Vector<Item> outfit(MOB myChar)
 	{
-		Vector outfitChoices=new Vector();
+		Vector outfitChoices=new Vector<Item>();
 		if(CMLib.flags().isEvil(myChar))
 		{
 			Weapon w=CMClass.getWeapon("Shortsword");

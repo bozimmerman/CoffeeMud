@@ -41,8 +41,8 @@ public class Robin extends Bird
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,2 };
 	public int[] bodyMask(){return parts;}
 	
-	protected static Vector resources=new Vector();
-	public Vector myResources()
+	protected static Vector<Item> resources=new Vector<Item>();
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

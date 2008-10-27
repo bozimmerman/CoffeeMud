@@ -53,7 +53,7 @@ public class MobileAggressive extends Mobile
 		tickWait=CMParms.getParmInt(newParms,"delay",0);
 		attackMsg=CMParms.getParmStr(newParms,"MESSAGE",null);
 		tickDown=tickWait;
-		Vector V=CMParms.parse(newParms.toUpperCase());
+		Vector<String> V=CMParms.parse(newParms.toUpperCase());
 		mobkill=V.contains("MOBKILL");
 		misbehave=V.contains("MISBEHAVE");
 	}

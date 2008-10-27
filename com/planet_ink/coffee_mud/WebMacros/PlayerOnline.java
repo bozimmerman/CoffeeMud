@@ -43,7 +43,7 @@ public class PlayerOnline extends StdWebMacro
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
 		String last=httpReq.getRequestParameter("PLAYER");
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		if(last==null) return " @break@";
 		if(last.length()>0)
 		{

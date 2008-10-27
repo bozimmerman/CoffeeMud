@@ -221,11 +221,11 @@ public class Paladin extends StdCharClass
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public Vector outfit(MOB myChar)
+	public Vector<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			Weapon w=CMClass.getWeapon("Shortsword");
 			outfitChoices.addElement(w);
 		}

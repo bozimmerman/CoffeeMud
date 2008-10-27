@@ -65,7 +65,7 @@ public class ExitData extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 
 		String last=httpReq.getRequestParameter("ROOM");
 		if(last==null) return " @break@";
@@ -117,10 +117,10 @@ public class ExitData extends StdWebMacro
 					Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-EXITS");
 					if(sorted==null)
 					{
-						Vector sortMe=new Vector();
-						for(Enumeration e=CMClass.exits();e.hasMoreElements();)
+						Vector<String> sortMe=new Vector<String>();
+						for(Enumeration<Exit> e=CMClass.exits();e.hasMoreElements();)
 							sortMe.addElement(CMClass.classID(e.nextElement()));
-						sorted=(new TreeSet(sortMe)).toArray();
+						sorted=(new TreeSet<String>(sortMe)).toArray();
 						Resources.submitResource("MUDGRINDER-EXITS",sorted);
 					}
 					for(int r=0;r<sorted.length;r++)

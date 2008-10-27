@@ -46,7 +46,7 @@ public class IMudClient implements I3Interface
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new IMudClient();}}
     public void initializeClass(){}
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
-    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public boolean activate(){ return true;}
     public boolean shutdown(){ return true;}
     public ThreadEngine.SupportThread getSupportThread() { return null;}
@@ -297,7 +297,7 @@ public class IMudClient implements I3Interface
 			if((message.startsWith(":")||message.startsWith(","))&&(message.trim().length()>1))
 			{
 				String msgstr=message.substring(1);
-				Vector V=CMParms.parse(msgstr);
+				Vector<String> V=CMParms.parse(msgstr);
 				Social S=CMLib.socials().fetchSocial(V,true);
 				if(S==null) S=CMLib.socials().fetchSocial(V,false);
 				CMMsg msg=null;
@@ -371,7 +371,7 @@ public class IMudClient implements I3Interface
 				MOB mob2=CMClass.getMOB("StdMOB");
 				mob2.setName(mob.Name()+"@"+imc2.imc_name);
 				mob2.setLocation(CMClass.getLocale("StdRoom"));
-				Vector V=CMParms.parse(message);
+				Vector<String> V=CMParms.parse(message);
 				Social S=CMLib.socials().fetchSocial(V,true);
 				if(S==null) S=CMLib.socials().fetchSocial(V,false);
 				CMMsg msg=null;

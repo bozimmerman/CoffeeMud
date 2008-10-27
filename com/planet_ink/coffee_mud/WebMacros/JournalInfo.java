@@ -37,7 +37,7 @@ public class JournalInfo extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("JOURNAL");
 		if(last==null) return " @break@";
 		Vector info=(Vector)httpReq.getRequestObjects().get("JOURNAL: "+last);

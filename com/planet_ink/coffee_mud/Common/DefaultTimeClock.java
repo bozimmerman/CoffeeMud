@@ -313,7 +313,7 @@ public class DefaultTimeClock implements TimeClock
 	{
 	    try
 	    {
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if((R!=null)
@@ -481,5 +481,5 @@ public class DefaultTimeClock implements TimeClock
 		}
 		return true;
 	}
-    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

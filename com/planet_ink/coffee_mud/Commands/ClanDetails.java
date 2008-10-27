@@ -36,7 +36,7 @@ public class ClanDetails extends StdCommand
 
 	private String[] access={"CLANDETAILS","CLAN"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String qual=CMParms.combine(commands,1).toUpperCase();

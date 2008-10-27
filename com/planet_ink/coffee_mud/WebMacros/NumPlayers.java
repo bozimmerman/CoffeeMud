@@ -36,7 +36,7 @@ public class NumPlayers extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		if(parms.containsKey("ALL"))
 			return ""+CMLib.sessions().size();
 

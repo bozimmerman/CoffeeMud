@@ -115,7 +115,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         if(login.trim().indexOf(" ")>=0) return false;
 
         login=login.toUpperCase().trim();
-        Vector V=CMParms.parse(login);
+        Vector<String> V=CMParms.parse(login);
         for(int v=V.size()-1;v>=0;v--)
         {
             String str=(String)V.elementAt(v);
@@ -235,7 +235,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             return;
 
         C=CMClass.getCommand("MOTD");
-        try{ C.execute(mob,CMParms.parse("MOTD NEW PAUSE"),0);}catch(Exception e){}
+        try{ C.execute(mob,CMParms.parseToObjV("MOTD NEW PAUSE"),0);}catch(Exception e){}
     }
 
     public boolean checkExpiration(MOB mob)

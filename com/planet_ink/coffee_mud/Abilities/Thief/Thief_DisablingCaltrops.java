@@ -41,7 +41,7 @@ public class Thief_DisablingCaltrops extends Thief_Caltrops
 	public void spring(MOB mob)
 	{
 		if((!invoker().mayIFight(mob))
-		||(invoker().getGroupMembers(new HashSet()).contains(mob))
+		||(invoker().getGroupMembers(new HashSet<MOB>()).contains(mob))
 		||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) some "+caltropTypeName()+"caltrops on the floor.");
 		else

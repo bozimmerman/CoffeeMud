@@ -190,7 +190,7 @@ public class Pregnancy extends StdAbility
 					if(daysRemaining<7) // BIRTH!
 					{
 						if(CMLib.flags().isSleeping(mob))
-							mob.enqueCommand(CMParms.parse("WAKE"),Command.METAFLAG_FORCED,0);
+							mob.enqueCommand(CMParms.parseToObjV("WAKE"),Command.METAFLAG_FORCED,0);
 						if((CMLib.dice().rollPercentage()>50)&&(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)>5))
 							mob.location().show(mob,null,CMMsg.MSG_NOISE,"<S-NAME> moan(s) and scream(s) in labor pain!!");
 						ticksInLabor++;
@@ -331,7 +331,7 @@ public class Pregnancy extends StdAbility
 						if((monthsRemaining<=1)&&(CMLib.dice().rollPercentage()==1))
 						{
 							if(CMLib.flags().isSleeping(mob))
-								mob.enqueCommand(CMParms.parse("WAKE"),Command.METAFLAG_FORCED,0);
+								mob.enqueCommand(CMParms.parseToObjV("WAKE"),Command.METAFLAG_FORCED,0);
 							mob.tell("Oh! You had a contraction!");
 						}
 						else
@@ -352,7 +352,7 @@ public class Pregnancy extends StdAbility
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

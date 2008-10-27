@@ -43,7 +43,7 @@ public class CharClassData extends StdWebMacro
         str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">None");
         CharClass C2=null;
         String C2ID=null;
-        for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+        for(Enumeration<CharClass> e=CMClass.charClasses();e.hasMoreElements();)
         {
             C2=(CharClass)e.nextElement();
             C2ID="com.planet_ink.coffee_mud.CharClasses."+C2.ID();
@@ -194,7 +194,7 @@ public class CharClassData extends StdWebMacro
         str.append("<TR><TD WIDTH=50%>");
         str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=CABLES"+(theclasses.size()+1)+">");
         str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
-        for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
         {
             Ability A=(Ability)a.nextElement();
             String ID=A.ID();
@@ -226,7 +226,7 @@ public class CharClassData extends StdWebMacro
 	// prime, quals, startingeq
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
         if((replaceCommand != null)
@@ -658,7 +658,7 @@ public class CharClassData extends StdWebMacro
                             if(cSrc)
                             {
                                 sec=C.getStat("SSET"+i);
-                                Vector V=CMParms.parse(sec);
+                                Vector<String> V=CMParms.parse(sec);
                                 sec=CMParms.combineWithX(V,",",0);
                             }
                             else
@@ -838,7 +838,7 @@ public class CharClassData extends StdWebMacro
 					Hashtable domains=new Hashtable();
 					Ability A=null;
 					String domain=null;
-					for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
 						A=(Ability)e.nextElement();
 						if(CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID())>0)

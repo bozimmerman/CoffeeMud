@@ -40,7 +40,7 @@ public class Spell_CEqPoison extends Spell_BaseClanEq {
   public String name(){return "ClanEnchant Poison";}
   public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-  public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+  public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
   {
     type="Poison";
     // All the work is done by the base model

@@ -37,7 +37,7 @@ public class RaceNext extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("RACE");
 		if(parms.containsKey("RESET"))
 		{	

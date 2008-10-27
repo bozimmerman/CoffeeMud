@@ -215,7 +215,7 @@ public class CharGen extends StdCommand
 	    int TOTAL_ITERATIONS=1000;
 	    
 	    DVector classSet=new DVector(2);
-	    for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+	    for(Enumeration<CharClass> e=CMClass.charClasses();e.hasMoreElements();)
 	    {
 	        CharClass C=(CharClass)e.nextElement();
 	        if((CMath.bset(C.availabilityCode(),Area.THEME_FANTASY)
@@ -279,7 +279,7 @@ public class CharGen extends StdCommand
             if(s.endsWith("s"))
             {
                 s=s.substring(0,s.length()-1);
-                for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+                for(Enumeration<CharClass> e=CMClass.charClasses();e.hasMoreElements();)
                 {
                     CharClass C=(CharClass)e.nextElement();
                     if((CMath.bset(C.availabilityCode(),Area.THEME_FANTASY)
@@ -522,7 +522,7 @@ public class CharGen extends StdCommand
         A.destroy();
 	}
 
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.isMonster())

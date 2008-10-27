@@ -40,7 +40,7 @@ public class BardSkill extends StdAbility
     protected int canAffectCode(){return 0;}
     protected int canTargetCode(){return CAN_MOBS;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

@@ -138,7 +138,7 @@ public class Emoter extends ActiveTicker
 			}
 			if(thisEmote.trim().length()>0)
 			{
-				Vector V=CMParms.parse(thisEmote);
+				Vector<String> V=CMParms.parse(thisEmote);
 				emoteType=defaultType;
 				broadcast=defaultBroadcast;
 				setEmoteTypes(V,true);

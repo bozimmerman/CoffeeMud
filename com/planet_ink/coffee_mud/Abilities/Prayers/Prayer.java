@@ -90,7 +90,7 @@ public class Prayer extends StdAbility
 		return "praying";
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental target, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,target,auto,asLevel))
 			return false;

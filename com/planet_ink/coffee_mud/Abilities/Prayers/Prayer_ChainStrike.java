@@ -40,12 +40,12 @@ public class Prayer_ChainStrike extends Prayer
 	public int maxRange(){return adjustedMaxInvokerRange(2);}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null) h=new HashSet();
 
-		HashSet myGroup=mob.getGroupMembers(new HashSet());
+		HashSet myGroup=mob.getGroupMembers(new HashSet<MOB>());
 		Vector targets=new Vector();
 		for(Iterator e=h.iterator();e.hasNext();)
 			targets.addElement(e.next());

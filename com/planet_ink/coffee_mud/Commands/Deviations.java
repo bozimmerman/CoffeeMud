@@ -156,7 +156,7 @@ public class Deviations extends StdCommand
 
 	public StringBuffer deviations(MOB mob, String rest)
 	{
-		Vector V=CMParms.parse(rest);
+		Vector<String> V=CMParms.parse(rest);
 		if((V.size()==0)
 		||((!((String)V.firstElement()).equalsIgnoreCase("mobs"))
 		   &&(!((String)V.firstElement()).equalsIgnoreCase("items"))
@@ -191,7 +191,7 @@ public class Deviations extends StdCommand
 		else
 		if(where.equalsIgnoreCase("world"))
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				fillCheckDeviations(R,type,check);
@@ -298,7 +298,7 @@ public class Deviations extends StdCommand
 		return str;
 	}
 
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		mob.tell(deviations(mob,CMParms.combine(commands,1)).toString());

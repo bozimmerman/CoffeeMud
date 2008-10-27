@@ -42,7 +42,7 @@ public class GreatFish extends GiantFish
 	public int weightVariance(){return 15;}
 	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_EYES;}
 	public String racialCategory(){return "Amphibian";}
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	private String[]racialAbilityNames={"Skill_Swim"};
 	private int[]racialAbilityLevels={1};
 	private int[]racialAbilityProficiencies={100};
@@ -83,7 +83,7 @@ public class GreatFish extends GiantFish
 		}
 		return naturalWeapon;
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

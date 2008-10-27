@@ -152,7 +152,7 @@ public class Prayer_Bless extends Prayer implements MendingSkill
 		return CMLib.flags().domainAffects(item,Ability.DOMAIN_CURSING).size()>0;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

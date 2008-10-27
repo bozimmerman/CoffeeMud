@@ -43,12 +43,12 @@ public class Thief_MakeBomb extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Trap theTrap=null;
 		Vector traps=new Vector();
 		int qualifyingClassLevel=CMLib.ableMapper().qualifyingClassLevel(mob,this)+(getXLEVELLevel(mob));
-		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			if((A instanceof Trap)

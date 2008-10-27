@@ -73,11 +73,11 @@ public class Spell_ConjureNexus extends Spell
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 	    try
 	    {
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(CMLib.flags().canAccess(mob,R))

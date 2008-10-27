@@ -50,7 +50,7 @@ public class WaterCurrents extends ActiveTicker
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		Vector V=CMParms.parse(newParms);
+		Vector<String> V=CMParms.parse(newParms);
 		dirs="";
 		for(int v=0;v<V.size();v++)
 		{
@@ -360,7 +360,7 @@ public class WaterCurrents extends ActiveTicker
 			}
 		}
 
-		public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+		public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 		public void setMiscText(String newMiscText){ miscText=newMiscText;}
 		public String text(){ return miscText;}

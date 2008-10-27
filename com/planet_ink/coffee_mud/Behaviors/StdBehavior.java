@@ -122,7 +122,7 @@ public class StdBehavior implements Behavior
 	public String getParms(){return parms;}
 	public void setParms(String parameters){parms=parameters;}
 	public String parmsFormat(){return CMParms.FORMAT_UNDEFINED;}
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	public Vector externalFiles(){return null;}
 
 	public void executeMsg(Environmental affecting, CMMsg msg)

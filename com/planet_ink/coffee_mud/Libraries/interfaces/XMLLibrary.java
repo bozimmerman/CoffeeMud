@@ -96,28 +96,28 @@ public interface XMLLibrary extends CMLibrary
      * @param tag
      * @return
      */
-    public String getValFromPieces(Vector V, String tag);
+    public String getValFromPieces(Vector<XMLpiece> V, String tag);
     /**
      * 
      * @param V
      * @param tag
      * @return
      */
-    public Vector getContentsFromPieces(Vector V, String tag);
+    public Vector<XMLpiece> getContentsFromPieces(Vector<XMLpiece> V, String tag);
     /**
      * 
      * @param V
      * @param tag
      * @return
      */
-    public Vector getRealContentsFromPieces(Vector V, String tag);
+    public Vector<XMLpiece> getRealContentsFromPieces(Vector<XMLpiece> V, String tag);
     /**
      * 
      * @param V
      * @param tag
      * @return
      */
-    public XMLpiece getPieceFromPieces(Vector V, String tag);
+    public XMLpiece getPieceFromPieces(Vector<XMLpiece> V, String tag);
     /**
      * Return the data value within a given XML block
      * <TAG>Data</TAG>
@@ -127,7 +127,7 @@ public interface XMLLibrary extends CMLibrary
      * @param tag Tag to search for
      * @return boolean Information from XML block
      */
-    public boolean getBoolFromPieces(Vector V, String tag);
+    public boolean getBoolFromPieces(Vector<XMLpiece> V, String tag);
     
     /**
      * Return the data value within a given XML block
@@ -138,7 +138,7 @@ public interface XMLLibrary extends CMLibrary
      * @param tag Tag to search for
      * @return short Information from XML block
      */
-    public short getShortFromPieces(Vector V, String tag);
+    public short getShortFromPieces(Vector<XMLpiece> V, String tag);
     
     /**
      * Return the data value within a given XML block
@@ -149,7 +149,7 @@ public interface XMLLibrary extends CMLibrary
      * @param tag Tag to search for
      * @return int Information from XML block
      */
-    public int getIntFromPieces(Vector V, String tag);
+    public int getIntFromPieces(Vector<XMLpiece> V, String tag);
     
     /**
      * Return the data value within a given XML block
@@ -160,7 +160,7 @@ public interface XMLLibrary extends CMLibrary
      * @param tag Tag to search for
      * @return long Information from XML block
      */
-    public long getLongFromPieces(Vector V, String tag);
+    public long getLongFromPieces(Vector<XMLpiece> V, String tag);
     
     /**
      * Return the data value within a given XML block
@@ -171,35 +171,36 @@ public interface XMLLibrary extends CMLibrary
      * @param tag Tag to search for
      * @return double Information from XML block
      */
-    public double getDoubleFromPieces(Vector V, String tag);
+    public double getDoubleFromPieces(Vector<XMLpiece> V, String tag);
     
     /**
      * 
      * @param buf
      * @return
      */
-    public Vector parseAllXML(String buf);
+    public Vector<XMLpiece> parseAllXML(String buf);
     
     /**
      * 
      * @param buf
      * @return
      */
-    public Vector parseAllXML(StringBuffer buf);
+    public Vector<XMLpiece> parseAllXML(StringBuffer buf);
     
     /**
      * 
      * @param numberedList
      * @return
      */
-    public Vector parseXMLList(String numberedList);
+    public Vector<String> parseXMLList(String numberedList);
     
     /**
      * 
      * @param V
      * @return
      */
-    public String getXMLList(Vector V);
+    @SuppressWarnings("unchecked")
+	public String getXMLList(Vector V);
     
     /**
      * Return the data value within the first XML block
@@ -242,7 +243,7 @@ public interface XMLLibrary extends CMLibrary
      * @param Tag Tag to search for
      * @return String Parameter value
      */
-    public String getParmValue(Hashtable parmSet, String Tag);
+    public String getParmValue(Hashtable<String,String> parmSet, String Tag);
     
     /**
      * parse a tag value for safety
@@ -270,8 +271,8 @@ public interface XMLLibrary extends CMLibrary
     {
         public String tag="";
         public String value="";
-        public Vector contents=new Vector();
-        public Hashtable parms=new Hashtable();
+        public Vector<XMLpiece> contents=new Vector<XMLpiece>();
+        public Hashtable<String,String> parms=new Hashtable<String,String>();
         public XMLpiece parent=null;
         public int outerStart=-1;
         public int innerStart=-1;
@@ -281,7 +282,7 @@ public interface XMLLibrary extends CMLibrary
         public void addContent(XMLpiece x)
         {
             if (x == null) return;
-            if (contents == null) contents = new Vector();
+            if (contents == null) contents = new Vector<XMLpiece>();
             x.parent=this;
             contents.addElement(x);
         }

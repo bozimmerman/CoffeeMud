@@ -46,7 +46,7 @@ public class RaceData extends StdWebMacro
         str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">None");
         Race R2=null;
         String R2ID=null;
-        for(Enumeration e=CMClass.races();e.hasMoreElements();)
+        for(Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
         {
             R2=(Race)e.nextElement();
             R2ID="com.planet_ink.coffee_mud.Races."+R2.ID();
@@ -411,7 +411,7 @@ public class RaceData extends StdWebMacro
         str.append("<TR><TD WIDTH=35%>");
         str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=RABLES"+(theclasses.size()+1)+">");
         str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
-        for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
         {
             String cnam=((Ability)a.nextElement()).ID();
             str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
@@ -478,7 +478,7 @@ public class RaceData extends StdWebMacro
         str.append("<TR><TD WIDTH=35%>");
         str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=CABLES"+(theclasses.size()+1)+">");
         str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
-        for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+        for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
         {
             String cnam=((Ability)a.nextElement()).ID();
             str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
@@ -531,7 +531,7 @@ public class RaceData extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 
 		String replaceCommand=httpReq.getRequestParameter("REPLACE");
 		if((replaceCommand != null)

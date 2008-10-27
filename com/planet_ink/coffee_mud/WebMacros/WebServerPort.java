@@ -35,7 +35,7 @@ public class WebServerPort extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-	    Hashtable parms=parseParms(parm);
+	    Hashtable<String,String> parms=parseParms(parm);
 	    if(parms.containsKey("CURRENT"))
             return Integer.toString(httpReq.getWebServerPort());
 		return httpReq.getWebServerPortStr();

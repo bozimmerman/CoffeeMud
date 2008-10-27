@@ -156,7 +156,7 @@ public class Healer extends Cleric
 			    twentyDown=((Integer)downs.elementAt(x,4)).intValue();
 				if(((--fiveDown)<=0)||((--tenDown)<=0)||((--twentyDown)<=0))
 				{
-					HashSet followers=myChar.getGroupMembers(new HashSet());
+					HashSet followers=myChar.getGroupMembers(new HashSet<MOB>());
 					if(myChar.location()!=null)
 						for(int i=0;i<myChar.location().numInhabitants();i++)
 						{
@@ -291,11 +291,11 @@ public class Healer extends Cleric
 		}
 	}
 
-	public Vector outfit(MOB myChar)
+	public Vector<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			Weapon w=CMClass.getWeapon("SmallMace");
 			outfitChoices.addElement(w);
 		}

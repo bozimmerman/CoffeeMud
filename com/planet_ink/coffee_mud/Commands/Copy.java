@@ -37,7 +37,7 @@ public class Copy extends StdCommand
 	private String[] access={"COPY"};
 	public String[] getAccessWords(){return access;}
 	
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"^S<S-NAME> wave(s) <S-HIS-HER> arms...^?");
@@ -123,7 +123,7 @@ public class Copy extends StdCommand
 		{
 		    try
 		    {
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					E=R.fetchInhabitant(name);
@@ -136,7 +136,7 @@ public class Copy extends StdCommand
 		{
 		    try
 		    {
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					for(int m=0;m<R.numInhabitants();m++)

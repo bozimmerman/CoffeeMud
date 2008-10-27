@@ -29,10 +29,11 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class DVector implements Cloneable, java.io.Serializable
 {
 	public static final long serialVersionUID=0;
-    public static final Enumeration emptyEnumeration=new Vector().elements();
+	public static final Enumeration emptyEnumeration=new Vector().elements();
     public static final Iterator emptyIterator=new Vector().iterator();
 	protected int dimensions=1;
 	private Vector stuff=new Vector(1);
@@ -336,7 +337,7 @@ public class DVector implements Cloneable, java.io.Serializable
 		}
 	}
 	
-    public static Vector softCopy(Vector V)
+	public static Vector softCopy(Vector V)
     {
         if(V==null) return null;
         Vector V2=new Vector(V.size());
@@ -353,7 +354,7 @@ public class DVector implements Cloneable, java.io.Serializable
         return DV2;
     }
     
-    public static Hashtable softCopy(Hashtable H)
+	public static Hashtable softCopy(Hashtable H)
     {
         if(H==null) return null;
         Hashtable H2=new Hashtable(H.size());
@@ -366,7 +367,7 @@ public class DVector implements Cloneable, java.io.Serializable
         return H2;
     }
     
-    public static Enumeration s_enum(Vector V) {
+	public static Enumeration s_enum(Vector V) {
         //return ((Vector)V.clone()).elements(); /*
         return new Enumeration() {
             Iterator i=null;
@@ -380,7 +381,7 @@ public class DVector implements Cloneable, java.io.Serializable
         //*/
     }
     
-    public static Iterator s_iter(Vector V) {
+	public static Iterator s_iter(Vector V) {
         //return ((Vector)V.clone()).iterator(); /*
         return new Iterator() {
             boolean more=false;
@@ -437,7 +438,7 @@ public class DVector implements Cloneable, java.io.Serializable
         //*/
     }
     
-    public static Enumeration s_enum(Hashtable H, boolean keys) {
+	public static Enumeration s_enum(Hashtable H, boolean keys) {
         //return keys?((Hashtable)H.clone()).keys():((Hashtable)H.clone()).elements(); /*
         Vector V=new Vector(H.size());
         synchronized(H)
@@ -450,7 +451,7 @@ public class DVector implements Cloneable, java.io.Serializable
         //*/
     }
     
-    public static HashSet softCopy(HashSet H)
+	public static HashSet softCopy(HashSet H)
     {
         if(H==null) return null;
         HashSet H2=new HashSet(H.size());

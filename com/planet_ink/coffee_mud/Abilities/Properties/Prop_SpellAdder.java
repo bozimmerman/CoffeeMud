@@ -253,7 +253,7 @@ public class Prop_SpellAdder extends Property
         return true;
 	}
 
-    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         String s=CMParms.combine(commands,0);
         if(s.length()>0) setMiscText(s);

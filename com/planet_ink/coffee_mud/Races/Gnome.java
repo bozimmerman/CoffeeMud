@@ -54,7 +54,7 @@ public class Gnome extends StdRace
 	private int[] agingChart={0,1,5,40,100,150,200,230,260};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -72,11 +72,11 @@ public class Gnome extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_MIND,affectableStats.getStat(CharStats.STAT_SAVE_MIND)+10);
         affectableStats.setStat(CharStats.STAT_SAVE_OVERLOOKING,affectableStats.getStat(CharStats.STAT_SAVE_OVERLOOKING)+10);
 	}
-	public Vector outfit(MOB myChar)
+	public Vector<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			// Have to, since it requires use of special constructor
 			Armor s1=CMClass.getArmor("GenShirt");
 			s1.setName("a small patchy tunic");
@@ -142,7 +142,7 @@ public class Gnome extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

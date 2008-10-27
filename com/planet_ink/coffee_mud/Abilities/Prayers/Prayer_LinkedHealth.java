@@ -84,7 +84,7 @@ public class Prayer_LinkedHealth extends Prayer
 		}
 		return true;
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -99,7 +99,7 @@ public class Prayer_LinkedHealth extends Prayer
 			return false;
 		}
 
-		if(!mob.getGroupMembers(new HashSet()).contains(target))
+		if(!mob.getGroupMembers(new HashSet<MOB>()).contains(target))
 		{
 			mob.tell(target.name()+" is not in your group.");
 			return false;

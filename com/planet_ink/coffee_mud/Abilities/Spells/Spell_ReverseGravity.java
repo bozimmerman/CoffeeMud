@@ -134,7 +134,7 @@ public class Spell_ReverseGravity extends Spell
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

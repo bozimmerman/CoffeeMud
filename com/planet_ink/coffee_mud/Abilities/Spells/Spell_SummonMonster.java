@@ -65,7 +65,7 @@ public class Spell_SummonMonster extends Spell
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -95,7 +95,7 @@ public class Spell_SummonMonster extends Spell
 	    Room R=caster.location();
 	    if(R==null) return null;
         MOB newMOB=null;
-        Vector choices=new Vector();
+        Vector<MOB> choices=new Vector<MOB>();
         MOB M=null;
         int range=0;
         int diff=2;
@@ -119,7 +119,7 @@ public class Spell_SummonMonster extends Spell
         while((choices.size()==0)&&(range<100))
         {
             range+=diff;
-		    for(Enumeration e=CMClass.mobTypes();e.hasMoreElements();)
+		    for(Enumeration<MOB> e=CMClass.mobTypes();e.hasMoreElements();)
             {
                 M=(MOB)((MOB)e.nextElement()).newInstance();
                 if((M.baseEnvStats().level()<level-range)

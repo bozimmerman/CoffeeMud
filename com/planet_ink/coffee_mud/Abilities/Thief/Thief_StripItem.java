@@ -61,7 +61,7 @@ public class Thief_StripItem extends ThiefSkill
         return super.castingQuality(mob,target);
     }
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         String itemToSteal="all";
         if(!auto)

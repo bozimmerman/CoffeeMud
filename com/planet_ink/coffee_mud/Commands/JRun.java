@@ -38,7 +38,7 @@ public class JRun extends StdCommand
 
     private String[] access={"JRUN"};
     public String[] getAccessWords(){return access;}
-    public boolean execute(MOB mob, Vector commands, int metaFlags)
+    public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
         throws java.io.IOException
     {
         if(commands.size()<2)
@@ -98,6 +98,6 @@ public class JRun extends StdCommand
     public boolean canBeOrdered(){return false;}
     public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"JSCRIPTS");}
 
-    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 }

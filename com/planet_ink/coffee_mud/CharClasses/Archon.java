@@ -132,11 +132,11 @@ public class Archon extends StdCharClass
         return super.okMessage(myHost, msg);
     }
     
-	public Vector outfit(MOB myChar)
+	public Vector<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			Weapon w=CMClass.getWeapon("ArchonStaff");
 			outfitChoices.addElement(w);
 		}

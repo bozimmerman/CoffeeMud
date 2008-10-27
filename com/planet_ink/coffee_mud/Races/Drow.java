@@ -5,6 +5,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.Area;
 import com.planet_ink.coffee_mud.Common.interfaces.CharStats;
 import com.planet_ink.coffee_mud.Common.interfaces.EnvStats;
 import com.planet_ink.coffee_mud.Items.interfaces.Armor;
+import com.planet_ink.coffee_mud.Items.interfaces.Item;
 import com.planet_ink.coffee_mud.Items.interfaces.RawMaterial;
 import com.planet_ink.coffee_mud.Items.interfaces.Weapon;
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
@@ -51,7 +52,7 @@ public class Drow extends Elf
 	private int[] agingChart={0,2,20,110,175,263,350,390,430};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -88,11 +89,11 @@ public class Drow extends Elf
 			}
 		}
 	}
-	public Vector outfit(MOB myChar)
+	public Vector<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			// Have to, since it requires use of special constructor
 			Armor s1=CMClass.getArmor("GenShirt");
 			s1.setName("a delicate black shirt");
@@ -159,7 +160,7 @@ public class Drow extends Elf
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

@@ -86,11 +86,11 @@ public interface MOB extends Environmental, Rider
 	/** Primary mob communication */
 	public void tell(MOB source, Environmental target, Environmental tool, String msg);
 	public void tell(String msg);
-	public void enqueCommand(Vector commands, int metaFlags, double tickDelay);
-    public void prequeCommand(Vector commands, int metaFlags, double tickDelay);
+	public void enqueCommand(Vector<Object> commands, int metaFlags, double tickDelay);
+    public void prequeCommand(Vector<Object> commands, int metaFlags, double tickDelay);
 	public boolean dequeCommand();
     public int commandQueSize();
-	public void doCommand(Vector commands, int metaFlags);
+	public void doCommand(Vector<Object> commands, int metaFlags);
     public double actions();
     public void setActions(double remain);
 
@@ -166,7 +166,7 @@ public interface MOB extends Environmental, Rider
 	public Item fetchInventory(Item goodLocation, String itemName);
 	public Item fetchCarried(Item goodLocation, String itemName);
 	public Item fetchWornItem(String itemName);
-	public Vector fetchWornItems(long wornCode, short aboveOrAroundLayer, short layerAttributes);
+	public Vector<Item> fetchWornItems(long wornCode, short aboveOrAroundLayer, short layerAttributes);
 	public Item fetchFirstWornItem(long wornCode);
 	public Item fetchWieldedItem();
     public boolean hasOnlyGoldInInventory();
@@ -193,8 +193,8 @@ public interface MOB extends Environmental, Rider
     public MOB amUltimatelyFollowing();
 	public boolean willFollowOrdersOf(MOB mob);
 	public void setFollowing(MOB mob);
-	public HashSet getGroupMembers(HashSet list);
-	public HashSet getRideBuddies(HashSet list);
+	public HashSet<MOB> getGroupMembers(HashSet<MOB> list);
+	public HashSet<Rider> getRideBuddies(HashSet<Rider> list);
 	public int maxFollowers();
 	public int totalFollowers();
 
@@ -212,7 +212,7 @@ public interface MOB extends Environmental, Rider
 	public void addExpertise(String of);
 	public void delExpertise(String of);
 	public int numExpertises();
-	public Enumeration uniqueExpertises();
+	public Enumeration<String> uniqueExpertises();
 	public String fetchExpertise(int x);
 	public String fetchExpertise(String of);
     
@@ -226,8 +226,8 @@ public interface MOB extends Environmental, Rider
     /** Manipulation of the factions list */
     public void addFaction(String of, int start);
     public void adjustFaction(String of, int amount);
-    public Enumeration fetchFactions();
-    public Vector fetchFactionRanges();
+    public Enumeration<String> fetchFactions();
+    public Vector<String> fetchFactionRanges();
     public boolean hasFaction(String which);
     public int fetchFaction(String which);
     public String getFactionListing();

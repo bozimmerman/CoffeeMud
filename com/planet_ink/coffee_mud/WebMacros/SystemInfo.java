@@ -39,7 +39,7 @@ public class SystemInfo extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		StringBuffer str=new StringBuffer("");
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		for(Enumeration e=parms.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();

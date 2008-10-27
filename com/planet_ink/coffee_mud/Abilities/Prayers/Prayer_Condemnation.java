@@ -43,7 +43,7 @@ public class Prayer_Condemnation extends Prayer
 	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         LegalBehavior B=null;
 		if(mob.location()!=null) B=CMLib.law().getLegalBehavior(mob.location());

@@ -74,7 +74,7 @@ public class Possess extends StdCommand
 		return target;
 	}
 
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.soulMate()!=null)
@@ -105,7 +105,7 @@ public class Possess extends StdCommand
 		{
 		    try
 		    {
-				Enumeration r=CMLib.map().rooms();
+				Enumeration<Room> r=CMLib.map().rooms();
 				for(;r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();

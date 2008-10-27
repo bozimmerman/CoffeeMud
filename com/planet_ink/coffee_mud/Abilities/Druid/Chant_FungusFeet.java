@@ -65,7 +65,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
 					if(A!=null)
 					{
 						int x=100;
-						while(((--x)>0)&&A.invoke(mob,CMParms.parse("foot"),mob,true,0));
+						while(((--x)>0)&&A.invoke(mob,CMParms.parseToObjV("foot"),mob,true,0));
 						mob.recoverCharStats();
 						mob.recoverEnvStats();
 						mob.recoverMaxState();
@@ -116,7 +116,7 @@ public class Chant_FungusFeet extends Chant implements DiseaseAffect
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

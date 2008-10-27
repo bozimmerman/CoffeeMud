@@ -48,7 +48,7 @@ public class Chant_SummonSeed extends Chant
                                             new Integer( RawMaterial.RESOURCE_CRACKER),
     };
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String s=CMParms.combine(commands,0);
 		StringBuffer buf=new StringBuffer("Seed types known:\n\r");

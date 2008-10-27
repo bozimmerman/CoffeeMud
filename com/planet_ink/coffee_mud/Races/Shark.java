@@ -40,7 +40,7 @@ public class Shark extends GiantFish
     public int heightVariance(){return 20;}
     public int lightestWeight(){return 355;}
     public int weightVariance(){return 105;}
-    protected static Vector resources=new Vector();
+    protected static Vector<Item> resources=new Vector<Item>();
 
     public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
     {
@@ -49,7 +49,7 @@ public class Shark extends GiantFish
         affectableStats.setRacialStat(CharStats.STAT_STRENGTH,16);
         affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,15);
     }
-    public Vector myResources()
+    public Vector<Item> myResources()
     {
         synchronized(resources)
         {

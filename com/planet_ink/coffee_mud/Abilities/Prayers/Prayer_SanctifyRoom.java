@@ -106,7 +106,7 @@ public class Prayer_SanctifyRoom extends Prayer
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=mob.location();
 		if(target==null) return false;

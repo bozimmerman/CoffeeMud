@@ -54,7 +54,7 @@ public class LizardMan extends StdRace
 	private int[] agingChart={0,1,3,14,30,45,60,62,64};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -115,7 +115,7 @@ public class LizardMan extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

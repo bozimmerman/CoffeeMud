@@ -58,7 +58,7 @@ public class Beholder extends StdRace
 	private int[] agingChart={0,5,20,110,325,500,850,950,1050};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -73,7 +73,7 @@ public class Beholder extends StdRace
 		affectableStats.setStat(CharStats.STAT_SAVE_MIND,100);
 	}
 
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

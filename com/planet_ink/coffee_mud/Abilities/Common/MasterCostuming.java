@@ -42,7 +42,7 @@ public class MasterCostuming extends Costuming
 	public String[] triggerStrings(){return triggerStrings;}
     public String parametersFile(){ return "mastercostume.txt";}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         int autoGenerate=0;
         if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))

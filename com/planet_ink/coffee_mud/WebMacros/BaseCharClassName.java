@@ -44,7 +44,7 @@ public class BaseCharClassName extends StdWebMacro
 			CharClass C=CMClass.getCharClass(last);
 			if(C!=null)
                 return clearWebMacros(C.name());
-			for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+			for(Enumeration<CharClass> e=CMClass.charClasses();e.hasMoreElements();)
 			{
 				C=(CharClass)e.nextElement();
 				if(C.baseClass().equalsIgnoreCase(last))

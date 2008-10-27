@@ -186,7 +186,7 @@ public interface QuestManager extends CMLibrary
             	return ((String) str).toUpperCase().trim();
             if((((String)str).indexOf(' ')>0)&&(((String)str).indexOf('\"')<0))
                 throw new CMException("Multiple-word room names/ids must be grouped with double-quotes.  If this represents several names, put each name in double-quotes as so: \"name1\" \"name2\" \"multi word name\".");
-            Vector V=CMParms.parse((String)str);
+            Vector<String> V=CMParms.parse((String)str);
             if(V.size()==0){ if(emptyOK) return ""; throw new CMException("You must enter an room id(s), name(s), keyword ANY, or ANY MASK=...");}
             String s=null;
             for(int v=0;v<V.size();v++)
@@ -218,7 +218,7 @@ public interface QuestManager extends CMLibrary
             if(((String)str).trim().toUpperCase().startsWith("ANY MASK=")) return str;
             if((((String)str).indexOf(' ')>0)&&(((String)str).indexOf('\"')<0))
                 throw new CMException("Multiple-word area names/ids must be grouped with double-quotes.  If this represents several names, put each name in double-quotes as so: \"name1\" \"name2\" \"multi word name\".");
-            Vector V=CMParms.parse((String)str);
+            Vector<String> V=CMParms.parse((String)str);
             if(V.size()==0){ if(emptyOK) return ""; throw new CMException("You must enter an area name(s), keyword ANY, or ANY MASK=...");}
             StringBuffer returnStr=new StringBuffer("");
             for(int v=0;v<V.size();v++)
@@ -284,7 +284,7 @@ public interface QuestManager extends CMLibrary
         new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //ability
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
             StringBuffer list=new StringBuffer("");
-            for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+            for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
             	list.append(((Ability)e.nextElement()).ID()+", ");
             if(((String)str).trim().length()==0){
                 if(emptyOK) return "";

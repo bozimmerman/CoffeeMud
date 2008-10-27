@@ -125,7 +125,7 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String whatToalarm=CMParms.combine(commands,0);
 		Exit alarmThis=null;

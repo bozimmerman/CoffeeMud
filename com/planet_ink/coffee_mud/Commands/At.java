@@ -140,7 +140,7 @@ public class At extends StdCommand
 				if(room==null)
 				{
 					String areaName=srchStr.toUpperCase();
-					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+					for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
 						if(CMLib.english().containsString(CMStrings.removeColors(R.displayText()),areaName))
@@ -156,7 +156,7 @@ public class At extends StdCommand
                     String areaName=srchStr.toUpperCase();
 				    try
 				    {
-						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+						for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 						{
 							Room R=(Room)r.nextElement();
 							if(CMLib.english().containsString(CMStrings.removeColors(R.description()),areaName))
@@ -194,7 +194,7 @@ public class At extends StdCommand
 		return room;
 	}
 
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		commands.removeElementAt(0);

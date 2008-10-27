@@ -186,7 +186,7 @@ public class Hunting extends CommonSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		verb="hunting";
 		found=null;

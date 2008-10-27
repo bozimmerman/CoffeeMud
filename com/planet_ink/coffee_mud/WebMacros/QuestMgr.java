@@ -38,7 +38,7 @@ public class QuestMgr extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		Quest Q=null;
         MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
         String name=(M==null)?"Someone":M.Name();

@@ -43,7 +43,7 @@ public class SocialData extends StdWebMacro
 
     public String runMacro(ExternalHTTPRequests httpReq, String parm)
     {
-        Hashtable parms=parseParms(parm);
+        Hashtable<String,String> parms=parseParms(parm);
         String last=httpReq.getRequestParameter("SOCIAL");
         if(parms.containsKey("ISVFS"))
             return ""+(new CMFile("::/resources/socials.txt",null,true).exists());

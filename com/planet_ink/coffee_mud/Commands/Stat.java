@@ -104,7 +104,7 @@ public class Stat  extends Skills
         {
             CharClass CharC=CMClass.getCharClass(rest);
             Vector allSkills=new Vector();
-            for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+            for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
                 allSkills.addElement(e.nextElement());
             long[][] totals=new long[allSkills.size()][CoffeeTableRow.STAT_TOTAL];
             while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
@@ -221,7 +221,7 @@ public class Stat  extends Skills
 		return false;
 	}
 
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		commands.removeElementAt(0);
@@ -317,7 +317,7 @@ public class Stat  extends Skills
 		{
 		    try
 		    {
-				Enumeration r=CMLib.map().rooms();
+				Enumeration<Room> r=CMLib.map().rooms();
 				for(;r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();

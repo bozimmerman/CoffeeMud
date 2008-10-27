@@ -37,7 +37,7 @@ public class AbilityNext extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("ABILITY");
 		if(parms.containsKey("RESET"))
 		{	
@@ -69,7 +69,7 @@ public class AbilityNext extends StdWebMacro
         boolean allFlag =parms.containsKey("ALL");
         boolean domainFlag=parms.containsKey("DOMAIN");
         String domain=(String)parms.get("DOMAIN");
-		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			boolean okToShow=true;

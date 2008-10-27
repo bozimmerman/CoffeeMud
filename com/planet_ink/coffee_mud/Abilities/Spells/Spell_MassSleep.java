@@ -53,7 +53,7 @@ public class Spell_MassSleep extends Spell
         return super.castingQuality(mob,target);
     }
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null)

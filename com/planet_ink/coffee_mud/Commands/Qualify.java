@@ -63,7 +63,7 @@ public class Qualify  extends Skills
 	{
 		int highestLevel=0;
 		StringBuffer msg=new StringBuffer("");
-		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			int level=CMLib.ableMapper().qualifyingLevel(able,A);
@@ -79,7 +79,7 @@ public class Qualify  extends Skills
 		for(int l=0;l<=highestLevel;l++)
 		{
 			StringBuffer thisLine=new StringBuffer("");
-			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
 				if((CMLib.ableMapper().qualifiesByLevel(able,A))
@@ -112,7 +112,7 @@ public class Qualify  extends Skills
 		return msg;
 	}
 
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");

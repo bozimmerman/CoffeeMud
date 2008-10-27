@@ -69,7 +69,7 @@ public class Chant_SenseMetal extends Chant
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_METAL);
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

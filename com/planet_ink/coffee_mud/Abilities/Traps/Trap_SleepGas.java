@@ -111,7 +111,7 @@ public class Trap_SleepGas extends StdTrap
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if((CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
-			||(invoker().getGroupMembers(new HashSet()).contains(target)))
+			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a needle trap!");
 			else
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> set(s) off a needle trap!"))

@@ -190,7 +190,7 @@ public class GenRace extends StdRace
 			affectableMaxState.setThirst(affectableMaxState.getThirst()+adjState.getThirst());
 		}
 	}
-	public Vector myResources(){
+	public Vector<Item> myResources(){
 		if(resourceChoices==null)
 			return new Vector();
 		return resourceChoices;
@@ -457,7 +457,7 @@ public class GenRace extends StdRace
 		outfitChoices=null;
 		if((oV!=null)&&(oV.size()>0))
 		{
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			for(int x=0;x<oV.size();x++)
 			{
 				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)oV.elementAt(x);
@@ -781,7 +781,7 @@ public class GenRace extends StdRace
 					 break;
 				 }
 		case 31: if(CMath.s_int(val)==0) outfitChoices=null; else outfitChoices=new Vector(CMath.s_int(val)); break;
-		case 32: {   if(outfitChoices==null) outfitChoices=new Vector();
+		case 32: {   if(outfitChoices==null) outfitChoices=new Vector<Item>();
 					 if(num>=outfitChoices.size())
 						outfitChoices.addElement(CMClass.getItem(val));
 					 else

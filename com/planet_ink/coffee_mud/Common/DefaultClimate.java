@@ -593,5 +593,5 @@ public class DefaultClimate implements Climate
 		}
 		return base;
 	}
-    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

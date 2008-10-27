@@ -37,7 +37,7 @@ public class Help extends StdCommand
 	private String[] access={"HELP"};
 	public String[] getAccessWords(){return access;}
 
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String helpStr=CMParms.combine(commands,1);

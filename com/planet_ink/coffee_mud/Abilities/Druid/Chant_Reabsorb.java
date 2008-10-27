@@ -68,7 +68,7 @@ public class Chant_Reabsorb extends Chant
     }
     
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=this.getTarget(mob,mob.location(),givenTarget,null,commands,Item.WORNREQ_UNWORNONLY);
 		if(target==null) return false;

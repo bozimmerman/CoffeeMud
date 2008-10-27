@@ -70,7 +70,7 @@ public class Dance_Square extends Dance
                 {
                     Object O=CMLib.english().findCommand(M,CMParms.parse(cmd));
                     if((O!=null)&&((!(O instanceof Command))||(((Command)O).canBeOrdered())))
-						M.enqueCommand(CMParms.parse(cmd),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,0);
+						M.enqueCommand(CMParms.parseToObjV(cmd),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,0);
                 }
 			}
 		}
@@ -78,7 +78,7 @@ public class Dance_Square extends Dance
 
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		steadyDown=-1;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -98,7 +98,7 @@ public class Dance_Square extends Dance
 			if((!auto)&&(mob.fetchEffect(this.ID())!=null))
 				str="^S<S-NAME> start(s) the "+danceOf()+" over again.^?";
 
-			HashSet friends=mob.getGroupMembers(new HashSet());
+			HashSet friends=mob.getGroupMembers(new HashSet<MOB>());
 			for(int v=0;v<commonRoomSet.size();v++)
 			{
 				Room R=(Room)commonRoomSet.elementAt(v);

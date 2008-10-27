@@ -43,7 +43,7 @@ public class Thief_Surrender extends ThiefSkill
     public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_INFLUENTIAL;}
 	public String[] triggerStrings(){return triggerStrings;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Vector theList=new Vector();
 		int gold=0;

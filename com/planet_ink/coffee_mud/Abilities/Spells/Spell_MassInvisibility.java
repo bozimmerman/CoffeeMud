@@ -46,14 +46,14 @@ public class Spell_MassInvisibility extends Spell
         {
             if(target instanceof MOB)
             {
-                if((((MOB)target).isInCombat())&&(((MOB)target).getGroupMembers(new HashSet()).size()==0))
+                if((((MOB)target).isInCombat())&&(((MOB)target).getGroupMembers(new HashSet<MOB>()).size()==0))
                     return Ability.QUALITY_INDIFFERENT;
             }
         }
         return super.castingQuality(mob,target);
     }
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,false);
 		if(h==null)

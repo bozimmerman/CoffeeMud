@@ -38,7 +38,7 @@ public class FileNext extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		String path=httpReq.getRequestParameter("PATH");
 		if(path==null) path="";
 		String last=httpReq.getRequestParameter("FILE");

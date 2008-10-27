@@ -36,7 +36,7 @@ public class Questwins extends StdCommand
 
 	private String[] access={"QUESTS","QUESTWINS"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 	    if((commands.size()==1)&&(((String)commands.firstElement()).startsWith("QUESTW")))

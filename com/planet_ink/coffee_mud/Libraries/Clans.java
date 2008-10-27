@@ -262,7 +262,7 @@ public class Clans extends StdLibrary implements ClanManager
 	    if(prizeStr.length()==0) return "None";
         if(prizeStr.length()>0)
         {
-            Vector V=CMParms.parse(prizeStr);
+            Vector<String> V=CMParms.parse(prizeStr);
             if(V.size()>=2)
             {
                 String type=((String)V.lastElement()).toUpperCase();

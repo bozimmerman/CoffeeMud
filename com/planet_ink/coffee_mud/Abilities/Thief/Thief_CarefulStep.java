@@ -76,7 +76,7 @@ public class Thief_CarefulStep extends ThiefSkill
         }
         return true;
     }
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String dir=CMParms.combine(commands,0);
 		if(commands.size()>0) dir=(String)commands.lastElement();

@@ -44,7 +44,7 @@ public class GiantWolf extends Wolf
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
 	public int[] bodyMask(){return parts;}
 
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -60,7 +60,7 @@ public class GiantWolf extends Wolf
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,13);
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,13);
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

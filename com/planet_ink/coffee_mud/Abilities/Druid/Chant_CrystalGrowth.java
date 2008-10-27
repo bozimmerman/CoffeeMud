@@ -42,7 +42,7 @@ public class Chant_CrystalGrowth extends Chant
 	protected int overrideMana(){return 50;}
     public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)
 		{

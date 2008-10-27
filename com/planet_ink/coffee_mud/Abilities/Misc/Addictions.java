@@ -130,7 +130,7 @@ public class Addictions extends StdAbility
         super.executeMsg(myHost,msg);
     }
     
-    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         Environmental target=givenTarget;
         

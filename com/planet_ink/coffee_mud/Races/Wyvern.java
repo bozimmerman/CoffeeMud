@@ -62,7 +62,7 @@ public class Wyvern extends StdRace
 	private int[] agingChart={0,5,20,110,325,500,850,950,1050};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -111,7 +111,7 @@ public class Wyvern extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

@@ -40,7 +40,7 @@ public class AbilityData extends StdWebMacro
 	// qualifyQ, auto
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-        Hashtable parms=parseParms(parm);
+        Hashtable<String,String> parms=parseParms(parm);
         
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
         if((replaceCommand != null) 
@@ -156,7 +156,7 @@ public class AbilityData extends StdWebMacro
                 }
                 if(parms.containsKey("ABILITY_FLAGS"))
                 {
-                    Vector list=new Vector();
+                    Vector<String> list=new Vector<String>();
                     if(httpReq.isRequestParameter("ABILITY_FLAGS"))
                     {
                         String id="";
@@ -194,7 +194,7 @@ public class AbilityData extends StdWebMacro
                 }
                 if(parms.containsKey("USAGEMASK"))
                 {
-                    Vector list=new Vector();
+                    Vector<String> list=new Vector<String>();
                     if(httpReq.isRequestParameter("USAGEMASK"))
                     {
                         String id="";
@@ -210,7 +210,7 @@ public class AbilityData extends StdWebMacro
                 }
                 if(parms.containsKey("CANAFFECTMASK"))
                 {
-                    Vector list=new Vector();
+                    Vector<String> list=new Vector<String>();
                     if(httpReq.isRequestParameter("CANAFFECTMASK"))
                     {
                         String id="";
@@ -226,7 +226,7 @@ public class AbilityData extends StdWebMacro
                 }
                 if(parms.containsKey("CANTARGETMASK"))
                 {
-                    Vector list=new Vector();
+                    Vector<String> list=new Vector<String>();
                     if(httpReq.isRequestParameter("CANTARGETMASK"))
                     {
                         String id="";
@@ -306,7 +306,7 @@ public class AbilityData extends StdWebMacro
                 }
                 if(parms.containsKey("POSTCASTAFFECT"))
                 {
-                    Vector list=new Vector();
+                    Vector<String> list=new Vector<String>();
                     if(httpReq.isRequestParameter("POSTCASTAFFECT"))
                     {
                         String id="";
@@ -316,7 +316,7 @@ public class AbilityData extends StdWebMacro
                     } 
                     else 
                         list=CMParms.parseSemicolons(A.getStat("POSTCASTAFFECT").toUpperCase(),true);
-                    for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                    for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
                     {
                         Ability A2=(Ability)e.nextElement();
                         String AID=A2.ID();
@@ -327,7 +327,7 @@ public class AbilityData extends StdWebMacro
                 }
                 if(parms.containsKey("POSTCASTABILITY"))
                 {
-                    Vector list=new Vector();
+                    Vector<String> list=new Vector<String>();
                     if(httpReq.isRequestParameter("POSTCASTABILITY"))
                     {
                         String id="";
@@ -337,7 +337,7 @@ public class AbilityData extends StdWebMacro
                     } 
                     else 
                         list=CMParms.parseSemicolons(A.getStat("POSTCASTABILITY").toUpperCase(),true);
-                    for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                    for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
                     {
                         Ability A2=(Ability)e.nextElement();
                         String AID=A2.ID();

@@ -377,7 +377,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		return hc*hc*multiplyer;
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		verb=cookWord();
 		cooking=null;

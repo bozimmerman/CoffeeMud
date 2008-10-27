@@ -614,7 +614,7 @@ public class StdAbility implements Ability
 		return (Item)target;
 	}
 
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	protected void cloneFix(Ability E){expertise=null;}
 	public CMObject copyOf()
 	{
@@ -877,19 +877,19 @@ public class StdAbility implements Ability
 			A.setProficiency(100);
 	}
 
-    public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+    public boolean preInvoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
     {
         return true;
     }
 	public boolean invoke(MOB mob, Environmental target, boolean auto, int asLevel)
 	{
-		Vector V=new Vector();
+		Vector<Object> V=new Vector<Object>();
 		if(target!=null)
 			V.addElement(target.name());
 		return invoke(mob,V,target,auto,asLevel);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental target, boolean auto, int asLevel)
 	{
 		expertise=null;
         if((mob!=null)&&(getXMAXRANGELevel(mob)>0))

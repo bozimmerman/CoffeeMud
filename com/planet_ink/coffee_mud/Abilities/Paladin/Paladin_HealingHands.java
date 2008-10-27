@@ -45,7 +45,7 @@ public class Paladin_HealingHands extends StdAbility
 	public long flags(){return Ability.FLAG_HEALINGMAGIC;}
     protected long minCastWaitTime(){return Tickable.TIME_TICK;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;

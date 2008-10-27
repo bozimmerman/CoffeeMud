@@ -36,7 +36,7 @@ public class Report extends Skills
 
 	private String[] access={"REPORT"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(commands.size()<2)
@@ -54,7 +54,7 @@ public class Report extends Skills
 			   buf.append(", and need "+mob.getExpNeededLevel()+" to level");
 			buf.append(".\"");
 			Command C=CMClass.getCommand("Say");
-			if(C!=null) C.execute(mob,CMParms.parse(buf.toString()),metaFlags);
+			if(C!=null) C.execute(mob,CMParms.parseToObjV(buf.toString()),metaFlags);
 		}
 		else
 		{
@@ -129,8 +129,8 @@ public class Report extends Skills
 		}
 		return false;
 	}
-    public double combatActionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
-    public double actionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
+    public double combatActionsCost(MOB mob, Vector<Object> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
+    public double actionsCost(MOB mob, Vector<Object> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
 	public boolean canBeOrdered(){return true;}
 
 	

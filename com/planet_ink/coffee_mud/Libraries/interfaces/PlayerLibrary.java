@@ -35,7 +35,7 @@ public interface PlayerLibrary extends CMLibrary, Runnable
     public void delPlayer(MOB oneToDel);
     public MOB getPlayer(String calledThis);
     public MOB getLoadPlayer(String last);
-    public Enumeration players();
+    public Enumeration<MOB> players();
     public void obliteratePlayer(MOB deadMOB, boolean quiet);
     public void forceTick();
     public int savePlayers();

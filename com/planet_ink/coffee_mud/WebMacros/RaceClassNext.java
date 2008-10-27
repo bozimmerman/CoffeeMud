@@ -37,7 +37,7 @@ public class RaceClassNext extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		String race=httpReq.getRequestParameter("RACE");
 		if(race.length()==0) return " @break@";
 		Race R=CMClass.getRace(race);

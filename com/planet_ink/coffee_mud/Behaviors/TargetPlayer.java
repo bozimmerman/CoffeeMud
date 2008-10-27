@@ -54,7 +54,7 @@ public class TargetPlayer extends ActiveTicker
 			MOB mob = (MOB) ticking;
 			if (mob.getVictim() != null) 
 			{
-				HashSet theBadGuys = mob.getVictim().getGroupMembers(new HashSet());
+				HashSet theBadGuys = mob.getVictim().getGroupMembers(new HashSet<MOB>());
 				MOB shouldFight = null;
 				for (Iterator e = theBadGuys.iterator(); e.hasNext(); ) 
 				{

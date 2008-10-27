@@ -403,5 +403,5 @@ public class DefaultCharState implements CharState
 			return new DefaultCharState();
 		}
 	}
-    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

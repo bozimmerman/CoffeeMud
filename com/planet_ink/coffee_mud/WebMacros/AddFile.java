@@ -37,7 +37,7 @@ public class AddFile extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		if((parms==null)||(parms.size()==0)) return "";
 		StringBuffer buf=new StringBuffer("");
         boolean webify=false;

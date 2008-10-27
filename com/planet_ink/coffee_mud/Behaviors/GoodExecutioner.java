@@ -44,7 +44,7 @@ public class GoodExecutioner  extends StdBehavior
     {
         super.setParms(newParms);
         newParms=newParms.toUpperCase();
-        Vector V=CMParms.parse(newParms);
+        Vector<String> V=CMParms.parse(newParms);
         doPlayers=V.contains("PLAYERS")||V.contains("PLAYER");
     }
 

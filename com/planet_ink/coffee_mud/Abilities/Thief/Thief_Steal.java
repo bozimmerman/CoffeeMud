@@ -86,7 +86,7 @@ public class Thief_Steal extends ThiefSkill
     }
 
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         String itemToSteal="all";  
         if(!auto)

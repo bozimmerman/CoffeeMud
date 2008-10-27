@@ -86,9 +86,9 @@ public class Resources
         return "\n\r";
     }
     
-    public static Vector getFileLineVector(StringBuffer buf)
+    public static Vector<String> getFileLineVector(StringBuffer buf)
     {
-        Vector V=new Vector();
+        Vector<String> V=new Vector<String>();
         if(buf==null) return V;
         StringBuffer str=new StringBuffer("");
         for(int i=0;i<buf.length()-1;i++)

@@ -40,7 +40,7 @@ public class Spell_Knock extends Spell
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         Room R=givenTarget==null?mob.location():CMLib.map().roomLocation(givenTarget);
         if(R==null) R=mob.location();

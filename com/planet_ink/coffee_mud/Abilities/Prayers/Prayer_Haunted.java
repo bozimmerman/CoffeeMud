@@ -93,7 +93,7 @@ public class Prayer_Haunted extends Prayer
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
 		if(target==null) return false;

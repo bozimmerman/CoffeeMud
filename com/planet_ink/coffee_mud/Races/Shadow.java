@@ -38,7 +38,7 @@ public class Shadow extends Spirit
 	public long forbiddenWornBits(){return 0;}
 	protected boolean destroyBodyAfterUse(){return true;}
 
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

@@ -82,7 +82,7 @@ public class Spell_MindLight extends Spell
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

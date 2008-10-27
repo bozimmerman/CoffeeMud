@@ -50,7 +50,7 @@ public class Worm extends StdRace
 	private int[] agingChart={0,2,4,6,8,10,12,14,16};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -80,7 +80,7 @@ public class Worm extends StdRace
 		}
 		return naturalWeapon;
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

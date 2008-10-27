@@ -60,7 +60,7 @@ public class Chant_Boulderbash extends Chant
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((!auto)
 		&&(mob.location().domainType()!=Room.DOMAIN_INDOORS_CAVE)

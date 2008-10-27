@@ -3762,7 +3762,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         if(text.trim().toUpperCase().startsWith("LOAD="))
         {
         	String filename=null;
-        	Vector V=CMParms.parse(text.trim().substring(5).trim());
+        	Vector<String> V=CMParms.parse(text.trim().substring(5).trim());
         	if(V.size()>0)
         	{
         		filename=(String)V.firstElement();
@@ -4256,7 +4256,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 		}
 	}
 
-    public int compareTo(Object o)
+    public int compareTo(CMObject o)
     {
     	return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));
     }

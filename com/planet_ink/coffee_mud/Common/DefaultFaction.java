@@ -41,7 +41,7 @@ public class DefaultFaction implements Faction, MsgListener
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultFaction();}}
     public void initializeClass(){}
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
-    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	protected String ID="";
 	protected String name="";
 	protected String choiceIntro="";
@@ -204,12 +204,12 @@ public class DefaultFaction implements Faction, MsgListener
             }
             if(key.startsWith("RELATION"))
             {
-                Vector v=CMParms.parse(words);
-                if(v.size()>=2)
+                Vector<String> V=CMParms.parse(words);
+                if(V.size()>=2)
                 {
-                    String who=(String)v.elementAt(0);
+                    String who=(String)V.elementAt(0);
                     double factor;
-                    String amt=((String)v.elementAt(1)).trim();
+                    String amt=((String)V.elementAt(1)).trim();
                     if(amt.endsWith("%"))
                         factor=CMath.s_pct(amt);
                     else
@@ -433,11 +433,11 @@ public class DefaultFaction implements Faction, MsgListener
             else
             if(CMLib.masking().maskCheck(s, mob,false))
             {
-                Vector v=CMParms.parse(s);
-                for(int j=0;j<v.size();j++)
+                Vector<String> V=CMParms.parse(s);
+                for(int j=0;j<V.size();j++)
                 {
-                    if(CMath.isInteger((String)v.elementAt(j)))
-                        mine.addElement(new Integer(CMath.s_int((String)v.elementAt(j))));
+                    if(CMath.isInteger((String)V.elementAt(j)))
+                        mine.addElement(new Integer(CMath.s_int((String)V.elementAt(j))));
                 }
             }
         }
@@ -521,11 +521,11 @@ public class DefaultFaction implements Faction, MsgListener
             else
             if(CMLib.masking().maskCheck(s, mob,false))
             {
-                Vector v=CMParms.parse(s);
-                for(int j=0;j<v.size();j++)
+                Vector<String> V=CMParms.parse(s);
+                for(int j=0;j<V.size();j++)
                 {
-                    if(CMath.isNumber((String)v.elementAt(j)))
-                        return CMath.s_int((String)v.elementAt(j));
+                    if(CMath.isNumber((String)V.elementAt(j)))
+                        return CMath.s_int((String)V.elementAt(j));
                 }
             }
         }
@@ -543,11 +543,11 @@ public class DefaultFaction implements Faction, MsgListener
             else
             if(CMLib.masking().maskCheck(s, mob,false))
             {
-                Vector v=CMParms.parse(s);
-                for(int j=0;j<v.size();j++)
+                Vector<String> V=CMParms.parse(s);
+                for(int j=0;j<V.size();j++)
                 {
-                    if(CMath.isNumber((String)v.elementAt(j)))
-                        return CMath.s_int((String)v.elementAt(j));
+                    if(CMath.isNumber((String)V.elementAt(j)))
+                        return CMath.s_int((String)V.elementAt(j));
                 }
             }
         }

@@ -135,7 +135,7 @@ public class Thief_Bind extends ThiefSkill
         return super.castingQuality(mob,target);
     }
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.isInCombat())&&(!auto))
 		{
@@ -204,7 +204,7 @@ public class Thief_Bind extends ThiefSkill
 				}
 				if((mob.getVictim()==target)&&(!auto))
 				{
-					HashSet H=mob.getGroupMembers(new HashSet());
+					HashSet H=mob.getGroupMembers(new HashSet<MOB>());
 					MOB M=null;
 					mob.makePeace();
 					for(Iterator i=H.iterator();i.hasNext();)

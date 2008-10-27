@@ -40,12 +40,12 @@ public class Archon_Metacraft extends ArchonSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	
 	public static Vector craftingSkills=new Vector();
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(craftingSkills.size()==0)
 		{
 		    Vector V=new Vector();
-			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
 				Ability A=(Ability)e.nextElement();
 				if(A instanceof ItemCraftor)

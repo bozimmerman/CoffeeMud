@@ -44,7 +44,7 @@ public class ResourceOverride extends StdBehavior
 		super.setParms(newStr);
 		rscs.clear();
 		roomTypes.clear();
-		Vector V=CMParms.parse(getParms());
+		Vector<String> V=CMParms.parse(getParms());
 		if(V.size()==0) return;
 		for(int v=0;v<V.size();v++)
 		{

@@ -179,7 +179,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 
 	protected String applyName(String name, String word)
 	{
-		Vector V=CMParms.parse(name);
+		Vector<String> V=CMParms.parse(name);
 		int insertHere=0;
 		if((V.size()>0)
 		&&(CMLib.english().isAnArticle((String)V.firstElement())))

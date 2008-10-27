@@ -50,7 +50,7 @@ public class WereWolf extends GiantWolf
 	private int[] agingChart={0,4,8,12,16,20,24,28,32};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+3);
@@ -79,7 +79,7 @@ public class WereWolf extends GiantWolf
 		super.executeMsg(myHost,msg);
 	}
 
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

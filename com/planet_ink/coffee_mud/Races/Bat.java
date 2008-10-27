@@ -42,7 +42,7 @@ public class Bat extends StdRace
 	public int lightestWeight(){return 2;}
 	public int weightVariance(){return 0;}
 	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_NECK-Item.WORN_HEAD-Item.WORN_EARS-Item.WORN_EYES;}
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	public String racialCategory(){return "Pteropine";}
 	private String[]racialAbilityNames={"WingFlying"};
@@ -122,7 +122,7 @@ public class Bat extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

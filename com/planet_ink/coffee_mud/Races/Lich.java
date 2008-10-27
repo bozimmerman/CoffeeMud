@@ -35,7 +35,7 @@ public class Lich extends Skeleton
 	public String ID(){	return "Lich"; }
 	public String name(){ return "Lich"; }
 
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -43,7 +43,7 @@ public class Lich extends Skeleton
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-4);
 		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+6);
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		return resources;
 	}

@@ -77,7 +77,7 @@ public class AreaXML extends StdWebMacro
 		if(mob==null) return null;
 		Area pickedA=getLoggedArea(httpReq,mob);
 		if(pickedA==null) return null;
-		Vector V=CMParms.parse("EXPORT AREA DATA MEMORY");
+		Vector<Object> V=CMParms.parseToObjV("EXPORT AREA DATA MEMORY");
 		V.addElement(pickedA);
 		Command C=CMClass.getCommand("Export");
 		if(C==null) return null;

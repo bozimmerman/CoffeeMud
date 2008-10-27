@@ -72,7 +72,7 @@ public class Spell_AlternateReality extends Spell
 		&&(msg.target()!=null)
 		&&(invoker()!=null))
 		{
-			HashSet H=invoker().getGroupMembers(new HashSet());
+			HashSet H=invoker().getGroupMembers(new HashSet<MOB>());
 			if(H.contains(msg.target()))
 			{
 				msg.source().tell("But you are on "+invoker().name()+"'s side!");
@@ -85,7 +85,7 @@ public class Spell_AlternateReality extends Spell
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=super.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -125,7 +125,7 @@ public class Spell_AlternateReality extends Spell
 						target.makePeace();
 						if(mob.getVictim()==target)
 							mob.setVictim(null);
-						HashSet H=mob.getGroupMembers(new HashSet());
+						HashSet H=mob.getGroupMembers(new HashSet<MOB>());
 						if(!H.contains(mob))H.add(mob);
 						Vector badGuys=new Vector();
 						for(int i=0;i<R.numInhabitants();i++)

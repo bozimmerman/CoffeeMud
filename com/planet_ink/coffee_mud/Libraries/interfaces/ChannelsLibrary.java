@@ -45,7 +45,7 @@ public interface ChannelsLibrary extends CMLibrary
      * @param i
      * @return
      */
-    public Vector getChannelFlags(int i);
+    public Vector<String> getChannelFlags(int i);
     /**
      * @param i
      * @return
@@ -112,7 +112,7 @@ public interface ChannelsLibrary extends CMLibrary
      * @param flag
      * @return
      */
-    public Vector getFlaggedChannelNames(String flag);
+    public Vector<String> getFlaggedChannelNames(String flag);
     /**
      * @return
      */
@@ -130,18 +130,18 @@ public interface ChannelsLibrary extends CMLibrary
      * @param channelCode
      * @return
      */
-    public Vector clearInvalidSnoopers(Session mySession, int channelCode);
+    public Vector<Session> clearInvalidSnoopers(Session mySession, int channelCode);
     /**
      * @param mySession
      * @param invalid
      */
-    public void restoreInvalidSnoopers(Session mySession, Vector invalid);
+    public void restoreInvalidSnoopers(Session mySession, Vector<Session> invalid);
     /**
      * @param mask
      * @param flags
      * @return
      */
-    public String parseOutFlags(String mask, Vector flags);
+    public String parseOutFlags(String mask, Vector<String> flags);
     /**
      * @param list
      * @param ilist

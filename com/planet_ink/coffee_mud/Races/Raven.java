@@ -56,7 +56,7 @@ public class Raven extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,2 };
 	public int[] bodyMask(){return parts;}
 
-	protected static Vector resources=new Vector();	
+	protected static Vector<Item> resources=new Vector<Item>();	
 	
 	private int[] agingChart={0,1,2,4,7,15,20,21,22};
 	public int[] getAgingChart(){return agingChart;}
@@ -130,7 +130,7 @@ public class Raven extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

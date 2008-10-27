@@ -39,13 +39,13 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	public int numChannelsLoaded=0;
 	public int numIChannelsLoaded=0;
 	public int numImc2ChannelsLoaded=0;
-	public Vector channelNames=new Vector();
-	public Vector channelMasks=new Vector();
-    public Vector channelFlags=new Vector();
-	public Vector ichannelList=new Vector();
-	public Vector imc2channelList=new Vector();
-	public Vector channelQue=new Vector();
-    public final Vector emptyVector=new Vector();
+	public Vector<String> channelNames=new Vector<String>();
+	public Vector<String> channelMasks=new Vector<String>();
+    public Vector<Vector<String>> channelFlags=new Vector<Vector<String>>();
+	public Vector<String> ichannelList=new Vector<String>();
+	public Vector<String> imc2channelList=new Vector<String>();
+	public Vector<Vector<CMMsg>> channelQue=new Vector<Vector<CMMsg>>();
+	public final Vector<String> emptyVector=new Vector<String>(1);
 	
 	public int getNumChannels()
 	{
@@ -60,10 +60,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	}
 
     
-    public Vector getChannelFlags(int i)
+    public Vector<String> getChannelFlags(int i)
     {
         if((i>=0)&&(i<channelFlags.size()))
-            return (Vector)channelFlags.elementAt(i);
+            return (Vector<String>)channelFlags.elementAt(i);
         return emptyVector;
     }
 
@@ -74,11 +74,11 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return "";
 	}
 
-	public Vector getChannelQue(int i)
+	public Vector<CMMsg> getChannelQue(int i)
 	{
 		if((i>=0)&&(i<channelQue.size()))
-			return (Vector)channelQue.elementAt(i);
-		return new Vector();
+			return (Vector<CMMsg>)channelQue.elementAt(i);
+		return new Vector<CMMsg>();
 	}
 	
     public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i)
@@ -181,7 +181,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	public void channelQueUp(int i, CMMsg msg)
 	{
         CMLib.map().sendGlobalMessage(msg.source(),CMMsg.TYP_CHANNEL,msg);
-		Vector q=getChannelQue(i);
+		Vector<CMMsg> q=getChannelQue(i);
 		synchronized(q)
 		{
 			if(q.size()>=QUEUE_SIZE)
@@ -217,12 +217,12 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return "";
 	}
 
-	public Vector getFlaggedChannelNames(String flag)
+	public Vector<String> getFlaggedChannelNames(String flag)
 	{
         flag=flag.toUpperCase().trim();
-        Vector channels=new Vector();
+        Vector<String> channels=new Vector<String>();
 		for(int c=0;c<channelNames.size();c++)
-			if(((Vector)channelFlags.elementAt(c)).contains(flag))
+			if(((Vector<String>)channelFlags.elementAt(c)).contains(flag))
                 channels.addElement(((String)channelNames.elementAt(c)).toUpperCase());
 		return channels;
 	}
@@ -232,12 +232,12 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         numChannelsLoaded=0;
         numIChannelsLoaded=0;
         numImc2ChannelsLoaded=0;
-        channelNames=new Vector();
-        channelMasks=new Vector();
-        channelFlags=new Vector();
-        ichannelList=new Vector();
-        imc2channelList=new Vector();
-        channelQue=new Vector();
+        channelNames=new Vector<String>();
+        channelMasks=new Vector<String>();
+        channelFlags=new Vector<Vector<String>>();
+        ichannelList=new Vector<String>();
+        imc2channelList=new Vector<String>();
+        channelQue=new Vector<Vector<CMMsg>>();
     }
     
     public boolean shutdown()
@@ -254,7 +254,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		{
 			String name=(String)channelNames.elementAt(i);
 			String mask=(String)channelMasks.elementAt(i);
-            Vector flags=(Vector)channelFlags.elementAt(i);
+            Vector<String> flags=(Vector<String>)channelFlags.elementAt(i);
 			String iname=(String)imc2channelList.elementAt(i);
 			if((iname!=null)&&(iname.trim().length()>0))
 			{
@@ -276,7 +276,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			String name=(String)channelNames.elementAt(i);
 			String mask=(String)channelMasks.elementAt(i);
 			String iname=(String)ichannelList.elementAt(i);
-            Vector flags=(Vector)channelFlags.elementAt(i);
+            Vector<String> flags=(Vector<String>)channelFlags.elementAt(i);
 			if((iname!=null)&&(iname.trim().length()>0))
 			{
 				array[num][0]=iname.trim();
@@ -294,9 +294,9 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return CMParms.toStringArray(channelNames);
 	}
 	
-	public Vector clearInvalidSnoopers(Session mySession, int channelCode)
+	public Vector<Session> clearInvalidSnoopers(Session mySession, int channelCode)
 	{
-	    Vector invalid=null;
+	    Vector<Session> invalid=null;
 	    if(mySession!=null)
 	    {
 		    Session S=null;
@@ -308,7 +308,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		        &&(mySession.amBeingSnoopedBy(S))
 		        &&(!mayReadThisChannel(S.mob(),channelCode,false)))
 		        {
-		            if(invalid==null) invalid=new Vector();
+		            if(invalid==null) invalid=new Vector<Session>();
 		            invalid.add(S);
 		            mySession.stopBeingSnoopedBy(S);
 		        }
@@ -317,16 +317,16 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	    return invalid;	    
 	}
 	
-	public void restoreInvalidSnoopers(Session mySession, Vector invalid)
+	public void restoreInvalidSnoopers(Session mySession, Vector<Session> invalid)
 	{
 	    if((mySession==null)||(invalid==null)) return;
 		for(int s=0;s<invalid.size();s++)
 		    mySession.startBeingSnoopedBy((Session)invalid.elementAt(s));
 	}
 
-    public String parseOutFlags(String mask, Vector flags)
+    public String parseOutFlags(String mask, Vector<String> flags)
     {
-        Vector V=CMParms.parse(mask);
+        Vector<String> V=CMParms.parse(mask);
         for(int v=V.size()-1;v>=0;v--)
         {
             String s=((String)V.elementAt(v)).toUpperCase();
@@ -361,7 +361,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			}
 			numChannelsLoaded++;
 			x=item.indexOf(" ");
-            Vector flags=new Vector();
+            Vector<String> flags=new Vector<String>();
 			if(x>0)
 			{
 				channelMasks.addElement(parseOutFlags(item.substring(x+1).trim(),flags));
@@ -373,7 +373,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			imc2channelList.addElement("");
 			channelNames.addElement(item.toUpperCase().trim());
             channelFlags.addElement(flags);
-			channelQue.addElement(new Vector());
+			channelQue.addElement(new Vector<CMMsg>());
 		}
 		while(ilist.length()>0)
 		{
@@ -399,8 +399,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			String ichan=item.substring(y2+1).trim();
 			item=item.substring(0,y1);
 			channelNames.addElement(item.toUpperCase().trim());
-			channelQue.addElement(new Vector());
-            Vector flags=new Vector();
+			channelQue.addElement(new Vector<CMMsg>());
+            Vector<String> flags=new Vector<String>();
 			channelMasks.addElement(parseOutFlags(lvl,flags));
             channelFlags.addElement(flags);
 			imc2channelList.addElement("");
@@ -430,8 +430,8 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			String ichan=item.substring(y2+1).trim();
 			item=item.substring(0,y1);
 			channelNames.addElement(item.toUpperCase().trim());
-			channelQue.addElement(new Vector());
-            Vector flags=new Vector();
+			channelQue.addElement(new Vector<CMMsg>());
+            Vector<String> flags=new Vector<String>();
             channelMasks.addElement(parseOutFlags(lvl,flags));
             channelFlags.addElement(flags);
 			imc2channelList.addElement(ichan);
@@ -439,9 +439,9 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		}
 
 		channelNames.addElement("AUCTION");
-		channelQue.addElement(new Vector());
+		channelQue.addElement(new Vector<CMMsg>());
 		channelMasks.addElement("");
-        channelFlags.addElement(new Vector());
+        channelFlags.addElement(new Vector<String>());
 		ichannelList.addElement("");
 		imc2channelList.addElement("");
 		numChannelsLoaded++;
@@ -481,7 +481,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         
         message=CMProps.applyINIFilter(message,CMProps.SYSTEM_CHANNELFILTER);
         
-        Vector flags=CMLib.channels().getChannelFlags(channelInt);
+        Vector<String> flags=CMLib.channels().getChannelFlags(channelInt);
         channelName=CMLib.channels().getChannelName(channelInt);
 
         CMMsg msg=null;
@@ -499,7 +499,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
             &&(Character.isLetter(message.charAt(1))||message.charAt(1)==' ')))
         {
             String msgstr=message.substring(1);
-            Vector V=CMParms.parse(msgstr);
+            Vector<String> V=CMParms.parse(msgstr);
             Social S=CMLib.socials().fetchSocial(V,true);
             if(S==null) S=CMLib.socials().fetchSocial(V,false);
             if(S!=null)

@@ -133,7 +133,7 @@ public class Bard extends StdCharClass
         {
 	    	if(host == mob)
 	    	{
-	            HashSet H=mob.getGroupMembers(new HashSet());
+	            HashSet H=mob.getGroupMembers(new HashSet<MOB>());
 	            double origAmount=theAmount;
 	            for(Iterator e=H.iterator();e.hasNext();)
 	            {
@@ -298,11 +298,11 @@ public class Bard extends StdCharClass
 	}
 	public String otherLimitations(){return "";}
 	public String otherBonuses(){return "Receives group bonus combat experience when in an intelligent group, and more for a group with players.  Receives exploration experience based on danger level.";}
-	public Vector outfit(MOB myChar)
+	public Vector<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			Weapon w=CMClass.getWeapon("Shortsword");
 			outfitChoices.addElement(w);
 		}

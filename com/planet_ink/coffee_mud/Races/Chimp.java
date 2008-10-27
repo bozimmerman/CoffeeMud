@@ -46,7 +46,7 @@ public class Chimp extends Monkey
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,0 };
 	public int[] bodyMask(){return parts;}
 
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);
@@ -54,7 +54,7 @@ public class Chimp extends Monkey
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,15);
 		affectableStats.setRacialStat(CharStats.STAT_INTELLIGENCE,1);
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

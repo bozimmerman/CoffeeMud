@@ -59,7 +59,7 @@ public class Dyeing extends CommonSkill
 					 +name.substring(end+3);
 		}
 		colorWord="^"+colorWord.charAt(0)+colorWord+"^?";
-		Vector V=CMParms.parse(name);
+		Vector<String> V=CMParms.parse(name);
 		for(int v=0;v<V.size();v++)
 		{
 			String word=(String)V.elementAt(v);
@@ -110,7 +110,7 @@ public class Dyeing extends CommonSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{

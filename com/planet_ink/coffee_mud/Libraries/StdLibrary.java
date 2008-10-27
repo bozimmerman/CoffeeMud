@@ -21,7 +21,7 @@ public class StdLibrary implements CMLibrary
         return new StdLibrary();
     }
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
-    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public void initializeClass(){}
     public boolean activate(){ return true;}
     public boolean shutdown(){ return true;}

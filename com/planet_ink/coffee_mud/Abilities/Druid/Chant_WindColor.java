@@ -96,7 +96,7 @@ public class Chant_WindColor extends Chant
 		int sourceCode=-1;
 		int levelCode=-1;
 		int[] colors=null;
-		HashSet group=mob.getGroupMembers(new HashSet());
+		HashSet group=mob.getGroupMembers(new HashSet<MOB>());
 		for(int i=0;i<R.numItems();i++)
 		{
 			Item I=R.fetchItem(i);
@@ -279,7 +279,7 @@ public class Chant_WindColor extends Chant
 		return str.toString().trim();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

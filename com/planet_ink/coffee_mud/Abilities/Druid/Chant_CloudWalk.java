@@ -79,7 +79,7 @@ public class Chant_CloudWalk extends Chant
 			}
 			else
 			{
-				HashSet H=mob.getGroupMembers(new HashSet());
+				HashSet H=mob.getGroupMembers(new HashSet<MOB>());
 				for(Iterator e=H.iterator();e.hasNext();)
 				{
 					MOB M=(MOB)e.next();
@@ -98,7 +98,7 @@ public class Chant_CloudWalk extends Chant
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

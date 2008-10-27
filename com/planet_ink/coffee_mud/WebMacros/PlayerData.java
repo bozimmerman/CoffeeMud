@@ -333,7 +333,7 @@ public class PlayerData extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("PLAYER");
 		if(last==null) return " @break@";
 		if(last.length()>0)

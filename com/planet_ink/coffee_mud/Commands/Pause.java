@@ -45,7 +45,7 @@ public class Pause extends StdCommand
         return false;
     }
     
-    public boolean execute(MOB mob, Vector commands, int metaFlags)
+    public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
         throws java.io.IOException
     {
         

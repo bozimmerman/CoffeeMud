@@ -75,7 +75,7 @@ public class BankAccountInfo extends StdWebMacro
 		Area playerA=null;
 		boolean destroyPlayer=false;
 		try{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("BANKCHAIN");
 		if(last==null) return " @break@";
 		MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));

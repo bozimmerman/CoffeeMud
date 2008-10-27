@@ -290,7 +290,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			    subTag=subTag.substring(0,x)+subTag.substring(x+1);
 			}
 			
-			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
 				if(((A.ID().equalsIgnoreCase(tag)||A.ID().equalsIgnoreCase(subTag))

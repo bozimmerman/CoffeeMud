@@ -74,7 +74,7 @@ public class Painting extends CommonSkill
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		try{
 		if(commands.size()==0)
@@ -129,7 +129,7 @@ public class Painting extends CommonSkill
 		{
 			String name=S.prompt("Enter the key words (not the description) for this work.\n\r:","");
 			if(name.trim().length()==0) return false;
-			Vector V=CMParms.parse(name.toUpperCase());
+			Vector<String> V=CMParms.parse(name.toUpperCase());
 			for(int v=0;v<V.size();v++)
 			{
 				String vstr=" "+((String)V.elementAt(v))+" ";

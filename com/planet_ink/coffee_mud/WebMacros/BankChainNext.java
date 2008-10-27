@@ -40,7 +40,7 @@ public class BankChainNext extends StdWebMacro
 		MOB playerM=null;
 		boolean destroyPlayer=false;
 		try{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("BANKCHAIN");
 		String player=httpReq.getRequestParameter("PLAYER");
 		if((player==null)||(player.length()==0)) player=httpReq.getRequestParameter("CLAN");

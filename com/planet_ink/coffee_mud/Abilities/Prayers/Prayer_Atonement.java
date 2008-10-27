@@ -40,7 +40,7 @@ public class Prayer_Atonement extends Prayer
 	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -50,7 +50,7 @@ public class Prayer_Atonement extends Prayer
 
 		boolean success=proficiencyCheck(mob,0,auto);
 		CMMsg msg2=null;
-		if((mob!=target)&&(!mob.getGroupMembers(new HashSet()).contains(target)))
+		if((mob!=target)&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 			msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,"<T-NAME> do(es) not seem to like <S-NAME> messing with <T-HIS-HER> head.");
 
 		if(success&&(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null))

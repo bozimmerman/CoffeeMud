@@ -81,7 +81,7 @@ public class ItemData extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
         String player=httpReq.getRequestParameter("PLAYER");
 		String last=httpReq.getRequestParameter("ROOM");
 		if((last==null)&&(player==null)) return " @break@";
@@ -555,7 +555,7 @@ public class ItemData extends StdWebMacro
 									break;
 						}
 						old=old.toUpperCase()+";";
-						for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+						for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 						{
 							String cnam=((Ability)a.nextElement()).ID();
 							str.append("<OPTION VALUE=\""+cnam+"\"");
@@ -656,7 +656,7 @@ public class ItemData extends StdWebMacro
 					{
 						if((firstTime)&&(I instanceof Wand))
 							old=""+((((Wand)I).getSpell()!=null)?((Wand)I).getSpell().ID():"");
-						for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+						for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 						{
 							String cnam=((Ability)a.nextElement()).ID();
 							str.append("<OPTION VALUE=\""+cnam+"\"");
@@ -888,7 +888,7 @@ public class ItemData extends StdWebMacro
 				    Ability A=null;
 					if((firstTime)&&(I instanceof Recipe))
 						old=""+((Recipe)I).getCommonSkillID();
-					for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 					{
 					 	A=(Ability)e.nextElement();
 					 	if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)

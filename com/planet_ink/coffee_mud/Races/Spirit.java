@@ -40,7 +40,7 @@ public class Spirit extends Undead
 	public int heightVariance(){return 12;}
 	protected boolean destroyBodyAfterUse(){return true;}
 
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 
 	protected Weapon funHumanoidWeapon()
 	{
@@ -128,7 +128,7 @@ public class Spirit extends Undead
 			return "^c" + mob.displayName(viewer) + "^c is in perfect condition.^N";
 	}
 	
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

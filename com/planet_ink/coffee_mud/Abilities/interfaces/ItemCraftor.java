@@ -128,5 +128,5 @@ public interface ItemCraftor extends Ability
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
 	 * @return a vector of integers
 	 */
-	public Vector myResources();
+	public Vector<Item> myResources();
 }

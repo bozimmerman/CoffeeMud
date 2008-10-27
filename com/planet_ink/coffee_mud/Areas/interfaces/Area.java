@@ -244,7 +244,7 @@ public interface Area extends Environmental, Economics
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
 	 * @return an enumerator of Room objects
 	 */
-	public Enumeration getProperMap();
+	public Enumeration<Room> getProperMap();
     /**
      * Returns an enumerator for all previously loaded rooms that
      * properly belongs to this area, along with their skys or underwater
@@ -253,7 +253,7 @@ public interface Area extends Environmental, Economics
      * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
      * @return an enumerator of Room objects
      */
-	public Enumeration getFilledProperMap();
+	public Enumeration<Room> getFilledProperMap();
 	/**
      * Designates that the given roomID belongs to this Area.
      * @param roomID the roomID of a room which should belong to this Area.
@@ -272,7 +272,7 @@ public interface Area extends Environmental, Economics
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
 	 * @return an enumerator of Room objects
 	 */
-	public Enumeration getCompleteMap();
+	public Enumeration<Room> getCompleteMap();
 	/**
 	 * Returns a RoomnumberSet for all rooms that properly belong to this area, including
 	 * those not yet loaded.
@@ -311,7 +311,7 @@ public interface Area extends Environmental, Economics
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
 	 * @return an enumerator of Room objects
 	 */
-	public Enumeration getMetroMap();
+	public Enumeration<Room> getMetroMap();
     /**
      * Designates that a given Room object belongs to one of this areas
      * children.
@@ -363,7 +363,7 @@ public interface Area extends Environmental, Economics
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
 	 * @return a vector of Room objects
 	 */
-	public Vector getMetroCollection();
+	public Vector<Room> getMetroCollection();
 	/**
 	 * Generates a new RoomID for a new Room in this area.  
 	 * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
@@ -432,7 +432,7 @@ public interface Area extends Environmental, Economics
 	 * AREA_ security flags activated when in this area.
 	 * @return Vector of player Names
 	 */
-	public Vector getSubOpVectorList();
+	public Vector<String> getSubOpVectorList();
 	/**
 	 * Returns a descriptive list of statistics about this area based on a
 	 * snapshot from getAreaIStats(), which is cached after being generated.
@@ -471,7 +471,7 @@ public interface Area extends Environmental, Economics
      * A Child Area inherets certain behaviors and property effects from its parents
      * @return an enumeration of Area objects
      */
-    public Enumeration getChildren();
+    public Enumeration<Area> getChildren();
     /**
      * Returns a semicolon delimited list of Area names representing the Children Areas of this
      * Area.
@@ -544,7 +544,7 @@ public interface Area extends Environmental, Economics
      * A Parent Area passes down certain behaviors and property effects to its children
      * @return an enumeration of Area objects
      */
-    public Enumeration getParents();
+    public Enumeration<Area> getParents();
     /**
      * Returns a semicolon delimited list of Area names representing the Parent Areas of this
      * Area.
@@ -577,7 +577,7 @@ public interface Area extends Environmental, Economics
      * A Parent Area passes down certain behaviors and property effects to its children
      * @return a Vector of Area objects
      */
-    public Vector getParentsRecurse();
+    public Vector<Area> getParentsRecurse();
     /**
      * Returns whether the Area is a Parent of this Area
      * A Parent Area passes down certain behaviors and property effects to its children
@@ -623,16 +623,16 @@ public interface Area extends Environmental, Economics
      * the complete list of roomIDs for this area and loading any rooms not yet
      * loaded, all at enumeration-time.
      */
-    public class CompleteRoomEnumerator implements Enumeration
+    public class CompleteRoomEnumerator implements Enumeration<Room>
     {
-    	Enumeration roomEnumerator=null;
+    	Enumeration<String> roomEnumerator=null;
     	Area area=null;
     	public CompleteRoomEnumerator(Area myArea){
     		area=myArea;
     		roomEnumerator=area.getProperRoomnumbers().getRoomIDs();
     	}
     	public boolean hasMoreElements(){return roomEnumerator.hasMoreElements();}
-    	public Object nextElement()
+    	public Room nextElement()
     	{
     		String roomID=(String)roomEnumerator.nextElement();
     		if(roomID==null) return null;

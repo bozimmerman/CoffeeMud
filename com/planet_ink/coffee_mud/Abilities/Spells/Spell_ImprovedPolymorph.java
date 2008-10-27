@@ -93,7 +93,7 @@ public class Spell_ImprovedPolymorph extends Spell
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
 		{
@@ -161,7 +161,7 @@ public class Spell_ImprovedPolymorph extends Spell
 		if(statDiff<0) statDiff=statDiff*-1;
 		int levelDiff=((mob.envStats().level()+(2*getXLEVELLevel(mob)))-target.envStats().level());
 		boolean success=proficiencyCheck(mob,levelDiff-statDiff,auto);
-		if(success&&(!auto)&&(!mob.mayIFight(target))&&(mob!=target)&&(!mob.getGroupMembers(new HashSet()).contains(target)))
+		if(success&&(!auto)&&(!mob.mayIFight(target))&&(mob!=target)&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
 		{
 			mob.tell(target.name()+" is a player, so you must be group members, or your playerkill flags must be on for this to work.");
 			success=false;

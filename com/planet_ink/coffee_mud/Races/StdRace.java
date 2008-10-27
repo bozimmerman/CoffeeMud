@@ -322,7 +322,7 @@ public class StdRace implements Race
 		return naturalWeapon;
 	}
 
-	public Vector outfit(MOB myChar){return outfitChoices;}
+	public Vector<Item> outfit(MOB myChar){return outfitChoices;}
 
 	public String healthText(MOB viewer, MOB mob)
 	{
@@ -383,7 +383,7 @@ public class StdRace implements Race
 		return CMClass.getWeapon("Natural");
 	}
 
-	public Vector myResources(){return new Vector();}
+	public Vector<Item> myResources(){return new Vector();}
 	public void setHeightWeight(EnvStats stats, char gender)
 	{
 		int weightModifier=0;
@@ -407,7 +407,7 @@ public class StdRace implements Race
 			stats.setHeight(shortestFemale()+heightModifier);
 	}
 
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	protected Item makeResource(String name, int type)
 	{

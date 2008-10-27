@@ -153,7 +153,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				budgetTickDown=100;
 				budgetRemaining=Long.MAX_VALUE/2;
 				String s=finalBudget();
-				Vector V=CMParms.parse(s.trim().toUpperCase());
+				Vector<String> V=CMParms.parse(s.trim().toUpperCase());
 				if(V.size()>0)
 				{
 					if(((String)V.firstElement()).equals("0"))

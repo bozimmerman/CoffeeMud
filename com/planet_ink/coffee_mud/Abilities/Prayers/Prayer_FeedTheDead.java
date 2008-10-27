@@ -42,7 +42,7 @@ public class Prayer_FeedTheDead extends Prayer
 	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_NOORDERING;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int amount=100;
 		if(!auto)

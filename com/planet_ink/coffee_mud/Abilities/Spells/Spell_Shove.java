@@ -44,7 +44,7 @@ public class Spell_Shove extends Spell
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
 	public long flags(){return Ability.FLAG_MOVING;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int dir=-1;
 		if(commands.size()>0)

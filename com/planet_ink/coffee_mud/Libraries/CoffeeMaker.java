@@ -702,7 +702,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		// find any mis-linked exits and fix them!
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				synchronized(("SYNC"+R.roomID()).intern())

@@ -101,7 +101,7 @@ public class Chant_SweetScent extends Chant
 		&&(CMLib.flags().canSmell(msg.source())))
 			msg.source().tell(msg.source(),affected,null,"<T-NAME> smell(s) absolutely intoxicating!");
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(
 		  (mob.location().domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)

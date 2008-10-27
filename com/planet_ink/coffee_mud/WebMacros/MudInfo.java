@@ -38,7 +38,7 @@ public class MudInfo extends StdWebMacro
 
     public String runMacro(ExternalHTTPRequests httpReq, String parm)
     {
-        Hashtable parms=parseParms(parm);
+        Hashtable<String,String> parms=parseParms(parm);
         if(parms.containsKey("DOMAIN"))
             return CMProps.getVar(CMProps.SYSTEM_MUDDOMAIN);
         if(parms.containsKey("EMAILOK"))

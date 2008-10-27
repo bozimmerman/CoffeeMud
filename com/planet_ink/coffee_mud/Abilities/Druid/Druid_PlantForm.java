@@ -200,7 +200,7 @@ public class Druid_PlantForm extends StdAbility
 		return false;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		for(int a=mob.numEffects()-1;a>=0;a--)
 		{

@@ -64,7 +64,7 @@ public class Thief_AutoMarkTraps extends Thief_AutoDetectTraps
         mob.curState().setMana(savedState.getMovement());
     }
     
-    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
         if((!auto)&&(target.fetchAbility("Thief_MarkTraps")==null))

@@ -54,7 +54,7 @@ public class Aggressive extends StdBehavior
 		super.setParms(newParms);
 		tickWait=CMParms.getParmInt(newParms,"delay",0);
 		attackMessage=CMParms.getParmStr(newParms,"MESSAGE",null);
-		Vector V=CMParms.parse(newParms.toUpperCase());
+		Vector<String> V=CMParms.parse(newParms.toUpperCase());
 		wander=V.contains("WANDER");
 		mobkill=V.contains("MOBKILL")||(V.contains("MOBKILLER"));
 		misbehave=V.contains("MISBEHAVE");
@@ -80,7 +80,7 @@ public class Aggressive extends StdBehavior
 			&&(CMLib.flags().canBeSeenBy(mob,monster))
 			&&(!CMSecurity.isAllowed(mob,R,"ORDER"))
 			&&(!CMSecurity.isAllowed(mob,R,"CMDROOMS"))
-			&&(!monster.getGroupMembers(new HashSet()).contains(mob)))
+			&&(!monster.getGroupMembers(new HashSet<MOB>()).contains(mob)))
 			{
 				// special backstab sneak attack!
 				if(CMLib.flags().isHidden(monster))
@@ -107,7 +107,7 @@ public class Aggressive extends StdBehavior
 		Room R=observer.location();
 		if((R!=null)&&(R.getArea().getAreaFlags()<=Area.FLAG_ACTIVE))
 		{
-			HashSet groupMembers=observer.getGroupMembers(new HashSet());
+			HashSet groupMembers=observer.getGroupMembers(new HashSet<MOB>());
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				MOB mob=R.fetchInhabitant(i);

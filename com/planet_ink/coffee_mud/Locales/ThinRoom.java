@@ -305,7 +305,7 @@ public class ThinRoom implements Room {
 		}
 		return new ThinRoom();
 	}
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	public void setMiscText(String newMiscText){}
 	public String text(){return "";}

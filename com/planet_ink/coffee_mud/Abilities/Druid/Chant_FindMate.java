@@ -79,7 +79,7 @@ public class Chant_FindMate extends Chant
 					if((mob.fetchFirstWornItem(Item.WORN_WAIST)!=null)
 					||(mob.fetchFirstWornItem(Item.WORN_LEGS)!=null))
 						unInvoke();
-					mob.doCommand(CMParms.parse("MATE \""+mate.name()+"$\""),Command.METAFLAG_FORCED);
+					mob.doCommand(CMParms.parseToObjV("MATE \""+mate.name()+"$\""),Command.METAFLAG_FORCED);
 					unInvoke();
 				}
 			}
@@ -153,7 +153,7 @@ public class Chant_FindMate extends Chant
 		return false;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

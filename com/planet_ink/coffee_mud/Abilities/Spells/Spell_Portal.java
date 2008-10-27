@@ -64,7 +64,7 @@ public class Spell_Portal extends Spell
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         newRoom=null;
         oldRoom=null;
@@ -103,7 +103,7 @@ public class Spell_Portal extends Spell
 		{
 		    try
 		    {
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room room=(Room)r.nextElement();
 		

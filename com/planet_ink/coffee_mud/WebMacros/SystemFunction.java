@@ -39,7 +39,7 @@ public class SystemFunction extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		if(parms.get("ANNOUNCE")!=null)
 		{
 			String s=httpReq.getRequestParameter("TEXT");
@@ -48,7 +48,7 @@ public class SystemFunction extends StdWebMacro
 				MOB M=((MOB)CMClass.sampleMOB().copyOf());
 				Command C=CMClass.getCommand("Announce");
 				try{
-					C.execute(M,CMParms.parse("all "+s.trim()),0);
+					C.execute(M,CMParms.parseToObjV("all "+s.trim()),0);
 				}catch(Exception e){}
 			}
 		}

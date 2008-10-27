@@ -145,7 +145,7 @@ public class Inventory extends StdCommand
 	}
 
 
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if((commands.size()==1)&&(commands.firstElement() instanceof MOB))

@@ -44,7 +44,7 @@ public class Paladin_Breakup extends StdAbility
 	public int usageType(){return USAGE_MOVEMENT;}
     public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_LEGAL; }
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat())
 		{

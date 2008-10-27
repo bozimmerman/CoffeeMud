@@ -62,7 +62,7 @@ public class DefaultClan implements Clan
     /** return a new instance of the object*/
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultClan();}}
     public void initializeClass(){}
-    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public CMObject copyOf()
     {
         try
@@ -1121,7 +1121,7 @@ public class DefaultClan implements Clan
                                         if(mob.location()==null)
                                             mob.setLocation(CMLib.map().getRandomRoom());
                                     }
-                                    Vector V=CMParms.parse(CV.matter);
+                                    Vector<Object> V=CMParms.parseToObjV(CV.matter);
                                     mob.doCommand(V,Command.METAFLAG_FORCED);
                                     mob.destroy();
                                 }
@@ -1301,7 +1301,7 @@ public class DefaultClan implements Clan
                 {
                     int amount=0;
                     double pct=0.0;
-                    Vector V=CMParms.parse(awardStr);
+                    Vector<String> V=CMParms.parse(awardStr);
                     if(V.size()>=2)
                     {
                         String type=((String)V.lastElement()).toUpperCase();

@@ -112,7 +112,7 @@ public class Prop_ClanEquipment extends Property
     public void setMiscText(String text)
     {
         super.setMiscText(text);
-        Vector V=CMParms.parse(text);
+        Vector<String> V=CMParms.parse(text);
         if(V.size()<4)
         {
             return;

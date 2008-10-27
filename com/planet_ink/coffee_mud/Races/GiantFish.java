@@ -42,7 +42,7 @@ public class GiantFish extends Fish
 	public int weightVariance(){return 405;}
 	public long forbiddenWornBits(){return Integer.MAX_VALUE-Item.WORN_EYES;}
 	public String racialCategory(){return "Amphibian";}
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
 	private static final int[] parts={0 ,2 ,0 ,1 ,0 ,0 ,0 ,1 ,0 ,0 ,0 ,2 ,1 ,0 ,1 ,0 };
@@ -76,7 +76,7 @@ public class GiantFish extends Fish
 		}
 		return naturalWeapon;
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

@@ -41,7 +41,7 @@ public class After extends StdCommand implements Tickable
 
 	private String[] access={"AFTER"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean every=false;
@@ -105,7 +105,7 @@ public class After extends StdCommand implements Tickable
 		}
 		commands.removeElementAt(0);
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
-		Vector V=new Vector();
+		Vector<Object> V=new Vector<Object>();
 		V.addElement(new Long(System.currentTimeMillis()));
 		V.addElement(new Long(time));
 		V.addElement(Boolean.valueOf(every));

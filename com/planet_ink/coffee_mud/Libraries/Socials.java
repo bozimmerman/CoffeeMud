@@ -40,14 +40,15 @@ public class Socials extends StdLibrary implements SocialsList
 {
     public String ID(){return "Socials";}
  
-    public Hashtable getSocialHash()
+    @SuppressWarnings("unchecked")
+	public Hashtable<String,Vector<Social>> getSocialHash()
     {
-        Hashtable soc=(Hashtable)Resources.getResource("PARSED: "+filename);
+        Hashtable<String,Vector<Social>> soc=(Hashtable<String,Vector<Social>>)Resources.getResource("PARSED: "+filename);
         if(soc==null)
         {
-            soc=new Hashtable();
+            soc=new Hashtable<String,Vector<Social>>();
             Resources.submitResource("PARSED: "+filename,soc);
-            Vector V=Resources.getFileLineVector(new CMFile(filename,null,true).text());
+            Vector<String> V=Resources.getFileLineVector(new CMFile(filename,null,true).text());
             for(int v=0;v<V.size();v++)
             {
                 String getline=(String)V.elementAt(v);
@@ -157,12 +158,12 @@ public class Socials extends StdLibrary implements SocialsList
         if(spdex>0) shortName=shortName.substring(0,spdex);
         return shortName;
 	}
-    private void put(Hashtable H, String name, Social S) 
+    private void put(Hashtable<String,Vector<Social>> H, String name, Social S) 
     { 
         name=realName(name);
-        Vector V2=(Vector)H.get(name);
+        Vector<Social> V2=H.get(name);
         if(V2==null) {
-            V2=new Vector(4);
+            V2=new Vector<Social>(4);
             H.put(name,V2);
             unloadDerivedResources();
         }
@@ -181,7 +182,7 @@ public class Socials extends StdLibrary implements SocialsList
 	public void remove(String name) 
 	{ 
 	    String realName=realName(name);
-        Vector V2=(Vector)getSocialHash().get(realName);
+	    Vector<Social> V2=getSocialHash().get(realName);
         if(V2==null) return;
         for(int v=0;v<V2.size();v++)
             if(((Social)V2.elementAt(v)).Name().equalsIgnoreCase(name))
@@ -324,15 +325,15 @@ public class Socials extends StdLibrary implements SocialsList
 	public boolean modifySocialInterface(MOB mob, String socialString)
 		throws IOException
 	{
-        Vector socials=CMParms.parse(socialString);
-        if(socials.size()==0)
+        Vector<String> socialsParse=CMParms.parse(socialString);
+        if(socialsParse.size()==0)
         {
             mob.tell("Which social?");
             return false;
         }
-        String name=((String)socials.firstElement()).toUpperCase().trim();
-        String rest=socials.size()>1?CMParms.combine(socials,1):"";
-        socials=getSocialsSet((String)socials.firstElement());
+        String name=((String)socialsParse.firstElement()).toUpperCase().trim();
+        String rest=socialsParse.size()>1?CMParms.combine(socialsParse,1):"";
+        Vector<Social> socials=getSocialsSet((String)socialsParse.firstElement());
         if((socials.size()==0)
         &&((mob.session()==null)
             ||(!mob.session().confirm("The social '"+name+"' does not exist.  Create it (y/N)? ","N"))))
@@ -469,7 +470,7 @@ public class Socials extends StdLibrary implements SocialsList
         return true;
 	}
 
-	public Social fetchSocial(Vector set, String name, boolean exactOnly) 
+	public Social fetchSocial(Vector<Social> set, String name, boolean exactOnly) 
 	{
 	    for(int s=0;s<set.size();s++)
 	        if(((Social)set.elementAt(s)).Name().equalsIgnoreCase(name))
@@ -484,15 +485,15 @@ public class Socials extends StdLibrary implements SocialsList
 	
 	public Social fetchSocial(String name, boolean exactOnly)
 	{
-        Hashtable soc=getSocialHash();
+        Hashtable<String,Vector<Social>> soc=getSocialHash();
         String realName=realName(name);
-        Vector V=(Vector)soc.get(realName);
+        Vector<Social> V=soc.get(realName);
         if((V==null)&&(exactOnly)) return null;
         Social S=null;
         if(V!=null)
             S=fetchSocial(V,name,exactOnly);
         if(S!=null) return S;
-		for(Enumeration e=soc.keys();e.hasMoreElements();)
+		for(Enumeration<String> e=soc.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
 			if(key.startsWith(name))
@@ -501,7 +502,7 @@ public class Socials extends StdLibrary implements SocialsList
 		return null;
 	}
 
-	public Social fetchSocial(Vector C, boolean exactOnly)
+	public Social fetchSocial(Vector<String> C, boolean exactOnly)
 	{
 		if(C==null) return null;
 		if(C.size()==0) return null;
@@ -521,10 +522,10 @@ public class Socials extends StdLibrary implements SocialsList
 		if(S==null) S=fetchSocial(socialName+theRest,true);
 		if((S==null)&&(!exactOnly))
 		{
-            Hashtable soc=getSocialHash();
+            Hashtable<String,Vector<Social>> soc=getSocialHash();
 			String backupSocialName=null;
             String socName=socialName.toUpperCase();
-			for(Enumeration e=soc.keys();e.hasMoreElements();)
+			for(Enumeration<String> e=soc.keys();e.hasMoreElements();)
 			{
 				String key=(String)e.nextElement();
 				if((key.startsWith(socName))&&(key.indexOf(" ")<0))
@@ -547,14 +548,14 @@ public class Socials extends StdLibrary implements SocialsList
 		return S;
 	}
 
-	public Vector enumSocialSet(int index)
+	public Vector<Social> enumSocialSet(int index)
 	{
 		if((index<0)||(index>numSocialSets())) return null;
 		int i=0;
-        Hashtable soc=getSocialHash();
-		for (Enumeration e = soc.elements() ; e.hasMoreElements() ; i++)
+        Hashtable<String,Vector<Social>> soc=getSocialHash();
+		for (Enumeration<Vector<Social>> e = soc.elements() ; e.hasMoreElements() ; i++)
 		{
-		    Vector V=(Vector)e.nextElement();
+		    Vector<Social> V=e.nextElement();
 			if(i==index) return V;
 		}
 		return null;
@@ -614,12 +615,12 @@ public class Socials extends StdLibrary implements SocialsList
 	public void save(MOB whom)
 	{
 		if(!isLoaded()) return;
-        Hashtable soc=getSocialHash();
+        Hashtable<String,Vector<Social>> soc=getSocialHash();
 		StringBuffer buf=new StringBuffer("");
-		Vector V2=new Vector();
-		for (Enumeration e = soc.elements() ; e.hasMoreElements() ; )
+		Vector<Social> V2=new Vector<Social>();
+		for (Enumeration<Vector<Social>> e = soc.elements() ; e.hasMoreElements() ; )
 		{
-		    Vector V1=(Vector)e.nextElement();
+			Vector<Social> V1=e.nextElement();
             for(int v1=0;v1<V1.size();v1++)
             {
                 Social S1=(Social)V1.elementAt(v1);
@@ -636,7 +637,7 @@ public class Socials extends StdLibrary implements SocialsList
     				V2.addElement(S1);
             }
 		}
-        Vector sorted=new Vector();
+        Vector<Social> sorted=new Vector<Social>();
         while(V2.size()>0)
         {
             Social lowest=(Social)V2.firstElement();
@@ -718,10 +719,10 @@ public class Socials extends StdLibrary implements SocialsList
         unloadDerivedResources();
 	}
 
-    public Vector getSocialsSet(String named)
+    public Vector<Social> getSocialsSet(String named)
     {
         named=realName(named);
-        return (Vector)getSocialHash().get(named);
+        return (Vector<Social>)getSocialHash().get(named);
     }
 
     public String findSocialName(String named, boolean exactOnly)
@@ -738,7 +739,7 @@ public class Socials extends StdLibrary implements SocialsList
     	String realName=findSocialName(named,true);
     	if(realName==null) realName=findSocialName(named,false);
     	if(realName==null) return null;
-    	Vector list=getSocialsSet(realName.toUpperCase());
+    	Vector<Social> list=getSocialsSet(realName.toUpperCase());
     	if((list==null)||(list.size()==0)) return null;
     	StringBuffer help=new StringBuffer("");
     	help.append("^H\n\r");
@@ -786,15 +787,16 @@ public class Socials extends StdLibrary implements SocialsList
     	return help.toString();
     }
     
-    public Vector getSocialsList() 
+    @SuppressWarnings("unchecked")
+	public Vector<String> getSocialsList() 
     {
-        Vector socialsList=(Vector)Resources.getResource("SOCIALS LIST");
+        Vector<String> socialsList=(Vector<String>)Resources.getResource("SOCIALS LIST");
         if(socialsList!=null) return socialsList;
         
-        Vector socialVec=new Vector();
+        Vector<String> socialVec=new Vector<String>();
         for(int s=0;s<CMLib.socials().numSocialSets();s++)
         {
-            Vector V=CMLib.socials().enumSocialSet(s);
+            Vector<Social> V=CMLib.socials().enumSocialSet(s);
             if((V==null)||(V.size()==0)) continue;
             Social S=(Social)V.firstElement();
             socialVec.addElement(realName(S.Name()));
@@ -808,7 +810,7 @@ public class Socials extends StdLibrary implements SocialsList
 	{
 		StringBuffer socialsList=(StringBuffer)Resources.getResource("SOCIALS TABLE");
 		if(socialsList!=null) return socialsList.toString();
-        Vector socialVec=getSocialsList();
+        Vector<String> socialVec=getSocialsList();
 		socialsList=new StringBuffer("");
 		int col=0;
 		for(int i=0;i<socialVec.size();i++)

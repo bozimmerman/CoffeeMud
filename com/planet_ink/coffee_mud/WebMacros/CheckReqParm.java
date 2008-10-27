@@ -37,7 +37,7 @@ public class CheckReqParm extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		boolean finalCondition=false;
 		for(Enumeration e=parms.keys();e.hasMoreElements();)
 		{

@@ -34,14 +34,14 @@ import java.util.*;
 */
 public interface MaskingLibrary extends CMLibrary
 {
-    public Hashtable getMaskCodes();
+    public Hashtable<String,Integer> getMaskCodes();
     public String rawMaskHelp();
     public String maskHelp(String CR, String word);
-	public Vector getAbilityEduReqs(String text);
+	public Vector<String> getAbilityEduReqs(String text);
     public String maskDesc(String text);
 	public String maskDesc(String text, boolean skipFirstWord);
-	public Vector maskCompile(String text);
-    public boolean maskCheck(Vector cset, Environmental E, boolean actual);
+	public Vector<Vector<Object>> maskCompile(String text);
+    public boolean maskCheck(Vector<Vector<Object>> cset, Environmental E, boolean actual);
     public boolean maskCheck(String text, Environmental E, boolean actual);
     public int minMaskLevel(String text, int minMinLevel);
 

@@ -37,7 +37,7 @@ public class HolidayData extends StdWebMacro
 
     public String runMacro(ExternalHTTPRequests httpReq, String parm)
     {
-        Hashtable parms=parseParms(parm);
+        Hashtable<String,String> parms=parseParms(parm);
         String last=httpReq.getRequestParameter("HOLIDAY");
         if(last==null) return " @break@";
         boolean exists = false;
@@ -471,7 +471,7 @@ public class HolidayData extends StdWebMacro
             str.append("<TR><TD WIDTH=30%>");
             str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=AFFECT"+(theclasses.size()+1)+">");
             str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
-            for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+            for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
             {
                 Ability A=(Ability)a.nextElement();
                 String cnam=A.ID();

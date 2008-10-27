@@ -41,7 +41,7 @@ public class Prayer_DemonicConsumption extends Prayer
 	protected int canTargetCode(){return CAN_ITEMS|CAN_MOBS;}
 	public long flags(){return Ability.FLAG_UNHOLY;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_ANY);
 		if(target==null) return false;

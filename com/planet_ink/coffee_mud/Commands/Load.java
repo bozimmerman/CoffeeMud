@@ -36,7 +36,7 @@ public class Load extends StdCommand
 
 	private String[] access={"LOAD"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String list="RESOURCE, FACTION, "+CMParms.toStringList(CMClass.OBJECT_DESCS);
@@ -79,7 +79,7 @@ public class Load extends StdCommand
             {
             	if(name.toUpperCase().endsWith(".JAVA"))
             	{
-            		Class C=null;
+            		Class<?> C=null;
             		Object CO=null;
             		try{
             			C=Class.forName("com.sun.tools.javac.Main", true, CMClass.instance());

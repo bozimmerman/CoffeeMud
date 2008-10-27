@@ -38,7 +38,7 @@ public class ControlPanel extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		String query=(String)parms.get("QUERY");
 		if((query==null)||(query.length()==0))
 			return "";

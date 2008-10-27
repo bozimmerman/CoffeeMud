@@ -71,7 +71,7 @@ public class CombatAbilities extends StdBehavior
 			}
 			return;
 	    }
-	    Vector V=CMParms.parse(theParms.trim());
+	    Vector<String> V=CMParms.parse(theParms.trim());
 	    Vector classes=new Vector();
 	    for(int v=0;v<V.size();v++)
 	    {
@@ -100,7 +100,7 @@ public class CombatAbilities extends StdBehavior
 
 	protected String getParmsMinusCombatMode()
 	{
-		Vector V=CMParms.parse(getParms());
+		Vector<String> V=CMParms.parse(getParms());
 		for(int v=V.size()-1;v>=0;v--)
 		{
 			String s=((String)V.elementAt(v)).toUpperCase();
@@ -207,7 +207,7 @@ public class CombatAbilities extends StdBehavior
 				else
 				{
 					if((victim==msg.source())
-					||(msg.source().getGroupMembers(new HashSet()).contains(victim)))
+					||(msg.source().getGroupMembers(new HashSet<MOB>()).contains(victim)))
 						adjustAggro(msg.source(),msg.value());
 				}
 			}
@@ -217,7 +217,7 @@ public class CombatAbilities extends StdBehavior
 			&&(msg.target()!=mob))
 			{
 				if((msg.target()==victim)
-				||(msg.source().getGroupMembers(new HashSet()).contains(victim)))
+				||(msg.source().getGroupMembers(new HashSet<MOB>()).contains(victim)))
 					adjustAggro(msg.source(),msg.value()*2);
 			}
 			else
@@ -229,7 +229,7 @@ public class CombatAbilities extends StdBehavior
 			&&(msg.source().isInCombat()))
 			{
 				if((msg.source()==victim)
-				||(msg.source().getGroupMembers(new HashSet()).contains(victim)))
+				||(msg.source().getGroupMembers(new HashSet<MOB>()).contains(victim)))
 				{
 					int level=CMLib.ableMapper().qualifyingLevel(msg.source(),(Ability)msg.tool());
 					if(level<=0) level=CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID());
@@ -248,7 +248,7 @@ public class CombatAbilities extends StdBehavior
 		skillsNever=null;
 		wandUseCheck[0]=false;
 		proficient=false;
-		Vector V=CMParms.parse(getParms());
+		Vector<String> V=CMParms.parse(getParms());
 		String s=null;
 		Ability A=null;
 		for(int v=0;v<V.size();v++)
@@ -406,7 +406,7 @@ public class CombatAbilities extends StdBehavior
 				&&(winAmt>(vicAmt+(vicAmt/2)))
 				&&(!((MOB)aggro.elementAt(windex,1)).amDead())
 				&&(((MOB)aggro.elementAt(windex,1)).isInCombat())
-                &&(!mob.getGroupMembers(new HashSet()).contains((MOB)aggro.elementAt(windex,1))))
+                &&(!mob.getGroupMembers(new HashSet<MOB>()).contains((MOB)aggro.elementAt(windex,1))))
 				{
 					mob.setVictim((MOB)aggro.elementAt(windex,1));
 					victim=mob.getVictim();

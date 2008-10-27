@@ -41,11 +41,11 @@ public class Prayer_CallUndead extends Prayer
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
     public long flags(){return Ability.FLAG_UNHOLY|Ability.FLAG_TRANSPORTING|Ability.FLAG_SUMMONING;}
 
-    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         Room oldRoom=null;
         MOB target=null;
-        HashSet H=mob.getGroupMembers(new HashSet());
+        HashSet H=mob.getGroupMembers(new HashSet<MOB>());
         if((H.size()==0)||((H.size()==1)&&(H.contains(mob))))
         {
             mob.tell("You don't have any controlled undead!");
@@ -98,7 +98,7 @@ public class Prayer_CallUndead extends Prayer
                 Ability A=CMClass.getAbility("Skill_Track");
                 if(A!=null)
                 {
-                    A.invoke(follower,CMParms.parse("\""+CMLib.map().getExtendedRoomID(newRoom)+"\""),newRoom,true,0);
+                    A.invoke(follower,CMParms.parseToObjV("\""+CMLib.map().getExtendedRoomID(newRoom)+"\""),newRoom,true,0);
                     return true;
                 }
             }

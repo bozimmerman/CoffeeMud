@@ -230,7 +230,7 @@ public class Reset extends StdCommand
 	
 	
 	
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		commands.removeElementAt(0);
@@ -352,7 +352,7 @@ public class Reset extends StdCommand
 						CMLib.database().DBReCreate(R,oldID);
 						try
 						{
-							for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+							for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 							{
 								Room R2=(Room)r.nextElement();
 				    			R2=CMLib.map().getRoom(R2);
@@ -408,10 +408,10 @@ public class Reset extends StdCommand
         else
 		if(s.equalsIgnoreCase("genraceagingcharts"))
 		{
-		    for(Enumeration e=CMClass.races();e.hasMoreElements();)
+		    for(Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
 		    {
 		        Race R=(Race)e.nextElement();
-		        Vector racesToBaseFrom=new Vector();
+		        Vector<Race> racesToBaseFrom=new Vector<Race>();
 		        Race human=CMClass.getRace("Human");
 		        Race halfling=CMClass.getRace("Halfling");
 		        if((R.isGeneric())&&(R.ID().length()>1)&&(!R.ID().endsWith("Race"))&&(Character.isUpperCase(R.ID().charAt(0))))
@@ -592,7 +592,7 @@ public class Reset extends StdCommand
 			mob.session().print("working...");
 			try
 			{
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					boolean changed=false;
@@ -1055,28 +1055,28 @@ public class Reset extends StdCommand
 								{
 									String poss="";
 									if(poss.length()==0)
-									for(Enumeration e=CMClass.races();e.hasMoreElements();)
+									for(Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
 									{
 										Race R3=(Race)e.nextElement();
 										if(R3.ID().toUpperCase().startsWith(str.toUpperCase()))
 										   poss=R3.name();
 									}
 									if(poss.length()==0)
-									for(Enumeration e=CMClass.races();e.hasMoreElements();)
+									for(Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
 									{
 										Race R3=(Race)e.nextElement();
 										if(R3.ID().toUpperCase().indexOf(str.toUpperCase())>=0)
 										   poss=R3.name();
 									}
 									if(poss.length()==0)
-									for(Enumeration e=CMClass.races();e.hasMoreElements();)
+									for(Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
 									{
 										Race R3=(Race)e.nextElement();
 										if(R3.name().toUpperCase().startsWith(str.toUpperCase()))
 										   poss=R3.name();
 									}
 									if(poss.length()==0)
-									for(Enumeration e=CMClass.races();e.hasMoreElements();)
+									for(Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
 									{
 										Race R3=(Race)e.nextElement();
 										if(R3.name().toUpperCase().indexOf(str.toUpperCase())>=0)

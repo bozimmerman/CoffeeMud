@@ -97,7 +97,7 @@ public class Chant_CaveIn extends Chant
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=null;
         if(mob.isMonster()&&(givenTarget instanceof MOB))

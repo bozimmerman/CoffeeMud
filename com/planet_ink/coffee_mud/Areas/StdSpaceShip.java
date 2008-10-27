@@ -259,7 +259,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public String displayText(){return "";}
 	public void setDisplayText(String newDisplayText){}
 
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 	public String text()
@@ -679,7 +679,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		Hashtable allNums=new Hashtable();
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if((R.getArea().Name().equals(Name()))

@@ -238,7 +238,7 @@ public class Ranger_FindWater extends StdAbility
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Vector V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
 		for(int v=0;v<V.size();v++)	((Ability)V.elementAt(v)).unInvoke();

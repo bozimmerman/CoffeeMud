@@ -143,7 +143,7 @@ public class Catalog extends StdCommand
 		return data;
 	}
 	
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Room R=mob.location();

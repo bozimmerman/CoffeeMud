@@ -484,7 +484,7 @@ public class Nanny extends StdBehavior
         &&(msg.target()==CMLib.map().roomLocation(host)))
         {
 			String currency=CMLib.beanCounter().getCurrency(host);
-        	HashSet H=msg.source().getGroupMembers(new HashSet());
+        	HashSet H=msg.source().getGroupMembers(new HashSet<MOB>());
             msg.source().getRideBuddies(H);
             if(!H.contains(msg.source())) H.add(msg.source());
         	HashSet H2 = null;

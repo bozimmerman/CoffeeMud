@@ -58,7 +58,7 @@ public class Tarantula extends StdRace
 	private int[] agingChart={0,0,0,1,1,1,1,2,2};
 	public int[] getAgingChart(){return agingChart;}
 		
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -93,7 +93,7 @@ public class Tarantula extends StdRace
 		}
 		return naturalWeapon;
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

@@ -65,7 +65,7 @@ public class Undead_ColdTouch extends StdAbility
 			mob.tell("The chill is lifted.");
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{

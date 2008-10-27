@@ -36,7 +36,7 @@ public class Quiet extends StdCommand
 
 	private String[] access={"QUIET"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(!CMath.bset(mob.getBitmap(),MOB.ATT_QUIET))

@@ -127,7 +127,7 @@ public class QuestMaker extends StdWebMacro
     
     public String runMacro(ExternalHTTPRequests httpReq, String parm)
     {
-        Hashtable parms=parseParms(parm);
+        Hashtable<String,String> parms=parseParms(parm);
         if((parms==null)||(parms.size()==0)) return "";
 		MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
 		if(M==null) return "[error -- no authenticated mob!]";
@@ -281,7 +281,7 @@ public class QuestMaker extends StdWebMacro
         			list.append("<TD><SELECT NAME="+httpKeyName+">");
         			if(optionalEntry) list.append("<OPTION VALUE=\"\" "+((oldValue.length()==0)?"SELECTED":"")+">");
         			Ability A=null;
-        			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+        			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
         			{
         				A=(Ability)e.nextElement();
             			list.append("<OPTION VALUE=\""+A.ID()+"\" ");

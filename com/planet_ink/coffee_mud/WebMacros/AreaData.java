@@ -36,13 +36,13 @@ public class AreaData extends StdWebMacro
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 
-	public static StringBuffer affectsNBehaves(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+	public static StringBuffer affectsNBehaves(Environmental E, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BEHAVIORS"))
 		{
-			Vector theclasses=new Vector();
-			Vector theparms=new Vector();
+			Vector<String> theclasses=new Vector<String>();
+			Vector<String> theparms=new Vector<String>();
 			if(httpReq.isRequestParameter("BEHAV1"))
 			{
 				int num=1;
@@ -93,8 +93,8 @@ public class AreaData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Behavior");
 
 			Object[] sortedB=null;
-			Vector sortMeB=new Vector();
-			for(Enumeration b=CMClass.behaviors();b.hasMoreElements();)
+			Vector<String> sortMeB=new Vector<String>();
+			for(Enumeration<Behavior> b=CMClass.behaviors();b.hasMoreElements();)
 			{
 				Behavior B=(Behavior)b.nextElement();
 				if(B.canImprove(E))
@@ -164,7 +164,7 @@ public class AreaData extends StdWebMacro
 			str.append("<TR><TD WIDTH=50%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=AFFECT"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
-			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
 				if(!A.canAffect(E)) continue;
@@ -184,11 +184,11 @@ public class AreaData extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		if(parms.containsKey("AREATYPES"))
 		{
 			StringBuffer str=new StringBuffer("");
-			for(Enumeration e=CMClass.areaTypes();e.hasMoreElements();)
+			for(Enumeration<Area> e=CMClass.areaTypes();e.hasMoreElements();)
 			{
 				Area A=(Area)e.nextElement();
 				str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
@@ -359,10 +359,10 @@ public class AreaData extends StdWebMacro
 					Object[] sortedA=(Object[])Resources.getResource("MUDGRINDER-AREAS");
 					if(sortedA==null)
 					{
-						Vector sortMeA=new Vector();
-						for(Enumeration a=CMClass.areaTypes();a.hasMoreElements();)
+						Vector<String> sortMeA=new Vector<String>();
+						for(Enumeration<Area> a=CMClass.areaTypes();a.hasMoreElements();)
 							sortMeA.addElement(CMClass.classID(a.nextElement()));
-						sortedA=(new TreeSet(sortMeA)).toArray();
+						sortedA=(new TreeSet<String>(sortMeA)).toArray();
 						Resources.submitResource("MUDGRINDER-AREAS",sortedA);
 					}
 					for(int r=0;r<sortedA.length;r++)

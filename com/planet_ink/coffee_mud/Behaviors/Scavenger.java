@@ -89,7 +89,7 @@ public class Scavenger extends ActiveTicker
                 {
                     Ability A=CMClass.getAbility("Skill_Track");
                     if(A!=null)
-                        A.invoke(mob,CMParms.parse("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
+                        A.invoke(mob,CMParms.parseToObjV("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
                 }
                 else
                 if((origItems>=0)&&(mob.inventorySize()>origItems))

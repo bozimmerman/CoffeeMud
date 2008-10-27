@@ -114,7 +114,7 @@ public class Fighter_BodyFlip extends FighterSkill
 		}
 		return super.castingQuality(mob,target);
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

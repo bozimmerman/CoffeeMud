@@ -36,7 +36,7 @@ public class GTell extends StdCommand
 
 	private String[] access={"GTELL","GT"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String text=CMParms.combine(commands,1);
@@ -73,7 +73,7 @@ public class GTell extends StdCommand
 			&&(Character.isLetter(text.charAt(1))||text.charAt(1)==' ')))
 		{
 			text=text.substring(1);
-			Vector V=CMParms.parse(text);
+			Vector<String> V=CMParms.parse(text);
 			Social S=CMLib.socials().fetchSocial(V,true);
 			if(S==null) S=CMLib.socials().fetchSocial(V,false);
 			if(S!=null)
@@ -103,7 +103,7 @@ public class GTell extends StdCommand
 			tellMsg.setOthersMessage(tellMsg.sourceMessage());
 		}
 		
-		HashSet group=mob.getGroupMembers(new HashSet());
+		HashSet group=mob.getGroupMembers(new HashSet<MOB>());
 		CMMsg msg=tellMsg;
 		for(Iterator e=group.iterator();e.hasNext();)
 		{

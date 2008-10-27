@@ -65,7 +65,7 @@ public class Prayer_SenseGood extends Prayer
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"The glowing blue fades from <S-YOUPOSS> eyes.");
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

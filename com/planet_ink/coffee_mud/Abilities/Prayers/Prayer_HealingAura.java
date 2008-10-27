@@ -68,7 +68,7 @@ public class Prayer_HealingAura extends Prayer
 
 		if((fiveDown>1)&&(tenDown>1)&&(twentyDown>1)) return true;
 
-		HashSet followers=myChar.getGroupMembers(new HashSet());
+		HashSet followers=myChar.getGroupMembers(new HashSet<MOB>());
 		if(myChar.location()!=null)
 			for(int i=0;i<myChar.location().numInhabitants();i++)
 			{

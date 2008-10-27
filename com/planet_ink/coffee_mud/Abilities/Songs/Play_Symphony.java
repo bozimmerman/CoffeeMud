@@ -746,7 +746,7 @@ public class Play_Symphony extends Play
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		instrument=null;
 		toDoCode=-1;

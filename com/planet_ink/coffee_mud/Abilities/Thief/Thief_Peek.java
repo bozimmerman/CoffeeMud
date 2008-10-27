@@ -48,7 +48,7 @@ public class Thief_Peek extends ThiefSkill
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
 		{

@@ -36,7 +36,7 @@ public class Sniff extends StdCommand
 
 	private String[] access={"SNIFF","SMELL"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean quiet=false;
@@ -89,8 +89,8 @@ public class Sniff extends StdCommand
 		}
 		return false;
 	}
-	public double actionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
-    public double combatActionsCost(MOB mob, Vector cmds){return 0.25;}
+	public double actionsCost(MOB mob, Vector<Object> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
+    public double combatActionsCost(MOB mob, Vector<Object> cmds){return 0.25;}
 	public boolean canBeOrdered(){return true;}
 
 	

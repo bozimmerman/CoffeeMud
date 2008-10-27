@@ -176,7 +176,7 @@ public class Skill_Track extends StdSkill
 			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),false);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 	    tickStatus=Tickable.STATUS_MISC6;
 		if((!CMLib.flags().aliveAwakeMobile(mob,false))||(mob.location()==null)||(!CMLib.flags().isInTheGame(mob,true)))

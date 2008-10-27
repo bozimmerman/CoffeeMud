@@ -63,7 +63,7 @@ public class Play_Accompaniment extends Play
     {
         if(mob!=null)
         {
-            if(mob.getGroupMembers(new HashSet()).size()<2)
+            if(mob.getGroupMembers(new HashSet<MOB>()).size()<2)
                 return Ability.QUALITY_INDIFFERENT;
         }
         return super.castingQuality(mob,target);

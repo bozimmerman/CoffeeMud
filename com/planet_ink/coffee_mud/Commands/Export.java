@@ -90,7 +90,7 @@ public class Export extends StdCommand
 		}
 	}
 
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String commandType="";
@@ -314,7 +314,7 @@ public class Export extends StdCommand
 				StringBuffer buf=new StringBuffer("<MOBS>");
 				try
 				{
-					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+					for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
 						if(S!=null) S.rawPrint(".");
@@ -377,7 +377,7 @@ public class Export extends StdCommand
 				StringBuffer buf=new StringBuffer("<ITEMS>");
 				try
 				{
-					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+					for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
 						if(S!=null) S.rawPrint(".");

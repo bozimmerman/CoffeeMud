@@ -208,11 +208,11 @@ public class Missionary extends Cleric
 		return true;
 	}
 
-	public Vector outfit(MOB myChar)
+	public Vector<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			Weapon w=CMClass.getWeapon("SmallMace");
 			outfitChoices.addElement(w);
 		}

@@ -46,7 +46,7 @@ public class EarthElemental extends StdRace
 	public boolean uncharmable(){return true;}
 	protected boolean destroyBodyAfterUse(){return true;}
 
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
@@ -103,7 +103,7 @@ public class EarthElemental extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect condition.^N";
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

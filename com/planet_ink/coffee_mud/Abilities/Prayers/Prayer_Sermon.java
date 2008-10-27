@@ -119,7 +119,7 @@ public class Prayer_Sermon extends Prayer
 		return super.okMessage(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		Hashtable h=new Hashtable();

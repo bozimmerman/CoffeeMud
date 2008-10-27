@@ -193,7 +193,7 @@ public class GenAbility extends StdAbility
 
     public boolean isGeneric(){return true;}
 
-    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
     {
     	if((!auto)
     	&&(((String)V(ID,V_CMSK)).length()>0)

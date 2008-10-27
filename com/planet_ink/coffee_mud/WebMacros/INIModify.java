@@ -57,7 +57,7 @@ public class INIModify extends StdWebMacro
 	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		if(parms==null) return "";
 		Vector page=CMProps.loadEnumerablePage(CMProps.getVar(CMProps.SYSTEM_INIPATH));
 		if(parms.containsKey("ADDKEY"))

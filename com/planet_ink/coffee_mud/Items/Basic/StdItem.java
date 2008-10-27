@@ -451,7 +451,7 @@ public class StdItem implements Item
 	}
 	public String miscTextFormat(){return CMParms.FORMAT_UNDEFINED;}
 
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	public long getTickStatus(){return tickStatus;}
 	public boolean tick(Tickable ticking, int tickID)

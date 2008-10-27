@@ -35,7 +35,7 @@ public interface Container extends Item
 	public boolean isOpen();
 	public boolean hasALid();
 	public void setLidsNLocks(boolean newHasALid, boolean newIsOpen, boolean newHasALock, boolean newIsLocked);
-	public Vector getContents();
+	public Vector<Item> getContents();
 	public int capacity();
 	public void setCapacity(int newValue);
 	public boolean canContain(Environmental E);

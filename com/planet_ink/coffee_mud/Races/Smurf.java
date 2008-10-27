@@ -50,7 +50,7 @@ public class Smurf extends StdRace
 	private int[] agingChart={0,2,20,110,175,263,350,390,430};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	protected Weapon funHumanoidWeapon()
@@ -141,7 +141,7 @@ public class Smurf extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

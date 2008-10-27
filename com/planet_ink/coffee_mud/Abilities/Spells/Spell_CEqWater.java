@@ -40,7 +40,7 @@ public class Spell_CEqWater extends Spell_BaseClanEq {
   public String name(){return "ClanEnchant Water";}
   public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-  public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+  public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
   {
     type="Water";
     // All the work is done by the base model

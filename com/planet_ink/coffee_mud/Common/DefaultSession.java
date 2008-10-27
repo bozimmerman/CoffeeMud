@@ -97,7 +97,7 @@ public class DefaultSession extends Thread implements Session
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultSession();}}
     public void initializeClass(){}
     public CMObject copyOf(){ try{ Object O=this.clone(); return (CMObject)O;}catch(Exception e){return newInstance();} }
-    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
     public DefaultSession()
     {
@@ -1531,7 +1531,7 @@ public class DefaultSession extends Thread implements Session
 						&&(mob()!=null))
 						{
 							lastBlahCheck=System.currentTimeMillis();
-							Vector V=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_IDLETIMERS));
+							Vector<String> V=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_IDLETIMERS));
 							if((V.size()>0)
 							&&(!CMSecurity.isAllowed(mob(),mob().location(),"IDLEOK"))
 							&&(CMath.s_int((String)V.firstElement())>0))
@@ -1675,7 +1675,7 @@ public class DefaultSession extends Thread implements Session
         public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new loginLogoutThread();}}
         public void initializeClass(){}
         public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
-        public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+        public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
         public long getTickStatus(){return 0;}
         private MOB theMOB=null;
         private int msgCode=-1;
@@ -1689,7 +1689,7 @@ public class DefaultSession extends Thread implements Session
 
         public void initialize()
         {
-            HashSet group=theMOB.getGroupMembers(new HashSet());
+            HashSet group=theMOB.getGroupMembers(new HashSet<MOB>());
             skipRooms.clear();
             for(Iterator i=group.iterator();i.hasNext();)
             {

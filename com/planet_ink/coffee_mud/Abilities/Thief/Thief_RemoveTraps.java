@@ -45,7 +45,7 @@ public class Thief_RemoveTraps extends ThiefSkill
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
     public Vector lastDone=new Vector();
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         boolean saveTheTrap=false;
         if((commands.size()>0)&&(commands.lastElement() instanceof Boolean))

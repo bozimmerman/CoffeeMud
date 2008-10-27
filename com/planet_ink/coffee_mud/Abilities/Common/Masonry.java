@@ -219,7 +219,7 @@ public class Masonry extends CraftingSkill
 								try
 								{
 									boolean rebuild=false;
-									for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+									for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 									{
 										Room R2=(Room)r.nextElement();
 										rebuild=false;
@@ -488,7 +488,7 @@ public class Masonry extends CraftingSkill
 								R.startItemRejuv();
 								try
 								{
-									for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+									for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 									{
 										Room R3=(Room)r.nextElement();
 										for(int d=0;d<R3.rawDoors().length;d++)
@@ -524,7 +524,7 @@ public class Masonry extends CraftingSkill
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
 		{

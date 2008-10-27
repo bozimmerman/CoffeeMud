@@ -105,13 +105,13 @@ public interface RoomnumberSet extends CMCommon
      * Returns an enumerator for all room ids in this object
      * @return an enumerator for all room ids in this object
      */
-    public Enumeration getRoomIDs();
+    public Enumeration<String> getRoomIDs();
 
     /**
      * Returns an enumerator for all area names in this object
      * @return an enumerator for all area names in this object
      */
-    public Enumeration getAreaNames();
+    public Enumeration<String> getAreaNames();
 
     /**
      * Returns the number parts of the room ids stored in this

@@ -50,11 +50,11 @@ public class Harpy extends GreatBird
 	private int[] agingChart={0,1,4,20,50,75,100,110,120};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{ affectableStats.setStat(CharStats.STAT_GENDER,'F');}
 
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

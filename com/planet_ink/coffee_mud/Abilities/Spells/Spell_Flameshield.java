@@ -104,7 +104,7 @@ public class Spell_Flameshield extends Spell
         affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

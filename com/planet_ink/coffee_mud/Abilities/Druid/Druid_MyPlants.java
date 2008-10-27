@@ -101,7 +101,7 @@ public class Druid_MyPlants extends StdAbility
 		Vector V=new Vector();
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if((myPlant(R,mob,0)!=null)&&(!V.contains(R)))
@@ -112,7 +112,7 @@ public class Druid_MyPlants extends StdAbility
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

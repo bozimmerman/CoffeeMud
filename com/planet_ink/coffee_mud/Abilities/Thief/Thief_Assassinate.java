@@ -186,7 +186,7 @@ public class Thief_Assassinate extends ThiefSkill
             CMLib.tracking().wanderAway(mob,false,true);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;

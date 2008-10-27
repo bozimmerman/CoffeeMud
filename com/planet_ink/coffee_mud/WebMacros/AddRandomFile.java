@@ -37,17 +37,17 @@ public class AddRandomFile extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		if((parms==null)||(parms.size()==0)) return "";
 		StringBuffer buf=new StringBuffer("");
 		int d=CMLib.dice().roll(1,parms.size(),0);
 		String file=null;
 		int i=0;
 		boolean LINKONLY=false;
-		for(Enumeration e=parms.elements();e.hasMoreElements();)
+		for(Enumeration<String> e=parms.elements();e.hasMoreElements();)
 			if(((String)e.nextElement()).equalsIgnoreCase("LINKONLY"))
 				LINKONLY=true;
-		for(Enumeration e=parms.elements();e.hasMoreElements();)
+		for(Enumeration<String> e=parms.elements();e.hasMoreElements();)
 		{
 			file=(String)e.nextElement();
 			if(file.equalsIgnoreCase("LINKONLY")) continue;

@@ -38,7 +38,7 @@ public class JournalFunction extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("JOURNAL");
 		if(last==null) return "Function not performed -- no Journal specified.";
 		Vector info=(Vector)httpReq.getRequestObjects().get("JOURNAL: "+last);

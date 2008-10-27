@@ -862,7 +862,7 @@ public final class IMC2Driver extends Thread {
 
             if (hbeat == HeartBeat) {
                 Object o = this;
-                Class cl = o.getClass();
+                Class<?> cl = o.getClass();
                 java.lang.reflect.Method funcs[] = cl.getMethods();
                 if (funcs.length > 1) {
                     for (int k = 0; k < funcs.length; k++) {

@@ -55,7 +55,7 @@ public class Spell_KnowOrigin extends Spell
 			try
 			{
 				// check mobs worn items first!
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(CMLib.flags().canAccess(mob,R))
@@ -76,7 +76,7 @@ public class Spell_KnowOrigin extends Spell
 		    try
 		    {
 				// check shopkeepers second!
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(CMLib.flags().canAccess(mob,R))
@@ -97,7 +97,7 @@ public class Spell_KnowOrigin extends Spell
 		    try
 		    {
 				// check mobs inventory items third!
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R!=null)
@@ -118,7 +118,7 @@ public class Spell_KnowOrigin extends Spell
 		    try
 		    {
 				// check room stuff last
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if((CMLib.flags().canAccess(mob,R))&&(R.fetchItem(null,me.Name())!=null))
@@ -129,7 +129,7 @@ public class Spell_KnowOrigin extends Spell
 		return null;
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_ANY);
 		if(target==null) return false;

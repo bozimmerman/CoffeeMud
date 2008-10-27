@@ -187,7 +187,7 @@ public class ClanData extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("CLAN");
 		if(last==null) return " @break@";
 		if(last.length()>0)
@@ -288,7 +288,7 @@ public class ClanData extends StdWebMacro
                     if(old==null) old=C.getClanClass();
                     str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">None");
                     CharClass CC=null;
-                    for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
+                    for(Enumeration<CharClass> e=CMClass.charClasses();e.hasMoreElements();)
                     {
                         CC=(CharClass)e.nextElement();
                         str.append("<OPTION VALUE=\""+CC.ID()+"\" "+((old.equalsIgnoreCase(CC.ID()))?"SELECTED":"")+">"+CC.name());

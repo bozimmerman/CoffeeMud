@@ -355,7 +355,7 @@ public interface SlaveryLibrary extends CMLibrary
                                 double price=CMLib.coffeeShops().sellingPrice(M,me,E,sk,true).absoluteGoldPrice;
                                 if(price<=CMLib.beanCounter().getTotalAbsoluteShopKeepersValue(me,M))
                                 {
-                                    me.enqueCommand(CMParms.parse("BUY \""+E.name()+"\""),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,0);
+                                    me.enqueCommand(CMParms.parseToObjV("BUY \""+E.name()+"\""),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,0);
                                     step=STEP_EVAL;
                                     return "HOLD";
                                 }

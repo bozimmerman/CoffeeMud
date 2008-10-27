@@ -20,7 +20,7 @@ public class FakeSession implements Session
     public String ID(){return "FakeSession";}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new FakeSession();}}
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
-    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public long getTickStatus(){return 0;}
     public void initializeSession(Socket s, String introTextStr){ theFile = new CMFile(introTextStr,null,true); }
     public boolean isLockedUpWriting(){return false;}

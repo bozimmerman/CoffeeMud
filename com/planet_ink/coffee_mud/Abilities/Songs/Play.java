@@ -348,7 +348,7 @@ public class Play extends StdAbility
 		return h;
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         steadyDown=-1;
 		if(!auto)

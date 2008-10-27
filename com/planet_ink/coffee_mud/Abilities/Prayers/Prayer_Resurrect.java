@@ -45,7 +45,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 		return (E instanceof DeadBody);
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental body=null;
         body=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);

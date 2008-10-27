@@ -307,7 +307,7 @@ public class Thief_TapRoom extends ThiefSkill
 
 	public Vector getParsedText(){return CMParms.parseSemicolons(text(),false);}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof Room))

@@ -25,7 +25,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class DefaultCoffeeShop implements CoffeeShop
 {
     public String ID(){return "DefaultCoffeeShop";}
-    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public CMObject copyOf()
     {
         try

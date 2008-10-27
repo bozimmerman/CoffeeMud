@@ -126,7 +126,7 @@ public class Song_Babble extends Song
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         steadyDown=-1;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

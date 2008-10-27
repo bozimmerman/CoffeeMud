@@ -36,11 +36,11 @@ public class JournalMessageNext extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public static HashSet getProtectedJournals()
+	public static HashSet<String> getProtectedJournals()
 	{
 	    Item I=null;
-	    HashSet H=new HashSet();
-	    for(Enumeration e=CMClass.basicItems();e.hasMoreElements();)
+	    HashSet<String> H=new HashSet<String>();
+	    for(Enumeration<Item> e=CMClass.basicItems();e.hasMoreElements();)
 	    {
 	        I=(Item)e.nextElement();
 	        if((I instanceof ArchonOnly)
@@ -58,7 +58,7 @@ public class JournalMessageNext extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		String journal=httpReq.getRequestParameter("JOURNAL");
 		if(journal==null) return " @break@";
 		if(isProtectedJournal(journal))

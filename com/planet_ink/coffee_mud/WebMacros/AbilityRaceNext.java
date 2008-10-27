@@ -40,7 +40,7 @@ public class AbilityRaceNext extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("ABILITY");
 		if(parms.containsKey("RESET"))
 		{	

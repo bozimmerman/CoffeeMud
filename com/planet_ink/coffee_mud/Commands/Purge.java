@@ -146,7 +146,7 @@ public class Purge extends StdCommand
 	}
 
 
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String commandType="";

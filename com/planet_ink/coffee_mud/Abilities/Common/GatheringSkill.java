@@ -45,7 +45,7 @@ public class GatheringSkill extends CommonSkill
 	
 	public GatheringSkill(){super();}
 	
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 	    if(supportedResources.containsKey(ID()))
 	        return (Vector)supportedResources.get(ID());

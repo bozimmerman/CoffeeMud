@@ -37,7 +37,7 @@ public class AreaNext extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("AREA");
 		if(parms.containsKey("RESET"))
 		{

@@ -35,7 +35,7 @@ import java.util.*;
 public class CMPlayers extends StdLibrary implements PlayerLibrary
 {
     public String ID(){return "CMPlayers";}
-    public Vector playersList = new Vector();
+    public Vector<MOB> playersList = new Vector<MOB>();
     
     private ThreadEngine.SupportThread thread=null;
     
@@ -57,7 +57,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
         MOB M = null;
         synchronized(playersList)
         {
-            for (Enumeration p=players(); p.hasMoreElements();)
+            for (Enumeration<MOB> p=players(); p.hasMoreElements();)
             {
                 M = (MOB)p.nextElement();
                 if (M.Name().equalsIgnoreCase(calledThis))
@@ -77,7 +77,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
             M=getPlayer(last);
             if(M!=null) return M;
 
-            for(Enumeration p=players();p.hasMoreElements();)
+            for(Enumeration<MOB> p=players();p.hasMoreElements();)
             {
                 MOB mob2=(MOB)p.nextElement();
                 if(mob2.Name().equalsIgnoreCase(last))
@@ -101,7 +101,8 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
         return M;
     }
 
-    public Enumeration players() { return DVector.s_enum(playersList); }
+    @SuppressWarnings("unchecked")
+	public Enumeration<MOB> players() { return (Enumeration<MOB>)DVector.s_enum(playersList); }
 
     public void obliteratePlayer(MOB deadMOB, boolean quiet)
     {
@@ -122,7 +123,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
             deadLoc.send(deadMOB,msg);
         try
         {
-            for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+            for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
             {
                 Room R=(Room)r.nextElement();
                 if((R!=null)&&(R!=deadLoc))
@@ -138,7 +139,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
             }
         }catch(NoSuchElementException e){}
         StringBuffer newNoPurge=new StringBuffer("");
-        Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
+        Vector<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
         boolean somethingDone=false;
         if((protectedOnes!=null)&&(protectedOnes.size()>0))
         {
@@ -167,7 +168,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
     public int savePlayers()
     {
         int processed=0;
-        for(Enumeration p=players();p.hasMoreElements();)
+        for(Enumeration<MOB> p=players();p.hasMoreElements();)
         {
             MOB mob=(MOB)p.nextElement();
             if(!mob.isMonster())
@@ -212,11 +213,11 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
         for(int i=0;i<levels.length;i++) levels[i]=0;
         for(int i=0;i<prePurgeLevels.length;i++) prePurgeLevels[i]=0;
         String mask=CMProps.getVar(CMProps.SYSTEM_AUTOPURGE);
-        Vector maskV=CMParms.parseCommas(mask.trim(),false);
+        Vector<String> maskV=CMParms.parseCommas(mask.trim(),false);
         long purgePoint=0;
         for(int mv=0;mv<maskV.size();mv++)
         {
-            Vector V=CMParms.parse(((String)maskV.elementAt(mv)).trim());
+            Vector<String> V=CMParms.parse(((String)maskV.elementAt(mv)).trim());
             if(V.size()<2) continue;
             long val=CMath.s_long((String)V.elementAt(1));
             if(val<=0) continue;
@@ -262,13 +263,13 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
             }
         }
         thread.status("autopurge process");
-        Vector allUsers=CMLib.database().getExtendedUserList();
-        Vector protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
-        if(protectedOnes==null) protectedOnes=new Vector();
+        Vector<Vector<String>> allUsers=CMLib.database().getExtendedUserList();
+        Vector<String> protectedOnes=Resources.getFileLineVector(Resources.getFileResource("protectedplayers.ini",false));
+        if(protectedOnes==null) protectedOnes=new Vector<String>();
 
         for(int u=0;u<allUsers.size();u++)
         {
-            Vector user=(Vector)allUsers.elementAt(u);
+        	Vector<String> user=(Vector<String>)allUsers.elementAt(u);
             String name=(String)user.elementAt(0);
             int level=CMath.s_int((String)user.elementAt(3));
             long last=CMath.s_long((String)user.elementAt(5));
@@ -303,7 +304,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                 }
                 if(!protectedOne)
                 {
-                    Vector warnedOnes=Resources.getFileLineVector(Resources.getFileResource("warnedplayers.ini",false));
+                    Vector<String> warnedOnes=Resources.getFileLineVector(Resources.getFileResource("warnedplayers.ini",false));
                     long foundWarning=-1;
                     StringBuffer warnStr=new StringBuffer("");
                     if((warnedOnes!=null)&&(warnedOnes.size()>0))

@@ -66,9 +66,9 @@ public class QuestBound implements Ability
 	public void setInvoker(MOB mob){}
 	public static final String[] empty={};
 	public String[] triggerStrings(){return empty;}
-	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel){return false;}
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental target, boolean auto, int asLevel){return false;}
 	public boolean invoke(MOB mob, Environmental target, boolean auto, int asLevel){return false;}
-    public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining){return true;}
+    public boolean preInvoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining){return true;}
 	public boolean autoInvocation(MOB mob){return false;}
 	public void unInvoke(){}
 	public boolean canBeUninvoked(){return false;}
@@ -190,7 +190,7 @@ public class QuestBound implements Ability
 		}
 	}
 
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	protected String questID="";
 	public void setMiscText(String newMiscText){ questID=newMiscText;}

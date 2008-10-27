@@ -225,11 +225,11 @@ public class Delver extends StdCharClass
 	public String otherLimitations(){return "Must remain Neutral to avoid skill and chant failure chances.";}
 	public String otherBonuses(){return "Can create a druidic connection with an area.  Benefits from freeing animals from cities.";}
 
-	public Vector outfit(MOB myChar)
+	public Vector<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			Weapon w=CMClass.getWeapon("Shortsword");
 			outfitChoices.addElement(w);
 		}

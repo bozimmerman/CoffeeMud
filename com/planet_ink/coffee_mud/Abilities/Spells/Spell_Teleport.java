@@ -40,7 +40,7 @@ public class Spell_Teleport extends Spell
 	public long flags(){return Ability.FLAG_TRANSPORTING;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
@@ -57,7 +57,7 @@ public class Spell_Teleport extends Spell
 		Vector candidates=new Vector();
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room room=(Room)r.nextElement();
 				if((room.getArea().name().toUpperCase().startsWith(areaName))
@@ -68,7 +68,7 @@ public class Spell_Teleport extends Spell
         if(candidates.size()==0)
         try
         {
-            for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+            for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
             {
                 Room room=(Room)r.nextElement();
                 if((room.getArea().name().toUpperCase().indexOf(areaName)>=0)

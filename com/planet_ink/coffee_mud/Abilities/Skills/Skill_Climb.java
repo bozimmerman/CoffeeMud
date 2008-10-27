@@ -50,7 +50,7 @@ public class Skill_Climb extends StdSkill
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_CLIMBING);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
 		if(dirCode<0)

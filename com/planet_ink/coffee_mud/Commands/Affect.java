@@ -82,7 +82,7 @@ public class Affect extends StdCommand
 		return msg.toString();
 	}
 
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Session S=mob.session();

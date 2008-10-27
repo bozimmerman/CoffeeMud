@@ -48,7 +48,7 @@ public class Spell_Cogniportive extends Spell
 		// check mobs worn items first!
 	    try
 	    {
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(CMLib.flags().canAccess(mob,R))
@@ -71,7 +71,7 @@ public class Spell_Cogniportive extends Spell
 	    try
 	    {
 			// check shopkeepers second!
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(CMLib.flags().canAccess(mob,R))
@@ -94,7 +94,7 @@ public class Spell_Cogniportive extends Spell
 	    try
 	    {
 			// check mobs inventory items third!
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(CMLib.flags().canAccess(mob,R))
@@ -117,7 +117,7 @@ public class Spell_Cogniportive extends Spell
 	    try
 	    {
 			// check room stuff last
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if((CMLib.flags().canAccess(mob,R))
@@ -196,7 +196,7 @@ public class Spell_Cogniportive extends Spell
 				String msgStr=CMStrings.getSayFromMessage(msg.sourceMessage());
 				if(msgStr!=null)
 				{
-					Vector V=CMParms.parse(msgStr);
+					Vector<String> V=CMParms.parse(msgStr);
 					if((V.size()>=2)
 					&&(((String)V.firstElement()).equalsIgnoreCase("HOME")))
 					{
@@ -215,7 +215,7 @@ public class Spell_Cogniportive extends Spell
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
 		if(target==null)

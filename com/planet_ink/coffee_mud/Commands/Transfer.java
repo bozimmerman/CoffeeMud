@@ -36,7 +36,7 @@ public class Transfer extends At
 
 	private String[] access={"TRANSFER"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Room room=null;
@@ -135,7 +135,7 @@ public class Transfer extends At
 			{
 			    try
 			    {
-					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+					for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
 						MOB M=null;

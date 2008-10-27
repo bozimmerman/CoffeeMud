@@ -171,7 +171,7 @@ public class Prayer_Vampirism extends Prayer
 					CMLib.commands().postGet(M,null,(Item)D,false);
 					if(M.isMine(D))
 					{
-						M.doCommand(CMParms.parse("DRINK "+D.Name()),Command.METAFLAG_FORCED);
+						M.doCommand(CMParms.parseToObjV("DRINK "+D.Name()),Command.METAFLAG_FORCED);
 						if(M.isMine(D))
 							((Item)D).destroy();
 					}
@@ -182,7 +182,7 @@ public class Prayer_Vampirism extends Prayer
 				if(B!=null)
 				{
 					Ability A=CMClass.getAbility("Butchering");
-					if(A!=null) A.invoke(M,CMParms.parse(B.Name()),B,true,0);
+					if(A!=null) A.invoke(M,CMParms.parseToObjV(B.Name()),B,true,0);
 				}
 				else
 				if(CMLib.dice().rollPercentage()<10)
@@ -197,7 +197,7 @@ public class Prayer_Vampirism extends Prayer
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

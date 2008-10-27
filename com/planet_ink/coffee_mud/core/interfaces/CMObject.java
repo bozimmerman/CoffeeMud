@@ -34,7 +34,7 @@ limitations under the License.
  * @author Bo Zimmerman
  *
  */
-public interface CMObject extends Cloneable, Comparable
+public interface CMObject extends Cloneable, Comparable<CMObject>
 {
     /**
      * The CoffeeMud Java Class ID shared by all instances of

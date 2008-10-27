@@ -715,5 +715,5 @@ public class DefaultPlayerStats implements PlayerStats
             return;
         levelInfo.addElement(new Integer(level),new Long(System.currentTimeMillis()),CMLib.map().getExtendedRoomID(R));
     }
-    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 }

@@ -36,7 +36,7 @@ public class Rules extends StdCommand
 
 	private String[] access={"RULES"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		StringBuffer credits=new CMFile(Resources.buildResourcePath("text")+"rules.txt",null,true).text();

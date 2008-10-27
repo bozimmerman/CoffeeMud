@@ -52,7 +52,7 @@ public class DoorwayGuardian extends StdBehavior
         String parm=getParms();
         int x=parm.indexOf(";");
         if(x>0) parm=parm.substring(0,x);
-		Vector V=CMParms.parse(parm);
+		Vector<String> V=CMParms.parse(parm);
 		for(int v=0;v<V.size();v++)
 		{
 			int dir=Directions.getGoodDirectionCode((String)V.elementAt(v));

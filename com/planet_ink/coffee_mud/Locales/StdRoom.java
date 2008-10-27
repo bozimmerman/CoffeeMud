@@ -934,7 +934,7 @@ public class StdRoom implements Room
 			   A.affectCharState(affectedMob,affectableMaxState);
 		}
 	}
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	protected String parseVariesCodes(String text)
 	{

@@ -62,7 +62,7 @@ public class Prop_Trainer extends Prop_StatTrainer
 			CharClass C=null;
 			Vector allowedClasses=new Vector();
 			Vector allowedExpertises=new Vector();
-			Vector V=CMParms.parse(text());
+			Vector<String> V=CMParms.parse(text());
 			String s=null;
 			for(int v=0;v<V.size();v++)
 			{

@@ -94,7 +94,7 @@ public class CheckAuthCode extends StdWebMacro
 	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		boolean finalCondition=false;
 		Hashtable auths=getAuths(httpReq);
 		if(auths==null) return "false";

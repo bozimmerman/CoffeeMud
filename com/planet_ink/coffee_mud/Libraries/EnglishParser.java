@@ -1217,7 +1217,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		    }
 		    return CMath.s_long(itemID);
 		}
-	    Vector V=CMParms.parse(itemID);
+	    Vector<String> V=CMParms.parse(itemID);
 	    if((V.size()>1)
 	    &&((CMath.isInteger((String)V.firstElement()))
         &&(matchAnyCurrencySet(CMParms.combine(V,1))!=null)))
@@ -1268,7 +1268,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             }
             return CMLib.beanCounter().getCurrency(mine);
 		}
-	    Vector V=CMParms.parse(itemID);
+	    Vector<String> V=CMParms.parse(itemID);
 	    if((V.size()>1)&&(CMath.isInteger((String)V.firstElement())))
 	        return matchAnyCurrencySet(CMParms.combine(V,1));
 	    else
@@ -1297,7 +1297,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             }
 		    return CMLib.beanCounter().getLowestDenomination(currency);
 		}
-	    Vector V=CMParms.parse(itemID);
+	    Vector<String> V=CMParms.parse(itemID);
 	    if((V.size()>1)&&(CMath.isInteger((String)V.firstElement())))
 	        return matchAnyDenomination(currency,CMParms.combine(V,1));
 	    else
@@ -1361,7 +1361,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		else
 		{
-		    Vector V=CMParms.parse(itemID);
+		    Vector<String> V=CMParms.parse(itemID);
 		    if((V.size()>1)&&(CMath.isInteger((String)V.firstElement())))
 		        gold=CMath.s_long((String)V.firstElement());
 		    else
@@ -1420,7 +1420,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		else
 		{
-		    Vector V=CMParms.parse(itemID);
+		    Vector<String> V=CMParms.parse(itemID);
 		    if(V.size()<1) return null;
 		    if((!CMath.isInteger((String)V.firstElement()))
 		    &&(!((String)V.firstElement()).equalsIgnoreCase("all")))

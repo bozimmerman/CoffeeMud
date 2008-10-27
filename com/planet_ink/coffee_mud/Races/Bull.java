@@ -40,7 +40,7 @@ public class Bull extends Buffalo
 	public int heightVariance(){return 6;}
 	public int lightestWeight(){return 350;}
 	public int weightVariance(){return 100;}
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 	public String racialCategory(){return "Bovine";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
@@ -62,7 +62,7 @@ public class Bull extends Buffalo
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,19);
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

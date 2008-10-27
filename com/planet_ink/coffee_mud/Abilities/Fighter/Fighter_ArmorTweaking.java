@@ -93,7 +93,7 @@ public class Fighter_ArmorTweaking extends FighterSkill
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		Item armor=super.getTarget(mob,null,givenTarget,null,commands,Item.WORNREQ_WORNONLY);

@@ -36,7 +36,7 @@ public class Config extends StdCommand
 
 	private String[] access={"CONFIG","AUTO"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("^HYour configuration flags:^?\n\r");

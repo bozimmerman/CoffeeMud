@@ -293,7 +293,7 @@ public class GrinderRooms
 			{
 			    try
 			    {
-					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+					for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R2=(Room)r.nextElement();
 						for(int d=0;d<R2.rawDoors().length;d++)

@@ -181,11 +181,11 @@ public class Templar extends Cleric
 	public String otherBonuses(){return "Receives Aura of Strife which increases in power.";}
 	public String otherLimitations(){return "Always fumbles good prayers.  Using non-evil prayers introduces failure chance.";}
 
-	public Vector outfit(MOB myChar)
+	public Vector<Item> outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector();
+			outfitChoices=new Vector<Item>();
 			Weapon w=CMClass.getWeapon("Shortsword");
 			outfitChoices.addElement(w);
 		}

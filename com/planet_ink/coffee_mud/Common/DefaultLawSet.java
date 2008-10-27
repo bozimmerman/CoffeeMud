@@ -40,7 +40,7 @@ public class DefaultLawSet implements Law
     public String ID(){return "DefaultLawSet";}
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultLawSet();}}
     public void initializeClass(){}
-    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public CMObject copyOf()
     {
         try

@@ -39,8 +39,8 @@ public class Lion extends GreatCat
 	public int[] bodyMask(){return parts;}
 	
 	
-	protected static Vector resources=new Vector();
-	public Vector myResources()
+	protected static Vector<Item> resources=new Vector<Item>();
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

@@ -40,7 +40,7 @@ public class AbilityPowersNext extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return " @break@";
 
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("ABILITY");
 		if(parms.containsKey("RESET"))
 		{	

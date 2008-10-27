@@ -1024,7 +1024,7 @@ public class StdDeity extends StdMOB implements Deity
                         Ability TRACKA=CMClass.getAbility("Skill_Track");
                         if(TRACKA!=null)
                         {
-                            TRACKA.invoke(M,CMParms.parse("\""+CMLib.map().getExtendedRoomID(room)+"\""),room,true,0);
+                            TRACKA.invoke(M,CMParms.parseToObjV("\""+CMLib.map().getExtendedRoomID(room)+"\""),room,true,0);
                             parishaners.addElement(M);
                         }
                     }
@@ -1315,7 +1315,7 @@ public class StdDeity extends StdMOB implements Deity
 			}
 			if(trig.length()>0)
 			{
-				Vector V=CMParms.parse(trig);
+				Vector<String> V=CMParms.parse(trig);
 				if(V.size()>1)
 				{
 					String cmd=(String)V.firstElement();

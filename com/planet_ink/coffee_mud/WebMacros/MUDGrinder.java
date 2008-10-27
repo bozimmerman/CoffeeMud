@@ -41,7 +41,7 @@ public class MUDGrinder extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
@@ -238,7 +238,7 @@ public class MUDGrinder extends StdWebMacro
             if(httpReq.getRequestParameter("DELFIRST")!=null)
             	deleteIfExists=httpReq.getRequestParameter("DELFIRST").equalsIgnoreCase("ON");
             StringBuffer buf=new StringBuffer(CMStrings.bytesToStr(bufBytes));
-    		Vector V=CMParms.parse("IMPORT "+(deleteIfExists?"":"NODELETE ")+"NOPROMPT");
+    		Vector<Object> V=CMParms.parseToObjV("IMPORT "+(deleteIfExists?"":"NODELETE ")+"NOPROMPT");
     		V.addElement(buf);
     		Command C=CMClass.getCommand("Import");
     		if(C==null) return null;

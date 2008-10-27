@@ -34,22 +34,22 @@ import java.util.*;
 public class CMMap extends StdLibrary implements WorldMap
 {
     public String ID(){return "CMMap";}
-	public Vector areasList = new Vector();
+	public Vector<Area> areasList = new Vector<Area>();
 	//public Vector roomsList = new Vector();
-	public Vector deitiesList = new Vector();
-    public Vector postOfficeList=new Vector();
-    public Vector auctionHouseList=new Vector();
-    public Vector bankList=new Vector();
+	public Vector<Deity> deitiesList = new Vector<Deity>();
+    public Vector<PostOffice> postOfficeList=new Vector<PostOffice>();
+    public Vector<Auctioneer> auctionHouseList=new Vector<Auctioneer>();
+    public Vector<Banker> bankList=new Vector<Banker>();
 	public final int QUADRANT_WIDTH=10;
-	public Vector space=new Vector();
-    public Hashtable globalHandlers=new Hashtable();
-    public Vector sortedAreas=null;
+	public Vector<SpaceObject> space=new Vector<SpaceObject>();
+    public Hashtable<Integer,Vector<Environmental>> globalHandlers=new Hashtable<Integer,Vector<Environmental>>();
+    public Vector<Area> sortedAreas=null;
     private ThreadEngine.SupportThread thread=null;
     public long lastVReset=0;
 
     public ThreadEngine.SupportThread getSupportThread() { return thread;}
     
-    protected int getGlobalIndex(Vector list, String name)
+    protected int getGlobalIndex(Vector<Environmental> list, String name)
     {
         if(list.size()==0) return -1;
         int start=0;
@@ -84,13 +84,13 @@ public class CMMap extends StdLibrary implements WorldMap
 		areasList.remove(oneToDel);
 	}
 
-	public Enumeration sortedAreas()
+	public Enumeration<Area> sortedAreas()
 	{
 		if(sortedAreas==null)
 		{
-			Vector V=new Vector();
+			Vector<Area> V=new Vector<Area>();
 			Area A=null;
-			for(Enumeration e=areas();e.hasMoreElements();)
+			for(Enumeration<Area> e=areas();e.hasMoreElements();)
 			{
 				A=(Area)e.nextElement();
 				String upperName=A.Name().toUpperCase();
@@ -108,7 +108,7 @@ public class CMMap extends StdLibrary implements WorldMap
 
 	public Area getArea(String calledThis)
 	{
-		for(Enumeration a=areas();a.hasMoreElements();)
+		for(Enumeration<Area> a=areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			if(A.Name().equalsIgnoreCase(calledThis))
@@ -120,7 +120,7 @@ public class CMMap extends StdLibrary implements WorldMap
     {
         Area A=getArea(calledThis);
         if(A!=null) return A;
-        for(Enumeration a=areas();a.hasMoreElements();)
+        for(Enumeration<Area> a=areas();a.hasMoreElements();)
         {
             A=(Area)a.nextElement();
             if(A.Name().toUpperCase().startsWith(calledThis))
@@ -133,7 +133,7 @@ public class CMMap extends StdLibrary implements WorldMap
     {
         Area A=findAreaStartsWith(calledThis);
         if(A!=null) return A;
-        for(Enumeration a=areas();a.hasMoreElements();)
+        for(Enumeration<Area> a=areas();a.hasMoreElements();)
         {
             A=(Area)a.nextElement();
             if(CMLib.english().containsString(A.Name(),calledThis))
@@ -141,11 +141,11 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         return null;
     }
-	public Enumeration areas()
+	public Enumeration<Area> areas()
     {
 		return areasList.elements();
 	}
-	public Enumeration roomIDs(){ return new WorldMap.CompleteRoomIDEnumerator(this);}
+	public Enumeration<String> roomIDs(){ return new WorldMap.CompleteRoomIDEnumerator(this);}
 	public Area getFirstArea()
 	{
 		if (areas().hasMoreElements())
@@ -166,10 +166,10 @@ public class CMMap extends StdLibrary implements WorldMap
 
     public void addGlobalHandler(Environmental E, int category)
     {
-        Vector V=(Vector)globalHandlers.get(new Integer(category));
+        Vector<Environmental> V=(Vector<Environmental>)globalHandlers.get(new Integer(category));
         if(V==null)
         {
-            V=new Vector();
+            V=new Vector<Environmental>();
             globalHandlers.put(new Integer(category),V);
         }
         if(!V.contains(E))
@@ -178,7 +178,7 @@ public class CMMap extends StdLibrary implements WorldMap
 
     public void delGlobalHandler(Environmental E, int category)
     {
-        Vector V=(Vector)globalHandlers.get(new Integer(category));
+        Vector<Environmental> V=(Vector<Environmental>)globalHandlers.get(new Integer(category));
         if(V==null) return;
         V.removeElement(E);
     }
@@ -272,14 +272,14 @@ public class CMMap extends StdLibrary implements WorldMap
 	public int numRooms()
     {
         int total=0;
-        for(Enumeration e=areas();e.hasMoreElements();)
+        for(Enumeration<Area> e=areas();e.hasMoreElements();)
             total+=((Area)e.nextElement()).properSize();
         return total;
     }
 
     public boolean sendGlobalMessage(MOB host, int category, CMMsg msg)
     {
-        Vector V=(Vector)globalHandlers.get(new Integer(category));
+        Vector<Environmental> V=(Vector<Environmental>)globalHandlers.get(new Integer(category));
         if(V==null) return true;
         try{
             Environmental E=null;
@@ -317,7 +317,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return R.roomID();
 	}
 
-    public Room getRoom(Vector roomSet, String calledThis)
+    public Room getRoom(Vector<Room> roomSet, String calledThis)
     {
         try
         {
@@ -345,14 +345,14 @@ public class CMMap extends StdLibrary implements WorldMap
                     if(A!=null) R=A.getRoom(calledThis);
                     if(R!=null) return R;
                 }
-                for(Enumeration e=areas();e.hasMoreElements();)
+                for(Enumeration<Area> e=areas();e.hasMoreElements();)
                 {
                     R = ((Area)e.nextElement()).getRoom(calledThis);
                     if(R!=null) return R;
                 }
             }
             else
-            for(Enumeration e=roomSet.elements();e.hasMoreElements();)
+            for(Enumeration<Room> e=roomSet.elements();e.hasMoreElements();)
             {
                 R=(Room)e.nextElement();
                 if(R.roomID().equalsIgnoreCase(calledThis))
@@ -363,7 +363,7 @@ public class CMMap extends StdLibrary implements WorldMap
         return null;
     }
 
-	public Room getRoom(Hashtable hashedRoomSet, String areaName, String calledThis)
+	public Room getRoom(Hashtable<String,Room> hashedRoomSet, String areaName, String calledThis)
 	{
 		if(calledThis.startsWith("#"))
 		{
@@ -396,8 +396,8 @@ public class CMMap extends StdLibrary implements WorldMap
     }
 
 	public Room getRoom(String calledThis){ return getRoom(null,calledThis); }
-	public Enumeration rooms(){ return new AreaEnumerator(false); }
-    public Enumeration roomsFilled(){ return new AreaEnumerator(true); }
+	public Enumeration<Room> rooms(){ return new AreaEnumerator(false); }
+    public Enumeration<Room> roomsFilled(){ return new AreaEnumerator(true); }
 	public Room getRandomRoom()
 	{
 		Room R=null;
@@ -408,7 +408,7 @@ public class CMMap extends StdLibrary implements WorldMap
             {
 				int which=CMLib.dice().roll(1,numRooms,-1);
                 int total=0;
-                for(Enumeration e=areas();e.hasMoreElements();)
+                for(Enumeration<Area> e=areas();e.hasMoreElements();)
                 {
                     Area A=(Area)e.nextElement();
                     if(which<(total+A.properSize()))
@@ -433,7 +433,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Deity getDeity(String calledThis)
 	{
 		Deity D = null;
-		for (Enumeration i=deities(); i.hasMoreElements();)
+		for (Enumeration<Deity> i=deities(); i.hasMoreElements();)
 		{
 			D = (Deity)i.nextElement();
 			if (D.Name().equalsIgnoreCase(calledThis))
@@ -441,7 +441,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		return null;
 	}
-	public Enumeration deities() { return deitiesList.elements(); }
+	public Enumeration<Deity> deities() { return deitiesList.elements(); }
 
     public int numPostOffices() { return postOfficeList.size(); }
     public void addPostOffice(PostOffice newOne)
@@ -456,7 +456,7 @@ public class CMMap extends StdLibrary implements WorldMap
     public PostOffice getPostOffice(String chain, String areaNameOrBranch)
     {
         PostOffice P = null;
-        for (Enumeration i=postOffices(); i.hasMoreElements();)
+        for (Enumeration<PostOffice> i=postOffices(); i.hasMoreElements();)
         {
             P = (PostOffice)i.nextElement();
             if((P.postalChain().equalsIgnoreCase(chain))
@@ -465,7 +465,7 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         Area A=findArea(areaNameOrBranch);
         if(A==null) return null;
-        for (Enumeration i=postOffices(); i.hasMoreElements();)
+        for (Enumeration<PostOffice> i=postOffices(); i.hasMoreElements();)
         {
             P = (PostOffice)i.nextElement();
             if((P.postalChain().equalsIgnoreCase(chain))
@@ -474,9 +474,9 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         return null;
     }
-    public Enumeration postOffices() { return DVector.s_enum(postOfficeList); }
+    public Enumeration<PostOffice> postOffices() { return DVector.s_enum(postOfficeList); }
 
-    public Enumeration auctionHouses() { return DVector.s_enum(auctionHouseList); }
+    public Enumeration<Auctioneer> auctionHouses() { return DVector.s_enum(auctionHouseList); }
     
     public int numAuctionHouses() { return auctionHouseList.size(); }
     public void addAuctionHouse(Auctioneer newOne)
@@ -491,7 +491,7 @@ public class CMMap extends StdLibrary implements WorldMap
     public Auctioneer getAuctionHouse(String chain, String areaNameOrBranch)
     {
     	Auctioneer C = null;
-        for (Enumeration i=auctionHouses(); i.hasMoreElements();)
+        for (Enumeration<Auctioneer> i=auctionHouses(); i.hasMoreElements();)
         {
             C = (Auctioneer)i.nextElement();
             if((C.auctionHouse().equalsIgnoreCase(chain))
@@ -500,7 +500,7 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         Area A=findArea(areaNameOrBranch);
         if(A==null) return null;
-        for (Enumeration i=auctionHouses(); i.hasMoreElements();)
+        for (Enumeration<Auctioneer> i=auctionHouses(); i.hasMoreElements();)
         {
             C = (Auctioneer)i.nextElement();
             if((C.auctionHouse().equalsIgnoreCase(chain))
@@ -523,7 +523,7 @@ public class CMMap extends StdLibrary implements WorldMap
     public Banker getBank(String chain, String areaNameOrBranch)
     {
     	Banker B = null;
-        for (Enumeration i=banks(); i.hasMoreElements();)
+        for (Enumeration<Banker> i=banks(); i.hasMoreElements();)
         {
             B = (Banker)i.nextElement();
             if((B.bankChain().equalsIgnoreCase(chain))
@@ -532,7 +532,7 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         Area A=findArea(areaNameOrBranch);
         if(A==null) return null;
-        for (Enumeration i=banks(); i.hasMoreElements();)
+        for (Enumeration<Banker> i=banks(); i.hasMoreElements();)
         {
             B = (Banker)i.nextElement();
             if((B.bankChain().equalsIgnoreCase(chain))
@@ -541,12 +541,12 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         return null;
     }
-    public Enumeration banks() { return DVector.s_enum(bankList); }
-	public Iterator bankChains(Area AreaOrNull)
+    public Enumeration<Banker> banks() { return DVector.s_enum(bankList); }
+	public Iterator<String> bankChains(Area AreaOrNull)
 	{
-		HashSet H=new HashSet();
+		HashSet<String> H=new HashSet<String>();
 		Banker B=null;
-		for(Enumeration e=banks();e.hasMoreElements();)
+		for(Enumeration<Banker> e=banks();e.hasMoreElements();)
 		{
 			B=(Banker)e.nextElement();
 			if((!H.contains(B.bankChain()))
@@ -558,9 +558,9 @@ public class CMMap extends StdLibrary implements WorldMap
 		return H.iterator();
 	}
 
-	public void renameRooms(Area A, String oldName, Vector allMyDamnRooms)
+	public void renameRooms(Area A, String oldName, Vector<Room> allMyDamnRooms)
 	{
-		Vector onesToRenumber=new Vector();
+		Vector<Room> onesToRenumber=new Vector<Room>();
 		for(int r=0;r<allMyDamnRooms.size();r++)
 		{
 			Room R=(Room)allMyDamnRooms.elementAt(r);
@@ -612,7 +612,7 @@ public class CMMap extends StdLibrary implements WorldMap
     {
     	if(room==null) return null;
     	Room R=null;
-    	Vector otherChoices=new Vector();
+    	Vector<Room> otherChoices=new Vector<Room>();
     	for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
     	{
     		R=room.getRoomInDir(d);
@@ -625,7 +625,7 @@ public class CMMap extends StdLibrary implements WorldMap
     	    			otherChoices.addElement(R);
     	    		}
     	}
-    	for(Enumeration e=rooms();e.hasMoreElements();)
+    	for(Enumeration<Room> e=rooms();e.hasMoreElements();)
     	{
     		R=(Room)e.nextElement();
     		if(R==room) continue;
@@ -672,7 +672,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return true;
 	}
     
-    public boolean explored(Room R, Vector areas)
+    public boolean explored(Room R, Vector<Area> areas)
     {
         if((R==null)
         ||(CMath.bset(R.envStats().sensesMask(),EnvStats.SENSE_ROOMUNEXPLORABLE))
@@ -681,10 +681,10 @@ public class CMMap extends StdLibrary implements WorldMap
         return false;
     }
 
-    public static class AreaEnumerator implements Enumeration
+    public static class AreaEnumerator implements Enumeration<Room>
     {
-        private Enumeration curAreaEnumeration=null;
-        private Enumeration curRoomEnumeration=null;
+        private Enumeration<Area> curAreaEnumeration=null;
+        private Enumeration<Room> curRoomEnumeration=null;
         private boolean addSkys = false;
         public AreaEnumerator(boolean includeSkys) {
             addSkys = includeSkys;
@@ -702,7 +702,7 @@ public class CMMap extends StdLibrary implements WorldMap
             }
             return curRoomEnumeration.hasMoreElements();
         }
-        public Object nextElement()
+        public Room nextElement()
         {
             if(curAreaEnumeration==null) curAreaEnumeration=CMLib.map().areas();
             while((curRoomEnumeration==null)||(!curRoomEnumeration.hasMoreElements()))
@@ -730,7 +730,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 		try
 		{
-			for(Enumeration r=rooms();r.hasMoreElements();)
+			for(Enumeration<Room> r=rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				synchronized(("SYNC"+R.roomID()).intern())
@@ -839,7 +839,7 @@ public class CMMap extends StdLibrary implements WorldMap
 	public void emptyRoom(Room room, Room bringBackHere)
 	{
 		if(room==null) return;
-		Vector inhabs=new Vector();
+		Vector<MOB> inhabs=new Vector<MOB>();
 		MOB M=null;
 		for(int m=0;m<room.numInhabitants();m++)
 		{
@@ -863,15 +863,18 @@ public class CMMap extends StdLibrary implements WorldMap
 				M.getStartRoom().bringMobHere(M,false);
 		}
 		Item I=null;
-		inhabs.clear();
+		inhabs = null;
+		
+		Vector<Item> contents = new Vector<Item>();
+		
 		for(int i=0;i<room.numItems();i++)
 		{
 		    I=room.fetchItem(i);
-		    if(I!=null) inhabs.addElement(I);
+		    if(I!=null) contents.addElement(I);
 		}
-		for(int i=0;i<inhabs.size();i++)
+		for(int i=0;i<contents.size();i++)
 		{
-			I=(Item)inhabs.elementAt(i);
+			I=(Item)contents.elementAt(i);
 			if(bringBackHere!=null)
 				bringBackHere.bringItemHere(I,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP),false);
 			else
@@ -887,9 +890,9 @@ public class CMMap extends StdLibrary implements WorldMap
 	{
 		Area A=getArea(areaName);
 		if(A==null) return;
-		Vector rooms=new Vector(100);
+		Vector<Room> rooms=new Vector<Room>(100);
 		Room R=null;
-        Enumeration e=A.getCompleteMap();
+        Enumeration<Room> e=A.getCompleteMap();
 		while(e.hasMoreElements())
 		{
 			for(int i=0;(i<100)&&e.hasMoreElements();i++)
@@ -897,7 +900,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				R=(Room)e.nextElement();
 				rooms.addElement(R);
 			}
-			for(Enumeration e2=rooms.elements();e2.hasMoreElements();)
+			for(Enumeration<Room> e2=rooms.elements();e2.hasMoreElements();)
 			{
 				R=(Room)e2.nextElement();
 				if((R!=null)&&(R.roomID().length()>0))
@@ -953,8 +956,8 @@ public class CMMap extends StdLibrary implements WorldMap
                 if(includeLocalFollowers)
                 {
                     MOB M2=null;
-                    HashSet H=M.getGroupMembers(new HashSet());
-                    for(Iterator i=H.iterator();i.hasNext();)
+                    HashSet<MOB> H=M.getGroupMembers(new HashSet<MOB>());
+                    for(Iterator<MOB> i=H.iterator();i.hasNext();)
                     {
                         M2=(MOB)i.next();
                         if((M2!=M)&&(M2.location()==R))
@@ -971,7 +974,7 @@ public class CMMap extends StdLibrary implements WorldMap
         int oldFlag=area.getAreaFlags();
         area.setAreaFlags(Area.FLAG_FROZEN);
         DVector playersHere=getAllPlayersHere(area,true);
-        for(Enumeration r=area.getProperMap();r.hasMoreElements();)
+        for(Enumeration<Room> r=area.getProperMap();r.hasMoreElements();)
             resetRoom((Room)r.nextElement());
         area.fillInAreaRooms();
         for(int p=0;p<playersHere.size();p++)
@@ -1004,7 +1007,7 @@ public class CMMap extends StdLibrary implements WorldMap
     public boolean shutdown() {
         areasList.clear();
         deitiesList.clear();
-        space=new Vector();
+        space=new Vector<SpaceObject>();
         globalHandlers.clear();
         thread.shutdown();
         return true;
@@ -1023,11 +1026,11 @@ public class CMMap extends StdLibrary implements WorldMap
         boolean debug=CMSecurity.isDebugging("VACUUM");
         try
         {
-            Vector stuffToGo=new Vector();
+            Vector<Environmental> stuffToGo=new Vector<Environmental>();
             Item I=null;
             MOB M=null;
             Room R=null;
-            Vector roomsToGo=new Vector();
+            Vector<Room> roomsToGo=new Vector<Room>();
             MOB expireM=CMLib.map().god(null);
             CMMsg expireMsg=CMClass.getMsg(expireM,R,null,CMMsg.MSG_EXPIRE,null);
             boolean vResetTime=false;
@@ -1036,7 +1039,7 @@ public class CMMap extends StdLibrary implements WorldMap
                 vResetTime=true;
                 lastVReset=System.currentTimeMillis();
             }
-            for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+            for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
             {
                 R=(Room)r.nextElement();
                 expireM.setLocation(R);
@@ -1110,10 +1113,10 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         catch(java.util.NoSuchElementException e){}
         thread.status("title sweeping");
-        Vector playerList=CMLib.database().getUserList();
+        Vector<String> playerList=CMLib.database().getUserList();
         try
         {
-            for(Enumeration r=rooms();r.hasMoreElements();)
+            for(Enumeration<Room> r=rooms();r.hasMoreElements();)
             {
                 Room R=(Room)r.nextElement();
                 LandTitle T=CMLib.law().getLandTitle(R);
@@ -1129,7 +1132,7 @@ public class CMMap extends StdLibrary implements WorldMap
         thread.status("checking");
         try
         {
-            for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+            for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
             {
                 Room R=(Room)r.nextElement();
                 for(int m=0;m<R.numInhabitants();m++)

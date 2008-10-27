@@ -44,7 +44,7 @@ public class Skill_Chirgury extends StdSkill
     public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
 	public static final String[] parts={"FETUS","BLOOD","HEART","LUNGS","STOMACH","PANCREAS","SPLEEN","BRAIN","LIVER","INTESTINES","TONGUE","EYES","BLADDER"};
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 	    if(commands.size()==0)
 	    {

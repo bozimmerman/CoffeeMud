@@ -43,7 +43,7 @@ public class UmberHulk extends StdRace
 	public long forbiddenWornBits(){return 0;}
 	public String racialCategory(){return "Giant-kin";}
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
     private String[]racialAbilityNames={"Chant_StoneWalking","Spell_Confusion"};
 	private int[]racialAbilityLevels={1,10};
 	private int[]racialAbilityProficiencies={100,50};
@@ -118,7 +118,7 @@ public class UmberHulk extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

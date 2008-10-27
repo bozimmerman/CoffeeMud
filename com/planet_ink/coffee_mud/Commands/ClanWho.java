@@ -38,7 +38,7 @@ public class ClanWho extends Who
 	private String[] access={"CLANWHO","CLWH"};
 	public String[] getAccessWords(){return access;}
 	
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if((mob.getClanID()==null)

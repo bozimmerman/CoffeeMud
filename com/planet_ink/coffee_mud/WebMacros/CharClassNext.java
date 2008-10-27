@@ -37,7 +37,7 @@ public class CharClassNext extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable parms=parseParms(parm);
+		Hashtable<String,String> parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("CLASS");
 		String base=httpReq.getRequestParameter("BASECLASS");
 		if(parms.containsKey("RESET"))

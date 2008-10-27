@@ -36,7 +36,7 @@ public class Skeleton extends Undead
 	public String ID(){	return "Skeleton"; }
 	public String name(){ return "Skeleton"; }
 
-	protected static Vector resources=new Vector();
+	protected static Vector<Item> resources=new Vector<Item>();
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -58,7 +58,7 @@ public class Skeleton extends Undead
 		return super.okMessage(myHost,msg);
 	}
 
-	public Vector myResources()
+	public Vector<Item> myResources()
 	{
 		synchronized(resources)
 		{

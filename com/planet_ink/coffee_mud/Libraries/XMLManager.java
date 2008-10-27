@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary.XMLpiece;
 
 /*
    Copyright 2000-2008 Bo Zimmerman
@@ -244,7 +245,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return Blob;
 	}
 
-	protected String parseOutParms(String blk, Hashtable parmList)
+	protected String parseOutParms(String blk, Hashtable<String, String> parmList)
 	{
 		blk=blk.trim();
 		for(int x=0;x<blk.length();x++)
@@ -263,9 +264,9 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	}
 
 
-	protected Hashtable parseParms(String Blob)
+	protected Hashtable<String, String> parseParms(String Blob)
 	{
-		Hashtable H=new Hashtable();
+		Hashtable<String, String> H=new Hashtable<String, String>();
 		StringBuffer curVal=null;
 		StringBuffer key=new StringBuffer("");
 		boolean quoteMode=false;
@@ -334,7 +335,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return H;
 	}
 
-	public String getValFromPieces(Vector V, String tag)
+	public String getValFromPieces(Vector<XMLpiece> V, String tag)
 	{
 		XMLpiece x=getPieceFromPieces(V,tag);
 		if((x!=null)&&(x.value!=null))
@@ -342,22 +343,22 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return "";
 	}
 
-	public Vector getContentsFromPieces(Vector V, String tag)
+	public Vector<XMLpiece> getContentsFromPieces(Vector<XMLpiece> V, String tag)
 	{
 		XMLpiece x=getPieceFromPieces(V,tag);
 		if((x!=null)&&(x.contents!=null))
 			return x.contents;
-		return new Vector();
+		return new Vector<XMLpiece>();
 	}
 
-	public Vector getRealContentsFromPieces(Vector V, String tag)
+	public Vector<XMLpiece> getRealContentsFromPieces(Vector<XMLpiece> V, String tag)
 	{
 		XMLpiece x=getPieceFromPieces(V,tag);
 		if(x!=null)	return x.contents;
 		return null;
 	}
 
-	public XMLpiece getPieceFromPieces(Vector V, String tag)
+	public XMLpiece getPieceFromPieces(Vector<XMLpiece> V, String tag)
 	{
 		if(V==null) return null;
 		for(int v=0;v<V.size();v++)
@@ -366,7 +367,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return null;
 	}
 
-	public boolean getBoolFromPieces(Vector V, String tag)
+	public boolean getBoolFromPieces(Vector<XMLpiece> V, String tag)
 	{
 		String val=getValFromPieces(V,tag);
 		if((val==null)||(val.length()==0))
@@ -376,22 +377,22 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return false;
 	}
 
-	public int getIntFromPieces(Vector V, String tag)
+	public int getIntFromPieces(Vector<XMLpiece> V, String tag)
 	{
 		return s_int(getValFromPieces(V,tag));
 	}
 
-	public short getShortFromPieces(Vector V, String tag)
+	public short getShortFromPieces(Vector<XMLpiece> V, String tag)
 	{
 		return s_short(getValFromPieces(V,tag));
 	}
 
-	public long getLongFromPieces(Vector V, String tag)
+	public long getLongFromPieces(Vector<XMLpiece> V, String tag)
 	{
 		return s_long(getValFromPieces(V,tag));
 	}
 
-	public double getDoubleFromPieces(Vector V, String tag)
+	public double getDoubleFromPieces(Vector<XMLpiece> V, String tag)
 	{
 		return s_double(getValFromPieces(V,tag));
 	}
@@ -437,7 +438,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
                 nextStart=buf.indexOf("<",start+1);
             }
         }
-        Hashtable parmList = new Hashtable();
+        Hashtable<String, String> parmList = new Hashtable<String, String>();
 		String tag=parseOutParms(buf.substring(start+1,end).trim(),parmList).toUpperCase().trim();
 
 		if(!tag.startsWith("/"))
@@ -448,7 +449,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 			{
 				piece.tag=tag.substring(0,tag.length()-1).trim();
 				piece.value="";
-				piece.contents=new Vector();
+				piece.contents=new Vector<XMLpiece>();
 				piece.outerStart=start;
 				piece.outerEnd=end;
 			}
@@ -457,7 +458,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 				piece.tag=tag.trim();
 				piece.outerStart=start;
 				piece.innerStart=end+1;
-				piece.contents=new Vector();
+				piece.contents=new Vector<XMLpiece>();
 				XMLpiece next=null;
 				while(next!=piece)
 				{
@@ -486,14 +487,14 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	}
 
 
-	public Vector parseAllXML(String buf)
+	public Vector<XMLpiece> parseAllXML(String buf)
 	{  
         return parseAllXML(new StringBuffer(buf));
     }
 
-	public Vector parseAllXML(StringBuffer buf)
+	public Vector<XMLpiece> parseAllXML(StringBuffer buf)
 	{
-		Vector V=new Vector();
+		Vector<XMLpiece> V=new Vector<XMLpiece>();
 		int end=-1;
 		XMLpiece next=nextXML(buf,null,end+1);
 		while(next!=null)
@@ -540,14 +541,15 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return false;
 	}
 
-	public String getParmValue(Hashtable parmSet, String Tag)
+	public String getParmValue(Hashtable<String, String> parmSet, String Tag)
 	{
         if((parmSet != null)&&(Tag != null))
             return (String)parmSet.get(Tag.toUpperCase().trim());
         return null;
 	}
 
-    public String getXMLList(Vector V)
+    @SuppressWarnings("unchecked")
+	public String getXMLList(Vector V)
     {
         StringBuffer str=new StringBuffer("");
         String s=null;
@@ -562,12 +564,12 @@ public class XMLManager extends StdLibrary implements XMLLibrary
         return str.toString();
     }
     
-    public Vector parseXMLList(String numberedList)
+    public Vector<String> parseXMLList(String numberedList)
     {
-        Vector xml=parseAllXML(numberedList);
-        Vector V=new Vector();
+        Vector<XMLpiece> xml=parseAllXML(numberedList);
+        Vector<String> V=new Vector<String>();
         for(int v=0;v<xml.size();v++)
-            V.addElement(this.restoreAngleBrackets(((XMLpiece)xml.elementAt(v)).value));
+            V.addElement(this.restoreAngleBrackets(xml.elementAt(v).value));
         return V;
     }
     

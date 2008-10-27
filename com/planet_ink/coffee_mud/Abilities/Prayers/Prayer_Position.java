@@ -124,7 +124,7 @@ public class Prayer_Position extends Prayer
 		return theTrail.toString();
 	}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(lastPosition==null) lastPosition=mob.getStartRoom();
 		if(lastPosition==null) return false;

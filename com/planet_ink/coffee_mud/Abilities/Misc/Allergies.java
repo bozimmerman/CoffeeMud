@@ -53,7 +53,7 @@ public class Allergies extends StdAbility
 	    super.setMiscText(newText);
 	    resourceAllergies.clear();
 	    raceAllergies.clear();
-	    Vector V=CMParms.parse(newText.toUpperCase().trim());
+	    Vector<String> V=CMParms.parse(newText.toUpperCase().trim());
 	    for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 	        if(V.contains(RawMaterial.RESOURCE_DESCS[i]))
 	            resourceAllergies.add(new Integer(RawMaterial.RESOURCE_DATA[i][0]));
@@ -157,7 +157,7 @@ public class Allergies extends StdAbility
 		super.executeMsg(myHost,msg);
 	}
 	
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String choice="";
 		if(givenTarget!=null)

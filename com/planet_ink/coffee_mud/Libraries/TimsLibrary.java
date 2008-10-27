@@ -932,7 +932,7 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 		{
 			spellSet=new Vector();
 			Ability A=null;
-			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
 			{
 				A=(Ability)e.nextElement();
 				if(((A.classificationCode()&(Ability.ALL_ACODES))==Ability.ACODE_SPELL))

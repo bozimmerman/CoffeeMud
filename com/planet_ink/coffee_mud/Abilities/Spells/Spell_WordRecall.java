@@ -48,7 +48,7 @@ public class Spell_WordRecall extends Spell
         return affectType;
     }
 
-    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
             return false;

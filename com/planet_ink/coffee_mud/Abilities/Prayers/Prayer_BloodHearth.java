@@ -54,7 +54,7 @@ public class Prayer_BloodHearth extends Prayer
 
 		if(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		{
-			HashSet H=msg.source().getGroupMembers(new HashSet());
+			HashSet H=msg.source().getGroupMembers(new HashSet<MOB>());
 			for(Iterator e=H.iterator();e.hasNext();)
             {
                 MOB M=(MOB)e.next();
@@ -82,7 +82,7 @@ public class Prayer_BloodHearth extends Prayer
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=mob.location();
 		if(target==null) return false;

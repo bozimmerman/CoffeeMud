@@ -39,7 +39,7 @@ public class Spell_DistantVision extends Spell
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<1)
 		{
@@ -50,7 +50,7 @@ public class Spell_DistantVision extends Spell
 		Room thisRoom=null;
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room room=(Room)r.nextElement();
 				if((CMLib.flags().canAccess(mob,room))

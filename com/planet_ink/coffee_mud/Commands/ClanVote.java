@@ -36,7 +36,7 @@ public class ClanVote extends StdCommand
 
 	private String[] access={"CLANVOTE"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");
@@ -194,7 +194,7 @@ public class ClanVote extends StdCommand
 									if(mob2.location()==null)
 										mob2.setLocation(CMLib.map().getRandomRoom());
 								}
-								Vector V=CMParms.parse(CV.matter);
+								Vector<Object> V=CMParms.parseToObjV(CV.matter);
 								mob2.doCommand(V,metaFlags|Command.METAFLAG_FORCED);
                                 mob2.destroy();
 							}

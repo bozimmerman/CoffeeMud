@@ -86,7 +86,7 @@ public class Follow extends StdCommand
 			{
 				return nofollow(mob,true,false);
 			}
-			if(mob.getGroupMembers(new HashSet()).contains(tofollow))
+			if(mob.getGroupMembers(new HashSet<MOB>()).contains(tofollow))
 			{
 				if(!quiet)
 					mob.tell("You are already a member of "+tofollow.name()+"'s group!");
@@ -108,7 +108,7 @@ public class Follow extends StdCommand
 		return true;
 	}
 
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean quiet=false;
@@ -164,8 +164,8 @@ public class Follow extends StdCommand
 		processFollow(mob,target,quiet);
 		return false;
 	}
-    public double combatActionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
-    public double actionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
+    public double combatActionsCost(MOB mob, Vector<Object> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
+    public double actionsCost(MOB mob, Vector<Object> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
 	public boolean canBeOrdered(){return true;}
 
 	

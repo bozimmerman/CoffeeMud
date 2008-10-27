@@ -875,7 +875,7 @@ public class List extends StdCommand
 		StringBuffer str=new StringBuffer("");
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(R.roomID().length()>0)
@@ -899,7 +899,7 @@ public class List extends StdCommand
 		StringBuffer str=new StringBuffer("");
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -958,7 +958,7 @@ public class List extends StdCommand
         if(rest.trim().length()==0)
         {
             str.append("Common Skills with editable recipes: ");
-            for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+            for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
             {
                 Ability A=(Ability)e.nextElement();
                 if(A instanceof ItemCraftor)
@@ -1022,7 +1022,7 @@ public class List extends StdCommand
 			str.append(CMStrings.padRight(""+RawMaterial.RESOURCE_DATA[i][2],5));
 			str.append(CMStrings.padRight(""+RawMaterial.RESOURCE_DATA[i][3],4));
 			StringBuffer locales=new StringBuffer("");
-			for(Enumeration e=CMClass.locales();e.hasMoreElements();)
+			for(Enumeration<Room> e=CMClass.locales();e.hasMoreElements();)
 			{
 				Room R=(Room)e.nextElement();
 				if(!(R instanceof GridLocale))
@@ -1483,7 +1483,7 @@ public class List extends StdCommand
 		}
 	}
 
-	public boolean execute(MOB mob, Vector commands, int metaFlags)
+	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector V=new Vector();

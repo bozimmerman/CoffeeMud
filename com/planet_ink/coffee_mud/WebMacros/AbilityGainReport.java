@@ -38,12 +38,12 @@ public class AbilityGainReport extends StdWebMacro
     {
         String className=httpReq.getRequestParameter("CLASS");
         if(className==null) className="";
-        Vector players=CMLib.database().getExtendedUserList();
-        HashSet trainedFor=new HashSet();
-        Hashtable profSpent=new Hashtable();
+        Vector<Vector<String>> players=CMLib.database().getExtendedUserList();
+        HashSet<String> trainedFor=new HashSet<String>();
+        Hashtable<String,long[]> profSpent=new Hashtable<String,long[]>();
         for(int pl=0;pl<players.size();pl++)
         {
-            MOB player=CMLib.players().getLoadPlayer((String)((Vector)players.elementAt(pl)).firstElement());
+            MOB player=CMLib.players().getLoadPlayer((String)((Vector<String>)players.elementAt(pl)).firstElement());
             for(int a=0;a<player.numLearnedAbilities();a++)
             {
                 Ability A=player.fetchAbility(a);
@@ -86,7 +86,7 @@ public class AbilityGainReport extends StdWebMacro
         DVector sorted=new DVector(2);
         while(profSpent.size()>0)
         {
-            Enumeration e=profSpent.keys();
+            Enumeration<String> e=profSpent.keys();
             String bestKey=(String)e.nextElement();
             long[] bestStat=(long[])profSpent.get(bestKey);
             for(;e.hasMoreElements();)
@@ -112,7 +112,7 @@ public class AbilityGainReport extends StdWebMacro
             if(trainedFor.contains(able))
                 buf.append("<TR><TD>"+able+"</TD><TD>"+stats[2]+"</TD><TD>"+stats[1]+"</TD></TR>");
         }
-        for(Iterator i=trainedFor.iterator();i.hasNext();)
+        for(Iterator<String> i=trainedFor.iterator();i.hasNext();)
         {
             String able=(String)i.next();
             if(!sorted.contains(able))

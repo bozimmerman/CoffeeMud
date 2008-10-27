@@ -54,7 +54,7 @@ public class Prayer_BlessedHearth extends Prayer
 		if(((msg.sourceMinor()==CMMsg.TYP_UNDEAD)||(msg.targetMinor()==CMMsg.TYP_UNDEAD))
 		&&(msg.target() instanceof MOB))
 		{
-			HashSet H=((MOB)msg.target()).getGroupMembers(new HashSet());
+			HashSet H=((MOB)msg.target()).getGroupMembers(new HashSet<MOB>());
 			for(Iterator e=H.iterator();e.hasNext();)
             {
                 MOB M=(MOB)e.next();
@@ -72,7 +72,7 @@ public class Prayer_BlessedHearth extends Prayer
 		if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&(msg.target() instanceof MOB))
 		{
-			HashSet H=((MOB)msg.target()).getGroupMembers(new HashSet());
+			HashSet H=((MOB)msg.target()).getGroupMembers(new HashSet<MOB>());
 			for(Iterator e=H.iterator();e.hasNext();)
             {
                 MOB M=(MOB)e.next();
@@ -90,7 +90,7 @@ public class Prayer_BlessedHearth extends Prayer
 	}
 
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=mob.location();
 		if(target==null) return false;

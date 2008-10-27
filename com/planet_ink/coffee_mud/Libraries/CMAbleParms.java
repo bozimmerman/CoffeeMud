@@ -981,7 +981,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         str.append("<TR><TD WIDTH=50%>");
                         str.append("\n\r<SELECT ONCHANGE=\"AddAffect(this);\" NAME="+fieldName+"_AFFECT"+(spells.size()+1)+">");
                         str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
-                        for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+                        for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
                         {
                             Ability A=(Ability)a.nextElement();
                             String cnam=A.ID();
@@ -1089,7 +1089,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     public void createChoices() {
                         Vector V  = new Vector();
                         Ability A = null;
-                        for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+                        for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
                         {
                             A=(Ability)e.nextElement();
                             if((A.classificationCode() & Ability.ALL_ACODES) == Ability.ACODE_COMMON_SKILL)
@@ -1318,7 +1318,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         StringBuffer str = new StringBuffer("");
                         str.append("\n\r<SELECT NAME="+fieldName+"_RACE MULTIPLE>");
                         str.append("<OPTION VALUE=\"\" "+((raceIDs.size()==0)?"CHECKED":"")+">");
-                        for(Enumeration e=CMClass.races();e.hasMoreElements();)
+                        for(Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
                         {
                             Race R=(Race)e.nextElement();
                             str.append("<OPTION VALUE=\""+R.ID()+"\" "+((raceIDs.contains(R.ID().toUpperCase()))?"CHECKED":"")+">"+R.name());

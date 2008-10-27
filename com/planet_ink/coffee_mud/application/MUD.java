@@ -1209,7 +1209,7 @@ public class MUD extends Thread implements MudHost
     public String executeCommand(String cmd)
         throws Exception
     {
-        Vector V=CMParms.parse(cmd);
+        Vector<String> V=CMParms.parse(cmd);
         if(V.size()==0) throw new CMException("Unknown command!");
         String word=(String)V.firstElement();
         throw new CMException("Unknown command: "+word);

@@ -1378,7 +1378,7 @@ public class StdMOB implements MOB
                     return false;
                 double diff=actions()-((Double)ROW[2]).doubleValue();
                 Object O=ROW[0];
-                Vector commands=(Vector)ROW[1];
+                Vector<Object> commands=(Vector<Object>)ROW[1];
                 ((long[])ROW[3])[0]=((long[])ROW[3])[0]+1000;
                 ((int[])ROW[4])[0]+=1;
                 int secondsElapsed=((int[])ROW[4])[0];
@@ -1412,7 +1412,7 @@ public class StdMOB implements MOB
         return false;
 	}
 
-	public void doCommand(Vector commands, int metaFlags)
+	public void doCommand(Vector<Object> commands, int metaFlags)
 	{
 		Object O=CMLib.english().findCommand(this,commands);
 		if(O!=null)
@@ -1421,7 +1421,7 @@ public class StdMOB implements MOB
 			CMLib.commands().handleUnknownCommand(this,commands);
 	}
 
-    protected void doCommand(Object O, Vector commands, int metaFlags)
+    protected void doCommand(Object O, Vector<Object> commands, int metaFlags)
 	{
 		try
 		{
@@ -1453,7 +1453,7 @@ public class StdMOB implements MOB
 		}
 	}
 
-    protected double calculateTickDelay(Object command, Vector commands, double tickDelay)
+    protected double calculateTickDelay(Object command, Vector<Object> commands, double tickDelay)
     {
         if(tickDelay<=0.0)
         {
@@ -1469,7 +1469,7 @@ public class StdMOB implements MOB
         return tickDelay;
     }
 
-    public void prequeCommand(Vector commands, int metaFlags, double tickDelay)
+    public void prequeCommand(Vector<Object> commands, int metaFlags, double tickDelay)
     {
         if(commands==null) return;
         Object O=CMLib.english().findCommand(this,commands);
@@ -1490,7 +1490,7 @@ public class StdMOB implements MOB
         dequeCommand();
     }
 
-	public void enqueCommand(Vector commands, int metaFlags, double tickDelay)
+	public void enqueCommand(Vector<Object> commands, int metaFlags, double tickDelay)
 	{
 		if(commands==null) return;
         Object O=CMLib.english().findCommand(this,commands);
@@ -2880,7 +2880,7 @@ public class StdMOB implements MOB
 	    return false;
 	}
 
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	public void confirmWearability()
 	{
@@ -3378,14 +3378,14 @@ public class StdMOB implements MOB
 		}
 	}
 	public int numExpertises(){return (expertises==null)?0:expertises.size();}
-	public Enumeration uniqueExpertises()
+	public Enumeration<String> uniqueExpertises()
 	{
 		try{
 			if((expertises==null)||(expertises.size()==0)) return empty.elements();
-			Vector exCopy=(Vector)expertises.clone();
+			Vector<String> exCopy=(Vector<String>)expertises.clone();
 			String exper=null, experRoot=null, expTest=null;
 			int num=-1,end=-1,num2=-1;
-			HashSet remove=new HashSet();
+			HashSet<String> remove=new HashSet<String>();
 			for(int i1=exCopy.size()-1;i1>=0;i1--)
 			{
 				exper=(String)exCopy.elementAt(i1);
@@ -3579,7 +3579,7 @@ public class StdMOB implements MOB
         else
             addFaction(which,fetchFaction(which) + amount);
     }
-    public Enumeration fetchFactions()
+    public Enumeration<String> fetchFactions()
     {
         return ((Hashtable)factions.clone()).keys();
     }
@@ -3607,7 +3607,7 @@ public class StdMOB implements MOB
         if(F==null) return false;
         return factions.containsKey(F.factionID().toUpperCase());
     }
-    public Vector fetchFactionRanges()
+    public Vector<String> fetchFactionRanges()
     {
         Faction F=null;
         Faction.FactionRange FR=null;

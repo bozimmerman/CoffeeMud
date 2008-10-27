@@ -339,7 +339,7 @@ public class StdCharClass implements CharClass
                     alreadyAble.put(A.ID(),A);
                 }
             }
-            for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+            for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
             {
                 Ability A=(Ability)a.nextElement();
                 int lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
@@ -356,7 +356,7 @@ public class StdCharClass implements CharClass
         else
         {
         	Vector onesToAdd=new Vector();
-			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
+			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
 				if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
@@ -619,7 +619,7 @@ public class StdCharClass implements CharClass
 		}
 	}
 
-	public Vector outfit(MOB myChar){return outfitChoices;}
+	public Vector<Item> outfit(MOB myChar){return outfitChoices;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -667,7 +667,7 @@ public class StdCharClass implements CharClass
 			||((disallowedWeaponClasses(msg.source())!=null)&&(disallowedWeaponClasses(msg.source()).contains(new Integer(((Weapon)msg.target()).weaponClassification()))))))
 	        msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.TYP_OK_VISUAL,"<T-NAME> feel(s) a bit strange in your hands.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
 	}
-	public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
 	public void unLevel(MOB mob){}
 

@@ -45,7 +45,7 @@ public interface Amputator extends Ability
      * @param E the object to scrutinize 
      * @return the set of the name of the remaining pieces. 
      */
-    public Vector remainingLimbNameSet(Environmental E);
+    public Vector<String> remainingLimbNameSet(Environmental E);
     /**
      * Performs the very dirty business of amputating the item of the given
      * name from the given target.  An existing instanceof of the amputator
@@ -63,7 +63,7 @@ public interface Amputator extends Ability
      * the list of the names of those parts which have been amputated.
      * @return the list of the names of the parts that are GONE!
      */
-    public Vector missingLimbNameSet();
+    public Vector<String> missingLimbNameSet();
     /**
      * Often losing one part means that other parts are instantly affected, like
      * removing an engine includes the spark plugs.  This method is called to
@@ -75,7 +75,7 @@ public interface Amputator extends Ability
      * @param missingLimbs the parts already missing from the target
      * @return the set of parts that are not yet missing, but now should be.
      */
-    public Vector affectedLimbNameSet(Object O, String missing, Vector missingLimbs);
+    public Vector<String> affectedLimbNameSet(Object O, String missing, Vector missingLimbs);
     /**
      * Restores a missing part, denoted by the given string, and managed by the
      * given Amputator property

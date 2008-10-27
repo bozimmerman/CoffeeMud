@@ -278,7 +278,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
             room.executeMsg(mob,msg);
         }
 
-        if(mob.getGroupMembers(new HashSet()).size()>1)
+        if(mob.getGroupMembers(new HashSet<MOB>()).size()>1)
         {
         	Command C=CMClass.getCommand("GTell");
         	try{
@@ -366,7 +366,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 
     public int adjustedExperience(MOB mob, MOB victim, int amount)
     {
-        HashSet group=mob.getGroupMembers(new HashSet());
+        HashSet group=mob.getGroupMembers(new HashSet<MOB>());
         CharClass charClass=null;
         Race charRace=null;
         for(Iterator i=group.iterator();i.hasNext();)

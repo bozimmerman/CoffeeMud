@@ -40,7 +40,7 @@ public class Song_Rebirth extends Song
 	protected boolean skipStandardSongInvoke(){return true;}
 	protected boolean HAS_QUANTITATIVE_ASPECT(){return false;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         steadyDown=-1;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

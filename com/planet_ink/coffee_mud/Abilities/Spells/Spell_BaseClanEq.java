@@ -64,7 +64,7 @@ public class Spell_BaseClanEq extends Spell
 		}
 		return super.canBeLearnedBy(teacher,student);
 	}
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(type.length()==0) return false;
 		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase(""))||(mob.getClanRole()==0))

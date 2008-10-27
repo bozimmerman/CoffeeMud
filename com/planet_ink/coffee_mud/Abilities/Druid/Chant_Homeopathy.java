@@ -43,7 +43,7 @@ public class Chant_Homeopathy extends Chant
     public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PRESERVING;}
     public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

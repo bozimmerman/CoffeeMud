@@ -25,7 +25,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class AuctionCoffeeShop implements CoffeeShop
 {
     public String ID(){return "AuctionCoffeeShop";}
-    public int compareTo(Object o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+    public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public static final Vector emptyV=new Vector();
     public String auctionShop="";
     

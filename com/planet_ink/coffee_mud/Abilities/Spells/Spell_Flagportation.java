@@ -40,7 +40,7 @@ public class Spell_Flagportation extends Spell
 	public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_CLANMAGIC;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 	    Clan C=mob.getClanID().length()>0?CMLib.clans().getClan(mob.getClanID()):null;
@@ -59,7 +59,7 @@ public class Spell_Flagportation extends Spell
 		Item I=null;
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				R=(Room)r.nextElement();
 				if(CMLib.flags().canAccess(mob,R))
