@@ -47,14 +47,9 @@ public class CMFile
     private static final int VFS_MASK_NOREADVFS=64;
     private static final int VFS_MASK_NOREADLOCAL=128;
 
-    private static final int VFS_INFO_FILENAME=0;
-    private static final int VFS_INFO_BITS=1;
-    private static final int VFS_INFO_DATE=2;
-    private static final int VFS_INFO_WHOM=3;
-    private static final int VFS_INFO_DATA=4;
-
     private static final char pathSeparator=File.separatorChar;
-    private static Vector[] vfs=new Vector[256];
+    @SuppressWarnings("unchecked")
+    private static Vector<CMVFSFile>[] vfs=new Vector[256];
     private boolean logErrors=false;
 
     private int vfsBits=0;
@@ -78,7 +73,21 @@ public class CMFile
     public CMFile (String currentPath, String filename, MOB user, boolean pleaseLogErrors, boolean forceAllow)
     { super(); buildCMFile(incorporateBaseDir(currentPath,filename),user,pleaseLogErrors,forceAllow); }
 
-    private static Vector vfsV() {
+    public static class CMVFSFile {
+    	public String filename;
+    	public int mask;
+    	public long modifiedDateTime;
+    	public String author;
+    	public Object data = null;
+    	public CMVFSFile(String filename, int mask, long modifiedDateTime, String author) {
+    		this.filename=filename;
+    		this.mask=mask;
+    		this.modifiedDateTime=modifiedDateTime;
+    		this.author=author;
+    	}
+    }
+    
+    private static Vector<CMVFSFile> vfsV() {
         return vfs[Thread.currentThread().getThreadGroup().getName().charAt(0)];
     }
     
@@ -103,7 +112,7 @@ public class CMFile
         localPath=path.replace('/',pathSeparator);
         // fill in all we can
         vfsBits=0;
-        Vector info=getVFSInfo(absolutePath);
+        CMVFSFile info=getVFSInfo(absolutePath);
         String ioPath=getIOReadableLocalPathAndName();
         localFile=new File(ioPath);
         if(!localFile.exists())
@@ -155,9 +164,9 @@ public class CMFile
 
         if((info!=null)&&((!demandLocal)||(!localFile.exists())))
         {
-            vfsBits=vfsBits|((Integer)info.elementAt(CMFile.VFS_INFO_BITS)).intValue();
-            author=((String)info.elementAt(CMFile.VFS_INFO_WHOM));
-            modifiedDateTime=((Long)info.elementAt(CMFile.VFS_INFO_DATE)).longValue();
+            vfsBits=vfsBits|info.mask;
+            author=info.author;
+            modifiedDateTime=info.modifiedDateTime;
         }
         else
         {
@@ -206,7 +215,7 @@ public class CMFile
     	if(isLocalFile())
             return ((localFile!=null)&&(localFile.isDirectory()));
         String filename=getVFSPathAndName();
-        Vector info=getVFSInfo(filename);
+        CMVFSFile info=getVFSInfo(filename);
         if(!filename.endsWith("/")) filename=filename+"/";
         if(info==null) info=getVFSInfo(filename);
         return (info!=null);
@@ -278,14 +287,14 @@ public class CMFile
         if(!isDirectory()) return true;
         if((localFile!=null)&&(localFile.isDirectory())&&(localFile.list().length>0))
             return false;
-        Vector file=null;
-        Vector vfs=getVFSDirectory();
+        CMVFSFile file=null;
+        Vector<CMVFSFile> vfs=getVFSDirectory();
         String name=getVFSPathAndName().toUpperCase()+"/";
-        for(Enumeration e=vfs.elements();e.hasMoreElements();)
+        for(Enumeration<CMVFSFile> e=vfs.elements();e.hasMoreElements();)
         {
-            file=(Vector)e.nextElement();
-            if((((String)file.firstElement()).toUpperCase().startsWith(name))
-            &&(!(((String)file.firstElement()).toUpperCase().equals(name))))
+            file=e.nextElement();
+            if(((file.filename).toUpperCase().startsWith(name))
+            &&(!((file.filename).toUpperCase().equals(name))))
                 return false;
         }
         return true;
@@ -309,12 +318,10 @@ public class CMFile
         {
         	String name=getVFSPathAndName();
         	if(isDirectory()) name=name+"/";
-            Vector info=getVFSInfo(name);
-            if((info==null)||(info.size()<1))
-            {
+        	CMVFSFile info=getVFSInfo(name);
+            if(info==null)
             	return false;
-            }
-            CMLib.database().DBDeleteVFSFile((String)info.elementAt(CMFile.VFS_INFO_FILENAME));
+            CMLib.database().DBDeleteVFSFile(info.filename);
             getVFSDirectory().remove(info);
             return true;
         }
@@ -348,7 +355,7 @@ public class CMFile
         }
         if(isVFSFile())
         {
-            Vector info=getVFSInfo(getVFSPathAndName());
+        	CMVFSFile info=getVFSInfo(getVFSPathAndName());
             if(info!=null)
             {
                 Object data=getVFSData(getVFSPathAndName());
@@ -417,7 +424,7 @@ public class CMFile
         }
         if(isVFSFile())
         {
-            Vector info=getVFSInfo(getVFSPathAndName());
+        	CMVFSFile info=getVFSInfo(getVFSPathAndName());
             if(info!=null)
             {
                 Object data=getVFSData(getVFSPathAndName());
@@ -481,7 +488,7 @@ public class CMFile
         }
         if(isVFSFile())
         {
-            Vector info=getVFSInfo(getVFSPathAndName());
+        	CMVFSFile info=getVFSInfo(getVFSPathAndName());
             if(info!=null)
             {
                 Object data=getVFSData(getVFSPathAndName());
@@ -574,20 +581,16 @@ public class CMFile
         if(!isLocalFile())
         {
             String filename=getVFSPathAndName();
-            Vector info=getVFSInfo(filename);
+            CMVFSFile info=getVFSInfo(filename);
             if(info!=null)
             {
-                filename=(String)info.firstElement();
+                filename=info.filename;
                 if(vfs!=null) vfsV().removeElement(info);
                 CMLib.database().DBDeleteVFSFile(filename);
             }
             if(vfsBits<0) vfsBits=0;
             vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
-            info=new Vector();
-            info.addElement(filename);
-            info.addElement(new Integer(vfsBits&VFS_MASK_MASKSAVABLE));
-            info.addElement(new Long(System.currentTimeMillis()));
-            info.addElement(author());
+            info = new CMVFSFile(filename,vfsBits&VFS_MASK_MASKSAVABLE,System.currentTimeMillis(),author());
             vfsV().addElement(info);
             CMLib.database().DBCreateVFSFile(filename,vfsBits,author(),O);
             return true;
@@ -663,20 +666,16 @@ public class CMFile
         {
         	if(append) O=new StringBuffer(text().append(O).toString());
             String filename=getVFSPathAndName();
-            Vector info=getVFSInfo(filename);
+            CMVFSFile info=getVFSInfo(filename);
             if(info!=null)
             {
-                filename=(String)info.firstElement();
+                filename=info.filename;
                 if(vfsV()!=null) vfsV().removeElement(info);
                 CMLib.database().DBDeleteVFSFile(filename);
             }
             if(vfsBits<0) vfsBits=0;
             vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
-            info=new Vector();
-            info.addElement(filename);
-            info.addElement(new Integer(vfsBits&VFS_MASK_MASKSAVABLE));
-            info.addElement(new Long(System.currentTimeMillis()));
-            info.addElement(author());
+            info=new CMVFSFile(filename,vfsBits&VFS_MASK_MASKSAVABLE,System.currentTimeMillis(),author());
             vfsV().addElement(info);
             CMLib.database().DBCreateVFSFile(filename,vfsBits,author(),O);
             return true;
@@ -729,7 +728,7 @@ public class CMFile
         if(!isLocalFile())
         {
             String filename=getVFSPathAndName();
-            Vector info=getVFSInfo(filename);
+            CMVFSFile info=getVFSInfo(filename);
             if(!filename.endsWith("/")) filename=filename+"/";
             if(info==null) info=getVFSInfo(filename);
             if(info!=null)
@@ -741,11 +740,7 @@ public class CMFile
             vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOREADVFS);
             vfsBits=CMath.unsetb(vfsBits,CMFile.VFS_MASK_NOWRITEVFS);
             vfsBits=vfsBits|CMFile.VFS_MASK_DIRECTORY;
-            info=new Vector();
-            info.addElement(filename);
-            info.addElement(new Integer(vfsBits&VFS_MASK_MASKSAVABLE));
-            info.addElement(new Long(System.currentTimeMillis()));
-            info.addElement(author());
+            info=new CMVFSFile(filename,vfsBits&VFS_MASK_MASKSAVABLE,System.currentTimeMillis(),author());
             vfsV().addElement(info);
             CMLib.database().DBCreateVFSFile(filename,vfsBits,author(),new StringBuffer(""));
             return true;
@@ -753,7 +748,7 @@ public class CMFile
         String fullPath=getIOReadableLocalPathAndName();
         File F=new File(fullPath);
 		File PF=F.getParentFile();
-		Vector parents=new Vector();
+		Vector<File> parents=new Vector<File>();
 		while(PF!=null)
 		{
 			parents.addElement(PF);
@@ -794,18 +789,18 @@ public class CMFile
         return list;
     }
 
-    private static Vector getVFSInfo(String filename)
+    private static CMVFSFile getVFSInfo(String filename)
     {
-        Vector vfs=getVFSDirectory();
+        Vector<CMVFSFile> vfs=getVFSDirectory();
         if(vfs==null) return null;
         filename=vfsifyFilename(filename);
         String filenameAsDir=filename+"/";
-        Vector file=null;
+        CMVFSFile file=null;
         String fnam=null;
-        for(Enumeration e=vfs.elements();e.hasMoreElements();)
+        for(Enumeration<CMVFSFile> e=vfs.elements();e.hasMoreElements();)
         {
-            file=(Vector)e.nextElement();
-            fnam=(String)file.firstElement();
+            file=e.nextElement();
+            fnam=file.filename;
             if(fnam.equalsIgnoreCase(filename)||fnam.equalsIgnoreCase(filenameAsDir))
                 return file;
         }
@@ -814,18 +809,18 @@ public class CMFile
 
     private static Object getVFSData(String filename)
     {
-        Vector vfs=getVFSDirectory();
+        Vector<CMVFSFile> vfs=getVFSDirectory();
         if(vfs==null) return null;
         filename=vfsifyFilename(filename);
-        Vector file=null;
-        for(Enumeration e=vfs.elements();e.hasMoreElements();)
+        CMVFSFile file=null;
+        for(Enumeration<CMVFSFile> e=vfs.elements();e.hasMoreElements();)
         {
-            file=(Vector)e.nextElement();
-            if(((String)file.firstElement()).equalsIgnoreCase(filename))
+            file=e.nextElement();
+            if((file.filename).equalsIgnoreCase(filename))
             {
-                Vector V=CMLib.database().DBReadVFSFile((String)file.firstElement());
-                if(V.size()>=CMFile.VFS_INFO_DATA)
-                    return V.elementAt(CMFile.VFS_INFO_DATA);
+            	CMVFSFile V=CMLib.database().DBReadVFSFile(file.filename);
+                if((V!=null)&&(V.data != null))
+                    return V.data;
             }
         }
         return null;
@@ -833,15 +828,15 @@ public class CMFile
 
     private static boolean doesFilenameExistInVFS(String filename)
     {
-        Vector file=null;
+    	CMVFSFile file=null;
         if(filename.length()==0) return true;
-        Vector vfs=getVFSDirectory();
+        Vector<CMVFSFile> vfs=getVFSDirectory();
         if(vfs==null) return false;
-        for(Enumeration e=vfs.elements();e.hasMoreElements();)
+        for(Enumeration<CMVFSFile> e=vfs.elements();e.hasMoreElements();)
         {
-            file=(Vector)e.nextElement();
-            if((((String)file.firstElement()).equalsIgnoreCase(filename))
-            ||(((String)file.firstElement()).equalsIgnoreCase(filename+"/")))
+            file=e.nextElement();
+            if(((file.filename).equalsIgnoreCase(filename))
+            ||((file.filename).equalsIgnoreCase(filename+"/")))
                 return true;
         }
         return false;
@@ -849,14 +844,14 @@ public class CMFile
 
     private static boolean doesExistAsPathInVFS(String filename)
     {
-        Vector file=null;
-        Vector vfs=getVFSDirectory();
+    	CMVFSFile file=null;
+        Vector<CMVFSFile> vfs=getVFSDirectory();
         if(vfs==null) return false;
         filename=vfsifyFilename(filename).toUpperCase()+"/";
-        for(Enumeration e=vfs.elements();e.hasMoreElements();)
+        for(Enumeration<CMVFSFile> e=vfs.elements();e.hasMoreElements();)
         {
-            file=(Vector)e.nextElement();
-            if(((String)file.firstElement()).toUpperCase().startsWith(filename))
+            file=e.nextElement();
+            if((file.filename).toUpperCase().startsWith(filename))
                 return true;
         }
         return false;
@@ -864,15 +859,15 @@ public class CMFile
 
     public boolean isVFSDirectory()
     {
-        Vector file=null;
-        Vector vfs=getVFSDirectory();
+    	CMVFSFile file=null;
+        Vector<CMVFSFile> vfs=getVFSDirectory();
         if(vfs==null) return false;
         String dir=getVFSPathAndName().toUpperCase();
         if(!dir.endsWith("/")) dir+="/";
-        for(Enumeration e=vfs.elements();e.hasMoreElements();)
+        for(Enumeration<CMVFSFile> e=vfs.elements();e.hasMoreElements();)
         {
-            file=(Vector)e.nextElement();
-            if(((String)file.firstElement()).toUpperCase().equals(dir))
+            file=e.nextElement();
+            if((file.filename).toUpperCase().equals(dir))
                 return true;
         }
         return false;
@@ -887,18 +882,18 @@ public class CMFile
         if((!isDirectory())||(!canRead()))
             return new CMFile[0];
         String prefix=demandLocal?"//":(demandVFS?"::":"");
-        Vector dir=new Vector();
-        Vector fcheck=new Vector();
-        Vector info=null;
+        Vector<CMFile> dir=new Vector<CMFile>();
+        Vector<String> fcheck=new Vector<String>();
+        CMVFSFile info=null;
         String thisDir=getVFSPathAndName();
-        Vector vfs=getVFSDirectory();
+        Vector<CMVFSFile> vfs=getVFSDirectory();
         String vfsSrchDir=thisDir+"/";
         if(thisDir.length()==0) vfsSrchDir="";
         if(!demandLocal)
         for(int v=0;v<vfs.size();v++)
         {
-            info=(Vector)vfs.elementAt(v);
-            String totalVFSString=(String)info.firstElement();
+            info=vfs.elementAt(v);
+            String totalVFSString=info.filename;
             if((thisDir.length()==0)
             ||totalVFSString.toUpperCase().startsWith(vfsSrchDir.toUpperCase())) // SOMETHING in this vfs dir
             {
@@ -957,18 +952,18 @@ public class CMFile
         return finalDir;
     }
 
-    public static Vector getVFSDirectory()
+    public static Vector<CMVFSFile> getVFSDirectory()
     {
-        Vector vvfs=vfsV();
+        Vector<CMVFSFile> vvfs=vfsV();
         if(vvfs==null)
         {
-            if(CMLib.database()==null) return new Vector();
+            if(CMLib.database()==null) return new Vector<CMVFSFile>();
             char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
             if(threadCode==MudHost.MAIN_HOST)
         		vvfs=vfs[threadCode]=CMLib.database().DBReadVFSDirectory();
             else
             {
-                Vector privateV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
+                Vector<String> privateV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
                 if(privateV.contains("DBVFS"))
                     vvfs=vfs[threadCode]=CMLib.database().DBReadVFSDirectory();
                 else
@@ -980,12 +975,12 @@ public class CMFile
                 else
                     vvfs=vfs[threadCode]=vfs[MudHost.MAIN_HOST]=CMLib.database().DBReadVFSDirectory();
             }
-            HashSet dirs=new HashSet();
+            HashSet<String> dirs=new HashSet<String>();
             String fname=null;
             int x=0;
             for(int v=0;v<vvfs.size();v++)
             {
-                fname=vfsifyFilename((String)((Vector)vvfs.elementAt(v)).firstElement());
+                fname=vfsifyFilename(vvfs.firstElement().filename);
                 x=fname.indexOf("/");
                 while(x>=0)
                 {
@@ -997,25 +992,21 @@ public class CMFile
             String file=null;
             String filenameAsDir=null;
             boolean found=false;
-            for(Iterator i=dirs.iterator();i.hasNext();)
+            for(Iterator<String> i=dirs.iterator();i.hasNext();)
             {
                 filenameAsDir=(String)i.next();
                 file=(filenameAsDir.endsWith("/"))?filenameAsDir.substring(0,filenameAsDir.length()-1):filenameAsDir;
                 found=false;
-                for(Enumeration e=vvfs.elements();e.hasMoreElements();)
+                for(Enumeration<CMVFSFile> e=vvfs.elements();e.hasMoreElements();)
                 {
-                    fname=(String)((Vector)e.nextElement()).firstElement();
+                    fname=(String)e.nextElement().filename;
                     if(fname.equalsIgnoreCase(file)||fname.equalsIgnoreCase(filenameAsDir))
                     { found=true; break;}
                 }
                 if(!found)
                 {
-                    Vector V=new Vector();
-                    V.addElement(filenameAsDir);
-                    V.addElement(new Integer(VFS_MASK_DIRECTORY));
-                    V.addElement(new Long(System.currentTimeMillis()));
-                    V.addElement("");
-                    vvfs.addElement(V);
+                    CMVFSFile info = new CMVFSFile(filenameAsDir,VFS_MASK_DIRECTORY,System.currentTimeMillis(),"");
+                    vvfs.addElement(info);
                 }
             }
         }
@@ -1119,7 +1110,7 @@ public class CMFile
         CMFile dir=new CMFile((demandLocal?"//":demandVFS?"::":"")+fixedPath,user,false);
         if((!dir.exists())||(!dir.isDirectory())||(!dir.canRead()))
             return null;
-        Vector set=new Vector();
+        Vector<CMFile> set=new Vector<CMFile>();
         CMFile[] cset=dir.listFiles();
         fixedName=fixedName.toUpperCase();
         for(int c=0;c<cset.length;c++)

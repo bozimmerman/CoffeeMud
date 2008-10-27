@@ -153,8 +153,8 @@ public interface DatabaseEngine extends CMLibrary
     public void DBDeletePoll(String name);
     public Vector DBReadPollList();
     public Vector DBReadPoll(String name);
-    public Vector DBReadVFSDirectory();
-    public Vector DBReadVFSFile(String filename);
+    public Vector<CMFile.CMVFSFile> DBReadVFSDirectory();
+    public CMFile.CMVFSFile DBReadVFSFile(String filename);
     public void DBCreateVFSFile(String filename, int bits, String creator, Object data);
     public void DBDeleteVFSFile(String filename);
     

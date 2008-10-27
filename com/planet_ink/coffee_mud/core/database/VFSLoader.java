@@ -40,22 +40,22 @@ public class VFSLoader
 		DB=newDB;
 	}
     
-    public Vector DBReadDirectory()
+    public Vector<CMFile.CMVFSFile> DBReadDirectory()
     {
         DBConnection D=null;
-        Vector rows=new Vector();
+        Vector<CMFile.CMVFSFile> rows=new Vector<CMFile.CMVFSFile>();
         try
         {
             D=DB.DBFetch();
             ResultSet R=D.query("SELECT * FROM CMVFS");
             while(R.next())
             {
-                Vector V=new Vector();
-                V.addElement(DBConnections.getRes(R,"CMFNAM"));
-                V.addElement(new Integer((int)DBConnections.getLongRes(R,"CMDTYP")));
-                V.addElement(new Long(DBConnections.getLongRes(R,"CMMODD")));
-                V.addElement(DBConnections.getRes(R,"CMWHOM"));
-                rows.addElement(V);
+                String fname = DBConnections.getRes(R,"CMFNAM");
+                int mask = (int)DBConnections.getLongRes(R,"CMDTYP");
+                long time = DBConnections.getLongRes(R,"CMMODD");
+                String author = DBConnections.getRes(R,"CMWHOM");
+                CMFile.CMVFSFile file = new CMFile.CMVFSFile(fname,mask,time,author);
+                rows.addElement(file);
             }
         }
         catch(Exception sqle)
@@ -68,10 +68,10 @@ public class VFSLoader
         return rows;
     }
     
-    public Vector DBRead(String filename)
+    public CMFile.CMVFSFile DBRead(String filename)
     {
         DBConnection D=null;
-        Vector row=new Vector();
+        CMFile.CMVFSFile row = null;;
         try
         {
             D=DB.DBFetch();
@@ -81,13 +81,12 @@ public class VFSLoader
                 String possFName=DBConnections.getRes(R,"CMFNAM");
                 if(possFName.equalsIgnoreCase(filename))
                 {
-                    row.addElement(possFName);
                     int bits=(int)DBConnections.getLongRes(R,"CMDTYP");
-                    row.addElement(new Integer(bits));
-                    row.addElement(new Long(DBConnections.getLongRes(R,"CMMODD")));
-                    row.addElement(DBConnections.getRes(R,"CMWHOM"));
+                    long mod=DBConnections.getLongRes(R,"CMMODD");
+                    String author = DBConnections.getRes(R,"CMWHOM");
                     String data=DBConnections.getRes(R,"CMDATA");
-                    row.addElement(B64Encoder.B64decode(data));
+                    row = new CMFile.CMVFSFile(filename,bits,mod,author);
+                    row.data = B64Encoder.B64decode(data);
                 }
             }
         }

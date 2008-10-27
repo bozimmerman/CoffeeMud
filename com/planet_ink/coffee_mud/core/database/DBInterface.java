@@ -379,9 +379,9 @@ public class DBInterface implements DatabaseEngine
     public Vector DBReadPoll(String name)
     {return PollLoader.DBRead(name);}
 
-    public Vector DBReadVFSDirectory()
+    public Vector<CMFile.CMVFSFile> DBReadVFSDirectory()
     { return VFSLoader.DBReadDirectory();}
-    public Vector DBReadVFSFile(String filename)
+    public CMFile.CMVFSFile DBReadVFSFile(String filename)
     { return VFSLoader.DBRead(filename);}
     public void DBCreateVFSFile(String filename, int bits, String creator, Object data)
     { VFSLoader.DBCreate(filename,bits,creator,data);}
