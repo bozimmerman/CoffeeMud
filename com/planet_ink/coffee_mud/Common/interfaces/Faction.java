@@ -395,7 +395,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionRange
      * @return an enumeration of all available ranges
      */
-    public Enumeration ranges();
+    public Enumeration<Faction.FactionRange> ranges();
 
     /**
      * Returns the Faction.FactionRange object that applies to the given faction

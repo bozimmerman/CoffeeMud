@@ -36,10 +36,10 @@ import java.util.*;
 public class Factions extends StdLibrary implements FactionManager
 {
     public String ID(){return "Factions";}
-	public Hashtable factionSet = new Hashtable();
+	public Hashtable<String,Faction> factionSet = new Hashtable<String,Faction>();
 	public Hashtable hashedFactionRanges=new Hashtable();
 	
-    public Hashtable factionSet(){return factionSet;}
+    public Hashtable<String,Faction> factionSet(){return factionSet;}
 	public void clearFactions()
 	{
 	    factionSet.clear();
@@ -47,7 +47,7 @@ public class Factions extends StdLibrary implements FactionManager
 	}
     public void reloadFactions(String factionList)
     {
-        Vector preLoadFactions=CMParms.parseSemicolons(factionList,true);
+        Vector<String> preLoadFactions=CMParms.parseSemicolons(factionList,true);
         clearFactions();
         for(int i=0;i<preLoadFactions.size();i++)
             getFaction((String)preLoadFactions.elementAt(i));
