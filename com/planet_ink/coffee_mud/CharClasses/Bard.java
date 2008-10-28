@@ -248,6 +248,7 @@ public class Bard extends StdCharClass
         }
     }
 
+	@SuppressWarnings("unchecked")
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);

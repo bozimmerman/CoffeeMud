@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -184,11 +185,11 @@ public class StdBook extends StdItem
 		super.executeMsg(myHost,msg);
 	}
 
-	public Vector DBRead(MOB readerMOB, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
+	public Vector<Object> DBRead(MOB readerMOB, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
 	{
 		StringBuffer buf=new StringBuffer("");
-		Vector reply=new Vector();
-		Vector journal=CMLib.database().DBReadJournal(Journal);
+		Vector<Object> reply=new Vector<Object>();
+		Vector<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(Journal);
 		if((which<0)||(journal==null)||(which>=journal.size()))
 		{
 			buf.append("\n\rTable of Contents\n\r");
@@ -206,19 +207,16 @@ public class StdBook extends StdItem
 		{
 			if(journal.size()>0)
 			{
-				reply.addElement(((Vector)journal.firstElement()).elementAt(DatabaseEngine.JOURNAL_FROM));
-				reply.addElement(((Vector)journal.firstElement()).elementAt(DatabaseEngine.JOURNAL_SUBJ));
+				reply.addElement(journal.firstElement().from);
+				reply.addElement(journal.firstElement().subj);
 			}
 			Vector selections=new Vector();
 			for(int j=0;j<journal.size();j++)
 			{
-				Vector entry=(Vector)journal.elementAt(j);
-				String from=(String)entry.elementAt(DatabaseEngine.JOURNAL_FROM);
-				//String date=(String)entry.elementAt(2);
-				String to=(String)entry.elementAt(DatabaseEngine.JOURNAL_TO);
-				String subject=(String)entry.elementAt(DatabaseEngine.JOURNAL_SUBJ);
-				// message is 5, but dont matter.
-				//String compdate=(String)entry.elementAt(6);
+				JournalsLibrary.JournalEntry entry=journal.elementAt(j);
+				String from=entry.from;
+				String to=entry.to;
+				String subject=entry.subj;
 				StringBuffer selection=new StringBuffer("");
 				if(to.equals("ALL")
                 ||to.equalsIgnoreCase(readerMOB.Name())
@@ -261,15 +259,14 @@ public class StdBook extends StdItem
 		}
 		else
 		{
-			Vector entry=(Vector)journal.elementAt(which);
-			String from=(String)entry.elementAt(DatabaseEngine.JOURNAL_FROM);
-			//String date=(String)entry.elementAt(2);
-			String to=(String)entry.elementAt(DatabaseEngine.JOURNAL_TO);
-			String subject=(String)entry.elementAt(DatabaseEngine.JOURNAL_SUBJ);
-			String message=(String)entry.elementAt(DatabaseEngine.JOURNAL_MSG);
+			JournalsLibrary.JournalEntry entry=journal.elementAt(which);
+			String from=entry.from;
+			String to=entry.to;
+			String subject=entry.subj;
+			String message=entry.msg;
 			
-			reply.addElement(entry.elementAt(DatabaseEngine.JOURNAL_FROM));
-			reply.addElement(entry.elementAt(DatabaseEngine.JOURNAL_SUBJ));
+			reply.addElement(entry.from);
+			reply.addElement(entry.subj);
 			
 			//String compdate=(String)entry.elementAt(6);
 			boolean mineAble=to.equalsIgnoreCase(readerMOB.Name())

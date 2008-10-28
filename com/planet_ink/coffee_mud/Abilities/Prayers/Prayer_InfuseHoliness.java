@@ -109,7 +109,7 @@ public class Prayer_InfuseHoliness extends Prayer
             }
             Area A=mob.location().getArea();
             Room R=null;
-            for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+            for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
             {
                 R=(Room)e.nextElement();
                 if(CMLib.law().getClericInfused((Room)target)==D)

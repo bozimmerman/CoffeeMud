@@ -42,4 +42,17 @@ public interface JournalsLibrary extends CMLibrary, Runnable
         "DIVORCES","CHRISTENINGS","LEVELS","DETAILEDLEVELS","DEATHS","DETAILEDDEATHS",
         "CONQUESTS","CONCEPTIONS","NEWPLAYERS","LOSTLEVELS","PLAYERPURGES","CLANINFO",
         "WARRANTS"};
+    
+	public static final String JOURNAL_BOUNDARY="%0D^w---------------------------------------------^N%0D";
+	
+	public static class JournalEntry
+	{
+		public String key;
+		public String from;
+		public String date;
+		public String to;
+		public String subj;
+		public String msg;
+		public String update;
+	}
 }

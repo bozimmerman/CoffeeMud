@@ -141,17 +141,17 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                 if((num!=null)&&(CMath.isNumber(num)))
                 {
                     thread.status("updating journal "+getCommandJournalName(j));
-                    Vector items=CMLib.database().DBReadJournal("SYSTEM_"+getCommandJournalName(j)+"S");
+                    Vector<JournalEntry> items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+getCommandJournalName(j)+"S");
                     if(items!=null)
                     for(int i=items.size()-1;i>=0;i--)
                     {
-                        Vector entry=(Vector)items.elementAt(i);
-                        long compdate=CMath.s_long((String)entry.elementAt(DatabaseEngine.JOURNAL_DATE2));
+                    	JournalEntry entry=items.elementAt(i);
+                        long compdate=CMath.s_long(entry.update);
                         compdate=compdate+Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
                         if(System.currentTimeMillis()>compdate)
                         {
-                            String from=(String)entry.elementAt(DatabaseEngine.JOURNAL_FROM);
-                            String message=(String)entry.elementAt(DatabaseEngine.JOURNAL_MSG);
+                            String from=entry.from;
+                            String message=entry.msg;
                             Log.sysOut(Thread.currentThread().getName(),"Expired "+getCommandJournalName(j)+" from "+from+": "+message);
                             CMLib.database().DBDeleteJournal("SYSTEM_"+getCommandJournalName(j)+"S",i);
                         }

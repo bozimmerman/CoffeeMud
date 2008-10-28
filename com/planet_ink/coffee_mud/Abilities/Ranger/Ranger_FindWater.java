@@ -260,9 +260,9 @@ public class Ranger_FindWater extends StdAbility
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		Vector rooms=new Vector();
-		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,true,true,false,60+(2*getXLEVELLevel(mob)));
-		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+		Vector<Room> rooms=new Vector<Room>();
+		Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,true,true,false,60+(2*getXLEVELLevel(mob)));
+		for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
 		{
 			Room R=CMLib.map().getRoom((Room)r.nextElement());
 			if(waterHere(mob,R,null).length()>0)

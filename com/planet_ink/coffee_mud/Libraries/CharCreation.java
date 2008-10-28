@@ -416,8 +416,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
             StringBuffer listOfRaces=new StringBuffer("[");
             boolean tmpFirst = true;
-            HashSet doneRaces=new HashSet();
-            for(Enumeration r=CMClass.races();r.hasMoreElements();)
+            HashSet<String> doneRaces=new HashSet<String>();
+            for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
             {
                 Race R=(Race)r.nextElement();
                 if(doneRaces.contains(R.ID())) continue;
@@ -457,7 +457,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                                             ||(CMath.bset(newRace.availabilityCode(),Area.THEME_SKILLONLYMASK))))
                         newRace=null;
                     if(newRace==null)
-                        for(Enumeration r=CMClass.races();r.hasMoreElements();)
+                        for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
                         {
                             Race R=(Race)r.nextElement();
                             if((R.name().equalsIgnoreCase(raceStr))
@@ -470,7 +470,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                             }
                         }
                     if(newRace==null)
-                        for(Enumeration r=CMClass.races();r.hasMoreElements();)
+                        for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
                         {
                             Race R=(Race)r.nextElement();
                             if((R.name().toUpperCase().startsWith(raceStr.toUpperCase()))

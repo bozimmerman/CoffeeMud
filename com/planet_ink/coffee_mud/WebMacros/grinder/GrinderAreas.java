@@ -37,7 +37,7 @@ public class GrinderAreas
 		StringBuffer AreaList=new StringBuffer("");
 		boolean anywhere=(CMSecurity.isAllowedAnywhere(mob,"CMDROOMS")||CMSecurity.isAllowedAnywhere(mob,"CMDAREAS"));
 		boolean everywhere=(CMSecurity.isASysOp(mob)||CMSecurity.isAllowedEverywhere(mob,"CMDROOMS")||CMSecurity.isAllowedEverywhere(mob,"CMDAREAS"));
-		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
+		for(Enumeration<Area> a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			if(everywhere||(A.amISubOp(mob.Name())&&anywhere))
@@ -109,7 +109,7 @@ public class GrinderAreas
 		areasNeedingUpdates.addElement(A);
 
 		boolean redoAllMyDamnRooms=false;
-		Vector allMyDamnRooms=null;
+		Vector<Room> allMyDamnRooms=null;
 		String oldName=null;
 
 		// class!
@@ -118,8 +118,8 @@ public class GrinderAreas
 			return "Please select a class type for this area.";
 		if(!className.equalsIgnoreCase(CMClass.classID(A)))
 		{
-			allMyDamnRooms=new Vector();
-			for(Enumeration r=A.getProperMap();r.hasMoreElements();)
+			allMyDamnRooms=new Vector<Room>();
+			for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 				allMyDamnRooms.addElement(r.nextElement());
 			Area oldA=A;
 			A=CMClass.getAreaType(className);
@@ -142,8 +142,8 @@ public class GrinderAreas
 		{
 			if(CMLib.map().getArea(name)!=null)
 				return "The name you chose is already in use.  Please enter another.";
-			allMyDamnRooms=new Vector();
-			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+			allMyDamnRooms=new Vector<Room>();
+			for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 				allMyDamnRooms.addElement(r.nextElement());
 			CMLib.map().delArea(A);
 			oldName=A.Name();

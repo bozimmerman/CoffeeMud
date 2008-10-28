@@ -192,8 +192,11 @@ public class DBInterface implements DatabaseEngine
 	public void DBDeleteJournal(String Journal, int which)
 	{JournalLoader.DBDelete(Journal,which);}
 	
-	public Vector DBReadJournal(String Journal)
-	{return JournalLoader.DBRead(Journal);}
+	public Vector<String> DBReadJournals()
+	{return JournalLoader.DBReadJournals();}
+	
+	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgs(String Journal)
+	{return JournalLoader.DBReadJournalMsgs(Journal);}
 	
 	public int DBCountJournal(String Journal, String from, String to)
 	{ return JournalLoader.DBCount(Journal,from,to);}

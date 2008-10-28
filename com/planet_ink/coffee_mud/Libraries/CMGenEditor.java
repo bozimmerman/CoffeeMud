@@ -4358,7 +4358,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             if(R2==null)
             {
                 StringBuffer str=new StringBuffer("That race name is invalid or is generic.  Valid races include: ");
-                for(Enumeration r=CMClass.races();r.hasMoreElements();)
+                for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
                 {
                     Race R=(Race)r.nextElement();
                     if(!R.isGeneric())
@@ -4392,9 +4392,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             if(C2==null)
             {
                 StringBuffer str=new StringBuffer("That char class name is invalid or is generic.  Valid char classes include: ");
-                for(Enumeration r=CMClass.charClasses();r.hasMoreElements();)
+                for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
                 {
-                    CharClass C=(CharClass)r.nextElement();
+                    CharClass C=(CharClass)c.nextElement();
                     if(!C.isGeneric())
                         str.append(C.ID()+", ");
                 }

@@ -364,7 +364,7 @@ public class DefaultClimate implements Climate
 
 			if(say!=null)
 			{
-				for(Enumeration r=A.getProperMap();r.hasMoreElements();)
+				for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(CMLib.map().hasASky(R))

@@ -182,7 +182,7 @@ public class Deviations extends StdCommand
 		else
 		if(where.equalsIgnoreCase("area"))
 		{
-			for(Enumeration r=mob.location().getArea().getCompleteMap();r.hasMoreElements();)
+			for(Enumeration<Room> r=mob.location().getArea().getCompleteMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				fillCheckDeviations(R,type,check);

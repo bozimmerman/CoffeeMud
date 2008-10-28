@@ -58,9 +58,9 @@ public class Chant_SenseSentience extends Chant
 				StringBuffer lines=new StringBuffer("^x");
 				lines.append(CMStrings.padRight("Name",25)+"| ");
 				lines.append(CMStrings.padRight("Location",17)+"^.^N\n\r");
-				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,true,false,false,false,50);
+				Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,true,false,false,false,50);
 				if(!checkSet.contains(mob.location())) checkSet.addElement(mob.location());
-				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+				for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
 				{
 					Room R=CMLib.map().getRoom((Room)r.nextElement());
 					if((((R.domainType()&Room.INDOORS)==0)

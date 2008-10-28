@@ -125,7 +125,7 @@ public class ResourceOverride extends StdBehavior
 			tickDown=5;
 			Area A=(Area)ticking;
 			Room R=null;
-			for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+			for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 			{
 				R=(Room)e.nextElement();
 				if(((roomTypes.size()==0)||(!roomTypes.contains(new Integer(R.domainType()))))

@@ -243,11 +243,12 @@ public class Beastmaster extends StdCharClass
 		{
 			outfitChoices=new Vector<Item>();
 			Weapon w=CMClass.getWeapon("Quarterstaff");
-			outfitChoices.addElement(w);
+			outfitChoices.addElement((Item)w);
 		}
 		return outfitChoices;
 	}
 
+	@SuppressWarnings("unchecked")
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);

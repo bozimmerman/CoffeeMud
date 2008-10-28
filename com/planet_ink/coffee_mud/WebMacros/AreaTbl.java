@@ -45,9 +45,9 @@ public class AreaTbl extends StdWebMacro
 			return "<TR><TD colspan=\"" + AT_MAX_COL + "\" class=\"cmAreaTblEntry\"><I>Game is not running - unable to get area list!</I></TD></TR>";
 		}
 
-		Vector areasVec=new Vector();
+		Vector<String> areasVec=new Vector<String>();
 
-		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
+		for(Enumeration<Area> a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			if(!CMLib.flags().isHidden(A))

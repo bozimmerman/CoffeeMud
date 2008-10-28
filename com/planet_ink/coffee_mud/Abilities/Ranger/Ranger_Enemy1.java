@@ -50,8 +50,8 @@ public class Ranger_Enemy1 extends StdAbility
 			if((affected==null)||(!(affected instanceof MOB)))
 				return super.text();
 			MOB mob=(MOB)affected;
-			Vector choices=new Vector();
-			for(Enumeration r=CMClass.races();r.hasMoreElements();)
+			Vector<String> choices=new Vector<String>();
+			for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 			{
 				Race R=(Race)r.nextElement();
 				if((!choices.contains(R.racialCategory()))

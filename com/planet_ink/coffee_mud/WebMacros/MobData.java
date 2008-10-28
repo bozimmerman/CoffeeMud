@@ -1117,7 +1117,7 @@ public class MobData extends StdWebMacro
 				break;
 			case 8: // race
 				if(firstTime) old=""+M.baseCharStats().getMyRace().ID();
-				for(Enumeration r=CMClass.races();r.hasMoreElements();)
+				for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 				{
 					Race R2=(Race)r.nextElement();
 					str.append("<OPTION VALUE=\""+R2.ID()+"\"");

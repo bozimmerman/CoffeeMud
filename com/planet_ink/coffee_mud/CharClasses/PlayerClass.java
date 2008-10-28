@@ -73,6 +73,7 @@ public class PlayerClass extends StdCharClass
 		}
 		super.startCharacter(mob, false, verifyOnly);
 	}
+	@SuppressWarnings("unchecked")
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -82,7 +83,7 @@ public class PlayerClass extends StdCharClass
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
-			for(Enumeration a=V.getDimensionVector(1).elements();a.hasMoreElements();)
+			for(Enumeration<String> a=V.getDimensionVector(1).elements();a.hasMoreElements();)
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)

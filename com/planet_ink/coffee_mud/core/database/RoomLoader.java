@@ -351,7 +351,7 @@ public class RoomLoader
 		}
 
         RoomnumberSet unloadedRooms=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
-        Vector rooms=DBReadRoomData(null,set,set==null,newAreasToCreate,unloadedRooms);
+        Vector<Room> rooms=DBReadRoomData(null,set,set==null,newAreasToCreate,unloadedRooms);
         
 		// handle stray areas
 		for(Enumeration e=newAreasToCreate.elements();e.hasMoreElements();)
@@ -359,7 +359,7 @@ public class RoomLoader
 			String areaName=(String)e.nextElement();
 			Log.sysOut("Area","Creating unhandled area: "+areaName);
 			Area realArea=DBCreate(areaName,"StdArea");
-			for(Enumeration r=rooms.elements();r.hasMoreElements();)
+			for(Enumeration<Room> r=rooms.elements();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(R.getArea().Name().equals(areaName))
@@ -374,7 +374,7 @@ public class RoomLoader
 		if(set==null)
 			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Finalizing room data)");
 
-		for(Enumeration r=rooms.elements();r.hasMoreElements();)
+		for(Enumeration<Room> r=rooms.elements();r.hasMoreElements();)
 		{
 			Room thisRoom=(Room)r.nextElement();
 			thisRoom.startItemRejuv();
@@ -382,7 +382,7 @@ public class RoomLoader
 		}
 
 		if(set==null)
-			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				((Area)a.nextElement()).getAreaStats();
 	}
     

@@ -50,7 +50,7 @@ public interface TrackingLibrary extends CMLibrary
     public void stopTracking(MOB mob);
     public int radiatesFromDir(Room room, Vector rooms);
     public void getRadiantRooms(Room room,
-                                Vector rooms,
+                                Vector<Room> rooms,
                                 boolean openOnly,
                                 boolean areaOnly,
                                 boolean noEmptyGrids,
@@ -59,7 +59,7 @@ public interface TrackingLibrary extends CMLibrary
                                 Room radiateTo,
                                 int maxDepth,
                                 HashSet ignoreRooms);
-	public Vector getRadiantRooms(Room room,
+	public Vector<Room> getRadiantRooms(Room room,
 								  boolean openOnly,
 								  boolean areaOnly,
 								  boolean noEmptyGrids,

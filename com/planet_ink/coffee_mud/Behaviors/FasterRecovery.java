@@ -115,7 +115,7 @@ public class FasterRecovery extends StdBehavior
 	public void doBe(Area area, int burst, int health, int hits, int mana, int move)
 	{
 		if(area==null) return;
-		for(Enumeration r=area.getMetroMap();r.hasMoreElements();)
+		for(Enumeration<Room> r=area.getMetroMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			doBe(R,burst,health,hits,mana,move);

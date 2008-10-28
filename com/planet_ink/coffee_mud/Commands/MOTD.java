@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -61,16 +62,16 @@ public class MOTD extends StdCommand
 				    buf.append(msg+"\n\r--------------------------------------\n\r");
 				}
 		
-				Vector journal=CMLib.database().DBReadJournal("CoffeeMud News");
+				Vector<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs("CoffeeMud News");
 				for(int which=0;which<journal.size();which++)
 				{
-					Vector entry=(Vector)journal.elementAt(which);
-					String from=(String)entry.elementAt(DatabaseEngine.JOURNAL_FROM);
-					long last=CMath.s_long((String)entry.elementAt(DatabaseEngine.JOURNAL_DATE));
-					String to=(String)entry.elementAt(DatabaseEngine.JOURNAL_TO);
-					String subject=(String)entry.elementAt(DatabaseEngine.JOURNAL_SUBJ);
-					String message=(String)entry.elementAt(DatabaseEngine.JOURNAL_MSG);
-					long compdate=CMath.s_long((String)entry.elementAt(DatabaseEngine.JOURNAL_DATE2));
+					JournalsLibrary.JournalEntry entry=journal.elementAt(which);
+					String from=entry.from;
+					long last=CMath.s_long(entry.date);
+					String to=entry.to;
+					String subject=entry.subj;
+					String message=entry.msg;
+					long compdate=CMath.s_long(entry.update);
                     if(compdate>mob.playerStats().lastDateTime())
                     {
     					boolean allMine=to.equalsIgnoreCase(mob.Name())
@@ -133,7 +134,7 @@ public class MOTD extends StdCommand
                         buf.append("\n\r--------------------------------------\n\r");
                 }
                 
-                Vector myEchoableCommandJournals=new Vector();
+                Vector<Integer> myEchoableCommandJournals=new Vector<Integer>();
                 for(int cj=0;cj<CMLib.journals().getNumCommandJournals();cj++)
                 {
                     if((CMLib.journals().getCommandJournalFlags(cj).get("ADMINECHO")!=null)
@@ -146,14 +147,14 @@ public class MOTD extends StdCommand
                 for(int cj=0;cj<myEchoableCommandJournals.size();cj++)
                 {
                     Integer CJ=(Integer)myEchoableCommandJournals.elementAt(cj);
-                    Vector items=CMLib.database().DBReadJournal("SYSTEM_"+CMLib.journals().getCommandJournalName(CJ.intValue())+"S");
+                    Vector<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+CMLib.journals().getCommandJournalName(CJ.intValue())+"S");
                     if(items!=null)
                     for(int i=0;i<items.size();i++)
                     {
-                        Vector entry=(Vector)items.elementAt(i);
-                        String from=(String)entry.elementAt(DatabaseEngine.JOURNAL_FROM);
-                        String message=(String)entry.elementAt(DatabaseEngine.JOURNAL_MSG);
-                        long compdate=CMath.s_long((String)entry.elementAt(DatabaseEngine.JOURNAL_DATE2));
+                    	JournalsLibrary.JournalEntry entry=items.elementAt(i);
+                        String from=entry.from;
+                        String message=entry.msg;
+                        long compdate=CMath.s_long(entry.update);
                         if(compdate>mob.playerStats().lastDateTime())
                         {
                             buf.append("\n\rNEW "+CMLib.journals().getCommandJournalName(CJ.intValue())+" from "+from+": "+message+"\n\r");
@@ -167,12 +168,12 @@ public class MOTD extends StdCommand
                 if((!CMath.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
                 &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0))
                 {
-                    Vector msgs=CMLib.database().DBReadJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX));
+                    Vector<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.SYSTEM_MAILBOX));
                     int mymsgs=0;
                     for(int num=0;num<msgs.size();num++)
                     {
-                        Vector thismsg=(Vector)msgs.elementAt(num);
-                        String to=((String)thismsg.elementAt(3));
+                    	JournalsLibrary.JournalEntry thismsg=msgs.elementAt(num);
+                        String to=thismsg.to;
                         if(to.equalsIgnoreCase("all")
                         ||to.equalsIgnoreCase(mob.Name())
                         ||(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),mob,true)))

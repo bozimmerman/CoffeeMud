@@ -85,7 +85,7 @@ public class At extends StdCommand
                 if(room==null)
                 {
                     // now look for area names
-                    for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+                    for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
                     {
                         Area A=(Area)a.nextElement();
                         if((A.Name().equalsIgnoreCase(srchStr))
@@ -101,7 +101,7 @@ public class At extends StdCommand
                 // keep looking at area names
 				if(room==null)
 				{
-					for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+					for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 					{
 						Area A=(Area)a.nextElement();
 						if((CMLib.english().containsString(A.name(),srchStr))
@@ -121,7 +121,7 @@ public class At extends StdCommand
 					MOB target=null;
 					try
 					{
-                        for(Enumeration r=CMLib.map().roomsFilled();r.hasMoreElements();)
+                        for(Enumeration<Room> r=CMLib.map().roomsFilled();r.hasMoreElements();)
                         {
                             Room R=(Room)r.nextElement();
                             target=R.fetchInhabitant(srchStr);
@@ -174,7 +174,7 @@ public class At extends StdCommand
 					Item target=null;
 					try
 					{
-						for(Enumeration r=CMLib.map().roomsFilled();r.hasMoreElements();)
+						for(Enumeration<Room> r=CMLib.map().roomsFilled();r.hasMoreElements();)
 						{
 							Room R=(Room)r.nextElement();
 							target=R.fetchItem(null,srchStr);

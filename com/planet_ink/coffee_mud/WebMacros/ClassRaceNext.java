@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -55,7 +56,7 @@ public class ClassRaceNext extends StdWebMacro
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();
-		for(Enumeration r=CMClass.races();r.hasMoreElements();)
+		for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 		{
 			Race R=(Race)r.nextElement();
 			mob.baseCharStats().setMyRace(R);

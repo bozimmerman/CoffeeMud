@@ -39,17 +39,17 @@ public class List extends StdCommand
 	public String[] getAccessWords(){return access;}
 
 
-	public StringBuffer roomDetails(Vector these, Room likeRoom)
+	public StringBuffer roomDetails(Vector<Room> these, Room likeRoom)
 	{return roomDetails(these.elements(),likeRoom);}
 
-	public StringBuffer roomDetails(Enumeration these, Room likeRoom)
+	public StringBuffer roomDetails(Enumeration<Room> these, Room likeRoom)
 	{
 		StringBuffer lines=new StringBuffer("");
 		if(!these.hasMoreElements()) return lines;
 		if(likeRoom==null) return lines;
         Room thisThang=null;
         String thisOne=null;
-        for(Enumeration r=these;r.hasMoreElements();)
+        for(Enumeration<Room> r=these;r.hasMoreElements();)
         {
             thisThang=(Room)r.nextElement();
             thisOne=thisThang.roomID();
@@ -60,14 +60,14 @@ public class List extends StdCommand
 		return lines;
 	}
 
-	public StringBuffer roomExpires(Enumeration these, Room likeRoom)
+	public StringBuffer roomExpires(Enumeration<Room> these, Room likeRoom)
 	{
 		StringBuffer lines=new StringBuffer("The time is: "+CMLib.time().date2String(System.currentTimeMillis())+"\n\r\n\r");
 		if(!these.hasMoreElements()) return lines;
 		if(likeRoom==null) return lines;
         Room thisThang=null;
         String thisOne=null;
-        for(Enumeration r=these;r.hasMoreElements();)
+        for(Enumeration<Room> r=these;r.hasMoreElements();)
         {
             thisThang=(Room)r.nextElement();
             thisOne=thisThang.roomID();
@@ -84,7 +84,7 @@ public class List extends StdCommand
 		lines.append("\n\r");
 		return lines;
 	}
-    public StringBuffer roomPropertyDetails(Enumeration these, Room likeRoom)
+    public StringBuffer roomPropertyDetails(Enumeration<Room> these, Room likeRoom)
     {
         StringBuffer lines=new StringBuffer("");
         if(!these.hasMoreElements()) return lines;
@@ -92,7 +92,7 @@ public class List extends StdCommand
         LandTitle t=null;
         Room thisThang=null;
         String thisOne=null;
-        for(Enumeration r=these;r.hasMoreElements();)
+        for(Enumeration<Room> r=these;r.hasMoreElements();)
         {
             thisThang=(Room)r.nextElement();
             t=CMLib.law().getLandTitle(thisThang);
@@ -106,16 +106,16 @@ public class List extends StdCommand
         lines.append("\n\r");
         return lines;
     }
-	public StringBuffer roomTypes(Vector these, Room likeRoom)
+	public StringBuffer roomTypes(Vector<Room> these, Room likeRoom)
 	{return roomTypes(these.elements(),likeRoom);}
-	public StringBuffer roomTypes(Enumeration these, Room likeRoom)
+	public StringBuffer roomTypes(Enumeration<Room> these, Room likeRoom)
 	{
 		StringBuffer lines=new StringBuffer("");
 		if(!these.hasMoreElements()) return lines;
 		if(likeRoom==null) return lines;
         Room thisThang=null;
         String thisOne=null;
-        for(Enumeration r=these;r.hasMoreElements();)
+        for(Enumeration<Room> r=these;r.hasMoreElements();)
         {
             thisThang=(Room)r.nextElement();
             thisOne=thisThang.roomID();
@@ -126,9 +126,9 @@ public class List extends StdCommand
 		return lines;
 	}
 
-	public StringBuffer roomResources(Vector these, Room likeRoom)
+	public StringBuffer roomResources(Vector<Room> these, Room likeRoom)
 	{return roomResources(these.elements(),likeRoom);}
-	public StringBuffer roomResources(Enumeration these, Room likeRoom)
+	public StringBuffer roomResources(Enumeration<Room> these, Room likeRoom)
 	{
 		StringBuffer lines=new StringBuffer(CMStrings.padRight("Room ID#",30)+"| "
 										   +CMStrings.padRight("Room Type",15)+"| "
@@ -137,7 +137,7 @@ public class List extends StdCommand
 		if(likeRoom==null) return lines;
         Room thisThang=null;
         String thisOne=null;
-        for(Enumeration r=these;r.hasMoreElements();)
+        for(Enumeration<Room> r=these;r.hasMoreElements();)
         {
             thisThang=(Room)r.nextElement();
             thisOne=thisThang.roomID();
@@ -155,7 +155,7 @@ public class List extends StdCommand
 		return lines;
 	}
 
-	public StringBuffer areaConquests(Enumeration these)
+	public StringBuffer areaConquests(Enumeration<Area> these)
 	{
 		StringBuffer lines=new StringBuffer(CMStrings.padRight("Area",26)+"| "
 										   +CMStrings.padRight("Clan",40)+"| "
@@ -163,7 +163,7 @@ public class List extends StdCommand
 		if(!these.hasMoreElements()) return lines;
         Area thisThang=null;
         String thisOne=null;
-        for(Enumeration r=these;r.hasMoreElements();)
+        for(Enumeration<Area> r=these;r.hasMoreElements();)
         {
             thisThang=(Area)r.nextElement();
             thisOne=thisThang.name();
@@ -284,8 +284,8 @@ public class List extends StdCommand
 	        if(F.showInSpecialReported()) useFaction=F;
 	    }
 		StringBuffer buf=new StringBuffer("Links: \n\r");
-		Vector areaLinkGroups=new Vector();
-		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
+		Vector<Vector<Environmental>> areaLinkGroups=new Vector<Vector<Environmental>>();
+		for(Enumeration<Area> a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			buf.append(A.name()+"\t"+A.numberOfProperIDedRooms()+" rooms\t");
@@ -294,17 +294,17 @@ public class List extends StdCommand
 				buf.append("\n\r");
 				continue;
 			}
-			Vector linkedGroups=new Vector();
+			Vector<Vector<Environmental>> linkedGroups=new Vector<Vector<Environmental>>();
 			int numMobs=0;
 			int totalAlignment=0;
 			int totalLevels=0;
-			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+			for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(R.roomID().length()>0)
 				{
-					Vector myVec=null;
-					Vector clearVec=null;
+					Vector<Environmental> myVec=null;
+					Vector<Environmental> clearVec=null;
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						Room R2=R.rawDoors()[d];
@@ -312,7 +312,7 @@ public class List extends StdCommand
 						{
 							for(int g=0;g<linkedGroups.size();g++)
 							{
-								Vector G=(Vector)linkedGroups.elementAt(g);
+								Vector<Environmental> G=(Vector<Environmental>)linkedGroups.elementAt(g);
 								if(G.size()==0)
 									clearVec=G;
 								else
@@ -342,7 +342,7 @@ public class List extends StdCommand
 							clearVec.addElement(R);
 						else
 						{
-							clearVec=new Vector();
+							clearVec=new Vector<Environmental>();
 							clearVec.addElement(R);
 							linkedGroups.addElement(clearVec);
 						}
@@ -350,7 +350,7 @@ public class List extends StdCommand
 				}
 				for(int g=linkedGroups.size()-1;g>=0;g--)
 				{
-					if(((Vector)linkedGroups.elementAt(g)).size()==0)
+					if(((Vector<Environmental>)linkedGroups.elementAt(g)).size()==0)
 						linkedGroups.removeElementAt(g);
 				}
 
@@ -373,9 +373,9 @@ public class List extends StdCommand
 
 			}
 			StringBuffer ext=new StringBuffer("links ");
-			Vector myVec=null;
-			Vector clearVec=null;
-			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+			Vector<Environmental> myVec=null;
+			Vector<Environmental> clearVec=null;
+			for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(R.roomID().length()>0)
@@ -387,7 +387,7 @@ public class List extends StdCommand
 						ext.append(Directions.getDirectionName(d)+" to "+R2.getArea().name()+" ("+R.roomID()+"/"+R2.roomID()+") ");
 						for(int g=0;g<areaLinkGroups.size();g++)
 						{
-							Vector G=(Vector)areaLinkGroups.elementAt(g);
+							Vector<Environmental> G=(Vector<Environmental>)areaLinkGroups.elementAt(g);
 							if(G.size()==0)
 								clearVec=G;
 							else
@@ -430,21 +430,21 @@ public class List extends StdCommand
 			if(linkedGroups.size()>0)
 			{
 				buf.append("\tgroups: "+linkedGroups.size()+" sizes: ");
-				for(Enumeration r=linkedGroups.elements();r.hasMoreElements();)
-					buf.append(((Vector)r.nextElement()).size()+" ");
+				for(Enumeration<Vector<Environmental>> r=linkedGroups.elements();r.hasMoreElements();)
+					buf.append(((Vector<Environmental>)r.nextElement()).size()+" ");
 			}
 			buf.append("\t"+ext.toString()+"\n\r");
 		}
 		buf.append("There were "+areaLinkGroups.size()+" area groups:");
 		for(int g=areaLinkGroups.size()-1;g>=0;g--)
 		{
-			if(((Vector)areaLinkGroups.elementAt(g)).size()==0)
+			if(((Vector<Environmental>)areaLinkGroups.elementAt(g)).size()==0)
 				areaLinkGroups.removeElementAt(g);
 		}
 		StringBuffer unlinkedGroups=new StringBuffer("");
-		for(Enumeration r=areaLinkGroups.elements();r.hasMoreElements();)
+		for(Enumeration<Vector<Environmental>> r=areaLinkGroups.elements();r.hasMoreElements();)
 		{
-			Vector V=(Vector)r.nextElement();
+			Vector<Environmental> V=(Vector<Environmental>)r.nextElement();
 			buf.append(V.size()+" ");
 			if(V.size()<4)
 			{
@@ -469,19 +469,16 @@ public class List extends StdCommand
             if((CMLib.journals().getCommandJournalName(i).toUpperCase().trim()+"S").startsWith(partialjournal.toUpperCase().trim()))
                 journal=CMLib.journals().getCommandJournalName(i).toUpperCase().trim();
         if(journal==null) return buf;
-		Vector V=CMLib.database().DBReadJournal("SYSTEM_"+journal+"S");
+		Vector<JournalsLibrary.JournalEntry> V=CMLib.database().DBReadJournalMsgs("SYSTEM_"+journal+"S");
 		if(V!=null)
 		{
 			buf.append("\n\r^x"+CMStrings.padRight("#",5)+CMStrings.padRight("From",10)+" Entry^.^N\n\r");
 			buf.append("---------------------------------------------\n\r");
 			for(int j=0;j<V.size();j++)
 			{
-				Vector entry=(Vector)V.elementAt(j);
-				String from=(String)entry.elementAt(DatabaseEngine.JOURNAL_FROM);
-				//String date=(String)entry.elementAt(2);
-				//String to=(String)entry.elementAt(3);
-				//String subject=(String)entry.elementAt(4);
-				String message=(String)entry.elementAt(DatabaseEngine.JOURNAL_MSG);
+				JournalsLibrary.JournalEntry entry=V.elementAt(j);
+				String from=entry.from;
+				String message=entry.msg;
 				buf.append(CMStrings.padRight((j+1)+"",3)+") "+CMStrings.padRight(from,10)+" "+message+"\n\r");
 			}
 		}
@@ -779,7 +776,7 @@ public class List extends StdCommand
     public StringBuffer listJournals()
     {
         StringBuffer buf=new StringBuffer("");
-        Vector journals=CMLib.database().DBReadJournal(null);
+        Vector<String> journals=CMLib.database().DBReadJournals();
 
         if(journals.size()==0)
             buf.append("No journals exits.");
@@ -858,7 +855,7 @@ public class List extends StdCommand
 	public StringBuffer listSubOps(MOB mob)
 	{
 		StringBuffer msg=new StringBuffer("");
-		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
+		for(Enumeration<Area> a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			msg.append(CMStrings.padRight(A.Name(),25)+": ");

@@ -91,7 +91,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 	public boolean virtualPage;
 
-	private Hashtable objects=null;
+	private Hashtable<String,Object> objects=null;
 
     public ProcessHTTPrequest()
     {
@@ -271,9 +271,9 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		}
 	}
 
-	public Hashtable getRequestObjects()
+	public Hashtable<String,Object> getRequestObjects()
 	{
-		if(objects==null) objects=new Hashtable();
+		if(objects==null) objects=new Hashtable<String,Object>();
 		return objects;
 	}
 

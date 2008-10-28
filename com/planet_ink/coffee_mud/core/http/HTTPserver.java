@@ -359,9 +359,9 @@ public class HTTPserver extends Thread implements MudHost
     public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
     public boolean isAcceptingConnections(){ return acceptConnections;}
 
-    public Vector getOverdueThreads()
+    public Vector<ProcessHTTPrequest> getOverdueThreads()
     {
-    	Vector V=new Vector();
+    	Vector<ProcessHTTPrequest> V=new Vector<ProcessHTTPrequest>();
     	long time=System.currentTimeMillis();
     	synchronized(activeRequests)
     	{

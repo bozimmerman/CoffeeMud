@@ -40,7 +40,7 @@ public class CMLib
 {
     static final long serialVersionUID=42;
     public String getClassName(){return "CMLib";}
-    private static final Vector mudThreads=new Vector();
+    private static final Vector<MudHost> mudThreads=new Vector<MudHost>();
     private static CMLib[] libs=new CMLib[256];
     public CMLib(){
         super();
@@ -118,7 +118,7 @@ public class CMLib
     public static CMSecurity security(){return CMSecurity.instance();}
     public static Directions directions(){return Directions.instance();}
     public static Log log(){return Log.instance();}
-    public static Vector hosts(){return mudThreads;}
+    public static Vector<MudHost> hosts(){return mudThreads;}
     public static MudHost mud(int port){
         if(mudThreads.size()==0)
             return null;
@@ -133,8 +133,8 @@ public class CMLib
     }
     public static Resources resources(){return Resources.instance();}
     public static CMProps props(){return CMProps.instance();}
-    public static Enumeration libraries(){
-        Vector V=new Vector();
+    public static Enumeration<CMLibrary> libraries(){
+        Vector<CMLibrary> V=new Vector<CMLibrary>();
         for(int l=0;l<CMLib.LIBRARY_TOTAL;l++)
             if(l().libraries[l]!=null)
                 V.addElement(l().libraries[l]);
@@ -249,7 +249,7 @@ public class CMLib
         if(code>=0)
         {
             if(l()==null) new CMLib();
-            Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
+            Vector<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
             if((!privacyV.contains(LIBRARY_DESCS[code])
             &&(libs[MudHost.MAIN_HOST]!=l())))
             {
@@ -263,7 +263,8 @@ public class CMLib
             l().registered[code]=true;
         }
     }
-    public static void killThread(Thread t, long sleepTime, int attempts)
+    @SuppressWarnings("deprecation")
+	public static void killThread(Thread t, long sleepTime, int attempts)
     {
 		try{
 			if(t==null) return;
@@ -279,7 +280,7 @@ public class CMLib
 
     public static void activateLibraries() {
         CMLib lib=l();
-        Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
+        Vector<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
         for(int l=0;l<lib.libraries.length;l++)
             if((!privacyV.contains(LIBRARY_DESCS[l])&&(libs[MudHost.MAIN_HOST]!=lib)))
             {
@@ -298,8 +299,8 @@ public class CMLib
             return libs[tcode].libraries[lcode];
         return null;
     }
-    public static Enumeration libraries(int code) {
-        Vector V=new Vector();
+    public static Enumeration<CMLibrary> libraries(int code) {
+        Vector<CMLibrary> V=new Vector<CMLibrary>();
         for(int l=0;l<libs.length;l++)
             if((libs[l]!=null)
             &&(libs[l].libraries[code]!=null)
@@ -308,7 +309,7 @@ public class CMLib
         return V.elements();
     }
     
-    public static void registerLibraries(Enumeration e)
+    public static void registerLibraries(Enumeration<CMLibrary> e)
     {
         for(;e.hasMoreElements();)
             registerLibrary((CMLibrary)e.nextElement());

@@ -1043,13 +1043,13 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             String name=buyer.Name();
             if((whatISell==ShopKeeper.DEAL_CLANDSELLER)||(whatISell==ShopKeeper.DEAL_CSHIPSELLER))
                 name=buyer.getClanID();
-            HashSet roomsHandling=new HashSet();
-            Hashtable titles=new Hashtable();
+            HashSet<Environmental> roomsHandling=new HashSet<Environmental>();
+            Hashtable<Environmental,LandTitle> titles=new Hashtable<Environmental,LandTitle>();
             if((whatISell==ShopKeeper.DEAL_CSHIPSELLER)||(whatISell==ShopKeeper.DEAL_SHIPSELLER))
             {
-                for(Enumeration r=CMLib.map().areas();r.hasMoreElements();)
+                for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
                 {
-                    Area A=(Area)r.nextElement();
+                    Area A=(Area)a.nextElement();
                     if((A instanceof SpaceShip)
                     &&(CMLib.flags().isHidden(A)))
                     {
@@ -1070,7 +1070,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 }
             }
             else
-            for(Enumeration r=myArea.getProperMap();r.hasMoreElements();)
+            for(Enumeration<Room> r=myArea.getProperMap();r.hasMoreElements();)
             {
                 Room R=(Room)r.nextElement();
                 LandTitle A=CMLib.law().getLandTitle(R);
@@ -1078,7 +1078,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     titles.put(R,A);
             }
 
-            for(Enumeration r=titles.keys();r.hasMoreElements();)
+            for(Enumeration<Environmental> r=titles.keys();r.hasMoreElements();)
             {
                 Environmental R=(Environmental)r.nextElement();
                 LandTitle A=(LandTitle)titles.get(R);
@@ -1088,7 +1088,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                         roomsHandling.add(R);
                     else
                     {
-                        Vector V2=A.getPropertyRooms();
+                        Vector<Room> V2=A.getPropertyRooms();
                         for(int v=0;v<V2.size();v++)
                             roomsHandling.add(V2.elementAt(v));
                     }
@@ -1472,27 +1472,27 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         	CMLib.database().DBUpdateJournal(data.auctionDBKey, data.auctioningI.Name(),xml.toString());
 	}
 
-    public Vector getAuctions(Object ofLike, String auctionHouse)
+    public Vector<AuctionData> getAuctions(Object ofLike, String auctionHouse)
     {
-    	Vector auctions=new Vector();
+    	Vector<AuctionData> auctions=new Vector<AuctionData>();
     	String house="SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim();
-	    Vector otherAuctions=CMLib.database().DBReadJournal(house);
+	    Vector<JournalsLibrary.JournalEntry> otherAuctions=CMLib.database().DBReadJournalMsgs(house);
 	    for(int o=0;o<otherAuctions.size();o++)
 	    {
-	        Vector auctionData=(Vector)otherAuctions.elementAt(o);
-            String from=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_FROM);
-	        String to=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_TO);
-            String key=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_KEY);
+	    	JournalsLibrary.JournalEntry auctionData=otherAuctions.elementAt(o);
+            String from=(String)auctionData.from;
+	        String to=(String)auctionData.to;
+            String key=(String)auctionData.key;
 	        if((ofLike instanceof MOB)&&(!((MOB)ofLike).Name().equals(to)))
 	        	continue;
 	        if((ofLike instanceof String)&&(!((String)ofLike).equals(key)))
 	        	continue;
             AuctionData data=new AuctionData();
-            String start=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_DATE);
+            String start=(String)auctionData.date;
             data.start=CMath.s_long(start);
             data.tickDown=CMath.s_long(to);
-            String xml=(String)auctionData.elementAt(DatabaseEngine.JOURNAL_MSG);
-            Vector xmlV=CMLib.xml().parseAllXML(xml);
+            String xml=(String)auctionData.msg;
+            Vector<XMLLibrary.XMLpiece> xmlV=CMLib.xml().parseAllXML(xml);
             xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
             String bid=CMLib.xml().getValFromPieces(xmlV,"PRICE");
             double oldBid=CMath.s_double(bid);

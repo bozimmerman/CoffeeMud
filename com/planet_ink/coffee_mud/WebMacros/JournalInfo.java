@@ -40,10 +40,11 @@ public class JournalInfo extends StdWebMacro
 		Hashtable<String,String> parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("JOURNAL");
 		if(last==null) return " @break@";
-		Vector info=(Vector)httpReq.getRequestObjects().get("JOURNAL: "+last);
+		@SuppressWarnings("unchecked")
+		Vector<JournalsLibrary.JournalEntry> info=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get("JOURNAL: "+last);
 		if(info==null)
 		{
-			info=CMLib.database().DBReadJournal(last);
+			info=CMLib.database().DBReadJournalMsgs(last);
 			httpReq.getRequestObjects().put("JOURNAL: "+last,info);
 		}
 		MOB M=null;
@@ -63,7 +64,7 @@ public class JournalInfo extends StdWebMacro
 		if(M==null)
 			M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
         boolean priviledged=CMSecurity.isAllowedAnywhere(M,"JOURNALS")&&(!parms.contains("NOPRIV"));
-		String to=((String)((Vector)info.elementAt(num)).elementAt(DatabaseEngine.JOURNAL_TO));
+		String to=info.elementAt(num).to;
 		if(to.equalsIgnoreCase("all")
         ||((M!=null)
            &&(priviledged
@@ -71,13 +72,13 @@ public class JournalInfo extends StdWebMacro
                ||(to.toUpperCase().trim().startsWith("MASK=")&&(CMLib.masking().maskCheck(to.trim().substring(5),M,true))))))
 		{
 			if(parms.containsKey("KEY"))
-                return clearWebMacros(((String)((Vector)info.elementAt(num)).elementAt(DatabaseEngine.JOURNAL_KEY)));
+                return clearWebMacros(info.elementAt(num).key);
 			else
 			if(parms.containsKey("FROM"))
-                return clearWebMacros(((String)((Vector)info.elementAt(num)).elementAt(DatabaseEngine.JOURNAL_FROM)));
+                return clearWebMacros(info.elementAt(num).from);
 			else
 			if(parms.containsKey("DATE"))
-				return CMLib.time().date2String(CMath.s_long((String)((Vector)info.elementAt(num)).elementAt(DatabaseEngine.JOURNAL_DATE)));
+				return CMLib.time().date2String(CMath.s_long(info.elementAt(num).date));
 			else
 			if(parms.containsKey("TO"))
             {
@@ -87,14 +88,14 @@ public class JournalInfo extends StdWebMacro
             }
 			else
 			if(parms.containsKey("SUBJECT"))
-                return clearWebMacros(((String)((Vector)info.elementAt(num)).elementAt(DatabaseEngine.JOURNAL_SUBJ)));
+                return clearWebMacros(info.elementAt(num).subj);
 			else
 			if(parms.containsKey("MESSAGE"))
 			{
-				String s=((String)((Vector)info.elementAt(num)).elementAt(DatabaseEngine.JOURNAL_MSG));
+				String s=info.elementAt(num).msg;
 				if(parms.containsKey("NOREPLIES"))
 				{
-					int x=s.indexOf(DatabaseEngine.JOURNAL_BOUNDARY);
+					int x=s.indexOf(JournalsLibrary.JOURNAL_BOUNDARY);
 					if(x>=0) s=s.substring(0,x);
 				}
 				if(parms.containsKey("PLAIN"))
@@ -105,7 +106,7 @@ public class JournalInfo extends StdWebMacro
 				}
 				else
 				{
-					s=CMStrings.replaceAll(s,DatabaseEngine.JOURNAL_BOUNDARY,"<HR>");
+					s=CMStrings.replaceAll(s,JournalsLibrary.JOURNAL_BOUNDARY,"<HR>");
 					s=CMStrings.replaceAll(s,"%0D","<BR>");
 	                s=CMStrings.replaceAll(s,"\n","<BR>");
 	                s=colorwebifyOnly(new StringBuffer(s)).toString();
@@ -114,7 +115,7 @@ public class JournalInfo extends StdWebMacro
                 return s;
 			}
             if(parms.containsKey("EMAILALLOWED"))
-                return ""+((((String)((Vector)info.elementAt(num)).elementAt(1)).length()>0)
+                return ""+((info.elementAt(num).from.length()>0)
                         &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0));
 		}
 		return "";

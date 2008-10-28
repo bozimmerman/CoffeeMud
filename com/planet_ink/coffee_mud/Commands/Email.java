@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -54,25 +55,25 @@ public class Email extends StdCommand
             String name=CMParms.combine(commands,1);
             if(name.equalsIgnoreCase("BOX"))
             {
-                Vector msgs=CMLib.database().DBReadJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX));
+                Vector<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.SYSTEM_MAILBOX));
                 while((mob.session()!=null)&&(!mob.session().killFlag()))
                 {
-                    Vector mymsgs=new Vector();
+                    Vector<JournalsLibrary.JournalEntry> mymsgs=new Vector<JournalsLibrary.JournalEntry>();
                     StringBuffer messages=new StringBuffer("^X"+CMStrings.padCenter(mob.Name()+"'s MailBox",48)+"^?^.\n\r");
                     messages.append("^X### "+CMStrings.padRight("From",15)+" "+CMStrings.padRight("Date",20)+" Subject^?^.\n\r");
                     for(int num=0;num<msgs.size();num++)
                     {
-                        Vector thismsg=(Vector)msgs.elementAt(num);
-                        String to=((String)thismsg.elementAt(DatabaseEngine.JOURNAL_TO));
+                    	JournalsLibrary.JournalEntry thismsg=msgs.elementAt(num);
+                        String to=(String)thismsg.to;
                         if(to.equalsIgnoreCase("ALL")
                         ||to.equalsIgnoreCase(mob.Name())
                         ||(to.toUpperCase().trim().startsWith("MASK=")&&CMLib.masking().maskCheck(to.trim().substring(5),mob,true)))
                         {
                             mymsgs.addElement(thismsg);
                             messages.append(CMStrings.padRight(""+mymsgs.size(),4)
-                                    +CMStrings.padRight(((String)thismsg.elementAt(DatabaseEngine.JOURNAL_FROM)),16)
-                                    +CMStrings.padRight(CMLib.time().date2String(CMath.s_long((String)thismsg.elementAt(DatabaseEngine.JOURNAL_DATE))),21)
-                                    +((String)thismsg.elementAt(DatabaseEngine.JOURNAL_SUBJ))
+                                    +CMStrings.padRight((thismsg.from),16)
+                                    +CMStrings.padRight(CMLib.time().date2String(CMath.s_long(thismsg.date)),21)
+                                    +(thismsg.subj)
                                     +"\n\r");
                         }
                     }
@@ -102,13 +103,13 @@ public class Email extends StdCommand
                     else
                     while((mob.session()!=null)&&(!mob.session().killFlag()))
                     {
-                        Vector thismsg=(Vector)mymsgs.elementAt(num-1);
-                        String key=(String)thismsg.elementAt(0);
-                        String from=(String)thismsg.elementAt(DatabaseEngine.JOURNAL_FROM);
-                        String date=(String)thismsg.elementAt(DatabaseEngine.JOURNAL_DATE);
+                    	JournalsLibrary.JournalEntry thismsg=mymsgs.elementAt(num-1);
+                        String key=thismsg.key;
+                        String from=thismsg.from;
+                        String date=thismsg.date;
                         date=CMLib.time().date2String(CMath.s_long(date));
-                        String subj=(String)thismsg.elementAt(DatabaseEngine.JOURNAL_SUBJ);
-                        String message=(String)thismsg.elementAt(DatabaseEngine.JOURNAL_MSG);
+                        String subj=thismsg.subj;
+                        String message=thismsg.msg;
                         messages=new StringBuffer("");
                         messages.append("^XMessage :^?^."+num+"\n\r");
                         messages.append("^XFrom    :^?^."+from+"\n\r");

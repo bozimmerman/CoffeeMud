@@ -275,11 +275,11 @@ public class Prop_RoomForSale extends Property implements LandTitle
 		}
 	}
 
-	public Vector getPropertyRooms()
+	public Vector<Room> getPropertyRooms()
 	{
-		Vector V=new Vector();
+		Vector<Room> V=new Vector<Room>();
 		if(affected instanceof Room)
-			V.addElement(affected);
+			V.addElement((Room)affected);
 		else
 		{
 			Room R=CMLib.map().getRoom(landPropertyID());

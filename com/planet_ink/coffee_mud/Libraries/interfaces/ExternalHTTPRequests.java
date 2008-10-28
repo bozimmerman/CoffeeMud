@@ -59,5 +59,5 @@ public interface ExternalHTTPRequests extends CMLibrary
 	public String getRequestEncodedParameters();
 	public InetAddress getServerAddress();
 	public String getPageContent(String filename);
-	public Hashtable getRequestObjects();
+	public Hashtable<String,Object> getRequestObjects();
 }

@@ -403,18 +403,18 @@ public class SMTPserver extends Thread implements Tickable
 				{
 					boolean keepall=isAKeepAllJournal(name);
 					// Vector mailingList=?
-					Vector msgs=CMLib.database().DBReadJournal(name);
+					Vector<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(name);
 					for(int m=0;m<msgs.size();m++)
 					{
-						Vector msg=(Vector)msgs.elementAt(m);
-						String to=(String)msg.elementAt(DatabaseEngine.JOURNAL_TO);
+						JournalsLibrary.JournalEntry msg=msgs.elementAt(m);
+						String to=msg.to;
 						if(to.equalsIgnoreCase("ALL"))
 						{
-							long date=CMath.s_long((String)msg.elementAt(DatabaseEngine.JOURNAL_DATE2));
-							String from=(String)msg.elementAt(DatabaseEngine.JOURNAL_FROM);
-							String key=(String)msg.elementAt(DatabaseEngine.JOURNAL_KEY);
-							String subj=((String)msg.elementAt(DatabaseEngine.JOURNAL_SUBJ)).trim();
-							String s=((String)msg.elementAt(DatabaseEngine.JOURNAL_MSG)).trim();
+							long date=CMath.s_long(msg.update);
+							String from=msg.from;
+							String key=msg.key;
+							String subj=msg.subj;
+							String s=msg.msg.trim();
 							if((subj.equalsIgnoreCase("subscribe"))
 							||(s.equalsIgnoreCase("subscribe")))
 							{
@@ -511,7 +511,7 @@ public class SMTPserver extends Thread implements Tickable
                                     IQE.setTimeInMillis(date);
 									IQE.add(Calendar.DATE,getJournalDays());
 									if(IQE.getTimeInMillis()<System.currentTimeMillis())
-										CMLib.database().DBDeleteJournal((String)msg.elementAt(DatabaseEngine.JOURNAL_KEY));
+										CMLib.database().DBDeleteJournal(msg.key);
 								}
 							}
 						}
@@ -525,7 +525,7 @@ public class SMTPserver extends Thread implements Tickable
 			{
 				if((mailboxName()!=null)&&(mailboxName().length()>0))
 				{
-					Vector emails=CMLib.database().DBReadJournal(mailboxName());
+					Vector<JournalsLibrary.JournalEntry> emails=CMLib.database().DBReadJournalMsgs(mailboxName());
 					processEmails(emails,null,true);
 				}
 				if(journals!=null)
@@ -534,7 +534,7 @@ public class SMTPserver extends Thread implements Tickable
 						String name=(String)journals.elementAt(j,1);
 						if(isAForwardingJournal(name))
 						{
-							Vector emails=CMLib.database().DBReadJournal(name);
+							Vector<JournalsLibrary.JournalEntry> emails=CMLib.database().DBReadJournalMsgs(name);
 							processEmails(emails,name,false);
 						}
 					}
@@ -552,20 +552,20 @@ public class SMTPserver extends Thread implements Tickable
 		return true;
 	}
 
-	public void processEmails(Vector emails,
+	public void processEmails(Vector<JournalsLibrary.JournalEntry> emails,
 							  String overrideReplyTo,
 							  boolean usePrivateRules)
 	{
 		if(emails!=null)
 		for(int e=0;e<emails.size();e++)
 		{
-			Vector mail=(Vector)emails.elementAt(e);
-			String key=(String)mail.elementAt(DatabaseEngine.JOURNAL_KEY);
-			String from=(String)mail.elementAt(DatabaseEngine.JOURNAL_FROM);
-			String to=(String)mail.elementAt(DatabaseEngine.JOURNAL_TO);
-			long date=CMath.s_long((String)mail.elementAt(DatabaseEngine.JOURNAL_DATE2));
-			String subj=((String)mail.elementAt(DatabaseEngine.JOURNAL_SUBJ)).trim();
-			String msg=((String)mail.elementAt(DatabaseEngine.JOURNAL_MSG)).trim();
+			JournalsLibrary.JournalEntry mail=emails.elementAt(e);
+			String key=mail.key;
+			String from=mail.from;
+			String to=mail.to;
+			long date=CMath.s_long(mail.update);
+			String subj=mail.subj;
+			String msg=mail.msg.trim();
 
 			if(to.equalsIgnoreCase("ALL")||(to.toUpperCase().trim().startsWith("MASK="))) continue;
 

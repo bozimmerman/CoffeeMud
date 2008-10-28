@@ -167,8 +167,8 @@ public class Prop_ClosedDayNight extends Property
 			MOB mob=(MOB)affected;
 			if(mob.location()!=null)
 			{
-        		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,25);
-        		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+        		Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,25);
+        		for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
         		{
         			Room R2=CMLib.map().getRoom((Room)r.nextElement());
 					if((R2.roomID().indexOf(Home)>=0)

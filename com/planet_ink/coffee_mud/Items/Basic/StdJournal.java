@@ -98,7 +98,7 @@ public class StdJournal extends StdItem
 				int which=-1;
 				boolean newOnly=false;
 				boolean all=false;
-				Vector parse=CMParms.parse(msg.targetMessage());
+				Vector<String> parse=CMParms.parse(msg.targetMessage());
 				for(int v=0;v<parse.size();v++)
 				{
 				    String s=(String)parse.elementAt(v);
@@ -111,7 +111,7 @@ public class StdJournal extends StdItem
 					if(s.equalsIgnoreCase("ALL")||s.equalsIgnoreCase("OLD"))
 					    all=true;
 				}
-				Vector read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
+				Vector<Object> read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
 				boolean megaRepeat=true;
 				while(megaRepeat)
 				{
@@ -242,18 +242,14 @@ public class StdJournal extends StdItem
 											mob.tell("The journal '"+journal+"' does not presently exist.  Aborted.");
 								        else
 								        {
-											Vector journal2=CMLib.database().DBReadJournal(Name());
-											Vector entry2=(Vector)journal2.elementAt(which-1);
-											String from2=(String)entry2.elementAt(DatabaseEngine.JOURNAL_FROM);
-											String to=(String)entry2.elementAt(DatabaseEngine.JOURNAL_TO);
-											String subject=(String)entry2.elementAt(DatabaseEngine.JOURNAL_SUBJ);
-											String message=(String)entry2.elementAt(DatabaseEngine.JOURNAL_MSG);
+											Vector<JournalsLibrary.JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(Name());
+											JournalsLibrary.JournalEntry entry2=journal2.elementAt(which-1);
 											CMLib.database().DBDeleteJournal(Name(),which-1);
 											CMLib.database().DBWriteJournal(realName,
-																			  from2,
-																			  to,
-																			  subject,
-																			  message,-1);
+																			  entry2.from,
+																			  entry2.to,
+																			  entry2.subj,
+																			  entry2.msg,-1);
 											msg.setValue(-1);
 								        }
 										mob.tell("Message transferred.");
@@ -400,11 +396,11 @@ public class StdJournal extends StdItem
 		super.executeMsg(myHost,msg);
 	}
 
-	public Vector DBRead(MOB reader, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
+	public Vector<Object> DBRead(MOB reader, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
 	{
 		StringBuffer buf=new StringBuffer("");
-		Vector reply=new Vector();
-		Vector journal=CMLib.database().DBReadJournal(Journal);
+		Vector<Object> reply=new Vector<Object>();
+		Vector<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(Journal);
 		boolean shortFormat=readableText().toUpperCase().indexOf("SHORTLIST")>=0;
 		if((which<0)||(journal==null)||(which>=journal.size()))
 		{
@@ -428,19 +424,19 @@ public class StdJournal extends StdItem
 		{
 			if(journal.size()>0)
 			{
-				reply.addElement(((Vector)journal.firstElement()).elementAt(DatabaseEngine.JOURNAL_FROM));
-				reply.addElement(((Vector)journal.firstElement()).elementAt(DatabaseEngine.JOURNAL_SUBJ));
+				reply.addElement(journal.firstElement().from);
+				reply.addElement(journal.firstElement().subj);
 			}
-			Vector selections=new Vector();
+			Vector<Object> selections=new Vector<Object>();
 			for(int j=0;j<journal.size();j++)
 			{
-				Vector entry=(Vector)journal.elementAt(j);
-				String from=(String)entry.elementAt(DatabaseEngine.JOURNAL_FROM);
-				String date=(String)entry.elementAt(DatabaseEngine.JOURNAL_DATE);
-				String to=(String)entry.elementAt(DatabaseEngine.JOURNAL_TO);
-				String subject=(String)entry.elementAt(DatabaseEngine.JOURNAL_SUBJ);
+				JournalsLibrary.JournalEntry entry=journal.elementAt(j);
+				String from=entry.from;
+				String date=entry.date;
+				String to=entry.to;
+				String subject=entry.subj;
 				// message is 5, but dont matter.
-				String compdate=(String)entry.elementAt(DatabaseEngine.JOURNAL_DATE2);
+				String compdate=entry.update;
 				StringBuffer selection=new StringBuffer("");
                 boolean mayRead=(to.equals("ALL")
                                 ||to.equalsIgnoreCase(reader.Name())
@@ -493,15 +489,15 @@ public class StdJournal extends StdItem
 		}
 		else
 		{
-			Vector entry=(Vector)journal.elementAt(which);
-			String from=(String)entry.elementAt(DatabaseEngine.JOURNAL_FROM);
-			String date=(String)entry.elementAt(DatabaseEngine.JOURNAL_DATE);
-			String to=(String)entry.elementAt(DatabaseEngine.JOURNAL_TO);
-			String subject=(String)entry.elementAt(DatabaseEngine.JOURNAL_SUBJ);
-			String message=(String)entry.elementAt(DatabaseEngine.JOURNAL_MSG);
+			JournalsLibrary.JournalEntry entry=journal.elementAt(which);
+			String from=entry.from;
+			String date=entry.date;
+			String to=entry.to;
+			String subject=entry.subj;
+			String message=entry.msg;
 			
-			reply.addElement(entry.elementAt(DatabaseEngine.JOURNAL_FROM));
-			reply.addElement(entry.elementAt(DatabaseEngine.JOURNAL_SUBJ));
+			reply.addElement(entry.from);
+			reply.addElement(entry.subj);
 			
             boolean allMine=(to.equalsIgnoreCase(reader.Name())
                             ||from.equalsIgnoreCase(reader.Name()));
@@ -538,7 +534,7 @@ public class StdJournal extends StdItem
 	private String getParm(String parmName)
 	{
         if(readableText().length()==0) return "";
-	    Hashtable h=CMParms.parseEQParms(readableText().toUpperCase(),
+	    Hashtable<String,String> h=CMParms.parseEQParms(readableText().toUpperCase(),
                                          new String[]{"READ","WRITE","REPLY","ADMIN","PRIVATE","MAILBOX"});
         String req=(String)h.get(parmName.toUpperCase().trim());
         if(req==null) req="";

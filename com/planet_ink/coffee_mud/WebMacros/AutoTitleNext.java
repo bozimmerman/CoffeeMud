@@ -45,7 +45,7 @@ public class AutoTitleNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		for(Enumeration r=CMLib.titles().autoTitles();r.hasMoreElements();)
+		for(Enumeration<String> r=CMLib.titles().autoTitles();r.hasMoreElements();)
 		{
             String title=(String)r.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!title.equals(lastID))))

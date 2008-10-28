@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -67,7 +68,7 @@ public class CommandJournal extends StdCommand
             return true;
         }
         int count=CMath.s_int(second);
-        Vector journal=CMLib.database().DBReadJournal(journalID);
+        Vector<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(journalID);
         int size=0;
         if(journal!=null) size=journal.size();
         if(size<=0)
@@ -97,12 +98,12 @@ public class CommandJournal extends StdCommand
             mob.tell(rest+" is not a journal");
             return true;
         }
-        Vector journal2=CMLib.database().DBReadJournal(journalID);
-        Vector entry2=(Vector)journal2.elementAt(count-1);
-        String from2=(String)entry2.elementAt(DatabaseEngine.JOURNAL_FROM);
-        String to=(String)entry2.elementAt(DatabaseEngine.JOURNAL_TO);
-        String subject=(String)entry2.elementAt(DatabaseEngine.JOURNAL_SUBJ);
-        String message=(String)entry2.elementAt(DatabaseEngine.JOURNAL_MSG);
+        Vector<JournalsLibrary.JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(journalID);
+        JournalsLibrary.JournalEntry entry2=journal2.elementAt(count-1);
+        String from2=entry2.from;
+        String to=(String)entry2.to;
+        String subject=(String)entry2.subj;
+        String message=(String)entry2.msg;
         CMLib.database().DBDeleteJournal(journalID,count-1);
         CMLib.database().DBWriteJournal(realName,
                                           from2,
@@ -135,7 +136,7 @@ public class CommandJournal extends StdCommand
             mob.tell("This feature has been disabled.");
         else
         {
-            Vector journal=CMLib.database().DBReadJournal(journalID);
+            Vector<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(journalID);
             int size=0;
             if(journal!=null) size=journal.size();
             if(size<=0)

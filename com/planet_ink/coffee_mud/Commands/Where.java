@@ -427,7 +427,7 @@ public class Where extends StdCommand
 			DVector mobsVec=new DVector(2);
 			DVector alignVec=new DVector(2);
 			int moblevel=mob.envStats().level()+adjust;
-			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				if((CMLib.flags().canAccess(mob,A))
@@ -458,7 +458,7 @@ public class Where extends StdCommand
             if((!CMSecurity.isDisabled("ROOMVISITS"))&&(mob.playerStats()!=null))
                 msg.append("You have explored "+mob.playerStats().percentVisited(mob,mob.location().getArea())+"% of this area and "+mob.playerStats().percentVisited(mob,null)+"% of the world.\n\r");
 			DVector scores=new DVector(2);
-			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				if(CMLib.flags().canAccess(mob,A))

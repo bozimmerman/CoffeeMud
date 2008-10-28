@@ -1376,7 +1376,7 @@ public class StdLawBook extends StdItem
 		mob.tell(getFromTOC("P2"+(theLaw.hasModifiableLaws()?"MOD":"")+(theLaw.hasModifiableNames()?"NAM":"")));
 		String duhJudge="No Judge Found!\n\r";
 		StringBuffer duhOfficers=new StringBuffer("");
-		for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+		for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 		{
 			Room R=(Room)e.nextElement();
 			for(int i=0;i<R.numInhabitants();i++)

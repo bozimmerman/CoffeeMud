@@ -162,6 +162,7 @@ public class Minstrel extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
+	@SuppressWarnings("unchecked")
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -171,7 +172,7 @@ public class Minstrel extends StdCharClass
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
-			for(Enumeration a=V.getDimensionVector(1).elements();a.hasMoreElements();)
+			for(Enumeration<String> a=V.getDimensionVector(1).elements();a.hasMoreElements();)
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)

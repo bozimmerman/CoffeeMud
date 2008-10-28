@@ -64,7 +64,7 @@ public class GrinderFlatMap
 			RoomnumberSet currentSet=A.getCachedRoomnumbers();
 			String roomID=null;
 			//RoomnumberSet loadRooms=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
-			for(Enumeration e=A.getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)
+			for(Enumeration<String> e=A.getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)
 			{
 				// this makes sure that, even though this is
 				// an unloaded room, it is ALSO actually needed

@@ -261,7 +261,7 @@ public class Skill_Track extends StdSkill
 			return false;
 		}
 
-		Vector rooms=new Vector();
+		Vector<Environmental> rooms=new Vector<Environmental>();
 		if(givenTarget instanceof Area)
 			rooms.addElement(((Area)givenTarget).getRandomMetroRoom());
 		else
@@ -282,8 +282,8 @@ public class Skill_Track extends StdSkill
 		{
 		    try
 		    {
-				Vector checkSet=CMLib.tracking().getRadiantRooms(thisRoom,false,false,!(allowAir||allowWater),!allowAir,!allowWater,radius);
-				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+				Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(thisRoom,false,false,!(allowAir||allowWater),!allowAir,!allowWater,radius);
+				for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
 				{
 					Room R=CMLib.map().getRoom((Room)r.nextElement());
 					if(R.fetchInhabitant(mobName)!=null)

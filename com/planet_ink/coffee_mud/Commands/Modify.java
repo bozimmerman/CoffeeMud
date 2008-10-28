@@ -482,7 +482,7 @@ public class Modify extends StdCommand
 		{
 			if(mob.session().confirm("Is changing the name of this area really necessary (y/N)?","N"))
 			{
-				for(Enumeration r=myArea.getCompleteMap();r.hasMoreElements();)
+				for(Enumeration<Room> r=myArea.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 		    		synchronized(("SYNC"+R.roomID()).intern())

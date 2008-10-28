@@ -67,10 +67,11 @@ public class JournalMessageNext extends StdWebMacro
 			if((M==null)||(!CMSecurity.isASysOp(M)))
 			    return " @break@";
 		}
-		Vector info=(Vector)httpReq.getRequestObjects().get("JOURNAL: "+journal);
+		@SuppressWarnings("unchecked")
+		Vector<JournalsLibrary.JournalEntry> info=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get("JOURNAL: "+journal);
 		if(info==null)
 		{
-			info=CMLib.database().DBReadJournal(journal);
+			info=CMLib.database().DBReadJournalMsgs(journal);
 			httpReq.getRequestObjects().put("JOURNAL: "+journal,info);
 		}
         String srch=httpReq.getRequestParameter("JOURNALMESSAGESEARCH");
@@ -104,14 +105,14 @@ public class JournalMessageNext extends StdWebMacro
                     return "<!--EMPTY-->";
                 return " @break@";
             }
-            Vector V=(Vector)info.elementAt(CMath.s_int(last));
-            String to=((String)V.elementAt(DatabaseEngine.JOURNAL_TO));
+            JournalsLibrary.JournalEntry E=info.elementAt(CMath.s_int(last));
+            String to=E.to;
             if((srch!=null)
             &&(srch.length()>0)
             &&((to.toLowerCase().indexOf(srch)<0)
-            &&(((String)V.elementAt(DatabaseEngine.JOURNAL_FROM)).toLowerCase().indexOf(srch)<0)
-            &&(((String)V.elementAt(DatabaseEngine.JOURNAL_SUBJ)).toLowerCase().indexOf(srch)<0)
-            &&(((String)V.elementAt(DatabaseEngine.JOURNAL_MSG)).toLowerCase().indexOf(srch)<0)))
+            &&(E.from.toLowerCase().indexOf(srch)<0)
+            &&(E.subj.toLowerCase().indexOf(srch)<0)
+            &&(E.msg.toLowerCase().indexOf(srch)<0)))
                 continue;
             
             if(to.equalsIgnoreCase("all")

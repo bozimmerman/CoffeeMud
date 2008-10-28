@@ -164,7 +164,7 @@ public class DefaultLawSet implements Law
                 }
                 else
                 if(item.length()>0)
-                for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+                for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
                 {
                     R=(Room)e.nextElement();
                     if(R.fetchAnyItem(item) instanceof Container)

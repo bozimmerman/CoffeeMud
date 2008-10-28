@@ -299,7 +299,7 @@ public class Prop_Artifact extends Property
 											}
 										Area A=R.getArea();
 										if((foundMOB==null)&&(MOBname.length()>0))
-											for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+											for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 											{
 												Room R2=(Room)e.nextElement();
 												for(int i=0;i<R2.numInhabitants();i++)

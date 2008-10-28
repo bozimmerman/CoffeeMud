@@ -164,7 +164,7 @@ public class StdTitle extends StdItem implements LandTitle
 		if(T!=null) T.updateTitle();
 	}
 
-	public Vector getPropertyRooms()
+	public Vector<Room> getPropertyRooms()
 	{
 		Room R=CMLib.map().getRoom(landPropertyID());
 		if(R!=null)
@@ -178,7 +178,7 @@ public class StdTitle extends StdItem implements LandTitle
 			LandTitle A=CMLib.law().getLandTitle(area);
 			if(A!=null) return A.getPropertyRooms();
 		}
-		return new Vector();
+		return new Vector<Room>();
 	}
 
 	public void recoverEnvStats(){CMLib.flags().setReadable(this,true); super.recoverEnvStats();}

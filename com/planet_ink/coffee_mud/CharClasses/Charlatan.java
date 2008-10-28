@@ -225,6 +225,7 @@ public class Charlatan extends StdCharClass
 		return super.okMessage(myHost,msg);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -244,7 +245,7 @@ public class Charlatan extends StdCharClass
 					return;
 			}
 			// now only give one, for current level, respecting alignment!
-			Vector choices=new Vector();
+			Vector<Ability> choices=new Vector<Ability>();
 			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
@@ -272,7 +273,7 @@ public class Charlatan extends StdCharClass
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
-			for(Enumeration a=V.getDimensionVector(1).elements();a.hasMoreElements();)
+			for(Enumeration<String> a=V.getDimensionVector(1).elements();a.hasMoreElements();)
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)

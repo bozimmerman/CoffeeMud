@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -36,15 +37,6 @@ public interface DatabaseEngine extends CMLibrary
 	public void resetconnections();
     public DBConnector getConnector();
 	// DBABLES, DBCCLASS, DBRACES, DBPLAYERS, DBMAP, DBSTATS, DBPOLLS, DBVFS, DBJOURNALS, DBQUESTS, DBCLANS  
-	
-	public static final int JOURNAL_KEY=0;
-	public static final int JOURNAL_FROM=1;
-	public static final int JOURNAL_DATE=2;
-	public static final int JOURNAL_TO=3;
-	public static final int JOURNAL_SUBJ=4;
-	public static final int JOURNAL_MSG=5;
-	public static final int JOURNAL_DATE2=6;
-	public static final String JOURNAL_BOUNDARY="%0D^w---------------------------------------------^N%0D";
 	
 	public static final int PDAT_WHO=0;
 	public static final int PDAT_SECTION=1;
@@ -104,7 +96,8 @@ public interface DatabaseEngine extends CMLibrary
 	public Area DBCreateArea(String areaName, String areaType);
 	public void DBDeleteArea(Area A);
 	public void DBUpdateArea(String keyName,Area A);
-	public Vector DBReadJournal(String Journal);
+	public Vector<String> DBReadJournals();
+	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgs(String Journal);
 	public int DBCountJournal(String Journal, String from, String to);
 	public void DBWriteJournal(String Journal, String from, String to, String subject, String message, int which);
 	public void DBDeleteJournal(String Journal, int which);

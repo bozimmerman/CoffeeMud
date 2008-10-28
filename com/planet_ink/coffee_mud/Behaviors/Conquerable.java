@@ -427,7 +427,7 @@ public class Conquerable extends Arrest
 											{ foundMOB=M; break;}
 										}
 									if((foundMOB==null)&&(MOBname.length()>0))
-										for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+										for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 										{
 											Room R2=(Room)e.nextElement();
 											for(int i=0;i<R2.numInhabitants();i++)
@@ -631,7 +631,7 @@ public class Conquerable extends Arrest
 	{
 		totalControlPoints=0;
         String worship=getManadatoryWorshipID();
-		for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+		for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 		{
 			Room R=(Room)e.nextElement();
 			for(int i=0;i<R.numInhabitants();i++)

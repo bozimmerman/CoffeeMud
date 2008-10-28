@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.Auctioneer.AuctionData;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.Enumeration;
@@ -26,7 +27,7 @@ public class AuctionCoffeeShop implements CoffeeShop
 {
     public String ID(){return "AuctionCoffeeShop";}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-    public static final Vector emptyV=new Vector();
+    public static final Vector<Environmental> emptyV=new Vector<Environmental>();
     public String auctionShop="";
     
     public CMObject copyOf()
@@ -52,8 +53,8 @@ public class AuctionCoffeeShop implements CoffeeShop
     public Environmental addStoreInventory(Environmental thisThang, ShopKeeper shop){ return addStoreInventory(thisThang,1,-1,shop);}
     public int baseStockSize(){ return 0;}
     public int totalStockSize(){ return 0;}
-    public Vector getStoreInventory(){ return emptyV;}
-    public Vector getBaseInventory(){ return emptyV;}
+    public Vector<Environmental> getStoreInventory(){ return emptyV;}
+    public Vector<Environmental> getBaseInventory(){ return emptyV;}
     
     public Environmental addStoreInventory(Environmental thisThang, 
                                            int number, 
@@ -80,8 +81,8 @@ public class AuctionCoffeeShop implements CoffeeShop
     
     public Environmental getStock(String name, MOB mob, int whatISell, Room startRoom)
     {
-    	Vector auctions=CMLib.coffeeShops().getAuctions(null,auctionShop);
-    	Vector auctionItems=new Vector();
+    	Vector<AuctionData> auctions=CMLib.coffeeShops().getAuctions(null,auctionShop);
+    	Vector<Item> auctionItems=new Vector<Item>();
     	for(int a=0;a<auctions.size();a++)
     	{
     		Item I=((Auctioneer.AuctionData)auctions.elementAt(a)).auctioningI;
@@ -106,7 +107,7 @@ public class AuctionCoffeeShop implements CoffeeShop
     
     public void emptyAllShelves(){}
     
-    public Vector removeSellableProduct(String named, MOB mob, int whatISell, Room startRoom)
+    public Vector<Environmental> removeSellableProduct(String named, MOB mob, int whatISell, Room startRoom)
     {
         return emptyV;
     }

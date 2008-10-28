@@ -3299,7 +3299,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		newArea.setName(newName);
 		CMLib.database().DBCreateArea(newName,newArea.ID());
 		Hashtable altIDs=new Hashtable();
-		for(Enumeration e=A.getCompleteMap();e.hasMoreElements();)
+		for(Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
 		{
 			Room room=(Room)e.nextElement();
 			synchronized(("SYNC"+room.roomID()).intern())
@@ -3321,7 +3321,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					CMLib.database().DBUpdateItems(newRoom);
 			}
 		}
-		for(Enumeration e=A.getCompleteMap();e.hasMoreElements();)
+		for(Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
 		{
 			Room room=(Room)e.nextElement();
 			String altID=(String)altIDs.get(room.roomID());

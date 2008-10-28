@@ -188,15 +188,15 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		}
 	}
 
-	public Hashtable makeMapRooms(int width)
+	public Hashtable<Room,MapRoom> makeMapRooms(int width)
 	{
-		Vector mapAreas=CMParms.parseSemicolons(getMapArea(),true);
-		Hashtable mapRooms=new Hashtable();
+		Vector<String> mapAreas=CMParms.parseSemicolons(getMapArea(),true);
+		Hashtable<Room,MapRoom> mapRooms=new Hashtable<Room,MapRoom>();
 		for(int a=0;a<mapAreas.size();a++)
 		{
 			Area A=CMLib.map().getArea((String)mapAreas.elementAt(a));
 			if(A!=null)
-			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+			for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				MapRoom mr=new MapRoom();

@@ -193,6 +193,7 @@ public class Cleric extends StdCharClass
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Prayer_Contagion",false);
 	}
 
+	@SuppressWarnings("unchecked")
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -203,7 +204,7 @@ public class Cleric extends StdCharClass
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
-			for(Enumeration a=V.getDimensionVector(1).elements();a.hasMoreElements();)
+			for(Enumeration<String> a=V.getDimensionVector(1).elements();a.hasMoreElements();)
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)

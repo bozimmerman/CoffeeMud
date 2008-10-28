@@ -200,9 +200,9 @@ public class Chant_FindPlant extends Chant
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		Vector rooms=new Vector();
-		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,true,true,50);
-		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+		Vector<Room> rooms=new Vector<Room>();
+		Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,true,true,50);
+		for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			if(itsHere(target,R).length()>0)

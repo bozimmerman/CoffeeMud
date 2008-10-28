@@ -56,9 +56,9 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 		}
 	}
 
-	public Vector getPropertyRooms()
+	public Vector<Room> getPropertyRooms()
 	{
-		Vector V=new Vector();
+		Vector<Room> V=new Vector<Room>();
 		Room R=null;
 		if(affected instanceof Room)
 			R=(Room)affected;

@@ -90,8 +90,8 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 			{
 				mob.location().send(mob,msg);
                 boolean worked=false;
-        		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,100);
-        		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+        		Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,100);
+        		for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
         		{
         			Room R=CMLib.map().getRoom((Room)r.nextElement());
 					for(int m=0;m<R.numInhabitants();m++)

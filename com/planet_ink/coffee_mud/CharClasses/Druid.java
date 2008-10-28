@@ -201,6 +201,7 @@ public class Druid extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
+	@SuppressWarnings("unchecked")
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -211,7 +212,7 @@ public class Druid extends StdCharClass
                                                 mob.charStats().getClassLevel(ID()),
                                                 false,
                                                 false);
-            for(Enumeration a=V.getDimensionVector(1).elements();a.hasMoreElements();)
+            for(Enumeration<String> a=V.getDimensionVector(1).elements();a.hasMoreElements();)
             {
                 Ability A=CMClass.getAbility((String)a.nextElement());
                 if((A!=null)
@@ -222,7 +223,7 @@ public class Druid extends StdCharClass
             return;
         }
 
-		Vector grantable=new Vector();
+		Vector<String> grantable=new Vector<String>();
 
 		int level=mob.charStats().getClassLevel(this);
 		int numChants=2;

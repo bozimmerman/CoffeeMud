@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -45,7 +46,7 @@ public class RaceNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		for(Enumeration r=CMClass.races();r.hasMoreElements();)
+		for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 		{
 			Race R=(Race)r.nextElement();
 			if((CMProps.isTheme(R.availabilityCode())&&(!CMath.bset(R.availabilityCode(),Area.THEME_SKILLONLYMASK)))

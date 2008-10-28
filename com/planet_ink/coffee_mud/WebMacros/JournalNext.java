@@ -45,10 +45,11 @@ public class JournalNext extends StdWebMacro
 			httpReq.getRequestObjects().remove("JOURNALLIST");
 			return "";
 		}
-		Vector journals=(Vector)httpReq.getRequestObjects().get("JOURNALLIST");
+		@SuppressWarnings("unchecked")
+		Vector<String> journals=(Vector<String>)httpReq.getRequestObjects().get("JOURNALLIST");
 		if(journals==null)
 		{
-			journals=CMLib.database().DBReadJournal(null);
+			journals=CMLib.database().DBReadJournals();
 			httpReq.getRequestObjects().put("JOURNALLIST",journals);
 		}
 		String lastID="";

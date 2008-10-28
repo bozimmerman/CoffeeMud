@@ -5668,7 +5668,7 @@ public class Import extends StdCommand
 			A.setAreaFlags(Area.FLAG_ACTIVE);
 		}
 		if(doneRooms.elements().hasMoreElements())
-			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				((Area)a.nextElement()).fillInAreaRooms();
 		if(session!=null) session.println("done!");
 		return true;

@@ -53,10 +53,10 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	public LegalBehavior getLegalBehavior(Area A)
 	{
 		if(A==null) return null;
-		Vector V=CMLib.flags().flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
+		Vector<Behavior> V=CMLib.flags().flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
 		if(V.size()>0) return (LegalBehavior)V.firstElement();
         LegalBehavior B=null;
-		for(Enumeration e=A.getParents();e.hasMoreElements();)
+		for(Enumeration<Area> e=A.getParents();e.hasMoreElements();)
 		{
 		    B=getLegalBehavior((Area)e.nextElement());
 		    if(B!=null) break;
@@ -66,18 +66,18 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
 	public LegalBehavior getLegalBehavior(Room R)
 	{
 		if(R==null) return null;
-		Vector V=CMLib.flags().flaggedBehaviors(R,Behavior.FLAG_LEGALBEHAVIOR);
+		Vector<Behavior> V=CMLib.flags().flaggedBehaviors(R,Behavior.FLAG_LEGALBEHAVIOR);
 		if(V.size()>0) return (LegalBehavior)V.firstElement();
 		return getLegalBehavior(R.getArea());
 	}
 	public Area getLegalObject(Area A)
 	{
 		if(A==null) return null;
-		Vector V=CMLib.flags().flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
+		Vector<Behavior> V=CMLib.flags().flaggedBehaviors(A,Behavior.FLAG_LEGALBEHAVIOR);
 		if(V.size()>0) return A;
 	    Area A2=null;
 	    Area A3=null;
-		for(Enumeration e=A.getParents();e.hasMoreElements();)
+		for(Enumeration<Area> e=A.getParents();e.hasMoreElements();)
 		{
 		    A2=(Area)e.nextElement();
 		    A3=getLegalObject(A2);
@@ -97,7 +97,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
         int streets=0;
         int buildings=0;
         Room R=null;
-        for(Enumeration e=A.getCompleteMap();e.hasMoreElements();)
+        for(Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
         {
             R=(Room)e.nextElement();
             if((R==null)||(R.roomID()==null)||(R.roomID().length()==0)) continue;
@@ -116,10 +116,10 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
         return true;
     }
     
-	public Vector getAllUniqueTitles(Enumeration e, String owner, boolean includeRentals)
+	public Vector<LandTitle> getAllUniqueTitles(Enumeration<Room> e, String owner, boolean includeRentals)
 	{
-	    Vector V=new Vector();
-	    HashSet roomsDone=new HashSet();
+	    Vector<LandTitle> V=new Vector<LandTitle>();
+	    HashSet<Room> roomsDone=new HashSet<Room>();
 	    Room R=null;
 	    for(;e.hasMoreElements();)
 	    {
@@ -133,7 +133,7 @@ public class MUDLaw extends StdLibrary implements LegalLibrary
                 ||(owner.equals("*")&&(T.landOwner().length()>0))
                 ||(T.landOwner().equals(owner))))
 	        {
-	            Vector V2=T.getPropertyRooms();
+	            Vector<Room> V2=T.getPropertyRooms();
 	            boolean proceed=true;
 	            for(int v=0;v<V2.size();v++)
 	            {

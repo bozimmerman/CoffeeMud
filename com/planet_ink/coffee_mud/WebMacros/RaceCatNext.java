@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -44,8 +45,8 @@ public class RaceCatNext extends StdWebMacro
 			if(last!=null) httpReq.removeRequestParameter("RACECAT");
 			return "";
 		}
-		Vector raceCats=new Vector();
-		for(Enumeration r=CMClass.races();r.hasMoreElements();)
+		Vector<String> raceCats=new Vector<String>();
+		for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 		{
 			Race R=(Race)r.nextElement();
 			if((!raceCats.contains(R.racialCategory()))
@@ -53,9 +54,9 @@ public class RaceCatNext extends StdWebMacro
 				||(parms.containsKey("ALL"))))
 					raceCats.addElement(R.racialCategory());
 		}
-		raceCats=new Vector(new TreeSet(raceCats));
+		raceCats=new Vector<String>(new TreeSet<String>(raceCats));
 		String lastID="";
-		for(Enumeration r=raceCats.elements();r.hasMoreElements();)
+		for(Enumeration<String> r=raceCats.elements();r.hasMoreElements();)
 		{
 			String RC=(String)r.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!RC.equals(lastID))))

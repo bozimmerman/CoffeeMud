@@ -867,19 +867,19 @@ public class MUDGrinder extends StdWebMacro
     		R=A.getRoom(A.Name()+"#"+find);
         	if((R!=null)&&(R.roomID().length()>0)) return R.roomID();
     	}
-		for(Enumeration r=A.getProperMap();r.hasMoreElements();)
+		for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 		{
 			R=(Room)r.nextElement();
 			if((R.roomID().length()>0)&&(R.roomID().toUpperCase().endsWith(find.toUpperCase())))
 				return R.roomID();
 		}
-		for(Enumeration r=A.getProperMap();r.hasMoreElements();)
+		for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 		{
 			R=(Room)r.nextElement();
 			if((R.roomID().length()>0)&&(R.displayText().toUpperCase().indexOf(find.toUpperCase())>=0))
 				return R.roomID();
 		}
-		for(Enumeration r=A.getProperMap();r.hasMoreElements();)
+		for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
 		{
 			R=(Room)r.nextElement();
 			if((R.roomID().length()>0)&&(R.description().toUpperCase().indexOf(find.toUpperCase())>=0))

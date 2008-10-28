@@ -857,7 +857,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public Room findTheJudge(Law laws, Area myArea)
 	{
-		for(Enumeration r=myArea.getMetroMap();r.hasMoreElements();)
+		for(Enumeration<Room> r=myArea.getMetroMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			for(int i=0;i<R.numInhabitants();i++)
@@ -937,14 +937,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
         Room jail=null;
         jail=CMLib.map().getRoom(which);
         if(jail==null)
-        for(Enumeration r=A.getMetroMap();r.hasMoreElements();)
+        for(Enumeration<Room> r=A.getMetroMap();r.hasMoreElements();)
         {
             Room R=(Room)r.nextElement();
             if(CMLib.english().containsString(R.displayText(),which))
             { jail=R; break; }
         }
         if(jail==null)
-        for(Enumeration r=A.getMetroMap();r.hasMoreElements();)
+        for(Enumeration<Room> r=A.getMetroMap();r.hasMoreElements();)
         {
             Room R=(Room)r.nextElement();
             if(CMLib.english().containsString(R.description(),which))
@@ -952,7 +952,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
         }
         return jail;
     }
-	public Room getRoom(Area A, Vector V)
+	public Room getRoom(Area A, Vector<String> V)
 	{
 		if(V.size()==0) return null;
 		String which=(String)V.elementAt(CMLib.dice().roll(1,V.size(),-1));

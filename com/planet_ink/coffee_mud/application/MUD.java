@@ -54,11 +54,11 @@ public class MUD extends Thread implements MudHost
     private static String execExternalCommand=null;
     private static Server imserver=null;
     private static IMC2Driver imc2server=null;
-    private static Vector webServers=new Vector();
+    private static Vector<HTTPserver> webServers=new Vector<HTTPserver>();
     private static SMTPserver smtpServerThread=null;
     private static DVector accessed=new DVector(2);
-    private static Vector autoblocked=new Vector();
-    private static Vector databases=new Vector();
+    private static Vector<String> autoblocked=new Vector<String>();
+    private static Vector<DBConnector> databases=new Vector<DBConnector>();
 
     private static boolean serverIsRunning = false;
 
@@ -124,7 +124,7 @@ public class MUD extends Thread implements MudHost
 		}
         
         char tCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
-        Vector privacyV=new Vector(1);
+        Vector<String> privacyV=new Vector<String>(1);
         if(tCode!=MAIN_HOST)
             privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
 		while (!serverIsRunning && isOK)
@@ -138,13 +138,13 @@ public class MUD extends Thread implements MudHost
 
         
         
-		Vector compress=CMParms.parseCommas(page.getStr("COMPRESS").toUpperCase(),true);
+		Vector<String> compress=CMParms.parseCommas(page.getStr("COMPRESS").toUpperCase(),true);
 		CMProps.setBoolVar(CMProps.SYSTEMB_ITEMDCOMPRESS,compress.contains("ITEMDESC"));
 		CMProps.setBoolVar(CMProps.SYSTEMB_MOBCOMPRESS,compress.contains("GENMOBS"));
 		CMProps.setBoolVar(CMProps.SYSTEMB_ROOMDCOMPRESS,compress.contains("ROOMDESC"));
 		CMProps.setBoolVar(CMProps.SYSTEMB_MOBDCOMPRESS,compress.contains("MOBDESC"));
 		Resources.setCompression(compress.contains("RESOURCES"));
-		Vector nocache=CMParms.parseCommas(page.getStr("NOCACHE").toUpperCase(),true);
+		Vector<String> nocache=CMParms.parseCommas(page.getStr("NOCACHE").toUpperCase(),true);
 		CMProps.setBoolVar(CMProps.SYSTEMB_MOBNOCACHE,nocache.contains("GENMOBS"));
 		CMProps.setBoolVar(CMProps.SYSTEMB_ROOMDNOCACHE,nocache.contains("ROOMDESC"));
 
@@ -216,7 +216,7 @@ public class MUD extends Thread implements MudHost
 		    webServersList="pub,admin";
 		if((webServersList.length()>0)&&(!webServersList.equalsIgnoreCase("false")))
 		{
-		    Vector serverNames=CMParms.parseCommas(webServersList,true);
+		    Vector<String> serverNames=CMParms.parseCommas(webServersList,true);
 		    for(int s=0;s<serverNames.size();s++)
 		    {
 		        String serverName=(String)serverNames.elementAt(s);
@@ -303,7 +303,7 @@ public class MUD extends Thread implements MudHost
     		CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: loading rooms....");
     		CMLib.database().DBReadAllRooms(null);
     		CMLib.database().DBReadArtifacts();
-    		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+    		for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
     		{
     			Area A=(Area)a.nextElement();
     			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: filling map ("+A.Name()+")");
@@ -508,7 +508,7 @@ public class MUD extends Thread implements MudHost
                 if(introDir.isDirectory())
                 {
                     CMFile[] files=introDir.listFiles();
-                    Vector choices=new Vector();
+                    Vector<String> choices=new Vector<String>();
                     for(int f=0;f<files.length;f++)
                         if(files[f].getName().toLowerCase().startsWith("intro")
                         &&files[f].getName().toLowerCase().endsWith(".txt"))
@@ -654,13 +654,13 @@ public class MUD extends Thread implements MudHost
                     if((S2!=null)&&(S2.mob()!=null)&&(S2.mob().playerStats()!=null))
                         S2.mob().playerStats().setLastDateTime(System.currentTimeMillis());
                 }
-            for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_PLAYERS);e.hasMoreElements();)
+            for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_PLAYERS);e.hasMoreElements();)
                 ((PlayerLibrary)e.nextElement()).savePlayers();
 			if(S!=null)S.println("done");
 			Log.sysOut(Thread.currentThread().getName(),"All users saved.");
 		}
         if(S!=null)S.print("Saving stats...");
-        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_STATS);e.hasMoreElements();)
+        for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_STATS);e.hasMoreElements();)
             ((StatisticsLibrary)e.nextElement()).update();
         if(S!=null)S.println("done");
         Log.sysOut(Thread.currentThread().getName(),"Stats saved.");
@@ -673,19 +673,19 @@ public class MUD extends Thread implements MudHost
 		if(S!=null) mob=S.mob();
 		if(mob==null) mob=CMClass.getMOB("StdMOB");
 		CMMsg msg=CMClass.getMsg(mob,null,CMMsg.MSG_SHUTDOWN,null);
-		Vector roomSet=new Vector();
+		Vector<Room> roomSet=new Vector<Room>();
 		try
 		{
-            for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_MAP);e.hasMoreElements();)
+            for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_MAP);e.hasMoreElements();)
             {
                 WorldMap map=((WorldMap)e.nextElement());
-    			for(Enumeration a=map.areas();a.hasMoreElements();)
+    			for(Enumeration<Area> a=map.areas();a.hasMoreElements();)
                     ((Area)a.nextElement()).setAreaFlags(Area.FLAG_STOPPED);
             }
-            for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_MAP);e.hasMoreElements();)
+            for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_MAP);e.hasMoreElements();)
             {
                 WorldMap map=((WorldMap)e.nextElement());
-    			for(Enumeration r=map.rooms();r.hasMoreElements();)
+    			for(Enumeration<Room> r=map.rooms();r.hasMoreElements();)
     			{
     				Room R=(Room)r.nextElement();
     				R.send(mob,msg);
@@ -695,13 +695,13 @@ public class MUD extends Thread implements MudHost
 	    }catch(NoSuchElementException e){}
 		if(S!=null)S.println("done");
 		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Quests");
-        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_QUEST);e.hasMoreElements();)
+        for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_QUEST);e.hasMoreElements();)
             ((CMLibrary)e.nextElement()).shutdown();
 
 
 		if(S!=null)S.println("Save thread stopped");
 		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Session Thread");
-        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_SESSIONS);e.hasMoreElements();)
+        for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_SESSIONS);e.hasMoreElements();)
             ((CMLibrary)e.nextElement()).shutdown();
 
 		if(CMSecurity.isSaveFlag("ROOMMOBS")
@@ -712,15 +712,15 @@ public class MUD extends Thread implements MudHost
 			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Rejuving the dead");
 			CMLib.threads().tickAllTickers(null);
 			CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Map Update");
-            for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_MAP);e.hasMoreElements();)
+            for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_MAP);e.hasMoreElements();)
             {
                 WorldMap map=((WorldMap)e.nextElement());
-    			for(Enumeration a=map.areas();a.hasMoreElements();)
+    			for(Enumeration<Area> a=map.areas();a.hasMoreElements();)
     				((Area)a.nextElement()).setAreaFlags(Area.FLAG_STOPPED);
             }
 			int roomCounter=0;
 			Room R=null;
-			for(Enumeration e=roomSet.elements();e.hasMoreElements();)
+			for(Enumeration<Room> e=roomSet.elements();e.hasMoreElements();)
 			{
 			    if(((++roomCounter)%200)==0)
 			    {
@@ -756,7 +756,7 @@ public class MUD extends Thread implements MudHost
 
 		if(S!=null)S.print("Stopping player Sessions...");
 		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Stopping sessions");
-        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_SESSIONS);e.hasMoreElements();)
+        for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_SESSIONS);e.hasMoreElements();)
         {
             SessionsList list=((SessionsList)e.nextElement());
     		while(list.size()>0)
@@ -788,7 +788,7 @@ public class MUD extends Thread implements MudHost
 
 		if(S!=null)S.print("Stopping all threads...");
 		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down service engine");
-        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_THREADS);e.hasMoreElements();)
+        for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_THREADS);e.hasMoreElements();)
             ((CMLibrary)e.nextElement()).shutdown();
 		if(S!=null)S.println("done");
 		Log.sysOut(Thread.currentThread().getName(),"Map Threads Stopped.");
@@ -800,27 +800,27 @@ public class MUD extends Thread implements MudHost
 		Log.sysOut(Thread.currentThread().getName(),"Database connections closed.");
 
 		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...Clearing socials, clans, channels");
-        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_SOCIALS);e.hasMoreElements();)
+        for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_SOCIALS);e.hasMoreElements();)
             ((CMLibrary)e.nextElement()).shutdown();
-        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_CLANS);e.hasMoreElements();)
+        for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_CLANS);e.hasMoreElements();)
             ((CMLibrary)e.nextElement()).shutdown();
-        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_CHANNELS);e.hasMoreElements();)
+        for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_CHANNELS);e.hasMoreElements();)
             ((CMLibrary)e.nextElement()).shutdown();
-        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_JOURNALS);e.hasMoreElements();)
+        for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_JOURNALS);e.hasMoreElements();)
             ((CMLibrary)e.nextElement()).shutdown();
-        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_POLLS);e.hasMoreElements();)
+        for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_POLLS);e.hasMoreElements();)
             ((CMLibrary)e.nextElement()).shutdown();
-        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_HELP);e.hasMoreElements();)
+        for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_HELP);e.hasMoreElements();)
             ((CMLibrary)e.nextElement()).shutdown();
 
 		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...unloading classes");
 		CMClass.shutdown();
 		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...unloading map");
-        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_CATALOG);e.hasMoreElements();)
+        for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_CATALOG);e.hasMoreElements();)
             ((CMLibrary)e.nextElement()).shutdown();
-        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_MAP);e.hasMoreElements();)
+        for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_MAP);e.hasMoreElements();)
             ((CMLibrary)e.nextElement()).shutdown();
-        for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_PLAYERS);e.hasMoreElements();)
+        for(Enumeration<CMLibrary> e=CMLib.libraries(CMLib.LIBRARY_PLAYERS);e.hasMoreElements();)
             ((CMLibrary)e.nextElement()).shutdown();
 		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...unloading resources");
 		Resources.clearResources();
@@ -1105,9 +1105,9 @@ public class MUD extends Thread implements MudHost
 		}
 	}
 
-    public Vector getOverdueThreads()
+    public Vector<Thread> getOverdueThreads()
     {
-    	Vector V=new Vector();
+    	Vector<Thread> V=new Vector<Thread>();
     	for(int w=0;w<webServers.size();w++)
     		V.addAll(((HTTPserver)webServers.elementAt(w)).getOverdueThreads());
     	//smtpServerThread -- handled as a Tickable
@@ -1120,13 +1120,13 @@ public class MUD extends Thread implements MudHost
 	public static void main(String a[])
 	{
 		String nameID="";
-		Vector iniFiles=CMParms.makeVector();
+		Vector<Object> iniFiles=CMParms.makeVector();
 		if(a.length>0)
 		{
 			for(int i=0;i<a.length;i++)
 				nameID+=" "+a[i];
 			nameID=nameID.trim();
-			Vector V=CMParms.paramParse(nameID);
+			Vector<String> V=CMParms.paramParse(nameID);
 			for(int v=0;v<V.size();v++)
 			{
 				String s=(String)V.elementAt(v);

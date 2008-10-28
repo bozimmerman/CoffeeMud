@@ -3388,7 +3388,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().Name().equalsIgnoreCase(arg2)))
                         R=lastKnownLocation;
                     if(R==null)
-                    for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+                    for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
                     {
                         Area A=(Area)a.nextElement();
                         if((A!=null)&&(A.Name().equalsIgnoreCase(arg2)))
@@ -3399,7 +3399,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                 R=A.getRandomProperRoom();
                         }
                     }
-                    for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+                    for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
                     {
                         Area A=(Area)a.nextElement();
                         if((A!=null)&&(CMLib.english().containsString(A.Name(),arg2)))
@@ -7168,7 +7168,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     {
                         Area A=CMLib.map().findArea(next);
                         if(A!=null)
-                            for(Enumeration e=A.getProperMap();e.hasMoreElements();)
+                            for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
                                 CMLib.threads().rejuv((Room)e.nextElement(),tickID);
                         else
                             logError(scripted,"MPREJUV","Syntax","Unknown location: "+next+" for "+scripted.Name());
@@ -7882,7 +7882,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                         V.addElement(findOne);
                                 }
                                 if((findOne==null)&&(A!=null))
-                                    for(Enumeration r=A.getProperMap();r.hasMoreElements();)
+                                    for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
                                     {
                                         Room R=(Room)r.nextElement();
                                         findOne=R.fetchInhabitant(mobName);

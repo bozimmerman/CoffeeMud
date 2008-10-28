@@ -625,8 +625,8 @@ public class Construction extends CraftingSkill
 				commonTell(mob,"A title must be specified.");
 				return false;
 			}
-    		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,20);
-    		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+    		Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,20);
+    		for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
     		{
     			Room R=CMLib.map().getRoom((Room)r.nextElement());
 				if(R.displayText().equalsIgnoreCase(title))

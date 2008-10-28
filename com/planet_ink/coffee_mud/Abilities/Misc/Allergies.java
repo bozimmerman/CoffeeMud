@@ -44,8 +44,8 @@ public class Allergies extends StdAbility
 	public int classificationCode(){return Ability.ACODE_PROPERTY;}
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
-    protected HashSet resourceAllergies=new HashSet();
-    protected HashSet raceAllergies=new HashSet();
+    protected HashSet<Integer> resourceAllergies=new HashSet<Integer>();
+    protected HashSet<Race> raceAllergies=new HashSet<Race>();
     protected int allergicCheckDown=0;
 	
 	public void setMiscText(String newText)
@@ -58,7 +58,7 @@ public class Allergies extends StdAbility
 	        if(V.contains(RawMaterial.RESOURCE_DESCS[i]))
 	            resourceAllergies.add(new Integer(RawMaterial.RESOURCE_DATA[i][0]));
 	    Race R=null;
-        for(Enumeration r=CMClass.races();r.hasMoreElements();)
+        for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
         {
             R=(Race)r.nextElement();
             if(V.contains(R.ID().toUpperCase()))
@@ -184,7 +184,7 @@ public class Allergies extends StdAbility
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
 		{
-			Vector allChoices=new Vector();
+			Vector<String> allChoices=new Vector<String>();
 		    for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
 		        if(((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LIQUID)
 		        &&((RawMaterial.RESOURCE_DATA[i][0]&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_ENERGY)
@@ -193,7 +193,7 @@ public class Allergies extends StdAbility
 		        &&(RawMaterial.RESOURCE_DATA[i][0]!=RawMaterial.RESOURCE_WOOD))
 			        allChoices.addElement(RawMaterial.RESOURCE_DESCS[i]);
 		    Race R=null;
-	        for(Enumeration r=CMClass.races();r.hasMoreElements();)
+	        for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 	        {
 	            R=(Race)r.nextElement();
 	            allChoices.addElement(R.ID().toUpperCase());

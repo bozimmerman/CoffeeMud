@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
+import com.planet_ink.coffee_mud.MOBS.interfaces.Auctioneer.AuctionData;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 /* 
@@ -31,7 +32,7 @@ import java.util.*;
 public interface ShoppingLibrary extends CMLibrary
 {
     public ShopKeeper getShopKeeper(Environmental E);
-    public Vector getAllShopkeepers(Room here, MOB notMOB);
+    public Vector<ShopKeeper> getAllShopkeepers(Room here, MOB notMOB);
     public String getViewDescription(Environmental E);
     public boolean shownInInventory(Environmental product, MOB buyer);
     public double rawSpecificGoldPrice(Environmental product,  int whatISell, double numberOfThem);
@@ -59,7 +60,7 @@ public interface ShoppingLibrary extends CMLibrary
 	public void returnMoney(MOB to, String currency, double amt);
     public String getAuctionInventory(MOB seller,MOB buyer,Auctioneer auction,String mask);
     public String getListForMask(String targetMessage);
-    public Vector getAuctions(Object ofLike, String auctionHouse);
+    public Vector<AuctionData> getAuctions(Object ofLike, String auctionHouse);
 	public Auctioneer.AuctionData getEnumeratedAuction(String named, String auctionHouse);
 	public void auctionNotify(MOB M, String resp, String regardingItem);
     public void cancelAuction(Auctioneer.AuctionData data);

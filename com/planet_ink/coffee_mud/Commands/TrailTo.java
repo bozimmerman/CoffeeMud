@@ -96,7 +96,7 @@ public class TrailTo extends StdCommand
 		if(where.equalsIgnoreCase("everyarea"))
 		{
 			StringBuffer str=new StringBuffer("");
-			for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
+			for(Enumeration<Area> a=CMLib.map().sortedAreas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				str.append(CMStrings.padRightPreserve(A.name(),30)+": "+trailTo(R1,set,A.name(),areaNames,confirm,radius,ignoreRooms)+"\n\r");
@@ -110,9 +110,9 @@ public class TrailTo extends StdCommand
 			StringBuffer str=new StringBuffer("");
 			try
 			{
-				for(Enumeration a=CMLib.map().rooms();a.hasMoreElements();)
+				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
 				{
-					Room R=(Room)a.nextElement();
+					Room R=(Room)r.nextElement();
 					if((R!=R1)&&(R.roomID().length()>0))
 						str.append(CMStrings.padRightPreserve(R.roomID(),30)+": "+trailTo(R1,set,R.roomID(),areaNames,confirm,radius,ignoreRooms)+"\n\r");
 				}
@@ -141,7 +141,7 @@ public class TrailTo extends StdCommand
 	{
 		Room R2=CMLib.map().getRoom(where);
 		if(R2==null)
-			for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
+			for(Enumeration<Area> a=CMLib.map().sortedAreas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				if(A.name().equalsIgnoreCase(where))
@@ -149,7 +149,7 @@ public class TrailTo extends StdCommand
 					if(set.size()==0)
 					{
 						int lowest=Integer.MAX_VALUE;
-						for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+						for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
 						{
 							Room R=(Room)r.nextElement();
 							int x=R.roomID().indexOf("#");

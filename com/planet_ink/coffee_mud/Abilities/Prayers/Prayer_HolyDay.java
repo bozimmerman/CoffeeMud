@@ -57,7 +57,7 @@ public class Prayer_HolyDay extends Prayer
 
 		if(canBeUninvoked())
 		{
-			for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
+			for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
 			{
 				Room R=(Room)e.nextElement();
 				R.showHappens(CMMsg.MSG_OK_VISUAL,"The holy day has ended.");

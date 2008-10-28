@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -36,11 +37,11 @@ public class BribeGateGuard extends StdBehavior
 	protected Exit e;
 	protected int dir = -1;
 	int tickTock = 0;
-	Vector paidPlayers = new Vector();
-	Hashtable toldAlready = new Hashtable();
+	Vector<MOB> paidPlayers = new Vector<MOB>();
+	Hashtable<String,Boolean> toldAlready = new Hashtable<String,Boolean>();
 	protected static boolean debug = false; // debuggin
 	protected static boolean surviveReboot=false; // survive reboot
-	protected static Hashtable notTheJournal=new Hashtable();
+	protected static Hashtable<String,Hashtable<String,Double>> notTheJournal=new Hashtable<String,Hashtable<String,Double>>();
 
 	public String ID()
 	{
@@ -126,26 +127,26 @@ public class BribeGateGuard extends StdBehavior
 		// return the balance in int form
 		if(surviveReboot)
 		{
-			Vector V =CMLib.database().DBReadJournal(gates());
-			Vector mine = new Vector();
+			Vector<JournalsLibrary.JournalEntry> V =CMLib.database().DBReadJournalMsgs(gates());
+			Vector<JournalsLibrary.JournalEntry> mine = new Vector<JournalsLibrary.JournalEntry>();
 			for (int v = 0; v < V.size(); v++)
 			{
-				Vector V2 = (Vector) V.elementAt(v);
-				if ( ( (String) V2.elementAt(1)).equalsIgnoreCase(mob.Name()))
+				JournalsLibrary.JournalEntry V2 = V.elementAt(v);
+				if ( ( V2.from.equalsIgnoreCase(mob.Name())))
 				{
 					mine.addElement(V2);
 				}
 			}
 			for (int v = 0; v < mine.size(); v++)
 			{
-				Vector V2 = (Vector) mine.elementAt(v);
-				String fullName = ( (String) V2.elementAt(4));
+				JournalsLibrary.JournalEntry V2 =  mine.elementAt(v);
+				String fullName = V2.subj;
 				if (fullName.equals("COINS"))
 				{
 					Coins item = (Coins) CMClass.getItem("StdCoins");
 					if (item != null)
 					{
-						CMLib.coffeeMaker().setPropertiesStr(item, ( (String) V2.elementAt(5)), true);
+						CMLib.coffeeMaker().setPropertiesStr(item,V2.msg, true);
 						item.recoverEnvStats();
 						item.text();
 					}
@@ -155,10 +156,10 @@ public class BribeGateGuard extends StdBehavior
 		}
 		else
 		{
-			Hashtable H=(Hashtable)notTheJournal.get(gates());
+			Hashtable<String,Double> H=(Hashtable<String,Double>)notTheJournal.get(gates());
 			if(H==null)
 			{
-				H=new Hashtable();
+				H=new Hashtable<String,Double>();
 				notTheJournal.put(gates(),H);
 			}
 			Double D=(Double)H.get(mob.Name());
@@ -197,28 +198,28 @@ public class BribeGateGuard extends StdBehavior
 		// kill the journal entries for that mob
 		if(surviveReboot)
 		{
-			Vector V = CMLib.database().DBReadJournal(gates());
-			Vector mine = new Vector();
+			Vector<JournalsLibrary.JournalEntry> V = CMLib.database().DBReadJournalMsgs(gates());
+			Vector<JournalsLibrary.JournalEntry> mine = new Vector<JournalsLibrary.JournalEntry>();
 			for (int v = 0; v < V.size(); v++)
 			{
-				Vector V2 = (Vector) V.elementAt(v);
-				if ( ( (String) V2.elementAt(1)).equalsIgnoreCase(mob.Name())) {
+				JournalsLibrary.JournalEntry V2 = V.elementAt(v);
+				if ( ( V2.from).equalsIgnoreCase(mob.Name())) {
 				  mine.addElement(V2);
 				}
 			}
 			for (int v = 0; v < mine.size(); v++)
 			{
-				Vector V2 = (Vector) mine.elementAt(v);
-				String fullName = ( (String) V2.elementAt(4));
+				JournalsLibrary.JournalEntry V2 = mine.elementAt(v);
+				String fullName = V2.subj;
 				if (fullName.equals("COINS")) {
-				  CMLib.database().DBDeleteJournal( ( (String) V2.elementAt(0)),
+				  CMLib.database().DBDeleteJournal( ( V2.key),
 				                               Integer.MAX_VALUE);
 				}
 			}
 		}
 		else
 		{
-			Hashtable H=(Hashtable)notTheJournal.get(gates());
+			Hashtable<String,Double> H=(Hashtable<String,Double>)notTheJournal.get(gates());
 			if(H==null) return;
 			Double D=(Double)H.get(mob.Name());
 			if(D==null) return;
@@ -237,10 +238,10 @@ public class BribeGateGuard extends StdBehavior
 		}
 		else
 		{
-			Hashtable H=(Hashtable)notTheJournal.get(gates());
+			Hashtable<String,Double> H=(Hashtable<String,Double>)notTheJournal.get(gates());
 			if(H==null)
 			{
-				H=new Hashtable();
+				H=new Hashtable<String,Double>();
 				notTheJournal.put(gates(),H);
 			}
 			Double D=(Double)H.get(mob.Name());

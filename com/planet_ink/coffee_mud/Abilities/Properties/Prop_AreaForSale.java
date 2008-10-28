@@ -176,15 +176,15 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		}
 	}
 
-	public Vector getPropertyRooms()
+	public Vector<Room> getPropertyRooms()
 	{
-		Vector V=new Vector();
+		Vector<Room> V=new Vector<Room>();
 		Area A=null;
 		if(affected instanceof Area)
 			A=(Area)affected;
 		else
 			A=CMLib.map().getArea(landPropertyID());
-		for(Enumeration e=A.getProperMap();e.hasMoreElements();)
+		for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
 			V.addElement(e.nextElement());
 		return V;
 	}

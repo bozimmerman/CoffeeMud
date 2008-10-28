@@ -175,7 +175,7 @@ public class WaterCurrents extends ActiveTicker
 				&&((below.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 				   ||(below.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
 				{
-					Vector V=((GridLocale)below).getAllRooms();
+					Vector<Room> V=((GridLocale)below).getAllRooms();
 					for(int v=0;v<V.size();v++)
 					{
 						Room R2=(Room)V.elementAt(v);
@@ -186,7 +186,7 @@ public class WaterCurrents extends ActiveTicker
 			else
 			if(ticking instanceof Area)
 			{
-				for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
+				for(Enumeration<Room> r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)

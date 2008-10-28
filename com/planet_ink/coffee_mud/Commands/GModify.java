@@ -534,7 +534,7 @@ public class GModify extends StdCommand
             return false;
         }
         if(placesToDo.size()==0)
-        for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+        for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
         {
             Area A=(Area)a.nextElement();
             if(A.getCompleteMap().hasMoreElements()
@@ -552,7 +552,7 @@ public class GModify extends StdCommand
             {
                 Area A=(Area)placesToDo.elementAt(i);
                 placesToDo.removeElement(A);
-                for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+                for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
                 {
                     Room R=(Room)r.nextElement();
                     if(CMSecurity.isAllowed(mob,R,"GMODIFY"))

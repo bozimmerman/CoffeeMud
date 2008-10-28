@@ -88,7 +88,7 @@ public interface LandTitle extends Environmental
      * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
      * @return a Vector of the complete set of Room objects represented by this title
      */
-	public Vector getPropertyRooms();
+	public Vector<Room> getPropertyRooms();
     /**
      * Whether this property is a rental.
      * @return true if the property is rental, false if ownable outright

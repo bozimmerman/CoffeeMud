@@ -44,7 +44,7 @@ public class Thief_Assassinate extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public long flags(){return Ability.FLAG_TRACKING;}
     public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING; }
-	protected Vector theTrail=null;
+	protected Vector<Room> theTrail=null;
 	public int nextDirection=-2;
 	protected MOB tracking=null;
 
@@ -249,7 +249,7 @@ public class Thief_Assassinate extends ThiefSkill
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		Vector rooms=new Vector();
+		Vector<Room> rooms=new Vector<Room>();
 		if(tracking!=null)
 		{
 			Room R=tracking.location();
@@ -261,8 +261,8 @@ public class Thief_Assassinate extends ThiefSkill
 		{
 		    try
 		    {
-				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,givenTarget!=null&&auto&&mob.isMonster(),true,true,true,50+(2*getXLEVELLevel(mob)));
-				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+				Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,givenTarget!=null&&auto&&mob.isMonster(),true,true,true,50+(2*getXLEVELLevel(mob)));
+				for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
 				{
 					Room R=CMLib.map().getRoom((Room)r.nextElement());
 					if(R.fetchInhabitant(mobName)!=null)

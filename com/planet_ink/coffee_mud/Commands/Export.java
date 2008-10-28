@@ -259,7 +259,7 @@ public class Export extends StdCommand
 				}
 				StringBuffer buf=new StringBuffer("");
 				if(fileNameCode!=2) buf.append("<AREAS>");
-				for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+				for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 				{
 					Area A=(Area)a.nextElement();
 					if(A!=null)
@@ -297,7 +297,7 @@ public class Export extends StdCommand
 				if(S!=null)
 					S.rawPrint("Reading area mobs '"+area.Name()+"'...");
 				StringBuffer buf=new StringBuffer("<MOBS>");
-				for(Enumeration r=area.getCompleteMap();r.hasMoreElements();)
+				for(Enumeration<Room> r=area.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(S!=null) S.rawPrint(".");
@@ -360,7 +360,7 @@ public class Export extends StdCommand
 				if(S!=null)
 					S.rawPrint("Reading area "+subType.toLowerCase()+" '"+area.Name()+"'...");
 				StringBuffer buf=new StringBuffer("<ITEMS>");
-				for(Enumeration r=area.getCompleteMap();r.hasMoreElements();)
+				for(Enumeration<Room> r=area.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(S!=null) S.rawPrint(".");

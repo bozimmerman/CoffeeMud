@@ -50,7 +50,7 @@ public class CheckAuthCode extends StdWebMacro
 			
 			String AREA=httpReq.getRequestParameter("AREA");
 			Room R=null;
-			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				if((AREA==null)||(AREA.length()==0)||(AREA.equals(A.Name())))

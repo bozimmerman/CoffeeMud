@@ -110,7 +110,7 @@ public class Copy extends StdCommand
 		{
 		    try
 		    {
-				for(Enumeration r=mob.location().getArea().getMetroMap();r.hasMoreElements();)
+				for(Enumeration<Room> r=mob.location().getArea().getMetroMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					E=R.fetchInhabitant(name);

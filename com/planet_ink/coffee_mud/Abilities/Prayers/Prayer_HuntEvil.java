@@ -137,9 +137,9 @@ public class Prayer_HuntEvil extends Prayer
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		Vector rooms=new Vector();
-		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,50);
-		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
+		Vector<Room> rooms=new Vector<Room>();
+		Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,50);
+		for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			if(gameHere(R)!=null)

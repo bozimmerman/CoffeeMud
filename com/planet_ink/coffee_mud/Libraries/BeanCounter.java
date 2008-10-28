@@ -35,10 +35,10 @@ import java.util.*;
 public class BeanCounter extends StdLibrary implements MoneyLibrary
 {
     public String ID(){return "BeanCounter";}
-    public Hashtable currencies=new Hashtable();
-    public static Hashtable defaultCurrencies=new Hashtable();
-    public Vector allCurrencyNames=new Vector();
-    public Hashtable allCurrencyDenominationNames=new Hashtable();
+    public Hashtable<String,DVector> currencies=new Hashtable<String,DVector>();
+    public static Hashtable<String,DVector> defaultCurrencies=new Hashtable<String,DVector>();
+    public Vector<String> allCurrencyNames=new Vector<String>();
+    public Hashtable<String,Vector<String>> allCurrencyDenominationNames=new Hashtable<String,Vector<String>>();
 
 	public void unloadCurrencySet(String currency)
 	{
@@ -54,7 +54,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	}
 
     public DVector createCurrencySet(String currency){ return createCurrencySet(currencies,currency);}
-	protected DVector createCurrencySet(Hashtable currencies, String currency)
+	protected DVector createCurrencySet(Hashtable<String,DVector> currencies, String currency)
 	{
 	    int x=currency.indexOf("=");
 	    if(x<0) return null;
@@ -62,12 +62,12 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	    if(currencies.containsKey(code))
 	        return (DVector)currencies.get(code);
         currency=currency.substring(x+1).trim();
-        Vector V=CMParms.parseSemicolons(currency,true);
+        Vector<String> V=CMParms.parseSemicolons(currency,true);
         DVector DV=new DVector(3);
         String s=null;
         String num=null;
         double d=0.0;
-        Vector currencyNames=new Vector();
+        Vector<String> currencyNames=new Vector<String>();
         for(int v=0;v<V.size();v++)
         {
             s=(String)V.elementAt(v);
@@ -138,14 +138,14 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
         return createCurrencySet(currency);
 	}
 
-	public Vector getAllCurrencies()
+	public Vector<String> getAllCurrencies()
 	{ return allCurrencyNames;}
 
-	public Vector getDenominationNameSet(String currency)
+	public Vector<String> getDenominationNameSet(String currency)
 	{
 	    if(allCurrencyDenominationNames.containsKey(currency))
-	        return (Vector)allCurrencyDenominationNames.get(currency);
-        return new Vector();
+	        return (Vector<String>)allCurrencyDenominationNames.get(currency);
+        return new Vector<String>();
 	}
 
 	public double lowestAbbreviatedDenomination(String currency)
@@ -280,10 +280,10 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
         return bestDenom;
     }
     
-	public Vector getBestDenominations(String currency, double absoluteValue)
+	public Vector<Double> getBestDenominations(String currency, double absoluteValue)
 	{
 		DVector DV=getCurrencySet(currency);
-		Vector V=new Vector();
+		Vector<Double> V=new Vector<Double>();
 		if(DV!=null)
 		for(int d=DV.size()-1;d>=0;d--)
 		{
@@ -341,7 +341,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 	public String nameCurrencyLong(String currency, double absoluteValue)
 	{
 	    StringBuffer str=new StringBuffer("");
-		Vector V=getBestDenominations(currency,absoluteValue);
+		Vector<Double> V=getBestDenominations(currency,absoluteValue);
 		for(int d=0;d<V.size();d++)
 		{
 		    double denom=((Double)V.elementAt(d)).doubleValue();
@@ -379,9 +379,9 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 
 	protected void parseDebt(DVector debt, String debtor, String xml)
 	{
-		Vector V=CMLib.xml().parseAllXML(xml);
+		Vector<XMLLibrary.XMLpiece> V=CMLib.xml().parseAllXML(xml);
 		if(xml==null){ Log.errOut("BeanCounter","Unable to parse: "+xml); return ;}
-		Vector debtData=CMLib.xml().getRealContentsFromPieces(V,"DEBT");
+		Vector<XMLLibrary.XMLpiece> debtData=CMLib.xml().getRealContentsFromPieces(V,"DEBT");
 		if(debtData==null){ Log.errOut("BeanCounter","Unable to get debt data"); return ;}
 		for(int p=0;p<debtData.size();p++)
 		{
@@ -705,7 +705,7 @@ public class BeanCounter extends StdLibrary implements MoneyLibrary
 		HashSet triedBanks=new HashSet();
 		if(modifyThisAreaBankGold(A,triedBanks,owner,explanation,currency,absoluteAmount))
 			return true;
-		for(Enumeration e=A.getParents();e.hasMoreElements();)
+		for(Enumeration<Area> e=A.getParents();e.hasMoreElements();)
 		{
 			Area A2=(Area)e.nextElement();
 			if(modifyThisAreaBankGold(A2,triedBanks,owner,explanation,currency,absoluteAmount))

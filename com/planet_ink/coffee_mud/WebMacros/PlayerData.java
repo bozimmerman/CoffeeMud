@@ -12,6 +12,7 @@ import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
+
 import java.util.*;
 
 
@@ -403,7 +404,7 @@ public class PlayerData extends StdWebMacro
 				String old=httpReq.getRequestParameter("RACE");
 				if((firstTime)||(old.length()==0)) 
 					old=""+M.baseCharStats().getMyRace().ID();
-				for(Enumeration r=CMClass.races();r.hasMoreElements();)
+				for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
 				{
 					Race R2=(Race)r.nextElement();
 					str.append("<OPTION VALUE=\""+R2.ID()+"\"");
