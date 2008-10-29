@@ -445,7 +445,7 @@ public class DefaultPlayerStats implements PlayerStats
 	{
 		if((bday!=null)&&(bday.length()>0))
 		{
-		    Vector V=CMParms.parseCommas(bday,true);
+		    Vector<String> V=CMParms.parseCommas(bday,true);
 		    birthday=new int[3];
 		    for(int v=0;v<V.size();v++)
 		        birthday[v]=CMath.s_int((String)V.elementAt(v));
@@ -532,11 +532,11 @@ public class DefaultPlayerStats implements PlayerStats
         levelInfo.clear();
         if(dates.length()>0)
         {
-            Vector sets=CMParms.parseSemicolons(dates,true);
+            Vector<String> sets=CMParms.parseSemicolons(dates,true);
             for(int ss=0;ss<sets.size();ss++)
             {
                 String sStr=(String)sets.elementAt(ss);
-                Vector twin=CMParms.parseCommas(sStr,true);
+                Vector<String> twin=CMParms.parseCommas(sStr,true);
                 if((twin.size()!=2)&&(twin.size()!=3))  continue;
                 if(CMath.s_int((String)twin.firstElement())>=lastNum)
                 {

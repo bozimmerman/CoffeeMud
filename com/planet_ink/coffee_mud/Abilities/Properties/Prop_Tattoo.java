@@ -36,9 +36,9 @@ public class Prop_Tattoo extends Property
 	public String name(){ return "A Tattoo";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 
-	public static Vector getTattoos(MOB mob)
+	public static Vector<String> getTattoos(MOB mob)
 	{
-		Vector tattos=new Vector();
+		Vector<String> tattos=new Vector<String>();
 		Ability A=mob.fetchAbility("Prop_Tattoo");
 		if(A!=null)
 			tattos=CMParms.parseSemicolons(A.text().toUpperCase(),true);

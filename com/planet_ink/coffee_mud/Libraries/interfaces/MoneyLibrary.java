@@ -101,7 +101,7 @@ public interface MoneyLibrary extends CMLibrary
     public void clearInventoryMoney(MOB mob, String currency);
     public void subtractMoney(MOB mob, double denomination, double absoluteAmount);
     public void subtractMoney(MOB mob, String currency, double denomination, double absoluteAmount);
-    public Vector getStandardCurrency(MOB mob, String currency);
+    public Vector<Coins> getStandardCurrency(MOB mob, String currency);
     public long getNumberOfCoins(MOB mob, String currency, double denomination);
     public String getCurrency(Environmental E);
     public double getTotalAbsoluteValue(MOB mob, String currency);

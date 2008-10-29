@@ -63,16 +63,16 @@ public class MudChat extends StdBehavior
     {
         if(newParms.startsWith("+"))
         {
-            Vector V=CMParms.parseSemicolons(newParms.substring(1),false);
+            Vector<String> V=CMParms.parseSemicolons(newParms.substring(1),false);
             StringBuffer rsc=new StringBuffer("");
             for(int v=0;v<V.size();v++)
                 rsc.append(((String)V.elementAt(v))+"\n\r");
-            V=parseChatData(rsc,new Vector());
-            for(int v=0;v<V.size();v++)
+            Vector chatV=parseChatData(rsc,new Vector());
+            for(int v=0;v<chatV.size();v++)
             {
-                Vector V2=(Vector)V.elementAt(v);
-                for(int v2=1;v2<V2.size();v2++)
-                    addedChatData.addElement(V2.elementAt(v2));
+                Vector chatV2=(Vector)chatV.elementAt(v);
+                for(int v2=1;v2<chatV2.size();v2++)
+                    addedChatData.addElement(chatV2.elementAt(v2));
             }
         }
         else
@@ -330,7 +330,7 @@ public class MudChat extends StdBehavior
 
 		if(selection!=null)
 		{
-			Vector selections=CMParms.parseSquiggleDelimited(selection.substring(1).trim(),true);
+			Vector<String> selections=CMParms.parseSquiggleDelimited(selection.substring(1).trim(),true);
 			for(int v=0;v<selections.size();v++)
 			{
 				String finalCommand=(String)selections.elementAt(v);

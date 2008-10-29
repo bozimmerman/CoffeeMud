@@ -50,7 +50,7 @@ public class Concierge extends StdBehavior
 	    	basePrice=CMath.s_double(newParm);
 	    	return;
 	    }
-	    Vector V=CMParms.parseSemicolons(newParm,true);
+	    Vector<String> V=CMParms.parseSemicolons(newParm,true);
 	    String s=null;
 	    int x=0;
 	    double price=0;

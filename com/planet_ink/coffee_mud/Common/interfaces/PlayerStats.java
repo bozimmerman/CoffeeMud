@@ -235,7 +235,7 @@ public interface PlayerStats extends CMCommon, CMModifiable
 	 * 
 	 * @return a set of player friend names
 	 */
-	public HashSet getFriends();
+	public HashSet<String> getFriends();
 
 	/**
      * Returns a modifiable HashSet that contains the set of player
@@ -243,7 +243,7 @@ public interface PlayerStats extends CMCommon, CMModifiable
      * 
 	 * @return a set of player ignored player list Names
 	 */
-	public HashSet getIgnored();
+	public HashSet<String> getIgnored();
 
 	/**
 	 * Returns a Vector of modifiable title definitions.  These are things
@@ -253,7 +253,7 @@ public interface PlayerStats extends CMCommon, CMModifiable
      * 
 	 * @return  a Vector of modifiable title definitions
 	 */
-    public Vector getTitles();
+    public Vector<String> getTitles();
     
     /**
      * Returns which of the player available titles is currently being used by
@@ -273,7 +273,7 @@ public interface PlayerStats extends CMCommon, CMModifiable
      * 
      * @return a Vector of strings, the last few tell messages
      */
-	public Vector getTellStack();
+	public Vector<String> getTellStack();
 	
 	/**
 	 * Adds a new string message to the tell stack.
@@ -292,7 +292,7 @@ public interface PlayerStats extends CMCommon, CMModifiable
      * 
      * @return a Vector of strings, the last few gtell messages
      */
-    public Vector getGTellStack();
+    public Vector<String> getGTellStack();
 
     /**
      * Adds a new string message to the gtell stack.
@@ -461,7 +461,7 @@ public interface PlayerStats extends CMCommon, CMModifiable
 	 * 
 	 * @return  a Vector of security flags and groups strings 
 	 */
-	public Vector getSecurityGroups();
+	public Vector<String> getSecurityGroups();
 
 	/**
 	 * When a player is first created, this method is used to 

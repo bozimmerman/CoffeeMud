@@ -285,10 +285,10 @@ public class RoomLoader
                     else
                     if(direction>255)
                     {
-                        Vector CEs=CMParms.parseSemicolons(exitMiscText.trim(),true);
+                        Vector<String> CEs=CMParms.parseSemicolons(exitMiscText.trim(),true);
                         for(int ces=0;ces<CEs.size();ces++)
                         {
-                            Vector SCE=CMParms.parse(((String)CEs.elementAt(ces)).trim());
+                            Vector<String> SCE=CMParms.parse(((String)CEs.elementAt(ces)).trim());
                             WorldMap.CrossExit CE=new WorldMap.CrossExit();
                             if(SCE.size()<3) continue;
                             CE.x=CMath.s_int((String)SCE.elementAt(0));

@@ -186,7 +186,7 @@ public class Sculpting extends EnhancedCraftingSkill implements ItemCraftor, Men
 			mending=false;
 			key=null;
 			messedUp=false;
-			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
+			Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORNREQ_UNWORNONLY);
 			if(!canMend(mob,building,false)) return false;
 			mending=true;

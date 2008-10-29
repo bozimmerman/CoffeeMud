@@ -74,7 +74,7 @@ public class Prop_Hidden extends Property
 		super.setMiscText(text);
 		if(!(affected instanceof MOB))
 		{
-			Vector parms=CMParms.parse(text.toUpperCase());
+			Vector<String> parms=CMParms.parse(text.toUpperCase());
 			unLocatable=parms.contains("UNLOCATABLE");
 		}
 	}

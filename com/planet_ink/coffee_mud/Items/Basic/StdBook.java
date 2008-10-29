@@ -97,7 +97,7 @@ public class StdBook extends StdItem
 				int which=-1;
 				boolean newOnly=false;
 				boolean all=false;
-				Vector parse=CMParms.parse(msg.targetMessage());
+				Vector<String> parse=CMParms.parse(msg.targetMessage());
 				for(int v=0;v<parse.size();v++)
 				{
 				    String s=(String)parse.elementAt(v);
@@ -296,7 +296,7 @@ public class StdBook extends StdItem
     private String getParm(String parmName)
     {
         if(readableText().length()==0) return "";
-        Hashtable h=CMParms.parseEQParms(readableText().toUpperCase(),
+        Hashtable<String,String> h=CMParms.parseEQParms(readableText().toUpperCase(),
                                          new String[]{"READ","WRITE","REPLY","ADMIN"});
         String req=(String)h.get(parmName.toUpperCase().trim());
         if(req==null) req="";

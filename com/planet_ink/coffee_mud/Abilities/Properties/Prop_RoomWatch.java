@@ -51,8 +51,8 @@ public class Prop_RoomWatch extends Property
 		super.executeMsg(myHost,msg);
 		if(newRooms==null)
 		{
-			Vector V=CMParms.parseSemicolons(text(),true);
-			newRooms=new Vector();
+			Vector<String> V=CMParms.parseSemicolons(text(),true);
+			newRooms=new Vector<Room>();
 			for(int v=0;v<V.size();v++)
 			{
 				Room R=CMLib.map().getRoom((String)V.elementAt(v));

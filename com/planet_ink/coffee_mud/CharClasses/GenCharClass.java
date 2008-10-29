@@ -68,14 +68,14 @@ public class GenCharClass extends StdCharClass
     // IS *only* used by stdcharclass for weaponliminatations, buildDisallowedWeaponClasses,  buildRequiredWeaponMaterials
     public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}
     
-    private HashSet requiredWeaponMaterials=null; // set of Integer material masks
-    protected HashSet requiredWeaponMaterials(){return requiredWeaponMaterials;}
+    private HashSet<Integer> requiredWeaponMaterials=null; // set of Integer material masks
+    protected HashSet<Integer> requiredWeaponMaterials(){return requiredWeaponMaterials;}
     
     protected int requiredArmorSourceMinor=-1;
     public int requiredArmorSourceMinor(){return requiredArmorSourceMinor;}
     
-	protected HashSet disallowedWeaponSet=null; // set of Integers for weapon classes
-	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeaponSet;}
+	protected HashSet<Integer> disallowedWeaponSet=null; // set of Integers for weapon classes
+	protected HashSet<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeaponSet;}
 	protected CharStats setStats=null;
 	protected CharStats adjStats=null;
 	protected EnvStats adjEStats=null;
@@ -773,7 +773,7 @@ public class GenCharClass extends StdCharClass
 				 break;
 		case 32:
         {
-                 Vector V=CMParms.parseCommas(val,true);
+                 Vector<String> V=CMParms.parseCommas(val,true);
 				 if(V.size()>0)
 				 {
 					disallowedWeaponSet=new HashSet();
@@ -864,14 +864,14 @@ public class GenCharClass extends StdCharClass
         case 46: if(CMath.s_int(val)==0)
                      requiredWeaponMaterials=null;
                  else
-                     requiredWeaponMaterials=new HashSet();
+                     requiredWeaponMaterials=new HashSet<Integer>();
                  break;
         case 47:
         {
-                 Vector V=CMParms.parseCommas(val,true);
+                 Vector<String> V=CMParms.parseCommas(val,true);
                  if(V.size()>0)
                  {
-                     requiredWeaponMaterials=new HashSet();
+                     requiredWeaponMaterials=new HashSet<Integer>();
                      for(int v=0;v<V.size();v++)
                          requiredWeaponMaterials.add(new Integer(CMath.s_int((String)V.elementAt(v))));
                  }

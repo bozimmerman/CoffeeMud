@@ -73,7 +73,7 @@ public class Prop_Smell extends Property
 	public DVector getSmells()
 	{
 	    if(smells!=null) return smells;
-	    Vector allsmells=CMParms.parseSemicolons(text(),true);
+	    Vector<String> allsmells=CMParms.parseSemicolons(text(),true);
 	    smells=new DVector(3);
 	    for(int i=0;i<allsmells.size();i++)
 	    {
@@ -82,7 +82,7 @@ public class Prop_Smell extends Property
 	        {
 	            int pct=100;
 	            int ticks=-1;
-	            Vector parsedSmell=CMParms.parse(smell);
+	            Vector<String> parsedSmell=CMParms.parse(smell);
 	            for(int ii=parsedSmell.size()-1;ii>=0;ii--)
 	            {
 	                String s=((String)parsedSmell.elementAt(ii)).toUpperCase();

@@ -62,7 +62,7 @@ public class CharClassData extends StdWebMacro
     }
 
 
-    public static StringBuffer cabilities(CharClass E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize, String font)
+    public static StringBuffer cabilities(CharClass E, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize, String font)
     {
         StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(8);
@@ -589,7 +589,7 @@ public class CharClassData extends StdWebMacro
                 if(parms.containsKey("NOWEAPS"))
                 {
                     String old=httpReq.getRequestParameter("NOWEAPS");
-                    Vector set=null;
+                    Vector<String> set=null;
                     if(old==null)
                     {
                         C=C.makeGenCharClass();
@@ -599,7 +599,7 @@ public class CharClassData extends StdWebMacro
                     else
                     {
                         String id="";
-                        set=new Vector();
+                        set=new Vector<String>();
                         for(int i=0;httpReq.isRequestParameter("NOWEAPS"+id);id=""+(++i))
                             set.addElement(httpReq.getRequestParameter("NOWEAPS"+id));
                     }
@@ -726,7 +726,7 @@ public class CharClassData extends StdWebMacro
                 if(parms.containsKey("WEAPMATS"))
                 {
                     String old=httpReq.getRequestParameter("WEAPMATS");
-                    Vector set=null;
+                    Vector<String> set=null;
                     if(old==null)
                     {
                         C=C.makeGenCharClass();
@@ -736,7 +736,7 @@ public class CharClassData extends StdWebMacro
                     else
                     {
                         String id="";
-                        set=new Vector();
+                        set=new Vector<String>();
                         for(int i=0;httpReq.isRequestParameter("WEAPMATS"+id);id=""+(++i))
                             if(CMath.isInteger(httpReq.getRequestParameter("WEAPMATS"+id)))
                                 set.addElement(httpReq.getRequestParameter("WEAPMATS"+id));

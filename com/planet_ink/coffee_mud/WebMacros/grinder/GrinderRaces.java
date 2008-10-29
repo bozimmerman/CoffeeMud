@@ -204,7 +204,7 @@ public class GrinderRaces
         return theclasses;
     }
 
-    public static String modifyRace(ExternalHTTPRequests httpReq, Hashtable parms, Race oldR, Race R)
+    public static String modifyRace(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, Race oldR, Race R)
     {
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
         if((replaceCommand != null)

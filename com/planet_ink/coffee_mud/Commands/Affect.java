@@ -64,7 +64,7 @@ public class Affect extends StdCommand
                 {
                     String s=CMLib.coffeeFilter().fullOutFilter(S,mob,null,null,null,disp,true);
                     s=CMStrings.replaceAll(s,"\r","");
-                    Vector V=CMParms.parseAny(s,"\n",true);
+                    Vector<String> V=CMParms.parseAny(s,"\n",true);
                     disps=new String[V.size()];
                     for(int d=0;d<V.size();d++)
                         disps[d]=(String)V.elementAt(d);

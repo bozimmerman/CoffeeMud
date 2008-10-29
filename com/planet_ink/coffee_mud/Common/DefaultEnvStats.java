@@ -87,7 +87,7 @@ public class DefaultEnvStats implements EnvStats
 		ambiance=ambiance.trim();
 		int i=0;
 		String[] ambis=ambiances();
-        Vector V=null;
+        Vector<String> V=null;
 		for(i=0;i<ambis.length;i++)
 			if(ambis[i].equalsIgnoreCase(ambiance))
 			{

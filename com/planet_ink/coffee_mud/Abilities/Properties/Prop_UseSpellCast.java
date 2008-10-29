@@ -56,7 +56,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 			{
 				String t=A.text();
 				A=(Ability)A.copyOf();
-				Vector V2=new Vector();
+				Vector<String> V2=new Vector<String>();
 				if(t.length()>0)
 				{
 					int x=t.indexOf("/");
@@ -71,7 +71,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 						A.setMiscText(t.substring(x+1));
 					}
 				}
-				A.invoke(qualMOB,V2,target,true,asLevel>0?asLevel:((affected!=null)?affected.envStats().level():0));
+				A.invoke(qualMOB,CMParms.makeObjV(V2),target,true,asLevel>0?asLevel:((affected!=null)?affected.envStats().level():0));
 			}
 		}
         return true;

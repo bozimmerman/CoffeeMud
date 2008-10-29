@@ -218,9 +218,9 @@ public class CMProps extends Properties
     protected String[] sysVars=new String[NUM_SYSTEM];
     protected Integer[] sysInts=new Integer[NUMI_SYSTEM];
     protected Boolean[] sysBools=new Boolean[NUMB_SYSTEM];
-    protected Vector sayFilter=new Vector();
-    protected Vector channelFilter=new Vector();
-    protected Vector emoteFilter=new Vector();
+    protected Vector<String> sayFilter=new Vector<String>();
+    protected Vector<String> channelFilter=new Vector<String>();
+    protected Vector<String> emoteFilter=new Vector<String>();
     protected Object[] listData=new Object[NUML_SYSTEM];
     protected DVector newusersByIP=new DVector(2);
     protected DVector skillMaxManaExceptions=new DVector(2);
@@ -357,7 +357,7 @@ public class CMProps extends Properties
 	{
 		DVector strBag = new DVector(2);
 		tagStartersToGet = tagStartersToGet.toUpperCase();
-		for(Enumeration e=propertyNames(); e.hasMoreElements();)
+		for(Enumeration<?> e=propertyNames(); e.hasMoreElements();)
 		{
 			String propName = (String)e.nextElement();
 			if(propName.toUpperCase().startsWith(tagStartersToGet))
@@ -566,7 +566,7 @@ public class CMProps extends Properties
     {
     	if(val==null) return 0;
     	set.clear();
-    	Vector V=CMParms.parseCommas(val,true);
+    	Vector<String> V=CMParms.parseCommas(val,true);
     	String s=null;
     	int endVal=0;
     	for(int v=0;v<V.size();v++)
@@ -614,7 +614,7 @@ public class CMProps extends Properties
         if((var<0)||(var>=NUML_SYSTEM)) return new int[0];
         if(p().listData[var]==null)
         {
-            Vector V=CMParms.parseCommas(getListValue(SYSTEML_KEYS[var]), true);
+            Vector<String> V=CMParms.parseCommas(getListValue(SYSTEML_KEYS[var]), true);
             int[] set=new int[V.size()];
             for(int v=0;v<V.size();v++)
                 set[v]=CMath.s_int((String)V.elementAt(v));
@@ -636,7 +636,7 @@ public class CMProps extends Properties
         if((var<0)||(var>=NUML_SYSTEM)) return new String[0][0];
         if(p().listData[var]==null)
         {
-            Vector V=CMParms.parseSemicolons(getListValue(SYSTEML_KEYS[var]),true);
+            Vector<String> V=CMParms.parseSemicolons(getListValue(SYSTEML_KEYS[var]),true);
             String[][] set=new String[V.size()][];
             for(int v=0;v<V.size();v++)
                 set[v]=CMParms.toStringArray(CMParms.parseCommas((String)V.elementAt(v),true));
@@ -736,7 +736,7 @@ public class CMProps extends Properties
             setIntVar(SYSTEMI_EQVIEW,0);
 
         s=getStr("EXPIRATIONS");
-        Vector V=CMParms.parseCommas(s,false);
+        Vector<String> V=CMParms.parseCommas(s,false);
         for(int i=0;i<5;i++)
         {
             if(V.size()>0)
@@ -846,7 +846,7 @@ public class CMProps extends Properties
 
     public static String applyINIFilter(String msg, int whichFilter)
     {
-        Vector filter=null;
+        Vector<String> filter=null;
         switch(whichFilter)
         {
         case SYSTEM_EMOTEFILTER: filter=p().emoteFilter; break;
@@ -972,7 +972,7 @@ public class CMProps extends Properties
         return getHashedMXPImage(H,key);
 
     }
-    public static String getHashedMXPImage(Hashtable H, String key)
+    public static String getHashedMXPImage(Hashtable<String,String> H, String key)
     {
         if(H==null) return "";
         String s=(String)H.get(key);
@@ -987,11 +987,11 @@ public class CMProps extends Properties
         if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
         ||(CMSecurity.isDisabled("MXP")))
             return "";
-        Hashtable H=(Hashtable)Resources.getResource("PARSED: mxp_images.ini");
+        Hashtable<String,String> H=(Hashtable)Resources.getResource("PARSED: mxp_images.ini");
         if(H==null)
         {
-            H=new Hashtable();
-            Vector V=Resources.getFileLineVector(new CMFile("resources/mxp_images.ini",null,false).text());
+            H=new Hashtable<String,String>();
+            Vector<String> V=Resources.getFileLineVector(new CMFile("resources/mxp_images.ini",null,false).text());
             if((V!=null)&&(V.size()>0))
             {
                 String s=null;

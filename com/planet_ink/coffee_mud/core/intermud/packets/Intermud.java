@@ -177,11 +177,11 @@ public class Intermud implements Runnable, Persistent, Serializable
         banned = new Hashtable();
         name_servers = new Vector();
         String s=CMProps.getVar(CMProps.SYSTEM_I3ROUTERS);
-        Vector V=CMParms.parseCommas(s,true);
+        Vector<String> V=CMParms.parseCommas(s,true);
         for(int v=0;v<V.size();v++)
         {
             s=(String)V.elementAt(v);
-            Vector V2=CMParms.parseAny(s,":",true);
+            Vector<String> V2=CMParms.parseAny(s,":",true);
             if(V2.size()>=3)
                 name_servers.addElement(new NameServer((String)V2.firstElement(),CMath.s_int((String)V2.elementAt(1)), (String)V2.elementAt(2)));
         }

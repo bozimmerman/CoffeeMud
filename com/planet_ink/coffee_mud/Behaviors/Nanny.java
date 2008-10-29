@@ -663,7 +663,7 @@ public class Nanny extends StdBehavior
     	if(x>0) dropOffs=null;
     	hourlyRate=CMParms.getParmDouble(parms,"RATE",2.0);
     	place=CMParms.getParmStr(parms,"NAME","nursery");
-    	Vector watches=CMParms.parseCommas(CMParms.getParmStr(parms,"WATCHES","Babies,Children").toUpperCase(),true);
+    	Vector<String> watches=CMParms.parseCommas(CMParms.getParmStr(parms,"WATCHES","Babies,Children").toUpperCase(),true);
     	String watch=null;
     	watchesBabies=false;
     	watchesChildren=false;

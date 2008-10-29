@@ -67,8 +67,8 @@ public class DefaultCMIntegerGrouper implements CMIntegerGrouper
         if(x<0) return null;
         String Xstr=txt.substring(1,x);
         String Ystr=txt.substring(x+3,txt.length()-1);
-        Vector XV=CMParms.parseCommas(Xstr,true);
-        Vector YV=CMParms.parseCommas(Ystr,true);
+        Vector<String> XV=CMParms.parseCommas(Xstr,true);
+        Vector<String> YV=CMParms.parseCommas(Ystr,true);
         xs=new int[XV.size()];
         for(int v=0;v<XV.size();v++)
             xs[v]=CMath.s_int((String)XV.elementAt(v));

@@ -575,7 +575,7 @@ public interface Session extends CMCommon
      * through this session.
      * @return a vector of strings
      */
-	public Vector previousCMD();
+	public Vector<Object> previousCMD();
     
     /**
      * Returns the player MOB attached to this session object.

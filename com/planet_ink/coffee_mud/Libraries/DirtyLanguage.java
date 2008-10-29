@@ -343,9 +343,9 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
         Resources.removeResource("PARSER_"+language.toUpperCase()+"_"+country.toUpperCase());
 	}
 	
-    public boolean insertExpansion(Vector MORE_CMDS, String str, int m, int strLen, boolean nothingDone)
+    public boolean insertExpansion(Vector<Object> MORE_CMDS, String str, int m, int strLen, boolean nothingDone)
     {
-        Vector expansion=CMParms.parseAny(CMStrings.replaceAll(str,"\\t","\t"),"\n",false);
+        Vector<String> expansion=CMParms.parseAny(CMStrings.replaceAll(str,"\\t","\t"),"\n",false);
         MORE_CMDS.setElementAt(expansion.elementAt(0),m);
         String expStr=(String)expansion.elementAt(0);
         if(expStr.length()<=strLen) nothingDone=false;
@@ -362,9 +362,9 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
         return nothingDone;
     }
     
-    public Vector preCommandParser(Vector CMDS)
+    public Vector<Object> preCommandParser(Vector<Object> CMDS)
     {
-        Vector MORE_CMDS=new Vector();
+        Vector<Object> MORE_CMDS=new Vector<Object>();
         String combinedWithTabs=CMParms.combineWithTabs(CMDS,0);
         MORE_CMDS.addElement(combinedWithTabs);
         DVector parser=CMLib.lang().getLanguageParser("COMMAND-PRE-PROCESSOR");

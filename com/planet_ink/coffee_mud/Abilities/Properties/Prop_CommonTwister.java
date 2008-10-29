@@ -45,7 +45,7 @@ public class Prop_CommonTwister extends Property
 	{
 		super.setMiscText(text);
 		changes.clear();
-		Vector V=CMParms.parseSemicolons(text,true);
+		Vector<String> V=CMParms.parseSemicolons(text,true);
 		for(int v=0;v<V.size();v++)
 		{
 			String s=(String)V.elementAt(v);

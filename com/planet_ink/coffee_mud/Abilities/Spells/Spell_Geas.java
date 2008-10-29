@@ -119,7 +119,7 @@ public class Spell_Geas extends Spell
 			mob.tell("You need to specify a target creature, and a geas to place on them.");
 			return false;
 		}
-		Vector name=CMParms.parse((String)commands.elementAt(0));
+		Vector<String> name=CMParms.parse((String)commands.elementAt(0));
 		commands.remove(commands.firstElement());
 		MOB target=getTarget(mob,name,givenTarget);
 		if(target==null) return false;

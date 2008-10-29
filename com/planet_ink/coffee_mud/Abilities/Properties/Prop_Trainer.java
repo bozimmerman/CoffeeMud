@@ -60,7 +60,7 @@ public class Prop_Trainer extends Prop_StatTrainer
 		{
 			built=true;
 			CharClass C=null;
-			Vector allowedClasses=new Vector();
+			Vector<CharClass> allowedClasses=new Vector<CharClass>();
 			Vector allowedExpertises=new Vector();
 			Vector<String> V=CMParms.parse(text());
 			String s=null;
@@ -92,7 +92,7 @@ public class Prop_Trainer extends Prop_StatTrainer
                 }
 			}
 			if(allowedClasses.size()==0)
-			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+			for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
 				allowedClasses.addElement(c.nextElement());
 			if(allowedExpertises.size()==0)
 			for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)

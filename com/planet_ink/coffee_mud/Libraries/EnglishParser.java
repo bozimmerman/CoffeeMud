@@ -1206,7 +1206,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             long num=CMath.s_long(itemID);
 		    if(mine instanceof MOB)
 		    {
-		        Vector V=CMLib.beanCounter().getStandardCurrency((MOB)mine,CMLib.beanCounter().getCurrency(mine));
+		        Vector<Coins> V=CMLib.beanCounter().getStandardCurrency((MOB)mine,CMLib.beanCounter().getCurrency(mine));
 		        for(int v=0;v<V.size();v++)
 		            if(((Coins)V.elementAt(v)).getNumberOfCoins()>=num)
 		                return num;

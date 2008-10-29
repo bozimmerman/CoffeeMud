@@ -78,7 +78,7 @@ public class Prop_SpellAdder extends Property
         if(spellV!=null) return spellV;
 		spellV=new Vector();
 		String names=getParmString(text());
-		Vector set=CMParms.parseSemicolons(names,true);
+		Vector<String> set=CMParms.parseSemicolons(names,true);
 		String thisOne=null;
 		for(int s=0;s<set.size();s++)
 		{
@@ -191,7 +191,7 @@ public class Prop_SpellAdder extends Property
             {
                 String t=A.text();
                 A=(Ability)A.copyOf();
-                Vector V2=new Vector();
+                Vector<String> V2=new Vector<String>();
                 if(t.length()>0)
                 {
                     int x=t.indexOf("/");

@@ -184,7 +184,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		{
 			String spell=text();
 			int x=spell.indexOf(";");
-			Vector V=new Vector();
+			Vector<String> V=new Vector<String>();
 			V.addElement(mob.name());
 			if(x>0)
 			{
@@ -198,7 +198,7 @@ public class Trap_Trap extends StdAbility implements Trap
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"But nothing happened...");
 				return;
 			}
-			A.invoke(invoker(),V,mob,true,0);
+			A.invoke(invoker(),CMParms.makeObjV(V),mob,true,0);
 		}
 	}
 

@@ -224,7 +224,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         Vector<String> V=CMParms.parse(part.trim());
         double d=0.0;
         boolean yes=false;
-        Vector VF=customer.fetchFactionRanges();
+        Vector<String> VF=customer.fetchFactionRanges();
         String align=CMLib.flags().getAlignmentName(customer);
         String sex=customer.charStats().genderName();
         for(int v=0;v<V.size();v++)

@@ -60,11 +60,11 @@ public class BardMap extends GenMap
 		return myMap;
 	}
 
-	public Hashtable makeMapRooms(int width)
+	public Hashtable<Room,MapRoom> makeMapRooms(int width)
 	{
 		String newText=getMapArea();
-		Vector mapAreas=CMParms.parseSemicolons(newText,true);
-		Hashtable mapRooms=new Hashtable();
+		Vector<String> mapAreas=CMParms.parseSemicolons(newText,true);
+		Hashtable<Room,MapRoom> mapRooms=new Hashtable<Room,MapRoom>();
 		for(int a=0;a<mapAreas.size();a++)
 		{
 			String area=(String)mapAreas.elementAt(a);

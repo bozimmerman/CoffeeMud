@@ -59,14 +59,14 @@ public class DefaultFaction implements Faction, MsgListener
 	protected boolean showInFactionsCommand=true;
 	protected Hashtable ranges=new Hashtable();
 	protected Hashtable affBehavs=new Hashtable();
-	protected Vector defaults=new Vector();
-	protected Vector autoDefaults=new Vector();
+	protected Vector<String> defaults=new Vector<String>();
+	protected Vector<String> autoDefaults=new Vector<String>();
 	protected double rateModifier=1.0;
     protected Hashtable changes=new Hashtable();
-    protected Vector factors=new Vector();
-    protected Hashtable relations=new Hashtable();
+    protected Vector<Object[]> factors=new Vector<Object[]>();
+    protected Hashtable<String,Double> relations=new Hashtable<String,Double>();
     protected Vector abilityUsages=new Vector();
-    protected Vector choices=new Vector();
+    protected Vector<String> choices=new Vector<String>();
 
     public String factionID(){return ID;}
     public String name(){return name;}
@@ -196,7 +196,7 @@ public class DefaultFaction implements Faction, MsgListener
             }
             if(key.startsWith("FACTOR"))
             {
-                Vector factor=CMParms.parseSemicolons(words,false);
+                Vector<String> factor=CMParms.parseSemicolons(words,false);
                 if(factor.size()>2)
                     factors.add(new Object[]{new Double(CMath.s_double((String)factor.elementAt(0))),
                                              new Double(CMath.s_double((String)factor.elementAt(1))),
@@ -421,9 +421,9 @@ public class DefaultFaction implements Faction, MsgListener
         return null;
     }
 
-    public Vector findChoices(MOB mob)
+    public Vector<Integer> findChoices(MOB mob)
     {
-        Vector mine=new Vector();
+        Vector<Integer> mine=new Vector<Integer>();
         String s;
         for(Enumeration e=choices.elements();e.hasMoreElements();)
         {
@@ -1017,7 +1017,7 @@ public class DefaultFaction implements Faction, MsgListener
         public void setFlags(String newFlagCache)
         {
             flagCache=newFlagCache.toUpperCase().trim();
-            Vector flags=CMParms.parse(flagCache);
+            Vector<String> flags=CMParms.parse(flagCache);
             if(flags.contains("OUTSIDER")) outsiderTargetOK=true;
             if(flags.contains("SELFOK")) selfTargetOK=true;
             if(flags.contains("JUST100")) just100=true;
@@ -1165,8 +1165,8 @@ public class DefaultFaction implements Faction, MsgListener
         public Vector setAbilityFlag(String str)
         {
             ID=str;
-            Vector flags=CMParms.parse(ID);
-            Vector unknowns=new Vector();
+            Vector<String> flags=CMParms.parse(ID);
+            Vector<String> unknowns=new Vector<String>();
             possibleAbilityID=false;
             for(int f=0;f<flags.size();f++)
             {

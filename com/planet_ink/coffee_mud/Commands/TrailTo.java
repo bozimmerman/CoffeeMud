@@ -41,7 +41,7 @@ public class TrailTo extends StdCommand
 	public String trailTo(Room R1, Vector commands)
 	{
 		int radius=Integer.MAX_VALUE;
-        HashSet ignoreRooms=null;
+        HashSet<Room> ignoreRooms=null;
         for(int c=0;c<commands.size();c++)
         {
             String s=(String)commands.elementAt(c);
@@ -60,8 +60,8 @@ public class TrailTo extends StdCommand
                 if(!s.startsWith("=")) continue;
                 s=s.substring(1);
                 commands.removeElementAt(c);
-                Vector roomList=CMParms.parseCommas(s,true);
-                ignoreRooms=new HashSet();
+                Vector<String> roomList=CMParms.parseCommas(s,true);
+                ignoreRooms=new HashSet<Room>();
                 for(int v=0;v<roomList.size();v++)
                 {
                     Room R=CMLib.map().getRoom((String)roomList.elementAt(v));

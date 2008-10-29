@@ -432,7 +432,7 @@ public class Generate extends StdCommand
         String inserter = CMLib.xml().getParmValue(piece.parms,"INSERT");
         if(inserter!=null)
         {
-            Vector V=CMParms.parseCommas(inserter,true);
+            Vector<String> V=CMParms.parseCommas(inserter,true);
             for(int v=0;v<V.size();v++)
             {
                 String s = (String)V.elementAt(v);

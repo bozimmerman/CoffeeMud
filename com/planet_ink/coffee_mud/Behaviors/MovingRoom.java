@@ -80,7 +80,7 @@ public class MovingRoom extends ActiveTicker
 	{
 		String myParms=newParms;
         listOfRooms=new Vector();
-        roomInfos=new Vector();
+        roomInfos=new Vector<String>();
         messageInfo=new Vector();
         mapInfo=new Vector();
         stubs=new Vector();

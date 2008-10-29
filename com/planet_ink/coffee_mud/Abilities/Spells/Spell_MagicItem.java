@@ -125,7 +125,7 @@ public class Spell_MagicItem extends Spell
 				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> glow(s) brightly!");
 				wand.baseEnvStats().setDisposition(target.baseEnvStats().disposition()|EnvStats.IS_BONUS);
 				wand.baseEnvStats().setLevel(wand.baseEnvStats().level()+(CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())/2));
-				//Vector V=CMParms.parseCommas(CMLib.utensils().wornList(wand.rawProperLocationBitmap()),true);
+				//Vector<String> V=CMParms.parseCommas(CMLib.utensils().wornList(wand.rawProperLocationBitmap()),true);
 				if(wand instanceof Armor)
 				{
 					Ability A=CMClass.getAbility("Prop_WearSpellCast");

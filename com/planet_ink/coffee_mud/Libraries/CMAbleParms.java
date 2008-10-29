@@ -41,16 +41,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
 {
     public String ID(){return "CMAbleParms";}
     
-    protected Hashtable DEFAULT_EDITORS = null; 
+    protected Hashtable<String,AbilityParameters.AbilityParmEditor> DEFAULT_EDITORS = null; 
     
     public CMAbleParms()
     {
         super();
     }
     
-    public Vector getCodedSpells(String spells)
+    public Vector<Ability> getCodedSpells(String spells)
     {
-        Vector spellsV=new Vector(); 
+        Vector<Ability> spellsV=new Vector<Ability>(); 
         if(spells.length()==0) return spellsV;
         if(spells.startsWith("*"))
         {
@@ -66,7 +66,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 return spellsV;
             }
         }
-        Vector V=CMParms.parseSemicolons(spells,true);
+        Vector<String> V=CMParms.parseSemicolons(spells,true);
         Ability lastSpell=null;
         Ability A=null;
         for(int v=0;v<V.size();v++)
@@ -150,12 +150,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         hardBonus[0]=(int)Math.round(hardBonus[0] * hardnessMultiplier);
     }
     
-    public Vector parseRecipeFormatColumns(String recipeFormat) {
+    public Vector<Object> parseRecipeFormatColumns(String recipeFormat) {
         char C = '\0';
         StringBuffer currentColumn = new StringBuffer("");
-        Vector currentColumns = null;
+        Vector<String> currentColumns = null;
         char[] recipeFmtC = recipeFormat.toCharArray();
-        Vector columnsV = new Vector();
+        Vector<Object> columnsV = new Vector<Object>();
         for(int c=0;c<=recipeFmtC.length;c++) {
             if(c==recipeFmtC.length) {
                 
@@ -169,7 +169,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             {
                 if(currentColumn.length()>0) {
                     if(currentColumns == null) {
-                        currentColumns = new Vector();
+                        currentColumns = new Vector<String>();
                         columnsV.addElement(currentColumns);
                     }
                     currentColumns.addElement(currentColumn.toString());
@@ -184,7 +184,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 {
                     if(currentColumn.length()>0) {
                         if(currentColumns == null) {
-                            currentColumns = new Vector();
+                            currentColumns = new Vector<String>();
                             columnsV.addElement(currentColumns);
                         }
                         currentColumns.addElement(currentColumn.toString());
@@ -209,7 +209,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         if(currentColumn.length()>0)
         {
             if(currentColumns == null) {
-                currentColumns = new Vector();
+                currentColumns = new Vector<String>();
                 columnsV.addElement(currentColumns);
             }
             currentColumns.addElement(currentColumn.toString());
@@ -219,11 +219,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         return columnsV;
     }
     
-    protected static int getClassFieldIndex(DVector dataRow) {
+	protected static int getClassFieldIndex(DVector dataRow) {
         for(int d=0;d<dataRow.size();d++)
             if(dataRow.elementAt(d,1) instanceof Vector) 
             {
-                Vector V=(Vector)dataRow.elementAt(d,1);
+                @SuppressWarnings("unchecked")
+                Vector<String> V=(Vector<String>)dataRow.elementAt(d,1);
                 if(V.contains("ITEM_CLASS_ID")||V.contains("FOOD_DRINK"))
                     return d;
             }
@@ -237,6 +238,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         return -1;
     }
     
+    @SuppressWarnings("unchecked")
     protected Item getSampleItem(DVector dataRow)
     {
         boolean classIDRequired = false;
@@ -244,8 +246,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         int fieldIndex = getClassFieldIndex(dataRow);
         for(int d=0;d<dataRow.size();d++)
             if((dataRow.elementAt(d,1) instanceof Vector) 
-                    &&(!classIDRequired)
-                    &&(((Vector)dataRow.elementAt(d,1)).size()>1))
+            &&(!classIDRequired)
+            &&(((Vector<String>)dataRow.elementAt(d,1)).size()>1))
                 classIDRequired=true;
         if(fieldIndex >=0)
             classID=(String)dataRow.elementAt(fieldIndex,2);
@@ -295,14 +297,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         return null;
     }
     
-    protected Vector parseDataRows(StringBuffer recipeData, Vector columnsV, int numberOfDataColumns)
+    @SuppressWarnings("unchecked")
+	protected Vector<DVector> parseDataRows(StringBuffer recipeData, Vector<Object> columnsV, int numberOfDataColumns)
     throws CMException
     {
         StringBuffer str = new StringBuffer(recipeData.toString());
         str = cleanDataRowEOLs(str);
-        Vector rowsV = new Vector();
+        Vector<DVector> rowsV = new Vector<DVector>();
         DVector dataRow = new DVector(2);
-        Vector currCol = null;
+        Vector<Object> currCol = null;
         String lastDiv = null;
         
         int lastLen = str.length();
@@ -318,7 +321,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 else
                     if(columnsV.elementAt(c) instanceof Vector)
                     {
-                        currCol = (Vector)columnsV.elementAt(c);
+                        currCol = (Vector<Object>)columnsV.elementAt(c);
                         if(c<columnsV.size()-1)
                         {
                             div = (String)columnsV.elementAt(c+1);
@@ -354,17 +357,18 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         return rowsV;
     }
     
-    protected boolean fixDataColumn(DVector dataRow, int rowShow) throws CMException
+    @SuppressWarnings("unchecked")
+	protected boolean fixDataColumn(DVector dataRow, int rowShow) throws CMException
     {
         Item classModelI = getSampleItem(dataRow);
-        Hashtable editors = getEditors();
+        Hashtable<String,AbilityParameters.AbilityParmEditor> editors = getEditors();
         if(classModelI == null) {
             Log.errOut("CMAbleParms","Data row "+rowShow+" discarded due to null/empty classID");
             return false;
         } 
         for(int d=0;d<dataRow.size();d++) 
         {
-            Vector colV=(Vector)dataRow.elementAt(d,1);
+            Vector<String> colV=(Vector<String>)dataRow.elementAt(d,1);
             if(colV.size()==1)
             {
                 AbilityParmEditor A = (AbilityParmEditor)editors.get((String)colV.firstElement());
@@ -401,7 +405,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         return true;
     }
     
-    protected void fixDataColumns(Vector rowsV) throws CMException
+    protected void fixDataColumns(Vector<DVector> rowsV) throws CMException
     {
         DVector dataRow = new DVector(2);
         for(int r=0;r<rowsV.size();r++) {
@@ -427,12 +431,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
     public void testRecipeParsing(String recipeFilename, String recipeFormat, boolean save)
     {
         StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+recipeFilename,null,true).text();
-        Vector columnsV = parseRecipeFormatColumns(recipeFormat);
+        Vector<Object> columnsV = parseRecipeFormatColumns(recipeFormat);
         int numberOfDataColumns = 0;
         for(int c = 0; c < columnsV.size(); c++)
             if(columnsV.elementAt(c) instanceof Vector)
                 numberOfDataColumns++;
-        Vector rowsV = null;
+        Vector<DVector> rowsV = null;
         try {
             rowsV = parseDataRows(str,columnsV,numberOfDataColumns);
             fixDataColumns(rowsV);
@@ -440,7 +444,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             Log.errOut("CMAbleParms","File: "+recipeFilename+": "+e.getMessage());
             return;
         }
-        Hashtable editors = getEditors();
+        Hashtable<String,AbilityParameters.AbilityParmEditor> editors = getEditors();
         DVector editRow = null;
         int[] showNumber = {0};
         int showFlag =-999;
@@ -469,9 +473,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             resaveRecipeFile(mob,recipeFilename,rowsV,columnsV,false);
     }
     
-    protected void calculateRecipeCols(int[] lengths, String[] headers, Vector rowsV)
+    protected void calculateRecipeCols(int[] lengths, String[] headers, Vector<DVector> rowsV)
     {
-        Hashtable editors = getEditors();
+        Hashtable<String,AbilityParameters.AbilityParmEditor> editors = getEditors();
         DVector dataRow = null;
         for(int r=0;r<rowsV.size();r++) {
             dataRow=(DVector)rowsV.elementAt(r);
@@ -550,9 +554,10 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         return list;
     }
     
-    public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException
+    @SuppressWarnings("unchecked")
+	public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException
     {
-        Hashtable editors = getEditors();
+        Hashtable<String,AbilityParameters.AbilityParmEditor> editors = getEditors();
         AbilityRecipeData recipe = parseRecipe(recipeFilename, recipeFormat);
         if(recipe.parseError() != null)
         {
@@ -572,7 +577,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 int keyIndex = getClassFieldIndex(editRow);
                 String classFieldData = null;
                 if(keyIndex>=0) {
-                    AbilityParmEditor A = (AbilityParmEditor)editors.get(((Vector)editRow.elementAt(keyIndex,1)).firstElement());
+                    AbilityParmEditor A = (AbilityParmEditor)editors.get(((Vector<Object>)editRow.elementAt(keyIndex,1)).firstElement());
                     if(A!=null)
                     {
                         classFieldData = A.commandLinePrompt(mob,(String)editRow.elementAt(keyIndex,2),new int[]{0},-999);
@@ -639,7 +644,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         }
     }
     
-    public void resaveRecipeFile(MOB mob, String recipeFilename, Vector rowsV, Vector columnsV, boolean saveToVFS)
+    public void resaveRecipeFile(MOB mob, String recipeFilename, Vector<DVector> rowsV, Vector<Object> columnsV, boolean saveToVFS)
     {
         StringBuffer saveBuf = new StringBuffer("");
         for(int r=0;r<rowsV.size();r++)
@@ -676,12 +681,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
     }
     
     
-    public synchronized Hashtable getEditors()
+    public synchronized Hashtable<String,AbilityParameters.AbilityParmEditor> getEditors()
     {
         if(DEFAULT_EDITORS != null)
             return DEFAULT_EDITORS;
         
-        Vector V=CMParms.makeVector(new Object[] {
+        Vector<Object> V=CMParms.makeVector(new Object[] {
                 new AbilityParmEditorImpl("SPELL_ID","The Spell ID",PARMTYPE_CHOICES) {
                     public void createChoices() { createChoices(CMClass.abilities());}
                     public String defaultValue(){ return "Spell_ID";}
@@ -713,16 +718,16 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 },
                 new AbilityParmEditorImpl("ITEM_CLASS_ID","Class ID",PARMTYPE_CHOICES) {
                     public void createChoices() { 
-                        Vector V  = new Vector();
+                        Vector<Object> V  = new Vector<Object>();
                         V.addAll(CMParms.makeVector(CMClass.clanItems()));
                         V.addAll(CMParms.makeVector(CMClass.armor()));
                         V.addAll(CMParms.makeVector(CMClass.basicItems()));
                         V.addAll(CMParms.makeVector(CMClass.miscMagic()));
                         V.addAll(CMParms.makeVector(CMClass.miscTech()));
                         V.addAll(CMParms.makeVector(CMClass.weapons()));
-                        Vector V2=new Vector();
+                        Vector<Object> V2=new Vector<Object>();
                         Item I;
-                        for(Enumeration e=V.elements();e.hasMoreElements();)
+                        for(Enumeration<Object> e=V.elements();e.hasMoreElements();)
                         {
                             I=(Item)e.nextElement();
                             if(I.isGeneric())
@@ -737,7 +742,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     public void createChoices() {}
                     public boolean confirmValue(String oldVal) { return oldVal.trim().length()>0;}
                     public String defaultValue(){ return "NECK";}
-                    public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                    public String webValue(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, String oldVal, String fieldName) {
                         short[] layerAtt = new short[1];
                         short[] layers = new short[1];
                         long[] wornLoc = new long[1];
@@ -762,7 +767,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         }
                         return reconvert(layerAtt,layers,wornLoc,logicalAnd,hardBonus);
                     }
-                    public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                    public String webField(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, String oldVal, String fieldName) {
                         String value = webValue(httpReq,parms,oldVal,fieldName);
                         short[] layerAtt = new short[1];
                         short[] layers = new short[1];
@@ -818,7 +823,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         
                     }
                     public String[] fakeUserInput(String oldVal) {
-                        Vector V = new Vector();
+                        Vector<String> V = new Vector<String>();
                         short[] layerAtt = new short[1];
                         short[] layers = new short[1];
                         long[] wornLoc = new long[1];
@@ -868,12 +873,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     public void createChoices() {}
                     public String defaultValue(){ return "1";}
                 },
-                new AbilityParmEditorImpl("CONTAINER_TYPE","Typ.",PARMTYPE_MULTICHOICES) {
+                new AbilityParmEditorImpl("CONTAINER_TYPE","Con.",PARMTYPE_MULTICHOICES) {
                     public void createChoices() { createBinaryChoices(Container.CONTAIN_DESCS);}
                     public int appliesToClass(Object o) { return (o instanceof Container)?1:-1;}
                     public String defaultValue(){ return "0";}
                 },
-                new AbilityParmEditorImpl("CONTAINER_TYPE_OR_LIDLOCK","Typ.",PARMTYPE_MULTICHOICES) {
+                new AbilityParmEditorImpl("CONTAINER_TYPE_OR_LIDLOCK","Con.",PARMTYPE_MULTICHOICES) {
                     public void createChoices() { 
                         createBinaryChoices(Container.CONTAIN_DESCS);
                         choices().addElement("LID","Lid");
@@ -897,7 +902,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         return CMClass.getAbility(oldVal.substring(0,y))!=null;
                     }
                     public String defaultValue(){ return "";}
-                    public String rebuild(Vector spells) throws CMException
+                    public String rebuild(Vector<Ability> spells) throws CMException
                     {
                         StringBuffer newVal = new StringBuffer("");
                         if(spells.size()==1)
@@ -919,9 +924,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         return newVal.toString();
                     }
                     public String[] fakeUserInput(String oldVal) {
-                        Vector V = new Vector();
-                        Vector V2 = new Vector();
-                        Vector spells=CMLib.ableParms().getCodedSpells(oldVal);
+                        Vector<String> V = new Vector<String>();
+                        Vector<String> V2 = new Vector<String>();
+                        Vector<Ability> spells=CMLib.ableParms().getCodedSpells(oldVal);
                         for(int s=0;s<spells.size();s++) {
                             V.addElement(((Ability)spells.elementAt(s)).ID());
                             V2.addElement(((Ability)spells.elementAt(s)).ID());
@@ -931,11 +936,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         V.addElement("");
                         return CMParms.toStringArray(V);
                     }
-                    public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
-                        Vector spells=null;
+                    public String webValue(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, String oldVal, String fieldName) {
+                        Vector<Ability> spells=null;
                         if(httpReq.isRequestParameter(fieldName+"_AFFECT1"))
                         {
-                            spells = new Vector();
+                            spells = new Vector<Ability>();
                             int num=1;
                             String behav=httpReq.getRequestParameter(fieldName+"_AFFECT"+num);
                             String theparm=httpReq.getRequestParameter(fieldName+"_ADATA"+num);
@@ -961,8 +966,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                             return oldVal;
                         }
                     }
-                    public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
-                        Vector spells=CMLib.ableParms().getCodedSpells(webValue(httpReq,parms,oldVal,fieldName));
+                    public String webField(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, String oldVal, String fieldName) {
+                        Vector<Ability> spells=CMLib.ableParms().getCodedSpells(webValue(httpReq,parms,oldVal,fieldName));
                         StringBuffer str = new StringBuffer("");
                         str.append("<TABLE WIDTH=100% BORDER=\"1\" CELLSPACING=0 CELLPADDING=0>");
                         for(int i=0;i<spells.size();i++)
@@ -996,7 +1001,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     }
                     public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
                     {
-                        Vector spells=CMLib.ableParms().getCodedSpells(oldVal);
+                        Vector<Ability> spells=CMLib.ableParms().getCodedSpells(oldVal);
                         StringBuffer rawCheck = new StringBuffer("");
                         for(int s=0;s<spells.size();s++)
                             rawCheck.append(((Ability)spells.elementAt(s)).ID()).append(";").append(((Ability)spells.elementAt(s)).text()).append(";");
@@ -1087,7 +1092,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 },
                 new AbilityParmEditorImpl("REQUIRED_COMMON_SKILL_ID","Common Skill",PARMTYPE_CHOICES) {
                     public void createChoices() {
-                        Vector V  = new Vector();
+                        Vector<Object> V  = new Vector<Object>();
                         Ability A = null;
                         for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
                         {
@@ -1112,7 +1117,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 new AbilityParmEditorImpl("RESOURCE_OR_KEYWORD","Resource",PARMTYPE_SPECIAL) {
                     public void createChoices() {}
                     public boolean confirmValue(String oldVal) { return true;}
-                    public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                    public String webValue(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, String oldVal, String fieldName) {
                         if(httpReq.isRequestParameter(fieldName+"_WHICH"))
                         {
                             String which=httpReq.getRequestParameter(fieldName+"_WHICH");
@@ -1122,28 +1127,29 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         }
                         return oldVal;
                     }
-                    public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                    public String webField(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, String oldVal, String fieldName) {
                         String value=webValue(httpReq,parms,oldVal,fieldName);
                         if(value.endsWith("$")) 
                             value = value.substring(0,oldVal.length()-1);
                         value = value.trim();
                         StringBuffer str = new StringBuffer("");
                         str.append("\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_WHICH ");
-                        boolean rsc=CMParms.containsIgnoreCase(RawMaterial.RESOURCE_DESCS,value);
-                        if(rsc) str.append("CHECKED");
+                        boolean rsc=CMParms.containsIgnoreCase(RawMaterial.RESOURCE_DESCS,value.toUpperCase().trim());
+                        if(rsc) str.append("CHECKED ");
                         str.append("VALUE=\"RESOURCE\">");
                         str.append("\n\r<SELECT NAME="+fieldName+"_RESOURCE>");
                         for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
                         {
-                            str.append("<OPTION VALUE=\""+RawMaterial.RESOURCE_DESCS[r]+"\"");
-                            if(rsc&&(value.equalsIgnoreCase(RawMaterial.RESOURCE_DESCS[r])))
-                                str.append(" CHECKED");
+                        	String VALUE = (r==0)?"":RawMaterial.RESOURCE_DESCS[r];
+                            str.append("<OPTION VALUE=\""+VALUE+"\"");
+                            if(rsc&&(value.equalsIgnoreCase(VALUE)))
+                                str.append(" SELECTED");
                             str.append(">"+CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[r]));
                         }
                         str.append("</SELECT>");
                         str.append("<BR>");
                         str.append("\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_WHICH ");
-                        if(!rsc) str.append("CHECKED");
+                        if(!rsc) str.append("CHECKED ");
                         str.append("VALUE=\"\">");
                         str.append("\n\r<INPUT TYPE=TEXT NAME="+fieldName+"_WORD VALUE=\""+(rsc?"":value)+"\">");
                         return str.toString();
@@ -1188,7 +1194,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                             return new String[]{oldVal.substring(0,oldVal.length()-1)}; 
                         return new String[]{oldVal}; 
                     }
-                    public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                    public String webValue(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, String oldVal, String fieldName) {
                         AbilityParmEditor A = (AbilityParmEditor)CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
                         if(oldVal.endsWith("$")) oldVal = oldVal.substring(0,oldVal.length()-1);
                         String value = A.webValue(httpReq,parms,oldVal,fieldName);
@@ -1197,7 +1203,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                                 return RawMaterial.RESOURCE_DESCS[r];
                         return (value.trim().length()==0)?"":(value+"$");
                     }
-                    public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                    public String webField(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, String oldVal, String fieldName) {
                         AbilityParmEditor A = (AbilityParmEditor)CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
                         return A.webField(httpReq,parms,oldVal,fieldName);
                     }
@@ -1249,7 +1255,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 },
                 new AbilityParmEditorImpl("RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
                     public void createChoices() {
-                        Vector V=CMParms.makeVector(RawMaterial.RESOURCE_DESCS);
+                        Vector<String> V=CMParms.makeVector(RawMaterial.RESOURCE_DESCS);
                         V.addAll(CMParms.makeVector(RawMaterial.MATERIAL_DESCS));
                         createChoices(V);
                     }
@@ -1257,7 +1263,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 },
                 new AbilityParmEditorImpl("OPTIONAL_RESOURCE_OR_MATERIAL","Rsc/Mat",PARMTYPE_CHOICES) {
                     public void createChoices() {
-                        Vector V=CMParms.makeVector(RawMaterial.RESOURCE_DESCS);
+                        Vector<String> V=CMParms.makeVector(RawMaterial.RESOURCE_DESCS);
                         V.addAll(CMParms.makeVector(RawMaterial.MATERIAL_DESCS));
                         V.addElement("");
                         createChoices(V);
@@ -1288,17 +1294,17 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     public boolean confirmValue(String oldVal) {
                         if(oldVal.trim().length()==0)
                             return true;
-                        Vector parsedVals = CMParms.parse(oldVal.toUpperCase());
+                        Vector<String> parsedVals = CMParms.parse(oldVal.toUpperCase());
                         for(int v=0;v<parsedVals.size();v++)
                             if(CMClass.getRace((String)parsedVals.elementAt(v))==null)
                                 return false;
                         return true;
                     }
-                    public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
-                        Vector raceIDs=null;
+                    public String webValue(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, String oldVal, String fieldName) {
+                        Vector<String> raceIDs=null;
                         if(httpReq.isRequestParameter(fieldName+"_RACE1"))
                         {
-                            raceIDs = new Vector();
+                            raceIDs = new Vector<String>();
                             int num=1;
                             String behav=httpReq.getRequestParameter(fieldName+"_RACE"+num);
                             while(behav!=null)
@@ -1313,24 +1319,24 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                             raceIDs = CMParms.parse(oldVal);
                         return CMParms.combine(raceIDs,0);
                     }
-                    public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
-                        Vector raceIDs=CMParms.parse(webValue(httpReq,parms,oldVal,fieldName).toUpperCase());
+                    public String webField(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, String oldVal, String fieldName) {
+                        Vector<String> raceIDs=CMParms.parse(webValue(httpReq,parms,oldVal,fieldName).toUpperCase());
                         StringBuffer str = new StringBuffer("");
                         str.append("\n\r<SELECT NAME="+fieldName+"_RACE MULTIPLE>");
-                        str.append("<OPTION VALUE=\"\" "+((raceIDs.size()==0)?"CHECKED":"")+">");
+                        str.append("<OPTION VALUE=\"\" "+((raceIDs.size()==0)?"SELECTED":"")+">");
                         for(Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
                         {
                             Race R=(Race)e.nextElement();
-                            str.append("<OPTION VALUE=\""+R.ID()+"\" "+((raceIDs.contains(R.ID().toUpperCase()))?"CHECKED":"")+">"+R.name());
+                            str.append("<OPTION VALUE=\""+R.ID()+"\" "+((raceIDs.contains(R.ID().toUpperCase()))?"SELECTED":"")+">"+R.name());
                         }
                         str.append("</SELECT>");
                         return str.toString();
                     }
                     public String[] fakeUserInput(String oldVal) { 
-                        Vector parsedVals = CMParms.parse(oldVal.toUpperCase());
+                        Vector<String> parsedVals = CMParms.parse(oldVal.toUpperCase());
                         if(parsedVals.size()==0)
                             return new String[]{""};
-                        Vector races = new Vector();
+                        Vector<String> races = new Vector<String>();
                         for(int p=0;p<parsedVals.size();p++) {
                             Race R=CMClass.getRace((String)parsedVals.elementAt(p));
                             races.addElement(R.name());
@@ -1352,7 +1358,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         {
                             mob.tell(showNumber+". "+prompt()+": '"+newVal+"'.");
                             if((showFlag!=showNumber[0])&&(showFlag>-999)) return newVal;
-                            Vector parsedVals = CMParms.parse(newVal.toUpperCase());
+                            Vector<String> parsedVals = CMParms.parse(newVal.toUpperCase());
                             behave=mob.session().prompt("Enter a race to add/remove (?)\n\r:","");
                             if(behave.length()>0)
                             {
@@ -1435,7 +1441,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     }
                     public String defaultValue(){ return "";}
                     public int appliesToClass(Object o) { return 0;}
-                    public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                    public String webValue(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, String oldVal, String fieldName) {
                         if(httpReq.isRequestParameter(fieldName+"_RESOURCE"))
                         {
                             String rsc=httpReq.getRequestParameter(fieldName+"_RESOURCE");
@@ -1446,7 +1452,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         }
                         return oldVal;
                     }
-                    public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+                    public String webField(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, String oldVal, String fieldName) {
                         String value=webValue(httpReq,parms,oldVal,fieldName);
                         String rsc = "";
                         int amt = 0;
@@ -1460,7 +1466,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         str.append("\n\r<SELECT NAME="+fieldName+"_RESOURCE MULTIPLE>");
                         for(int r=0;r<RawMaterial.RESOURCE_DESCS.length;r++)
                             str.append("<OPTION VALUE=\""+RawMaterial.RESOURCE_DESCS[r]+"\" "
-                                    +((RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(rsc))?"CHECKED":"")+">"
+                                    +((RawMaterial.RESOURCE_DESCS[r].equalsIgnoreCase(rsc))?"SELECTED":"")+">"
                                     +CMStrings.capitalizeAndLower(RawMaterial.RESOURCE_DESCS[r]));
                         str.append("</SELECT>");
                         str.append("&nbsp;&nbsp;Amount: ");
@@ -1501,7 +1507,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 },
                 
         });
-        DEFAULT_EDITORS = new Hashtable();
+        DEFAULT_EDITORS = new Hashtable<String,AbilityParmEditor>();
         for(int v=0;v<V.size();v++) {
             AbilityParmEditor A = (AbilityParmEditor)V.elementAt(v);
             DEFAULT_EDITORS.put(A.ID(),A);
@@ -1513,8 +1519,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
     {
         private String recipeFilename;
         private String recipeFormat;
-        private Vector columns;
-        private Vector dataRows;
+        private Vector<Object> columns;
+        private Vector<DVector> dataRows;
         private int numberOfDataColumns;
         public String[] columnHeaders;
         public int[] columnLengths;
@@ -1522,7 +1528,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         private String parseError = null;
         private boolean wasVFS = false;
         
-        public AbilityRecipeDataImpl(String recipeFilename, String recipeFormat)
+        @SuppressWarnings("unchecked")
+		public AbilityRecipeDataImpl(String recipeFilename, String recipeFormat)
         {
             this.recipeFilename = recipeFilename;
             this.recipeFormat = recipeFormat;
@@ -1540,7 +1547,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 DVector editRow = new DVector(2);
                 for(int c=0;c<columns().size();c++)
                     if(columns().elementAt(c) instanceof Vector)
-                        editRow.addElement((Vector)columns().elementAt(c),"");
+                        editRow.addElement((Vector<Object>)columns().elementAt(c),"");
                 classFieldIndex = CMAbleParms.getClassFieldIndex(editRow);
                 fixDataColumns(dataRows);
             } catch(CMException e) {
@@ -1570,18 +1577,19 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 }
             return editRow;
         }
-        public DVector blankRow() {
+        @SuppressWarnings("unchecked")
+		public DVector blankRow() {
             DVector editRow = new DVector(2);
             for(int c=0;c<columns().size();c++)
                 if(columns().elementAt(c) instanceof Vector)
-                    editRow.addElement((Vector)columns().elementAt(c),"");
+                    editRow.addElement((Vector<Object>)columns().elementAt(c),"");
             return editRow;
         }
         public int getClassFieldIndex() { return classFieldIndex;}
         public String recipeFilename(){ return recipeFilename;}
         public String recipeFormat(){ return recipeFormat;}
-        public Vector dataRows() { return dataRows;}
-        public Vector columns() { return columns;}
+        public Vector<DVector> dataRows() { return dataRows;}
+        public Vector<Object> columns() { return columns;}
         public int[] columnLengths() { return columnLengths;}
         public String[] columnHeaders(){ return columnHeaders;}
         public int numberOfDataColumns(){ return numberOfDataColumns;}
@@ -1632,7 +1640,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             }
             return false;
         }
-        public String[] fakeUserInput(String oldVal) {
+        @SuppressWarnings("unchecked")
+		public String[] fakeUserInput(String oldVal) {
             boolean emptyOK = false;
             switch(fieldType) {
             case PARMTYPE_STRINGORNULL:
@@ -1649,7 +1658,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             case PARMTYPE_CHOICES:
             {
                 if(oldVal.trim().length()==0) return new String[]{"NULL"};
-                Vector V = choices.getDimensionVector(1);
+                Vector<String> V = choices.getDimensionVector(1);
                 for(int v=0;v<V.size();v++)
                     if(oldVal.equalsIgnoreCase((String)V.elementAt(v)))
                         return new String[]{(String)choices.elementAt(v,2)};
@@ -1659,12 +1668,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 if(oldVal.trim().length()==0) return new String[]{"NULL"};
                 if(!CMath.isInteger(oldVal))
                 {
-                    Vector V = choices.getDimensionVector(1);
+                    Vector<String> V = (Vector<String>)choices.getDimensionVector(1);
                     for(int v=0;v<V.size();v++)
                         if(oldVal.equalsIgnoreCase((String)V.elementAt(v)))
                             return new String[]{(String)choices.elementAt(v,2),""};
                 } else {
-                    Vector V = new Vector();
+                    Vector<String> V = new Vector<String>();
                     for(int c=0;c<choices.size();c++)
                         if(CMath.bset(CMath.s_int(oldVal),((Integer)choices.elementAt(c,1)).intValue()))
                         {
@@ -1720,7 +1729,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             return str;
         }
         
-        public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+        public String webValue(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, String oldVal, String fieldName) {
             String webValue = httpReq.getRequestParameter(fieldName);
             switch(fieldType) {
             case PARMTYPE_ONEWORD:
@@ -1748,11 +1757,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             return "";
         }
         
-        public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
+        public String webField(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, String oldVal, String fieldName) {
             int textSize = 50;
             String webValue = webValue(httpReq,parms,oldVal,fieldName);
             String onChange = null;
-            Vector choiceValues = new Vector();
+            Vector<String> choiceValues = new Vector<String>();
             switch(fieldType) {
             case PARMTYPE_ONEWORD:
                 textSize = 10;
@@ -1804,7 +1813,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
         }
         
         public abstract void createChoices(); 
-        public DVector createChoices(Enumeration e) {
+        public DVector createChoices(Enumeration<?> e) {
             if(choices != null) return choices;
             choices = new DVector(2);
             Object o = null;
@@ -1824,7 +1833,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             }
             return choices;
         }
-        public DVector createChoices(Vector V) { return createChoices(V.elements());}
+        public DVector createChoices(Vector<?> V) { return createChoices(V.elements());}
         public DVector createChoices(String[] S) { return createChoices(CMParms.makeVector(S).elements());}
         public DVector createBinaryChoices(String[] S) { 
             if(choices != null) return choices;

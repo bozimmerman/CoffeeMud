@@ -123,7 +123,7 @@ public class SMTPserver extends Thread implements Tickable
 		String journalStr=page.getStr("JOURNALS");
 		if((journalStr==null)||(journalStr.length()>0))
 		{
-			Vector V=CMParms.parseCommas(journalStr,true);
+			Vector<String> V=CMParms.parseCommas(journalStr,true);
 			if(V.size()>0)
 			{
 				journals=new DVector(5);
@@ -139,7 +139,7 @@ public class SMTPserver extends Thread implements Tickable
 					}
 					if(!journals.contains(s))
 					{
-						Vector PV=CMParms.parseSpaces(parm,true);
+						Vector<String> PV=CMParms.parseSpaces(parm,true);
 						StringBuffer crit=new StringBuffer("");
 						boolean forward=false;
 						boolean subscribeOnly=false;

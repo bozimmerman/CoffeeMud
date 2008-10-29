@@ -41,7 +41,7 @@ public interface LanguageLibrary extends CMLibrary
     public String filterTranslation(String item);
     public DVector getLanguageTranslator(String parser);
     public void setLocale(String lang, String state);
-    public Vector preCommandParser(Vector CMDS);
+    public Vector<Object> preCommandParser(Vector<Object> CMDS);
     public String preItemParser(String item);
     public String failedItemParser(String item);
     

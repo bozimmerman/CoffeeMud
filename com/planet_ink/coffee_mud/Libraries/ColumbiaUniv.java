@@ -180,7 +180,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     public String confirmExpertiseLine(String row, String ID, boolean addIfPossible)
     {
         int levels=0;
-        HashSet flags=new HashSet();
+        HashSet<String> flags=new HashSet<String>();
         String s=null;
         String skillMask=null;
         int[] costs=new int[5];
@@ -216,7 +216,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
             }
             else
             {
-                Vector stages=getStageCodes(ID);
+                Vector<String> stages=getStageCodes(ID);
                 if((stages==null)||(stages.size()==0))
                     return "Error: Expertise not yet defined: "+ID+"="+row;
                 def=getDefinition((String)stages.elementAt(0));
@@ -245,7 +245,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
         }
         ID=row.substring(0,x).toUpperCase();
         row=row.substring(x+1);
-        Vector parts=CMParms.parseCommas(row,false);
+        Vector<String> parts=CMParms.parseCommas(row,false);
         if(parts.size()!=11)
             return "Error: Expertise row malformed (Requires 11 entries/10 commas): "+ID+"="+row;
         name=(String)parts.elementAt(0);

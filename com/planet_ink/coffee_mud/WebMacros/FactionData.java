@@ -279,7 +279,7 @@ public class FactionData extends StdWebMacro
                     if(trigger==null)
                     {
                         int v=0;
-                        for(Enumeration e=F.changeEventKeys();e.hasMoreElements();v++)
+                        for(Enumeration<String> e=F.changeEventKeys();e.hasMoreElements();v++)
                         {
                             String def=(String)e.nextElement();
                             Faction.FactionChangeEvent E=(Faction.FactionChangeEvent)F.getChangeEvent(def);
@@ -287,7 +287,7 @@ public class FactionData extends StdWebMacro
                             httpReq.addRequestParameters("CHANGESDIR"+v,""+E.direction());
                             httpReq.addRequestParameters("CHANGESFACTOR"+v,CMath.toPct(E.factor()));
                             String id="";
-                            Vector flags=CMParms.parse(E.flagCache());
+                            Vector<String> flags=CMParms.parse(E.flagCache());
                             for(int f=0;f<flags.size();f++)
                             {
                                 httpReq.addRequestParameters("CHANGESFLAGS"+v+"_"+id,""+((String)flags.elementAt(f)));
@@ -495,7 +495,7 @@ public class FactionData extends StdWebMacro
                                 Vector<String> V=CMParms.parse(E.abilityFlags());
                                 String id="";
                                 int x=-1;
-                                for(Enumeration e2=V.elements();e2.hasMoreElements();id="_"+(++x))
+                                for(Enumeration<String> e2=V.elements();e2.hasMoreElements();id="_"+(++x))
                                     httpReq.addRequestParameters("ABILITYUSE"+v+id,(String)e2.nextElement());
                             }
                             else

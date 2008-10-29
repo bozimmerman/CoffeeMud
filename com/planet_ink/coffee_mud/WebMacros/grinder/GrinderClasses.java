@@ -71,7 +71,7 @@ public class GrinderClasses
         return theclasses;
     }
 
-    public static String modifyCharClass(ExternalHTTPRequests httpReq, Hashtable parms, CharClass oldC, CharClass C)
+    public static String modifyCharClass(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, CharClass oldC, CharClass C)
     {
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
         if((replaceCommand != null) 
@@ -175,16 +175,16 @@ public class GrinderClasses
         old=httpReq.getRequestParameter("GENHELP");
         C.setStat("HELP", ((old==null)?"":old));
         String id="";
-        Vector V=new Vector();
+        Vector<String> V=new Vector<String>();
         for(int i=0;httpReq.isRequestParameter("NOWEAPS"+id);id=""+(++i))
             V.addElement(httpReq.getRequestParameter("NOWEAPS"+id));
         C.setStat("GETWEP",CMParms.toStringList(V));
-        V=GrinderRaces.itemList(oldC.outfit(null),'O',httpReq,false);
-        C.setStat("NUMOFT",""+V.size());
-        for(int l=0;l<V.size();l++)
+        Vector Ivs=GrinderRaces.itemList(oldC.outfit(null),'O',httpReq,false);
+        C.setStat("NUMOFT",""+Ivs.size());
+        for(int l=0;l<Ivs.size();l++)
         {
-            C.setStat("GETOFTID"+l,((Environmental)V.elementAt(l)).ID());
-            C.setStat("GETOFTPARM"+l,((Environmental)V.elementAt(l)).text());
+            C.setStat("GETOFTID"+l,((Environmental)Ivs.elementAt(l)).ID());
+            C.setStat("GETOFTPARM"+l,((Environmental)Ivs.elementAt(l)).text());
         }
         C.setStat("DISFLAGS",""+CMath.s_long(httpReq.getRequestParameter("DISFLAGS")));
         num=0;
@@ -228,7 +228,7 @@ public class GrinderClasses
             C.setStat("SSETLEVEL"+l, ((Integer)DV.elementAt(l,1)).toString());
         }
         id="";
-        V=new Vector();
+        V=new Vector<String>();
         for(int i=0;httpReq.isRequestParameter("WEAPMATS"+id);id=""+(++i))
             if(CMath.isInteger(httpReq.getRequestParameter("WEAPMATS"+id)))
                 V.addElement(httpReq.getRequestParameter("WEAPMATS"+id));

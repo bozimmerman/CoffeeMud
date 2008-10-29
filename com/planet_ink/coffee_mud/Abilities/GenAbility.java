@@ -666,7 +666,7 @@ public class GenAbility extends StdAbility
     	if(CMath.isInteger(val)) return CMath.s_int(val);
     	int dom=0;
     	int acod=Ability.ACODE_SKILL;
-    	Vector V=CMParms.parseCommas(val,true);
+    	Vector<String> V=CMParms.parseCommas(val,true);
     	for(int v=0;v<V.size();v++)
     	{
     		val=(String)V.elementAt(v);
@@ -720,7 +720,7 @@ public class GenAbility extends StdAbility
     			return mask?(1<<i):i;
     	if(mask)
     	{
-    		Vector V=CMParms.parseCommas(val,true);
+    		Vector<String> V=CMParms.parseCommas(val,true);
     		int num=0;
     		for(int v=0;v<V.size();v++)
     			num=num|(1<<convert(options,(String)V.elementAt(v),false));

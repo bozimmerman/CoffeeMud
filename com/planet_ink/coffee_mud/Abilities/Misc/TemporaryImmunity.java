@@ -95,7 +95,7 @@ public class TemporaryImmunity extends StdAbility
 		else
 		{
 			set.clear();
-			Vector V=CMParms.parseSemicolons(str,true);
+			Vector<String> V=CMParms.parseSemicolons(str,true);
 			for(int v=0;v<V.size();v++)
 			{
 				String s=(String)V.elementAt(v);

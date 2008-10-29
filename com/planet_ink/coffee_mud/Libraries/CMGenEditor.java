@@ -4040,7 +4040,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        Vector set=CMParms.parseCommas(E.getStat(Field),true);
+        Vector<String> set=CMParms.parseCommas(E.getStat(Field),true);
         StringBuffer str=new StringBuffer("");
         for(int v=0;v<set.size();v++)
             str.append(" "+Weapon.CLASS_DESCS[CMath.s_int((String)set.elementAt(v))].toLowerCase());
@@ -4096,7 +4096,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        Vector set=CMParms.parseCommas(E.getStat(Field),true);
+        Vector<String> set=CMParms.parseCommas(E.getStat(Field),true);
         StringBuffer str=new StringBuffer("");
         for(int v=0;v<set.size();v++)
             str.append(" "+CMLib.materials().getMaterialDesc(CMath.s_int((String)set.elementAt(v))));
@@ -5312,7 +5312,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                         E.setStat("NUMRABLE","");
                     for(int i=0;i<data.size();i++)
                     {
-                        Vector V=CMParms.parseSemicolons((String)data.elementAt(i),false);
+                        Vector<String> V=CMParms.parseSemicolons((String)data.elementAt(i),false);
                         E.setStat("GETRABLE"+i,((String)V.elementAt(0)));
                         E.setStat("GETRABLELVL"+i,((String)V.elementAt(1)));
                         E.setStat("GETRABLEQUAL"+i,((String)V.elementAt(2)));
@@ -5396,7 +5396,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                         E.setStat("NUMREFF","");
                     for(int i=0;i<data.size();i++)
                     {
-                        Vector V=CMParms.parseSquiggleDelimited((String)data.elementAt(i),false);
+                        Vector<String> V=CMParms.parseSquiggleDelimited((String)data.elementAt(i),false);
                         E.setStat("GETREFF"+i,((String)V.elementAt(0)));
                         E.setStat("GETREFFLVL"+i,((String)V.elementAt(1)));
                         E.setStat("GETREFFPARM"+i,((String)V.elementAt(2)));
@@ -5732,7 +5732,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                         E.setStat("NUMCABLE","");
                     for(int i=0;i<data.size();i++)
                     {
-                        Vector V=CMParms.parseSemicolons((String)data.elementAt(i),false);
+                        Vector<String> V=CMParms.parseSemicolons((String)data.elementAt(i),false);
                         E.setStat("GETCABLE"+i,((String)V.elementAt(0)));
                         E.setStat("GETCABLEPROF"+i,((String)V.elementAt(1)));
                     }

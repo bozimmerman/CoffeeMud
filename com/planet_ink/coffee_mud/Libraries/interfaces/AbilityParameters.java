@@ -42,8 +42,8 @@ public interface AbilityParameters extends CMLibrary
     {
         public String ID();
         public int parmType();
-        public DVector createChoices(Enumeration e);
-        public DVector createChoices(Vector V);
+        public DVector createChoices(Enumeration<?> e);
+        public DVector createChoices(Vector<?> V);
         public DVector createChoices(String[] S);
         public DVector choices();
         public int appliesToClass(Object o);
@@ -52,25 +52,25 @@ public interface AbilityParameters extends CMLibrary
         public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException;
         public String colHeader();
         public String defaultValue();
-        public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName);
-        public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName);
+        public String webValue(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, String oldVal, String fieldName);
+        public String webField(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, String oldVal, String fieldName);
     }
     
-    public Vector getCodedSpells(String spells);
+    public Vector<Ability> getCodedSpells(String spells);
     public void parseWearLocation(short[] layerAtt, short[] layers, long[] wornLoc, boolean[] logicalAnd, double[] hardBonus, String wearLocation);
     public void modifyRecipesList(MOB mob, String recipeFilename, String recipeFormat) throws java.io.IOException;
     public void testRecipeParsing(String recipeFilename, String recipeFormat, boolean save);
     public AbilityRecipeData parseRecipe(String recipeFilename, String recipeFormat);
-    public Hashtable getEditors();
-    public void resaveRecipeFile(MOB mob, String recipeFilename, Vector rowsV, Vector columnsV, boolean saveVFS);
+    public Hashtable<String,AbilityParameters.AbilityParmEditor> getEditors();
+    public void resaveRecipeFile(MOB mob, String recipeFilename, Vector<DVector> rowsV, Vector<Object> columnsV, boolean saveVFS);
     public StringBuffer getRecipeList(ItemCraftor iA);
     
     public static interface AbilityRecipeData 
     {
         public String recipeFilename();
         public String recipeFormat();
-        public Vector dataRows();
-        public Vector columns();
+        public Vector<DVector> dataRows();
+        public Vector<Object> columns();
         public int[] columnLengths();
         public String[] columnHeaders();
         public int numberOfDataColumns();

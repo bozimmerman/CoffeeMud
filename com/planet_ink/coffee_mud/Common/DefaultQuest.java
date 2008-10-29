@@ -417,7 +417,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         {
             if(startLine>=0) q.lastLine=v;
             String s=modifyStringFromArgs((String)script.elementAt(v),args);
-            Vector p=CMParms.parse(s);
+            Vector<String> p=CMParms.parse(s);
             boolean isQuiet=q.beQuiet;
             if(p.size()>0)
             {
@@ -642,7 +642,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }catch(CMException ex){
                             q.mob=null;
 	                        Vector choices=new Vector();
-	                        Vector mobTypes=CMParms.parse(CMParms.combine(p,2).toUpperCase());
+	                        Vector<String> mobTypes=CMParms.parse(CMParms.combine(p,2).toUpperCase());
 	                        for(int t=0;t<mobTypes.size();t++)
 	                        {
 	                            String mobType=(String)mobTypes.elementAt(t);
@@ -3766,7 +3766,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         	if(V.size()>0)
         	{
         		filename=(String)V.firstElement();
-        		Vector parms=null;
+        		Vector<String> parms=null;
         		try{
 	        		for(int v=1;v<V.size();v++)
 	        		{

@@ -145,7 +145,7 @@ public class Domesticating extends CommonSkill
 				return false;
 			}
 			String oldName=M.name();
-			Vector oldV=CMParms.parse(oldName);
+			Vector<String> oldV=CMParms.parse(oldName);
 			if(oldV.size()>1)
 			{
 				if(oldName.endsWith(", "+((String)oldV.lastElement())))

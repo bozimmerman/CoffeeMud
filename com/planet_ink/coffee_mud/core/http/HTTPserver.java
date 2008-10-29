@@ -110,7 +110,7 @@ public class HTTPserver extends Thread implements MudHost
 		}
 		if(which>0)
 		{
-			Vector V=CMParms.parseCommas(page.getStr("PORT"),true);
+			Vector<String> V=CMParms.parseCommas(page.getStr("PORT"),true);
 			if(which>=V.size())
 			{
 				Log.errOut(getName(),"ERROR: not enough PORT entries to support #"+(which+1));
@@ -254,7 +254,7 @@ public class HTTPserver extends Thread implements MudHost
 
 		try
 		{
-			Vector allports=CMParms.parseCommas(page.getStr("PORT"),true);
+			Vector<String> allports=CMParms.parseCommas(page.getStr("PORT"),true);
 			myPort=CMath.s_int((String)allports.elementAt(myServerNumber));
 			servsock=new ServerSocket(myPort, q_len, bindAddr);
 

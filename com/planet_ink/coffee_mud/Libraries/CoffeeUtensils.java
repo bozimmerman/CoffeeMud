@@ -495,7 +495,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
             }
             else
                 compiledMask=new Vector();
-            Vector parsed=CMParms.parse(s);
+            Vector<String> parsed=CMParms.parse(s);
             int pct=100;
             for(int x=0;x<parsed.size();x++)
                 if(CMath.isInteger((String)parsed.elementAt(x)))

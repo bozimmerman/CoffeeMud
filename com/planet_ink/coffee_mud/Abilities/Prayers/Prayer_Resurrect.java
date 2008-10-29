@@ -189,7 +189,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
                         body.destroy();
 						rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
 						mob.location().recoverRoomStats();
-						Vector whatsToDo=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH));
+						Vector<String> whatsToDo=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH));
 						for(int w=0;w<whatsToDo.size();w++)
 						{
 							String whatToDo=(String)whatsToDo.elementAt(w);

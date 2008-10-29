@@ -736,7 +736,7 @@ public class PokerDealer extends StdBehavior
                 {
                     // now we parse their words, and see if every word is a number,
                     // and whether every number is between 1-5
-                    Vector parsed=CMParms.parse(textOfSay);
+                    Vector<String> parsed=CMParms.parse(textOfSay);
                     HandOfCards hand=theDeck().getPlayerHand(msg.source());
                     boolean numbersOK=(hand!=null)&&(parsed.size()>0);
                     if(hand!=null)

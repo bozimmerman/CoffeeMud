@@ -150,7 +150,7 @@ public class Spell_Wish extends Spell
 				if(!Character.isLetterOrDigit(wish.charAt(i)))
 					wish.setCharAt(i,' ');
 			myWish=wish.toString().trim().toUpperCase();
-			Vector wishV=CMParms.parse(myWish);
+			Vector<String> wishV=CMParms.parse(myWish);
 			myWish=" "+myWish+" ";
 			if(wishV.size()==0)
 			{
@@ -186,7 +186,7 @@ public class Spell_Wish extends Spell
 				{	goldWish=goldWish.substring(1+redundantGoldStarts[i].length()); i=-1;}
 				i++;
 			}
-			Vector goldCheck=CMParms.parse(goldWish.trim().toLowerCase());
+			Vector<String> goldCheck=CMParms.parse(goldWish.trim().toLowerCase());
 			if((goldCheck.size()>1)
 			&&(CMath.isNumber((String)goldCheck.firstElement()))
 			&&(CMath.s_int((String)goldCheck.firstElement())>0)

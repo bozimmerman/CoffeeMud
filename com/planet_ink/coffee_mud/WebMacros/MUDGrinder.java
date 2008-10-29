@@ -706,8 +706,8 @@ public class MUDGrinder extends StdWebMacro
 			Area A=CMLib.map().getArea(AREA);
 			if(A==null) return "@break@";
 			String like=httpReq.getRequestParameter("ROOM");
-			Vector likeList=CMParms.parseCommas(like,true);
-			Vector RS=new Vector();
+			Vector<String> likeList=CMParms.parseCommas(like,true);
+			Vector<Room> RS=new Vector<Room>();
 			for(int l=0;l<likeList.size();l++)
 			{
 				like=(String)likeList.elementAt(l);

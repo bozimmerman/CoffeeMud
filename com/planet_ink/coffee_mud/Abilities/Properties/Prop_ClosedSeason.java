@@ -36,7 +36,7 @@ public class Prop_ClosedSeason extends Property
 	public String ID() { return "Prop_ClosedSeason"; }
 	public String name(){ return "Contingent Visibility";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
-	protected Vector closedV=null;
+	protected Vector<String> closedV=null;
 	boolean doneToday=false;
 	private Area exitArea=null;
 

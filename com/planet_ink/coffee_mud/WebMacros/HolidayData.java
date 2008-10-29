@@ -336,7 +336,7 @@ public class HolidayData extends StdWebMacro
         return "";
     }
 
-    public static StringBuffer behaviors(DVector behaviors, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    public static StringBuffer behaviors(DVector behaviors, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         if(parms.containsKey("BEHAVIORS"))
@@ -416,7 +416,7 @@ public class HolidayData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer properties(DVector properties, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    public static StringBuffer properties(DVector properties, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         if(parms.containsKey("AFFECTS"))
@@ -486,13 +486,13 @@ public class HolidayData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer priceFactors(DVector stats, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    public static StringBuffer priceFactors(DVector stats, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         if(parms.containsKey("PRICEFACTORS"))
         {
-            Vector theclasses=new Vector();
-            Vector theparms=new Vector();
+            Vector<String> theclasses=new Vector<String>();
+            Vector<String> theparms=new Vector<String>();
             if(httpReq.isRequestParameter("PRCFAC1"))
             {
                 int num=1;
@@ -517,7 +517,7 @@ public class HolidayData extends StdWebMacro
             {
                 int pndex=stats.indexOf("PRICEMASKS");
                 String priceStr=(pndex<0)?"":(String)stats.elementAt(pndex,2);
-                Vector priceV=CMParms.parseCommas(priceStr,true);
+                Vector<String> priceV=CMParms.parseCommas(priceStr,true);
                 for(int v=0;v<priceV.size();v++)
                 {
                     String priceLine=(String)priceV.elementAt(v);
@@ -569,7 +569,7 @@ public class HolidayData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer mudChat(DVector behaviors, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    public static StringBuffer mudChat(DVector behaviors, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         if(parms.containsKey("MUDCHAT"))

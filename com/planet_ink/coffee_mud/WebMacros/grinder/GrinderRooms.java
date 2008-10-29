@@ -56,7 +56,7 @@ public class GrinderRooms
 		R.recoverRoomStats();
 	}
 
-	public static String editRoom(ExternalHTTPRequests httpReq, Hashtable parms, MOB whom, Room R)
+	public static String editRoom(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, MOB whom, Room R)
 	{
 		if(R==null) return "Old Room not defined!";
 		boolean redoAllMyDamnRooms=false;

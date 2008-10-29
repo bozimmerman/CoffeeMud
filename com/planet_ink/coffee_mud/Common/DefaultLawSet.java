@@ -65,13 +65,13 @@ public class DefaultLawSet implements Law
     private Hashtable basicCrimes=new Hashtable();
     private Hashtable taxLaws=new Hashtable();
 
-    private Vector chitChat=new Vector();
-    private Vector chitChat2=new Vector();
-    private Vector chitChat3=new Vector();
-    private Vector jailRooms=new Vector();
-    private Vector releaseRooms=new Vector();
-    private Vector officerNames=new Vector();
-    private Vector judgeNames=new Vector();
+    private Vector<String> chitChat=new Vector<String>();
+    private Vector<String> chitChat2=new Vector<String>();
+    private Vector<String> chitChat3=new Vector<String>();
+    private Vector<String> jailRooms=new Vector<String>();
+    private Vector<String> releaseRooms=new Vector<String>();
+    private Vector<String> officerNames=new Vector<String>();
+    private Vector<String> judgeNames=new Vector<String>();
     private String[] messages=new String[Law.MSG_TOTAL];
 
     private boolean activated=true;
@@ -109,13 +109,13 @@ public class DefaultLawSet implements Law
     public boolean hasModifiableNames(){return namesModifiable;}
     public boolean hasModifiableLaws(){return lawsModifiable;}
 
-    public Vector chitChat(){ return chitChat;}
-    public Vector chitChat2(){ return chitChat2;}
-    public Vector chitChat3(){ return chitChat3;}
-    public Vector jailRooms(){ return jailRooms;}
-    public Vector releaseRooms(){ return releaseRooms;}
-    public Vector officerNames(){ return officerNames;}
-    public Vector judgeNames(){ return judgeNames;}
+    public Vector<String> chitChat(){ return chitChat;}
+    public Vector<String> chitChat2(){ return chitChat2;}
+    public Vector<String> chitChat3(){ return chitChat3;}
+    public Vector<String> jailRooms(){ return jailRooms;}
+    public Vector<String> releaseRooms(){ return releaseRooms;}
+    public Vector<String> officerNames(){ return officerNames;}
+    public Vector<String> judgeNames(){ return judgeNames;}
     public String[] messages(){ return messages;}
 
     public Vector oldWarrants(){ return oldWarrants;}
@@ -149,7 +149,7 @@ public class DefaultLawSet implements Law
         String tres=(String)taxLaws().get("TREASURY");
         if((tres!=null)&&(tres.length()>0))
         {
-            Vector V=CMParms.parseSemicolons(tres,false);
+            Vector<String> V=CMParms.parseSemicolons(tres,false);
             if(V.size()>0)
             {
                 Room R=null;
@@ -511,7 +511,7 @@ public class DefaultLawSet implements Law
                 {
                     otherCrimes.addElement(CMParms.parse(words.substring(0,x)));
                     String[] bits=new String[Law.BIT_NUMBITS];
-                    Vector parsed=CMParms.parseSemicolons(words.substring(x+1),false);
+                    Vector<String> parsed=CMParms.parseSemicolons(words.substring(x+1),false);
                     for(int i=0;i<Law.BIT_NUMBITS;i++)
                         if(i<parsed.size())
                             bits[i]=(String)parsed.elementAt(i);
@@ -524,7 +524,7 @@ public class DefaultLawSet implements Law
                 {
                     bannedSubstances.addElement(CMParms.parse(words.substring(0,x)));
                     String[] bits=new String[Law.BIT_NUMBITS];
-                    Vector parsed=CMParms.parseSemicolons(words.substring(x+1),false);
+                    Vector<String> parsed=CMParms.parseSemicolons(words.substring(x+1),false);
                     for(int i=0;i<Law.BIT_NUMBITS;i++)
                         if(i<parsed.size())
                             bits[i]=(String)parsed.elementAt(i);
@@ -559,7 +559,7 @@ public class DefaultLawSet implements Law
     private String[] getInternalBits(String bitStr)
     {
         String[] bits=new String[Law.BIT_NUMBITS];
-        Vector parsed=CMParms.parseSemicolons(bitStr,false);
+        Vector<String> parsed=CMParms.parseSemicolons(bitStr,false);
         for(int i=0;i<Law.BIT_NUMBITS;i++)
             if(i<parsed.size())
                 bits[i]=(String)parsed.elementAt(i);

@@ -464,7 +464,7 @@ public class CharGen extends StdCommand
                         }
                         if(failSkillCheck!=null)
                         {
-                            Vector V=CMParms.parseSemicolons(B.getStat("RECORD"),true);
+                            Vector<String> V=CMParms.parseSemicolons(B.getStat("RECORD"),true);
                             for(int v=0;v<V.size();v++)
                             {
                                 String s=((String)V.elementAt(v)).trim();

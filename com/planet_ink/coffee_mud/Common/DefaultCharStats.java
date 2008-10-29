@@ -271,7 +271,7 @@ public class DefaultCharStats implements CharStats
 	}
 	public void setSavesFromString(String str)
 	{
-		Vector V=CMParms.parseSemicolons(str,false);
+		Vector<String> V=CMParms.parseSemicolons(str,false);
 		for(int x=NUM_SAVE_START;x<NUM_STATS;x++)
 		{
 			int vnum=x-NUM_SAVE_START;
@@ -465,7 +465,7 @@ public class DefaultCharStats implements CharStats
 	
 	public void setBodyPartsFromStringAfterRace(String str)
 	{
-		Vector V=CMParms.parseSemicolons(str,true);
+		Vector<String> V=CMParms.parseSemicolons(str,true);
 		bodyAlterations=null;
 		for(int i=0;i<getMyRace().bodyMask().length;i++)
 		{

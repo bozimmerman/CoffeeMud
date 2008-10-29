@@ -259,7 +259,7 @@ public class Quests extends StdLibrary implements QuestManager
             return "Unknown error.";
         if(CMLib.quests().fetchQuest(named)!=null)
             return "A quest called '"+named+"' already exists.  Better to pick a new name.";
-        Vector lineV=null;
+        Vector<String> lineV=null;
         String line=null;
         String var=null;
         String cmd=null;
@@ -355,7 +355,7 @@ public class Quests extends StdLibrary implements QuestManager
         if((index<0)||(index>=steps.size()))
             return "";
         
-        Vector lineV=null;
+        Vector<String> lineV=null;
         String line=null;
         String var=null;
         String cmd=null;
@@ -387,7 +387,7 @@ public class Quests extends StdLibrary implements QuestManager
         else
             return -1;
         
-        Vector lineV=null;
+        Vector<String> lineV=null;
         String line=null;
         String var=null;
         String cmd=null;
@@ -440,7 +440,7 @@ public class Quests extends StdLibrary implements QuestManager
         encodedData.addElement(properties);
         encodedData.addElement(stats);
         encodedData.addElement(stepV);
-        Vector lineV=null;
+        Vector<String> lineV=null;
         String line=null;
         String var=null;
         String cmd=null;
@@ -970,7 +970,7 @@ public class Quests extends StdLibrary implements QuestManager
     {
         int pndex=stats.indexOf("PRICEMASKS");
         String priceStr=(pndex<0)?"":(String)stats.elementAt(pndex,2);
-        Vector priceV=CMParms.parseCommas(priceStr,true);
+        Vector<String> priceV=CMParms.parseCommas(priceStr,true);
         for(int v=0;v<=priceV.size();v++)
         {
             if((showFlag>0)&&(showFlag!=showNumber)){ if(v<priceV.size())showNumber++; continue;}
@@ -1055,10 +1055,10 @@ public class Quests extends StdLibrary implements QuestManager
         int mndex=behaviors.indexOf(MUDCHAT);
         String mudChatStr=(mndex<0)?"":(String)behaviors.elementAt(mndex,2);
         if(mudChatStr.startsWith("+")) mudChatStr=mudChatStr.substring(1);
-        Vector rawMCV=CMParms.parseSemicolons(mudChatStr,true);
+        Vector<String> rawMCV=CMParms.parseSemicolons(mudChatStr,true);
         Vector mudChatV=new Vector();
         String s=null;
-        Vector V=new Vector();
+        Vector<String> V=new Vector<String>();
         mudChatV.addElement(V);
         for(int r=0;r<rawMCV.size();r++)
         {
@@ -1176,7 +1176,7 @@ public class Quests extends StdLibrary implements QuestManager
 
     public Vector parseQuestCommandLines(Vector script, String cmdOnly, int startLine)
     {
-        Vector line=null;
+        Vector<String> line=null;
         String cmd=null;
         boolean inScript=false;
         Vector lines=new Vector();
@@ -1206,7 +1206,7 @@ public class Quests extends StdLibrary implements QuestManager
     
     public Vector parseQuestSteps(Vector script, int startLine, boolean rawLineInput)
     {
-        Vector line=null;
+        Vector<String> line=null;
         String cmd=null;
         Vector parsed=new Vector();
         StringBuffer scr=new StringBuffer("");

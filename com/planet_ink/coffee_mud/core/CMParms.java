@@ -1283,6 +1283,15 @@ public class CMParms
             V.add(O.elementAt(s));
         return V;
     }
+    public static Vector<String> makeStrVector(String O)
+    { Vector<String> V=new Vector<String>(); V.addElement(O); return V;}
+    public static Vector<String> makeStrVector(String O, String O2)
+    { Vector<String> V=new Vector<String>(); V.addElement(O); V.addElement(O2); return V;}
+    public static Vector<String> makeStrVector(String O, String O2, String O3)
+    { Vector<String> V=new Vector<String>(); V.addElement(O); V.addElement(O2); V.addElement(O3); return V;}
+    public static Vector<String> makeStrVector(String O, String O2, String O3, String O4)
+    { Vector<String> V=new Vector<String>(); V.addElement(O); V.addElement(O2); V.addElement(O3); V.addElement(O4); return V;}
+    
     public static Vector<Object> makeVector()
     { return new Vector<Object>();}
     public static Vector<Object> makeVector(Object O)

@@ -86,7 +86,7 @@ public class DefaultClan implements Clan
             else
             {
                 lastClanKillRecord=(String)((Vector)V.firstElement()).elementAt(3);
-                V=CMParms.parseSemicolons(lastClanKillRecord,true);
+                Vector<String> V2=CMParms.parseSemicolons(lastClanKillRecord,true);
                 for(int v=0;v<V.size();v++)
                     clanKills.addElement(new Long(CMath.s_long((String)V.elementAt(v))));
             }
@@ -201,7 +201,7 @@ public class DefaultClan implements Clan
         return done;
     }
 
-    public Enumeration votes()
+    public Enumeration<ClanVote> votes()
     {
         if(voteList==null)
         {
@@ -1051,7 +1051,7 @@ public class DefaultClan implements Clan
             {
                 boolean updateVotes=false;
                 Vector votesToRemove=new Vector();
-                Vector data=null;
+                Vector<String> data=null;
                 switch(getGovernment())
                 {
                 case GVT_DEMOCRACY:
@@ -1064,7 +1064,7 @@ public class DefaultClan implements Clan
                     data=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_CLANVOTER),false);
                     break;
                 default:
-                    data=new Vector();
+                    data=new Vector<String>();
                     break;
                 }
                 long duration=54;

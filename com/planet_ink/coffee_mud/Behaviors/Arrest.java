@@ -1428,7 +1428,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		W.setLastOffense(System.currentTimeMillis());
 		W.setWarnMsg(warnMsg);
 		sentence=sentence.trim();
-        Vector sentences=CMParms.parse(sentence);
+        Vector<String> sentences=CMParms.parse(sentence);
         W.setPunishment(0);
         for(int v=0;v<sentences.size();v++)
         {

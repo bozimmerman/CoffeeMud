@@ -54,7 +54,7 @@ public class AbilityNext extends StdWebMacro
 		String flagString=httpReq.getRequestParameter("FLAGS");
 		if((flagString!=null)&&(flagString.length()>0))
 		{
-		    Vector V=CMParms.parseSquiggles(flagString.toUpperCase());
+		    Vector<String> V=CMParms.parseSquiggles(flagString.toUpperCase());
 		    for(int i=0;i<Ability.FLAG_DESCS.length;i++)
 		        if(V.contains(Ability.FLAG_DESCS[i]))
 		            flags=flags|(CMath.pow(2,i));

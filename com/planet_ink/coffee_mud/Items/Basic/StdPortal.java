@@ -90,7 +90,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 			{
 				if(msg.sourceMessage().indexOf(mountString(CMMsg.TYP_SIT,msg.source()))>0)
 				{
-					Vector V=CMParms.parseSemicolons(readableText(),true);
+					Vector<String> V=CMParms.parseSemicolons(readableText(),true);
 					if(V.size()==0)
 					{
 						msg.source().tell("This portal is broken.. nowhere to go!");
@@ -132,7 +132,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
     protected Room getDestinationRoom()
     {
         Room R=null;
-        Vector V=CMParms.parseSemicolons(readableText(),true);
+        Vector<String> V=CMParms.parseSemicolons(readableText(),true);
         if(V.size()>0)
             R=CMLib.map().getRoom((String)V.elementAt(CMLib.dice().roll(1,V.size(),-1)));
         return R;
@@ -199,7 +199,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	
 	public StringBuffer viewableText(MOB mob, Room myRoom)
 	{
-		Vector V=CMParms.parseSemicolons(readableText(),true);
+		Vector<String> V=CMParms.parseSemicolons(readableText(),true);
 		Room room=myRoom;
 		if(V.size()>0)
 		    room=CMLib.map().getRoom((String)V.elementAt(CMLib.dice().roll(1,V.size(),-1)));

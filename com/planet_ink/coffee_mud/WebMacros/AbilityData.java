@@ -439,7 +439,7 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("ALIGNMENT"))
 				{
 				    String rangeDesc=null;
-				    for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
+				    for(Enumeration<Faction> e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
 				    {
 				        Faction F=(Faction)e.nextElement();
 				        rangeDesc=F.usageFactorRangeDescription(A);
@@ -449,7 +449,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("ALLOWS"))
 				{
-					Vector allows=CMLib.ableMapper().getAbilityAllowsList(A.ID());
+					Vector<String> allows=CMLib.ableMapper().getAbilityAllowsList(A.ID());
 					Ability A2=null;
 					if((allows!=null)&&(allows.size()>0))
 					{

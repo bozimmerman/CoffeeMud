@@ -35,7 +35,7 @@ public class StdPerfume extends StdDrink implements Perfume
 {
 	public String ID(){	return "StdPerfume";}
 
-	Vector smellList=new Vector();
+	Vector<String> smellList=new Vector<String>();
 	
 	public StdPerfume()
 	{
@@ -55,7 +55,7 @@ public class StdPerfume extends StdDrink implements Perfume
 		recoverEnvStats();
 	}
 
-	public Vector getSmellEmotes(Perfume me)
+	public Vector<String> getSmellEmotes(Perfume me)
 	{	return smellList;}
 	public String getSmellList()
 	{

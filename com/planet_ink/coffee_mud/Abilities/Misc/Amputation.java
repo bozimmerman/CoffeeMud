@@ -54,7 +54,7 @@ public class Amputation extends StdAbility implements Amputator
 	public boolean canBeUninvoked(){return false;}
     public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_ANATOMY;}
 	public int usageType(){return USAGE_MOVEMENT|USAGE_MANA;}
-	protected Vector missingLimbs=null;
+	protected Vector<String> missingLimbs=null;
 	private int[] amputations=new int[Race.BODY_PARTS];
 	private long badWearLocations=0;
 	private static final long[] LEFT_LOCS={Item.WORN_LEFT_FINGER,Item.WORN_LEFT_WRIST};
@@ -233,10 +233,10 @@ public class Amputation extends StdAbility implements Amputator
 		missingLimbs=null;
 	}
 
-	public Vector missingLimbNameSet()
+	public Vector<String> missingLimbNameSet()
 	{
 		if(missingLimbs!=null) return missingLimbs;
-		missingLimbs=new Vector();
+		missingLimbs=new Vector<String>();
 		if(affected==null) return missingLimbs;
 		if((!(affected instanceof MOB))&&(!(affected instanceof DeadBody)))
 		   return missingLimbs;
@@ -348,7 +348,7 @@ public class Amputation extends StdAbility implements Amputator
 		}
 
 		if (A == null)return;
-		Vector theRest = A.missingLimbNameSet();
+		Vector<String> theRest = A.missingLimbNameSet();
 		if (theRest.contains(gone))theRest.remove(gone);
 		A.setMiscText("");
 		for (int i = 0; i < theRest.size(); i++)
@@ -364,9 +364,9 @@ public class Amputation extends StdAbility implements Amputator
 		return -1;
 	}
 
-	public Vector affectedLimbNameSet(Object O, String missing, Vector missingLimbs)
+	public Vector<String> affectedLimbNameSet(Object O, String missing, Vector missingLimbs)
 	{
-		Vector AL=new Vector();
+		Vector<String> AL=new Vector<String>();
 		int x=getRacialCode(missing);
 		if(x>=0)
 		{

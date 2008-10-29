@@ -3068,7 +3068,7 @@ public class Import extends StdCommand
 			boolean forgiveZeroes=false;
 			if((codeStr2.indexOf("~")>=0)&&(codeStr2.lastIndexOf("~")>codeStr2.indexOf("~")))
 			{
-				Vector V=CMParms.parseSquiggles(codeStr2);
+				Vector<String> V=CMParms.parseSquiggles(codeStr2);
 				if(V.size()==4)
 				{
 					forgiveZeroes=true;

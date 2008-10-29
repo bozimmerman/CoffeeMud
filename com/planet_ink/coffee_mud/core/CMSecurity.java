@@ -72,7 +72,7 @@ public class CMSecurity
     private static CMSecurity i(){ return secs[Thread.currentThread().getThreadGroup().getName().charAt(0)];}  
     
     protected Hashtable groups=new Hashtable();
-    protected Vector compiledSysop=null;
+    protected Vector<Vector<Object>> compiledSysop=null;
     
     public void markShared() {
         char threadCode=Thread.currentThread().getThreadGroup().getName().charAt(0);
@@ -465,18 +465,18 @@ public class CMSecurity
         return false;
     }
 	
-	public static Vector getSecurityCodes(MOB mob, Room room)
+	public static Vector<String> getSecurityCodes(MOB mob, Room room)
 	{
-        if((mob==null)||(mob.playerStats()==null)) return new Vector();
-		Vector codes=(Vector)mob.playerStats().getSecurityGroups().clone();
+        if((mob==null)||(mob.playerStats()==null)) return new Vector<String>();
+		Vector<String> codes=(Vector<String>)mob.playerStats().getSecurityGroups().clone();
         CMParms.addToVector(mob.baseCharStats().getCurrentClass().getSecurityGroups(mob.baseCharStats().getCurrentClassLevel()),codes);
-		HashSet tried=new HashSet();
+		HashSet<String> tried=new HashSet<String>();
 		for(Enumeration e=i().groups.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();
 			codes.addElement(key);
-			HashSet H=(HashSet)i().groups.get(key);
-			for(Iterator i=H.iterator();i.hasNext();)
+			HashSet<String> H=(HashSet<String>)i().groups.get(key);
+			for(Iterator<String> i=H.iterator();i.hasNext();)
 			{
 				String s=(String)i.next();
 				if(!tried.contains(s))
@@ -747,7 +747,7 @@ public class CMSecurity
 	
 	public static void setDebugVars(String vars)
 	{
-		Vector V=CMParms.parseCommas(vars.toUpperCase(),true);
+		Vector<String> V=CMParms.parseCommas(vars.toUpperCase(),true);
 		dbgVars.clear();
 		for(int v=0;v<V.size();v++)
 			dbgVars.add(((String)V.elementAt(v)).trim());
@@ -755,10 +755,10 @@ public class CMSecurity
 	
 	public static void setDisableVars(String vars)
 	{
-		Vector V=CMParms.parseCommas(vars.toUpperCase(),true);
+		Vector<String> V=CMParms.parseCommas(vars.toUpperCase(),true);
 		disVars.clear();
 		for(int v=0;v<V.size();v++)
-			disVars.add(V.elementAt(v));
+			disVars.add((String)V.elementAt(v));
 	}
 	public static void setDisableVar(String var, boolean delete)
 	{
@@ -770,7 +770,7 @@ public class CMSecurity
 	}
 	public static void setSaveFlags(String flags)
 	{
-		Vector V=CMParms.parseCommas(flags.toUpperCase(),true);
+		Vector<String> V=CMParms.parseCommas(flags.toUpperCase(),true);
 		saveFlags.clear();
 		for(int v=0;v<V.size();v++)
 		    saveFlags.add(V.elementAt(v));
@@ -784,9 +784,9 @@ public class CMSecurity
 		    saveFlags.add(flag);
 	}
 	
-    protected static HashSet disVars=new HashSet();
-    protected static HashSet dbgVars=new HashSet();
-    protected static HashSet saveFlags=new HashSet();
+    protected static HashSet<String> disVars=new HashSet<String>();
+    protected static HashSet<String> dbgVars=new HashSet<String>();
+    protected static HashSet<String> saveFlags=new HashSet<String>();
 
 	public static long getStartTime(){return i().startTime;}
 	

@@ -41,7 +41,7 @@ public class GrinderExits
       "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
       " MISCTEXT","ISGENERIC","DOORNAME","IMAGE"};
     
-	public static String dispositions(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms)
+	public static String dispositions(Environmental E, ExternalHTTPRequests httpReq, Hashtable<String,String> parms)
 	{
 		E.baseEnvStats().setDisposition(0);
 		for(int d=0;d<EnvStats.IS_CODES.length;d++)
@@ -53,7 +53,7 @@ public class GrinderExits
 		return "";
 	}
 	
-	public static String editExit(Room R, int dir,ExternalHTTPRequests httpReq, Hashtable parms)
+	public static String editExit(Room R, int dir,ExternalHTTPRequests httpReq, Hashtable<String,String> parms)
 	{
 		synchronized(("SYNC"+R.roomID()).intern())
 		{

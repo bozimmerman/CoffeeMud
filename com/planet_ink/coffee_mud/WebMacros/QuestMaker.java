@@ -319,7 +319,7 @@ public class QuestMaker extends StdWebMacro
         			list.append("<TR><TD COLSPAN=2>"+descColor+lastLabel+"</B></FONT></I></TD></TR>\n\r");
         			list.append("<TR><TD>"+labelColor+keyNameFixed+"</B></FONT></I></TD>");
         			list.append("<TD><SELECT NAME="+httpKeyName+">");
-        			Vector options=CMParms.parseCommas(defValue.toUpperCase(),true);
+        			Vector <String>options=CMParms.parseCommas(defValue.toUpperCase(),true);
         			if(optionalEntry) options.insertElementAt("",0);
         			for(int o=0;o<options.size();o++)
         			{
@@ -726,7 +726,7 @@ public class QuestMaker extends StdWebMacro
                             case QuestManager.QM_COMMAND_$ITEMXML:
                         	case QuestManager.QM_COMMAND_$ITEMXML_ONEORMORE:
                         	{
-                        		Vector V=CMParms.parseSemicolons(val,true);
+                        		Vector<String> V=CMParms.parseSemicolons(val,true);
                         		val="";
                         		for(int v1=0;v1<V.size();v1++)
                         		{
@@ -741,7 +741,7 @@ public class QuestMaker extends StdWebMacro
                             case QuestManager.QM_COMMAND_$MOBXML:
                         	case QuestManager.QM_COMMAND_$MOBXML_ONEORMORE:
                         	{
-                        		Vector V=CMParms.parseSemicolons(val,true);
+                        		Vector<String> V=CMParms.parseSemicolons(val,true);
                         		val="";
                         		for(int v1=0;v1<V.size();v1++)
                         		{

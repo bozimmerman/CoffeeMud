@@ -447,8 +447,8 @@ public class StdLawBook extends StdItem
 					String oldVal=oldLaw[Law.BIT_CRIMELOCS].toUpperCase();
 					String lastOle="";
 					boolean lastAnswer=false;
-					Vector allloca1=CMParms.parse(oldVal);
-					Vector allloca2=CMParms.parse(oldVal.toUpperCase());
+					Vector<String> allloca1=CMParms.parse(oldVal);
+					Vector<String> allloca2=CMParms.parse(oldVal.toUpperCase());
 					for(int i=0;i<locflags.length;i++)
 					{
 						int dex=allloca2.indexOf(locflags[i][1].toUpperCase());
@@ -851,7 +851,7 @@ public class StdLawBook extends StdItem
 			String S=theLaw.getInternalStr("TREASURY").trim();
 			String room="*";
 			String item="";
-			Vector V=CMParms.parseSemicolons(S,false);
+			Vector<String> V=CMParms.parseSemicolons(S,false);
 			if((S.length()==0)||(V.size()==0))
 				str.append("Not defined");
 			else

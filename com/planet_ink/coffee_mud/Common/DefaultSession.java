@@ -810,7 +810,7 @@ public class DefaultSession extends Thread implements Session
             String tag=l.substring(tagStart+1,tagEnd).trim();
             l=l.substring(tagEnd+1).trim();
             // now we have a tag, and its parameters (space delimited)
-            Vector parts=CMParms.parseSpaces(tag,true);
+            Vector<String> parts=CMParms.parseSpaces(tag,true);
             if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Got secure MXP tag: "+tag);
             if(parts.size()>1)
             {
@@ -1453,7 +1453,7 @@ public class DefaultSession extends Thread implements Session
                                 killFlag=true;
                     }
 					needPrompt=true;
-					Vector CMDS=null;
+					Vector<String> CMDS=null;
 					while((!killFlag)&&(mob!=null))
 					{
                         while((!killFlag)
@@ -1482,17 +1482,17 @@ public class DefaultSession extends Thread implements Session
                                 String firstWord=(String)CMDS.firstElement();
                                 PlayerStats pstats=mob.playerStats();
                                 String alias=(pstats!=null)?pstats.getAlias(firstWord):"";
-                                Vector ALL_CMDS=new Vector();
+                                Vector<Vector<String>> ALL_CMDS=new Vector<Vector<String>>();
                                 boolean echoOn=false;
                                 if(alias.length()>0)
                                 {
                                     CMDS.removeElementAt(0);
-                                    Vector all_stuff=CMParms.parseSquiggleDelimited(alias,true);
+                                    Vector<String> all_stuff=CMParms.parseSquiggleDelimited(alias,true);
                                     for(int a=0;a<all_stuff.size();a++)
                                     {
-                                        Vector THIS_CMDS=(Vector)CMDS.clone();
+                                        Vector<String> THIS_CMDS=(Vector<String>)CMDS.clone();
                                         ALL_CMDS.addElement(THIS_CMDS);
-                                        Vector preCommands=CMParms.parse((String)all_stuff.elementAt(a));
+                                        Vector<String> preCommands=CMParms.parse((String)all_stuff.elementAt(a));
                                         for(int v=preCommands.size()-1;v>=0;v--)
                                             THIS_CMDS.insertElementAt(preCommands.elementAt(v),0);
                                     }
@@ -1502,7 +1502,7 @@ public class DefaultSession extends Thread implements Session
                                     ALL_CMDS.addElement(CMDS);
                                 for(int v=0;v<ALL_CMDS.size();v++)
                                 {
-                                    CMDS=(Vector)ALL_CMDS.elementAt(v);
+                                    CMDS=(Vector<String>)ALL_CMDS.elementAt(v);
     								setPreviousCmd(CMDS);
     								milliTotal+=(lastStop-lastStart);
 
@@ -1515,10 +1515,10 @@ public class DefaultSession extends Thread implements Session
 
     								lastStart=System.currentTimeMillis();
                                     if(echoOn) rawPrintln(CMParms.combineWithQuotes(CMDS,0));
-                                    Vector MORE_CMDS=CMLib.lang().preCommandParser(CMDS);
+                                    Vector<Object> MORE_CMDS=CMLib.lang().preCommandParser(CMParms.makeObjV(CMDS));
                                     for(int m=0;m<MORE_CMDS.size();m++)
                                     	if(mob!=null)
-		    								mob.enqueCommand((Vector)MORE_CMDS.elementAt(m),metaFlags(),0);
+		    								mob.enqueCommand((Vector<Object>)MORE_CMDS.elementAt(m),metaFlags(),0);
     								lastStop=System.currentTimeMillis();
                                 }
 							}

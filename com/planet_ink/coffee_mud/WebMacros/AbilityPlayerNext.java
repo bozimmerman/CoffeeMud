@@ -66,8 +66,8 @@ public class AbilityPlayerNext extends StdWebMacro
 			return " @break@";
 		}
 
-        Vector abilities=new Vector();
-        HashSet foundIDs=new HashSet();
+        Vector<Ability> abilities=new Vector<Ability>();
+        HashSet<String> foundIDs=new HashSet<String>();
         for(int a=0;a<M.numAbilities();a++)
         {
             Ability A=M.fetchAbility(a);

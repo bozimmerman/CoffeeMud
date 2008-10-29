@@ -61,7 +61,7 @@ public class Sounder extends StdBehavior
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		Vector emote=CMParms.parseSemicolons(newParms,true);
+		Vector<String> emote=CMParms.parseSemicolons(newParms,true);
 		triggers=new int[emote.size()];
 		strings=new String[emote.size()];
 

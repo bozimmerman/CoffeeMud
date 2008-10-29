@@ -38,8 +38,8 @@ public class CombatAbilities extends StdBehavior
 	public int combatMode=0;
 	public DVector aggro=null;
 	public short chkDown=0;
-	public Vector skillsNever=null;
-	public Vector skillsAlways=null;
+	public Vector<String> skillsNever=null;
+	public Vector<String> skillsAlways=null;
 	protected boolean[] wandUseCheck={false,false};
 	protected boolean proficient=false;
 	protected String lastSpell="";

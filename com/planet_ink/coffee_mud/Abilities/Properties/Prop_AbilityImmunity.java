@@ -37,12 +37,12 @@ public class Prop_AbilityImmunity extends Property
 	public String name(){ return "Ability Immunity";}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 	public String accountForYourself() { return "Immunity";	}
-	protected Vector diseases=new Vector();
-	protected Vector messages=new Vector();
+	protected Vector<String> diseases=new Vector<String>();
+	protected Vector<String> messages=new Vector<String>();
 
 	public void setMiscText(String newText)
 	{
-        messages=new Vector();
+        messages=new Vector<String>();
 		diseases=CMParms.parseSemicolons(newText.toUpperCase(),true);
 		for(int d=0;d<diseases.size();d++)
 		{

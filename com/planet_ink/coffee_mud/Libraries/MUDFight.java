@@ -1350,7 +1350,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     		whatToDo=CMProps.getVar(CMProps.SYSTEM_MOBDEATH).toUpperCase();
     	else
     		whatToDo=CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH).toUpperCase();
-		Vector whatsToDo=CMParms.parseCommas(whatToDo,true);
+		Vector<String> whatsToDo=CMParms.parseCommas(whatToDo,true);
 		double[] fakeVarVals={1.0,1.0,1.0};
 		for(int w=0;w<whatsToDo.size();w++)
 		{
@@ -1376,7 +1376,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 (fighting!=null)?fighting.envStats().level():0,
                 rejuv
         };
-		Vector whatsToDo=CMParms.parseCommas(whatToDo,true);
+		Vector<String> whatsToDo=CMParms.parseCommas(whatToDo,true);
 		for(int w=0;w<whatsToDo.size();w++)
 		{
 			whatToDo=(String)whatsToDo.elementAt(w);

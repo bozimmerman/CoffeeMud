@@ -209,7 +209,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			messedUp=false;
 			Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
-			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
+			Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORNREQ_UNWORNONLY);
 			if(!canMend(mob, building,false)) return false;
 			mending=true;
@@ -228,7 +228,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			messedUp=false;
 			Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
-			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
+			Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORNREQ_UNWORNONLY);
 			if(building==null) return false;
 			if(((building.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)

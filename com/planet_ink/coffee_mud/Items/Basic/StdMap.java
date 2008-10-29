@@ -71,7 +71,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 	}
 	public void doMapArea()
 	{
-		Vector V=CMParms.parseSemicolons(getMapArea(),true);
+		Vector<String> V=CMParms.parseSemicolons(getMapArea(),true);
 		String newName="";
 		for(int v=0;v<V.size();v++)
 		{

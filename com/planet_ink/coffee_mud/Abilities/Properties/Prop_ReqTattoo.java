@@ -63,7 +63,7 @@ public class Prop_ReqTattoo extends Property
 		}
 	}
 	
-	public Vector getMask(boolean[] flags)
+	public Vector<String> getMask(boolean[] flags)
 	{
 		Vector<String> V=CMParms.parse(miscText.toUpperCase());
 		String s=null;

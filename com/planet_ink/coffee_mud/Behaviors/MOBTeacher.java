@@ -174,7 +174,7 @@ public class MOBTeacher extends CombatAbilities
 		myMOB.baseCharStats().setMyLevels(""+myMOB.envStats().level());
 		myMOB.recoverCharStats();
 
-		Hashtable myAbles=new Hashtable();
+		Hashtable<String,Ability> myAbles=new Hashtable<String,Ability>();
 		Ability A=null;
 		for(int a=0;a<myMOB.numAbilities();a++)
 		{
@@ -185,7 +185,7 @@ public class MOBTeacher extends CombatAbilities
 		myMOB.baseCharStats().setStat(CharStats.STAT_WISDOM,19);
 
 		int pct=100;
-		Vector V=null;
+		Vector<String> V=null;
 		A=CMClass.getAbility(getParms());
 		if(A!=null)
 		{

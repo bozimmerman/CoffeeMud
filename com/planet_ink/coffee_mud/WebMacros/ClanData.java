@@ -39,7 +39,7 @@ public class ClanData extends StdWebMacro
 	// ACCEPTANCE, TYPE, POINTS, CLANIDRELATIONS, MEMBERSTART, MEMBERNEXT,
 	// MEMBERNAME, MEMBERPOS
 
-    public static StringBuffer members(Clan C, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    public static StringBuffer members(Clan C, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         if(parms.containsKey("MEMBERSLIST"))
@@ -130,7 +130,7 @@ public class ClanData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer relations(Clan C, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
+    public static StringBuffer relations(Clan C, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         if(parms.containsKey("RELATIONS"))
