@@ -41,8 +41,8 @@ public class AddFile extends StdWebMacro
 		if((parms==null)||(parms.size()==0)) return "";
 		StringBuffer buf=new StringBuffer("");
         boolean webify=false;
-        Vector V=new Vector();
-        for(Enumeration e=parms.elements();e.hasMoreElements();)
+        Vector<String> V=new Vector<String>();
+        for(Enumeration<String> e=parms.elements();e.hasMoreElements();)
             V.addElement(e.nextElement());
         for(int v=V.size()-1;v>=0;v--)
         {

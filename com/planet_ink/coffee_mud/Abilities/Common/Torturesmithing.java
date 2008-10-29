@@ -61,7 +61,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_SPELL=10;
 
     public String parametersFile(){ return "torturesmith.txt";}
-    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{
@@ -98,7 +98,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"Make what? Enter \""+triggerStrings()[0].toLowerCase()+" list\" for a list.");
 			return false;
 		}
-		Vector recipes=addRecipes(mob,loadRecipes());
+		Vector<Vector<String>> recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
         bundling=false;
@@ -109,7 +109,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",16)+" Lvl Material required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				Vector<String> V=recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");

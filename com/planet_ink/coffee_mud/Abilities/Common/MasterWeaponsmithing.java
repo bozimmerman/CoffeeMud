@@ -42,7 +42,7 @@ public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
     protected int displayColumns(){return 2;}
 
     public String parametersFile(){ return "masterweaponsmith.txt";}
-    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
     
 	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

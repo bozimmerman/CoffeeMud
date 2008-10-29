@@ -60,7 +60,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 	protected static final int RCP_SPELL=10;
 
     public String parametersFile(){ return "masterleatherworking.txt";}
-    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{
@@ -141,7 +141,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
                 return super.bundle(mob,commands);
             return false;
         }
-		Vector recipes=addRecipes(mob,loadRecipes());
+		Vector<Vector<String>> recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
         playSound="scissor.wav";
 		String startStr=null;
@@ -160,7 +160,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				Vector<String> V=recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
@@ -177,7 +177,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			}
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				Vector<String> V=recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
@@ -194,7 +194,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			}
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				Vector<String> V=recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
@@ -211,7 +211,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			}
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				Vector<String> V=recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
@@ -228,7 +228,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			}			
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				Vector<String> V=recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
@@ -245,7 +245,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			}
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				Vector<String> V=recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");

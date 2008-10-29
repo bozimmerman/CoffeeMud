@@ -131,7 +131,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	}
 
     public String parametersFile(){ return "recipes.txt";}
-    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{

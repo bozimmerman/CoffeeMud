@@ -44,7 +44,7 @@ public class FoodPrep extends Cooking
 	public boolean requireFire(){return false;}
 
     public String parametersFile(){ return "foodprep.txt";}
-    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
     public FoodPrep()
     {

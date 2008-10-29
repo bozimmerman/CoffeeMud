@@ -41,7 +41,7 @@ public class CageBuilding extends Wainwrighting
     public String supportedResourceString(){return "WOODEN";}
 
     public String parametersFile(){ return "cagebuilding.txt";}
-    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
 	{

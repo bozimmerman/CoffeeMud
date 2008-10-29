@@ -41,7 +41,7 @@ public class AddRandomFileFromDir extends StdWebMacro
 		Hashtable<String,String> parms=parseParms(parm);
 		if((parms==null)||(parms.size()==0)) return "";
 		StringBuffer buf=new StringBuffer("");
-		Vector fileList=new Vector();
+		Vector<String> fileList=new Vector<String>();
 		boolean LINKONLY=false;
 		for(Enumeration<String> e=parms.elements();e.hasMoreElements();)
 			if(((String)e.nextElement()).equalsIgnoreCase("LINKONLY"))

@@ -67,7 +67,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 
     public Hashtable parametersFields(){ return new Hashtable();}
     public String parametersFile(){ return "clancraft.txt";}
-    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{
@@ -157,7 +157,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			mob.tell("You are not authorized to draw from the power of your "+C.typeName()+".");
 			return false;
 		}
-		Vector recipes=addRecipes(mob,loadRecipes());
+		Vector<Vector<String>> recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
 		int duration=4;
@@ -173,7 +173,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 					   +CMStrings.padRight("Amt#2",4)+"\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				Vector<String> V=recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");

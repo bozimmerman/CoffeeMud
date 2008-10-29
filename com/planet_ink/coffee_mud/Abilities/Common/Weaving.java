@@ -82,7 +82,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 	}
 
     public String parametersFile(){ return "weaving.txt";}
-    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{
@@ -176,7 +176,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
                 return super.bundle(mob,commands);
             return false;
         }
-		Vector recipes=addRecipes(mob,loadRecipes());
+		Vector<Vector<String>> recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
         bundling=false;
 		String startStr=null;
@@ -192,7 +192,7 @@ public class Weaving extends EnhancedCraftingSkill implements ItemCraftor, Mendi
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				Vector<String> V=recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");

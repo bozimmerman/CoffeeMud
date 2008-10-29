@@ -68,7 +68,7 @@ public class Taxidermy extends CraftingSkill
 		super.unInvoke();
 	}
 
-	protected Vector loadRecipes()
+	protected Vector<Vector<String>> loadRecipes()
 	{
         String filename="taxidermy.txt";
 		Vector V=(Vector)Resources.getResource("PARSED: "+filename);

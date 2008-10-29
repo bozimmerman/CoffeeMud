@@ -71,7 +71,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 	}
 
     public String parametersFile(){ return "glassblowing.txt";}
-    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{
@@ -117,7 +117,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
                 return super.bundle(mob,commands);
             return false;
         }
-		Vector recipes=addRecipes(mob,loadRecipes());
+		Vector<Vector<String>> recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
         bundling=false;
@@ -128,7 +128,7 @@ public class GlassBlowing extends CraftingSkill implements ItemCraftor
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",16)+" Lvl Sand required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				Vector<String> V=recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");

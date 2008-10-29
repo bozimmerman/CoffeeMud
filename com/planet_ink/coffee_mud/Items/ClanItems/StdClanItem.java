@@ -376,7 +376,7 @@ public class StdClanItem extends StdItem implements ClanItem
 					Vector recipes=loadRecipes();
 					for(int v=0;v<recipes.size();v++)
 					{
-						Vector V=(Vector)recipes.elementAt(v);
+						Vector<String> V=recipes.elementAt(v);
 						if((V.size()>3)&&(CMath.s_int((String)V.elementAt(3))==((ClanItem)myHost).ciType()))
 						{
 							int exp=CMath.s_int((String)V.elementAt(6))/2;

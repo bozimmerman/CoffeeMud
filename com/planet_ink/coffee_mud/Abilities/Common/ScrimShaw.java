@@ -69,7 +69,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 	}
 
     public String parametersFile(){ return "scrimshaw.txt";}
-    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{
@@ -149,7 +149,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
                 return super.bundle(mob,commands);
             return false;
         }
-		Vector recipes=addRecipes(mob,loadRecipes());
+		Vector<Vector<String>> recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
         bundling=false;
@@ -160,7 +160,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",16)+" Lvl Bone required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				Vector<String> V=recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");

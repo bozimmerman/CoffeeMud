@@ -46,7 +46,7 @@ public interface ItemCraftor extends Ability
 	 * Each craftable recipe is also a vector of strings.
 	 * @return a vector of vectors
 	 */
-	public Vector fetchRecipes();
+	public Vector<Vector<String>> fetchRecipes();
 	
 	/**
 	 * A String containing the format of each entry in the parameter file
@@ -68,7 +68,7 @@ public interface ItemCraftor extends Ability
 	 * @param beLoose whether to be specific or "loose" with name matching
 	 * @return a vector of vectors
 	 */
-	public Vector matchingRecipeNames(String recipeName, boolean beLoose);
+	public Vector<Vector<String>> matchingRecipeNames(String recipeName, boolean beLoose);
 	
 	/**
 	 * Crafts a random item of a type supported by this class of 

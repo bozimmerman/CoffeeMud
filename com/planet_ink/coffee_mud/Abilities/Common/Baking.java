@@ -44,5 +44,5 @@ public class Baking extends Cooking
 	public boolean requireLid(){return true;}
 
     public String parametersFile(){ return "bake.txt";}
-    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
 }

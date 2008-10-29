@@ -69,12 +69,12 @@ public class CraftingSkill extends GatheringSkill
 		return thisStr;
 	}
 	
-	protected Vector addRecipes(MOB mob, Vector recipes)
+	protected Vector<Vector<String>> addRecipes(MOB mob, Vector<Vector<String>> recipes)
 	{
 	    if(mob==null) return recipes;
 	    Item I=null;
-	    Vector V=null;
-	    Vector V2=null;
+	    Vector<Vector<String>> V=null;
+	    Vector<String> V2=null;
 	    boolean clonedYet=false;
 	    for(int i=0;i<mob.inventorySize();i++)
 	    {
@@ -82,18 +82,18 @@ public class CraftingSkill extends GatheringSkill
 	        if((I instanceof Recipe)
 	        &&(((Recipe)I).getCommonSkillID().equalsIgnoreCase(ID())))
 	        {
-	            if(!clonedYet){ recipes=(Vector)recipes.clone(); clonedYet=true;}
+	            if(!clonedYet){ recipes=(Vector<Vector<String>>)recipes.clone(); clonedYet=true;}
 	            V=loadList(new StringBuffer(((Recipe)I).getRecipeCodeLine()));
 	            for(int v=0;v<V.size();v++)
 	            {
-	                V2=(Vector)V.elementAt(v);
-	                if((recipes.size()==0)||(((Vector)recipes.lastElement()).size()<=V2.size()))
+	                V2=(Vector<String>)V.elementAt(v);
+	                if((recipes.size()==0)||(((Vector<String>)recipes.lastElement()).size()<=V2.size()))
 	                    recipes.addElement(V2);
 	                else
 	                {
-	                    Log.errOut(ID(),"Not enough parms ("+((Vector)recipes.lastElement()).size()+"<="+V2.size()+"): "+((Recipe)I).getRecipeCodeLine());
-	                    while(V2.size()<((Vector)recipes.lastElement()).size()) V2.addElement("");
-	                    while(V2.size()>((Vector)recipes.lastElement()).size()) V2.removeElementAt(V2.size()-1);
+	                    Log.errOut(ID(),"Not enough parms ("+((Vector<String>)recipes.lastElement()).size()+"<="+V2.size()+"): "+((Recipe)I).getRecipeCodeLine());
+	                    while(V2.size()<((Vector<String>)recipes.lastElement()).size()) V2.addElement("");
+	                    while(V2.size()>((Vector<String>)recipes.lastElement()).size()) V2.removeElementAt(V2.size()-1);
 	                    recipes.addElement(V2);
 	                }
 	                V2.trimToSize();
@@ -168,11 +168,11 @@ public class CraftingSkill extends GatheringSkill
         I.setRawProperLocationBitmap(wornLoc[0]);
     }
     
-	protected Vector loadList(StringBuffer str)
+	protected Vector<Vector<String>> loadList(StringBuffer str)
 	{
-		Vector V=new Vector();
+		Vector<Vector<String>> V=new Vector<Vector<String>>();
 		if(str==null) return V;
-		Vector V2=new Vector();
+		Vector<String> V2=new Vector<String>();
 		boolean oneComma=false;
 		int start=0;
 		int longestList=0;
@@ -201,7 +201,7 @@ public class CraftingSkill extends GatheringSkill
     					V2.addElement(str.substring(start,i));
     					if(V2.size()>longestList) longestList=V2.size();
     					V.addElement(V2);
-    					V2=new Vector();
+    					V2=new Vector<String>();
                     }
 				}
 				start=i+1;
@@ -219,16 +219,17 @@ public class CraftingSkill extends GatheringSkill
 		}
 		for(int v=0;v<V.size();v++)
 		{
-			V2=(Vector)V.elementAt(v);
+			V2=(Vector<String>)V.elementAt(v);
 			while(V2.size()<longestList)
 				V2.addElement("");
 		}
 		return V;
 	}
 
-    protected Vector loadRecipes(String filename)
+    @SuppressWarnings("unchecked")
+	protected Vector<Vector<String>> loadRecipes(String filename)
     {
-        Vector V=(Vector)Resources.getResource("PARSED: "+filename);
+        Vector<Vector<String>> V=(Vector<Vector<String>>)Resources.getResource("PARSED: "+filename);
         if(V==null)
         {
             StringBuffer str=new CMFile(Resources.buildResourcePath("skills")+filename,null,true).text();
@@ -264,8 +265,8 @@ public class CraftingSkill extends GatheringSkill
 		return amt;
 	}
 	
-	public Vector fetchRecipes(){return loadRecipes();}
-	protected Vector loadRecipes(){ return new Vector();}
+	public Vector<Vector<String>> fetchRecipes(){return loadRecipes();}
+	protected Vector<Vector<String>> loadRecipes(){ return new Vector<Vector<String>>();}
 	 
 	protected int[][] fetchFoundResourceData(MOB mob,
 											 int req1Required,
@@ -503,14 +504,14 @@ public class CraftingSkill extends GatheringSkill
 		return allItems;
 	}
 	
-	public Vector matchingRecipeNames(String recipeName, boolean beLoose){return matchingRecipeNames(fetchRecipes(),recipeName,beLoose);}
-	protected Vector matchingRecipeNames(Vector recipes, String recipeName, boolean beLoose)
+	public Vector<Vector<String>> matchingRecipeNames(String recipeName, boolean beLoose){return matchingRecipeNames(fetchRecipes(),recipeName,beLoose);}
+	protected Vector<Vector<String>> matchingRecipeNames(Vector<Vector<String>> recipes, String recipeName, boolean beLoose)
 	{
-		Vector matches=new Vector();
+		Vector<Vector<String>> matches=new Vector<Vector<String>>();
 		if(recipeName.length()==0) return matches;
 		for(int r=0;r<recipes.size();r++)
 		{
-			Vector V=(Vector)recipes.elementAt(r);
+			Vector<String> V=(Vector<String>)recipes.elementAt(r);
 			if(V.size()>0)
 			{
 				String item=(String)V.elementAt(0);
@@ -521,7 +522,7 @@ public class CraftingSkill extends GatheringSkill
 		if(matches.size()>0) return matches;
 		for(int r=0;r<recipes.size();r++)
 		{
-			Vector V=(Vector)recipes.elementAt(r);
+			Vector<String> V=(Vector<String>)recipes.elementAt(r);
 			if(V.size()>0)
 			{
 				String item=(String)V.elementAt(0);
@@ -534,7 +535,7 @@ public class CraftingSkill extends GatheringSkill
 		{
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector V=(Vector)recipes.elementAt(r);
+				Vector<String> V=(Vector<String>)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=(String)V.elementAt(0);
@@ -547,7 +548,7 @@ public class CraftingSkill extends GatheringSkill
 			if(lastWord.length()>1)
     			for(int r=0;r<recipes.size();r++)
     			{
-    				Vector V=(Vector)recipes.elementAt(r);
+    				Vector<String> V=(Vector<String>)recipes.elementAt(r);
     				if(V.size()>0)
     				{
     					String item=(String)V.elementAt(0);
