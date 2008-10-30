@@ -30,13 +30,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class NumPlayers extends StdWebMacro
 {
 	public String name()	{return "NumPlayers";}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable<String,String> parms=parseParms(parm);
+		Hashtable parms=parseParms(parm);
 		if(parms.containsKey("ALL"))
 			return ""+CMLib.sessions().size();
 

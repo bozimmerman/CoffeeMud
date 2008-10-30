@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class SystemInfo extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -39,7 +40,7 @@ public class SystemInfo extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		StringBuffer str=new StringBuffer("");
-		Hashtable<String,String> parms=parseParms(parm);
+		Hashtable parms=parseParms(parm);
 		for(Enumeration e=parms.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();

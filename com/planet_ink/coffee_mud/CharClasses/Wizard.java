@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Wizard extends Mage
 {
     public String ID(){return "Wizard";}
@@ -54,7 +55,7 @@ public class Wizard extends Mage
         CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_Shield",false);
         CMLib.ableMapper().addCharAbilityMapping(ID(),1,"Spell_IronGrip",false);
 
-        for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+        for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
         {
             Ability A=(Ability)a.nextElement();
             if((A!=null)

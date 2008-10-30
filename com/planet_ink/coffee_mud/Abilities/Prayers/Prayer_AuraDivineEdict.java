@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Prayer_AuraDivineEdict extends Prayer
 {
 	public String ID() { return "Prayer_AuraDivineEdict"; }
@@ -83,7 +84,7 @@ public class Prayer_AuraDivineEdict extends Prayer
 		&&(msg.target().envStats().level()<invoker().envStats().level()+(super.getXLEVELLevel(invoker())*2))
 		&&(CMStrings.getSayFromMessage(msg.sourceMessage().toUpperCase()).equals(CMStrings.getSayFromMessage(msg.sourceMessage()))))
 		{
-			Vector<Object> V=CMParms.parseToObjV("ORDER \""+msg.target().Name()+"\" "+CMStrings.getSayFromMessage(msg.sourceMessage()));
+			Vector V=CMParms.parse("ORDER \""+msg.target().Name()+"\" "+CMStrings.getSayFromMessage(msg.sourceMessage()));
 			Object O=CMLib.english().findCommand((MOB)msg.target(),(Vector)V.clone());
 			if((!((MOB)msg.target()).isMonster())
 			&&(CMClass.classID(O).equalsIgnoreCase("DROP")
@@ -137,7 +138,7 @@ public class Prayer_AuraDivineEdict extends Prayer
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

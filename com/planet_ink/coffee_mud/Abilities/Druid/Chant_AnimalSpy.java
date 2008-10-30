@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_AnimalSpy extends Chant
 {
 	public String ID() { return "Chant_AnimalSpy"; }
@@ -116,7 +117,7 @@ public class Chant_AnimalSpy extends Chant
 				{
 					String msg2=msg.sourceMessage().substring(start+1,end).trim();
 					if(msg2.length()>0)
-						spy.enqueCommand(CMParms.parseToObjV(msg2.trim()),Command.METAFLAG_FORCED,0);
+						spy.enqueCommand(CMParms.parse(msg2.trim()),Command.METAFLAG_FORCED,0);
 				}
 			}
 		}
@@ -131,7 +132,7 @@ public class Chant_AnimalSpy extends Chant
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		if(commands.size()<1)

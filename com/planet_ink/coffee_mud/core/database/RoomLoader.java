@@ -32,6 +32,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class RoomLoader
 {
 	protected DBConnector DB=null;
@@ -285,10 +286,10 @@ public class RoomLoader
                     else
                     if(direction>255)
                     {
-                        Vector<String> CEs=CMParms.parseSemicolons(exitMiscText.trim(),true);
+                        Vector CEs=CMParms.parseSemicolons(exitMiscText.trim(),true);
                         for(int ces=0;ces<CEs.size();ces++)
                         {
-                            Vector<String> SCE=CMParms.parse(((String)CEs.elementAt(ces)).trim());
+                            Vector SCE=CMParms.parse(((String)CEs.elementAt(ces)).trim());
                             WorldMap.CrossExit CE=new WorldMap.CrossExit();
                             if(SCE.size()<3) continue;
                             CE.x=CMath.s_int((String)SCE.elementAt(0));
@@ -351,7 +352,7 @@ public class RoomLoader
 		}
 
         RoomnumberSet unloadedRooms=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
-        Vector<Room> rooms=DBReadRoomData(null,set,set==null,newAreasToCreate,unloadedRooms);
+        Vector rooms=DBReadRoomData(null,set,set==null,newAreasToCreate,unloadedRooms);
         
 		// handle stray areas
 		for(Enumeration e=newAreasToCreate.elements();e.hasMoreElements();)
@@ -359,7 +360,7 @@ public class RoomLoader
 			String areaName=(String)e.nextElement();
 			Log.sysOut("Area","Creating unhandled area: "+areaName);
 			Area realArea=DBCreate(areaName,"StdArea");
-			for(Enumeration<Room> r=rooms.elements();r.hasMoreElements();)
+			for(Enumeration r=rooms.elements();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(R.getArea().Name().equals(areaName))
@@ -374,7 +375,7 @@ public class RoomLoader
 		if(set==null)
 			CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Finalizing room data)");
 
-		for(Enumeration<Room> r=rooms.elements();r.hasMoreElements();)
+		for(Enumeration r=rooms.elements();r.hasMoreElements();)
 		{
 			Room thisRoom=(Room)r.nextElement();
 			thisRoom.startItemRejuv();
@@ -382,7 +383,7 @@ public class RoomLoader
 		}
 
 		if(set==null)
-			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 				((Area)a.nextElement()).getAreaStats();
 	}
     

@@ -19,6 +19,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public interface SessionsList extends CMLibrary, Runnable
 {
     public Vector all=new Vector();

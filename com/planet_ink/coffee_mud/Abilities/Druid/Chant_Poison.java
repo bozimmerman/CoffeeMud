@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_Poison extends Chant
 {
 	public String ID() { return "Chant_Poison"; }
@@ -42,7 +43,7 @@ public class Chant_Poison extends Chant
 	public int canTargetCode(){return Ability.CAN_MOBS;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

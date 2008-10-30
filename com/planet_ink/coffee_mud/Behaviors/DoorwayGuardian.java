@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class DoorwayGuardian extends StdBehavior
 {
 	public String ID(){return "DoorwayGuardian";}
@@ -52,7 +53,7 @@ public class DoorwayGuardian extends StdBehavior
         String parm=getParms();
         int x=parm.indexOf(";");
         if(x>0) parm=parm.substring(0,x);
-		Vector<String> V=CMParms.parse(parm);
+		Vector V=CMParms.parse(parm);
 		for(int v=0;v<V.size();v++)
 		{
 			int dir=Directions.getGoodDirectionCode((String)V.elementAt(v));

@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prop_RoomsForSale extends Prop_RoomForSale
 {
 	public String ID() { return "Prop_RoomsForSale"; }
@@ -56,9 +57,9 @@ public class Prop_RoomsForSale extends Prop_RoomForSale
 		}
 	}
 
-	public Vector<Room> getPropertyRooms()
+	public Vector getPropertyRooms()
 	{
-		Vector<Room> V=new Vector<Room>();
+		Vector V=new Vector();
 		Room R=null;
 		if(affected instanceof Room)
 			R=(Room)affected;

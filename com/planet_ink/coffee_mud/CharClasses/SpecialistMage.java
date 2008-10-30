@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class SpecialistMage extends Mage
 {
 	public String ID(){return "SpecialistMage";}
@@ -42,7 +43,7 @@ public class SpecialistMage extends Mage
     public void initializeClass()
     {
         super.initializeClass();
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			if(A!=null)

@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "EnhancedCraftingSkill"; }
@@ -179,7 +180,7 @@ public class EnhancedCraftingSkill extends CraftingSkill implements ItemCraftor
 
 	protected String applyName(String name, String word)
 	{
-		Vector<String> V=CMParms.parse(name);
+		Vector V=CMParms.parse(name);
 		int insertHere=0;
 		if((V.size()>0)
 		&&(CMLib.english().isAnArticle((String)V.firstElement())))

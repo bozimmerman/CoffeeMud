@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdContainer extends StdItem implements Container
 {
 	public String ID(){	return "StdContainer";}

@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class AbilityRecipeData extends StdWebMacro
 {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -41,7 +42,7 @@ public class AbilityRecipeData extends StdWebMacro
     // qualifyQ, auto
     public String runMacro(ExternalHTTPRequests httpReq, String parm)
     {
-        Hashtable<String,String> parms=parseParms(parm);
+        Hashtable parms=parseParms(parm);
         
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
         if((replaceCommand != null) 

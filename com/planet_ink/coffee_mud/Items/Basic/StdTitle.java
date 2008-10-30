@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdTitle extends StdItem implements LandTitle
 {
 	public String ID(){	return "StdTitle";}
@@ -164,7 +165,7 @@ public class StdTitle extends StdItem implements LandTitle
 		if(T!=null) T.updateTitle();
 	}
 
-	public Vector<Room> getPropertyRooms()
+	public Vector getPropertyRooms()
 	{
 		Room R=CMLib.map().getRoom(landPropertyID());
 		if(R!=null)
@@ -178,7 +179,7 @@ public class StdTitle extends StdItem implements LandTitle
 			LandTitle A=CMLib.law().getLandTitle(area);
 			if(A!=null) return A.getPropertyRooms();
 		}
-		return new Vector<Room>();
+		return new Vector();
 	}
 
 	public void recoverEnvStats(){CMLib.flags().setReadable(this,true); super.recoverEnvStats();}

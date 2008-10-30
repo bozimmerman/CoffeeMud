@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prop_HereSpellCast extends Prop_HaveSpellCast
 {
 	public String ID() { return "Prop_HereSpellCast"; }

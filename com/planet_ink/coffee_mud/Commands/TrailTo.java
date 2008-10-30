@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class TrailTo extends StdCommand
 {
 	public TrailTo(){}
@@ -41,7 +42,7 @@ public class TrailTo extends StdCommand
 	public String trailTo(Room R1, Vector commands)
 	{
 		int radius=Integer.MAX_VALUE;
-        HashSet<Room> ignoreRooms=null;
+        HashSet ignoreRooms=null;
         for(int c=0;c<commands.size();c++)
         {
             String s=(String)commands.elementAt(c);
@@ -60,8 +61,8 @@ public class TrailTo extends StdCommand
                 if(!s.startsWith("=")) continue;
                 s=s.substring(1);
                 commands.removeElementAt(c);
-                Vector<String> roomList=CMParms.parseCommas(s,true);
-                ignoreRooms=new HashSet<Room>();
+                Vector roomList=CMParms.parseCommas(s,true);
+                ignoreRooms=new HashSet();
                 for(int v=0;v<roomList.size();v++)
                 {
                     Room R=CMLib.map().getRoom((String)roomList.elementAt(v));
@@ -96,7 +97,7 @@ public class TrailTo extends StdCommand
 		if(where.equalsIgnoreCase("everyarea"))
 		{
 			StringBuffer str=new StringBuffer("");
-			for(Enumeration<Area> a=CMLib.map().sortedAreas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				str.append(CMStrings.padRightPreserve(A.name(),30)+": "+trailTo(R1,set,A.name(),areaNames,confirm,radius,ignoreRooms)+"\n\r");
@@ -110,7 +111,7 @@ public class TrailTo extends StdCommand
 			StringBuffer str=new StringBuffer("");
 			try
 			{
-				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if((R!=R1)&&(R.roomID().length()>0))
@@ -141,7 +142,7 @@ public class TrailTo extends StdCommand
 	{
 		Room R2=CMLib.map().getRoom(where);
 		if(R2==null)
-			for(Enumeration<Area> a=CMLib.map().sortedAreas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				if(A.name().equalsIgnoreCase(where))
@@ -149,7 +150,7 @@ public class TrailTo extends StdCommand
 					if(set.size()==0)
 					{
 						int lowest=Integer.MAX_VALUE;
-						for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+						for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 						{
 							Room R=(Room)r.nextElement();
 							int x=R.roomID().indexOf("#");
@@ -277,7 +278,7 @@ public class TrailTo extends StdCommand
 		return theTrail.toString();
 	}
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("QUIETLY")))

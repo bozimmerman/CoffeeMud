@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Druid_MyPlants extends StdAbility
 {
 	public String ID() { return "Druid_MyPlants"; }
@@ -80,13 +81,13 @@ public class Druid_MyPlants extends StdAbility
 		return null;
 	}
 
-    public static Vector<Room> myAreaPlantRooms(MOB mob, Area A)
+    public static Vector myAreaPlantRooms(MOB mob, Area A)
     {
-        Vector<Room> V=new Vector<Room>();
+        Vector V=new Vector();
         try
         {
             if(A!=null)
-            for(Enumeration<Room> r=A.getMetroMap();r.hasMoreElements();)
+            for(Enumeration r=A.getMetroMap();r.hasMoreElements();)
             {
                 Room R=(Room)r.nextElement();
                 if((myPlant(R,mob,0)!=null)&&(!V.contains(R)))
@@ -96,12 +97,12 @@ public class Druid_MyPlants extends StdAbility
         return V;
     }
     
-	public static Vector<Room> myPlantRooms(MOB mob)
+	public static Vector myPlantRooms(MOB mob)
 	{
-		Vector<Room> V=new Vector<Room>();
+		Vector V=new Vector();
 		try
 		{
-			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if((myPlant(R,mob,0)!=null)&&(!V.contains(R)))
@@ -112,7 +113,7 @@ public class Druid_MyPlants extends StdAbility
 	}
 
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

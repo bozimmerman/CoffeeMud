@@ -30,12 +30,13 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Lich extends Skeleton
 {
 	public String ID(){	return "Lich"; }
 	public String name(){ return "Lich"; }
 
-	protected static Vector<Item> resources=new Vector<Item>();
+	protected static Vector resources=new Vector();
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -43,7 +44,7 @@ public class Lich extends Skeleton
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-4);
 		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+6);
 	}
-	public Vector<Item> myResources()
+	public Vector myResources()
 	{
 		return resources;
 	}

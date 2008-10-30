@@ -32,6 +32,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
+@SuppressWarnings("unchecked")
 public class LPCData {
     static public Object getLPCData(String str) throws I3Exception {
         return getLPCData(str, false);

@@ -28,6 +28,7 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Puppy extends Dog
 {
 	public String ID(){	return "Puppy"; }
@@ -44,7 +45,7 @@ public class Puppy extends Dog
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
 	public int[] bodyMask(){return parts;}
 
-	protected static Vector<Item> resources=new Vector<Item>();
+	protected static Vector resources=new Vector();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		super.affectCharStats(affectedMOB, affectableStats);

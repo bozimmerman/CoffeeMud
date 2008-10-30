@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_ArcanePossession extends Spell
 {
 	public String ID() { return "Spell_ArcanePossession"; }
@@ -79,7 +80,7 @@ public class Spell_ArcanePossession extends Spell
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,null,givenTarget,commands,Item.WORNREQ_ANY);
 		if(target==null) return false;

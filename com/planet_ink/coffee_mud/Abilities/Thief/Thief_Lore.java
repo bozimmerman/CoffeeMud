@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Thief_Lore extends ThiefSkill
 {
 	public String ID() { return "Thief_Lore"; }
@@ -42,7 +43,7 @@ public class Thief_Lore extends ThiefSkill
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
     public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_ARCANELORE;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
 		if(target==null) return false;

@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prayer_MassParalyze extends Prayer
 {
 	public String ID() { return "Prayer_MassParalyze"; }
@@ -62,7 +63,7 @@ public class Prayer_MassParalyze extends Prayer
 			mob.tell("The paralysis eases out of your muscles.");
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

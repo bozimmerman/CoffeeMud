@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class GrinderExits
 {
     private static final String[] okparms={
@@ -41,7 +42,7 @@ public class GrinderExits
       "ISALIGNMENTRESTRICTED","RESTRICTEDALIGNMENTS",
       " MISCTEXT","ISGENERIC","DOORNAME","IMAGE"};
     
-	public static String dispositions(Environmental E, ExternalHTTPRequests httpReq, Hashtable<String,String> parms)
+	public static String dispositions(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		E.baseEnvStats().setDisposition(0);
 		for(int d=0;d<EnvStats.IS_CODES.length;d++)
@@ -53,7 +54,7 @@ public class GrinderExits
 		return "";
 	}
 	
-	public static String editExit(Room R, int dir,ExternalHTTPRequests httpReq, Hashtable<String,String> parms)
+	public static String editExit(Room R, int dir,ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		synchronized(("SYNC"+R.roomID()).intern())
 		{

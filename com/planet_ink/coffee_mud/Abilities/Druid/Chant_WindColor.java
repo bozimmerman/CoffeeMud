@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_WindColor extends Chant
 {
 	public String ID() { return "Chant_WindColor"; }
@@ -96,7 +97,7 @@ public class Chant_WindColor extends Chant
 		int sourceCode=-1;
 		int levelCode=-1;
 		int[] colors=null;
-		HashSet group=mob.getGroupMembers(new HashSet<MOB>());
+		HashSet group=mob.getGroupMembers(new HashSet());
 		for(int i=0;i<R.numItems();i++)
 		{
 			Item I=R.fetchItem(i);
@@ -279,7 +280,7 @@ public class Chant_WindColor extends Chant
 		return str.toString().trim();
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

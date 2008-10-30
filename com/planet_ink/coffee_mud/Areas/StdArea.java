@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdArea implements Area
 {
 	public String ID(){	return "StdArea";}
@@ -42,8 +43,8 @@ public class StdArea implements Area
 	protected String imageName="";
 	protected int techLevel=0;
 	protected int climateID=Area.CLIMASK_NORMAL;
-	protected Vector<Room> properRooms=new Vector<Room>();
-    protected Vector<String> blurbFlags=new Vector<String>(1);
+	protected Vector properRooms=new Vector();
+    protected Vector blurbFlags=new Vector(1);
 	//protected Vector metroRooms=new Vector();
 	protected long tickStatus=Tickable.STATUS_NOT;
 	protected long expirationDate=0;
@@ -52,10 +53,10 @@ public class StdArea implements Area
 	protected RoomnumberSet properRoomIDSet=null;
 	protected RoomnumberSet metroRoomIDSet=null;
 
-    protected Vector<Area> children=null;
-    protected Vector<Area> parents=null;
-    protected Vector<String> childrenToLoad=new Vector<String>(1);
-    protected Vector<String> parentsToLoad=new Vector<String>(1);
+    protected Vector children=null;
+    protected Vector parents=null;
+    protected Vector childrenToLoad=new Vector(1);
+    protected Vector parentsToLoad=new Vector(1);
 
 	protected EnvStats envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
 	protected EnvStats baseEnvStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
@@ -74,8 +75,8 @@ public class StdArea implements Area
         {
             CMLib.beanCounter().unloadCurrencySet(currency);
             currency=newCurrency;
-            for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
-                CMLib.beanCounter().getCurrencySet(e.nextElement().getCurrency());
+            for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+                CMLib.beanCounter().getCurrencySet(((Area)e.nextElement()).getCurrency());
         }
         else
         {
@@ -85,15 +86,15 @@ public class StdArea implements Area
 	}
 	public String getCurrency(){return currency;}
 
-    protected Vector<String> allBlurbFlags()
+    protected Vector allBlurbFlags()
     {
-        Vector<String> V=(Vector<String>)blurbFlags.clone();
+        Vector V=(Vector)blurbFlags.clone();
         String flag=null;
         Area A=null;
         int num=0;
-        for(Enumeration<Area> e=getParents();e.hasMoreElements();)
+        for(Enumeration e=getParents();e.hasMoreElements();)
         {
-            A=e.nextElement();
+            A=(Area)e.nextElement();
             num=A.numBlurbFlags();
             for(int x=0;x<num;x++)
             {
@@ -109,10 +110,10 @@ public class StdArea implements Area
         if((flag==null)||(flag.trim().length()==0))
             return null;
         flag=flag.toUpperCase().trim()+" ";
-        Vector<String> V=allBlurbFlags();
+        Vector V=allBlurbFlags();
         for(int i=0;i<V.size();i++)
-            if(V.elementAt(i).startsWith(flag))
-                return V.elementAt(i).substring(flag.length());
+            if(((String)V.elementAt(i)).startsWith(flag))
+                return ((String)V.elementAt(i)).substring(flag.length());
         return null;
     }
     public int numBlurbFlags(){return blurbFlags.size();}
@@ -120,7 +121,7 @@ public class StdArea implements Area
     public String getBlurbFlag(int which)
     {
         if(which<0) return null;
-        Vector<String> V=allBlurbFlags();
+        Vector V=allBlurbFlags();
         if(which>=V.size()) return null;
         try{
             String s=(String)V.elementAt(which);
@@ -157,7 +158,7 @@ public class StdArea implements Area
         flagOnly+=" ";
         try{
             for(int v=0;v<blurbFlags.size();v++)
-                if(blurbFlags.elementAt(v).startsWith(flagOnly))
+                if(((String)blurbFlags.elementAt(v)).startsWith(flagOnly))
                 {
                     blurbFlags.removeElementAt(v);
                     return;
@@ -167,10 +168,10 @@ public class StdArea implements Area
 
 	public long expirationDate(){return expirationDate;}
 	public void setExpirationDate(long time){expirationDate=time;}
-	protected Vector<Ability> affects=new Vector<Ability>(1);
-	protected Vector<Behavior> behaviors=new Vector<Behavior>(1);
-    protected Vector<ScriptingEngine> scripts=new Vector<ScriptingEngine>(1);
-	protected Vector<String> subOps=new Vector<String>(1);
+	protected Vector affects=new Vector(1);
+	protected Vector behaviors=new Vector(1);
+    protected Vector scripts=new Vector(1);
+	protected Vector subOps=new Vector(1);
 	protected Climate climateObj=(Climate)CMClass.getCommon("DefaultClimate");
 	public void setClimateObj(Climate obj){climateObj=obj;}
 	public Climate getClimateObj()
@@ -240,7 +241,7 @@ public class StdArea implements Area
 			Room R=null;
 			for(int p=properRooms.size()-1;p>=0;p--)
 			{
-				R=properRooms.elementAt(p);
+				R=(Room)properRooms.elementAt(p);
 				if(R.roomID().length()>0)
 					set.add(R.roomID());
 			}
@@ -293,7 +294,7 @@ public class StdArea implements Area
 	{
 		for(int s=subOps.size()-1;s>=0;s--)
 		{
-			if(subOps.elementAt(s).equalsIgnoreCase(username))
+			if(((String)subOps.elementAt(s)).equalsIgnoreCase(username))
 				return true;
 		}
 		return false;
@@ -303,7 +304,7 @@ public class StdArea implements Area
 		StringBuffer list=new StringBuffer("");
 		for(int s=subOps.size()-1;s>=0;s--)
 		{
-			String str=subOps.elementAt(s);
+			String str=(String)subOps.elementAt(s);
 			list.append(str);
 			list.append(";");
 		}
@@ -318,7 +319,7 @@ public class StdArea implements Area
 	{
 		for(int s=subOps.size()-1;s>=0;s--)
 		{
-			if(subOps.elementAt(s).equalsIgnoreCase(username))
+			if(((String)subOps.elementAt(s)).equalsIgnoreCase(username))
 				subOps.removeElementAt(s);
 		}
 	}
@@ -333,7 +334,7 @@ public class StdArea implements Area
 			String roomID=null;
 			int newnum=0;
 			String name=Name().toUpperCase();
-			for(Enumeration<String> i=CMLib.map().roomIDs();i.hasMoreElements();)
+			for(Enumeration i=CMLib.map().roomIDs();i.hasMoreElements();)
 			{
 				roomID=(String)i.nextElement();
 				if((roomID.length()>0)&&(roomID.startsWith(name+"#")))
@@ -395,13 +396,13 @@ public class StdArea implements Area
 
 		parents=null;
 		if(E.parents!=null)
-			parents=(Vector<Area>)E.parents.clone();
+			parents=(Vector)E.parents.clone();
 		children=null;
 		if(E.children!=null)
-			children=(Vector<Area>)E.children.clone();
-		affects=new Vector<Ability>(1);
-		behaviors=new Vector<Behavior>(1);
-        scripts=new Vector<ScriptingEngine>(1);
+			children=(Vector)E.children.clone();
+		affects=new Vector(1);
+		behaviors=new Vector(1);
+        scripts=new Vector(1);
 		for(int b=0;b<E.numBehaviors();b++)
 		{
 			Behavior B=E.fetchBehavior(b);
@@ -450,8 +451,8 @@ public class StdArea implements Area
     }
     protected String finalPrejudiceFactors(Area A){
         if(A.prejudiceFactors().length()>0) return A.prejudiceFactors();
-        for(Enumeration<Area> e=A.getParents();e.hasMoreElements();)
-        { String  s=finalPrejudiceFactors(e.nextElement()); if(s.length()!=0) return s;}
+        for(Enumeration e=A.getParents();e.hasMoreElements();)
+        { String  s=finalPrejudiceFactors((Area)e.nextElement()); if(s.length()!=0) return s;}
         return "";
     }
     public String prejudiceFactors(){return prejudiceFactors;}
@@ -466,8 +467,8 @@ public class StdArea implements Area
     }
     protected String[] finalItemPricingAdjustments(Area A){
         if(A.itemPricingAdjustments().length>0) return A.itemPricingAdjustments();
-        for(Enumeration<Area> e=A.getParents();e.hasMoreElements();)
-        { String[]  s=finalItemPricingAdjustments(e.nextElement()); if(s.length!=0) return s;}
+        for(Enumeration e=A.getParents();e.hasMoreElements();)
+        { String[]  s=finalItemPricingAdjustments((Area)e.nextElement()); if(s.length!=0) return s;}
         return empty;
     }
     public String[] itemPricingAdjustments(){return itemPricingAdjustments;}
@@ -481,8 +482,8 @@ public class StdArea implements Area
     }
     protected String finalIgnoreMask(Area A){
         if(A.ignoreMask().length()>0) return A.ignoreMask();
-        for(Enumeration<Area> e=A.getParents();e.hasMoreElements();)
-        { String  s=finalIgnoreMask(e.nextElement()); if(s.length()!=0) return s;}
+        for(Enumeration e=A.getParents();e.hasMoreElements();)
+        { String  s=finalIgnoreMask((Area)e.nextElement()); if(s.length()!=0) return s;}
         return "";
     }
     public String ignoreMask(){return ignoreMask;}
@@ -496,8 +497,8 @@ public class StdArea implements Area
     }
     protected String finalBudget(Area A){
         if(A.budget().length()>0) return A.budget();
-        for(Enumeration<Area> e=A.getParents();e.hasMoreElements();)
-        { String  s=finalBudget(e.nextElement()); if(s.length()!=0) return s;}
+        for(Enumeration e=A.getParents();e.hasMoreElements();)
+        { String  s=finalBudget((Area)e.nextElement()); if(s.length()!=0) return s;}
         return "";
     }
     public String budget(){return budget;}
@@ -511,8 +512,8 @@ public class StdArea implements Area
     }
     protected String finalDevalueRate(Area A){
         if(A.devalueRate().length()>0) return A.devalueRate();
-        for(Enumeration<Area> e=A.getParents();e.hasMoreElements();)
-        { String  s=finalDevalueRate(e.nextElement()); if(s.length()!=0) return s;}
+        for(Enumeration e=A.getParents();e.hasMoreElements();)
+        { String  s=finalDevalueRate((Area)e.nextElement()); if(s.length()!=0) return s;}
         return "";
     }
     public String devalueRate(){return devalueRate;}
@@ -529,8 +530,8 @@ public class StdArea implements Area
     }
     protected int finalInvResetRate(Area A){
         if(A.invResetRate()!=0) return A.invResetRate();
-        for(Enumeration<Area> e=A.getParents();e.hasMoreElements();)
-        { int x=finalInvResetRate(e.nextElement()); if(x!=0) return x;}
+        for(Enumeration e=A.getParents();e.hasMoreElements();)
+        { int x=finalInvResetRate((Area)e.nextElement()); if(x!=0) return x;}
         return 0;
     }
 
@@ -594,7 +595,7 @@ public class StdArea implements Area
 		}
 		if(parents!=null)
 		for(int i=0;i<parents.size();i++)
-			if(!parents.elementAt(i).okMessage(myHost,msg))
+			if(!((Area)parents.elementAt(i)).okMessage(myHost,msg))
 				return false;
 
 		if((getTechLevel()>0)&&(!CMath.bset(getTechLevel(),Area.THEME_FANTASY)))
@@ -700,7 +701,7 @@ public class StdArea implements Area
 
 		if(parents!=null)
 		for(int i=0;i<parents.size();i++)
-			parents.elementAt(i).executeMsg(myHost,msg);
+			((Area)parents.elementAt(i)).executeMsg(myHost,msg);
 	}
 
 	public long getTickStatus(){ return tickStatus;}
@@ -835,7 +836,7 @@ public class StdArea implements Area
 	{
 		try
 		{
-			return affects.elementAt(index);
+			return (Ability)affects.elementAt(index);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -862,7 +863,7 @@ public class StdArea implements Area
 
 	public void fillInAreaRooms()
 	{
-		for(Enumeration<?> r=getProperMap();r.hasMoreElements();)
+		for(Enumeration r=getProperMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			R.clearSky();
@@ -872,7 +873,7 @@ public class StdArea implements Area
 					((GridLocale)R).buildGrid();
 			}
 		}
-		for(Enumeration<?> r=getProperMap();r.hasMoreElements();)
+		for(Enumeration r=getProperMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			R.clearSky();
@@ -918,13 +919,13 @@ public class StdArea implements Area
     /** Manipulation of the scripts list */
     public void addScript(ScriptingEngine S)
     {
-        if(scripts==null) scripts=new Vector<ScriptingEngine>(1);
+        if(scripts==null) scripts=new Vector(1);
         if(S==null) return;
         if(!scripts.contains(S)) {
             ScriptingEngine S2=null;
             for(int s=0;s<scripts.size();s++)
             {
-                S2=scripts.elementAt(s);
+                S2=(ScriptingEngine)scripts.elementAt(s);
                 if((S2!=null)&&(S2.getScript().equalsIgnoreCase(S.getScript())))
                     return;
             }
@@ -937,11 +938,11 @@ public class StdArea implements Area
         {
             scripts.removeElement(S);
             if(scripts.size()==0)
-                scripts=new Vector<ScriptingEngine>(1);
+                scripts=new Vector(1);
         }
     }
     public int numScripts(){return (scripts==null)?0:scripts.size();}
-    public ScriptingEngine fetchScript(int x){try{return scripts.elementAt(x);}catch(Exception e){} return null;}
+    public ScriptingEngine fetchScript(int x){try{return (ScriptingEngine)scripts.elementAt(x);}catch(Exception e){} return null;}
 
 	public int maxRange(){return Integer.MAX_VALUE;}
 	public int minRange(){return Integer.MIN_VALUE;}
@@ -955,10 +956,10 @@ public class StdArea implements Area
 		synchronized(("STATS_"+Name()).intern())
 		{
 			Resources.removeResource("HELP_"+Name().toUpperCase());
-			Vector<Integer> levelRanges=new Vector<Integer>();
-			Vector<Integer> alignRanges=new Vector<Integer>();
+			Vector levelRanges=new Vector();
+			Vector alignRanges=new Vector();
 			Faction theFaction=null;
-			for(Enumeration<?> e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
+			for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
 			{
 			    Faction F=(Faction)e.nextElement();
 			    if(F.showInSpecialReported())
@@ -977,7 +978,7 @@ public class StdArea implements Area
 			long totalAlignments=0;
 	        Room R=null;
 	        MOB mob=null;
-			for(Enumeration<?> r=getProperMap();r.hasMoreElements();)
+			for(Enumeration r=getProperMap();r.hasMoreElements();)
 			{
 				R=(Room)r.nextElement();
 				for(int i=0;i<R.numInhabitants();i++)
@@ -1012,8 +1013,8 @@ public class StdArea implements Area
 			{
 				Collections.sort(levelRanges);
 				Collections.sort(alignRanges);
-				statData[Area.AREASTAT_MEDLEVEL]=levelRanges.elementAt((int)Math.round(Math.floor(CMath.div(levelRanges.size(),2.0)))).intValue();
-				statData[Area.AREASTAT_MEDALIGN]=alignRanges.elementAt((int)Math.round(Math.floor(CMath.div(alignRanges.size(),2.0)))).intValue();
+				statData[Area.AREASTAT_MEDLEVEL]=((Integer)levelRanges.elementAt((int)Math.round(Math.floor(CMath.div(levelRanges.size(),2.0))))).intValue();
+				statData[Area.AREASTAT_MEDALIGN]=((Integer)alignRanges.elementAt((int)Math.round(Math.floor(CMath.div(alignRanges.size(),2.0))))).intValue();
 				statData[Area.AREASTAT_AVGLEVEL]=(int)Math.round(CMath.div(statData[Area.AREASTAT_TOTLEVEL],statData[Area.AREASTAT_POPULATION]));
 				statData[Area.AREASTAT_AVGALIGN]=(int)Math.round(((double)totalAlignments)/((double)statData[Area.AREASTAT_POPULATION]));
 			}
@@ -1035,7 +1036,7 @@ public class StdArea implements Area
 			s.append("Author         : "+author+"\n\r");
         s.append("Number of rooms: "+statData[Area.AREASTAT_VISITABLEROOMS]+"\n\r");
 		Faction theFaction=null;
-		for(Enumeration<?> e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
+		for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
 		{
 		    Faction F=(Faction)e.nextElement();
 		    if(F.showInSpecialReported())
@@ -1095,7 +1096,7 @@ public class StdArea implements Area
 	{
 		try
 		{
-			return behaviors.elementAt(index);
+			return (Behavior)behaviors.elementAt(index);
 		}
 		catch(java.lang.ArrayIndexOutOfBoundsException x){}
 		return null;
@@ -1132,7 +1133,7 @@ public class StdArea implements Area
 			while(start<=end)
 			{
 	            mid=(end+start)/2;
-	            int comp=properRooms.elementAt(mid).roomID().compareToIgnoreCase(roomID);
+	            int comp=((Room)properRooms.elementAt(mid)).roomID().compareToIgnoreCase(roomID);
 	            if(comp==0) return mid;
 	            else
 	            if(comp>0)
@@ -1171,7 +1172,7 @@ public class StdArea implements Area
         	if(properRooms.size()>0)
         	{
         		insertAt=getProperIndex(R);
-	            int comp=properRooms.elementAt(insertAt).roomID().compareToIgnoreCase(roomID);
+	            int comp=((Room)properRooms.elementAt(insertAt)).roomID().compareToIgnoreCase(roomID);
 	            if(comp==0) return;
                 addMetroRoom(R);
 				if(comp>0)
@@ -1304,9 +1305,9 @@ public class StdArea implements Area
 	        while(start<=end)
 	        {
 	            int mid=(end+start)/2;
-	            int comp=properRooms.elementAt(mid).roomID().compareToIgnoreCase(roomID);
+	            int comp=((Room)properRooms.elementAt(mid)).roomID().compareToIgnoreCase(roomID);
 	            if(comp==0)
-	                return properRooms.elementAt(mid);
+	                return (Room)properRooms.elementAt(mid);
 	            else
 	            if(comp>0)
 	                end=mid-1;
@@ -1327,7 +1328,7 @@ public class StdArea implements Area
 	public int numberOfProperIDedRooms()
 	{
 		int num=0;
-		for(Enumeration<?> e=getProperMap();e.hasMoreElements();)
+		for(Enumeration e=getProperMap();e.hasMoreElements();)
 		{
 			Room R=(Room)e.nextElement();
 			if(R.roomID().length()>0)
@@ -1362,23 +1363,23 @@ public class StdArea implements Area
 		return R;
 	}
 
-	public Enumeration<Room> getProperMap()
+	public Enumeration getProperMap()
 	{
-		Vector<Room> V=(Vector<Room>)properRooms.clone();
+		Vector V=(Vector)properRooms.clone();
 		Room R=null;
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			R=V.elementAt(v);
+			R=(Room)V.elementAt(v);
 			if(R instanceof GridLocale)
 				V.addAll(((GridLocale)R).getAllRooms());
 		}
 		return V.elements();
 	}
 
-    public Enumeration<Room> getFilledProperMap()
+    public Enumeration getFilledProperMap()
     {
-        Enumeration<?> r=getProperMap();
-        Vector<Room> V=new Vector<Room>();
+        Enumeration r=getProperMap();
+        Vector V=new Vector();
         Room R=null;
         Room R2=null;
         for(;r.hasMoreElements();)
@@ -1399,13 +1400,13 @@ public class StdArea implements Area
         }
         return V.elements();
     }
-	public Vector<Room> getMetroCollection()
+	public Vector getMetroCollection()
 	{
-		Vector<Room> V=(Vector<Room>)properRooms.clone();
+		Vector V=(Vector)properRooms.clone();
 		Room R=null;
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			R=V.elementAt(v);
+			R=(Room)V.elementAt(v);
 			if(R instanceof GridLocale)
 				V.addAll(((GridLocale)R).getAllRooms());
 		}
@@ -1415,9 +1416,9 @@ public class StdArea implements Area
 		return V;
 
 	}
-	public Enumeration<Room> getCompleteMap(){return getProperMap();}
-	public Enumeration<Room> getMetroMap(){return getMetroCollection().elements();}
-	public Vector<String> getSubOpVectorList()
+	public Enumeration getCompleteMap(){return getProperMap();}
+	public Enumeration getMetroMap(){return getMetroCollection().elements();}
+	public Vector getSubOpVectorList()
 	{
 		return subOps;
 	}
@@ -1430,22 +1431,22 @@ public class StdArea implements Area
 	{
 	    if(children==null)
 		{
-	        children=new Vector<Area>(1);
+	        children=new Vector(1);
 	        for(int i=0;i<childrenToLoad.size();i++)
 			{
-	          Area A=CMLib.map().getArea(childrenToLoad.elementAt(i));
+	          Area A=CMLib.map().getArea((String)childrenToLoad.elementAt(i));
 	          if(A==null)
 	            continue;
 			children.addElement(A);
 			}
 		}
 	}
-	public Enumeration<Area> getChildren() { initChildren(); return children.elements(); }
+	public Enumeration getChildren() { initChildren(); return children.elements(); }
 	public String getChildrenList() {
 	        initChildren();
 	        StringBuffer str=new StringBuffer("");
-	        for(Enumeration<Area> e=getChildren(); e.hasMoreElements();) {
-	                Area A=e.nextElement();
+	        for(Enumeration e=getChildren(); e.hasMoreElements();) {
+	                Area A=(Area)e.nextElement();
 	                if(str.length()>0) str.append(";");
 	                str.append(A.name());
 	        }
@@ -1453,11 +1454,11 @@ public class StdArea implements Area
 	}
 
 	public int getNumChildren() { initChildren(); return children.size(); }
-	public Area getChild(int num) { initChildren(); return children.elementAt(num); }
+	public Area getChild(int num) { initChildren(); return (Area)children.elementAt(num); }
 	public Area getChild(String named) {
 	        initChildren();
 	        for(int i=0;i<children.size();i++){
-	                Area A=children.elementAt(i);
+	                Area A=(Area)children.elementAt(i);
 	                if((A.name().equalsIgnoreCase(named))
 	                   ||(A.Name().equalsIgnoreCase(named)))
 	                       return A;
@@ -1467,7 +1468,7 @@ public class StdArea implements Area
 	public boolean isChild(Area named) {
 	        initChildren();
 	        for(int i=0;i<children.size();i++){
-	                Area A=children.elementAt(i);
+	                Area A=(Area)children.elementAt(i);
 	                if(A.equals(named))
 	                       return true;
 	        }
@@ -1476,7 +1477,7 @@ public class StdArea implements Area
 	public boolean isChild(String named) {
 	        initChildren();
 	        for(int i=0;i<children.size();i++){
-	                Area A=children.elementAt(i);
+	                Area A=(Area)children.elementAt(i);
 	                if((A.name().equalsIgnoreCase(named))
 	                   ||(A.Name().equalsIgnoreCase(named)))
 	                        return true;
@@ -1487,7 +1488,7 @@ public class StdArea implements Area
 	        initChildren();
 	        // So areas can load ok, the code needs to be able to replace 'dummy' children with 'real' ones
 	        for(int i=0;i<children.size();i++){
-	                Area A=children.elementAt(i);
+	                Area A=(Area)children.elementAt(i);
 	                if(A.Name().equalsIgnoreCase(Adopted.Name())){
 	                        children.setElementAt(Adopted, i);
 	                        return;
@@ -1509,7 +1510,7 @@ public class StdArea implements Area
 	        }
 	        for(int i=0;i<parents.size();i++) {
 	                // check with all the parents about how they feel
-	                Area rent=parents.elementAt(i);
+	                Area rent=(Area)parents.elementAt(i);
 	                // as soon as any parent says false, dump that false back to them
 	                if(!(rent.canChild(newChild)))
 	                {
@@ -1524,21 +1525,21 @@ public class StdArea implements Area
 	// Parent
 	public void initParents() {
 	        if (parents == null) {
-	                parents = new Vector<Area>();
+	                parents = new Vector();
 	                for (int i = 0; i < parentsToLoad.size(); i++) {
-	                        Area A = CMLib.map().getArea( parentsToLoad.elementAt(i));
+	                        Area A = CMLib.map().getArea((String)parentsToLoad.elementAt(i));
 	                        if (A == null)
 	                                continue;
 	                        parents.addElement(A);
 	                }
 	        }
 	}
-	public Enumeration<Area> getParents() { initParents(); return parents.elements(); }
-    public Vector<Area> getParentsRecurse()
+	public Enumeration getParents() { initParents(); return parents.elements(); }
+    public Vector getParentsRecurse()
     {
-        Vector<Area> V=new Vector<Area>();
+        Vector V=new Vector();
         Area A=null;
-        for(Enumeration<Area> e=getParents();e.hasMoreElements();)
+        for(Enumeration e=getParents();e.hasMoreElements();)
         {
             A=(Area)e.nextElement();
             V.addElement(A);
@@ -1550,9 +1551,9 @@ public class StdArea implements Area
 	public String getParentsList() {
 	        initParents();
 	        StringBuffer str=new StringBuffer("");
-	        for(Enumeration<Area> e=getParents(); e.hasMoreElements();) 
+	        for(Enumeration e=getParents(); e.hasMoreElements();) 
 	        {
-                Area A=e.nextElement();
+                Area A=(Area)e.nextElement();
                 if(str.length()>0) str.append(";");
                 str.append(A.name());
 	        }
@@ -1560,11 +1561,11 @@ public class StdArea implements Area
 	}
 
 	public int getNumParents() { initParents(); return parents.size(); }
-	public Area getParent(int num) { initParents(); return parents.elementAt(num); }
+	public Area getParent(int num) { initParents(); return (Area)parents.elementAt(num); }
 	public Area getParent(String named) {
 	        initParents();
 	        for(int i=0;i<parents.size();i++){
-	                Area A=parents.elementAt(i);
+	                Area A=(Area)parents.elementAt(i);
 	                if((A.name().equalsIgnoreCase(named))
 	                   ||(A.Name().equalsIgnoreCase(named)))
 	                       return A;
@@ -1574,7 +1575,7 @@ public class StdArea implements Area
 	public boolean isParent(Area named) {
 	        initParents();
 	        for(int i=0;i<parents.size();i++){
-	                Area A=parents.elementAt(i);
+	                Area A=(Area)parents.elementAt(i);
 	                if(A.equals(named))
 	                       return true;
 	        }
@@ -1583,7 +1584,7 @@ public class StdArea implements Area
 	public boolean isParent(String named) {
 	        initParents();
 	        for(int i=0;i<parents.size();i++){
-	                Area A=parents.elementAt(i);
+	                Area A=(Area)parents.elementAt(i);
 	                if((A.name().equalsIgnoreCase(named))
 	                   ||(A.Name().equalsIgnoreCase(named)))
 	                        return true;
@@ -1593,7 +1594,7 @@ public class StdArea implements Area
 	public void addParent(Area Adopted) {
 	        initParents();
 	        for(int i=0;i<parents.size();i++){
-	                Area A=parents.elementAt(i);
+	                Area A=(Area)parents.elementAt(i);
 	                if(A.Name().equalsIgnoreCase(Adopted.Name())){
 	                        parents.setElementAt(Adopted, i);
 	                        return;
@@ -1614,7 +1615,7 @@ public class StdArea implements Area
 	        }
 	        for(int i=0;i<children.size();i++) {
 	                // check with all the children about how they feel
-	                Area child=children.elementAt(i);
+	                Area child=(Area)children.elementAt(i);
 	                // as soon as any child says false, dump that false back to them
 	                if(!(child.canParent(newParent)))
 	                {

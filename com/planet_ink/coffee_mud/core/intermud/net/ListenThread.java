@@ -32,6 +32,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
+@SuppressWarnings("unchecked")
 public class ListenThread extends Thread {
     private ServerSocket listen;
     private Vector clients;

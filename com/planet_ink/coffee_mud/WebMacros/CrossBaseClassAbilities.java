@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class CrossBaseClassAbilities extends StdWebMacro
 {
 	public String name()	{return "CrossBaseClassAbilities";}
@@ -68,7 +69,7 @@ public class CrossBaseClassAbilities extends StdWebMacro
 			for(int c=0;c<charClasses.size();c++)
 			{
 				String className=(String)charClasses.elementAt(c);
-				for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+				for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 				{
 					Ability A=(Ability)a.nextElement();
 					int level=CMLib.ableMapper().getQualifyingLevel(className,true,A.ID());

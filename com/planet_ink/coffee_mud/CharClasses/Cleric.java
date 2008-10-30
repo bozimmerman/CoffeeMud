@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Cleric extends StdCharClass
 {
 	public String ID(){return "Cleric";}
@@ -204,7 +205,7 @@ public class Cleric extends StdCharClass
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
-			for(Enumeration<String> a=V.getDimensionVector(1).elements();a.hasMoreElements();)
+			for(Enumeration a=V.getDimensionVector(1).elements();a.hasMoreElements();)
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)
@@ -227,7 +228,7 @@ public class Cleric extends StdCharClass
 				return;
 		}
 		// now only give one, for current level, respecting alignment!
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
@@ -353,9 +354,9 @@ public class Cleric extends StdCharClass
 		return true;
 	}
 
-	public Vector<Item> outfit(MOB myChar)
+	public Vector outfit(MOB myChar)
 	{
-		Vector outfitChoices=new Vector<Item>();
+		Vector outfitChoices=new Vector();
 		if(CMLib.flags().isEvil(myChar))
 		{
 			Weapon w=CMClass.getWeapon("Shortsword");

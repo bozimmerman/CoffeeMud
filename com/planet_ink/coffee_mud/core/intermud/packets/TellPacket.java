@@ -46,6 +46,7 @@ import java.util.Vector;
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
  */
+@SuppressWarnings("unchecked")
 public class TellPacket extends Packet {
 	
     /**

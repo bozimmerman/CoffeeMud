@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
 {
 	public String ID() { return "MasterWeaponsmithing"; }
@@ -42,9 +43,9 @@ public class MasterWeaponsmithing extends Weaponsmithing implements ItemCraftor
     protected int displayColumns(){return 2;}
 
     public String parametersFile(){ return "masterweaponsmith.txt";}
-    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
     
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int autoGenerate=0;
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))

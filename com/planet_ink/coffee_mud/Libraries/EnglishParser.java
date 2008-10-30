@@ -35,6 +35,7 @@ import java.util.regex.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class EnglishParser extends StdLibrary implements EnglishParsing
 {
     public String ID(){return "EnglishParser";}
@@ -1206,7 +1207,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             long num=CMath.s_long(itemID);
 		    if(mine instanceof MOB)
 		    {
-		        Vector<Coins> V=CMLib.beanCounter().getStandardCurrency((MOB)mine,CMLib.beanCounter().getCurrency(mine));
+		        Vector V=CMLib.beanCounter().getStandardCurrency((MOB)mine,CMLib.beanCounter().getCurrency(mine));
 		        for(int v=0;v<V.size();v++)
 		            if(((Coins)V.elementAt(v)).getNumberOfCoins()>=num)
 		                return num;
@@ -1217,7 +1218,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		    }
 		    return CMath.s_long(itemID);
 		}
-	    Vector<String> V=CMParms.parse(itemID);
+	    Vector V=CMParms.parse(itemID);
 	    if((V.size()>1)
 	    &&((CMath.isInteger((String)V.firstElement()))
         &&(matchAnyCurrencySet(CMParms.combine(V,1))!=null)))
@@ -1268,7 +1269,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             }
             return CMLib.beanCounter().getCurrency(mine);
 		}
-	    Vector<String> V=CMParms.parse(itemID);
+	    Vector V=CMParms.parse(itemID);
 	    if((V.size()>1)&&(CMath.isInteger((String)V.firstElement())))
 	        return matchAnyCurrencySet(CMParms.combine(V,1));
 	    else
@@ -1297,7 +1298,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
             }
 		    return CMLib.beanCounter().getLowestDenomination(currency);
 		}
-	    Vector<String> V=CMParms.parse(itemID);
+	    Vector V=CMParms.parse(itemID);
 	    if((V.size()>1)&&(CMath.isInteger((String)V.firstElement())))
 	        return matchAnyDenomination(currency,CMParms.combine(V,1));
 	    else
@@ -1361,7 +1362,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		else
 		{
-		    Vector<String> V=CMParms.parse(itemID);
+		    Vector V=CMParms.parse(itemID);
 		    if((V.size()>1)&&(CMath.isInteger((String)V.firstElement())))
 		        gold=CMath.s_long((String)V.firstElement());
 		    else
@@ -1420,7 +1421,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		else
 		{
-		    Vector<String> V=CMParms.parse(itemID);
+		    Vector V=CMParms.parse(itemID);
 		    if(V.size()<1) return null;
 		    if((!CMath.isInteger((String)V.firstElement()))
 		    &&(!((String)V.firstElement()).equalsIgnoreCase("all")))

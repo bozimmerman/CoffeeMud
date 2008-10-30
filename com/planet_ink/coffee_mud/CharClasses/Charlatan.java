@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Charlatan extends StdCharClass
 {
 	public String ID(){return "Charlatan";}
@@ -172,11 +173,11 @@ public class Charlatan extends StdCharClass
     
 	public String otherLimitations(){return "";}
 	public String otherBonuses(){return "Receives 2% resistance per level to mind affects, 4% resistance per level to divination spells.  Non-class skills become cheaper at 30th level.  Gains a random non-class skill or spell every other level! Receives exploration experience based on danger level.";}
-	public Vector<Item> outfit(MOB myChar)
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector<Item>();
+			outfitChoices=new Vector();
 			Weapon w=CMClass.getWeapon("Shortsword");
 			outfitChoices.addElement(w);
 		}
@@ -225,7 +226,7 @@ public class Charlatan extends StdCharClass
 		return super.okMessage(myHost,msg);
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -245,8 +246,8 @@ public class Charlatan extends StdCharClass
 					return;
 			}
 			// now only give one, for current level, respecting alignment!
-			Vector<Ability> choices=new Vector<Ability>();
-			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			Vector choices=new Vector();
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
 				int lql=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
@@ -273,7 +274,7 @@ public class Charlatan extends StdCharClass
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
-			for(Enumeration<String> a=V.getDimensionVector(1).elements();a.hasMoreElements();)
+			for(Enumeration a=V.getDimensionVector(1).elements();a.hasMoreElements();)
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)

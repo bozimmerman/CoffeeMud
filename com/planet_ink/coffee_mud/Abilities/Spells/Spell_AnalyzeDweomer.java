@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_AnalyzeDweomer extends Spell
 {
 	public String ID() { return "Spell_AnalyzeDweomer"; }
@@ -40,7 +41,7 @@ public class Spell_AnalyzeDweomer extends Spell
 	protected int canTargetCode(){return CAN_ITEMS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
 		if(target==null) return false;

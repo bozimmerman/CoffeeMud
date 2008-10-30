@@ -46,6 +46,7 @@ import java.util.*;
   * </ul>
   * @author=Bo Zimmerman, Jeremy Vyska
   */
+@SuppressWarnings("unchecked")
 public interface Clan extends Cloneable, Tickable, CMCommon, CMModifiable
 {
 

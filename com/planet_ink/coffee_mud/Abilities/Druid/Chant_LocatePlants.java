@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_LocatePlants extends Chant
 {
 	public String ID() { return "Chant_LocatePlants"; }
@@ -116,7 +117,7 @@ public class Chant_LocatePlants extends Chant
 			msg.append("There seem to be a large number of plants all around you!\n\r");
 		return msg.toString();
 	}
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))
@@ -142,9 +143,9 @@ public class Chant_LocatePlants extends Chant
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		Vector<Room> rooms=new Vector<Room>();
-		Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,true,true,50);
-		for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
+		Vector rooms=new Vector();
+		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,true,true,50);
+		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			if(plantsHere(mob,R).length()>0)

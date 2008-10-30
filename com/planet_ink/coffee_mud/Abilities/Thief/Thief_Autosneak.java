@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Thief_Autosneak extends ThiefSkill
 {
 	public String ID() { return "Thief_Autosneak"; }
@@ -71,7 +72,7 @@ public class Thief_Autosneak extends ThiefSkill
 				if(A!=null)
 				{
 					noRepeat=true;
-					if(A.invoke(mob,CMParms.parseToObjV(Directions.getDirectionName(dir)),null,false,0))
+					if(A.invoke(mob,CMParms.parse(Directions.getDirectionName(dir)),null,false,0))
 					{
 						int[] usage=A.usageCost(mob,false);
 						if(CMath.bset(A.usageType(),Ability.USAGE_HITPOINTS)&&(usage[USAGEINDEX_HITPOINTS]>0))
@@ -91,7 +92,7 @@ public class Thief_Autosneak extends ThiefSkill
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.fetchEffect(ID())!=null))
 		{

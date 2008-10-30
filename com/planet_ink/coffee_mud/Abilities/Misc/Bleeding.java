@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Bleeding extends StdAbility
 {
     public String ID() { return "Bleeding"; }
@@ -126,7 +127,7 @@ public class Bleeding extends StdAbility
         return true;
     }
 
-    public boolean invoke(MOB mob, Vector<Object> commands, Environmental target, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
     {
     	if(target==null) target=mob;
     	if(!(target instanceof MOB)) return false;

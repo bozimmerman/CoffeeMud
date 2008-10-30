@@ -30,13 +30,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class ClanDetails extends StdCommand
 {
 	public ClanDetails(){}
 
 	private String[] access={"CLANDETAILS","CLAN"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String qual=CMParms.combine(commands,1).toUpperCase();

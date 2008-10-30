@@ -33,6 +33,7 @@ import java.util.*;
  * @author Owner
  *
  */
+@SuppressWarnings("unchecked")
 public interface AbilityMapper extends CMLibrary
 {
     /**
@@ -72,7 +73,7 @@ public interface AbilityMapper extends CMLibrary
      * @param autoGain
      * @param preReqSkillsList
      */
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain, Vector<String> preReqSkillsList);
+    public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain, Vector preReqSkillsList);
     /**
      * @param ID
      * @param qualLevel
@@ -89,7 +90,7 @@ public interface AbilityMapper extends CMLibrary
      * @param preReqSkillsList
      * @param extraMasks
      */
-    public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain, Vector<String> preReqSkillsList, String extraMasks);
+    public void addCharAbilityMapping(String ID, int qualLevel, String ability, boolean autoGain, Vector preReqSkillsList, String extraMasks);
     /**
      * @param ID
      * @param qualLevel
@@ -162,7 +163,7 @@ public interface AbilityMapper extends CMLibrary
      */
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
     								  String defaultParam, boolean autoGain, boolean secret,
-    								  Vector<String> preReqSkillsList, String extraMask);
+    								  Vector preReqSkillsList, String extraMask);
     /**
      * @param ID
      * @param qualLevel
@@ -177,7 +178,7 @@ public interface AbilityMapper extends CMLibrary
      */
     public void addCharAbilityMapping(String ID, int qualLevel, String ability, int defaultProficiency, 
                                       String defaultParam, boolean autoGain, boolean secret,
-                                      Vector<String> preReqSkillsList, String extraMask, Integer[] costOverrides);
+                                      Vector preReqSkillsList, String extraMask, Integer[] costOverrides);
     /**
      * @param ID
      * @param ability
@@ -188,7 +189,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @param preReqSkillsList
 	 * @param extraMask
 	 */
-	public void addPreRequisites(String ID, Vector<String> preReqSkillsList, String extraMask);
+	public void addPreRequisites(String ID, Vector preReqSkillsList, String extraMask);
     /**
      * @param ID
      */
@@ -197,7 +198,7 @@ public interface AbilityMapper extends CMLibrary
      * @param ID
      * @return
      */
-    public Enumeration<AbilityMapper.AbilityMapping> getClassAbles(String ID);
+    public Enumeration getClassAbles(String ID);
     /**
      * @param abilityID
      * @return
@@ -232,7 +233,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @param ableID
 	 * @return
 	 */
-	public Vector<String> getAbilityAllowsList(String ableID);
+	public Vector getAbilityAllowsList(String ableID);
     /**
      * @param ID
      * @return
@@ -244,7 +245,7 @@ public interface AbilityMapper extends CMLibrary
      * @param level
      * @return
      */
-    public Vector<String> getLevelListings(String ID, boolean checkAll, int level);
+    public Vector getLevelListings(String ID, boolean checkAll, int level);
     /**
      * @param ID
      * @param level
@@ -434,7 +435,7 @@ public interface AbilityMapper extends CMLibrary
 	 * @param req
 	 * @return
 	 */
-	public Vector<Item> componentCheck(MOB mob, DVector req);
+	public Vector componentCheck(MOB mob, DVector req);
 	/**
 	 * @param mob
 	 * @param AID
@@ -444,13 +445,13 @@ public interface AbilityMapper extends CMLibrary
 	/**
 	 * @return
 	 */
-	public Hashtable<String,DVector> getAbilityComponentMap();
+	public Hashtable getAbilityComponentMap();
 	/**
 	 * @param s
 	 * @param to
 	 * @return
 	 */
-	public String addAbilityComponent(String s, Hashtable<String,DVector> to);
+	public String addAbilityComponent(String s, Hashtable to);
 
     /**
      * @param AID
@@ -474,12 +475,12 @@ public interface AbilityMapper extends CMLibrary
      * @param req
      * @return
      */
-    public Vector<DVector> getAbilityComponentDecodedDVectors(DVector req);
+    public Vector getAbilityComponentDecodedDVectors(DVector req);
     /**
      * @param AID
      * @return
      */
-    public Vector<DVector> getAbilityComponentDecodedDVectors(String AID);
+    public Vector getAbilityComponentDecodedDVectors(String AID);
     
     /**
      * @param decodedDV

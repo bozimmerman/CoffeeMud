@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class AreaTbl extends StdWebMacro
 {
 	public String name()	{return "AreaTbl";}
@@ -45,9 +46,9 @@ public class AreaTbl extends StdWebMacro
 			return "<TR><TD colspan=\"" + AT_MAX_COL + "\" class=\"cmAreaTblEntry\"><I>Game is not running - unable to get area list!</I></TD></TR>";
 		}
 
-		Vector<String> areasVec=new Vector<String>();
+		Vector areasVec=new Vector();
 
-		for(Enumeration<Area> a=CMLib.map().sortedAreas();a.hasMoreElements();)
+		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			if(!CMLib.flags().isHidden(A))

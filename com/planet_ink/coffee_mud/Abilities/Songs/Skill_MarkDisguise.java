@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Skill_MarkDisguise extends Skill_Disguise
 {
 	public String ID() { return "Skill_MarkDisguise"; }
@@ -55,7 +56,7 @@ public class Skill_MarkDisguise extends Skill_Disguise
 		return -1;
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Skill_Disguise A=(Skill_Disguise)mob.fetchEffect("Skill_Disguise");
 		if(A==null) A=(Skill_Disguise)mob.fetchEffect("Skill_MarkDisguise");

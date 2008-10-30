@@ -32,6 +32,7 @@ import java.util.regex.Pattern;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class DirtyLanguage extends StdLibrary implements LanguageLibrary
 {
     public String ID(){return "DirtyLanguage";}
@@ -343,9 +344,9 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
         Resources.removeResource("PARSER_"+language.toUpperCase()+"_"+country.toUpperCase());
 	}
 	
-    public boolean insertExpansion(Vector<Object> MORE_CMDS, String str, int m, int strLen, boolean nothingDone)
+    public boolean insertExpansion(Vector MORE_CMDS, String str, int m, int strLen, boolean nothingDone)
     {
-        Vector<String> expansion=CMParms.parseAny(CMStrings.replaceAll(str,"\\t","\t"),"\n",false);
+        Vector expansion=CMParms.parseAny(CMStrings.replaceAll(str,"\\t","\t"),"\n",false);
         MORE_CMDS.setElementAt(expansion.elementAt(0),m);
         String expStr=(String)expansion.elementAt(0);
         if(expStr.length()<=strLen) nothingDone=false;
@@ -362,9 +363,9 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
         return nothingDone;
     }
     
-    public Vector<Object> preCommandParser(Vector<Object> CMDS)
+    public Vector preCommandParser(Vector CMDS)
     {
-        Vector<Object> MORE_CMDS=new Vector<Object>();
+        Vector MORE_CMDS=new Vector();
         String combinedWithTabs=CMParms.combineWithTabs(CMDS,0);
         MORE_CMDS.addElement(combinedWithTabs);
         DVector parser=CMLib.lang().getLanguageParser("COMMAND-PRE-PROCESSOR");

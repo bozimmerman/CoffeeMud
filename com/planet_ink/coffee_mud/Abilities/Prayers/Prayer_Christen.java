@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Prayer_Christen extends Prayer
 {
 	public String ID() { return "Prayer_Christen"; }
@@ -54,7 +55,7 @@ public class Prayer_Christen extends Prayer
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 	    if(mob.isInCombat())
 	    {

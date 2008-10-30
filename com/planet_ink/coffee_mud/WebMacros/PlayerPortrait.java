@@ -31,6 +31,7 @@ import com.planet_ink.coffee_mud.core.exceptions.HTTPServerException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class PlayerPortrait extends StdWebMacro
 {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -59,8 +60,7 @@ public class PlayerPortrait extends StdWebMacro
                 Vector data=CMLib.database().DBReadData(last,"CMPORTRAIT");
                 if((data!=null)&&(data.size()>0))
                 {
-                    data=(Vector)data.firstElement();
-                    String encoded=(String)data.lastElement();
+                    String encoded=((DatabaseEngine.PlayerData)data.firstElement()).xml;
                     img=B64Encoder.B64decode(encoded);
                     if(img!=null)
                         Resources.submitResource("CMPORTRAIT-"+last,img);

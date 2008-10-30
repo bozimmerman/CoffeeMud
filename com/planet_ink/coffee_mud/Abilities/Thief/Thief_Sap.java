@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Thief_Sap extends ThiefSkill
 {
 	public String ID() { return "Thief_Sap"; }
@@ -117,7 +118,7 @@ public class Thief_Sap extends ThiefSkill
         return super.castingQuality(mob,target);
     }
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -172,7 +173,7 @@ public class Thief_Sap extends ThiefSkill
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 					success=maliciousAffect(mob,target,asLevel,3,-1);
-				HashSet H=mob.getGroupMembers(new HashSet<MOB>());
+				HashSet H=mob.getGroupMembers(new HashSet());
 				MOB M=null;
 				mob.makePeace();
 				for(Iterator i=H.iterator();i.hasNext();)

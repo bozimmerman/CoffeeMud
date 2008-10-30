@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class AnimalTaming extends CommonSkill
 {
 	public String ID() { return "AnimalTaming"; }
@@ -131,7 +132,7 @@ public class AnimalTaming extends CommonSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		verb="taming";
 		taming=null;

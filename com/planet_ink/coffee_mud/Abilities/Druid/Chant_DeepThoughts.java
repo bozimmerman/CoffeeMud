@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_DeepThoughts extends Chant
 {
 	public String ID() { return "Chant_DeepThoughts"; }
@@ -132,7 +133,7 @@ public class Chant_DeepThoughts extends Chant
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat())
 		{

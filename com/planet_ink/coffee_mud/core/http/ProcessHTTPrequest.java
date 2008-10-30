@@ -39,6 +39,7 @@ import com.planet_ink.coffee_mud.core.exceptions.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 {
     public String ID(){return "ProcessHTTPrequest";}
@@ -91,7 +92,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 
 	public boolean virtualPage;
 
-	private Hashtable<String,Object> objects=null;
+	private Hashtable objects=null;
 
     public ProcessHTTPrequest()
     {
@@ -271,9 +272,9 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		}
 	}
 
-	public Hashtable<String,Object> getRequestObjects()
+	public Hashtable getRequestObjects()
 	{
-		if(objects==null) objects=new Hashtable<String,Object>();
+		if(objects==null) objects=new Hashtable();
 		return objects;
 	}
 

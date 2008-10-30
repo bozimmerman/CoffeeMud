@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_CharmWard extends Spell
 {
 	public String ID() { return "Spell_CharmWard"; }
@@ -112,7 +113,7 @@ public class Spell_CharmWard extends Spell
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=null;
 		if(commands.size()>0)

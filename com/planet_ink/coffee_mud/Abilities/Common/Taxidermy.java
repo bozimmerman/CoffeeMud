@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Taxidermy extends CraftingSkill
 {
 	public String ID() { return "Taxidermy"; }
@@ -68,7 +69,7 @@ public class Taxidermy extends CraftingSkill
 		super.unInvoke();
 	}
 
-	protected Vector<Vector<String>> loadRecipes()
+	protected Vector loadRecipes()
 	{
         String filename="taxidermy.txt";
 		Vector V=(Vector)Resources.getResource("PARSED: "+filename);
@@ -106,7 +107,7 @@ public class Taxidermy extends CraftingSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Vector POSES=loadRecipes();
 		String pose=null;

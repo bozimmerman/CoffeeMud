@@ -30,13 +30,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class OutFit extends StdCommand
 {
 	public OutFit(){}
 
 	private String[] access={"OUTFIT"};
 	public String[] getAccessWords(){return access;}
-    public boolean preExecute(MOB mob, Vector<Object> commands, int metaFlags, int secondsElapsed, double actionsRemaining)
+    public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
     throws java.io.IOException
 	{
     	if(secondsElapsed>8.0)
@@ -49,7 +50,7 @@ public class OutFit extends StdCommand
     		mob.tell("You invoke a plea for mystical outfitting and await the answer.");
 	    return true;
 	}
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob==null) return false;
@@ -62,12 +63,12 @@ public class OutFit extends StdCommand
 			CMLib.utensils().outfit(mob,R.outfit(mob));
 		mob.tell("\n\r");
 		Command C2=CMClass.getCommand("Equipment");
-		if(C2!=null) C2.execute(mob,CMParms.parseToObjV("EQUIPMENT"),metaFlags);
+		if(C2!=null) C2.execute(mob,CMParms.parse("EQUIPMENT"),metaFlags);
 		mob.tell("\n\rUseful equipment appears mysteriously out of the java plain.");
 		return false;
 	}
-    public double combatActionsCost(MOB mob, Vector<Object> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0)*4;}
-    public double actionsCost(MOB mob, Vector<Object> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0)*4;}
+    public double combatActionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0)*4;}
+    public double actionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0)*4;}
 	public boolean canBeOrdered(){return false;}
 
 	

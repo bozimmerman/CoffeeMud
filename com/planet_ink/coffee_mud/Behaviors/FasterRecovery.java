@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class FasterRecovery extends StdBehavior
 {
 	public String ID(){return "FasterRecovery";}
@@ -115,7 +116,7 @@ public class FasterRecovery extends StdBehavior
 	public void doBe(Area area, int burst, int health, int hits, int mana, int move)
 	{
 		if(area==null) return;
-		for(Enumeration<Room> r=area.getMetroMap();r.hasMoreElements();)
+		for(Enumeration r=area.getMetroMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			doBe(R,burst,health,hits,mana,move);

@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class DefaultCoffeeTableRow implements CoffeeTableRow
 {
     public String ID(){return "DefaultCoffeeTableRow";}
@@ -138,7 +139,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
             bumpVal("G"+((char)mob.baseCharStats().getStat(CharStats.STAT_GENDER)),type);
             bumpVal("F"+tagFix(mob.getWorshipCharID()),type);
             bumpVal("Q"+tagFix(mob.getClanID()),type);
-            HashSet H=mob.getGroupMembers(new HashSet<MOB>());
+            HashSet H=mob.getGroupMembers(new HashSet());
             bumpVal("J"+H.size(),type);
             int pct=0;
             for(Iterator e=H.iterator();e.hasNext();)

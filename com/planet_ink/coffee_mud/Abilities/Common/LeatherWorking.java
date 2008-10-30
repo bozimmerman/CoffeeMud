@@ -34,6 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	public String ID() { return "LeatherWorking"; }
@@ -60,7 +61,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 	protected static final int RCP_SPELL=10;
 
     public String parametersFile(){ return "leatherworking.txt";}
-	protected Vector<Vector<String>> loadRecipes()
+	protected Vector loadRecipes()
 	{
         String filename=parametersFile();
 		Vector recipes=(Vector)Resources.getResource("PARSED: "+filename);
@@ -76,7 +77,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
                 Vector pleaseAdd2=new Vector();
                 for(int r=0;r<recipes.size();r++)
                 {
-                    Vector<String> V=recipes.elementAt(r);
+                    Vector V=(Vector)recipes.elementAt(r);
                     if(V.size()>0)
                     {
                         Vector V1=(Vector)V.clone();
@@ -154,7 +155,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int autoGenerate=0;
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
@@ -179,7 +180,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
                 return super.bundle(mob,commands);
             return false;
         }
-		Vector<Vector<String>> recipes=addRecipes(mob,loadRecipes());
+		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
         bundling=false;
@@ -196,7 +197,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector<String> V=recipes.elementAt(r);
+				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
@@ -224,7 +225,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			building=null;
 			mending=false;
 			messedUp=false;
-			Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
+			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORNREQ_UNWORNONLY);
 			if(!canMend(mob,building,false)) return false;
 			mending=true;
@@ -241,7 +242,7 @@ public class LeatherWorking extends EnhancedCraftingSkill implements ItemCraftor
 			mending=false;
 			refitting=false;
 			messedUp=false;
-			Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
+			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORNREQ_UNWORNONLY);
 			if(building==null) return false;
 			if((building.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER)

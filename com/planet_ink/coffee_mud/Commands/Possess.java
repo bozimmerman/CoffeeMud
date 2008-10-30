@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Possess extends StdCommand
 {
 	public Possess(){}
@@ -74,7 +75,7 @@ public class Possess extends StdCommand
 		return target;
 	}
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.soulMate()!=null)
@@ -105,7 +106,7 @@ public class Possess extends StdCommand
 		{
 		    try
 		    {
-				Enumeration<Room> r=CMLib.map().rooms();
+				Enumeration r=CMLib.map().rooms();
 				for(;r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();

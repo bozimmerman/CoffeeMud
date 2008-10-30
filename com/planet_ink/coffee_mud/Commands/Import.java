@@ -32,6 +32,7 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Import extends StdCommand
 {
 	public Import(){}
@@ -366,7 +367,7 @@ public class Import extends StdCommand
 		}
 	    try
 	    {
-			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(!R.getArea().Name().equalsIgnoreCase(areaName))
@@ -383,7 +384,7 @@ public class Import extends StdCommand
 			Room foundOne=null;
 			try
 			{
-				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R.getArea().Name().equalsIgnoreCase(areaName))
@@ -2200,7 +2201,7 @@ public class Import extends StdCommand
 				M.addNonUninvokableEffect(CMClass.getAbility("Prayer_Curse"));
 			if(CMath.isSet(affFlag,11))
 			{
-				for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+				for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 				{
 					Ability A=(Ability)a.nextElement();
 					if(A.ID().startsWith("Specialization"))
@@ -3068,7 +3069,7 @@ public class Import extends StdCommand
 			boolean forgiveZeroes=false;
 			if((codeStr2.indexOf("~")>=0)&&(codeStr2.lastIndexOf("~")>codeStr2.indexOf("~")))
 			{
-				Vector<String> V=CMParms.parseSquiggles(codeStr2);
+				Vector V=CMParms.parseSquiggles(codeStr2);
 				if(V.size()==4)
 				{
 					forgiveZeroes=true;
@@ -3909,7 +3910,7 @@ public class Import extends StdCommand
 		return str.trim();
 	}
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean prompt=true;
@@ -4078,7 +4079,7 @@ public class Import extends StdCommand
 							{
 							    try
 							    {
-									for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+									for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 									{
 										Room R=(Room)r.nextElement();
 										if((R!=null)&&(!R.getArea().Name().equalsIgnoreCase(areaName)))
@@ -4179,7 +4180,7 @@ public class Import extends StdCommand
 						reLinkTable=new Vector();
 						try
 						{
-							for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+							for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 							{
 								Room R2=(Room)r.nextElement();
 								if(R2!=R)
@@ -4559,7 +4560,7 @@ public class Import extends StdCommand
 			boolean exists=false;
 			try
 			{
-				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R.getArea().Name().equalsIgnoreCase(areaName))
@@ -5668,7 +5669,7 @@ public class Import extends StdCommand
 			A.setAreaFlags(Area.FLAG_ACTIVE);
 		}
 		if(doneRooms.elements().hasMoreElements())
-			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 				((Area)a.nextElement()).fillInAreaRooms();
 		if(session!=null) session.println("done!");
 		return true;

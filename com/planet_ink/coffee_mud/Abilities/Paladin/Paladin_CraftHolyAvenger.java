@@ -34,6 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 {
 	public String ID() { return "Paladin_CraftHolyAvenger"; }
@@ -77,7 +78,7 @@ public class Paladin_CraftHolyAvenger extends EnhancedCraftingSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int completion=16;
 		Item fire=getRequiredFire(mob,0);

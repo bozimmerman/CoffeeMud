@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Purist extends Cleric
 {
 	public String ID(){return "Purist";}
@@ -199,11 +200,11 @@ public class Purist extends Cleric
 		return true;
 	}
 
-	public Vector<Item> outfit(MOB myChar)
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector<Item>();
+			outfitChoices=new Vector();
 			Weapon w=CMClass.getWeapon("SmallMace");
 			outfitChoices.addElement(w);
 		}

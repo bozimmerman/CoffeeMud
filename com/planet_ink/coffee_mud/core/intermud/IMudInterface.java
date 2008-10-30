@@ -37,6 +37,7 @@ import java.io.Serializable;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class IMudInterface implements ImudServices, Serializable
 {
 	public static final long serialVersionUID=0;

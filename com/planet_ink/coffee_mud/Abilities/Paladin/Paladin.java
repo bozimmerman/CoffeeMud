@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Paladin extends StdAbility
 {
 	public String ID() { return "Paladin"; }
@@ -55,7 +56,7 @@ public class Paladin extends StdAbility
 			return false;
 		if(paladinsGroup!=null)
 		{
-			HashSet H=((MOB)affected).getGroupMembers(new HashSet<MOB>());
+			HashSet H=((MOB)affected).getGroupMembers(new HashSet());
 			for(Iterator e=H.iterator();e.hasNext();)
 			{
 				MOB mob=(MOB)e.next();

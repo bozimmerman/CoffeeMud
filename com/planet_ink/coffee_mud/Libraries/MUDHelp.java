@@ -34,6 +34,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class MUDHelp extends StdLibrary implements HelpLibrary
 {
     public String ID(){return "MUDHelp";}
@@ -290,7 +291,7 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 			    subTag=subTag.substring(0,x)+subTag.substring(x+1);
 			}
 			
-			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
 				if(((A.ID().equalsIgnoreCase(tag)||A.ID().equalsIgnoreCase(subTag))

@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_KnowOrigin extends Spell
 {
 	public String ID() { return "Spell_KnowOrigin"; }
@@ -55,7 +56,7 @@ public class Spell_KnowOrigin extends Spell
 			try
 			{
 				// check mobs worn items first!
-				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(CMLib.flags().canAccess(mob,R))
@@ -76,7 +77,7 @@ public class Spell_KnowOrigin extends Spell
 		    try
 		    {
 				// check shopkeepers second!
-				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(CMLib.flags().canAccess(mob,R))
@@ -97,7 +98,7 @@ public class Spell_KnowOrigin extends Spell
 		    try
 		    {
 				// check mobs inventory items third!
-				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R!=null)
@@ -118,7 +119,7 @@ public class Spell_KnowOrigin extends Spell
 		    try
 		    {
 				// check room stuff last
-				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if((CMLib.flags().canAccess(mob,R))&&(R.fetchItem(null,me.Name())!=null))
@@ -129,7 +130,7 @@ public class Spell_KnowOrigin extends Spell
 		return null;
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_ANY);
 		if(target==null) return false;

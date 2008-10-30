@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Mining extends GatheringSkill
 {
 	public String ID() { return "Mining"; }
@@ -105,7 +106,7 @@ public class Mining extends GatheringSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         bundling=false;
 		if((!auto)

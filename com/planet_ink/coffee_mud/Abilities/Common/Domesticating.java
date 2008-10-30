@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Domesticating extends CommonSkill
 {
 	public String ID() { return "Domesticating"; }
@@ -93,7 +94,7 @@ public class Domesticating extends CommonSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		taming=null;
 		String str=CMParms.combine(commands,0);
@@ -145,7 +146,7 @@ public class Domesticating extends CommonSkill
 				return false;
 			}
 			String oldName=M.name();
-			Vector<String> oldV=CMParms.parse(oldName);
+			Vector oldV=CMParms.parse(oldName);
 			if(oldV.size()>1)
 			{
 				if(oldName.endsWith(", "+((String)oldV.lastElement())))

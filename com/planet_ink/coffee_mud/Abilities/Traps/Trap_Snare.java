@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Trap_Snare extends StdTrap
 {
 	public String ID() { return "Trap_Snare"; }
@@ -79,7 +80,7 @@ public class Trap_Snare extends StdTrap
 		{
 			if((!invoker().mayIFight(target))
 			||(isLocalExempt(target))
-			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
+			||(invoker().getGroupMembers(new HashSet()).contains(target))
 			||(target==invoker())
 			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) tripping a snare trap!");

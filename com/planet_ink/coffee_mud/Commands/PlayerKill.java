@@ -30,13 +30,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class PlayerKill extends StdCommand
 {
 	public PlayerKill(){}
 
 	private String[] access={"PLAYERKILL","PKILL"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ALWAYS")

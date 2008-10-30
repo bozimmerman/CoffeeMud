@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Jester extends StdCharClass
 {
 	public String ID(){return "Jester";}
@@ -191,7 +192,7 @@ public class Jester extends StdCharClass
 			+(affectableStats.getClassLevel(this)*2));
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -201,7 +202,7 @@ public class Jester extends StdCharClass
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
-			for(Enumeration<String> a=V.getDimensionVector(1).elements();a.hasMoreElements();)
+			for(Enumeration a=V.getDimensionVector(1).elements();a.hasMoreElements();)
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)
@@ -215,11 +216,11 @@ public class Jester extends StdCharClass
     public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host, mob,victim,amount,6.0);}
 	public String otherLimitations(){return "";}
 	public String otherBonuses(){return "Receives 2%/level bonus to saves versus poison.  Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration experience based on danger level.";}
-	public Vector<Item> outfit(MOB myChar)
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector<Item>();
+			outfitChoices=new Vector();
 			Weapon w=CMClass.getWeapon("Shortsword");
 			outfitChoices.addElement(w);
 		}

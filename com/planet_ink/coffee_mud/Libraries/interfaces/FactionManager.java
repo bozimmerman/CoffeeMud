@@ -33,12 +33,13 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public interface FactionManager extends CMLibrary, Tickable
 {
-    public Hashtable<String,Faction> factionSet();
+    public Hashtable factionSet();
     public void clearFactions();
     public void reloadFactions(String factionList);
-    public Hashtable<String,Faction> rangeCodeNames();
+    public Hashtable rangeCodeNames();
     public boolean isRangeCodeName(String key);
     public boolean isFactionedThisWay(MOB mob, String rangeCodeName);
     public String rangeDescription(String rangeCodeName, String andOr);
@@ -53,7 +54,7 @@ public interface FactionManager extends CMLibrary, Tickable
     public int getPercent(String factionID, int faction);
     public int getPercentFromAvg(String factionID, int faction);
     public Faction.FactionRange getRange(String factionID, int faction);
-    public Enumeration<Faction.FactionRange> getRanges(String factionID);
+    public Enumeration getRanges(String factionID);
     public double getRangePercent(String factionID, int faction); 
     public int getTotal(String factionID);
     public int getRandom(String factionID);

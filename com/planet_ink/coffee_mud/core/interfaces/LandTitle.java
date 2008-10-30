@@ -35,6 +35,7 @@ import java.util.Vector;
  * for sale, or implemented as Items representing the sellable title.
  * @author Bo Zimmerman
  */
+@SuppressWarnings("unchecked")
 public interface LandTitle extends Environmental
 {
     /**
@@ -88,7 +89,7 @@ public interface LandTitle extends Environmental
      * @see com.planet_ink.coffee_mud.Locales.interfaces.Room
      * @return a Vector of the complete set of Room objects represented by this title
      */
-	public Vector<Room> getPropertyRooms();
+	public Vector getPropertyRooms();
     /**
      * Whether this property is a rental.
      * @return true if the property is rental, false if ownable outright

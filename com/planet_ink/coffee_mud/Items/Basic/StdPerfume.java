@@ -31,11 +31,12 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdPerfume extends StdDrink implements Perfume
 {
 	public String ID(){	return "StdPerfume";}
 
-	Vector<String> smellList=new Vector<String>();
+	Vector smellList=new Vector();
 	
 	public StdPerfume()
 	{
@@ -55,7 +56,7 @@ public class StdPerfume extends StdDrink implements Perfume
 		recoverEnvStats();
 	}
 
-	public Vector<String> getSmellEmotes(Perfume me)
+	public Vector getSmellEmotes(Perfume me)
 	{	return smellList;}
 	public String getSmellList()
 	{

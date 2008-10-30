@@ -30,13 +30,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class GTell extends StdCommand
 {
 	public GTell(){}
 
 	private String[] access={"GTELL","GT"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String text=CMParms.combine(commands,1);
@@ -73,7 +74,7 @@ public class GTell extends StdCommand
 			&&(Character.isLetter(text.charAt(1))||text.charAt(1)==' ')))
 		{
 			text=text.substring(1);
-			Vector<String> V=CMParms.parse(text);
+			Vector V=CMParms.parse(text);
 			Social S=CMLib.socials().fetchSocial(V,true);
 			if(S==null) S=CMLib.socials().fetchSocial(V,false);
 			if(S!=null)
@@ -103,7 +104,7 @@ public class GTell extends StdCommand
 			tellMsg.setOthersMessage(tellMsg.sourceMessage());
 		}
 		
-		HashSet group=mob.getGroupMembers(new HashSet<MOB>());
+		HashSet group=mob.getGroupMembers(new HashSet());
 		CMMsg msg=tellMsg;
 		for(Iterator e=group.iterator();e.hasNext();)
 		{

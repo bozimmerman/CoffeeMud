@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Prayer_HealingAura extends Prayer
 {
 	public String ID() { return "Prayer_HealingAura"; }
@@ -68,7 +69,7 @@ public class Prayer_HealingAura extends Prayer
 
 		if((fiveDown>1)&&(tenDown>1)&&(twentyDown>1)) return true;
 
-		HashSet followers=myChar.getGroupMembers(new HashSet<MOB>());
+		HashSet followers=myChar.getGroupMembers(new HashSet());
 		if(myChar.location()!=null)
 			for(int i=0;i<myChar.location().numInhabitants();i++)
 			{

@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_MassCureDisease"; }
@@ -72,7 +73,7 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -90,8 +91,8 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 			{
 				mob.location().send(mob,msg);
                 boolean worked=false;
-        		Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,100);
-        		for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
+        		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,100);
+        		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
         		{
         			Room R=CMLib.map().getRoom((Room)r.nextElement());
 					for(int m=0;m<R.numInhabitants();m++)

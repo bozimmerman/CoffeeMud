@@ -34,6 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Generate extends StdCommand
 {
     public Generate(){}
@@ -47,7 +48,7 @@ public class Generate extends StdCommand
 
     private String[] access={"GENERATE"};
     public String[] getAccessWords(){return access;}
-    public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+    public boolean execute(MOB mob, Vector commands, int metaFlags)
         throws java.io.IOException
     {
     	if(true)
@@ -118,7 +119,8 @@ public class Generate extends StdCommand
     
     // tags created: ROOM_CLASS, ROOM_TITLE, ROOM_DESCRIPTION, ROOM_CLASSES, ROOM_TITLES, ROOM_DESCRIPTIONS
     // tags created: 
-    private Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable<String,Object> defined) throws CMException
+    @SuppressWarnings("unused")
+    private Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
     {
         String classID = findString("class",piece,defined);
         Room R = CMClass.getLocale(classID);
@@ -432,7 +434,7 @@ public class Generate extends StdCommand
         String inserter = CMLib.xml().getParmValue(piece.parms,"INSERT");
         if(inserter!=null)
         {
-            Vector<String> V=CMParms.parseCommas(inserter,true);
+            Vector V=CMParms.parseCommas(inserter,true);
             for(int v=0;v<V.size();v++)
             {
                 String s = (String)V.elementAt(v);

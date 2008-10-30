@@ -33,6 +33,7 @@ import java.net.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class DefaultSession extends Thread implements Session
 {
 	protected int status=0;
@@ -810,7 +811,7 @@ public class DefaultSession extends Thread implements Session
             String tag=l.substring(tagStart+1,tagEnd).trim();
             l=l.substring(tagEnd+1).trim();
             // now we have a tag, and its parameters (space delimited)
-            Vector<String> parts=CMParms.parseSpaces(tag,true);
+            Vector parts=CMParms.parseSpaces(tag,true);
             if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Got secure MXP tag: "+tag);
             if(parts.size()>1)
             {
@@ -1453,7 +1454,7 @@ public class DefaultSession extends Thread implements Session
                                 killFlag=true;
                     }
 					needPrompt=true;
-					Vector<String> CMDS=null;
+					Vector CMDS=null;
 					while((!killFlag)&&(mob!=null))
 					{
                         while((!killFlag)
@@ -1482,17 +1483,17 @@ public class DefaultSession extends Thread implements Session
                                 String firstWord=(String)CMDS.firstElement();
                                 PlayerStats pstats=mob.playerStats();
                                 String alias=(pstats!=null)?pstats.getAlias(firstWord):"";
-                                Vector<Vector<String>> ALL_CMDS=new Vector<Vector<String>>();
+                                Vector ALL_CMDS=new Vector();
                                 boolean echoOn=false;
                                 if(alias.length()>0)
                                 {
                                     CMDS.removeElementAt(0);
-                                    Vector<String> all_stuff=CMParms.parseSquiggleDelimited(alias,true);
+                                    Vector all_stuff=CMParms.parseSquiggleDelimited(alias,true);
                                     for(int a=0;a<all_stuff.size();a++)
                                     {
-                                        Vector<String> THIS_CMDS=(Vector<String>)CMDS.clone();
+                                        Vector THIS_CMDS=(Vector)CMDS.clone();
                                         ALL_CMDS.addElement(THIS_CMDS);
-                                        Vector<String> preCommands=CMParms.parse((String)all_stuff.elementAt(a));
+                                        Vector preCommands=CMParms.parse((String)all_stuff.elementAt(a));
                                         for(int v=preCommands.size()-1;v>=0;v--)
                                             THIS_CMDS.insertElementAt(preCommands.elementAt(v),0);
                                     }
@@ -1502,7 +1503,7 @@ public class DefaultSession extends Thread implements Session
                                     ALL_CMDS.addElement(CMDS);
                                 for(int v=0;v<ALL_CMDS.size();v++)
                                 {
-                                    CMDS=(Vector<String>)ALL_CMDS.elementAt(v);
+                                    CMDS=(Vector)ALL_CMDS.elementAt(v);
     								setPreviousCmd(CMDS);
     								milliTotal+=(lastStop-lastStart);
 
@@ -1515,10 +1516,10 @@ public class DefaultSession extends Thread implements Session
 
     								lastStart=System.currentTimeMillis();
                                     if(echoOn) rawPrintln(CMParms.combineWithQuotes(CMDS,0));
-                                    Vector<Object> MORE_CMDS=CMLib.lang().preCommandParser(CMParms.makeObjV(CMDS));
+                                    Vector MORE_CMDS=CMLib.lang().preCommandParser(CMDS);
                                     for(int m=0;m<MORE_CMDS.size();m++)
                                     	if(mob!=null)
-		    								mob.enqueCommand((Vector<Object>)MORE_CMDS.elementAt(m),metaFlags(),0);
+		    								mob.enqueCommand((Vector)MORE_CMDS.elementAt(m),metaFlags(),0);
     								lastStop=System.currentTimeMillis();
                                 }
 							}
@@ -1531,7 +1532,7 @@ public class DefaultSession extends Thread implements Session
 						&&(mob()!=null))
 						{
 							lastBlahCheck=System.currentTimeMillis();
-							Vector<String> V=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_IDLETIMERS));
+							Vector V=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_IDLETIMERS));
 							if((V.size()>0)
 							&&(!CMSecurity.isAllowed(mob(),mob().location(),"IDLEOK"))
 							&&(CMath.s_int((String)V.firstElement())>0))
@@ -1689,7 +1690,7 @@ public class DefaultSession extends Thread implements Session
 
         public void initialize()
         {
-            HashSet group=theMOB.getGroupMembers(new HashSet<MOB>());
+            HashSet group=theMOB.getGroupMembers(new HashSet());
             skipRooms.clear();
             for(Iterator i=group.iterator();i.hasNext();)
             {

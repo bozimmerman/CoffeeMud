@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Bomb_Smoke extends StdBomb
 {
 	public String ID() { return "Bomb_Smoke"; }
@@ -60,7 +61,7 @@ public class Bomb_Smoke extends StdBomb
 		{
 			if((!invoker().mayIFight(target))
 			||(isLocalExempt(target))
-			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target))
+			||(invoker().getGroupMembers(new HashSet()).contains(target))
 			||(target==invoker())
 			||(CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) the smoke bomb!");

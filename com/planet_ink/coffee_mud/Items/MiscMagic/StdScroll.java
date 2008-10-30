@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdScroll extends StdItem implements MiscMagic, Scroll
 {
 	public String ID(){	return "StdScroll";}

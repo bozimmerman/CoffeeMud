@@ -38,6 +38,7 @@ import java.util.*;
  * @author Bo Zimmerman
  *
  */
+@SuppressWarnings("unchecked")
 public interface MudHost
 {
     /** the number of milliseconds between each savethread execution */

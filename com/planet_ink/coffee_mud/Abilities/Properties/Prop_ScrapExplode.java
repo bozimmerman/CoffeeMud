@@ -35,6 +35,7 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
+@SuppressWarnings("unchecked")
 public class Prop_ScrapExplode extends Property {
 
 	public String ID() { return "Prop_ScrapExplode"; }
@@ -55,7 +56,7 @@ public class Prop_ScrapExplode extends Property {
 			{
 				CMLib.combat().postDamage(mob, mob, item, damage*2,  CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE, Weapon.TYPE_PIERCING,
 				        "Scrapping " + item.Name() + " causes an explosion which <DAMAGE> <T-NAME>!!!");
-				HashSet theBadGuys=mob.getGroupMembers(new HashSet<MOB>());
+				HashSet theBadGuys=mob.getGroupMembers(new HashSet());
 				for(Iterator e=theBadGuys.iterator();e.hasNext();)
 				{
 					MOB inhab=(MOB)e.next();

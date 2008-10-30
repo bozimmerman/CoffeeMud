@@ -30,13 +30,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Transfer extends At
 {
 	public Transfer(){}
 
 	private String[] access={"TRANSFER"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Room room=null;
@@ -116,7 +117,7 @@ public class Transfer extends At
 						V.addElement(M);
 				}
 			if(V.size()==0)
-				for(Enumeration<Room> r=mob.location().getArea().getProperMap();r.hasMoreElements();)
+				for(Enumeration r=mob.location().getArea().getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					MOB M=null;
@@ -135,7 +136,7 @@ public class Transfer extends At
 			{
 			    try
 			    {
-					for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
 						MOB M=null;

@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Sasquatch extends Gorilla
 {
 	public String ID(){	return "Sasquatch"; }
@@ -46,13 +47,13 @@ public class Sasquatch extends Gorilla
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
 
-	protected static Vector<Item> resources=new Vector<Item>();
+	protected static Vector resources=new Vector();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+5);
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+5);
 	}
-	public Vector<Item> myResources()
+	public Vector myResources()
 	{
 		synchronized(resources)
 		{

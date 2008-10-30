@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Druid_Rend extends StdAbility
 {
 	public String ID() { return "Druid_Rend"; }
@@ -64,7 +65,7 @@ public class Druid_Rend extends StdAbility
          return super.castingQuality(mob,target);
     }
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{

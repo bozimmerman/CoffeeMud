@@ -31,13 +31,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class AbilityNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable<String,String> parms=parseParms(parm);
+		Hashtable parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("ABILITY");
 		if(parms.containsKey("RESET"))
 		{	
@@ -54,7 +55,7 @@ public class AbilityNext extends StdWebMacro
 		String flagString=httpReq.getRequestParameter("FLAGS");
 		if((flagString!=null)&&(flagString.length()>0))
 		{
-		    Vector<String> V=CMParms.parseSquiggles(flagString.toUpperCase());
+		    Vector V=CMParms.parseSquiggles(flagString.toUpperCase());
 		    for(int i=0;i<Ability.FLAG_DESCS.length;i++)
 		        if(V.contains(Ability.FLAG_DESCS[i]))
 		            flags=flags|(CMath.pow(2,i));
@@ -69,7 +70,7 @@ public class AbilityNext extends StdWebMacro
         boolean allFlag =parms.containsKey("ALL");
         boolean domainFlag=parms.containsKey("DOMAIN");
         String domain=(String)parms.get("DOMAIN");
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			boolean okToShow=true;

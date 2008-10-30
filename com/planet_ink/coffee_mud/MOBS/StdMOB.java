@@ -33,6 +33,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdMOB implements MOB
 {
 	private static final Vector empty=new Vector();
@@ -1378,7 +1379,7 @@ public class StdMOB implements MOB
                     return false;
                 double diff=actions()-((Double)ROW[2]).doubleValue();
                 Object O=ROW[0];
-                Vector<Object> commands=(Vector<Object>)ROW[1];
+                Vector commands=(Vector)ROW[1];
                 ((long[])ROW[3])[0]=((long[])ROW[3])[0]+1000;
                 ((int[])ROW[4])[0]+=1;
                 int secondsElapsed=((int[])ROW[4])[0];
@@ -1412,7 +1413,7 @@ public class StdMOB implements MOB
         return false;
 	}
 
-	public void doCommand(Vector<Object> commands, int metaFlags)
+	public void doCommand(Vector commands, int metaFlags)
 	{
 		Object O=CMLib.english().findCommand(this,commands);
 		if(O!=null)
@@ -1421,7 +1422,7 @@ public class StdMOB implements MOB
 			CMLib.commands().handleUnknownCommand(this,commands);
 	}
 
-    protected void doCommand(Object O, Vector<Object> commands, int metaFlags)
+    protected void doCommand(Object O, Vector commands, int metaFlags)
 	{
 		try
 		{
@@ -1453,7 +1454,7 @@ public class StdMOB implements MOB
 		}
 	}
 
-    protected double calculateTickDelay(Object command, Vector<Object> commands, double tickDelay)
+    protected double calculateTickDelay(Object command, Vector commands, double tickDelay)
     {
         if(tickDelay<=0.0)
         {
@@ -1469,7 +1470,7 @@ public class StdMOB implements MOB
         return tickDelay;
     }
 
-    public void prequeCommand(Vector<Object> commands, int metaFlags, double tickDelay)
+    public void prequeCommand(Vector commands, int metaFlags, double tickDelay)
     {
         if(commands==null) return;
         Object O=CMLib.english().findCommand(this,commands);
@@ -1490,7 +1491,7 @@ public class StdMOB implements MOB
         dequeCommand();
     }
 
-	public void enqueCommand(Vector<Object> commands, int metaFlags, double tickDelay)
+	public void enqueCommand(Vector commands, int metaFlags, double tickDelay)
 	{
 		if(commands==null) return;
         Object O=CMLib.english().findCommand(this,commands);
@@ -3378,14 +3379,14 @@ public class StdMOB implements MOB
 		}
 	}
 	public int numExpertises(){return (expertises==null)?0:expertises.size();}
-	public Enumeration<String> uniqueExpertises()
+	public Enumeration uniqueExpertises()
 	{
 		try{
 			if((expertises==null)||(expertises.size()==0)) return empty.elements();
-			Vector<String> exCopy=(Vector<String>)expertises.clone();
+			Vector exCopy=(Vector)expertises.clone();
 			String exper=null, experRoot=null, expTest=null;
 			int num=-1,end=-1,num2=-1;
-			HashSet<String> remove=new HashSet<String>();
+			HashSet remove=new HashSet();
 			for(int i1=exCopy.size()-1;i1>=0;i1--)
 			{
 				exper=(String)exCopy.elementAt(i1);
@@ -3579,7 +3580,7 @@ public class StdMOB implements MOB
         else
             addFaction(which,fetchFaction(which) + amount);
     }
-    public Enumeration<String> fetchFactions()
+    public Enumeration fetchFactions()
     {
         return ((Hashtable)factions.clone()).keys();
     }
@@ -3607,7 +3608,7 @@ public class StdMOB implements MOB
         if(F==null) return false;
         return factions.containsKey(F.factionID().toUpperCase());
     }
-    public Vector<String> fetchFactionRanges()
+    public Vector fetchFactionRanges()
     {
         Faction F=null;
         Faction.FactionRange FR=null;

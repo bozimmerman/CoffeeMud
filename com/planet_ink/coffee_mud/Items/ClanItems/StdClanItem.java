@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdClanItem extends StdItem implements ClanItem
 {
 	public String ID(){	return "StdClanItem";}
@@ -212,6 +213,7 @@ public class StdClanItem extends StdItem implements ClanItem
 		return V;
 	}
 
+	@SuppressWarnings("unchecked")
 	public static synchronized Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("PARSED: clancraft.txt");
@@ -376,7 +378,7 @@ public class StdClanItem extends StdItem implements ClanItem
 					Vector recipes=loadRecipes();
 					for(int v=0;v<recipes.size();v++)
 					{
-						Vector<String> V=recipes.elementAt(v);
+						Vector V=(Vector)recipes.elementAt(v);
 						if((V.size()>3)&&(CMath.s_int((String)V.elementAt(3))==((ClanItem)myHost).ciType()))
 						{
 							int exp=CMath.s_int((String)V.elementAt(6))/2;

@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Prayer_Absorption extends Prayer
 {
 	public String ID() { return "Prayer_Absorption"; }
@@ -61,7 +62,7 @@ public class Prayer_Absorption extends Prayer
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

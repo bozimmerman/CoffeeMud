@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class GrinderHolidays {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
@@ -54,7 +55,7 @@ public class GrinderHolidays {
     }
 
 
-    public static String createModifyHoliday(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, String holidayName)
+    public static String createModifyHoliday(ExternalHTTPRequests httpReq, Hashtable parms, String holidayName)
     {
         int index=CMLib.quests().getHolidayIndex(holidayName);
         if(index<=0)

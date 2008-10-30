@@ -22,6 +22,7 @@ import java.util.Vector;
 import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
+@SuppressWarnings("unchecked")
 public class DefaultCoffeeShop implements CoffeeShop
 {
     public String ID(){return "DefaultCoffeeShop";}

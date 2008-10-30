@@ -16,6 +16,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class CMStrings
 {
     private CMStrings(){super();}
@@ -357,9 +358,9 @@ public class CMStrings
         return size;
     }
     
-    public static Hashtable<Object,Integer> makeNumericHash(Object[] obj)
+    public static Hashtable makeNumericHash(Object[] obj)
     {
-    	Hashtable<Object,Integer> H=new Hashtable<Object,Integer>();
+    	Hashtable H=new Hashtable();
     	for(int i=0;i<obj.length;i++)
     		H.put(obj[i],new Integer(i));
     	return H;

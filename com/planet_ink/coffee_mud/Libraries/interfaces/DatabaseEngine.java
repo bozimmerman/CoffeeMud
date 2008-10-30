@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public interface DatabaseEngine extends CMLibrary
 {
 	public String errorStatus();
@@ -38,11 +39,14 @@ public interface DatabaseEngine extends CMLibrary
     public DBConnector getConnector();
 	// DBABLES, DBCCLASS, DBRACES, DBPLAYERS, DBMAP, DBSTATS, DBPOLLS, DBVFS, DBJOURNALS, DBQUESTS, DBCLANS  
 	
-	public static final int PDAT_WHO=0;
-	public static final int PDAT_SECTION=1;
-	public static final int PDAT_KEY=2;
-	public static final int PDAT_XML=3;
-	
+    public static class PlayerData
+    {
+    	public String who="";
+    	public String section="";
+    	public String key="";
+    	public String xml="";
+    }
+    
 	public void DBUpdateFollowers(MOB mob);
 	public void DBReadCatalogs();
 	public void DBReadContent(Room thisRoom, Vector rooms);
@@ -87,8 +91,8 @@ public interface DatabaseEngine extends CMLibrary
     public boolean isConnected();
 	public String[] DBFetchEmailData(String name);
 	public String DBEmailSearch(String email);
-	public Vector<Vector<String>> getExtendedUserList();
-	public Vector<String> getUserList();
+	public Vector getExtendedUserList();
+	public Vector getUserList();
     public Vector DBScanFollowers(MOB mob);
 	public void DBReadFollowers(MOB mob, boolean bringToLife);
 	public void DBDeleteMOB(MOB mob);
@@ -96,8 +100,8 @@ public interface DatabaseEngine extends CMLibrary
 	public Area DBCreateArea(String areaName, String areaType);
 	public void DBDeleteArea(Area A);
 	public void DBUpdateArea(String keyName,Area A);
-	public Vector<String> DBReadJournals();
-	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgs(String Journal);
+	public Vector DBReadJournals();
+	public Vector DBReadJournalMsgs(String Journal);
 	public int DBCountJournal(String Journal, String from, String to);
 	public void DBWriteJournal(String Journal, String from, String to, String subject, String message, int which);
 	public void DBDeleteJournal(String Journal, int which);
@@ -146,7 +150,7 @@ public interface DatabaseEngine extends CMLibrary
     public void DBDeletePoll(String name);
     public Vector DBReadPollList();
     public Vector DBReadPoll(String name);
-    public Vector<CMFile.CMVFSFile> DBReadVFSDirectory();
+    public Vector DBReadVFSDirectory();
     public CMFile.CMVFSFile DBReadVFSFile(String filename);
     public void DBCreateVFSFile(String filename, int bits, String creator, Object data);
     public void DBDeleteVFSFile(String filename);

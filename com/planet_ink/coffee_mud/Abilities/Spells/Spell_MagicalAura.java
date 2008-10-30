@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_MagicalAura extends Spell
 {
 	public String ID() { return "Spell_MagicalAura"; }
@@ -74,7 +75,7 @@ public class Spell_MagicalAura extends Spell
         return super.castingQuality(mob,target);
     }
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_ANY);
 		if(target==null) return false;

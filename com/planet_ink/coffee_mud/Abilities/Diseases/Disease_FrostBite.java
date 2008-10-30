@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Disease_FrostBite extends Disease
 {
     public String ID() { return "Disease_FrostBite"; }
@@ -65,7 +66,7 @@ public class Disease_FrostBite extends Disease
             if(A!=null)
             {
                 super.unInvoke();
-                A.invoke(mob,CMParms.parseToObjV(where),mob,true,0);
+                A.invoke(mob,CMParms.parse(where),mob,true,0);
                 mob.recoverCharStats();
                 mob.recoverEnvStats();
                 mob.recoverMaxState();
@@ -97,7 +98,7 @@ public class Disease_FrostBite extends Disease
         }
     }
 
-    public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         where=null;
         return super.invoke(mob,commands,givenTarget,auto,asLevel);

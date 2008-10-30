@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Distilling extends Cooking
 {
 	public String ID() { return "Distilling"; }
@@ -45,7 +46,7 @@ public class Distilling extends Cooking
     public String supportedResourceString(){return "MISC";}
 
     public String parametersFile(){ return "liquors.txt";}
-    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
     public Distilling()
     {
@@ -55,7 +56,7 @@ public class Distilling extends Cooking
         defaultDrinkSound = "hotspring.wav";
     }
 
-    public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(building==null))
             return false;

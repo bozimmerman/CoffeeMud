@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 {
     public String ID(){return "TimsLibrary";}
@@ -932,7 +933,7 @@ public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
 		{
 			spellSet=new Vector();
 			Ability A=null;
-			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
 			{
 				A=(Ability)e.nextElement();
 				if(((A.classificationCode()&(Ability.ALL_ACODES))==Ability.ACODE_SPELL))

@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_SpeedTime extends Chant
 {
 	public String ID() { return "Chant_SpeedTime"; }
@@ -44,7 +45,7 @@ public class Chant_SpeedTime extends Chant
 	protected int canTargetCode(){return 0;}
 	protected int overrideMana(){return 100;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

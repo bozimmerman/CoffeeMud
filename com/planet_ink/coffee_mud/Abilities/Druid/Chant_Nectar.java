@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_Nectar extends Chant
 {
 	public String ID() { return "Chant_Nectar"; }
@@ -120,7 +121,7 @@ public class Chant_Nectar extends Chant
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!auto)
 		{

@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prop_LangTranslator extends Property implements Language
 {
 	public String ID() { return "Prop_LangTranslator"; }
@@ -45,7 +46,7 @@ public class Prop_LangTranslator extends Property implements Language
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
-		Vector<String> V=CMParms.parse(text);
+		Vector V=CMParms.parse(text);
 		langs.clear();
 		int lastpct=100;
 		for(int v=0;v<V.size();v++)

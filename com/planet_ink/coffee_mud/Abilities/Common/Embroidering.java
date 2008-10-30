@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Embroidering extends CommonSkill
 {
 	public String ID() { return "Embroidering"; }
@@ -71,7 +72,7 @@ public class Embroidering extends CommonSkill
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{

@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -31,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdPostman extends StdShopKeeper implements PostOffice
 {
     public String ID(){return "StdPostman";}
@@ -67,8 +69,6 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         recoverEnvStats();
         recoverCharStats();
     }
-
-
 
     public double minimumPostage(){return minimumPostage;}
     public void setMinimumPostage(double d){minimumPostage=d;}
@@ -150,19 +150,16 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         boolean found=false;
         for(int v=V.size()-1;v>=0;v--)
         {
-            Vector V2=(Vector)V.elementAt(v);
-            if((V2.size()>3)
-            &&(((String)V2.elementAt(DATA_KEY)).startsWith(postalBranch()+";")))
+        	DatabaseEngine.PlayerData V2=(DatabaseEngine.PlayerData)V.elementAt(v);
+            if((V2!=null)
+            &&(V2.key.startsWith(postalBranch()+";")))
             {
-                Item I=makeItem(parsePostalItemData((String)V2.elementAt(DATA_DATA)));
+                Item I=makeItem(parsePostalItemData(V2.xml));
                 if(I==null) continue;
                 if(thisThang.sameAs(I))
                 {
                     found=true;
-                    CMLib.database().DBDeleteData(
-                            ((String)V2.elementAt(DATA_USERID)),
-                            ((String)V2.elementAt(DATA_CHAIN)),
-                            ((String)V2.elementAt(DATA_KEY)));
+                    CMLib.database().DBDeleteData( V2.who, V2.section, V2.key);
                     break;
                 }
             }
@@ -180,10 +177,10 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         if(V==null) return branches;
         for(int v=0;v<V.size();v++)
         {
-            Vector V2=(Vector)V.elementAt(v);
-            if(V2.size()>3)
+        	DatabaseEngine.PlayerData V2=(DatabaseEngine.PlayerData)V.elementAt(v);
+            if(V2!=null)
             {
-                String key=(String)V2.elementAt(DATA_KEY);
+                String key=V2.key;
                 int x=key.indexOf("/");
                 if(x>0)
                     branches.put(key.substring(0,x),key.substring(x+1));
@@ -207,14 +204,11 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         if(V==null) return;
         for(int v=0;v<V.size();v++)
         {
-            Vector V2=(Vector)V.elementAt(v);
-            if((V2.size()>3)
-            &&(((String)V2.elementAt(DATA_KEY)).startsWith(postalBranch()+"/")))
+        	DatabaseEngine.PlayerData V2=(DatabaseEngine.PlayerData)V.elementAt(v);
+            if((V2!=null)
+            &&(V2.key.startsWith(postalBranch()+"/")))
             {
-                CMLib.database().DBDeleteData(
-                ((String)V2.elementAt(DATA_USERID)),
-                ((String)V2.elementAt(DATA_CHAIN)),
-                ((String)V2.elementAt(DATA_KEY)));
+                CMLib.database().DBDeleteData( V2.who, V2.section, V2.key);
             }
         }
     }
@@ -224,9 +218,9 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         Vector mine=new Vector();
         for(int v=0;v<V.size();v++)
         {
-            Vector V2=(Vector)V.elementAt(v);
-            if((V2.size()>3)
-            &&(((String)V2.elementAt(DATA_KEY)).startsWith(postalBranch()+";")))
+        	DatabaseEngine.PlayerData V2=(DatabaseEngine.PlayerData)V.elementAt(v);
+            if((V2!=null)
+            &&(V2.key.startsWith(postalBranch()+";")))
             {
                 mine.addElement(V2);
             }
@@ -252,11 +246,11 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         Vector V=getBoxRowData(mob);
         for(int v=0;v<V.size();v++)
         {
-            Vector V2=(Vector)V.elementAt(v);
-            if((V2.size()>3)
-            &&(((String)V2.elementAt(DATA_KEY)).startsWith(postalBranch()+";")))
+        	DatabaseEngine.PlayerData V2=(DatabaseEngine.PlayerData)V.elementAt(v);
+            if((V2!=null)
+            &&(V2.key.startsWith(postalBranch()+";")))
             {
-                Item I=makeItem(parsePostalItemData((String)V2.elementAt(DATA_DATA)));
+                Item I=makeItem(parsePostalItemData(V2.xml));
                 if(I==null) continue;
                 if(CMLib.english().containsString(I.Name(),likeThis))
                     return I;
@@ -265,51 +259,56 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         return null;
     }
 
-    public Vector findExactBoxData(String mob, Item likeThis)
+    public MailPiece findExactBoxData(String mob, Item likeThis)
     {
         Vector V=getBoxRowData(mob);
         for(int v=0;v<V.size();v++)
         {
-            Vector V2=(Vector)V.elementAt(v);
-            if((V2.size()>3)
-            &&(((String)V2.elementAt(DATA_KEY)).startsWith(postalBranch()+";")))
+        	DatabaseEngine.PlayerData V2=(DatabaseEngine.PlayerData)V.elementAt(v);
+            if((V2!=null)
+            &&(V2.key.startsWith(postalBranch()+";")))
             {
-                Item I=makeItem(parsePostalItemData((String)V2.elementAt(DATA_DATA)));
+                Item I=makeItem(parsePostalItemData(V2.xml));
                 if(I==null) continue;
                 if(I.sameAs(likeThis))
-                    return parsePostalItemData((String)V2.elementAt(DATA_DATA));
+                    return parsePostalItemData(V2.xml);
             }
         }
         return null;
     }
 
-    public Vector parsePostalItemData(String data)
+    public MailPiece parsePostalItemData(String data)
     {
-        Vector V=new Vector();
+        MailPiece piece = new MailPiece();
         for(int i=0;i<5;i++)
         {
             int x=data.indexOf(";");
-            if(x<0) break;
-            V.addElement(data.substring(0,x));
+            if(x<0)
+            {
+            	Log.errOut("StdPostman","Man formed postal data: "+data);
+            	return null;
+            }
+            switch(i)
+            {
+            case 0: piece.from = data.substring(0,x); break;
+            case 1: piece.to = data.substring(0,x); break;
+            case 2: piece.time = data.substring(0,x); break;
+            case 3: piece.cod = data.substring(0,x); break;
+            case 4: piece.classID = data.substring(0,x); break;
+            }
             data=data.substring(x+1);
         }
-        V.addElement(data);
-        if(V.size()<NUM_PIECES)
-        {
-        	Log.errOut("StdPostman","Man formed postal data: "+data);
-        	return new Vector();
-        }
-        return V;
+	    piece.xml = data;
+        return piece;
     }
 
-    protected Item makeItem(Vector data)
+    protected Item makeItem(MailPiece data)
     {
-        if(data.size()<NUM_PIECES)
-            return null;
-        Item I=CMClass.getItem((String)data.elementAt(PIECE_CLASSID));
+        if(data ==  null) return null;
+        Item I=CMClass.getItem(data.classID);
         if(I!=null)
         {
-            CMLib.coffeeMaker().setPropertiesStr(I,(String)data.elementAt(PIECE_MISCDATA),true);
+            CMLib.coffeeMaker().setPropertiesStr(I,data.xml,true);
             I.recoverEnvStats();
             I.text();
             return I;
@@ -332,14 +331,13 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         return minimumPostage()+CMath.mul(postagePerPound(),chargeableWeight);
     }
 
-    protected double getHoldingCost(Vector data, int chargeableWeight)
+    protected double getHoldingCost(MailPiece data, int chargeableWeight)
     {
-        if(data.size()<NUM_PIECES)
-            return 0.0;
+        if(data== null) return 0.0;
         if(getStartRoom()==null) return 0.0;
         double amt=0.0;
         TimeClock TC=(getStartRoom()==null)?CMLib.time().globalClock():getStartRoom().getArea().getTimeObj();
-        long time=System.currentTimeMillis()-CMath.s_long((String)data.elementAt(PIECE_TIME));
+        long time=System.currentTimeMillis()-CMath.s_long(data.time);
         long millisPerMudMonth=TC.getDaysInMonth()*Tickable.TIME_MILIS_PER_MUDHOUR*TC.getHoursInDay();
         if(time<=0) return amt;
         amt+=CMath.mul(CMath.mul(Math.floor(CMath.div(time,millisPerMudMonth)),holdFeePerPound()),chargeableWeight);
@@ -347,12 +345,11 @@ public class StdPostman extends StdShopKeeper implements PostOffice
     }
 
 
-    protected double getCODChargeForPiece(Vector data)
+    protected double getCODChargeForPiece(MailPiece data)
     {
-        if(data.size()<NUM_PIECES)
-            return 0.0;
+        if(data==null) return 0.0;
         int chargeableWeight=getChargeableWeight(makeItem(data));
-        double COD=CMath.s_double((String)data.elementAt(PIECE_COD));
+        double COD=CMath.s_double(data.cod);
         double amt=0.0;
         if(COD>0.0)
             amt=getSimplePostage(chargeableWeight)+COD;
@@ -466,18 +463,18 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                 if(V==null) V=new Vector();
                 for(int v=0;v<V.size();v++)
                 {
-                    Vector V2=(Vector)V.elementAt(v);
-                    parsed.addElement(parsePostalItemData((String)V2.elementAt(DATA_DATA)));
+                	DatabaseEngine.PlayerData V2=(DatabaseEngine.PlayerData)V.elementAt(v);
+                    parsed.addElement(parsePostalItemData(V2.xml));
                     CMLib.database().DBDeleteData(
-                    ((String)V2.elementAt(DATA_USERID)),
-                    ((String)V2.elementAt(DATA_CHAIN)),
-                    ((String)V2.elementAt(DATA_KEY)));
+                    V2.who,
+                    V2.section,
+                    V2.key);
                 }
                 PostOffice P=null;
                 for(int v=0;v<parsed.size();v++)
                 {
-                    Vector V2=(Vector)parsed.elementAt(v);
-                    String toWhom=(String)V2.elementAt(PIECE_TO);
+                	MailPiece V2=(MailPiece)parsed.elementAt(v);
+                    String toWhom=V2.to;
                     String deliveryBranch=findProperBranch(toWhom);
                     if(deliveryBranch!=null)
                     {
@@ -485,18 +482,18 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                         Item I=makeItem(V2);
                         if((P!=null)&&(I!=null))
                         {
-                            P.addToBox(toWhom,I,(String)V2.elementAt(PIECE_FROM),(String)V2.elementAt(PIECE_TO),CMath.s_long((String)V2.elementAt(PIECE_TIME)),CMath.s_double((String)V2.elementAt(PIECE_COD)));
+                            P.addToBox(toWhom,I,V2.from,V2.to,CMath.s_long(V2.time),CMath.s_double(V2.cod));
                             continue;
                         }
                     }
-                    String fromWhom=(String)V2.elementAt(PIECE_FROM);
+                    String fromWhom=V2.from;
                     deliveryBranch=findProperBranch(fromWhom);
                     if(deliveryBranch!=null)
                     {
                         P=CMLib.map().getPostOffice(postalChain(),deliveryBranch);
                         Item I=makeItem(V2);
                         if((P!=null)&&(I!=null))
-                            P.addToBox(fromWhom,I,(String)V2.elementAt(PIECE_TO),"POSTMASTER",System.currentTimeMillis(),0.0);
+                            P.addToBox(fromWhom,I,V2.to,"POSTMASTER",System.currentTimeMillis(),0.0);
                     }
                 }
                 V=CMLib.database().DBReadData(postalChain());
@@ -505,25 +502,21 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                 if((TC!=null)&&(maxMudMonthsHeld()>0))
                 for(int v=0;v<V.size();v++)
                 {
-                    Vector V2=(Vector)V.elementAt(v);
-                    if((V2.size()>3)
-                    &&(((String)V2.elementAt(DATA_KEY)).startsWith(postalBranch()+";")))
+                	DatabaseEngine.PlayerData V2=(DatabaseEngine.PlayerData)V.elementAt(v);
+                    if(V2.key.startsWith(postalBranch()+";"))
                     {
-                        Vector data=parsePostalItemData(((String)V2.elementAt(DATA_DATA)));
-                        if((data!=null)&&(data.size()>1)&&(getStartRoom()!=null))
+                    	MailPiece data=parsePostalItemData(V2.xml);
+                        if((data!=null)&&(getStartRoom()!=null))
                         {
-                            long time=System.currentTimeMillis()-CMath.s_long((String)data.elementAt(PIECE_TIME));
+                            long time=System.currentTimeMillis()-CMath.s_long(data.time);
                             long millisPerMudMonth=TC.getDaysInMonth()*Tickable.TIME_MILIS_PER_MUDHOUR*TC.getHoursInDay();
                             if(time>0)
                             {
                                 int months=(int)Math.round(Math.floor(CMath.div(time,millisPerMudMonth)));
                                 if(months>maxMudMonthsHeld())
                                 {
-                                    Item I=makeItem(V2);
-                                    CMLib.database().DBDeleteData(
-                                            ((String)V2.elementAt(DATA_USERID)),
-                                            ((String)V2.elementAt(DATA_CHAIN)),
-                                            ((String)V2.elementAt(DATA_KEY)));
+                                    Item I=makeItem(data);
+                                    CMLib.database().DBDeleteData(V2.who,V2.section,V2.key);
                                     if(I!=null)
                                         getShop().addStoreInventory(I,this);
                                 }
@@ -635,12 +628,12 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                     if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
                         thename=msg.source().getClanID();
                     Item old=(Item)msg.tool();
-                    Vector data=findExactBoxData(thename,(Item)msg.tool());
+                    MailPiece data=findExactBoxData(thename,(Item)msg.tool());
                     if((data==null)
                     &&(whatISell!=ShopKeeper.DEAL_CLANPOSTMAN)
                     &&(msg.source().isMarriedToLiege()))
                         data=findExactBoxData(msg.source().getLiegeID(),(Item)msg.tool());
-                    if((data==null)||(data.size()<NUM_PIECES))
+                    if(data==null)
                         CMLib.commands().postSay(this,mob,"You want WHAT? Try LIST.",true,false);
                     else
                     {
@@ -653,14 +646,14 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                         {
 
                             CMLib.beanCounter().subtractMoney(msg.source(),totalCharge);
-                            double COD=CMath.s_double((String)data.elementAt(PIECE_COD));
+                            double COD=CMath.s_double(data.cod);
                             Coins returnMoney=null;
                             if(COD>0.0)
                                 returnMoney=CMLib.beanCounter().makeBestCurrency(this,COD);
                             if(returnMoney!=null)
                             {
-                                CMLib.commands().postSay(this,mob,"The COD amount of "+returnMoney.Name()+" has been sent back to "+((String)data.elementAt(PIECE_FROM))+".",true,false);
-                                addToBox(postalChain(),returnMoney,(String)data.elementAt(PIECE_TO),(String)data.elementAt(PIECE_FROM),System.currentTimeMillis(),0.0);
+                                CMLib.commands().postSay(this,mob,"The COD amount of "+returnMoney.Name()+" has been sent back to "+data.from+".",true,false);
+                                addToBox(postalChain(),returnMoney,data.to,data.from,System.currentTimeMillis(),0.0);
                                 CMLib.commands().postSay(this,mob,"The total charge on that was a COD charge of "+returnMoney.Name()+" plus "+CMLib.beanCounter().nameCurrencyShort(this,totalCharge-COD)+" postage and holding fees.",true,false);
                             }
                             else
@@ -819,8 +812,8 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	                    mob.tell(str.toString());
 	                    for(int i=0;i<V.size();i++)
 	                    {
-	                        Vector V2=(Vector)V.elementAt(i);
-	                        Vector pieces=parsePostalItemData((String)V2.elementAt(DATA_DATA));
+	                    	DatabaseEngine.PlayerData V2=(DatabaseEngine.PlayerData)V.elementAt(i);
+	                    	MailPiece pieces=parsePostalItemData(V2.xml);
 	                        Item I=makeItem(pieces);
 	                        if(I==null) continue;
 	                        str=new StringBuffer("^N");
@@ -831,8 +824,8 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 	                        }
 	                        else
 	                            str.append("[        ]");
-	                        str.append("["+CMStrings.padRight((String)pieces.elementAt(PIECE_FROM),15)+"]");
-	                        TimeClock C2=C.deriveClock(CMath.s_long((String)pieces.elementAt(PIECE_TIME)));
+	                        str.append("["+CMStrings.padRight(pieces.from,15)+"]");
+	                        TimeClock C2=C.deriveClock(CMath.s_long(pieces.time));
 	                        str.append("["+CMStrings.padRight(C2.getShortestTimeDescription(),15)+"]");
 	                        str.append("["+CMStrings.padRight(I.Name(),28)+"]");
 	                        mob.tell(str.toString()+"^T");
@@ -921,12 +914,12 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                     }
                     if((msg.tool()!=null)&&(!msg.tool().okMessage(myHost,msg)))
                         return false;
-                    Vector data=findExactBoxData(thename,(Item)msg.tool());
+                    MailPiece data=findExactBoxData(thename,(Item)msg.tool());
                     if((data==null)
                     &&(whatISell!=ShopKeeper.DEAL_CLANPOSTMAN)
                     &&(msg.source().isMarriedToLiege()))
                         data=findExactBoxData(msg.source().getLiegeID(),(Item)msg.tool());
-                    if((data==null)||(data.size()<NUM_PIECES))
+                    if(data==null)
                     {
                         CMLib.commands().postSay(this,mob,"You want WHAT? Try LIST.",true,false);
                         return false;

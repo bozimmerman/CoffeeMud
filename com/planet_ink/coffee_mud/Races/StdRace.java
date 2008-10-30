@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdRace implements Race
 {
 	public String ID(){	return "StdRace"; }
@@ -322,7 +323,7 @@ public class StdRace implements Race
 		return naturalWeapon;
 	}
 
-	public Vector<Item> outfit(MOB myChar){return outfitChoices;}
+	public Vector outfit(MOB myChar){return outfitChoices;}
 
 	public String healthText(MOB viewer, MOB mob)
 	{
@@ -383,7 +384,7 @@ public class StdRace implements Race
 		return CMClass.getWeapon("Natural");
 	}
 
-	public Vector<Item> myResources(){return new Vector();}
+	public Vector myResources(){return new Vector();}
 	public void setHeightWeight(EnvStats stats, char gender)
 	{
 		int weightModifier=0;

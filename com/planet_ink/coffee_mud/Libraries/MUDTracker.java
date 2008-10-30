@@ -32,6 +32,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class MUDTracker extends StdLibrary implements TrackingLibrary
 {
     public String ID(){return "MUDTracker";}
@@ -465,7 +466,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
             if(status!=null)status[0]=Tickable.STATUS_MISC7+15;
 			if(!nextExit.isOpen())
 			{
-				mob.doCommand(CMParms.parseToObjV("OPEN "+Directions.getDirectionName(direction)),Command.METAFLAG_FORCED);
+				mob.doCommand(CMParms.parse("OPEN "+Directions.getDirectionName(direction)),Command.METAFLAG_FORCED);
 				if(nextExit.isOpen())
 					reclose=true;
 			}
@@ -544,7 +545,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 			&&(opExit.isOpen()))
 			{
                 if(status!=null)status[0]=Tickable.STATUS_MISC7+22;
-				mob.doCommand(CMParms.parseToObjV("CLOSE "+Directions.getDirectionName(opDirection)),Command.METAFLAG_FORCED);
+				mob.doCommand(CMParms.parse("CLOSE "+Directions.getDirectionName(opDirection)),Command.METAFLAG_FORCED);
 				if((opExit.hasALock())&&(relock))
 				{
                     if(status!=null)status[0]=Tickable.STATUS_MISC7+23;

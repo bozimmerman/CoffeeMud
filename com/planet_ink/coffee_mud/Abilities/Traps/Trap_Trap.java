@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Trap_Trap extends StdAbility implements Trap
 {
 	public String ID() { return "Trap_Trap"; }
@@ -184,7 +185,7 @@ public class Trap_Trap extends StdAbility implements Trap
 		{
 			String spell=text();
 			int x=spell.indexOf(";");
-			Vector<String> V=new Vector<String>();
+			Vector V=new Vector();
 			V.addElement(mob.name());
 			if(x>0)
 			{
@@ -198,7 +199,7 @@ public class Trap_Trap extends StdAbility implements Trap
 				mob.location().showHappens(CMMsg.MSG_OK_VISUAL,"But nothing happened...");
 				return;
 			}
-			A.invoke(invoker(),CMParms.makeObjV(V),mob,true,0);
+			A.invoke(invoker(),V,mob,true,0);
 		}
 	}
 

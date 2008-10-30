@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Paladin_Goodness extends Paladin
 {
 	public String ID() { return "Paladin_Goodness"; }

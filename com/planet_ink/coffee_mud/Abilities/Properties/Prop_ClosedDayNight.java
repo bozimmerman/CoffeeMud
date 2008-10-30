@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prop_ClosedDayNight extends Property
 {
 	public String ID() { return "Prop_ClosedDayNight"; }
@@ -54,7 +55,7 @@ public class Prop_ClosedDayNight extends Property
 	public void setMiscText(String text)
 	{
 		super.setMiscText(text);
-		Vector<String> V=CMParms.parse(text);
+		Vector V=CMParms.parse(text);
 		dayFlag=false;
 		doneToday=false;
 		lockupFlag=false;
@@ -167,8 +168,8 @@ public class Prop_ClosedDayNight extends Property
 			MOB mob=(MOB)affected;
 			if(mob.location()!=null)
 			{
-        		Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,25);
-        		for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
+        		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,25);
+        		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
         		{
         			Room R2=CMLib.map().getRoom((Room)r.nextElement());
 					if((R2.roomID().indexOf(Home)>=0)
@@ -266,10 +267,10 @@ public class Prop_ClosedDayNight extends Property
 				}
 
 				if(sleepFlag)
-					mob.doCommand(CMParms.parseToObjV("SLEEP"),Command.METAFLAG_FORCED);
+					mob.doCommand(CMParms.parse("SLEEP"),Command.METAFLAG_FORCED);
 				else
 				if(sitFlag)
-					mob.doCommand(CMParms.parseToObjV("SIT"),Command.METAFLAG_FORCED);
+					mob.doCommand(CMParms.parse("SIT"),Command.METAFLAG_FORCED);
 				lastClosed=1;
 			}
 			else

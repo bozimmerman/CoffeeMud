@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class GenAbility extends StdAbility
 {
     // data should be stored in a common instance object .. something common to all genability of same id,
@@ -193,7 +194,7 @@ public class GenAbility extends StdAbility
 
     public boolean isGeneric(){return true;}
 
-    public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
     	if((!auto)
     	&&(((String)V(ID,V_CMSK)).length()>0)
@@ -666,7 +667,7 @@ public class GenAbility extends StdAbility
     	if(CMath.isInteger(val)) return CMath.s_int(val);
     	int dom=0;
     	int acod=Ability.ACODE_SKILL;
-    	Vector<String> V=CMParms.parseCommas(val,true);
+    	Vector V=CMParms.parseCommas(val,true);
     	for(int v=0;v<V.size();v++)
     	{
     		val=(String)V.elementAt(v);
@@ -720,7 +721,7 @@ public class GenAbility extends StdAbility
     			return mask?(1<<i):i;
     	if(mask)
     	{
-    		Vector<String> V=CMParms.parseCommas(val,true);
+    		Vector V=CMParms.parseCommas(val,true);
     		int num=0;
     		for(int v=0;v<V.size();v++)
     			num=num|(1<<convert(options,(String)V.elementAt(v),false));

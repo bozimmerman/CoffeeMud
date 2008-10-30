@@ -34,6 +34,7 @@ import java.io.*;
     limitations under the License.
  */
 
+@SuppressWarnings("unchecked")
 public class OffLine extends Thread implements MudHost
 {
     public static Vector mudThreads=new Vector();

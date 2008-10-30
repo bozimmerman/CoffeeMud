@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public interface WorldMap extends CMLibrary, Runnable
 {
     /************************************************************************/
@@ -42,8 +43,8 @@ public interface WorldMap extends CMLibrary, Runnable
     public Area getArea(String calledThis);
     public Area findAreaStartsWith(String calledThis);
     public Area findArea(String calledThis);
-    public Enumeration<Area> areas();
-	public Enumeration<Area> sortedAreas();
+    public Enumeration areas();
+	public Enumeration sortedAreas();
     public Area getFirstArea();
     public Area getRandomArea();
     public void obliterateArea(String areaName);
@@ -53,16 +54,16 @@ public interface WorldMap extends CMLibrary, Runnable
     /**							 ROOMS		    							*/
     /************************************************************************/
     public int numRooms();
-	public Enumeration<String> roomIDs();
+	public Enumeration roomIDs();
     public String getExtendedRoomID(Room R);
     public Room getRoom(Room room);
     public Room getRoom(String calledThis);
-    public Room getRoom(Vector<Room> roomSet, String calledThis);
-	public Room getRoom(Hashtable<String,Room> hashedRoomSet, String areaName, String calledThis);
-    public Enumeration<Room> rooms();
-    public Enumeration<Room> roomsFilled();
+    public Room getRoom(Vector roomSet, String calledThis);
+	public Room getRoom(Hashtable hashedRoomSet, String areaName, String calledThis);
+    public Enumeration rooms();
+    public Enumeration roomsFilled();
     public Room getRandomRoom();
-    public void renameRooms(Area A, String oldName, Vector<Room> allMyDamnRooms);
+    public void renameRooms(Area A, String oldName, Vector allMyDamnRooms);
     public void obliterateRoom(Room deadRoom);
     public Room findConnectingRoom(Room room);
     public int getRoomDir(Room from, Room to);
@@ -80,7 +81,7 @@ public interface WorldMap extends CMLibrary, Runnable
     public boolean isClearableRoom(Room room);
     public String createNewExit(Room from, Room room, int direction);
     public Area areaLocation(Object E);
-    public boolean explored(Room R, Vector<Area> areas);
+    public boolean explored(Room R, Vector areas);
    
     /************************************************************************/
     /**							 QUICK-MAPPINGS    							*/
@@ -89,23 +90,23 @@ public interface WorldMap extends CMLibrary, Runnable
     public void addDeity(Deity newOne);
     public void delDeity(Deity oneToDel);
     public Deity getDeity(String calledThis);
-    public Enumeration<Deity> deities();
+    public Enumeration deities();
     public int numPostOffices();
     public void addPostOffice(PostOffice newOne);
     public void delPostOffice(PostOffice oneToDel);
     public PostOffice getPostOffice(String chain, String areaNameOrBranch);
-    public Enumeration<PostOffice> postOffices();
+    public Enumeration postOffices();
     public int numBanks();
     public void addBank(Banker newOne);
     public void delBank(Banker oneToDel);
     public Banker getBank(String chain, String areaNameOrBranch);
-    public Enumeration<Banker> banks();
-	public Iterator<String> bankChains(Area AreaOrNull);
+    public Enumeration banks();
+	public Iterator bankChains(Area AreaOrNull);
     public int numAuctionHouses();
     public void addAuctionHouse(Auctioneer newOne);
     public void delAuctionHouse(Auctioneer oneToDel);
     public Auctioneer getAuctionHouse(String chain, String areaNameOrBranch);
-    public Enumeration<Auctioneer> auctionHouses();
+    public Enumeration auctionHouses();
     
     /************************************************************************/
     /**							 SPACE METHODS 								*/
@@ -141,10 +142,10 @@ public interface WorldMap extends CMLibrary, Runnable
     }
 	public final static long ROOM_EXPIRATION_MILLIS=2500000;
     
-    public class CompleteRoomIDEnumerator implements Enumeration<String>
+    public class CompleteRoomIDEnumerator implements Enumeration
     {
-    	Enumeration<String> roomIDEnumerator=null;
-    	Enumeration<Area> areaEnumerator=null;
+    	Enumeration roomIDEnumerator=null;
+    	Enumeration areaEnumerator=null;
     	public CompleteRoomIDEnumerator(WorldMap map){areaEnumerator=map.areas();}
     	public boolean hasMoreElements()
     	{
@@ -157,7 +158,7 @@ public interface WorldMap extends CMLibrary, Runnable
 	    		}
     		return ((roomIDEnumerator!=null)&&(roomIDEnumerator.hasMoreElements()));
     	}
-    	public String nextElement(){ return hasMoreElements()?roomIDEnumerator.nextElement():null;}
+    	public String nextElement(){ return hasMoreElements()?(String)roomIDEnumerator.nextElement():null;}
     }
 
 	

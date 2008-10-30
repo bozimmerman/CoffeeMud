@@ -38,6 +38,7 @@ import java.util.*;
     WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF 
     THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+@SuppressWarnings("unchecked")
 public class PokerDealer extends StdBehavior
 {
     public String ID(){return "PokerDealer";}
@@ -736,7 +737,7 @@ public class PokerDealer extends StdBehavior
                 {
                     // now we parse their words, and see if every word is a number,
                     // and whether every number is between 1-5
-                    Vector<String> parsed=CMParms.parse(textOfSay);
+                    Vector parsed=CMParms.parse(textOfSay);
                     HandOfCards hand=theDeck().getPlayerHand(msg.source());
                     boolean numbersOK=(hand!=null)&&(parsed.size()>0);
                     if(hand!=null)

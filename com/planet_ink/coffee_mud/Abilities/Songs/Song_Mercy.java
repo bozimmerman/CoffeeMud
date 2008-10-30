@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Song_Mercy extends Song
 {
 	public String ID() { return "Song_Mercy"; }
@@ -86,7 +87,7 @@ public class Song_Mercy extends Song
 		return super.okMessage(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		count=3;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

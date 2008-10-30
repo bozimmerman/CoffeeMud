@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Thief_SetDecoys extends ThiefSkill implements Trap
 {
 	public String ID() { return "Thief_SetDecoys"; }
@@ -146,7 +147,7 @@ public class Thief_SetDecoys extends ThiefSkill implements Trap
         return super.castingQuality(mob,target);
     }
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         Environmental target=(givenTarget!=null)?givenTarget:mob.location();
 		if(target.fetchEffect(ID())!=null)

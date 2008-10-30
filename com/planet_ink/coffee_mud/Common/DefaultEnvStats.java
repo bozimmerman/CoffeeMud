@@ -29,6 +29,7 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class DefaultEnvStats implements EnvStats
 {
     public String ID(){return "DefaultEnvStats";}
@@ -87,7 +88,7 @@ public class DefaultEnvStats implements EnvStats
 		ambiance=ambiance.trim();
 		int i=0;
 		String[] ambis=ambiances();
-        Vector<String> V=null;
+        Vector V=null;
 		for(i=0;i<ambis.length;i++)
 			if(ambis[i].equalsIgnoreCase(ambiance))
 			{

@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_LocateObject extends Spell
 {
 	public String ID() { return "Spell_LocateObject"; }
@@ -39,7 +40,7 @@ public class Spell_LocateObject extends Spell
 	public int classificationCode(){return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		if(commands.size()<1)
@@ -116,8 +117,8 @@ public class Spell_LocateObject extends Spell
 				Environmental item=null;
 				Room room=null;
                 ShopKeeper SK=null;
-				Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,50+adjustedLevel(mob,asLevel));
-				for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
+				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,50+adjustedLevel(mob,asLevel));
+				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 				{
 					room=CMLib.map().getRoom((Room)r.nextElement());
 					if(!CMLib.flags().canAccess(mob,room)) continue;

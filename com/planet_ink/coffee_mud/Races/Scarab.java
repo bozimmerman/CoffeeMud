@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Scarab extends StdRace
 {
 	public String ID(){	return "Scarab"; }
@@ -50,7 +51,7 @@ public class Scarab extends StdRace
 	private int[] agingChart={0,1,2,3,4,5,6,7,8};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector<Item> resources=new Vector<Item>();
+	protected static Vector resources=new Vector();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -85,7 +86,7 @@ public class Scarab extends StdRace
 		}
 		return naturalWeapon;
 	}
-	public Vector<Item> myResources()
+	public Vector myResources()
 	{
 		synchronized(resources)
 		{

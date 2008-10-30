@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class WereWolf extends GiantWolf
 {
 	public String ID(){	return "WereWolf"; }
@@ -50,7 +51,7 @@ public class WereWolf extends GiantWolf
 	private int[] agingChart={0,4,8,12,16,20,24,28,32};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector<Item> resources=new Vector<Item>();
+	protected static Vector resources=new Vector();
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY)+3);
@@ -79,7 +80,7 @@ public class WereWolf extends GiantWolf
 		super.executeMsg(myHost,msg);
 	}
 
-	public Vector<Item> myResources()
+	public Vector myResources()
 	{
 		synchronized(resources)
 		{

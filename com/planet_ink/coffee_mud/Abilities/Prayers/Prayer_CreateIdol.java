@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Prayer_CreateIdol extends Prayer
 {
 	public String ID() { return "Prayer_CreateIdol"; }
@@ -90,7 +91,7 @@ public class Prayer_CreateIdol extends Prayer
 		return super.okMessage(host,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.getWorshipCharID().length()==0)||(CMLib.map().getDeity(mob.getWorshipCharID())==null))
 		{

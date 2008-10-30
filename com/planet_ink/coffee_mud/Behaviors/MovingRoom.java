@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class MovingRoom extends ActiveTicker
 {
 	public String ID(){return "MovingRoom";}
@@ -80,7 +81,7 @@ public class MovingRoom extends ActiveTicker
 	{
 		String myParms=newParms;
         listOfRooms=new Vector();
-        roomInfos=new Vector<String>();
+        roomInfos=new Vector();
         messageInfo=new Vector();
         mapInfo=new Vector();
         stubs=new Vector();

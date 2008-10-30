@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class I3Cmd extends StdCommand
 {
 	public I3Cmd(){}
@@ -45,7 +46,7 @@ public class I3Cmd extends StdCommand
 			mob.tell("Try I3 LIST, I3 LOCATE [NAME], or I3 INFO [MUD-NAME].");
 	}
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(!(CMLib.intermud().i3online()))

@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_FodderSignal extends Chant
 {
 	public String ID() { return "Chant_FodderSignal"; }
@@ -80,7 +81,7 @@ public class Chant_FodderSignal extends Chant
 					&&(M!=dummy)
 					&&(M.isMonster())
 					&&(!M.isInCombat())
-					&&(!dummy.getGroupMembers(new HashSet<MOB>()).contains(M))
+					&&(!dummy.getGroupMembers(new HashSet()).contains(M))
 					&&(CMLib.flags().canBeSeenBy(dummy,M)))
 					{
 						if(room.show(M,dummy,CMMsg.MASK_MOVE|CMMsg.MSG_NOISE,"<S-NAME> howl(s) in anger at <T-NAMESELF>!"))
@@ -93,7 +94,7 @@ public class Chant_FodderSignal extends Chant
 	}
 
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

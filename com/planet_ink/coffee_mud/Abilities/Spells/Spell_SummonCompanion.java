@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_SummonCompanion extends Spell
 {
     public String ID() { return "Spell_SummonCompanion"; }
@@ -42,11 +43,11 @@ public class Spell_SummonCompanion extends Spell
 	public int enchantQuality(){return Ability.QUALITY_INDIFFERENT;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-    public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         Room oldRoom=null;
         MOB target=null;
-        HashSet H=mob.getGroupMembers(new HashSet<MOB>());
+        HashSet H=mob.getGroupMembers(new HashSet());
         if((H.size()==0)||((H.size()==1)&&(H.contains(mob))))
         {
             mob.tell("You don't have any companions!");

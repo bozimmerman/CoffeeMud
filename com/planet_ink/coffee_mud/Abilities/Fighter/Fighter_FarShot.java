@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Fighter_FarShot extends FighterSkill
 {
 	public String ID() { return "Fighter_FarShot"; }

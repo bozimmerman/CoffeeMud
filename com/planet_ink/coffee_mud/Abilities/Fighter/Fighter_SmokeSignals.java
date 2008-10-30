@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Fighter_SmokeSignals extends FighterSkill
 {
 	public String ID() { return "Fighter_SmokeSignals"; }
@@ -80,7 +81,7 @@ public class Fighter_SmokeSignals extends FighterSkill
 		return fire;
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((!auto)&&(mob.isInCombat()))
 		{
@@ -130,8 +131,8 @@ public class Fighter_SmokeSignals extends FighterSkill
 				mob.location().send(mob,msg);
 				String str=CMParms.combine(commands,0);
 				CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,str,CMMsg.MSG_OK_VISUAL,"You see some smoke signals in the distance.");
-				Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,50);
-				for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
+				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,50);
+				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 				{
 					R=(Room)r.nextElement();
 					weather=R.getArea().getClimateObj().weatherType(R);

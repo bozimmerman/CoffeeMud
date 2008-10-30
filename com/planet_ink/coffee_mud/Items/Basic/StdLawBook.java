@@ -33,6 +33,7 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdLawBook extends StdItem
 {
 	public String ID(){	return "StdLawBook";}
@@ -287,7 +288,7 @@ public class StdLawBook extends StdItem
 						msg.append(sentence.toLowerCase()+" ");
                     }
                     String oldSentence="";
-                    Vector<String> V=CMParms.parse(oldLaw[Law.BIT_SENTENCE]);
+                    Vector V=CMParms.parse(oldLaw[Law.BIT_SENTENCE]);
                     DVector V2=new DVector(2);
                     for(int v=0;v<V.size();v++)
                     {
@@ -447,8 +448,8 @@ public class StdLawBook extends StdItem
 					String oldVal=oldLaw[Law.BIT_CRIMELOCS].toUpperCase();
 					String lastOle="";
 					boolean lastAnswer=false;
-					Vector<String> allloca1=CMParms.parse(oldVal);
-					Vector<String> allloca2=CMParms.parse(oldVal.toUpperCase());
+					Vector allloca1=CMParms.parse(oldVal);
+					Vector allloca2=CMParms.parse(oldVal.toUpperCase());
 					for(int i=0;i<locflags.length;i++)
 					{
 						int dex=allloca2.indexOf(locflags[i][1].toUpperCase());
@@ -851,7 +852,7 @@ public class StdLawBook extends StdItem
 			String S=theLaw.getInternalStr("TREASURY").trim();
 			String room="*";
 			String item="";
-			Vector<String> V=CMParms.parseSemicolons(S,false);
+			Vector V=CMParms.parseSemicolons(S,false);
 			if((S.length()==0)||(V.size()==0))
 				str.append("Not defined");
 			else
@@ -1376,7 +1377,7 @@ public class StdLawBook extends StdItem
 		mob.tell(getFromTOC("P2"+(theLaw.hasModifiableLaws()?"MOD":"")+(theLaw.hasModifiableNames()?"NAM":"")));
 		String duhJudge="No Judge Found!\n\r";
 		StringBuffer duhOfficers=new StringBuffer("");
-		for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
+		for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
 		{
 			Room R=(Room)e.nextElement();
 			for(int i=0;i<R.numInhabitants();i++)

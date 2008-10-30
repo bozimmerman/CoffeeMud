@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public interface CMMiscUtils extends CMLibrary
 {
     public static final int LOOTFLAG_RUIN=1;

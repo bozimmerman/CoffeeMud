@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class GrinderRooms
 {
 	public static void happilyAddMob(MOB M, Room R)
@@ -56,7 +57,7 @@ public class GrinderRooms
 		R.recoverRoomStats();
 	}
 
-	public static String editRoom(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, MOB whom, Room R)
+	public static String editRoom(ExternalHTTPRequests httpReq, Hashtable parms, MOB whom, Room R)
 	{
 		if(R==null) return "Old Room not defined!";
 		boolean redoAllMyDamnRooms=false;
@@ -293,7 +294,7 @@ public class GrinderRooms
 			{
 			    try
 			    {
-					for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R2=(Room)r.nextElement();
 						for(int d=0;d<R2.rawDoors().length;d++)

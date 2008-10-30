@@ -42,6 +42,7 @@ import java.util.*;
  *
  */
 
+@SuppressWarnings("unchecked")
 public final class IMC2Driver extends Thread {
 
     Socket sa;
@@ -146,12 +147,12 @@ public final class IMC2Driver extends Thread {
 	final public String[][] buildChannelMap(String s)
 	{
 		
-		Vector<String> V=CMParms.parseCommas(s,true);
-		Vector<String[]> finalV=new Vector<String[]>();
+		Vector V=CMParms.parseCommas(s,true);
+		Vector finalV=new Vector();
 		for(int v=0;v<V.size();v++)
 		{
 			String s2=(String)V.elementAt(v);
-			Vector<String> V2=CMParms.parse(s2);
+			Vector V2=CMParms.parse(s2);
 			String[] bit=new String[3];
 			bit[0]="";
 			bit[1]="";

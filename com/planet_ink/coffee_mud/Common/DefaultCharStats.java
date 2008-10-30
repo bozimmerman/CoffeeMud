@@ -33,6 +33,7 @@ import org.mozilla.javascript.ScriptableObject;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class DefaultCharStats implements CharStats
 {
 
@@ -271,7 +272,7 @@ public class DefaultCharStats implements CharStats
 	}
 	public void setSavesFromString(String str)
 	{
-		Vector<String> V=CMParms.parseSemicolons(str,false);
+		Vector V=CMParms.parseSemicolons(str,false);
 		for(int x=NUM_SAVE_START;x<NUM_STATS;x++)
 		{
 			int vnum=x-NUM_SAVE_START;
@@ -465,7 +466,7 @@ public class DefaultCharStats implements CharStats
 	
 	public void setBodyPartsFromStringAfterRace(String str)
 	{
-		Vector<String> V=CMParms.parseSemicolons(str,true);
+		Vector V=CMParms.parseSemicolons(str,true);
 		bodyAlterations=null;
 		for(int i=0;i<getMyRace().bodyMask().length;i++)
 		{

@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class TimsItemTable extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -46,11 +47,11 @@ public class TimsItemTable extends StdWebMacro
 		
 		StringBuffer str=new StringBuffer("<TABLE WIDTH=100% BORDER=1>");
 		str.append("<TR><TD>Name</TD><TD>LVL</TD><TD>TVLV</TD><TD>DIFF</TD><TD>DIFF%</TD><TD>ARM</TD><TD>ATT</TD><TD>DAM</TD><TD>ADJ</TD><TD>CAST</TD><TD>RESIST</TD></TR>");
-		Vector<Item> onesDone=new Vector<Item>();
-		for(Enumeration<Area> a=CMLib.map().sortedAreas();a.hasMoreElements();)
+		Vector onesDone=new Vector();
+		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
-			for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if((endTime>0)&&(System.currentTimeMillis()>endTime))
@@ -96,7 +97,7 @@ public class TimsItemTable extends StdWebMacro
         return clearWebMacros(str)+"</TABLE>";
 	}
 	
-	public boolean doneBefore(Vector<Item> V, Item I)
+	public boolean doneBefore(Vector V, Item I)
 	{
 		if(I==null) return true;
 		if((!(I instanceof Armor))&&(!(I instanceof Weapon)))

@@ -34,6 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class MasterTailoring extends Tailoring
 {
 	public String ID() { return "MasterTailoring"; }
@@ -43,7 +44,7 @@ public class MasterTailoring extends Tailoring
 
     public String parametersFile(){ return "mastertailor.txt";}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         int autoGenerate=0;
         if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))

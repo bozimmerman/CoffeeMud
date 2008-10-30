@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Visible extends StdCommand
 {
     public Visible(){}
@@ -62,7 +63,7 @@ public class Visible extends StdCommand
         return offenders;
     }
 
-    public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+    public boolean execute(MOB mob, Vector commands, int metaFlags)
         throws java.io.IOException
     {
         String str="Prop_WizInvis";
@@ -88,8 +89,8 @@ public class Visible extends StdCommand
             ((Ability)V.elementAt(v)).unInvoke();
         return false;
     }
-    public double actionsCost(MOB mob, Vector<Object> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
-    public double combatActionsCost(MOB mob, Vector<Object> cmds){return 0.25;}
+    public double actionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
+    public double combatActionsCost(MOB mob, Vector cmds){return 0.25;}
     public boolean canBeOrdered(){return true;}
     
 }

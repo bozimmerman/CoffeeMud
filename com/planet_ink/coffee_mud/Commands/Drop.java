@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Drop extends StdCommand
 {
 	public Drop(){}
@@ -58,7 +59,7 @@ public class Drop extends StdCommand
 		return false;
 	}
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String whatToDrop=null;
@@ -152,8 +153,8 @@ public class Drop extends StdCommand
 		mob.location().recoverRoomStats();
 		return false;
 	}
-    public double combatActionsCost(MOB mob, Vector<Object> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
-    public double actionsCost(MOB mob, Vector<Object> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
+    public double combatActionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
+    public double actionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
 	public boolean canBeOrdered(){return true;}
 
 	

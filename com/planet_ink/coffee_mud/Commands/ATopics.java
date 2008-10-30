@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class ATopics extends StdCommand
 {
 	public ATopics(){}
@@ -44,8 +45,8 @@ public class ATopics extends StdCommand
 		{
 			topicBuffer=new StringBuffer();
 
-			Vector<String> reverseList=new Vector<String>();
-			for(Enumeration<Object> e=rHelpFile.keys();e.hasMoreElements();)
+			Vector reverseList=new Vector();
+			for(Enumeration e=rHelpFile.keys();e.hasMoreElements();)
 			{
 				String ptop = (String)e.nextElement();
 				String thisTag=rHelpFile.getProperty(ptop);
@@ -65,7 +66,7 @@ public class ATopics extends StdCommand
 	}
 
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Properties arcHelpFile=CMLib.help().getArcHelpFile();

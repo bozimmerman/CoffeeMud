@@ -22,6 +22,7 @@ import java.util.*;
  * <p>Company: http://www.falserealities.com</p>
  * @author Tulath (a.k.a.) Jeremy Vyska
  */
+@SuppressWarnings("unchecked")
 public class FieryRoom
     extends ActiveTicker {
     public String ID() {
@@ -55,7 +56,7 @@ public class FieryRoom
         directDamage = CMParms.getParmInt(newParms, "damage", 10);
         eqChance = CMParms.getParmInt(newParms, "eqchance", 0);
         burnTicks = CMParms.getParmInt(newParms, "burnticks", 12);
-        Vector<String> V=CMParms.parse(newParms.toUpperCase());
+        Vector V=CMParms.parse(newParms.toUpperCase());
         noStop=(V.contains("NOSTOP"));
         noNpc=(V.contains("NONPC"));
         noFireText=(V.contains("NOFIRETEXT"));
@@ -87,7 +88,7 @@ public class FieryRoom
                     boolean reallyAffect = true;
                     if (noNpc) {
                         reallyAffect = false;
-                        HashSet group = inhab.getGroupMembers(new HashSet<MOB>());
+                        HashSet group = inhab.getGroupMembers(new HashSet());
                         for (Iterator e = group.iterator(); e.hasNext(); ) 
                         {
                             MOB follower = (MOB) e.next();

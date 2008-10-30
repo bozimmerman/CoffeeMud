@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Power_WebSpinning extends SuperPower
 {
 	public String ID() { return "Power_WebSpinning"; }
@@ -122,7 +123,7 @@ public class Power_WebSpinning extends SuperPower
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=super.getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY);
 		if(target==null) return false;

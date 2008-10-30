@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Qualifier extends StdCharClass
 {
 	public String ID(){return "Qualifier";}
@@ -62,7 +63,7 @@ public class Qualifier extends StdCharClass
 		if((verifyOnly)&&(!loaded()))
 		{
 			setLoaded(true);
-			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
 				int lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
@@ -72,7 +73,7 @@ public class Qualifier extends StdCharClass
 		}
 		super.startCharacter(mob, false, verifyOnly);
 	}
-	@SuppressWarnings("unchecked")
+	
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -82,7 +83,7 @@ public class Qualifier extends StdCharClass
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
-			for(Enumeration<String> a=V.getDimensionVector(1).elements();a.hasMoreElements();)
+			for(Enumeration a=V.getDimensionVector(1).elements();a.hasMoreElements();)
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)

@@ -33,6 +33,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class GenCharClass extends StdCharClass
 {
 	protected String ID="GenCharClass";
@@ -68,14 +69,14 @@ public class GenCharClass extends StdCharClass
     // IS *only* used by stdcharclass for weaponliminatations, buildDisallowedWeaponClasses,  buildRequiredWeaponMaterials
     public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}
     
-    private HashSet<Integer> requiredWeaponMaterials=null; // set of Integer material masks
-    protected HashSet<Integer> requiredWeaponMaterials(){return requiredWeaponMaterials;}
+    private HashSet requiredWeaponMaterials=null; // set of Integer material masks
+    protected HashSet requiredWeaponMaterials(){return requiredWeaponMaterials;}
     
     protected int requiredArmorSourceMinor=-1;
     public int requiredArmorSourceMinor(){return requiredArmorSourceMinor;}
     
-	protected HashSet<Integer> disallowedWeaponSet=null; // set of Integers for weapon classes
-	protected HashSet<Integer> disallowedWeaponClasses(MOB mob){return disallowedWeaponSet;}
+	protected HashSet disallowedWeaponSet=null; // set of Integers for weapon classes
+	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeaponSet;}
 	protected CharStats setStats=null;
 	protected CharStats adjStats=null;
 	protected EnvStats adjEStats=null;
@@ -552,7 +553,7 @@ public class GenCharClass extends StdCharClass
 		outfitChoices=null;
 		if((oV!=null)&&(oV.size()>0))
 		{
-			outfitChoices=new Vector<Item>();
+			outfitChoices=new Vector();
 			for(int x=0;x<oV.size();x++)
 			{
 				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)oV.elementAt(x);
@@ -773,7 +774,7 @@ public class GenCharClass extends StdCharClass
 				 break;
 		case 32:
         {
-                 Vector<String> V=CMParms.parseCommas(val,true);
+                 Vector V=CMParms.parseCommas(val,true);
 				 if(V.size()>0)
 				 {
 					disallowedWeaponSet=new HashSet();
@@ -785,7 +786,7 @@ public class GenCharClass extends StdCharClass
 				 break;
         }
 		case 33: if(CMath.s_int(val)==0) outfitChoices=null; break;
-		case 34: {   if(outfitChoices==null) outfitChoices=new Vector<Item>();
+		case 34: {   if(outfitChoices==null) outfitChoices=new Vector();
 					 if(num>=outfitChoices.size())
 						outfitChoices.addElement(CMClass.getItem(val));
 					 else
@@ -864,14 +865,14 @@ public class GenCharClass extends StdCharClass
         case 46: if(CMath.s_int(val)==0)
                      requiredWeaponMaterials=null;
                  else
-                     requiredWeaponMaterials=new HashSet<Integer>();
+                     requiredWeaponMaterials=new HashSet();
                  break;
         case 47:
         {
-                 Vector<String> V=CMParms.parseCommas(val,true);
+                 Vector V=CMParms.parseCommas(val,true);
                  if(V.size()>0)
                  {
-                     requiredWeaponMaterials=new HashSet<Integer>();
+                     requiredWeaponMaterials=new HashSet();
                      for(int v=0;v<V.size();v++)
                          requiredWeaponMaterials.add(new Integer(CMath.s_int((String)V.elementAt(v))));
                  }

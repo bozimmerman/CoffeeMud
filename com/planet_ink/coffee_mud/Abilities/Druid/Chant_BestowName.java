@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_BestowName extends Chant
 {
 	public String ID() { return "Chant_BestowName"; }
@@ -57,7 +58,7 @@ public class Chant_BestowName extends Chant
 			affectedStats.setName(text());
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -79,7 +80,7 @@ public class Chant_BestowName extends Chant
 
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
-		if((!CMLib.flags().isAnimalIntelligence(target))||(!target.isMonster())||(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
+		if((!CMLib.flags().isAnimalIntelligence(target))||(!target.isMonster())||(!mob.getGroupMembers(new HashSet()).contains(target)))
 		{
 			mob.tell("This chant only works on non-player animals in your group.");
 			return false;

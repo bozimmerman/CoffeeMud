@@ -36,6 +36,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
+@SuppressWarnings("unchecked")
 public class Packet {
 	/*
 		Transmissions are LPC arrays with a predefined set of six initial elements: 

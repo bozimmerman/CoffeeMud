@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class GrinderAreas
 {
 	public static String getAreaList(Area pickedA, MOB mob)
@@ -37,7 +38,7 @@ public class GrinderAreas
 		StringBuffer AreaList=new StringBuffer("");
 		boolean anywhere=(CMSecurity.isAllowedAnywhere(mob,"CMDROOMS")||CMSecurity.isAllowedAnywhere(mob,"CMDAREAS"));
 		boolean everywhere=(CMSecurity.isASysOp(mob)||CMSecurity.isAllowedEverywhere(mob,"CMDROOMS")||CMSecurity.isAllowedEverywhere(mob,"CMDAREAS"));
-		for(Enumeration<Area> a=CMLib.map().sortedAreas();a.hasMoreElements();)
+		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			if(everywhere||(A.amISubOp(mob.Name())&&anywhere))
@@ -49,7 +50,7 @@ public class GrinderAreas
 		return AreaList.toString();
 	}
 
-	public static String doAffectsNBehavs(Environmental E, ExternalHTTPRequests httpReq, Hashtable<String,String> parms)
+	public static String doAffectsNBehavs(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		while(E.numBehaviors()>0)
 			E.delBehavior(E.fetchBehavior(0));
@@ -99,7 +100,7 @@ public class GrinderAreas
 		return "";
 	}
 
-	public static String modifyArea(ExternalHTTPRequests httpReq, Hashtable<String,String> parms)
+	public static String modifyArea(ExternalHTTPRequests httpReq, Hashtable parms)
 	{
         Vector areasNeedingUpdates=new Vector();
 		String last=httpReq.getRequestParameter("AREA");
@@ -109,7 +110,7 @@ public class GrinderAreas
 		areasNeedingUpdates.addElement(A);
 
 		boolean redoAllMyDamnRooms=false;
-		Vector<Room> allMyDamnRooms=null;
+		Vector allMyDamnRooms=null;
 		String oldName=null;
 
 		// class!
@@ -118,8 +119,8 @@ public class GrinderAreas
 			return "Please select a class type for this area.";
 		if(!className.equalsIgnoreCase(CMClass.classID(A)))
 		{
-			allMyDamnRooms=new Vector<Room>();
-			for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+			allMyDamnRooms=new Vector();
+			for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 				allMyDamnRooms.addElement(r.nextElement());
 			Area oldA=A;
 			A=CMClass.getAreaType(className);
@@ -142,8 +143,8 @@ public class GrinderAreas
 		{
 			if(CMLib.map().getArea(name)!=null)
 				return "The name you chose is already in use.  Please enter another.";
-			allMyDamnRooms=new Vector<Room>();
-			for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+			allMyDamnRooms=new Vector();
+			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				allMyDamnRooms.addElement(r.nextElement());
 			CMLib.map().delArea(A);
 			oldName=A.Name();

@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_SnuffFlame extends Chant
 {
 	public String ID() { return "Chant_SnuffFlame"; }
@@ -42,7 +43,7 @@ public class Chant_SnuffFlame extends Chant
 	protected int canTargetCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget, Item.WORNREQ_ANY);
 		if(target==null) return false;

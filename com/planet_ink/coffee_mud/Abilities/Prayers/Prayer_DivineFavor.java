@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Prayer_DivineFavor extends Prayer
 {
     public String ID() { return "Prayer_DivineFavor"; }
@@ -96,7 +97,7 @@ public class Prayer_DivineFavor extends Prayer
         return true;
     }
     
-    public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         Environmental target=mob;
         if((auto)&&(givenTarget!=null)) target=givenTarget;

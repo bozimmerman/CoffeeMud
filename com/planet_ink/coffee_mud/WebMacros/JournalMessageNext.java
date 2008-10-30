@@ -32,15 +32,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class JournalMessageNext extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public static HashSet<String> getProtectedJournals()
+	public static HashSet getProtectedJournals()
 	{
 	    Item I=null;
-	    HashSet<String> H=new HashSet<String>();
-	    for(Enumeration<Item> e=CMClass.basicItems();e.hasMoreElements();)
+	    HashSet H=new HashSet();
+	    for(Enumeration e=CMClass.basicItems();e.hasMoreElements();)
 	    {
 	        I=(Item)e.nextElement();
 	        if((I instanceof ArchonOnly)
@@ -58,7 +59,7 @@ public class JournalMessageNext extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable<String,String> parms=parseParms(parm);
+		Hashtable parms=parseParms(parm);
 		String journal=httpReq.getRequestParameter("JOURNAL");
 		if(journal==null) return " @break@";
 		if(isProtectedJournal(journal))
@@ -67,8 +68,8 @@ public class JournalMessageNext extends StdWebMacro
 			if((M==null)||(!CMSecurity.isASysOp(M)))
 			    return " @break@";
 		}
-		@SuppressWarnings("unchecked")
-		Vector<JournalsLibrary.JournalEntry> info=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get("JOURNAL: "+journal);
+		
+		Vector info=(Vector)httpReq.getRequestObjects().get("JOURNAL: "+journal);
 		if(info==null)
 		{
 			info=CMLib.database().DBReadJournalMsgs(journal);
@@ -105,7 +106,7 @@ public class JournalMessageNext extends StdWebMacro
                     return "<!--EMPTY-->";
                 return " @break@";
             }
-            JournalsLibrary.JournalEntry E=info.elementAt(CMath.s_int(last));
+            JournalsLibrary.JournalEntry E=(JournalsLibrary.JournalEntry)info.elementAt(CMath.s_int(last));
             String to=E.to;
             if((srch!=null)
             &&(srch.length()>0)

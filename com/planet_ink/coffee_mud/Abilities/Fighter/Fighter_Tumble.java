@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Fighter_Tumble extends FighterSkill
 {
 	public int hits=0;
@@ -99,7 +100,7 @@ public class Fighter_Tumble extends FighterSkill
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.fetchEffect(this.ID())!=null)
 		{

@@ -32,12 +32,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdThinGrid extends StdRoom implements GridLocale
 {
 	public String ID(){return "StdThinGrid";}
-	protected Vector<String> descriptions=new Vector<String>(1);
-	protected Vector<String> displayTexts=new Vector<String>(1);
-	protected Vector<WorldMap.CrossExit> gridexits=new Vector<WorldMap.CrossExit>(1);
+	protected Vector descriptions=new Vector(1);
+	protected Vector displayTexts=new Vector(1);
+	protected Vector gridexits=new Vector(1);
 
 	protected int xsize=5;
 	protected int ysize=5;
@@ -58,9 +59,9 @@ public class StdThinGrid extends StdRoom implements GridLocale
         super.cloneFix(E);
         if(E instanceof StdThinGrid)
         {
-            descriptions=(Vector<String>)((StdThinGrid)E).descriptions.clone();
-            displayTexts=(Vector<String>)((StdThinGrid)E).displayTexts.clone();
-            gridexits=(Vector<WorldMap.CrossExit>)((StdThinGrid)E).gridexits.clone();
+            descriptions=(Vector)((StdThinGrid)E).descriptions.clone();
+            displayTexts=(Vector)((StdThinGrid)E).displayTexts.clone();
+            gridexits=(Vector)((StdThinGrid)E).gridexits.clone();
         }
     }
 	public String getGridChildLocaleID(){return "StdRoom";}
@@ -80,15 +81,15 @@ public class StdThinGrid extends StdRoom implements GridLocale
 			if(R!=null) R.destroy();
 		}
 		rooms.clear();
-        descriptions=new Vector<String>(1);
-        displayTexts=new Vector<String>(1);
-        gridexits=new Vector<WorldMap.CrossExit>(1);
+        descriptions=new Vector(1);
+        displayTexts=new Vector(1);
+        gridexits=new Vector(1);
 	}
 
 	public void setDescription(String newDescription)
 	{
 		super.setDescription(newDescription);
-		descriptions=new Vector<String>();
+		descriptions=new Vector();
 		int x=newDescription.toUpperCase().indexOf("<P>");
 		while(x>=0)
 		{
@@ -104,7 +105,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 	public void setDisplayText(String newDisplayText)
 	{
 		super.setDisplayText(newDisplayText);
-		displayTexts=new Vector<String>();
+		displayTexts=new Vector();
 		int x=newDisplayText.toUpperCase().indexOf("<P>");
 		while(x>=0)
 		{
@@ -434,7 +435,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		return R;
 	}
 
-	public Vector<WorldMap.CrossExit> outerExits(){return (Vector<WorldMap.CrossExit>)gridexits.clone();}
+	public Vector outerExits(){return (Vector)gridexits.clone();}
 	public void delOuterExit(WorldMap.CrossExit x){gridexits.remove(x);}
 	public void addOuterExit(WorldMap.CrossExit x){gridexits.addElement(x);}
 
@@ -535,10 +536,10 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		return getMakeGridRoom(x,y);
 	}
 
-	public Vector<Room> getAllRooms()
+	public Vector getAllRooms()
 	{
 		getRandomGridChild();
-		return (Vector<Room>)rooms.getDimensionVector(1).clone();
+		return (Vector)rooms.getDimensionVector(1).clone();
 	}
 
 	protected Room alternativeLink(Room room, Room defaultRoom, int dir)

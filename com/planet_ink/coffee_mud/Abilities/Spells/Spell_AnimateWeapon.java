@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_AnimateWeapon extends Spell
 {
 	public String ID() { return "Spell_AnimateWeapon"; }
@@ -122,7 +123,7 @@ public class Spell_AnimateWeapon extends Spell
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_FLYING);
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
 		if(target==null) return false;

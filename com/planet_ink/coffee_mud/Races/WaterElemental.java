@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class WaterElemental extends StdRace
 {
 	public String ID(){	return "WaterElemental"; }
@@ -61,7 +62,7 @@ public class WaterElemental extends StdRace
 	private int[] agingChart={0,0,0,0,0,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE,Integer.MAX_VALUE};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector<Item> resources=new Vector<Item>();
+	protected static Vector resources=new Vector();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -123,7 +124,7 @@ public class WaterElemental extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect condition.^N";
 	}
-	public Vector<Item> myResources()
+	public Vector myResources()
 	{
 		synchronized(resources)
 		{

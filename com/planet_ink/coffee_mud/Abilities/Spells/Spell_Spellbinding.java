@@ -36,6 +36,7 @@ import java.io.ObjectOutputStream;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_Spellbinding extends Spell
 {
 	public String ID() { return "Spell_Spellbinding"; }
@@ -137,9 +138,9 @@ public class Spell_Spellbinding extends Spell
 						int curMana=msg.source().curState().getMana();
 						msg.source().curState().setMana(1000);
 						if(msg.target()!=null)
-							A.invoke(msg.source(),CMParms.parseToObjV(msg.target().Name()),null,false,0);
+							A.invoke(msg.source(),CMParms.parse(msg.target().Name()),null,false,0);
 						else
-							A.invoke(msg.source(),new Vector<Object>(),null,false,0);
+							A.invoke(msg.source(),new Vector(),null,false,0);
 						msg.source().curState().setMana(curMana);
 					}
 					if(canBeUninvoked())
@@ -151,7 +152,7 @@ public class Spell_Spellbinding extends Spell
 		super.executeMsg(host,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

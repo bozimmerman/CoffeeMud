@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public interface HelpLibrary extends CMLibrary
 {
     public StringBuffer getHelpText(String helpStr, MOB forMOB, boolean favorAHelp);

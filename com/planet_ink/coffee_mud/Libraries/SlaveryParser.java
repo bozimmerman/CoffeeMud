@@ -34,6 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 {
     public String ID(){return "SlaveryParser";}
@@ -167,7 +168,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
 
     public geasSteps processRequest(MOB you, MOB me, String req)
     {
-        Vector<String> REQ=CMParms.parse(req.toLowerCase().trim());
+        Vector REQ=CMParms.parse(req.toLowerCase().trim());
         for(int v=0;v<REQ.size();v++)
             REQ.setElementAt(cleanWord((String)REQ.elementAt(v)),v);
         Vector poss=findMatch(me,REQ);
@@ -208,7 +209,7 @@ public class SlaveryParser extends StdLibrary implements SlaveryLibrary
             {
                 geasStep g=new geasStep(geasSteps);
                 Hashtable map=(Hashtable)poss.elementAt(i);
-                Vector<String> all=CMParms.parseSemicolons((String)map.get("INSTR"),true);
+                Vector all=CMParms.parseSemicolons((String)map.get("INSTR"),true);
                 if(CMSecurity.isDebugging("GEAS"))
                     Log.debugOut("GEAS",CMParms.toStringList(all));
                 g.que=new Vector();

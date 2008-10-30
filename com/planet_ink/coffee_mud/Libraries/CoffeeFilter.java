@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class CoffeeFilter extends StdLibrary implements TelnetFilter
 {
     public String ID(){return "CoffeeFilter";}

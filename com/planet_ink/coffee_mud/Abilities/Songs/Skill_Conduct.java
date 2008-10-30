@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Skill_Conduct extends BardSkill
 {
 	public String ID() { return "Skill_Conduct"; }
@@ -43,7 +44,7 @@ public class Skill_Conduct extends BardSkill
 	public int maxRange(){return adjustedMaxInvokerRange(2);}
 
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Ability SYMPHONY=mob.fetchAbility("Play_Symphony");
 		if((!auto)&&(SYMPHONY==null))

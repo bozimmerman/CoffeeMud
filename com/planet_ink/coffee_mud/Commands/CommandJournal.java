@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class CommandJournal extends StdCommand
 {
     public CommandJournal(){}
@@ -68,7 +69,7 @@ public class CommandJournal extends StdCommand
             return true;
         }
         int count=CMath.s_int(second);
-        Vector<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(journalID);
+        Vector journal=CMLib.database().DBReadJournalMsgs(journalID);
         int size=0;
         if(journal!=null) size=journal.size();
         if(size<=0)
@@ -98,8 +99,8 @@ public class CommandJournal extends StdCommand
             mob.tell(rest+" is not a journal");
             return true;
         }
-        Vector<JournalsLibrary.JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(journalID);
-        JournalsLibrary.JournalEntry entry2=journal2.elementAt(count-1);
+        Vector journal2=CMLib.database().DBReadJournalMsgs(journalID);
+        JournalsLibrary.JournalEntry entry2=(JournalsLibrary.JournalEntry)journal2.elementAt(count-1);
         String from2=entry2.from;
         String to=(String)entry2.to;
         String subject=(String)entry2.subj;
@@ -136,7 +137,7 @@ public class CommandJournal extends StdCommand
             mob.tell("This feature has been disabled.");
         else
         {
-            Vector<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(journalID);
+            Vector journal=CMLib.database().DBReadJournalMsgs(journalID);
             int size=0;
             if(journal!=null) size=journal.size();
             if(size<=0)
@@ -165,7 +166,7 @@ public class CommandJournal extends StdCommand
         return true;
     }
     
-    public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+    public boolean execute(MOB mob, Vector commands, int metaFlags)
         throws java.io.IOException
     {
         if((commands==null)||(commands.size()==1))

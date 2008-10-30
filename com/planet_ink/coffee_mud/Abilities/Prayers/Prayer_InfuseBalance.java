@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prayer_InfuseBalance extends Prayer
 {
     public String ID() { return "Prayer_InfuseBalance"; }
@@ -66,7 +67,7 @@ public class Prayer_InfuseBalance extends Prayer
     }
 
 
-    public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_ANY);
         if(target==null)
@@ -101,7 +102,7 @@ public class Prayer_InfuseBalance extends Prayer
             }
             Area A=mob.location().getArea();
             Room R=null;
-            for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
+            for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
             {
                 R=(Room)e.nextElement();
                 if(CMLib.law().getClericInfused((Room)target)==D)

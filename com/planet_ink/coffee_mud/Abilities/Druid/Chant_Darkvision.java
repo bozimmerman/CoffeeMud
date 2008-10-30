@@ -32,6 +32,7 @@ import java.util.Vector;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_Darkvision extends Chant
 {
 	public String ID() { return "Chant_Darkvision"; }
@@ -69,7 +70,7 @@ public class Chant_Darkvision extends Chant
 			mob.tell("You lose your darkvision.");
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

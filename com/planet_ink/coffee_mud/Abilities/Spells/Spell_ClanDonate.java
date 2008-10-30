@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_ClanDonate extends Spell
 {
 	public String ID() { return "Spell_ClanDonate"; }
@@ -42,7 +43,7 @@ public class Spell_ClanDonate extends Spell
 	protected int overrideMana(){return 5;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,null,givenTarget,null,commands,Item.WORNREQ_UNWORNONLY);
 		if(target==null) return false;

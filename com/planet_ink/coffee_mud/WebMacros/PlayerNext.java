@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class PlayerNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -40,7 +41,7 @@ public class PlayerNext extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
-		Hashtable<String,String> parms=parseParms(parm);
+		Hashtable parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("PLAYER");
 		if(parms.containsKey("RESET"))
 		{	

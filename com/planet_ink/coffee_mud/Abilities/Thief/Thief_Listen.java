@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Thief_Listen extends ThiefSkill
 {
 	public String ID() { return "Thief_Listen"; }
@@ -93,7 +94,7 @@ public class Thief_Listen extends ThiefSkill
 			unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String whom=CMParms.combine(commands,0);
 		int dirCode=Directions.getGoodDirectionCode(whom);

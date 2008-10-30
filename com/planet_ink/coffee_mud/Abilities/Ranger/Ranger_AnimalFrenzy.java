@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Ranger_AnimalFrenzy extends StdAbility
 {
 	public String ID() { return "Ranger_AnimalFrenzy"; }
@@ -62,7 +63,7 @@ public class Ranger_AnimalFrenzy extends StdAbility
 
 		if(rangersGroup!=null)
 		{
-			HashSet H=invoker.getGroupMembers(new HashSet<MOB>());
+			HashSet H=invoker.getGroupMembers(new HashSet());
 			for(Iterator e=H.iterator();e.hasNext();)
 			{
 				MOB mob=(MOB)e.next();

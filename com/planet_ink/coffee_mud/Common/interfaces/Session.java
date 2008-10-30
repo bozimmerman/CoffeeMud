@@ -37,6 +37,7 @@ import java.net.SocketException;
  * object to a MOB is the only difference between an NPC MOB and a player MOB.
  * This object handles input, output, and related processes.
  */
+@SuppressWarnings("unchecked")
 public interface Session extends CMCommon
 {
     
@@ -575,7 +576,7 @@ public interface Session extends CMCommon
      * through this session.
      * @return a vector of strings
      */
-	public Vector<Object> previousCMD();
+	public Vector previousCMD();
     
     /**
      * Returns the player MOB attached to this session object.

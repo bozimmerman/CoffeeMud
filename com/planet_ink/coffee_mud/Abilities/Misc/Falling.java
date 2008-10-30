@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Falling extends StdAbility
 {
 	public String ID() { return "Falling"; }
@@ -251,7 +252,7 @@ public class Falling extends StdAbility
 		else
 			super.setAffectedOne(being);
 	}
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental target, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
 	{
 		if(!auto) return false;
 		Environmental E=target;

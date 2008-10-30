@@ -30,13 +30,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Mood extends StdCommand
 {
 	public Mood(){}
 
 	private String[] access={"MOOD"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Ability A=CMClass.getAbility("Mood");
@@ -50,7 +51,7 @@ public class Mood extends StdCommand
 			mob.tell("This command is not implemented.");
 		return false;
 	}
-    public double combatActionsCost(MOB mob, Vector<Object> cmds){return 0;}
-    public double actionsCost(MOB mob, Vector<Object> cmds){return 0;}
+    public double combatActionsCost(MOB mob, Vector cmds){return 0;}
+    public double actionsCost(MOB mob, Vector cmds){return 0;}
 	public boolean canBeOrdered(){return true;}
 }

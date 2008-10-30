@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_SpeedAging extends Chant
 {
 	public String ID() { return "Chant_SpeedAging"; }
@@ -41,7 +42,7 @@ public class Chant_SpeedAging extends Chant
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 	protected int overrideMana(){return Integer.MAX_VALUE;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_ANY,true);
 		if(target==null) return false;

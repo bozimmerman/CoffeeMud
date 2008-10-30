@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Bull extends Buffalo
 {
 	public String ID(){	return "Bull"; }
@@ -40,7 +41,7 @@ public class Bull extends Buffalo
 	public int heightVariance(){return 6;}
 	public int lightestWeight(){return 350;}
 	public int weightVariance(){return 100;}
-	protected static Vector<Item> resources=new Vector<Item>();
+	protected static Vector resources=new Vector();
 	public String racialCategory(){return "Bovine";}
 
 	//                                an ey ea he ne ar ha to le fo no gi mo wa ta wi
@@ -62,7 +63,7 @@ public class Bull extends Buffalo
 		super.affectCharStats(affectedMOB, affectableStats);
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,19);
 	}
-	public Vector<Item> myResources()
+	public Vector myResources()
 	{
 		synchronized(resources)
 		{

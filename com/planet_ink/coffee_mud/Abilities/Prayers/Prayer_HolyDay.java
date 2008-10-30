@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Prayer_HolyDay extends Prayer
 {
 	public String ID() { return "Prayer_HolyDay"; }
@@ -57,7 +58,7 @@ public class Prayer_HolyDay extends Prayer
 
 		if(canBeUninvoked())
 		{
-			for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
+			for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
 			{
 				Room R=(Room)e.nextElement();
 				R.showHappens(CMMsg.MSG_OK_VISUAL,"The holy day has ended.");
@@ -126,7 +127,7 @@ public class Prayer_HolyDay extends Prayer
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Area target=mob.location().getArea();
 		if(target==null) return false;

@@ -28,6 +28,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public interface TrackingLibrary extends CMLibrary
 {
     public Vector findBastardTheBestWay(Room location,
@@ -50,7 +51,7 @@ public interface TrackingLibrary extends CMLibrary
     public void stopTracking(MOB mob);
     public int radiatesFromDir(Room room, Vector rooms);
     public void getRadiantRooms(Room room,
-                                Vector<Room> rooms,
+                                Vector rooms,
                                 boolean openOnly,
                                 boolean areaOnly,
                                 boolean noEmptyGrids,
@@ -59,7 +60,7 @@ public interface TrackingLibrary extends CMLibrary
                                 Room radiateTo,
                                 int maxDepth,
                                 HashSet ignoreRooms);
-	public Vector<Room> getRadiantRooms(Room room,
+	public Vector getRadiantRooms(Room room,
 								  boolean openOnly,
 								  boolean areaOnly,
 								  boolean noEmptyGrids,

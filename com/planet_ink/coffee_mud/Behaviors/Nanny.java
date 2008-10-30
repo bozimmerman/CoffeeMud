@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Nanny extends StdBehavior
 {
     public String ID(){return "Nanny";}
@@ -484,7 +485,7 @@ public class Nanny extends StdBehavior
         &&(msg.target()==CMLib.map().roomLocation(host)))
         {
 			String currency=CMLib.beanCounter().getCurrency(host);
-        	HashSet H=msg.source().getGroupMembers(new HashSet<MOB>());
+        	HashSet H=msg.source().getGroupMembers(new HashSet());
             msg.source().getRideBuddies(H);
             if(!H.contains(msg.source())) H.add(msg.source());
         	HashSet H2 = null;
@@ -663,7 +664,7 @@ public class Nanny extends StdBehavior
     	if(x>0) dropOffs=null;
     	hourlyRate=CMParms.getParmDouble(parms,"RATE",2.0);
     	place=CMParms.getParmStr(parms,"NAME","nursery");
-    	Vector<String> watches=CMParms.parseCommas(CMParms.getParmStr(parms,"WATCHES","Babies,Children").toUpperCase(),true);
+    	Vector watches=CMParms.parseCommas(CMParms.getParmStr(parms,"WATCHES","Babies,Children").toUpperCase(),true);
     	String watch=null;
     	watchesBabies=false;
     	watchesChildren=false;

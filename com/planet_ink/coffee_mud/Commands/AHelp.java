@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class AHelp extends StdCommand
 {
 	public AHelp(){}
@@ -37,7 +38,7 @@ public class AHelp extends StdCommand
 	private String[] access={"ARCHELP","AHELP"};
 	public String[] getAccessWords(){return access;}
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String helpStr=CMParms.combine(commands,1);
@@ -55,10 +56,10 @@ public class AHelp extends StdCommand
 				StringBuffer theRest=(StringBuffer)Resources.getResource("arc_help.therest");
 				if(theRest==null)
 				{
-					Vector<String> V=new Vector<String>();
+					Vector V=new Vector();
 					theRest=new StringBuffer("");
 
-					for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 					{
 						Ability A=(Ability)a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY))
@@ -71,7 +72,7 @@ public class AHelp extends StdCommand
 					}
 
 					V.clear();
-					for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 					{
 						Ability A=(Ability)a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_DISEASE))
@@ -84,7 +85,7 @@ public class AHelp extends StdCommand
 					}
 
 					V.clear();
-					for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 					{
 						Ability A=(Ability)a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_POISON))
@@ -97,7 +98,7 @@ public class AHelp extends StdCommand
 					}
 
 					V.clear();
-					for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+					for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 					{
 						Ability A=(Ability)a.nextElement();
 						if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SUPERPOWER))
@@ -110,7 +111,7 @@ public class AHelp extends StdCommand
 					}
 
 					V.clear();
-					for(Enumeration<Behavior> b=CMClass.behaviors();b.hasMoreElements();)
+					for(Enumeration b=CMClass.behaviors();b.hasMoreElements();)
 					{
 						Behavior B=(Behavior)b.nextElement();
 						if(B!=null) V.addElement(B.ID());

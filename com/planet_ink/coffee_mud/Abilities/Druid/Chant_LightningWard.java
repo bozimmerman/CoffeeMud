@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_LightningWard extends Chant
 {
 	public String ID() { return "Chant_LightningWard"; }
@@ -60,7 +61,7 @@ public class Chant_LightningWard extends Chant
 		affectedStats.setStat(CharStats.STAT_SAVE_ELECTRIC,affectedStats.getStat(CharStats.STAT_SAVE_ELECTRIC)+100);
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

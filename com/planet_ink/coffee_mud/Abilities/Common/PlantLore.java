@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class PlantLore extends CommonSkill
 {
 	public String ID() { return "PlantLore"; }
@@ -130,7 +131,7 @@ public class PlantLore extends CommonSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		verb="observing plant growth";
 		success=false;

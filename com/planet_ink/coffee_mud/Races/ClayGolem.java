@@ -31,13 +31,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class ClayGolem extends StoneGolem
 {
 	public String ID(){	return "ClayGolem"; }
 	public String name(){ return "Clay Golem"; }
-	protected static Vector<Item> resources=new Vector<Item>();
+	protected static Vector resources=new Vector();
 	
-	public Vector<Item> myResources()
+	public Vector myResources()
 	{
 		synchronized(resources)
 		{

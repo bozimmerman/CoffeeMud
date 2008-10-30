@@ -34,6 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	public String ID() { return "MasterLeatherWorking"; }
@@ -60,7 +61,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 	protected static final int RCP_SPELL=10;
 
     public String parametersFile(){ return "masterleatherworking.txt";}
-    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{
@@ -116,7 +117,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int autoGenerate=0;
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
@@ -141,7 +142,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
                 return super.bundle(mob,commands);
             return false;
         }
-		Vector<Vector<String>> recipes=addRecipes(mob,loadRecipes());
+		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
         playSound="scissor.wav";
 		String startStr=null;
@@ -160,7 +161,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector<String> V=recipes.elementAt(r);
+				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
@@ -177,7 +178,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			}
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector<String> V=recipes.elementAt(r);
+				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
@@ -194,7 +195,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			}
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector<String> V=recipes.elementAt(r);
+				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
@@ -211,7 +212,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			}
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector<String> V=recipes.elementAt(r);
+				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
@@ -228,7 +229,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			}			
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector<String> V=recipes.elementAt(r);
+				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
@@ -245,7 +246,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			}
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector<String> V=recipes.elementAt(r);
+				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
@@ -273,7 +274,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			building=null;
 			mending=false;
 			messedUp=false;
-			Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
+			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORNREQ_UNWORNONLY);
 			if(!canMend(mob,building,false)) return false;
 			mending=true;
@@ -290,7 +291,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 			mending=false;
 			refitting=false;
 			messedUp=false;
-			Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
+			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORNREQ_UNWORNONLY);
 			if(building==null) return false;
 			if((building.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_LEATHER)

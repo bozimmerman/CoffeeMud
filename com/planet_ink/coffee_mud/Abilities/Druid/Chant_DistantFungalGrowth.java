@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_DistantFungalGrowth extends Chant
 {
 	public String ID() { return "Chant_DistantFungalGrowth"; }
@@ -41,7 +42,7 @@ public class Chant_DistantFungalGrowth extends Chant
 	protected int canAffectCode(){return 0;}
 	protected int canTargetCode(){return CAN_ROOMS;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		if(commands.size()<1)
@@ -55,7 +56,7 @@ public class Chant_DistantFungalGrowth extends Chant
 		Room newRoom=null;
 		try
 		{
-			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if((CMLib.english().containsString(R.displayText(),areaName))

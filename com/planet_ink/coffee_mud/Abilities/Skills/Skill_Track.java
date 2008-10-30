@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Skill_Track extends StdSkill
 {
 	public String ID() { return "Skill_Track"; }
@@ -176,7 +177,7 @@ public class Skill_Track extends StdSkill
 			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),false);
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 	    tickStatus=Tickable.STATUS_MISC6;
 		if((!CMLib.flags().aliveAwakeMobile(mob,false))||(mob.location()==null)||(!CMLib.flags().isInTheGame(mob,true)))
@@ -261,7 +262,7 @@ public class Skill_Track extends StdSkill
 			return false;
 		}
 
-		Vector<Environmental> rooms=new Vector<Environmental>();
+		Vector rooms=new Vector();
 		if(givenTarget instanceof Area)
 			rooms.addElement(((Area)givenTarget).getRandomMetroRoom());
 		else
@@ -282,8 +283,8 @@ public class Skill_Track extends StdSkill
 		{
 		    try
 		    {
-				Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(thisRoom,false,false,!(allowAir||allowWater),!allowAir,!allowWater,radius);
-				for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
+				Vector checkSet=CMLib.tracking().getRadiantRooms(thisRoom,false,false,!(allowAir||allowWater),!allowAir,!allowWater,radius);
+				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 				{
 					Room R=CMLib.map().getRoom((Room)r.nextElement());
 					if(R.fetchInhabitant(mobName)!=null)

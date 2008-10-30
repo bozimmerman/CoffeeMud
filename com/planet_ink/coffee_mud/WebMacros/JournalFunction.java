@@ -32,17 +32,18 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class JournalFunction extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable<String,String> parms=parseParms(parm);
+		Hashtable parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("JOURNAL");
 		if(last==null) return "Function not performed -- no Journal specified.";
-		@SuppressWarnings("unchecked")
-		Vector<JournalsLibrary.JournalEntry> info=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get("JOURNAL: "+last);
+		
+		Vector info=(Vector)httpReq.getRequestObjects().get("JOURNAL: "+last);
 		if(info==null)
 		{
 			info=CMLib.database().DBReadJournalMsgs(last);
@@ -92,7 +93,8 @@ public class JournalFunction extends StdWebMacro
 		if(lastlast!=null) num=CMath.s_int(lastlast);
 		if((num<0)||(num>=info.size()))
 			return "Function not performed -- illegal journal message specified.";
-		String to=info.elementAt(num).to;
+		JournalsLibrary.JournalEntry entry = (JournalsLibrary.JournalEntry)info.elementAt(num);
+		String to=entry.to;
 		if(CMSecurity.isAllowedAnywhere(M,"JOURNALS")||(to.equalsIgnoreCase(M.Name())))
 		{
 			if(parms.containsKey("DELETE"))
@@ -119,7 +121,7 @@ public class JournalFunction extends StdWebMacro
                 String replyMsg=httpReq.getRequestParameter("NEWTEXT");
                 if(replyMsg.length()==0)
                     return "Email not submitted -- No text!";
-                String toName=info.elementAt(num).from;
+                String toName=entry.from;
                 if(replyMsg.length()==0)
                     return "Email not submitted -- No text!";
                 MOB toM=CMLib.players().getLoadPlayer(toName);
@@ -128,7 +130,7 @@ public class JournalFunction extends StdWebMacro
                 CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),
                                                   M.Name(),
                                                   toM.Name(),
-                                                  "RE: "+info.elementAt(num).subj,
+                                                  "RE: "+entry.subj,
                                                   replyMsg,-1);
                 httpReq.getRequestObjects().remove("JOURNAL: "+last);
                 return "Email queued";
@@ -157,8 +159,8 @@ public class JournalFunction extends StdWebMacro
                         realName=CMLib.database().DBGetRealJournalName(journal.toUpperCase());
                     if(realName==null)
                         return  "The journal '"+journal+"' does not presently exist.  Aborted.";
-                    Vector<JournalsLibrary.JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(last);
-                    JournalsLibrary.JournalEntry entry2=journal2.elementAt(num);
+                    Vector journal2=CMLib.database().DBReadJournalMsgs(last);
+                    JournalsLibrary.JournalEntry entry2=(JournalsLibrary.JournalEntry)journal2.elementAt(num);
                     String from2=(String)entry2.from;
                     String to2=(String)entry2.to;
                     String subject=(String)entry2.subj;

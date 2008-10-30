@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	public String ID() { return "Armorsmithing"; }
@@ -75,7 +76,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 	}
 
     public String parametersFile(){ return "armorsmith.txt";}
-    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{
@@ -138,7 +139,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int autoGenerate=0;
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
@@ -163,7 +164,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
                 return super.bundle(mob,commands);
             return false;
         }
-		Vector<Vector<String>> recipes=addRecipes(mob,loadRecipes());
+		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
         bundling=false;
@@ -179,7 +180,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			buf.append("\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector<String> V=recipes.elementAt(r);
+				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
@@ -209,7 +210,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			messedUp=false;
 			Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
-			Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
+			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORNREQ_UNWORNONLY);
 			if(!canMend(mob, building,false)) return false;
 			mending=true;
@@ -228,7 +229,7 @@ public class Armorsmithing extends EnhancedCraftingSkill implements ItemCraftor,
 			messedUp=false;
 			Item fire=getRequiredFire(mob,autoGenerate);
 			if(fire==null) return false;
-			Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
+			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORNREQ_UNWORNONLY);
 			if(building==null) return false;
 			if(((building.material()&RawMaterial.MATERIAL_MASK)!=RawMaterial.MATERIAL_METAL)

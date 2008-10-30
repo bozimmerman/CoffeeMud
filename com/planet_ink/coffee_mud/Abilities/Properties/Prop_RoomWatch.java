@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prop_RoomWatch extends Property
 {
 	public String ID() { return "Prop_RoomWatch"; }
@@ -51,8 +52,8 @@ public class Prop_RoomWatch extends Property
 		super.executeMsg(myHost,msg);
 		if(newRooms==null)
 		{
-			Vector<String> V=CMParms.parseSemicolons(text(),true);
-			newRooms=new Vector<Room>();
+			Vector V=CMParms.parseSemicolons(text(),true);
+			newRooms=new Vector();
 			for(int v=0;v<V.size();v++)
 			{
 				Room R=CMLib.map().getRoom((String)V.elementAt(v));

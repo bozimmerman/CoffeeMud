@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_GrowOak extends Chant_SummonPlants
 {
 	public String ID() { return "Chant_GrowOak"; }
@@ -115,7 +116,7 @@ public class Chant_GrowOak extends Chant_SummonPlants
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Vector V=Druid_MyPlants.myPlantRooms(mob);
 		for(int v=0;v<V.size();v++)

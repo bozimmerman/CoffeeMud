@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prayer_MoralBalance extends Prayer
 {
 	public String ID() { return "Prayer_MoralBalance"; }
@@ -39,7 +40,7 @@ public class Prayer_MoralBalance extends Prayer
 	public int abstractQuality(){ return Ability.QUALITY_OK_OTHERS;}
 	public long flags(){return Ability.FLAG_HOLY | Ability.FLAG_UNHOLY;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -50,7 +51,7 @@ public class Prayer_MoralBalance extends Prayer
         
 		boolean success=proficiencyCheck(mob,0,auto);
         CMMsg msg2=null;
-        if((mob!=target)&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
+        if((mob!=target)&&(!mob.getGroupMembers(new HashSet()).contains(target)))
             msg2=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,"<T-NAME> do(es) not seem to like <S-NAME> messing with <T-HIS-HER> head.");
 
 		if((success)&&(CMLib.factions().getFaction(CMLib.factions().AlignID())!=null))

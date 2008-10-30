@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Skill_Explosive extends StdSkill
 {
 	public String ID() { return "Skill_Explosive"; }
@@ -43,7 +44,7 @@ public class Skill_Explosive extends StdSkill
 	public int classificationCode(){return Ability.ACODE_SKILL;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_LoveMoon extends Chant
 {
 	public String ID() { return "Chant_LoveMoon"; }
@@ -93,7 +94,7 @@ public class Chant_LoveMoon extends Chant
 						if(I!=null)	CMLib.commands().postRemove(mob,I,false);
 						I=mob.fetchFirstWornItem(Item.WORN_LEGS);
 						if(I!=null)	CMLib.commands().postRemove(mob,I,false);
-						mob.doCommand(CMParms.parseToObjV("MATE "+M.Name()),Command.METAFLAG_FORCED);
+						mob.doCommand(CMParms.parse("MATE "+M.Name()),Command.METAFLAG_FORCED);
 					}
 					else
 					if(CMLib.dice().rollPercentage()>10)
@@ -145,7 +146,7 @@ public class Chant_LoveMoon extends Chant
 		affectableStats.setStat(CharStats.STAT_CHARISMA,affectableStats.getStat(CharStats.STAT_CHARISMA)+6);
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
 		if(target==null) return false;

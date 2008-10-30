@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class ProtectedCitizen extends ActiveTicker
 {
 	public String ID(){return "ProtectedCitizen";}
@@ -137,9 +138,9 @@ public class ProtectedCitizen extends ActiveTicker
 
 		String claim=getClaims()[CMLib.dice().roll(1,getClaims().length,-1)].trim();
 		if(claim.startsWith(","))
-			mob.doCommand(CMParms.parseToObjV("EMOTE \""+claim.substring(1).trim()+"\""),Command.METAFLAG_FORCED);
+			mob.doCommand(CMParms.parse("EMOTE \""+claim.substring(1).trim()+"\""),Command.METAFLAG_FORCED);
 		else
-			mob.doCommand(CMParms.parseToObjV("YELL \""+claim+"\""),Command.METAFLAG_FORCED);
+			mob.doCommand(CMParms.parse("YELL \""+claim+"\""),Command.METAFLAG_FORCED);
 
 		Room thisRoom=mob.location();
 		Vector V=new Vector();

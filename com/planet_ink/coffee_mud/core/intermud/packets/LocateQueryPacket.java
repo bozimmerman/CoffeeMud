@@ -31,6 +31,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
+@SuppressWarnings("unchecked")
 public class LocateQueryPacket extends Packet {
     public String user_name;
 

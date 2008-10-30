@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prayer_Revival extends Prayer
 {
 	public String ID() { return "Prayer_Revival"; }
@@ -109,9 +110,9 @@ public class Prayer_Revival extends Prayer
 			case 8:	CMLib.commands().postSay(mob,null,"Holy is the name of "+D.name()+"!",false,false); break;
 			case 9:	CMLib.commands().postSay(mob,null,"Do you BELIEVE?!? I BELIEVE!!!",false,false); break;
 			case 10: CMLib.commands().postSay(mob,null,"Halleluyah!",false,false); break;
-			case 11: mob.enqueCommand(CMParms.parseToObjV("EMOTE do(es) a spirit-filled dance!"),Command.METAFLAG_FORCED,0); break;
-			case 12: mob.enqueCommand(CMParms.parseToObjV("EMOTE wave(s) <S-HIS-HER> hands in the air!"),Command.METAFLAG_FORCED,0);  break;
-			case 13: mob.enqueCommand(CMParms.parseToObjV("EMOTE catch(es) the spirit of "+D.name()+"!"),Command.METAFLAG_FORCED,0); break;
+			case 11: mob.enqueCommand(CMParms.parse("EMOTE do(es) a spirit-filled dance!"),Command.METAFLAG_FORCED,0); break;
+			case 12: mob.enqueCommand(CMParms.parse("EMOTE wave(s) <S-HIS-HER> hands in the air!"),Command.METAFLAG_FORCED,0);  break;
+			case 13: mob.enqueCommand(CMParms.parse("EMOTE catch(es) the spirit of "+D.name()+"!"),Command.METAFLAG_FORCED,0); break;
 			}
 			if((clerics.size()>2)&&(inhabs.size()>0))
 			{
@@ -152,7 +153,7 @@ public class Prayer_Revival extends Prayer
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

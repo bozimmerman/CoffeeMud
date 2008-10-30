@@ -34,6 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Smelting extends CraftingSkill
 {
 	public String ID() { return "Smelting"; }
@@ -71,7 +72,7 @@ public class Smelting extends CraftingSkill
 	}
 
     public String parametersFile(){ return "smelting.txt";}
-    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{
@@ -100,7 +101,7 @@ public class Smelting extends CraftingSkill
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
 		if(commands.size()==0)
@@ -108,7 +109,7 @@ public class Smelting extends CraftingSkill
 			commonTell(mob,"Make what? Enter \"smelt list\" for a list.");
 			return false;
 		}
-		Vector<Vector<String>> recipes=addRecipes(mob,loadRecipes());
+		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
 		int duration=4;
@@ -118,7 +119,7 @@ public class Smelting extends CraftingSkill
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",20)+" Lvl "+CMStrings.padRight("Metal #1",16)+" Metal #2\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector<String> V=recipes.elementAt(r);
+				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");

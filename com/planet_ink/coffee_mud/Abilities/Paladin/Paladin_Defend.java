@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Paladin_Defend extends StdAbility
 {
 	public String ID() { return "Paladin_Defend"; }
@@ -113,7 +114,7 @@ public class Paladin_Defend extends StdAbility
 	}
 
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!CMLib.flags().aliveAwakeMobile(mob,false))
 			return false;

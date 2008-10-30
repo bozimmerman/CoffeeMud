@@ -29,6 +29,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class QuestMaker extends StdWebMacro
 {
     public String name()    {return "QuestMaker";}
@@ -127,7 +128,7 @@ public class QuestMaker extends StdWebMacro
     
     public String runMacro(ExternalHTTPRequests httpReq, String parm)
     {
-        Hashtable<String,String> parms=parseParms(parm);
+        Hashtable parms=parseParms(parm);
         if((parms==null)||(parms.size()==0)) return "";
 		MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
 		if(M==null) return "[error -- no authenticated mob!]";
@@ -281,7 +282,7 @@ public class QuestMaker extends StdWebMacro
         			list.append("<TD><SELECT NAME="+httpKeyName+">");
         			if(optionalEntry) list.append("<OPTION VALUE=\"\" "+((oldValue.length()==0)?"SELECTED":"")+">");
         			Ability A=null;
-        			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+        			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
         			{
         				A=(Ability)e.nextElement();
             			list.append("<OPTION VALUE=\""+A.ID()+"\" ");
@@ -726,7 +727,7 @@ public class QuestMaker extends StdWebMacro
                             case QuestManager.QM_COMMAND_$ITEMXML:
                         	case QuestManager.QM_COMMAND_$ITEMXML_ONEORMORE:
                         	{
-                        		Vector<String> V=CMParms.parseSemicolons(val,true);
+                        		Vector V=CMParms.parseSemicolons(val,true);
                         		val="";
                         		for(int v1=0;v1<V.size();v1++)
                         		{
@@ -741,7 +742,7 @@ public class QuestMaker extends StdWebMacro
                             case QuestManager.QM_COMMAND_$MOBXML:
                         	case QuestManager.QM_COMMAND_$MOBXML_ONEORMORE:
                         	{
-                        		Vector<String> V=CMParms.parseSemicolons(val,true);
+                        		Vector V=CMParms.parseSemicolons(val,true);
                         		val="";
                         		for(int v1=0;v1<V.size();v1++)
                         		{

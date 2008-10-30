@@ -28,6 +28,7 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class GiantWolf extends Wolf
 {
 	public String ID(){	return "GiantWolf"; }
@@ -44,7 +45,7 @@ public class GiantWolf extends Wolf
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
 	public int[] bodyMask(){return parts;}
 
-	protected static Vector<Item> resources=new Vector<Item>();
+	protected static Vector resources=new Vector();
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -60,7 +61,7 @@ public class GiantWolf extends Wolf
 		affectableStats.setRacialStat(CharStats.STAT_STRENGTH,13);
 		affectableStats.setRacialStat(CharStats.STAT_DEXTERITY,13);
 	}
-	public Vector<Item> myResources()
+	public Vector myResources()
 	{
 		synchronized(resources)
 		{

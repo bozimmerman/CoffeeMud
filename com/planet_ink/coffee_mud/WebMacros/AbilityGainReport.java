@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class AbilityGainReport extends StdWebMacro
 {
     public String name()    {return "AbilityGainReport";}
@@ -38,12 +39,12 @@ public class AbilityGainReport extends StdWebMacro
     {
         String className=httpReq.getRequestParameter("CLASS");
         if(className==null) className="";
-        Vector<Vector<String>> players=CMLib.database().getExtendedUserList();
-        HashSet<String> trainedFor=new HashSet<String>();
-        Hashtable<String,long[]> profSpent=new Hashtable<String,long[]>();
+        Vector players=CMLib.database().getExtendedUserList();
+        HashSet trainedFor=new HashSet();
+        Hashtable profSpent=new Hashtable();
         for(int pl=0;pl<players.size();pl++)
         {
-            MOB player=CMLib.players().getLoadPlayer((String)((Vector<String>)players.elementAt(pl)).firstElement());
+            MOB player=CMLib.players().getLoadPlayer((String)((Vector)players.elementAt(pl)).firstElement());
             for(int a=0;a<player.numLearnedAbilities();a++)
             {
                 Ability A=player.fetchAbility(a);
@@ -86,7 +87,7 @@ public class AbilityGainReport extends StdWebMacro
         DVector sorted=new DVector(2);
         while(profSpent.size()>0)
         {
-            Enumeration<String> e=profSpent.keys();
+            Enumeration e=profSpent.keys();
             String bestKey=(String)e.nextElement();
             long[] bestStat=(long[])profSpent.get(bestKey);
             for(;e.hasMoreElements();)
@@ -112,7 +113,7 @@ public class AbilityGainReport extends StdWebMacro
             if(trainedFor.contains(able))
                 buf.append("<TR><TD>"+able+"</TD><TD>"+stats[2]+"</TD><TD>"+stats[1]+"</TD></TR>");
         }
-        for(Iterator<String> i=trainedFor.iterator();i.hasNext();)
+        for(Iterator i=trainedFor.iterator();i.hasNext();)
         {
             String able=(String)i.next();
             if(!sorted.contains(able))

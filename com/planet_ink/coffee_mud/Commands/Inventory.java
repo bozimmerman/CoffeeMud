@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Inventory extends StdCommand
 {
 	public Inventory(){}
@@ -145,7 +146,7 @@ public class Inventory extends StdCommand
 	}
 
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if((commands.size()==1)&&(commands.firstElement() instanceof MOB))

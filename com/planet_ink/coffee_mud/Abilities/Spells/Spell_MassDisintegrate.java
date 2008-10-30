@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_MassDisintegrate extends Spell
 {
 	public String ID() { return "Spell_MassDisintegrate"; }
@@ -41,7 +42,7 @@ public class Spell_MassDisintegrate extends Spell
 	public int overrideMana(){return 200;}
 
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if((h==null)||(h.size()<0))

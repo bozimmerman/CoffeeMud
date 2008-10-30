@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class ROMPatrolman extends StdBehavior
 {
 	public String ID(){return "ROMPatrolman";}
@@ -57,7 +58,7 @@ public class ROMPatrolman extends StdBehavior
 		if(victim==null) return;
 		if(BrotherHelper.isBrother(victim,observer,false)) return;
 		observer.location().show(observer,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> blow(s) down hard on <S-HIS-HER> whistle. ***WHEEEEEEEEEEEET***");
-		for(Enumeration<Room> r=observer.location().getArea().getMetroMap();r.hasMoreElements();)
+		for(Enumeration r=observer.location().getArea().getMetroMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			if((R!=observer.location())&&(R.numPCInhabitants()>0))

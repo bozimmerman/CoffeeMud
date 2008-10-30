@@ -30,13 +30,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Credits extends StdCommand
 {
 	public Credits(){}
 
 	private String[] access={"CREDITS"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		StringBuffer credits=new CMFile(Resources.buildResourcePath("text")+"credits.txt",null,true).text();

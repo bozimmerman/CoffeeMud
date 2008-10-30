@@ -31,6 +31,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Disease_Alzheimers extends Disease
 {
 	public String ID() { return "Disease_Alzheimers"; }

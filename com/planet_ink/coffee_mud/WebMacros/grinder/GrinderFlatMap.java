@@ -32,6 +32,7 @@ import java.net.URLEncoder;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class GrinderFlatMap
 {
     protected Vector areaMap=null;
@@ -64,7 +65,7 @@ public class GrinderFlatMap
 			RoomnumberSet currentSet=A.getCachedRoomnumbers();
 			String roomID=null;
 			//RoomnumberSet loadRooms=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
-			for(Enumeration<String> e=A.getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)
+			for(Enumeration e=A.getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)
 			{
 				// this makes sure that, even though this is
 				// an unloaded room, it is ALSO actually needed

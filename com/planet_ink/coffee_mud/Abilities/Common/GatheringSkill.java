@@ -34,6 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class GatheringSkill extends CommonSkill
 {
 	public String ID() { return "GatheringSkill"; }
@@ -45,7 +46,7 @@ public class GatheringSkill extends CommonSkill
 	
 	public GatheringSkill(){super();}
 	
-	public Vector<Item> myResources()
+	public Vector myResources()
 	{
 	    if(supportedResources.containsKey(ID()))
 	        return (Vector)supportedResources.get(ID());

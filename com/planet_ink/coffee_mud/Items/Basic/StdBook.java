@@ -34,6 +34,7 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdBook extends StdItem
 {
 	public String ID(){	return "StdBook";}
@@ -97,7 +98,7 @@ public class StdBook extends StdItem
 				int which=-1;
 				boolean newOnly=false;
 				boolean all=false;
-				Vector<String> parse=CMParms.parse(msg.targetMessage());
+				Vector parse=CMParms.parse(msg.targetMessage());
 				for(int v=0;v<parse.size();v++)
 				{
 				    String s=(String)parse.elementAt(v);
@@ -185,11 +186,11 @@ public class StdBook extends StdItem
 		super.executeMsg(myHost,msg);
 	}
 
-	public Vector<Object> DBRead(MOB readerMOB, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
+	public Vector DBRead(MOB readerMOB, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
 	{
 		StringBuffer buf=new StringBuffer("");
-		Vector<Object> reply=new Vector<Object>();
-		Vector<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(Journal);
+		Vector reply=new Vector();
+		Vector journal=CMLib.database().DBReadJournalMsgs(Journal);
 		if((which<0)||(journal==null)||(which>=journal.size()))
 		{
 			buf.append("\n\rTable of Contents\n\r");
@@ -207,13 +208,13 @@ public class StdBook extends StdItem
 		{
 			if(journal.size()>0)
 			{
-				reply.addElement(journal.firstElement().from);
-				reply.addElement(journal.firstElement().subj);
+				reply.addElement(((JournalsLibrary.JournalEntry)journal.firstElement()).from);
+				reply.addElement(((JournalsLibrary.JournalEntry)journal.firstElement()).subj);
 			}
 			Vector selections=new Vector();
 			for(int j=0;j<journal.size();j++)
 			{
-				JournalsLibrary.JournalEntry entry=journal.elementAt(j);
+				JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.elementAt(j);
 				String from=entry.from;
 				String to=entry.to;
 				String subject=entry.subj;
@@ -259,7 +260,7 @@ public class StdBook extends StdItem
 		}
 		else
 		{
-			JournalsLibrary.JournalEntry entry=journal.elementAt(which);
+			JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.elementAt(which);
 			String from=entry.from;
 			String to=entry.to;
 			String subject=entry.subj;
@@ -296,7 +297,7 @@ public class StdBook extends StdItem
     private String getParm(String parmName)
     {
         if(readableText().length()==0) return "";
-        Hashtable<String,String> h=CMParms.parseEQParms(readableText().toUpperCase(),
+        Hashtable h=CMParms.parseEQParms(readableText().toUpperCase(),
                                          new String[]{"READ","WRITE","REPLY","ADMIN"});
         String req=(String)h.get(parmName.toUpperCase().trim());
         if(req==null) req="";

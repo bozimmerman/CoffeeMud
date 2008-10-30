@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Play_Reveille extends Play
 {
 	public String ID() { return "Play_Reveille"; }
@@ -50,7 +51,7 @@ public class Play_Reveille extends Play
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		steadyDown=-1;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -106,7 +107,7 @@ public class Play_Reveille extends Play
 								R2.send(follower,msg2);
 								if(CMLib.flags().isSleeping(follower))
 								{
-									follower.doCommand(CMParms.parseToObjV("WAKE"),Command.METAFLAG_FORCED);
+									follower.doCommand(CMParms.parse("WAKE"),Command.METAFLAG_FORCED);
 									if(!CMLib.flags().isSleeping(follower))
 									{
 										Ability A=CMClass.getAbility("Searching");

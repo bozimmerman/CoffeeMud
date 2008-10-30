@@ -39,6 +39,7 @@ import java.util.*;
  * languages.  A single ability usually represents a single language, but 
  * may support multiple simultaneously.
  */
+@SuppressWarnings("unchecked")
 public interface Language extends Ability
 {
     /**

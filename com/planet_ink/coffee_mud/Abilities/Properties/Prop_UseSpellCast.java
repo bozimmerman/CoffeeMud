@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prop_UseSpellCast extends Prop_SpellAdder
 {
 	public String ID() { return "Prop_UseSpellCast"; }
@@ -56,7 +57,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 			{
 				String t=A.text();
 				A=(Ability)A.copyOf();
-				Vector<String> V2=new Vector<String>();
+				Vector V2=new Vector();
 				if(t.length()>0)
 				{
 					int x=t.indexOf("/");
@@ -71,7 +72,7 @@ public class Prop_UseSpellCast extends Prop_SpellAdder
 						A.setMiscText(t.substring(x+1));
 					}
 				}
-				A.invoke(qualMOB,CMParms.makeObjV(V2),target,true,asLevel>0?asLevel:((affected!=null)?affected.envStats().level():0));
+				A.invoke(qualMOB,V2,target,true,asLevel>0?asLevel:((affected!=null)?affected.envStats().level():0));
 			}
 		}
         return true;

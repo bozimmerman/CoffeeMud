@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prop_ItemTransporter extends Property
 {
 	public String ID() { return "Prop_ItemTransporter"; }
@@ -76,7 +77,7 @@ public class Prop_ItemTransporter extends Property
 			nextDestination=null;
 			try
 			{
-				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room room=(Room)r.nextElement();
 					Ability A=room.fetchEffect("Prop_ItemTransReceiver");

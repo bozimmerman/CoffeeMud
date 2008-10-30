@@ -16,6 +16,7 @@ import java.util.*;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
+@SuppressWarnings("unchecked")
 public class DefaultRoomnumberSet implements RoomnumberSet
 {
     public DVector root=new DVector(2);

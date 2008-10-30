@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Disease_Leeches extends Disease
 {
 	public String ID() { return "Disease_Leeches"; }

@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Fighter_CalledStrike extends FighterSkill
 {
 	public String ID() { return "Fighter_CalledStrike"; }
@@ -125,7 +126,7 @@ public class Fighter_CalledStrike extends FighterSkill
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!prereqs(mob,false)) return false;
 

@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class ResetWhole extends StdBehavior
 {
 	public String ID(){return "ResetWhole";}
@@ -71,7 +72,7 @@ public class ResetWhole extends StdBehavior
 		{
 			if(ticking instanceof Area)
 			{
-				for(Enumeration<Room> r=((Area)ticking).getMetroMap();r.hasMoreElements();)
+				for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					for(int b=0;b<R.numBehaviors();b++)

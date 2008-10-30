@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Where extends StdCommand
 {
 	public Where(){}
@@ -64,7 +65,7 @@ public class Where extends StdCommand
 		return false;
 	}
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if((CMSecurity.isAllowed(mob,mob.location(),"WHERE"))
@@ -427,7 +428,7 @@ public class Where extends StdCommand
 			DVector mobsVec=new DVector(2);
 			DVector alignVec=new DVector(2);
 			int moblevel=mob.envStats().level()+adjust;
-			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				if((CMLib.flags().canAccess(mob,A))
@@ -458,7 +459,7 @@ public class Where extends StdCommand
             if((!CMSecurity.isDisabled("ROOMVISITS"))&&(mob.playerStats()!=null))
                 msg.append("You have explored "+mob.playerStats().percentVisited(mob,mob.location().getArea())+"% of this area and "+mob.playerStats().percentVisited(mob,null)+"% of the world.\n\r");
 			DVector scores=new DVector(2);
-			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				if(CMLib.flags().canAccess(mob,A))

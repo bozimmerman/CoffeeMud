@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_AcidArrow extends Spell
 {
 	public String ID() { return "Spell_AcidArrow"; }
@@ -55,7 +56,7 @@ public class Spell_AcidArrow extends Spell
 		}
 		return super.tick(ticking,tickID);
 	}
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

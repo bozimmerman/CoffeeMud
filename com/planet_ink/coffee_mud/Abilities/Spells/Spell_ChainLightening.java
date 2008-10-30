@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_ChainLightening extends Spell
 {
 	public String ID() { return "Spell_ChainLightening"; }
@@ -39,12 +40,12 @@ public class Spell_ChainLightening extends Spell
 	public int classificationCode(){	return Ability.ACODE_SPELL|Ability.DOMAIN_EVOCATION;}
     public long flags(){return Ability.FLAG_AIRBASED;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null) h=new HashSet();
 
-		HashSet myGroup=mob.getGroupMembers(new HashSet<MOB>());
+		HashSet myGroup=mob.getGroupMembers(new HashSet());
 		Vector targets=new Vector();
 		for(Iterator e=h.iterator();e.hasNext();)
 			targets.addElement(e.next());

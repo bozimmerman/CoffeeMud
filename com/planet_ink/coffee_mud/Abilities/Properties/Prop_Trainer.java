@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prop_Trainer extends Prop_StatTrainer
 {
 	public String ID() { return "Prop_Trainer"; }
@@ -60,9 +61,9 @@ public class Prop_Trainer extends Prop_StatTrainer
 		{
 			built=true;
 			CharClass C=null;
-			Vector<CharClass> allowedClasses=new Vector<CharClass>();
+			Vector allowedClasses=new Vector();
 			Vector allowedExpertises=new Vector();
-			Vector<String> V=CMParms.parse(text());
+			Vector V=CMParms.parse(text());
 			String s=null;
 			for(int v=0;v<V.size();v++)
 			{
@@ -92,7 +93,7 @@ public class Prop_Trainer extends Prop_StatTrainer
                 }
 			}
 			if(allowedClasses.size()==0)
-			for(Enumeration<CharClass> c=CMClass.charClasses();c.hasMoreElements();)
+			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 				allowedClasses.addElement(c.nextElement());
 			if(allowedExpertises.size()==0)
 			for(Enumeration e=CMLib.expertises().definitions();e.hasMoreElements();)

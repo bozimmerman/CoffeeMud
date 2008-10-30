@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Ranger_FindWater extends StdAbility
 {
 	public String ID() { return "Ranger_FindWater"; }
@@ -238,7 +239,7 @@ public class Ranger_FindWater extends StdAbility
 	}
 
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Vector V=CMLib.flags().flaggedAffects(mob,Ability.FLAG_TRACKING);
 		for(int v=0;v<V.size();v++)	((Ability)V.elementAt(v)).unInvoke();
@@ -260,9 +261,9 @@ public class Ranger_FindWater extends StdAbility
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		Vector<Room> rooms=new Vector<Room>();
-		Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,true,true,false,60+(2*getXLEVELLevel(mob)));
-		for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
+		Vector rooms=new Vector();
+		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,true,true,false,60+(2*getXLEVELLevel(mob)));
+		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 		{
 			Room R=CMLib.map().getRoom((Room)r.nextElement());
 			if(waterHere(mob,R,null).length()>0)

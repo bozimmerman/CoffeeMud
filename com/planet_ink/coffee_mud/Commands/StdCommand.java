@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdCommand implements Command
 {
 	public StdCommand(){}
@@ -47,22 +48,22 @@ public class StdCommand implements Command
 	private String[] access=null;
 	public String[] getAccessWords(){return access;}
     public void initializeClass(){}
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		// accepts the mob executing, and a Vector of Strings as a parm.
 		// the return value is arbitrary, though false is conventional.
 		return false;
 	}
-    public boolean preExecute(MOB mob, Vector<Object> commands, int metaFlags, int secondsElapsed, double actionsRemaining)
+    public boolean preExecute(MOB mob, Vector commands, int metaFlags, int secondsElapsed, double actionsRemaining)
         throws java.io.IOException
     {
         return true;
     }
 
 	
-    public double actionsCost(MOB mob, Vector<Object> cmds){return 0.0;}
-    public double combatActionsCost(MOB mob, Vector<Object> cmds){return 0.0;}
+    public double actionsCost(MOB mob, Vector cmds){return 0.0;}
+    public double combatActionsCost(MOB mob, Vector cmds){return 0.0;}
 	public boolean canBeOrdered(){return true;}
 	public boolean securityCheck(MOB mob){return true;}
 	public boolean staffCommand(){return false;}

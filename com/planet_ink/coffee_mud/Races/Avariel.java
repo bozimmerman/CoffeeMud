@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Avariel extends StdRace
 {
 	public String ID(){	return "Avariel"; }
@@ -58,7 +59,7 @@ public class Avariel extends StdRace
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,2 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,0 ,2 };
 	public int[] bodyMask(){return parts;}
 
-	protected static Vector<Item> resources=new Vector<Item>();
+	protected static Vector resources=new Vector();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -75,11 +76,11 @@ public class Avariel extends StdRace
 		affectableStats.setStat(CharStats.STAT_MAX_CONSTITUTION_ADJ,affectableStats.getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)-1);
 		affectableStats.setStat(CharStats.STAT_SAVE_MAGIC,affectableStats.getStat(CharStats.STAT_SAVE_MAGIC)+10);
 	}
-	public Vector<Item> outfit(MOB myChar)
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector<Item>();
+			outfitChoices=new Vector();
 			// Have to, since it requires use of special constructor
 			Armor s1=CMClass.getArmor("GenShirt");
 			s1.setName("a delicate green shirt");
@@ -146,7 +147,7 @@ public class Avariel extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
-	public Vector<Item> myResources()
+	public Vector myResources()
 	{
 		synchronized(resources)
 		{

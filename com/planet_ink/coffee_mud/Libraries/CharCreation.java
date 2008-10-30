@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class CharCreation extends StdLibrary implements CharCreationLibrary
 {
     public String ID(){return "CharCreation";}
@@ -115,7 +116,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         if(login.trim().indexOf(" ")>=0) return false;
 
         login=login.toUpperCase().trim();
-        Vector<String> V=CMParms.parse(login);
+        Vector V=CMParms.parse(login);
         for(int v=V.size()-1;v>=0;v--)
         {
             String str=(String)V.elementAt(v);
@@ -128,7 +129,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             if((" YOU SHIT FUCK CUNT ALL FAGGOT ASSHOLE ARSEHOLE PUSSY COCK SLUT BITCH DAMN CRAP GOD JESUS CHRIST NOBODY SOMEBODY MESSIAH ADMIN SYSOP ").indexOf(" "+str+" ")>=0)
                 return false;
         }
-        Vector<String> V2=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_BADNAMES),true);
+        Vector V2=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_BADNAMES),true);
         for(int v2=0;v2<V2.size();v2++)
         {
             String str2=(String)V2.elementAt(v2);
@@ -235,7 +236,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             return;
 
         C=CMClass.getCommand("MOTD");
-        try{ C.execute(mob,CMParms.parseToObjV("MOTD NEW PAUSE"),0);}catch(Exception e){}
+        try{ C.execute(mob,CMParms.parse("MOTD NEW PAUSE"),0);}catch(Exception e){}
     }
 
     public boolean checkExpiration(MOB mob)
@@ -278,9 +279,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
     {
         if(session.confirm("\n\r'"+CMStrings.capitalizeAndLower(login)+"' does not exist.\n\rIs this a new character you would like to create (y/N)?","N"))
         {
-            Hashtable<String,Vector<String>> extraScripts=new Hashtable<String,Vector<String>>();
+            Hashtable extraScripts=new Hashtable();
             final String[] VALID_SCRIPT_CODES={"PASSWORD","EMAIL","ANSI","THEME","RACE","GENDER","STATS","CLASS","FACTIONS","END"};                    
-            Vector<String> extras=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_CHARCREATIONSCRIPTS),true);
+            Vector extras=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_CHARCREATIONSCRIPTS),true);
             for(int e=0;e<extras.size();e++) {
                 String s=(String)extras.elementAt(e);
                 int x=s.indexOf(':');
@@ -301,8 +302,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     }
                     s=s.substring(x+1);
                 }
-                Vector<String> V=(Vector<String>)extraScripts.get(code);
-                if(V==null){ V=new Vector<String>(); extraScripts.put(code,V);}
+                Vector V=(Vector)extraScripts.get(code);
+                if(V==null){ V=new Vector(); extraScripts.put(code,V);}
                 V.addElement(s.trim());
             }
             
@@ -416,8 +417,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
             StringBuffer listOfRaces=new StringBuffer("[");
             boolean tmpFirst = true;
-            HashSet<String> doneRaces=new HashSet<String>();
-            for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+            HashSet doneRaces=new HashSet();
+            for(Enumeration r=CMClass.races();r.hasMoreElements();)
             {
                 Race R=(Race)r.nextElement();
                 if(doneRaces.contains(R.ID())) continue;
@@ -457,7 +458,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                                             ||(CMath.bset(newRace.availabilityCode(),Area.THEME_SKILLONLYMASK))))
                         newRace=null;
                     if(newRace==null)
-                        for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+                        for(Enumeration r=CMClass.races();r.hasMoreElements();)
                         {
                             Race R=(Race)r.nextElement();
                             if((R.name().equalsIgnoreCase(raceStr))
@@ -470,7 +471,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                             }
                         }
                     if(newRace==null)
-                        for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+                        for(Enumeration r=CMClass.races();r.hasMoreElements();)
                         {
                             Race R=(Race)r.nextElement();
                             if((R.name().toUpperCase().startsWith(raceStr.toUpperCase()))

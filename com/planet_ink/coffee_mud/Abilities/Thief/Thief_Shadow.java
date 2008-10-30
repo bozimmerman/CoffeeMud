@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Thief_Shadow extends ThiefSkill
 {
 	public String ID() { return "Thief_Shadow"; }
@@ -82,7 +83,7 @@ public class Thief_Shadow extends ThiefSkill
 		if(CMLib.flags().canBeSeenBy(mob,shadowing)) return false;
 		if(!CMLib.flags().canBeSeenBy(shadowing,mob)) return false;
 		if(mob.location()!=shadowing.location()) return false;
-		if(mob.getGroupMembers(new HashSet<MOB>()).size()>1) return false;
+		if(mob.getGroupMembers(new HashSet()).size()>1) return false;
 		return true;
 	}
 
@@ -110,7 +111,7 @@ public class Thief_Shadow extends ThiefSkill
 				MOB mob=invoker;
 				lastRoom=msg.source().location();
 				if(!mob.isMonster())
-					mob.enqueCommand(CMParms.parseToObjV(directionWent),Command.METAFLAG_FORCED,0);
+					mob.enqueCommand(CMParms.parse(directionWent),Command.METAFLAG_FORCED,0);
 				else
 					CMLib.tracking().move(mob,dir,false,false);
 			}
@@ -179,7 +180,7 @@ public class Thief_Shadow extends ThiefSkill
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Thief_Shadow A=(Thief_Shadow)mob.fetchEffect(ID());
 		if(A!=null)
@@ -209,7 +210,7 @@ public class Thief_Shadow extends ThiefSkill
 			mob.tell("You cannot shadow yourself?!");
 			return false;
 		}
-		if(mob.getGroupMembers(new HashSet<MOB>()).size()>1)
+		if(mob.getGroupMembers(new HashSet()).size()>1)
 		{
 			mob.tell("You cannot shadow someone while part of a group.");
 			return false;

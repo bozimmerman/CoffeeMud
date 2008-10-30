@@ -31,18 +31,19 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class AreaData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 
-	public static StringBuffer affectsNBehaves(Environmental E, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
+	public static StringBuffer affectsNBehaves(Environmental E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BEHAVIORS"))
 		{
-			Vector<String> theclasses=new Vector<String>();
-			Vector<String> theparms=new Vector<String>();
+			Vector theclasses=new Vector();
+			Vector theparms=new Vector();
 			if(httpReq.isRequestParameter("BEHAV1"))
 			{
 				int num=1;
@@ -93,8 +94,8 @@ public class AreaData extends StdWebMacro
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Behavior");
 
 			Object[] sortedB=null;
-			Vector<String> sortMeB=new Vector<String>();
-			for(Enumeration<Behavior> b=CMClass.behaviors();b.hasMoreElements();)
+			Vector sortMeB=new Vector();
+			for(Enumeration b=CMClass.behaviors();b.hasMoreElements();)
 			{
 				Behavior B=(Behavior)b.nextElement();
 				if(B.canImprove(E))
@@ -164,7 +165,7 @@ public class AreaData extends StdWebMacro
 			str.append("<TR><TD WIDTH=50%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=AFFECT"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
-			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
 				if(!A.canAffect(E)) continue;
@@ -184,11 +185,11 @@ public class AreaData extends StdWebMacro
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
-		Hashtable<String,String> parms=parseParms(parm);
+		Hashtable parms=parseParms(parm);
 		if(parms.containsKey("AREATYPES"))
 		{
 			StringBuffer str=new StringBuffer("");
-			for(Enumeration<Area> e=CMClass.areaTypes();e.hasMoreElements();)
+			for(Enumeration e=CMClass.areaTypes();e.hasMoreElements();)
 			{
 				Area A=(Area)e.nextElement();
 				str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
@@ -359,10 +360,10 @@ public class AreaData extends StdWebMacro
 					Object[] sortedA=(Object[])Resources.getResource("MUDGRINDER-AREAS");
 					if(sortedA==null)
 					{
-						Vector<String> sortMeA=new Vector<String>();
-						for(Enumeration<Area> a=CMClass.areaTypes();a.hasMoreElements();)
+						Vector sortMeA=new Vector();
+						for(Enumeration a=CMClass.areaTypes();a.hasMoreElements();)
 							sortMeA.addElement(CMClass.classID(a.nextElement()));
-						sortedA=(new TreeSet<String>(sortMeA)).toArray();
+						sortedA=(new TreeSet(sortMeA)).toArray();
 						Resources.submitResource("MUDGRINDER-AREAS",sortedA);
 					}
 					for(int r=0;r<sortedA.length;r++)

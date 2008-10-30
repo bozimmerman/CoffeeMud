@@ -34,6 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Age extends StdAbility
 {
 	public String ID() { return "Age"; }

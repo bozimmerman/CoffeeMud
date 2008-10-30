@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Aggressive extends StdBehavior
 {
 	public String ID(){return "Aggressive";}
@@ -54,7 +55,7 @@ public class Aggressive extends StdBehavior
 		super.setParms(newParms);
 		tickWait=CMParms.getParmInt(newParms,"delay",0);
 		attackMessage=CMParms.getParmStr(newParms,"MESSAGE",null);
-		Vector<String> V=CMParms.parse(newParms.toUpperCase());
+		Vector V=CMParms.parse(newParms.toUpperCase());
 		wander=V.contains("WANDER");
 		mobkill=V.contains("MOBKILL")||(V.contains("MOBKILLER"));
 		misbehave=V.contains("MISBEHAVE");
@@ -80,7 +81,7 @@ public class Aggressive extends StdBehavior
 			&&(CMLib.flags().canBeSeenBy(mob,monster))
 			&&(!CMSecurity.isAllowed(mob,R,"ORDER"))
 			&&(!CMSecurity.isAllowed(mob,R,"CMDROOMS"))
-			&&(!monster.getGroupMembers(new HashSet<MOB>()).contains(mob)))
+			&&(!monster.getGroupMembers(new HashSet()).contains(mob)))
 			{
 				// special backstab sneak attack!
 				if(CMLib.flags().isHidden(monster))
@@ -107,7 +108,7 @@ public class Aggressive extends StdBehavior
 		Room R=observer.location();
 		if((R!=null)&&(R.getArea().getAreaFlags()<=Area.FLAG_ACTIVE))
 		{
-			HashSet groupMembers=observer.getGroupMembers(new HashSet<MOB>());
+			HashSet groupMembers=observer.getGroupMembers(new HashSet());
 			for(int i=0;i<R.numInhabitants();i++)
 			{
 				MOB mob=R.fetchInhabitant(i);

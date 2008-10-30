@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class ResourceOverride extends StdBehavior
 {
 	public String ID(){return "ResourceOverride";}
@@ -44,7 +45,7 @@ public class ResourceOverride extends StdBehavior
 		super.setParms(newStr);
 		rscs.clear();
 		roomTypes.clear();
-		Vector<String> V=CMParms.parse(getParms());
+		Vector V=CMParms.parse(getParms());
 		if(V.size()==0) return;
 		for(int v=0;v<V.size();v++)
 		{
@@ -125,7 +126,7 @@ public class ResourceOverride extends StdBehavior
 			tickDown=5;
 			Area A=(Area)ticking;
 			Room R=null;
-			for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
+			for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
 			{
 				R=(Room)e.nextElement();
 				if(((roomTypes.size()==0)||(!roomTypes.contains(new Integer(R.domainType()))))

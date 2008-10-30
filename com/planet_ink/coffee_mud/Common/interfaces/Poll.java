@@ -40,6 +40,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @see com.planet_ink.coffee_mud.Libraries.interfaces.PollManager
  * @see com.planet_ink.coffee_mud.core.CMLib#polls()
  */
+@SuppressWarnings("unchecked")
 public interface Poll extends CMCommon
 {
     /**

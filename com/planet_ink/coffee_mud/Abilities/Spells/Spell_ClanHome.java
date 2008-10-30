@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_ClanHome extends Spell
 {
 	public String ID() { return "Spell_ClanHome"; }
@@ -41,7 +42,7 @@ public class Spell_ClanHome extends Spell
 	public long flags(){return Ability.FLAG_TRANSPORTING|Ability.FLAG_CLANMAGIC;}
 	protected boolean disregardsArmorCheck(MOB mob){return true;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room clanHomeRoom=null;
 		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase(""))||(mob.getClanRole()==0))

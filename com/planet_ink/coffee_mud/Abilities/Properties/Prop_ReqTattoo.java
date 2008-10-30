@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prop_ReqTattoo extends Property
 {
 	public String ID() { return "Prop_ReqTattoo"; }
@@ -63,9 +64,9 @@ public class Prop_ReqTattoo extends Property
 		}
 	}
 	
-	public Vector<String> getMask(boolean[] flags)
+	public Vector getMask(boolean[] flags)
 	{
-		Vector<String> V=CMParms.parse(miscText.toUpperCase());
+		Vector V=CMParms.parse(miscText.toUpperCase());
 		String s=null;
 		for(int v=V.size()-1;v>=1;v--)
 		{

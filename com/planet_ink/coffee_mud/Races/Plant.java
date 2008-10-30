@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Plant extends Vine
 {
 	public String ID(){	return "Plant"; }
@@ -47,7 +48,7 @@ public class Plant extends Vine
 	private static final int[] parts={0 ,0 ,0 ,0 ,0 ,8 ,8 ,1 ,0 ,0 ,0 ,0 ,0 ,0 ,0 ,0 };
 	public int[] bodyMask(){return parts;}
 
-	protected static Vector<Item> resources=new Vector<Item>();
+	protected static Vector resources=new Vector();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -151,7 +152,7 @@ public class Plant extends Vine
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect condition.^N";
 	}
-	public Vector<Item> myResources()
+	public Vector myResources()
 	{
 		synchronized(resources)
 		{

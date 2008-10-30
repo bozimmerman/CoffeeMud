@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class MOBTeacher extends CombatAbilities
 {
 	public String ID(){return "MOBTeacher";}
@@ -76,7 +77,7 @@ public class MOBTeacher extends CombatAbilities
 		boolean stdCharClass=mob.charStats().getCurrentClass().ID().equals("StdCharClass");
 		String className=mob.charStats().getCurrentClass().ID();
 		Ability A=null;
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			A=(Ability)a.nextElement();
 			if((((stdCharClass&&(CMLib.ableMapper().lowestQualifyingLevel(A.ID())>0)))
@@ -174,7 +175,7 @@ public class MOBTeacher extends CombatAbilities
 		myMOB.baseCharStats().setMyLevels(""+myMOB.envStats().level());
 		myMOB.recoverCharStats();
 
-		Hashtable<String,Ability> myAbles=new Hashtable<String,Ability>();
+		Hashtable myAbles=new Hashtable();
 		Ability A=null;
 		for(int a=0;a<myMOB.numAbilities();a++)
 		{
@@ -185,7 +186,7 @@ public class MOBTeacher extends CombatAbilities
 		myMOB.baseCharStats().setStat(CharStats.STAT_WISDOM,19);
 
 		int pct=100;
-		Vector<String> V=null;
+		Vector V=null;
 		A=CMClass.getAbility(getParms());
 		if(A!=null)
 		{

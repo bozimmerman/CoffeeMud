@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prayer_Resurrect extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_Resurrect"; }
@@ -45,7 +46,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 		return (E instanceof DeadBody);
 	}
 	
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental body=null;
         body=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
@@ -189,7 +190,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
                         body.destroy();
 						rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
 						mob.location().recoverRoomStats();
-						Vector<String> whatsToDo=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH));
+						Vector whatsToDo=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH));
 						for(int w=0;w<whatsToDo.size();w++)
 						{
 							String whatToDo=(String)whatsToDo.elementAt(w);

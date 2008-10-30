@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Fighter_Spring extends FighterSkill
 {
 	public String ID() { return "Fighter_Spring"; }
@@ -59,7 +60,7 @@ public class Fighter_Spring extends FighterSkill
 	}
 	
 	
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
 		{

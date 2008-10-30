@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prayer_RockFlesh extends Prayer implements MendingSkill
 {
 	public String ID() { return "Prayer_RockFlesh"; }
@@ -46,7 +47,7 @@ public class Prayer_RockFlesh extends Prayer implements MendingSkill
 		return (E.fetchEffect("Spell_FleshStone")!=null)||(E.fetchEffect("Prayer_FleshRock")!=null);
 	}
 	
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		Environmental target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);

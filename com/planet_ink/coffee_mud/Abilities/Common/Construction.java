@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Construction extends CraftingSkill
 {
 	public String ID() { return "Construction"; }
@@ -210,7 +211,7 @@ public class Construction extends CraftingSkill
 								try
 								{
 									boolean rebuild=false;
-									for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+									for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 									{
 										Room R2=(Room)r.nextElement();
 										rebuild=false;
@@ -451,7 +452,7 @@ public class Construction extends CraftingSkill
 									R.startItemRejuv();
 									try
 									{
-										for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+										for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 										{
 											Room R2=(Room)r.nextElement();
 											for(int d=0;d<R2.rawDoors().length;d++)
@@ -488,7 +489,7 @@ public class Construction extends CraftingSkill
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
 		{
@@ -625,8 +626,8 @@ public class Construction extends CraftingSkill
 				commonTell(mob,"A title must be specified.");
 				return false;
 			}
-    		Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,20);
-    		for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
+    		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,20);
+    		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
     		{
     			Room R=CMLib.map().getRoom((Room)r.nextElement());
 				if(R.displayText().equalsIgnoreCase(title))

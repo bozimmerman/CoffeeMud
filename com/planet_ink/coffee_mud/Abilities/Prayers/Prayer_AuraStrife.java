@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Prayer_AuraStrife extends Prayer
 {
 	public String ID() { return "Prayer_AuraStrife"; }
@@ -76,7 +77,7 @@ public class Prayer_AuraStrife extends Prayer
 		&&(affected instanceof MOB))
 		{
 			MOB mob=(MOB)affected;
-			HashSet invokerGroup=invoker().getGroupMembers(new HashSet<MOB>());
+			HashSet invokerGroup=invoker().getGroupMembers(new HashSet());
 			if(mob!=invoker())
 			{
 				if(mob.location()!=invoker().location())
@@ -110,7 +111,7 @@ public class Prayer_AuraStrife extends Prayer
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

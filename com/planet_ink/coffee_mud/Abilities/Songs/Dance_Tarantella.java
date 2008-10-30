@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Dance_Tarantella extends Dance
 {
 	public String ID() { return "Dance_Tarantella"; }

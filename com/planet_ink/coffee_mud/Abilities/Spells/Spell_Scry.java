@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_Scry extends Spell
 {
 	public String ID() { return "Spell_Scry"; }
@@ -86,7 +87,7 @@ public class Spell_Scry extends Spell
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((auto||mob.isMonster())&&((commands.size()<1)||(((String)commands.firstElement()).equals(mob.name()))))
 		{
@@ -126,7 +127,7 @@ public class Spell_Scry extends Spell
 		{
 		    try
 		    {
-				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room room=(Room)r.nextElement();
 					if(CMLib.flags().canAccess(mob,room))

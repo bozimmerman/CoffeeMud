@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Emoter extends ActiveTicker
 {
 	public String ID(){return "Emoter";}
@@ -138,7 +139,7 @@ public class Emoter extends ActiveTicker
 			}
 			if(thisEmote.trim().length()>0)
 			{
-				Vector<String> V=CMParms.parse(thisEmote);
+				Vector V=CMParms.parse(thisEmote);
 				emoteType=defaultType;
 				broadcast=defaultBroadcast;
 				setEmoteTypes(V,true);
@@ -273,7 +274,7 @@ public class Emoter extends ActiveTicker
 			if(ticking instanceof Area)
 			{
 				emoter=CMClass.getMOB("StdMOB");
-				for(Enumeration<Room> r=((Area)ticking).getMetroMap();r.hasMoreElements();)
+				for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					emoteHere(R,emoter,emote,null,false);

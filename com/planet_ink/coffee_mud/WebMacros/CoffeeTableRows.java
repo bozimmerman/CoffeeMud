@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class CoffeeTableRows extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -40,7 +41,7 @@ public class CoffeeTableRows extends StdWebMacro
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
 		if(parm.length()==0) parm="DATERANGE&LOGINS&MOSTONLINE&AVERAGEONLINE&TOTALHOURS&NEWPLAYERS&DEATHS&PKDEATHS&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES";
-		Hashtable<String,String> parms=parseParms(parm);
+		Hashtable parms=parseParms(parm);
 		DVector orderedParms=parseOrderedParms(parm);
 		String header=(String)parms.get("HEADER");
 		if(header==null) header="";
@@ -78,7 +79,7 @@ public class CoffeeTableRows extends StdWebMacro
             if(code.length()>1)
                 CharC=CMClass.getCharClass(code.substring(1));
             Vector allSkills=new Vector();
-            for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+            for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
             {
                 Ability A=(Ability)e.nextElement();
                 if((CharC==null)||(CMLib.ableMapper().getQualifyingLevel(CharC.ID(),true,A.ID())>=0))

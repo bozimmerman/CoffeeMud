@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_Shamblermorph extends Chant
 {
 	public String ID() { return "Chant_Shamblermorph"; }
@@ -90,7 +91,7 @@ public class Chant_Shamblermorph extends Chant
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -106,7 +107,7 @@ public class Chant_Shamblermorph extends Chant
 		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff<0) levelDiff=0;
 		boolean success=proficiencyCheck(mob,-(levelDiff*10),auto);
-		boolean malicious=!target.getGroupMembers(new HashSet<MOB>()).contains(mob);
+		boolean malicious=!target.getGroupMembers(new HashSet()).contains(mob);
 		if(success)
 		{
 			// it worked, so build a copy of this ability,

@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class WeatherAffects extends PuddleMaker
 {
 	public String ID(){return "WeatherAffects";}
@@ -236,7 +237,7 @@ public class WeatherAffects extends PuddleMaker
                 }
             }
             else
-            for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+            for(Enumeration e=A.getProperMap();e.hasMoreElements();)
             {
                 Room R=(Room)e.nextElement();
                 if((R.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
@@ -263,7 +264,7 @@ public class WeatherAffects extends PuddleMaker
             case Climate.WEATHER_HAIL:
             case Climate.WEATHER_THUNDERSTORM:
             case Climate.WEATHER_RAIN:
-                for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+                for(Enumeration r=A.getProperMap();r.hasMoreElements();)
                 {
                     Room R=(Room)r.nextElement();
                     if(CMLib.map().hasASky(R))
@@ -507,7 +508,7 @@ public class WeatherAffects extends PuddleMaker
                     else
                         R=null;
                     Room R2=null;
-                    for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+                    for(Enumeration e=A.getProperMap();e.hasMoreElements();)
                     {
                         R2=(Room)e.nextElement();
                         if((R2!=R)&&(R2.numInhabitants()>0))
@@ -561,7 +562,7 @@ public class WeatherAffects extends PuddleMaker
                     else
                         R=null;
                     Room R2=null;
-                    for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+                    for(Enumeration e=A.getProperMap();e.hasMoreElements();)
                     {
                         R2=(Room)e.nextElement();
                         if((R2!=R)&&(R2.numInhabitants()>0))

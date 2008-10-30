@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prop_WeaponImmunity extends Property
 {
 	public String ID() { return "Prop_WeaponImmunity"; }
@@ -46,7 +47,7 @@ public class Prop_WeaponImmunity extends Property
 	{
 	    super.setMiscText(newValue);
 	    flags=new Hashtable();
-	    Vector<String> V=CMParms.parse(newValue.toUpperCase());
+	    Vector V=CMParms.parse(newValue.toUpperCase());
 	    Object c=null;
 	    String s=null;
 	    for(int v=0;v<V.size();v++)

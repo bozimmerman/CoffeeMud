@@ -32,21 +32,22 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class RaceCatNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable<String,String> parms=parseParms(parm);
+		Hashtable parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("RACECAT");
 		if(parms.containsKey("RESET"))
 		{	
 			if(last!=null) httpReq.removeRequestParameter("RACECAT");
 			return "";
 		}
-		Vector<String> raceCats=new Vector<String>();
-		for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+		Vector raceCats=new Vector();
+		for(Enumeration r=CMClass.races();r.hasMoreElements();)
 		{
 			Race R=(Race)r.nextElement();
 			if((!raceCats.contains(R.racialCategory()))
@@ -54,9 +55,9 @@ public class RaceCatNext extends StdWebMacro
 				||(parms.containsKey("ALL"))))
 					raceCats.addElement(R.racialCategory());
 		}
-		raceCats=new Vector<String>(new TreeSet<String>(raceCats));
+		raceCats=new Vector(new TreeSet(raceCats));
 		String lastID="";
-		for(Enumeration<String> r=raceCats.elements();r.hasMoreElements();)
+		for(Enumeration r=raceCats.elements();r.hasMoreElements();)
 		{
 			String RC=(String)r.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!RC.equals(lastID))))

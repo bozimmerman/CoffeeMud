@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public interface LanguageLibrary extends CMLibrary
 {
     public void clear();
@@ -41,7 +42,7 @@ public interface LanguageLibrary extends CMLibrary
     public String filterTranslation(String item);
     public DVector getLanguageTranslator(String parser);
     public void setLocale(String lang, String state);
-    public Vector<Object> preCommandParser(Vector<Object> CMDS);
+    public Vector preCommandParser(Vector CMDS);
     public String preItemParser(String item);
     public String failedItemParser(String item);
     

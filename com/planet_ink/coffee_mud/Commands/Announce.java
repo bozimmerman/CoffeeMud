@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Announce extends StdCommand
 {
 	public Announce(){}
@@ -67,7 +68,7 @@ public class Announce extends StdCommand
 	  	S.stdPrintln(Message.toString());
 	}
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
         

@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
 {
     public String ID(){return "ColumbiaUniv";}
@@ -180,7 +181,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
     public String confirmExpertiseLine(String row, String ID, boolean addIfPossible)
     {
         int levels=0;
-        HashSet<String> flags=new HashSet<String>();
+        HashSet flags=new HashSet();
         String s=null;
         String skillMask=null;
         int[] costs=new int[5];
@@ -216,7 +217,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
             }
             else
             {
-                Vector<String> stages=getStageCodes(ID);
+                Vector stages=getStageCodes(ID);
                 if((stages==null)||(stages.size()==0))
                     return "Error: Expertise not yet defined: "+ID+"="+row;
                 def=getDefinition((String)stages.elementAt(0));
@@ -245,7 +246,7 @@ public class ColumbiaUniv extends StdLibrary implements ExpertiseLibrary
         }
         ID=row.substring(0,x).toUpperCase();
         row=row.substring(x+1);
-        Vector<String> parts=CMParms.parseCommas(row,false);
+        Vector parts=CMParms.parseCommas(row,false);
         if(parts.size()!=11)
             return "Error: Expertise row malformed (Requires 11 entries/10 commas): "+ID+"="+row;
         name=(String)parts.elementAt(0);

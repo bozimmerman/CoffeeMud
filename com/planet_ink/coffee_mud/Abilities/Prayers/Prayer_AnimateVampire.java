@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Prayer_AnimateVampire extends Prayer
 {
 	public String ID() { return "Prayer_AnimateVampire"; }
@@ -59,7 +60,7 @@ public class Prayer_AnimateVampire extends Prayer
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_UNWORNONLY);
 		if(target==null) return false;

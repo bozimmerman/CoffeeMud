@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class JournalLoader
 {
 	protected DBConnector DB=null;
@@ -95,16 +96,16 @@ public class JournalLoader
 	
 	public long DBReadNewJournalDate(String Journal, String name)
 	{
-		@SuppressWarnings("unchecked")
-		Hashtable<String,Hashtable<String,Long>> TABLE=(Hashtable<String,Hashtable<String,Long>>)Resources.getResource("JOURNALDATECACHE");
+		
+		Hashtable TABLE=(Hashtable)Resources.getResource("JOURNALDATECACHE");
 		if(TABLE==null)
 		{
-			TABLE=new Hashtable<String,Hashtable<String,Long>>();
+			TABLE=new Hashtable();
 			Resources.submitResource("JOURNALDATECACHE",TABLE);
 		}
 		synchronized(TABLE)
 		{
-			Hashtable<String,Long> H=(Hashtable<String,Long>)TABLE.get(Journal);
+			Hashtable H=(Hashtable)TABLE.get(Journal);
 			if(H!=null)
 			{
 				Long l=(Long)H.get(name);
@@ -114,14 +115,14 @@ public class JournalLoader
 				if((l!=null)&&(l2!=null)) return l.longValue()>l2.longValue()?l.longValue():l2.longValue();
 				return 0;
 			}
-			Vector<JournalsLibrary.JournalEntry> V=DBReadJournalMsgs(Journal);
-			H=new Hashtable<String,Long>();
+			Vector V=DBReadJournalMsgs(Journal);
+			H=new Hashtable();
 			TABLE.put(Journal,H);
 			if(V==null) return 0;
 			if(V.size()==0) return 0;
 			for(int v=0;v<V.size();v++)
 			{
-				JournalsLibrary.JournalEntry E=V.elementAt(v);
+				JournalsLibrary.JournalEntry E=(JournalsLibrary.JournalEntry)V.elementAt(v);
 				String to=E.to;
 				String compdate=E.update;
 				if(to.equalsIgnoreCase("all"))
@@ -154,10 +155,10 @@ public class JournalLoader
 		}
 	}
 	
-	public synchronized Vector<String> DBReadJournals()
+	public synchronized Vector DBReadJournals()
 	{
 		DBConnection D=null;
-		Vector<String> journals = new Vector<String>();
+		Vector journals = new Vector();
 		try
 		{
 			D=DB.DBFetch();
@@ -184,9 +185,9 @@ public class JournalLoader
 		return journals;
 	}
 	
-	public synchronized Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgs(String Journal)
+	public synchronized Vector DBReadJournalMsgs(String Journal)
 	{
-		Vector<JournalsLibrary.JournalEntry> journal=new Vector<JournalsLibrary.JournalEntry>();
+		Vector journal=new Vector();
 		//Resources.submitResource("JOURNAL_"+Journal);
 		DBConnection D=null;
 		try
@@ -240,15 +241,15 @@ public class JournalLoader
 			return null;
 		}
 			
-		Vector<JournalsLibrary.JournalEntry> oldJournal=journal;
-		journal=new Vector<JournalsLibrary.JournalEntry>();
+		Vector oldJournal=journal;
+		journal=new Vector();
 		while(oldJournal.size()>0)
 		{
 			JournalsLibrary.JournalEntry useEntry=null;
 			long byDate=Long.MAX_VALUE;
 			for(int j=0;j<oldJournal.size();j++)
 			{
-				JournalsLibrary.JournalEntry entry=oldJournal.elementAt(j);
+				JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)oldJournal.elementAt(j);
 				String datestr=entry.date;
 				long date=0;
 				if(datestr.indexOf("/")>=0)
@@ -276,12 +277,12 @@ public class JournalLoader
 		return journal;
 	}
 
-	public int getFirstMsgIndex(Vector<JournalsLibrary.JournalEntry> journal, String from, String to, String subj)
+	public int getFirstMsgIndex(Vector journal, String from, String to, String subj)
 	{
 		if(journal==null) return -1;
 		for(int i=0;i<journal.size();i++)
 		{
-			JournalsLibrary.JournalEntry E=journal.elementAt(i);
+			JournalsLibrary.JournalEntry E=(JournalsLibrary.JournalEntry)journal.elementAt(i);
 			if((from!=null)&&(!(E.from).equalsIgnoreCase(from)))
 				continue;
 			if((to!=null)&&(!(E.to).equalsIgnoreCase(to)))
@@ -311,7 +312,7 @@ public class JournalLoader
 			D=DB.DBFetch();
 			if((D.catalog()!=null)&&(D.catalog().equals("FAKEDB")))
 			{
-				Vector<String> keys=new Vector<String>();
+				Vector keys=new Vector();
 				ResultSet R=D.query("SELECT * FROM CMJRNL");
 				while(R.next())
 				{
@@ -342,7 +343,7 @@ public class JournalLoader
 	{
 		if(which<0)
 		{
-			Vector<JournalsLibrary.JournalEntry> journal=DBReadJournalMsgs(Journal);
+			Vector journal=DBReadJournalMsgs(Journal);
 			if((journal==null)||(journal.size()==0)) return;
 			DB.update("DELETE FROM CMJRNL WHERE CMJRNL='"+Journal+"'");
 		}
@@ -353,16 +354,16 @@ public class JournalLoader
 		}
 		else
 		{
-			Vector<JournalsLibrary.JournalEntry> journal=DBReadJournalMsgs(Journal);
+			Vector journal=DBReadJournalMsgs(Journal);
 			if(journal==null) return;
 			if(which>=journal.size()) return;
-			JournalsLibrary.JournalEntry entry=journal.elementAt(which);
+			JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.elementAt(which);
 			String oldkey=entry.key;
 			DB.update("DELETE FROM CMJRNL WHERE CMJKEY='"+oldkey+"'");
 		}
 	}
 	
-	public void updateJournalDateCacheIfNecessary(Hashtable<String,Long> H, String to, String from, long date)
+	public void updateJournalDateCacheIfNecessary(Hashtable H, String to, String from, long date)
 	{
 		if(to.equalsIgnoreCase("all"))
 		{
@@ -400,10 +401,10 @@ public class JournalLoader
 		String date=System.currentTimeMillis()+"";
 		if(which>=0)
 		{
-			Vector<JournalsLibrary.JournalEntry> journal=DBReadJournalMsgs(Journal);
+			Vector journal=DBReadJournalMsgs(Journal);
 			if(journal==null) return;
 			if(which>=journal.size()) return;
-			JournalsLibrary.JournalEntry entry=journal.elementAt(which);
+			JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.elementAt(which);
 			String olddate=entry.date;
 			int olddatedex=olddate.indexOf("/");
 			if(olddatedex>=0) olddate=olddate.substring(0,olddatedex);
@@ -414,13 +415,13 @@ public class JournalLoader
                           +"^yDate/Time ^N: "+CMLib.time().date2String(System.currentTimeMillis())+"%0D"
                           +message;
 			DB.update("UPDATE CMJRNL SET CMDATE='"+olddate+"/"+date+"', CMMSGT='"+message+"' WHERE CMJKEY='"+oldkey+"'");
-			@SuppressWarnings("unchecked")
-			Hashtable<String,Hashtable<String,Long>> TABLE=(Hashtable<String,Hashtable<String,Long>>)Resources.getResource("JOURNALDATECACHE");
+			
+			Hashtable TABLE=(Hashtable)Resources.getResource("JOURNALDATECACHE");
 			if(TABLE!=null)
 			{
 				synchronized(TABLE)
 				{
-					Hashtable<String,Long> H=TABLE.get(Journal);
+					Hashtable H=(Hashtable)TABLE.get(Journal);
 					if(H!=null)
 						updateJournalDateCacheIfNecessary(H, entry.to, entry.from, System.currentTimeMillis());
 				}
@@ -446,13 +447,13 @@ public class JournalLoader
 			+"','"+to
 			+"','"+subject
 			+"','"+message+"')");
-			@SuppressWarnings("unchecked")
-			Hashtable<String,Hashtable<String,Long>> TABLE=(Hashtable<String,Hashtable<String,Long>>)Resources.getResource("JOURNALDATECACHE");
+			
+			Hashtable TABLE=(Hashtable)Resources.getResource("JOURNALDATECACHE");
 			if(TABLE!=null)
 			{
 				synchronized(TABLE)
 				{
-					Hashtable<String,Long> H=TABLE.get(Journal);
+					Hashtable H=(Hashtable)TABLE.get(Journal);
 					if(H!=null)
 						updateJournalDateCacheIfNecessary(H,to,from,System.currentTimeMillis());
 				}

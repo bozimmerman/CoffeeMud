@@ -34,6 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class GenMobilePortal extends GenPortal implements Rideable, Exit
 {
     public String ID(){ return "GenMobilePortal";}

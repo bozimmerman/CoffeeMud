@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class BardMap extends GenMap
 {
 	public String ID(){	return "BardMap";}
@@ -60,11 +61,11 @@ public class BardMap extends GenMap
 		return myMap;
 	}
 
-	public Hashtable<Room,MapRoom> makeMapRooms(int width)
+	public Hashtable makeMapRooms(int width)
 	{
 		String newText=getMapArea();
-		Vector<String> mapAreas=CMParms.parseSemicolons(newText,true);
-		Hashtable<Room,MapRoom> mapRooms=new Hashtable<Room,MapRoom>();
+		Vector mapAreas=CMParms.parseSemicolons(newText,true);
+		Hashtable mapRooms=new Hashtable();
 		for(int a=0;a<mapAreas.size();a++)
 		{
 			String area=(String)mapAreas.elementAt(a);

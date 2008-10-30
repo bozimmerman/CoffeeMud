@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Cooking extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Cooking"; }
@@ -131,7 +132,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	}
 
     public String parametersFile(){ return "recipes.txt";}
-    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{
@@ -377,7 +378,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		return hc*hc*multiplyer;
 	}
 	
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		verb=cookWord();
 		cooking=null;

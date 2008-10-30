@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prayer_SenseInvisible extends Prayer
 {
 	public String ID() { return "Prayer_SenseInvisible"; }
@@ -86,7 +87,7 @@ public class Prayer_SenseInvisible extends Prayer
         return super.castingQuality(mob,target);
     }
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         Environmental target=mob;
         if((auto)&&(givenTarget!=null)) target=givenTarget;

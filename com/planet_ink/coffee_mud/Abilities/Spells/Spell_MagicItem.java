@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_MagicItem extends Spell
 {
 	public String ID() { return "Spell_MagicItem"; }
@@ -43,7 +44,7 @@ public class Spell_MagicItem extends Spell
 	protected int overrideMana(){return Integer.MAX_VALUE;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{
@@ -125,7 +126,7 @@ public class Spell_MagicItem extends Spell
 				mob.location().show(mob,target,null,CMMsg.MSG_OK_VISUAL,"<T-NAME> glow(s) brightly!");
 				wand.baseEnvStats().setDisposition(target.baseEnvStats().disposition()|EnvStats.IS_BONUS);
 				wand.baseEnvStats().setLevel(wand.baseEnvStats().level()+(CMLib.ableMapper().lowestQualifyingLevel(wandThis.ID())/2));
-				//Vector<String> V=CMParms.parseCommas(CMLib.utensils().wornList(wand.rawProperLocationBitmap()),true);
+				//Vector V=CMParms.parseCommas(CMLib.utensils().wornList(wand.rawProperLocationBitmap()),true);
 				if(wand instanceof Armor)
 				{
 					Ability A=CMClass.getAbility("Prop_WearSpellCast");

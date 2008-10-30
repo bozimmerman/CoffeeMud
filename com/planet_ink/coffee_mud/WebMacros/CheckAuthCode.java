@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class CheckAuthCode extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -50,7 +51,7 @@ public class CheckAuthCode extends StdWebMacro
 			
 			String AREA=httpReq.getRequestParameter("AREA");
 			Room R=null;
-			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				if((AREA==null)||(AREA.length()==0)||(AREA.equals(A.Name())))
@@ -94,7 +95,7 @@ public class CheckAuthCode extends StdWebMacro
 	
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable<String,String> parms=parseParms(parm);
+		Hashtable parms=parseParms(parm);
 		boolean finalCondition=false;
 		Hashtable auths=getAuths(httpReq);
 		if(auths==null) return "false";

@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Trap_Popper extends StdTrap
 {
 	public String ID() { return "Trap_Popper"; }
@@ -44,14 +45,14 @@ public class Trap_Popper extends StdTrap
 		if((target!=invoker())&&(target.location()!=null))
 		{
 			if((CMLib.dice().rollPercentage()<=target.charStats().getSave(CharStats.STAT_SAVE_TRAPS))
-			||(invoker().getGroupMembers(new HashSet<MOB>()).contains(target)))
+			||(invoker().getGroupMembers(new HashSet()).contains(target)))
 				target.location().show(target,null,null,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> avoid(s) setting off a noise trap!");
 			else
 			if(target.location().show(target,target,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_NOISE,"<S-NAME> set(s) off a **POP** trap!"))
 			{
 				super.spring(target);
 				Area A=target.location().getArea();
-				for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
+				for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
 				{
 					Room R=(Room)e.nextElement();
 					if(R!=target.location())

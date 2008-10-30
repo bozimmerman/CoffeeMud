@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 {
     public String ID(){return "CoffeeUtensils";}
@@ -495,7 +496,7 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
             }
             else
                 compiledMask=new Vector();
-            Vector<String> parsed=CMParms.parse(s);
+            Vector parsed=CMParms.parse(s);
             int pct=100;
             for(int x=0;x<parsed.size();x++)
                 if(CMath.isInteger((String)parsed.elementAt(x)))

@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class AbilityData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -40,7 +41,7 @@ public class AbilityData extends StdWebMacro
 	// qualifyQ, auto
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-        Hashtable<String,String> parms=parseParms(parm);
+        Hashtable parms=parseParms(parm);
         
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
         if((replaceCommand != null) 
@@ -156,7 +157,7 @@ public class AbilityData extends StdWebMacro
                 }
                 if(parms.containsKey("ABILITY_FLAGS"))
                 {
-                    Vector<String> list=new Vector<String>();
+                    Vector list=new Vector();
                     if(httpReq.isRequestParameter("ABILITY_FLAGS"))
                     {
                         String id="";
@@ -194,7 +195,7 @@ public class AbilityData extends StdWebMacro
                 }
                 if(parms.containsKey("USAGEMASK"))
                 {
-                    Vector<String> list=new Vector<String>();
+                    Vector list=new Vector();
                     if(httpReq.isRequestParameter("USAGEMASK"))
                     {
                         String id="";
@@ -210,7 +211,7 @@ public class AbilityData extends StdWebMacro
                 }
                 if(parms.containsKey("CANAFFECTMASK"))
                 {
-                    Vector<String> list=new Vector<String>();
+                    Vector list=new Vector();
                     if(httpReq.isRequestParameter("CANAFFECTMASK"))
                     {
                         String id="";
@@ -226,7 +227,7 @@ public class AbilityData extends StdWebMacro
                 }
                 if(parms.containsKey("CANTARGETMASK"))
                 {
-                    Vector<String> list=new Vector<String>();
+                    Vector list=new Vector();
                     if(httpReq.isRequestParameter("CANTARGETMASK"))
                     {
                         String id="";
@@ -306,7 +307,7 @@ public class AbilityData extends StdWebMacro
                 }
                 if(parms.containsKey("POSTCASTAFFECT"))
                 {
-                    Vector<String> list=new Vector<String>();
+                    Vector list=new Vector();
                     if(httpReq.isRequestParameter("POSTCASTAFFECT"))
                     {
                         String id="";
@@ -316,7 +317,7 @@ public class AbilityData extends StdWebMacro
                     } 
                     else 
                         list=CMParms.parseSemicolons(A.getStat("POSTCASTAFFECT").toUpperCase(),true);
-                    for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+                    for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
                     {
                         Ability A2=(Ability)e.nextElement();
                         String AID=A2.ID();
@@ -327,7 +328,7 @@ public class AbilityData extends StdWebMacro
                 }
                 if(parms.containsKey("POSTCASTABILITY"))
                 {
-                    Vector<String> list=new Vector<String>();
+                    Vector list=new Vector();
                     if(httpReq.isRequestParameter("POSTCASTABILITY"))
                     {
                         String id="";
@@ -337,7 +338,7 @@ public class AbilityData extends StdWebMacro
                     } 
                     else 
                         list=CMParms.parseSemicolons(A.getStat("POSTCASTABILITY").toUpperCase(),true);
-                    for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+                    for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
                     {
                         Ability A2=(Ability)e.nextElement();
                         String AID=A2.ID();
@@ -439,7 +440,7 @@ public class AbilityData extends StdWebMacro
 				if(parms.containsKey("ALIGNMENT"))
 				{
 				    String rangeDesc=null;
-				    for(Enumeration<Faction> e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
+				    for(Enumeration e=CMLib.factions().factionSet().elements();e.hasMoreElements();)
 				    {
 				        Faction F=(Faction)e.nextElement();
 				        rangeDesc=F.usageFactorRangeDescription(A);
@@ -449,7 +450,7 @@ public class AbilityData extends StdWebMacro
 				}
 				if(parms.containsKey("ALLOWS"))
 				{
-					Vector<String> allows=CMLib.ableMapper().getAbilityAllowsList(A.ID());
+					Vector allows=CMLib.ableMapper().getAbilityAllowsList(A.ID());
 					Ability A2=null;
 					if((allows!=null)&&(allows.size()>0))
 					{

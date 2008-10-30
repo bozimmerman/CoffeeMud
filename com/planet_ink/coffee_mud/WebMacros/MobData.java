@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class MobData extends StdWebMacro
 {
 	public String name() {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -81,7 +82,7 @@ public class MobData extends StdWebMacro
 		return str.toString();
 	}
 
-	public static StringBuffer abilities(MOB E, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
+	public static StringBuffer abilities(MOB E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("ABILITIES"))
@@ -153,7 +154,7 @@ public class MobData extends StdWebMacro
 			str.append("<TR><TD WIDTH=35%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=ABLES"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
-			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				String cnam=((Ability)a.nextElement()).ID();
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
@@ -177,7 +178,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer expertiseList(MOB E, ExternalHTTPRequests httpReq, Hashtable<String,String> parms)
+	public static StringBuffer expertiseList(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("EXPERTISELIST"))
@@ -226,7 +227,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer blessings(Deity E, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
+	public static StringBuffer blessings(Deity E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("BLESSINGS"))
@@ -275,7 +276,7 @@ public class MobData extends StdWebMacro
 			str.append("<TR><TD WIDTH=100%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=BLESS"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Blessing");
-			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				String cnam=((Ability)a.nextElement()).ID();
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
@@ -287,7 +288,7 @@ public class MobData extends StdWebMacro
 		}
 		return str;
 	}
-	public static StringBuffer curses(Deity E, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
+	public static StringBuffer curses(Deity E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("CURSES"))
@@ -336,7 +337,7 @@ public class MobData extends StdWebMacro
 			str.append("<TR><TD WIDTH=100%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=CURSE"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Curse");
-			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				String cnam=((Ability)a.nextElement()).ID();
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
@@ -349,7 +350,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer factions(MOB E, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
+	public static StringBuffer factions(MOB E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("FACTIONS"))
@@ -446,7 +447,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer classList(MOB E, ExternalHTTPRequests httpReq, Hashtable<String,String> parms)
+	public static StringBuffer classList(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("CLASSLIST"))
@@ -525,7 +526,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer powers(Deity E, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
+	public static StringBuffer powers(Deity E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("POWERS"))
@@ -564,7 +565,7 @@ public class MobData extends StdWebMacro
 			str.append("<TR><TD WIDTH=100%>");
 			str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=POWER"+(theclasses.size()+1)+">");
 			str.append("<OPTION SELECTED VALUE=\"\">Select a Granted Power");
-			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				String cnam=((Ability)a.nextElement()).ID();
 				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
@@ -576,7 +577,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-    public static StringBuffer priceFactors(Economics E, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
+    public static StringBuffer priceFactors(Economics E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         if(parms.containsKey("PRICEFACTORS"))
@@ -641,7 +642,7 @@ public class MobData extends StdWebMacro
         return str;
     }
 
-	public static StringBuffer shopkeeper(ShopKeeper E, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
+	public static StringBuffer shopkeeper(ShopKeeper E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
         StringBuffer str=new StringBuffer("");
         str.append(priceFactors(E,httpReq,parms,borderSize));
@@ -698,7 +699,7 @@ public class MobData extends StdWebMacro
 							{	O=(MOB)M2.copyOf(); break;	}
 						}
 						if(O==null)
-						for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+						for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 						{
 							Ability A2=(Ability)a.nextElement();
 							if(CMClass.classID(A2).equals(MATCHING))
@@ -787,7 +788,7 @@ public class MobData extends StdWebMacro
 			{
 				bufA=new StringBuffer("");
 				Vector sortMeA=new Vector();
-				for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+				for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 					sortMeA.addElement(CMClass.classID(a.nextElement()));
 				for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 					sortMeA.addElement(CMClass.classID(m.nextElement()));
@@ -821,7 +822,7 @@ public class MobData extends StdWebMacro
 		return str;
 	}
 
-	public static StringBuffer itemList(MOB oldM, MOB M, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
+	public static StringBuffer itemList(MOB oldM, MOB M, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
 	{
 		StringBuffer str=new StringBuffer("");
 		if(parms.containsKey("ITEMLIST"))
@@ -950,7 +951,7 @@ public class MobData extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable<String,String> parms=parseParms(parm);
+		Hashtable parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("ROOM");
 		if(last==null) return " @break@";
 		String mobCode=httpReq.getRequestParameter("MOB");
@@ -1117,7 +1118,7 @@ public class MobData extends StdWebMacro
 				break;
 			case 8: // race
 				if(firstTime) old=""+M.baseCharStats().getMyRace().ID();
-				for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+				for(Enumeration r=CMClass.races();r.hasMoreElements();)
 				{
 					Race R2=(Race)r.nextElement();
 					str.append("<OPTION VALUE=\""+R2.ID()+"\"");

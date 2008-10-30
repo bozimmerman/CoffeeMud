@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Bird extends StdRace
 {
 	public String ID(){	return "Bird"; }
@@ -59,7 +60,7 @@ public class Bird extends StdRace
 	private int[] agingChart={0,1,2,4,5,5,6,7,8};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector<Item> resources=new Vector<Item>();
+	protected static Vector resources=new Vector();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
@@ -129,7 +130,7 @@ public class Bird extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
-	public Vector<Item> myResources()
+	public Vector myResources()
 	{
 		synchronized(resources)
 		{

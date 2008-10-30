@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Email extends StdCommand
 {
 	public Email(){}
@@ -40,7 +41,7 @@ public class Email extends StdCommand
 	private String[] access={"EMAIL"};
 	public String[] getAccessWords(){return access;}
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.session()==null)	return true;
@@ -55,15 +56,15 @@ public class Email extends StdCommand
             String name=CMParms.combine(commands,1);
             if(name.equalsIgnoreCase("BOX"))
             {
-                Vector<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.SYSTEM_MAILBOX));
+                Vector msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.SYSTEM_MAILBOX));
                 while((mob.session()!=null)&&(!mob.session().killFlag()))
                 {
-                    Vector<JournalsLibrary.JournalEntry> mymsgs=new Vector<JournalsLibrary.JournalEntry>();
+                    Vector mymsgs=new Vector();
                     StringBuffer messages=new StringBuffer("^X"+CMStrings.padCenter(mob.Name()+"'s MailBox",48)+"^?^.\n\r");
                     messages.append("^X### "+CMStrings.padRight("From",15)+" "+CMStrings.padRight("Date",20)+" Subject^?^.\n\r");
                     for(int num=0;num<msgs.size();num++)
                     {
-                    	JournalsLibrary.JournalEntry thismsg=msgs.elementAt(num);
+                    	JournalsLibrary.JournalEntry thismsg=(JournalsLibrary.JournalEntry)msgs.elementAt(num);
                         String to=(String)thismsg.to;
                         if(to.equalsIgnoreCase("ALL")
                         ||to.equalsIgnoreCase(mob.Name())
@@ -103,7 +104,7 @@ public class Email extends StdCommand
                     else
                     while((mob.session()!=null)&&(!mob.session().killFlag()))
                     {
-                    	JournalsLibrary.JournalEntry thismsg=mymsgs.elementAt(num-1);
+                    	JournalsLibrary.JournalEntry thismsg=(JournalsLibrary.JournalEntry)mymsgs.elementAt(num-1);
                         String key=thismsg.key;
                         String from=thismsg.from;
                         String date=thismsg.date;

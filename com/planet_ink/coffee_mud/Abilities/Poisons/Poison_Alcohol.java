@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Poison_Alcohol extends Poison
 {
 	public String ID() { return "Poison_Alcohol"; }
@@ -268,7 +269,7 @@ public class Poison_Alcohol extends Poison
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int largest=alchoholContribution();
 		if((givenTarget instanceof MOB)&&(auto))

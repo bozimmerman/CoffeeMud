@@ -31,21 +31,9 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public interface PostOffice extends ShopKeeper
 {
-    public final static int DATA_USERID=0;
-    public final static int DATA_CHAIN=1;
-    public final static int DATA_KEY=2;
-    public final static int DATA_DATA=3;
-    
-    public final static int PIECE_FROM=0;
-    public final static int PIECE_TO=1;
-    public final static int PIECE_TIME=2;
-    public final static int PIECE_COD=3;
-    public final static int PIECE_CLASSID=4;
-    public final static int PIECE_MISCDATA=5;
-    public final static int NUM_PIECES=6;
-    
     public void addToBox(String boxName, Item thisThang, String from, String to, long holdTime, double COD);
     public void addToBox(MOB mob, Item thisThang, String from, String to, long holdTime, double COD);
     public boolean delFromBox(String mob, Item thisThang);
@@ -54,14 +42,13 @@ public interface PostOffice extends ShopKeeper
     public Hashtable getOurOpenBoxes(String mob);
     public void createBoxHere(String mob, String forward);
     public void deleteBoxHere(String mob);
-    public Vector getAllLocalBoxVectors(String mob);
+    public MailPiece parsePostalItemData(String data);
     public Item findBoxContents(String mob, String likeThis);
     public Item findBoxContents(MOB mob, String likeThis);
     public String postalChain();
     public void setPostalChain(String name);
     public String postalBranch(); // based on individual shopkeeper
     public String findProperBranch(String name);
-    public Vector parsePostalItemData(String data);
     
     public double minimumPostage();
     public void setMinimumPostage(double d);
@@ -73,4 +60,15 @@ public interface PostOffice extends ShopKeeper
     public void setFeeForNewBox(double d);
     public int maxMudMonthsHeld();
     public void setMaxMudMonthsHeld(int months);
+    
+    public static class MailPiece
+    {
+    	public String from="";
+    	public String to="";
+    	public String time="";
+    	public String cod="";
+    	public String classID="";
+    	public String xml="";
+    }
+
 }

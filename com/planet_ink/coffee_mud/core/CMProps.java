@@ -34,6 +34,7 @@ import java.io.ByteArrayInputStream;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class CMProps extends Properties
 {
     private static CMProps[] props=new CMProps[256];
@@ -218,9 +219,9 @@ public class CMProps extends Properties
     protected String[] sysVars=new String[NUM_SYSTEM];
     protected Integer[] sysInts=new Integer[NUMI_SYSTEM];
     protected Boolean[] sysBools=new Boolean[NUMB_SYSTEM];
-    protected Vector<String> sayFilter=new Vector<String>();
-    protected Vector<String> channelFilter=new Vector<String>();
-    protected Vector<String> emoteFilter=new Vector<String>();
+    protected Vector sayFilter=new Vector();
+    protected Vector channelFilter=new Vector();
+    protected Vector emoteFilter=new Vector();
     protected Object[] listData=new Object[NUML_SYSTEM];
     protected DVector newusersByIP=new DVector(2);
     protected DVector skillMaxManaExceptions=new DVector(2);
@@ -357,7 +358,7 @@ public class CMProps extends Properties
 	{
 		DVector strBag = new DVector(2);
 		tagStartersToGet = tagStartersToGet.toUpperCase();
-		for(Enumeration<?> e=propertyNames(); e.hasMoreElements();)
+		for(Enumeration e=propertyNames(); e.hasMoreElements();)
 		{
 			String propName = (String)e.nextElement();
 			if(propName.toUpperCase().startsWith(tagStartersToGet))
@@ -566,7 +567,7 @@ public class CMProps extends Properties
     {
     	if(val==null) return 0;
     	set.clear();
-    	Vector<String> V=CMParms.parseCommas(val,true);
+    	Vector V=CMParms.parseCommas(val,true);
     	String s=null;
     	int endVal=0;
     	for(int v=0;v<V.size();v++)
@@ -614,7 +615,7 @@ public class CMProps extends Properties
         if((var<0)||(var>=NUML_SYSTEM)) return new int[0];
         if(p().listData[var]==null)
         {
-            Vector<String> V=CMParms.parseCommas(getListValue(SYSTEML_KEYS[var]), true);
+            Vector V=CMParms.parseCommas(getListValue(SYSTEML_KEYS[var]), true);
             int[] set=new int[V.size()];
             for(int v=0;v<V.size();v++)
                 set[v]=CMath.s_int((String)V.elementAt(v));
@@ -636,7 +637,7 @@ public class CMProps extends Properties
         if((var<0)||(var>=NUML_SYSTEM)) return new String[0][0];
         if(p().listData[var]==null)
         {
-            Vector<String> V=CMParms.parseSemicolons(getListValue(SYSTEML_KEYS[var]),true);
+            Vector V=CMParms.parseSemicolons(getListValue(SYSTEML_KEYS[var]),true);
             String[][] set=new String[V.size()][];
             for(int v=0;v<V.size();v++)
                 set[v]=CMParms.toStringArray(CMParms.parseCommas((String)V.elementAt(v),true));
@@ -736,7 +737,7 @@ public class CMProps extends Properties
             setIntVar(SYSTEMI_EQVIEW,0);
 
         s=getStr("EXPIRATIONS");
-        Vector<String> V=CMParms.parseCommas(s,false);
+        Vector V=CMParms.parseCommas(s,false);
         for(int i=0;i<5;i++)
         {
             if(V.size()>0)
@@ -846,7 +847,7 @@ public class CMProps extends Properties
 
     public static String applyINIFilter(String msg, int whichFilter)
     {
-        Vector<String> filter=null;
+        Vector filter=null;
         switch(whichFilter)
         {
         case SYSTEM_EMOTEFILTER: filter=p().emoteFilter; break;
@@ -972,7 +973,7 @@ public class CMProps extends Properties
         return getHashedMXPImage(H,key);
 
     }
-    public static String getHashedMXPImage(Hashtable<String,String> H, String key)
+    public static String getHashedMXPImage(Hashtable H, String key)
     {
         if(H==null) return "";
         String s=(String)H.get(key);
@@ -987,11 +988,11 @@ public class CMProps extends Properties
         if((getVar(SYSTEM_MXPIMAGEPATH).length()==0)
         ||(CMSecurity.isDisabled("MXP")))
             return "";
-        Hashtable<String,String> H=(Hashtable)Resources.getResource("PARSED: mxp_images.ini");
+        Hashtable H=(Hashtable)Resources.getResource("PARSED: mxp_images.ini");
         if(H==null)
         {
-            H=new Hashtable<String,String>();
-            Vector<String> V=Resources.getFileLineVector(new CMFile("resources/mxp_images.ini",null,false).text());
+            H=new Hashtable();
+            Vector V=Resources.getFileLineVector(new CMFile("resources/mxp_images.ini",null,false).text());
             if((V!=null)&&(V.size()>0))
             {
                 String s=null;
@@ -1022,7 +1023,7 @@ public class CMProps extends Properties
         {
             String raceName=((MOB)O).charStats().raceName().toUpperCase();
             Race R=null;
-            for(Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
+            for(Enumeration e=CMClass.races();e.hasMoreElements();)
             {
                 R=(Race)e.nextElement();
                 if(raceName.equalsIgnoreCase(R.name()))
@@ -1330,11 +1331,11 @@ public class CMProps extends Properties
                     xtraValues[xtraValues.length-x-1]=val; 
     }
 
-    public static Vector<String> getStatCodeExtentions(CMObject O)
+    public static Vector getStatCodeExtentions(CMObject O)
     {
     	String[][] statCodeExtensions = p().statCodeExtensions;
     	if( statCodeExtensions == null) return null;
-    	Vector<String> V=new Vector<String>();
+    	Vector V=new Vector();
         String myClassName=O.ID();
     	V.addElement(myClassName.toUpperCase());
         Class<?> C=O.getClass();
@@ -1347,7 +1348,7 @@ public class CMProps extends Properties
             else
                 V.addElement(myClassName.toUpperCase());
         }
-        for(Enumeration<String> v=V.elements();v.hasMoreElements();)
+        for(Enumeration v=V.elements();v.hasMoreElements();)
         {
         	myClassName = (String)v.nextElement();
         	for(int i=0;i<statCodeExtensions.length;i++)

@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class ColorSet extends StdCommand
 {
 	public ColorSet(){}
@@ -79,7 +80,7 @@ public class ColorSet extends StdCommand
 		return colorNum;
 	}
 	
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(mob.session()==null) return false;

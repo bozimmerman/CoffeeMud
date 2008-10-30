@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 {
     public String ID(){return "CoffeeShops";}
@@ -221,10 +222,10 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
            return 0.0;
         if(part.trim().indexOf(" ")<0)
             return CMath.s_double(part.trim());
-        Vector<String> V=CMParms.parse(part.trim());
+        Vector V=CMParms.parse(part.trim());
         double d=0.0;
         boolean yes=false;
-        Vector<String> VF=customer.fetchFactionRanges();
+        Vector VF=customer.fetchFactionRanges();
         String align=CMLib.flags().getAlignmentName(customer);
         String sex=customer.charStats().genderName();
         for(int v=0;v<V.size();v++)
@@ -372,7 +373,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         double resourceRate=0.0;
         double itemRate=0.0;
         String s=shop.finalDevalueRate();
-        Vector<String> V=CMParms.parse(s.trim());
+        Vector V=CMParms.parse(s.trim());
         if(V.size()<=0)
             return 0.0;
         else
@@ -767,7 +768,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         MOB mobFor=buyer;
         if((message!=null)&&(message.length()>0)&&(buyer.location()!=null))
         {
-            Vector<String> V=CMParms.parse(message);
+            Vector V=CMParms.parse(message);
             if(((String)V.elementAt(V.size()-2)).equalsIgnoreCase("for"))
             {
                 String s=(String)V.lastElement();
@@ -1043,11 +1044,11 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             String name=buyer.Name();
             if((whatISell==ShopKeeper.DEAL_CLANDSELLER)||(whatISell==ShopKeeper.DEAL_CSHIPSELLER))
                 name=buyer.getClanID();
-            HashSet<Environmental> roomsHandling=new HashSet<Environmental>();
-            Hashtable<Environmental,LandTitle> titles=new Hashtable<Environmental,LandTitle>();
+            HashSet roomsHandling=new HashSet();
+            Hashtable titles=new Hashtable();
             if((whatISell==ShopKeeper.DEAL_CSHIPSELLER)||(whatISell==ShopKeeper.DEAL_SHIPSELLER))
             {
-                for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+                for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
                 {
                     Area A=(Area)a.nextElement();
                     if((A instanceof SpaceShip)
@@ -1070,7 +1071,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 }
             }
             else
-            for(Enumeration<Room> r=myArea.getProperMap();r.hasMoreElements();)
+            for(Enumeration r=myArea.getProperMap();r.hasMoreElements();)
             {
                 Room R=(Room)r.nextElement();
                 LandTitle A=CMLib.law().getLandTitle(R);
@@ -1078,7 +1079,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     titles.put(R,A);
             }
 
-            for(Enumeration<Environmental> r=titles.keys();r.hasMoreElements();)
+            for(Enumeration r=titles.keys();r.hasMoreElements();)
             {
                 Environmental R=(Environmental)r.nextElement();
                 LandTitle A=(LandTitle)titles.get(R);
@@ -1088,7 +1089,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                         roomsHandling.add(R);
                     else
                     {
-                        Vector<Room> V2=A.getPropertyRooms();
+                        Vector V2=A.getPropertyRooms();
                         for(int v=0;v<V2.size();v++)
                             roomsHandling.add(V2.elementAt(v));
                     }
@@ -1472,14 +1473,14 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         	CMLib.database().DBUpdateJournal(data.auctionDBKey, data.auctioningI.Name(),xml.toString());
 	}
 
-    public Vector<AuctionData> getAuctions(Object ofLike, String auctionHouse)
+    public Vector getAuctions(Object ofLike, String auctionHouse)
     {
-    	Vector<AuctionData> auctions=new Vector<AuctionData>();
+    	Vector auctions=new Vector();
     	String house="SYSTEM_AUCTIONS_"+auctionHouse.toUpperCase().trim();
-	    Vector<JournalsLibrary.JournalEntry> otherAuctions=CMLib.database().DBReadJournalMsgs(house);
+	    Vector otherAuctions=CMLib.database().DBReadJournalMsgs(house);
 	    for(int o=0;o<otherAuctions.size();o++)
 	    {
-	    	JournalsLibrary.JournalEntry auctionData=otherAuctions.elementAt(o);
+	    	JournalsLibrary.JournalEntry auctionData=(JournalsLibrary.JournalEntry)otherAuctions.elementAt(o);
             String from=(String)auctionData.from;
 	        String to=(String)auctionData.to;
             String key=(String)auctionData.key;
@@ -1492,7 +1493,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             data.start=CMath.s_long(start);
             data.tickDown=CMath.s_long(to);
             String xml=(String)auctionData.msg;
-            Vector<XMLLibrary.XMLpiece> xmlV=CMLib.xml().parseAllXML(xml);
+            Vector xmlV=CMLib.xml().parseAllXML(xml);
             xmlV=CMLib.xml().getContentsFromPieces(xmlV,"AUCTION");
             String bid=CMLib.xml().getValFromPieces(xmlV,"PRICE");
             double oldBid=CMath.s_double(bid);

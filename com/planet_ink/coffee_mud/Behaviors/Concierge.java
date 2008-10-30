@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Concierge extends StdBehavior
 {
 	public String ID(){return "Concierge";}
@@ -50,7 +51,7 @@ public class Concierge extends StdBehavior
 	    	basePrice=CMath.s_double(newParm);
 	    	return;
 	    }
-	    Vector<String> V=CMParms.parseSemicolons(newParm,true);
+	    Vector V=CMParms.parseSemicolons(newParm,true);
 	    String s=null;
 	    int x=0;
 	    double price=0;

@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Thief_CarefulStep extends ThiefSkill
 {
 	public String ID() { return "Thief_CarefulStep"; }
@@ -76,7 +77,7 @@ public class Thief_CarefulStep extends ThiefSkill
         }
         return true;
     }
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String dir=CMParms.combine(commands,0);
 		if(commands.size()>0) dir=(String)commands.lastElement();

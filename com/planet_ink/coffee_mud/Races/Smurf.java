@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Smurf extends StdRace
 {
 	public String ID(){	return "Smurf"; }
@@ -50,7 +51,7 @@ public class Smurf extends StdRace
 	private int[] agingChart={0,2,20,110,175,263,350,390,430};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector<Item> resources=new Vector<Item>();
+	protected static Vector resources=new Vector();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	protected Weapon funHumanoidWeapon()
@@ -141,7 +142,7 @@ public class Smurf extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
-	public Vector<Item> myResources()
+	public Vector myResources()
 	{
 		synchronized(resources)
 		{

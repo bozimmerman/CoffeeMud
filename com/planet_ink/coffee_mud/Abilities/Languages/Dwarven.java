@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Dwarven extends StdLanguage
 {
 	public String ID() { return "Dwarven"; }

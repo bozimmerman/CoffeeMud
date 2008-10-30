@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_Geas extends Spell
 {
 	public String ID() { return "Spell_Geas"; }
@@ -105,7 +106,7 @@ public class Spell_Geas extends Spell
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isMonster())
 		{
@@ -119,7 +120,7 @@ public class Spell_Geas extends Spell
 			mob.tell("You need to specify a target creature, and a geas to place on them.");
 			return false;
 		}
-		Vector<String> name=CMParms.parse((String)commands.elementAt(0));
+		Vector name=CMParms.parse((String)commands.elementAt(0));
 		commands.remove(commands.firstElement());
 		MOB target=getTarget(mob,name,givenTarget);
 		if(target==null) return false;

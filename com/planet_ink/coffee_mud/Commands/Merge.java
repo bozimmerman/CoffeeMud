@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Merge extends StdCommand
 {
 	public Merge(){}
@@ -170,7 +171,7 @@ public class Merge extends StdCommand
 		}
 	}
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean noisy=CMSecurity.isDebugging("MERGE");
@@ -374,7 +375,7 @@ public class Merge extends StdCommand
 			return false;
 		}
 		if(placesToDo.size()==0)
-		for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+		for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			if(A.getCompleteMap().hasMoreElements()
@@ -392,7 +393,7 @@ public class Merge extends StdCommand
 			{
 				Area A=(Area)placesToDo.elementAt(i);
 				placesToDo.removeElement(A);
-				for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(CMSecurity.isAllowed(mob,R,"MERGE"))

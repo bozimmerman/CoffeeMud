@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -34,6 +35,7 @@ import java.util.regex.Pattern;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class DataLoader
 {
 	protected DBConnector DB=null;
@@ -59,12 +61,12 @@ public class DataLoader
 				String section2=DBConnections.getRes(R,"CMSECT");
 				if(section2.equalsIgnoreCase(section))
 				{
-					Vector V=new Vector();
-					V.addElement(playerID2);
-					V.addElement(section2);
-					V.addElement(DBConnections.getRes(R,"CMPKEY"));
-					V.addElement(DBConnections.getRes(R,"CMPDAT"));
-					rows.addElement(V);
+                    PlayerData d = new PlayerData();
+                    d.who=playerID2;
+                    d.section=section2;
+                    d.key=DBConnections.getRes(R,"CMPKEY");
+                    d.xml=DBConnections.getRes(R,"CMPDAT");
+                    rows.addElement(d);
 				}
 			}
 		}
@@ -89,12 +91,12 @@ public class DataLoader
 				String playerID2=DBConnections.getRes(R,"CMPLID");
 				if(playerID2.equalsIgnoreCase(playerID))
 				{
-					Vector V=new Vector();
-					V.addElement(playerID2);
-					V.addElement(DBConnections.getRes(R,"CMSECT"));
-					V.addElement(DBConnections.getRes(R,"CMPKEY"));
-					V.addElement(DBConnections.getRes(R,"CMPDAT"));
-					rows.addElement(V);
+                    PlayerData d = new PlayerData();
+                    d.who=playerID2;
+                    d.section=DBConnections.getRes(R,"CMSECT");
+                    d.key=DBConnections.getRes(R,"CMPKEY");
+                    d.xml=DBConnections.getRes(R,"CMPDAT");
+                    rows.addElement(d);
 				}
 			}
 		}
@@ -151,12 +153,12 @@ public class DataLoader
 			    Matcher M=P.matcher(key);
 			    if(M.find())
 			    {
-					Vector V=new Vector();
-					V.addElement(plid);
-					V.addElement(sect);
-					V.addElement(key);
-					V.addElement(DBConnections.getRes(R,"CMPDAT"));
-					rows.addElement(V);
+                    PlayerData d = new PlayerData();
+                    d.who=plid;
+                    d.section=sect;
+                    d.key=key;
+                    d.xml=DBConnections.getRes(R,"CMPDAT");
+                    rows.addElement(d);
 			    }
 			}
 		}
@@ -182,12 +184,12 @@ public class DataLoader
 				String plid=DBConnections.getRes(R,"CMPLID");
 				String sect=DBConnections.getRes(R,"CMSECT");
 				key=DBConnections.getRes(R,"CMPKEY");
-				Vector V=new Vector();
-				V.addElement(plid);
-				V.addElement(sect);
-				V.addElement(key);
-				V.addElement(DBConnections.getRes(R,"CMPDAT"));
-				rows.addElement(V);
+                PlayerData d = new PlayerData();
+                d.who=plid;
+                d.section=sect;
+                d.key=key;
+                d.xml=DBConnections.getRes(R,"CMPDAT");
+                rows.addElement(d);
 			}
 		}
 		catch(Exception sqle)
@@ -218,12 +220,12 @@ public class DataLoader
 				if((playerID2.equalsIgnoreCase(playerID))
 				&&(section2.equalsIgnoreCase(section)))
 				{
-					Vector V=new Vector();
-					V.addElement(playerID2);
-					V.addElement(section2);
-					V.addElement(DBConnections.getRes(R,"CMPKEY"));
-					V.addElement(DBConnections.getRes(R,"CMPDAT"));
-					rows.addElement(V);
+                    PlayerData d = new PlayerData();
+                    d.who=playerID2;
+                    d.section=section2;
+                    d.key=DBConnections.getRes(R,"CMPKEY");
+                    d.xml=DBConnections.getRes(R,"CMPDAT");
+                    rows.addElement(d);
 				}
 			}
 		}
@@ -245,12 +247,12 @@ public class DataLoader
 			ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMSECT='"+section+"'");
 			while(R.next())
 			{
-				Vector V=new Vector();
-				V.addElement(DBConnections.getRes(R,"CMPLID"));
-				V.addElement(DBConnections.getRes(R,"CMSECT"));
-				V.addElement(DBConnections.getRes(R,"CMPKEY"));
-				V.addElement(DBConnections.getRes(R,"CMPDAT"));
-				rows.addElement(V);
+                PlayerData d = new PlayerData();
+                d.who=DBConnections.getRes(R,"CMPLID");
+                d.section=DBConnections.getRes(R,"CMSECT");
+                d.key=DBConnections.getRes(R,"CMPKEY");
+                d.xml=DBConnections.getRes(R,"CMPDAT");
+                rows.addElement(d);
 			}
 		}
 		catch(Exception sqle)
@@ -279,12 +281,12 @@ public class DataLoader
                     String section2=DBConnections.getRes(R,"CMSECT");
                     if(sections.contains(section2))
                     {
-                        Vector V=new Vector();
-                        V.addElement(playerID);
-                        V.addElement(section2);
-                        V.addElement(DBConnections.getRes(R,"CMPKEY"));
-                        V.addElement(DBConnections.getRes(R,"CMPDAT"));
-                        rows.addElement(V);
+                        PlayerData d = new PlayerData();
+                        d.who=playerID;
+                        d.section=section2;
+                        d.key=DBConnections.getRes(R,"CMPKEY");
+                        d.xml=DBConnections.getRes(R,"CMPDAT");
+                        rows.addElement(d);
                     }
                 }
             }
@@ -297,12 +299,12 @@ public class DataLoader
                 ResultSet R=D.query("SELECT * FROM CMPDAT WHERE CMPLID='"+playerID+"' AND ("+clause+")");
                 while(R.next())
                 {
-                    Vector V=new Vector();
-                    V.addElement(DBConnections.getRes(R,"CMPLID"));
-                    V.addElement(DBConnections.getRes(R,"CMSECT"));
-                    V.addElement(DBConnections.getRes(R,"CMPKEY"));
-                    V.addElement(DBConnections.getRes(R,"CMPDAT"));
-                    rows.addElement(V);
+                    PlayerData d = new PlayerData();
+                    d.who=DBConnections.getRes(R,"CMPLID");
+                    d.section=DBConnections.getRes(R,"CMSECT");
+                    d.key=DBConnections.getRes(R,"CMPKEY");
+                    d.xml=DBConnections.getRes(R,"CMPDAT");
+                    rows.addElement(d);
                 }
             }
         }
@@ -467,8 +469,8 @@ public class DataLoader
 		Vector itemSet=CMLib.database().DBReadData("ARTIFACTS");
 		for(int i=0;i<itemSet.size();i++)
 		{
-			Vector item=(Vector)itemSet.elementAt(i);
-			String itemID=(String)item.firstElement();
+			PlayerData item=(PlayerData)itemSet.elementAt(i);
+			String itemID=(String)item.who;
 			Ability A=CMClass.getAbility("Prop_Artifact");
 			if(A!=null)
 			{

@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 {
 	public long[] coordinates=new long[3];
@@ -679,7 +680,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		Hashtable allNums=new Hashtable();
 		try
 		{
-			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if((R.getArea().Name().equals(Name()))

@@ -32,6 +32,7 @@ import java.util.*;
  * A, well, Race
  * @author Bo Zimmerman
  */
+@SuppressWarnings("unchecked")
 public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, CMModifiable
 {
     /** Age constant for an infant */
@@ -179,7 +180,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, C
 	 * @param myChar one who will receive the objects
 	 * @return a vector of Item objects
 	 */
-	public Vector<Item> outfit(MOB myChar);
+	public Vector outfit(MOB myChar);
 	/**
 	 * Returns a description of the given mobs description, by
 	 * consulting the mobs curState().getHitPoints method.
@@ -204,7 +205,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, C
 	 * @see com.planet_ink.coffee_mud.Items.interfaces.RawMaterial
 	 * @return a vector of rawmaterial objects
 	 */
-	public Vector<Item> myResources();
+	public Vector myResources();
 	/**
 	 * Returns the corpse of a member of this race, populates it with the equipment of
 	 * the given mob, and places it in the given room.  If the destroyBodyAfterUse returns
@@ -256,7 +257,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, C
 	 * @param mob the mob to level up
 	 * @param gainedAbilityIDs the set of abilities/skill IDs gained during this leveling process
 	 */
-	public void level(MOB mob, Vector<String> gainedAbilityIDs);
+	public void level(MOB mob, Vector gainedAbilityIDs);
 
 	/**
 	 * Whenever a player or mob of this race gains experience, this method gets a chance
@@ -300,7 +301,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, C
 	 * @param mob the mob to grant the abilities to
 	 * @return a vector of the Ability objects
 	 */
-	public Vector<Ability> racialAbilities(MOB mob);
+	public Vector racialAbilities(MOB mob);
 	/**
 	 * Return a vector of skills, spells, and other abilities granted to the given
 	 * mob of the given mobs level.  This method is not functionally used because
@@ -309,7 +310,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, C
 	 * @param mob the mob to grant the abilities to
 	 * @return a vector of the Ability objects
 	 */
-	public Vector<Ability> racialEffects(MOB mob);
+	public Vector racialEffects(MOB mob);
 	/**
 	 * Apply any affects of the given mob at the given age to the given base and/or
 	 * current char stats.
@@ -359,7 +360,7 @@ public interface Race extends Tickable, StatsAffecting, MsgListener, CMObject, C
 		"ANTENEA","EYE","EAR","HEAD","NECK","ARM","HAND","TORSO","LEG","FOOT",
 		"NOSE","GILL","MOUTH","WAIST","TAIL","WING"};
 	/** constant hash of BODYPARTSTR */
-	public final static Hashtable<Object,Integer> BODYPARTHASH=CMStrings.makeNumericHash(BODYPARTSTR);
+	public final static Hashtable BODYPARTHASH=CMStrings.makeNumericHash(BODYPARTSTR);
 	/** constant used to set and check the classless flag on generic races */
 	public final static int GENFLAG_NOCLASS=1;
 	/** constant used to set and check the levelless flag on generic races */

@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Resources
 {
     private static Resources[] rscs=new Resources[256];
@@ -86,9 +87,9 @@ public class Resources
         return "\n\r";
     }
     
-    public static Vector<String> getFileLineVector(StringBuffer buf)
+    public static Vector getFileLineVector(StringBuffer buf)
     {
-        Vector<String> V=new Vector<String>();
+        Vector V=new Vector();
         if(buf==null) return V;
         StringBuffer str=new StringBuffer("");
         for(int i=0;i<buf.length()-1;i++)

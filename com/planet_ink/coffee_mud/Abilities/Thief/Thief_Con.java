@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Thief_Con extends ThiefSkill
 {
 	public String ID() { return "Thief_Con"; }
@@ -126,7 +127,7 @@ public class Thief_Con extends ThiefSkill
         return true;
     }
     
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         if(commands!=null) commands=(Vector)commands.clone();
         if(!conCheck(mob,commands,givenTarget,auto,asLevel))

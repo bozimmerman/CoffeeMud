@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_VolcanicChasm extends Chant
 {
 	public String ID() { return "Chant_VolcanicChasm"; }
@@ -98,7 +99,7 @@ public class Chant_VolcanicChasm extends Chant
         return super.castingQuality(mob,target);
     }
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Room target=mob.location();
 		if(target==null) return false;

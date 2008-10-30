@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Prayer_DailyBread extends Prayer
 {
 	public String ID() { return "Prayer_DailyBread"; }
@@ -43,7 +44,7 @@ public class Prayer_DailyBread extends Prayer
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
 	protected int overrideMana(){return 100;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=this.getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

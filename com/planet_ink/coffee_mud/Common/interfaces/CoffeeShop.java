@@ -48,6 +48,7 @@ import java.util.Vector;
  * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#whatIsSold()
  * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#DEAL_INVENTORYONLY
  */
+@SuppressWarnings("unchecked")
 public interface CoffeeShop extends CMCommon
 {
     /**
@@ -93,7 +94,7 @@ public interface CoffeeShop extends CMCommon
      * Will only return one of each item, even if multiple are available.
      * @return a Vector of objects for sale.
      */
-    public Vector<Environmental> getStoreInventory();
+    public Vector getStoreInventory();
     
     /**
      * Returns a Vector of all the Environmental objects this shop has in its base
@@ -103,7 +104,7 @@ public interface CoffeeShop extends CMCommon
      * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#DEAL_INVENTORYONLY
      * @return a Vector of objects in base inventory
      */
-    public Vector<Environmental> getBaseInventory();
+    public Vector getBaseInventory();
     
     /**
      * Clears both the base and stock/store inventories.
@@ -215,7 +216,7 @@ public interface CoffeeShop extends CMCommon
      * @param startRoom the shops start room, for determining jurisdiction
      * @return the available items, if found, as a Vector of Environmental objects
      */
-    public Vector<Environmental> removeSellableProduct(String named, MOB mob, int whatISell, Room startRoom);
+    public Vector removeSellableProduct(String named, MOB mob, int whatISell, Room startRoom);
     
     /**
      * Generates an XML document of all available shop inventory, prices, and availability.

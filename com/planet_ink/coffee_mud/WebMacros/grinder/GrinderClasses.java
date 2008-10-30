@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class GrinderClasses 
 {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -71,7 +72,7 @@ public class GrinderClasses
         return theclasses;
     }
 
-    public static String modifyCharClass(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, CharClass oldC, CharClass C)
+    public static String modifyCharClass(ExternalHTTPRequests httpReq, Hashtable parms, CharClass oldC, CharClass C)
     {
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
         if((replaceCommand != null) 
@@ -175,7 +176,7 @@ public class GrinderClasses
         old=httpReq.getRequestParameter("GENHELP");
         C.setStat("HELP", ((old==null)?"":old));
         String id="";
-        Vector<String> V=new Vector<String>();
+        Vector V=new Vector();
         for(int i=0;httpReq.isRequestParameter("NOWEAPS"+id);id=""+(++i))
             V.addElement(httpReq.getRequestParameter("NOWEAPS"+id));
         C.setStat("GETWEP",CMParms.toStringList(V));
@@ -228,7 +229,7 @@ public class GrinderClasses
             C.setStat("SSETLEVEL"+l, ((Integer)DV.elementAt(l,1)).toString());
         }
         id="";
-        V=new Vector<String>();
+        V=new Vector();
         for(int i=0;httpReq.isRequestParameter("WEAPMATS"+id);id=""+(++i))
             if(CMath.isInteger(httpReq.getRequestParameter("WEAPMATS"+id)))
                 V.addElement(httpReq.getRequestParameter("WEAPMATS"+id));

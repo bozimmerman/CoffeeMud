@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Butchering extends GatheringSkill
 {
 	public String ID() { return "Butchering"; }
@@ -95,7 +96,7 @@ public class Butchering extends GatheringSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		body=null;
 		Item I=null;

@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class FireBuilding extends CommonSkill
 {
 	public String ID() { return "FireBuilding"; }
@@ -104,7 +105,7 @@ public class FireBuilding extends CommonSkill
         return here;
     }
     
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((mob.isMonster()
 		&&(!CMLib.flags().isAnimalIntelligence(mob)))

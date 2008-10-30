@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Thief_Pick extends ThiefSkill
 {
 	public String ID() { return "Thief_Pick"; }
@@ -49,7 +50,7 @@ public class Thief_Pick extends ThiefSkill
 	public int abilityCode(){return code;}
 	public void setAbilityCode(int newCode){code=newCode;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String whatTounlock=CMParms.combine(commands,0);
 		Environmental unlockThis=null;

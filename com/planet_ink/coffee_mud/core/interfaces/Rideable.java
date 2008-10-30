@@ -36,6 +36,7 @@ import java.util.HashSet;
  * @author Bo Zimmerman
  *
  */
+@SuppressWarnings("unchecked")
 public interface Rideable extends Environmental
 {
     /** constant for the  rideType() method.  Means it is ridden over land*/

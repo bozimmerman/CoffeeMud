@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prop_Hidden extends Property
 {
 	public String ID() { return "Prop_Hidden"; }
@@ -74,7 +75,7 @@ public class Prop_Hidden extends Property
 		super.setMiscText(text);
 		if(!(affected instanceof MOB))
 		{
-			Vector<String> parms=CMParms.parse(text.toUpperCase());
+			Vector parms=CMParms.parse(text.toUpperCase());
 			unLocatable=parms.contains("UNLOCATABLE");
 		}
 	}

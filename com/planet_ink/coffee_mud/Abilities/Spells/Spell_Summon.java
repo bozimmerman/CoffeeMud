@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_Summon extends Spell
 {
 	public String ID() { return "Spell_Summon"; }
@@ -63,7 +64,7 @@ public class Spell_Summon extends Spell
         super.unInvoke();
     }
     
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		String areaName=CMParms.combine(commands,0).trim().toUpperCase();
@@ -108,7 +109,7 @@ public class Spell_Summon extends Spell
                 }
             }
             if(oldRoom==null)
-			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room room=(Room)r.nextElement();
 				if(CMLib.flags().canAccess(mob,room))
@@ -135,7 +136,7 @@ public class Spell_Summon extends Spell
 		int adjustment=(target.envStats().level()-(mob.envStats().level()+(getXLEVELLevel(mob)+(2*getX1Level(mob)))))*3;
 		boolean success=proficiencyCheck(mob,-adjustment,auto);
 		
-		if(success&&(!auto)&&(!mob.mayIFight(target))&&(!mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
+		if(success&&(!auto)&&(!mob.mayIFight(target))&&(!mob.getGroupMembers(new HashSet()).contains(target)))
 		{
 			mob.tell(target.name()+" is a player, so you must be group members, or your playerkill flags must be on for this to work.");
 			success=false;

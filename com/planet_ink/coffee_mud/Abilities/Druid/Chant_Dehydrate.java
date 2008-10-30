@@ -32,6 +32,7 @@ import java.util.Vector;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_Dehydrate extends Chant
 {
 	public String ID() { return "Chant_Dehydrate"; }
@@ -40,7 +41,7 @@ public class Chant_Dehydrate extends Chant
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_ENDURING;}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_ANY);
 		if(target==null) return false;

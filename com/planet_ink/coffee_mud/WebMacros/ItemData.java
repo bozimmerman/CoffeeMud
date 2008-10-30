@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class ItemData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -81,7 +82,7 @@ public class ItemData extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable<String,String> parms=parseParms(parm);
+		Hashtable parms=parseParms(parm);
         String player=httpReq.getRequestParameter("PLAYER");
 		String last=httpReq.getRequestParameter("ROOM");
 		if((last==null)&&(player==null)) return " @break@";
@@ -555,7 +556,7 @@ public class ItemData extends StdWebMacro
 									break;
 						}
 						old=old.toUpperCase()+";";
-						for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+						for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 						{
 							String cnam=((Ability)a.nextElement()).ID();
 							str.append("<OPTION VALUE=\""+cnam+"\"");
@@ -596,7 +597,7 @@ public class ItemData extends StdWebMacro
 								break;
 					}
 					mask=mask.toUpperCase()+";";
-					for(Enumeration<Area> a=CMLib.map().sortedAreas();a.hasMoreElements();)
+					for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 					{
 						Area A2=(Area)a.nextElement();
 						str.append("<OPTION VALUE=\""+A2.Name()+"\"");
@@ -656,7 +657,7 @@ public class ItemData extends StdWebMacro
 					{
 						if((firstTime)&&(I instanceof Wand))
 							old=""+((((Wand)I).getSpell()!=null)?((Wand)I).getSpell().ID():"");
-						for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+						for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 						{
 							String cnam=((Ability)a.nextElement()).ID();
 							str.append("<OPTION VALUE=\""+cnam+"\"");
@@ -888,7 +889,7 @@ public class ItemData extends StdWebMacro
 				    Ability A=null;
 					if((firstTime)&&(I instanceof Recipe))
 						old=""+((Recipe)I).getCommonSkillID();
-					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+					for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
 					{
 					 	A=(Ability)e.nextElement();
 					 	if(((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL)

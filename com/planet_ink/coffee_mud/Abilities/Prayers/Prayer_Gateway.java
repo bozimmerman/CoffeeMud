@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Prayer_Gateway extends Prayer
 {
 	public String ID() { return "Prayer_Gateway"; }
@@ -64,7 +65,7 @@ public class Prayer_Gateway extends Prayer
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((auto||mob.isMonster())&&(commands.size()==0))
 			commands.addElement(CMLib.map().getRandomRoom().displayText());
@@ -84,7 +85,7 @@ public class Prayer_Gateway extends Prayer
 		newRoom=null;
 		try
 		{
-			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(CMLib.flags().canAccess(mob,R))

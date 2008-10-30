@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Aarakocran extends Harpy
 {
 	public String ID(){	return "Aarakocran"; }
@@ -49,7 +50,7 @@ public class Aarakocran extends Harpy
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,2 ,1 ,2 ,2 ,1 ,0 ,1 ,1 ,1 ,2 };
 	public int[] bodyMask(){return parts;}
 
-	protected static Vector<Item> resources=new Vector<Item>();
+	protected static Vector resources=new Vector();
         
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
@@ -58,7 +59,7 @@ public class Aarakocran extends Harpy
 		affectableStats.setStat(CharStats.STAT_CONSTITUTION,affectableStats.getStat(CharStats.STAT_CONSTITUTION)-2);
 	}
         
-	public Vector<Item> myResources()
+	public Vector myResources()
 	{
 		synchronized(resources)
 		{

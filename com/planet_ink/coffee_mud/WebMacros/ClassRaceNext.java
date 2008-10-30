@@ -32,13 +32,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class ClassRaceNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable<String,String> parms=parseParms(parm);
+		Hashtable parms=parseParms(parm);
 		String cclass=httpReq.getRequestParameter("CLASS");
 		if(cclass.trim().length()==0) return " @break@";
 		CharClass C=CMClass.getCharClass(cclass.trim());
@@ -56,7 +57,7 @@ public class ClassRaceNext extends StdWebMacro
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();
-		for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+		for(Enumeration r=CMClass.races();r.hasMoreElements();)
 		{
 			Race R=(Race)r.nextElement();
 			mob.baseCharStats().setMyRace(R);

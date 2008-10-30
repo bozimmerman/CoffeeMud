@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_Portal extends Spell
 {
 	public String ID() { return "Spell_Portal"; }
@@ -64,7 +65,7 @@ public class Spell_Portal extends Spell
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
         newRoom=null;
         oldRoom=null;
@@ -103,7 +104,7 @@ public class Spell_Portal extends Spell
 		{
 		    try
 		    {
-				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room room=(Room)r.nextElement();
 		

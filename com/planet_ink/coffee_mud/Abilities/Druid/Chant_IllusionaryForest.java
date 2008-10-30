@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_IllusionaryForest extends Chant
 {
 	public String ID() { return "Chant_IllusionaryForest"; }
@@ -137,7 +138,7 @@ public class Chant_IllusionaryForest extends Chant
 		return newRoom;
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING

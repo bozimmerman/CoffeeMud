@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class DefaultClimate implements Climate
 {
 	public String ID(){return "DefaultClimate";}
@@ -364,7 +365,7 @@ public class DefaultClimate implements Climate
 
 			if(say!=null)
 			{
-				for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+				for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(CMLib.map().hasASky(R))

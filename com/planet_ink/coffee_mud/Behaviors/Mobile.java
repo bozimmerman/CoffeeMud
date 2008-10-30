@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Mobile extends ActiveTicker
 {
 	public String ID(){return "Mobile";}
@@ -104,7 +105,7 @@ public class Mobile extends ActiveTicker
 		leashHash=null;
 		restrictedLocales=null;
 		leash=CMParms.getParmInt(newParms,"LEASH",0);
-		Vector<String> V=CMParms.parse(newParms);
+		Vector V=CMParms.parse(newParms);
 		for(int v=0;v<V.size();v++)
 		{
 			String s=(String)V.elementAt(v);

@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Run extends Go
 {
 	public Run(){}
@@ -39,11 +40,11 @@ public class Run extends Go
 	private String[] access={"RUN"};
 	public String[] getAccessWords(){return access;}
 	public int energyExpenseFactor(){return 2;}
-	public double actionsCost(MOB mob, Vector<Object> cmds)
+	public double actionsCost(MOB mob, Vector cmds)
 	{
 		return super.actionsCost(mob, cmds) / 4.0;
 	}
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 	throws java.io.IOException
 	{
 		if(mob==null)

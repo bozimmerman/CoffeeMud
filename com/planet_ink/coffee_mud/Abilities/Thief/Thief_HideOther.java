@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Thief_HideOther extends ThiefSkill
 {
 	public String ID() { return "Thief_HideOther"; }
@@ -125,7 +126,7 @@ public class Thief_HideOther extends ThiefSkill
 			affectableStats.setDisposition(affectableStats.disposition()-EnvStats.IS_SNEAKING);
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=super.getTarget(mob,commands,givenTarget,false,false);
 		if(target==null) return false;
@@ -139,7 +140,7 @@ public class Thief_HideOther extends ThiefSkill
 			mob.tell("Not while in combat!");
 			return false;
 		}
-		HashSet H=mob.getGroupMembers(new HashSet<MOB>());
+		HashSet H=mob.getGroupMembers(new HashSet());
 		if(!H.contains(target))
 		{
 			mob.tell("You can only hide a group member.");

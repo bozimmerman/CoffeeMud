@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
+@SuppressWarnings("unchecked")
 public class Ignan extends StdLanguage
 {
 	public String ID() { return "Ignan"; }

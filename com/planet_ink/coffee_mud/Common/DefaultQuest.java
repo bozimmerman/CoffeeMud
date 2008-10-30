@@ -35,6 +35,7 @@ import org.mozilla.javascript.ScriptableObject;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class DefaultQuest implements Quest, Tickable, CMObject
 {
 
@@ -417,7 +418,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         {
             if(startLine>=0) q.lastLine=v;
             String s=modifyStringFromArgs((String)script.elementAt(v),args);
-            Vector<String> p=CMParms.parse(s);
+            Vector p=CMParms.parse(s);
             boolean isQuiet=q.beQuiet;
             if(p.size()>0)
             {
@@ -642,7 +643,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         }catch(CMException ex){
                             q.mob=null;
 	                        Vector choices=new Vector();
-	                        Vector<String> mobTypes=CMParms.parse(CMParms.combine(p,2).toUpperCase());
+	                        Vector mobTypes=CMParms.parse(CMParms.combine(p,2).toUpperCase());
 	                        for(int t=0;t<mobTypes.size();t++)
 	                        {
 	                            String mobType=(String)mobTypes.elementAt(t);
@@ -3762,11 +3763,11 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         if(text.trim().toUpperCase().startsWith("LOAD="))
         {
         	String filename=null;
-        	Vector<String> V=CMParms.parse(text.trim().substring(5).trim());
+        	Vector V=CMParms.parse(text.trim().substring(5).trim());
         	if(V.size()>0)
         	{
         		filename=(String)V.firstElement();
-        		Vector<String> parms=null;
+        		Vector parms=null;
         		try{
 	        		for(int v=1;v<V.size();v++)
 	        		{

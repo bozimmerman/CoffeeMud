@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Fighter_Warcry extends FighterSkill
 {
 	public String ID() { return "Fighter_Warcry"; }
@@ -77,7 +78,7 @@ public class Fighter_Warcry extends FighterSkill
 			mob.tell("You calm down a bit.");
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

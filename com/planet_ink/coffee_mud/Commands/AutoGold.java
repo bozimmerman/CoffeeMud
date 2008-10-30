@@ -31,13 +31,14 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class AutoGold extends StdCommand
 {
 	public AutoGold(){}
 
 	private String[] access={"AUTOGOLD"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOGOLD))

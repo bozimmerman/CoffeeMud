@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Thief_AutoMarkTraps extends Thief_AutoDetectTraps
 {
     public String ID() { return "Thief_AutoMarkTraps"; }
@@ -64,7 +65,7 @@ public class Thief_AutoMarkTraps extends Thief_AutoDetectTraps
         mob.curState().setMana(savedState.getMovement());
     }
     
-    public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         MOB target=(givenTarget instanceof MOB)?(MOB)givenTarget:mob;
         if((!auto)&&(target.fetchAbility("Thief_MarkTraps")==null))

@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Dance_Manipuri extends Dance
 {
 	public String ID() { return "Dance_Manipuri"; }
@@ -95,7 +96,7 @@ public class Dance_Manipuri extends Dance
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		count=3;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))

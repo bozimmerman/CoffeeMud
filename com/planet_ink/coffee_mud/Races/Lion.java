@@ -28,6 +28,7 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Lion extends GreatCat
 {
 	public String ID(){	return "Lion"; }
@@ -39,8 +40,8 @@ public class Lion extends GreatCat
 	public int[] bodyMask(){return parts;}
 	
 	
-	protected static Vector<Item> resources=new Vector<Item>();
-	public Vector<Item> myResources()
+	protected static Vector resources=new Vector();
+	public Vector myResources()
 	{
 		synchronized(resources)
 		{

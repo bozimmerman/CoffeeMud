@@ -31,6 +31,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class AutoNotify extends StdCommand
 {
 
@@ -39,7 +40,7 @@ public class AutoNotify extends StdCommand
 	private String[] access={"AUTONOTIFY"};
 	public String[] getAccessWords(){return access;}
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTONOTIFY))

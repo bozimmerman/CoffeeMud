@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Thief_Panhandling extends ThiefSkill
 {
 	public String ID() { return "Thief_Panhandling"; }
@@ -132,7 +133,7 @@ public class Thief_Panhandling extends ThiefSkill
 							{
 								CMLib.beanCounter().subtractMoney(mob2,total);
 								mob2.addInventory(C);
-								mob2.doCommand(CMParms.parseToObjV("GIVE \""+C.name()+"\" \""+mob.Name()+"\""),Command.METAFLAG_FORCED);
+								mob2.doCommand(CMParms.parse("GIVE \""+C.name()+"\" \""+mob.Name()+"\""),Command.METAFLAG_FORCED);
 								if(!C.amDestroyed()) C.putCoinsBack();
 							}
 					    }
@@ -161,7 +162,7 @@ public class Thief_Panhandling extends ThiefSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Sounder extends StdBehavior
 {
 	public String ID(){return "Sounder";}
@@ -61,7 +62,7 @@ public class Sounder extends StdBehavior
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		Vector<String> emote=CMParms.parseSemicolons(newParms,true);
+		Vector emote=CMParms.parseSemicolons(newParms,true);
 		triggers=new int[emote.size()];
 		strings=new String[emote.size()];
 
@@ -346,7 +347,7 @@ public class Sounder extends StdBehavior
 			emoter=CMClass.getMOB("StdMOB");
 			emoter.setName(ticking.name());
 			emoter.charStats().setStat(CharStats.STAT_GENDER,'N');
-			for(Enumeration<Room> r=((Area)ticking).getMetroMap();r.hasMoreElements();)
+			for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				emoteHere(R,emoter,emote);

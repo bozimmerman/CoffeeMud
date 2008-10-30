@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class CharClassData extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -43,7 +44,7 @@ public class CharClassData extends StdWebMacro
         str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">None");
         CharClass C2=null;
         String C2ID=null;
-        for(Enumeration<CharClass> e=CMClass.charClasses();e.hasMoreElements();)
+        for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
         {
             C2=(CharClass)e.nextElement();
             C2ID="com.planet_ink.coffee_mud.CharClasses."+C2.ID();
@@ -62,7 +63,7 @@ public class CharClassData extends StdWebMacro
     }
 
 
-    public static StringBuffer cabilities(CharClass E, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize, String font)
+    public static StringBuffer cabilities(CharClass E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize, String font)
     {
         StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(8);
@@ -194,7 +195,7 @@ public class CharClassData extends StdWebMacro
         str.append("<TR><TD WIDTH=50%>");
         str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=CABLES"+(theclasses.size()+1)+">");
         str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
-        for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+        for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
         {
             Ability A=(Ability)a.nextElement();
             String ID=A.ID();
@@ -226,7 +227,7 @@ public class CharClassData extends StdWebMacro
 	// prime, quals, startingeq
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable<String,String> parms=parseParms(parm);
+		Hashtable parms=parseParms(parm);
 
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
         if((replaceCommand != null)
@@ -589,7 +590,7 @@ public class CharClassData extends StdWebMacro
                 if(parms.containsKey("NOWEAPS"))
                 {
                     String old=httpReq.getRequestParameter("NOWEAPS");
-                    Vector<String> set=null;
+                    Vector set=null;
                     if(old==null)
                     {
                         C=C.makeGenCharClass();
@@ -599,7 +600,7 @@ public class CharClassData extends StdWebMacro
                     else
                     {
                         String id="";
-                        set=new Vector<String>();
+                        set=new Vector();
                         for(int i=0;httpReq.isRequestParameter("NOWEAPS"+id);id=""+(++i))
                             set.addElement(httpReq.getRequestParameter("NOWEAPS"+id));
                     }
@@ -658,7 +659,7 @@ public class CharClassData extends StdWebMacro
                             if(cSrc)
                             {
                                 sec=C.getStat("SSET"+i);
-                                Vector<String> V=CMParms.parse(sec);
+                                Vector V=CMParms.parse(sec);
                                 sec=CMParms.combineWithX(V,",",0);
                             }
                             else
@@ -726,7 +727,7 @@ public class CharClassData extends StdWebMacro
                 if(parms.containsKey("WEAPMATS"))
                 {
                     String old=httpReq.getRequestParameter("WEAPMATS");
-                    Vector<String> set=null;
+                    Vector set=null;
                     if(old==null)
                     {
                         C=C.makeGenCharClass();
@@ -736,7 +737,7 @@ public class CharClassData extends StdWebMacro
                     else
                     {
                         String id="";
-                        set=new Vector<String>();
+                        set=new Vector();
                         for(int i=0;httpReq.isRequestParameter("WEAPMATS"+id);id=""+(++i))
                             if(CMath.isInteger(httpReq.getRequestParameter("WEAPMATS"+id)))
                                 set.addElement(httpReq.getRequestParameter("WEAPMATS"+id));
@@ -838,7 +839,7 @@ public class CharClassData extends StdWebMacro
 					Hashtable domains=new Hashtable();
 					Ability A=null;
 					String domain=null;
-					for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+					for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
 					{
 						A=(Ability)e.nextElement();
 						if(CMLib.ableMapper().getQualifyingLevel(C.ID(),true,A.ID())>0)

@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class RandomTraps extends ActiveTicker
 {
 	public String ID(){return "RandomTraps";}
@@ -137,7 +138,7 @@ public class RandomTraps extends ActiveTicker
 				doAnyLockedDoors=false;
 			}
 
-			Vector<String> V=CMParms.parse(oldParms);
+			Vector V=CMParms.parse(oldParms);
 			for(int v=0;v<V.size();v++)
 			{
 				String s=(String)V.elementAt(v);
@@ -238,7 +239,7 @@ public class RandomTraps extends ActiveTicker
             tickStatus=Tickable.STATUS_MISC+2;
 			Vector allTraps=new Vector();
 			if(maintained.size()<avgTraps)
-				for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+				for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
 				{
 					Ability A=(Ability)e.nextElement();
 					if(A instanceof Trap)

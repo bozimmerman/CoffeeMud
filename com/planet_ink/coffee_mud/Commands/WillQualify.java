@@ -36,6 +36,7 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
+@SuppressWarnings("unchecked")
 public class WillQualify  extends Skills
 {
 	public WillQualify() {}
@@ -122,7 +123,7 @@ public class WillQualify  extends Skills
 		return msg;
 	}
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 	                throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");

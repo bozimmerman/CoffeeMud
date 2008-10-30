@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class SlaveTrading extends CommonSkill
 {
 	public String ID() { return "SlaveTrading"; }
@@ -41,7 +42,7 @@ public class SlaveTrading extends CommonSkill
 	protected int canTargetCode(){return Ability.CAN_MOBS;}
     public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_CRIMINAL; }
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		commands.insertElementAt("SELL",0);
         Environmental shopkeeper=CMLib.english().parseShopkeeper(mob,commands,"Sell whom to whom?");

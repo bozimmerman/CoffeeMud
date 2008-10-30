@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class CMJournals extends StdLibrary implements JournalsLibrary
 {
     public String ID(){return "CMJournals";}
@@ -141,11 +142,11 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                 if((num!=null)&&(CMath.isNumber(num)))
                 {
                     thread.status("updating journal "+getCommandJournalName(j));
-                    Vector<JournalEntry> items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+getCommandJournalName(j)+"S");
+                    Vector items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+getCommandJournalName(j)+"S");
                     if(items!=null)
                     for(int i=items.size()-1;i>=0;i--)
                     {
-                    	JournalEntry entry=items.elementAt(i);
+                    	JournalEntry entry=(JournalEntry)items.elementAt(i);
                         long compdate=CMath.s_long(entry.update);
                         compdate=compdate+Math.round(CMath.mul(TimeManager.MILI_DAY,CMath.s_double(num)));
                         if(System.currentTimeMillis()>compdate)

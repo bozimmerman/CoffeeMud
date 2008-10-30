@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Skill_Swim extends StdSkill
 {
 	public String ID() { return "Skill_Swim"; }
@@ -110,7 +111,7 @@ public class Skill_Swim extends StdSkill
         }
         return true;
     }
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int dirCode=Directions.getDirectionCode(CMParms.combine(commands,0));
         if(!preInvoke(mob,commands,givenTarget,auto,asLevel,0,0.0))

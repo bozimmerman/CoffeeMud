@@ -41,6 +41,7 @@ import java.util.Vector;
  * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#fetchFaction(String)
  * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#addFaction(String, int)
  */
+@SuppressWarnings("unchecked")
 public interface Faction extends CMCommon, MsgListener
 {
     /**
@@ -277,7 +278,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
      * @return the default faction mask/value list
      */
-    public Enumeration<String> defaults();
+    public Enumeration defaults();
 
     /**
      * Returns the default faction value that applies to the given mob.
@@ -302,7 +303,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#defaults()
      * @param v the new default faction mask/value list
      */
-    public void setDefaults(Vector<String> v);
+    public void setDefaults(Vector v);
 
     /**
      * Returns the automatic default faction mask/value list, which is 
@@ -314,7 +315,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setAutoDefaults(Vector)
      * @return the automatic default faction mask/value list
      */
-    public Enumeration<String> autoDefaults();
+    public Enumeration autoDefaults();
 
     /**
      * Returns the automatic default faction value that applies to the
@@ -337,7 +338,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
      * @param v the new automatic default faction mask/value list
      */
-    public void setAutoDefaults(Vector<String> v);
+    public void setAutoDefaults(Vector v);
 
     /**
      * A modifier of the base amount of faction value change, namely 100.
@@ -363,7 +364,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#setChoices(Vector)
      * @return the choosable faction mask/value list
      */
-    public Enumeration<String> choices();
+    public Enumeration choices();
 
     /**
      * Returns a vector of Integer objects representing the choosable
@@ -373,7 +374,7 @@ public interface Faction extends CMCommon, MsgListener
      * @param mob the player mob to evaluate
      * @return a vector of integer faction values that applies
      */
-    public Vector<Integer> findChoices(MOB mob);
+    public Vector findChoices(MOB mob);
 
     /**
      * Sets the player choosable faction mask/value list, which is 
@@ -385,7 +386,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#choices()
      * @param v the list of choosable faction mask/values
      */
-    public void setChoices(Vector<String> v);
+    public void setChoices(Vector v);
 
     /**
      * Returns an enumeration of all available Faction.FactionRange objects,
@@ -395,7 +396,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionRange
      * @return an enumeration of all available ranges
      */
-    public Enumeration<Faction.FactionRange> ranges();
+    public Enumeration ranges();
 
     /**
      * Returns the Faction.FactionRange object that applies to the given faction
@@ -456,7 +457,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#executeChange(MOB, MOB, com.planet_ink.coffee_mud.Common.interfaces.Faction.FactionChangeEvent)
      * @return an enumeration of the event keys (triggers)
      */
-    public Enumeration<String> changeEventKeys();
+    public Enumeration changeEventKeys();
 
     /**
      * Returns a FactionChangeEvent that applies when the given Ability is used
@@ -543,7 +544,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Libraries.interfaces.MaskingLibrary
      * @return the enumeration of change factor object arrays
      */
-    public Enumeration<Object[]> factors();
+    public Enumeration factors();
     
     /**
      * Removes the given change factor from this faction.
@@ -598,7 +599,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#getRelation(String)
      * @return an enumeration of faction ids
      */
-    public Enumeration<String> relationFactions();
+    public Enumeration relationFactions();
 
     /**
      * Removes the give faction relation from this faction.  Requires a faction id
@@ -645,7 +646,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#getAffectBehav(String)
      * @return an enumeration of Abilities or Behavior ID
      */
-    public Enumeration<String> affectsBehavs();
+    public Enumeration affectsBehavs();
 
     /**
      * Removes the given ability or behavior from this Faction.  It will require the
@@ -700,7 +701,7 @@ public interface Faction extends CMCommon, MsgListener
      * @see com.planet_ink.coffee_mud.Common.interfaces.Faction#canUse(MOB, Ability)
      * @return an enumeration of Faction.FactionAbilityUsage objects for this Faction
      */
-    public Enumeration<Faction.FactionAbilityUsage> abilityUsages();
+    public Enumeration abilityUsages();
     
     /**
      * Returns the list of faction ranges that apply based on Faction.FactionAbilityUsage 
@@ -1179,7 +1180,7 @@ public interface Faction extends CMCommon, MsgListener
          * @param str the ability usage mask
          * @return A vector of words inside the given string that are not valid or were not understood.
          */
-        public Vector<String> setAbilityFlag(String str);
+        public Vector setAbilityFlag(String str);
 
         /**
          * A bitmask of ability flags that must NOT be set for this usage to apply to an ability

@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Play_LoveSong extends Play
 {
 	public String ID() { return "Play_LoveSong"; }
@@ -68,7 +69,7 @@ public class Play_LoveSong extends Play
 					if(I!=null)	CMLib.commands().postRemove(mob,I,false);
 					I=mob.fetchFirstWornItem(Item.WORN_LEGS);
 					if(I!=null)	CMLib.commands().postRemove(mob,I,false);
-					mob.doCommand(CMParms.parseToObjV("MATE "+M.Name()),Command.METAFLAG_FORCED);
+					mob.doCommand(CMParms.parse("MATE "+M.Name()),Command.METAFLAG_FORCED);
 				}
 				else
 				if(CMLib.dice().rollPercentage()>10)

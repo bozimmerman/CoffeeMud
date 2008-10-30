@@ -27,6 +27,7 @@ import java.util.*;
  * KIND, either express or implied. See the License for the specific language
  * governing permissions and limitations under the License.
  */
+@SuppressWarnings("unchecked")
 public class MOBloader
 {
     protected DBConnector DB=null;
@@ -114,7 +115,7 @@ public class MOBloader
                 String buf=DBConnections.getRes(R,"CMPFIL");
                 pstats.setXML(buf);
                 stats.setSavesFromString(DBConnections.getRes(R,"CMSAVE"));
-                Vector<String> V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
+                Vector V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
                 while(mob.numTattoos()>0)
                     mob.delTattoo(mob.fetchTattoo(0));
                 for(int v=0;v<V9.size();v++)
@@ -128,7 +129,7 @@ public class MOBloader
                     stats.setStat(CharStats.STAT_AGE,
                         pstats.initializeBirthday((int)Math.round(CMath.div(mob.getAgeHours(),60.0)),stats.getMyRace()));
                 mob.setImage(CMLib.xml().returnXMLValue(buf,"IMG"));
-                Vector<XMLLibrary.XMLpiece> CleanXML=CMLib.xml().parseAllXML(DBConnections.getRes(R,"CMMXML"));
+                Vector CleanXML=CMLib.xml().parseAllXML(DBConnections.getRes(R,"CMMXML"));
                 CMLib.coffeeMaker().setFactionFromXML(mob,CleanXML);
                 found=true;
             }
@@ -159,8 +160,8 @@ public class MOBloader
         {
             D=DB.DBFetch();
             ResultSet R=D.query("SELECT * FROM CMCHIT WHERE CMUSERID='"+mob.Name()+"'");
-            Hashtable<String,Item> itemNums=new Hashtable<String,Item>();
-            Hashtable<Item,String> itemLocs=new Hashtable<Item,String>();
+            Hashtable itemNums=new Hashtable();
+            Hashtable itemLocs=new Hashtable();
             while(R.next())
             {
                 String itemNum=DBConnections.getRes(R,"CMITNM");
@@ -190,7 +191,7 @@ public class MOBloader
                     mob.addInventory(newItem);
                 }
             }
-            for(Enumeration<Item> e=itemLocs.keys();e.hasMoreElements();)
+            for(Enumeration e=itemLocs.keys();e.hasMoreElements();)
             {
                 Item keyItem=(Item)e.nextElement();
                 String location=(String)itemLocs.get(keyItem);
@@ -306,10 +307,10 @@ public class MOBloader
         // wont add if same name already exists
     }
 
-    public Vector<String> getUserList()
+    public Vector getUserList()
     {
         DBConnection D=null;
-        Vector<String> V=new Vector<String>();
+        Vector V=new Vector();
         try
         {
             D=DB.DBFetch();
@@ -327,10 +328,10 @@ public class MOBloader
         return V;
     }
 
-    public Vector<Vector<String>> getExtendedUserList()
+    public Vector getExtendedUserList()
     {
         DBConnection D=null;
-        Vector<Vector<String>> allUsers=new Vector<Vector<String>>();
+        Vector allUsers=new Vector();
         try
         {
             D=DB.DBFetch();
@@ -338,7 +339,7 @@ public class MOBloader
             ResultSet R=D.query("SELECT * FROM CMCHAR");
             if(R!=null) while(R.next())
             {
-            	Vector<String> thisUser=new Vector<String>();
+            	Vector thisUser=new Vector();
                 try
                 {
                     thisUser.addElement(DBConnections.getRes(R,"CMUSERID"));
@@ -404,7 +405,7 @@ public class MOBloader
             head.append(CMStrings.padRight("Lvl",4)+" ");
             head.append(CMStrings.padRight("Exp/Lvl",17));
             head.append("] Character name\n\r");
-            HashSet<String> done=new HashSet<String>();
+            HashSet done=new HashSet();
             if(R!=null) while(R.next())
             {
                 String username=DBConnections.getRes(R,"CMUSERID");
@@ -437,7 +438,7 @@ public class MOBloader
                     head.append("\n\r");
                 }
             }
-            for(Enumeration<MOB> e=CMLib.players().players();e.hasMoreElements();)
+            for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
             {
                 MOB M=(MOB)e.nextElement();
                 if((M.getLiegeID().equals(liegeID))&&(!done.contains(M.Name())))
@@ -497,10 +498,10 @@ public class MOBloader
         return DV;
     }
 
-    public Vector<MOB> DBScanFollowers(MOB mob)
+    public Vector DBScanFollowers(MOB mob)
     {
         DBConnection D=null;
-        Vector<MOB> V=new Vector<MOB>();
+        Vector V=new Vector();
         // now grab the followers
         try
         {
@@ -537,7 +538,7 @@ public class MOBloader
     {
         Room location=mob.location();
         if(location==null) location=mob.getStartRoom();
-        Vector<MOB> V=DBScanFollowers(mob);
+        Vector V=DBScanFollowers(mob);
         for(int v=0;v<V.size();v++) {
             MOB newMOB=(MOB)V.elementAt(v);
             Room room=(location==null)?newMOB.getStartRoom():location;
@@ -564,7 +565,7 @@ public class MOBloader
         DB.update("UPDATE CMCHAR SET  CMEMAL='"+pstats.getEmail()+"'  WHERE CMUSERID='"+mob.Name()+"'");
     }
 
-    public void DBClanFill(String clan, Vector<String> members, Vector<Integer> roles, Vector<Long> lastDates)
+    public void DBClanFill(String clan, Vector members, Vector roles, Vector lastDates)
     {
         DBConnection D=null;
         try
@@ -695,9 +696,9 @@ public class MOBloader
         DB.update("UPDATE CMCHAR SET CMDESC='"+mob.description()+"' WHERE CMUSERID='"+mob.Name()+"'");
     }
 
-    private void DBUpdateContents(MOB mob, Vector<String> V)
+    private void DBUpdateContents(MOB mob, Vector V)
     {
-        Vector<String> done=new Vector<String>();
+        Vector done=new Vector();
         for(int i=0;i<mob.inventorySize();i++)
         {
             Item thisItem=mob.fetchInventory(i);
@@ -727,7 +728,7 @@ public class MOBloader
         }catch(Exception e)
         {}
         if(DB.queryRows("SELECT * FROM CMCHIT  WHERE CMUSERID='"+mob.Name()+"'")>0) Log.errOut("Failed to update items for mob "+mob.Name()+".");
-        Vector<String> V=new Vector<String>();
+        Vector V=new Vector();
         if(mob.inventorySize()>0) DBUpdateContents(mob,V);
         for(int v=0;v<V.size();v++)
             DB.update((String)V.elementAt(v));
@@ -754,7 +755,7 @@ public class MOBloader
         if(E instanceof Container)
         {
             Container C=(Container)E;
-            Vector<Item> contents=C.getContents();
+            Vector contents=C.getContents();
             for(int c=0;c<contents.size();c++)
                 addFollowerDependent((Environmental)contents.elementAt(c),list,"@"+myCode+"C");
         }
@@ -766,7 +767,7 @@ public class MOBloader
         if((mob==null)||(mob.Name().length()==0)) return;
         DB.update("DELETE FROM CMCHFO WHERE CMUSERID='"+mob.Name()+"'");
         if(DB.queryRows("SELECT * FROM CMCHFO  WHERE CMUSERID='"+mob.Name()+"'")>0) Log.errOut("Failed to update followers for mob "+mob.Name()+".");
-        Vector<String> V=new Vector<String>();
+        Vector V=new Vector();
         for(int f=0;f<mob.numFollowers();f++)
         {
             MOB thisMOB=mob.fetchFollower(f);

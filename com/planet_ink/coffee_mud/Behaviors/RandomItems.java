@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class RandomItems extends ActiveTicker
 {
 	public String ID(){return "RandomItems";}
@@ -83,7 +84,7 @@ public class RandomItems extends ActiveTicker
 				extraX=xtra.indexOf(";");
 				if(extraX>=0) extraParms=xtra.substring(extraX+1);
 			}
-			Vector<String> V=CMParms.parse(extraParms);
+			Vector V=CMParms.parse(extraParms);
 			for(int v=0;v<V.size();v++)
 			{
 				String s=(String)V.elementAt(v);

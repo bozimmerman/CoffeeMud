@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prayer_Marry extends Prayer
 {
 	public String ID() { return "Prayer_Marry"; }
@@ -41,7 +42,7 @@ public class Prayer_Marry extends Prayer
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	public int classificationCode(){return Ability.ACODE_PRAYER|Ability.DOMAIN_BLESSING;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{

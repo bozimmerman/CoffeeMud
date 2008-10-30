@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class MudChat extends StdBehavior
 {
 	public String ID(){return "MudChat";}
@@ -50,7 +51,7 @@ public class MudChat extends StdBehavior
 	//----------------------------------------------
 
 	protected MOB lastReactedTo=null;
-	protected Vector<Vector<Object>> responseQue=new Vector<Vector<Object>>();
+	protected Vector responseQue=new Vector();
 	protected int tickDown=3;
 	protected final static int TALK_WAIT_DELAY=8;
 	protected int talkDown=0;
@@ -63,7 +64,7 @@ public class MudChat extends StdBehavior
     {
         if(newParms.startsWith("+"))
         {
-            Vector<String> V=CMParms.parseSemicolons(newParms.substring(1),false);
+            Vector V=CMParms.parseSemicolons(newParms.substring(1),false);
             StringBuffer rsc=new StringBuffer("");
             for(int v=0;v<V.size();v++)
                 rsc.append(((String)V.elementAt(v))+"\n\r");
@@ -330,7 +331,7 @@ public class MudChat extends StdBehavior
 
 		if(selection!=null)
 		{
-			Vector<String> selections=CMParms.parseSquiggleDelimited(selection.substring(1).trim(),true);
+			Vector selections=CMParms.parseSquiggleDelimited(selection.substring(1).trim(),true);
 			for(int v=0;v<selections.size();v++)
 			{
 				String finalCommand=(String)selections.elementAt(v);
@@ -362,11 +363,11 @@ public class MudChat extends StdBehavior
 				if(finalCommand.indexOf("$$")>=0)
 					finalCommand=CMStrings.replaceAll(finalCommand,"$$","$");
 
-				Vector<Object> V=CMParms.parseToObjV(finalCommand);
+				Vector V=CMParms.parse(finalCommand);
 				V.insertElementAt(new Integer(RESPONSE_DELAY),0);
 				for(int f=0;f<responseQue.size();f++)
 				{
-					Vector<Object> V1=(Vector<Object>)responseQue.elementAt(f);
+					Vector V1=(Vector)responseQue.elementAt(f);
 					if(CMParms.combine(V1,1).equalsIgnoreCase(finalCommand))
 					{
 						V=null;

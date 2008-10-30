@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public interface ExpertiseLibrary extends CMLibrary
 {
     public static final int XFLAG_X1=0;

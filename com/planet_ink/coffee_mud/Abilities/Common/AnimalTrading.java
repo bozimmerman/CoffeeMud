@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class AnimalTrading extends CommonSkill
 {
 	public String ID() { return "AnimalTrading"; }
@@ -42,7 +43,7 @@ public class AnimalTrading extends CommonSkill
     public int classificationCode() {   return Ability.ACODE_COMMON_SKILL|Ability.DOMAIN_ANIMALAFFINITY; }
     protected Vector recentlyTraded=new Vector();
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental taming=null;
 		Item cage=null;

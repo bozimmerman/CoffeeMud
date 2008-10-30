@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -32,6 +33,7 @@ import java.util.*;
  * <p>See the License for the specific language governing permissions and
  * <p>limitations under the License.
  */
+@SuppressWarnings("unchecked")
 public class DefaultClan implements Clan
 {
     public String ID(){return "DefaultClan";}
@@ -85,10 +87,10 @@ public class DefaultClan implements Clan
                 lastClanKillRecord="";
             else
             {
-                lastClanKillRecord=(String)((Vector)V.firstElement()).elementAt(3);
-                Vector<String> V2=CMParms.parseSemicolons(lastClanKillRecord,true);
-                for(int v=0;v<V.size();v++)
-                    clanKills.addElement(new Long(CMath.s_long((String)V.elementAt(v))));
+                lastClanKillRecord=((DatabaseEngine.PlayerData)V.firstElement()).xml;
+                Vector V2=CMParms.parseSemicolons(lastClanKillRecord,true);
+                for(int v=0;v<V2.size();v++)
+                    clanKills.addElement(new Long(CMath.s_long((String)V2.elementAt(v))));
             }
         }
     }
@@ -146,7 +148,7 @@ public class DefaultClan implements Clan
         if(!(CV instanceof ClanVote))
             return;
         votes();
-        voteList.addElement(CV);
+        voteList.addElement((ClanVote)CV);
     }
     public void delVote(Object CV)
     {
@@ -201,7 +203,7 @@ public class DefaultClan implements Clan
         return done;
     }
 
-    public Enumeration<ClanVote> votes()
+    public Enumeration votes()
     {
         if(voteList==null)
         {
@@ -210,7 +212,7 @@ public class DefaultClan implements Clan
             for(int v=0;v<V.size();v++)
             {
                 ClanVote CV=new ClanVote();
-                String rawxml=(String)((Vector)V.elementAt(v)).elementAt(3);
+                String rawxml=((DatabaseEngine.PlayerData)V.elementAt(v)).xml;
                 if(rawxml.trim().length()==0) return voteList.elements();
                 Vector xml=CMLib.xml().parseAllXML(rawxml);
                 if(xml==null)
@@ -1051,7 +1053,7 @@ public class DefaultClan implements Clan
             {
                 boolean updateVotes=false;
                 Vector votesToRemove=new Vector();
-                Vector<String> data=null;
+                Vector data=null;
                 switch(getGovernment())
                 {
                 case GVT_DEMOCRACY:
@@ -1064,7 +1066,7 @@ public class DefaultClan implements Clan
                     data=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_CLANVOTER),false);
                     break;
                 default:
-                    data=new Vector<String>();
+                    data=new Vector();
                     break;
                 }
                 long duration=54;
@@ -1121,7 +1123,7 @@ public class DefaultClan implements Clan
                                         if(mob.location()==null)
                                             mob.setLocation(CMLib.map().getRandomRoom());
                                     }
-                                    Vector<Object> V=CMParms.parseToObjV(CV.matter);
+                                    Vector V=CMParms.parse(CV.matter);
                                     mob.doCommand(V,Command.METAFLAG_FORCED);
                                     mob.destroy();
                                 }
@@ -1301,7 +1303,7 @@ public class DefaultClan implements Clan
                 {
                     int amount=0;
                     double pct=0.0;
-                    Vector<String> V=CMParms.parse(awardStr);
+                    Vector V=CMParms.parse(awardStr);
                     if(V.size()>=2)
                     {
                         String type=((String)V.lastElement()).toUpperCase();

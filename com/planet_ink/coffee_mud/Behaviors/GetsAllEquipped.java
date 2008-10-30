@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class GetsAllEquipped extends ActiveTicker
 {
 	public String ID(){return "GetsAllEquipped";}
@@ -66,12 +67,12 @@ public class GetsAllEquipped extends ActiveTicker
 			if(thisRoom.numItems()==0) return true;
 
 			DoneEquipping=true;
-            Vector<Item> stuffIHad=new Vector<Item>();
+            Vector stuffIHad=new Vector();
             for(int i=0;i<mob.inventorySize();i++)
                 stuffIHad.addElement(mob.fetchInventory(i));
             mob.enqueCommand(CMParms.makeVector("GET","ALL"),Command.METAFLAG_FORCED,0);
             Item I=null;
-            Vector<Item> dropThisStuff=new Vector<Item>();
+            Vector dropThisStuff=new Vector();
             for(int i=0;i<mob.inventorySize();i++)
             {
                 I=mob.fetchInventory(i);

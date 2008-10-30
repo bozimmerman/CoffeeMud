@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class ClanResign extends StdCommand
 {
 	public ClanResign(){}
@@ -37,7 +38,7 @@ public class ClanResign extends StdCommand
 	private String[] access={"CLANRESIGN"};
 	public String[] getAccessWords(){return access;}
     
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");

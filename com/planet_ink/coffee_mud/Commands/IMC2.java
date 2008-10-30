@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class IMC2 extends StdCommand
 {
 	public IMC2(){}
@@ -43,7 +44,7 @@ public class IMC2 extends StdCommand
 			mob.tell("Try IMC2 LIST, IMC2 INFO [MUD], IMC2 LOCATE, or IMC2 CHANNELS.");
 	}
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(!(CMLib.intermud().imc2online()))

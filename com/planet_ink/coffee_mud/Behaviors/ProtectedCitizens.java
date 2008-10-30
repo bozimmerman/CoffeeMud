@@ -31,17 +31,18 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class ProtectedCitizens extends ActiveTicker
 {
 	public String ID(){return "ProtectedCitizens";}
 	protected int canImproveCode(){return Behavior.CAN_MOBS|Behavior.CAN_AREAS|Behavior.CAN_ROOMS;}
-	protected static Vector<Vector<Object>> citizenZapper=null;
-	protected static Vector<Vector<Object>> helperZapper=null;
+	protected static Vector citizenZapper=null;
+	protected static Vector helperZapper=null;
 	protected static String[] defclaims={"Help! I'm being attacked!","Help me!!"};
 	protected String[] claims=null;
 	protected int radius=7;
 	protected int maxAssistance=1;
-	protected Hashtable<MOB,Vector<MOB>> assisters=new Hashtable<MOB,Vector<MOB>>();
+	protected Hashtable assisters=new Hashtable();
 
 	public ProtectedCitizens()
 	{
@@ -64,29 +65,29 @@ public class ProtectedCitizens extends ActiveTicker
 		claims=null;
 	}
 
-	public Vector<Vector<Object>> getProtectedZapper()
+	public Vector getProtectedZapper()
 	{
 		if(citizenZapper!=null) return citizenZapper;
 		String s=getParmsNoTicks();
-		if(s.length()==0){ citizenZapper=new Vector<Vector<Object>>(); return citizenZapper;}
+		if(s.length()==0){ citizenZapper=new Vector(); return citizenZapper;}
 		char c=';';
 		int x=s.indexOf(c);
-		if(x<0){ citizenZapper=new Vector<Vector<Object>>(); return citizenZapper;}
+		if(x<0){ citizenZapper=new Vector(); return citizenZapper;}
 		citizenZapper=CMLib.masking().maskCompile(s.substring(0,x));
 		return citizenZapper;
 	}
 
-	public Vector<Vector<Object>> getCityguardZapper()
+	public Vector getCityguardZapper()
 	{
 		if(helperZapper!=null) return helperZapper;
 		String s=getParmsNoTicks();
-		if(s.length()==0){ helperZapper=new Vector<Vector<Object>>(); return helperZapper;}
+		if(s.length()==0){ helperZapper=new Vector(); return helperZapper;}
 		char c=';';
 		int x=s.indexOf(c);
-		if(x<0){ helperZapper=new Vector<Vector<Object>>(); return helperZapper;}
+		if(x<0){ helperZapper=new Vector(); return helperZapper;}
 		s=s.substring(x+1).trim();
 		x=s.indexOf(c);
-		if(x<0){ helperZapper=new Vector<Vector<Object>>(); return helperZapper;}
+		if(x<0){ helperZapper=new Vector(); return helperZapper;}
 		helperZapper=CMLib.masking().maskCompile(s.substring(0,x));
 		return helperZapper;
 	}
@@ -107,7 +108,7 @@ public class ProtectedCitizens extends ActiveTicker
 		s=s.substring(x+1).trim();
 		if(s.length()==0)
 		{ claims=defclaims; return claims;}
-		Vector<String> V=new Vector<String>();
+		Vector V=new Vector();
 		x=s.indexOf(c);
 		while(x>=0)
 		{
@@ -155,16 +156,16 @@ public class ProtectedCitizens extends ActiveTicker
 
 		String claim=getClaims()[CMLib.dice().roll(1,getClaims().length,-1)].trim();
 		if(claim.startsWith(","))
-			mob.doCommand(CMParms.parseToObjV("EMOTE \""+claim.substring(1).trim()+"\""),Command.METAFLAG_FORCED);
+			mob.doCommand(CMParms.parse("EMOTE \""+claim.substring(1).trim()+"\""),Command.METAFLAG_FORCED);
 		else
-			mob.doCommand(CMParms.parseToObjV("YELL \""+claim+"\""),Command.METAFLAG_FORCED);
+			mob.doCommand(CMParms.parse("YELL \""+claim+"\""),Command.METAFLAG_FORCED);
 
 		Room thisRoom=mob.location();
 		Vector rooms=new Vector();
-		Vector<MOB> assMOBS=(Vector<MOB>)assisters.get(mob);
+		Vector assMOBS=(Vector)assisters.get(mob);
 		if(assMOBS==null)
 		{
-			assMOBS=new Vector<MOB>();
+			assMOBS=new Vector();
 			assisters.put(mob,assMOBS);
 		}
 		for(int a=0;a<assMOBS.size();a++)
@@ -218,9 +219,9 @@ public class ProtectedCitizens extends ActiveTicker
 					&&(CMLib.flags().canHear(M))))
 					{
 						boolean notAllowed=false;
-						for(Enumeration<Vector<MOB>> a=assisters.elements();a.hasMoreElements();)
+						for(Enumeration a=assisters.elements();a.hasMoreElements();)
 						{
-							Vector<MOB> assers=(Vector<MOB>)a.nextElement();
+							Vector assers=(Vector)a.nextElement();
 							if(assers.contains(M))
 							{ notAllowed=true; break;}
 						}
@@ -258,7 +259,7 @@ public class ProtectedCitizens extends ActiveTicker
 					assistMOB(((Room)ticking).fetchInhabitant(i));
 			else
 			if(ticking instanceof Area)
-				for(Enumeration<Room> r=((Area)ticking).getMetroMap();r.hasMoreElements();)
+				for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					for(int i=0;i<R.numInhabitants();i++)

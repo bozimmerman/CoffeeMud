@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class HTTPserver extends Thread implements MudHost
 {
     protected CMProps page=null;
@@ -110,7 +111,7 @@ public class HTTPserver extends Thread implements MudHost
 		}
 		if(which>0)
 		{
-			Vector<String> V=CMParms.parseCommas(page.getStr("PORT"),true);
+			Vector V=CMParms.parseCommas(page.getStr("PORT"),true);
 			if(which>=V.size())
 			{
 				Log.errOut(getName(),"ERROR: not enough PORT entries to support #"+(which+1));
@@ -254,7 +255,7 @@ public class HTTPserver extends Thread implements MudHost
 
 		try
 		{
-			Vector<String> allports=CMParms.parseCommas(page.getStr("PORT"),true);
+			Vector allports=CMParms.parseCommas(page.getStr("PORT"),true);
 			myPort=CMath.s_int((String)allports.elementAt(myServerNumber));
 			servsock=new ServerSocket(myPort, q_len, bindAddr);
 
@@ -359,9 +360,9 @@ public class HTTPserver extends Thread implements MudHost
     public void setAcceptConnections(boolean truefalse){ acceptConnections=truefalse;}
     public boolean isAcceptingConnections(){ return acceptConnections;}
 
-    public Vector<ProcessHTTPrequest> getOverdueThreads()
+    public Vector getOverdueThreads()
     {
-    	Vector<ProcessHTTPrequest> V=new Vector<ProcessHTTPrequest>();
+    	Vector V=new Vector();
     	long time=System.currentTimeMillis();
     	synchronized(activeRequests)
     	{

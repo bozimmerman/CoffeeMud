@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class RaceData extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -46,7 +47,7 @@ public class RaceData extends StdWebMacro
         str.append("<OPTION VALUE=\"\" "+((old.length()==0)?"SELECTED":"")+">None");
         Race R2=null;
         String R2ID=null;
-        for(Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
+        for(Enumeration e=CMClass.races();e.hasMoreElements();)
         {
             R2=(Race)e.nextElement();
             R2ID="com.planet_ink.coffee_mud.Races."+R2.ID();
@@ -64,7 +65,7 @@ public class RaceData extends StdWebMacro
         return str.toString();
     }
 
-    public static StringBuffer estats(EnvStats E, char c, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
+    public static StringBuffer estats(EnvStats E, char c, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(2);
@@ -122,7 +123,7 @@ public class RaceData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer cstats(CharStats E, char c, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
+    public static StringBuffer cstats(CharStats E, char c, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(2);
@@ -180,7 +181,7 @@ public class RaceData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer cstate(CharState E, char c, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
+    public static StringBuffer cstate(CharState E, char c, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(2);
@@ -239,7 +240,7 @@ public class RaceData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer itemList(Vector items, char c, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize, boolean one)
+    public static StringBuffer itemList(Vector items, char c, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize, boolean one)
     {
     	if(items==null) items=new Vector();
         StringBuffer str=new StringBuffer("");
@@ -351,7 +352,7 @@ public class RaceData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer rabilities(Race E, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize, String font)
+    public static StringBuffer rabilities(Race E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize, String font)
     {
         StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(4);
@@ -411,7 +412,7 @@ public class RaceData extends StdWebMacro
         str.append("<TR><TD WIDTH=35%>");
         str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=RABLES"+(theclasses.size()+1)+">");
         str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
-        for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+        for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
         {
             String cnam=((Ability)a.nextElement()).ID();
             str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
@@ -433,7 +434,7 @@ public class RaceData extends StdWebMacro
     }
 
 
-    public static StringBuffer cabilities(Race E, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize, String font)
+    public static StringBuffer cabilities(Race E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize, String font)
     {
         StringBuffer str=new StringBuffer("");
         DVector theclasses=new DVector(2);
@@ -478,7 +479,7 @@ public class RaceData extends StdWebMacro
         str.append("<TR><TD WIDTH=35%>");
         str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=CABLES"+(theclasses.size()+1)+">");
         str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
-        for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+        for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
         {
             String cnam=((Ability)a.nextElement()).ID();
             str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
@@ -531,7 +532,7 @@ public class RaceData extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable<String,String> parms=parseParms(parm);
+		Hashtable parms=parseParms(parm);
 
 		String replaceCommand=httpReq.getRequestParameter("REPLACE");
 		if((replaceCommand != null)

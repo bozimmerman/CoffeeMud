@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spirit extends Undead
 {
 	public String ID(){	return "Spirit"; }
@@ -40,7 +41,7 @@ public class Spirit extends Undead
 	public int heightVariance(){return 12;}
 	protected boolean destroyBodyAfterUse(){return true;}
 
-	protected static Vector<Item> resources=new Vector<Item>();
+	protected static Vector resources=new Vector();
 
 	protected Weapon funHumanoidWeapon()
 	{
@@ -128,7 +129,7 @@ public class Spirit extends Undead
 			return "^c" + mob.displayName(viewer) + "^c is in perfect condition.^N";
 	}
 	
-	public Vector<Item> myResources()
+	public Vector myResources()
 	{
 		synchronized(resources)
 		{

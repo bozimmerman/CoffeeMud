@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Skill_Juggle extends BardSkill
 {
 	public String ID() { return "Skill_Juggle"; }
@@ -350,7 +351,7 @@ public class Skill_Juggle extends BardSkill
         return super.castingQuality(mob,target);
     }
 	
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String whatToJuggle=(mob.isMonster()&&(givenTarget instanceof MOB))?"all":CMParms.combine(commands,0);
 		Skill_Juggle A=(Skill_Juggle)mob.fetchEffect("Skill_Juggle");

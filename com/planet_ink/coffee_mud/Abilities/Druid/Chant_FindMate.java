@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_FindMate extends Chant
 {
 	public String ID() { return "Chant_FindMate"; }
@@ -79,7 +80,7 @@ public class Chant_FindMate extends Chant
 					if((mob.fetchFirstWornItem(Item.WORN_WAIST)!=null)
 					||(mob.fetchFirstWornItem(Item.WORN_LEGS)!=null))
 						unInvoke();
-					mob.doCommand(CMParms.parseToObjV("MATE \""+mate.name()+"$\""),Command.METAFLAG_FORCED);
+					mob.doCommand(CMParms.parse("MATE \""+mate.name()+"$\""),Command.METAFLAG_FORCED);
 					unInvoke();
 				}
 			}
@@ -153,7 +154,7 @@ public class Chant_FindMate extends Chant
 		return false;
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
@@ -177,9 +178,9 @@ public class Chant_FindMate extends Chant
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		Vector<Room> rooms=new Vector<Room>();
-		Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,false,false,false,false,50);
-		for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
+		Vector rooms=new Vector();
+		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,false,false,false,false,50);
+		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			if(R!=null)

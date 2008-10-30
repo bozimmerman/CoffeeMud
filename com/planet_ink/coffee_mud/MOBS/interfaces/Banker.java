@@ -30,13 +30,9 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public interface Banker extends ShopKeeper
 {
-	public final static int DATA_USERID=0;
-	public final static int DATA_BANK=1;
-	public final static int DATA_KEY=2;
-	public final static int DATA_DATA=3;
-	
 	public final static double MIN_ITEM_BALANCE_DIVIDEND=10.0;
 	
 	public void addDepositInventory(String mob, Item thisThang);

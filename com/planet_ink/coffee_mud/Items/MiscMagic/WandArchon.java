@@ -29,6 +29,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class WandArchon extends StdWand implements ArchonOnly
 {
 	public String ID(){	return "WandArchon";}

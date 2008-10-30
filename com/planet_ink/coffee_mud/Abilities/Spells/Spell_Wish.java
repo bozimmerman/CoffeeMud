@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_Wish extends Spell
 {
 	public String ID() { return "Spell_Wish"; }
@@ -99,7 +100,7 @@ public class Spell_Wish extends Spell
 	    if(A!=null){ A.setAbilityCode(65536); A.invoke(mob,mob,true,0);}
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isMonster())
 		{
@@ -150,7 +151,7 @@ public class Spell_Wish extends Spell
 				if(!Character.isLetterOrDigit(wish.charAt(i)))
 					wish.setCharAt(i,' ');
 			myWish=wish.toString().trim().toUpperCase();
-			Vector<String> wishV=CMParms.parse(myWish);
+			Vector wishV=CMParms.parse(myWish);
 			myWish=" "+myWish+" ";
 			if(wishV.size()==0)
 			{
@@ -186,7 +187,7 @@ public class Spell_Wish extends Spell
 				{	goldWish=goldWish.substring(1+redundantGoldStarts[i].length()); i=-1;}
 				i++;
 			}
-			Vector<String> goldCheck=CMParms.parse(goldWish.trim().toLowerCase());
+			Vector goldCheck=CMParms.parse(goldWish.trim().toLowerCase());
 			if((goldCheck.size()>1)
 			&&(CMath.isNumber((String)goldCheck.firstElement()))
 			&&(CMath.s_int((String)goldCheck.firstElement())>0)
@@ -216,7 +217,7 @@ public class Spell_Wish extends Spell
 			foundThang=maybeAdd(E,thangsFound,foundThang);
 			try
 			{
-				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room room=(Room)r.nextElement();
 					if(CMLib.flags().canAccess(mob,room))
@@ -228,7 +229,7 @@ public class Spell_Wish extends Spell
 		    }catch(NoSuchElementException nse){}
 		    try
 		    {
-				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room room=(Room)r.nextElement();
 					if(CMLib.flags().canAccess(mob,room))
@@ -477,7 +478,7 @@ public class Spell_Wish extends Spell
 				{
 				    try
 				    {
-						for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 						{
 							Room room=(Room)r.nextElement();
 							if(CMLib.flags().canAccess(mob,room))
@@ -635,7 +636,7 @@ public class Spell_Wish extends Spell
 				if(myWish.indexOf(" GAIN ")>=0)
 				{
 					level=1;
-					Vector<String> V=CMParms.parse(myWish);
+					Vector V=CMParms.parse(myWish);
 					for(int i2=1;i2<V.size();i2++)
 					{
 						if(((String)V.elementAt(i2)).equalsIgnoreCase("LEVELS"))
@@ -654,7 +655,7 @@ public class Spell_Wish extends Spell
 				if(myWish.indexOf(" LOSE" )>=0)
 				{
 					level=-1;
-					Vector<String> V=CMParms.parse(myWish);
+					Vector V=CMParms.parse(myWish);
 					for(int i2=1;i2<V.size();i2++)
 					{
 						if(((String)V.elementAt(i2)).equalsIgnoreCase("LEVELS"))
@@ -671,7 +672,7 @@ public class Spell_Wish extends Spell
 				}
 				else
 				{
-					Vector<String> V=CMParms.parse(myWish);
+					Vector V=CMParms.parse(myWish);
 					for(int i2=0;i2<V.size()-1;i2++)
 					{
 						if(((String)V.elementAt(i2)).equalsIgnoreCase("LEVEL"))

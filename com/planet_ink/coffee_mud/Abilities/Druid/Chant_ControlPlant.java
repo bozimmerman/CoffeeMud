@@ -32,6 +32,7 @@ import java.util.Vector;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_ControlPlant extends Chant
 {
 	public String ID() { return "Chant_ControlPlant"; }
@@ -57,7 +58,7 @@ public class Chant_ControlPlant extends Chant
 		return null;
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item myPlant=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
 		if(myPlant==null) return false;

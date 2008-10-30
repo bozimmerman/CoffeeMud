@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
 
+@SuppressWarnings("unchecked")
 public class FaerieDragon extends StdRace
 {
 	public String ID(){	return "Faerie Dragon"; }
@@ -48,7 +49,7 @@ public class FaerieDragon extends StdRace
 	private int[] agingChart={0,5,20,110,325,500,850,950,1050};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector<Item> resources=new Vector<Item>();
+	protected static Vector resources=new Vector();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
@@ -105,7 +106,7 @@ public class FaerieDragon extends StdRace
 		else
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
-	public Vector<Item> myResources()
+	public Vector myResources()
 	{
 		synchronized(resources)
 		{

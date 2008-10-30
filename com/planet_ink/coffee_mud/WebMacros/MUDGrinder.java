@@ -34,6 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class MUDGrinder extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
@@ -41,7 +42,7 @@ public class MUDGrinder extends StdWebMacro
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable<String,String> parms=parseParms(parm);
+		Hashtable parms=parseParms(parm);
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);
 
@@ -238,7 +239,7 @@ public class MUDGrinder extends StdWebMacro
             if(httpReq.getRequestParameter("DELFIRST")!=null)
             	deleteIfExists=httpReq.getRequestParameter("DELFIRST").equalsIgnoreCase("ON");
             StringBuffer buf=new StringBuffer(CMStrings.bytesToStr(bufBytes));
-    		Vector<Object> V=CMParms.parseToObjV("IMPORT "+(deleteIfExists?"":"NODELETE ")+"NOPROMPT");
+    		Vector V=CMParms.parse("IMPORT "+(deleteIfExists?"":"NODELETE ")+"NOPROMPT");
     		V.addElement(buf);
     		Command C=CMClass.getCommand("Import");
     		if(C==null) return null;
@@ -706,8 +707,8 @@ public class MUDGrinder extends StdWebMacro
 			Area A=CMLib.map().getArea(AREA);
 			if(A==null) return "@break@";
 			String like=httpReq.getRequestParameter("ROOM");
-			Vector<String> likeList=CMParms.parseCommas(like,true);
-			Vector<Room> RS=new Vector<Room>();
+			Vector likeList=CMParms.parseCommas(like,true);
+			Vector RS=new Vector();
 			for(int l=0;l<likeList.size();l++)
 			{
 				like=(String)likeList.elementAt(l);
@@ -867,19 +868,19 @@ public class MUDGrinder extends StdWebMacro
     		R=A.getRoom(A.Name()+"#"+find);
         	if((R!=null)&&(R.roomID().length()>0)) return R.roomID();
     	}
-		for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+		for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 		{
 			R=(Room)r.nextElement();
 			if((R.roomID().length()>0)&&(R.roomID().toUpperCase().endsWith(find.toUpperCase())))
 				return R.roomID();
 		}
-		for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+		for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 		{
 			R=(Room)r.nextElement();
 			if((R.roomID().length()>0)&&(R.displayText().toUpperCase().indexOf(find.toUpperCase())>=0))
 				return R.roomID();
 		}
-		for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+		for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 		{
 			R=(Room)r.nextElement();
 			if((R.roomID().length()>0)&&(R.description().toUpperCase().indexOf(find.toUpperCase())>=0))

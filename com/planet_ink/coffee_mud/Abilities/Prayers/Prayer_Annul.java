@@ -34,6 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Prayer_Annul extends Prayer
 {
 	public String ID() { return "Prayer_Annul"; }
@@ -42,7 +43,7 @@ public class Prayer_Annul extends Prayer
 	public long flags(){return Ability.FLAG_HOLY|Ability.FLAG_UNHOLY;}
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;

@@ -38,6 +38,7 @@ import java.util.Vector;
  * @author George Reese (borg@imaginary.com)
  * @version 1.0
  */
+@SuppressWarnings("unchecked")
 public abstract class Interactive implements ServerUser {
     /**
      * Given a user name, this method will build a unique
@@ -547,6 +548,7 @@ public abstract class Interactive implements ServerUser {
  * @version 1.0
  * @see com.planet_ink.coffee_mud.core.intermud.net.Interactive
  */
+@SuppressWarnings("unchecked")
 class InputThread implements Runnable {
     private Vector                  input_buffer;
     private BufferedReader 			stream;

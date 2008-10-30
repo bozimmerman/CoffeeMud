@@ -34,6 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Mood extends StdAbility
 {
 	public String ID() { return "Mood"; }
@@ -694,7 +695,7 @@ public class Mood extends StdAbility
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String entered=CMParms.combine(commands,0);
         String origEntered=CMParms.combine(commands,0);

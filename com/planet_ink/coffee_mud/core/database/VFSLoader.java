@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class VFSLoader
 {
 	protected DBConnector DB=null;
@@ -40,10 +41,10 @@ public class VFSLoader
 		DB=newDB;
 	}
     
-    public Vector<CMFile.CMVFSFile> DBReadDirectory()
+    public Vector DBReadDirectory()
     {
         DBConnection D=null;
-        Vector<CMFile.CMVFSFile> rows=new Vector<CMFile.CMVFSFile>();
+        Vector rows=new Vector();
         try
         {
             D=DB.DBFetch();

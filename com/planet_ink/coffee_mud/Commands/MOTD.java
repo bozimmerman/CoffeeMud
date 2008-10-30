@@ -33,13 +33,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class MOTD extends StdCommand
 {
 	public MOTD(){}
 
 	private String[] access={"MOTD"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean pause=((commands!=null)&&(commands.size()>1)&&(((String)commands.lastElement()).equalsIgnoreCase("PAUSE")));
@@ -62,10 +63,10 @@ public class MOTD extends StdCommand
 				    buf.append(msg+"\n\r--------------------------------------\n\r");
 				}
 		
-				Vector<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs("CoffeeMud News");
+				Vector journal=CMLib.database().DBReadJournalMsgs("CoffeeMud News");
 				for(int which=0;which<journal.size();which++)
 				{
-					JournalsLibrary.JournalEntry entry=journal.elementAt(which);
+					JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.elementAt(which);
 					String from=entry.from;
 					long last=CMath.s_long(entry.date);
 					String to=entry.to;
@@ -134,7 +135,7 @@ public class MOTD extends StdCommand
                         buf.append("\n\r--------------------------------------\n\r");
                 }
                 
-                Vector<Integer> myEchoableCommandJournals=new Vector<Integer>();
+                Vector myEchoableCommandJournals=new Vector();
                 for(int cj=0;cj<CMLib.journals().getNumCommandJournals();cj++)
                 {
                     if((CMLib.journals().getCommandJournalFlags(cj).get("ADMINECHO")!=null)
@@ -147,11 +148,11 @@ public class MOTD extends StdCommand
                 for(int cj=0;cj<myEchoableCommandJournals.size();cj++)
                 {
                     Integer CJ=(Integer)myEchoableCommandJournals.elementAt(cj);
-                    Vector<JournalsLibrary.JournalEntry> items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+CMLib.journals().getCommandJournalName(CJ.intValue())+"S");
+                    Vector items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+CMLib.journals().getCommandJournalName(CJ.intValue())+"S");
                     if(items!=null)
                     for(int i=0;i<items.size();i++)
                     {
-                    	JournalsLibrary.JournalEntry entry=items.elementAt(i);
+                    	JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)items.elementAt(i);
                         String from=entry.from;
                         String message=entry.msg;
                         long compdate=CMath.s_long(entry.update);
@@ -168,11 +169,11 @@ public class MOTD extends StdCommand
                 if((!CMath.bset(mob.getBitmap(),MOB.ATT_AUTOFORWARD))
                 &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0))
                 {
-                    Vector<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.SYSTEM_MAILBOX));
+                    Vector msgs=CMLib.database().DBReadJournalMsgs(CMProps.getVar(CMProps.SYSTEM_MAILBOX));
                     int mymsgs=0;
                     for(int num=0;num<msgs.size();num++)
                     {
-                    	JournalsLibrary.JournalEntry thismsg=msgs.elementAt(num);
+                    	JournalsLibrary.JournalEntry thismsg=(JournalsLibrary.JournalEntry)msgs.elementAt(num);
                         String to=thismsg.to;
                         if(to.equalsIgnoreCase("all")
                         ||to.equalsIgnoreCase(mob.Name())
@@ -232,15 +233,15 @@ public class MOTD extends StdCommand
         PostOffice P=null;
         for(int i=0;i<mailData.size();i++)
         {
-            Vector letter=(Vector)mailData.elementAt(i);
-            String chain=(String)letter.elementAt(1);
-            String branch=(String)letter.elementAt(2);
+        	DatabaseEngine.PlayerData letter=(DatabaseEngine.PlayerData)mailData.elementAt(i);
+            String chain=(String)letter.section;
+            String branch=(String)letter.key;
             int x=branch.indexOf(";");
             if(x<0) continue;
             branch=branch.substring(0,x);
             P=CMLib.map().getPostOffice(chain,branch);
             if(P==null) continue;
-            Vector pieces=P.parsePostalItemData((String)letter.elementAt(3));
+            PostOffice.MailPiece pieces=P.parsePostalItemData(letter.xml);
             int[] ct=(int[])results.get(P);
             if(ct==null)
             {
@@ -248,7 +249,7 @@ public class MOTD extends StdCommand
                 results.put(P,ct);
             }
             ct[1]++;
-            if(CMath.s_long((String)pieces.elementAt(PostOffice.PIECE_TIME))>newTimeDate)
+            if(CMath.s_long(pieces.time)>newTimeDate)
                 ct[0]++;
         }
         return results;

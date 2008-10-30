@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Prayer_ConsecrateLand extends Prayer
 {
 	public String ID() { return "Prayer_ConsecrateLand"; }
@@ -62,7 +63,7 @@ public class Prayer_ConsecrateLand extends Prayer
 	}
 
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=mob.location();
 		if(target==null) return false;

@@ -34,6 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class LockSmith extends CraftingSkill
 {
 	public String ID() { return "LockSmith"; }
@@ -171,7 +172,7 @@ public class LockSmith extends CraftingSkill
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((commands.size()==0)
 		||(CMParms.combine(commands,0).equalsIgnoreCase("list")))

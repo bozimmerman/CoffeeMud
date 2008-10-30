@@ -32,6 +32,7 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Modify extends StdCommand
 {
 	public Modify(){}
@@ -482,7 +483,7 @@ public class Modify extends StdCommand
 		{
 			if(mob.session().confirm("Is changing the name of this area really necessary (y/N)?","N"))
 			{
-				for(Enumeration<Room> r=myArea.getCompleteMap();r.hasMoreElements();)
+				for(Enumeration r=myArea.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 		    		synchronized(("SYNC"+R.roomID()).intern())
@@ -732,7 +733,7 @@ public class Modify extends StdCommand
 		
 		try
 		{
-			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room room=(Room)r.nextElement();
 				for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
@@ -1126,7 +1127,7 @@ public class Modify extends StdCommand
 		return false;
 	}
 	
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String commandType="";
@@ -1474,7 +1475,7 @@ public class Modify extends StdCommand
 					thang.recoverEnvStats();
 					try
 					{
-						for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 						{
 							Room room=(Room)r.nextElement();
 				    		synchronized(("SYNC"+room.roomID()).intern())

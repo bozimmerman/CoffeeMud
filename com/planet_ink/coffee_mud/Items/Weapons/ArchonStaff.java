@@ -31,6 +31,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class ArchonStaff extends Staff implements Wand, MiscMagic, ArchonOnly
 {
 	public String ID(){	return "ArchonStaff";}

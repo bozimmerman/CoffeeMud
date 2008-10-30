@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_DispelMagic extends Spell
 {
 	public String ID() { return "Spell_DispelMagic"; }
@@ -77,7 +78,7 @@ public class Spell_DispelMagic extends Spell
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_ANY);
 		if(target==null) return false;
@@ -131,7 +132,7 @@ public class Spell_DispelMagic extends Spell
 			int affectType=verbalCastCode(mob,target,auto);
 			if(((!mob.isMonster())&&(target instanceof MOB)&&(!((MOB)target).isMonster()))
 			||(mob==target)
-			||(mob.getGroupMembers(new HashSet<MOB>()).contains(target)))
+			||(mob.getGroupMembers(new HashSet()).contains(target)))
 				affectType=CMMsg.MSG_CAST_VERBAL_SPELL;
 			if(auto) affectType=affectType|CMMsg.MASK_ALWAYS;
 

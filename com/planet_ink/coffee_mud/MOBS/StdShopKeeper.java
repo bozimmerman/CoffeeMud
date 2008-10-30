@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdShopKeeper extends StdMOB implements ShopKeeper
 {
 	public String ID(){return "StdShopKeeper";}
@@ -153,7 +154,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				budgetTickDown=100;
 				budgetRemaining=Long.MAX_VALUE/2;
 				String s=finalBudget();
-				Vector<String> V=CMParms.parse(s.trim().toUpperCase());
+				Vector V=CMParms.parse(s.trim().toUpperCase());
 				if(V.size()>0)
 				{
 					if(((String)V.firstElement()).equals("0"))

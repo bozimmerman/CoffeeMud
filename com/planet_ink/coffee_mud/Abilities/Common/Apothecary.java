@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Apothecary extends Cooking
 {
 	public String ID() { return "Apothecary"; }
@@ -46,7 +47,7 @@ public class Apothecary extends Cooking
 	protected int iniPracticesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
 
     public String parametersFile(){ return "poisons.txt";}
-    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
     public Apothecary()
     {
@@ -58,7 +59,7 @@ public class Apothecary extends Cooking
 
 
 
-    public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         if((!super.invoke(mob,commands,givenTarget,auto,asLevel))||(building==null))
             return false;

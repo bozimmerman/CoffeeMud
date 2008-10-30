@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_PlantBed extends Chant
 {
 	public String ID() { return "Chant_PlantBed"; }
@@ -57,7 +58,7 @@ public class Chant_PlantBed extends Chant
 		}
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((((mob.location().domainType()&Room.INDOORS)>0)
 		   ||(mob.location().domainType()==Room.DOMAIN_OUTDOORS_DESERT)

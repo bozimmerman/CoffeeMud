@@ -31,6 +31,7 @@ import java.util.regex.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class GModify extends StdCommand
 {
     public GModify(){}
@@ -306,7 +307,7 @@ public class GModify extends StdCommand
         }
     }
 
-    public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+    public boolean execute(MOB mob, Vector commands, int metaFlags)
         throws java.io.IOException
     {
         boolean noisy=CMSecurity.isDebugging("GMODIFY");
@@ -534,7 +535,7 @@ public class GModify extends StdCommand
             return false;
         }
         if(placesToDo.size()==0)
-        for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+        for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
         {
             Area A=(Area)a.nextElement();
             if(A.getCompleteMap().hasMoreElements()
@@ -552,7 +553,7 @@ public class GModify extends StdCommand
             {
                 Area A=(Area)placesToDo.elementAt(i);
                 placesToDo.removeElement(A);
-                for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+                for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
                 {
                     Room R=(Room)r.nextElement();
                     if(CMSecurity.isAllowed(mob,R,"GMODIFY"))

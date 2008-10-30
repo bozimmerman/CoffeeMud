@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Follower extends ActiveTicker
 {
 	public String ID(){return "Follower";}
@@ -55,7 +56,7 @@ public class Follower extends ActiveTicker
 		maxTicks=0;
 		chance=100;
         super.setParms(newParms);
-		Vector<String> V=CMParms.parse(newParms.toUpperCase());
+		Vector V=CMParms.parse(newParms.toUpperCase());
 		realFollow=V.contains("GROUP");
 		inventory=V.contains("INVENTORY")||V.contains("INV");
     }

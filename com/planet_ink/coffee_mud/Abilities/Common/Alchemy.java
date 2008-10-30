@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Alchemy extends CraftingSkill
 {
 	public String ID() { return "Alchemy"; }
@@ -80,7 +81,7 @@ public class Alchemy extends CraftingSkill
 	}
 
     public String parametersFile(){ return "alchemy.txt";}
-    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{
@@ -126,7 +127,7 @@ public class Alchemy extends CraftingSkill
 	}
 
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
 		if(commands.size()<1)
@@ -134,7 +135,7 @@ public class Alchemy extends CraftingSkill
 			commonTell(mob,"Brew what? Enter \"brew list\" for a list.");
 			return false;
 		}
-		Vector<Vector<String>> recipes=addRecipes(mob,loadRecipes());
+		Vector recipes=addRecipes(mob,loadRecipes());
 		String pos=(String)commands.lastElement();
 		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("list"))
 		{
@@ -145,7 +146,7 @@ public class Alchemy extends CraftingSkill
 			int toggleTop=3;
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector<String> V=recipes.elementAt(r);
+				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String spell=(String)V.elementAt(0);
@@ -205,7 +206,7 @@ public class Alchemy extends CraftingSkill
 			String ingredient="";
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector<String> V=recipes.elementAt(r);
+				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String spell=(String)V.elementAt(0);

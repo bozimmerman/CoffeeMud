@@ -28,6 +28,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public interface PlayerLibrary extends CMLibrary, Runnable
 {
     public int numPlayers();
@@ -35,7 +36,7 @@ public interface PlayerLibrary extends CMLibrary, Runnable
     public void delPlayer(MOB oneToDel);
     public MOB getPlayer(String calledThis);
     public MOB getLoadPlayer(String last);
-    public Enumeration<MOB> players();
+    public Enumeration players();
     public void obliteratePlayer(MOB deadMOB, boolean quiet);
     public void forceTick();
     public int savePlayers();

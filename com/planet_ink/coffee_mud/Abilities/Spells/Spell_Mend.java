@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_Mend extends Spell
 {
 	public String ID() { return "Spell_Mend"; }
@@ -39,7 +40,7 @@ public class Spell_Mend extends Spell
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ALTERATION;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,null,givenTarget,commands,Item.WORNREQ_ANY);
 		if(target==null) return false;

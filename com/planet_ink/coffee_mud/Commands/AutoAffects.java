@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class AutoAffects extends StdCommand
 {
     private String[] access={"AUTOAFFECTS","AUTOAFF","AAF"};
@@ -59,7 +60,7 @@ public class AutoAffects extends StdCommand
         return msg.toString();
     }
 
-    public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+    public boolean execute(MOB mob, Vector commands, int metaFlags)
         throws java.io.IOException
     {
         Session S=mob.session();

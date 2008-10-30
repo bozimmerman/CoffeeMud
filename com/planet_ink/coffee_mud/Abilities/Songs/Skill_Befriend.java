@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Skill_Befriend extends BardSkill
 {
     public String ID() { return "Skill_Befriend"; }
@@ -43,7 +44,7 @@ public class Skill_Befriend extends BardSkill
     public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_INFLUENTIAL;}
     public int usageType(){return USAGE_MANA;}
 
-    public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         if(commands.size()<1)
         {

@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Archon extends StdCharClass
 {
 	public String ID(){return "Archon";}
@@ -132,11 +133,11 @@ public class Archon extends StdCharClass
         return super.okMessage(myHost, msg);
     }
     
-	public Vector<Item> outfit(MOB myChar)
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector<Item>();
+			outfitChoices=new Vector();
 			Weapon w=CMClass.getWeapon("ArchonStaff");
 			outfitChoices.addElement(w);
 		}

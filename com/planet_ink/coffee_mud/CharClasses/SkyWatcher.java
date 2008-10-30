@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class SkyWatcher extends StdCharClass
 {
 	public String ID(){return "SkyWatcher";}
@@ -271,7 +272,7 @@ public class SkyWatcher extends StdCharClass
 		}
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -281,7 +282,7 @@ public class SkyWatcher extends StdCharClass
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
-			for(Enumeration<String> a=V.getDimensionVector(1).elements();a.hasMoreElements();)
+			for(Enumeration a=V.getDimensionVector(1).elements();a.hasMoreElements();)
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)
@@ -292,11 +293,11 @@ public class SkyWatcher extends StdCharClass
 		}
 	}
 
-	public Vector<Item> outfit(MOB myChar)
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector<Item>();
+			outfitChoices=new Vector();
 			Weapon w=CMClass.getWeapon("Quarterstaff");
 			outfitChoices.addElement(w);
 		}

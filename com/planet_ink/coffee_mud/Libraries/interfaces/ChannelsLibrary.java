@@ -28,6 +28,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public interface ChannelsLibrary extends CMLibrary
 {
     public final int QUEUE_SIZE=100;
@@ -45,7 +46,7 @@ public interface ChannelsLibrary extends CMLibrary
      * @param i
      * @return
      */
-    public Vector<String> getChannelFlags(int i);
+    public Vector getChannelFlags(int i);
     /**
      * @param i
      * @return
@@ -112,7 +113,7 @@ public interface ChannelsLibrary extends CMLibrary
      * @param flag
      * @return
      */
-    public Vector<String> getFlaggedChannelNames(String flag);
+    public Vector getFlaggedChannelNames(String flag);
     /**
      * @return
      */
@@ -130,18 +131,18 @@ public interface ChannelsLibrary extends CMLibrary
      * @param channelCode
      * @return
      */
-    public Vector<Session> clearInvalidSnoopers(Session mySession, int channelCode);
+    public Vector clearInvalidSnoopers(Session mySession, int channelCode);
     /**
      * @param mySession
      * @param invalid
      */
-    public void restoreInvalidSnoopers(Session mySession, Vector<Session> invalid);
+    public void restoreInvalidSnoopers(Session mySession, Vector invalid);
     /**
      * @param mask
      * @param flags
      * @return
      */
-    public String parseOutFlags(String mask, Vector<String> flags);
+    public String parseOutFlags(String mask, Vector flags);
     /**
      * @param list
      * @param ilist

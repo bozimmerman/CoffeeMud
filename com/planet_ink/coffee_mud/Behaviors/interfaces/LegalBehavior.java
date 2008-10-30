@@ -42,6 +42,7 @@ import java.util.*;
  * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant
  * @see com.planet_ink.coffee_mud.Common.interfaces.Law
  */
+@SuppressWarnings("unchecked")
 public interface LegalBehavior extends Behavior
 {
     /** constant for the number of miliseconds in a real-life day */

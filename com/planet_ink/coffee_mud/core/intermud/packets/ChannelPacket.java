@@ -32,6 +32,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
+@SuppressWarnings("unchecked")
 public class ChannelPacket extends Packet  {
     public String channel = null;
     public String sender_visible_name = null;

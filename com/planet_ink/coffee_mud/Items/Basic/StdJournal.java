@@ -33,6 +33,7 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdJournal extends StdItem
 {
 	public String ID(){	return "StdJournal";}
@@ -98,7 +99,7 @@ public class StdJournal extends StdItem
 				int which=-1;
 				boolean newOnly=false;
 				boolean all=false;
-				Vector<String> parse=CMParms.parse(msg.targetMessage());
+				Vector parse=CMParms.parse(msg.targetMessage());
 				for(int v=0;v<parse.size();v++)
 				{
 				    String s=(String)parse.elementAt(v);
@@ -111,7 +112,7 @@ public class StdJournal extends StdItem
 					if(s.equalsIgnoreCase("ALL")||s.equalsIgnoreCase("OLD"))
 					    all=true;
 				}
-				Vector<Object> read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
+				Vector read=DBRead(mob,Name(),which-1,lastTime, newOnly, all);
 				boolean megaRepeat=true;
 				while(megaRepeat)
 				{
@@ -242,8 +243,8 @@ public class StdJournal extends StdItem
 											mob.tell("The journal '"+journal+"' does not presently exist.  Aborted.");
 								        else
 								        {
-											Vector<JournalsLibrary.JournalEntry> journal2=CMLib.database().DBReadJournalMsgs(Name());
-											JournalsLibrary.JournalEntry entry2=journal2.elementAt(which-1);
+											Vector journal2=CMLib.database().DBReadJournalMsgs(Name());
+											JournalsLibrary.JournalEntry entry2=(JournalsLibrary.JournalEntry)journal2.elementAt(which-1);
 											CMLib.database().DBDeleteJournal(Name(),which-1);
 											CMLib.database().DBWriteJournal(realName,
 																			  entry2.from,
@@ -396,11 +397,11 @@ public class StdJournal extends StdItem
 		super.executeMsg(myHost,msg);
 	}
 
-	public Vector<Object> DBRead(MOB reader, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
+	public Vector DBRead(MOB reader, String Journal, int which, long lastTimeDate, boolean newOnly, boolean all)
 	{
 		StringBuffer buf=new StringBuffer("");
-		Vector<Object> reply=new Vector<Object>();
-		Vector<JournalsLibrary.JournalEntry> journal=CMLib.database().DBReadJournalMsgs(Journal);
+		Vector reply=new Vector();
+		Vector journal=CMLib.database().DBReadJournalMsgs(Journal);
 		boolean shortFormat=readableText().toUpperCase().indexOf("SHORTLIST")>=0;
 		if((which<0)||(journal==null)||(which>=journal.size()))
 		{
@@ -424,13 +425,13 @@ public class StdJournal extends StdItem
 		{
 			if(journal.size()>0)
 			{
-				reply.addElement(journal.firstElement().from);
-				reply.addElement(journal.firstElement().subj);
+				reply.addElement(((JournalsLibrary.JournalEntry)journal.firstElement()).from);
+				reply.addElement(((JournalsLibrary.JournalEntry)journal.firstElement()).subj);
 			}
-			Vector<Object> selections=new Vector<Object>();
+			Vector selections=new Vector();
 			for(int j=0;j<journal.size();j++)
 			{
-				JournalsLibrary.JournalEntry entry=journal.elementAt(j);
+				JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.elementAt(j);
 				String from=entry.from;
 				String date=entry.date;
 				String to=entry.to;
@@ -489,7 +490,7 @@ public class StdJournal extends StdItem
 		}
 		else
 		{
-			JournalsLibrary.JournalEntry entry=journal.elementAt(which);
+			JournalsLibrary.JournalEntry entry=(JournalsLibrary.JournalEntry)journal.elementAt(which);
 			String from=entry.from;
 			String date=entry.date;
 			String to=entry.to;
@@ -534,7 +535,7 @@ public class StdJournal extends StdItem
 	private String getParm(String parmName)
 	{
         if(readableText().length()==0) return "";
-	    Hashtable<String,String> h=CMParms.parseEQParms(readableText().toUpperCase(),
+	    Hashtable h=CMParms.parseEQParms(readableText().toUpperCase(),
                                          new String[]{"READ","WRITE","REPLY","ADMIN","PRIVATE","MAILBOX"});
         String req=(String)h.get(parmName.toUpperCase().trim());
         if(req==null) req="";

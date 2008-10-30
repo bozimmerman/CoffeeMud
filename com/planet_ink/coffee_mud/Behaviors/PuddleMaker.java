@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class PuddleMaker extends StdBehavior
 {
 	public String ID(){return "PuddleMaker";}
@@ -153,7 +154,7 @@ public class PuddleMaker extends StdBehavior
 				Area A=(Area)ticking;
 				if((!anyWetWeather(A.getClimateObj().weatherType(null)))
 				&&(!dryWeather(A.getClimateObj().weatherType(null))))
-					for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+					for(Enumeration e=A.getProperMap();e.hasMoreElements();)
 					{
 						Room R=(Room)e.nextElement();
 						if(((R.domainType()&Room.INDOORS)==0)

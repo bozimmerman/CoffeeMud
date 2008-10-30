@@ -28,6 +28,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public interface CMFlagLibrary extends CMLibrary
 {
     public final static int flag_arrives=0;
@@ -112,13 +113,13 @@ public interface CMFlagLibrary extends CMLibrary
     public boolean isPossiblyAggressive(MOB M);
 	public boolean isChild(Environmental E);
 	public boolean isBaby(Environmental E);
-    public Vector<Behavior> flaggedBehaviors(Environmental E, long flag);
-    public Vector<Ability> flaggedAnyAffects(Environmental E, long flag);
-    public Vector<Ability> flaggedAffects(Environmental E, long flag);
-    public Vector<Ability> flaggedAbilities(MOB E, long flag);
-    public Vector<Ability> domainAnyAffects(Environmental E, int domain);
-    public Vector<Ability> domainAffects(Environmental E, int domain);
-    public Vector<Ability> domainAbilities(MOB E, int domain);
+    public Vector flaggedBehaviors(Environmental E, long flag);
+    public Vector flaggedAnyAffects(Environmental E, long flag);
+    public Vector flaggedAffects(Environmental E, long flag);
+    public Vector flaggedAbilities(MOB E, long flag);
+    public Vector domainAnyAffects(Environmental E, int domain);
+    public Vector domainAffects(Environmental E, int domain);
+    public Vector domainAbilities(MOB E, int domain);
     public boolean canAccess(MOB mob, Area A);
     public boolean canAccess(MOB mob, Room R);
     public boolean isMetal(Environmental E);

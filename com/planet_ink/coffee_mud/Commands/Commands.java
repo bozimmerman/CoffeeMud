@@ -30,22 +30,23 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Commands extends StdCommand
 {
 	public Commands(){}
 
 	private String[] access={"COMMANDS"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(!mob.isMonster())
 		{
 			StringBuffer commandList=new StringBuffer("");
-			Vector<String> commandSet=new Vector<String>();
+			Vector commandSet=new Vector();
 			int col=0;
-			HashSet<String> done=new HashSet<String>();
-			for(Enumeration<Command> e=CMClass.commands();e.hasMoreElements();)
+			HashSet done=new HashSet();
+			for(Enumeration e=CMClass.commands();e.hasMoreElements();)
 			{
 				Command C=(Command)e.nextElement();
 				String[] access=C.getAccessWords();
@@ -69,7 +70,7 @@ public class Commands extends StdCommand
 				}
 			}
 			Collections.sort(commandSet);
-			for(Iterator<String> i=commandSet.iterator();i.hasNext();)
+			for(Iterator i=commandSet.iterator();i.hasNext();)
 			{
 			    String s=(String)i.next();
 				if(++col>3){ commandList.append("\n\r"); col=0;}

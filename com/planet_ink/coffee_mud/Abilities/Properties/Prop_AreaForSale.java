@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prop_AreaForSale extends Property implements LandTitle
 {
 	public String ID() { return "Prop_AreaForSale"; }
@@ -176,15 +177,15 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		}
 	}
 
-	public Vector<Room> getPropertyRooms()
+	public Vector getPropertyRooms()
 	{
-		Vector<Room> V=new Vector<Room>();
+		Vector V=new Vector();
 		Area A=null;
 		if(affected instanceof Area)
 			A=(Area)affected;
 		else
 			A=CMLib.map().getArea(landPropertyID());
-		for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+		for(Enumeration e=A.getProperMap();e.hasMoreElements();)
 			V.addElement(e.nextElement());
 		return V;
 	}

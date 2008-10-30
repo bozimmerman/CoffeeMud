@@ -34,6 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Skill_Enslave extends StdSkill
 {
 	public String ID() { return "Skill_Enslave"; }
@@ -95,7 +96,7 @@ public class Skill_Enslave extends StdSkill
 					    if((msg.target()==mob)
 					    &&(msg.source().Name().equals(mob.getLiegeID())))
 					    {
-					        Vector<String> V=CMParms.parse(response.toUpperCase());
+					        Vector V=CMParms.parse(response.toUpperCase());
 					        if(V.contains("STOP")||V.contains("CANCEL"))
 					        {
 					            CMLib.commands().postSay(mob,msg.source(),"Yes master.",false,false);
@@ -232,7 +233,7 @@ public class Skill_Enslave extends StdSkill
 	                else
 	                {
 	                    Command C=CMClass.getCommand("Eat");
-	                    try{C.execute(mob,CMParms.parseToObjV("EAT \""+f.Name()+"$\""),Command.METAFLAG_ORDER);}catch(Exception e){}
+	                    try{C.execute(mob,CMParms.parse("EAT \""+f.Name()+"$\""),Command.METAFLAG_ORDER);}catch(Exception e){}
 	                }
 	            }
 	            if(mob.curState().getThirst()<=0)
@@ -249,7 +250,7 @@ public class Skill_Enslave extends StdSkill
 	                else
 	                {
 	                    Command C=CMClass.getCommand("Drink");
-	                    try{C.execute(mob,CMParms.parseToObjV("DRINK \""+d.Name()+"$\""),Command.METAFLAG_ORDER);}catch(Exception e){}
+	                    try{C.execute(mob,CMParms.parse("DRINK \""+d.Name()+"$\""),Command.METAFLAG_ORDER);}catch(Exception e){}
 	                }
 	            }
 		    }
@@ -283,7 +284,7 @@ public class Skill_Enslave extends StdSkill
 		return super.tick(ticking,tickID);
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.isMonster())
 		{

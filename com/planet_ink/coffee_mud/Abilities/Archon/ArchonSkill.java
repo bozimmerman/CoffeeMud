@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class ArchonSkill extends StdAbility
 {
 	public String ID() { return "ArchonSkill"; }

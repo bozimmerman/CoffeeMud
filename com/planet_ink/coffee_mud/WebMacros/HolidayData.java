@@ -31,13 +31,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class HolidayData extends StdWebMacro
 {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
     public String runMacro(ExternalHTTPRequests httpReq, String parm)
     {
-        Hashtable<String,String> parms=parseParms(parm);
+        Hashtable parms=parseParms(parm);
         String last=httpReq.getRequestParameter("HOLIDAY");
         if(last==null) return " @break@";
         boolean exists = false;
@@ -336,7 +337,7 @@ public class HolidayData extends StdWebMacro
         return "";
     }
 
-    public static StringBuffer behaviors(DVector behaviors, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
+    public static StringBuffer behaviors(DVector behaviors, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         if(parms.containsKey("BEHAVIORS"))
@@ -416,7 +417,7 @@ public class HolidayData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer properties(DVector properties, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
+    public static StringBuffer properties(DVector properties, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         if(parms.containsKey("AFFECTS"))
@@ -471,7 +472,7 @@ public class HolidayData extends StdWebMacro
             str.append("<TR><TD WIDTH=30%>");
             str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=AFFECT"+(theclasses.size()+1)+">");
             str.append("<OPTION SELECTED VALUE=\"\">Select an Effect");
-            for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+            for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
             {
                 Ability A=(Ability)a.nextElement();
                 String cnam=A.ID();
@@ -486,13 +487,13 @@ public class HolidayData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer priceFactors(DVector stats, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
+    public static StringBuffer priceFactors(DVector stats, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         if(parms.containsKey("PRICEFACTORS"))
         {
-            Vector<String> theclasses=new Vector<String>();
-            Vector<String> theparms=new Vector<String>();
+            Vector theclasses=new Vector();
+            Vector theparms=new Vector();
             if(httpReq.isRequestParameter("PRCFAC1"))
             {
                 int num=1;
@@ -517,7 +518,7 @@ public class HolidayData extends StdWebMacro
             {
                 int pndex=stats.indexOf("PRICEMASKS");
                 String priceStr=(pndex<0)?"":(String)stats.elementAt(pndex,2);
-                Vector<String> priceV=CMParms.parseCommas(priceStr,true);
+                Vector priceV=CMParms.parseCommas(priceStr,true);
                 for(int v=0;v<priceV.size();v++)
                 {
                     String priceLine=(String)priceV.elementAt(v);
@@ -569,7 +570,7 @@ public class HolidayData extends StdWebMacro
         return str;
     }
 
-    public static StringBuffer mudChat(DVector behaviors, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, int borderSize)
+    public static StringBuffer mudChat(DVector behaviors, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize)
     {
         StringBuffer str=new StringBuffer("");
         if(parms.containsKey("MUDCHAT"))

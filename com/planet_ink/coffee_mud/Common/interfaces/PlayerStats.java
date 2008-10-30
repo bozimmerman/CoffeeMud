@@ -36,6 +36,7 @@ import java.util.*;
  * 
  * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#playerStats()
  */
+@SuppressWarnings("unchecked")
 public interface PlayerStats extends CMCommon, CMModifiable
 {
     /**
@@ -235,7 +236,7 @@ public interface PlayerStats extends CMCommon, CMModifiable
 	 * 
 	 * @return a set of player friend names
 	 */
-	public HashSet<String> getFriends();
+	public HashSet getFriends();
 
 	/**
      * Returns a modifiable HashSet that contains the set of player
@@ -243,7 +244,7 @@ public interface PlayerStats extends CMCommon, CMModifiable
      * 
 	 * @return a set of player ignored player list Names
 	 */
-	public HashSet<String> getIgnored();
+	public HashSet getIgnored();
 
 	/**
 	 * Returns a Vector of modifiable title definitions.  These are things
@@ -253,7 +254,7 @@ public interface PlayerStats extends CMCommon, CMModifiable
      * 
 	 * @return  a Vector of modifiable title definitions
 	 */
-    public Vector<String> getTitles();
+    public Vector getTitles();
     
     /**
      * Returns which of the player available titles is currently being used by
@@ -273,7 +274,7 @@ public interface PlayerStats extends CMCommon, CMModifiable
      * 
      * @return a Vector of strings, the last few tell messages
      */
-	public Vector<String> getTellStack();
+	public Vector getTellStack();
 	
 	/**
 	 * Adds a new string message to the tell stack.
@@ -292,7 +293,7 @@ public interface PlayerStats extends CMCommon, CMModifiable
      * 
      * @return a Vector of strings, the last few gtell messages
      */
-    public Vector<String> getGTellStack();
+    public Vector getGTellStack();
 
     /**
      * Adds a new string message to the gtell stack.
@@ -461,7 +462,7 @@ public interface PlayerStats extends CMCommon, CMModifiable
 	 * 
 	 * @return  a Vector of security flags and groups strings 
 	 */
-	public Vector<String> getSecurityGroups();
+	public Vector getSecurityGroups();
 
 	/**
 	 * When a player is first created, this method is used to 

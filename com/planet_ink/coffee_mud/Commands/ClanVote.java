@@ -30,13 +30,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class ClanVote extends StdCommand
 {
 	public ClanVote(){}
 
 	private String[] access={"CLANVOTE"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("");
@@ -194,7 +195,7 @@ public class ClanVote extends StdCommand
 									if(mob2.location()==null)
 										mob2.setLocation(CMLib.map().getRandomRoom());
 								}
-								Vector<Object> V=CMParms.parseToObjV(CV.matter);
+								Vector V=CMParms.parse(CV.matter);
 								mob2.doCommand(V,metaFlags|Command.METAFLAG_FORCED);
                                 mob2.destroy();
 							}

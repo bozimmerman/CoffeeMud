@@ -31,6 +31,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
+@SuppressWarnings("unchecked")
 public class ChannelWhoReply extends Packet {
     public String channel = null;
 	public Vector who=null;

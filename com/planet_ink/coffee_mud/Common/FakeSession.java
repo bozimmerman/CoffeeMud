@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 import com.planet_ink.coffee_mud.core.interfaces.Environmental;
 import com.planet_ink.coffee_mud.core.interfaces.Tickable;
 
+@SuppressWarnings("unchecked")
 public class FakeSession implements Session
 {
     CMFile theFile=null;

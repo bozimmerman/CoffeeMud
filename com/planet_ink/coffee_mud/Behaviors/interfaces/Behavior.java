@@ -41,6 +41,7 @@ import java.util.Vector;
  * @see com.planet_ink.coffee_mud.core.interfaces.Environmental
  * @see com.planet_ink.coffee_mud.core.interfaces.Tickable
  */
+@SuppressWarnings("unchecked")
 public interface Behavior extends Tickable, MsgListener, CMObject, CMModifiable
 {
 	/**

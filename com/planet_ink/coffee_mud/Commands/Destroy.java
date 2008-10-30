@@ -32,6 +32,7 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Destroy extends StdCommand
 {
 	public Destroy(){}
@@ -45,7 +46,7 @@ public class Destroy extends StdCommand
 		return false;
 	}
 	
-	public boolean mobs(MOB mob, Vector<Object> commands)
+	public boolean mobs(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
 		{
@@ -87,7 +88,7 @@ public class Destroy extends StdCommand
 	}
 
 
-	public static boolean players(MOB mob, Vector<Object> commands)
+	public static boolean players(MOB mob, Vector commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -182,7 +183,7 @@ public class Destroy extends StdCommand
 
     }
 
-	public void rooms(MOB mob, Vector<Object> commands)
+	public void rooms(MOB mob, Vector commands)
 		throws IOException
 	{
 		String thecmd=((String)commands.elementAt(0)).toLowerCase();
@@ -305,7 +306,7 @@ public class Destroy extends StdCommand
 		}
 	}
 
-	public void exits(MOB mob, Vector<Object> commands)
+	public void exits(MOB mob, Vector commands)
 	{
 		if(mob.location().roomID().equals(""))
 		{
@@ -343,7 +344,7 @@ public class Destroy extends StdCommand
 		Log.sysOut("Exits",mob.location().roomID()+" exits destroyed by "+mob.Name()+".");
 	}
 
-	public boolean items(MOB mob, Vector<Object> commands)
+	public boolean items(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
 		{
@@ -412,7 +413,7 @@ public class Destroy extends StdCommand
 	}
 
 
-	public void areas(MOB mob, Vector<Object> commands)
+	public void areas(MOB mob, Vector commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -465,7 +466,7 @@ public class Destroy extends StdCommand
 		}
 	}
 
-	public boolean races(MOB mob, Vector<Object> commands)
+	public boolean races(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
 		{
@@ -502,7 +503,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-	public boolean components(MOB mob, Vector<Object> commands)
+	public boolean components(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
 		{
@@ -528,7 +529,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
     
-    public boolean expertises(MOB mob, Vector<Object> commands)
+    public boolean expertises(MOB mob, Vector commands)
     {
         if(commands.size()<3)
         {
@@ -549,7 +550,7 @@ public class Destroy extends StdCommand
         return true;
     }
     
-    public boolean titles(MOB mob, Vector<Object> commands)
+    public boolean titles(MOB mob, Vector commands)
     {
         mob.tell("Destroying a title will not remove the title from all players who may have it.");
         mob.tell("If this is important, you should destroy and then re-add the exact same title with an unreachable " +
@@ -580,7 +581,7 @@ public class Destroy extends StdCommand
         return true;
     }
     
-	public boolean classes(MOB mob, Vector<Object> commands)
+	public boolean classes(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
 		{
@@ -617,7 +618,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-	public boolean abilities(MOB mob, Vector<Object> commands)
+	public boolean abilities(MOB mob, Vector commands)
 	{
 		if(commands.size()<3)
 		{
@@ -653,7 +654,7 @@ public class Destroy extends StdCommand
 		return true;
 	}
 
-	public void socials(MOB mob, Vector<Object> commands)
+	public void socials(MOB mob, Vector commands)
 		throws IOException
 	{
 		if(commands.size()<3)
@@ -727,7 +728,7 @@ public class Destroy extends StdCommand
 	}
 
 	
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if((!CMSecurity.isAllowedStartsWith(mob,"CMD"))
@@ -1072,7 +1073,7 @@ public class Destroy extends StdCommand
                 mob.tell("Destroy which journal? Try List Journal");
                 return errorOut(mob);
             }
-            Vector<String> V=CMLib.database().DBReadJournals();
+            Vector V=CMLib.database().DBReadJournals();
             String name=CMParms.combine(commands,2);
             int which=-1;
             for(int v=0;v<V.size();v++)
@@ -1241,7 +1242,7 @@ public class Destroy extends StdCommand
 				{
 				    try
 				    {
-						for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 						{
 							Room room=(Room)r.nextElement();
 							if(room.roomID().equalsIgnoreCase(allWord))
@@ -1292,8 +1293,8 @@ public class Destroy extends StdCommand
 		}
 		return false;
 	}
-    public double combatActionsCost(MOB mob, Vector<Object> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
-    public double actionsCost(MOB mob, Vector<Object> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
+    public double combatActionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
+    public double actionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCMDTIME),100.0);}
 	public boolean canBeOrdered(){return false;}
 
 	

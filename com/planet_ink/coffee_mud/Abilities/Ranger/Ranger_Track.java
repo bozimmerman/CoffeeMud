@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Ranger_Track extends StdAbility
 {
 	public String ID() { return "Ranger_Track"; }
@@ -117,7 +118,7 @@ public class Ranger_Track extends StdAbility
 			nextDirection=CMLib.tracking().trackNextDirectionFromHere(theTrail,mob.location(),true);
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!CMLib.flags().aliveAwakeMobile(mob,false))
 			return false;
@@ -157,9 +158,9 @@ public class Ranger_Track extends StdAbility
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		Vector<Room> rooms=new Vector<Room>();
-		Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,false,true,true,true,75+(2*getXLEVELLevel(mob)));
-		for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
+		Vector rooms=new Vector();
+		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,false,true,true,true,75+(2*getXLEVELLevel(mob)));
+		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 		{
 			Room R=CMLib.map().getRoom((Room)r.nextElement());
 			if(R.fetchInhabitant(mobName)!=null)

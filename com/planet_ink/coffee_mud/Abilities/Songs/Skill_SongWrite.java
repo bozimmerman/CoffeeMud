@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Skill_SongWrite extends BardSkill
 {
 	public String ID() { return "Skill_SongWrite"; }
@@ -43,7 +44,7 @@ public class Skill_SongWrite extends BardSkill
 	public String[] triggerStrings(){return triggerStrings;}
     public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_CALLIGRAPHY;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()<2)
 		{

@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_SenseAge extends Chant
 {
 	public String ID() { return "Chant_SenseAge"; }
@@ -41,7 +42,7 @@ public class Chant_SenseAge extends Chant
 	public int abstractQuality(){return Ability.QUALITY_OK_OTHERS;}
 	protected int manaOverride(){return 5;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=getAnyTarget(mob,commands,givenTarget,Item.WORNREQ_ANY);
 		if(target==null) return false;

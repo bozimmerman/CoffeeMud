@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Thief_SenseLaw extends ThiefSkill
 {
 	public String ID() { return "Thief_SenseLaw"; }

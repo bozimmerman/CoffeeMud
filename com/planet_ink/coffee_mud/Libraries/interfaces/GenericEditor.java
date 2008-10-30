@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public interface GenericEditor extends CMLibrary
 {
     public static interface CMEval { public Object eval(Object val, Object[] choices, boolean emptyOK) throws CMException; }

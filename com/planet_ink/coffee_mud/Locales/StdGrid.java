@@ -33,13 +33,14 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdGrid extends StdRoom implements GridLocale
 {
 	public String ID(){return "StdGrid";}
 	protected Room[][] subMap=null;
-	protected Vector<String> descriptions=new Vector<String>();
-	protected Vector<String> displayTexts=new Vector<String>();
-	protected Vector<WorldMap.CrossExit> gridexits=new Vector<WorldMap.CrossExit>();
+	protected Vector descriptions=new Vector();
+	protected Vector displayTexts=new Vector();
+	protected Vector gridexits=new Vector();
 	protected int xsize=5;
 	protected int ysize=5;
 
@@ -54,9 +55,9 @@ public class StdGrid extends StdRoom implements GridLocale
         super.cloneFix(E);
         if(E instanceof StdGrid)
         {
-            descriptions=(Vector<String>)((StdGrid)E).descriptions.clone();
-            displayTexts=(Vector<String>)((StdGrid)E).displayTexts.clone();
-            gridexits=(Vector<WorldMap.CrossExit>)((StdGrid)E).gridexits.clone();
+            descriptions=(Vector)((StdGrid)E).descriptions.clone();
+            displayTexts=(Vector)((StdGrid)E).displayTexts.clone();
+            gridexits=(Vector)((StdGrid)E).gridexits.clone();
         }
     }
 	public String getGridChildLocaleID(){return "StdRoom";}
@@ -123,7 +124,7 @@ public class StdGrid extends StdRoom implements GridLocale
 	public void setDescription(String newDescription)
 	{
 		super.setDescription(newDescription);
-		descriptions=new Vector<String>();
+		descriptions=new Vector();
 		int x=newDescription.toUpperCase().indexOf("<P>");
 		while(x>=0)
 		{
@@ -139,7 +140,7 @@ public class StdGrid extends StdRoom implements GridLocale
 	public void setDisplayText(String newDisplayText)
 	{
 		super.setDisplayText(newDisplayText);
-		displayTexts=new Vector<String>();
+		displayTexts=new Vector();
 		int x=newDisplayText.toUpperCase().indexOf("<P>");
 		while(x>=0)
 		{
@@ -152,7 +153,7 @@ public class StdGrid extends StdRoom implements GridLocale
 			displayTexts.addElement(newDisplayText);
 	}
 
-	public Vector<WorldMap.CrossExit> outerExits(){return (Vector<WorldMap.CrossExit>)gridexits.clone();}
+	public Vector outerExits(){return (Vector)gridexits.clone();}
 	public void addOuterExit(WorldMap.CrossExit x){gridexits.addElement(x);}
 	public void delOuterExit(WorldMap.CrossExit x){gridexits.remove(x);}
 	
@@ -237,9 +238,9 @@ public class StdGrid extends StdRoom implements GridLocale
 		if(V.size()==0) return null;
 		return (Room)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 	}
-	public Vector<Room> getAllRooms()
+	public Vector getAllRooms()
 	{
-		Vector<Room> V=new Vector<Room>();
+		Vector V=new Vector();
 		Room[][] subMap=getBuiltGrid();
 		if(subMap!=null)
 		for(int x=0;x<subMap.length;x++)

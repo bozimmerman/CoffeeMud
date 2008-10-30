@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class InstantDeath extends ActiveTicker
 {
 	public String ID(){return "InstantDeath";}
@@ -98,7 +99,7 @@ public class InstantDeath extends ActiveTicker
 			else
 			if(ticking instanceof Area)
 			{
-				for(Enumeration<Room> r=((Area)ticking).getMetroMap();r.hasMoreElements();)
+				for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					killEveryoneHere(null,R);

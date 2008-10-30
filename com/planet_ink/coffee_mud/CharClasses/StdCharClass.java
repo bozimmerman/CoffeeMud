@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdCharClass implements CharClass
 {
 	public String ID(){return "StdCharClass";}
@@ -55,7 +56,7 @@ public class StdCharClass implements CharClass
 	public int getManaDice(){return 1;}
 	public int getManaDie(){return 6;}
 	protected int maxStatAdj[]={0,0,0,0,0,0};
-	protected Vector<Item> outfitChoices=null;
+	protected Vector outfitChoices=null;
 	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}
 	protected HashSet disallowedWeaponClasses(MOB mob){return null;}
@@ -339,7 +340,7 @@ public class StdCharClass implements CharClass
                     alreadyAble.put(A.ID(),A);
                 }
             }
-            for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+            for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
             {
                 Ability A=(Ability)a.nextElement();
                 int lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
@@ -356,7 +357,7 @@ public class StdCharClass implements CharClass
         else
         {
         	Vector onesToAdd=new Vector();
-			for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
 				if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())>0)
@@ -619,7 +620,7 @@ public class StdCharClass implements CharClass
 		}
 	}
 
-	public Vector<Item> outfit(MOB myChar){return outfitChoices;}
+	public Vector outfit(MOB myChar){return outfitChoices;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{

@@ -31,13 +31,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class AutoTitleNext extends StdWebMacro
 {
 	public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable<String,String> parms=parseParms(parm);
+		Hashtable parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("AUTOTITLE");
 		if(parms.containsKey("RESET"))
 		{	
@@ -45,7 +46,7 @@ public class AutoTitleNext extends StdWebMacro
 			return "";
 		}
 		String lastID="";
-		for(Enumeration<String> r=CMLib.titles().autoTitles();r.hasMoreElements();)
+		for(Enumeration r=CMLib.titles().autoTitles();r.hasMoreElements();)
 		{
             String title=(String)r.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!title.equals(lastID))))

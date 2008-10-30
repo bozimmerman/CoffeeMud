@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Prayer_GuardianHearth extends Prayer
 {
 	public String ID() { return "Prayer_GuardianHearth"; }
@@ -65,7 +66,7 @@ public class Prayer_GuardianHearth extends Prayer
 		   &&(msg.target() instanceof MOB)
 		   &&((msg.source()!=msg.target())||(CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))))
 		{
-			HashSet H=((MOB)msg.target()).getGroupMembers(new HashSet<MOB>());
+			HashSet H=((MOB)msg.target()).getGroupMembers(new HashSet());
 			for(Iterator e=H.iterator();e.hasNext();)
             {
                 MOB M=(MOB)e.next();
@@ -83,7 +84,7 @@ public class Prayer_GuardianHearth extends Prayer
 	}
 
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=mob.location();
 		if(target==null) return false;

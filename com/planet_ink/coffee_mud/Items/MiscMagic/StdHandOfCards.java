@@ -46,6 +46,7 @@ import java.util.*;
     to anyone who LOOKS at a person holding a hand with such
     cars.
 */
+@SuppressWarnings("unchecked")
 public class StdHandOfCards extends StdContainer implements MiscMagic, HandOfCards
 {
     public String ID(){ return "StdHandOfCards";}

@@ -32,6 +32,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Conquerable extends Arrest
 {
 	public String ID(){return "Conquerable";}
@@ -381,9 +382,9 @@ public class Conquerable extends Arrest
             HashSet doneRooms=new HashSet();
             clanItems.clear();
 			Vector itemSet=CMLib.database().DBReadData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
-			if((itemSet!=null)&&(itemSet.size()>0)&&(((Vector)itemSet.firstElement()).size()>3))
+			if((itemSet!=null)&&(itemSet.size()>0))
 			{
-				String data=(String)((Vector)itemSet.firstElement()).elementAt(3);
+				String data=((DatabaseEngine.PlayerData)itemSet.firstElement()).xml;
 				Vector xml=CMLib.xml().parseAllXML(data);
 				if(xml!=null)
 				{
@@ -427,7 +428,7 @@ public class Conquerable extends Arrest
 											{ foundMOB=M; break;}
 										}
 									if((foundMOB==null)&&(MOBname.length()>0))
-										for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
+										for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
 										{
 											Room R2=(Room)e.nextElement();
 											for(int i=0;i<R2.numInhabitants();i++)
@@ -631,7 +632,7 @@ public class Conquerable extends Arrest
 	{
 		totalControlPoints=0;
         String worship=getManadatoryWorshipID();
-		for(Enumeration<Room> e=A.getMetroMap();e.hasMoreElements();)
+		for(Enumeration e=A.getMetroMap();e.hasMoreElements();)
 		{
 			Room R=(Room)e.nextElement();
 			for(int i=0;i<R.numInhabitants();i++)

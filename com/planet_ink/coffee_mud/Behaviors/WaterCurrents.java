@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class WaterCurrents extends ActiveTicker
 {
 	public String ID(){return "WaterCurrents";}
@@ -50,7 +51,7 @@ public class WaterCurrents extends ActiveTicker
 	public void setParms(String newParms)
 	{
 		super.setParms(newParms);
-		Vector<String> V=CMParms.parse(newParms);
+		Vector V=CMParms.parse(newParms);
 		dirs="";
 		for(int v=0;v<V.size();v++)
 		{
@@ -175,7 +176,7 @@ public class WaterCurrents extends ActiveTicker
 				&&((below.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
 				   ||(below.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)))
 				{
-					Vector<Room> V=((GridLocale)below).getAllRooms();
+					Vector V=((GridLocale)below).getAllRooms();
 					for(int v=0;v<V.size();v++)
 					{
 						Room R2=(Room)V.elementAt(v);
@@ -186,7 +187,7 @@ public class WaterCurrents extends ActiveTicker
 			else
 			if(ticking instanceof Area)
 			{
-				for(Enumeration<Room> r=((Area)ticking).getMetroMap();r.hasMoreElements();)
+				for(Enumeration r=((Area)ticking).getMetroMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if((R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)

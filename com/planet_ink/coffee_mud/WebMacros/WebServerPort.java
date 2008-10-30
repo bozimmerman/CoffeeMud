@@ -29,13 +29,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class WebServerPort extends StdWebMacro
 {
 	public String name()	{return "WebServerPort";}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-	    Hashtable<String,String> parms=parseParms(parm);
+	    Hashtable parms=parseParms(parm);
 	    if(parms.containsKey("CURRENT"))
             return Integer.toString(httpReq.getWebServerPort());
 		return httpReq.getWebServerPortStr();

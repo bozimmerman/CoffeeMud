@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Pachyderm extends StdRace
 {
 	public String ID(){	return "Pachyderm"; }
@@ -50,7 +51,7 @@ public class Pachyderm extends StdRace
 	private int[] agingChart={0,4,8,16,28,60,80,82,84};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector<Item> resources=new Vector<Item>();
+	protected static Vector resources=new Vector();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
@@ -108,7 +109,7 @@ public class Pachyderm extends StdRace
 			return "^c" + mob.displayName(viewer) + "^c is in perfect health.^N";
 	}
 
-	public Vector<Item> myResources()
+	public Vector myResources()
 	{
 		synchronized(resources)
 		{

@@ -44,6 +44,7 @@ import org.mozilla.javascript.ScriptableObject;
  * 
  * @see com.planet_ink.coffee_mud.Behaviors.Scriptable
  */
+@SuppressWarnings("unchecked")
 public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
 {
     /**

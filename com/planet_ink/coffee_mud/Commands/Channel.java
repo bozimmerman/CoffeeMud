@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Channel extends StdCommand
 {
 	public Channel(){}
@@ -47,7 +48,7 @@ public class Channel extends StdCommand
 		return access;
 	}
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if((commands.size()>2)&&(commands.firstElement() instanceof Boolean))
@@ -151,5 +152,5 @@ public class Channel extends StdCommand
 
 	
 	public boolean canBeOrdered(){return true;}
-    public double combatActionsCost(MOB mob, Vector<Object> cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
+    public double combatActionsCost(MOB mob, Vector cmds){return CMath.div(CMProps.getIntVar(CMProps.SYSTEMI_DEFCOMCMDTIME),100.0);}
 }

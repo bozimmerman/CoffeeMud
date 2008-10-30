@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class WereAnimal extends StdRace
 {
 	public String ID(){	return "WereAnimal"; }
@@ -50,9 +51,9 @@ public class WereAnimal extends StdRace
 	private int[] agingChart={0,4,8,12,16,20,24,28,32};
 	public int[] getAgingChart(){return agingChart;}
 	
-	protected static Vector<Item> resources=new Vector<Item>();
+	protected static Vector resources=new Vector();
 
-	public Vector<Item> myResources()
+	public Vector myResources()
 	{
 		synchronized(resources)
 		{

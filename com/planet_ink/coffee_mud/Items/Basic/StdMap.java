@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.interfaces.Map
 {
 	public String ID(){	return "StdMap";}
@@ -71,7 +72,7 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 	}
 	public void doMapArea()
 	{
-		Vector<String> V=CMParms.parseSemicolons(getMapArea(),true);
+		Vector V=CMParms.parseSemicolons(getMapArea(),true);
 		String newName="";
 		for(int v=0;v<V.size();v++)
 		{
@@ -188,15 +189,15 @@ public class StdMap extends StdItem implements com.planet_ink.coffee_mud.Items.i
 		}
 	}
 
-	public Hashtable<Room,MapRoom> makeMapRooms(int width)
+	public Hashtable makeMapRooms(int width)
 	{
-		Vector<String> mapAreas=CMParms.parseSemicolons(getMapArea(),true);
-		Hashtable<Room,MapRoom> mapRooms=new Hashtable<Room,MapRoom>();
+		Vector mapAreas=CMParms.parseSemicolons(getMapArea(),true);
+		Hashtable mapRooms=new Hashtable();
 		for(int a=0;a<mapAreas.size();a++)
 		{
 			Area A=CMLib.map().getArea((String)mapAreas.elementAt(a));
 			if(A!=null)
-			for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				MapRoom mr=new MapRoom();

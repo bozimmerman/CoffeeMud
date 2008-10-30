@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Affect extends StdCommand
 {
 	private String[] access={"AFFECT","AFF","AF"};
@@ -64,7 +65,7 @@ public class Affect extends StdCommand
                 {
                     String s=CMLib.coffeeFilter().fullOutFilter(S,mob,null,null,null,disp,true);
                     s=CMStrings.replaceAll(s,"\r","");
-                    Vector<String> V=CMParms.parseAny(s,"\n",true);
+                    Vector V=CMParms.parseAny(s,"\n",true);
                     disps=new String[V.size()];
                     for(int d=0;d<V.size();d++)
                         disps[d]=(String)V.elementAt(d);
@@ -82,7 +83,7 @@ public class Affect extends StdCommand
 		return msg.toString();
 	}
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Session S=mob.session();

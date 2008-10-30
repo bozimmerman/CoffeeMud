@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Shadow extends Spirit
 {
 	public String ID(){	return "Shadow"; }
@@ -38,7 +39,7 @@ public class Shadow extends Spirit
 	public long forbiddenWornBits(){return 0;}
 	protected boolean destroyBodyAfterUse(){return true;}
 
-	protected static Vector<Item> resources=new Vector<Item>();
+	protected static Vector resources=new Vector();
 	public int availabilityCode(){return Area.THEME_FANTASY|Area.THEME_SKILLONLYMASK;}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)

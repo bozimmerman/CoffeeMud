@@ -17,6 +17,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 import java.util.*;
 import java.io.IOException;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine.PlayerData;
 /* 
    Copyright 2000-2008 Bo Zimmerman
 
@@ -32,6 +33,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class DBInterface implements DatabaseEngine
 {
     public String ID(){return "DBInterface";}
@@ -55,7 +57,7 @@ public class DBInterface implements DatabaseEngine
     	DatabaseEngine baseEngine=(DatabaseEngine)CMLib.library(MudHost.MAIN_HOST,CMLib.LIBRARY_DATABASE);
     	if((baseEngine!=null)&&(baseEngine.getConnector()!=DB)&&(baseEngine.isConnected()))
     	    oldBaseDB=baseEngine.getConnector();
-        Vector<String> privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
+        Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
         this.GAbilityLoader=new GAbilityLoader(privacyV.contains("ABILITY")?DB:oldBaseDB);
         this.GCClassLoader=new GCClassLoader(privacyV.contains("CHARCLASS")?DB:oldBaseDB);
         this.GRaceLoader=new GRaceLoader(privacyV.contains("RACE")?DB:oldBaseDB);
@@ -192,10 +194,10 @@ public class DBInterface implements DatabaseEngine
 	public void DBDeleteJournal(String Journal, int which)
 	{JournalLoader.DBDelete(Journal,which);}
 	
-	public Vector<String> DBReadJournals()
+	public Vector DBReadJournals()
 	{return JournalLoader.DBReadJournals();}
 	
-	public Vector<JournalsLibrary.JournalEntry> DBReadJournalMsgs(String Journal)
+	public Vector DBReadJournalMsgs(String Journal)
 	{return JournalLoader.DBReadJournalMsgs(Journal);}
 	
 	public int DBCountJournal(String Journal, String from, String to)
@@ -382,7 +384,7 @@ public class DBInterface implements DatabaseEngine
     public Vector DBReadPoll(String name)
     {return PollLoader.DBRead(name);}
 
-    public Vector<CMFile.CMVFSFile> DBReadVFSDirectory()
+    public Vector DBReadVFSDirectory()
     { return VFSLoader.DBReadDirectory();}
     public CMFile.CMVFSFile DBReadVFSFile(String filename)
     { return VFSLoader.DBRead(filename);}

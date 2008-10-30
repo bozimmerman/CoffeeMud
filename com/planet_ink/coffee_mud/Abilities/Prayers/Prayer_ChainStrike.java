@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Prayer_ChainStrike extends Prayer
 {
 	public String ID() { return "Prayer_ChainStrike"; }
@@ -40,12 +41,12 @@ public class Prayer_ChainStrike extends Prayer
 	public int maxRange(){return adjustedMaxInvokerRange(2);}
 	public int abstractQuality(){return Ability.QUALITY_MALICIOUS;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null) h=new HashSet();
 
-		HashSet myGroup=mob.getGroupMembers(new HashSet<MOB>());
+		HashSet myGroup=mob.getGroupMembers(new HashSet());
 		Vector targets=new Vector();
 		for(Iterator e=h.iterator();e.hasNext();)
 			targets.addElement(e.next());

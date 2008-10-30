@@ -17,6 +17,7 @@ import java.sql.SQLException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Statement implements java.sql.Statement
 {
    static private void log(String x) {

@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class StdAbility implements Ability
 {
 	public String ID() { return "StdAbility"; }
@@ -877,19 +878,19 @@ public class StdAbility implements Ability
 			A.setProficiency(100);
 	}
 
-    public boolean preInvoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
+    public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
     {
         return true;
     }
 	public boolean invoke(MOB mob, Environmental target, boolean auto, int asLevel)
 	{
-		Vector<Object> V=new Vector<Object>();
+		Vector V=new Vector();
 		if(target!=null)
 			V.addElement(target.name());
 		return invoke(mob,V,target,auto,asLevel);
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental target, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
 	{
 		expertise=null;
         if((mob!=null)&&(getXMAXRANGELevel(mob)>0))

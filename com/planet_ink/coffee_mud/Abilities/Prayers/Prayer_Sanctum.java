@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prayer_Sanctum extends Prayer
 {
 	public String ID() { return "Prayer_Sanctum"; }
@@ -101,7 +102,7 @@ public class Prayer_Sanctum extends Prayer
 						String t="No fighting!";
 						if(text().indexOf(";")>0)
 						{
-							Vector<String> V=CMParms.parseSemicolons(text(),true);
+							Vector V=CMParms.parseSemicolons(text(),true);
 							t=(String)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 						}
 						CMLib.commands().postSay(mob,msg.source(),t,false,false);
@@ -114,7 +115,7 @@ public class Prayer_Sanctum extends Prayer
 					String t="You feel too peaceful here.";
                     if(text().indexOf(";")>0)
 					{
-						Vector<String> V=CMParms.parseSemicolons(text(),true);
+						Vector V=CMParms.parseSemicolons(text(),true);
 						t=(String)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 					}
 					msg.source().tell(t);
@@ -130,7 +131,7 @@ public class Prayer_Sanctum extends Prayer
 	}
 
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target=mob.location();
 		if(target==null) return false;

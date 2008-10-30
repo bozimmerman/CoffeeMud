@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class CrossClassAbilities extends StdWebMacro
 {
 	public String name()	{return "CrossClassAbilities";}
@@ -51,7 +52,7 @@ public class CrossClassAbilities extends StdWebMacro
 				cnum++;
 			}
 		}
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			StringBuffer buf=new StringBuffer("");

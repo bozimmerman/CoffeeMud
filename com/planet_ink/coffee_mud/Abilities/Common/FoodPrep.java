@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class FoodPrep extends Cooking
 {
 	public String ID() { return "FoodPrep"; }
@@ -44,7 +45,7 @@ public class FoodPrep extends Cooking
 	public boolean requireFire(){return false;}
 
     public String parametersFile(){ return "foodprep.txt";}
-    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
     public FoodPrep()
     {

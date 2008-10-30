@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Burning extends StdAbility
 {
 	public String ID() { return "Burning"; }
@@ -305,7 +306,7 @@ public class Burning extends StdAbility
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setDisposition(affectableStats.disposition()|EnvStats.IS_LIGHTSOURCE);
 	}
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental target, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel)
 	{
 		if(!auto) return false;
 		if(target==null) return false;

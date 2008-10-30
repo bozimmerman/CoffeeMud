@@ -32,6 +32,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class GenRace extends StdRace
 {
 	protected String ID="GenRace";
@@ -190,7 +191,7 @@ public class GenRace extends StdRace
 			affectableMaxState.setThirst(affectableMaxState.getThirst()+adjState.getThirst());
 		}
 	}
-	public Vector<Item> myResources(){
+	public Vector myResources(){
 		if(resourceChoices==null)
 			return new Vector();
 		return resourceChoices;
@@ -408,7 +409,7 @@ public class GenRace extends StdRace
 		setStat("EVENTRACE",CMLib.xml().getValFromPieces(raceData,"EVENTRACE"));
 		setStat("WEAPONRACE",CMLib.xml().getValFromPieces(raceData,"WEAPONRACE"));
 		String body=CMLib.xml().getValFromPieces(raceData,"BODY");
-		Vector<String> V=CMParms.parseSemicolons(body,false);
+		Vector V=CMParms.parseSemicolons(body,false);
 		for(int v=0;v<V.size();v++)
 			if(v<bodyMask().length)
 				bodyMask()[v]=CMath.s_int((String)V.elementAt(v));
@@ -429,7 +430,7 @@ public class GenRace extends StdRace
 		String saState=CMLib.xml().getValFromPieces(raceData,"STARTASTATE");
 		if(saState.length()>0){ startAdjState=(CharState)CMClass.getCommon("DefaultCharState"); startAdjState.setAllValues(0); CMLib.coffeeMaker().setCharState(startAdjState,saState);}
 		String aging=CMLib.xml().getValFromPieces(raceData,"AGING");
-		Vector<String> aV=CMParms.parseCommas(aging,true);
+		Vector aV=CMParms.parseCommas(aging,true);
 		for(int v=0;v<aV.size();v++)
 		    getAgingChart()[v]=CMath.s_int((String)aV.elementAt(v));
 
@@ -457,7 +458,7 @@ public class GenRace extends StdRace
 		outfitChoices=null;
 		if((oV!=null)&&(oV.size()>0))
 		{
-			outfitChoices=new Vector<Item>();
+			outfitChoices=new Vector();
 			for(int x=0;x<oV.size();x++)
 			{
 				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)oV.elementAt(x);
@@ -698,7 +699,7 @@ public class GenRace extends StdRace
 		}
 		case 13:
 		{
-			Vector<String> V=CMParms.parseSemicolons(val,false);
+			Vector V=CMParms.parseSemicolons(val,false);
 			for(int v=0;v<V.size();v++)
 				if(v<bodyMask().length)
 					bodyMask()[v]=CMath.s_int((String)V.elementAt(v));
@@ -781,7 +782,7 @@ public class GenRace extends StdRace
 					 break;
 				 }
 		case 31: if(CMath.s_int(val)==0) outfitChoices=null; else outfitChoices=new Vector(CMath.s_int(val)); break;
-		case 32: {   if(outfitChoices==null) outfitChoices=new Vector<Item>();
+		case 32: {   if(outfitChoices==null) outfitChoices=new Vector();
 					 if(num>=outfitChoices.size())
 						outfitChoices.addElement(CMClass.getItem(val));
 					 else
@@ -822,7 +823,7 @@ public class GenRace extends StdRace
 					 break;
 				 }
 		case 39: {
-					Vector<String> aV=CMParms.parseCommas(val,true);
+					Vector aV=CMParms.parseCommas(val,true);
 					for(int v=0;v<aV.size();v++)
 					    getAgingChart()[v]=CMath.s_int((String)aV.elementAt(v));
 		    		break;

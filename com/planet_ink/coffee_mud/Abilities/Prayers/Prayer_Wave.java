@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prayer_Wave extends Prayer
 {
 	public String ID() { return "Prayer_Wave"; }
@@ -44,7 +45,7 @@ public class Prayer_Wave extends Prayer
 
 
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		HashSet h=properTargets(mob,givenTarget,auto);
 		if(h==null) return false;

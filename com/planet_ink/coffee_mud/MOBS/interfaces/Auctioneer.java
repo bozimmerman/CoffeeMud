@@ -30,6 +30,7 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public interface Auctioneer extends ShopKeeper
 {
 	public static class AuctionData
@@ -108,7 +109,7 @@ public interface Auctioneer extends ShopKeeper
         public int minDays=0;
         public AuctionRates()
         {
-            Vector<String> ratesV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_AUCTIONRATES),true);
+            Vector ratesV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_AUCTIONRATES),true);
             while(ratesV.size()<7)ratesV.addElement("0");
             liveListPrice=CMath.s_double((String)ratesV.elementAt(0));
             timeListPrice=CMath.s_double((String)ratesV.elementAt(1));

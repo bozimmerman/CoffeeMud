@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class At extends StdCommand
 {
 	public At(){}
@@ -85,7 +86,7 @@ public class At extends StdCommand
                 if(room==null)
                 {
                     // now look for area names
-                    for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+                    for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
                     {
                         Area A=(Area)a.nextElement();
                         if((A.Name().equalsIgnoreCase(srchStr))
@@ -101,7 +102,7 @@ public class At extends StdCommand
                 // keep looking at area names
 				if(room==null)
 				{
-					for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+					for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 					{
 						Area A=(Area)a.nextElement();
 						if((CMLib.english().containsString(A.name(),srchStr))
@@ -121,7 +122,7 @@ public class At extends StdCommand
 					MOB target=null;
 					try
 					{
-                        for(Enumeration<Room> r=CMLib.map().roomsFilled();r.hasMoreElements();)
+                        for(Enumeration r=CMLib.map().roomsFilled();r.hasMoreElements();)
                         {
                             Room R=(Room)r.nextElement();
                             target=R.fetchInhabitant(srchStr);
@@ -140,7 +141,7 @@ public class At extends StdCommand
 				if(room==null)
 				{
 					String areaName=srchStr.toUpperCase();
-					for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
 						if(CMLib.english().containsString(CMStrings.removeColors(R.displayText()),areaName))
@@ -156,7 +157,7 @@ public class At extends StdCommand
                     String areaName=srchStr.toUpperCase();
 				    try
 				    {
-						for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 						{
 							Room R=(Room)r.nextElement();
 							if(CMLib.english().containsString(CMStrings.removeColors(R.description()),areaName))
@@ -174,7 +175,7 @@ public class At extends StdCommand
 					Item target=null;
 					try
 					{
-						for(Enumeration<Room> r=CMLib.map().roomsFilled();r.hasMoreElements();)
+						for(Enumeration r=CMLib.map().roomsFilled();r.hasMoreElements();)
 						{
 							Room R=(Room)r.nextElement();
 							target=R.fetchItem(null,srchStr);
@@ -194,7 +195,7 @@ public class At extends StdCommand
 		return room;
 	}
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		commands.removeElementAt(0);

@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Thief_Graffiti extends ThiefSkill
 {
 	public String ID() { return "Thief_Graffiti"; }
@@ -41,7 +42,7 @@ public class Thief_Graffiti extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
     public int classificationCode(){return Ability.ACODE_THIEF_SKILL|Ability.DOMAIN_STREETSMARTS;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		String str=CMParms.combine(commands,0);
 		if(str.length()==0)

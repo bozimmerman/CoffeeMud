@@ -30,18 +30,19 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Areas extends StdCommand
 {
 	public Areas(){}
 
 	private String[] access={"AREAS"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Vector areasVec=new Vector();
         boolean sysop=(mob!=null)&&CMSecurity.isASysOp(mob);
-		for(Enumeration<Area> a=CMLib.map().sortedAreas();a.hasMoreElements();)
+		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
 			if(CMLib.flags().canAccess(mob,A))

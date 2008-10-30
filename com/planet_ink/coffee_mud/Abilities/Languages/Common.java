@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Common extends StdLanguage
 {
 	public String ID() { return "Common"; }
@@ -47,7 +48,7 @@ public class Common extends StdLanguage
 	}
 	public int proficiency(){return 100;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		boolean anythingDone=false;
 		for(int a=0;a<mob.numAllEffects();a++)

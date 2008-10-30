@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_Meld extends Spell
 {
 	public String ID() { return "Spell_Meld"; }
@@ -72,7 +73,7 @@ public class Spell_Meld extends Spell
 		return 99;
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		// add something to disable traps
 		//

@@ -35,6 +35,7 @@ import java.util.*;
  * @see com.planet_ink.coffee_mud.Common.interfaces.CharStats
  * @author Bo Zimmerman
  */
+@SuppressWarnings("unchecked")
 public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObject, CMModifiable
 {
 	/**
@@ -234,7 +235,7 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 * @param myChar one who will receive the objects
 	 * @return a vector of Item objects
 	 */
-	public Vector<Item> outfit(MOB myChar);
+	public Vector outfit(MOB myChar);
 
 	/**
 	 * This method is called whenever a player casts a spell which has a lasting

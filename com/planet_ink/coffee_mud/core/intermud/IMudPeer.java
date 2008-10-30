@@ -41,6 +41,7 @@ import java.io.ObjectOutputStream;
  * limitations under the License.
  *
  */
+@SuppressWarnings("unchecked")
 public class IMudPeer implements PersistentPeer
 {
 	Object myobj=null;

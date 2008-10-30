@@ -33,6 +33,7 @@ import java.util.Vector;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_ColdWard extends Chant
 {
 	public String ID() { return "Chant_ColdWard"; }
@@ -60,7 +61,7 @@ public class Chant_ColdWard extends Chant
 		affectedStats.setStat(CharStats.STAT_SAVE_COLD,affectedStats.getStat(CharStats.STAT_SAVE_COLD)+100);
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
 		if((auto)&&(givenTarget!=null)&&(givenTarget instanceof MOB))

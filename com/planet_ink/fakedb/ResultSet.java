@@ -19,7 +19,7 @@ import java.util.Map;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-
+@SuppressWarnings("unchecked")
 class ResultSet implements java.sql.ResultSet
 {
    private Statement statement;

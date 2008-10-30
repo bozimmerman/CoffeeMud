@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Druid_ShapeShift extends StdAbility
 {
 	public String ID() { return "Druid_ShapeShift"; }
@@ -207,7 +208,7 @@ public class Druid_ShapeShift extends StdAbility
         return super.castingQuality(mob,target);
     }
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		for(int a=mob.numEffects()-1;a>=0;a--)
 		{

@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Fighter_Rescue extends FighterSkill
 {
 	public String ID() { return "Fighter_Rescue"; }
@@ -44,7 +45,7 @@ public class Fighter_Rescue extends FighterSkill
     public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
 	public int usageType(){return USAGE_MOVEMENT;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob==null) return false;
 		MOB imfighting=mob.getVictim();

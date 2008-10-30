@@ -45,6 +45,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @version 1.0
  * @see com.planet_ink.coffee_mud.core.intermud.net.Interactive#redirectInput
  */
+
 public interface Input {
     /**
      * Implementations of this interface will define this

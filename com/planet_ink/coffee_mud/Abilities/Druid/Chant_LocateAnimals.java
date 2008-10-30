@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_LocateAnimals extends Chant
 {
 	public String ID() { return "Chant_LocateAnimals"; }
@@ -113,7 +114,7 @@ public class Chant_LocateAnimals extends Chant
 		return null;
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.fetchEffect(this.ID())!=null)
 		{
@@ -137,9 +138,9 @@ public class Chant_LocateAnimals extends Chant
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		Vector<Room> rooms=new Vector<Room>();
-		Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,20);
-		for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
+		Vector rooms=new Vector();
+		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,20);
+		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 		{
 			Room R=CMLib.map().getRoom((Room)r.nextElement());
 			if(animalHere(R)!=null)

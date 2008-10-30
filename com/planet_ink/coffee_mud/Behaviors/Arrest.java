@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -35,6 +36,7 @@ import java.io.ByteArrayOutputStream;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Arrest extends StdBehavior implements LegalBehavior
 {
 	public String ID(){return "Arrest";}
@@ -401,21 +403,10 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					Vector data=CMLib.database().DBReadData(what.Name(),"ARREST",what.Name()+"/ARREST");
 					if((data!=null)&&(data.size()>0))
 					{
-						data=(Vector)data.firstElement();
-						if((data!=null)&&(data.size()>0))
-						{
-							String s=CMStrings.replaceAll((String)data.elementAt(3),"~","\n");
-							s=CMStrings.replaceAll(s,"`","'");
-							lawprops.load(new ByteArrayInputStream(CMStrings.strToBytes(s)));
-						}
-						else
-						{
-							String s=Law.defaultLaw;
-							lawprops.load(new ByteArrayInputStream(CMStrings.strToBytes(s)));
-							s=CMStrings.replaceAll(s,"\n","~");
-							s=CMStrings.replaceAll(s,"'","`");
-							CMLib.database().DBCreateData(what.Name(),"ARREST",what.Name()+"/ARREST",s);
-						}
+						DatabaseEngine.PlayerData pdata=(DatabaseEngine.PlayerData)data.firstElement();
+						String s=CMStrings.replaceAll(pdata.xml,"~","\n");
+						s=CMStrings.replaceAll(s,"`","'");
+						lawprops.load(new ByteArrayInputStream(CMStrings.strToBytes(s)));
 					}
 					else
 					{
@@ -622,7 +613,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 	public boolean isStillACrime(LegalWarrant W, boolean debugging)
 	{
 		// will witness talk, or victim press charges?
-		HashSet H=W.criminal().getGroupMembers(new HashSet<MOB>());
+		HashSet H=W.criminal().getGroupMembers(new HashSet());
 		if((W.witness()!=null)&&W.witness().amDead()) 
 	    {
 		    if(debugging) Log.debugOut("ARREST", "Witness is DEAD!");
@@ -857,7 +848,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 
 	public Room findTheJudge(Law laws, Area myArea)
 	{
-		for(Enumeration<Room> r=myArea.getMetroMap();r.hasMoreElements();)
+		for(Enumeration r=myArea.getMetroMap();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
 			for(int i=0;i<R.numInhabitants();i++)
@@ -879,7 +870,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 			Room R=findTheJudge(laws,myArea);
 			if(R!=null)
 			{
-				A.invoke(officer,CMParms.parseToObjV("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
+				A.invoke(officer,CMParms.parse("\""+CMLib.map().getExtendedRoomID(R)+"\""),R,true,0);
 				return true;
 			}
 		}
@@ -937,14 +928,14 @@ public class Arrest extends StdBehavior implements LegalBehavior
         Room jail=null;
         jail=CMLib.map().getRoom(which);
         if(jail==null)
-        for(Enumeration<Room> r=A.getMetroMap();r.hasMoreElements();)
+        for(Enumeration r=A.getMetroMap();r.hasMoreElements();)
         {
             Room R=(Room)r.nextElement();
             if(CMLib.english().containsString(R.displayText(),which))
             { jail=R; break; }
         }
         if(jail==null)
-        for(Enumeration<Room> r=A.getMetroMap();r.hasMoreElements();)
+        for(Enumeration r=A.getMetroMap();r.hasMoreElements();)
         {
             Room R=(Room)r.nextElement();
             if(CMLib.english().containsString(R.description(),which))
@@ -952,7 +943,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
         }
         return jail;
     }
-	public Room getRoom(Area A, Vector<String> V)
+	public Room getRoom(Area A, Vector V)
 	{
 		if(V.size()==0) return null;
 		String which=(String)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
@@ -1258,7 +1249,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		// any special circumstances?
 		if(crimeFlags.trim().length()>0)
 		{
-			Vector<String> V=CMParms.parse(crimeFlags.toUpperCase());
+			Vector V=CMParms.parse(crimeFlags.toUpperCase());
 			for(int v=0;v<V.size();v++)
 			{
 				String str=(String)V.elementAt(v);
@@ -1330,7 +1321,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		if(crimeLocs.trim().length()>0)
 		{
 			boolean aCrime=false;
-			Vector<String> V=CMParms.parse(crimeLocs);
+			Vector V=CMParms.parse(crimeLocs);
 			String display=mob.location().displayText().toUpperCase().trim();
 			for(int v=0;v<V.size();v++)
 			{
@@ -1428,7 +1419,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 		W.setLastOffense(System.currentTimeMillis());
 		W.setWarnMsg(warnMsg);
 		sentence=sentence.trim();
-        Vector<String> sentences=CMParms.parse(sentence);
+        Vector sentences=CMParms.parse(sentence);
         W.setPunishment(0);
         for(int v=0;v<sentences.size();v++)
         {
@@ -1890,20 +1881,20 @@ public class Arrest extends StdBehavior implements LegalBehavior
 					mob.setVictim(officer);
 				else
 				if(!CMLib.flags().isAnimalIntelligence(mob))
-					mob.enqueCommand(CMParms.parseToObjV("FLEE"),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,1);
+					mob.enqueCommand(CMParms.parse("FLEE"),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER,1);
 			}
 			else
 			if((good||neutral)
 			&&(!CMLib.flags().isAnimalIntelligence(mob)))
 			{
 				mob.makePeace();
-				mob.doCommand(CMParms.parseToObjV("SIT"),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER);
+				mob.doCommand(CMParms.parse("SIT"),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER);
 			}
 			else
 			if((CMLib.flags().isAnimalIntelligence(mob))&&(CMLib.dice().rollPercentage()>50))
 			{
 				mob.makePeace();
-				mob.doCommand(CMParms.parseToObjV("SIT"),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER);
+				mob.doCommand(CMParms.parse("SIT"),Command.METAFLAG_FORCED|Command.METAFLAG_ORDER);
 			}
 		}
 	}
@@ -2516,7 +2507,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						{
 							W.setTravelAttemptTime(System.currentTimeMillis());
 							A.setAbilityCode(1);
-							A.invoke(officer,CMParms.parseToObjV(CMLib.map().getExtendedRoomID(jail)),jail,true,0);
+							A.invoke(officer,CMParms.parse(CMLib.map().getExtendedRoomID(jail)),jail,true,0);
 						}
 						if(officer.fetchEffect("Skill_Track")==null)
 						{
@@ -2590,7 +2581,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
                         {
                             W.setTravelAttemptTime(System.currentTimeMillis());
                             A.setAbilityCode(1);
-                            A.invoke(officer,CMParms.parseToObjV(CMLib.map().getExtendedRoomID(jail)),jail,true,0);
+                            A.invoke(officer,CMParms.parse(CMLib.map().getExtendedRoomID(jail)),jail,true,0);
                         }
                         if(officer.fetchEffect("Skill_Track")==null)
                         {
@@ -2732,7 +2723,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						{
 							CMLib.tracking().stopTracking(officer);
 							A.setAbilityCode(1); // tells track to cache the path
-							A.invoke(officer,CMParms.parseToObjV(CMLib.map().getExtendedRoomID(W.jail())),W.jail(),true,0);
+							A.invoke(officer,CMParms.parse(CMLib.map().getExtendedRoomID(W.jail())),W.jail(),true,0);
 						}
 						if(officer.fetchEffect("Skill_Track")==null)
 						{
@@ -2799,7 +2790,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
                         {
                             CMLib.tracking().stopTracking(officer);
                             A.setAbilityCode(1); // tells track to cache the path
-                            A.invoke(officer,CMParms.parseToObjV(CMLib.map().getExtendedRoomID(W.jail())),W.jail(),true,0);
+                            A.invoke(officer,CMParms.parse(CMLib.map().getExtendedRoomID(W.jail())),W.jail(),true,0);
                         }
                         if(officer.fetchEffect("Skill_Track")==null)
                         {
@@ -2875,7 +2866,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if(A!=null)
 						{
 							W.setTravelAttemptTime(System.currentTimeMillis());
-							A.invoke(officer,CMParms.parseToObjV(CMLib.map().getExtendedRoomID(W.releaseRoom())),W.releaseRoom(),true,0);
+							A.invoke(officer,CMParms.parse(CMLib.map().getExtendedRoomID(W.releaseRoom())),W.releaseRoom(),true,0);
 						}
 						if(officer.fetchEffect("Skill_Track")==null)
 						{
@@ -2921,7 +2912,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 								{
 									CMLib.tracking().stopTracking(officer);
 									Ability A=CMClass.getAbility("Skill_Track");
-									if(A!=null)	A.invoke(officer,CMParms.parseToObjV(CMLib.map().getExtendedRoomID(W.releaseRoom())),W.releaseRoom(),true,0);
+									if(A!=null)	A.invoke(officer,CMParms.parse(CMLib.map().getExtendedRoomID(W.releaseRoom())),W.releaseRoom(),true,0);
 									if(W.arrestingOfficer().fetchEffect("Skill_Track")==null)
 									{
 										W.setTravelAttemptTime(0);

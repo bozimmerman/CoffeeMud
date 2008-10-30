@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Thief_Assassinate extends ThiefSkill
 {
 	public String ID() { return "Thief_Assassinate"; }
@@ -44,7 +45,7 @@ public class Thief_Assassinate extends ThiefSkill
 	public String[] triggerStrings(){return triggerStrings;}
 	public long flags(){return Ability.FLAG_TRACKING;}
     public int classificationCode() {   return Ability.ACODE_SKILL|Ability.DOMAIN_DIRTYFIGHTING; }
-	protected Vector<Room> theTrail=null;
+	protected Vector theTrail=null;
 	public int nextDirection=-2;
 	protected MOB tracking=null;
 
@@ -186,7 +187,7 @@ public class Thief_Assassinate extends ThiefSkill
             CMLib.tracking().wanderAway(mob,false,true);
     }
     
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!CMLib.flags().aliveAwakeMobileUnbound(mob,false))
 			return false;
@@ -249,7 +250,7 @@ public class Thief_Assassinate extends ThiefSkill
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
-		Vector<Room> rooms=new Vector<Room>();
+		Vector rooms=new Vector();
 		if(tracking!=null)
 		{
 			Room R=tracking.location();
@@ -261,8 +262,8 @@ public class Thief_Assassinate extends ThiefSkill
 		{
 		    try
 		    {
-				Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,givenTarget!=null&&auto&&mob.isMonster(),true,true,true,50+(2*getXLEVELLevel(mob)));
-				for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
+				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,givenTarget!=null&&auto&&mob.isMonster(),true,true,true,50+(2*getXLEVELLevel(mob)));
+				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 				{
 					Room R=CMLib.map().getRoom((Room)r.nextElement());
 					if(R.fetchInhabitant(mobName)!=null)

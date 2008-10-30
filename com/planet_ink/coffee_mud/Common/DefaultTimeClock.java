@@ -9,6 +9,8 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
+import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -31,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class DefaultTimeClock implements TimeClock
 {
 	public String ID(){return "DefaultTimeClock";}
@@ -313,7 +316,7 @@ public class DefaultTimeClock implements TimeClock
 	{
 	    try
 	    {
-			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if((R!=null)
@@ -435,13 +438,13 @@ public class DefaultTimeClock implements TimeClock
 			if((loadName!=null)&&(!loaded))
 			{
 				loaded=true;
-				Vector V=CMLib.database().DBReadData(loadName,"TIMECLOCK");
+				Vector bitV=CMLib.database().DBReadData(loadName,"TIMECLOCK");
 				String timeRsc=null;
-				if((V==null)||(V.size()==0)||(!(V.elementAt(0) instanceof Vector)))
+				if((bitV==null)||(bitV.size()==0))
 					timeRsc="<TIME>-1</TIME><DAY>1</DAY><MONTH>1</MONTH><YEAR>1</YEAR>";
 				else
-					timeRsc=(String)((Vector)V.elementAt(0)).elementAt(3);
-				V=CMLib.xml().parseAllXML(timeRsc);
+					timeRsc=((DatabaseEngine.PlayerData)(bitV.firstElement())).xml;
+				Vector V=CMLib.xml().parseAllXML(timeRsc);
 				setTimeOfDay(CMLib.xml().getIntFromPieces(V,"TIME"));
 				setDayOfMonth(CMLib.xml().getIntFromPieces(V,"DAY"));
 				setMonth(CMLib.xml().getIntFromPieces(V,"MONTH"));

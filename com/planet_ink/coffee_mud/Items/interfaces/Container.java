@@ -28,6 +28,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public interface Container extends Item
 {
 	public boolean isLocked();
@@ -35,7 +36,7 @@ public interface Container extends Item
 	public boolean isOpen();
 	public boolean hasALid();
 	public void setLidsNLocks(boolean newHasALid, boolean newIsOpen, boolean newHasALock, boolean newIsLocked);
-	public Vector<Item> getContents();
+	public Vector getContents();
 	public int capacity();
 	public void setCapacity(int newValue);
 	public boolean canContain(Environmental E);

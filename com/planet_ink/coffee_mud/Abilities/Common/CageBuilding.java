@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class CageBuilding extends Wainwrighting
 {
 	public String ID() { return "CageBuilding"; }
@@ -41,9 +42,9 @@ public class CageBuilding extends Wainwrighting
     public String supportedResourceString(){return "WOODEN";}
 
     public String parametersFile(){ return "cagebuilding.txt";}
-    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(commands.size()==0)
 		{

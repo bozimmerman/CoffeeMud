@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Beastmaster extends StdCharClass
 {
 	public String ID(){return "Beastmaster";}
@@ -237,18 +238,18 @@ public class Beastmaster extends StdCharClass
 		return false;
 	}
 
-	public Vector<Item> outfit(MOB myChar)
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector<Item>();
+			outfitChoices=new Vector();
 			Weapon w=CMClass.getWeapon("Quarterstaff");
 			outfitChoices.addElement((Item)w);
 		}
 		return outfitChoices;
 	}
 
-	@SuppressWarnings("unchecked")
+	
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);

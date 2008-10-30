@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_VineWeave extends Chant
 {
 	public String ID() { return "Chant_VineWeave"; }
@@ -42,7 +43,7 @@ public class Chant_VineWeave extends Chant
 	protected int overrideMana(){return 50;}
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(mob.location().resourceChoices()==null)
 		{

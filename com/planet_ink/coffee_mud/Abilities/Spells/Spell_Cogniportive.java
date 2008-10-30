@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_Cogniportive extends Spell
 {
 	public String ID() { return "Spell_Cogniportive"; }
@@ -48,7 +49,7 @@ public class Spell_Cogniportive extends Spell
 		// check mobs worn items first!
 	    try
 	    {
-			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(CMLib.flags().canAccess(mob,R))
@@ -71,7 +72,7 @@ public class Spell_Cogniportive extends Spell
 	    try
 	    {
 			// check shopkeepers second!
-			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(CMLib.flags().canAccess(mob,R))
@@ -94,7 +95,7 @@ public class Spell_Cogniportive extends Spell
 	    try
 	    {
 			// check mobs inventory items third!
-			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(CMLib.flags().canAccess(mob,R))
@@ -117,7 +118,7 @@ public class Spell_Cogniportive extends Spell
 	    try
 	    {
 			// check room stuff last
-			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if((CMLib.flags().canAccess(mob,R))
@@ -196,7 +197,7 @@ public class Spell_Cogniportive extends Spell
 				String msgStr=CMStrings.getSayFromMessage(msg.sourceMessage());
 				if(msgStr!=null)
 				{
-					Vector<String> V=CMParms.parse(msgStr);
+					Vector V=CMParms.parse(msgStr);
 					if((V.size()>=2)
 					&&(((String)V.firstElement()).equalsIgnoreCase("HOME")))
 					{
@@ -215,7 +216,7 @@ public class Spell_Cogniportive extends Spell
 		super.executeMsg(myHost,msg);
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_ANY);
 		if(target==null)

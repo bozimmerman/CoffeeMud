@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prop_CommonTwister extends Property
 {
 	public String ID() { return "Prop_CommonTwister"; }
@@ -45,7 +46,7 @@ public class Prop_CommonTwister extends Property
 	{
 		super.setMiscText(text);
 		changes.clear();
-		Vector<String> V=CMParms.parseSemicolons(text,true);
+		Vector V=CMParms.parseSemicolons(text,true);
 		for(int v=0;v<V.size();v++)
 		{
 			String s=(String)V.elementAt(v);

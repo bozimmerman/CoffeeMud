@@ -30,18 +30,19 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class After extends StdCommand implements Tickable
 {
 	public String name(){return "SysOpSkills";} // for tickables use
 	public long getTickStatus(){return Tickable.STATUS_NOT;}
 
-	public Vector<Vector<Object>> afterCmds=new Vector<Vector<Object>>();
+	public Vector afterCmds=new Vector();
 
 	public After(){}
 
 	private String[] access={"AFTER"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean every=false;
@@ -64,12 +65,12 @@ public class After extends StdCommand implements Tickable
 			str.append(CMStrings.padRight("Next run",20)+" "+CMStrings.padRight(" Interval",20)+" "+CMStrings.padRight("Who",10)+" Command\n\r");
 			while(s<afterCmds.size())
 			{
-				Vector<Object> V=(Vector<Object>)afterCmds.elementAt(s);
+				Vector V=(Vector)afterCmds.elementAt(s);
 				long start=((Long)V.elementAt(0)).longValue();
 				long duration=((Long)V.elementAt(1)).longValue();
 				every=((Boolean)V.elementAt(2)).booleanValue();
 				MOB M=((MOB)V.elementAt(3));
-				Vector<String> command=(Vector<String>)V.elementAt(4);
+				Vector command=(Vector)V.elementAt(4);
 				str.append(CMStrings.padRight(CMLib.time().date2String(start+duration),20)+" ");
 				str.append((every?"*":" ")+CMStrings.padRight(CMLib.english().returnTime(duration,0),20)+" ");
 				str.append(CMStrings.padRight(M.Name(),10)+" ");
@@ -105,7 +106,7 @@ public class After extends StdCommand implements Tickable
 		}
 		commands.removeElementAt(0);
 		if(commands.size()==0){ mob.tell(afterErr); return false;}
-		Vector<Object> V=new Vector<Object>();
+		Vector V=new Vector();
 		V.addElement(new Long(System.currentTimeMillis()));
 		V.addElement(new Long(time));
 		V.addElement(Boolean.valueOf(every));
@@ -129,14 +130,14 @@ public class After extends StdCommand implements Tickable
 		int s=0;
 		while(s<afterCmds.size())
 		{
-			Vector<Object> V=(Vector<Object>)afterCmds.elementAt(s);
+			Vector V=(Vector)afterCmds.elementAt(s);
 			long start=((Long)V.elementAt(0)).longValue();
 			long duration=((Long)V.elementAt(1)).longValue();
 			if(System.currentTimeMillis()>(start+duration))
 			{
 				boolean every=((Boolean)V.elementAt(2)).booleanValue();
 				MOB mob=((MOB)V.elementAt(3));
-				Vector<String> command=(Vector<String>)V.elementAt(4);
+				Vector command=(Vector)V.elementAt(4);
 				Integer metaFlag=(Integer)V.elementAt(5);
 				if(every)
 				{
@@ -145,7 +146,7 @@ public class After extends StdCommand implements Tickable
 				}
 				else
 					afterCmds.removeElementAt(s);
-				mob.doCommand((Vector<Object>)command.clone(),metaFlag.intValue());
+				mob.doCommand((Vector)command.clone(),metaFlag.intValue());
 			}
 			else
 				s++;

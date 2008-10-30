@@ -33,10 +33,11 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class GrinderAbilities {
     public String name()    {return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-    public static String modifyAbility(ExternalHTTPRequests httpReq, Hashtable<String,String> parms, Ability oldA, Ability A)
+    public static String modifyAbility(ExternalHTTPRequests httpReq, Hashtable parms, Ability oldA, Ability A)
     {
         String replaceCommand=httpReq.getRequestParameter("REPLACE");
         if((replaceCommand != null) 

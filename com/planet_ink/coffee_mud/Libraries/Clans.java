@@ -33,6 +33,7 @@ import java.util.*;
  * <p>See the License for the specific language governing permissions and
  * <p>limitations under the License.
  */
+@SuppressWarnings("unchecked")
 public class Clans extends StdLibrary implements ClanManager
 {
 	public Hashtable all=new Hashtable();
@@ -262,7 +263,7 @@ public class Clans extends StdLibrary implements ClanManager
 	    if(prizeStr.length()==0) return "None";
         if(prizeStr.length()>0)
         {
-            Vector<String> V=CMParms.parse(prizeStr);
+            Vector V=CMParms.parse(prizeStr);
             if(V.size()>=2)
             {
                 String type=((String)V.lastElement()).toUpperCase();

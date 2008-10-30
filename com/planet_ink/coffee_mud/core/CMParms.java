@@ -18,13 +18,14 @@ import com.planet_ink.coffee_mud.core.interfaces.CMObject;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class CMParms
 {
     private CMParms(){super();}
     private static CMParms inst=new CMParms();
     public static CMParms instance(){return inst;}
 
-    public static String combine(Vector<?> commands, int startAt, int endAt)
+    public static String combine(Vector commands, int startAt, int endAt)
     {
         StringBuffer Combined=new StringBuffer("");
         if(commands!=null)
@@ -33,7 +34,7 @@ public class CMParms
         return Combined.toString().trim();
     }
 
-    public static String combineWithQuotes(Vector<?> commands, int startAt, int endAt)
+    public static String combineWithQuotes(Vector commands, int startAt, int endAt)
     {
         StringBuffer Combined=new StringBuffer("");
         if(commands!=null)
@@ -46,7 +47,7 @@ public class CMParms
         return Combined.toString().trim();
     }
     
-    @SuppressWarnings("unchecked")
+    
 	public static void sortVector(Vector V) {
         Vector V2=new Vector(new TreeSet(V));
         V.clear();
@@ -54,7 +55,7 @@ public class CMParms
         V.trimToSize();
     }
 
-    public static String combineAfterIndexWithQuotes(Vector<String> commands, String match)
+    public static String combineAfterIndexWithQuotes(Vector commands, String match)
     {
         StringBuffer Combined=new StringBuffer("");
         if(commands!=null)
@@ -67,7 +68,7 @@ public class CMParms
         return Combined.toString().trim();
     }
 
-    public static String combineWithQuotes(Vector<?> commands, int startAt)
+    public static String combineWithQuotes(Vector commands, int startAt)
     {
         StringBuffer Combined=new StringBuffer("");
         if(commands!=null)
@@ -80,12 +81,12 @@ public class CMParms
         return Combined.toString().trim();
     }
 
-    public static String combineWithTabs(Vector<?> commands, int startAt)
+    public static String combineWithTabs(Vector commands, int startAt)
     {
         return combineWithX(commands,"\t",startAt);
     }
 
-    public static String combineWithX(Vector<?> commands, String X, int startAt)
+    public static String combineWithX(Vector commands, String X, int startAt)
     {
         StringBuffer Combined=new StringBuffer("");
         if(commands!=null)
@@ -97,7 +98,7 @@ public class CMParms
         return Combined.toString().trim();
     }
 
-    public static String combine(Vector<?> commands, int startAt)
+    public static String combine(Vector commands, int startAt)
     {
         StringBuffer Combined=new StringBuffer("");
         if(commands!=null)
@@ -106,15 +107,12 @@ public class CMParms
         return Combined.toString().trim();
     }
 
-    public static Vector<String> parse(String str)
+    public static Vector parse(String str)
     {   return parse(str,-1);   }
 
-    public static Vector<Object> parseToObjV(String str)
-    {   return makeObjV(parse(str,-1));   }
-
-    public static Vector<String> paramParse(String str)
+    public static Vector paramParse(String str)
     {
-        Vector<String> commands=parse(str);
+        Vector commands=parse(str);
         for(int i=0;i<commands.size();i++)
         {
             String s=(String)commands.elementAt(i);
@@ -146,16 +144,9 @@ public class CMParms
         return commands;
     }
 
-    @SuppressWarnings("unchecked")
-	public static Vector<Object> makeObjV(Vector<?> V)
+    public static Vector parse(String str, int upTo)
     {
-    	if(V==null) return new Vector<Object>();
-    	return (Vector<Object>)V.clone();
-    }
-    
-    public static Vector<String> parse(String str, int upTo)
-    {
-        Vector<String> commands=new Vector<String>();
+        Vector commands=new Vector();
         if(str==null) return commands;
         str=str.trim();
         while(!str.equals(""))
@@ -203,9 +194,9 @@ public class CMParms
         return commands;
     }
 
-    public static Vector<String> parseCommas(String s, boolean ignoreNulls)
+    public static Vector parseCommas(String s, boolean ignoreNulls)
     {
-        Vector<String> V=new Vector<String>();
+        Vector V=new Vector();
         if((s==null)||(s.length()==0)) return V;
         int x=s.indexOf(",");
         while(x>=0)
@@ -221,9 +212,9 @@ public class CMParms
         return V;
     }
 
-    public static Vector<String> parseTabs(String s, boolean ignoreNulls)
+    public static Vector parseTabs(String s, boolean ignoreNulls)
     {
-        Vector<String> V=new Vector<String>();
+        Vector V=new Vector();
         if((s==null)||(s.length()==0)) return V;
         int x=s.indexOf("\t");
         while(x>=0)
@@ -239,9 +230,9 @@ public class CMParms
         return V;
     }
 
-    public static Vector<String> parseAny(String s, String delimeter, boolean ignoreNulls)
+    public static Vector parseAny(String s, String delimeter, boolean ignoreNulls)
     {
-        Vector<String> V=new Vector<String>();
+        Vector V=new Vector();
         if((s==null)||(s.length()==0)) return V;
         int x=s.indexOf(delimeter);
         while(x>=0)
@@ -256,9 +247,9 @@ public class CMParms
             V.addElement(s.trim());
         return V;
     }
-    public static Vector<String> parseAnyWords(String s, String delimeter, boolean ignoreNulls)
+    public static Vector parseAnyWords(String s, String delimeter, boolean ignoreNulls)
     {
-        Vector<String> V=new Vector<String>();
+        Vector V=new Vector();
         if((s==null)||(s.length()==0)) return V;
         delimeter=delimeter.toUpperCase();
         int x=s.toUpperCase().indexOf(delimeter);
@@ -275,9 +266,9 @@ public class CMParms
         return V;
     }
 
-    public static Vector<String> parseSquiggles(String s)
+    public static Vector parseSquiggles(String s)
     {
-        Vector<String> V=new Vector<String>();
+        Vector V=new Vector();
         if((s==null)||(s.length()==0)) return V;
         int x=s.indexOf("~");
         while(x>=0)
@@ -290,9 +281,9 @@ public class CMParms
         return V;
     }
 
-    public static Vector<String> parseSentences(String s)
+    public static Vector parseSentences(String s)
     {
-        Vector<String> V=new Vector<String>();
+        Vector V=new Vector();
         if((s==null)||(s.length()==0)) return V;
         int x=s.indexOf(".");
         while(x>=0)
@@ -305,9 +296,9 @@ public class CMParms
         return V;
     }
 
-    public static Vector<String> parseSquiggleDelimited(String s, boolean ignoreNulls)
+    public static Vector parseSquiggleDelimited(String s, boolean ignoreNulls)
     {
-        Vector<String> V=new Vector<String>();
+        Vector V=new Vector();
         if((s==null)||(s.length()==0)) return V;
         int x=s.indexOf("~");
         while(x>=0)
@@ -323,9 +314,9 @@ public class CMParms
         return V;
     }
 
-    public static Vector<String> parseSemicolons(String s, boolean ignoreNulls)
+    public static Vector parseSemicolons(String s, boolean ignoreNulls)
     {
-        Vector<String> V=new Vector<String>();
+        Vector V=new Vector();
         if((s==null)||(s.length()==0)) return V;
         int x=s.indexOf(";");
         while(x>=0)
@@ -341,9 +332,9 @@ public class CMParms
         return V;
     }
 
-    public static Vector<String> parseSpaces(String s, boolean ignoreNulls)
+    public static Vector parseSpaces(String s, boolean ignoreNulls)
     {
-        Vector<String> V=new Vector<String>();
+        Vector V=new Vector();
         if((s==null)||(s.length()==0)) return V;
         int x=s.indexOf(" ");
         while(x>=0)
@@ -555,10 +546,10 @@ public class CMParms
         return makeIntArray('\0',0);
     }
 
-    private static int strIndex(Vector<String> V, String str, int start)
+    private static int strIndex(Vector V, String str, int start)
     {
         if(str.indexOf(' ')<0) return V.indexOf(str,start);
-        Vector<String> V2=CMParms.parse(str);
+        Vector V2=CMParms.parse(str);
         if(V2.size()==0) return -1;
         int x=V.indexOf(V2.firstElement(),start);
         boolean found=false;
@@ -573,7 +564,7 @@ public class CMParms
         if(found) return x;
         return -1;
     }
-    private static int stringContains(Vector<String> V, char combiner, StringBuffer buf, int lastIndex)
+    private static int stringContains(Vector V, char combiner, StringBuffer buf, int lastIndex)
     {
         String str=buf.toString().trim();
         if(str.length()==0) return lastIndex;
@@ -599,7 +590,7 @@ public class CMParms
         }
         return -1;
     }
-    private static int stringContains(Vector<String> V, char[] str, int[] index, int depth)
+    private static int stringContains(Vector V, char[] str, int[] index, int depth)
     {
         StringBuffer buf=new StringBuffer("");
         int lastIndex=0;
@@ -687,9 +678,9 @@ public class CMParms
         return stringContains(V,combiner,buf,lastIndex);
     }
 
-    public static Hashtable<String,String> parseEQParms(String str, String[] parmList)
+    public static Hashtable parseEQParms(String str, String[] parmList)
     {
-        Hashtable<String,String> h=new Hashtable<String,String>();
+        Hashtable h=new Hashtable();
         int lastEQ=-1;
         String lastParm=null;
         for(int x=0;x<str.length();x++)
@@ -740,7 +731,7 @@ public class CMParms
             &&(buf1.charAt(i)!='`')
             &&(!Character.isLetterOrDigit(buf1.charAt(i))))
                 buf1.setCharAt(i,' ');
-        Vector<String> V=CMParms.parse(buf1.toString());
+        Vector V=CMParms.parse(buf1.toString());
         return stringContains(V,str2.toCharArray(),new int[]{0},0);
     }
 
@@ -918,7 +909,7 @@ public class CMParms
         return defaultValue;
     }
 
-    public static String[] toStringArray(Vector<?> V)
+    public static String[] toStringArray(Vector V)
     {
         if((V==null)||(V.size()==0)){
             String[] s=new String[0];
@@ -930,7 +921,7 @@ public class CMParms
         return s;
     }
 
-    public static long[] toLongArray(Vector<?> V)
+    public static long[] toLongArray(Vector V)
     {
         if((V==null)||(V.size()==0)){
             long[] s=new long[0];
@@ -941,7 +932,7 @@ public class CMParms
             s[v]=CMath.s_long(V.elementAt(v).toString());
         return s;
     }
-    public static int[] toIntArray(Vector<?> V)
+    public static int[] toIntArray(Vector V)
     {
         if((V==null)||(V.size()==0)){
             int[] s=new int[0];
@@ -977,7 +968,7 @@ public class CMParms
         return str.toString();
     }
 
-    public static String toSemicolonList(Enumeration<?> bytes)
+    public static String toSemicolonList(Enumeration bytes)
     {
         StringBuffer str=new StringBuffer("");
         Object o;
@@ -989,7 +980,7 @@ public class CMParms
         return str.toString();
     }
     
-    public static String toSemicolonList(Vector<?> bytes)
+    public static String toSemicolonList(Vector bytes)
     {
         StringBuffer str=new StringBuffer("");
         for(int b=0;b<bytes.size();b++)
@@ -997,7 +988,7 @@ public class CMParms
         return str.toString();
     }
 
-    public static String toSafeSemicolonList(Vector<?> list)
+    public static String toSafeSemicolonList(Vector list)
     {
         return toSafeSemicolonList(list.toArray());
     }
@@ -1025,11 +1016,11 @@ public class CMParms
         return buf1.toString();
     }
 
-    public static Vector<String> parseSafeSemicolonList(String list, boolean ignoreNulls)
+    public static Vector parseSafeSemicolonList(String list, boolean ignoreNulls)
     {
         StringBuffer buf1=new StringBuffer(list);
         int lastDex=0;
-        Vector<String> V=new Vector<String>();
+        Vector V=new Vector();
         for(int l=0;l<buf1.length();l++)
             switch(buf1.charAt(l))
             {
@@ -1049,7 +1040,7 @@ public class CMParms
 
     public static byte[] fromByteList(String str)
     {
-        Vector<String> V=CMParms.parseSemicolons(str,true);
+        Vector V=CMParms.parseSemicolons(str,true);
         if(V.size()>0)
         {
             byte[] bytes=new byte[V.size()];
@@ -1060,7 +1051,7 @@ public class CMParms
         return new byte[0];
     }
 
-    public static String[] toStringArray(HashSet<?> V)
+    public static String[] toStringArray(HashSet V)
     {
         if((V==null)||(V.size()==0)){
             String[] s=new String[0];
@@ -1068,7 +1059,7 @@ public class CMParms
         }
         String[] s=new String[V.size()];
         int v=0;
-        for(Iterator<?> i=V.iterator();i.hasNext();)
+        for(Iterator i=V.iterator();i.hasNext();)
             s[v++]=(i.next()).toString();
         return s;
     }
@@ -1097,7 +1088,7 @@ public class CMParms
         return s.toString().substring(2);
     }
 
-    public static String toStringList(Enumeration<?> e)
+    public static String toStringList(Enumeration e)
     {
         if(!e.hasMoreElements()) return "";
         StringBuffer s=new StringBuffer("");
@@ -1184,7 +1175,7 @@ public class CMParms
     }
 
 
-    public static String toStringList(Vector<?> V)
+    public static String toStringList(Vector V)
     {
         if((V==null)||(V.size()==0)){
             return "";
@@ -1196,19 +1187,19 @@ public class CMParms
         return s.toString().substring(2);
     }
 
-    public static String toStringList(HashSet<?> V)
+    public static String toStringList(HashSet V)
     {
         if((V==null)||(V.size()==0)){
             return "";
         }
         StringBuffer s=new StringBuffer("");
-        for(Iterator<?> i=V.iterator();i.hasNext();)
+        for(Iterator i=V.iterator();i.hasNext();)
             s.append(", "+i.next().toString());
         if(s.length()==0) return "";
         return s.toString().substring(2);
     }
 
-    public static boolean equalVectors(Vector<?> V1, Vector<?> V2)
+    public static boolean equalVectors(Vector V1, Vector V2)
     {
         if((V1==null)&&(V2==null)) return true;
         if((V1==null)||(V2==null)) return false;
@@ -1219,101 +1210,93 @@ public class CMParms
         return true;
     }
 
-    public static Hashtable<String,String> makeHashtable(String[][] O)
+    public static Hashtable makeHashtable(String[][] O)
     {
-    	Hashtable<String,String> H =new Hashtable<String,String>(O!=null?O.length:0);
+    	Hashtable H =new Hashtable(O!=null?O.length:0);
     	if(O!=null)
     		for(int o=0;o<O.length;o++)
     			H.put(O[o][0].toUpperCase().trim(),O[o][1]);
     	return H;
     }
-    public static Hashtable<Object,Object> makeHashtable(Object[][] O)
+    public static Hashtable makeHashtable(Object[][] O)
     {
-    	Hashtable<Object,Object> H =new Hashtable<Object,Object>(O!=null?O.length:0);
+    	Hashtable H =new Hashtable(O!=null?O.length:0);
     	if(O!=null)
     		for(int o=0;o<O.length;o++)
     			H.put(O[o][0],O[o][1]);
     	return H;
     }
-    public static Vector<Object> makeVector(Object[] O)
+    public static Vector makeVector(Object[] O)
     {
-        Vector<Object> V=new Vector<Object>(O!=null?O.length:0);
+        Vector V=new Vector(O!=null?O.length:0);
         if(O!=null)
         for(int s=0;s<O.length;s++)
             V.addElement(O[s]);
         return V;
     }
-    public static Vector<Object> makeVector(Enumeration<?> e)
+    public static Vector makeVector(Enumeration e)
     {
-        Vector<Object> V=new Vector<Object>();
+        Vector V=new Vector();
         if(e!=null)
         for(;e.hasMoreElements();)
             V.addElement(e.nextElement());
         return V;
     }
-    public static Vector<String> makeVector(String[] O)
+    public static Vector makeVector(String[] O)
     {
-        Vector<String> V=new Vector<String>(O!=null?O.length:0);
+        Vector V=new Vector(O!=null?O.length:0);
         if(O!=null)
         for(int s=0;s<O.length;s++)
             V.addElement(O[s]);
         return V;
     }
-    public static HashSet<Object> makeHashSet(Object[] O)
+    public static HashSet makeHashSet(Object[] O)
     {
-        HashSet<Object> V=new HashSet<Object>();
+        HashSet V=new HashSet();
         if(O!=null)
         for(int s=0;s<O.length;s++)
             V.add(O[s]);
         return V;
     }
-    public static HashSet<String> makeHashSet(String[] O)
+    public static HashSet makeHashSet(String[] O)
     {
-        HashSet<String> V=new HashSet<String>();
+        HashSet V=new HashSet();
         if(O!=null)
         for(int s=0;s<O.length;s++)
             V.add(O[s]);
         return V;
     }
-    public static HashSet<Object> makeHashSet(Vector<?> O)
+    public static HashSet makeHashSet(Vector O)
     {
-        HashSet<Object> V=new HashSet<Object>();
+        HashSet V=new HashSet();
         if(O!=null)
         for(int s=0;s<O.size();s++)
             V.add(O.elementAt(s));
         return V;
     }
-    public static Vector<String> makeStrVector(String O)
-    { Vector<String> V=new Vector<String>(); V.addElement(O); return V;}
-    public static Vector<String> makeStrVector(String O, String O2)
-    { Vector<String> V=new Vector<String>(); V.addElement(O); V.addElement(O2); return V;}
-    public static Vector<String> makeStrVector(String O, String O2, String O3)
-    { Vector<String> V=new Vector<String>(); V.addElement(O); V.addElement(O2); V.addElement(O3); return V;}
-    public static Vector<String> makeStrVector(String O, String O2, String O3, String O4)
-    { Vector<String> V=new Vector<String>(); V.addElement(O); V.addElement(O2); V.addElement(O3); V.addElement(O4); return V;}
     
-    public static Vector<Object> makeVector()
-    { return new Vector<Object>();}
-    public static Vector<Object> makeVector(Object O)
-    { Vector<Object> V=new Vector<Object>(); V.addElement(O); return V;}
-    public static Vector<Object> makeVector(Object O, Object O2)
-    { Vector<Object> V=new Vector<Object>(); V.addElement(O); V.addElement(O2); return V;}
-    public static Vector<Object> makeVector(Object O, Object O2, Object O3)
-    { Vector<Object> V=new Vector<Object>(); V.addElement(O); V.addElement(O2); V.addElement(O3); return V;}
-    public static Vector<Object> makeVector(Object O, Object O2, Object O3, Object O4)
-    { Vector<Object> V=new Vector<Object>(); V.addElement(O); V.addElement(O2); V.addElement(O3); V.addElement(O4); return V;}
+    public static Vector makeVector()
+    { return new Vector();}
+    public static Vector makeVector(Object O)
+    { Vector V=new Vector(); V.addElement(O); return V;}
+    public static Vector makeVector(Object O, Object O2)
+    { Vector V=new Vector(); V.addElement(O); V.addElement(O2); return V;}
+    public static Vector makeVector(Object O, Object O2, Object O3)
+    { Vector V=new Vector(); V.addElement(O); V.addElement(O2); V.addElement(O3); return V;}
+    public static Vector makeVector(Object O, Object O2, Object O3, Object O4)
+    { Vector V=new Vector(); V.addElement(O); V.addElement(O2); V.addElement(O3); V.addElement(O4); return V;}
 
-    public static HashSet<Object> makeHashSet(){return new HashSet<Object>();}
-    public static HashSet<Object> makeHashSet(Object O)
-    {HashSet<Object> H=new HashSet<Object>(); H.add(O); return H;}
-    public static HashSet<Object> makeHashSet(Object O, Object O2)
-    {HashSet<Object> H=new HashSet<Object>(); H.add(O); H.add(O2); return H;}
-    public static HashSet<Object> makeHashSet(Object O, Object O2, Object O3)
-    {HashSet<Object> H=new HashSet<Object>(); H.add(O); H.add(O2); H.add(O3); return H;}
-    public static HashSet<Object> makeHashSet(Object O, Object O2, Object O3, Object O4)
-    {HashSet<Object> H=new HashSet<Object>(); H.add(O); H.add(O2); H.add(O3); H.add(O4); return H;}
+    public static HashSet makeHashSet(){return new HashSet();}
+    public static HashSet makeHashSet(Object O)
+    {HashSet H=new HashSet(); H.add(O); return H;}
+    public static HashSet makeHashSet(Object O, Object O2)
+    {HashSet H=new HashSet(); H.add(O); H.add(O2); return H;}
+    public static HashSet makeHashSet(Object O, Object O2, Object O3)
+    {HashSet H=new HashSet(); H.add(O); H.add(O2); H.add(O3); return H;}
+    public static HashSet makeHashSet(Object O, Object O2, Object O3, Object O4)
+    {HashSet H=new HashSet(); H.add(O); H.add(O2); H.add(O3); H.add(O4); return H;}
 
-    public static String[] toStringArray(Hashtable<String,String> V)
+    public static String[] toStringArray(Hashtable V)
     {
         if((V==null)||(V.size()==0)){
             String[] s=new String[0];
@@ -1321,7 +1304,7 @@ public class CMParms
         }
         String[] s=new String[V.size()];
         int v=0;
-        for(Enumeration<String> e=V.keys();e.hasMoreElements();)
+        for(Enumeration e=V.keys();e.hasMoreElements();)
         {
             String KEY=(String)e.nextElement();
             s[v]=(String)V.get(KEY);
@@ -1330,14 +1313,14 @@ public class CMParms
         return s;
     }
 
-    @SuppressWarnings("unchecked")
+    
 	public static void addToVector(Vector from, Vector to)
     {
         if(from!=null)
         for(int i=0;i<from.size();i++)
             to.addElement(from.elementAt(i));
     }
-    @SuppressWarnings("unchecked")
+    
 	public static void delFromVector(Vector del, Vector from)
     {
         if(del!=null)
@@ -1345,7 +1328,7 @@ public class CMParms
             from.removeElement(del.elementAt(i));
     }
 
-    public static boolean vectorOfStringContainsIgnoreCase(Vector<String> V, String s)
+    public static boolean vectorOfStringContainsIgnoreCase(Vector V, String s)
     {
         for(int v=0;v<V.size();v++)
             if(s.equalsIgnoreCase((String)V.elementAt(v)))
@@ -1353,13 +1336,13 @@ public class CMParms
         return false;
     }
 
-    public static String toStringList(Hashtable<String,Object> V)
+    public static String toStringList(Hashtable V)
     {
         if((V==null)||(V.size()==0)){
             return "";
         }
         StringBuffer s=new StringBuffer("");
-        for(Enumeration<String> e=V.keys();e.hasMoreElements();)
+        for(Enumeration e=V.keys();e.hasMoreElements();)
         {
             String KEY=(String)e.nextElement();
             s.append(KEY+"="+(V.get(KEY).toString())+"/");
@@ -1368,14 +1351,14 @@ public class CMParms
     }
 
 
-    public static Vector<Object> copyVector(Vector<?> V)
+    public static Vector copyVector(Vector V)
     {
-        Vector<Object> V2=new Vector<Object>();
+        Vector V2=new Vector();
         for(int v=0;v<V.size();v++)
         {
             Object h=V.elementAt(v);
             if(h instanceof Vector)
-                V2.addElement(copyVector((Vector<?>)h));
+                V2.addElement(copyVector((Vector)h));
             else
                 V2.addElement(h);
         }
@@ -1391,7 +1374,7 @@ public class CMParms
                 return i;
         return -1;
     }
-    public static int indexOfIgnoreCase(Enumeration<?> supported, String key)
+    public static int indexOfIgnoreCase(Enumeration supported, String key)
     {
         if(supported==null) return -1;
         int index = -1;
@@ -1403,7 +1386,7 @@ public class CMParms
         }
         return -1;
     }
-    public static int indexOf(Enumeration<?> supported, Object key)
+    public static int indexOf(Enumeration supported, Object key)
     {
         if(supported==null) return -1;
         int index = -1;
@@ -1415,7 +1398,7 @@ public class CMParms
         }
         return -1;
     }
-    public static int indexOfIgnoreCase(Iterator<?> supported, String key)
+    public static int indexOfIgnoreCase(Iterator supported, String key)
     {
         if(supported==null) return -1;
         int index = -1;
@@ -1427,7 +1410,7 @@ public class CMParms
         }
         return -1;
     }
-    public static int indexOf(Iterator<?> supported, Object key)
+    public static int indexOf(Iterator supported, Object key)
     {
         if(supported==null) return -1;
         int index = -1;
@@ -1486,9 +1469,9 @@ public class CMParms
         return false;
     }
 
-    public static Vector<Object> denumerate(Enumeration<?> e)
+    public static Vector denumerate(Enumeration e)
     {
-        Vector<Object> V=new Vector<Object>();
+        Vector V=new Vector();
         for(;e.hasMoreElements();)
             V.addElement(e.nextElement());
         return V;

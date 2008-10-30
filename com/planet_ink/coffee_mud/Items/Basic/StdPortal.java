@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdPortal extends StdContainer implements Rideable, Exit
 {
 	public String ID(){	return "StdPortal";}
@@ -90,7 +91,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 			{
 				if(msg.sourceMessage().indexOf(mountString(CMMsg.TYP_SIT,msg.source()))>0)
 				{
-					Vector<String> V=CMParms.parseSemicolons(readableText(),true);
+					Vector V=CMParms.parseSemicolons(readableText(),true);
 					if(V.size()==0)
 					{
 						msg.source().tell("This portal is broken.. nowhere to go!");
@@ -132,7 +133,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
     protected Room getDestinationRoom()
     {
         Room R=null;
-        Vector<String> V=CMParms.parseSemicolons(readableText(),true);
+        Vector V=CMParms.parseSemicolons(readableText(),true);
         if(V.size()>0)
             R=CMLib.map().getRoom((String)V.elementAt(CMLib.dice().roll(1,V.size(),-1)));
         return R;
@@ -199,7 +200,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 	
 	public StringBuffer viewableText(MOB mob, Room myRoom)
 	{
-		Vector<String> V=CMParms.parseSemicolons(readableText(),true);
+		Vector V=CMParms.parseSemicolons(readableText(),true);
 		Room room=myRoom;
 		if(V.size()>0)
 		    room=CMLib.map().getRoom((String)V.elementAt(CMLib.dice().roll(1,V.size(),-1)));

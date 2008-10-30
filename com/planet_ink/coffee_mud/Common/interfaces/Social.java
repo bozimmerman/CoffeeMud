@@ -49,6 +49,7 @@ import java.util.Vector;
  * @see com.planet_ink.coffee_mud.Common.interfaces.Social
  * @see com.planet_ink.coffee_mud.Libraries.interfaces.SocialsList
  */
+@SuppressWarnings("unchecked")
 public interface Social extends Environmental, CMCommon
 {
     

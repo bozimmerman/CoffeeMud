@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Gigantic extends StdLanguage
 {
 	public String ID() { return "Gigantic"; }

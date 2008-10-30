@@ -35,6 +35,7 @@ import org.mozilla.javascript.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Quests extends StdLibrary implements QuestManager
 {
     public String ID(){return "Quests";}
@@ -259,7 +260,7 @@ public class Quests extends StdLibrary implements QuestManager
             return "Unknown error.";
         if(CMLib.quests().fetchQuest(named)!=null)
             return "A quest called '"+named+"' already exists.  Better to pick a new name.";
-        Vector<String> lineV=null;
+        Vector lineV=null;
         String line=null;
         String var=null;
         String cmd=null;
@@ -355,7 +356,7 @@ public class Quests extends StdLibrary implements QuestManager
         if((index<0)||(index>=steps.size()))
             return "";
         
-        Vector<String> lineV=null;
+        Vector lineV=null;
         String line=null;
         String var=null;
         String cmd=null;
@@ -387,7 +388,7 @@ public class Quests extends StdLibrary implements QuestManager
         else
             return -1;
         
-        Vector<String> lineV=null;
+        Vector lineV=null;
         String line=null;
         String var=null;
         String cmd=null;
@@ -440,7 +441,7 @@ public class Quests extends StdLibrary implements QuestManager
         encodedData.addElement(properties);
         encodedData.addElement(stats);
         encodedData.addElement(stepV);
-        Vector<String> lineV=null;
+        Vector lineV=null;
         String line=null;
         String var=null;
         String cmd=null;
@@ -970,7 +971,7 @@ public class Quests extends StdLibrary implements QuestManager
     {
         int pndex=stats.indexOf("PRICEMASKS");
         String priceStr=(pndex<0)?"":(String)stats.elementAt(pndex,2);
-        Vector<String> priceV=CMParms.parseCommas(priceStr,true);
+        Vector priceV=CMParms.parseCommas(priceStr,true);
         for(int v=0;v<=priceV.size();v++)
         {
             if((showFlag>0)&&(showFlag!=showNumber)){ if(v<priceV.size())showNumber++; continue;}
@@ -1055,10 +1056,10 @@ public class Quests extends StdLibrary implements QuestManager
         int mndex=behaviors.indexOf(MUDCHAT);
         String mudChatStr=(mndex<0)?"":(String)behaviors.elementAt(mndex,2);
         if(mudChatStr.startsWith("+")) mudChatStr=mudChatStr.substring(1);
-        Vector<String> rawMCV=CMParms.parseSemicolons(mudChatStr,true);
+        Vector rawMCV=CMParms.parseSemicolons(mudChatStr,true);
         Vector mudChatV=new Vector();
         String s=null;
-        Vector<String> V=new Vector<String>();
+        Vector V=new Vector();
         mudChatV.addElement(V);
         for(int r=0;r<rawMCV.size();r++)
         {
@@ -1176,7 +1177,7 @@ public class Quests extends StdLibrary implements QuestManager
 
     public Vector parseQuestCommandLines(Vector script, String cmdOnly, int startLine)
     {
-        Vector<String> line=null;
+        Vector line=null;
         String cmd=null;
         boolean inScript=false;
         Vector lines=new Vector();
@@ -1206,7 +1207,7 @@ public class Quests extends StdLibrary implements QuestManager
     
     public Vector parseQuestSteps(Vector script, int startLine, boolean rawLineInput)
     {
-        Vector<String> line=null;
+        Vector line=null;
         String cmd=null;
         Vector parsed=new Vector();
         StringBuffer scr=new StringBuffer("");
@@ -1435,7 +1436,7 @@ public class Quests extends StdLibrary implements QuestManager
             }
         }
         Vector newMobs=new Vector();
-        for(Enumeration<MOB> e=CMClass.mobTypes();e.hasMoreElements();)
+        for(Enumeration e=CMClass.mobTypes();e.hasMoreElements();)
         {
             M=(MOB)e.nextElement();
             if(M.isGeneric())
@@ -1659,7 +1660,7 @@ public class Quests extends StdLibrary implements QuestManager
                         {
                             String showValue=(showFlag<-900)?"":(String)pageDV.elementAt(step,4);
                             StringBuffer label=new StringBuffer(((lastLabel==null)?"":lastLabel)+"\n\rChoices: ");
-                            for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+                            for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
                                 label.append(((Ability)e.nextElement()).ID()+" ");
                             String s=CMLib.genEd().prompt(mob,showValue,++showNumber,showFlag,parm1Fixed,optionalEntry,false,label.toString(),
                                                             QuestManager.QM_COMMAND_TESTS[inputCode],

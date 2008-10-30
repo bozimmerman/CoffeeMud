@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_DetectSentience extends Spell
 {
 	public String ID() { return "Spell_DetectSentience"; }
@@ -41,7 +42,7 @@ public class Spell_DetectSentience extends Spell
 	protected int canAffectCode(){return 0;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_DIVINATION;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -57,10 +58,10 @@ public class Spell_DetectSentience extends Spell
 				StringBuffer lines=new StringBuffer("^x");
 				lines.append(CMStrings.padRight("Name",25)+"| ");
 				lines.append(CMStrings.padRight("Location",17)+"^.^N\n\r");
-				Vector<Room> checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,true,false,false,false,35+this.getXMAXRANGELevel(mob));
+				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,true,false,false,false,35+this.getXMAXRANGELevel(mob));
 				if(!checkSet.contains(mob.location())) checkSet.addElement(mob.location());
                 CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_CAST,null);
-				for(Enumeration<Room> r=checkSet.elements();r.hasMoreElements();)
+				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 				{
 					Room R=CMLib.map().getRoom((Room)r.nextElement());
 					for(int m=0;m<R.numInhabitants();m++)

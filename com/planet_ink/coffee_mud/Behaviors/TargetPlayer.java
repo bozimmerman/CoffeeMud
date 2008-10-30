@@ -35,6 +35,7 @@ import java.util.*;
  * @author FR - Jeremy Vyska; CM - Bo Zimmerman
  * @version 1.0.0.0
  */
+@SuppressWarnings("unchecked")
 public class TargetPlayer extends ActiveTicker
 {
 	public String ID(){return "TargetPlayer";}
@@ -54,7 +55,7 @@ public class TargetPlayer extends ActiveTicker
 			MOB mob = (MOB) ticking;
 			if (mob.getVictim() != null) 
 			{
-				HashSet theBadGuys = mob.getVictim().getGroupMembers(new HashSet<MOB>());
+				HashSet theBadGuys = mob.getVictim().getGroupMembers(new HashSet());
 				MOB shouldFight = null;
 				for (Iterator e = theBadGuys.iterator(); e.hasNext(); ) 
 				{

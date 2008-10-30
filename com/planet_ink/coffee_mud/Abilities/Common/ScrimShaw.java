@@ -34,6 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, MendingSkill
 {
 	public String ID() { return "ScrimShaw"; }
@@ -69,7 +70,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 	}
 
     public String parametersFile(){ return "scrimshaw.txt";}
-    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{
@@ -124,7 +125,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 		return true;
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int autoGenerate=0;
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
@@ -149,7 +150,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
                 return super.bundle(mob,commands);
             return false;
         }
-		Vector<Vector<String>> recipes=addRecipes(mob,loadRecipes());
+		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
         bundling=false;
@@ -160,7 +161,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",16)+" Lvl Bone required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector<String> V=recipes.elementAt(r);
+				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");
@@ -185,7 +186,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 			mending=false;
 			key=null;
 			messedUp=false;
-			Vector<String> newCommands=CMParms.parse(CMParms.combine(commands,1));
+			Vector newCommands=CMParms.parse(CMParms.combine(commands,1));
 			building=getTarget(mob,mob.location(),givenTarget,newCommands,Item.WORNREQ_UNWORNONLY);
 			if(!canMend(mob,building,false)) return false;
 			mending=true;

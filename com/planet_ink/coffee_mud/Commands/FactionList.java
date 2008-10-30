@@ -30,13 +30,14 @@ import java.util.*;
  * <p>limitations under the License.
  */
 
+@SuppressWarnings("unchecked")
 public class FactionList extends StdCommand
 {
 	public FactionList(){}
 
 	private String[] access={"FACTIONS","FAC"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		StringBuffer msg=new StringBuffer("\n\r^HFaction Standings:^?^N\n\r");

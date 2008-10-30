@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_MassFungalGrowth extends Chant_SummonFungus
 {
 	public String ID() { return "Chant_MassFungalGrowth"; }
@@ -40,7 +41,7 @@ public class Chant_MassFungalGrowth extends Chant_SummonFungus
 	public int classificationCode(){return Ability.ACODE_CHANT|Ability.DOMAIN_PLANTGROWTH;}
     public int abstractQuality(){return Ability.QUALITY_INDIFFERENT;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

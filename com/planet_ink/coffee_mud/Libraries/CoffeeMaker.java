@@ -34,6 +34,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 {
     public String ID(){return "CoffeeMaker";}
@@ -642,10 +643,10 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				if(dir>255)
 				{
 					String xdata=CMLib.xml().getValFromPieces(xblk.contents,"XDATA");
-					Vector<String> CEs=CMParms.parseSemicolons(xdata.trim(),true);
+					Vector CEs=CMParms.parseSemicolons(xdata.trim(),true);
 					for(int ces=0;ces<CEs.size();ces++)
 					{
-						Vector<String> SCE=CMParms.parse(((String)CEs.elementAt(ces)).trim());
+						Vector SCE=CMParms.parse(((String)CEs.elementAt(ces)).trim());
 						WorldMap.CrossExit CE=new WorldMap.CrossExit();
 						if(SCE.size()<3) continue;
 						CE.x=CMath.s_int((String)SCE.elementAt(0));
@@ -702,7 +703,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		// find any mis-linked exits and fix them!
 		try
 		{
-			for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				synchronized(("SYNC"+R.roomID()).intern())
@@ -947,7 +948,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 	        if(CMProps.getVar(CMProps.SYSTEM_AUTOAREAPROPS).trim().length()>0)
 	        {
 	        	String props=CMProps.getVar(CMProps.SYSTEM_AUTOAREAPROPS).trim();
-	        	Vector<String> allProps=CMParms.parseSemicolons(props,true);
+	        	Vector allProps=CMParms.parseSemicolons(props,true);
 	        	String prop=null;
 	        	String parms=null;
 	        	Ability A=null;
@@ -2434,7 +2435,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					}
 				}
 			}
-			Vector<String> V9=CMParms.parseSemicolons(CMLib.xml().getValFromPieces(buf,"TATTS"),true);
+			Vector V9=CMParms.parseSemicolons(CMLib.xml().getValFromPieces(buf,"TATTS"),true);
 			while(((MOB)E).numTattoos()>0)((MOB)E).delTattoo(((MOB)E).fetchTattoo(0));
 			for(int v=0;v<V9.size();v++) ((MOB)E).addTattoo((String)V9.elementAt(v));
 
@@ -2638,7 +2639,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			mob.playerStats().setEmail(CMLib.xml().getValFromPieces(mblk.contents,"EMAL"));
 			String buf=CMLib.xml().getValFromPieces(mblk.contents,"CMPFIL");
 			mob.playerStats().setXML(buf);
-			Vector<String> V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
+			Vector V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"TATTS"),true);
 			while(mob.numTattoos()>0)mob.delTattoo(mob.fetchTattoo(0));
 			for(int v=0;v<V9.size();v++) mob.addTattoo((String)V9.elementAt(v));
 			V9=CMParms.parseSemicolons(CMLib.xml().returnXMLValue(buf,"EDUS"),true);
@@ -3253,14 +3254,14 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			break;
 		case 18:
 			{
-				Vector<String> V9=CMParms.parseSemicolons(val,true);
+				Vector V9=CMParms.parseSemicolons(val,true);
 				while(M.numTattoos()>0)M.delTattoo(M.fetchTattoo(0));
 				for(int v=0;v<V9.size();v++) M.addTattoo((String)V9.elementAt(v));
 			}
 			break;
 		case 19:
 			{
-				Vector<String> V9=CMParms.parseSemicolons(val,true);
+				Vector V9=CMParms.parseSemicolons(val,true);
 				while(M.numExpertises()>0)M.delExpertise(M.fetchExpertise(0));
 				for(int v=0;v<V9.size();v++) M.addExpertise((String)V9.elementAt(v));
 			}
@@ -3268,7 +3269,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		case 20: M.setImage(val); break;
 		case 21:
 		    {
-		    	Vector<String> V10=CMParms.parseSemicolons(val,true);
+		    	Vector V10=CMParms.parseSemicolons(val,true);
 		    	for(int v=0;v<V10.size();v++)
 		    	{
 		    	    String s=(String)V10.elementAt(v);
@@ -3299,7 +3300,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		newArea.setName(newName);
 		CMLib.database().DBCreateArea(newName,newArea.ID());
 		Hashtable altIDs=new Hashtable();
-		for(Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
+		for(Enumeration e=A.getCompleteMap();e.hasMoreElements();)
 		{
 			Room room=(Room)e.nextElement();
 			synchronized(("SYNC"+room.roomID()).intern())
@@ -3321,7 +3322,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					CMLib.database().DBUpdateItems(newRoom);
 			}
 		}
-		for(Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
+		for(Enumeration e=A.getCompleteMap();e.hasMoreElements();)
 		{
 			Room room=(Room)e.nextElement();
 			String altID=(String)altIDs.get(room.roomID());

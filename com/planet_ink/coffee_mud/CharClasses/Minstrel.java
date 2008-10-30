@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Minstrel extends StdCharClass
 {
 	public String ID(){return "Minstrel";}
@@ -162,7 +163,7 @@ public class Minstrel extends StdCharClass
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
 
-	@SuppressWarnings("unchecked")
+	
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -172,7 +173,7 @@ public class Minstrel extends StdCharClass
 												mob.charStats().getClassLevel(ID()),
 												false,
 												false);
-			for(Enumeration<String> a=V.getDimensionVector(1).elements();a.hasMoreElements();)
+			for(Enumeration a=V.getDimensionVector(1).elements();a.hasMoreElements();)
 			{
 				Ability A=CMClass.getAbility((String)a.nextElement());
 				if((A!=null)
@@ -224,11 +225,11 @@ public class Minstrel extends StdCharClass
     
 	public String otherLimitations(){return "";}
 	public String otherBonuses(){return "Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration experience based on danger level.";}
-	public Vector<Item> outfit(MOB myChar)
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector<Item>();
+			outfitChoices=new Vector();
 			Weapon w=CMClass.getWeapon("Shortsword");
 			outfitChoices.addElement(w);
 		}

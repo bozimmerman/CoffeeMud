@@ -31,18 +31,19 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prop_AbilityImmunity extends Property
 {
 	public String ID() { return "Prop_AbilityImmunity"; }
 	public String name(){ return "Ability Immunity";}
 	protected int canAffectCode(){return Ability.CAN_MOBS|Ability.CAN_ITEMS|Ability.CAN_ROOMS|Ability.CAN_EXITS;}
 	public String accountForYourself() { return "Immunity";	}
-	protected Vector<String> diseases=new Vector<String>();
-	protected Vector<String> messages=new Vector<String>();
+	protected Vector diseases=new Vector();
+	protected Vector messages=new Vector();
 
 	public void setMiscText(String newText)
 	{
-        messages=new Vector<String>();
+        messages=new Vector();
 		diseases=CMParms.parseSemicolons(newText.toUpperCase(),true);
 		for(int d=0;d<diseases.size();d++)
 		{

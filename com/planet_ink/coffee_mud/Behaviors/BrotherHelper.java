@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class BrotherHelper extends StdBehavior
 {
 	public String ID(){return "BrotherHelper";}
@@ -50,7 +51,7 @@ public class BrotherHelper extends StdBehavior
 	    if(num<0)
 	    {
 	        num=0;
-	        Vector<String> V=CMParms.parse(getParms());
+	        Vector V=CMParms.parse(getParms());
 	        for(int v=0;v<V.size();v++)
 	            if(CMath.isInteger((String)V.elementAt(v)))
 	                num=CMath.s_int((String)V.elementAt(v));

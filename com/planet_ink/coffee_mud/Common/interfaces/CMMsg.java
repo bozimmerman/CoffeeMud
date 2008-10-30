@@ -99,6 +99,7 @@ import java.util.Vector;
  * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#send(MOB, CMMsg)
  * @see com.planet_ink.coffee_mud.Locales.interfaces.Room#sendOthers(MOB, CMMsg)
  */
+@SuppressWarnings("unchecked")
 public interface CMMsg extends CMCommon
 {
     /**

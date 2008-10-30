@@ -41,6 +41,7 @@ import java.util.*;
  * @see com.planet_ink.coffee_mud.Behaviors.interfaces.LegalBehavior 
  * @see com.planet_ink.coffee_mud.Common.interfaces.LegalWarrant
  */
+@SuppressWarnings("unchecked")
 public interface Law extends CMCommon
 {
     /**

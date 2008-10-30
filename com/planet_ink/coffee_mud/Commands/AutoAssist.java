@@ -31,6 +31,7 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class AutoAssist extends StdCommand
 {
 	public AutoAssist(){}
@@ -38,7 +39,7 @@ public class AutoAssist extends StdCommand
 	private String[] access={"AUTOASSIST"};
 	public String[] getAccessWords(){return access;}
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOASSIST))

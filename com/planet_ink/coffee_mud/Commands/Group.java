@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Group extends StdCommand
 {
 	public Group(){}
@@ -76,11 +77,11 @@ public class Group extends StdCommand
 		return msg;
 	}
 	
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		mob.tell(mob.name()+"'s group:\n\r");
-		HashSet group=mob.getGroupMembers(new HashSet<MOB>());
+		HashSet group=mob.getGroupMembers(new HashSet());
 		StringBuffer msg=new StringBuffer("");
 		for(Iterator e=group.iterator();e.hasNext();)
 		{

@@ -34,6 +34,7 @@ import java.util.*;
  * it is not typically invoked as a skill, although there are skills that 
  * generate or make use of Trap abilities.
  */
+@SuppressWarnings("unchecked")
 public interface Trap extends Ability
 {
 	/** deprecated needle trap-type constant for deprecated traps.  Returned by internal trapType() methods. */

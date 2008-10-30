@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Spell_Dream extends Spell
 {
 	public String ID() { return "Spell_Dream"; }
@@ -37,7 +38,7 @@ public class Spell_Dream extends Spell
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_ILLUSION;}
     public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		if(commands.size()<1)
@@ -58,7 +59,7 @@ public class Spell_Dream extends Spell
 				mob.location().send(mob,msg);
 				try
 				{
-					for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
 						if(CMLib.flags().canAccess(mob,R))

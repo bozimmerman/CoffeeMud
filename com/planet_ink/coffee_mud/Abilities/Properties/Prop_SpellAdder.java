@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prop_SpellAdder extends Property
 {
 	public String ID() { return "Prop_SpellAdder"; }
@@ -78,7 +79,7 @@ public class Prop_SpellAdder extends Property
         if(spellV!=null) return spellV;
 		spellV=new Vector();
 		String names=getParmString(text());
-		Vector<String> set=CMParms.parseSemicolons(names,true);
+		Vector set=CMParms.parseSemicolons(names,true);
 		String thisOne=null;
 		for(int s=0;s<set.size();s++)
 		{
@@ -191,7 +192,7 @@ public class Prop_SpellAdder extends Property
             {
                 String t=A.text();
                 A=(Ability)A.copyOf();
-                Vector<String> V2=new Vector<String>();
+                Vector V2=new Vector();
                 if(t.length()>0)
                 {
                     int x=t.indexOf("/");
@@ -253,7 +254,7 @@ public class Prop_SpellAdder extends Property
         return true;
 	}
 
-    public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         String s=CMParms.combine(commands,0);
         if(s.length()>0) setMiscText(s);

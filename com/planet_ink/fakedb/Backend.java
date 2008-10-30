@@ -19,6 +19,7 @@ package com.planet_ink.fakedb;
 import java.io.*;
 import java.util.*;
 
+@SuppressWarnings("unchecked")
 class Backend
 {
    File basePath;

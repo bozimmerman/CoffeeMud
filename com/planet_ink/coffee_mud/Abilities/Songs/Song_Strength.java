@@ -33,6 +33,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Song_Strength extends Song
 {
 	public String ID() { return "Song_Strength"; }
@@ -58,14 +59,14 @@ public class Song_Strength extends Song
         {
             if(target instanceof MOB)
             {
-                if(mob.getGroupMembers(new HashSet<MOB>()).size()==0)
+                if(mob.getGroupMembers(new HashSet()).size()==0)
                     return Ability.QUALITY_INDIFFERENT;
             }
         }
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		amount=CMath.s_int(CMParms.combine(commands,0));
 

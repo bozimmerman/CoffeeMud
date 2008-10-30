@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Archon_Hush extends ArchonSkill
 {
 	boolean doneTicking=false;
@@ -78,7 +79,7 @@ public class Archon_Hush extends ArchonSkill
 			mob.tell("You are no longer hushed!");
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=getTargetAnywhere(mob,commands,givenTarget,false,true,false);
 		if(target==null) return false;

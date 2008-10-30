@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Export extends StdCommand
 {
 	public Export(){}
@@ -90,7 +91,7 @@ public class Export extends StdCommand
 		}
 	}
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		String commandType="";
@@ -259,7 +260,7 @@ public class Export extends StdCommand
 				}
 				StringBuffer buf=new StringBuffer("");
 				if(fileNameCode!=2) buf.append("<AREAS>");
-				for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+				for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 				{
 					Area A=(Area)a.nextElement();
 					if(A!=null)
@@ -297,7 +298,7 @@ public class Export extends StdCommand
 				if(S!=null)
 					S.rawPrint("Reading area mobs '"+area.Name()+"'...");
 				StringBuffer buf=new StringBuffer("<MOBS>");
-				for(Enumeration<Room> r=area.getCompleteMap();r.hasMoreElements();)
+				for(Enumeration r=area.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(S!=null) S.rawPrint(".");
@@ -314,7 +315,7 @@ public class Export extends StdCommand
 				StringBuffer buf=new StringBuffer("<MOBS>");
 				try
 				{
-					for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
 						if(S!=null) S.rawPrint(".");
@@ -360,7 +361,7 @@ public class Export extends StdCommand
 				if(S!=null)
 					S.rawPrint("Reading area "+subType.toLowerCase()+" '"+area.Name()+"'...");
 				StringBuffer buf=new StringBuffer("<ITEMS>");
-				for(Enumeration<Room> r=area.getCompleteMap();r.hasMoreElements();)
+				for(Enumeration r=area.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(S!=null) S.rawPrint(".");
@@ -377,7 +378,7 @@ public class Export extends StdCommand
 				StringBuffer buf=new StringBuffer("<ITEMS>");
 				try
 				{
-					for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+					for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 					{
 						Room R=(Room)r.nextElement();
 						if(S!=null) S.rawPrint(".");

@@ -32,6 +32,7 @@ import java.io.Serializable;
  * limitations under the License.
  *
  */
+@SuppressWarnings("unchecked")
 public class ChannelList implements Serializable {
 	public static final long serialVersionUID=0;
     private int id;

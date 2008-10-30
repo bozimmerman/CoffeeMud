@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Bard extends StdCharClass
 {
 	public String ID(){return "Bard";}
@@ -133,7 +134,7 @@ public class Bard extends StdCharClass
         {
 	    	if(host == mob)
 	    	{
-	            HashSet H=mob.getGroupMembers(new HashSet<MOB>());
+	            HashSet H=mob.getGroupMembers(new HashSet());
 	            double origAmount=theAmount;
 	            for(Iterator e=H.iterator();e.hasNext();)
 	            {
@@ -248,7 +249,7 @@ public class Bard extends StdCharClass
         }
     }
 
-	@SuppressWarnings("unchecked")
+	
 	public void grantAbilities(MOB mob, boolean isBorrowedClass)
 	{
 		super.grantAbilities(mob,isBorrowedClass);
@@ -299,11 +300,11 @@ public class Bard extends StdCharClass
 	}
 	public String otherLimitations(){return "";}
 	public String otherBonuses(){return "Receives group bonus combat experience when in an intelligent group, and more for a group with players.  Receives exploration experience based on danger level.";}
-	public Vector<Item> outfit(MOB myChar)
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector<Item>();
+			outfitChoices=new Vector();
 			Weapon w=CMClass.getWeapon("Shortsword");
 			outfitChoices.addElement(w);
 		}

@@ -51,6 +51,7 @@ import java.util.Hashtable;
  * @version 1.0
  * @see com.planet_ink.coffee_mud.core.intermud.server.Server
  */
+@SuppressWarnings("unchecked")
 public class ServerThread extends Thread {
     private java.util.Date      boot_time=null;
     private int                 count  = 1;

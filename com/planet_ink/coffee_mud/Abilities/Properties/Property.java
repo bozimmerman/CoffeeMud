@@ -31,6 +31,7 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Property implements Ability
 {
 	public String ID() { return "Property"; }
@@ -81,9 +82,9 @@ public class Property implements Ability
 	public void setInvoker(MOB mob){}
 	public static final String[] empty={};
 	public String[] triggerStrings(){return empty;}
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental target, boolean auto, int asLevel){return false;}
+	public boolean invoke(MOB mob, Vector commands, Environmental target, boolean auto, int asLevel){return false;}
 	public boolean invoke(MOB mob, Environmental target, boolean auto, int asLevel){return false;}
-    public boolean preInvoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining){return true;}
+    public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining){return true;}
 	public boolean autoInvocation(MOB mob){return false;}
 	public void unInvoke(){}
 	public boolean canBeUninvoked(){return false;}

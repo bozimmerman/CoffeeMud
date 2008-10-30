@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Druid_KnowPlants extends StdAbility
 {
 	public String ID() { return "Druid_KnowPlants"; }
@@ -58,7 +59,7 @@ public class Druid_KnowPlants extends StdAbility
 		return false;
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item I=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
 		if(I==null) return false;

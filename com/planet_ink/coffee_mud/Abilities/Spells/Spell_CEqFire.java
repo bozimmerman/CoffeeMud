@@ -35,12 +35,13 @@ import java.util.*;
  * @version 1.0.0.0
  */
 
+@SuppressWarnings("unchecked")
 public class Spell_CEqFire extends Spell_BaseClanEq {
   public String ID() { return "Spell_CEqFire"; }
   public String name(){return "ClanEnchant Fire";}
   public int abstractQuality(){ return Ability.QUALITY_INDIFFERENT;}
 
-  public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+  public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
   {
     type="Fire";
     // All the work is done by the base model

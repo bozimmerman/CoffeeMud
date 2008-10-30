@@ -31,12 +31,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prop_ClosedSeason extends Property
 {
 	public String ID() { return "Prop_ClosedSeason"; }
 	public String name(){ return "Contingent Visibility";}
 	protected int canAffectCode(){return Ability.CAN_ITEMS|Ability.CAN_MOBS|Ability.CAN_EXITS|Ability.CAN_ROOMS;}
-	protected Vector<String> closedV=null;
+	protected Vector closedV=null;
 	boolean doneToday=false;
 	private Area exitArea=null;
 

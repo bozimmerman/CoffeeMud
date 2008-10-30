@@ -34,6 +34,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Ranger_Hide extends StdAbility
 {
 	public String ID() { return "Ranger_Hide"; }
@@ -100,7 +101,7 @@ public class Ranger_Hide extends StdAbility
 		if(R==null) return null;
 		int highestLevel=0;
 		MOB highestMOB=null;
-		HashSet H=meMOB.getGroupMembers(new HashSet<MOB>());
+		HashSet H=meMOB.getGroupMembers(new HashSet());
 		if(not!=null) H.addAll(not);
 		for(int i=0;i<R.numInhabitants();i++)
 		{
@@ -117,7 +118,7 @@ public class Ranger_Hide extends StdAbility
 		return highestMOB;
 	}
 	
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

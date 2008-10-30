@@ -34,6 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Injury extends StdAbility
 {
 	public String ID() { return "Injury"; }
@@ -109,11 +110,11 @@ public class Injury extends StdAbility
 	
 	public void setMiscText(String txt) {
 	    injuries=new Vector[Race.BODY_PARTS];
-	    Vector<String> sets=CMParms.parseSemicolons(txt,true);
+	    Vector sets=CMParms.parseSemicolons(txt,true);
 	    for(int s=0;s<sets.size();s++)
 	    {
 	        String set=(String)sets.elementAt(s);
-	        Vector<String> V=CMParms.parseAny(set,":",false);
+	        Vector V=CMParms.parseAny(set,":",false);
 	        if(V.size()==3)
 	        {
 	            int part=CMath.s_int((String)V.firstElement());
@@ -122,7 +123,7 @@ public class Injury extends StdAbility
     	            String msg=(String)V.elementAt(1);
     	            int hurt=CMath.s_int((String)V.lastElement());
     	            if(injuries[part]==null)
-    	                injuries[part] = new Vector<String>();
+    	                injuries[part] = new Vector();
     	            injuries[part].addElement(new Object[]{msg,new Integer(hurt)});
 	            }
 	        }
@@ -366,7 +367,7 @@ public class Injury extends StdAbility
 	    return super.okMessage(host,msg);
 	}
 	
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if((givenTarget!=null)&&(auto))
 		{

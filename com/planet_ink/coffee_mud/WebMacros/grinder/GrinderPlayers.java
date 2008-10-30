@@ -36,6 +36,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class GrinderPlayers extends GrinderMobs
 {
 	public final static String[] BASICS={
@@ -113,7 +114,7 @@ public class GrinderPlayers extends GrinderMobs
 		return -1;
 	}
 
-	public static String titleList(MOB E, ExternalHTTPRequests httpReq, Hashtable<String,String> parms)
+	public static String titleList(MOB E, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		if(E.playerStats()==null) return "";
 		E.playerStats().getTitles().clear();
@@ -197,7 +198,7 @@ public class GrinderPlayers extends GrinderMobs
 			case 56: M.baseEnvStats().setSpeed(CMath.s_double(old)); break;
 			case 57: 
 			{
-				Vector<String> V=CMParms.parseCommas(old.toUpperCase(),true);
+				Vector V=CMParms.parseCommas(old.toUpperCase(),true);
 				while(M.numExpertises()>0) M.delExpertise(M.fetchExpertise(0));
 				for(int v=0;v<V.size();v++)
 					if(CMLib.expertises().getDefinition((String)V.elementAt(v))!=null)
@@ -206,7 +207,7 @@ public class GrinderPlayers extends GrinderMobs
 			}
 			case 58: 
 			{
-				Vector<String> V=CMParms.parseCommas(old.toUpperCase(),true);
+				Vector V=CMParms.parseCommas(old.toUpperCase(),true);
 				while(M.numTattoos()>0) M.delTattoo(M.fetchTattoo(0));
 				for(int v=0;v<V.size();v++)
 					M.addTattoo((String)V.elementAt(v));
@@ -216,7 +217,7 @@ public class GrinderPlayers extends GrinderMobs
 			{
 				if(M.playerStats()!=null)
 				{
-					Vector<String> V=CMParms.parseCommas(old.toUpperCase(),true);
+					Vector V=CMParms.parseCommas(old.toUpperCase(),true);
 					M.playerStats().getSecurityGroups().clear();
 					CMParms.addToVector(V,M.playerStats().getSecurityGroups());
 				}
@@ -243,7 +244,7 @@ public class GrinderPlayers extends GrinderMobs
 		return "";
 	}
 
-	public static String classList(MOB M, ExternalHTTPRequests httpReq, Hashtable<String,String> parms)
+	public static String classList(MOB M, ExternalHTTPRequests httpReq, Hashtable parms)
 	{
 		if(httpReq.isRequestParameter("CHARCLASS1"))
 		{
@@ -274,7 +275,7 @@ public class GrinderPlayers extends GrinderMobs
 		return "";
 	}
 	
-	public static String editPlayer(MOB whom, ExternalHTTPRequests httpReq, Hashtable<String,String> parms, MOB M)
+	public static String editPlayer(MOB whom, ExternalHTTPRequests httpReq, Hashtable parms, MOB M)
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return CMProps.getVar(CMProps.SYSTEM_MUDSTATUS);

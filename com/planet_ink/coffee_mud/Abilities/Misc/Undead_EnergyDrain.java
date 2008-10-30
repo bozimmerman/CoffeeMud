@@ -31,6 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Undead_EnergyDrain extends StdAbility
 {
 	public String ID() { return "Undead_EnergyDrain"; }
@@ -90,7 +91,7 @@ public class Undead_EnergyDrain extends StdAbility
 			mob.tell("The energy drain is lifted.");
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=null;
 		Ability reAffect=null;

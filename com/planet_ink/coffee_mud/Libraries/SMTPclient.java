@@ -36,6 +36,7 @@ import com.planet_ink.coffee_mud.core.exceptions.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class SMTPclient extends StdLibrary implements SMTPLibrary, SMTPLibrary.SMTPClient
 {
     public String ID(){return "SMTPclient";}

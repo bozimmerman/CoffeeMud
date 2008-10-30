@@ -32,6 +32,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
+@SuppressWarnings("unchecked")
 public class ChannelDelete extends Packet  {
     public String channel = null;
 

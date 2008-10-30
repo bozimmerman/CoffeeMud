@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Skill_TuneInstrument extends BardSkill
 {
 	public String ID() { return "Skill_TuneInstrument"; }
@@ -48,7 +49,7 @@ public class Skill_TuneInstrument extends BardSkill
 		affectableStats.setAbility(affectableStats.ability()+2+getXLEVELLevel(invoker));
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Item target=Play.getInstrument(mob,-1,true);
 		if(target==null) return false;

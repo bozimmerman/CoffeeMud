@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Mage extends StdCharClass
 {
 	public String ID(){return "Mage";}
@@ -376,7 +377,7 @@ public class Mage extends StdCharClass
 			numSpells=2;
 		else
 			numSpells=1;
-		for(Enumeration<Ability> a=CMClass.abilities();a.hasMoreElements();)
+		for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 		{
 			Ability A=(Ability)a.nextElement();
 			if((CMLib.ableMapper().getQualifyingLevel(ID(),true,A.ID())==level)
@@ -411,11 +412,11 @@ public class Mage extends StdCharClass
 		}
 	}
 
-	public Vector<Item> outfit(MOB myChar)
+	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
 		{
-			outfitChoices=new Vector<Item>();
+			outfitChoices=new Vector();
 			Weapon w=CMClass.getWeapon("Quarterstaff");
 			outfitChoices.addElement(w);
 		}

@@ -32,6 +32,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class GenCaged extends GenItem implements CagedAnimal
 {
 	public String ID(){	return "GenCaged";}

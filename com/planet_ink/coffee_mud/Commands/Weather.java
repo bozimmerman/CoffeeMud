@@ -30,13 +30,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Weather extends StdCommand
 {
 	public Weather(){}
 
 	private String[] access={"WEATHER"};
 	public String[] getAccessWords(){return access;}
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		Room room=mob.location();
@@ -44,7 +45,7 @@ public class Weather extends StdCommand
 		if((commands.size()>1)&&((room.domainType()&Room.INDOORS)==0)&&(((String)commands.elementAt(1)).equalsIgnoreCase("WORLD")))
 		{
 			StringBuffer tellMe=new StringBuffer("");
-			for(Enumeration<Area> a=CMLib.map().sortedAreas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				if(CMLib.flags().canAccess(mob,A))

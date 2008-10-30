@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Chant_Treehouse extends Chant
 {
 	public String ID() { return "Chant_Treehouse"; }
@@ -75,7 +76,7 @@ public class Chant_Treehouse extends Chant
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		Environmental target = mob.location();
 		if(target.fetchEffect(ID())!=null)

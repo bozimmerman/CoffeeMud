@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Blacksmithing"; }
@@ -74,7 +75,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 	}
 
     public String parametersFile(){ return "blacksmith.txt";}
-    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{
@@ -96,7 +97,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int autoGenerate=0;
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
@@ -121,7 +122,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
                 return super.bundle(mob,commands);
             return false;
         }
-		Vector<Vector<String>> recipes=addRecipes(mob,loadRecipes());
+		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
         bundling=false;
@@ -132,7 +133,7 @@ public class Blacksmithing extends EnhancedCraftingSkill implements ItemCraftor
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",16)+" Lvl Metals required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector<String> V=recipes.elementAt(r);
+				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");

@@ -31,6 +31,7 @@ import java.util.Vector;
  * limitations under the License.
  *
  */
+@SuppressWarnings("unchecked")
 public class LocateReplyPacket extends Packet {
     public String located_mud_name;
     public String located_visible_name;

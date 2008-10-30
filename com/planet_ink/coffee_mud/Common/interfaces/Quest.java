@@ -43,6 +43,7 @@ import java.util.Vector;
  * circumstances.
  * @see com.planet_ink.coffee_mud.Libraries.interfaces.QuestManager
  */
+@SuppressWarnings("unchecked")
 public interface Quest extends Tickable, CMCommon, CMModifiable
 {
     /**

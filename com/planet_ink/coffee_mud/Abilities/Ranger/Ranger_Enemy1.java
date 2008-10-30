@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Ranger_Enemy1 extends StdAbility
 {
 	public String ID() { return "Ranger_Enemy1"; }
@@ -50,8 +51,8 @@ public class Ranger_Enemy1 extends StdAbility
 			if((affected==null)||(!(affected instanceof MOB)))
 				return super.text();
 			MOB mob=(MOB)affected;
-			Vector<String> choices=new Vector<String>();
-			for(Enumeration<Race> r=CMClass.races();r.hasMoreElements();)
+			Vector choices=new Vector();
+			for(Enumeration r=CMClass.races();r.hasMoreElements();)
 			{
 				Race R=(Race)r.nextElement();
 				if((!choices.contains(R.racialCategory()))

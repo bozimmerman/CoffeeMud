@@ -32,6 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Prayer_EarthMud extends Prayer
 {
 	public String ID() { return "Prayer_EarthMud"; }
@@ -91,7 +92,7 @@ public class Prayer_EarthMud extends Prayer
         return super.castingQuality(mob,target);
     }
     
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 
 		int type=mob.location().domainType();

@@ -34,6 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Torturesmithing extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Torturesmithing"; }
@@ -61,7 +62,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 	protected static final int RCP_SPELL=10;
 
     public String parametersFile(){ return "torturesmith.txt";}
-    protected Vector<Vector<String>> loadRecipes(){return super.loadRecipes(parametersFile());}
+    protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
 	public void unInvoke()
 	{
@@ -83,7 +84,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 		super.unInvoke();
 	}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		int autoGenerate=0;
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
@@ -98,7 +99,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"Make what? Enter \""+triggerStrings()[0].toLowerCase()+" list\" for a list.");
 			return false;
 		}
-		Vector<Vector<String>> recipes=addRecipes(mob,loadRecipes());
+		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
 		String startStr=null;
         bundling=false;
@@ -109,7 +110,7 @@ public class Torturesmithing extends CraftingSkill implements ItemCraftor
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",16)+" Lvl Material required\n\r");
 			for(int r=0;r<recipes.size();r++)
 			{
-				Vector<String> V=recipes.elementAt(r);
+				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String item=replacePercent((String)V.elementAt(RCP_FINALNAME),"");

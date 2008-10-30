@@ -33,6 +33,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class Prayer_Enervate extends Prayer
 {
     public String ID() { return "Prayer_Enervate"; }
@@ -41,7 +42,7 @@ public class Prayer_Enervate extends Prayer
     public int abstractQuality(){ return Ability.QUALITY_MALICIOUS;}
     public long flags(){return Ability.FLAG_UNHOLY;}
 
-    public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         MOB target=this.getTarget(mob,commands,givenTarget);
         if(target==null) return false;

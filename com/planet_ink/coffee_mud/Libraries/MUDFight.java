@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class MUDFight extends StdLibrary implements CombatLibrary
 {
     public String ID(){return "MUDFight";}
@@ -45,7 +46,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		HashSet h=new HashSet();
 		Room thisRoom=mob.location();
 		if(thisRoom==null) return null;
-        HashSet h1=mob.getGroupMembers(new HashSet<MOB>());
+        HashSet h1=mob.getGroupMembers(new HashSet());
 		for(int m=0;m<thisRoom.numInhabitants();m++)
 		{
 			MOB inhab=thisRoom.fetchInhabitant(m);
@@ -68,7 +69,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             if(caster.Name().equalsIgnoreCase("somebody"))
     			h=new HashSet();
             else
-                h=caster.getGroupMembers(new HashSet<MOB>());
+                h=caster.getGroupMembers(new HashSet());
 			for(Iterator e=((HashSet)h.clone()).iterator();e.hasNext();)
 			{
 				MOB M=(MOB)e.next();
@@ -113,7 +114,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         if(mob.Name().equalsIgnoreCase("nobody"))
             h1=new HashSet();
         else
-            h1=mob.getGroupMembers(new HashSet<MOB>());
+            h1=mob.getGroupMembers(new HashSet());
 		for(int m=0;m<thisRoom.numInhabitants();m++)
 		{
 			MOB inhab=thisRoom.fetchInhabitant(m);
@@ -133,7 +134,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 	public void makePeaceInGroup(MOB mob)
 	{
-		HashSet myGroup=mob.getGroupMembers(new HashSet<MOB>());
+		HashSet myGroup=mob.getGroupMembers(new HashSet());
 		for(Iterator e=myGroup.iterator();e.hasNext();)
 		{
 			MOB mob2=(MOB)e.next();
@@ -467,7 +468,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
     protected HashSet getCombatBeneficiaries(MOB killer, MOB killed, Room deathRoom, HashSet beneficiaries, CharClass combatCharClass)
     {
-        HashSet followers=(killer!=null)?killer.getGroupMembers(new HashSet<MOB>()):(new HashSet());
+        HashSet followers=(killer!=null)?killer.getGroupMembers(new HashSet()):(new HashSet());
         if(combatCharClass==null) combatCharClass=CMClass.getCharClass("StdCharClass");
         if(deathRoom!=null)
         {
@@ -498,7 +499,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
     protected HashSet getCombatDividers(MOB killer, MOB killed, Room deathRoom, HashSet dividers, CharClass combatCharClass)
     {
-        HashSet followers=(killer!=null)?killer.getGroupMembers(new HashSet<MOB>()):(new HashSet());
+        HashSet followers=(killer!=null)?killer.getGroupMembers(new HashSet()):(new HashSet());
         if(combatCharClass==null) combatCharClass=CMClass.getCharClass("StdCharClass");
         if(deathRoom!=null)
         {
@@ -975,8 +976,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         {
             Room R=observer.location();
             MOB newTargetM=null;
-            HashSet hisGroupH=deadmob.getGroupMembers(new HashSet<MOB>());
-            HashSet myGroupH=observer.getGroupMembers(new HashSet<MOB>());
+            HashSet hisGroupH=deadmob.getGroupMembers(new HashSet());
+            HashSet myGroupH=observer.getGroupMembers(new HashSet());
             for(int r=0;r<R.numInhabitants();r++)
             {
                 MOB M=R.fetchInhabitant(r);
@@ -1350,7 +1351,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     		whatToDo=CMProps.getVar(CMProps.SYSTEM_MOBDEATH).toUpperCase();
     	else
     		whatToDo=CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH).toUpperCase();
-		Vector<String> whatsToDo=CMParms.parseCommas(whatToDo,true);
+		Vector whatsToDo=CMParms.parseCommas(whatToDo,true);
 		double[] fakeVarVals={1.0,1.0,1.0};
 		for(int w=0;w<whatsToDo.size();w++)
 		{
@@ -1376,13 +1377,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 (fighting!=null)?fighting.envStats().level():0,
                 rejuv
         };
-		Vector<String> whatsToDo=CMParms.parseCommas(whatToDo,true);
+		Vector whatsToDo=CMParms.parseCommas(whatToDo,true);
 		for(int w=0;w<whatsToDo.size();w++)
 		{
 			whatToDo=(String)whatsToDo.elementAt(w);
 			if(whatToDo.startsWith("UNL"))
 			{
-				Vector<String> V=CMParms.parse(whatToDo);
+				Vector V=CMParms.parse(whatToDo);
 				int times=1;
 				if((V.size()>1)&&(CMath.s_int((String)V.lastElement())>1))
 					times=CMath.s_int((String)V.lastElement());

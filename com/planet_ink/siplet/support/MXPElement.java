@@ -1,6 +1,7 @@
 package com.planet_ink.siplet.support;
 import java.util.*;
 
+@SuppressWarnings("unchecked")
 public class MXPElement implements Cloneable
 {
     public static final int BIT_OPEN=1;

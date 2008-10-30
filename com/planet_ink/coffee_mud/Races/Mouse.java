@@ -28,6 +28,7 @@ import java.util.Vector;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Mouse extends Rodent
 {
 	public String ID(){	return "Mouse"; }
@@ -38,8 +39,8 @@ public class Mouse extends Rodent
 	private static final int[] parts={0 ,2 ,2 ,1 ,1 ,0 ,0 ,1 ,4 ,4 ,1 ,0 ,1 ,1 ,1 ,0 };
 	public int[] bodyMask(){return parts;}
 	
-	protected static Vector<Item> resources=new Vector<Item>();
-	public Vector<Item> myResources()
+	protected static Vector resources=new Vector();
+	public Vector myResources()
 	{
 		synchronized(resources)
 		{

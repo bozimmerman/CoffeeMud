@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Sheath extends StdCommand
 {
 	public Sheath(){}
@@ -56,7 +57,7 @@ public class Sheath extends StdCommand
 		return sheaths;
 	}
 
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		boolean quiet=false;
@@ -209,7 +210,7 @@ public class Sheath extends StdCommand
 		}
 		return false;
 	}
-    public double actionsCost(MOB mob, Vector<Object> cmds){return 0.5;}
+    public double actionsCost(MOB mob, Vector cmds){return 0.5;}
 	public boolean canBeOrdered(){return true;}
 
 	

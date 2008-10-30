@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class ThiefSkill extends StdAbility
 {
 	public String ID() { return "ThiefSkill"; }
@@ -41,7 +42,7 @@ public class ThiefSkill extends StdAbility
     protected int canAffectCode(){return 0;}
     protected int canTargetCode(){return CAN_MOBS;}
     
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -72,7 +73,7 @@ public class ThiefSkill extends StdAbility
 		if(R==null) return null;
 		int highestLevel=0;
 		MOB highestMOB=null;
-		HashSet H=meMOB.getGroupMembers(new HashSet<MOB>());
+		HashSet H=meMOB.getGroupMembers(new HashSet());
 		if(not!=null) H.addAll(not);
 		for(int i=0;i<R.numInhabitants();i++)
 		{

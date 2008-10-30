@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -33,6 +34,7 @@ import java.util.*;
    limitations under the License.
 */
 
+@SuppressWarnings("unchecked")
 public class StdClanDonationList extends StdClanItem
 {
 
@@ -89,11 +91,11 @@ public class StdClanDonationList extends StdClanItem
                     String key=null;
                     int x=0;
                     long val=0;
-                    Vector set=null;
+                    DatabaseEngine.PlayerData set=null;
                     while(V.size()>0)
                     {
-                        set=(Vector)V.firstElement();
-                        key=(String)set.elementAt(2);
+                        set=(DatabaseEngine.PlayerData)V.firstElement();
+                        key=set.key;
                         x=key.indexOf("/");
                         if(x>0)
                         {
@@ -105,14 +107,14 @@ public class StdClanDonationList extends StdClanItem
                                     did=true;
                                     Object[] O=new Object[2];
                                     O[0]=new Long(val);
-                                    O[1]=(String)set.elementAt(3);
+                                    O[1]=set.xml;
                                     sorted.insertElementAt(O,i);
                                 }
                             if(!did) 
                             {
                                 Object[] O=new Object[2];
                                 O[0]=new Long(val);
-                                O[1]=(String)set.elementAt(3);
+                                O[1]=set.xml;
                                 sorted.addElement(O);
                             }
                         }

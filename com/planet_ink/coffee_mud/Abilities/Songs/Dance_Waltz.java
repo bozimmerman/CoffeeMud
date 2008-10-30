@@ -32,6 +32,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Dance_Waltz extends Dance
 {
 	public String ID() { return "Dance_Waltz"; }
@@ -56,7 +57,7 @@ public class Dance_Waltz extends Dance
 			affectedStats.setStat(i,affectedStats.getStat(i)+statadd[i]);
 	}
     
-    public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+    public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
     {
         statadd=null;
         return super.invoke(mob,commands,givenTarget,auto,asLevel);

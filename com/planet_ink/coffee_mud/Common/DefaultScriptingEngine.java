@@ -36,6 +36,7 @@ import java.util.regex.Pattern;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class DefaultScriptingEngine implements ScriptingEngine
 {
     public String ID(){return "DefaultScriptingEngine";}
@@ -719,7 +720,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     inAreaRoom=M.location();
             }
             if(inAreaRoom==null)
-            for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+            for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
             {
                 Room R=(Room)r.nextElement();
                 if((R.roomID().endsWith("#"+thisName))
@@ -736,7 +737,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         if(room!=null) return room;
         try
         {
-            for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+            for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
             {
                 Room R=(Room)r.nextElement();
                 if(CMLib.english().containsString(R.displayText(),thisName))
@@ -752,7 +753,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         if(room!=null) return room;
         try
         {
-            for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+            for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
             {
                 Room R=(Room)r.nextElement();
                 if(CMLib.english().containsString(R.description(),thisName))
@@ -768,7 +769,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
         if(room!=null) return room;
         try
         {
-            for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+            for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
             {
                 Room R=(Room)r.nextElement();
                 if((R.fetchInhabitant(thisName)!=null)
@@ -996,7 +997,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             try
             {
                 if(areaThing==null)
-                for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+                for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
                 {
                     Room R=(Room)r.nextElement();
                     Environmental E=null;
@@ -1512,7 +1513,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     back=back.substring(x);
                     boolean rest=back.startsWith("..");
                     if(rest) back=back.substring(2);
-                    Vector<String> V=CMParms.parse(middle);
+                    Vector V=CMParms.parse(middle);
                     if((V.size()>0)&&(y>=0))
                     {
                         if(y>=V.size())
@@ -2601,7 +2602,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(tlen==1) tt=parseBits(eval,t,"cr"); /* tt[t+0] */
                 String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+0]);
                 String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[t+1]);
-                Vector<String> V=CMParms.parse(arg1.toUpperCase());
+                Vector V=CMParms.parse(arg1.toUpperCase());
                 returnable=V.contains(arg2.toUpperCase());
                 break;
             }
@@ -3388,7 +3389,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if((lastKnownLocation!=null)&&(lastKnownLocation.getArea().Name().equalsIgnoreCase(arg2)))
                         R=lastKnownLocation;
                     if(R==null)
-                    for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+                    for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
                     {
                         Area A=(Area)a.nextElement();
                         if((A!=null)&&(A.Name().equalsIgnoreCase(arg2)))
@@ -3399,7 +3400,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                 R=A.getRandomProperRoom();
                         }
                     }
-                    for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+                    for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
                     {
                         Area A=(Area)a.nextElement();
                         if((A!=null)&&(CMLib.english().containsString(A.Name(),arg2)))
@@ -4733,7 +4734,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             {
                 String arg1=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getCleanBit(funcParms,0));
                 String arg2=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,CMParms.getPastBitClean(funcParms,0));
-                Vector<String> V=CMParms.parse(arg1.toUpperCase());
+                Vector V=CMParms.parse(arg1.toUpperCase());
                 results.append(V.indexOf(arg2.toUpperCase()));
                 break;
             }
@@ -7168,7 +7169,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     {
                         Area A=CMLib.map().findArea(next);
                         if(A!=null)
-                            for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+                            for(Enumeration e=A.getProperMap();e.hasMoreElements();)
                                 CMLib.threads().rejuv((Room)e.nextElement(),tickID);
                         else
                             logError(scripted,"MPREJUV","Syntax","Unknown location: "+next+" for "+scripted.Name());
@@ -7396,7 +7397,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PROPERTY)
                         newTarget.addNonUninvokableEffect(A);
                     else
-                        A.invoke(monster,CMParms.parseToObjV(m2),newTarget,true,0);
+                        A.invoke(monster,CMParms.parse(m2),newTarget,true,0);
                 }
                 break;
             }
@@ -7672,7 +7673,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Environmental newTarget=getArgumentItem(tt[1],source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
                 if((newTarget!=null)&&(newTarget instanceof MOB))
                 {
-                    Vector<String> V=CMParms.parse(tt[2]);
+                    Vector V=CMParms.parse(tt[2]);
                     for(int i=0;i<V.size();i++)
                     {
                         if(CMath.isInteger(((String)V.elementAt(i)).trim()))
@@ -7882,7 +7883,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                                         V.addElement(findOne);
                                 }
                                 if((findOne==null)&&(A!=null))
-                                    for(Enumeration<Room> r=A.getProperMap();r.hasMoreElements();)
+                                    for(Enumeration r=A.getProperMap();r.hasMoreElements();)
                                     {
                                         Room R=(Room)r.nextElement();
                                         findOne=R.fetchInhabitant(mobName);
@@ -7896,7 +7897,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             if(V.elementAt(v) instanceof MOB)
                             {
                                 MOB mob=(MOB)V.elementAt(v);
-                                HashSet H=mob.getGroupMembers(new HashSet<MOB>());
+                                HashSet H=mob.getGroupMembers(new HashSet());
                                 for(Iterator e=H.iterator();e.hasNext();)
                                 {
                                     MOB M=(MOB)e.next();
@@ -8061,14 +8062,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if((V!=null)&&(V.size()>0))
                     for(int v=0;v<V.size();v++)
                     {
-                        Vector VAR=(Vector)V.elementAt(v);
-                        if(VAR.size()>3)
-                        {
-                            String varName=(String)VAR.elementAt(2);
-                            if(varName.startsWith(which.toUpperCase()+"_SCRIPTABLEVARS_"))
-                                varName=varName.substring((which+"_SCRIPTABLEVARS_").length());
-                            setVar(which,varName,(String)VAR.elementAt(3));
-                        }
+                    	DatabaseEngine.PlayerData VAR=(DatabaseEngine.PlayerData)V.elementAt(v);
+                        String varName=VAR.key;
+                        if(varName.startsWith(which.toUpperCase()+"_SCRIPTABLEVARS_"))
+                            varName=varName.substring((which+"_SCRIPTABLEVARS_").length());
+                        setVar(which,varName,VAR.xml);
                     }
                 }
                 break;
@@ -8180,7 +8178,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(A!=null)
                 {
                     altStatusTickable=A;
-                    A.invoke(monster,CMParms.parseToObjV(arg1),null,true,0);
+                    A.invoke(monster,CMParms.parse(arg1),null,true,0);
                     altStatusTickable=null;
                 }
                 break;
@@ -8193,7 +8191,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(A!=null)
                 {
                     altStatusTickable=A;
-                    A.invoke(monster,CMParms.parseToObjV(arg1+" LANDONLY"),null,true,0);
+                    A.invoke(monster,CMParms.parse(arg1+" LANDONLY"),null,true,0);
                     altStatusTickable=null;
                 }
                 break;
@@ -8552,7 +8550,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             default:
                 if(cmd.length()>0)
                 {
-                    Vector<Object> V=CMParms.parseToObjV(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s));
+                    Vector V=CMParms.parse(varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,s));
                     if(V.size()>0)
                         monster.doCommand(V,Command.METAFLAG_MPFORCED);
                 }

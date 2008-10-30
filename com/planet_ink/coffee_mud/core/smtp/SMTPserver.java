@@ -36,6 +36,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class SMTPserver extends Thread implements Tickable
 {
 	public String ID(){return "SMTPserver";}
@@ -123,7 +124,7 @@ public class SMTPserver extends Thread implements Tickable
 		String journalStr=page.getStr("JOURNALS");
 		if((journalStr==null)||(journalStr.length()>0))
 		{
-			Vector<String> V=CMParms.parseCommas(journalStr,true);
+			Vector V=CMParms.parseCommas(journalStr,true);
 			if(V.size()>0)
 			{
 				journals=new DVector(5);
@@ -139,7 +140,7 @@ public class SMTPserver extends Thread implements Tickable
 					}
 					if(!journals.contains(s))
 					{
-						Vector<String> PV=CMParms.parseSpaces(parm,true);
+						Vector PV=CMParms.parseSpaces(parm,true);
 						StringBuffer crit=new StringBuffer("");
 						boolean forward=false;
 						boolean subscribeOnly=false;
@@ -403,10 +404,10 @@ public class SMTPserver extends Thread implements Tickable
 				{
 					boolean keepall=isAKeepAllJournal(name);
 					// Vector mailingList=?
-					Vector<JournalsLibrary.JournalEntry> msgs=CMLib.database().DBReadJournalMsgs(name);
+					Vector msgs=CMLib.database().DBReadJournalMsgs(name);
 					for(int m=0;m<msgs.size();m++)
 					{
-						JournalsLibrary.JournalEntry msg=msgs.elementAt(m);
+						JournalsLibrary.JournalEntry msg=(JournalsLibrary.JournalEntry)msgs.elementAt(m);
 						String to=msg.to;
 						if(to.equalsIgnoreCase("ALL"))
 						{
@@ -525,7 +526,7 @@ public class SMTPserver extends Thread implements Tickable
 			{
 				if((mailboxName()!=null)&&(mailboxName().length()>0))
 				{
-					Vector<JournalsLibrary.JournalEntry> emails=CMLib.database().DBReadJournalMsgs(mailboxName());
+					Vector emails=CMLib.database().DBReadJournalMsgs(mailboxName());
 					processEmails(emails,null,true);
 				}
 				if(journals!=null)
@@ -534,7 +535,7 @@ public class SMTPserver extends Thread implements Tickable
 						String name=(String)journals.elementAt(j,1);
 						if(isAForwardingJournal(name))
 						{
-							Vector<JournalsLibrary.JournalEntry> emails=CMLib.database().DBReadJournalMsgs(name);
+							Vector emails=CMLib.database().DBReadJournalMsgs(name);
 							processEmails(emails,name,false);
 						}
 					}
@@ -552,14 +553,14 @@ public class SMTPserver extends Thread implements Tickable
 		return true;
 	}
 
-	public void processEmails(Vector<JournalsLibrary.JournalEntry> emails,
+	public void processEmails(Vector emails,
 							  String overrideReplyTo,
 							  boolean usePrivateRules)
 	{
 		if(emails!=null)
 		for(int e=0;e<emails.size();e++)
 		{
-			JournalsLibrary.JournalEntry mail=emails.elementAt(e);
+			JournalsLibrary.JournalEntry mail=(JournalsLibrary.JournalEntry)emails.elementAt(e);
 			String key=mail.key;
 			String from=mail.from;
 			String to=mail.to;

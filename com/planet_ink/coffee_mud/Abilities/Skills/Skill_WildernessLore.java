@@ -30,6 +30,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Skill_WildernessLore extends StdSkill
 {
 	public String ID() { return "Skill_WildernessLore"; }
@@ -44,7 +45,7 @@ public class Skill_WildernessLore extends StdSkill
 	protected int iniPracticesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_COMMONPRACCOST);}
 	public int usageType(){return USAGE_MANA;}
 
-	public boolean invoke(MOB mob, Vector<Object> commands, Environmental givenTarget, boolean auto, int asLevel)
+	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;

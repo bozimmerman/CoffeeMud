@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Thief_DisablingCaltrops extends Thief_Caltrops
 {
 	public String ID() { return "Thief_DisablingCaltrops"; }
@@ -41,7 +42,7 @@ public class Thief_DisablingCaltrops extends Thief_Caltrops
 	public void spring(MOB mob)
 	{
 		if((!invoker().mayIFight(mob))
-		||(invoker().getGroupMembers(new HashSet<MOB>()).contains(mob))
+		||(invoker().getGroupMembers(new HashSet()).contains(mob))
 		||(CMLib.dice().rollPercentage()<mob.charStats().getSave(CharStats.STAT_SAVE_TRAPS)))
 			mob.location().show(mob,affected,this,CMMsg.MSG_OK_ACTION,"<S-NAME> avoid(s) some "+caltropTypeName()+"caltrops on the floor.");
 		else

@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Reset extends StdCommand
 {
 	public Reset(){}
@@ -40,7 +41,7 @@ public class Reset extends StdCommand
 	public String[] getAccessWords(){return access;}
 	public boolean securityCheck(MOB mob){return CMSecurity.isAllowed(mob,mob.location(),"RESET");}
 
-	public int resetAreaOramaManaI(MOB mob, Item I, Hashtable<String,Integer> rememberI, String lead)
+	public int resetAreaOramaManaI(MOB mob, Item I, Hashtable rememberI, String lead)
 		throws java.io.IOException
 	{
 		int nochange=0;
@@ -197,7 +198,7 @@ public class Reset extends StdCommand
 		Room R=null;
 		StringBuffer warning=new StringBuffer("");
 		String roomWarning=null; 
-		for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+		for(Enumeration e=A.getProperMap();e.hasMoreElements();)
 		{
 			R=(Room)e.nextElement();
 			roomWarning=resetWarning(mob,R);
@@ -231,7 +232,7 @@ public class Reset extends StdCommand
 	
 	
 	
-	public boolean execute(MOB mob, Vector<Object> commands, int metaFlags)
+	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
 		commands.removeElementAt(0);
@@ -264,7 +265,7 @@ public class Reset extends StdCommand
             if(s.equalsIgnoreCase("area"))
             {
                 Area A=mob.location().getArea();
-                for(Enumeration<Room> e=A.getProperMap();e.hasMoreElements();)
+                for(Enumeration e=A.getProperMap();e.hasMoreElements();)
                     CMLib.threads().rejuv((Room)e.nextElement(),tickID);
                 mob.tell("Done.");
             }
@@ -338,7 +339,7 @@ public class Reset extends StdCommand
 		{
 			Area A=mob.location().getArea();
 			boolean somethingDone=false;
-			for(Enumeration<Room> e=A.getCompleteMap();e.hasMoreElements();)
+			for(Enumeration e=A.getCompleteMap();e.hasMoreElements();)
 			{
 				Room R=(Room)e.nextElement();
 	    		synchronized(("SYNC"+R.roomID()).intern())
@@ -353,7 +354,7 @@ public class Reset extends StdCommand
 						CMLib.database().DBReCreate(R,oldID);
 						try
 						{
-							for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+							for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 							{
 								Room R2=(Room)r.nextElement();
 				    			R2=CMLib.map().getRoom(R2);
@@ -389,7 +390,7 @@ public class Reset extends StdCommand
         {
             Room R=null;
             LandTitle T=null;
-            for(Enumeration<Room> e=CMLib.map().rooms();e.hasMoreElements();)
+            for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
             {
                 R=(Room)e.nextElement();
 	    		synchronized(("SYNC"+R.roomID()).intern())
@@ -409,10 +410,10 @@ public class Reset extends StdCommand
         else
 		if(s.equalsIgnoreCase("genraceagingcharts"))
 		{
-		    for(Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
+		    for(Enumeration e=CMClass.races();e.hasMoreElements();)
 		    {
 		        Race R=(Race)e.nextElement();
-		        Vector<Race> racesToBaseFrom=new Vector<Race>();
+		        Vector racesToBaseFrom=new Vector();
 		        Race human=CMClass.getRace("Human");
 		        Race halfling=CMClass.getRace("Halfling");
 		        if((R.isGeneric())&&(R.ID().length()>1)&&(!R.ID().endsWith("Race"))&&(Character.isUpperCase(R.ID().charAt(0))))
@@ -501,10 +502,10 @@ public class Reset extends StdCommand
 				mob.tell("Which bank?");
 				return false;
 			}
-			Vector<JournalsLibrary.JournalEntry> V=CMLib.database().DBReadJournalMsgs(bank);
+			Vector V=CMLib.database().DBReadJournalMsgs(bank);
 			for(int v=0;v<V.size();v++)
 			{
-				JournalsLibrary.JournalEntry V2=V.elementAt(v);
+				JournalsLibrary.JournalEntry V2=(JournalsLibrary.JournalEntry)V.elementAt(v);
 				String name=V2.from;
 				String ID=V2.subj;
 				String classID=V2.to;
@@ -521,7 +522,7 @@ public class Reset extends StdCommand
 		{
 			s="room";
 			if(commands.size()>1) s=(String)commands.elementAt(1);
-			Vector<Room> rooms=new Vector<Room>();
+			Vector rooms=new Vector();
 			if(s.toUpperCase().startsWith("ROOM"))
 				rooms.addElement(mob.location());
 			else
@@ -529,7 +530,7 @@ public class Reset extends StdCommand
 			{
 			    try
 			    {
-					for(Enumeration<Room> e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
+					for(Enumeration e=mob.location().getArea().getCompleteMap();e.hasMoreElements();)
 						rooms.addElement(e.nextElement());
 			    }catch(NoSuchElementException nse){}
 			}
@@ -538,10 +539,10 @@ public class Reset extends StdCommand
 			{
 			    try
 			    {
-			    	for(Enumeration<Area> e=CMLib.map().areas();e.hasMoreElements();)
+			    	for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
 			    	{
 			    		Area A=(Area)e.nextElement();
-			    		for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+			    		for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 							rooms.addElement(r.nextElement());
 			    	}
 			    }catch(NoSuchElementException nse){}
@@ -552,7 +553,7 @@ public class Reset extends StdCommand
 				return false;
 			}
 
-			for(Enumeration<Room> r=rooms.elements();r.hasMoreElements();)
+			for(Enumeration r=rooms.elements();r.hasMoreElements();)
 			{
 				Room R=CMLib.map().getRoom((Room)r.nextElement());
 		    	synchronized(("SYNC"+R.roomID()).intern())
@@ -593,7 +594,7 @@ public class Reset extends StdCommand
 			mob.session().print("working...");
 			try
 			{
-				for(Enumeration<Room> r=CMLib.map().rooms();r.hasMoreElements();)
+				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					boolean changed=false;
@@ -623,11 +624,11 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
-			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				A.setAreaFlags(Area.FLAG_FROZEN);
-				for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()==0) continue;
@@ -666,11 +667,11 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
-			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				A.setAreaFlags(Area.FLAG_FROZEN);
-				for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()==0) continue;
@@ -719,7 +720,7 @@ public class Reset extends StdCommand
 			}
 			
 			mob.session().print("working...");
-			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				boolean changed=false;
@@ -771,11 +772,11 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
-			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				A.setAreaFlags(Area.FLAG_FROZEN);
-				for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()>0)
@@ -798,7 +799,7 @@ public class Reset extends StdCommand
 								ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 								if(SK!=null)
 								{
-									Vector<Environmental> V=SK.getShop().getStoreInventory();
+									Vector V=SK.getShop().getStoreInventory();
 									for(int i=V.size()-1;i>=0;i--)
 									{
 										Environmental E=(Environmental)V.elementAt(i);
@@ -836,11 +837,11 @@ public class Reset extends StdCommand
 		{
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
-			for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
 				A.setAreaFlags(Area.FLAG_FROZEN);
-				for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()>0)
@@ -871,7 +872,7 @@ public class Reset extends StdCommand
 								ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 								if(SK!=null)
 								{
-									Vector<Environmental> V=SK.getShop().getStoreInventory();
+									Vector V=SK.getShop().getStoreInventory();
 									for(int i=V.size()-1;i>=0;i--)
 									{
 										Environmental E=(Environmental)V.elementAt(i);
@@ -909,11 +910,11 @@ public class Reset extends StdCommand
         {
             if(mob.session()==null) return false;
             mob.session().print("working...");
-            for(Enumeration<Area> a=CMLib.map().areas();a.hasMoreElements();)
+            for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
             {
                 Area A=(Area)a.nextElement();
                 A.setAreaFlags(Area.FLAG_FROZEN);
-                for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+                for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
                 {
                     Room R=(Room)r.nextElement();
                     if(R.roomID().length()>0)
@@ -944,7 +945,7 @@ public class Reset extends StdCommand
                                 ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
                                 if(SK!=null)
                                 {
-                                    Vector<Environmental> V=SK.getShop().getStoreInventory();
+                                    Vector V=SK.getShop().getStoreInventory();
                                     for(int i=V.size()-1;i>=0;i--)
                                     {
                                         Environmental E=(Environmental)V.elementAt(i);
@@ -987,10 +988,10 @@ public class Reset extends StdCommand
 			Area A=mob.location().getArea();
             CMLib.map().resetArea(A);
 			A.setAreaFlags(Area.FLAG_FROZEN);
-			Hashtable<String,Integer> rememberI=new Hashtable<String,Integer>();
-			Hashtable<String,Race> rememberM=new Hashtable<String,Race>();
+			Hashtable rememberI=new Hashtable();
+			Hashtable rememberM=new Hashtable();
 			try{
-			for(Enumeration<Room> r=A.getCompleteMap();r.hasMoreElements();)
+			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(R.roomID().length()>0)
@@ -1056,28 +1057,28 @@ public class Reset extends StdCommand
 								{
 									String poss="";
 									if(poss.length()==0)
-									for(Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
+									for(Enumeration e=CMClass.races();e.hasMoreElements();)
 									{
 										Race R3=(Race)e.nextElement();
 										if(R3.ID().toUpperCase().startsWith(str.toUpperCase()))
 										   poss=R3.name();
 									}
 									if(poss.length()==0)
-									for(Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
+									for(Enumeration e=CMClass.races();e.hasMoreElements();)
 									{
 										Race R3=(Race)e.nextElement();
 										if(R3.ID().toUpperCase().indexOf(str.toUpperCase())>=0)
 										   poss=R3.name();
 									}
 									if(poss.length()==0)
-									for(Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
+									for(Enumeration e=CMClass.races();e.hasMoreElements();)
 									{
 										Race R3=(Race)e.nextElement();
 										if(R3.name().toUpperCase().startsWith(str.toUpperCase()))
 										   poss=R3.name();
 									}
 									if(poss.length()==0)
-									for(Enumeration<Race> e=CMClass.races();e.hasMoreElements();)
+									for(Enumeration e=CMClass.races();e.hasMoreElements();)
 									{
 										Race R3=(Race)e.nextElement();
 										if(R3.name().toUpperCase().indexOf(str.toUpperCase())>=0)
@@ -1113,7 +1114,7 @@ public class Reset extends StdCommand
 						ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
 						if(SK!=null)
 						{
-							Vector<Environmental> V=SK.getShop().getStoreInventory();
+							Vector V=SK.getShop().getStoreInventory();
 							for(int i=V.size()-1;i>=0;i--)
 							{
 								Environmental E=(Environmental)V.elementAt(i);

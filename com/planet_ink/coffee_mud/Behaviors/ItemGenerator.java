@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class ItemGenerator extends ActiveTicker
 {
 	public String ID(){return "ItemGenerator";}
@@ -54,7 +55,7 @@ public class ItemGenerator extends ActiveTicker
 		String parms=newParms;
 		if(parms.indexOf(";")>=0)
 			parms=parms.substring(0,parms.indexOf(";"));
-		Vector<String> V=CMParms.parse(parms);
+		Vector V=CMParms.parse(parms);
 		for(int v=0;v<V.size();v++)
 		{
 			String s=(String)V.elementAt(v);
@@ -170,7 +171,7 @@ public class ItemGenerator extends ActiveTicker
 		{
 			Vector allItems=new Vector();
 		    Vector skills=new Vector();
-			for(Enumeration<Ability> e=CMClass.abilities();e.hasMoreElements();)
+			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
 			{
 				Ability A=(Ability)e.nextElement();
 				if(A instanceof ItemCraftor)

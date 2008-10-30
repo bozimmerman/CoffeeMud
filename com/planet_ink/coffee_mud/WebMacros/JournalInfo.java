@@ -31,17 +31,18 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class JournalInfo extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
 	public String runMacro(ExternalHTTPRequests httpReq, String parm)
 	{
-		Hashtable<String,String> parms=parseParms(parm);
+		Hashtable parms=parseParms(parm);
 		String last=httpReq.getRequestParameter("JOURNAL");
 		if(last==null) return " @break@";
-		@SuppressWarnings("unchecked")
-		Vector<JournalsLibrary.JournalEntry> info=(Vector<JournalsLibrary.JournalEntry>)httpReq.getRequestObjects().get("JOURNAL: "+last);
+		
+		Vector info=(Vector)httpReq.getRequestObjects().get("JOURNAL: "+last);
 		if(info==null)
 		{
 			info=CMLib.database().DBReadJournalMsgs(last);
@@ -64,7 +65,8 @@ public class JournalInfo extends StdWebMacro
 		if(M==null)
 			M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
         boolean priviledged=CMSecurity.isAllowedAnywhere(M,"JOURNALS")&&(!parms.contains("NOPRIV"));
-		String to=info.elementAt(num).to;
+        JournalsLibrary.JournalEntry entry = (JournalsLibrary.JournalEntry)info.elementAt(num);
+		String to=entry.to;
 		if(to.equalsIgnoreCase("all")
         ||((M!=null)
            &&(priviledged
@@ -72,13 +74,13 @@ public class JournalInfo extends StdWebMacro
                ||(to.toUpperCase().trim().startsWith("MASK=")&&(CMLib.masking().maskCheck(to.trim().substring(5),M,true))))))
 		{
 			if(parms.containsKey("KEY"))
-                return clearWebMacros(info.elementAt(num).key);
+                return clearWebMacros(entry.key);
 			else
 			if(parms.containsKey("FROM"))
-                return clearWebMacros(info.elementAt(num).from);
+                return clearWebMacros(entry.from);
 			else
 			if(parms.containsKey("DATE"))
-				return CMLib.time().date2String(CMath.s_long(info.elementAt(num).date));
+				return CMLib.time().date2String(CMath.s_long(entry.date));
 			else
 			if(parms.containsKey("TO"))
             {
@@ -88,11 +90,11 @@ public class JournalInfo extends StdWebMacro
             }
 			else
 			if(parms.containsKey("SUBJECT"))
-                return clearWebMacros(info.elementAt(num).subj);
+                return clearWebMacros(entry.subj);
 			else
 			if(parms.containsKey("MESSAGE"))
 			{
-				String s=info.elementAt(num).msg;
+				String s=entry.msg;
 				if(parms.containsKey("NOREPLIES"))
 				{
 					int x=s.indexOf(JournalsLibrary.JOURNAL_BOUNDARY);
@@ -115,7 +117,7 @@ public class JournalInfo extends StdWebMacro
                 return s;
 			}
             if(parms.containsKey("EMAILALLOWED"))
-                return ""+((info.elementAt(num).from.length()>0)
+                return ""+((entry.from.length()>0)
                         &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0));
 		}
 		return "";

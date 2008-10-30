@@ -30,15 +30,16 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prop_Tattoo extends Property
 {
 	public String ID() { return "Prop_Tattoo"; }
 	public String name(){ return "A Tattoo";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
 
-	public static Vector<String> getTattoos(MOB mob)
+	public static Vector getTattoos(MOB mob)
 	{
-		Vector<String> tattos=new Vector<String>();
+		Vector tattos=new Vector();
 		Ability A=mob.fetchAbility("Prop_Tattoo");
 		if(A!=null)
 			tattos=CMParms.parseSemicolons(A.text().toUpperCase(),true);

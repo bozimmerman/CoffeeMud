@@ -34,6 +34,7 @@ import java.io.IOException;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class CommonMsgs extends StdLibrary implements CommonCommands
 {
     public String ID(){return "CommonMsgs";}
