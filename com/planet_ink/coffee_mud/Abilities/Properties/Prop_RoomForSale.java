@@ -453,104 +453,99 @@ public class Prop_RoomForSale extends Property implements LandTitle
 	    int day=A.getTimeObj().getDayOfMonth();
 	    int year=A.getTimeObj().getYear();
 	    Object O=Resources.getResource("RENTAL INFO/"+owner);
-	    Vector V=null;
+	    Vector pDataV=null;
 	    if(O instanceof Vector)
-	        V=(Vector)O;
+	        pDataV=(Vector)O;
 	    else
-	        V=CMLib.database().DBReadData(owner,"RENTAL INFO");
-	    if(V==null)
-	        V=new Vector();
-	    if(V.size()==0)
+	        pDataV=CMLib.database().DBReadData(owner,"RENTAL INFO");
+	    if(pDataV==null)
+	        pDataV=new Vector();
+    	DatabaseEngine.PlayerData pData = null;
+	    if(pDataV.size()==0)
 	    {
-		    V=new Vector();
-	        V.addElement(owner);
-	        V.addElement("RENTAL INFO");
-	        V.addElement("RENTAL INFO/"+owner);
-	        V.addElement(ID+"|~>|"+day+" "+month+" "+year+"|~;|");
-	        CMLib.database().DBCreateData(owner,"RENTAL INFO","RENTAL INFO/"+owner,(String)V.lastElement());
-	        Vector V2=new Vector();
-	        V2.addElement(V);
-	        Resources.submitResource("RENTAL INFO/"+owner,V2);
+	    	pData = new DatabaseEngine.PlayerData();
+	    	pData.who=owner;
+	    	pData.section="RENTAL INFO";
+	    	pData.key="RENTAL INFO/"+owner;
+	    	pData.xml=ID+"|~>|"+day+" "+month+" "+year+"|~;|";
+	        CMLib.database().DBCreateData(owner,"RENTAL INFO","RENTAL INFO/"+owner,pData.xml);
+	        pDataV.addElement(pData);
+	        Resources.submitResource("RENTAL INFO/"+owner,pDataV);
 	        return false;
 	    }
 	    else
-	    if(V.firstElement() instanceof Vector)
+	    if(pDataV.firstElement() instanceof DatabaseEngine.PlayerData)
 	    {
-	        V=(Vector)V.firstElement();
-	        if(V.size()>2)
+	    	pData=(DatabaseEngine.PlayerData)pDataV.firstElement();
+	        String parse=pData.xml;
+	        int x=parse.indexOf("|~;|");
+	        StringBuffer reparse=new StringBuffer("");
+	        boolean changesMade=false;
+            boolean needsToPay=false;
+	        while(x>=0)
 	        {
-		        String parse=(String)V.lastElement();
-		        int x=parse.indexOf("|~;|");
-		        StringBuffer reparse=new StringBuffer("");
-		        boolean changesMade=false;
-                boolean needsToPay=false;
-		        while(x>=0)
-		        {
-		            String thisOne=parse.substring(0,x);
-		            if(thisOne.startsWith(ID+"|~>|"))
-		            {
-		                thisOne=thisOne.substring((ID+"|~>|").length());
-		                V=CMParms.parse(thisOne);
-		                if(V.size()==3)
-		                {
-		                    int lastYear=CMath.s_int((String)V.lastElement());
-		                    int lastMonth=CMath.s_int((String)V.elementAt(1));
-		                    int lastDay=CMath.s_int((String)V.firstElement());
-		                    while(!needsToPay)
+	            String thisOne=parse.substring(0,x);
+	            if(thisOne.startsWith(ID+"|~>|"))
+	            {
+	                thisOne=thisOne.substring((ID+"|~>|").length());
+	                Vector dateV=CMParms.parse(thisOne);
+	                if(dateV.size()==3)
+	                {
+	                    int lastYear=CMath.s_int((String)dateV.lastElement());
+	                    int lastMonth=CMath.s_int((String)dateV.elementAt(1));
+	                    int lastDay=CMath.s_int((String)dateV.firstElement());
+	                    while(!needsToPay)
+	                    {
+		                    if(lastYear<year)
+		                        needsToPay=true;
+		                    else
+		                    if((lastYear==year)&&(lastMonth<month)&&(day>=lastDay))
+		                        needsToPay=true;
+		                    if(needsToPay)
 		                    {
-			                    if(lastYear<year)
-			                        needsToPay=true;
-			                    else
-			                    if((lastYear==year)&&(lastMonth<month)&&(day>=lastDay))
-			                        needsToPay=true;
-			                    if(needsToPay)
-			                    {
-			                        if(CMLib.beanCounter().modifyLocalBankGold(A,
-			                                owner,
-			                                CMLib.utensils().getFormattedDate(A)+":Withdrawl of "+rent+": Rent for "+ID,
-			                                CMLib.beanCounter().getCurrency(A),
-			                                (double)(-rent)))
-			                        {
-			                            lastMonth++;
-			                            if(lastMonth>A.getTimeObj().getMonthsInYear())
-			                            {
-			                                lastMonth=1;
-			                                lastYear++;
-			                            }
-			                            changesMade=true;
-					                    needsToPay=false;
-			                        }
-			                    }
-			                    else
-			                        break;
+		                        if(CMLib.beanCounter().modifyLocalBankGold(A,
+		                                owner,
+		                                CMLib.utensils().getFormattedDate(A)+":Withdrawl of "+rent+": Rent for "+ID,
+		                                CMLib.beanCounter().getCurrency(A),
+		                                (double)(-rent)))
+		                        {
+		                            lastMonth++;
+		                            if(lastMonth>A.getTimeObj().getMonthsInYear())
+		                            {
+		                                lastMonth=1;
+		                                lastYear++;
+		                            }
+		                            changesMade=true;
+				                    needsToPay=false;
+		                        }
 		                    }
-		                    if(changesMade)
-		                        reparse.append(ID+"|~>|"+lastDay+" "+lastMonth+" "+lastYear+"|~;|");
-		                    if(needsToPay&&(!changesMade))
-		                        return true;
-		                }
-		            }
-		            else
-		                reparse.append(thisOne+"|~;|");
-		            parse=parse.substring(x+4);
-		            x=parse.indexOf("|~;|");
-		        }
-		        if(changesMade)
-		        {
-			        CMLib.database().DBReCreateData(owner,"RENTAL INFO","RENTAL INFO/"+owner,reparse.toString());
-				    V=new Vector();
-			        V.addElement(owner);
-			        V.addElement("RENTAL INFO");
-			        V.addElement("RENTAL INFO/"+owner);
-			        V.addElement(reparse.toString());
-			        Vector V2=new Vector();
-			        V2.addElement(V);
-			        Resources.updateResource("RENTAL INFO/"+owner,V2);
-		        }
-			    return needsToPay;
+		                    else
+		                        break;
+	                    }
+	                    if(changesMade)
+	                        reparse.append(ID+"|~>|"+lastDay+" "+lastMonth+" "+lastYear+"|~;|");
+	                    if(needsToPay&&(!changesMade))
+	                        return true;
+	                }
+	            }
+	            else
+	                reparse.append(thisOne+"|~;|");
+	            parse=parse.substring(x+4);
+	            x=parse.indexOf("|~;|");
 	        }
-		    return false;
-	    }
+	        if(changesMade)
+	        {
+		        CMLib.database().DBReCreateData(owner,"RENTAL INFO","RENTAL INFO/"+owner,reparse.toString());
+		    	pData = new DatabaseEngine.PlayerData();
+		    	pData.who=owner;
+		    	pData.section="RENTAL INFO";
+		    	pData.key="RENTAL INFO/"+owner;
+		    	pData.xml=reparse.toString();
+		    	pDataV.setElementAt(pData,0);
+		        Resources.updateResource("RENTAL INFO/"+owner,pDataV);
+	        }
+		    return needsToPay;
+        }
 	    return false;
 	}
 

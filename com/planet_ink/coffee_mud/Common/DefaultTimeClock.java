@@ -443,7 +443,7 @@ public class DefaultTimeClock implements TimeClock
 				if((bitV==null)||(bitV.size()==0))
 					timeRsc="<TIME>-1</TIME><DAY>1</DAY><MONTH>1</MONTH><YEAR>1</YEAR>";
 				else
-					timeRsc=((DatabaseEngine.PlayerData)(bitV.firstElement())).xml;
+					timeRsc=((DatabaseEngine.PlayerData)bitV.firstElement()).xml;
 				Vector V=CMLib.xml().parseAllXML(timeRsc);
 				setTimeOfDay(CMLib.xml().getIntFromPieces(V,"TIME"));
 				setDayOfMonth(CMLib.xml().getIntFromPieces(V,"DAY"));

@@ -148,24 +148,24 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	public boolean delDepositInventory(String mob, Item thisThang)
 	{
-		Vector V=getDepositInventory(mob);
+		Vector V=getRawPDDepositInventory(mob);
 		boolean money=thisThang instanceof Coins;
 		boolean found=false;
 		for(int v=V.size()-1;v>=0;v--)
 		{
-			DatabaseEngine.PlayerData V2=(DatabaseEngine.PlayerData)V.elementAt(v);
-			if(money&&(V2.xml).startsWith("COINS;"))
+			DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.elementAt(v);
+			if(money&&(PD.xml).startsWith("COINS;"))
 			{
-				CMLib.database().DBDeleteData((V2.who),(V2.section),(V2.key));
+				CMLib.database().DBDeleteData(PD.who,PD.section,PD.key);
 				found=true;
 			}
 			if(!money)
 			{
-				Item I=makeItem(V2.xml);
+				Item I=makeItem(PD.xml);
 				if(I==null) continue;
 				if(thisThang.sameAs(I))
 				{
-					CMLib.database().DBDeleteData(V2.who,V2.section,V2.key);
+					CMLib.database().DBDeleteData(PD.who,PD.section,PD.key);
 					return true;
 				}
 			}
@@ -178,7 +178,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	}
 	public int numberDeposited(String mob)
 	{
-		return getDepositInventory(mob).size();
+		return getRawPDDepositInventory(mob).size();
 	}
 	public Vector getDepositedItems(MOB mob)
 	{
@@ -188,17 +188,17 @@ public class StdBanker extends StdShopKeeper implements Banker
 	public Vector getDepositedItems(String mob)
 	{
 		if((mob==null)||(mob.length()==0)) return new Vector();
-		Vector V=getDepositInventory(mob);
+		Vector V=getRawPDDepositInventory(mob);
 		Vector mine=new Vector();
 		for(int v=0;v<V.size();v++)
 		{
-			DatabaseEngine.PlayerData V2=(DatabaseEngine.PlayerData)V.elementAt(v);
-			Item I=makeItem(V2.xml);
+			DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.elementAt(v);
+			Item I=makeItem(PD.xml);
 			if(I!=null)	mine.addElement(I);
 		}
 		return mine;
 	}
-	public Vector getDepositInventory(String mob)
+	public Vector getRawPDDepositInventory(String mob)
 	{
 		return CMLib.database().DBReadData(mob,bankChain());
 	}
@@ -243,19 +243,19 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	public Item findDepositInventory(String mob, String likeThis)
 	{
-		Vector V=getDepositInventory(mob);
+		Vector V=getRawPDDepositInventory(mob);
 		if(CMath.s_int(likeThis)>0)
 			for(int v=0;v<V.size();v++)
 			{
-				DatabaseEngine.PlayerData V2=(DatabaseEngine.PlayerData)V.elementAt(v);
-				if(V2.xml.startsWith("COINS;"))
-					return makeItem(V2.xml);
+				DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.elementAt(v);
+				if(PD.xml.startsWith("COINS;"))
+					return makeItem(PD.xml);
 			}
 		else
 		for(int v=0;v<V.size();v++)
 		{
-			DatabaseEngine.PlayerData V2=(DatabaseEngine.PlayerData)V.elementAt(v);
-			Item I=makeItem(V2.xml);
+			DatabaseEngine.PlayerData PD=(DatabaseEngine.PlayerData)V.elementAt(v);
+			Item I=makeItem(PD.xml);
 			if(I==null) continue;
 			if(CMLib.english().containsString(I.Name(),likeThis))
 				return I;

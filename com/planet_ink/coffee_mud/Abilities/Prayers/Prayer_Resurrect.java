@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -50,22 +51,22 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 	{
 		Environmental body=null;
         body=getTarget(mob,mob.location(),givenTarget,commands,Item.WORNREQ_UNWORNONLY);
-        Vector nonPlayerData=null;
+        DatabaseEngine.PlayerData nonPlayerData=null;
         boolean playerCorpse=false;
         if((body==null)&&(CMSecurity.isASysOp(mob)))
         {
             Vector V=CMLib.database().DBReadData("HEAVEN");
             Vector allObjs=new Vector();
-            Vector allDataVs=new Vector();
+            Vector allDataPs=new Vector();
             if((V!=null)&&(V.size()>0))
             for(int v=0;v<V.size();v++)
             {
-                Vector dataV=(Vector)V.elementAt(v);
-                String data=(String)dataV.lastElement();
+            	DatabaseEngine.PlayerData dataP=(DatabaseEngine.PlayerData)V.elementAt(v);
+                String data=dataP.xml;
                 Environmental obj=parseHeavenlyData(data);
                 if(obj!=null)
                 {
-                    allDataVs.addElement(dataV);
+                    allDataPs.addElement(dataP);
                     allObjs.addElement(obj);
                 }
             }
@@ -80,7 +81,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
                 {
                     body=(Environmental)allObjs.elementAt(i);
                     Ability age=body.fetchEffect("Age");
-                    mob.tell(CMStrings.padRight((String)((Vector)allDataVs.elementAt(i)).firstElement(),15)
+                    mob.tell(CMStrings.padRight(((DatabaseEngine.PlayerData)allDataPs.elementAt(i)).who,15)
                             +CMStrings.padRight(body.name(),45)
                             +CMStrings.padRight(((age==null)?"":CMLib.time().date2String(CMath.s_long(age.text()))),16)+"\n\r"+CMStrings.padRight("",15)+body.description());
                 }
@@ -92,7 +93,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
             for(int i=0;i<allObjs.size();i++)
                 if(allObjs.elementAt(i)==E)
                 {
-                    nonPlayerData=(Vector)allDataVs.elementAt(i);
+                    nonPlayerData=(DatabaseEngine.PlayerData)allDataPs.elementAt(i);
                     body=E;
                     break;
                 }
@@ -121,7 +122,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
     						Vector V=CMLib.database().DBReadData(M.Name(),"HEAVEN",M.Name()+"/HEAVEN/"+AGE.text());
     						if((V!=null)&&(V.size()>0))
     						{
-    							nonPlayerData=(Vector)V.firstElement();
+    							nonPlayerData=(DatabaseEngine.PlayerData)V.firstElement();
     							break;
     						}
     					}
@@ -228,7 +229,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 				}
 				else
 				{
-					String data=(String)nonPlayerData.lastElement();
+					String data=nonPlayerData.xml;
 					Environmental object=parseHeavenlyData(data);
 					if(object==null)
 						mob.location().show(mob,body,CMMsg.MSG_OK_VISUAL,"<T-NAME> twitch(es) for a moment, but the spirit is too far gone.");

@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -204,7 +205,7 @@ public class Prop_Artifact extends Property
 				if(autoreset)
 				{
 					Vector itemSet=CMLib.database().DBReadData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
-					if((itemSet!=null)&&(itemSet.size()>0)&&(((Vector)itemSet.firstElement()).size()>3))
+					if((itemSet!=null)&&(itemSet.size()>0))
 						return;
 				}
 				StringBuffer data=new StringBuffer("");
@@ -253,11 +254,11 @@ public class Prop_Artifact extends Property
 					return false;
 
 				Vector itemSet=CMLib.database().DBReadData(getItemID(),"ARTIFACTS","ARTIFACTS/"+getItemID());
-				if((itemSet!=null)&&(itemSet.size()>0)&&(((Vector)itemSet.firstElement()).size()>3))
+				if((itemSet!=null)&&(itemSet.size()>0))
 				{
 					// does it already exist?
 					if(registeredArtifacts.containsKey(getItemID())) registeredArtifacts.remove(getItemID());
-					String data=(String)((Vector)itemSet.firstElement()).elementAt(3);
+					String data=((DatabaseEngine.PlayerData)itemSet.firstElement()).xml;
 					Vector xml=CMLib.xml().parseAllXML(data);
 					if(xml!=null)
 						for(int c=0;c<xml.size();c++)
