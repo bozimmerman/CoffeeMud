@@ -116,13 +116,16 @@ public class AbilityRecipeData extends StdWebMacro
                         AbilityParameters.AbilityParmEditor editor =
                             (AbilityParameters.AbilityParmEditor)CMLib.ableParms().getEditors().get((String)dataRow.elementAt(c,1));
                         String oldVal = (String)dataRow.elementAt(c,2);
-                        str.append("\n\r<TR>");
-                        str.append("<TD WIDTH=20%>" + hsfont + editor.colHeader() + hefont + "</TD>");
-                        if(c==classFieldIndex)
-                            str.append("<TD>" + sfont + editor.webValue(httpReq,parms,oldVal,"DATA_"+row+"_"+c) + efont + "</TD>");
-                        else
-                            str.append("<TD>" + sfont + editor.webField(httpReq,parms,oldVal,"DATA_"+row+"_"+c) + efont + "</TD>");
-                        str.append("</TR>");
+                        if(!editor.ID().equalsIgnoreCase("N_A"))
+                        {
+	                        str.append("\n\r<TR>");
+	                        str.append("<TD WIDTH=20%>" + hsfont + editor.prompt() + hefont + "</TD>");
+	                        if(c==classFieldIndex)
+	                            str.append("<TD>" + sfont + editor.webValue(httpReq,parms,oldVal,"DATA_"+row+"_"+c) + efont + "</TD>");
+	                        else
+	                            str.append("<TD>" + sfont + editor.webField(httpReq,parms,oldVal,"DATA_"+row+"_"+c) + efont + "</TD>");
+	                        str.append("</TR>");
+                        }
                     }
                     str.append("\n\r</TABLE>");
                     if(classFieldIndex>=0)

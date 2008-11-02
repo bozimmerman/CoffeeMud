@@ -708,6 +708,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     public boolean confirmValue(String oldVal) { return true;}
                     public String defaultValue(){ return "10";}
                 },
+                new AbilityParmEditorImpl("OPTIONAL_AMOUNT_REQUIRED","Amt",PARMTYPE_NUMBER){
+                    public void createChoices() {}
+                    public boolean confirmValue(String oldVal) { return true;}
+                    public String defaultValue(){ return "";}
+                },
                 new AbilityParmEditorImpl("ITEM_BASE_VALUE","Value",PARMTYPE_NUMBER){
                     public void createChoices() {}
                     public String defaultValue(){ return "5";}
@@ -756,9 +761,11 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                             logicalAnd[0] = httpReq.getRequestParameter(fieldName+"_ISTWOHANDED").equalsIgnoreCase("on");
                             layers[0] = CMath.s_short(httpReq.getRequestParameter(fieldName+"_LAYER"));
                             layerAtt[0] = 0;
-                            if(httpReq.getRequestParameter(fieldName+"_SEETHRU").equalsIgnoreCase("on"))
+                            if((httpReq.isRequestParameter(fieldName+"_SEETHRU"))
+                            &&(httpReq.getRequestParameter(fieldName+"_SEETHRU").equalsIgnoreCase("on")))
                                 layerAtt[0] |= Armor.LAYERMASK_SEETHROUGH;
-                            if(httpReq.getRequestParameter(fieldName+"_MULTIWEAR").equalsIgnoreCase("on"))
+                            if((httpReq.isRequestParameter(fieldName+"_MULTIWEAR"))
+                            &&(httpReq.getRequestParameter(fieldName+"_MULTIWEAR").equalsIgnoreCase("on")))
                                 layerAtt[0] |= Armor.LAYERMASK_MULTIWEAR;
                         }
                         return reconvert(layerAtt,layers,wornLoc,logicalAnd,hardBonus);
@@ -910,9 +917,9 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                                     String txt = ((Ability)spells.elementAt(s)).text().trim();
                                     if((txt.indexOf(';')>=0)||(CMClass.getAbility(txt)!=null))
                                         throw new CMException("You may not have more than one spell when one of the spells parameters is a spell id or a ; character.");
-                                    newVal.append(((Ability)spells.firstElement()).ID());
+                                    newVal.append(((Ability)spells.elementAt(s)).ID());
                                     if(txt.length()>0)
-                                        newVal.append(";" + ((Ability)spells.firstElement()).text());
+                                        newVal.append(";" + ((Ability)spells.elementAt(s)).text());
                                     if(s<(spells.size()-1))
                                         newVal.append(";");
                                 }
@@ -1130,7 +1137,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         value = value.trim();
                         StringBuffer str = new StringBuffer("");
                         str.append("\n\r<INPUT TYPE=RADIO NAME="+fieldName+"_WHICH ");
-                        boolean rsc=CMParms.containsIgnoreCase(RawMaterial.RESOURCE_DESCS,value.toUpperCase().trim());
+                        boolean rsc=(value.trim().length()==0)||CMParms.containsIgnoreCase(RawMaterial.RESOURCE_DESCS,value.toUpperCase().trim());
                         if(rsc) str.append("CHECKED ");
                         str.append("VALUE=\"RESOURCE\">");
                         str.append("\n\r<SELECT NAME="+fieldName+"_RESOURCE>");
@@ -1298,21 +1305,15 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     }
                     public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
                         Vector raceIDs=null;
-                        if(httpReq.isRequestParameter(fieldName+"_RACE1"))
+                        if(httpReq.isRequestParameter(fieldName+"_RACE"))
                         {
-                            raceIDs = new Vector();
-                            int num=1;
-                            String behav=httpReq.getRequestParameter(fieldName+"_RACE"+num);
-                            while(behav!=null)
-                            {
-                                if(behav.length()>0)
-                                    raceIDs.addElement(behav);
-                                num++;
-                                behav=httpReq.getRequestParameter(fieldName+"_RACE"+num);
-                            }
+                            String id="";
+                            raceIDs=new Vector();
+                            for(int i=0;httpReq.isRequestParameter(fieldName+"_RACE"+id);id=""+(++i))
+                            	raceIDs.addElement(httpReq.getRequestParameter(fieldName+"_RACE"+id).toUpperCase().trim());
                         }
                         else
-                            raceIDs = CMParms.parse(oldVal);
+                            raceIDs = CMParms.parse(oldVal.toUpperCase().trim());
                         return CMParms.combine(raceIDs,0);
                     }
                     public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
@@ -1429,6 +1430,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                     public boolean confirmValue(String oldVal) { return oldVal.trim().length()==0||oldVal.equals("0");}
                     public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
                     { return "";}
+                    public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) { return ""; }
                 },
                 new AbilityParmEditorImpl("RESOURCE_NAME_AMOUNT_MATERIAL_REQUIRED","Resrc/Amt",PARMTYPE_SPECIAL) {
                     public void createChoices() { 
