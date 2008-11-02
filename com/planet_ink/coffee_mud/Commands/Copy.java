@@ -213,7 +213,12 @@ public class Copy extends StdCommand
 				if(i==0)
 				{
 					if(number>1)
-						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+newItem.name()+"s falls "+end+".");
+					{
+						if(newItem.name().toLowerCase().endsWith("s"))
+							room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+newItem.name()+" falls "+end+".");
+						else
+							room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+number+" "+newItem.name()+"s falls "+end+".");
+					}
 					else
 						room.showHappens(CMMsg.MSG_OK_ACTION,"Suddenly, "+newItem.name()+" fall "+end+".");
 					Log.sysOut("SysopUtils",mob.Name()+" "+number+" copied "+newItem.ID()+" item.");
