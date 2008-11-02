@@ -103,14 +103,15 @@ public class CMLib
     public static final int LIBRARY_TITLES=44;
     public static final int LIBRARY_ABLEPARMS=45;
     public static final int LIBRARY_GENEDITOR=46;
-    public static final int LIBRARY_TOTAL=47;
+    public static final int LIBRARY_AREAGEN=47;
+    public static final int LIBRARY_TOTAL=48;
     public static final String[] LIBRARY_DESCS={
         "DATABASE","THREADS","INTERMUD","HTTP","LISTER","MONEY","SHOPS","COMBAT",
         "HELP","TRACKING","MASKING","CHANNELS","COMMANDS","ENGLISH","SLAVERY","JOURNALS",
         "FLAGS","OBJBUILDERS","SESSIONS","TELNET","XML","SOCIALS","UTENSILS","STATS",
         "MAP","QUEST","ABLEMAP","ENCODER","SMTP","DICE","FACTIONS","CLANS","POLLS",
         "TIME","COLOR","LOGIN","TIMS","LEVELS","EXPERTISES","MATERIALS","LEGAL",
-        "LANGUAGE","CATALOG","PLAYERS","TITLES","ABLEPARMS","GENEDITOR"};
+        "LANGUAGE","CATALOG","PLAYERS","TITLES","ABLEPARMS","GENEDITOR","AREAGEN"};
 
     public static CMath math(){return CMath.instance();}
     public static CMParms parms(){return CMParms.instance();}
@@ -174,6 +175,7 @@ public class CMLib
     public static ExpLevelLibrary leveler(){return (ExpLevelLibrary)l().libraries[LIBRARY_LEVELS];}
     public static WorldMap map(){return (WorldMap)l().libraries[LIBRARY_MAP];}
     public static QuestManager quests(){return (QuestManager)l().libraries[LIBRARY_QUEST];}
+    public static AreaGenerationLibrary percolator(){return (AreaGenerationLibrary)l().libraries[LIBRARY_AREAGEN];}
     public static AbilityMapper ableMapper(){return (AbilityMapper)l().libraries[LIBRARY_ABLEMAP];}
     public static TextEncoders encoder(){return (TextEncoders)l().libraries[LIBRARY_ENCODER];}
     public static SMTPLibrary smtp(){return (SMTPLibrary)l().libraries[LIBRARY_SMTP];}
@@ -241,6 +243,7 @@ public class CMLib
         if(O instanceof AutoTitlesLibrary) return LIBRARY_TITLES;
         if(O instanceof AbilityParameters) return LIBRARY_ABLEPARMS;
         if(O instanceof GenericEditor) return LIBRARY_GENEDITOR;
+        if(O instanceof AreaGenerationLibrary) return LIBRARY_AREAGEN;
         return -1;
     }
 

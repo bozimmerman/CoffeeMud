@@ -494,7 +494,7 @@ public class CMStrings
 	private static final int	STRING_EXP_TOKEN_NOT		= 7;
 	private static final int	STRING_EXP_TOKEN_NUMCONST	= 8;
 
-	private static StringExpToken makeTokenType(String token, Hashtable variables) throws Exception
+	private static StringExpToken makeTokenType(String token, Hashtable variables, boolean emptyVars) throws Exception
 	{
 		if ((token == null)||(token.length()==0))
 			return null;
@@ -522,7 +522,10 @@ public class CMStrings
 			Object value = variables.get(token);
 			if(!(value instanceof String))
 				value = variables.get(token.toUpperCase().trim());
-			if (!(value instanceof String))
+			if((value == null)&&(emptyVars))
+				value="";
+			else
+			if(!(value instanceof String))
 				throw new Exception("Undefined variable found: $" + token);
 			if(value.toString().trim().length()==0)
 				return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, value.toString());
@@ -539,7 +542,7 @@ public class CMStrings
 		return StringExpToken.token(STRING_EXP_TOKEN_EVALUATOR, token);
 	}
 
-	private static StringExpToken nextStringToken(String expression, int[] index, Hashtable variables) throws Exception
+	private static StringExpToken nextStringToken(String expression, int[] index, Hashtable variables, boolean emptyVars) throws Exception
 	{
 		int[] stateBlock = STRING_EXP_SM[1];
 		StringBuffer token = new StringBuffer("");
@@ -583,12 +586,12 @@ public class CMStrings
 					index[0]++;
 					break;
 				case -1:
-					return makeTokenType(token.toString(), variables);
+					return makeTokenType(token.toString(), variables, emptyVars);
 				case 0:
 				{
 					token.append(c);
 					index[0]++;
-					return makeTokenType(token.toString(), variables);
+					return makeTokenType(token.toString(), variables, emptyVars);
 				}
 				default:
 				{
@@ -612,7 +615,7 @@ public class CMStrings
 				throw new Exception("Expression ended prematurely");
 			case -1:
 			case 0:
-				return makeTokenType(token.toString(), variables);
+				return makeTokenType(token.toString(), variables, emptyVars);
 			default:
 				return null;
 		}
@@ -951,14 +954,14 @@ public class CMStrings
 		return result;
 	}
 
-	public static boolean parseStringExpression(String expression, Hashtable variables) throws Exception
+	public static boolean parseStringExpression(String expression, Hashtable variables, boolean emptyVarsOK) throws Exception
 	{
 		Vector tokens = new Vector();
 		int[] i = { 0 };
-		StringExpToken token = nextStringToken(expression,i,variables);
+		StringExpToken token = nextStringToken(expression,i,variables, emptyVarsOK);
 		while(token != null) {
 			tokens.addElement(token);
-			token = nextStringToken(expression,i,variables);
+			token = nextStringToken(expression,i,variables, emptyVarsOK);
 		}
 		if(tokens.size()==0) return true;
 		i = new int[]{ 0 };
