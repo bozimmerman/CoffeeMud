@@ -117,7 +117,7 @@ public class DefaultSession extends Thread implements Session
 			setServerTelnetMode(TELNET_ANSI,true);
 			setClientTelnetMode(TELNET_ANSI,true);
 			setClientTelnetMode(TELNET_TERMTYPE,true);
-			requestSubOption(rawout,TELNET_TERMTYPE);
+			negotiateTelnetMode(rawout,TELNET_TERMTYPE);
 			if(!CMSecurity.isDisabled("MCCP"))
 			    changeTelnetMode(rawout,TELNET_COMPRESS2,true);
 
@@ -130,7 +130,7 @@ public class DefaultSession extends Thread implements Session
 			//changeTelnetMode(rawout,TELNET_BINARY,true);
 			preliminaryRead(250);
 			if((!terminalType.equalsIgnoreCase("ANSI"))&&(clientTelnetMode(TELNET_ECHO)))
-			    changeTelnetModeBackwards(TELNET_ECHO,false);
+			    changeTelnetModeBackwards(rawout,TELNET_ECHO,false);
 			rawout.flush();
 			preliminaryRead(250);
 
@@ -145,14 +145,14 @@ public class DefaultSession extends Thread implements Session
 			    out.flush();
 			    rawout.flush();
 				try{Thread.sleep(50);}catch(Exception e){}
-			    requestSubOption(rawout,TELNET_COMPRESS2);
+				negotiateTelnetMode(rawout,TELNET_COMPRESS2);
 			    ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
 			    zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
 				out = new PrintWriter(new OutputStreamWriter(zOut,"iso-8859-1"));
 				try{Thread.sleep(50);}catch(Exception e){}
 			}
 			if(clientTelnetMode(Session.TELNET_MXP))
-			    print("\n\033[6z\n<SUPPORT IMAGE IMAGE.URL>\n");
+				print("\n\033[6z\n<SUPPORT IMAGE IMAGE.URL>\n");
 			preliminaryRead(500);
 			if(introTextStr!=null)
                 print(introTextStr);
@@ -206,12 +206,12 @@ public class DefaultSession extends Thread implements Session
         }catch(Exception e){}
     }
 
-    private void requestSubOption(OutputStream out, int optionCode)
+    private void negotiateTelnetMode(OutputStream out, int optionCode)
     throws IOException
     {
         if(CMSecurity.isDebugging("TELNET"))
             Log.debugOut("Session","Sent sub-option: "+Session.TELNET_DESCS[optionCode]);
-        if(optionCode!=TELNET_COMPRESS2)
+        if(optionCode==TELNET_TERMTYPE)
         {
 	        byte[] stream={(byte)TELNET_IAC,(byte)TELNET_SB,(byte)optionCode,(byte)1,(byte)TELNET_IAC,(byte)TELNET_SE};
 	        out.write(stream);
@@ -259,7 +259,8 @@ public class DefaultSession extends Thread implements Session
         if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
     }
-    public void changeTelnetMode(int telnetCode, boolean onOff)
+    // this is stupid, but a printwriter can not be cast as an outputstream, so this dup was necessary
+    public void changeTelnetMode(int telnetCode, boolean onOff) 
     {
     	char[] command={(char)TELNET_IAC,onOff?(char)TELNET_WILL:(char)TELNET_WONT,(char)telnetCode};
     	out.write(command);
@@ -267,13 +268,37 @@ public class DefaultSession extends Thread implements Session
         if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Sent: "+(onOff?"Will":"Won't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
     }
-    private void changeTelnetModeBackwards(int telnetCode, boolean onOff)
+    public void changeTelnetModeBackwards(int telnetCode, boolean onOff)
     {
     	char[] command={(char)TELNET_IAC,onOff?(char)TELNET_DO:(char)TELNET_DONT,(char)telnetCode};
     	out.write(command);
         out.flush();
         if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
         setServerTelnetMode(telnetCode,onOff);
+    }
+    public void changeTelnetModeBackwards(OutputStream out, int telnetCode, boolean onOff)
+    throws IOException
+    {
+    	byte[] command={(byte)TELNET_IAC,onOff?(byte)TELNET_DO:(byte)TELNET_DONT,(byte)telnetCode};
+    	out.write(command);
+        out.flush();
+        if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Back-Sent: "+(onOff?"Do":"Don't")+" "+Session.TELNET_DESCS[telnetCode]);
+        setServerTelnetMode(telnetCode,onOff);
+    }
+    public void negotiateTelnetMode(int telnetCode)
+    {
+        if(telnetCode==TELNET_TERMTYPE)
+        {
+	    	char[] command={(char)TELNET_IAC,(char)TELNET_SB,(char)telnetCode,(char)1,(char)TELNET_IAC,(char)TELNET_SE};
+	    	out.write(command);
+        }
+        else
+        {
+	    	char[] command={(char)TELNET_IAC,(char)TELNET_SB,(char)telnetCode,(char)TELNET_IAC,(char)TELNET_SE};
+	    	out.write(command);
+        }
+        out.flush();
+        if(CMSecurity.isDebugging("TELNET")) Log.debugOut("Session","Negotiate-Sent: "+Session.TELNET_DESCS[telnetCode]);
     }
 
     public void initTelnetMode(int mobbitmap)
@@ -304,6 +329,7 @@ public class DefaultSession extends Thread implements Session
     public void setLastNPCFight(){lastNPCFight=System.currentTimeMillis();}
     public Vector getLastMsgs(){return (Vector)prevMsgs.clone();}
 
+    public String getTerminalType(){ return terminalType;}
 	public MOB mob(){return mob;}
 	public void setMob(MOB newmob)
 	{ mob=newmob;}
@@ -744,6 +770,9 @@ public class DefaultSession extends Thread implements Session
         			else
     				if(terminalType.equalsIgnoreCase("ANSI"))
         			    changeTelnetMode(rawout,TELNET_ECHO,true);
+    				else
+    				if(terminalType.toLowerCase().startsWith("mushclient")&&(!CMSecurity.isDisabled("MXP")))
+    					negotiateTelnetMode(rawout,TELNET_MXP);
                 }
                 else
                 if (suboptionData[0] == 1) // Request for data.
@@ -907,7 +936,7 @@ public class DefaultSession extends Thread implements Session
             	setClientTelnetMode(last,true);
             	if(connectionComplete)
             	{
-	                requestSubOption(rawout,TELNET_COMPRESS2);
+            		negotiateTelnetMode(rawout,TELNET_COMPRESS2);
 	                out.flush();
 	                ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
 	                zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);

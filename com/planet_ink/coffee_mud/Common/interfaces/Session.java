@@ -733,7 +733,13 @@ public interface Session extends CMCommon
      * @return a vector of string message strings
      */
     public Vector getLastMsgs();
-
+    
+    /**
+     * Gets the terminal type the user has
+     * @return the terminal type
+     */
+    public String getTerminalType();
+    
     /**
      * Sets a server telnet mode flag.
      * 
@@ -789,6 +795,16 @@ public interface Session extends CMCommon
      * @param onOff true to turn on, false to turn off the flag
      */
     public void changeTelnetMode(int telnetCode, boolean onOff);
+    
+    /**
+     * Change telnet mode by negotiating the command to the clients client.
+     * 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#TELNET_ANSI
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setClientTelnetMode(int, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#setServerTelnetMode(int, boolean)
+     * @param telnetCode the telnet code
+     */
+    public void negotiateTelnetMode(int telnetCode);
     
     /**
      * Initializes a telnet mode between this session and the connected client by negotiating

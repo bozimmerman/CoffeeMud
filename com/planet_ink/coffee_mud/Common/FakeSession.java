@@ -27,6 +27,8 @@ public class FakeSession implements Session
     public boolean isLockedUpWriting(){return false;}
     public void initializeClass(){}
     public void start(){}
+    public String getTerminalType(){ return "Fake";}
+    public void negotiateTelnetMode(int code){}
     
     public String[] clookup(){return new String[255];}
     

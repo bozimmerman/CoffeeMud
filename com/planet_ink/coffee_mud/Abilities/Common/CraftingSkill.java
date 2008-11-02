@@ -227,7 +227,6 @@ public class CraftingSkill extends GatheringSkill
 		return V;
 	}
 
-    @SuppressWarnings("unchecked")
 	protected Vector loadRecipes(String filename)
     {
         Vector V=(Vector)Resources.getResource("PARSED: "+filename);

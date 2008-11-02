@@ -48,6 +48,8 @@ public class MXP extends StdCommand
             ||(!mob.session().clientTelnetMode(Session.TELNET_MXP)))
 			{
                 mob.session().changeTelnetMode(Session.TELNET_MXP,true);
+                if(mob.session().getTerminalType().toLowerCase().startsWith("mushclient"))
+                	mob.session().negotiateTelnetMode(Session.TELNET_MXP);
                 for(int i=0;((i<5)&&(!mob.session().clientTelnetMode(Session.TELNET_MXP)));i++)
                 {
                     try{mob.session().prompt("",100);}catch(Exception e){}
