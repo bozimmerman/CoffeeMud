@@ -801,7 +801,7 @@ public class GenCharClass extends StdCharClass
 					 }
 					 break;
 				 }
-		case 36: hpDice=CMath.s_int(val); break;
+		case 36: hpDie=CMath.s_int(val); break;
 		case 37: manaDice=CMath.s_int(val); break;
 		case 38: manaDie=CMath.s_int(val); break;
 		case 39: disableFlags=CMath.s_int(val); break;
