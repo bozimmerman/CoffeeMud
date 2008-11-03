@@ -50,8 +50,7 @@ public class Prayers extends Skills
         domainName[0]="";
         level[0]=-1;
         parseDomainInfo(mob,commands,CMParms.makeVector(new Integer(Ability.ACODE_PRAYER)),level,domain,domainName);
-        if((domain[0]>=0)||(qual.length()==0))
-            msg.append("\n\r^HYour "+domainName[0].replace('_',' ')+"prayers:^? "+getAbilities(mob,Ability.ACODE_PRAYER,domain[0],true,level[0]));
+        msg.append("\n\r^HYour "+domainName[0].replace('_',' ')+"prayers:^? "+getAbilities(mob,Ability.ACODE_PRAYER,domain[0],true,level[0]));
 		if(!mob.isMonster())
 			mob.session().wraplessPrintln(msg.toString());
 		return false;

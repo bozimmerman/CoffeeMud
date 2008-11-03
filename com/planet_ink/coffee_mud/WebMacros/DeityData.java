@@ -91,34 +91,38 @@ public class DeityData extends StdWebMacro
                         Room R=(Room)httpReq.getRequestObjects().get(roomID);
                         if(R==null)
                         {
-                            Vector deities=new Vector();
-                            for(Enumeration e=CMLib.map().deities();e.hasMoreElements();)
-                                deities.addElement(((MOB)e.nextElement()).copyOf());
                             R=CMLib.map().getRoom(roomID);
                             if(R==null)
                                 return "No Room?!";
+                            Vector restoreDeities = new Vector();
+                            for(Enumeration e=CMLib.map().deities();e.hasMoreElements();)
+                            {
+                            	Deity D2 = (Deity)e.nextElement();
+                            	if((D2.getStartRoom()!=null)
+                            	&&(CMLib.map().getExtendedRoomID(D2.getStartRoom()).equalsIgnoreCase(CMLib.map().getExtendedRoomID(R))))
+                            		restoreDeities.addElement(D2);
+                            }
                             CMLib.map().resetRoom(R);
                             R=CMLib.map().getRoom(roomID);
+                            for(int d=restoreDeities.size()-1;d>=0;d--)
+                            {
+                            	Deity D2=(Deity)restoreDeities.elementAt(d);
+                            	if(CMLib.map().getDeity(D2.Name())!=null)
+                            		restoreDeities.removeElementAt(d);
+                            }
+                            for(Enumeration e=restoreDeities.elements();e.hasMoreElements();)
+                            {
+                            	Deity D2=(Deity)e.nextElement();
+                            	for(int i=0;i<R.numInhabitants();i++)
+                            	{
+                            		MOB M=R.fetchInhabitant(i);
+                            		if((M instanceof Deity)
+                            		&&(M.Name().equals(D2.Name())))
+                            			CMLib.map().addDeity((Deity)M);
+                            	}
+                            }
                             httpReq.getRequestObjects().put(roomID,R);
                             D=CMLib.map().getDeity(last);
-                            Vector ddeities=new Vector();
-                            for(Enumeration e=CMLib.map().deities();e.hasMoreElements();)
-                                ddeities.addElement(e.nextElement());
-                            for(Enumeration e=ddeities.elements();e.hasMoreElements();)
-                                CMLib.map().delDeity((Deity)e.nextElement());
-                            for(Enumeration e=deities.elements();e.hasMoreElements();)
-                            {
-                                Deity OD=(Deity)e.nextElement();
-                                for(Enumeration e2=ddeities.elements();e2.hasMoreElements();)
-                                {
-                                    Deity RD=(Deity)e2.nextElement();
-                                    if(OD.sameAs(RD))
-                                    {
-                                        CMLib.map().addDeity(RD);
-                                        break;
-                                    }
-                                }
-                            }
                         }
                         synchronized(("SYNC"+roomID).intern())
                         {
