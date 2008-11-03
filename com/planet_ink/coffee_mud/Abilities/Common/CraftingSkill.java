@@ -197,13 +197,11 @@ public class CraftingSkill extends GatheringSkill
                 else
 				if(oneComma)
 				{
-                    if(start<i-1)
-                    {
-    					V2.addElement(str.substring(start,i));
-    					if(V2.size()>longestList) longestList=V2.size();
-    					V.addElement(V2);
-    					V2=new Vector();
-                    }
+					V2.addElement(str.substring(start,i));
+					if(V2.size()>longestList) longestList=V2.size();
+					V2.trimToSize();
+					V.addElement(V2);
+					V2=new Vector();
 				}
 				start=i+1;
 				oneComma=false;
