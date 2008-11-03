@@ -2117,4 +2117,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 16. New Thief skills: Disassemble traps, Improved Caltrops, Slick Caltrops
 17. Factions can now have auto-applies affects/behaviors (auto-aggressive mobs based on faction, anyone?)
 18. Players now have their followers listed on the web page
-19. 
+19. Term of old bugs has expired.  New bugs set to take office early next year.
