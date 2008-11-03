@@ -56,21 +56,29 @@ public class Generate extends StdCommand
             mob.tell("Not yet implemented");
             return false;
     	}
-        CMFile file = new CMFile(Resources.buildResourcePath("randomdata.xml"),mob,false);
+        if(commands.size()<3)
+        {
+        	mob.tell("Generate what? Try GENERATE [TYPE] [TAG_NAME] (FROM [DATA_FILE_PATH]) ([TAG=VALUE]..)");
+        	return false;
+        }
+        CMFile file = null;
+        if((commands.size()>3)&&((String)commands.elementAt(3)).equalsIgnoreCase("FROM"))
+		{
+        	file = new CMFile(Resources.buildResourcePath((String)commands.elementAt(4)),mob,false);	
+        	commands.removeElementAt(3);
+        	commands.removeElementAt(3);
+		}
+        else
+        	file = new CMFile(Resources.buildResourcePath("examples/randomdata.xml"),mob,false);
         if(!file.canRead())
         {
-            mob.tell("Can't comply. '"+file.getCanonicalPath()+"' not found.");
+            mob.tell("Random data file '"+file.getCanonicalPath()+"' not found.  Aborting.");
             return false;
         }
         StringBuffer xml = file.textUnformatted();
         Vector xmlRoot = CMLib.xml().parseAllXML(xml);
         Hashtable definedTags = new Hashtable();
         CMLib.percolator().buildDefinedTagSet(xmlRoot,definedTags);
-        if(commands.size()<3)
-        {
-        	mob.tell("Generate what? Try GENERATE [TYPE] [TAG_NAME] ([TAG_PARMS]..)");
-        	return false;
-        }
         String typeName = (String)commands.elementAt(1);
         String objectType = typeName.toUpperCase().trim();
         Integer codeI=(Integer)OBJECT_TYPES.get(objectType);
@@ -91,17 +99,76 @@ public class Generate extends StdCommand
         		return false;
         	}
         }
-        //int objectTypeIndex = CMParms.indexOf(OBJECT_TYPES.keys(),objectType);
+        int objectTypeIndex = CMParms.indexOf(OBJECT_TYPES.keys(),objectType);
         String tagName = ((String)commands.elementAt(2)).toUpperCase().trim();
-        if(!definedTags.contains(tagName))
+        if(definedTags.get(tagName) instanceof XMLLibrary.XMLpiece)
         {
-        	mob.tell("No tag called '"+tagName+"' has been defined in the /resources/randomdata.xml file.");
-        	mob.tell("Found tags include: "+CMParms.toStringList(definedTags.keys()));
+        	mob.tell("No tag called '"+tagName+"' has been properly defined in the data file.");
+        	Vector xmlTagsV=new Vector();
+        	for(Enumeration keys=definedTags.keys();keys.hasMoreElements();)
+        	{
+        		String key=(String)keys.nextElement();
+                if(definedTags.get(key) instanceof XMLLibrary.XMLpiece)
+                	xmlTagsV.addElement(key.toLowerCase());
+        	}
+        	mob.tell("Found tags include: "+CMParms.toStringList(xmlTagsV));
         	return false;
         }
         
-        mob.tell("Not yet implemented");
-        return false;
+        XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)definedTags.get(tagName);
+        definedTags.putAll(CMParms.parseEQParms(CMParms.combine(commands,3)));
+        Vector V = null;
+        try{
+	        switch(objectTypeIndex)
+	        {
+	        case Integer.MAX_VALUE:
+	        {
+	        	String s=CMLib.percolator().findString(tagName, piece, definedTags);
+	        	if(s!=null)
+	        		V.addElement(s);
+	        	break;
+	        }
+	    	case CMClass.OBJECT_AREA:
+	    		throw new CMException("Area creation not yet implemented.");
+			case CMClass.OBJECT_MOB:
+				V=CMLib.percolator().findMobs(piece, definedTags);
+				break;
+			case CMClass.OBJECT_LOCALE:
+			{
+				Room R=CMLib.percolator().buildRoom(piece, definedTags);
+				if(R!=null)
+					V.addElement(R);
+				break;
+			}
+			case CMClass.OBJECT_ITEM:
+				V=CMLib.percolator().findItems(piece, definedTags);
+				break;
+	        }
+        } catch(CMException cex) {
+        	mob.tell("Unable to generate: "+cex.getMessage());
+        	return false;
+        }
+        if(V.size()==0)
+        	mob.tell("Nothing generated.");
+        else
+        for(int v=0;v<V.size();v++)
+        	if(V.elementAt(v) instanceof MOB)
+        		((MOB)V.elementAt(v)).bringToLife(mob.location(),true);
+        	else
+        	if(V.elementAt(v) instanceof Item)
+        	{
+        		mob.location().addItem((Item)V.elementAt(v));
+        		mob.location().showHappens(CMMsg.MSG_OK_VISUAL,((Item)V.elementAt(v)).name()+" appears.");
+        	}
+        	else
+        	if(V.elementAt(v) instanceof String)
+        		mob.tell((String)V.elementAt(v));
+        	else
+        	if(V.elementAt(v) instanceof Room)
+        		mob.tell("Generated: "+CMLib.coffeeMaker().getRoomXML((Room)V.elementAt(v),new HashSet(), new HashSet(), true));
+        	else
+        		mob.tell("Unhandled object: "+V.elementAt(v).getClass().getCanonicalName());
+        return true;
     }
     
     public boolean canBeOrdered(){return false;}

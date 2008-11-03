@@ -721,6 +721,75 @@ public class CMParms
         return h;
     }
 
+    public static Hashtable parseEQParms(String parms)
+    {
+        Hashtable h=new Hashtable();
+        int state=0;
+        int start=-1;
+        String parmName=null;
+        StringBuffer str=new StringBuffer(parms);
+        for(int x=0;x<=str.length();x++)
+        {
+        	char c=(x==str.length())?'\n':str.charAt(x);
+        	switch(state)
+        	{
+        	case 0:
+	            if((c=='_')||(Character.isLetter(c)))
+	            {
+	            	start=x;
+	            	state=1;
+	            	parmName=null;
+	            }
+	            break;
+        	case 1:
+	            if(c=='=')
+	            {
+	            	if(parmName==null)
+	            		parmName=str.substring(start,x).toUpperCase().trim();
+	            	state=2;
+	            }
+	            else
+	            if(Character.isWhitespace(c))
+            		parmName=str.substring(start,x).toUpperCase().trim();
+	            break;
+        	case 2:
+        		if((c=='\"')||(c=='\n'))
+        		{
+        			state=3;
+        			start=x+1;
+        		}
+        		else
+        		if(!Character.isWhitespace(c))
+        		{
+        			state=4;
+        			start=x+1;
+        		}
+        		break;
+        	case 3:
+        		if(c=='\\')
+        			str.deleteCharAt(x);
+        		else
+        		if(c=='\"')
+        		{
+        			state=0;
+        			h.put(parmName,str.substring(start,x));
+        		}
+        		break;
+        	case 4:
+        		if(c=='\\')
+        			str.deleteCharAt(x);
+        		else
+        		if(Character.isWhitespace(c)||(c=='\n'))
+        		{
+        			state=0;
+        			h.put(parmName,str.substring(start,x));
+        		}
+        		break;
+        	}
+        }
+        return h;
+    }
+
     public static int stringContains(String str1, String str2)
     {
         StringBuffer buf1=new StringBuffer(str1.toLowerCase());

@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -32,5 +33,9 @@ import java.util.*;
 public interface AreaGenerationLibrary extends CMLibrary
 {
     public void buildDefinedTagSet(Vector xmlRoot, Hashtable defined);
+    public Vector findItems(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
+    public Vector findMobs(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
+    public String findString(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
+    public Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
     
 }

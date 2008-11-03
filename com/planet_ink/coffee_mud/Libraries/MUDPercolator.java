@@ -56,8 +56,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     
     // tags created: ROOM_CLASS, ROOM_TITLE, ROOM_DESCRIPTION, ROOM_CLASSES, ROOM_TITLES, ROOM_DESCRIPTIONS
     // tags created: 
-    @SuppressWarnings("unused")
-    private Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    public Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
     {
         String classID = findString("class",piece,defined);
         Room R = CMClass.getLocale(classID);
@@ -97,7 +96,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         return R;
     }
     
-    private Vector findMobs(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    public Vector findMobs(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
     {
     	Vector V = new Vector();
     	String tagName="MOB";
@@ -167,7 +166,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         return M;
     }
     
-    private Vector findItems(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    public Vector findItems(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
     {
     	Vector V = new Vector();
     	String tagName="ITEM";
@@ -330,7 +329,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         }
     }
     
-    private String findString(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    public String findString(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
     {
         String asParm = CMLib.xml().getParmValue(piece.parms,tagName.toUpperCase().trim());
         if(asParm != null) return strFilter(asParm,defined);
