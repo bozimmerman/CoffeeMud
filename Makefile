@@ -166,6 +166,7 @@ com.planet_ink.coffee_mud.Items.MiscTech \
 com.planet_ink.coffee_mud.Items.Software \
 com.planet_ink.coffee_mud.Items.Weapons \
 com.planet_ink.coffee_mud.Libraries.interfaces \
+com.planet_ink.coffee_mud.Libraries.layouts \
 com.planet_ink.coffee_mud.Locales.interfaces \
 com.planet_ink.coffee_mud.MOBS.interfaces \
 com.planet_ink.coffee_mud.Races.interfaces \
@@ -544,6 +545,7 @@ com.planet_ink.coffee_mud.Items.MiscTech : $(call PACKAGE_OBJS,com.planet_ink.co
 com.planet_ink.coffee_mud.Items.Software : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Items.Software)
 com.planet_ink.coffee_mud.Items.Weapons : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Items.Weapons)
 com.planet_ink.coffee_mud.Libraries.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Libraries.interfaces)
+com.planet_ink.coffee_mud.Libraries.layouts : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Libraries.layouts)
 com.planet_ink.coffee_mud.Locales.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Locales.interfaces)
 com.planet_ink.coffee_mud.MOBS.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.MOBS.interfaces)
 com.planet_ink.coffee_mud.Races.interfaces : $(call PACKAGE_OBJS,com.planet_ink.coffee_mud.Races.interfaces)

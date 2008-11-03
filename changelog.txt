@@ -2109,3 +2109,12 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 8. New DISABLE INI flags: ALLERGIES, THREADTHREAD, JOURNALTHREAD, MAPTHREAD, PLAYERTHREAD, SESSIONTHREAD, STATSTHREAD
 9. New INI entries: EXTVAR_ to add your own custom variables to a limited set of classes
 10. Internal: Several code shuffles to support the new multi-hosts stuff.
+11. New MUDGrinder Editor: Common Skill Recipes (new security code: CMDRECIPES)
+12. METACRAFT command can now have its creations be targeted.
+13. New CLAN type: FAMILY
+14. Apprentices may not go beyond level 5 (by default)
+15. Character Classes can now have a level cap specified.
+16. New Thief skills: Disassemble traps, Improved Caltrops, Slick Caltrops
+17. Factions can now have auto-applies affects/behaviors (auto-aggressive mobs based on faction, anyone?)
+18. Players now have their followers listed on the web page
+19. 
