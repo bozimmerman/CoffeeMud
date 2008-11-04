@@ -155,35 +155,4 @@ public interface DatabaseEngine extends CMLibrary
     	public String xml="";
     }
     
-    public static class ThinPlayer
-    {
-    	public static final String[] SORTCODES={ "NAME","CLASS","RACE","LEVEL","AGE","LAST","EMAIL","IP"};
-    	public static final String[] SORTCODES2={ "CHARACTER","CHARCLASS","RACE","LVL","HOURS","DATE","EMAILADDRESS","LASTIP"};
-    	public String name="";
-    	public String charClass="";
-    	public String race="";
-    	public int level=0;
-    	public int age=0;
-    	public long last=0;
-    	public String email="";
-    	public String ip="";
-    	public String getSortValue(int code) {
-    		switch(code) {
-    		case 0: return name;
-    		case 1: return charClass;
-    		case 2: return race;
-    		case 3: return ""+level;
-    		case 4: return ""+age;
-    		case 5: return ""+last;
-    		case 6: return email;
-    		case 7: return ip;
-    		}
-    		return name;
-    	}
-    	public static int getSortCode(String codeName) {
-    		int x=CMParms.indexOf(SORTCODES,codeName);
-    		if(x<0)x=CMParms.indexOf(SORTCODES2,codeName);
-    		return x;
-    	}
-    }
 }

@@ -51,10 +51,10 @@ public class PlayerNext extends StdWebMacro
 		String lastID="";
 		String sort=httpReq.getRequestParameter("SORTBY");
 		if(sort==null) sort="";
-		Vector V=ThinPlayerData.getSortedThinPlayerData(httpReq, sort);
-		for(int i=0;i<V.size();i++)
+		Enumeration pe=CMLib.players().thinPlayers(sort,httpReq.getRequestObjects());
+		for(;pe.hasMoreElements();)
 		{
-			DatabaseEngine.ThinPlayer user=(DatabaseEngine.ThinPlayer)V.elementAt(i);
+			PlayerLibrary.ThinPlayer user=(PlayerLibrary.ThinPlayer)pe.nextElement();
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!user.name.equals(lastID))))
 			{
 				httpReq.addRequestParameters("PLAYER",user.name);

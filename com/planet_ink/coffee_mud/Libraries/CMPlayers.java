@@ -206,6 +206,84 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
         }
         return processed;
     }
+    
+	public String getThinSortValue(ThinPlayer player, int code) 
+	{
+		switch(code) {
+		case 0: return player.name;
+		case 1: return player.charClass;
+		case 2: return player.race;
+		case 3: return Integer.toString(player.level);
+		case 4: return Integer.toString(player.age);
+		case 5: return Long.toString(player.last);
+		case 6: return player.email;
+		case 7: return player.ip;
+		}
+		return player.name;
+	}
+	
+	public int getThinSortCode(String codeName, boolean loose) 
+	{
+		int x=CMParms.indexOf(THIN_SORT_CODES,codeName);
+		if(x<0)x=CMParms.indexOf(THIN_SORT_CODES2,codeName);
+		if(!loose) return x;
+		if(x<0)
+			for(int s=0;s<THIN_SORT_CODES.length;s++)
+				if(THIN_SORT_CODES[s].startsWith(codeName))
+					x=s;
+		if(x<0)
+			for(int s=0;s<THIN_SORT_CODES2.length;s++)
+				if(THIN_SORT_CODES2[s].startsWith(codeName))
+					x=s;
+		return x;
+	}
+	
+    public Enumeration thinPlayers(String sort, Hashtable cache)
+    {
+		Vector V=cache==null?null:(Vector)cache.get("PLAYERLISTVECTOR"+sort);
+		if(V==null)
+		{
+			V=CMLib.database().getExtendedUserList();
+			int code=getThinSortCode(sort,false);
+			if((sort.length()>0)
+			&&(code>=0)
+			&&(V.size()>1))
+			{
+				Vector unV=V;
+				V=new Vector();
+				while(unV.size()>0)
+				{
+					ThinPlayer M=(ThinPlayer)unV.firstElement();
+					String loweStr=getThinSortValue(M,code);
+					ThinPlayer lowestM=M;
+					for(int i=1;i<unV.size();i++)
+					{
+						M=(ThinPlayer)unV.elementAt(i);
+						String val=getThinSortValue(M,code);
+						if((CMath.isNumber(val)&&CMath.isNumber(loweStr)))
+						{
+							if(CMath.s_long(val)<CMath.s_long(loweStr))
+							{
+								loweStr=val;
+								lowestM=M;
+							}
+						}
+						else
+						if(val.compareTo(loweStr)<0)
+						{
+							loweStr=val;
+							lowestM=M;
+						}
+					}
+					unV.removeElement(lowestM);
+					V.addElement(lowestM);
+				}
+			}
+			if(cache!=null)
+				cache.put("PLAYERLISTVECTOR"+sort,V);
+		}
+		return DVector.s_enum(V);
+    }
 
     private boolean autoPurge()
     {
@@ -270,7 +348,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
         for(int u=0;u<allUsers.size();u++)
         {
-        	DatabaseEngine.ThinPlayer user=(DatabaseEngine.ThinPlayer)allUsers.elementAt(u);
+        	ThinPlayer user=(ThinPlayer)allUsers.elementAt(u);
             String name=user.name;
             int level=user.level;
             long last=user.last;

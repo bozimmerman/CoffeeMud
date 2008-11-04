@@ -339,7 +339,7 @@ public class MOBloader
             ResultSet R=D.query("SELECT * FROM CMCHAR");
             if(R!=null) while(R.next())
             {
-            	DatabaseEngine.ThinPlayer thisUser=new DatabaseEngine.ThinPlayer();
+            	PlayerLibrary.ThinPlayer thisUser=new PlayerLibrary.ThinPlayer();
                 try
                 {
                     thisUser.name=DBConnections.getRes(R,"CMUSERID");

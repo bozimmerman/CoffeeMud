@@ -557,15 +557,7 @@ public class List extends StdCommand
 		if(commands.size()>0)
 		{
 			String rest=CMParms.combine(commands,0).toUpperCase();
-			sortBy = DatabaseEngine.ThinPlayer.getSortCode(rest);
-			if(sortBy<0)
-				for(int s=0;s<DatabaseEngine.ThinPlayer.SORTCODES.length;s++)
-					if(DatabaseEngine.ThinPlayer.SORTCODES[s].startsWith(rest))
-						sortBy=s;
-			if(sortBy<0)
-				for(int s=0;s<DatabaseEngine.ThinPlayer.SORTCODES2.length;s++)
-					if(DatabaseEngine.ThinPlayer.SORTCODES2[s].startsWith(rest))
-						sortBy=s;
+			sortBy = CMLib.players().getThinSortCode(rest,true);
 			if(sortBy<0)
 			{
 				mob.tell("Unrecognized sort criteria: "+rest);
@@ -588,16 +580,17 @@ public class List extends StdCommand
 		Vector allUsers=CMLib.database().getExtendedUserList();
 		Vector oldSet=allUsers;
 		int showBy=sortBy;
+		PlayerLibrary lib=CMLib.players();
 		while((oldSet.size()>0)&&(sortBy>=0)&&(sortBy<=7))
 		{
 			if(oldSet==allUsers) allUsers=new Vector();
 			if((sortBy<3)||(sortBy>4))
 			{
-				DatabaseEngine.ThinPlayer selected=(DatabaseEngine.ThinPlayer)oldSet.firstElement();
+				PlayerLibrary.ThinPlayer selected=(PlayerLibrary.ThinPlayer)oldSet.firstElement();
 				for(int u=1;u<oldSet.size();u++)
 				{
-					DatabaseEngine.ThinPlayer U=(DatabaseEngine.ThinPlayer)oldSet.elementAt(u);
-					if(((String)selected.getSortValue(sortBy)).compareTo(((String)U.getSortValue(sortBy)))>0)
+					PlayerLibrary.ThinPlayer U=(PlayerLibrary.ThinPlayer)oldSet.elementAt(u);
+					if(lib.getThinSortValue(selected,sortBy).compareTo(lib.getThinSortValue(U,sortBy))>0)
 					   selected=U;
 				}
 				if(selected!=null)
@@ -608,11 +601,11 @@ public class List extends StdCommand
 			}
 			else
 			{
-				DatabaseEngine.ThinPlayer selected=(DatabaseEngine.ThinPlayer)oldSet.firstElement();
+				PlayerLibrary.ThinPlayer selected=(PlayerLibrary.ThinPlayer)oldSet.firstElement();
 				for(int u=1;u<oldSet.size();u++)
 				{
-					DatabaseEngine.ThinPlayer U=(DatabaseEngine.ThinPlayer)oldSet.elementAt(u);
-					if(CMath.s_long(selected.getSortValue(sortBy))>CMath.s_long((U.getSortValue(sortBy))))
+					PlayerLibrary.ThinPlayer U=(PlayerLibrary.ThinPlayer)oldSet.elementAt(u);
+					if(CMath.s_long(lib.getThinSortValue(selected,sortBy))>CMath.s_long(lib.getThinSortValue(U,sortBy)))
 					   selected=U;
 				}
 				if(selected!=null)
@@ -625,7 +618,7 @@ public class List extends StdCommand
 
 		for(int u=0;u<allUsers.size();u++)
 		{
-			DatabaseEngine.ThinPlayer U=(DatabaseEngine.ThinPlayer)allUsers.elementAt(u);
+			PlayerLibrary.ThinPlayer U=(PlayerLibrary.ThinPlayer)allUsers.elementAt(u);
 
 			head.append("[");
 			head.append(CMStrings.padRight(U.race,8)+" ");

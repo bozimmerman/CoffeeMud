@@ -68,7 +68,7 @@
 	@loop@
 	<TR>
 	@PlayerNext@
-	<TD><a href="javascript:Player('@PlayerID@')"><FONT COLOR=WHITE><B>@PlayerID@</B></FONT></a>@if?PlayerOnline?=true@<FONT COLOR=YELLOW> *</FONT>@endif@</TD>
+	<TD><a href="javascript:Player('@PlayerID@')"><FONT COLOR=WHITE><B>@PlayerID@</B></FONT></a>@if?PlayerOnline@<FONT COLOR=YELLOW> *</FONT>@endif@</TD>
 	<TD><FONT COLOR=WHITE>@ThinPlayerData?RACE@</FONT></TD>
 	<TD><FONT COLOR=WHITE>@ThinPlayerData?CHARCLASS@</FONT></TD>
 	<TD><FONT COLOR=WHITE>@ThinPlayerData?LEVEL@</FONT></TD>
