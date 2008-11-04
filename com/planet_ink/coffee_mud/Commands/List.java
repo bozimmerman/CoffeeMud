@@ -548,7 +548,7 @@ public class List extends StdCommand
 		}
 		return buf;
 	}
-
+	
 	public void listUsers(MOB mob, Vector commands)
 	{
 		if(commands.size()==0) return;
@@ -557,30 +557,16 @@ public class List extends StdCommand
 		if(commands.size()>0)
 		{
 			String rest=CMParms.combine(commands,0).toUpperCase();
-			if("RACE".startsWith(rest))
-				sortBy=2;
-			else
-			if("IP".startsWith(rest))
-				sortBy=7;
-			else
-			if("CLASS".startsWith(rest))
-				sortBy=1;
-			else
-			if("CHARACTER".startsWith(rest)||"NAME".startsWith(rest))
-				sortBy=0;
-			else
-			if("LEVEL".startsWith(rest)||"LVL".startsWith(rest))
-				sortBy=3;
-			else
-			if("AGE".startsWith(rest)||"HOURS".startsWith(rest))
-				sortBy=4;
-			else
-			if("DATE".startsWith(rest)||"LAST".startsWith(rest))
-				sortBy=5;
-			else
-			if("EMAIL".startsWith(rest))
-				sortBy=6;
-			else
+			sortBy = DatabaseEngine.ThinPlayer.getSortCode(rest);
+			if(sortBy<0)
+				for(int s=0;s<DatabaseEngine.ThinPlayer.SORTCODES.length;s++)
+					if(DatabaseEngine.ThinPlayer.SORTCODES[s].startsWith(rest))
+						sortBy=s;
+			if(sortBy<0)
+				for(int s=0;s<DatabaseEngine.ThinPlayer.SORTCODES2.length;s++)
+					if(DatabaseEngine.ThinPlayer.SORTCODES2[s].startsWith(rest))
+						sortBy=s;
+			if(sortBy<0)
 			{
 				mob.tell("Unrecognized sort criteria: "+rest);
 				return;
@@ -607,12 +593,12 @@ public class List extends StdCommand
 			if(oldSet==allUsers) allUsers=new Vector();
 			if((sortBy<3)||(sortBy>4))
 			{
-				Vector selected=(Vector)oldSet.firstElement();
+				DatabaseEngine.ThinPlayer selected=(DatabaseEngine.ThinPlayer)oldSet.firstElement();
 				for(int u=1;u<oldSet.size();u++)
 				{
-					Vector V=(Vector)oldSet.elementAt(u);
-					if(((String)selected.elementAt(sortBy)).compareTo(((String)V.elementAt(sortBy)))>0)
-					   selected=V;
+					DatabaseEngine.ThinPlayer U=(DatabaseEngine.ThinPlayer)oldSet.elementAt(u);
+					if(((String)selected.getSortValue(sortBy)).compareTo(((String)U.getSortValue(sortBy)))>0)
+					   selected=U;
 				}
 				if(selected!=null)
 				{
@@ -622,12 +608,12 @@ public class List extends StdCommand
 			}
 			else
 			{
-				Vector selected=(Vector)oldSet.firstElement();
+				DatabaseEngine.ThinPlayer selected=(DatabaseEngine.ThinPlayer)oldSet.firstElement();
 				for(int u=1;u<oldSet.size();u++)
 				{
-					Vector V=(Vector)oldSet.elementAt(u);
-					if(CMath.s_long((String)selected.elementAt(sortBy))>CMath.s_long(((String)V.elementAt(sortBy))))
-					   selected=V;
+					DatabaseEngine.ThinPlayer U=(DatabaseEngine.ThinPlayer)oldSet.elementAt(u);
+					if(CMath.s_long(selected.getSortValue(sortBy))>CMath.s_long((U.getSortValue(sortBy))))
+					   selected=U;
 				}
 				if(selected!=null)
 				{
@@ -639,20 +625,20 @@ public class List extends StdCommand
 
 		for(int u=0;u<allUsers.size();u++)
 		{
-			Vector U=(Vector)allUsers.elementAt(u);
+			DatabaseEngine.ThinPlayer U=(DatabaseEngine.ThinPlayer)allUsers.elementAt(u);
 
 			head.append("[");
-			head.append(CMStrings.padRight((String)U.elementAt(2),8)+" ");
-			head.append(CMStrings.padRight((String)U.elementAt(1),10)+" ");
-			head.append(CMStrings.padRight((String)U.elementAt(3),4)+" ");
-			long age=Math.round(CMath.div(CMath.s_long((String)U.elementAt(4)),60.0));
+			head.append(CMStrings.padRight(U.race,8)+" ");
+			head.append(CMStrings.padRight(U.charClass,10)+" ");
+			head.append(CMStrings.padRight(""+U.level,4)+" ");
+			long age=Math.round(CMath.div(CMath.s_long(""+U.age),60.0));
 			head.append(CMStrings.padRight(""+age,5)+" ");
 			switch(showBy){
-			case 6: head.append(CMStrings.padRight((String)U.elementAt(6),23)+" "); break;
-			case 7: head.append(CMStrings.padRight((String)U.elementAt(7),23)+" "); break;
-			default: head.append(CMStrings.padRight(CMLib.time().date2String(CMath.s_long((String)U.elementAt(5))),18)+" "); break;
+			case 6: head.append(CMStrings.padRight(U.email,23)+" "); break;
+			case 7: head.append(CMStrings.padRight(U.ip,23)+" "); break;
+			default: head.append(CMStrings.padRight(CMLib.time().date2String(U.last),18)+" "); break;
 			}
-			head.append("] "+CMStrings.padRight("^<LSTUSER^>"+((String)U.elementAt(0))+"^</LSTUSER^>",15));
+			head.append("] "+CMStrings.padRight("^<LSTUSER^>"+U.name+"^</LSTUSER^>",15));
 			head.append("\n\r");
 		}
 		mob.tell(head.toString());

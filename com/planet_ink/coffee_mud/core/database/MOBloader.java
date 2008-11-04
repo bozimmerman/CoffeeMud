@@ -10,7 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -339,10 +339,10 @@ public class MOBloader
             ResultSet R=D.query("SELECT * FROM CMCHAR");
             if(R!=null) while(R.next())
             {
-            	Vector thisUser=new Vector();
+            	DatabaseEngine.ThinPlayer thisUser=new DatabaseEngine.ThinPlayer();
                 try
                 {
-                    thisUser.addElement(DBConnections.getRes(R,"CMUSERID"));
+                    thisUser.name=DBConnections.getRes(R,"CMUSERID");
                     String cclass=DBConnections.getRes(R,"CMCLAS");
                     int x=cclass.lastIndexOf(";");
                     if((x>0)&&(x<cclass.length()-2))
@@ -350,13 +350,13 @@ public class MOBloader
                         C=CMClass.getCharClass(cclass.substring(x+1));
                         if(C!=null) cclass=C.name();
                     }
-                    thisUser.addElement(cclass);
+                    thisUser.charClass=(cclass);
                     String rrace=DBConnections.getRes(R,"CMRACE");
                     Race R2=CMClass.getRace(rrace);
                     if(R2!=null)
-                        thisUser.addElement(R2.name());
+                        thisUser.race=(R2.name());
                     else
-                        thisUser.addElement(rrace);
+                        thisUser.race=rrace;
                     String lvl=DBConnections.getRes(R,"CMLEVL");
                     x=lvl.indexOf(";");
                     int level=0;
@@ -367,16 +367,16 @@ public class MOBloader
                         x=lvl.indexOf(";");
                     }
                     if(lvl.length()>0) level+=CMath.s_int(lvl);
-                    thisUser.addElement(Integer.toString(level));
-                    thisUser.addElement(DBConnections.getRes(R,"CMAGEH"));
-                    MOB M=CMLib.players().getPlayer((String)thisUser.firstElement());
+                    thisUser.level=level;
+                    thisUser.age=(int)DBConnections.getLongRes(R,"CMAGEH");
+                    MOB M=CMLib.players().getPlayer((String)thisUser.name);
                     if((M!=null)&&(M.lastTickedDateTime()>0))
-                        thisUser.addElement(""+M.lastTickedDateTime());
+                        thisUser.last=M.lastTickedDateTime();
                     else
-                        thisUser.addElement(DBConnections.getRes(R,"CMDATE"));
+                        thisUser.last=DBConnections.getLongRes(R,"CMDATE");
                     String lsIP=DBConnections.getRes(R,"CMLSIP");
-                    thisUser.addElement(DBConnections.getRes(R,"CMEMAL"));
-                    thisUser.addElement(lsIP);
+                    thisUser.email=DBConnections.getRes(R,"CMEMAL");
+                    thisUser.ip=lsIP;
                     allUsers.addElement(thisUser);
                 }catch(Exception e)
                 {

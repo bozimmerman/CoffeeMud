@@ -270,10 +270,10 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
 
         for(int u=0;u<allUsers.size();u++)
         {
-        	Vector user=(Vector)allUsers.elementAt(u);
-            String name=(String)user.elementAt(0);
-            int level=CMath.s_int((String)user.elementAt(3));
-            long last=CMath.s_long((String)user.elementAt(5));
+        	DatabaseEngine.ThinPlayer user=(DatabaseEngine.ThinPlayer)allUsers.elementAt(u);
+            String name=user.name;
+            int level=user.level;
+            long last=user.last;
             long when=Long.MAX_VALUE;
             long warn=Long.MAX_VALUE;
             if(level>levels.length)

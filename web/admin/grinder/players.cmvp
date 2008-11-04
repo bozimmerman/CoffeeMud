@@ -62,18 +62,18 @@
 	<TD WIDTH=10%><B><a href="javascript:Sort('CHARCLASS')"><FONT COLOR=YELLOW>Class</FONT></a></B></TD>
 	<TD WIDTH=5%><B><a href="javascript:Sort('LEVEL')"><FONT COLOR=YELLOW>Level</FONT></a></B></TD>
 	<TD WIDTH=10%><B><a href="javascript:Sort('HOURS')"><FONT COLOR=YELLOW>Hours</FONT></a></B></TD>
-	<TD WIDTH=35%><B><a href="javascript:Sort('LASTDATETIMEMILLIS')"><FONT COLOR=YELLOW>Last Date/Time</FONT></a></B></TD>
+	<TD WIDTH=35%><B><a href="javascript:Sort('DATE')"><FONT COLOR=YELLOW>Last Date/Time</FONT></a></B></TD>
 	</TR>
 	@PlayerNext?RESET@
 	@loop@
 	<TR>
 	@PlayerNext@
 	<TD><a href="javascript:Player('@PlayerID@')"><FONT COLOR=WHITE><B>@PlayerID@</B></FONT></a>@if?PlayerOnline?=true@<FONT COLOR=YELLOW> *</FONT>@endif@</TD>
-	<TD><FONT COLOR=WHITE>@PlayerData?RACENAME@</FONT></TD>
-	<TD><FONT COLOR=WHITE>@PlayerData?CHARCLASS@</FONT></TD>
-	<TD><FONT COLOR=WHITE>@PlayerData?LEVEL@</FONT></TD>
-	<TD><FONT COLOR=WHITE>@PlayerData?HOURS@</FONT></TD>
-	<TD><FONT COLOR=WHITE>@PlayerData?LASTDATETIME@</FONT></TD>
+	<TD><FONT COLOR=WHITE>@ThinPlayerData?RACE@</FONT></TD>
+	<TD><FONT COLOR=WHITE>@ThinPlayerData?CHARCLASS@</FONT></TD>
+	<TD><FONT COLOR=WHITE>@ThinPlayerData?LEVEL@</FONT></TD>
+	<TD><FONT COLOR=WHITE>@ThinPlayerData?HOURS@</FONT></TD>
+	<TD><FONT COLOR=WHITE>@ThinPlayerData?DATE@</FONT></TD>
 	</TR>
 	@back@
 	</TABLE>

@@ -51,63 +51,16 @@ public class PlayerNext extends StdWebMacro
 		String lastID="";
 		String sort=httpReq.getRequestParameter("SORTBY");
 		if(sort==null) sort="";
-		Vector V=(Vector)httpReq.getRequestObjects().get("PLAYERLISTVECTOR"+sort);
-		if(V==null)
-		{
-			V=CMLib.database().getUserList();
-			int code=PlayerData.getBasicCode(sort);
-			if((sort.length()>0)
-			&&(code>=0)
-			&&(V.size()>1))
-			{
-				Vector unV=V;
-				V=new Vector();
-				while(unV.size()>0)
-				{
-					MOB M=CMLib.players().getLoadPlayer((String)unV.firstElement());
-					if(M==null) return " @break@";
-					String loweStr=PlayerData.getBasic(M,code);
-					if(loweStr.endsWith(", ")) 
-						loweStr=loweStr.substring(0,loweStr.length()-2);
-					MOB lowestM=M;
-					for(int i=1;i<unV.size();i++)
-					{
-						M=CMLib.players().getLoadPlayer((String)unV.elementAt(i));
-						if(M==null) return " @break@";
-						String val=PlayerData.getBasic(M,code);
-						if(val.endsWith(", "))
-							val=val.substring(0,val.length()-2);
-						if((CMath.isNumber(val)&&CMath.isNumber(loweStr)))
-						{
-							if(CMath.s_long(val)<CMath.s_long(loweStr))
-							{
-								loweStr=val;
-								lowestM=M;
-							}
-						}
-						else
-						if(val.compareTo(loweStr)<0)
-						{
-							loweStr=val;
-							lowestM=M;
-						}
-					}
-					unV.removeElement(lowestM.Name());
-					V.addElement(lowestM.Name());
-				}
-			}
-			httpReq.getRequestObjects().put("PLAYERLISTVECTOR"+sort,V);
-		}
-		
+		Vector V=ThinPlayerData.getSortedThinPlayerData(httpReq, sort);
 		for(int i=0;i<V.size();i++)
 		{
-			String user=(String)V.elementAt(i);
-			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!user.equals(lastID))))
+			DatabaseEngine.ThinPlayer user=(DatabaseEngine.ThinPlayer)V.elementAt(i);
+			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!user.name.equals(lastID))))
 			{
-				httpReq.addRequestParameters("PLAYER",user);
+				httpReq.addRequestParameters("PLAYER",user.name);
 				return "";
 			}
-			lastID=user;
+			lastID=user.name;
 		}
 		httpReq.addRequestParameters("PLAYER","");
 		if(parms.containsKey("EMPTYOK"))

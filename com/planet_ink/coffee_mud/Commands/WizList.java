@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -53,18 +54,18 @@ public class WizList extends StdCommand
         CharClass C=CMClass.getCharClass("Archon");
 		for(int u=0;u<allUsers.size();u++)
 		{
-			Vector U=(Vector)allUsers.elementAt(u);
-			if(((String)U.elementAt(1)).equals("Archon"))
+			DatabaseEngine.ThinPlayer U=(DatabaseEngine.ThinPlayer)allUsers.elementAt(u);
+			if(U.charClass.equals("Archon"))
 			{
 				head.append("[");
-				head.append(CMStrings.padRight((String)U.elementAt(2),8)+" ");
+				head.append(CMStrings.padRight(U.race,8)+" ");
                 if((C==null)||(!C.leveless()))
-    				head.append(CMStrings.padRight((String)U.elementAt(3),4)+" ");
+    				head.append(CMStrings.padRight(""+U.level,4)+" ");
                 else
                     head.append(CMStrings.padRight("    ",4)+" ");
                 if(isArchonLooker)
-					head.append(CMStrings.padRight(CMLib.time().date2String(CMath.s_long((String)U.elementAt(5))),18)+" ");
-				head.append("] "+CMStrings.padRight((String)U.elementAt(0),25));
+					head.append(CMStrings.padRight(CMLib.time().date2String(U.last),18)+" ");
+				head.append("] "+CMStrings.padRight(U.name,25));
 				head.append("\n\r");
 			}
 		}

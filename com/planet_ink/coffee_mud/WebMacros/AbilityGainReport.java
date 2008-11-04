@@ -39,12 +39,12 @@ public class AbilityGainReport extends StdWebMacro
     {
         String className=httpReq.getRequestParameter("CLASS");
         if(className==null) className="";
-        Vector players=CMLib.database().getExtendedUserList();
+        Vector players=CMLib.database().getUserList();
         HashSet trainedFor=new HashSet();
         Hashtable profSpent=new Hashtable();
         for(int pl=0;pl<players.size();pl++)
         {
-            MOB player=CMLib.players().getLoadPlayer((String)((Vector)players.elementAt(pl)).firstElement());
+            MOB player=CMLib.players().getLoadPlayer((String)players.elementAt(pl));
             for(int a=0;a<player.numLearnedAbilities();a++)
             {
                 Ability A=player.fetchAbility(a);
