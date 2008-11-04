@@ -22,9 +22,6 @@
 			@loop@
 			<p>
 			@HelpTopics?ARCHON&SHORT&NEXT@<a name="@HelpTopics@"><B>@HelpTopics@</B></a>
-			<br>
-			<br>
-			<br>
 			<pre>@HelpTopics?data&ahelp&LIMIT=80@</pre>
 			</P>
 			@back@

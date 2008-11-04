@@ -82,12 +82,15 @@ public class ManualArchon extends StdItem implements MiscMagic,ArchonOnly
 						&&(!CMSecurity.isDisabled("LEVELS")))
 						while(mob.baseEnvStats().level()<100)
 						{
+							int oldLevel = mob.baseEnvStats().level();
 							if((mob.getExpNeededLevel()==Integer.MAX_VALUE)
 							||(mob.charStats().getCurrentClass().expless())
 							||(mob.charStats().getMyRace().expless()))
 								CMLib.leveler().level(mob);
 							else
 								CMLib.leveler().postExperience(mob,null,null,mob.getExpNeededLevel()+1,false);
+							if(mob.baseEnvStats().level()==oldLevel)
+								break;
 						}
 						mob.baseCharStats().setCurrentClass(newClass);
 						mob.baseCharStats().setClassLevel(mob.baseCharStats().getCurrentClass(),30);

@@ -25,7 +25,7 @@
 		</ul>
 		</td><td valign=top align=left>
 			@AbilityNext?RESET@	@loop@ <P> @AbilityNext?COMMON SKILL&THIEF SKILL&SKILL@
-				<a name="@AbilityID@"><B>@AbilityName@ (@AbilityID@)</B></a><br><br><br>
+				<br><a name="@AbilityID@"><B>@AbilityName@ (@AbilityID@)</B></a>
 				<pre>@AbilityData?help&LIMIT=80@</pre></P> @back@
 		</td></tr></table></center>
 	</body>

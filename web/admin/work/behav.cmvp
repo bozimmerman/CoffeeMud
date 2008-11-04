@@ -24,9 +24,6 @@
 			@loop@
 			<p>
 			@BehaviorNext?NEXT@<a name="@BehaviorID@"><B>@BehaviorID@</B></a>
-			<br>
-			<br>
-			<br>
 			<pre>@BehaviorData?help&LIMIT=80@</pre>
 			</P>
 			@back@

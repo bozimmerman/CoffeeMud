@@ -25,7 +25,7 @@
 		</ul>
 		</td><td valign=top align=left>
 			@ExpertiseNext?RESET@	@loop@ <P> @ExpertiseNext@
-				<a name="@ExpertiseID@"><B>@ExpertiseData?NAME@ (@ExpertiseID@)</B></a><br><br><br>
+				<br><a name="@ExpertiseID@"><B>@ExpertiseData?NAME@ (@ExpertiseID@)</B></a>
 				<pre>@ExpertiseData?help&LIMIT=80@</pre></P> @back@
 		</td></tr></table></center>
 	</body>

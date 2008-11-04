@@ -22,9 +22,6 @@
 			@loop@
 			<p>
 			@HelpTopics?SHORT&NEXT@<a name="@HelpTopics@"><B>@HelpTopics@</B></a>
-			<br>
-			<br>
-			<br>
 			<pre>@HelpTopics?data&LIMIT=80@</pre>
 			</P>
 			@back@

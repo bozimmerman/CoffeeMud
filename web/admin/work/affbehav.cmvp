@@ -24,9 +24,6 @@
 			@loop@
 			<p>
 			@AbilityAffectNext?NEXT@<a name="@AbilityID@"><B>@AbilityID@: @AbilityName@</B></a>
-			<br>
-			<br>
-			<br>
 			<pre>@AbilityData?help&LIMIT=80@</pre>
 			</P>
 			@back@
