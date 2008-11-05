@@ -1,36 +1,5 @@
 <?xml version="1.0"?>
-<!--
-<description select="any-1" tag=mytag action="replace">
-<value weight=2 > My Description1 </value>
-<value weight=2> My Description2 </value>
-</description>
-<description tag="mytag2" action="append" select="any-1" condition="" insert="$mytag">
-<value weight=2> My Description3</value>
-<value weight=2> My Description4</value>
-</description>
-
-<areas>
-<area tag="labyrynth">
-<name>$name</name>
-<author>$author</name>
-<layout select="any-1">
-<type weight=4>maze</type>
-<type weight=1>grid</type>
-<type weight=2>hallway</type>
-<type weight=1>city</type>
-</layout>
-</area>
-</areas>
--->
-<rooms tag="room" select="any-1" insert="$cave-rooms,$water-rooms" />
-
-<rooms tag="cave-rooms" select="all">
-<room class="CaveRoom">
-<title value="$mytag,$mytag2" />
-<description value="$mytag,$mytag2" />
-<items />
-<mobs />
-<affects />
-<behaviors />
-</room>
-</rooms>
+<AREADATA>
+<AREA tag="dungeon" layout="MazeLayout">
+</AREA>
+</AREADATA>

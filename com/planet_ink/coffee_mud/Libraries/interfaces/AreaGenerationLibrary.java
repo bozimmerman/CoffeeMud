@@ -36,6 +36,7 @@ public interface AreaGenerationLibrary extends CMLibrary
     public Vector findItems(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
     public Vector findMobs(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
     public String findString(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
-    public Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
-    
+    public Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined, int direction) throws CMException;
+    public void checkRequirements(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
+    public Area buildArea(XMLLibrary.XMLpiece piece, Hashtable defined, int direction) throws CMException;
 }

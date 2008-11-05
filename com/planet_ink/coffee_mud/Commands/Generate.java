@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.CMLibrary;
 import com.planet_ink.coffee_mud.Libraries.interfaces.XMLLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
@@ -58,7 +59,7 @@ public class Generate extends StdCommand
     	}
         if(commands.size()<3)
         {
-        	mob.tell("Generate what? Try GENERATE [TYPE] [TAG_NAME] (FROM [DATA_FILE_PATH]) ([TAG=VALUE]..)");
+        	mob.tell("Generate what? Try GENERATE [TYPE] [TAG_NAME] (FROM [DATA_FILE_PATH]) ([TAG=VALUE]..) [DIRECTION]");
         	return false;
         }
         CMFile file = null;
@@ -99,7 +100,17 @@ public class Generate extends StdCommand
         		return false;
         	}
         }
-        int objectTypeIndex = CMParms.indexOf(OBJECT_TYPES.keys(),objectType);
+        int direction=-1;
+        if((codeI.intValue()==CMClass.OBJECT_AREA)||(codeI.intValue()==CMClass.OBJECT_LOCALE))
+        {
+        	String possDir=(String)commands.lastElement();
+        	direction = Directions.getGoodDirectionCode(possDir);
+        	if(direction<0)
+        	{
+        		mob.tell("When creating an area or room, the LAST parameter to this command must be a direction to link to this room by.");
+        		return false;
+        	}
+        }
         String tagName = ((String)commands.elementAt(2)).toUpperCase().trim();
         if(definedTags.get(tagName) instanceof XMLLibrary.XMLpiece)
         {
@@ -117,9 +128,18 @@ public class Generate extends StdCommand
         
         XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)definedTags.get(tagName);
         definedTags.putAll(CMParms.parseEQParms(CMParms.combine(commands,3)));
+        try 
+        {
+        	CMLib.percolator().checkRequirements(piece, definedTags);
+        } 
+        catch(CMException cme) 
+        {
+        	mob.tell("Required tags for "+tagName+" were missing: "+cme.getMessage());
+        	return false;
+        }
         Vector V = null;
         try{
-	        switch(objectTypeIndex)
+	        switch(codeI.intValue())
 	        {
 	        case Integer.MAX_VALUE:
 	        {
@@ -129,13 +149,16 @@ public class Generate extends StdCommand
 	        	break;
 	        }
 	    	case CMClass.OBJECT_AREA:
-	    		throw new CMException("Area creation not yet implemented.");
+	    		Area A=CMLib.percolator().buildArea(piece, definedTags, direction);
+	    		if(A!=null)
+	    			V.addElement(A);
+	    		break;
 			case CMClass.OBJECT_MOB:
 				V=CMLib.percolator().findMobs(piece, definedTags);
 				break;
 			case CMClass.OBJECT_LOCALE:
 			{
-				Room R=CMLib.percolator().buildRoom(piece, definedTags);
+				Room R=CMLib.percolator().buildRoom(piece, definedTags, direction);
 				if(R!=null)
 					V.addElement(R);
 				break;

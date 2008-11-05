@@ -55,9 +55,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     }
     
     // tags created: ROOM_CLASS, ROOM_TITLE, ROOM_DESCRIPTION, ROOM_CLASSES, ROOM_TITLES, ROOM_DESCRIPTIONS
-    // tags created: 
-    public Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    public Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined, int direction) throws CMException
     {
+        addDefinition("DIRECTION",Directions.getDirectionName(direction).toLowerCase(),defined);
+        
         String classID = findString("class",piece,defined);
         Room R = CMClass.getLocale(classID);
         if(R == null) throw new CMException("Unable to build room on classID '"+classID+"', Data: "+piece.value);
@@ -94,6 +95,58 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         	R.addBehavior(B);
         }
         return R;
+    }
+    
+    // tags created: LINK_DIRECTION, AREA_CLASS, AREA_NAME, AREA_DESCRIPTION, AREA_LAYOUT, AREA_SIZE
+    public Area buildArea(XMLLibrary.XMLpiece piece, Hashtable defined, int direction) throws CMException
+    {
+    	defined.put("DIRECTION",Directions.getDirectionName(direction).toLowerCase());
+        String classID = findString("class",piece,defined);
+        Area A = CMClass.getAreaType(classID);
+        if(A == null) 
+        	throw new CMException("Unable to build area on classID '"+classID+"', Data: "+piece.value);
+        defined.put("AREA_CLASS",classID);
+        String name = findString("name",piece,defined);
+        A.setName(name);
+        defined.put("AREA_NAME",name);
+        String description = findString("description",piece,defined);
+        A.setDescription(description);
+        defined.put("AREA_DESCRIPTION",description);
+        String layoutType = findString("layout",piece,defined);
+        if((layoutType==null)||(layoutType.trim().length()==0))
+        	throw new CMException("Unable to build area without defined layout");
+        com.planet_ink.coffee_mud.Libraries.layouts.AbstractLayout layoutManager = null;
+        try {
+        	String className="com.planet_ink.coffee_mud.Libraries.layouts."+layoutType;
+	        Class layoutClass = new CMClass().loadClass(className, true);
+	        if(layoutClass==null) throw new ClassNotFoundException(className);
+	        layoutManager = (com.planet_ink.coffee_mud.Libraries.layouts.AbstractLayout)layoutClass.newInstance(); 
+	        if(layoutManager==null) throw new ClassNotFoundException(className);
+        } 
+        catch(Exception cnfe) { throw new CMException("Undefined Layout "+cnfe.getMessage()); }
+        defined.put("AREA_LAYOUT",layoutManager.name());
+        String size = findString("size",piece,defined);
+        if((!CMath.isInteger(size))||(CMath.s_int(size)<=0))
+        	throw new CMException("Unable to build area of size "+size);
+        defined.put("AREA_SIZE",size);
+        Vector roomsLayout = layoutManager.generate(CMath.s_int(size));
+        if((roomsLayout==null)||(roomsLayout.size()==0))
+        	throw new CMException("Unable to fill area of size "+size+" off layout "+layoutManager.name());
+        
+        Vector V;
+        V = findAffects(piece,defined);
+        for(int i=0;i<V.size();i++)
+        {
+        	Ability AB=(Ability)V.elementAt(i);
+        	A.addNonUninvokableEffect(AB);
+        }
+        V = findBehaviors(piece,defined);
+        for(int i=0;i<V.size();i++)
+        {
+        	Behavior B=(Behavior)V.elementAt(i);
+        	A.addBehavior(B);
+        }
+        return A;
     }
     
     public Vector findMobs(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
@@ -430,6 +483,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
             }
         }
         return choices;
+    }
+
+    public void checkRequirements(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    {
+        checkRequirements(defined,CMLib.xml().getParmValue(piece.parms,"REQUIRES"));
     }
     
     private Vector selectChoices(Vector choices, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
