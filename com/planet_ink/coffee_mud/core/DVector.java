@@ -118,6 +118,48 @@ public class DVector implements Cloneable, java.io.Serializable
 		return V;
 	}
 	
+	public void sortBy(int dim)
+	{
+        if((dim<1)||(dim>dimensions)) throw new java.lang.IndexOutOfBoundsException();
+        dim--;
+		if(stuff!=null)
+		{
+			TreeSet sorted=new TreeSet();
+			synchronized(stuff)
+			{
+				Object O=null;
+			    for(Enumeration s=stuff.elements();s.hasMoreElements();)
+			    {
+			    	O=((Object[])s.nextElement())[dim];
+			    	if(!sorted.contains(O))
+				        sorted.add(O);
+			    }
+			    Vector newStuff = new Vector(stuff.size());
+			    for(Iterator i=sorted.iterator();i.hasNext();)
+			    {
+			    	O=i.next();
+				    for(Enumeration s=stuff.elements();s.hasMoreElements();)
+				    {
+				    	Object[] Os=(Object[])s.nextElement();
+				    	if(O==Os[dim]) newStuff.addElement(Os);
+				    }
+			    }
+			    stuff=newStuff;
+			}
+		}
+	}
+
+	public static DVector toDVector(Hashtable h)
+	{
+		DVector DV=new DVector(2);
+		for(Enumeration e=h.keys();e.hasMoreElements();)
+		{
+			Object key=e.nextElement();
+			DV.addElement(key,h.get(key));
+		}
+		return DV;
+	}
+	
     public void addSharedElements(Object[] O)
     {
         if(dimensions!=O.length) throw new java.lang.IndexOutOfBoundsException();

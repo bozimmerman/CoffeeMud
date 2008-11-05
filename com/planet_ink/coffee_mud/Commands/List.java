@@ -929,7 +929,56 @@ public class List extends StdCommand
 		return CMLib.lister().reallyList2Cols(keys,-1,null).toString();
 	}
 
-    public String listRecipes(MOB mob, String rest)
+	public String listHelpFileRequests(MOB mob, String rest)
+	{
+		String fileName=Log.instance().getLogFilename("help");
+		if(fileName==null)
+			return "This feature requires that help request log entries be directed to a file.";
+		CMFile f=new CMFile(fileName,mob,true);
+		if((!f.exists())||(!f.canRead()))
+			return "File '"+f.getName()+"' does not exist.";
+		Vector V=Resources.getFileLineVector(f.text());
+		Hashtable entries = new Hashtable();
+		for(int v=0;v<V.size();v++)
+		{
+			String s=(String)V.elementAt(v);
+			if(s.indexOf(" Help  Help")==19)
+			{
+				int x=s.indexOf("wanted help on",19);
+				String helpEntry=s.substring(x+14).trim().toLowerCase();
+				int[] sightings=(int[])entries.get(helpEntry);
+				if(sightings==null)
+				{
+					sightings=new int[1];
+					if(CMLib.help().getHelpText(helpEntry,mob,false)!=null)
+						sightings[0]=-1;
+					entries.put(helpEntry,sightings);
+				}
+				if(sightings[0]>=0)
+					sightings[0]++;
+				else
+					sightings[0]--;
+			}
+		}
+		Hashtable readyEntries = new Hashtable(entries.size());
+		for(Enumeration e=entries.keys();e.hasMoreElements();)
+		{
+			Object key=e.nextElement();
+			int[] val=(int[])entries.get(key);
+			readyEntries.put(key,Integer.valueOf(val[0]));
+		}
+		DVector sightingsDV=DVector.toDVector(readyEntries);
+		sightingsDV.sortBy(2);
+		StringBuffer str=new StringBuffer("^HHelp entries, sorted by popularity: ^N\n\r");
+		for(int d=0;d<sightingsDV.size();d++)
+			str.append("^w"+CMStrings.padRight(sightingsDV.elementAt(d,2).toString(),4))
+			   .append(" ")
+			   .append(sightingsDV.elementAt(d,1).toString())
+			   .append("\n\r");
+		return str.toString()+"^N";
+	}
+	
+	public String listRecipes(MOB mob, String rest)
     {
         StringBuffer str = new StringBuffer("");
         if(rest.trim().length()==0)
@@ -1174,6 +1223,7 @@ public class List extends StdCommand
 		/*54*/{"CONQUERED","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
         /*55*/{"HOLIDAYS","LISTADMIN","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
         /*56*/{"RECIPES","LISTADMIN","CMDRECIPES"},
+        /*57*/{"HELPFILEREQUESTS","LISTADMIN"}
 	};
 
     public StringBuffer listContent(MOB mob, Vector commands)
@@ -1454,6 +1504,7 @@ public class List extends StdCommand
 		case 54: s.wraplessPrintln(areaConquests(CMLib.map().sortedAreas()).toString()); break;
         case 55: s.wraplessPrintln(CMLib.quests().listHolidays(mob.location().getArea(),CMParms.combine(commands,1))); break;
         case 56: s.wraplessPrintln(listRecipes(mob,CMParms.combine(commands,1))); break;
+        case 57: s.wraplessPrint(listHelpFileRequests(mob,CMParms.combine(commands,1))); break;
         default:
 			s.println("List?!");
 			break;

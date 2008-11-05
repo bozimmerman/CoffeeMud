@@ -494,6 +494,7 @@ public class Socials extends StdLibrary implements SocialsList
         if(V!=null)
             S=fetchSocial(V,name,exactOnly);
         if(S!=null) return S;
+        if(V==null) return null;
 		for(Enumeration e=soc.keys();e.hasMoreElements();)
 		{
 			String key=(String)e.nextElement();

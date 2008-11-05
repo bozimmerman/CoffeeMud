@@ -130,6 +130,17 @@ public class Log
         if(flag.startsWith("OFF")) return false;
         return true;
     }
+    
+    public String getLogFilename(String name)
+    {
+		String flag=prop(name.toUpperCase().trim());
+		if(flag.startsWith("OWNFILE"))
+			return logName+"_"+name.toLowerCase()+".log";
+		if((flag.startsWith("FILE"))||(flag.startsWith("BOTH")))
+			return logName+".log";
+		return null;
+    }
+    
 	/**
 	 * Returns an appropriate writer for the given ON, OFF, FILE, or OWNFILE
  	 *
