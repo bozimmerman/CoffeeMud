@@ -66,7 +66,7 @@ public class TreeLayout extends AbstractLayout
 		}
 	}
 	
-	public Vector<AbstractLayout.LayoutNode> generate(int num) {
+	public Vector<AbstractLayout.LayoutNode> generate(int num, int dir) {
 		Vector<AbstractLayout.LayoutNode> set = new Vector<AbstractLayout.LayoutNode>();
 		Vector<TreeStem> progress = new Vector<TreeStem>();
 		

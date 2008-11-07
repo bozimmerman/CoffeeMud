@@ -2,6 +2,8 @@ package com.planet_ink.coffee_mud.Libraries.layouts;
 import java.util.*;
 import java.text.*;
 
+import com.planet_ink.coffee_mud.core.Directions;
+
 public class LayoutTester
 {
 	public static void draw(Vector<AbstractLayout.LayoutNode> V)
@@ -46,11 +48,11 @@ public class LayoutTester
 	
 	public static void main(String[] args)
 	{
-		draw(new BoxCitySquareLayout().generate(10));
-		draw(new BoxCitySquareLayout().generate(20));
-		draw(new BoxCitySquareLayout().generate(50));
-		draw(new BoxCitySquareLayout().generate(70));
-		draw(new BoxCitySquareLayout().generate(80));
-		draw(new BoxCitySquareLayout().generate(100));
+		draw(new BoxCitySquareLayout().generate(10, Directions.NORTH));
+		draw(new BoxCitySquareLayout().generate(20, Directions.NORTH));
+		draw(new BoxCitySquareLayout().generate(50, Directions.NORTH));
+		draw(new BoxCitySquareLayout().generate(70, Directions.NORTH));
+		draw(new BoxCitySquareLayout().generate(80, Directions.NORTH));
+		draw(new BoxCitySquareLayout().generate(100, Directions.NORTH));
 	}
 }

@@ -38,7 +38,7 @@ public class MazeLayout extends AbstractLayout
 		
 	}
 	
-	public Vector<LayoutNode> generate(int num) 
+	public Vector<LayoutNode> generate(int num, int dir) 
 	{
 		Vector<LayoutNode> set = new Vector<LayoutNode>();
 		int diameter = (int)Math.round(Math.sqrt((double)num));

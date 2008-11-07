@@ -303,5 +303,5 @@ public abstract class AbstractLayout
 	}
 	
 	public abstract String name();
-	public abstract Vector<LayoutNode> generate(int num);
+	public abstract Vector<LayoutNode> generate(int num, int dir);
 }
