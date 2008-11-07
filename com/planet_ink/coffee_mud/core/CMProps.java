@@ -116,7 +116,9 @@ public class CMProps extends Properties
     public static final int SYSTEM_DEFAULTPROMPT=58;
     public static final int SYSTEM_PRIVATERESOURCES=59;
     public static final int SYSTEM_CHARCREATIONSCRIPTS=60;
-    public static final int NUM_SYSTEM=61;
+    public static final int SYSTEM_CHARSETINPUT=61;
+    public static final int SYSTEM_CHARSETOUTPUT=62;
+    public static final int NUM_SYSTEM=63;
 
     public static final int SYSTEMI_EXPRATE=0;
     public static final int SYSTEMI_SKYSIZE=1;
@@ -710,6 +712,10 @@ public class CMProps extends Properties
         setBoolVar(SYSTEMB_INTRODUCTIONSYSTEM,getStr("INTRODUCTIONSYSTEM").equalsIgnoreCase("YES")?true:false);
         setUpLowVar(SYSTEM_PREFACTIONS,getStr("FACTIONS"));
         setUpLowVar(SYSTEM_CHARCREATIONSCRIPTS,getStr("CHARCREATIONSCRIPTS"));
+        setUpLowVar(SYSTEM_CHARSETINPUT,getStr("CHARSETINPUT"));
+        if(getVar(SYSTEM_CHARSETINPUT).length()==0) setUpLowVar(SYSTEM_CHARSETINPUT,"iso-8859-1");
+        setUpLowVar(SYSTEM_CHARSETOUTPUT,getStr("CHARSETOUTPUT"));
+        if(getVar(SYSTEM_CHARSETOUTPUT).length()==0) setUpLowVar(SYSTEM_CHARSETOUTPUT,"iso-8859-1");
 
         if(CMLib.color()!=null) CMLib.color().clearLookups();
         if(getStr("MANACONSUMEAMT").trim().equalsIgnoreCase("LEVEL"))

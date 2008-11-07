@@ -134,10 +134,8 @@ public class DefaultSession extends Thread implements Session
 			rawout.flush();
 			preliminaryRead(250);
 
-            //out = new PrintWriter(new BufferedWriter(new OutputStreamWriter(rawout, "UTF-8")));
-            //in = new BufferedReader(new InputStreamReader(rawin, "UTF-8"));
-			out = new PrintWriter(new OutputStreamWriter(rawout,"iso-8859-1"));
-			in = new BufferedReader(new InputStreamReader(rawin,"iso-8859-1"));
+			out = new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)));
+			in = new BufferedReader(new InputStreamReader(rawin,CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT)));
 
 			preliminaryRead(250);
 			if(clientTelnetMode(TELNET_COMPRESS2))
@@ -148,7 +146,7 @@ public class DefaultSession extends Thread implements Session
 				negotiateTelnetMode(rawout,TELNET_COMPRESS2);
 			    ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
 			    zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
-				out = new PrintWriter(new OutputStreamWriter(zOut,"iso-8859-1"));
+				out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)));
 				try{Thread.sleep(50);}catch(Exception e){}
 			}
 			if(clientTelnetMode(Session.TELNET_MXP))
@@ -940,7 +938,7 @@ public class DefaultSession extends Thread implements Session
 	                out.flush();
 	                ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
 	                zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
-					out = new PrintWriter(new OutputStreamWriter(zOut,"iso-8859-1"));
+					out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)));
 					try{Thread.sleep(250);}catch(Exception e){}
             	}
             }
@@ -960,7 +958,7 @@ public class DefaultSession extends Thread implements Session
             if((last==TELNET_COMPRESS2)&&(serverTelnetMode(last)))
             {
             	setClientTelnetMode(last,false);
-				out = new PrintWriter(new OutputStreamWriter(rawout,"iso-8859-1"));
+				out = new PrintWriter(new OutputStreamWriter(rawout,CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)));
             }
             if((mightSupportTelnetMode(last)&&(serverTelnetMode(last))))
                 changeTelnetMode(last,false);

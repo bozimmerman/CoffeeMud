@@ -3,6 +3,7 @@ import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.TextEncoders;
+import com.planet_ink.coffee_mud.core.CMProps;
 import com.planet_ink.coffee_mud.core.Log;
 
 /* 
@@ -44,7 +45,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
             synchronized (encodeBuffer)
             {
                 int len = decompresser.inflate(encodeBuffer);
-                return new String(encodeBuffer, 0, len, "iso-8859-1");
+                return new String(encodeBuffer, 0, len, CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT));
             }
         }
         catch (Exception ex)
@@ -62,7 +63,7 @@ public class CMEncoder extends StdLibrary implements TextEncoders
         try
         {
             compresser.reset();
-            compresser.setInput(s.getBytes("iso-8859-1"));
+            compresser.setInput(s.getBytes(CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT)));
             compresser.finish();
             
             synchronized (encodeBuffer)

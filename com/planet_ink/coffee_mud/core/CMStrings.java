@@ -47,8 +47,8 @@ public class CMStrings
         return str.substring(0,x+1)+". "+str.substring(x+1).trim();
     }
     
-    public static String bytesToStr(byte[] b){ if(b==null) return ""; try{ return new String(b,"iso-8859-1");}catch(Exception e){return new String(b);}}
-    public static byte[] strToBytes(String str){ try{ return str.getBytes("iso-8859-1");}catch(Exception e){return str.getBytes();}}
+    public static String bytesToStr(byte[] b){ if(b==null) return ""; try{ return new String(b,CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT));}catch(Exception e){return new String(b);}}
+    public static byte[] strToBytes(String str){ try{ return str.getBytes(CMProps.getVar(CMProps.SYSTEM_CHARSETINPUT));}catch(Exception e){return str.getBytes();}}
     public static boolean isVowel(char c)
     { return (("aeiou").indexOf(Character.toLowerCase(c))>=0);}
     
