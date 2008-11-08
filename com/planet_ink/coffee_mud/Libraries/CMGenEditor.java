@@ -7193,13 +7193,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     
     public void modifyRoom(MOB mob, Room R) throws IOException
     {
-        int showNumber=0;
         int showFlag=-1;
         if(CMProps.getIntVar(CMProps.SYSTEMI_EDITORTYPE)>0)
             showFlag=-999;
         boolean ok=false;
         while(!ok)
         {
+            int showNumber=0;
             genRoomType(mob,R,++showNumber,showFlag);
             genDisplayText(mob,R,++showNumber,showFlag);
             genDescription(mob,R,++showNumber,showFlag);

@@ -637,7 +637,7 @@ public class DefaultFaction implements Faction, MsgListener
                         for(Iterator i=combatBeneficiaries.iterator();i.hasNext();)
                         {
                             MOB killerM=(MOB)i.next();
-                            if(!hasFaction(killerM))
+                            if(eventC.applies(killerM))
                                 executeChange(killerM,killedM,eventC);
                         }
                 }
