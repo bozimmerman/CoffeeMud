@@ -6,8 +6,11 @@ import com.planet_ink.coffee_mud.core.Directions;
 
 public class LayoutTester
 {
-	public static void draw(Vector<AbstractLayout.LayoutNode> V)
+	public static void draw(AbstractLayout layout, int size, int dir)
 	{
+		Vector<AbstractLayout.LayoutNode> V=layout.generate(size, dir);
+		
+		System.out.println("Layout "+layout.name()+", size="+V.size());
 		long lowestX=Long.MAX_VALUE;
 		long lowestY=Long.MAX_VALUE;
 		long highestX=Long.MIN_VALUE;
@@ -42,17 +45,22 @@ public class LayoutTester
 				}
 			}
 		}
-		System.out.println("Size="+V.size());
-		//for(AbstractPattern.LayoutNode n : V) System.out.println(n.toString());
 	}
 	
 	public static void main(String[] args)
 	{
-		draw(new BoxCitySquareLayout().generate(10, Directions.NORTH));
-		draw(new BoxCitySquareLayout().generate(20, Directions.NORTH));
-		draw(new BoxCitySquareLayout().generate(50, Directions.NORTH));
-		draw(new BoxCitySquareLayout().generate(70, Directions.NORTH));
-		draw(new BoxCitySquareLayout().generate(80, Directions.NORTH));
-		draw(new BoxCitySquareLayout().generate(100, Directions.NORTH));
+		Directions.instance();
+		draw(new BoxCityLayout(),25, Directions.NORTH);
+		draw(new BoxCityLayout(), 50, Directions.NORTH);
+		draw(new BoxCitySquareLayout(), 25, Directions.NORTH);
+		draw(new BoxCitySquareLayout(), 50, Directions.NORTH);
+		draw(new CrossLayout(), 25, Directions.NORTH);
+		draw(new CrossLayout(), 50, Directions.NORTH);
+		draw(new GridCityLayout(), 25, Directions.NORTH);
+		draw(new GridCityLayout(), 50, Directions.NORTH);
+		draw(new MazeLayout(), 25, Directions.NORTH);
+		draw(new MazeLayout(), 50, Directions.NORTH);
+		draw(new TreeLayout(), 25, Directions.NORTH);
+		draw(new TreeLayout(), 50, Directions.NORTH);
 	}
 }

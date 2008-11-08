@@ -1,10 +1,9 @@
 package com.planet_ink.coffee_mud.Libraries.layouts;
 
 import java.util.*;
-import java.util.Iterator;
-import java.util.TreeSet;
-import java.util.Vector;
 import com.planet_ink.coffee_mud.core.Directions;
+import com.planet_ink.coffee_mud.Libraries.layouts.AbstractLayout.LayoutNode;
+import com.planet_ink.coffee_mud.Locales.interfaces.*;
 
 public class BoxCityLayout extends AbstractLayout 
 {
@@ -45,14 +44,14 @@ public class BoxCityLayout extends AbstractLayout
 			for(int x=0;x<width-1;x++)
 			{
 				d.use(n,"street");
-				n.flagRun("n,s");
+				n.flagRun("e,w");
 				LayoutNode nn = getNextNode(d, n, Directions.EAST);
 				if(nn==null) nn=makeNextNode(n, Directions.EAST);
 				n.crossLink(nn);
 				n=nn;
 			}
 			d.use(n,"street");
-			n.flagRun("n,s");
+			n.flagRun("e,w");
 		}
 		halfLineE(d,startY,y,width,yposUsed);
 		halfLineE(d,y,endY,width,yposUsed);
@@ -73,7 +72,6 @@ public class BoxCityLayout extends AbstractLayout
 		Vector<LayoutNode> set = new Vector<LayoutNode>();
 		int diameter = (int)Math.round(Math.sqrt((double)num));
 		int plusX = (diff(diameter,diameter,num) > diff(diameter+1,diameter,num)) ? 1 : 0;
-		
 		LayoutSet d = new LayoutSet(set,num);
 		drawABox(d,diameter+plusX,diameter);
 		TreeSet<Integer> yposUsed = new TreeSet<Integer>();
@@ -110,6 +108,19 @@ public class BoxCityLayout extends AbstractLayout
 			}
 		}
 		fillInFlags(d);
+		LayoutNode n = null;
+		switch(dir)
+		{
+		case Directions.NORTH: n=d.getNode(new long[]{(diameter+plusX)/2,0}); break;
+		case Directions.SOUTH: n=d.getNode(new long[]{(diameter+plusX)/2,-diameter+1}); break;
+		case Directions.EAST: n=d.getNode(new long[]{0,(-diameter+1)/2}); break;
+		case Directions.WEST: n=d.getNode(new long[]{diameter+plusX-1,(-diameter+1)/2}); break;
+		}
+		if(n!=null)
+		{
+			set.remove(n);
+			set.insertElementAt(n,0);
+		}
 		return set;
 	}
 

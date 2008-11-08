@@ -210,7 +210,7 @@ public abstract class AbstractLayout
 	public void fillMaze(LayoutSet d, LayoutNode p)
 	{
 		Vector<Integer> dirs = new Vector<Integer>();
-		for(int i=0;i<Directions.NUM_DIRECTIONS();i++)
+		for(int i=0;i<4;i++)
 			dirs.add(Integer.valueOf(i));
 		Vector<Integer> rdirs = new Vector<Integer>();
 		while(dirs.size()>0)
@@ -241,7 +241,7 @@ public abstract class AbstractLayout
 		{
 			LayoutNode n = (LayoutNode)e.nextElement();
 			StringBuffer exits = new StringBuffer("");
-			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+			for(int d=0;d<4;d++)
 				if(AbstractLayout.getNextNode(laySet, n, d)!=null)
 					if(exits.length()>0)
 						exits.append(","+Directions.getDirectionChar(d));
@@ -257,10 +257,10 @@ public abstract class AbstractLayout
 			if(n.links.size()==2)
 			{
 				String type = n.type();
-				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+				for(int d=0;d<4;d++)
 				{
 					LayoutNode n2=AbstractLayout.getNextNode(laySet, n, d);
-					if(n2.type().equalsIgnoreCase("leaf"))
+					if((n2!=null)&&(n2.type().equalsIgnoreCase("leaf")))
 						type="offleaf";
 				}
 				if(!type.equalsIgnoreCase("offleaf"))
@@ -273,12 +273,13 @@ public abstract class AbstractLayout
 				||(!n.type().equalsIgnoreCase("surround")))))
 			{
 				boolean allStreet = true;
-				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+				for(int d=0;d<4;d++)
 				{
 					LayoutNode n2=AbstractLayout.getNextNode(laySet, n, d);
-					if((!n2.type().equalsIgnoreCase("street"))
-					&&(!n2.type().equalsIgnoreCase("surround")))
-						allStreet = false;
+					if((n2==null)
+					||((!n2.type().equalsIgnoreCase("street"))
+						&&(!n2.type().equalsIgnoreCase("surround"))))
+							allStreet = false;
 				}
 				if(allStreet)
 					n.flag("tee");
@@ -289,12 +290,13 @@ public abstract class AbstractLayout
 				||(!n.type().equalsIgnoreCase("surround")))))
 			{
 				boolean allStreet = true;
-				for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+				for(int d=0;d<4;d++)
 				{
 					LayoutNode n2=AbstractLayout.getNextNode(laySet, n, d);
-					if((!n2.type().equalsIgnoreCase("street"))
-					&&(!n2.type().equalsIgnoreCase("surround")))
-						allStreet = false;
+					if((n2==null)
+					||((!n2.type().equalsIgnoreCase("street"))
+						&&(!n2.type().equalsIgnoreCase("surround"))))
+							allStreet = false;
 				}
 				if(allStreet)
 					n.flag("intersection");

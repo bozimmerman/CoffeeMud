@@ -15,11 +15,15 @@ public class GridCityLayout extends AbstractLayout
 		
 		LayoutSet d = new LayoutSet(set,num);
 		drawABox(d,diameter+plusX,diameter);
+		int middle=(diameter+plusX)/2;
+		LayoutNode firstNode=null;
 		for(int x=0;x<diameter+plusX;x+=2)
 		{
 			LayoutNode n = d.getNode(new long[]{x,0});
 			if(n!=null)
 			{
+				if((dir==Directions.NORTH)&&(x>=middle-1)&&(x<=middle+1))
+					firstNode=n;
 				for(int y=0;y<diameter-1;y++)
 				{
 					d.use(n,"street");
@@ -31,14 +35,19 @@ public class GridCityLayout extends AbstractLayout
 				}
 				d.use(n,"street");
 				n.flagRun("n,s");
+				if((dir==Directions.SOUTH)&&(x>=middle-1)&&(x<=middle+1))
+					firstNode=n;
 			}
 		}
 		int endX=diameter+plusX-1;
+		middle=(-diameter+1)/2;
 		for(int y=-2;y>=-diameter+1;y-=2)
 		{
 			LayoutNode n = d.getNode(new long[]{0,y});
 			if(n!=null)
 			{
+				if((dir==Directions.EAST)&&(y>=middle-1)&&(y<=middle+1))
+					firstNode=n;
 				for(int x=0;x<endX;x++)
 				{
 					d.use(n,"street");
@@ -50,6 +59,8 @@ public class GridCityLayout extends AbstractLayout
 				}
 				d.use(n,"street");
 				n.flagRun("e,w");
+				if((dir==Directions.WEST)&&(y>=middle-1)&&(y<=middle+1))
+					firstNode=n;
 			}
 		}
 		boolean north=true;
@@ -95,6 +106,11 @@ public class GridCityLayout extends AbstractLayout
 			}
 		}
 		fillInFlags(d);
+		if(firstNode != null)
+		{
+			set.remove(firstNode);
+			set.insertElementAt(firstNode, 0);
+		}
 		return set;
 	}
 

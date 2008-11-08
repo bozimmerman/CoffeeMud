@@ -10,7 +10,7 @@ public class MazeLayout extends AbstractLayout
 	public void fillMaze(LayoutSet d, LayoutNode p, int width, int height)
 	{
 		Vector<Integer> dirs = new Vector<Integer>();
-		for(int i=0;i<Directions.NUM_DIRECTIONS();i++)
+		for(int i=0;i<4;i++)
 			dirs.add(Integer.valueOf(i));
 		Vector<Integer> rdirs = new Vector<Integer>();
 		while(dirs.size()>0)
@@ -45,10 +45,16 @@ public class MazeLayout extends AbstractLayout
 		int plusX = (diff(diameter,diameter,num) > diff(diameter+1,diameter,num)) ? 1 : 0;
 		
 		LayoutSet d = new LayoutSet(set,num);
-		LayoutNode n = new LayoutNode(new long[]{diameter/2,0});
+		LayoutNode n = null;
+		switch(dir)
+		{
+		case Directions.NORTH: n=new LayoutNode(new long[]{(diameter+plusX)/2,0}); n.flagGateExit("n"); break;
+		case Directions.SOUTH: n=new LayoutNode(new long[]{(diameter+plusX)/2,-diameter+1}); n.flagGateExit("s"); break;
+		case Directions.EAST: n=new LayoutNode(new long[]{0,(-diameter+1)/2}); n.flagGateExit("e"); break;
+		case Directions.WEST: n=new LayoutNode(new long[]{diameter+plusX-1,(-diameter+1)/2}); n.flagGateExit("w"); break;
+		}
 		d.use(n,"interior");
 		n.flag("gate");
-		n.flagGateExit("s");
 		fillMaze(d,n,diameter+plusX,diameter);
 		fillInFlags(d);
 		return set;

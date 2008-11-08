@@ -5,7 +5,7 @@ import com.planet_ink.coffee_mud.core.Directions;
 
 public class TreeLayout extends AbstractLayout
 {
-	public String name(){return "BUSH";}
+	public String name(){return "TREE";}
 	
 	private class TreeStem
 	{

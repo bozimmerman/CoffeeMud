@@ -25,6 +25,7 @@ public class CrossLayout extends AbstractLayout
 		int diameter = (num / 3 / 2) + 1;
 		LayoutSet d = new LayoutSet(set,num);
 		LayoutNode n = new LayoutNode(new long[]{0,0});
+		LayoutNode firstNode = n;
 		for(int x=0;x<diameter;x++)
 		{
 			d.use(n,"street");
@@ -36,7 +37,9 @@ public class CrossLayout extends AbstractLayout
 		}
 		n.flagRun("N,S");
 		d.use(n,"street");
+		if(dir==Directions.SOUTH) firstNode=n;
 		n = new LayoutNode(new long[]{-(diameter/2),-(diameter/2)});
+		if(dir==Directions.EAST) firstNode=n;
 		for(int x=0;x<diameter;x++)
 		{
 			d.use(n,"street");
@@ -48,6 +51,7 @@ public class CrossLayout extends AbstractLayout
 		}
 		d.use(n,"street");
 		n.flagRun("E,W");
+		if(dir==Directions.WEST) firstNode=n;
 		@SuppressWarnings("unchecked")
 		Vector<LayoutNode> corridors = (Vector<LayoutNode>)set.clone();
 		int x = 0;
@@ -66,6 +70,8 @@ public class CrossLayout extends AbstractLayout
 			x++;
 		}
 		fillInFlags(d);
+		set.remove(firstNode);
+		set.insertElementAt(firstNode,0);
 		return set;
 	}
 
