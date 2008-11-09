@@ -212,8 +212,8 @@ public class DBInterface implements DatabaseEngine
 	public void DBUpdateJournal(String key, String subject, String msg)
 	{JournalLoader.DBUpdateJournal(key,subject,msg);}
 	
-	public void DBCreateRoom(Room room, String LocaleID)
-	{RoomLoader.DBCreate(room,LocaleID);}
+	public void DBCreateRoom(Room room)
+	{RoomLoader.DBCreate(room);}
 	
 	public void DBUpdateRoom(Room room)
 	{RoomLoader.DBUpdateRoom(room);}
@@ -248,8 +248,8 @@ public class DBInterface implements DatabaseEngine
 	public boolean DBReadUserOnly(MOB mob)
 	{return MOBloader.DBReadUserOnly(mob);}
 	
-	public Area DBCreateArea(String areaName, String areaType)
-	{return RoomLoader.DBCreate(areaName,areaType);}
+	public void DBCreateArea(Area A)
+	{RoomLoader.DBCreate(A);}
 	
 	public void DBDeleteArea(Area A)
 	{RoomLoader.DBDelete(A);}

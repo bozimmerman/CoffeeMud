@@ -4615,9 +4615,11 @@ public class Import extends StdCommand
 				Area A=CMLib.map().getArea(areaName);
 				if(A==null)
 				{
-					A=CMLib.database().DBCreateArea(areaName,"StdArea");
+					A=CMClass.getAreaType("StdArea");
+					A.setName(areaName);
 					A.setAuthorID(areaAuthor);
-					CMLib.database().DBUpdateArea(areaName,A);
+					CMLib.map().addArea(A);
+					CMLib.database().DBCreateArea(A);
 				}
 				else
 					A.setAreaFlags(Area.FLAG_FROZEN);
@@ -5585,7 +5587,7 @@ public class Import extends StdCommand
 		for(Enumeration e=doneRooms.elements();e.hasMoreElements();)
 		{
 			Room saveRoom=(Room)e.nextElement();
-			CMLib.database().DBCreateRoom(saveRoom,CMClass.classID(saveRoom));
+			CMLib.database().DBCreateRoom(saveRoom);
 			// final exit clean-up optimization
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 			{

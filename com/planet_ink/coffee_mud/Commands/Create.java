@@ -284,14 +284,7 @@ public class Create extends StdCommand
 		}
 		thisRoom.setDisplayText(CMClass.classID(thisRoom)+"-"+thisRoom.roomID());
 		thisRoom.setDescription("");
-		CMLib.database().DBCreateRoom(thisRoom,Locale);
-
-		if(thisRoom==null)
-		{
-			mob.tell("You have  to specify the proper fields.\n\rThe format is CREATE ROOM [DIRECTION] [ROOM TYPE]\n\r");
-			mob.location().showOthers(mob,null,CMMsg.MSG_OK_ACTION,"<S-NAME> flub(s) a powerful spell.");
-			return;
-		}
+		CMLib.database().DBCreateRoom(thisRoom);
 
 		CMLib.map().createNewExit(mob.location(),thisRoom,direction);
 
@@ -459,14 +452,17 @@ public class Create extends StdCommand
 			}
 		}
 		if(areaType.length()==0) areaType="StdArea";
-		A=CMLib.database().DBCreateArea(areaName,areaType);
+		A=CMClass.getAreaType(areaType);
 		A.setName(areaName);
+		CMLib.map().addArea(A);
+		CMLib.database().DBCreateArea(A);
+		
 		Room R=CMClass.getLocale("StdRoom");
 		R.setRoomID(A.getNewRoomID(R,-1));
 		R.setArea(A);
 		R.setDisplayText(CMClass.classID(R)+"-"+R.roomID());
 		R.setDescription("");
-		CMLib.database().DBCreateRoom(R,R.ID());
+		CMLib.database().DBCreateRoom(R);
 		mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The size of the world just increased!");
 		mob.tell("You are now at "+R.roomID()+".");
 		R.bringMobHere(mob,true);

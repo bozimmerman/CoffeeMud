@@ -266,7 +266,7 @@ public class Masonry extends CraftingSkill
 									}
                                     if(CMSecurity.isDebugging("PROPERTY"))
                                         Log.debugOut("Masonry",R2.roomID()+" created for water.");
-									CMLib.database().DBCreateRoom(R2,R2.ID());
+									CMLib.database().DBCreateRoom(R2);
 									CMLib.database().DBUpdateExits(R2);
 								}
 	

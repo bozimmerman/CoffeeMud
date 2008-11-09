@@ -316,13 +316,16 @@ public class MUD extends Thread implements MudHost
     		{
     			Log.sysOut("NO MAPPED ROOM?!  I'll make ya one!");
     			String id="START";
-    			Area newArea=CMLib.database().DBCreateArea("New Area","StdArea");
+    			Area newArea=CMClass.getAreaType("StdArea");
+    			newArea.setName("New Area");
+    			CMLib.map().addArea(newArea);
+    			CMLib.database().DBCreateArea(newArea);
     			Room room=CMClass.getLocale("StdRoom");
     			room.setRoomID(id);
     			room.setArea(newArea);
     			room.setDisplayText("New Room");
     			room.setDescription("Brand new database room! You need to change this text with the MODIFY ROOM command.  If your character is not an Archon, pick up the book you see here and read it immediately!");
-    			CMLib.database().DBCreateRoom(room,"StdRoom");
+    			CMLib.database().DBCreateRoom(room);
     			Item I=CMClass.getMiscMagic("ManualArchon");
     			room.addItem(I);
     			CMLib.database().DBUpdateItems(room);

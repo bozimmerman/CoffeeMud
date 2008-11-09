@@ -359,12 +359,15 @@ public class RoomLoader
 		{
 			String areaName=(String)e.nextElement();
 			Log.sysOut("Area","Creating unhandled area: "+areaName);
-			Area realArea=DBCreate(areaName,"StdArea");
+			Area A=CMClass.getAreaType("StdArea");
+			A.setName(areaName);
+			DBCreate(A);
+			CMLib.map().addArea(A);
 			for(Enumeration r=rooms.elements();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
 				if(R.getArea().Name().equals(areaName))
-					R.setArea(realArea);
+					R.setArea(A);
 			}
 		}
         
@@ -1081,16 +1084,15 @@ public class RoomLoader
 			Log.debugOut("RoomLoader","Done recreating room "+room.roomID());
 	}
 
-	public Area DBCreate(String areaName, String areaType)
+	public void DBCreate(Area A)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMAREA")||CMSecurity.isDebugging("DBROOMS")))
-			Log.debugOut("RoomLoader","Creating area "+areaName);
-		Area A=CMClass.getAreaType(areaType);
-		if(A==null) A=CMClass.getAreaType("StdArea");
-		if((A==null)||(areaName.length()==0)) return null;
+			Log.debugOut("RoomLoader","Creating area "+A.name());
+		if((A==null)||(A.name().length()==0)) {
+			Log.errOut("RoomLoader","Unable to create area "+A.name());
+			return;
+		}
 
-		A=(Area)A.copyOf();
-		A.setName(areaName);
 		CMLib.map().addArea(A);
 		DB.update(
 		"INSERT INTO CMAREA ("
@@ -1111,8 +1113,7 @@ public class RoomLoader
 		+A.getTechLevel()+")");
         A.setAreaFlags(Area.FLAG_ACTIVE);
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMAREA")||CMSecurity.isDebugging("DBROOMS")))
-			Log.debugOut("RoomLoader","Done creating area "+areaName);
-		return A;
+			Log.debugOut("RoomLoader","Done creating area "+A.name());
 	}
 
 	public void DBUpdate(String keyName,Area A)
@@ -1191,7 +1192,7 @@ public class RoomLoader
 	}
 
 
-	public void DBCreate(Room room, String LocaleID)
+	public void DBCreate(Room room)
 	{
 		if(!room.savable()) return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROOM")||CMSecurity.isDebugging("DBROOMS")))
@@ -1206,7 +1207,7 @@ public class RoomLoader
 		+"CMROTX"
 		+") values ("
 		+"'"+room.roomID()+"',"
-		+"'"+LocaleID+"',"
+		+"'"+CMClass.classID(room)+"',"
 		+"'"+room.getArea().Name()+"',"
 		+"'"+room.displayText()+" ',"
 		+"'"+room.description()+" ',"

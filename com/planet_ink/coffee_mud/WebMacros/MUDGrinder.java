@@ -263,7 +263,10 @@ public class MUDGrinder extends StdWebMacro
 			if(A==null)
 			{
 				String areaClass=httpReq.getRequestParameter("AREATYPE");
-				A=CMLib.database().DBCreateArea(AREA,areaClass);
+				A=CMClass.getAreaType(areaClass);
+				A.setName(AREA);
+				CMLib.map().addArea(A);
+				CMLib.database().DBCreateArea(A);
 				if(A==null) return "false";
 				A.setName(AREA);
 		        CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A);			}

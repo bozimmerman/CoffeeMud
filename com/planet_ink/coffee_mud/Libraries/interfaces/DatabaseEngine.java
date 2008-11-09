@@ -54,7 +54,7 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBUpdateTheseMOBs(Room room, Vector mobs);
 	public void DBUpdateTheseItems(Room room, Vector item);
 	public void DBUpdateMOBs(Room room);
-	public void DBCreateRoom(Room room, String LocaleID);
+	public void DBCreateRoom(Room room);
 	public void DBUpdateRoom(Room room);
     public RoomnumberSet DBReadAreaRoomList(String areaName, boolean reportStatus);
 	public void DBUpdatePlayer(MOB mob);
@@ -89,7 +89,7 @@ public interface DatabaseEngine extends CMLibrary
 	public void DBReadFollowers(MOB mob, boolean bringToLife);
 	public void DBDeleteMOB(MOB mob);
 	public void DBCreateCharacter(MOB mob);
-	public Area DBCreateArea(String areaName, String areaType);
+	public void DBCreateArea(Area A);
 	public void DBDeleteArea(Area A);
 	public void DBUpdateArea(String keyName,Area A);
 	public Vector DBReadJournals();

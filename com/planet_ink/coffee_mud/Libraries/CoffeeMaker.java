@@ -620,7 +620,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		if(newRoom.roomID().equals("NEW")) newRoom.setRoomID(myArea.getNewRoomID(newRoom,-1));
 		if(CMLib.map().getRoom(newRoom.roomID())!=null) return "Room Exists: "+newRoom.roomID();
 		newRoom.setArea(myArea);
-		CMLib.database().DBCreateRoom(newRoom,roomClass);
+		CMLib.database().DBCreateRoom(newRoom);
 		newRoom.setDisplayText(CMLib.xml().getValFromPieces(xml,"RDISP"));
 		newRoom.setDescription(CMLib.xml().getValFromPieces(xml,"RDESC"));
 		newRoom.setMiscText(CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(xml,"RTEXT")));
@@ -992,9 +992,11 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		String areaName=CMLib.xml().getValFromPieces(aV,"ANAME");
 
 		if(CMLib.map().getArea(areaName)!=null) return "Area Exists: "+areaName;
-		if(CMClass.getAreaType(areaClass)==null) return unpackErr("Area","No class: "+areaClass);
-		Area newArea=CMLib.database().DBCreateArea(areaName,areaClass);
-		if(newArea==null) return unpackErr("Area","null 'area'");
+		Area newArea=CMClass.getAreaType(areaClass);
+		if(newArea==null) return unpackErr("Area","No class: "+areaClass);
+		newArea.setName(areaName);
+		CMLib.map().addArea(newArea);
+		CMLib.database().DBCreateArea(newArea);
 
 		newArea.setDescription(CMLib.coffeeFilter().safetyFilter(CMLib.xml().getValFromPieces(aV,"ADESC")));
 		newArea.setClimateType(CMLib.xml().getIntFromPieces(aV,"ACLIM"));
@@ -3298,7 +3300,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 	{
 		Area newArea=(Area)A.copyOf();
 		newArea.setName(newName);
-		CMLib.database().DBCreateArea(newName,newArea.ID());
+		CMLib.database().DBCreateArea(newArea);
+		CMLib.map().addArea(newArea);
 		Hashtable altIDs=new Hashtable();
 		for(Enumeration e=A.getCompleteMap();e.hasMoreElements();)
 		{
@@ -3314,7 +3317,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					newRoom.rawDoors()[d]=null;
 				newRoom.setRoomID(newArea.getNewRoomID(room,-1));
 				newRoom.setArea(newArea);
-				CMLib.database().DBCreateRoom(newRoom,CMClass.classID(newRoom));
+				CMLib.database().DBCreateRoom(newRoom);
 				altIDs.put(room.roomID(),newRoom.roomID());
 				if(newRoom.numInhabitants()>0)
 					CMLib.database().DBUpdateMOBs(newRoom);

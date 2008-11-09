@@ -241,7 +241,10 @@ public class Modify extends StdCommand
 							}
 						}
 						if(areaType.length()==0) areaType="StdArea";
-						A=CMLib.database().DBCreateArea(restStr,areaType);
+						A=CMClass.getAreaType(areaType);
+						A.setName(restStr);
+						CMLib.map().addArea(A);
+						CMLib.database().DBCreateArea(A);
 						mob.location().setArea(A);
                         CMLib.coffeeMaker().addAutoPropsToAreaIfNecessary(A);
 						reid=true;

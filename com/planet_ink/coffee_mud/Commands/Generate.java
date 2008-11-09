@@ -49,14 +49,26 @@ public class Generate extends StdCommand
 
     private String[] access={"GENERATE"};
     public String[] getAccessWords(){return access;}
+
+    public void createNewPlace(MOB mob, Room oldR, Room R, int direction) {
+		Exit E = CMClass.getExit("Open");
+		oldR.setRawExit(direction, E);
+		oldR.rawDoors()[direction]=R;
+		int opDir=Directions.getOpDirectionCode(direction);
+		if(R.getRoomInDir(opDir)!=null)
+			mob.tell("An error has caused the following exit to be one-way.");
+		else
+		{
+			R.setRawExit(opDir, E);
+			R.rawDoors()[opDir]=oldR;
+		}
+		CMLib.database().DBUpdateExits(oldR);
+		oldR.showHappens(CMMsg.MSG_OK_VISUAL,"A new place materializes to the "+Directions.getDirectionName(direction));
+    }
+    
     public boolean execute(MOB mob, Vector commands, int metaFlags)
         throws java.io.IOException
     {
-    	if(true)
-    	{
-            mob.tell("Not yet implemented");
-            return false;
-    	}
         if(commands.size()<3)
         {
         	mob.tell("Generate what? Try GENERATE [TYPE] [TAG_NAME] (FROM [DATA_FILE_PATH]) ([TAG=VALUE]..) [DIRECTION]");
@@ -110,6 +122,11 @@ public class Generate extends StdCommand
         		mob.tell("When creating an area or room, the LAST parameter to this command must be a direction to link to this room by.");
         		return false;
         	}
+        	if(mob.location().getRoomInDir(direction)!=null) 
+        	{
+        		mob.tell("A room already exists in direction "+Directions.getDirectionName(direction)+". Action aborted.");
+        		return false;
+        	}
         }
         String tagName = ((String)commands.elementAt(2)).toUpperCase().trim();
         if(definedTags.get(tagName) instanceof XMLLibrary.XMLpiece)
@@ -137,7 +154,7 @@ public class Generate extends StdCommand
         	mob.tell("Required tags for "+tagName+" were missing: "+cme.getMessage());
         	return false;
         }
-        Vector V = null;
+        Vector V = new Vector();
         try{
 	        switch(codeI.intValue())
 	        {
@@ -188,9 +205,29 @@ public class Generate extends StdCommand
         		mob.tell((String)V.elementAt(v));
         	else
         	if(V.elementAt(v) instanceof Room)
-        		mob.tell("Generated: "+CMLib.coffeeMaker().getRoomXML((Room)V.elementAt(v),new HashSet(), new HashSet(), true));
+        	{
+        		Room R=(Room)V.elementAt(v);
+        		createNewPlace(mob,mob.location(),R,direction);
+        	}
         	else
-        		mob.tell("Unhandled object: "+V.elementAt(v).getClass().getCanonicalName());
+        	if(V.elementAt(v) instanceof Area)
+        	{
+        		Area A=(Area)V.elementAt(v);
+        		CMLib.database().DBCreateArea(A);
+        		Room R=A.getRoom(A.Name()+"#0");
+        		if(R==null) R=(Room)A.getFilledProperMap().nextElement();
+        		createNewPlace(mob,mob.location(),R,direction);
+        		mob.tell("Saving remaining rooms for area '"+A.name()+"'...");
+        		for(Enumeration e=A.getFilledProperMap();e.hasMoreElements();)
+        		{
+        			R=(Room)e.nextElement();
+    				CMLib.database().DBCreateRoom(R);
+    				CMLib.database().DBUpdateExits(R);
+    				CMLib.database().DBUpdateItems(R);
+    				CMLib.database().DBUpdateMOBs(R);
+        		}
+        		mob.tell("Done saving remaining rooms for area '"+A.name()+"'");
+        	}
         return true;
     }
     

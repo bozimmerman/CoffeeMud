@@ -149,8 +149,10 @@ public class GrinderAreas
 			CMLib.map().delArea(A);
 			oldName=A.Name();
 			CMLib.database().DBDeleteArea(A);
-			A=CMLib.database().DBCreateArea(name,CMClass.classID(A));
+			A=CMClass.getAreaType(A.ID());
 			A.setName(name);
+			CMLib.map().addArea(A);
+			CMLib.database().DBCreateArea(A);
 			redoAllMyDamnRooms=true;
 			httpReq.addRequestParameters("AREA",A.Name());
 		}

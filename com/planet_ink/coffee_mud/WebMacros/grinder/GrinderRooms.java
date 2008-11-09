@@ -371,7 +371,7 @@ public class GrinderRooms
 			newRoom.rawDoors()[Directions.getOpDirectionCode(dir)]=linkTo;
 			newRoom.setRawExit(Directions.getOpDirectionCode(dir),CMClass.getExit("StdOpenDoorway"));
 		}
-		CMLib.database().DBCreateRoom(newRoom,CMClass.classID(newRoom));
+		CMLib.database().DBCreateRoom(newRoom);
 		CMLib.database().DBUpdateExits(newRoom);
 		if(newRoom.numInhabitants()>0)
 			CMLib.database().DBUpdateMOBs(newRoom);
@@ -410,7 +410,7 @@ public class GrinderRooms
 			R.setDescription("Description of "+R.roomID());
 		}
 		R.setArea(A);
-		CMLib.database().DBCreateRoom(R,CMClass.classID(R));
+		CMLib.database().DBCreateRoom(R);
 		if(R.numInhabitants()>0)
 			CMLib.database().DBUpdateMOBs(R);
 		if(R.numItems()>0)

@@ -261,7 +261,7 @@ public class Copy extends StdCommand
 						return false;
 					}
 					newRoom.setArea(room.getArea());
-					CMLib.database().DBCreateRoom(newRoom,CMClass.classID(newRoom));
+					CMLib.database().DBCreateRoom(newRoom);
 					CMLib.database().DBUpdateExits(newRoom);
 					CMLib.database().DBUpdateExits(room);
 					if(newRoom.numInhabitants()>0)

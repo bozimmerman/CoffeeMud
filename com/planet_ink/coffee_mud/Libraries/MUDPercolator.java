@@ -146,6 +146,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         	Behavior B=(Behavior)V.elementAt(i);
         	A.addBehavior(B);
         }
+        
+        CMLib.map().addArea(A); // necessary for proper naming.
+        
+        
         return A;
     }
     
