@@ -10,7 +10,7 @@ public class LayoutTester
 	{
 		Vector<AbstractLayout.LayoutNode> V=layout.generate(size, dir);
 		
-		System.out.println("Layout "+layout.name()+", size="+V.size());
+		System.out.println("Layout "+layout.name()+", size="+V.size()+": "+continuityCheck(V));
 		long lowestX=Long.MAX_VALUE;
 		long lowestY=Long.MAX_VALUE;
 		long highestX=Long.MIN_VALUE;
@@ -46,21 +46,41 @@ public class LayoutTester
 			}
 		}
 	}
+	public static boolean continuityCheck(Vector<AbstractLayout.LayoutNode> set)
+	{
+		for(int s=0;s<set.size();s++)
+		{
+			AbstractLayout.LayoutNode node = set.elementAt(s);
+			for(Enumeration<AbstractLayout.LayoutNode> e=node.links.elements();e.hasMoreElements();)
+				if(!set.contains(e.nextElement()))
+					return false;
+		}
+		return true;
+	}
 	
 	public static void main(String[] args)
 	{
 		Directions.instance();
-		draw(new BoxCityLayout(),25, Directions.NORTH);
-		draw(new BoxCityLayout(), 50, Directions.NORTH);
-		draw(new BoxCitySquareLayout(), 25, Directions.NORTH);
-		draw(new BoxCitySquareLayout(), 50, Directions.NORTH);
-		draw(new CrossLayout(), 25, Directions.NORTH);
-		draw(new CrossLayout(), 50, Directions.NORTH);
-		draw(new GridCityLayout(), 25, Directions.NORTH);
-		draw(new GridCityLayout(), 50, Directions.NORTH);
-		draw(new MazeLayout(), 25, Directions.NORTH);
-		draw(new MazeLayout(), 50, Directions.NORTH);
-		draw(new TreeLayout(), 25, Directions.NORTH);
-		draw(new TreeLayout(), 50, Directions.NORTH);
+		int d=Directions.NORTH;
+		{
+			draw(new BoxCityLayout(),25, d);
+			draw(new BoxCityLayout(), 50, d);
+			draw(new BoxCityLayout(), 100, d);
+			draw(new BoxCitySquareLayout(), 25, d);
+			draw(new BoxCitySquareLayout(), 50, d);
+			draw(new BoxCitySquareLayout(), 100, d);
+			draw(new CrossLayout(), 25, d);
+			draw(new CrossLayout(), 50, d);
+			draw(new CrossLayout(), 100, d);
+			draw(new GridCityLayout(), 25, d);
+			draw(new GridCityLayout(), 50, d);
+			draw(new GridCityLayout(), 100, d);
+			draw(new MazeLayout(), 25, d);
+			draw(new MazeLayout(), 50, d);
+			draw(new MazeLayout(), 100, d);
+			draw(new TreeLayout(), 25, d);
+			draw(new TreeLayout(), 50, d);
+			draw(new TreeLayout(), 100, d);
+		}
 	}
 }

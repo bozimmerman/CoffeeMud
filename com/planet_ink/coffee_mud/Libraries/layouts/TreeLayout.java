@@ -1,26 +1,47 @@
 package com.planet_ink.coffee_mud.Libraries.layouts;
 import java.util.*;
 
+import com.planet_ink.coffee_mud.Libraries.layouts.AbstractLayout.LayoutNode;
 import com.planet_ink.coffee_mud.core.Directions;
 
 public class TreeLayout extends AbstractLayout
 {
 	public String name(){return "TREE";}
+	int originalDirection=Directions.NORTH;
 	
 	private class TreeStem
 	{
 		public LayoutNode currNode = null;
-		private int[] dir = null;
+		private int dir = Directions.NORTH;
 		private LayoutSet d = null;
-		public TreeStem(long[] coord, int[] dir, LayoutSet d)
+		public TreeStem(long[] coord, int dir, LayoutSet d)
 		{
 			this.dir = dir;
 			this.d = d;
 			currNode = new LayoutNode(coord);
 		}
-		private long[] getCoord(long[] curr, int[] dir) { return new long[]{curr[0]+dir[0],curr[1]+dir[1]}; }
-		private int[][] getTurns(int[] dir) { return (dir[1]==0) ? new int[][]{{0,-1}} : new int[][]{{-1,0},{1,0}}; }
-		public TreeStem nextNode() {
+		private long[] getCoord(long[] curr, int dir) { return makeNextCoord(curr,dir);}
+		
+		private int[] getTurns(int dir) 
+		{ 
+			switch(dir)
+			{
+			case Directions.NORTH:
+			case Directions.SOUTH:
+				if(originalDirection==Directions.EAST) return new int[]{Directions.EAST};
+				if(originalDirection==Directions.WEST) return new int[]{Directions.WEST};
+				return new int[]{Directions.WEST,Directions.EAST};
+			case Directions.EAST:
+			case Directions.WEST:
+				if(originalDirection==Directions.NORTH) return new int[]{Directions.NORTH};
+				if(originalDirection==Directions.SOUTH) return new int[]{Directions.SOUTH};
+				return new int[]{Directions.NORTH,Directions.SOUTH};
+			}
+			return null;
+		}
+		
+		public TreeStem nextNode() 
+		{
 			long[] nextCoord = getCoord(currNode.coord,dir);
 			TreeStem stem = new TreeStem(nextCoord,dir,d);
 			if(!d.use(stem.currNode,"street")) return null;
@@ -29,22 +50,12 @@ public class TreeLayout extends AbstractLayout
 			return stem;
 		}
 
-		private void patchRun(LayoutNode from, LayoutNode to)
-		{
-			int dirCode = getDirection(from,to);
-			switch(dirCode)
-			{
-			case Directions.NORTH:
-			case Directions.SOUTH:
-				to.flagRun("n,s"); break;
-			case Directions.EAST:
-			case Directions.WEST:
-				to.flagRun("e,w"); break;
-			}
+		private void patchRun(LayoutNode from, LayoutNode to) {
+			to.flagRun(AbstractLayout.getRunDirection(getDirection(from,to)));
 		}
 		
 		public TreeStem firstBranch() {
-			int[][] turns = getTurns(dir);
+			int[] turns = getTurns(dir);
 			if((turns == null)||(turns.length<1)) return null;
 			long[] nextCoord = getCoord(currNode.coord,turns[0]);
 			TreeStem newStem =  new TreeStem(nextCoord,turns[0],d);
@@ -55,7 +66,7 @@ public class TreeLayout extends AbstractLayout
 			return newStem;
 		}
 		public TreeStem secondBranch() {
-			int[][] turns = getTurns(dir);
+			int[] turns = getTurns(dir);
 			if((turns == null)||(turns.length<2)) return null;
 			long[] nextCoord = getCoord(currNode.coord,turns[1]);
 			TreeStem newStem =  new TreeStem(nextCoord,turns[1],d);
@@ -71,17 +82,18 @@ public class TreeLayout extends AbstractLayout
 		Vector<TreeStem> progress = new Vector<TreeStem>();
 		
 		long[] rootCoord = new long[]{0,0};
-		LayoutSet d = new LayoutSet(set,num);
-		TreeStem root = new TreeStem(rootCoord, new int[]{0,-1}, d);
+		LayoutSet lSet = new LayoutSet(set,num);
+		originalDirection=dir;
+		TreeStem root = new TreeStem(rootCoord, dir, lSet);
 		progress.add(root);
-		d.use(root.currNode,"street");
+		lSet.use(root.currNode,"street");
 		root.currNode.flag("gate");
-		root.currNode.flagGateExit("s");
-		root.currNode.flagRun("n,s");
+		root.currNode.flagGateExit(Directions.getDirectionChar(dir));
+		root.currNode.flagRun(AbstractLayout.getRunDirection(dir));
 		
-		while(d.spaceAvailable()) {
+		while(lSet.spaceAvailable()) {
 			Vector<TreeStem> newOnes = new Vector<TreeStem>();
-			for(Iterator<TreeStem> i =  progress.iterator(); i.hasNext() && d.spaceAvailable(); )
+			for(Iterator<TreeStem> i =  progress.iterator(); i.hasNext() && lSet.spaceAvailable(); )
 			{
 				TreeStem stem = i.next();
 				TreeStem branch = stem.nextNode();
@@ -98,9 +110,9 @@ public class TreeLayout extends AbstractLayout
 				progress.add(b);
 				newOnes.remove(b);
 			}
-				
 		}
-		fillInFlags(d);
+		clipLongStreets(lSet);
+		fillInFlags(lSet);
 		return set;
 	}
 }

@@ -57,14 +57,15 @@ public class BoxCityLayout extends AbstractLayout
 		halfLineE(d,y,endY,width,yposUsed);
 	}
 	
-	public void fillMaze(LayoutSet d, LayoutNode p, int dir)
+	public boolean fillMaze(LayoutSet d, LayoutNode p, int dir)
 	{
 		LayoutNode n = super.getNextNode(d, p, dir);
-		if(n != null) return;
+		if(n != null) 
+			return false;
 		n = super.makeNextNode(p, dir);
 		p.crossLink(n);
 		d.use(n,"interior");
-		super.fillMaze(d, n);
+		return super.fillMaze(d, n);
 	}
 	
 	public Vector<LayoutNode> generate(int num, int dir) 
@@ -94,19 +95,22 @@ public class BoxCityLayout extends AbstractLayout
 				{
 					x=lastX.intValue()+((thisX.intValue() - lastX.intValue()) / 2);
 					if(y.intValue() > (-diameter+1))
-						this.fillMaze(d, d.getNode(x, y.intValue()), Directions.NORTH);
+						if(!fillMaze(d, d.getNode(x, y.intValue()), Directions.NORTH))
+							fillMaze(d, d.getNode(x+1, y.intValue()), Directions.NORTH);
 					if(thisXE.hasNext())
 					{
 						lastX = thisX;
 						thisX = thisXE.next();
 						x=lastX.intValue()+((thisX.intValue() - lastX.intValue()) / 2);
 						if(y.intValue() < 0)
-							this.fillMaze(d, d.getNode(x, y.intValue()), Directions.SOUTH);
+							if(!fillMaze(d, d.getNode(x, y.intValue()), Directions.SOUTH))
+								fillMaze(d, d.getNode(x+1, y.intValue()), Directions.SOUTH);
 					}
 				}
 				lastX = thisX;
 			}
 		}
+		clipLongStreets(d);
 		fillInFlags(d);
 		LayoutNode n = null;
 		switch(dir)

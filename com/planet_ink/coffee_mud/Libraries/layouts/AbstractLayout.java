@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries.layouts;
 import java.util.*;
 
+import com.planet_ink.coffee_mud.core.CMStrings;
 import com.planet_ink.coffee_mud.core.Directions;
 /**
  * Abstract area layout pattern
@@ -38,7 +39,42 @@ public abstract class AbstractLayout
 		}
 		public void crossLink(LayoutNode to) {
 			links.put(Integer.valueOf(getDirection(this,to)),to);
-			to.links.put(Integer.valueOf(getDirection(to,this)),to);
+			to.links.put(Integer.valueOf(getDirection(to,this)),this);
+		}
+		public void delLink(LayoutNode linkNode) {
+			for(Enumeration<Integer> e=links.keys();e.hasMoreElements();)
+			{
+				Integer key=e.nextElement();
+				if(links.get(key)==linkNode)
+					links.remove(key);
+			}
+		}
+		public LayoutNode getLink(int d) { return links.get(d);}
+		
+		public boolean isStreetLike() {
+			if(links.size()!=2) return false;
+			Enumeration<LayoutNode> linksE=links.elements();
+			LayoutNode n1=linksE.nextElement();
+			LayoutNode n2=linksE.nextElement();
+			int d1=AbstractLayout.getDirection(this, n1);
+			int d2=AbstractLayout.getDirection(this, n2);
+			switch(d1)
+			{
+			case Directions.NORTH: return d2==Directions.SOUTH;
+			case Directions.SOUTH: return d2==Directions.NORTH;
+			case Directions.EAST: return d2==Directions.WEST;
+			case Directions.WEST: return d2==Directions.EAST;
+			}
+			return false;
+		}
+		public void deLink() {
+			for(Enumeration<Integer> e=links.keys();e.hasMoreElements();)
+			{
+				Integer key=e.nextElement();
+				LayoutNode linkNode=links.get(key);
+				linkNode.delLink(this);
+			}
+			links.clear();
 		}
 		public String toString() {
 			String s= "("+coord[0]+","+coord[1]+") ->";
@@ -98,19 +134,40 @@ public abstract class AbstractLayout
 		}
 	}
 	
-	public static LayoutNode makeNextNode(LayoutNode n, int dir)
+	public static String getRunDirection(int dirCode)
+	{
+		switch(dirCode)
+		{
+		case Directions.NORTH:
+		case Directions.SOUTH:
+			return "n,s";
+		case Directions.EAST:
+		case Directions.WEST:
+			return "e,w";
+		}
+		return "";
+	}
+	
+	public static long[] makeNextCoord(long[] n, int dir)
 	{
 		switch(dir)
 		{
 		case Directions.NORTH:
-			return new LayoutNode(new long[]{n.coord[0],n.coord[1]-1});
+			return new long[]{n[0],n[1]-1};
 		case Directions.SOUTH:
-			return new LayoutNode(new long[]{n.coord[0],n.coord[1]+1});
+			return new long[]{n[0],n[1]+1};
 		case Directions.EAST:
-			return new LayoutNode(new long[]{n.coord[0]+1,n.coord[1]});
+			return new long[]{n[0]+1,n[1]};
 		case Directions.WEST:
-			return new LayoutNode(new long[]{n.coord[0]-1,n.coord[1]});
+			return new long[]{n[0]-1,n[1]};
 		}
+		return null;
+	}
+	
+	public static LayoutNode makeNextNode(LayoutNode n, int dir)
+	{
+		long[] l = makeNextCoord(n.coord,dir);
+		if(l!=null) return new LayoutNode(l);
 		return null;
 	}
 	
@@ -133,8 +190,14 @@ public abstract class AbstractLayout
 		public Long getHashCode(long x, long y){ return (Long.valueOf((x * total)+y));}
 		public boolean isUsed(long[] xy) { return isUsed(xy[0],xy[1]); }
 		public boolean isUsed(long x, long y) { return used.containsKey(getHashCode(x,y)); }
+		public boolean isUsed(LayoutNode n) { return isUsed(n.coord)&&set.contains(n); }
+		public void unUse(LayoutNode n) {
+			used.remove(getHashCode(n.coord[0],n.coord[1]));
+			set.remove(n);
+		}
 		public boolean use(LayoutNode n, String nodeType) {
-			if(isUsed(n.coord)) return false;
+			if(isUsed(n.coord)) 
+				return false;
 			used.put(getHashCode(n.coord[0],n.coord[1]),n);
 			set.add(n);
 			if(nodeType != null)
@@ -207,7 +270,7 @@ public abstract class AbstractLayout
 		return (x<num) ? (num - x) : (x - num); 
 	}
 	
-	public void fillMaze(LayoutSet d, LayoutNode p)
+	public boolean fillMaze(LayoutSet d, LayoutNode p)
 	{
 		Vector<Integer> dirs = new Vector<Integer>();
 		for(int i=0;i<4;i++)
@@ -230,9 +293,39 @@ public abstract class AbstractLayout
 				p.crossLink(p2);
 				d.use(p2,"interior");
 				fillMaze(d,p2);
-			}
+			} 
 		}
-		
+		return true;
+	}
+	
+	public void clipLongStreets(LayoutSet laySet)
+	{
+		@SuppressWarnings("unchecked")
+		Vector<AbstractLayout.LayoutNode> set2=(Vector<AbstractLayout.LayoutNode>)laySet.set.clone();
+		for(Enumeration<AbstractLayout.LayoutNode> e=set2.elements();e.hasMoreElements();)
+		{
+			LayoutNode p=e.nextElement();
+			if(laySet.isUsed(p) && p.isStreetLike())
+				for(int d=0;d<4;d++)
+					if(p.getLink(d)==null)
+					{
+						LayoutNode p2 =AbstractLayout.getNextNode(laySet, p, d); 
+						if((p2!=null)
+						&&(!p.links.containsValue(p2)))
+						{
+							Enumeration<LayoutNode> nodes=p.links.elements();
+							LayoutNode p_1=(LayoutNode)nodes.nextElement();
+							LayoutNode p_2=(LayoutNode)nodes.nextElement();
+							p.deLink();
+							p_1.crossLink(p_2);
+							laySet.unUse(p);
+							LayoutNode p3 = AbstractLayout.makeNextNode(p2, Directions.getOpDirectionCode(d));
+							p2.crossLink(p3);
+							laySet.use(p3, "leaf");
+							break;
+						}
+					}
+		}
 	}
 	
 	public void fillInFlags(LayoutSet laySet)
