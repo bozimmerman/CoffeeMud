@@ -2098,7 +2098,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 41. New Script cmds: MPSCRIPT, MPREJUV
 42. List command now supports parameters for list LOG to lessen the load
 43. Unlike prices, bugs are (hopefully) in decline.
-# Build 5.5.0 Released ?
+# Build 5.5.0 Released November 9, 2008 - svn revision 2128
 1. MUD supports multiple ini files & "hosts" at boot time, see new INI entry PRIVATERESOURCES and Inst. Guide
 2. New Quest script command: SET PERSISTANCE to force quests to make numerous start attempts
 3. New Scriptable commands: MPPROMPT, MPCONFIRM, MPCHOOSE (read guide first before using!)
