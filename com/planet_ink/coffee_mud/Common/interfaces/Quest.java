@@ -201,7 +201,7 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
      * mobs to their previous state.  It will then enter a stopped-paused
      * state for the given ticks.  Any start failures after that 
      * will cause the pause time to be doubled before the next try.
-     * @param firstPauseTime ticks to remain in stopped state before restarting
+     * @param firstPauseTicks ticks to remain in stopped state before restarting
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuest()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stepQuest()
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stopQuest()

@@ -975,12 +975,6 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		return false;
 	}
 
-
-    /**
-     * @param ID
-     * @param ability
-     * @return
-     */
     public AbilityMapping getAbleMap(String ID, String ability)
     {
         if(completeAbleMap.containsKey(ID))

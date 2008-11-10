@@ -492,7 +492,7 @@ public interface Session extends CMCommon
     
     /**
      * Queries and executes the quit command for the mob.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#logoff(boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#logoff(boolean, boolean, boolean)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Session#killFlag()
      * @param mob the character quitting (sent in case the session went null)
      * @param commands any command-line parameters given on quit
@@ -513,7 +513,7 @@ public interface Session extends CMCommon
     
     /**
      * Returns whether this session is done, or slated to be done.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#logoff(boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#logoff(boolean, boolean, boolean)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Session#cmdExit(MOB, Vector)
      * @see com.planet_ink.coffee_mud.Common.interfaces.Session#killFlag()
      * @return true if this session needs to go, false otherwise

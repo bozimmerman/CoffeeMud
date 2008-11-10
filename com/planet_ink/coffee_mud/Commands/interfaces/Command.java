@@ -100,7 +100,7 @@ public interface Command extends CMObject
 	 * method is called when the command is entered, and every second
 	 * afterwards until the invoker has enough actions to complete it.
 	 * At completion time, execute is called.
-	 * @see Command#execute(MOB, Vector)
+	 * @see Command#execute(MOB, Vector, int)
 	 * @param mob the player or mob invoking the command
 	 * @param commands the parameters entered for the command (including the trigger word)
 	 * @param metaFlags flags denoting how the command is being executed
