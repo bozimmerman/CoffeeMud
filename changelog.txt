@@ -2117,4 +2117,12 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 16. New Thief skills: Disassemble traps, Improved Caltrops, Slick Caltrops
 17. Factions can now have auto-applies affects/behaviors (auto-aggressive mobs based on faction, anyone?)
 18. Players now have their followers listed on the web page
-19. Term of old bugs has expired.  New bugs set to take office early next year.
+19. New resource: lists.ini, and ini entry LISTFILE for various combat, exp, and other modifiable settings.
+20. Internal: lots of new Libraries/ created out of disparate code, to support feature #1.
+21. New LIST type: helpfilerequests, for parsing help-file misses (if you are recording them).
+22. New INI entries: CHARSETINPUT, CHARSETOUTPUT for manipulating default IO char sets.
+23. In the works: random area/room/mob/item/etc generator.  GENERATE command is disabled atm. 
+24. New WebMacro ThinPlayerData created to make the Players MUDGrinder lister go faster.
+25. Food types now have BITE field to designate how many times EAT can be used against it.
+26. LOTS more skills/spells/etc have their castingQuality methods implemented: mobs just got smarter!
+27. Term of old bugs has expired.  New bugs set to take office early next year.
