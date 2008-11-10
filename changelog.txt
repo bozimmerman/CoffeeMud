@@ -2126,5 +2126,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 25. Food types now have BITE field to designate how many times EAT can be used against it.
 26. LOTS more skills/spells/etc have their castingQuality methods set: casting mobs just got smarter!
 27. Children will now be tattooed with their parentage.
-28. Intrernal: Lots of javadoc comments added.
-29. Term of old bugs has expired.  New bugs set to take office early next year.
+28. Internal: Lots of javadoc comments added.
+29. Internal: Scriptable reworked to do run-time parse caching to increase speed significantly.
+30. New Zappermask: QUESTWIN
+31. Term of old bugs has expired.  New bugs set to take office early next year.
