@@ -1,8 +1,8 @@
 package com.planet_ink.coffee_mud.Libraries.layouts;
 import java.util.*;
 
-import com.planet_ink.coffee_mud.Libraries.layouts.AbstractLayout.LayoutNode;
 import com.planet_ink.coffee_mud.core.Directions;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
 
 public class TreeLayout extends AbstractLayout
 {
@@ -13,14 +13,14 @@ public class TreeLayout extends AbstractLayout
 	{
 		public LayoutNode currNode = null;
 		private int dir = Directions.NORTH;
-		private LayoutSet d = null;
+		private LayoutSet lSet = null;
 		public TreeStem(long[] coord, int dir, LayoutSet d)
 		{
 			this.dir = dir;
-			this.d = d;
-			currNode = new LayoutNode(coord);
+			this.lSet = d;
+			currNode = new DefaultLayoutNode(coord);
 		}
-		private long[] getCoord(long[] curr, int dir) { return makeNextCoord(curr,dir);}
+		private long[] getCoord(long[] curr, int dir) { return lSet.makeNextCoord(curr,dir);}
 		
 		private int[] getTurns(int dir) 
 		{ 
@@ -42,9 +42,9 @@ public class TreeLayout extends AbstractLayout
 		
 		public TreeStem nextNode() 
 		{
-			long[] nextCoord = getCoord(currNode.coord,dir);
-			TreeStem stem = new TreeStem(nextCoord,dir,d);
-			if(!d.use(stem.currNode,"street")) return null;
+			long[] nextCoord = getCoord(currNode.coord(),dir);
+			TreeStem stem = new TreeStem(nextCoord,dir,lSet);
+			if(!lSet.use(stem.currNode,"street")) return null;
 			currNode.crossLink(stem.currNode);
 			patchRun(currNode,stem.currNode);
 			return stem;
@@ -57,9 +57,9 @@ public class TreeLayout extends AbstractLayout
 		public TreeStem firstBranch() {
 			int[] turns = getTurns(dir);
 			if((turns == null)||(turns.length<1)) return null;
-			long[] nextCoord = getCoord(currNode.coord,turns[0]);
-			TreeStem newStem =  new TreeStem(nextCoord,turns[0],d);
-			if(!d.use(newStem.currNode,"street")) return null;
+			long[] nextCoord = getCoord(currNode.coord(),turns[0]);
+			TreeStem newStem =  new TreeStem(nextCoord,turns[0],lSet);
+			if(!lSet.use(newStem.currNode,"street")) return null;
 			currNode.flag("corner");
 			currNode.crossLink(newStem.currNode);
 			patchRun(currNode,newStem.currNode);
@@ -68,17 +68,18 @@ public class TreeLayout extends AbstractLayout
 		public TreeStem secondBranch() {
 			int[] turns = getTurns(dir);
 			if((turns == null)||(turns.length<2)) return null;
-			long[] nextCoord = getCoord(currNode.coord,turns[1]);
-			TreeStem newStem =  new TreeStem(nextCoord,turns[1],d);
-			if(!d.use(newStem.currNode,"street")) return null;
+			long[] nextCoord = getCoord(currNode.coord(),turns[1]);
+			TreeStem newStem =  new TreeStem(nextCoord,turns[1],lSet);
+			if(!lSet.use(newStem.currNode,"street")) return null;
 			currNode.crossLink(newStem.currNode);
 			patchRun(currNode,newStem.currNode);
 			return newStem;
 		}
 	}
 	
-	public Vector<AbstractLayout.LayoutNode> generate(int num, int dir) {
-		Vector<AbstractLayout.LayoutNode> set = new Vector<AbstractLayout.LayoutNode>();
+	public Vector<LayoutNode> generate(int num, int dir) 
+	{
+		Vector<LayoutNode> set = new Vector<LayoutNode>();
 		Vector<TreeStem> progress = new Vector<TreeStem>();
 		
 		long[] rootCoord = new long[]{0,0};
@@ -111,8 +112,8 @@ public class TreeLayout extends AbstractLayout
 				newOnes.remove(b);
 			}
 		}
-		clipLongStreets(lSet);
-		fillInFlags(lSet);
+		lSet.clipLongStreets();
+		lSet.fillInFlags();
 		return set;
 	}
 }

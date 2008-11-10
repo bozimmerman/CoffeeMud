@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries.layouts;
 
 import java.util.Vector;
 import com.planet_ink.coffee_mud.core.Directions;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
 
 public class GridCityLayout extends AbstractLayout 
 {
@@ -13,27 +14,27 @@ public class GridCityLayout extends AbstractLayout
 		int diameter = (int)Math.round(Math.sqrt((double)num));
 		int plusX = (diff(diameter,diameter,num) > diff(diameter+1,diameter,num)) ? 1 : 0;
 		
-		LayoutSet d = new LayoutSet(set,num);
-		drawABox(d,diameter+plusX,diameter);
+		LayoutSet lSet = new LayoutSet(set,num);
+		lSet.drawABox(diameter+plusX,diameter);
 		int middle=(diameter+plusX)/2;
 		LayoutNode firstNode=null;
 		for(int x=0;x<diameter+plusX;x+=2)
 		{
-			LayoutNode n = d.getNode(new long[]{x,0});
+			LayoutNode n = lSet.getNode(new long[]{x,0});
 			if(n!=null)
 			{
 				if((dir==Directions.NORTH)&&(x>=middle-1)&&(x<=middle+1))
 					firstNode=n;
 				for(int y=0;y<diameter-1;y++)
 				{
-					d.use(n,"street");
+					lSet.use(n,"street");
 					n.flagRun("n,s");
-					LayoutNode nn = getNextNode(d, n, Directions.NORTH);
-					if(nn==null) nn=makeNextNode(n, Directions.NORTH);
+					LayoutNode nn = lSet.getNextNode(n, Directions.NORTH);
+					if(nn==null) nn=lSet.makeNextNode(n, Directions.NORTH);
 					n.crossLink(nn);
 					n=nn;
 				}
-				d.use(n,"street");
+				lSet.use(n,"street");
 				n.flagRun("n,s");
 				if((dir==Directions.SOUTH)&&(x>=middle-1)&&(x<=middle+1))
 					firstNode=n;
@@ -43,21 +44,21 @@ public class GridCityLayout extends AbstractLayout
 		middle=(-diameter+1)/2;
 		for(int y=-2;y>=-diameter+1;y-=2)
 		{
-			LayoutNode n = d.getNode(new long[]{0,y});
+			LayoutNode n = lSet.getNode(new long[]{0,y});
 			if(n!=null)
 			{
 				if((dir==Directions.EAST)&&(y>=middle-1)&&(y<=middle+1))
 					firstNode=n;
 				for(int x=0;x<endX;x++)
 				{
-					d.use(n,"street");
+					lSet.use(n,"street");
 					n.flagRun("e,w");
-					LayoutNode nn = getNextNode(d, n, Directions.EAST);
-					if(nn==null) nn=makeNextNode(n, Directions.EAST);
+					LayoutNode nn = lSet.getNextNode(n, Directions.EAST);
+					if(nn==null) nn=lSet.makeNextNode(n, Directions.EAST);
 					n.crossLink(nn);
 					n=nn;
 				}
-				d.use(n,"street");
+				lSet.use(n,"street");
 				n.flagRun("e,w");
 				if((dir==Directions.WEST)&&(y>=middle-1)&&(y<=middle+1))
 					firstNode=n;
@@ -68,21 +69,21 @@ public class GridCityLayout extends AbstractLayout
 		{
 			for(int x=1;x<endX;x++)
 			{
-				LayoutNode n = d.getNode(new long[]{x,y});
-				LayoutNode nn = super.getNextNode(d, n, Directions.NORTH);
+				LayoutNode n = lSet.getNode(new long[]{x,y});
+				LayoutNode nn = lSet.getNextNode(n, Directions.NORTH);
 				if(nn==null)
 				{
 					if(north)
 					{
 						if(y>(-diameter)+2)
 						{
-							nn = super.makeNextNode( n, Directions.NORTH);
+							nn = lSet.makeNextNode( n, Directions.NORTH);
 						}
 					}
 					if(nn != null)
 					{
 						n.crossLink(nn);
-						d.use(nn,"interior");
+						lSet.use(nn,"interior");
 					}
 					north = !north;
 				}
@@ -92,20 +93,20 @@ public class GridCityLayout extends AbstractLayout
 		{
 			for(int x=1;x<endX;x++)
 			{
-				LayoutNode n = d.getNode(new long[]{x,y});
-				LayoutNode nn = super.getNextNode(d, n, Directions.SOUTH);
+				LayoutNode n = lSet.getNode(new long[]{x,y});
+				LayoutNode nn = lSet.getNextNode(n, Directions.SOUTH);
 				if(nn==null)
 				{
-					nn = super.makeNextNode( n, Directions.SOUTH);
+					nn = lSet.makeNextNode( n, Directions.SOUTH);
 					if(nn != null)
 					{
 						n.crossLink(nn);
-						d.use(nn,"interior");
+						lSet.use(nn,"interior");
 					}
 				}
 			}
 		}
-		fillInFlags(d);
+		lSet.fillInFlags();
 		if(firstNode != null)
 		{
 			set.remove(firstNode);

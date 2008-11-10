@@ -303,6 +303,7 @@ public class CMLib
             return libs[tcode].libraries[lcode];
         return null;
     }
+    
     public static Enumeration libraries(int code) {
         Vector V=new Vector();
         for(int l=0;l<libs.length;l++)
@@ -318,6 +319,7 @@ public class CMLib
         for(;e.hasMoreElements();)
             registerLibrary((CMLibrary)e.nextElement());
     }
+    
     public static int countRegistered()
     {
         int x=0;

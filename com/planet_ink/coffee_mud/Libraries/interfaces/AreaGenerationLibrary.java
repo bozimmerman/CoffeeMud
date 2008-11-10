@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.layouts.AbstractLayout;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -39,4 +40,31 @@ public interface AreaGenerationLibrary extends CMLibrary
     public Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined, int direction) throws CMException;
     public void checkRequirements(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
     public Area buildArea(XMLLibrary.XMLpiece piece, Hashtable defined, int direction) throws CMException;
+    public LayoutManager getLayoutManager(String named);
+    
+    public static interface LayoutManager
+    {
+    	public String name();
+    	public Vector<LayoutNode> generate(int num, int dir);
+    }
+    
+	public static interface LayoutNode 
+	{
+		public void crossLink(LayoutNode to);
+		public void delLink(LayoutNode linkNode);
+		public LayoutNode getLink(int d);
+		public Hashtable<Integer,LayoutNode> links();
+		public Hashtable<String,String> tags();
+		public long[] coord();
+		public boolean isStreetLike();
+		public void deLink();
+		public void flag(String flag);
+		public void flagRun(String dirs);
+		public String type();
+		public void setExits(String dirs);
+		public String getExitsString();
+		public void flagGateExit(String dir);
+		public void reType(String type);
+		public String getRep(int line);
+	}
 }

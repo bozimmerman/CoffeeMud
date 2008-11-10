@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -19,7 +20,6 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.util.*;
 
-import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
    Copyright 2000-2008 Bo Zimmerman
@@ -41,6 +41,21 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 {
     public String ID(){return "MUDPercolator";}
 
+    private Hashtable<String,Class<LayoutManager>> mgrs = new Hashtable<String,Class<LayoutManager>>();
+    
+    public LayoutManager getLayoutManager(String named) 
+    {
+    	Class<LayoutManager> mgr = mgrs.get(named.toUpperCase().trim());
+    	if(mgr != null){
+    		try {
+	    		return mgr.newInstance();
+    		}catch(Exception e) {
+    			return null;
+    		}
+    	}
+    	return null;
+    }
+    
     public void buildDefinedTagSet(Vector xmlRoot, Hashtable defined)
     {
         if(xmlRoot==null) return;
@@ -52,6 +67,25 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
                 defined.put(tag.toUpperCase().trim(),piece);
             buildDefinedTagSet(piece.contents,defined);
         }
+    }
+    
+    public boolean activate()
+    { 
+        String filePath="com/planet_ink/coffee_mud/Libraries/layouts";
+        CMProps page = CMProps.instance();
+        Vector layouts=CMClass.loadClassList(filePath,page.getStr("LIBRARY"),"/layouts",LayoutManager.class,true);
+    	for(int f=0;f<layouts.size();f++)
+    	{
+    		LayoutManager lmgr= (LayoutManager)layouts.elementAt(f);
+    		Class<LayoutManager> lmgrClass=(Class<LayoutManager>)lmgr.getClass();
+        	mgrs.put(lmgr.name().toUpperCase().trim(),lmgrClass);
+    	}
+    	return true;
+    }
+    
+    public boolean shutdown(){ 
+    	mgrs.clear();
+    	return true;
     }
     
     // tags created: ROOM_CLASS, ROOM_TITLE, ROOM_DESCRIPTION, ROOM_CLASSES, ROOM_TITLES, ROOM_DESCRIPTIONS
@@ -115,15 +149,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         String layoutType = findString("layout",piece,defined);
         if((layoutType==null)||(layoutType.trim().length()==0))
         	throw new CMException("Unable to build area without defined layout");
-        com.planet_ink.coffee_mud.Libraries.layouts.AbstractLayout layoutManager = null;
-        try {
-        	String className="com.planet_ink.coffee_mud.Libraries.layouts."+layoutType;
-	        Class layoutClass = new CMClass().loadClass(className, true);
-	        if(layoutClass==null) throw new ClassNotFoundException(className);
-	        layoutManager = (com.planet_ink.coffee_mud.Libraries.layouts.AbstractLayout)layoutClass.newInstance(); 
-	        if(layoutManager==null) throw new ClassNotFoundException(className);
-        } 
-        catch(Exception cnfe) { throw new CMException("Undefined Layout "+cnfe.getMessage()); }
+        LayoutManager layoutManager = getLayoutManager(layoutType);
+        if(layoutManager == null)
+        	throw new CMException("Undefined Layout "+layoutType);
         defined.put("AREA_LAYOUT",layoutManager.name());
         String size = findString("size",piece,defined);
         if((!CMath.isInteger(size))||(CMath.s_int(size)<=0))
@@ -149,7 +177,49 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         
         CMLib.map().addArea(A); // necessary for proper naming.
         
-        
+        // now break our rooms into logical groups, generate those rooms.
+        Vector<Vector<LayoutNode>> roomGroups = new Vector<Vector<LayoutNode>>();
+        LayoutNode magicRoom = (LayoutNode)roomsLayout.firstElement();
+        while(roomsLayout.size() > 0)
+        {
+        	//TODO: the group breaking.
+        }
+        // make CERTAIN that the magic first room in the layout always
+        // gets ID#0.
+        for(int g=0;g<roomGroups.size();g++)
+        {
+        	Vector<LayoutNode> group=(Vector<LayoutNode>)roomGroups.elementAt(g);
+        	if(group.contains(magicRoom))
+        	{
+        		if((group.size()>1)&&(group.firstElement() != magicRoom))
+        		{
+	        		group.remove(magicRoom);
+	        		group.insertElementAt(magicRoom,0);
+        		}
+        		if((roomGroups.size()>1)&&(roomGroups.firstElement() != group))
+        		{
+        			roomGroups.remove(group);
+        			roomGroups.insertElementAt(group,0);
+        		}
+        		break;
+        	}
+        }
+        //now generate the rooms and add them to the area
+        for(Vector<LayoutNode> group : roomGroups)
+        {
+        	Hashtable groupDefined = (Hashtable)defined.clone();
+        	for(LayoutNode node : group)
+        	{
+        		for(String key : node.tags().keySet())
+        			groupDefined.put("ROOMTAG_"+key.toUpperCase().trim(),node.tags().get(key));
+        		Room R=buildRoom(piece, groupDefined, direction);
+        		R.setRoomID(A.getNewRoomID(null,-1));
+        		R.setArea(A);
+        		A.addProperRoom(R);
+        		for(String key : node.tags().keySet())
+        			groupDefined.remove("ROOMTAG_"+key.toUpperCase().trim());
+        	}
+        }
         return A;
     }
     

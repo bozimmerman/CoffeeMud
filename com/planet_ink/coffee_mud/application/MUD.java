@@ -128,16 +128,16 @@ public class MUD extends Thread implements MudHost
         Vector privacyV=new Vector(1);
         if(tCode!=MAIN_HOST)
             privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(),true);
-		while (!serverIsRunning && isOK)
+        
+        long startWait=System.currentTimeMillis();
+		while (!serverIsRunning && isOK && ((System.currentTimeMillis() - startWait)< 90000))
 		{ try{ Thread.sleep(500); }catch(Exception e){ isOK=false;} }
 		
-		if (!isOK)
+		if((!isOK)||(!serverIsRunning))
 		{
 			fatalStartupError(t,5);
 			return false;
 		}
-
-        
         
 		Vector compress=CMParms.parseCommas(page.getStr("COMPRESS").toUpperCase(),true);
 		CMProps.setBoolVar(CMProps.SYSTEMB_ITEMDCOMPRESS,compress.contains("ITEMDESC"));

@@ -15,7 +15,10 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.util.*;
+import java.io.File;
 import java.lang.reflect.Modifier;
+import java.net.URL;
+
 import org.mozilla.javascript.*;
 import org.mozilla.javascript.optimizer.*;
 
@@ -932,21 +935,6 @@ public class CMClass extends ClassLoader
 		return h;
 	}
 
-	public static boolean loadObjectListToObj(Object o, String filePath, String path, String ancester)
-	{
-		if(path.length()>0)
-		{
-            boolean success=false;
-			if(path.equalsIgnoreCase("%default%"))
-				success=loadListToObj(o,filePath, ancester, false);
-			else
-				success=loadListToObj(o,path,ancester, false);
-            return success;
-		}
-        return false;
-	}
-
-	
 	public static Vector loadVectorListToObj(String filePath, String auxPath, String ancester)
 	{
 		Vector v=new Vector();
@@ -961,12 +949,46 @@ public class CMClass extends ClassLoader
 		loadObjectListToObj(v,filePath,auxPath,ancester);
 		return new Vector(new TreeSet(v));
 	}
-
+	
+	public static Vector loadClassList(String filePath, String auxPath, String subDir, Class ancestorC1, boolean quiet)
+	{
+		Vector v=new Vector();
+		int x=auxPath.indexOf(";");
+		while(x>=0)
+		{
+			String path=auxPath.substring(0,x).trim();
+			auxPath=auxPath.substring(x+1).trim();
+			if(path.equalsIgnoreCase("%default%"))
+				loadListToObj(v,filePath, ancestorC1, quiet);
+			else
+				loadListToObj(v,path,ancestorC1, quiet);
+			x=auxPath.indexOf(";");
+		}
+		if(auxPath.equalsIgnoreCase("%default%"))
+			loadListToObj(v,filePath, ancestorC1, quiet);
+		else
+			loadListToObj(v,auxPath,ancestorC1, quiet);
+		return v;
+	}
+	
+	public static boolean loadObjectListToObj(Object o, String filePath, String path, String ancester)
+	{
+		if(path.length()>0)
+		{
+            boolean success=false;
+			if(path.equalsIgnoreCase("%default%"))
+				success=loadListToObj(o,filePath, ancester, false);
+			else
+				success=loadListToObj(o,path,ancester, false);
+            return success;
+		}
+        return false;
+	}
 	
 	public static boolean loadListToObj(Object toThis, String filePath, String ancestor, boolean quiet)
 	{
-        Class ancestorCl=null;
         CMClass loader=new CMClass();
+        Class ancestorCl=null;
         if (ancestor != null && ancestor.length() != 0)
         {
             try
@@ -979,7 +1001,12 @@ public class CMClass extends ClassLoader
                     Log.sysOut("CMClass","WARNING: Couldn't load ancestor class: "+ancestor);
             }
         }
-
+		return loadListToObj(toThis, filePath, ancestorCl, quiet);
+	}
+	
+	public static boolean loadListToObj(Object toThis, String filePath, Class ancestorCl, boolean quiet)
+	{
+        CMClass loader=new CMClass();
         CMFile file=new CMFile(filePath,null,true);
         Vector fileList=new Vector();
         if(file.canRead())
@@ -1023,7 +1050,8 @@ public class CMClass extends ClassLoader
                         if(!quiet)
                             Log.sysOut("CMClass","WARNING: class failed ancestral check: "+packageName);
                     }
-                    O=C.newInstance();
+                    else
+	                    O=C.newInstance();
                 }
                 if(O==null)
                 {
@@ -1085,7 +1113,29 @@ public class CMClass extends ClassLoader
 		return name;
 	}
 
-    protected static boolean checkAncestry(Class cl, Class ancestorCl)
+	public static CMFile getClassDir(Class C) 
+	{
+		URL location = C.getProtectionDomain().getCodeSource().getLocation();
+		String loc;
+		if(location == null) {
+			
+			return null;
+		}
+		
+		loc=location.getPath();
+		loc=loc.replace('/',File.separatorChar);
+		String floc=new java.io.File(".").getAbsolutePath();
+		if(floc.endsWith(".")) floc=floc.substring(0,floc.length()-1);
+		if(floc.endsWith(File.separator)) floc=floc.substring(0,floc.length()-File.separator.length());
+		int x=floc.indexOf(File.separator);
+		if(x>=0)floc=floc.substring(File.separator.length());
+		x=loc.indexOf(floc);
+		loc=loc.substring(x+floc.length());
+		loc=loc.replace(File.separatorChar,'/');
+		return new CMFile("/"+loc,null,false);
+	}
+
+	public static boolean checkAncestry(Class cl, Class ancestorCl)
 	{
 		if (cl == null) return false;
 		if (cl.isPrimitive() || cl.isInterface()) return false;
@@ -1655,7 +1705,7 @@ public class CMClass extends ClassLoader
             classLoaderSync[0]=true;
         return true;
     }
-
+	
     protected static class JScriptLib extends ScriptableObject
     {
         public String getClassName(){ return "JScriptLib";}

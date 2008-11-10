@@ -1,39 +1,40 @@
 package com.planet_ink.coffee_mud.Libraries.layouts;
 import java.util.*;
 import java.text.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.*;
 
 import com.planet_ink.coffee_mud.core.Directions;
 
 public class LayoutTester
 {
-	public static void draw(AbstractLayout layout, int size, int dir)
+	public static void draw(LayoutManager layout, int size, int dir)
 	{
-		Vector<AbstractLayout.LayoutNode> V=layout.generate(size, dir);
+		Vector<LayoutNode> V=layout.generate(size, dir);
 		
 		System.out.println("Layout "+layout.name()+", size="+V.size()+": "+continuityCheck(V));
 		long lowestX=Long.MAX_VALUE;
 		long lowestY=Long.MAX_VALUE;
 		long highestX=Long.MIN_VALUE;
 		long highestY=Long.MIN_VALUE;
-		Hashtable<Long,Vector<AbstractLayout.LayoutNode>> HY = new Hashtable<Long,Vector<AbstractLayout.LayoutNode>>();
-		for(AbstractLayout.LayoutNode ls : V)
+		Hashtable<Long,Vector<LayoutNode>> HY = new Hashtable<Long,Vector<LayoutNode>>();
+		for(LayoutNode ls : V)
 		{
-			if(ls.coord[0]<lowestX) lowestX = ls.coord[0];
-			if(ls.coord[1]<lowestY) lowestY = ls.coord[1];
-			if(ls.coord[0]>highestX) highestX = ls.coord[0];
-			if(ls.coord[1]>highestY) highestY = ls.coord[1];
-			if(!HY.containsKey(ls.coord[1])) 
-				HY.put(ls.coord[1], new Vector<AbstractLayout.LayoutNode>());
-			HY.get(ls.coord[1]).add(ls);
+			if(ls.coord()[0]<lowestX) lowestX = ls.coord()[0];
+			if(ls.coord()[1]<lowestY) lowestY = ls.coord()[1];
+			if(ls.coord()[0]>highestX) highestX = ls.coord()[0];
+			if(ls.coord()[1]>highestY) highestY = ls.coord()[1];
+			if(!HY.containsKey(ls.coord()[1])) 
+				HY.put(ls.coord()[1], new Vector<LayoutNode>());
+			HY.get(ls.coord()[1]).add(ls);
 			
 		}
 		for(long y=lowestY;y<=highestY;y++)
 		{
-			Vector<AbstractLayout.LayoutNode> ys = HY.get(Long.valueOf(y));
+			Vector<LayoutNode> ys = HY.get(Long.valueOf(y));
 			if(ys != null)
 			{
-				Hashtable<Long,AbstractLayout.LayoutNode> H = new Hashtable<Long,AbstractLayout.LayoutNode>();
-				for(AbstractLayout.LayoutNode xs : ys) H.put(Long.valueOf(xs.coord[0]),xs);
+				Hashtable<Long,LayoutNode> H = new Hashtable<Long,LayoutNode>();
+				for(LayoutNode xs : ys) H.put(Long.valueOf(xs.coord()[0]),xs);
 				for(int i=0;i<3;i++)
 				{
 					for(long x=lowestX;x<=highestX;x++)
@@ -46,12 +47,12 @@ public class LayoutTester
 			}
 		}
 	}
-	public static boolean continuityCheck(Vector<AbstractLayout.LayoutNode> set)
+	public static boolean continuityCheck(Vector<LayoutNode> set)
 	{
 		for(int s=0;s<set.size();s++)
 		{
-			AbstractLayout.LayoutNode node = set.elementAt(s);
-			for(Enumeration<AbstractLayout.LayoutNode> e=node.links.elements();e.hasMoreElements();)
+			LayoutNode node = set.elementAt(s);
+			for(Enumeration<LayoutNode> e=node.links().elements();e.hasMoreElements();)
 				if(!set.contains(e.nextElement()))
 					return false;
 		}

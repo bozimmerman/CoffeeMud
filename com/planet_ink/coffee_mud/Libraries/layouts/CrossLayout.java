@@ -1,20 +1,21 @@
 package com.planet_ink.coffee_mud.Libraries.layouts;
 import java.util.*;
 import com.planet_ink.coffee_mud.core.Directions;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
 
 public class CrossLayout extends AbstractLayout 
 {
 	public String name() { return "CROSS";}
 
-	public void addRoom(LayoutSet d, LayoutNode n2, int dir)
+	public void addRoom(LayoutSet lSet, LayoutNode n2, int dir)
 	{
-		if(d.spaceAvailable())
+		if(lSet.spaceAvailable())
 		{
-			LayoutNode nn = getNextNode(d,n2,dir);
+			LayoutNode nn = lSet.getNextNode(n2,dir);
 			if(nn == null)
 			{
-				nn = makeNextNode(n2,dir);
-				d.use(nn,"leaf");
+				nn = lSet.makeNextNode(n2,dir);
+				lSet.use(nn,"leaf");
 			}
 			n2.crossLink(nn);
 		}
@@ -23,33 +24,33 @@ public class CrossLayout extends AbstractLayout
 	public Vector<LayoutNode> generate(int num, int dir) {
 		Vector<LayoutNode> set = new Vector<LayoutNode>();
 		int diameter = (num / 3 / 2) + 1;
-		LayoutSet d = new LayoutSet(set,num);
-		LayoutNode n = new LayoutNode(new long[]{0,0});
+		LayoutSet lSet = new LayoutSet(set,num);
+		LayoutNode n = new DefaultLayoutNode(new long[]{0,0});
 		LayoutNode firstNode = n;
 		for(int x=0;x<diameter;x++)
 		{
-			d.use(n,"street");
+			lSet.use(n,"street");
 			n.flagRun("N,S");
-			LayoutNode nn = getNextNode(d, n, Directions.NORTH);
-			if(nn==null) nn=makeNextNode(n, Directions.NORTH);
+			LayoutNode nn = lSet.getNextNode(n, Directions.NORTH);
+			if(nn==null) nn=lSet.makeNextNode(n, Directions.NORTH);
 			n.crossLink(nn);
 			n=nn;
 		}
 		n.flagRun("N,S");
-		d.use(n,"street");
+		lSet.use(n,"street");
 		if(dir==Directions.SOUTH) firstNode=n;
-		n = new LayoutNode(new long[]{-(diameter/2),-(diameter/2)});
+		n = new DefaultLayoutNode(new long[]{-(diameter/2),-(diameter/2)});
 		if(dir==Directions.EAST) firstNode=n;
 		for(int x=0;x<diameter;x++)
 		{
-			d.use(n,"street");
+			lSet.use(n,"street");
 			n.flagRun("e,w");
-			LayoutNode nn = getNextNode(d, n, Directions.EAST);
-			if(nn==null) nn = makeNextNode(n, Directions.EAST);
+			LayoutNode nn = lSet.getNextNode(n, Directions.EAST);
+			if(nn==null) nn = lSet.makeNextNode(n, Directions.EAST);
 			n.crossLink(nn);
 			n=nn;
 		}
-		d.use(n,"street");
+		lSet.use(n,"street");
 		n.flagRun("E,W");
 		if(dir==Directions.WEST) firstNode=n;
 		@SuppressWarnings("unchecked")
@@ -59,17 +60,17 @@ public class CrossLayout extends AbstractLayout
 		{
 			if(x<diameter)
 			{
-				addRoom(d,n2,Directions.EAST);
-				addRoom(d,n2,Directions.WEST);
+				addRoom(lSet,n2,Directions.EAST);
+				addRoom(lSet,n2,Directions.WEST);
 			} 
 			else
 			{
-				addRoom(d,n2,Directions.NORTH);
-				addRoom(d,n2,Directions.SOUTH);
+				addRoom(lSet,n2,Directions.NORTH);
+				addRoom(lSet,n2,Directions.SOUTH);
 			}
 			x++;
 		}
-		fillInFlags(d);
+		lSet.fillInFlags();
 		set.remove(firstNode);
 		set.insertElementAt(firstNode,0);
 		return set;
