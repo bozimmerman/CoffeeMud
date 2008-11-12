@@ -65,6 +65,7 @@ public class GenCharClass extends StdCharClass
     public int getManaDivisor(){return manaDivisor;}
     public int getManaDice(){return manaDice;}
     public int getManaDie(){return manaDie;}
+    public int getLevelCap() {return levelCap;}
     
     // IS *only* used by stdcharclass for weaponliminatations, buildDisallowedWeaponClasses,  buildRequiredWeaponMaterials
     public int allowedWeaponLevel(){return CharClass.WEAPONS_ANY;}
