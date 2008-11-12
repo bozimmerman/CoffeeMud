@@ -33,6 +33,20 @@ public class CMStrings
         return str.toString();
     }
     
+    public static boolean isUpperCase(String str) {
+    	for(int c=0;c<str.length();c++)
+    		if(!Character.isUpperCase(str.charAt(c)))
+    			return false;
+    	return true;
+    }
+    
+    public static boolean isLowerCase(String str) {
+    	for(int c=0;c<str.length();c++)
+    		if(!Character.isLowerCase(str.charAt(c)))
+    			return false;
+    	return true;
+    }
+    
     public static String endWithAPeriod(String str)
     {
         if((str==null)||(str.length()==0)) return str;

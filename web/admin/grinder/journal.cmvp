@@ -91,6 +91,10 @@
 				@if?CheckReqParm?FUNCTION=EMAIL@
 				<CENTER><FONT COLOR=RED><B>@JournalFunction?EMAIL@</B></FONT></CENTER>
 				@endif@
+				@if?CheckReqParm?FUNCTION=EVERYTHING@
+				<CENTER><FONT COLOR=RED><B>@JournalFunction?EVERYTHING@</B></FONT></CENTER>
+				@AddRequestParameter?FUNCTION=SHOWALL@
+				@endif@
 				@if?CheckReqParm?FUNCTION=NEWPOST@
 				<CENTER><FONT COLOR=RED><B>@JournalFunction?NEWPOST@</B></FONT></CENTER>
 				@endif@
@@ -307,9 +311,14 @@
                                     <FONT COLOR=WHITE>@JournalInfo?MESSAGE@</FONT><P>
                                     <TABLE WIDTH=100% BORDER=0>
                                     <TR VALIGN=TOP>
-                                    <TD WIDTH=51% ALIGN=LEFT VALIGN=TOP>
+                                    <TD WIDTH=35% ALIGN=LEFT VALIGN=TOP>
                                         @if?CheckAuthCode?AUTH_JOURNALS=true@
-                                        <INPUT TYPE=BUTTON NAME=TRANSFER@RequestParameter?JOURNALMESSAGE@ VALUE="Transfer TO:" ONCLICK="if(document.JOURNAL.NEWJOURNAL@RequestParameter?JOURNALMESSAGE@.selectedIndex>=0)Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','TRANSFER');">
+                                        <FONT COLOR=WHITE SIZE=-1>
+                                        <INPUT TYPE=RADIO NAME=FATE@RequestParameter?JOURNALMESSAGE@ VALUE="" CHECKED>
+                                        Leave Here
+                                        <BR>
+                                        <INPUT TYPE=RADIO NAME=FATE@RequestParameter?JOURNALMESSAGE@ VALUE="TRANSFER">
+                                        Transfer:
                                         @AddRequestParameter?THISJOURNAL=@@RequestParameter?JOURNAL@@ @
                                         <SELECT NAME=NEWJOURNAL@RequestParameter?JOURNALMESSAGE@>
                                         @JournalNext?RESET@
@@ -320,22 +329,26 @@
                                         </SELECT>
                                         @AddRequestParameter?JOURNAL=@@RequestParameter?THISJOURNAL@@ @
                                         @endif@
+                                        <BR>
+                                        <INPUT TYPE=RADIO NAME=FATE@RequestParameter?JOURNALMESSAGE@ VALUE="DELETE">
+                                        Delete
                                     </TD>
-                                    <TD WIDTH=17% ALIGN=CENTER VALIGN=TOP>
-                                        <INPUT TYPE=BUTTON NAME=REPLY VALUE="Reply" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','POSTREPLY');">
-                                    </TD>
-                                    <TD WIDTH=17% ALIGN=CENTER VALIGN=TOP>
-                                    @if?JournalInfo?EMAILALLOWED@
-                                        <INPUT TYPE=BUTTON NAME=EMAIL VALUE="Email" ONCLICK="Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','POSTEMAIL');">
-                                    @endif@
-                                    </TD>
-                                    <TD WIDTH=17% ALIGN=CENTER VALIGN=TOP>
-                                        <INPUT TYPE=BUTTON NAME=DELETE VALUE="Delete" ONCLICK="if(confirm('Delete this message?'))Clicked3('@RequestParameter?JOURNAL@','@RequestParameter?JOURNALMESSAGE@','DELETE');">
+                                    <TD WIDTH=65% ALIGN=CENTER VALIGN=TOP>
+                                        <FONT COLOR=WHITE SIZE=-1>
+                                        <INPUT TYPE=RADIO NAME=REPLYEMAIL@RequestParameter?JOURNALMESSAGE@ VALUE="" CHECKED>No Reply/Email
+                                        <INPUT TYPE=RADIO NAME=REPLYEMAIL@RequestParameter?JOURNALMESSAGE@ VALUE="REPLY">Reply
+	                                    @if?JournalInfo?EMAILALLOWED@
+	                                        <INPUT TYPE=CHECKBOX NAME=REPLYEMAIL@RequestParameter?JOURNALMESSAGE@ VALUE="EMAIL">Email
+	                                    @endif@
+	                                    <TEXTAREA NAME=NEWTEXT@RequestParameter?JOURNALMESSAGE@ COLS=50 ROWS=3 WRAP></TEXTAREA>
                                     </TD>
                                     </TR>
                                     </TABLE>
                                     <HR>
                                 @back@
+                                <CENTER>
+                                <INPUT TYPE=BUTTON NAME=PROCESSALL Value="Submit All" ONCLICK="if(window.confirm('Submit all changes above?')) Clicked3('@RequestParameter?JOURNAL@','','EVERYTHING');">
+                                </CENTER>
                             @endif@
 						@endif@
 					@endif@

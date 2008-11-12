@@ -89,97 +89,132 @@ public class JournalFunction extends StdWebMacro
 			return "Post submitted.";
 		}
 		String lastlast=httpReq.getRequestParameter("JOURNALMESSAGE");
-		int num=0;
-		if(lastlast!=null) num=CMath.s_int(lastlast);
-		if((num<0)||(num>=info.size()))
-			return "Function not performed -- illegal journal message specified.";
-		JournalsLibrary.JournalEntry entry = (JournalsLibrary.JournalEntry)info.elementAt(num);
-		String to=entry.to;
-		if(CMSecurity.isAllowedAnywhere(M,"JOURNALS")||(to.equalsIgnoreCase(M.Name())))
+		int num=(parms.containsKey("EVERYTHING"))?info.size():0;
+		StringBuffer messages=new StringBuffer("");
+		String textFieldAddendum="";
+		boolean keepProcessing=true;
+		while(keepProcessing)
 		{
-			if(parms.containsKey("DELETE"))
+			if(parms.containsKey("EVERYTHING"))
 			{
-				if(M==null)	return "Can not delete -- required logged in user.";
-				CMLib.database().DBDeleteJournal(last,num);
-				httpReq.addRequestParameters("JOURNALMESSAGE","");
-				httpReq.getRequestObjects().remove("JOURNAL: "+last);
-				return "Message #"+(num+1)+" deleted.";
+				num--;
+				parms.clear();
+				parms.put("EVERYTHING","EVERYTHING");
+				String fate=httpReq.getRequestParameter("FATE"+num);
+				String replyemail=httpReq.getRequestParameter("REPLYEMAIL"+num);
+				if((fate!=null)&&(fate.length()>0)&&(CMStrings.isUpperCase(fate)))
+					parms.put(fate,fate);
+				if((replyemail!=null)&&(replyemail.length()>0)&&(CMStrings.isUpperCase(replyemail)))
+					parms.put(replyemail,replyemail);
+				keepProcessing=num>=0;
+				if(parms.size()==1) continue;
+				textFieldAddendum=Integer.toString(num);
 			}
-			else
-			if(parms.containsKey("REPLY"))
+			else 
 			{
-				String text=httpReq.getRequestParameter("NEWTEXT");
-				if(text.length()==0)
-					return "Reply not submitted -- No text!";
-				CMLib.database().DBWriteJournal(last,from,"","",text,num);
-				httpReq.getRequestObjects().remove("JOURNAL: "+last);
-				return "Reply submitted";
+				keepProcessing=false;
+				if(lastlast!=null) num=CMath.s_int(lastlast);
+				if((num<0)||(num>=info.size()))
+					return "Function not performed -- illegal journal message specified.";
 			}
-            else
-            if(parms.containsKey("EMAIL"))
-            {
-                String replyMsg=httpReq.getRequestParameter("NEWTEXT");
-                if(replyMsg.length()==0)
-                    return "Email not submitted -- No text!";
-                String toName=entry.from;
-                if(replyMsg.length()==0)
-                    return "Email not submitted -- No text!";
-                MOB toM=CMLib.players().getLoadPlayer(toName);
-                if((M==null)||(M.playerStats()==null)||(M.playerStats().getEmail().indexOf("@")<0))
-                    return "Player '"+toName+"' does not exist, or has no email address.";
-                CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),
-                                                  M.Name(),
-                                                  toM.Name(),
-                                                  "RE: "+entry.subj,
-                                                  replyMsg,-1);
-                httpReq.getRequestObjects().remove("JOURNAL: "+last);
-                return "Email queued";
-            }
-            else
-            if(CMSecurity.isAllowedAnywhere(M,"JOURNALS"))
-            {
-                if(parms.containsKey("TRANSFER"))
-                {
-                    String journal=httpReq.getRequestParameter("NEWJOURNAL");
-                    if((journal==null) || (journal.length()==0))
-                        journal=httpReq.getRequestParameter("NEWJOURNAL"+lastlast);
-                    if((journal==null) || (journal.length()==0))
-                        return "Transfer not completed -- No journal!";
-                    String realName=null;
-                    for(int i=0;i<CMLib.journals().getNumCommandJournals();i++)
-                        if(journal.equalsIgnoreCase(CMLib.journals().getCommandJournalName(i))
-                        ||journal.equalsIgnoreCase(CMLib.journals().getCommandJournalName(i)+"s"))
-                        {
-                            realName="SYSTEM_"+CMLib.journals().getCommandJournalName(i).toUpperCase()+"S";
-                            break;
-                        }
-                    if(realName==null)
-                        realName=CMLib.database().DBGetRealJournalName(journal);
-                    if(realName==null)
-                        realName=CMLib.database().DBGetRealJournalName(journal.toUpperCase());
-                    if(realName==null)
-                        return  "The journal '"+journal+"' does not presently exist.  Aborted.";
-                    Vector journal2=CMLib.database().DBReadJournalMsgs(last);
-                    JournalsLibrary.JournalEntry entry2=(JournalsLibrary.JournalEntry)journal2.elementAt(num);
-                    String from2=(String)entry2.from;
-                    String to2=(String)entry2.to;
-                    String subject=(String)entry2.subj;
-                    String message=(String)entry2.msg;
-                    CMLib.database().DBDeleteJournal(last,num);
-                    CMLib.database().DBWriteJournal(realName,
-                                                      from2,
-                                                      to2,
-                                                      subject,
-                                                      message,-1);
-                    httpReq.addRequestParameters("JOURNALMESSAGE","");
-                    httpReq.getRequestObjects().remove("JOURNAL: "+last);
-                    return "Message transferred";
-                }
-                return "";
-            }
-			else
-				return "";
+			JournalsLibrary.JournalEntry entry = (JournalsLibrary.JournalEntry)info.elementAt(num);
+			String to=entry.to;
+			if(CMSecurity.isAllowedAnywhere(M,"JOURNALS")||(to.equalsIgnoreCase(M.Name())))
+			{
+				if(parms.containsKey("REPLY"))
+				{
+					String text=httpReq.getRequestParameter("NEWTEXT"+textFieldAddendum);
+					if((text==null)||(text.length()==0))
+						messages.append("Reply to #"+num+" not submitted -- No text!<BR>");
+					else
+					{
+						CMLib.database().DBWriteJournal(last,from,"","",text,num);
+						httpReq.getRequestObjects().remove("JOURNAL: "+last);
+						messages.append("Reply to #"+num+" submitted<BR>");
+					}
+				}
+	            else
+	            if(parms.containsKey("EMAIL"))
+	            {
+	                String replyMsg=httpReq.getRequestParameter("NEWTEXT"+textFieldAddendum);
+	                if(replyMsg.length()==0)
+						messages.append("Email to #"+num+" not submitted -- No text!<BR>");
+	                else
+	                {
+		                String toName=entry.from;
+		                MOB toM=CMLib.players().getLoadPlayer(toName);
+		                if((M==null)||(M.playerStats()==null)||(M.playerStats().getEmail().indexOf("@")<0))
+							messages.append("Player '"+toName+"' does not exist, or has no email address.<BR>");
+		                else
+		                {
+			                CMLib.database().DBWriteJournal(CMProps.getVar(CMProps.SYSTEM_MAILBOX),
+			                                                  M.Name(),
+			                                                  toM.Name(),
+			                                                  "RE: "+entry.subj,
+			                                                  replyMsg,-1);
+			                httpReq.getRequestObjects().remove("JOURNAL: "+last);
+							messages.append("Email to #"+num+" queued");
+		                }
+	                }
+	            }
+	            else
+				if(parms.containsKey("DELETE"))
+				{
+					if(M==null)	
+						messages.append("Can not delete #"+num+"-- required logged in user.<BR>");
+					else
+					{
+						CMLib.database().DBDeleteJournal(last,num);
+						httpReq.addRequestParameters("JOURNALMESSAGE","");
+						httpReq.getRequestObjects().remove("JOURNAL: "+last);
+						messages.append("Message #"+num+" deleted.<BR>");
+					}
+				}
+				else
+	            if(CMSecurity.isAllowedAnywhere(M,"JOURNALS"))
+	            {
+	                if(parms.containsKey("TRANSFER"))
+	                {
+	                    String journal=httpReq.getRequestParameter("NEWJOURNAL"+textFieldAddendum);
+	                    if((journal==null) || (journal.length()==0))
+	                        journal=httpReq.getRequestParameter("NEWJOURNAL"+textFieldAddendum+lastlast);
+	                    if((journal==null) || (journal.length()==0))
+	    					messages.append("Transfer #"+num+" not completed -- No journal!<BR>");
+	                    String realName=null;
+	                    for(int i=0;i<CMLib.journals().getNumCommandJournals();i++)
+	                        if(journal.equalsIgnoreCase(CMLib.journals().getCommandJournalName(i))
+	                        ||journal.equalsIgnoreCase(CMLib.journals().getCommandJournalName(i)+"s"))
+	                        {
+	                            realName="SYSTEM_"+CMLib.journals().getCommandJournalName(i).toUpperCase()+"S";
+	                            break;
+	                        }
+	                    if(realName==null)
+	                        realName=CMLib.database().DBGetRealJournalName(journal);
+	                    if(realName==null)
+	                        realName=CMLib.database().DBGetRealJournalName(journal.toUpperCase());
+	                    if(realName==null)
+	    					messages.append("The journal '"+journal+"' does not presently exist.  Aborted.<BR>");
+	                    Vector journal2=CMLib.database().DBReadJournalMsgs(last);
+	                    JournalsLibrary.JournalEntry entry2=(JournalsLibrary.JournalEntry)journal2.elementAt(num);
+	                    String from2=(String)entry2.from;
+	                    String to2=(String)entry2.to;
+	                    String subject=(String)entry2.subj;
+	                    String message=(String)entry2.msg;
+	                    CMLib.database().DBDeleteJournal(last,num);
+	                    CMLib.database().DBWriteJournal(realName,
+	                                                      from2,
+	                                                      to2,
+	                                                      subject,
+	                                                      message,-1);
+	                    httpReq.addRequestParameters("JOURNALMESSAGE","");
+	                    httpReq.getRequestObjects().remove("JOURNAL: "+last);
+						messages.append("Message #"+num+" transferred<BR>");
+	                }
+	            }
+	            else
+					messages.append("You are not allowed to perform this function on message #"+num+".<BR>");
+			}
 		}
-		return "You are not allowed to perform this function.";
+        return messages.toString();
 	}
 }
