@@ -51,7 +51,8 @@ public class Generate extends StdCommand
     public String[] getAccessWords(){return access;}
 
     public void createNewPlace(MOB mob, Room oldR, Room R, int direction) {
-		Exit E = CMClass.getExit("Open");
+    	Exit E=R.getExitInDir(Directions.getOpDirectionCode(direction));
+    	if(E==null) E = CMClass.getExit("Open");
 		oldR.setRawExit(direction, E);
 		oldR.rawDoors()[direction]=R;
 		int opDir=Directions.getOpDirectionCode(direction);
@@ -179,7 +180,8 @@ public class Generate extends StdCommand
 				break;
 			case CMClass.OBJECT_LOCALE:
 			{
-				Room R=CMLib.percolator().buildRoom(piece, definedTags, direction);
+        		Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
+				Room R=CMLib.percolator().buildRoom(piece, definedTags, exits, direction);
 				if(R!=null)
 					V.addElement(R);
 				break;

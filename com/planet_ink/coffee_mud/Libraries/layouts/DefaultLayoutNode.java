@@ -4,11 +4,13 @@ import java.util.Enumeration;
 import java.util.Hashtable;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
+import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.core.Directions;
 
 public class DefaultLayoutNode implements LayoutNode
 {
 	public long[] coord;
+	public Room associatedRoom = null;
 	public Hashtable<Integer,LayoutNode> links = new Hashtable<Integer,LayoutNode>();
 	private Hashtable<String,String> tags = new Hashtable<String,String>();
 	public DefaultLayoutNode(long[] coord) {
@@ -17,6 +19,8 @@ public class DefaultLayoutNode implements LayoutNode
 	public DefaultLayoutNode(long x, long y) {
 		this.coord = new long[]{x,y};
 	}
+	public Room room() { return associatedRoom;}
+	public void setRoom(Room room){associatedRoom=room;}
 	public long[] coord(){ return coord;}
 	public Hashtable<String,String> tags(){ return tags;}
 	public Hashtable<Integer,LayoutNode> links() { return links;}

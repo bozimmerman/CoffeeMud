@@ -89,7 +89,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     }
     
     // tags created: ROOM_CLASS, ROOM_TITLE, ROOM_DESCRIPTION, ROOM_CLASSES, ROOM_TITLES, ROOM_DESCRIPTIONS
-    public Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined, int direction) throws CMException
+    public Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined, Exit[] exits, int direction) throws CMException
     {
         addDefinition("DIRECTION",Directions.getDirectionName(direction).toLowerCase(),defined);
         
@@ -127,6 +127,16 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         {
         	Behavior B=(Behavior)V.elementAt(i);
         	R.addBehavior(B);
+        }
+        for(int dir=0;dir<Directions.NUM_DIRECTIONS();dir++) {
+        	Exit E=exits[dir];
+        	if((E==null)&&(defined.containsKey("ROOMLINK_"+Directions.getDirectionChar(dir).toUpperCase())))
+        	{
+        		defined.put("ROOMLINK_DIR",Directions.getDirectionChar(dir).toUpperCase());
+        		E=findExit(piece, defined);
+        		defined.remove("ROOMLINK_DIR");
+        	}
+    		R.setRawExit(dir, E);
         }
         return R;
     }
@@ -212,12 +222,25 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         	{
         		for(String key : node.tags().keySet())
         			groupDefined.put("ROOMTAG_"+key.toUpperCase().trim(),node.tags().get(key));
-        		Room R=buildRoom(piece, groupDefined, direction);
+        		Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
+        		for(Integer linkDir : node.links().keySet())
+        		{
+        			LayoutNode linkNode = node.links().get(linkDir);
+        			if(linkNode.room() != null) {
+	        			int opDir=Directions.getOpDirectionCode(linkDir.intValue());
+	        			exits[linkDir.intValue()]=linkNode.room().getExitInDir(opDir);
+        			}
+        			groupDefined.put("ROOMLINK_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase(),"true");
+        		}
+        		Room R=buildRoom(piece, groupDefined, exits, direction);
         		R.setRoomID(A.getNewRoomID(null,-1));
         		R.setArea(A);
         		A.addProperRoom(R);
+        		node.setRoom(R);
         		for(String key : node.tags().keySet())
         			groupDefined.remove("ROOMTAG_"+key.toUpperCase().trim());
+        		for(Integer linkDir : node.links().keySet())
+        			groupDefined.remove("ROOMLINK_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase());
         	}
         }
         return A;
@@ -237,6 +260,24 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
             V.addElement(M);
         }
     	return V;
+    }
+    
+    public Exit findExit(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    {
+    	String tagName="EXIT";
+        Vector choices = getAllChoices(tagName, piece, defined);
+        if((choices==null)||(choices.size()==0)) return null;
+        choices = selectChoices(choices,piece,defined);
+        if((choices==null)||(choices.size()==0)) return null;
+        Vector exitChoices = new Vector();
+        for(int c=0;c<choices.size();c++)
+        {
+            Exit E=buildExit((XMLLibrary.XMLpiece)choices.elementAt(c),defined);
+            if(E!=null)
+            	exitChoices.addElement(E);
+        }
+        if((exitChoices==null)||(exitChoices.size()==0)) return null;
+        return (Exit)exitChoices.elementAt(CMLib.dice().roll(1,exitChoices.size(),-1));
     }
     
     private MOB buildMob(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
@@ -291,6 +332,62 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         M.recoverEnvStats();
         M.recoverMaxState();
         return M;
+    }
+    
+    public Vector findExits(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    {
+    	Vector V = new Vector();
+    	String tagName="EXIT";
+        Vector choices = getAllChoices(tagName, piece, defined);
+        if((choices==null)||(choices.size()==0)) return V;
+        choices = selectChoices(choices,piece,defined);
+        for(int c=0;c<choices.size();c++)
+        {
+            XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
+            Exit E=buildExit(valPiece,defined);
+            V.addElement(E);
+        }
+    	return V;
+    }
+    
+    // remember to check ROOMLINK_DIR for N,S,E,W,U,D,etc..
+    private Exit buildExit(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    {
+        String classID = findString("class",piece,defined);
+        Exit E = CMClass.getExit(classID);
+        if(E == null) throw new CMException("Unable to build exit on classID '"+classID+"', Data: "+piece.value);
+        addDefinition("EXIT_CLASS",classID,defined);
+        String[] ignoreTags={"CLASS"};
+        String[] statCodes = E.getStatCodes();
+        for(int s=0;s<statCodes.length;s++)
+        {
+        	String stat=statCodes[s];
+        	if(!CMParms.contains(ignoreTags, stat))
+        	{
+	            String value = findOptionalString(stat,piece,defined);
+	            if(value != null)
+	            {
+	            	E.setStat(stat, value);
+		            addDefinition("EXIT_"+stat,value,defined);
+	            }
+        	}
+        }
+        Vector V = findAffects(piece,defined);
+        for(int i=0;i<V.size();i++)
+        {
+        	Ability A=(Ability)V.elementAt(i);
+        	E.addNonUninvokableEffect(A);
+        }
+        V = findBehaviors(piece,defined);
+        for(int i=0;i<V.size();i++)
+        {
+        	Behavior B=(Behavior)V.elementAt(i);
+        	E.addBehavior(B);
+        }
+        E.text();
+        E.setMiscText(E.text());
+        E.recoverEnvStats();
+        return E;
     }
     
     public Vector findItems(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException

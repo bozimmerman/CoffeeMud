@@ -37,7 +37,7 @@ public interface AreaGenerationLibrary extends CMLibrary
     public Vector findItems(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
     public Vector findMobs(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
     public String findString(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
-    public Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined, int direction) throws CMException;
+    public Room buildRoom(XMLLibrary.XMLpiece piece, Hashtable defined, Exit[] exits, int direction) throws CMException;
     public void checkRequirements(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
     public Area buildArea(XMLLibrary.XMLpiece piece, Hashtable defined, int direction) throws CMException;
     public LayoutManager getLayoutManager(String named);
@@ -66,5 +66,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 		public void flagGateExit(String dir);
 		public void reType(String type);
 		public String getRep(int line);
+		public Room room();
+		public void setRoom(Room room);
 	}
 }
