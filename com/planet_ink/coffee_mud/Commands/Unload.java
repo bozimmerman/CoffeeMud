@@ -40,7 +40,7 @@ public class Unload extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		String list="CLASS, HELP, USER, FACTION, ALL, [FILENAME]";
+		String list="CLASS, HELP, USER, AREA, FACTION, ALL, [FILENAME]";
 		
 		String str=CMParms.combine(commands,1);
 		if(str.length()==0)
@@ -182,6 +182,22 @@ public class Unload extends StdCommand
                     return false;
                 }
                 mob.tell("Unknown Faction '"+which+"'.  Use LIST FACTIONS.");
+                return false;
+            }
+        }
+        else
+        // Area Unloading
+        if((((String)commands.elementAt(1)).equalsIgnoreCase("AREA"))
+        &&(CMSecurity.isAllowed(mob, mob.location(), "CMDAREAS")))
+        {
+            String which=CMParms.combine(commands,2);
+            Area A=null;
+            if(which.length()>0)
+            	A=CMLib.map().getArea(which);
+            if(A==null)
+                mob.tell("Unknown Area '"+which+"'.  Use AREAS.");
+            else
+            {
                 return false;
             }
         }
