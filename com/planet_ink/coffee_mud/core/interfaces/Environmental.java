@@ -39,7 +39,7 @@ import java.util.*;
  * @author Bo Zimmerman
  *
  */
-public interface Environmental extends Tickable, StatsAffecting, MsgListener, CMObject, CMModifiable, Behavable
+public interface Environmental extends Tickable, Affectable, StatsAffecting, MsgListener, CMObject, CMModifiable, Behavable
 {
     /**
      * The displayable name of this object.  May be modified by envStats() object. Is
@@ -242,57 +242,6 @@ public interface Environmental extends Tickable, StatsAffecting, MsgListener, CM
      * @param dateTime the time stamp when this thing expires
      */
 	public void setExpirationDate(long dateTime);
-
-	/**
-     * Add a new effect to this object, whether permanent or temporary.  After calling this method,
-     * recoverEnvStats() should be called next in case this ability object modifies the stats.
-     * An Ability with a given ID() can only be added once per object.
-     * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#recoverEnvStats()
-     * @param to The ability object to add as an effect.
-     */
-	public void addEffect(Ability to);
-    /**
-     * Same as addEffect(Ability), but will set the Ability object as never being able to be uninvoked.
-     * recoverEnvStats() method  should be called next.
-     * An Ability with a given ID() can only be added once per object.
-     * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#recoverEnvStats()
-     * @param to The ability object to add as an effect.
-     */
-	public void addNonUninvokableEffect(Ability to);
-    /**
-     * Delete an effect from this object, whether permanent or temporary.  After calling this method,
-     * recoverEnvStats() should be called next in case this ability object modified the stats.
-     * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#recoverEnvStats()
-     * @param to The ability object to remove as an effect on this object
-     */
-	public void delEffect(Ability to);
-    /**
-     * Returns the number of ability objects listed as effects on this object.
-     * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
-     * @return the number of effects this object has
-     */
-	public int numEffects();
-    /**
-     * Returns an ability object listed as an effect on this object. May return null even if the index
-     * is correct to mark a race condition.
-     * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#numEffects()
-     * @param index which object to return
-     * @return the ability object effecting this object
-     */
-	public Ability fetchEffect(int index);
-    /**
-     * Returns an ability object listed as an effect on this object. The object will
-     * be the one with the same ID() string as passed in.
-     * @see com.planet_ink.coffee_mud.Abilities.interfaces.Ability
-     * @see CMObject#ID()
-     * @return the ability object effecting this object
-     */
-	public Ability fetchEffect(String ID);
-
 	/**
 	 * the maximum range of this object, if applicable.  Can refer to the size of a room,
      * the range of a weapon, or the calculated range of a mob in combat.
