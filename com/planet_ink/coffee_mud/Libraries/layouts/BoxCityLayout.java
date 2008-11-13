@@ -3,6 +3,8 @@ package com.planet_ink.coffee_mud.Libraries.layouts;
 import java.util.*;
 import com.planet_ink.coffee_mud.core.Directions;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutRuns;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutTypes;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 
 public class BoxCityLayout extends AbstractLayout 
@@ -19,15 +21,15 @@ public class BoxCityLayout extends AbstractLayout
 			xposUsed.add(Integer.valueOf(x));
 			for(int y=0;y<height-1;y++)
 			{
-				lSet.use(n,"street");
-				n.flagRun("n,s");
+				lSet.use(n,LayoutTypes.street);
+				n.flagRun(LayoutRuns.ns);
 				LayoutNode nn = lSet.getNextNode(n, Directions.NORTH);
 				if(nn==null) nn=lSet.makeNextNode(n, Directions.NORTH);
 				n.crossLink(nn);
 				n=nn;
 			}
-			lSet.use(n,"street");
-			n.flagRun("n,s");
+			lSet.use(n,LayoutTypes.street);
+			n.flagRun(LayoutRuns.ns);
 		}
 		halfLineN(lSet,startX,x,height,xposUsed);
 		halfLineN(lSet,x,endX,height,xposUsed);
@@ -43,15 +45,15 @@ public class BoxCityLayout extends AbstractLayout
 			yposUsed.add(Integer.valueOf(y));
 			for(int x=0;x<width-1;x++)
 			{
-				lSet.use(n,"street");
-				n.flagRun("e,w");
+				lSet.use(n,LayoutTypes.street);
+				n.flagRun(LayoutRuns.ew);
 				LayoutNode nn = lSet.getNextNode(n, Directions.EAST);
 				if(nn==null) nn=lSet.makeNextNode(n, Directions.EAST);
 				n.crossLink(nn);
 				n=nn;
 			}
-			lSet.use(n,"street");
-			n.flagRun("e,w");
+			lSet.use(n,LayoutTypes.street);
+			n.flagRun(LayoutRuns.ew);
 		}
 		halfLineE(lSet,startY,y,width,yposUsed);
 		halfLineE(lSet,y,endY,width,yposUsed);
@@ -64,7 +66,7 @@ public class BoxCityLayout extends AbstractLayout
 			return false;
 		n = lSet.makeNextNode(p, dir);
 		p.crossLink(n);
-		lSet.use(n,"interior");
+		lSet.use(n,LayoutTypes.interior);
 		return lSet.fillMaze(n);
 	}
 	

@@ -3,7 +3,11 @@ package com.planet_ink.coffee_mud.Libraries.layouts;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutRuns;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutTags;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutTypes;
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
 import com.planet_ink.coffee_mud.core.Directions;
 
@@ -12,7 +16,7 @@ public class DefaultLayoutNode implements LayoutNode
 	public long[] coord;
 	public Room associatedRoom = null;
 	public Hashtable<Integer,LayoutNode> links = new Hashtable<Integer,LayoutNode>();
-	private Hashtable<String,String> tags = new Hashtable<String,String>();
+	private Hashtable<LayoutTags,String> tags = new Hashtable<LayoutTags,String>();
 	public DefaultLayoutNode(long[] coord) {
 		this.coord = coord;
 	}
@@ -22,11 +26,16 @@ public class DefaultLayoutNode implements LayoutNode
 	public Room room() { return associatedRoom;}
 	public void setRoom(Room room){associatedRoom=room;}
 	public long[] coord(){ return coord;}
-	public Hashtable<String,String> tags(){ return tags;}
+	public Hashtable<LayoutTags,String> tags(){ return tags;}
 	public Hashtable<Integer,LayoutNode> links() { return links;}
 	public void crossLink(LayoutNode to) {
 		links.put(Integer.valueOf(AbstractLayout.getDirection(this,to)),to);
 		to.links().put(Integer.valueOf(AbstractLayout.getDirection(to,this)),this);
+	}
+	public LayoutRuns getFlagRuns(){ 
+		if(tags.containsKey(LayoutTags.NODERUN))
+			return LayoutRuns.valueOf(tags.get(LayoutTags.NODERUN));
+		return null;
 	}
 	public void delLink(LayoutNode linkNode) {
 		for(Enumeration<Integer> e=links.keys();e.hasMoreElements();)
@@ -69,29 +78,36 @@ public class DefaultLayoutNode implements LayoutNode
 			s+= "("+n.coord()[0]+","+n.coord()[1]+"),  ";
 		return s;
 	}
-	public void flag(String flag) {
-		String s=tags.get("NODEFLAGS");
+	public void flag(LayoutFlags flag) {
+		String s=tags.get(LayoutTags.NODEFLAGS);
 		if(s==null)
-			tags.put("NODEFLAGS",","+flag.toLowerCase()+",");
+			tags.put(LayoutTags.NODEFLAGS,","+flag.toString()+",");
 		else
-		if(s.indexOf(","+flag.toLowerCase()+",")<0)
-			tags.put("NODEFLAGS",s+flag.toLowerCase()+",");
+		if(s.indexOf(","+flag.toString()+",")<0)
+			tags.put(LayoutTags.NODEFLAGS,s+flag.toString()+",");
 	}
-	public void flagRun(String dirs) {
-		tags.put("NODERUN",dirs.toLowerCase().trim());
+	public void flagRun(LayoutRuns run) {
+		tags.put(LayoutTags.NODERUN,run.toString());
 	}
-	public String type(){ return tags.get("NODETYPE");}
-	public void setExits(String dirs) {
-		tags.put("NODEEXITS",dirs.toLowerCase().trim());
+	public LayoutTypes type(){ return LayoutTypes.valueOf(tags.get("NODETYPE"));}
+	public void setExits(int[] dirs) {
+		StringBuffer buf=new StringBuffer(",");
+		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+			for(int i=0;i<dirs.length;i++)
+				if(dirs[i]==d)
+				{
+					buf.append(Directions.getDirectionChar(d).toLowerCase())
+					   .append(",");
+				}
+		tags.put(LayoutTags.NODEEXITS,buf.toString());
 	}
-	public String getExitsString() {return tags.get("NODEEXITS");}
-	public void flagGateExit(String dir) {
-		tags.put("NODEGATEEXIT",dir.toLowerCase().trim());
+	public void flagGateExit(int dir) {
+		tags.put(LayoutTags.NODEGATEEXIT,Directions.getDirectionChar(dir).toLowerCase());
 	}
-	public void reType(String type) {
-		tags.put("NODETYPE",type.toLowerCase().trim());
+	public void reType(LayoutTypes type) {
+		tags.put(LayoutTags.NODETYPE,type.toString());
 	}
-	public String getRep(int line) {
+	public String getColorRepresentation(int line) {
 		
 		switch(line)
 		{

@@ -70,10 +70,6 @@ public class Generate extends StdCommand
     public boolean execute(MOB mob, Vector commands, int metaFlags)
         throws java.io.IOException
     {
-    	if(true) {
-    		mob.tell("Not yet implemented.");
-    		return false;
-    	}
         if(commands.size()<3)
         {
         	mob.tell("Generate what? Try GENERATE [TYPE] [TAG_NAME] (FROM [DATA_FILE_PATH]) ([TAG=VALUE]..) [DIRECTION]");

@@ -3,6 +3,8 @@ package com.planet_ink.coffee_mud.Libraries.layouts;
 import java.util.Vector;
 import com.planet_ink.coffee_mud.core.Directions;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutRuns;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutTypes;
 
 public class GridCityLayout extends AbstractLayout 
 {
@@ -27,15 +29,15 @@ public class GridCityLayout extends AbstractLayout
 					firstNode=n;
 				for(int y=0;y<diameter-1;y++)
 				{
-					lSet.use(n,"street");
-					n.flagRun("n,s");
+					lSet.use(n,LayoutTypes.street);
+					n.flagRun(LayoutRuns.ns);
 					LayoutNode nn = lSet.getNextNode(n, Directions.NORTH);
 					if(nn==null) nn=lSet.makeNextNode(n, Directions.NORTH);
 					n.crossLink(nn);
 					n=nn;
 				}
-				lSet.use(n,"street");
-				n.flagRun("n,s");
+				lSet.use(n,LayoutTypes.street);
+				n.flagRun(LayoutRuns.ns);
 				if((dir==Directions.SOUTH)&&(x>=middle-1)&&(x<=middle+1))
 					firstNode=n;
 			}
@@ -51,15 +53,15 @@ public class GridCityLayout extends AbstractLayout
 					firstNode=n;
 				for(int x=0;x<endX;x++)
 				{
-					lSet.use(n,"street");
-					n.flagRun("e,w");
+					lSet.use(n,LayoutTypes.street);
+					n.flagRun(LayoutRuns.ew);
 					LayoutNode nn = lSet.getNextNode(n, Directions.EAST);
 					if(nn==null) nn=lSet.makeNextNode(n, Directions.EAST);
 					n.crossLink(nn);
 					n=nn;
 				}
-				lSet.use(n,"street");
-				n.flagRun("e,w");
+				lSet.use(n,LayoutTypes.street);
+				n.flagRun(LayoutRuns.ew);
 				if((dir==Directions.WEST)&&(y>=middle-1)&&(y<=middle+1))
 					firstNode=n;
 			}
@@ -83,7 +85,7 @@ public class GridCityLayout extends AbstractLayout
 					if(nn != null)
 					{
 						n.crossLink(nn);
-						lSet.use(nn,"interior");
+						lSet.use(nn,LayoutTypes.interior);
 					}
 					north = !north;
 				}
@@ -101,7 +103,7 @@ public class GridCityLayout extends AbstractLayout
 					if(nn != null)
 					{
 						n.crossLink(nn);
-						lSet.use(nn,"interior");
+						lSet.use(nn,LayoutTypes.interior);
 					}
 				}
 			}

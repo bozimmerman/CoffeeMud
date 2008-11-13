@@ -2,7 +2,9 @@ package com.planet_ink.coffee_mud.Libraries.layouts;
 
 import java.util.Vector;
 import com.planet_ink.coffee_mud.core.Directions;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutTypes;
 
 public class MazeLayout extends AbstractLayout 
 {
@@ -31,7 +33,7 @@ public class MazeLayout extends AbstractLayout
 			&&(p2.coord()[0]<width)
 			&&(p2.coord()[1]>-height))
 			{
-				lSet.use(p2,"interior");
+				lSet.use(p2,LayoutTypes.interior);
 				p.crossLink(p2);
 				fillMaze(lSet,p2,width,height);
 			}
@@ -49,13 +51,18 @@ public class MazeLayout extends AbstractLayout
 		LayoutNode n = null;
 		switch(dir)
 		{
-		case Directions.NORTH: n=new DefaultLayoutNode(new long[]{(diameter+plusX)/2,0}); n.flagGateExit("n"); break;
-		case Directions.SOUTH: n=new DefaultLayoutNode(new long[]{(diameter+plusX)/2,-diameter+1}); n.flagGateExit("s"); break;
-		case Directions.EAST: n=new DefaultLayoutNode(new long[]{0,(-diameter+1)/2}); n.flagGateExit("e"); break;
-		case Directions.WEST: n=new DefaultLayoutNode(new long[]{diameter+plusX-1,(-diameter+1)/2}); n.flagGateExit("w"); break;
+		case Directions.NORTH: n=new DefaultLayoutNode(new long[]{(diameter+plusX)/2,0}); break;
+		case Directions.SOUTH: n=new DefaultLayoutNode(new long[]{(diameter+plusX)/2,-diameter+1}); break;
+		case Directions.EAST: n=new DefaultLayoutNode(new long[]{0,(-diameter+1)/2}); break;
+		case Directions.WEST: n=new DefaultLayoutNode(new long[]{diameter+plusX-1,(-diameter+1)/2}); break;
+		case Directions.NORTHEAST: n=new DefaultLayoutNode(new long[]{0,(-diameter+1)/2}); break;
+		case Directions.NORTHWEST: n=new DefaultLayoutNode(new long[]{diameter+plusX-1,(-diameter+1)/2}); break;
+		case Directions.SOUTHEAST: n=new DefaultLayoutNode(new long[]{0,(-diameter+1)/2}); break;
+		case Directions.SOUTHWEST: n=new DefaultLayoutNode(new long[]{diameter+plusX-1,(-diameter+1)/2}); break;
 		}
-		lSet.use(n,"interior");
-		n.flag("gate");
+		n.flagGateExit(dir);
+		lSet.use(n,LayoutTypes.interior);
+		n.flag(LayoutFlags.gate);
 		fillMaze(lSet,n,diameter+plusX,diameter);
 		lSet.fillInFlags();
 		return set;

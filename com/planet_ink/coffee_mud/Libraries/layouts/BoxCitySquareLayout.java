@@ -5,6 +5,7 @@ import java.util.Vector;
 
 import com.planet_ink.coffee_mud.core.Directions;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutTypes;
 public class BoxCitySquareLayout extends BoxCityLayout 
 {
 	public String name() { return "BOXCITYSQUARE";}
@@ -17,7 +18,7 @@ public class BoxCitySquareLayout extends BoxCityLayout
 		if(center == null)
 		{
 			center = new DefaultLayoutNode(x,y);
-			lSet.use(center,"square");
+			lSet.use(center,LayoutTypes.square);
 		}
 		Vector<long[]> square = new Vector<long[]>();
 		square.add(new long[]{x-1,y-1});
@@ -37,10 +38,10 @@ public class BoxCitySquareLayout extends BoxCityLayout
 			if(n==null)
 			{
 				n = new DefaultLayoutNode(sq);
-				lSet.use(n,"square");
+				lSet.use(n,LayoutTypes.square);
 			}
 			else
-				n.reType("square");
+				n.reType(LayoutTypes.square);
 			lastNode.crossLink(n);
 			lastNode = n;
 		}
@@ -77,7 +78,7 @@ public class BoxCitySquareLayout extends BoxCityLayout
 				}
 				n2 = lSet.makeNextNode(n, d);
 				n.crossLink(n2);
-				lSet.use(n2, "leaf");
+				lSet.use(n2, LayoutTypes.leaf);
 			}
 		}
 	}

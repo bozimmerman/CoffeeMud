@@ -74,8 +74,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         String filePath="com/planet_ink/coffee_mud/Libraries/layouts";
         CMProps page = CMProps.instance();
         Vector layouts=CMClass.loadClassList(filePath,page.getStr("LIBRARY"),"/layouts",LayoutManager.class,true);
-    	for(int f=0;f<layouts.size();f++)
-    	{
+    	for(int f=0;f<layouts.size();f++) {
     		LayoutManager lmgr= (LayoutManager)layouts.elementAt(f);
     		Class<LayoutManager> lmgrClass=(Class<LayoutManager>)lmgr.getClass();
         	mgrs.put(lmgr.name().toUpperCase().trim(),lmgrClass);
@@ -105,26 +104,22 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         addDefinition("ROOM_DESCRIPTION",description,defined);
         Vector V;
         V = findMobs(piece,defined);
-        for(int i=0;i<V.size();i++)
-        {
+        for(int i=0;i<V.size();i++) {
         	MOB M=(MOB)V.elementAt(i);
         	R.bringMobHere(M,false);
         }
         V = findItems(piece,defined);
-        for(int i=0;i<V.size();i++)
-        {
+        for(int i=0;i<V.size();i++) {
         	Item I=(Item)V.elementAt(i);
         	R.bringItemHere(I, 0,false);
         }
         V = findAffects(piece,defined);
-        for(int i=0;i<V.size();i++)
-        {
+        for(int i=0;i<V.size();i++) {
         	Ability A=(Ability)V.elementAt(i);
         	R.addNonUninvokableEffect(A);
         }
         V = findBehaviors(piece,defined);
-        for(int i=0;i<V.size();i++)
-        {
+        for(int i=0;i<V.size();i++) {
         	Behavior B=(Behavior)V.elementAt(i);
         	R.addBehavior(B);
         }
@@ -139,6 +134,30 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     		R.setRawExit(dir, E);
         }
         return R;
+    }
+
+    private void layoutRecursiveFill(LayoutNode n, Vector<LayoutNode> group, LayoutTypes type)
+    {
+    	if(n != null)
+		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+			if(n.links().containsKey(Integer.valueOf(d))) {
+				LayoutNode offN=n.links().get(Integer.valueOf(d));
+				if((offN.type()==type)
+				&&(!group.contains(offN))) {
+					group.addElement(offN);
+					layoutRecursiveFill(offN,group,type);
+				}
+			}
+    }
+    
+    private void layoutFollow(LayoutNode n, LayoutTypes type, int direction, Vector<LayoutNode> group)
+    {
+		n=n.links().get(Integer.valueOf(direction));
+		while((n != null) &&(n.type()==LayoutTypes.street) &&(!group.contains(n)))
+		{
+			group.addElement(n);
+			n=n.links().get(Integer.valueOf(Directions.NORTH));
+		}
     }
     
     // tags created: LINK_DIRECTION, AREA_CLASS, AREA_NAME, AREA_DESCRIPTION, AREA_LAYOUT, AREA_SIZE
@@ -192,22 +211,64 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         LayoutNode magicRoom = (LayoutNode)roomsLayout.firstElement();
         while(roomsLayout.size() > 0)
         {
-        	//TODO: the group breaking.
+        	LayoutNode node=(LayoutNode)roomsLayout.firstElement();
+        	Vector<LayoutNode> group=new Vector<LayoutNode>();
+        	group.addElement(node);
+        	if(node.type()==LayoutTypes.offleaf) {
+        		for(Integer linkDir : node.links().keySet())
+        			if(roomsLayout.contains(node.links().get(linkDir)))
+        			{
+	        			if(node.links().get(linkDir).type()==LayoutTypes.leaf)
+	        				group.addElement(node.links().get(linkDir));
+        			}
+        	} else
+        	if(node.type()==LayoutTypes.leaf) {
+        		for(Integer linkDir : node.links().keySet())
+        			if(roomsLayout.contains(node.links().get(linkDir)))
+        			{
+	        			if((node.links().get(linkDir).type()==LayoutTypes.leaf)
+	        			||(node.links().get(linkDir).type()==LayoutTypes.offleaf))
+	        				group.addElement(node.links().get(linkDir));
+        			}
+        	} else
+        	if((node.type()==LayoutTypes.interior)
+        	||(node.type()==LayoutTypes.square)
+        	||(node.type()==LayoutTypes.surround)) {
+        		layoutRecursiveFill(node,group,node.type());
+        	}  else
+        	if(node.type()==LayoutTypes.street) {
+        		LayoutRuns run=node.getFlagRuns();
+        		if(run==LayoutRuns.ns) {
+        			layoutFollow(node,LayoutTypes.street,Directions.NORTH,group);
+        			layoutFollow(node,LayoutTypes.street,Directions.SOUTH,group);
+        		} else
+        		if(run==LayoutRuns.ew) {
+        			layoutFollow(node,LayoutTypes.street,Directions.EAST,group);
+        			layoutFollow(node,LayoutTypes.street,Directions.WEST,group);
+	    		} else
+        		if(run==LayoutRuns.nesw) {
+        			layoutFollow(node,LayoutTypes.street,Directions.NORTHEAST,group);
+        			layoutFollow(node,LayoutTypes.street,Directions.SOUTHWEST,group);
+	    		} else
+        		if(run==LayoutRuns.nwse) {
+        			layoutFollow(node,LayoutTypes.street,Directions.NORTHWEST,group);
+        			layoutFollow(node,LayoutTypes.street,Directions.SOUTHEAST,group);
+        		}
+        	} 
+        	for(LayoutNode n : group)
+        		roomsLayout.remove(n);
         }
         // make CERTAIN that the magic first room in the layout always
         // gets ID#0.
         for(int g=0;g<roomGroups.size();g++)
         {
         	Vector<LayoutNode> group=(Vector<LayoutNode>)roomGroups.elementAt(g);
-        	if(group.contains(magicRoom))
-        	{
-        		if((group.size()>1)&&(group.firstElement() != magicRoom))
-        		{
+        	if(group.contains(magicRoom)) {
+        		if((group.size()>1)&&(group.firstElement() != magicRoom)) {
 	        		group.remove(magicRoom);
 	        		group.insertElementAt(magicRoom,0);
         		}
-        		if((roomGroups.size()>1)&&(roomGroups.firstElement() != group))
-        		{
+        		if((roomGroups.size()>1)&&(roomGroups.firstElement() != group)) {
         			roomGroups.remove(group);
         			roomGroups.insertElementAt(group,0);
         		}
@@ -220,11 +281,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         	Hashtable groupDefined = (Hashtable)defined.clone();
         	for(LayoutNode node : group)
         	{
-        		for(String key : node.tags().keySet())
-        			groupDefined.put("ROOMTAG_"+key.toUpperCase().trim(),node.tags().get(key));
+        		for(LayoutTags key : node.tags().keySet())
+        			groupDefined.put("ROOMTAG_"+key.toString().toUpperCase(),node.tags().get(key));
         		Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
-        		for(Integer linkDir : node.links().keySet())
-        		{
+        		for(Integer linkDir : node.links().keySet()) {
         			LayoutNode linkNode = node.links().get(linkDir);
         			if(linkNode.room() != null) {
 	        			int opDir=Directions.getOpDirectionCode(linkDir.intValue());
@@ -237,8 +297,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         		R.setArea(A);
         		A.addProperRoom(R);
         		node.setRoom(R);
-        		for(String key : node.tags().keySet())
-        			groupDefined.remove("ROOMTAG_"+key.toUpperCase().trim());
+        		for(LayoutTags key : node.tags().keySet())
+        			groupDefined.remove("ROOMTAG_"+key.toString().toUpperCase().trim());
         		for(Integer linkDir : node.links().keySet())
         			groupDefined.remove("ROOMLINK_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase());
         	}
@@ -253,8 +313,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         Vector choices = getAllChoices(tagName, piece, defined);
         if((choices==null)||(choices.size()==0)) return V;
         choices = selectChoices(choices,piece,defined);
-        for(int c=0;c<choices.size();c++)
-        {
+        for(int c=0;c<choices.size();c++) {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
             MOB M=buildMob(valPiece,defined);
             V.addElement(M);
@@ -288,41 +347,34 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         addDefinition("MOB_CLASS",classID,defined);
         String[] ignoreTags={"CLASS"};
         String[] statCodes = M.getStatCodes();
-        for(int s=0;s<statCodes.length;s++)
-        {
+        for(int s=0;s<statCodes.length;s++) {
         	String stat=statCodes[s];
-        	if(!CMParms.contains(ignoreTags, stat))
-        	{
+        	if(!CMParms.contains(ignoreTags, stat)) {
 	            String value = findOptionalString(stat,piece,defined);
-	            if(value != null)
-	            {
+	            if(value != null) {
 	            	M.setStat(stat, value);
 		            addDefinition("MOB_"+stat,value,defined);
 	            }
         	}
         }
         Vector items = findItems(piece,defined);
-        for(int i=0;i<items.size();i++)
-        {
+        for(int i=0;i<items.size();i++) {
         	Item I=(Item)items.elementAt(i);
         	M.addInventory(I);
         	I.wearIfPossible(M);
         }
         Vector V = findAffects(piece,defined);
-        for(int i=0;i<V.size();i++)
-        {
+        for(int i=0;i<V.size();i++) {
         	Ability A=(Ability)V.elementAt(i);
         	M.addNonUninvokableEffect(A);
         }
         V = findBehaviors(piece,defined);
-        for(int i=0;i<V.size();i++)
-        {
+        for(int i=0;i<V.size();i++) {
         	Behavior B=(Behavior)V.elementAt(i);
         	M.addBehavior(B);
         }
         V = findAbilities(piece,defined);
-        for(int i=0;i<V.size();i++)
-        {
+        for(int i=0;i<V.size();i++) {
         	Ability A=(Ability)V.elementAt(i);
         	M.addAbility(A);
         }

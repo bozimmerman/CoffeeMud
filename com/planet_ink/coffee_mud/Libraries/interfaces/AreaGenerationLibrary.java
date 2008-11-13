@@ -54,19 +54,24 @@ public interface AreaGenerationLibrary extends CMLibrary
 		public void delLink(LayoutNode linkNode);
 		public LayoutNode getLink(int d);
 		public Hashtable<Integer,LayoutNode> links();
-		public Hashtable<String,String> tags();
+		public Hashtable<LayoutTags,String> tags();
 		public long[] coord();
 		public boolean isStreetLike();
 		public void deLink();
-		public void flag(String flag);
-		public void flagRun(String dirs);
-		public String type();
-		public void setExits(String dirs);
-		public String getExitsString();
-		public void flagGateExit(String dir);
-		public void reType(String type);
-		public String getRep(int line);
+		public void flag(LayoutFlags flag);
+		public void flagRun(LayoutRuns dirs);
+		public LayoutRuns getFlagRuns();
+		public LayoutTypes type();
+		public void setExits(int[] dirs);
+		public void flagGateExit(int dir);
+		public void reType(LayoutTypes type);
+		public String getColorRepresentation(int line);
 		public Room room();
 		public void setRoom(Room room);
 	}
+	
+	public enum LayoutTags { NODERUN, NODEFLAGS, NODETYPE, NODEEXITS, NODEGATEEXIT};
+	public enum LayoutTypes { surround, leaf, offleaf, street, square, interior }
+	public enum LayoutFlags { corner, gate, intersection, tee }
+	public enum LayoutRuns { ew,ns,ud,nesw,nwse }
 }

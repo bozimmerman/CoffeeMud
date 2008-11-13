@@ -5,7 +5,10 @@ import java.util.Hashtable;
 import java.util.Random;
 import java.util.Vector;
 
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutRuns;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutTypes;
 import com.planet_ink.coffee_mud.core.Directions;
 
 public class LayoutSet 
@@ -29,7 +32,7 @@ public class LayoutSet
 		used.remove(getHashCode(n.coord()[0],n.coord()[1]));
 		set.remove(n);
 	}
-	public boolean use(LayoutNode n, String nodeType) {
+	public boolean use(LayoutNode n, LayoutTypes nodeType) {
 		if(isUsed(n.coord())) 
 			return false;
 		used.put(getHashCode(n.coord()[0],n.coord()[1]),n);
@@ -75,57 +78,57 @@ public class LayoutSet
 	public void drawABox(int width, int height)
 	{
 		LayoutNode n = new DefaultLayoutNode(new long[]{0,0});
-		n.flag("corner");
+		n.flag(LayoutFlags.corner);
 		for(int y=0;y<height-1;y++)
 		{
-			use(n,"surround");
+			use(n,LayoutTypes.surround);
 			LayoutNode nn = getNextNode(n, Directions.NORTH);
 			if(nn==null) nn=makeNextNode(n, Directions.NORTH);
 			n.crossLink(nn);
-			nn.tags().put("NODERUN","N,S");
+			nn.flagRun(LayoutRuns.ns);
 			n=nn;
 		}
-		n.flag("corner");
-		use(n,"surround");
+		n.flag(LayoutFlags.corner);
+		use(n,LayoutTypes.surround);
 		n = new DefaultLayoutNode(new long[]{width-1,0});
-		n.flag("corner");
+		n.flag(LayoutFlags.corner);
 		for(int y=0;y<height-1;y++)
 		{
-			use(n,"surround");
+			use(n,LayoutTypes.surround);
 			LayoutNode nn = getNextNode(n, Directions.NORTH);
 			if(nn==null) nn=makeNextNode(n, Directions.NORTH);
 			n.crossLink(nn);
-			nn.tags().put("NODERUN","N,S");
+			nn.flagRun(LayoutRuns.ns);
 			n=nn;
 		}
-		n.flag("corner");
-		use(n,"surround");
+		n.flag(LayoutFlags.corner);
+		use(n,LayoutTypes.surround);
 		n = getNode(new long[]{0,0});
-		n.flag("corner");
+		n.flag(LayoutFlags.corner);
 		for(int x=0;x<width-1;x++)
 		{
-			use(n,"surround");
+			use(n,LayoutTypes.surround);
 			LayoutNode nn = getNextNode(n, Directions.EAST);
 			if(nn==null) nn=makeNextNode(n, Directions.EAST);
 			n.crossLink(nn);
-			nn.tags().put("NODERUN","E,W");
+			nn.flagRun(LayoutRuns.ns);
 			n=nn;
 		}
-		n.flag("corner");
-		use(n,"surround");
+		n.flag(LayoutFlags.corner);
+		use(n,LayoutTypes.surround);
 		n = getNode(new long[]{0,-height+1});
-		n.flag("corner");
+		n.flag(LayoutFlags.corner);
 		for(int x=0;x<width-1;x++)
 		{
-			use(n,"surround");
+			use(n,LayoutTypes.surround);
 			LayoutNode nn = getNextNode(n, Directions.EAST);
 			if(nn==null) nn=makeNextNode(n, Directions.EAST);
 			n.crossLink(nn);
-			nn.tags().put("NODERUN","E,W");
+			nn.flagRun(LayoutRuns.ns);
 			n=nn;
 		}
-		n.flag("corner");
-		use(n,"surround");
+		n.flag(LayoutFlags.corner);
+		use(n,LayoutTypes.surround);
 	}
 	
 	public boolean fillMaze(LayoutNode p)
@@ -149,7 +152,7 @@ public class LayoutSet
 			{
 				p2 = makeNextNode(p, dir.intValue());
 				p.crossLink(p2);
-				use(p2,"interior");
+				use(p2,LayoutTypes.interior);
 				fillMaze(p2);
 			} 
 		}
@@ -179,7 +182,7 @@ public class LayoutSet
 							unUse(p);
 							LayoutNode p3 = makeNextNode(p2, Directions.getOpDirectionCode(d));
 							p2.crossLink(p3);
-							use(p3, "leaf");
+							use(p3, LayoutTypes.leaf);
 							break;
 						}
 					}
@@ -191,66 +194,63 @@ public class LayoutSet
 		for(Enumeration<LayoutNode> e=set().elements();e.hasMoreElements();)
 		{
 			LayoutNode n = (LayoutNode)e.nextElement();
-			StringBuffer exits = new StringBuffer("");
-			for(int d=0;d<4;d++)
-				if(getNextNode(n, d)!=null)
-					if(exits.length()>0)
-						exits.append(","+Directions.getDirectionChar(d));
-					else
-						exits.append(Directions.getDirectionChar(d));
-			n.setExits(exits.toString());
-			if(exits.length()==1)
-				n.reType("leaf");
+			int[] dirs=new int[n.links().size()];
+			int x=0;
+			for(Integer dirLink : n.links().keySet())
+				dirs[x++]=dirLink.intValue();
+			n.setExits(dirs);
+			if(dirs.length==1)
+				n.reType(LayoutTypes.leaf);
 		}
 		for(Enumeration<LayoutNode> e=set().elements();e.hasMoreElements();)
 		{
 			LayoutNode n = (LayoutNode)e.nextElement();
 			if(n.links().size()==2)
 			{
-				String type = n.type();
-				for(int d=0;d<4;d++)
+				LayoutTypes type = n.type();
+				for(Integer dirLink : n.links().keySet())
 				{
-					LayoutNode n2=getNextNode(n, d);
-					if((n2!=null)&&(n2.type().equalsIgnoreCase("leaf")))
-						type="offleaf";
+					LayoutNode n2=n.links().get(dirLink);
+					if((n2!=null)&&(n2.type()==LayoutTypes.leaf))
+						type=LayoutTypes.offleaf;
 				}
-				if(!type.equalsIgnoreCase("offleaf"))
-					n.flag("corner");
+				if(type!=LayoutTypes.offleaf)
+					n.flag(LayoutFlags.corner);
 				n.reType(type);
 			}
 			else
 			if((n.links().size()==3)
-			&&(((n.type().equalsIgnoreCase("street"))
-				||(!n.type().equalsIgnoreCase("surround")))))
+			&&(((n.type()==LayoutTypes.street)
+				||(n.type()!=LayoutTypes.surround))))
 			{
 				boolean allStreet = true;
-				for(int d=0;d<4;d++)
+				for(Integer dirLink : n.links().keySet())
 				{
-					LayoutNode n2=getNextNode(n, d);
+					LayoutNode n2=n.links().get(dirLink);
 					if((n2==null)
-					||((!n2.type().equalsIgnoreCase("street"))
-						&&(!n2.type().equalsIgnoreCase("surround"))))
+					||((n2.type()!=LayoutTypes.street)
+						&&(n2.type()!=LayoutTypes.surround)))
 							allStreet = false;
 				}
 				if(allStreet)
-					n.flag("tee");
+					n.flag(LayoutFlags.tee);
 			}
 			else
 			if((n.links().size()==4)
-			&&(((n.type().equalsIgnoreCase("street"))
-				||(!n.type().equalsIgnoreCase("surround")))))
+			&&(((n.type()==LayoutTypes.street)
+				||(n.type()!=LayoutTypes.surround))))
 			{
 				boolean allStreet = true;
-				for(int d=0;d<4;d++)
+				for(Integer dirLink : n.links().keySet())
 				{
-					LayoutNode n2=getNextNode(n, d);
+					LayoutNode n2=n.links().get(dirLink);
 					if((n2==null)
-					||((!n2.type().equalsIgnoreCase("street"))
-						&&(!n2.type().equalsIgnoreCase("surround"))))
+					||((n2.type()!=LayoutTypes.street)
+						&&(n2.type()!=LayoutTypes.surround)))
 							allStreet = false;
 				}
 				if(allStreet)
-					n.flag("intersection");
+					n.flag(LayoutFlags.intersection);
 			}
 		}
 	}

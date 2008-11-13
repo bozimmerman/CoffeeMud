@@ -2,6 +2,8 @@ package com.planet_ink.coffee_mud.Libraries.layouts;
 import java.util.*;
 import com.planet_ink.coffee_mud.core.Directions;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutRuns;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutTypes;
 
 public class CrossLayout extends AbstractLayout 
 {
@@ -15,7 +17,7 @@ public class CrossLayout extends AbstractLayout
 			if(nn == null)
 			{
 				nn = lSet.makeNextNode(n2,dir);
-				lSet.use(nn,"leaf");
+				lSet.use(nn,LayoutTypes.leaf);
 			}
 			n2.crossLink(nn);
 		}
@@ -29,29 +31,29 @@ public class CrossLayout extends AbstractLayout
 		LayoutNode firstNode = n;
 		for(int x=0;x<diameter;x++)
 		{
-			lSet.use(n,"street");
-			n.flagRun("N,S");
+			lSet.use(n,LayoutTypes.street);
+			n.flagRun(LayoutRuns.ns);
 			LayoutNode nn = lSet.getNextNode(n, Directions.NORTH);
 			if(nn==null) nn=lSet.makeNextNode(n, Directions.NORTH);
 			n.crossLink(nn);
 			n=nn;
 		}
-		n.flagRun("N,S");
-		lSet.use(n,"street");
+		n.flagRun(LayoutRuns.ns);
+		lSet.use(n,LayoutTypes.street);
 		if(dir==Directions.SOUTH) firstNode=n;
 		n = new DefaultLayoutNode(new long[]{-(diameter/2),-(diameter/2)});
 		if(dir==Directions.EAST) firstNode=n;
 		for(int x=0;x<diameter;x++)
 		{
-			lSet.use(n,"street");
-			n.flagRun("e,w");
+			lSet.use(n,LayoutTypes.street);
+			n.flagRun(LayoutRuns.ew);
 			LayoutNode nn = lSet.getNextNode(n, Directions.EAST);
 			if(nn==null) nn = lSet.makeNextNode(n, Directions.EAST);
 			n.crossLink(nn);
 			n=nn;
 		}
-		lSet.use(n,"street");
-		n.flagRun("E,W");
+		lSet.use(n,LayoutTypes.street);
+		n.flagRun(LayoutRuns.ew);
 		if(dir==Directions.WEST) firstNode=n;
 		@SuppressWarnings("unchecked")
 		Vector<LayoutNode> corridors = (Vector<LayoutNode>)set.clone();

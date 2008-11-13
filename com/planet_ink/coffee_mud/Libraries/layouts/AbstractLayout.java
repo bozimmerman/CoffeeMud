@@ -37,18 +37,18 @@ public abstract class AbstractLayout implements LayoutManager
 		return -1;
 	}
 	
-	public static String getRunDirection(int dirCode)
+	public static LayoutRuns getRunDirection(int dirCode)
 	{
 		switch(dirCode)
 		{
 		case Directions.NORTH:
 		case Directions.SOUTH:
-			return "n,s";
+			return LayoutRuns.ns;
 		case Directions.EAST:
 		case Directions.WEST:
-			return "e,w";
+			return LayoutRuns.ew;
 		}
-		return "";
+		return LayoutRuns.ns;
 	}
 	
 }

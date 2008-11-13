@@ -2,7 +2,9 @@ package com.planet_ink.coffee_mud.Libraries.layouts;
 import java.util.*;
 
 import com.planet_ink.coffee_mud.core.Directions;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutFlags;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
+import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutTypes;
 
 public class TreeLayout extends AbstractLayout
 {
@@ -44,7 +46,7 @@ public class TreeLayout extends AbstractLayout
 		{
 			long[] nextCoord = getCoord(currNode.coord(),dir);
 			TreeStem stem = new TreeStem(nextCoord,dir,lSet);
-			if(!lSet.use(stem.currNode,"street")) return null;
+			if(!lSet.use(stem.currNode,LayoutTypes.street)) return null;
 			currNode.crossLink(stem.currNode);
 			patchRun(currNode,stem.currNode);
 			return stem;
@@ -59,8 +61,8 @@ public class TreeLayout extends AbstractLayout
 			if((turns == null)||(turns.length<1)) return null;
 			long[] nextCoord = getCoord(currNode.coord(),turns[0]);
 			TreeStem newStem =  new TreeStem(nextCoord,turns[0],lSet);
-			if(!lSet.use(newStem.currNode,"street")) return null;
-			currNode.flag("corner");
+			if(!lSet.use(newStem.currNode,LayoutTypes.street)) return null;
+			currNode.flag(LayoutFlags.corner);
 			currNode.crossLink(newStem.currNode);
 			patchRun(currNode,newStem.currNode);
 			return newStem;
@@ -70,7 +72,7 @@ public class TreeLayout extends AbstractLayout
 			if((turns == null)||(turns.length<2)) return null;
 			long[] nextCoord = getCoord(currNode.coord(),turns[1]);
 			TreeStem newStem =  new TreeStem(nextCoord,turns[1],lSet);
-			if(!lSet.use(newStem.currNode,"street")) return null;
+			if(!lSet.use(newStem.currNode,LayoutTypes.street)) return null;
 			currNode.crossLink(newStem.currNode);
 			patchRun(currNode,newStem.currNode);
 			return newStem;
@@ -87,9 +89,9 @@ public class TreeLayout extends AbstractLayout
 		originalDirection=dir;
 		TreeStem root = new TreeStem(rootCoord, dir, lSet);
 		progress.add(root);
-		lSet.use(root.currNode,"street");
-		root.currNode.flag("gate");
-		root.currNode.flagGateExit(Directions.getDirectionChar(dir));
+		lSet.use(root.currNode,LayoutTypes.street);
+		root.currNode.flag(LayoutFlags.gate);
+		root.currNode.flagGateExit(dir);
 		root.currNode.flagRun(AbstractLayout.getRunDirection(dir));
 		
 		while(lSet.spaceAvailable()) {

@@ -39,7 +39,7 @@ public class LayoutTester
 				{
 					for(long x=lowestX;x<=highestX;x++)
 						if(H.containsKey(Long.valueOf(x)))
-							System.out.print(H.get(Long.valueOf(x)).getRep(i));
+							System.out.print(H.get(Long.valueOf(x)).getColorRepresentation(i));
 						else
 							System.out.print("   ");
 					System.out.println("");
