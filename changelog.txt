@@ -2130,3 +2130,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 29. Internal: Scriptable reworked to do run-time parse caching to increase speed significantly.
 30. New Zappermask: QUESTWIN
 31. Term of old bugs has expired.  New bugs set to take office early next year.
+# Build 5.5.1 Released November 13, 2008 - couple of bug fixes in the new features
+
