@@ -460,7 +460,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		DVector DV=new DVector(2);
         CharClass C=CMClass.getCharClass(ID);
         if((C!=null)&&(C.getLevelCap()>=0)&&(level>C.getLevelCap()))
-            return DV;
+        	level=C.getLevelCap();
 		if(completeAbleMap.containsKey(ID))
 		{
 			Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
