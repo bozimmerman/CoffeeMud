@@ -338,7 +338,7 @@
                                         <INPUT TYPE=RADIO NAME=REPLYEMAIL@RequestParameter?JOURNALMESSAGE@ VALUE="" CHECKED>No Reply/Email
                                         <INPUT TYPE=RADIO NAME=REPLYEMAIL@RequestParameter?JOURNALMESSAGE@ VALUE="REPLY">Reply
 	                                    @if?JournalInfo?EMAILALLOWED@
-	                                        <INPUT TYPE=CHECKBOX NAME=REPLYEMAIL@RequestParameter?JOURNALMESSAGE@ VALUE="EMAIL">Email
+	                                        <INPUT TYPE=RADIO NAME=REPLYEMAIL@RequestParameter?JOURNALMESSAGE@ VALUE="EMAIL">Email
 	                                    @endif@
 	                                    <TEXTAREA NAME=NEWTEXT@RequestParameter?JOURNALMESSAGE@ COLS=50 ROWS=3 WRAP></TEXTAREA>
                                     </TD>
