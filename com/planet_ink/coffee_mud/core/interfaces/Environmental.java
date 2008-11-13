@@ -170,54 +170,6 @@ public interface Environmental extends Tickable, Affectable, StatsAffecting, Msg
 	 */
 	public String miscTextFormat();
 	
-	/**
-     * Object containing a set of base, unmodified, mostly numeric fields.  The values on the fields
-     * in this object will be as they were set by the builder. This object is used as a basis for
-     * the recoverEnvStats() method.  See the EnvStats interface for information on the fields herein.
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#envStats()
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#recoverEnvStats()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
-     * @return a set of state fields
-     */
-	public EnvStats baseEnvStats();
-    /**
-     * Re-sets the object containing a set of base, unmodified, mostly numeric fields.  The values on the fields
-     * in this object will be as they were set by the builder. This object is used as a basis for
-     * the recoverEnvStats() method.  See the EnvStats interface for information on the fields herein. This
-     * method is rarely called -- the fields therein are usually set using setter methods from the EnvStats
-     * interface on the object itself.
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#envStats()
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#recoverEnvStats()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
-     * @param newBaseEnvStats a set of state fields
-     */
-    public void setBaseEnvStats(EnvStats newBaseEnvStats);
-    /**
-     * Object containing a set of current, modified, usable, mostly numeric fields.  This object is based on
-     * the object from baseEnvStats() and then updated and modified by the recoverEnvStats() method.
-     * See the EnvStats interface for information on the fields herein.
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#baseEnvStats()
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#recoverEnvStats()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
-     * @return the current set of state fields
-     */
-	public EnvStats envStats();
-    /**
-     * This method copies the baseEnvStats() object into the envStats() object, then makes repeated calls to
-     * all surrounding objects  with affectEnvStats(Environmental,EnvStats) method.   Surrounding  objects
-     * include the room where the object is located, the Ability objects in the Effects list, the Behaviors
-     * in the behaviors list, and race/charclass/area if applicable.  Those methods will then make all necessary
-     * adjustments to the values in the new envStats() object.  When it returns, envStats() will have a totally
-     * updated object.  This method must be called in code whenever the object is placed on the map, or when
-     * anything changes in its environment, such as location, effects, or other states.
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#baseEnvStats()
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#envStats()
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#addEffect(Ability)
-     * @see com.planet_ink.coffee_mud.core.interfaces.Environmental#addBehavior(Behavior)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.EnvStats
-     */
-	public void recoverEnvStats();
-
     /**
      * Whether this object instance is functionally identical to the object passed in.  Works by repeatedly
      * calling getStat on both objects and comparing the values.
