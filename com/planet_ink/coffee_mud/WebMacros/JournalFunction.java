@@ -157,7 +157,6 @@ public class JournalFunction extends StdWebMacro
 		                }
 	                }
 	            }
-	            else
 				if(parms.containsKey("DELETE"))
 				{
 					if(M==null)	
