@@ -115,7 +115,7 @@ public class JournalFunction extends StdWebMacro
 				keepProcessing=false;
 				if(lastlast!=null) num=CMath.s_int(lastlast);
 				if((num<0)||(num>=info.size()))
-					return "Function not performed -- illegal journal message specified.";
+					return "Function not performed -- illegal journal message specified.<BR>";
 			}
 			JournalsLibrary.JournalEntry entry = (JournalsLibrary.JournalEntry)info.elementAt(num);
 			String to=entry.to;
@@ -153,7 +153,7 @@ public class JournalFunction extends StdWebMacro
 			                                                  "RE: "+entry.subj,
 			                                                  replyMsg,-1);
 			                httpReq.getRequestObjects().remove("JOURNAL: "+last);
-							messages.append("Email to #"+num+" queued");
+							messages.append("Email to #"+num+" queued<BR>");
 		                }
 	                }
 	            }
