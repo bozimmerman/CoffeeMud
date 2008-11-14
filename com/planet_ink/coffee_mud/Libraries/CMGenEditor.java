@@ -954,7 +954,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     }
 
     public void genDescription(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException
-    {   E.setDescription(CMLib.genEd().prompt(mob,E.description(),showNumber,showFlag,"Description",true,false,null));}
+    {   E.setDescription(CMLib.genEd().prompt(mob,E.description(),showNumber,showFlag,"Description",true,true,null));}
 
     protected void genNotes(MOB mob, MOB E, int showNumber, int showFlag) throws IOException
     {
@@ -987,7 +987,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     public void genDisplayText(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        mob.tell(showNumber+". Display: '"+E.displayText()+"'.");
+        if(mob.session()!=null)
+        	mob.session().rawPrint(showNumber+". Display: '"+E.displayText()+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         String newName=null;
         if(E instanceof Item)
