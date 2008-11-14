@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -85,7 +86,10 @@ public class Knock extends StdCommand
 				{
 					Vector V=new Vector();
 					V.addElement(mob.location());
-					CMLib.tracking().getRadiantRooms(R,V,true,false,false,false,false,null,5,null);
+					TrackingLibrary.TrackingFlags flags;
+					flags = new TrackingLibrary.TrackingFlags()
+							.add(TrackingLibrary.TrackingFlag.OPENONLY);
+					CMLib.tracking().getRadiantRooms(R,V,flags,null,5,null);
 					V.removeElement(mob.location());
 					for(int v=0;v<V.size();v++)
 					{

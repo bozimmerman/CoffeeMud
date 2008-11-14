@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -143,8 +144,12 @@ public class Chant_LocatePlants extends Chant
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
+		TrackingLibrary.TrackingFlags flags;
+		flags = new TrackingLibrary.TrackingFlags()
+				.add(TrackingLibrary.TrackingFlag.NOAIR)
+				.add(TrackingLibrary.TrackingFlag.NOWATER);
 		Vector rooms=new Vector();
-		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,true,true,50);
+		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
 		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
@@ -153,7 +158,13 @@ public class Chant_LocatePlants extends Chant
 		}
 
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findBastardTheBestWay(target.location(),rooms,false,false,true,true,false,50);
+		{
+			//TrackingLibrary.TrackingFlags flags;
+			flags = new TrackingLibrary.TrackingFlags()
+					.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+					.add(TrackingLibrary.TrackingFlag.NOAIR);
+			theTrail=CMLib.tracking().findBastardTheBestWay(target.location(),rooms,flags,50);
+		}
 
 		if((success)&&(theTrail!=null))
 		{

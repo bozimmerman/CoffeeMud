@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -58,7 +59,10 @@ public class Spell_DetectSentience extends Spell
 				StringBuffer lines=new StringBuffer("^x");
 				lines.append(CMStrings.padRight("Name",25)+"| ");
 				lines.append(CMStrings.padRight("Location",17)+"^.^N\n\r");
-				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,true,false,false,false,35+this.getXMAXRANGELevel(mob));
+				TrackingLibrary.TrackingFlags flags;
+				flags = new TrackingLibrary.TrackingFlags()
+						.add(TrackingLibrary.TrackingFlag.AREAONLY);
+				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,35+this.getXMAXRANGELevel(mob));
 				if(!checkSet.contains(mob.location())) checkSet.addElement(mob.location());
                 CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.MASK_ALWAYS|CMMsg.MSG_CAST,null);
 				for(Enumeration r=checkSet.elements();r.hasMoreElements();)

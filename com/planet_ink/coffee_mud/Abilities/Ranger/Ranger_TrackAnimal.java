@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -166,8 +167,15 @@ public class Ranger_TrackAnimal extends StdAbility
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
+		TrackingLibrary.TrackingFlags flags;
+		flags=new TrackingLibrary.TrackingFlags()
+			.add(TrackingLibrary.TrackingFlag.OPENONLY)
+			.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+			.add(TrackingLibrary.TrackingFlag.NOAIR)
+			.add(TrackingLibrary.TrackingFlag.NOWATER);
+		
 		Vector rooms=new Vector();
-		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,false,true,true,true,75+(2*getXLEVELLevel(mob)));
+		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,75+(2*getXLEVELLevel(mob)));
 		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 		{
 			Room R=CMLib.map().getRoom((Room)r.nextElement());
@@ -176,7 +184,7 @@ public class Ranger_TrackAnimal extends StdAbility
 		}
 
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,true,false,true,true,true,75+(2*getXLEVELLevel(mob)));
+			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,flags,75+(2*getXLEVELLevel(mob)));
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))

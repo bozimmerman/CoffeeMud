@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -138,7 +139,14 @@ public class Thief_Safehouse extends ThiefSkill
         }
         if(!isGoodSafehouse(target))
         {
-            Vector V=CMLib.tracking().getRadiantRooms(target,true,true,true,true,true,50+(2*getXLEVELLevel(mob)));
+    		TrackingLibrary.TrackingFlags flags;
+    		flags = new TrackingLibrary.TrackingFlags()
+    				.add(TrackingLibrary.TrackingFlag.OPENONLY)
+    				.add(TrackingLibrary.TrackingFlag.AREAONLY)
+    				.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+    				.add(TrackingLibrary.TrackingFlag.NOAIR)
+    				.add(TrackingLibrary.TrackingFlag.NOWATER);
+            Vector V=CMLib.tracking().getRadiantRooms(target,flags,50+(2*getXLEVELLevel(mob)));
             Room R=null;
             int v=0;
             for(;v<V.size();v++)
@@ -150,7 +158,7 @@ public class Thief_Safehouse extends ThiefSkill
             mob.tell("A place like this can't be a safehouse.");
             if((isGoodSafehouse(R))&&(!isLawHere(R)))
             {
-                V=CMLib.tracking().findBastardTheBestWay(target,CMParms.makeVector(R),true,true,true,true,true,50+(2*getXLEVELLevel(mob)));
+                V=CMLib.tracking().findBastardTheBestWay(target,CMParms.makeVector(R),flags,50+(2*getXLEVELLevel(mob)));
                 StringBuffer trail=new StringBuffer("");
                 int dir=CMLib.tracking().trackNextDirectionFromHere(V,target,true);
                 while(target!=R)

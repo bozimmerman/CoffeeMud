@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -59,7 +60,10 @@ public class Chant_SenseSentience extends Chant
 				StringBuffer lines=new StringBuffer("^x");
 				lines.append(CMStrings.padRight("Name",25)+"| ");
 				lines.append(CMStrings.padRight("Location",17)+"^.^N\n\r");
-				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,true,false,false,false,50);
+				TrackingLibrary.TrackingFlags flags;
+				flags = new TrackingLibrary.TrackingFlags()
+						.add(TrackingLibrary.TrackingFlag.AREAONLY);
+				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
 				if(!checkSet.contains(mob.location())) checkSet.addElement(mob.location());
 				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 				{

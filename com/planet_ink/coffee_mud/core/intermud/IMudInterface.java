@@ -404,6 +404,23 @@ public class IMudInterface implements ImudServices, Serializable
 				}catch(Exception e){Log.errOut("IMudClient",e);}
 			}
 			break;
+		case Packet.CHAN_USER_REQ:
+			{
+				ChannelUserRequest wk=(ChannelUserRequest)packet;
+				ChannelUserReply wkr=new ChannelUserReply();
+				wkr.target_name=wk.sender_name;
+				wkr.target_mud=wk.sender_mud;
+				wkr.userRequested=wk.userToRequest;
+				MOB M=CMLib.players().getLoadPlayer(wk.userToRequest);
+				if(M!=null) {
+					wkr.userVisibleName = M.name();
+					wkr.gender=(char)M.charStats().getStat(CharStats.STAT_GENDER);
+					try{
+						wkr.send();
+					}catch(Exception e){Log.errOut("IMudClient",e);}
+				}
+			}
+			break;
 		case Packet.WHO_REQUEST:
 			{
 				WhoPacket wk=(WhoPacket)packet;

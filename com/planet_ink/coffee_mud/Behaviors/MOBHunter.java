@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -69,7 +70,14 @@ public class MOBHunter extends ActiveTicker
 	{
 		MOB prey=null;
 		Vector rooms=new Vector();
-		CMLib.tracking().getRadiantRooms(mob.location(),rooms,true,true,true,true,true,null,radius,null);
+		TrackingLibrary.TrackingFlags flags;
+		flags = new TrackingLibrary.TrackingFlags()
+				.add(TrackingLibrary.TrackingFlag.OPENONLY)
+				.add(TrackingLibrary.TrackingFlag.AREAONLY)
+				.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+				.add(TrackingLibrary.TrackingFlag.NOAIR)
+				.add(TrackingLibrary.TrackingFlag.NOWATER);
+		CMLib.tracking().getRadiantRooms(mob.location(),rooms,flags,null,radius,null);
 		for(int r=0;r<rooms.size();r++)
 		{
 			Room R=(Room)rooms.elementAt(r);

@@ -480,6 +480,16 @@ public class Intermud implements Runnable, Persistent, Serializable
 						Log.errOut("Intermud","1-"+e.getMessage());
                     }
                 }
+                else if( type.equals("chan-user-req") ) {
+                    try {
+                        ChannelUserRequest p = new ChannelUserRequest(data);
+
+                        intermud.receive(p);
+                    }
+                    catch( InvalidPacketException e ) {
+						Log.errOut("Intermud","1-"+e.getMessage());
+                    }
+                }
                 else if( type.equals("channel-add") ) {
                     try {
                         ChannelAdd p = new ChannelAdd(data);
@@ -513,6 +523,16 @@ public class Intermud implements Runnable, Persistent, Serializable
                 else if( type.equals("chan-who-reply") ) {
                     try {
                         ChannelWhoReply p = new ChannelWhoReply(data);
+
+                        intermud.receive(p);
+                    }
+                    catch( InvalidPacketException e ) {
+						Log.errOut("Intermud","5-"+e.getMessage());
+                    }
+                }
+                else if( type.equals("chan-user-reply") ) {
+                    try {
+                        ChannelUserReply p = new ChannelUserReply(data);
 
                         intermud.receive(p);
                     }

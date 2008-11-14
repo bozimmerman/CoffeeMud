@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -197,7 +198,11 @@ public class ProtectedCitizens extends ActiveTicker
 		if(assistance>=maxAssistance)
 			return true;
 
-        CMLib.tracking().getRadiantRooms(thisRoom,rooms,true,true,false,false,false,null,radius,null);
+		TrackingLibrary.TrackingFlags flags;
+		flags = new TrackingLibrary.TrackingFlags()
+				.add(TrackingLibrary.TrackingFlag.OPENONLY)
+				.add(TrackingLibrary.TrackingFlag.AREAONLY);
+        CMLib.tracking().getRadiantRooms(thisRoom,rooms,flags,null,radius,null);
 		for(int r=0;r<rooms.size();r++)
 		{
 			Room R=(Room)rooms.elementAt(r);

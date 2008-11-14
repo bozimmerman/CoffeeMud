@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -288,14 +289,15 @@ public class Patroller extends ActiveTicker
 				    tickStatus=Tickable.STATUS_MISC+8;
 					if((direction<0)||(thatRoom==null))
 			        {
-			            correction=CMLib.tracking().findBastardTheBestWay(thisRoom,
-                                    			                    	  CMParms.makeVector(R),
-                                    			                    	  ticking instanceof Item,
-                                    			                    	  false,
-                                    			                    	  true,
-                                    			                    	  !airOk,
-                                    			                    	  !waterOk,
-                                    			                    	  diameter);
+						TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+						if(ticking instanceof Item)
+							flags.add(TrackingLibrary.TrackingFlag.OPENONLY);
+						flags.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+						if(!airOk)
+							flags.add(TrackingLibrary.TrackingFlag.NOAIR);
+						if(!waterOk)
+							flags.add(TrackingLibrary.TrackingFlag.NOWATER);
+			            correction=CMLib.tracking().findBastardTheBestWay(thisRoom,CMParms.makeVector(R),flags,diameter);
 					    tickStatus=Tickable.STATUS_MISC+9;
 			            if(correction!=null)
 				            direction=CMLib.tracking().trackNextDirectionFromHere(correction,thisRoom,ticking instanceof Item);

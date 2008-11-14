@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -54,7 +55,10 @@ public class Prayer_Position extends Prayer
 	public String trailTo(Room R1, Room R2)
 	{
 		Vector set=new Vector();
-		CMLib.tracking().getRadiantRooms(R1,set,false,false,true,false,false,R2,Integer.MAX_VALUE,null);
+		TrackingLibrary.TrackingFlags flags;
+		flags = new TrackingLibrary.TrackingFlags()
+				.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+		CMLib.tracking().getRadiantRooms(R1,set,flags,R2,Integer.MAX_VALUE,null);
 		int foundAt=-1;
 		for(int i=0;i<set.size();i++)
 		{

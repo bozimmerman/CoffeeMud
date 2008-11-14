@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -178,8 +179,11 @@ public class Chant_FindMate extends Chant
 
 		boolean success=proficiencyCheck(mob,0,auto);
 
+		TrackingLibrary.TrackingFlags flags;
+		flags = new TrackingLibrary.TrackingFlags()
+				.add(TrackingLibrary.TrackingFlag.OPENONLY);
 		Vector rooms=new Vector();
-		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,false,false,false,false,50);
+		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
 		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
@@ -192,8 +196,14 @@ public class Chant_FindMate extends Chant
 			}
 		}
 		checkSet=null;
+		//TrackingLibrary.TrackingFlags flags;
+		flags = new TrackingLibrary.TrackingFlags()
+				.add(TrackingLibrary.TrackingFlag.OPENONLY)
+				.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+				.add(TrackingLibrary.TrackingFlag.NOAIR)
+				.add(TrackingLibrary.TrackingFlag.NOWATER);
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,true,false,true,true,true,50);
+			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,flags,50);
 
 		if((success)&&(theTrail!=null))
 		{

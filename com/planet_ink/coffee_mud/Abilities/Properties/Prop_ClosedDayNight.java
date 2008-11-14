@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -168,7 +169,8 @@ public class Prop_ClosedDayNight extends Property
 			MOB mob=(MOB)affected;
 			if(mob.location()!=null)
 			{
-        		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,25);
+				TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+        		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,25);
         		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
         		{
         			Room R2=CMLib.map().getRoom((Room)r.nextElement());

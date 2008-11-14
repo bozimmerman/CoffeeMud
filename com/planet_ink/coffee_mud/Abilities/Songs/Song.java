@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -186,7 +187,12 @@ public class Song extends StdAbility
     	if(depth==0) return CMParms.makeVector(invoker().location());
     	Vector rooms=new Vector();
         // needs to be area-only, because of the aggro-tracking rule
-    	CMLib.tracking().getRadiantRooms(invoker().location(), rooms, true, true, false, true, false, null, depth, null);
+		TrackingLibrary.TrackingFlags flags;
+		flags = new TrackingLibrary.TrackingFlags()
+				.add(TrackingLibrary.TrackingFlag.OPENONLY)
+				.add(TrackingLibrary.TrackingFlag.AREAONLY)
+				.add(TrackingLibrary.TrackingFlag.NOAIR);
+    	CMLib.tracking().getRadiantRooms(invoker().location(), rooms,flags, null, depth, null);
     	if(!rooms.contains(invoker().location()))
     		rooms.addElement(invoker().location());
     	return rooms;

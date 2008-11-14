@@ -10,6 +10,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -85,7 +86,11 @@ public class SoundEcho extends StdAbility
 				msg.addTrailerMsg(echoMsg);
 				echoMsg=CMClass.getMsg(msg.source(),msg.target(),msg.tool(),CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null,msg.othersCode(),str);
 				Vector rooms=new Vector();
-				CMLib.tracking().getRadiantRooms(sourceRoom,rooms,true,true,false,false,false,null,range/2,null);
+				TrackingLibrary.TrackingFlags flags;
+				flags = new TrackingLibrary.TrackingFlags()
+						.add(TrackingLibrary.TrackingFlag.OPENONLY)
+						.add(TrackingLibrary.TrackingFlag.AREAONLY);
+				CMLib.tracking().getRadiantRooms(sourceRoom,rooms,flags,null,range/2,null);
 				Room room=null;
 				for(int v=0;v<rooms.size();v++)
 				{
@@ -104,7 +109,7 @@ public class SoundEcho extends StdAbility
 					}
 				}
 				rooms.clear();
-				CMLib.tracking().getRadiantRooms(sourceRoom,rooms,true,true,false,false,false,null,range,null);
+				CMLib.tracking().getRadiantRooms(sourceRoom,rooms,flags,null,range,null);
 				for(int v=0;v<rooms.size();v++)
 				{
 					room=(Room)rooms.elementAt(v);

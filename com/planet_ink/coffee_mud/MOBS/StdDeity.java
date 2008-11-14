@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -1006,7 +1007,8 @@ public class StdDeity extends StdMOB implements Deity
         }
         Room R=null;
         MOB M=null;
-        Vector V=CMLib.tracking().getRadiantRooms(room,false,false,false,false,false,5+(mob.envStats().level()/5));
+		TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+        Vector V=CMLib.tracking().getRadiantRooms(room,flags,5+(mob.envStats().level()/5));
         for(int v=0;v<V.size();v++)
         {
             R=(Room)V.elementAt(v);

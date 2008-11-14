@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -81,7 +82,12 @@ public class PlantLore extends CommonSkill
 					{
 						StringBuffer str=new StringBuffer("");
 						Vector V=new Vector();
-						CMLib.tracking().getRadiantRooms(room,V,true,true,false,true,false,null,2+(getXLEVELLevel(mob)/2),null);
+						TrackingLibrary.TrackingFlags flags;
+						flags = new TrackingLibrary.TrackingFlags()
+								.add(TrackingLibrary.TrackingFlag.OPENONLY)
+								.add(TrackingLibrary.TrackingFlag.AREAONLY)
+								.add(TrackingLibrary.TrackingFlag.NOAIR);
+						CMLib.tracking().getRadiantRooms(room,V,flags,null,2+(getXLEVELLevel(mob)/2),null);
 						for(int v=0;v<V.size();v++)
 						{
 							Room R=(Room)V.elementAt(v);

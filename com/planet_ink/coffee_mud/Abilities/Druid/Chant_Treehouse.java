@@ -84,8 +84,14 @@ public class Chant_Treehouse extends Chant
 			mob.tell("There is already a treehouse above here!");
 			return false;
 		}
-		if((mob.location().domainType()!=Room.DOMAIN_OUTDOORS_WOODS)
-        &&(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE))
+		boolean isATree=((mob.location().domainType()==Room.DOMAIN_OUTDOORS_WOODS)
+					   ||(mob.location().domainType()!=Room.DOMAIN_OUTDOORS_JUNGLE));
+		Item myPlant=Druid_MyPlants.myPlant(mob.location(),mob,0);
+		if((myPlant != null) &&((myPlant.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN))
+			isATree=true;
+		if((mob.location().myResource()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN)
+			isATree=true;
+		if(!isATree)
 		{
 			mob.tell("There really aren't enough trees here to chant to.");
 			return false;

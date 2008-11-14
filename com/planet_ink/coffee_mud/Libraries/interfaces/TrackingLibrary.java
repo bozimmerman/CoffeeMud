@@ -31,42 +31,13 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public interface TrackingLibrary extends CMLibrary
 {
-    public Vector findBastardTheBestWay(Room location,
-                                        Room destRoom,
-                                        boolean openOnly,
-                                        boolean areaOnly,
-                                        boolean noEmptyGrids,
-                                        boolean noAir,
-                                        boolean noWater,
-                                        int maxRadius);
-    public Vector findBastardTheBestWay(Room location,
-                                        Vector destRooms,
-                                        boolean openOnly,
-                                        boolean areaOnly,
-                                        boolean noEmptyGrids,
-                                        boolean noAir,
-                                        boolean noWater,
-                                        int maxRadius);
+    public Vector findBastardTheBestWay(Room location, Room destRoom, TrackingFlags flags, int maxRadius);
+    public Vector findBastardTheBestWay(Room location, Vector destRooms, TrackingFlags flags, int maxRadius);
     public int trackNextDirectionFromHere(Vector theTrail, Room location, boolean openOnly);
     public void stopTracking(MOB mob);
     public int radiatesFromDir(Room room, Vector rooms);
-    public void getRadiantRooms(Room room,
-                                Vector rooms,
-                                boolean openOnly,
-                                boolean areaOnly,
-                                boolean noEmptyGrids,
-                                boolean noAir,
-                                boolean noWater,
-                                Room radiateTo,
-                                int maxDepth,
-                                HashSet ignoreRooms);
-	public Vector getRadiantRooms(Room room,
-								  boolean openOnly,
-								  boolean areaOnly,
-								  boolean noEmptyGrids,
-								  boolean noAir,
-								  boolean noWater,
-								  int maxDepth);
+    public void getRadiantRooms(Room room, Vector rooms, TrackingFlags flags, Room radiateTo, int maxDepth, HashSet ignoreRooms);
+	public Vector getRadiantRooms(Room room, TrackingFlags flags, int maxDepth);
     public boolean beMobile(MOB mob,
                             boolean dooropen,
                             boolean wander,
@@ -83,4 +54,11 @@ public interface TrackingLibrary extends CMLibrary
     public int findRoomDir(MOB mob, Room R);
 	public Vector findAllTrails(Room from, Room to, Vector radiantTrail);
 	public Vector findAllTrails(Room from, Vector tos, Vector radiantTrail);
+	
+	public static enum TrackingFlag {NOHOMES,OPENONLY,AREAONLY,NOEMPTYGRIDS,NOAIR,NOWATER};
+	
+	public static class TrackingFlags extends HashSet {
+		private static final long serialVersionUID = 1L;
+		public TrackingFlags add(TrackingFlag flag) { super.add(flag); return this;}
+	}
 }

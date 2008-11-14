@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -278,12 +279,16 @@ public class Skill_Track extends StdSkill
 			if(R!=null) rooms.addElement(R);
 		}
 
+		TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+		if(!(allowAir||allowWater)) flags.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
+		if(!allowAir) flags.add(TrackingLibrary.TrackingFlag.NOAIR);
+		if(!allowWater) flags.add(TrackingLibrary.TrackingFlag.NOWATER);
 	    tickStatus=Tickable.STATUS_MISC6+5;
 		if(rooms.size()<=0)
 		{
 		    try
 		    {
-				Vector checkSet=CMLib.tracking().getRadiantRooms(thisRoom,false,false,!(allowAir||allowWater),!allowAir,!allowWater,radius);
+				Vector checkSet=CMLib.tracking().getRadiantRooms(thisRoom,flags,radius);
 				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 				{
 					Room R=CMLib.map().getRoom((Room)r.nextElement());
@@ -304,7 +309,7 @@ public class Skill_Track extends StdSkill
 				theTrail=(Vector)cachedPaths.get(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID((Room)rooms.firstElement()));
 		    tickStatus=Tickable.STATUS_MISC6+9;
 			if(theTrail==null)
-				theTrail=CMLib.tracking().findBastardTheBestWay(thisRoom,rooms,false,false,!(allowAir||allowWater),!allowAir,!allowWater,radius);
+				theTrail=CMLib.tracking().findBastardTheBestWay(thisRoom,rooms,flags,radius);
 		    tickStatus=Tickable.STATUS_MISC6+10;
 			if((cacheCode==1)&&(rooms.size()==1)&&(theTrail!=null))
 				cachedPaths.put(CMLib.map().getExtendedRoomID(thisRoom)+"->"+CMLib.map().getExtendedRoomID((Room)rooms.firstElement()),theTrail);

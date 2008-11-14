@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -106,8 +107,11 @@ public class Concierge extends StdBehavior
 			}
 		if(stringsToDo!=null)
 		{
+			TrackingLibrary.TrackingFlags flags;
+			flags = new TrackingLibrary.TrackingFlags()
+					.add(TrackingLibrary.TrackingFlag.AREAONLY);
 			Vector roomsInRange=
-				CMLib.tracking().getRadiantRooms(observer.location(),false,true,false,false,false,50);
+				CMLib.tracking().getRadiantRooms(observer.location(),flags,50);
 			Room R=null;
 			String place=null;
 			for(int r=0;r<stringsToDo.size();r++)

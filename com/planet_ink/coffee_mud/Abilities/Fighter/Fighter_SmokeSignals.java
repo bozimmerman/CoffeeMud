@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -131,7 +132,8 @@ public class Fighter_SmokeSignals extends FighterSkill
 				mob.location().send(mob,msg);
 				String str=CMParms.combine(commands,0);
 				CMMsg msg2=CMClass.getMsg(mob,null,this,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,str,CMMsg.MSG_OK_VISUAL,"You see some smoke signals in the distance.");
-				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,50);
+				TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
 				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 				{
 					R=(Room)r.nextElement();

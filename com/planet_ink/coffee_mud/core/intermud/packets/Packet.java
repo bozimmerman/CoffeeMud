@@ -55,6 +55,8 @@ public class Packet {
 	final static public int CHAN_ADD     = 11;
 	final static public int CHAN_REMOVE  = 12;
 	final static public int CHAN_LISTEN  = 13;
+	final static public int CHAN_USER_REQ= 14;
+	final static public int CHAN_USER_REP= 15;
 
     public String sender_mud = null;
     public String sender_name = null;

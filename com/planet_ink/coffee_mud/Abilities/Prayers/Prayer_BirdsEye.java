@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -58,7 +59,11 @@ public class Prayer_BirdsEye extends Prayer
 				if(I!=null)
 				{
 					Vector set=new Vector();
-					CMLib.tracking().getRadiantRooms(mob.location(),set,false,false,true,true,false,null,2,null);
+					TrackingLibrary.TrackingFlags flags;
+					flags = new TrackingLibrary.TrackingFlags()
+							.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+							.add(TrackingLibrary.TrackingFlag.NOAIR);
+					CMLib.tracking().getRadiantRooms(mob.location(),set,flags,null,2,null);
 					StringBuffer str=new StringBuffer("");
 					for(int i=0;i<set.size();i++)
 						str.append(CMLib.map().getExtendedRoomID((Room)set.elementAt(i))+";");

@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -139,7 +140,8 @@ public class Prayer_HuntEvil extends Prayer
 		boolean success=proficiencyCheck(mob,0,auto);
 
 		Vector rooms=new Vector();
-		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,50);
+		TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50);
 		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 		{
 			Room R=(Room)r.nextElement();
@@ -148,7 +150,7 @@ public class Prayer_HuntEvil extends Prayer
 		}
 
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,false,false,false,false,false,50);
+			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,flags,50);
 
 		MOB target=null;
 		if((theTrail!=null)&&(theTrail.size()>0))

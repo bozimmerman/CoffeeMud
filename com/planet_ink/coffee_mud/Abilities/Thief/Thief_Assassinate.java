@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -262,7 +263,14 @@ public class Thief_Assassinate extends ThiefSkill
 		{
 		    try
 		    {
-				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),true,givenTarget!=null&&auto&&mob.isMonster(),true,true,true,50+(2*getXLEVELLevel(mob)));
+				TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+				if(givenTarget!=null&&auto&&mob.isMonster())
+					flags.add(TrackingLibrary.TrackingFlag.AREAONLY);
+				flags.add(TrackingLibrary.TrackingFlag.OPENONLY)
+					 .add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+					 .add(TrackingLibrary.TrackingFlag.NOAIR)
+					 .add(TrackingLibrary.TrackingFlag.NOWATER);
+				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50+(2*getXLEVELLevel(mob)));
 				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 				{
 					Room R=CMLib.map().getRoom((Room)r.nextElement());
@@ -272,8 +280,15 @@ public class Thief_Assassinate extends ThiefSkill
 		    }catch(NoSuchElementException nse){}
 		}
 
+		TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+		flags.add(TrackingLibrary.TrackingFlag.OPENONLY)
+			 .add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+			 .add(TrackingLibrary.TrackingFlag.NOAIR)
+			 .add(TrackingLibrary.TrackingFlag.NOWATER);
+		if(givenTarget!=null&&auto&&mob.isMonster())
+			flags.add(TrackingLibrary.TrackingFlag.AREAONLY);
 		if(rooms.size()>0)
-			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,true,givenTarget!=null&&auto&&mob.isMonster(),true,true,true,50+(2*getXLEVELLevel(mob)));
+			theTrail=CMLib.tracking().findBastardTheBestWay(mob.location(),rooms,flags,50+(2*getXLEVELLevel(mob)));
 
 		if((tracking==null)&&(theTrail!=null)&&(theTrail.size()>0))
 			tracking=((Room)theTrail.firstElement()).fetchInhabitant(mobName);

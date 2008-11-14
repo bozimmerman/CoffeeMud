@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -211,7 +212,11 @@ public class Thief_UndergroundConnections extends ThiefSkill
 			return false;
 		}
 
-		Vector trail=CMLib.tracking().getRadiantRooms(thisRoom,false,false,true,true,true,30+(2*getXLEVELLevel(mob)));
+		TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+		flags.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+			 .add(TrackingLibrary.TrackingFlag.NOAIR)
+			 .add(TrackingLibrary.TrackingFlag.NOWATER);
+		Vector trail=CMLib.tracking().getRadiantRooms(thisRoom,flags,30+(2*getXLEVELLevel(mob)));
 		Vector finalTos=new Vector();
         Room R=null;
 		for(int c=0;c<trail.size();c++)

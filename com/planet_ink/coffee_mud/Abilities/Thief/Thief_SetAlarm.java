@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -88,8 +89,12 @@ public class Thief_SetAlarm extends ThiefSkill implements Trap
 		if(sprung)
 		{
 			Vector rooms=new Vector();
-			CMLib.tracking().getRadiantRooms(room1,rooms,true,true,false,false,false,null,10+(getXLEVELLevel(invoker())*2),null);
-			CMLib.tracking().getRadiantRooms(room2,rooms,true,true,false,false,false,null,10+(getXLEVELLevel(invoker())*2),null);
+			TrackingLibrary.TrackingFlags flags;
+			flags = new TrackingLibrary.TrackingFlags()
+					.add(TrackingLibrary.TrackingFlag.OPENONLY)
+					.add(TrackingLibrary.TrackingFlag.AREAONLY);
+			CMLib.tracking().getRadiantRooms(room1,rooms,flags,null,10+(getXLEVELLevel(invoker())*2),null);
+			CMLib.tracking().getRadiantRooms(room2,rooms,flags,null,10+(getXLEVELLevel(invoker())*2),null);
 			Vector mobsDone=new Vector();
 			room1.showHappens(CMMsg.MSG_NOISE,"A horrible alarm is going off here.");
 			room2.showHappens(CMMsg.MSG_NOISE,"A horrible alarm is going off here.");

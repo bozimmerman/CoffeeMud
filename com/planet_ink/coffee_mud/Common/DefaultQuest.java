@@ -1071,7 +1071,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                         Vector choices=new Vector();
                         Vector useThese=null;
                         if(range>0)
-                        	useThese=CMLib.tracking().getRadiantRooms(q.room,false,true,false,false,false,range);
+                        {
+            				TrackingLibrary.TrackingFlags flags;
+            				flags = new TrackingLibrary.TrackingFlags()
+            						.add(TrackingLibrary.TrackingFlag.AREAONLY);
+                        	useThese=CMLib.tracking().getRadiantRooms(q.room,flags,range);
+                        }
                         for(int n=0;n<names.size();n++)
                         {
                             String localeName=((String)names.elementAt(n)).toUpperCase();
@@ -1193,7 +1198,12 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                             names.addElement(CMParms.combine(p,2));
                         Vector useThese=null;
                         if(range>0)
-                        	useThese=CMLib.tracking().getRadiantRooms(q.room,false,true,false,false,false,range);
+                        {
+            				TrackingLibrary.TrackingFlags flags;
+            				flags = new TrackingLibrary.TrackingFlags()
+            						.add(TrackingLibrary.TrackingFlag.AREAONLY);
+                        	useThese=CMLib.tracking().getRadiantRooms(q.room,flags,range);
+                        }
                         for(int n=0;n<names.size();n++)
                         {
                             String localeName=((String)names.elementAt(n)).toUpperCase();

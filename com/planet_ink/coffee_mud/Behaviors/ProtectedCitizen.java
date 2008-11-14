@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -144,7 +145,11 @@ public class ProtectedCitizen extends ActiveTicker
 
 		Room thisRoom=mob.location();
 		Vector V=new Vector();
-		CMLib.tracking().getRadiantRooms(thisRoom,V,true,!wander,false,false,false,null,radius,null);
+		TrackingLibrary.TrackingFlags flags;
+		flags = new TrackingLibrary.TrackingFlags()
+				.add(TrackingLibrary.TrackingFlag.OPENONLY);
+		if(!wander) flags.add(TrackingLibrary.TrackingFlag.AREAONLY);
+		CMLib.tracking().getRadiantRooms(thisRoom,V,flags,null,radius,null);
 		for(int v=0;v<V.size();v++)
 		{
 			Room R=(Room)V.elementAt(v);

@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -128,7 +129,12 @@ public class Skill_RegionalAwareness extends StdSkill
 				Room[][] rmap=new Room[diameter][diameter];
 				Vector rooms=new Vector();
 				HashSet closedPaths=new HashSet();
-				CMLib.tracking().getRadiantRooms(mob.location(),rooms,true,false,true,true,false,null,diameter,null);
+				TrackingLibrary.TrackingFlags flags;
+				flags = new TrackingLibrary.TrackingFlags()
+						.add(TrackingLibrary.TrackingFlag.OPENONLY)
+						.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS)
+						.add(TrackingLibrary.TrackingFlag.NOAIR);
+				CMLib.tracking().getRadiantRooms(mob.location(),rooms,flags,null,diameter,null);
 				rmap[diameter/2][diameter/2]=mob.location();
 				map[diameter/2][diameter/2]='*';
 				for(int i=0;i<rooms.size();i++)

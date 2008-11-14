@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -91,7 +92,8 @@ public class Prayer_MassCureDisease extends Prayer implements MendingSkill
 			{
 				mob.location().send(mob,msg);
                 boolean worked=false;
-        		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,100);
+    			TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+        		Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,100);
         		for(Enumeration r=checkSet.elements();r.hasMoreElements();)
         		{
         			Room R=CMLib.map().getRoom((Room)r.nextElement());

@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -54,7 +55,10 @@ public class Chant_SweetScent extends Chant
 			{
 				Room room=(Room)I.owner();
 				Vector rooms=new Vector();
-				CMLib.tracking().getRadiantRooms(room,rooms,true,false,false,false,false,null,10,null);
+				TrackingLibrary.TrackingFlags flags;
+				flags = new TrackingLibrary.TrackingFlags()
+						.add(TrackingLibrary.TrackingFlag.OPENONLY);
+				CMLib.tracking().getRadiantRooms(room,rooms,flags,null,10,null);
 				for(int i=0;i<room.numInhabitants();i++)
 				{
 					MOB M=room.fetchInhabitant(i);

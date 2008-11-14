@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -43,6 +44,7 @@ public class TrailTo extends StdCommand
 	{
 		int radius=Integer.MAX_VALUE;
         HashSet ignoreRooms=null;
+        TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags();
         for(int c=0;c<commands.size();c++)
         {
             String s=(String)commands.elementAt(c);
@@ -70,9 +72,15 @@ public class TrailTo extends StdCommand
                     if(!ignoreRooms.contains(R))ignoreRooms.add(R);
                 }
             }
+            else
+            if(s.toUpperCase().startsWith("NOHOME"))
+            {
+                commands.removeElementAt(c);
+                flags.add(TrackingLibrary.TrackingFlag.NOHOMES);
+            }
         }
 		String where=CMParms.combine(commands,1);
-		if(where.length()==0) return "Trail to where? Try a Room ID, 'everyroom', or 'everyarea'.  You can also use the 'areanames', 'ignorerooms=', and 'confirm!' flags.";
+		if(where.length()==0) return "Trail to where? Try a Room ID, 'everyroom', or 'everyarea'.  You can also use the 'areanames', 'nohomes', 'ignorerooms=', and 'confirm!' flags.";
 		if(R1==null) return "Where are you?";
 		boolean confirm=false;
         boolean areaNames=false;
@@ -93,7 +101,7 @@ public class TrailTo extends StdCommand
 			confirm=true;
 		}
 		Vector set=new Vector();
-		CMLib.tracking().getRadiantRooms(R1,set,false,false,true,false,false,null,radius,ignoreRooms);
+		CMLib.tracking().getRadiantRooms(R1,set,flags,null,radius,ignoreRooms);
 		if(where.equalsIgnoreCase("everyarea"))
 		{
 			StringBuffer str=new StringBuffer("");
@@ -176,8 +184,10 @@ public class TrailTo extends StdCommand
 				}
 			}
 		if(R2==null) return "Unable to determine '"+where+"'.";
+		TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags()
+											.add(TrackingLibrary.TrackingFlag.NOEMPTYGRIDS);
 		if(set.size()==0)
-			CMLib.tracking().getRadiantRooms(R1,set,false,false,true,false,false,R2,radius,ignoreRooms);
+			CMLib.tracking().getRadiantRooms(R1,set,flags,R2,radius,ignoreRooms);
 		int foundAt=-1;
 		for(int i=0;i<set.size();i++)
 		{

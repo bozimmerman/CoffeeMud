@@ -38,28 +38,20 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
     public String ID(){return "MUDTracker";}
     public Vector findBastardTheBestWay(Room location,
 							            Room destRoom,
-							            boolean openOnly,
-							            boolean areaOnly,
-							            boolean noEmptyGrids,
-							            boolean noAir,
-							            boolean noWater,
+							            TrackingFlags flags,
 							            int maxRadius)
     {
-    	return findBastardTheBestWay(location,destRoom,openOnly,areaOnly,noEmptyGrids,noAir,noWater,maxRadius,null);
+    	return findBastardTheBestWay(location,destRoom,flags,maxRadius,null);
     }
     public Vector findBastardTheBestWay(Room location,
                                         Room destRoom,
-                                        boolean openOnly,
-                                        boolean areaOnly,
-                                        boolean noEmptyGrids,
-                                        boolean noAir,
-                                        boolean noWater,
+                                        TrackingFlags flags,
                                         int maxRadius,
                                         Vector radiant)
    {
         if((radiant==null)||(radiant.size()==0)){
         	radiant=new Vector();
-            getRadiantRooms(location,radiant,openOnly,areaOnly,noEmptyGrids,noAir,noWater,destRoom,maxRadius,null);
+            getRadiantRooms(location,radiant,flags,destRoom,maxRadius,null);
             if(!radiant.contains(location))
                 radiant.insertElementAt(location,0);
         }
@@ -131,11 +123,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 
 	public Vector findBastardTheBestWay(Room location,
 									    Vector destRooms,
-									    boolean openOnly,
-									    boolean areaOnly,
-									    boolean noEmptyGrids,
-									    boolean noAir,
-									    boolean noWater,
+									    TrackingFlags flags,
 									    int maxRadius)
 	{
 
@@ -146,14 +134,14 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
         if(destRooms.size()>1)
         {
         	radiant=new Vector();
-            getRadiantRooms(location,radiant,openOnly,areaOnly,noEmptyGrids,noAir,noWater,null,maxRadius,null);
+            getRadiantRooms(location,radiant,flags,null,maxRadius,null);
         }
         for(int i=0;(i<5)&&(destRooms.size()>0);i++)
         {
             pick=CMLib.dice().roll(1,destRooms.size(),-1);
             destRoom=(Room)destRooms.elementAt(pick);
             destRooms.removeElementAt(pick);
-            Vector thisTrail=findBastardTheBestWay(location,destRoom,openOnly,areaOnly,noEmptyGrids,noAir,noWater,maxRadius,radiant);
+            Vector thisTrail=findBastardTheBestWay(location,destRoom,flags,maxRadius,radiant);
             if((thisTrail!=null)
             &&((finalTrail==null)||(thisTrail.size()<finalTrail.size())))
                 finalTrail=thisTrail;
@@ -162,7 +150,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	    for(int r=0;r<destRooms.size();r++)
 	    {
 	        destRoom=(Room)destRooms.elementAt(r);
-            Vector thisTrail=findBastardTheBestWay(location,destRoom,openOnly,areaOnly,noEmptyGrids,noAir,noWater,maxRadius);
+            Vector thisTrail=findBastardTheBestWay(location,destRoom,flags,maxRadius);
             if((thisTrail!=null)
             &&((finalTrail==null)||(thisTrail.size()<finalTrail.size())))
                 finalTrail=thisTrail;
@@ -219,24 +207,16 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 	}
 
 	public Vector getRadiantRooms(Room room,
-								  boolean openOnly,
-								  boolean areaOnly,
-								  boolean noEmptyGrids,
-								  boolean noAir,
-								  boolean noWater,
+								  TrackingFlags flags,
 								  int maxDepth)
 	{
 		Vector V=new Vector();
-		getRadiantRooms(room,V,openOnly,areaOnly,noEmptyGrids,noAir,noWater,null,maxDepth,null);
+		getRadiantRooms(room,V,flags,null,maxDepth,null);
 		return V;
 	}
 	public void getRadiantRooms(Room room,
 							    Vector rooms,
-							    boolean openOnly,
-							    boolean areaOnly,
-							    boolean noEmptyGrids,
-							    boolean noAir,
-							    boolean noWater,
+							    TrackingFlags flags,
 							    Room radiateTo,
 							    int maxDepth,
                                 HashSet ignoreRooms)
@@ -255,6 +235,12 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 		Room R1=null;
 		Room R=null;
 		Exit E=null;
+		boolean nohomes = (flags!=null) && flags.contains(TrackingFlag.NOHOMES);
+	    boolean openOnly = (flags!=null) && flags.contains(TrackingFlag.OPENONLY);
+	    boolean areaOnly = (flags!=null) && flags.contains(TrackingFlag.AREAONLY);
+	    boolean noEmptyGrids = (flags!=null) && flags.contains(TrackingFlag.NOEMPTYGRIDS);
+	    boolean noAir = (flags!=null) && flags.contains(TrackingFlag.NOAIR);
+	    boolean noWater = (flags!=null) && flags.contains(TrackingFlag.NOWATER);
 
         int r=0;
         int d=0;
@@ -277,6 +263,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 					||((noAir)
 						&&((R.domainType()==Room.DOMAIN_INDOORS_AIR)
 						 	||(R.domainType()==Room.DOMAIN_OUTDOORS_AIR)))
+					||((nohomes)&&(CMLib.law().getLandTitle(R)!=null))
 					||((noWater)
 						&&((R.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)
 					       ||(R.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)

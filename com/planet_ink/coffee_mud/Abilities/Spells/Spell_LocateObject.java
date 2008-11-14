@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.TrackingLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -117,7 +118,8 @@ public class Spell_LocateObject extends Spell
 				Environmental item=null;
 				Room room=null;
                 ShopKeeper SK=null;
-				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),false,false,false,false,false,50+adjustedLevel(mob,asLevel));
+    			TrackingLibrary.TrackingFlags flags=new TrackingLibrary.TrackingFlags();
+				Vector checkSet=CMLib.tracking().getRadiantRooms(mob.location(),flags,50+adjustedLevel(mob,asLevel));
 				for(Enumeration r=checkSet.elements();r.hasMoreElements();)
 				{
 					room=CMLib.map().getRoom((Room)r.nextElement());
