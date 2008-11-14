@@ -1502,6 +1502,8 @@ public class DefaultSession extends Thread implements Session
 						if(input!=null)
 						{
 							lastKeystroke=System.currentTimeMillis();
+							if(input.trim().length()>0)
+								prevMsgs.add(input);
 							setAfkFlag(false);
 							CMDS=CMParms.parse(input);
 							if(CMDS.size()>0)

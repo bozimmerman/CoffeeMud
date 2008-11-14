@@ -52,6 +52,12 @@ public class Spell_ClarifyScroll extends Spell
 			return false;
 		}
 
+		if(((Scroll)target).usesRemaining()>((Scroll)target).getSpells().size())
+		{
+			mob.tell("That scroll can not be enhanced any further.");
+			return false;
+		}
+		
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 

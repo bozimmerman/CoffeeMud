@@ -2138,3 +2138,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 3. trailto supports nohomes flag now.
 4. Crafting Expertises are no longer such a hideous hit on the time required
 5. Wimpy can now accept a percentage of hit points as an argument
+6. Messing up a mending now results in a partial mend. 
+7. Clarify Scroll now has a ceiling, to help balance against mages. 
+8. New Shaman Prayer: Cleanliness
+9. Replay will now show the commands you entered also.
