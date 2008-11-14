@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.ChannelsLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -70,7 +71,7 @@ public class ChanWho extends StdCommand
 		}
 		String head="^x\n\rListening on "+channel+":^?^.^N\n\r";
 		StringBuffer buf=new StringBuffer("");
-        boolean areareq=CMLib.channels().getChannelFlags(channelInt).contains("SAMEAREA");
+        boolean areareq=CMLib.channels().getChannelFlags(channelInt).contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 		for(int s=0;s<CMLib.sessions().size();s++)
 		{
 			Session ses=CMLib.sessions().elementAt(s);

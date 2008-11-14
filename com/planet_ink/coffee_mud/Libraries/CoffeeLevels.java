@@ -134,7 +134,7 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.tell("^ZYou have ****LOST A LEVEL****^.^N\n\r\n\r"+CMProps.msp("doh.wav",60));
 		if(!mob.isMonster())
         {
-            Vector channels=CMLib.channels().getFlaggedChannelNames("LOSTLEVELS");
+            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOSTLEVELS);
             if(!CMLib.flags().isCloaked(mob))
             for(int i=0;i<channels.size();i++)
                 CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just lost a level.",true);
@@ -292,8 +292,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		if(mob.playerStats()!=null)
 		{
             mob.playerStats().setLeveledDateTime(mob.baseEnvStats().level(),room);
-            Vector channels=CMLib.channels().getFlaggedChannelNames("DETAILEDLEVELS");
-            Vector channels2=CMLib.channels().getFlaggedChannelNames("LEVELS");
+            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DETAILEDLEVELS);
+            Vector channels2=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LEVELS);
             if(!CMLib.flags().isCloaked(mob))
             for(int i=0;i<channels.size();i++)
                 CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just gained a level at "+CMLib.map().getExtendedRoomID(room)+".",true);

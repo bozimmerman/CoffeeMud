@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -101,9 +102,9 @@ public class Channel extends StdCommand
 			return false;
 		}
         
-        Vector flags=CMLib.channels().getChannelFlags(channelInt);
+        HashSet<ChannelsLibrary.ChannelFlag> flags=CMLib.channels().getChannelFlags(channelInt);
 		if((mob.getClanID().equalsIgnoreCase("")||mob.getClanRole()==Clan.POS_APPLICANT)
-        &&(flags.contains("CLANONLY")||flags.contains("CLANALLYONLY")))
+        &&(flags.contains(ChannelsLibrary.ChannelFlag.CLANONLY)||flags.contains(ChannelsLibrary.ChannelFlag.CLANALLYONLY)))
 		{
             mob.tell("You can't talk to your clan - you don't have one.");
             return false;
@@ -120,7 +121,7 @@ public class Channel extends StdCommand
 			if(que.size()>0)
 			{
 				if(num>que.size()) num=que.size();
-				boolean areareq=flags.contains("SAMEAREA");
+				boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 				for(int i=que.size()-num;i<que.size();i++)
 				{
 					CMMsg msg=(CMMsg)que.elementAt(i);

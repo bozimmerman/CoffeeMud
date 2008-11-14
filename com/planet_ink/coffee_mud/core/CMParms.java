@@ -98,13 +98,22 @@ public class CMParms
         return Combined.toString().trim();
     }
 
-    public static String combine(Vector commands, int startAt)
+    public static String combine(Vector<?> commands, int startAt)
     {
-        StringBuffer Combined=new StringBuffer("");
+        StringBuffer combined=new StringBuffer("");
         if(commands!=null)
         for(int commandIndex=startAt;commandIndex<commands.size();commandIndex++)
-            Combined.append(commands.elementAt(commandIndex).toString()+" ");
-        return Combined.toString().trim();
+            combined.append(commands.elementAt(commandIndex).toString()+" ");
+        return combined.toString().trim();
+    }
+
+    public static String combine(HashSet<?> flags, int startAt)
+    {
+        StringBuffer combined=new StringBuffer("");
+        if(flags!=null)
+        for(Iterator<?> i=flags.iterator();i.hasNext();)
+            combined.append(i.next().toString()+" ");
+        return combined.toString().trim();
     }
 
     public static Vector parse(String str)

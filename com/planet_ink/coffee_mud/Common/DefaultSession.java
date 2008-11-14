@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -1660,7 +1661,7 @@ public class DefaultSession extends Thread implements Session
                 CMLib.commands().postFlee(mob,"NOWHERE");
                 mob.makePeace();
             }
-            Vector channels=CMLib.channels().getFlaggedChannelNames("LOGOFFS");
+            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGOFFS);
             if(!CMLib.flags().isCloaked(mob))
             for(int i=0;i<channels.size();i++)
                 CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),name+" has logged out",true);

@@ -788,7 +788,7 @@ public class MOBloader
     public void DBDelete(MOB mob)
     {
         if(mob.Name().length()==0) return;
-        Vector channels=CMLib.channels().getFlaggedChannelNames("PLAYERPURGES");
+        Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.PLAYERPURGES);
         for(int i=0;i<channels.size();i++)
             CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just been deleted.",true);
         CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_PURGES);

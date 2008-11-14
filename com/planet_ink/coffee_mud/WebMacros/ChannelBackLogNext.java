@@ -73,7 +73,7 @@ public class ChannelBackLogNext extends StdWebMacro
 							return "<!--EMPTY-->";
 						return " @break@";
 					}
-					boolean areareq=CMLib.channels().getChannelFlags(channelInt).contains("SAMEAREA");
+					boolean areareq=CMLib.channels().getChannelFlags(channelInt).contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
 					CMMsg msg=(CMMsg)que.elementAt(num);
 					String str=null;
 					if((mob==msg.source())&&(msg.sourceMessage()!=null))

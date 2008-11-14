@@ -243,7 +243,7 @@ public class Clans extends StdLibrary implements ClanManager
 	
 	public void clanAnnounceAll(String msg)
 	{
-        Vector channels=CMLib.channels().getFlaggedChannelNames("CLANINFO");
+        Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
         for(int i=0;i<channels.size();i++)
             CMLib.commands().postChannel((String)channels.elementAt(i),"ALL",msg,true);
 	}
@@ -362,7 +362,7 @@ public class Clans extends StdLibrary implements ClanManager
 
     public void clanAnnounce(MOB mob, String msg)
     {
-        Vector channels=CMLib.channels().getFlaggedChannelNames("CLANINFO");
+        Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CLANINFO);
         for(int i=0;i<channels.size();i++)
             CMLib.commands().postChannel(mob,(String)channels.elementAt(i),msg,true);
     }

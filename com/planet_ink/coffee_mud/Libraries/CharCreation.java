@@ -781,7 +781,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             &&(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
                 mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
             CMLib.database().DBUpdatePlayer(mob);
-            Vector channels=CMLib.channels().getFlaggedChannelNames("NEWPLAYERS");
+            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
             for(int i=0;i<channels.size();i++)
                 CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has just been created.",true);
             CMLib.coffeeTables().bump(mob,CoffeeTableRow.STAT_LOGINS);
@@ -1002,7 +1002,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 if((CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("NEVER"))
                 &&(CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
                     mob.setBitmap(mob.getBitmap()-MOB.ATT_PLAYERKILL);
-                Vector channels=CMLib.channels().getFlaggedChannelNames("LOGINS");
+                Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGINS);
                 if(!CMLib.flags().isCloaked(mob))
                 for(int i=0;i<channels.size();i++)
                     CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),mob.Name()+" has logged on.",true);

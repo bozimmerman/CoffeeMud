@@ -33,152 +33,35 @@ public interface ChannelsLibrary extends CMLibrary
 {
     public final int QUEUE_SIZE=100;
     
-    /**
-     * @return
-     */
     public int getNumChannels();
-    /**
-     * @param i
-     * @return
-     */
     public String getChannelMask(int i);
-    /**
-     * @param i
-     * @return
-     */
-    public Vector getChannelFlags(int i);
-    /**
-     * @param i
-     * @return
-     */
+    public HashSet<ChannelFlag> getChannelFlags(int i);
     public String getChannelName(int i);
-    /**
-     * @param i
-     * @return
-     */
     public Vector getChannelQue(int i);
-    /**
-     * @param sender
-     * @param areaReq
-     * @param M
-     * @param i
-     * @return
-     */
     public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i);
-    /**
-     * @param sender
-     * @param areaReq
-     * @param M
-     * @param i
-     * @param offlineOK
-     * @return
-     */
     public boolean mayReadThisChannel(MOB sender, boolean areaReq, MOB M, int i, boolean offlineOK);
-    /**
-     * @param sender
-     * @param areaReq
-     * @param ses
-     * @param i
-     * @return
-     */
     public boolean mayReadThisChannel(MOB sender, boolean areaReq, Session ses, int i);
-    /**
-     * @param M
-     * @param i
-     * @param zapCheckOnly
-     * @return
-     */
     public boolean mayReadThisChannel(MOB M, int i, boolean zapCheckOnly);
-    /**
-     * @param i
-     * @param msg
-     */
     public void channelQueUp(int i, CMMsg msg);
-    /**
-     * @param channelName
-     * @return
-     */
     public int getChannelIndex(String channelName);
-    /**
-     * @param channelName
-     * @return
-     */
     public int getChannelCodeNumber(String channelName);
-    /**
-     * @param channelName
-     * @return
-     */
     public String getChannelName(String channelName);
-    /**
-     * @param flag
-     * @return
-     */
-    public Vector getFlaggedChannelNames(String flag);
-    /**
-     * @return
-     */
+    public Vector getFlaggedChannelNames(ChannelFlag flag);
     public String[][] imc2ChannelsArray();
-    /**
-     * @return
-     */
     public String[][] iChannelsArray();
-    /**
-     * @return
-     */
     public String[] getChannelNames();
-    /**
-     * @param mySession
-     * @param channelCode
-     * @return
-     */
     public Vector clearInvalidSnoopers(Session mySession, int channelCode);
-    /**
-     * @param mySession
-     * @param invalid
-     */
     public void restoreInvalidSnoopers(Session mySession, Vector invalid);
-    /**
-     * @param mask
-     * @param flags
-     * @return
-     */
-    public String parseOutFlags(String mask, Vector flags);
-    /**
-     * @param list
-     * @param ilist
-     * @param imc2list
-     * @return
-     */
+    public String parseOutFlags(String mask, HashSet<ChannelFlag> flags);
     public int loadChannels(String list, String ilist, String imc2list);
-    
-    /**
-     * 
-     * @param ses
-     * @param areareq
-     * @param channelInt
-     * @param msg
-     * @param sender
-     * @return
-     */
     public boolean channelTo(Session ses, boolean areareq, int channelInt, CMMsg msg, MOB sender);
-    
-    /**
-     * 
-     * @param mob
-     * @param channelName
-     * @param message
-     * @param systemMsg
-     */
     public void reallyChannel(MOB mob, String channelName, String message, boolean systemMsg);
     
-    /**
-     * 
-     */
-    public static final String[] ALLFLAGS={
-            "DEFAULT","SAMEAREA","CLANONLY","READONLY",
-            "EXECUTIONS","LOGINS","LOGOFFS","BIRTHS","MARRIAGES", 
-            "DIVORCES","CHRISTENINGS","LEVELS","DETAILEDLEVELS","DEATHS","DETAILEDDEATHS",
-            "CONQUESTS","CONCEPTIONS","NEWPLAYERS","LOSTLEVELS","PLAYERPURGES","CLANINFO",
-            "WARRANTS", "PLAYERREADONLY"};
-        
+    public static enum ChannelFlag {
+        DEFAULT,SAMEAREA,CLANONLY,READONLY,
+        EXECUTIONS,LOGINS,LOGOFFS,BIRTHS,MARRIAGES, 
+        DIVORCES,CHRISTENINGS,LEVELS,DETAILEDLEVELS,DEATHS,DETAILEDDEATHS,
+        CONQUESTS,CONCEPTIONS,NEWPLAYERS,LOSTLEVELS,PLAYERPURGES,CLANINFO,
+        WARRANTS, PLAYERREADONLY, CLANALLYONLY
+    };
 }

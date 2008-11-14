@@ -917,8 +917,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             if((!deadmob.isMonster())&&(deadmob.soulMate()==null))
             {
                 CMLib.coffeeTables().bump(deadmob,CoffeeTableRow.STAT_DEATHS);
-                Vector channels=CMLib.channels().getFlaggedChannelNames("DETAILEDDEATHS");
-                Vector channels2=CMLib.channels().getFlaggedChannelNames("DEATHS");
+                Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DETAILEDDEATHS);
+                Vector channels2=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.DEATHS);
                 if(!CMLib.flags().isCloaked(deadmob))
                 for(int i=0;i<channels.size();i++)
                 if((msg.tool()!=null)&&(msg.tool() instanceof MOB))

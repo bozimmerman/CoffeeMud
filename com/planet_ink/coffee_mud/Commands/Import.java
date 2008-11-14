@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -4313,7 +4314,7 @@ public class Import extends StdCommand
 						&&((S.mob().playerStats().getFriends().contains(M.Name())||S.mob().playerStats().getFriends().contains("All"))))
 							S.mob().tell("^X"+M.Name()+" has just been created.^.^?");
 					}
-                    Vector channels=CMLib.channels().getFlaggedChannelNames("NEWPLAYERS");
+                    Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
                     for(int i=0;i<channels.size();i++)
                         CMLib.commands().postChannel((String)channels.elementAt(i),M.getClanID(),M.Name()+" has just been created.",true);
 					if(M.getStartRoom()==null)

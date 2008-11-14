@@ -9,7 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -225,7 +225,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
             laws.warrants().addElement(W);
         	if(W.criminal()!=null)
         	{
-	            Vector channels=CMLib.channels().getFlaggedChannelNames("WARRANTS");
+	            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.WARRANTS);
 	            for(int i=0;i<channels.size();i++)
 	                CMLib.commands().postChannel((String)channels.elementAt(i),"",W.criminal().name()+" has been accused of "+fixCharge(W)+".",true);
         	}
@@ -2335,7 +2335,7 @@ public class Arrest extends StdBehavior implements LegalBehavior
 						if((highestCrimeAction(laws,W,W.criminal())==Law.PUNISHMENT_EXECUTE)
                         &&(judge.location()!=null))
 						{
-							Vector channels=CMLib.channels().getFlaggedChannelNames("EXECUTIONS");
+							Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.EXECUTIONS);
                             for(int i=0;i<channels.size();i++)
 								CMLib.commands().postChannel(judge,(String)channels.elementAt(i),W.criminal().Name()+" is being executed at "+judge.location().displayText()+" for "+W.criminal().charStats().hisher()+" crimes.",true);
 						}

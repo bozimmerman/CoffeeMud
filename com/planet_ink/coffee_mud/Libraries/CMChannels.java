@@ -42,11 +42,12 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	public int numImc2ChannelsLoaded=0;
 	public Vector channelNames=new Vector();
 	public Vector channelMasks=new Vector();
-    public Vector channelFlags=new Vector();
+    public Vector<HashSet<ChannelFlag>> channelFlags=new Vector<HashSet<ChannelFlag>>();
 	public Vector ichannelList=new Vector();
 	public Vector imc2channelList=new Vector();
 	public Vector channelQue=new Vector();
-	public final Vector emptyVector=new Vector(1);
+	//public final Vector emptyVector=new Vector(1);
+	public final HashSet<ChannelFlag> emptyFlags=new HashSet<ChannelFlag>(1);
 	
 	public int getNumChannels()
 	{
@@ -61,11 +62,11 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 	}
 
     
-    public Vector getChannelFlags(int i)
+    public HashSet<ChannelFlag> getChannelFlags(int i)
     {
         if((i>=0)&&(i<channelFlags.size()))
-            return (Vector)channelFlags.elementAt(i);
-        return emptyVector;
+            return (HashSet<ChannelFlag>)channelFlags.elementAt(i);
+        return emptyFlags;
     }
 
 	public String getChannelName(int i)
@@ -218,12 +219,11 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		return "";
 	}
 
-	public Vector getFlaggedChannelNames(String flag)
+	public Vector getFlaggedChannelNames(ChannelFlag flag)
 	{
-        flag=flag.toUpperCase().trim();
         Vector channels=new Vector();
 		for(int c=0;c<channelNames.size();c++)
-			if(((Vector)channelFlags.elementAt(c)).contains(flag))
+			if(((HashSet<ChannelFlag>)channelFlags.elementAt(c)).contains(flag))
                 channels.addElement(((String)channelNames.elementAt(c)).toUpperCase());
 		return channels;
 	}
@@ -235,7 +235,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         numImc2ChannelsLoaded=0;
         channelNames=new Vector();
         channelMasks=new Vector();
-        channelFlags=new Vector();
+        channelFlags=new Vector<HashSet<ChannelFlag>>();
         ichannelList=new Vector();
         imc2channelList=new Vector();
         channelQue=new Vector();
@@ -255,7 +255,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		{
 			String name=(String)channelNames.elementAt(i);
 			String mask=(String)channelMasks.elementAt(i);
-            Vector flags=(Vector)channelFlags.elementAt(i);
+			HashSet<ChannelFlag> flags=channelFlags.elementAt(i);
 			String iname=(String)imc2channelList.elementAt(i);
 			if((iname!=null)&&(iname.trim().length()>0))
 			{
@@ -277,7 +277,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			String name=(String)channelNames.elementAt(i);
 			String mask=(String)channelMasks.elementAt(i);
 			String iname=(String)ichannelList.elementAt(i);
-            Vector flags=(Vector)channelFlags.elementAt(i);
+			HashSet<ChannelFlag> flags=channelFlags.elementAt(i);
 			if((iname!=null)&&(iname.trim().length()>0))
 			{
 				array[num][0]=iname.trim();
@@ -325,17 +325,16 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		    mySession.startBeingSnoopedBy((Session)invalid.elementAt(s));
 	}
 
-    public String parseOutFlags(String mask, Vector flags)
+    public String parseOutFlags(String mask, HashSet<ChannelFlag> flags)
     {
         Vector V=CMParms.parse(mask);
         for(int v=V.size()-1;v>=0;v--)
         {
             String s=((String)V.elementAt(v)).toUpperCase();
-            for(int i=0;i<ALLFLAGS.length;i++)
-            if(s.equals(ALLFLAGS[i]))
+            if(ChannelFlag.valueOf(s) != null)
             {
                 V.removeElementAt(v);
-                flags.addElement(s.trim().toUpperCase());
+                flags.add(ChannelFlag.valueOf(s.trim().toUpperCase()));
                 break;
             }
         }
@@ -362,7 +361,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			}
 			numChannelsLoaded++;
 			x=item.indexOf(" ");
-            Vector flags=new Vector();
+			HashSet<ChannelFlag> flags=new HashSet<ChannelFlag>();
 			if(x>0)
 			{
 				channelMasks.addElement(parseOutFlags(item.substring(x+1).trim(),flags));
@@ -401,7 +400,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			item=item.substring(0,y1);
 			channelNames.addElement(item.toUpperCase().trim());
 			channelQue.addElement(new Vector());
-            Vector flags=new Vector();
+			HashSet<ChannelFlag> flags=new HashSet<ChannelFlag>();
 			channelMasks.addElement(parseOutFlags(lvl,flags));
             channelFlags.addElement(flags);
 			imc2channelList.addElement("");
@@ -432,7 +431,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 			item=item.substring(0,y1);
 			channelNames.addElement(item.toUpperCase().trim());
 			channelQue.addElement(new Vector());
-            Vector flags=new Vector();
+			HashSet<ChannelFlag> flags=new HashSet<ChannelFlag>();
             channelMasks.addElement(parseOutFlags(lvl,flags));
             channelFlags.addElement(flags);
 			imc2channelList.addElement(ichan);
@@ -442,7 +441,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
 		channelNames.addElement("AUCTION");
 		channelQue.addElement(new Vector());
 		channelMasks.addElement("");
-        channelFlags.addElement(new Vector());
+        channelFlags.addElement(new HashSet<ChannelFlag>());
 		ichannelList.addElement("");
 		imc2channelList.addElement("");
 		numChannelsLoaded++;
@@ -482,7 +481,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         
         message=CMProps.applyINIFilter(message,CMProps.SYSTEM_CHANNELFILTER);
         
-        Vector flags=CMLib.channels().getChannelFlags(channelInt);
+        HashSet<ChannelFlag> flags=CMLib.channels().getChannelFlags(channelInt);
         channelName=CMLib.channels().getChannelName(channelInt);
 
         CMMsg msg=null;
@@ -522,7 +521,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         if((mob.location()!=null)
         &&((!mob.location().isInhabitant(mob))||(mob.location().okMessage(mob,msg))))
         {
-            boolean areareq=flags.contains("SAMEAREA");
+            boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
             CMLib.channels().channelQueUp(channelInt,msg);
             for(int s=0;s<CMLib.sessions().size();s++)
             {

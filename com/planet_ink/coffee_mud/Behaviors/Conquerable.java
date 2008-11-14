@@ -271,7 +271,7 @@ public class Conquerable extends Arrest
 			if(holdingClan.length()>0)
 			{
 	            if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest",holdingClan+" has lost control of "+myArea.name()+".");
-	            Vector channels=CMLib.channels().getFlaggedChannelNames("CONQUESTS");
+	            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
 	            for(int i=0;i<channels.size();i++)
 	                CMLib.commands().postChannel((String)channels.elementAt(i),"ALL",holdingClan+" has lost control of "+myArea.name()+".",false);
 				if(journalName.length()>0)
@@ -539,7 +539,7 @@ public class Conquerable extends Arrest
                     	{
                         	Log.sysOut("Conquerable",A.Name()+" revolted against "+holdingClan+" with "+chance+"% chance");
                             if(CMSecurity.isDebugging("CONQUEST")) Log.debugOut("Conquest","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+" with "+chance+"% chance, after "+calcItemControlPoints(myArea)+" item points of "+totalControlPoints+" control points.");
-                            Vector channels=CMLib.channels().getFlaggedChannelNames("CONQUESTS");
+                            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
                             for(int i=0;i<channels.size();i++)
                                 CMLib.commands().postChannel((String)channels.elementAt(i),"ALL","The inhabitants of "+myArea.name()+" have revolted against "+holdingClan+".",false);
                             if(journalName.length()>0)
@@ -556,7 +556,7 @@ public class Conquerable extends Arrest
                     	{
     	                    if(CMLib.dice().rollPercentage()<chance)
     	                    {
-    	                        Vector channels=CMLib.channels().getFlaggedChannelNames("CONQUESTS");
+    	                        Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
     	                        for(int i=0;i<channels.size();i++)
     	                            CMLib.commands().postChannel((String)channels.elementAt(i),"ALL","There are the rumblings of revolt in "+myArea.name()+".",false);
     	                    }
@@ -837,7 +837,7 @@ public class Conquerable extends Arrest
                     }
 				}
 			}
-            Vector channels=CMLib.channels().getFlaggedChannelNames("CONQUESTS");
+            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.CONQUESTS);
             for(int i=0;i<channels.size();i++)
                 CMLib.commands().postChannel((String)channels.elementAt(i),"ALL",holdingClan+" gains control of "+myArea.name()+".",false);
 			if(journalName.length()>0)

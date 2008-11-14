@@ -372,7 +372,7 @@ public class Age extends StdAbility
 							S.mob().tell("^X"+newMan.Name()+" has just been created.^.^?");
 					}
 
-                    Vector channels=CMLib.channels().getFlaggedChannelNames("NEWPLAYERS");
+                    Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
                     for(int i=0;i<channels.size();i++)
                         CMLib.commands().postChannel((String)channels.elementAt(i),newMan.getClanID(),newMan.Name()+" has just been created.",true);
 

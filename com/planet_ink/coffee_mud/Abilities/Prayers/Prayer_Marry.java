@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -142,7 +143,7 @@ public class Prayer_Marry extends Prayer
 				wife.setLiegeID(husband.Name());
 				CMLib.coffeeTables().bump(husband,CoffeeTableRow.STAT_MARRIAGES);
 				CMLib.commands().postSay(mob,husband,"You may kiss your bride!",false,false);
-                Vector channels=CMLib.channels().getFlaggedChannelNames("MARRIAGES");
+                Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.MARRIAGES);
                 for(int i=0;i<channels.size();i++)
                     CMLib.commands().postChannel((String)channels.elementAt(i),husband.getClanID(),husband.name()+" and "+wife.name()+" were just joined in holy matrimony!",true);
              }
