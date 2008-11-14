@@ -78,7 +78,7 @@ public class Spell_DetectSentience extends Spell
                             {
                                 R.send(mob,msg2);
     							lines.append("^!"+CMStrings.padRight(M.name(),25)+"^?| ");
-    							lines.append(R.roomTitle());
+    							lines.append(R.roomTitle(mob));
     							lines.append("\n\r");
                             }
 						}

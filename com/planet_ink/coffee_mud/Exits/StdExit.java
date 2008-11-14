@@ -463,7 +463,7 @@ public class StdExit implements Exit
 			if(room==null)
 				Say.append("^Z(null)^.^? ");
 			else
-				Say.append("^H("+CMLib.map().getExtendedRoomID(room)+")^? "+room.roomTitle()+CMLib.flags().colorCodes(room,mob)+" ");
+				Say.append("^H("+CMLib.map().getExtendedRoomID(room)+")^? "+room.roomTitle(mob)+CMLib.flags().colorCodes(room,mob)+" ");
 			Say.append("via ^H("+ID()+")^? "+(isOpen()?displayText():closedText()));
 		}
 		else
@@ -478,7 +478,7 @@ public class StdExit implements Exit
 					Say.append(displayText()+CMLib.flags().colorCodes(this,mob));
 				else
 				if(room!=null)
-					Say.append(room.roomTitle()+CMLib.flags().colorCodes(room,mob));
+					Say.append(room.roomTitle(mob)+CMLib.flags().colorCodes(room,mob));
 			}
 			else
 			if((CMLib.flags().canBeSeenBy(this,mob))&&(closedText().trim().length()>0))

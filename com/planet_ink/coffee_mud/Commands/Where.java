@@ -199,7 +199,7 @@ public class Where extends StdCommand
 								||CMLib.english().containsString(R.description(),who))
 								{
 									lines.append("^!"+CMStrings.padRight("*",17)+"^?| ");
-									lines.append(R.roomTitle());
+									lines.append(R.roomTitle(mob));
 									lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
 									lines.append("\n\r");
 								}
@@ -228,7 +228,7 @@ public class Where extends StdCommand
                                         if(CMLib.masking().maskCheck(compiledZapperMask,I,true))
                                         {
                                             lines.append("^!"+CMStrings.padRight(I.name(),17)+"^?| ");
-                                            lines.append(R.roomTitle());
+                                            lines.append(R.roomTitle(mob));
                                             lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                             lines.append("\n\r");
                                         }
@@ -239,7 +239,7 @@ public class Where extends StdCommand
                                         if(CMLib.masking().maskCheck(who,I,true))
                                         {
                                             lines.append("^!"+CMStrings.padRight(I.name(),17)+"^?| ");
-                                            lines.append(R.roomTitle());
+                                            lines.append(R.roomTitle(mob));
                                             lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                             lines.append("\n\r");
                                         }
@@ -250,7 +250,7 @@ public class Where extends StdCommand
 									||(CMLib.english().containsString(I.description(),who)))
 									{
 										lines.append("^!"+CMStrings.padRight(I.name(),17)+"^?| ");
-										lines.append(R.roomTitle());
+										lines.append(R.roomTitle(mob));
 										lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
 										lines.append("\n\r");
 									}
@@ -266,7 +266,7 @@ public class Where extends StdCommand
                                             if(CMLib.masking().maskCheck(compiledZapperMask,M,true))
                                             {
                                                 lines.append("^!"+CMStrings.padRight(M.name(),17)+"^?| ");
-                                                lines.append(R.roomTitle());
+                                                lines.append(R.roomTitle(mob));
                                                 lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                                 lines.append("\n\r");
                                             }
@@ -277,7 +277,7 @@ public class Where extends StdCommand
                                             if(CMLib.masking().maskCheck(who,M,true))
                                             {
                                                 lines.append("^!"+CMStrings.padRight(M.name(),17)+"^?| ");
-                                                lines.append(R.roomTitle());
+                                                lines.append(R.roomTitle(mob));
                                                 lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
                                                 lines.append("\n\r");
                                             }
@@ -288,7 +288,7 @@ public class Where extends StdCommand
 										||(CMLib.english().containsString(M.description(),who)))
 										{
 											lines.append("^!"+CMStrings.padRight(M.name(),17)+"^?| ");
-											lines.append(R.roomTitle());
+											lines.append(R.roomTitle(mob));
 											lines.append(" (^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(R)+"^</LSTROOMID^>)");
 											lines.append("\n\r");
 										}

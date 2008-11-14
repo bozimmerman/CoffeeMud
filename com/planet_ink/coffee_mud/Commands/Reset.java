@@ -279,7 +279,7 @@ public class Reset extends StdCommand
 		if(s.equalsIgnoreCase("room"))
 		{
             String warning=resetWarning(mob, mob.location());
-            if((mob.session()==null)||(warning==null)||(mob.session().confirm(warning + "\n\rReset the contents of the room '"+mob.location().roomTitle()+"', OK (Y/n)?","Y")))
+            if((mob.session()==null)||(warning==null)||(mob.session().confirm(warning + "\n\rReset the contents of the room '"+mob.location().roomTitle(mob)+"', OK (Y/n)?","Y")))
             {
                 Session S=null;
                 for(int x=0;x<CMLib.sessions().size();x++)

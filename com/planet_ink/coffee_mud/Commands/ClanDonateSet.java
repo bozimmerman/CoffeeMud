@@ -81,8 +81,8 @@ public class ClanDonateSet extends StdCommand
 			{
 				C.setDonation(CMLib.map().getExtendedRoomID(R));
 				C.update();
-				mob.tell("The donation room for "+C.typeName()+" "+C.clanID()+" is now set to "+R.roomTitle()+".");
-				CMLib.clans().clanAnnounce(mob,"The donation room for "+C.typeName()+" "+C.clanID()+" is now set to "+R.roomTitle()+".");
+				mob.tell("The donation room for "+C.typeName()+" "+C.clanID()+" is now set to "+R.roomTitle(mob)+".");
+				CMLib.clans().clanAnnounce(mob,"The donation room for "+C.typeName()+" "+C.clanID()+" is now set to "+R.roomTitle(mob)+".");
 				return true;
 			}
 		}

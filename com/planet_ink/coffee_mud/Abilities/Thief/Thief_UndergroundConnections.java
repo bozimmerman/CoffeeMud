@@ -66,7 +66,7 @@ public class Thief_UndergroundConnections extends ThiefSkill
 				pathOut.removeElementAt(0);
 				if(currRoom!=null)
 				{
-					String roomDesc=currRoom.roomTitle();
+					String roomDesc=currRoom.roomTitle(null);
 					if((lastDesc==null)||(!roomDesc.equalsIgnoreCase(lastDesc)))
 					{
 						lastDesc=roomDesc;

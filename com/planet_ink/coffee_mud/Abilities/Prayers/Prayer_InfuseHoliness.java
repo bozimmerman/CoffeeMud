@@ -115,7 +115,7 @@ public class Prayer_InfuseHoliness extends Prayer
                 R=(Room)e.nextElement();
                 if(CMLib.law().getClericInfused((Room)target)==D)
                 {
-                    mob.tell("There is already a holy place of "+D.Name()+" in this area at "+R.roomTitle()+".");
+                    mob.tell("There is already a holy place of "+D.Name()+" in this area at "+R.roomTitle(mob)+".");
                     return false;
                 }
             }

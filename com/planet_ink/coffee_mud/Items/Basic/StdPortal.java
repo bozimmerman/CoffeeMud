@@ -211,7 +211,7 @@ public class StdPortal extends StdContainer implements Rideable, Exit
 			if(room==null)
 				Say.append("^Z(null)^.^? ");
 			else
-				Say.append("^H("+CMLib.map().getExtendedRoomID(room)+")^? "+room.roomTitle()+CMLib.flags().colorCodes(room,mob)+" ");
+				Say.append("^H("+CMLib.map().getExtendedRoomID(room)+")^? "+room.roomTitle(mob)+CMLib.flags().colorCodes(room,mob)+" ");
 			Say.append("via ^H("+ID()+")^? "+(isOpen()?name():closedText()));
 		}
 		else

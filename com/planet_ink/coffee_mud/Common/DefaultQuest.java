@@ -3881,7 +3881,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	    			Object O=getObjectIfSpecified(CMParms.paramParse(possObjName),args,0,0);
 	    			String replace=(O==null)?"null":O.toString();
 	    			if(O instanceof Room)
-	    				replace=((Room)O).roomTitle();
+	    				replace=((Room)O).roomTitle(null);
 	    			else
 	    			if(O instanceof Environmental)
 	    				replace=((Environmental)O).Name();
@@ -4226,7 +4226,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             if(questState.isStat(code))
             {
                 Object O=questState.getStat(code);
-                if(O instanceof Room) return ((Room)O).roomTitle();
+                if(O instanceof Room) return ((Room)O).roomTitle(null);
                 if(O instanceof TimeClock) return ((TimeClock)O).getShortTimeDescription();
                 if(O instanceof Environmental) return ((Environmental)O).Name();
                 if(O instanceof Vector) return ""+((Vector)O).size();

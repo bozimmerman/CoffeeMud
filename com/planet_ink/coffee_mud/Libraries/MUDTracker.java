@@ -642,7 +642,7 @@ public class MUDTracker extends StdLibrary implements TrackingLibrary
 				if((CMLib.flags().canBeSeenBy(e,mob))
 				&&((e.name().equalsIgnoreCase(desc))
 				||(e.displayText().equalsIgnoreCase(desc))
-				||(r.roomTitle().equalsIgnoreCase(desc))
+				||(r.roomTitle(mob).equalsIgnoreCase(desc))
 				||(e.description().equalsIgnoreCase(desc))))
 				{
 					dir=d; break;
