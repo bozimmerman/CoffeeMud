@@ -70,6 +70,31 @@ public class CraftingSkill extends GatheringSkill
 		return thisStr;
 	}
 	
+	protected void messedUpCrafting(MOB mob)
+	{
+		if(building!=null)
+		{
+			if(building.usesRemaining()<100)
+			{
+				if(building.usesRemaining()>90)
+					building.setUsesRemaining(building.usesRemaining()+1);
+				else
+				if(building.usesRemaining()>80)
+					building.setUsesRemaining(building.usesRemaining()+3);
+				else
+				if(building.usesRemaining()>70)
+					building.setUsesRemaining(building.usesRemaining()+5);
+				else
+				if(building.usesRemaining()>60)
+					building.setUsesRemaining(building.usesRemaining()+7);
+				else
+					building.setUsesRemaining(building.usesRemaining()+10);
+			}
+			commonEmote(mob,"<S-NAME> mess(es) up mending "+building.name()+".");
+		}
+		
+	}
+	
 	protected Vector addRecipes(MOB mob, Vector recipes)
 	{
 	    if(mob==null) return recipes;

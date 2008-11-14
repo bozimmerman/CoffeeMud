@@ -93,7 +93,7 @@ public class Weaponsmithing extends EnhancedCraftingSkill implements ItemCraftor
 					if(messedUp)
 					{
 						if(mending)
-							commonEmote(mob,"<S-NAME> mess(es) up mending "+building.name()+".");
+							messedUpCrafting(mob);
 						else
 							commonEmote(mob,"<S-NAME> mess(es) up smithing "+building.name()+".");
 					}

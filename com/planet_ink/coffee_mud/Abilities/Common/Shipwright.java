@@ -85,7 +85,7 @@ public class Shipwright extends CraftingSkill implements ItemCraftor, MendingSki
 					if(messedUp)
 					{
 						if(mending)
-							commonEmote(mob,"<S-NAME> mess(es) up mending "+building.name()+".");
+							messedUpCrafting(mob);
 						else
 							commonEmote(mob,"<S-NAME> mess(es) up carving "+building.name()+".");
 					}

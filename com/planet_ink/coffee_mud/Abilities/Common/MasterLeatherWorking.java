@@ -75,7 +75,7 @@ public class MasterLeatherWorking extends EnhancedCraftingSkill implements ItemC
 					if(messedUp)
 					{
 						if(mending)
-							commonEmote(mob,"<S-NAME> mess(es) up mending "+building.name()+".");
+							messedUpCrafting(mob);
 						else
 						if(refitting)
 							commonEmote(mob,"<S-NAME> mess(es) up refitting "+building.name()+".");

@@ -84,7 +84,7 @@ public class ScrimShaw extends EnhancedCraftingSkill implements ItemCraftor, Men
 					if(messedUp)
 					{
 						if(mending)
-							commonEmote(mob,"<S-NAME> mess(es) up mending "+building.name()+".");
+							messedUpCrafting(mob);
 						else
 							commonTell(mob,"<S-NAME> mess(es) up scrimshawing "+building.name()+".");
 					}
