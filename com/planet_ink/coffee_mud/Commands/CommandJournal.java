@@ -208,15 +208,15 @@ public class CommandJournal extends StdCommand
             &&(!transfer(mob,"SYSTEM_"+journalWord+"S",journalWord.toLowerCase()+"s",commands,journalWord)))
             {
                 String prePend="";
-                if((journalNum>=0)&&(CMLib.journals().getCommandJournalFlags(journalNum).containsKey("ADDROOM")))
+                if((journalNum>=0)&&(CMLib.journals().getCommandJournalFlags(journalNum).containsKey(JournalsLibrary.JournalFlag.ADDROOM)))
                     prePend="(^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(mob.location())+"^</LSTROOMID^>) ";
                 CMLib.database().DBWriteJournal("SYSTEM_"+journalWord+"S",mob.Name(),"ALL",
                         journalWord+": "+CMStrings.padRight(CMParms.combine(commands,1),15),
                         prePend+CMParms.combine(commands,1),
                         -1);
                 mob.tell("Your "+journalWord.toLowerCase()+" message has been sent.  Thank you.");
-                if((journalNum>=0)&&(CMLib.journals().getCommandJournalFlags(journalNum).get("CHANNEL=")!=null))
-                    CMLib.commands().postChannel(((String)CMLib.journals().getCommandJournalFlags(journalNum).get("CHANNEL=")).toUpperCase().trim(),"",mob.Name()+" posted to "+journalWord+": "+CMParms.combine(commands,1),true);
+                if((journalNum>=0)&&(CMLib.journals().getCommandJournalFlags(journalNum).get(JournalsLibrary.JournalFlag.CHANNEL)!=null))
+                    CMLib.commands().postChannel(((String)CMLib.journals().getCommandJournalFlags(journalNum).get(JournalsLibrary.JournalFlag.CHANNEL)).toUpperCase().trim(),"",mob.Name()+" posted to "+journalWord+": "+CMParms.combine(commands,1),true);
             }
         }
         else

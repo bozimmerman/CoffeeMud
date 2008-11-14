@@ -11,6 +11,7 @@ import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.DatabaseEngine;
 import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.JournalsLibrary.JournalFlag;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -138,7 +139,7 @@ public class MOTD extends StdCommand
                 Vector myEchoableCommandJournals=new Vector();
                 for(int cj=0;cj<CMLib.journals().getNumCommandJournals();cj++)
                 {
-                    if((CMLib.journals().getCommandJournalFlags(cj).get("ADMINECHO")!=null)
+                    if((CMLib.journals().getCommandJournalFlags(cj).get(JournalsLibrary.JournalFlag.ADMINECHO)!=null)
                     &&((CMSecurity.isAllowed(mob,mob.location(),CMLib.journals().getCommandJournalName(cj)))
                             ||CMSecurity.isAllowed(mob,mob.location(),"KILL"+CMLib.journals().getCommandJournalName(cj)+"S")
                             ||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN")))

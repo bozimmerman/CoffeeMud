@@ -40,8 +40,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     public int numCommandJournalsLoaded=0;
     public Vector commandJournalNames=new Vector();
     public Vector commandJournalMasks=new Vector();
-    public Vector commandJournalFlags=new Vector();
-    public final Vector emptyVector=new Vector();
+    public Vector<Hashtable<JournalFlag,String>> commandJournalFlags=new Vector<Hashtable<JournalFlag,String>>();
+    public final Vector emptyVector=new Vector(1);
     
     private ThreadEngine.SupportThread thread=null;
     public ThreadEngine.SupportThread getSupportThread() { return thread;}
@@ -66,24 +66,25 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
             }
             numCommandJournalsLoaded++;
             x=item.indexOf(" ");
-            Hashtable flags=new Hashtable();
+            Hashtable<JournalFlag,String> flags=new Hashtable<JournalFlag,String>();
             if(x>0)
             {
                 String mask=item.substring(x+1).trim();
-                String[] possflags={"CHANNEL=","ADDROOM","EXPIRE=","ADMINECHO"};
-                for(int pf=0;pf<possflags.length;pf++)
+                for(int pf=0;pf<JournalFlag.values().length;pf++)
                 {
-                    int keyx=mask.toUpperCase().indexOf(possflags[pf]);
+                	String flag = JournalFlag.values()[pf].toString();
+                    int keyx=mask.toUpperCase().indexOf(flag);
                     if(keyx>=0)
                     {
                         int keyy=mask.indexOf(" ",keyx+1);
                         if(keyy<0) keyy=mask.length();
                         if((keyx==0)||(Character.isWhitespace(mask.charAt(keyx-1))))
                         {
-                            String parm=mask.substring(keyx+possflags[pf].length(),keyy).trim();
-                            if((parm.length()==0)||(possflags[pf].endsWith("=")))
+                            String parm=mask.substring(keyx+flag.length(),keyy).trim();
+                            if((parm.length()==0)||(parm.startsWith("=")))
                             {
-                                flags.put(possflags[pf],parm);
+                            	if(parm.startsWith("=")) parm=parm.substring(1);
+                                flags.put(JournalFlag.values()[pf],parm);
                                 mask=mask.substring(0,keyx).trim()+" "+mask.substring(keyy).trim();
                             }
                         }
@@ -119,11 +120,11 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
         return "";
     }
 
-    public Hashtable getCommandJournalFlags(int i)
+    public Hashtable<JournalFlag,String> getCommandJournalFlags(int i)
     {
         if((i>=0)&&(i<commandJournalFlags.size()))
-            return (Hashtable)commandJournalFlags.elementAt(i);
-        return new Hashtable();
+            return (Hashtable<JournalFlag,String>)commandJournalFlags.elementAt(i);
+        return new Hashtable(1);
     }
     public String[] getCommandJournalNames()
     {
@@ -138,7 +139,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
         {
             for(int j=0;j<getNumCommandJournals();j++)
             {
-                String num=(String)getCommandJournalFlags(j).get("EXPIRE=");
+                String num=(String)getCommandJournalFlags(j).get(JournalFlag.EXPIRE);
                 if((num!=null)&&(CMath.isNumber(num)))
                 {
                     thread.status("updating journal "+getCommandJournalName(j));
@@ -175,7 +176,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     private void clearJournals() {
         numCommandJournalsLoaded=0;
         commandJournalMasks=new Vector();
-        commandJournalFlags=new Vector();
+        commandJournalFlags=new Vector<Hashtable<JournalFlag,String>>();
         commandJournalNames=new Vector();
     }
     

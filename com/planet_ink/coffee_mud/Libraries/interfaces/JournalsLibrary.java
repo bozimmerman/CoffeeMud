@@ -28,21 +28,14 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-@SuppressWarnings("unchecked")
 public interface JournalsLibrary extends CMLibrary, Runnable
 {
     public int loadCommandJournals(String list);
     public int getNumCommandJournals();
     public String getCommandJournalMask(int i);
     public String getCommandJournalName(int i);
-    public Hashtable getCommandJournalFlags(int i);
+    public Hashtable<JournalFlag,String> getCommandJournalFlags(int i);
     public String[] getCommandJournalNames();
-    public static final String[] ALLFLAGS={
-        "DEFAULT","SAMEAREA","CLANONLY","READONLY",
-        "EXECUTIONS","LOGINS","LOGOFFS","BIRTHS","MARRIAGES", 
-        "DIVORCES","CHRISTENINGS","LEVELS","DETAILEDLEVELS","DEATHS","DETAILEDDEATHS",
-        "CONQUESTS","CONCEPTIONS","NEWPLAYERS","LOSTLEVELS","PLAYERPURGES","CLANINFO",
-        "WARRANTS"};
     
 	public static final String JOURNAL_BOUNDARY="%0D^w---------------------------------------------^N%0D";
 	
@@ -56,4 +49,8 @@ public interface JournalsLibrary extends CMLibrary, Runnable
 		public String msg;
 		public String update;
 	}
+	
+    public static enum JournalFlag {
+        CHANNEL,ADDROOM,EXPIRE,ADMINECHO,CONFIRM;
+    };
 }
