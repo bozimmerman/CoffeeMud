@@ -98,7 +98,7 @@ public interface Room extends Environmental, Affectable, Behavable
 	public boolean getMobility();
 	public void resetVectors();
 
-	public final static String[][] variationCodes={
+	public final static String[][] VARIATION_CODES={
 		{"SUMMER","S"+TimeClock.SEASON_SUMMER},
 		{"SPRING","S"+TimeClock.SEASON_SPRING},
 		{"WINTER","S"+TimeClock.SEASON_WINTER},
@@ -122,8 +122,19 @@ public interface Room extends Environmental, Affectable, Behavable
 		{"COLD","W"+Climate.WEATHER_WINTER_COLD},
 		{"HAIL","W"+Climate.WEATHER_HAIL},
 		{"CLOUDY","W"+Climate.WEATHER_CLOUDY},
-		{"ELSE","D0"}
+		{"SWIMMING","M"+EnvStats.IS_SWIMMING},
+		{"FLYING","M"+EnvStats.IS_FLYING},
+		{"CRAWLING","M"+EnvStats.IS_SITTING},
+		{"SITTING","M"+EnvStats.IS_SITTING},
+		{"FALLING","M"+EnvStats.IS_FALLING},
+		{"CLIMBING","M"+EnvStats.IS_CLIMBING},
+		{"INVISIBLE","M"+EnvStats.IS_INVISIBLE},
+		{"HIDDEN","M"+EnvStats.IS_HIDDEN},
+		{"ELSE","\n"},
+		{"VARIES","\r"}
 	};
+	public static final Hashtable VARIATION_CODES_HASHED=CMParms.makeHashtable(VARIATION_CODES);
+	
 
 	public void startItemRejuv();
 	public void recoverRoomStats();
@@ -150,8 +161,8 @@ public interface Room extends Environmental, Affectable, Behavable
 	public int pointsPerMove(MOB mob);
 	public int thirstPerRound(MOB mob);
 
-	public String roomTitle();
-	public String roomDescription();
+	public String roomTitle(MOB mob);
+	public String roomDescription(MOB mob);
 
 	public void send(MOB source, CMMsg msg);
 	public void sendOthers(MOB source, CMMsg msg);

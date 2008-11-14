@@ -2134,5 +2134,6 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 1. couple of bug fixes in the new features
 # Build 5.5.2 Release ?
 1. Journal Show All Messages allows batch processing now
-2. 
+2. I3 will now properly respond to chan-user-req, and has a new default server in the ini
+3. trailto supports nohomes flag now.
 

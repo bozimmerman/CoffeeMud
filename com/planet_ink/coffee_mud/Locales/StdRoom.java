@@ -937,7 +937,7 @@ public class StdRoom implements Room
 	}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
-	protected String parseVariesCodes(String text)
+	protected String parseVariesCodes(MOB mob, String text)
 	{
 		StringBuffer buf=new StringBuffer("");
 		int x=text.indexOf("<");
@@ -947,37 +947,42 @@ public class StdRoom implements Room
 			buf.append(text.substring(0,x));
 			text=text.substring(x);
 			boolean found=false;
-			for(int i=0;i<variationCodes.length;i++)
-				if(text.startsWith("<"+variationCodes[i][0]+">"))
+			for(int i=0;i<VARIATION_CODES.length;i++)
+				if(text.startsWith("<"+VARIATION_CODES[i][0]+">"))
 				{
 					found=true;
-					int y=text.indexOf("</"+variationCodes[i][0]+">");
+					int y=text.indexOf("</"+VARIATION_CODES[i][0]+">");
 					String dispute=null;
 					if(y>0)
 					{
-						dispute=text.substring(variationCodes[i][0].length()+2,y);
-						text=text.substring(y+variationCodes[i][0].length()+3);
+						dispute=text.substring(VARIATION_CODES[i][0].length()+2,y);
+						text=text.substring(y+VARIATION_CODES[i][0].length()+3);
 					}
 					else
 					{
-						dispute=text.substring(variationCodes[i][0].length()+2);
+						dispute=text.substring(VARIATION_CODES[i][0].length()+2);
 						text="";
 					}
-					int num=CMath.s_int(variationCodes[i][1].substring(1));
-					switch(variationCodes[i][1].charAt(0))
+					int num=CMath.s_int(VARIATION_CODES[i][1].substring(1));
+					switch(VARIATION_CODES[i][1].charAt(0))
 					{
-					case 'D': elseStr=parseVariesCodes(dispute); break;
+					case '\n': elseStr=dispute; break;
+					case '\r': buf.append(parseVariesCodes(mob,dispute)); break;
 					case 'W':
 						if(getArea().getClimateObj().weatherType(null)==num)
-							buf.append(parseVariesCodes(dispute));
+							buf.append(parseVariesCodes(mob,dispute));
 						break;
 					case 'C':
 						if(getArea().getTimeObj().getTODCode()==num)
-							buf.append(parseVariesCodes(dispute));
+							buf.append(parseVariesCodes(mob,dispute));
 						break;
 					case 'S':
 						if(getArea().getTimeObj().getSeasonCode()==num)
-							buf.append(parseVariesCodes(dispute));
+							buf.append(parseVariesCodes(mob,dispute));
+						break;
+					case 'M':
+						if((mob!=null)&&(CMath.bset(mob.envStats().disposition(),num)))
+							buf.append(parseVariesCodes(mob,dispute));
 						break;
 					}
 					break;
@@ -990,30 +995,30 @@ public class StdRoom implements Room
 		if((buf.length()==0)&&(elseStr!=null))
 		{
 			buf.append(text);
-			buf.append(elseStr);
+			buf.append(parseVariesCodes(mob,elseStr));
 		}
 		else
 			buf.append(text);
 		return buf.toString();
 	}
 
-	protected String parseVaries(String text)
+	protected String parseVaries(MOB mob, String text)
 	{
 		if(text.startsWith("<VARIES>"))
 		{
 			int x=text.indexOf("</VARIES>");
 			if(x>=0)
-				return parseVariesCodes(text.substring(8,x))+text.substring(x+9);
-			return parseVariesCodes(text.substring(8));
+				return parseVariesCodes(mob,text.substring(8,x))+text.substring(x+9);
+			return parseVariesCodes(mob,text.substring(8));
 		}
 		return text;
 	}
 
-	public String roomTitle(){
-		return parseVaries(displayText());
+	public String roomTitle(MOB mob){
+		return parseVaries(mob,displayText());
 	}
-	public String roomDescription(){
-		return parseVaries(description());
+	public String roomDescription(MOB mob){
+		return parseVaries(mob,description());
 	}
 
 

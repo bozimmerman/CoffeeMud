@@ -138,8 +138,8 @@ public class ThinRoom implements Room {
 	public int pointsPerMove(MOB mob){return 0;}
 	public int thirstPerRound(MOB mob){return 0;}
 
-	public String roomTitle(){return "";}
-	public String roomDescription(){return "";}
+	public String roomTitle(MOB mob){return "";}
+	public String roomDescription(MOB mob){return "";}
 
 	public void send(MOB source, CMMsg msg){}
 	public void sendOthers(MOB source, CMMsg msg){}

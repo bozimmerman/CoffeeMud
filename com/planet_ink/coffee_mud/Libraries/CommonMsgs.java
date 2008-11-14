@@ -901,12 +901,12 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
         }
         if(CMLib.flags().canBeSeenBy(room,mob))
         {
-            Say.append("^O^<RName^>" + room.roomTitle()+"^</RName^>"+CMLib.flags().colorCodes(room,mob)+"^L\n\r");
+            Say.append("^O^<RName^>" + room.roomTitle(mob)+"^</RName^>"+CMLib.flags().colorCodes(room,mob)+"^L\n\r");
             if((lookCode!=LOOK_BRIEFOK)||(!CMath.bset(mob.getBitmap(),MOB.ATT_BRIEF)))
             {
                 if(lookCode==LOOK_LONG)
                 {
-                    String roomDesc=room.roomDescription();
+                    String roomDesc=room.roomDescription(mob);
                     Vector keyWords=null;
                     String word=null;
                     int x=0;
@@ -952,7 +952,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                     Say.append("^L^<RDesc^>"+roomDesc+"^</RDesc^>");
                 }
                 else
-                    Say.append("^L^<RDesc^>" + room.roomDescription()+"^</RDesc^>");
+                    Say.append("^L^<RDesc^>" + room.roomDescription(mob)+"^</RDesc^>");
                 if((!mob.isMonster())&&(mob.session().clientTelnetMode(Session.TELNET_MXP)))
                     Say.append(CMProps.mxpImage(room," ALIGN=RIGHT H=70 W=70"));
                 if(compress)

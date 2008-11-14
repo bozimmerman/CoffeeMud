@@ -1192,7 +1192,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             return makeParsableString((Vector)O);
         else
         if(O instanceof Room)
-            return ((Room)O).roomTitle();
+            return ((Room)O).roomTitle(null);
         else
         if(O instanceof Environmental)
             return ((Environmental)O).Name();
@@ -1348,8 +1348,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 break;
             case 'g': middle=((msg==null)?"":msg.toLowerCase()); break;
             case 'G': middle=((msg==null)?"":msg); break;
-            case 'd': middle=(lastKnownLocation!=null)?lastKnownLocation.roomTitle():""; break;
-            case 'D': middle=(lastKnownLocation!=null)?lastKnownLocation.roomDescription():""; break;
+            case 'd': middle=(lastKnownLocation!=null)?lastKnownLocation.roomTitle(monster):""; break;
+            case 'D': middle=(lastKnownLocation!=null)?lastKnownLocation.roomDescription(monster):""; break;
             case 'p':
             case 'P':
                 if(secondaryItem!=null)
