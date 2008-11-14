@@ -204,6 +204,12 @@ public class CommandJournal extends StdCommand
         }
         if(CMParms.combine(commands,1).length()>0)
         {
+	        String msgString=CMParms.combine(commands,1);
+	        if((journalNum>=0)&&(CMLib.journals().getCommandJournalFlags(journalNum).contains(JournalsLibrary.JournalFlag.CONFIRM)))
+	        {
+	        	if(!mob.session().confirm("Submit this message: '"+msgString+"' (Y/n)?","Y"))
+		            return false;
+	        }
             if((!review(mob,"SYSTEM_"+journalWord+"S",journalWord.toLowerCase()+"s",commands,journalWord))
             &&(!transfer(mob,"SYSTEM_"+journalWord+"S",journalWord.toLowerCase()+"s",commands,journalWord)))
             {
