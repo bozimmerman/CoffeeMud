@@ -34,18 +34,18 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public interface CatalogLibrary extends CMLibrary
 {
-    public DVector getCatalogItems();
-    public DVector getCatalogMobs();
+    public String[] getCatalogItemNames();
+    public String[] getCatalogMobNames();
+    public Item[] getCatalogItems();
+    public MOB[] getCatalogMobs();
     public boolean isCatalogObj(Environmental E);
     public boolean isCatalogObj(String name);
-    public int getCatalogItemIndex(String called);
-    public int getCatalogMobIndex(String called);
-    public Item getCatalogItem(int index);
-    public MOB getCatalogMob(int index);
-    public int[] getCatalogItemUsage(int index);
-    public int[] getCatalogMobUsage(int index);
-    public CataData getCatalogItemData(int index);
-    public CataData getCatalogMobData(int index);
+    public Item getCatalogItem(String name);
+    public MOB getCatalogMob(String name);
+    public int[] getCatalogItemUsage(String name);
+    public int[] getCatalogMobUsage(String name);
+    public CataData getCatalogItemData(String name);
+    public CataData getCatalogMobData(String name);
     public void delCatalog(Environmental E);
     public void addCatalogReplace(Environmental E);
     public void addCatalog(Environmental E);

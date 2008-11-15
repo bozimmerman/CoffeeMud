@@ -717,8 +717,9 @@ public class RoomLoader
 				CMLib.catalog().addCatalogReplace(I);
 				if((data!=null)&&(data.length()>0))
 				{
-    				int dex=CMLib.catalog().getCatalogItemIndex(I.Name());
-    				if(dex>=0) CMLib.catalog().getCatalogItemData(dex).build(data);
+					CatalogLibrary.CataData dataI=CMLib.catalog().getCatalogItemData(I.Name());
+					if(dataI!=null)
+						dataI.build(data);
 				}
 			}
 		}
@@ -740,8 +741,9 @@ public class RoomLoader
 				CMLib.catalog().addCatalogReplace(M);
                 if((data!=null)&&(data.length()>0))
                 {
-                    int dex=CMLib.catalog().getCatalogMobIndex(M.Name());
-                    if(dex>=0) CMLib.catalog().getCatalogMobData(dex).build(data);
+					CatalogLibrary.CataData dataM=CMLib.catalog().getCatalogMobData(M.Name());
+					if(dataM!=null)
+						dataM.build(data);
                 }
 			}
 		}
@@ -794,9 +796,9 @@ public class RoomLoader
 		String text=thisItem.text();
 		if(catalog)
 		{
-		    int x=CMLib.catalog().getCatalogItemIndex(thisItem.Name());
-		    if(x>=0) 
-		        text+=CMLib.catalog().getCatalogItemData(x).data();
+			CatalogLibrary.CataData dataI=CMLib.catalog().getCatalogItemData(thisItem.Name());
+			if(dataI!=null)
+		        text+=dataI.data();
 		}
 		DB.update(
 		"INSERT INTO CMROIT ("

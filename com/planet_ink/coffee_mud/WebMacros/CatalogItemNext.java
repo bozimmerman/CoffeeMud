@@ -58,17 +58,21 @@ public class CatalogItemNext extends StdWebMacro
         Item I=null;
         String name=null;
         CatalogLibrary.CataData data=null;
-        for(int s=0;s<CMLib.catalog().getCatalogItems().size();s++)
+        String[] names=CMLib.catalog().getCatalogItemNames();
+        int[] usage=null;
+        for(int s=0;s<names.length;s++)
         {
-            I=CMLib.catalog().getCatalogItem(s);
-            data=CMLib.catalog().getCatalogItemData(s);
-            if(I==null) continue;
-            name="CATALOG-"+I.Name().toUpperCase().trim();
+            name="CATALOG-"+names[s].toUpperCase().trim();
             if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!name.equalsIgnoreCase(lastID))))
             {
+                data=CMLib.catalog().getCatalogItemData(names[s]);
+                usage=CMLib.catalog().getCatalogItemUsage(names[s]);
+                I=CMLib.catalog().getCatalogItem(names[s]);
+                if(I==null) continue;
+                
                 httpReq.addRequestParameters("ITEM",name);
                 httpReq.addRequestParameters("CATALOG_ITEM_NAME",""+I.name());
-                httpReq.addRequestParameters("CATALOG_ITEM_USAGE",""+CMLib.catalog().getCatalogItemUsage(s)[0]);
+                httpReq.addRequestParameters("CATALOG_ITEM_USAGE",""+usage[0]);
                 httpReq.addRequestParameters("CATALOG_ITEM_LEVEL",""+I.baseEnvStats().level());
                 httpReq.addRequestParameters("CATALOG_ITEM_CLASS",I.ID());
                 httpReq.addRequestParameters("CATALOG_ITEM_VALUE",""+I.baseGoldValue());

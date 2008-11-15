@@ -74,24 +74,24 @@ public class QuestMaker extends StdWebMacro
             list.append(I.Name()+" ("+I.ID()+")");
         }
         list.append("<OPTION VALUE=\"\">------ CATALOGED -------");
-        for(int m=0;m<CMLib.catalog().getCatalogItems().size();m++)
+        String[] names=CMLib.catalog().getCatalogItemNames();
+        for(int i=0;i<names.length;i++)
         {
-            Environmental E=(Environmental)CMLib.catalog().getCatalogItems().elementAt(m,1);
-            list.append("<OPTION VALUE=\"CATALOG-"+E.Name()+"\"");
+            list.append("<OPTION VALUE=\"CATALOG-"+names[i]+"\"");
             if((oldItem!=null)
             &&(CMLib.flags().isCataloged(oldItem))
-            &&(oldItem.Name().equalsIgnoreCase(E.Name())))
+            &&(oldItem.Name().equalsIgnoreCase(names[i])))
                 list.append(" SELECTED");
-            list.append(">"+E.Name());
+            list.append(">"+names[i]);
         }
         return list.toString();
     }
     
-    public void addCatalogList(Vector toList, DVector fromList)
+    public void addCatalogList(Vector toList, Environmental[] fromList)
     {
-        for(int m=0;m<fromList.size();m++)
+        for(int m=0;m<fromList.length;m++)
         {
-            Environmental E=(Environmental)fromList.elementAt(m,1);
+            Environmental E=(Environmental)fromList[m];
             E=(Environmental)E.copyOf();
             CMLib.flags().setCataloged(E, true);
             E.text();
@@ -113,15 +113,15 @@ public class QuestMaker extends StdWebMacro
             list.append(M2.Name()+" ("+M2.ID()+")");
         }
         list.append("<OPTION VALUE=\"\">------ CATALOGED -------");
-        for(int m=0;m<CMLib.catalog().getCatalogMobs().size();m++)
+        String[] names=CMLib.catalog().getCatalogMobNames();
+        for(int m=0;m<names.length;m++)
         {
-            Environmental E=(Environmental)CMLib.catalog().getCatalogMobs().elementAt(m,1);
-            list.append("<OPTION VALUE=\"CATALOG-"+E.Name()+"\"");
+            list.append("<OPTION VALUE=\"CATALOG-"+names[m]+"\"");
             if((oldMob!=null)
             &&(CMLib.flags().isCataloged(oldMob))
-            &&(oldMob.Name().equalsIgnoreCase(E.Name())))
+            &&(oldMob.Name().equalsIgnoreCase(names[m])))
                 list.append(" SELECTED");
-            list.append(">"+E.Name());
+            list.append(">"+names[m]);
         }
         return list.toString();
     }

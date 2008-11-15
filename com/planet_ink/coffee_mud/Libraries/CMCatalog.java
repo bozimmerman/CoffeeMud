@@ -59,7 +59,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
         return -1;
     }
     
-    public void addCatalogReplace(DVector DV, Environmental E)
+    protected void addCatalogReplace(DVector DV, Environmental E)
     {
         int start=0;
         int end=DV.size()-1;
@@ -105,8 +105,33 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
         
     }
     
-    public DVector getCatalogItems(){return icatalog;}
-    public DVector getCatalogMobs(){return mcatalog;}
+    public String[] makeCatalogNames(Vector catalog){
+    	String[] names=new String[catalog.size()];
+    	int x=0;
+    	for(Iterator i=DVector.s_iter(catalog);i.hasNext();)
+    		names[x++]=((Environmental)i.next()).Name();
+    	return names;
+    }
+    
+    public String[] getCatalogItemNames() { return makeCatalogNames(icatalog.getDimensionVector(1)); }
+    public String[] getCatalogMobNames() { return makeCatalogNames(mcatalog.getDimensionVector(1)); }
+    
+    public Item[] getCatalogItems(){
+    	Vector itemsV=icatalog.getDimensionVector(1);
+    	Item[] items=new Item[itemsV.size()];
+    	int x=0;
+    	for(Iterator i=itemsV.iterator();i.hasNext();)
+    		items[x++]=(Item)i.next();
+    	return items;
+    }
+    public MOB[] getCatalogMobs(){
+    	Vector mobsV=mcatalog.getDimensionVector(1);
+    	MOB[] mobs=new MOB[mobsV.size()];
+    	int x=0;
+    	for(Iterator i=mobsV.iterator();i.hasNext();)
+    		mobs[x++]=(MOB)i.next();
+    	return mobs;
+    }
     
     public boolean isCatalogObj(Environmental E)
     {
@@ -122,56 +147,44 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
         return index>=0;
     }
     
-    public int getCatalogItemIndex(String called)
+    protected int getCatalogItemIndex(String called)
     { 
-        return getGlobalIndex(icatalog.getDimensionVector(1),called);
+    	synchronized(icatalog)
+    	{
+	        return getGlobalIndex(icatalog.getDimensionVector(1),called);
+    	}
     }
     
-    public int getCatalogMobIndex(String called)
+    protected int getCatalogMobIndex(String called)
     { 
-        return getGlobalIndex(mcatalog.getDimensionVector(1),called);
+    	synchronized(mcatalog)
+    	{
+	        return getGlobalIndex(mcatalog.getDimensionVector(1),called);
+    	}
     }
     
-    public Item getCatalogItem(int index)
+    public Item getCatalogItem(String called)
     { 
         try
         {
-            return (Item)icatalog.elementAt(index,1);
+        	synchronized(icatalog)
+        	{
+	            return (Item)icatalog.elementAt(getCatalogItemIndex(called),1);
+        	}
         }
         catch(Exception e)
         {
             return null;
         }
     }
-    public MOB getCatalogMob(int index)
+    public MOB getCatalogMob(String called)
     { 
         try
         {
-            return (MOB)mcatalog.elementAt(index,1);
-        }
-        catch(Exception e)
-        {
-            return null;
-        }
-    }
-    
-    public int[] getCatalogItemUsage(int index)
-    { 
-        try
-        {
-            return (int[])icatalog.elementAt(index,2);
-        }
-        catch(Exception e)
-        {
-            return null;
-        }
-    }
-    
-    public int[] getCatalogMobUsage(int index)
-    { 
-        try
-        {
-            return (int[])mcatalog.elementAt(index,2);
+        	synchronized(mcatalog)
+        	{
+	            return (MOB)mcatalog.elementAt(getCatalogMobIndex(called),1);
+        	}
         }
         catch(Exception e)
         {
@@ -179,11 +192,14 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
         }
     }
     
-    public CataData getCatalogItemData(int index)
+    public int[] getCatalogItemUsage(String called)
     { 
         try
         {
-            return (CataData)icatalog.elementAt(index,3);
+        	synchronized(icatalog)
+        	{
+	            return (int[])icatalog.elementAt(getCatalogItemIndex(called),2);
+        	}
         }
         catch(Exception e)
         {
@@ -191,11 +207,44 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
         }
     }
     
-    public CataData getCatalogMobData(int index)
+    public int[] getCatalogMobUsage(String called)
     { 
         try
         {
-            return (CataData)mcatalog.elementAt(index,3);
+        	synchronized(mcatalog)
+        	{
+	            return (int[])mcatalog.elementAt(getCatalogMobIndex(called),2);
+        	}
+        }
+        catch(Exception e)
+        {
+            return null;
+        }
+    }
+    
+    public CataData getCatalogItemData(String called)
+    { 
+        try
+        {
+        	synchronized(icatalog)
+        	{
+	            return (CataData)icatalog.elementAt(getCatalogItemIndex(called),3);
+        	}
+        }
+        catch(Exception e)
+        {
+            return null;
+        }
+    }
+    
+    public CataData getCatalogMobData(String called)
+    { 
+        try
+        {
+        	synchronized(mcatalog)
+        	{
+	            return (CataData)mcatalog.elementAt(getCatalogMobIndex(called),3);
+        	}
         }
         catch(Exception e)
         {
@@ -207,39 +256,51 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
     {
         if(E==null) return;
         if(E instanceof Item)
-            icatalog.removeElement((Item)E);
+        {
+        	synchronized(icatalog)
+        	{
+	            icatalog.removeElement((Item)E);
+        	}
+        }
         else
         if(E instanceof MOB)
-            mcatalog.removeElement((MOB)E);
+        {
+        	synchronized(mcatalog)
+        	{
+	            mcatalog.removeElement((MOB)E);
+        	}
+        }
     }
     
-    public void addCatalogReplace(Environmental E)
+    public synchronized void addCatalogReplace(Environmental E)
     {
         if(E==null) return;
         if(E instanceof Item)
-            addCatalogReplace(icatalog,(Item)E);
+        {
+        	synchronized(icatalog)
+        	{
+	            addCatalogReplace(icatalog,(Item)E);
+        	}
+        }
         else
         if(E instanceof MOB)
-            addCatalogReplace(mcatalog,(MOB)E);
+        {
+        	synchronized(mcatalog)
+        	{
+	            addCatalogReplace(mcatalog,(MOB)E);
+        	}
+        }
     }
     
     public void addCatalog(Environmental E)
     {
         if(E==null) return;
+        Environmental E2;
         if(E instanceof Item)
-        {
-            int oldIndex=getCatalogItemIndex(E.Name());
-            Environmental E2=null;
-            if(oldIndex>=0) E2=getCatalogItem(oldIndex);
-            if(E2!=null) delCatalog((Item)E2);
-        }
+            E2=getCatalogItem(E.Name());
         else
-        {
-            int oldIndex=getCatalogMobIndex(E.Name());
-            Environmental E2=null;
-            if(oldIndex>=0) E2=getCatalogMob(oldIndex);
-            if(E2!=null) delCatalog((Item)E2);
-        }
+            E2=getCatalogMob(E.Name());
+        if(E2!=null) delCatalog((MOB)E2);
         addCatalogReplace(E);
     }
     
@@ -258,16 +319,16 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
                 boolean iscataloged=CMLib.flags().isCataloged(E);
                 if((!add)&&(iscataloged))
                 {
+                    int[] usage=getCatalogItemUsage(E.Name());
                     CMLib.flags().setCataloged(E,false);
-                    int index=getCatalogItemIndex(E.Name());
-                    if(index>=0) getCatalogItemUsage(index)[0]--;
+                    if(usage!=null)usage[0]--;
                 }
                 else
                 if((add)&&(!iscataloged))
                 {
                     CMLib.flags().setCataloged(E,true);
-                    int index=getCatalogItemIndex(E.Name());
-                    if(index>=0) getCatalogItemUsage(index)[0]++;
+                    int[] usage=getCatalogItemUsage(E.Name());
+                    if(usage!=null)usage[0]--;
                 }
             }
         } catch(Throwable t){}
@@ -367,19 +428,22 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
         if(M==null) return null;
         CatalogLibrary.CataData data=null;
         Vector selections=null;
-        for(int d=0;d<icatalog.size();d++)
+        synchronized(icatalog)
         {
-            data=(CatalogLibrary.CataData)icatalog.elementAt(d,3);
-            if((data.live==live)
-            &&(data.rate>0.0)
-            &&(data.lmaskV != null)
-            &&(Math.random() <= data.rate)
-            &&(CMLib.masking().maskCheck(data.lmaskV,M,true)))
-            {
-                if(selections==null)
-                    selections=new Vector();
-                selections.addElement(icatalog.elementAt(d,1));
-            }
+	        for(int d=0;d<icatalog.size();d++)
+	        {
+	            data=(CatalogLibrary.CataData)icatalog.elementAt(d,3);
+	            if((data.live==live)
+	            &&(data.rate>0.0)
+	            &&(data.lmaskV != null)
+	            &&(Math.random() <= data.rate)
+	            &&(CMLib.masking().maskCheck(data.lmaskV,M,true)))
+	            {
+	                if(selections==null)
+	                    selections=new Vector();
+	                selections.addElement(icatalog.elementAt(d,1));
+	            }
+	        }
         }
         if(selections==null) return null;
         Item I=(Item)selections.elementAt(CMLib.dice().roll(1,selections.size(),-1));

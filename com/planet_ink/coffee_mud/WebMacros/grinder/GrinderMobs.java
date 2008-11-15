@@ -766,14 +766,13 @@ public class GrinderMobs
 			{
 			    if(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
 			    {
-			        int m=CMLib.catalog().getCatalogMobIndex(mobCode.substring(8));
-			        if(m>=0)
+		            MOB M2=CMLib.catalog().getCatalogMob(mobCode.substring(8));
+			        if(M2!=null)
 			        {
-			            MOB M2=CMLib.catalog().getCatalogMob(m);
 			            if(!M.Name().equalsIgnoreCase(M2.Name()))
     			            M.setName(M2.Name());
 			            if((M2.databaseID()==null)||(M2.databaseID().length()==0))
-			                m=-1;
+			                M2=null;
 			            else
     			            M.setDatabaseID(M2.databaseID());
 			        }
@@ -782,7 +781,7 @@ public class GrinderMobs
                     CMLib.catalog().addCatalogReplace(M);
                     newMobCode=mobCode;
                     CMLib.catalog().propogateCatalogChange(M);
-                    if(m>=0)
+                    if(M2!=null)
                         CMLib.database().DBUpdateMOB("CATALOG_MOBS",M);
                     else
                         CMLib.database().DBCreateThisMOB("CATALOG_MOBS",M);

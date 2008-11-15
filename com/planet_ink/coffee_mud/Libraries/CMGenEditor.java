@@ -395,17 +395,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             E.setName(newName);
             return;
         }
-        int catIndex=(E instanceof MOB)?
-                    CMLib.catalog().getCatalogMobIndex(E.Name()):
-                    CMLib.catalog().getCatalogItemIndex(E.Name());
-        if(catIndex<0) {
+        Environmental cataE=(E instanceof MOB)?
+                (Environmental)CMLib.catalog().getCatalogMob(E.Name()):
+                (Environmental)CMLib.catalog().getCatalogItem(E.Name());
+        if(cataE==null) {
             E.setName(newName);
             CMLib.flags().setCataloged(E,false);
             return;
         }
         int[] usage=(E instanceof MOB)?
-                CMLib.catalog().getCatalogMobUsage(catIndex):
-                CMLib.catalog().getCatalogItemUsage(catIndex);
+                CMLib.catalog().getCatalogMobUsage(E.Name()):
+                CMLib.catalog().getCatalogItemUsage(E.Name());
         if(mob.session().confirm("This object is cataloged.  Changing its name will detach it from the cataloged version, are you sure (y/N)?","N"))
         {
             E.setName(newName);
@@ -422,13 +422,9 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         ||(mob.session()==null))
             return;
 
-        int oldIndex=(E instanceof MOB)?
-                     CMLib.catalog().getCatalogMobIndex(E.Name()):
-                     CMLib.catalog().getCatalogItemIndex(E.Name());
-        if(oldIndex<0) return;
         Environmental cataE=(E instanceof MOB)?
-                            (Environmental)CMLib.catalog().getCatalogMob(oldIndex):
-                            (Environmental)CMLib.catalog().getCatalogItem(oldIndex);
+                            (Environmental)CMLib.catalog().getCatalogMob(E.Name()):
+                            (Environmental)CMLib.catalog().getCatalogItem(E.Name());
 
         CMLib.flags().setCataloged(E,false);
         if(cataE.sameAs(E))
@@ -437,8 +433,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             return;
         }
         int[] usage=(E instanceof MOB)?
-                     CMLib.catalog().getCatalogMobUsage(oldIndex):
-                     CMLib.catalog().getCatalogItemUsage(oldIndex);
+                     CMLib.catalog().getCatalogMobUsage(E.Name()):
+                     CMLib.catalog().getCatalogItemUsage(E.Name());
         if(mob.session().confirm("This object is cataloged.  Enter Y to update the cataloged version, or N to detach this object from the catalog (Y/n)?","Y"))
         {
 

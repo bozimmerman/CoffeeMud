@@ -203,10 +203,8 @@ public class ItemData extends StdWebMacro
 				{
 	                if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 	                {
-	                    int i=CMLib.catalog().getCatalogItemIndex(itemCode.substring(8));
-	                    if(i>=0)
-	                        I=CMLib.catalog().getCatalogItem(i);
-	                    else
+	                	I=CMLib.catalog().getCatalogItem(itemCode.substring(8));
+	                    if(I==null)
 	                        I=CMClass.getItem("GenItem");
 	                }
 	                else
@@ -936,10 +934,7 @@ public class ItemData extends StdWebMacro
 				    if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
 		            {
 		                String name=itemCode.substring(8);
-		                int cataDex=CMLib.catalog().getCatalogItemIndex(name);
-		                CatalogLibrary.CataData data=null;
-		                if(cataDex>=0)
-		                    data=CMLib.catalog().getCatalogItemData(cataDex);
+		                CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
 		                if(data!=null)
 		                    old=CMath.toPct(data.rate);
 		            }
@@ -949,10 +944,7 @@ public class ItemData extends StdWebMacro
                     if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
                     {
                         String name=itemCode.substring(8);
-                        int cataDex=CMLib.catalog().getCatalogItemIndex(name);
-                        CatalogLibrary.CataData data=null;
-                        if(cataDex>=0)
-                            data=CMLib.catalog().getCatalogItemData(cataDex);
+                        CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
                         if(data!=null)
                             old=data.live?"on":"";
                     }
@@ -962,10 +954,7 @@ public class ItemData extends StdWebMacro
                     if((firstTime)&&(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-")))
                     {
                         String name=itemCode.substring(8);
-                        int cataDex=CMLib.catalog().getCatalogItemIndex(name);
-                        CatalogLibrary.CataData data=null;
-                        if(cataDex>=0)
-                            data=CMLib.catalog().getCatalogItemData(cataDex);
+                        CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
                         if(data!=null)
                             old=""+data.lmaskStr;
                     }

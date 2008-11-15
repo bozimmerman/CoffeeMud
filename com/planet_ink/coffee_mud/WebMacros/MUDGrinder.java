@@ -136,9 +136,7 @@ public class MUDGrinder extends StdWebMacro
             if(last.length()==0) return "@break@";
             if(last.startsWith("CATALOG-")) {
                 last=last.substring(8);
-                int m=CMLib.catalog().getCatalogMobIndex(last);
-                if(m<0) return "@break@";
-                MOB M=CMLib.catalog().getCatalogMob(m);
+                MOB M=CMLib.catalog().getCatalogMob(last);
                 if(M==null) return "@break@";
                 if(!CMSecurity.isAllowedEverywhere(mob,"CATALOG")) return "@break@";
                 CMLib.catalog().delCatalog(M);
@@ -158,9 +156,7 @@ public class MUDGrinder extends StdWebMacro
             if(last.length()==0) return "@break@";
             if(last.startsWith("CATALOG-")) {
                 last=last.substring(8);
-                int i=CMLib.catalog().getCatalogItemIndex(last);
-                if(i<0) return "@break@";
-                Item I=CMLib.catalog().getCatalogItem(i);
+                Item I=CMLib.catalog().getCatalogItem(last);
                 if(I==null) return "@break@";
                 if(!CMSecurity.isAllowedEverywhere(mob,"CATALOG")) return "@break@";
                 CMLib.catalog().delCatalog(I);

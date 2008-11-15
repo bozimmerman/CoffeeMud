@@ -160,19 +160,14 @@ public class RoomData extends StdWebMacro
 	{
         if(!MATCHING.startsWith("CATALOG-"))
             return null;
-        int m=CMLib.catalog().getCatalogMobIndex(MATCHING.substring(8));
-        if(m>=0)
+        MOB M2=CMLib.catalog().getCatalogMob(MATCHING.substring(8));
+        if(M2!=null)
         {
-            MOB M2=CMLib.catalog().getCatalogMob(m);
-            if(M2!=null)
-            {
-                M2=(MOB)M2.copyOf();
-                CMLib.flags().setCataloged(M2,true);
-                M2.text();
-                return M2;
-            }
+            M2=(MOB)M2.copyOf();
+            CMLib.flags().setCataloged(M2,true);
+            M2.text();
         }
-        return null;
+        return M2;
 	}
 
 
@@ -180,19 +175,14 @@ public class RoomData extends StdWebMacro
     {
         if(!MATCHING.startsWith("CATALOG-"))
             return null;
-        int i=CMLib.catalog().getCatalogItemIndex(MATCHING.substring(8));
-        if(i>=0)
+        Item I=CMLib.catalog().getCatalogItem(MATCHING.substring(8));
+        if(I!=null)
         {
-            Item I=CMLib.catalog().getCatalogItem(i);
-            if(I!=null)
-            {
-                I=(Item)I.copyOf();
-                CMLib.flags().setCataloged(I,true);
-                I.text();
-            }
-            return I;
+            I=(Item)I.copyOf();
+            CMLib.flags().setCataloged(I,true);
+            I.text();
         }
-        return null;
+        return I;
     }
 
     public static String getAppropriateCode(Environmental E, Environmental RorM, Vector classes, Vector list)
@@ -438,18 +428,14 @@ public class RoomData extends StdWebMacro
 						else
 						if(MATCHING.startsWith("CATALOG-"))
 						{
-						    int m=CMLib.catalog().getCatalogMobIndex(MATCHING.substring(8));
-						    if(m>=0)
-						    {
-						        MOB M=CMLib.catalog().getCatalogMob(m);
-						        if(M!=null)
-						        {
-						            M=(MOB)M.copyOf();
-						            CMLib.flags().setCataloged(M,true);
-						            M.text();
-	                                classes.addElement(M);
-						        }
-						    }
+					        MOB M=CMLib.catalog().getCatalogMob(MATCHING.substring(8));
+					        if(M!=null)
+					        {
+					            M=(MOB)M.copyOf();
+					            CMLib.flags().setCataloged(M,true);
+					            M.text();
+                                classes.addElement(M);
+					        }
 						}
 						else
 						if(MATCHING.indexOf("@")>0)
@@ -525,11 +511,9 @@ public class RoomData extends StdWebMacro
 				}
                 str.append(mlist);
 				str.append("<OPTION VALUE=\"\">------ CATALOGED -------");
-				for(int m=0;m<CMLib.catalog().getCatalogMobs().size();m++)
-				{
-				    String name=((MOB)CMLib.catalog().getCatalogMobs().elementAt(m,1)).Name();
-				    str.append("<OPTION VALUE=\"CATALOG-"+name+"\">"+name);
-				}
+				String[] names=CMLib.catalog().getCatalogMobNames();
+				for(int m=0;m<names.length;m++)
+				    str.append("<OPTION VALUE=\"CATALOG-"+names[m]+"\">"+names[m]);
 				str.append("</SELECT>");
 				str.append("</TD>");
 				str.append("<TD WIDTH=10%>");
@@ -642,11 +626,9 @@ public class RoomData extends StdWebMacro
 				}
                 str.append(ilist);
                 str.append("<OPTION VALUE=\"\">------ CATALOGED -------");
-                for(int m=0;m<CMLib.catalog().getCatalogItems().size();m++)
-                {
-                    String name=((Item)CMLib.catalog().getCatalogItems().elementAt(m,1)).Name();
-                    str.append("<OPTION VALUE=\"CATALOG-"+name+"\">"+name);
-                }
+                String[] names=CMLib.catalog().getCatalogItemNames();
+                for(int i=0;i<names.length;i++)
+                    str.append("<OPTION VALUE=\"CATALOG-"+names[i]+"\">"+names[i]);
 				str.append("</SELECT>");
 				str.append("</TD>");
 				str.append("<TD WIDTH=10%>");

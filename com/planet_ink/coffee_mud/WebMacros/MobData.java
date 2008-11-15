@@ -803,16 +803,13 @@ public class MobData extends StdWebMacro
 			}
             str.append(bufA);
             str.append("<OPTION VALUE=\"\">------ CATALOGED -------");
-            for(int m=0;m<CMLib.catalog().getCatalogMobs().size();m++)
-            {
-                String name=((MOB)CMLib.catalog().getCatalogMobs().elementAt(m,1)).Name();
-                str.append("<OPTION VALUE=\"CATALOG-"+name+"\">"+name);
-            }
-            for(int m=0;m<CMLib.catalog().getCatalogItems().size();m++)
-            {
-                String name=((Item)CMLib.catalog().getCatalogItems().elementAt(m,1)).Name();
-                str.append("<OPTION VALUE=\"CATALOG-"+name+"\">"+name);
-            }
+            String[] names;
+            names=CMLib.catalog().getCatalogMobNames();
+            for(int m=0;m<names.length;m++)
+                str.append("<OPTION VALUE=\"CATALOG-"+names[m]+"\">"+names[m]);
+            names=CMLib.catalog().getCatalogItemNames();
+            for(int i=0;i<names.length;i++)
+                str.append("<OPTION VALUE=\"CATALOG-"+names[i]+"\">"+names[i]);
 			str.append("</SELECT>");
 			str.append("</TD><TD WIDTH=50%>Stock:");
 			str.append("<INPUT TYPE=TEXT SIZE=5 NAME=SDATA"+(theclasses.size()+1)+" VALUE=\"1\">");
@@ -935,11 +932,9 @@ public class MobData extends StdWebMacro
 			}
             str.append(mposs);
             str.append("<OPTION VALUE=\"\">------ CATALOGED -------");
-            for(int m=0;m<CMLib.catalog().getCatalogItems().size();m++)
-            {
-                String name=((Environmental)CMLib.catalog().getCatalogItems().elementAt(m,1)).Name();
-                str.append("<OPTION VALUE=\"CATALOG-"+name+"\">"+name);
-            }
+            String[] names=CMLib.catalog().getCatalogItemNames();
+            for(int i=0;i<names.length;i++)
+                str.append("<OPTION VALUE=\"CATALOG-"+names[i]+"\">"+names[i]);
 			str.append("</SELECT>");
 			str.append("</TD>");
 			str.append("<TD WIDTH=10%>");
@@ -981,10 +976,8 @@ public class MobData extends StdWebMacro
 			{
 			    if(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
 			    {
-			        int m=CMLib.catalog().getCatalogMobIndex(mobCode.substring(8));
-			        if(m>=0)
-			            M=CMLib.catalog().getCatalogMob(m);
-			        else
+			    	M=CMLib.catalog().getCatalogMob(mobCode.substring(8));
+			    	if(M==null)
 	                    M=CMClass.getMOB("GenMob");
 			    }
 			    else

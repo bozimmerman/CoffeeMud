@@ -550,30 +550,29 @@ public class GrinderItems
 			I.text();
 			if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 			{
-                int i=CMLib.catalog().getCatalogItemIndex(itemCode.substring(8));
-                if(i>=0)
+                Item I2=CMLib.catalog().getCatalogItem(itemCode.substring(8));
+                if(I2!=null)
                 {
-                    Item I2=CMLib.catalog().getCatalogItem(i);
                     if(!I.Name().equalsIgnoreCase(I2.Name()))
                         I.setName(I2.Name());
-                    if((I2.databaseID()==null)||(I2.databaseID().length()==0))
-                        i=-1;
-                    else
+                    if((I2.databaseID()!=null)&&(I2.databaseID().length()>0))
                         I.setDatabaseID(I2.databaseID());
+                    else
+                    	I2=null;
                 }
                 CMLib.flags().setCataloged(I,false);
                 I.text(); // to get cataloged status into xml
                 CMLib.catalog().addCatalogReplace(I);
                 httpReq.addRequestParameters("ITEM",itemCode);
                 CMLib.catalog().propogateCatalogChange(I);
-                int ii=CMLib.catalog().getCatalogItemIndex(itemCode.substring(8));
-                if((ii>=0)&&(cataData!=null))
+                Item I3=CMLib.catalog().getCatalogItem(itemCode.substring(8));
+                if((I3!=null)&&(cataData!=null))
                 {
-                    CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(ii);
+                    CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(I3.Name());
                     if((cataData.rate>0.0)&&(cataData.lmaskStr!=null)&&(cataData.lmaskStr.length()>0))
                         data.build(cataData.data());
                 }
-                if(i>=0)
+                if(I2!=null)
                     CMLib.database().DBUpdateItem("CATALOG_ITEMS",I);
                 else
                     CMLib.database().DBCreateThisItem("CATALOG_ITEMS",I);

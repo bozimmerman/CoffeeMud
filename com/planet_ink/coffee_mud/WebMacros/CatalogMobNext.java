@@ -56,16 +56,19 @@ public class CatalogMobNext extends StdWebMacro
         String lastID="";
         MOB M=null;
         String name=null;
-        for(int s=0;s<CMLib.catalog().getCatalogMobs().size();s++)
+        String[] names=CMLib.catalog().getCatalogMobNames();
+        int[] usage;
+        for(int s=0;s<names.length;s++)
         {
-            M=CMLib.catalog().getCatalogMob(s);
-            if(M==null) continue;
-            name="CATALOG-"+M.Name().toUpperCase().trim();
+            name="CATALOG-"+names[s].toUpperCase().trim();
             if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!name.equalsIgnoreCase(lastID))))
             {
+                usage=CMLib.catalog().getCatalogMobUsage(names[s]);
+                M=CMLib.catalog().getCatalogMob(names[s]);
+                if(M==null) continue;
                 httpReq.addRequestParameters("MOB",name);
                 httpReq.addRequestParameters("CATALOG_MOB_NAME",M.name());
-                httpReq.addRequestParameters("CATALOG_MOB_USAGE",""+CMLib.catalog().getCatalogMobUsage(s)[0]);
+                httpReq.addRequestParameters("CATALOG_MOB_USAGE",""+usage[0]);
                 httpReq.addRequestParameters("CATALOG_MOB_RACE",M.baseCharStats().raceName());
                 httpReq.addRequestParameters("CATALOG_MOB_GENDER",M.baseCharStats().genderName());
                 httpReq.addRequestParameters("CATALOG_MOB_LEVEL",""+M.baseEnvStats().level());

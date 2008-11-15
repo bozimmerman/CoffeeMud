@@ -43,11 +43,11 @@ public class Catalog extends StdCommand
 	    throws java.io.IOException
 	{
 	    Environmental origE=E;
-        int exists=-1;
+	    Environmental cataE=null;
         if(E instanceof MOB)
-            exists=CMLib.catalog().getCatalogMobIndex(E.Name());
+        	cataE=CMLib.catalog().getCatalogMob(E.Name());
         else
-            exists=CMLib.catalog().getCatalogItemIndex(E.Name());
+		    cataE=CMLib.catalog().getCatalogItem(E.Name());
         String msg="<S-NAME> catalog(s) <T-NAMESELF>.";
         if(CMLib.flags().isCataloged(E))
         {
@@ -57,21 +57,18 @@ public class Catalog extends StdCommand
         CMLib.flags().setCataloged(E,true);
         E=(Environmental)E.copyOf();
         CMLib.flags().setCataloged(E,false);
-        if(exists>=0)
+        if(cataE!=null)
         {
             StringBuffer diffs=new StringBuffer("");
-            Environmental cat=(E instanceof MOB)?
-                             (Environmental)CMLib.catalog().getCatalogMob(exists):
-                             (Environmental)CMLib.catalog().getCatalogItem(exists);
-            if(E.sameAs(cat))
+            if(E.sameAs(cataE))
             {
                 CMLib.flags().setCataloged(E,true);
-                mob.tell("The object '"+cat.Name()+"' already exists in the catalog, exactly as it is.");
+                mob.tell("The object '"+cataE.Name()+"' already exists in the catalog, exactly as it is.");
                 return true;
             }
-            for(int i=0;i<cat.getStatCodes().length;i++)
-                if((!cat.getStat(cat.getStatCodes()[i]).equals(E.getStat(cat.getStatCodes()[i]))))
-                    diffs.append(cat.getStatCodes()[i]+",");
+            for(int i=0;i<cataE.getStatCodes().length;i++)
+                if((!cataE.getStat(cataE.getStatCodes()[i]).equals(E.getStat(cataE.getStatCodes()[i]))))
+                    diffs.append(cataE.getStatCodes()[i]+",");
             if((mob.session()==null)
             ||(!mob.session().confirm("Cataloging that object will change the existing cataloged '"+E.Name()+"' by altering the following properties: "+diffs.toString()+".  Please confirm (y/N)?","Y")))
             {
@@ -125,22 +122,28 @@ public class Catalog extends StdCommand
 	}
 	
 	
-	public int[] findCatalogIndex(int whatKind, String ID, boolean exactOnly)
+	public Object[] findCatalogIndex(int whatKind, String ID, boolean exactOnly)
 	{
-		int[] data=new int[]{-1,-1};
-		if((data[0]<0)&&((whatKind==0)||(whatKind==1)))
-		{ data[0]=CMLib.catalog().getCatalogMobIndex(ID); if(data[0]>=0) data[1]=1;}
-		if((data[0]<0)&&((whatKind==0)||(whatKind==2)))
-		{ data[0]=CMLib.catalog().getCatalogItemIndex(ID); if(data[0]>=0) data[1]=2;}
+		Object[] data=new Object[]{null,null};
+		if((data[0]==null)&&((whatKind==0)||(whatKind==1)))
+		{ data[0]=CMLib.catalog().getCatalogMob(ID); if(data[0]!=null) data[1]=Integer.valueOf(1);}
+		if((data[0]==null)&&((whatKind==0)||(whatKind==2)))
+		{ data[0]=CMLib.catalog().getCatalogItem(ID); if(data[0]!=null) data[1]=Integer.valueOf(2);}
 		if(exactOnly) return data;
-		if((data[0]<0)&&((whatKind==0)||(whatKind==1)))
-			for(int x=0;x<CMLib.catalog().getCatalogMobs().size();x++)
-				if(CMLib.english().containsString(((MOB)CMLib.catalog().getCatalogMobs().elementAt(x,1)).Name(), ID))
-				{	data[0]=x; data[1]=1; break;}
-		if((data[0]<0)&&((whatKind==0)||(whatKind==2)))
-			for(int x=0;x<CMLib.catalog().getCatalogItems().size();x++)
-				if(CMLib.english().containsString(((Item)CMLib.catalog().getCatalogItems().elementAt(x,1)).Name(), ID))
-				{	data[0]=x; data[1]=2; break;}
+		if((data[0]==null)&&((whatKind==0)||(whatKind==1)))
+		{
+			String[] names=CMLib.catalog().getCatalogMobNames();
+			for(int x=0;x<names.length;x++)
+				if(CMLib.english().containsString(names[x], ID))
+				{	data[0]=CMLib.catalog().getCatalogMob(names[x]); data[1]=Integer.valueOf(1); break;}
+		}
+		if((data[0]==null)&&((whatKind==0)||(whatKind==2)))
+		{
+			String[] names=CMLib.catalog().getCatalogItemNames();
+			for(int x=0;x<names.length;x++)
+				if(CMLib.english().containsString(names[x], ID))
+				{	data[0]=CMLib.catalog().getCatalogItem(names[x]); data[1]=Integer.valueOf(2); break;}
+		}
 		return data;
 	}
 	
@@ -287,9 +290,10 @@ public class Catalog extends StdCommand
 					list.append(CMStrings.padRight("Name",38)+" ");
 					list.append(CMStrings.padRight("Name",38)+" ");
 					list.append("\n\r"+CMStrings.repeat("-",78)+"\n\r");
-					for(int i=0;i<CMLib.catalog().getCatalogMobs().size();i++)
+					String[] names=CMLib.catalog().getCatalogMobNames();
+					for(int i=0;i<names.length;i++)
 					{
-						M=CMLib.catalog().getCatalogMob(i);
+						M=CMLib.catalog().getCatalogMob(names[i]);
 						if((ID==null)||(ID.length()==0)||(CMLib.english().containsString(M.Name(),ID)))
 						{
 							list.append(CMStrings.padRight(M.Name(),38));
@@ -314,10 +318,11 @@ public class Catalog extends StdCommand
                     list.append(CMStrings.padRight("Rate",6)+" ");
 					list.append(CMStrings.padRight("Mask",31)+" ");
                     list.append("\n\r"+CMStrings.repeat("-",78)+"\n\r");
-					for(int i=0;i<CMLib.catalog().getCatalogItems().size();i++)
+                    String[] names=CMLib.catalog().getCatalogItemNames();
+					for(int i=0;i<names.length;i++)
 					{
-						I=CMLib.catalog().getCatalogItem(i);
-                        data=CMLib.catalog().getCatalogItemData(i);
+						I=CMLib.catalog().getCatalogItem(names[i]);
+                        data=CMLib.catalog().getCatalogItemData(names[i]);
 						if((ID==null)||(ID.length()==0)||(CMLib.english().containsString(I.Name(),ID)))
 						{
 							list.append(CMStrings.padRight(I.Name(),38)+" ");
@@ -350,15 +355,13 @@ public class Catalog extends StdCommand
 				if((commands.size()>0)&&("ITEMS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
 				{ commands.removeElementAt(0); whatKind=2;}
 				String ID=CMParms.combine(commands,0);
-				int[] foundData=findCatalogIndex(whatKind,ID,false);
-				if(foundData[0]<0)
+				Object[] foundData=findCatalogIndex(whatKind,ID,false);
+				if(foundData[0]==null)
 				{
 					mob.tell("'"+ID+"' not found in catalog! Try CATALOG LIST");
 					return false;
 				}
-				Environmental E=(foundData[1]==1)?
-								(Environmental)CMLib.catalog().getCatalogMob(foundData[0]):
-								(Environmental)CMLib.catalog().getCatalogItem(foundData[0]);
+				Environmental E=(Environmental)foundData[0];
 				//int[] usage=(foundData[1]==1)?
 				//			CMLib.catalog().getCatalogMobUsage(foundData[0]):
 				//			CMLib.catalog().getCatalogItemUsage(foundData[0]);
@@ -401,18 +404,16 @@ public class Catalog extends StdCommand
                 if((commands.size()>0)&&("ITEMS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
                 { commands.removeElementAt(0); whatKind=2;}
                 String ID=CMParms.combine(commands,0);
-                int[] foundData=findCatalogIndex(whatKind,ID,false);
-                if(foundData[0]<0)
+                Object[] foundData=findCatalogIndex(whatKind,ID,false);
+                if(foundData[0]==null)
                 {
                     mob.tell("'"+ID+"' not found in catalog! Try CATALOG LIST");
                     return false;
                 }
-                Environmental E=(foundData[1]==1)?
-                                (Environmental)CMLib.catalog().getCatalogMob(foundData[0]):
-                                (Environmental)CMLib.catalog().getCatalogItem(foundData[0]);
-                CatalogLibrary.CataData data=(foundData[1]==1)?
-                                            CMLib.catalog().getCatalogMobData(foundData[0]):
-                                            CMLib.catalog().getCatalogItemData(foundData[0]);
+                Environmental E=(Environmental)foundData[0];
+                CatalogLibrary.CataData data=(((Integer)foundData[1]).intValue()==1)?
+                                            CMLib.catalog().getCatalogMobData(E.Name()):
+                                            CMLib.catalog().getCatalogItemData(E.Name());
                 if(E instanceof MOB)
                 {
                     mob.tell("There is no extra mob data to edit. See help on CATALOG.");

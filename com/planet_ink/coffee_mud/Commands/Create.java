@@ -298,11 +298,9 @@ public class Create extends StdCommand
 	
 	public MOB getNewCatalogMob(String mobID)
 	{
-		int catDex=CMLib.catalog().getCatalogMobIndex(mobID);
-		MOB newMOB=null;
-		if(catDex>=0)
+		MOB newMOB=CMLib.catalog().getCatalogMob(mobID);
+		if(newMOB!=null)
 		{
-			newMOB=CMLib.catalog().getCatalogMob(catDex);
 			newMOB=(MOB)newMOB.copyOf();
             try { CMLib.catalog().changeCatalogUsage(newMOB,true);} catch(Throwable t){}
 			CMLib.flags().setCataloged(newMOB,true);
@@ -313,11 +311,9 @@ public class Create extends StdCommand
 	
 	public Item getNewCatalogItem(String itemID)
 	{
-		Item newItem=null;
-		int catDex=CMLib.catalog().getCatalogItemIndex(itemID);
-		if(catDex>=0)
+		Item newItem=CMLib.catalog().getCatalogItem(itemID);
+		if(newItem!=null)
 		{
-			newItem=CMLib.catalog().getCatalogItem(catDex);
 			newItem=(Item)newItem.copyOf();
 	        try { CMLib.catalog().changeCatalogUsage(newItem,true);} catch(Throwable t){}
 			CMLib.flags().setCataloged(newItem,true);
@@ -956,7 +952,7 @@ public class Create extends StdCommand
 			E=CMClass.getItem(allWord);
 			if(((E!=null)&&(E instanceof Item))
 			||(CMLib.english().numPossibleGold(null,allWord)>0)
-			||(CMLib.catalog().getCatalogItemIndex(allWord)>=0))
+			||(CMLib.catalog().getCatalogItem(allWord)!=null))
 			{
 				commands.insertElementAt("ITEM",1);
 				execute(mob,commands,metaFlags);
@@ -965,7 +961,7 @@ public class Create extends StdCommand
 			{
 				E=CMClass.getMOB(allWord);
 				if(((E!=null)&&(E instanceof MOB))
-				||(CMLib.catalog().getCatalogMobIndex(allWord)>=0))
+				||(CMLib.catalog().getCatalogMob(allWord)!=null))
 				{
 					commands.insertElementAt("MOB",1);
 					execute(mob,commands,metaFlags);
