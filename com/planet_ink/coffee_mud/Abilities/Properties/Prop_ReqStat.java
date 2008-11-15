@@ -31,12 +31,28 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class Prop_ReqStat extends Property
 {
 	public String ID() { return "Prop_ReqStat"; }
 	public String name(){ return "Require stat values";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS|Ability.CAN_ITEMS;}
-
+	private boolean noSneak=false;
+	
+	public void setMiscText(String txt)
+	{
+		noSneak=false;
+		Vector parms=CMParms.parse(txt.toUpperCase());
+		String s;
+		for(Enumeration p=parms.elements();p.hasMoreElements();)
+		{
+			s=(String)p.nextElement();
+			if(s.startsWith("NOSNEAK"))
+				noSneak=true;
+		}
+		super.setMiscText(txt);
+	}
+	
 
 	public String accountForYourself()
 	{
@@ -48,7 +64,7 @@ public class Prop_ReqStat extends Property
 		if(mob==null) return false;
 		if(CMLib.flags().isATrackingMonster(mob))
 			return true;
-		if(CMLib.flags().isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
+		if(CMLib.flags().isSneaking(mob)&&(!noSneak))
 			return true;
 		int[] comp=null;
 		for(int c=0;c<CharStats.STAT_NAMES.length;c++)

@@ -49,7 +49,7 @@ public class Prop_ReqHeight extends Property
 		   &&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
 			int height=100;
-			if(CMath.s_int(text())>0)
+			if(CMath.isInteger(text()))
 				height=CMath.s_int(text());
 			if(msg.source().envStats().height()>height)
 			{

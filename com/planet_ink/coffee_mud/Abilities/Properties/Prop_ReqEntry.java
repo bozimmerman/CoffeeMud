@@ -37,7 +37,27 @@ public class Prop_ReqEntry extends Property
 	public String ID() { return "Prop_ReqEntry"; }
 	public String name(){ return "All Room/Exit Limitations";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
-
+	private boolean noFollow=false;
+	private boolean noSneak=false;
+	
+	public void setMiscText(String txt)
+	{
+		noFollow=false;
+		noSneak=false;
+		Vector parms=CMParms.parse(txt.toUpperCase());
+		String s;
+		for(Enumeration p=parms.elements();p.hasMoreElements();)
+		{
+			s=(String)p.nextElement();
+			if("NOFOLLOW".startsWith(s))
+				noFollow=true;
+			else
+			if(s.startsWith("NOSNEAK"))
+				noSneak=true;
+		}
+		super.setMiscText(txt);
+	}
+	
 	public String accountForYourself()
 	{
 		return "Entry restricted as follows: "+CMLib.masking().maskDesc(miscText);
@@ -48,7 +68,7 @@ public class Prop_ReqEntry extends Property
 		if(mob==null) return false;
 		if(CMLib.flags().isATrackingMonster(mob))
 			return true;
-		if(CMLib.flags().isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
+		if(CMLib.flags().isSneaking(mob)&&(!noSneak))
 			return true;
 		return CMLib.masking().maskCheck(text(),mob,false);
 	}
@@ -62,7 +82,7 @@ public class Prop_ReqEntry extends Property
 			&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 			{
 				HashSet H=new HashSet();
-				if(text().toUpperCase().indexOf("NOFOL")>=0)
+				if(noFollow)
 					H.add(msg.source());
 				else
 				{
@@ -89,7 +109,7 @@ public class Prop_ReqEntry extends Property
 				case CMMsg.TYP_MOUNT:
 					{
 						HashSet H=new HashSet();
-						if(text().toUpperCase().indexOf("NOFOL")>=0)
+						if(noFollow)
 							H.add(msg.source());
 						else
 						{

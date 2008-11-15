@@ -38,6 +38,34 @@ public class Prop_ReqLevels extends Property
 	public String ID() { return "Prop_ReqLevels"; }
 	public String name(){ return "Level Limitations";}
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
+	private boolean noFollow=false;
+	private boolean noSneak=false;
+	private boolean allFlag=false;
+	private boolean sysopFlag=false;
+	
+	public void setMiscText(String txt)
+	{
+		noFollow=false;
+		noSneak=false;
+		Vector parms=CMParms.parse(txt.toUpperCase());
+		String s;
+		for(Enumeration p=parms.elements();p.hasMoreElements();)
+		{
+			s=(String)p.nextElement();
+			if("NOFOLLOW".startsWith(s))
+				noFollow=true;
+			else
+			if(s.startsWith("NOSNEAK"))
+				noSneak=true;
+			else
+			if("ALL".equals(s))
+				allFlag=true;
+			else
+			if("SYSOP".equals(s))
+				noSneak=true;
+		}
+		super.setMiscText(txt);
+	}
 
 	public boolean passesMuster(MOB mob, Environmental R)
 	{
@@ -45,16 +73,16 @@ public class Prop_ReqLevels extends Property
 		if(CMLib.flags().isATrackingMonster(mob))
 			return true;
 		
-		if(CMLib.flags().isSneaking(mob)&&(text().toUpperCase().indexOf("NOSNEAK")<0))
+		if(CMLib.flags().isSneaking(mob)&&(!noSneak))
 			return true;
 
-		if((text().toUpperCase().indexOf("ALL")>=0)
+		if((allFlag)
 		||(text().length()==0)
 		||(!(R instanceof Room))
 	    ||(CMSecurity.isAllowed(mob,(Room)R,"GOTO")))
 			return true;
 
-		if((text().toUpperCase().indexOf("SYSOP")>=0)
+		if((sysopFlag)
 		&&(R instanceof Room)
 		&&(!CMSecurity.isAllowed(mob,(Room)R,"GOTO")))
 			return false;
@@ -120,7 +148,7 @@ public class Prop_ReqLevels extends Property
 		&&((msg.amITarget(affected))||(msg.tool()==affected)||(affected instanceof Area)))
 		{
 			HashSet H=new HashSet();
-			if(text().toUpperCase().indexOf("NOFOL")>=0)
+			if(noFollow)
 				H.add(msg.source());
 			else
 			{
