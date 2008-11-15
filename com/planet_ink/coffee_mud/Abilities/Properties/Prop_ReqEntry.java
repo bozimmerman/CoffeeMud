@@ -39,28 +39,45 @@ public class Prop_ReqEntry extends Property
 	protected int canAffectCode(){return Ability.CAN_ROOMS|Ability.CAN_AREAS|Ability.CAN_EXITS;}
 	private boolean noFollow=false;
 	private boolean noSneak=false;
+	private String maskS="";
+	private String message="";
 	
 	public void setMiscText(String txt)
 	{
 		noFollow=false;
 		noSneak=false;
-		Vector parms=CMParms.parse(txt.toUpperCase());
+		maskS=txt;
+		message="";
+		Vector parms=CMParms.parse(txt);
 		String s;
 		for(Enumeration p=parms.elements();p.hasMoreElements();)
 		{
 			s=(String)p.nextElement();
-			if("NOFOLLOW".startsWith(s))
+			if("NOFOLLOW".startsWith(s.toUpperCase()))
+			{
+				maskS=CMStrings.replaceFirst(maskS, s, "");
 				noFollow=true;
+			}
 			else
-			if(s.startsWith("NOSNEAK"))
+			if(s.toUpperCase().startsWith("NOSNEAK"))
+			{
+				maskS=CMStrings.replaceFirst(maskS, s, "");
 				noSneak=true;
+			}
+			else
+			if((s.toUpperCase().startsWith("MESSAGE"))
+			&&(s.substring(7).trim().startsWith("=")))
+			{
+				message=s.substring(7).trim().substring(1);
+				maskS=CMStrings.replaceFirst(maskS, s, "");
+			}
 		}
 		super.setMiscText(txt);
 	}
 	
 	public String accountForYourself()
 	{
-		return "Entry restricted as follows: "+CMLib.masking().maskDesc(miscText);
+		return "Entry restricted as follows: "+CMLib.masking().maskDesc(maskS);
 	}
 
 	public boolean passesMuster(MOB mob)
@@ -70,7 +87,7 @@ public class Prop_ReqEntry extends Property
 			return true;
 		if(CMLib.flags().isSneaking(mob)&&(!noSneak))
 			return true;
-		return CMLib.masking().maskCheck(text(),mob,false);
+		return CMLib.masking().maskCheck(maskS,mob,false);
 	}
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -94,7 +111,7 @@ public class Prop_ReqEntry extends Property
 				for(Iterator e=H.iterator();e.hasNext();)
 					if(passesMuster((MOB)e.next()))
 						return super.okMessage(myHost,msg);
-				msg.source().tell("You can not go that way.");
+				msg.source().tell((message.length()==0)?"You can not go that way.":message);
 				return false;
 			}
 			else
@@ -126,7 +143,7 @@ public class Prop_ReqEntry extends Property
 							&&(passesMuster((MOB)E)))
 								return super.okMessage(myHost,msg);
 						}
-						msg.source().tell("You are not permitted in there.");
+						msg.source().tell((message.length()==0)?"You are not permitted in there.":message);
 						return false;
 					}
 				default:
