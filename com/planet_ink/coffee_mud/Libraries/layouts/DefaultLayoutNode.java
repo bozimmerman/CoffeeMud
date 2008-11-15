@@ -89,7 +89,7 @@ public class DefaultLayoutNode implements LayoutNode
 	public void flagRun(LayoutRuns run) {
 		tags.put(LayoutTags.NODERUN,run.toString());
 	}
-	public LayoutTypes type(){ return LayoutTypes.valueOf(tags.get("NODETYPE"));}
+	public LayoutTypes type(){ return LayoutTypes.valueOf(tags.get(LayoutTags.NODETYPE));}
 	public void setExits(int[] dirs) {
 		StringBuffer buf=new StringBuffer(",");
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)

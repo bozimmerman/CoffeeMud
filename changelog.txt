@@ -2142,3 +2142,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 7. Clarify Scroll now has a ceiling, to help balance against mages. 
 8. New Shaman Prayer: Cleanliness
 9. Replay will now show the commands you entered also.
+10. New Command Journal option: confirm

@@ -331,10 +331,10 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         for(int v=V.size()-1;v>=0;v--)
         {
             String s=((String)V.elementAt(v)).toUpperCase();
-            if(ChannelFlag.valueOf(s) != null)
+            if(CMParms.contains(ChannelFlag.values(), s))
             {
                 V.removeElementAt(v);
-                flags.add(ChannelFlag.valueOf(s.trim().toUpperCase()));
+                flags.add(ChannelFlag.valueOf(s));
                 break;
             }
         }
