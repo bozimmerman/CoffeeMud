@@ -240,6 +240,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             zapCodes.put("+RACE",new Integer(112));  // for compiled use ONLY
             zapCodes.put("-QUESTWIN",new Integer(113));
             zapCodes.put("+QUESTWIN",new Integer(114));
+            zapCodes.put("-GROUPSIZE",new Integer(115));
+            zapCodes.put("+GROUPSIZE",new Integer(116));
 		}
 		return zapCodes;
 	}
@@ -1867,6 +1869,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					buf.append(".  ");
 				}
 				break;
+				case 115: // -groupsize
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					buf.append((skipFirstWord?"A":"Requires a")+" group size of at most "+val+".  ");
+					break;
+				case 116: // +groupsize
+					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
+					buf.append((skipFirstWord?"A":"Requires a")+" group size of at least "+val+".  ");
+					break;
 				}
 			else
 			{
@@ -2753,6 +2763,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 case 66: // -damage
                 case 67: // +attack
                 case 68: // -attack
+                case 115: // -groupsize
+                case 116: // +groupsize
 					{
 						val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 						Vector entry=new Vector();
@@ -3924,6 +3936,14 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				break;
 			case 41: // +lvleq
 				if((V.size()>1)&&((actual?E.baseEnvStats().level():E.envStats().level())==((Integer)V.elementAt(1)).intValue()))
+				   return false;
+				break;
+			case 116: // +groupsize
+				if((V.size()>1)&&(mob.getGroupMembers(new HashSet(1)).size()<(((Integer)V.elementAt(1)).intValue())))
+				   return false;
+				break;
+			case 115: // -groupsize
+				if((V.size()>1)&&(mob.getGroupMembers(new HashSet(1)).size()>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
 			}

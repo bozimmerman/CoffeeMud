@@ -118,6 +118,8 @@ public interface MaskingLibrary extends CMLibrary
         +"-DEX X (<WORD> those with dexterity greater than X)  <BR>"
         +"+DEX X (<WORD> those with dexterity less than X) <BR>"
         +"+-ADJSTR...ADJCON (Same as above, but uses current values) <BR>"
+        +"-GROUPSIZE X (<WORD> those in groups larger than X)  <BR>"
+        +"+GROUPSIZE X (<WORD> those in groups smaller than X)  <BR>"
         +"-AREA (<WORD> in all areas) <BR>"
         +"-AREA \"+my areaname\" etc.. (create exceptions) <BR>"
         +"+AREA (do not <WORD> any areas) <BR>"

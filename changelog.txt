@@ -2143,3 +2143,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 8. New Shaman Prayer: Cleanliness
 9. Replay will now show the commands you entered also.
 10. New Command Journal option: confirm
+11. New Zapper Mask: GROUPSIZE
