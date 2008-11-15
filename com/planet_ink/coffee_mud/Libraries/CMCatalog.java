@@ -102,7 +102,6 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
                     }
             DV.addElement(E,new int[]{0},new CataData(""));
         }
-        
     }
     
     public String[] makeCatalogNames(Vector catalog){

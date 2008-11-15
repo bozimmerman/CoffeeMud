@@ -403,14 +403,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             CMLib.flags().setCataloged(E,false);
             return;
         }
-        int[] usage=(E instanceof MOB)?
-                CMLib.catalog().getCatalogMobUsage(E.Name()):
-                CMLib.catalog().getCatalogItemUsage(E.Name());
         if(mob.session().confirm("This object is cataloged.  Changing its name will detach it from the cataloged version, are you sure (y/N)?","N"))
         {
+            CMLib.catalog().changeCatalogUsage(E,false);
             E.setName(newName);
-            CMLib.flags().setCataloged(E,false);
-            usage[0]--;
         }
     }
 
@@ -432,9 +428,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             CMLib.flags().setCataloged(E,true);
             return;
         }
-        int[] usage=(E instanceof MOB)?
-                     CMLib.catalog().getCatalogMobUsage(E.Name()):
-                     CMLib.catalog().getCatalogItemUsage(E.Name());
         if(mob.session().confirm("This object is cataloged.  Enter Y to update the cataloged version, or N to detach this object from the catalog (Y/n)?","Y"))
         {
 
@@ -449,11 +442,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             Log.infoOut("BaseGenerics",mob.Name()+" updated catalog "+((E instanceof MOB)?"MOB":"ITEM")+" "+E.Name());
         }
         else
-        {
-
-            CMLib.flags().setCataloged(E,false);
-            usage[0]--;
-        }
+            CMLib.catalog().changeCatalogUsage(E,false);
     }
 
     protected void genImage(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException

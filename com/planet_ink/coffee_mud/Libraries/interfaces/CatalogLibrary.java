@@ -42,8 +42,6 @@ public interface CatalogLibrary extends CMLibrary
     public boolean isCatalogObj(String name);
     public Item getCatalogItem(String name);
     public MOB getCatalogMob(String name);
-    public int[] getCatalogItemUsage(String name);
-    public int[] getCatalogMobUsage(String name);
     public CataData getCatalogItemData(String name);
     public CataData getCatalogMobData(String name);
     public void delCatalog(Environmental E);
