@@ -36,7 +36,7 @@ import java.util.Vector;
  * down to a goblin
  */
 @SuppressWarnings("unchecked")
-public interface MOB extends Environmental, Rider
+public interface MOB extends Environmental, Rider, DBIdentifiable
 {
 	public int getBitmap();
 	public void setBitmap(int bitmap);
@@ -80,8 +80,6 @@ public interface MOB extends Environmental, Rider
 	public int adjustedDamage(Weapon weapon, MOB target);
 	public long peaceTime();
 	
-	public void setDatabaseID(String id);
-	public String databaseID();
 	public void resetVectors();
 
 	/** Primary mob communication */

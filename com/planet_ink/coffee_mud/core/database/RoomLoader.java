@@ -714,13 +714,19 @@ public class RoomLoader
 			    itemNum=(String)e.nextElement();
 			    I=(Item)itemNums.get(itemNum);
 			    data=(String)((cataData!=null)?cataData.get(itemNum):null);
-				CMLib.catalog().addCatalogReplace(I);
-				if((data!=null)&&(data.length()>0))
-				{
-					CatalogLibrary.CataData dataI=CMLib.catalog().getCatalogItemData(I.Name());
-					if(dataI!=null)
-						dataI.build(data);
-				}
+			    Item oldI=CMLib.catalog().getCatalogItem(I.Name());
+			    if((oldI!=null)&&(I.databaseID().length()>0)&&(!oldI.databaseID().equals(I.databaseID())))
+			    	DBDeleteRoomItem("CATALOG_ITEMS", I);
+			    else	
+			    {
+					CMLib.catalog().addCatalogReplace(I);
+					if((data!=null)&&(data.length()>0))
+					{
+						CatalogLibrary.CataData dataI=CMLib.catalog().getCatalogItemData(I.Name());
+						if(dataI!=null)
+							dataI.build(data);
+					}
+			    }
 			}
 		}
 
@@ -738,13 +744,19 @@ public class RoomLoader
                 itemNum=(String)e.nextElement();
                 M=(MOB)itemNums.get(itemNum);
                 data=(String)((cataData!=null)?cataData.get(itemNum):null);
-				CMLib.catalog().addCatalogReplace(M);
-                if((data!=null)&&(data.length()>0))
-                {
-					CatalogLibrary.CataData dataM=CMLib.catalog().getCatalogMobData(M.Name());
-					if(dataM!=null)
-						dataM.build(data);
-                }
+                MOB oldM=CMLib.catalog().getCatalogMob(M.Name());
+			    if((oldM!=null)&&(M.databaseID().length()>0)&&(!oldM.databaseID().equals(M.databaseID())))
+			    	DBDeleteRoomMOB("CATALOG_MOBS", M);
+			    else	
+			    {
+					CMLib.catalog().addCatalogReplace(M);
+	                if((data!=null)&&(data.length()>0))
+	                {
+						CatalogLibrary.CataData dataM=CMLib.catalog().getCatalogMobData(M.Name());
+						if(dataM!=null)
+							dataM.build(data);
+	                }
+			    }
 			}
 		}
 		

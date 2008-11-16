@@ -395,14 +395,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             E.setName(newName);
             return;
         }
-        Environmental cataE=(E instanceof MOB)?
-                (Environmental)CMLib.catalog().getCatalogMob(E.Name()):
-                (Environmental)CMLib.catalog().getCatalogItem(E.Name());
+        Environmental cataE=CMLib.catalog().getCatalogMatch(E);
         if(cataE==null) {
             E.setName(newName);
-            CMLib.flags().setCataloged(E,false);
+            CMLib.catalog().changeCatalogUsage(E,false);
             return;
-        }
+        } else
         if(mob.session().confirm("This object is cataloged.  Changing its name will detach it from the cataloged version, are you sure (y/N)?","N"))
         {
             CMLib.catalog().changeCatalogUsage(E,false);
@@ -418,31 +416,32 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         ||(mob.session()==null))
             return;
 
-        Environmental cataE=(E instanceof MOB)?
-                            (Environmental)CMLib.catalog().getCatalogMob(E.Name()):
-                            (Environmental)CMLib.catalog().getCatalogItem(E.Name());
-
-        CMLib.flags().setCataloged(E,false);
-        if(cataE.sameAs(E))
+        StringBuffer diffs=CMLib.catalog().checkCatalogIntegrity(E);
+        if(diffs!=null)
         {
-            CMLib.flags().setCataloged(E,true);
-            return;
+        	Environmental cataE=(Environmental)CMLib.catalog().getCatalogMatch(E).copyOf();
+        	CMLib.catalog().changeCatalogUsage(cataE,true);
+        	StringBuffer detailedDiff=new StringBuffer("");
+        	Vector V=CMParms.parseCommas(diffs.toString(),true);
+        	
+        	for(int v=0;v<V.size();v++)
+        	{
+        		String stat=(String)V.elementAt(v);
+        		detailedDiff.append("CATALOG:"+stat+":'"+cataE.getStat(stat)+"'\n\r");
+        		detailedDiff.append("YOURS  :"+stat+":'"+E.getStat(stat)+"'\n\r");
+        	}
+        	cataE.destroy();
+        	mob.tell("You have modified the following fields: \n\r"+detailedDiff.toString());
+	        if(mob.session().confirm("This object is cataloged.  Enter Y to update the cataloged version, or N to detach this object from the catalog (Y/n)?","Y"))
+	        {
+	        	CMLib.catalog().updateCatalog(E);
+	            CMLib.catalog().propogateCatalogChange(E);
+	            mob.tell("Catalog update complete.");
+	            Log.infoOut("BaseGenerics",mob.Name()+" updated catalog "+((E instanceof MOB)?"MOB":"ITEM")+" "+E.Name());
+	        }
+	        else
+	            CMLib.catalog().changeCatalogUsage(E,false);
         }
-        if(mob.session().confirm("This object is cataloged.  Enter Y to update the cataloged version, or N to detach this object from the catalog (Y/n)?","Y"))
-        {
-
-            cataE.setMiscText(E.text());
-            if(E instanceof MOB)
-                CMLib.database().DBUpdateMOB("CATALOG_MOBS",(MOB)cataE);
-            else
-                CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)cataE);
-            CMLib.flags().setCataloged(E,true);
-            CMLib.catalog().propogateCatalogChange(cataE);
-            mob.tell("Catalog update complete.");
-            Log.infoOut("BaseGenerics",mob.Name()+" updated catalog "+((E instanceof MOB)?"MOB":"ITEM")+" "+E.Name());
-        }
-        else
-            CMLib.catalog().changeCatalogUsage(E,false);
     }
 
     protected void genImage(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException
@@ -973,7 +972,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
         if(mob.session()!=null)
-        	mob.session().rawPrint(showNumber+". Display: '"+E.displayText()+"'.");
+        	mob.session().rawPrintln(showNumber+". Display: '"+E.displayText()+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         String newName=null;
         if(E instanceof Item)
@@ -6713,10 +6712,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     ok=false;
                 }
                 boolean wasCataloged=CMLib.flags().isCataloged(me);
-                CMLib.flags().setCataloged(me,false);
+                CMLib.catalog().changeCatalogUsage(me,false);
                 me.setMiscText(me.text());
                 if(wasCataloged)
-                    CMLib.flags().setCataloged(me,true);
+                    CMLib.catalog().changeCatalogUsage(me,true);
             }
         }
     }
@@ -7169,10 +7168,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     ok=false;
                 }
                 boolean wasCataloged=CMLib.flags().isCataloged(me);
-                CMLib.flags().setCataloged(me,false);
+                CMLib.catalog().changeCatalogUsage(me,false);
                 me.setMiscText(me.text());
                 if(wasCataloged)
-                    CMLib.flags().setCataloged(me,true);
+                    CMLib.catalog().changeCatalogUsage(me,true);
             }
         }
     }

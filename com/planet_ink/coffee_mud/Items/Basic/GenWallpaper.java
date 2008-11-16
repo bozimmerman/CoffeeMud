@@ -58,6 +58,7 @@ public class GenWallpaper implements Item
 	
 	public void setDatabaseID(String id){}//databaseID=id;}
 	public String databaseID(){return "";}//databaseID;}
+	public boolean canSaveDatabaseID(){ return false;}
 
 	public String Name(){ return name;}
 	public String name()

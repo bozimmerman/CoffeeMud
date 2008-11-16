@@ -93,8 +93,7 @@ public class QuestMaker extends StdWebMacro
         {
             Environmental E=(Environmental)fromList[m];
             E=(Environmental)E.copyOf();
-            CMLib.flags().setCataloged(E, true);
-            E.text();
+            CMLib.catalog().changeCatalogUsage(E,true);
             toList.addElement(E);
         }
     }

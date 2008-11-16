@@ -164,8 +164,7 @@ public class RoomData extends StdWebMacro
         if(M2!=null)
         {
             M2=(MOB)M2.copyOf();
-            CMLib.flags().setCataloged(M2,true);
-            M2.text();
+            CMLib.catalog().changeCatalogUsage(M2,true);
         }
         return M2;
 	}
@@ -179,8 +178,7 @@ public class RoomData extends StdWebMacro
         if(I!=null)
         {
             I=(Item)I.copyOf();
-            CMLib.flags().setCataloged(I,true);
-            I.text();
+            CMLib.catalog().changeCatalogUsage(I,true);
         }
         return I;
     }
@@ -432,8 +430,7 @@ public class RoomData extends StdWebMacro
 					        if(M!=null)
 					        {
 					            M=(MOB)M.copyOf();
-					            CMLib.flags().setCataloged(M,true);
-					            M.text();
+					            CMLib.catalog().changeCatalogUsage(M,true);
                                 classes.addElement(M);
 					        }
 						}
@@ -462,11 +459,8 @@ public class RoomData extends StdWebMacro
 					for(int m=0;m<R.numInhabitants();m++)
 					{
 						MOB M=R.fetchInhabitant(m);
-	                    if((M!=null)&&(CMLib.flags().isCatalogedFalsely(M)))
-	                    {
-	                        CMLib.flags().setCataloged(M,false);
-                            M.text();
-	                    }
+	                    if(M!=null)
+	                    	CMLib.catalog().updateCatalogIntegrity(M);
 						if(M.savable())
 							classes.addElement(M);
 					}
@@ -561,11 +555,7 @@ public class RoomData extends StdWebMacro
 						Item I2=R.fetchItem(m);
                         if(I2!=null)
                         {
-    	                    if(CMLib.flags().isCatalogedFalsely(I2))
-    	                    {
-    	                        CMLib.flags().setCataloged(I2,false);
-                                I2.text();
-    	                    }
+                        	CMLib.catalog().updateCatalogIntegrity(I2);
     						classes.addElement(I2);
     						containers.addElement((I2.container()==null)?"":(Object)I2.container());
     						beingWorn.addElement(Boolean.valueOf(!I2.amWearingAt(Item.IN_INVENTORY)));

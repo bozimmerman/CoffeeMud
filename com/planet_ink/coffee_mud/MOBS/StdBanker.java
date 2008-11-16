@@ -94,8 +94,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	{
 		String name=thisThang.ID();
 		if(thisThang instanceof Coins) name="COINS";
-    	if(CMLib.flags().isCatalogedFalsely(thisThang))
-    		CMLib.flags().setCataloged(thisThang,false);
+    	CMLib.catalog().updateCatalogIntegrity(thisThang);
 		CMLib.database().DBCreateData(mob,bankChain(),""+thisThang+Math.random(),name+";"+CMLib.coffeeMaker().getPropertiesStr(thisThang,true));
 	}
 

@@ -213,7 +213,6 @@ public class StdClanItem extends StdItem implements ClanItem
 		return V;
 	}
 
-	@SuppressWarnings("unchecked")
 	public static synchronized Vector loadRecipes()
 	{
 		Vector V=(Vector)Resources.getResource("PARSED: clancraft.txt");

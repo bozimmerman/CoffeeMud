@@ -223,13 +223,16 @@ public class StdMOB implements MOB
 	public long peaceTime(){return peaceTime;}
 
 	public void setDatabaseID(String id){databaseID=id;}
+	public boolean canSaveDatabaseID(){ return true;}
 	public String databaseID(){return databaseID;}
 
 	public String Name()
 	{
 		return Username;
 	}
-	public void setName(String newName){Username=newName;}
+	public void setName(String newName){
+		Username=newName;
+	}
 	public String name()
 	{
 		if(envStats().newName()!=null) return envStats().newName();
@@ -365,6 +368,8 @@ public class StdMOB implements MOB
             CMClass.bumpCounter(E,CMClass.OBJECT_MOB);
             E.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			E.cloneFix(this);
+			if(CMLib.flags().isCataloged(E))
+		    	CMLib.catalog().updateCatalogIntegrity(E);
 			return E;
 
 		}

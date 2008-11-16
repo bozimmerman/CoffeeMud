@@ -767,26 +767,20 @@ public class GrinderMobs
 			    if(mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
 			    {
 		            MOB M2=CMLib.catalog().getCatalogMob(mobCode.substring(8));
-			        if(M2!=null)
-			        {
-			            if(!M.Name().equalsIgnoreCase(M2.Name()))
-    			            M.setName(M2.Name());
-			            if((M2.databaseID()==null)||(M2.databaseID().length()==0))
-			                M2=null;
-			            else
-    			            M.setDatabaseID(M2.databaseID());
-			        }
-	                CMLib.flags().setCataloged(M,false);
-                    M.text(); // to get cataloged status into xml
-                    CMLib.catalog().addCatalogReplace(M);
-                    newMobCode=mobCode;
-                    CMLib.catalog().propogateCatalogChange(M);
-                    if(M2!=null)
-                        CMLib.database().DBUpdateMOB("CATALOG_MOBS",M);
-                    else
-                        CMLib.database().DBCreateThisMOB("CATALOG_MOBS",M);
-                    copyMOB=M;
-                    Log.infoOut("GrinderItems",whom.Name()+" updated catalog MOB "+M.Name());
+			        if((M2!=null)&&(!M.Name().equalsIgnoreCase(M2.Name())))
+			            M.setName(M2.Name());
+	                if(CMLib.catalog().addCatalogReplace(M))
+	                {
+	                	M2=CMLib.catalog().getCatalogMob(M.Name());
+	                    newMobCode=mobCode;
+	                    CMLib.catalog().propogateCatalogChange(M);
+	                    if(M2!=null)
+	                        CMLib.database().DBUpdateMOB("CATALOG_MOBS",M2);
+	                    else
+	                        CMLib.database().DBCreateThisMOB("CATALOG_MOBS",M2);
+	                    copyMOB=M;
+	                    Log.infoOut("GrinderItems",whom.Name()+" updated catalog MOB "+M.Name());
+	                }
 			    }
 			    else 
 			    {

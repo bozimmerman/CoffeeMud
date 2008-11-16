@@ -936,7 +936,7 @@ public class ItemData extends StdWebMacro
 		                String name=itemCode.substring(8);
 		                CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
 		                if(data!=null)
-		                    old=CMath.toPct(data.rate);
+		                    old=CMath.toPct(data.getRate());
 		            }
 				    str.append(old+", ");
 				    break;
@@ -946,7 +946,7 @@ public class ItemData extends StdWebMacro
                         String name=itemCode.substring(8);
                         CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
                         if(data!=null)
-                            old=data.live?"on":"";
+                            old=data.getWhenLive()?"on":"";
                     }
                     str.append(((old!=null)&&(old.equalsIgnoreCase("on"))?"CHECKED":"")+", ");
                     break;
@@ -956,7 +956,7 @@ public class ItemData extends StdWebMacro
                         String name=itemCode.substring(8);
                         CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(name);
                         if(data!=null)
-                            old=""+data.lmaskStr;
+                            old=""+data.getMaskStr();
                     }
                     str.append(old+", ");
                     break;

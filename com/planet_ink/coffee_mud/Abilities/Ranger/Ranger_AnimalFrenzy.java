@@ -74,6 +74,8 @@ public class Ranger_AnimalFrenzy extends StdAbility
 				{
 					rangersGroup.addElement(mob);
 					mob.addNonUninvokableEffect((Ability)this.copyOf());
+					Ability A=mob.fetchEffect(ID());
+					if(A!=null)A.setSavable(false);
 				}
 			}
 			for(int i=rangersGroup.size()-1;i>=0;i--)

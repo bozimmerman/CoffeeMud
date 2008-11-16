@@ -728,11 +728,7 @@ public class MobData extends StdWebMacro
 					Environmental O=(Environmental)V.elementAt(b);
 					if(O instanceof Item) itemClasses.addElement(O);
 					if(O instanceof MOB) mobClasses.addElement(O);
-                    if((O!=null)&&(CMLib.flags().isCatalogedFalsely(O)))
-                    {
-                        CMLib.flags().setCataloged(O,false);
-                        O.text(); // to get cataloged status into xml
-                    }
+                    if(O!=null) CMLib.catalog().updateCatalogIntegrity(O);
 					theclasses.addElement(O);
 					theparms.addElement(""+E.getShop().numberInStock(O));
 					theprices.addElement(""+E.getShop().stockPrice(O));
@@ -867,11 +863,7 @@ public class MobData extends StdWebMacro
 					Item I2=M.fetchInventory(m);
                     if(I2!=null)
                     {
-                        if(CMLib.flags().isCatalogedFalsely(I2))
-                        {
-                            CMLib.flags().setCataloged(I2,false);
-                            I2.text();
-                        }
+                    	CMLib.catalog().updateCatalogIntegrity(I2);
                         classes.addElement(I2);
                         containers.addElement((I2.container()==null)?"":(Object)I2.container());
                         beingWorn.addElement(Boolean.valueOf(!I2.amWearingAt(Item.IN_INVENTORY)));

@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-public interface Item extends Environmental, Rider
+public interface Item extends Environmental, Rider, DBIdentifiable
 {
     /** a constant used in the Locale item search classes to filter on only items being worn */
 	public static int WORNREQ_WORNONLY=0;
@@ -357,26 +357,6 @@ public interface Item extends Environmental, Rider
      * @param E the mob or room where the item is located
      */
     public void setOwner(Environmental E);
-    
-	/**
-	 * Sets the internal database id for mapping back to tables.
-	 * Used principally by code that needs to do an UPDATE on a 
-	 * particular mob, so it can be traced back to its row in 
-	 * the appropriate table.
-	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#databaseID()
-	 * @param id the database id
-	 */
-	public void setDatabaseID(String id);
-	
-	/**
-	 * Gets the internal database id for mapping back to tables.
-	 * Used principally by code that needs to do an UPDATE on a 
-	 * particular mob, so it can be traced back to its row in 
-	 * the appropriate table.
-	 * @see com.planet_ink.coffee_mud.MOBS.interfaces.MOB#setDatabaseID(String)
-	 * @return the database id
-	 */
-	public String databaseID();
     
 	/** worn code constant, representing  being unworn altogether */
 	public static final long IN_INVENTORY=0;

@@ -42,78 +42,48 @@ public interface CatalogLibrary extends CMLibrary
     public boolean isCatalogObj(String name);
     public Item getCatalogItem(String name);
     public MOB getCatalogMob(String name);
+    public Environmental getCatalogMatch(Environmental E);
     public CataData getCatalogItemData(String name);
     public CataData getCatalogMobData(String name);
+    public CataData getCatalogData(Environmental E);
     public void delCatalog(Environmental E);
-    public void addCatalogReplace(Environmental E);
-    public void addCatalog(Environmental E);
+    public boolean addCatalogReplace(Environmental E);
+    public void updateCatalog(Environmental E);
+    public StringBuffer checkCatalogIntegrity(Environmental E);
+    public void updateCatalogIntegrity(Environmental E);
     public void propogateCatalogChange(Environmental E);
     public void changeCatalogUsage(Environmental E, boolean add);
     public Item getDropItem(MOB M, boolean live);
+    public CataData sampleCataData(String xml);
+    public Vector<RoomContent> roomContent(Room R);
+    public void updateRoomContent(String roomID, Vector<RoomContent> content);
     
-    public static class CataData 
+    public static interface RoomContent
     {
-        public Vector lmaskV=null;
-        public String lmaskStr=null;
-        public boolean live=false;
-        public double rate=0.0;
+    	public Environmental E();
+    	public Environmental holder();
+    	public boolean isDirty();
+    	public void flagDirty();
+    	public boolean deleted();
+    }
+    
+    public static interface CataData 
+    {
+        public Vector getMaskV();
+        public String getMaskStr();
+        public boolean getWhenLive();
+        public double getRate();
+        public void setMaskStr(String s);
+        public void setWhenLive(boolean l);
+        public void setRate(double r);
+        public Enumeration<Environmental> enumeration();
+        public void addReference(Environmental E);
+        public boolean isReference(Environmental E);
+        public void delReference(Environmental E);
+        public int numReferences();
         
-        public CataData(String catadata)
-        {
-            build(catadata);
-        }
+        public String data();
         
-        public CataData(String _lmask, String _rate, boolean _live)
-        {
-            this(_lmask,CMath.s_pct(_rate),_live);
-        }
-        
-        public CataData(String _lmask, double _rate, boolean _live)
-        {
-            live=_live;
-            lmaskStr=_lmask;
-            lmaskV=null;
-            if(lmaskStr.length()>0)
-                lmaskV=CMLib.masking().maskCompile(lmaskStr);
-            rate=_rate;
-        }
-        
-        public String data() 
-        {
-            StringBuffer buf=new StringBuffer("");
-            buf.append("<CATALOGDATA>");
-            buf.append("<RATE>"+CMath.toPct(rate)+"</RATE>");
-            buf.append("<LMASK>"+CMLib.xml().parseOutAngleBrackets(lmaskStr)+"</LMASK>");
-            buf.append("<LIVE>"+live+"</LIVE>");
-            buf.append("</CATALOGDATA>");
-            return buf.toString();
-        }
-        
-        public void build(String catadata)
-        {
-            Vector V=null;
-            if((catadata!=null)&&(catadata.length()>0))
-            {
-                V=CMLib.xml().parseAllXML(catadata);
-                XMLLibrary.XMLpiece piece=CMLib.xml().getPieceFromPieces(V,"CATALOGDATA");
-                if((piece!=null)&&(piece.contents!=null)&&(piece.contents.size()>0))
-                {
-                    lmaskStr=CMLib.xml().restoreAngleBrackets(CMLib.xml().getValFromPieces(piece.contents,"LMASK"));
-                    String ratestr=CMLib.xml().getValFromPieces(piece.contents,"RATE");
-                    rate=CMath.s_pct(ratestr);
-                    lmaskV=null;
-                    if(lmaskStr.length()>0)
-                        lmaskV=CMLib.masking().maskCompile(lmaskStr);
-                    live=CMath.s_bool(CMLib.xml().getValFromPieces(piece.contents,"LIVE"));
-                }
-            }
-            else
-            {
-                lmaskV=null;
-                lmaskStr="";
-                live=false;
-                rate=0.0;
-            }
-        }
+        public void build(String catadata);
     }
 }

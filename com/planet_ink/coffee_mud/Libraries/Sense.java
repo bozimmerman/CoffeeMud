@@ -92,36 +92,6 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	{ return (E!=null)&&((E.baseEnvStats().disposition()&EnvStats.IS_CATALOGED)==EnvStats.IS_CATALOGED); }
 	public boolean hasSeenContents(Environmental E)
 	{ return (E!=null)&&((E.envStats().sensesMask()&EnvStats.SENSE_CONTENTSUNSEEN)==0); }
-	public boolean isCatalogedFalsely(Environmental E)
-	{
-	    if(E==null) return false;
-		if(!isCataloged(E)) return false;
-		if(E instanceof MOB)
-		{
-			Environmental E2=CMLib.catalog().getCatalogMob(E.Name());
-			if(E2==null) return true;
-			setCataloged(E,false);
-			if(!E2.sameAs(E))
-			{
-				setCataloged(E,true);
-				return true;
-			}
-			setCataloged(E,true);
-		}
-		if(E instanceof Item)
-		{
-			Environmental E2=CMLib.catalog().getCatalogItem(E.Name());
-			if(E2==null) return true;
-			setCataloged(E,false);
-			if(!E2.sameAs(E))
-			{
-				setCataloged(E,true);
-				return true;
-			}
-			setCataloged(E,true);
-		}
-		return false;
-	}
 	public void setReadable(Item I, boolean truefalse)
 	{
 		if(I==null) return;
@@ -140,24 +110,7 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 			I.envStats().setSensesMask(CMath.setb(I.envStats().sensesMask(),EnvStats.SENSE_ITEMREADABLE));
 		}
 	}
-	public void setCataloged(Environmental E, boolean truefalse)
-	{
-		if(E==null) return;
-		if(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
-		{
-			if(!truefalse)
-			{
-				E.baseEnvStats().setDisposition(CMath.unsetb(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED));
-				E.envStats().setDisposition(CMath.unsetb(E.envStats().disposition(),EnvStats.IS_CATALOGED));
-			}
-		}
-		else
-		if(truefalse)
-		{
-			E.baseEnvStats().setDisposition(CMath.setb(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED));
-			E.envStats().setDisposition(CMath.setb(E.envStats().disposition(),EnvStats.IS_CATALOGED));
-		}
-	}
+	
 	public void setGettable(Item I, boolean truefalse)
 	{
 		if(I==null) return;

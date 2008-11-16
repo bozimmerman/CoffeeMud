@@ -1353,6 +1353,15 @@ public class CMParms
         return V;
     }
     
+    public static HashSet makeHashSet(Enumeration E)
+    {
+        HashSet V=new HashSet();
+        if(E!=null)
+        for(;E.hasMoreElements();)
+            V.add(E.nextElement());
+        return V;
+    }
+    
     public static Vector makeVector()
     { return new Vector();}
     public static Vector makeVector(Object O)

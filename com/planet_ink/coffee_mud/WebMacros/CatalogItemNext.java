@@ -75,11 +75,11 @@ public class CatalogItemNext extends StdWebMacro
                 httpReq.addRequestParameters("CATALOG_ITEM_LEVEL",""+I.baseEnvStats().level());
                 httpReq.addRequestParameters("CATALOG_ITEM_CLASS",I.ID());
                 httpReq.addRequestParameters("CATALOG_ITEM_VALUE",""+I.baseGoldValue());
-                if(data.rate>0.0)
+                if(data.getRate()>0.0)
                 {
-                    httpReq.addRequestParameters("CATALOG_ITEM_RATE",CMath.toPct(data.rate));
-                    httpReq.addRequestParameters("CATALOG_ITEM_MASK",data.lmaskStr==null?"":data.lmaskStr);
-                    httpReq.addRequestParameters("CATALOG_ITEM_LIVE",""+data.live);
+                    httpReq.addRequestParameters("CATALOG_ITEM_RATE",CMath.toPct(data.getRate()));
+                    httpReq.addRequestParameters("CATALOG_ITEM_MASK",data.getMaskStr()==null?"":data.getMaskStr());
+                    httpReq.addRequestParameters("CATALOG_ITEM_LIVE",""+data.getWhenLive());
                 }
                 else
                 {

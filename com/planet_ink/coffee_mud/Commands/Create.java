@@ -303,7 +303,6 @@ public class Create extends StdCommand
 		{
 			newMOB=(MOB)newMOB.copyOf();
             try { CMLib.catalog().changeCatalogUsage(newMOB,true);} catch(Throwable t){}
-			CMLib.flags().setCataloged(newMOB,true);
 			newMOB.text();
 		}
 		return newMOB;
@@ -316,7 +315,6 @@ public class Create extends StdCommand
 		{
 			newItem=(Item)newItem.copyOf();
 	        try { CMLib.catalog().changeCatalogUsage(newItem,true);} catch(Throwable t){}
-			CMLib.flags().setCataloged(newItem,true);
 			newItem.text();
 		}
 		return newItem;

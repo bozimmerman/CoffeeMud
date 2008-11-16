@@ -188,6 +188,8 @@ public class StdItem implements Item
             CMClass.bumpCounter(E,CMClass.OBJECT_ITEM);
             E.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			E.cloneFix(this);
+			if(CMLib.flags().isCataloged(E))
+		    	CMLib.catalog().updateCatalogIntegrity(E);
 			return E;
 
 		}
@@ -224,7 +226,7 @@ public class StdItem implements Item
 	}
 	
 	public void setDatabaseID(String id){databaseID=id;}
-	
+	public boolean canSaveDatabaseID(){ return true;}
 	public String databaseID(){return databaseID;}
 	
 	public void setExpirationDate(long time)

@@ -704,8 +704,7 @@ public class MOBloader
             Item thisItem=mob.fetchInventory(i);
             if((thisItem!=null)&&(!done.contains(""+thisItem))&&(thisItem.savable()))
             {
-            	if(CMLib.flags().isCatalogedFalsely(thisItem))
-            		CMLib.flags().setCataloged(thisItem,false);
+            	CMLib.catalog().updateCatalogIntegrity(thisItem);
                 String str="INSERT INTO CMCHIT (CMUSERID, CMITNM, CMITID, CMITTX, CMITLO, CMITWO, "
                 +"CMITUR, CMITLV, CMITAB, CMHEIT"
                 +") values ('"+mob.Name()+"','"+(thisItem)+"','"+thisItem.ID()+"','"+thisItem.text()+" ','"
@@ -742,8 +741,7 @@ public class MOBloader
         if((E instanceof MOB)
         &&((!((MOB)E).isMonster())||(((MOB)E).isPossessing())))
             return;
-        if(CMLib.flags().isCatalogedFalsely(E))
-            CMLib.flags().setCataloged(E,false);
+    	CMLib.catalog().updateCatalogIntegrity(E);
         String myCode=""+(list.size()-1);
         list.addElement(E,CMClass.classID(E)+"#"+myCode+parent);
         if(E instanceof Rideable)
@@ -773,8 +771,7 @@ public class MOBloader
             MOB thisMOB=mob.fetchFollower(f);
             if((thisMOB!=null)&&(thisMOB.isMonster())&&(!thisMOB.isPossessing()))
             {
-            	if(CMLib.flags().isCatalogedFalsely(thisMOB))
-            		CMLib.flags().setCataloged(thisMOB,false);
+            	CMLib.catalog().updateCatalogIntegrity(thisMOB);
                 String str="INSERT INTO CMCHFO (CMUSERID, CMFONM, CMFOID, CMFOTX, CMFOLV, CMFOAB"
                 +") values ('"+mob.Name()+"',"+f+",'"+CMClass.classID(thisMOB)+"','"+thisMOB.text()+" ',"
                 +thisMOB.baseEnvStats().level()+","+thisMOB.baseEnvStats().ability()+")";

@@ -514,22 +514,22 @@ public class GrinderItems
 				case 84: // catarate
 				    if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 				    {
-				        if(cataData==null) cataData=new CatalogLibrary.CataData("");
-				        cataData.rate=CMath.s_pct(old);
+				        if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
+				        cataData.setRate(CMath.s_pct(old));
 				    }
 				    break;
                 case 85: // catalive
                     if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
                     {
-                        if(cataData==null) cataData=new CatalogLibrary.CataData("");
-                        cataData.live=((old!=null)&&(old.equalsIgnoreCase("on")));
+                        if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
+                        cataData.setWhenLive(((old!=null)&&(old.equalsIgnoreCase("on"))));
                     }
                     break;
                 case 86: // catamask
                     if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
                     {
-                        if(cataData==null) cataData=new CatalogLibrary.CataData("");
-                        cataData.lmaskStr=old;
+                        if(cataData==null) cataData=CMLib.catalog().sampleCataData("");
+                        cataData.setMaskStr(old);
                     }
                     break;
                 case 87: // bite
@@ -551,33 +551,26 @@ public class GrinderItems
 			if(itemCode.startsWith("CATALOG-")||itemCode.startsWith("NEWCATA-"))
 			{
                 Item I2=CMLib.catalog().getCatalogItem(itemCode.substring(8));
-                if(I2!=null)
+                if((I2!=null)&&(!I.Name().equalsIgnoreCase(I2.Name())))
+                    I.setName(I2.Name());
+                if(CMLib.catalog().addCatalogReplace(I))
                 {
-                    if(!I.Name().equalsIgnoreCase(I2.Name()))
-                        I.setName(I2.Name());
-                    if((I2.databaseID()!=null)&&(I2.databaseID().length()>0))
-                        I.setDatabaseID(I2.databaseID());
-                    else
-                    	I2=null;
+	                httpReq.addRequestParameters("ITEM",itemCode);
+	                CMLib.catalog().propogateCatalogChange(I);
+	                Item I3=CMLib.catalog().getCatalogItem(itemCode.substring(8));
+	                if((I3!=null)&&(cataData!=null))
+	                {
+	                    CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(I3.Name());
+	                    if((cataData.getRate()>0.0)&&(cataData.getMaskStr()!=null)&&(cataData.getMaskStr().length()>0))
+	                        data.build(cataData.data());
+	                }
+	                if(I2!=null)
+	                    CMLib.database().DBUpdateItem("CATALOG_ITEMS",I3);
+	                else
+	                    CMLib.database().DBCreateThisItem("CATALOG_ITEMS",I3);
+	                Log.infoOut("GrinderItems",whom.Name()+" updated catalog ITEM "+I.Name());
+	                copyItem=I;
                 }
-                CMLib.flags().setCataloged(I,false);
-                I.text(); // to get cataloged status into xml
-                CMLib.catalog().addCatalogReplace(I);
-                httpReq.addRequestParameters("ITEM",itemCode);
-                CMLib.catalog().propogateCatalogChange(I);
-                Item I3=CMLib.catalog().getCatalogItem(itemCode.substring(8));
-                if((I3!=null)&&(cataData!=null))
-                {
-                    CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(I3.Name());
-                    if((cataData.rate>0.0)&&(cataData.lmaskStr!=null)&&(cataData.lmaskStr.length()>0))
-                        data.build(cataData.data());
-                }
-                if(I2!=null)
-                    CMLib.database().DBUpdateItem("CATALOG_ITEMS",I);
-                else
-                    CMLib.database().DBCreateThisItem("CATALOG_ITEMS",I);
-                Log.infoOut("GrinderItems",whom.Name()+" updated catalog ITEM "+I.Name());
-                copyItem=I;
 			}
 			else
 			if(itemCode.equals("NEW"))
