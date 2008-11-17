@@ -3055,16 +3055,16 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		switch(getGenItemCodeNum(code))
 		{
 		case 0: break;
-		case 1: I.setUsesRemaining(CMath.s_int(val)); break;
-		case 2: I.baseEnvStats().setLevel(CMath.s_int(val)); break;
-		case 3: I.baseEnvStats().setAbility(CMath.s_int(val)); break;
+		case 1: I.setUsesRemaining(CMath.s_parseIntExpression(val)); break;
+		case 2: I.baseEnvStats().setLevel(CMath.s_parseIntExpression(val)); break;
+		case 3: I.baseEnvStats().setAbility(CMath.s_parseIntExpression(val)); break;
 		case 4: I.setName(val); break;
 		case 5: I.setDisplayText(val); break;
 		case 6: I.setDescription(val); break;
 		case 7: I.setSecretIdentity(val); break;
 		case 8: I.setRawProperLocationBitmap(CMath.s_long(val)); break;
 		case 9: I.setRawLogicalAnd(CMath.s_bool(val)); break;
-		case 10: I.setBaseValue(CMath.s_int(val)); break;
+		case 10: I.setBaseValue(CMath.s_parseIntExpression(val)); break;
 		case 11: CMLib.flags().setReadable(I,CMath.s_bool(val)); break;
 		case 12: CMLib.flags().setDroppable(I,CMath.s_bool(val)); break;
 		case 13: CMLib.flags().setRemovable(I,CMath.s_bool(val)); break;
@@ -3083,11 +3083,11 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					 setExtraEnvProperties(I,CMLib.xml().parseAllXML(val));
 					 break;
 				 }
-		case 16: I.baseEnvStats().setDisposition(CMath.s_int(val)); break;
-		case 17: I.baseEnvStats().setWeight(CMath.s_int(val)); break;
-		case 18: I.baseEnvStats().setArmor(CMath.s_int(val)); break;
-		case 19: I.baseEnvStats().setDamage(CMath.s_int(val)); break;
-		case 20: I.baseEnvStats().setAttackAdjustment(CMath.s_int(val)); break;
+		case 16: I.baseEnvStats().setDisposition(CMath.s_parseIntExpression(val)); break;
+		case 17: I.baseEnvStats().setWeight(CMath.s_parseIntExpression(val)); break;
+		case 18: I.baseEnvStats().setArmor(CMath.s_parseIntExpression(val)); break;
+		case 19: I.baseEnvStats().setDamage(CMath.s_parseIntExpression(val)); break;
+		case 20: I.baseEnvStats().setAttackAdjustment(CMath.s_parseIntExpression(val)); break;
 		case 21: I.setReadableText(val); break;
 		case 22: I.setImage(val); break;
         /*case 23:
@@ -3185,23 +3185,23 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		{
 		case 0: break;
 		case 1: M.baseCharStats().setMyRace(CMClass.getRace(val)); break;
-		case 2: M.baseEnvStats().setLevel(CMath.s_int(val)); break;
-		case 3: M.baseEnvStats().setAbility(CMath.s_int(val)); break;
+		case 2: M.baseEnvStats().setLevel(CMath.s_parseIntExpression(val)); break;
+		case 3: M.baseEnvStats().setAbility(CMath.s_parseIntExpression(val)); break;
 		case 4: M.setName(val); break;
 		case 5: M.setDisplayText(val); break;
 		case 6: M.setDescription(val); break;
-		case 7: CMLib.beanCounter().setMoney(M,CMath.s_int(val)); break;
+		case 7: CMLib.beanCounter().setMoney(M,CMath.s_parseIntExpression(val)); break;
 		case 8: if(CMath.s_int(val)==Integer.MAX_VALUE)
 		    		M.removeFaction(CMLib.factions().AlignID());
 				else
-		        	M.addFaction(CMLib.factions().AlignID(),CMath.s_int(val));
+		        	M.addFaction(CMLib.factions().AlignID(),CMath.s_parseIntExpression(val));
 				break;
-		case 9: M.baseEnvStats().setDisposition(CMath.s_int(val)); break;
-		case 10: M.baseEnvStats().setSensesMask(CMath.s_int(val)); break;
-		case 11: M.baseEnvStats().setArmor(CMath.s_int(val)); break;
-		case 12: M.baseEnvStats().setDamage(CMath.s_int(val)); break;
-		case 13: M.baseEnvStats().setAttackAdjustment(CMath.s_int(val)); break;
-		case 14: M.baseEnvStats().setSpeed(CMath.s_double(val)); break;
+		case 9: M.baseEnvStats().setDisposition(CMath.s_parseIntExpression(val)); break;
+		case 10: M.baseEnvStats().setSensesMask(CMath.s_parseIntExpression(val)); break;
+		case 11: M.baseEnvStats().setArmor(CMath.s_parseIntExpression(val)); break;
+		case 12: M.baseEnvStats().setDamage(CMath.s_parseIntExpression(val)); break;
+		case 13: M.baseEnvStats().setAttackAdjustment(CMath.s_parseIntExpression(val)); break;
+		case 14: M.baseEnvStats().setSpeed(CMath.s_parseMathExpression(val)); break;
 		case 15: {
 					 while(M.numEffects()>0)
 					 {
@@ -3266,7 +3266,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		    	}
 		    	break;
 		    }
-		case 22: M.setMoneyVariation(CMath.s_double(val)); break;
+		case 22: M.setMoneyVariation(CMath.s_parseMathExpression(val)); break;
         /*case 23:
         {
             while(M.numScripts()>0)

@@ -5,8 +5,10 @@
 	<DESCRIPTION></DESCRIPTION>
 	<SIZE>$size</SIZE>
 	<NAME>$name</NAME>
-	<ROOM tag="dungeon_rooms" select="all">
+	<ROOM tag="dungeon_rooms" select="all" insert="$dungeon_hallways">
 		
 	</ROOM>
 </AREA>
+<ROOMGROUP tag="dungeon_hallways">
+</ROOMGROUP>
 </AREADATA>

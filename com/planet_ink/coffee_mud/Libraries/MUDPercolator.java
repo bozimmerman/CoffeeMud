@@ -756,8 +756,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         {
             XMLLibrary.XMLpiece lilP =(XMLLibrary.XMLpiece)choices.elementAt(c); 
             checkRequirements(defined,CMLib.xml().getParmValue(lilP.parms,"REQUIRES"));
-            String condition=CMLib.xml().getParmValue(lilP.parms,"CONDITION");
             try {
+                String condition=CMLib.xml().getParmValue(lilP.parms,"CONDITION");
 	            if((condition != null) && (!CMStrings.parseStringExpression(condition,defined, true)))
 	            {
 	                choices.removeElementAt(c);
