@@ -368,12 +368,12 @@ public class DefaultCharState implements CharState
 	public void setStat(String code, String val)
 	{
 		switch(getCodeNum(code)){
-		case 0: setHitPoints(CMath.s_int(val)); break;
-		case 1: setMana(CMath.s_int(val)); break;
-		case 2: setMovement(CMath.s_int(val)); break;
-		case 3: setHunger(CMath.s_int(val)); break;
-		case 4: setThirst(CMath.s_int(val)); break;
-		case 5: setFatigue(CMath.s_int(val)); break;
+		case 0: setHitPoints(CMath.s_parseIntExpression(val)); break;
+		case 1: setMana(CMath.s_parseIntExpression(val)); break;
+		case 2: setMovement(CMath.s_parseIntExpression(val)); break;
+		case 3: setHunger(CMath.s_parseIntExpression(val)); break;
+		case 4: setThirst(CMath.s_parseIntExpression(val)); break;
+		case 5: setFatigue(CMath.s_parseIntExpression(val)); break;
 		}
 	}
 	public String getStat(String code)
