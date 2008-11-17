@@ -287,7 +287,6 @@ public class StdMOB implements MOB
 	public void setExpirationDate(long time){expirationDate=time;}
     protected void finalize()
     {
-        try { CMLib.catalog().changeCatalogUsage(this,false);} catch(Throwable t){}
         CMClass.unbumpCounter(this,CMClass.OBJECT_MOB);
     }
     public boolean amDestroyed(){return amDestroyed;}
@@ -368,8 +367,6 @@ public class StdMOB implements MOB
             CMClass.bumpCounter(E,CMClass.OBJECT_MOB);
             E.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			E.cloneFix(this);
-			if(CMLib.flags().isCataloged(E))
-		    	CMLib.catalog().updateCatalogIntegrity(E);
 			return E;
 
 		}

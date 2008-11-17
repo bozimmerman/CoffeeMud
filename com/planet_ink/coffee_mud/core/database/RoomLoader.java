@@ -500,8 +500,8 @@ public class RoomLoader
     				((MOB)E).bringToLife(room,true);
                 }
     		}
-		itemLocs=(Hashtable)stuff.get("LOCSFOR"+roomID);
-		mobRides=(Hashtable)stuff.get("RIDESFOR"+roomID);
+		itemLocs=(Hashtable)stuff.get("LOCSFOR"+roomID.toUpperCase());
+		mobRides=(Hashtable)stuff.get("RIDESFOR"+roomID.toUpperCase());
 		if(itemLocs!=null)
 		{
 			fixItemKeys(itemLocs,content);
@@ -551,17 +551,17 @@ public class RoomLoader
 				String roomID=DBConnections.getRes(R,"CMROID");
 				if((unloadedRooms!=null)&&(unloadedRooms.contains(roomID)))
 					continue;
-				itemNums=(Hashtable)stuff.get("NUMSFOR"+roomID);
+				itemNums=(Hashtable)stuff.get("NUMSFOR"+roomID.toUpperCase());
 				if(itemNums==null)
 				{
 					itemNums=new Hashtable();
-					stuff.put("NUMSFOR"+roomID,itemNums);
+					stuff.put("NUMSFOR"+roomID.toUpperCase(),itemNums);
 				}
-				itemLocs=(Hashtable)stuff.get("LOCSFOR"+roomID);
+				itemLocs=(Hashtable)stuff.get("LOCSFOR"+roomID.toUpperCase());
 				if(itemLocs==null)
 				{
 					itemLocs=new Hashtable();
-					stuff.put("LOCSFOR"+roomID,itemLocs);
+					stuff.put("LOCSFOR"+roomID.toUpperCase(),itemLocs);
 				}
 				String itemNum=DBConnections.getRes(R,"CMITNM");
 				String itemID=DBConnections.getRes(R,"CMITID");
@@ -587,11 +587,11 @@ public class RoomLoader
 					    int x=text.lastIndexOf("<CATALOGDATA>");
 					    if((x>0)&&(text.indexOf("</CATALOGDATA>",x)>0))
 				        {
-			                cataData=(Hashtable)stuff.get("CATADATAFOR"+roomID);
+			                cataData=(Hashtable)stuff.get("CATADATAFOR"+roomID.toUpperCase());
 			                if(cataData==null)
 			                {
 			                    cataData=new Hashtable();
-			                    stuff.put("CATADATAFOR"+roomID,cataData);
+			                    stuff.put("CATADATAFOR"+roomID.toUpperCase(),cataData);
 			                }
 			                cataData.put(itemNum,text.substring(x));
 			                text=text.substring(0,x);
@@ -638,17 +638,17 @@ public class RoomLoader
 				String NUMID=DBConnections.getRes(R,"CMCHNM");
 				String MOBID=DBConnections.getRes(R,"CMCHID");
 
-				itemNums=(Hashtable)stuff.get("NUMSFOR"+roomID);
+				itemNums=(Hashtable)stuff.get("NUMSFOR"+roomID.toUpperCase());
 				if(itemNums==null)
 				{
 					itemNums=new Hashtable();
-					stuff.put("NUMSFOR"+roomID,itemNums);
+					stuff.put("NUMSFOR"+roomID.toUpperCase(),itemNums);
 				}
-				mobRides=(Hashtable)stuff.get("RIDESFOR"+roomID);
+				mobRides=(Hashtable)stuff.get("RIDESFOR"+roomID.toUpperCase());
 				if(mobRides==null)
 				{
 					mobRides=new Hashtable();
-					stuff.put("RIDESFOR"+roomID,mobRides);
+					stuff.put("RIDESFOR"+roomID.toUpperCase(),mobRides);
 				}
 
 				MOB newMOB=CMClass.getMOB(MOBID);
@@ -719,7 +719,7 @@ public class RoomLoader
 			    	DBDeleteRoomItem("CATALOG_ITEMS", I);
 			    else	
 			    {
-					CMLib.catalog().addCatalogReplace(I);
+					CMLib.catalog().submitToCatalog(I);
 					if((data!=null)&&(data.length()>0))
 					{
 						CatalogLibrary.CataData dataI=CMLib.catalog().getCatalogItemData(I.Name());
@@ -749,7 +749,7 @@ public class RoomLoader
 			    	DBDeleteRoomMOB("CATALOG_MOBS", M);
 			    else	
 			    {
-					CMLib.catalog().addCatalogReplace(M);
+					CMLib.catalog().submitToCatalog(M);
 	                if((data!=null)&&(data.length()>0))
 	                {
 						CatalogLibrary.CataData dataM=CMLib.catalog().getCatalogMobData(M.Name());
@@ -768,7 +768,7 @@ public class RoomLoader
 				CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Populating Rooms ("+(currentRecordPos)+" of "+recordCount+")");
 			Room room=(Room)e.nextElement();
 			if(debug) Log.debugOut("RoomLoader","Populating room: "+room.roomID());
-			itemNums=(Hashtable)stuff.get("NUMSFOR"+room.roomID());
+			itemNums=(Hashtable)stuff.get("NUMSFOR"+room.roomID().toUpperCase());
 			if(itemNums!=null)
 				fixContentContainers(itemNums,stuff,room.roomID(),room,debug);
 		}

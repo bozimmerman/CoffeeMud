@@ -76,7 +76,6 @@ public class StdItem implements Item
     protected boolean abilityImbuesMagic(){return true;}
     protected void finalize()
     {
-        try {CMLib.catalog().changeCatalogUsage(this,false);} catch(Throwable t){}
         CMClass.unbumpCounter(this,CMClass.OBJECT_ITEM);
     }
     public void initializeClass(){}
@@ -188,8 +187,6 @@ public class StdItem implements Item
             CMClass.bumpCounter(E,CMClass.OBJECT_ITEM);
             E.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			E.cloneFix(this);
-			if(CMLib.flags().isCataloged(E))
-		    	CMLib.catalog().updateCatalogIntegrity(E);
 			return E;
 
 		}

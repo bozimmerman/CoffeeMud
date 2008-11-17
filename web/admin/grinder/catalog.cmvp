@@ -136,16 +136,18 @@
         <TR><TD WIDTH=100% COLSPAN=2 VALIGN=TOP>
             <TABLE WIDTH=100% BORDER=1>
             <TR>
+            <TD WIDTH=5%><B><FONT COLOR=YELLOW>#</FONT></b></TD>
             <TD WIDTH=30%><B><FONT COLOR=YELLOW>Name</FONT></b></TD>
             <TD WIDTH=10%><B><FONT COLOR=YELLOW>Level</FONT></b></TD>
             <TD WIDTH=20%><B><FONT COLOR=YELLOW>Class</FONT></b></TD>
             <TD WIDTH=20%><B><FONT COLOR=YELLOW>Race</FONT></b></TD>
-            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Gender</FONT></b></TD>
+            <TD WIDTH=15%><B><FONT COLOR=YELLOW>Gender</FONT></b></TD>
             </TR>
             @CatalogMobNext?RESET@
             @loop@
             @CatalogMobNext?ALL@
                 <TR>
+                <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_USAGE@</B></FONT></a></TD>
                 <TD><a href="javascript:CatalogMob('@RequestParameter?MOB@','')"><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_NAME@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_LEVEL@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_CLASS@</B></FONT></a></TD>
@@ -166,18 +168,20 @@
         <TR><TD WIDTH=100% COLSPAN=2 VALIGN=TOP>
             <TABLE WIDTH=100% BORDER=1>
             <TR>
+            <TD WIDTH=5%><B><FONT COLOR=YELLOW>#</FONT></b></TD>
             <TD WIDTH=25%><B><FONT COLOR=YELLOW>Name</FONT></b></TD>
             <TD WIDTH=5%><B><FONT COLOR=YELLOW>Level</FONT></b></TD>
             <TD WIDTH=10%><B><FONT COLOR=YELLOW>Class</FONT></b></TD>
             <TD WIDTH=5%><B><FONT COLOR=YELLOW>Value</FONT></b></TD>
             <TD WIDTH=10%><B><FONT COLOR=YELLOW>Rate</FONT></b></TD>
             <TD WIDTH=10%><B><FONT COLOR=YELLOW>State</FONT></b></TD>
-            <TD WIDTH=35%><B><FONT COLOR=YELLOW>MOB Mask</FONT></b></TD>
+            <TD WIDTH=30%><B><FONT COLOR=YELLOW>MOB Mask</FONT></b></TD>
             </TR>
             @CatalogItemNext?RESET@
             @loop@
             @CatalogItemNext?ALL@
                 <TR>
+                <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_USAGE@</B></FONT></a></TD>
                 <TD><a href="javascript:CatalogItem('@RequestParameter?ITEM@','')"><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_NAME@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_LEVEL@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_CLASS@</B></FONT></a></TD>

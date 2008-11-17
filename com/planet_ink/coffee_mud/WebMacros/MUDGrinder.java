@@ -140,7 +140,6 @@ public class MUDGrinder extends StdWebMacro
                 if(M==null) return "@break@";
                 if(!CMSecurity.isAllowedEverywhere(mob,"CATALOG")) return "@break@";
                 CMLib.catalog().delCatalog(M);
-                CMLib.database().DBDeleteMOB("CATALOG_MOBS",M);
                 Log.sysOut("Grinder",mob.Name()+" destroyed catalog mob "+last);
                 return "The catalog mob "+last+" has been removed.";
             }
@@ -160,7 +159,6 @@ public class MUDGrinder extends StdWebMacro
                 if(I==null) return "@break@";
                 if(!CMSecurity.isAllowedEverywhere(mob,"CATALOG")) return "@break@";
                 CMLib.catalog().delCatalog(I);
-                CMLib.database().DBDeleteItem("CATALOG_ITEMS",I);
                 Log.sysOut("Grinder",mob.Name()+" destroyed catalog item "+last);
                 return "The catalog item "+last+" has been removed.";
             }

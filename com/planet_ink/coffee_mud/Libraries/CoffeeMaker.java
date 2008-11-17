@@ -1664,32 +1664,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		if(V==null)
 			Log.errOut("CoffeeMaker","setPropertiesStr: null 'V': "+((E==null)?"":E.Name()));
 		else
-		if(E==null)
-			Log.errOut("CoffeeMaker","setPropertiesStr: null 'E'");
-		else
-		{
-			setEnvStats(E.baseEnvStats(),CMLib.xml().getValFromPieces(V,"PROP"));
-			if((CMLib.flags().isCataloged(E))
-			&&(E.isGeneric()))
-			{
-				E.setName(CMLib.xml().getValFromPieces(V,"NAME"));
-				Environmental cataE=CMLib.catalog().getCatalogMatch(E);
-				if((cataE!=null)&&(cataE!=E)
-				&&(!CMath.bset(cataE.baseEnvStats().disposition(),EnvStats.IS_CATALOGED)))
-				{
-					setPropertiesStr(E,cataE.text(),fromTop);
-					CMLib.catalog().changeCatalogUsage(E, true);
-					recoverEnvironmental(E);
-					return;
-				}
-
-			}
-			if(E.isGeneric())
-				setGenPropertiesStr(E,V);
-			if(fromTop)
-				setOrdPropertiesStr(E,V);
-			recoverEnvironmental(E);
-		}
+			setPropertiesStr(E,V,fromTop);
 	}
 
 	public void recoverEnvironmental(Environmental E)
@@ -1707,15 +1682,18 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 	public void setPropertiesStr(Environmental E, Vector V, boolean fromTop)
 	{
 		if(E==null)
+		{
 			Log.errOut("CoffeeMaker","setPropertiesStr2: null 'E'");
-		else
+			return;
+		}
+		if(!handleCatalogItem(E, V, fromTop))
 		{
 			if(E.isGeneric())
 				setGenPropertiesStr(E,V);
 			if(fromTop)
 				setOrdPropertiesStr(E,V);
-			recoverEnvironmental(E);
 		}
+		recoverEnvironmental(E);
 	}
 
 	public void setOrdPropertiesStr(Environmental E, Vector V)
@@ -2022,6 +2000,32 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		if(variableEq) ((MOB)E).flagVariableEq();
 	}
 
+	public boolean handleCatalogItem(Environmental E, Vector buf, boolean fromTop)
+	{
+		setEnvStats(E.baseEnvStats(),CMLib.xml().getValFromPieces(buf,"PROP"));
+		if((CMLib.flags().isCataloged(E))
+		&&(E.isGeneric()))
+		{
+			E.setName(CMLib.xml().getValFromPieces(buf,"NAME"));
+			Environmental cataE=CMLib.catalog().getCatalogObj(E);
+			if(cataE!=null)
+			{
+				if(CMath.bset(cataE.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
+					Log.errOut("CoffeeMaker","Error with catalog object "+E.Name()+".");
+				else
+				if((cataE!=null)&&(cataE!=E))
+				{
+					if(fromTop)
+						setOrdPropertiesStr(E,buf);
+					setPropertiesStr(E, cataE.text(),false);
+					CMLib.catalog().changeCatalogUsage(E, true);
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public void setGenPropertiesStr(Environmental E, Vector buf)
 	{
 		if(buf==null)

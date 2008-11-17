@@ -79,6 +79,7 @@ public class AuctionCoffeeShop implements CoffeeShop
         return -1;
     }
     public int numberInStock(Environmental likeThis){ return 1;}
+    public void resubmitInventory(Vector V, ShopKeeper SK){}
     
     public Environmental getStock(String name, MOB mob, int whatISell, Room startRoom)
     {

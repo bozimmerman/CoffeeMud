@@ -43,7 +43,7 @@ public class Catalog extends StdCommand
 	    throws java.io.IOException
 	{
 	    Environmental origE=E;
-	    Environmental cataE=CMLib.catalog().getCatalogMatch(E);
+	    Environmental cataE=CMLib.catalog().getCatalogObj(E);
 	    if((!(E instanceof DBIdentifiable))
 	    ||(!((DBIdentifiable)E).canSaveDatabaseID()))
 	    {
@@ -72,34 +72,11 @@ public class Catalog extends StdCommand
                 return false;
             }
             msg="<S-NAME> modif(ys) the cataloged version of <T-NAMESELF>.";
-            if(E instanceof MOB)
-            {
-                if(CMLib.catalog().addCatalogReplace(E))
-	                CMLib.database().DBUpdateMOB("CATALOG_MOBS",CMLib.catalog().getCatalogMob(E.Name()));
-            }
-            else
-            if(E instanceof Item)
-            {
-                if(CMLib.catalog().addCatalogReplace(E))
-	                CMLib.database().DBUpdateItem("CATALOG_ITEMS",CMLib.catalog().getCatalogItem(E.Name()));
-            }
-            if(mob.session()!=null) mob.session().print("Updating map...");
-            CMLib.catalog().propogateCatalogChange(E);
-            if(mob.session()!=null) mob.session().println(".");
+            CMLib.catalog().updateCatalog(E);
         }
         else
         {
-            if(E instanceof MOB)
-            {
-                if(CMLib.catalog().addCatalogReplace(E))
-	                CMLib.database().DBCreateThisMOB("CATALOG_MOBS",CMLib.catalog().getCatalogMob(E.Name()));
-            }
-            else
-            if(E instanceof Item)
-            {
-                if(CMLib.catalog().addCatalogReplace(E))
-	                CMLib.database().DBCreateThisItem("CATALOG_ITEMS",CMLib.catalog().getCatalogItem(E.Name()));
-            }
+            CMLib.catalog().addCatalog(E);
         }
         R.show(mob,E,CMMsg.MSG_OK_VISUAL,msg);
         return true;
@@ -130,6 +107,41 @@ public class Catalog extends StdCommand
 		}
 		return (Environmental)data[0];
 	}
+
+	public Enumeration getRoomSet(MOB mob, String which)
+	{
+		Enumeration rooms=null;
+		if(which.equalsIgnoreCase("ROOM"))
+			rooms=CMParms.makeVector(CMLib.map().getExtendedRoomID(mob.location())).elements();
+		else
+		if(which.equalsIgnoreCase("AREA"))
+			rooms=mob.location().getArea().getProperRoomnumbers().getRoomIDs();
+		else
+		if(which.equalsIgnoreCase("WORLD"))
+			rooms=CMLib.map().roomIDs();
+		return rooms;
+	}
+
+	public int getObjectType(Vector commands)
+	{
+		int whatKind=0;
+		if((commands.size()>0)&&("MOBS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
+		{ commands.removeElementAt(0); whatKind=1; }
+		if((commands.size()>0)&&("ITEMS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
+		{ commands.removeElementAt(0); whatKind=2;}
+		return whatKind;
+	}
+
+	public boolean checkUserRoomSetEntry(Vector commands)
+	{
+		if(commands.size()==0) return false;
+		if((((String)commands.firstElement()).equalsIgnoreCase("ROOM"))
+		||(((String)commands.firstElement()).equalsIgnoreCase("AREA"))
+		||(((String)commands.firstElement()).equalsIgnoreCase("WORLD")))
+			return true;
+		return false;
+		
+	}
 	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
@@ -139,27 +151,15 @@ public class Catalog extends StdCommand
 		if((commands!=null)&&(commands.size()>1))
 		{
 			commands.removeElementAt(0);
-			if((((String)commands.firstElement()).equalsIgnoreCase("ROOM"))
-			||(((String)commands.firstElement()).equalsIgnoreCase("AREA"))
-			||(((String)commands.firstElement()).equalsIgnoreCase("WORLD")))
+			final String[] types={"object","mobs","items"};
+			
+			if(checkUserRoomSetEntry(commands))
 			{
 				String which=((String)commands.firstElement()).toLowerCase();
-				Enumeration rooms=null;
-				if(which.equalsIgnoreCase("ROOM"))
-					rooms=CMParms.makeVector(CMLib.map().getExtendedRoomID(mob.location())).elements();
-				else
-				if(which.equalsIgnoreCase("AREA"))
-					rooms=mob.location().getArea().getProperRoomnumbers().getRoomIDs();
-				else
-				if(which.equalsIgnoreCase("WORLD"))
-					rooms=CMLib.map().roomIDs();
+				Enumeration rooms=getRoomSet(mob,which);
 				commands.removeElementAt(0);
-				int whatKind=0;
-				String type="objects";
-				if((commands.size()>0)&&("MOBS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
-				{ commands.removeElementAt(0); whatKind=1; type="mobs";}
-				if((commands.size()>0)&&("ITEMS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
-				{ commands.removeElementAt(0); whatKind=2;type="items";}
+				int whatKind=getObjectType(commands);
+				String type=types[whatKind];
 				
 				if((mob.session()!=null)
 				&&(mob.session().confirm("You are about to auto-catalog (room-reset and save) all "+which+" "+type+".\n\r"
@@ -208,11 +208,7 @@ public class Catalog extends StdCommand
 			if(((String)commands.firstElement()).equalsIgnoreCase("LIST"))
 			{
 				commands.removeElementAt(0);
-				int whatKind=0; // 0=both, 1=mob, 2=item
-				if((commands.size()>0)&&("MOBS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
-				{ commands.removeElementAt(0); whatKind=1;}
-				if((commands.size()>0)&&("ITEMS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
-				{ commands.removeElementAt(0); whatKind=2;}
+				int whatKind=getObjectType(commands);
 				String ID=CMParms.combine(commands,0);
 				StringBuffer list=new StringBuffer("");
 				int col=0;
@@ -289,11 +285,7 @@ public class Catalog extends StdCommand
 			if(((String)commands.firstElement()).equalsIgnoreCase("DELETE"))
 			{
 				commands.removeElementAt(0);
-				int whatKind=0; // 0=both, 1=mob, 2=item
-				if((commands.size()>0)&&("MOBS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
-				{ commands.removeElementAt(0); whatKind=1;}
-				if((commands.size()>0)&&("ITEMS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
-				{ commands.removeElementAt(0); whatKind=2;}
+				int whatKind=getObjectType(commands);
 				String ID=CMParms.combine(commands,0);
 				Environmental[] del=null;
 				if(ID.equalsIgnoreCase("everydamnmob"))
@@ -333,7 +325,6 @@ public class Catalog extends StdCommand
 						&&((del.length>10)||(mob.session().confirm(prefix+"This will permanently delete mob '"+((MOB)E).Name()+"' from the catalog.  Are you sure (y/N)?","N"))))
 						{
 							CMLib.catalog().delCatalog((MOB)E);
-							CMLib.database().DBDeleteMOB("CATALOG_MOBS",(MOB)E); // you have the actual one here
 							mob.tell("MOB '"+((MOB)E).Name()+" has been permanently removed from the catalog.");
 						}
 					}
@@ -347,7 +338,6 @@ public class Catalog extends StdCommand
 						&&((del.length>10)||(mob.session().confirm(prefix+"This will permanently delete item '"+((Item)E).Name()+"' from the catalog.  Are you sure (y/N)?","N"))))
 						{
 							CMLib.catalog().delCatalog((Item)E);
-							CMLib.database().DBDeleteItem("CATALOG_ITEMS",(Item)E); // you have the catalog item here
 							mob.tell("Item '"+E.Name()+" has been permanently removed from the catalog.");
 						}
 					}
@@ -357,11 +347,7 @@ public class Catalog extends StdCommand
             if(((String)commands.firstElement()).equalsIgnoreCase("EDIT"))
             {
                 commands.removeElementAt(0);
-                int whatKind=0; // 0=both, 1=mob, 2=item
-                if((commands.size()>0)&&("MOBS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
-                { commands.removeElementAt(0); whatKind=1;}
-                if((commands.size()>0)&&("ITEMS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
-                { commands.removeElementAt(0); whatKind=2;}
+				int whatKind=getObjectType(commands);
                 String ID=CMParms.combine(commands,0);
                 Environmental E=findCatalog(whatKind,ID,false);
                 if(E==null)
@@ -416,107 +402,86 @@ public class Catalog extends StdCommand
                 }
             }
             else
-            if(((String)commands.firstElement()).equalsIgnoreCase("SCAN"))
+            if((((String)commands.firstElement()).equalsIgnoreCase("SCAN"))
+            ||(((String)commands.firstElement()).equalsIgnoreCase("DBSCAN")))
             {
+            	boolean db=((String)commands.firstElement()).toUpperCase().startsWith("DB");
             	commands.removeElementAt(0);
-    			if((commands.size()>0)
-    			&&((((String)commands.firstElement()).equalsIgnoreCase("ROOM"))
-					||(((String)commands.firstElement()).equalsIgnoreCase("AREA"))
-					||(((String)commands.firstElement()).equalsIgnoreCase("WORLD"))))
+    			if(checkUserRoomSetEntry(commands))
 				{
 					String which=((String)commands.firstElement()).toLowerCase();
-					Enumeration rooms=null;
-					if(which.equalsIgnoreCase("ROOM"))
-						rooms=CMParms.makeVector(CMLib.map().getExtendedRoomID(mob.location())).elements();
-					else
-					if(which.equalsIgnoreCase("AREA"))
-						rooms=mob.location().getArea().getProperRoomnumbers().getRoomIDs();
-					else
-					if(which.equalsIgnoreCase("WORLD"))
-						rooms=CMLib.map().roomIDs();
+					Enumeration rooms=getRoomSet(mob,which);
 					commands.removeElementAt(0);
-					int whatKind=0;
-					if((commands.size()>0)&&("MOBS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
-					{ commands.removeElementAt(0); whatKind=1;}
-					if((commands.size()>0)&&("ITEMS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
-					{ commands.removeElementAt(0); whatKind=2;}
+					
+					int whatKind=getObjectType(commands);
 					Environmental E=null;
 					String roomID=null;
 					for(;rooms.hasMoreElements();)
 					{
 						roomID=(String)rooms.nextElement();
 						R=CMLib.map().getRoom(roomID);
+						if(db) R=CMLib.coffeeMaker().makeNewRoomContent(R);
 						Vector<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
 						for(CatalogLibrary.RoomContent content : contents)
 						{
 							E=content.E();
 							if(E instanceof Coins) continue;
                             if((E instanceof MOB)&&(whatKind!=2)&&(CMLib.flags().isCataloged(E)))
-                            	if(CMLib.catalog().getCatalogMatch(E)!=null)
+                            	if(CMLib.catalog().getCatalogObj(E)!=null)
 	                            	mob.tell("Check: MOB "+E.Name()+" in "+roomID+" is cataloged.");
                             	else
 	                            	mob.tell("Error: MOB "+E.Name()+" in "+roomID+" is falsely cataloged.");
                             
                             if((E instanceof Item)&&(whatKind!=1)&&(CMLib.flags().isCataloged(E)))
-                            	if(CMLib.catalog().getCatalogMatch(E)!=null)
+                            	if(CMLib.catalog().getCatalogObj(E)!=null)
 	                            	mob.tell("Check: Item "+E.Name()+" in "+roomID+" is cataloged.");
                             	else
 	                            	mob.tell("Error: Item "+E.Name()+" in "+roomID+" is falsely cataloged.");
 						}
+						if(db) R.destroy();
 					}
 				}
     			else
     				mob.tell("Scan what?");
             }
             else
-            if(((String)commands.firstElement()).equalsIgnoreCase("DBSCAN"))
+            if((((String)commands.firstElement()).equalsIgnoreCase("OVERLOOK"))
+            ||(((String)commands.firstElement()).equalsIgnoreCase("DBOVERLOOK")))
             {
+            	boolean db=((String)commands.firstElement()).toUpperCase().startsWith("DB");
             	commands.removeElementAt(0);
-    			if((commands.size()>0)
-    			&&((((String)commands.firstElement()).equalsIgnoreCase("ROOM"))
-					||(((String)commands.firstElement()).equalsIgnoreCase("AREA"))
-					||(((String)commands.firstElement()).equalsIgnoreCase("WORLD"))))
+    			if(checkUserRoomSetEntry(commands))
 				{
 					String which=((String)commands.firstElement()).toLowerCase();
-					Enumeration rooms=null;
-					if(which.equalsIgnoreCase("ROOM"))
-						rooms=CMParms.makeVector(CMLib.map().getExtendedRoomID(mob.location())).elements();
-					else
-					if(which.equalsIgnoreCase("AREA"))
-						rooms=mob.location().getArea().getProperRoomnumbers().getRoomIDs();
-					else
-					if(which.equalsIgnoreCase("WORLD"))
-						rooms=CMLib.map().roomIDs();
+					Enumeration rooms=getRoomSet(mob,which);
 					commands.removeElementAt(0);
-					int whatKind=0;
-					if((commands.size()>0)&&("MOBS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
-					{ commands.removeElementAt(0); whatKind=1;}
-					if((commands.size()>0)&&("ITEMS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
-					{ commands.removeElementAt(0); whatKind=2;}
+					
+					int whatKind=getObjectType(commands);
 					Environmental E=null;
 					String roomID=null;
 					for(;rooms.hasMoreElements();)
 					{
 						roomID=(String)rooms.nextElement();
-						R=CMLib.coffeeMaker().makeNewRoomContent(CMLib.map().getRoom(roomID));
+						R=CMLib.map().getRoom(roomID);
+						if(db) R=CMLib.coffeeMaker().makeNewRoomContent(R);
 						Vector<CatalogLibrary.RoomContent> contents=CMLib.catalog().roomContent(R);
 						for(CatalogLibrary.RoomContent content : contents)
 						{
 							E=content.E();
 							if(E instanceof Coins) continue;
-                            if((E instanceof MOB)&&(whatKind!=2)&&(CMLib.flags().isCataloged(E)))
-                            	if(CMLib.catalog().getCatalogMatch(E)!=null)
-	                            	mob.tell("Check: MOB "+E.Name()+" in "+roomID+" is cataloged.");
+                            if((E instanceof MOB)&&(whatKind!=2)&&(!CMLib.flags().isCataloged(E)))
+                            	if(CMLib.catalog().getCatalogMob(E.Name())!=null)
+	                            	mob.tell("MOB "+E.Name()+" in "+roomID+" should be tied to the catalog.");
                             	else
-	                            	mob.tell("Error: MOB "+E.Name()+" in "+roomID+" is falsely cataloged.");
+	                            	mob.tell("MOB "+E.Name()+" in "+roomID+" is not cataloged.");
                             
-                            if((E instanceof Item)&&(whatKind!=1)&&(CMLib.flags().isCataloged(E)))
-                            	if(CMLib.catalog().getCatalogMatch(E)!=null)
-	                            	mob.tell("Check: Item "+E.Name()+" in "+roomID+" is cataloged.");
+                            if((E instanceof Item)&&(whatKind!=1)&&(!CMLib.flags().isCataloged(E)))
+                            	if(CMLib.catalog().getCatalogItem(E.Name())!=null)
+	                            	mob.tell("Item "+E.Name()+" in "+roomID+" should be tied to the catalog.");
                             	else
-	                            	mob.tell("Error: Item "+E.Name()+" in "+roomID+" is falsely cataloged.");
+	                            	mob.tell("Item "+E.Name()+" in "+roomID+" is not cataloged.");
 						}
-						R.destroy();
+						if(db) R.destroy();
 					}
 				}
     			else
@@ -526,29 +491,13 @@ public class Catalog extends StdCommand
             if(((String)commands.firstElement()).equalsIgnoreCase("CLEAN"))
             {
 				commands.removeElementAt(0);
-    			if((commands.size()>0)
-    			&&((((String)commands.firstElement()).equalsIgnoreCase("ROOM"))
-					||(((String)commands.firstElement()).equalsIgnoreCase("AREA"))
-					||(((String)commands.firstElement()).equalsIgnoreCase("WORLD"))))
+				if(checkUserRoomSetEntry(commands))
 				{
 					String which=((String)commands.firstElement()).toLowerCase();
-					Enumeration rooms=null;
-					if(which.equalsIgnoreCase("ROOM"))
-						rooms=CMParms.makeVector(CMLib.map().getExtendedRoomID(mob.location())).elements();
-					else
-					if(which.equalsIgnoreCase("AREA"))
-						rooms=mob.location().getArea().getProperRoomnumbers().getRoomIDs();
-					else
-					if(which.equalsIgnoreCase("WORLD"))
-						rooms=CMLib.map().roomIDs();
+					Enumeration rooms=getRoomSet(mob,which);
 					commands.removeElementAt(0);
-					int whatKind=0;
-					String type="objects";
-					if((commands.size()>0)&&("MOBS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
-					{ commands.removeElementAt(0); whatKind=1; type="mobs";}
-					if((commands.size()>0)&&("ITEMS".startsWith(((String)commands.firstElement()).toUpperCase().trim())))
-					{ commands.removeElementAt(0); whatKind=2;type="items";}
-					
+					int whatKind=getObjectType(commands);
+					String type=types[whatKind];
 					if((mob.session()!=null)
 					&&(mob.session().confirm("You are about to auto-clean (and auto-save) all "+which+" "+type+".\n\r"
 				        +"This command, if used improperly, may alter "+type+" in this "+which+".\n\rAre you absolutely sure (y/N)?","N")))
@@ -568,7 +517,7 @@ public class Catalog extends StdCommand
 	                            if((E instanceof MOB)&&(whatKind!=2))
 	                            {
                                     if((CMLib.flags().isCataloged(E))
-                                    &&(CMLib.catalog().getCatalogMatch(E)==null))
+                                    &&(CMLib.catalog().getCatalogObj(E)==null))
                                     { 
                                     	CMLib.catalog().changeCatalogUsage(E,false);
                                     	content.flagDirty();
@@ -580,7 +529,7 @@ public class Catalog extends StdCommand
 	                            if((E instanceof Item)&&(whatKind!=1))
 	                            {
                                     if((CMLib.flags().isCataloged(E))
-                                    &&(CMLib.catalog().getCatalogMatch(E)==null))
+                                    &&(CMLib.catalog().getCatalogObj(E)==null))
                                     { 
                                     	CMLib.catalog().changeCatalogUsage(E,false);
                                     	content.flagDirty();

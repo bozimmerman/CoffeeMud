@@ -553,24 +553,25 @@ public class GrinderItems
                 Item I2=CMLib.catalog().getCatalogItem(itemCode.substring(8));
                 if((I2!=null)&&(!I.Name().equalsIgnoreCase(I2.Name())))
                     I.setName(I2.Name());
-                if(CMLib.catalog().addCatalogReplace(I))
+                httpReq.addRequestParameters("ITEM",itemCode);
+                if(I2==null)
                 {
-	                httpReq.addRequestParameters("ITEM",itemCode);
-	                CMLib.catalog().propogateCatalogChange(I);
-	                Item I3=CMLib.catalog().getCatalogItem(itemCode.substring(8));
-	                if((I3!=null)&&(cataData!=null))
-	                {
-	                    CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(I3.Name());
-	                    if((cataData.getRate()>0.0)&&(cataData.getMaskStr()!=null)&&(cataData.getMaskStr().length()>0))
-	                        data.build(cataData.data());
-	                }
-	                if(I2!=null)
-	                    CMLib.database().DBUpdateItem("CATALOG_ITEMS",I3);
-	                else
-	                    CMLib.database().DBCreateThisItem("CATALOG_ITEMS",I3);
-	                Log.infoOut("GrinderItems",whom.Name()+" updated catalog ITEM "+I.Name());
-	                copyItem=I;
+                    CMLib.catalog().addCatalog(I);
+	                Log.infoOut("GrinderItems",whom.Name()+" created catalog ITEM "+I.Name());
                 }
+                else
+                {
+                	CMLib.catalog().updateCatalog(I);
+	                Log.infoOut("GrinderItems",whom.Name()+" updated catalog ITEM "+I.Name());
+                }
+                Item I3=CMLib.catalog().getCatalogItem(itemCode.substring(8));
+                if((I3!=null)&&(cataData!=null))
+                {
+                    CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(I3.Name());
+                    if((cataData.getRate()>0.0)&&(cataData.getMaskStr()!=null)&&(cataData.getMaskStr().length()>0))
+                        data.build(cataData.data());
+                }
+                copyItem=I;
 			}
 			else
 			if(itemCode.equals("NEW"))

@@ -206,6 +206,8 @@ public class ItemData extends StdWebMacro
 	                	I=CMLib.catalog().getCatalogItem(itemCode.substring(8));
 	                    if(I==null)
 	                        I=CMClass.getItem("GenItem");
+				    	else
+				    		I=(Item)I.copyOf();
 	                }
 	                else
 					if(itemCode.equals("NEW"))

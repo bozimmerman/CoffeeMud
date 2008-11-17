@@ -324,6 +324,25 @@ public class DefaultCoffeeShop implements CoffeeShop
         return item;
     }
     
+    public void resubmitInventory(Vector shopItems, ShopKeeper SK)
+    {
+    	DVector addBacks=new DVector(3);
+        for(int b=0;b<shopItems.size();b++)
+        {
+            Environmental shopItem=(Environmental)shopItems.elementAt(b);
+            int num=numberInStock(shopItem);
+            int price=stockPrice(shopItem);
+            addBacks.addElement(shopItem,new Integer(num),new Integer(price));
+        }
+        emptyAllShelves();
+        for(int a=0;a<addBacks.size();a++)
+            addStoreInventory(
+                    (Environmental)addBacks.elementAt(a,1),
+                    ((Integer)addBacks.elementAt(a,2)).intValue(),
+                    ((Integer)addBacks.elementAt(a,3)).intValue(),
+                    SK);
+    }
+    
     public void emptyAllShelves()
     {
         if(storeInventory!=null)storeInventory.clear();

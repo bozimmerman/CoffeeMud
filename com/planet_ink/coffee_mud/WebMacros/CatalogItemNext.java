@@ -65,13 +65,14 @@ public class CatalogItemNext extends StdWebMacro
             if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!name.equalsIgnoreCase(lastID))))
             {
                 data=CMLib.catalog().getCatalogItemData(names[s]);
-                //int[] usage=CMLib.catalog().getCatalogItemUsage(names[s]);
                 I=CMLib.catalog().getCatalogItem(names[s]);
                 if(I==null) continue;
                 
                 httpReq.addRequestParameters("ITEM",name);
                 httpReq.addRequestParameters("CATALOG_ITEM_NAME",""+I.name());
-                //httpReq.addRequestParameters("CATALOG_ITEM_USAGE",""+usage[0]);
+                httpReq.addRequestParameters("CATALOG_ITEM_USAGE",""+data.numReferences());
+                //httpReq.addRequestParameters("CATALOG_ITEM_AREA",""+data.mostPopularArea());
+                //httpReq.addRequestParameters("CATALOG_ITEM_HOME",""+data.mostPopularRoom());
                 httpReq.addRequestParameters("CATALOG_ITEM_LEVEL",""+I.baseEnvStats().level());
                 httpReq.addRequestParameters("CATALOG_ITEM_CLASS",I.ID());
                 httpReq.addRequestParameters("CATALOG_ITEM_VALUE",""+I.baseGoldValue());

@@ -235,4 +235,14 @@ public interface CoffeeShop extends CMCommon
      * @param shop the shopkeeper shop
      */
     public void buildShopFromXML(String text, ShopKeeper shop);
+    
+    /**
+     * A method for quickly making wholesale changes to a shopkeepers inventory.
+     * getStoreInventory should be called to get the list of items.  The items can
+     * then be modified, and this method called to properly "resubmit" them to
+     * the shopkeeper.
+     * @param shopItems the items for inventory
+     * @param SK the shopkeeper
+     */
+    public void resubmitInventory(Vector shopItems, ShopKeeper SK);
 }

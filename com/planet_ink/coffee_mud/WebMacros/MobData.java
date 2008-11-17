@@ -971,6 +971,8 @@ public class MobData extends StdWebMacro
 			    	M=CMLib.catalog().getCatalogMob(mobCode.substring(8));
 			    	if(M==null)
 	                    M=CMClass.getMOB("GenMob");
+			    	else
+			    		M=(MOB)M.copyOf();
 			    }
 			    else
 				if(mobCode.equals("NEW"))

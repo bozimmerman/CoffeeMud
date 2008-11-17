@@ -42,16 +42,16 @@ public interface CatalogLibrary extends CMLibrary
     public boolean isCatalogObj(String name);
     public Item getCatalogItem(String name);
     public MOB getCatalogMob(String name);
-    public Environmental getCatalogMatch(Environmental E);
+    public Environmental getCatalogObj(Environmental E);
     public CataData getCatalogItemData(String name);
     public CataData getCatalogMobData(String name);
     public CataData getCatalogData(Environmental E);
     public void delCatalog(Environmental E);
-    public boolean addCatalogReplace(Environmental E);
+    public void addCatalog(Environmental E);
+    public void submitToCatalog(Environmental E);
     public void updateCatalog(Environmental E);
     public StringBuffer checkCatalogIntegrity(Environmental E);
     public void updateCatalogIntegrity(Environmental E);
-    public void propogateCatalogChange(Environmental E);
     public void changeCatalogUsage(Environmental E, boolean add);
     public Item getDropItem(MOB M, boolean live);
     public CataData sampleCataData(String xml);
@@ -81,6 +81,8 @@ public interface CatalogLibrary extends CMLibrary
         public boolean isReference(Environmental E);
         public void delReference(Environmental E);
         public int numReferences();
+        public String mostPopularRoom();
+        public String mostPopularArea();
         
         public String data();
         

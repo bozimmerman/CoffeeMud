@@ -395,7 +395,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             E.setName(newName);
             return;
         }
-        Environmental cataE=CMLib.catalog().getCatalogMatch(E);
+        Environmental cataE=CMLib.catalog().getCatalogObj(E);
         if(cataE==null) {
             E.setName(newName);
             CMLib.catalog().changeCatalogUsage(E,false);
@@ -419,7 +419,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         StringBuffer diffs=CMLib.catalog().checkCatalogIntegrity(E);
         if(diffs!=null)
         {
-        	Environmental cataE=(Environmental)CMLib.catalog().getCatalogMatch(E).copyOf();
+        	Environmental cataE=(Environmental)CMLib.catalog().getCatalogObj(E).copyOf();
         	CMLib.catalog().changeCatalogUsage(cataE,true);
         	StringBuffer detailedDiff=new StringBuffer("");
         	Vector V=CMParms.parseCommas(diffs.toString(),true);
@@ -435,7 +435,6 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	        if(mob.session().confirm("This object is cataloged.  Enter Y to update the cataloged version, or N to detach this object from the catalog (Y/n)?","Y"))
 	        {
 	        	CMLib.catalog().updateCatalog(E);
-	            CMLib.catalog().propogateCatalogChange(E);
 	            mob.tell("Catalog update complete.");
 	            Log.infoOut("BaseGenerics",mob.Name()+" updated catalog "+((E instanceof MOB)?"MOB":"ITEM")+" "+E.Name());
 	        }
@@ -6711,11 +6710,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
                     ok=false;
                 }
-                boolean wasCataloged=CMLib.flags().isCataloged(me);
-                CMLib.catalog().changeCatalogUsage(me,false);
                 me.setMiscText(me.text());
-                if(wasCataloged)
-                    CMLib.catalog().changeCatalogUsage(me,true);
             }
         }
     }
@@ -7167,11 +7162,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
                     ok=false;
                 }
-                boolean wasCataloged=CMLib.flags().isCataloged(me);
-                CMLib.catalog().changeCatalogUsage(me,false);
                 me.setMiscText(me.text());
-                if(wasCataloged)
-                    CMLib.catalog().changeCatalogUsage(me,true);
             }
         }
     }

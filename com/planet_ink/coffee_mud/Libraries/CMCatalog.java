@@ -41,7 +41,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
     public DVector icatalog=new DVector(2);
     public DVector mcatalog=new DVector(2);
 
-	public void setCataloged(Environmental E, boolean truefalse)
+	public void changeCatalogFlag(Environmental E, boolean truefalse)
 	{
 		if(E==null) return;
 		if(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
@@ -60,25 +60,31 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
 		}
 	}
 	
-    protected int getGlobalIndex(Vector list, String name)
+    protected Object getCatalogObject(DVector list, String name, int dim)
     {
-        if(list.size()==0) return -1;
-        int start=0;
-        int end=list.size()-1;
-        while(start<=end)
-        {
-            int mid=(end+start)/2;
-            int comp=((Environmental)list.elementAt(mid)).Name().compareToIgnoreCase(name);
-            if(comp==0)
-                return mid;
-            else
-            if(comp>0)
-                end=mid-1;
-            else
-                start=mid+1;
-
-        }
-        return -1;
+    	synchronized(list)
+    	{
+            try
+            {
+		        if(list.size()==0) return null;
+		        int start=0;
+		        int end=list.size()-1;
+		        while(start<=end)
+		        {
+		            int mid=(end+start)/2;
+		            int comp=((Environmental)list.elementAt(mid,1)).Name().compareToIgnoreCase(name);
+		            if(comp==0)
+		                return list.elementAt(mid,dim);
+		            else
+		            if(comp>0)
+		                end=mid-1;
+		            else
+		                start=mid+1;
+		
+		        }
+            } catch(Exception e){}
+	        return null;
+    	}
     }
     
     protected void addCatalogReplace(DVector DV, Environmental E)
@@ -128,7 +134,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
         }
     }
     
-    public String[] makeCatalogNames(Vector catalog){
+    public String[] makeCatalogNames(Vector catalog)
+    {
     	String[] names=new String[catalog.size()];
     	int x=0;
     	for(Iterator i=DVector.s_iter(catalog);i.hasNext();)
@@ -158,92 +165,25 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
     
     public boolean isCatalogObj(Environmental E)
     {
-        if(E instanceof MOB) return mcatalog.contains(E);
-        if(E instanceof Item) return icatalog.contains(E);
-        return false;
+    	if(E instanceof MOB) return getCatalogMob(E.Name()) != null;
+    	if(E instanceof Item) return getCatalogItem(E.Name()) != null;
+    	return false; 
     }
     
     public boolean isCatalogObj(String name)
     {
-        int index=getCatalogMobIndex(name);
-        if(index<0) index=getCatalogItemIndex(name);
-        return index>=0;
+        Object o=getCatalogMob(name);
+        if(o==null) o=getCatalogItem(name);
+        return o!=null;
     }
     
-    protected int getCatalogItemIndex(String called)
-    { 
-    	synchronized(icatalog)
-    	{
-	        return getGlobalIndex(icatalog.getDimensionVector(1),called);
-    	}
-    }
+    public Item getCatalogItem(String called) { return (Item)getCatalogObject(icatalog,called,1); }
     
-    protected int getCatalogMobIndex(String called)
-    { 
-    	synchronized(mcatalog)
-    	{
-	        return getGlobalIndex(mcatalog.getDimensionVector(1),called);
-    	}
-    }
+    public MOB getCatalogMob(String called) { return (MOB)getCatalogObject(mcatalog,called,1); }
     
-    public Item getCatalogItem(String called)
-    { 
-        try
-        {
-        	synchronized(icatalog)
-        	{
-	            return (Item)icatalog.elementAt(getCatalogItemIndex(called),1);
-        	}
-        }
-        catch(Exception e)
-        {
-            return null;
-        }
-    }
-    public MOB getCatalogMob(String called)
-    { 
-        try
-        {
-        	synchronized(mcatalog)
-        	{
-	            return (MOB)mcatalog.elementAt(getCatalogMobIndex(called),1);
-        	}
-        }
-        catch(Exception e)
-        {
-            return null;
-        }
-    }
+    public CataData getCatalogItemData(String called) { return (CataData)getCatalogObject(icatalog,called,2); }
     
-    public CataData getCatalogItemData(String called)
-    { 
-        try
-        {
-        	synchronized(icatalog)
-        	{
-	            return (CataData)icatalog.elementAt(getCatalogItemIndex(called),2);
-        	}
-        }
-        catch(Exception e)
-        {
-            return null;
-        }
-    }
-    
-    public CataData getCatalogMobData(String called)
-    { 
-        try
-        {
-        	synchronized(mcatalog)
-        	{
-	            return (CataData)mcatalog.elementAt(getCatalogMobIndex(called),2);
-        	}
-        }
-        catch(Exception e)
-        {
-            return null;
-        }
-    }
+    public CataData getCatalogMobData(String called) { return (CataData)getCatalogObject(mcatalog,called,2); }
     
     public Vector<RoomContent> roomContent(Room R) 
     {
@@ -339,22 +279,13 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
     		if(E instanceof ShopKeeper)
     		{
     			ShopKeeper SK=(ShopKeeper)E;
-                DVector addBacks=new DVector(3);
-                Vector shopItems=SK.getShop().getStoreInventory();
-                for(int b=0;b<shopItems.size();b++)
-                {
-                    Environmental shopItem=(Environmental)shopItems.elementAt(b);
-                    int num=SK.getShop().numberInStock(shopItem);
-                    int price=SK.getShop().stockPrice(shopItem);
-                    addBacks.addElement(shopItem,new Integer(num),new Integer(price));
-                }
-                SK.getShop().emptyAllShelves();
-                for(int a=0;a<addBacks.size();a++)
-                    SK.getShop().addStoreInventory(
-                            (Environmental)addBacks.elementAt(a,1),
-                            ((Integer)addBacks.elementAt(a,2)).intValue(),
-                            ((Integer)addBacks.elementAt(a,3)).intValue(),
-                            SK);
+    			Vector newShop=new Vector();
+    	    	for(RoomContent C : content)
+    	    	{
+    	    		if((C.holder()==SK)&&(!C.deleted()))
+                        newShop.addElement(C.E());
+    	    	}
+            	SK.getShop().resubmitInventory(newShop, SK);
     		}
     	}
     	for(Environmental E : updatables)
@@ -370,8 +301,57 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
     	}
     }
     
+    public void addCatalog(Environmental E)
+    {
+        if(E==null) return;
+        if((E==null)||(!(E instanceof DBIdentifiable))||(!((DBIdentifiable)E).canSaveDatabaseID())) 
+        	return;
+    	synchronized(getSync(E).intern())
+    	{
+	        changeCatalogFlag(E,true);
+	        Environmental origE=E;
+    		E=(Environmental)origE.copyOf();
+    		submitToCatalog(E);
+    		if(E instanceof Item)
+	            CMLib.database().DBCreateThisItem("CATALOG_ITEMS",(Item)E);
+    		else
+    		if(E instanceof MOB)
+	            CMLib.database().DBCreateThisMOB("CATALOG_MOBS",(MOB)E);
+    		CataData data=getCatalogData(E);
+    		if(data!=null) data.addReference(origE);
+    	}
+    }
+    
+    public void submitToCatalog(Environmental E)
+    {
+        if(E==null) return;
+    	synchronized(getSync(E).intern())
+    	{
+	        if(getCatalogObj(E)!=null) return;
+	        changeCatalogFlag(E,false);
+	        E.text(); // to get cataloged status into xml
+	        if(E instanceof Item)
+	        {
+	        	synchronized(icatalog)
+	        	{
+		            addCatalogReplace(icatalog,(Item)E);
+	        	}
+	        }
+	        else
+	        if(E instanceof MOB)
+	        {
+	        	synchronized(mcatalog)
+	        	{
+		            addCatalogReplace(mcatalog,(MOB)E);
+	        	}
+	        }
+    	}
+    }
+    
     public void delCatalog(Environmental E)
     {
+        if(E==null) return;
+        E=getCatalogObj(E);
         if(E==null) return;
         CataData data=getCatalogData(E);
         if(E instanceof Item)
@@ -380,6 +360,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
         	{
 	            icatalog.removeElement((Item)E);
         	}
+            CMLib.database().DBDeleteItem("CATALOG_ITEMS",(Item)E);
         }
         else
         if(E instanceof MOB)
@@ -388,6 +369,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
         	{
 	            mcatalog.removeElement((MOB)E);
         	}
+            CMLib.database().DBDeleteMOB("CATALOG_MOBS",(MOB)E);
         }
         if(data!=null)
         {
@@ -409,7 +391,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
         			{
             			if(((E instanceof MOB)&&(content.E() instanceof MOB))
             			||((E instanceof Item)&&(content.E() instanceof Item)))
-            				setCataloged(E,false);
+            				changeCatalogFlag(content.E(),false);
         			}
         		}
         		R=CMLib.coffeeMaker().makeNewRoomContent(R);
@@ -422,7 +404,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
             			if(((E instanceof MOB)&&(content.E() instanceof MOB))
             			||((E instanceof Item)&&(content.E() instanceof Item)))
             			{
-            				setCataloged(E,false);
+            				changeCatalogFlag(content.E(),false);
             				content.flagDirty();
             				dirty=true;
             			}
@@ -434,35 +416,6 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
         }
     }
     
-    public boolean addCatalogReplace(Environmental E)
-    {
-        if((E==null)||(!(E instanceof DBIdentifiable))||(!((DBIdentifiable)E).canSaveDatabaseID())) 
-        	return false;
-    	synchronized(getSync(E).intern())
-    	{
-	        setCataloged(E,true);
-    		E=(Environmental)E.copyOf();
-	        setCataloged(E,false);
-	        E.text(); // to get cataloged status into xml
-	        if(E instanceof Item)
-	        {
-	        	synchronized(icatalog)
-	        	{
-		            addCatalogReplace(icatalog,(Item)E);
-	        	}
-	        }
-	        else
-	        if(E instanceof MOB)
-	        {
-	        	synchronized(mcatalog)
-	        	{
-		            addCatalogReplace(mcatalog,(MOB)E);
-	        	}
-	        }
-    	}
-        return true;
-    }
-    
     public boolean shutdown()
     {
         icatalog=new DVector(2);
@@ -470,85 +423,59 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
         return true;
     }
     
-    public void updateCatalog(Environmental E)
+    public void updateCatalog(Environmental modelE)
     {
-    	synchronized(getSync(E).intern())
+        if((modelE==null)
+        ||(!(modelE instanceof DBIdentifiable))
+        ||(!((DBIdentifiable)modelE).canSaveDatabaseID())) 
+        	return;
+    	synchronized(getSync(modelE).intern())
     	{
-	        Environmental cataE=CMLib.catalog().getCatalogMatch(E);
-	        if(cataE==null) return;
-	        cataE.setMiscText(E.text());
-	        setCataloged(cataE,false);
-	        if(E instanceof MOB)
+	        changeCatalogFlag(modelE,false);
+    		Environmental cataE=(Environmental)modelE.copyOf();
+	        cataE.text(); // to get cataloged status into xml
+    		if(modelE!=getCatalogObj(modelE))
+		        changeCatalogFlag(modelE,true);
+	        if(cataE instanceof Item)
+	        {
+	        	synchronized(icatalog)
+	        	{
+		            addCatalogReplace(icatalog,(Item)cataE);
+	        	}
+	        }
+	        else
+	        if(cataE instanceof MOB)
+	        {
+	        	synchronized(mcatalog)
+	        	{
+		            addCatalogReplace(mcatalog,(MOB)cataE);
+	        	}
+	        }
+    		cataE=getCatalogObj(cataE);
+	        if(cataE instanceof MOB)
 	            CMLib.database().DBUpdateMOB("CATALOG_MOBS",(MOB)cataE);
 	        else
 	            CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)cataE);
-	        setCataloged(E,true);
-    	}
-    }
-    
-    public void changeCatalogUsage(Environmental E, boolean toCataloged)
-    {
-    	synchronized(getSync(E).intern())
-    	{
-            if((E!=null)&&(E.baseEnvStats()!=null)&&(!E.amDestroyed()))
-            {
-                if(toCataloged)
-            	{
-	                setCataloged(E,true);
-                	CataData data=getCatalogData(E);
-                    if(data!=null) data.addReference(E);
-            	}
-                else
-            	if(CMLib.flags().isCataloged(E))
-            	{
-                    setCataloged(E,false);
-                	CataData data=getCatalogData(E);
-                    if(data!=null) data.delReference(E);
-            	}
-            }
-    	}
-    }
-    
-    private void propogateShopChange(ShopKeeper SK, HashSet<Environmental> ignored, Environmental cataE)
-    {
-        boolean isMob=(cataE instanceof MOB);
-        Environmental E=null;
-        int i=0;
-        Vector V=SK.getShop().getStoreInventory();
-        for(i=0;i<V.size();i++)
-        {
-            E=(Environmental)V.elementAt(i);
-            if(!ignored.contains(E))
-            {
-	            if((isMob)&&(E instanceof MOB)
-	            &&(CMLib.flags().isCataloged(E))
-	            &&(cataE.Name().equalsIgnoreCase(E.Name())))
-	                E.setMiscText(E.text());
-	            if((!isMob)&&(E instanceof Item)
-	            &&(CMLib.flags().isCataloged(E))
-	            &&(cataE.Name().equalsIgnoreCase(E.Name())))
-	                E.setMiscText(E.text());
-            }
-        }
-    }
-    
-    public void propogateCatalogChange(Environmental cataE)
-    {
-    	synchronized(getSync(cataE).intern())
-    	{
+	        
     		CataData data = getCatalogData(cataE);
+    		data.delReference(cataE);
     		HashSet<Environmental> ignored=null;
     		if(data!=null)
     			ignored=CMParms.makeHashSet(data.enumeration());
     		else
     			ignored=new HashSet<Environmental>(1);
+    		Environmental E;
     		for(Iterator<Environmental> i=ignored.iterator();i.hasNext();)
     		{
-    			Environmental E=i.next();
+    			E=i.next();
     			if((!E.amDestroyed())
                 &&(CMLib.flags().isCataloged(E))
+                &&(cataE!=E)
                 &&(E.Name().equalsIgnoreCase(cataE.Name())))
+    			{
                     E.setMiscText(E.text());
+                    changeCatalogFlag(E,true);
+    			}
     		}
     		
 	        boolean isMob=(cataE instanceof MOB);
@@ -623,12 +550,61 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
     	}
     }
     
+    public void changeCatalogUsage(Environmental E, boolean toCataloged)
+    {
+    	synchronized(getSync(E).intern())
+    	{
+            if((E!=null)&&(E.baseEnvStats()!=null)&&(!E.amDestroyed()))
+            {
+                if(toCataloged)
+            	{
+	                changeCatalogFlag(E,true);
+                	CataData data=getCatalogData(E);
+                    if(data!=null) data.addReference(E);
+            	}
+                else
+            	if(CMLib.flags().isCataloged(E))
+            	{
+                    changeCatalogFlag(E,false);
+                	CataData data=getCatalogData(E);
+                    if(data!=null) data.delReference(E);
+            	}
+            }
+    	}
+    }
+    
+    protected void propogateShopChange(ShopKeeper SK, HashSet<Environmental> ignored, Environmental cataE)
+    {
+        boolean isMob=(cataE instanceof MOB);
+        Environmental E=null;
+        int i=0;
+        Vector V=SK.getShop().getStoreInventory();
+        boolean changes=false;
+        for(i=0;i<V.size();i++)
+        {
+            E=(Environmental)V.elementAt(i);
+            if(!ignored.contains(E))
+            {
+	            if((isMob)&&(E instanceof MOB)
+	            &&(CMLib.flags().isCataloged(E))
+	            &&(cataE.Name().equalsIgnoreCase(E.Name())))
+	            { E.setMiscText(E.text()); changes=true;}
+	            if((!isMob)&&(E instanceof Item)
+	            &&(CMLib.flags().isCataloged(E))
+	            &&(cataE.Name().equalsIgnoreCase(E.Name())))
+	            { E.setMiscText(E.text()); changes=true;}
+            }
+        }
+        if(changes)
+        	SK.getShop().resubmitInventory(V, SK);
+    }
+    
     public CataData getCatalogData(Environmental E) {
     	if(E==null) return null;
     	return (E instanceof MOB)?getCatalogMobData(E.Name()):getCatalogItemData(E.Name());
     }
     
-    public Environmental getCatalogMatch(Environmental E) {
+    public Environmental getCatalogObj(Environmental E) {
     	if(E==null) return null;
     	return (E instanceof MOB)?getCatalogMob(E.Name()):getCatalogItem(E.Name());
     }
@@ -638,7 +614,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
     	synchronized(getSync(E).intern())
     	{
 	    	if(checkCatalogIntegrity(E)==null) return;
-	    	setCataloged(E,false);
+	    	changeCatalogFlag(E,false);
 	    	E.text();
     	}
     }
@@ -653,21 +629,21 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
             if(CMLib.flags().isCataloged(E))
     		{
             	CataData data=getCatalogData(E);
-            	Environmental cataE=getCatalogMatch(E);
+            	Environmental cataE=getCatalogObj(E);
             	if((cataE==null)||(data==null))
             	{
                 	if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)) 
                 		return null; // if catalog isn't fully loaded, this can be a false correction
                 	if(data!=null)
     	            	data.delReference(E);
-                	setCataloged(E,false);
+                	changeCatalogFlag(E,false);
                 	E.text();
                 	return null;
             	} 
             	else 
             	{
             		StringBuffer diffs=null;
-                	setCataloged(E,false);
+                	changeCatalogFlag(E,false);
                 	if(!cataE.sameAs(E))
                 	{
                 		diffs=new StringBuffer("");
@@ -675,7 +651,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
                             if((!cataE.getStat(cataE.getStatCodes()[i]).equals(E.getStat(cataE.getStatCodes()[i]))))
                                 diffs.append(cataE.getStatCodes()[i]+",");
                 	}
-                	setCataloged(E,true);
+                	changeCatalogFlag(E,true);
                 	if(data!=null)
                 		data.addReference(E);
                 	return diffs;
@@ -768,6 +744,43 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
         		}
         	}
         	return V;
+        }
+
+        public RoomnumberSet getLocations() {
+        	Vector<Environmental> items=makeVector();
+        	RoomnumberSet homes=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
+        	RoomnumberSet set=(RoomnumberSet)CMClass.getCommon("DefaultRoomnumberSet");
+        	Room R=null;
+        	for(Environmental E : items)
+        	{
+        		R=CMLib.map().getStartRoom(E);
+        		if(R==null) R=CMLib.map().roomLocation(E);
+        		if(R==null) continue;
+        		if((E instanceof Item)
+        		&&(((Item)E).owner() instanceof MOB)
+        		&&(!((MOB)((Item)E).owner()).isMonster()))
+        			continue;
+        		if(CMLib.law().getLandTitle(R)!=null)
+        			homes.add(CMLib.map().getExtendedRoomID(R));
+        		else
+	    			homes.add(CMLib.map().getExtendedRoomID(R));
+        	}
+        	if(set.roomCountAllAreas()>0) return set;
+        	return homes;
+        }
+        
+        public String mostPopularRoom() {
+        	RoomnumberSet set=getLocations();
+        	for(Enumeration e=set.getRoomIDs();e.hasMoreElements();) 
+        		return (String)e.nextElement();
+        	return "";
+        }
+        
+        public String mostPopularArea() {
+        	RoomnumberSet set=getLocations();
+        	for(Enumeration e=set.getAreaNames();e.hasMoreElements();) 
+        		return (String)e.nextElement();
+        	return "";
         }
         
         public int numReferences() {

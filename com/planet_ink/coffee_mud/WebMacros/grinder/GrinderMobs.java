@@ -769,18 +769,18 @@ public class GrinderMobs
 		            MOB M2=CMLib.catalog().getCatalogMob(mobCode.substring(8));
 			        if((M2!=null)&&(!M.Name().equalsIgnoreCase(M2.Name())))
 			            M.setName(M2.Name());
-	                if(CMLib.catalog().addCatalogReplace(M))
-	                {
-	                	M2=CMLib.catalog().getCatalogMob(M.Name());
-	                    newMobCode=mobCode;
-	                    CMLib.catalog().propogateCatalogChange(M);
-	                    if(M2!=null)
-	                        CMLib.database().DBUpdateMOB("CATALOG_MOBS",M2);
-	                    else
-	                        CMLib.database().DBCreateThisMOB("CATALOG_MOBS",M2);
-	                    copyMOB=M;
+                    newMobCode=mobCode;
+			        if(M2==null)
+			        {
+			        	CMLib.catalog().addCatalog(M);
+	                    Log.infoOut("GrinderItems",whom.Name()+" created catalog MOB "+M.Name());
+			        }
+			        else
+			        {
+			        	CMLib.catalog().updateCatalog(M);
 	                    Log.infoOut("GrinderItems",whom.Name()+" updated catalog MOB "+M.Name());
-	                }
+			        }
+                    copyMOB=M;
 			    }
 			    else 
 			    {
