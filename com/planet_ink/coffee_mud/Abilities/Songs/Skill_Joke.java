@@ -87,12 +87,17 @@ public class Skill_Joke extends BardSkill
 					      +"'You are "+de[1]+" "+ob[3]+"!'";
 					break;
 				case 3:
-					joke= "Person 1: 'Knock, knock!'\n\r"
-					     +"Person 2: 'Who's there?'\n\r"
-					     +"Person 1: 'A "+ob[1]+".'\n\r"
-					     +"Person 2: 'A "+ob[1]+" who?'\n\r"
-					     +"Person 1: '"+de[1]+" "+ob[2]+"!'";
+				{
+					String targetName=target.name();
+					String jokerName=mob.name();
+					if(mob==target) jokerName="Someone";
+					joke= jokerName+": 'Knock, knock!'\n\r"
+					     +targetName+": 'Who's there?'\n\r"
+					     +jokerName+": 'A "+ob[1]+".'\n\r"
+					     +targetName+": 'A "+ob[1]+" who?'\n\r"
+					     +jokerName+": '"+de[1]+" "+ob[2]+"!'";
 					break;
+				}
 				case 4:
 					joke= "Q: What's the difference between a "+ob[1]+" and a "+ob[2]+"?\n\r"
 					     +"A: A "+ob[1]+" is "+de[1]+" "+ob[3]+"!";
