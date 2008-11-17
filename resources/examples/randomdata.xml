@@ -1,5 +1,12 @@
 <?xml version="1.0"?>
 <AREADATA>
-<AREA tag="dungeon" layout="MazeLayout">
+<AREA tag="dungeon" layout="MazeLayout" requires="name,size,level_range">
+	<AUTHOR></AUTHOR>
+	<DESCRIPTION></DESCRIPTION>
+	<SIZE>$size</SIZE>
+	<NAME>$name</NAME>
+	<ROOM tag="dungeon_rooms" select="all">
+		
+	</ROOM>
 </AREA>
 </AREADATA>

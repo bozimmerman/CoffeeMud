@@ -172,6 +172,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         String name = findString("name",piece,defined);
         A.setName(name);
         defined.put("AREA_NAME",name);
+        String author = findString("author",piece,defined);
+        A.setAuthorID(author);
         String description = findString("description",piece,defined);
         A.setDescription(description);
         defined.put("AREA_DESCRIPTION",description);
@@ -292,7 +294,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         			}
         			groupDefined.put("ROOMLINK_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase(),"true");
         		}
-        		Room R=buildRoom(piece, groupDefined, exits, direction);
+        		Room R=findRoom(piece, groupDefined, exits, direction);
         		R.setRoomID(A.getNewRoomID(null,-1));
         		R.setArea(A);
         		A.addProperRoom(R);
@@ -315,10 +317,64 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         choices = selectChoices(choices,piece,defined);
         for(int c=0;c<choices.size();c++) {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
-            MOB M=buildMob(valPiece,defined);
-            V.addElement(M);
+            try {
+	            MOB M=buildMob(valPiece,defined);
+	            V.addElement(M);
+	        }catch(Exception e){}
         }
     	return V;
+    }
+    
+    public Room findRoom(XMLLibrary.XMLpiece piece, Hashtable defined, Exit[] exits, int directions) throws CMException
+    {
+    	String tagName="ROOM";
+        Vector choices = getAllChoices(tagName, piece, defined);
+        if((choices==null)||(choices.size()==0)) return null;
+        choices = selectChoices(choices,piece,defined);
+        if((choices==null)||(choices.size()==0)) return null;
+        DVector roomChoices = new DVector(3);
+        for(int c=0;c<choices.size();c++)
+        {
+        	Exit[] rExits=exits.clone();
+        	Hashtable rDefined=(Hashtable)defined.clone();
+            try {
+	            Room R=buildRoom((XMLLibrary.XMLpiece)choices.elementAt(c),rDefined,rExits,directions);
+	            if(R!=null)
+	            	roomChoices.addElement(R,rExits,rDefined);
+            } catch(Exception e){}
+        }
+        if((roomChoices==null)||(roomChoices.size()==0)) return null;
+        
+        int dex=CMLib.dice().roll(1,roomChoices.size(),-1);
+        Room room=(Room)roomChoices.elementAt(dex,1);
+        Exit[] rExits=(Exit[])roomChoices.elementAt(dex,2);
+        Hashtable rDefined=(Hashtable)roomChoices.elementAt(dex,3);
+        roomChoices.clear();
+        
+        defined.clear();
+        defined.putAll(rDefined);
+        
+        for(int e=0;e<rExits.length;e++)
+        	exits[e]=rExits[e];
+        return room;
+    }
+    
+    public DVector findRooms(XMLLibrary.XMLpiece piece, Hashtable defined, Exit[] exits, int direction) throws CMException
+    {
+    	DVector DV = new DVector(2);
+    	String tagName="ROOM";
+        Vector choices = getAllChoices(tagName, piece, defined);
+        if((choices==null)||(choices.size()==0)) return DV;
+        choices = selectChoices(choices,piece,defined);
+        for(int c=0;c<choices.size();c++) {
+            XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
+	            Exit[] theseExits=exits.clone();
+            try {
+	            Room R=buildRoom(valPiece,defined,theseExits,direction);
+	            DV.addElement(R,theseExits);
+	        }catch(Exception e){}
+        }
+    	return DV;
     }
     
     public Exit findExit(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
@@ -331,9 +387,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         Vector exitChoices = new Vector();
         for(int c=0;c<choices.size();c++)
         {
-            Exit E=buildExit((XMLLibrary.XMLpiece)choices.elementAt(c),defined);
-            if(E!=null)
-            	exitChoices.addElement(E);
+            try {
+	            Exit E=buildExit((XMLLibrary.XMLpiece)choices.elementAt(c),defined);
+	            if(E!=null)
+	            	exitChoices.addElement(E);
+            }catch(Exception e){}
         }
         if((exitChoices==null)||(exitChoices.size()==0)) return null;
         return (Exit)exitChoices.elementAt(CMLib.dice().roll(1,exitChoices.size(),-1));
@@ -396,9 +454,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
-            Exit E=buildExit(valPiece,defined);
-            V.addElement(E);
-        }
+            try {
+	            Exit E=buildExit(valPiece,defined);
+	            V.addElement(E);
+	        }catch(Exception e){}
+       }
     	return V;
     }
     
@@ -452,7 +512,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
-            V.addAll(buildItem(valPiece,defined));
+            try{
+	            V.addAll(buildItem(valPiece,defined));
+	        }catch(Exception e){}
         }
     	return V;
     }
@@ -539,8 +601,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
-            Ability A=buildAbility(valPiece,defined);
-            V.addElement(A);
+            try {
+	            Ability A=buildAbility(valPiece,defined);
+	            V.addElement(A);
+	        }catch(Exception e){}
         }
     	return V;
     }
@@ -555,8 +619,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
-            Behavior B=buildBehavior(valPiece,defined);
-            V.addElement(B);
+            try {
+	            Behavior B=buildBehavior(valPiece,defined);
+	            V.addElement(B);
+	        }catch(Exception e){}
         }
     	return V;
     }
