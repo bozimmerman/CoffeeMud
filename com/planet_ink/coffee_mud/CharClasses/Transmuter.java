@@ -39,9 +39,9 @@ public class Transmuter extends SpecialistMage
     public void initializeClass()
     {
         super.initializeClass();
-		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),3,"Spell_CauseStink",25,true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Spell_MassWaterbreath",25,true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),9,"Spell_MassWaterbreath",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_Misstep",0,"",false,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Spell_Sonar",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Spell_Grow",25,true);
