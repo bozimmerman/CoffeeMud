@@ -357,6 +357,7 @@ public class StdMOB implements MOB
             if(S!=null)
                 addScript((ScriptingEngine)S.copyOf());
         }
+		CMLib.catalog().newInstance(this);
 	}
 
 	public CMObject copyOf()

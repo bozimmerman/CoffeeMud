@@ -513,7 +513,6 @@ public class CMFile
             buf = new byte [ fileIn.available() ];
             fileIn.readFully(buf);
             fileIn.close();
-            fileIn.close();
         }
         catch(Exception e)
         {

@@ -1322,31 +1322,48 @@ public class List extends StdCommand
         }
     }
 
-    public String listLog(MOB mob, Vector commands)
+    public boolean pause(Session sess) {
+    	if((sess==null)||(sess.killFlag())) return false;
+    	sess.out("<pause - enter>".toCharArray());
+		try{ 
+			String s=sess.blockingIn(); 
+			if(s!=null)
+			{
+				s=s.toLowerCase();
+				if(s.startsWith("qu")||s.startsWith("ex")||s.equals("x"))
+					return false;
+			}
+		}catch(Exception e){return false;}
+    	return !sess.killFlag();
+    }
+    public void listLog(MOB mob, Vector commands)
     {
-        StringBuffer log=Log.instance().getLog();
+    	int pageBreak=((mob.playerStats()!=null)?mob.playerStats().getPageBreak():0);
+    	int lineNum=0;
         if(commands.size()<2)
-            return log.toString();
+        {
+            Log.LogReader log=Log.instance().getLogReader();
+        	String line=log.nextLine();
+        	while((line!=null)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+        	{
+        		mob.session().rawPrintln(line);
+        		if((pageBreak>0)&&(lineNum>=pageBreak))
+        			if(!pause(mob.session()))
+        				break;
+	    			else
+	    				lineNum=0;
+        		lineNum++;
+            	line=log.nextLine();
+        	}
+        	log.close();
+        	return;
+        }
 
-        Vector logV=new Vector();
         int start=0;
-        for(int l=0;l<log.length();l++)
-            switch(log.charAt(l))
-            {
-            case '\r':
-            case '\n':
-                if(start<l)
-                {
-                    logV.addElement(log.subSequence(start,l));
-                    start=l+1;
-                }
-                break;
-            }
-        if(start<log.length())
-            logV.addElement(log.subSequence(start,log.length()));
-
-        start=0;
-        int end=logV.size();
+        int logSize=Log.instance().numLines();
+        int end=logSize;
+        Log.LogReader log=Log.instance().getLogReader();
+        
         for(int i=1;i<commands.size();i++)
         {
             String s=(String)commands.elementAt(i);
@@ -1383,12 +1400,27 @@ public class List extends StdCommand
                 }
             }
         }
-        StringBuffer newLog=new StringBuffer("");
-        if(end>=log.length()) end=log.length();
+        if(end>=logSize) end=logSize;
         if(start<0) start=0;
-        for(int i=start;i<end;i++)
-            newLog.append(logV.elementAt(i)).append("\r\n");
-        return newLog.toString();
+    	String line=log.nextLine();
+    	lineNum=0;
+    	int shownLineNum=0;
+    	while((line!=null)&&(mob.session()!=null)&&(!mob.session().killFlag()))
+    	{
+    		if((lineNum>start)&&(lineNum<=end))
+    		{
+	    		mob.session().rawPrintln(line);
+	    		if((pageBreak>0)&&(shownLineNum>=pageBreak))
+	    			if(!pause(mob.session()))
+	    				break;
+	    			else
+	    				shownLineNum=0;
+	    		shownLineNum++;
+    		}
+    		lineNum++;
+        	line=log.nextLine();
+    	}
+    	log.close();
     }
 
 	public void archonlist(MOB mob, Vector commands)
@@ -1481,7 +1513,7 @@ public class List extends StdCommand
 			break;
 		}
         case 33: s.wraplessPrintln(listRaceCats(CMClass.races(),rest.equalsIgnoreCase("SHORT")).toString()); break;
-		case 34: s.wraplessPrintln(listLog(mob,commands)); break;
+		case 34: listLog(mob,commands); break;
 		case 35: listUsers(mob,commands); break;
 		case 36: s.println(listLinkages(mob).toString()); break;
 		case 37: s.println(listReports(mob).toString()); break;

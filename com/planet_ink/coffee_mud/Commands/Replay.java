@@ -49,7 +49,7 @@ public class Replay extends StdCommand
 			Vector last=S.getLastMsgs();
 			if(num>last.size()) num=last.size();
 			for(int v=last.size()-num;v<last.size();v++)
-				S.onlyPrint(((String)last.elementAt(v))+"\n\r",-1,true);
+				S.onlyPrint(((String)last.elementAt(v))+"\n\r",true);
 		}
 		return false;
 	}

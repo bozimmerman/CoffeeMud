@@ -192,6 +192,24 @@ public interface PlayerStats extends CMCommon, CMModifiable
      */
     public void setWrap(int newWrap);
     
+	/**
+	 * Returns the page break row for this player, or 0.
+     * 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#setPageBreak(int)
+     * 
+	 * @return the page break row for this player, or 0.
+	 */
+    public int getPageBreak();
+
+    /**
+     * Sets the page break row for this player, or 0.
+     * 
+     * @see com.planet_ink.coffee_mud.Common.interfaces.PlayerStats#getPageBreak()
+     * 
+     * @param newBreak the page break row for this player, or 0.
+     */
+    public void setPageBreak(int newBreak);
+    
     /**
      * Returns the custom prompt, an encoded string, for this player.  "" means 
      * default is used.

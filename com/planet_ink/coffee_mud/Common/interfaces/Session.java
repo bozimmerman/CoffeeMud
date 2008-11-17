@@ -71,16 +71,15 @@ public interface Session extends CMCommon
      * breaks, and line caching
      * @see com.planet_ink.coffee_mud.Common.interfaces.Session#out(char[])
      * @param msg the string to send to the user
-     * @param pageBreak the number of lines to break on, -1=NO
      * @param noCache true to disable line caching, false otherwise
      */
-	public void onlyPrint(String msg, int pageBreak, boolean noCache);
+	public void onlyPrint(String msg, boolean noCache);
     
     /**
      * Low level text output method.
      * Implements such features as snoops, spam-stacking.
      * No page breaking, and Always line caching
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, boolean)
      * @param msg the string to send to the user
      */
 	public void onlyPrint(String msg);
@@ -109,35 +108,11 @@ public interface Session extends CMCommon
      * Low level line-output method.  Sets the
      * prompt flag after write, and inserts
      * additional pre-linefeed if currently at
-     * the prompt.  Adds post linefeed of course.
-     * Does a page break of given value.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrint(String, int)
-     * @param msg the string to send to the user
-     * @param pageBreak  the number of lines to break on, -1=NO
-     */
-	public void rawPrintln(String msg, int pageBreak);
-    
-    /**
-     * Low level line-output method.  Sets the
-     * prompt flag after write, and inserts
-     * additional pre-linefeed if currently at
      * the prompt.
      * @see com.planet_ink.coffee_mud.Common.interfaces.Session#rawPrint(String, int)
      * @param msg the string to send to the user
      */
 	public void rawPrint(String msg);
-    
-    /**
-     * Low level line-output method.  Sets the
-     * prompt flag after write, and inserts
-     * additional pre-linefeed if currently at
-     * the prompt.
-     * Does a page break of given value.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
-     * @param msg the string to send to the user
-     * @param pageBreak the number of lines to break on, -1=NO
-     */
-	public void rawPrint(String msg, int pageBreak);
     
     /**
      * Higher-level line output method.  Does full
@@ -205,7 +180,7 @@ public interface Session extends CMCommon
      * Medium-level text output method.  Does full
      * filtering of special characters and codes.
      * Does not manage the prompt.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, boolean)
      * @param msg the string to send to the user
      */
 	public void print(String msg);
@@ -215,7 +190,7 @@ public interface Session extends CMCommon
      * filtering of special characters and codes
      * using given variable values.
      * Does not manage the prompt.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, boolean)
      * @param Source variable for special code parsing: Source
      * @param Target variable for special code parsing: Target
      * @param Tool variable for special code parsing: Tool
@@ -231,7 +206,7 @@ public interface Session extends CMCommon
      * filtering of special characters and codes.
      * Does not manage the prompt.
      * Adds a linefeed at the end though.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, boolean)
      * @param msg the string to send to the user
      */
 	public void println(String msg);
@@ -242,7 +217,7 @@ public interface Session extends CMCommon
      * using given variable values.
      * Does not manage the prompt.
      * Adds a linefeed at the end though.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, boolean)
      * @param Source variable for special code parsing: Source
      * @param Target variable for special code parsing: Target
      * @param Tool variable for special code parsing: Tool
@@ -266,7 +241,7 @@ public interface Session extends CMCommon
      * filtering of special characters and codes.
      * DOES manage the prompt, but turns OFF word wrap!
      * Adds a linefeed at the end.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, boolean)
      * @param msg the string to send to the user
      */
 	public void wraplessPrintln(String msg);
@@ -275,7 +250,7 @@ public interface Session extends CMCommon
      * Medium-level text output method.  Does full
      * filtering of special characters and codes.
      * DOES manage the prompt, but turns OFF word wrap!
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, boolean)
      * @param msg the string to send to the user
      */
 	public void wraplessPrint(String msg);
@@ -284,28 +259,26 @@ public interface Session extends CMCommon
      * Lower-Medium-level text output method.  Does only the
      * parsing of color codes, no word wrapping, no codes.
      * Adds a linefeed at the end.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, boolean)
      * @param msg the string to send to the user
-     * @param pageBreak the number of lines to break on, -1=NO
      * @param noCache true to disable line caching, false otherwise
      */
-	public void colorOnlyPrintln(String msg, int pageBreak, boolean noCache);
+	public void colorOnlyPrintln(String msg, boolean noCache);
     
     /**
      * Lower-Medium-level text output method.  Does only the
      * parsing of color codes, no word wrapping, no codes.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, boolean)
      * @param msg the string to send to the user
-     * @param pageBreak the number of lines to break on, -1=NO
      * @param noCache true to disable line caching, false otherwise
      */
-	public void colorOnlyPrint(String msg, int pageBreak, boolean noCache);
+	public void colorOnlyPrint(String msg, boolean noCache);
     
     /**
      * Lower-Medium-level text output method.  Does only the
      * parsing of color codes, no word wrapping, no codes.
      * Adds a linefeed at the end.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, boolean)
      * @param msg the string to send to the user
      */
 	public void colorOnlyPrintln(String msg);
@@ -313,7 +286,7 @@ public interface Session extends CMCommon
     /**
      * Lower-Medium-level text output method.  Does only the
      * parsing of color codes, no word wrapping, no codes.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, int, boolean)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Session#onlyPrint(String, boolean)
      * @param msg the string to send to the user
      */
 	public void colorOnlyPrint(String msg);

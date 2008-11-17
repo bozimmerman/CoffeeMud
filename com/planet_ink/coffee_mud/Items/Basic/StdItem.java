@@ -177,7 +177,7 @@ public class StdItem implements Item
 			if((A!=null)&&(!A.canBeUninvoked())&&(!A.ID().equals("ItemRejuv")))
 				addEffect((Ability)A.copyOf());
 		}
-
+		CMLib.catalog().newInstance(this);
 	}
 	public CMObject copyOf()
 	{

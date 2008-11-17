@@ -550,6 +550,19 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
     	}
     }
     
+    public void newInstance(Environmental E)
+    {
+    	synchronized(getSync(E).intern())
+    	{
+    		EnvStats stats=E.baseEnvStats();
+    		if((stats!=null)&&(CMath.bset(stats.disposition(),EnvStats.IS_CATALOGED)))
+    		{
+	        	CataData data=getCatalogData(E);
+	            if(data!=null) data.addReference(E);
+    		}
+    	}
+    }
+    
     public void changeCatalogUsage(Environmental E, boolean toCataloged)
     {
     	synchronized(getSync(E).intern())

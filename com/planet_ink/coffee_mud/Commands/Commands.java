@@ -77,7 +77,7 @@ public class Commands extends StdCommand
 				commandList.append(CMStrings.padRight("^<HELP^>"+s+"^</HELP^>",19));
 			}
 			commandList.append("\n\r\n\rEnter HELP 'COMMAND' for more information on these commands.\n\r");
-			mob.session().colorOnlyPrintln("^HComplete commands list:^?\n\r"+commandList.toString(),23,false);
+			mob.session().colorOnlyPrintln("^HComplete commands list:^?\n\r"+commandList.toString(),false);
 		}
 		return false;
 	}

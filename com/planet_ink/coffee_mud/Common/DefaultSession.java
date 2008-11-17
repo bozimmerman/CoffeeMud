@@ -333,6 +333,7 @@ public class DefaultSession extends Thread implements Session
 	public void setMob(MOB newmob)
 	{ mob=newmob;}
 	public int getWrap(){return ((mob!=null)&&(mob.playerStats()!=null))?mob.playerStats().getWrap():78;}
+	public int getPageBreak(){return ((mob!=null)&&(mob.playerStats()!=null))?mob.playerStats().getPageBreak():-1;}
 	public boolean killFlag(){return killFlag;}
 	public void setKillFlag(boolean truefalse){killFlag=truefalse;}
 	public Vector previousCMD(){return previousCmd;}
@@ -435,8 +436,8 @@ public class DefaultSession extends Thread implements Session
 	}
     public void out(String c){ if(c!=null) out(c.toCharArray());}
     public void out(char c){ char[] cs={c}; out(cs);}
-	public void onlyPrint(String msg){onlyPrint(msg,-1,false);}
-	public void onlyPrint(String msg, int pageBreak, boolean noCache)
+	public void onlyPrint(String msg){onlyPrint(msg,false);}
+	public void onlyPrint(String msg, boolean noCache)
 	{
 		if((out==null)||(msg==null)) return;
 		try
@@ -446,7 +447,7 @@ public class DefaultSession extends Thread implements Session
                 {
                     String msgColored=CMStrings.replaceAll(msg,"\n\r",CMLib.coffeeFilter().colorOnlyFilter("\n\r^Z"+((mob==null)?"?":mob.Name())+":^N ",this));
 					for(int s=0;s<snoops.size();s++)
-						((Session)snoops.elementAt(s)).onlyPrint(msgColored,0,noCache);
+						((Session)snoops.elementAt(s)).onlyPrint(msgColored,noCache);
                 }
 			}catch(IndexOutOfBoundsException x){}
 
@@ -472,7 +473,7 @@ public class DefaultSession extends Thread implements Session
 			else
 				lastStr=msg;
 
-			if(pageBreak<0)	pageBreak=CMProps.getIntVar(CMProps.SYSTEMI_PAGEBREAK);
+			int pageBreak=getPageBreak();
 			if((pageBreak>0)&&(this==Thread.currentThread()))
 			{
 				int lines=0;
@@ -489,7 +490,15 @@ public class DefaultSession extends Thread implements Session
 							out(msg.substring(0,i).toCharArray());
 							msg=msg.substring(i+1);
 							out("<pause - enter>".toCharArray());
-							try{ blockingIn(); }catch(Exception e){return;}
+							try{ 
+								String s=blockingIn(); 
+								if(s!=null)
+								{
+									s=s.toLowerCase();
+									if(s.startsWith("qu")||s.startsWith("ex")||s.equals("x"))
+										return;
+								}
+							}catch(Exception e){return;}
 						}
 					}
 				}
@@ -523,25 +532,23 @@ public class DefaultSession extends Thread implements Session
 	}
 
     public void rawOut(String msg){out(msg);}
-	public void rawPrint(String msg){rawPrint(msg,-1);}
-	public void rawPrint(String msg, int pageBreak)
+	public void rawPrint(String msg)
 	{ if(msg==null)return;
-	  onlyPrint((needPrompt?"":"\n\r")+msg,pageBreak,false);
+	  onlyPrint((needPrompt?"":"\n\r")+msg,false);
 	  needPrompt=true;
 	}
 
 	public void print(String msg)
-	{ onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,false),-1,false); }
+	{ onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,false),false); }
 
-	public void rawPrintln(String msg){rawPrintln(msg,-1);}
-	public void rawPrintln(String msg, int pageBreak)
-	{ if(msg==null)return; rawPrint(msg+"\n\r",pageBreak);}
+	public void rawPrintln(String msg)
+	{ if(msg==null)return; rawPrint(msg+"\n\r");}
 
 	public void stdPrint(String msg)
 	{ rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,false)); }
 
 	public void print(Environmental src, Environmental trg, Environmental tol, String msg)
-	{ onlyPrint((CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,false)),-1,false);}
+	{ onlyPrint((CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,false)),false);}
 
 	public void stdPrint(Environmental src, Environmental trg, Environmental tol, String msg)
 	{ rawPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,trg,msg,false)); }
@@ -551,27 +558,27 @@ public class DefaultSession extends Thread implements Session
 
 	public void wraplessPrintln(String msg)
 	{ if(msg==null)return;
-	  onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,true)+"\n\r",-1,false);
+	  onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,true)+"\n\r",false);
 	  needPrompt=true;
 	}
 
 	public void wraplessPrint(String msg)
-	{ onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,true),-1,false);
+	{ onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,mob,mob,null,msg,true),false);
 	  needPrompt=true;
 	}
 
 	public void colorOnlyPrintln(String msg)
-	{ colorOnlyPrint(msg,-1,false);}
-	public void colorOnlyPrintln(String msg, int pageBreak, boolean noCache)
+	{ colorOnlyPrint(msg,false);}
+	public void colorOnlyPrintln(String msg, boolean noCache)
 	{ if(msg==null)return;
-	  onlyPrint(CMLib.coffeeFilter().colorOnlyFilter(msg,this)+"\n\r",pageBreak,noCache);
+	  onlyPrint(CMLib.coffeeFilter().colorOnlyFilter(msg,this)+"\n\r",noCache);
 	  needPrompt=true;
 	}
 
 	public void colorOnlyPrint(String msg)
-	{ colorOnlyPrint(msg,-1,false);}
-	public void colorOnlyPrint(String msg, int pageBreak, boolean noCache)
-	{ onlyPrint(CMLib.coffeeFilter().colorOnlyFilter(msg,this),pageBreak,noCache);
+	{ colorOnlyPrint(msg,false);}
+	public void colorOnlyPrint(String msg, boolean noCache)
+	{ onlyPrint(CMLib.coffeeFilter().colorOnlyFilter(msg,this),noCache);
 	  needPrompt=true;
 	}
 
@@ -582,7 +589,7 @@ public class DefaultSession extends Thread implements Session
 
 	public void println(Environmental src, Environmental trg, Environmental tol, String msg)
 	{ if(msg==null)return;
-	  onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,false)+"\n\r",-1,false);
+	  onlyPrint(CMLib.coffeeFilter().fullOutFilter(this,mob,src,trg,tol,msg,false)+"\n\r",false);
 	}
 
 	public void stdPrintln(Environmental src,Environmental trg, Environmental tol, String msg)

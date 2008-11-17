@@ -32,7 +32,7 @@ public class FakeSession implements Session
     
     public String[] clookup(){return new String[255];}
     
-    public void onlyPrint(String msg, int pageBreak, boolean noCache){
+    public void onlyPrint(String msg, boolean noCache){
         if(theFile != null) {
             synchronized(theFile)
             {
@@ -40,32 +40,32 @@ public class FakeSession implements Session
             }
         }
     }
-    public void onlyPrint(String msg){ onlyPrint(msg,0,false); }
-    public void rawOut(String msg){ onlyPrint(msg,0,false); }
-    public void rawPrintln(String msg){ onlyPrint(msg,0,false); }
-    public void rawPrintln(String msg, int pageBreak){ onlyPrint(msg,0,false); }
-    public void rawPrint(String msg){ onlyPrint(msg,0,false); }
-    public void rawPrint(String msg, int pageBreak){ onlyPrint(msg,0,false); }
-    public void stdPrint(String msg){ onlyPrint(msg,0,false); }
-    public void stdPrint(Environmental Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,0,false); }
-    public void stdPrintln(String msg){ onlyPrint(msg,0,false); }
-    public void stdPrintln(Environmental Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,0,false); }
-    public void out(char[] c){ onlyPrint(new String(c),0,false); }
-    public void print(String msg){ onlyPrint(msg,0,false); }
-    public void print(Environmental Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,0,false); }
-    public void println(String msg){ onlyPrint(msg,0,false); }
-    public void println(Environmental Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,0,false); }
-    public void wraplessPrintln(String msg){ onlyPrint(msg,0,false); }
-    public void wraplessPrint(String msg){ onlyPrint(msg,0,false); }
-    public void colorOnlyPrintln(String msg, int pageBreak, boolean noCache){ onlyPrint(msg,0,false); }
-    public void colorOnlyPrint(String msg, int pageBreak, boolean noCache){ onlyPrint(msg,0,false); }
-    public void colorOnlyPrintln(String msg){ onlyPrint(msg,0,false); }
-    public void colorOnlyPrint(String msg){ onlyPrint(msg,0,false); }
+    public void onlyPrint(String msg){ onlyPrint(msg,false); }
+    public void rawOut(String msg){ onlyPrint(msg,false); }
+    public void rawPrintln(String msg){ onlyPrint(msg,false); }
+    public void rawPrintln(String msg, int pageBreak){ onlyPrint(msg,false); }
+    public void rawPrint(String msg){ onlyPrint(msg,false); }
+    public void rawPrint(String msg, int pageBreak){ onlyPrint(msg,false); }
+    public void stdPrint(String msg){ onlyPrint(msg,false); }
+    public void stdPrint(Environmental Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,false); }
+    public void stdPrintln(String msg){ onlyPrint(msg,false); }
+    public void stdPrintln(Environmental Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,false); }
+    public void out(char[] c){ onlyPrint(new String(c),false); }
+    public void print(String msg){ onlyPrint(msg,false); }
+    public void print(Environmental Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,false); }
+    public void println(String msg){ onlyPrint(msg,false); }
+    public void println(Environmental Source, Environmental Target, Environmental Tool, String msg){ onlyPrint(msg,false); }
+    public void wraplessPrintln(String msg){ onlyPrint(msg,false); }
+    public void wraplessPrint(String msg){ onlyPrint(msg,false); }
+    public void colorOnlyPrintln(String msg, boolean noCache){ onlyPrint(msg,false); }
+    public void colorOnlyPrint(String msg, boolean noCache){ onlyPrint(msg,false); }
+    public void colorOnlyPrintln(String msg){ onlyPrint(msg,false); }
+    public void colorOnlyPrint(String msg){ onlyPrint(msg,false); }
     public void setPromptFlag(boolean truefalse){}
     
     public char hotkey(long maxWait) {return ' ';}
     public String prompt(String Message, String Default) { 
-        onlyPrint(Message,0,false);
+        onlyPrint(Message,false);
         String msg  = readlineContinue();
         if(msg.length()==0) return Default;
         return msg;
@@ -80,7 +80,7 @@ public class FakeSession implements Session
     }
     public boolean confirm(String Message, String Default, long maxTime) { return confirm(Message,Default,0);}
     public String choose(String Message, String Choices, String Default) { 
-        onlyPrint(Message,0,false);
+        onlyPrint(Message,false);
         String msg  = readlineContinue();
         if(msg.length()==0) return Default;
         if(Choices.toUpperCase().indexOf(msg.toUpperCase().trim())>=0)

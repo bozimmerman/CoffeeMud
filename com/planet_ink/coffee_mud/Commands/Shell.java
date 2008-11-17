@@ -435,7 +435,7 @@ public class Shell extends StdCommand
                 if(mob.session()!=null)
                 {
                     mob.session().colorOnlyPrintln("\n\r^xFile /"+CF.getVFSPathAndName()+"^.^N\n\r");
-                    mob.session().rawPrint(CF.text().toString(),25);
+                    mob.session().rawPrint(CF.text().toString());
                 }
             }
             break;
@@ -677,7 +677,7 @@ public class Shell extends StdCommand
                         StringBuffer list=new StringBuffer("File: "+file.getVFSPathAndName()+"\n\r");
                         for(int v=0;v<vbuf.size();v++)
                             list.append(CMLib.coffeeFilter().colorOnlyFilter("^X"+CMStrings.padRight(""+v,3)+")^.^N ",mob.session())+(String)vbuf.elementAt(v)+"\n\r");
-                        mob.session().rawPrint(list.toString(),25);
+                        mob.session().rawPrint(list.toString());
                         break;
                     }
                     case 'I':

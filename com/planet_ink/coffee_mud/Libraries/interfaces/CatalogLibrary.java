@@ -57,6 +57,7 @@ public interface CatalogLibrary extends CMLibrary
     public CataData sampleCataData(String xml);
     public Vector<RoomContent> roomContent(Room R);
     public void updateRoomContent(String roomID, Vector<RoomContent> content);
+    public void newInstance(Environmental E);
     
     public static interface RoomContent
     {

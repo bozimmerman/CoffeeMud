@@ -31,34 +31,40 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class Config extends StdCommand
+public class PageBreak extends StdCommand
 {
-	public Config(){}
+	public PageBreak(){}
 
-	private String[] access={"CONFIG","AUTO"};
+	private String[] access={"PAGEBREAK"};
 	public String[] getAccessWords(){return access;}
+	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
-		StringBuffer msg=new StringBuffer("^HYour configuration flags:^?\n\r");
-		for(int i=0;i<MOB.AUTODESC.length;i++)
+	    if((mob==null)||(mob.playerStats()==null))
+	        return false;
+	    
+		if(commands.size()<2)
 		{
-            if((MOB.AUTODESC[i].equalsIgnoreCase("SYSMSGS"))&&(!(CMSecurity.isAllowed(mob,mob.location(),"SYSMSGS"))))
-                continue;
-			
-			msg.append(CMStrings.padRight(MOB.AUTODESC[i],15)+": ");
-			boolean set=CMath.isSet(mob.getBitmap(),i);
-			if(MOB.AUTOREV[i]) set=!set;
-			msg.append(set?"ON":"OFF");
-			msg.append("\n\r");
+		    String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
+			mob.tell("Change your page break to what? Your current page break setting is: "+pageBreak+". Enter a number larger than 0 or 'disable'.");
+			return false;
 		}
-	    String wrap=(mob.playerStats().getWrap()!=0)?(""+mob.playerStats().getWrap()):"Disabled";
-		msg.append(CMStrings.padRight("LINEWRAP",15)+": "+wrap);
-		msg.append("\n\r");
+		String newBreak=CMParms.combine(commands,1);
+		int newVal=mob.playerStats().getWrap();
+		if((CMath.isInteger(newBreak))&&(CMath.s_int(newBreak)>0))
+		    newVal=CMath.s_int(newBreak);
+		else
+		if("DISABLED".startsWith(newBreak.toUpperCase()))
+		    newVal=0;
+		else
+		{
+			mob.tell("'"+newBreak+"' is not a valid setting. Enter a number larger than 0 or 'disable'.");
+		    return false;
+		}
+		mob.playerStats().setPageBreak(newVal);
 	    String pageBreak=(mob.playerStats().getPageBreak()!=0)?(""+mob.playerStats().getPageBreak()):"Disabled";
-		msg.append(CMStrings.padRight("PAGEBREAK",15)+": "+pageBreak);
-		msg.append("\n\r");
-		mob.tell(msg.toString());
+		mob.tell("Your new page break setting is: "+pageBreak+".");
 		return false;
 	}
 	
@@ -66,3 +72,4 @@ public class Config extends StdCommand
 
 	
 }
+

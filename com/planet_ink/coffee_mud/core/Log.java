@@ -337,6 +337,73 @@ public class Log
 		}
 	}
 
+	public static interface LogReader
+	{
+		public String nextLine();
+		public void close();
+	}
+	
+	public int numLines()
+	{
+		int num=0;
+		try
+		{
+			FileReader F=new FileReader(logName+".log");
+			BufferedReader reader = new BufferedReader(F);
+			String line="";
+			while((line!=null)&&(reader.ready()))
+			{ line=reader.readLine(); num++;}
+		}
+		catch(Exception e)
+		{
+			Log.errOut("Log",e.getMessage());
+		}
+		return num;
+	}
+	
+	public LogReader getLogReader()
+	{
+		return new LogReader() {
+			BufferedReader reader = null;
+			public String nextLine()
+			{
+				if(reader==null)
+				{
+					try
+					{
+						FileReader F=new FileReader(logName+".log");
+						reader = new BufferedReader(F);
+					}
+					catch(Exception e)
+					{
+						Log.errOut("Log",e.getMessage());
+						return null;
+					}
+				}
+				String line=null;
+				try {
+					if(reader.ready())
+						line=reader.readLine();
+			    }
+			    catch ( final IOException ignore ){}
+				if(line==null) close();
+				return line;
+			}
+			public void close() {
+				{
+				    try
+				    {
+				        if ( reader != null )
+				        {
+				            reader.close();
+				            reader = null;
+				        }
+				    }
+				    catch ( final IOException ignore ){}
+				}
+			}
+		};
+	}
 	public StringBuffer getLog()
 	{
 

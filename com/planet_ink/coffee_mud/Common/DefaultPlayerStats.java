@@ -62,6 +62,7 @@ public class DefaultPlayerStats implements PlayerStats
     protected String announceMsg="";
     protected String notes="";
 	protected int wrap=78;
+	protected int pageBreak=CMProps.getIntVar(CMProps.SYSTEMI_PAGEBREAK);;
     protected int[] birthday=null;
 	protected MOB replyTo=null;
 	protected int replyType=0;
@@ -84,7 +85,7 @@ public class DefaultPlayerStats implements PlayerStats
 									 "COLORSTR","PROMPT","POOFIN",
 									 "POOFOUT","TRANPOOFIN","TRAINPOOFOUT",
 									 "ANNOUNCEMSG","NOTES","WRAP","BIRTHDAY",
-									 "ACCTEXPIRATION","INTRODUCTIONS"};
+									 "ACCTEXPIRATION","INTRODUCTIONS","PAGEBREAK"};
 	public String getStat(String code)
 	{
 		switch(getCodeNum(code))
@@ -109,6 +110,7 @@ public class DefaultPlayerStats implements PlayerStats
 		case 17: return CMParms.toStringList(birthday);
 		case 18: return ""+accountExpiration;
 		case 19: return "<INTROS>"+getPrivateList(introductions)+"</INTROS>";
+		case 20: return ""+pageBreak;
         default:
             return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
 		}
@@ -137,6 +139,7 @@ public class DefaultPlayerStats implements PlayerStats
 		case 17: setBirthday(val); break;
 		case 18: accountExpiration=CMath.s_long(val); break;
 		case 19: introductions=getHashFrom(CMLib.xml().returnXMLValue(val,"INTROS")); break;
+		case 20: pageBreak=CMath.s_int(val); break;
 		default:
             CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
             break;
@@ -201,6 +204,8 @@ public class DefaultPlayerStats implements PlayerStats
 	public void setLastDateTime(long C){ LastDateTime=C;}
 	public int getWrap(){return wrap;}
 	public void setWrap(int newWrap){wrap=newWrap;}
+	public int getPageBreak(){return pageBreak;}
+	public void setPageBreak(int newBreak){pageBreak=newBreak;}
 	public String password(){return Password;}
 	public void setPassword(String newPassword){Password=newPassword;}
 	public String notes(){return notes;}
@@ -426,6 +431,7 @@ public class DefaultPlayerStats implements PlayerStats
 			+((i.length()>0)?"<IGNORED>"+i+"</IGNORED>":"")
             +((t.length()>0)?"<INTROS>"+t+"</INTROS>":"")
 			+"<WRAP>"+wrap+"</WRAP>"
+			+"<PAGEBREAK>"+pageBreak+"</PAGEBREAK>"
 			+getTitleXML()
             +getAliasXML()
 			+"<ACCTEXP>"+accountExpiration+"</ACCTEXP>"
@@ -496,6 +502,11 @@ public class DefaultPlayerStats implements PlayerStats
         }
 		String oldWrap=CMLib.xml().returnXMLValue(str,"WRAP");
 		if(CMath.isInteger(oldWrap)) wrap=CMath.s_int(oldWrap);
+		String oldBreak=CMLib.xml().returnXMLValue(str,"PAGEBREAK");
+		if(CMath.isInteger(oldBreak)) 
+			pageBreak=CMath.s_int(oldBreak);
+		else
+			pageBreak=CMProps.getIntVar(CMProps.SYSTEMI_PAGEBREAK);
 		setSecurityGroupStr(CMLib.xml().returnXMLValue(str,"SECGRPS"));
 		setAliasXML(str);
 		setTitleXML(str);
