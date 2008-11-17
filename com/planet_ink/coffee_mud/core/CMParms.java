@@ -999,6 +999,15 @@ public class CMParms
         return s;
     }
 
+    public static String[] toStringArray(Object[] O)
+    {
+    	if(O==null) return new String[0];
+        String[] s=new String[O.length];
+        for(int o=0;o<O.length;o++)
+        	s[o]=(O[o]!=null)?O[o].toString():"";
+        return s;
+    }
+
     public static long[] toLongArray(Vector V)
     {
         if((V==null)||(V.size()==0)){
