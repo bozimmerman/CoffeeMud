@@ -2739,6 +2739,13 @@ public class StdMOB implements MOB
                         	Ability theYawns = CMClass.getAbility("Disease_Yawning");
                         	if(theYawns!=null) theYawns.invoke(this, this, true,0);
                      	}
+				        if((curState().getFatigue()>(CharState.FATIGUED_EXHAUSTED_MILLIS))
+						&&(!isMonster())
+                     	&&(CMLib.dice().rollPercentage()==1))
+                     	{
+                        	Ability sleep = CMClass.getAbility("Spell_Sleep");
+                        	if(sleep!=null) sleep.invoke(this, this, true,0);
+                     	}
 					}
 				}
                 else

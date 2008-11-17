@@ -62,6 +62,8 @@ public interface CharState extends CMCommon, CMModifiable
 	public final static long REST_PER_TICK=Tickable.TIME_TICK*200;
     /** constant for how many fatigue points are required to be considered fatigued */
 	public final static long FATIGUED_MILLIS=Tickable.TIME_TICK*3000;
+    /** constant for how many fatigue points are required to be considered exhausted */
+	public final static long FATIGUED_EXHAUSTED_MILLIS=FATIGUED_MILLIS*10;
 
 	/**
      * Get primary combat stats as displayable code string

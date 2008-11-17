@@ -2144,3 +2144,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 9. Replay will now show the commands you entered also.
 10. New Command Journal option: confirm
 11. New Zapper Mask: GROUPSIZE
+12. Catalog System has lots of new features -- faster, usage counters, & auto updating your map
+13. Catalog command has new parameters: scan, dbscan, overlook, dboverlook
+14. New player command: PAGEBREAK.   Also, pagebreak and linewrap added to CONFIG command.
+15. LIST LOG now streams its data for extreme speed.
