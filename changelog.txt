@@ -2149,3 +2149,6 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 14. New player command: PAGEBREAK.   Also, pagebreak and linewrap added to CONFIG command.
 15. LIST LOG now streams its data for extreme speed.
 16. Players more than 10X fatigued will have a 1% chance/tick to fall under the sleep spell.
+17. New Spell: Dispel Divination
+18. Players will be notified when users on FRIENDS list log off, just like logins.
+ 

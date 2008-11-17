@@ -1668,10 +1668,14 @@ public class DefaultSession extends Thread implements Session
                 CMLib.commands().postFlee(mob,"NOWHERE");
                 mob.makePeace();
             }
-            Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGOFFS);
             if(!CMLib.flags().isCloaked(mob))
-            for(int i=0;i<channels.size();i++)
-                CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),name+" has logged out",true);
+            {
+                Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.LOGOFFS);
+	            for(int i=0;i<channels.size();i++)
+	                CMLib.commands().postChannel((String)channels.elementAt(i),mob.getClanID(),name+" has logged out",true);
+            }
+            CMLib.login().notifyFriends(mob,"^X"+mob.Name()+" has logged off.^.^?");
+	            
 			// the player quit message!
             loginLogoutThread LT=new loginLogoutThread(mob,CMMsg.MSG_QUIT);
             LT.initialize();

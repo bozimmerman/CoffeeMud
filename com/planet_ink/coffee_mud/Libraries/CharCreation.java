@@ -763,17 +763,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             mob.playerStats().setLastIP(session.getAddress());
             Log.sysOut("FrontDoor","Created user: "+mob.Name());
             CMProps.addNewUserByIP(session.getAddress());
-            for(int s=0;s<CMLib.sessions().size();s++)
-            {
-                Session S=CMLib.sessions().elementAt(s);
-                if((S!=null)
-                &&(S.mob()!=null)
-                &&((!CMLib.flags().isCloaked(mob))||(CMSecurity.isASysOp(S.mob())))
-                &&(CMath.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
-                &&(S.mob().playerStats()!=null)
-                &&((S.mob().playerStats().getFriends().contains(mob.Name())||S.mob().playerStats().getFriends().contains("All"))))
-                    S.mob().tell("^X"+mob.Name()+" has just been created.^.^?");
-            }
+            notifyFriends(mob,"^X"+mob.Name()+" just been created.^.^?");
             if((CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ALWAYS"))
             &&(!CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
                 mob.setBitmap(mob.getBitmap()|MOB.ATT_PLAYERKILL);
@@ -811,6 +801,30 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         return false;
     }
 
+    
+    public void notifyFriends(MOB mob, String message)
+    {
+    	try {
+	        for(int s=0;s<CMLib.sessions().size();s++)
+	        {
+	            Session sessionS=CMLib.sessions().elementAt(s);
+	            if(sessionS!=null)
+	            {
+	            	MOB listenerM=sessionS.mob();
+		            if((listenerM!=null)
+		            &&(listenerM!=mob)
+		            &&((!CMLib.flags().isCloaked(mob))||(CMSecurity.isASysOp(listenerM)))
+		            &&(CMath.bset(listenerM.getBitmap(),MOB.ATT_AUTONOTIFY)))
+		            {
+		            	PlayerStats listenerPStats=listenerM.playerStats();
+			            if((listenerPStats!=null)
+			            &&((listenerPStats.getFriends().contains(mob.Name())||listenerPStats.getFriends().contains("All"))))
+			            	listenerM.tell(message);
+		            }
+	            }
+	        }
+    	} catch(Exception e){}
+    }
 
     // 0=no login, 1=normal login, 2=swap
     public int login(MOB mob, int attempt)
@@ -984,18 +998,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 }
                 if((mob.session()!=null)&&(mob.playerStats()!=null))
                     mob.playerStats().setLastIP(mob.session().getAddress());
-                for(int s=0;s<CMLib.sessions().size();s++)
-                {
-                    Session S=CMLib.sessions().elementAt(s);
-                    if((S!=null)
-                    &&(S.mob()!=null)
-                    &&(S.mob()!=mob)
-                    &&((!CMLib.flags().isCloaked(mob))||(CMSecurity.isASysOp(S.mob())))
-                    &&(CMath.bset(S.mob().getBitmap(),MOB.ATT_AUTONOTIFY))
-                    &&(S.mob().playerStats()!=null)
-                    &&((S.mob().playerStats().getFriends().contains(mob.Name())||S.mob().playerStats().getFriends().contains("All"))))
-                        S.mob().tell("^X"+mob.Name()+" has logged on.^.^?");
-                }
+                notifyFriends(mob,"^X"+mob.Name()+" has logged on.^.^?");
                 if((CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ALWAYS"))
                 &&(!CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
                     mob.setBitmap(mob.getBitmap()|MOB.ATT_PLAYERKILL);
