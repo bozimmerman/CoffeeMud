@@ -396,6 +396,22 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         if((exitChoices==null)||(exitChoices.size()==0)) return null;
         return (Exit)exitChoices.elementAt(CMLib.dice().roll(1,exitChoices.size(),-1));
     }
+
+    private void fillOutStats(Environmental E, String[] ignoreTags, String defPrefix, XMLLibrary.XMLpiece piece, Hashtable defined)
+    {
+        String[] statCodes = E.getStatCodes();
+        for(int s=0;s<statCodes.length;s++) {
+        	String stat=statCodes[s];
+        	if(!CMParms.contains(ignoreTags, stat)) {
+	            String value = findOptionalString(stat,piece,defined);
+	            if(value != null) {
+	            	E.setStat(stat, value);
+	            	if(defPrefix.length()>0)
+			            addDefinition(defPrefix+stat,E.getStat(stat),defined);
+	            }
+        	}
+        }
+    }
     
     private MOB buildMob(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
     {
@@ -403,18 +419,17 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         MOB M = CMClass.getMOB(classID);
         if(M == null) throw new CMException("Unable to build mob on classID '"+classID+"', Data: "+piece.value);
         addDefinition("MOB_CLASS",classID,defined);
-        String[] ignoreTags={"CLASS"};
-        String[] statCodes = M.getStatCodes();
-        for(int s=0;s<statCodes.length;s++) {
-        	String stat=statCodes[s];
-        	if(!CMParms.contains(ignoreTags, stat)) {
-	            String value = findOptionalString(stat,piece,defined);
-	            if(value != null) {
-	            	M.setStat(stat, value);
-		            addDefinition("MOB_"+stat,value,defined);
-	            }
-        	}
+        String[] ignoreTags={"CLASS","LEVEL"};
+        
+        String value = findOptionalString("LEVEL",piece,defined);
+        if(value != null) {
+        	M.setStat("LEVEL", value);
+            addDefinition("MOB_LEVEL",M.getStat("LEVEL"),defined);
+            CharClass origClass =M.baseCharStats().getCurrentClass();
+            origClass.fillOutMOB(M,M.baseEnvStats().level());
         }
+        fillOutStats(M,ignoreTags,"MOB_",piece,defined);
+        
         Vector items = findItems(piece,defined);
         for(int i=0;i<items.size();i++) {
         	Item I=(Item)items.elementAt(i);
@@ -470,20 +485,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         if(E == null) throw new CMException("Unable to build exit on classID '"+classID+"', Data: "+piece.value);
         addDefinition("EXIT_CLASS",classID,defined);
         String[] ignoreTags={"CLASS"};
-        String[] statCodes = E.getStatCodes();
-        for(int s=0;s<statCodes.length;s++)
-        {
-        	String stat=statCodes[s];
-        	if(!CMParms.contains(ignoreTags, stat))
-        	{
-	            String value = findOptionalString(stat,piece,defined);
-	            if(value != null)
-	            {
-	            	E.setStat(stat, value);
-		            addDefinition("EXIT_"+stat,value,defined);
-	            }
-        	}
-        }
+        fillOutStats(E,ignoreTags,"EXIT_",piece,defined);
         Vector V = findAffects(piece,defined);
         for(int i=0;i<V.size();i++)
         {
@@ -541,20 +543,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         if(I == null) throw new CMException("Unable to build item on classID '"+classID+"', Data: "+piece.value);
         addDefinition("ITEM_CLASS",classID,defined);
         String[] ignoreTags={"CLASS"};
-        String[] statCodes = I.getStatCodes();
-        for(int s=0;s<statCodes.length;s++)
-        {
-        	String stat=statCodes[s];
-        	if(!CMParms.contains(ignoreTags, stat))
-        	{
-	            String value = findOptionalString(stat,piece,defined);
-	            if(value != null)
-	            {
-	            	I.setStat(stat, value);
-		            addDefinition("ITEM_"+stat,value,defined);
-	            }
-        	}
-        }
+        
+        fillOutStats(I,ignoreTags,"ITEM_",piece,defined);
+        CMLib.itemBuilder().balanceItemByLevel(I);
+        fillOutStats(I,ignoreTags,"ITEM_",piece,defined);
+        
         Vector contents = new Vector();
         contents.addElement(I);
         Vector V;
