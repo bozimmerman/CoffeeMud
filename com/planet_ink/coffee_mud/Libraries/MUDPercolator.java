@@ -300,7 +300,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         		A.addProperRoom(R);
         		node.setRoom(R);
         		for(LayoutTags key : node.tags().keySet())
-        			groupDefined.remove("ROOMTAG_"+key.toString().toUpperCase().trim());
+        			groupDefined.remove("ROOMTAG_"+key.toString().toUpperCase());
         		for(Integer linkDir : node.links().keySet())
         			groupDefined.remove("ROOMLINK_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase());
         	}
@@ -683,10 +683,20 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         }
         choices = selectChoices(choices,piece,defined);
         StringBuffer finalValue = new StringBuffer("");
+        
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
-            String value = findString("VALUE",valPiece,defined);
+            String value;
+            try {
+	            value = findString("VALUE",valPiece,defined);
+            } catch(Exception e) {
+            	value = strFilter(valPiece.value,defined);
+            }
+            String defineString = CMLib.xml().getParmValue(valPiece.parms,"DEFINE");
+            if((defineString!=null)&&(defineString.trim().length()>0))
+            	defined.put(defineString.toUpperCase().trim(), value);
+            
             String action = CMLib.xml().getParmValue(valPiece.parms,"ACTION");
             if((action==null)||(action.length()==0)) action="APPEND";
             if(action.equalsIgnoreCase("REPLACE"))
@@ -703,20 +713,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         return finalValue.toString().trim();
     }
 
-    private void checkRequirements(Hashtable defined, String requirements) throws CMException
-    {
-    	if(requirements==null) return;
-    	requirements = requirements.trim();
-    	Vector reqs = CMParms.parseCommas(requirements,true);
-    	for(int r=0;r<reqs.size();r++)
-    	{
-    		String req=(String)reqs.elementAt(r);
-    		if(req.startsWith("$")) req=req.substring(1).trim();
-    		if((!defined.containsKey(req))&&(!defined.containsKey(req.toUpperCase())))
-    			throw new CMException("Required variable not defined: '"+req+"'.  Please define this variable.");
-    	}
-    }
-    
     private Vector getAllChoices(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
     {
         Vector choices = new Vector();
@@ -730,50 +726,119 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
             for(int v=0;v<V.size();v++)
             {
                 String s = (String)V.elementAt(v);
-                if(!s.startsWith("$"))
-                    throw new CMException("Insert missing $: '"+s+"' on piece '"+piece.tag+"', Data: "+piece.value);
+        		if(s.startsWith("$")) s=s.substring(1).trim();
                 XMLLibrary.XMLpiece insertPiece =(XMLLibrary.XMLpiece)defined.get(s.substring(1).toUpperCase().trim());
                 if(insertPiece == null)
                     throw new CMException("Undefined insert: '"+s+"' on piece '"+piece.tag+"', Data: "+piece.value);
-                if(insertPiece.contents.size()==0)
-                {
-                    if(insertPiece.tag.equalsIgnoreCase(tagName))
-                        choices.addElement(insertPiece);
-                    else
-                        throw new CMException("Can't insert: '"+insertPiece.tag+"' as '"+tagName+"' on piece '"+piece.tag+"', Data: "+piece.value);
-                }
-                for(int i=0;i<insertPiece.contents.size();i++)
-                {
-                    XMLLibrary.XMLpiece insertPieceChild =(XMLLibrary.XMLpiece)insertPiece.contents.elementAt(i);
-                    if(insertPieceChild.tag.equalsIgnoreCase(tagName))
-                        choices.addElement(insertPieceChild);
-                    else
-                        throw new CMException("Can't insert: '"+insertPieceChild.tag+"' as '"+tagName+"' on piece '"+piece.tag+"', Data: "+piece.value);
-                }
+                if(insertPiece.tag.equalsIgnoreCase(tagName))
+                    choices.addElement(insertPiece);
             }
         }
+        Vector finalChoices = new Vector(choices.size());
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece lilP =(XMLLibrary.XMLpiece)choices.elementAt(c); 
-            checkRequirements(defined,CMLib.xml().getParmValue(lilP.parms,"REQUIRES"));
             try {
                 String condition=CMLib.xml().getParmValue(lilP.parms,"CONDITION");
-	            if((condition != null) && (!CMStrings.parseStringExpression(condition,defined, true)))
+	            if((condition == null) || (CMStrings.parseStringExpression(condition,defined, true)))
 	            {
-	                choices.removeElementAt(c);
-	                c--;
+	                checkRequirements(defined,CMLib.xml().getParmValue(lilP.parms,"REQUIRES"));
+	                Vector underChoices = getAllChoices(tagName,lilP,defined);
+	                if(underChoices.size()==0)
+	                	finalChoices.addElement(lilP);
+	                else {
+	                	// a tagged object that contains others is only a container
+	                	finalChoices.addAll(selectChoices(underChoices,lilP,defined));
+	                }
 	            }
             } 
             catch(Exception e)
             {
-                choices.removeElementAt(c);
-                c--;
                 Log.errOut("Generate",e);
             }
         }
-        return choices;
+        return finalChoices;
     }
 
+    private String getRequirementsDescription(String values) 
+    {
+    	if(values==null) return "";
+		if(values.equalsIgnoreCase("integer")||values.equalsIgnoreCase("int"))
+			return " as an integer or integer expression";
+		else
+		if(values.equalsIgnoreCase("double")||values.equalsIgnoreCase("#")||values.equalsIgnoreCase("number"))
+			return " as a number or numeric expression";
+		else
+		if(values.equalsIgnoreCase("string")||values.equalsIgnoreCase("$"))
+			return " as an open string";
+		else
+		if(values.trim().length()>0)
+			return " as one of the following values: "+values;
+		return "";
+	}
+    
+    private boolean checkRequirementsValue(String validValue, String value) 
+    {
+    	if(validValue==null) return value != null;
+		if(validValue.equalsIgnoreCase("integer")||validValue.equalsIgnoreCase("int"))
+			return CMath.isMathExpression(value);
+		else
+		if(validValue.equalsIgnoreCase("double")||validValue.equalsIgnoreCase("#")||validValue.equalsIgnoreCase("number"))
+			return CMath.isMathExpression(value);
+		else
+		if(validValue.equalsIgnoreCase("string")||validValue.equalsIgnoreCase("$"))
+			return value.length()>0;
+		else
+		if(validValue.trim().length()>0)
+			return CMParms.containsIgnoreCase(CMParms.toStringArray(CMParms.parseSemicolons(validValue,true)),value);
+		return value.length()==0;
+	}
+    
+    protected String cleanRequirementsValue(String values, String value) 
+    {
+    	if(values==null) return value;
+		if(values.equalsIgnoreCase("integer")||values.equalsIgnoreCase("int"))
+			return Integer.toString(CMath.s_parseIntExpression(value));
+		else
+		if(values.equalsIgnoreCase("double")||values.equalsIgnoreCase("#")||values.equalsIgnoreCase("number"))
+			return Double.toString(CMath.s_parseMathExpression(value));
+		else
+		if(values.equalsIgnoreCase("string")||values.equalsIgnoreCase("$"))
+			return value;
+		else
+		if(values.trim().length()>0)
+		{
+			String[] arrayStr=CMParms.toStringArray(CMParms.parseSemicolons(values,true));
+			int x=CMParms.indexOfIgnoreCase(arrayStr,value);
+			if(x<0) x=0;
+			return arrayStr[x];
+		}
+		return value;
+	}
+    
+    private void checkRequirements(Hashtable defined, String requirements) throws CMException
+    {
+    	if(requirements==null) return;
+    	requirements = requirements.trim();
+    	Vector reqs = CMParms.parseCommas(requirements,true);
+    	for(int r=0;r<reqs.size();r++)
+    	{
+    		String reqVariable=(String)reqs.elementAt(r);
+    		if(reqVariable.startsWith("$")) reqVariable=reqVariable.substring(1).trim();
+    		String validValues=null;
+    		int x=reqVariable.indexOf('=');
+    		if(x>=0)
+    		{
+    			validValues=reqVariable.substring(x).trim();
+    			reqVariable=reqVariable.substring(0,x).trim();
+    		}
+    		if((!defined.containsKey(reqVariable))&&(!defined.containsKey(reqVariable.toUpperCase())))
+    			throw new CMException("Required variable not defined: '"+reqVariable+"'.  Please define this variable"+getRequirementsDescription(validValues)+".");
+    		if(!checkRequirementsValue(validValues, defined.get(reqVariable).toString()))
+    			throw new CMException("The required variable '"+reqVariable+"' is not properly defined.  Please define this variable"+getRequirementsDescription(validValues)+".");
+    	}
+    }
+    
     public void checkRequirements(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
     {
         checkRequirements(defined,CMLib.xml().getParmValue(piece.parms,"REQUIRES"));
@@ -867,7 +932,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     			x++;
     		String var = str.substring(start+1,x);
     		Object val = defined.get(var.toUpperCase().trim());
-    		if(val instanceof XMLLibrary.XMLpiece) val = findString(((XMLLibrary.XMLpiece)val).tag,(XMLLibrary.XMLpiece)val,defined);
+    		if(val instanceof XMLLibrary.XMLpiece) val = findString("VALUE",(XMLLibrary.XMLpiece)val,defined);
     		if(val == null) throw new CMException("Unknown variable '$"+var+"' in str '"+str+"'");
     		str=str.substring(0,start)+val.toString()+str.substring(x);
     	}

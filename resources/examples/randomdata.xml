@@ -1,6 +1,12 @@
 <?xml version="1.0"?>
+<!--  
+Layout Tags:
+NODERUN, NODEFLAGS, NODETYPE, NODEEXITS, NODEGATEEXIT
+Prefixed with ROOMTAG_
+Also ROOMLINK_N, ROOMLINK_S, etc are available
+-->
 <AREADATA>
-<AREA tag="dungeon" layout="MazeLayout" requires="name,size,level_range">
+<AREA tag="maze_dungeon" layout="MazeLayout" requires="name,size,level_range">
 	<AUTHOR></AUTHOR>
 	<DESCRIPTION></DESCRIPTION>
 	<SIZE>$size</SIZE>
@@ -9,6 +15,38 @@
 		
 	</ROOM>
 </AREA>
-<ROOMGROUP tag="dungeon_hallways">
-</ROOMGROUP>
+
+<ROOM tag="dungeon_hallways" select="any-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
+	<ROOM class="CaveRoom" condition="">
+		<TITLE>A $dungeon_hallways_street_name</TITLE>
+		<DESCRIPTION>$dungeon_hallways_street_desc</DESCRIPTION>
+	</ROOM>
+	<ROOM class="CaveRoom" condition="1?10=1">
+		<TITLE>A $dungeon_crawlways_street_name</TITLE>
+		<DESCRIPTION>$dungeon_crawlways_street_desc</DESCRIPTION>
+		<AFFECT class="Prop_Crawlspace" parms="" />
+	</ROOM>
+</ROOM>
+
+<STRING tag="dungeon_hallways_street_name" define="dungeon_hallways_street_name" select="any-1">
+<VALUE>cavernous tunnel</VALUE>
+<VALUE>rocky tube</VALUE>
+<VALUE>cave hallway</VALUE>
+<VALUE>dark cave hallway</VALUE>
+<VALUE>rocky passageway</VALUE>
+<VALUE>cave passageway</VALUE>
+<VALUE>cavernous $ROOMTAG_NODERUN tunnel</VALUE>
+<VALUE>rocky $ROOMTAG_NODERUN tube</VALUE>
+<VALUE>cave $ROOMTAG_NODERUN hallway</VALUE>
+<VALUE>dark $ROOMTAG_NODERUN cave hallway</VALUE>
+<VALUE>rocky $ROOMTAG_NODERUN passageway</VALUE>
+<VALUE>cave $ROOMTAG_NODERUN passageway</VALUE>
+</STRING>
+
+<STRING tag="dungeon_crawlways_street_name" define="dungeon_crawlways_street_name" select="any-1">
+<VALUE>small $dungeon_hallways_street_name</VALUE>
+<VALUE>narrow $dungeon_hallways_street_name</VALUE>
+<VALUE>short $dungeon_hallways_street_name</VALUE>
+</STRING>
+
 </AREADATA>
