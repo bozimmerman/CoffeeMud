@@ -11,49 +11,60 @@ ROOMTAG_NODERUN values:
 Also ROOMLINK_N, ROOMLINK_S, etc are available
 -->
 <AREADATA>
-<AREA tag="maze_dungeon" layout="MazeLayout" requires="name,size,level_range">
+<AREA tag="maze_dungeon" layout="MazeLayout" requires="name=$,size=int,level_range=int,theme=prison,rats,kobolds,random">
 	<AUTHOR></AUTHOR>
 	<DESCRIPTION></DESCRIPTION>
 	<SIZE>$size</SIZE>
 	<NAME>$name</NAME>
-	<ROOM tag="dungeon_rooms" select="all" insert="$dungeon_hallways,$dungeon_interior,$dungeon_leaf,$dungeon_offleaf">
-		
-	</ROOM>
+	<ROOM tag="dungeon_rooms" insert="$dungeon_hallways,$dungeon_interior,$dungeon_leaf,$dungeon_offleaf" />
 </AREA>
 
 <ROOM tag="dungeon_hallways" select="any-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
-	<ROOM class="CaveRoom" condition="">
+	<ROOM class="CaveRoom" condition="" include="dungeon_mobs,dungeon_items">
 		<TITLE>$a_streetprefix $dungeon_hallways_street_name</TITLE>
 		<DESCRIPTION>$dungeon_hallways_street_desc</DESCRIPTION>
+		<EXIT class="Open" />
 	</ROOM>
-	<ROOM class="CaveRoom" condition="1?10 &lt;= 2">
+	<ROOM class="CaveRoom" condition="1?10 &lt;= 2"  include="dungeon_mobs,dungeon_items">
 		<TITLE>$a_streetprefix $dungeon_crawlways_street_name</TITLE>
 		<DESCRIPTION>$dungeon_crawlways_street_desc</DESCRIPTION>
 		<AFFECT class="Prop_Crawlspace" parms="" />
+		<EXIT class="Open" />
 	</ROOM>
 </ROOM>
 
 <ROOM tag="dungeon_interior" select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
-	<ROOM class="CaveRoom" condition="">
+	<ROOM class="CaveRoom" condition="" include="dungeon_mobs,dungeon_items">
 		<TITLE>
+		<!--TODO: Fill this in -->
 		</TITLE>
-		<DESCRIPTION>$dungeon_hallways_street_desc</DESCRIPTION>
+		<DESCRIPTION>
+		<!--TODO: Fill this in -->
+		</DESCRIPTION>
+		<EXIT class="Open" />
 	</ROOM>
 </ROOM>
 
 <ROOM tag="dungeon_leaf" select="any-1" condition="$roomtag_nodetype='leaf'">
-	<ROOM class="CaveRoom" condition="">
+	<ROOM class="CaveRoom" condition="" include="dungeon_mobs,dungeon_items">
 		<TITLE>
+		<!--TODO: Fill this in -->
 		</TITLE>
-		<DESCRIPTION>$dungeon_hallways_street_desc</DESCRIPTION>
+		<DESCRIPTION>
+		<!--TODO: Fill this in -->
+		</DESCRIPTION>
+		<EXIT class="Open" /> <!--TODO: change this -->
 	</ROOM>
 </ROOM>
 
 <ROOM tag="dungeon_offleaf" select="any-1" insert="$dungeon_interior" condition="$roomtag_nodetype='offleaf'">
-	<ROOM class="CaveRoom" condition="">
+	<ROOM class="CaveRoom" condition="" include="dungeon_mobs,dungeon_items">
 		<TITLE>
+		<!--TODO: Fill this in -->
 		</TITLE>
-		<DESCRIPTION>$dungeon_hallways_street_desc</DESCRIPTION>
+		<DESCRIPTION>
+		<!--TODO: Fill this in -->
+		</DESCRIPTION>
 	</ROOM>
 </ROOM>
 
@@ -94,5 +105,37 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 <VALUE condition="'corner' IN $ROOMTAG_NODEFLAGS">Corner of a</VALUE>
 <VALUE condition="$ROOMTAG_NODEFLAGS=''">A</VALUE>
 </STRING>
+
+<STRING tag="dungeon_hallways_street_desc">
+<!--TODO: Insert values -->
+</STRING>
+
+<STRING tag="dungeon_crawlways_street_desc">
+<!--TODO: Insert values -->
+</STRING>
+
+<MOB tag="dungeon_mobs" requires="theme=prison,rats,kobolds,random">
+	<MOB condition="$theme='rats' or $theme='random'">
+	<!--TODO: Insert values -->
+	</MOB>
+	<MOB condition="$theme='prison' or $theme='random'">
+	<!--TODO: Insert values -->
+	</MOB>
+	<MOB condition="$theme='kobold' or $theme='random'">
+	<!--TODO: Insert values -->
+	</MOB>
+</MOB>
+
+<MOB tag="dungeon_items" requires="theme=prison,rats,kobolds,random">
+	<MOB condition="$theme='rats' or $theme='random'">
+	<!--TODO: Insert values -->
+	</MOB>
+	<MOB condition="$theme='prison' or $theme='random'">
+	<!--TODO: Insert values -->
+	</MOB>
+	<MOB condition="$theme='kobold' or $theme='random'">
+	<!--TODO: Insert values -->
+	</MOB>
+</MOB>
 
 </AREADATA>

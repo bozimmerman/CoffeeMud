@@ -734,10 +734,13 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
                     choices.addElement(insertPiece);
             }
         }
+        if((choices.size()==0)&&(piece.tag.equalsIgnoreCase(tagName)))
+        	choices.addElement(piece);
         Vector finalChoices = new Vector(choices.size());
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece lilP =(XMLLibrary.XMLpiece)choices.elementAt(c); 
+            if(finalChoices.contains(lilP)) continue;
             try {
                 String condition=CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(lilP.parms,"CONDITION"));
 	            if((condition == null) || (CMStrings.parseStringExpression(condition,defined, true)))
