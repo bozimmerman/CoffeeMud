@@ -832,9 +832,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     			validValues=reqVariable.substring(x).trim();
     			reqVariable=reqVariable.substring(0,x).trim();
     		}
-    		if((!defined.containsKey(reqVariable))&&(!defined.containsKey(reqVariable.toUpperCase())))
+    		if(!defined.containsKey(reqVariable.toUpperCase()))
     			throw new CMException("Required variable not defined: '"+reqVariable+"'.  Please define this variable"+getRequirementsDescription(validValues)+".");
-    		if(!checkRequirementsValue(validValues, defined.get(reqVariable).toString()))
+    		if(!checkRequirementsValue(validValues, defined.get(reqVariable.toUpperCase()).toString()))
     			throw new CMException("The required variable '"+reqVariable+"' is not properly defined.  Please define this variable"+getRequirementsDescription(validValues)+".");
     	}
     }
