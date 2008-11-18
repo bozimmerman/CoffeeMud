@@ -1,8 +1,13 @@
 <?xml version="1.0"?>
 <!--  
-Layout Tags:
-NODERUN, NODEFLAGS, NODETYPE, NODEEXITS, NODEGATEEXIT
-Prefixed with ROOMTAG_
+ROOMTAG_*:
+	NODERUN, NODEFLAGS, NODETYPE, NODEEXITS, NODEGATEEXIT
+ROOMTAG_NODETYPE values:
+	surround, leaf, offleaf, street, square, interior
+ROOMTAG_NODEFLAGS contains:
+	corner, gate, intersection, tee
+ROOMTAG_NODERUN values:
+	ew,ns,ud,nesw,nwse
 Also ROOMLINK_N, ROOMLINK_S, etc are available
 -->
 <AREADATA>
@@ -11,20 +16,44 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 	<DESCRIPTION></DESCRIPTION>
 	<SIZE>$size</SIZE>
 	<NAME>$name</NAME>
-	<ROOM tag="dungeon_rooms" select="all" insert="$dungeon_hallways">
+	<ROOM tag="dungeon_rooms" select="all" insert="$dungeon_hallways,$dungeon_interior,$dungeon_leaf,$dungeon_offleaf">
 		
 	</ROOM>
 </AREA>
 
 <ROOM tag="dungeon_hallways" select="any-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
 	<ROOM class="CaveRoom" condition="">
-		<TITLE>A $dungeon_hallways_street_name</TITLE>
+		<TITLE>$a_streetprefix $dungeon_hallways_street_name</TITLE>
 		<DESCRIPTION>$dungeon_hallways_street_desc</DESCRIPTION>
 	</ROOM>
-	<ROOM class="CaveRoom" condition="1?10=1">
-		<TITLE>A $dungeon_crawlways_street_name</TITLE>
+	<ROOM class="CaveRoom" condition="1?10 &lt;= 2">
+		<TITLE>$a_streetprefix $dungeon_crawlways_street_name</TITLE>
 		<DESCRIPTION>$dungeon_crawlways_street_desc</DESCRIPTION>
 		<AFFECT class="Prop_Crawlspace" parms="" />
+	</ROOM>
+</ROOM>
+
+<ROOM tag="dungeon_interior" select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
+	<ROOM class="CaveRoom" condition="">
+		<TITLE>
+		</TITLE>
+		<DESCRIPTION>$dungeon_hallways_street_desc</DESCRIPTION>
+	</ROOM>
+</ROOM>
+
+<ROOM tag="dungeon_leaf" select="any-1" condition="$roomtag_nodetype='leaf'">
+	<ROOM class="CaveRoom" condition="">
+		<TITLE>
+		</TITLE>
+		<DESCRIPTION>$dungeon_hallways_street_desc</DESCRIPTION>
+	</ROOM>
+</ROOM>
+
+<ROOM tag="dungeon_offleaf" select="any-1" insert="$dungeon_interior" condition="$roomtag_nodetype='offleaf'">
+	<ROOM class="CaveRoom" condition="">
+		<TITLE>
+		</TITLE>
+		<DESCRIPTION>$dungeon_hallways_street_desc</DESCRIPTION>
 	</ROOM>
 </ROOM>
 
@@ -35,18 +64,35 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 <VALUE>dark cave hallway</VALUE>
 <VALUE>rocky passageway</VALUE>
 <VALUE>cave passageway</VALUE>
-<VALUE>cavernous $ROOMTAG_NODERUN tunnel</VALUE>
-<VALUE>rocky $ROOMTAG_NODERUN tube</VALUE>
-<VALUE>cave $ROOMTAG_NODERUN hallway</VALUE>
-<VALUE>dark $ROOMTAG_NODERUN cave hallway</VALUE>
-<VALUE>rocky $ROOMTAG_NODERUN passageway</VALUE>
-<VALUE>cave $ROOMTAG_NODERUN passageway</VALUE>
+<VALUE>cavernous $roomrun_desc tunnel</VALUE>
+<VALUE>rocky $roomrun_desc tube</VALUE>
+<VALUE>cave $roomrun_desc hallway</VALUE>
+<VALUE>dark $roomrun_desc cave hallway</VALUE>
+<VALUE>rocky $roomrun_desc passageway</VALUE>
+<VALUE>cave $roomrun_desc passageway</VALUE>
 </STRING>
 
 <STRING tag="dungeon_crawlways_street_name" define="dungeon_crawlways_street_name" select="any-1">
 <VALUE>small $dungeon_hallways_street_name</VALUE>
 <VALUE>narrow $dungeon_hallways_street_name</VALUE>
 <VALUE>short $dungeon_hallways_street_name</VALUE>
+</STRING>
+
+<STRING tag="roomrun_desc" select="any-1">
+<VALUE condition="$ROOMTAG_NODERUN='nw'">north-south</VALUE>
+<VALUE condition="$ROOMTAG_NODERUN='ew'">east-west</VALUE>
+<VALUE condition="$ROOMTAG_NODERUN='ud'">ascending</VALUE>
+<VALUE condition="$ROOMTAG_NODERUN='nwse'">northwest-southeast</VALUE>
+<VALUE condition="$ROOMTAG_NODERUN='nesw'">northeast-southwest</VALUE>
+<VALUE condition="$ROOMTAG_NODERUN=''">winding</VALUE>
+</STRING>
+
+<STRING tag="a_streetprefix" select="any-1">
+<VALUE condition="'tee' IN $ROOMTAG_NODEFLAGS">T-Intersection in a</VALUE>
+<VALUE condition="'gate' IN $ROOMTAG_NODEFLAGS">Entrace to a</VALUE>
+<VALUE condition="'intersection' IN $ROOMTAG_NODEFLAGS">Intersection in a</VALUE>
+<VALUE condition="'corner' IN $ROOMTAG_NODEFLAGS">Corner of a</VALUE>
+<VALUE condition="$ROOMTAG_NODEFLAGS=''">A</VALUE>
 </STRING>
 
 </AREADATA>

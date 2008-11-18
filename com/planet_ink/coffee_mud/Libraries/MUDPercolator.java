@@ -678,7 +678,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         Vector choices = getAllChoices(tagName, piece, defined);
         if((choices==null)||(choices.size()==0)) {
             if((piece.tag.equalsIgnoreCase(tagName))&&(piece.contents.size()==0))
-                return piece.value;
+                return strFilter(piece.value,defined);
             throw new CMException("Unable to find tag '"+tagName+"' on piece '"+piece.tag+"', Data: "+piece.value);
         }
         choices = selectChoices(choices,piece,defined);
@@ -739,7 +739,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         {
             XMLLibrary.XMLpiece lilP =(XMLLibrary.XMLpiece)choices.elementAt(c); 
             try {
-                String condition=CMLib.xml().getParmValue(lilP.parms,"CONDITION");
+                String condition=CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(lilP.parms,"CONDITION"));
 	            if((condition == null) || (CMStrings.parseStringExpression(condition,defined, true)))
 	            {
 	                checkRequirements(defined,CMLib.xml().getParmValue(lilP.parms,"REQUIRES"));
@@ -885,7 +885,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
                 for(int c=0;c<cV.size();c++)
                 {
                     XMLLibrary.XMLpiece lilP=(XMLLibrary.XMLpiece)cV.elementAt(c);
-                    int weight=CMath.s_int(CMLib.xml().getParmValue(lilP.parms,"WEIGHT"));
+                    int weight=CMath.s_parseIntExpression(CMLib.xml().getParmValue(lilP.parms,"WEIGHT"));
                     if(weight<1) weight=1;
                     weights[c]=weight;
                     total+=weight;
@@ -936,6 +936,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     		if(val == null) throw new CMException("Unknown variable '$"+var+"' in str '"+str+"'");
     		str=str.substring(0,start)+val.toString()+str.substring(x);
     	}
-        return str;
+        return CMLib.xml().restoreAngleBrackets(str);
     }
 }
