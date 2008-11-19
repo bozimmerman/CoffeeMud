@@ -69,17 +69,6 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 	</ROOM>
 </ROOM>
 
-<ROOM tag="dungeon_offleaf" select="any-1" insert="$dungeon_interior" condition="$roomtag_nodetype='offleaf'">
-	<ROOM class="CaveRoom" condition="" include="dungeon_mobs,dungeon_items">
-		<TITLE>
-		<!--TODO: Fill this in -->
-		</TITLE>
-		<DESCRIPTION>
-		<!--TODO: Fill this in -->
-		</DESCRIPTION>
-	</ROOM>
-</ROOM>
-
 <MOB tag="dungeon_mobs" requires="theme=prison;rats;kobolds;random">
 	<MOB condition="$theme='rats' or $theme='random'">
 	<!--TODO: Insert values -->
@@ -212,15 +201,15 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 	</STRING>
 </STRING>
 
-<STRING tag="dungeonadj_phys_size">
-	<STRING select="any-1" tag="dungeonadj_phys_size_values">
+<STRING tag="dungeonadj_phys_size" select="any-1">
+	<STRING tag="dungeonadj_phys_size_values">
 		<STRING>narrow</STRING>
 		<STRING>huge</STRING>
 		<STRING>rocky</STRING>
 	</STRING>
 </STRING>
-<STRING tag="dungeonadj_phys_nosize">
-	<STRING select="any-1" tag="dungeonadj_phys_nosize_values">
+<STRING tag="dungeonadj_phys_nosize" select="any-1">
+	<STRING tag="dungeonadj_phys_nosize_values">
 		<STRING>jagged</STRING>
 		<STRING>smooth</STRING>
 		<STRING>rocky</STRING>
@@ -230,8 +219,8 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 		<STRING>cracked</STRING>
 	</STRING>
 </STRING>
-<STRING tag="dungeonadj_feeling">
-	<STRING select="any-1" tag="dungeonadj_feeling_values">
+<STRING tag="dungeonadj_feeling" select="any-1" >
+	<STRING tag="dungeonadj_feeling_values">
 		<STRING>ghastly</STRING>
 		<STRING>creepy</STRING>
 		<STRING>eerie</STRING>
@@ -240,8 +229,8 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 		<STRING>unsettling</STRING>
 	</STRING>
 </STRING>
-<STRING tag="dungeonadj_general">
-	<STRING select="any-1" tag="dungeonadj_general_values">
+<STRING tag="dungeonadj_general" select="any-1">
+	<STRING tag="dungeonadj_feeling_values">
 		<STRING>dank</STRING>
 		<STRING>quiet</STRING>
 		<STRING>musty</STRING>

@@ -729,7 +729,18 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
             }
             String defineString = CMLib.xml().getParmValue(valPiece.parms,"DEFINE");
             if((defineString!=null)&&(defineString.trim().length()>0))
-            	defined.put(defineString.toUpperCase().trim(), value);
+            {
+            	Vector V=CMParms.parseCommas(defineString,true);
+            	for(Enumeration e=V.elements();e.hasMoreElements();)
+            	{
+            		String defVar=(String)e.nextElement();
+            		int x=defVar.indexOf('=');
+            		if(x>0)
+		            	defined.put(defVar.substring(0,x).toUpperCase().trim(),defVar.substring(x+1).trim());
+            		else
+		            	defined.put(defVar.toUpperCase().trim(), value);
+            	}
+            }
             
             String action = CMLib.xml().getParmValue(valPiece.parms,"ACTION");
             if((action==null)||(action.length()==0)) action="APPEND";
