@@ -459,6 +459,16 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         	Ability A=(Ability)V.elementAt(i);
         	M.addAbility(A);
         }
+        ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
+        if(SK!=null)
+        {
+	        V = findShopInventory(piece,defined);
+	        if(V.size()>0)
+	        	SK.getShop().emptyAllShelves();
+	        for(int i=0;i<V.size();i++)
+	        	SK.getShop().addStoreInventory((Environmental)V.elementAt(i),SK);
+        }
+        
         M.text();
         M.setMiscText(M.text());
         M.recoverCharStats();
@@ -510,6 +520,20 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         E.setMiscText(E.text());
         E.recoverEnvStats();
         return E;
+    }
+    
+    public Vector findShopInventory(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
+    {
+    	Vector V = new Vector();
+        Vector choices = getAllChoices("SHOPINVENTORY", piece, defined);
+        if((choices==null)||(choices.size()==0)) return V;
+        choices = selectChoices(choices,piece,defined);
+        if((choices==null)||(choices.size()==0)) return V;
+        XMLLibrary.XMLpiece shopPiece = (XMLLibrary.XMLpiece)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
+        V.addAll(findItems(shopPiece,defined));
+        V.addAll(findMobs(shopPiece,defined));
+        V.addAll(findAbilities(shopPiece,defined));
+        return V;
     }
     
     public Vector findItems(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
