@@ -207,16 +207,18 @@ public class LayoutSet
 			LayoutNode n = (LayoutNode)e.nextElement();
 			if(n.links().size()==2)
 			{
-				LayoutTypes type = n.type();
-				for(Integer dirLink : n.links().keySet())
-				{
-					LayoutNode n2=n.links().get(dirLink);
-					if((n2!=null)&&(n2.type()==LayoutTypes.leaf))
-						type=LayoutTypes.offleaf;
-				}
-				if(type!=LayoutTypes.offleaf)
+				LayoutFlags flag = null;
+				if(n.type()==LayoutTypes.interior)
+					for(Integer dirLink : n.links().keySet())
+					{
+						LayoutNode n2=n.links().get(dirLink);
+						if((n2!=null)&&(n2.type()==LayoutTypes.leaf))
+							flag=LayoutFlags.offleaf;
+					}
+				if(flag!=null)
+					n.flag(flag);
+				else
 					n.flag(LayoutFlags.corner);
-				n.reType(type);
 			}
 			else
 			if((n.links().size()==3)

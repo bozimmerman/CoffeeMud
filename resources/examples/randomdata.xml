@@ -20,7 +20,7 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 </AREA>
 
 <ROOM tag="dungeon_hallways" select="any-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
-	<ROOM class="CaveRoom" condition="" include="dungeon_mobs,dungeon_items">
+	<ROOM class="CaveRoom" include="dungeon_mobs,dungeon_items">
 		<TITLE>$a_streetprefix $dungeon_hallways_street_name</TITLE>
 		<DESCRIPTION>$dungeon_hallways_street_desc</DESCRIPTION>
 		<EXIT class="Open" />
@@ -79,6 +79,30 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 		</DESCRIPTION>
 	</ROOM>
 </ROOM>
+
+<MOB tag="dungeon_mobs" requires="theme=prison;rats;kobolds;random">
+	<MOB condition="$theme='rats' or $theme='random'">
+	<!--TODO: Insert values -->
+	</MOB>
+	<MOB condition="$theme='prison' or $theme='random'">
+	<!--TODO: Insert values -->
+	</MOB>
+	<MOB condition="$theme='kobold' or $theme='random'">
+	<!--TODO: Insert values -->
+	</MOB>
+</MOB>
+
+<MOB tag="dungeon_items" requires="theme=prison;rats;kobolds;random">
+	<MOB condition="$theme='rats' or $theme='random'">
+	<!--TODO: Insert values -->
+	</MOB>
+	<MOB condition="$theme='prison' or $theme='random'">
+	<!--TODO: Insert values -->
+	</MOB>
+	<MOB condition="$theme='kobold' or $theme='random'">
+	<!--TODO: Insert values -->
+	</MOB>
+</MOB>
 
 <STRING tag="dungeon_hallways_street_name" define="dungeon_hallways_street_name" select="any-1">
 <STRING>cavernous tunnel</STRING>
@@ -186,7 +210,6 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 		<STRING>You are certain you just heard a scream coming from somewhere.</STRING>
 		<STRING>The walls seems to groan.</STRING>
 	</STRING>
-	
 </STRING>
 
 <STRING tag="dungeonadj_phys_size">
@@ -267,28 +290,4 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 	<STRING select="any-1" insert="dungeon_random_blurbs" action="APPEND" />
 </STRING>
 <STRING tag="helloworld">Hello World!</STRING>
-<MOB tag="dungeon_mobs" requires="theme=prison;rats;kobolds;random">
-	<MOB condition="$theme='rats' or $theme='random'">
-	<!--TODO: Insert values -->
-	</MOB>
-	<MOB condition="$theme='prison' or $theme='random'">
-	<!--TODO: Insert values -->
-	</MOB>
-	<MOB condition="$theme='kobold' or $theme='random'">
-	<!--TODO: Insert values -->
-	</MOB>
-</MOB>
-
-<MOB tag="dungeon_items" requires="theme=prison;rats;kobolds;random">
-	<MOB condition="$theme='rats' or $theme='random'">
-	<!--TODO: Insert values -->
-	</MOB>
-	<MOB condition="$theme='prison' or $theme='random'">
-	<!--TODO: Insert values -->
-	</MOB>
-	<MOB condition="$theme='kobold' or $theme='random'">
-	<!--TODO: Insert values -->
-	</MOB>
-</MOB>
-
 </AREADATA>

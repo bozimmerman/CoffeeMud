@@ -1,6 +1,7 @@
 package com.planet_ink.coffee_mud.Libraries.layouts;
 
 import java.util.Enumeration;
+import java.util.HashSet;
 import java.util.Hashtable;
 
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutFlags;
@@ -17,6 +18,8 @@ public class DefaultLayoutNode implements LayoutNode
 	public Room associatedRoom = null;
 	public Hashtable<Integer,LayoutNode> links = new Hashtable<Integer,LayoutNode>();
 	private Hashtable<LayoutTags,String> tags = new Hashtable<LayoutTags,String>();
+	private HashSet<LayoutFlags> flags = new HashSet<LayoutFlags>();
+	
 	public DefaultLayoutNode(long[] coord) {
 		this.coord = coord;
 	}
@@ -32,6 +35,7 @@ public class DefaultLayoutNode implements LayoutNode
 		links.put(Integer.valueOf(AbstractLayout.getDirection(this,to)),to);
 		to.links().put(Integer.valueOf(AbstractLayout.getDirection(to,this)),this);
 	}
+	public boolean isFlagged(LayoutFlags flag) { return flags.contains(flag);}
 	public LayoutRuns getFlagRuns(){ 
 		if(tags.containsKey(LayoutTags.NODERUN))
 			return LayoutRuns.valueOf(tags.get(LayoutTags.NODERUN));
@@ -80,6 +84,7 @@ public class DefaultLayoutNode implements LayoutNode
 	}
 	public void flag(LayoutFlags flag) {
 		String s=tags.get(LayoutTags.NODEFLAGS);
+		flags.add(flag);
 		if(s==null)
 			tags.put(LayoutTags.NODEFLAGS,","+flag.toString()+",");
 		else

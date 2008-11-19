@@ -211,34 +211,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         // now break our rooms into logical groups, generate those rooms.
         Vector<Vector<LayoutNode>> roomGroups = new Vector<Vector<LayoutNode>>();
         LayoutNode magicRoom = (LayoutNode)roomsLayout.firstElement();
-        while(roomsLayout.size() > 0)
+        int lastSize = -1;
+        while(roomsLayout.size() < lastSize)
         {
+        	lastSize = roomsLayout.size();
         	LayoutNode node=(LayoutNode)roomsLayout.firstElement();
         	Vector<LayoutNode> group=new Vector<LayoutNode>();
-        	group.addElement(node);
-        	if(node.type()==LayoutTypes.offleaf) {
-        		for(Integer linkDir : node.links().keySet())
-        			if(roomsLayout.contains(node.links().get(linkDir)))
-        			{
-	        			if(node.links().get(linkDir).type()==LayoutTypes.leaf)
-	        				group.addElement(node.links().get(linkDir));
-        			}
-        	} else
-        	if(node.type()==LayoutTypes.leaf) {
-        		for(Integer linkDir : node.links().keySet())
-        			if(roomsLayout.contains(node.links().get(linkDir)))
-        			{
-	        			if((node.links().get(linkDir).type()==LayoutTypes.leaf)
-	        			||(node.links().get(linkDir).type()==LayoutTypes.offleaf))
-	        				group.addElement(node.links().get(linkDir));
-        			}
-        	} else
-        	if((node.type()==LayoutTypes.interior)
-        	||(node.type()==LayoutTypes.square)
-        	||(node.type()==LayoutTypes.surround)) {
-        		layoutRecursiveFill(node,group,node.type());
-        	}  else
         	if(node.type()==LayoutTypes.street) {
+            	group.add(node);
         		LayoutRuns run=node.getFlagRuns();
         		if(run==LayoutRuns.ns) {
         			layoutFollow(node,LayoutTypes.street,Directions.NORTH,group);
@@ -257,8 +237,32 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         			layoutFollow(node,LayoutTypes.street,Directions.SOUTHEAST,group);
         		}
         	} 
+        	if(node.type()==LayoutTypes.leaf) {
+            	group.add(node);
+        		for(Integer linkDir : node.links().keySet())
+        			if(roomsLayout.contains(node.links().get(linkDir)))
+        			{
+	        			if((node.links().get(linkDir).type()==LayoutTypes.leaf)
+	        			||(node.links().get(linkDir).type()==LayoutTypes.interior)&&(node.isFlagged(LayoutFlags.offleaf)))
+	        				group.addElement(node.links().get(linkDir));
+        			}
+        	}
         	for(LayoutNode n : group)
         		roomsLayout.remove(n);
+        	if(group.size()>0)
+        		roomGroups.add(group);
+        }
+        
+        while(roomsLayout.size() >0)
+        {
+        	lastSize = roomsLayout.size();
+        	LayoutNode node=(LayoutNode)roomsLayout.firstElement();
+        	Vector<LayoutNode> group=new Vector<LayoutNode>();
+        	group.add(node);
+    		layoutRecursiveFill(node,group,node.type());
+        	for(LayoutNode n : group)
+        		roomsLayout.remove(n);
+			roomGroups.add(group);
         }
         // make CERTAIN that the magic first room in the layout always
         // gets ID#0.

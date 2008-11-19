@@ -60,6 +60,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 		public void deLink();
 		public void flag(LayoutFlags flag);
 		public void flagRun(LayoutRuns dirs);
+		public boolean isFlagged(LayoutFlags flag);
 		public LayoutRuns getFlagRuns();
 		public LayoutTypes type();
 		public void setExits(int[] dirs);
@@ -71,7 +72,7 @@ public interface AreaGenerationLibrary extends CMLibrary
 	}
 	
 	public enum LayoutTags { NODERUN, NODEFLAGS, NODETYPE, NODEEXITS, NODEGATEEXIT};
-	public enum LayoutTypes { surround, leaf, offleaf, street, square, interior }
-	public enum LayoutFlags { corner, gate, intersection, tee }
+	public enum LayoutTypes { surround, leaf, street, square, interior }
+	public enum LayoutFlags { corner, gate, intersection, tee, offleaf }
 	public enum LayoutRuns { ew,ns,ud,nesw,nwse }
 }
