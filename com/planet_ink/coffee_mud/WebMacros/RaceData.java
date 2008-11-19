@@ -147,8 +147,8 @@ public class RaceData extends StdWebMacro
         else
         {
             for(int i=0;i<CharStats.STAT_DESCS.length;i++)
-                if(E.getStat(CharStats.STAT_DESCS[i])!=0)
-                    theclasses.addElement(CharStats.STAT_DESCS[i],Integer.toString(E.getStat(CharStats.STAT_DESCS[i])));
+                if(CMath.s_int(E.getStat(CharStats.STAT_DESCS[i]))!=0)
+                    theclasses.addElement(CharStats.STAT_DESCS[i],E.getStat(CharStats.STAT_DESCS[i]));
         }
         str.append("<TABLE WIDTH=100% BORDER="+borderSize+" CELLSPACING=0 CELLPADDING=0>");
         for(int i=0;i<theclasses.size();i++)

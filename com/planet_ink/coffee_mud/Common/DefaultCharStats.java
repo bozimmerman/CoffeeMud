@@ -699,14 +699,6 @@ public class DefaultCharStats implements CharStats
 		stats[abilityCode]=(short)value;
 	}
 
-	public int getStat(String abilityName)
-	{
-		for(int i=0;i<STAT_DESCS.length;i++)
-			if(STAT_DESCS[i].startsWith(abilityName))
-				return getStat(i);
-		return -1;
-	}
-
 	public int getCode(String abilityName)
 	{
 		for(int i=0;i<STAT_DESCS.length;i++)
@@ -715,4 +707,32 @@ public class DefaultCharStats implements CharStats
 		return -1;
 	}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
+	public int getSaveStatIndex() { return getStatCodes().length;}
+	
+	public String getStat(String abilityName)
+	{
+		int dex=CMParms.indexOfIgnoreCase(getStatCodes(),abilityName);
+		if(dex>=0) return Integer.toString(getStat(dex));
+		
+		for(int i=0;i<STAT_DESCS.length;i++)
+			if(STAT_DESCS[i].startsWith(abilityName))
+				return Integer.toString(getStat(i));
+		return null;
+	}
+
+	
+	public String[] getStatCodes() { return CharStats.STAT_NAMES;}
+	public boolean isStat(String code) { return CMParms.containsIgnoreCase(getStatCodes(),code);}
+	public void setStat(String code, String val) {
+		int dex=CMParms.indexOfIgnoreCase(getStatCodes(),code);
+		if(dex>=0) 
+			setStat(dex,CMath.s_parseIntExpression(val));
+		else
+		for(int i=0;i<STAT_DESCS.length;i++)
+			if(STAT_DESCS[i].startsWith(code))
+			{
+				setStat(dex,CMath.s_parseIntExpression(val));
+				return;
+			}
+	}
 }

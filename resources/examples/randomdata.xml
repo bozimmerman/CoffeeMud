@@ -11,7 +11,7 @@ ROOMTAG_NODERUN values:
 Also ROOMLINK_N, ROOMLINK_S, etc are available
 -->
 <AREADATA>
-<AREA tag="maze_dungeon" layout="MazeLayout" requires="name=$,size=int,level_range=int,theme=prison,rats,kobolds,random">
+<AREA tag="maze_dungeon" layout="MazeLayout" requires="name=$,size=int,level_range=int,theme=prison;rats;kobolds;random">
 	<AUTHOR></AUTHOR>
 	<DESCRIPTION></DESCRIPTION>
 	<SIZE>$size</SIZE>
@@ -114,7 +114,7 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 <!--TODO: Insert values -->
 </STRING>
 
-<MOB tag="dungeon_mobs" requires="theme=prison,rats,kobolds,random">
+<MOB tag="dungeon_mobs" requires="theme=prison;rats;kobolds;random">
 	<MOB condition="$theme='rats' or $theme='random'">
 	<!--TODO: Insert values -->
 	</MOB>
@@ -126,7 +126,7 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 	</MOB>
 </MOB>
 
-<MOB tag="dungeon_items" requires="theme=prison,rats,kobolds,random">
+<MOB tag="dungeon_items" requires="theme=prison;rats;kobolds;random">
 	<MOB condition="$theme='rats' or $theme='random'">
 	<!--TODO: Insert values -->
 	</MOB>

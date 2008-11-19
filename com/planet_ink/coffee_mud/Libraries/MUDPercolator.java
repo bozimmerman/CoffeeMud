@@ -397,7 +397,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         return (Exit)exitChoices.elementAt(CMLib.dice().roll(1,exitChoices.size(),-1));
     }
 
-    private void fillOutStats(Environmental E, String[] ignoreTags, String defPrefix, XMLLibrary.XMLpiece piece, Hashtable defined)
+    private void fillOutStats(CMModifiable E, String[] ignoreTags, String defPrefix, XMLLibrary.XMLpiece piece, Hashtable defined)
     {
         String[] statCodes = E.getStatCodes();
         for(int s=0;s<statCodes.length;s++) {
@@ -411,6 +411,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	            }
         	}
         }
+    }
+    
+    private void fillOutStats(Environmental E, String[] ignoreTags, String defPrefix, XMLLibrary.XMLpiece piece, Hashtable defined)
+    {
+    	fillOutStats(E,ignoreTags,defPrefix,piece,defined);
+    	fillOutStats(E.baseEnvStats(),ignoreTags,defPrefix,piece,defined);
+    	if(E instanceof MOB)
+        	fillOutStats(((MOB)E).baseCharStats(),ignoreTags,defPrefix,piece,defined);
     }
     
     private MOB buildMob(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException

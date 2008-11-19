@@ -91,7 +91,14 @@ public class GenShopkeeper extends StdShopKeeper
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setWhatIsSold(CMath.s_int(val)); break;
+		case 0:{
+			if((val.length()==0)||(CMath.isInteger(val)))
+				setWhatIsSold(CMath.s_int(val));
+			else
+			if(CMParms.containsIgnoreCase(ShopKeeper.DEAL_DESCS,val))
+				setWhatIsSold(CMParms.indexOfIgnoreCase(ShopKeeper.DEAL_DESCS,val));
+			break;
+		}
 		case 1: setPrejudiceFactors(val); break;
 		case 2: setBudget(val); break;
 		case 3: setDevalueRate(val); break;

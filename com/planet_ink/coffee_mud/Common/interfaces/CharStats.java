@@ -33,7 +33,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
  * @author Bo Zimmerman
  *
  */
-public interface CharStats extends CMCommon
+public interface CharStats extends CMCommon, CMModifiable
 {
     /** stat constant for strength */
     public static final int VALUE_ALLSTATS_DEFAULT=10;
@@ -123,17 +123,6 @@ public interface CharStats extends CMCommon
      * @return the value of the given STAT
      */
 	public int getStat(int statNum);
-    /**
-     * Get the value of one of the mob stats, representing attributes,
-     * saving throws, and max attributes, from the CharStats interface.
-     * The abilityName is cross referenced with STAT_DESCS string array
-     * to determine the proper STAT_ constant.
-     * @see CharStats
-     * @see CharStats#STAT_DESCS
-     * @param abilityName name of which constant to get a value for
-     * @return the value of the given STAT
-     */
-	public int getStat(String abilityName);
     /**
      * Set the value of one of the STAT_ constants, representing attributes,
      * saving throws, and max attributes, from the CharStats interface.
