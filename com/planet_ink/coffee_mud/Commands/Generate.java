@@ -130,17 +130,26 @@ public class Generate extends StdCommand
         	}
         }
         String tagName = ((String)commands.elementAt(2)).toUpperCase().trim();
-        if(definedTags.get(tagName) instanceof XMLLibrary.XMLpiece)
+        if((!(definedTags.get(tagName) instanceof XMLLibrary.XMLpiece))
+        ||(!((XMLLibrary.XMLpiece)definedTags.get(tagName)).tag.equalsIgnoreCase(objectType)))
         {
-        	mob.tell("No tag called '"+tagName+"' has been properly defined in the data file.");
-        	Vector xmlTagsV=new Vector();
-        	for(Enumeration keys=definedTags.keys();keys.hasMoreElements();)
+        	mob.tell("The "+objectType+" tag '"+tagName+"' has been properly defined in the data file.");
+        	StringBuffer foundTags=new StringBuffer("");
+        	for(Enumeration tkeye=OBJECT_TYPES.keys();tkeye.hasMoreElements();)
         	{
-        		String key=(String)keys.nextElement();
-                if(definedTags.get(key) instanceof XMLLibrary.XMLpiece)
-                	xmlTagsV.addElement(key.toLowerCase());
+        		String tKey=(String)tkeye.nextElement();
+        		foundTags.append("^H"+tKey+"^N: ");
+            	Vector xmlTagsV=new Vector();
+	        	for(Enumeration keys=definedTags.keys();keys.hasMoreElements();)
+	        	{
+	        		String key=(String)keys.nextElement();
+	                if((definedTags.get(key) instanceof XMLLibrary.XMLpiece)
+	                &&(((XMLLibrary.XMLpiece)definedTags.get(key)).tag.equalsIgnoreCase(tKey)))
+	                	xmlTagsV.addElement(key.toLowerCase());
+	        	}
+	        	foundTags.append(CMParms.toStringList(xmlTagsV)+"\n\r");
         	}
-        	mob.tell("Found tags include: "+CMParms.toStringList(xmlTagsV));
+        	mob.tell("Found tags include: \n\r"+foundTags.toString());
         	return false;
         }
         
@@ -161,7 +170,7 @@ public class Generate extends StdCommand
 	        {
 	        case Integer.MAX_VALUE:
 	        {
-	        	String s=CMLib.percolator().findString(tagName, piece, definedTags);
+	        	String s=CMLib.percolator().findString("STRING", piece, definedTags);
 	        	if(s!=null)
 	        		V.addElement(s);
 	        	break;

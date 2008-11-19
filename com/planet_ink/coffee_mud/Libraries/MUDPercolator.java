@@ -713,10 +713,15 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
             String value;
-            try {
-	            value = findString("VALUE",valPiece,defined);
-            } catch(Exception e) {
-            	value = strFilter(valPiece.value,defined);
+            if(valPiece == piece)
+            	value=strFilter(piece.value,defined);
+            else
+            {
+	            try {
+		            value = findString("STRING",valPiece,defined);
+	            } catch(Exception e) {
+	            	value = strFilter(valPiece.value,defined);
+	            }
             }
             String defineString = CMLib.xml().getParmValue(valPiece.parms,"DEFINE");
             if((defineString!=null)&&(defineString.trim().length()>0))
@@ -752,7 +757,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
             {
                 String s = (String)V.elementAt(v);
         		if(s.startsWith("$")) s=s.substring(1).trim();
-                XMLLibrary.XMLpiece insertPiece =(XMLLibrary.XMLpiece)defined.get(s.substring(1).toUpperCase().trim());
+                XMLLibrary.XMLpiece insertPiece =(XMLLibrary.XMLpiece)defined.get(s.toUpperCase().trim());
                 if(insertPiece == null)
                     throw new CMException("Undefined insert: '"+s+"' on piece '"+piece.tag+"', Data: "+piece.value);
                 if(insertPiece.tag.equalsIgnoreCase(tagName))
@@ -771,13 +776,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	            if((condition == null) || (CMStrings.parseStringExpression(condition,defined, true)))
 	            {
 	                checkRequirements(defined,CMLib.xml().getParmValue(lilP.parms,"REQUIRES"));
-	                Vector underChoices = getAllChoices(tagName,lilP,defined);
-	                if(underChoices.size()==0)
-	                	finalChoices.addElement(lilP);
-	                else {
-	                	// a tagged object that contains others is only a container
-	                	finalChoices.addAll(selectChoices(underChoices,lilP,defined));
-	                }
+                	finalChoices.addElement(lilP);
 	            }
             } 
             catch(Exception e)
@@ -960,9 +959,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     			x++;
     		String var = str.substring(start+1,x);
     		Object val = defined.get(var.toUpperCase().trim());
-    		if(val instanceof XMLLibrary.XMLpiece) val = findString("VALUE",(XMLLibrary.XMLpiece)val,defined);
+    		if(val instanceof XMLLibrary.XMLpiece) val = findString("STRING",(XMLLibrary.XMLpiece)val,defined);
     		if(val == null) throw new CMException("Unknown variable '$"+var+"' in str '"+str+"'");
     		str=str.substring(0,start)+val.toString()+str.substring(x);
+    		x=str.indexOf('$');
     	}
         return CMLib.xml().restoreAngleBrackets(str);
     }

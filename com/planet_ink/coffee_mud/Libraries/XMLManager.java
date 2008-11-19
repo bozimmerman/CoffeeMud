@@ -56,6 +56,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 
 	public String restoreAngleBrackets(String s)
 	{
+		if(s==null) return null;
 		StringBuffer buf=new StringBuffer(s);
 		int loop=0;
 		while(loop<buf.length())

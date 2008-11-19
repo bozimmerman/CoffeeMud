@@ -11,11 +11,11 @@ ROOMTAG_NODERUN values:
 Also ROOMLINK_N, ROOMLINK_S, etc are available
 -->
 <AREADATA>
-<AREA tag="maze_dungeon" layout="MazeLayout" requires="name=$,size=int,level_range=int,theme=prison;rats;kobolds;random">
+<AREA tag="maze_dungeon" layout="MazeLayout" requires="areaname=$,areasize=int,level_range=int,theme=prison;rats;kobolds;random">
 	<AUTHOR></AUTHOR>
 	<DESCRIPTION></DESCRIPTION>
-	<SIZE>$size</SIZE>
-	<NAME>$name</NAME>
+	<SIZE>$areasize</SIZE>
+	<NAME>$areaname</NAME>
 	<ROOM tag="dungeon_rooms" insert="$dungeon_hallways,$dungeon_interior,$dungeon_leaf,$dungeon_offleaf" />
 </AREA>
 
@@ -81,192 +81,192 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 </ROOM>
 
 <STRING tag="dungeon_hallways_street_name" define="dungeon_hallways_street_name" select="any-1">
-<VALUE>cavernous tunnel</VALUE>
-<VALUE>rocky tube</VALUE>
-<VALUE>cave hallway</VALUE>
-<VALUE>dark cave hallway</VALUE>
-<VALUE>rocky passageway</VALUE>
-<VALUE>cave passageway</VALUE>
-<VALUE>cavernous $roomrun_desc tunnel</VALUE>
-<VALUE>rocky $roomrun_desc tube</VALUE>
-<VALUE>cave $roomrun_desc hallway</VALUE>
-<VALUE>dark $roomrun_desc cave hallway</VALUE>
-<VALUE>rocky $roomrun_desc passageway</VALUE>
-<VALUE>cave $roomrun_desc passageway</VALUE>
+<STRING>cavernous tunnel</STRING>
+<STRING>rocky tube</STRING>
+<STRING>cave hallway</STRING>
+<STRING>dark cave hallway</STRING>
+<STRING>rocky passageway</STRING>
+<STRING>cave passageway</STRING>
+<STRING>cavernous $roomrun_desc tunnel</STRING>
+<STRING>rocky $roomrun_desc tube</STRING>
+<STRING>cave $roomrun_desc hallway</STRING>
+<STRING>dark $roomrun_desc cave hallway</STRING>
+<STRING>rocky $roomrun_desc passageway</STRING>
+<STRING>cave $roomrun_desc passageway</STRING>
 </STRING>
 
 <STRING tag="dungeon_crawlways_street_name" define="dungeon_crawlways_street_name" select="any-1">
-<VALUE>small $dungeon_hallways_street_name</VALUE>
-<VALUE>narrow $dungeon_hallways_street_name</VALUE>
-<VALUE>short $dungeon_hallways_street_name</VALUE>
+<STRING>small $dungeon_hallways_street_name</STRING>
+<STRING>narrow $dungeon_hallways_street_name</STRING>
+<STRING>short $dungeon_hallways_street_name</STRING>
 </STRING>
 
 <STRING tag="roomrun_desc" select="any-1">
-<VALUE condition="$ROOMTAG_NODERUN='nw'">north-south</VALUE>
-<VALUE condition="$ROOMTAG_NODERUN='ew'">east-west</VALUE>
-<VALUE condition="$ROOMTAG_NODERUN='ud'">ascending</VALUE>
-<VALUE condition="$ROOMTAG_NODERUN='nwse'">northwest-southeast</VALUE>
-<VALUE condition="$ROOMTAG_NODERUN='nesw'">northeast-southwest</VALUE>
-<VALUE condition="$ROOMTAG_NODERUN=''">winding</VALUE>
+<STRING condition="$ROOMTAG_NODERUN='nw'">north-south</STRING>
+<STRING condition="$ROOMTAG_NODERUN='ew'">east-west</STRING>
+<STRING condition="$ROOMTAG_NODERUN='ud'">ascending</STRING>
+<STRING condition="$ROOMTAG_NODERUN='nwse'">northwest-southeast</STRING>
+<STRING condition="$ROOMTAG_NODERUN='nesw'">northeast-southwest</STRING>
+<STRING condition="$ROOMTAG_NODERUN=''">winding</STRING>
 </STRING>
 
 <STRING tag="roomrun_desc_long" select="any-1">
-<VALUE condition="$ROOMTAG_NODERUN='nw'">north and south</VALUE>
-<VALUE condition="$ROOMTAG_NODERUN='ew'">east and west</VALUE>
-<VALUE condition="$ROOMTAG_NODERUN='ud'">ascending and descending</VALUE>
-<VALUE condition="$ROOMTAG_NODERUN='nwse'">northwest and southeast</VALUE>
-<VALUE condition="$ROOMTAG_NODERUN='nesw'">northeast and southwest</VALUE>
-<VALUE condition="$ROOMTAG_NODERUN=''">around</VALUE>
+<STRING condition="$ROOMTAG_NODERUN='nw'">north and south</STRING>
+<STRING condition="$ROOMTAG_NODERUN='ew'">east and west</STRING>
+<STRING condition="$ROOMTAG_NODERUN='ud'">ascending and descending</STRING>
+<STRING condition="$ROOMTAG_NODERUN='nwse'">northwest and southeast</STRING>
+<STRING condition="$ROOMTAG_NODERUN='nesw'">northeast and southwest</STRING>
+<STRING condition="$ROOMTAG_NODERUN=''">around</STRING>
 </STRING>
 
 <STRING tag="a_streetprefix" select="any-1">
-<VALUE condition="'tee' IN $ROOMTAG_NODEFLAGS">T-Intersection in a</VALUE>
-<VALUE condition="'gate' IN $ROOMTAG_NODEFLAGS">Entrace to a</VALUE>
-<VALUE condition="'intersection' IN $ROOMTAG_NODEFLAGS">Intersection in a</VALUE>
-<VALUE condition="'corner' IN $ROOMTAG_NODEFLAGS">Corner of a</VALUE>
-<VALUE condition="$ROOMTAG_NODEFLAGS=''">A</VALUE>
+<STRING condition="'tee' IN $ROOMTAG_NODEFLAGS">T-Intersection in a</STRING>
+<STRING condition="'gate' IN $ROOMTAG_NODEFLAGS">Entrace to a</STRING>
+<STRING condition="'intersection' IN $ROOMTAG_NODEFLAGS">Intersection in a</STRING>
+<STRING condition="'corner' IN $ROOMTAG_NODEFLAGS">Corner of a</STRING>
+<STRING condition="$ROOMTAG_NODEFLAGS=''">A</STRING>
 </STRING>
 
 <STRING tag="dungeon_interior_desc">
-	<VALUE select="all" action="append">
+	<STRING select="all" action="append">
 		A dump has been created here. 
 		Something very big looks to have take up residence amongst the garbage.
 		Obviously something REALLY big lives here. 
 		This mighty vaulted cavern seems much too fine to have been crafted by the likes of what you see here. 
-	 </VALUE>
+	 </STRING>
 </STRING>
 
-<VALUE tag="dungeon_random_blurbs" select="any-1">
-	<VALUE select="any-1">
-		<VALUE>The $dungeonadj_any walls are nearly pitch black.</VALUE>
-		<VALUE>The walls here are $dungeonadj_any.</VALUE>
-		<VALUE>The walls are $dungeonadj_any.</VALUE>
-		<VALUE>The walls are $dungeonadj_any and just slightly $dungeonadj_any.</VALUE>
-		<VALUE>The $dungeonadj_any walls are tall and sheer.</VALUE>
-	</VALUE>
-	<VALUE select="any-1">
-		<VALUE>The $dungeonadj_any floor has been worn down by years of use.</VALUE>
-		<VALUE>The floor is $dungeonadj_any and appears unscathed by mass footfall.</VALUE>
-		<VALUE>The $dungeonadj_any floor is bare and dirtless</VALUE>
-		<VALUE>The floor is covered with bones, leftovers, broken items, and rotten flesh.</VALUE>
-		<VALUE>The $dungeonadj_any floor has some rotten and half-eaten body parts of animals.</VALUE>
-		<VALUE>Earthly spines jut out from the ceiling and the floor.</VALUE>
-		<VALUE>Sharp pointed rocks on the ceiling and floor provide plenty of navigational obstacles.</VALUE>
-	</VALUE>
-	<VALUE>There are several menacing stalagtites and stalagmites to navigate around</VALUE>
-	<VALUE>A series of undecipherable scribbles sit on the walls.</VALUE>
-	<VALUE>You might have just stepped on a frog.</VALUE>
-	<VALUE>Something indescribable makes you feel lonesome and sad here.</VALUE>
-	<VALUE select="any-1">
-		<VALUE>The $dungeonadj_any ceiling is too far above you to see clearly.</VALUE>
-		<VALUE>The ceiling is $dungeonadj_any.</VALUE>
-		<VALUE>The $dungeonadj_any ceiling is unsettling.</VALUE>
-	</VALUE>
-	<VALUE select="any-1">
-		<VALUE>A layer of dirt upon the ground is marked with various tracks.</VALUE>
-		<VALUE>Dust has settled on the ground from scarce use.</VALUE>
-	</VALUE>
-	<VALUE select="any-1" condition="1?10 &lt;= 2">
-		<VALUE>The stench is quite unbearable.</VALUE>
-		<VALUE>A musty, dank smell wafts through the air.</VALUE>
-		<VALUE>You fancy you can smell brimstone...</VALUE>
-		<VALUE>The first thing you notice is the stench.</VALUE>
-		<VALUE>The stink in here is horrible.</VALUE>
-	</VALUE>
-	<VALUE select="any-1">
-		<VALUE>The air is $dungeonadj_nonphys.</VALUE>
-		<VALUE>$dungeonadj_nonphys air hovers around you.</VALUE>
-		<VALUE>This air is $dungeonadj_nonphys and $dungeonadj_nonphys.</VALUE>
-	</VALUE>
-	<VALUE>This place is $dungeonadj_anynosize.</VALUE>
-	<VALUE>You feel $dungeonadj_nonphys.</VALUE>
-	<VALUE>You thought you felt a breeze.</VALUE>
-	<VALUE select="any-1">
-		<VALUE>You think you heard a sound of faint trickling in the distance.</VALUE>
-		<VALUE>You are certain you just heard a scream coming from somewhere.</VALUE>
-		<VALUE>The walls seems to groan.</VALUE>
-	</VALUE>
+<STRING tag="dungeon_random_blurbs" select="all">
+	<STRING select="any-1">
+		<STRING>The $dungeonadj_any walls are nearly pitch black.</STRING>
+		<STRING>The walls here are $dungeonadj_any.</STRING>
+		<STRING>The walls are $dungeonadj_any.</STRING>
+		<STRING>The walls are $dungeonadj_any and just slightly $dungeonadj_any.</STRING>
+		<STRING>The $dungeonadj_any walls are tall and sheer.</STRING>
+	</STRING>
+	<STRING select="any-1">
+		<STRING>The $dungeonadj_any floor has been worn down by years of use.</STRING>
+		<STRING>The floor is $dungeonadj_any and appears unscathed by mass footfall.</STRING>
+		<STRING>The $dungeonadj_any floor is bare and dirtless.</STRING>
+		<STRING>The floor has bits of bones and rotten flesh.</STRING>
+		<STRING>The $dungeonadj_any floor has bits of rotten and half-eaten animal parts.</STRING>
+		<STRING>Earthly spines jut out from the ceiling and the floor.</STRING>
+		<STRING>Sharp pointed rocks on the ceiling and floor provide plenty of navigational obstacles.</STRING>
+	</STRING>
+	<STRING>There are several menacing stalagtites and stalagmites to navigate around.</STRING>
+	<STRING>A series of undecipherable scribbles sit on the walls.</STRING>
+	<STRING>You might have just stepped on a frog.</STRING>
+	<STRING>Something indescribable makes you feel lonesome and sad here.</STRING>
+	<STRING select="any-1">
+		<STRING>The $dungeonadj_any ceiling is too far above you to see clearly.</STRING>
+		<STRING>The ceiling is $dungeonadj_any.</STRING>
+		<STRING>The $dungeonadj_any ceiling is unsettling.</STRING>
+	</STRING>
+	<STRING select="any-1">
+		<STRING>A layer of dirt upon the ground is marked with various tracks.</STRING>
+		<STRING>Dust has settled on the ground from scarce use.</STRING>
+	</STRING>
+	<STRING select="any-1" condition="1?10 &lt;= 2">
+		<STRING>The stench is quite unbearable.</STRING>
+		<STRING>A musty, dank smell wafts through the air.</STRING>
+		<STRING>You think you smell brimstone.</STRING>
+		<STRING>The first thing you notice is the stench.</STRING>
+		<STRING>The stink in here is horrible.</STRING>
+	</STRING>
+	<STRING select="any-1">
+		<STRING>The air is $dungeonadj_nonphys.</STRING>
+		<STRING>$dungeonadj_nonphys air hovers around you.</STRING>
+		<STRING>This air is $dungeonadj_nonphys and $dungeonadj_nonphys.</STRING>
+	</STRING>
+	<STRING>This place is $dungeonadj_anynosize.</STRING>
+	<STRING>You feel $dungeonadj_nonphys.</STRING>
+	<STRING>You thought you felt a breeze.</STRING>
+	<STRING select="any-1">
+		<STRING>You think you heard a sound of faint trickling in the distance.</STRING>
+		<STRING>You are certain you just heard a scream coming from somewhere.</STRING>
+		<STRING>The walls seems to groan.</STRING>
+	</STRING>
 	
-</VALUE>
+</STRING>
 
 <STRING tag="dungeonadj_phys_size">
-	<VALUE select="any-1" tag="dungeonadj_phys_size_values">
-		<VALUE>narrow</VALUE>
-		<VALUE>huge</VALUE>
-		<VALUE>rocky</VALUE>
-	</VALUE>
+	<STRING select="any-1" tag="dungeonadj_phys_size_values">
+		<STRING>narrow</STRING>
+		<STRING>huge</STRING>
+		<STRING>rocky</STRING>
+	</STRING>
 </STRING>
 <STRING tag="dungeonadj_phys_nosize">
-	<VALUE select="any-1" tag="dungeonadj_phys_nosize_values">
-		<VALUE>jagged</VALUE>
-		<VALUE>smooth</VALUE>
-		<VALUE>rocky</VALUE>
-		<VALUE>grey</VALUE>
-		<VALUE>craggy</VALUE>
-		<VALUE>rough</VALUE>
-		<VALUE>cracked</VALUE>
-	</VALUE>
+	<STRING select="any-1" tag="dungeonadj_phys_nosize_values">
+		<STRING>jagged</STRING>
+		<STRING>smooth</STRING>
+		<STRING>rocky</STRING>
+		<STRING>grey</STRING>
+		<STRING>craggy</STRING>
+		<STRING>rough</STRING>
+		<STRING>cracked</STRING>
+	</STRING>
 </STRING>
 <STRING tag="dungeonadj_feeling">
-	<VALUE select="any-1" tag="dungeonadj_feeling_values">
-		<VALUE>ghastly</VALUE>
-		<VALUE>creepy</VALUE>
-		<VALUE>eerie</VALUE>
-		<VALUE>lonely</VALUE>
-		<VALUE>scarey</VALUE>
-		<VALUE>unsettling</VALUE>
-	</VALUE>
+	<STRING select="any-1" tag="dungeonadj_feeling_values">
+		<STRING>ghastly</STRING>
+		<STRING>creepy</STRING>
+		<STRING>eerie</STRING>
+		<STRING>lonely</STRING>
+		<STRING>scarey</STRING>
+		<STRING>unsettling</STRING>
+	</STRING>
 </STRING>
 <STRING tag="dungeonadj_general">
-	<VALUE select="any-1" tag="dungeonadj_general_values">
-		<VALUE>dank</VALUE>
-		<VALUE>quiet</VALUE>
-		<VALUE>musty</VALUE>
-		<VALUE>damp</VALUE>
-		<VALUE>still</VALUE>
-		<VALUE>dark</VALUE>
-		<VALUE>wet</VALUE>
-		<VALUE>cold</VALUE>
-		<VALUE>black</VALUE>
-	</VALUE>
+	<STRING select="any-1" tag="dungeonadj_general_values">
+		<STRING>dank</STRING>
+		<STRING>quiet</STRING>
+		<STRING>musty</STRING>
+		<STRING>damp</STRING>
+		<STRING>still</STRING>
+		<STRING>dark</STRING>
+		<STRING>wet</STRING>
+		<STRING>cold</STRING>
+		<STRING>black</STRING>
+	</STRING>
 </STRING>
 
 <STRING tag="dungeonadj_anynosize" select="any-1" insert="dungeonadj_general_values,dungeonadj_feeling_values,dungeonadj_phys_nosize_values" />
 <STRING tag="dungeonadj_nonphys" select="any-1" insert="dungeonadj_general_values,dungeonadj_feeling_values" />
 <STRING tag="dungeonadj_phys" select="any-1" insert="dungeonadj_phys_size_values,dungeonadj_phys_nosize_values" />
 <STRING tag="dungeonadj_any" select="any-1" insert="dungeonadj_general_values,dungeonadj_feeling_values,dungeonadj_phys_size_values,dungeonadj_phys_nosize_values" />
-<STRING tag="dungeon_tunnelword" define="dungeon_tunnelword" select="any-1"><VALUE>tunnel</VALUE><VALUE>corridor</VALUE></STRING>
+<STRING tag="dungeon_tunnelword" define="dungeon_tunnelword" select="any-1"><STRING>tunnel</STRING><STRING>corridor</STRING></STRING>
 
 <STRING tag="dungeon_hallways_street_desc" select="all">
-	<VALUE select="any-1" action="PREPEND">
-		<VALUE>You stand in a $dungeonadj_any $dungeon_tunnelword that runs steeply $roomrun_desc_long.</VALUE> 
-		<VALUE>This $dungeonadj_any $dungeon_tunnelword runs steeply $roomrun_desc_long.</VALUE> 
-		<VALUE>You are in a $dungeonadj_any $dungeon_tunnelword running $roomrun_desc_long.</VALUE> 
-		<VALUE>This $dungeonadj_any $dungeon_tunnelword runs $roomrun_desc_long.</VALUE> 
-		<VALUE>You are walking through a $dungeonadj_any $dungeon_tunnelword running $roomrun_desc_long.</VALUE>
-		<VALUE>This $dungeonadj_any $dungeon_tunnelword heads $roomrun_desc_long.</VALUE>
-		<VALUE>This $dungeonadj_any $dungeon_tunnelword seems to head $roomrun_desc_long.</VALUE>
-	</VALUE>
-	<VALUE select="any-1" insert="dungeon_random_blurbs" action="APPEND" />
+	<STRING select="any-1" action="PREPEND">
+		<STRING>You stand in a $dungeonadj_any $dungeon_tunnelword that runs steeply $roomrun_desc_long.</STRING> 
+		<STRING>This $dungeonadj_any $dungeon_tunnelword runs steeply $roomrun_desc_long.</STRING> 
+		<STRING>You are in a $dungeonadj_any $dungeon_tunnelword running $roomrun_desc_long.</STRING> 
+		<STRING>This $dungeonadj_any $dungeon_tunnelword runs $roomrun_desc_long.</STRING> 
+		<STRING>You are walking through a $dungeonadj_any $dungeon_tunnelword running $roomrun_desc_long.</STRING>
+		<STRING>This $dungeonadj_any $dungeon_tunnelword heads $roomrun_desc_long.</STRING>
+		<STRING>This $dungeonadj_any $dungeon_tunnelword seems to head $roomrun_desc_long.</STRING>
+	</STRING>
+	<STRING select="any-1" insert="dungeon_random_blurbs" action="APPEND" />
 </STRING>
 
 <STRING tag="dungeon_crawlways_street_desc"  select="all">
-	<VALUE select="any-1" action="prepend">
-		<VALUE>You are in a $dungeonadj_nonphys $dungeon_tunnelword that runs narrowly $roomrun_desc_long.</VALUE> 
-		<VALUE>This $dungeonadj_nonphys $dungeon_tunnelword runs narrowly $roomrun_desc_long.</VALUE> 
-		<VALUE>You are in a $dungeonadj_nonphys $dungeon_tunnelword squeezing $roomrun_desc_long.</VALUE> 
-		<VALUE>This $dungeonadj_nonphys $dungeon_tunnelword runs $roomrun_desc_long.</VALUE> 
-		<VALUE>You are going through a $dungeonadj_nonphys $dungeon_tunnelword running $roomrun_desc_long.</VALUE>
-		<VALUE>This $dungeonadj_nonphys $dungeon_tunnelword heads $roomrun_desc_long.</VALUE>
-		<VALUE>This $dungeonadj_nonphys $dungeon_tunnelword seems to head $roomrun_desc_long.</VALUE>
-	</VALUE>
-	<VALUE select="any-1">
-		<VALUE>The $dungeonadj_phys ceiling is very low.</VALUE>
-		<VALUE>The $dungeonadj_phys ceiling is very low.</VALUE>
-	</VALUE>
-	<VALUE select="any-1" insert="dungeon_random_blurbs" action="APPEND" />
+	<STRING select="any-1" action="prepend">
+		<STRING>You are in a $dungeonadj_anynosize $dungeon_tunnelword that runs narrowly $roomrun_desc_long.</STRING> 
+		<STRING>This $dungeonadj_anynosize $dungeon_tunnelword runs narrowly $roomrun_desc_long.</STRING> 
+		<STRING>You are in a $dungeonadj_anynosize $dungeon_tunnelword squeezing $roomrun_desc_long.</STRING> 
+		<STRING>This $dungeonadj_anynosize $dungeon_tunnelword runs $roomrun_desc_long.</STRING> 
+		<STRING>You are going through a $dungeonadj_anynosize $dungeon_tunnelword running $roomrun_desc_long.</STRING>
+		<STRING>This $dungeonadj_anynosize $dungeon_tunnelword heads $roomrun_desc_long.</STRING>
+		<STRING>This $dungeonadj_anynosize $dungeon_tunnelword seems to head $roomrun_desc_long.</STRING>
+	</STRING>
+	<STRING select="any-1">
+		<STRING>The $dungeonadj_phys_nosize ceiling is very low.</STRING>
+		<STRING>The $dungeonadj_phys_nosize ceiling is very low.</STRING>
+	</STRING>
+	<STRING select="any-1" insert="dungeon_random_blurbs" action="APPEND" />
 </STRING>
-
+<STRING tag="helloworld">Hello World!</STRING>
 <MOB tag="dungeon_mobs" requires="theme=prison;rats;kobolds;random">
 	<MOB condition="$theme='rats' or $theme='random'">
 	<!--TODO: Insert values -->
