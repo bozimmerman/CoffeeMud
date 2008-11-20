@@ -48,7 +48,7 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 		<!--TODO: Fill this in -->
 		</TITLE>
 		<DESCRIPTION>
-		The ceiling of this cavern must be a mile up, but the black cold waters of the
+		, but the black cold waters of the
  		lake seem to cover almost the entire floor.You are on the perfectly still waters of a cold black lake. 
  		<!--TODO: Fill this in -->
 		</DESCRIPTION>
@@ -168,6 +168,7 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 	</STRING>
 	<STRING>There are several menacing stalagtites and stalagmites to navigate around.</STRING>
 	<STRING>A series of undecipherable scribbles sit on the walls.</STRING>
+	<STRING>It looks like something might have died here.</STRING>
 	<STRING>You might have just stepped on a frog.</STRING>
 	<STRING>Something indescribable makes you feel lonesome and sad here.</STRING>
 	<STRING select="any-1">

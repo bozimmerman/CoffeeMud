@@ -320,6 +320,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         if((choices==null)||(choices.size()==0)) return V;
         for(int c=0;c<choices.size();c++) {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
+            defineReward(valPiece,null,defined);
             try {
 	            MOB M=buildMob(valPiece,defined);
 	            V.addElement(M);
@@ -336,10 +337,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         DVector roomChoices = new DVector(3);
         for(int c=0;c<choices.size();c++)
         {
+        	XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
+            defineReward(valPiece,null,defined);
         	Exit[] rExits=exits.clone();
         	Hashtable rDefined=(Hashtable)defined.clone();
             try {
-	            Room R=buildRoom((XMLLibrary.XMLpiece)choices.elementAt(c),rDefined,rExits,directions);
+	            Room R=buildRoom(valPiece,rDefined,rExits,directions);
 	            if(R!=null)
 	            	roomChoices.addElement(R,rExits,rDefined);
             } catch(Exception e){}
@@ -368,7 +371,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         if((choices==null)||(choices.size()==0)) return DV;
         for(int c=0;c<choices.size();c++) {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
-	            Exit[] theseExits=exits.clone();
+            defineReward(valPiece,null,defined);
+            Exit[] theseExits=exits.clone();
             try {
 	            Room R=buildRoom(valPiece,defined,theseExits,direction);
 	            DV.addElement(R,theseExits);
@@ -386,7 +390,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         for(int c=0;c<choices.size();c++)
         {
             try {
-	            Exit E=buildExit((XMLLibrary.XMLpiece)choices.elementAt(c),defined);
+            	XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
+                defineReward(valPiece,null,defined);
+	            Exit E=buildExit(valPiece,defined);
 	            if(E!=null)
 	            	exitChoices.addElement(E);
             }catch(Exception e){}
@@ -484,6 +490,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
+            defineReward(valPiece,null,defined);
             try {
 	            Exit E=buildExit(valPiece,defined);
 	            V.addElement(E);
@@ -540,6 +547,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
+            defineReward(valPiece,null,defined);
             try{
 	            V.addAll(buildItem(valPiece,defined));
 	        }catch(Exception e){}
@@ -618,6 +626,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
+            defineReward(valPiece,null,defined);
             try {
 	            Ability A=buildAbility(valPiece,defined);
 	            V.addElement(A);
@@ -635,6 +644,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
+            defineReward(valPiece,null,defined);
             try {
 	            Behavior B=buildBehavior(valPiece,defined);
 	            V.addElement(B);
@@ -687,6 +697,27 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         }
     }
     
+    public void defineReward(XMLLibrary.XMLpiece piece, String value, Hashtable defined)
+    {
+        String defineString = CMLib.xml().getParmValue(piece.parms,"DEFINE");
+        if((defineString!=null)&&(defineString.trim().length()>0))
+        {
+        	Vector V=CMParms.parseCommas(defineString,true);
+        	for(Enumeration e=V.elements();e.hasMoreElements();)
+        	{
+        		String defVar=(String)e.nextElement();
+        		int x=defVar.indexOf('=');
+        		if(x>0)
+	            	defined.put(defVar.substring(0,x).toUpperCase().trim(),defVar.substring(x+1).trim());
+        		else
+        		if(value!=null)
+	            	defined.put(defVar.toUpperCase().trim(), value);
+        		else
+	            	defined.put(defVar.toUpperCase().trim(), "!");
+        	}
+        }
+    }
+    
     public String findString(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
     {
         String asParm = CMLib.xml().getParmValue(piece.parms,tagName.toUpperCase().trim());
@@ -713,20 +744,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	            	value = strFilter(valPiece.value,defined);
 	            }
             }
-            String defineString = CMLib.xml().getParmValue(valPiece.parms,"DEFINE");
-            if((defineString!=null)&&(defineString.trim().length()>0))
-            {
-            	Vector V=CMParms.parseCommas(defineString,true);
-            	for(Enumeration e=V.elements();e.hasMoreElements();)
-            	{
-            		String defVar=(String)e.nextElement();
-            		int x=defVar.indexOf('=');
-            		if(x>0)
-		            	defined.put(defVar.substring(0,x).toUpperCase().trim(),defVar.substring(x+1).trim());
-            		else
-		            	defined.put(defVar.toUpperCase().trim(), value);
-            	}
-            }
+            defineReward(valPiece,value,defined);
             
             String action = CMLib.xml().getParmValue(valPiece.parms,"ACTION");
             if((action==null)||(action.length()==0)) action="APPEND";
