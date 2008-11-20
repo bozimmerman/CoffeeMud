@@ -318,7 +318,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     	String tagName="MOB";
         Vector choices = getAllChoices(tagName, piece, defined);
         if((choices==null)||(choices.size()==0)) return V;
-        choices = selectChoices(choices,piece,defined);
         for(int c=0;c<choices.size();c++) {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
             try {
@@ -333,8 +332,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     {
     	String tagName="ROOM";
         Vector choices = getAllChoices(tagName, piece, defined);
-        if((choices==null)||(choices.size()==0)) return null;
-        choices = selectChoices(choices,piece,defined);
         if((choices==null)||(choices.size()==0)) return null;
         DVector roomChoices = new DVector(3);
         for(int c=0;c<choices.size();c++)
@@ -369,7 +366,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     	String tagName="ROOM";
         Vector choices = getAllChoices(tagName, piece, defined);
         if((choices==null)||(choices.size()==0)) return DV;
-        choices = selectChoices(choices,piece,defined);
         for(int c=0;c<choices.size();c++) {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
 	            Exit[] theseExits=exits.clone();
@@ -385,8 +381,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     {
     	String tagName="EXIT";
         Vector choices = getAllChoices(tagName, piece, defined);
-        if((choices==null)||(choices.size()==0)) return null;
-        choices = selectChoices(choices,piece,defined);
         if((choices==null)||(choices.size()==0)) return null;
         Vector exitChoices = new Vector();
         for(int c=0;c<choices.size();c++)
@@ -487,7 +481,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     	String tagName="EXIT";
         Vector choices = getAllChoices(tagName, piece, defined);
         if((choices==null)||(choices.size()==0)) return V;
-        choices = selectChoices(choices,piece,defined);
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
@@ -531,8 +524,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     	Vector V = new Vector();
         Vector choices = getAllChoices("SHOPINVENTORY", piece, defined);
         if((choices==null)||(choices.size()==0)) return V;
-        choices = selectChoices(choices,piece,defined);
-        if((choices==null)||(choices.size()==0)) return V;
         XMLLibrary.XMLpiece shopPiece = (XMLLibrary.XMLpiece)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
         V.addAll(findItems(shopPiece,defined));
         V.addAll(findMobs(shopPiece,defined));
@@ -546,7 +537,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     	String tagName="ITEM";
         Vector choices = getAllChoices(tagName, piece, defined);
         if((choices==null)||(choices.size()==0)) return V;
-        choices = selectChoices(choices,piece,defined);
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
@@ -563,7 +553,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     	String tagName="CONTENT";
         Vector choices = getAllChoices(tagName, piece, defined);
         if((choices==null)||(choices.size()==0)) return V;
-        choices = selectChoices(choices,piece,defined);
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
@@ -626,7 +615,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     	Vector V = new Vector();
         Vector choices = getAllChoices(tagName, piece, defined);
         if((choices==null)||(choices.size()==0)) return V;
-        choices = selectChoices(choices,piece,defined);
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
@@ -644,7 +632,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     	String tagName="BEHAVIOR";
         Vector choices = getAllChoices(tagName, piece, defined);
         if((choices==null)||(choices.size()==0)) return V;
-        choices = selectChoices(choices,piece,defined);
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
@@ -710,7 +697,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
                 return strFilter(piece.value,defined);
             throw new CMException("Unable to find tag '"+tagName+"' on piece '"+piece.tag+"', Data: "+piece.value);
         }
-        choices = selectChoices(choices,piece,defined);
         StringBuffer finalValue = new StringBuffer("");
         
         for(int c=0;c<choices.size();c++)
@@ -763,7 +749,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         Vector choices = new Vector();
         for(int p=0;p<piece.contents.size();p++)
             if(((XMLLibrary.XMLpiece)piece.contents.elementAt(p)).tag.equalsIgnoreCase(tagName))
-                choices.addElement(piece.contents.elementAt(p));
+                choices.addAll(getAllChoices(tagName,piece.contents.elementAt(p),defined));
         String inserter = CMLib.xml().getParmValue(piece.parms,"INSERT");
         if(inserter!=null)
         {
@@ -776,11 +762,13 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
                 if(insertPiece == null)
                     throw new CMException("Undefined insert: '"+s+"' on piece '"+piece.tag+"', Data: "+piece.value);
                 if(insertPiece.tag.equalsIgnoreCase(tagName))
-                    choices.addElement(insertPiece);
+                    choices.addAll(getAllChoices(tagName,insertPiece,defined));
             }
         }
-        if((choices.size()==0)&&(piece.tag.equalsIgnoreCase(tagName)))
-        	choices.addElement(piece);
+        else
+        if((piece.contents.size()==0)&&(piece.tag.equalsIgnoreCase(tagName)))
+        	return CMParms.makeVector(piece);
+        
         Vector finalChoices = new Vector(choices.size());
         for(int c=0;c<choices.size();c++)
         {
@@ -799,7 +787,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
                 Log.errOut("Generate",e);
             }
         }
-        return finalChoices;
+        return selectChoices(finalChoices,piece,defined);
     }
 
     private String getRequirementsDescription(String values) 

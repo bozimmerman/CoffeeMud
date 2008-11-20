@@ -230,7 +230,7 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 	</STRING>
 </STRING>
 <STRING tag="dungeonadj_general" select="any-1">
-	<STRING tag="dungeonadj_feeling_values">
+	<STRING tag="dungeonadj_general_values">
 		<STRING>dank</STRING>
 		<STRING>quiet</STRING>
 		<STRING>musty</STRING>
