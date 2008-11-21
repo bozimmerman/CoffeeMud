@@ -192,7 +192,7 @@ public class Where extends StdCommand
 					for(;r.hasMoreElements();)
 					{
 						R=(Room)r.nextElement();
-						if((R!=null)&&(CMSecurity.isAllowed(mob,R,"WHERE")))
+						if((R!=null)&&(CMSecurity.isAllowed(mob,R,"WHERE"))&&(CMLib.flags().canAccess(mob,R.getArea())))
 						{
 							if((!mobOnly)&&(!itemOnly)&&(!exitOnly))
 								if(CMLib.english().containsString(R.displayText(),who)
