@@ -6191,6 +6191,42 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         }
     }
 
+    protected void genScripts(MOB mob, MOB E, int showNumber, int showFlag)
+    throws IOException
+    {
+        if((showFlag>0)&&(showFlag!=showNumber)) return;
+        String behave="NO";
+        while((mob.session()!=null)&&(!mob.session().killFlag())&&(behave.length()>0))
+        {
+            String behaviorstr="";
+            for(int b=0;b<E.numScripts();b++)
+            {
+                ScriptingEngine B=E.fetchScript(b);
+                if(B!=null) behaviorstr+=(b+1)+":"+B.defaultQuestName()+", ";
+            }
+            if(behaviorstr.length()>0)
+                behaviorstr=behaviorstr.substring(0,behaviorstr.length()-2);
+            mob.tell(showNumber+". Scripts: '"+behaviorstr+"'.");
+            if((showFlag!=showNumber)&&(showFlag>-999)) return;
+            behave=mob.session().prompt("Enter a script number to remove\n\r:","");
+            if(behave.length()>0)
+            {
+                String tattoo=behave;
+                if((tattoo.length()>0)
+                &&(CMath.isInteger(tattoo))
+                &&(CMath.s_int(tattoo)>0)
+                &&(CMath.s_int(tattoo)<=E.numScripts()))
+                {
+                	int x=CMath.s_int(tattoo);
+                    mob.tell("Script #"+x+" removed.");
+                    E.delScript(E.fetchScript(x-1));
+                }
+            }
+            else
+                mob.tell("(no change)");
+        }
+    }
+    
     protected void modifyGenDrink(MOB mob, Drink me)
         throws IOException
     {
@@ -6780,6 +6816,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             genEmail(mob,me,++showNumber,showFlag);
             genSecurity(mob,me,++showNumber,showFlag);
             genImage(mob,me,++showNumber,showFlag);
+            genScripts(mob,me,++showNumber,showFlag);
             genNotes(mob,me,++showNumber,showFlag);
             for(int x=me.getSaveStatIndex();x<me.getStatCodes().length;x++)
                 me.setStat(me.getStatCodes()[x],CMLib.genEd().prompt(mob,me.getStat(me.getStatCodes()[x]),++showNumber,showFlag,CMStrings.capitalizeAndLower(me.getStatCodes()[x])));
