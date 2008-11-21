@@ -714,7 +714,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
     
     public boolean activate() {
         if(thread==null)
-            thread=new ThreadEngine.SupportThread("CMCatalog"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
+            thread=new ThreadEngine.SupportThread("THCatalog"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
                     MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging("CATALOGTHREAD"));
         if(!thread.started)
             thread.start();
