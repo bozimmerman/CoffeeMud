@@ -78,7 +78,11 @@ public class Thief_Assassinate extends ThiefSkill
 				{
 					Ability A=mob.fetchAbility("Thief_BackStab");
 					if(A!=null)
+					{
+						A.setAbilityCode(5);
 						A.invoke(mob,tracking,false,0);
+						A.setAbilityCode(0);
+					}
 				}
 				else
 					CMLib.combat().postAttack(mob,tracking,mob.fetchWieldedItem());
