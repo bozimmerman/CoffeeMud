@@ -49,12 +49,12 @@ public class Skill_Leeching extends StdSkill
 		MOB target=getTarget(mob,commands,givenTarget);
 		if(target==null) return false;
 
-		if((!auto)&&(!target.willFollowOrdersOf(mob)))
+		if((!auto)&&(mob!=target)&&(!target.willFollowOrdersOf(mob)))
 		{
 			mob.tell(target.charStats().HeShe()+" must be a follower for you to leech them.");
 			return false;
 		}
-		if(mob.isInCombat()&&(mob.rangeToTarget()>0))
+		if(mob.isInCombat()&&(mob.getVictim()==target)&&(mob.rangeToTarget()>0))
 		{
 			mob.tell("You are too far away to try that!");
 			return false;

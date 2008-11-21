@@ -80,6 +80,7 @@ public class ThiefSkill extends StdAbility
 			MOB M=R.fetchInhabitant(i);
 			if((M!=null)
 			&&(M!=meMOB)
+			&&(!CMLib.flags().isSleeping(M))
 			&&(!H.contains(M))
 			&&(highestLevel<M.envStats().level()))
 			{

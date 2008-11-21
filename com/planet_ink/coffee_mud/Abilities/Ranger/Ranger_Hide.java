@@ -108,6 +108,7 @@ public class Ranger_Hide extends StdAbility
 			MOB M=R.fetchInhabitant(i);
 			if((M!=null)
 			&&(M!=meMOB)
+			&&(!CMLib.flags().isSleeping(M))
 			&&(!H.contains(M))
 			&&(highestLevel<M.envStats().level()))
 			{
@@ -158,7 +159,7 @@ public class Ranger_Hide extends StdAbility
 			str="You creep behind some rocks and remain completely still.";
 
 
-		boolean success=proficiencyCheck(mob,levelDiff*10,auto);
+		boolean success=(highestMOB==null)||proficiencyCheck(mob,levelDiff*10,auto);
 
 		if(!success)
 		{

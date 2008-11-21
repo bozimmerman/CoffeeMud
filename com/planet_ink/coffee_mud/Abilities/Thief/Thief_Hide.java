@@ -148,7 +148,7 @@ public class Thief_Hide extends ThiefSkill
 
 		String str="You creep into a shadow and remain completely still.";
 
-		boolean success=proficiencyCheck(mob,levelDiff*10,auto);
+		boolean success=(highestMOB==null)||proficiencyCheck(mob,levelDiff*10,auto);
 
 		if(!success)
 		{
