@@ -136,17 +136,12 @@ public class Thief_Mark extends ThiefSkill
 			mob.tell("You cannot mark yourself!");
 			return false;
 		}
-		Ability A=target.fetchEffect(ID());
-		if((A!=null)&&(A.invoker()==mob))
+		Ability A=mob.fetchEffect(ID());
+		if((A!=null)&&(((Thief_Mark)A).mark==target))
 		{
 			target.delEffect(A);
 			mob.tell("You remove your mark from "+target.displayName(mob));
 			return true;
-		}
-		if(A!=null)
-		{
-			mob.tell(target.displayName(mob)+" is already marked by someone else.");
-			return false;
 		}
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
@@ -168,7 +163,6 @@ public class Thief_Mark extends ThiefSkill
 				A=(Ability)copyOf();
 				mob.addEffect(A);
 				A.makeNonUninvokable();
-				A.setSavable(false);
 			}
 			((Thief_Mark)A).mark=target;
 			((Thief_Mark)A).ticks=0;
