@@ -36,7 +36,37 @@ public class CatalogItemNext extends StdWebMacro
 {
     public String name(){return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
     public boolean isAdminMacro()   {return true;}
+    static final String[] DATA={
+					            "CATALOG_ITEM_NAME",
+					            "CATALOG_ITEM_USAGE",
+					            "CATALOG_ITEM_LEVEL",
+					            "CATALOG_ITEM_CLASS",
+					            "CATALOG_ITEM_VALUE",
+					            "CATALOG_ITEM_RATE",
+					            "CATALOG_ITEM_MASK",
+					            "CATALOG_ITEM_LIVE",
+					            "CATALOG_ITEM_AREA",
+    };
 
+    public static String getCataStat(Item I, CatalogLibrary.CataData data, int x)
+    {
+    	if((I==null)||(data==null)) return "";
+        boolean dataRate=(data.getRate()>0.0);
+    	switch(x)
+    	{
+    	case 0: return I.Name();
+    	case 1: return ""+data.numReferences();
+    	case 2: return ""+I.baseEnvStats().level();
+    	case 3: return I.ID();
+    	case 4: return ""+I.baseGoldValue();
+    	case 5: return (dataRate)?CMath.toPct(data.getRate()):"";
+    	case 6: return (dataRate)?(data.getMaskStr()==null?"":data.getMaskStr()):"";
+    	case 7: return (dataRate)?(""+data.getWhenLive()):"";
+    	case 8: return ""+data.mostPopularArea();
+    	}
+    	return "";
+    }
+    
     public String runMacro(ExternalHTTPRequests httpReq, String parm)
     {
         Hashtable parms=parseParms(parm);
@@ -44,14 +74,8 @@ public class CatalogItemNext extends StdWebMacro
         if(parms.containsKey("RESET"))
         {   
             if(last!=null) httpReq.removeRequestParameter("ITEM");
-            httpReq.removeRequestParameter("CATALOG_ITEM_NAME");
-            httpReq.removeRequestParameter("CATALOG_ITEM_USAGE");
-            httpReq.removeRequestParameter("CATALOG_ITEM_LEVEL");
-            httpReq.removeRequestParameter("CATALOG_ITEM_CLASS");
-            httpReq.removeRequestParameter("CATALOG_ITEM_VALUE");
-            httpReq.removeRequestParameter("CATALOG_ITEM_RATE");
-            httpReq.removeRequestParameter("CATALOG_ITEM_MASK");
-            httpReq.removeRequestParameter("CATALOG_ITEM_LIVE");
+            for(int d=0;d<DATA.length;d++)
+	            httpReq.removeRequestParameter(DATA[d]);
             return "";
         }
         String lastID="";
@@ -59,6 +83,41 @@ public class CatalogItemNext extends StdWebMacro
         String name=null;
         CatalogLibrary.CataData data=null;
         String[] names=CMLib.catalog().getCatalogItemNames();
+        String sortBy=httpReq.getRequestParameter("SORTBY");
+        if((sortBy!=null)&&(sortBy.length()>0))
+        {
+        	String[] sortedNames=(String[])httpReq.getRequestObjects().get("CATALOG_ITEM_"+sortBy.toUpperCase());
+        	if(sortedNames!=null)
+        		names=sortedNames;
+        	else
+        	{
+	        	final int sortIndex=CMParms.indexOf(DATA, "CATALOG_ITEM_"+sortBy.toUpperCase());
+	        	if(sortIndex>=0)
+	        	{
+	        		Object[] sortifiable=new Object[names.length];
+	        		for(int s=0;s<names.length;s++)
+	        			sortifiable[s]=new Object[]{
+	        				names[s], 
+	        				CMLib.catalog().getCatalogItem(names[s]), 
+	        				CMLib.catalog().getCatalogItemData(names[s])};
+	            	Arrays.sort(sortifiable,new Comparator() {
+						public int compare(Object o1, Object o2) {
+							Object[] O1=(Object[])o1;
+							Object[] O2=(Object[])o2;
+							String s1=getCataStat((Item)O1[1],(CatalogLibrary.CataData)O1[2],sortIndex);
+							String s2=getCataStat((Item)O2[1],(CatalogLibrary.CataData)O2[2],sortIndex);
+							if(CMath.isNumber(s1)&&CMath.isNumber(s2))
+								return Double.valueOf(CMath.s_double(s1)).compareTo(Double.valueOf(CMath.s_double(s2)));
+							else
+								return s1.toLowerCase().compareTo(s2.toLowerCase());
+						}
+	            	});
+	            	for(int s=0;s<names.length;s++)
+	            		names[s]=(String)((Object[])sortifiable[s])[0];
+	            	httpReq.getRequestObjects().put("CATALOG_ITEM_"+sortBy.toUpperCase(),names);
+	        	}
+        	}
+        }
         for(int s=0;s<names.length;s++)
         {
             name="CATALOG-"+names[s].toUpperCase().trim();
@@ -67,37 +126,16 @@ public class CatalogItemNext extends StdWebMacro
                 data=CMLib.catalog().getCatalogItemData(names[s]);
                 I=CMLib.catalog().getCatalogItem(names[s]);
                 if(I==null) continue;
-                
                 httpReq.addRequestParameters("ITEM",name);
-                httpReq.addRequestParameters("CATALOG_ITEM_NAME",""+I.name());
-                httpReq.addRequestParameters("CATALOG_ITEM_USAGE",""+data.numReferences());
-                //httpReq.addRequestParameters("CATALOG_ITEM_AREA",""+data.mostPopularArea());
-                //httpReq.addRequestParameters("CATALOG_ITEM_HOME",""+data.mostPopularRoom());
-                httpReq.addRequestParameters("CATALOG_ITEM_LEVEL",""+I.baseEnvStats().level());
-                httpReq.addRequestParameters("CATALOG_ITEM_CLASS",I.ID());
-                httpReq.addRequestParameters("CATALOG_ITEM_VALUE",""+I.baseGoldValue());
-                if(data.getRate()>0.0)
-                {
-                    httpReq.addRequestParameters("CATALOG_ITEM_RATE",CMath.toPct(data.getRate()));
-                    httpReq.addRequestParameters("CATALOG_ITEM_MASK",data.getMaskStr()==null?"":data.getMaskStr());
-                    httpReq.addRequestParameters("CATALOG_ITEM_LIVE",""+data.getWhenLive());
-                }
-                else
-                {
-                    httpReq.addRequestParameters("CATALOG_ITEM_RATE","");
-                    httpReq.addRequestParameters("CATALOG_ITEM_MASK","");
-                    httpReq.addRequestParameters("CATALOG_ITEM_LIVE","");
-                }
+                for(int d=0;d<DATA.length;d++)
+    	            httpReq.addRequestParameters(DATA[d],getCataStat(I,data,d));
                 return "";
             }
             lastID=name;
         }
         httpReq.addRequestParameters("ITEM","");
-        httpReq.addRequestParameters("CATALOG_ITEM_NAME","");
-        httpReq.addRequestParameters("CATALOG_ITEM_USAGE","");
-        httpReq.addRequestParameters("CATALOG_ITEM_LEVEL","");
-        httpReq.addRequestParameters("CATALOG_ITEM_CLASS","");
-        httpReq.addRequestParameters("CATALOG_ITEM_VALUE","");
+        for(int d=0;d<DATA.length;d++)
+            httpReq.addRequestParameters(DATA[d],"");
         if(parms.containsKey("EMPTYOK"))
             return "<!--EMPTY-->";
         return " @break@";

@@ -82,8 +82,9 @@ public interface CatalogLibrary extends CMLibrary
         public boolean isReference(Environmental E);
         public void delReference(Environmental E);
         public int numReferences();
-        public String mostPopularRoom();
         public String mostPopularArea();
+        public String randomRoom();
+        public void cleanHouse();
         
         public String data();
         

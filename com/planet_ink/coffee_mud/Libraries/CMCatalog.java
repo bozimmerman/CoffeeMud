@@ -35,9 +35,13 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class CMCatalog extends StdLibrary implements CatalogLibrary
+public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
 {
     public String ID(){return "CMCatalog";}
+    private ThreadEngine.SupportThread thread=null;
+    
+    public ThreadEngine.SupportThread getSupportThread() { return thread;}
+    
     public DVector icatalog=new DVector(2);
     public DVector mcatalog=new DVector(2);
 
@@ -416,13 +420,6 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
         }
     }
     
-    public boolean shutdown()
-    {
-        icatalog=new DVector(2);
-        mcatalog=new DVector(2);
-        return true;
-    }
-    
     public void updateCatalog(Environmental modelE)
     {
         if((modelE==null)
@@ -632,7 +629,8 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
     	}
     }
 
-    private final String getSync(Environmental E) { return ((E instanceof MOB)?"CATASYNC_MOB_":"CATASYNC_ITEM_")+E.Name().toUpperCase();}
+    private final String getSync(String name, boolean mobType) { return ((mobType)?"CATASYNC_MOB_":"CATASYNC_ITEM_")+name.toUpperCase();}
+    private final String getSync(Environmental E) { return getSync(E.Name(),E instanceof MOB);}
     
     public StringBuffer checkCatalogIntegrity(Environmental E) 
     {
@@ -714,6 +712,53 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
     
     public CataData sampleCataData(String xml) {return new CataDataImpl(xml);}
     
+    public boolean activate() {
+        if(thread==null)
+            thread=new ThreadEngine.SupportThread("CMCatalog"+Thread.currentThread().getThreadGroup().getName().charAt(0), 
+                    MudHost.TIME_SAVETHREAD_SLEEP, this, CMSecurity.isDebugging("CATALOGTHREAD"));
+        if(!thread.started)
+            thread.start();
+        return true;
+    }
+    
+    public boolean shutdown()
+    {
+        icatalog=new DVector(2);
+        mcatalog=new DVector(2);
+        thread.shutdown();
+        return true;
+    }
+    
+    public void forceTick()
+    {
+        if(thread.status.equalsIgnoreCase("sleeping"))
+        {
+            thread.interrupt();
+            return;
+        }
+    }
+
+    public void run()
+    {
+        if(!CMSecurity.isDisabled("CATALOGTHREAD"))
+        {
+            thread.status("checking catalog references.");
+            String[] names = getCatalogItemNames();
+            for(int n=0;n<names.length;n++)
+            {
+        		CataData data=getCatalogItemData(names[n]);
+        		data.cleanHouse();
+            }
+            names = getCatalogMobNames();
+            for(int n=0;n<names.length;n++)
+            {
+        		CataData data=getCatalogMobData(names[n]);
+        		data.cleanHouse();
+            }
+            
+        }
+    }
+    
     public static class RoomContentImpl implements RoomContent
     {
     	private Environmental obj=null;
@@ -735,6 +780,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
         public boolean live=false;
         public double rate=0.0;
         public Vector<WeakReference> refs=new Vector<WeakReference>(1);
+        public boolean noRefs = CMSecurity.isDisabled("CATALOGCACHE");
         
         public CataDataImpl(String catadata)
         {
@@ -776,24 +822,38 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
         		if(CMLib.law().getLandTitle(R)!=null)
         			homes.add(CMLib.map().getExtendedRoomID(R));
         		else
-	    			homes.add(CMLib.map().getExtendedRoomID(R));
+        			set.add(CMLib.map().getExtendedRoomID(R));
         	}
         	if(set.roomCountAllAreas()>0) return set;
         	return homes;
         }
         
-        public String mostPopularRoom() {
+        public String randomRoom() {
         	RoomnumberSet set=getLocations();
-        	for(Enumeration e=set.getRoomIDs();e.hasMoreElements();) 
-        		return (String)e.nextElement();
-        	return "";
+        	if(set.roomCountAllAreas()==0)
+        		return "";
+        	return set.random();
         }
         
         public String mostPopularArea() {
         	RoomnumberSet set=getLocations();
-        	for(Enumeration e=set.getAreaNames();e.hasMoreElements();) 
-        		return (String)e.nextElement();
-        	return "";
+        	Enumeration e=set.getAreaNames();
+        	if(!e.hasMoreElements()) return "";
+        	String maxArea=(String)e.nextElement();
+        	int maxCount=set.roomCount(maxArea);
+        	for(;e.hasMoreElements();) 
+        	{
+        		String area=(String)e.nextElement();
+        		int count=set.roomCount(area);
+        		if(count>maxCount)
+        		{
+        			maxCount=count;
+        			maxArea=area;
+        		}
+        	}
+        	Area A=CMLib.map().getArea(maxArea);
+        	if(A!=null) return A.Name();
+        	return maxArea;
         }
         
         public int numReferences() {
@@ -806,7 +866,25 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary
         
         public Enumeration<Environmental> enumeration() { return makeVector().elements();}
         
+        public synchronized void cleanHouse()
+        {
+        	if(noRefs)
+        	{
+        		refs.clear();
+        		return;
+        	}
+        	Environmental o=null;
+        	for(int r=refs.size();r>=0;r--)
+        	{
+        		o=(Environmental)refs.elementAt(r).get();
+        		if(o.amDestroyed()||!CMLib.flags().isCataloged(o))
+        			refs.removeElementAt(r);
+        	}
+        	refs=DVector.softCopy(refs);
+        }
+        
         public synchronized void addReference(Environmental E) {
+        	if(noRefs) return;
         	if(isReference(E)) return;
         	Environmental o=null;
         	for(int r=0;r<refs.size();r++)

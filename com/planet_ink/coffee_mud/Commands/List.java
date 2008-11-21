@@ -528,11 +528,12 @@ public class List extends StdCommand
         {
     		long saveThreadMilliTotal=CMath.s_long(CMLib.threads().systemReport("Thread"+threadNum+"MilliTotal"));
     		long saveThreadTickTotal=CMath.s_long(CMLib.threads().systemReport("Thread"+threadNum+"TickTotal"));
-    		buf.append("Thread '"+threadName+"' has consumed: ^H"+CMLib.english().returnTime(saveThreadMilliTotal,saveThreadTickTotal)+" ("+CMLib.threads().systemReport("Thread"+threadNum+"Status")+")^?.\n\r");
+    		buf.append("Thread '"+threadName+"' has consumed: ^H"+CMLib.english().returnTime(saveThreadMilliTotal,saveThreadTickTotal)+" ("+CMLib.threads().systemReport("Thread"+threadNum+"Status")+")^?.");
     		buf.append("\n\r");
             threadNum++;
             threadName=CMLib.threads().systemReport("Thread"+threadNum+"name");
         }
+		buf.append("\n\r");
 		buf.append("^xSession report:^.^N\n\r");
 		long totalMOBMillis=CMath.s_long(CMLib.threads().systemReport("totalMOBMillis"));
 		long totalMOBTicks=CMath.s_long(CMLib.threads().systemReport("totalMOBTicks"));

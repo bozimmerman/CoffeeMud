@@ -109,49 +109,38 @@ public class CMLister extends StdLibrary implements ListingLibrary
     
     public String summarizeTheRest(MOB mob, Vector things, boolean compress) 
     {
-        HashSet restH=new HashSet();
+        Vector restV=new Vector();
         Item I=null;
         String name="";
-        boolean items=false;
+        boolean otherItemsHere=false;
         for(int v=0;v<things.size();v++)
         {
             I=(Item)things.elementAt(v);
             if(CMLib.flags().canBeSeenBy(I,mob)&&(I.displayText().length()>0))
             {
-                name=CMLib.materials().genericType(I);
+                name=CMLib.materials().genericType(I).toLowerCase();
                 if(name.startsWith("item"))
                 {
-                    if(!items)
-                        items=true;
+                    if(!otherItemsHere)
+                    	otherItemsHere=true;
                 }
                 else
-                if(!restH.contains(name))
-                    restH.add(name);
+                if(!restV.contains(name))
+                	restV.addElement(name);
             }
         }
-        if((restH.size()==0)&&(!items)) return "";
+        if((restV.size()==0)&&(!otherItemsHere)) return "";
+        if(otherItemsHere) restV.addElement("other");
         StringBuffer theRest=new StringBuffer("");
-        for(Iterator i=restH.iterator();i.hasNext();)
+        for(int o=0;o<restV.size();o++)
         {
-            name=(String)i.next();
-            if(theRest.length()>0) {
-                if((items)||(restH.size()>2))
-                    theRest.append(", ");
-                if((!i.hasNext())&&(!items))
-                    theRest.append("and ");
-            }
-            theRest.append(name);
-        }
-        if(items) {
-            if(theRest.length()>0)
-            {
-                if(restH.size()>1)
-                    theRest.append(", ");
+            theRest.append(restV.elementAt(o));
+            if(o<restV.size()-1)
+                theRest.append(", ");
+            if((restV.size()>1)&&(o==(restV.size()-2)))
                 theRest.append("and ");
-            }
-            theRest.append("other items");
         }
-        return "^IThere are also "+theRest.toString()+" here.^N"+(compress?"":"\n\r");
+        return "^IThere are also "+theRest.toString()+" items here.^N"+(compress?"":"\n\r");
     }
     
     public StringBuffer lister(MOB mob, 

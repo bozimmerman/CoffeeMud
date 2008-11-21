@@ -87,6 +87,12 @@
             document.RESOURCES.action='catalog.cmvp';
             document.RESOURCES.submit();
         }
+        function Refresh(sortby)
+        {
+            document.RESOURCES.action='catalog.cmvp';
+            document.RESOURCES.SORTBY.value=sortby;
+            document.RESOURCES.submit();
+        }
         function ToMob()
         {
             document.RESOURCES.MODE.value='';
@@ -126,6 +132,7 @@
 <FORM NAME=RESOURCES TARGET=_top METHOD=POST ACTION="catalogs.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=MODE VALUE="@RequestParameter?MODE@">
+<INPUT TYPE=HIDDEN NAME=SORTBY VALUE="@RequestParameter?SORTBY@">
     <TABLE WIDTH=100% BORDER=1>
     <TR><TD WIDTH=100% COLSPAN=2 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud @MudServerVersion@ Catalog Manager</H2></FONT></TD></TR>
     @if?CheckReqParm?MODE=@
@@ -136,12 +143,13 @@
         <TR><TD WIDTH=100% COLSPAN=2 VALIGN=TOP>
             <TABLE WIDTH=100% BORDER=1>
             <TR>
-            <TD WIDTH=5%><B><FONT COLOR=YELLOW>#</FONT></b></TD>
-            <TD WIDTH=30%><B><FONT COLOR=YELLOW>Name</FONT></b></TD>
-            <TD WIDTH=10%><B><FONT COLOR=YELLOW>Level</FONT></b></TD>
-            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Class</FONT></b></TD>
-            <TD WIDTH=20%><B><FONT COLOR=YELLOW>Race</FONT></b></TD>
-            <TD WIDTH=15%><B><FONT COLOR=YELLOW>Gender</FONT></b></TD>
+            <TD WIDTH=5%><a href="javascript:Refresh('USAGE');"><B><FONT COLOR=YELLOW>#</FONT></b></a></TD>
+            <TD WIDTH=30%><a href="javascript:Refresh('NAME');"><B><FONT COLOR=YELLOW>Name</FONT></b></a></TD>
+            <TD WIDTH=10%><a href="javascript:Refresh('LEVEL');"><B><FONT COLOR=YELLOW>Level</FONT></b></a></TD>
+            <TD WIDTH=10%><a href="javascript:Refresh('CLASS');"><B><FONT COLOR=YELLOW>Class</FONT></b></a></TD>
+            <TD WIDTH=10%><a href="javascript:Refresh('RACE');"><B><FONT COLOR=YELLOW>Race</FONT></b></a></TD>
+            <TD WIDTH=10%><a href="javascript:Refresh('GENDER');"><B><FONT COLOR=YELLOW>Gender</FONT></b></a></TD>
+            <TD WIDTH=25%><a href="javascript:Refresh('AREA');"><B><FONT COLOR=YELLOW>Area</FONT></b></a></TD>
             </TR>
             @CatalogMobNext?RESET@
             @loop@
@@ -153,6 +161,7 @@
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_CLASS@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_RACE@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_GENDER@</B></FONT></a></TD>
+                <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_MOB_AREA@</B></FONT></a></TD>
                 </TR>
             @back@
             <TR>
@@ -168,14 +177,15 @@
         <TR><TD WIDTH=100% COLSPAN=2 VALIGN=TOP>
             <TABLE WIDTH=100% BORDER=1>
             <TR>
-            <TD WIDTH=5%><B><FONT COLOR=YELLOW>#</FONT></b></TD>
-            <TD WIDTH=25%><B><FONT COLOR=YELLOW>Name</FONT></b></TD>
-            <TD WIDTH=5%><B><FONT COLOR=YELLOW>Level</FONT></b></TD>
-            <TD WIDTH=10%><B><FONT COLOR=YELLOW>Class</FONT></b></TD>
-            <TD WIDTH=5%><B><FONT COLOR=YELLOW>Value</FONT></b></TD>
-            <TD WIDTH=10%><B><FONT COLOR=YELLOW>Rate</FONT></b></TD>
-            <TD WIDTH=10%><B><FONT COLOR=YELLOW>State</FONT></b></TD>
-            <TD WIDTH=30%><B><FONT COLOR=YELLOW>MOB Mask</FONT></b></TD>
+            <TD WIDTH=5%><a href="javascript:Refresh('USAGE');"><B><FONT COLOR=YELLOW>#</FONT></b></a></TD>
+            <TD WIDTH=25%><a href="javascript:Refresh('NAME');"><B><FONT COLOR=YELLOW>Name</FONT></b></a></TD>
+            <TD WIDTH=5%><a href="javascript:Refresh('LEVEL');"><B><FONT COLOR=YELLOW>Level</FONT></b></a></TD>
+            <TD WIDTH=10%><a href="javascript:Refresh('CLASS');"><B><FONT COLOR=YELLOW>Class</FONT></b></a></TD>
+            <TD WIDTH=5%><a href="javascript:Refresh('VALUE');"><B><FONT COLOR=YELLOW>Value</FONT></b></a></TD>
+            <TD WIDTH=20%><a href="javascript:Refresh('AREA');"><B><FONT COLOR=YELLOW>Area</FONT></b></a></TD>
+            <TD WIDTH=5%><a href="javascript:Refresh('RATE');"><B><FONT COLOR=YELLOW>Rate</FONT></b></a></TD>
+            <TD WIDTH=5%><a href="javascript:Refresh('LIVE');"><B><FONT COLOR=YELLOW>State</FONT></b></a></TD>
+            <TD WIDTH=20%><a href="javascript:Refresh('MASK');"><B><FONT COLOR=YELLOW>MOB Mask</FONT></b></a></TD>
             </TR>
             @CatalogItemNext?RESET@
             @loop@
@@ -186,6 +196,7 @@
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_LEVEL@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_CLASS@</B></FONT></a></TD>
                 <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_VALUE@</B></FONT></a></TD>
+                <TD><FONT COLOR=WHITE><B>@RequestParameter?CATALOG_ITEM_AREA@</B></FONT></a></TD>
                 @if?CheckReqParm?CATALOG_ITEM_RATE=@
                     <TD COLSPAN=3><FONT COLOR=WHITE>N/A</FONT></a></TD>
                 @else@
