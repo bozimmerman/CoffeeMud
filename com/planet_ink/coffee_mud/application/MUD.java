@@ -520,6 +520,7 @@ public class MUD extends Thread implements MudHost
                     if(choices.size()>0) introFilename=(String)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
                 }
                 StringBuffer introText=Resources.getFileResource(introFilename,true);
+            	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
                 Session S=(Session)CMClass.getCommon("DefaultSession");
                 S.initializeSession(sock, introText != null ? introText.toString() : null);
                 S.start();

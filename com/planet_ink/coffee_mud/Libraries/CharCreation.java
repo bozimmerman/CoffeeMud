@@ -308,7 +308,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             }
             
             login=CMStrings.capitalizeAndLower(login.trim());
-            session.println(null,null,null,"\n\r\n\r"+new CMFile(Resources.buildResourcePath("text")+"newchar.txt",null,true).text().toString());
+            StringBuffer introText=new CMFile(Resources.buildResourcePath("text")+"newchar.txt",null,true).text();
+        	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
+            session.println(null,null,null,"\n\r\n\r"+introText.toString());
 
             boolean emailPassword=((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))&&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0));
 
@@ -328,7 +330,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             executeScript(mob,(Vector)extraScripts.get("PASSWORD"));
             
             boolean emailReq=(!CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("OPTION"));
-        	session.println(null,null,null,new CMFile(Resources.buildResourcePath("text")+"email.txt",null,true).text().toString());
+            StringBuffer emailIntro=new CMFile(Resources.buildResourcePath("text")+"email.txt",null,true).text();
+        	try { emailIntro = CMLib.httpUtils().doVirtualPage(emailIntro);}catch(Exception ex){}
+        	session.println(null,null,null,emailIntro.toString());
             while(true)
             {
                 String newEmail=session.prompt("\n\rEnter your e-mail address:");
@@ -397,7 +401,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                     }
                     while((theme<0)&&(!session.killFlag()))
                     {
-                    	session.println(null,null,null,new CMFile(Resources.buildResourcePath("text")+"themes.txt",null,true).text().toString());
+                        introText=new CMFile(Resources.buildResourcePath("text")+"themes.txt",null,true).text();
+                    	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
+                    	session.println(null,null,null,introText.toString());
                     	session.print("\n\r^!Please select from the following:^N "+selections.substring(1)+"\n\r");
                         String themeStr=session.choose(": ",choices,"");
                         if(themeStr.toUpperCase().startsWith("F"))
@@ -413,7 +419,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             executeScript(mob,(Vector)extraScripts.get("THEME"));
             
             if(!CMSecurity.isDisabled("RACES"))
-            	session.println(null,null,null,new CMFile(Resources.buildResourcePath("text")+"races.txt",null,true).text().toString());
+            {
+                introText=new CMFile(Resources.buildResourcePath("text")+"races.txt",null,true).text();
+            	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
+            	session.println(null,null,null,introText.toString());
+            }
 
             StringBuffer listOfRaces=new StringBuffer("[");
             boolean tmpFirst = true;
@@ -512,7 +522,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
 
             executeScript(mob,(Vector)extraScripts.get("GENDER"));
             
-            session.println(null,null,null,"\n\r\n\r"+new CMFile(Resources.buildResourcePath("text")+"stats.txt",null,true).text().toString());
+            introText=new CMFile(Resources.buildResourcePath("text")+"stats.txt",null,true).text();
+        	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
+            session.println(null,null,null,"\n\r\n\r"+introText.toString());
 
             boolean mayCont=true;
             StringBuffer listOfClasses=new StringBuffer("??? no classes ???");
@@ -679,7 +691,11 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 if(mine.size()>1)
                 {
                     if((F.choiceIntro()!=null)&&(F.choiceIntro().length()>0))
-                        session.println(null,null,null,"\n\r\n\r"+new CMFile(Resources.makeFileResourceName(F.choiceIntro()),null,true).text().toString());
+                    {
+                    	StringBuffer intro = new CMFile(Resources.makeFileResourceName(F.choiceIntro()),null,true).text();
+                    	try { intro = CMLib.httpUtils().doVirtualPage(intro);}catch(Exception ex){}
+                        session.println(null,null,null,"\n\r\n\r"+intro.toString());
+                    }
                     StringBuffer menu=new StringBuffer("Select one: ");
                     Vector namedChoices=new Vector();
                     for(int m=0;m<mine.size();m++)
@@ -726,7 +742,9 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             mob.setStartRoom(getDefaultStartRoom(mob));
             mob.baseCharStats().setStat(CharStats.STAT_AGE,mob.playerStats().initializeBirthday(0,mob.baseCharStats().getMyRace()));
             
-            session.println(null,null,null,"\n\r\n\r"+new CMFile(Resources.buildResourcePath("text")+"newchardone.txt",null,true).text().toString());
+            introText=new CMFile(Resources.buildResourcePath("text")+"newchardone.txt",null,true).text();
+        	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
+            session.println(null,null,null,"\n\r\n\r"+introText.toString());
             session.prompt("");
             boolean logoff=false;
             if(emailPassword)
@@ -790,6 +808,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         if((CMSecurity.isDisabled("LOGINS"))&&(!CMSecurity.isASysOp(mob)))
         {
 			StringBuffer rejectText=Resources.getFileResource("text/nologins.txt",true);
+        	try { rejectText = CMLib.httpUtils().doVirtualPage(rejectText);}catch(Exception ex){}
 			if((rejectText!=null)&&(rejectText.length()>0))
 				mob.session().println(rejectText.toString());
 			try{Thread.sleep(1000);}catch(Exception e){}
