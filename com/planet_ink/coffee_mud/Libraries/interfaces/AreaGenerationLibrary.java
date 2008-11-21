@@ -33,7 +33,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public interface AreaGenerationLibrary extends CMLibrary
 {
-    public void buildDefinedTagSet(Vector xmlRoot, Hashtable defined);
+    public void buildDefinedIDSet(Vector xmlRoot, Hashtable defined);
     public Vector findItems(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
     public Vector findMobs(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;
     public String findString(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException;

@@ -14,15 +14,15 @@ Use DEFINE _VARNAME to persist a definition beyond the room.
 TODO: **COMPLETE** docs maybe even a dtd or two
 -->
 <AREADATA>
-<AREA tag="maze_dungeon" layout="MazeLayout" requires="areaname=$,areasize=int,level_range=int,theme=prison;rats;kobolds;random">
+<AREA id="maze_dungeon" layout="MazeLayout" requires="areaname=$,areasize=int,level_range=int,theme=prison;rats;kobolds;random">
 	<AUTHOR></AUTHOR>
 	<DESCRIPTION></DESCRIPTION>
 	<SIZE>$areasize</SIZE>
 	<NAME>$areaname</NAME>
-	<ROOM tag="dungeon_rooms" insert="$dungeon_hallways,$dungeon_interior,$dungeon_leaf,$dungeon_offleaf" />
+	<ROOM id="dungeon_rooms" insert="$dungeon_hallways,$dungeon_interior,$dungeon_leaf,$dungeon_offleaf" />
 </AREA>
 
-<ROOM tag="dungeon_hallways" select="any-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
+<ROOM id="dungeon_hallways" select="any-1" condition="$roomtag_nodetype='street' or $roomtag_nodetype='surround'">
 	<ROOM class="CaveRoom" include="dungeon_mobs,dungeon_items">
 		<TITLE>$a_streetprefix $dungeon_hallways_street_name</TITLE>
 		<DESCRIPTION>$dungeon_hallways_street_desc</DESCRIPTION>
@@ -37,7 +37,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 	</ROOM>
 </ROOM>
 
-<ROOM tag="dungeon_interior" select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
+<ROOM id="dungeon_interior" select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
 	<ROOM class="CaveRoom" condition="" include="dungeon_mobs,dungeon_items">
 		<TITLE>
 		<!--TODO: Fill this in -->
@@ -67,7 +67,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 	</ROOM>
 </ROOM>
 
-<ROOM tag="dungeon_leaf" select="any-1" condition="$roomtag_nodetype='leaf'">
+<ROOM id="dungeon_leaf" select="any-1" condition="$roomtag_nodetype='leaf'">
 	<ROOM class="StoneRoom" condition="" include="dungeon_mobs,dungeon_items">
 		<TITLE>
 		<!--TODO: Fill this in -->
@@ -122,7 +122,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 	</ROOM>
 </ROOM>
 
-<MOB tag="dungeon_mobs" requires="theme=prison;rats;kobolds;random">
+<MOB id="dungeon_mobs" requires="theme=prison;rats;kobolds;random">
 	<MOB condition="$theme='rats' or $theme='random'">
 	<!--TODO: Insert values -->
 	</MOB>
@@ -134,7 +134,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 	</MOB>
 </MOB>
 
-<ITEM tag="dungeon_items" requires="theme=prison;rats;kobolds;random">
+<ITEM id="dungeon_items" requires="theme=prison;rats;kobolds;random">
 	<ITEM condition="$theme='rats' or $theme='random'">
 	<!--TODO: Insert values -->
 	</ITEM>
@@ -146,7 +146,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 	</ITEM>
 </ITEM>
 
-<STRING tag="dungeon_hallways_street_name" define="dungeon_hallways_street_name" select="any-1">
+<STRING id="dungeon_hallways_street_name" define="dungeon_hallways_street_name" select="any-1">
 <STRING>cavernous tunnel</STRING>
 <STRING>rocky tube</STRING>
 <STRING>cave hallway</STRING>
@@ -161,13 +161,13 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 <STRING>cave $roomrun_desc passageway</STRING>
 </STRING>
 
-<STRING tag="dungeon_crawlways_street_name" define="dungeon_crawlways_street_name" select="any-1">
+<STRING id="dungeon_crawlways_street_name" define="dungeon_crawlways_street_name" select="any-1">
 <STRING>small $dungeon_hallways_street_name</STRING>
 <STRING>narrow $dungeon_hallways_street_name</STRING>
 <STRING>short $dungeon_hallways_street_name</STRING>
 </STRING>
 
-<STRING tag="roomrun_desc" select="any-1">
+<STRING id="roomrun_desc" select="any-1">
 <STRING condition="$ROOMTAG_NODERUN='nw'">north-south</STRING>
 <STRING condition="$ROOMTAG_NODERUN='ew'">east-west</STRING>
 <STRING condition="$ROOMTAG_NODERUN='ud'">ascending</STRING>
@@ -176,7 +176,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 <STRING condition="$ROOMTAG_NODERUN=''">winding</STRING>
 </STRING>
 
-<STRING tag="roomrun_desc_long" select="any-1">
+<STRING id="roomrun_desc_long" select="any-1">
 <STRING condition="$ROOMTAG_NODERUN='nw'">north and south</STRING>
 <STRING condition="$ROOMTAG_NODERUN='ew'">east and west</STRING>
 <STRING condition="$ROOMTAG_NODERUN='ud'">ascending and descending</STRING>
@@ -185,7 +185,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 <STRING condition="$ROOMTAG_NODERUN=''">around</STRING>
 </STRING>
 
-<STRING tag="a_streetprefix" select="any-1">
+<STRING id="a_streetprefix" select="any-1">
 <STRING condition="'tee' IN $ROOMTAG_NODEFLAGS">T-Intersection in a</STRING>
 <STRING condition="'gate' IN $ROOMTAG_NODEFLAGS">Entrace to a</STRING>
 <STRING condition="'intersection' IN $ROOMTAG_NODEFLAGS">Intersection in a</STRING>
@@ -193,7 +193,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 <STRING condition="$ROOMTAG_NODEFLAGS=''">A</STRING>
 </STRING>
 
-<STRING tag="dungeon_interior_desc">
+<STRING id="dungeon_interior_desc">
 	<STRING select="all" action="append">
 		A dump has been created here. 
 		Something very big looks to have take up residence amongst the garbage.
@@ -202,7 +202,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 	 </STRING>
 </STRING>
 
-<STRING tag="dungeon_random_blurbs" select="all">
+<STRING id="dungeon_random_blurbs" select="all">
 	<STRING select="any-1">
 		<STRING>The $dungeonadj_any walls are nearly pitch black.</STRING>
 		<STRING>The walls here are $dungeonadj_any.</STRING>
@@ -255,15 +255,15 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 	</STRING>
 </STRING>
 
-<STRING tag="dungeonadj_phys_size" select="any-1">
-	<STRING tag="dungeonadj_phys_size_values">
+<STRING id="dungeonadj_phys_size" select="any-1">
+	<STRING id="dungeonadj_phys_size_values">
 		<STRING>narrow</STRING>
 		<STRING>huge</STRING>
 		<STRING>rocky</STRING>
 	</STRING>
 </STRING>
-<STRING tag="dungeonadj_phys_nosize" select="any-1">
-	<STRING tag="dungeonadj_phys_nosize_values">
+<STRING id="dungeonadj_phys_nosize" select="any-1">
+	<STRING id="dungeonadj_phys_nosize_values">
 		<STRING>jagged</STRING>
 		<STRING>smooth</STRING>
 		<STRING>rocky</STRING>
@@ -273,8 +273,8 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 		<STRING>cracked</STRING>
 	</STRING>
 </STRING>
-<STRING tag="dungeonadj_feeling" select="any-1" >
-	<STRING tag="dungeonadj_feeling_values">
+<STRING id="dungeonadj_feeling" select="any-1" >
+	<STRING id="dungeonadj_feeling_values">
 		<STRING>ghastly</STRING>
 		<STRING>creepy</STRING>
 		<STRING>eerie</STRING>
@@ -283,8 +283,8 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 		<STRING>unsettling</STRING>
 	</STRING>
 </STRING>
-<STRING tag="dungeonadj_general" select="any-1">
-	<STRING tag="dungeonadj_general_values">
+<STRING id="dungeonadj_general" select="any-1">
+	<STRING id="dungeonadj_general_values">
 		<STRING>dank</STRING>
 		<STRING>quiet</STRING>
 		<STRING>musty</STRING>
@@ -297,13 +297,13 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 	</STRING>
 </STRING>
 
-<STRING tag="dungeonadj_anynosize" select="any-1" insert="dungeonadj_general_values,dungeonadj_feeling_values,dungeonadj_phys_nosize_values" />
-<STRING tag="dungeonadj_nonphys" select="any-1" insert="dungeonadj_general_values,dungeonadj_feeling_values" />
-<STRING tag="dungeonadj_phys" select="any-1" insert="dungeonadj_phys_size_values,dungeonadj_phys_nosize_values" />
-<STRING tag="dungeonadj_any" select="any-1" insert="dungeonadj_general_values,dungeonadj_feeling_values,dungeonadj_phys_size_values,dungeonadj_phys_nosize_values" />
-<STRING tag="dungeon_tunnelword" define="dungeon_tunnelword" select="any-1"><STRING>tunnel</STRING><STRING>corridor</STRING></STRING>
+<STRING id="dungeonadj_anynosize" select="any-1" insert="dungeonadj_general_values,dungeonadj_feeling_values,dungeonadj_phys_nosize_values" />
+<STRING id="dungeonadj_nonphys" select="any-1" insert="dungeonadj_general_values,dungeonadj_feeling_values" />
+<STRING id="dungeonadj_phys" select="any-1" insert="dungeonadj_phys_size_values,dungeonadj_phys_nosize_values" />
+<STRING id="dungeonadj_any" select="any-1" insert="dungeonadj_general_values,dungeonadj_feeling_values,dungeonadj_phys_size_values,dungeonadj_phys_nosize_values" />
+<STRING id="dungeon_tunnelword" define="dungeon_tunnelword" select="any-1"><STRING>tunnel</STRING><STRING>corridor</STRING></STRING>
 
-<STRING tag="dungeon_hallways_street_desc" select="all">
+<STRING id="dungeon_hallways_street_desc" select="all">
 	<STRING select="any-1" action="PREPEND">
 		<STRING>You stand in a $dungeonadj_any $dungeon_tunnelword that runs steeply $roomrun_desc_long.</STRING> 
 		<STRING>This $dungeonadj_any $dungeon_tunnelword runs steeply $roomrun_desc_long.</STRING> 
@@ -316,7 +316,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 	<STRING select="any-1" insert="dungeon_random_blurbs" action="APPEND" />
 </STRING>
 
-<STRING tag="dungeon_crawlways_street_desc"  select="all">
+<STRING id="dungeon_crawlways_street_desc"  select="all">
 	<STRING select="any-1" action="prepend">
 		<STRING>You are in a $dungeonadj_anynosize $dungeon_tunnelword that runs narrowly $roomrun_desc_long.</STRING> 
 		<STRING>This $dungeonadj_anynosize $dungeon_tunnelword runs narrowly $roomrun_desc_long.</STRING> 
@@ -332,19 +332,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 	</STRING>
 	<STRING select="any-1" insert="dungeon_random_blurbs" action="APPEND" />
 </STRING>
-<STRING tag="helloworld">Hello World!</STRING>
-<STRING tag="testcounter">
-<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
-<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
-<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
-<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
-<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
-<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
-<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
-<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
-<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
-<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
-<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
-<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
-</STRING>
+<STRING id="helloworld">Hello World!</STRING>
+<STRING id="testcounter"> $testcounterstep $testcounterstep $testcounterstep $testcounterstep $testcounterstep $testcounterstep $testcounterstep $testcounterstep</STRING>
+<STRING id="testcounterstep"><STRING select="any-1"><STRING condition="2&gt;$testcount" define="testcount+=1">a</STRING><STRING>b</STRING></STRING></STRING>
 </AREADATA>

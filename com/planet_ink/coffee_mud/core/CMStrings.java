@@ -542,6 +542,8 @@ public class CMStrings
 			else
 			if(!(value instanceof String))
 				throw new Exception("Undefined variable found: $" + token);
+			if((value.toString().length()>0)&&(!CMath.isNumber(value.toString())))
+				return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, value.toString());
 			return StringExpToken.token(STRING_EXP_TOKEN_UKNCONST, value.toString());
 		}
 		if ((token.charAt(0) == '_') || (Character.isLetterOrDigit(token.charAt(0))) || (token.charAt(0) == '|') || (token.charAt(0) == '&'))

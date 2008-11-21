@@ -72,7 +72,7 @@ public class Generate extends StdCommand
     {
         if(commands.size()<3)
         {
-        	mob.tell("Generate what? Try GENERATE [TYPE] [TAG_NAME] (FROM [DATA_FILE_PATH]) ([TAG=VALUE]..) [DIRECTION]");
+        	mob.tell("Generate what? Try GENERATE [TYPE] [TAG_ID] (FROM [DATA_FILE_PATH]) ([VAR=VALUE]..) [DIRECTION]");
         	return false;
         }
         CMFile file = null;
@@ -91,8 +91,8 @@ public class Generate extends StdCommand
         }
         StringBuffer xml = file.textUnformatted();
         Vector xmlRoot = CMLib.xml().parseAllXML(xml);
-        Hashtable definedTags = new Hashtable();
-        CMLib.percolator().buildDefinedTagSet(xmlRoot,definedTags);
+        Hashtable definedIDs = new Hashtable();
+        CMLib.percolator().buildDefinedIDSet(xmlRoot,definedIDs);
         String typeName = (String)commands.elementAt(1);
         String objectType = typeName.toUpperCase().trim();
         Integer codeI=(Integer)OBJECT_TYPES.get(objectType);
@@ -129,39 +129,39 @@ public class Generate extends StdCommand
         		return false;
         	}
         }
-        String tagName = ((String)commands.elementAt(2)).toUpperCase().trim();
-        if((!(definedTags.get(tagName) instanceof XMLLibrary.XMLpiece))
-        ||(!((XMLLibrary.XMLpiece)definedTags.get(tagName)).tag.equalsIgnoreCase(objectType)))
+        String idName = ((String)commands.elementAt(2)).toUpperCase().trim();
+        if((!(definedIDs.get(idName) instanceof XMLLibrary.XMLpiece))
+        ||(!((XMLLibrary.XMLpiece)definedIDs.get(idName)).tag.equalsIgnoreCase(objectType)))
         {
-        	mob.tell("The "+objectType+" tag '"+tagName+"' has been properly defined in the data file.");
-        	StringBuffer foundTags=new StringBuffer("");
+        	mob.tell("The "+objectType+" id '"+idName+"' has been properly defined in the data file.");
+        	StringBuffer foundIDs=new StringBuffer("");
         	for(Enumeration tkeye=OBJECT_TYPES.keys();tkeye.hasMoreElements();)
         	{
         		String tKey=(String)tkeye.nextElement();
-        		foundTags.append("^H"+tKey+"^N: ");
+        		foundIDs.append("^H"+tKey+"^N: \n\r");
             	Vector xmlTagsV=new Vector();
-	        	for(Enumeration keys=definedTags.keys();keys.hasMoreElements();)
+	        	for(Enumeration keys=definedIDs.keys();keys.hasMoreElements();)
 	        	{
 	        		String key=(String)keys.nextElement();
-	                if((definedTags.get(key) instanceof XMLLibrary.XMLpiece)
-	                &&(((XMLLibrary.XMLpiece)definedTags.get(key)).tag.equalsIgnoreCase(tKey)))
+	                if((definedIDs.get(key) instanceof XMLLibrary.XMLpiece)
+	                &&(((XMLLibrary.XMLpiece)definedIDs.get(key)).tag.equalsIgnoreCase(tKey)))
 	                	xmlTagsV.addElement(key.toLowerCase());
 	        	}
-	        	foundTags.append(CMParms.toStringList(xmlTagsV)+"\n\r");
+	        	foundIDs.append(CMParms.toStringList(xmlTagsV)+"\n\r");
         	}
-        	mob.tell("Found tags include: \n\r"+foundTags.toString());
+        	mob.tell("Found ids include: \n\r"+foundIDs.toString());
         	return false;
         }
         
-        XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)definedTags.get(tagName);
-        definedTags.putAll(CMParms.parseEQParms(CMParms.combine(commands,3)));
+        XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)definedIDs.get(idName);
+        definedIDs.putAll(CMParms.parseEQParms(CMParms.combine(commands,3)));
         try 
         {
-        	CMLib.percolator().checkRequirements(piece, definedTags);
+        	CMLib.percolator().checkRequirements(piece, definedIDs);
         } 
         catch(CMException cme) 
         {
-        	mob.tell("Required tags for "+tagName+" were missing: "+cme.getMessage());
+        	mob.tell("Required ids for "+idName+" were missing: "+cme.getMessage());
         	return false;
         }
         Vector V = new Vector();
@@ -170,29 +170,29 @@ public class Generate extends StdCommand
 	        {
 	        case Integer.MAX_VALUE:
 	        {
-	        	String s=CMLib.percolator().findString("STRING", piece, definedTags);
+	        	String s=CMLib.percolator().findString("STRING", piece, definedIDs);
 	        	if(s!=null)
 	        		V.addElement(s);
 	        	break;
 	        }
 	    	case CMClass.OBJECT_AREA:
-	    		Area A=CMLib.percolator().buildArea(piece, definedTags, direction);
+	    		Area A=CMLib.percolator().buildArea(piece, definedIDs, direction);
 	    		if(A!=null)
 	    			V.addElement(A);
 	    		break;
 			case CMClass.OBJECT_MOB:
-				V=CMLib.percolator().findMobs(piece, definedTags);
+				V=CMLib.percolator().findMobs(piece, definedIDs);
 				break;
 			case CMClass.OBJECT_LOCALE:
 			{
         		Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
-				Room R=CMLib.percolator().buildRoom(piece, definedTags, exits, direction);
+				Room R=CMLib.percolator().buildRoom(piece, definedIDs, exits, direction);
 				if(R!=null)
 					V.addElement(R);
 				break;
 			}
 			case CMClass.OBJECT_ITEM:
-				V=CMLib.percolator().findItems(piece, definedTags);
+				V=CMLib.percolator().findItems(piece, definedIDs);
 				break;
 	        }
         } catch(CMException cex) {
