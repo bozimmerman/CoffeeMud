@@ -77,72 +77,72 @@ public class FieryRoom
     {
         super.tick(ticking, tickID);
         // on every tick, we may do damage OR eq handling.
+        if (!(ticking instanceof Room))
+        	return super.tick(ticking, tickID);
+        
         Room room = (Room) ticking;
-        if ( (directDamage > 0) || (eqChance > 0)) {
-            // for each inhab, do directDamage to them.
-            for (int i = 0; i < room.numInhabitants(); i++) 
-            {
-                MOB inhab = room.fetchInhabitant(i);
-                if (inhab.isMonster()) 
-                {
-                    boolean reallyAffect = true;
-                    if (noNpc) {
-                        reallyAffect = false;
-                        HashSet group = inhab.getGroupMembers(new HashSet());
-                        for (Iterator e = group.iterator(); e.hasNext(); ) 
-                        {
-                            MOB follower = (MOB) e.next();
-                            if (! (follower.isMonster())) 
-                            {
-                                reallyAffect = true;
-                                break;
-                            }
-                        }
-                    }
-                    if (reallyAffect) {
-                        dealDamage(inhab);
-                        if (CMLib.dice().rollPercentage() > eqChance)
-                            eqRoast(inhab);
-                    }
-                }
-                else 
-                {
-                    if((!CMSecurity.isAllowed(inhab,inhab.location(),"ORDER"))
-	        		&&(!CMSecurity.isAllowed(inhab,inhab.location(),"CMDROOMS"))) 
-                    {
-                        dealDamage(inhab);
-                        if (CMLib.dice().rollPercentage() > eqChance)
-                            eqRoast(inhab);
-                    }
-                }
-            }
-        }
         if (canAct(ticking, tickID)) {
-            if (ticking instanceof Room) {
-                // % chance of burning each item in the room.
-                roastRoom(room);
-                // The tick happened.  If NOT NoFireText, Do flame emotes
-                if(!noFireText) {
-                    Room R = (Room) ticking;
-                    String pickedText=FireTexts[CMLib.dice().roll(1,FireTexts.length,0)-1];
-                    R.showHappens(CMMsg.MSG_OK_ACTION,pickedText);
-                }
-                if (!noStop) 
-                {
-                    if(burnTicks==0) 
-                    {
-                        // NOSTOP is false.  This means the room gets set
-                        // to the torched text and the behavior goes away.
-                        room.setDisplayText(newDisplay);
-                        room.setDescription(newDesc);
-                        room.delBehavior(this);
-                    }
-                    else
-                        --burnTicks;
-                }
+	        if ( (directDamage > 0) || (eqChance > 0)) {
+	            // for each inhab, do directDamage to them.
+	            for (int i = 0; i < room.numInhabitants(); i++) 
+	            {
+	                MOB inhab = room.fetchInhabitant(i);
+	                if (inhab.isMonster()) 
+	                {
+	                    boolean reallyAffect = true;
+	                    if (noNpc) {
+	                        reallyAffect = false;
+	                        HashSet group = inhab.getGroupMembers(new HashSet());
+	                        for (Iterator e = group.iterator(); e.hasNext(); ) 
+	                        {
+	                            MOB follower = (MOB) e.next();
+	                            if (! (follower.isMonster())) 
+	                            {
+	                                reallyAffect = true;
+	                                break;
+	                            }
+	                        }
+	                    }
+	                    if (reallyAffect) {
+	                        dealDamage(inhab);
+	                        if (CMLib.dice().rollPercentage() > eqChance)
+	                            eqRoast(inhab);
+	                    }
+	                }
+	                else 
+	                {
+	                    if((!CMSecurity.isAllowed(inhab,inhab.location(),"ORDER"))
+		        		&&(!CMSecurity.isAllowed(inhab,inhab.location(),"CMDROOMS"))) 
+	                    {
+	                        dealDamage(inhab);
+	                        if (CMLib.dice().rollPercentage() > eqChance)
+	                            eqRoast(inhab);
+	                    }
+	                }
+	            }
+	        }
+            // % chance of burning each item in the room.
+            roastRoom(room);
+            // The tick happened.  If NOT NoFireText, Do flame emotes
+            if(!noFireText) {
+                String pickedText=FireTexts[CMLib.dice().roll(1,FireTexts.length,0)-1];
+                room.showHappens(CMMsg.MSG_OK_ACTION,pickedText);
             }
         }
-        return true;
+        if (!noStop) 
+        {
+            if(burnTicks==0) 
+            {
+                // NOSTOP is false.  This means the room gets set
+                // to the torched text and the behavior goes away.
+                room.setDisplayText(newDisplay);
+                room.setDescription(newDesc);
+                room.delBehavior(this);
+            }
+            else
+                --burnTicks;
+        }
+    	return super.tick(ticking, tickID);
     }
 
     private void dealDamage(MOB mob) 
