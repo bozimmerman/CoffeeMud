@@ -58,6 +58,15 @@ public class ActiveTicker extends StdBehavior
 		tickReset();
 	}
 
+	public String rebuildParms()
+	{
+		StringBuffer rebuilt=new StringBuffer("");
+		rebuilt.append(" min="+minTicks);
+		rebuilt.append(" max="+maxTicks);
+		rebuilt.append(" chance="+chance);
+		return rebuilt.toString();
+	}
+	
 	public String getParmsNoTicks()
 	{
 		String parms=getParms();

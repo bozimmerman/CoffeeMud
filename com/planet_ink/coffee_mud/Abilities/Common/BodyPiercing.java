@@ -85,11 +85,20 @@ public class BodyPiercing extends CommonSkill
 	{
 		if(commands.size()<2)
 		{
-			commonTell(mob,"You must specify whom you want to pierce, and what body part to pierce.");
+			commonTell(mob,"You must specify remove and/or whom you want to pierce, and what body part to pierce.");
 			return false;
 		}
 		String name=(String)commands.firstElement();
+		String command="";
 		String part=CMParms.combine(commands,1);
+		if(commands.size()>2)
+		{
+			if(((String)commands.elementAt(1)).equalsIgnoreCase("REMOVE"))
+			{
+				command=((String)commands.elementAt(1)).toUpperCase();
+				part=CMParms.combine(commands,2);
+			}
+		}
 		
 		MOB target=super.getTarget(mob,CMParms.makeVector(name),givenTarget);
 		if(target==null) return false;
@@ -141,6 +150,15 @@ public class BodyPiercing extends CommonSkill
 		    if(tat.toUpperCase().startsWith(wornName.toUpperCase()+":"))
 	            numTattsDone++;
 		}
+		if("REMOVE".equals(command))
+		{
+		    if(numTattsDone<=0)
+		    {
+			    commonTell(mob,"There is no piercing there to heal.");
+			    return false;
+		    }
+		}
+		else
 		if(numTattsDone>=target.getWearPositions(Item.WORN_CODES[partNum]))
 		{
 		    commonTell(mob,"That location is already decorated.");
@@ -157,13 +175,21 @@ public class BodyPiercing extends CommonSkill
 		displayText="You are "+verb;
 		if(!proficiencyCheck(mob,0,auto)) writing="";
 		int duration=getDuration(30,mob,1,6);
-		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) piercing <T-NAMESELF> on the "+wornName.toLowerCase()+".");
+		String msgStr="<S-NAME> start(s) piercing <T-NAMESELF> on the "+wornName.toLowerCase()+".";
+		if("REMOVE".equals(command))
+			msgStr="<S-NAME> heals(s) the piercing on <T-YOUPOSS> "+wornName.toLowerCase()+".";
+		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,msgStr);
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			beneficialAffect(mob,mob,asLevel,duration);
-			BodyPiercing A=(BodyPiercing)mob.fetchEffect(ID());
-			if(A!=null) A.target=target;
+			if("REMOVE".equals(command))
+			    target.delTattoo(writing);
+			else
+			{
+				beneficialAffect(mob,mob,asLevel,duration);
+				BodyPiercing A=(BodyPiercing)mob.fetchEffect(ID());
+				if(A!=null) A.target=target;
+			}
 		}
 		return true;
 	}

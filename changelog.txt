@@ -2155,5 +2155,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 20. CL Player Editor now allows Quest-Scripts to be Removed manually (to fix players with bad quest scripts attached to them)
 21. MG Catalog Manager will now show "most popular" area for stuff, and allows sorting by column
 22. Common text files (intro.txt, newchar.txt, rules.txt, etc) are sent through webmacro system now -- add macros!
-23. 
+23. Behavior MobReSave now saves/restores a mobs charstats.
   

@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
+import java.lang.ref.WeakReference;
 import java.util.*;
 
 /* 
@@ -39,6 +40,8 @@ public class MOBReSave extends ActiveTicker
 	public long flags(){return 0;}
 	protected static HashSet roomsReset=new HashSet();
 	protected boolean noRecurse=false;
+	protected CharStats startStats=null;
+	protected WeakReference host=null;
 
 	public MOBReSave()
 	{
@@ -47,7 +50,24 @@ public class MOBReSave extends ActiveTicker
 		tickReset();
 	}
 
-
+	public void setParms(String newParms)
+	{
+		super.setParms(newParms);
+		startStats=(CharStats)CMClass.getCommon("DefaultCharStats");
+		for(int c=0;c<CharStats.NUM_STATS;c++)
+			startStats.setStat(c,CMParms.getParmInt(parms,CharStats.STAT_ABBR[c],-1));
+	}
+	
+	public String getParms() 
+	{
+		if(host==null) return super.getParms();
+		MOB M=(MOB)host.get();
+		if(M==null) return super.getParms();
+		StringBuffer rebuiltParms=new StringBuffer(super.rebuildParms());
+		for(int c=0;c<CharStats.NUM_STATS;c++)
+			rebuiltParms.append(" "+CharStats.STAT_ABBR[c]+"="+M.baseCharStats().getStat(c));
+		return rebuiltParms.toString();
+	}
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((ticking instanceof MOB)
@@ -56,16 +76,28 @@ public class MOBReSave extends ActiveTicker
 		&&(!noRecurse)
 		&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 		&&(((MOB)ticking).getStartRoom()!=null)
-		&&(((MOB)ticking).getStartRoom().roomID().length()>0))
+		&&(((MOB)ticking).getStartRoom().roomID().length()>0)
+		&&(((MOB)ticking).databaseID().length()>0))
 		{
-			noRecurse=true;
 			MOB mob=(MOB)ticking;
-			Room R=mob.getStartRoom();
-	    	synchronized(("SYNC"+R.roomID()).intern())
-	    	{
-				if(canAct(ticking,tickID)&&(mob.databaseID().length()>0))
-					CMLib.database().DBUpdateMOB(R.roomID(),mob);
-	    	}
+			if((host==null)||(host.get()==null))
+				host=new WeakReference(mob);
+			noRecurse=true;
+			if(startStats != null)
+			{
+				synchronized(startStats)
+				{
+					for(int c=0;c<CharStats.NUM_STATS;c++)
+						if(startStats.getStat(c)>0)
+							mob.baseCharStats().setStat(c,startStats.getStat(c));
+					startStats=null;
+				}
+			}
+			if(canAct(ticking,tickID))
+			{
+				Room R=mob.getStartRoom();
+				CMLib.database().DBUpdateMOB(R.roomID(),mob);
+			}
 		}
 		noRecurse=false;
 		return true;
