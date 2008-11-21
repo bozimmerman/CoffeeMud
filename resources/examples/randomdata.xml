@@ -9,6 +9,9 @@ ROOMTAG_NODEFLAGS contains:
 ROOMTAG_NODERUN values:
 	ew,ns,ud,nesw,nwse
 Also ROOMLINK_N, ROOMLINK_S, etc are available
+Use DEFINE to harden information between rooms/mobs/other info
+Use DEFINE _VARNAME to persist a definition beyond the room.
+TODO: **COMPLETE** docs maybe even a dtd or two
 -->
 <AREADATA>
 <AREA tag="maze_dungeon" layout="MazeLayout" requires="areaname=$,areasize=int,level_range=int,theme=prison;rats;kobolds;random">
@@ -24,6 +27,7 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 		<TITLE>$a_streetprefix $dungeon_hallways_street_name</TITLE>
 		<DESCRIPTION>$dungeon_hallways_street_desc</DESCRIPTION>
 		<EXIT class="Open" />
+		<!-- TODO: Trap! -->
 	</ROOM>
 	<ROOM class="CaveRoom" condition="1?10 &lt;= 2"  include="dungeon_mobs,dungeon_items">
 		<TITLE>$a_streetprefix $dungeon_crawlways_street_name</TITLE>
@@ -43,21 +47,40 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 		</DESCRIPTION>
 		<EXIT class="Open" />
 	</ROOM>
-	<ROOM class="IndoorWaterSurface" condition="" include="dungeon_mobs,dungeon_items">
+	<ROOM class="CaveRoom" condition="" include="dungeon_mobs,dungeon_items">
 		<TITLE>
 		<!--TODO: Fill this in -->
 		</TITLE>
 		<DESCRIPTION>
-		, but the black cold waters of the
- 		lake seem to cover almost the entire floor.You are on the perfectly still waters of a cold black lake. 
- 		<!--TODO: Fill this in -->
+		<!--TODO: Fill this in -->
 		</DESCRIPTION>
-		<AFFECT class="Prop_RoomDark" />
+		<EXIT class="Open" />
+	</ROOM>
+	<ROOM class="StoneRoom" condition="" include="dungeon_mobs,dungeon_items">
+		<TITLE>
+		<!--TODO: Fill this in -->
+		</TITLE>
+		<DESCRIPTION>
+		<!--TODO: Fill this in -->
+		</DESCRIPTION>
 		<EXIT class="Open" />
 	</ROOM>
 </ROOM>
 
 <ROOM tag="dungeon_leaf" select="any-1" condition="$roomtag_nodetype='leaf'">
+	<ROOM class="StoneRoom" condition="" include="dungeon_mobs,dungeon_items">
+		<TITLE>
+		<!--TODO: Fill this in -->
+		</TITLE>
+		<DESCRIPTION>
+		<!--TODO: Fill this in -->
+		</DESCRIPTION>
+		<EXIT select="any-1">
+			<EXIT class="Door" />
+			<EXIT class="Open" />
+			<EXIT class="LockedDoor" />
+		</EXIT>
+	</ROOM>
 	<ROOM class="CaveRoom" condition="" include="dungeon_mobs,dungeon_items">
 		<TITLE>
 		<!--TODO: Fill this in -->
@@ -66,6 +89,36 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 		<!--TODO: Fill this in -->
 		</DESCRIPTION>
 		<EXIT class="Open" /> <!--TODO: change this -->
+	</ROOM>
+	<ROOM class="CaveRoom" condition="" include="dungeon_mobs,dungeon_items">
+		<TITLE>
+		<!--TODO: Fill this in -->
+		</TITLE>
+		<DESCRIPTION>
+		<!--TODO: Fill this in -->
+		</DESCRIPTION>
+		<EXIT class="Open" /> <!--TODO: change this -->
+	</ROOM>
+	<ROOM class="CaveRoom" condition="" include="dungeon_mobs,dungeon_items">
+		<TITLE>
+		<!--TODO: Fill this in -->
+		</TITLE>
+		<DESCRIPTION>
+		<!--TODO: Fill this in -->
+		</DESCRIPTION>
+		<EXIT class="Open" /> <!--TODO: change this -->
+	</ROOM>
+	<ROOM class="IndoorWaterSurface" condition="1?20=1 and $_lakes&lt;1" define="_lakes+=1">
+		<TITLE>
+		<!--TODO: Fill this in -->
+		</TITLE>
+		<DESCRIPTION>
+		The ceiling of this cavern must be a mile up, but the black cold waters of the
+ 		lake seem to cover almost the entire floor.You are on the perfectly still waters of a cold black lake. 
+ 		<!--TODO: Fill this in -->
+		</DESCRIPTION>
+		<AFFECT class="Prop_RoomDark" />
+		<EXIT class="Open" />
 	</ROOM>
 </ROOM>
 
@@ -81,17 +134,17 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 	</MOB>
 </MOB>
 
-<MOB tag="dungeon_items" requires="theme=prison;rats;kobolds;random">
-	<MOB condition="$theme='rats' or $theme='random'">
+<ITEM tag="dungeon_items" requires="theme=prison;rats;kobolds;random">
+	<ITEM condition="$theme='rats' or $theme='random'">
 	<!--TODO: Insert values -->
-	</MOB>
-	<MOB condition="$theme='prison' or $theme='random'">
+	</ITEM>
+	<ITEM condition="$theme='prison' or $theme='random'">
 	<!--TODO: Insert values -->
-	</MOB>
-	<MOB condition="$theme='kobold' or $theme='random'">
+	</ITEM>
+	<ITEM condition="$theme='kobold' or $theme='random'">
 	<!--TODO: Insert values -->
-	</MOB>
-</MOB>
+	</ITEM>
+</ITEM>
 
 <STRING tag="dungeon_hallways_street_name" define="dungeon_hallways_street_name" select="any-1">
 <STRING>cavernous tunnel</STRING>
@@ -280,4 +333,18 @@ Also ROOMLINK_N, ROOMLINK_S, etc are available
 	<STRING select="any-1" insert="dungeon_random_blurbs" action="APPEND" />
 </STRING>
 <STRING tag="helloworld">Hello World!</STRING>
+<STRING tag="testcounter">
+<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
+<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
+<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
+<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
+<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
+<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
+<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
+<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
+<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
+<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
+<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
+<STRING select="any-1"><STRING condition="2&gt;$testcount" _define="testcount+=1">a</STRING><STRING>b</STRING></STRING>
+</STRING>
 </AREADATA>

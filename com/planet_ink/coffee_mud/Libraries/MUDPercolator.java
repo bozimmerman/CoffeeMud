@@ -308,6 +308,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         		for(Integer linkDir : node.links().keySet())
         			groupDefined.remove("ROOMLINK_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase());
         	}
+            for(Enumeration e=groupDefined.keys();e.hasMoreElements();)
+            {
+            	String key=(String)e.nextElement();
+            	if(key.startsWith("_")&&(!defined.containsKey(key)))
+            		defined.put(key, groupDefined.get(key));
+            }
         }
         return A;
     }
@@ -697,23 +703,44 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         }
     }
     
-    public void defineReward(XMLLibrary.XMLpiece piece, String value, Hashtable defined)
+    protected void defineReward(XMLLibrary.XMLpiece piece, String value, Hashtable defined) throws CMException
     {
-        String defineString = CMLib.xml().getParmValue(piece.parms,"DEFINE");
+        defineReward(piece,value,defined,"DEFINE");
+    }
+    protected void defineReward(XMLLibrary.XMLpiece piece, String value, Hashtable defined, String defineTag) throws CMException
+    {
+        String defineString = CMLib.xml().getParmValue(piece.parms,defineTag);
         if((defineString!=null)&&(defineString.trim().length()>0))
         {
         	Vector V=CMParms.parseCommas(defineString,true);
         	for(Enumeration e=V.elements();e.hasMoreElements();)
         	{
         		String defVar=(String)e.nextElement();
+        		String definition=value;
         		int x=defVar.indexOf('=');
+        		if(x==0) continue;
         		if(x>0)
-	            	defined.put(defVar.substring(0,x).toUpperCase().trim(),defVar.substring(x+1).trim());
-        		else
-        		if(value!=null)
-	            	defined.put(defVar.toUpperCase().trim(), value);
-        		else
-	            	defined.put(defVar.toUpperCase().trim(), "!");
+        			definition=defVar.substring(x+1).trim();
+        			defVar=defVar.substring(0,x).toUpperCase().trim();
+        			switch(defVar.charAt(defVar.length()-1))
+            		{
+        				case '+': case '-': case '*': case '/':
+        				{
+                			char plusMinus=defVar.charAt(defVar.length()-1);
+                			defVar=defVar.substring(0,defVar.length()-1).trim();
+                			String oldVal=(String)defined.get(defVar.toUpperCase().trim());
+                			if((oldVal==null)||(oldVal.trim().length()==0)) oldVal="0";
+                			definition=oldVal+plusMinus+definition;
+                			break;
+        				}
+            		}
+        		if(definition==null) definition="!";
+        		definition=strFilter(definition,defined);
+        		if(CMath.isMathExpression(definition))
+        			definition=Integer.toString(CMath.s_parseIntExpression(definition));
+        		Log.debugOut("MUDPercolator",defineTag+":"+defVar+"="+definition);
+        		if(defVar.trim().length()>0)
+            		defined.put(defVar.toUpperCase().trim(), definition);
         	}
         }
     }
@@ -735,17 +762,19 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
             String value;
             if(valPiece == piece)
+            {
             	value=strFilter(piece.value,defined);
+	            defineReward(valPiece,value,defined);
+            }
             else
             {
 	            try {
 		            value = findString("STRING",valPiece,defined);
 	            } catch(Exception e) {
 	            	value = strFilter(valPiece.value,defined);
+		            defineReward(valPiece,value,defined);
 	            }
             }
-            defineReward(valPiece,value,defined);
-            
             String action = CMLib.xml().getParmValue(valPiece.parms,"ACTION");
             if((action==null)||(action.length()==0)) action="APPEND";
             if(action.equalsIgnoreCase("REPLACE"))
@@ -765,9 +794,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     private Vector getAllChoices(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
     {
         Vector choices = new Vector();
-        for(int p=0;p<piece.contents.size();p++)
-            if(((XMLLibrary.XMLpiece)piece.contents.elementAt(p)).tag.equalsIgnoreCase(tagName))
-                choices.addAll(getAllChoices(tagName,piece.contents.elementAt(p),defined));
         String inserter = CMLib.xml().getParmValue(piece.parms,"INSERT");
         if(inserter!=null)
         {
@@ -787,27 +813,37 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         if((piece.contents.size()==0)&&(piece.tag.equalsIgnoreCase(tagName)))
         	return CMParms.makeVector(piece);
         
+        for(int p=0;p<piece.contents.size();p++)
+            if(((XMLLibrary.XMLpiece)piece.contents.elementAt(p)).tag.equalsIgnoreCase(tagName))
+                choices.addAll(getAllChoices(tagName,piece.contents.elementAt(p),defined));
+        
         Vector finalChoices = new Vector(choices.size());
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece lilP =(XMLLibrary.XMLpiece)choices.elementAt(c); 
             if(finalChoices.contains(lilP)) continue;
-            try {
-                String condition=CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(lilP.parms,"CONDITION"));
-	            if((condition == null) || (CMStrings.parseStringExpression(condition,defined, true)))
-	            {
-	                checkRequirements(defined,CMLib.xml().getParmValue(lilP.parms,"REQUIRES"));
-                	finalChoices.addElement(lilP);
-	            }
-            } 
-            catch(Exception e)
-            {
-                Log.errOut("Generate",e);
-            }
+            if(testCondition(lilP,defined))
+            	finalChoices.addElement(lilP);
         }
         return selectChoices(finalChoices,piece,defined);
     }
 
+    private boolean testCondition(XMLLibrary.XMLpiece piece, Hashtable defined)
+    {
+        String condition=CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(piece.parms,"CONDITION"));
+        try {
+            if(condition == null) return true; 
+            boolean result=CMStrings.parseStringExpression(condition,defined, true);
+            Log.debugOut("MUDPercolator","CONDITION: "+condition+":"+result);
+            return result;
+        } 
+        catch(Exception e)
+        {
+            Log.errOut("Generate",e);
+            return false;
+        }
+    }
+    
     private String getRequirementsDescription(String values) 
     {
     	if(values==null) return "";
@@ -897,34 +933,45 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         String selection = CMLib.xml().getParmValue(piece.parms,"SELECT");
         if(selection == null) return choices;
         selection=selection.toUpperCase().trim();
-        if(selection.equals("NONE"))  return new Vector();
-        if(choices.size()==0) throw new CMException("Can't make selection among NONE: on piece '"+piece.tag+"', Data: "+piece.value);
-        if(selection.equals("ALL"))  return choices;
-        if(selection.equals("FIRST"))  return CMParms.makeVector(choices.firstElement());
+        Vector selectedChoicesV=null;
+        if(selection.equals("NONE")) 
+        	selectedChoicesV= new Vector();
+        else
+        if(choices.size()==0) 
+        	throw new CMException("Can't make selection among NONE: on piece '"+piece.tag+"', Data: "+piece.value);
+        else
+        if(selection.equals("ALL")) 
+        	selectedChoicesV=choices;
+        else
+        if(selection.equals("FIRST"))
+        	selectedChoicesV= CMParms.makeVector(choices.firstElement());
+        else
         if(selection.startsWith("FIRST-"))
         {
             int num=CMath.s_int(selection.substring(selection.indexOf('-')+1));
             if((num<=0)||(num>choices.size())) throw new CMException("Can't pick first "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
-            Vector V=new Vector();
+            selectedChoicesV=new Vector();
             for(int v=0;v<num;v++)
-                V.addElement(choices.elementAt(v));
-            return V;
+            	selectedChoicesV.addElement(choices.elementAt(v));
         }
-        if(selection.equals("LAST"))  return CMParms.makeVector(choices.lastElement());
+        else
+        if(selection.equals("LAST"))  
+        	selectedChoicesV=CMParms.makeVector(choices.lastElement());
+        else
         if(selection.startsWith("LAST-"))
         {
             int num=CMath.s_int(selection.substring(selection.indexOf('-')+1));
             if((num<=0)||(num>choices.size())) throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
-            Vector V=new Vector();
-            for(int v=V.size()-num;v<V.size();v++)
-                V.addElement(choices.elementAt(v));
-            return V;
+            selectedChoicesV=new Vector();
+            for(int v=choices.size()-num;v<choices.size();v++)
+            	selectedChoicesV.addElement(choices.elementAt(v));
         }
+        else
         if(selection.startsWith("PICK-"))
         {
             int num=CMath.s_int(selection.substring(selection.indexOf('-')+1));
             if((num<=0)||(num>choices.size())) throw new CMException("Can't pick "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
-            Vector V=new Vector();
+            selectedChoicesV=new Vector();
             Vector cV=(Vector)choices.clone();
             for(int v=0;v<num;v++)
             {
@@ -946,27 +993,32 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
                     c++;
                     choice-=weights[c];
                 }
-                V.addElement(cV.elementAt(c));
+                selectedChoicesV.addElement(cV.elementAt(c));
                 cV.removeElementAt(c);
             }
-            return V;
         }
-        if(selection.equals("ANY"))    return CMParms.makeVector(choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)));
+        else
+        if(selection.equals("ANY"))
+        	selectedChoicesV=CMParms.makeVector(choices.elementAt(CMLib.dice().roll(1,choices.size(),-1)));
+        else
         if(selection.startsWith("ANY-"))
         {
             int num=CMath.s_int(selection.substring(selection.indexOf('-')+1));
             if((num<=0)||(num>choices.size())) throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
-            Vector V=new Vector();
+            selectedChoicesV=new Vector();
             Vector cV=(Vector)choices.clone();
             for(int v=0;v<num;v++)
             {
                 int x=CMLib.dice().roll(1,cV.size(),-1);
-                V.addElement(cV.elementAt(x));
+                selectedChoicesV.addElement(cV.elementAt(x));
                 cV.removeElementAt(x);
             }
-            return V;
         }
-        throw new CMException("Illegal select type '"+selection+"' on piece '"+piece.tag+"', Data: "+piece.value);
+        else
+	        throw new CMException("Illegal select type '"+selection+"' on piece '"+piece.tag+"', Data: "+piece.value);
+        for(Enumeration e=selectedChoicesV.elements();e.hasMoreElements();)
+        	defineReward((XMLLibrary.XMLpiece)e.nextElement(),null,defined,"_DEFINE");
+        return selectedChoicesV;
     }
     
     private String strFilter(String str, Hashtable defined) throws CMException

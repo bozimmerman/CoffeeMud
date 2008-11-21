@@ -507,6 +507,7 @@ public class CMStrings
 	private static final int	STRING_EXP_TOKEN_COMBINER	= 6;
 	private static final int	STRING_EXP_TOKEN_NOT		= 7;
 	private static final int	STRING_EXP_TOKEN_NUMCONST	= 8;
+	private static final int	STRING_EXP_TOKEN_UKNCONST	= 9;
 
 	private static StringExpToken makeTokenType(String token, Hashtable variables, boolean emptyVars) throws Exception
 	{
@@ -541,15 +542,7 @@ public class CMStrings
 			else
 			if(!(value instanceof String))
 				throw new Exception("Undefined variable found: $" + token);
-			if(value.toString().trim().length()==0)
-				return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, value.toString());
-			try 
-			{
-				Double.parseDouble(value.toString());
-				return StringExpToken.token(STRING_EXP_TOKEN_NUMCONST, value.toString());
-			} catch (Exception e) {
-				return StringExpToken.token(STRING_EXP_TOKEN_STRCONST, value.toString());
-			}
+			return StringExpToken.token(STRING_EXP_TOKEN_UKNCONST, value.toString());
 		}
 		if ((token.charAt(0) == '_') || (Character.isLetterOrDigit(token.charAt(0))) || (token.charAt(0) == '|') || (token.charAt(0) == '&'))
 			return StringExpToken.token(STRING_EXP_TOKEN_WORD, token);
@@ -647,7 +640,8 @@ public class CMStrings
 		StringExpToken token = nextToken(tokens, i);
 		if (token == null)
 			return null;
-		if (token.type != STRING_EXP_TOKEN_STRCONST)
+		if((token.type != STRING_EXP_TOKEN_STRCONST)
+		&& (token.type != STRING_EXP_TOKEN_UKNCONST))
 			return null;
 		index[0] = i[0];
 		return token.value;
@@ -659,7 +653,8 @@ public class CMStrings
 		StringExpToken token = nextToken(tokens, i);
 		if (token == null)
 			return null;
-		if (token.type != STRING_EXP_TOKEN_NUMCONST)
+		if((token.type != STRING_EXP_TOKEN_NUMCONST)
+		&& (token.type != STRING_EXP_TOKEN_UKNCONST))
 			return null;
 		index[0] = i[0];
 		return new Double(token.numValue);
