@@ -89,13 +89,14 @@ public class BodyPiercing extends CommonSkill
 			return false;
 		}
 		String name=(String)commands.firstElement();
-		String command="";
 		String part=CMParms.combine(commands,1);
+		String command="";
 		if(commands.size()>2)
 		{
-			if(((String)commands.elementAt(1)).equalsIgnoreCase("REMOVE"))
+			if(((String)commands.firstElement()).equalsIgnoreCase("REMOVE"))
 			{
-				command=((String)commands.elementAt(1)).toUpperCase();
+				command=((String)commands.firstElement()).toUpperCase();
+				name=(String)commands.elementAt(1);
 				part=CMParms.combine(commands,2);
 			}
 		}
@@ -177,7 +178,7 @@ public class BodyPiercing extends CommonSkill
 		int duration=getDuration(30,mob,1,6);
 		String msgStr="<S-NAME> start(s) piercing <T-NAMESELF> on the "+wornName.toLowerCase()+".";
 		if("REMOVE".equals(command))
-			msgStr="<S-NAME> heals(s) the piercing on <T-YOUPOSS> "+wornName.toLowerCase()+".";
+			msgStr="<S-NAME> heal(s) the piercing on <T-YOUPOSS> "+wornName.toLowerCase()+".";
 		CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSG_NOISYMOVEMENT,msgStr);
 		if(mob.location().okMessage(mob,msg))
 		{
