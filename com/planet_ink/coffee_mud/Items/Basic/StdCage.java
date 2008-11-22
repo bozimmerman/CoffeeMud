@@ -31,6 +31,7 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+@SuppressWarnings("unchecked")
 public class StdCage extends StdContainer
 {
 	public String ID(){	return "StdCage";}
@@ -48,18 +49,63 @@ public class StdCage extends StdContainer
 		recoverEnvStats();
 	}
 
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if((tickID==Tickable.TICKID_EXIT_REOPEN)&&(isOpen()))
+		{
+			Room R=CMLib.map().roomLocation((Environmental)ticking);
+			if((R!=null)&&(owner() instanceof Room)&&(CMLib.flags().isInTheGame(this,true)))
+			{
+				Vector mobContents=getContents();
+				for(Enumeration e=mobContents.elements();e.hasMoreElements();)
+				{
+					Environmental E=(Environmental)e.nextElement();
+					if(E instanceof CagedAnimal)
+					{
+						MOB M=((CagedAnimal)E).unCageMe();
+						if(M!=null)
+							M.bringToLife(R,true);
+						R.showHappens(CMMsg.MSG_OK_ACTION,"<S-NAME> escapes from "+name()+"!");
+						E.destroy();
+					}
+				}
+			}
+		}
+		return super.tick(ticking,tickID);
+	}
+	
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		if((msg.amITarget(this))
-        &&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE)))
+		if(msg.amITarget(this))
 		{
-            synchronized(this)
-            {
-                boolean wasOpen=isOpen;
-                isOpen=true;
-                CMLib.commands().handleBeingLookedAt(msg);
-                isOpen=wasOpen;
-            }
+			switch(msg.targetMinor())
+			{
+			case CMMsg.TYP_CLOSE:
+				if((hasALid)&&(isOpen))
+				{
+					if(CMLib.threads().isTicking(this,Tickable.TICKID_EXIT_REOPEN))
+						CMLib.threads().deleteTick(this,Tickable.TICKID_EXIT_REOPEN);
+				}
+				break;
+			case CMMsg.TYP_OPEN:
+				if((hasALid)&&(!isOpen)&&(!isLocked))
+				{
+					if((owner() instanceof Room)
+					&&(!CMLib.threads().isTicking(this,Tickable.TICKID_EXIT_REOPEN)))
+						CMLib.threads().startTickDown(this,Tickable.TICKID_EXIT_REOPEN,30);
+				}
+				break;
+			case CMMsg.TYP_LOOK: case CMMsg.TYP_EXAMINE:
+			{
+	            synchronized(this)
+	            {
+	                boolean wasOpen=isOpen;
+	                isOpen=true;
+	                CMLib.commands().handleBeingLookedAt(msg);
+	                isOpen=wasOpen;
+	            }
+			}
+			}
 			for(int b=0;b<numBehaviors();b++)
 			{
 				Behavior B=fetchBehavior(b);
