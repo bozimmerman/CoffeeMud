@@ -35,7 +35,6 @@ public interface ShoppingLibrary extends CMLibrary
     public ShopKeeper getShopKeeper(Environmental E);
     public Vector getAllShopkeepers(Room here, MOB notMOB);
     public String getViewDescription(Environmental E);
-    public boolean shownInInventory(Environmental product, MOB buyer);
     public double rawSpecificGoldPrice(Environmental product,  int whatISell, double numberOfThem);
     public double prejudiceValueFromPart(MOB customer, boolean sellTo, String part);
     public double prejudiceFactor(MOB customer, String factors, boolean sellTo);

@@ -155,13 +155,32 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         return str.toString();
     }
 
-    public boolean shownInInventory(Environmental product, MOB buyer)
+    public boolean shownInInventory(MOB seller, MOB buyer, Environmental product, int whatIsSold)
     {
-        if(!(product instanceof Item)) return true;
-        if(((Item)product).container()!=null) return false;
-        if(CMSecurity.isAllowed(buyer,buyer.location(),"CMDMOBS")) return true;
-        if(((Item)product).envStats().level()>buyer.envStats().level()) return false;
-        if(!CMLib.flags().canBeSeenBy(product,buyer)) return false;
+        if(CMSecurity.isAllowed(buyer,buyer.location(),"CMDMOBS")) 
+        	return true;
+        if(product instanceof Item) 
+        {
+            if(((Item)product).container()!=null) 
+            	return false;
+            if(((Item)product).envStats().level()>buyer.envStats().level()) 
+            	return false;
+            if(!CMLib.flags().canBeSeenBy(product,buyer)) 
+            	return false;
+        }
+        if(product instanceof MOB)
+        {
+            if(((Item)product).envStats().level()>buyer.envStats().level()) 
+            	return false;
+        }
+        if(product instanceof Ability)
+        {
+        	if(whatIsSold==ShopKeeper.DEAL_TRAINER)
+        	{
+        		if(CMLib.ableMapper().qualifiesByLevel(buyer, (Ability)product))
+    				return false;
+        	}
+        }
         return true;
     }
 
@@ -541,6 +560,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         CMLib.commands().postSay(seller,buyer,"I'm sorry, I'm not buying those.",true,false);
         return false;
     }
+    
+    
     public boolean standardBuyEvaluation(MOB seller,
                                          MOB buyer,
                                          Environmental product,
@@ -672,7 +693,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         for(int i=0;i<rawInventory.size();i++)
         {
             E=(Environmental)rawInventory.elementAt(i);
-            if(shownInInventory(E,buyer)
+            if(shownInInventory(seller,buyer,E,shop.whatIsSold())
             &&((mask==null)||(mask.length()==0)||(CMLib.english().containsString(E.name(),mask))))
             	inventory.addElement(E);
         }
@@ -1549,7 +1570,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         for(int v=0;v<auctions.size();v++)
         {
         	Auctioneer.AuctionData data=(Auctioneer.AuctionData)auctions.elementAt(v);
-	        if(shownInInventory(data.auctioningI,buyer))
+	        if(shownInInventory(seller,buyer,data.auctioningI,ShopKeeper.DEAL_ANYTHING))
 	        {
 	        	if(((mask==null)||(mask.length()==0)||(CMLib.english().containsString(data.auctioningI.name(),mask)))
 	        	&&((data.tickDown>System.currentTimeMillis())||(data.auctioningM==buyer)||(data.highBidderM==buyer)))
