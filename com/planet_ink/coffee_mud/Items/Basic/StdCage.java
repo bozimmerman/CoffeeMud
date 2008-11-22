@@ -53,7 +53,7 @@ public class StdCage extends StdContainer
 	{
 		if((tickID==Tickable.TICKID_EXIT_REOPEN)&&(isOpen()))
 		{
-			Room R=CMLib.map().roomLocation((Environmental)ticking);
+			Room R=CMLib.map().roomLocation(this);
 			if((R!=null)&&(owner() instanceof Room)&&(CMLib.flags().isInTheGame(this,true)))
 			{
 				Vector mobContents=getContents();
@@ -65,7 +65,7 @@ public class StdCage extends StdContainer
 						MOB M=((CagedAnimal)E).unCageMe();
 						if(M!=null)
 							M.bringToLife(R,true);
-						R.showHappens(CMMsg.MSG_OK_ACTION,"<S-NAME> escapes from "+name()+"!");
+						R.show(M,null,this,CMMsg.MSG_OK_ACTION,"<S-NAME> escapes from <O-NAME>!");
 						E.destroy();
 					}
 				}
@@ -99,27 +99,17 @@ public class StdCage extends StdContainer
 			{
 	            synchronized(this)
 	            {
-	                boolean wasOpen=isOpen;
-	                isOpen=true;
-	                CMLib.commands().handleBeingLookedAt(msg);
-	                isOpen=wasOpen;
+	            	if(!isOpen)
+	            	{
+	            		isOpen=true;
+		        		super.executeMsg(myHost,msg);
+		                isOpen=false;
+		                return;
+	            	}
 	            }
+	            break;
 			}
 			}
-			for(int b=0;b<numBehaviors();b++)
-			{
-				Behavior B=fetchBehavior(b);
-				if(B!=null)
-					B.executeMsg(this,msg);
-			}
-
-			for(int a=0;a<numEffects();a++)
-			{
-				Ability A=fetchEffect(a);
-				if(A!=null)
-					A.executeMsg(this,msg);
-			}
-			return;
 		}
 		super.executeMsg(myHost,msg);
 	}

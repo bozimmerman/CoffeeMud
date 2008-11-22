@@ -2158,4 +2158,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 23. Behavior MobReSave now saves/restores a mobs charstats.
 24. Thief Mark skill can now unmark, BodyPiercing can now "heal" piercings, 
     You can Leech yourself now, always Hide from sleeping mobs, and assassinate packs a larger punch.
-25. If a cage containing a mob is opened and left open -- the creature will now escape!
+25. If a cage containing a mob is opened and left open -- the creature will now escape in 30 ticks (2 min)!
