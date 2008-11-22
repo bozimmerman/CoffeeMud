@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Libraries;
+import com.planet_ink.coffee_mud.core.exceptions.BadEmailAddressException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
@@ -312,7 +313,8 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
         	try { introText = CMLib.httpUtils().doVirtualPage(introText);}catch(Exception ex){}
             session.println(null,null,null,"\n\r\n\r"+introText.toString());
 
-            boolean emailPassword=((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))&&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0));
+            boolean emailPassword=((CMProps.getVar(CMProps.SYSTEM_EMAILREQ).toUpperCase().startsWith("PASS"))
+            					 &&(CMProps.getVar(CMProps.SYSTEM_MAILBOX).length()>0));
 
             String password="";
             if(!emailPassword)
@@ -339,9 +341,15 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
                 String confirmEmail=newEmail;
                 if(emailPassword) session.println("This email address will be used to send you a password.");
                 if(emailReq) confirmEmail=session.prompt("Confirm that '"+newEmail+"' is correct by re-entering.\n\rRe-enter:");
-                if(((newEmail.length()>6)&&(newEmail.indexOf("@")>0)&&((newEmail.equalsIgnoreCase(confirmEmail))))
-                   ||(!emailReq))
+                boolean emailConfirmed=false;
+                if((newEmail.length()>0)&&(newEmail.equalsIgnoreCase(confirmEmail)))
+                	emailConfirmed=CMLib.smtp().isValidEmailAddress(newEmail);
+                
+            	mob.setBitmap(CMath.unsetb(mob.getBitmap(),MOB.ATT_AUTOFORWARD));
+                if(emailConfirmed||((!emailReq)&&(newEmail.trim().length()==0)))
                 {
+                	if(emailConfirmed)
+	                	mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_AUTOFORWARD));
                     mob.playerStats().setEmail(newEmail);
                     break;
                 }
