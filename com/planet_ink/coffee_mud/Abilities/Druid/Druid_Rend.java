@@ -118,7 +118,7 @@ public class Druid_Rend extends StdAbility
 			// what happened.
 			invoker=mob;
 			int topDamage=(adjustedLevel(mob,asLevel)+getX2Level(mob))*2;
-			int damage=CMLib.dice().roll(1,topDamage,0);
+			int damage=CMLib.dice().roll(1,topDamage,adjustedLevel(mob,asLevel));
 			CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|CMMsg.TYP_JUSTICE|(auto?CMMsg.MASK_ALWAYS:0),null);
 			if(mob.location().okMessage(mob,msg))
 			{

@@ -209,7 +209,7 @@ public class StdWand extends StdItem implements Wand
 							Vector V=new Vector();
 							if(target!=null)
 								V.addElement(target.name());
-							V.addElement(message);
+							V.addAll(CMParms.parse(message));
 							mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,me.name()+" glows brightly.");
 							me.setUsesRemaining(me.usesRemaining()-1);
 							A.invoke(mob, V, target, true, me.envStats().level());
