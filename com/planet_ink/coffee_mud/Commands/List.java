@@ -272,9 +272,167 @@ public class List extends StdCommand
 		return lines;
 
 	}
-
-
-
+	
+	public void addScripts(DVector DV, Room R, ShopKeeper SK, MOB M, Item I, Environmental E)
+	{
+		if(E==null) return;
+		for(int b=0;b<E.numBehaviors();b++)
+		{
+			Behavior B=E.fetchBehavior(b);
+			if(B instanceof ScriptingEngine)
+			{
+				Vector files=B.externalFiles();
+				for(int f=0;f<files.size();f++)
+					DV.addElement(files.elementAt(f),E,R,M,I,B);
+				String nonFiles=((ScriptingEngine)B).getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
+				if(nonFiles.trim().length()>0)
+					DV.addElement("*Custom*"+nonFiles.trim(),E,R,M,I,B);
+			}
+		}
+		for(int s=0;s<E.numScripts();s++)
+		{
+			ScriptingEngine SE=E.fetchScript(s);
+			Vector files=SE.externalFiles();
+			for(int f=0;f<files.size();f++)
+				DV.addElement(files.elementAt(f),E,R,M,I,SE);
+			String nonFiles=SE.getVar("*","COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT");
+			if(nonFiles.trim().length()>0)
+				DV.addElement("*Custom*"+nonFiles.trim(),E,R,M,I,SE);
+		}
+	}
+	
+	public void addShopScripts(DVector DV, Room R, MOB M, Item I, Environmental E)
+	{
+		if(E==null) return;
+		ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(E);
+		if(SK!=null)
+		{
+			Vector V=SK.getShop().getStoreInventory();
+			for(int v=0;v<V.size();v++)
+				addScripts(DV,R,SK,M,I,(Environmental)V.elementAt(v));
+		}
+	}
+	
+	public StringBuffer listScripts(MOB mob, Vector cmds)
+	{
+		if(cmds.size()==0) return new StringBuffer("");
+		cmds.removeElementAt(0);
+		if(cmds.size()==0)
+			return new StringBuffer("List what script details? Try LIST SCRIPTS (COUNT/DETAILS/CUSTOM)");
+		String rest=CMParms.combine(cmds,0);
+		Room R=null;
+		DVector scriptTree=new DVector(6);
+		MOB M=null;
+		Item I=null;
+		for(Enumeration e=CMLib.map().roomsFilled();e.hasMoreElements();)
+		{
+			R=(Room)e.nextElement(); if(R==null) continue;
+			addScripts(scriptTree,R,null,null,null,R);
+			addShopScripts(scriptTree,R,null,null,R);
+			for(int m=0;m<R.numInhabitants();m++)
+			{
+				M=R.fetchInhabitant(m); if(M==null) continue;
+				addScripts(scriptTree,R,null,M,null,M);
+				addShopScripts(scriptTree,R,M,null,M);
+				for(int i=0;i<M.inventorySize();i++)
+				{
+					I=M.fetchInventory(i); if(I==null) continue;
+					addScripts(scriptTree,R,null,M,I,I);
+					addShopScripts(scriptTree,R,M,I,I);
+				}
+			}
+			for(int i=0;i<R.numItems();i++)
+			{
+				I=R.fetchItem(i); if(I==null) continue;
+				addScripts(scriptTree,R,null,M,I,I);
+				addShopScripts(scriptTree,R,M,I,I);
+			}
+		}
+		
+		StringBuffer lines=new StringBuffer("");
+		if(rest.equalsIgnoreCase("COUNT"))
+		{
+			lines=new StringBuffer("^x")
+			.append(CMStrings.padRight("Script File",50))
+			.append(CMStrings.padRight("Usage",5))
+			.append("^.^N\n\r");
+			scriptTree.sortBy(1);
+			if(scriptTree.size()>0)
+			{
+				String lastOne=(String)scriptTree.elementAt(0,1);
+				if(lastOne.startsWith("*Custom*")) lastOne="*Custom*";
+				int counter=1;
+				for(int d=1;d<scriptTree.size();d++)
+				{
+					String scriptFilename=(String)scriptTree.elementAt(d,1);
+					if(scriptFilename.startsWith("*Custom*")) scriptFilename="*Custom*";
+					if(lastOne.equalsIgnoreCase(scriptFilename))
+						counter++;
+					else
+					{
+						lines.append(CMStrings.padRight(lastOne,50));
+						lines.append(CMStrings.padRight(""+counter,5));
+						lines.append("^.^N\n\r");
+						counter=1;
+						lastOne=scriptFilename;
+					}
+				}
+				lines.append(CMStrings.padRight(lastOne,30));
+				lines.append(CMStrings.padRight(""+counter,5));
+				lines.append("\n\r");
+			}
+		} 
+		else
+		if(rest.equalsIgnoreCase("DETAILS"))
+		{
+			lines=new StringBuffer("^x")
+			.append(CMStrings.padRight("Script File",30))
+			.append(CMStrings.padRight("Host",20))
+			.append(CMStrings.padRight("Location",25))
+			.append("^.^N\n\r");
+			scriptTree.sortBy(1);
+			if(scriptTree.size()>0)
+			{
+				for(int d=0;d<scriptTree.size();d++)
+				{
+					String scriptFilename=(String)scriptTree.elementAt(d,1);
+					Environmental host=(Environmental)scriptTree.elementAt(d,2);
+					Room room=(Room)scriptTree.elementAt(d,3);
+					lines.append(CMStrings.padRight(scriptFilename,30));
+					lines.append(CMStrings.padRight(host.Name(),20));
+					lines.append(CMStrings.padRight(CMLib.map().getExtendedRoomID(room),20));
+					lines.append("^.^N\n\r");
+				}
+			}
+		}
+		else
+		if(rest.equalsIgnoreCase("CUSTOM"))
+		{
+			lines=new StringBuffer("^xCustom Scripts")
+									.append("^.^N\n\r");
+			scriptTree.sortBy(1);
+			if(scriptTree.size()>0)
+			{
+				for(int d=0;d<scriptTree.size();d++)
+				{
+					String scriptFilename=(String)scriptTree.elementAt(d,1);
+					if(scriptFilename.startsWith("*Custom*"))
+					{
+						Environmental host=(Environmental)scriptTree.elementAt(d,2);
+						Room room=(Room)scriptTree.elementAt(d,3);
+						lines.append("^xHost: ^.^N").append(host.Name())
+							 .append(", ^xLocation: ^.^N").append(CMLib.map().getExtendedRoomID(room));
+						lines.append("^.^N\n\r");
+						lines.append(scriptFilename.substring(8));
+						lines.append("^.^N\n\r");
+					}
+				}
+			}
+		}
+		else
+			return new StringBuffer("Invalid parameter for LIST SCRIPTS.  Enter LIST SCRIPTS alone for help.");
+		return lines;
+	}
 
 	public StringBuffer listLinkages(MOB mob)
 	{
@@ -1224,7 +1382,8 @@ public class List extends StdCommand
 		/*54*/{"CONQUERED","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
         /*55*/{"HOLIDAYS","LISTADMIN","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
         /*56*/{"RECIPES","LISTADMIN","CMDRECIPES"},
-        /*57*/{"HELPFILEREQUESTS","LISTADMIN"}
+        /*57*/{"HELPFILEREQUESTS","LISTADMIN"},
+		/*58*/{"SCRIPTS","CMDMOBS","CMDITEMS","CMDROOMS","CMDAREAS","CMDEXITS","CMDRACES","CMDCLASSES"},
 	};
 
     public StringBuffer listContent(MOB mob, Vector commands)
@@ -1538,6 +1697,7 @@ public class List extends StdCommand
         case 55: s.wraplessPrintln(CMLib.quests().listHolidays(mob.location().getArea(),CMParms.combine(commands,1))); break;
         case 56: s.wraplessPrintln(listRecipes(mob,CMParms.combine(commands,1))); break;
         case 57: s.wraplessPrint(listHelpFileRequests(mob,CMParms.combine(commands,1))); break;
+        case 58: s.wraplessPrintln(listScripts(mob,commands).toString()); break;
         default:
 			s.println("List?!");
 			break;

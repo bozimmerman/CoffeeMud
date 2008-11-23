@@ -384,7 +384,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
     public Vector externalFiles()
     {
         Vector xmlfiles=new Vector();
-        parseParmFilenames(getScript(),xmlfiles,0);
+        parseLoads(getScript(), 0, xmlfiles, null);
         return xmlfiles;
     }
 
@@ -448,6 +448,12 @@ public class DefaultScriptingEngine implements ScriptingEngine
     {
         if(host.equalsIgnoreCase("*"))
         {
+        	if(var.equals("COFFEEMUD_SYSTEM_INTERNAL_NONFILENAME_SCRIPT"))
+        	{
+        		StringBuffer str=new StringBuffer("");
+        		parseLoads(getScript(),0,null,str);
+        		return str.toString();
+        	}
             Vector V=resources._findResourceKeys("SCRIPTVAR-");
             String val=null;
             Hashtable H=null;
@@ -527,43 +533,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
     public boolean canFreelyBehaveNormal(Tickable affecting)
     { return CMLib.flags().canFreelyBehaveNormal(affecting);}
 
-    protected void parseParmFilenames(String parse, Vector filenames, int depth)
-    {
-        if(depth>10) return;  // no including off to infinity
-        while(parse.length()>0)
-        {
-            int y=parse.toUpperCase().indexOf("LOAD=");
-            if(y>=0)
-            {
-                if(parse.substring(0,y).trim().endsWith("#"))
-                {
-                    parse=parse.substring(y+1);
-                    continue;
-                }
-                int z=parse.indexOf("~",y);
-                while((z>0)&&(parse.charAt(z-1)=='\\'))
-                    z=parse.indexOf("~",z+1);
-                if(z>0)
-                {
-                    String filename=parse.substring(y+5,z).trim();
-                    parse=parse.substring(z+1);
-                    filenames.addElement(filename);
-                    parseParmFilenames(getResourceFileData(filename).toString(),filenames,depth+1);
-                }
-                else
-                {
-                    String filename=parse.substring(y+5).trim();
-                    filenames.addElement(filename);
-                    parseParmFilenames(getResourceFileData(filename).toString(),filenames,depth+1);
-                    break;
-                }
-            }
-            else
-                break;
-        }
-    }
-
-    protected String parseLoads(String text, int depth)
+    protected String parseLoads(String text, int depth, Vector filenames, StringBuffer nonFilenameScript)
     {
         StringBuffer results=new StringBuffer("");
         String parse=text;
@@ -580,6 +550,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 &&(!p.endsWith("\r"))
                 &&(p.length()>0))
                 {
+                    if(nonFilenameScript!=null) 
+                    	nonFilenameScript.append(parse.substring(0,y+1));
                     results.append(parse.substring(0,y+1));
                     parse=parse.substring(y+1);
                     continue;
@@ -592,17 +564,23 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 {
                     String filename=parse.substring(y+5,z).trim();
                     parse=parse.substring(z+1);
-                    results.append(parseLoads(getResourceFileData(filename).toString(),depth+1));
+                    if((filenames!=null)&&(!filenames.contains(filename))) 
+                    	filenames.addElement(filename);
+                    results.append(parseLoads(getResourceFileData(filename).toString(),depth+1,filenames,null));
                 }
                 else
                 {
                     String filename=parse.substring(y+5).trim();
-                    results.append(parseLoads(getResourceFileData(filename).toString(),depth+1));
+                    if((filenames!=null)&&(!filenames.contains(filename))) 
+                    	filenames.addElement(filename);
+                    results.append(parseLoads(getResourceFileData(filename).toString(),depth+1,filenames,null));
                     break;
                 }
             }
             else
             {
+                if(nonFilenameScript!=null) 
+                	nonFilenameScript.append(parse);
                 results.append(parse);
                 break;
             }
@@ -631,7 +609,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
             }
         }
         Vector V=new Vector();
-        text=parseLoads(text,0);
+        text=parseLoads(text,0,null,null);
         int y=0;
         while((text!=null)&&(text.length()>0))
         {
