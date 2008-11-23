@@ -365,13 +365,29 @@ public class CMMap extends StdLibrary implements WorldMap
     }
     
     public Vector findRooms(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct)
-    { return findRooms(rooms,mob,srchStr,displayOnly,false,timePct);}
+    { 
+    	Vector roomsV=new Vector();
+		if((srchStr.charAt(0)=='#')&&(mob!=null)&&(mob.location()!=null))
+			addWorldRoomsLiberally(roomsV,getRoom(mob.location().getArea().Name()+srchStr));
+		else
+			addWorldRoomsLiberally(roomsV,getRoom(srchStr));
+		addWorldRoomsLiberally(roomsV,findRooms(rooms,mob,srchStr,displayOnly,false,timePct));
+		return roomsV;
+    }
+    
     public Room findFirstRoom(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct)
     { 
-    	Vector found=findRooms(rooms,mob,srchStr,displayOnly,true,timePct);
-    	if(found.size()>0) return (Room)found.firstElement();
+    	Vector roomsV=new Vector();
+		if((srchStr.charAt(0)=='#')&&(mob!=null)&&(mob.location()!=null))
+			addWorldRoomsLiberally(roomsV,getRoom(mob.location().getArea().Name()+srchStr));
+		else
+			addWorldRoomsLiberally(roomsV,getRoom(srchStr));
+    	if(roomsV.size()>0) return (Room)roomsV.firstElement();
+		addWorldRoomsLiberally(roomsV,findRooms(rooms,mob,srchStr,displayOnly,true,timePct));
+    	if(roomsV.size()>0) return (Room)roomsV.firstElement();
     	return null;
     }
+    
     public Vector findRooms(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, boolean returnFirst, int timePct)
     {
     	Vector foundRooms=new Vector();
@@ -1318,7 +1334,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		Room room=null;
 		Vector rooms=(returnFirst)?null:new Vector();
 		
-		Room curRoom=mob.location();
+		Room curRoom=(mob!=null)?mob.location():null;
 		boolean searchAreas=srchWhatARIPMVK.toUpperCase().indexOf('A')>=0;
 		boolean searchRooms=srchWhatARIPMVK.toUpperCase().indexOf('R')>=0;
 		boolean searchPlayers=srchWhatARIPMVK.toUpperCase().indexOf('P')>=0;
@@ -1329,20 +1345,17 @@ public class CMMap extends StdLibrary implements WorldMap
 		if(searchRooms)
 		{
 			int dirCode=Directions.getGoodDirectionCode(cmd);
-			if(dirCode>=0)
-				room=addWorldRoomsLiberally(rooms,mob.location().rawDoors()[dirCode]);
+			if((dirCode>=0)&&(curRoom!=null))
+				room=addWorldRoomsLiberally(rooms,curRoom.rawDoors()[dirCode]);
 			if(room==null)
 				room=addWorldRoomsLiberally(rooms,getRoom(cmd));
 		}
-		
+
 		if(room==null)
 		{
 		    // first get room ids
 			if((cmd.charAt(0)=='#')&&(curRoom!=null)&&(searchRooms))
-			{
-				cmd=curRoom.getArea().Name()+"#";
-				room=addWorldRoomsLiberally(rooms,getRoom(cmd));
-			}
+				room=addWorldRoomsLiberally(rooms,getRoom(curRoom.getArea().Name()+cmd));
 			else
 			{
                 String srchStr=cmd;
@@ -1404,6 +1417,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			}
 		}
 		if(rooms!=null) return rooms;
+		if(room==null) return new Vector(1);
 		return CMParms.makeVector(room);
 	}
 

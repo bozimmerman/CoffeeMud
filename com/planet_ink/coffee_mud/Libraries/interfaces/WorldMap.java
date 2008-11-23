@@ -68,12 +68,12 @@ public interface WorldMap extends CMLibrary, Runnable
     public Room findConnectingRoom(Room room);
     public int getRoomDir(Room from, Room to);
 	public Vector findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatARIPMVK, int timePct);
+	public Room findWorldRoomLiberally(MOB mob, String cmd, String srchWhatARIPM, int timePct);
     public Vector findRooms(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct);
     public Room findFirstRoom(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct);
-	public Room findWorldRoomLiberally(MOB mob, String cmd, String srchWhatARIPM, int timePct);
+    public MOB findFirstInhabitant(Enumeration rooms, MOB mob, String srchStr, int timePct);
     public Vector findInhabitants(Enumeration rooms, MOB mob, String srchStr, int timePct);
     public Vector findRoomItems(Enumeration rooms, MOB mob, String srchStr, boolean anyItems, int timePct);
-    public MOB findFirstInhabitant(Enumeration rooms, MOB mob, String srchStr, int timePct);
     public Item findFirstRoomItem(Enumeration rooms, MOB mob, String srchStr, boolean anyItems, int timePct);
     public Vector findShopStock(Enumeration rooms, MOB mob, String srchStr, int timePct);
     public Environmental findFirstShopStock(Enumeration rooms, MOB mob, String srchStr, int timePct);
