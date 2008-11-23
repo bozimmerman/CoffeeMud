@@ -2149,7 +2149,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 14. New player command: PAGEBREAK.   Also, pagebreak and linewrap added to CONFIG command.
 15. LIST LOG now streams its data for extreme speed.
 16. Players more than 10X fatigued will have a 1% chance/tick to fall under the sleep spell.
-17. New Spell: Dispel Divination
+17. New Spells: Dispel Divination, Teleport Object
 18. Players will be notified when users on FRIENDS list log off, just like logins.
 19. FieryRoom Behavior tick parms apply to damage now, instead of room destruction (other parms for that anyway).
 20. CL Player Editor now allows Quest-Scripts to be Removed manually (to fix players with bad quest scripts attached to them)
@@ -2159,3 +2159,8 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 24. Thief Mark skill can now unmark, BodyPiercing can now "heal" piercings, 
     You can Leech yourself now, always Hide from sleeping mobs, and assassinate packs a larger punch.
 25. If a cage containing a mob is opened and left open -- the creature will now escape in 30 ticks (2 min)!
+26. New Prayer: Sense Alergies 
+27. Internal: Some time/CPU control has been implemented for skills that require scanning the whole map (like Teleport
+    or Gate, etc.  This means that for large maps, players may notice those skills have gotten much "slower", though 
+    in reality, it will help your mud support more people doing such things.
+28. 
