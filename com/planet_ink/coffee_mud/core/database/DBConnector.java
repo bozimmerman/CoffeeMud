@@ -41,6 +41,7 @@ public class DBConnector
 	private boolean DBReuse=false;
 	private int numConnections=0;
 	private boolean DoErrorQueueing=false;
+	private boolean NewErrorQueueing=false;
 	
 	public DBConnector (){super();}
 	
@@ -50,7 +51,8 @@ public class DBConnector
 						String NEWDBPass, 
 						int NEWnumConnections,
 						boolean NEWReuse,
-						boolean NEWDoErrorQueueing)
+						boolean NEWDoErrorQueueing,
+						boolean NEWRetryErrorQueue)
 	{
 		super();
 		DBClass=NEWDBClass;
@@ -59,13 +61,14 @@ public class DBConnector
 		DBPass=NEWDBPass;
 		numConnections=NEWnumConnections;
 		DoErrorQueueing=NEWDoErrorQueueing;
+		NewErrorQueueing=NEWRetryErrorQueue;
 		DBReuse=NEWReuse;
 	}
 	public void reconnect()
 	{
 		if(DBs!=null){ DBs.deregisterDriver(); DBs.killConnections();}
 		DBs=new DBConnections(DBClass,DBService,DBUser,DBPass,numConnections,DBReuse,DoErrorQueueing);
-		if(DBs.amIOk()) DBs.retryQueuedErrors();
+		if(DBs.amIOk()&&NewErrorQueueing) DBs.retryQueuedErrors();
 	}
 	
 	public String service(){ return DBService;}

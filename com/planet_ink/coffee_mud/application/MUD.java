@@ -174,8 +174,10 @@ public class MUD extends Thread implements MudHost
             String dbPass=page.getStr("DBPASS");
             int dbConns=page.getInt("DBCONNECTIONS");
             boolean dbReuse=page.getBoolean("DBREUSE");
+            boolean useQue=!CMSecurity.isDisabled("DBERRORQUE");
+            boolean useQueStart=!CMSecurity.isDisabled("DBERRORQUESTART");
             CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: connecting to database");
-			currentDBconnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbConns,dbReuse,true);
+			currentDBconnector=new DBConnector(dbClass,dbService,dbUser,dbPass,dbConns,dbReuse,useQue,useQueStart);
 			currentDBconnector.reconnect();
 	        CMLib.registerLibrary(new DBInterface(currentDBconnector));
 
