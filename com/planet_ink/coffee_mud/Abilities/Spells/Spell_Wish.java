@@ -213,39 +213,17 @@ public class Spell_Wish extends Spell
 			Vector thangsFound=new Vector();
 			Environmental foundThang=null;
 			Environmental E=mob.location().fetchFromRoomFavorItems(null,objectWish,Item.WORNREQ_UNWORNONLY);
-            ShopKeeper SK=null;
 			foundThang=maybeAdd(E,thangsFound,foundThang);
 			try
 			{
-				Vector items=CMLib.map().findItems(CMLib.map().rooms(), mob,objectWish,true,10);
+				Vector items=CMLib.map().findRoomItems(CMLib.map().rooms(), mob,objectWish,true,10);
 				items.addAll(CMLib.map().findInhabitants(CMLib.map().rooms(), mob,objectWish,10));
+				items.addAll(CMLib.map().findInventory(CMLib.map().rooms(), mob,objectWish,10));
+				items.addAll(CMLib.map().findShopStock(CMLib.map().rooms(), mob,objectWish,10));
 				for(Enumeration e=items.elements();e.hasMoreElements();)
 				{
 					E=(Environmental)e.nextElement();
 					foundThang=maybeAdd(E,thangsFound,foundThang);
-				}
-		    }catch(NoSuchElementException nse){}
-		    try
-		    {
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-				{
-					Room room=(Room)r.nextElement();
-					if(CMLib.flags().canAccess(mob,room))
-					for(int m=0;m<room.numInhabitants();m++)
-					{
-						MOB mob2=room.fetchInhabitant(m);
-						if(mob2!=null)
-						{
-							E=mob2.fetchInventory(objectWish);
-							foundThang=maybeAdd(E,thangsFound,foundThang);
-                            SK=CMLib.coffeeShops().getShopKeeper(mob2);
-							if(SK!=null)
-							{
-								E=SK.getShop().getStock(objectWish,mob,SK.whatIsSold(),mob2.getStartRoom());
-								foundThang=maybeAdd(E,thangsFound,foundThang);
-							}
-						}
-					}
 				}
 		    }catch(NoSuchElementException nse){}
 			if((thangsFound.size()>0)&&(foundThang!=null))

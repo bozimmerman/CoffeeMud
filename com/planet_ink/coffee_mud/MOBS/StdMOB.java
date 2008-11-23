@@ -3002,6 +3002,13 @@ public class StdMOB implements MOB
 	public Item fetchInventory(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Item.WORNREQ_ANY,true,true);}
 	public Item fetchCarried(Item goodLocation, String itemName){ return fetchFromInventory(goodLocation,itemName,Item.WORNREQ_UNWORNONLY,true,true);}
 	public Item fetchWornItem(String itemName){ return fetchFromInventory(null,itemName,Item.WORNREQ_WORNONLY,true,true);}
+	public Vector fetchInventories(String itemName){ 
+        Vector V=CMLib.english().fetchEnvironmentals(inventory,itemName,true);
+        if((V!=null)&&(V.size()>0)) return V;
+        V=CMLib.english().fetchEnvironmentals(inventory,itemName,false);
+        if(V!=null) return V;
+        return new Vector(1);
+	}
 
 	public void addFollower(MOB follower, int order)
 	{

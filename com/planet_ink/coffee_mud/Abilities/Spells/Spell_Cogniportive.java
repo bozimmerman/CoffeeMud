@@ -47,78 +47,58 @@ public class Spell_Cogniportive extends Spell
 		if(me instanceof LandTitle)
 			return ((Room)((LandTitle)me).getPropertyRooms().firstElement()).roomID();
 		// check mobs worn items first!
+		String srchStr="$"+me.Name()+"$";
+    	Vector mobInventory=new Vector(1);
 	    try
 	    {
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+	    	mobInventory=CMLib.map().findInventory(CMLib.map().rooms(),null, srchStr, 10);
+			for(Enumeration i=mobInventory.elements();i.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
-				if(CMLib.flags().canAccess(mob,R))
-				{
-					for(int s=0;s<R.numInhabitants();s++)
-					{
-						MOB M=R.fetchInhabitant(s);
-						if((M!=null)
-						&&(M.isMonster())
-						&&(!(M instanceof ShopKeeper))
-						&&(M.fetchInventory(me.Name())!=null)
-						&&(!M.fetchInventory(me.Name()).amWearingAt(Item.IN_INVENTORY))
-						&&((beLoose) || me.sameAs(M.fetchInventory(me.Name())))
-                        &&(CMLib.law().getLandTitle(R)==null))
-							return CMLib.map().getExtendedRoomID(M.getStartRoom());
-					}
-				}
+				Item I=(Item)i.nextElement();
+				Environmental owner=I.owner();
+				Room room=CMLib.map().roomLocation(owner);
+				if((owner instanceof MOB)
+				&&(((MOB)owner).isMonster())
+				&&(!I.amWearingAt(Item.IN_INVENTORY))
+				&&((beLoose) || me.sameAs(I))
+                &&(CMLib.law().getLandTitle(room)==null))
+					return CMLib.map().getExtendedRoomID(room);
 			}
 	    }catch(NoSuchElementException nse){}
 	    try
 	    {
-			// check shopkeepers second!
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+	    	Vector all=CMLib.map().findShopStockers(CMLib.map().rooms(), mob, srchStr, 10);
+			for(Enumeration i=all.elements();i.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
-				if(CMLib.flags().canAccess(mob,R))
-				{
-					for(int s=0;s<R.numInhabitants();s++)
-					{
-						MOB M=R.fetchInhabitant(s);
-						if((M!=null)&&(CMLib.coffeeShops().getShopKeeper(M)!=null))
-						{
-							ShopKeeper S=CMLib.coffeeShops().getShopKeeper(M);
-							if((S.getShop().doIHaveThisInStock(me.Name(),null,S.whatIsSold(),M.getStartRoom()))
-	                        &&((beLoose) || me.sameAs(S.getShop().getStock(me.Name(), null, S.whatIsSold(), M.getStartRoom())))
-                            &&(CMLib.law().getLandTitle(R)==null))
-								return CMLib.map().getExtendedRoomID(M.getStartRoom());
-						}
-					}
-				}
+				ShopKeeper S=(ShopKeeper)i.nextElement();
+				Room room=CMLib.map().getStartRoom(S);
+				Environmental E=S.getShop().getStock(me.Name(), null,S.whatIsSold(),room);
+				if((E instanceof Item)
+                &&((beLoose) || me.sameAs(E))
+                &&(CMLib.law().getLandTitle(room)==null))
+					return CMLib.map().getExtendedRoomID(room);
 			}
 	    }catch(NoSuchElementException nse){}
 	    try
 	    {
 			// check mobs inventory items third!
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			for(Enumeration i=mobInventory.elements();i.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
-				if(CMLib.flags().canAccess(mob,R))
-				{
-					for(int s=0;s<R.numInhabitants();s++)
-					{
-						MOB M=R.fetchInhabitant(s);
-						if((M!=null)
-						&&(M.isMonster())
-						&&(!(M instanceof ShopKeeper))
-						&&(M.fetchInventory(me.Name())!=null)
-						&&(M.fetchInventory(me.Name()).amWearingAt(Item.IN_INVENTORY))
-                        &&((beLoose) || me.sameAs(M.fetchInventory(me.Name())))
-                        &&(CMLib.law().getLandTitle(R)==null))
-							return CMLib.map().getExtendedRoomID(M.getStartRoom());
-					}
-				}
+				Item I=(Item)i.nextElement();
+				Environmental owner=I.owner();
+				Room room=CMLib.map().getStartRoom(owner);
+				if((owner instanceof MOB)
+				&&(((MOB)owner).isMonster())
+				&&(I.amWearingAt(Item.IN_INVENTORY))
+				&&((beLoose) || me.sameAs(I))
+                &&(CMLib.law().getLandTitle(room)==null))
+					return CMLib.map().getExtendedRoomID(room);
 			}
 	    }catch(NoSuchElementException nse){}
 	    try
 	    {
 			// check room stuff last
-	    	Vector targets=CMLib.map().findItems(CMLib.map().rooms(), mob, me.Name(), false,10);
+	    	Vector targets=CMLib.map().findRoomItems(CMLib.map().rooms(), mob, me.Name(), false,10);
 			for(Enumeration i=targets.elements();i.hasMoreElements();)
 			{
 				Item I=(Item)i.nextElement();

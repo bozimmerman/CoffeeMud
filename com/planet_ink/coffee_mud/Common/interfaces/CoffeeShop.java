@@ -97,6 +97,15 @@ public interface CoffeeShop extends CMCommon
     public Vector getStoreInventory();
     
     /**
+     * Returns a Vector of all the Environmental objects this shop has for sale
+     * which match the given search string.
+     * Will only return one of each item, even if multiple are available.
+     * @param srchStr the item to hunt for.
+     * @return a Vector of objects for sale.
+     */
+    public Vector getStoreInventory(String srchStr);
+    
+    /**
      * Returns a Vector of all the Environmental objects this shop has in its base
      * inventory.  Only useful for historical reasons, or if the shop sells inventory
      * only.

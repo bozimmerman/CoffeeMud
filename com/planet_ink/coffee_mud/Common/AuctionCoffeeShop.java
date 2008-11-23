@@ -55,6 +55,7 @@ public class AuctionCoffeeShop implements CoffeeShop
     public int baseStockSize(){ return 0;}
     public int totalStockSize(){ return 0;}
     public Vector getStoreInventory(){ return emptyV;}
+    public Vector getStoreInventory(String srchStr){ return emptyV;}
     public Vector getBaseInventory(){ return emptyV;}
     
     public Environmental addStoreInventory(Environmental thisThang, 

@@ -56,67 +56,11 @@ public class Spell_KnowOrigin extends Spell
 			try
 			{
 				// check mobs worn items first!
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					if(CMLib.flags().canAccess(mob,R))
-					{
-						for(int s=0;s<R.numInhabitants();s++)
-						{
-							MOB M=R.fetchInhabitant(s);
-							if((M!=null)
-							&&(M.isMonster())
-							&&(!(M instanceof ShopKeeper))
-							&&(M.fetchInventory(me.Name())!=null)
-							&&(!M.fetchInventory(me.Name()).amWearingAt(Item.IN_INVENTORY)))
-								return M.getStartRoom();
-						}
-					}
-				}
-		    }catch(NoSuchElementException nse){}
-		    try
-		    {
-				// check shopkeepers second!
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					if(CMLib.flags().canAccess(mob,R))
-					{
-						for(int s=0;s<R.numInhabitants();s++)
-						{
-							MOB M=R.fetchInhabitant(s);
-							if((M!=null)&&(CMLib.coffeeShops().getShopKeeper(M)!=null))
-							{
-								ShopKeeper S=CMLib.coffeeShops().getShopKeeper(M);
-								if(S.getShop().doIHaveThisInStock(me.Name(),null,S.whatIsSold(),M.getStartRoom()))
-									return M.getStartRoom();
-							}
-						}
-					}
-				}
-		    }catch(NoSuchElementException nse){}
-		    try
-		    {
-				// check mobs inventory items third!
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					if(R!=null)
-					{
-						for(int s=0;s<R.numInhabitants();s++)
-						{
-							MOB M=R.fetchInhabitant(s);
-							if((M!=null)
-							&&(M.isMonster())
-							&&(!(M instanceof ShopKeeper))
-							&&(M.fetchInventory(me.Name())!=null)
-							&&(M.fetchInventory(me.Name()).amWearingAt(Item.IN_INVENTORY)))
-								return M.getStartRoom();
-						}
-					}
-				}
-		    }catch(NoSuchElementException nse){}
-		    try { // check room stuff last
+				String srchStr="$"+me.Name()+"$";
+				Environmental E=CMLib.map().findFirstShopStocker(CMLib.map().rooms(), mob, srchStr, 10);
+				if(E!=null) return CMLib.map().getStartRoom(E);
+				E=CMLib.map().findFirstInventory(CMLib.map().rooms(), mob, srchStr, 10);
+				if(E!=null) return CMLib.map().getStartRoom(E);
 		    	return CMLib.map().findWorldRoomLiberally(mob, me.Name(), "I",10);
 		    }catch(NoSuchElementException nse){}
 		}

@@ -891,7 +891,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
         if(thisName.length()==0) return null;
         Environmental thing=null;
         Environmental areaThing=null;
-        ShopKeeper SK=null;
         if(thisName.toUpperCase().trim().startsWith("FROMFILE "))
         {
             try{
@@ -928,35 +927,51 @@ public class DefaultScriptingEngine implements ScriptingEngine
             try
             {
                 if(areaThing==null)
-                for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
                 {
-                    Room R=(Room)r.nextElement();
-                    Environmental E=null;
-                    if(mob)
-                        E=R.fetchInhabitant(thisName);
-                    else
-                    {
-                        E=R.fetchItem(null,thisName);
-                        if(E==null)
-                        for(int i=0;i<R.numInhabitants();i++)
-                        {
-                            MOB M=R.fetchInhabitant(i);
-                            if(M!=null)
-                            {
-                                E=M.fetchInventory(thisName);
-                                SK=CMLib.coffeeShops().getShopKeeper(M);
-                                if((SK!=null)&&(E==null))
-                                    E=SK.getShop().getStock(thisName,null,SK.whatIsSold(),M.getStartRoom());
-                            }
-                        }
-                    }
-                    if(E!=null)
-                    {
-                        if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
-                            areaThing=E;
-                        else
-                            thing=E;
-                    }
+            		Area A=imHere.getArea();
+                	Vector all=new Vector();
+                	if(mob)
+                	{
+                		all.addAll(CMLib.map().findInhabitants(A.getProperMap(),null,thisName,100));
+	            		if(all.size()==0)
+	            			all.addAll(CMLib.map().findShopStock(A.getProperMap(), null, thisName,100));
+	            		for(int a=all.size()-1;a>=0;a--)
+	            			if(!(all.elementAt(a) instanceof MOB))
+	            				all.removeElementAt(a);
+	            		if(all.size()>0) 
+	            			areaThing=(Environmental)all.elementAt(CMLib.dice().roll(1,all.size(),-1));
+	            		else
+	            		{
+	                		all.addAll(CMLib.map().findInhabitants(CMLib.map().rooms(),null,thisName,100));
+		            		if(all.size()==0)
+		            			all.addAll(CMLib.map().findShopStock(CMLib.map().rooms(), null, thisName,100));
+		            		for(int a=all.size()-1;a>=0;a--)
+		            			if(!(all.elementAt(a) instanceof MOB))
+		            				all.removeElementAt(a);
+		            		if(all.size()>0) 
+		            			thing=(Environmental)all.elementAt(CMLib.dice().roll(1,all.size(),-1));
+	            		}
+                	}
+                	if(all.size()==0)
+                	{
+	                	all.addAll(CMLib.map().findRoomItems(A.getProperMap(), null,thisName,true,100));
+	            		if(all.size()==0)
+	                    	all.addAll(CMLib.map().findInventory(A.getProperMap(), null,thisName,100));
+	            		if(all.size()==0)
+	                    	all.addAll(CMLib.map().findShopStock(A.getProperMap(), null,thisName,100));
+	            		if(all.size()>0) 
+	            			areaThing=(Environmental)all.elementAt(CMLib.dice().roll(1,all.size(),-1));
+	            		else
+	            		{
+		                	all.addAll(CMLib.map().findRoomItems(CMLib.map().rooms(), null,thisName,true,100));
+		            		if(all.size()==0)
+		                    	all.addAll(CMLib.map().findInventory(CMLib.map().rooms(), null,thisName,100));
+		            		if(all.size()==0)
+		                    	all.addAll(CMLib.map().findShopStock(CMLib.map().rooms(), null,thisName,100));
+		            		if(all.size()>0) 
+		            			thing=(Environmental)all.elementAt(CMLib.dice().roll(1,all.size(),-1));
+	            		}
+                	}
                 }
             }catch(NoSuchElementException nse){}
         }

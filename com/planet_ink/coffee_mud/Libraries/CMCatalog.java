@@ -474,76 +474,42 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
                     changeCatalogFlag(E,true);
     			}
     		}
-    		
+    		Vector all=new Vector();
+    		String srchStr="$"+cataE.Name()+"$";
 	        boolean isMob=(cataE instanceof MOB);
-	        MOB M=null;
-	        Room R=null;
-	        Item I=null;
+    		if(cataE instanceof MOB)
+    		{
+	    		all.addAll(CMLib.map().findInhabitants(CMLib.map().rooms(),null, srchStr, 50));
+	    		all.addAll(CMLib.map().findShopStock(CMLib.map().rooms(),null, srchStr, 50));
+    		}
+    		else
+    		{
+	    		all.addAll(CMLib.map().findRoomItems(CMLib.map().rooms(),null, srchStr, true, 50));
+	    		all.addAll(CMLib.map().findInventory(CMLib.map().rooms(),null, srchStr, 50));
+	    		all.addAll(CMLib.map().findInventory(null,null, srchStr, 50));
+	    		all.addAll(CMLib.map().findShopStockers(CMLib.map().rooms(),null, srchStr, 50));
+	    		all.addAll(CMLib.map().findShopStockers(null,null, srchStr, 50));
+    		}
+    		HashSet doneShops=new HashSet();
 	        ShopKeeper SK=null;
-	        int m=0,i=0;
-	        for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
-	        {
-	            Area A=(Area)e.nextElement();
-	            SK=CMLib.coffeeShops().getShopKeeper(A);
-	            if(SK!=null) propogateShopChange(SK,ignored,cataE);
-	        }
-	        for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
-	        {
-	            R=(Room)e.nextElement();
-	            if(!isMob)
-	            for(i=0;i<R.numItems();i++)
-	            {
-	                I=R.fetchItem(i);
-	                if((CMLib.flags().isCataloged(I))
-	                &&(!ignored.contains(I))
-	                &&(cataE.Name().equalsIgnoreCase(I.Name())))
-	                    I.setMiscText(I.text());
+    		for(Enumeration e=all.elements();e.hasMoreElements();)
+    		{
+    			E=(Environmental)e.nextElement();
+                if((CMLib.flags().isCataloged(E))
+                &&(!ignored.contains(E))
+                &&(((isMob)&&(E instanceof MOB))||((!isMob)&&(E instanceof Item)))
+                &&(cataE.Name().equalsIgnoreCase(E.Name())))
+                {
+                	ignored.add(E);
+                    E.setMiscText(E.text());
+                    changeCatalogFlag(E,true);
+                }
+                SK=CMLib.coffeeShops().getShopKeeper(E);
+	            if((SK!=null)&&(!doneShops.contains(SK))) {
+	            	doneShops.add(SK);
+	            	propogateShopChange(SK,ignored,cataE);
 	            }
-	            for(m=0;m<R.numInhabitants();m++)
-	            {
-	                M=R.fetchInhabitant(m);
-	                if(!M.isMonster()) continue;
-	                if((isMob)
-	                &&(!ignored.contains(M))
-	                &&(CMLib.flags().isCataloged(M))
-	                &&(cataE.Name().equalsIgnoreCase(M.Name())))
-	                    M.setMiscText(M.text());
-	                if(!isMob)
-	                {
-	                    for(i=0;i<M.inventorySize();i++)
-	                    {
-	                        I=M.fetchInventory(i);
-	                        if((CMath.bset(I.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
-        	                &&(!ignored.contains(I))
-	                        &&(cataE.Name().equalsIgnoreCase(I.Name())))
-	                            I.setMiscText(I.text());
-	                    }
-	                    SK=CMLib.coffeeShops().getShopKeeper(M);
-	                    if(SK!=null) propogateShopChange(SK,ignored,cataE);
-	                }
-	            }
-	            SK=CMLib.coffeeShops().getShopKeeper(R);
-	            if(SK!=null) propogateShopChange(SK,ignored,cataE);
-	        }
-	        if(!isMob)
-	        for(Enumeration e=CMLib.players().players();e.hasMoreElements();)
-	        {
-	            M=(MOB)e.nextElement();
-	            for(i=0;i<M.inventorySize();i++)
-	            {
-	                I=M.fetchInventory(i);
-	                if((CMath.bset(I.baseEnvStats().disposition(),EnvStats.IS_CATALOGED))
-	                &&(!ignored.contains(I))
-	                &&(cataE.Name().equalsIgnoreCase(I.Name())))
-	                {
-	                    I.setMiscText(I.text());
-	                    if(M.playerStats()!=null)
-	                        M.playerStats().setLastUpdated(0);
-	                }
-	            }
-	            SK=CMLib.coffeeShops().getShopKeeper(M);
-	            if(SK!=null) propogateShopChange(SK,ignored,cataE);
-	        }
+    		}
     	}
     }
     
@@ -595,6 +561,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
             E=(Environmental)V.elementAt(i);
             if(!ignored.contains(E))
             {
+            	ignored.add(E);
 	            if((isMob)&&(E instanceof MOB)
 	            &&(CMLib.flags().isCataloged(E))
 	            &&(cataE.Name().equalsIgnoreCase(E.Name())))

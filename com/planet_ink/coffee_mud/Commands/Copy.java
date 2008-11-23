@@ -79,7 +79,6 @@ public class Copy extends StdCommand
 			}
 		}
 		Environmental E=null;
-        ShopKeeper SK=null;
 		int dirCode=Directions.getGoodDirectionCode(name);
 		if(dirCode>=0)
 			E=mob.location();
@@ -111,45 +110,17 @@ public class Copy extends StdCommand
 		{
 		    try
 		    {
-		    	Vector targets=CMLib.map().findInhabitants(mob.location().getArea().getMetroMap(), mob, name, 50);
-		    	if(targets.size()==0) 
-			    	targets=CMLib.map().findItems(mob.location().getArea().getMetroMap(), mob, name, true, 50);
-		    	if(targets.size()>0) 
-		    		E=(Environmental)targets.elementAt(CMLib.dice().roll(1,targets.size(),-1));
-		    }catch(NoSuchElementException e){}
-		}
-		if(E==null)
-		{
-		    try
-		    {
-		    	Vector targets=CMLib.map().findInhabitants(CMLib.map().areas(), mob, name, 50);
-		    	if(targets.size()==0) 
-			    	targets=CMLib.map().findItems(CMLib.map().areas(), mob, name, true, 50);
-		    	if(targets.size()>0) 
-		    		E=(Environmental)targets.elementAt(CMLib.dice().roll(1,targets.size(),-1));
-		    }catch(NoSuchElementException e){}
-		}
-		if(E==null)
-		{
-		    try
-		    {
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					for(int m=0;m<R.numInhabitants();m++)
-					{
-						MOB mob2=R.fetchInhabitant(m);
-						if(mob2!=null)
-						{
-							E=mob2.fetchInventory(name);
-                            SK=CMLib.coffeeShops().getShopKeeper(mob2);
-							if((E==null)&&(SK!=null))
-								E=SK.getShop().getStock(name,null,SK.whatIsSold(),mob2.getStartRoom());
-						}
-						if(E!=null) break;
-					}
-					if(E!=null) break;
-				}
+		    	E=CMLib.map().findFirstInhabitant(mob.location().getArea().getMetroMap(), mob, name, 50);
+		    	if(E==null) 
+			    	E=CMLib.map().findFirstRoomItem(mob.location().getArea().getMetroMap(), mob, name, true, 50);
+		    	if(E==null) 
+			    	E=CMLib.map().findFirstInventory(null, mob, name, 50);
+		    	if(E==null) 
+			    	E=CMLib.map().findFirstShopStock(null, mob, name, 50);
+		    	if(E==null) 
+			    	E=CMLib.map().findFirstInventory(CMLib.map().areas(), mob, name, 50);
+		    	if(E==null) 
+			    	E=CMLib.map().findFirstShopStock(CMLib.map().areas(), mob, name, 50);
 		    }catch(NoSuchElementException e){}
 		}
 		if(E==null)

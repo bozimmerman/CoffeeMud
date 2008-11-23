@@ -124,6 +124,15 @@ public class DefaultCoffeeShop implements CoffeeShop
     {
         return (Vector)storeInventory.getDimensionVector(1).clone();
     }
+    public Vector getStoreInventory(String srchStr)
+    {
+    	Vector storeInv=(Vector)storeInventory.getDimensionVector(1).clone();
+    	Vector V=CMLib.english().fetchEnvironmentals(storeInv, srchStr, true);
+    	if((V!=null)&&(V.size()>0)) return V;
+    	V=CMLib.english().fetchEnvironmentals(storeInv, srchStr, false);
+    	if(V!=null) return V;
+        return new Vector(1);
+    }
     public Vector getBaseInventory()
     {
         return baseInventory;
