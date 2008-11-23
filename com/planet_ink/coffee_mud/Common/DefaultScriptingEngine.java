@@ -702,87 +702,18 @@ public class DefaultScriptingEngine implements ScriptingEngine
         Room inAreaRoom=null;
         try
         {
-            for(Enumeration p=CMLib.players().players();p.hasMoreElements();)
-            {
-                MOB M=(MOB)p.nextElement();
-                if((M.Name().equalsIgnoreCase(thisName))
-                &&(M.location()!=null)
-                &&(CMLib.flags().isInTheGame(M,true)))
-                    inAreaRoom=M.location();
-            }
-            if(inAreaRoom==null)
-            for(Enumeration p=CMLib.players().players();p.hasMoreElements();)
-            {
-                MOB M=(MOB)p.nextElement();
-                if((M.name().equalsIgnoreCase(thisName))
-                &&(M.location()!=null)
-                &&(CMLib.flags().isInTheGame(M,true)))
-                    inAreaRoom=M.location();
-            }
-            if(inAreaRoom==null)
-            for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+	    	Vector rooms=CMLib.map().findWorldRoomsLiberally(null, thisName, "RIAPM",10);
+            for(Enumeration r=rooms.elements();r.hasMoreElements();)
             {
                 Room R=(Room)r.nextElement();
-                if((R.roomID().endsWith("#"+thisName))
-                ||(R.roomID().endsWith(thisName)))
-                {
-                    if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
-                        inAreaRoom=R;
-                    else
-                        room=R;
-                }
+                if(inAreaRoom!=null) break;
+                if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
+                    inAreaRoom=R;
+                else
+                if(room==null)
+                    room=R;
             }
         }catch(NoSuchElementException nse){}
-        if(inAreaRoom!=null) return inAreaRoom;
-        if(room!=null) return room;
-        try
-        {
-            for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-            {
-                Room R=(Room)r.nextElement();
-                if(CMLib.english().containsString(R.displayText(),thisName))
-                {
-                    if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
-                        inAreaRoom=R;
-                    else
-                        room=R;
-                }
-            }
-        }catch(NoSuchElementException nse){}
-        if(inAreaRoom!=null) return inAreaRoom;
-        if(room!=null) return room;
-        try
-        {
-            for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-            {
-                Room R=(Room)r.nextElement();
-                if(CMLib.english().containsString(R.description(),thisName))
-                {
-                    if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
-                        inAreaRoom=R;
-                    else
-                        room=R;
-                }
-            }
-        }catch(NoSuchElementException nse){}
-        if(inAreaRoom!=null) return inAreaRoom;
-        if(room!=null) return room;
-        try
-        {
-            for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-            {
-                Room R=(Room)r.nextElement();
-                if((R.fetchInhabitant(thisName)!=null)
-                ||(R.fetchItem(null,thisName)!=null))
-                {
-                    if((imHere!=null)&&(imHere.getArea().Name().equals(R.getArea().Name())))
-                        inAreaRoom=R;
-                    else
-                        room=R;
-                }
-            }
-        }catch(NoSuchElementException nse){}
-                
         if(inAreaRoom!=null) return inAreaRoom;
         return room;
     }

@@ -118,12 +118,13 @@ public class Spell_Cogniportive extends Spell
 	    try
 	    {
 			// check room stuff last
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+	    	Vector targets=CMLib.map().findItems(CMLib.map().rooms(), mob, me.Name(), false,10);
+			for(Enumeration i=targets.elements();i.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
-				if((CMLib.flags().canAccess(mob,R))
-                &&(R.fetchItem(null,me.Name())!=null)
-                &&((beLoose) || me.sameAs(R.fetchItem(null,me.Name())))
+				Item I=(Item)i.nextElement();
+				Room R=CMLib.map().roomLocation(I);
+				if((R!=null)
+                &&((beLoose) || me.sameAs(I))
                 &&(CMLib.law().getLandTitle(R)==null))
 				   return CMLib.map().getExtendedRoomID(R);
 			}

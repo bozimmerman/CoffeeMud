@@ -718,6 +718,71 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		return null;
 	}
 
+	public Vector fetchEnvironmentals(Vector list, String srchStr, boolean exactOnly)
+	{
+		Object[] flags=fetchFlags(srchStr);
+		if(flags==null) return null;
+		Vector matches=new Vector();
+		
+		srchStr=(String)flags[FLAG_STR];
+		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
+		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
+        Environmental thisThang=null;
+		if(exactOnly)
+		{
+			if(srchStr.startsWith("$")) srchStr=srchStr.substring(1);
+			if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
+			try
+			{
+				for(int i=0;i<list.size();i++)
+				{
+					thisThang=(Environmental)list.elementAt(i);
+					if(thisThang.ID().equalsIgnoreCase(srchStr)
+					   ||thisThang.name().equalsIgnoreCase(srchStr)
+					   ||thisThang.Name().equalsIgnoreCase(srchStr))
+						if((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))
+							if((--myOccurrance)<=0)
+								matches.addElement(thisThang);
+				}
+			}
+			catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		}
+		else
+		{
+			myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
+			try
+			{
+                for(int i=0;i<list.size();i++)
+                {
+                    thisThang=(Environmental)list.elementAt(i);
+					if((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
+					   &&((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0))))
+						if((--myOccurrance)<=0)
+							matches.addElement(thisThang);
+				}
+			}
+			catch(java.lang.ArrayIndexOutOfBoundsException x){}
+			if(matches.size()==0)
+			{
+				myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
+				try
+				{
+					for(int i=0;i<list.size();i++)
+					{
+						thisThang=(Environmental)list.elementAt(i);
+						if((!(thisThang instanceof Ability))
+						&&(containsString(thisThang.displayText(),srchStr)
+	                        ||((thisThang instanceof MOB)&&containsString(((MOB)thisThang).genericName(),srchStr))))
+	    						if((--myOccurrance)<=0)
+	    							matches.addElement(thisThang);
+					}
+				}
+				catch(java.lang.ArrayIndexOutOfBoundsException x){}
+			}
+		}
+		return matches;
+	}
+
 	public Environmental fetchEnvironmental(Hashtable list, String srchStr, boolean exactOnly)
 	{
 		Object[] flags=fetchFlags(srchStr);
@@ -944,6 +1009,80 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				}
 			}
 			catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		}
+		return null;
+	}
+
+	public Vector fetchAvailableItems(Vector list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)
+	{
+		Vector matches=new Vector();
+		Object[] flags=fetchFlags(srchStr);
+		if(flags==null) return matches;
+
+		srchStr=(String)flags[FLAG_STR];
+		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
+		boolean allFlag=((Boolean)flags[FLAG_ALL]).booleanValue();
+
+		if(exactOnly)
+		{
+			try
+			{
+				if(srchStr.startsWith("$")) srchStr=srchStr.substring(1);
+				if(srchStr.endsWith("$")) srchStr=srchStr.substring(0,srchStr.length()-1);
+				for(int i=0;i<list.size();i++)
+				{
+					Item thisThang=(Item)list.elementAt(i);
+					boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
+
+					if((thisThang.container()==goodLocation)
+					&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
+					&&(thisThang.ID().equalsIgnoreCase(srchStr)
+					   ||(thisThang.Name().equalsIgnoreCase(srchStr))
+					   ||(thisThang.name().equalsIgnoreCase(srchStr))))
+						if((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))
+							if((--myOccurrance)<=0)
+								matches.addElement(thisThang);
+				}
+			}
+			catch(java.lang.ArrayIndexOutOfBoundsException x){}
+		}
+		else
+		{
+			try
+			{
+				for(int i=0;i<list.size();i++)
+				{
+					Item thisThang=(Item)list.elementAt(i);
+					boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
+
+					if((thisThang.container()==goodLocation)
+					&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
+					&&((containsString(thisThang.name(),srchStr)||containsString(thisThang.Name(),srchStr))
+					   &&((!allFlag)||((thisThang.displayText()!=null)&&(thisThang.displayText().length()>0)))))
+						if((--myOccurrance)<=0)
+							matches.addElement(thisThang);
+				}
+			}
+			catch(java.lang.ArrayIndexOutOfBoundsException x){}
+			if(matches.size()==0)
+			{
+				myOccurrance=((Integer)flags[FLAG_DOT]).intValue();
+				try
+				{
+	                Item thisThang=null;
+					for(int i=0;i<list.size();i++)
+					{
+						thisThang=(Item)list.elementAt(i);
+						boolean beingWorn=!thisThang.amWearingAt(Item.IN_INVENTORY);
+						if((thisThang.container()==goodLocation)
+						&&((wornReqCode==Item.WORNREQ_ANY)||(beingWorn&&(wornReqCode==Item.WORNREQ_WORNONLY))||((!beingWorn)&&(wornReqCode==Item.WORNREQ_UNWORNONLY)))
+						&&(containsString(thisThang.displayText(),srchStr)))
+							if((--myOccurrance)<=0)
+								matches.addElement(thisThang);
+					}
+				}
+				catch(java.lang.ArrayIndexOutOfBoundsException x){}
+			}
 		}
 		return null;
 	}

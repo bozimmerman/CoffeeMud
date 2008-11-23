@@ -56,18 +56,15 @@ public class Chant_DistantOvergrowth extends Chant
 		Room newRoom=null;
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+			Vector rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
+			for(Enumeration r=rooms.elements();r.hasMoreElements();)
 			{
 				Room R=(Room)r.nextElement();
-				if((CMLib.english().containsString(R.displayText(),areaName))
-				&&(CMLib.flags().canAccess(mob,R)))
+				anyRoom=R;
+				if((R.domainType()&Room.INDOORS)==0)
 				{
-				   anyRoom=R;
-					if((R.domainType()&Room.INDOORS)==0)
-					{
-					    newRoom=R;
-					    break;
-					}
+				    newRoom=R;
+				    break;
 				}
 			}
 	    }catch(NoSuchElementException e){}

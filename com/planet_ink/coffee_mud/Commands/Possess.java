@@ -106,12 +106,11 @@ public class Possess extends StdCommand
 		{
 		    try
 		    {
-				Enumeration r=CMLib.map().rooms();
-				for(;r.hasMoreElements();)
+		    	Vector inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,MOBname,100);
+				for(Enumeration m=inhabs.elements();m.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
-					MOB mob2=R.fetchInhabitant(MOBname);
-					if((mob2!=null)&&(mob2.isMonster())&&(CMSecurity.isAllowed(mob,R,"POSSESS")))
+					MOB mob2=(MOB)m.nextElement();
+					if((mob2.isMonster())&&(CMSecurity.isAllowed(mob,mob2.location(),"POSSESS")))
 					{
 						target=mob2;
 						break;

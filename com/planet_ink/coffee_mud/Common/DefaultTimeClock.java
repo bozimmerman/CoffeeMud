@@ -316,58 +316,60 @@ public class DefaultTimeClock implements TimeClock
 	{
 	    try
 	    {
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				if((R!=null)
-				&&(R.getArea()!=null)
-				&&(R.getArea().getTimeObj()==this)
-				&&((R.numInhabitants()>0)||(R.numItems()>0)))
+	    	for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
+	    	{
+	    		Area A=(Area)a.nextElement();
+				if(A.getTimeObj()==this)
+				for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 				{
-					R.recoverEnvStats();
-					for(int m=0;m<R.numInhabitants();m++)
+					Room R=(Room)r.nextElement();
+					if((R!=null)&&((R.numInhabitants()>0)||(R.numItems()>0)))
 					{
-						MOB mob=R.fetchInhabitant(m);
-						if((mob!=null)
-						&&(!mob.isMonster()))
+						R.recoverEnvStats();
+						for(int m=0;m<R.numInhabitants();m++)
 						{
-							if(CMLib.map().hasASky(R)
-							&&(!CMLib.flags().isSleeping(mob))
-							&&(CMLib.flags().canSee(mob)))
+							MOB mob=R.fetchInhabitant(m);
+							if((mob!=null)
+							&&(!mob.isMonster()))
 							{
-								switch(getTODCode())
+								if(CMLib.map().hasASky(R)
+								&&(!CMLib.flags().isSleeping(mob))
+								&&(CMLib.flags().canSee(mob)))
 								{
-								case TimeClock.TIME_DAWN:
-									mob.tell("^JThe sun begins to rise in the west.^?");
-									break;
-								case TimeClock.TIME_DAY:
-									break;
-									//mob.tell("The sun is now shining brightly."); break;
-								case TimeClock.TIME_DUSK:
-									mob.tell("^JThe sun begins to set in the east.^?"); break;
-								case TimeClock.TIME_NIGHT:
-									mob.tell("^JThe sun has set and darkness again covers the world.^?"); break;
+									switch(getTODCode())
+									{
+									case TimeClock.TIME_DAWN:
+										mob.tell("^JThe sun begins to rise in the west.^?");
+										break;
+									case TimeClock.TIME_DAY:
+										break;
+										//mob.tell("The sun is now shining brightly."); break;
+									case TimeClock.TIME_DUSK:
+										mob.tell("^JThe sun begins to set in the east.^?"); break;
+									case TimeClock.TIME_NIGHT:
+										mob.tell("^JThe sun has set and darkness again covers the world.^?"); break;
+									}
 								}
-							}
-							else
-							{
-								switch(getTODCode())
+								else
 								{
-								case TimeClock.TIME_DAWN:
-									mob.tell("It is now daytime."); break;
-								case TimeClock.TIME_DAY: break;
-									//mob.tell("The sun is now shining brightly."); break;
-								case TimeClock.TIME_DUSK: break;
-									//mob.tell("It is almost nighttime."); break;
-								case TimeClock.TIME_NIGHT:
-									mob.tell("It is nighttime."); break;
+									switch(getTODCode())
+									{
+									case TimeClock.TIME_DAWN:
+										mob.tell("It is now daytime."); break;
+									case TimeClock.TIME_DAY: break;
+										//mob.tell("The sun is now shining brightly."); break;
+									case TimeClock.TIME_DUSK: break;
+										//mob.tell("It is almost nighttime."); break;
+									case TimeClock.TIME_NIGHT:
+										mob.tell("It is nighttime."); break;
+									}
 								}
 							}
 						}
 					}
+					R.recoverRoomStats();
 				}
-				R.recoverRoomStats();
-			}
+	    	}
 	    }catch(java.util.NoSuchElementException x){}
 	}
 

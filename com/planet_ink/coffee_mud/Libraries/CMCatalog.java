@@ -874,13 +874,15 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
         		return;
         	}
         	Environmental o=null;
-        	for(int r=refs.size();r>=0;r--)
-        	{
-        		o=(Environmental)refs.elementAt(r).get();
-        		if(o.amDestroyed()||!CMLib.flags().isCataloged(o))
-        			refs.removeElementAt(r);
-        	}
-        	refs=DVector.softCopy(refs);
+        	try {
+	        	for(int r=refs.size()-1;r>=0;r--)
+	        	{
+	        		o=(Environmental)refs.elementAt(r).get();
+	        		if((o==null)||o.amDestroyed()||(!CMLib.flags().isCataloged(o)))
+	        			refs.removeElementAt(r);
+	        	}
+	        	refs=DVector.softCopy(refs);
+        	} catch(ArrayIndexOutOfBoundsException ex){}
         }
         
         public synchronized void addReference(Environmental E) {

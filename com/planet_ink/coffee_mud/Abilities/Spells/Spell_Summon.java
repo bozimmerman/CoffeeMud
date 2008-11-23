@@ -109,19 +109,7 @@ public class Spell_Summon extends Spell
                 }
             }
             if(oldRoom==null)
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-			{
-				Room room=(Room)r.nextElement();
-				if(CMLib.flags().canAccess(mob,room))
-				{
-					target=room.fetchInhabitant(areaName);
-					if(target!=null)
-					{
-						oldRoom=room;
-						break;
-					}
-				}
-			}
+            	oldRoom=CMLib.map().findWorldRoomLiberally(mob,areaName,"I",10);
 	    }catch(NoSuchElementException nse){}
 
 		if(oldRoom==null)

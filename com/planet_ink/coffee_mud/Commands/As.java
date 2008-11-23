@@ -62,12 +62,9 @@ public class As extends StdCommand
 		{
 		    try
 		    {
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					M=R.fetchInhabitant(cmd);
-					if(M!=null) break;
-				}
+		    	Vector targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, cmd, 50);
+		    	if(targets.size()>0) 
+		    		M=(MOB)targets.elementAt(CMLib.dice().roll(1,targets.size(),-1));
 		    }
 		    catch(NoSuchElementException e){}
 		}

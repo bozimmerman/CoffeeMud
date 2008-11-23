@@ -127,15 +127,9 @@ public class Spell_Scry extends Spell
 		{
 		    try
 		    {
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-				{
-					Room room=(Room)r.nextElement();
-					if(CMLib.flags().canAccess(mob,room))
-					{
-						MOB mob2=room.fetchInhabitant(mobName);
-						if(mob2!=null){ target=mob2; break;}
-					}
-				}
+		    	Vector targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, mobName, 50);
+		    	if(targets.size()>0) 
+		    		target=(MOB)targets.elementAt(CMLib.dice().roll(1,targets.size(),-1));
 		    }catch(NoSuchElementException nse){}
 		}
 		if(target instanceof Deity) target=null;

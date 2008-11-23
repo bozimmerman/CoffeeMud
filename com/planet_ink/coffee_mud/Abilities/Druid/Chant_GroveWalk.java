@@ -53,26 +53,23 @@ public class Chant_GroveWalk extends Chant
 
 
 		Room newRoom=null;
-		boolean hereok=false;
+		boolean hereok=mob.location().fetchItem(null,"DruidicMonument")!=null;
 		try
 		{
-			for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
+			Vector rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob,areaName,true,10);
+			for(Enumeration e=rooms.elements();e.hasMoreElements();)
 			{
 				Room R=(Room)e.nextElement();
-				if(CMLib.flags().canAccess(mob,R))
-					for(int i=0;i<R.numItems();i++)
+				for(int i=0;i<R.numItems();i++)
+				{
+					Item I=R.fetchItem(i);
+					if((I!=null)&&(I.ID().equals("DruidicMonument")))
 					{
-						Item I=R.fetchItem(i);
-						if((I!=null)&&(I.ID().equals("DruidicMonument")))
-						{
-							if(R==mob.location())
-								hereok=true;
-							if(CMLib.english().containsString(R.displayText(),areaName))
-							   newRoom=R;
-							break;
-						}
+					    newRoom=R;
+						break;
 					}
-				if((newRoom!=null)&&(hereok)) break;
+				}
+				if(newRoom!=null) break;
 			}
 	    }catch(NoSuchElementException e){}
 		if(!hereok)

@@ -217,14 +217,12 @@ public class Spell_Wish extends Spell
 			foundThang=maybeAdd(E,thangsFound,foundThang);
 			try
 			{
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+				Vector items=CMLib.map().findItems(CMLib.map().rooms(), mob,objectWish,true,10);
+				items.addAll(CMLib.map().findInhabitants(CMLib.map().rooms(), mob,objectWish,10));
+				for(Enumeration e=items.elements();e.hasMoreElements();)
 				{
-					Room room=(Room)r.nextElement();
-					if(CMLib.flags().canAccess(mob,room))
-					{
-						E=room.fetchFromRoomFavorMOBs(null,objectWish,Item.WORNREQ_UNWORNONLY);
-						foundThang=maybeAdd(E,thangsFound,foundThang);
-					}
+					E=(Environmental)e.nextElement();
+					foundThang=maybeAdd(E,thangsFound,foundThang);
 				}
 		    }catch(NoSuchElementException nse){}
 		    try
@@ -478,16 +476,9 @@ public class Spell_Wish extends Spell
 				{
 				    try
 				    {
-						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-						{
-							Room room=(Room)r.nextElement();
-							if(CMLib.flags().canAccess(mob,room))
-							if(CMLib.english().containsString(room.displayText(),locationWish.trim()))
-							{
-							   newRoom=room;
-							   break;
-							}
-						}
+				    	Vector rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, locationWish.trim(), true, 10);
+				    	if(rooms.size()>0)
+				    		newRoom=(Room)rooms.elementAt(CMLib.dice().roll(1,rooms.size(),-1));
 				    }catch(NoSuchElementException nse){}
 				}
 				if(newRoom!=null)

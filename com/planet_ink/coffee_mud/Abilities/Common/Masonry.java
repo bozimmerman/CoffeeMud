@@ -540,7 +540,9 @@ public class Masonry extends CraftingSkill
 			StringBuffer buf=new StringBuffer(CMStrings.padRight("Item",20)+" Stone required\n\r");
 			for(int r=0;r<data.length;r++)
 			{
-				if(((r!=BUILD_MONUMENT)||(mob.charStats().getCurrentClass().baseClass().equals("Druid")))
+				if(((r!=BUILD_MONUMENT)
+						||(mob.charStats().getCurrentClass().baseClass().equals("Druid"))
+						||CMSecurity.isASysOp(mob))
 				&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(CMStrings.padRight(data[r][DAT_NAME],20),mask)))
                 {
 			        int woodRequired=adjustWoodRequired(CMath.s_int(data[r][DAT_WOOD]),mob);
@@ -604,9 +606,11 @@ public class Masonry extends CraftingSkill
 		}
 		for(int r=0;r<data.length;r++)
 		{
-			if((r!=BUILD_MONUMENT)||(mob.charStats().getCurrentClass().baseClass().equals("Druid")))
-				if(data[r][DAT_NAME].toUpperCase().startsWith(firstWord.toUpperCase()))
-					doingCode=r;
+			if((r!=BUILD_MONUMENT)
+				||(mob.charStats().getCurrentClass().baseClass().equals("Druid"))
+				||CMSecurity.isASysOp(mob))
+					if(data[r][DAT_NAME].toUpperCase().startsWith(firstWord.toUpperCase()))
+						doingCode=r;
 		}
 		if(doingCode<0)
 		{

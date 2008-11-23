@@ -197,6 +197,7 @@ public class ThinRoom implements Room {
 							  String allMessage){return true;}
 
 	public MOB fetchInhabitant(String inhabitantID){return null;}
+	public Vector fetchInhabitants(String inhabitantID){return new Vector(1);}
 	public void addInhabitant(MOB mob){}
 	public void delInhabitant(MOB mob){}
 	public int numInhabitants(){return 0;}
@@ -221,6 +222,8 @@ public class ThinRoom implements Room {
 	public Item fetchItem(int i){return null;}
 	public Item fetchAnyItem(String itemID){return null;}
 	public void bringItemHere(Item item, int expireMins, boolean andRiders){}
+	public Vector fetchAnyItems(String itemID) { return new Vector(1);}
+	public Vector fetchItems(Item goodLocation, String itemID) { return new Vector(1);}
 
 	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName,int wornReqCode){return null;}
 	public Environmental fetchFromMOBRoomItemExit(MOB mob, Item goodLocation, String thingName, int wornReqCode){return null;}

@@ -318,18 +318,15 @@ public class Stat  extends Skills
 		{
 		    try
 		    {
-				Enumeration r=CMLib.map().rooms();
-				for(;r.hasMoreElements();)
+		    	Vector inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,MOBname,100);
+				for(Enumeration m=inhabs.elements();m.hasMoreElements();)
 				{
-					Room R=(Room)r.nextElement();
+					MOB mob2=(MOB)m.nextElement();
+					Room R=mob2.location();
 					if(CMSecurity.isAllowed(mob,R,"STAT"))
 					{
-						MOB mob2=R.fetchInhabitant(MOBname);
-						if(mob2!=null)
-						{
-							target=mob2;
-							break;
-						}
+						target=mob2;
+						break;
 					}
 				}
 		    }catch(NoSuchElementException nse){}

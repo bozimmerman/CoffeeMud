@@ -196,15 +196,7 @@ public interface QuestManager extends CMLibrary
                 boolean found=false;
                 Room R=CMLib.map().getRoom(s);
                 if(R!=null) found=true;
-                if(!found)
-                for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
-                {
-                    R=(Room)e.nextElement();
-                    if((CMLib.english().containsString(R.displayText(),s)
-                    ||(s.equalsIgnoreCase(R.displayText()))
-                    ||(CMLib.english().containsString(R.description(),s))))
-                    { found=true; break;}
-                }
+                if(!found) found=CMLib.map().findWorldRoomLiberally(null,s,"R",50)!=null;
                 if(!found) throw new CMException("'"+((String)V.elementAt(v))+"' is not a valid room name, id, or description.");
             }
             return str;

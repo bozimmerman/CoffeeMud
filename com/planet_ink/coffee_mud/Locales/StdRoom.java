@@ -1510,6 +1510,13 @@ public class StdRoom implements Room
 			mob=(MOB)CMLib.english().fetchEnvironmental(inhabitants,inhabitantID, false);
 		return mob;
 	}
+	public Vector fetchInhabitants(String inhabitantID)
+	{
+		Vector inhabs=CMLib.english().fetchEnvironmentals(inhabitants,inhabitantID,true);
+		if(inhabs.size()==0)
+			inhabs=CMLib.english().fetchEnvironmentals(inhabitants,inhabitantID, false);
+		return inhabs;
+	}
 	public void addInhabitant(MOB mob)
 	{
 		inhabitants.addElement(mob);
@@ -1575,6 +1582,20 @@ public class StdRoom implements Room
 		Item item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Item.WORNREQ_UNWORNONLY,true);
 		if(item==null) item=CMLib.english().fetchAvailableItem(contents,itemID,goodLocation,Item.WORNREQ_UNWORNONLY,false);
 		return item;
+	}
+	public Vector fetchItems(Item goodLocation, String itemID)
+	{
+		Vector items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Item.WORNREQ_UNWORNONLY,true);
+		if(items.size()==0)
+			items=CMLib.english().fetchAvailableItems(contents,itemID,goodLocation,Item.WORNREQ_UNWORNONLY,false);
+		return items;
+	}
+	public Vector fetchAnyItems(String itemID)
+	{
+		Vector items=CMLib.english().fetchEnvironmentals(contents,itemID,true);
+		if(items.size()==0)
+			items=CMLib.english().fetchEnvironmentals(contents,itemID, false);
+		return items;
 	}
 	public void addItem(Item item)
 	{

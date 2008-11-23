@@ -1240,18 +1240,7 @@ public class Destroy extends StdCommand
 				Room theRoom=null;
 				if(allWord.length()>0)
 				{
-				    try
-				    {
-						for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-						{
-							Room room=(Room)r.nextElement();
-							if(room.roomID().equalsIgnoreCase(allWord))
-							{
-								theRoom=room;
-								break;
-							}
-						}
-				    }catch(NoSuchElementException e){}
+				    try{ theRoom=CMLib.map().getRoom(allWord); }catch(NoSuchElementException e){}
 				}
 				if(theRoom!=null)
 				{

@@ -51,16 +51,9 @@ public class Spell_DistantVision extends Spell
 		Room thisRoom=null;
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-			{
-				Room room=(Room)r.nextElement();
-				if((CMLib.flags().canAccess(mob,room))
-				&&(CMLib.english().containsString(room.displayText(),areaName)))
-				{
-					thisRoom=room;
-					break;
-				}
-			}
+			Vector rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
+			if(rooms.size()>0)
+				thisRoom=(Room)rooms.elementAt(CMLib.dice().roll(1,rooms.size(),-1));
 	    }catch(NoSuchElementException nse){}
 
 		if(thisRoom==null)

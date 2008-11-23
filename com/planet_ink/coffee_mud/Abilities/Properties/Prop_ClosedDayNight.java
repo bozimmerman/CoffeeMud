@@ -186,17 +186,15 @@ public class Prop_ClosedDayNight extends Property
 			if(R!=null) return R;
 			try
 			{
-				for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
-				{
-					Room R2=(Room)e.nextElement();
-					if((R2.roomID().indexOf(Home)>=0)
-					||CMLib.english().containsString(R2.name(),Home)
-					||CMLib.english().containsString(R2.displayText(),Home)
-					||CMLib.english().containsString(R2.description(),Home))
-					{ R=R2; break;}
-					if(R2.fetchInhabitant(Home)!=null)
-					{ R=R2; break;}
-				}
+		    	Vector rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, Home,false,10);
+		    	if(rooms.size()>0) 
+		    		R=(Room)rooms.elementAt(CMLib.dice().roll(1,rooms.size(),-1));
+		    	else
+		    	{
+			    	Vector inhabs=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, Home, 10);
+			    	if(inhabs.size()>0) 
+			    		R=CMLib.map().roomLocation((MOB)inhabs.elementAt(CMLib.dice().roll(1,inhabs.size(),-1)));
+		    	}
 		    }catch(NoSuchElementException e){}
 		}
 		return R;

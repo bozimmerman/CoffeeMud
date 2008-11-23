@@ -64,7 +64,7 @@ public class Link extends At
 		thisRoom=CMLib.map().getRoom(RoomID);
 		if(thisRoom==null)
 		{
-			thisRoom=super.findRoomLiberally(mob,new StringBuffer(RoomID));
+			thisRoom=CMLib.map().findWorldRoomLiberally(mob,RoomID,"R",100);
 			if(thisRoom==null)
 			{
 				mob.tell("Room \""+RoomID+"\" is unknown.  Try again.");

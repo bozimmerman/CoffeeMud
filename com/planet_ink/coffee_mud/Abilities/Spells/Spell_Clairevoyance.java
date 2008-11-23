@@ -113,15 +113,11 @@ public class Spell_Clairevoyance extends Spell
 		{
 		    try
 		    {
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					if(CMLib.flags().canAccess(mob,R))
-					{
-						MOB mob2=R.fetchInhabitant(mobName);
-						if(mob2!=null){ target=mob2; break;}
-					}
-				}
+		    	Vector targets=CMLib.map().findInhabitants(mob.location().getArea().getProperMap(), mob, mobName, 10);
+		    	if(targets.size()==0)
+		    		targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, mobName, 10);
+		    	if(targets.size()>0) 
+		    		target=(MOB)targets.elementAt(CMLib.dice().roll(1,targets.size(),-1));
 		    }catch(NoSuchElementException nse){}
 		}
 		if(target instanceof Deity) target=null;

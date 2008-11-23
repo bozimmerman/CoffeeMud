@@ -104,17 +104,9 @@ public class Spell_Portal extends Spell
 		{
 		    try
 		    {
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-				{
-					Room room=(Room)r.nextElement();
-		
-					if((CMLib.flags().canAccess(mob,room))
-					&&(CMLib.english().containsString(room.displayText(),areaName)))
-					{
-					   newRoom=room;
-					   break;
-					}
-				}
+		    	Vector rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName, true, 10);
+		    	if(rooms.size()>0)
+		    		newRoom=(Room)rooms.elementAt(CMLib.dice().roll(1,rooms.size(),-1));
 		    }catch(NoSuchElementException nse){}
 		}
 

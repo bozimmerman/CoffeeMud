@@ -116,15 +116,8 @@ public class Spell_KnowOrigin extends Spell
 					}
 				}
 		    }catch(NoSuchElementException nse){}
-		    try
-		    {
-				// check room stuff last
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					if((CMLib.flags().canAccess(mob,R))&&(R.fetchItem(null,me.Name())!=null))
-					   return R;
-				}
+		    try { // check room stuff last
+		    	return CMLib.map().findWorldRoomLiberally(mob, me.Name(), "I",10);
 		    }catch(NoSuchElementException nse){}
 		}
 		return null;

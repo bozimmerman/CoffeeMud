@@ -85,16 +85,9 @@ public class Prayer_Gateway extends Prayer
 		newRoom=null;
 		try
 		{
-			for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-			{
-				Room R=(Room)r.nextElement();
-				if(CMLib.flags().canAccess(mob,R))
-					if(CMLib.english().containsString(R.displayText(),areaName))
-					{
-					   newRoom=R;
-					   break;
-					}
-			}
+	    	Vector rooms=CMLib.map().findRooms(CMLib.map().rooms(), mob, areaName,true,10);
+	    	if(rooms.size()>0) 
+	    		newRoom=(Room)rooms.elementAt(CMLib.dice().roll(1,rooms.size(),-1));
 	    }catch(NoSuchElementException e){}
 
 		if(newRoom==null)

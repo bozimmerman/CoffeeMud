@@ -69,7 +69,7 @@ public class Goto extends At
 			}
 		}
 		else
-			room=findRoomLiberally(mob,cmd);
+			room=CMLib.map().findWorldRoomLiberally(mob,cmd.toString(),"RIPMA",100);
 
 		if(room==null)
 		{

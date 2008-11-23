@@ -111,26 +111,22 @@ public class Copy extends StdCommand
 		{
 		    try
 		    {
-				for(Enumeration r=mob.location().getArea().getMetroMap();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					E=R.fetchInhabitant(name);
-					if(E==null) E=R.fetchAnyItem(name);
-					if(E!=null) break;
-				}
+		    	Vector targets=CMLib.map().findInhabitants(mob.location().getArea().getMetroMap(), mob, name, 50);
+		    	if(targets.size()==0) 
+			    	targets=CMLib.map().findItems(mob.location().getArea().getMetroMap(), mob, name, true, 50);
+		    	if(targets.size()>0) 
+		    		E=(Environmental)targets.elementAt(CMLib.dice().roll(1,targets.size(),-1));
 		    }catch(NoSuchElementException e){}
 		}
 		if(E==null)
 		{
 		    try
 		    {
-				for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
-				{
-					Room R=(Room)r.nextElement();
-					E=R.fetchInhabitant(name);
-					if(E==null) E=R.fetchAnyItem(name);
-					if(E!=null) break;
-				}
+		    	Vector targets=CMLib.map().findInhabitants(CMLib.map().areas(), mob, name, 50);
+		    	if(targets.size()==0) 
+			    	targets=CMLib.map().findItems(CMLib.map().areas(), mob, name, true, 50);
+		    	if(targets.size()>0) 
+		    		E=(Environmental)targets.elementAt(CMLib.dice().roll(1,targets.size(),-1));
 		    }catch(NoSuchElementException e){}
 		}
 		if(E==null)

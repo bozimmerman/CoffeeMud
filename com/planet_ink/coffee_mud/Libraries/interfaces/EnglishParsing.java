@@ -57,7 +57,9 @@ public interface EnglishParsing extends CMLibrary
     public Environmental fetchEnvironmental(Vector list, String srchStr, boolean exactOnly);
     public Environmental fetchEnvironmental(Hashtable list, String srchStr, boolean exactOnly);
     public Environmental fetchEnvironmental(Environmental[] list, String srchStr, boolean exactOnly);
+	public Vector fetchEnvironmentals(Vector list, String srchStr, boolean exactOnly);
     public Item fetchAvailableItem(Vector list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly);
+    public Vector fetchAvailableItems(Vector list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly);
     public int getContextNumber(Object[] list, Environmental E);
     public int getContextNumber(Vector list, Environmental E);
     public String getContextName(Vector list, Environmental E);

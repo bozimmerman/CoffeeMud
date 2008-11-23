@@ -221,6 +221,7 @@ public interface Room extends Environmental, Affectable, Behavable
 	public boolean isHere(Environmental E);
 
 	public MOB fetchInhabitant(String inhabitantID);
+	public Vector fetchInhabitants(String inhabitantID);
 	public void addInhabitant(MOB mob);
 	public void delInhabitant(MOB mob);
 	public int numInhabitants();
@@ -240,6 +241,8 @@ public interface Room extends Environmental, Affectable, Behavable
 	public Item fetchItem(Item goodLocation, String itemID);
 	public Item fetchItem(int i);
 	public Item fetchAnyItem(String itemID);
+	public Vector fetchItems(Item goodLocation, String itemID);
+	public Vector fetchAnyItems(String itemID);
 	public void bringItemHere(Item item, int expireMins, boolean andRiders);
 
 	public Environmental fetchFromRoomFavorItems(Item goodLocation, String thingName,int wornReqCode);

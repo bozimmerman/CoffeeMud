@@ -199,7 +199,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             {
                 StringBuffer mxpText=Resources.getFileResource("text/mxp.txt",true);
                 if(mxpText!=null)
-                    S.rawPrintln("\033[6z"+mxpText.toString()+"\n\r");
+                    S.rawOut("\033[6z"+mxpText.toString()+"\n\r");
             }
             else
                 mob.tell("MXP codes have been disabled for this session.");

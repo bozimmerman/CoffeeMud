@@ -199,18 +199,8 @@ public class Thief_ContractHit extends ThiefSkill
         }
 
 		Vector V=new Vector();
-		try
-		{
-			for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
-			{
-				Room R=(Room)e.nextElement();
-				if(CMLib.flags().canAccess(mob,R))
-				{
-					MOB M=R.fetchInhabitant(CMParms.combine(commands,0));
-					if(M!=null)
-						V.addElement(M);
-				}
-			}
+		try {
+	    	V=CMLib.map().findInhabitants(CMLib.map().rooms(), mob,CMParms.combine(commands,0), 10);
 	    }catch(NoSuchElementException nse){}
 		MOB target=null;
 		if(V.size()>0)

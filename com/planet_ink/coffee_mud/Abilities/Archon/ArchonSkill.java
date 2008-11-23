@@ -73,12 +73,9 @@ public class ArchonSkill extends StdAbility
 		{
 		    try
 		    {
-				for(Enumeration e=CMLib.map().rooms();e.hasMoreElements();)
-				{
-					Room R=(Room)e.nextElement();
-					if(R!=mob.location())
-						target=R.fetchInhabitant(targetName);
-				}
+		    	Vector targets=CMLib.map().findInhabitants(CMLib.map().rooms(), mob, targetName, 50);
+		    	if(targets.size()>0) 
+		    		target=(MOB)targets.elementAt(CMLib.dice().roll(1,targets.size(),-1));
 		    }
 		    catch(NoSuchElementException e){}
 		}

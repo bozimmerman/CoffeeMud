@@ -363,7 +363,105 @@ public class CMMap extends StdLibrary implements WorldMap
         catch(java.util.NoSuchElementException x){}
         return null;
     }
+    
+    public Vector findRooms(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct)
+    {
+    	Vector foundRooms=new Vector();
+    	Vector completeRooms=new Vector();
+		try { completeRooms=CMParms.makeVector(rooms); }catch(NoSuchElementException nse){}
+		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
+		
+		Enumeration enumSet;
+		enumSet=completeRooms.elements();
+		while(enumSet.hasMoreElements())
+		{
+	    	findRoomsByDisplay(mob,enumSet,foundRooms,srchStr,delay);
+	    	if(enumSet.hasMoreElements()) try{Thread.sleep(1000 - delay);}catch(Exception e){}
+		}
+		if(!displayOnly)
+		{
+			enumSet=completeRooms.elements();
+			while(enumSet.hasMoreElements())
+			{
+				findRoomsByDesc(mob,enumSet,foundRooms,srchStr,delay);
+		    	if(enumSet.hasMoreElements()) try{Thread.sleep(1000 - delay);}catch(Exception e){}
+			}
+		}
+    	return foundRooms;
+    }
+    
+    protected void findRoomsByDisplay(MOB mob, Enumeration rooms, Vector foundRooms, String srchStr, long maxTime)
+    {
+    	long startTime=System.currentTimeMillis();
+		try
+		{
+			srchStr=srchStr.toUpperCase();
+			boolean useTimer=maxTime>1;
+			for(;rooms.hasMoreElements();)
+			{
+				Room room=(Room)rooms.nextElement();
+				if((CMLib.english().containsString(CMStrings.removeColors(room.displayText()),srchStr))
+				&&((mob==null)||CMLib.flags().canAccess(mob,room)))
+					foundRooms.addElement(room);
+				if((useTimer)&&((System.currentTimeMillis()-startTime)>maxTime))
+					return;
+			}
+	    }catch(NoSuchElementException nse){}
+    }
 
+    protected void findRoomsByDesc(MOB mob, Enumeration rooms, Vector foundRooms, String srchStr, long maxTime)
+    {
+    	long startTime=System.currentTimeMillis();
+		try
+		{
+			srchStr=srchStr.toUpperCase();
+			boolean useTimer=maxTime>1;
+			for(;rooms.hasMoreElements();)
+			{
+				Room room=(Room)rooms.nextElement();
+				if((CMLib.english().containsString(CMStrings.removeColors(room.description()),srchStr))
+				&&((mob==null)||CMLib.flags().canAccess(mob,room)))
+					foundRooms.addElement(room);
+				if((useTimer)&&((System.currentTimeMillis()-startTime)>maxTime))
+					return;
+			}
+	    }catch(NoSuchElementException nse){}
+    }
+
+    public Vector findInhabitants(Enumeration rooms, MOB mob, String srchStr, int timePct)
+    {
+    	Vector found=new Vector();
+		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
+		boolean useTimer = delay>1;
+		long startTime=System.currentTimeMillis();
+		for(;rooms.hasMoreElements();)
+		{
+			Room room=(Room)rooms.nextElement();
+			if((mob==null)||CMLib.flags().canAccess(mob,room))
+				found.addAll(room.fetchInhabitants(srchStr));
+	    	if((useTimer)&&((System.currentTimeMillis()-startTime)>delay)) 
+	    		try{Thread.sleep(1000 - delay); startTime=System.currentTimeMillis();}catch(Exception e){}
+		}
+    	return found;
+    }
+    
+    public Vector findItems(Enumeration rooms, MOB mob, String srchStr, boolean anyItems, int timePct)
+    {
+    	Vector found=new Vector();
+		long delay=Math.round(CMath.s_pct(timePct+"%") * 1000);
+		boolean useTimer = delay>1;
+		long startTime=System.currentTimeMillis();
+		for(;rooms.hasMoreElements();)
+		{
+			Room room=(Room)rooms.nextElement();
+			if((mob==null)||CMLib.flags().canAccess(mob,room))
+				found.addAll(anyItems?room.fetchItems(null,srchStr):room.fetchAnyItems(srchStr));
+	    	if((useTimer)&&((System.currentTimeMillis()-startTime)>delay)) 
+	    		try{Thread.sleep(1000 - delay); startTime=System.currentTimeMillis();}catch(Exception e){}
+		}
+    	return found;
+    }
+    
 	public Room getRoom(Hashtable hashedRoomSet, String areaName, String calledThis)
 	{
 		if(calledThis.startsWith("#"))
@@ -773,6 +871,9 @@ public class CMMap extends StdLibrary implements WorldMap
 	public Room roomLocation(Environmental E)
 	{
 		if(E==null) return null;
+		if(E instanceof Area)
+			return ((Area)E).getRandomProperRoom();
+		else
 		if(E instanceof Room)
 			return (Room)E;
 		else
@@ -939,6 +1040,125 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 	}
 
+	public Room findWorldRoomLiberally(MOB mob, String cmd, String srchWhatARIPM, int timePct)
+	{
+		Vector rooms=findWorldRoomsLiberally(mob,cmd,srchWhatARIPM,true,timePct);
+		if((rooms!=null)&&(rooms.size()!=0)) return (Room)rooms.firstElement();
+		return null;
+	}
+	
+	public Vector findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatARIPM, int timePct)
+	{ return findWorldRoomsLiberally(mob,cmd,srchWhatARIPM,false,timePct); }
+	
+	protected Room addWorldRoomsLiberally(Vector rooms, Vector choicesV)
+	{
+		if(choicesV==null) return null;
+		if(rooms!=null)
+		{
+			for(Enumeration choices=choicesV.elements();choices.hasMoreElements();)
+				addWorldRoomsLiberally(rooms,roomLocation((Environmental)choices.nextElement()));
+			return null;
+		}
+		else
+		{
+			Room room=null;
+			int tries=0;
+            while(((room==null)||(room.roomID().length()==0))&&((++tries)<200))
+                room=roomLocation((Environmental)choicesV.elementAt(CMLib.dice().roll(1,choicesV.size(),-1)));
+            return room;
+		}
+	}
+	
+	protected Room addWorldRoomsLiberally(Vector rooms, Room room)
+	{
+		if(room==null) return null;
+		if(rooms!=null)
+		{ 
+			if(!rooms.contains(room))
+				rooms.addElement(room);
+			return null;
+		}
+		return room;
+	}
+	
+	protected Room addWorldRoomsLiberally(Vector rooms, Area area)
+	{ return addWorldRoomsLiberally(rooms,area.getRandomProperRoom()); }
+	
+	protected Vector findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatARIPM, boolean returnFirst, int timePct)
+	{
+		Room room=null;
+		Vector rooms=(returnFirst)?null:new Vector();
+		
+		Room curRoom=mob.location();
+		boolean searchAreas=srchWhatARIPM.toUpperCase().indexOf('A')>=0;
+		boolean searchRooms=srchWhatARIPM.toUpperCase().indexOf('R')>=0;
+		boolean searchPlayers=srchWhatARIPM.toUpperCase().indexOf('P')>=0;
+		boolean searchItems=srchWhatARIPM.toUpperCase().indexOf('I')>=0;
+		boolean searchInhabs=srchWhatARIPM.toUpperCase().indexOf('M')>=0;
+		if(searchRooms)
+		{
+			int dirCode=Directions.getGoodDirectionCode(cmd);
+			if(dirCode>=0)
+				room=addWorldRoomsLiberally(rooms,mob.location().rawDoors()[dirCode]);
+			if(room==null)
+				room=addWorldRoomsLiberally(rooms,getRoom(cmd));
+		}
+		
+		if(room==null)
+		{
+		    // first get room ids
+			if((cmd.charAt(0)=='#')&&(curRoom!=null)&&(searchRooms))
+			{
+				cmd=curRoom.getArea().Name()+"#";
+				room=addWorldRoomsLiberally(rooms,getRoom(cmd));
+			}
+			else
+			{
+                String srchStr=cmd;
+                
+                if(searchPlayers)
+                {
+	                // then look for players
+	                Session sess=CMLib.sessions().findPlayerOnline(srchStr,false);
+	                if((sess!=null) && (sess.mob()!=null) && (sess.mob()!=null))
+	                	room=addWorldRoomsLiberally(rooms,sess.mob().location());
+                }
+                
+                if(searchAreas && room==null)
+                {
+                	Area A=findArea(srchStr);
+                	if((A!=null) &&(A.properSize()>0) &&(A.getProperRoomnumbers().roomCountAllAreas()>0))
+                		room=addWorldRoomsLiberally(rooms,A);
+                }
+                
+				// no good, so look for room inhabitants
+				if(searchInhabs && room==null)
+				{
+					Vector candidates=findInhabitants(roomsFilled(), mob, srchStr, timePct);
+					if(candidates.size()>0)
+                		room=addWorldRoomsLiberally(rooms,candidates);
+				}
+				
+				// now check room text
+				if(searchRooms && room==null)
+				{
+					Vector candidates=findRooms(roomsFilled(), mob, srchStr, false, timePct);
+					if(candidates.size()>0)
+                		room=addWorldRoomsLiberally(rooms,candidates);
+				}
+				
+				// lastly, check floor items
+				if(searchItems && room==null)
+				{
+					Vector candidates=findItems(roomsFilled(), mob, srchStr, false,timePct);
+					if(candidates.size()>0)
+                		room=addWorldRoomsLiberally(rooms,candidates);
+				}
+			}
+		}
+		if(rooms!=null) return rooms;
+		return CMParms.makeVector(room);
+	}
 
     private DVector getAllPlayersHere(Area area, boolean includeLocalFollowers)
     {
@@ -1032,7 +1252,7 @@ public class CMMap extends StdLibrary implements WorldMap
             MOB M=null;
             Room R=null;
             Vector roomsToGo=new Vector();
-            MOB expireM=CMLib.map().god(null);
+            MOB expireM=god(null);
             CMMsg expireMsg=CMClass.getMsg(expireM,R,null,CMMsg.MSG_EXPIRE,null);
             boolean vResetTime=false;
             if((System.currentTimeMillis()-lastVReset)>(12 * 60 * 60 * 1000))
@@ -1040,7 +1260,7 @@ public class CMMap extends StdLibrary implements WorldMap
                 vResetTime=true;
                 lastVReset=System.currentTimeMillis();
             }
-            for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+            for(Enumeration r=rooms();r.hasMoreElements();)
             {
                 R=(Room)r.nextElement();
                 expireM.setLocation(R);
@@ -1090,7 +1310,7 @@ public class CMMap extends StdLibrary implements WorldMap
                             R.sendOthers(expireM,expireMsg);
                         else
                             success=false;
-                        if(debug) Log.sysOut("UTILITHREAD","Expired "+E.Name()+" in "+CMLib.map().getExtendedRoomID(R)+": "+success);
+                        if(debug) Log.sysOut("UTILITHREAD","Expired "+E.Name()+" in "+getExtendedRoomID(R)+": "+success);
                     }
                     stuffToGo.clear();
                 }
@@ -1102,10 +1322,10 @@ public class CMMap extends StdLibrary implements WorldMap
                 R=(Room)roomsToGo.elementAt(r);
                 expireM.setLocation(R);
                 expireMsg.setTarget(R);
-                thread.status("expirating room "+CMLib.map().getExtendedRoomID(R));
+                thread.status("expirating room "+getExtendedRoomID(R));
                 if(debug)
                 {
-                    String roomID=CMLib.map().getExtendedRoomID(R);
+                    String roomID=getExtendedRoomID(R);
                     if(roomID.length()==0) roomID="(unassigned grid room, probably in the air)";
                     if(debug) Log.sysOut("UTILITHREAD","Expired "+roomID+".");
                 }
@@ -1133,7 +1353,7 @@ public class CMMap extends StdLibrary implements WorldMap
         thread.status("checking");
         try
         {
-            for(Enumeration r=CMLib.map().rooms();r.hasMoreElements();)
+            for(Enumeration r=rooms();r.hasMoreElements();)
             {
                 Room R=(Room)r.nextElement();
                 for(int m=0;m<R.numInhabitants();m++)

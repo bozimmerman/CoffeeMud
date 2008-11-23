@@ -80,6 +80,30 @@ public class Sessions extends StdLibrary implements SessionsList
         return true;
     }
     
+    public Session findPlayerOnline(String srchStr, boolean exactOnly)
+    {
+        // then look for players
+		for(int s=0;s<size();s++)
+		{
+			Session thisSession=elementAt(s);
+			if((thisSession.mob()!=null) && (!thisSession.killFlag())
+			&&(thisSession.mob().location()!=null)
+			&&(thisSession.mob().name().equalsIgnoreCase(srchStr)))
+				return thisSession;
+		}
+		// keep looking for players
+		if(!exactOnly)
+			for(int s=0;s<size();s++)
+			{
+				Session thisSession=elementAt(s);
+				if((thisSession.mob()!=null)&&(!thisSession.killFlag())
+				&&(thisSession.mob().location()!=null)
+				&&(CMLib.english().containsString(thisSession.mob().name(),srchStr)))
+					return thisSession;
+			}
+		return null;
+    }
+    
     public void run()
     {
         if((CMSecurity.isDisabled("UTILITHREAD"))
