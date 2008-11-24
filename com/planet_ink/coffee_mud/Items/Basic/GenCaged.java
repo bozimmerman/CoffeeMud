@@ -82,6 +82,7 @@ public class GenCaged extends GenItem implements CagedAnimal
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if(msg.amITarget(this)
+			||((msg.tool()==this)&&(msg.target()==container())&&(container()!=null))
 		&&(baseEnvStats().ability()==0)
 		&&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_DROP)))
 		{

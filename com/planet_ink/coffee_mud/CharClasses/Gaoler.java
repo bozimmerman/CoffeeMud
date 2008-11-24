@@ -179,6 +179,7 @@ public class Gaoler extends StdCharClass
         if((msg.source()==host)
         &&(msg.target() instanceof MOB)
         &&(msg.target()!=msg.source())
+		&&(((MOB)host).charStats().getCurrentClass().ID().equals(ID()))
         &&(msg.tool() instanceof Ability)
         &&((MOB)host).isMine(msg.tool())
         &&(msg.tool().ID().equals("Thief_Flay")
