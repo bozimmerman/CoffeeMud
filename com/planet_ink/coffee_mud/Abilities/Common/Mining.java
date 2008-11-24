@@ -142,7 +142,7 @@ public class Mining extends GatheringSkill
 		   ||((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
 		   ||((resourceType&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL)))
 		{
-			found=(Item)CMLib.materials().makeResource(resourceType,mob.location().domainType(),false,null);
+			found=(Item)CMLib.materials().makeResource(resourceType,Integer.toString(mob.location().domainType()),false,null);
 			foundShortName="nothing";
 			if(found!=null)
 				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();

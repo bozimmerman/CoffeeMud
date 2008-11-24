@@ -258,7 +258,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                 Environmental E=null;
                 for(int x=0;x<number;x++)
                 {
-                    E=makeResource(I.material(),-1,true,I.rawSecretIdentity());
+                    E=makeResource(I.material(),null,true,I.rawSecretIdentity());
                     if(E instanceof Item)
                     {
                         loseValue+=I.baseGoldValue();
@@ -377,7 +377,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
 		return -1;
 	}
 	
-	public Environmental makeResource(int myResource, int localeCode, boolean noAnimals, String fullName)
+	public Environmental makeResource(int myResource, String localeCode, boolean noAnimals, String fullName)
 	{
 		if(myResource<0)
 			return null;
@@ -665,7 +665,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                 if(I.baseEnvStats().weight()>1)
                 {
                     I.baseEnvStats().setWeight(I.baseEnvStats().weight()-1);
-                    Environmental E=makeResource(otherMaterial,-1,true,I.rawSecretIdentity());
+                    Environmental E=makeResource(otherMaterial,null,true,I.rawSecretIdentity());
                     if(E instanceof Item)
                         lostValue+=((Item)E).value();
                     adjustResourceName(I);
@@ -689,7 +689,7 @@ public class RawCMaterial extends StdLibrary implements MaterialLibrary
                 if(I.baseEnvStats().weight()>howMuch)
                 {
                     I.baseEnvStats().setWeight(I.baseEnvStats().weight()-howMuch);
-                    Environmental E=makeResource(finalMaterial,-1,true,I.rawSecretIdentity());
+                    Environmental E=makeResource(finalMaterial,null,true,I.rawSecretIdentity());
                     if(E instanceof Item)
                         lostValue+=(((Item)E).value()*howMuch);
                     adjustResourceName(I);

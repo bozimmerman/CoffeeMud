@@ -171,7 +171,7 @@ public class GatheringSkill extends CommonSkill
 	    }
 	    if(lowestNonZeroFoodNumber==Long.MAX_VALUE)
 	        lowestNonZeroFoodNumber=0;
-		Item I=(Item)CMLib.materials().makeResource(foundResource,mob.location().domainType(),true,null);
+		Item I=(Item)CMLib.materials().makeResource(foundResource,Integer.toString(mob.location().domainType()),true,null);
         if(I==null)
         {
             commonTell(mob,"You could not bundle "+name+" due to "+foundResource+" being an invalid resource code.  Bug it!");

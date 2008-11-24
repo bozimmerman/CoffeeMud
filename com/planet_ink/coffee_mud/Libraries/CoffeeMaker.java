@@ -2208,7 +2208,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		}
 
 		if(E instanceof RawMaterial)
-			((RawMaterial)E).setDomainSource(CMLib.xml().getIntFromPieces(buf,"DOMN"));
+			((RawMaterial)E).setDomainSource(CMLib.xml().getValFromPieces(buf,"DOMN"));
 
 		if(E instanceof Drink)
 		{

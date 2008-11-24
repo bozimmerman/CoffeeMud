@@ -142,7 +142,7 @@ public class Digging extends GatheringSkill
 		   ||(resourceType==RawMaterial.RESOURCE_SAND)
 		   ||(resourceType==RawMaterial.RESOURCE_STONE)))
 		{
-			found=(Item)CMLib.materials().makeResource(resourceType,mob.location().domainType(),false,null);
+			found=(Item)CMLib.materials().makeResource(resourceType,Integer.toString(mob.location().domainType()),false,null);
 			foundShortName="nothing";
 			if(found!=null)
 				foundShortName=RawMaterial.RESOURCE_DESCS[found.material()&RawMaterial.RESOURCE_MASK].toLowerCase();

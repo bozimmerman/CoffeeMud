@@ -63,11 +63,11 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	public static int RCP_MAININGR=4;
 	public static int RCP_MAINAMNT=5;
 
-	protected Container cooking=null;
+	protected Container cookingPot=null;
     protected String finalDishName=null;
     protected int finalAmount=0;
     protected Vector finalRecipe=null;
-    protected Hashtable oldContents=null;
+    protected Hashtable oldPotContents=null;
     protected String defaultFoodSound="sizzle.wav";
     protected String defaultDrinkSound="liquid.wav";
      
@@ -108,13 +108,13 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
 		{
 			MOB mob=(MOB)affected;
-			if((cooking==null)
+			if((cookingPot==null)
 			||(building==null)
 			||(finalRecipe==null)
 			||(finalAmount<=0)
-			||(!isMineForCooking(mob,cooking))
-			||(!meetsLidRequirements(mob,cooking))
-			||(!contentsSame(potContents(cooking),oldContents))
+			||(!isMineForCooking(mob,cookingPot))
+			||(!meetsLidRequirements(mob,cookingPot))
+			||(!contentsSame(potContents(cookingPot),oldPotContents))
 			||(requireFire()&&(getRequiredFire(mob,0)==null)))
 			{
 				aborted=true;
@@ -140,28 +140,28 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		{
 			if((affected!=null)&&(affected instanceof MOB))
 			{
-				if((cooking!=null)&&(finalRecipe!=null)&&(building!=null))
+				if((cookingPot!=null)&&(finalRecipe!=null)&&(building!=null))
 				{
-					Vector V=cooking.getContents();
+					Vector V=cookingPot.getContents();
 					for(int v=0;v<V.size();v++)
 						((Item)V.elementAt(v)).destroy();
-					if((cooking instanceof Drink)&&(building instanceof Drink))
-						((Drink)cooking).setLiquidRemaining(0);
+					if((cookingPot instanceof Drink)&&(building instanceof Drink))
+						((Drink)cookingPot).setLiquidRemaining(0);
 					if(!aborted)
 					for(int i=0;i<finalAmount*(abilityCode());i++)
 					{
 						Item food=((Item)building.copyOf());
 						food.setMiscText(building.text());
 						food.recoverEnvStats();
-						if(cooking.owner() instanceof Room)
-							((Room)cooking.owner()).addItemRefuse(food,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+						if(cookingPot.owner() instanceof Room)
+							((Room)cookingPot.owner()).addItemRefuse(food,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 						else
-						if(cooking.owner() instanceof MOB)
-							((MOB)cooking.owner()).addInventory(food);
-						food.setContainer(cooking);
+						if(cookingPot.owner() instanceof MOB)
+							((MOB)cookingPot.owner()).addInventory(food);
+						food.setContainer(cookingPot);
 						if(((food.material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LIQUID)
-						&&(cooking instanceof Drink))
-							((Drink)cooking).setLiquidRemaining(0);
+						&&(cookingPot instanceof Drink))
+							((Drink)cookingPot).setLiquidRemaining(0);
 							
 					}
 				}
@@ -221,13 +221,13 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 
 	public Vector countIngredients(Vector Vr)
 	{
-		String[] contents=new String[oldContents.size()];
-		int[] amounts=new int[oldContents.size()];
+		String[] contents=new String[oldPotContents.size()];
+		int[] amounts=new int[oldPotContents.size()];
 		int numIngredients=0;
-		for(Enumeration e=oldContents.keys();e.hasMoreElements();)
+		for(Enumeration e=oldPotContents.keys();e.hasMoreElements();)
 		{
 			contents[numIngredients]=(String)e.nextElement();
-			amounts[numIngredients]=((Integer)oldContents.get(contents[numIngredients])).intValue();
+			amounts[numIngredients]=((Integer)oldPotContents.get(contents[numIngredients])).intValue();
 			numIngredients++;
 		}
 
@@ -299,10 +299,10 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		return codedList;
 	}
 
-	public Vector extraIngredientsInOldContents(Vector Vr)
+	public Vector extraIngredientsInOldContents(Vector Vr, boolean perfectOnly)
 	{
 		Vector extra=new Vector();
-		for(Enumeration e=oldContents.keys();e.hasMoreElements();)
+		for(Enumeration e=oldPotContents.keys();e.hasMoreElements();)
 		{
 			boolean found=false;
 			String ingredient=(String)e.nextElement();
@@ -315,7 +315,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				String ingredient2=((String)Vr.elementAt(vr)).toUpperCase();
 				if((ingredient2.length()>0)
 				&&((ingredient.toUpperCase().startsWith(ingredient2+"/"))
-				||(ingredient.toUpperCase().endsWith(ingredient2))))
+				||((!perfectOnly)&&ingredient.toUpperCase().endsWith(ingredient2))
+				||((perfectOnly)&&ingredient.toUpperCase().equalsIgnoreCase(ingredient2))))
 					found=true;
 			}
 			if(!found)
@@ -329,7 +330,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		return extra;
 	}
 
-	public Vector missingIngredientsFromOldContents(Vector Vr)
+	public Vector missingIngredientsFromOldContents(Vector Vr, boolean perfectOnly)
 	{
 		Vector missing=new Vector();
 
@@ -344,11 +345,12 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				int amount=1;
 				if(vr<Vr.size()-1)amount=CMath.s_int((String)Vr.elementAt(vr+1));
 				boolean found=false;
-				for(Enumeration e=oldContents.keys();e.hasMoreElements();)
+				for(Enumeration e=oldPotContents.keys();e.hasMoreElements();)
 				{
 					String ingredient2=((String)e.nextElement()).toUpperCase();
 					if((ingredient2.startsWith(ingredient.toUpperCase()+"/"))
-					||(ingredient2.endsWith(ingredient.toUpperCase())))
+					||((perfectOnly)&&ingredient2.endsWith(ingredient.toUpperCase()))
+					||((!perfectOnly)&&ingredient2.equalsIgnoreCase(ingredient.toUpperCase())))
 					{ found=true; break;}
 				}
 				if(amount>=0)
@@ -381,13 +383,13 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		verb=cookWord();
-		cooking=null;
+		cookingPot=null;
 		finalRecipe=null;
 		finalAmount=0;
 		building=null;
 		finalDishName=null;
 		messedUp=false;
-		oldContents=null;
+		oldPotContents=null;
 		Vector allRecipes=addRecipes(mob,loadRecipes());
 		int autoGenerate=0;
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
@@ -484,19 +486,20 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 
 		messedUp=!proficiencyCheck(mob,0,auto);
 		int duration=getDuration(40,mob,1,5);
-		cooking=(Container)target;
-		oldContents=potContents(cooking);
+		cookingPot=(Container)target;
+		oldPotContents=potContents(cookingPot);
 
 		//***********************************************
 		//* figure out recipe
 		//***********************************************
-		Vector recipes=new Vector();
+		Vector perfectRecipes=new Vector();
+		Vector closerRecipes=new Vector();
 		Vector closeRecipes=new Vector();
 		for(int v=0;v<allRecipes.size();v++)
 		{
 			Vector Vr=(Vector)allRecipes.elementAt(v);
 			boolean found=false;
-			for(Enumeration e=oldContents.keys();e.hasMoreElements();)
+			for(Enumeration e=oldPotContents.keys();e.hasMoreElements();)
 			{
 				String ingredient2=((String)e.nextElement()).toUpperCase();
 				if((ingredient2.startsWith(((String)Vr.elementAt(RCP_MAININGR)).toUpperCase()+"/"))
@@ -505,12 +508,17 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			}
 			if(found)
 			   closeRecipes.addElement(Vr);
-			if((missingIngredientsFromOldContents(Vr).size()==0)
-			&&(extraIngredientsInOldContents(Vr).size()==0))
-				recipes.addElement(Vr);
+			if((missingIngredientsFromOldContents(Vr,true).size()==0)
+			&&(extraIngredientsInOldContents(Vr,true).size()==0))
+				perfectRecipes.addElement(Vr);
+			if((missingIngredientsFromOldContents(Vr,false).size()==0)
+			&&(extraIngredientsInOldContents(Vr,false).size()==0))
+				closerRecipes.addElement(Vr);
 		}
 
-		if(recipes.size()==0)
+		if(perfectRecipes.size()==0)
+			perfectRecipes=closerRecipes;
+		if(perfectRecipes.size()==0)
 		{
 			if(closeRecipes.size()==0)
 			{
@@ -520,8 +528,8 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			for(int vr=0;vr<closeRecipes.size();vr++)
 			{
 				Vector Vr=(Vector)closeRecipes.elementAt(vr);
-				Vector missing=missingIngredientsFromOldContents(Vr);
-				Vector extra=extraIngredientsInOldContents(Vr);
+				Vector missing=missingIngredientsFromOldContents(Vr,false);
+				Vector extra=extraIngredientsInOldContents(Vr,false);
 				String recipeName=replacePercent((String)Vr.elementAt(RCP_FINALFOOD),((String)Vr.elementAt(RCP_MAININGR)).toLowerCase());
 				if(extra.size()>0)
 				{
@@ -548,9 +556,9 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			return false;
 		}
 		Vector complaints=new Vector();
-		for(int vr=0;vr<recipes.size();vr++)
+		for(int vr=0;vr<perfectRecipes.size();vr++)
 		{
-			Vector Vr=(Vector)recipes.elementAt(vr);
+			Vector Vr=(Vector)perfectRecipes.elementAt(vr);
 			Vector counts=countIngredients(Vr);
 			Integer amountMaking=(Integer)counts.elementAt(0);
 			String recipeName=replacePercent((String)Vr.elementAt(RCP_FINALFOOD),((String)Vr.elementAt(RCP_MAININGR)).toLowerCase());
@@ -602,7 +610,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		}
 
 		String foodType=(String)finalRecipe.elementAt(RCP_FOODDRINK);
-		Vector contents=cooking.getContents();
+		Vector contents=cookingPot.getContents();
 		String replaceName=((String)finalRecipe.elementAt(RCP_MAININGR));
 		for(int v=0;v<contents.size();v++)
 		{
@@ -610,21 +618,29 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			if((I instanceof RawMaterial)
 			&&(RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].equalsIgnoreCase((String)finalRecipe.elementAt(RCP_MAININGR))))
 			{
-				String name=I.Name();
-				if(name.endsWith(" meat"))
-					name=name.substring(0,name.length()-5);
-				if(name.endsWith(" flesh"))
-					name=name.substring(0,name.length()-6);
-				name=name.trim();
-				int x=name.lastIndexOf(" ");
-				if((x>0)&&(!name.substring(x+1).trim().equalsIgnoreCase("of")))
-					replaceName=name.substring(x+1);
+				if((((RawMaterial)I).domainSource()!=null)
+				&&(!CMath.isNumber(((RawMaterial)I).domainSource()))
+				&&(CMClass.getRace(((RawMaterial)I).domainSource()))!=null)
+					replaceName=CMClass.getRace(((RawMaterial)I).domainSource()).name().toLowerCase();
 				else
-					replaceName=name;
+				{
+					String name=I.Name();
+					if(name.endsWith(" meat"))
+						name=name.substring(0,name.length()-5);
+					if(name.endsWith(" flesh"))
+						name=name.substring(0,name.length()-6);
+					name=name.trim();
+					int x=name.lastIndexOf(" ");
+					if((x>0)&&(!name.substring(x+1).trim().equalsIgnoreCase("of")))
+						replaceName=name.substring(x+1);
+					else
+						replaceName=name;
+				}
 				break;
 			}
 		}
-		finalDishName=replacePercent((String)finalRecipe.elementAt(RCP_FINALFOOD),Character.toUpperCase(replaceName.charAt(0))+replaceName.substring(1).toLowerCase());
+		finalDishName=replacePercent((String)finalRecipe.elementAt(RCP_FINALFOOD),
+									CMStrings.capitalizeAndLower(replaceName));
 		if(foodType.equalsIgnoreCase("FOOD"))
 		{
 			building=CMClass.getItem("GenFood");
@@ -785,11 +801,11 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		CMMsg msg=CMClass.getMsg(mob,cooking,this,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) "+cookWord()+" something in <T-NAME>.");
+		CMMsg msg=CMClass.getMsg(mob,cookingPot,this,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISYMOVEMENT,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> start(s) "+cookWord()+" something in <T-NAME>.");
 		if(mob.location().okMessage(mob,msg))
 		{
 			mob.location().send(mob,msg);
-			cooking=(Container)msg.target();
+			cookingPot=(Container)msg.target();
 			beneficialAffect(mob,mob,asLevel,duration);
 		}
 		return true;

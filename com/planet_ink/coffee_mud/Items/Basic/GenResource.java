@@ -46,9 +46,9 @@ public class GenResource extends GenItem implements RawMaterial
 		recoverEnvStats();
 	}
 
-	protected int domainSource=-1;
-	public int domainSource(){return domainSource;}
-	public void setDomainSource(int src){domainSource=src;}
+	protected String domainSource=null;
+	public String domainSource(){return domainSource;}
+	public void setDomainSource(String src){domainSource=src;}
 	public boolean rebundle(){return CMLib.materials().rebundle(this);}
 	public void quickDestroy(){ CMLib.materials().quickDestroy(this);}
 }

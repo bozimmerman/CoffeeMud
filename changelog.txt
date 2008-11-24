@@ -2164,3 +2164,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
     or Gate, etc.  This means that for large maps, players may notice those skills have gotten much "slower", though 
     in reality, it will help your mud support more people doing such things.
 28. New Disable Flags: DBERRORQUESTART, DBERRORQUE, CATALOGCACHE
+29. New LIST parameter: SCRIPTS (for finding script usages and scriptables in your world)
+ 

@@ -31,8 +31,8 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 public interface RawMaterial extends Item
 {
 	
-	public int domainSource();
-	public void setDomainSource(int src);
+	public String domainSource();
+	public void setDomainSource(String src);
 	public boolean rebundle();
 	public void quickDestroy();
 	

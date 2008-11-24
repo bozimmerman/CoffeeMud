@@ -412,7 +412,7 @@ public class StdRace implements Race
 
 	protected Item makeResource(String name, int type)
 	{
-		return (Item)CMLib.materials().makeResource(type,-1,true,name);
+		return (Item)CMLib.materials().makeResource(type,ID(),true,name);
 	}
 
 	public DeadBody getCorpseContainer(MOB mob, Room room)

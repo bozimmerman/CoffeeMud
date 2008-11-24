@@ -81,7 +81,7 @@ public class GenFoodResource extends GenFood implements RawMaterial, Food
         	return false;
         return super.okMessage(host,msg);
 	}
-	protected int domainSource=-1;
-	public int domainSource(){return domainSource;}
-	public void setDomainSource(int src){domainSource=src;}
+	protected String domainSource=null;
+	public String domainSource(){return domainSource;}
+	public void setDomainSource(String src){domainSource=src;}
 }
