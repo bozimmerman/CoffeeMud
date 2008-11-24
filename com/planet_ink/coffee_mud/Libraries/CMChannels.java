@@ -335,7 +335,6 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
             {
                 V.removeElementAt(v);
                 flags.add(ChannelFlag.valueOf(s));
-                break;
             }
         }
         return CMParms.combine(V,0);
@@ -454,7 +453,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
     {
         MOB M=ses.mob();
         boolean didIt=false;
-        if(CMLib.channels().mayReadThisChannel(sender,areareq,ses,channelInt)
+        if(mayReadThisChannel(sender,areareq,ses,channelInt)
         &&(M.location()!=null)
         &&(M.location().okMessage(ses.mob(),msg)))
         {
@@ -476,13 +475,13 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
     
     public void reallyChannel(MOB mob, String channelName, String message, boolean systemMsg)
     {
-        int channelInt=CMLib.channels().getChannelIndex(channelName);
+        int channelInt=getChannelIndex(channelName);
         if(channelInt<0) return;
         
         message=CMProps.applyINIFilter(message,CMProps.SYSTEM_CHANNELFILTER);
         
-        HashSet<ChannelFlag> flags=CMLib.channels().getChannelFlags(channelInt);
-        channelName=CMLib.channels().getChannelName(channelInt);
+        HashSet<ChannelFlag> flags=getChannelFlags(channelInt);
+        channelName=getChannelName(channelInt);
 
         CMMsg msg=null;
         if(systemMsg)
@@ -522,7 +521,7 @@ public class CMChannels extends StdLibrary implements ChannelsLibrary
         &&((!mob.location().isInhabitant(mob))||(mob.location().okMessage(mob,msg))))
         {
             boolean areareq=flags.contains(ChannelsLibrary.ChannelFlag.SAMEAREA);
-            CMLib.channels().channelQueUp(channelInt,msg);
+            channelQueUp(channelInt,msg);
             for(int s=0;s<CMLib.sessions().size();s++)
             {
                 Session ses=CMLib.sessions().elementAt(s);
