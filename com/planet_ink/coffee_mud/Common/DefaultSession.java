@@ -488,8 +488,10 @@ public class DefaultSession extends Thread implements Session
 							if((i<(msg.length()-1)&&(msg.charAt(i+1)=='\r')))
 								i++;
 							out(msg.substring(0,i).toCharArray());
+							out.flush();
 							msg=msg.substring(i+1);
 							out("<pause - enter>".toCharArray());
+							out.flush();
 							try{ 
 								String s=blockingIn(); 
 								if(s!=null)
