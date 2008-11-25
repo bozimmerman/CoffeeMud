@@ -216,7 +216,7 @@ public class AbilityRecipeData extends StdWebMacro
                         DVector dataRow = (DVector)recipeData.dataRows().elementAt(r);
                         str.append("\n\r<TR>");
                         str.append("<TD>");
-                        str.append("<A HREF=\"javascript:Select("+(r+1)+")\">" + sfont + "<B>"+(r+1)+"</B>");
+                        str.append("<A HREF=\"javascript:Select("+(r+1)+")\">" + sfont + "<B><FONT COLOR=YELLOW>"+(r+1)+"</FONT></B>");
                         str.append(efont + "</A>");
                         str.append("</TD>");
                         for(int c=0;c<dataRow.size();c++)
