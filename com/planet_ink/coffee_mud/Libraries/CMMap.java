@@ -1285,15 +1285,25 @@ public class CMMap extends StdLibrary implements WorldMap
 		}
 	}
 
-	public Room findWorldRoomLiberally(MOB mob, String cmd, String srchWhatARIPMVK, int timePct)
+	public Room findWorldRoomLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct)
 	{
-		Vector rooms=findWorldRoomsLiberally(mob,cmd,srchWhatARIPMVK,true,timePct);
+		Vector rooms=findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,null,true,timePct);
 		if((rooms!=null)&&(rooms.size()!=0)) return (Room)rooms.firstElement();
 		return null;
 	}
 	
-	public Vector findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatARIPMVK, int timePct)
-	{ return findWorldRoomsLiberally(mob,cmd,srchWhatARIPMVK,false,timePct); }
+	public Vector findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct)
+	{ return findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,null,false,timePct); }
+	
+	public Room findAreaRoomLiberally(MOB mob, Area A,String cmd, String srchWhatAERIPMVK, int timePct)
+	{
+		Vector rooms=findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,A,true,timePct);
+		if((rooms!=null)&&(rooms.size()!=0)) return (Room)rooms.firstElement();
+		return null;
+	}
+	
+	public Vector findAreaRoomsLiberally(MOB mob, Area A,String cmd, String srchWhatAERIPMVK, int timePct)
+	{ return findWorldRoomsLiberally(mob,cmd,srchWhatAERIPMVK,A,false,timePct); }
 	
 	protected Room addWorldRoomsLiberally(Vector rooms, Vector choicesV)
 	{
@@ -1329,19 +1339,25 @@ public class CMMap extends StdLibrary implements WorldMap
 	protected Room addWorldRoomsLiberally(Vector rooms, Area area)
 	{ return addWorldRoomsLiberally(rooms,area.getRandomProperRoom()); }
 	
-	protected Vector findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatARIPMVK, boolean returnFirst, int timePct)
+	protected Enumeration rightLiberalMap(Area A) {
+		if(A==null) return roomsFilled();
+		return A.getProperMap();
+	}
+	
+	protected Vector findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, Area A, boolean returnFirst, int timePct)
 	{
 		Room room=null;
 		Vector rooms=(returnFirst)?null:new Vector();
 		
 		Room curRoom=(mob!=null)?mob.location():null;
-		boolean searchAreas=srchWhatARIPMVK.toUpperCase().indexOf('A')>=0;
-		boolean searchRooms=srchWhatARIPMVK.toUpperCase().indexOf('R')>=0;
-		boolean searchPlayers=srchWhatARIPMVK.toUpperCase().indexOf('P')>=0;
-		boolean searchItems=srchWhatARIPMVK.toUpperCase().indexOf('I')>=0;
-		boolean searchInhabs=srchWhatARIPMVK.toUpperCase().indexOf('M')>=0;
-		boolean searchInventories=srchWhatARIPMVK.toUpperCase().indexOf('V')>=0;
-		boolean searchStocks=srchWhatARIPMVK.toUpperCase().indexOf('K')>=0;
+		boolean searchWeakAreas=srchWhatAERIPMVK.toUpperCase().indexOf('E')>=0;
+		boolean searchStrictAreas=srchWhatAERIPMVK.toUpperCase().indexOf('A')>=0;
+		boolean searchRooms=srchWhatAERIPMVK.toUpperCase().indexOf('R')>=0;
+		boolean searchPlayers=srchWhatAERIPMVK.toUpperCase().indexOf('P')>=0;
+		boolean searchItems=srchWhatAERIPMVK.toUpperCase().indexOf('I')>=0;
+		boolean searchInhabs=srchWhatAERIPMVK.toUpperCase().indexOf('M')>=0;
+		boolean searchInventories=srchWhatAERIPMVK.toUpperCase().indexOf('V')>=0;
+		boolean searchStocks=srchWhatAERIPMVK.toUpperCase().indexOf('K')>=0;
 		if(searchRooms)
 		{
 			int dirCode=Directions.getGoodDirectionCode(cmd);
@@ -1368,17 +1384,19 @@ public class CMMap extends StdLibrary implements WorldMap
 	                	room=addWorldRoomsLiberally(rooms,sess.mob().location());
                 }
                 
-                if(searchAreas && room==null)
+                // search areas strictly
+                if(searchStrictAreas && room==null && (A==null))
                 {
-                	Area A=findArea(srchStr);
+                	A=getArea(srchStr);
                 	if((A!=null) &&(A.properSize()>0) &&(A.getProperRoomnumbers().roomCountAllAreas()>0))
                 		room=addWorldRoomsLiberally(rooms,A);
+                	A=null;
                 }
                 
 				// no good, so look for room inhabitants
 				if(searchInhabs && room==null)
 				{
-					Vector candidates=findInhabitants(roomsFilled(), mob, srchStr,returnFirst, timePct);
+					Vector candidates=findInhabitants(rightLiberalMap(A), mob, srchStr,returnFirst, timePct);
 					if(candidates.size()>0)
                 		room=addWorldRoomsLiberally(rooms,candidates);
 				}
@@ -1386,7 +1404,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				// now check room text
 				if(searchRooms && room==null)
 				{
-					Vector candidates=findRooms(roomsFilled(), mob, srchStr, false,returnFirst, timePct);
+					Vector candidates=findRooms(rightLiberalMap(A), mob, srchStr, false,returnFirst, timePct);
 					if(candidates.size()>0)
                 		room=addWorldRoomsLiberally(rooms,candidates);
 				}
@@ -1394,7 +1412,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				// check floor items
 				if(searchItems && room==null)
 				{
-					Vector candidates=findRoomItems(roomsFilled(), mob, srchStr, false,returnFirst,timePct);
+					Vector candidates=findRoomItems(rightLiberalMap(A), mob, srchStr, false,returnFirst,timePct);
 					if(candidates.size()>0)
                 		room=addWorldRoomsLiberally(rooms,candidates);
 				}
@@ -1402,7 +1420,7 @@ public class CMMap extends StdLibrary implements WorldMap
 				// check inventories
 				if(searchInventories && room==null)
 				{
-					Vector candidates=findInventory(roomsFilled(), mob, srchStr, returnFirst,timePct);
+					Vector candidates=findInventory(rightLiberalMap(A), mob, srchStr, returnFirst,timePct);
 					if(candidates.size()>0)
                 		room=addWorldRoomsLiberally(rooms,candidates);
 				}
@@ -1410,10 +1428,19 @@ public class CMMap extends StdLibrary implements WorldMap
 				// check stocks
 				if(searchStocks && room==null)
 				{
-					Vector candidates=findShopStock(roomsFilled(), mob, srchStr, returnFirst,false,timePct);
+					Vector candidates=findShopStock(rightLiberalMap(A), mob, srchStr, returnFirst,false,timePct);
 					if(candidates.size()>0)
                 		room=addWorldRoomsLiberally(rooms,candidates);
 				}
+				
+				// search areas weakly
+                if(searchWeakAreas && room==null && (A==null))
+                {
+                	A=findArea(srchStr);
+                	if((A!=null) &&(A.properSize()>0) &&(A.getProperRoomnumbers().roomCountAllAreas()>0))
+                		room=addWorldRoomsLiberally(rooms,A);
+                	A=null;
+                }
 			}
 		}
 		if(rooms!=null) return rooms;

@@ -67,8 +67,10 @@ public interface WorldMap extends CMLibrary, Runnable
     public void obliterateRoom(Room deadRoom);
     public Room findConnectingRoom(Room room);
     public int getRoomDir(Room from, Room to);
-	public Vector findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatARIPMVK, int timePct);
-	public Room findWorldRoomLiberally(MOB mob, String cmd, String srchWhatARIPM, int timePct);
+	public Vector findWorldRoomsLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct);
+	public Room findWorldRoomLiberally(MOB mob, String cmd, String srchWhatAERIPMVK, int timePct);
+	public Vector findAreaRoomsLiberally(MOB mob, Area A, String cmd, String srchWhatAERIPMVK, int timePct);
+	public Room findAreaRoomLiberally(MOB mob, Area A, String cmd, String srchWhatAERIPMVK, int timePct);
     public Vector findRooms(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct);
     public Room findFirstRoom(Enumeration rooms, MOB mob, String srchStr, boolean displayOnly, int timePct);
     public MOB findFirstInhabitant(Enumeration rooms, MOB mob, String srchStr, int timePct);
