@@ -2782,6 +2782,7 @@ public class StdMOB implements MOB
 
             manaConsumeCounter=CMLib.commands().tickManaConsumption(this,manaConsumeCounter);
 
+            c=0;
             for(e=DVector.s_enum(behaviors);e.hasMoreElements();c++)
             {
 				T=(Tickable)e.nextElement();
@@ -2789,6 +2790,7 @@ public class StdMOB implements MOB
 				if(T!=null) T.tick(ticking,tickID);
 			}
 
+            c=0;
             for(e=DVector.s_enum(scripts);e.hasMoreElements();c++)
             {
                 T=(Tickable)e.nextElement();
@@ -2800,6 +2802,7 @@ public class StdMOB implements MOB
             
             Faction.FactionData factionData=null;
             String factionID=null;
+            c=0;
             for(e=DVector.s_enum(factions,true);e.hasMoreElements();c++)
             {
                 factionID=(String)e.nextElement();

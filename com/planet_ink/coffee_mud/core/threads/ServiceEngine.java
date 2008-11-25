@@ -678,6 +678,8 @@ public class ServiceEngine implements ThreadEngine
                     Behavior B=((Environmental)obj).fetchBehavior((int)b);
                     codeWord+=" ("+B.name()+": "+B.getTickStatus();
                 }
+                else
+                	codeWord+=" (#Error#)";
                 return codeWord;
             }
             else
