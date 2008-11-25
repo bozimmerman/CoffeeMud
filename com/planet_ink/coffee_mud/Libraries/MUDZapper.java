@@ -1924,6 +1924,52 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 		return buf.toString();
 	}
 
+	public boolean syntaxCheck(String mask, Vector errorSink)
+	{
+		if(mask.trim().length()==0) return true;
+		Vector V=CMParms.parse(mask.toUpperCase());
+		for(int v=0;v<V.size();v++)
+		{
+			String str=(String)V.elementAt(v);
+	        Hashtable zapCodes=getMaskCodes();
+	        if(zapCodes.containsKey(str)) return true;
+			for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+			{
+				CharClass C=(CharClass)c.nextElement();
+				if(str.startsWith("-"+CMStrings.padRight(C.name(),4).toUpperCase().trim()))
+					return true;
+			}
+			Vector cats=new Vector();
+			for(Enumeration r=CMClass.races();r.hasMoreElements();)
+			{
+				Race R=(Race)r.nextElement();
+				String cat=R.racialCategory().toUpperCase();
+				if(cat.length()>6) cat=cat.substring(0,6);
+				if((str.startsWith("-"+cat))&&(!cats.contains(R.racialCategory())))
+					return true;
+			}
+			if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_EVIL].substring(0,3)))
+				return true;
+			if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_GOOD].substring(0,3)))
+				return true;
+			if(str.startsWith("-"+Faction.ALIGN_NAMES[Faction.ALIGN_NEUTRAL].substring(0,3)))
+				return true;
+			if(str.startsWith("-MALE"))
+				return true;
+			if(str.startsWith("-FEMALE"))
+				return true;
+			if(str.startsWith("-NEUTER"))
+				return true;
+			if(levelHelp(str,'-',"").length()>0)
+				return true;
+			if((str.startsWith("-"))
+	        &&(CMLib.factions().isRangeCodeName(str.substring(1))))
+				return true;
+		}
+		errorSink.addElement("No valid zapper codes found.");
+		return false;
+	}
+	
 	public Vector getAbilityEduReqs(String text)
 	{
 		Vector preReqs=new Vector();

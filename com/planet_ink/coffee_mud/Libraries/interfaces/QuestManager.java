@@ -270,8 +270,11 @@ public interface QuestManager extends CMLibrary
         new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //itemxml_1ormore
         	return QuestManager.QM_COMMAND_TESTS[QM_COMMAND_$ITEMXML].eval(str,choices,emptyOK);
         }},
-        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //string
+        new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //zappermask
             if(!(str instanceof String)) throw new CMException("Bad type: "+((str==null)?"null":str.getClass().getName()));
+            Vector errors=new Vector(1);
+            if(!CMLib.masking().syntaxCheck((String)str,errors))
+            	throw new CMException("Mask Error: "+CMParms.toStringList(errors));
             return str;
         }},
         new GenericEditor.CMEval(){ public Object eval(Object str, Object[] choices, boolean emptyOK) throws CMException { //ability

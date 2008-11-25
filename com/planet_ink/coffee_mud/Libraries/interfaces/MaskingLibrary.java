@@ -44,6 +44,7 @@ public interface MaskingLibrary extends CMLibrary
 	public Vector maskCompile(String text);
     public boolean maskCheck(Vector cset, Environmental E, boolean actual);
     public boolean maskCheck(String text, Environmental E, boolean actual);
+    public boolean syntaxCheck(String text, Vector errorSink);
     public int minMaskLevel(String text, int minMinLevel);
 
     public final String DEFAULT_MASK_HELP =
