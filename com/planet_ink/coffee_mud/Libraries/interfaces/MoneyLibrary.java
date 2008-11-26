@@ -31,23 +31,9 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public interface MoneyLibrary extends CMLibrary
 {
-    public static final String defaultCurrencyDefinition=
-        "=1 gold coin(s);100 golden note(s);10000 whole note(s);1000000 Archon note(s)";
-    public static final String goldStandard=
-        "GOLD=0.01 copper piece(s) (cp);0.1 silver piece(s) (sp);1.0 gold piece(s) (gp);5.0 platinum piece(s) (pp)";
-    public static final String copperStandard=
-        "COPPER=1 copper bit(s) (cc);10 silver bit(s) (sc);100 gold bit(s) (gc);500 platinum bit(s) (pc)";
-    
-    public static final int DEBT_DEBTOR=1;
-    public static final int DEBT_OWEDTO=2;
-    public static final int DEBT_AMTDBL=3;
-    public static final int DEBT_REASON=4;
-    public static final int DEBT_DUELONG=5;
-    public static final int DEBT_INTDBL=6;
-    
     public void unloadCurrencySet(String currency);
-    public DVector createCurrencySet(String currency);
-    public DVector getCurrencySet(String currency);
+    public MoneyDenomination[] createCurrencySet(String currency);
+    public MoneyDenomination[] getCurrencySet(String currency);
     public Vector getAllCurrencies();
     public Vector getDenominationNameSet(String currency);
     public double lowestAbbreviatedDenomination(String currency);
@@ -62,7 +48,8 @@ public interface MoneyLibrary extends CMLibrary
     public String getDenominationName(String currency,  double denomination, long number);
     public double getBestDenomination(String currency, double absoluteValue);
     public double getBestDenomination(String currency, int numberOfCoins, double absoluteValue);
-    public Vector getBestDenominations(String currency, double absoluteValue);
+    public double[] getBestDenominations(String currency, double absoluteValue);
+	public int getDenominationIndex(String currency, double value);
     public String getConvertableDescription(String currency, double denomination);
     public String getDenominationName(String currency, double denomination);
     public String nameCurrencyShort(MOB mob, double absoluteValue);
@@ -109,10 +96,48 @@ public interface MoneyLibrary extends CMLibrary
     public double getTotalAbsoluteNativeValue(MOB mob);
     public double getTotalAbsoluteShopKeepersValue(MOB mob, MOB shopkeeper);
     public double getTotalAbsoluteValueAllCurrencies(MOB mob);
-	public DVector getDebt(String name);
-	public DVector getDebt(String name, String owedTo);
-	public DVector getDebtOwed(String owedTo);
+	public Vector<DebtItem> getDebt(String name);
+	public Vector<DebtItem> getDebt(String name, String owedTo);
+	public Vector<DebtItem> getDebtOwed(String owedTo);
 	public double getDebtOwed(String name, String owedTo);
 	public void adjustDebt(String name, String owedTo, double adjustAmt, String reason, double interest, long due);
 	public void delAllDebt(String name, String owedTo);
+	
+    public static class MoneyDenomination
+    {
+    	public double value=0.0;
+    	public String name="";
+    	public String abbr="";
+    	public MoneyDenomination(double value,String name,String abbr) {
+    		this.value=value;
+    		this.name=name;
+    		this.abbr=abbr;
+    	}
+    }
+    
+    public static final String defaultCurrencyDefinition=
+        "=1 gold coin(s);100 golden note(s);10000 whole note(s);1000000 Archon note(s)";
+    public static final String goldStandard=
+        "GOLD=0.01 copper piece(s) (cp);0.1 silver piece(s) (sp);1.0 gold piece(s) (gp);5.0 platinum piece(s) (pp)";
+    public static final String copperStandard=
+        "COPPER=1 copper bit(s) (cc);10 silver bit(s) (sc);100 gold bit(s) (gc);500 platinum bit(s) (pc)";
+
+    public static class DebtItem
+    {
+    	public String debtor;
+    	public String owedTo;
+    	public double amt;
+    	public long due;
+    	public double interest;
+    	public String reason;
+    	public DebtItem(String debtor, String owedTo, double amt, String reason, long due, double interest)
+    	{
+    		this.debtor=debtor;
+    		this.owedTo=owedTo;
+    		this.amt=amt;
+    		this.reason=reason;
+    		this.due=due;
+    		this.interest=interest;
+    	}
+    }
 }

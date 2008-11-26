@@ -275,18 +275,15 @@ public class StdBanker extends StdShopKeeper implements Banker
 	public double getItemInterest(){return itemInterest;}
 	public void setLoanInterest(double interest){loanInterest=interest;}
 	public double getLoanInterest(){return loanInterest;}
-	public Vector getDebtInfo(MOB mob)
+	public MoneyLibrary.DebtItem getDebtInfo(MOB mob)
 	{
-		DVector debt=CMLib.beanCounter().getDebtOwed(bankChain());
+		Vector<MoneyLibrary.DebtItem> debt=CMLib.beanCounter().getDebtOwed(bankChain());
 		if(mob==null) return null;
 		String whom=(whatISell==ShopKeeper.DEAL_CLANBANKER)?mob.getClanID():mob.Name();
 		if((whom==null)||(whom.length()==0)) return null;
 		for(int d=0;d<debt.size();d++)
-		{
-			String debtor=(String)debt.elementAt(d,MoneyLibrary.DEBT_DEBTOR);
-			if(debtor.equalsIgnoreCase(whom))
-				return debt.getRowVector(d);
-		}
+			if(debt.elementAt(d).debtor.equalsIgnoreCase(whom))
+				return debt.elementAt(d);
 		return null;
 	}
 
@@ -338,7 +335,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 								userNames.addElement(name);
 						}
 					}
-					DVector debt=CMLib.beanCounter().getDebtOwed(bankChain());
+					Vector<MoneyLibrary.DebtItem> debts=CMLib.beanCounter().getDebtOwed(bankChain());
 					for(int u=0;u<userNames.size();u++)
 					{
 						String name=(String)userNames.elementAt(u);
@@ -359,16 +356,16 @@ public class StdBanker extends StdShopKeeper implements Banker
 						newBalance+=CMath.mul(newBalance,coinInterest);
 						if(totalValue>0)
 							newBalance+=CMath.mul(totalValue,itemInterest);
-						for(int d=debt.size()-1;d>=0;d--)
+						for(int d=debts.size()-1;d>=0;d--)
 						{
-							String debtor=(String)debt.elementAt(d,MoneyLibrary.DEBT_DEBTOR);
+							MoneyLibrary.DebtItem debtItem=debts.elementAt(d);
+							String debtor=debtItem.debtor;
 							if(debtor.equalsIgnoreCase(name))
 							{
-								long debtDueAt=((Long)debt.elementAt(d,MoneyLibrary.DEBT_DUELONG)).longValue();
-								double intRate=((Double)debt.elementAt(d,MoneyLibrary.DEBT_INTDBL)).doubleValue();
-								double dueAmount=((Double)debt.elementAt(d,MoneyLibrary.DEBT_AMTDBL)).doubleValue();
-								//String me=(String)debt.elementAt(d,MoneyLibrary.DEBT_OWEDTO);
-								String reason=(String)debt.elementAt(d,MoneyLibrary.DEBT_REASON);
+								long debtDueAt=debtItem.due;
+								double intRate=debtItem.interest;
+								double dueAmount=debtItem.amt;
+								String reason=debtItem.reason;
 								double intDue=CMath.mul(intRate,dueAmount);
 								long timeRemaining=debtDueAt-System.currentTimeMillis();
 								if((timeRemaining<0)&&(newBalance<((dueAmount)+intDue)))
@@ -385,7 +382,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 									else
 										CMLib.beanCounter().adjustDebt(debtor,bankChain(),intDue,reason,intRate,debtDueAt);
 								}
-								debt.removeElementAt(d);
+								debts.removeElementAt(d);
 							}
 						}
 						if(newBalance<0)
@@ -422,8 +419,8 @@ public class StdBanker extends StdShopKeeper implements Banker
 								addDepositInventory(name,coinItem);
 						}
 					}
-					for(int d=debt.size()-1;d>=0;d--)
-						CMLib.beanCounter().delAllDebt((String)debt.elementAt(d,MoneyLibrary.DEBT_DEBTOR),bankChain());
+					for(int d=debts.size()-1;d>=0;d--)
+						CMLib.beanCounter().delAllDebt(debts.elementAt(d).debtor,bankChain());
 				}
 			}
 		}
@@ -678,17 +675,18 @@ public class StdBanker extends StdShopKeeper implements Banker
 						else
 							str.append("Your balance is ^H"+CMLib.beanCounter().nameCurrencyLong(this,balance)+"^?.");
 					}
-					DVector debt=null;
+					Vector<MoneyLibrary.DebtItem> debts=null;
 					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
-						debt=CMLib.beanCounter().getDebt(mob.getClanID(),bankChain());
+						debts=CMLib.beanCounter().getDebt(mob.getClanID(),bankChain());
 					else
-						debt=CMLib.beanCounter().getDebt(mob.Name(),bankChain());
-					if(debt!=null)
-					for(int d=0;d<debt.size();d++)
+						debts=CMLib.beanCounter().getDebt(mob.Name(),bankChain());
+					if(debts!=null)
+					for(int d=0;d<debts.size();d++)
 					{
-						long debtDueAt=((Long)debt.elementAt(d,MoneyLibrary.DEBT_DUELONG)).longValue();
-						double intRate=((Double)debt.elementAt(d,MoneyLibrary.DEBT_INTDBL)).doubleValue();
-						double dueAmount=((Double)debt.elementAt(d,MoneyLibrary.DEBT_AMTDBL)).doubleValue();
+						MoneyLibrary.DebtItem debt=debts.elementAt(d);
+						long debtDueAt=debt.due;
+						double intRate=debt.interest;
+						double dueAmount=debt.amt;
 						long timeRemaining=debtDueAt-System.currentTimeMillis();
 						if(timeRemaining>0)
 							str.append("\n\r"

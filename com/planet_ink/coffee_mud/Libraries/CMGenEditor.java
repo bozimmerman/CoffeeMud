@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -2071,7 +2072,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         {
             gocontinue=false;
             String newDenom=mob.session().prompt("Enter denomination (?):",""+E.getDenomination()).trim().toUpperCase();
-            DVector DV=CMLib.beanCounter().getCurrencySet(E.getCurrency());
+            MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(E.getCurrency());
             if((newDenom.length()>0)
             &&(!CMath.isDouble(newDenom))
             &&(!newDenom.equalsIgnoreCase("?")))
@@ -2085,13 +2086,13 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 &&(CMath.s_double(newDenom)==E.getDenomination())))
                     mob.tell("(no change)");
             else
-            if((!CMath.isDouble(newDenom))
-            ||(newDenom.equalsIgnoreCase("?"))
-            ||((DV!=null)&&(!DV.contains(new Double(CMath.s_double(newDenom))))))
+            if((newDenom.equalsIgnoreCase("?"))
+            ||(!CMath.isDouble(newDenom))
+            ||((DV!=null)&&(CMLib.beanCounter().getDenominationIndex(E.getCurrency(), CMath.s_double(newDenom))<0)))
             {
                 StringBuffer allDenoms=new StringBuffer("");
-                for(int i=0;i<DV.size();i++)
-                    allDenoms.append(((Double)DV.elementAt(i,1)).doubleValue()+"("+((String)DV.elementAt(i,2))+"), ");
+                for(int i=0;i<DV.length;i++)
+                    allDenoms.append(DV[i].value+"("+DV[i].name+"), ");
                 if(allDenoms.toString().endsWith(", "))
                     allDenoms=new StringBuffer(allDenoms.substring(0,allDenoms.length()-2));
                 mob.tell("'"+newDenom+"' is not a defined denomination. Try one of these: "+allDenoms.toString()+".");

@@ -6,6 +6,7 @@ import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
 import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
@@ -871,13 +872,13 @@ public class ItemData extends StdWebMacro
 				    String currency=(I instanceof Coins)?currency=((Coins)I).getCurrency():"";
 					if((firstTime)&&(I instanceof Coins))
 						old=""+((Coins)I).getDenomination();
-					DVector cs=CMLib.beanCounter().getCurrencySet(currency);
-					for(int i=0;i<cs.size();i++)
+					MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(currency);
+					for(int i=0;i<DV.length;i++)
 					{
-					    str.append("<OPTION VALUE=\""+((Double)cs.elementAt(i,1)).doubleValue()+"\"");
-					    if(((Double)cs.elementAt(i,1)).doubleValue()==CMath.s_double(old))
+					    str.append("<OPTION VALUE=\""+DV[i].value+"\"");
+					    if(DV[i].value==CMath.s_double(old))
 					        str.append(" SELECTED");
-					    str.append(">"+((String)cs.elementAt(i,2)));
+					    str.append(">"+DV[i].name);
 					}
 					break;
 				}

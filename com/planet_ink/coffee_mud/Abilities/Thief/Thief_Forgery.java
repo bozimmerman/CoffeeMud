@@ -9,6 +9,8 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -118,11 +120,10 @@ public class Thief_Forgery extends ThiefSkill
 		}
 		if(newName.length()==0)
 		{
-		    DVector DV=CMLib.beanCounter().getCurrencySet(CMLib.beanCounter().getCurrency(mob));
-			for(int i=0;i<DV.size();i++)
+			MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(CMLib.beanCounter().getCurrency(mob));
+			for(int i=0;i<DV.length;i++)
 			{
-				Item note=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(mob),
-											        ((Double)DV.elementAt(i,1)).doubleValue());
+				Item note=CMLib.beanCounter().makeBestCurrency(CMLib.beanCounter().getCurrency(mob), DV[i].value);
 				if((note!=null)&&(CMLib.english().containsString(note.name(),forgeWhat)))
 				{
 					newName=note.name();

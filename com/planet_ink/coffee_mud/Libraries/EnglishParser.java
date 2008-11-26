@@ -3,6 +3,7 @@ import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.exceptions.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
 import com.planet_ink.coffee_mud.Areas.interfaces.*;
 import com.planet_ink.coffee_mud.Behaviors.interfaces.*;
@@ -1470,21 +1471,21 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 
 	public double matchAnyDenomination(String currency, String itemID)
 	{
-        DVector V2=CMLib.beanCounter().getCurrencySet(currency);
+		MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(currency);
         itemID=itemID.toUpperCase();
         String s=null;
-        if(V2!=null)
-        for(int v2=0;v2<V2.size();v2++)
+        if(DV!=null)
+        for(int v2=0;v2<DV.length;v2++)
         {
-            s=((String)V2.elementAt(v2,2)).toUpperCase();
+            s=DV[v2].name.toUpperCase();
             if(s.endsWith("(S)"))
                 s=s.substring(0,s.length()-3)+"S";
             if(containsString(s,itemID))
-                return ((Double)V2.elementAt(v2,1)).doubleValue();
+                return DV[v2].value;
             else
             if((s.length()>0)
             &&(containsString(s,itemID)))
-                return ((Double)V2.elementAt(v2,1)).doubleValue();
+                return DV[v2].value;
         }
 	    return 0.0;
 	}

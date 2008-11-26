@@ -6753,11 +6753,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 String type=tt[1];
                 String head=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[2]);
                 String val=varify(source,target,scripted,monster,primaryItem,secondaryItem,msg,tmp,tt[3]);
-                if(type.startsWith("E")) Log.errOut(head,val);
+                if(type.startsWith("E")) Log.errOut("Script","["+head+"] "+val);
                 else
-                if(type.startsWith("I")||type.startsWith("S")) Log.infoOut(head,val);
+                if(type.startsWith("I")||type.startsWith("S")) Log.infoOut("Script","["+head+"] "+val);
                 else
-                if(type.startsWith("D")) Log.debugOut(head,val);
+                if(type.startsWith("D")) Log.debugOut("Script","["+head+"] "+val);
                 else
                     logError(scripted,"MPLOG","Syntax","Unknown log type "+type+" for "+scripted.Name());
                 break;

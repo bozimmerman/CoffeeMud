@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -57,5 +58,5 @@ public interface Banker extends ShopKeeper
 	public void setBankChain(String name);
 	public double getBalance(MOB mob);
 	public double totalItemsWorth(MOB mob);
-	public Vector getDebtInfo(MOB mob);
+	public MoneyLibrary.DebtItem getDebtInfo(MOB mob);
 }

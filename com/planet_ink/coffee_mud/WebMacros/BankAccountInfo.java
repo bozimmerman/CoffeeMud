@@ -36,35 +36,27 @@ public class BankAccountInfo extends StdWebMacro
 {
 	public String name()	{return this.getClass().getName().substring(this.getClass().getName().lastIndexOf('.')+1);}
 
-	public static synchronized Vector getMakeAccountInfo(ExternalHTTPRequests httpReq, Banker B, MOB playerM, Area playerA)
+	public static class BankAccountStuff
 	{
-		Vector info=(Vector)httpReq.getRequestObjects().get("BANKINFO: "+B.bankChain()+": "+playerM.Name());
+		double balance=0.0;
+		MoneyLibrary.DebtItem debt=null;
+		Vector items=new Vector(1);
+	}
+	
+	public static synchronized BankAccountStuff getMakeAccountInfo(ExternalHTTPRequests httpReq, Banker B, MOB playerM)
+	{
+		BankAccountStuff info=(BankAccountStuff)httpReq.getRequestObjects().get("BANKINFO: "+B.bankChain()+": "+playerM.Name());
 		if(info!=null) return info;
-		info=new Vector();
+		info=new BankAccountStuff();
 		if((!playerM.Name().equals(playerM.getClanID()))&&(B.whatIsSold()==Banker.DEAL_CLANBANKER))
 		{
-			info.addElement(new Double(0.0));
-			info.addElement(new Vector());
-			info.addElement(new Vector());
 		}
 		else
 		{
 			Double bal=new Double(B.getBalance(playerM));
-			info.addElement(bal);
-			if(bal.doubleValue()<=0.0)
-			{
-				info.addElement(new Vector());
-				info.addElement(new Vector());
-			}
-			else
-			{
-				Vector debtV=B.getDebtInfo(playerM);
-				if(debtV==null) debtV=new Vector();
-				info.addElement(debtV);
-				Vector items=B.getDepositedItems(playerM);
-				if(items==null) items=new Vector();
-				info.addElement(items);
-			}
+			info.balance=bal.doubleValue();
+			info.debt=B.getDebtInfo(playerM);
+			info.items=B.getDepositedItems(playerM);
 		}
 		httpReq.getRequestObjects().put("BANKINFO: "+B.bankChain()+": "+playerM.Name(),info);
 		return info;
@@ -95,22 +87,33 @@ public class BankAccountInfo extends StdWebMacro
 			{
 				playerM=CMClass.getMOB("StdMOB");
 				playerM.setName(C.clanID());
-				playerM.setLocation(CMLib.map().getStartRoom(B));
-				playerM.setStartRoom(CMLib.map().getStartRoom(B));
+				playerM.setLocation(M.location());
+				playerM.setStartRoom(M.getStartRoom());
 				playerM.setClanID(C.clanID());
 				playerM.setClanRole(Clan.POS_BOSS);
 				destroyPlayer=true;
 			}
 			else
-				playerM=CMLib.players().getLoadPlayer(player);
+			{
+				playerM=CMLib.players().getPlayer(player);
+				if(playerM==null)
+				{
+					playerM=CMClass.getMOB("StdMOB");
+					playerM.setName(CMStrings.capitalizeAndLower(player));
+					playerM.setLocation(M.location());
+					playerM.setStartRoom(M.getStartRoom());
+					playerM.setClanID("");
+					destroyPlayer=true;
+				}
+			}
 			if(playerM!=null) playerA=CMLib.map().getStartArea(playerM);
 			if((playerM==null)||(playerA==null)) 
 				return "PLAYER not found!";
 		}
 		else
 			return "PLAYER not set!";
-		Vector acct=BankAccountInfo.getMakeAccountInfo(httpReq,B,playerM,playerA);
-		double balance=((Double)acct.firstElement()).doubleValue();
+		BankAccountStuff acct=BankAccountInfo.getMakeAccountInfo(httpReq,B,playerM);
+		double balance=acct.balance;
 		if(parms.containsKey("HASACCT"))
 			return (balance>0.0)?"true":"false"; 
 		if(balance<=0.0) return "";
@@ -121,13 +124,13 @@ public class BankAccountInfo extends StdWebMacro
 		||(parms.containsKey("DEBTDUE"))
 		||(parms.containsKey("DEBTINT")))
 		{
-			Vector debtV=(Vector)acct.elementAt(1);
-			if((debtV==null)||(debtV.size()==0)) return "N/A";
-			double debt=((Double)debtV.elementAt(MoneyLibrary.DEBT_AMTDBL-1)).doubleValue();
-			String reason=((String)debtV.elementAt(MoneyLibrary.DEBT_REASON-1));
-			String intRate=CMath.div((int)Math.round(((Double)debtV.elementAt(MoneyLibrary.DEBT_INTDBL-1)).doubleValue()*10000.0),100.0)+"%";
-			long dueLong=((Long)debtV.elementAt(MoneyLibrary.DEBT_DUELONG-1)).longValue();
-			long timeRemaining=dueLong-dueLong;
+			MoneyLibrary.DebtItem debt=acct.debt;
+			if((debt==null)||(debt.amt==0.0)) return "N/A";
+			double amt=debt.amt;
+			String reason=debt.reason;
+			String intRate=CMath.div((int)Math.round(debt.interest*10000.0),100.0)+"%";
+			long dueLong=debt.due;
+			long timeRemaining=System.currentTimeMillis()-dueLong;
 			String dueDate="";
 			if(timeRemaining<0)
 				dueDate="Past due.";
@@ -143,7 +146,7 @@ public class BankAccountInfo extends StdWebMacro
 					dueDate=T.getShortTimeDescription();
 				}
 			}
-			if(parms.containsKey("DEBTAMT")) return CMLib.beanCounter().nameCurrencyLong(playerM,debt);
+			if(parms.containsKey("DEBTAMT")) return CMLib.beanCounter().nameCurrencyLong(playerM,amt);
 			if(parms.containsKey("DEBTRSN")) return reason;
 			if(parms.containsKey("DEBTDUE")) return dueDate;
 			if(parms.containsKey("DEBTINT")) return intRate;
@@ -152,17 +155,20 @@ public class BankAccountInfo extends StdWebMacro
 		if(parms.containsKey("ITEMSWORTH")) return CMLib.beanCounter().nameCurrencyLong(playerM,B.totalItemsWorth(playerM));
 		if(parms.containsKey("ITEMSLIST"))
 		{
-			Vector items=(Vector)acct.lastElement();
-			StringBuffer list=new StringBuffer("");
-			for(int v=0;v<items.size();v++)
-				if(!(items.elementAt(v) instanceof Coins))
-				{
-					list.append(((Environmental)items.elementAt(v)).name());
-					if(v<(items.size()-1)) list.append(", ");
-				}
-			return list.toString();
+			Vector items=acct.items;
+			if(items != null)
+			{
+				StringBuffer list=new StringBuffer("");
+				for(int v=0;v<items.size();v++)
+					if(!(items.elementAt(v) instanceof Coins))
+					{
+						list.append(((Environmental)items.elementAt(v)).name());
+						if(v<(items.size()-1)) list.append(", ");
+					}
+				return list.toString();
+			}
 		}
 		return "";
-		}finally{if(destroyPlayer) playerM.destroy();}
+		}finally{if(destroyPlayer){playerM.setLocation(null); playerM.destroy();}}
 	}
 }

@@ -62,14 +62,24 @@ public class BankChainNext extends StdWebMacro
 			{
 				playerM=CMClass.getMOB("StdMOB");
 				playerM.setName(C.clanID());
-				playerM.setLocation(CMLib.map().getRandomRoom());
-				playerM.setStartRoom(CMLib.map().getRandomRoom());
+				playerM.setLocation(M.location());
+				playerM.setStartRoom(M.getStartRoom());
 				playerM.setClanID(C.clanID());
 				playerM.setClanRole(Clan.POS_BOSS);
 				destroyPlayer=true;
 			}
 			else
-				playerM=CMLib.players().getLoadPlayer(player);
+			{
+				playerM=CMLib.players().getPlayer(player);
+				if(playerM==null)
+				{
+					playerM=CMClass.getMOB("StdMOB");
+					playerM.setName(CMStrings.capitalizeAndLower(player));
+					playerM.setLocation(M.location());
+					playerM.setStartRoom(M.getStartRoom());
+					destroyPlayer=true;
+				}
+			}
 			if(playerM==null) return "";
 		}
 		else
@@ -88,7 +98,7 @@ public class BankChainNext extends StdWebMacro
 					Banker bankerM=CMLib.map().getBank(bankChain,bankChain);
 					if((bankerM==null)
 					||((!playerM.getClanID().equals(playerM.Name()))&&(bankerM.whatIsSold()==Banker.DEAL_CLANBANKER))
-					||(((Double)BankAccountInfo.getMakeAccountInfo(httpReq,bankerM,playerM,null).firstElement()).doubleValue()<=0.0))
+					||(BankAccountInfo.getMakeAccountInfo(httpReq,bankerM,playerM).balance<=0.0))
 					{
 						lastID=bankChain;
 						continue;
@@ -102,7 +112,7 @@ public class BankChainNext extends StdWebMacro
 		if(parms.containsKey("EMPTYOK"))
 			return "<!--EMPTY-->";
 		return " @break@";
-		}finally{if(destroyPlayer) playerM.destroy();}
+		}finally{if(destroyPlayer){ playerM.setLocation(null); playerM.destroy();}}
 	}
 
 }

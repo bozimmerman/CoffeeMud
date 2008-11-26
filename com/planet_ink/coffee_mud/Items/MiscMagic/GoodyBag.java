@@ -9,6 +9,8 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary;
+import com.planet_ink.coffee_mud.Libraries.interfaces.MoneyLibrary.MoneyDenomination;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -71,10 +73,10 @@ public class GoodyBag extends BagOfEndlessness implements ArchonOnly
 			    for(int v=0;v<V.size();v++)
 			    {
 			        String currency=(String)V.elementAt(v);
-			        DVector V2=CMLib.beanCounter().getCurrencySet(currency);
-			        for(int v2=0;v2<V2.size();v2++)
+			        MoneyLibrary.MoneyDenomination[] DV=CMLib.beanCounter().getCurrencySet(currency);
+			        for(int v2=0;v2<DV.length;v2++)
 			        {
-						Coins C=CMLib.beanCounter().makeBestCurrency(currency,((Double)V2.elementAt(v2,1)).doubleValue(),owner(),this);
+						Coins C=CMLib.beanCounter().makeBestCurrency(currency,DV[v2].value,owner(),this);
 						if(C!=null)	C.setNumberOfCoins(100);
 			        }
 			    }
