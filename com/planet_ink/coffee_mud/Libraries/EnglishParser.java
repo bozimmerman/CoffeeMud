@@ -1085,7 +1085,7 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 				catch(java.lang.ArrayIndexOutOfBoundsException x){}
 			}
 		}
-		return null;
+		return matches;
 	}
 
 	public Environmental fetchAvailable(Vector list, String srchStr, Item goodLocation, int wornReqCode, boolean exactOnly)

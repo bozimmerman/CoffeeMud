@@ -3411,7 +3411,9 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         else
         {
         	if(startQuestOnTime())
+        	{
             	CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_QUESTTIMESTART);
+        	}
         }
         tickStatus=Tickable.STATUS_NOT;
         return true;

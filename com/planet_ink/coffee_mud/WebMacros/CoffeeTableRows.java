@@ -99,6 +99,13 @@ public class CoffeeTableRows extends StdWebMacro
                 C2.set(Calendar.MILLISECOND,999);
                 curTime=C2.getTimeInMillis();
                 Vector set=new Vector();
+                if(V.size()==1)
+                {
+                    CoffeeTableRow T=(CoffeeTableRow)V.elementAt(0);
+                    set.addElement(T);
+                    V.removeElementAt(0);
+                }
+                else
                 for(int v=V.size()-1;v>=0;v--)
                 {
                     CoffeeTableRow T=(CoffeeTableRow)V.elementAt(v);
@@ -149,7 +156,7 @@ public class CoffeeTableRows extends StdWebMacro
             }
         }
         else
-        if(orderedParms.contains("QUESTRPT"))
+        if(orderedParms.contains("QUESTNAME")||orderedParms.contains("QUESTRPT"))
         {
             long[][] totals=new long[CMLib.quests().numQuests()][CoffeeTableRow.STAT_TOTAL];
             while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
@@ -165,6 +172,13 @@ public class CoffeeTableRows extends StdWebMacro
                 C2.set(Calendar.MILLISECOND,999);
                 curTime=C2.getTimeInMillis();
                 Vector set=new Vector();
+                if(V.size()==1)
+                {
+                    CoffeeTableRow T=(CoffeeTableRow)V.elementAt(0);
+                    set.addElement(T);
+                    V.removeElementAt(0);
+                }
+                else
                 for(int v=V.size()-1;v>=0;v--)
                 {
                     CoffeeTableRow T=(CoffeeTableRow)V.elementAt(v);
@@ -178,13 +192,12 @@ public class CoffeeTableRows extends StdWebMacro
                 {
                     CoffeeTableRow T=(CoffeeTableRow)set.elementAt(s);
                     for(int x=0;x<CMLib.quests().numQuests();x++)
-                        T.totalUp("A"+T.tagFix(CMLib.quests().fetchQuest(x).name()),totals[x]);
+                        T.totalUp("U"+T.tagFix(CMLib.quests().fetchQuest(x).name()),totals[x]);
                 }
                 if(scale==0) break;
             }
-            int x=-1;
             Quest Q=null;
-            while(x<CMLib.quests().numQuests())
+            for(int x=0;x<CMLib.quests().numQuests();x++)
             {
             	Q=CMLib.quests().fetchQuest(x);
                 table.append("<TR>");

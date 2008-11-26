@@ -71,14 +71,37 @@ public class Stat  extends Skills
 		if(V.size()==0){ mob.tell("No Stats?!"); return false;}
 		StringBuffer table=new StringBuffer("");
         boolean skillUse=false;
+        boolean questStats=false;
         if(rest.toUpperCase().trim().startsWith("SKILLUSE"))
         {
             skillUse=true;
-            rest=rest.substring("SKILLUSE".length()).trim();
+            int x=rest.indexOf(' ');
+            if(x>0) rest=rest.substring(x+1).trim();
+            else rest="";
+        }
+        if(rest.toUpperCase().trim().startsWith("QUEST"))
+        {
+        	questStats=true;
+            int x=rest.indexOf(' ');
+            if(x>0) rest=rest.substring(x+1).trim();
+            else rest="";
         }
 		table.append("^xStatistics since "+CMLib.time().date2String(ENDQ.getTimeInMillis())+":^.^N\n\r\n\r");
         if(skillUse)
             table.append(CMStrings.padRight("Skill",25)+CMStrings.padRight("Uses",10)+CMStrings.padRight("Skill",25)+CMStrings.padRight("Uses",10)+"\n\r");
+        else
+        if(questStats)
+            table.append(CMStrings.padRight("Quest",35)
+	   					+CMStrings.padRight("STRT",5)
+    					+CMStrings.padRight("TSRT",5)
+    					+CMStrings.padRight("FLST",5)
+    					+CMStrings.padRight("ACPT",5)
+    					+CMStrings.padRight("WINS",5)
+    					+CMStrings.padRight("FAIL",5)
+    					+CMStrings.padRight("DROP",5)
+    					+CMStrings.padRight("TSTP",5)
+    					+CMStrings.padRight("STOP",5)
+            		    +"\n\r");
         else
     		table.append(CMStrings.padRight("Date",25)
     					 +CMStrings.padRight("CONs",5)
@@ -166,6 +189,58 @@ public class Stat  extends Skills
                 }
             }
             if(cr)table.append("\n\r");
+        }
+        else
+        if(questStats)
+        {
+            long[][] totals=new long[CMLib.quests().numQuests()][CoffeeTableRow.STAT_TOTAL];
+            while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
+            {
+                lastCur=curTime;
+                Calendar C2=Calendar.getInstance();
+                C.setTimeInMillis(curTime);
+                C2.add(Calendar.DATE,-(scale));
+                curTime=C2.getTimeInMillis();
+                C2.set(Calendar.HOUR_OF_DAY,23);
+                C2.set(Calendar.MINUTE,59);
+                C2.set(Calendar.SECOND,59);
+                C2.set(Calendar.MILLISECOND,999);
+                curTime=C2.getTimeInMillis();
+                Vector set=new Vector();
+                for(int v=V.size()-1;v>=0;v--)
+                {
+                    CoffeeTableRow T=(CoffeeTableRow)V.elementAt(v);
+                    if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
+                    {
+                        set.addElement(T);
+                        V.removeElementAt(v);
+                    }
+                }
+                for(int s=0;s<set.size();s++)
+                {
+                    CoffeeTableRow T=(CoffeeTableRow)set.elementAt(s);
+                    for(int x=0;x<CMLib.quests().numQuests();x++)
+                        T.totalUp("U"+T.tagFix(CMLib.quests().fetchQuest(x).name()),totals[x]);
+                }
+                if(scale==0) break;
+            }
+            for(int x=0;x<CMLib.quests().numQuests();x++)
+            {
+                Quest Q=CMLib.quests().fetchQuest(x);
+                table.append(
+            		     CMStrings.padRight(Q.name(),35)
+                        +CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_QUESTSTARTATTEMPT],5)
+		                +CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_QUESTTIMESTART],5)
+		                +CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_QUESTFAILEDSTART],5)
+		                +CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_QUESTACCEPTED],5)
+		                +CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_QUESTSUCCESS],5)
+		                +CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_QUESTFAILED],5)
+		                +CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_QUESTDROPPED],5)
+		                +CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_QUESTTIMESTOP],5)
+		                +CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_QUESTSTOP],5));
+                table.append("\n\r");
+            }
+            table.append("\n\r");
         }
         else
 		while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
