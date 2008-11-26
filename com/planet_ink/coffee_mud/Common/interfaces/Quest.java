@@ -60,6 +60,20 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
 	 */
 	public void setName(String newName);
 	
+    /**
+     * Returns the author of the quest
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setAuthor(String)
+     * @return the author of the quest
+     */
+	public String author();
+	
+	/**
+	 * Sets the author of the quest
+     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#author()
+	 * @param newName the author of the quest
+	 */
+	public void setAuthor(String newName);
+	
 	/**
 	 * Returns the friendly display name of the quest
      * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#setDisplayName(String)
@@ -647,7 +661,7 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
     /** The list of BASIC non-iterative variable codes that pertain to a quest object */
 	public final static String[] QCODES={"CLASS", "NAME", "DURATION", "WAIT", "MINPLAYERS", "PLAYERMASK",
 										 "RUNLEVEL", "DATE", "MUDDAY", "INTERVAL","SPAWNABLE", "DISPLAY", 
-                                         "INSTRUCTIONS", "PERSISTANCE"};
+                                         "INSTRUCTIONS", "PERSISTANCE", "AUTHOR"};
     /** The list of basic quest objects defined in an iterative fashion during quest script execution */
 	public final static String[] QOBJS={"LOADEDMOBS", "LOADEDITEMS", "AREA", "ROOM", "MOBGROUP", "ITEMGROUP", "ROOMGROUP",
 		 								"ITEM", "ENVOBJ", "STUFF", "MOB"};

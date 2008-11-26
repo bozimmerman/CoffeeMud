@@ -1809,6 +1809,7 @@ public class Quests extends StdLibrary implements QuestManager
                     script=CMStrings.replaceAll(script,var,val);
                 }
             }
+            script=CMStrings.replaceAll(script,"$#AUTHOR",mob.Name());
             if((mob.session()!=null)&&(!mob.session().killFlag())
             &&(mob.session().confirm("Create the new quest: "+name+" (y/N)? ","N")))
             {

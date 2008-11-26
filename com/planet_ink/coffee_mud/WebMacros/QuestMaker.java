@@ -756,6 +756,7 @@ public class QuestMaker extends StdWebMacro
                         script=CMStrings.replaceAll(script,var,val);
                     }
                 }
+                script=CMStrings.replaceAll(script,"$#AUTHOR",M.Name());
                 Quest Q=(Quest)CMClass.getCommon("DefaultQuest");
                 CMFile newQF=new CMFile(Resources.makeFileResourceName("quests/"+name+".quest"),M,true,false);
                 newQF.saveText(script);

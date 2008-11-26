@@ -42,6 +42,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     public String ID(){return "DefaultQuest";}
 
     protected String name="";
+    protected String author="";
     protected String displayName="";
     protected String startDate="";
     protected int duration=450; // about 30 minutes
@@ -69,6 +70,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     public String name(){return name;}
     public void setName(String newName){name=newName;}
 
+    // the author of the quest
+    public String author(){return author;}
+    public void setAuthor(String newName){author=newName;}
+    
     // the display name of the quest
     public String displayName(){ return displayName;}
     public void setDisplayName(String newName){ displayName=newName;}
@@ -181,6 +186,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     public void setScript(String parm){
         rawScriptParameter=parm;
         name="";
+        author="";
         displayName="";
         startDate="";
         duration=-1;
@@ -4174,6 +4180,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             break;
         case 11: setDisplayName(val); break;
         case 13: durable=CMath.s_bool(val); break;
+        case 14: author=val; break;
         case 12: // instructions can and should fall through the default
 		default:
             if((code.toUpperCase().trim().equalsIgnoreCase("REMAINING"))&&(running()))
@@ -4214,6 +4221,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         case 10: return SPAWN_DESCS[getSpawn()];
         case 11: return displayName();
         case 13: return Boolean.toString(durable);
+        case 14: return author();
         case 12: // instructions can and should fall through the default
 		default:
         {
