@@ -869,6 +869,20 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
         	} catch(ArrayIndexOutOfBoundsException ex){}
         }
         
+        public Environmental getLiveReference()
+        {
+        	if(noRefs) return null;
+        	Environmental o=null;
+        	try {
+	        	for(int r=0;r<refs.size();r++)
+	        	{
+	        		o=(Environmental)refs.elementAt(r).get();
+	        		if((o!=null)&&(CMLib.flags().isInTheGame(o,true)))
+		    			return o;
+	        	}
+        	} catch(Exception e) { }
+    		return null;
+        }
         public synchronized void addReference(Environmental E) {
         	if(noRefs) return;
         	if(isReference(E)) return;

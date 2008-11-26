@@ -2169,4 +2169,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 31. Scriptable codes $h/$H $s/$S added to support him/her. LOG command also changed to prevent spoofing.
 32. Quests now save their authors, if the questmaker is used.
 33. Cooking will now give slightly more specific names to the final recipe (Fried Water Fowl instead of Fried Poultry, etc)
-34. 
+34. Channel socials can now target Cataloged mobs (targetting other out-of-room mobs would have required a world scan)
+35. 

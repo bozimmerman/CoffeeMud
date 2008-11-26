@@ -86,6 +86,7 @@ public interface CatalogLibrary extends CMLibrary
         public String mostPopularArea();
         public String randomRoom();
         public void cleanHouse();
+        public Environmental getLiveReference();
         public int getDeathsPicksups();
         public void bumpDeathPickup();
         

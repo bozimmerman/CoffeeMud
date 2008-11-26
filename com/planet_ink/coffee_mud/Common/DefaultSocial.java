@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.CatalogLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -173,26 +174,37 @@ public class DefaultSocial implements Social
         &&(!((String)commands.elementAt(1)).equalsIgnoreCase("SELF"))
         &&(!((String)commands.elementAt(1)).equalsIgnoreCase("ALL")))
 			targetStr=(String)commands.elementAt(1);
-		Environmental Target=null;
+		Environmental target=null;
 		if(targetStr.length()>0)
 		{
 		    String targetMud="";
 		    if(targetStr.indexOf("@")>0)
 		        targetMud=targetStr.substring(targetStr.indexOf("@")+1);
 		    else
-				Target=CMLib.players().getPlayer(targetStr);
-			
-			if(((Target==null)&&(makeTarget))
+		    {
+		    	target=CMLib.players().getPlayer(targetStr);
+				if((target==null)&&(!makeTarget))
+				{
+					MOB possTarget=CMLib.catalog().getCatalogMob(targetStr);
+					if(possTarget!=null)
+					{
+						CatalogLibrary.CataData data=CMLib.catalog().getCatalogData(possTarget);
+						if(data!=null)
+							target=data.getLiveReference();
+					}
+				}
+		    }
+			if(((target==null)&&(makeTarget))
 			||((targetMud.length()>0)
 				&&(I3channelName!=null)
 				&&((CMLib.intermud().i3online())&&(CMLib.intermud().isI3channel(I3channelName)))))
 			{
-				Target=CMClass.getMOB("StdMOB");
-				Target.setName(targetStr);
-				((MOB)Target).setLocation(CMLib.map().getRandomRoom());
+				target=CMClass.getMOB("StdMOB");
+				target.setName(targetStr);
+				((MOB)target).setLocation(CMLib.map().getRandomRoom());
 			}
-			if((Target!=null)&&(!CMLib.flags().isSeen(Target)))
-			   Target=null;
+			if((target!=null)&&(!CMLib.flags().isSeen(target)))
+				target=null;
 		}
 
         String mspFile=((MSPfile!=null)&&(MSPfile.length()>0))?CMProps.msp(MSPfile,10):"";
@@ -213,13 +225,13 @@ public class DefaultSocial implements Social
         
 		CMMsg msg=null;
         if(end.length()==0) mspFile="";
-		if((Target==null)&&(targetable()))
+		if((target==null)&&(targetable()))
 			msg=CMClass.getMsg(mob,null,this,srcMask|sourceCode(),str+See_when_no_target+end,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null);
 		else
-		if(Target==null)
+		if(target==null)
 			msg=CMClass.getMsg(mob,null,this,srcMask|sourceCode(),str+You_see+end+mspFile,CMMsg.NO_EFFECT,null,fullCode,str+Third_party_sees+end+mspFile);
 		else
-			msg=CMClass.getMsg(mob,Target,this,srcMask|sourceCode(),str+You_see+end+mspFile,fullCode,str+Target_sees+end+mspFile,fullCode,str+Third_party_sees+end+mspFile);
+			msg=CMClass.getMsg(mob,target,this,srcMask|sourceCode(),str+You_see+end+mspFile,fullCode,str+Target_sees+end+mspFile,fullCode,str+Third_party_sees+end+mspFile);
 		return msg;
 	}
 
