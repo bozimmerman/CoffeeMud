@@ -149,6 +149,68 @@ public class CoffeeTableRows extends StdWebMacro
             }
         }
         else
+        if(orderedParms.contains("QUESTRPT"))
+        {
+            long[][] totals=new long[CMLib.quests().numQuests()][CoffeeTableRow.STAT_TOTAL];
+            while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
+            {
+                lastCur=curTime;
+                Calendar C2=Calendar.getInstance();
+                C.setTimeInMillis(curTime);
+                C2.add(Calendar.DATE,-(scale));
+                curTime=C2.getTimeInMillis();
+                C2.set(Calendar.HOUR_OF_DAY,23);
+                C2.set(Calendar.MINUTE,59);
+                C2.set(Calendar.SECOND,59);
+                C2.set(Calendar.MILLISECOND,999);
+                curTime=C2.getTimeInMillis();
+                Vector set=new Vector();
+                for(int v=V.size()-1;v>=0;v--)
+                {
+                    CoffeeTableRow T=(CoffeeTableRow)V.elementAt(v);
+                    if((T.startTime()>curTime)&&(T.endTime()<=lastCur))
+                    {
+                        set.addElement(T);
+                        V.removeElementAt(v);
+                    }
+                }
+                for(int s=0;s<set.size();s++)
+                {
+                    CoffeeTableRow T=(CoffeeTableRow)set.elementAt(s);
+                    for(int x=0;x<CMLib.quests().numQuests();x++)
+                        T.totalUp("A"+T.tagFix(CMLib.quests().fetchQuest(x).name()),totals[x]);
+                }
+                if(scale==0) break;
+            }
+            int x=-1;
+            Quest Q=null;
+            while(x<CMLib.quests().numQuests())
+            {
+            	Q=CMLib.quests().fetchQuest(x);
+                table.append("<TR>");
+                for(int i=0;i<orderedParms.size();i++)
+                {
+                    String key=(String)orderedParms.elementAt(i,1);
+                    if(key.equals("COLSPAN"))
+                        colspan=" COLSPAN="+orderedParms.elementAt(i,2);
+                    else if(key.equalsIgnoreCase("QUESTNAME")) table.append("<TD"+colspan+">"+header+Q.name()+footer+"</TD>");
+                    else if(key.equalsIgnoreCase("DATERANGE")) table.append("<TD"+colspan+">"+header+CMLib.time().date2DateString(curTime+1)+" - "+CMLib.time().date2DateString(lastCur-1)+footer+"</TD>");
+    				else if(key.equalsIgnoreCase("DATESTART")) table.append("<TD"+colspan+">"+header+CMLib.time().date2DateString(curTime+1)+footer+"</TD>");
+    				else if(key.equalsIgnoreCase("DATEEND")) table.append("<TD"+colspan+">"+header+CMLib.time().date2DateString(lastCur)+footer+"</TD>");
+                    else if(key.equalsIgnoreCase("FAILEDSTART")) table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTFAILEDSTART]+footer+"</TD>");
+                    else if(key.equalsIgnoreCase("TIMESTART")) table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTTIMESTART]+footer+"</TD>");
+                    else if(key.equalsIgnoreCase("TIMESTOP")) table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTTIMESTOP]+footer+"</TD>");
+                    else if(key.equalsIgnoreCase("STOP")) table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTSTOP]+footer+"</TD>");
+                    else if(key.equalsIgnoreCase("ACCEPTED")) table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTACCEPTED]+footer+"</TD>");
+                    else if(key.equalsIgnoreCase("FAILED")) table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTFAILED]+footer+"</TD>");
+                    else if(key.equalsIgnoreCase("SUCCESS")) table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTSUCCESS]+footer+"</TD>");
+                    else if(key.equalsIgnoreCase("DROPPED")) table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTDROPPED]+footer+"</TD>");
+                    else if(key.equalsIgnoreCase("STARTATTEMPT")) table.append("<TD"+colspan+">"+header+totals[x][CoffeeTableRow.STAT_QUESTSTARTATTEMPT]+footer+"</TD>");
+                }
+                table.append("</TR>");
+            }
+        }
+        else
 		while((V.size()>0)&&(curTime>(ENDQ.getTimeInMillis())))
 		{
 			lastCur=curTime;

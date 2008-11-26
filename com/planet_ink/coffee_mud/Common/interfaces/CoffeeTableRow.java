@@ -123,6 +123,14 @@ public interface CoffeeTableRow extends CMCommon
      */
     public void bumpVal(CMObject E, int type);
     
+    /**
+     * Simple method that replaces a strings spaces with _
+     * characters, and makes the string uppercase.
+     * @param s the string to change
+     * @return the changed string
+     */
+    public String tagFix(String s);
+    
     /** 
      * Loops through adding all the event stats for the given code string
      * together

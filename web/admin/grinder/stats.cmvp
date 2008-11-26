@@ -13,22 +13,24 @@
 			document.CONTROL.action=action;
 			document.CONTROL.submit();
 		}
-		function ClickedBox(which)
+		function ClickedBox(skillRpt,questRpt)
 		{
 			var newVal='';
-			if(which=='SKILLRPT') {
+			if(skillRpt=='SKILLRPT') {
 			     if(confirm('Generating a skills report may require several minutes of intense calculation.  Are you sure?'))
     			     newVal='on';
     			 else
     			 {
     			     document.CONTROL.RPTTYP[0].checked=true;
                      document.CONTROL.RPTTYP[1].checked=false;
+                     document.CONTROL.RPTTYP[2].checked=false;
                      return;
     			 }
 			} 
-			if(newVal!=document.CONTROL.SKILLRPT.value)
+			if((skillRpt!=document.CONTROL.SKILLRPT.value)||(questRpt!=document.CONTROL.QUESTRPT.value))
 			{
-				document.CONTROL.SKILLRPT.value=newVal;
+				document.CONTROL.QUESTRPT.value=questRpt;
+				document.CONTROL.SKILLRPT.value=skillRpt;
 				Clicked('/grinder/stats.cmvp');
 			}
 		}
@@ -53,6 +55,7 @@
 <FORM NAME=CONTROL TARGET=_top METHOD=POST ACTION="stats.cmvp">
 <INPUT TYPE=HIDDEN NAME=AUTH VALUE="@Authenticate?AUTH@">
 <INPUT TYPE=HIDDEN NAME=SKILLRPT VALUE="@RequestParameter?SKILLRPT@">
+<INPUT TYPE=HIDDEN NAME=QUESTRPT VALUE="@RequestParameter?QUESTRPT@">
 	<TABLE WIDTH=100% BORDER=1>
 	<TR><TD WIDTH=100% COLSPAN=15 BGCOLOR=WHITE ALIGN=CENTER><FONT COLOR=BLACK><H2>CoffeeMud Statistics Report</H2></FONT></TD></TR>
 	<TR>
@@ -164,8 +167,9 @@
 		<OPTION VALUE=30>Months
 		<OPTION VALUE=365>Years
 		</SELECT>
-		<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?!CheckReqParm?SKILLRPT=on@checked@endif@ VALUE=USAGERPT ONCLICK="ClickedBox('USAGERPT');"><FONT COLOR=WHITE>Usage Report</FONT>
-		<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?SKILLRPT=on@checked@endif@ VALUE=SKILLRPT ONCLICK="ClickedBox('SKILLRPT');"><FONT COLOR=WHITE>Skills Report</FONT>
+		<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?!CheckReqParm?SKILLRPT=on@ @if?!CheckReqParm?QUESTRPT=on@checked@endif@ @endif@ VALUE=USAGERPT ONCLICK="ClickedBox('USAGERPT');"><FONT COLOR=WHITE>Usage Report</FONT>
+		<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?SKILLRPT=on@checked@endif@ VALUE=SKILLRPT ONCLICK="ClickedBox('SKILLRPT','');"><FONT COLOR=WHITE>Skills Report</FONT>
+		<INPUT TYPE=RADIO NAME=RPTTYP ID=RPTTYP @if?CheckReqParm?QUESTRPT=on@checked@endif@ VALUE=QUESTRPT ONCLICK="ClickedBox('','QUESTRPT');"><FONT COLOR=WHITE>Quest Report</FONT>
 		</TD>
 		<TD WIDTH=58% COLSPAN=8 ALIGN=CENTER>
 		<FONT COLOR=WHITE>Report on...</FONT>
@@ -348,27 +352,46 @@
 			<TD WIDTH=18% COLSPAN=3><FONT COLOR=WHITE><B>Ability ID</B></FONT></TD>
 			<TD WIDTH=6%><FONT COLOR=WHITE><B>Uses</B></FONT></TD>
 		@else@
-			<TD WIDTH=15%><FONT COLOR=WHITE><B>Date Range</B></FONT></TD>
-			<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Newbies</B></FONT></TD>
-			<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Logins</B></FONT></TD>
-			<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Tot. Hr.</B></FONT></TD>
-			<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Avg. Mn.</B></FONT></TD>
-			<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Avg. On *</B></FONT></TD>
-			<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Most On *</B></FONT></TD>
-			<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Deaths</B></FONT></TD>
-			<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>PKills</B></FONT></TD>
-			<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Levels</B></FONT></TD>
-			<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Class +-</B></FONT></TD>
-			<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Purges</B></FONT></TD>
-			<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Marriage</B></FONT></TD>
-			<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Births</B></FONT></TD>
-			<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Divorces</B></FONT></TD>
+			@if?!CheckReqParm?QUESTRPT=@
+				<TD WIDTH=15%><FONT COLOR=WHITE><B>Date Range</B></FONT></TD>
+				<TD WIDTH=30%><FONT COLOR=WHITE><B>Quest</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Starts</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Time Starts</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Fail Starts</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Accepted</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Success</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Failures</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Dropped</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Time Stops</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Stops</B></FONT></TD>
+
+			@else@
+				<TD WIDTH=15%><FONT COLOR=WHITE><B>Date Range</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Newbies</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Logins</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Tot. Hr.</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Avg. Mn.</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Avg. On *</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Most On *</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Deaths</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>PKills</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Levels</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Class +-</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Purges</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Marriage</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Births</B></FONT></TD>
+				<TD WIDTH=6%><FONT COLOR=WHITE SIZE=-1><B>Divorces</B></FONT></TD>
+			@endif@
 		@endif@
 	</TR>
 		@if?!CheckReqParm?SKILLRPT=@
 			@CoffeeTableRows?HEADER=<FONT COLOR=WHITE SIZE=-1>&FOOTER=</FONT>&COLSPAN=1&NEXTSKILLID&SKILLUSE&COLSPAN=3&NEXTSKILLID&COLSPAN=1&SKILLUSE&COLSPAN=3&NEXTSKILLID&COLSPAN=1&SKILLUSE&COLSPAN=3&NEXTSKILLID&COLSPAN=1&SKILLUSE@
 		@else@
-			@CoffeeTableRows?HEADER=<FONT COLOR=WHITE SIZE=-1>&FOOTER=</FONT>&DATERANGE&NEWPLAYERS&LOGINS&TOTALHOURS&AVERAGETICKS&AVERAGEONLINE&MOSTONLINE&DEATHS&PKDEATHS&LEVELSUP&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES@
+			@if?!CheckReqParm?QUESTRPT=@
+				@CoffeeTableRows?HEADER=<FONT COLOR=WHITE SIZE=-1>&FOOTER=</FONT>&DATERANGE&QUESTNAMESTARTATTEMPT&TIMESTART&FAILEDSTART&ACCEPTED&SUCCESS&FAILED&DROPPED&TIMESTOP&STOP@
+			@else@
+				@CoffeeTableRows?HEADER=<FONT COLOR=WHITE SIZE=-1>&FOOTER=</FONT>&DATERANGE&NEWPLAYERS&LOGINS&TOTALHOURS&AVERAGETICKS&AVERAGEONLINE&MOSTONLINE&DEATHS&PKDEATHS&LEVELSUP&CLASSCHANGES&PURGES&MARRIAGES&BIRTHS&DIVORCES@
+			@endif@
 		@endif@
 	</TABLE>
 	<CENTER>
