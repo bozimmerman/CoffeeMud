@@ -58,6 +58,7 @@ public interface CatalogLibrary extends CMLibrary
     public Vector<RoomContent> roomContent(Room R);
     public void updateRoomContent(String roomID, Vector<RoomContent> content);
     public void newInstance(Environmental E);
+    public void bumpDeathPickup(Environmental E);
     
     public static interface RoomContent
     {
@@ -85,6 +86,8 @@ public interface CatalogLibrary extends CMLibrary
         public String mostPopularArea();
         public String randomRoom();
         public void cleanHouse();
+        public int getDeathsPicksups();
+        public void bumpDeathPickup();
         
         public String data();
         

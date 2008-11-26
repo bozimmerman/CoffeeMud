@@ -1340,6 +1340,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
     		if(item instanceof RawMaterial)
     			((RawMaterial)item).rebundle();
         }
+        if(CMLib.flags().isCataloged(item))
+	        CMLib.catalog().bumpDeathPickup(item);
     }
     public void handleBeingDropped(CMMsg msg)
     {

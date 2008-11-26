@@ -966,6 +966,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 CMLib.combat().justDie(null,deadmob);
             deadmob.tell(deadmob,msg.target(),msg.tool(),msg.sourceMessage());
             if(deadmob.riding()!=null) deadmob.riding().delRider(deadmob);
+            if(CMLib.flags().isCataloged(deadmob))
+    	        CMLib.catalog().bumpDeathPickup(deadmob);
         }
     }
 

@@ -526,6 +526,19 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
     	}
     }
     
+    public void bumpDeathPickup(Environmental E)
+    {
+    	synchronized(getSync(E).intern())
+    	{
+    		EnvStats stats=E.baseEnvStats();
+    		if((stats!=null)&&(CMath.bset(stats.disposition(),EnvStats.IS_CATALOGED)))
+    		{
+	        	CataData data=getCatalogData(E);
+	            if(data!=null) data.bumpDeathPickup();
+    		}
+    	}
+    }
+    
     public void changeCatalogUsage(Environmental E, boolean toCataloged)
     {
     	synchronized(getSync(E).intern())
@@ -746,6 +759,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
         public String lmaskStr=null;
         public boolean live=false;
         public double rate=0.0;
+        public volatile int deathPickup=0;
         public Vector<WeakReference> refs=new Vector<WeakReference>(1);
         public boolean noRefs = CMSecurity.isDisabled("CATALOGCACHE");
         
@@ -832,6 +846,9 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
         }
         
         public Enumeration<Environmental> enumeration() { return makeVector().elements();}
+        
+        public int getDeathsPicksups(){ return deathPickup;}
+        public void bumpDeathPickup(){ deathPickup++;}
         
         public synchronized void cleanHouse()
         {
