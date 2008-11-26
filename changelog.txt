@@ -2165,4 +2165,8 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
     in reality, it will help your mud support more people doing such things.
 28. New Disable Flags: DBERRORQUESTART, DBERRORQUE, CATALOGCACHE
 29. New LIST parameter: SCRIPTS (for finding script usages and scriptables in your world)
- 
+30. Help money/currency/etc will show local currency.  help world currency shows all active currencies.
+31. Scriptable codes $h/$H $s/$S added to support him/her. LOG command also changed to prevent spoofing.
+32. Quests now save their authors, if the questmaker is used.
+33. Cooking will now give slightly more specific names to the final recipe (Fried Water Fowl instead of Fried Poultry, etc)
+34. 

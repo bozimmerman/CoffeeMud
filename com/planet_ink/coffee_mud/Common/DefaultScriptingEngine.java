@@ -1173,6 +1173,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(lastKnownLocation!=null)
                     middle=lastKnownLocation.getArea().name();
                 break;
+                //case 'a':
+            case 'A':
+                // unnecessary, since, in coffeemud, this is part of the name
+                break;
             case 'b': middle=lastLoaded!=null?lastLoaded.name():""; break;
             case 'B': middle=lastLoaded!=null?lastLoaded.displayText():""; break;
             case 'c':
@@ -1181,41 +1185,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(randMOB!=null)
                     middle=randMOB.name();
                 break;
-            case 'i':
-                if(monster!=null)
-                    middle=monster.name();
-                break;
-            case 'I':
-                if(monster!=null)
-                    middle=monster.displayText();
-                break;
-            case 'n':
-            case 'N':
+            case 'd': middle=(lastKnownLocation!=null)?lastKnownLocation.roomTitle(monster):""; break;
+            case 'D': middle=(lastKnownLocation!=null)?lastKnownLocation.roomDescription(monster):""; break;
+            case 'e':
                 if(source!=null)
-                    middle=source.name();
+                    middle=source.charStats().heshe();
                 break;
-            case 't':
-            case 'T':
-                if(target!=null)
-                    middle=target.name();
-                break;
-            case 'y':
-                if(source!=null)
-                    middle=source.charStats().sirmadam();
-                break;
-            case 'Y':
+            case 'E':
                 if((target!=null)&&(target instanceof MOB))
-                    middle=((MOB)target).charStats().sirmadam();
-                break;
-            case 'r':
-            case 'R':
-                randMOB=getRandPC(monster,tmp,lastKnownLocation);
-                if(randMOB!=null)
-                    middle=randMOB.name();
-                break;
-            case 'j':
-                if(monster!=null)
-                    middle=monster.charStats().heshe();
+                    middle=((MOB)target).charStats().heshe();
                 break;
             case 'f':
                 if((monster!=null)&&(monster.amFollowing()!=null))
@@ -1225,13 +1203,28 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if((monster!=null)&&(monster.amFollowing()!=null))
                     middle=monster.amFollowing().charStats().heshe();
                 break;
-            case 'e':
-                if(source!=null)
-                    middle=source.charStats().heshe();
+            case 'g': middle=((msg==null)?"":msg.toLowerCase()); break;
+            case 'G': middle=((msg==null)?"":msg); break;
+            case 'h':
+                if(monster!=null)
+                    middle=monster.charStats().himher();
                 break;
-            case 'E':
-                if((target!=null)&&(target instanceof MOB))
-                    middle=((MOB)target).charStats().heshe();
+            case 'H':
+                randMOB=getRandPC(monster,tmp,lastKnownLocation);
+                if(randMOB!=null)
+                    middle=randMOB.charStats().himher();
+                break;
+            case 'i':
+                if(monster!=null)
+                    middle=monster.name();
+                break;
+            case 'I':
+                if(monster!=null)
+                    middle=monster.displayText();
+                break;
+            case 'j':
+                if(monster!=null)
+                    middle=monster.charStats().heshe();
                 break;
             case 'J':
                 randMOB=getRandPC(monster,tmp,lastKnownLocation);
@@ -1242,38 +1235,10 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(monster!=null)
                     middle=monster.charStats().hisher();
                 break;
-            case 'm':
-                if(source!=null)
-                    middle=source.charStats().hisher();
-                break;
-            case 'M':
-                if((target!=null)&&(target instanceof MOB))
-                    middle=((MOB)target).charStats().hisher();
-                break;
             case 'K':
                 randMOB=getRandPC(monster,tmp,lastKnownLocation);
                 if(randMOB!=null)
                     middle=randMOB.charStats().hisher();
-                break;
-            case 'o':
-            case 'O':
-                if(primaryItem!=null)
-                    middle=primaryItem.name();
-                break;
-            case 'g': middle=((msg==null)?"":msg.toLowerCase()); break;
-            case 'G': middle=((msg==null)?"":msg); break;
-            case 'd': middle=(lastKnownLocation!=null)?lastKnownLocation.roomTitle(monster):""; break;
-            case 'D': middle=(lastKnownLocation!=null)?lastKnownLocation.roomDescription(monster):""; break;
-            case 'p':
-            case 'P':
-                if(secondaryItem!=null)
-                    middle=secondaryItem.name();
-                break;
-            case 'w':
-                middle=primaryItem!=null?primaryItem.owner().Name():middle;
-                break;
-            case 'W':
-                middle=secondaryItem!=null?secondaryItem.owner().Name():middle;
                 break;
             case 'l':
                 if(lastKnownLocation!=null)
@@ -1300,6 +1265,92 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     }
                     middle=str.toString();
                 }
+                break;
+            case 'm':
+                if(source!=null)
+                    middle=source.charStats().hisher();
+                break;
+            case 'M':
+                if((target!=null)&&(target instanceof MOB))
+                    middle=((MOB)target).charStats().hisher();
+                break;
+            case 'n':
+            case 'N':
+                if(source!=null)
+                    middle=source.name();
+                break;
+            case 'o':
+            case 'O':
+                if(primaryItem!=null)
+                    middle=primaryItem.name();
+                break;
+            case 'p':
+            case 'P':
+                if(secondaryItem!=null)
+                    middle=secondaryItem.name();
+                break;
+            case 'r':
+            case 'R':
+                randMOB=getRandPC(monster,tmp,lastKnownLocation);
+                if(randMOB!=null)
+                    middle=randMOB.name();
+                break;
+            case 's':
+                if(source!=null)
+                    middle=source.charStats().himher();
+                break;
+            case 'S':
+                if((target!=null)&&(target instanceof MOB))
+                    middle=((MOB)target).charStats().himher();
+                break;
+            case 't':
+            case 'T':
+                if(target!=null)
+                    middle=target.name();
+                break;
+            case 'w':
+                middle=primaryItem!=null?primaryItem.owner().Name():middle;
+                break;
+            case 'W':
+                middle=secondaryItem!=null?secondaryItem.owner().Name():middle;
+                break;
+            case 'x':
+            case 'X':
+                if(lastKnownLocation!=null)
+                {
+                    middle="";
+                    Exit E=null;
+                    int dir=-1;
+                    if((t<varifyable.length()-2)&&(Directions.getGoodDirectionCode(""+varifyable.charAt(t+2))>=0))
+                    {
+                        dir=Directions.getGoodDirectionCode(""+varifyable.charAt(t+2));
+                        E=lastKnownLocation.getExitInDir(dir);
+                    }
+                    else
+                    {
+                        int i=0;
+                        while(((++i)<100)||(E!=null))
+                        {
+                            dir=CMLib.dice().roll(1,Directions.NUM_DIRECTIONS(),-1);
+                            E=lastKnownLocation.getExitInDir(dir);
+                        }
+                    }
+                    if((dir>=0)&&(E!=null))
+                    {
+                        if(c=='x')
+                            middle=Directions.getDirectionName(dir);
+                        else
+                            middle=E.name();
+                    }
+                }
+                break;
+            case 'y':
+                if(source!=null)
+                    middle=source.charStats().sirmadam();
+                break;
+            case 'Y':
+                if((target!=null)&&(target instanceof MOB))
+                    middle=((MOB)target).charStats().sirmadam();
                 break;
             case '<':
                 {
@@ -1368,40 +1419,6 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     {
                         middle=functify(monster,source,target,monster,primaryItem,secondaryItem,msg,tmp,back.substring(0,x).trim());
                         back=back.substring(x+1);
-                    }
-                }
-                break;
-            //case 'a':
-            case 'A':
-                // unnecessary, since, in coffeemud, this is part of the name
-                break;
-            case 'x':
-            case 'X':
-                if(lastKnownLocation!=null)
-                {
-                    middle="";
-                    Exit E=null;
-                    int dir=-1;
-                    if((t<varifyable.length()-2)&&(Directions.getGoodDirectionCode(""+varifyable.charAt(t+2))>=0))
-                    {
-                        dir=Directions.getGoodDirectionCode(""+varifyable.charAt(t+2));
-                        E=lastKnownLocation.getExitInDir(dir);
-                    }
-                    else
-                    {
-                        int i=0;
-                        while(((++i)<100)||(E!=null))
-                        {
-                            dir=CMLib.dice().roll(1,Directions.NUM_DIRECTIONS(),-1);
-                            E=lastKnownLocation.getExitInDir(dir);
-                        }
-                    }
-                    if((dir>=0)&&(E!=null))
-                    {
-                        if(c=='x')
-                            middle=Directions.getDirectionName(dir);
-                        else
-                            middle=E.name();
                     }
                 }
                 break;
