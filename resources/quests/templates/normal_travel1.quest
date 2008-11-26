@@ -110,6 +110,7 @@
 
 set name $QUEST_ID
 set display $QUEST_NAME
+set author $#AUTHOR
 
 set wait 1
 set interval 1
