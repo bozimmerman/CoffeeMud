@@ -183,6 +183,7 @@ GREET_PROG 100
 			mpquestwin $n *
 			sayto $n $DESTINATION_RESPONSE
 			mpendquest $n
+			mpqset * STATISTICS SUCCESS
 		endif
 	endif
 ~

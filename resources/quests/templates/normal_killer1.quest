@@ -149,6 +149,7 @@ IF QUESTSCRIPTED($n *)
 		mpquestwin $n *
 		sayto $n $QUEST_WINSPEECH_TEXT
 		mpendquest $n
+		mpqset * STATISTICS SUCCESS
 	endif
 else
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)

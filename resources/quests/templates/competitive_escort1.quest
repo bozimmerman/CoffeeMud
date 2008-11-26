@@ -211,6 +211,7 @@ QUEST_TIME_PROG * -1
 		if !QUESTWINNER('$<$i $QUEST_ID_ACCEPTED>.$0' *)
 			tell "$<$i $QUEST_ID_ACCEPTED>.$0" You failed to complete your escort quest in time.
 	    endif
+		mpqset * STATISTICS FAILED
 	next
 	MPSETVAR * $QUEST_ID_NUMACCEPTED ''
 	MPSETVAR * $QUEST_ID_ALREADY_TOLD ''
@@ -326,6 +327,7 @@ RAND_PROG 99
 				mpquestwin $f *
 				mpecho $ESCORTED_RESPONSE
 				mpendquest *
+				mpqset * STATISTICS SUCCESS
 				IF EVAL('$NEXT_QUEST' != '')
 					mpstartquest $NEXT_QUEST
 				ENDIF

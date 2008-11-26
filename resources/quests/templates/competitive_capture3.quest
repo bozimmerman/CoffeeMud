@@ -217,6 +217,7 @@ QUEST_TIME_PROG * -1
 		if !QUESTWINNER('$<$i $QUEST_ID_ACCEPTED>.$0' *)
 			tell "$<$i $QUEST_ID_ACCEPTED>.$0" You failed to complete my quest in time.
 	    endif
+		mpqset * STATISTICS FAILED
 	next
 	if VAR($i $QUEST_ID_REWARDED == '')
 		$QUEST_LOSESPEECH_TYPE $QUEST_LOSESPEECH_TEXT
@@ -274,6 +275,7 @@ ALL_GREET_PROG 100
 				mpquestwin $9 *
 				$QUEST_WINSPEECH_TYPE $QUEST_WINSPEECH_TEXT
 				mpendquest *
+				mpqset * STATISTICS SUCCESS
 				IF EVAL('$NEXT_QUEST' != '')
 					mpstartquest $NEXT_QUEST
 				ENDIF

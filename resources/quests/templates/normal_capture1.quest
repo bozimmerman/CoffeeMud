@@ -219,6 +219,7 @@ if INROOM($i == $g)
             mpquestwin $i *
             mpforce $9 sayto $i $QUEST_WINSPEECH_TEXT
             mpendquest $i
+			mpqset * STATISTICS SUCCESS
         ENDIF
     else
         for $0 = 1 to '$%NUMMOBSROOM(*)%'

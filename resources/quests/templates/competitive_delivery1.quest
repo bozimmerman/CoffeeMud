@@ -242,6 +242,7 @@ GIVE_PROG all
 QUEST_TIME_PROG * 1
 	mpechoat $w You have less than a minute left to deliver $i.
 ~
+
 </DATA></FILE>
 <FILE><NAME>$QUEST_ID_deliveree.script</NAME>
 <DATA>
@@ -277,6 +278,7 @@ GIVE_PROG all
 				mpjunk $o
 				sayto "$n" $DELIVER_RESPONSE
 				mpendquest *
+				mpqset * STATISTICS SUCCESS
 				IF EVAL('$NEXT_QUEST' != '')
 					mpstartquest $NEXT_QUEST
 				ENDIF
@@ -295,6 +297,9 @@ GIVE_PROG all
 <DATA>
 ONCE_PROG 100
     mpsetvar $i INSTRUCTIONS Please deliver $[1, *] to ${2 *}. $REASONING 
+~
+QUEST_TIME_PROG * -1
+	mpqset * STATISTICS FAILED
 ~
 RAND_PROG 99
     if QVAR(* REMAINING == '')

@@ -121,7 +121,7 @@ public interface CoffeeTableRow extends CMCommon
      * @param E the mob or ability
      * @param type the type of event to tabulate
      */
-    public void bumpVal(Environmental E, int type);
+    public void bumpVal(CMObject E, int type);
     
     /** 
      * Loops through adding all the event stats for the given code string
@@ -158,6 +158,25 @@ public interface CoffeeTableRow extends CMCommon
     public final int STAT_SKILLUSE=11;
     /** a constant index of the total number of enumerated statistical events*/
     public final int STAT_TOTAL=12;
+    
+    /** a constant index into statistics for a quest failed start*/
+    public final int STAT_QUESTFAILEDSTART=1;
+    /** a constant index into statistics for a times start*/
+    public final int STAT_QUESTTIMESTART=2;
+    /** a constant index into statistics for a quest timeout stop*/
+    public final int STAT_QUESTTIMESTOP=3;
+    /** a constant index into statistics for a quest manual stop*/
+    public final int STAT_QUESTSTOP=4;
+    /** a constant index into statistics for a quest accepted*/
+    public final int STAT_QUESTACCEPTED=5;
+    /** a constant index into statistics for a quest failed*/
+    public final int STAT_QUESTFAILED=6;
+    /** a constant index into statistics for a quest success*/
+    public final int STAT_QUESTSUCCESS=7;
+    /** a constant index into statistics for a quest dropped*/
+    public final int STAT_QUESTDROPPED=8;
+    /** a constant index into statistics for a manual start*/
+    public final int STAT_QUESTSTARTATTEMPT=9;
     
     /** a constant index into statistics for a num players online poll event*/
     public final int STAT_SPECIAL_NUMONLINE=1000;

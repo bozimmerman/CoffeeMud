@@ -220,6 +220,7 @@ GIVE_PROG all
                 mpquestwin $n *
                 sayto $n $DELIVERY_RESPONSE
                 mpendquest $n
+				mpqset * STATISTICS SUCCESS
             else
                 sayto "$n" What's this?
                 give "$o" "$n"

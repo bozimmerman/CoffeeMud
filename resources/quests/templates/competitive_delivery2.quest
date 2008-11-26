@@ -270,6 +270,7 @@ PUT_PROG all
 					mpquestwin $n *
 					mpecho $DELIVER_RESPONSE
 					mpendquest *
+					mpqset * STATISTICS SUCCESS
 					IF EVAL('$NEXT_QUEST' != '')
 						mpstartquest $NEXT_QUEST
 					ENDIF
@@ -317,6 +318,9 @@ DROP_PROG all
 <DATA>
 ONCE_PROG 100
     mpsetvar $i INSTRUCTIONS Please deliver $[1, *] to ${2 *}. $REASONING 
+~
+QUEST_TIME_PROG * -1
+	mpqset * STATISTICS FAILED
 ~
 RAND_PROG 99
     if QVAR(* REMAINING == '')

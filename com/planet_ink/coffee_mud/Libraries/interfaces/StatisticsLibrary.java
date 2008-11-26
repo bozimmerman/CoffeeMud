@@ -33,5 +33,5 @@ import java.util.*;
 public interface StatisticsLibrary extends CMLibrary, Runnable
 {
     public void update();
-    public void bump(Environmental E, int type);
+    public void bump(CMObject E, int type);
 }

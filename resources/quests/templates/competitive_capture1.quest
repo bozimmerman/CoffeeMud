@@ -279,6 +279,7 @@ ALL_GREET_PROG 100
 				mpquestwin $9 *
 				$QUEST_WINSPEECH_TYPE $QUEST_WINSPEECH_TEXT
 				mpendquest *
+				mpqset * STATISTICS SUCCESS
 				IF EVAL('$NEXT_QUEST' != '')
 					mpstartquest $NEXT_QUEST
 				ENDIF

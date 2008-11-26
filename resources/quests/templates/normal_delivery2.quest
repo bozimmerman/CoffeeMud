@@ -224,6 +224,7 @@ PUT_PROG all
                     mpquestwin $n *
                     mpecho $DELIVER_RESPONSE
                     mpendquest $n
+					mpqset * STATISTICS SUCCESS
                 endif
             endif
         endif
@@ -256,6 +257,7 @@ DROP_PROG all
                 mpquestwin $n *
                 mpecho $DELIVER_RESPONSE
                 mpendquest $n
+				mpqset * STATISTICS SUCCESS
             endif
         endif
     endif

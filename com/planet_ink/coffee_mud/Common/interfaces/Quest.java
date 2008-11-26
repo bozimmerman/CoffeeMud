@@ -187,17 +187,6 @@ public interface Quest extends Tickable, CMCommon, CMModifiable
 	public boolean startQuest();
     
 	/**
-	 * This method is called every tick to check and see if the wait
-	 * is completed and its time to actually start the quest. This
-	 * method also checks run levels, player elligibility, etc.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#resetQuest(int)
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#startQuest()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.Quest#stepQuest()
-	 * @return true if the quest was successfully started, false otherwise
-	 */
-    public boolean startQuestOnTime();
-	
-	/**
      * this will stop executing of the quest script.  It will clean up 
      * any objects or mobs which may have been loaded, restoring map 
      * mobs to their previous state.  If the quest is autorandom, it 

@@ -6757,6 +6757,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     }
                 }
                 else
+                if(var.equalsIgnoreCase("STATISTICS")&&(val.equalsIgnoreCase("ACCEPTED")))
+                	CMLib.coffeeTables().bump(Q,CoffeeTableRow.STAT_QUESTACCEPTED);
+                else
+                if(var.equalsIgnoreCase("STATISTICS")&&(val.equalsIgnoreCase("WON")))
+                	CMLib.coffeeTables().bump(Q,CoffeeTableRow.STAT_QUESTSUCCESS);
+                else
+                if(var.equalsIgnoreCase("STATISTICS")&&(val.equalsIgnoreCase("FAILED")))
+                	CMLib.coffeeTables().bump(Q,CoffeeTableRow.STAT_QUESTFAILED);
+                else
                 {
                     if(val.equals("++")) val=""+(CMath.s_int(Q.getStat(var))+1);
                     if(val.equals("--")) val=""+(CMath.s_int(Q.getStat(var))-1);

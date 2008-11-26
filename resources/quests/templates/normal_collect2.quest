@@ -184,6 +184,7 @@ GIVE_PROG all
                 mpquestwin $n *
                 sayto $n $QUEST_WINSPEECH_TEXT
                 mpendquest $n
+				mpqset * STATISTICS SUCCESS
             else
                 sayto "$n" That's $<$n $QUEST_ID_RETURNED>/$NUM_COLLECTABLES.
                 mpsetvar $i PROGRESS Picked up: $<$i $QUEST_ID_GOT>/$NUM_COLLECTABLES, Returned: $<$i $QUEST_ID_RETURNED>/$NUM_COLLECTABLES

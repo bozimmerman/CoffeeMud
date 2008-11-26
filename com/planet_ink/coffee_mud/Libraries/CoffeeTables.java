@@ -46,7 +46,7 @@ public class CoffeeTables extends StdLibrary implements StatisticsLibrary
 			CMLib.database().DBUpdateStat(todays.startTime(),todays.data());
 	}
     
-	public void bump(Environmental E, int type)
+	public void bump(CMObject E, int type)
 	{
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return;

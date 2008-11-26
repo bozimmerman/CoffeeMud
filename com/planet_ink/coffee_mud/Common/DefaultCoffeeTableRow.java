@@ -107,7 +107,7 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
         return s.trim().replaceAll(" ","_").toUpperCase();
     }
     
-    public void bumpVal(Environmental E, int type)
+    public void bumpVal(CMObject E, int type)
     {
         if((E instanceof MOB)&&(((MOB)E).isMonster())) return;
         
@@ -150,6 +150,9 @@ public class DefaultCoffeeTableRow implements CoffeeTableRow
         else
         if(E instanceof Ability)
             bumpVal("A"+tagFix(E.ID()),type);
+        else
+        if(E instanceof Quest)
+            bumpVal("U"+tagFix(((Quest)E).name()),type);
     }
     
     public void populate(long start, long end, String data)

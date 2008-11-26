@@ -100,6 +100,7 @@ public class Questwins extends StdCommand
             }
             if((!mob.isMonster()&&(mob.session().confirm("Drop the quest '"+Q.name()+"', are you sure (y/N)?","N"))))
             {
+            	CMLib.coffeeTables().bump(Q,CoffeeTableRow.STAT_QUESTDROPPED);
                 mob.delScript(foundS);
                 mob.tell("Quest dropped.");
                 return false;

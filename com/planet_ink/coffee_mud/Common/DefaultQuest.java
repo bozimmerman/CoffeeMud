@@ -2854,7 +2854,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
     public boolean spawnQuest(String script, Vector baseVars, boolean reTime)
     {
-        Quest Q2=(Quest)CMClass.getCommon("DefaultQuest");
+    	DefaultQuest Q2=(DefaultQuest)CMClass.getCommon("DefaultQuest");
         Q2.setCopy(true);
         Q2.setVars(baseVars,0);
         Q2.setScript(script);
@@ -2874,19 +2874,26 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             }
         }
         else
-        if(Q2.startQuest())
+        if(Q2.startQuestInternal())
         	return true;
     	Q2.enterDormantState();
     	return false;
     }
 
 
+    public boolean startQuest() 
+    {
+        if((!running())&&(!isCopy()))
+        	CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_QUESTSTARTATTEMPT);
+        return startQuestInternal();
+    }
+    
     // this will execute the quest script.  If the quest is running, it
-    // will call stopQuest first to shut it down.
-    public boolean startQuest()
+    // will call stopQuestInternal first to shut it down.
+    public boolean startQuestInternal()
     {
         if(running()) {
-        	stopQuest();
+        	stopQuestInternal();
         	resetData=null;
         }
 
@@ -2934,6 +2941,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 resetQuest(10);
                 return false;
             }
+        	CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_QUESTFAILEDSTART);
         }
         else
         if(!questState.done)
@@ -2949,7 +2957,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         	enterRunningState();
         	return true;
         }
-        stopQuest();
+        stopQuestInternal();
         return false;
     }
 
@@ -3135,7 +3143,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     // this will cause a quest to begin parsing its next "step".
     // this will clear out unpreserved objects from previous
     // step and resume quest script processing.
-    // if this is the LAST step, stopQuest() is automatically called
+    // if this is the LAST step, stopQuestInternal() is automatically called
 
     public boolean stepQuest()
     {
@@ -3176,7 +3184,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         	enterRunningState();
         	return true;
         }
-        stopQuest();
+        stopQuestInternal();
         return false;
     }
 
@@ -3187,10 +3195,17 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         stopQuest();
     }
     
+    public void stopQuest()
+    {
+        if((!stoppingQuest)&&(running()))
+	    	CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_QUESTSUCCESS);
+    	stopQuestInternal();
+    }
+    
     // this will stop executing of the quest script.  It will clean up
     // any objects or mobs which may have been loaded, restoring map
     // mobs to their previous state.
-    public void stopQuest()
+    public void stopQuestInternal()
     {
         if(stoppingQuest) return;
         // first set everything to complete!
@@ -3387,16 +3402,22 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             if(duration()>0)
                 ticksRemaining--;
             if(ticksRemaining<0)
+            {
+            	CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_QUESTTIMESTOP);
                 stopQuest();
+            }
             tickStatus=Tickable.STATUS_END;
         }
         else
-        	startQuestOnTime();
+        {
+        	if(startQuestOnTime())
+            	CMLib.coffeeTables().bump(this,CoffeeTableRow.STAT_QUESTTIMESTART);
+        }
         tickStatus=Tickable.STATUS_NOT;
         return true;
     }
 
-    public boolean startQuestOnTime()
+    protected boolean startQuestOnTime()
     {
         if((--waitRemaining)>=0) return false;
 
@@ -3425,7 +3446,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             }
         	ticksRemaining=-1;
             if((numElligiblePlayers>=minPlayers)||(duration()==0))
-                return startQuest();
+                return startQuestInternal();
         }
     	enterDormantState();
     	return false;

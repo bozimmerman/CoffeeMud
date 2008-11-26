@@ -451,6 +451,7 @@ FUNCTION_PROG winner
 				mpquestwin $n *
 				$SOLVED_RESPONSE_TYPE $SOLVED_RESPONSE_TEXT
 				mpendquest *
+				mpqset * STATISTICS SUCCESS
 				IF EVAL('$NEXT_QUEST' != '')
 					mpstartquest $NEXT_QUEST
 				ENDIF
@@ -601,6 +602,9 @@ QUEST_TIME_PROG * -1
 <DATA>
 ONCE_PROG 100
     mpsetvar $i INSTRUCTIONS $QUEST_INSTRUCTIONSSTRING
+~
+QUEST_TIME_PROG * -1
+	mpqset * STATISTICS FAILED
 ~
 RAND_PROG 99
     if QVAR(* REMAINING == '')
