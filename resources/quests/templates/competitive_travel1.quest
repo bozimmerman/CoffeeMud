@@ -201,6 +201,7 @@ SPEECH_PROG p i accept
 			if !STRIN('$<$i $QUEST_ID_ACCEPTED>' '$n')
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
 				mpqset * REMAINING $DURATION
+				mpqset * STATISTICS ACCEPTED
 				MPSETVAR $i $QUEST_ID_ACCEPTED '$<$i $QUEST_ID_ACCEPTED> $n'
 				mpsetvar $n $QUEST_ID_ACCEPTED 'TRUE'
                 mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script

@@ -162,6 +162,7 @@ endif
 SPEECH_PROG p i accept $QUEST_NAME
 	if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
 		if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
+			mpqset * STATISTICS ACCEPTED
 			sayto "$n" $QUEST_INSTRUCTIONSSTRING
             mpscript $n INDIVIDUAL SAVABLE LOAD=$QUEST_ID_playertrack.script
 		endif

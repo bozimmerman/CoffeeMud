@@ -203,6 +203,7 @@ SPEECH_PROG p i accept $QUEST_NAME
         if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
             if !QUESTSCRIPTED($n *)
                 sayto "$n" $QUEST_INSTRUCTIONSSTRING
+				mpqset * STATISTICS ACCEPTED
                 mpscript $n INDIVIDUAL SAVABLE LOAD=$QUEST_ID_playertrack.script
             else
                 sayto "$n" Yes, yes, I know .. now off with you.

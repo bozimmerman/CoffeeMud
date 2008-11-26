@@ -214,7 +214,8 @@ SPEECH_PROG p i accept
 				mpqset * REMAINING $DURATION
 				mpsetvar $i $QUEST_ID_ACCEPTED $n
 				mpsetvar $n $QUEST_ID_ACCEPTED 'YES'
-                mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
+				mpqset * STATISTICS ACCEPTED
+				mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
 			else
 				sayto "$n" Yes, yes, I know .. now off with you.
 			endif

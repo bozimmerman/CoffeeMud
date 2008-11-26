@@ -264,6 +264,7 @@ SPEECH_PROG p i accept
                 mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
 				mpsetvar $i $QUEST_ID_ACCEPTED '$<$i $QUEST_ID_ACCEPTED> $n'
 				mpsetvar $n $QUEST_ID_COUNT 0
+				mpqset * STATISTICS ACCEPTED
 				mpqset * REMAINING $DURATION
 			else
 				sayto "$n" Yes, yes, I know .. thanks again.

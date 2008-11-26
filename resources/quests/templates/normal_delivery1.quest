@@ -176,11 +176,12 @@ SPEECH_PROG p i accept $QUEST_NAME
     if ISLIKE($n '$QUEST_CRITERIA') and ISPC($n) and !QUESTSCRIPTED($n *)
         if  EVAL('$MULTIPLE' == 'YES') OR !QUESTWINNER($n *)
             sayto "$n" $QUEST_INSTRUCTIONSSTRING
-                if !HAS($i '$[1 *]')
-                    mpoload fromfile $QUEST_ID_item.xml '$[1 *]'
-                endif
-                give "$[1 *]" "$n"
-                sayto "$n" Please deliver this to ${2 *}.
+			mpqset * STATISTICS ACCEPTED
+            if !HAS($i '$[1 *]')
+                mpoload fromfile $QUEST_ID_item.xml '$[1 *]'
+            endif
+            give "$[1 *]" "$n"
+            sayto "$n" Please deliver this to ${2 *}.
             mpscript $n INDIVIDUAL SAVABLE LOAD=$QUEST_ID_playertrack.script
         endif
     endif

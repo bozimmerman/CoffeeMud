@@ -221,6 +221,7 @@ QUEST_TIME_PROG * -1
 		if !QUESTWINNER('$<$i $QUEST_ID_ACCEPTED>.$0' *)
 			tell "$<$i $QUEST_ID_ACCEPTED>.$0" You failed to complete my quest in time.
 	    endif
+		mpqset * STATISTICS FAILED
 	next
 	if VAR($i $QUEST_ID_REWARDED == '')
 		$QUEST_LOSESPEECH_TYPE $QUEST_LOSESPEECH_TEXT
@@ -296,6 +297,7 @@ SPEECH_PROG p i accept
 			if VAR($n $QUEST_ID_ACCEPTED == '')
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
 				mpqset * REMAINING $DURATION
+				mpqset * STATISTICS ACCEPTED
                 mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
 				MPSETVAR $i $QUEST_ID_ACCEPTED '$<$i $QUEST_ID_ACCEPTED> $n'
 				mpsetvar $n $QUEST_ID_ACCEPTED 'YES'

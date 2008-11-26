@@ -348,6 +348,7 @@ SPEECH_PROG p i accept
 				mpqset * REMAINING $DURATION
 				MPSETVAR $n $QUEST_ID_CORRECT 0
 				sayto "$n" $QUEST_INSTRUCTIONSSTRING
+				mpqset * STATISTICS ACCEPTED
                 mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
 			else
 				sayto "$n" Yes, that's great .. now off with you.

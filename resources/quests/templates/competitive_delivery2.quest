@@ -224,6 +224,7 @@ SPEECH_PROG p i accept
 				give "$[1 *]" "$n"
 				sayto "$n" Please deliver this to $DESTINATION_DESC.  $REASONING
 				mpqset * REMAINING $DURATION
+				mpqset * STATISTICS ACCEPTED
                 mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
 			else
 				if has($n '$[1 *]')

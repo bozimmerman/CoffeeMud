@@ -242,6 +242,7 @@ SPEECH_PROG p i accept
 				mpqset * REMAINING $DURATION
 				MPSETVAR $i $QUEST_ID_ACCEPTED '$<$i $QUEST_ID_ACCEPTED> $n'
 				mpsetvar $n $QUEST_ID_ACCEPTED 'YES'
+				mpqset * STATISTICS ACCEPTED
                 mpscript $n INDIVIDUAL LOAD=$QUEST_ID_playertrack.script
 				for $0 = 1 to '$%NUMMOBSROOM(*)%'
 				   if QUESTMOB('$%ROOMMOB($0)%' *) AND EVAL('$%ROOMMOB($0)%' != $i)
