@@ -224,6 +224,55 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 	
 	public String fixHelp(String tag, String str, MOB forMOB)
 	{
+		boolean worldCurrency=str.startsWith("<CURRENCIES>");
+		if(str.startsWith("<CURRENCY>")||worldCurrency)
+		{
+			str=str.substring(worldCurrency?12:10);
+			Vector currencies=new Vector();
+			if((forMOB==null)||(forMOB.location()==null)||(worldCurrency))
+			{
+				worldCurrency=true;
+				for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+				{
+					String currency=CMLib.beanCounter().getCurrency((Area)e.nextElement());
+					if(!currencies.contains(currency))
+						currencies.addElement(currency);
+				}
+			}
+			else
+				currencies.addElement(CMLib.beanCounter().getCurrency(forMOB.location()));
+			StringBuffer help=new StringBuffer("");
+			if(worldCurrency)
+				help.append("\n\r"+CMStrings.padRight("World Currencies",20)+":");
+			for(Enumeration e=currencies.elements();e.hasMoreElements();)
+			{
+				String currency=(String)e.nextElement();
+				if(worldCurrency)
+					help.append("\n\r"+CMStrings.padRight("Currency",20)+":");
+				else
+					help.append("\n\r"+CMStrings.padRight("Local Currency",20)+":");
+				if(currency.length()==0)
+					help.append("default");
+				else
+					help.append(CMStrings.capitalizeAndLower(currency));
+				MoneyLibrary.MoneyDenomination denoms[]=CMLib.beanCounter().getCurrencySet(currency);
+				for(int d=0;d<denoms.length;d++)
+				{
+					if(denoms[d].abbr.length()>0)
+						help.append("\n\r"+CMStrings.padRight(denoms[d].name+" ("+denoms[d].abbr+")",20)+":");
+					else
+						help.append("\n\r"+CMStrings.padRight(denoms[d].name,20)+":");
+					if(denoms[d].value==CMLib.beanCounter().getLowestDenomination(currency))
+						help.append(" (exchange rate is "+denoms[d].value+" of base)");
+					else
+						help.append(" "+CMLib.beanCounter().getConvertableDescription(currency,denoms[d].value));
+				}
+				help.append("\n\r");
+			}
+			help.append(str);
+			str=help.toString();
+		}
+		else
 		if(str.startsWith("<EXPERTISE>"))
 		{
 			str=str.substring(11);
