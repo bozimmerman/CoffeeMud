@@ -13,6 +13,7 @@ import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.lang.ref.WeakReference;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -26,6 +27,8 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 public class DefaultCoffeeShop implements CoffeeShop
 {
     public String ID(){return "DefaultCoffeeShop";}
+	WeakReference<ShopKeeper> shopKeeper = null;
+	
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public CMObject copyOf()
     {
@@ -40,6 +43,15 @@ public class DefaultCoffeeShop implements CoffeeShop
             return new DefaultCoffeeShop();
         }
     }
+    
+    public CoffeeShop build(ShopKeeper SK) {
+    	shopKeeper=new WeakReference(SK);
+    	return this;
+    }
+    
+    public ShopKeeper shopKeeper(){ return (shopKeeper==null)?null:shopKeeper.get();}
+    public int whatIsSold(){ShopKeeper SK=shopKeeper(); return (SK==null)?ShopKeeper.DEAL_ANYTHING:SK.whatIsSold();}
+    
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultCoffeeShop();}}
     public void initializeClass(){}
     

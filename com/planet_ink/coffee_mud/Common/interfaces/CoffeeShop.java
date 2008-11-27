@@ -254,4 +254,23 @@ public interface CoffeeShop extends CMCommon
      * @param SK the shopkeeper
      */
     public void resubmitInventory(Vector shopItems, ShopKeeper SK);
+    
+    /**
+     * Initializes this shop object with its host ShopKeeper
+     * @param SK the shopkeeper that hosts this object
+     * @return always this
+     */
+    public CoffeeShop build(ShopKeeper SK);
+    
+    /**
+     * Returns the shopKeeper that is hosting this shop
+     * @return the shopKeeper that is hosting this shop
+     */
+    public ShopKeeper shopKeeper();
+    
+    /**
+     * Returns the whatIsSold code for the shopkeeper hosting this shop.
+     * @return the whatIsSold code for the shopkeeper hosting this shop.
+     */
+    public int whatIsSold();
 }
