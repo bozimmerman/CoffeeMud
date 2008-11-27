@@ -251,6 +251,8 @@ public class CMFile
         return true;
     }
 
+    public boolean demandedVFS(){return demandVFS;}
+    public boolean demandedLocal(){return demandLocal;}
     public boolean isDirectory(){return exists()&&CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY);}
     public boolean exists(){ return !(CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADVFS)&&CMath.bset(vfsBits,CMFile.VFS_MASK_NOREADLOCAL));}
     public boolean isFile(){return canRead()&&(!CMath.bset(vfsBits,CMFile.VFS_MASK_DIRECTORY));}
