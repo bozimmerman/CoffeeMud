@@ -80,7 +80,7 @@ public class Bid extends StdCommand
 		do
 		{
             ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(shopkeeper);
-			Environmental itemToDo=SK.getShop().getStock(whatName,mob,SK.whatIsSold(),CMLib.map().getStartRoom(shopkeeper));
+			Environmental itemToDo=SK.getShop().getStock(whatName,mob);
 			if(itemToDo==null) break;
 			if(CMLib.flags().canBeSeenBy(itemToDo,mob))
 				V.addElement(itemToDo);

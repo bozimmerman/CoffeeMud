@@ -61,7 +61,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	}
 	public String text()
 	{
-		return shop.makeXML(this);
+		return shop.makeXML();
 	}
     private String budget="100000";
 	public String budget(){return budget;}
@@ -75,7 +75,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 	{
 		synchronized(this)
 		{
-            shop.buildShopFromXML(text,this);
+            shop.buildShopFromXML(text);
 		}
 	}
 
@@ -239,11 +239,11 @@ public class Merchant extends CommonSkill implements ShopKeeper
 		else
 		if(msg.amISource(merchantM)&&(msg.sourceMinor()==CMMsg.TYP_DEATH))
 		{
-			Item I=(Item)getShop().removeStock("all",merchantM,whatIsSold(),merchantM.getStartRoom());
+			Item I=(Item)getShop().removeStock("all",merchantM);
 			while(I!=null)
 			{
                 merchantM.addInventory(I);
-				I=(Item)getShop().removeStock("all",merchantM,whatIsSold(),merchantM.getStartRoom());
+				I=(Item)getShop().removeStock("all",merchantM);
 			}
             merchantM.recoverEnvStats();
 		}
@@ -265,7 +265,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
         &&((doISellThis(tool))||(whatIsSold()==DEAL_INVENTORYONLY)))
         {
             CMLib.commands().postSay(merchantM,source,"OK, I will now sell "+tool.name()+".",false,false);
-            getShop().addStoreInventory(tool,1,-1,this);
+            getShop().addStoreInventory(tool,1,-1);
             if(affected instanceof Area)
                 CMLib.database().DBUpdateArea(affected.Name(),(Area)affected);
             else
@@ -321,7 +321,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
                 break;
 			case CMMsg.TYP_VIEW:
 				super.executeMsg(myHost,msg);
-				if((msg.tool()!=null)&&(getShop().doIHaveThisInStock(msg.tool().Name(),mob,whatIsSold(),merchantM.getStartRoom())))
+				if((msg.tool()!=null)&&(getShop().doIHaveThisInStock(msg.tool().Name(),mob)))
 					CMLib.commands().postSay(merchantM,msg.source(),"Interested in "+msg.tool().name()+"? Here is some information for you:\n\rLevel "+msg.tool().envStats().level()+"\n\rDescription: "+msg.tool().description(),true,false);
 				break;
             case CMMsg.TYP_SELL: // sell TO -- this is a shopkeeper purchasing from a player
@@ -335,13 +335,13 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				super.executeMsg(myHost,msg);
                 MOB mobFor=CMLib.coffeeShops().parseBuyingFor(msg.source(),msg.targetMessage());
                 if((msg.tool()!=null)
-                &&(getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",mobFor,whatIsSold(),merchantM.getStartRoom()))
+                &&(getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",mobFor))
                 &&(merchantM.location()!=null))
                 {
-			        Environmental item=getShop().getStock("$"+msg.tool().Name()+"$",mobFor,whatIsSold(),merchantM.getStartRoom());
+			        Environmental item=getShop().getStock("$"+msg.tool().Name()+"$",mobFor);
 			        if(item!=null) CMLib.coffeeShops().transactMoneyOnly(merchantM,msg.source(),this,item,!merchantM.isMonster());
 
-                    Vector products=getShop().removeSellableProduct("$"+msg.tool().Name()+"$",mobFor,whatIsSold(),merchantM.getStartRoom());
+                    Vector products=getShop().removeSellableProduct("$"+msg.tool().Name()+"$",mobFor);
                     if(products.size()==0) break;
                     Environmental product=(Environmental)products.firstElement();
                     if(product instanceof Item)
@@ -423,7 +423,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
 				return false;
 			}
 			String itemName=CMParms.combine(commands,1);
-			Item I=(Item)getShop().removeStock(itemName,mob,whatIsSold(),mob.getStartRoom());
+			Item I=(Item)getShop().removeStock(itemName,mob);
 			if(I==null)
 			{
 				commonTell(mob,"'"+itemName+"' is not on the list.");
@@ -433,9 +433,9 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			while(I!=null)
 			{
 				mob.addInventory(I);
-				I=(Item)getShop().removeStock(itemName,mob,whatIsSold(),mob.getStartRoom());
+				I=(Item)getShop().removeStock(itemName,mob);
 			}
-            getShop().delAllStoreInventory(I,whatIsSold());
+            getShop().delAllStoreInventory(I);
 			mob.recoverCharStats();
 			mob.recoverEnvStats();
 			mob.recoverMaxState();
@@ -520,9 +520,9 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			{
 				Item I=(Item)V.elementAt(i);
 				if(val<=0)
-                    getShop().addStoreInventory(I,this);
+                    getShop().addStoreInventory(I);
 				else
-                    getShop().addStoreInventory(I,1,(int)Math.round(val),this);
+                    getShop().addStoreInventory(I,1,(int)Math.round(val));
 				mob.delInventory(I);
 			}
 		}

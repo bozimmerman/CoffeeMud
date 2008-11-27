@@ -66,8 +66,8 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
     protected static final Hashtable lastCheckTimes=new Hashtable();
 
     public CoffeeShop getShop(){
-    	CoffeeShop shop=(CoffeeShop)CMClass.getCommon("AuctionCoffeeShop");
-    	shop.addStoreInventory(null,this);
+    	CoffeeShop shop=((CoffeeShop)CMClass.getCommon("AuctionCoffeeShop")).build(this);
+    	shop.addStoreInventory(null);
     	return shop;
     }
 

@@ -476,7 +476,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	        if(V.size()>0)
 	        	SK.getShop().emptyAllShelves();
 	        for(int i=0;i<V.size();i++)
-	        	SK.getShop().addStoreInventory((Environmental)V.elementAt(i),SK);
+	        	SK.getShop().addStoreInventory((Environmental)V.elementAt(i));
         }
         
         M.text();

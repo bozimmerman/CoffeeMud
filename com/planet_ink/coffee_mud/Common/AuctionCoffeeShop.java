@@ -14,6 +14,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.Auctioneer.AuctionData;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
+import java.lang.ref.WeakReference;
 import java.util.Enumeration;
 import java.util.Hashtable;
 import java.util.Vector;
@@ -30,6 +31,7 @@ public class AuctionCoffeeShop implements CoffeeShop
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public static final Vector emptyV=new Vector();
     public String auctionShop="";
+    protected WeakReference<ShopKeeper> shopKeeper=null;
     
     public CMObject copyOf()
     {
@@ -46,12 +48,21 @@ public class AuctionCoffeeShop implements CoffeeShop
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new AuctionCoffeeShop();}}
     public void initializeClass(){}
     
+    
+    public CoffeeShop build(ShopKeeper SK) {
+    	shopKeeper=new WeakReference(SK);
+    	return this;
+    }
+    
+    public ShopKeeper shopKeeper(){ return (shopKeeper==null)?null:shopKeeper.get();}
+    public int whatIsSold(){ShopKeeper SK=shopKeeper(); return (SK==null)?ShopKeeper.DEAL_ANYTHING:SK.whatIsSold();}
+    
     public boolean inBaseInventory(Environmental thisThang)
     {
         return false;
     }
 
-    public Environmental addStoreInventory(Environmental thisThang, ShopKeeper shop){ return addStoreInventory(thisThang,1,-1,shop);}
+    public Environmental addStoreInventory(Environmental thisThang){ return addStoreInventory(thisThang,1,-1);}
     public int baseStockSize(){ return 0;}
     public int totalStockSize(){ return 0;}
     public Vector getStoreInventory(){ return emptyV;}
@@ -60,29 +71,28 @@ public class AuctionCoffeeShop implements CoffeeShop
     
     public Environmental addStoreInventory(Environmental thisThang, 
                                            int number, 
-                                           int price,
-                                           ShopKeeper shop)
+                                           int price)
     {
-    	if(shop instanceof Auctioneer)
-    		auctionShop=((Auctioneer)shop).auctionHouse();
+    	if(shopKeeper() instanceof Auctioneer)
+    		auctionShop=((Auctioneer)shopKeeper()).auctionHouse();
         return thisThang;
     }
     
     public int totalStockWeight(){return 0;}
     
     public int totalStockSizeIncludingDuplicates(){ return 0;}
-    public void delAllStoreInventory(Environmental thisThang, int whatISell){}
+    public void delAllStoreInventory(Environmental thisThang){}
     
-    public boolean doIHaveThisInStock(String name, MOB mob, int whatISell, Room startRoom){return getStock(name,mob,whatISell,startRoom)!=null;}
+    public boolean doIHaveThisInStock(String name, MOB mob){return getStock(name,mob)!=null;}
 
     public int stockPrice(Environmental likeThis)
     {
         return -1;
     }
     public int numberInStock(Environmental likeThis){ return 1;}
-    public void resubmitInventory(Vector V, ShopKeeper SK){}
+    public void resubmitInventory(Vector V){}
     
-    public Environmental getStock(String name, MOB mob, int whatISell, Room startRoom)
+    public Environmental getStock(String name, MOB mob)
     {
     	Vector auctions=CMLib.coffeeShops().getAuctions(null,auctionShop);
     	Vector auctionItems=new Vector();
@@ -103,18 +113,18 @@ public class AuctionCoffeeShop implements CoffeeShop
     }
 
 
-    public Environmental removeStock(String name, MOB mob, int whatISell, Room startRoom)
+    public Environmental removeStock(String name, MOB mob)
     {
         return null;
     }
     
     public void emptyAllShelves(){}
     
-    public Vector removeSellableProduct(String named, MOB mob, int whatISell, Room startRoom)
+    public Vector removeSellableProduct(String named, MOB mob)
     {
         return emptyV;
     }
     
-    public String makeXML(ShopKeeper shop){return "";}
-    public void buildShopFromXML(String text, ShopKeeper shop){}
+    public String makeXML(){return "";}
+    public void buildShopFromXML(String text){}
 }

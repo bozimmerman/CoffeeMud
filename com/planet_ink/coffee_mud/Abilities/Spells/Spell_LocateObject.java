@@ -139,7 +139,7 @@ public class Spell_LocateObject extends Spell
 						item=inhab.fetchInventory(what);
                         SK=CMLib.coffeeShops().getShopKeeper(inhab);
 						if((item==null)&&(SK!=null))
-							item=SK.getShop().getStock(what,mob,SK.whatIsSold(),inhab.getStartRoom());
+							item=SK.getShop().getStock(what,mob);
 						if((item instanceof Item)
 						&&((CMLib.flags().canBeLocated((Item)item)))
 						&&(item.envStats().level()>minLevel)

@@ -569,7 +569,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                                          boolean buyNotView)
     {
         if((product!=null)
-        &&(shop.getShop().doIHaveThisInStock("$"+product.Name()+"$",buyer,shop.whatIsSold(),(seller!=null)?seller.getStartRoom():null)))
+        &&(shop.getShop().doIHaveThisInStock("$"+product.Name()+"$",buyer)))
         {
             if(buyNotView)
             {
@@ -834,7 +834,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 if(V!=null)
                 for(int v=0;v<V.size();v++)
                     ((Item)V.elementAt(v)).removeFromOwnerContainer();
-                shop.getShop().addStoreInventory(coreSoldItem,number,-1,shop);
+                shop.getShop().addStoreInventory(coreSoldItem,number,-1);
                 if(V!=null)
                 for(int v=0;v<V.size();v++)
                 {
@@ -842,7 +842,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                     if(!shop.doISellThis(item2)||(item2 instanceof Key))
                         item2.destroy();
                     else
-                        shop.getShop().addStoreInventory(item2,1,-1,shop);
+                        shop.getShop().addStoreInventory(item2,1,-1);
                 }
             }
             else
@@ -854,7 +854,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 if(A!=null) A.setMiscText("");
                 newMOB.setLiegeID("");
                 newMOB.setClanID("");
-                shop.getShop().addStoreInventory(newMOB,shop);
+                shop.getShop().addStoreInventory(newMOB);
                 ((MOB)product).setFollowing(null);
                 if((((MOB)product).baseEnvStats().rejuv()>0)
                 &&(((MOB)product).baseEnvStats().rejuv()<Integer.MAX_VALUE)

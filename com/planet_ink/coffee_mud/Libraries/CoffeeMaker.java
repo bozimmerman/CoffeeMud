@@ -1984,7 +1984,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			setPropertiesStr(newOne,idat,true);
 			if((newOne.baseEnvStats().rejuv()>0)&&(newOne.baseEnvStats().rejuv()<Integer.MAX_VALUE))
 				variableEq=true;
-			shopmob.getShop().addStoreInventory(newOne,numStock,stockPrice,shopmob);
+			shopmob.getShop().addStoreInventory(newOne,numStock,stockPrice);
 		}
 		for(int i=0;i<shopmob.getShop().getStoreInventory().size();i++)
 		{
@@ -2057,7 +2057,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			{
 				Vector V=((ShopKeeper)E).getShop().getStoreInventory();
 				for(int b=0;b<V.size();b++)
-					((ShopKeeper)E).getShop().delAllStoreInventory(((Environmental)V.elementAt(b)),((ShopKeeper)E).whatIsSold());
+					((ShopKeeper)E).getShop().delAllStoreInventory(((Environmental)V.elementAt(b)));
 			}
 			if(E instanceof Deity)
 			{

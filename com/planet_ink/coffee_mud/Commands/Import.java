@@ -5166,22 +5166,22 @@ public class Import extends StdCommand
 							{
 								int num=CMath.s_int(CMParms.getCleanBit(s,3));
 								if(num<0) num=100;
-								((ShopKeeper)M).getShop().addStoreInventory(I,num,-1,((ShopKeeper)M));
-								if((I instanceof Light)&&(!((ShopKeeper)M).getShop().doIHaveThisInStock("OilFlask",null,((ShopKeeper)M).whatIsSold(),M.getStartRoom())))
-									((ShopKeeper)M).getShop().addStoreInventory(CMClass.getBasicItem("OilFlask"),num*2,-1,((ShopKeeper)M));
+								((ShopKeeper)M).getShop().addStoreInventory(I,num,-1);
+								if((I instanceof Light)&&(!((ShopKeeper)M).getShop().doIHaveThisInStock("OilFlask",null)))
+									((ShopKeeper)M).getShop().addStoreInventory(CMClass.getBasicItem("OilFlask"),num*2,-1);
 								else
 								if(((I.ID().equals("GenReadable"))
 								||(I instanceof com.planet_ink.coffee_mud.Items.interfaces.Map))
-								&&(!((ShopKeeper)M).getShop().doIHaveThisInStock("Parchment",null,((ShopKeeper)M).whatIsSold(),M.getStartRoom())))
+								&&(!((ShopKeeper)M).getShop().doIHaveThisInStock("Parchment",null)))
 								{
 									((ShopKeeper)M).setWhatIsSold(ShopKeeper.DEAL_INVENTORYONLY);
-									((ShopKeeper)M).getShop().addStoreInventory(CMClass.getBasicItem("Parchment"),num,-1,((ShopKeeper)M));
+									((ShopKeeper)M).getShop().addStoreInventory(CMClass.getBasicItem("Parchment"),num,-1);
 									Item journal2=CMClass.getBasicItem("GenJournal");
 									journal2.setName("the adventurers journal");
 									journal2.setBaseValue(250);
 									journal2.recoverEnvStats();
 									journal2.text();
-									((ShopKeeper)M).getShop().addStoreInventory(journal2,num,-1,((ShopKeeper)M));
+									((ShopKeeper)M).getShop().addStoreInventory(journal2,num,-1);
 								}
 								else
 								if(((ShopKeeper)M).whatIsSold()==ShopKeeper.DEAL_WEAPONS)
@@ -5195,7 +5195,7 @@ public class Import extends StdCommand
 									arrows.setDisplayText("Some arrows have been left here.");
 									arrows.recoverEnvStats();
 									arrows.text();
-									((ShopKeeper)M).getShop().addStoreInventory(arrows,num,-1,((ShopKeeper)M));
+									((ShopKeeper)M).getShop().addStoreInventory(arrows,num,-1);
 								}
 							}
 							else
@@ -5509,7 +5509,7 @@ public class Import extends StdCommand
 					MOB pet=storeRoom.fetchInhabitant(0);
 					if(pet!=null)
 					{
-						shopKeeper.getShop().addStoreInventory(pet,20,-1,shopKeeper);
+						shopKeeper.getShop().addStoreInventory(pet,20,-1);
 						pet.setFollowing(null);
 						pet.destroy();
 					}

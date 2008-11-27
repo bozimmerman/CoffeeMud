@@ -65,12 +65,11 @@ public interface CoffeeShop extends CMCommon
     /**
      * Adds a new item to the store inventory.  Use this method when an item is sold
      * to the store, as pricing and other information will have to be derived.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#addStoreInventory(Environmental, int, int, ShopKeeper)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#addStoreInventory(Environmental, int, int)
      * @param thisThang the thing to sell
-     * @param shop the shop that's selling it
      * @return the core store inventory item added
      */
-    public Environmental addStoreInventory(Environmental thisThang, ShopKeeper shop);
+    public Environmental addStoreInventory(Environmental thisThang);
     
     /**
      * Returns the number of items in the stores base inventory.  Only really useful
@@ -129,10 +128,9 @@ public interface CoffeeShop extends CMCommon
      * @param thisThang the item/mob/ability to sell 
      * @param number the number of items to sell
      * @param price the price of the item (in base currency) or -1 to have it determined
-     * @param shop the shop selling the item
      * @return the actual object stored in the inventory
      */
-    public Environmental addStoreInventory(Environmental thisThang, int number, int price, ShopKeeper shop);
+    public Environmental addStoreInventory(Environmental thisThang, int number, int price);
     
     /**
      * Total weight, in pounds, of all items in the store inventory, taking number in
@@ -153,9 +151,8 @@ public interface CoffeeShop extends CMCommon
      * Removes all items like the given item from the base and store inventory.
      * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#whatIsSold()
      * @param thisThang the item like which to remove
-     * @param whatISell reference to what kind of stuff the store sells
      */
-    public void delAllStoreInventory(Environmental thisThang, int whatISell);
+    public void delAllStoreInventory(Environmental thisThang);
 
     /**
      * Returns whether an item with the given name is presently in this stores
@@ -163,11 +160,9 @@ public interface CoffeeShop extends CMCommon
      * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#whatIsSold()
      * @param name the name of the item to search for
      * @param mob the mob who is interested (stock can differ depending on customer)
-     * @param whatISell reference to what kind of stuff the store sells
-     * @param startRoom the shops start room, for determining jurisdiction
      * @return whether the item is available
      */
-    public boolean doIHaveThisInStock(String name, MOB mob, int whatISell, Room startRoom);
+    public boolean doIHaveThisInStock(String name, MOB mob);
     
     /**
      * Returns the base stock price (not the final price by any means) that the shop
@@ -194,11 +189,9 @@ public interface CoffeeShop extends CMCommon
      * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#getStoreInventory()
      * @param name the name of the item to search for
      * @param mob the mob who is interested (stock can differ depending on customer)
-     * @param whatISell reference to what kind of stuff the store sells
-     * @param startRoom the shops start room, for determining jurisdiction
      * @return the available item, if found
      */
-    public Environmental getStock(String name, MOB mob, int whatISell, Room startRoom);
+    public Environmental getStock(String name, MOB mob);
     
     /**
      * Searches this shops stock of items for sale for one matching the given name.
@@ -207,11 +200,9 @@ public interface CoffeeShop extends CMCommon
      * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#getStoreInventory()
      * @param name the name of the item to search for
      * @param mob the mob who is interested (stock can differ depending on customer)
-     * @param whatISell reference to what kind of stuff the store sells
-     * @param startRoom the shops start room, for determining jurisdiction
      * @return the available item, if found
      */
-    public Environmental removeStock(String name, MOB mob, int whatISell, Room startRoom);
+    public Environmental removeStock(String name, MOB mob);
     
     /**
      * Searches this shops stock of items for sale for one matching the given name.
@@ -221,29 +212,25 @@ public interface CoffeeShop extends CMCommon
      * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#getStoreInventory()
      * @param named the name of the item to search for
      * @param mob the mob who is interested (stock can differ depending on customer)
-     * @param whatISell reference to what kind of stuff the store sells
-     * @param startRoom the shops start room, for determining jurisdiction
      * @return the available items, if found, as a Vector of Environmental objects
      */
-    public Vector removeSellableProduct(String named, MOB mob, int whatISell, Room startRoom);
+    public Vector removeSellableProduct(String named, MOB mob);
     
     /**
      * Generates an XML document of all available shop inventory, prices, and availability.
      * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#getStoreInventory()
-     * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#buildShopFromXML(String, ShopKeeper)
-     * @param shop the shopkeeper shop
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#buildShopFromXML(String)
      * @return an XML document.
      */
-    public String makeXML(ShopKeeper shop);
+    public String makeXML();
     
     /**
      * Repopulates this shop inventory from a given xml document, restoring store inventory,
      * base inventory, prices, and availability.
-     * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#makeXML(ShopKeeper)
+     * @see com.planet_ink.coffee_mud.Common.interfaces.CoffeeShop#makeXML()
      * @param text the xml document to restore from
-     * @param shop the shopkeeper shop
      */
-    public void buildShopFromXML(String text, ShopKeeper shop);
+    public void buildShopFromXML(String text);
     
     /**
      * A method for quickly making wholesale changes to a shopkeepers inventory.
@@ -251,7 +238,25 @@ public interface CoffeeShop extends CMCommon
      * then be modified, and this method called to properly "resubmit" them to
      * the shopkeeper.
      * @param shopItems the items for inventory
-     * @param SK the shopkeeper
      */
-    public void resubmitInventory(Vector shopItems, ShopKeeper SK);
+    public void resubmitInventory(Vector shopItems);
+    
+    /**
+     * Initializes this shop object with its host ShopKeeper
+     * @param SK the shopkeeper that hosts this object
+     * @return always this
+     */
+    public CoffeeShop build(ShopKeeper SK);
+    
+    /**
+     * Returns the shopKeeper that is hosting this shop
+     * @return the shopKeeper that is hosting this shop
+     */
+    public ShopKeeper shopKeeper();
+    
+    /**
+     * Returns the whatIsSold code for the shopkeeper hosting this shop.
+     * @return the whatIsSold code for the shopkeeper hosting this shop.
+     */
+    public int whatIsSold();
 }

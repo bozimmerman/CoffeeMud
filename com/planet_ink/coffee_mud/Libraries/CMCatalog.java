@@ -289,7 +289,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
     	    		if((C.holder()==SK)&&(!C.deleted()))
                         newShop.addElement(C.E());
     	    	}
-            	SK.getShop().resubmitInventory(newShop, SK);
+            	SK.getShop().resubmitInventory(newShop);
     		}
     	}
     	for(Environmental E : updatables)
@@ -586,7 +586,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
             }
         }
         if(changes)
-        	SK.getShop().resubmitInventory(V, SK);
+        	SK.getShop().resubmitInventory(V);
     }
     
     public CataData getCatalogData(Environmental E) {

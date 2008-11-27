@@ -255,7 +255,7 @@ public class Prop_ItemTransporter extends Property
 						if((item.container()==null)||(item.container()==container))
 							item.setContainer(nextDestination);
 						if(mob instanceof ShopKeeper)
-							((ShopKeeper)mob).getShop().addStoreInventory(item,((ShopKeeper)mob));
+							((ShopKeeper)mob).getShop().addStoreInventory(item);
 						else
 							mob.addInventory(item);
 					}

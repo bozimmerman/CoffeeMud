@@ -34,7 +34,7 @@ import java.util.*;
 public class StdShopKeeper extends StdMOB implements ShopKeeper
 {
 	public String ID(){return "StdShopKeeper";}
-    protected CoffeeShop shop=(CoffeeShop)CMClass.getCommon("DefaultCoffeeShop");
+    protected CoffeeShop shop=((CoffeeShop)CMClass.getCommon("DefaultCoffeeShop")).build(this);
 	protected int whatISell=0;
 	protected int invResetRate=0;
 	protected int invResetTickDown=0;
@@ -76,7 +76,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	{
 		super.cloneFix(E);
 		if(E instanceof StdShopKeeper)
-            shop=(CoffeeShop)((StdShopKeeper)E).shop.copyOf();
+            shop=((CoffeeShop)((StdShopKeeper)E).shop.copyOf()).build(this);
 	}
     
     public CoffeeShop getShop(){return shop;}
@@ -98,7 +98,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
             {
                 Environmental E=(Environmental)rivals.elementAt(r);
                 if(CMLib.dice().rollPercentage()>E.baseEnvStats().rejuv())
-                    getShop().delAllStoreInventory(E,whatIsSold());
+                    getShop().delAllStoreInventory(E);
                 else
                 {
                     E.baseEnvStats().setRejuv(0);
@@ -253,7 +253,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 					&&((doISellThis(msg.tool()))||(whatISell==DEAL_INVENTORYONLY)))
 	                {
 	                    CMLib.commands().postSay(this,msg.source(),"Yes, I will now sell "+msg.tool().name()+".",false,false);
-	                    getShop().addStoreInventory(msg.tool(),1,-1,this);
+	                    getShop().addStoreInventory(msg.tool(),1,-1);
 	                    if(isGeneric()) text();
 						return;
 					}
@@ -290,7 +290,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				super.executeMsg(myHost,msg);
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
-					if((msg.tool()!=null)&&(getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",mob,whatIsSold(),getStartRoom())))
+					if((msg.tool()!=null)&&(getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",mob)))
 						CMLib.commands().postSay(this,msg.source(),CMLib.coffeeShops().getViewDescription(msg.tool()),true,false);
 				}
 				break;
@@ -302,13 +302,13 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	            {
 	                MOB mobFor=CMLib.coffeeShops().parseBuyingFor(msg.source(),msg.targetMessage());
 					if((msg.tool()!=null)
-					&&(getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",mobFor,whatIsSold(),getStartRoom()))
+					&&(getShop().doIHaveThisInStock("$"+msg.tool().Name()+"$",mobFor))
 					&&(location()!=null))
 					{
-				        Environmental item=getShop().getStock("$"+msg.tool().Name()+"$",mobFor,whatISell,getStartRoom());
+				        Environmental item=getShop().getStock("$"+msg.tool().Name()+"$",mobFor);
 				        if(item!=null) CMLib.coffeeShops().transactMoneyOnly(this,msg.source(),this,item,!isMonster());
 				        
-						Vector products=getShop().removeSellableProduct("$"+msg.tool().Name()+"$",mobFor,whatIsSold(),getStartRoom());
+						Vector products=getShop().removeSellableProduct("$"+msg.tool().Name()+"$",mobFor);
 						if(products.size()==0) break;
 						Environmental product=(Environmental)products.firstElement();
 	                    

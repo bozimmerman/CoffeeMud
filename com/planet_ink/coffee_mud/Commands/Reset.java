@@ -813,8 +813,8 @@ public class Reset extends StdCommand
 											{
 												int numInStock=SK.getShop().numberInStock(I);
 												int stockPrice=SK.getShop().stockPrice(I);
-												SK.getShop().delAllStoreInventory(I,SK.whatIsSold());
-												SK.getShop().addStoreInventory(I,numInStock,stockPrice,SK);
+												SK.getShop().delAllStoreInventory(I);
+												SK.getShop().addStoreInventory(I,numInStock,stockPrice);
 											}
 										}
 									}
@@ -886,8 +886,8 @@ public class Reset extends StdCommand
 											{
 												int numInStock=SK.getShop().numberInStock(I);
 												int stockPrice=SK.getShop().stockPrice(I);
-												SK.getShop().delAllStoreInventory(I,SK.whatIsSold());
-												SK.getShop().addStoreInventory(I,numInStock,stockPrice,SK);
+												SK.getShop().delAllStoreInventory(I);
+												SK.getShop().addStoreInventory(I,numInStock,stockPrice);
 											}
 										}
 									}
@@ -959,8 +959,8 @@ public class Reset extends StdCommand
                                             {
                                                 int numInStock=SK.getShop().numberInStock(I);
                                                 int stockPrice=SK.getShop().stockPrice(I);
-                                                SK.getShop().delAllStoreInventory(I,SK.whatIsSold());
-                                                SK.getShop().addStoreInventory(I,numInStock,stockPrice,SK);
+                                                SK.getShop().delAllStoreInventory(I);
+                                                SK.getShop().addStoreInventory(I,numInStock,stockPrice);
                                             }
                                         }
                                     }
@@ -1124,7 +1124,7 @@ public class Reset extends StdCommand
 									int returned=resetAreaOramaManaI(mob,I,rememberI," - ");
 									if(returned<0)
 									{
-										SK.getShop().delAllStoreInventory(I,SK.whatIsSold());
+										SK.getShop().delAllStoreInventory(I);
 										somethingDone=true;
 										mob.tell("   deleted");
 									}
@@ -1134,8 +1134,8 @@ public class Reset extends StdCommand
 										somethingDone=true;
 										int numInStock=SK.getShop().numberInStock(I);
 										int stockPrice=SK.getShop().stockPrice(I);
-										SK.getShop().delAllStoreInventory(I,SK.whatIsSold());
-										SK.getShop().addStoreInventory(I,numInStock,stockPrice,SK);
+										SK.getShop().delAllStoreInventory(I);
+										SK.getShop().addStoreInventory(I,numInStock,stockPrice);
 									}
 								}
 							}

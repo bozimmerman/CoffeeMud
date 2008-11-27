@@ -167,7 +167,7 @@ public class RandomItems extends ActiveTicker
 	public boolean isStillMaintained(Environmental thang, ShopKeeper SK, Item I)
 	{
 		if((I==null)||(I.amDestroyed())) return false;
-		if(SK!=null) return SK.getShop().doIHaveThisInStock(I.Name(),null,SK.whatIsSold(),null);
+		if(SK!=null) return SK.getShop().doIHaveThisInStock(I.Name(),null);
 		if(thang instanceof Area)
 		{
 			Room R=CMLib.map().roomLocation(I);
@@ -316,7 +316,7 @@ public class RandomItems extends ActiveTicker
 						if(SK.doISellThis(I))
 						{
 							maintained.addElement(I);
-							SK.getShop().addStoreInventory((Environmental)ticking,1,-1,SK);
+							SK.getShop().addStoreInventory((Environmental)ticking,1,-1);
 						}
 					}
 					else

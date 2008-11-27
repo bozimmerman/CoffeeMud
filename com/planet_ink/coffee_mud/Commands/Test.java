@@ -312,9 +312,9 @@ public class Test extends StdCommand
                 M.setName("Shoppy");
                 ShopKeeper SK=(ShopKeeper)M;
                 Item I=CMClass.getWeapon("Dagger");
-                SK.getShop().addStoreInventory(I,10,5,SK);
+                SK.getShop().addStoreInventory(I,10,5);
                 I=CMClass.getWeapon("Shortsword");
-                SK.getShop().addStoreInventory(I,10,5,SK);
+                SK.getShop().addStoreInventory(I,10,5);
                 SK.setInvResetRate(999999999);
                 Room R2=CMClass.getLocale("WoodRoom");
                 R2.setRoomID("UNKNOWN2");

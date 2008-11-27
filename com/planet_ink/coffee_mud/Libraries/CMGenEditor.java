@@ -3140,7 +3140,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 Vector V=E.getShop().getStoreInventory();
                 for(int b=0;b<V.size();b++)
                     if(!E.doISellThis((Environmental)V.elementAt(b)))
-                        E.getShop().delAllStoreInventory((Environmental)V.elementAt(b),E.whatIsSold());
+                        E.getShop().delAllStoreInventory((Environmental)V.elementAt(b));
             }
         }
     }
@@ -3184,11 +3184,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 }
                 else
                 {
-                    Environmental item=E.getShop().getStock(itemstr,null,E.whatIsSold(),null);
+                    Environmental item=E.getShop().getStock(itemstr,null);
                     if(item!=null)
                     {
                         mob.tell(item.ID()+" removed.");
-                        E.getShop().delAllStoreInventory((Environmental)item.copyOf(),E.whatIsSold());
+                        E.getShop().delAllStoreInventory((Environmental)item.copyOf());
                     }
                     else
                     {
@@ -3223,7 +3223,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                             {
                                 boolean alreadyHasIt=false;
 
-                                if(E.getShop().doIHaveThisInStock(item.Name(),null,E.whatIsSold(),null))
+                                if(E.getShop().doIHaveThisInStock(item.Name(),null))
                                    alreadyHasIt=true;
 
                                 if(!alreadyHasIt)
@@ -3233,7 +3233,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                                     if(!(item instanceof Ability))
                                         num=CMath.s_int(mob.session().prompt("How many? :",""));
                                     int price=CMath.s_int(mob.session().prompt("At what price? :",""));
-                                    E.getShop().addStoreInventory(item,num,price,E);
+                                    E.getShop().addStoreInventory(item,num,price);
                                 }
                             }
                         }

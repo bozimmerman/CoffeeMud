@@ -62,7 +62,7 @@ public class StdInnKey extends StdKey implements InnKey
 				removeFromOwnerContainer();
 			if(myShopkeeper!=null)
 			{
-				myShopkeeper.getShop().addStoreInventory(this,myShopkeeper); // makes a copy
+				myShopkeeper.getShop().addStoreInventory(this); // makes a copy
 				destroy();
 			}
 			return false;
@@ -96,7 +96,7 @@ public class StdInnKey extends StdKey implements InnKey
 		&&(msg.tool()==this))
 		{
 			CMLib.threads().deleteTick(this,Tickable.TICKID_ITEM_BOUNCEBACK);
-			myShopkeeper.getShop().addStoreInventory(this,myShopkeeper); //makes a copy
+			myShopkeeper.getShop().addStoreInventory(this); //makes a copy
 			destroy();
 		}
 	}

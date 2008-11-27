@@ -397,7 +397,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 									((LandTitle)I).updateLot(null);
 								}
 								if(!(I instanceof Coins))
-                                    getShop().addStoreInventory(I,this);
+                                    getShop().addStoreInventory(I);
 							}
 							delAllDeposits(name);
 							CMLib.beanCounter().delAllDebt(name,bankChain());

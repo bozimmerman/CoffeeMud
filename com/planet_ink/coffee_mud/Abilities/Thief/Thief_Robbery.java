@@ -144,7 +144,7 @@ public class Thief_Robbery extends ThiefSkill
 			return false;
 
 		ShopKeeper shop=CMLib.coffeeShops().getShopKeeper(target);
-		Environmental stolen=shop.getShop().getStock(itemToSteal,mob,shop.whatIsSold(),target.getStartRoom());
+		Environmental stolen=shop.getShop().getStock(itemToSteal,mob);
 		if(stolen!=null)
 		{
 			ShopKeeper.ShopPrice price=CMLib.coffeeShops().sellingPrice(target,mob,stolen,shop,false);
@@ -157,7 +157,7 @@ public class Thief_Robbery extends ThiefSkill
 				mob.tell(mob,target,stolen,"You cannot rob '<O-NAME>' from <T-NAME>.");
 				return false;
 			}
-			if(!shop.getShop().doIHaveThisInStock(stolen.Name(),mob,shop.whatIsSold(),target.getStartRoom()))
+			if(!shop.getShop().doIHaveThisInStock(stolen.Name(),mob))
 				stolen=null;
 		}
 
@@ -243,7 +243,7 @@ public class Thief_Robbery extends ThiefSkill
 				}
 				if(stolen!=null)
 				{
-					Vector products=shop.getShop().removeSellableProduct(stolen.Name(),mob,shop.whatIsSold(),target.getStartRoom());
+					Vector products=shop.getShop().removeSellableProduct(stolen.Name(),mob);
 					stolen=(Environmental)products.firstElement();
 					if(stolen instanceof Item)
 					{
