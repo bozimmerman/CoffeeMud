@@ -170,7 +170,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         }
         if(product instanceof MOB)
         {
-            if(((Item)product).envStats().level()>buyer.envStats().level()) 
+            if(((MOB)product).envStats().level()>buyer.envStats().level()) 
             	return false;
         }
         if(product instanceof Ability)
