@@ -3074,76 +3074,87 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        mob.tell(showNumber+". Shopkeeper type: '"+E.storeKeeperString()+"'.");
-        StringBuffer buf=new StringBuffer("");
-        StringBuffer codes=new StringBuffer("");
-        String codeStr="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        if(E instanceof Banker)
+        long oldMask=E.getWhatIsSoldMask();
+        while((mob.session()!=null)&&(!mob.session().killFlag()))
         {
-            int r=ShopKeeper.DEAL_BANKER;
-            char c=codeStr.charAt(r);
-            codes.append(c);
-            buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
-            r=ShopKeeper.DEAL_CLANBANKER;
-            c=codeStr.charAt(r);
-            codes.append(c);
-            buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
+	        mob.tell(showNumber+". Shopkeeper type: '"+E.storeKeeperString()+"'.");
+	        if((showFlag!=showNumber)&&(showFlag>-999)) return;
+	        
+	        StringBuffer buf=new StringBuffer("");
+	        StringBuffer codes=new StringBuffer("");
+	        String codeStr="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	        if(E instanceof Banker)
+	        {
+	            int r=ShopKeeper.DEAL_BANKER;
+	            char c=codeStr.charAt(r);
+	            codes.append(c);
+	            buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
+	            r=ShopKeeper.DEAL_CLANBANKER;
+	            c=codeStr.charAt(r);
+	            codes.append(c);
+	            buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
+	        }
+	        else
+	        if(E instanceof PostOffice)
+	        {
+	            int r=ShopKeeper.DEAL_POSTMAN;
+	            char c=codeStr.charAt(r);
+	            codes.append(c);
+	            buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
+	            r=ShopKeeper.DEAL_CLANPOSTMAN;
+	            c=codeStr.charAt(r);
+	            codes.append(c);
+	            buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
+	        }
+	        else
+	        if(E instanceof Auctioneer)
+	        {
+	            int r=ShopKeeper.DEAL_AUCTIONEER;
+	            char c=codeStr.charAt(r);
+	            codes.append(c);
+	            buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
+	            r=ShopKeeper.DEAL_AUCTIONEER;
+	            c=codeStr.charAt(r);
+	            codes.append(c);
+	            buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
+	        }
+	        else
+	        for(int r=0;r<ShopKeeper.DEAL_DESCS.length;r++)
+	        {
+	            if((r!=ShopKeeper.DEAL_CLANBANKER)
+	            &&(r!=ShopKeeper.DEAL_BANKER)
+	            &&(r!=ShopKeeper.DEAL_CLANPOSTMAN)
+	            &&(r!=ShopKeeper.DEAL_POSTMAN))
+	            {
+	                char c=codeStr.charAt(r);
+	                codes.append(c);
+	                buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
+	            }
+	        }
+	        String newType=mob.session().choose(buf.toString()+"Enter a value to toggle on/off: ",codes.toString(),"");
+	        int newValue=-1;
+	        if(newType.trim().length()==0)
+	        {
+	        	if(E.getWhatIsSoldMask()==oldMask)
+	        		mob.tell("(no change");
+	        	return;
+	        }
+	        if(newType.length()>0)
+	            newValue=codeStr.indexOf(newType.toUpperCase());
+	        if(newValue<=0)
+	        	E.setWhatIsSoldMask(0);
+	        else
+	        if(E.isSold(newValue))
+	        {
+	        	E.addSoldType(-newValue);
+	            Vector V=E.getShop().getStoreInventory();
+	            for(int b=0;b<V.size();b++)
+	                if(!E.doISellThis((Environmental)V.elementAt(b)))
+	                    E.getShop().delAllStoreInventory((Environmental)V.elementAt(b));
+	        }
+	        else
+	            E.addSoldType(newValue);
         }
-        else
-        if(E instanceof PostOffice)
-        {
-            int r=ShopKeeper.DEAL_POSTMAN;
-            char c=codeStr.charAt(r);
-            codes.append(c);
-            buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
-            r=ShopKeeper.DEAL_CLANPOSTMAN;
-            c=codeStr.charAt(r);
-            codes.append(c);
-            buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
-        }
-        else
-        if(E instanceof Auctioneer)
-        {
-            int r=ShopKeeper.DEAL_AUCTIONEER;
-            char c=codeStr.charAt(r);
-            codes.append(c);
-            buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
-            r=ShopKeeper.DEAL_AUCTIONEER;
-            c=codeStr.charAt(r);
-            codes.append(c);
-            buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
-        }
-        else
-        for(int r=0;r<ShopKeeper.DEAL_DESCS.length;r++)
-        {
-            if((r!=ShopKeeper.DEAL_CLANBANKER)
-            &&(r!=ShopKeeper.DEAL_BANKER)
-            &&(r!=ShopKeeper.DEAL_CLANPOSTMAN)
-            &&(r!=ShopKeeper.DEAL_POSTMAN))
-            {
-                char c=codeStr.charAt(r);
-                codes.append(c);
-                buf.append(c+") "+ShopKeeper.DEAL_DESCS[r]+"\n\r");
-            }
-        }
-        if((showFlag!=showNumber)&&(showFlag>-999)) return;
-        String newType=mob.session().choose(buf.toString()+"Enter a new value\n\r: ",codes.toString(),"");
-        int newValue=-1;
-        if(newType.length()>0)
-            newValue=codeStr.indexOf(newType.toUpperCase());
-        if(newValue<=0)
-        	E.setWhatIsSoldMask(0);
-        else
-        if(E.isSold(newValue))
-        {
-        	E.addSoldType(-newValue);
-            Vector V=E.getShop().getStoreInventory();
-            for(int b=0;b<V.size();b++)
-                if(!E.doISellThis((Environmental)V.elementAt(b)))
-                    E.getShop().delAllStoreInventory((Environmental)V.elementAt(b));
-        }
-        else
-            E.addSoldType(newValue);
     }
 
     protected void genShopkeeper2(MOB mob, ShopKeeper E, int showNumber, int showFlag)

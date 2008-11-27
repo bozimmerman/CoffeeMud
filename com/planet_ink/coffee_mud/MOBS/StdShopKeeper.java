@@ -88,7 +88,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
     			for(int c1=0;c1<ShopKeeper.DEAL_CONFLICTS[c].length;c1++)
     				if(ShopKeeper.DEAL_CONFLICTS[c][c1]==mask)
     				{
-    	    			for(c1=0;c1<ShopKeeper.DEAL_CONFLICTS[c].length;c++)
+    	    			for(c1=0;c1<ShopKeeper.DEAL_CONFLICTS[c].length;c1++)
     	    				if((ShopKeeper.DEAL_CONFLICTS[c][c1]!=mask)
     	    				&&(isSold(ShopKeeper.DEAL_CONFLICTS[c][c1])))
     	    					addSoldType(-ShopKeeper.DEAL_CONFLICTS[c][c1]);
