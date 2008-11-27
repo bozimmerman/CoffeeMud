@@ -1190,6 +1190,7 @@ public class MUD extends Thread implements MudHost
 			{
 				try{ Thread.sleep(1000);}catch(Exception e){}
 				killCount(Thread.currentThread().getThreadGroup(),Thread.currentThread());
+				try{ Thread.sleep(1000);}catch(Exception e){}
 				if(activeThreadCount(Thread.currentThread().getThreadGroup())>1)
 				{
 					Log.sysOut(Thread.currentThread().getName(),"WARNING: " + activeThreadCount(Thread.currentThread().getThreadGroup()) +" other thread(s) are still active!");

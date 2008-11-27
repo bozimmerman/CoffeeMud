@@ -6760,7 +6760,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 if(var.equalsIgnoreCase("STATISTICS")&&(val.equalsIgnoreCase("ACCEPTED")))
                 	CMLib.coffeeTables().bump(Q,CoffeeTableRow.STAT_QUESTACCEPTED);
                 else
-                if(var.equalsIgnoreCase("STATISTICS")&&(val.equalsIgnoreCase("WON")))
+                if(var.equalsIgnoreCase("STATISTICS")&&(val.equalsIgnoreCase("SUCCESS")||val.equalsIgnoreCase("WON")))
                 	CMLib.coffeeTables().bump(Q,CoffeeTableRow.STAT_QUESTSUCCESS);
                 else
                 if(var.equalsIgnoreCase("STATISTICS")&&(val.equalsIgnoreCase("FAILED")))
