@@ -165,7 +165,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		return A;
 	}
 
-    public void addGlobalHandler(Environmental E, int category)
+    public void addGlobalHandler(MsgListener E, int category)
     {
         Vector V=(Vector)globalHandlers.get(new Integer(category));
         if(V==null)
@@ -173,15 +173,21 @@ public class CMMap extends StdLibrary implements WorldMap
             V=new Vector();
             globalHandlers.put(new Integer(category),V);
         }
-        if(!V.contains(E))
-            V.add(E);
+        synchronized(V)
+        {
+	        if(!V.contains(E))
+	            V.add(E);
+        }
     }
 
-    public void delGlobalHandler(Environmental E, int category)
+    public void delGlobalHandler(MsgListener E, int category)
     {
         Vector V=(Vector)globalHandlers.get(new Integer(category));
         if(V==null) return;
-        V.removeElement(E);
+        synchronized(V)
+        {
+	        V.removeElement(E);
+        }
     }
 
     public MOB god(Room R){
@@ -282,28 +288,38 @@ public class CMMap extends StdLibrary implements WorldMap
     {
         Vector V=(Vector)globalHandlers.get(new Integer(category));
         if(V==null) return true;
-        try{
-            Environmental E=null;
-            for(int v=V.size()-1;v>=0;v--)
-            {
-                E=(Environmental)V.elementAt(v);
-                if(!CMLib.flags().isInTheGame(E,true))
-                {
-                    if(!CMLib.flags().isInTheGame(E,false))
-                        delGlobalHandler(E,category);
-                }
-                else
-                if(!E.okMessage(host,msg))
-                    return false;
-            }
-            for(int v=V.size()-1;v>=0;v--)
-            {
-                E=(Environmental)V.elementAt(v);
-                E.executeMsg(host,msg);
-            }
+        synchronized(V)
+        {
+	        try{
+	            Environmental E=null;
+	            for(int v=V.size()-1;v>=0;v--)
+	            {
+	            	if(V.elementAt(v) instanceof Environmental)
+	            	{
+		                E=(Environmental)V.elementAt(v);
+		                if(!CMLib.flags().isInTheGame(E,true))
+		                {
+		                    if(!CMLib.flags().isInTheGame(E,false))
+		                        delGlobalHandler(E,category);
+		                }
+		                else
+		                if(!E.okMessage(host,msg))
+		                    return false;
+	            	}
+	            	else
+	            	if(V.elementAt(v) instanceof MsgListener)
+	            	{
+	            		if(!((MsgListener)V.elementAt(v)).okMessage(host, msg))
+	            			return false;
+	            	}
+	            }
+	            for(int v=V.size()-1;v>=0;v--)
+	            	if(V.elementAt(v) instanceof MsgListener)
+		                ((MsgListener)V.elementAt(v)).executeMsg(host,msg);
+	        }
+	        catch(java.lang.ArrayIndexOutOfBoundsException xx){}
+	        catch(Exception x){Log.errOut("CMMap",x);}
         }
-        catch(java.lang.ArrayIndexOutOfBoundsException xx){}
-        catch(Exception x){Log.errOut("CMMap",x);}
         return true;
     }
 

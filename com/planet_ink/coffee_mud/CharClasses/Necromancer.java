@@ -43,6 +43,7 @@ public class Necromancer extends Cleric
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	protected int alwaysFlunksThisQuality(){return 1000;}
+	protected boolean registeredAsListener=false;
 
 	public Necromancer()
 	{
@@ -135,6 +136,18 @@ public class Necromancer extends Cleric
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_AnimateVampire",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Regeneration",true);
+		
+		if(!registeredAsListener)
+		{
+			synchronized(this)
+			{
+				if(!registeredAsListener)
+				{
+					CMLib.map().addGlobalHandler(this,CMMsg.TYP_DEATH);
+					registeredAsListener=true;
+				}
+			}
+		}
 	}
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
@@ -157,7 +170,7 @@ public class Necromancer extends Cleric
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public String otherBonuses(){return "Becomes Lich upon death after reaching 30th level Necromancer.  Undead followers will not drain experience.";}
+	public String otherBonuses(){return "Can sense deaths at Necromancer level 15, and becomes a Lich upon death at 30.  Undead followers will not drain experience.";}
 	public String otherLimitations(){return "Always fumbles good prayers.  Qualifies and receives evil prayers.  Using non-aligned prayers introduces failure chance.";}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -169,7 +182,6 @@ public class Necromancer extends Cleric
 
 		if(msg.amISource(myChar)
 		&&(!myChar.isMonster())
-		&&(msg.sourceMinor()==CMMsg.TYP_DEATH)
 		&&(myChar.baseCharStats().getClassLevel(this)>=30)
 		&&(!myChar.baseCharStats().getMyRace().ID().equals("Lich")))
 		{
@@ -184,6 +196,35 @@ public class Necromancer extends Cleric
 		return true;
 	}
 
+	public void executeMsg(Environmental myHost, CMMsg msg)
+	{
+		if(!(myHost instanceof MOB)){
+			super.executeMsg(myHost,msg);
+		} else {
+			MOB aChar=(MOB)myHost;
+			super.executeMsg(myHost,msg);
+			MOB M=null;
+			Room deathRoom=aChar.location();
+			if((deathRoom!=null)&&(deathRoom.getArea()!=null))
+			for(Enumeration e=CMLib.sessions().sessions();e.hasMoreElements();)
+			{
+				M=((Session)e.nextElement()).mob();
+				if((M!=null)
+				&&(M.baseCharStats().getCurrentClass()==this)
+				&&(aChar!=M)
+				&&(M.baseCharStats().getClassLevel(this)>14)
+				&&(CMLib.flags().isInTheGame(M,true)))
+				{
+					if(!aChar.isMonster())
+						M.tell("^RYou just felt the death of "+aChar.Name()+".^N");
+					else
+					if((M.location()!=deathRoom)&&(deathRoom.getArea().Name().equals(M.location().getArea().Name())))
+						M.tell("^RYou just felt the death of "+aChar.Name()+" somewhere nearby.^N");
+				}
+			}
+		}
+	}
+	
     public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, HashSet followers)
 	{
 		if((mob!=null)

@@ -138,8 +138,8 @@ public interface WorldMap extends CMLibrary, Runnable
     /************************************************************************/
     /**							 MESSAGES	 								*/
     /************************************************************************/
-    public void addGlobalHandler(Environmental E, int category);
-    public void delGlobalHandler(Environmental E, int category);
+    public void addGlobalHandler(MsgListener E, int category);
+    public void delGlobalHandler(MsgListener E, int category);
     public MOB god(Room R);
     public boolean sendGlobalMessage(MOB host, int category, CMMsg msg);
     

@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries.interfaces;
 
+import java.util.Enumeration;
 import java.util.Vector;
 import com.planet_ink.coffee_mud.Common.interfaces.Session;
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
@@ -30,4 +31,5 @@ public interface SessionsList extends CMLibrary, Runnable
     public void removeElement(Session S);
     public void stopSessionAtAllCosts(Session S);
     public Session findPlayerOnline(String srchStr, boolean exactOnly);
+    public Enumeration sessions();
 }
