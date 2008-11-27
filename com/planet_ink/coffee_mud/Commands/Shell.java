@@ -319,7 +319,13 @@ public class Shell extends StdCommand
                         target=target+"/"+name;
                     else
                         target=name;
-                    target=(SF.isLocalFile()&&DD.canLocalEquiv())?"//"+target:"::"+target;
+                    if(DD.demandedVFS())
+                    	target="::"+target;
+                    else
+                    if(DD.demandedLocal())
+                    	target="//"+target;
+                    else
+	                    target=(SF.isLocalFile()&&DD.canLocalEquiv())?"//"+target:"::"+target;
                     DF=new CMFile(target,mob,false);
                 }
                 else
@@ -765,7 +771,13 @@ public class Shell extends StdCommand
                         target=target+"/"+name;
                     else
                         target=name;
-                    target=(SF.isLocalFile()&&DD.canLocalEquiv())?"//"+target:"::"+target;
+                    if(DD.demandedVFS())
+                    	target="::"+target;
+                    else
+                    if(DD.demandedLocal())
+                    	target="//"+target;
+                    else
+	                    target=(SF.isLocalFile()&&DD.canLocalEquiv())?"//"+target:"::"+target;
                     DF=new CMFile(target,mob,false);
                 }
                 else
