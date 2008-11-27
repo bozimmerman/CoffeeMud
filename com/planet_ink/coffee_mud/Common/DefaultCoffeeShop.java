@@ -44,14 +44,6 @@ public class DefaultCoffeeShop implements CoffeeShop
         }
     }
     
-    public CoffeeShop build(ShopKeeper SK) {
-    	shopKeeper=new WeakReference(SK);
-    	return this;
-    }
-    
-    public ShopKeeper shopKeeper(){ return (shopKeeper==null)?null:shopKeeper.get();}
-    public int whatIsSold(){ShopKeeper SK=shopKeeper(); return (SK==null)?ShopKeeper.DEAL_ANYTHING:SK.whatIsSold();}
-    
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultCoffeeShop();}}
     public void initializeClass(){}
     
