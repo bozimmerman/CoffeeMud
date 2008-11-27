@@ -359,6 +359,76 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
     }
     
 	
+	public boolean armorCheck(MOB mob, Item I, int allowedArmorLevel)
+	{
+		if(((I instanceof Armor)||(I instanceof Shield)))
+		{
+			boolean ok=true;
+			switch(I.material()&RawMaterial.MATERIAL_MASK)
+			{
+			case RawMaterial.MATERIAL_LEATHER:
+				if((allowedArmorLevel==CharClass.ARMOR_CLOTH)
+				||(allowedArmorLevel==CharClass.ARMOR_VEGAN)
+				||(allowedArmorLevel==CharClass.ARMOR_OREONLY)
+				||(allowedArmorLevel==CharClass.ARMOR_METALONLY))
+					ok=false;
+				break;
+			case RawMaterial.MATERIAL_METAL:
+			case RawMaterial.MATERIAL_MITHRIL:
+				if((allowedArmorLevel==CharClass.ARMOR_CLOTH)
+				||(allowedArmorLevel==CharClass.ARMOR_LEATHER)
+				||(allowedArmorLevel==CharClass.ARMOR_NONMETAL))
+					ok=false;
+				break;
+			case RawMaterial.MATERIAL_ENERGY:
+				if((allowedArmorLevel==CharClass.ARMOR_METALONLY)
+				||(allowedArmorLevel==CharClass.ARMOR_OREONLY)
+				||(allowedArmorLevel==CharClass.ARMOR_VEGAN))
+				   return false;
+				break;
+			case RawMaterial.MATERIAL_CLOTH:
+				if((allowedArmorLevel==CharClass.ARMOR_METALONLY)
+				||(allowedArmorLevel==CharClass.ARMOR_OREONLY)
+				||((allowedArmorLevel==CharClass.ARMOR_VEGAN)
+				   &&((I.material()==RawMaterial.RESOURCE_HIDE)
+					  ||(I.material()==RawMaterial.RESOURCE_FUR)
+					  ||(I.material()==RawMaterial.RESOURCE_FEATHERS)
+					  ||(I.material()==RawMaterial.RESOURCE_WOOL))))
+					ok=false;
+				break;
+			case RawMaterial.MATERIAL_PLASTIC:
+			case RawMaterial.MATERIAL_WOODEN:
+				if((allowedArmorLevel==CharClass.ARMOR_CLOTH)
+				||(allowedArmorLevel==CharClass.ARMOR_OREONLY)
+				||(allowedArmorLevel==CharClass.ARMOR_LEATHER)
+				||(allowedArmorLevel==CharClass.ARMOR_METALONLY))
+					ok=false;
+				break;
+			case RawMaterial.MATERIAL_ROCK:
+			case RawMaterial.MATERIAL_GLASS:
+				if((allowedArmorLevel==CharClass.ARMOR_CLOTH)
+				||(allowedArmorLevel==CharClass.ARMOR_LEATHER)
+				||(allowedArmorLevel==CharClass.ARMOR_METALONLY))
+					ok=false;
+				break;
+			case RawMaterial.MATERIAL_FLESH:
+				if((allowedArmorLevel==CharClass.ARMOR_METALONLY)
+				||(allowedArmorLevel==CharClass.ARMOR_VEGAN)
+				||(allowedArmorLevel==CharClass.ARMOR_CLOTH)
+				||(allowedArmorLevel==CharClass.ARMOR_OREONLY))
+					ok=false;
+				break;
+			default:
+				if((allowedArmorLevel==CharClass.ARMOR_METALONLY)
+				||(allowedArmorLevel==CharClass.ARMOR_OREONLY))
+					ok=false;
+				break;
+			}
+			return ok;
+		}
+		return true;
+	}
+	
 	public boolean armorCheck(MOB mob, int allowedArmorLevel)
 	{
 		if(allowedArmorLevel==CharClass.ARMOR_ANY) return true;
@@ -366,71 +436,9 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		for(int i=0;i<mob.inventorySize();i++)
 		{
 			Item I=mob.fetchInventory(i);
-			if(I==null) break;
-			if((!I.amWearingAt(Item.IN_INVENTORY))
-			&&((I instanceof Armor)||(I instanceof Shield)))
+			if((I!=null)&&(!I.amWearingAt(Item.IN_INVENTORY)))
 			{
-				boolean ok=true;
-				switch(I.material()&RawMaterial.MATERIAL_MASK)
-				{
-				case RawMaterial.MATERIAL_LEATHER:
-					if((allowedArmorLevel==CharClass.ARMOR_CLOTH)
-					||(allowedArmorLevel==CharClass.ARMOR_VEGAN)
-					||(allowedArmorLevel==CharClass.ARMOR_OREONLY)
-					||(allowedArmorLevel==CharClass.ARMOR_METALONLY))
-						ok=false;
-					break;
-				case RawMaterial.MATERIAL_METAL:
-				case RawMaterial.MATERIAL_MITHRIL:
-					if((allowedArmorLevel==CharClass.ARMOR_CLOTH)
-					||(allowedArmorLevel==CharClass.ARMOR_LEATHER)
-					||(allowedArmorLevel==CharClass.ARMOR_NONMETAL))
-						ok=false;
-					break;
-				case RawMaterial.MATERIAL_ENERGY:
-					if((allowedArmorLevel==CharClass.ARMOR_METALONLY)
-					||(allowedArmorLevel==CharClass.ARMOR_OREONLY)
-					||(allowedArmorLevel==CharClass.ARMOR_VEGAN))
-					   return false;
-					break;
-				case RawMaterial.MATERIAL_CLOTH:
-					if((allowedArmorLevel==CharClass.ARMOR_METALONLY)
-					||(allowedArmorLevel==CharClass.ARMOR_OREONLY)
-					||((allowedArmorLevel==CharClass.ARMOR_VEGAN)
-					   &&((I.material()==RawMaterial.RESOURCE_HIDE)
-						  ||(I.material()==RawMaterial.RESOURCE_FUR)
-						  ||(I.material()==RawMaterial.RESOURCE_FEATHERS)
-						  ||(I.material()==RawMaterial.RESOURCE_WOOL))))
-						ok=false;
-					break;
-				case RawMaterial.MATERIAL_PLASTIC:
-				case RawMaterial.MATERIAL_WOODEN:
-					if((allowedArmorLevel==CharClass.ARMOR_CLOTH)
-					||(allowedArmorLevel==CharClass.ARMOR_OREONLY)
-					||(allowedArmorLevel==CharClass.ARMOR_LEATHER)
-					||(allowedArmorLevel==CharClass.ARMOR_METALONLY))
-						ok=false;
-					break;
-				case RawMaterial.MATERIAL_ROCK:
-				case RawMaterial.MATERIAL_GLASS:
-					if((allowedArmorLevel==CharClass.ARMOR_CLOTH)
-					||(allowedArmorLevel==CharClass.ARMOR_LEATHER)
-					||(allowedArmorLevel==CharClass.ARMOR_METALONLY))
-						ok=false;
-					break;
-				case RawMaterial.MATERIAL_FLESH:
-					if((allowedArmorLevel==CharClass.ARMOR_METALONLY)
-					||(allowedArmorLevel==CharClass.ARMOR_VEGAN)
-					||(allowedArmorLevel==CharClass.ARMOR_CLOTH)
-					||(allowedArmorLevel==CharClass.ARMOR_OREONLY))
-						ok=false;
-					break;
-				default:
-					if((allowedArmorLevel==CharClass.ARMOR_METALONLY)
-					||(allowedArmorLevel==CharClass.ARMOR_OREONLY))
-						ok=false;
-					break;
-				}
+				boolean ok=armorCheck(mob,I,allowedArmorLevel);
 				if((!ok)&&((I.rawWornCode()&CharClass.ARMOR_WEARMASK)>0))
 					return false;
 			}

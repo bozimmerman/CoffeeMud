@@ -2147,6 +2147,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 12. Catalog System has lots of new features -- faster, usage counters, & auto updating your map
 13. Catalog command has new parameters: scan, dbscan, overlook, dboverlook
 14. New player command: PAGEBREAK.   Also, pagebreak and linewrap added to CONFIG command.
+    -- You can also enter x, quit, or exit at the pagebreak prompt to stop output.
 15. LIST LOG now streams its data for extreme speed.
 16. Players more than 10X fatigued will have a 1% chance/tick to fall under the sleep spell.
 17. New Spells: Dispel Divination, Teleport Object
@@ -2170,4 +2171,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 32. Quests now save their authors, if the questmaker is used.
 33. Cooking will now give slightly more specific names to the final recipe (Fried Water Fowl instead of Fried Poultry, etc)
 34. Channel socials can now target Cataloged mobs (targetting other out-of-room mobs would have required a world scan)
-35. 
+35. CoffeeTables STATS system will now gather statistics on quests, though some stats require mobprog "hooks" to gather.
+    The templates for the questmaker have been updated.
+36. Necromancers will now be notified of the deaths of mobs nearby and of other players online.
+37.   

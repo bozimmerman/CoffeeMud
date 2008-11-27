@@ -667,6 +667,17 @@ public class StdCharClass implements CharClass
 		&&(((requiredWeaponMaterials()!=null)&&(!requiredWeaponMaterials().contains(new Integer(((Weapon)msg.target()).material()&RawMaterial.MATERIAL_MASK))))
 			||((disallowedWeaponClasses(msg.source())!=null)&&(disallowedWeaponClasses(msg.source()).contains(new Integer(((Weapon)msg.target()).weaponClassification()))))))
 	        msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.TYP_OK_VISUAL,"<T-NAME> feel(s) a bit strange in your hands.",CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+	    if((msg.source()==myHost)
+	    &&(msg.target() instanceof Item)
+	    &&(((msg.targetMinor()==CMMsg.TYP_WEAR)||(msg.targetMinor()==CMMsg.TYP_HOLD))
+		&&(msg.source().charStats().getCurrentClass().ID().equals(ID()))
+	    &&(!msg.source().isMonster()))
+	    &&(!CMLib.utensils().armorCheck(msg.source(),(Item)msg.target(),allowedArmorLevel())))
+	    {
+	    	final String[] choices=CMProps.getSListVar(CMProps.SYSTEML_ARMOR_MISFITS);
+	    	String choice=choices[CMLib.dice().roll(1,choices.length,-1)];
+	        msg.addTrailerMsg(CMClass.getMsg(msg.source(),msg.target(),null,CMMsg.TYP_OK_VISUAL,choice,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,null));
+	    }
 	}
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 
