@@ -732,6 +732,10 @@ public interface Area extends Environmental, Economics
     public final static int AREASTAT_VISITABLEROOMS=9;
 	/**	Index into area IStats for number of these constants.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaIStats() */
 	public final static int AREASTAT_NUMBER=10;
+	/** Descriptions of the various area IStat constants.. see @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaIStats() */
+	public final static String[] AREASTAT_DESCS={
+		"POPULATION","MIN-LEVEL","MAX-LEVEL","AVG-LEVEL","MED-LEVEL","AVG-ALIGNMENT","MED-ALIGNMENT","TOTAL-LEVELS","TOTAL-INTELLIGENT-LEVELS","VISITABLE-ROOMS"
+	};
 	
 	/**	State flag for area meaning Area is active.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaFlags() */
     public final static int FLAG_ACTIVE=0;
