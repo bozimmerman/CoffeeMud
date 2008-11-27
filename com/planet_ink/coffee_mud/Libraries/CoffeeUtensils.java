@@ -361,7 +361,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 	
 	public boolean armorCheck(MOB mob, Item I, int allowedArmorLevel)
 	{
-		if(((I instanceof Armor)||(I instanceof Shield)))
+		if((((I instanceof Armor)||(I instanceof Shield)))
+		&&(I.rawProperLocationBitmap()&CharClass.ARMOR_WEARMASK)>0)
 		{
 			boolean ok=true;
 			switch(I.material()&RawMaterial.MATERIAL_MASK)
