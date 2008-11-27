@@ -73,7 +73,7 @@ public class GenShopkeeper extends StdShopKeeper
 			return CMLib.coffeeMaker().getGenMobStat(this,code);
 		switch(getCodeNum(code))
 		{
-		case 0: return ""+whatIsSold();
+		case 0: return ""+getWhatIsSoldMask();
 		case 1: return prejudiceFactors();
 		case 2: return budget();
 		case 3: return devalueRate();
@@ -92,11 +92,11 @@ public class GenShopkeeper extends StdShopKeeper
 		switch(getCodeNum(code))
 		{
 		case 0:{
-			if((val.length()==0)||(CMath.isInteger(val)))
-				setWhatIsSold(CMath.s_int(val));
+			if((val.length()==0)||(CMath.isLong(val)))
+				setWhatIsSoldMask(CMath.s_long(val));
 			else
 			if(CMParms.containsIgnoreCase(ShopKeeper.DEAL_DESCS,val))
-				setWhatIsSold(CMParms.indexOfIgnoreCase(ShopKeeper.DEAL_DESCS,val));
+				setWhatIsSoldMask(CMParms.indexOfIgnoreCase(ShopKeeper.DEAL_DESCS,val));
 			break;
 		}
 		case 1: setPrejudiceFactors(val); break;

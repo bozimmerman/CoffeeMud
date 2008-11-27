@@ -45,7 +45,7 @@ import java.util.Vector;
  * for situations where the stock is empty, but someone is wanting to sell.
  * 
  * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper
- * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#whatIsSold()
+ * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#isSold(int)
  * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#DEAL_INVENTORYONLY
  */
 @SuppressWarnings("unchecked")
@@ -55,7 +55,7 @@ public interface CoffeeShop extends CMCommon
      * Returns whether an item sufficiently like the given item originally
      * existed in this shops inventory when it was created.  Applies only
      * to shops where their whatIsSold method returns ONLY_INVENTORY
-     * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#whatIsSold()
+     * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#isSold(int)
      * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#DEAL_INVENTORYONLY
      * @param thisThang the thing to compare against the base inventory
      * @return whether the item, or one just like it, is in the base inventory
@@ -74,7 +74,7 @@ public interface CoffeeShop extends CMCommon
     /**
      * Returns the number of items in the stores base inventory.  Only really useful
      * for historical reasons, or if the shop sells inventory only.
-     * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#whatIsSold()
+     * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#isSold(int)
      * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#DEAL_INVENTORYONLY
      * @return the number of items in the base inventory
      */
@@ -108,7 +108,7 @@ public interface CoffeeShop extends CMCommon
      * Returns a Vector of all the Environmental objects this shop has in its base
      * inventory.  Only useful for historical reasons, or if the shop sells inventory
      * only.
-     * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#whatIsSold()
+     * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#isSold(int)
      * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#DEAL_INVENTORYONLY
      * @return a Vector of objects in base inventory
      */
@@ -149,7 +149,7 @@ public interface CoffeeShop extends CMCommon
     
     /**
      * Removes all items like the given item from the base and store inventory.
-     * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#whatIsSold()
+     * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#isSold(int)
      * @param thisThang the item like which to remove
      */
     public void delAllStoreInventory(Environmental thisThang);
@@ -157,7 +157,7 @@ public interface CoffeeShop extends CMCommon
     /**
      * Returns whether an item with the given name is presently in this stores
      * stock inventory, and available for sale.
-     * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#whatIsSold()
+     * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#isSold(int)
      * @param name the name of the item to search for
      * @param mob the mob who is interested (stock can differ depending on customer)
      * @return whether the item is available
@@ -255,8 +255,8 @@ public interface CoffeeShop extends CMCommon
     public ShopKeeper shopKeeper();
     
     /**
-     * Returns the whatIsSold code for the shopkeeper hosting this shop.
-     * @return the whatIsSold code for the shopkeeper hosting this shop.
+     * Returns whether the whatIsSold code applies to the shopkeeper hosting this shop.
+     * @return whether the whatIsSold code applies to the shopkeeper hosting this shop.
      */
-    public int whatIsSold();
+    public boolean isSold(int code);
 }

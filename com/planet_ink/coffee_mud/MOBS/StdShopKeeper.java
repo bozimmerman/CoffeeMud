@@ -35,7 +35,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 {
 	public String ID(){return "StdShopKeeper";}
     protected CoffeeShop shop=((CoffeeShop)CMClass.getCommon("DefaultCoffeeShop")).build(this);
-	protected int whatISell=0;
+	protected long whatIsSoldMask=0;
 	protected int invResetRate=0;
 	protected int invResetTickDown=0;
 	protected String budget="";
@@ -69,8 +69,40 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 		recoverCharStats();
 	}
 
-	public int whatIsSold(){return whatISell;}
-	public void setWhatIsSold(int newSellCode){whatISell=newSellCode;}
+    public boolean isSold(int mask){
+    	if(mask==0) return whatIsSoldMask==0;
+    	if((whatIsSoldMask&255)==mask)
+	    	return true;
+		return CMath.bset(whatIsSoldMask>>8, CMath.pow(2,mask-1));
+    }
+    public void addSoldType(int mask)
+    {
+    	if(mask==0)
+    		whatIsSoldMask=0;
+    	else
+    	{
+	    	if((whatIsSoldMask>0)&&(whatIsSoldMask<256))
+		    	whatIsSoldMask=(CMath.pow(2,whatIsSoldMask-1)<<8);
+	    	
+    		for(int c=0;c<ShopKeeper.DEAL_CONFLICTS.length;c++)
+    			for(int c1=0;c1<ShopKeeper.DEAL_CONFLICTS[c].length;c1++)
+    				if(ShopKeeper.DEAL_CONFLICTS[c][c1]==mask)
+    				{
+    	    			for(c1=0;c1<ShopKeeper.DEAL_CONFLICTS[c].length;c++)
+    	    				if((ShopKeeper.DEAL_CONFLICTS[c][c1]!=mask)
+    	    				&&(isSold(ShopKeeper.DEAL_CONFLICTS[c][c1])))
+    	    					addSoldType(-ShopKeeper.DEAL_CONFLICTS[c][c1]);
+	    				break;
+	    			}
+    		
+	    	if(mask<0)
+		    	whatIsSoldMask=CMath.unsetb(whatIsSoldMask,(CMath.pow(2,(-mask)-1)<<8));
+	    	else
+		    	whatIsSoldMask|=(CMath.pow(2,mask-1)<<8);
+    	}
+    }
+    public long getWhatIsSoldMask(){return whatIsSoldMask;}
+	public void setWhatIsSoldMask(long newSellCode){whatIsSoldMask=newSellCode;}
 
 	protected void cloneFix(MOB E)
 	{
@@ -110,7 +142,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
     }
 
 
-    public String storeKeeperString(){return CMLib.coffeeShops().storeKeeperString(whatIsSold());}
+    public String storeKeeperString(){return CMLib.coffeeShops().storeKeeperString(getShop());}
 	public boolean doISellThis(Environmental thisThang){return CMLib.coffeeShops().doISellThis(thisThang,this);}
     protected Area getStartArea(){
         Area A=CMLib.map().getStartArea(this);
@@ -250,7 +282,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 	                    ||(CMLib.law().doesHavePriviledgesHere(msg.source(),getStartRoom()))
 						||(CMSecurity.isAllowed(msg.source(),location(),"CMDMOBS")&&(isMonster()))
 						||(CMSecurity.isAllowed(msg.source(),location(),"CMDROOMS")&&(isMonster()))))
-					&&((doISellThis(msg.tool()))||(whatISell==DEAL_INVENTORYONLY)))
+					&&((doISellThis(msg.tool()))||(isSold(DEAL_INVENTORYONLY))))
 	                {
 	                    CMLib.commands().postSay(this,msg.source(),"Yes, I will now sell "+msg.tool().name()+".",false,false);
 	                    getShop().addStoreInventory(msg.tool(),1,-1);
@@ -345,7 +377,7 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
 				{
 					String forMask=CMLib.coffeeShops().getListForMask(msg.targetMessage());
 					Vector inventory=getShop().getStoreInventory();
-					inventory=CMLib.coffeeShops().addRealEstateTitles(inventory,mob,whatIsSold(),getStartRoom());
+					inventory=CMLib.coffeeShops().addRealEstateTitles(inventory,mob,getShop(),getStartRoom());
                     int limit=CMParms.getParmInt(finalPrejudiceFactors(),"LIMIT",0);
                     String s=CMLib.coffeeShops().getListInventory(this,mob,inventory,limit,this,forMask);
 					if(s.length()>0)

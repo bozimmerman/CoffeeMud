@@ -80,7 +80,7 @@ public class GenPostman extends StdPostman
             return CMLib.coffeeMaker().getGenMobStat(this,code);
         switch(getCodeNum(code))
         {
-        case 0: return ""+whatIsSold();
+        case 0: return ""+getWhatIsSoldMask();
         case 1: return prejudiceFactors();
         case 2: return postalChain();
         case 3: return ""+minimumPostage();
@@ -101,7 +101,7 @@ public class GenPostman extends StdPostman
         else
         switch(getCodeNum(code))
         {
-        case 0: setWhatIsSold(CMath.s_int(val)); break;
+        case 0: setWhatIsSoldMask(CMath.s_long(val)); break;
         case 1: setPrejudiceFactors(val); break;
         case 2: setPostalChain(val); break;
         case 3: setMinimumPostage(CMath.s_double(val)); break;

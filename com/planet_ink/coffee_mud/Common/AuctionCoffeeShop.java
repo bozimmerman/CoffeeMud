@@ -55,7 +55,7 @@ public class AuctionCoffeeShop implements CoffeeShop
     }
     
     public ShopKeeper shopKeeper(){ return (shopKeeper==null)?null:shopKeeper.get();}
-    public int whatIsSold(){ShopKeeper SK=shopKeeper(); return (SK==null)?ShopKeeper.DEAL_ANYTHING:SK.whatIsSold();}
+    public boolean isSold(int code){ShopKeeper SK=shopKeeper(); return (SK==null)?false:SK.isSold(code);}
     
     public boolean inBaseInventory(Environmental thisThang)
     {

@@ -561,7 +561,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 			}
 			if(E instanceof ShopKeeper)
 			{
-				text.append(CMLib.xml().convertXMLtoTag("SELLCD",((ShopKeeper)E).whatIsSold()));
+				text.append(CMLib.xml().convertXMLtoTag("SELLCD",((ShopKeeper)E).getWhatIsSoldMask()));
 				Vector V=((ShopKeeper)E).getShop().getStoreInventory();
 				StringBuffer itemstr=new StringBuffer("");
 				for(int b=0;b<V.size();b++)
@@ -1934,7 +1934,7 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 	{
 		boolean variableEq=false;
 		ShopKeeper shopmob=(ShopKeeper)E;
-		shopmob.setWhatIsSold(CMLib.xml().getIntFromPieces(buf,"SELLCD"));
+		shopmob.setWhatIsSoldMask(CMLib.xml().getLongFromPieces(buf,"SELLCD"));
 		shopmob.getShop().emptyAllShelves();
 		Vector V=CMLib.xml().getRealContentsFromPieces(buf,"STORE");
 		if(V==null)

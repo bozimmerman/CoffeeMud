@@ -98,6 +98,25 @@ public interface ShopKeeper extends Environmental, Economics
     public final static int DEAL_CLANPOSTMAN=29;
     /** shopkeeper type constant, means they handle auctions, and implement the Auctioneer interface*/
     public final static int DEAL_AUCTIONEER=30;
+    
+    /** shopkeeper integer sets denoting the DEAL_* constants which conflict with each other */
+    public final static int[][] DEAL_CONFLICTS={
+    	{DEAL_POSTMAN,DEAL_CLANPOSTMAN},
+    	{DEAL_CLANBANKER,DEAL_BANKER},
+    	{DEAL_SHIPSELLER,DEAL_CSHIPSELLER,DEAL_LANDSELLER,DEAL_CLANDSELLER},
+    	{DEAL_TRAINER,DEAL_CASTER},
+    };
+    
+    /** A list of strings describing the DEAL_* constants, in their numeric value order. */
+	public final static String[] DEAL_DESCS={
+		"ANYTHING","GENERAL","ARMOR","MAGIC","WEAPONS",
+		"PETS","LEATHER","INVENTORY ONLY","TRAINER",
+		"CASTER","JEWELRY","POTIONS","BANKER","LAND",
+		"ANY TECHNOLOGY","CLAN LAND","FOODS","MEATS",
+	    "VEGETABLES","HIDES","LUMBER","METALS","ROCKS",
+		"CLAN BANKER", "INN KEEPER", "SHIP SELLER", 
+        "CLAN SHIP SELLER", "SLAVES", "POSTMAN", "CLAN POSTMAN",
+        "AUCTIONEER"};
 	
     /**
      * This class represents a given price for a given item in the shopkeepers inventory. It is usually
@@ -112,17 +131,6 @@ public interface ShopKeeper extends Environmental, Economics
         /** the number of quest points required to purchase the item */
         public int questPointPrice=0;
     }
-    
-    /** A list of strings describing the DEAL_* constants, in their numeric value order. */
-	public final static String[] DEAL_DESCS={
-		"ANYTHING","GENERAL","ARMOR","MAGIC","WEAPONS",
-		"PETS","LEATHER","INVENTORY ONLY","TRAINER",
-		"CASTER","JEWELRY","POTIONS","BANKER","LAND",
-		"ANY TECHNOLOGY","CLAN LAND","FOODS","MEATS",
-	    "VEGETABLES","HIDES","LUMBER","METALS","ROCKS",
-		"CLAN BANKER", "INN KEEPER", "SHIP SELLER", 
-        "CLAN SHIP SELLER", "SLAVES", "POSTMAN", "CLAN POSTMAN",
-        "AUCTIONEER"};
 
     /** 
      * the CoffeeShop method to access the shopkeepers store of goods 
@@ -130,29 +138,50 @@ public interface ShopKeeper extends Environmental, Economics
      * @return the CoffeeShop object
      */
     public CoffeeShop getShop();
+    
     /**
-     * Returns the ShopKeeper DEAL_* constant describing what is sold or bought by this ShopKeeper
-     * @see ShopKeeper
-     * @return the dealer constant
+     * Returns the ShopKeeper DEAL_* mask describing what is sold or bought by this ShopKeeper
+     * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#DEAL_DESCS
+     * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#setWhatIsSoldMask(long)
+     * return the dealer type constants to the 2nd power, shifted 8 bits left
      */
-	public int whatIsSold();
+	public long getWhatIsSoldMask();
     /**
-     * Sets the ShopKeeper DEAL_* constant  describing what is sold or bought by this ShopKeeper
-     * @see ShopKeeper
-     * @param newSellCode the dealer type constant
+     * Returns whether the given type of good is sold by this shopkeeper.
+     * @param mask  the ShopKeeper DEAL_* constant describing what is sold or bought by this ShopKeeper
+     * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#DEAL_DESCS
+     * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#getWhatIsSoldMask()
+     * @return true if the shopkeeper will make such a deal
      */
-	public void setWhatIsSold(int newSellCode);
+	public boolean isSold(int deal);
+    /**
+     * Sets the encoded ShopKeeper DEAL_* constants describing what is sold or bought by this ShopKeeper
+     * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#DEAL_DESCS
+     * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#addSoldType(int)
+     * @param newSellCode the dealer type constants to the 2nd power, shifted 8 bits left
+     */
+	public void setWhatIsSoldMask(long newSellCode);
+	
+	/**
+    * Adds the ShopKeeper DEAL_* constants describing what is sold or bought by this ShopKeeper
+    * to the existing shopkeeper mask.  A value of 0 will clear the whole mask.
+     * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#DEAL_DESCS
+     * @see com.planet_ink.coffee_mud.core.interfaces.ShopKeeper#isSold(int)
+    * @param dealType the ShopKeeper DEAL_* constants describing what is sold or bought by this ShopKeeper
+    */
+    public void addSoldType(int dealType);
+    
     /** 
      * Based on the value of this ShopKeepers whatIsSold() method, this will return a displayable string
      * describing that type.
-     * @see ShopKeeper#whatIsSold()
+     * @see ShopKeeper#isSold(int)
      * @return a description of the whatIsSold() code
      */
 	public String storeKeeperString();
     /**
      * Returns whether this ShopKeeper deals in the type of item passed in.  The determination is based
      * on the whatIsSold() code.
-     * @see ShopKeeper#whatIsSold()
+     * @see ShopKeeper#isSold(int)
      * @param thisThang the item to determine if the shopkeeper deals  in
      * @return whether the shopkeeper deals in the type of item passed in
      */

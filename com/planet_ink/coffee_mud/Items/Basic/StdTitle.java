@@ -222,11 +222,11 @@ public class StdTitle extends StdItem implements LandTitle
 			if((A!=null)&&(A.landOwner().length()>0))
 			{
 				ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(msg.target());
-			    if((((SK.whatIsSold()==ShopKeeper.DEAL_CLANBANKER)||(SK.whatIsSold()==ShopKeeper.DEAL_CLANDSELLER))
+			    if((((SK.isSold(ShopKeeper.DEAL_CLANBANKER))||(SK.isSold(ShopKeeper.DEAL_CLANDSELLER)))
 			            &&(!A.landOwner().equals(msg.source().getClanID())))
-			    ||(((SK.whatIsSold()==ShopKeeper.DEAL_BANKER)||(SK.whatIsSold()==ShopKeeper.DEAL_CLANBANKER))
+			    ||(((SK.isSold(ShopKeeper.DEAL_BANKER))||(SK.isSold(ShopKeeper.DEAL_CLANBANKER)))
 			            &&(!A.landOwner().equals(msg.source().Name())))
-                ||(((SK.whatIsSold()==ShopKeeper.DEAL_POSTMAN)||(SK.whatIsSold()==ShopKeeper.DEAL_CLANPOSTMAN))
+                ||(((SK.isSold(ShopKeeper.DEAL_POSTMAN))||(SK.isSold(ShopKeeper.DEAL_CLANPOSTMAN)))
                         &&(!A.landOwner().equals(msg.source().Name()))))
 			    {
 			        String str="I'm sorry, '"+msg.tool().Name()+" is not for sale.  It already belongs to "+A.landOwner()+".  It should be destroyed.";
@@ -453,11 +453,11 @@ public class StdTitle extends StdItem implements LandTitle
 					}
 
 				}
-				if((((ShopKeeper)msg.tool()).whatIsSold()==ShopKeeper.DEAL_CLANDSELLER)
+				if((((ShopKeeper)msg.tool()).isSold(ShopKeeper.DEAL_CLANDSELLER))
 				&&(msg.source().getClanID().length()>0))
 					A.setLandOwner(msg.source().getClanID());
 				else
-				if((((ShopKeeper)msg.tool()).whatIsSold()==ShopKeeper.DEAL_CSHIPSELLER)
+				if((((ShopKeeper)msg.tool()).isSold(ShopKeeper.DEAL_CSHIPSELLER))
 				&&(msg.source().getClanID().length()>0))
 					A.setLandOwner(msg.source().getClanID());
 				else

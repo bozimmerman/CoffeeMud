@@ -48,7 +48,7 @@ public class BankAccountInfo extends StdWebMacro
 		BankAccountStuff info=(BankAccountStuff)httpReq.getRequestObjects().get("BANKINFO: "+B.bankChain()+": "+playerM.Name());
 		if(info!=null) return info;
 		info=new BankAccountStuff();
-		if((!playerM.Name().equals(playerM.getClanID()))&&(B.whatIsSold()==Banker.DEAL_CLANBANKER))
+		if((!playerM.Name().equals(playerM.getClanID()))&&(B.isSold(Banker.DEAL_CLANBANKER)))
 		{
 		}
 		else

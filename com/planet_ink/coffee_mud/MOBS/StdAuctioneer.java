@@ -105,8 +105,10 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
         CMLib.map().addAuctionHouse(this);
     }
 
-    public int whatIsSold(){return ShopKeeper.DEAL_AUCTIONEER;}
-    public void setWhatIsSold(int newSellCode){ }
+    public long getWhatIsSoldMask(){ return DEAL_AUCTIONEER;}
+    public boolean isSold(int mask){return mask==ShopKeeper.DEAL_AUCTIONEER;}
+    public void setWhatIsSoldMask(long newSellCode){ }
+    public void addSoldType(int mask){}
 
 
     public boolean tick(Tickable ticking, int tickID)
@@ -614,7 +616,7 @@ public class StdAuctioneer extends StdMOB implements Auctioneer
 	        super.executeMsg(myHost,msg);
     }
 
-    public String storeKeeperString(){return CMLib.coffeeShops().storeKeeperString(whatIsSold());}
+    public String storeKeeperString(){return CMLib.coffeeShops().storeKeeperString(getShop());}
 	public boolean doISellThis(Environmental thisThang){return CMLib.coffeeShops().doISellThis(thisThang,this);}
     protected Area getStartArea(){
         Area A=CMLib.map().getStartArea(this);

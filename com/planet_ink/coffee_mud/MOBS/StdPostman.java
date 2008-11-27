@@ -53,7 +53,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         setDisplayText("The local postman is waiting to serve you.");
         CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);
         setMoney(0);
-        whatISell=ShopKeeper.DEAL_POSTMAN;
+        whatIsSoldMask=ShopKeeper.DEAL_POSTMAN;
         baseEnvStats.setWeight(150);
         setWimpHitPoint(0);
 
@@ -92,13 +92,14 @@ public class StdPostman extends StdShopKeeper implements PostOffice
         CMLib.map().addPostOffice(this);
     }
 
-    public int whatIsSold(){return whatISell;}
-    public void setWhatIsSold(int newSellCode){
-        if(newSellCode!=ShopKeeper.DEAL_CLANPOSTMAN)
-            whatISell=ShopKeeper.DEAL_POSTMAN;
-        else
-            whatISell=ShopKeeper.DEAL_CLANPOSTMAN;
-    }
+    public void addSoldType(int mask){setWhatIsSoldMask(CMath.abs(mask));}
+	public void setWhatIsSoldMask(long newSellCode){
+    	super.setWhatIsSoldMask(newSellCode);
+    	if(!isSold(ShopKeeper.DEAL_CLANPOSTMAN))
+    		whatIsSoldMask=ShopKeeper.DEAL_POSTMAN;
+    	else
+    		whatIsSoldMask=ShopKeeper.DEAL_CLANPOSTMAN;
+	}
 
     public String postalChain(){return text();}
     public void setPostalChain(String name){setMiscText(name);}
@@ -121,7 +122,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 
     public void addToBox(MOB mob, Item thisThang, String from, String to, long holdTime, double COD)
     {
-        if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+        if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
         {
             if(mob.getClanID().length()==0)
                 return;
@@ -133,7 +134,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 
     public boolean delFromBox(MOB mob, Item thisThang)
     {
-        if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+        if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
         {
             if(mob.getClanID().length()>0)
                 return delFromBox(mob.getClanID(),thisThang);
@@ -232,7 +233,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
     }
     public Item findBoxContents(MOB mob, String likeThis)
     {
-        if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+        if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
         {
             if(mob.getClanID().length()==0) return null;
             return findBoxContents(mob.getClanID(),likeThis);
@@ -559,7 +560,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                                 &&((CMLib.players().getLoadPlayer(toWhom)!=null)||(CMLib.clans().findClan(toWhom)!=null)))
                                 {
                                     String fromWhom=msg.source().Name();
-                                    if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                                    if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                                         fromWhom=msg.source().getClanID();
                                     if(CMLib.players().getLoadPlayer(toWhom)!=null)
                                         toWhom=CMLib.players().getLoadPlayer(toWhom).Name();
@@ -621,12 +622,12 @@ public class StdPostman extends StdShopKeeper implements PostOffice
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
                 {
                     String thename=msg.source().Name();
-                    if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                    if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                         thename=msg.source().getClanID();
                     Item old=(Item)msg.tool();
                     MailPiece data=findExactBoxData(thename,(Item)msg.tool());
                     if((data==null)
-                    &&(whatISell!=ShopKeeper.DEAL_CLANPOSTMAN)
+                    &&(!isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                     &&(msg.source().isMarriedToLiege()))
                         data=findExactBoxData(msg.source().getLiegeID(),(Item)msg.tool());
                     if(data==null)
@@ -634,7 +635,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                     else
                     {
                         if((!delFromBox(msg.source(),old))
-                        &&(whatISell!=ShopKeeper.DEAL_CLANPOSTMAN)
+                        &&(!isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                         &&(msg.source().isMarriedToLiege()))
                             delFromBox(msg.source().getLiegeID(),old);
                         double totalCharge=getCODChargeForPiece(data);
@@ -677,18 +678,18 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                 super.executeMsg(myHost,msg);
                 String str=CMStrings.getSayFromMessage(msg.targetMessage());
                 String theName=msg.source().Name();
-                if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                     theName=msg.source().getClanID();
                 if((str!=null)&&(str.trim().equalsIgnoreCase("open")))
                 {
-                    if((whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                    if((isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                     &&((theName.length()==0)
                       ||(CMLib.clans().getClan(theName)==null)))
                         CMLib.commands().postSay(this,mob,"I'm sorry, I only do business with Clans, and you aren't part of one.",true,false);
                     else
                     if(getOurOpenBoxes(theName).containsKey(postalBranch()))
                     {
-                        if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                        if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                             CMLib.commands().postSay(this,mob,"Your clan already has a box open here!",true,false);
                         else
                             CMLib.commands().postSay(this,mob,"You already have a box open here!",true,false);
@@ -703,7 +704,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                         }
                         CMLib.beanCounter().subtractMoney(msg.source(),CMLib.beanCounter().getCurrency(this),feeForNewBox());
                         createBoxHere(theName,theName);
-                        if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                        if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                             CMLib.commands().postSay(this,mob,"A box has been opened for your clan.",true,false);
                         else
                             CMLib.commands().postSay(this,mob,"A box has been opened for you.",true,false);
@@ -711,7 +712,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                     else
                     {
                         createBoxHere(theName,theName);
-                        if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                        if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                             CMLib.commands().postSay(this,mob,"A box has been opened for your clan.",true,false);
                         else
                             CMLib.commands().postSay(this,mob,"A box has been opened for you.",true,false);
@@ -722,7 +723,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                 {
                     if(!getOurOpenBoxes(theName).containsKey(postalBranch()))
                     {
-                        if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                        if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                             CMLib.commands().postSay(this,mob,"Your clan does not have a box here!",true,false);
                         else
                             CMLib.commands().postSay(this,mob,"You don't have a box open here!",true,false);
@@ -742,7 +743,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                     str=str.trim().substring(7).trim();
                     if(!getOurOpenBoxes(theName).containsKey(postalBranch()))
                     {
-                        if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                        if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                             CMLib.commands().postSay(this,mob,"Your clan does not have a box here!",true,false);
                         else
                             CMLib.commands().postSay(this,mob,"You don't have a box open here!",true,false);
@@ -760,7 +761,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                             else
                             if(!P.getOurOpenBoxes(theName).containsKey(P.postalBranch()))
                             {
-                                if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                                if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                                     CMLib.commands().postSay(this,mob,"I'm sorry, your clan does not have a box at our branch in "+A.name()+".",true,false);
                                 else
                                     CMLib.commands().postSay(this,mob,"I'm sorry, you don't have a box at our branch in "+A.name()+".",true,false);
@@ -782,7 +783,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
     			if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
     			{
 	                Vector V=null;
-	                if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+	                if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
 	                    V=getAllLocalBoxPD(mob.getClanID());
 	                else
 	                {
@@ -867,7 +868,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                     if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
                         return false;
                     if(msg.tool()==null) return false;
-                    if((whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                    if((isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                     &&((msg.source().getClanID().length()==0)
                       ||(CMLib.clans().getClan(msg.source().getClanID())==null)))
                     {
@@ -886,7 +887,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                     if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
                         return false;
                     String thename=msg.source().Name();
-                    if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                    if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                     {
                         thename=msg.source().getClanID();
                         Clan C=CMLib.clans().getClan(msg.source().getClanID());
@@ -912,7 +913,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                         return false;
                     MailPiece data=findExactBoxData(thename,(Item)msg.tool());
                     if((data==null)
-                    &&(whatISell!=ShopKeeper.DEAL_CLANPOSTMAN)
+                    &&(!isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                     &&(msg.source().isMarriedToLiege()))
                         data=findExactBoxData(msg.source().getLiegeID(),(Item)msg.tool());
                     if(data==null)
@@ -939,7 +940,7 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                 if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
                     return false;
                 String thename=msg.source().Name();
-                if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                 {
                     thename=msg.source().getClanID();
                     Clan C=CMLib.clans().getClan(msg.source().getClanID());
@@ -957,18 +958,18 @@ public class StdPostman extends StdShopKeeper implements PostOffice
                 }
                 else
                 if((!getOurOpenBoxes(thename).containsKey(postalBranch()))
-                &&((whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                &&((isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                    ||(!msg.source().isMarriedToLiege())
                    ||(!getOurOpenBoxes(msg.source().getLiegeID()).containsKey(postalBranch()))))
                 {
-                    if((whatISell!=ShopKeeper.DEAL_CLANPOSTMAN)
+                    if((!isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                     &&(msg.source().getStartRoom().getArea()==getStartRoom().getArea()))
                     {
                         createBoxHere(msg.source().Name(),msg.source().Name());
                         return true;
                     }
                     StringBuffer str=new StringBuffer("");
-                    if(whatISell==ShopKeeper.DEAL_CLANPOSTMAN)
+                    if(isSold(ShopKeeper.DEAL_CLANPOSTMAN))
                         str.append("The Clan "+thename+" does not have a postal box at this branch, I'm afraid.");
                     else
                         str.append("You don't have a postal box at this branch, I'm afraid.");

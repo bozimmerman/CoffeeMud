@@ -3131,18 +3131,19 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         int newValue=-1;
         if(newType.length()>0)
             newValue=codeStr.indexOf(newType.toUpperCase());
-        if(newValue>=0)
+        if(newValue<=0)
+        	E.setWhatIsSoldMask(0);
+        else
+        if(E.isSold(newValue))
         {
-            boolean reexamine=(E.whatIsSold()!=newValue);
-            E.setWhatIsSold(newValue);
-            if(reexamine)
-            {
-                Vector V=E.getShop().getStoreInventory();
-                for(int b=0;b<V.size();b++)
-                    if(!E.doISellThis((Environmental)V.elementAt(b)))
-                        E.getShop().delAllStoreInventory((Environmental)V.elementAt(b));
-            }
+        	E.addSoldType(-newValue);
+            Vector V=E.getShop().getStoreInventory();
+            for(int b=0;b<V.size();b++)
+                if(!E.doISellThis((Environmental)V.elementAt(b)))
+                    E.getShop().delAllStoreInventory((Environmental)V.elementAt(b));
         }
+        else
+            E.addSoldType(newValue);
     }
 
     protected void genShopkeeper2(MOB mob, ShopKeeper E, int showNumber, int showFlag)
@@ -3210,10 +3211,10 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                             item.recoverEnvStats();
                             boolean ok=E.doISellThis(item);
                             if((item instanceof Ability)
-                               &&((E.whatIsSold()==ShopKeeper.DEAL_TRAINER)||(E.whatIsSold()==ShopKeeper.DEAL_CASTER)))
+                               &&((E.isSold(ShopKeeper.DEAL_TRAINER))||(E.isSold(ShopKeeper.DEAL_CASTER))))
                                 ok=true;
                             else
-                            if(E.whatIsSold()==ShopKeeper.DEAL_INVENTORYONLY)
+                            if(E.isSold(ShopKeeper.DEAL_INVENTORYONLY))
                                 ok=true;
                             if(!ok)
                             {

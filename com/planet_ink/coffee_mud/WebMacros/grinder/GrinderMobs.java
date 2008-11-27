@@ -441,7 +441,16 @@ public class GrinderMobs
 					break;
 				case 22: // shopkeeper type
 					if(M instanceof ShopKeeper)
-						((ShopKeeper)M).setWhatIsSold(CMath.s_int(old));
+					{
+						((ShopKeeper)M).setWhatIsSoldMask(0);
+						((ShopKeeper)M).addSoldType(Integer.valueOf(CMath.s_int(old)));
+						int x=1;
+						while(httpReq.getRequestParameter(okparms[o]+x)!=null)
+						{
+							((ShopKeeper)M).addSoldType(Integer.valueOf(CMath.s_int(httpReq.getRequestParameter(okparms[o]+x))));
+							x++;
+						}
+					}
 					break;
 				case 23: // is generic
 					break;

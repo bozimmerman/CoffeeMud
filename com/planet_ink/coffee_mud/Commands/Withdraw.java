@@ -76,7 +76,7 @@ public class Withdraw extends StdCommand
     			thisThang=((Banker)SHOP).findDepositInventory(mob,str);
     
     		if(((thisThang==null)||((thisThang instanceof Coins)&&(((Coins)thisThang).getNumberOfCoins()<=0)))
-    		&&(((Banker)SHOP).whatIsSold()!=ShopKeeper.DEAL_CLANBANKER)
+    		&&(!((Banker)SHOP).isSold(ShopKeeper.DEAL_CLANBANKER))
     		&&(mob.isMarriedToLiege()))
     		{
     			MOB mob2=CMLib.players().getPlayer(mob.getLiegeID());
@@ -100,7 +100,7 @@ public class Withdraw extends StdCommand
         {
             thisThang=((PostOffice)SHOP).findBoxContents(mob,str);
             if((thisThang==null)
-            &&(((PostOffice)SHOP).whatIsSold()!=ShopKeeper.DEAL_CLANPOSTMAN)
+            &&(!((PostOffice)SHOP).isSold(ShopKeeper.DEAL_CLANPOSTMAN))
             &&(mob.isMarriedToLiege()))
             {
                 MOB mob2=CMLib.players().getPlayer(mob.getLiegeID());

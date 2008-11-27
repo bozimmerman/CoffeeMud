@@ -85,10 +85,42 @@ public class Merchant extends CommonSkill implements ShopKeeper
 			affectableStats.setWeight(affectableStats.weight()+shop.totalStockWeight());
 	}
 
-    private int whatIsSold=ShopKeeper.DEAL_ANYTHING;
-	public int whatIsSold(){return whatIsSold;}
-	public void setWhatIsSold(int newSellCode){whatIsSold=newSellCode;}
-    public String storeKeeperString(){return CMLib.coffeeShops().storeKeeperString(whatIsSold());}
+    private long whatIsSoldMask=ShopKeeper.DEAL_ANYTHING;
+    public boolean isSold(int mask){
+    	if(mask==0) return whatIsSoldMask==0;
+    	if((whatIsSoldMask&255)==mask)
+	    	return true;
+		return CMath.bset(whatIsSoldMask>>8, CMath.pow(2,mask-1));
+    }
+    public void addSoldType(int mask)
+    {
+    	if(mask==0)
+    		whatIsSoldMask=0;
+    	else
+    	{
+	    	if((whatIsSoldMask>0)&&(whatIsSoldMask<256))
+		    	whatIsSoldMask=(CMath.pow(2,whatIsSoldMask-1)<<8);
+	    	
+    		for(int c=0;c<ShopKeeper.DEAL_CONFLICTS.length;c++)
+    			for(int c1=0;c1<ShopKeeper.DEAL_CONFLICTS[c].length;c1++)
+    				if(ShopKeeper.DEAL_CONFLICTS[c][c1]==mask)
+    				{
+    	    			for(c1=0;c1<ShopKeeper.DEAL_CONFLICTS[c].length;c++)
+    	    				if((ShopKeeper.DEAL_CONFLICTS[c][c1]!=mask)
+    	    				&&(isSold(ShopKeeper.DEAL_CONFLICTS[c][c1])))
+    	    					addSoldType(-ShopKeeper.DEAL_CONFLICTS[c][c1]);
+	    				break;
+	    			}
+    		
+	    	if(mask>0)
+		    	whatIsSoldMask|=(CMath.pow(2,mask-1)<<8);
+	    	else
+		    	whatIsSoldMask=CMath.unsetb(whatIsSoldMask,(CMath.pow(2,(-mask)-1)<<8));
+    	}
+    }
+    public long getWhatIsSoldMask(){return whatIsSoldMask;}
+	public void setWhatIsSoldMask(long newSellCode){whatIsSoldMask=newSellCode;}
+    public String storeKeeperString(){return CMLib.coffeeShops().storeKeeperString(getShop());}
     public boolean doISellThis(Environmental thisThang){return CMLib.coffeeShops().doISellThis(thisThang,this);}
     private String prejudice="";
 	public String prejudiceFactors(){return prejudice;}
@@ -262,7 +294,7 @@ public class Merchant extends CommonSkill implements ShopKeeper
             ||((source.getClanID().length()>0)
             	&&(CMLib.law().getLegalBehavior(merchantM.getStartRoom())!=null)
             	&&(CMLib.law().getLegalBehavior(merchantM.getStartRoom()).rulingOrganization().equals(source.getClanID()))))
-        &&((doISellThis(tool))||(whatIsSold()==DEAL_INVENTORYONLY)))
+        &&((doISellThis(tool))||(isSold(DEAL_INVENTORYONLY))))
         {
             CMLib.commands().postSay(merchantM,source,"OK, I will now sell "+tool.name()+".",false,false);
             getShop().addStoreInventory(tool,1,-1);

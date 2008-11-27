@@ -141,7 +141,7 @@ public class Thief_Embezzle extends ThiefSkill
 
 		Item myCoins=null;
         String myAcct=mob.Name();
-        if(bank.whatIsSold()==ShopKeeper.DEAL_CLANBANKER)
+        if(bank.isSold(ShopKeeper.DEAL_CLANBANKER))
         {
             if(mob.getClanID().length()>0)
             {

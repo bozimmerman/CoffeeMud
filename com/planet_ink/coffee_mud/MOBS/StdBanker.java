@@ -49,7 +49,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 		setDisplayText("A banker is waiting to serve you.");
 		CMLib.factions().setAlignment(this,Faction.ALIGN_GOOD);
 		setMoney(0);
-		whatISell=ShopKeeper.DEAL_BANKER;
+		whatIsSoldMask=ShopKeeper.DEAL_BANKER;
 		baseEnvStats.setWeight(150);
 		setWimpHitPoint(0);
 
@@ -77,14 +77,13 @@ public class StdBanker extends StdShopKeeper implements Banker
         CMLib.map().addBank(this);
     }
 
-
-
-	public int whatIsSold(){return whatISell;}
-	public void setWhatIsSold(int newSellCode){
-		if(newSellCode!=ShopKeeper.DEAL_CLANBANKER)
-			whatISell=ShopKeeper.DEAL_BANKER;
-		else
-			whatISell=ShopKeeper.DEAL_CLANBANKER;
+    public void addSoldType(int mask){setWhatIsSoldMask(CMath.abs(mask));}
+	public void setWhatIsSoldMask(long newSellCode){
+    	super.setWhatIsSoldMask(newSellCode);
+    	if(!isSold(ShopKeeper.DEAL_CLANBANKER))
+    		whatIsSoldMask=ShopKeeper.DEAL_BANKER;
+    	else
+    		whatIsSoldMask=ShopKeeper.DEAL_CLANBANKER;
 	}
 
 	public String bankChain(){return text();}
@@ -100,7 +99,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	public void addDepositInventory(MOB mob, Item thisThang)
 	{
-		if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+		if(isSold(ShopKeeper.DEAL_CLANBANKER))
 		{
 			if(mob.getClanID().length()==0)
 				return;
@@ -112,7 +111,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	public boolean delDepositInventory(MOB mob, Item thisThang)
 	{
-		if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+		if(isSold(ShopKeeper.DEAL_CLANBANKER))
 		{
 			if(mob.getClanID().length()>0)
 				return delDepositInventory(mob.getClanID(),thisThang);
@@ -182,7 +181,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	public Vector getDepositedItems(MOB mob)
 	{
 		if(mob==null) return new Vector();
-		return getDepositedItems((whatISell==ShopKeeper.DEAL_CLANBANKER)?mob.getClanID():mob.Name());
+		return getDepositedItems((isSold(ShopKeeper.DEAL_CLANBANKER))?mob.getClanID():mob.Name());
 	}
 	public Vector getDepositedItems(String mob)
 	{
@@ -221,7 +220,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	public void bankLedger(MOB mob, String msg)
 	{
 	    String date=CMLib.utensils().getFormattedDate(mob);
-		if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+		if(isSold(ShopKeeper.DEAL_CLANBANKER))
 		{
 			if(mob.getClanID().length()==0) return;
 		    CMLib.beanCounter().bankLedger(bankChain(),mob.getClanID(),date+": "+msg);
@@ -232,7 +231,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 
 	public Item findDepositInventory(MOB mob, String likeThis)
 	{
-		if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+		if(isSold(ShopKeeper.DEAL_CLANBANKER))
 		{
 			if(mob.getClanID().length()==0) return null;
 			return findDepositInventory(mob.getClanID(),likeThis);
@@ -279,7 +278,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	{
 		Vector<MoneyLibrary.DebtItem> debt=CMLib.beanCounter().getDebtOwed(bankChain());
 		if(mob==null) return null;
-		String whom=(whatISell==ShopKeeper.DEAL_CLANBANKER)?mob.getClanID():mob.Name();
+		String whom=(isSold(ShopKeeper.DEAL_CLANBANKER))?mob.getClanID():mob.Name();
 		if((whom==null)||(whom.length()==0)) return null;
 		for(int d=0;d<debt.size();d++)
 			if(debt.elementAt(d).debtor.equalsIgnoreCase(whom))
@@ -439,7 +438,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 	public double totalItemsWorth(MOB mob)
 	{
 		Vector V=null;
-		if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+		if(isSold(ShopKeeper.DEAL_CLANBANKER))
 			V=getDepositedItems(mob.getClanID());
 		else
 			V=getDepositedItems(mob.Name());
@@ -477,7 +476,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						Item old=findDepositInventory(msg.source(),""+Integer.MAX_VALUE);
 						MOB owner=msg.source();
 						if((old==null)
-						&&(whatISell!=ShopKeeper.DEAL_CLANBANKER)
+						&&(!isSold(ShopKeeper.DEAL_CLANBANKER))
 						&&(msg.source().isMarriedToLiege()))
 						{
 							old=findDepositInventory(msg.source().getLiegeID(),""+Integer.MAX_VALUE);
@@ -490,7 +489,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						if(old!=null) delDepositInventory(owner,old);
 						if(item!=null)
 							addDepositInventory(owner,item);
-						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+						if(isSold(ShopKeeper.DEAL_CLANBANKER))
 						    CMLib.commands().postSay(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+CMLib.beanCounter().nameCurrencyLong(this,getBalance(owner))+".",true,false);
 						else
 						    CMLib.commands().postSay(this,mob,"Ok, your new balance is "+CMLib.beanCounter().nameCurrencyLong(this,getBalance(owner))+".",true,false);
@@ -534,7 +533,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						while((months<(location().getArea().getTimeObj().getMonthsInYear()*10))
 							&&(CMath.div(amt,months)>250.0)) months++;
 						long dueAt=System.currentTimeMillis()+(timeInterval()*months);
-						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+						if(isSold(ShopKeeper.DEAL_CLANBANKER))
 							CMLib.beanCounter().adjustDebt(msg.source().getClanID(),bankChain(),amt,"Bank Loan",interestRate,dueAt);
 						else
 							CMLib.beanCounter().adjustDebt(msg.source().Name(),bankChain(),amt,"Bank Loan",interestRate,dueAt);
@@ -549,7 +548,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					{
 						Item depositInventoryItem=findDepositInventory(msg.source(),""+Integer.MAX_VALUE);
 						MOB owner=msg.source();
-						if((whatISell!=ShopKeeper.DEAL_CLANBANKER)
+						if((!isSold(ShopKeeper.DEAL_CLANBANKER))
 						&&(msg.source().isMarriedToLiege())
 						&&((depositInventoryItem==null)
 						        ||((depositInventoryItem instanceof Coins)
@@ -582,14 +581,14 @@ public class StdBanker extends StdShopKeeper implements Banker
 								CMLib.commands().postDrop(this,old,true,false);
 							if((coins==null)||(coins.getNumberOfCoins()<=0))
 							{
-								if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+								if(isSold(ShopKeeper.DEAL_CLANBANKER))
 									CMLib.commands().postSay(this,mob,"I have closed the account for Clan "+owner.getClanID()+". Thanks for your business.",true,false);
 								else
 									CMLib.commands().postSay(this,mob,"I have closed that account. Thanks for your business.",true,false);
 								return;
 							}
 							addDepositInventory(owner,coins);
-							if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+							if(isSold(ShopKeeper.DEAL_CLANBANKER))
 							    CMLib.commands().postSay(this,mob,"Ok, Clan "+owner.getClanID()+" now has a balance of "+CMLib.beanCounter().nameCurrencyLong(this,coins.getTotalValue())+".",true,false);
 							else
 							    CMLib.commands().postSay(this,mob,"Ok, your new balance is "+CMLib.beanCounter().nameCurrencyLong(this,coins.getTotalValue())+".",true,false);
@@ -600,7 +599,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					else
 					{
 						if((!delDepositInventory(msg.source(),old))
-						&&(whatISell!=ShopKeeper.DEAL_CLANBANKER)
+						&&(!isSold(ShopKeeper.DEAL_CLANBANKER))
 						&&(msg.source().isMarriedToLiege()))
 							delDepositInventory(msg.source().getLiegeID(),old);
 
@@ -628,7 +627,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				if(CMLib.flags().aliveAwakeMobileUnbound(mob,true))
 				{
 					Vector V=null;
-					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+					if(isSold(ShopKeeper.DEAL_CLANBANKER))
 						V=getDepositedItems(mob.getClanID());
 					else
 					{
@@ -670,13 +669,13 @@ public class StdBanker extends StdShopKeeper implements Banker
 					double balance=getBalance(mob);
 					if(balance>0)
 					{
-						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+						if(isSold(ShopKeeper.DEAL_CLANBANKER))
 							str.append("Clan "+mob.getClanID()+" has a balance of ^H"+CMLib.beanCounter().nameCurrencyLong(this,balance)+"^?.");
 						else
 							str.append("Your balance is ^H"+CMLib.beanCounter().nameCurrencyLong(this,balance)+"^?.");
 					}
 					Vector<MoneyLibrary.DebtItem> debts=null;
-					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+					if(isSold(ShopKeeper.DEAL_CLANBANKER))
 						debts=CMLib.beanCounter().getDebt(mob.getClanID(),bankChain());
 					else
 						debts=CMLib.beanCounter().getDebt(mob.Name(),bankChain());
@@ -690,7 +689,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 						long timeRemaining=debtDueAt-System.currentTimeMillis();
 						if(timeRemaining>0)
 							str.append("\n\r"
-									+((whatISell==ShopKeeper.DEAL_CLANBANKER)?"Clan "+mob.getClanID():"You")
+									+((isSold(ShopKeeper.DEAL_CLANBANKER))?"Clan "+mob.getClanID():"You")
 									+" owe ^H"+CMLib.beanCounter().nameCurrencyLong(this,dueAmount)+"^? in debt.\n\r"
 									+"Monthly interest is "+(intRate*100.0)+"%.  "
 									+"The loan must be paid in full in "
@@ -737,7 +736,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					if(msg.tool()==null)
                         return false;
 					double balance=getBalance(mob);
-					if((whatISell==ShopKeeper.DEAL_CLANBANKER)
+					if((isSold(ShopKeeper.DEAL_CLANBANKER))
 					&&((msg.source().getClanID().length()==0)
 					  ||(CMLib.clans().getClan(msg.source().getClanID())==null)))
 					{
@@ -766,7 +765,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					double minbalance=(totalItemsWorth(mob)/MIN_ITEM_BALANCE_DIVIDEND)+CMath.div(((Item)msg.tool()).value(),MIN_ITEM_BALANCE_DIVIDEND);
 					if(balance<minbalance)
 					{
-						if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+						if(isSold(ShopKeeper.DEAL_CLANBANKER))
 							CMLib.commands().postSay(this,mob,"Clan "+msg.source().getClanID()+" will need a total balance of "+CMLib.beanCounter().nameCurrencyShort(this,minbalance)+" for me to hold that.",true,false);
 						else
 							CMLib.commands().postSay(this,mob,"You'll need a total balance of "+CMLib.beanCounter().nameCurrencyShort(this,minbalance)+" for me to hold that.",true,false);
@@ -779,7 +778,7 @@ public class StdBanker extends StdShopKeeper implements Banker
                     if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
                         return false;
 					String thename=msg.source().Name();
-					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+					if(isSold(ShopKeeper.DEAL_CLANBANKER))
 					{
 						thename=msg.source().getClanID();
 						Clan C=CMLib.clans().getClan(msg.source().getClanID());
@@ -814,7 +813,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 							return false;
 					    }
 
-						if((whatISell!=ShopKeeper.DEAL_CLANBANKER)
+						if((!isSold(ShopKeeper.DEAL_CLANBANKER))
 						&&(owner.isMarriedToLiege())
 						&&(balance<((Coins)msg.tool()).getTotalValue()))
 						{
@@ -832,7 +831,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					else
 					if(findDepositInventory(thename,msg.tool().Name())==null)
 					{
-						if((whatISell!=ShopKeeper.DEAL_CLANBANKER)
+						if((!isSold(ShopKeeper.DEAL_CLANBANKER))
 						&&(msg.source().isMarriedToLiege())
 						&&(findDepositInventory(msg.source().getLiegeID(),msg.tool().Name())!=null))
 							owner=CMLib.players().getPlayer(msg.source().getLiegeID());
@@ -845,7 +844,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					else
 					if(msg.tool() instanceof Item)
 					{
-						double debt=(whatISell==ShopKeeper.DEAL_CLANBANKER)?
+						double debt=(isSold(ShopKeeper.DEAL_CLANBANKER))?
 										CMLib.beanCounter().getDebtOwed(mob.getClanID(),bankChain()):
 											CMLib.beanCounter().getDebtOwed(mob.Name(),bankChain());
 						if((debt>0.0)
@@ -860,7 +859,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 					{
 						if(((Coins)msg.tool()).getTotalValue()>balance)
 						{
-							if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+							if(isSold(ShopKeeper.DEAL_CLANBANKER))
 								CMLib.commands().postSay(this,mob,"I'm sorry, Clan "+thename+" has only "+CMLib.beanCounter().nameCurrencyShort(this,balance)+" in its account.",true,false);
 							else
 								CMLib.commands().postSay(this,mob,"I'm sorry, you have only "+CMLib.beanCounter().nameCurrencyShort(this,balance)+" in that account.",true,false);
@@ -894,7 +893,7 @@ public class StdBanker extends StdShopKeeper implements Banker
                 	return false;
                 }
 				String thename=msg.source().Name();
-				if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+				if(isSold(ShopKeeper.DEAL_CLANBANKER))
 				{
 					thename=msg.source().getClanID();
 					Clan C=CMLib.clans().getClan(msg.source().getClanID());
@@ -912,12 +911,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 				}
 				else
 				if((numberDeposited(thename)==0)
-				&&((whatISell==ShopKeeper.DEAL_CLANBANKER)
+				&&((isSold(ShopKeeper.DEAL_CLANBANKER))
 				   ||(!msg.source().isMarriedToLiege())
 				   ||(numberDeposited(msg.source().getLiegeID())==0)))
 				{
 					StringBuffer str=new StringBuffer("");
-					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+					if(isSold(ShopKeeper.DEAL_CLANBANKER))
 						str.append("The Clan "+thename+" does not have an account with us, I'm afraid.");
 					else
 						str.append("You don't have an account with us, I'm afraid.");
@@ -928,7 +927,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				if(debt>0.0)
 				{
 					StringBuffer str=new StringBuffer("");
-					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+					if(isSold(ShopKeeper.DEAL_CLANBANKER))
 						str.append("The Clan "+thename+" already has a "+CMLib.beanCounter().nameCurrencyShort(this,debt)+" loan out with us.");
 					else
 						str.append("You already have a "+CMLib.beanCounter().nameCurrencyShort(this,debt)+" loan out with us.");
@@ -939,7 +938,7 @@ public class StdBanker extends StdShopKeeper implements Banker
 				if(collateralRemaining>0)
 				{
 					StringBuffer str=new StringBuffer("");
-					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+					if(isSold(ShopKeeper.DEAL_CLANBANKER))
 						str.append("The Clan "+thename+" ");
 					else
 						str.append("You ");
@@ -955,7 +954,7 @@ public class StdBanker extends StdShopKeeper implements Banker
                 if(!CMLib.coffeeShops().ignoreIfNecessary(msg.source(),finalIgnoreMask(),this))
                     return false;
 				String thename=msg.source().Name();
-				if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+				if(isSold(ShopKeeper.DEAL_CLANBANKER))
 				{
 					thename=msg.source().getClanID();
 					Clan C=CMLib.clans().getClan(msg.source().getClanID());
@@ -973,12 +972,12 @@ public class StdBanker extends StdShopKeeper implements Banker
 				}
 				else
 				if((numberDeposited(thename)==0)
-				&&((whatISell==ShopKeeper.DEAL_CLANBANKER)
+				&&((isSold(ShopKeeper.DEAL_CLANBANKER))
 				   ||(!msg.source().isMarriedToLiege())
 				   ||(numberDeposited(msg.source().getLiegeID())==0)))
 				{
 					StringBuffer str=new StringBuffer("");
-					if(whatISell==ShopKeeper.DEAL_CLANBANKER)
+					if(isSold(ShopKeeper.DEAL_CLANBANKER))
 						str.append("The Clan "+thename+" does not have an account with us, I'm afraid.");
 					else
 						str.append("You don't have an account with us, I'm afraid.");

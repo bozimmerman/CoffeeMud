@@ -2099,7 +2099,8 @@ public class Import extends StdCommand
 					else
 					if((mobName.toUpperCase().indexOf("PET ")>=0)||(mobName.toUpperCase().indexOf("PETS ")>=0))
 						whatIsell=ShopKeeper.DEAL_PETS;
-					((ShopKeeper)M).setWhatIsSold(whatIsell);
+					((ShopKeeper)M).setWhatIsSoldMask(0);
+					((ShopKeeper)M).addSoldType(whatIsell);
 					break;
 				}
 			}
@@ -5174,7 +5175,8 @@ public class Import extends StdCommand
 								||(I instanceof com.planet_ink.coffee_mud.Items.interfaces.Map))
 								&&(!((ShopKeeper)M).getShop().doIHaveThisInStock("Parchment",null)))
 								{
-									((ShopKeeper)M).setWhatIsSold(ShopKeeper.DEAL_INVENTORYONLY);
+									((ShopKeeper)M).setWhatIsSoldMask(0);
+									((ShopKeeper)M).addSoldType(ShopKeeper.DEAL_INVENTORYONLY);
 									((ShopKeeper)M).getShop().addStoreInventory(CMClass.getBasicItem("Parchment"),num,-1);
 									Item journal2=CMClass.getBasicItem("GenJournal");
 									journal2.setName("the adventurers journal");
@@ -5184,7 +5186,7 @@ public class Import extends StdCommand
 									((ShopKeeper)M).getShop().addStoreInventory(journal2,num,-1);
 								}
 								else
-								if(((ShopKeeper)M).whatIsSold()==ShopKeeper.DEAL_WEAPONS)
+								if(((ShopKeeper)M).isSold(ShopKeeper.DEAL_WEAPONS))
 								{
 									Item arrows=CMClass.getBasicItem("GenAmmunition");
 									((Ammunition)arrows).setAmmunitionType("arrows");
@@ -5505,7 +5507,8 @@ public class Import extends StdCommand
 				else
 				while(storeRoom.numInhabitants()>0)
 				{
-					shopKeeper.setWhatIsSold(ShopKeeper.DEAL_PETS);
+					shopKeeper.setWhatIsSoldMask(0);
+					shopKeeper.addSoldType(ShopKeeper.DEAL_PETS);
 					MOB pet=storeRoom.fetchInhabitant(0);
 					if(pet!=null)
 					{

@@ -77,7 +77,7 @@ public class GenBanker extends StdBanker
 			return CMLib.coffeeMaker().getGenMobStat(this,code);
         switch(getCodeNum(code))
 		{
-		case 0: return ""+whatIsSold();
+		case 0: return ""+getWhatIsSoldMask();
 		case 1: return prejudiceFactors();
 		case 2: return bankChain();
 		case 3: return ""+getCoinInterest();
@@ -96,7 +96,7 @@ public class GenBanker extends StdBanker
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setWhatIsSold(CMath.s_int(val)); break;
+		case 0: setWhatIsSoldMask(CMath.s_long(val)); break;
 		case 1: setPrejudiceFactors(val); break;
 		case 2: setBankChain(val); break;
 		case 3: setCoinInterest(CMath.s_double(val)); break;

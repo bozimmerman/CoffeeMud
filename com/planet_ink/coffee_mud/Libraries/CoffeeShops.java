@@ -155,7 +155,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         return str.toString();
     }
 
-    public boolean shownInInventory(MOB seller, MOB buyer, Environmental product, int whatIsSold)
+    protected boolean shownInInventory(MOB seller, MOB buyer, Environmental product, ShopKeeper shopKeeper)
     {
         if(CMSecurity.isAllowed(buyer,buyer.location(),"CMDMOBS")) 
         	return true;
@@ -175,7 +175,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         }
         if(product instanceof Ability)
         {
-        	if(whatIsSold==ShopKeeper.DEAL_TRAINER)
+        	if(shopKeeper.isSold(ShopKeeper.DEAL_TRAINER))
         	{
         		if(CMLib.ableMapper().qualifiesByLevel(buyer, (Ability)product))
     				return false;
@@ -185,7 +185,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     }
 
     public double rawSpecificGoldPrice(Environmental product,
-                                       int whatISell,
+                                       CoffeeShop shop,
                                        double numberOfThem)
     {
         double price=0.0;
@@ -194,7 +194,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         else
         if(product instanceof Ability)
         {
-            if(whatISell==ShopKeeper.DEAL_TRAINER)
+            if(shop.isSold(ShopKeeper.DEAL_TRAINER))
                 price=CMLib.ableMapper().lowestQualifyingLevel(product.ID())*100;
             else
                 price=CMLib.ableMapper().lowestQualifyingLevel(product.ID())*75;
@@ -347,7 +347,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         if(stockPrice>=0)
             val.absoluteGoldPrice=(double)stockPrice;
         else
-            val.absoluteGoldPrice=rawSpecificGoldPrice(product,shop.whatIsSold(),number);
+            val.absoluteGoldPrice=rawSpecificGoldPrice(product,shop.getShop(),number);
 
         if(buyer==null)
         {
@@ -433,7 +433,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         if(stockPrice>=0.0)
             val.absoluteGoldPrice=(double)stockPrice;
         else
-            val.absoluteGoldPrice=rawSpecificGoldPrice(product,shop.whatIsSold(),number);
+            val.absoluteGoldPrice=rawSpecificGoldPrice(product,shop.getShop(),number);
 
         if(buyer==null) return val;
 
@@ -600,7 +600,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 }
             }
             if((product instanceof LandTitle)
-            &&((shop.whatIsSold()==ShopKeeper.DEAL_CLANDSELLER)||(shop.whatIsSold()==ShopKeeper.DEAL_CSHIPSELLER)))
+            &&((shop.isSold(ShopKeeper.DEAL_CLANDSELLER))||(shop.isSold(ShopKeeper.DEAL_CSHIPSELLER))))
             {
                 Clan C=null;
                 if(buyer.getClanID().length()>0)C=CMLib.clans().getClan(buyer.getClanID());
@@ -640,7 +640,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
             }
             if(product instanceof Ability)
             {
-                if(shop.whatIsSold()==ShopKeeper.DEAL_TRAINER)
+                if(shop.isSold(ShopKeeper.DEAL_TRAINER))
                 {
                     MOB teacher=CMClass.getMOB("Teacher");
                     if(!((Ability)product).canBeLearnedBy(teacher,buyer))
@@ -693,17 +693,17 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         for(int i=0;i<rawInventory.size();i++)
         {
             E=(Environmental)rawInventory.elementAt(i);
-            if(shownInInventory(seller,buyer,E,shop.whatIsSold())
+            if(shownInInventory(seller,buyer,E,shop)
             &&((mask==null)||(mask.length()==0)||(CMLib.english().containsString(E.name(),mask))))
             	inventory.addElement(E);
         }
 
         if(inventory.size()>0)
         {
-            int totalCols=((shop.whatIsSold()==ShopKeeper.DEAL_LANDSELLER)
-                           ||(shop.whatIsSold()==ShopKeeper.DEAL_CLANDSELLER)
-                           ||(shop.whatIsSold()==ShopKeeper.DEAL_SHIPSELLER)
-                           ||(shop.whatIsSold()==ShopKeeper.DEAL_CSHIPSELLER))?1:2;
+            int totalCols=((shop.isSold(ShopKeeper.DEAL_LANDSELLER))
+                           ||(shop.isSold(ShopKeeper.DEAL_CLANDSELLER))
+                           ||(shop.isSold(ShopKeeper.DEAL_SHIPSELLER))
+                           ||(shop.isSold(ShopKeeper.DEAL_CSHIPSELLER)))?1:2;
             int totalWidth=60/totalCols;
             String showPrice=null;
             ShopKeeper.ShopPrice price=null;
@@ -754,11 +754,11 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         }
         if(str.length()==0)
         {
-            if((shop.whatIsSold()!=ShopKeeper.DEAL_BANKER)
-            &&(shop.whatIsSold()!=ShopKeeper.DEAL_CLANBANKER)
-            &&(shop.whatIsSold()!=ShopKeeper.DEAL_CLANPOSTMAN)
-            &&(shop.whatIsSold()!=ShopKeeper.DEAL_AUCTIONEER)
-            &&(shop.whatIsSold()!=ShopKeeper.DEAL_POSTMAN))
+            if((!shop.isSold(ShopKeeper.DEAL_BANKER))
+            &&(!shop.isSold(ShopKeeper.DEAL_CLANBANKER))
+            &&(!shop.isSold(ShopKeeper.DEAL_CLANPOSTMAN))
+            &&(!shop.isSold(ShopKeeper.DEAL_AUCTIONEER))
+            &&(!shop.isSold(ShopKeeper.DEAL_POSTMAN)))
                 return seller.name()+" has nothing for sale.";
             return "";
         }
@@ -963,7 +963,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         product.recoverEnvStats();
         product.setMiscText(product.text());
         Ability slaveA=null;
-        if(shop.whatIsSold()==ShopKeeper.DEAL_SLAVES)
+        if(shop.isSold(ShopKeeper.DEAL_SLAVES))
         {
             slaveA=product.fetchEffect("Skill_Enslave");
             if(slaveA!=null) slaveA.setMiscText("");
@@ -1001,7 +1001,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         if((seller==null)||(seller.location()==null)||(A==null)||(shop==null)||(mobFor==null))
             return ;
         Room room=seller.location();
-        if(shop.whatIsSold()==ShopKeeper.DEAL_TRAINER)
+        if(shop.isSold(ShopKeeper.DEAL_TRAINER))
         {
             MOB teacher=CMClass.getMOB("Teacher");
             A.teach(teacher,mobFor);
@@ -1052,22 +1052,22 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         }
     }
 
-    public Vector addRealEstateTitles(Vector V, MOB buyer, int whatISell, Room myRoom)
+    public Vector addRealEstateTitles(Vector V, MOB buyer, CoffeeShop shop, Room myRoom)
     {
         if((myRoom==null)||(buyer==null)) return V;
         Area myArea=myRoom.getArea();
-        if(((whatISell==ShopKeeper.DEAL_LANDSELLER)
-            ||(whatISell==ShopKeeper.DEAL_SHIPSELLER)
-            ||((whatISell==ShopKeeper.DEAL_CSHIPSELLER)&&(buyer.getClanID().length()>0))
-            ||((whatISell==ShopKeeper.DEAL_CLANDSELLER)&&(buyer.getClanID().length()>0)))
+        if(((shop.isSold(ShopKeeper.DEAL_LANDSELLER))
+            ||(shop.isSold(ShopKeeper.DEAL_SHIPSELLER))
+            ||((shop.isSold(ShopKeeper.DEAL_CSHIPSELLER))&&(buyer.getClanID().length()>0))
+            ||((shop.isSold(ShopKeeper.DEAL_CLANDSELLER))&&(buyer.getClanID().length()>0)))
         &&(myArea!=null))
         {
             String name=buyer.Name();
-            if((whatISell==ShopKeeper.DEAL_CLANDSELLER)||(whatISell==ShopKeeper.DEAL_CSHIPSELLER))
+            if((shop.isSold(ShopKeeper.DEAL_CLANDSELLER))||(shop.isSold(ShopKeeper.DEAL_CSHIPSELLER)))
                 name=buyer.getClanID();
             HashSet roomsHandling=new HashSet();
             Hashtable titles=new Hashtable();
-            if((whatISell==ShopKeeper.DEAL_CSHIPSELLER)||(whatISell==ShopKeeper.DEAL_SHIPSELLER))
+            if((shop.isSold(ShopKeeper.DEAL_CSHIPSELLER))||(shop.isSold(ShopKeeper.DEAL_SHIPSELLER)))
             {
                 for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
                 {
@@ -1206,77 +1206,169 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     }
 
 
-    public String storeKeeperString(int whatISell)
+    public String storeKeeperString(CoffeeShop shop)
     {
-        switch(whatISell)
+    	if(shop==null) return "";
+    	if(shop.isSold(ShopKeeper.DEAL_ANYTHING))
+    		return "*Anything*";
+    	
+    	Vector V=new Vector();
+    	for(int d=1;d<ShopKeeper.DEAL_DESCS.length;d++)
+		if(shop.isSold(d))
+        switch(d)
         {
-        case ShopKeeper.DEAL_ANYTHING:
-            return "*Anything*";
         case ShopKeeper.DEAL_GENERAL:
-            return "General items";
+            V.addElement("General items"); break;
         case ShopKeeper.DEAL_ARMOR:
-            return "Armor";
+            V.addElement("Armor"); break;
         case ShopKeeper.DEAL_MAGIC:
-            return "Miscellaneous Magic Items";
+            V.addElement("Miscellaneous Magic Items"); break;
         case ShopKeeper.DEAL_WEAPONS:
-            return "Weapons";
+            V.addElement("Weapons"); break;
         case ShopKeeper.DEAL_PETS:
-            return "Pets and Animals";
+            V.addElement("Pets and Animals"); break;
         case ShopKeeper.DEAL_LEATHER:
-            return "Leather";
+            V.addElement("Leather"); break;
         case ShopKeeper.DEAL_INVENTORYONLY:
-            return "Only my Inventory";
+            V.addElement("Only my Inventory"); break;
         case ShopKeeper.DEAL_TRAINER:
-            return "Training in skills/spells/prayers/songs";
+            V.addElement("Training in skills/spells/prayers/songs"); break;
         case ShopKeeper.DEAL_CASTER:
-            return "Caster of spells/prayers";
+            V.addElement("Caster of spells/prayers"); break;
         case ShopKeeper.DEAL_ALCHEMIST:
-            return "Potions";
+            V.addElement("Potions"); break;
         case ShopKeeper.DEAL_INNKEEPER:
-            return "My services as an Inn Keeper";
+            V.addElement("My services as an Inn Keeper"); break;
         case ShopKeeper.DEAL_JEWELLER:
-            return "Precious stones and jewellery";
+            V.addElement("Precious stones and jewellery"); break;
         case ShopKeeper.DEAL_BANKER:
-            return "My services as a Banker";
+            V.addElement("My services as a Banker"); break;
         case ShopKeeper.DEAL_CLANBANKER:
-            return "My services as a Banker to Clans";
+            V.addElement("My services as a Banker to Clans"); break;
         case ShopKeeper.DEAL_LANDSELLER:
-            return "Real estate";
+            V.addElement("Real estate"); break;
         case ShopKeeper.DEAL_CLANDSELLER:
-            return "Clan estates";
+            V.addElement("Clan estates"); break;
         case ShopKeeper.DEAL_ANYTECHNOLOGY:
-            return "Any technology";
+            V.addElement("Any technology"); break;
         case ShopKeeper.DEAL_BUTCHER:
-            return "Meats";
+            V.addElement("Meats"); break;
         case ShopKeeper.DEAL_FOODSELLER:
-            return "Foodstuff";
+            V.addElement("Foodstuff"); break;
         case ShopKeeper.DEAL_GROWER:
-            return "Vegetables";
+            V.addElement("Vegetables"); break;
         case ShopKeeper.DEAL_HIDESELLER:
-            return "Hides and Furs";
+            V.addElement("Hides and Furs"); break;
         case ShopKeeper.DEAL_LUMBERER:
-            return "Lumber";
+            V.addElement("Lumber"); break;
         case ShopKeeper.DEAL_METALSMITH:
-            return "Metal ores";
+            V.addElement("Metal ores"); break;
         case ShopKeeper.DEAL_STONEYARDER:
-            return "Stone and rock";
+            V.addElement("Stone and rock"); break;
         case ShopKeeper.DEAL_SHIPSELLER:
-            return "Ships";
+            V.addElement("Ships"); break;
         case ShopKeeper.DEAL_CSHIPSELLER:
-            return "Clan Ships";
+            V.addElement("Clan Ships"); break;
         case ShopKeeper.DEAL_SLAVES:
-            return "Slaves";
+            V.addElement("Slaves"); break;
         case ShopKeeper.DEAL_POSTMAN:
-            return "My services as a Postman";
+            V.addElement("My services as a Postman"); break;
         case ShopKeeper.DEAL_CLANPOSTMAN:
-            return "My services as a Postman for Clans";
+            V.addElement("My services as a Postman for Clans"); break;
         case ShopKeeper.DEAL_AUCTIONEER:
-            return "My services as an Auctioneer";
+            V.addElement("My services as an Auctioneer"); break;
         default:
-            return "... I have no idea WHAT I sell";
+            V.addElement("... I have no idea WHAT I sell"); break;
         }
+    	return CMParms.toStringList(V);
     }
 
+    protected boolean shopKeeperItemTypeCheck(Environmental E, int dealCode, ShopKeeper shopKeeper)
+    {
+        switch(dealCode)
+        {
+        case ShopKeeper.DEAL_ANYTHING:
+            return !(E instanceof LandTitle);
+        case ShopKeeper.DEAL_ARMOR:
+            return (E instanceof Armor);
+        case ShopKeeper.DEAL_MAGIC:
+            return (E instanceof MiscMagic);
+        case ShopKeeper.DEAL_WEAPONS:
+            return (E instanceof Weapon)||(E instanceof Ammunition);
+        case ShopKeeper.DEAL_GENERAL:
+            return ((E instanceof Item)
+                    &&(!(E instanceof Armor))
+                    &&(!(E instanceof MiscMagic))
+                    &&(!(E instanceof ClanItem))
+                    &&(!(E instanceof Weapon))
+                    &&(!(E instanceof Ammunition))
+                    &&(!(E instanceof MOB))
+                    &&(!(E instanceof LandTitle))
+                    &&(!(E instanceof RawMaterial))
+                    &&(!(E instanceof Ability)));
+        case ShopKeeper.DEAL_LEATHER:
+            return ((E instanceof Item)
+                    &&((((Item)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER)
+                    &&(!(E instanceof RawMaterial)));
+        case ShopKeeper.DEAL_PETS:
+            return ((E instanceof MOB)&&(CMLib.flags().isAnimalIntelligence((MOB)E)));
+        case ShopKeeper.DEAL_SLAVES:
+            return ((E instanceof MOB)&&(!CMLib.flags().isAnimalIntelligence((MOB)E)));
+        case ShopKeeper.DEAL_INVENTORYONLY:
+            return (shopKeeper.getShop().inBaseInventory(E));
+        case ShopKeeper.DEAL_INNKEEPER:
+            return E instanceof InnKey;
+        case ShopKeeper.DEAL_JEWELLER:
+            return ((E instanceof Item)
+                    &&(!(E instanceof Weapon))
+                    &&(!(E instanceof MiscMagic))
+                    &&(!(E instanceof ClanItem))
+                    &&(((((Item)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_GLASS)
+                    ||((((Item)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)
+                    ||((Item)E).fitsOn(Item.WORN_EARS)
+                    ||((Item)E).fitsOn(Item.WORN_NECK)
+                    ||((Item)E).fitsOn(Item.WORN_RIGHT_FINGER)
+                    ||((Item)E).fitsOn(Item.WORN_LEFT_FINGER)));
+        case ShopKeeper.DEAL_ALCHEMIST:
+            return (E instanceof Potion);
+        case ShopKeeper.DEAL_LANDSELLER:
+        case ShopKeeper.DEAL_CLANDSELLER:
+        case ShopKeeper.DEAL_SHIPSELLER:
+        case ShopKeeper.DEAL_CSHIPSELLER:
+            return (E instanceof LandTitle);
+        case ShopKeeper.DEAL_ANYTECHNOLOGY:
+            return (E instanceof Electronics);
+        case ShopKeeper.DEAL_BUTCHER:
+            return ((E instanceof RawMaterial)
+                &&(((RawMaterial)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH);
+        case ShopKeeper.DEAL_FOODSELLER:
+            return (((E instanceof Food)||(E instanceof Drink))
+                    &&(!(E instanceof RawMaterial)));
+        case ShopKeeper.DEAL_GROWER:
+            return ((E instanceof RawMaterial)
+                &&(((RawMaterial)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION);
+        case ShopKeeper.DEAL_HIDESELLER:
+            return ((E instanceof RawMaterial)
+                &&((((RawMaterial)E).material()==RawMaterial.RESOURCE_HIDE)
+                ||(((RawMaterial)E).material()==RawMaterial.RESOURCE_FEATHERS)
+                ||(((RawMaterial)E).material()==RawMaterial.RESOURCE_LEATHER)
+                ||(((RawMaterial)E).material()==RawMaterial.RESOURCE_SCALES)
+                ||(((RawMaterial)E).material()==RawMaterial.RESOURCE_WOOL)
+                ||(((RawMaterial)E).material()==RawMaterial.RESOURCE_FUR)));
+        case ShopKeeper.DEAL_LUMBERER:
+            return ((E instanceof RawMaterial)
+                &&((((RawMaterial)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN));
+        case ShopKeeper.DEAL_METALSMITH:
+            return ((E instanceof RawMaterial)
+                &&(((((RawMaterial)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
+                ||(((RawMaterial)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL));
+        case ShopKeeper.DEAL_STONEYARDER:
+            return ((E instanceof RawMaterial)
+                &&((((RawMaterial)E).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK));
+        }
+        return false;
+    }
+    
     public boolean doISellThis(Environmental thisThang, ShopKeeper shop)
     {
         if(thisThang instanceof PackagedItems)
@@ -1286,88 +1378,12 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         ||(thisThang instanceof DeadBody)
         ||(CMLib.flags().isChild(thisThang)))
             return false;
-        switch(shop.whatIsSold())
-        {
-        case ShopKeeper.DEAL_ANYTHING:
+        if(shop.isSold(ShopKeeper.DEAL_ANYTHING))
             return !(thisThang instanceof LandTitle);
-        case ShopKeeper.DEAL_ARMOR:
-            return (thisThang instanceof Armor);
-        case ShopKeeper.DEAL_MAGIC:
-            return (thisThang instanceof MiscMagic);
-        case ShopKeeper.DEAL_WEAPONS:
-            return (thisThang instanceof Weapon)||(thisThang instanceof Ammunition);
-        case ShopKeeper.DEAL_GENERAL:
-            return ((thisThang instanceof Item)
-                    &&(!(thisThang instanceof Armor))
-                    &&(!(thisThang instanceof MiscMagic))
-                    &&(!(thisThang instanceof ClanItem))
-                    &&(!(thisThang instanceof Weapon))
-                    &&(!(thisThang instanceof Ammunition))
-                    &&(!(thisThang instanceof MOB))
-                    &&(!(thisThang instanceof LandTitle))
-                    &&(!(thisThang instanceof RawMaterial))
-                    &&(!(thisThang instanceof Ability)));
-        case ShopKeeper.DEAL_LEATHER:
-            return ((thisThang instanceof Item)
-                    &&((((Item)thisThang).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_LEATHER)
-                    &&(!(thisThang instanceof RawMaterial)));
-        case ShopKeeper.DEAL_PETS:
-            return ((thisThang instanceof MOB)&&(CMLib.flags().isAnimalIntelligence((MOB)thisThang)));
-        case ShopKeeper.DEAL_SLAVES:
-            return ((thisThang instanceof MOB)&&(!CMLib.flags().isAnimalIntelligence((MOB)thisThang)));
-        case ShopKeeper.DEAL_INVENTORYONLY:
-            return (shop.getShop().inBaseInventory(thisThang));
-        case ShopKeeper.DEAL_INNKEEPER:
-            return thisThang instanceof InnKey;
-        case ShopKeeper.DEAL_JEWELLER:
-            return ((thisThang instanceof Item)
-                    &&(!(thisThang instanceof Weapon))
-                    &&(!(thisThang instanceof MiscMagic))
-                    &&(!(thisThang instanceof ClanItem))
-                    &&(((((Item)thisThang).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_GLASS)
-                    ||((((Item)thisThang).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_PRECIOUS)
-                    ||((Item)thisThang).fitsOn(Item.WORN_EARS)
-                    ||((Item)thisThang).fitsOn(Item.WORN_NECK)
-                    ||((Item)thisThang).fitsOn(Item.WORN_RIGHT_FINGER)
-                    ||((Item)thisThang).fitsOn(Item.WORN_LEFT_FINGER)));
-        case ShopKeeper.DEAL_ALCHEMIST:
-            return (thisThang instanceof Potion);
-        case ShopKeeper.DEAL_LANDSELLER:
-        case ShopKeeper.DEAL_CLANDSELLER:
-        case ShopKeeper.DEAL_SHIPSELLER:
-        case ShopKeeper.DEAL_CSHIPSELLER:
-            return (thisThang instanceof LandTitle);
-        case ShopKeeper.DEAL_ANYTECHNOLOGY:
-            return (thisThang instanceof Electronics);
-        case ShopKeeper.DEAL_BUTCHER:
-            return ((thisThang instanceof RawMaterial)
-                &&(((RawMaterial)thisThang).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_FLESH);
-        case ShopKeeper.DEAL_FOODSELLER:
-            return (((thisThang instanceof Food)||(thisThang instanceof Drink))
-                    &&(!(thisThang instanceof RawMaterial)));
-        case ShopKeeper.DEAL_GROWER:
-            return ((thisThang instanceof RawMaterial)
-                &&(((RawMaterial)thisThang).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_VEGETATION);
-        case ShopKeeper.DEAL_HIDESELLER:
-            return ((thisThang instanceof RawMaterial)
-                &&((((RawMaterial)thisThang).material()==RawMaterial.RESOURCE_HIDE)
-                ||(((RawMaterial)thisThang).material()==RawMaterial.RESOURCE_FEATHERS)
-                ||(((RawMaterial)thisThang).material()==RawMaterial.RESOURCE_LEATHER)
-                ||(((RawMaterial)thisThang).material()==RawMaterial.RESOURCE_SCALES)
-                ||(((RawMaterial)thisThang).material()==RawMaterial.RESOURCE_WOOL)
-                ||(((RawMaterial)thisThang).material()==RawMaterial.RESOURCE_FUR)));
-        case ShopKeeper.DEAL_LUMBERER:
-            return ((thisThang instanceof RawMaterial)
-                &&((((RawMaterial)thisThang).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_WOODEN));
-        case ShopKeeper.DEAL_METALSMITH:
-            return ((thisThang instanceof RawMaterial)
-                &&(((((RawMaterial)thisThang).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_METAL)
-                ||(((RawMaterial)thisThang).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_MITHRIL));
-        case ShopKeeper.DEAL_STONEYARDER:
-            return ((thisThang instanceof RawMaterial)
-                &&((((RawMaterial)thisThang).material()&RawMaterial.MATERIAL_MASK)==RawMaterial.MATERIAL_ROCK));
-        }
-
+        else
+        for(int d=1;d<ShopKeeper.DEAL_DESCS.length;d++)
+        	if(shop.isSold(d) && shopKeeperItemTypeCheck(thisThang,d,shop))
+        		return true;
         return false;
     }
 
@@ -1570,7 +1586,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         for(int v=0;v<auctions.size();v++)
         {
         	Auctioneer.AuctionData data=(Auctioneer.AuctionData)auctions.elementAt(v);
-	        if(shownInInventory(seller,buyer,data.auctioningI,ShopKeeper.DEAL_ANYTHING))
+	        if(shownInInventory(seller,buyer,data.auctioningI,auction))
 	        {
 	        	if(((mask==null)||(mask.length()==0)||(CMLib.english().containsString(data.auctioningI.name(),mask)))
 	        	&&((data.tickDown>System.currentTimeMillis())||(data.auctioningM==buyer)||(data.highBidderM==buyer)))

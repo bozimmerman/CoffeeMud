@@ -50,7 +50,7 @@ public class DefaultCoffeeShop implements CoffeeShop
     }
     
     public ShopKeeper shopKeeper(){ return (shopKeeper==null)?null:shopKeeper.get();}
-    public int whatIsSold(){ShopKeeper SK=shopKeeper(); return (SK==null)?ShopKeeper.DEAL_ANYTHING:SK.whatIsSold();}
+    public boolean isSold(int code){ShopKeeper SK=shopKeeper(); return (SK==null)?false:SK.isSold(code);}
     protected Room startRoom() { return CMLib.map().getStartRoom(shopKeeper());}
     
     public CMObject newInstance(){try{return (CMObject)getClass().newInstance();}catch(Exception e){return new DefaultCoffeeShop();}}
@@ -156,7 +156,7 @@ public class DefaultCoffeeShop implements CoffeeShop
                                            int price)
     {
         if(number<0) number=1;
-        if((whatIsSold()==ShopKeeper.DEAL_INVENTORYONLY)&&(!inBaseInventory(thisThang)))
+        if((isSold(ShopKeeper.DEAL_INVENTORYONLY))&&(!inBaseInventory(thisThang)))
         {
         	Environmental E=(Environmental)thisThang.copyOf();
         	CMLib.threads().deleteTick(E,-1);
@@ -228,7 +228,7 @@ public class DefaultCoffeeShop implements CoffeeShop
 
     public void delAllStoreInventory(Environmental thisThang)
     {
-        if((whatIsSold()==ShopKeeper.DEAL_INVENTORYONLY)&&(inBaseInventory(thisThang)))
+        if((isSold(ShopKeeper.DEAL_INVENTORYONLY))&&(inBaseInventory(thisThang)))
         {
             for(int v=baseInventory.size()-1;v>=0;v--)
             {
@@ -250,13 +250,12 @@ public class DefaultCoffeeShop implements CoffeeShop
         Environmental item=CMLib.english().fetchEnvironmental(storeInventory.getDimensionVector(1),name,true);
         if(item==null)
             item=CMLib.english().fetchEnvironmental(storeInventory.getDimensionVector(1),name,false);
-        int whatISell=whatIsSold();
         if((item==null)
            &&(mob!=null)
-           &&((whatISell==ShopKeeper.DEAL_LANDSELLER)||(whatISell==ShopKeeper.DEAL_CLANDSELLER)
-              ||(whatISell==ShopKeeper.DEAL_SHIPSELLER)||(whatISell==ShopKeeper.DEAL_CSHIPSELLER)))
+           &&((isSold(ShopKeeper.DEAL_LANDSELLER))||(isSold(ShopKeeper.DEAL_CLANDSELLER))
+              ||(isSold(ShopKeeper.DEAL_SHIPSELLER))||(isSold(ShopKeeper.DEAL_CSHIPSELLER))))
         {
-            Vector titles=CMLib.coffeeShops().addRealEstateTitles(new Vector(),mob,whatISell,startRoom());
+            Vector titles=CMLib.coffeeShops().addRealEstateTitles(new Vector(),mob,this,startRoom());
             item=CMLib.english().fetchEnvironmental(titles,name,true);
             if(item==null)
                 item=CMLib.english().fetchEnvironmental(titles,name,false);
@@ -300,13 +299,12 @@ public class DefaultCoffeeShop implements CoffeeShop
         Environmental item=CMLib.english().fetchEnvironmental(storeInventory.getDimensionVector(1),name,true);
         if(item==null)
             item=CMLib.english().fetchEnvironmental(storeInventory.getDimensionVector(1),name,false);
-        int whatISell=whatIsSold();
         if((item==null)
-        &&((whatISell==ShopKeeper.DEAL_LANDSELLER)||(whatISell==ShopKeeper.DEAL_CLANDSELLER)
-           ||(whatISell==ShopKeeper.DEAL_SHIPSELLER)||(whatISell==ShopKeeper.DEAL_CSHIPSELLER))
+        &&((isSold(ShopKeeper.DEAL_LANDSELLER))||(isSold(ShopKeeper.DEAL_CLANDSELLER))
+           ||(isSold(ShopKeeper.DEAL_SHIPSELLER))||(isSold(ShopKeeper.DEAL_CSHIPSELLER)))
         &&(mob!=null))
         {
-            Vector titles=CMLib.coffeeShops().addRealEstateTitles(new Vector(),mob,whatISell,startRoom());
+            Vector titles=CMLib.coffeeShops().addRealEstateTitles(new Vector(),mob,this,startRoom());
             item=CMLib.english().fetchEnvironmental(titles,name,true);
             if(item==null)
                 item=CMLib.english().fetchEnvironmental(titles,name,false);
@@ -417,7 +415,7 @@ public class DefaultCoffeeShop implements CoffeeShop
         if((V!=null)&&(V.size()>0))
         {
             StringBuffer itemstr=new StringBuffer("");
-            itemstr.append(CMLib.xml().convertXMLtoTag("ISELL",shopKeeper().whatIsSold()));
+            itemstr.append(CMLib.xml().convertXMLtoTag("ISELL",shopKeeper().getWhatIsSoldMask()));
             itemstr.append(CMLib.xml().convertXMLtoTag("IPREJ",shopKeeper().prejudiceFactors()));
             itemstr.append(CMLib.xml().convertXMLtoTag("IBUDJ",shopKeeper().budget()));
             itemstr.append(CMLib.xml().convertXMLtoTag("IDVAL",shopKeeper().devalueRate()));
@@ -452,12 +450,12 @@ public class DefaultCoffeeShop implements CoffeeShop
         	if(shop==null) return;
             String parm=CMParms.getParmStr(text,"ISELL",""+ShopKeeper.DEAL_ANYTHING);
             if((parm!=null)&&(CMath.isNumber(parm))) 
-            	shop.setWhatIsSold(CMath.s_int(parm));
+            	shop.setWhatIsSoldMask(CMath.s_long(parm));
             else
             if(parm!=null)
             for(int s=0;s<ShopKeeper.DEAL_DESCS.length;s++)
                 if(parm.equalsIgnoreCase(ShopKeeper.DEAL_DESCS[s]))
-                    shop.setWhatIsSold(s);
+                    shop.setWhatIsSoldMask(s);
             parm=CMParms.getParmStr(text,"IPREJ","");
             if(parm!=null) shop.setPrejudiceFactors(parm);
             parm=CMParms.getParmStr(text,"IBUDJ","1000000");
@@ -485,7 +483,7 @@ public class DefaultCoffeeShop implements CoffeeShop
         }
         String parm=CMLib.xml().getValFromPieces(buf,"ISELL");
         if((parm!=null)&&(CMath.isNumber(parm))) 
-            shop.setWhatIsSold(CMath.s_int(parm));
+            shop.setWhatIsSoldMask(CMath.s_long(parm));
         parm=CMLib.xml().getValFromPieces(buf,"IPREJ");
         if(parm!=null) shop.setPrejudiceFactors(parm);
         parm=CMLib.xml().getValFromPieces(buf,"IBUDJ");

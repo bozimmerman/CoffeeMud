@@ -35,7 +35,7 @@ public interface ShoppingLibrary extends CMLibrary
     public ShopKeeper getShopKeeper(Environmental E);
     public Vector getAllShopkeepers(Room here, MOB notMOB);
     public String getViewDescription(Environmental E);
-    public double rawSpecificGoldPrice(Environmental product,  int whatISell, double numberOfThem);
+    public double rawSpecificGoldPrice(Environmental product,  CoffeeShop shop, double numberOfThem);
     public double prejudiceValueFromPart(MOB customer, boolean sellTo, String part);
     public double prejudiceFactor(MOB customer, String factors, boolean sellTo);
     public ShopKeeper.ShopPrice sellingPrice(MOB seller, MOB buyer, Environmental product, ShopKeeper shop, boolean includeSalesTax);
@@ -52,9 +52,9 @@ public interface ShoppingLibrary extends CMLibrary
     public boolean purchaseItems(Item baseProduct, Vector products, MOB seller, MOB mobFor);
     public boolean purchaseMOB(MOB product, MOB seller, ShopKeeper shop, MOB mobFor);
     public void purchaseAbility(Ability A,  MOB seller, ShopKeeper shop, MOB mobFor);
-    public Vector addRealEstateTitles(Vector V, MOB buyer, int whatISell, Room myRoom);
+    public Vector addRealEstateTitles(Vector V, MOB buyer, CoffeeShop shop, Room myRoom);
     public boolean ignoreIfNecessary(MOB mob, String ignoreMask, MOB whoIgnores);
-    public String storeKeeperString(int whatISell);
+    public String storeKeeperString(CoffeeShop shop);
     public boolean doISellThis(Environmental thisThang, ShopKeeper shop);
 	public String[] bid(MOB mob, double bid, String bidCurrency, Auctioneer.AuctionData auctionData, Item I, Vector auctionAnnounces);
 	public void returnMoney(MOB to, String currency, double amt);

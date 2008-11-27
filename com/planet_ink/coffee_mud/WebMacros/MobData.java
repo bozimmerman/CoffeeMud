@@ -1217,33 +1217,62 @@ public class MobData extends StdWebMacro
 				if(M instanceof ShopKeeper) return "true";
                 return "false";
 			case 22: // shopkeeper type
+			{
+				HashSet shopTypes=new HashSet();
 				if((firstTime)&&(M instanceof ShopKeeper))
-					old=""+((ShopKeeper)M).whatIsSold();
+				{
+					for(int d=0;d<ShopKeeper.DEAL_DESCS.length;d++)
+						if(((ShopKeeper)M).isSold(d))
+							shopTypes.add(Integer.valueOf(d));
+				}
+				else
+				{
+					shopTypes.add(Integer.valueOf(CMath.s_int(old)));
+					int x=1;
+					while(httpReq.getRequestParameter(okparms[o]+x)!=null)
+					{
+						shopTypes.add(Integer.valueOf(CMath.s_int(httpReq.getRequestParameter(okparms[o]+x))));
+						x++;
+					}
+				}
 				if(M instanceof Banker)
 				{
 					int r=ShopKeeper.DEAL_BANKER;
 					str.append("<OPTION VALUE=\""+r+"\"");
-					if(r==CMath.s_int(old))
-						str.append(" SELECTED");
+					if(shopTypes.contains(Integer.valueOf(r))) str.append(" SELECTED");
 					str.append(">"+ShopKeeper.DEAL_DESCS[r]);
 					r=ShopKeeper.DEAL_CLANBANKER;
 					str.append("<OPTION VALUE=\""+r+"\"");
-					if(r==CMath.s_int(old))
-						str.append(" SELECTED");
+					if(shopTypes.contains(Integer.valueOf(r))) str.append(" SELECTED");
+					str.append(">"+ShopKeeper.DEAL_DESCS[r]);
+				}
+				else
+				if(M instanceof PostOffice)
+				{
+					int r=ShopKeeper.DEAL_POSTMAN;
+					str.append("<OPTION VALUE=\""+r+"\"");
+					if(shopTypes.contains(Integer.valueOf(r))) str.append(" SELECTED");
+					str.append(">"+ShopKeeper.DEAL_DESCS[r]);
+					r=ShopKeeper.DEAL_CLANPOSTMAN;
+					str.append("<OPTION VALUE=\""+r+"\"");
+					if(shopTypes.contains(Integer.valueOf(r))) str.append(" SELECTED");
 					str.append(">"+ShopKeeper.DEAL_DESCS[r]);
 				}
 				else
 				for(int r=0;r<ShopKeeper.DEAL_DESCS.length;r++)
 				{
-					if((r!=ShopKeeper.DEAL_CLANBANKER)&&(r!=ShopKeeper.DEAL_BANKER))
+					if((r!=ShopKeeper.DEAL_CLANBANKER)
+					&&(r!=ShopKeeper.DEAL_BANKER)
+					&&(r!=ShopKeeper.DEAL_POSTMAN)
+					&&(r!=ShopKeeper.DEAL_CLANPOSTMAN))
 					{
 						str.append("<OPTION VALUE=\""+r+"\"");
-						if(r==CMath.s_int(old))
-							str.append(" SELECTED");
+						if(shopTypes.contains(Integer.valueOf(r))) str.append(" SELECTED");
 						str.append(">"+ShopKeeper.DEAL_DESCS[r]);
 					}
 				}
 				break;
+			}
 			case 23:
 				if(M.isGeneric()) return "true";
                 return "false";
