@@ -200,7 +200,10 @@ public class Necromancer extends Cleric
 	{
 		if(!(myHost instanceof MOB)){
 			super.executeMsg(myHost,msg);
-		} else {
+		} 
+		else
+		if((msg.sourceMinor()==CMMsg.TYP_DEATH)&&(msg.othersMinor()==CMMsg.TYP_DEATH))
+		{
 			MOB aChar=(MOB)myHost;
 			super.executeMsg(myHost,msg);
 			MOB M=null;
@@ -213,7 +216,8 @@ public class Necromancer extends Cleric
 				&&(M.baseCharStats().getCurrentClass()==this)
 				&&(aChar!=M)
 				&&(M.baseCharStats().getClassLevel(this)>14)
-				&&(CMLib.flags().isInTheGame(M,true)))
+				&&(CMLib.flags().isInTheGame(M,true))
+				&&(!CMath.bset(M.getBitmap(),MOB.ATT_QUIET)))
 				{
 					if(!aChar.isMonster())
 						M.tell("^RYou just felt the death of "+aChar.Name()+".^N");

@@ -200,6 +200,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			CMMsg.MSG_DEATH,null,
 			CMMsg.MSG_DEATH,null,
 			CMMsg.MSG_DEATH,null);
+		CMLib.map().sendGlobalMessage(deadM,CMMsg.TYP_DEATH, msg2);
 		if(addHere!=null)
 		{
 			if(deathRoom.okMessage(deadM,msg2))
