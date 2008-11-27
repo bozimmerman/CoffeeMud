@@ -40,6 +40,13 @@ public class Areas extends StdCommand
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
 	{
+		StringBuffer msg=new StringBuffer("^HComplete areas list:^?^N\n\r");
+		String expression=null;
+		if(commands.size()>1)
+		{
+			expression=CMParms.combineWithQuotes(commands,1);
+			msg=new StringBuffer("^HFiltered areas list:^?^N\n\r");
+		}
 		Vector areasVec=new Vector();
         boolean sysop=(mob!=null)&&CMSecurity.isASysOp(mob);
 		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
@@ -56,10 +63,26 @@ public class Areas extends StdCommand
                 case Area.FLAG_FROZEN: name="^b"+name+"^?"; break;
                 case Area.FLAG_STOPPED: name="^r"+name+"^?"; break;
                 }
+                if(expression!=null)
+                {
+                	int[] stats=A.getAreaIStats();
+                	if(stats!=null)
+                	{
+                    	Hashtable H=new Hashtable();
+	                	for(int i=0;i<stats.length;i++)
+	                		H.put(Area.AREASTAT_DESCS[i],Integer.toString(stats[i]));
+	                	try {
+	                		if(!CMStrings.parseStringExpression(expression, H,false))
+	                			continue;
+	                	}catch(Exception e){
+	                		mob.tell("There was an error in your AREA qualifier parameters. See help on AREA for more information. The error was: "+e.getMessage());
+	                		return false;
+	                	}
+                	}
+                }
 				areasVec.addElement(name);
             }
 		}
-		StringBuffer msg=new StringBuffer("^HComplete areas list:^?^N\n\r");
 		int col=0;
 		for(int i=0;i<areasVec.size();i++)
 		{
