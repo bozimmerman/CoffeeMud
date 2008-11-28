@@ -14,7 +14,7 @@ Use DEFINE _VARNAME to persist a definition beyond the room.
 TODO: **COMPLETE** docs maybe even a dtd or two
 -->
 <AREADATA>
-<AREA id="maze_dungeon" layout="MazeLayout" requires="areaname=$,areasize=int,level_range=int,theme=prison;rats;kobolds;random">
+<AREA id="maze_dungeon" layout="MazeLayout" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;random">
 	<AUTHOR></AUTHOR>
 	<DESCRIPTION></DESCRIPTION>
 	<SIZE>$areasize</SIZE>
@@ -27,6 +27,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 		<TITLE>$a_streetprefix $dungeon_hallways_street_name</TITLE>
 		<DESCRIPTION>$dungeon_hallways_street_desc</DESCRIPTION>
 		<EXIT class="Open" />
+		<MOB condition="1?5=1" select="any-1" include="dungeon_mobs" />
 		<!-- TODO: Trap! -->
 	</ROOM>
 	<ROOM class="CaveRoom" condition="1?10 &lt;= 2"  include="dungeon_mobs,dungeon_items">
@@ -39,31 +40,11 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 
 <ROOM id="dungeon_interior" select="any-1" condition="$roomtag_nodetype='interior' or $roomtag_nodetype='square'">
 	<ROOM class="CaveRoom" condition="" include="dungeon_mobs,dungeon_items">
-		<TITLE>
-		<!--TODO: Fill this in -->
-		</TITLE>
-		<DESCRIPTION>
-		<!--TODO: Fill this in -->
-		</DESCRIPTION>
+		<TITLE>$a_streetprefix $dungeon_hallways_street_name</TITLE>
+		<DESCRIPTION>$dungeon_interior_desc</DESCRIPTION>
 		<EXIT class="Open" />
-	</ROOM>
-	<ROOM class="CaveRoom" condition="" include="dungeon_mobs,dungeon_items">
-		<TITLE>
-		<!--TODO: Fill this in -->
-		</TITLE>
-		<DESCRIPTION>
-		<!--TODO: Fill this in -->
-		</DESCRIPTION>
-		<EXIT class="Open" />
-	</ROOM>
-	<ROOM class="StoneRoom" condition="" include="dungeon_mobs,dungeon_items">
-		<TITLE>
-		<!--TODO: Fill this in -->
-		</TITLE>
-		<DESCRIPTION>
-		<!--TODO: Fill this in -->
-		</DESCRIPTION>
-		<EXIT class="Open" />
+		<MOB condition="1?3=1" select="any-1" include="dungeon_mobs" />
+		<!-- TODO: Trap! -->
 	</ROOM>
 </ROOM>
 
@@ -122,29 +103,251 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 	</ROOM>
 </ROOM>
 
-<MOB id="dungeon_mobs" requires="theme=prison;rats;kobolds;random">
-	<MOB condition="$theme='rats' or $theme='random'">
-	<!--TODO: Insert values -->
+<MOB id="dungeon_mobs" select="all" requires="level_range=int,theme=prison;rats;kobolds;random,aggrochance=int">
+	<MOB select="all" condition="$theme='rats' or $theme='random'">
+		<MOB level="$level_range" id="dungeon_rat" race="Rat">
+			<NAME>(a(n)) $nasty_animal_desc $mammal_color rat</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY weight="1">$mob_name squeeks at you.</DISPLAY>
+				<DISPLAY weight="1">$mob_name bares its teeth at you.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is rummaging through something.</DISPLAY>
+				<DISPLAY weight="1">$mob_name looks hungry.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is pittering around here.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is trying to hide here.</DISPLAY>
+				<DISPLAY weight="5">$mob_name is here.</DISPLAY>
+			</DISPLAY>
+			<ALIGNMENT>0</ALIGNMENT>
+			<ABILITY condition="$mob_level>10 and 1?3=1" class="Disease" />
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$aggrochance&lt;0" class="MobileAggressive" parms="" />
+				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+				<BEHAVIOR class="Mobile" parms="" />
+				<BEHAVIOR class="CombatAbilities" parms="" />
+			</BEHAVIOR>
+		</MOB>
+		<MOB level="$level_range" id="dungeon_bat" race="Bat">
+			<NAME>(a(n)) $nasty_animal_desc $mammal_color bat</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY weight="1">$mob_name dives at you.</DISPLAY>
+				<DISPLAY weight="1">$mob_name bares its teeth at you.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is circling around here.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is hunting for food.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is flying around here.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is hanging around here.</DISPLAY>
+				<DISPLAY weight="5">$mob_name is here.</DISPLAY>
+			</DISPLAY>
+			<ALIGNMENT>0</ALIGNMENT>
+			<ABILITY condition="$mob_level>10 and 1?3=1" class="Disease" />
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$aggrochance&lt;0" class="MobileAggressive" parms="" />
+				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+				<BEHAVIOR class="Mobile" parms="" />
+				<BEHAVIOR class="CombatAbilities" parms="" />
+			</BEHAVIOR>
+		</MOB>
+		<MOB level="$level_range" id="dungeon_spider" race="Spider">
+			<NAME>(a(n)) $nasty_animal_desc $insect_color spider</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY weight="1">$mob_name creeps towards you.</DISPLAY>
+				<DISPLAY weight="1">$mob_name opens its mandibles at you.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is crawling around here.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is waiting for food.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is spinning around here.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is waiting around here.</DISPLAY>
+				<DISPLAY weight="5">$mob_name is here.</DISPLAY>
+			</DISPLAY>
+			<ALIGNMENT>0</ALIGNMENT>
+			<ABILITY condition="$mob_level>10 and 1?3=1" class="Poison" />
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$aggrochance&lt;0" class="MobileAggressive" parms="" />
+				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+				<BEHAVIOR class="Mobile" parms="" />
+				<BEHAVIOR class="CombatAbilities" parms="" />
+			</BEHAVIOR>
+		</MOB>
+		<MOB level="$level_range" id="dungeon_blob" race="Blob">
+			<NAME>(a(n)) $nasty_animal_desc $creature_color blob</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY weight="1">$mob_name creeps towards you.</DISPLAY>
+				<DISPLAY weight="1">$mob_name looks very menacing.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is dragging itself around here.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is waiting for food.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is waiting around here.</DISPLAY>
+				<DISPLAY weight="5">$mob_name is here.</DISPLAY>
+			</DISPLAY>
+			<ALIGNMENT>0</ALIGNMENT>
+			<ABILITY condition="$mob_level&gt;30 and 1?3=1" class="Paralysis" />
+			<ABILITY condition="1?3=1" class="WeakParalysis" />
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$aggrochance&lt;0" class="MobileAggressive" parms="" />
+				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+				<BEHAVIOR class="Mobile" parms="" />
+				<BEHAVIOR class="CombatAbilities" parms="" />
+				<BEHAVIOR class="Scavenger" parms="" />
+			</BEHAVIOR>
+		</MOB>
+		<MOB level="$level_range" id="dungeon_scorpion" race="Scorpion">
+			<NAME>(a(n)) $nasty_animal_desc scorpion</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY weight="1">$mob_name creeps towards you.</DISPLAY>
+				<DISPLAY weight="1">$mob_name snaps its tail at you.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is crawling around here.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is waiting for food.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is running around here.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is waiting around here.</DISPLAY>
+				<DISPLAY weight="5">$mob_name is here.</DISPLAY>
+			</DISPLAY>
+			<ALIGNMENT>0</ALIGNMENT>
+			<ABILITY condition="$mob_level>10 and 1?3=1" class="Poison" />
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$aggrochance&lt;0" class="MobileAggressive" parms="" />
+				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+				<BEHAVIOR class="Mobile" parms="" />
+				<BEHAVIOR class="CombatAbilities" parms="" />
+			</BEHAVIOR>
+		</MOB>
+		<MOB level="$level_range" id="dungeon_snake" race="Snake">
+			<NAME>(a(n)) $nasty_animal_desc $reptile_color snake</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY weight="1">$mob_name slinks towards you.</DISPLAY>
+				<DISPLAY weight="1">$mob_name shows its fangs you.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is slithering around here.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is waiting for food.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is moving around here.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is coiled up here.</DISPLAY>
+				<DISPLAY weight="5">$mob_name is here.</DISPLAY>
+			</DISPLAY>
+			<ALIGNMENT>0</ALIGNMENT>
+			<ABILITY condition="$mob_level>10 and 1?3=1" class="Poison" />
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$aggrochance&lt;0" class="MobileAggressive" parms="" />
+				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+				<BEHAVIOR class="Mobile" parms="" />
+				<BEHAVIOR class="CombatAbilities" parms="" />
+			</BEHAVIOR>
+		</MOB>
+		<MOB level="$level_range" id="dungeon_lizard" race="Lizard">
+			<NAME>(a(n)) $nasty_animal_desc $reptile_color lizard</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY weight="1">$mob_name creeps towards you.</DISPLAY>
+				<DISPLAY weight="1">$mob_name flicks its tounge you.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is crawling around here.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is waiting for food.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is watching you.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is trying to hide here.</DISPLAY>
+				<DISPLAY weight="5">$mob_name is here.</DISPLAY>
+			</DISPLAY>
+			<ALIGNMENT>0</ALIGNMENT>
+			<ABILITY condition="$mob_level>5 and 1?3=1" class="Skill_Trip" />
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$aggrochance&lt;0" class="MobileAggressive" parms="" />
+				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+				<BEHAVIOR class="Mobile" parms="" />
+				<BEHAVIOR class="CombatAbilities" parms="" />
+			</BEHAVIOR>
+		</MOB>
 	</MOB>
-	<MOB condition="$theme='prison' or $theme='random'">
-	<!--TODO: Insert values -->
+	<MOB select="all" condition="$theme='prison' or $theme='random'">
+	<!--TODO: Insert values: prisoners, spirits -->
 	</MOB>
-	<MOB condition="$theme='kobold' or $theme='random'">
-	<!--TODO: Insert values -->
+	<MOB select="all" condition="$theme='kobold' or $theme='random'">
+		<MOB level="$level_range" id="dungeon_kobold" race="Kobold">
+			<NAME>(a(n)) $nasty_animal_desc kobold</NAME>
+			<DISPLAY select="pick-1">
+				<DISPLAY weight="1">$mob_name sneaks towards you.</DISPLAY>
+				<DISPLAY weight="1">$mob_name charges at you.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is patrolling here.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is scavenging for food.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is watching you.</DISPLAY>
+				<DISPLAY weight="1">$mob_name is trying to hide from you.</DISPLAY>
+				<DISPLAY weight="5">$mob_name is here.</DISPLAY>
+			</DISPLAY>
+			<ALIGNMENT>-10000</ALIGNMENT>
+			<ABILITY select="all">
+				<ABILITY condition="1?3=1" class="Skill_Trip" />
+				<ABILITY condition="1?3=1" class="Skill_Dirt" />
+				<ABILITY condition="1?3=1" class="Thief_Distract" />
+				<ABILITY condition="$mob_level>5 and 1?3=1" class="Thief_Caltrop" />
+				<ABILITY condition="$mob_level>5 and 1?3=1" class="Thief_SlickCaltrops" />
+			</ABILITY>
+			<BEHAVIOR select="all">
+				<BEHAVIOR condition="$aggrochance&lt;0" class="MobileAggressive" parms="" />
+				<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+				<BEHAVIOR condition="1?3=1"  class="Wimpy" parms="" />
+				<BEHAVIOR class="MudChat" parms="" />
+				<BEHAVIOR condition="1?2=1"  class="BrotherHelper" parms="" />
+				<BEHAVIOR class="Mobile" parms="" />
+				<BEHAVIOR class="Scavenger" parms="" />
+				<BEHAVIOR class="CombatAbilities" parms="" />
+			</BEHAVIOR>
+			<ITEM select="all">
+				<ITEM select="pick-1">
+					<ITEM weight="3" class="GenWeapon" LEVEL="$mob_level">
+						<NAME>a short spear</NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<WEAPONCLASS>POLEARM</WEAPONCLASS>
+						<WEAPONTYPE>PIERCING</WEAPONTYPE>
+						<MATERIAL>OAK</MATERIAL>
+					</ITEM>
+					<ITEM weight="1" class="GenWeapon" LEVEL="$mob_level">
+						<NAME>a short dagger</NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<WEAPONCLASS>DAGGER</WEAPONCLASS>
+						<WEAPONTYPE>PIERCING</WEAPONTYPE>
+						<MATERIAL>IRON</MATERIAL>
+					</ITEM>
+					<ITEM weight="1" class="GenWeapon" LEVEL="$mob_level">
+						<NAME>a sharp stick</NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<MATERIAL>OAK</MATERIAL>
+						<WEAPONCLASS>DAGGER</WEAPONCLASS>
+						<WEAPONTYPE>PIERCING</WEAPONTYPE>
+					</ITEM>
+					<ITEM weight="1" class="GenWeapon" LEVEL="$mob_level">
+						<NAME>a small spiked mace</NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<MATERIAL>IRON</MATERIAL>
+						<WEAPONCLASS>BLUNT</WEAPONCLASS>
+						<WEAPONTYPE>BASHING</WEAPONTYPE>
+					</ITEM>
+				</ITEM>
+			</ITEM>
+		</MOB>
 	</MOB>
 </MOB>
 
-<ITEM id="dungeon_items" requires="theme=prison;rats;kobolds;random">
-	<ITEM condition="$theme='rats' or $theme='random'">
-	<!--TODO: Insert values -->
+<ITEM id="dungeon_items" select="all" requires="level_range=int,theme=prison;rats;kobolds;random">
+	<ITEM select="all" condition="$theme='rats' or $theme='random'">
+	<!--TODO: Insert values: adventurer corpses are good -->
 	</ITEM>
-	<ITEM condition="$theme='prison' or $theme='random'">
-	<!--TODO: Insert values -->
+	<ITEM select="all" condition="$theme='prison' or $theme='random'">
+	<!--TODO: Insert values: lots of things, dead guards again are good -->
 	</ITEM>
-	<ITEM condition="$theme='kobold' or $theme='random'">
-	<!--TODO: Insert values -->
+	<ITEM select="all" condition="$theme='kobold' or $theme='random'">
+	<!--TODO: Insert values: lots of things I guess -->
 	</ITEM>
 </ITEM>
+
+<STRING id="creature_color" select="any-1" include="mammal_color,reptile_color" />
+
+<STRING id="insect_color" select="any-1" include="mammal_color">
+<STRING>green</STRING>
+<STRING>dark green</STRING>
+</STRING>
+
+<STRING id="reptile_color" select="any-1">
+<STRING>green</STRING>
+<STRING>dark green</STRING>
+<STRING>light green</STRING>
+<STRING>reddish</STRING>
+<STRING>pale</STRING>
+</STRING>
+
+<STRING id="mammal_color" select="any-1">
+<STRING>black</STRING>
+<STRING>brown</STRING>
+<STRING>gray</STRING>
+</STRING>
 
 <STRING id="dungeon_hallways_street_name" define="dungeon_hallways_street_name" select="any-1">
 <STRING>cavernous tunnel</STRING>
@@ -259,13 +462,27 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 <STRING condition="$ROOMTAG_NODEFLAGS=''">A</STRING>
 </STRING>
 
-<STRING id="dungeon_interior_desc">
-	<STRING select="all" action="append">
-		A dump has been created here. 
-		Something very big looks to have take up residence amongst the garbage.
-		Obviously something REALLY big lives here. 
-		This mighty vaulted cavern seems much too fine to have been crafted by the likes of what you see here. 
-	 </STRING>
+<STRING id="nasty_animal_desc" select="all">
+	<STRING>oversized</STRING>
+	<STRING>runt</STRING>
+	<STRING>muddy</STRING>
+	<STRING>nasty</STRING>
+	<STRING>smelly</STRING>
+	<STRING>grotesque</STRING>
+	<STRING>slithering</STRING>
+	<STRING>hungry</STRING>
+	<STRING>unpleasant</STRING>
+	<STRING>creepy</STRING>
+	<STRING>eerie</STRING>
+	<STRING>harsh</STRING>
+	<STRING>scary</STRING>
+	<STRING>dour</STRING>
+	<STRING>grim</STRING>
+	<STRING>quiet</STRING>
+	<STRING>musty</STRING>
+	<STRING>damp</STRING>
+	<STRING>wet</STRING>
+	<STRING>cold</STRING>
 </STRING>
 
 <STRING id="dungeon_random_blurbs" select="all">
@@ -310,14 +527,43 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 		<STRING>The air is $dungeonadj_nonphys.</STRING>
 		<STRING>$dungeonadj_nonphys air hovers around you.</STRING>
 		<STRING>This air is $dungeonadj_nonphys and $dungeonadj_nonphys.</STRING>
+		<STRING>The air is not quite as $dungeonadj_nonphys here.</STRING>
 	</STRING>
 	<STRING>This place is $dungeonadj_anynosize.</STRING>
 	<STRING>You feel $dungeonadj_nonphys.</STRING>
 	<STRING>You thought you felt a breeze.</STRING>
 	<STRING select="any-1">
 		<STRING>You think you heard a sound of faint trickling in the distance.</STRING>
-		<STRING>You are certain you just heard a scream coming from somewhere.</STRING>
 		<STRING>The walls seems to groan.</STRING>
+		<STRING>Faint $dungeonadj_feeling sounds can be heard in the distance.</STRING>
+	</STRING>
+	<STRING select="all" condition="theme='prison' or (theme='random' and 1?10=1)">
+		<STRING>You are certain you just heard a $dungeonadj_feeling scream coming from somewhere.</STRING>
+		<STRING>You can hear the $dungeonadj_feeling sounds of human suffering.</STRING>
+		<STRING>You hear $dungeonadj_feeling tortured screams in the distance.</STRING>
+		<STRING>You hear $dungeonadj_feeling screams of suffering in the distance.</STRING>
+		<STRING>You hear $dungeonadj_feeling sounds coming from all around you.</STRING>
+		<STRING>You hear $dungeonadj_feeling sounds coming from all around you.</STRING>
+		<STRING>You wonder if an execution occurred here.</STRING>
+	</STRING>
+	<STRING select="all" condition="theme='kobolds' or (theme='random' and 1?10=1)">
+		<STRING>You hear $dungeonadj_feeling snickering nearby.</STRING>
+		<STRING>You hear the $dungeonadj_feeling sounds of pattering feet nearby.</STRING>
+		<STRING>You hear faint but $dungeonadj_feeling yipping sounds echoing around you.</STRING>
+		<STRING>By the smell, you are pretty sure this is another bathroom spot.</STRING>
+		<STRING>It smells like something $dungeonadj_feeling sprayed in here.</STRING>
+		<STRING>Bits of a sprung trap are splayed about.</STRING>
+		<STRING>Several faint $dungeonadj_feeling yipping voices echo in the distance.</STRING>
+	</STRING>
+	<STRING select="all" condition="theme='rats' or (theme='random' and 1?10=1)">
+		<STRING>You hear $dungeonadj_feeling squeeking nearby.</STRING>
+		<STRING>You hear the $dungeonadj_feeling sounds of tiny pattering feet nearby.</STRING>
+		<STRING>You hear faint but $dungeonadj_feeling animal sounds echoing around you.</STRING>
+		<STRING>Something has left droppings here.</STRING>
+		<STRING>Some $dungeonadj_feeling creature obviously relieved itself here.</STRING>
+		<STRING>Bits of half-eaten trash can be seen around here.</STRING>
+		<STRING>Bits of some half-eaten creature are here.</STRING>
+		<STRING>Was that the sound of something $dungeonadj_feeling?</STRING>
 	</STRING>
 </STRING>
 
@@ -325,7 +571,13 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 	<STRING id="dungeonadj_phys_size_values">
 		<STRING>narrow</STRING>
 		<STRING>huge</STRING>
-		<STRING>rocky</STRING>
+		<STRING>broad</STRING>
+		<STRING>wide</STRING>
+		<STRING>large</STRING>
+		<STRING>spacious</STRING>
+		<STRING>expansive</STRING>
+		<STRING>cramped</STRING>
+		<STRING>tight</STRING>
 	</STRING>
 </STRING>
 <STRING id="dungeonadj_phys_nosize" select="any-1">
@@ -334,6 +586,8 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 		<STRING>smooth</STRING>
 		<STRING>rocky</STRING>
 		<STRING>grey</STRING>
+		<STRING>coarse</STRING>
+		<STRING>uneven</STRING>
 		<STRING>craggy</STRING>
 		<STRING>rough</STRING>
 		<STRING>cracked</STRING>
@@ -342,10 +596,18 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 <STRING id="dungeonadj_feeling" select="any-1" >
 	<STRING id="dungeonadj_feeling_values">
 		<STRING>ghastly</STRING>
+		<STRING>unpleasant</STRING>
 		<STRING>creepy</STRING>
 		<STRING>eerie</STRING>
+		<STRING>harsh</STRING>
 		<STRING>lonely</STRING>
-		<STRING>scarey</STRING>
+		<STRING>grating</STRING>
+		<STRING>scary</STRING>
+		<STRING>sinister</STRING>
+		<STRING>dreary</STRING>
+		<STRING>dour</STRING>
+		<STRING>grim</STRING>
+		<STRING>gloomy</STRING>
 		<STRING>unsettling</STRING>
 	</STRING>
 </STRING>
@@ -354,6 +616,8 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 		<STRING>dank</STRING>
 		<STRING>quiet</STRING>
 		<STRING>musty</STRING>
+		<STRING>moldy</STRING>
+		<STRING>chilling</STRING>
 		<STRING>damp</STRING>
 		<STRING>still</STRING>
 		<STRING>dark</STRING>
@@ -391,7 +655,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 		<STRING>This $dungeonadj_any $dungeon_tunnelword heads $roomexits_desc_long.</STRING>
 		<STRING>This $dungeonadj_any $dungeon_tunnelword seems to head $roomexits_desc_long.</STRING>
 	</STRING>
-	<STRING select="any-1" insert="dungeon_random_blurbs" action="APPEND" />
+	<STRING select="any-2" insert="dungeon_random_blurbs" action="APPEND" />
 </STRING>
 
 <STRING id="dungeon_crawlways_street_desc"  select="all">

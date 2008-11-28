@@ -3068,7 +3068,12 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		case 11: CMLib.flags().setReadable(I,CMath.s_bool(val)); break;
 		case 12: CMLib.flags().setDroppable(I,CMath.s_bool(val)); break;
 		case 13: CMLib.flags().setRemovable(I,CMath.s_bool(val)); break;
-		case 14: I.setMaterial(CMath.s_int(val)); break;
+		case 14: if(CMath.isInteger(val)||(val.trim().length()==0))
+					I.setMaterial(CMath.s_int(val)); 
+				 else
+				 if(CMParms.contains(RawMaterial.RESOURCE_DESCS,val.toUpperCase().trim()))
+					I.setMaterial(RawMaterial.RESOURCE_DATA[CMParms.indexOf(RawMaterial.RESOURCE_DESCS,val.toUpperCase().trim())][0]); 
+				 break;
 		case 15: {
 					 while(I.numEffects()>0)
 					 {

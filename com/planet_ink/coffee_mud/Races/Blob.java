@@ -45,6 +45,20 @@ public class Blob extends Unique
 	public String racialCategory(){return "Unique";}
 	public boolean fertile(){return true;}
 
+	public String arriveStr() { return "drags itself in"; }
+	public String leaveStr() { return "drags itself"; }
+	
+	public Weapon myNaturalWeapon()
+	{
+		if(naturalWeapon==null)
+		{
+			naturalWeapon=CMClass.getWeapon("StdWeapon");
+			naturalWeapon.setName("a body slam");
+			naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+		}
+		return naturalWeapon;
+	}
+
 	public Vector myResources()
 	{
 		synchronized(resources)

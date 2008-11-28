@@ -1027,6 +1027,21 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     		str=str.substring(0,start)+val.toString()+str.substring(x);
     		x=str.indexOf('$');
     	}
+    	x=str.toLowerCase().indexOf("(a(n))");
+    	while((x>=0)&&(x<str.length()-8))
+    	{
+    		if((Character.isWhitespace(str.charAt(x+6)))
+    		&&(Character.isLetter(str.charAt(x+7))))
+			{
+				if(CMStrings.isVowel(str.charAt(x+7)))
+					str=str.substring(0,x)+"an"+str.substring(x+6);
+				else
+					str=str.substring(0,x)+"a"+str.substring(x+6);
+			}
+    		else
+				str=str.substring(0,x)+"a"+str.substring(x+6);
+    		x=str.toLowerCase().indexOf("(a(n))");
+    	}
         return CMLib.xml().restoreAngleBrackets(str);
     }
 }

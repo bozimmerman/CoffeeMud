@@ -45,6 +45,21 @@ public class Jelly extends Unique
 	public String racialCategory(){return "Unique";}
 	public boolean fertile(){return true;}
 
+	public String arriveStr() { return "sloshes in"; }
+	public String leaveStr() { return "sloshes"; }
+	
+	public Weapon myNaturalWeapon()
+	{
+		if(naturalWeapon==null)
+		{
+			naturalWeapon=CMClass.getWeapon("StdWeapon");
+			naturalWeapon.setName("an appendange");
+			naturalWeapon.setRanges(0,2);
+			naturalWeapon.setWeaponType(Weapon.TYPE_BASHING);
+		}
+		return naturalWeapon;
+	}
+
 	public Vector myResources()
 	{
 		synchronized(resources)
