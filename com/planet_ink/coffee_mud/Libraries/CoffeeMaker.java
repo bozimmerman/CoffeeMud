@@ -3062,7 +3062,23 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		case 5: I.setDisplayText(val); break;
 		case 6: I.setDescription(val); break;
 		case 7: I.setSecretIdentity(val); break;
-		case 8: I.setRawProperLocationBitmap(CMath.s_long(val)); break;
+		case 8: {
+				  if(CMath.isLong(val)||(val.trim().length()==0))
+					  I.setRawProperLocationBitmap(CMath.s_long(val)); 
+				  else
+				  {
+					  I.setRawProperLocationBitmap(0);
+					  Vector V=CMParms.parseCommas(val,true);
+					  for(Enumeration e=V.elements();e.hasMoreElements();)
+					  {
+						  val=(String)e.nextElement();
+						  int wornIndex=CMParms.indexOfIgnoreCase(Item.WORN_DESCS,val);
+						  if(wornIndex>=0)
+							  I.setRawProperLocationBitmap(I.rawProperLocationBitmap()|Item.WORN_CODES[wornIndex]);
+					  }
+				  }
+				  break;
+				}
 		case 9: I.setRawLogicalAnd(CMath.s_bool(val)); break;
 		case 10: I.setBaseValue(CMath.s_parseIntExpression(val)); break;
 		case 11: CMLib.flags().setReadable(I,CMath.s_bool(val)); break;
@@ -3071,8 +3087,8 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 		case 14: if(CMath.isInteger(val)||(val.trim().length()==0))
 					I.setMaterial(CMath.s_int(val)); 
 				 else
-				 if(CMParms.contains(RawMaterial.RESOURCE_DESCS,val.toUpperCase().trim()))
-					I.setMaterial(RawMaterial.RESOURCE_DATA[CMParms.indexOf(RawMaterial.RESOURCE_DESCS,val.toUpperCase().trim())][0]); 
+				 if(CMParms.containsIgnoreCase(RawMaterial.RESOURCE_DESCS,val))
+					I.setMaterial(RawMaterial.RESOURCE_DATA[CMParms.indexOfIgnoreCase(RawMaterial.RESOURCE_DESCS,val)][0]); 
 				 break;
 		case 15: {
 					 while(I.numEffects()>0)
@@ -3088,7 +3104,23 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 					 setExtraEnvProperties(I,CMLib.xml().parseAllXML(val));
 					 break;
 				 }
-		case 16: I.baseEnvStats().setDisposition(CMath.s_parseIntExpression(val)); break;
+		case 16:{
+				  if(CMath.isInteger(val)||(val.trim().length()==0))
+					 I.baseEnvStats().setDisposition(CMath.s_parseIntExpression(val));
+				  else
+				  {
+					  I.baseEnvStats().setDisposition(0);
+					  Vector V=CMParms.parseCommas(val,true);
+					  for(Enumeration e=V.elements();e.hasMoreElements();)
+					  {
+						  val=(String)e.nextElement();
+						  int dispIndex=CMParms.indexOfIgnoreCase(EnvStats.IS_CODES,val);
+						  if(dispIndex>=0)
+							  I.baseEnvStats().setDisposition(I.baseEnvStats().disposition()|(int)CMath.pow(2,dispIndex));
+					  }
+				  }
+				  break;
+		}
 		case 17: I.baseEnvStats().setWeight(CMath.s_parseIntExpression(val)); break;
 		case 18: I.baseEnvStats().setArmor(CMath.s_parseIntExpression(val)); break;
 		case 19: I.baseEnvStats().setDamage(CMath.s_parseIntExpression(val)); break;
@@ -3201,8 +3233,42 @@ public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
 				else
 		        	M.addFaction(CMLib.factions().AlignID(),CMath.s_parseIntExpression(val));
 				break;
-		case 9: M.baseEnvStats().setDisposition(CMath.s_parseIntExpression(val)); break;
-		case 10: M.baseEnvStats().setSensesMask(CMath.s_parseIntExpression(val)); break;
+		case 9: 
+			{
+				  if(CMath.isInteger(val)||(val.trim().length()==0))
+					 M.baseEnvStats().setDisposition(CMath.s_parseIntExpression(val));
+				  else
+				  {
+					  M.baseEnvStats().setDisposition(0);
+					  Vector V=CMParms.parseCommas(val,true);
+					  for(Enumeration e=V.elements();e.hasMoreElements();)
+					  {
+						  val=(String)e.nextElement();
+						  int dispIndex=CMParms.indexOfIgnoreCase(EnvStats.IS_CODES,val);
+						  if(dispIndex>=0)
+							  M.baseEnvStats().setDisposition(M.baseEnvStats().disposition()|(int)CMath.pow(2,dispIndex));
+					  }
+				  }
+				  break;
+			}
+		case 10: 
+			{
+				  if(CMath.isInteger(val)||(val.trim().length()==0))
+					 M.baseEnvStats().setSensesMask(CMath.s_parseIntExpression(val));
+				  else
+				  {
+					  M.baseEnvStats().setSensesMask(0);
+					  Vector V=CMParms.parseCommas(val,true);
+					  for(Enumeration e=V.elements();e.hasMoreElements();)
+					  {
+						  val=(String)e.nextElement();
+						  int dispIndex=CMParms.indexOfIgnoreCase(EnvStats.CAN_SEE_CODES,val);
+						  if(dispIndex>=0)
+							  M.baseEnvStats().setSensesMask(M.baseEnvStats().sensesMask()|(int)CMath.pow(2,dispIndex));
+					  }
+				  }
+				  break;
+			}
 		case 11: M.baseEnvStats().setArmor(CMath.s_parseIntExpression(val)); break;
 		case 12: M.baseEnvStats().setDamage(CMath.s_parseIntExpression(val)); break;
 		case 13: M.baseEnvStats().setAttackAdjustment(CMath.s_parseIntExpression(val)); break;

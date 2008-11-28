@@ -939,7 +939,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         else
         if(selection.startsWith("FIRST-"))
         {
-            int num=CMath.s_int(selection.substring(selection.indexOf('-')+1));
+            int num=CMath.parseIntExpression(selection.substring(selection.indexOf('-')+1));
             if((num<=0)||(num>choices.size())) throw new CMException("Can't pick first "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
             selectedChoicesV=new Vector();
             for(int v=0;v<num;v++)
@@ -951,7 +951,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         else
         if(selection.startsWith("LAST-"))
         {
-            int num=CMath.s_int(selection.substring(selection.indexOf('-')+1));
+            int num=CMath.parseIntExpression(selection.substring(selection.indexOf('-')+1));
             if((num<=0)||(num>choices.size())) throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
             selectedChoicesV=new Vector();
             for(int v=choices.size()-num;v<choices.size();v++)
@@ -960,7 +960,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         else
         if(selection.startsWith("PICK-"))
         {
-            int num=CMath.s_int(selection.substring(selection.indexOf('-')+1));
+            int num=CMath.parseIntExpression(selection.substring(selection.indexOf('-')+1));
             if((num<=0)||(num>choices.size())) throw new CMException("Can't pick "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
             selectedChoicesV=new Vector();
             Vector cV=(Vector)choices.clone();
@@ -971,7 +971,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
                 for(int c=0;c<cV.size();c++)
                 {
                     XMLLibrary.XMLpiece lilP=(XMLLibrary.XMLpiece)cV.elementAt(c);
-                    int weight=CMath.s_parseIntExpression(CMLib.xml().getParmValue(lilP.parms,"WEIGHT"));
+                    int weight=CMath.s_parseIntExpression(CMLib.xml().getParmValue(lilP.parms,"PICKWEIGHT"));
                     if(weight<1) weight=1;
                     weights[c]=weight;
                     total+=weight;
@@ -994,7 +994,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         else
         if(selection.startsWith("ANY-"))
         {
-            int num=CMath.s_int(selection.substring(selection.indexOf('-')+1));
+            int num=CMath.parseIntExpression(selection.substring(selection.indexOf('-')+1));
             if((num<=0)||(num>choices.size())) throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
             selectedChoicesV=new Vector();
             Vector cV=(Vector)choices.clone();

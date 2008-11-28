@@ -372,7 +372,28 @@ public interface EnvStats extends CMCommon, CMModifiable
     /** a bit setting, as from sensesMask(), flagging this item/room  */
 	public final static int SENSE_UNUSEDMASK17=65536;
 	
-	/** All bits in a Integer, cast into a long */
+    /** STAT codes list, indexed by the 2nd root of the various sensesMask() SENSE_ bitmasks */ 
+	public static final String[] SENSE_CODES={
+		"UNLOCATABLE",
+		"ITEMNOMINRANGE",
+		"ITEMNOMAXRANGE",
+		"ITEMREADABLE",
+		"ITEMNOTGET",
+		"ITEMNODROP",
+		"ITEMNOREMOVE",
+		"CONTENTSUNSEEN",
+		"ITEMNEVERSAVED",
+		"ROOMUNEXPLORABLE",
+		"ROOMNOMOVEMENT",
+		"ROOMUNMAPPABLE",
+		"ROOMGRIDSYNC",
+		"ITEMNORUIN",
+		"UNUSEDMASK15",
+		"UNUSEDMASK16",
+		"UNUSEDMASK17",
+	};
+
+		/** All bits in a Integer, cast into a long */
 	public final static long ALLMASK=Integer.MAX_VALUE;
 	
 	// dispositions
