@@ -91,7 +91,7 @@ public class Stat  extends Skills
             table.append(CMStrings.padRight("Skill",25)+CMStrings.padRight("Uses",10)+CMStrings.padRight("Skill",25)+CMStrings.padRight("Uses",10)+"\n\r");
         else
         if(questStats)
-            table.append(CMStrings.padRight("Quest",35)
+            table.append(CMStrings.padRight("Quest",30)
 	   					+CMStrings.padRight("STRT",5)
     					+CMStrings.padRight("TSRT",5)
     					+CMStrings.padRight("FLST",5)
@@ -228,7 +228,7 @@ public class Stat  extends Skills
             {
                 Quest Q=CMLib.quests().fetchQuest(x);
                 table.append(
-            		     CMStrings.padRight(Q.name(),35)
+            		     CMStrings.padRight(Q.name(),30)
                         +CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_QUESTSTARTATTEMPT],5)
 		                +CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_QUESTTIMESTART],5)
 		                +CMStrings.centerPreserve(""+totals[x][CoffeeTableRow.STAT_QUESTFAILEDSTART],5)
