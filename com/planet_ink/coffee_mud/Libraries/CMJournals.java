@@ -103,14 +103,13 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
         S.setSavable(false);
         S.setVarScope("*");
         S.setScript("LOAD="+scriptFilename);
-        S.setVar("*","VALUE", oldValue);
+        S.setVar(mob.Name(),"VALUE", oldValue);
         CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"COMMANDJOURNAL_"+CMJ.NAME());
         S.executeMsg(mob, msg2);
         S.dequeResponses();
         S.tick(mob,Tickable.TICKID_MOB);
         String response=S.getVar("*","VALUE");
-        if((response!=null)&&(response.length()>0)) 
-        	return response;
+        if(response!=null) return response;
         return oldValue;
     }
     

@@ -220,34 +220,38 @@ public class CommandJournal extends StdCommand
             mob.tell("This command is not available to you.");
             return false;
         }
-        if(CMParms.combine(commands,1).length()>0)
+        if((!review(mob,"SYSTEM_"+journal.NAME()+"S",journal.NAME().toLowerCase()+"s",commands,journal.NAME()))
+        &&(!transfer(mob,"SYSTEM_"+journal.NAME()+"S",journal.NAME().toLowerCase()+"s",commands,journal.NAME())))
         {
 	        String msgString=CMParms.combine(commands,1);
-	        if(journal.getFlag(JournalsLibrary.JournalFlag.CONFIRM)!=null)
-	        {
-	        	if(!mob.session().confirm("Submit this message: '"+msgString+"' (Y/n)?","Y"))
-		            return false;
-	        }
 	        if((mob.session()!=null)&&(!mob.session().killFlag()))
 	        	msgString=CMLib.journals().getScriptValue(mob,journal.NAME(),msgString);
-            if((!review(mob,"SYSTEM_"+journal.NAME()+"S",journal.NAME().toLowerCase()+"s",commands,journal.NAME()))
-            &&(!transfer(mob,"SYSTEM_"+journal.NAME()+"S",journal.NAME().toLowerCase()+"s",commands,journal.NAME())))
-            {
-                String prePend="";
-                if(journal.getFlag(JournalsLibrary.JournalFlag.ADDROOM)!=null)
-                    prePend="(^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(mob.location())+"^</LSTROOMID^>) ";
-                CMLib.database().DBWriteJournal("SYSTEM_"+journal.NAME()+"S",mob.Name(),"ALL",
-                		journal.NAME()+": "+CMStrings.padRight(CMParms.combine(commands,1),15),
-                        prePend+CMParms.combine(commands,1),
-                        -1);
-                mob.tell("Your "+journal.NAME().toLowerCase()+" message has been sent.  Thank you.");
-                if(journal.getFlag(JournalsLibrary.JournalFlag.CHANNEL)!=null)
-                    CMLib.commands().postChannel(journal.getFlag(JournalsLibrary.JournalFlag.CHANNEL).toUpperCase().trim(),"",mob.Name()+" posted to "+journal.NAME()+": "+CMParms.combine(commands,1),true);
-            }
+	        if(msgString.trim().length()>0)
+	        {
+		        if(journal.getFlag(JournalsLibrary.JournalFlag.CONFIRM)!=null)
+		        {
+		        	if(!mob.session().confirm("\n\r^HSubmit this "+journal.NAME().toLowerCase()+": '^N"+msgString+"^H' (Y/n)?^.^N","Y"))
+			            return false;
+		        }
+	            String prePend="";
+	            if(journal.getFlag(JournalsLibrary.JournalFlag.ADDROOM)!=null)
+	                prePend="(^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(mob.location())+"^</LSTROOMID^>) ";
+	            CMLib.database().DBWriteJournal("SYSTEM_"+journal.NAME()+"S",mob.Name(),"ALL",
+	            		CMStrings.padRight("^.^N"+msgString+"^.^N",20),
+	                    prePend+msgString,
+	                    -1);
+	            mob.tell("Your "+journal.NAME().toLowerCase()+" message has been sent.  Thank you.");
+	            if(journal.getFlag(JournalsLibrary.JournalFlag.CHANNEL)!=null)
+	                CMLib.commands().postChannel(journal.getFlag(JournalsLibrary.JournalFlag.CHANNEL).toUpperCase().trim(),"",mob.Name()+" posted to "+journal.NAME()+": "+CMParms.combine(commands,1),true);
+	        }
+	        else
+	        {
+	            mob.tell("What's the "+journal.NAME().toLowerCase()+"? Be Specific!");
+	            return false;
+	        }
+	        
         }
-        else
-            mob.tell("What's the "+journal.NAME().toLowerCase()+"? Be Specific!");
-        return false;
+    	return true;
     }
     
     public boolean canBeOrdered(){return false;}

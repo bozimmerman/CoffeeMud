@@ -2176,4 +2176,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 36. Necromancers will now be notified of the deaths of mobs nearby and of other players online.
 37. Players will now get a message if they attempt to put on armor outside their class restrictions.  Messages are in lists.ini
 38. ShopKeepers can now sell multiple-types of items.  Conflicting types are resolved when set.
-39. 
+39. CommandJournals now support SCRIPT= flag to allow you to scrip entries into your journal.  An example for BUG is included.
+40. 
