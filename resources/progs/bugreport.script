@@ -1,0 +1,6 @@
+ONCE_PROG
+	MPECHOAT $i ^HBug Report! Here is your bug description so far:%0D ^.^N$<$i VALUE>
+    MPPROMPT $i MORERESPONSE ^HPlease any additional details about the situation:^.^N
+    MPPROMPT $i BUGSTEPS ^HEnter a comma-separated list of steps describing how to recreate this bug:^.^N
+    MPSETVAR $i VALUE $<$i VALUE>. ^w$<$i MORERESPONSE>. ^ySteps: $<$i BUGSTEPS>^.^N
+~
