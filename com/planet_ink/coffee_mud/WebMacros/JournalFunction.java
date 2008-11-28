@@ -180,13 +180,16 @@ public class JournalFunction extends StdWebMacro
 	                    if((journal==null) || (journal.length()==0))
 	    					messages.append("Transfer #"+num+" not completed -- No journal!<BR>");
 	                    String realName=null;
-	                    for(int i=0;i<CMLib.journals().getNumCommandJournals();i++)
-	                        if(journal.equalsIgnoreCase(CMLib.journals().getCommandJournalName(i))
-	                        ||journal.equalsIgnoreCase(CMLib.journals().getCommandJournalName(i)+"s"))
+	                    for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().journals();e.hasMoreElements();)
+	                    {
+	                    	JournalsLibrary.CommandJournal CMJ=e.nextElement();
+	                        if(journal.equalsIgnoreCase(CMJ.NAME())
+	                        ||journal.equalsIgnoreCase(CMJ.NAME()+"s"))
 	                        {
-	                            realName="SYSTEM_"+CMLib.journals().getCommandJournalName(i).toUpperCase()+"S";
+	                            realName="SYSTEM_"+CMJ.NAME()+"S";
 	                            break;
 	                        }
+	                    }
 	                    if(realName==null)
 	                        realName=CMLib.database().DBGetRealJournalName(journal);
 	                    if(realName==null)

@@ -136,20 +136,21 @@ public class MOTD extends StdCommand
                         buf.append("\n\r--------------------------------------\n\r");
                 }
                 
-                Vector myEchoableCommandJournals=new Vector();
-                for(int cj=0;cj<CMLib.journals().getNumCommandJournals();cj++)
+                Vector<JournalsLibrary.CommandJournal> myEchoableCommandJournals=new Vector<JournalsLibrary.CommandJournal>();
+                for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().journals();e.hasMoreElements();)
                 {
-                    if((CMLib.journals().getCommandJournalFlags(cj).get(JournalsLibrary.JournalFlag.ADMINECHO)!=null)
-                    &&((CMSecurity.isAllowed(mob,mob.location(),CMLib.journals().getCommandJournalName(cj)))
-                            ||CMSecurity.isAllowed(mob,mob.location(),"KILL"+CMLib.journals().getCommandJournalName(cj)+"S")
+                	JournalsLibrary.CommandJournal CMJ=e.nextElement();
+                    if((CMJ.getFlag(JournalsLibrary.JournalFlag.ADMINECHO)!=null)
+                    &&((CMSecurity.isAllowed(mob,mob.location(),CMJ.NAME()))
+                            ||CMSecurity.isAllowed(mob,mob.location(),"KILL"+CMJ.NAME()+"S")
                             ||CMSecurity.isAllowed(mob,mob.location(),"LISTADMIN")))
-                        myEchoableCommandJournals.addElement(new Integer(cj));
+                        myEchoableCommandJournals.addElement(CMJ);
                 }
                 boolean CJseparator=false;
                 for(int cj=0;cj<myEchoableCommandJournals.size();cj++)
                 {
-                    Integer CJ=(Integer)myEchoableCommandJournals.elementAt(cj);
-                    Vector items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+CMLib.journals().getCommandJournalName(CJ.intValue())+"S");
+                	JournalsLibrary.CommandJournal CMJ=myEchoableCommandJournals.elementAt(cj);
+                    Vector items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+CMJ.NAME()+"S");
                     if(items!=null)
                     for(int i=0;i<items.size();i++)
                     {
@@ -159,7 +160,7 @@ public class MOTD extends StdCommand
                         long compdate=CMath.s_long(entry.update);
                         if(compdate>mob.playerStats().lastDateTime())
                         {
-                            buf.append("\n\rNEW "+CMLib.journals().getCommandJournalName(CJ.intValue())+" from "+from+": "+message+"\n\r");
+                            buf.append("\n\rNEW "+CMJ.NAME()+" from "+from+": "+message+"\n\r");
                             CJseparator=true;
                         }
                     }

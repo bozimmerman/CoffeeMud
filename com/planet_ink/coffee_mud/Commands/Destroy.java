@@ -839,22 +839,22 @@ public class Destroy extends StdCommand
 		{
 			commandType=((String)commands.elementAt(1)).toUpperCase();
 		}
-        for(int i=0;i<CMLib.journals().getNumCommandJournals();i++)
+        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().journals();e.hasMoreElements();)
         {
-            if((CMLib.journals().getCommandJournalName(i).equals(commandType))
-            &&(CMSecurity.isAllowed(mob,mob.location(),CMLib.journals().getCommandJournalName(i))
-                ||CMSecurity.isAllowed(mob,mob.location(),"KILL"+CMLib.journals().getCommandJournalName(i)+"S")))
+        	JournalsLibrary.CommandJournal CMJ=e.nextElement();
+            if((CMJ.NAME().equals(commandType))
+            &&(CMSecurity.isAllowed(mob,mob.location(),CMJ.NAME())
+                ||CMSecurity.isAllowed(mob,mob.location(),"KILL"+CMJ.NAME()+"S")))
             {
-                String nam=CMLib.journals().getCommandJournalName(i);
                 int which=-1;
                 if(commands.size()>2)
                     which=CMath.s_int((String)commands.elementAt(2));
                 if(which<=0)
-                    mob.tell("Please enter a valid "+nam.toLowerCase()+" number to delete.  Use LIST "+nam+"S for more information.");
+                    mob.tell("Please enter a valid "+CMJ.NAME().toLowerCase()+" number to delete.  Use LIST "+CMJ.NAME()+"S for more information.");
                 else
                 {
-                    CMLib.database().DBDeleteJournal("SYSTEM_"+nam+"S",which-1);
-                    mob.tell(nam.toLowerCase()+" deletion submitted.");
+                    CMLib.database().DBDeleteJournal("SYSTEM_"+CMJ.NAME()+"S",which-1);
+                    mob.tell(CMJ.NAME().toLowerCase()+" deletion submitted.");
                     
                 }
                 return true;

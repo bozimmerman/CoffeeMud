@@ -31,11 +31,10 @@ import java.util.*;
 public interface JournalsLibrary extends CMLibrary, Runnable
 {
     public int loadCommandJournals(String list);
+    public Enumeration<CommandJournal> journals();
+    public CommandJournal getCommandJournal(String named);
     public int getNumCommandJournals();
-    public String getCommandJournalMask(int i);
-    public String getCommandJournalName(int i);
-    public Hashtable<JournalFlag,String> getCommandJournalFlags(int i);
-    public String[] getCommandJournalNames();
+    public String getScriptValue(MOB mob, String journal, String oldValue);
     
 	public static final String JOURNAL_BOUNDARY="%0D^w---------------------------------------------^N%0D";
 	
@@ -50,7 +49,24 @@ public interface JournalsLibrary extends CMLibrary, Runnable
 		public String update;
 	}
 	
+    public static class CommandJournal
+    {
+    	protected String name="";
+    	protected String mask="";
+    	protected Hashtable<JournalFlag,String> flags=new Hashtable<JournalFlag,String>(1);
+    	public CommandJournal(String name, String mask, Hashtable<JournalFlag,String> flags)
+    	{
+    		this.name=name;
+    		this.mask=mask;
+    		this.flags=flags;
+    	}
+    	public String NAME(){return name;}
+    	public String mask(){return mask;}
+    	public String getFlag(JournalFlag flag){return flags.get(flag);} 
+    	public String getScriptFilename(){return flags.get(JournalFlag.SCRIPT);}
+    }
+    
     public static enum JournalFlag {
-        CHANNEL,ADDROOM,EXPIRE,ADMINECHO,CONFIRM;
+        CHANNEL,ADDROOM,EXPIRE,ADMINECHO,CONFIRM,SCRIPT;
     };
 }

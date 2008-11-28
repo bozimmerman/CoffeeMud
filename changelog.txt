@@ -2175,3 +2175,5 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
     The templates for the questmaker have been updated.
 36. Necromancers will now be notified of the deaths of mobs nearby and of other players online.
 37. Players will now get a message if they attempt to put on armor outside their class restrictions.  Messages are in lists.ini
+38. ShopKeepers can now sell multiple-types of items.  Conflicting types are resolved when set.
+39. 

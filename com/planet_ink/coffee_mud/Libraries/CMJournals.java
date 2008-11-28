@@ -36,11 +36,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
 {
     public String ID(){return "CMJournals";}
     public final int QUEUE_SIZE=100;
-    
-    public int numCommandJournalsLoaded=0;
-    public Vector commandJournalNames=new Vector();
-    public Vector commandJournalMasks=new Vector();
-    public Vector<Hashtable<JournalFlag,String>> commandJournalFlags=new Vector<Hashtable<JournalFlag,String>>();
+    protected Hashtable<String,CommandJournal> journals=new Hashtable<String,CommandJournal>();
     public final Vector emptyVector=new Vector(1);
     
     private ThreadEngine.SupportThread thread=null;
@@ -64,12 +60,12 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                 item=list.substring(0,x).trim();
                 list=list.substring(x+1);
             }
-            numCommandJournalsLoaded++;
             x=item.indexOf(" ");
             Hashtable<JournalFlag,String> flags=new Hashtable<JournalFlag,String>();
+            String mask="";
             if(x>0)
             {
-                String mask=item.substring(x+1).trim();
+                mask=item.substring(x+1).trim();
                 for(int pf=0;pf<JournalFlag.values().length;pf++)
                 {
                 	String flag = JournalFlag.values()[pf].toString();
@@ -90,60 +86,53 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                         }
                     }
                 }
-                commandJournalMasks.addElement(mask);
                 item=item.substring(0,x);
             }
-            else
-                commandJournalMasks.addElement("");
-            commandJournalFlags.addElement(flags);
-            commandJournalNames.addElement(item.toUpperCase().trim());
+            journals.put(item.toUpperCase().trim(),new CommandJournal(item.toUpperCase().trim(),mask,flags));
         }
-        return numCommandJournalsLoaded;
+        return journals.size();
     }
     
-    public int getNumCommandJournals()
+    public String getScriptValue(MOB mob, String journal, String oldValue) 
     {
-        return commandJournalNames.size();
+    	CommandJournal CMJ=getCommandJournal(journal);
+    	if(CMJ==null) return oldValue;
+        String scriptFilename=CMJ.getScriptFilename();
+        if((scriptFilename==null)||(scriptFilename.trim().length()==0)) return oldValue;
+        ScriptingEngine S=(ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+        S.setSavable(false);
+        S.setVarScope("*");
+        S.setScript("LOAD="+scriptFilename);
+        S.setVar("*","VALUE", oldValue);
+        CMMsg msg2=CMClass.getMsg(mob,mob,null,CMMsg.MSG_OK_VISUAL,null,null,"COMMANDJOURNAL_"+CMJ.NAME());
+        S.executeMsg(mob, msg2);
+        S.dequeResponses();
+        S.tick(mob,Tickable.TICKID_MOB);
+        String response=S.getVar("*","VALUE");
+        if((response!=null)&&(response.length()>0)) 
+        	return response;
+        return oldValue;
     }
     
-    public String getCommandJournalMask(int i)
-    {
-        if((i>=0)&&(i<commandJournalMasks.size()))
-            return (String)commandJournalMasks.elementAt(i);
-        return "";
-    }
-
-    public String getCommandJournalName(int i)
-    {
-        if((i>=0)&&(i<commandJournalNames.size()))
-            return (String)commandJournalNames.elementAt(i);
-        return "";
-    }
-
-    public Hashtable<JournalFlag,String> getCommandJournalFlags(int i)
-    {
-        if((i>=0)&&(i<commandJournalFlags.size()))
-            return (Hashtable<JournalFlag,String>)commandJournalFlags.elementAt(i);
-        return new Hashtable(1);
-    }
-    public String[] getCommandJournalNames()
-    {
-        if(commandJournalNames.size()==0) return null;
-        return CMParms.toStringArray(commandJournalNames);
-    }
+    public int getNumCommandJournals() { return journals.size();    }
+    
+    public Enumeration<CommandJournal> journals(){ return (Enumeration<CommandJournal>)DVector.s_enum(journals,false);}
+    
+    public CommandJournal getCommandJournal(String named) { return journals.get(named.toUpperCase().trim());}
     
     public void commandJournalSweep()
     {
         thread.status("command journal sweeping");
         try
         {
-            for(int j=0;j<getNumCommandJournals();j++)
+            for(Enumeration<CommandJournal> e=journals();e.hasMoreElements();)
             {
-                String num=(String)getCommandJournalFlags(j).get(JournalFlag.EXPIRE);
+            	CommandJournal CMJ=e.nextElement();
+                String num=CMJ.getFlag(JournalFlag.EXPIRE);
                 if((num!=null)&&(CMath.isNumber(num)))
                 {
-                    thread.status("updating journal "+getCommandJournalName(j));
-                    Vector items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+getCommandJournalName(j)+"S");
+                    thread.status("updating journal "+CMJ.NAME());
+                    Vector items=CMLib.database().DBReadJournalMsgs("SYSTEM_"+CMJ.NAME()+"S");
                     if(items!=null)
                     for(int i=items.size()-1;i>=0;i--)
                     {
@@ -154,8 +143,8 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
                         {
                             String from=entry.from;
                             String message=entry.msg;
-                            Log.sysOut(Thread.currentThread().getName(),"Expired "+getCommandJournalName(j)+" from "+from+": "+message);
-                            CMLib.database().DBDeleteJournal("SYSTEM_"+getCommandJournalName(j)+"S",i);
+                            Log.sysOut(Thread.currentThread().getName(),"Expired "+CMJ.NAME()+" from "+from+": "+message);
+                            CMLib.database().DBDeleteJournal("SYSTEM_"+CMJ.NAME()+"S",i);
                         }
                     }
                     thread.status("command journal sweeping");
@@ -174,10 +163,7 @@ public class CMJournals extends StdLibrary implements JournalsLibrary
     }
     
     private void clearJournals() {
-        numCommandJournalsLoaded=0;
-        commandJournalMasks=new Vector();
-        commandJournalFlags=new Vector<Hashtable<JournalFlag,String>>();
-        commandJournalNames=new Vector();
+    	journals=new Hashtable<String,CommandJournal>();
     }
     
     public boolean shutdown() {

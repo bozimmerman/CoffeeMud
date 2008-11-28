@@ -42,7 +42,19 @@ public class CommandJournal extends StdCommand
     public String[] getAccessWords()
     {
         if(access!=null) return access;
-        access=CMLib.journals().getCommandJournalNames();
+        synchronized(this)
+        {
+            if(access!=null) return access;
+            
+	        access=new String[CMLib.journals().getNumCommandJournals()];
+	        int x=0;
+	        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().journals();e.hasMoreElements();)
+	        {
+	        	JournalsLibrary.CommandJournal CMJ=e.nextElement();
+	        	access[x]=CMJ.NAME();
+	        	x++;
+	        }
+        }
         return access;
     }
 
@@ -83,13 +95,16 @@ public class CommandJournal extends StdCommand
             return true;
         }
         String realName=null;
-        for(int i=0;i<CMLib.journals().getNumCommandJournals();i++)
-            if(rest.equalsIgnoreCase(CMLib.journals().getCommandJournalName(i))
-            ||rest.equalsIgnoreCase(CMLib.journals().getCommandJournalName(i)+"s"))
+        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().journals();e.hasMoreElements();)
+        {
+        	JournalsLibrary.CommandJournal CMJ=e.nextElement();
+            if(rest.equalsIgnoreCase(CMJ.NAME())
+            ||rest.equalsIgnoreCase(CMJ.NAME()+"s"))
             {
-                realName="SYSTEM_"+CMLib.journals().getCommandJournalName(i).toUpperCase()+"S";
+                realName="SYSTEM_"+CMJ.NAME().toUpperCase()+"S";
                 break;
             }
+        }
         if(realName==null)
             realName=CMLib.database().DBGetRealJournalName(rest);
         if(realName==null)
@@ -174,30 +189,33 @@ public class CommandJournal extends StdCommand
             mob.tell("!!!!!");
             return false;
         }
-        String journalWord=null;
-        int journalNum=-1;
-        
-        for(int i=0;i<CMLib.journals().getNumCommandJournals();i++)
-            if(CMLib.journals().getCommandJournalName(i).equals(((String)commands.firstElement()).toUpperCase().trim()))
+        JournalsLibrary.CommandJournal journal=null;
+        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().journals();e.hasMoreElements();)
+        {
+        	JournalsLibrary.CommandJournal CMJ=e.nextElement();
+            if(CMJ.NAME().equals(((String)commands.firstElement()).toUpperCase().trim()))
             {
-                journalNum=i;
-                journalWord=CMLib.journals().getCommandJournalName(i).toUpperCase().trim();
+            	journal=CMJ;
                 break;
             }
-        if(journalWord==null)
-        for(int i=0;i<CMLib.journals().getNumCommandJournals();i++)
-            if(CMLib.journals().getCommandJournalName(i).startsWith(((String)commands.firstElement()).toUpperCase().trim()))
+        }
+        if(journal==null)
+        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().journals();e.hasMoreElements();)
+        {
+        	JournalsLibrary.CommandJournal CMJ=e.nextElement();
+            if(CMJ.NAME().startsWith(((String)commands.firstElement()).toUpperCase().trim()))
             {
-                journalNum=i;
-                journalWord=CMLib.journals().getCommandJournalName(i).toUpperCase().trim();
+            	journal=CMJ;
                 break;
             }
-        if(journalWord==null)
+        }
+        if(journal==null)
         {
             mob.tell("!!!!!");
             return false;
         }
-        if((journalNum>=0)&&(!CMLib.masking().maskCheck(CMLib.journals().getCommandJournalMask(journalNum),mob,true)))
+        if((journal.mask().length()>0)
+        &&(!CMLib.masking().maskCheck(journal.mask(),mob,true)))
         {
             mob.tell("This command is not available to you.");
             return false;
@@ -205,28 +223,30 @@ public class CommandJournal extends StdCommand
         if(CMParms.combine(commands,1).length()>0)
         {
 	        String msgString=CMParms.combine(commands,1);
-	        if((journalNum>=0)&&(CMLib.journals().getCommandJournalFlags(journalNum).contains(JournalsLibrary.JournalFlag.CONFIRM)))
+	        if(journal.getFlag(JournalsLibrary.JournalFlag.CONFIRM)!=null)
 	        {
 	        	if(!mob.session().confirm("Submit this message: '"+msgString+"' (Y/n)?","Y"))
 		            return false;
 	        }
-            if((!review(mob,"SYSTEM_"+journalWord+"S",journalWord.toLowerCase()+"s",commands,journalWord))
-            &&(!transfer(mob,"SYSTEM_"+journalWord+"S",journalWord.toLowerCase()+"s",commands,journalWord)))
+	        if((mob.session()!=null)&&(!mob.session().killFlag()))
+	        	msgString=CMLib.journals().getScriptValue(mob,journal.NAME(),msgString);
+            if((!review(mob,"SYSTEM_"+journal.NAME()+"S",journal.NAME().toLowerCase()+"s",commands,journal.NAME()))
+            &&(!transfer(mob,"SYSTEM_"+journal.NAME()+"S",journal.NAME().toLowerCase()+"s",commands,journal.NAME())))
             {
                 String prePend="";
-                if((journalNum>=0)&&(CMLib.journals().getCommandJournalFlags(journalNum).containsKey(JournalsLibrary.JournalFlag.ADDROOM)))
+                if(journal.getFlag(JournalsLibrary.JournalFlag.ADDROOM)!=null)
                     prePend="(^<LSTROOMID^>"+CMLib.map().getExtendedRoomID(mob.location())+"^</LSTROOMID^>) ";
-                CMLib.database().DBWriteJournal("SYSTEM_"+journalWord+"S",mob.Name(),"ALL",
-                        journalWord+": "+CMStrings.padRight(CMParms.combine(commands,1),15),
+                CMLib.database().DBWriteJournal("SYSTEM_"+journal.NAME()+"S",mob.Name(),"ALL",
+                		journal.NAME()+": "+CMStrings.padRight(CMParms.combine(commands,1),15),
                         prePend+CMParms.combine(commands,1),
                         -1);
-                mob.tell("Your "+journalWord.toLowerCase()+" message has been sent.  Thank you.");
-                if((journalNum>=0)&&(CMLib.journals().getCommandJournalFlags(journalNum).get(JournalsLibrary.JournalFlag.CHANNEL)!=null))
-                    CMLib.commands().postChannel(((String)CMLib.journals().getCommandJournalFlags(journalNum).get(JournalsLibrary.JournalFlag.CHANNEL)).toUpperCase().trim(),"",mob.Name()+" posted to "+journalWord+": "+CMParms.combine(commands,1),true);
+                mob.tell("Your "+journal.NAME().toLowerCase()+" message has been sent.  Thank you.");
+                if(journal.getFlag(JournalsLibrary.JournalFlag.CHANNEL)!=null)
+                    CMLib.commands().postChannel(journal.getFlag(JournalsLibrary.JournalFlag.CHANNEL).toUpperCase().trim(),"",mob.Name()+" posted to "+journal.NAME()+": "+CMParms.combine(commands,1),true);
             }
         }
         else
-            mob.tell("What's the "+journalWord.toLowerCase()+"? Be Specific!");
+            mob.tell("What's the "+journal.NAME().toLowerCase()+"? Be Specific!");
         return false;
     }
     

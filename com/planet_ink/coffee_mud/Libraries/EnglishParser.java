@@ -158,9 +158,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 		}
 
-        for(int c=0;c<CMLib.journals().getNumCommandJournals();c++)
+        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().journals();e.hasMoreElements();)
         {
-            if(CMLib.journals().getCommandJournalName(c).equalsIgnoreCase(firstWord))
+        	JournalsLibrary.CommandJournal CMJ=e.nextElement();
+            if(CMJ.NAME().equalsIgnoreCase(firstWord))
             {
                 C=CMClass.getCommand("CommandJournal");
                 if((C!=null)&&(C.securityCheck(mob))) return C;
@@ -220,9 +221,10 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 			}
 		}
 
-        for(int c=0;c<CMLib.journals().getNumCommandJournals();c++)
+        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().journals();e.hasMoreElements();)
         {
-            if(CMLib.journals().getCommandJournalName(c).startsWith(firstWord))
+        	JournalsLibrary.CommandJournal CMJ=e.nextElement();
+            if(CMJ.NAME().startsWith(firstWord))
             {
                 C=CMClass.getCommand("CommandJournal");
                 if((C!=null)&&(C.securityCheck(mob))) return C;

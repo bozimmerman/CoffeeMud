@@ -228,13 +228,16 @@ public class StdJournal extends StdItem
 								    if(journal.length()>0)
 								    {
                                         String realName=null;
-                                        for(int i=0;i<CMLib.journals().getNumCommandJournals();i++)
-                                            if(journal.equalsIgnoreCase(CMLib.journals().getCommandJournalName(i))
-                                            ||journal.equalsIgnoreCase(CMLib.journals().getCommandJournalName(i)+"s"))
+                                        for(Enumeration<JournalsLibrary.CommandJournal> e=CMLib.journals().journals();e.hasMoreElements();)
+                                        {
+                                        	JournalsLibrary.CommandJournal CMJ=e.nextElement();
+                                            if(journal.equalsIgnoreCase(CMJ.NAME())
+                                            ||journal.equalsIgnoreCase(CMJ.NAME()+"S"))
                                             {
-                                                realName="SYSTEM_"+CMLib.journals().getCommandJournalName(i).toUpperCase()+"S";
+                                                realName="SYSTEM_"+CMJ.NAME()+"S";
                                                 break;
                                             }
+                                        }
                                         if(realName==null)
                                             realName=CMLib.database().DBGetRealJournalName(journal);
                                         if(realName==null)

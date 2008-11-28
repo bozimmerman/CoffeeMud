@@ -18,3 +18,6 @@
 #
 # Example: 
 # {* the dude}=-area "+new area" +midgaard
+* the blah=-level +<=91 -class +=thieff
+
+* the blah too=-level +<=91 -class +=thieff
