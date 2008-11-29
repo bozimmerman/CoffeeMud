@@ -276,7 +276,7 @@ public class CMLib
 			try{Thread.sleep(sleepTime);}catch(Exception e){}
 			int att=0;
 			while((att<attempts)&&t.isAlive())try{att++;Thread.sleep(sleepTime);}catch(Exception e){}
-			if(t.isAlive()) { try { t.stop();}catch(Throwable tx){} }
+			try {if(t.isAlive()) { try { t.stop();}catch(Throwable tx){} } }catch(java.lang.ThreadDeath td) {}
 		}
 		catch(Throwable th){}
 

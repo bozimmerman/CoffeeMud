@@ -2985,156 +2985,159 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         stoppingQuest=true;
         if(questState.stuff.size()>0)
         {
-            for(int i=0;i<questState.stuff.size();i++)
-            {
-                Integer I=(Integer)questState.stuff.elementAt(i,2);
-                if(I.intValue()>0)
-                {
-                    questState.stuff.setElementAt(i,2,new Integer(I.intValue()-1));
-                    continue;
-                }
-                Environmental E=(Environmental)questState.stuff.elementAt(i,1);
-            	Ability A=E.fetchEffect("QuestBound");
-            	if(A!=null)E.delEffect(A);
-                questState.stuff.removeElementAt(i);
-                if(E instanceof Item)
-                {
-                	if((CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE))
-                	&&(!((Item)E).amDestroyed()))
-	                    ((Item)E).destroy();
-                }
-                else
-                if(E instanceof MOB)
-                {
-                    MOB M=(MOB)E;
-                    ScriptingEngine B=(ScriptingEngine)((MOB)E).fetchBehavior("Scriptable");
-                    if(B!=null)
-                        B.endQuest(E,M,name());
-                    Room R=M.getStartRoom();
-                    if((R==null)||(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE)))
-                    {
-                    	M.setFollowing(null);
-                        CMLib.tracking().wanderAway(M,true,false);
-                        if(M.location()!=null)
-                            M.location().delInhabitant(M);
-                        M.setLocation(null);
-                        M.destroy();
-                    }
-                    else
-                    if((!M.amDead())
-                    &&(!M.amDestroyed())
-                    &&((M.location()!=R)||(!R.isInhabitant(M))))
-                    {
-                    	M.setFollowing(null);
-                        CMLib.tracking().wanderAway(M,false,true);
-                    }
-                }
-                i--;
-            }
-        }
-        if(questState.addons.size()>0)
-        {
-            for(int i=questState.addons.size()-1;i>=0;i--)
-            {
-                Integer I=(Integer)questState.addons.elementAt(i,2);
-                if(I.intValue()>0)
-                {
-                    questState.addons.setElementAt(i,2,new Integer(I.intValue()-1));
-                    continue;
-                }
-                Vector V=(Vector)questState.addons.elementAt(i,1);
-                questState.addons.removeElementAt(i);
-                if(V.size()<2) continue;
-                Environmental E=(Environmental)V.elementAt(0);
-                Object O=V.elementAt(1);
-                if(O instanceof String)
-                {
-                    String stat=(String)O;
-                    String parms=(String)V.elementAt(2);
-                    if(CMStrings.contains(E.getStatCodes(),stat.toUpperCase().trim()))
-	                    E.setStat(stat,parms);
-                    else
-                    if(CMStrings.contains(E.baseEnvStats().getStatCodes(),stat.toUpperCase().trim()))
-                    {
-                    	E.baseEnvStats().setStat(stat.toUpperCase().trim(),parms);
-                    	E.recoverEnvStats();
-                    }
-                    else
-                    if((E instanceof MOB)&&(CMStrings.contains(CharStats.STAT_NAMES,stat.toUpperCase().trim())))
-                    {
-                    	((MOB)E).baseCharStats().setStat(CMParms.indexOf(CharStats.STAT_NAMES,stat.toUpperCase().trim()),CMath.s_int(parms));
-                    	((MOB)E).recoverCharStats();
-                    }
-                    else
-                    if((E instanceof MOB)&&CMStrings.contains(((MOB)E).baseState().getStatCodes(),stat))
-                    {
-                    	((MOB)E).baseState().setStat(stat,parms);
-                    	((MOB)E).recoverMaxState();
-                    	((MOB)E).resetToMaxState();
-                    }
-                }
-                else
-                if(O instanceof Behavior)
-                {
-                    Behavior B=E.fetchBehavior(((Behavior)O).ID());
-                    if((E instanceof MOB)&&(B instanceof ScriptingEngine))
-                        ((ScriptingEngine)B).endQuest(E,(MOB)E,name());
-                    if((V.size()>2)&&(V.elementAt(2) instanceof String))
-                    {
-                        if(B==null){ B=(Behavior)O; E.addBehavior(B);}
-                        B.setParms((String)V.elementAt(2));
-                    }
-                    else
-                    if(B!=null)
-                        E.delBehavior(B);
-                }
-                else
-                if(O instanceof ScriptingEngine)
-                {
-                    ScriptingEngine S=(ScriptingEngine)O;
-                    if((E instanceof MOB)&&(!S.isSavable()))
-                    {
-                        S.endQuest(E,(MOB)E,name());
-                        ((MOB)E).delScript(S);
-                    }
-                }
-                else
-                if(O instanceof Ability)
-                {
-                    if((V.size()>2)
-                    &&(V.elementAt(2) instanceof Ability)
-                    &&(E instanceof MOB))
-                    {
-                        Ability A=((MOB)E).fetchAbility(((Ability)O).ID());
-                        if((V.size()>3)&&(V.elementAt(3) instanceof String))
-                        {
-                            if(A==null){A=(Ability)O; ((MOB)E).addAbility(A);}
-                            A.setMiscText((String)V.elementAt(3));
-                        }
-                        else
-                        if(A!=null)
-                            ((MOB)E).delAbility(A);
-                    }
-                    else
-                    {
-                        Ability A=E.fetchEffect(((Ability)O).ID());
-                        if((V.size()>2)&&(V.elementAt(2) instanceof String))
-                        {
-                            if(A==null){A=(Ability)O; E.addEffect(A);}
-                            A.setMiscText((String)V.elementAt(2));
-                        }
-                        else
-                        if(A!=null)
-                        {
-                            A.unInvoke();
-                            E.delEffect(A);
-                        }
-                    }
-                }
-                else
-                if(O instanceof Item)
-                    ((Item)O).destroy();
-            }
+        	synchronized(questState)
+        	{
+	            for(int i=0;i<questState.stuff.size();i++)
+	            {
+	                Integer I=(Integer)questState.stuff.elementAt(i,2);
+	                if(I.intValue()>0)
+	                {
+	                    questState.stuff.setElementAt(i,2,new Integer(I.intValue()-1));
+	                    continue;
+	                }
+	                Environmental E=(Environmental)questState.stuff.elementAt(i,1);
+	            	Ability A=E.fetchEffect("QuestBound");
+	            	if(A!=null)E.delEffect(A);
+	                questState.stuff.removeElementAt(i);
+	                if(E instanceof Item)
+	                {
+	                	if((CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE))
+	                	&&(!((Item)E).amDestroyed()))
+		                    ((Item)E).destroy();
+	                }
+	                else
+	                if(E instanceof MOB)
+	                {
+	                    MOB M=(MOB)E;
+	                    ScriptingEngine B=(ScriptingEngine)((MOB)E).fetchBehavior("Scriptable");
+	                    if(B!=null)
+	                        B.endQuest(E,M,name());
+	                    Room R=M.getStartRoom();
+	                    if((R==null)||(CMath.bset(E.baseEnvStats().disposition(),EnvStats.IS_UNSAVABLE)))
+	                    {
+	                    	M.setFollowing(null);
+	                        CMLib.tracking().wanderAway(M,true,false);
+	                        if(M.location()!=null)
+	                            M.location().delInhabitant(M);
+	                        M.setLocation(null);
+	                        M.destroy();
+	                    }
+	                    else
+	                    if((!M.amDead())
+	                    &&(!M.amDestroyed())
+	                    &&((M.location()!=R)||(!R.isInhabitant(M))))
+	                    {
+	                    	M.setFollowing(null);
+	                        CMLib.tracking().wanderAway(M,false,true);
+	                    }
+	                }
+	                i--;
+	            }
+	        }
+	        if(questState.addons.size()>0)
+	        {
+	            for(int i=questState.addons.size()-1;i>=0;i--)
+	            {
+	                Integer I=(Integer)questState.addons.elementAt(i,2);
+	                if(I.intValue()>0)
+	                {
+	                    questState.addons.setElementAt(i,2,new Integer(I.intValue()-1));
+	                    continue;
+	                }
+	                Vector V=(Vector)questState.addons.elementAt(i,1);
+	                questState.addons.removeElementAt(i);
+	                if(V.size()<2) continue;
+	                Environmental E=(Environmental)V.elementAt(0);
+	                Object O=V.elementAt(1);
+	                if(O instanceof String)
+	                {
+	                    String stat=(String)O;
+	                    String parms=(String)V.elementAt(2);
+	                    if(CMStrings.contains(E.getStatCodes(),stat.toUpperCase().trim()))
+		                    E.setStat(stat,parms);
+	                    else
+	                    if(CMStrings.contains(E.baseEnvStats().getStatCodes(),stat.toUpperCase().trim()))
+	                    {
+	                    	E.baseEnvStats().setStat(stat.toUpperCase().trim(),parms);
+	                    	E.recoverEnvStats();
+	                    }
+	                    else
+	                    if((E instanceof MOB)&&(CMStrings.contains(CharStats.STAT_NAMES,stat.toUpperCase().trim())))
+	                    {
+	                    	((MOB)E).baseCharStats().setStat(CMParms.indexOf(CharStats.STAT_NAMES,stat.toUpperCase().trim()),CMath.s_int(parms));
+	                    	((MOB)E).recoverCharStats();
+	                    }
+	                    else
+	                    if((E instanceof MOB)&&CMStrings.contains(((MOB)E).baseState().getStatCodes(),stat))
+	                    {
+	                    	((MOB)E).baseState().setStat(stat,parms);
+	                    	((MOB)E).recoverMaxState();
+	                    	((MOB)E).resetToMaxState();
+	                    }
+	                }
+	                else
+	                if(O instanceof Behavior)
+	                {
+	                    Behavior B=E.fetchBehavior(((Behavior)O).ID());
+	                    if((E instanceof MOB)&&(B instanceof ScriptingEngine))
+	                        ((ScriptingEngine)B).endQuest(E,(MOB)E,name());
+	                    if((V.size()>2)&&(V.elementAt(2) instanceof String))
+	                    {
+	                        if(B==null){ B=(Behavior)O; E.addBehavior(B);}
+	                        B.setParms((String)V.elementAt(2));
+	                    }
+	                    else
+	                    if(B!=null)
+	                        E.delBehavior(B);
+	                }
+	                else
+	                if(O instanceof ScriptingEngine)
+	                {
+	                    ScriptingEngine S=(ScriptingEngine)O;
+	                    if((E instanceof MOB)&&(!S.isSavable()))
+	                    {
+	                        S.endQuest(E,(MOB)E,name());
+	                        ((MOB)E).delScript(S);
+	                    }
+	                }
+	                else
+	                if(O instanceof Ability)
+	                {
+	                    if((V.size()>2)
+	                    &&(V.elementAt(2) instanceof Ability)
+	                    &&(E instanceof MOB))
+	                    {
+	                        Ability A=((MOB)E).fetchAbility(((Ability)O).ID());
+	                        if((V.size()>3)&&(V.elementAt(3) instanceof String))
+	                        {
+	                            if(A==null){A=(Ability)O; ((MOB)E).addAbility(A);}
+	                            A.setMiscText((String)V.elementAt(3));
+	                        }
+	                        else
+	                        if(A!=null)
+	                            ((MOB)E).delAbility(A);
+	                    }
+	                    else
+	                    {
+	                        Ability A=E.fetchEffect(((Ability)O).ID());
+	                        if((V.size()>2)&&(V.elementAt(2) instanceof String))
+	                        {
+	                            if(A==null){A=(Ability)O; E.addEffect(A);}
+	                            A.setMiscText((String)V.elementAt(2));
+	                        }
+	                        else
+	                        if(A!=null)
+	                        {
+	                            A.unInvoke();
+	                            E.delEffect(A);
+	                        }
+	                    }
+	                }
+	                else
+	                if(O instanceof Item)
+	                    ((Item)O).destroy();
+	            }
+	        }
         }
         stoppingQuest=false;
     }
@@ -3209,10 +3212,13 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     {
         if(stoppingQuest) return;
         // first set everything to complete!
-        for(int q=0;q<questState.stuff.size();q++)
-            questState.stuff.setElementAt(q,2,new Integer(0));
-        for(int q=0;q<questState.addons.size();q++)
-            questState.addons.setElementAt(q,2,new Integer(0));
+        synchronized(questState)
+        {
+	        for(int q=0;q<questState.stuff.size();q++)
+	            questState.stuff.setElementAt(q,2,new Integer(0));
+	        for(int q=0;q<questState.addons.size();q++)
+	            questState.addons.setElementAt(q,2,new Integer(0));
+        }
         cleanQuestStep();
         stoppingQuest=true;
         if(!isCopy())
@@ -3487,24 +3493,30 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             A4.setProficiency(100);
             mob.addAbility(A4);
         }
-        questState.addons.addElement(V,new Integer(questState.preserveState));
+        synchronized(questState)
+        {
+	        questState.addons.addElement(V,new Integer(questState.preserveState));
+        }
     }
 
     public void runtimeRegisterObject(Environmental object)
     {
-        int x=questState.stuff.indexOf(object);
-        if(x<0)
+        synchronized(questState)
         {
-        	questState.stuff.addElement(object, new Integer(questState.preserveState));
-        	Ability A=CMClass.getAbility("QuestBound");
-        	A.setMiscText(""+this);
-        	object.addNonUninvokableEffect(A);
-        }
-        else
-        {
-            Integer I=(Integer)questState.stuff.elementAt(x,2);
-            if(I.intValue()<questState.preserveState)
-                questState.stuff.setElementAt(x,2, new Integer(questState.preserveState));
+	        int x=questState.stuff.indexOf(object);
+	        if(x<0)
+	        {
+	        	questState.stuff.addElement(object, new Integer(questState.preserveState));
+	        	Ability A=CMClass.getAbility("QuestBound");
+	        	A.setMiscText(""+this);
+	        	object.addNonUninvokableEffect(A);
+	        }
+	        else
+	        {
+	            Integer I=(Integer)questState.stuff.elementAt(x,2);
+	            if(I.intValue()<questState.preserveState)
+	                questState.stuff.setElementAt(x,2, new Integer(questState.preserveState));
+	        }
         }
     }
 
@@ -3541,7 +3553,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
                 A4.startTickDown(null,affected,99999);
             A4.makeLongLasting();
         }
-        questState.addons.addElement(V,new Integer(questState.preserveState));
+        synchronized(questState)
+        {
+	        questState.addons.addElement(V,new Integer(questState.preserveState));
+        }
     }
 
     public void runtimeRegisterBehavior(Environmental behaving, String behaviorID, String parms, boolean give)
@@ -3573,7 +3588,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             behaving.addBehavior(B);
         }
         B.registerDefaultQuest(name());
-        questState.addons.addElement(V,new Integer(questState.preserveState));
+        synchronized(questState)
+        {
+	        questState.addons.addElement(V,new Integer(questState.preserveState));
+        }
     }
 
     public void runtimeRegisterStat(Environmental E, String stat, String parms, boolean give)
@@ -3621,7 +3639,10 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         	((MOB)E).recoverMaxState();
         	((MOB)E).resetToMaxState();
         }
-        questState.addons.addElement(V,new Integer(questState.preserveState));
+        synchronized(questState)
+        {
+	        questState.addons.addElement(V,new Integer(questState.preserveState));
+        }
     }
 
     public int getQuestThingIndex(Vector V, String name, int type, int[] num)
@@ -3653,12 +3674,15 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     {
         int[] num={1};
         int x=-1;
-        if(questState.stuff!=null)
-            x=getQuestThingIndex(questState.stuff.getDimensionVector(1),name,CMClass.OBJECT_MOB,num);
-        if(x<0)
-            x=getQuestThingIndex(questState.mobGroup,name,CMClass.OBJECT_MOB,num);
-        if((x<0)&&(questState.mysteryData!=null))
-            x=getQuestThingIndex(questState.mysteryData.agentGroup,name,CMClass.OBJECT_MOB,num);
+        synchronized(questState)
+        {
+	        if(questState.stuff!=null)
+	            x=getQuestThingIndex(questState.stuff.getDimensionVector(1),name,CMClass.OBJECT_MOB,num);
+	        if(x<0)
+	            x=getQuestThingIndex(questState.mobGroup,name,CMClass.OBJECT_MOB,num);
+	        if((x<0)&&(questState.mysteryData!=null))
+	            x=getQuestThingIndex(questState.mysteryData.agentGroup,name,CMClass.OBJECT_MOB,num);
+        }
         return x;
     }
 
@@ -3666,16 +3690,19 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     {
         int[] num={1};
         int x=-1;
-        if(questState.stuff!=null)
-            x=getQuestThingIndex(questState.stuff.getDimensionVector(1),roomID,CMClass.OBJECT_LOCALE,num);
-        if(x<0)
-            x=getQuestThingIndex(questState.roomGroup,roomID,CMClass.OBJECT_LOCALE,num);
-        if(questState.mysteryData!=null)
+        synchronized(questState)
         {
-            if(x<0)
-                x=getQuestThingIndex(questState.mysteryData.whereAtGroup,roomID,CMClass.OBJECT_LOCALE,num);
-            if(x<0)
-                x=getQuestThingIndex(questState.mysteryData.whereHappenedGroup,roomID,CMClass.OBJECT_LOCALE,num);
+	        if(questState.stuff!=null)
+	            x=getQuestThingIndex(questState.stuff.getDimensionVector(1),roomID,CMClass.OBJECT_LOCALE,num);
+	        if(x<0)
+	            x=getQuestThingIndex(questState.roomGroup,roomID,CMClass.OBJECT_LOCALE,num);
+	        if(questState.mysteryData!=null)
+	        {
+	            if(x<0)
+	                x=getQuestThingIndex(questState.mysteryData.whereAtGroup,roomID,CMClass.OBJECT_LOCALE,num);
+	            if(x<0)
+	                x=getQuestThingIndex(questState.mysteryData.whereHappenedGroup,roomID,CMClass.OBJECT_LOCALE,num);
+	        }
         }
         return x;
     }
@@ -3684,14 +3711,17 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     {
         int[] num={1};
         int x=-1;
-        if(questState.stuff!=null)
-            x=getQuestThingIndex(questState.stuff.getDimensionVector(1),name,CMClass.OBJECT_ITEM,num);
-        if(x<0)
-            x=getQuestThingIndex(questState.itemGroup,name,CMClass.OBJECT_ITEM,num);
-        if(questState.mysteryData!=null)
+        synchronized(questState)
         {
-            if(x<0)
-                x=getQuestThingIndex(questState.mysteryData.toolGroup,name,CMClass.OBJECT_ITEM,num);
+	        if(questState.stuff!=null)
+	            x=getQuestThingIndex(questState.stuff.getDimensionVector(1),name,CMClass.OBJECT_ITEM,num);
+	        if(x<0)
+	            x=getQuestThingIndex(questState.itemGroup,name,CMClass.OBJECT_ITEM,num);
+	        if(questState.mysteryData!=null)
+	        {
+	            if(x<0)
+	                x=getQuestThingIndex(questState.mysteryData.toolGroup,name,CMClass.OBJECT_ITEM,num);
+	        }
         }
         return x;
     }
@@ -3716,14 +3746,17 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     {
         int[] num={1};
         Environmental E=null;
-        if(questState.stuff!=null)
-            E=getQuestThing(questState.stuff.getDimensionVector(1),i,CMClass.OBJECT_MOB,num);
-        if(E instanceof MOB) return (MOB)E;
-        E=getQuestThing(questState.mobGroup,i,CMClass.OBJECT_MOB,num);
-        if(E instanceof MOB) return (MOB)E;
-        if(questState.mysteryData!=null)
-            E=getQuestThing(questState.mysteryData.agentGroup,i,CMClass.OBJECT_MOB,num);
-        if(E instanceof MOB) return (MOB)E;
+        synchronized(questState)
+        {
+	        if(questState.stuff!=null)
+	            E=getQuestThing(questState.stuff.getDimensionVector(1),i,CMClass.OBJECT_MOB,num);
+	        if(E instanceof MOB) return (MOB)E;
+	        E=getQuestThing(questState.mobGroup,i,CMClass.OBJECT_MOB,num);
+	        if(E instanceof MOB) return (MOB)E;
+	        if(questState.mysteryData!=null)
+	            E=getQuestThing(questState.mysteryData.agentGroup,i,CMClass.OBJECT_MOB,num);
+	        if(E instanceof MOB) return (MOB)E;
+        }
         return null;
     }
 
@@ -3731,14 +3764,17 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     {
         int[] num={1};
         Environmental E=null;
-        if(questState.stuff!=null)
-            E=getQuestThing(questState.stuff.getDimensionVector(1),i,CMClass.OBJECT_ITEM,num);
-        if(E instanceof Item) return (Item)E;
-        E=getQuestThing(questState.itemGroup,i,CMClass.OBJECT_ITEM,num);
-        if(E instanceof Item) return (Item)E;
-        if(questState.mysteryData!=null)
-            E=getQuestThing(questState.mysteryData.toolGroup,i,CMClass.OBJECT_ITEM,num);
-        if(E instanceof Item) return (Item)E;
+        synchronized(questState)
+        {
+	        if(questState.stuff!=null)
+	            E=getQuestThing(questState.stuff.getDimensionVector(1),i,CMClass.OBJECT_ITEM,num);
+	        if(E instanceof Item) return (Item)E;
+	        E=getQuestThing(questState.itemGroup,i,CMClass.OBJECT_ITEM,num);
+	        if(E instanceof Item) return (Item)E;
+	        if(questState.mysteryData!=null)
+	            E=getQuestThing(questState.mysteryData.toolGroup,i,CMClass.OBJECT_ITEM,num);
+	        if(E instanceof Item) return (Item)E;
+        }
         return null;
     }
 
@@ -3746,17 +3782,20 @@ public class DefaultQuest implements Quest, Tickable, CMObject
     {
         int[] num={1};
         Environmental E=null;
-        if(questState.stuff!=null)
-            E=getQuestThing(questState.stuff.getDimensionVector(1),i,CMClass.OBJECT_LOCALE,num);
-        if(E instanceof Room) return (Room)E;
-        E=getQuestThing(questState.roomGroup,i,CMClass.OBJECT_LOCALE,num);
-        if(E instanceof Room) return (Room)E;
-        if(questState.mysteryData!=null)
-            E=getQuestThing(questState.mysteryData.whereAtGroup,i,CMClass.OBJECT_LOCALE,num);
-        if(E instanceof Room) return (Room)E;
-        if(questState.mysteryData!=null)
-            E=getQuestThing(questState.mysteryData.whereHappenedGroup,i,CMClass.OBJECT_LOCALE,num);
-        if(E instanceof Room) return (Room)E;
+        synchronized(questState)
+        {
+	        if(questState.stuff!=null)
+	            E=getQuestThing(questState.stuff.getDimensionVector(1),i,CMClass.OBJECT_LOCALE,num);
+	        if(E instanceof Room) return (Room)E;
+	        E=getQuestThing(questState.roomGroup,i,CMClass.OBJECT_LOCALE,num);
+	        if(E instanceof Room) return (Room)E;
+	        if(questState.mysteryData!=null)
+	            E=getQuestThing(questState.mysteryData.whereAtGroup,i,CMClass.OBJECT_LOCALE,num);
+	        if(E instanceof Room) return (Room)E;
+	        if(questState.mysteryData!=null)
+	            E=getQuestThing(questState.mysteryData.whereHappenedGroup,i,CMClass.OBJECT_LOCALE,num);
+	        if(E instanceof Room) return (Room)E;
+        }
         return null;
     }
 
@@ -3783,11 +3822,14 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 
     public int getObjectInUseIndex(String name)
     {
-        for(int i=0;i<questState.stuff.size();i++)
+        synchronized(questState)
         {
-            Environmental E=(Environmental)questState.stuff.elementAt(i,1);
-            if(E.name().equalsIgnoreCase(name))
-                return (i+1);
+	        for(int i=0;i<questState.stuff.size();i++)
+	        {
+	            Environmental E=(Environmental)questState.stuff.elementAt(i,1);
+	            if(E.name().equalsIgnoreCase(name))
+	                return (i+1);
+	        }
         }
         return -1;
     }

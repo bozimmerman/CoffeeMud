@@ -33,7 +33,6 @@ import java.util.Vector;
  */
 @SuppressWarnings("unchecked")
 public class ChannelUserReply extends Packet {
-    public String channel = null;
 	public String userRequested=null;
 	public String userVisibleName=null;
 	public char gender = 'N';
@@ -47,7 +46,7 @@ public class ChannelUserReply extends Packet {
     public ChannelUserReply(Vector v) throws InvalidPacketException {
         super(v);
         try {
-            type = Packet.CHAN_WHO_REP;
+            type = Packet.CHAN_USER_REP;
 			try{
 				userRequested = (String)v.elementAt(6);
 				userVisibleName = (String)v.elementAt(7);
@@ -65,7 +64,7 @@ public class ChannelUserReply extends Packet {
     }
 
     public void send() throws InvalidPacketException {
-        if( channel==null || userRequested == null || userVisibleName == null ) {
+        if( userRequested == null || userVisibleName == null ) {
             throw new InvalidPacketException();
         }
         super.send();
