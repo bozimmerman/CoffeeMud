@@ -55,6 +55,49 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 	<ROOM select="all" condition="$theme='prison' or $theme='random'">
 		<ROOM class="StoneRoom">
 			<TITLE>a prison cell</TITLE>
+			<TITLE>a large caged cell</TITLE>
+			<TITLE>a solitary cell</TITLE>
+			<TITLE>a private cage cell</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner" />
+		</ROOM>
+		<ROOM class="StoneRoom">
+			<TITLE>a torture chamber</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner" />
+		</ROOM>
+		<ROOM class="StoneRoom">
+			<TITLE>a pit</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner" />
+		</ROOM>
+		<ROOM class="StoneRoom">
+			<TITLE>a latrine</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner" />
+		</ROOM>
+		<ROOM class="StoneRoom">
+			<TITLE>a guard station</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner" />
+		</ROOM>
+		<ROOM class="StoneRoom">
+			<TITLE>a private luxury cell</TITLE>
 			<DESCRIPTION>
 			<!--TODO: Fill this in -->
 			</DESCRIPTION>
@@ -62,9 +105,187 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner" />
 		</ROOM>
 	</ROOM>
-	<ROOM select="all" condition="$theme='dungeon' or $theme='random'">
+	<ROOM select="all" condition="$theme='rats' or $theme='random'">
+		<ROOM class="CaveRoom">
+			<TITLE>a nursury</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a guardroom/checkpoint</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a workshop</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a feed room/larder</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a store room</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a kitchen</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a common room</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a hatchery</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+		<ROOM class="CaveRoom" condition="_throneroom&lt;1" define="_throneroom+=1">
+			<TITLE>the throne room</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+	</ROOM>
+	<ROOM select="all" condition="$theme='rats' or $theme='random'">
+		<ROOM class="CaveRoom">
+			<TITLE>a air shaft</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
 		<ROOM class="StoneRoom">
-			<TITLE>a prison cell</TITLE>
+			<TITLE>a laboratory</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a hatchery</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a lair</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a den</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a pit</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a precipice</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a precipice</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a fungal room</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a cave-in</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a dead-end (skeletons)</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+		<ROOM class="StoneRoom">
+			<TITLE>a safe room</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+		<ROOM class="MazeRoom">
+			<TITLE>a catacomb</TITLE>
+			<DESCRIPTION>
+			<!--TODO: Fill this in -->
+			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner,dungeon_mobs" />
+		</ROOM>
+		<ROOM class="StoneRoom">
+			<TITLE>a crypt w/ sarcophogi</TITLE>
 			<DESCRIPTION>
 			<!--TODO: Fill this in -->
 			</DESCRIPTION>
