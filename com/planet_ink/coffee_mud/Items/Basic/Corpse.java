@@ -130,60 +130,84 @@ public class Corpse extends GenContainer implements DeadBody
 
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
-		super.executeMsg(myHost,msg);
+		if((msg.targetMinor()==CMMsg.TYP_SIT)
+		&&(msg.source().Name().equalsIgnoreCase(mobName()))
+		&&(msg.amITarget(this)||(msg.tool()==this))
+		&&(CMLib.flags().isGolem(msg.source()))
+		&&(msg.source().envStats().height()<0)
+		&&(msg.source().envStats().weight()<=0)
+        &&(playerCorpse())
+        &&(mobName().length()>0))
+		{
+			CMLib.utensils().resurrect(msg.source(),msg.source().location(),this,-1);
+			return;
+		}
 		if(msg.amITarget(this)&&(msg.targetMinor()==CMMsg.TYP_SNIFF)
         &&((System.currentTimeMillis()-timeOfDeath())>(TimeManager.MILI_HOUR/2)))
 		    msg.source().tell(name()+" has definitely started to decay.");
+		super.executeMsg(myHost, msg);
+		
 	}
 	
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if(!super.okMessage(myHost,msg))
-			return false;
 		if((msg.amITarget(this)||(msg.tool()==this))
-        &&((msg.targetMinor()==CMMsg.TYP_GET)
-			||((msg.tool() instanceof Ability)
-				&&(!msg.tool().ID().equalsIgnoreCase("Prayer_Resurrect"))
-				&&(!msg.tool().ID().equalsIgnoreCase("Prayer_PreserveBody"))
-				&&(!msg.tool().ID().equalsIgnoreCase("Song_Rebirth"))))
-		&&(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).length()>0)
         &&(playerCorpse())
-        &&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE")))
-		&&(mobName().length()>0))
-        {
-            if(CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDITEMS"))
-                return true;
-            
-            MOB ultimateFollowing=msg.source().amUltimatelyFollowing();
-            if((msg.source().isMonster())
-            &&((ultimateFollowing==null)||(ultimateFollowing.isMonster())))
-                return true;
-            if(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).equalsIgnoreCase("ANY"))
-                return true;
-            if (mobName().equalsIgnoreCase(msg.source().Name()))
+        &&(mobName().length()>0))
+		{
+			if((msg.targetMinor()==CMMsg.TYP_SIT)
+			&&(msg.source().name().equalsIgnoreCase(mobName()))
+			&&(CMLib.flags().isGolem(msg.source()))
+			&&(msg.source().envStats().height()<0)
+			&&(msg.source().envStats().weight()<=0))
 				return true;
-            else
-            if(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).equalsIgnoreCase("SELFONLY"))
-			{
-                msg.source().tell("You may not loot another players corpse.");
-                return false;
-	        }
-			else
-            if(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).equalsIgnoreCase("PKONLY"))
-			{
-                if(!(CMath.bset((msg.source()).getBitmap(), MOB.ATT_PLAYERKILL)))
+			
+			if(!super.okMessage(myHost,msg))
+				return false;
+			
+			if(((msg.targetMinor()==CMMsg.TYP_GET)
+				||((msg.tool() instanceof Ability)
+					&&(!msg.tool().ID().equalsIgnoreCase("Prayer_Resurrect"))
+					&&(!msg.tool().ID().equalsIgnoreCase("Prayer_PreserveBody"))
+					&&(!msg.tool().ID().equalsIgnoreCase("Song_Rebirth"))))
+			&&(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).length()>0)
+	        &&((msg.targetMessage()==null)||(!msg.targetMessage().equalsIgnoreCase("GIVE"))))
+	        {
+	            if(CMSecurity.isAllowed(msg.source(),msg.source().location(),"CMDITEMS"))
+	                return true;
+	            
+	            MOB ultimateFollowing=msg.source().amUltimatelyFollowing();
+	            if((msg.source().isMonster())
+	            &&((ultimateFollowing==null)||(ultimateFollowing.isMonster())))
+	                return true;
+	            if(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).equalsIgnoreCase("ANY"))
+	                return true;
+	            if (mobName().equalsIgnoreCase(msg.source().Name()))
+					return true;
+	            else
+	            if(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).equalsIgnoreCase("SELFONLY"))
 				{
-                    msg.source().tell("You can not get that.  You are not a player killer.");
-                    return false;
-                }
+	                msg.source().tell("You may not loot another players corpse.");
+	                return false;
+		        }
 				else
-				if(mobPKFlag())
+	            if(CMProps.getVar(CMProps.SYSTEM_CORPSEGUARD).equalsIgnoreCase("PKONLY"))
 				{
-                    msg.source().tell("You can not get that.  "+mobName()+" was not a player killer.");
-                    return false;
-                }
-			}
-        }
-        return true;
+	                if(!(CMath.bset((msg.source()).getBitmap(), MOB.ATT_PLAYERKILL)))
+					{
+	                    msg.source().tell("You can not get that.  You are not a player killer.");
+	                    return false;
+	                }
+					else
+					if(mobPKFlag())
+					{
+	                    msg.source().tell("You can not get that.  "+mobName()+" was not a player killer.");
+	                    return false;
+	                }
+				}
+	        }
+	        return true;
+		}
+        return super.okMessage(myHost, msg);
 	}
 }
