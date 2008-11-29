@@ -115,7 +115,8 @@ public class Flee extends Go
 				if(whatToDo==null) return false;
 				int[] expLost={10+((mob.envStats().level()-fighting.envStats().level()))*5};
 				if(expLost[0]<10) expLost[0]=10;
-				CMLib.combat().handleConsequences(mob,fighting,whatToDo,expLost,"You lose @x1 experience points for withdrawing.");
+				String[] cmds=CMParms.toStringArray(CMParms.parseCommas(whatToDo,true));
+				CMLib.combat().handleConsequences(mob,fighting,cmds,expLost,"You lose @x1 experience points for withdrawing.");
 				double pctHPremaining=CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints());
 				if(expLost[0]>0)
 				{

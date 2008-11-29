@@ -50,10 +50,18 @@ public class Enter extends Go
 		if(dir<0)
 		{
 			Environmental getThis=mob.location().fetchFromRoomFavorItems(null,enterWhat,Item.WORNREQ_UNWORNONLY);
-			if((getThis!=null)&&(getThis instanceof Rideable))
+			if(getThis!=null)
 			{
-				Command C=CMClass.getCommand("Sit");
-				if(C!=null) return C.execute(mob,commands,metaFlags);
+				if(getThis instanceof Rideable)
+				{
+					Command C=CMClass.getCommand("Sit");
+					if(C!=null) return C.execute(mob,commands,metaFlags);
+				}
+				else
+				if(getThis instanceof DeadBody)
+				{
+					
+				}
 			}
 			dir=CMLib.tracking().findExitDir(mob,mob.location(),enterWhat);
 			if(dir<0)

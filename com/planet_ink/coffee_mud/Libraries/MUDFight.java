@@ -186,7 +186,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 		String msp=CMProps.msp("death"+CMLib.dice().roll(1,7,0)+".wav",50);
 		CMMsg msg=null;
-		if(CMLib.combat().isKnockedOutUponDeath(deadM,killerM))
+		if(isKnockedOutUponDeath(deadM,killerM))
 			msg=CMClass.getMsg(deadM,null,killerM,
 					CMMsg.MSG_OK_VISUAL,"^f^*^<FIGHT^>!!!!!!!!!YOU ARE DEFEATED!!!!!!!!!!^</FIGHT^>^?^.\n\r"+msp,
 					CMMsg.MSG_OK_VISUAL,null,
@@ -561,17 +561,17 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 		int[] expLost={100*target.envStats().level()};
 		if(expLost[0]<100) expLost[0]=100;
-		String whatToDo=null;
+		String[] cmds=null;
 		if((target.isMonster())||(target.soulMate()!=null))
-			whatToDo=CMProps.getVar(CMProps.SYSTEM_MOBDEATH);
+			cmds=CMParms.toStringArray(CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_MOBDEATH),true));
 		else
-			whatToDo=CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH);
-		CMLib.combat().handleConsequences(target,source,whatToDo,expLost,"^*You lose @x1 experience points.^?^.");
+			cmds=CMParms.toStringArray(CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH),true));
+		handleConsequences(target,source,cmds,expLost,"^*You lose @x1 experience points.^?^.");
 
-		if(!CMLib.combat().isKnockedOutUponDeath(target,source))
+		if(!isKnockedOutUponDeath(target,source))
 		{
 			DeadBody body=null;
-			if(!(CMParms.parseCommas(whatToDo.toUpperCase().trim(),true).contains("RECALL")))
+			if(!CMParms.containsIgnoreCase(cmds,"RECALL"))
 				body=target.killMeDead(true);
 			Room bodyRoom=deathRoom;
 			if((body!=null)&&(body.owner() instanceof Room)&&(((Room)body.owner()).isContent(body)))
@@ -883,7 +883,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 if((!target.curState().adjHitPoints(-dmg,target.maxState()))
                 &&(target.curState().getHitPoints()<1)
                 &&(target.location()!=null))
-                    CMLib.combat().postDeath(attacker,target,msg);
+                    postDeath(attacker,target,msg);
                 else
                 {
             		if((Math.round(CMath.div(dmg,target.maxState().getHitPoints())*100.0)>=CMProps.getIntVar(CMProps.SYSTEMI_INJBLEEDPCTHP))
@@ -895,7 +895,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	                if((target.curState().getHitPoints()<target.getWimpHitPoint())
 	                &&(target.getWimpHitPoint()>0)
 	                &&(target.isInCombat()))
-	                    CMLib.combat().postPanic(target,msg);
+	                    postPanic(target,msg);
 	                else
 	                if((CMProps.getIntVar(CMProps.SYSTEMI_INJPCTHP)>=(int)Math.round(CMath.div(target.curState().getHitPoints(),target.maxState().getHitPoints())*100.0))
 	                &&(!CMLib.flags().isGolem(target))
@@ -947,7 +947,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 	Item KI=killer.fetchWieldedItem();
                 	Log.combatOut("KILL",killer.Name()+":"+killer.envStats().getCombatStats()+":"+killer.curState().getCombatStats()+":"+((KI==null)?"null":KI.name())+":"+deadmob.Name()+":"+deadmob.envStats().getCombatStats()+":"+deadmob.curState().getCombatStats()+":"+((DI==null)?"null":DI.name()));
                 }
-                CMLib.combat().justDie(killer,deadmob);
+                justDie(killer,deadmob);
                 if((!deadmob.isMonster())&&(deadmob.soulMate()==null)&&(killer!=deadmob)&&(!killer.isMonster()))
                 {
                     CMLib.coffeeTables().bump(deadmob,CoffeeTableRow.STAT_PKDEATHS);
@@ -964,7 +964,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 }
             }
             else
-                CMLib.combat().justDie(null,deadmob);
+                justDie(null,deadmob);
             deadmob.tell(deadmob,msg.target(),msg.tool(),msg.sourceMessage());
             if(deadmob.riding()!=null) deadmob.riding().delRider(deadmob);
             if(CMLib.flags().isCataloged(deadmob))
@@ -1048,8 +1048,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                     weapon=(Item)msg.tool();
                 if(weapon!=null)
                 {
-                	boolean isHit=CMLib.combat().rollToHit(attacker,target);
-                    CMLib.combat().postWeaponDamage(attacker,target,weapon,isHit);
+                	boolean isHit=rollToHit(attacker,target);
+                    postWeaponDamage(attacker,target,weapon,isHit);
                     if(isHit) msg.setValue(1);
                 }
                 if((target.soulMate()==null)&&(target.playerStats()!=null)&&(target.location()!=null))
@@ -1192,7 +1192,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         if((weapon!=null)&&(weapon.amWearingAt(Item.IN_INVENTORY)))
             weapon=fighter.fetchWieldedItem();
         if((!CMath.bset(fighter.getBitmap(),MOB.ATT_AUTOMELEE)))
-            CMLib.combat().postAttack(fighter,fighter.getVictim(),weapon);
+            postAttack(fighter,fighter.getVictim(),weapon);
         else
         {
             boolean inminrange=(fighter.rangeToTarget()>=fighter.minRange(weapon));
@@ -1231,7 +1231,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
             }
             else
             if(inminrange&&inmaxrange&&((weapon!=null)||(fighter.rangeToTarget()==0)))
-                CMLib.combat().postAttack(fighter,fighter.getVictim(),weapon);
+                postAttack(fighter,fighter.getVictim(),weapon);
         }
     }
 
@@ -1365,10 +1365,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return false;
     }
 
-    public boolean handleConsequences(MOB mob, MOB fighting, String whatToDo, int[] lostExperience, String message)
+    public boolean handleConsequences(MOB mob, MOB fighting, String[] commands, int[] lostExperience, String message)
     {
-		if(whatToDo==null) return false;
-		whatToDo=whatToDo.toUpperCase();
+    	if((commands==null)||(commands.length==0)) return false;
 		if(lostExperience==null) lostExperience=new int[1];
 		int baseExperience=lostExperience[0];
 		lostExperience[0]=0;
@@ -1380,10 +1379,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
                 (fighting!=null)?fighting.envStats().level():0,
                 rejuv
         };
-		Vector whatsToDo=CMParms.parseCommas(whatToDo,true);
-		for(int w=0;w<whatsToDo.size();w++)
+		for(int w=0;w<commands.length;w++)
 		{
-			whatToDo=(String)whatsToDo.elementAt(w);
+			String whatToDo=commands[w].toUpperCase();
 			if(whatToDo.startsWith("UNL"))
 			{
 				Vector V=CMParms.parse(whatToDo);
