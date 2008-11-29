@@ -444,10 +444,14 @@ public class DefaultCoffeeShop implements CoffeeShop
         baseInventory=new Vector();
         
         if(text.length()==0) return;
+    	ShopKeeper shop=shopKeeper();
+    	if(shop==null)
+        {
+            Log.errOut("DefaultCoffeeShop","Error getting base shopKeeper obj host from "+text);
+            return;
+        }
         if(!text.trim().startsWith("<"))
         {
-        	ShopKeeper shop=shopKeeper();
-        	if(shop==null) return;
             String parm=CMParms.getParmStr(text,"ISELL",""+ShopKeeper.DEAL_ANYTHING);
             if((parm!=null)&&(CMath.isNumber(parm))) 
             	shop.setWhatIsSoldMask(CMath.s_long(parm));
@@ -473,12 +477,6 @@ public class DefaultCoffeeShop implements CoffeeShop
         if(buf==null)
         {
             Log.errOut("DefaultCoffeeShop","Error parsing data.");
-            return;
-        }
-    	ShopKeeper shop=shopKeeper();
-    	if(shop==null)
-        {
-            Log.errOut("DefaultCoffeeShop","Error parsing shopKeeper.");
             return;
         }
         String parm=CMLib.xml().getValFromPieces(buf,"ISELL");
