@@ -126,7 +126,8 @@ public class Chant_AstralProjection extends Chant
 				return false;
 			}
 		}
-		if(target.fetchEffect("Prop_AstralSpirit")!=null)
+		if(CMLib.flags().isGolem(target)
+		&&((target.envStats().height()<=0)||(target.envStats().weight()<=0)))
 		{
 			mob.tell("You are already as astral spirit.");
 			return false;

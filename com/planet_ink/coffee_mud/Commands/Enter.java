@@ -59,13 +59,14 @@ public class Enter extends Go
 				}
 				else
 				if((getThis instanceof DeadBody)
-				&&(mob.envStats().height()<0)
+				&&(mob.envStats().height()<=0)
 				&&(mob.envStats().weight()<=0))
 				{
-					String mountStr="<S-NAME> "+((Rideable)getThis).mountString(CMMsg.TYP_SIT,mob)+" <T-NAME>.";
+					String mountStr="<S-NAME> enter(s) <T-NAME>.";
 					CMMsg msg=CMClass.getMsg(mob,getThis,null,CMMsg.MSG_SIT,mountStr);
 					if(mob.location().okMessage(mob,msg))
 						mob.location().send(mob,msg);
+					return true;
 				}
 			}
 			dir=CMLib.tracking().findExitDir(mob,mob.location(),enterWhat);

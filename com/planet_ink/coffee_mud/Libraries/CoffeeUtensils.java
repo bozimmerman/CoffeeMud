@@ -698,6 +698,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 			}
             body.delEffect(body.fetchEffect("Age")); // so misskids doesn't record it
             body.destroy();
+            rejuvedMOB.baseEnvStats().setDisposition(CMath.unsetb(rejuvedMOB.baseEnvStats().disposition(),EnvStats.IS_SITTING));
+            rejuvedMOB.envStats().setDisposition(CMath.unsetb(rejuvedMOB.baseEnvStats().disposition(),EnvStats.IS_SITTING));
 			rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
 			corpseRoom.recoverRoomStats();
 			Vector whatsToDo=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH));

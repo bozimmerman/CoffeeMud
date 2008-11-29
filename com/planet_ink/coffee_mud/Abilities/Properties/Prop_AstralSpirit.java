@@ -38,6 +38,13 @@ public class Prop_AstralSpirit extends Property
 	public String name(){ return "Astral Spirit";}
 	public String displayText(){ return "(Spirit Form)";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	private Race race=null;
+	
+	public Race spiritRace() {
+		if(race==null)
+			race=CMClass.getRace("Spirit");
+		return race;
+	}
 	public boolean autoInvocation(MOB mob)
 	{
 		if((mob!=null)&&(mob.fetchEffect(ID())==null))
@@ -110,6 +117,11 @@ public class Prop_AstralSpirit extends Property
 		return true;
 	}
 
+	public void affectCharStats(MOB affected, CharStats affectableStats)
+	{
+		affectableStats.setMyRace(spiritRace());
+		super.affectCharStats(affected, affectableStats);
+	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
