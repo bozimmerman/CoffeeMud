@@ -789,8 +789,9 @@ public class RoomLoader
 		}
 		return contents;
     }
-	public void DBCreateThisItem(String roomID, Item thisItem)
-	{
+    
+    protected String getDBCreateItemString(String roomID, Item thisItem)
+    {
         boolean catalog=((roomID!=null)&&(roomID.startsWith("CATALOG_")));
 		thisItem.setExpirationDate(0); // saved items won't clear!
 		Environmental container=thisItem.container();
@@ -812,7 +813,7 @@ public class RoomLoader
 			if(dataI!=null)
 		        text+=dataI.data();
 		}
-		DB.update(
+		return
 		"INSERT INTO CMROIT ("
 		+"CMROID, "
 		+"CMITNM, "
@@ -834,7 +835,11 @@ public class RoomLoader
 		+thisItem.usesRemaining()+","
 		+thisItem.baseEnvStats().level()+","
 		+thisItem.baseEnvStats().ability()+","
-		+thisItem.baseEnvStats().height()+")");
+		+thisItem.baseEnvStats().height()+")";
+    }
+	public void DBCreateThisItem(String roomID, Item thisItem)
+	{
+		DB.update(getDBCreateItemString(roomID,thisItem));
 	}
 	
 	public void DBUpdateTheseItems(Room room, Vector items)
@@ -842,19 +847,16 @@ public class RoomLoader
 		if((!room.savable())||(room.amDestroyed())) return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Start item update for room "+room.roomID());
-		DB.update("DELETE FROM CMROIT WHERE CMROID='"+room.roomID()+"'");
-		try{Thread.sleep(items.size()+1);}catch(Exception e){}
-		if(DB.queryRows("SELECT * FROM CMROIT  WHERE CMROID='"+room.roomID()+"'")>0)
-			Log.errOut("Failed to update items for room "+room.roomID()+".");
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
-			Log.debugOut("RoomLoader","Continue item update for room "+room.roomID());
+		Vector statements=new Vector();
+		statements.addElement("DELETE FROM CMROIT WHERE CMROID='"+room.roomID()+"'");
 		for(int i=0;i<items.size();i++)
 		{
 			Item thisItem=(Item)items.elementAt(i);
-			DBCreateThisItem(room.roomID(),thisItem);
+			statements.addElement(getDBCreateItemString(room.roomID(),thisItem));
 		}
+		DB.update(CMParms.toStringArray(statements));
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
-			Log.debugOut("RoomLoader","Finished item update for room "+room.roomID());
+			Log.debugOut("RoomLoader","Finished items update for room "+room.roomID());
 	}
 	
 	public void DBUpdateItems(Room room)
@@ -869,9 +871,8 @@ public class RoomLoader
 		
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROEX")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Starting exit update for room "+room.roomID());
-		DB.update("DELETE FROM CMROEX WHERE CMROID='"+room.roomID()+"'");
-		if(DB.queryRows("SELECT * FROM CMROEX  WHERE CMROID='"+room.roomID()+"'")>0)
-			Log.errOut("Failed to update exits for room "+room.roomID()+".");
+		Vector statements=new Vector();
+		statements.addElement("DELETE FROM CMROEX WHERE CMROID='"+room.roomID()+"'");
 		for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 		{
 			Exit thisExit=room.getRawExit(d);
@@ -879,7 +880,7 @@ public class RoomLoader
 			if(((thisRoom!=null)||(thisExit!=null))
 			   &&((thisRoom==null)||(thisRoom.savable())))
 			{
-				DB.update(
+				statements.addElement(
 				"INSERT INTO CMROEX ("
 				+"CMROID, "
 				+"CMDIRE, "
@@ -923,7 +924,7 @@ public class RoomLoader
 					StringBuffer exitStr=new StringBuffer("");
 					for(Iterator a=oldStrs.iterator();a.hasNext();)
 						exitStr.append((String)a.next());
-					DB.update(
+					statements.addElement(
 					"INSERT INTO CMROEX ("
 					+"CMROID, "
 					+"CMDIRE, "
@@ -937,14 +938,19 @@ public class RoomLoader
 					+"'"+exitStr.toString()+"',"
 					+"'"+R.roomID()+"')");
 				}
-				
 			}
 		}
+		DB.update(CMParms.toStringArray(statements));
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROEX")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Finished exit update for room "+room.roomID());
 	}
 
 	public void DBCreateThisMOB(String roomID, MOB thisMOB)
+	{
+		DB.update(getDBCreateMOBString(roomID,thisMOB));
+	}
+	
+	public String getDBCreateMOBString(String roomID, MOB thisMOB)
 	{
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Creating mob "+thisMOB.name()+" for room "+roomID);
@@ -961,7 +967,13 @@ public class RoomLoader
 		String mobID=""+thisMOB;
 		thisMOB.setDatabaseID(mobID);
 		
-		DB.update(
+		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
+			Log.debugOut("RoomLoader","Created mob "+thisMOB.name()+" for room "+roomID);
+		
+		if((CMProps.getBoolVar(CMProps.SYSTEMB_MOBNOCACHE))&&(!catalog))
+		   thisMOB.setMiscText("%DBID>"+roomID+mobID.substring(mobID.indexOf("@")));
+		
+		return
 		"INSERT INTO CMROCH ("
 		+"CMROID, "
 		+"CMCHNM, "
@@ -980,31 +992,25 @@ public class RoomLoader
 		+thisMOB.baseEnvStats().ability()+","
 		+thisMOB.baseEnvStats().rejuv()+","
 		+"'"+ride+"'"
-		+")");
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
-			Log.debugOut("RoomLoader","Created mob "+thisMOB.name()+" for room "+roomID);
-		
-		if((CMProps.getBoolVar(CMProps.SYSTEMB_MOBNOCACHE))&&(!catalog))
-		   thisMOB.setMiscText("%DBID>"+roomID+mobID.substring(mobID.indexOf("@")));
+		+")";
 	}
+	
 	public void DBUpdateTheseMOBs(Room room, Vector mobs)
 	{
 		if((!room.savable())||(room.amDestroyed())) return;
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Updating mobs for room "+room.roomID());
 		if(mobs==null) mobs=new Vector();
-		DB.update("DELETE FROM CMROCH WHERE CMROID='"+room.roomID()+"'");
-		if(DB.queryRows("SELECT * FROM CMROCH  WHERE CMROID='"+room.roomID()+"'")>0)
-			Log.errOut("Failed to update mobs for room "+room.roomID()+".");
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
-			Log.debugOut("RoomLoader","Continue updating mobs for room "+room.roomID());
+		Vector statements=new Vector();
+		statements.addElement("DELETE FROM CMROCH WHERE CMROID='"+room.roomID()+"'");
 		for(int m=0;m<mobs.size();m++)
 		{
 			MOB thisMOB=(MOB)mobs.elementAt(m);
-			DBCreateThisMOB(room.roomID(),thisMOB);
+			statements.addElement(getDBCreateMOBString(room.roomID(),thisMOB));
 		}
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROCH")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Done updating mobs for room "+room.roomID());
+		DB.update(CMParms.toStringArray(statements));
 	}
 
 	public void DBUpdateMOBs(Room room)
@@ -1163,12 +1169,15 @@ public class RoomLoader
 	public void DBUpdateRoomItem(String roomID, Item item)
 	{
 		if((roomID==null)||(!item.savable())||(item.amDestroyed())) return;
-		DBDeleteRoomItem(roomID,item);
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
-			Log.debugOut("RoomLoader","Continue updating item "+item.name()+" in room "+roomID);
-		DBCreateThisItem(roomID,item);
-		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
-			Log.debugOut("RoomLoader","Done updating item "+item.name()+" in room "+roomID);
+		synchronized(roomID.toUpperCase().intern())
+		{
+			DBDeleteRoomItem(roomID,item);
+			if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
+				Log.debugOut("RoomLoader","Continue updating item "+item.name()+" in room "+roomID);
+			DBCreateThisItem(roomID,item);
+			if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMROIT")||CMSecurity.isDebugging("DBROOMS")))
+				Log.debugOut("RoomLoader","Done updating item "+item.name()+" in room "+roomID);
+		}
 	}
 	
 	public void DBDeleteRoomMOB(String roomID, MOB mob)

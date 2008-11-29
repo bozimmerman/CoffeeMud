@@ -696,9 +696,10 @@ public class MOBloader
         DB.update("UPDATE CMCHAR SET CMDESC='"+mob.description()+"' WHERE CMUSERID='"+mob.Name()+"'");
     }
 
-    private void DBUpdateContents(MOB mob, Vector V)
+    private Vector getDBItemUpdateStrings(MOB mob)
     {
-        Vector done=new Vector();
+        HashSet done=new HashSet();
+        Vector strings=new Vector();
         for(int i=0;i<mob.inventorySize();i++)
         {
             Item thisItem=mob.fetchInventory(i);
@@ -711,26 +712,20 @@ public class MOBloader
                 +((thisItem.container()!=null)?(""+thisItem.container()):"")+"',"+thisItem.rawWornCode()+","
                 +thisItem.usesRemaining()+","+thisItem.baseEnvStats().level()+","+thisItem.baseEnvStats().ability()+","
                 +thisItem.baseEnvStats().height()+")";
-                if(!V.contains(str)) V.addElement(str);
-                done.addElement(""+thisItem);
+                strings.addElement(str);
+                done.add(""+thisItem);
             }
         }
+        return strings;
     }
 
     public void DBUpdateItems(MOB mob)
     {
         if(mob.Name().length()==0) return;
-        DB.update("DELETE FROM CMCHIT WHERE CMUSERID='"+mob.Name()+"'");
-        try
-        {
-            Thread.sleep(mob.inventorySize());
-        }catch(Exception e)
-        {}
-        if(DB.queryRows("SELECT * FROM CMCHIT  WHERE CMUSERID='"+mob.Name()+"'")>0) Log.errOut("Failed to update items for mob "+mob.Name()+".");
-        Vector V=new Vector();
-        if(mob.inventorySize()>0) DBUpdateContents(mob,V);
-        for(int v=0;v<V.size();v++)
-            DB.update((String)V.elementAt(v));
+        Vector statements=new Vector();
+        statements.addElement("DELETE FROM CMCHIT WHERE CMUSERID='"+mob.Name()+"'");
+        statements.addAll(getDBItemUpdateStrings(mob));
+        DB.update(CMParms.toStringArray(statements));
     }
 
     // this method is unused, but is a good idea of how to collect riders, followers, carts, etc.
@@ -763,9 +758,8 @@ public class MOBloader
     public void DBUpdateFollowers(MOB mob)
     {
         if((mob==null)||(mob.Name().length()==0)) return;
-        DB.update("DELETE FROM CMCHFO WHERE CMUSERID='"+mob.Name()+"'");
-        if(DB.queryRows("SELECT * FROM CMCHFO  WHERE CMUSERID='"+mob.Name()+"'")>0) Log.errOut("Failed to update followers for mob "+mob.Name()+".");
-        Vector V=new Vector();
+        Vector statements=new Vector();
+        statements.addElement("DELETE FROM CMCHFO WHERE CMUSERID='"+mob.Name()+"'");
         for(int f=0;f<mob.numFollowers();f++)
         {
             MOB thisMOB=mob.fetchFollower(f);
@@ -775,11 +769,10 @@ public class MOBloader
                 String str="INSERT INTO CMCHFO (CMUSERID, CMFONM, CMFOID, CMFOTX, CMFOLV, CMFOAB"
                 +") values ('"+mob.Name()+"',"+f+",'"+CMClass.classID(thisMOB)+"','"+thisMOB.text()+" ',"
                 +thisMOB.baseEnvStats().level()+","+thisMOB.baseEnvStats().ability()+")";
-                V.addElement(str);
+                statements.addElement(str);
             }
         }
-        for(int v=0;v<V.size();v++)
-            DB.update((String)V.elementAt(v));
+        DB.update(CMParms.toStringArray(statements));
     }
 
     public void DBDelete(MOB mob)
@@ -819,9 +812,8 @@ public class MOBloader
     public void DBUpdateAbilities(MOB mob)
     {
         if(mob.Name().length()==0) return;
-        DB.update("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.Name()+"'");
-        if(DB.queryRows("SELECT * FROM CMCHAB  WHERE CMUSERID='"+mob.Name()+"'")>0) Log.errOut("Failed to update abilities for mob "+mob.Name()+".");
-        Vector V=new Vector();
+        Vector statements=new Vector();
+        statements.addElement("DELETE FROM CMCHAB WHERE CMUSERID='"+mob.Name()+"'");
         HashSet H=new HashSet();
         for(int a=0;a<mob.numLearnedAbilities();a++)
         {
@@ -837,7 +829,7 @@ public class MOBloader
                 H.add(thisAbility.ID());
                 String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
                 +") values ('"+mob.Name()+"','"+thisAbility.ID()+"',"+proficiency+",'"+thisAbility.text()+"')";
-                V.addElement(str);
+                statements.addElement(str);
             }
         }
         for(int a=0;a<mob.numEffects();a++)
@@ -847,7 +839,7 @@ public class MOBloader
             {
                 String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
                 +") values ('"+mob.Name()+"','"+thisAffect.ID()+"',"+Integer.MAX_VALUE+",'"+thisAffect.text()+"')";
-                V.addElement(str);
+                statements.addElement(str);
             }
         }
         for(int b=0;b<mob.numBehaviors();b++)
@@ -858,7 +850,7 @@ public class MOBloader
                 String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
                 +") values ('"+mob.Name()+"','"+thisBehavior.ID()+"',"+Integer.MIN_VALUE+",'"+thisBehavior.getParms()+"'"
                 +")";
-                V.addElement(str);
+                statements.addElement(str);
             }
         }
         String scriptStuff = CMLib.coffeeMaker().getGenScripts(mob,true);
@@ -867,11 +859,10 @@ public class MOBloader
             String str="INSERT INTO CMCHAB (CMUSERID, CMABID, CMABPF,CMABTX"
             +") values ('"+mob.Name()+"','ScriptingEngine',"+Integer.MIN_VALUE+",'"+scriptStuff+"'"
             +")";
-            V.addElement(str);
+            statements.addElement(str);
         }
 
-        for(int v=0;v<V.size();v++)
-            DB.update((String)V.elementAt(v));
+        DB.update(CMParms.toStringArray(statements));
     }
 
     public void DBCreateCharacter(MOB mob)

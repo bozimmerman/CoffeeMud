@@ -94,7 +94,8 @@ public class DBConnector
 		return false;
 	}
 	
-	public int update(String updateString){ return (DBs!=null)?DBs.update(updateString):0;}
+	public int update(String[] updateStrings){ return (DBs!=null)?DBs.update(updateStrings):0;}
+	public int update(String updateString){ return (DBs!=null)?DBs.update(new String[]{updateString}):0;}
 	
 	public int queryRows(String queryString){ return (DBs!=null)?DBs.queryRows(queryString):0;}
 

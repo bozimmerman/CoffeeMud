@@ -103,33 +103,38 @@ public class DBConnections
 	 * @param updateString	the update SQL command
 	 * @return int	the responseCode, or -1
 	 */
-	public int update(String updateString)
+	public int update(String[] updateStrings)
 	{
 		DBConnection DBToUse=null;
 		int Result=-1;
+		String updateString=null;
 		try
 		{
 			DBToUse=DBFetch();
-			try
+			for(int i=0;i<updateStrings.length;i++)
 			{
-				Result=DBToUse.update(updateString,0);
-			}
-			catch(Exception sqle)
-			{
-                if(sqle instanceof java.io.EOFException)
-                {
-                    Log.errOut("DBConnections",""+sqle);
-                    DBDone(DBToUse);
-                    return -1;
-                }
-                if(sqle instanceof SQLException)
-                {
-                    // queued by the connection for retry
-                }
-			}
-			if(Result<0)
-			{
-				Log.errOut("DBConnections",""+DBToUse.getLastError()+"/"+updateString);
+				updateString=updateStrings[i];
+				try
+				{
+					Result=DBToUse.update(updateString,0);
+				}
+				catch(Exception sqle)
+				{
+	                if(sqle instanceof java.io.EOFException)
+	                {
+	                    Log.errOut("DBConnections",""+sqle);
+	                    DBDone(DBToUse);
+	                    return -1;
+	                }
+	                if(sqle instanceof SQLException)
+	                {
+	                    // queued by the connection for retry
+	                }
+				}
+				if(Result<0)
+				{
+					Log.errOut("DBConnections",""+DBToUse.getLastError()+"/"+updateString);
+				}
 			}
 		}
 		catch(Exception e)
