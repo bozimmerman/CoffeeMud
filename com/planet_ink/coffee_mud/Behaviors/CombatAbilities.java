@@ -535,7 +535,17 @@ public class CombatAbilities extends StdBehavior
 			if(proficient)
                 tryThisOne.setProficiency(100);
 			else
-    			tryThisOne.setProficiency(CMLib.dice().roll(1,70,mob.baseEnvStats().level()));
+			{
+				int qualLevel=CMLib.ableMapper().qualifyingLevel(mob,tryThisOne);
+				if(qualLevel<=0)
+	                tryThisOne.setProficiency(75);
+				else
+				{
+					int levelDiff=mob.baseEnvStats().level()-qualLevel;
+					if((levelDiff>50)||(levelDiff<0)) levelDiff=50;
+					tryThisOne.setProficiency(50+levelDiff);
+				}
+			}
 			Vector V=new Vector();
 			V.addElement(target.name());
 			if(lastSpell!=null)
