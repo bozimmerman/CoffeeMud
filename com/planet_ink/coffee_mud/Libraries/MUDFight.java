@@ -1400,6 +1400,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				Ability A=CMClass.getAbility("Prop_AstralSpirit");
 				if((A!=null)&&(mob.fetchAbility(A.ID())==null))
 				{
+					if(whatToDo.startsWith("ASTRAL_R"))
+						A.setMiscText("SELF-RES");
 					mob.addAbility(A);
 					A.autoInvocation(mob);
 				}
