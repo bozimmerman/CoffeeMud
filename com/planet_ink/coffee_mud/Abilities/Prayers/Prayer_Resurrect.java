@@ -157,76 +157,7 @@ public class Prayer_Resurrect extends Prayer implements MendingSkill
 				invoker=mob;
 				mob.location().send(mob,msg);
 				if(playerCorpse)
-				{
-					MOB rejuvedMOB=CMLib.players().getPlayer(((DeadBody)body).mobName());
-					if(rejuvedMOB!=null)
-					{
-						rejuvedMOB.tell("You are being resurrected.");
-						if(rejuvedMOB.location()!=mob.location())
-						{
-							rejuvedMOB.location().showOthers(rejuvedMOB,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> disappears!");
-							mob.location().bringMobHere(rejuvedMOB,false);
-						}
-						Ability A=rejuvedMOB.fetchAbility("Prop_AstralSpirit");
-						if(A!=null) rejuvedMOB.delAbility(A);
-						A=rejuvedMOB.fetchEffect("Prop_AstralSpirit");
-						if(A!=null) rejuvedMOB.delEffect(A);
-	
-						int it=0;
-						while(it<rejuvedMOB.location().numItems())
-						{
-							Item item=rejuvedMOB.location().fetchItem(it);
-							if((item!=null)&&(item.container()==body))
-							{
-								CMMsg msg2=CMClass.getMsg(rejuvedMOB,body,item,CMMsg.MSG_GET,null);
-								rejuvedMOB.location().send(rejuvedMOB,msg2);
-								CMMsg msg3=CMClass.getMsg(rejuvedMOB,item,null,CMMsg.MSG_GET,null);
-								rejuvedMOB.location().send(rejuvedMOB,msg3);
-								it=0;
-							}
-							else
-								it++;
-						}
-                        body.delEffect(body.fetchEffect("Age")); // so misskids doesn't record it
-                        body.destroy();
-						rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
-						mob.location().recoverRoomStats();
-						Vector whatsToDo=CMParms.parse(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH));
-						for(int w=0;w<whatsToDo.size();w++)
-						{
-							String whatToDo=(String)whatsToDo.elementAt(w);
-							if(whatToDo.startsWith("UNL"))
-								CMLib.leveler().level(rejuvedMOB);
-							else
-							if(whatToDo.startsWith("ASTR"))
-							{}
-							else
-							if(whatToDo.startsWith("PUR"))
-							{}
-							else
-							if((whatToDo.trim().equals("0"))||(CMath.s_int(whatToDo)>0))
-							{
-								int expLost=(CMath.s_int(whatToDo)+(2*super.getXPCOSTLevel(mob)))/2;
-								rejuvedMOB.tell("^*You regain "+expLost+" experience points.^?^.");
-								CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
-							}
-							else
-							if(whatToDo.length()<3)
-								continue;
-							else
-							{
-                                double lvl=(double)body.envStats().level();
-                                for(int l=body.envStats().level();l<rejuvedMOB.envStats().level();l++)
-                                    lvl=lvl/2.0;
-								int expLost=(int)Math.round(((100.0+(2.0*((double)super.getXPCOSTLevel(mob))))*lvl)/2.0);
-								rejuvedMOB.tell("^*You regain "+expLost+" experience points.^?^.");
-								CMLib.leveler().postExperience(rejuvedMOB,null,null,expLost,false);
-							}
-						}
-					}
-					else
-						mob.location().show(mob,body,CMMsg.MSG_OK_VISUAL,"<T-NAME> twitch(es) for a moment, but the spirit is too far gone.");
-				}
+					success = CMLib.utensils().resurrect(mob,mob.location(), (DeadBody)body, super.getXPCOSTLevel(mob));
 				else
 				{
 					String data=nonPlayerData.xml;

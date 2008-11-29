@@ -85,43 +85,7 @@ public class Song_Rebirth extends Song
 						&&(((DeadBody)body).playerCorpse())
 						&&(((DeadBody)body).mobName().length()>0))
 						{
-							MOB rejuvedMOB=CMLib.players().getPlayer(((DeadBody)body).mobName());
-							if(rejuvedMOB!=null)
-							{
-								rejuvedMOB.tell("You are being resusitated.");
-								if(rejuvedMOB.location()!=R)
-								{
-									rejuvedMOB.location().showOthers(rejuvedMOB,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> disappear(s)!");
-									R.bringMobHere(rejuvedMOB,false);
-								}
-	
-								Ability A=rejuvedMOB.fetchAbility("Prop_AstralSpirit");
-								if(A!=null) rejuvedMOB.delAbility(A);
-								A=rejuvedMOB.fetchEffect("Prop_AstralSpirit");
-								if(A!=null) rejuvedMOB.delEffect(A);
-	
-								int it=0;
-								while(it<rejuvedMOB.location().numItems())
-								{
-									Item item=rejuvedMOB.location().fetchItem(it);
-									if((item!=null)&&(item.container()==body))
-									{
-										CMMsg msg2=CMClass.getMsg(rejuvedMOB,body,item,CMMsg.MSG_GET,null);
-										rejuvedMOB.location().send(rejuvedMOB,msg2);
-										CMMsg msg3=CMClass.getMsg(rejuvedMOB,item,null,CMMsg.MSG_GET,null);
-										rejuvedMOB.location().send(rejuvedMOB,msg3);
-										it=0;
-									}
-									else
-										it++;
-								}
-								body.destroy();
-								R.recoverRoomStats();
-								foundOne=true;
-								rejuvedMOB.location().show(rejuvedMOB,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> get(s) up!");
-								i=0;
-							}
-							else
+							if(!CMLib.utensils().resurrect(mob,mob.location(), (DeadBody)body, -1))
 								i++;
 						}
 						else

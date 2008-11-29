@@ -62,6 +62,7 @@ public interface CMMiscUtils extends CMLibrary
     public MOB getMobPossessingAnother(MOB mob);
     public void roomAffectFully(CMMsg msg, Room room, int dirCode);
     public Vector getDeadBodies(Environmental container);
+    public boolean resurrect(MOB tellMob, Room corpseRoom, DeadBody body, int XPLevel);
     
     public Item isRuinedLoot(DVector policies, Item I);
     public DVector parseLootPolicyFor(MOB mob);
