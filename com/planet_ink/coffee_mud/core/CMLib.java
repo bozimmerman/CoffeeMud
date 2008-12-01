@@ -148,7 +148,7 @@ public class CMLib
     public static DatabaseEngine database(){return (DatabaseEngine)l().libraries[LIBRARY_DATABASE];}
     public static ThreadEngine threads(){return (ThreadEngine)l().libraries[LIBRARY_THREADS];}
     public static I3Interface intermud(){return (I3Interface)l().libraries[LIBRARY_INTERMUD];}
-    public static ItemBuilderLibrary itemBuilder(){return (ItemBuilderLibrary)l().libraries[LIBRARY_TIMS];}
+    public static ItemBalanceLibrary itemBuilder(){return (ItemBalanceLibrary)l().libraries[LIBRARY_TIMS];}
     public static ExternalHTTPRequests httpUtils(){return (ExternalHTTPRequests)l().libraries[LIBRARY_HTTP];}
     public static ListingLibrary lister(){return (ListingLibrary)l().libraries[LIBRARY_LISTER];}
     public static MoneyLibrary beanCounter(){return (MoneyLibrary)l().libraries[LIBRARY_MONEY];}
@@ -234,7 +234,7 @@ public class CMLib
         if(O instanceof TimeManager) return LIBRARY_TIME;
         if(O instanceof ColorLibrary) return LIBRARY_COLOR;
         if(O instanceof CharCreationLibrary) return LIBRARY_LOGIN;
-        if(O instanceof ItemBuilderLibrary) return LIBRARY_TIMS;
+        if(O instanceof ItemBalanceLibrary) return LIBRARY_TIMS;
         if(O instanceof ExpertiseLibrary) return LIBRARY_EXPERTISES;
         if(O instanceof MaterialLibrary) return LIBRARY_MATERIALS;
         if(O instanceof LegalLibrary) return LIBRARY_LEGAL;

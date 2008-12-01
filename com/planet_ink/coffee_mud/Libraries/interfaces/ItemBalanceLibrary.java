@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public interface ItemBuilderLibrary extends CMLibrary
+public interface ItemBalanceLibrary extends CMLibrary
 {
 	public int timsLevelCalculator(Item I);
 	public int timsLevelCalculator(Item I, Ability ADJ, Ability RES, Ability CAST, int castMul);

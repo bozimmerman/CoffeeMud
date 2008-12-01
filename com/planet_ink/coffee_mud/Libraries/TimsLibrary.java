@@ -32,7 +32,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class TimsLibrary extends StdLibrary implements ItemBuilderLibrary
+public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 {
     public String ID(){return "TimsLibrary";}
 
