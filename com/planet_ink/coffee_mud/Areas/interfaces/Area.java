@@ -377,18 +377,18 @@ public interface Area extends Environmental, Economics
 	 * Area Flags, unlike flags, is a PURELY run-time set that changes depending
 	 * upon how the engine is operating on this area or its content.
 	 * This method changes the state.
-	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#FLAG_ACTIVE
-	 * @param flagBits
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#STATE_ACTIVE
+	 * @param newState
 	 */
-	public void setAreaFlags(int flagBits);
+	public void setAreaState(int newState);
 	/**
 	 * Area Flags, unlike flags, is a PURELY run-time set that changes depending
 	 * upon how the engine is operating on this area or its content.
 	 * This method returns the state.
-	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#FLAG_ACTIVE
+	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#STATE_ACTIVE
 	 * @return a numeric state for this area
 	 */
-	public int getAreaFlags();
+	public int getAreaState();
 	/**
 	 * Adds a SubOp to this area.  This must be a valid Player Name.  A Player with
 	 * this designation will have their AREA security flags activated when in this area.
@@ -742,13 +742,13 @@ public interface Area extends Environmental, Economics
 	};
 	
 	/**	State flag for area meaning Area is active.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaFlags() */
-    public final static int FLAG_ACTIVE=0;
+    public final static int STATE_ACTIVE=0;
 	/**	State flag for area meaning Area is passive.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaFlags() */
-    public final static int FLAG_PASSIVE=1;
+    public final static int STATE_PASSIVE=1;
 	/**	State flag for area meaning Area is frozen.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaFlags() */
-    public final static int FLAG_FROZEN=2;
+    public final static int STATE_FROZEN=2;
 	/**	State flag for area meaning Area is dead.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaFlags() */
-    public final static int FLAG_STOPPED=3;
+    public final static int STATE_STOPPED=3;
 	/**	Amount of time of player absence before an area automatically goes from Active to passive */
     public final static long TIME_PASSIVE_LAPSE=60*1000*30; // 30 mins
     

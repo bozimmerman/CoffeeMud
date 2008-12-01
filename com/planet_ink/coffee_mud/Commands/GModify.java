@@ -590,15 +590,15 @@ public class GModify extends StdCommand
 	            if((mob.session()==null)||(mob.session().killFlag())||(R.getArea()==null))
 	            	return false;
 	            Area A=R.getArea();
-	            int oldFlag=A.getAreaFlags();
+	            int oldFlag=A.getAreaState();
 	            if(changes.size()==0)
 	            {
 	                R=CMLib.coffeeMaker().makeNewRoomContent(R);
-		            if(R!=null) A.setAreaFlags(Area.FLAG_FROZEN);
+		            if(R!=null) A.setAreaState(Area.STATE_FROZEN);
 	            }
 	            else
 	            {
-		            A.setAreaFlags(Area.FLAG_FROZEN);
+		            A.setAreaState(Area.STATE_FROZEN);
 	                CMLib.map().resetRoom(R);
 	            }
 	            if(R==null) continue;
@@ -640,7 +640,7 @@ public class GModify extends StdCommand
 	            if(savemobs) CMLib.database().DBUpdateMOBs(R);
 	            if((mob.session()!=null)&&(changes.size()>0)) 
 	                mob.session().rawPrint(".");
-	            A.setAreaFlags(oldFlag);
+	            A.setAreaState(oldFlag);
 	            if(changes.size()==0) R.destroy();
 	    	}
         }
@@ -650,8 +650,8 @@ public class GModify extends StdCommand
         for(int i=0;i<placesToDo.size();i++)
         {
             A=((Room)placesToDo.elementAt(i)).getArea();
-            if((A!=null)&&(A.getAreaFlags()>Area.FLAG_ACTIVE)) 
-                A.setAreaFlags(Area.FLAG_ACTIVE);
+            if((A!=null)&&(A.getAreaState()>Area.STATE_ACTIVE)) 
+                A.setAreaState(Area.STATE_ACTIVE);
         }
         return false;
     }

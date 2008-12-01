@@ -424,8 +424,8 @@ public class Merge extends StdCommand
 	    	synchronized(("SYNC"+R.roomID()).intern())
 	    	{
 	    		R=CMLib.map().getRoom(R);
-				int oldFlags=R.getArea().getAreaFlags();
-				R.getArea().setAreaFlags(Area.FLAG_FROZEN);
+				int oldFlags=R.getArea().getAreaState();
+				R.getArea().setAreaState(Area.STATE_FROZEN);
 				CMLib.map().resetRoom(R);
 				boolean savemobs=false;
 				boolean saveitems=false;
@@ -477,7 +477,7 @@ public class Merge extends StdCommand
 				if(saveitems) CMLib.database().DBUpdateItems(R);
 				if(savemobs) CMLib.database().DBUpdateMOBs(R);
 				if(mob.session()!=null)	mob.session().rawPrint(".");
-				R.getArea().setAreaFlags(oldFlags);
+				R.getArea().setAreaState(oldFlags);
 	    	}
 		}
 
@@ -486,8 +486,8 @@ public class Merge extends StdCommand
 		for(int i=0;i<placesToDo.size();i++)
         {
             A=((Room)placesToDo.elementAt(i)).getArea();
-            if((A!=null)&&(A.getAreaFlags()>Area.FLAG_ACTIVE))
-                A.setAreaFlags(Area.FLAG_ACTIVE);
+            if((A!=null)&&(A.getAreaState()>Area.STATE_ACTIVE))
+                A.setAreaState(Area.STATE_ACTIVE);
         }
 		return false;
 	}

@@ -1496,8 +1496,8 @@ public class CMMap extends StdLibrary implements WorldMap
     }
     public void resetArea(Area area)
     {
-        int oldFlag=area.getAreaFlags();
-        area.setAreaFlags(Area.FLAG_FROZEN);
+        int oldFlag=area.getAreaState();
+        area.setAreaState(Area.STATE_FROZEN);
         DVector playersHere=getAllPlayersHere(area,true);
         for(Enumeration r=area.getProperMap();r.hasMoreElements();)
             resetRoom((Room)r.nextElement());
@@ -1508,7 +1508,7 @@ public class CMMap extends StdLibrary implements WorldMap
             Room R=getRoom((String)playersHere.elementAt(p,2));
             if(R!=null) R.bringMobHere(M,false);
         }
-        area.setAreaFlags(oldFlag);
+        area.setAreaState(oldFlag);
     }
 
 	public boolean hasASky(Room room)

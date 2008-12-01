@@ -687,7 +687,7 @@ public class MUD extends Thread implements MudHost
             {
                 WorldMap map=((WorldMap)e.nextElement());
     			for(Enumeration a=map.areas();a.hasMoreElements();)
-                    ((Area)a.nextElement()).setAreaFlags(Area.FLAG_STOPPED);
+                    ((Area)a.nextElement()).setAreaState(Area.STATE_STOPPED);
             }
             for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_MAP);e.hasMoreElements();)
             {
@@ -723,7 +723,7 @@ public class MUD extends Thread implements MudHost
             {
                 WorldMap map=((WorldMap)e.nextElement());
     			for(Enumeration a=map.areas();a.hasMoreElements();)
-    				((Area)a.nextElement()).setAreaFlags(Area.FLAG_STOPPED);
+    				((Area)a.nextElement()).setAreaState(Area.STATE_STOPPED);
             }
 			int roomCounter=0;
 			Room R=null;

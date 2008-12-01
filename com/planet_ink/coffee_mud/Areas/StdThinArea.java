@@ -43,6 +43,15 @@ public class StdThinArea extends StdArea
     	if(R!=null) R.setExpirationDate(WorldMap.ROOM_EXPIRATION_MILLIS);
     	super.addProperRoom(R);
     }
+	public Room getProperRoom(String roomID)
+	{
+    	if(!isRoom(roomID)) return null;
+    	Room R=super.getRoom(roomID);
+    	if(((R==null)||(R.amDestroyed()))&&(roomID!=null))
+    		return null;
+    	return R;
+	}
+	
     public Room getRoom(String roomID)
     {
     	if(!isRoom(roomID)) return null;

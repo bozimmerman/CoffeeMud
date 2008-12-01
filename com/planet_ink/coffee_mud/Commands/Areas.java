@@ -56,12 +56,12 @@ public class Areas extends StdCommand
             {
                 String name=(!CMLib.flags().isHidden(A))?" "+A.name():"("+A.name()+")";
                 if(sysop)
-                switch(A.getAreaFlags())
+                switch(A.getAreaState())
                 {
-                case Area.FLAG_ACTIVE: name="^w"+name+"^?";break;
-                case Area.FLAG_PASSIVE: name="^W"+name+"^?"; break;
-                case Area.FLAG_FROZEN: name="^b"+name+"^?"; break;
-                case Area.FLAG_STOPPED: name="^r"+name+"^?"; break;
+                case Area.STATE_ACTIVE: name="^w"+name+"^?";break;
+                case Area.STATE_PASSIVE: name="^W"+name+"^?"; break;
+                case Area.STATE_FROZEN: name="^b"+name+"^?"; break;
+                case Area.STATE_STOPPED: name="^r"+name+"^?"; break;
                 }
                 if(expression!=null)
                 {

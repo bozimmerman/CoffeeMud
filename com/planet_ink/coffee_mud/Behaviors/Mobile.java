@@ -183,7 +183,7 @@ public class Mobile extends ActiveTicker
 			if(room==null) return true;
             
             if((room.getArea()!=null)
-            &&(room.getArea().getAreaFlags()>=Area.FLAG_PASSIVE))
+            &&(room.getArea().getAreaState()>=Area.STATE_PASSIVE))
                 return true;
             
 			for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)

@@ -1037,8 +1037,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 	{
 		StringBuffer buf=new StringBuffer("");
 		if(area==null) return buf;
-		int oldFlag=area.getAreaFlags();
-		area.setAreaFlags(Area.FLAG_FROZEN);
+		int oldFlag=area.getAreaState();
+		area.setAreaState(Area.STATE_FROZEN);
 		buf.append("<AREA>");
 		buf.append(CMLib.xml().convertXMLtoTag("ACLAS",area.ID()));
 		buf.append(CMLib.xml().convertXMLtoTag("ANAME",area.Name()));
@@ -1072,7 +1072,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		}
 		fillFileSet(area,files);
 		buf.append("</AREA>");
-        area.setAreaFlags(oldFlag);
+        area.setAreaState(oldFlag);
 		return buf;
 	}
 

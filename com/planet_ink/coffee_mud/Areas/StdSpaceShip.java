@@ -117,7 +117,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	protected String description="";
 	protected String miscText="";
 	protected Vector myRooms=new Vector();
-	protected int flag=Area.FLAG_ACTIVE;
+	protected int flag=Area.STATE_ACTIVE;
 	protected long tickStatus=Tickable.STATUS_NOT;
 	protected String author=""; // will be used for owner, I guess.
 	public void setAuthorID(String authorID){author=authorID;}
@@ -183,13 +183,13 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public String getArchivePath(){return "";}
 	public void setArchivePath(String pathFile){}
 	
-    public void setAreaFlags(int flagBits)
+    public void setAreaState(int newState)
     {
-        if((flagBits==0)&&(!CMLib.threads().isTicking(this,Tickable.TICKID_AREA)))
+        if((newState==0)&&(!CMLib.threads().isTicking(this,Tickable.TICKID_AREA)))
             CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
-        flag=flagBits;
+        flag=newState;
     }
-    public int getAreaFlags(){return flag;}
+    public int getAreaState(){return flag;}
 	public boolean amISubOp(String username){return false;}
 	public String getSubOpList(){return "";}
 	public void setSubOpList(String list){}
@@ -300,7 +300,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
                 return false;
         }
         
-		if((flag>=Area.FLAG_FROZEN)||(!CMLib.flags().allowsMovement(this)))
+		if((flag>=Area.STATE_FROZEN)||(!CMLib.flags().allowsMovement(this)))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
@@ -454,7 +454,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 	public long getTickStatus(){ return tickStatus;}
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(flag>=Area.FLAG_STOPPED) return false;
+		if(flag>=Area.STATE_STOPPED) return false;
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_AREA)
 		{

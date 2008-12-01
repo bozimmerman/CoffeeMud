@@ -49,7 +49,7 @@ public class StdArea implements Area
 	protected long tickStatus=Tickable.STATUS_NOT;
 	protected long expirationDate=0;
     protected long lastPlayerTime=System.currentTimeMillis();
-    protected int flag=Area.FLAG_ACTIVE;
+    protected int flag=Area.STATE_ACTIVE;
 	protected RoomnumberSet properRoomIDSet=null;
 	protected RoomnumberSet metroRoomIDSet=null;
 
@@ -282,13 +282,13 @@ public class StdArea implements Area
     public String rawImage(){return imageName;}
 	public void setImage(String newImage){imageName=newImage;}
 
-    public void setAreaFlags(int flagBits)
+    public void setAreaState(int newState)
     {
-        if((flagBits==0)&&(!CMLib.threads().isTicking(this,Tickable.TICKID_AREA)))
+        if((newState==0)&&(!CMLib.threads().isTicking(this,Tickable.TICKID_AREA)))
             CMLib.threads().startTickDown(this,Tickable.TICKID_AREA,1);
-        flag=flagBits;
+        flag=newState;
     }
-    public int getAreaFlags(){return flag;}
+    public int getAreaState(){return flag;}
 
 	public boolean amISubOp(String username)
 	{
@@ -580,13 +580,13 @@ public class StdArea implements Area
         if(!msg.source().isMonster())
         {
             lastPlayerTime=System.currentTimeMillis();
-            if((flag==Area.FLAG_PASSIVE)
+            if((flag==Area.STATE_PASSIVE)
             &&((msg.sourceMinor()==CMMsg.TYP_ENTER)
             ||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
             ||(msg.sourceMinor()==CMMsg.TYP_FLEE)))
-                flag=Area.FLAG_ACTIVE;
+                flag=Area.STATE_ACTIVE;
         }
-		if((flag>=Area.FLAG_FROZEN)||(!CMLib.flags().allowsMovement(this)))
+		if((flag>=Area.STATE_FROZEN)||(!CMLib.flags().allowsMovement(this)))
 		{
 			if((msg.sourceMinor()==CMMsg.TYP_ENTER)
 			||(msg.sourceMinor()==CMMsg.TYP_LEAVE)
@@ -708,18 +708,18 @@ public class StdArea implements Area
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-		if(flag>=Area.FLAG_STOPPED)
+		if(flag>=Area.STATE_STOPPED)
             return false;
 		tickStatus=Tickable.STATUS_START;
 		if(tickID==Tickable.TICKID_AREA)
 		{
-            if((flag<=Area.FLAG_ACTIVE)
+            if((flag<=Area.STATE_ACTIVE)
             &&((System.currentTimeMillis()-lastPlayerTime)>Area.TIME_PASSIVE_LAPSE))
             {
                 if(CMSecurity.isDisabled("PASSIVEAREAS"))
                     lastPlayerTime=System.currentTimeMillis();
                 else
-                    flag=Area.FLAG_PASSIVE;
+                    flag=Area.STATE_PASSIVE;
             }
 			tickStatus=Tickable.STATUS_ALIVE;
 			getClimateObj().tick(this,tickID);
