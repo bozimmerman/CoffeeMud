@@ -1400,8 +1400,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				Ability A=CMClass.getAbility("Prop_AstralSpirit");
 				if((A!=null)&&(mob.fetchAbility(A.ID())==null))
 				{
+					mob.tell("^HYou are now a spirit.^N");
 					if(whatToDo.startsWith("ASTRAL_R"))
+					{
 						A.setMiscText("SELF-RES");
+						mob.tell("^HFind your corpse and use ENTER [body name] to re-enter your body.^N");
+					}
+					else
+						mob.tell("^HFind your corpse have someone resurrect it.^N");
 					mob.addAbility(A);
 					A.autoInvocation(mob);
 				}
