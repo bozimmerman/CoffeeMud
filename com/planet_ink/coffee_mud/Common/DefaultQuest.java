@@ -3436,6 +3436,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
             Quest Q=CMLib.quests().fetchQuest(q);
             if((!Q.name().equals(name))
             &&(Q.running())
+            &&(Q.duration()!=0)
             &&(Q.runLevel()<=runLevel()))
             { allowedToRun=false; break;}
         }
