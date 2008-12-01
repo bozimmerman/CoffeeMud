@@ -97,7 +97,7 @@ public class GenWand extends StdWand
     public String[] getStatCodes()
     {
         if(codes==null)
-            codes=CMProps.getStatCodesList(CMObjectBuilder.GENITEMCODES,this);
+            codes=CMProps.getStatCodesList(GenericBuilder.GENITEMCODES,this);
         return codes; 
     }
 	public boolean sameAs(Environmental E)

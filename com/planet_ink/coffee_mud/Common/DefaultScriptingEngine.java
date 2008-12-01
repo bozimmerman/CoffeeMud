@@ -1588,11 +1588,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
         if(!found)
         if(E instanceof MOB)
         {
-            for(int i=0;i<CMObjectBuilder.GENMOBCODES.length;i++)
+            for(int i=0;i<GenericBuilder.GENMOBCODES.length;i++)
             {
-                if(CMObjectBuilder.GENMOBCODES[i].equalsIgnoreCase(arg2))
+                if(GenericBuilder.GENMOBCODES[i].equalsIgnoreCase(arg2))
                 {
-                    val=CMLib.coffeeMaker().getGenMobStat((MOB)E,CMObjectBuilder.GENMOBCODES[i]);
+                    val=CMLib.coffeeMaker().getGenMobStat((MOB)E,GenericBuilder.GENMOBCODES[i]);
                     found=true; break;
                 }
             }
@@ -1651,11 +1651,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
         else
         if(E instanceof Item)
         {
-            for(int i=0;i<CMObjectBuilder.GENITEMCODES.length;i++)
+            for(int i=0;i<GenericBuilder.GENITEMCODES.length;i++)
             {
-                if(CMObjectBuilder.GENITEMCODES[i].equalsIgnoreCase(arg2))
+                if(GenericBuilder.GENITEMCODES[i].equalsIgnoreCase(arg2))
                 {
-                    val=CMLib.coffeeMaker().getGenItemStat((Item)E,CMObjectBuilder.GENITEMCODES[i]);
+                    val=CMLib.coffeeMaker().getGenItemStat((Item)E,GenericBuilder.GENITEMCODES[i]);
                     found=true; break;
                 }
             }
@@ -6569,13 +6569,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     if(!found)
                     if(newTarget instanceof MOB)
                     {
-                        for(int i=0;i<CMObjectBuilder.GENMOBCODES.length;i++)
+                        for(int i=0;i<GenericBuilder.GENMOBCODES.length;i++)
                         {
-                            if(CMObjectBuilder.GENMOBCODES[i].equalsIgnoreCase(arg2))
+                            if(GenericBuilder.GENMOBCODES[i].equalsIgnoreCase(arg2))
                             {
-                                if(arg3.equals("++")) arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenMobStat((MOB)newTarget,CMObjectBuilder.GENMOBCODES[i]))+1);
-                                if(arg3.equals("--")) arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenMobStat((MOB)newTarget,CMObjectBuilder.GENMOBCODES[i]))-1);
-                                CMLib.coffeeMaker().setGenMobStat((MOB)newTarget,CMObjectBuilder.GENMOBCODES[i],arg3);
+                                if(arg3.equals("++")) arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenMobStat((MOB)newTarget,GenericBuilder.GENMOBCODES[i]))+1);
+                                if(arg3.equals("--")) arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenMobStat((MOB)newTarget,GenericBuilder.GENMOBCODES[i]))-1);
+                                CMLib.coffeeMaker().setGenMobStat((MOB)newTarget,GenericBuilder.GENMOBCODES[i],arg3);
                                 found=true;
                                 break;
                             }
@@ -6657,13 +6657,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     else
                     if(newTarget instanceof Item)
                     {
-                        for(int i=0;i<CMObjectBuilder.GENITEMCODES.length;i++)
+                        for(int i=0;i<GenericBuilder.GENITEMCODES.length;i++)
                         {
-                            if(CMObjectBuilder.GENITEMCODES[i].equalsIgnoreCase(arg2))
+                            if(GenericBuilder.GENITEMCODES[i].equalsIgnoreCase(arg2))
                             {
-                                if(arg3.equals("++")) arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenItemStat((Item)newTarget,CMObjectBuilder.GENITEMCODES[i]))+1);
-                                if(arg3.equals("--")) arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenItemStat((Item)newTarget,CMObjectBuilder.GENITEMCODES[i]))-1);
-                                CMLib.coffeeMaker().setGenItemStat((Item)newTarget,CMObjectBuilder.GENITEMCODES[i],arg3);
+                                if(arg3.equals("++")) arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenItemStat((Item)newTarget,GenericBuilder.GENITEMCODES[i]))+1);
+                                if(arg3.equals("--")) arg3=""+(CMath.s_int(CMLib.coffeeMaker().getGenItemStat((Item)newTarget,GenericBuilder.GENITEMCODES[i]))-1);
+                                CMLib.coffeeMaker().setGenItemStat((Item)newTarget,GenericBuilder.GENITEMCODES[i],arg3);
                                 found=true;
                                 break;
                             }

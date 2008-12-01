@@ -31,7 +31,7 @@ import java.util.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public interface CMObjectBuilder extends CMLibrary
+public interface GenericBuilder extends CMLibrary
 {
     public final static String[] GENITEMCODES={
             "CLASS","USES","LEVEL","ABILITY","NAME",

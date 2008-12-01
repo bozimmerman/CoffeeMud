@@ -123,7 +123,7 @@ public class GenArmor extends StdArmor
 	{
 		if(codes!=null) return codes;
         String[] MYCODES=CMProps.getStatCodesList(GenArmor.MYCODES,this);
-		String[] superCodes=CMObjectBuilder.GENITEMCODES;
+		String[] superCodes=GenericBuilder.GENITEMCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)

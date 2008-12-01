@@ -101,7 +101,7 @@ public class GenRideable extends StdRideable
 	{
 		if(codes!=null) return codes;
         String[] MYCODES=CMProps.getStatCodesList(GenRideable.MYCODES,this);
-		String[] superCodes=CMObjectBuilder.GENMOBCODES;
+		String[] superCodes=GenericBuilder.GENMOBCODES;
 		codes=new String[superCodes.length+MYCODES.length];
 		int i=0;
 		for(;i<superCodes.length;i++)

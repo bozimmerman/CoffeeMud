@@ -165,7 +165,7 @@ public class CMLib
     public static SlaveryLibrary slavery(){return (SlaveryLibrary)l().libraries[LIBRARY_SLAVERY];}
     public static JournalsLibrary journals(){return (JournalsLibrary)l().libraries[LIBRARY_JOURNALS];}
     public static TelnetFilter coffeeFilter(){return (TelnetFilter)l().libraries[LIBRARY_TELNET];}
-    public static CMObjectBuilder coffeeMaker(){return (CMObjectBuilder)l().libraries[LIBRARY_OBJBUILDERS];}
+    public static GenericBuilder coffeeMaker(){return (GenericBuilder)l().libraries[LIBRARY_OBJBUILDERS];}
     public static SessionsList sessions(){return (SessionsList)l().libraries[LIBRARY_SESSIONS];}
     public static CMFlagLibrary flags(){return (CMFlagLibrary)l().libraries[LIBRARY_FLAGS];}
     public static XMLLibrary xml(){return (XMLLibrary)l().libraries[LIBRARY_XML];}
@@ -215,7 +215,7 @@ public class CMLib
         if(O instanceof SlaveryLibrary) return LIBRARY_SLAVERY;
         if(O instanceof JournalsLibrary) return LIBRARY_JOURNALS;
         if(O instanceof TelnetFilter) return LIBRARY_TELNET;
-        if(O instanceof CMObjectBuilder) return LIBRARY_OBJBUILDERS;
+        if(O instanceof GenericBuilder) return LIBRARY_OBJBUILDERS;
         if(O instanceof SessionsList) return LIBRARY_SESSIONS;
         if(O instanceof CMFlagLibrary) return LIBRARY_FLAGS;
         if(O instanceof XMLLibrary) return LIBRARY_XML;

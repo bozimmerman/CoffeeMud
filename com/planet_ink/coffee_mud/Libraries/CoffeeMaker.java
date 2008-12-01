@@ -35,7 +35,7 @@ import com.planet_ink.coffee_mud.Libraries.interfaces.*;
    limitations under the License.
 */
 @SuppressWarnings("unchecked")
-public class CoffeeMaker extends StdLibrary implements CMObjectBuilder
+public class CoffeeMaker extends StdLibrary implements GenericBuilder
 {
     public String ID(){return "CoffeeMaker";}
     public Hashtable GENMOBCODESHASH=new Hashtable();
