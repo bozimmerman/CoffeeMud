@@ -58,6 +58,12 @@ public interface LandTitle extends Environmental
      * @param owner the name of the owner of the property
      */
 	public void setLandOwner(String owner);
+	
+    /**
+     * Get the actual clan or mob owner of the property, or null if it can not.
+     * @return the owner of the property
+     */
+	public CMObject landOwnerObject();
     /**
      * Get the roomID or the Area name of the property for sale
      * @return the roomID or the Area  name of the property for sale

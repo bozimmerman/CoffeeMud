@@ -102,6 +102,17 @@ public class StdTitle extends StdItem implements LandTitle
 		A.updateTitle();
 	}
 
+	public CMObject landOwnerObject()
+	{
+		LandTitle A=fetchALandTitle();
+		if(A==null)	return null;
+		String owner=A.landOwner();
+		if(owner.length()==0) return null;
+		Clan C=CMLib.clans().getClan(owner);
+		if(C!=null) return C;
+		return CMLib.players().getLoadPlayer(owner);
+	}
+	
 	public String landOwner()
 	{
 		LandTitle A=fetchALandTitle();

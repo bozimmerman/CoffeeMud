@@ -77,6 +77,15 @@ public class Prop_AreaForSale extends Property implements LandTitle
 		return text().substring(0,text().indexOf("/"));
 	}
 
+	public CMObject landOwnerObject()
+	{
+		String owner=landOwner();
+		if(owner.length()==0) return null;
+		Clan C=CMLib.clans().getClan(owner);
+		if(C!=null) return C;
+		return CMLib.players().getLoadPlayer(owner);
+	}
+	
 	public void setLandOwner(String owner)
 	{   
 	    setMiscText(owner+"/"

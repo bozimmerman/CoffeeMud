@@ -58,7 +58,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 			<DESCRIPTION>
 			<!--TODO: Fill this in -->
 			</DESCRIPTION>
-			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<EXIT class="LockedDoor" text="$areaname cellkey" />
 			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner" />
 		</ROOM>
 		<ROOM class="CaveRoom">
@@ -66,7 +66,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 			<DESCRIPTION>
 			<!--TODO: Fill this in -->
 			</DESCRIPTION>
-			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<EXIT class="LockedDoor" text="$areaname cellkey" />
 			<MOB select="2?5" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner" />
 		</ROOM>
 		<ROOM class="CaveRoom">
@@ -74,7 +74,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 			<DESCRIPTION>
 			<!--TODO: Fill this in -->
 			</DESCRIPTION>
-			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<EXIT class="LockedDoor" text="$areaname cellkey" />
 			<MOB select="1" include="dungeon_prisoner" />
 		</ROOM>
 		<ROOM class="StoneRoom" condition="_luxuryCell&lt;2" define="_luxuryCell+=1">
@@ -82,7 +82,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 			<DESCRIPTION>
 			<!--TODO: Fill this in -->
 			</DESCRIPTION>
-			<EXIT class="LockedDoor" text="$areaname_cellkey" />
+			<EXIT class="LockedDoor" text="$areaname luxurykey" />
 		</ROOM>
 		<ROOM class="CaveRoom" condition="_torturechamber&lt;1" define="_torturechamber+=1">
 			<TITLE>a torture chamber</TITLE>
@@ -568,7 +568,8 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 				<BEHAVIOR class="Scavenger" parms="" />
 			</BEHAVIOR>
 			<ITEM select="all">
-				<ITEM class="StdKey" LEVEL="1" text="$areaname_cellkey"/>
+				<ITEM class="StdKey" LEVEL="1" text="$areaname cellkey" condition="1?10=1 or $_maincellkey&lt;1" define="_maincellkey+=1"/>
+				<ITEM class="StdKey" LEVEL="1" text="$areaname luxurykey" condition="1?10=1"/>
 				<ITEM class="GenShield" LEVEL="$mob_level" condition="'guard' in $mob_name" material="OAK" />
 				<ITEM select="any-1?4">
 					<ITEM class="GenArmor" LEVEL="$mob_level">

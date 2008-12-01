@@ -639,6 +639,16 @@ public class StdBanker extends StdShopKeeper implements Banker
 								CMParms.addToVector(V2,V);
 						}
 					}
+					for(int v=V.size()-1;v>=0;v--)
+						if(V.elementAt(v) instanceof LandTitle)
+						{
+							LandTitle L=(LandTitle)V.elementAt(v);
+							if(L.landOwnerObject()==null)
+							{
+								delDepositInventory(mob,(Item)L);
+								V.removeElement(L);
+							}
+						}
 
 					StringBuffer str=new StringBuffer("");
 					str.append("\n\rAccount balance at '"+bankChain()+"'.\n\r");
