@@ -188,6 +188,7 @@ public class CoffeeTableRows extends StdWebMacro
                         V.removeElementAt(v);
                     }
                 }
+                if(set.size()==0){ set.addAll(V); V.clear();}
                 for(int s=0;s<set.size();s++)
                 {
                     CoffeeTableRow T=(CoffeeTableRow)set.elementAt(s);
