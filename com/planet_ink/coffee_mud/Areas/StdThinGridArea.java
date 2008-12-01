@@ -52,11 +52,12 @@ public class StdThinGridArea extends StdGridArea
     	{
     		if(roomID.toUpperCase().startsWith(Name().toUpperCase()+"#"))
 	    		roomID=Name()+roomID.substring(Name().length()); // for case sensitive situations
-			Vector V=CMLib.database().DBReadRoomData(roomID,false);
-			if(V.size()>0)
+			R=CMLib.database().DBReadRoomObject(roomID,false);
+			if(R!=null)
 			{
-				R=(Room)V.firstElement();
-				while(V.size()>1) V.removeElementAt(1);
+				R.setArea(this);
+				addProperRoom(R);
+				Vector V=CMParms.makeVector(R);
 				CMLib.database().DBReadRoomExits(roomID,V,false);
 				CMLib.database().DBReadContent(R,V);
 				fillInAreaRoom(R);

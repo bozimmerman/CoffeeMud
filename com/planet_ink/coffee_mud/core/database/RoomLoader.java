@@ -157,6 +157,54 @@ public class RoomLoader
     { 
     	return DBReadRoomData(singleRoomIDtoLoad,null,reportStatus,null,null);
     }
+    
+    public Room DBReadRoomObject(String roomIDtoLoad, boolean reportStatus)
+    {
+        DBConnection D=null;
+        try
+        {
+            D=DB.DBFetch();
+            if(reportStatus)
+                CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Counting Rooms");
+            ResultSet R=D.query("SELECT * FROM CMROOM WHERE CMROID='"+roomIDtoLoad+"'");
+            recordCount=DB.getRecordCount(D,R);
+            updateBreak=CMath.s_int("1"+zeroes.substring(0,(""+(recordCount/100)).length()-1));
+            String roomID=null;
+            if(R.next())
+            {
+                currentRecordPos=R.getRow();
+                roomID=DBConnections.getRes(R,"CMROID");
+                String localeID=DBConnections.getRes(R,"CMLOID");
+                //String areaName=DBConnections.getRes(R,"CMAREA");
+                Room newRoom=CMClass.getLocale(localeID);
+                if(newRoom==null)
+                    Log.errOut("Room","Couldn't load room '"+roomID+"', localeID '"+localeID+"'.");
+                else
+                {
+                    newRoom.setRoomID(roomID);
+                    newRoom.setDisplayText(DBConnections.getRes(R,"CMDESC1"));
+                    if(CMProps.getBoolVar(CMProps.SYSTEMB_ROOMDNOCACHE))
+                        newRoom.setDescription("");
+                    else
+                        newRoom.setDescription(DBConnections.getRes(R,"CMDESC2"));
+                    newRoom.setMiscText(DBConnections.getRes(R,"CMROTX"));
+                }
+                if(((currentRecordPos%updateBreak)==0)&&(reportStatus))
+                    CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Loading Rooms ("+currentRecordPos+" of "+recordCount+")");
+                return newRoom;
+            }
+        }
+        catch(SQLException sqle)
+        {
+            Log.errOut("Room",sqle);
+        }
+        finally
+        {
+	        if(D!=null) DB.DBDone(D);
+        }
+        return null;
+    }
+    
     public Vector DBReadRoomData(String singleRoomIDtoLoad,
 								 RoomnumberSet roomsToLoad,
 								 boolean reportStatus, 

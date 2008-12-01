@@ -139,6 +139,9 @@ public class DBInterface implements DatabaseEngine
     public void DBReadAllRooms(RoomnumberSet roomsToRead)
     { RoomLoader.DBReadAllRooms(roomsToRead);}
     
+    public Room DBReadRoomObject(String roomIDtoLoad, boolean reportStatus)
+    { return RoomLoader.DBReadRoomObject(roomIDtoLoad, reportStatus);}
+    
     public void DBReadRoomExits(String roomID, Vector allRooms, boolean reportStatus)
     {RoomLoader.DBReadRoomExits(roomID,allRooms,reportStatus);}
     
