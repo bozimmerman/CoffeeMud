@@ -709,8 +709,10 @@ public interface Area extends Environmental, Economics
 	
 	/**	State flag meaning this area is a THIN type area.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#flags() */
 	public final static int FLAG_THIN=1;
-	/**	State flag meaning this area is a INSTANCE type area.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#flags() */
-	public final static int FLAG_INSTANCE=2;
+	/**	State flag meaning this area is a INSTANCE parent type area.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#flags() */
+	public final static int FLAG_INSTANCE_PARENT=2;
+	/**	State flag meaning this area is a INSTANCE child type area.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#flags() */
+	public final static int FLAG_INSTANCE_CHILD=3;
 	
 	/**	Index into area IStats for population.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getAreaIStats() */
 	public final static int AREASTAT_POPULATION=0;
