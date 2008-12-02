@@ -2661,7 +2661,7 @@ public class StdMOB implements MOB
 						if((envStats().rejuv()<0)||(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN)))
 						{
 							tickStatus=Tickable.STATUS_REBIRTH;
-							cloneFix(CMClass.getMOB(ID()));
+							cloneFix(CMClass.staticMOB(ID()));
 							bringToLife(CMLib.map().getStartRoom(this),true);
 							location().showOthers(this,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 						}

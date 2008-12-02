@@ -306,6 +306,9 @@ public class CMClass extends ClassLoader
         return thisItem;
     }
 
+    public static MOB staticMOB(String mobID)
+    { return (MOB)CMClass.getGlobal(c().MOBs,mobID);}
+    
     protected static MOB sampleMOB=null;
 	public static MOB sampleMOB()
 	{
