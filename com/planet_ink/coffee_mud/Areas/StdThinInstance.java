@@ -60,10 +60,10 @@ public class StdThinInstance extends StdThinArea
 	
 	protected Area getParentArea()
 	{
-		int x=Name().lastIndexOf("_");
+		int x=Name().indexOf("_");
 		if(x<0) return null;
-		if(!CMath.isNumber(Name().substring(x+1))) return null;
-		Area parentA = CMLib.map().getArea(Name().substring(0,x));
+		if(!CMath.isNumber(Name().substring(0,x))) return null;
+		Area parentA = CMLib.map().getArea(Name().substring(x+1));
 		if((parentA==null)
 		||(!CMath.bset(parentA.flags(),Area.FLAG_INSTANCE_PARENT))
 		||(CMath.bset(parentA.flags(),Area.FLAG_INSTANCE_CHILD)))
@@ -235,7 +235,7 @@ public class StdThinInstance extends StdThinArea
 	        			}
         			}
         		}
-        		Area redirectA = null;
+        		StdThinInstance redirectA = null;
         		if(myDex<0)
         		{
         			StdThinInstance newA=(StdThinInstance)this.copyOf();
@@ -246,15 +246,15 @@ public class StdThinInstance extends StdThinArea
         			newA.setName((++instanceCounter)+"_"+Name());
         			newA.flags |= Area.FLAG_INSTANCE_CHILD;
         			for(Enumeration e=getProperRoomnumbers().getRoomIDs();e.hasMoreElements();)
-        				newA.addProperRoomnumber(convertToMyArea((String)e.nextElement()));
+        				newA.addProperRoomnumber(newA.convertToMyArea((String)e.nextElement()));
         			redirectA=newA;
         			CMLib.map().addArea(newA);
         			newA.setAreaState(Area.STATE_ACTIVE); // starts ticking
         			children.addElement(CMParms.makeVector(msg.source()),redirectA);
         		}
         		else
-        			redirectA=(Area)children.elementAt(myDex,2);
-        		Room R=redirectA.getRoom(convertToMyArea(CMLib.map().getExtendedRoomID((Room)msg.target())));
+        			redirectA=(StdThinInstance)children.elementAt(myDex,2);
+        		Room R=redirectA.getRoom(redirectA.convertToMyArea(CMLib.map().getExtendedRoomID((Room)msg.target())));
         		if(R!=null) msg.setTarget(R);
         	}
         }

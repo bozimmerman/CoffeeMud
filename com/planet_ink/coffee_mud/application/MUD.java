@@ -533,11 +533,16 @@ public class MUD extends Thread implements MudHost
         else
         if((CMLib.database()!=null)&&(CMLib.database().isConnected())&&(CMLib.encoder()!=null))
         {
-            StringBuffer rejectText=Resources.getFileResource("text/offline.txt",false);
+            StringBuffer rejectText;
+            
+        	try { rejectText = Resources.getFileResource("text/offline.txt",true);
+        	} catch(java.lang.NullPointerException npe) { rejectText=new StringBuffer("");}
+        	
             PrintWriter out = new PrintWriter(sock.getOutputStream());
             out.println("\n\rOFFLINE: " + CMProps.getVar(CMProps.SYSTEM_MUDSTATUS)+"\n\r");
             out.println(rejectText);
             out.flush();
+        	
             try{Thread.sleep(1000);}catch(Exception e){}
             out.close();
             sock = null;
