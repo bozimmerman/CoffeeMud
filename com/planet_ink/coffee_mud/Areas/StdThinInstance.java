@@ -121,11 +121,7 @@ public class StdThinInstance extends StdThinArea
 							}
 						}
 						else
-						{
-							Room localDirR=CMLib.map().getRoom(dirR);
-							if(localDirR!=null)
-								R.rawDoors()[d]=localDirR;
-						}
+							R.rawDoors()[d]=dirR;
 					}
 				}
 			}
@@ -193,7 +189,7 @@ public class StdThinInstance extends StdThinArea
 			return false;
 		if(CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
 			return true;
-		
+    	setAreaState(Area.STATE_PASSIVE);
         if((msg.sourceMinor()==CMMsg.TYP_ENTER)
         &&(msg.target() instanceof Room)
         &&(CMath.bset(flags(),Area.FLAG_INSTANCE_PARENT))
@@ -201,7 +197,6 @@ public class StdThinInstance extends StdThinArea
         &&(!CMSecurity.isAllowed(msg.source(),(Room)msg.target(),"CMDAREAS"))
         &&(((msg.source().getStartRoom()==null)||(msg.source().getStartRoom().getArea()!=this))))
         {
-        	
         	synchronized(children)
         	{
         		int myDex=-1;
