@@ -250,24 +250,10 @@ public class CMath
     {
         return num|bitmask;
     }
-    public static int unsetb(int num, int bitmask)
-    {
-        if(bset(num,bitmask))
-            num-=bitmask;
-        return num;
-    }
-    public static long unsetb(long num, long bitmask)
-    {
-        if(bset(num,bitmask))
-            num-=bitmask;
-        return num;
-    }
-    public static long unsetb(long num, int bitmask)
-    {
-        if(bset(num,bitmask))
-            num-=bitmask;
-        return num;
-    }
+    public static int unsetb(int num, int bitmask) { return num & (~bitmask);}
+    public static long unsetb(long num, long bitmask) { return num & (~bitmask);}
+    public static long unsetb(long num, int bitmask) { return num & (~bitmask);}
+    
     public static boolean isSet(int number, int bitnumber)
     {
     	int mask=(int)pow(2,bitnumber);
