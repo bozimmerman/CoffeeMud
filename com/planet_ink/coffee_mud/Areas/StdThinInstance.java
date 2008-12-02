@@ -35,7 +35,7 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class StdThinInstance extends StdThinArea
 {
-	public String ID(){	return "StdThinArea";}
+	public String ID(){	return "StdThinInstance";}
 	private long flags=Area.FLAG_THIN|Area.FLAG_INSTANCE_PARENT;
 	public long flags(){return flags;}
 	
