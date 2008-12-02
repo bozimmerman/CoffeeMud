@@ -1405,9 +1405,11 @@ public class StdRoom implements Room
 		return doors;
 	}
     
-    public boolean savable(){return ((roomID().length()>0)
-    							    && (getArea()!=null)
-    								&& (!CMath.bset(getArea().flags(),Area.FLAG_INSTANCE_CHILD)));}
+    public boolean savable(){
+    	return ((roomID().length()>0)
+			    &&((getArea()==null)
+					|| (!CMath.bset(getArea().flags(),Area.FLAG_INSTANCE_CHILD))));
+	}
     
 
 	public void destroy()
