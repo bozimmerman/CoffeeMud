@@ -177,7 +177,6 @@ public class StdItem implements Item
 			if((A!=null)&&(!A.canBeUninvoked())&&(!A.ID().equals("ItemRejuv")))
 				addEffect((Ability)A.copyOf());
 		}
-		CMLib.catalog().newInstance(this);
 	}
 	public CMObject copyOf()
 	{
@@ -187,6 +186,7 @@ public class StdItem implements Item
             CMClass.bumpCounter(E,CMClass.OBJECT_ITEM);
             E.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			E.cloneFix(this);
+			CMLib.catalog().newInstance(this);
 			return E;
 
 		}

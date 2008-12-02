@@ -292,6 +292,7 @@ public class StdMOB implements MOB
     public boolean amDestroyed(){return amDestroyed;}
 	protected void cloneFix(MOB E)
 	{
+		if(E==null) return;
 		affects=new Vector(1);
 		baseEnvStats=(EnvStats)E.baseEnvStats().copyOf();
 		envStats=(EnvStats)E.envStats().copyOf();
@@ -357,7 +358,6 @@ public class StdMOB implements MOB
             if(S!=null)
                 addScript((ScriptingEngine)S.copyOf());
         }
-		CMLib.catalog().newInstance(this);
 	}
 
 	public CMObject copyOf()
@@ -368,8 +368,8 @@ public class StdMOB implements MOB
             CMClass.bumpCounter(E,CMClass.OBJECT_MOB);
             E.xtraValues=(xtraValues==null)?null:(String[])xtraValues.clone();
 			E.cloneFix(this);
+			CMLib.catalog().newInstance(this);
 			return E;
-
 		}
 		catch(CloneNotSupportedException e)
 		{
@@ -2661,6 +2661,7 @@ public class StdMOB implements MOB
 						if((envStats().rejuv()<0)||(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN)))
 						{
 							tickStatus=Tickable.STATUS_REBIRTH;
+							cloneFix(CMClass.getMOB(ID()));
 							bringToLife(CMLib.map().getStartRoom(this),true);
 							location().showOthers(this,null,CMMsg.MSG_OK_ACTION,"<S-NAME> appears!");
 						}
