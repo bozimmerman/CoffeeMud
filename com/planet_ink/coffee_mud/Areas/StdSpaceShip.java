@@ -109,7 +109,7 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
         amDestroyed=true;
     }
     public boolean amDestroyed(){return amDestroyed;}
-    public boolean savable(){return !amDestroyed;}
+    public boolean savable(){return ((!amDestroyed) && (!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD)));}
 	public String ID(){	return "StdSpaceShip";}
 	protected String name="a space ship";
 	protected Room savedDock=null;

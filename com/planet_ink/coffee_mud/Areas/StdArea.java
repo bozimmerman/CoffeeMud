@@ -220,7 +220,7 @@ public class StdArea implements Area
         amDestroyed=true;
     }
     public boolean amDestroyed(){return amDestroyed;}
-    public boolean savable(){return !amDestroyed;}
+    public boolean savable(){return ((!amDestroyed) && (!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD)));}
 
 	public String name()
 	{

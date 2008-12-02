@@ -1,22 +1,23 @@
 package com.planet_ink.coffee_mud.Areas;
 
-import java.util.Enumeration;
-import java.util.Vector;
-
 import com.planet_ink.coffee_mud.Areas.interfaces.Area;
 import com.planet_ink.coffee_mud.Areas.interfaces.Area.CompleteRoomEnumerator;
 import com.planet_ink.coffee_mud.Common.interfaces.CMMsg;
 import com.planet_ink.coffee_mud.Libraries.interfaces.WorldMap;
 import com.planet_ink.coffee_mud.Locales.interfaces.GridLocale;
 import com.planet_ink.coffee_mud.Locales.interfaces.Room;
+import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.CMLib;
 import com.planet_ink.coffee_mud.core.CMParms;
+import com.planet_ink.coffee_mud.core.CMSecurity;
 import com.planet_ink.coffee_mud.core.CMath;
 import com.planet_ink.coffee_mud.core.DVector;
 import com.planet_ink.coffee_mud.core.Directions;
 import com.planet_ink.coffee_mud.core.interfaces.Environmental;
 import com.planet_ink.coffee_mud.core.interfaces.MsgListener;
+
+import java.util.*;
 
 public class StdThinInstance extends StdThinArea
 {
@@ -24,7 +25,8 @@ public class StdThinInstance extends StdThinArea
 	private long flags=Area.FLAG_THIN|Area.FLAG_INSTANCE_PARENT;
 	public long flags(){return flags;}
 	
-	public Vector children = null;
+	public Vector children = new Vector(1);
+	private volatile int instanceCounter=0;
 	
 	protected String getStrippedRoomID(String roomID)
 	{
@@ -127,8 +129,10 @@ public class StdThinInstance extends StdThinArea
         if((msg.sourceMinor()==CMMsg.TYP_ENTER)
         &&(msg.target() instanceof Room)
         &&(CMath.bset(flags(),Area.FLAG_INSTANCE_PARENT))
-        &&(isRoom((Room)msg.target())))
+        &&(isRoom((Room)msg.target()))
+        &&(!CMSecurity.isAllowed(msg.source(),(Room)msg.target(),"CMDAREAS")))
         {
+        	HashSet grp = msg.source().getGroupMembers(new HashSet());
         	
         }
         return true;
