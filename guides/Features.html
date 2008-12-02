@@ -1,207 +1,180 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"><head>
-    <meta name="generator" content="HTML Tidy, see www.w3.org" />
-
-    
-    <title>CoffeeMud 5.5 Features</title><link rel="StyleSheet" href="style.css" type="text/css" media="screen" /><!-- Modified by Josh Mueller, 2006-5-5, add index, and fix spelling errors --></head>
-
-
-  <body>
-    <center>
-      <table border="1" bordercolor="gray" cellpadding="10" cellspacing="0" width="90%">
-        <tbody>
-          <tr>
-            <td colspan="2" align="left" bgcolor="#dfdfdf" width="100%">
-              <h1>CoffeeMud 5.5 Features</h1>
-            </td>
-          </tr>
-
-          <tr>
-            <td align="left" valign="top" width="20%">
-              <ul>
-                <li><a href="#general">General Features</a></li>
-
-                <li><a href="#areas">Areas and Rooms</a></li>
-
-                <li><a href="#player">Player and MOB features</a></li>
-
-                <li><a href="#armor">Armor, Weapon, and Item features</a></li>
-
-                <li><a href="#application">Application Information</a></li>
-              </ul>
-            </td>
-
-            <td align="left" valign="top">
-              <h2><a name="general">General Features</a></h2>
-
-              <ul>
-                <li>ANSI colour support, MSP sound support, MXP tag support, MCCP compression support</li>
-
-                <li>Stable, all original code base that's extendable through INI options, Java, and JavaScript, even at run-time</li>
-
-                <li>Built in web server for performing maintenance, administration, working on areas, and accessing information</li>
-
-                <li>Built in SMTP server for anonymous player emails, mailing lists, announcements, and sending passwords</li>
-
-                <li>Use a full blown JDBC/ODBC database, or the built in flat file database</li>
-
-                <li>On-line boards (journals) for public and private messaging</li>
-
-                <li>7 base classes, 38 subclasses, 6 player races, and over 1200 spells, prayers, songs, skills, and abilities</li>
-
-                <li>Customizable races and classes, with level based racial and class skill systems</li>
-
-                <li>Over 700 socials, with real-time addition abilities.</li>
-
-                <li>Several builder scripting possibilities, including both extended MOBPROG and Javascript</li>
-
-                <li>Abbreviate commands, items, mobs, and abilities. Reference all or some. Extendable english parsing</li>
-
-                <li>Web-based visual on-line area editing tool available, along with Web-based automated-quest designer</li>
-
-                <li>Customizable security system. Assign privileges on a player-by-player basis</li>
-
-                <li>Ability to import CoffeeMud area files, as well as those from ROM, Circle, Smaug, Icey, and others</li>
-
-                <li>Mud-wide and player-solo quest support, including automated, time-based, and event based triggering!</li>
-
-                <li>Descriptive combat system with race-based natural weapons, ranged weapons and spells, and mounted combat</li>
-
-                <li>Contagions and diseases built into the engine. Catch a cold when naked, or poison ivy in the forest</li>
-
-                <li>Player lieges and vassals, area Conquest engine, and Legal systems available, with easy to use law books</li>
-
-                <li>Player property, banking, auctioning, and postal systems available, serving players or clans or both</li>
-
-                <li>Full Deity support, with automated blessings to the faithful and curses to the wicked</li>
-
-                <li>Numerous Clan-types support, including politics, alliances, and automated membership management</li><li>Customizable Faction system with faction-based behaviors and reactions,&nbsp;automated relationships and triggers</li>
-              </ul>
-
-              <h2><a name="areas">Areas and Rooms</a></h2>
-
-              <ul>
-                <li>On-line area creation. (mobs, areas, exits and items). Never wait for a reboot to publish an area!</li>
-
-                <li>Area based climates, seasons, and weather changes that affect game play</li>
-
-                <li>Numerous terrain types, including underwater areas requiring spells to breathe</li>
-
-                <li>Water rooms requiring swimming abilities</li>
-
-                <li>Air rooms with gravity, so items and mobs can fall!</li>
-
-                <li>Pits you can fall into, and other deadly traps</li>
-
-                <li>Cliffs requiring climbing ability</li>
-
-                <li>Cardinal exit directions and many types of doors and exit types, including drawbridges, gates, panels, grates, portals,
-                ladders, curtains, etc..</li>
-
-                <li>Customizable system of crime and punishment available for each of your cities.</li>
-
-                <li>Mud wide skies and oceans!</li>
-
-                <li>Homes and property real-estate system for players and clans.</li>
-
-                <li>Customizable system of crime and punishment available for each of your cities!</li>
-
-                <li>Customizable conquest system to allow players to conquer and control your areas</li>
-              </ul>
-
-              <h2><a name="player">Player and MOB features</a></h2>
-
-              <ul>
-                <li>Wimpy
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta name="generator" content="HTML Tidy, see www.w3.org" />
+  <title>CoffeeMud 5.5 Features</title>
+  <link rel="StyleSheet" href="style.css" type="text/css" media="screen" />
+<!-- Modified by Josh Mueller, 2006-5-5, add index, and fix spelling errors -->
+</head>
+<body>
+<center>
+<table border="1" bordercolor="gray" cellpadding="10" cellspacing="0"
+ width="90%">
+  <tbody>
+    <tr>
+      <td colspan="2" align="left" bgcolor="#dfdfdf" width="100%">
+      <h1>CoffeeMud 5.5 Features</h1>
+      </td>
+    </tr>
+    <tr>
+      <td align="left" valign="top" width="20%">
+      <ul>
+        <li><a href="#general">General Features</a></li>
+        <li><a href="#areas">Areas and Rooms</a></li>
+        <li><a href="#player">Player and MOB features</a></li>
+        <li><a href="#armor">Armor, Weapon, and Item features</a></li>
+        <li><a href="#application">Application Information</a></li>
+      </ul>
+      </td>
+      <td align="left" valign="top">
+      <h2><a name="general">General Features</a></h2>
+      <ul>
+        <li>ANSI colour support, MSP sound support, MXP tag support,
+MCCP compression support</li>
+        <li>Stable, all original code base that's extendable through
+INI options, Java, and JavaScript, even at run-time</li>
+        <li>Built in web server for performing maintenance,
+administration, working on areas, and accessing information</li>
+        <li>Built in SMTP server for anonymous player emails, mailing
+lists, announcements, and sending passwords</li>
+        <li>Use a full blown JDBC/ODBC database, or the built in flat
+file database</li>
+        <li>On-line boards (journals) for public and private messaging</li>
+        <li>7 base classes, 38 subclasses, 6 player races, and over
+1200 spells, prayers, songs, skills, and abilities</li>
+        <li>Customizable races and classes, with level based racial and
+class skill systems</li>
+        <li>Over 700 socials, with real-time addition abilities.</li>
+        <li>Several builder scripting possibilities, including both
+extended MOBPROG and Javascript</li>
+        <li>Abbreviate commands, items, mobs, and abilities. Reference
+all or some. Extendable english parsing</li>
+        <li>Web-based visual on-line area editing tool available, along
+with Web-based automated-quest designer</li>
+        <li>Customizable security system. Assign privileges on a
+player-by-player basis</li>
+        <li>Ability to import CoffeeMud area files, as well as those
+from ROM, Circle, Smaug, Icey, and others</li>
+        <li>Mud-wide and player-solo quest support, including
+automated, time-based, and event based triggering!</li>
+        <li>Descriptive combat system with race-based natural weapons,
+ranged weapons and spells, and mounted combat</li>
+        <li>Contagions and diseases built into the engine. Catch a cold
+when naked, or poison ivy in the forest</li>
+        <li>Player lieges and vassals, area Conquest engine, and Legal
+systems available, with easy to use law books</li>
+        <li>Player property, banking, auctioning, and postal systems
+available, serving players or clans or both</li>
+        <li>Full Deity support, with automated blessings to the
+faithful and curses to the wicked</li>
+        <li>Numerous Clan-types support, including politics, alliances,
+and automated membership management</li>
+        <li>Customizable Faction system with faction-based behaviors
+and reactions,&nbsp;automated relationships and triggers</li>
+      </ul>
+      <h2><a name="areas">Areas and Rooms</a></h2>
+      <ul>
+        <li>On-line area creation. (mobs, areas, exits and items).
+Never wait for a reboot to publish an area!</li>
+        <li>Area Instances supported</li>
+        <li>Area based climates, seasons, and weather changes that
+affect game play</li>
+        <li>Numerous terrain types, including underwater areas
+requiring spells to breathe</li>
+        <li>Water rooms requiring swimming abilities</li>
+        <li>Air rooms with gravity, so items and mobs can fall!</li>
+        <li>Pits you can fall into, and other deadly traps</li>
+        <li>Cliffs requiring climbing ability</li>
+        <li>Cardinal exit directions and many types of doors and exit
+types, including drawbridges, gates, panels, grates, portals, ladders,
+curtains, etc..</li>
+        <li>Customizable system of crime and punishment available for
+each of your cities.</li>
+        <li>Mud wide skies and oceans!</li>
+        <li>Homes and property real-estate system for players and clans.</li>
+        <li>Customizable system of crime and punishment available for
+each of your cities!</li>
+        <li>Customizable conquest system to allow players to conquer
+and control your areas</li>
+      </ul>
+      <h2><a name="player">Player and MOB features</a></h2>
+      <ul>
+        <li>Wimpy
 mobs, aggressive mobs, race/alignment protecting mobs, healer mobs,
 teaching mobs, shopkeeper mobs, swallowing mobs, money changer mobs,
 chatting mobs, rideable mobs, dragon mobs, guarding mobs, scavenger
 mobs, thief mobs, mending mobs, etc, etc..</li>
-
-                <li>Scripting capabilities to add custom MOB behaviors</li>
-
-                <li>Players can customize their character by training their stats, gaining new skills, and practicing ones they know</li>
-
-                <li>Fighter, Mage, Cleric, Thief, Bard, and Druid base classes. Customizable class system available online!</li>
-
-                <li>Traditional and meaningful race list, including Human, Elf, Dwarf, Halfling, Gnome, and Half Elf. Races are
-                customizable!</li>
-
-                <li>Mobiles can chat with players and behave according to your wishes</li>
-
-                <li>Fantasy race-based language support with real language-based translations!</li>
-
-                <li>Players and MOBs can teach each other their skills or even their language</li>
-
-                <li>Usage of abilities and spells dependent on proficiency, practice to learn!</li>
-
-                <li>The most unique and powerful common skill system available for ANY mud!</li>
-
-                <li>Mage skills include brewing, scribing scrolls, recharging wands, revoking, plus 300 spells to learn and cast!</li>
-
-                <li>Fighters can fight two handed, sweep, cleave, trip, blind fight, kick, roll with blows, break weapons, dodge, parry,
-                disarm, kick dirt, whomp, and more!</li>
-
-                <li>Thieves steal, pilfer, detect, disarm traps, bribe, backstab, poison, sneak, observe, bind, sap, shadow, lay new traps,
-                listen, and much more...</li>
-
-                <li>Clerics can turn undead, command, heal, protect, animate, lay hands, cast over 200 different prayers, and suffer the wrath
-                of their god when they fail</li>
-
-                <li>Bards have lots of unique skills, plus 150+ songs and dances with group wide, or all-enemy effects for all who hear!</li>
-
-                <li>Druids control and use weather, polymorph themselves and others, and have access to over 200 unique chants</li>
-
-                <li>All bard songs, mage spells, cleric prayers, thief and fighter skills are all extendable by players who learn
-                expertises.</li>
-
-                <li>Player killing is optional for the two fighting players, or other PK systems are settable via the INI file</li>
-
-                <li>Saves against poison, undead, fire, cold, gas, and much more..</li>
-              </ul>
-
-              <h2><a name="armor">Armor, Weapon, and Item features</a></h2>
-
-              <ul>
-                <li>Item/Armor/Weapon material types and weights</li>
-
-                <li>Armor condition/damage, sizing, and repair</li>
-
-                <li>Multi-spell scrolls, and wands with secret invoke words</li>
-
-                <li>Weapon sharpness and condition</li>
-
-                <li>Wands, Staffs, Traps, wearable pouches, boats, horses, and much more</li>
-
-                <li>Beds you can lie in, chairs you can sit in, etc..</li>
-
-                <li>Weapon specializations based on class</li>
-
-                <li>Skills and trades for players to make their own mundane items!</li>
-              </ul>
-              <hr />
-
-              <h2><a name="application">Application Information:</a></h2>
-
-              <p>CoffeeMud
+        <li>Scripting capabilities to add custom MOB behaviors</li>
+        <li>Players can customize their character by training their
+stats, gaining new skills, and practicing ones they know</li>
+        <li>Fighter, Mage, Cleric, Thief, Bard, and Druid base classes.
+Customizable class system available online!</li>
+        <li>Traditional and meaningful race list, including Human, Elf,
+Dwarf, Halfling, Gnome, and Half Elf. Races are customizable!</li>
+        <li>Mobiles can chat with players and behave according to your
+wishes</li>
+        <li>Fantasy race-based language support with real
+language-based translations!</li>
+        <li>Players and MOBs can teach each other their skills or even
+their language</li>
+        <li>Usage of abilities and spells dependent on proficiency,
+practice to learn!</li>
+        <li>The most unique and powerful common skill system available
+for ANY mud!</li>
+        <li>Mage skills include brewing, scribing scrolls, recharging
+wands, revoking, plus 300 spells to learn and cast!</li>
+        <li>Fighters can fight two handed, sweep, cleave, trip, blind
+fight, kick, roll with blows, break weapons, dodge, parry, disarm, kick
+dirt, whomp, and more!</li>
+        <li>Thieves steal, pilfer, detect, disarm traps, bribe,
+backstab, poison, sneak, observe, bind, sap, shadow, lay new traps,
+listen, and much more...</li>
+        <li>Clerics can turn undead, command, heal, protect, animate,
+lay hands, cast over 200 different prayers, and suffer the wrath of
+their god when they fail</li>
+        <li>Bards have lots of unique skills, plus 150+ songs and
+dances with group wide, or all-enemy effects for all who hear!</li>
+        <li>Druids control and use weather, polymorph themselves and
+others, and have access to over 200 unique chants</li>
+        <li>All bard songs, mage spells, cleric prayers, thief and
+fighter skills are all extendable by players who learn expertises.</li>
+        <li>Player killing is optional for the two fighting players, or
+other PK systems are settable via the INI file</li>
+        <li>Saves against poison, undead, fire, cold, gas, and much
+more..</li>
+      </ul>
+      <h2><a name="armor">Armor, Weapon, and Item features</a></h2>
+      <ul>
+        <li>Item/Armor/Weapon material types and weights</li>
+        <li>Armor condition/damage, sizing, and repair</li>
+        <li>Multi-spell scrolls, and wands with secret invoke words</li>
+        <li>Weapon sharpness and condition</li>
+        <li>Wands, Staffs, Traps, wearable pouches, boats, horses, and
+much more</li>
+        <li>Beds you can lie in, chairs you can sit in, etc..</li>
+        <li>Weapon specializations based on class</li>
+        <li>Skills and trades for players to make their own mundane
+items!</li>
+      </ul>
+      <hr />
+      <h2><a name="application">Application Information:</a></h2>
+      <p>CoffeeMud
 is written in 100% Java, listening as a telnet server on any specified
 port. Two web servers can be activated to listen on specified ports.
 CoffeeMud supports any JDBC/ODBC database and has been successfully
 tested using MySQL, HSQLDB, and Derby over JDBC, and Access/SQL Server
 over ODBC. The package also includes a flat-file JDBC system for
 beginners.</p>
-
-              <p>The
+      <p>The
 system includes an API that allows standard MOBs, Items, Weapons,
 Armor, Room types, Exit types, and Magic Items to be coded in less than
 a hundred lines using a template. Generic MOBS, Items, Weapons, Armor,
 and Exit types can be be molded to fit any design and spec. And all of
 it can be implemented online at run-time.</p>
-
-              <p>CoffeeMud utilizes a smart threading model that spawns threads only when necessary. It will balance the objects needs for
-              threads versus the systems need to keep thread spawning low.</p>
-
-              <p>An
+      <p>CoffeeMud utilizes a smart threading model that spawns threads
+only when necessary. It will balance the objects needs for threads
+versus the systems need to keep thread spawning low.</p>
+      <p>An
 advanced message passing system lies at the systems core. Messages are
 customized for the message source, message target, and how that message
 appears to everyone else in the room. Each message is coded with basic
@@ -209,9 +182,10 @@ sensory information so that only the blind miss visual messages, while
 they don't miss the auditory ones. Messages can also be previewed and
 modified by every object involved, lending even more environmental
 realism to coding!</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </center>
-  </body></html>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</center>
+</body>
+</html>

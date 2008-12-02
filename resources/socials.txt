@@ -2,9 +2,9 @@ ss	AARGH	AAAAAARRRRRRGGGGGGHHHHHH!!!!!!	<S-NAME> throws back <S-HIS-HER> head an
 ss	AARGH <T-NAME>	You scream your frustration and grab for <T-HIS-HER> throat with both hands!	<S-NAME> howls in frustration, and leaps for <T-NAMESELF>, trying to throttle <T-HIM-HER>!	<S-NAME> grabs for your throat with two hands, howling in frustration!	You get even MORE frustrated when you can't find anyone to throttle!	
 ss	AARGH SELF	You scream in frustration at your own stupidity!	<S-NAME> screams in frustration at <S-HIS-HER> own stupidity!			
 ww	ACCEPT	You accept the proferred apology graciously.	<S-NAME> graciously accepts the proferred apology.			
-ww	ACCUSE	Accuse who??	<S-NAME> is in an accusing mood.			
-ww	ACCUSE <T-NAME>	You look accusingly at <T-HIM-HER>.	<S-NAME> looks accusingly at <T-NAMESELF>.	<S-NAME> looks accusingly at you.	Accuse somebody who's not even there ??	
-ww	ACCUSE SELF	You accuse yourself.	<S-NAME> seems to have a bad conscience.			
+wv	ACCUSE	Accuse who??	<S-NAME> is in an accusing mood.			
+wv	ACCUSE <T-NAME>	You look accusingly at <T-HIM-HER>.	<S-NAME> looks accusingly at <T-NAMESELF>.	<S-NAME> looks accusingly at you.	Accuse somebody who's not even there ??	
+wv	ACCUSE SELF	You accuse yourself.	<S-NAME> seems to have a bad conscience.			
 oo	ADJUST	You look around, make sure nobody is watching, and you adjust your "Tool."	<S-NAME> looks around slyly, smiles, then reaches down and "adjusts" <S-HIM-HERSELF>...			
 ww	AGREE	You agree absolutely.	<S-NAME> agrees absolutely.			
 ww	AGREE <T-NAME>	You nod in enthusiastic agreement with <T-NAMESELF>.	<S-NAME> nods in enthusiastic agreement with <T-NAMESELF>.	<S-NAME> nods in enthusiastic agreement with you.	Sorry, your target is absent.	

@@ -493,6 +493,7 @@ public class MudChat extends StdBehavior
 			String rest[]=new String[1];
 			boolean combat=((monster.isInCombat()))||(mob.isInCombat());
 
+			String str;
 			if((msg.targetMinor()==CMMsg.TYP_SPEAK)
 			&&(msg.amITarget(monster)
 			   ||((msg.target()==null)
@@ -503,36 +504,33 @@ public class MudChat extends StdBehavior
 			&&(myChatGroup!=null)
 			&&(lastReactedTo!=msg.source())
 			&&(msg.sourceMessage()!=null)
-			&&(msg.targetMessage()!=null))
+			&&(msg.targetMessage()!=null)
+			&&((str=CMStrings.getSayFromMessage(msg.sourceMessage()))!=null))
 			{
-                String str=CMStrings.getSayFromMessage(msg.sourceMessage());
-				if(str!=null)
+				str=" "+str+" ";
+				int l=0;
+				for(int i=1;i<myChatGroup.size();i++)
 				{
-					str=" "+str+" ";
-					int l=0;
-					for(int i=1;i<myChatGroup.size();i++)
+					Vector possResponses=(Vector)myChatGroup.elementAt(i);
+					String expression=((String)possResponses.elementAt(0)).trim();
+					if(expression.startsWith("*"))
 					{
-						Vector possResponses=(Vector)myChatGroup.elementAt(i);
-						String expression=((String)possResponses.elementAt(0)).trim();
-						if(expression.startsWith("*"))
-						{
-							if(!combat) continue;
-							expression=expression.substring(1);
-						}
-						else
-						if(combat) continue;
+						if(!combat) continue;
+						expression=expression.substring(1);
+					}
+					else
+					if(combat) continue;
 
-						l=expression.length();
-						if((l>0)
-						&&(expression.charAt(0)=='(')
-						&&(expression.charAt(l-1)==')'))
+					l=expression.length();
+					if((l>0)
+					&&(expression.charAt(0)=='(')
+					&&(expression.charAt(l-1)==')'))
+					{
+						if(match(mob,expression.substring(1,expression.length()-1),str,rest))
 						{
-							if(match(mob,expression.substring(1,expression.length()-1),str,rest))
-							{
-								myResponses=new Vector();
-								myResponses.addAll(possResponses);
-                                break;
-							}
+							myResponses=new Vector();
+							myResponses.addAll(possResponses);
+                            break;
 						}
 					}
 				}
@@ -552,7 +550,7 @@ public class MudChat extends StdBehavior
 			&&(lastReactedTo!=msg.source())
 			&&(myChatGroup!=null))
 			{
-				String str=null;
+				str=null;
 				char c1='[';
 				char c2=']';
 				if((msg.amITarget(monster)&&(msg.targetMessage()!=null)))
