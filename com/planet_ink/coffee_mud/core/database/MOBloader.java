@@ -631,6 +631,13 @@ public class MOBloader
         if(pstats==null) return;
         String strStartRoomID=(mob.getStartRoom()!=null)?CMLib.map().getExtendedRoomID(mob.getStartRoom()):"";
         String strOtherRoomID=(mob.location()!=null)?CMLib.map().getExtendedRoomID(mob.location()):"";
+        
+        if((mob.location()!=null)
+        &&(mob.location().getArea()!=null)
+        &&(CMath.bset(mob.location().getArea().flags(),Area.FLAG_INSTANCE_PARENT)
+        	||CMath.bset(mob.location().getArea().flags(),Area.FLAG_INSTANCE_CHILD)))
+        	strOtherRoomID=strStartRoomID;
+        
         StringBuffer pfxml=new StringBuffer(pstats.getXML());
         if(mob.numTattoos()>0)
         {

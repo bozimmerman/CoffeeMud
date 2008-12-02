@@ -52,7 +52,7 @@ public class Areas extends StdCommand
 		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
-			if(CMLib.flags().canAccess(mob,A))
+			if(CMLib.flags().canAccess(mob,A)&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
             {
                 String name=(!CMLib.flags().isHidden(A))?" "+A.name():"("+A.name()+")";
                 if(sysop)

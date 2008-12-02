@@ -48,7 +48,8 @@ public class Weather extends StdCommand
 			for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
-				if(CMLib.flags().canAccess(mob,A))
+				if((CMLib.flags().canAccess(mob,A))
+				&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 					tellMe.append(CMStrings.padRight(A.name(),20)+": "+A.getClimateObj().weatherDescription(room)+"\n\r");
 			}
 			mob.tell(tellMe.toString());

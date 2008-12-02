@@ -50,7 +50,9 @@ public class GrinderMap extends GrinderFlatMap
 			Area A = (Area) q.nextElement();
 			// for now, skip hidden areas.  Areas are often hidden if they aren't linked
 			// to the world (ie under construction or Archon only)
-			if (CMLib.flags().isHidden(A)) continue;
+			if ((CMLib.flags().isHidden(A))
+			||(CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
+					continue;
 			for (Enumeration r = A.getProperRoomnumbers().getRoomIDs(); r.hasMoreElements(); )
 			{
 				String roomID=(String)r.nextElement();

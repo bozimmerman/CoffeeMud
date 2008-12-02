@@ -665,7 +665,8 @@ public class DefaultPlayerStats implements PlayerStats
             for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
             {
                 A=(Area)e.nextElement();
-                if(CMLib.flags().canAccess(mob,A))
+                if((CMLib.flags().canAccess(mob,A))
+        		&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
                 {
                 	int[] stats=A.getAreaIStats();
                     if(stats[Area.AREASTAT_VISITABLEROOMS]>0)

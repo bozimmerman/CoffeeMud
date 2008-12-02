@@ -108,7 +108,8 @@ public class Spell_LocateObject extends Spell
 				    if((A!=null)&&(!areasTried.contains(A)))
 				    {
 				        areasTried.add(A);
-				        if(CMLib.flags().canAccess(mob,A))
+				        if((CMLib.flags().canAccess(mob,A))
+		        		&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 				            areas.add(A);
 				        else
 				            numAreas--;

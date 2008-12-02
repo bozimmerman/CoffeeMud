@@ -52,7 +52,7 @@ public class AreaNext extends StdWebMacro
 			if((last==null)||((last.length()>0)&&(last.equals(lastID))&&(!A.Name().equals(lastID))))
 			{
 				httpReq.addRequestParameters("AREA",A.Name());
-				if(!CMLib.flags().isHidden(A))
+				if((!CMLib.flags().isHidden(A))&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 					return "";
 				last=A.Name();
 			}

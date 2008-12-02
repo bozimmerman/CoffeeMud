@@ -51,7 +51,7 @@ public class AreaTbl extends StdWebMacro
 		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 		{
 			Area A=(Area)a.nextElement();
-			if(!CMLib.flags().isHidden(A))
+			if((!CMLib.flags().isHidden(A))&&(!CMath.bset(A.flags(),Area.FLAG_INSTANCE_CHILD)))
 				areasVec.addElement(A.name());
 		}
 		StringBuffer msg=new StringBuffer("\n\r");

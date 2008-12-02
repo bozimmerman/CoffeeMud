@@ -400,6 +400,8 @@ public class StdArea implements Area
 		children=null;
 		if(E.children!=null)
 			children=(Vector)E.children.clone();
+		if(E.blurbFlags!=null)
+			blurbFlags=(Vector)E.blurbFlags.clone();
 		affects=new Vector(1);
 		behaviors=new Vector(1);
         scripts=new Vector(1);
@@ -407,13 +409,13 @@ public class StdArea implements Area
 		{
 			Behavior B=E.fetchBehavior(b);
 			if(B!=null)
-				behaviors.addElement(B);
+				behaviors.addElement((Behavior)B.copyOf());
 		}
 		for(int a=0;a<E.numEffects();a++)
 		{
 			Ability A=E.fetchEffect(a);
 			if(A!=null)
-				affects.addElement(A);
+				affects.addElement((Ability)A.copyOf());
 		}
         ScriptingEngine S=null;
         for(int i=0;i<E.numScripts();i++)
@@ -1244,6 +1246,7 @@ public class StdArea implements Area
 		if((roomID!=null)&&(roomID.length()>0)&&(!metroRoomIDSet.contains(roomID)))
 		{
 			metroRoomIDSet.add(roomID);
+			if(!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
 			for(int p=getNumParents()-1;p>=0;p--)
 				getParent(p).addMetroRoomnumber(roomID);
 		}
@@ -1256,6 +1259,7 @@ public class StdArea implements Area
 		&&(metroRoomIDSet.contains(roomID)))
 		{
 			metroRoomIDSet.remove(roomID);
+			if(!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD))
 			for(int p=getNumParents()-1;p>=0;p--)
 				getParent(p).delMetroRoomnumber(roomID);
 		}
