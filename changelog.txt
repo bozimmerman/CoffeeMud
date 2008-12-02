@@ -2177,7 +2177,7 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 37. Players will now get a message if they attempt to put on armor outside their class restrictions.  Messages are in lists.ini
 38. ShopKeepers can now sell multiple-types of items.  Conflicting types are resolved when set.
 39. CommandJournals now support SCRIPT= flag to allow you to scrip entries into your journal.  An example for BUG is included.
-40. New Death/Flee consequence: ASTRAL_RES -- same as ASTRAL, but players can use ENTER to self-res.
+40. New Death/Flee consequence: ASTRAL_RES -- same as ASTRAL, but players can use ENTER [body] to self-res.
 41. New Area type: StdThinInstance.  Yep, CoffeeMud supports real-life instances now! Check out the Archon Guide for more info.
 ??. * I changed the name of a few of the library interfaces, so make sure you follow the 
 	* part of the upgrade instructions regarding deleting your old "com" directory before 
