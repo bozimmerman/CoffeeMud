@@ -182,46 +182,158 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 				<DESCRIPTION select="any-1">$dungeon_prison_exits</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="LockedDoor" text="$areaname cellkey" />
-			<MOB select="any-1" include="dungeon_prisoner" />
 			<AFFECT class="Prop_NoRecall" /> <AFFECT class="Prop_NoSummon" /> <AFFECT class="Prop_NoTeleportOut" />
 		</ROOM>
 		<ROOM class="StoneRoom" condition="_luxuryCell&lt;2" define="_luxuryCell+=1">
-			<TITLE>a private luxury cell</TITLE>
+			<TITLE>a private $dungeonadj_fancy cell</TITLE>
 			<DESCRIPTION>
-			<!--TODO: Fill this in -->
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are in (a(n)) $dungeonadj_phys_size_large $dungeonadj_light solitary cell for discerning tastes.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $dungeonadj_phys_size_large $dungeonadj_light cell for solitary enjoyment.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $dungeonadj_phys_size_large $dungeonadj_light solitary prisoner's holding apartment.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $dungeonadj_phys_size_large $dungeonadj_light solitary cell for prisoners of wealth.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $dungeonadj_phys_size_large $dungeonadj_light cell for solitary refinement.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $dungeonadj_phys_size_large $dungeonadj_light solitary prisoner's holding suite.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Everything here is totally $dungeonadj_light.</DESCRIPTION>
+					<DESCRIPTION>This room is completely $dungeonadj_light.</DESCRIPTION>
+					<DESCRIPTION>This $dungeonadj_light room is $dungeonadj_fancy.</DESCRIPTION>
+					<DESCRIPTION>Life here is $dungeonadj_light and $dungeonadj_fancy.</DESCRIPTION>
+					<DESCRIPTION>This room is $dungeonadj_light and $dungeonadj_fancy.</DESCRIPTION>
+					<DESCRIPTION>This $dungeonadj_fancy is $dungeonadj_light room.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_prison_exits</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="LockedDoor" text="$areaname luxurykey" />
+			<MOB include="dungeon_prisoner" level="$level_range" race="$prisoner_races" name="$fantasy_name" display="$glitzy_prisoner_disp" />
 			<AFFECT class="Prop_NoRecall" /> <AFFECT class="Prop_NoSummon" /> <AFFECT class="Prop_NoTeleportOut" />
+			<STRING id="glitzy_prisoner_disp" select="any-1">
+				<STRING>$MOB_NAME is enjoying a confined rest.</STRING>
+				<STRING>$MOB_NAME is a prisoner of luxury.</STRING>
+				<STRING>$MOB_NAME is not resisting a rest.</STRING>
+				<STRING>$MOB_NAME is a prisoner with deep pockets.</STRING>
+				<STRING>$MOB_NAME has the best cell sold.</STRING>
+				<STRING>$MOB_NAME has the best punishment money can buy.</STRING>
+			</STRING>
+			<ITEM select="any-2">
+				<ITEM class="GenBed"  name="(a(n)) $dungeonadj_fancy bed" display="$ITEM_NAME is made here"/>
+				<ITEM class="GenChair"  name="(a(n)) $dungeonadj_fancy chair" display="$ITEM_NAME is waiting to me rested upon"/>
+				<ITEM class="GenFountain"  name="(a(n)) $ITEM_NAME fountain" display="$ITEM_NAME has been built here"/>
+				<ITEM class="GenMirror"  name="a mirror" display="a mirror is for gazing in"/>
+				<ITEM class="GenTub"  name="(a(n)) $dungeonadj_fancy tub" display="$ITEM_NAME is here"/>
+				<ITEM class="GenTable"  name="(a(n)) $dungeonadj_fancy table" display="$ITEM_NAME is here"/>
+				<ITEM class="GenPiano"  name="(a(n)) $dungeonadj_fancy piano" display="$ITEM_NAME is here"/>
+				<ITEM class="GenPipe" name="(a(n)) $dungeonadj_fancy pipe" display="$ITEM_NAME has been put aside for a moment"/>
+				<ITEM class="GenCigar" name="(a(n)) $dungeonadj_fancy cigar" display="$ITEM_NAME is here waiting to be enjoyed."/>
+			</ITEM>
 		</ROOM>
 		<ROOM class="CaveRoom" condition="_torturechamber&lt;1" define="_torturechamber+=1">
-			<TITLE>a torture chamber</TITLE>
+			<TITLE>(a(n)) $dungeonadj_feeling torture chamber</TITLE>
 			<DESCRIPTION>
-			<!--TODO: Fill this in -->
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in (a(n)) $nasty_dirty_word torture chamber.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $nasty_dirty_word cell room obviously meant for pain.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $nasty_dirty_word chamber of torture and pain.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $nasty_dirty_word torture chamber.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $nasty_dirty_word chamber of torture and pain.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $nasty_dirty_word room obviously meant for pain.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Just the sight of this $dungeonadj_feeling room makes you talk.</DESCRIPTION>
+					<DESCRIPTION>All manner of $dungeonadj_feeling instruments for human suffering abound here.</DESCRIPTION>
+					<DESCRIPTION>This $nasty_dirty_word room of suffering makes you feel $dungeonadj_feeling.</DESCRIPTION>
+					<DESCRIPTION>You feel $dungeonadj_feeling just standing in this place.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurbs</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_prison_exits</DESCRIPTION>
+				<MOB include="dungeon_prisonguard" level="$level_range" race="$prisoner_races" name="Dr. $fantasy_name" display="$torture_prisonguard_disp" />
+				<ITEM select="any-2">
+					<ITEM class="metacraft"  name="Whipping Post"/>
+					<ITEM class="metacraft"  name="Torture Bed"/>
+					<ITEM class="metacraft"  name="Stockade"/>
+					<ITEM class="metacraft"  name="Gallows"/>
+					<ITEM class="metacraft"  name="Torture Rack"/>
+					<ITEM class="metacraft"  name="Spanish watercloth"/>
+					<ITEM class="metacraft"  name="Garucha Gallows"/>
+					<ITEM class="metacraft"  name="Garotte Bed"/>
+					<ITEM class="metacraft"  name="Brank Helmet"/>
+					<ITEM class="metacraft"  name="The Machine"/>
+				</ITEM>
+				<STRING id="torture_prisonguard_disp" select="any-1">
+					<STRING>$MOB_NAME is enjoying his work here.</STRING>
+					<STRING>$MOB_NAME wants to get on your nerves.</STRING>
+					<STRING>$MOB_NAME is ready for you.</STRING>
+					<STRING>$MOB_NAME is tidying up for the next guest.</STRING>
+					<STRING>$MOB_NAME is curious about how you feel.</STRING>
+				</STRING>
 			</DESCRIPTION>
 			<EXIT class="Door" />
 		</ROOM>
 		<ROOM class="CaveRoom" condition="_pitroom&lt;2" define="_pitroom+=1">
-			<TITLE>a pit</TITLE>
+			<TITLE>(a(n)) $nasty_dirty_word pit</TITLE>
 			<DESCRIPTION>
-			<!--TODO: Fill this in -->
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in (a(n)) $nasty_dirty_word pit.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $nasty_dirty_word pit.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $nasty_dirty_word pit.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $nasty_dirty_word pit.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Its little more than a great hole surrounded by a metal cage.</DESCRIPTION>
+					<DESCRIPTION>It is a great caged hole for prisoners.</DESCRIPTION>
+					<DESCRIPTION>A pit holds prisoners in a large hole surrounded by bars.</DESCRIPTION>
+					<DESCRIPTION>A great hole surrounded by bars holds in the prisoners.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurbs</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_prison_exits</DESCRIPTION>
 			</DESCRIPTION>
+			<EXIT class="LockedDoor" text="$areaname cellkey" />
+			<MOB select="1?3" include="dungeon_prisoner,dungeon_prisoner,dungeon_prisoner" />
+			<AFFECT class="Prop_NoRecall" /> <AFFECT class="Prop_NoSummon" /> <AFFECT class="Prop_NoTeleportOut" />
 			<EXIT class="Gate" />
 		</ROOM>
 		<ROOM class="CaveRoom" condition="_latrine&lt;2" define="_latrine+=1">
-			<TITLE>a latrine</TITLE>
+			<TITLE>(a(n)) $nasty_dirty_word latrine</TITLE>
 			<DESCRIPTION>
-			<!--TODO: Fill this in -->
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing knee deep in (a(n)) $nasty_dirty_word latrine.</DESCRIPTION>
+					<DESCRIPTION>You are in (a(n)) $nasty_dirty_word latrine.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $nasty_dirty_word latrine.</DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $nasty_dirty_word latrine.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You now realize what happens to all the waste generated here.</DESCRIPTION>
+					<DESCRIPTION>This is where all the waste is dumped.</DESCRIPTION>
+					<DESCRIPTION>The waste and filth of the prisoners and guards is all dumped here.</DESCRIPTION>
+					<DESCRIPTION>This must be where the waste from the prisoners is dumped.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You now realize what happens to all the waste generated here.</DESCRIPTION>
+					<DESCRIPTION>This is where all the waste is dumped.</DESCRIPTION>
+					<DESCRIPTION>The waste and filth of the prisoners and guards is all dumped here.</DESCRIPTION>
+					<DESCRIPTION>This must be where the waste from the prisoners is dumped.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_badsmells</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurbs</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_prison_exits</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Door" />
-			<MOB select="1?3" include="dungeon_guard,dungeon_guard,dungeon_guard" />
+			<MOB select="1?2" include="dungeon_guard,dungeon_guard,dungeon_guard" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a guard station</TITLE>
 			<DESCRIPTION>
-			<!--TODO: Fill this in -->
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in a guard station.</DESCRIPTION>
+					<DESCRIPTION>You are in a guard station.</DESCRIPTION>
+					<DESCRIPTION>You're inside a guard station.</DESCRIPTION>
+					<DESCRIPTION>This is a guard station.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION>The exit lies to the $roomexits_desc_long</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Door" />
-			<MOB select="1?3" include="dungeon_guard" />
+			<MOB select="2?5" include="dungeon_guard,dungeon_guard,dungeon_guard,dungeon_guard,dungeon_guard" />
 		</ROOM>
 	</ROOM>
 	<ROOM select="all" condition="$theme='kobolds' or $theme='random'">
@@ -468,11 +580,13 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 		<STRING>Dust has settled on the ground from scarce use.</STRING>
 	</STRING>
 	<STRING select="any-1" condition="1?10 &lt;= 2">
-		<STRING>The stench is quite unbearable.</STRING>
-		<STRING>A musty, dank smell wafts through the air.</STRING>
-		<STRING>You think you smell brimstone.</STRING>
-		<STRING>The first thing you notice is the stench.</STRING>
-		<STRING>The stink in here is horrible.</STRING>
+		<STRING select="all" id="dungeon_random_badsmells">
+			<STRING>The stench is quite unbearable.</STRING>
+			<STRING>A musty, dank smell wafts through the air.</STRING>
+			<STRING>You think you smell brimstone.</STRING>
+			<STRING>The first thing you notice is the stench.</STRING>
+			<STRING>The stink in here is horrible.</STRING>
+		</STRING>
 	</STRING>
 	<STRING select="any-1">
 		<STRING>The air is $dungeonadj_nonphys.</STRING>
@@ -998,6 +1112,34 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 		<STRING>cracked</STRING>
 	</STRING>
 </STRING>
+<STRING id="nasty_dirty_word" select="all">
+	<STRING>dirty</STRING>
+	<STRING>filthy</STRING>
+	<STRING>muddy</STRING>
+	<STRING>nasty</STRING>
+	<STRING>smelly</STRING>
+	<STRING>grotesque</STRING>
+	<STRING>unpleasant</STRING>
+	<STRING>creepy</STRING>
+	<STRING>eerie</STRING>
+	<STRING>harsh</STRING>
+	<STRING>scary</STRING>
+	<STRING>quiet</STRING>
+	<STRING>musty</STRING>
+	<STRING>damp</STRING>
+	<STRING>wet</STRING>
+	<STRING>cold</STRING>
+</STRING>
+
+<STRING id="nasty_animal_desc" select="all" include="nasty_dirty_word">
+	<STRING>oversized</STRING>
+	<STRING>runt</STRING>
+	<STRING>slithering</STRING>
+	<STRING>hungry</STRING>
+	<STRING>dour</STRING>
+	<STRING>grim</STRING>
+</STRING>
+
 <STRING id="dungeonadj_feeling" select="any-1" >
 	<STRING id="dungeonadj_feeling_values">
 		<STRING>ghastly</STRING>
@@ -1080,6 +1222,34 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 		<STRING>homey</STRING>
 		<STRING>homelike</STRING>
 	</STRING>
+</STRING>
+
+<STRING id="nasty_dirty_word" select="all">
+	<STRING>dirty</STRING>
+	<STRING>filthy</STRING>
+	<STRING>muddy</STRING>
+	<STRING>nasty</STRING>
+	<STRING>smelly</STRING>
+	<STRING>grotesque</STRING>
+	<STRING>unpleasant</STRING>
+	<STRING>creepy</STRING>
+	<STRING>eerie</STRING>
+	<STRING>harsh</STRING>
+	<STRING>scary</STRING>
+	<STRING>quiet</STRING>
+	<STRING>musty</STRING>
+	<STRING>damp</STRING>
+	<STRING>wet</STRING>
+	<STRING>cold</STRING>
+</STRING>
+
+<STRING id="nasty_animal_desc" select="all" include="nasty_dirty_word">
+	<STRING>oversized</STRING>
+	<STRING>runt</STRING>
+	<STRING>slithering</STRING>
+	<STRING>hungry</STRING>
+	<STRING>dour</STRING>
+	<STRING>grim</STRING>
 </STRING>
 
 <STRING id="small_word" select="any-1">
@@ -1257,34 +1427,6 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 <STRING condition="'intersection' IN $ROOMTAG_NODEFLAGS">Intersection in a</STRING>
 <STRING condition="'corner' IN $ROOMTAG_NODEFLAGS">Corner of a</STRING>
 <STRING condition="$ROOMTAG_NODEFLAGS=''">A</STRING>
-</STRING>
-
-<STRING id="nasty_dirty_word" select="all">
-	<STRING>dirty</STRING>
-	<STRING>filthy</STRING>
-	<STRING>muddy</STRING>
-	<STRING>nasty</STRING>
-	<STRING>smelly</STRING>
-	<STRING>grotesque</STRING>
-	<STRING>unpleasant</STRING>
-	<STRING>creepy</STRING>
-	<STRING>eerie</STRING>
-	<STRING>harsh</STRING>
-	<STRING>scary</STRING>
-	<STRING>quiet</STRING>
-	<STRING>musty</STRING>
-	<STRING>damp</STRING>
-	<STRING>wet</STRING>
-	<STRING>cold</STRING>
-</STRING>
-
-<STRING id="nasty_animal_desc" select="all" include="nasty_dirty_word">
-	<STRING>oversized</STRING>
-	<STRING>runt</STRING>
-	<STRING>slithering</STRING>
-	<STRING>hungry</STRING>
-	<STRING>dour</STRING>
-	<STRING>grim</STRING>
 </STRING>
 
 <STRING id="dungeonadj_anynosize" select="any-1" insert="dungeonadj_general_values,dungeonadj_feeling_values,dungeonadj_phys_nosize_values" />

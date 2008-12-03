@@ -434,10 +434,28 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     protected MOB buildMob(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
     {
         String classID = findString("class",piece,defined);
-        MOB M = CMClass.getMOB(classID);
-        if(M == null) throw new CMException("Unable to build mob on classID '"+classID+"', Data: "+piece.value);
-        addDefinition("MOB_CLASS",classID,defined);
-        String[] ignoreStats={"CLASS","LEVEL"};
+        MOB M = null;
+        String[] ignoreStats={};
+        if(classID.equalsIgnoreCase("catalog"))
+        {
+            String name = findString("name",piece,defined);
+            if((name == null)||(name.length()==0)) 
+            	throw new CMException("Unable to build a catalog mob without a name, Data: "+piece.value);
+            M = CMLib.catalog().getCatalogMob(name);
+            if(M==null)
+	        	throw new CMException("Unable to find cataloged mob called '"+name+"', Data: "+piece.value);
+            M=(MOB)M.copyOf();
+            CMLib.catalog().changeCatalogUsage(M,true);
+            addDefinition("MOB_CLASS",M.ID(),defined);
+            ignoreStats=new String[]{"CLASS","NAME","LEVEL"};
+        }
+        else
+        {
+	        M = CMClass.getMOB(classID);
+	        if(M == null) throw new CMException("Unable to build mob on classID '"+classID+"', Data: "+piece.value);
+	        addDefinition("MOB_CLASS",classID,defined);
+            ignoreStats=new String[]{"CLASS","LEVEL"};
+        }
         
         String value = findOptionalString("LEVEL",piece,defined);
         if(value != null) {
@@ -578,17 +596,67 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     protected Vector buildItem(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
     {
         String classID = findString("class",piece,defined);
-        Item I = CMClass.getItem(classID);
-        if(I == null) throw new CMException("Unable to build item on classID '"+classID+"', Data: "+piece.value);
-        addDefinition("ITEM_CLASS",classID,defined);
-        String[] ignoreStats={"CLASS"};
-        
+        Vector contents = new Vector();
+        String[] ignoreStats={};
+        if(classID.equalsIgnoreCase("metacraft"))
+        {
+            String recipe = findString("name",piece,defined);
+            if((recipe == null)||(recipe.length()==0)) 
+            	throw new CMException("Unable to metacraft an item without a name, Data: "+piece.value);
+            String materialStr = findString("material",piece,defined);
+            int material=-1;
+            if((materialStr!=null)&&(CMParms.containsIgnoreCase(RawMaterial.RESOURCE_DESCS,materialStr)))
+            	material=RawMaterial.RESOURCE_DATA[CMParms.indexOfIgnoreCase(RawMaterial.RESOURCE_DESCS,materialStr)][0];
+			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+			{
+				Ability A=(Ability)e.nextElement();
+				if(A instanceof ItemCraftor)
+				{
+					ItemCraftor skill=(ItemCraftor)A;
+					Vector V=skill.matchingRecipeNames(recipe,false);
+					if((V!=null)&&(V.size()>0))
+					{
+						if(material>=0)
+							contents=skill.craftItem(recipe,material);
+						else
+							contents=skill.craftItem(recipe);
+						break;
+					}
+				}
+			}
+			if((contents==null)||(contents.size()==0))
+	        	throw new CMException("Unable to metacraft an item called '"+recipe+"', Data: "+piece.value);
+            addDefinition("ITEM_CLASS",((MOB)contents.firstElement()).ID(),defined);
+            ignoreStats=new String[]{"CLASS","NAME"};
+        }
+        else
+        if(classID.equalsIgnoreCase("catalog"))
+        {
+            String name = findString("name",piece,defined);
+            if((name == null)||(name.length()==0)) 
+            	throw new CMException("Unable to build a catalog item without a name, Data: "+piece.value);
+            Item I = CMLib.catalog().getCatalogItem(name);
+            if(I==null)
+	        	throw new CMException("Unable to find cataloged item called '"+name+"', Data: "+piece.value);
+            I=(Item)I.copyOf();
+            CMLib.catalog().changeCatalogUsage(I,true);
+            contents.addElement(I);
+            addDefinition("ITEM_CLASS",I.ID(),defined);
+            ignoreStats=new String[]{"CLASS","NAME"};
+        }
+        else
+        {
+	        Item I = CMClass.getItem(classID);
+	        if(I == null) throw new CMException("Unable to build item on classID '"+classID+"', Data: "+piece.value);
+	        contents.addElement(I);
+	        addDefinition("ITEM_CLASS",classID,defined);
+	        ignoreStats=new String[]{"CLASS"};
+        }
+        Item I=(Item)contents.firstElement();
         fillOutStats(I,ignoreStats,"ITEM_",piece,defined);
         CMLib.itemBuilder().balanceItemByLevel(I);
         fillOutStats(I,ignoreStats,"ITEM_",piece,defined);
         
-        Vector contents = new Vector();
-        contents.addElement(I);
         Vector V;
         if(I instanceof Container)
         {
