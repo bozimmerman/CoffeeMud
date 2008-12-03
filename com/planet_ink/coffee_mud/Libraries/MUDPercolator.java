@@ -1042,6 +1042,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				str=str.substring(0,x)+"a"+str.substring(x+6);
     		x=str.toLowerCase().indexOf("(a(n))");
     	}
-        return CMLib.xml().restoreAngleBrackets(str);
+        return CMLib.xml().restoreAngleBrackets(str).replace('\'','`');
     }
 }

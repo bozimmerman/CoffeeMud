@@ -38,8 +38,8 @@ public class GenKey extends GenItem implements Key
 	public GenKey()
 	{
 		super();
-		setName("a generic key thing");
-		setDisplayText("a generic key thing sits here.");
+		setName("a key");
+		setDisplayText("a key has been left here.");
 		setDescription("");
 		setMaterial(RawMaterial.RESOURCE_IRON);
 	}
