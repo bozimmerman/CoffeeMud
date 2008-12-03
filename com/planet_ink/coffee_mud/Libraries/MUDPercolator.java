@@ -607,21 +607,35 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
             int material=-1;
             if((materialStr!=null)&&(CMParms.containsIgnoreCase(RawMaterial.RESOURCE_DESCS,materialStr)))
             	material=RawMaterial.RESOURCE_DATA[CMParms.indexOfIgnoreCase(RawMaterial.RESOURCE_DESCS,materialStr)][0];
+            Vector craftors=new Vector();
 			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
 			{
 				Ability A=(Ability)e.nextElement();
 				if(A instanceof ItemCraftor)
+					craftors.addElement(A);
+			}
+			if(recipe.equalsIgnoreCase("anything"))
+			{
+				ItemCraftor skill=(ItemCraftor)craftors.elementAt(CMLib.dice().roll(1,craftors.size(),-1));
+				if(material>=0)
+					contents=skill.craftAllItemsVectors(material);
+				else
+					contents=skill.craftAllItemsVectors();
+				if((contents!=null)&&(contents.size()>0))
+					contents=(Vector)contents.elementAt(CMLib.dice().roll(1,contents.size(),-1));
+			}
+			else
+			for(Enumeration e=craftors.elements();e.hasMoreElements();)
+			{
+				ItemCraftor skill=(ItemCraftor)e.nextElement();
+				Vector V=skill.matchingRecipeNames(recipe,false);
+				if((V!=null)&&(V.size()>0))
 				{
-					ItemCraftor skill=(ItemCraftor)A;
-					Vector V=skill.matchingRecipeNames(recipe,false);
-					if((V!=null)&&(V.size()>0))
-					{
-						if(material>=0)
-							contents=skill.craftItem(recipe,material);
-						else
-							contents=skill.craftItem(recipe);
-						break;
-					}
+					if(material>=0)
+						contents=skill.craftItem(recipe,material);
+					else
+						contents=skill.craftItem(recipe);
+					break;
 				}
 			}
 			if((contents==null)||(contents.size()==0))
