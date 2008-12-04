@@ -66,7 +66,7 @@ public class CharClassData extends StdWebMacro
     public static StringBuffer cabilities(CharClass E, ExternalHTTPRequests httpReq, Hashtable parms, int borderSize, String font)
     {
         StringBuffer str=new StringBuffer("");
-        DVector theclasses=new DVector(8);
+        DVector theclasses=new DVector(9);
         boolean showPreReqs=httpReq.isRequestParameter("SHOWPREREQS")&&httpReq.getRequestParameter("SHOWPREREQS").equalsIgnoreCase("on");
         boolean showMasks=httpReq.isRequestParameter("SHOWMASKS")&&httpReq.getRequestParameter("SHOWMASKS").equalsIgnoreCase("on");
         boolean showParms=httpReq.isRequestParameter("SHOWPARMS")&&httpReq.getRequestParameter("SHOWPARMS").equalsIgnoreCase("on");
@@ -92,7 +92,9 @@ public class CharClassData extends StdWebMacro
                     if(prereqs==null) prereqs="";
                     String mask=httpReq.getRequestParameter("CABMSK"+num);
                     if(mask==null) mask="";
-                    theclasses.addElement(behav,levl,prof,qual,secr,parm,prereqs,mask);
+                    String maxp=httpReq.getRequestParameter("CABMPOF"+num);
+                    if((maxp==null)||(!CMath.isInteger(maxp))) maxp="100";
+                    theclasses.addElement(behav,levl,prof,qual,secr,parm,prereqs,mask,maxp);
                 }
                 num++;
                 behav=httpReq.getRequestParameter("CABLES"+num);
@@ -129,7 +131,8 @@ public class CharClassData extends StdWebMacro
                                               CMLib.ableMapper().getSecretSkill(E.ID(),false,aID)?"on":"",
                                               CMLib.ableMapper().getDefaultParm(E.ID(),false,aID),
                                               CMLib.ableMapper().getPreReqStrings(E.ID(), false, aID),
-                                              CMLib.ableMapper().getExtraMask(E.ID(),false,aID));
+                                              CMLib.ableMapper().getExtraMask(E.ID(),false,aID),
+                                              Integer.toString(CMLib.ableMapper().getMaxProficiency(E.ID(),false,aID)));
                     }
                 }
             }
@@ -141,9 +144,10 @@ public class CharClassData extends StdWebMacro
         if(parms.containsKey("HEADERCOL1")
         ||parms.containsKey("HEADERCOL2")
         ||parms.containsKey("HEADERCOL3")
-        ||parms.containsKey("HEADERCOL4"))
+        ||parms.containsKey("HEADERCOL4")
+        ||parms.containsKey("HEADERCOL5"))
         {
-            str.append("<TR><TD WIDTH=50%>");
+            str.append("<TR><TD WIDTH=40%>");
             if(parms.containsKey("HEADERCOL1"))
                 str.append(sfont + ((String)parms.get("HEADERCOL1")) + efont);
             str.append("</TD><TD WIDTH=10%>");
@@ -152,9 +156,12 @@ public class CharClassData extends StdWebMacro
             str.append("</TD><TD WIDTH=10%>");
             if(parms.containsKey("HEADERCOL3"))
                 str.append(sfont + ((String)parms.get("HEADERCOL3")) + efont);
-            str.append("</TD><TD WIDTH=30%>");
+            str.append("</TD><TD WIDTH=10%>");
             if(parms.containsKey("HEADERCOL4"))
                 str.append(sfont + ((String)parms.get("HEADERCOL4")) + efont);
+            str.append("</TD><TD WIDTH=30%>");
+            if(parms.containsKey("HEADERCOL5"))
+                str.append(sfont + ((String)parms.get("HEADERCOL5")) + efont);
             str.append("</TD></TR>");
         }
         HashSet used=new HashSet();
@@ -162,7 +169,7 @@ public class CharClassData extends StdWebMacro
         {
             String theclass=(String)theclasses.elementAt(i,1);
             used.add(theclass);
-            str.append("<TR><TD WIDTH=50%>");
+            str.append("<TR><TD WIDTH=40%>");
             str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=CABLES"+(i+1)+">");
             str.append("<OPTION VALUE=\"\">Delete!");
             str.append("<OPTION VALUE=\""+theclass+"\" SELECTED>"+theclass);
@@ -173,6 +180,9 @@ public class CharClassData extends StdWebMacro
             str.append("</TD>");
             str.append("<TD WIDTH=10%>");
             str.append("<INPUT TYPE=TEXT NAME=CABPOF"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,3))+"\" SIZE=2 MAXLENGTH=3>"+font+"%</B></I></FONT>");
+            str.append("</TD>");
+            str.append("<TD WIDTH=10%>");
+            str.append("<INPUT TYPE=TEXT NAME=CABMPOF"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,9))+"\" SIZE=2 MAXLENGTH=3>"+font+"%</B></I></FONT>");
             str.append("</TD>");
             str.append("<TD WIDTH=30%>");
             str.append("<INPUT TYPE=CHECKBOX NAME=CABQUA"+(i+1)+" "+(((String)theclasses.elementAt(i,4)).equalsIgnoreCase("on")?"CHECKED":"")+">"+font+"Qualify Only</B></FONT></I>&nbsp;");
@@ -186,13 +196,13 @@ public class CharClassData extends StdWebMacro
             str.append("</TD>");
             str.append("</TR>");
             if(showParms)
-                str.append("<TR><TD WIDTH=100% COLSPAN=4>"+sfont+"Parameters: "+efont+"<INPUT TYPE=TEXT NAME=CABPRM"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,6))+"\" SIZE=50 MAXLENGTH=255></TD></TR>");
+                str.append("<TR><TD WIDTH=100% COLSPAN=5>"+sfont+"Parameters: "+efont+"<INPUT TYPE=TEXT NAME=CABPRM"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,6))+"\" SIZE=50 MAXLENGTH=255></TD></TR>");
             if(showMasks)
-                str.append("<TR><TD WIDTH=100% COLSPAN=4>"+sfont+"Extra Mask: "+efont+"<INPUT TYPE=TEXT NAME=CABMSK"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,8))+"\" SIZE=50 MAXLENGTH=255></TD></TR>");
+                str.append("<TR><TD WIDTH=100% COLSPAN=5>"+sfont+"Extra Mask: "+efont+"<INPUT TYPE=TEXT NAME=CABMSK"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,8))+"\" SIZE=50 MAXLENGTH=255></TD></TR>");
             if(showPreReqs)
-                str.append("<TR><TD WIDTH=100% COLSPAN=4>"+sfont+"Pre-Reqs list: "+efont+"<INPUT TYPE=TEXT NAME=CABPRE"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,7))+"\" SIZE=50 MAXLENGTH=255></TD></TR>");
+                str.append("<TR><TD WIDTH=100% COLSPAN=5>"+sfont+"Pre-Reqs list: "+efont+"<INPUT TYPE=TEXT NAME=CABPRE"+(i+1)+" VALUE=\""+((String)theclasses.elementAt(i,7))+"\" SIZE=50 MAXLENGTH=255></TD></TR>");
         }
-        str.append("<TR><TD WIDTH=50%>");
+        str.append("<TR><TD WIDTH=40%>");
         str.append("<SELECT ONCHANGE=\"AddAffect(this);\" NAME=CABLES"+(theclasses.size()+1)+">");
         str.append("<OPTION SELECTED VALUE=\"\">Select an Ability");
         for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
@@ -210,14 +220,17 @@ public class CharClassData extends StdWebMacro
         str.append("<TD WIDTH=10%>");
         str.append("<INPUT TYPE=TEXT NAME=CABPOF"+(theclasses.size()+1)+" VALUE=\"\" SIZE=2 MAXLENGTH=3>"+font+"%</B></I></FONT>");
         str.append("</TD>");
+        str.append("<TD WIDTH=10%>");
+        str.append("<INPUT TYPE=TEXT NAME=CABMPOF"+(theclasses.size()+1)+" VALUE=\"\" SIZE=2 MAXLENGTH=3>"+font+"%</B></I></FONT>");
+        str.append("</TD>");
         str.append("<TD WIDTH=30%>");
         str.append("<INPUT TYPE=CHECKBOX NAME=CABQUA"+(theclasses.size()+1)+" >"+font+"Qualify Only</B></I></FONT>&nbsp;");
         str.append("<INPUT TYPE=CHECKBOX NAME=CABSCR"+(theclasses.size()+1)+" >"+font+"Secret</B></I></FONT>");
         str.append("</TD>");
         str.append("</TR>");
-        str.append("<TR><TD WIDTH=100% COLSPAN=4>"+sfont+"Parameters: "+efont+"<INPUT TYPE=TEXT NAME=CABPRM"+(theclasses.size()+1)+" VALUE=\"\" SIZE=50 MAXLENGTH=255></TD></TR>");
-        str.append("<TR><TD WIDTH=100% COLSPAN=4>"+sfont+"Extra Mask: "+efont+"<INPUT TYPE=TEXT NAME=CABMSK"+(theclasses.size()+1)+" VALUE=\"\" SIZE=50 MAXLENGTH=255></TD></TR>");
-        str.append("<TR><TD WIDTH=100% COLSPAN=4>"+sfont+"Pre-Reqs list: "+efont+"<INPUT TYPE=TEXT NAME=CABPRE"+(theclasses.size()+1)+" VALUE=\"\" SIZE=50 MAXLENGTH=255></TD></TR>");
+        str.append("<TR><TD WIDTH=100% COLSPAN=5>"+sfont+"Parameters: "+efont+"<INPUT TYPE=TEXT NAME=CABPRM"+(theclasses.size()+1)+" VALUE=\"\" SIZE=50 MAXLENGTH=255></TD></TR>");
+        str.append("<TR><TD WIDTH=100% COLSPAN=5>"+sfont+"Extra Mask: "+efont+"<INPUT TYPE=TEXT NAME=CABMSK"+(theclasses.size()+1)+" VALUE=\"\" SIZE=50 MAXLENGTH=255></TD></TR>");
+        str.append("<TR><TD WIDTH=100% COLSPAN=5>"+sfont+"Pre-Reqs list: "+efont+"<INPUT TYPE=TEXT NAME=CABPRE"+(theclasses.size()+1)+" VALUE=\"\" SIZE=50 MAXLENGTH=255></TD></TR>");
         str.append("</TABLE>");
         return str;
     }

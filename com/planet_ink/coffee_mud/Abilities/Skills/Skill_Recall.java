@@ -48,7 +48,7 @@ public class Skill_Recall extends StdSkill
 			return false;
 
         boolean group=false;//"GROUP".startsWith(CMParms.combine(commands,0).toUpperCase());
-		boolean success=(!mob.isInCombat())||proficiencyCheck(mob,0,auto);
+		boolean success=(!mob.isInCombat())||proficiencyCheck(mob,getXLEVELLevel(mob)*10,auto);
 		if(success)
 		{
 			Room recalledRoom=mob.location();

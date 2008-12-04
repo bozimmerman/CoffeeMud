@@ -37,15 +37,18 @@ public class DVector implements Cloneable, java.io.Serializable
     public static final Iterator emptyIterator=new Vector().iterator();
 	protected int dimensions=1;
 	private Vector stuff=new Vector(1);
+	private final static int MAX_SIZE=9;
 	public DVector(int dim)
 	{
 		if(dim<1) throw new java.lang.IndexOutOfBoundsException();
+		if(dim>MAX_SIZE) throw new java.lang.IndexOutOfBoundsException();
 		dimensions=dim;
 		stuff=new Vector(1);
 	}
     public DVector(int dim, int startingSize)
     {
         if(dim<1) throw new java.lang.IndexOutOfBoundsException();
+		if(dim>MAX_SIZE) throw new java.lang.IndexOutOfBoundsException();
         dimensions=dim;
         stuff=new Vector(startingSize);
     }
@@ -242,6 +245,14 @@ public class DVector implements Cloneable, java.io.Serializable
             stuff.addElement(new Object[]{O,O1,O2,O3,O4,O5,O6,O7});
 		}
 	}
+	public void addElement(Object O, Object O1, Object O2, Object O3, Object O4, Object O5, Object O6, Object O7, Object O8)
+	{
+		if(dimensions!=9) throw new java.lang.IndexOutOfBoundsException();
+		synchronized(stuff)
+		{
+            stuff.addElement(new Object[]{O,O1,O2,O3,O4,O5,O6,O7,O8});
+		}
+	}
 	public boolean contains(Object O){
         return indexOf(O)>=0;
     }
@@ -376,6 +387,15 @@ public class DVector implements Cloneable, java.io.Serializable
 		synchronized(stuff)
 		{
             stuff.insertElementAt(new Object[]{O,O1,O2,O3,O4,O5,O6,O7},here);
+		}
+	}
+	
+	public void insertElementAt(int here, Object O, Object O1, Object O2, Object O3, Object O4, Object O5, Object O6, Object O7, Object O8)
+	{
+		if(dimensions!=9) throw new java.lang.IndexOutOfBoundsException();
+		synchronized(stuff)
+		{
+            stuff.insertElementAt(new Object[]{O,O1,O2,O3,O4,O5,O6,O7,O8},here);
 		}
 	}
 	

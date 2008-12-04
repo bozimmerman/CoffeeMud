@@ -40,7 +40,7 @@ public class GrinderClasses
 
     public static DVector cabilities(ExternalHTTPRequests httpReq)
     {
-        DVector theclasses=new DVector(8);
+        DVector theclasses=new DVector(9);
         if(httpReq.isRequestParameter("CABLES1"))
         {
             int num=1;
@@ -63,7 +63,9 @@ public class GrinderClasses
                     if(prereq==null) prereq="";
                     Object mask=httpReq.getRequestParameter("CABMSK"+num);
                     if(mask==null) mask="";
-                    theclasses.addElement(behav,levl,prof,qual,secr,parm,prereq,mask);
+                    String maxp=httpReq.getRequestParameter("CABMPOF"+num);
+                    if(maxp==null) maxp="100";
+                    theclasses.addElement(behav,levl,prof,qual,secr,parm,prereq,mask,maxp);
                 }
                 num++;
                 behav=httpReq.getRequestParameter("CABLES"+num);
@@ -255,6 +257,7 @@ public class GrinderClasses
                 C.setStat("GETCABLEPREQ"+i, (String)DV.elementAt(i,7));
             if(DV.elementAt(i,8) instanceof String)
                 C.setStat("GETCABLEMASK"+i, (String)DV.elementAt(i,8));
+            C.setStat("GETCABLEMAXP"+i, (String)DV.elementAt(i,9));
             // CABLE MUST BE LAST
             C.setStat("GETCABLE"+i, (String)DV.elementAt(i,1));
         }

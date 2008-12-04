@@ -327,7 +327,7 @@ public class GenCharClass extends StdCharClass
 			str.append(CMLib.xml().convertXMLtoTag("STARTASTATE",CMLib.coffeeMaker().getCharStateStr(startAdjState)));
 		str.append(CMLib.xml().convertXMLtoTag("DISFLAGS",""+disableFlags));
 
-		DVector ables=getAbleSet();
+		Vector ables=getAbleSet();
 		if((ables==null)||(ables.size()==0))
 			str.append("<CABILITIES/>");
 		else
@@ -336,14 +336,15 @@ public class GenCharClass extends StdCharClass
 			for(int r=0;r<ables.size();r++)
 			{
 				str.append("<CABILITY>");
-				str.append("<CACLASS>"+ables.elementAt(r,1)+"</CACLASS>");
-				str.append("<CALEVEL>"+ables.elementAt(r,2)+"</CALEVEL>");
-				str.append("<CAPROFF>"+ables.elementAt(r,3)+"</CAPROFF>");
-				str.append("<CAAGAIN>"+ables.elementAt(r,4)+"</CAAGAIN>");
-				str.append("<CASECR>"+ables.elementAt(r,5)+"</CASECR>");
-				str.append("<CAPARM>"+ables.elementAt(r,6)+"</CAPARM>");
-                str.append("<CAPREQ>"+ables.elementAt(r,7)+"</CAPREQ>");
-                str.append("<CAMASK>"+ables.elementAt(r,8)+"</CAMASK>");
+				str.append("<CACLASS>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).abilityName+"</CACLASS>");
+				str.append("<CALEVEL>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).qualLevel+"</CALEVEL>");
+				str.append("<CAPROFF>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).defaultProficiency+"</CAPROFF>");
+				str.append("<CAAGAIN>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).autoGain+"</CAAGAIN>");
+				str.append("<CASECR>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).isSecret+"</CASECR>");
+				str.append("<CAPARM>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).defaultParm+"</CAPARM>");
+                str.append("<CAPREQ>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).originalSkillPreReqList+"</CAPREQ>");
+                str.append("<CAMASK>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).extraMask+"</CAMASK>");
+                str.append("<CAMAXP>"+((AbilityMapper.AbilityMapping)ables.elementAt(r)).maxProficiency+"</CAMAXP>");
 				str.append("</CABILITY>");
 			}
 			str.append("</CABILITIES>");
@@ -508,10 +509,14 @@ public class GenCharClass extends StdCharClass
 				XMLLibrary.XMLpiece iblk=(XMLLibrary.XMLpiece)xV.elementAt(x);
 				if((!iblk.tag.equalsIgnoreCase("CABILITY"))||(iblk.contents==null))
 					continue;
+				// I hate backwards compatibility.
+				String maxProff=CMLib.xml().getValFromPieces(iblk.contents,"CAMAXP");
+				if((maxProff==null)||(maxProff.trim().length()==0)) maxProff="100";
 				CMLib.ableMapper().addCharAbilityMapping(ID(),
     								 CMLib.xml().getIntFromPieces(iblk.contents,"CALEVEL"),
     								 CMLib.xml().getValFromPieces(iblk.contents,"CACLASS"),
     								 CMLib.xml().getIntFromPieces(iblk.contents,"CAPROFF"),
+    								 CMath.s_int(maxProff),
     								 CMLib.xml().getValFromPieces(iblk.contents,"CAPARM"),
     								 CMLib.xml().getBoolFromPieces(iblk.contents,"CAAGAIN"),
     								 CMLib.xml().getBoolFromPieces(iblk.contents,"CASECR"),
@@ -601,21 +606,24 @@ public class GenCharClass extends StdCharClass
             setStat(getStatCodes()[i],CMLib.xml().getValFromPieces(classData, getStatCodes()[i]));
 	}
 
-	protected DVector getAbleSet()
+	protected Vector getAbleSet()
 	{
-		DVector VA=new DVector(8);
+		Vector VA=new Vector(9);
 		DVector V=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
 		for(int v=0;v<V.size();v++)
 		{
 			String AID=(String)V.elementAt(v,1);
-			VA.addElement(AID,
-						  ""+CMLib.ableMapper().getQualifyingLevel(ID(),false,AID),
-						  ""+CMLib.ableMapper().getDefaultProficiency(ID(),false,AID),
-						  ""+CMLib.ableMapper().getDefaultGain(ID(),false,AID),
-						  ""+CMLib.ableMapper().getSecretSkill(ID(),false,AID),
-						  ""+CMLib.ableMapper().getDefaultParm(ID(),false,AID),
-                          ""+CMLib.ableMapper().getPreReqStrings(ID(),false,AID),
-                          ""+CMLib.ableMapper().getExtraMask(ID(),false,AID));
+			AbilityMapper.AbilityMapping newMAP=new AbilityMapper.AbilityMapping();
+			newMAP.abilityName = AID;
+			newMAP.qualLevel = CMLib.ableMapper().getQualifyingLevel(ID(),false,AID); 
+			newMAP.defaultProficiency = CMLib.ableMapper().getDefaultProficiency(ID(),false,AID);
+			newMAP.autoGain = CMLib.ableMapper().getDefaultGain(ID(),false,AID);
+			newMAP.isSecret = CMLib.ableMapper().getSecretSkill(ID(),false,AID);
+			newMAP.defaultParm = CMLib.ableMapper().getDefaultParm(ID(),false,AID);
+			newMAP.originalSkillPreReqList = CMLib.ableMapper().getPreReqStrings(ID(),false,AID);
+			newMAP.extraMask = CMLib.ableMapper().getExtraMask(ID(),false,AID);
+			newMAP.maxProficiency = CMLib.ableMapper().getMaxProficiency(ID(),false,AID);
+			VA.addElement(newMAP);
 		}
 		return VA;
 	}
@@ -630,7 +638,8 @@ public class GenCharClass extends StdCharClass
 									 "GETOFTPARM","HPDIE","MANADICE","MANADIE","DISFLAGS",
 									 "STARTASTATE","NUMNAME","NAMELEVEL","NUMSSET","SSET",
                                      "SSETLEVEL","NUMWMAT","GETWMAT","ARMORMINOR","STATCLASS",
-                                     "EVENTCLASS","GETCABLEPREQ","GETCABLEMASK","HELP","LEVELCAP"
+                                     "EVENTCLASS","GETCABLEPREQ","GETCABLEMASK","HELP","LEVELCAP",
+                                     "GETCABLEMAXP"
 									 }; 
     
 	public String getStat(String code)
@@ -671,13 +680,13 @@ public class GenCharClass extends StdCharClass
 		case 21: return (adjStats==null)?"":CMLib.coffeeMaker().getCharStatsStr(adjStats);
 		case 22: return (setStats==null)?"":CMLib.coffeeMaker().getCharStatsStr(setStats);
 		case 23: return (adjState==null)?"":CMLib.coffeeMaker().getCharStateStr(adjState);
-		case 24: return ""+getAbleSet().size();
-		case 25: return (String)getAbleSet().elementAt(num,1);
-		case 26: return (String)getAbleSet().elementAt(num,2);
-		case 27: return (String)getAbleSet().elementAt(num,3);
-		case 28: return (String)getAbleSet().elementAt(num,4);
-		case 29: return (String)getAbleSet().elementAt(num,5);
-		case 30: return (String)getAbleSet().elementAt(num,6);
+		case 24: return Integer.toString(getAbleSet().size());
+		case 25: return ((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).abilityName;
+		case 26: return Integer.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).qualLevel);
+		case 27: return Integer.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).defaultProficiency);
+		case 28: return Boolean.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).autoGain);
+		case 29: return Boolean.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).isSecret);
+		case 30: return ((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).defaultParm;
 		case 31: return ""+((disallowedWeaponSet!=null)?disallowedWeaponSet.size():0);
 		case 32: return CMParms.toStringList(disallowedWeaponSet);
 		case 33: return ""+((outfit(null)!=null)?outfit(null).size():0);
@@ -704,16 +713,17 @@ public class GenCharClass extends StdCharClass
         case 48: return ""+requiredArmorSourceMinor();
         case 49: return this.getCharClassLocatorID(statBuddy);
         case 50: return this.getCharClassLocatorID(eventBuddy);
-        case 51: return (String)getAbleSet().elementAt(num,7);
-        case 52: return (String)getAbleSet().elementAt(num,8);
+		case 51: return ((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).originalSkillPreReqList;
+		case 52: return ((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).extraMask;
         case 53: return helpEntry;
         case 54: return ""+levelCap;
+		case 55: return Integer.toString(((AbilityMapper.AbilityMapping)getAbleSet().elementAt(num)).maxProficiency);
         default:
             return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
         }
 		return "";
 	}
-	protected String[] tempables=new String[8];
+	protected String[] tempables=new String[9];
 	public void setStat(String code, String val)
 	{
         int num=0;
@@ -757,6 +767,7 @@ public class GenCharClass extends StdCharClass
                                                          CMath.s_int(tempables[1]),
                                                          val,
                                                          CMath.s_int(tempables[2]),
+                                                         CMath.s_int(tempables[8]),
                                                          tempables[5],
                                                          CMath.s_bool(tempables[3]),
                                                          CMath.s_bool(tempables[4]),
@@ -904,6 +915,7 @@ public class GenCharClass extends StdCharClass
         case 52: tempables[7]=val; break;
         case 53: helpEntry=val; break;
         case 54: levelCap=CMath.s_int(val); break;
+        case 55: tempables[8]=val; break;
         default:
             CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
             break;

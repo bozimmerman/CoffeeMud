@@ -46,33 +46,33 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  int qualLevel,
 									  String ability,
 									  boolean autoGain)
-	{ addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false,new Vector(),""); }
+	{ addCharAbilityMapping(ID,qualLevel,ability,0,100,"",autoGain,false,new Vector(),""); }
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
 									  String ability,
 									  boolean autoGain,
 									  String extraMasks)
-	{ addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false,new Vector(),extraMasks); }
+	{ addCharAbilityMapping(ID,qualLevel,ability,0,100,"",autoGain,false,new Vector(),extraMasks); }
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
 									  String ability,
 									  boolean autoGain,
 									  Vector skillPreReqs)
-	{ addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false,skillPreReqs,""); }
+	{ addCharAbilityMapping(ID,qualLevel,ability,0,100,"",autoGain,false,skillPreReqs,""); }
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
 									  String ability,
 									  boolean autoGain,
 									  Vector skillPreReqs,
 									  String extraMasks)
-	{ addCharAbilityMapping(ID,qualLevel,ability,0,"",autoGain,false,skillPreReqs,extraMasks); }
+	{ addCharAbilityMapping(ID,qualLevel,ability,0,100,"",autoGain,false,skillPreReqs,extraMasks); }
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
 									  String ability,
 									  int defaultProficiency,
 									  String defParm,
 									  boolean autoGain)
-	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,defParm,autoGain,false,new Vector(),""); }
+	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,100,defParm,autoGain,false,new Vector(),""); }
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
 									  String ability,
@@ -80,20 +80,20 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  String defParm,
 									  boolean autoGain,
 									  String extraMasks)
-	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,defParm,autoGain,false,new Vector(),extraMasks); }
+	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,100,defParm,autoGain,false,new Vector(),extraMasks); }
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
 									  String ability,
 									  int defaultProficiency,
 									  boolean autoGain)
-	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,"",autoGain,false,new Vector(),""); }
+	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,100,"",autoGain,false,new Vector(),""); }
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
 									  String ability,
 									  int defaultProficiency,
 									  boolean autoGain,
 									  String extraMasks)
-	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,"",autoGain,false,new Vector(),extraMasks); }
+	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,100,"",autoGain,false,new Vector(),extraMasks); }
 
 	public void delCharAbilityMapping(String ID, String ability)
 	{
@@ -124,7 +124,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
 		return ableMap.elements();
 	}
-
+	
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
 									  String ability,
@@ -132,7 +132,8 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  String defaultParam,
 									  boolean autoGain,
 									  boolean secret)
-	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,defaultParam,autoGain,secret,new Vector(),"");}
+	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,100,defaultParam,autoGain,secret,new Vector(),"");}
+	
 	public void addCharAbilityMapping(String ID,
 									  int qualLevel,
 									  String ability,
@@ -141,18 +142,51 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  boolean autoGain,
 									  boolean secret,
 									  String extraMasks)
-	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,defaultParam,autoGain,secret,new Vector(),extraMasks);}
+	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,100,defaultParam,autoGain,secret,new Vector(),extraMasks);}
+	
+	
+	public void addCharAbilityMapping(String ID,
+							          int qualLevel,
+							          String ability,
+							          int defaultProficiency,
+							          String defaultParam,
+							          boolean autoGain,
+							          boolean secret,
+							          Vector preReqSkillsList,
+							          String extraMask)
+	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,100,defaultParam,autoGain,secret,preReqSkillsList,extraMask,null);}
+
+	public void addCharAbilityMapping(String ID,
+									  int qualLevel,
+									  String ability,
+									  int defaultProficiency,
+									  int maxProficiency,
+									  String defaultParam,
+									  boolean autoGain,
+									  boolean secret)
+	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,new Vector(),"");}
+	public void addCharAbilityMapping(String ID,
+									  int qualLevel,
+									  String ability,
+									  int defaultProficiency,
+									  int maxProficiency,
+									  String defaultParam,
+									  boolean autoGain,
+									  boolean secret,
+									  String extraMasks)
+	{ addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,new Vector(),extraMasks);}
 
     public void addCharAbilityMapping(String ID,
                                       int qualLevel,
                                       String ability,
                                       int defaultProficiency,
+                                      int maxProficiency,
                                       String defaultParam,
                                       boolean autoGain,
                                       boolean secret,
                                       Vector preReqSkillsList,
                                       String extraMask)
-    { addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,defaultParam,autoGain,secret,preReqSkillsList,extraMask,null);}
+    { addCharAbilityMapping(ID,qualLevel,ability,defaultProficiency,maxProficiency,defaultParam,autoGain,secret,preReqSkillsList,extraMask,null);}
 
 	
 	public void addPreRequisites(String ID, Vector preReqSkillsList, String extraMask)
@@ -284,6 +318,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 									  int qualLevel,
 									  String ability,
 									  int defaultProficiency,
+									  int maxProficiency,
 									  String defaultParam,
 									  boolean autoGain,
 									  boolean secret,
@@ -303,6 +338,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		able.isSecret=secret;
 		able.defaultParm=defaultParam==null?"":defaultParam;
 		able.defaultProficiency=defaultProficiency;
+		able.maxProficiency=maxProficiency;
 		able.extraMask=extraMask==null?"":extraMask;
         able.costOverrides=costOverrides;
         able.originalSkillPreReqList=CMParms.toStringList(preReqSkillsList);
@@ -1197,6 +1233,22 @@ public class CMAble extends StdLibrary implements AbilityMapper
         return "";
     }
 
+	public int getMaxProficiency(String ID, boolean checkAll, String ability)
+	{
+		if(completeAbleMap.containsKey(ID))
+		{
+			Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
+			if(ableMap.containsKey(ability))
+				return ((AbilityMapping)ableMap.get(ability)).maxProficiency;
+		}
+		if((checkAll)&&(completeAbleMap.containsKey("All")))
+		{
+			Hashtable ableMap=(Hashtable)completeAbleMap.get("All");
+			if(ableMap.containsKey(ability))
+				return ((AbilityMapping)ableMap.get(ability)).maxProficiency;
+		}
+		return 100;
+	}
 	public int getDefaultProficiency(String ID, boolean checkAll, String ability)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -1576,5 +1628,4 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 		return H;
 	}
-
 }

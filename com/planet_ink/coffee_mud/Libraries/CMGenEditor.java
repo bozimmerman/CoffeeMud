@@ -5418,7 +5418,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         {
             if(mob.session().confirm("Enter Y to DELETE, or N to modify (y/N)?","N"))
             {
-                DVector set=(DVector)sets.elementAt(origLevelIndex,2);
+                Vector set=(Vector)sets.elementAt(origLevelIndex,2);
                 set.removeElementAt(origAbleIndex);
                 return null;
             }
@@ -5432,67 +5432,61 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             mob.tell("Aborted.");
             return null;
         }
-        Integer prof=null;
-        Boolean secret=null;
-        Boolean gained=null;
-        String parms="";
-        String masks="";
-        String preqs="";
+
+    	AbilityMapper.AbilityMapping aMAP=new AbilityMapper.AbilityMapping();
         if(origLevelIndex<0)
         {
-            prof=new Integer(0);
-            secret=Boolean.FALSE;
-            gained=Boolean.FALSE;
-            parms="";
-            preqs="";
-            masks="";
+        	aMAP.abilityName=ableID;
+        	aMAP.defaultProficiency=0;
+        	aMAP.maxProficiency=100;
+        	aMAP.defaultParm="";
+        	aMAP.originalSkillPreReqList="";
+        	aMAP.extraMask="";
+        	aMAP.autoGain=false;
+        	aMAP.isSecret=false;
         }
         else
         {
-            DVector set=(DVector)sets.elementAt(origLevelIndex,2);
-            gained=(Boolean)set.elementAt(origAbleIndex,2);
-            prof=(Integer)set.elementAt(origAbleIndex,3);
-            secret=(Boolean)set.elementAt(origAbleIndex,4);
-            parms=(String)set.elementAt(origAbleIndex,5);
-            preqs=(String)set.elementAt(origAbleIndex,6);
-            masks=(String)set.elementAt(origAbleIndex,7);
-            set.removeElementAt(origAbleIndex);
+            Vector levelSet=(Vector)sets.elementAt(origLevelIndex,2);
+            aMAP=(AbilityMapper.AbilityMapping)levelSet.elementAt(origAbleIndex);
+            levelSet.removeElementAt(origAbleIndex);
             origAbleIndex=-1;
         }
 
         int newlevelIndex=sets.indexOf(level);
-        DVector levelSet=null;
+        Vector levelSet=null;
         if(newlevelIndex<0)
         {
             newlevelIndex=sets.size();
-            levelSet=new DVector(7);
+            levelSet=new Vector();
             sets.addElement(level,levelSet);
         }
         else
-            levelSet=(DVector)sets.elementAt(newlevelIndex,2);
-        prof=new Integer(CMath.s_int(mob.session().prompt("Enter the (default) proficiency level ("+prof.toString()+"): ",prof.toString())));
-        gained=Boolean.valueOf(mob.session().confirm("Is this skill automatically gained (Y/N)?",""+gained.toString()));
-        secret=Boolean.valueOf(mob.session().confirm("Is this skill secret (N/y)?",secret.toString()));
-        parms=mob.session().prompt("Enter any properties ("+parms+")\n\r: ",parms);
+            levelSet=(Vector)sets.elementAt(newlevelIndex,2);
+        aMAP.defaultProficiency=CMath.s_int(mob.session().prompt("Enter the (default) proficiency level ("+aMAP.defaultProficiency+"): ",aMAP.defaultProficiency+""));
+        aMAP.maxProficiency=CMath.s_int(mob.session().prompt("Enter the (maximum) proficiency level ("+aMAP.maxProficiency+"): ",aMAP.maxProficiency+""));
+        aMAP.autoGain=Boolean.valueOf(mob.session().confirm("Is this skill automatically gained"+(aMAP.autoGain?"(Y/n)":"(y/N)")+"?",""+aMAP.autoGain));
+        aMAP.isSecret=Boolean.valueOf(mob.session().confirm("Is this skill secret "+(aMAP.isSecret?"(Y/n)":"(y/N)")+"?",""+aMAP.isSecret));
+        aMAP.defaultParm=mob.session().prompt("Enter any properties ("+aMAP.defaultParm+")\n\r: ",aMAP.defaultParm);
         String s="?";
         while(s.equalsIgnoreCase("?"))
         {
-            s=mob.session().prompt("Enter any pre-requisites ("+preqs+")\n\r(?) : ",preqs);
+            s=mob.session().prompt("Enter any pre-requisites ("+aMAP.originalSkillPreReqList+")\n\r(?) : ",aMAP.originalSkillPreReqList);
             if(s.equalsIgnoreCase("?"))
                 mob.tell(""+CMLib.help().getHelpText("ABILITY_PREREQS",mob,true));
             else
-                preqs=s;
+            	aMAP.originalSkillPreReqList=s;
         }
         s="?";
         while(s.equalsIgnoreCase("?"))
         {
-            s=mob.session().prompt("Enter any requirement mask ("+masks+")\n\r(?) : ",masks);
+            s=mob.session().prompt("Enter any requirement mask ("+aMAP.extraMask+")\n\r(?) : ",aMAP.extraMask);
             if(s.equalsIgnoreCase("?"))
                 mob.tell(""+CMLib.help().getHelpText("MASKS",mob,true));
             else
-                masks=s;
+            	aMAP.extraMask=s;
         }
-        levelSet.addElement(ableID,gained,prof,secret,parms,preqs,masks);
+        levelSet.addElement(aMAP);
         return sets;
     }
 
@@ -5516,25 +5510,28 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 Ability A=CMClass.getAbility(E.getStat("GETCABLE"+v));
                 if(A!=null)
                 {
-                    Boolean gain=Boolean.valueOf(CMath.s_bool(E.getStat("GETCABLEGAIN"+v)));
-                    Integer defProf=new Integer(CMath.s_int(E.getStat("GETCABLEPROF"+v)));
-                    Integer lvl=new Integer(CMath.s_int(E.getStat("GETCABLELVL"+v)));
-                    Boolean secret=Boolean.valueOf(CMath.s_bool(E.getStat("GETCABLESECR"+v)));
-                    String parm=E.getStat("GETCABLEPARM"+v);
-                    String preq=E.getStat("GETCABLEPREQ"+v);
-                    String mask=E.getStat("GETCABLEMASK"+v);
-                    int lvlIndex=levelSets.indexOf(lvl);
-                    DVector set=null;
+                	AbilityMapper.AbilityMapping aMAP=new AbilityMapper.AbilityMapping();
+                	aMAP.abilityName=A.ID();
+                	aMAP.autoGain=CMath.s_bool(E.getStat("GETCABLEGAIN"+v));
+                    aMAP.defaultProficiency=CMath.s_int(E.getStat("GETCABLEPROF"+v));
+                    aMAP.qualLevel=CMath.s_int(E.getStat("GETCABLELVL"+v));
+                    aMAP.isSecret=CMath.s_bool(E.getStat("GETCABLESECR"+v));
+                    aMAP.maxProficiency=CMath.s_int(E.getStat("GETCABLEMAXP"+v));
+                    aMAP.defaultParm=E.getStat("GETCABLEPARM"+v);
+                    aMAP.originalSkillPreReqList=E.getStat("GETCABLEPREQ"+v);
+                    aMAP.extraMask=E.getStat("GETCABLEMASK"+v);
+                    int lvlIndex=levelSets.indexOf(Integer.valueOf(aMAP.qualLevel));
+                	Vector set=null;
                     if(lvlIndex<0)
                     {
-                        set=new DVector(7);
-                        levelSets.addElement(lvl,set);
-                        if(lvl.intValue()>maxAbledLevel)
-                            maxAbledLevel=lvl.intValue();
+                        set=new Vector();
+                        levelSets.addElement(Integer.valueOf(aMAP.qualLevel),set);
+                        if(aMAP.qualLevel>maxAbledLevel)
+                            maxAbledLevel=aMAP.qualLevel;
                     }
                     else
-                        set=(DVector)levelSets.elementAt(lvlIndex,2);
-                    set.addElement(A.ID(),gain,defProf,secret,parm,preq,mask);
+                        set=(Vector)levelSets.elementAt(lvlIndex,2);
+                    set.addElement(aMAP);
                 }
             }
             String header=showNumber+". Class Abilities: ";
@@ -5553,24 +5550,18 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 int index=levelSets.indexOf(new Integer(i));
                 if(index<0) continue;
-                DVector set=(DVector)levelSets.elementAt(index,2);
+                Vector set=(Vector)levelSets.elementAt(index,2);
                 for(int s=0;s<set.size();s++)
                 {
-                    String ID=(String)set.elementAt(s,1);
-                    Boolean gain=(Boolean)set.elementAt(s,2);
-                    Integer defProf=(Integer)set.elementAt(s,3);
-                    Boolean secret=(Boolean)set.elementAt(s,4);
-                    String parm=(String)set.elementAt(s,5);
-                    String preq=(String)set.elementAt(s,6);
-                    String mask=(String)set.elementAt(s,7);
+                	AbilityMapper.AbilityMapping aMAP=(AbilityMapper.AbilityMapping)set.elementAt(s);
                     parts.append(spaces+CMStrings.padRight(""+i,3)+" "
-                                       +CMStrings.padRight(""+ID,25)+" "
-                                       +CMStrings.padRight(defProf.toString(),5)+" "
-                                       +CMStrings.padRight(gain.toString(),5)+" "
-                                       +CMStrings.padRight(secret.toString(),6)+" "
-                                       +CMStrings.padRight(parm,7)+" "
-                                       +CMStrings.padRight(preq,7)+" "
-                                       +CMStrings.padRight(mask,6)+"\n\r"
+                                       +CMStrings.padRight(""+aMAP.abilityName,25)+" "
+                                       +CMStrings.padRight(""+aMAP.defaultProficiency,5)+" "
+                                       +CMStrings.padRight(""+aMAP.autoGain,5)+" "
+                                       +CMStrings.padRight(""+aMAP.isSecret,6)+" "
+                                       +CMStrings.padRight(""+aMAP.defaultParm,7)+" "
+                                       +CMStrings.padRight(""+aMAP.originalSkillPreReqList,7)+" "
+                                       +CMStrings.padRight(""+aMAP.extraMask,6)+"\n\r"
                                        );
                 }
             }
@@ -5584,12 +5575,12 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 int lvlIndex=-1;
                 int ableIndex=-1;
-                DVector myLevelSet=null;
+                Vector myLevelSet=null;
                 for(int s=0;s<levelSets.size();s++)
                 {
-                    DVector lvls=(DVector)levelSets.elementAt(s,2);
+                    Vector lvls=(Vector)levelSets.elementAt(s,2);
                     for(int l=0;l<lvls.size();l++)
-                        if(CMLib.english().containsString(((String)lvls.elementAt(l,1)),newName))
+                        if(CMLib.english().containsString(((AbilityMapper.AbilityMapping)lvls.elementAt(l)).abilityName,newName))
                         {
                             lvlIndex=s;
                             ableIndex=l;
@@ -5617,7 +5608,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 }
                 else
                 {
-                    String aID=(String)myLevelSet.elementAt(ableIndex,1);
+                    String aID=((AbilityMapper.AbilityMapping)myLevelSet.elementAt(ableIndex)).abilityName;
                     if(genClassAbleMod(mob,levelSets,aID,lvlIndex,ableIndex)!=null)
                         mob.tell(aID+" modified.");
                     else
@@ -5638,18 +5629,20 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                     for(int s=0;s<levelSets.size();s++)
                     {
                         Integer lvl=(Integer)levelSets.elementAt(s,1);
-                        DVector lvls=(DVector)levelSets.elementAt(s,2);
+                        Vector lvls=(Vector)levelSets.elementAt(s,2);
                         for(int l=0;l<lvls.size();l++)
                         {
+                        	AbilityMapper.AbilityMapping aMAP=(AbilityMapper.AbilityMapping)lvls.elementAt(l);
                             E.setStat("GETCABLELVL"+dex,lvl.toString());
-                            E.setStat("GETCABLEGAIN"+dex,lvls.elementAt(l,2).toString());
-                            E.setStat("GETCABLEPROF"+dex,lvls.elementAt(l,3).toString());
-                            E.setStat("GETCABLESECR"+dex,lvls.elementAt(l,4).toString());
-                            E.setStat("GETCABLEPARM"+dex,lvls.elementAt(l,5).toString());
-                            E.setStat("GETCABLEPREQ"+dex,lvls.elementAt(l,6).toString());
-                            E.setStat("GETCABLEMASK"+dex,lvls.elementAt(l,7).toString());
+                            E.setStat("GETCABLEGAIN"+dex,""+aMAP.autoGain);
+                            E.setStat("GETCABLEPROF"+dex,""+aMAP.defaultProficiency);
+                            E.setStat("GETCABLESECR"+dex,""+aMAP.isSecret);
+                            E.setStat("GETCABLEPARM"+dex,""+aMAP.defaultParm);
+                            E.setStat("GETCABLEPREQ"+dex,aMAP.originalSkillPreReqList);
+                            E.setStat("GETCABLEMASK"+dex,aMAP.extraMask);
+                            E.setStat("GETCABLEMAXP"+dex,""+aMAP.maxProficiency);
                             // CABLE MUST BE LAST
-                            E.setStat("GETCABLE"+dex,lvls.elementAt(l,1).toString());
+                            E.setStat("GETCABLE"+dex,aMAP.abilityName);
                             dex++;
                         }
                     }

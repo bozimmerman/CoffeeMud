@@ -857,7 +857,8 @@ public class StdAbility implements Ability
         if(!A.appropriateToMyFactions(mob))
             return;
 
-		if(A.proficiency()<100)
+        int maxProficiency = CMLib.ableMapper().getMaxProficiency(mob.charStats().getCurrentClass().ID(),true,ID()); 
+		if(A.proficiency()< maxProficiency)
 		{
 			if(((int)Math.round(Math.sqrt(((double)mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)))*34.0*Math.random()))>=A.proficiency())
 			{
@@ -866,7 +867,7 @@ public class StdAbility implements Ability
 			    {
 					// very important, since these can be autoinvoked affects (copies)!
 					A.setProficiency(A.proficiency()+1);
-					if((this!=A)&&(proficiency()<100))
+					if((this!=A)&&(proficiency()<maxProficiency))
 						setProficiency(proficiency()+1);
 					if(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOIMPROVE))
 						mob.tell("You become better at "+A.name()+".");

@@ -479,7 +479,7 @@ public class StdCharClass implements CharClass
 
         DVector data1=CMLib.ableMapper().getUpToLevelListings(ID(),Integer.MAX_VALUE,true,false);
         String aID=null;
-        DVector completeSet=new DVector(8);
+        DVector completeSet=new DVector(9);
         for(int i=0;i<data1.size();i++)
         {
             aID=(String)data1.elementAt(i,1);
@@ -490,7 +490,8 @@ public class StdCharClass implements CharClass
                                    Boolean.valueOf(CMLib.ableMapper().getSecretSkill(ID(),false,aID)),
                                    CMLib.ableMapper().getDefaultParm(ID(),false,aID),
                                    CMLib.ableMapper().getPreReqStrings(ID(),false,aID),
-                                   CMLib.ableMapper().getExtraMask(ID(),false,aID));
+                                   CMLib.ableMapper().getExtraMask(ID(),false,aID),
+                                   new Integer(CMLib.ableMapper().getMaxProficiency(ID(),false,aID)));
         }
 
         if(completeSet.size()>0)
@@ -506,6 +507,7 @@ public class StdCharClass implements CharClass
             CR.setStat("GETCABLEPARM"+i,completeSet.elementAt(i,6).toString());
             CR.setStat("GETCABLEPREQ"+i,completeSet.elementAt(i,7).toString());
             CR.setStat("GETCABLEMASK"+i,completeSet.elementAt(i,8).toString());
+            CR.setStat("GETCABLEMAXP"+i,completeSet.elementAt(i,9).toString());
             // GETCABLE -- MUST BE LAST --
             CR.setStat("GETCABLE"+i,completeSet.elementAt(i,1).toString());
         }
