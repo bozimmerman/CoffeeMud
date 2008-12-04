@@ -123,7 +123,8 @@ public class CombatAbilities extends StdBehavior
 			Ability A=mob.fetchAbility(a);
 			if(A!=null)
 			{
-				if(A.proficiency()<50)	A.setProficiency(50);
+				int proficiency=CMLib.ableMapper().getMaxProficiency(mob,true,A.ID())/2;
+				if(A.proficiency()<proficiency)	A.setProficiency(proficiency);
 				oldAbilities.addElement(A);
 			}
 		}

@@ -302,13 +302,13 @@ public class StdRace implements Race
                         &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
 						{
 
-							if(A.proficiency()>0) A.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A.ID()));
+							if(A.proficiency()>0) A.setProficiency(100);
 							A.invoke(mob,mob,false,0);
 							if(CMLib.flags().isChild(mob))
 							{
 								A=mob.fetchAbility("Common");
 								if(A==null){ A=CMClass.getAbility("Common"); if(A!=null)mob.addAbility(A);}
-								if(A!=null) A.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A.ID()));
+								if(A!=null) A.setProficiency(100);
 							}
 						}
 					}

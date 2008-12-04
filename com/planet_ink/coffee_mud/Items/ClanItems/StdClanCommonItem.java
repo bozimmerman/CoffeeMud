@@ -225,7 +225,7 @@ public class StdClanCommonItem extends StdClanItem
 				Ability A=CMClass.getAbility(readableText());
 				if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
 				{
-					A.setProficiency(CMLib.ableMapper().getMaxProficiency(M,true,A.ID()));
+					A.setProficiency(100);
                     boolean success=false;
                     if(((A.classificationCode()&Ability.ALL_DOMAINS)!=Ability.DOMAIN_CRAFTINGSKILL)
                     &&(CMLib.flags().isMobile(M)))

@@ -1260,7 +1260,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			if(ableMap.containsKey(ability))
 				return ((AbilityMapping)ableMap.get(ability)).maxProficiency;
 		}
-		return 100;
+		return getMaxProficiency(ability);
 	}
 	public int getMaxProficiency(String abilityID)
 	{
