@@ -302,13 +302,13 @@ public class StdRace implements Race
                         &&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_LANGUAGE))
 						{
 
-							if(A.proficiency()>0) A.setProficiency(100);
+							if(A.proficiency()>0) A.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A.ID()));
 							A.invoke(mob,mob,false,0);
 							if(CMLib.flags().isChild(mob))
 							{
 								A=mob.fetchAbility("Common");
 								if(A==null){ A=CMClass.getAbility("Common"); if(A!=null)mob.addAbility(A);}
-								if(A!=null) A.setProficiency(100);
+								if(A!=null) A.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A.ID()));
 							}
 						}
 					}
@@ -565,7 +565,7 @@ public class StdRace implements Race
 				Ability A=CMClass.getAbility(racialEffectNames()[v]);
 				if(A!=null)
 				{
-					A.setProficiency(100);
+					A.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A.ID()));
 					A.setSavable(false);
 					A.setMiscText(racialEffectParms()[v]);
 					A.makeNonUninvokable();

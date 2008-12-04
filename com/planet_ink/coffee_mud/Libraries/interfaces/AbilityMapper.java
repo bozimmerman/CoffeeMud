@@ -125,6 +125,8 @@ public interface AbilityMapper extends CMLibrary
     public String getPreReqStrings(String ID, boolean checkAll, String ability);
     public int getDefaultProficiency(String ID, boolean checkAll, String ability);
     public int getMaxProficiency(String ID, boolean checkAll, String ability);
+	public int getMaxProficiency(String abilityID);
+	public int getMaxProficiency(MOB mob, boolean checkAll, String ability);
 	public Vector componentCheck(MOB mob, DVector req);
 	public String getAbilityComponentDesc(MOB mob, String AID);
 	public Hashtable getAbilityComponentMap();

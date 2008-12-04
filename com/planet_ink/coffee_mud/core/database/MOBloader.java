@@ -257,7 +257,7 @@ public class MOBloader
                         {
                             if(proficiency==Integer.MAX_VALUE)
                             {
-                                newAbility.setProficiency(100);
+                                newAbility.setProficiency(CMLib.ableMapper().getMaxProficiency(newAbility.ID()));
                                 mob.addNonUninvokableEffect(newAbility);
                                 newAbility.setMiscText(DBConnections.getRes(R,"CMABTX"));
                             }else

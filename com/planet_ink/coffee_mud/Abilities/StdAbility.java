@@ -857,7 +857,7 @@ public class StdAbility implements Ability
         if(!A.appropriateToMyFactions(mob))
             return;
 
-        int maxProficiency = CMLib.ableMapper().getMaxProficiency(mob.charStats().getCurrentClass().ID(),true,ID()); 
+        int maxProficiency = CMLib.ableMapper().getMaxProficiency(mob,true,ID()); 
 		if(A.proficiency()< maxProficiency)
 		{
 			if(((int)Math.round(Math.sqrt(((double)mob.charStats().getStat(CharStats.STAT_INTELLIGENCE)))*34.0*Math.random()))>=A.proficiency())
@@ -876,7 +876,7 @@ public class StdAbility implements Ability
 			}
 		}
 		else
-			A.setProficiency(100);
+			A.setProficiency(maxProficiency);
 	}
 
     public boolean preInvoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel, int secondsElapsed, double actionsRemaining)
@@ -1201,7 +1201,8 @@ public class StdAbility implements Ability
 		Ability yourAbility=teacher.fetchAbility(ID());
 		if(yourAbility!=null)
 		{
-			if(yourAbility.proficiency()<25)
+			int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,yourAbility.ID()), .25));
+			if(yourAbility.proficiency()<prof75)
 			{
 				teacher.tell("You are not proficient enough to teach '"+name()+"'");
 				student.tell(teacher.name()+" is not proficient enough to teach '"+name()+"'.");
@@ -1326,7 +1327,8 @@ public class StdAbility implements Ability
 
 		if(teacherAbility!=null)
 		{
-			if(teacherAbility.proficiency()<25)
+			int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,teacherAbility.ID()), .25));
+			if(teacherAbility.proficiency()<prof75)
 			{
 				teacher.tell("You aren't proficient enough to teach '"+name()+"'.");
 				student.tell(teacher.name()+" isn't proficient enough to teach you '"+name()+"'.");
@@ -1436,6 +1438,7 @@ public class StdAbility implements Ability
 			return false;
 		}
 
+		int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,yourAbility.ID()), .25));
 		if(yourAbility.proficiency()>teacherAbility.proficiency())
 		{
 			teacher.tell("You aren't proficient enough to teach any more about '"+name()+"'.");
@@ -1443,14 +1446,15 @@ public class StdAbility implements Ability
 			return false;
 		}
 		else
-		if(yourAbility.proficiency()>74)
+		if(yourAbility.proficiency()>prof75-1)
 		{
 			teacher.tell("You can't teach "+student.charStats().himher()+" any more about '"+name()+"'.");
 			student.tell("You can't learn any more about '"+name()+"' except through dilligence.");
 			return false;
 		}
 
-		if(teacherAbility.proficiency()<25)
+		int prof25=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,teacherAbility.ID()), .25));
+		if(teacherAbility.proficiency()<prof25)
 		{
 			teacher.tell("You aren't proficient enough to teach '"+name()+"'.");
 			student.tell(teacher.name()+" isn't proficient enough to teach you '"+name()+"'.");
@@ -1484,9 +1488,10 @@ public class StdAbility implements Ability
 			student.setPractices(student.getPractices()-practicesRequired(student));
 			student.setTrains(student.getTrains()-trainsRequired(student));
 			Ability newAbility=(Ability)newInstance();
+			int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,newAbility.ID()), .75));
 			newAbility.setProficiency((int)Math.round(CMath.mul(proficiency(),((CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),100.0))))));
-			if(newAbility.proficiency()>75)
-				newAbility.setProficiency(75);
+			if(newAbility.proficiency()>prof75)
+				newAbility.setProficiency(prof75);
 			int defProficiency=CMLib.ableMapper().getDefaultProficiency(student.charStats().getCurrentClass().ID(),true,ID());
 			if((defProficiency>0)&&(defProficiency>newAbility.proficiency()))
 				newAbility.setProficiency(defProficiency);
@@ -1506,12 +1511,13 @@ public class StdAbility implements Ability
 		Ability yourAbility=student.fetchAbility(ID());
 		if(yourAbility!=null)
 		{
-			if(yourAbility.proficiency()<75)
+			int prof75=(int)Math.round(CMath.mul(CMLib.ableMapper().getMaxProficiency(student,true,yourAbility.ID()), .75));
+			if(yourAbility.proficiency()<prof75)
 			{
 				student.setPractices(student.getPractices()-practicesToPractice(student));
 				yourAbility.setProficiency(yourAbility.proficiency()+(int)Math.round(25.0*(CMath.div(teacher.charStats().getStat(CharStats.STAT_WISDOM)+student.charStats().getStat(CharStats.STAT_INTELLIGENCE),36.0))));
-				if(yourAbility.proficiency()>75)
-					yourAbility.setProficiency(75);
+				if(yourAbility.proficiency()>prof75)
+					yourAbility.setProficiency(prof75);
 			}
 		}
 	}

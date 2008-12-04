@@ -38,6 +38,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
     public String ID(){return "CMAble";}
 	public Hashtable completeAbleMap=new Hashtable();
 	public Hashtable lowestQualifyingLevelMap=new Hashtable();
+	public Hashtable maxProficiencyMap=new Hashtable();
 	public Hashtable allows=new Hashtable();
     public Hashtable completeDomainMap=new Hashtable();
     public Hashtable reverseAbilityMap=new Hashtable();
@@ -366,6 +367,10 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		if((lowLevel==null)
 		||(qualLevel<lowLevel.intValue()))
 			lowestQualifyingLevelMap.put(ability,new Integer(qualLevel));
+		Integer maxProf=(Integer)maxProficiencyMap.get(ability);
+		if((maxProf==null)
+		||(maxProficiency>maxProf.intValue()))
+			maxProficiencyMap.put(ability,new Integer(maxProficiency));
 		DVector reV=(DVector)reverseAbilityMap.get(ability);
 		if(reV==null){ reV=new DVector(2); reverseAbilityMap.put(ability,reV);}
 		if(!reV.contains(ID)) reV.addElement(ID, able);
@@ -1233,6 +1238,14 @@ public class CMAble extends StdLibrary implements AbilityMapper
         return "";
     }
 
+	public int getMaxProficiency(MOB mob, boolean checkAll, String ability)
+	{
+		if(mob==null) return getMaxProficiency(ability);
+		CharClass C=mob.charStats().getCurrentClass();
+		if(C==null) return getMaxProficiency(ability);
+		return getMaxProficiency(C.ID(),checkAll,ability);
+	}
+	
 	public int getMaxProficiency(String ID, boolean checkAll, String ability)
 	{
 		if(completeAbleMap.containsKey(ID))
@@ -1247,6 +1260,12 @@ public class CMAble extends StdLibrary implements AbilityMapper
 			if(ableMap.containsKey(ability))
 				return ((AbilityMapping)ableMap.get(ability)).maxProficiency;
 		}
+		return 100;
+	}
+	public int getMaxProficiency(String abilityID)
+	{
+		if(maxProficiencyMap.containsKey(abilityID))
+			return ((Integer)maxProficiencyMap.get(abilityID)).intValue();
 		return 100;
 	}
 	public int getDefaultProficiency(String ID, boolean checkAll, String ability)

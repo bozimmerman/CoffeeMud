@@ -140,7 +140,7 @@ public class CombatAbilities extends StdBehavior
 					a=a-1;
 				}
 				else
-					newOne.setProficiency(100);
+					newOne.setProficiency(CMLib.ableMapper().getMaxProficiency(newOne.ID()));
 			}
 		}
 	}

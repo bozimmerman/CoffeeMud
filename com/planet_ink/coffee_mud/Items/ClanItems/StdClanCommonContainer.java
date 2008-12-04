@@ -70,7 +70,7 @@ public class StdClanCommonContainer extends StdClanContainer
 				Ability A=CMClass.getAbility(readableText());
 				if((A!=null)&&((A.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_COMMON_SKILL))
 				{
-					A.setProficiency(100);
+					A.setProficiency(CMLib.ableMapper().getMaxProficiency(M,true,A.ID()));
 					if(M.inventorySize()>1)
 					{
 						Item I=null;

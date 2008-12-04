@@ -404,7 +404,7 @@ public class StdDeity extends StdMOB implements Deity
 		&&(CMLib.ableMapper().qualifyingLevel(mob,Power)<=0))
 		{
 			Power=(Ability)Power.copyOf();
-			Power.setProficiency(100);
+			Power.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,Power.ID()));
 			Power.setSavable(false);
 			mob.addAbility(Power);
 		}

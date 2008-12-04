@@ -330,11 +330,11 @@ public class StdCharClass implements CharClass
                 Ability A=mob.fetchAbility(a);
                 if(A!=null)
                 {
-                    A.setProficiency(100);
+                    A.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A.ID()));
                     A.setSavable(false);
                     Ability A2=(Ability)alreadyAff.get(A.ID());
                     if(A2!=null)
-                        A2.setProficiency(100);
+                        A2.setProficiency(CMLib.ableMapper().getMaxProficiency(mob,true,A.ID()));
                     else
                         A.autoInvocation(mob);
                     alreadyAble.put(A.ID(),A);

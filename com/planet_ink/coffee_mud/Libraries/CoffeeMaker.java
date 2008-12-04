@@ -1815,7 +1815,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				return;
 			}
 			String proff=CMLib.xml().getValFromPieces(ablk.contents,"APROF");
-			if(proff.length()>0)
+			if((proff!=null)&&(proff.length()>0))
 				newOne.setProficiency(CMath.s_int(proff));
 			else
 				newOne.setProficiency(100);
