@@ -920,12 +920,12 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 			<ITEM class="GenTable" name="(a(n)) $nasty_word table" display="$ITEM_NAME is here">
 				<ITEM select="any-2" include="any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item" />
 			</ITEM>
-			<ITEM class="metacraft" name="Scroll Case"">
+			<ITEM class="metacraft" name="Scroll Case">
 				<ITEM select="any-2">
 					<CONTENTS><ITEM select="any-2" include="any_scrollscribing_item,any_scrollscribing_item" /></CONTENTS>
 				</ITEM>
 			</ITEM>
-			<ITEM class="metacraft" name="Potion Rack""/>
+			<ITEM class="metacraft" name="Potion Rack">
 				<CONTENTS><ITEM select="any-2" include="any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item" /></CONTENTS>
 			</ITEM>
 		</ROOM>
