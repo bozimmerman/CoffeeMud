@@ -566,13 +566,16 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			cmds=CMParms.toStringArray(CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_MOBDEATH),true));
 		else
 			cmds=CMParms.toStringArray(CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PLAYERDEATH),true));
+		
+		DeadBody body=null; //must be done before consequences because consequences could be purging
+		if((!CMParms.containsIgnoreCase(cmds,"RECALL"))
+		&&(!isKnockedOutUponDeath(target,source)))
+			body=target.killMeDead(true);
+		
 		handleConsequences(target,source,cmds,expLost,"^*You lose @x1 experience points.^?^.");
 
 		if(!isKnockedOutUponDeath(target,source))
 		{
-			DeadBody body=null;
-			if(!CMParms.containsIgnoreCase(cmds,"RECALL"))
-				body=target.killMeDead(true);
 			Room bodyRoom=deathRoom;
 			if((body!=null)&&(body.owner() instanceof Room)&&(((Room)body.owner()).isContent(body)))
 				bodyRoom=(Room)body.owner();

@@ -236,10 +236,11 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	        return false;
 		CMMsg msg=CMClass.getMsg(mob,victim,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_EXPCHANGE,null,CMMsg.NO_EFFECT,homage,CMMsg.NO_EFFECT,""+quiet);
 		msg.setValue(amount);
-		if(mob.location()!=null)
+		Room R=mob.location();
+		if(R!=null)
 		{
-			if(mob.location().okMessage(mob,msg))
-				mob.location().send(mob,msg);
+			if(R.okMessage(mob,msg))
+				R.send(mob,msg);
 			else
 				return false;
 		}
