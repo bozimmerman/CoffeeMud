@@ -9,14 +9,13 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
-import com.planet_ink.coffee_mud.Libraries.interfaces.ExpertiseLibrary;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 
 import java.util.*;
-
 
 /* 
    Copyright 2000-2008 Bo Zimmerman
@@ -35,27 +34,19 @@ import java.util.*;
 */
 
 @SuppressWarnings("unchecked")
-public class Herbalism extends CraftingSkill implements ItemCraftor
+public class ScrollScribing extends CraftingSkill implements ItemCraftor
 {
-	public String ID() { return "Herbalism"; }
-	public String name(){ return "Herbalism";}
-	private static final String[] triggerStrings = {"HERBALISM","HERBREW","HBREW"};
+	public String ID() { return "ScrollScribing"; }
+	public String name(){ return "Scroll Scribing";}
+	private static final String[] triggerStrings = {"ENSCRIBE","SCROLLSCRIBE","SCROLLSCRIBING"};
 	public String[] triggerStrings(){return triggerStrings;}
 	protected int iniTrainsRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLTRAINCOST);}
 	protected int iniPracticesRequired(){return CMProps.getIntVar(CMProps.SYSTEMI_SKILLPRACCOST);}
-    public String parametersFormat(){ return 
-        "SPELL_ID\tITEM_LEVEL\t"
-        +"RESOURCE_NAME_OR_HERB_NAME\t"
-        +"RESOURCE_NAME_OR_HERB_NAME\t"
-        +"RESOURCE_NAME_OR_HERB_NAME\t"
-        +"RESOURCE_NAME_OR_HERB_NAME\t"
-        +"RESOURCE_NAME_OR_HERB_NAME\t"
-        +"RESOURCE_NAME_OR_HERB_NAME";}
+    public String supportedResourceString(){return "MISC";}
+    public String parametersFormat(){ return "SPELL_ID\tRESOURCE_NAME";}
 
 	String oldName="";
-	private Ability theSpell=null;
-	private static final Hashtable usage=new Hashtable();
-
+    protected Ability theSpell=null;
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))
@@ -70,19 +61,17 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 			else
 			if(tickUp==0)
 			{
-				commonEmote(mob,"<S-NAME> start(s) brewing "+building.name()+".");
-				displayText="You are brewing "+building.name();
-				verb="brewing "+building.name();
+				commonEmote(mob,"<S-NAME> start(s) scribing "+building.name()+".");
+				displayText="You are scribing "+building.name();
+				verb="scribing "+building.name();
 			}
 		}
 		return super.tick(ticking,tickID);
 	}
 
-    public String parametersFile(){ return "herbalism.txt";}
+    public String parametersFile(){ return "scribing.txt";}
     protected Vector loadRecipes(){return super.loadRecipes(parametersFile());}
 
-	public Vector craftItem(String recipe) { return craftItem(recipe,0); }
-	
 	public void unInvoke()
 	{
 		if(canBeUninvoked())
@@ -105,24 +94,44 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 		}
 		super.unInvoke();
 	}
-	
+
+	protected int spellLevel(MOB mob, Ability A)
+	{
+		int lvl=CMLib.ableMapper().qualifyingLevel(mob,A);
+		if(lvl<0) lvl=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+		switch(lvl)
+		{
+		case 0: return lvl;
+		case 1: return lvl;
+		case 2: return lvl+1;
+		case 3: return lvl+1;
+		case 4: return lvl+2;
+		case 5: return lvl+2;
+		case 6: return lvl+3;
+		case 7: return lvl+3;
+		case 8: return lvl+4;
+		case 9: return lvl+4;
+		default: return lvl+5;
+		}
+	}
+
+	public Vector craftItem(String recipe) { return craftItem(recipe,0); }
+
 	protected Item buildItem(Ability theSpell)
 	{
-		building=CMClass.getItem("GenMultiPotion");
-		((Potion)building).setSpellList(theSpell.ID());
-		building.setName("a potion of "+theSpell.name().toLowerCase());
-		building.setDisplayText("a potion of "+theSpell.name().toLowerCase()+" sits here.");
-		((Drink)building).setThirstQuenched(10);
-		((Drink)building).setLiquidHeld(100);
-		((Drink)building).setLiquidRemaining(100);
+		building=CMClass.getItem("GenScroll");
+		((Scroll)building).setSpellList(theSpell.ID());
+		building.setName("a scroll of "+theSpell.name().toLowerCase());
+		building.setDisplayText("a scroll of "+theSpell.name().toLowerCase()+" sits here.");
 		building.setDescription("");
+		building.recoverEnvStats();
+		building.setUsesRemaining(1);
 		building.text();
 		return building;
 	}
-
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
-		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,-1);
 		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
 		{
 			commands.removeElementAt(0);
@@ -132,66 +141,46 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 			commands.addElement(building);
 			return true;
 		}
+		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
 		if(commands.size()<1)
 		{
-			commonTell(mob,"Brew what? Enter \"hbrew list\" for a list.");
+			commonTell(mob,"Enscribe what? Enter \"enscribe list\" for a list.");
 			return false;
 		}
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String pos=(String)commands.lastElement();
-		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement()).equalsIgnoreCase("LIST")))
+		if((commands.firstElement() instanceof String)&&(((String)commands.firstElement())).equalsIgnoreCase("list"))
 		{
-			//String mask=CMParms.combine(commands,1);
-			StringBuffer buf=new StringBuffer("Potions you know how to brew:\n\r");
-			buf.append(CMStrings.padRight("Chant",20)+" "+CMStrings.padRight("Level",5)+" Ingredients\n\r");
-			boolean fillUsage=(usage.size()==0);
+			String mask=CMParms.combine(commands,1);
+			StringBuffer buf=new StringBuffer("Scrolls you know how to enscribe:\n\r");
+			buf.append(CMStrings.padRight("Spell",25)+" "+CMStrings.padRight("Spell",25)+" "+CMStrings.padRight("Spell",25));
+			int toggler=1;
+			int toggleTop=3;
 			for(int r=0;r<recipes.size();r++)
 			{
 				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String spell=(String)V.elementAt(0);
-					int level=CMath.s_int((String)V.elementAt(1));
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
-					&&(level>=0)
-					&&(xlevel(mob)>=level))
+					&&(spellLevel(mob,A)>=0)
+					&&(xlevel(mob)>=spellLevel(mob,A))
+					&&((mask==null)||(mask.length()==0)||mask.equalsIgnoreCase("all")||CMLib.english().containsString(spell,mask)))
 					{
-						buf.append(CMStrings.padRight(A.name(),20)+" "+CMStrings.padRight(""+level,5)+" ");
-						for(int i=2;i<V.size();i++)
-						{
-							String s=((String)V.elementAt(i)).toLowerCase();
-							if(s.trim().length()==0) continue;
-							if(s.endsWith("$")) s=s.substring(0,s.length()-1);
-							if(fillUsage)
-							{
-							    Integer I=(Integer)usage.get(s.toUpperCase().trim());
-							    if(I==null) 
-							        I=new Integer(0);
-							    else
-								    usage.remove(s.toUpperCase().trim());
-							    usage.put(s.toUpperCase().trim(),new Integer(I.intValue()+1));
-							}
-							buf.append(s+" ");
-						}
-						buf.append("\n\r");
+						buf.append(CMStrings.padRight(A.name(),25)+((toggler!=toggleTop)?" ":"\n\r"));
+						if(++toggler>toggleTop) toggler=1;
 					}
 				}
 			}
+			if(toggler!=1) buf.append("\n\r");
 			commonTell(mob,buf.toString());
-			/*
-			for(Enumeration e=usage.keys();e.hasMoreElements();)
-			{
-			    String key=(String)e.nextElement();
-			    Integer I=(Integer)usage.get(key);
-			    mob.tell(key+"="+I.intValue());
-			}*/
 			return true;
 		}
 		else
-		if(commands.size()<2)
+		if((!auto)&&(commands.size()<2))
 		{
-			commonEmote(mob,"You must specify what chant you wish to brew, and the container to brew it in.");
+			commonEmote(mob,"You must specify what magic you wish to enscribe, and the paper to enscribe it in.");
 			return false;
 		}
 		else
@@ -204,112 +193,86 @@ public class Herbalism extends CraftingSkill implements ItemCraftor
 				commonTell(mob,"You'll need to pick that up first.");
 				return false;
 			}
-			if(!(building instanceof Container))
+			if(!CMath.bset(building.material(),RawMaterial.MATERIAL_PAPER))
 			{
-				commonTell(mob,"There's nothing in "+building.name()+" to brew!");
+				commonTell(mob,building.name()+" isn't even made of paper!");
 				return false;
 			}
-			if(!(building instanceof Drink))
+			if(!(building instanceof Scroll))
 			{
-				commonTell(mob,"You can't drink out of a "+building.name()+".");
+				commonTell(mob,"There's can't enscribe magic on "+building.name()+"!");
 				return false;
 			}
-			if(((Drink)building).liquidRemaining()==0)
+			if(((Scroll)building).getSpells().size()>0)
 			{
-				commonTell(mob,"The "+building.name()+" contains no liquid base.  Water is probably fine.");
+				commonTell(mob,"You can only scribe on blank scrolls.");
 				return false;
 			}
 			String recipeName=CMParms.combine(commands,0);
 			theSpell=null;
-			Vector recipe=null;
+			String ingredient="";
 			for(int r=0;r<recipes.size();r++)
 			{
 				Vector V=(Vector)recipes.elementAt(r);
 				if(V.size()>0)
 				{
 					String spell=(String)V.elementAt(0);
-					int level=CMath.s_int((String)V.elementAt(1));
 					Ability A=mob.fetchAbility(spell);
 					if((A!=null)
-					&&(xlevel(mob)>=level)
+					&&(xlevel(mob)>=spellLevel(mob,A))
 					&&(A.name().equalsIgnoreCase(recipeName)))
 					{
 						theSpell=A;
-						recipe=V;
+						ingredient=(String)V.elementAt(1);
 					}
 				}
 			}
-			if((theSpell==null)||(recipe==null))
+			if(theSpell==null)
 			{
-				commonTell(mob,"You don't know how to brew '"+recipeName+"'.  Try \"hbrew list\" for a list.");
+				commonTell(mob,"You don't know how to enscribe '"+recipeName+"'.  Try \"enscribe list\" for a list.");
 				return false;
 			}
 			int experienceToLose=10;
-			if((theSpell.classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_CHANT)
-			{
-				experienceToLose+=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*10;
-				experienceToLose-=CMLib.ableMapper().qualifyingClassLevel(mob,theSpell)*5;
-			}
+			experienceToLose+=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*10;
+			experienceToLose-=CMLib.ableMapper().qualifyingClassLevel(mob,theSpell)*5;
+			int resourceType=-1;
+			for(int i=0;i<RawMaterial.RESOURCE_DESCS.length;i++)
+				if(RawMaterial.RESOURCE_DESCS[i].equalsIgnoreCase(ingredient))
+				{ resourceType=RawMaterial.RESOURCE_DATA[i][0]; break;}
 
-			Vector V=((Container)building).getContents();
-			// first check for all the right stuff
-			for(int i=2;i<recipe.size();i++)
+			int[][] data = null;
+			if(resourceType>0)
 			{
-				String ingredient=((String)recipe.elementAt(i)).trim();
-				if(ingredient.length()>0)
-				{
-					boolean ok=false;
-					for(int v=0;v<V.size();v++)
-					{
-						Item I=(Item)V.elementAt(v);
-						if(CMLib.english().containsString(I.Name(),ingredient)
-						||(RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].equalsIgnoreCase(ingredient)))
-						{ ok=true; break;}
-					}
-					if(!ok)
-					{
-						commonTell(mob,"This brew requires "+ingredient.toLowerCase()+".  Please place some inside the "+building.name()+" and try again.");
-						return false;
-					}
-				}
+				int[] pm={resourceType};
+				data=fetchFoundResourceData(mob,
+											1,ingredient,pm,
+											0,null,null,
+											bundling,
+											-1,
+											null);
+				if(data==null) return false;
 			}
-			// now check for unnecessary stuff
-			for(int v=0;v<V.size();v++)
-			{
-				Item I=(Item)V.elementAt(v);
-				boolean ok=false;
-				for(int i=2;i<recipe.size();i++)
-				{
-					String ingredient=((String)recipe.elementAt(i)).trim();
-					if(ingredient.length()>0)
-						if(CMLib.english().containsString(I.Name(),ingredient)
-						||(RawMaterial.RESOURCE_DESCS[I.material()&RawMaterial.RESOURCE_MASK].equalsIgnoreCase(ingredient)))
-						{ ok=true; break;}
-				}
-				if(!ok)
-				{
-					commonTell(mob,"The "+I.name()+" must be removed from the "+building.name()+" before starting.");
-					return false;
-				}
-			}
-
 			if(experienceToLose<10) experienceToLose=10;
 
 			if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 				return false;
 
+			if(resourceType>0)
+				CMLib.materials().destroyResources(mob.location(),data[0][FOUND_AMT],data[0][FOUND_CODE],0,null);
+			
+            playSound=null;
             experienceToLose=getXPCOSTAdjustment(mob,experienceToLose);
 			CMLib.leveler().postExperience(mob,null,null,-experienceToLose,false);
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
 			oldName=building.name();
 			building.destroy();
 			building=buildItem(theSpell);
-            playSound="hotspring.wav";
+			building.setSecretIdentity("This is the work of "+mob.Name()+".");
 
 			int duration=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
 			if(duration<10) duration=10;
-
 			messedUp=!proficiencyCheck(mob,0,auto);
+
 			CMMsg msg=CMClass.getMsg(mob,building,this,CMMsg.MSG_NOISYMOVEMENT,null);
 			if(mob.location().okMessage(mob,msg))
 			{

@@ -625,6 +625,24 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 					contents=(Vector)contents.elementAt(CMLib.dice().roll(1,contents.size(),-1));
 			}
 			else
+			if(recipe.toLowerCase().startsWith("any-"))
+			{
+				recipe=recipe.substring(4);
+				for(Enumeration e=craftors.elements();e.hasMoreElements();)
+				{
+					ItemCraftor skill=(ItemCraftor)e.nextElement();
+					if(skill.ID().equalsIgnoreCase(recipe))
+					{
+						if(material>=0)
+							contents=skill.craftAllItemsVectors(material);
+						else
+							contents=skill.craftAllItemsVectors();
+					}
+				}
+				if((contents!=null)&&(contents.size()>0))
+					contents=(Vector)contents.elementAt(CMLib.dice().roll(1,contents.size(),-1));
+			}
+			else
 			for(Enumeration e=craftors.elements();e.hasMoreElements();)
 			{
 				ItemCraftor skill=(ItemCraftor)e.nextElement();

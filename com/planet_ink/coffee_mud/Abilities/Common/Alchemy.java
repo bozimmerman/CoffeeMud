@@ -34,7 +34,7 @@ import java.util.*;
 */
 
 @SuppressWarnings("unchecked")
-public class Alchemy extends CraftingSkill
+public class Alchemy extends CraftingSkill implements ItemCraftor
 {
 	public String ID() { return "Alchemy"; }
 	public String name(){ return "Alchemy";}
@@ -126,9 +126,31 @@ public class Alchemy extends CraftingSkill
 		}
 	}
 
+	public Vector craftItem(String recipe) { return craftItem(recipe,0); }
 
+	protected Item buildItem(Ability theSpell)
+	{
+		building=CMClass.getItem("GenPotion");
+		((Potion)building).setSpellList(theSpell.ID());
+		building.setName("a potion of "+theSpell.name().toLowerCase());
+		building.setDisplayText("a potion of "+theSpell.name().toLowerCase()+" sits here.");
+		building.setDescription("");
+		building.recoverEnvStats();
+		building.text();
+		return building;
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
+		if((auto)&&(givenTarget==this)&&(commands.size()>0)&&(commands.firstElement() instanceof Integer))
+		{
+			commands.removeElementAt(0);
+			Ability theSpell=super.getCraftableSpellRecipe(commands);
+			if(theSpell==null) return false;
+			building=buildItem(theSpell);
+			commands.addElement(building);
+			return true;
+		}
 		randomRecipeFix(mob,addRecipes(mob,loadRecipes()),commands,0);
 		if(commands.size()<1)
 		{
@@ -166,7 +188,7 @@ public class Alchemy extends CraftingSkill
 			return true;
 		}
 		else
-		if(commands.size()<2)
+		if((!auto)&&(commands.size()<2))
 		{
 			commonEmote(mob,"You must specify what magic you wish to brew, and the container to brew it in.");
 			return false;
@@ -287,14 +309,8 @@ public class Alchemy extends CraftingSkill
 			commonTell(mob,"You lose "+experienceToLose+" experience points for the effort.");
 			oldName=building.name();
 			building.destroy();
-			building=CMClass.getItem("GenPotion");
-			((Potion)building).setSpellList(theSpell.ID());
-			building.setName("a potion of "+theSpell.name().toLowerCase());
-			building.setDisplayText("a potion of "+theSpell.name().toLowerCase()+" sits here.");
-			building.setDescription("");
+			building=buildItem(theSpell);
 			building.setSecretIdentity("This is the work of "+mob.Name()+".");
-			building.recoverEnvStats();
-			building.text();
 
 			int duration=CMLib.ableMapper().qualifyingLevel(mob,theSpell)*5;
 			if(duration<10) duration=10;

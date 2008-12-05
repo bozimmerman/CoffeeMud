@@ -290,7 +290,37 @@ public class CraftingSkill extends GatheringSkill
 	
 	public Vector fetchRecipes(){return loadRecipes();}
 	protected Vector loadRecipes(){ return new Vector();}
-	 
+	
+	protected Ability getCraftableSpellRecipe(Vector commands)
+	{
+		Ability theSpell=null;
+		String spellName=null;
+		if((commands.size()>0)&&(commands.firstElement() instanceof String))
+			spellName=CMParms.combine(commands,0);
+		else
+		{
+			Vector recipes=loadRecipes();
+			Vector V=(Vector)recipes.elementAt(CMLib.dice().roll(1,recipes.size(),-1));
+			spellName=(String)V.firstElement();
+		}
+		if(spellName!=null)
+		{
+			theSpell=CMClass.getAbility((String)commands.firstElement());
+			if(theSpell==null)
+			{
+				Vector recipes=loadRecipes();
+				for(Enumeration e=recipes.elements();e.hasMoreElements();)
+				{
+					Vector V=(Vector)e.nextElement();
+					if(CMLib.english().containsString((String)V.firstElement(),spellName))
+						theSpell=CMClass.getAbility((String)V.firstElement());
+					if(theSpell!=null) break;	
+				}
+			}
+		}
+		return theSpell;
+	}
+	
 	protected int[][] fetchFoundResourceData(MOB mob,
 											 int req1Required,
 											 String req1Desc, int[] req1,

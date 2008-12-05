@@ -414,7 +414,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 					<ABILITY condition="1?3=1" class="Thief_Distract" />
 				</ABILITY>
 				<BEHAVIOR select="all">
-					<BEHAVIOR condition="1?10&lt;$aggrochance"  class="Aggressive" parms="" />
+					<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
 					<BEHAVIOR class="MudChat" parms="" />
 					<BEHAVIOR condition="1?2=1"  class="BrotherHelper" parms="" />
 					<BEHAVIOR class="Scavenger" parms="" />
@@ -502,7 +502,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 						<DISPLAY pickweight="1">$mob_name is constructing trouble for someone.</DISPLAY>
 						<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
 						<DISPLAY pickweight="2">$mob_name is taking something apart.</DISPLAY>
-						<DISPLAY pickweight="2">$mob_name is taking putting something together.</DISPLAY>
+						<DISPLAY pickweight="2">$mob_name is putting something together.</DISPLAY>
 					</DISPLAY>
 					<ALIGNMENT>-10000</ALIGNMENT>
 					<ABILITY select="all">
@@ -512,7 +512,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 						<ABILITY condition="1?3=1" class="Thief_Distract" />
 					</ABILITY>
 					<BEHAVIOR select="all">
-						<BEHAVIOR condition="1?10&lt;$aggrochance"  class="Aggressive" parms="" />
+						<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
 						<BEHAVIOR class="MudChat" parms="" />
 						<BEHAVIOR condition="1?2=1"  class="BrotherHelper" parms="" />
 						<BEHAVIOR class="Scavenger" parms="" />
@@ -646,7 +646,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 						<ABILITY condition="1?3=1" class="Thief_Distract" />
 					</ABILITY>
 					<BEHAVIOR select="all">
-						<BEHAVIOR condition="1?10&lt;$aggrochance"  class="Aggressive" parms="" />
+						<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
 						<BEHAVIOR class="MudChat" parms="" />
 						<BEHAVIOR condition="1?2=1"  class="BrotherHelper" parms="" />
 						<BEHAVIOR class="Scavenger" parms="" />
@@ -737,7 +737,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 					<DESCRIPTION>Kobold eggs are everywhere you look. </DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You feel quite serene here.  So different from other kobold locales</DESCRIPTION>
+					<DESCRIPTION>You feel quite serene here.  So different from other kobold locales.</DESCRIPTION>
 					<DESCRIPTION>This place seems downright serene for a kobold lair. </DESCRIPTION>
 					<DESCRIPTION>This must be the quietest room in the whole place. </DESCRIPTION>
 					<DESCRIPTION>You can't imagine a quieter spot in this lair to be standing in. </DESCRIPTION>
@@ -794,7 +794,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 					<ABILITY condition="1?3=1" class="Thief_Distract" />
 				</ABILITY>
 				<BEHAVIOR select="all">
-					<BEHAVIOR condition="1?10&lt;$aggrochance"  class="Aggressive" parms="" />
+					<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
 					<BEHAVIOR class="MudChat" parms="" />
 					<BEHAVIOR condition="1?2=1"  class="BrotherHelper" parms="" />
 					<BEHAVIOR class="Scavenger" parms="" />
@@ -829,20 +829,105 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 	</ROOM>
 	<ROOM select="all" condition="$theme='rats' or $theme='random'">
 		<ROOM class="CaveRoom">
-			<TITLE>a air shaft</TITLE>
+			<TITLE>an air shaft</TITLE>
 			<DESCRIPTION>
-			<!--TODO: Fill this in -->
-			</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing under an air shaft.</DESCRIPTION>
+					<DESCRIPTION>You're inside a small cavern with an air shaft to the surface. </DESCRIPTION>
+					<DESCRIPTION>You've found an air shaft to the surface. </DESCRIPTION>
+					<DESCRIPTION>This is a small cavern with an air shaft to the surface. </DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>It appears far too narrow to navigate, but the air smells sweet.</DESCRIPTION>
+					<DESCRIPTION>The shaft is little more than a small hole, but it's still nice</DESCRIPTION>
+					<DESCRIPTION>Sweet air wafts in from the small narrow hole in the ceiling.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>At first you felt quite safe here, but what is that stuff on the floor?</DESCRIPTION>
+					<DESCRIPTION>This place seems fairly nice, except for those odd sounds. </DESCRIPTION>
+					<DESCRIPTION>This must be the most refreshing cavern in this whole place, except, what was that sound? </DESCRIPTION>
+					<DESCRIPTION>You can't imagine a more refreshing place in this lair to be standing in. Say, what's that stuff on the floor?</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurbs</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_leaf_exits</DESCRIPTION>
+			</DESCRIPTION>			
 			<EXIT class="Open" />
-			<MOB select="1?3" include="dungeon_mobs,dungeon_mobs,dungeon_mobs" />
+			<MOB select="2?5" include="dungeon_bat,dungeon_bat,dungeon_bat,dungeon_bat,dungeon_bat" />
 		</ROOM>
 		<ROOM class="StoneRoom">
 			<TITLE>a laboratory</TITLE>
 			<DESCRIPTION>
-			<!--TODO: Fill this in -->
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in (a(n)) $dungeonadj_feeling laboratory.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $dungeonadj_feeling laboratory. </DESCRIPTION>
+					<DESCRIPTION>You've found (a(n)) $dungeonadj_feeling laboratory. </DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $dungeonadj_feeling laboratory. </DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Implements of alchemy, dissection, and experimentation are everywhere.</DESCRIPTION>
+					<DESCRIPTION>Implements of alchemy, dissection, and experimentation are all over the place. </DESCRIPTION>
+					<DESCRIPTION>Implements of alchemy, dissection, and experimentation are all over. </DESCRIPTION>
+					<DESCRIPTION>Implements of alchemy, dissection, and experimentation are scattered about. </DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You can already feel your safety level dropping.</DESCRIPTION>
+					<DESCRIPTION>This place seems downright bizarre. </DESCRIPTION>
+					<DESCRIPTION>This can't be a sane place to be hanging out. </DESCRIPTION>
+					<DESCRIPTION>You can't imagine a more insane spot to be standing in. </DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurbs</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_kobold_exits</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="LockedDoor" text="$areaname labkey" />
-			<MOB select="1?3" include="dungeon_mobs,dungeon_mobs,dungeon_mobs" />
+			<MOB level="$level_range + 1" race="humanoid_races" gender="$anygender">
+				<NAME>doctor $fantasy_name</NAME>
+				<DISPLAY select="pick-1">
+					<DISPLAY pickweight="1">$mob_name stands around.</DISPLAY>
+					<DISPLAY pickweight="2">$mob_name seems disturbed by the interruption.</DISPLAY>
+					<DISPLAY pickweight="2">$mob_name is doing some experiments.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is engaged in some troubling experiment.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is dissecting something.</DISPLAY>
+					<DISPLAY pickweight="1">$mob_name is combining chemicals together.</DISPLAY>
+				</DISPLAY>
+				<DESCRIPTION>A mad scientist if you ever saw one.</DESCRIPTION>
+				<ALIGNMENT>-10000</ALIGNMENT>
+				<BEHAVIOR select="all">
+					<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+					<BEHAVIOR class="MudChat" parms="" />
+					<BEHAVIOR class="Mageness" parms="" />
+				</BEHAVIOR>
+				<ITEM select="pick-1?3">
+					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
+						<NAME select="any-1"><NAME>(a(n)) $dungeonadj_fancy pointy hat</NAME><NAME>(a(n)) $dungeonadj_fancy hat</NAME></NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>COTTON</MATERIAL><PROPERWORN>HEAD</PROPERWORN>
+					</ITEM>
+					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
+						<NAME select="any-1"><NAME>(a(n)) $dungeonadj_fancy sparkling robe</NAME><NAME>(a(n)) $dungeonadj_fancy robe</NAME></NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>LEATHER</MATERIAL><PROPERWORN>TORSO,LEGS,ARMS</PROPERWORN>
+					</ITEM>
+				</ITEM>
+				<ITEM select="pick-1">
+					<ITEM pickweight="1" class="GenStaff" LEVEL="$mob_level">
+						<NAME>(a(n)) $dungeonadj_fancy staff</NAME>
+						<DISPLAY>$item_name has been left here"</DISPLAY>
+						<MATERIAL>OAK</MATERIAL>
+						<WEAPONCLASS>STAFF</WEAPONCLASS>
+						<WEAPONTYPE>BASHING</WEAPONTYPE>
+					</ITEM>
+				</ITEM>
+			</MOB>
+			<ITEM class="GenTable" name="(a(n)) $nasty_word table" display="$ITEM_NAME is here">
+				<ITEM select="any-2" include="any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item" />
+			</ITEM>
+			<ITEM class="metacraft" name="Scroll Case"">
+				<ITEM select="any-2">
+					<CONTENTS><ITEM select="any-2" include="any_scrollscribing_item,any_scrollscribing_item" /></CONTENTS>
+				</ITEM>
+			</ITEM>
+			<ITEM class="metacraft" name="Potion Rack""/>
+				<CONTENTS><ITEM select="any-2" include="any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item" /></CONTENTS>
+			</ITEM>
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a hatchery</TITLE>
@@ -961,6 +1046,15 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 		<STRING>The exit to the $roomexits_desc_long is the only way out.</STRING>
 		<STRING>The only way out of here is $roomexits_desc_long.</STRING>
 		<STRING>Escape is to the $roomexits_desc_long.</STRING>
+	</STRING>
+</STRING>
+
+<STRING id="dungeon_leaf_exits" select="all">
+	<STRING select="any-1">
+		<STRING>The exit is to the $roomexits_desc_long.</STRING>
+		<STRING>The way out of here is $roomexits_desc_long.</STRING>
+		<STRING>The exit to the $roomexits_desc_long is the only way out.</STRING>
+		<STRING>The only way out of here is $roomexits_desc_long.</STRING>
 	</STRING>
 </STRING>
 
@@ -1593,6 +1687,12 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 	</MOB>
 </MOB>
 
+<ITEM class="metacraft" name="any-alchemy" id="any_alchemy_item"/>
+<ITEM class="metacraft" name="any-herbalism" id="any_herbalism_item"/>
+<ITEM class="metacraft" name="any-apothecary" id="any_apothecary_item"/>
+<ITEM class="metacraft" name="any-distilling" id="any_apothecary_item"/>
+<ITEM class="metacraft" name="any-scrollscribing" id="any_scrollscribing_item"/>
+
 <STRING id="anygender" select="any-1"> <STRING>M</STRING> <STRING>F</STRING></STRING>
 
 <ITEM id="dungeon_items" select="all" requires="level_range=int,theme=prison;rats;kobolds;random">
@@ -1616,6 +1716,15 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 	<STRING>Ogre</STRING>
 	<STRING>Halfling</STRING>
 	<STRING>Goblin</STRING>
+</STRING>
+
+<STRING id="humanoid_races" select="any-1" define="humanoid_races">
+	<STRING>Human</STRING>
+	<STRING>Dwarf</STRING>
+	<STRING>Elf</STRING>
+	<STRING>Gnome</STRING>
+	<STRING>Halfling</STRING>
+	<STRING>HalfElf</STRING>
 </STRING>
 
 <STRING id="dungeonadj_phys_size" select="any-1">
