@@ -250,9 +250,9 @@ public class Dragon extends StdMOB
 	public boolean tick(Tickable ticking, int tickID)
 	{
         if((tickID==Tickable.TICKID_MOB)
-        &&((baseEnvStats().level()!=birthAge)
+        &&(((baseEnvStats().level()/10)!=birthAge)
         ||(baseEnvStats().ability()!=birthColor)))
-            setupDragon(baseEnvStats().ability(),baseEnvStats().level());
+            setupDragon(baseEnvStats().ability(),(baseEnvStats().level()/10));
 		if((!amDead())&&(tickID==Tickable.TICKID_MOB))
 		{
 			if((Stomach==null)

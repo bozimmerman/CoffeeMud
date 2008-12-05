@@ -1674,7 +1674,22 @@ public class StdArea implements Area
 		switch(getCodeNum(code))
 		{
 		case 0: return;
-		case 1: setClimateType(CMath.s_int(val)); break;
+		case 1: 
+				if((val.length()==0)||CMath.isInteger(val))
+					setClimateType(CMath.s_int(val)); 
+				else
+				{
+					setClimateType(0); 
+					Vector V=CMParms.parseCommas(val,true);
+					for(int v=0;v<V.size();v++)
+					{
+						val=(String)V.elementAt(v);
+						int x=CMParms.indexOfIgnoreCase(Area.CLIMATE_DESCS, val);
+						if(x>=0)
+							setClimateType(climateType()|(int)CMath.pow(2,x-1));
+					}
+				}
+				break;
 		case 2: setDescription(val); break;
 		case 3: setMiscText(val); break;
 		case 4: setTechLevel(CMath.s_int(val)); break;

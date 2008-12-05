@@ -188,6 +188,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         if((!CMath.isInteger(size))||(CMath.s_int(size)<=0))
         	throw new CMException("Unable to build area of size "+size);
         defined.put("AREA_SIZE",size);
+        String[] ignoreStats={"CLASS","NAME","DESCRIPTION","LAYOUT","SIZE"};
+        fillOutStats(A, ignoreStats,"AREA_",piece,defined);
         Vector roomsLayout = layoutManager.generate(CMath.s_int(size),direction);
         if((roomsLayout==null)||(roomsLayout.size()==0))
         	throw new CMException("Unable to fill area of size "+size+" off layout "+layoutManager.name());
