@@ -932,10 +932,30 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 		<ROOM class="CaveRoom">
 			<TITLE>a hatchery</TITLE>
 			<DESCRIPTION>
-			<!--TODO: Fill this in -->
-			</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in (a(n)) $nasty_word kobold hatchery.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $nasty_word kobold hatchery. </DESCRIPTION>
+					<DESCRIPTION>You've found (a(n)) $nasty_word kobold hatchery. </DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $nasty_word kobold hatchery. </DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>Dragon eggs are set carefully about the room.</DESCRIPTION>
+					<DESCRIPTION>Dragon eggs are evenly spaces around this room. </DESCRIPTION>
+					<DESCRIPTION>Dragon eggs are everywhere you look. </DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You feel quite serene here.  So different from other kobold locales.</DESCRIPTION>
+					<DESCRIPTION>This place seems downright serene for a kobold lair. </DESCRIPTION>
+					<DESCRIPTION>This must be the quietest room in the whole place. </DESCRIPTION>
+					<DESCRIPTION>You can't imagine a quieter spot in this lair to be standing in. </DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurbs</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_kobold_exits</DESCRIPTION>
+			</DESCRIPTION>			
+			<EXIT class="Door" />
+			<ITEM class="GenFoodResource" id="dragon_egg" name="some $nasty_word kobold eggs" display="$item_name are here" material="EGGS" />
+			<ITEM select="2?5" include="dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg,dragon_egg" />
 			<EXIT class="Open" />
-			<MOB select="1?3" include="dungeon_mobs,dungeon_mobs,dungeon_mobs" />
 		</ROOM>
 		<ROOM class="CaveRoom">
 			<TITLE>a lair</TITLE>
