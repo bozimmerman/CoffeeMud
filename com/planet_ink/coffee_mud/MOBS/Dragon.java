@@ -70,7 +70,7 @@ public class Dragon extends StdMOB
 
 	// ===== Defined Value for holding the Dragon Type
 	protected int DragonColor(){ return baseEnvStats().ability();}
-	protected int DragonAge(){ return baseEnvStats().level()/8;}
+	protected int DragonAge(){ return baseEnvStats().level()/10;}
 	protected Room Stomach = null;
 
 	// ===== random constructor
@@ -83,15 +83,30 @@ public class Dragon extends StdMOB
 	// ===== constructs a dragon of a specified color, but a random age
 	public Dragon(int colorValue)
 	{
-		this(colorValue,determineAge()*8);
+		this(colorValue,determineAge());
 	}
 
-	public void setupDragon(int colorValue, int ageValue)
+	// ===== public constructor
+	public Dragon(int colorValue, int ageValue)
+	{
+		super();
+		baseEnvStats().setAbility(colorValue);
+		baseEnvStats().setLevel(5+(ageValue*10));
+		birthColor=0;
+		birthAge=0;
+		setupDragonIfNecessary();
+	}
+
+	public void setupDragonIfNecessary()
 	{
 		// ===== set the parameter stuff		DragonAge() = ageValue;
 
 		if(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 			return;
+        if((DragonAge()==birthAge)&&(DragonColor()==birthColor))
+        	return;
+        int colorValue=DragonColor(); 
+        int ageValue=DragonAge();
 
         birthAge=ageValue;
         birthColor=colorValue;
@@ -122,9 +137,6 @@ public class Dragon extends StdMOB
 			addInventory(ClawTwo);
 		}
 
-		// ===== Set his defences based upon his age as well
-		baseEnvStats().setArmor(20 - (DragonAge()*15));
-
 		// ===== hitpoints are muxed by 10 To beef them up
 		int PointMod = 1;
 
@@ -144,15 +156,14 @@ public class Dragon extends StdMOB
 			default:		PointMod = 3;	CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);	break;
 		}
 
-		baseState.setHitPoints(((7+PointMod) * 10 * DragonAge()));
-		setMoney(1000 * DragonAge());
+        baseCharStats().getCurrentClass().fillOutMOB(this,baseEnvStats().level());
+		baseState.setHitPoints(baseState.getHitPoints() * PointMod);
+		setMoney(getMoney()*PointMod);
 		baseEnvStats().setWeight(1500 * DragonAge());
 
 		// ===== Dragons never flee.
 		setWimpHitPoint(0);
 
-		// ===== Dragons Get two attacks per round with their claws
-		baseEnvStats().setSpeed(2.0);
 
 		// ===== Dragons get tougher with age
 		baseCharStats().setStat(CharStats.STAT_STRENGTH,13 + (DragonAge()*2));
@@ -171,17 +182,6 @@ public class Dragon extends StdMOB
 		resetToMaxState();
 		recoverEnvStats();
 		recoverCharStats();
-	}
-
-	// ===== public constructor
-	public Dragon(int colorValue, int ageValue)
-	{
-		super();
-		baseEnvStats().setAbility(colorValue);
-		baseEnvStats().setLevel(ageValue);
-		setupDragon(colorValue,ageValue);
-        birthColor=0;
-        birthAge=0;
 	}
 
     protected static int determineAge()
@@ -249,11 +249,10 @@ public class Dragon extends StdMOB
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
-        if((tickID==Tickable.TICKID_MOB)
-        &&(((baseEnvStats().level()/10)!=birthAge)
-        ||(baseEnvStats().ability()!=birthColor)))
-            setupDragon(baseEnvStats().ability(),(baseEnvStats().level()/10));
-		if((!amDead())&&(tickID==Tickable.TICKID_MOB))
+        if(tickID!=Tickable.TICKID_MOB)
+        	return super.tick(ticking, tickID);
+        setupDragonIfNecessary();
+		if(!amDead())
 		{
 			if((Stomach==null)
 			&&(location()!=null)
@@ -447,12 +446,14 @@ public class Dragon extends StdMOB
 		return true;
 	}
 
+	public void recoverEnvStats()
+	{
+		super.recoverEnvStats();
+		setupDragonIfNecessary();
+	}
 	public void recoverCharStats()
 	{
 		super.recoverCharStats();
-		if((baseEnvStats().level()!=birthAge)
-		||(baseEnvStats().ability()!=birthColor))
-			setupDragon(baseEnvStats().ability(),baseEnvStats().level());
 		charStats().setStat(CharStats.STAT_SAVE_MAGIC,charStats().getStat(CharStats.STAT_SAVE_MAGIC)+DragonAge()*5);
 		switch(DragonColor())
 		{

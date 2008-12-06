@@ -51,12 +51,13 @@ public class Paladin_Aura extends Paladin
 	{
 		if(!super.tick(ticking,tickID)) return false;
 		pass=(invoker==null)||(invoker.fetchAbility(ID())==null)||proficiencyCheck(null,0,false);
+		if(pass)
 		for(int i=paladinsGroup.size()-1;i>=0;i--)
 		{
 			try
 			{
 				MOB mob=(MOB)paladinsGroup.elementAt(i);
-				if(( CMLib.flags().isEvil(mob) )&&(pass))
+				if(CMLib.flags().isEvil(mob))
 				{
 					int damage=(int)Math.round(CMath.div(mob.envStats().level()+(2*getXLEVELLevel(invoker)),3.0));
 					CMLib.combat().postDamage(invoker,mob,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe aura around <S-NAME> <DAMAGE> <T-NAME>!^?");
