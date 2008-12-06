@@ -2332,17 +2332,17 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        mob.tell(showNumber+". Theme setting: '"+Area.THEME_DESCS[A.getTechLevel()]+"'.");
+        mob.tell(showNumber+". Theme setting: '"+Area.THEME_PHRASE[A.getTechLevel()]+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         boolean q=false;
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(!q))
         {
-            String newType=mob.session().prompt("Enter a new level (?)\n\r",Area.THEME_DESCS[A.getTechLevel()]);
+            String newType=mob.session().prompt("Enter a new level (?)\n\r",Area.THEME_PHRASE[A.getTechLevel()]);
             if(newType.equals("?"))
             {
                 StringBuffer say=new StringBuffer("");
-                for(int i=1;i<Area.THEME_DESCS.length;i++)
-                    say.append(i+") "+Area.THEME_DESCS[i]+"\n\r");
+                for(int i=1;i<Area.THEME_PHRASE.length;i++)
+                    say.append(i+") "+Area.THEME_PHRASE[i]+"\n\r");
                 mob.tell(say.toString());
                 q=false;
             }
@@ -2353,8 +2353,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
                 if(CMath.s_int(newType)>0)
                     newValue=CMath.s_int(newType);
                 else
-                for(int i=0;i<Area.THEME_DESCS.length;i++)
-                    if(Area.THEME_DESCS[i].toUpperCase().startsWith(newType.toUpperCase()))
+                for(int i=0;i<Area.THEME_PHRASE.length;i++)
+                    if(Area.THEME_PHRASE[i].toUpperCase().startsWith(newType.toUpperCase()))
                         newValue=i;
                 if(newValue>=0)
                     A.setTechLevel(newValue);
@@ -4238,7 +4238,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        mob.tell(showNumber+". Availability: '"+Area.THEME_DESCS_EXT[CMath.s_int(E.getStat("AVAIL"))]+"'.");
+        mob.tell(showNumber+". Availability: '"+Area.THEME_PHRASE_EXT[CMath.s_int(E.getStat("AVAIL"))]+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         String newName="?";
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.equals("?")))
@@ -4247,14 +4247,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             if(newName.length()==0)
                 mob.tell("(no change)");
             else
-            if((CMath.isNumber(newName))&&(CMath.s_int(newName)<Area.THEME_DESCS_EXT.length))
+            if((CMath.isNumber(newName))&&(CMath.s_int(newName)<Area.THEME_PHRASE_EXT.length))
                 E.setStat("AVAIL",""+CMath.s_int(newName));
             else
             if(newName.equalsIgnoreCase("?"))
             {
                 StringBuffer str=new StringBuffer("Valid values: \n\r");
-                for(int i=0;i<Area.THEME_DESCS_EXT.length;i++)
-                    str.append(i+") "+Area.THEME_DESCS_EXT[i]+"\n\r");
+                for(int i=0;i<Area.THEME_PHRASE_EXT.length;i++)
+                    str.append(i+") "+Area.THEME_PHRASE_EXT[i]+"\n\r");
                 mob.tell(str.toString());
             }
             else
@@ -4266,7 +4266,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
     throws IOException
     {
         if((showFlag>0)&&(showFlag!=showNumber)) return;
-        mob.tell(showNumber+". Availability: '"+Area.THEME_DESCS_EXT[CMath.s_int(E.getStat("PLAYER"))]+"'.");
+        mob.tell(showNumber+". Availability: '"+Area.THEME_PHRASE_EXT[CMath.s_int(E.getStat("PLAYER"))]+"'.");
         if((showFlag!=showNumber)&&(showFlag>-999)) return;
         String newName="?";
         while((mob.session()!=null)&&(!mob.session().killFlag())&&(newName.equals("?")))
@@ -4275,14 +4275,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             if(newName.length()==0)
                 mob.tell("(no change)");
             else
-            if((CMath.isNumber(newName))&&(CMath.s_int(newName)<Area.THEME_DESCS_EXT.length))
+            if((CMath.isNumber(newName))&&(CMath.s_int(newName)<Area.THEME_PHRASE_EXT.length))
                 E.setStat("PLAYER",""+CMath.s_int(newName));
             else
             if(newName.equalsIgnoreCase("?"))
             {
                 StringBuffer str=new StringBuffer("Valid values: \n\r");
-                for(int i=0;i<Area.THEME_DESCS_EXT.length;i++)
-                    str.append(i+") "+Area.THEME_DESCS_EXT[i]+"\n\r");
+                for(int i=0;i<Area.THEME_PHRASE_EXT.length;i++)
+                    str.append(i+") "+Area.THEME_PHRASE_EXT[i]+"\n\r");
                 mob.tell(str.toString());
             }
             else

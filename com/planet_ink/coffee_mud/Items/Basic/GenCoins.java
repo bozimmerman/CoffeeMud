@@ -183,7 +183,7 @@ public class GenCoins extends GenItem implements Coins
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setNumberOfCoins(CMath.s_int(val)); break;
+		case 0: setNumberOfCoins(CMath.s_parseIntExpression(val)); break;
 		case 1: setCurrency(val); break;
 		case 2: setDenomination(CMath.s_double(val)); break;
         default:

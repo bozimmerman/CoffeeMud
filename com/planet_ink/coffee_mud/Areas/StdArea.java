@@ -1674,25 +1674,10 @@ public class StdArea implements Area
 		switch(getCodeNum(code))
 		{
 		case 0: return;
-		case 1: 
-				if((val.length()==0)||CMath.isInteger(val))
-					setClimateType(CMath.s_int(val)); 
-				else
-				{
-					setClimateType(0); 
-					Vector V=CMParms.parseCommas(val,true);
-					for(int v=0;v<V.size();v++)
-					{
-						val=(String)V.elementAt(v);
-						int x=CMParms.indexOfIgnoreCase(Area.CLIMATE_DESCS, val);
-						if(x>=0)
-							setClimateType(climateType()|(int)CMath.pow(2,x-1));
-					}
-				}
-				break;
+		case 1: setClimateType(CMath.s_parseBitIntExpression(Area.CLIMATE_DESCS,val)); break;
 		case 2: setDescription(val); break;
 		case 3: setMiscText(val); break;
-		case 4: setTechLevel(CMath.s_int(val)); break;
+		case 4: setTechLevel(CMath.s_parseBitIntExpression(Area.THEME_DESCS,val)); break;
         case 5:
         {
             if(val.startsWith("+"))
@@ -1707,7 +1692,7 @@ public class StdArea implements Area
         case 6: setPrejudiceFactors(val); break;
         case 7: setBudget(val); break;
         case 8: setDevalueRate(val); break;
-        case 9: setInvResetRate(CMath.s_int(val)); break;
+        case 9: setInvResetRate(CMath.s_parseIntExpression(val)); break;
         case 10: setIgnoreMask(val); break;
         case 11: setItemPricingAdjustments((val.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(val,true))); break;
 		}

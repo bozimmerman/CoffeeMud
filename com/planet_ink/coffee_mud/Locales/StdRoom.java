@@ -1979,13 +1979,13 @@ public class StdRoom implements Room
 	private static final String[] CODES={"CLASS","DISPLAY","DESCRIPTION","TEXT"};
 	public String[] getStatCodes(){return CODES;}
     public boolean isStat(String code){ return CMParms.indexOf(getStatCodes(),code.toUpperCase().trim())>=0;}
-	protected int getCodeNum(String code){
+	protected int getStdRoomCodeNum(String code){
 		for(int i=0;i<CODES.length;i++)
 			if(code.equalsIgnoreCase(CODES[i])) return i;
 		return -1;
 	}
 	public String getStat(String code){
-		switch(getCodeNum(code))
+		switch(getStdRoomCodeNum(code))
 		{
 		case 0: return CMClass.classID(this);
 		case 1: return displayText();
@@ -1996,7 +1996,7 @@ public class StdRoom implements Room
 	}
 	public void setStat(String code, String val)
 	{
-		switch(getCodeNum(code))
+		switch(getStdRoomCodeNum(code))
 		{
 		case 0: return;
 		case 1: setDisplayText(val); break;

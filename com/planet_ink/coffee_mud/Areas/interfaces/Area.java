@@ -645,6 +645,7 @@ public interface Area extends Environmental, Economics
     	}
     }
     
+    public final static String[] THEME_DESCS={"FANTASY","TECH","HEROIC","SKILLONLY"};
 	/**	Bitmap flag meaning that the object supports magic.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTechLevel() */
 	public final static int THEME_FANTASY=1;
 	/**	Bitmap flag meaning that the object supports technology.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#getTechLevel() */
@@ -656,34 +657,34 @@ public interface Area extends Environmental, Economics
 	/**	Indexed description of the THEME_ bitmap constants in all possible combinations.  
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY 
 	 */
-	public final static String[] THEME_DESCS={"Unknown",             // 0
-	    									  "Fantasy",             // 1
-											  "Technical",           // 2
-											  "Fantasy & Technical", // 3
-											  "Heroic",              // 4
-											  "Heroic & Fantasy",    // 5
-											  "Heroic & Technical",  // 6
-											  "All Allowed"          // 7
+	public final static String[] THEME_PHRASE={"Unknown",             // 0
+	    									   "Fantasy",             // 1
+											   "Technical",           // 2
+											   "Fantasy & Technical", // 3
+											   "Heroic",              // 4
+											   "Heroic & Fantasy",    // 5
+											   "Heroic & Technical",  // 6
+											   "All Allowed"          // 7
 	};
 	/**	Indexed extended description of the THEME_ bitmap constants in all possible combinations.  
 	 * @see com.planet_ink.coffee_mud.Areas.interfaces.Area#THEME_FANTASY 
 	 */
-	public final static String[] THEME_DESCS_EXT={"Unavailable",         // 0
-												  "Fantasy",             // 1
-												  "Technical",           // 2
-												  "Fantasy & Technical", // 3
-												  "Heroic",              // 4
-												  "Heroic & Fantasy",    // 5
-												  "Heroic & Technical",  // 6
-												  "All Allowed",         // 7
-		    									  "Unavail. Skill only", // 8
-		    									  "Fantasy Skills Only", // 9
-												  "Tech Skill Only",     // 10
-												  "Fant&Tech Skill Only",// 11
-												  "Powers only",         // 12
-												  "Powers & Spells only",// 13
-												  "Hero&Tech Skill only",// 14
-												  "Any skill only"       // 15
+	public final static String[] THEME_PHRASE_EXT={"Unavailable",         // 0
+											       "Fantasy",             // 1
+											       "Technical",           // 2
+											       "Fantasy & Technical", // 3
+											       "Heroic",              // 4
+											       "Heroic & Fantasy",    // 5
+											       "Heroic & Technical",  // 6
+												   "All Allowed",         // 7
+		    									   "Unavail. Skill only", // 8
+		    									   "Fantasy Skills Only", // 9
+												   "Tech Skill Only",     // 10
+												   "Fant&Tech Skill Only",// 11
+												   "Powers only",         // 12
+												   "Powers & Spells only",// 13
+												   "Hero&Tech Skill only",// 14
+												   "Any skill only"       // 15
 											   
 	};	
 	/**	Bitmap climate flag meaning that the area has normal weather.  @see com.planet_ink.coffee_mud.Areas.interfaces.Area#climateType() */

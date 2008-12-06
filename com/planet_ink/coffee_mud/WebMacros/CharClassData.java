@@ -556,8 +556,8 @@ public class CharClassData extends StdWebMacro
                         mask=C.availabilityCode();
                     else
                         mask|=CMath.s_long(old);
-                    for(int i=0;i<Area.THEME_DESCS_EXT.length;i++)
-                        str.append("<OPTION VALUE="+i+" "+((i==mask)?"SELECTED":"")+">"+Area.THEME_DESCS_EXT[i]);
+                    for(int i=0;i<Area.THEME_PHRASE_EXT.length;i++)
+                        str.append("<OPTION VALUE="+i+" "+((i==mask)?"SELECTED":"")+">"+Area.THEME_PHRASE_EXT[i]);
                     str.append(", ");
                 }
                 if(parms.containsKey("ESTATS")||parms.containsKey("CSTATS")||parms.containsKey("ASTATS")||parms.containsKey("ASTATE")||parms.containsKey("STARTASTATE"))
@@ -824,7 +824,7 @@ public class CharClassData extends StdWebMacro
 					}
 				}
 				if(parms.containsKey("PLAYABLE"))
-					str.append(Area.THEME_DESCS_EXT[C.availabilityCode()]+", ");
+					str.append(Area.THEME_PHRASE_EXT[C.availabilityCode()]+", ");
 
 				if(parms.containsKey("BASECLASS"))
 					str.append(C.baseClass()+", ");

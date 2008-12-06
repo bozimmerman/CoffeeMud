@@ -96,12 +96,12 @@ public class GenBoffWeapon extends StdBoffWeapon
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setRanges(CMath.s_int(val),maxRange()); break;
-		case 1: setRanges(minRange(),CMath.s_int(val)); break;
-		case 2: setWeaponType(CMath.s_int(val)); break;
-		case 3: setWeaponClassification(CMath.s_int(val)); break;
+		case 0: setRanges(CMath.s_parseIntExpression(val),maxRange()); break;
+		case 1: setRanges(minRange(),CMath.s_parseIntExpression(val)); break;
+		case 2: setWeaponType(CMath.s_parseListIntExpression(Weapon.TYPE_DESCS,val)); break;
+		case 3: setWeaponClassification(CMath.s_parseListIntExpression(Weapon.CLASS_DESCS,val)); break;
 		case 4: setAmmunitionType(val); break;
-		case 5: setAmmoCapacity(CMath.s_int(val)); break;
+		case 5: setAmmoCapacity(CMath.s_parseIntExpression(val)); break;
         default:
             CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
             break;

@@ -84,7 +84,7 @@ public class GenClanApron extends StdClanApron
         switch(getCodeNum(code))
         {
         case 0: setClanID(val); break;
-        case 1: setCIType(CMath.s_int(val)); break;
+        case 1: setCIType(CMath.s_parseListIntExpression(ClanItem.CI_DESC,val)); break;
         default:
             CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
             break;

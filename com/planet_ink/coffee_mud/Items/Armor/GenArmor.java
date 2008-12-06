@@ -95,6 +95,7 @@ public class GenArmor extends StdArmor
             return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
         }
 	}
+	
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -104,10 +105,10 @@ public class GenArmor extends StdArmor
 		{
 		case 0: setLidsNLocks(hasALid(),isOpen(),CMath.s_bool(val),false); break;
 		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
-		case 2: setCapacity(CMath.s_int(val)); break;
-		case 3: setContainTypes(CMath.s_long(val)); break;
-		case 4: setClothingLayer(CMath.s_short(val)); break;
-		case 5: setLayerAttributes(CMath.s_short(val)); break;
+		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
+		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
+		case 4: setClothingLayer((short)CMath.s_parseIntExpression(val)); break;
+		case 5: setLayerAttributes((short)CMath.s_parseListLongExpression(Armor.LAYERMASK_DESCS,val)); break;
         default:
             CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
             break;

@@ -133,7 +133,7 @@ public class Generate extends StdCommand
         if((!(definedIDs.get(idName) instanceof XMLLibrary.XMLpiece))
         ||(!((XMLLibrary.XMLpiece)definedIDs.get(idName)).tag.equalsIgnoreCase(objectType)))
         {
-        	mob.tell("The "+objectType+" id '"+idName+"' has been properly defined in the data file.");
+        	mob.tell("The "+objectType+" id '"+idName+"' has not been defined in the data file.");
         	StringBuffer foundIDs=new StringBuffer("");
         	for(Enumeration tkeye=OBJECT_TYPES.keys();tkeye.hasMoreElements();)
         	{
@@ -154,7 +154,7 @@ public class Generate extends StdCommand
         }
         
         XMLLibrary.XMLpiece piece=(XMLLibrary.XMLpiece)definedIDs.get(idName);
-        definedIDs.putAll(CMParms.parseEQParms(CMParms.combine(commands,3)));
+        definedIDs.putAll(CMParms.parseEQParms(commands,3,commands.size()));
         try 
         {
         	CMLib.percolator().checkRequirements(piece, definedIDs);

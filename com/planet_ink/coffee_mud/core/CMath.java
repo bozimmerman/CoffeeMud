@@ -549,6 +549,86 @@ public class CMath
     public static boolean isFloat(String DBL){return isDouble(DBL);}
     
     /**
+     * Returns a int representing either the given value, or 
+     * the 2^ power of the comma separated values in the order
+     * they appear in the given string list.
+     *
+     * <br><br><b>Usage:</b> if(s_parseBitIntExpression(CMDS,CMD.substring(14)));
+     * @param bits the ordered string values from 0-whatever.
+     * @param val the expression, or list of string values
+     * @return the int value, or 0
+     */
+    public static int s_parseBitIntExpression(String[] bits, String val)
+    {
+    	return (int)s_parseBitLongExpression(bits,val);
+    }
+    
+    /**
+     * Returns a long representing either the given value, or 
+     * the 2^ power of the comma separated values in the order
+     * they appear in the given string list.
+     *
+     * <br><br><b>Usage:</b> if(s_parseBitLongExpression(CMDS,CMD.substring(14)));
+     * @param bits the ordered string values from 0-whatever.
+     * @param val the expression, or list of string values
+     * @return the long value, or 0
+     */
+    public static long s_parseBitLongExpression(String[] bits, String val)
+    {
+    	if((val==null)||(val.trim().length()==0)||(CMath.isMathExpression(val)))
+    		return CMath.s_parseLongExpression(val);
+    	StringTokenizer tokens=new StringTokenizer(val,",");
+    	long l=0;
+    	while(tokens.hasMoreElements())
+    	{
+    		val=tokens.nextToken().trim();
+    		if((val.length()==0)||(CMath.isMathExpression(val)))
+    			l|=CMath.s_parseLongExpression(val);
+    		else
+    		for(int x=0;x<bits.length;x++)
+    			if(bits[x].equalsIgnoreCase(val))
+	    		{
+    				l+=pow(2,x-1);
+	    			break;
+	    		}
+    	}
+    	return l;
+    }
+    
+    /**
+     * Returns a long representing either the given value, or 
+     * the index of the value in the order
+     * they appear in the given string list.
+     *
+     * <br><br><b>Usage:</b> if(s_parseListLongExpression(CMDS,CMD.substring(14)));
+     * @param descs the ordered string values from 0-whatever.
+     * @param val the expression, or list of string values
+     * @return the long value, or 0
+     */
+    public static long s_parseListLongExpression(String[] descs, String val)
+    {
+    	if((val==null)||(val.trim().length()==0)||(CMath.isMathExpression(val)))
+    		return CMath.s_parseLongExpression(val);
+		for(int x=0;x<descs.length;x++)
+			if(descs[x].equalsIgnoreCase(val))
+				return x;
+		return 0;
+    }
+    
+    /**
+     * Returns a int representing either the given value, or 
+     * the index of the value in the order
+     * they appear in the given string list.
+     *
+     * <br><br><b>Usage:</b> if(s_parseListIntExpression(CMDS,CMD.substring(14)));
+     * @param descs the ordered string values from 0-whatever.
+     * @param val the expression, or list of string values
+     * @return the int value, or 0
+     */
+    public static int s_parseListIntExpression(String[] descs, String val)
+    { return (int)s_parseListLongExpression(descs,val);}
+    
+    /**
      * Returns whether the given string is a double value
      *
      * <br><br><b>Usage:</b> if(isDouble(CMD.substring(14)));

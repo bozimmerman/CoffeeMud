@@ -752,14 +752,14 @@ public class RaceData extends StdWebMacro
                         mask=R.availabilityCode();
                     else
                         mask|=CMath.s_long(old);
-                    for(int i=0;i<Area.THEME_DESCS_EXT.length;i++)
-                        str.append("<OPTION VALUE="+i+" "+((i==mask)?"SELECTED":"")+">"+Area.THEME_DESCS_EXT[i]);
+                    for(int i=0;i<Area.THEME_PHRASE_EXT.length;i++)
+                        str.append("<OPTION VALUE="+i+" "+((i==mask)?"SELECTED":"")+">"+Area.THEME_PHRASE_EXT[i]);
                     str.append(", ");
                 }
 
 
 				if(parms.containsKey("PLAYABLE"))
-					str.append(Area.THEME_DESCS_EXT[R.availabilityCode()]+", ");
+					str.append(Area.THEME_PHRASE_EXT[R.availabilityCode()]+", ");
 				if(parms.containsKey("NATURALWEAPON"))
 					str.append(R.myNaturalWeapon().name()+", ");
 

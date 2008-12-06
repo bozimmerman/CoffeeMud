@@ -617,7 +617,7 @@ public class GenAbility extends StdAbility
         case 7: SV(ID,V_AUTO,Boolean.valueOf(CMath.s_bool(val))); break;
         case 8: SV(ID,V_FLAG,new Integer(convert(Ability.FLAG_DESCS,val,true))); break;
         case 9: SV(ID,V_CLAS,new Integer(convertClassAndDomain(val))); break;
-        case 10: SV(ID,V_OMAN,new Integer(CMath.s_int(val))); break;
+        case 10: SV(ID,V_OMAN,new Integer(CMath.s_parseIntExpression(val))); break;
         case 11: SV(ID,V_USAG,new Integer(convert(Ability.USAGE_DESCS,val,true))); break;
         case 12: SV(ID,V_CAFF,new Integer(convert(Ability.CAN_DESCS,val,true))); break;
         case 13: SV(ID,V_CTAR,new Integer(convert(Ability.CAN_DESCS,val,true))); break;

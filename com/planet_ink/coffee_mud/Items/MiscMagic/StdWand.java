@@ -261,8 +261,8 @@ public class StdWand extends StdItem implements Wand
 		switch(getCodeNum(code))
 		{
 		case 0: return;
-		case 1: baseEnvStats().setLevel(CMath.s_int(val)); break;
-		case 2: baseEnvStats().setAbility(CMath.s_int(val)); break;
+		case 1: baseEnvStats().setLevel(CMath.s_parseIntExpression(val)); break;
+		case 2: baseEnvStats().setAbility(CMath.s_parseIntExpression(val)); break;
 		case 3: setMiscText(val); break;
 		}
 	}

@@ -736,6 +736,8 @@ public class CMParms
         int state=0;
         int start=-1;
         String parmName=null;
+        int lastPossibleStart=-1;
+        boolean lastWasWhitespace=false;
         StringBuffer str=new StringBuffer(parms);
         for(int x=0;x<=str.length();x++)
         {
@@ -753,25 +755,34 @@ public class CMParms
         	case 1:
 	            if(c=='=')
 	            {
-	            	if(parmName==null)
-	            		parmName=str.substring(start,x).toUpperCase().trim();
+            		parmName=str.substring(start,x).toUpperCase().trim();
 	            	state=2;
 	            }
 	            else
 	            if(Character.isWhitespace(c))
+	            {
             		parmName=str.substring(start,x).toUpperCase().trim();
+            		start=x;
+	            }
 	            break;
         	case 2:
         		if((c=='\"')||(c=='\n'))
         		{
         			state=3;
         			start=x+1;
+        			lastPossibleStart=start;
+        		}
+        		else
+        		if(c=='=')
+        		{ // do nothing, this is a do-over
         		}
         		else
         		if(!Character.isWhitespace(c))
         		{
+        			lastWasWhitespace=false;
         			state=4;
-        			start=x+1;
+        			start=x;
+        			lastPossibleStart=start;
         		}
         		break;
         	case 3:
@@ -782,16 +793,40 @@ public class CMParms
         		{
         			state=0;
         			h.put(parmName,str.substring(start,x));
+        			parmName=null;
         		}
         		break;
         	case 4:
         		if(c=='\\')
         			str.deleteCharAt(x);
         		else
-        		if(Character.isWhitespace(c)||(c=='\n'))
+        		if(c=='=')
+        		{
+        			String value=str.substring(start,x).trim();
+        			if(value.length()==0)
+        				state=2;
+        			else
+        			{
+	        			h.put(parmName,str.substring(start,lastPossibleStart).trim());
+	        			parmName=str.substring(lastPossibleStart,x).toUpperCase().trim();
+    	            	state=2;
+        			}
+        		}
+        		else
+        		if(c=='\n')
         		{
         			state=0;
         			h.put(parmName,str.substring(start,x));
+        			parmName=null;
+        		}
+        		else
+        		if(Character.isWhitespace(c))
+        			lastWasWhitespace=true;
+        		else
+        		if(lastWasWhitespace)
+        		{
+        			lastWasWhitespace=false;
+        			lastPossibleStart=x;
         		}
         		break;
         	}
@@ -799,6 +834,14 @@ public class CMParms
         return h;
     }
 
+    public static Hashtable parseEQParms(Vector parms, int start, int end)
+    {
+        Hashtable h=new Hashtable();
+    	for(int x=0;x<parms.size();x++)
+    		h.putAll(parseEQParms((String)parms.elementAt(x)));
+        return h;
+    }
+    
     public static int stringContains(String str1, String str2)
     {
         StringBuffer buf1=new StringBuffer(str1.toLowerCase());

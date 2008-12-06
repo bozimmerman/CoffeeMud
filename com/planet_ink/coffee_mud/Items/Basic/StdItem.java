@@ -1424,9 +1424,9 @@ public class StdItem implements Item
 		switch(getCodeNum(code))
 		{
 		case 0: return;
-		case 1: setUsesRemaining(CMath.s_int(val)); break;
-		case 2: baseEnvStats().setLevel(CMath.s_int(val)); break;
-		case 3: baseEnvStats().setAbility(CMath.s_int(val)); break;
+		case 1: setUsesRemaining(CMath.s_parseIntExpression(val)); break;
+		case 2: baseEnvStats().setLevel(CMath.s_parseIntExpression(val)); break;
+		case 3: baseEnvStats().setAbility(CMath.s_parseIntExpression(val)); break;
 		case 4: setMiscText(val); break;
 		}
 	}

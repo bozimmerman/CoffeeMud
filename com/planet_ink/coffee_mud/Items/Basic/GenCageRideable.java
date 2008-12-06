@@ -83,6 +83,7 @@ public class GenCageRideable extends StdCageRideable
             return CMProps.getStatCodeExtensionValue(getStatCodes(), xtraValues, code);
         }
 	}
+	
 	public void setStat(String code, String val)
 	{
 		if(CMLib.coffeeMaker().getGenItemCodeNum(code)>=0)
@@ -92,10 +93,10 @@ public class GenCageRideable extends StdCageRideable
 		{
 		case 0: setLidsNLocks(hasALid(),isOpen(),CMath.s_bool(val),false); break;
 		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
-		case 2: setCapacity(CMath.s_int(val)); break;
-		case 3: setContainTypes(CMath.s_long(val)); break;
-		case 4: setRideBasis(CMath.s_int(val)); break;
-		case 5: setRiderCapacity(CMath.s_int(val)); break;
+		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
+		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
+		case 4: setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS,val)); break;
+		case 5: setRiderCapacity(CMath.s_parseIntExpression(val)); break;
         default:
             CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
             break;

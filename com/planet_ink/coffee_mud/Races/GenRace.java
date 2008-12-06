@@ -680,12 +680,12 @@ public class GenRace extends StdRace
 		case 1: name=val; break;
 		case 2: racialCategory=val; break;
 		case 3: forbiddenWornBits=CMath.s_long(val); break;
-		case 4: weightVariance=CMath.s_int(val); break;
-		case 5: lightestWeight=CMath.s_int(val); break;
-		case 6: heightVariance=CMath.s_int(val); break;
-		case 7: shortestFemale=CMath.s_int(val); break;
-		case 8: shortestMale=CMath.s_int(val); break;
-		case 9: availability=CMath.s_int(val); break;
+		case 4: weightVariance=CMath.s_parseIntExpression(val); break;
+		case 5: lightestWeight=CMath.s_parseIntExpression(val); break;
+		case 6: heightVariance=CMath.s_parseIntExpression(val); break;
+		case 7: shortestFemale=CMath.s_parseIntExpression(val); break;
+		case 8: shortestMale=CMath.s_parseIntExpression(val); break;
+		case 9: availability=CMath.s_parseBitIntExpression(Area.THEME_DESCS,val); break;
 		case 10: leaveStr=val;break;
 		case 11: arriveStr=val;break;
 		case 12:
@@ -753,7 +753,7 @@ public class GenRace extends StdRace
 					 break;
 				 }
 		case 25: {   if(racialAbilityProficiencies==null) racialAbilityProficiencies=new int[num+1];
-				     racialAbilityProficiencies[num]=CMath.s_int(val);
+				     racialAbilityProficiencies[num]=CMath.s_parseIntExpression(val);
 					 break;
 				 }
 		case 26: {   if(racialAbilityQuals==null) racialAbilityQuals=new boolean[num+1];
@@ -761,7 +761,7 @@ public class GenRace extends StdRace
 					 break;
 				 }
 		case 27: {   if(racialAbilityLevels==null) racialAbilityLevels=new int[num+1];
-				     racialAbilityLevels[num]=CMath.s_int(val);
+				     racialAbilityLevels[num]=CMath.s_parseIntExpression(val);
 					 break;
 				 }
 		case 28: if(CMath.s_int(val)==0){

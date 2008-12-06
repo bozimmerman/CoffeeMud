@@ -30,6 +30,7 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public interface Armor extends Container
 {
+	public static final String[] LAYERMASK_DESCS={"SEETHROUGH","MULTIWEAR"};
 	public static final short LAYERMASK_SEETHROUGH=(short)1;
 	public static final short LAYERMASK_MULTIWEAR=(short)2;
 	public short getClothingLayer();

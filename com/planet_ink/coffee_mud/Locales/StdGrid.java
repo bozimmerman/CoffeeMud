@@ -8,6 +8,7 @@ import com.planet_ink.coffee_mud.CharClasses.interfaces.*;
 import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
+import com.planet_ink.coffee_mud.Items.Basic.GenCage;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
@@ -808,5 +809,48 @@ public class StdGrid extends StdRoom implements GridLocale
 			}
 		}
 		return true;
+	}
+	
+	private final static String[] MYCODES={"XSIZE","YSIZE"};
+	public String getStat(String code)
+	{
+		if(super.getStdRoomCodeNum(code)>=0)
+			return super.getStat(code);
+		switch(getStdGridCodeNum(code))
+		{
+		case 0: return Integer.toString(xGridSize());
+		case 1: return Integer.toString(yGridSize());
+        default: return "";
+        }
+	}
+	public void setStat(String code, String val)
+	{
+		if(super.getStdRoomCodeNum(code)>=0)
+			super.setStat(code, val);
+		else
+		switch(getStdGridCodeNum(code))
+		{
+		case 0: setXGridSize(CMath.s_parseIntExpression(val)); break;
+		case 1: setYGridSize(CMath.s_parseIntExpression(val)); break;
+        default: break;
+		}
+	}
+	protected int getStdGridCodeNum(String code){
+		for(int i=0;i<codes.length;i++)
+			if(code.equalsIgnoreCase(codes[i])) return i;
+		return -1;
+	}
+	private static String[] codes=null;
+	public String[] getStatCodes()
+	{
+		if(codes!=null) return codes;
+		String[] superCodes=super.getStatCodes();
+		codes=new String[superCodes.length+MYCODES.length];
+		int i=0;
+		for(;i<superCodes.length;i++)
+			codes[i]=superCodes[i];
+		for(int x=0;x<MYCODES.length;i++,x++)
+			codes[i]=MYCODES[x];
+		return codes;
 	}
 }

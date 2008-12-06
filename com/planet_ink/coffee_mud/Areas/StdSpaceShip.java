@@ -1058,10 +1058,10 @@ public class StdSpaceShip implements Area, SpaceObject, SpaceShip
 		switch(getCodeNum(code))
 		{
 		case 0: return;
-		case 1: setClimateType(CMath.s_int(val)); break;
+		case 1: setClimateType(CMath.s_parseBitIntExpression(Area.CLIMATE_DESCS,val)); break;
 		case 2: setDescription(val); break;
 		case 3: setMiscText(val); break;
-		case 4: setTechLevel(CMath.s_int(val)); break;
+		case 4: setTechLevel(CMath.s_parseBitIntExpression(Area.THEME_DESCS,val)); break;
         case 5:
         {
             if(val.startsWith("+"))

@@ -272,8 +272,8 @@ public class StdScroll extends StdItem implements MiscMagic, Scroll
 		switch(getCodeNum(code))
 		{
 		case 0: return;
-		case 1: baseEnvStats().setLevel(CMath.s_int(val)); break;
-		case 2: baseEnvStats().setAbility(CMath.s_int(val)); break;
+		case 1: baseEnvStats().setLevel(CMath.s_parseIntExpression(val)); break;
+		case 2: baseEnvStats().setAbility(CMath.s_parseIntExpression(val)); break;
 		case 3: setMiscText(val); break;
 		}
 	}

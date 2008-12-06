@@ -14,14 +14,12 @@ Use DEFINE _VARNAME to persist a definition beyond the room.
 TODO: **COMPLETE** docs maybe even a dtd or two
 -->
 <AREADATA>
-<AREA id="maze_dungeon" layout="MazeLayout" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;random">
-	<AUTHOR></AUTHOR>
-	<DESCRIPTION></DESCRIPTION>
+<AREA id="maze_dungeon" class="StdArea" layout="MAZE" requires="areaname=$,areasize=int,level_range=int,aggrochance=int,theme=prison;rats;kobolds;random">
 	<SIZE>$areasize</SIZE>
 	<NAME>$areaname</NAME>
 	<ROOM id="dungeon_rooms" insert="$dungeon_hallways,$dungeon_interior,$dungeon_leaf,$dungeon_offleaf" />
 	<BEHAVIOR select="all">
-		<BEHAVIOR condition="$theme='kobolds'" class="RandomTraps" parms="mintraps=1 maxtraps=$AREA_SIZE rooms=Y exits=Y" />
+		<BEHAVIOR condition="$theme='kobolds'" class="RandomTraps" parms="mintraps=1 maxtraps=$AREA_SIZE/2 rooms=Y exits=Y" />
 		<BEHAVIOR condition="$theme='random'" class="RandomTraps" parms="mintraps=1 maxtraps=3 rooms=Y exits=Y" />
 	</BEHAVIOR>
 </AREA>
@@ -958,13 +956,13 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 			<EXIT class="Open" />
 		</ROOM>
 		<ROOM class="CaveRoom">
-			<TITLE>a lair</TITLE>
+			<TITLE>a dragon's lair</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-					<DESCRIPTION>You are standing in (a(n)) $dungeonadj_feeling dragon lair.</DESCRIPTION>
-					<DESCRIPTION>You're inside (a(n)) $dungeonadj_feeling dragon lair. </DESCRIPTION>
-					<DESCRIPTION>You've found (a(n)) $dungeonadj_feeling dragon lair. </DESCRIPTION>
-					<DESCRIPTION>This is (a(n)) $dungeonadj_feeling dragon lair. </DESCRIPTION>
+					<DESCRIPTION>You are standing in (a(n)) $dungeonadj_feeling dragon's lair.</DESCRIPTION>
+					<DESCRIPTION>You're inside (a(n)) $dungeonadj_feeling dragon's lair. </DESCRIPTION>
+					<DESCRIPTION>You've found (a(n)) $dungeonadj_feeling dragon's lair. </DESCRIPTION>
+					<DESCRIPTION>This is (a(n)) $dungeonadj_feeling dragon's lair. </DESCRIPTION>
 				</DESCRIPTION>
 				<DESCRIPTION select="any-1">$dungeon_random_blurbs</DESCRIPTION>
 				<DESCRIPTION select="any-1">
@@ -978,68 +976,198 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 			<MOB class="Dragon" ability="0?9" level="(1.20 * ($level_range)) + 1" />
 			<EXIT class="Open" />
 		</ROOM>
-		<!-- TODO: a pit, a precipice, a fungal room, a crypt w/ sarcophogi --->
+<!-- 
+TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi 
+-->
 		<ROOM class="CaveRoom">
-			<TITLE>a den</TITLE>
+			<TITLE>a dead-end</TITLE>
 			<DESCRIPTION>
-			<!--TODO: Fill this in -->
-			</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in a dead-end.</DESCRIPTION>
+					<DESCRIPTION>You're inside a dead-end cavern.</DESCRIPTION>
+					<DESCRIPTION>You've found a dead-end cavern.</DESCRIPTION>
+					<DESCRIPTION>This is a dead-end.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurbs</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You feel like there's more dead here than end.</DESCRIPTION>
+					<DESCRIPTION>This seems like a dead-end in more than once sense of the word.</DESCRIPTION>
+					<DESCRIPTION>The name of this place could not be more accurate.</DESCRIPTION>
+					<DESCRIPTION>You can't imagine why this is a dead-end.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_leaf_exits</DESCRIPTION>
+			</DESCRIPTION>			
 			<EXIT class="Open" />
-			<MOB select="1?3" include="dungeon_mobs,dungeon_mobs,dungeon_mobs" />
-		</ROOM>
-		<ROOM class="CaveRoom">
-			<TITLE>a cave-in</TITLE>
-			<DESCRIPTION>
-			<!--TODO: Fill this in -->
-			</DESCRIPTION>
-			<EXIT class="Open" />
-			<MOB select="1?3" include="dungeon_mobs,dungeon_mobs,dungeon_mobs" />
-		</ROOM>
-		<ROOM class="CaveRoom">
-			<TITLE>a dead-end (skeletons)</TITLE>
-			<DESCRIPTION>
-			<!--TODO: Fill this in -->
-			</DESCRIPTION>
-			<EXIT class="Open" />
-			<MOB select="1?3" include="dungeon_mobs,dungeon_mobs,dungeon_mobs" />
+			<MOB select="1?3" include="dungeon_skeleton,dungeon_skeleton,dungeon_skeleton" />
 		</ROOM>
 		<ROOM class="StoneRoom">
 			<TITLE>a safe room</TITLE>
 			<DESCRIPTION>
-			<!--TODO: Fill this in -->
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in an empty carved stone room.</DESCRIPTION>
+					<DESCRIPTION>You're inside an empty stone room.</DESCRIPTION>
+					<DESCRIPTION>You've found an empty stone room.</DESCRIPTION>
+					<DESCRIPTION>This is an empty stone room.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You feel perfectly safe here, and wonder why nothing has claimed this place yet?</DESCRIPTION>
+					<DESCRIPTION>This seems like a safe place to take a rest, so long as nothing comes through the door.</DESCRIPTION>
+					<DESCRIPTION>This appears to be the safest spot in this place so far.  Perhaps you can take a rest and a bite, so long as nothing comes through the door.</DESCRIPTION>
+					<DESCRIPTION>You can't imagine a safer place to rest, though perhaps keeping one eye open.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_leaf_exits</DESCRIPTION>
 			</DESCRIPTION>
 			<EXIT class="Door" />
-			<MOB select="1?3" include="dungeon_mobs,dungeon_mobs,dungeon_mobs" />
+			<AFFECT class="Prop_RoomDark" />
 		</ROOM>
 		<ROOM class="MazeRoom">
-			<TITLE>a catacomb</TITLE>
-			<DESCRIPTION>
-			<!--TODO: Fill this in -->
-			</DESCRIPTION>
+			<TITLE>lost in the catacombs</TITLE>
+			<DESCRIPTION>&lt;VARIES&gt;
+			You are lost in an cavernous underground catacomb.
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;P&gt;$dungeon_random_blurbs&lt;/P&gt;
+			&lt;VARIES&gt;</DESCRIPTION>
+			<XSIZE>5</XSIZE>
+			<YSIZE>5</YSIZE>
 			<EXIT class="Door" />
-			<MOB select="5?10" include="dungeon_mobs,dungeon_mobs,dungeon_mobs,dungeon_mobs,dungeon_mobs,dungeon_mobs,dungeon_mobs,dungeon_mobs,dungeon_mobs,dungeon_mobs,dungeon_mobs,dungeon_mobs" />
+			<MOB class="GenUndead" level="$level_range" id="dungeon_mobile_spirit" name="a spirit of the dead" include="dungeon_spirit">
+				<BEHAVIOR class="MobileAggressive" parms="" />
+			</MOB>
+			<MOB select="5?10" include="dungeon_mobile_spirit,dungeon_mobile_spirit,dungeon_mobile_spirit,dungeon_mobile_spirit,dungeon_mobile_spirit,dungeon_mobile_spirit,dungeon_mobile_spirit,dungeon_mobile_spirit,dungeon_mobile_spirit,dungeon_mobile_spirit," />
+			<AFFECT class="Prop_RoomDark" />
 		</ROOM>
-		<ROOM class="IndoorWaterSurface" condition="1?20=1 and $_lakes&lt;1" define="_lakes+=1">
-			<TITLE>
-				<TITLE select="any-1">
-				<!--TODO: Fill this in -->
-				</TITLE>
-			</TITLE>
+		<ROOM class="CaveRoom">
+			<TITLE>a rat den</TITLE>
 			<DESCRIPTION>
 				<DESCRIPTION select="any-1">
-				<!--TODO: Fill this in -->
-				The ceiling of this cavern must be a mile up, but the black cold waters of the
-		 		lake seem to cover almost the entire floor.
-		 		You are on the perfectly still waters of a cold black lake. 
+					<DESCRIPTION>You are standing in a rat's den.</DESCRIPTION>
+					<DESCRIPTION>You're inside a rat's den.</DESCRIPTION>
+					<DESCRIPTION>You've found a rat's den.</DESCRIPTION>
+					<DESCRIPTION>This is a rat's den.</DESCRIPTION>
 				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurbs</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You feel like some $nasty_word critters live here.</DESCRIPTION>
+					<DESCRIPTION>This seems like a place some $nasty_word critters call home.</DESCRIPTION>
+					<DESCRIPTION>Some $nasty_word little critters definitely lives here.</DESCRIPTION>
+					<DESCRIPTION>You aren't sure the $nasty_word little critters would be happy to see you.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurbs</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_leaf_exits</DESCRIPTION>
+			</DESCRIPTION>			
+			<EXIT class="Open" />
+			<MOB select="3?5" include="dungeon_rat,dungeon_rat,dungeon_rat,dungeon_rat,dungeon_rat" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a web filled den</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in a web filled den.</DESCRIPTION>
+					<DESCRIPTION>You're inside a web covered den.</DESCRIPTION>
+					<DESCRIPTION>You've found a web covered den.</DESCRIPTION>
+					<DESCRIPTION>This is a web covered den.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurbs</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You feel like some $nasty_word spiders live here.</DESCRIPTION>
+					<DESCRIPTION>This seems like a place some $nasty_word spiders call home.</DESCRIPTION>
+					<DESCRIPTION>Some $nasty_word little spiders definitely lives here.</DESCRIPTION>
+					<DESCRIPTION>You aren't sure the $nasty_word little spiders would be happy to see you.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurbs</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_leaf_exits</DESCRIPTION>
+			</DESCRIPTION>			
+			<EXIT class="Open" />
+			<MOB select="3?5" include="dungeon_spider,dungeon_spider,dungeon_spider,dungeon_spider,dungeon_spider" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a dry lizard's den</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in a dry scaley den.</DESCRIPTION>
+					<DESCRIPTION>You're inside a  dry scaley den.</DESCRIPTION>
+					<DESCRIPTION>You've found a  dry scaley den.</DESCRIPTION>
+					<DESCRIPTION>This is a  dry scaley den.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurbs</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You feel like some $nasty_word reptiles live here.</DESCRIPTION>
+					<DESCRIPTION>This seems like a place some $nasty_word reptiles call home.</DESCRIPTION>
+					<DESCRIPTION>Some $nasty_word little reptiles definitely lives here.</DESCRIPTION>
+					<DESCRIPTION>You aren't sure the $nasty_word little reptiles would be happy to see you.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurbs</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_leaf_exits</DESCRIPTION>
+			</DESCRIPTION>			
+			<EXIT class="Open" />
+			<MOB select="3?5" include="dungeon_lizard,dungeon_lizard,dungeon_lizard,dungeon_lizard,dungeon_lizard" />
+		</ROOM>
+		<ROOM class="CaveRoom">
+			<TITLE>a slithering den</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are standing in a scaley slithering den.</DESCRIPTION>
+					<DESCRIPTION>You're inside a slithering den.</DESCRIPTION>
+					<DESCRIPTION>You've found a slithering scaley den.</DESCRIPTION>
+					<DESCRIPTION>This is a slithering den.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurbs</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You feel like some $nasty_word snakes live here.</DESCRIPTION>
+					<DESCRIPTION>This seems like a place some $nasty_word snakes call home.</DESCRIPTION>
+					<DESCRIPTION>Some $nasty_word little snakes definitely lives here.</DESCRIPTION>
+					<DESCRIPTION>You aren't sure the $nasty_word little snakes would be happy to see you.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurbs</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_leaf_exits</DESCRIPTION>
+			</DESCRIPTION>			
+			<EXIT class="Open" />
+			<MOB select="3?5" include="dungeon_snake,dungeon_snake,dungeon_snake,dungeon_snake,dungeon_snake" />
+		</ROOM>
+		<ROOM class="IndoorWaterSurface" condition="1?20=1 and $_lakes&lt;1" define="_lakes+=1">
+			<TITLE>an underground lake</TITLE>
+			<DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>You are swimming in a large underground lake.</DESCRIPTION>
+					<DESCRIPTION>You're swimming in a cold underground lake.</DESCRIPTION>
+					<DESCRIPTION>You've found a cold underground lake.</DESCRIPTION>
+					<DESCRIPTION>This is a large cold underground lake.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurbs</DESCRIPTION>
+				<DESCRIPTION select="any-1">
+					<DESCRIPTION>The ceiling of this cavern reflects off the still water surface.</DESCRIPTION>
+					<DESCRIPTION>The black cold waters of the lake seem to cover the whole floor.</DESCRIPTION>
+					<DESCRIPTION>The water is cold and perfectly still.</DESCRIPTION>
+					<DESCRIPTION>Shadows flicker their reflections on the surface of the cold still water.</DESCRIPTION>
+				</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_random_blurbs</DESCRIPTION>
+				<DESCRIPTION select="any-1">$dungeon_leaf_exits</DESCRIPTION>
 			</DESCRIPTION>
 			<AFFECT class="Prop_RoomDark" />
 			<EXIT class="Open" />
 		</ROOM>
 	</ROOM>
 </ROOM>
-
-
 
 <STRING id="dungeon_kobold_exits" select="all">
 	<STRING select="any-1">
@@ -1358,7 +1486,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 				</ITEM>
 			</ITEM>
 		</MOB>
-		<MOB class="GenUndead" level="$level_range" id="dungeon_spirit" race="Spirit" condition="1?3=1" gender="$anygender">
+		<MOB class="GenUndead" level="$level_range" id="dungeon_spirit" race="Spirit" gender="$anygender" condition="($theme!='prison') or (1?3=1)">
 			<NAME>a dead prisoners spirit</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name whisps towards you.</DISPLAY>
@@ -1382,7 +1510,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 				<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
 			</BEHAVIOR>
 		</MOB>
-		<MOB class="GenMob" level="$level_range" id="dungeon_prisonguard" race="$prisoner_races" condition="1?3&gt;1" gender="$anygender">
+		<MOB class="GenMob" level="$level_range" id="dungeon_prisonguard" race="$prisoner_races" gender="$anygender">
 			<NAME>(a(n)) $prisoner_races prison guard</NAME>
 			<DISPLAY select="pick-1">
 				<DISPLAY pickweight="1">$mob_name marches towards you.</DISPLAY>
@@ -1689,6 +1817,54 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 	</MOB>
 </MOB>
 
+<MOB class="GenUndead" level="$level_range" id="dungeon_skeleton" race="Skeleton" gender="N">
+	<NAME>a skeleton</NAME>
+	<DISPLAY select="pick-1">
+		<DISPLAY pickweight="1">$mob_name rattles towards you.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name wants to see you die.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name is rattling towards you.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name doesn`t know it`s dead.</DISPLAY>
+		<DISPLAY pickweight="1">$mob_name is watching you.</DISPLAY>
+		<DISPLAY pickweight="5">$mob_name is here.</DISPLAY>
+	</DISPLAY>
+	<ALIGNMENT>-10000?0</ALIGNMENT>
+	<BEHAVIOR select="all">
+		<BEHAVIOR condition="$aggrochance&lt;0 and $roomtag_nodetype!='leaf'" class="MobileAggressive" parms="" />
+		<BEHAVIOR condition="1?100&lt;$aggrochance"  class="Aggressive" parms="" />
+		<BEHAVIOR class="Mobile" condition="$roomtag_nodetype!='leaf'" parms="" />
+	</BEHAVIOR>
+	<ITEM select="pick-1">
+		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+			<NAME>(a(n)) $ragged_word spear</NAME>
+			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<WEAPONCLASS>POLEARM</WEAPONCLASS>
+			<WEAPONTYPE>PIERCING</WEAPONTYPE>
+			<MATERIAL>OAK</MATERIAL>
+		</ITEM>
+		<ITEM pickweight="2" class="GenWeapon" LEVEL="$mob_level">
+			<NAME>(a(n)) $ragged_word sword</NAME>
+			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<WEAPONCLASS>SWORD</WEAPONCLASS>
+			<WEAPONTYPE>SLASHING</WEAPONTYPE>
+			<MATERIAL>IRON</MATERIAL>
+		</ITEM>
+		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+			<NAME>(a(n)) $ragged_word dagger</NAME>
+			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<WEAPONCLASS>DAGGER</WEAPONCLASS>
+			<WEAPONTYPE>PIERCING</WEAPONTYPE>
+			<MATERIAL>IRON</MATERIAL>
+		</ITEM>
+		<ITEM pickweight="1" class="GenWeapon" LEVEL="$mob_level">
+			<NAME>a spiked $ragged_word mace</NAME>
+			<DISPLAY>$item_name has been left here"</DISPLAY>
+			<MATERIAL>IRON</MATERIAL>
+			<WEAPONCLASS>BLUNT</WEAPONCLASS>
+			<WEAPONTYPE>BASHING</WEAPONTYPE>
+		</ITEM>
+	</ITEM>
+</MOB>
+		
 <ITEM class="metacraft" name="any-alchemy" id="any_alchemy_item"/>
 <ITEM class="metacraft" name="any-herbalism" id="any_herbalism_item"/>
 <ITEM class="metacraft" name="any-apothecary" id="any_apothecary_item"/>

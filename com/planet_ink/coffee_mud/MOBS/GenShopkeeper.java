@@ -102,7 +102,7 @@ public class GenShopkeeper extends StdShopKeeper
 		case 1: setPrejudiceFactors(val); break;
 		case 2: setBudget(val); break;
 		case 3: setDevalueRate(val); break;
-		case 4: setInvResetRate(CMath.s_int(val)); break;
+		case 4: setInvResetRate(CMath.s_parseIntExpression(val)); break;
         case 5: setIgnoreMask(val); break;
         case 6: setItemPricingAdjustments((val.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(val,true))); break;
         default:

@@ -102,14 +102,14 @@ public class GenAuctioneer extends StdAuctioneer
         else
         switch(getCodeNum(code))
         {
-        case 0: setWhatIsSoldMask(CMath.s_long(val)); break;
+        case 0: setWhatIsSoldMask(CMath.s_parseListLongExpression(ShopKeeper.DEAL_DESCS,val)); break;
         case 1: setPrejudiceFactors(val); break;
         case 2: setAuctionHouse(val); break;
-        case 3: setTimedListingPrice(CMath.s_double(val)); break;
-        case 4: setTimedListingPct(CMath.s_double(val)); break;
-        case 5: setTimedFinalCutPct(CMath.s_double(val)); break;
-        case 6: setMaxTimedAuctionDays(CMath.s_int(val)); break;
-        case 7: setMinTimedAuctionDays(CMath.s_int(val)); break;
+        case 3: setTimedListingPrice(CMath.s_parseMathExpression(val)); break;
+        case 4: setTimedListingPct(CMath.s_parseMathExpression(val)); break;
+        case 5: setTimedFinalCutPct(CMath.s_parseMathExpression(val)); break;
+        case 6: setMaxTimedAuctionDays(CMath.s_parseIntExpression(val)); break;
+        case 7: setMinTimedAuctionDays(CMath.s_parseIntExpression(val)); break;
         case 8: setIgnoreMask(val); break;
         case 9: setItemPricingAdjustments((val.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(val,true))); break;
         default:

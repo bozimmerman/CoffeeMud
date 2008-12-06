@@ -241,11 +241,11 @@ public class AreaData extends StdWebMacro
 				}
 				if(parms.containsKey("TECHLEVEL"))
 				{
-					for(int i=1;i<Area.THEME_DESCS.length;i++)
+					for(int i=1;i<Area.THEME_PHRASE.length;i++)
 					{
 						str.append("<OPTION VALUE="+i);
 						if(i==A.getTechLevel()) str.append(" SELECTED");
-						str.append(">"+Area.THEME_DESCS[i]);
+						str.append(">"+Area.THEME_PHRASE[i]);
 					}
 				}
 				if(parms.containsKey("NAME"))

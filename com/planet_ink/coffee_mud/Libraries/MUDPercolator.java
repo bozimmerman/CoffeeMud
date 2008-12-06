@@ -102,6 +102,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         String description = findString("description",piece,defined);
         R.setDescription(description);
         addDefinition("ROOM_DESCRIPTION",description,defined);
+    	final String[] ignoreStats={"CLASS","DISPLAY","DESCRIPTION"};
+    	fillOutStats(R, ignoreStats, "ROOM_", piece, defined);
         Vector V;
         V = findMobs(piece,defined);
         for(int i=0;i<V.size();i++) {
@@ -172,11 +174,15 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         String name = findString("name",piece,defined);
         A.setName(name);
         defined.put("AREA_NAME",name);
-        String author = findString("author",piece,defined);
-        A.setAuthorID(author);
-        String description = findString("description",piece,defined);
-        A.setDescription(description);
-        defined.put("AREA_DESCRIPTION",description);
+        String author = findOptionalString("author",piece,defined);
+        if(author != null)
+	        A.setAuthorID(author);
+        String description = findOptionalString("description",piece,defined);
+        if(description != null)
+        {
+	        A.setDescription(description);
+        	defined.put("AREA_DESCRIPTION",description);
+        }
         String layoutType = findString("layout",piece,defined);
         if((layoutType==null)||(layoutType.trim().length()==0))
         	throw new CMException("Unable to build area without defined layout");
@@ -409,7 +415,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         return (Exit)exitChoices.elementAt(CMLib.dice().roll(1,exitChoices.size(),-1));
     }
 
-    protected void fillOutStats(CMModifiable E, String[] ignoreStats, String defPrefix, XMLLibrary.XMLpiece piece, Hashtable defined)
+    protected void fillOutStatCodes(CMModifiable E, String[] ignoreStats, String defPrefix, XMLLibrary.XMLpiece piece, Hashtable defined)
     {
         String[] statCodes = E.getStatCodes();
         for(int s=0;s<statCodes.length;s++) {
@@ -427,10 +433,10 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     
     protected void fillOutStats(Environmental E, String[] ignoreStats, String defPrefix, XMLLibrary.XMLpiece piece, Hashtable defined)
     {
-    	fillOutStats(E,ignoreStats,defPrefix,piece,defined);
-    	fillOutStats(E.baseEnvStats(),ignoreStats,defPrefix,piece,defined);
+    	fillOutStatCodes(E,ignoreStats,defPrefix,piece,defined);
+    	fillOutStatCodes(E.baseEnvStats(),ignoreStats,defPrefix,piece,defined);
     	if(E instanceof MOB)
-        	fillOutStats(((MOB)E).baseCharStats(),ignoreStats,defPrefix,piece,defined);
+    		fillOutStatCodes(((MOB)E).baseCharStats(),ignoreStats,defPrefix,piece,defined);
     }
     
     protected MOB buildMob(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
@@ -605,7 +611,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
             String recipe = findString("name",piece,defined);
             if((recipe == null)||(recipe.length()==0)) 
             	throw new CMException("Unable to metacraft an item without a name, Data: "+piece.value);
-            String materialStr = findString("material",piece,defined);
+            String materialStr = findOptionalString("material",piece,defined);
             int material=-1;
             if((materialStr!=null)&&(CMParms.containsIgnoreCase(RawMaterial.RESOURCE_DESCS,materialStr)))
             	material=RawMaterial.RESOURCE_DATA[CMParms.indexOfIgnoreCase(RawMaterial.RESOURCE_DESCS,materialStr)][0];
@@ -1006,7 +1012,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     		int x=reqVariable.indexOf('=');
     		if(x>=0)
     		{
-    			validValues=reqVariable.substring(x).trim();
+    			validValues=reqVariable.substring(x+1).trim();
     			reqVariable=reqVariable.substring(0,x).trim();
     		}
     		if(!defined.containsKey(reqVariable.toUpperCase()))

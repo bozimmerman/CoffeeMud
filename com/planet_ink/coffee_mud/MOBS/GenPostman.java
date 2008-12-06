@@ -104,11 +104,11 @@ public class GenPostman extends StdPostman
         case 0: setWhatIsSoldMask(CMath.s_long(val)); break;
         case 1: setPrejudiceFactors(val); break;
         case 2: setPostalChain(val); break;
-        case 3: setMinimumPostage(CMath.s_double(val)); break;
-        case 4: setPostagePerPound(CMath.s_double(val)); break;
-        case 5: setHoldFeePerPound(CMath.s_double(val)); break;
-        case 6: setFeeForNewBox(CMath.s_double(val)); break;
-        case 7: setMaxMudMonthsHeld(CMath.s_int(val)); break;
+        case 3: setMinimumPostage(CMath.s_parseMathExpression(val)); break;
+        case 4: setPostagePerPound(CMath.s_parseMathExpression(val)); break;
+        case 5: setHoldFeePerPound(CMath.s_parseMathExpression(val)); break;
+        case 6: setFeeForNewBox(CMath.s_parseMathExpression(val)); break;
+        case 7: setMaxMudMonthsHeld(CMath.s_parseIntExpression(val)); break;
         case 8: setIgnoreMask(val); break;
         case 9: setItemPricingAdjustments((val.trim().length()==0)?new String[0]:CMParms.toStringArray(CMParms.parseCommas(val,true))); break;
         default:

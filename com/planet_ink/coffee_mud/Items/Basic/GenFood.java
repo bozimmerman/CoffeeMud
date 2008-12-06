@@ -87,8 +87,8 @@ public class GenFood extends StdFood
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setNourishment(CMath.s_int(val)); break;
-        case 1: setBite(CMath.s_int(val)); break;
+		case 0: setNourishment(CMath.s_parseIntExpression(val)); break;
+        case 1: setBite(CMath.s_parseIntExpression(val)); break;
         default:
             CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
             break;

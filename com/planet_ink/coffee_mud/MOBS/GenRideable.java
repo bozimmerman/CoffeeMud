@@ -84,8 +84,8 @@ public class GenRideable extends StdRideable
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setRideBasis(CMath.s_int(val)); break;
-		case 1: setRiderCapacity(CMath.s_int(val)); break;
+		case 0: setRideBasis(CMath.s_parseListIntExpression(Rideable.RIDEABLE_DESCS,val)); break;
+		case 1: setRiderCapacity(CMath.s_parseIntExpression(val)); break;
         default:
             CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
             break;

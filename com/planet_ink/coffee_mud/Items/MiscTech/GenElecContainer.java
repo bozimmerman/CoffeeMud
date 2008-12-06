@@ -90,10 +90,15 @@ public class GenElecContainer extends StdElecContainer
 		{
 		case 0: setLidsNLocks(hasALid(),isOpen(),CMath.s_bool(val),false); break;
 		case 1: setLidsNLocks(CMath.s_bool(val),isOpen(),hasALock(),false); break;
-		case 2: setCapacity(CMath.s_int(val)); break;
-		case 3: setContainTypes(CMath.s_long(val)); break;
-		case 4: setFuelType(CMath.s_int(val)); break;
-		case 5: setPowerCapacity(CMath.s_long(val)); break;
+		case 2: setCapacity(CMath.s_parseIntExpression(val)); break;
+		case 3: setContainTypes(CMath.s_parseBitLongExpression(Container.CONTAIN_DESCS,val)); break;
+		case 4:{
+				int x=CMath.s_parseListIntExpression(RawMaterial.RESOURCE_DESCS, val);
+				x=((x>=0)&&(x<RawMaterial.RESOURCE_DATA[1][0]))?RawMaterial.RESOURCE_DATA[x][0]:x;
+				setFuelType(x); 
+				break;
+			   } 
+		case 5: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
         default:
             CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
             break;

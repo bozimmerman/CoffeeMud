@@ -84,8 +84,13 @@ public class GenElecItem extends StdElecItem
 		else
 		switch(getCodeNum(code))
 		{
-		case 0: setFuelType(CMath.s_int(val)); break;
-		case 1: setPowerCapacity(CMath.s_long(val)); break;
+		case 0:{
+				int x=CMath.s_parseListIntExpression(RawMaterial.RESOURCE_DESCS, val);
+				x=((x>=0)&&(x<RawMaterial.RESOURCE_DATA[1][0]))?RawMaterial.RESOURCE_DATA[x][0]:x;
+				setFuelType(x); 
+				break;
+			   } 
+		case 1: setPowerCapacity(CMath.s_parseLongExpression(val)); break;
         default:
             CMProps.setStatCodeExtensionValue(getStatCodes(), xtraValues, code, val);
             break;
