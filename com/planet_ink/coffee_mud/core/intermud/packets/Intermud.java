@@ -401,203 +401,222 @@ public class Intermud implements Runnable, Persistent, Serializable
 					return;
 				}
 			}
-            // Read a packet from the router
-            {
-                String str;
+            String str;
 
-                try {
-                    int len=0;
-                    while(!shutdown){try{
+            try 
+            {
+                int len=0;
+                while(!shutdown)
+                {
+                	try
+                	{ // please don't compress this again
 	                    len = input.readInt();
 	                    break;
-                    }catch(java.io.IOException e){if((e.getMessage()==null)||(e.getMessage().toUpperCase().indexOf("TIMED OUT")<0)) throw e;}}
-					if(len>65536)
-					{
-						int skipped=0;
-						while(skipped<len)
-							skipped+=input.skipBytes(len);
-						Log.errOut("Got illegal packet: "+skipped+"/"+len+" bytes.");
-						continue;
-					}
-                    byte[] tmp = new byte[len];
+                	} 
+                	catch(java.io.IOException e)
+                	{
+                		if((e.getMessage()==null)||(e.getMessage().toUpperCase().indexOf("TIMED OUT")<0)) 
+                			throw e;
+                		CMLib.s_sleep(1000);
+                		continue;
+                	}
+                }
+				if(len>65536)
+				{
+					int skipped=0;
+					while(skipped<len)
+						skipped+=input.skipBytes(len);
+					Log.errOut("Got illegal packet: "+skipped+"/"+len+" bytes.");
+					continue;
+				}
+                byte[] tmp = new byte[len];
 
-                    while(!shutdown){try{
+                while(!shutdown)
+                {
+                	try
+                	{ // please don't compress this again
 	                    input.readFully(tmp);
 	                    break;
-                    }catch(java.io.IOException e){if((e.getMessage()==null)||(e.getMessage().toUpperCase().indexOf("TIMED OUT")<0)) throw e;}}
-					str=new String(tmp);
+                	}
+                	catch(java.io.IOException e)
+                	{
+                		if((e.getMessage()==null)||(e.getMessage().toUpperCase().indexOf("TIMED OUT")<0)) 
+                			throw e;
+                		CMLib.s_sleep(1000);
+                		Log.errOut("Intermud","Timeout receiving packet sized "+len);
+                		continue;
+                	}
                 }
-                catch( java.io.IOException e ) {
-                    data = null;
-                    str = null;
-                    connected = false;
-                    try { Thread.sleep(1200); }
-					catch (InterruptedException ee)
+				str=new String(tmp);
+            }
+            catch( java.io.IOException e ) {
+                data = null;
+                str = null;
+                connected = false;
+                try { Thread.sleep(1200); }
+				catch (InterruptedException ee)
+				{
+					if(shutdown)
 					{
-						if(shutdown)
-						{
-							Log.sysOut("Intermud","Shutdown!!!");
-							return;
-						}
+						Log.sysOut("Intermud","Shutdown!!!");
+						return;
 					}
-                    connect();
-        			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
-					if(errMsg!=null) Log.errOut("InterMud","384-"+errMsg);
-                    return;
-                }
-                try {
-                    if(CMSecurity.isDebugging("I3"))
-                        Log.sysOut("Intermud","Receiving: "+str);
-                    data = (Vector)LPCData.getLPCData(str);
-                }
-                catch( I3Exception e ) {
-        			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
-					if(errMsg!=null) Log.errOut("InterMud","389-"+errMsg);
-                    continue;
-                }
+				}
+                connect();
+    			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
+				if(errMsg!=null) Log.errOut("InterMud","384-"+errMsg);
+                return;
+            }
+            try {
+                if(CMSecurity.isDebugging("I3"))
+                    Log.sysOut("Intermud","Receiving: "+str);
+                data = (Vector)LPCData.getLPCData(str);
+            }
+            catch( I3Exception e ) {
+    			String errMsg=e.getMessage()==null?e.toString():e.getMessage();
+				if(errMsg!=null) Log.errOut("InterMud","389-"+errMsg);
+                continue;
             }
             // Figure out the packet type and send it to the mudlib
-            {
-                String type = (String)data.elementAt(0);
+            String type = (String)data.elementAt(0);
 
-                if( type.equals("channel-m") || type.equals("channel-e") || type.equals("channel-t") ) {
-                    try {
-                        ChannelPacket p = new ChannelPacket(data);
-
-                        intermud.receive(p);
-                    }
-                    catch( InvalidPacketException e ) {
-						Log.errOut("Intermud","0-"+e.getMessage());
-                    }
-                }
-                else if( type.equals("chan-who-req") ) {
-                    try {
-                        ChannelWhoRequest p = new ChannelWhoRequest(data);
-
-                        intermud.receive(p);
-                    }
-                    catch( InvalidPacketException e ) {
-						Log.errOut("Intermud","1-"+e.getMessage());
-                    }
-                }
-                else if( type.equals("chan-user-req") ) {
-                    try {
-                        ChannelUserRequest p = new ChannelUserRequest(data);
-
-                        intermud.receive(p);
-                    }
-                    catch( InvalidPacketException e ) {
-						Log.errOut("Intermud","1-"+e.getMessage());
-                    }
-                }
-                else if( type.equals("channel-add") ) {
-                    try {
-                        ChannelAdd p = new ChannelAdd(data);
-
-                        intermud.receive(p);
-                    }
-                    catch( InvalidPacketException e ) {
-						Log.errOut("Intermud","2-"+e.getMessage());
-                    }
-                }
-                else if( type.equals("channel-remove") ) {
-                    try {
-                        ChannelDelete p = new ChannelDelete(data);
-
-                        intermud.receive(p);
-                    }
-                    catch( InvalidPacketException e ) {
-						Log.errOut("Intermud","3-"+e.getMessage());
-                    }
-                }
-                else if( type.equals("channel-listen") ) {
-                    try {
-                        ChannelListen p = new ChannelListen(data);
-
-                        intermud.receive(p);
-                    }
-                    catch( InvalidPacketException e ) {
-						Log.errOut("Intermud","4-"+e.getMessage());
-                    }
-                }
-                else if( type.equals("chan-who-reply") ) {
-                    try {
-                        ChannelWhoReply p = new ChannelWhoReply(data);
-
-                        intermud.receive(p);
-                    }
-                    catch( InvalidPacketException e ) {
-						Log.errOut("Intermud","5-"+e.getMessage());
-                    }
-                }
-                else if( type.equals("chan-user-reply") ) {
-                    try {
-                        ChannelUserReply p = new ChannelUserReply(data);
-
-                        intermud.receive(p);
-                    }
-                    catch( InvalidPacketException e ) {
-						Log.errOut("Intermud","5-"+e.getMessage());
-                    }
-                }
-                else if( type.equals("chanlist-reply") ) {
-                    channelList(data);
-                }
-                else if( type.equals("locate-reply") ) {
-                    try {
-                        LocateReplyPacket p = new LocateReplyPacket(data);
-
-                        intermud.receive(p);
-                    }
-                    catch( InvalidPacketException e ) {
-						Log.errOut("Intermud","6-"+e.getMessage());
-                    }
-                }
-                else if( type.equals("locate-req") ) {
-                    try {
-                        LocateQueryPacket p = new LocateQueryPacket(data);
-
-                        intermud.receive(p);
-                    }
-                    catch( InvalidPacketException e ) {
-						Log.errOut("Intermud","7-"+e.getMessage());
-                    }
-                }
-                else if( type.equals("mudlist") ) {
-                    mudlist(data);
-                }
-                else if( type.equals("startup-reply") ) {
-                    startupReply(data);
-                }
-                else if( type.equals("tell") ) {
-                    try {
-                        TellPacket p = new TellPacket(data);
-
-                        intermud.receive(p);
-                    }
-                    catch( InvalidPacketException e ) {
-						Log.errOut("Intermud","8-"+e.getMessage());
-                    }
-                }
-                else if( type.equals("who-req") ) {
-                    WhoPacket p = new WhoPacket(data);
-
-                    intermud.receive(p);
-				}
-                else if( type.equals("who-reply") ) {
-                    WhoPacket p = new WhoPacket(data);
+            if( type.equals("channel-m") || type.equals("channel-e") || type.equals("channel-t") ) {
+                try {
+                    ChannelPacket p = new ChannelPacket(data);
 
                     intermud.receive(p);
                 }
-                else if( type.equals("error") ) {
-                    error(data);
+                catch( InvalidPacketException e ) {
+					Log.errOut("Intermud","0-"+e.getMessage());
                 }
-                else if( type.equals("ucache-update") ) {
-                    // i have NO idea what to do here
-				}
-                else {
-                    Log.errOut("Intermud","Other packet: " + type);
+            }
+            else if( type.equals("chan-who-req") ) {
+                try {
+                    ChannelWhoRequest p = new ChannelWhoRequest(data);
+
+                    intermud.receive(p);
                 }
+                catch( InvalidPacketException e ) {
+					Log.errOut("Intermud","1-"+e.getMessage());
+                }
+            }
+            else if( type.equals("chan-user-req") ) {
+                try {
+                    ChannelUserRequest p = new ChannelUserRequest(data);
+
+                    intermud.receive(p);
+                }
+                catch( InvalidPacketException e ) {
+					Log.errOut("Intermud","1-"+e.getMessage());
+                }
+            }
+            else if( type.equals("channel-add") ) {
+                try {
+                    ChannelAdd p = new ChannelAdd(data);
+
+                    intermud.receive(p);
+                }
+                catch( InvalidPacketException e ) {
+					Log.errOut("Intermud","2-"+e.getMessage());
+                }
+            }
+            else if( type.equals("channel-remove") ) {
+                try {
+                    ChannelDelete p = new ChannelDelete(data);
+
+                    intermud.receive(p);
+                }
+                catch( InvalidPacketException e ) {
+					Log.errOut("Intermud","3-"+e.getMessage());
+                }
+            }
+            else if( type.equals("channel-listen") ) {
+                try {
+                    ChannelListen p = new ChannelListen(data);
+
+                    intermud.receive(p);
+                }
+                catch( InvalidPacketException e ) {
+					Log.errOut("Intermud","4-"+e.getMessage());
+                }
+            }
+            else if( type.equals("chan-who-reply") ) {
+                try {
+                    ChannelWhoReply p = new ChannelWhoReply(data);
+
+                    intermud.receive(p);
+                }
+                catch( InvalidPacketException e ) {
+					Log.errOut("Intermud","5-"+e.getMessage());
+                }
+            }
+            else if( type.equals("chan-user-reply") ) {
+                try {
+                    ChannelUserReply p = new ChannelUserReply(data);
+
+                    intermud.receive(p);
+                }
+                catch( InvalidPacketException e ) {
+					Log.errOut("Intermud","5-"+e.getMessage());
+                }
+            }
+            else if( type.equals("chanlist-reply") ) {
+                channelList(data);
+            }
+            else if( type.equals("locate-reply") ) {
+                try {
+                    LocateReplyPacket p = new LocateReplyPacket(data);
+
+                    intermud.receive(p);
+                }
+                catch( InvalidPacketException e ) {
+					Log.errOut("Intermud","6-"+e.getMessage());
+                }
+            }
+            else if( type.equals("locate-req") ) {
+                try {
+                    LocateQueryPacket p = new LocateQueryPacket(data);
+
+                    intermud.receive(p);
+                }
+                catch( InvalidPacketException e ) {
+					Log.errOut("Intermud","7-"+e.getMessage());
+                }
+            }
+            else if( type.equals("mudlist") ) {
+                mudlist(data);
+            }
+            else if( type.equals("startup-reply") ) {
+                startupReply(data);
+            }
+            else if( type.equals("tell") ) {
+                try {
+                    TellPacket p = new TellPacket(data);
+
+                    intermud.receive(p);
+                }
+                catch( InvalidPacketException e ) {
+					Log.errOut("Intermud","8-"+e.getMessage());
+                }
+            }
+            else if( type.equals("who-req") ) {
+                WhoPacket p = new WhoPacket(data);
+
+                intermud.receive(p);
+			}
+            else if( type.equals("who-reply") ) {
+                WhoPacket p = new WhoPacket(data);
+
+                intermud.receive(p);
+            }
+            else if( type.equals("error") ) {
+                error(data);
+            }
+            else if( type.equals("ucache-update") ) {
+                // i have NO idea what to do here
+			}
+            else {
+                Log.errOut("Intermud","Other packet: " + type);
             }
         }
     }

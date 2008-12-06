@@ -281,6 +281,11 @@ public class CMLib
 		catch(Throwable th){}
 
     }
+    
+    public static boolean s_sleep(long millis) {
+    	try{ Thread.sleep(millis); } catch(java.lang.InterruptedException ex) { return false;}
+    	return true;
+    }
 
     public static void activateLibraries() {
         CMLib lib=l();
