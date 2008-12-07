@@ -267,7 +267,7 @@ public interface XMLLibrary extends CMLibrary
      * @author Bo Zimmerman
      *
      */
-    public static class XMLpiece
+    public static class XMLpiece implements Cloneable
     {
         public String tag="";
         public String value="";
@@ -278,6 +278,17 @@ public interface XMLLibrary extends CMLibrary
         public int innerStart=-1;
         public int innerEnd=-1;
         public int outerEnd=-1;
+        
+        public XMLpiece copyOf() {
+        	try {
+        		XMLpiece piece2=(XMLpiece)this.clone();
+        		piece2.contents=(Vector<XMLpiece>)contents.clone();
+        		piece2.parms=(Hashtable<String,String>)parms.clone();
+        		return piece2;
+        	} catch(Exception e) {
+        		return this;
+        	}
+        }
         
         public void addContent(XMLpiece x)
         {

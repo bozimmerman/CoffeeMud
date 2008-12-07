@@ -113,7 +113,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         V = findItems(piece,defined);
         for(int i=0;i<V.size();i++) {
         	Item I=(Item)V.elementAt(i);
-        	R.bringItemHere(I, 0,false);
+        	R.addItem(I);
+        	I.setExpirationDate(0);
         }
         V = findAffects(piece,defined);
         for(int i=0;i<V.size();i++) {
@@ -130,35 +131,44 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         	if((E==null)&&(defined.containsKey("ROOMLINK_"+Directions.getDirectionChar(dir).toUpperCase())))
         	{
         		defined.put("ROOMLINK_DIR",Directions.getDirectionChar(dir).toUpperCase());
-        		E=findExit(piece, defined);
+        		Exit E2=findExit(piece, defined);
+        		if(E2!=null) E=E2;
         		defined.remove("ROOMLINK_DIR");
+        		if(CMSecurity.isDebugging("MUDPERCOLATOR"))
+        			Log.debugOut("MUDPercolator","EXIT:NEW:"+((E==null)?"null":E.ID())+":DIR="+Directions.getDirectionChar(dir).toUpperCase()+":ROOM="+title);
         	}
+        	else
+    		if(CMSecurity.isDebugging("MUDPERCOLATOR")&&defined.containsKey("ROOMLINK_"+Directions.getDirectionChar(dir).toUpperCase()))
+    			Log.debugOut("MUDPercolator","EXIT:OLD:"+((E==null)?"null":E.ID())+":DIR="+Directions.getDirectionChar(dir).toUpperCase()+":ROOM="+title);
     		R.setRawExit(dir, E);
         }
         return R;
     }
 
-    protected void layoutRecursiveFill(LayoutNode n, Vector<LayoutNode> group, LayoutTypes type)
+    protected void layoutRecursiveFill(LayoutNode n, HashSet<LayoutNode> nodesDone, Vector<LayoutNode> group, LayoutTypes type)
     {
     	if(n != null)
 		for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
 			if(n.links().containsKey(Integer.valueOf(d))) {
 				LayoutNode offN=n.links().get(Integer.valueOf(d));
 				if((offN.type()==type)
-				&&(!group.contains(offN))) {
+				&&(!group.contains(offN))
+				&&(!nodesDone.contains(offN))) {
 					group.addElement(offN);
-					layoutRecursiveFill(offN,group,type);
+					nodesDone.add(offN);
+					layoutRecursiveFill(offN,nodesDone,group,type);
 				}
 			}
     }
     
-    protected void layoutFollow(LayoutNode n, LayoutTypes type, int direction, Vector<LayoutNode> group)
+    protected void layoutFollow(LayoutNode n, LayoutTypes type, int direction, HashSet<LayoutNode> nodesDone, Vector<LayoutNode> group)
     {
 		n=n.links().get(Integer.valueOf(direction));
-		while((n != null) &&(n.type()==LayoutTypes.street) &&(!group.contains(n)))
+		while((n != null) &&(n.type()==LayoutTypes.street) &&(!group.contains(n) &&(!nodesDone.contains(n))))
 		{
+			nodesDone.add(n);
 			group.addElement(n);
-			n=n.links().get(Integer.valueOf(Directions.NORTH));
+			n=n.links().get(Integer.valueOf(direction));
 		}
     }
     
@@ -214,116 +224,227 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         	A.addBehavior(B);
         }
         
+        if(CMLib.map().getArea(A.Name())!=null)
+        {
+        	A.destroy();
+        	throw new CMException("Unable to create area '"+A.Name()+"', you must destroy the old one first.");
+        }
+        
         CMLib.map().addArea(A); // necessary for proper naming.
         
         // now break our rooms into logical groups, generate those rooms.
         Vector<Vector<LayoutNode>> roomGroups = new Vector<Vector<LayoutNode>>();
         LayoutNode magicRoom = (LayoutNode)roomsLayout.firstElement();
-        int lastSize = -1;
-        while(roomsLayout.size() < lastSize)
+        HashSet<LayoutNode> nodesDone=new HashSet<LayoutNode>();
+        boolean keepLooking=true;
+        while(keepLooking)
         {
-        	lastSize = roomsLayout.size();
-        	LayoutNode node=(LayoutNode)roomsLayout.firstElement();
-        	Vector<LayoutNode> group=new Vector<LayoutNode>();
-        	if(node.type()==LayoutTypes.street) {
-            	group.add(node);
-        		LayoutRuns run=node.getFlagRuns();
-        		if(run==LayoutRuns.ns) {
-        			layoutFollow(node,LayoutTypes.street,Directions.NORTH,group);
-        			layoutFollow(node,LayoutTypes.street,Directions.SOUTH,group);
-        		} else
-        		if(run==LayoutRuns.ew) {
-        			layoutFollow(node,LayoutTypes.street,Directions.EAST,group);
-        			layoutFollow(node,LayoutTypes.street,Directions.WEST,group);
-	    		} else
-        		if(run==LayoutRuns.nesw) {
-        			layoutFollow(node,LayoutTypes.street,Directions.NORTHEAST,group);
-        			layoutFollow(node,LayoutTypes.street,Directions.SOUTHWEST,group);
-	    		} else
-        		if(run==LayoutRuns.nwse) {
-        			layoutFollow(node,LayoutTypes.street,Directions.NORTHWEST,group);
-        			layoutFollow(node,LayoutTypes.street,Directions.SOUTHEAST,group);
-        		}
-        	} 
-        	if(node.type()==LayoutTypes.leaf) {
-            	group.add(node);
-        		for(Integer linkDir : node.links().keySet())
-        			if(roomsLayout.contains(node.links().get(linkDir)))
-        			{
-	        			if((node.links().get(linkDir).type()==LayoutTypes.leaf)
-	        			||(node.links().get(linkDir).type()==LayoutTypes.interior)&&(node.isFlagged(LayoutFlags.offleaf)))
-	        				group.addElement(node.links().get(linkDir));
-        			}
+        	keepLooking=false;
+        	for(int i=0;i<roomsLayout.size();i++)
+        	{
+	        	LayoutNode node=(LayoutNode)roomsLayout.elementAt(i);
+	        	if(node.type()==LayoutTypes.leaf) 
+	        	{
+		        	Vector<LayoutNode> group=new Vector<LayoutNode>();
+	            	group.add(node);
+	            	nodesDone.add(node);
+	        		for(Integer linkDir : node.links().keySet())
+	        		{
+	        			LayoutNode dirNode=node.links().get(linkDir);
+	        			if(!nodesDone.contains(dirNode))
+	        			{
+		        			if((dirNode.type()==LayoutTypes.leaf)
+		        			||(dirNode.type()==LayoutTypes.interior)&&(node.isFlagged(LayoutFlags.offleaf)))
+		        			{
+		        				group.addElement(dirNode);
+		                    	nodesDone.add(node);
+		        			}
+	        			}
+	        		}
+	            	for(LayoutNode n : group)
+	            		roomsLayout.remove(n);
+	            	if(group.size()>0)
+	            		roomGroups.add(group);
+	            	keepLooking=true;
+	            	break;
+	        	}
         	}
-        	for(LayoutNode n : group)
-        		roomsLayout.remove(n);
-        	if(group.size()>0)
-        		roomGroups.add(group);
+        }
+        keepLooking=true;
+        while(keepLooking)
+        {
+        	keepLooking=false;
+        	for(int i=0;i<roomsLayout.size();i++)
+        	{
+	        	LayoutNode node=(LayoutNode)roomsLayout.elementAt(i);
+	        	if(node.type()==LayoutTypes.street) 
+	        	{
+		        	Vector<LayoutNode> group=new Vector<LayoutNode>();
+	            	group.add(node);
+	    			nodesDone.add(node);
+	        		LayoutRuns run=node.getFlagRuns();
+	        		if(run==LayoutRuns.ns) {
+	        			layoutFollow(node,LayoutTypes.street,Directions.NORTH,nodesDone,group);
+	        			layoutFollow(node,LayoutTypes.street,Directions.SOUTH,nodesDone,group);
+	        		} else
+	        		if(run==LayoutRuns.ew) {
+	        			layoutFollow(node,LayoutTypes.street,Directions.EAST,nodesDone,group);
+	        			layoutFollow(node,LayoutTypes.street,Directions.WEST,nodesDone,group);
+		    		} else
+	        		if(run==LayoutRuns.nesw) {
+	        			layoutFollow(node,LayoutTypes.street,Directions.NORTHEAST,nodesDone,group);
+	        			layoutFollow(node,LayoutTypes.street,Directions.SOUTHWEST,nodesDone,group);
+		    		} else
+	        		if(run==LayoutRuns.nwse) {
+	        			layoutFollow(node,LayoutTypes.street,Directions.NORTHWEST,nodesDone,group);
+	        			layoutFollow(node,LayoutTypes.street,Directions.SOUTHEAST,nodesDone,group);
+	        		}
+	        		else 
+	        		{
+	        			int topDir=-1;
+	        			int topSize=-1;
+	        			for(int d=0;d<Directions.NUM_DIRECTIONS();d++)
+	        				if(node.links().get(Integer.valueOf(d))!=null)
+	        				{
+	        					Vector grpCopy=(Vector)group.clone();
+	        					HashSet<LayoutNode> nodesDoneCopy=(HashSet<LayoutNode>)nodesDone.clone();
+	                			layoutFollow(node,LayoutTypes.street,d,nodesDoneCopy,grpCopy);
+	            				if(node.links().get(Integer.valueOf(Directions.getOpDirectionCode(d)))!=null)
+		                			layoutFollow(node,LayoutTypes.street,Directions.getOpDirectionCode(d),nodesDoneCopy,grpCopy);
+	            				if(grpCopy.size()>topSize)
+	            				{
+	            					topSize=grpCopy.size();
+	            					topDir=d;
+	            				}
+	        				}
+	        			if(topDir>=0)
+	        			{
+	            			layoutFollow(node,LayoutTypes.street,topDir,nodesDone,group);
+	        				if(node.links().get(Integer.valueOf(Directions.getOpDirectionCode(topDir)))!=null)
+	                			layoutFollow(node,LayoutTypes.street,Directions.getOpDirectionCode(topDir),nodesDone,group);
+	        			}
+	        		}
+		        	for(LayoutNode n : group)
+		        		roomsLayout.remove(n);
+		        	if(group.size()>0)
+		        		roomGroups.add(group);
+		        	keepLooking=true;
+	        	} 
+        	}
         }
         
         while(roomsLayout.size() >0)
         {
-        	lastSize = roomsLayout.size();
         	LayoutNode node=(LayoutNode)roomsLayout.firstElement();
         	Vector<LayoutNode> group=new Vector<LayoutNode>();
         	group.add(node);
-    		layoutRecursiveFill(node,group,node.type());
+        	nodesDone.add(node);
+    		layoutRecursiveFill(node,nodesDone,group,node.type());
         	for(LayoutNode n : group)
         		roomsLayout.remove(n);
 			roomGroups.add(group);
         }
         // make CERTAIN that the magic first room in the layout always
         // gets ID#0.
+        Vector<LayoutNode> magicGroup=null;
         for(int g=0;g<roomGroups.size();g++)
         {
         	Vector<LayoutNode> group=(Vector<LayoutNode>)roomGroups.elementAt(g);
         	if(group.contains(magicRoom)) {
-        		if((group.size()>1)&&(group.firstElement() != magicRoom)) {
-	        		group.remove(magicRoom);
-	        		group.insertElementAt(magicRoom,0);
-        		}
-        		if((roomGroups.size()>1)&&(roomGroups.firstElement() != group)) {
-        			roomGroups.remove(group);
-        			roomGroups.insertElementAt(group,0);
-        		}
+        		magicGroup=group;
         		break;
         	}
         }
-        //now generate the rooms and add them to the area
-        for(Vector<LayoutNode> group : roomGroups)
+        if(CMSecurity.isDebugging("MUDPERCOLATOR"))
+        for(int g=0;g<roomGroups.size();g++)
         {
-        	Hashtable groupDefined = (Hashtable)defined.clone();
-        	for(LayoutNode node : group)
-        	{
-        		for(LayoutTags key : node.tags().keySet())
-        			groupDefined.put("ROOMTAG_"+key.toString().toUpperCase(),node.tags().get(key));
-        		Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
-        		for(Integer linkDir : node.links().keySet()) {
-        			LayoutNode linkNode = node.links().get(linkDir);
-        			if(linkNode.room() != null) {
-	        			int opDir=Directions.getOpDirectionCode(linkDir.intValue());
-	        			exits[linkDir.intValue()]=linkNode.room().getExitInDir(opDir);
-        			}
-        			groupDefined.put("ROOMLINK_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase(),"true");
-        		}
-        		Room R=findRoom(piece, groupDefined, exits, direction);
-        		R.setRoomID(A.getNewRoomID(null,-1));
-        		R.setArea(A);
-        		A.addProperRoom(R);
-        		node.setRoom(R);
-        		for(LayoutTags key : node.tags().keySet())
-        			groupDefined.remove("ROOMTAG_"+key.toString().toUpperCase());
-        		for(Integer linkDir : node.links().keySet())
-        			groupDefined.remove("ROOMLINK_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase());
-        	}
-            for(Enumeration e=groupDefined.keys();e.hasMoreElements();)
-            {
-            	String key=(String)e.nextElement();
-            	if(key.startsWith("_")&&(!defined.containsKey(key)))
-            		defined.put(key, groupDefined.get(key));
-            }
+        	Vector<LayoutNode> group=(Vector<LayoutNode>)roomGroups.elementAt(g);
+        	Log.debugOut("MudPercolator","GROUP:"+A.Name()+": "+group.firstElement().type().toString()+": "+group.size());
+        }
+        Hashtable groupDefinitions=new Hashtable();
+        for(Vector<LayoutNode> group : roomGroups)
+        	groupDefinitions.put(group, defined.clone());
+    	Hashtable groupDefined = (Hashtable)groupDefinitions.get(magicGroup);
+    	processRoom(A,direction,piece,magicRoom,groupDefined);
+        
+        try {
+	        //now generate the rooms and add them to the area
+	        for(Vector<LayoutNode> group : roomGroups)
+	        {
+	        	groupDefined = (Hashtable)groupDefinitions.get(group);
+	        	for(LayoutNode node : group)
+		        	if(node!=magicRoom)
+		        		processRoom(A,direction,piece,node,groupDefined);
+	            for(Enumeration e=groupDefined.keys();e.hasMoreElements();)
+	            {
+	            	String key=(String)e.nextElement();
+	            	if(key.startsWith("__"))
+	            		defined.put(key, groupDefined.get(key));
+	            }
+	        }
+
+	        //now do a final-link on the rooms
+	        for(Vector<LayoutNode> group : roomGroups)
+	        {
+	        	for(LayoutNode node : group)
+	        	{
+	        		Room R=node.room();
+	        		for(Integer linkDir : node.links().keySet()) {
+	        			LayoutNode linkNode=node.getLink(linkDir.intValue());
+	        			R.rawDoors()[linkDir.intValue()]=linkNode.room();
+	        		}
+	        	}
+	        }
+	        CMLib.map().delArea(A); // we added it for id assignment, now we are done.
+        }
+        catch(Throwable t)
+        {
+        	CMLib.map().delArea(A);
+        	A.destroy();
+        	throw new CMException(t.getMessage());
         }
         return A;
+    }
+
+    public void processRoom(Area A, int direction, XMLLibrary.XMLpiece piece, LayoutNode node, Hashtable groupDefined)
+    	throws CMException
+    {
+		for(LayoutTags key : node.tags().keySet())
+			groupDefined.put("ROOMTAG_"+key.toString().toUpperCase(),node.tags().get(key));
+		Exit[] exits=new Exit[Directions.NUM_DIRECTIONS()];
+		for(Integer linkDir : node.links().keySet()) {
+			LayoutNode linkNode = node.links().get(linkDir);
+			if(linkNode.room() != null) {
+    			int opDir=Directions.getOpDirectionCode(linkDir.intValue());
+    			exits[linkDir.intValue()]=linkNode.room().getExitInDir(opDir);
+			}
+			groupDefined.put("ROOMLINK_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase(),"true");
+		}
+        if(CMSecurity.isDebugging("MUDPERCOLATOR"))
+        {
+        	Log.debugOut("MUDPercolator",A.Name()+": type: "+node.type().toString());
+        	StringBuffer defs=new StringBuffer("");
+        	for(Enumeration e=groupDefined.keys();e.hasMoreElements();)
+        	{
+        		String key=(String)e.nextElement();
+        		if(groupDefined.get(key) instanceof String)
+        		defs.append(", "+key+"="+((String)groupDefined.get(key)));
+        	}
+        	Log.debugOut("MUDPercolator","DEFS: "+defs.toString());
+        }
+		Room R=findRoom(piece, groupDefined, exits, direction);
+		if(R==null)
+			throw new CMException("Failure to generate room from "+piece.value);
+		R.setRoomID(A.getNewRoomID(null,-1));
+        if(CMSecurity.isDebugging("MUDPERCOLATOR"))
+        	Log.debugOut("MUDPercolator","ROOMID: "+R.roomID());
+		R.setArea(A);
+		A.addProperRoom(R);
+		node.setRoom(R);
+		for(LayoutTags key : node.tags().keySet())
+			groupDefined.remove("ROOMTAG_"+key.toString().toUpperCase());
+		for(Integer linkDir : node.links().keySet())
+			groupDefined.remove("ROOMLINK_"+Directions.getDirectionChar(linkDir.intValue()).toUpperCase());
     }
     
     public Vector findMobs(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
@@ -335,6 +456,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         for(int c=0;c<choices.size();c++) {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
             defineReward(valPiece,null,defined);
+            if(CMSecurity.isDebugging("MUDPERCOLATOR"))
+            	Log.debugOut("MUDPercolator","Found Mob: "+valPiece.value);
             try {
 	            MOB M=buildMob(valPiece,defined);
 	            V.addElement(M);
@@ -347,34 +470,36 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     {
     	String tagName="ROOM";
         Vector choices = getAllChoices(tagName, piece, defined);
-        if((choices==null)||(choices.size()==0)) return null;
-        DVector roomChoices = new DVector(3);
-        for(int c=0;c<choices.size();c++)
+        if((choices==null)||(choices.size()==0)) 
+    	{
+    		return null;
+    	}
+        while(choices.size()>0)
         {
-        	XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
-            defineReward(valPiece,null,defined);
-        	Exit[] rExits=exits.clone();
-        	Hashtable rDefined=(Hashtable)defined.clone();
+        	XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
             try {
+            	choices.remove(valPiece);
+            	Hashtable rDefined=(Hashtable)defined.clone();
+            	Exit[] rExits=exits.clone();
 	            Room R=buildRoom(valPiece,rDefined,rExits,directions);
 	            if(R!=null)
-	            	roomChoices.addElement(R,rExits,rDefined);
-            } catch(Exception e){}
+	            {
+	                defineReward(valPiece,null,rDefined);
+	            	for(Enumeration e=rDefined.keys();e.hasMoreElements();)
+	            	{
+	            		String key=(String)e.nextElement();
+	            		if(key.startsWith("_"))
+	            			defined.put(key,rDefined.get(key));
+	            	}
+	                for(int e=0;e<rExits.length;e++)
+	                	exits[e]=rExits[e];
+	                return R;
+	            }
+            } catch(Exception e){
+            	Log.errOut("MUDPercolator",e);
+            }
         }
-        if((roomChoices==null)||(roomChoices.size()==0)) return null;
-        
-        int dex=CMLib.dice().roll(1,roomChoices.size(),-1);
-        Room room=(Room)roomChoices.elementAt(dex,1);
-        Exit[] rExits=(Exit[])roomChoices.elementAt(dex,2);
-        Hashtable rDefined=(Hashtable)roomChoices.elementAt(dex,3);
-        roomChoices.clear();
-        
-        defined.clear();
-        defined.putAll(rDefined);
-        
-        for(int e=0;e<rExits.length;e++)
-        	exits[e]=rExits[e];
-        return room;
+		return null;
     }
     
     public DVector findRooms(XMLLibrary.XMLpiece piece, Hashtable defined, Exit[] exits, int direction) throws CMException
@@ -406,6 +531,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
             try {
             	XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
                 defineReward(valPiece,null,defined);
+                if(CMSecurity.isDebugging("MUDPERCOLATOR"))
+                	Log.debugOut("MUDPercolator","Found Exit: "+valPiece.value);
 	            Exit E=buildExit(valPiece,defined);
 	            if(E!=null)
 	            	exitChoices.addElement(E);
@@ -522,6 +649,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
+            if(CMSecurity.isDebugging("MUDPERCOLATOR"))
+            	Log.debugOut("MUDPercolator","Found Exit: "+valPiece.value);
             defineReward(valPiece,null,defined);
             try {
 	            Exit E=buildExit(valPiece,defined);
@@ -579,10 +708,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
+            if(CMSecurity.isDebugging("MUDPERCOLATOR"))
+            	Log.debugOut("MUDPercolator","Found Item: "+valPiece.value);
             defineReward(valPiece,null,defined);
             try{
 	            V.addAll(buildItem(valPiece,defined));
-	        }catch(Exception e){}
+	        }catch(CMException e){ 
+	        	throw e;
+	        }
         }
     	return V;
     }
@@ -596,6 +729,8 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         for(int c=0;c<choices.size();c++)
         {
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
+            if(CMSecurity.isDebugging("MUDPERCOLATOR"))
+            	Log.debugOut("MUDPercolator","Found Content: "+valPiece.value);
             V.addAll(findItems(valPiece,defined));
         }
     	return V;
@@ -666,7 +801,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 			}
 			if((contents==null)||(contents.size()==0))
 	        	throw new CMException("Unable to metacraft an item called '"+recipe+"', Data: "+piece.value);
-            addDefinition("ITEM_CLASS",((MOB)contents.firstElement()).ID(),defined);
+            addDefinition("ITEM_CLASS",((Item)contents.firstElement()).ID(),defined);
             ignoreStats=new String[]{"CLASS","NAME"};
         }
         else
@@ -824,6 +959,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         		int x=defVar.indexOf('=');
         		if(x==0) continue;
         		if(x>0)
+        		{
         			definition=defVar.substring(x+1).trim();
         			defVar=defVar.substring(0,x).toUpperCase().trim();
         			switch(defVar.charAt(defVar.length()-1))
@@ -838,14 +974,19 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
                 			break;
         				}
             		}
+        		}
         		if(definition==null) definition="!";
         		definition=strFilter(definition,defined);
         		if(CMath.isMathExpression(definition))
         			definition=Integer.toString(CMath.s_parseIntExpression(definition));
         		if(defVar.trim().length()>0)
             		defined.put(defVar.toUpperCase().trim(), definition);
+                if(CMSecurity.isDebugging("MUDPERCOLATOR"))
+                	Log.debugOut("MudPercolator","DEFINE:"+defVar.toUpperCase().trim()+"="+definition);
         	}
         }
+        if((piece.parent!=null)&&(piece.parent.tag.equalsIgnoreCase(piece.tag)))
+        	defineReward(piece.parent,value,defined);
     }
     
     public String findString(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
@@ -853,6 +994,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     	tagName=tagName.toUpperCase().trim();
         String asParm = CMLib.xml().getParmValue(piece.parms,tagName);
         if(asParm != null) return strFilter(asParm,defined);
+        
+        Object asDefined = defined.get(tagName);
+        if(asDefined instanceof String) 
+        	return (String)asDefined;
+        
         Vector choices = getAllChoices(tagName, piece, defined);
         if((choices==null)||(choices.size()==0))
             throw new CMException("Unable to find tag '"+tagName+"' on piece '"+piece.tag+"', Data: "+piece.value);
@@ -894,6 +1040,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 
     protected Vector getAllChoices(String tagName, XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
     {
+		if(!testCondition(piece,defined))
+			return new Vector(1);
+		
         Vector choices = new Vector();
         String inserter = CMLib.xml().getParmValue(piece.parms,"INSERT");
         if(inserter!=null)
@@ -907,26 +1056,46 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
                 if(insertPiece == null)
                     throw new CMException("Undefined insert: '"+s+"' on piece '"+piece.tag+"', Data: "+piece.value);
                 if(insertPiece.tag.equalsIgnoreCase(tagName))
-                    choices.addAll(getAllChoices(tagName,insertPiece,defined));
+                	choices.addAll(getAllChoices(tagName,insertPiece,defined));
             }
         }
         else
-        if((piece.contents.size()==0)&&(piece.tag.equalsIgnoreCase(tagName)))
-        	return CMParms.makeVector(piece);
+        if(piece.tag.equalsIgnoreCase(tagName))
+        {
+            boolean container=false;
+            for(int p=0;p<piece.contents.size();p++)
+                if(((XMLLibrary.XMLpiece)piece.contents.elementAt(p)).tag.equalsIgnoreCase(tagName))
+                {	container=true; break;}
+            if(!container)
+            {
+                String like = CMLib.xml().getParmValue(piece.parms,"LIKE");
+                if(like!=null)
+                {
+                    Vector V=CMParms.parseCommas(inserter,true);
+                    piece=piece.copyOf();
+                    for(int v=0;v<V.size();v++)
+                    {
+                        String s = (String)V.elementAt(v);
+                		if(s.startsWith("$")) s=s.substring(1).trim();
+                        XMLLibrary.XMLpiece insertPiece =(XMLLibrary.XMLpiece)defined.get(s.toUpperCase().trim());
+                        if((insertPiece == null)||(!insertPiece.tag.equalsIgnoreCase(tagName)))
+                            throw new CMException("Invalid like: '"+s+"' on piece '"+piece.tag+"', Data: "+piece.value);
+                        piece.contents.addAll(insertPiece.contents);
+                        piece.parms.putAll(insertPiece.parms);
+                    	choices.addAll(getAllChoices(tagName,insertPiece,defined));
+                    }
+                }
+            	return CMParms.makeVector(piece);
+            }
+        }
         
         for(int p=0;p<piece.contents.size();p++)
-            if(((XMLLibrary.XMLpiece)piece.contents.elementAt(p)).tag.equalsIgnoreCase(tagName))
-                choices.addAll(getAllChoices(tagName,piece.contents.elementAt(p),defined));
-        
-        Vector finalChoices = new Vector(choices.size());
-        for(int c=0;c<choices.size();c++)
         {
-            XMLLibrary.XMLpiece lilP =(XMLLibrary.XMLpiece)choices.elementAt(c); 
-            if(finalChoices.contains(lilP)) continue;
-            if(testCondition(lilP,defined))
-            	finalChoices.addElement(lilP);
+        	XMLLibrary.XMLpiece subPiece = (XMLLibrary.XMLpiece)piece.contents.elementAt(p);
+            if(subPiece.tag.equalsIgnoreCase(tagName))
+                choices.addAll(getAllChoices(tagName,piece.contents.elementAt(p),defined));
         }
-        return selectChoices(finalChoices,piece,defined);
+        return selectChoices(choices,piece,defined);
     }
 
     protected boolean testCondition(XMLLibrary.XMLpiece piece, Hashtable defined)
@@ -934,11 +1103,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         String condition=CMLib.xml().restoreAngleBrackets(CMLib.xml().getParmValue(piece.parms,"CONDITION"));
         try {
             if(condition == null) return true; 
-            return CMStrings.parseStringExpression(condition,defined, true);
+            boolean test= CMStrings.parseStringExpression(condition,defined, true);
+            if(CMSecurity.isDebugging("MUDPERCOLATOR"))
+            	Log.debugOut("MudPercolator","TEST:"+condition+"="+test);        		
+            return test;
         } 
         catch(Exception e)
         {
-            Log.errOut("Generate",e);
+            Log.errOut("Generate",e.getMessage()+": "+condition);
             return false;
         }
     }
@@ -1036,11 +1208,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         if(selection.equals("NONE")) 
         	selectedChoicesV= new Vector();
         else
-        if(choices.size()==0) 
-        	throw new CMException("Can't make selection among NONE: on piece '"+piece.tag+"', Data: "+piece.value);
-        else
         if(selection.equals("ALL")) 
         	selectedChoicesV=choices;
+        else
+        if(choices.size()==0) 
+        	throw new CMException("Can't make selection among NONE: on piece '"+piece.tag+"', Data: "+piece.value);
         else
         if(selection.equals("FIRST"))
         	selectedChoicesV= CMParms.makeVector(choices.firstElement());
@@ -1048,7 +1220,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         if(selection.startsWith("FIRST-"))
         {
             int num=CMath.parseIntExpression(selection.substring(selection.indexOf('-')+1));
-            if((num<=0)||(num>choices.size())) throw new CMException("Can't pick first "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
+            if((num<0)||(num>choices.size())) throw new CMException("Can't pick first "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
             selectedChoicesV=new Vector();
             for(int v=0;v<num;v++)
             	selectedChoicesV.addElement(choices.elementAt(v));
@@ -1060,7 +1232,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         if(selection.startsWith("LAST-"))
         {
             int num=CMath.parseIntExpression(selection.substring(selection.indexOf('-')+1));
-            if((num<=0)||(num>choices.size())) throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
+            if((num<0)||(num>choices.size())) throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
             selectedChoicesV=new Vector();
             for(int v=choices.size()-num;v<choices.size();v++)
             	selectedChoicesV.addElement(choices.elementAt(v));
@@ -1069,7 +1241,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         if(selection.startsWith("PICK-"))
         {
             int num=CMath.parseIntExpression(selection.substring(selection.indexOf('-')+1));
-            if((num<=0)||(num>choices.size())) throw new CMException("Can't pick "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
+            if((num<0)||(num>choices.size())) throw new CMException("Can't pick "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
             selectedChoicesV=new Vector();
             Vector cV=(Vector)choices.clone();
             for(int v=0;v<num;v++)
@@ -1103,7 +1275,34 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         if(selection.startsWith("ANY-"))
         {
             int num=CMath.parseIntExpression(selection.substring(selection.indexOf('-')+1));
-            if((num<=0)||(num>choices.size())) throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
+            if((num<0)||(num>choices.size())) throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
+            selectedChoicesV=new Vector();
+            Vector cV=(Vector)choices.clone();
+            for(int v=0;v<num;v++)
+            {
+                int x=CMLib.dice().roll(1,cV.size(),-1);
+                selectedChoicesV.addElement(cV.elementAt(x));
+                cV.removeElementAt(x);
+            }
+        }
+        else
+        if(selection.startsWith("REPEAT-"))
+        {
+            int num=CMath.parseIntExpression(selection.substring(selection.indexOf('-')+1));
+            if(num<0) throw new CMException("Can't pick last "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
+            selectedChoicesV=new Vector();
+            Vector cV=(Vector)choices.clone();
+            for(int v=0;v<num;v++)
+            {
+                int x=CMLib.dice().roll(1,cV.size(),-1);
+                selectedChoicesV.addElement(cV.elementAt(x));
+            }
+        }
+        else
+        if((selection != null)&&(selection.trim().length()>0)&&CMath.isMathExpression(selection))
+        {
+            int num=CMath.parseIntExpression(selection);
+            if((num<0)||(num>choices.size())) throw new CMException("Can't pick any "+num+" of "+choices.size()+" on piece '"+piece.tag+"', Data: "+piece.value);
             selectedChoicesV=new Vector();
             Vector cV=(Vector)choices.clone();
             for(int v=0;v<num;v++)

@@ -724,8 +724,8 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 	public Vector fetchEnvironmentals(Vector list, String srchStr, boolean exactOnly)
 	{
 		Object[] flags=fetchFlags(srchStr);
-		if(flags==null) return null;
-		Vector matches=new Vector();
+		Vector matches=new Vector(1);
+		if(flags==null) return matches;
 		
 		srchStr=(String)flags[FLAG_STR];
 		int myOccurrance=((Integer)flags[FLAG_DOT]).intValue();

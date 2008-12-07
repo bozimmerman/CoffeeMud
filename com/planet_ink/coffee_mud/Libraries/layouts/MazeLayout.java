@@ -33,7 +33,7 @@ public class MazeLayout extends AbstractLayout
 			&&(p2.coord()[0]<width)
 			&&(p2.coord()[1]>-height))
 			{
-				lSet.use(p2,LayoutTypes.interior);
+				lSet.use(p2,LayoutTypes.street);
 				p.crossLink(p2);
 				fillMaze(lSet,p2,width,height);
 			}
@@ -61,7 +61,7 @@ public class MazeLayout extends AbstractLayout
 		case Directions.SOUTHWEST: n=new DefaultLayoutNode(new long[]{diameter+plusX-1,(-diameter+1)/2}); break;
 		}
 		n.flagGateExit(dir);
-		lSet.use(n,LayoutTypes.interior);
+		lSet.use(n,LayoutTypes.street);
 		n.flag(LayoutFlags.gate);
 		fillMaze(lSet,n,diameter+plusX,diameter);
 		lSet.fillInFlags();

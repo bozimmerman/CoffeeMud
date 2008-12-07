@@ -369,7 +369,7 @@ public class CMath
                 case '*': finalValue*=curValue; break;
                 case '/':
                 case '\\': finalValue/=curValue; break;
-                case '?': finalValue=((curValue-finalValue)*Math.random())+finalValue;
+                case '?': finalValue=((curValue-finalValue)*Math.random())+finalValue; break;
                 }
                 c=st.nextToken();
             }

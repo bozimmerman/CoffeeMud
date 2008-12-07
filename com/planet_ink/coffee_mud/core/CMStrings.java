@@ -762,7 +762,7 @@ public class CMStrings
 		if(token.value.equals("?")) 
 		{
 			index[0] = i[0];
-			return new Double((Math.random() * rightValue.doubleValue()) + leftValue.doubleValue()) ;
+			return new Double(Math.round((Math.random() * (rightValue.doubleValue()-leftValue.doubleValue())) + leftValue.doubleValue())) ;
 		}
 		else
 			throw new Exception("Unknown math combiner "+token.value);

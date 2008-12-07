@@ -18,8 +18,8 @@ public class CrossLayout extends AbstractLayout
 			{
 				nn = lSet.makeNextNode(n2,dir);
 				lSet.use(nn,LayoutTypes.leaf);
+				n2.crossLink(nn);
 			}
-			n2.crossLink(nn);
 		}
 	}
 	

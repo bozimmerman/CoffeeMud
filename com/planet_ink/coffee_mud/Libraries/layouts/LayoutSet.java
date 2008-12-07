@@ -199,7 +199,7 @@ public class LayoutSet
 			for(Integer dirLink : n.links().keySet())
 				dirs[x++]=dirLink.intValue();
 			n.setExits(dirs);
-			if(dirs.length==1)
+			if((dirs.length==1)&&(!n.isFlagged(LayoutFlags.gate)))
 				n.reType(LayoutTypes.leaf);
 		}
 		for(Enumeration<LayoutNode> e=set().elements();e.hasMoreElements();)
@@ -218,7 +218,13 @@ public class LayoutSet
 				if(flag!=null)
 					n.flag(flag);
 				else
-					n.flag(LayoutFlags.corner);
+				{
+					Enumeration<Integer> dirs=n.links().keys();
+					Integer lN1=dirs.nextElement();
+					Integer lN2=dirs.nextElement();
+					if(lN1.intValue() != Directions.getOpDirectionCode(lN2.intValue()))
+						n.flag(LayoutFlags.corner);
+				}
 			}
 			else
 			if((n.links().size()==3)
