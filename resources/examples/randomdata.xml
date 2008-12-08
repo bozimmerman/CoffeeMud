@@ -86,11 +86,11 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 			<STRING select="any-1" condition="$ROOMTITLE_D!=''" action="APPEND" >Below you is $ROOMTITLE_D.</STRING>
 			<STRING select="any-1" condition="$ROOMTITLE_D=''" action="APPEND" >There is an exit below you.</STRING>
 		</STRING>
-		<STRING select="all" condition="(!('ne' IN $ROOMTAG_NODERUN)) and $ROOMLINK_NE=!=''" action="APPEND" >
+		<STRING select="all" condition="(!('ne' IN $ROOMTAG_NODERUN)) and $ROOMLINK_NE!=''" action="APPEND" >
 			<STRING select="any-1" condition="$ROOMTITLE_NE!=''" action="APPEND" >To the northeast is $ROOMTITLE_NE.</STRING>
 			<STRING select="any-1" condition="$ROOMTITLE_NE=''" action="APPEND" >There is an exit to the northeast.</STRING>
 		</STRING>
-		<STRING select="all" condition="(!('nw' IN $ROOMTAG_NODERUN)) and $ROOMLINK_NW=!=''" action="APPEND" >
+		<STRING select="all" condition="(!('nw' IN $ROOMTAG_NODERUN)) and $ROOMLINK_NW!=''" action="APPEND" >
 			<STRING select="any-1" condition="$ROOMTITLE_NW!=''" action="APPEND" >To the northwest is $ROOMTITLE_NW.</STRING>
 			<STRING select="any-1" condition="$ROOMTITLE_NW=''" action="APPEND" >There is an exit to the northwest.</STRING>
 		</STRING>
@@ -1928,7 +1928,7 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
 <ITEM class="metacraft" name="any-alchemy" id="any_alchemy_item"/>
 <ITEM class="metacraft" name="any-herbalism" id="any_herbalism_item"/>
 <ITEM class="metacraft" name="any-apothecary" id="any_apothecary_item"/>
-<ITEM class="metacraft" name="any-distilling" id="any_apothecary_item"/>
+<ITEM class="metacraft" name="any-distilling" id="any_distilling_item"/>
 <ITEM class="metacraft" name="any-scrollscribing" id="any_scrollscribing_item"/>
 
 <STRING id="anygender" select="any-1"> <STRING>M</STRING> <STRING>F</STRING></STRING>
