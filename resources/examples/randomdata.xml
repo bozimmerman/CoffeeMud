@@ -952,7 +952,7 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 					<BEHAVIOR class="MudChat" parms="" />
 					<BEHAVIOR class="Mageness" parms="" />
 				</BEHAVIOR>
-				<ITEM select="pick-1?3">
+				<ITEM select="pick-1?2">
 					<ITEM pickweight="1" class="GenArmor" LEVEL="$mob_level">
 						<NAME select="any-1"><NAME>(a(n)) $dungeonadj_fancy pointy hat</NAME><NAME>(a(n)) $dungeonadj_fancy hat</NAME></NAME>
 						<DISPLAY>$item_name has been left here"</DISPLAY><MATERIAL>COTTON</MATERIAL><PROPERWORN>HEAD</PROPERWORN>

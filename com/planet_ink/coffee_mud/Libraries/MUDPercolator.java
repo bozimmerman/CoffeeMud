@@ -585,10 +585,13 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	        addDefinition("MOB_CLASS",classID,defined);
             ignoreStats=new String[]{"CLASS","NAME","LEVEL"};
             
-            String name = findString("NAME",piece,defined);
-            if((name == null)||(name.length()==0)) 
-            	throw new CMException("Unable to build a mob without a name, Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
-            M.setName(name);
+	        if(M.isGeneric())
+	        {
+	            String name = findString("NAME",piece,defined);
+	            if((name == null)||(name.length()==0)) 
+	            	throw new CMException("Unable to build a mob without a name, Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
+	            M.setName(name);
+	        }
         }
         addDefinition("MOB_NAME",M.Name(),defined);
         
@@ -782,6 +785,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 							contents=skill.craftAllItemsVectors(material);
 						else
 							contents=skill.craftAllItemsVectors();
+						if((contents==null)||(contents.size()==0))
+							Log.errOut("MUDPercolator","Tried metacrafting any-"+recipe+", got "+contents.size()+" from "+skill.ID());
+						break;
 					}
 				}
 				if((contents!=null)&&(contents.size()>0))
@@ -828,10 +834,13 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	        contents.addElement(I);
 	        addDefinition("ITEM_CLASS",classID,defined);
 	        
-            String name = findString("NAME",piece,defined);
-            if((name == null)||(name.length()==0)) 
-            	throw new CMException("Unable to build a catalog item without a name, Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
-            I.setName(name);
+	        if(I.isGeneric())
+	        {
+	            String name = findString("NAME",piece,defined);
+	            if((name == null)||(name.length()==0)) 
+	            	throw new CMException("Unable to build a catalog item without a name, Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
+	            I.setName(name);
+	        }
 	        ignoreStats=new String[]{"CLASS","NAME"};
         }
         
