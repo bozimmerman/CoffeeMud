@@ -118,9 +118,9 @@ public class Copy extends StdCommand
 		    	if(E==null) 
 			    	E=CMLib.map().findFirstShopStock(null, mob, name, 50);
 		    	if(E==null) 
-			    	E=CMLib.map().findFirstInventory(CMLib.map().areas(), mob, name, 50);
+			    	E=CMLib.map().findFirstInventory(CMLib.map().rooms(), mob, name, 50);
 		    	if(E==null) 
-			    	E=CMLib.map().findFirstShopStock(CMLib.map().areas(), mob, name, 50);
+			    	E=CMLib.map().findFirstShopStock(CMLib.map().rooms(), mob, name, 50);
 		    }catch(NoSuchElementException e){}
 		}
 		if(E==null)

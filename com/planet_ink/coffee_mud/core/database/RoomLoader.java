@@ -1189,7 +1189,7 @@ public class RoomLoader
 			return;
 		}
 
-		CMLib.map().addArea(A);
+		//CMLib.map().addArea(A); // not sure why I ever toyed with this idea, but apparantly I did.
 		DB.update(
 		"INSERT INTO CMAREA ("
 		+"CMAREA,"

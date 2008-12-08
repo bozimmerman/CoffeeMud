@@ -160,13 +160,6 @@ public class Spell_WizardLock extends Spell
 										exit.hasALock(),true,exit.defaultsLocked());
 					Room R=mob.location();
 					Room R2=null;
-					Ability lock=(Ability)copyOf();
-					lock.setMiscText("");
-					if(!CMLib.law().doesHavePriviledgesHere(mob,R))
-						for(int a=0;a<R.numEffects();a++)
-							if((R.fetchEffect(a) instanceof LandTitle)
-							   &&(((LandTitle)R.fetchEffect(a)).landOwner().length()>0))
-								lock.setMiscText("MALICIOUS");
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 						if(R.getExitInDir(d)==target)
 						{ R2=R.getRoomInDir(d); break;}
@@ -187,6 +180,20 @@ public class Spell_WizardLock extends Spell
 					Container container=(Container)target;
 					container.setLidsNLocks(container.hasALid(),false,container.hasALock(),true);
 					mob.location().show(mob,target,CMMsg.MSG_OK_VISUAL,"<T-NAME> look(s) shut tight!");
+				}
+				Ability lock=target.fetchEffect(ID());
+				if(lock != null)
+				{
+					lock.setMiscText(Integer.toString(mob.envStats().level()));
+					if(target instanceof Exit)
+					{
+						Room R=mob.location();
+						if(!CMLib.law().doesHavePriviledgesHere(mob,R))
+							for(int a=0;a<R.numEffects();a++)
+								if((R.fetchEffect(a) instanceof LandTitle)
+								   &&(((LandTitle)R.fetchEffect(a)).landOwner().length()>0))
+									lock.setMiscText(lock.text()+" MALICIOUS");
+					}
 				}
 			}
 

@@ -114,11 +114,27 @@ public class Spell_Knock extends Spell
 				for(int a=0;a<openThis.numEffects();a++)
 				{
 					Ability A=openThis.fetchEffect(a);
-					if((A!=null)&&(A.ID().equalsIgnoreCase("Spell_WizardLock"))&&(A.invoker()!=null)&&(A.invoker().envStats().level()<(mob.envStats().level()+3+(2*getXLEVELLevel(mob)))))
+					if((A!=null)&&(A.ID().equalsIgnoreCase("Spell_WizardLock")))
 					{
-						A.unInvoke();
-						R.show(mob,null,openThis,CMMsg.MSG_OK_VISUAL,"A spell around <O-NAME> seems to fade.");
-						break;
+						String txt=A.text().trim();
+						int level=(A.invoker()!=null)?A.invoker().envStats().level():0;
+						if(txt.length()>0)
+						{
+							if(CMath.isInteger(txt))
+								level=CMath.s_int(txt);
+							else
+							{
+								int x=txt.indexOf(' ');
+								if((x>0)&&(CMath.isInteger(txt.substring(0,x))))
+									level=CMath.s_int(txt.substring(0,x));
+							}
+						}
+						if(level<(mob.envStats().level()+3+(2*getXLEVELLevel(mob))))
+						{
+							A.unInvoke();
+							R.show(mob,null,openThis,CMMsg.MSG_OK_VISUAL,"A spell around <O-NAME> seems to fade.");
+							break;
+						}
 					}
 				}
 				msg=CMClass.getMsg(mob,openThis,null,CMMsg.MSG_UNLOCK,null);

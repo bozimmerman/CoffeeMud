@@ -1,6 +1,4 @@
 %0D
 @MudInfo?NAME@ supports email!  
 
-Your players in this mud will be given an email address like:
-playername@@MudInfo?DOMAIN@
-Email sent to this address by other players will be forwarded to your real email address automatically.  Giving a real email address also allows you to retrieve your password if you forget it.  Your real address is kept secret, of course, hidden behind the player email address mentioned above.
+If you enable autoforwarding, email sent to playername@@MudInfo?DOMAIN@ by other players will be forwarded to your real email address automatically.  Giving a real email address also allows you to retrieve your password if you forget it.  Your real address is kept secret, of course.

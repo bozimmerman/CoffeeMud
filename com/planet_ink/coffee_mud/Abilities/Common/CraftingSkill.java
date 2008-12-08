@@ -538,7 +538,7 @@ public class CraftingSkill extends GatheringSkill
 	public Vector craftItem(String recipe)
 	{
 		Vector rscs=myResources();
-		if(rscs.size()==0) return new Vector();
+		if(rscs.size()==0) rscs=CMParms.makeVector(RawMaterial.RESOURCE_WOOD);
 		int material=((Integer)rscs.elementAt(CMLib.dice().roll(1,rscs.size(),-1))).intValue();
 		return craftItem(recipe,material);
 	}
@@ -548,11 +548,12 @@ public class CraftingSkill extends GatheringSkill
 		Vector rscs=myResources();
 		Vector allItems=new Vector();
 		Vector items=null;
+		if(rscs.size()==0) rscs=CMParms.makeVector(RawMaterial.RESOURCE_WOOD);
 		for(int r=0;r<rscs.size();r++)
 		{
 			items=craftAllItemsVectors(((Integer)rscs.elementAt(r)).intValue());
 			if((items==null)||(items.size()==0)) continue;
-			allItems.addElement(items);
+			allItems.addAll(items);
 		}
 		return allItems;
 	}

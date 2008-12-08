@@ -72,7 +72,7 @@ public class Generate extends StdCommand
     {
         if(commands.size()<3)
         {
-        	mob.tell("Generate what? Try GENERATE [TYPE] [TAG_ID] (FROM [DATA_FILE_PATH]) ([VAR=VALUE]..) [DIRECTION]");
+        	mob.tell("Generate what? Try GENERATE [TYPE] [ID] (FROM [DATA_FILE_PATH]) ([VAR=VALUE]..) [DIRECTION]");
         	return false;
         }
         CMFile file = null;
@@ -197,6 +197,8 @@ public class Generate extends StdCommand
 	        }
         } catch(CMException cex) {
         	mob.tell("Unable to generate: "+cex.getMessage());
+        	if(CMSecurity.isDebugging("MUDPERCOLATOR"))
+	        	Log.debugOut("Generate",cex);
         	return false;
         }
         if(V.size()==0)
@@ -204,7 +206,10 @@ public class Generate extends StdCommand
         else
         for(int v=0;v<V.size();v++)
         	if(V.elementAt(v) instanceof MOB)
+        	{
         		((MOB)V.elementAt(v)).bringToLife(mob.location(),true);
+        		mob.location().showHappens(CMMsg.MSG_OK_VISUAL,((MOB)V.elementAt(v)).name()+" appears.");
+        	}
         	else
         	if(V.elementAt(v) instanceof Item)
         	{
@@ -224,6 +229,7 @@ public class Generate extends StdCommand
         	if(V.elementAt(v) instanceof Area)
         	{
         		Area A=(Area)V.elementAt(v);
+    			CMLib.map().addArea(A);
         		CMLib.database().DBCreateArea(A);
         		Room R=A.getRoom(A.Name()+"#0");
         		if(R==null) R=(Room)A.getFilledProperMap().nextElement();
