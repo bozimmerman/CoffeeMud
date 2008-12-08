@@ -1261,7 +1261,7 @@ public class CMMap extends StdLibrary implements WorldMap
 			for(int i=0;(i<100)&&e.hasMoreElements();i++)
 			{
 				R=(Room)e.nextElement();
-				if(R.roomID()!=null)
+				if((R!=null)&&(R.roomID()!=null))
 					rooms.addElement(R);
 			}
 			if(rooms.size()==0) break;
