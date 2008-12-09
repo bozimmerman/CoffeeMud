@@ -973,13 +973,13 @@ TODO: **COMPLETE** docs maybe even a dtd or two
 				</ITEM>
 			</MOB>
 			<ITEM class="GenTable" name="(a(n)) $nasty_word table" display="$ITEM_NAME is here">
-				<CONTENTS><ITEM select="any-2" insert="any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item" /></CONTENTS>
+				<CONTENT><ITEM select="any-2" insert="any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item" /></CONTENT>
 			</ITEM>
 			<ITEM class="metacraft" name="Scroll Case">
-				<CONTENTS><ITEM select="any-2" insert="any_scrollscribing_item,any_scrollscribing_item" /></CONTENTS>
+				<CONTENT><ITEM select="any-2" insert="any_scrollscribing_item,any_scrollscribing_item" /></CONTENT>
 			</ITEM>
 			<ITEM class="metacraft" name="Potion Rack">
-				<CONTENTS><ITEM select="any-2" insert="any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item" /></CONTENTS>
+				<CONTENT><ITEM select="any-2" insert="any_alchemy_item,any_apothecary_item,any_distilling_item,any_herbalism_item" /></CONTENT>
 			</ITEM>
 		</ROOM>
 		<ROOM class="CaveRoom">
