@@ -887,7 +887,7 @@ public class MobData extends StdWebMacro
                 str.append("<FONT COLOR=WHITE SIZE=-1>");
                 str.append("Container: ");
                 str.append("<SELECT NAME=ITEMCONT"+(i+1)+">");
-                str.append("<OPTION VALUE=\"\" "+((C==null)?"SELECTED":"")+">On the ground");
+                str.append("<OPTION VALUE=\"\" "+((C==null)?"SELECTED":"")+">In Inventory");
                 for(int i2=0;i2<classes.size();i2++)
                     if((classes.elementAt(i2) instanceof Container)&&(i2!=i))
                     {
