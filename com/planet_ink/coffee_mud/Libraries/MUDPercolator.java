@@ -108,7 +108,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         V = findMobs(piece,defined);
         for(int i=0;i<V.size();i++) {
         	MOB M=(MOB)V.elementAt(i);
-        	R.bringMobHere(M,false);
+        	M.bringToLife(R,true);
         }
         V = findItems(piece,defined);
         for(int i=0;i<V.size();i++) {
@@ -142,6 +142,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     			Log.debugOut("MUDPercolator","EXIT:OLD:"+((E==null)?"null":E.ID())+":DIR="+Directions.getDirectionChar(dir).toUpperCase()+":ROOM="+title);
     		*/
     		R.setRawExit(dir, E);
+    		R.startItemRejuv();
         }
         return R;
     }
@@ -401,6 +402,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         catch(Throwable t)
         {
         	CMLib.map().delArea(A);
+        	CMLib.map().emptyArea(A);
         	A.destroy();
         	if(t instanceof CMException)
         		throw (CMException)t;
@@ -1108,18 +1110,20 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
                 String like = CMLib.xml().getParmValue(piece.parms,"LIKE");
                 if(like!=null)
                 {
-                    Vector V=CMParms.parseCommas(inserter,true);
+                    Vector V=CMParms.parseCommas(like,true);
+                    XMLLibrary.XMLpiece origPiece = piece; 
                     piece=piece.copyOf();
                     for(int v=0;v<V.size();v++)
                     {
                         String s = (String)V.elementAt(v);
                 		if(s.startsWith("$")) s=s.substring(1).trim();
-                        XMLLibrary.XMLpiece insertPiece =(XMLLibrary.XMLpiece)defined.get(s.toUpperCase().trim());
-                        if((insertPiece == null)||(!insertPiece.tag.equalsIgnoreCase(tagName)))
+                        XMLLibrary.XMLpiece likePiece =(XMLLibrary.XMLpiece)defined.get(s.toUpperCase().trim());
+                        if((likePiece == null)||(!likePiece.tag.equalsIgnoreCase(tagName)))
                             throw new CMException("Invalid like: '"+s+"' on piece '"+piece.tag+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
-                        piece.contents.addAll(insertPiece.contents);
-                        piece.parms.putAll(insertPiece.parms);
-                    	choices.addAll(getAllChoices(tagName,insertPiece,defined,false));
+                        piece.contents.addAll(likePiece.contents);
+                        piece.parms.putAll(likePiece.parms);
+                        piece.parms.putAll(origPiece.parms);
+                    	choices.addAll(getAllChoices(tagName,likePiece,defined,false));
                     }
                 }
             	return CMParms.makeVector(piece);

@@ -1129,6 +1129,25 @@ public class CMMap extends StdLibrary implements WorldMap
 		CMLib.database().DBDeleteRoom(deadRoom);
 	}
 
+	public void emptyArea(Area A)
+	{
+		for(int a=A.numEffects()-1;a>=0;a--)
+		{
+			Ability A1=A.fetchEffect(a);
+			if(A1!=null)
+			{
+				A1.unInvoke();
+				A.delEffect(A1);
+			}
+		}
+		for(Enumeration e=A.getProperMap();e.hasMoreElements();)
+		{
+			Room R=(Room)e.nextElement();
+			emptyRoom(R,null);
+			R.destroy();
+		}
+	}
+	
 	public Room roomLocation(Environmental E)
 	{
 		if(E==null) return null;

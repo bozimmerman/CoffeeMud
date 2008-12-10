@@ -1078,28 +1078,31 @@ TODO: add a pit, a precipice, a fungal room, a crypt w/ sarcophogi
 		<ROOM class="StdMaze">
 			<TITLE>lost in the catacombs</TITLE>
 			<DESCRIPTION>You are lost in an cavernous underground catacomb.
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
-			&lt;P&gt;$dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
+			&lt;P&gt;You are lost in a cavernous underground catacomb. $dungeon_random_blurb $dungeon_random_blurb
 			</DESCRIPTION>
 			<XSIZE>5</XSIZE>
 			<YSIZE>5</YSIZE>
