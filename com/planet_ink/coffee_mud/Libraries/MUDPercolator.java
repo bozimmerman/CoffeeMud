@@ -564,7 +564,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     {
         String classID = findString("class",piece,defined);
         MOB M = null;
-        String[] ignoreStats={};
         if(classID.equalsIgnoreCase("catalog"))
         {
             String name = findString("NAME",piece,defined);
@@ -576,14 +575,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
             M=(MOB)M.copyOf();
             CMLib.catalog().changeCatalogUsage(M,true);
             addDefinition("MOB_CLASS",M.ID(),defined);
-            ignoreStats=new String[]{"CLASS","NAME","LEVEL"};
         }
         else
         {
 	        M = CMClass.getMOB(classID);
 	        if(M == null) throw new CMException("Unable to build mob on classID '"+classID+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
 	        addDefinition("MOB_CLASS",classID,defined);
-            ignoreStats=new String[]{"CLASS","NAME","LEVEL"};
             
 	        if(M.isGeneric())
 	        {
@@ -602,7 +599,23 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
             CharClass origClass =M.baseCharStats().getCurrentClass();
             origClass.fillOutMOB(M,M.baseEnvStats().level());
         }
+        value = findOptionalString("GENDER",piece,defined);
+        if(value != null)
+	        M.baseCharStats().setStat(CharStats.STAT_GENDER,value.charAt(0));
+        else
+	        M.baseCharStats().setStat(CharStats.STAT_GENDER,CMLib.dice().rollPercentage()>50?'M':'F');
+        value = findOptionalString("RACE",piece,defined);
+        if(value != null)
+        {
+        	Race R=CMClass.getRace(value);
+        	if(R!=null)
+                R.setHeightWeight(M.baseEnvStats(),(char)M.baseCharStats().getStat(CharStats.STAT_GENDER));
+        }
+        String[] ignoreStats={"CLASS","NAME","LEVEL","GENDER"};
         fillOutStats(M,ignoreStats,"MOB_",piece,defined);
+        M.recoverCharStats();
+        M.recoverEnvStats();
+        M.recoverMaxState();
         
         Vector items = findItems(piece,defined);
         for(int i=0;i<items.size();i++) {
@@ -635,6 +648,9 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 	        	SK.getShop().addStoreInventory((Environmental)V.elementAt(i));
         }
         
+        M.recoverCharStats();
+        M.recoverEnvStats();
+        M.recoverMaxState();
         M.text();
         M.setMiscText(M.text());
         M.recoverCharStats();
@@ -761,15 +777,18 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 				while((contents==null)||(contents.size()==0)&&((System.currentTimeMillis()-startTime)<500))
 				{
 					ItemCraftor skill=(ItemCraftor)craftors.elementAt(CMLib.dice().roll(1,craftors.size(),-1));
-					Vector skillContents=null;
-					if(material>=0)
-						skillContents=skill.craftAllItemsVectors(material);
-					else
-						skillContents=skill.craftAllItemsVectors();
-					if((skillContents!=null)&&(skillContents.size()>0))
-						contents=(Vector)skillContents.elementAt(CMLib.dice().roll(1,skillContents.size(),-1));
-					if((contents==null)||(contents.size()==0))
-						Log.errOut("MUDPercolator","Tried metacrafting anything, got "+skillContents.size()+" from "+skill.ID());
+					if(skill.fetchRecipes().size()>0)
+					{
+						Vector skillContents=null;
+						if(material>=0)
+							skillContents=skill.craftAllItemsVectors(material);
+						else
+							skillContents=skill.craftAllItemsVectors();
+						if((skillContents!=null)&&(skillContents.size()>0))
+							contents=(Vector)skillContents.elementAt(CMLib.dice().roll(1,skillContents.size(),-1));
+						if((contents==null)||(contents.size()==0))
+							Log.errOut("MUDPercolator","Tried metacrafting anything, got "+skillContents.size()+" from "+skill.ID());
+					}
 				}
 			}
 			else
@@ -848,8 +867,11 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         addDefinition("ITEM_NAME",I.Name(),defined);
         
         fillOutStats(I,ignoreStats,"ITEM_",piece,defined);
+        I.recoverEnvStats();
         CMLib.itemBuilder().balanceItemByLevel(I);
+        I.recoverEnvStats();
         fillOutStats(I,ignoreStats,"ITEM_",piece,defined);
+        I.recoverEnvStats();
         
         Vector V;
         if(I instanceof Container)
@@ -874,6 +896,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         	Behavior B=(Behavior)V.elementAt(i);
         	I.addBehavior(B);
         }
+        I.recoverEnvStats();
         I.text();
         I.setMiscText(I.text());
         I.recoverEnvStats();

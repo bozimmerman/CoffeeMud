@@ -142,21 +142,29 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			commonTell(mob,"Make what? Enter \"clancraft list\" for a list.");
 			return false;
 		}
-		if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
+		String clanTypeName="Clan";
+		String clanName="None";
+		Clan C=null;
+		if(autoGenerate<=0)
 		{
-			mob.tell("You must be a member of a clan to use this skill.");
-			return false;
-		}
-		Clan C=CMLib.clans().getClan(mob.getClanID());
-		if(C==null)
-		{
-			mob.tell("You must be a member of a clan to use this skill.");
-			return false;
-		}
-		if((C.allowedToDoThis(mob,Clan.FUNC_CLANENCHANT)!=1)&&(!CMSecurity.isASysOp(mob)))
-		{
-			mob.tell("You are not authorized to draw from the power of your "+C.typeName()+".");
-			return false;
+			if((mob.getClanID()==null)||(mob.getClanID().equalsIgnoreCase("")))
+			{
+				mob.tell("You must be a member of a clan to use this skill.");
+				return false;
+			}
+			C=CMLib.clans().getClan(mob.getClanID());
+			if(C==null)
+			{
+				mob.tell("You must be a member of a clan to use this skill.");
+				return false;
+			}
+			if((C.allowedToDoThis(mob,Clan.FUNC_CLANENCHANT)!=1)&&(!CMSecurity.isASysOp(mob)))
+			{
+				mob.tell("You are not authorized to draw from the power of your "+C.typeName()+".");
+				return false;
+			}
+			clanName=C.name();
+			clanTypeName=C.typeName();
 		}
 		Vector recipes=addRecipes(mob,loadRecipes());
 		String str=(String)commands.elementAt(0);
@@ -259,9 +267,9 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 
 		expRequired=CMath.s_int((String)foundRecipe.elementAt(RCP_EXP));
         expRequired=getXPCOSTAdjustment(mob,expRequired);
-		if(C.getExp()<expRequired)
+		if((C!=null)&&(C.getExp()<expRequired))
 		{
-			mob.tell("You need "+expRequired+" to do that, but your "+C.typeName()+" has only "+C.getExp()+" experience points.");
+			mob.tell("You need "+expRequired+" to do that, but your "+clanTypeName+" has only "+C.getExp()+" experience points.");
 			return false;
 		}
 		int[][] data=fetchFoundResourceData(mob,amt1,mat1,null,amt2,mat2,null,false,autoGenerate,null);
@@ -269,7 +277,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		amt1=data[0][FOUND_AMT];
 		amt2=data[1][FOUND_AMT];
 		String reqskill=(String)foundRecipe.elementAt(RCP_REQUIREDSKILL);
-		if(reqskill.trim().length()>0)
+		if((autoGenerate<=0)&&(reqskill.trim().length()>0))
 		{
 			Ability A=CMClass.findAbility(reqskill.trim());
 			if((A!=null)&&(mob.fetchAbility(A.ID())==null))
@@ -299,9 +307,9 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 		if(!misctype.equalsIgnoreCase("area"))
 		{
             if(((String)foundRecipe.elementAt(RCP_FINALNAME)).trim().startsWith("%"))
-    			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),C.typeName()+" "+C.name());
+    			itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),clanTypeName+" "+clanName);
             else
-                itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),"of "+C.typeName()+" "+C.name());
+                itemName=replacePercent((String)foundRecipe.elementAt(RCP_FINALNAME),"of "+clanTypeName+" "+clanName);
 			if(misctype.length()>0)
 				building.setReadableText(misctype);
 		}
@@ -351,7 +359,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			{
 				building.setMaterial(RawMaterial.RESOURCE_PAPER);
 				CMLib.flags().setReadable(building,true);
-				building.setReadableText("Read the glorious propaganda of "+C.typeName()+" "+C.name().toLowerCase()+"! Join and fight for us today!");
+				building.setReadableText("Read the glorious propaganda of "+clanTypeName+" "+clanName.toLowerCase()+"! Join and fight for us today!");
 			}
 		}
 
@@ -393,7 +401,7 @@ public class ClanCrafting extends CraftingSkill implements ItemCraftor
 			mob.location().send(mob,msg);
 			beneficialAffect(mob,mob,asLevel,duration);
 			ClanCrafting CC=(ClanCrafting)mob.fetchEffect(ID());
-			if(CC!=null)
+			if((CC!=null)&&(C!=null))
 			{
 		        C.setExp(C.getExp()-expRequired);
 		        C.update();

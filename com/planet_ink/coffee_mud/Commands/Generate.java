@@ -209,12 +209,14 @@ public class Generate extends StdCommand
         	{
         		((MOB)V.elementAt(v)).bringToLife(mob.location(),true);
         		mob.location().showHappens(CMMsg.MSG_OK_VISUAL,((MOB)V.elementAt(v)).name()+" appears.");
+        		Log.sysOut("Generate",mob.Name()+" generated mob "+((MOB)V.elementAt(v)).name());
         	}
         	else
         	if(V.elementAt(v) instanceof Item)
         	{
         		mob.location().addItem((Item)V.elementAt(v));
         		mob.location().showHappens(CMMsg.MSG_OK_VISUAL,((Item)V.elementAt(v)).name()+" appears.");
+        		Log.sysOut("Generate",mob.Name()+" generated item "+((Item)V.elementAt(v)).name());
         	}
         	else
         	if(V.elementAt(v) instanceof String)
@@ -224,6 +226,7 @@ public class Generate extends StdCommand
         	{
         		Room R=(Room)V.elementAt(v);
         		createNewPlace(mob,mob.location(),R,direction);
+	    		Log.sysOut("Generate",mob.Name()+" generated room "+R.roomID());
         	}
         	else
         	if(V.elementAt(v) instanceof Area)
@@ -244,6 +247,7 @@ public class Generate extends StdCommand
     				CMLib.database().DBUpdateMOBs(R);
         		}
         		mob.tell("Done saving remaining rooms for area '"+A.name()+"'");
+	    		Log.sysOut("Generate",mob.Name()+" generated area "+A.name());
         	}
         return true;
     }
