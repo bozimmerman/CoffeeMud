@@ -46,7 +46,7 @@ public class Patroller extends ActiveTicker
 	protected boolean rideOnly=false;
 	protected Vector correction=null;
 
-	protected boolean rideFlag=false;
+	protected volatile int rideCheckCt = 0;
 	
 	public Patroller()
 	{
@@ -102,7 +102,7 @@ public class Patroller extends ActiveTicker
 	public boolean okMessage(Environmental host, CMMsg msg)
 	{
 	    if((rideOnly)
-	    &&(!rideFlag)
+	    &&(rideCheckCt<=0)
 	    &&(rideOk)
 	    &&(host instanceof Rideable)
 	    &&((msg.targetMinor()==CMMsg.TYP_ENTER)||(msg.targetMinor()==CMMsg.TYP_LEAVE))
@@ -365,35 +365,36 @@ public class Patroller extends ActiveTicker
                             mob.setRiding((Rideable)ticking);
 							CMMsg enterMsg=CMClass.getMsg(mob,thatRoom,E,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
 							CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null);
-							rideFlag=true;
-							if((E!=null)&&(!E.okMessage(mob,enterMsg)))
-							{	
-							    rideFlag=false;	
-							    tickStatus=Tickable.STATUS_NOT;
-							    return true;
+							try {
+								rideCheckCt++;
+								if((E!=null)&&(!E.okMessage(mob,enterMsg)))
+								{	
+								    tickStatus=Tickable.STATUS_NOT;
+								    return true;
+								}
+								else
+								if((opExit!=null)&&(!opExit.okMessage(mob,leaveMsg)))
+								{	
+								    tickStatus=Tickable.STATUS_NOT;
+								    return true;
+								}
+								else
+								if(!enterMsg.target().okMessage(mob,enterMsg))
+								{	
+								    tickStatus=Tickable.STATUS_NOT;
+								    return true;
+								}
+								else
+								if(!mob.okMessage(mob,enterMsg))
+								{	
+								    tickStatus=Tickable.STATUS_NOT;
+								    return true;
+								}
 							}
-							else
-							if((opExit!=null)&&(!opExit.okMessage(mob,leaveMsg)))
-							{	
-							    rideFlag=false;	
-							    tickStatus=Tickable.STATUS_NOT;
-							    return true;
+							finally 
+							{
+								rideCheckCt--;
 							}
-							else
-							if(!enterMsg.target().okMessage(mob,enterMsg))
-							{	
-							    rideFlag=false;	
-							    tickStatus=Tickable.STATUS_NOT;
-							    return true;
-							}
-							else
-							if(!mob.okMessage(mob,enterMsg))
-							{	
-							    rideFlag=false;	
-							    tickStatus=Tickable.STATUS_NOT;
-							    return true;
-							}
-							rideFlag=false;
 						}
 					}
 				}
@@ -502,9 +503,12 @@ public class Patroller extends ActiveTicker
 				}
 				else
 				{
-					rideFlag=true;
-					CMLib.tracking().move(mob,direction,false,false);
-					rideFlag=false;
+					try {
+						rideCheckCt++;
+						CMLib.tracking().move(mob,direction,false,false);
+					} finally {
+						rideCheckCt--;
+					}
 				}
 
 			    tickStatus=Tickable.STATUS_MISC+24;

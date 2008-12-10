@@ -101,7 +101,8 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		for(int i=0;i<contents.size();i++)
 		{
 			Item thisItem=(Item)contents.elementAt(i);
-			if(!myProperLocation.isContent(thisItem))
+			if((!myProperLocation.isContent(thisItem))
+			&&((!CMLib.flags().isMobile(thisItem)) || (!CMLib.flags().isInTheGame(thisItem,true))))
 			{
 				Item newThisItem=(Item)((Item)ccontents.elementAt(i)).copyOf();
 
@@ -138,7 +139,8 @@ public class ItemRejuv extends StdAbility implements ItemTicker
 		if(tickID==Tickable.TICKID_ROOM_ITEM_REJUV)
 		{
 			verifyFixContents();
-			if(!myProperLocation.isContent(item))
+			if((!myProperLocation.isContent(item))
+			&&((!CMLib.flags().isMobile(item)) || (!CMLib.flags().isInTheGame(item,true))))
 			{
 				unloadIfNecessary(item);
 				loadMeUp((Item)contents.elementAt(0),myProperLocation);
