@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries.layouts;
 
 import java.util.*;
 import com.planet_ink.coffee_mud.core.Directions;
+import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutRuns;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutTypes;
@@ -127,6 +128,8 @@ public class BoxCityLayout extends AbstractLayout
 			set.remove(n);
 			set.insertElementAt(n,0);
 		}
+		else
+			Log.errOut("BoxCityLayout","Not able to find start room for direction: "+dir);
 		return set;
 	}
 

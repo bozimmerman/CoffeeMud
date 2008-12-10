@@ -2,6 +2,7 @@ package com.planet_ink.coffee_mud.Libraries.layouts;
 
 import java.util.Vector;
 import com.planet_ink.coffee_mud.core.Directions;
+import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutNode;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutRuns;
 import com.planet_ink.coffee_mud.Libraries.interfaces.AreaGenerationLibrary.LayoutTypes;
@@ -114,6 +115,8 @@ public class GridCityLayout extends AbstractLayout
 			set.remove(firstNode);
 			set.insertElementAt(firstNode, 0);
 		}
+		else
+			Log.errOut("GridCityLayout","Not able to find start room for direction: "+dir);
 		return set;
 	}
 
