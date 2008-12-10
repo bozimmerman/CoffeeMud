@@ -83,6 +83,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				break;
 			}
 		}
+    	if(CMSecurity.isDebugging("OUTPUT"))
+    		Log.debugOut("CoffeeFilter","OUTPUT: ?: "+buf.toString());
 		return buf.toString();
 	}
 	
@@ -223,6 +225,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 
 		if ((S!=null)&&(S.currentColor() != ('N'))&&(S.clientTelnetMode(Session.TELNET_ANSI)))
 			buf.append(S.makeEscape('N'));
+    	if(CMSecurity.isDebugging("OUTPUT"))
+    		Log.debugOut("CoffeeFilter","OUTPUT: "+(((S!=null)&&(S.mob()!=null))?S.mob().Name():"")+": "+buf.toString());
 		return buf.toString();
 	}
     
@@ -861,6 +865,8 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			System.out.print(" \n");
 		}
 		//*/
+    	if(CMSecurity.isDebugging("OUTPUT"))
+    		Log.debugOut("CoffeeFilter","OUTPUT: "+(((S!=null)&&(S.mob()!=null))?S.mob().Name():"")+": "+buf.toString());
 		return buf.toString();
 	}
 
