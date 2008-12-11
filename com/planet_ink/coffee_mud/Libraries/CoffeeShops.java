@@ -159,6 +159,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
     {
         if(CMSecurity.isAllowed(buyer,buyer.location(),"CMDMOBS")) 
         	return true;
+        if(seller == buyer) return true;
         if(product instanceof Item) 
         {
             if(((Item)product).container()!=null) 
