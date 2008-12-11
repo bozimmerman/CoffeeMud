@@ -126,7 +126,7 @@ public class HolidayData extends StdWebMacro
                         int dex=settings.indexOf("AREAGROUP");
                         if(dex>=0)
                             old=(String)settings.elementAt(dex,2);
-                        else
+                        if((old==null)||(old.length()==0))
                             old="ALL";
                         areaNames = CMParms.parse(old.toUpperCase().trim());
                     } else {
@@ -262,6 +262,7 @@ public class HolidayData extends StdWebMacro
                         else
                             old="1-1";
                         old=TYPES[1]+": "+old;
+                        str.append(old);
                     }
                     else
                     if(dateIndex>=0)
@@ -272,6 +273,7 @@ public class HolidayData extends StdWebMacro
                         else
                             old="1-1";
                         old=TYPES[2]+": "+old;
+                        str.append(old);
                     }
                     else
                     {
