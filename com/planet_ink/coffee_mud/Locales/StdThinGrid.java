@@ -222,34 +222,39 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		Room R=getGridRoomIfExists(x,y);
 		if(R==null)
 		{
-			R=CMClass.getLocale(getGridChildLocaleID());
-			if(R==null) return null;
-			R.setGridParent(this);
-			R.setRoomID("");
-			R.setDisplayText(displayText());
-			R.setDescription(description());
-			int c=-1;
-			if(displayTexts!=null)
-			if(displayTexts.size()>0)
+			synchronized((this+"?"+x+"?"+y).intern())
 			{
-				c=CMLib.dice().roll(1,displayTexts.size(),-1);
-				R.setDisplayText((String)displayTexts.elementAt(c));
+				R=getGridRoomIfExists(x,y);
+				if(R!=null) return R;
+				R=CMClass.getLocale(getGridChildLocaleID());
+				if(R==null) return null;
+				R.setGridParent(this);
+				R.setRoomID("");
+				R.setDisplayText(displayText());
+				R.setDescription(description());
+				int c=-1;
+				if(displayTexts!=null)
+				if(displayTexts.size()>0)
+				{
+					c=CMLib.dice().roll(1,displayTexts.size(),-1);
+					R.setDisplayText((String)displayTexts.elementAt(c));
+				}
+				if(descriptions!=null)
+				if(descriptions.size()>0)
+				{
+					if((c<0)||(c>descriptions.size())||(descriptions.size()!=displayTexts.size()))
+						c=CMLib.dice().roll(1,descriptions.size(),-1);
+					R.setDescription((String)descriptions.elementAt(c));
+				}
+	
+				for(int a=0;a<numEffects();a++)
+					R.addEffect((Ability)fetchEffect(a).copyOf());
+				for(int b=0;b<numBehaviors();b++)
+					R.addBehavior((Behavior)fetchBehavior(b).copyOf());
+				R.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
+				addSortedRoom(R,x,y);
+				R.setArea(getArea());
 			}
-			if(descriptions!=null)
-			if(descriptions.size()>0)
-			{
-				if((c<0)||(c>descriptions.size())||(descriptions.size()!=displayTexts.size()))
-					c=CMLib.dice().roll(1,descriptions.size(),-1);
-				R.setDescription((String)descriptions.elementAt(c));
-			}
-
-			for(int a=0;a<numEffects();a++)
-				R.addEffect((Ability)fetchEffect(a).copyOf());
-			for(int b=0;b<numBehaviors();b++)
-				R.addBehavior((Behavior)fetchBehavior(b).copyOf());
-			R.setExpirationDate(System.currentTimeMillis()+WorldMap.ROOM_EXPIRATION_MILLIS);
-			addSortedRoom(R,x,y);
-			R.setArea(getArea());
 		}
 		return R;
 	}
