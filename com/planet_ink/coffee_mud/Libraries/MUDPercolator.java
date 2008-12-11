@@ -184,7 +184,14 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         	throw new CMException("Unable to build area on classID '"+classID+"', Data: "+CMParms.toStringList(piece.parms)+":"+piece.value);
         defined.put("AREA_CLASS",classID);
         String name = findString("NAME",piece,defined);
+        if(CMLib.map().getArea(name)!=null)
+        {
+        	A.destroy();
+        	throw new CMException("Unable to create area '"+A.Name()+"', you must destroy the old one first.");
+        }
+        
         A.setName(name);
+        
         defined.put("AREA_NAME",name);
         String author = findOptionalString("author",piece,defined);
         if(author != null)
@@ -224,12 +231,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         {
         	Behavior B=(Behavior)V.elementAt(i);
         	A.addBehavior(B);
-        }
-        
-        if(CMLib.map().getArea(A.Name())!=null)
-        {
-        	A.destroy();
-        	throw new CMException("Unable to create area '"+A.Name()+"', you must destroy the old one first.");
         }
         
         CMLib.map().addArea(A); // necessary for proper naming.
