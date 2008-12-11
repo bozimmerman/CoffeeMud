@@ -222,7 +222,7 @@ public class StdThinGrid extends StdRoom implements GridLocale
 		Room R=getGridRoomIfExists(x,y);
 		if(R==null)
 		{
-			synchronized((this+"?"+x+"?"+y).intern())
+			synchronized(rooms)
 			{
 				R=getGridRoomIfExists(x,y);
 				if(R!=null) return R;
