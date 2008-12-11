@@ -265,10 +265,18 @@ public class Tick extends Thread implements TickableGroup, Cloneable
         return lastClient!=null?lastClient.clientObject:null;
     }
 
+    public String getStatus() {
+    	Tickable lastTicked = lastTicked();
+    	if((!awake)||(lastTicked==null)) 
+    		return "Sleeping";
+    	return "Ticking: "+lastTicked.ID()+": "+lastTicked.name()+": "+myEngine.getTickStatusSummary(lastTicked);
+    }
+    
 	public void shutdown()
 	{
 		tickers.removeAllElements();
 		numTickers=tickers.size();
+		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down Service Engine: "+myEngine.ID()+": killing #" + tickObjectCounter+": "+getStatus());
 		CMLib.killThread(this,10,1);
 	}
 

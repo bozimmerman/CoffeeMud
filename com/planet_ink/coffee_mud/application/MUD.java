@@ -799,9 +799,12 @@ public class MUD extends Thread implements MudHost
 		}
 
 		if(S!=null)S.print("Stopping all threads...");
-		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down service engine");
         for(Enumeration e=CMLib.libraries(CMLib.LIBRARY_THREADS);e.hasMoreElements();)
-            ((CMLibrary)e.nextElement()).shutdown();
+        {
+        	CMLibrary lib=(CMLibrary)e.nextElement();
+    		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down Service Engine: " + lib.ID());
+            lib.shutdown();
+        }
 		if(S!=null)S.println("done");
 		Log.sysOut(Thread.currentThread().getName(),"Map Threads Stopped.");
 

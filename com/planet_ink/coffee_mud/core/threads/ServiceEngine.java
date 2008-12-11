@@ -592,6 +592,7 @@ public class ServiceEngine implements ThreadEngine
 			try{Thread.sleep(100);}catch(Exception e){}
 			which++;
 		}
+		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down Service Engine: "+ID()+": thread shutdown");
         thread.shutdown();
         // force final time tick!
         Vector timeObjects=new Vector();
@@ -601,6 +602,7 @@ public class ServiceEngine implements ThreadEngine
             if(!timeObjects.contains(A.getTimeObj()))
                 timeObjects.addElement(A.getTimeObj());
         }
+		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down Service Engine: "+ID()+": saving time objects");
         for(int t=0;t<timeObjects.size();t++)
             ((TimeClock)timeObjects.elementAt(t)).save();
 		Log.sysOut("ServiceEngine","Shutdown complete.");
