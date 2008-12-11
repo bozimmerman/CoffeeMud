@@ -276,7 +276,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
 	{
 		tickers.removeAllElements();
 		numTickers=tickers.size();
-		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down Service Engine: "+myEngine.ID()+": killing #" + tickObjectCounter+": "+getStatus());
+		CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down Service Engine: killing Tick#" + tickObjectCounter+": "+getStatus());
 		CMLib.killThread(this,10,1);
 	}
 
