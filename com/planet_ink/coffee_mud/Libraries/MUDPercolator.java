@@ -557,9 +557,6 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
     protected void fillOutStats(Environmental E, String[] ignoreStats, String defPrefix, XMLLibrary.XMLpiece piece, Hashtable defined)
     {
     	fillOutStatCodes(E,ignoreStats,defPrefix,piece,defined);
-    	fillOutStatCodes(E.baseEnvStats(),ignoreStats,defPrefix,piece,defined);
-    	if(E instanceof MOB)
-    		fillOutStatCodes(((MOB)E).baseCharStats(),ignoreStats,defPrefix,piece,defined);
     }
     
     protected MOB buildMob(XMLLibrary.XMLpiece piece, Hashtable defined) throws CMException
@@ -1058,19 +1055,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
             XMLLibrary.XMLpiece valPiece = (XMLLibrary.XMLpiece)choices.elementAt(c);
         	String value=strFilter(valPiece.value,defined);
             defineReward(valPiece,value,defined);
-            /**
-             * Ok, here's the problem: 
-             * this is the logical place for a top level selected "define" reward.
-             * As the value of the actual piece finally selected and USED for a string.
-             * However, by this point, everything has been sub-selected and passed any
-             * condition checks that rely ON the reward to inform the decision. No sub-tag
-             * can ever really *know* that it will be finally selected, and thus whether to
-             * trigger its define cmd until this point and yet it is THIS point that informs
-             * the conditions on whether to pick it.  Total catch-22.  
-             * 
-             * A solution might be to have getAllChoices finally set the define cmd, but that
-             * just pushes the problem down one level.  
-             */
+            
             String action = CMLib.xml().getParmValue(valPiece.parms,"ACTION");
             if((action==null)||(action.length()==0)) action="APPEND";
             if(action.equalsIgnoreCase("REPLACE"))
