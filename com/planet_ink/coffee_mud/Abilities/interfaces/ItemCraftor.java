@@ -98,7 +98,7 @@ public interface ItemCraftor extends Ability
 	 * as a vector in the returned vector. The item vector usually
 	 * only contains the finished item, but a second element will
 	 * occur when a key is required and also generated.
-	 * @return a vector of vectors of item(s)
+	 * @return a vector of vectors of item vector(s)
 	 */
 	public Vector craftAllItemsVectors();
 	

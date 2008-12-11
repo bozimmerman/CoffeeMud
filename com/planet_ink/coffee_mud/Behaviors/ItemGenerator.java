@@ -189,6 +189,7 @@ public class ItemGenerator extends ActiveTicker
 					materialSet=(Vector)skillSet.elementAt(v);
 					for(int m=0;m<materialSet.size();m++)
 					{
+						
 						itemSet=(Vector)materialSet.elementAt(m);
 						if(itemSet.size()>0)
 							allItems.addElement(itemSet.firstElement());

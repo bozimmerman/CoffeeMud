@@ -785,7 +785,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(material>=0)
 							skillContents=skill.craftAllItemsVectors(material);
 						else
-							skillContents=skill.craftAllItemsVectors();
+						{
+							skillContents=new Vector();
+							Vector V=skill.craftAllItemsVectors();
+							for(Enumeration e=V.elements();e.hasMoreElements();)
+								skillContents.addAll((Vector)e.nextElement());
+						}
 						if((skillContents!=null)&&(skillContents.size()>0))
 							contents=(Vector)skillContents.elementAt(CMLib.dice().roll(1,skillContents.size(),-1));
 						if((contents==null)||(contents.size()==0))
@@ -805,7 +810,12 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
 						if(material>=0)
 							contents=skill.craftAllItemsVectors(material);
 						else
-							contents=skill.craftAllItemsVectors();
+						{
+							contents=new Vector();
+							Vector V=skill.craftAllItemsVectors();
+							for(Enumeration e2=V.elements();e2.hasMoreElements();)
+								contents.addAll((Vector)e2.nextElement());
+						}
 						if((contents==null)||(contents.size()==0))
 							Log.errOut("MUDPercolator","Tried metacrafting any-"+recipe+", got "+contents.size()+" from "+skill.ID());
 						break;
