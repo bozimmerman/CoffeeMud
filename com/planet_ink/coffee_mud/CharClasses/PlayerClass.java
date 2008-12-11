@@ -61,7 +61,7 @@ public class PlayerClass extends StdCharClass
 	
 	public void startCharacter(MOB mob, boolean isBorrowedClass, boolean verifyOnly)
 	{
-		if((verifyOnly)&&(!loaded()))
+		if(!loaded())
 		{
 			setLoaded(true);
 			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
