@@ -1389,7 +1389,8 @@ public class StdArea implements Area
         for(;r.hasMoreElements();)
         {
             R=(Room)r.nextElement();
-            V.addElement(R);
+            if(!V.contains(R))
+	            V.addElement(R);
             for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
             {
                 R2=R.rawDoors()[d];
@@ -1398,6 +1399,7 @@ public class StdArea implements Area
                     if(R2 instanceof GridLocale)
                         V.addAll(((GridLocale)R2).getAllRooms());
                     else
+                    if(!V.contains(R2))
                         V.add(R2);
                 }
             }
