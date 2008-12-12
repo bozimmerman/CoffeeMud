@@ -331,6 +331,7 @@ public class GrinderRooms
             }
 			if(!copyRoom.sameAs(R))
 				Log.sysOut("Grinder",whom.Name()+" modified room "+R.roomID()+".");
+			copyRoom.destroy();
     	}
 		return "";
 	}

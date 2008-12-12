@@ -255,7 +255,7 @@ public class GenWallpaper implements Item
 		}
 	}
 
-	public void stopTicking(){destroyed=true;}
+	public void stopTicking(){destroyed=true;CMLib.threads().deleteTick(this,-1);}
 	public void destroy()
 	{
 		if(owner==null) return;

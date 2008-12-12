@@ -473,25 +473,25 @@ public class DefaultCoffeeShop implements CoffeeShop
             return;
         }
 
-        Vector buf=CMLib.xml().parseAllXML(text);
-        if(buf==null)
+        Vector xmlV=CMLib.xml().parseAllXML(text);
+        if(xmlV==null)
         {
             Log.errOut("DefaultCoffeeShop","Error parsing data.");
             return;
         }
-        String parm=CMLib.xml().getValFromPieces(buf,"ISELL");
+        String parm=CMLib.xml().getValFromPieces(xmlV,"ISELL");
         if((parm!=null)&&(CMath.isNumber(parm))) 
             shop.setWhatIsSoldMask(CMath.s_long(parm));
-        parm=CMLib.xml().getValFromPieces(buf,"IPREJ");
+        parm=CMLib.xml().getValFromPieces(xmlV,"IPREJ");
         if(parm!=null) shop.setPrejudiceFactors(parm);
-        parm=CMLib.xml().getValFromPieces(buf,"IBUDJ");
+        parm=CMLib.xml().getValFromPieces(xmlV,"IBUDJ");
         if(parm!=null) shop.setBudget(parm);
-        parm=CMLib.xml().getValFromPieces(buf,"IDVAL");
+        parm=CMLib.xml().getValFromPieces(xmlV,"IDVAL");
         if(parm!=null) shop.setDevalueRate(parm);
-        parm=CMLib.xml().getValFromPieces(buf,"IGNOR");
+        parm=CMLib.xml().getValFromPieces(xmlV,"IGNOR");
         if(parm!=null) shop.setIgnoreMask(parm);
         
-        Vector iV=CMLib.xml().getRealContentsFromPieces(buf,"INVS");
+        Vector iV=CMLib.xml().getRealContentsFromPieces(xmlV,"INVS");
         if(iV==null)
         {
             Log.errOut("DefaultCoffeeShop","Error parsing 'INVS'.");

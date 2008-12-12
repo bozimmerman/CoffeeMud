@@ -1139,7 +1139,7 @@ public class StdItem implements Item
         return weight;
     }
     
-	public void stopTicking(){destroyed=true;}
+	public void stopTicking(){destroyed=true;CMLib.threads().deleteTick(this,-1);}
 	public void destroy()
 	{
 		myContainer=null;
