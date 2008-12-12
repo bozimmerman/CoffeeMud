@@ -360,17 +360,16 @@ public class Patroller extends ActiveTicker
 						Rider R=(Rider)riders.elementAt(i);
 						if(R instanceof MOB)
 						{
-							// overboard check
-							if(((MOB)R).isMonster() 
-							&& (((MOB)R).riding()==I)
-							&& ((MOB)R).savable()
-							&& (((MOB)R).location() != thisRoom)
-							&& CMLib.flags().isInTheGame(R,true))
-								thisRoom.bringMobHere((MOB)R,false);
-							
 						    tickStatus=Tickable.STATUS_MISC+16;
 							MOB mob=(MOB)R;
                             mob.setRiding((Rideable)ticking);
+							// overboard check
+							if(mob.isMonster() 
+							&& mob.savable()
+							&& (mob.location() != thisRoom)
+							&& CMLib.flags().isInTheGame(R,true))
+								thisRoom.bringMobHere((MOB)R,false);
+                            
 							CMMsg enterMsg=CMClass.getMsg(mob,thatRoom,E,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null,CMMsg.MSG_ENTER,null);
 							CMMsg leaveMsg=CMClass.getMsg(mob,thisRoom,opExit,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null,CMMsg.MSG_LEAVE,null);
 							try {
