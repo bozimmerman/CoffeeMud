@@ -40,6 +40,10 @@
 			
 			<li> <a href="#AREAS">AREAS</a>
 			
+			<li> <a href="#AREA_CURRENCY">AREA_CURRENCY</a>
+			
+			<li> <a href="#AREA_MONEY">AREA_MONEY</a>
+			
 			<li> <a href="#ARMORED_DEFENCE">ARMORED_DEFENCE</a>
 			
 			<li> <a href="#ARRESTED">ARRESTED</a>
@@ -239,6 +243,10 @@
 			<li> <a href="#CREDITS">CREDITS</a>
 			
 			<li> <a href="#CRIME">CRIME</a>
+			
+			<li> <a href="#CURRENCIES">CURRENCIES</a>
+			
+			<li> <a href="#CURRENCY">CURRENCY</a>
 			
 			<li> <a href="#CURSED">CURSED</a>
 			
@@ -472,6 +480,8 @@
 			
 			<li> <a href="#LANGUAGES">LANGUAGES</a>
 			
+			<li> <a href="#LANTERN">LANTERN</a>
+			
 			<li> <a href="#LEARN">LEARN</a>
 			
 			<li> <a href="#LEAVE">LEAVE</a>
@@ -492,6 +502,10 @@
 			
 			<li> <a href="#LIST">LIST</a>
 			
+			<li> <a href="#LOCAL_CURRENCY">LOCAL_CURRENCY</a>
+			
+			<li> <a href="#LOCAL_MONEY">LOCAL_MONEY</a>
+			
 			<li> <a href="#LOCATE">LOCATE</a>
 			
 			<li> <a href="#LOCK">LOCK</a>
@@ -511,6 +525,8 @@
 			<li> <a href="#MISSIONARY">MISSIONARY</a>
 			
 			<li> <a href="#MONEY">MONEY</a>
+			
+			<li> <a href="#MONIES">MONIES</a>
 			
 			<li> <a href="#MONK">MONK</a>
 			
@@ -575,6 +591,8 @@
 			<li> <a href="#OUTFIT">OUTFIT</a>
 			
 			<li> <a href="#PACKAGE">PACKAGE</a>
+			
+			<li> <a href="#PAGEBREAK">PAGEBREAK</a>
 			
 			<li> <a href="#PAROLE">PAROLE</a>
 			
@@ -734,6 +752,8 @@
 			
 			<li> <a href="#SPEAK">SPEAK</a>
 			
+			<li> <a href="#SPELLNAME">SPELLNAME</a>
+			
 			<li> <a href="#SPELLS">SPELLS</a>
 			
 			<li> <a href="#SPLIT">SPLIT</a>
@@ -800,6 +820,8 @@
 			
 			<li> <a href="#UP">UP</a>
 			
+			<li> <a href="#Using">Using</a>
+			
 			<li> <a href="#VALUE">VALUE</a>
 			
 			<li> <a href="#VASSALS">VASSALS</a>
@@ -843,6 +865,14 @@
 			<li> <a href="#WIZARD">WIZARD</a>
 			
 			<li> <a href="#WIZLIST">WIZLIST</a>
+			
+			<li> <a href="#WORLD_CURRENCIES">WORLD_CURRENCIES</a>
+			
+			<li> <a href="#WORLD_CURRENCY">WORLD_CURRENCY</a>
+			
+			<li> <a href="#WORLD_MONEY">WORLD_MONEY</a>
+			
+			<li> <a href="#WORLD_MONIES">WORLD_MONIES</a>
 			
 			<li> <a href="#WORSHIP">WORSHIP</a>
 			
@@ -918,7 +948,17 @@
 			
 			<p>
 			<a name="AREAS"><B>AREAS</B></a>
-			<pre>Command : AREAS<BR>Usage   : AREAS<BR>Example : areas<BR>Short(s): <BR>This command will list all the areas in the known world of the game. You may<BR>also enter HELP [AREA NAME] to get more help on the areas you see listed with this<BR>command.</pre>
+			<pre>Command : AREAS<BR>Usage   : AREAS ([FILTER EXPRESSION])<BR>Example : areas<BR>Example : areas $population > 10 or ($avg_level &lt; 5 and $avg_level > 2)<BR>Example : areas $med_alignment >= 7500<BR>Short(s): <BR>This command will list all the areas in the known world of the game. <BR><BR>You can also filter the list by entering a expression that tests various<BR>statistics about the area in order to help find the one you want.  You can use any<BR>normal mathematical calculation and comparisons >, &lt;, >=, =, !=, &lt;>, &lt;=,<BR>and can combine expressions using "and" or "or".  Use parenthesis to affect the<BR>order of evaulation.  Most importantly, you can test any of the following variables<BR>about the areas: $POPULATION, $MIN_LEVEL, $MAX_LEVEL, $AVG_LEVEL, $MED_LEVEL,<BR>$AVG_ALIGNMENT, $MED_ALIGNMENT, $TOTAL_LEVELS, $TOTAL_INTELLIGENT_LEVELS,<BR>$VISITABLE_ROOMS<BR><BR>You may also enter HELP [AREA NAME] to get more help on the areas you see<BR>listed with this command.</pre>
+			</P>
+			
+			<p>
+			<a name="AREA_CURRENCY"><B>AREA_CURRENCY</B></a>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			</P>
+			
+			<p>
+			<a name="AREA_MONEY"><B>AREA_MONEY</B></a>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
 			</P>
 			
 			<p>
@@ -1422,6 +1462,16 @@
 			</P>
 			
 			<p>
+			<a name="CURRENCIES"><B>CURRENCIES</B></a>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			</P>
+			
+			<p>
+			<a name="CURRENCY"><B>CURRENCY</B></a>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			</P>
+			
+			<p>
 			<a name="CURSED"><B>CURSED</B></a>
 			<pre>You've been affected by an evil cleric curse.  Well, find another cleric to<BR>bless you then, or who has Remove Curse.</pre>
 			</P>
@@ -1673,7 +1723,11 @@
 			
 			<p>
 			<a name="FIGHTER"><B>FIGHTER</B></a>
-			<pre>Fighters are brutish weapon masters, skilled in the art of killing.  They may<BR>specialize in any weapon type, and learn numerous new fighting techniques as they<BR>advance in level.  Fighters receive more hit points and attack bonuses per level<BR>than any other class, and are invaluable in a close melee.<BR><BR>Fighter is the starting point for numerous sub-classes which the player may<BR>choose to gain levels in at any time.  These sub-classes include: Monk, Ranger,<BR>Paladin, and Barbarian.<BR><BR>How to play: The fighters strength is in his domination of pure combat. When<BR>playing alone, a fighter is fully capable of gaining the necessary experience. <BR>However, the fighter may choose to lead a group to gain an even greater advantage. <BR>As the tank (primary melee combatant) in a group, the fighter will give the group<BR>the benefit of his superior armor and fighting skill, while benefitting from the<BR>healing spells of a cleric, or the magical aids of a mage.<BR><BR>The fighters greatest weakness is his inability to move secretly, or get into<BR>or out of tricky spots.  For this reason, the fighter outside of a group should<BR>steer towards simple combat areas, and be content only with the treasures obtains<BR>from his kills.<BR></pre>
+			<pre>Fighters are brutish weapon masters, skilled in the art of killing.  They may<BR>specialize in any weapon type, and learn numerous new fighting techniques as they<BR>advance in level.  Fighters receive more hit points and attack bonuses per level<BR>than any other class, and are invaluable in a close melee.<BR><BR>
+Fighter is the starting point for numerous sub-classes which the player may<BR>choose to gain levels in at any time.  These sub-classes include: Monk, Ranger,<BR>Paladin, and Barbarian.<BR><BR>
+How to play: The fighters strength is in his domination of pure combat. When<BR>playing alone, a fighter is fully capable of gaining the necessary experience. <BR>However, the fighter may choose to lead a group to gain an even greater advantage. <BR>As the tank (primary melee combatant) in a group, the fighter will give the group<BR>the benefit of his superior armor and fighting skill, while benefitting from the<BR>healing spells of a cleric, or the magical aids of a mage.<BR><BR>
+The fighters greatest weakness is his inability to move secretly, or get into<BR>or out of tricky spots.  For this reason, the fighter outside of a group should<BR>steer towards simple combat areas, and be content only with the treasures obtains<BR>from his kills.<BR>
+</pre>
 			</P>
 			
 			<p>
@@ -1948,7 +2002,7 @@
 			
 			<p>
 			<a name="INTERMUD"><B>INTERMUD</B></a>
-			<pre>See the I3 command.  Intermud is a communication protocol that allows many<BR>different muds to share channels as send instant messages to each other.</pre>
+			<pre>See the I3 and IMC2 commands.  Intermud is one of the communication protocols<BR>that allows many different muds to share channels and send instant messages to each<BR>other.</pre>
 			</P>
 			
 			<p>
@@ -2002,6 +2056,11 @@
 			</P>
 			
 			<p>
+			<a name="LANTERN"><B>LANTERN</B></a>
+			<pre>A light giving object which must be FILLed with oil and then held (HOLD).</pre>
+			</P>
+			
+			<p>
 			<a name="LEARN"><B>LEARN</B></a>
 			<pre>Command : LEARN<BR>Usage   : LEARN [ATTRIBUTE/CLASS/EXPERTISE/SKILL] ([TEACHER MOB NAME])<BR>Example : learn stealthy ii<BR>Example : learn magic missile Horice<BR>Example : learn strength from Horice<BR>Short(s): <BR>If your character has the necessary training points and/or practice points,<BR>this command will allow you to request training in the specified skill, spell,<BR>chant, prayer, attribute, or expertise.  In addition to specifying the ability to<BR>learn, you may also specify a MOB who is present in the room who can teach you in<BR>that skill.  See also help on TRAIN, GAIN, and TEACH.</pre>
 			</P>
@@ -2043,12 +2102,22 @@
 			
 			<p>
 			<a name="LINEWRAP"><B>LINEWRAP</B></a>
-			<pre>Command : LINEWRAP<BR>Usage   : LINEWRAP [LINE NUMBER]/DISABLE<BR>Example : linewrap 100<BR>Example : linewrap disable<BR>Short(s): <BR>This command will allow the player to disable the default CoffeeMud<BR>linewrapping system, or to set it to a higher or lower number to accomodate their<BR>terminal.</pre>
+			<pre>Command : LINEWRAP<BR>Usage   : LINEWRAP [COL NUMBER]/DISABLE<BR>Example : linewrap 100<BR>Example : linewrap disable<BR>Short(s): <BR>This command will allow the player to disable the default CoffeeMud<BR>linewrapping system, or to set it to a higher or lower number to accomodate their<BR>terminal.</pre>
 			</P>
 			
 			<p>
 			<a name="LIST"><B>LIST</B></a>
 			<pre>Command : LIST<BR>Usage   : LIST ([SHOPKEEPER]) (FOR [ITEMNAME])<BR>Example : list<BR>Example : list weaponsmith<BR>Example : list for shield<BR>Short(s): <BR>The normal player version of this command will display the items which a<BR>particular shopkeeper MOB may be selling, along with the prices being offered to<BR>your characters. If more than one shopkeeper is in the room, you may have to<BR>specify the shopkeeper name in the parameters.  You may add the key word FOR and an<BR>item name to the end to filter the results.  See also BUY, SELL, DEPOSIT, WITHDRAW,<BR>VIEW, BID.</pre>
+			</P>
+			
+			<p>
+			<a name="LOCAL_CURRENCY"><B>LOCAL_CURRENCY</B></a>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			</P>
+			
+			<p>
+			<a name="LOCAL_MONEY"><B>LOCAL_MONEY</B></a>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
 			</P>
 			
 			<p>
@@ -2098,7 +2167,12 @@
 			
 			<p>
 			<a name="MONEY"><B>MONEY</B></a>
-			<pre>Money is represented in gold coins.  You spend them with shopkeepers. You may<BR>also have bank notes.  LOOKing at one of the notes will show you their value in<BR>gold coins.</pre>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			</P>
+			
+			<p>
+			<a name="MONIES"><B>MONIES</B></a>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
 			</P>
 			
 			<p>
@@ -2259,6 +2333,11 @@
 			<p>
 			<a name="PACKAGE"><B>PACKAGE</B></a>
 			<pre>Command : PACKAGE<BR>Usage   : PACKAGE [NUMBER] [ITEM NAMES]<BR>Example : package 10 daggers<BR>Example : package all bottles<BR>Short(s): <BR>This command packages together several identical items.  Thus grouped, the<BR>items may be easier to sell to shopkeepers and easier to carry.  The items must all<BR>be exactly the same.  Currency may not be packaged.  Raw resources, such as wood or<BR>ore metals, may be packaged, but will not then be available for use by crafting<BR>skills.  To do that, you would need to bundle the resources instead.  Items can be<BR>removed from packages using the GET [NUMBER] FROM [PACKAGE] syntax.</pre>
+			</P>
+			
+			<p>
+			<a name="PAGEBREAK"><B>PAGEBREAK</B></a>
+			<pre>Command : PAGEBREAK<BR>Usage   : PAGEBREAK [LINE NUMBER]/DISABLE<BR>Example : pagebreak 25<BR>Example : pagebreak disable<BR>Short(s): <BR>This command will allow the player to disable the default CoffeeMud page break<BR>system, or to set it to a higher or lower number to accomodate their terminal.</pre>
 			</P>
 			
 			<p>
@@ -2657,6 +2736,11 @@
 			</P>
 			
 			<p>
+			<a name="SPELLNAME"><B>SPELLNAME</B></a>
+			<pre>See help on SPELLS, CHANTS, PRAYERS, SONGS, CAST, PRAY, SING, CHANT</pre>
+			</P>
+			
+			<p>
 			<a name="SPELLS"><B>SPELLS</B></a>
 			<pre>Command : SPELLS<BR>Usage   : SPELLS (CONJURATION,ABJURATION,etc..)/[NAME] ([LEVEL])<BR>Example : spells<BR>Example : spells conjuration<BR>Example : spells ?<BR>Example : spells fireball<BR>Short(s): <BR>Lists any spells that you know, along with your proficiency in them.  Can also<BR>be qualified to list your spells by spell domain, or use ? to list domains.  You<BR>can get your level and proficiency for a particular spell by listing it by name. A<BR>level parameter may be given to show spells only up to that level.</pre>
 			</P>
@@ -2822,6 +2906,11 @@
 			</P>
 			
 			<p>
+			<a name="Using"><B>Using</B></a>
+			<pre></pre>
+			</P>
+			
+			<p>
 			<a name="VALUE"><B>VALUE</B></a>
 			<pre>Command : VALUE<BR>Usage   : VALUE [ITEM NAME] ([SHOPKEEPER])<BR>Example : value sword<BR>Short(s): <BR>If you are in the same room as a shopkeeper who is selling and buying goods,<BR>this command will get the shopkeeper to tell you how much he or she will give for<BR>your item.</pre>
 			</P>
@@ -2858,7 +2947,7 @@
 			
 			<p>
 			<a name="WANDS"><B>WANDS</B></a>
-			<pre>Skill    : Wands<BR>Available: Almost All<BR>Example  : <BR>A wand is an holdable item that can be used to create magical affects.<BR><BR>This skill allows one to effectively use a magical wand or staff.  To invoke a<BR>wand or staff, it must first be held.  Then the magic word is spoken to the target.<BR> For instance, if the magic word is `zuy`, you would enter the following to invoke<BR>your wand: sayto orc zuy. <BR><BR>Wands generally require a small amount of mana to use, and less if the wand<BR>user is capable of learning the spell cast by the wand.</pre>
+			<pre>Skill    : Wands<BR>Available: Almost All<BR>Example  : <BR>A wand is an holdable item that can be used to create magical affects.<BR><BR>This skill allows one to effectively use a magical wand or staff.  To invoke a<BR>wand or staff, it must first be held.  Then the magic word is spoken to the target.<BR> For instance, if the magic word is `zuy`, you would enter the following to invoke<BR>your wand: sayto orc zuy. <BR><BR>If the spell on the wand requires extra parameters, then you can include those<BR>after the casting words.  For a wand of Summon, for instance, you might try: say<BR>zuy cityguard. <BR>Wands generally require a small amount of mana to use, and less if the wand<BR>user is capable of learning the spell cast by the wand.</pre>
 			</P>
 			
 			<p>
@@ -2908,7 +2997,7 @@
 			
 			<p>
 			<a name="WIMPY"><B>WIMPY</B></a>
-			<pre>Command : WIMPY<BR>Usage   : WIMPY [HIT POINT LEVEL]<BR>Example : wimpy 5<BR>Short(s): <BR>Sets the minimum number of hit points your character must have in order for you<BR>to remain in a fight.  Should your character drop below that level during combat,<BR>he or she will automatically FLEE the room.  See the FLEE command for more<BR>information.</pre>
+			<pre>Command : WIMPY<BR>Usage   : WIMPY [HIT POINTS]/[PCT]<BR>Example : wimpy 5<BR>Example : wimpy 15%<BR>Short(s): <BR>Sets the minimum number of hit points your character must have in order for you<BR>to remain in a fight.  Should your character drop below that level during combat,<BR>he or she will automatically FLEE the room.  See the FLEE command for more<BR>information.</pre>
 			</P>
 			
 			<p>
@@ -2929,6 +3018,26 @@
 			<p>
 			<a name="WIZLIST"><B>WIZLIST</B></a>
 			<pre>Command : WIZLIST<BR>Usage   : WIZLIST<BR>Example : wizlist<BR>Short(s): <BR>Shows a list of all the Archons on this mud.</pre>
+			</P>
+			
+			<p>
+			<a name="WORLD_CURRENCIES"><B>WORLD_CURRENCIES</B></a>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			</P>
+			
+			<p>
+			<a name="WORLD_CURRENCY"><B>WORLD_CURRENCY</B></a>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			</P>
+			
+			<p>
+			<a name="WORLD_MONEY"><B>WORLD_MONEY</B></a>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
+			</P>
+			
+			<p>
+			<a name="WORLD_MONIES"><B>WORLD_MONIES</B></a>
+			<pre><BR>World Currencies    :<BR>Currency            :default<BR>gold coin(s)        : (exchange rate is 1.0 of base)<BR>golden note(s)      : Equal to 100 gold coins.<BR>whole note(s)       : Equal to 10000 gold coins.<BR>Archon note(s)      : Equal to 1000000 gold coins.<BR></pre>
 			</P>
 			
 			<p>
