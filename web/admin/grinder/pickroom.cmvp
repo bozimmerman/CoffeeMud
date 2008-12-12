@@ -25,6 +25,7 @@
 			return;
 		}
 		opener.pickedRoom(avalue,rvalue,document.NEWAREA.REST.value);
+		window.close();
 	}
 //-->
 </SCRIPT>

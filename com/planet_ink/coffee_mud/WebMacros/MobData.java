@@ -979,7 +979,16 @@ public class MobData extends StdWebMacro
 					M=CMClass.getMOB("GenMob");
 				else
                 if(mobCode.equals("NEWDEITY"))
+                {
                     M=CMClass.getMOB("GenDeity");
+                    String deityName=httpReq.getRequestParameter("NEWMOBNAME");
+                    if((M!=null)&&(deityName!=null))
+                    {
+	                    M.setDisplayText(CMStrings.replaceAll(((Deity)M).displayText(),CMStrings.capitalizeFirstLetter(M.name()),deityName));
+	                    ((Deity)M).setClericRitual(CMStrings.replaceAll(((Deity)M).getClericRitual(),M.name(),deityName));
+	                    ((Deity)M).setWorshipRitual(CMStrings.replaceAll(((Deity)M).getWorshipRitual(),M.name(),deityName));
+                    }
+                }
                 else
 				if(R!=null)
 					M=RoomData.getMOBFromCode(R,mobCode);
