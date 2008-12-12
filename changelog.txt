@@ -2183,7 +2183,8 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 43. New un-qualified-for Skill: Flee -- just calls the Flee command, but can be used as a replacement of the command if set up properly.
 44. New un-qualified-for Common Skill: ScrollScribing -- inferior to the scribe skill, but ties into metacrafting!
 45. Random object generator done.  See HELP GENERATE, and play around with it.  Let me know if this is interesting in any way.
-46. * I changed the name of a few of the library interfaces, so make sure you follow the 
+46. EXPORT command now supports single players by name.
+47. * I changed the name of a few of the library interfaces, so make sure you follow the 
 	part of the upgrade instructions regarding deleting your old "com" directory before 
 	running the new build.
-42. CoffeeMud-bug values dropped 700 points in overnight debugging.
+48. CoffeeMud-bug values dropped 700 points in overnight debugging.

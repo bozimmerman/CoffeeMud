@@ -162,6 +162,13 @@ public class Export extends StdCommand
 			else
 			if(sub.equalsIgnoreCase("data"))
 				commands.removeElementAt(0);
+			else
+			if((commandType.equalsIgnoreCase("PLAYER"))
+			&&(CMLib.players().getLoadPlayer(sub)!=null))
+			{
+				subType=sub;
+				commands.removeElementAt(0);
+			}
 
 			if(commands.size()==0)
 			{
@@ -284,6 +291,20 @@ public class Export extends StdCommand
 				}
 				if(fileNameCode!=2) xml=buf.toString()+"</AREAS>";
 			}
+		}
+		else
+		if(commandType.equalsIgnoreCase("PLAYER"))
+		{
+			StringBuffer x=new StringBuffer("<PLAYERS>");
+			MOB M=CMLib.players().getLoadPlayer(subType);
+			if(M!=null)
+			{
+				x.append("\r\n<PLAYER>");
+				x.append(CMLib.coffeeMaker().getPlayerXML(M,custom,files));
+				x.append("</PLAYER>");
+			}
+			if(fileNameCode==2) fileName=fileName+"/player";
+			xml=x.toString()+"</PLAYERS>";
 		}
 		else
 		if(subType.equalsIgnoreCase("MOBS"))
