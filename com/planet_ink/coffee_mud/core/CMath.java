@@ -30,7 +30,7 @@ public class CMath
 
     /** Convert an integer to its Roman Numeral equivalent
      *
-     * Usage: Return=MiscFunc.convertToRoman(Number)+".";
+     * Usage: Return=convertToRoman(Number)+".";
      * @param i Integer to convert
      *
      * @return String Converted integer
@@ -64,12 +64,10 @@ public class CMath
         return roman.toString();
     }
 
-    /** Convert an integer to its Roman Numeral equivalent
-     *
-     * Usage: Return=MiscFunc.convertToRoman(Number)+".";
-     * @param s String to convert
-     *
-     * @return String Converted integer
+    /**
+     * Convert a number from roman numeral to integer.
+     * @param s the roman numeral string
+     * @return the int
      */
     public static int convertFromRoman(String s)
     {
@@ -97,6 +95,11 @@ public class CMath
         return x;
     }
 
+    /**
+     * Return st,nd,rd for a number
+     * @param num the number
+     * @return the st,nd,rd appendage only
+     */
     public static String numAppendage(int num)
 	{
         if((num<11)||(num>13))
@@ -112,8 +115,18 @@ public class CMath
         return "th";
 	}
 
+    /**
+     * Return true if the char is a roman numeral digit
+     * @param c the char
+     * @return true if is roman
+     */
     public static boolean isRomanDigit(char c){ return ROMAN_ALL.indexOf(c)>=0;}
 
+    /**
+     * Returns true if the string is a roman numeral
+     * @param s the string to test
+     * @return true if a roman numeral, false otherwise
+     */
     public static boolean isRomanNumeral(String s)
     {
         if(s==null) return false;
@@ -125,6 +138,12 @@ public class CMath
         return true;
     }
 
+    /**
+     * Returns the absolute difference between two numbers
+     * @param x the first number
+     * @param y the second number
+     * @return the absolute difference (x-y)*(-1 if <)
+     */
     public static long absDiff(long x, long y)
     {
         long d=x-y;
@@ -132,6 +151,11 @@ public class CMath
         return d;
     }
 
+    /**
+     * Returns true if the string is a number (float or int)
+     * @param s the string to test
+     * @return true if a number, false otherwise
+     */
     public static boolean isNumber(String s)
     {
         if(s==null) return false;
