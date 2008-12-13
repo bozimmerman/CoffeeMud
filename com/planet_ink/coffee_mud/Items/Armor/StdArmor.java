@@ -362,7 +362,8 @@ public class StdArmor extends StdContainer implements Armor
 						if((rawWornCode()==Item.WORN_HEAD)
 						&&(CMLib.dice().rollPercentage()==1)
 						&&(CMLib.dice().rollPercentage()==1)
-						&&((msg.value())>10))
+						&&((msg.value())>10)
+						&&(!CMSecurity.isDisabled("AUTODISEASE")))
 						{
 							Ability A=CMClass.getAbility("Disease_Tinnitus");
 							if((A!=null)&&(owner().fetchEffect(A.ID())==null))

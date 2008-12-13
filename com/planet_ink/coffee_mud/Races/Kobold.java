@@ -136,7 +136,7 @@ public class Kobold extends StdRace
 		Vector rsc=(Vector)resources.clone();
 		Item meat=makeResource
 		("some "+name().toLowerCase()+" flesh",RawMaterial.RESOURCE_MEAT);
-		if(CMLib.dice().rollPercentage()<5)
+		if((CMLib.dice().rollPercentage()<5)&&(!CMSecurity.isDisabled("AUTODISEASE")))
 		{
 			Ability A=CMClass.getAbility("Disease_Lepresy");
 			if(A!=null)	meat.addNonUninvokableEffect(A);

@@ -1605,14 +1605,16 @@ public class DefaultSession extends Thread implements Session
 							if((getIdleMillis()>=10800000)&&(!killFlag()))
 							{
 								if((!CMLib.flags().isSleeping(mob))
-								&&(mob().fetchEffect("Disease_Blahs")==null))
+								&&(mob().fetchEffect("Disease_Blahs")==null)
+								&&(!CMSecurity.isDisabled("AUTODISEASE")))
 								{
 									Ability A=CMClass.getAbility("Disease_Blahs");
 									if(A!=null) A.invoke(mob,mob,true,0);
 								}
 								else
 								if((CMLib.flags().isSleeping(mob))
-								&&(mob().fetchEffect("Disease_Narcolepsy")==null))
+								&&(mob().fetchEffect("Disease_Narcolepsy")==null)
+								&&(!CMSecurity.isDisabled("AUTODISEASE")))
 								{
 									Ability A=CMClass.getAbility("Disease_Narcolepsy");
 									if(A!=null) A.invoke(mob,mob,true,0);

@@ -163,13 +163,16 @@ public class Undead extends StdRace
 		DeadBody body=super.getCorpseContainer(mob,room);
 		if((body!=null)&&(mob!=null))
 		{
-			if((mob.name().toUpperCase().indexOf("DRACULA")>=0)
-			||(mob.name().toUpperCase().indexOf("VAMPIRE")>=0))
-				body.addNonUninvokableEffect(CMClass.getAbility("Disease_Vampirism"));
-			else
-			if((mob.name().toUpperCase().indexOf("GHOUL")>=0)
-			||(mob.name().toUpperCase().indexOf("GHAST")>=0))
-				body.addNonUninvokableEffect(CMClass.getAbility("Disease_Cannibalism"));
+			if(!CMSecurity.isDisabled("AUTODISEASE"))
+			{
+				if((mob.name().toUpperCase().indexOf("DRACULA")>=0)
+				||(mob.name().toUpperCase().indexOf("VAMPIRE")>=0))
+					body.addNonUninvokableEffect(CMClass.getAbility("Disease_Vampirism"));
+				else
+				if((mob.name().toUpperCase().indexOf("GHOUL")>=0)
+				||(mob.name().toUpperCase().indexOf("GHAST")>=0))
+					body.addNonUninvokableEffect(CMClass.getAbility("Disease_Cannibalism"));
+			}
 	        if(ID().equals("Undead"))
 	        {
 	            Ability A=CMClass.getAbility("Prop_Smell");

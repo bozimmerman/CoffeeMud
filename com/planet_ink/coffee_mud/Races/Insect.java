@@ -73,7 +73,8 @@ public class Insect extends StdRace
 		&&(msg.tool() instanceof Weapon)
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)
 		&&(!((MOB)msg.target()).isMonster())
-		&&(((msg.value())>(((MOB)msg.target()).maxState().getHitPoints()/20))))
+		&&(((msg.value())>(((MOB)msg.target()).maxState().getHitPoints()/20)))
+		&&(!CMSecurity.isDisabled("AUTODISEASE")))
 		{
 			Ability A=CMClass.getAbility("Disease_Lyme");
 			if((A!=null)&&(msg.target().fetchEffect(A.ID())==null))

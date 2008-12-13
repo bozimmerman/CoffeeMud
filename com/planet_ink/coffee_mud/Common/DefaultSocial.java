@@ -138,7 +138,8 @@ public class DefaultSocial implements Social
 					&&(CMLib.dice().rollPercentage()==1)
 					&&(mob.charStats().getStat(CharStats.STAT_GENDER)!=('N'))
 					&&(tmob.charStats().getStat(CharStats.STAT_GENDER)!=('N'))
-					&&(mob.charStats().getStat(CharStats.STAT_GENDER)!=tmob.charStats().getStat(CharStats.STAT_GENDER)))
+					&&(mob.charStats().getStat(CharStats.STAT_GENDER)!=tmob.charStats().getStat(CharStats.STAT_GENDER))
+					&&(!CMSecurity.isDisabled("AUTODISEASE")))
 					{
 						Ability A=CMClass.getAbility("Disease_Smiles");
 						if((A!=null)&&(target.fetchEffect(A.ID())==null))

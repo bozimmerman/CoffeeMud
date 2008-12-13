@@ -114,7 +114,8 @@ public class StdFood extends StdItem implements Food
 			    &&(mob.curState().getHunger()>=mob.maxState().maxHunger(mob.baseWeight()))
 				&&(CMLib.dice().roll(1,500,0)==1)
 				&&(!CMLib.flags().isGolem(msg.source()))
-				&&(msg.source().fetchEffect("Disease_Obesity")==null))
+				&&(msg.source().fetchEffect("Disease_Obesity")==null)
+				&&(!CMSecurity.isDisabled("AUTODISEASE")))
 				{
 				    Ability A=CMClass.getAbility("Disease_Obesity");
 				    if(A!=null){A.invoke(mob,mob,true,0);}

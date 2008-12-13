@@ -48,10 +48,11 @@ public class Swamp extends StdRoom
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((msg.amITarget(this)||(msg.targetMinor()==CMMsg.TYP_ADVANCE)||(msg.targetMinor()==CMMsg.TYP_RETREAT))
-		   &&(!msg.source().isMonster())
-		   &&(msg.source().curState().getHitPoints()<msg.source().maxState().getHitPoints())
-		   &&(CMLib.dice().rollPercentage()==1)
-		   &&(CMLib.dice().rollPercentage()==1))
+	    &&(!msg.source().isMonster())
+	    &&(msg.source().curState().getHitPoints()<msg.source().maxState().getHitPoints())
+	    &&(CMLib.dice().rollPercentage()==1)
+	    &&(CMLib.dice().rollPercentage()==1)
+	    &&(!CMSecurity.isDisabled("AUTODISEASE")))
 		{
 			Ability A=null;
 			if(CMLib.dice().rollPercentage()>50)

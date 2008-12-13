@@ -49,9 +49,10 @@ public class Woods extends StdRoom
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		if((msg.amITarget(this)||(msg.targetMinor()==CMMsg.TYP_ADVANCE)||(msg.targetMinor()==CMMsg.TYP_RETREAT))
-		   &&(!msg.source().isMonster())
-		   &&(CMLib.dice().rollPercentage()==1)
-		   &&(CMLib.dice().rollPercentage()==1))
+	    &&(!msg.source().isMonster())
+	    &&(CMLib.dice().rollPercentage()==1)
+	    &&(CMLib.dice().rollPercentage()==1)
+	    &&(!CMSecurity.isDisabled("AUTODISEASE")))
 		{
 			Ability A=CMClass.getAbility("Disease_PoisonIvy");
 			if((A!=null)&&(msg.source().fetchEffect(A.ID())==null))

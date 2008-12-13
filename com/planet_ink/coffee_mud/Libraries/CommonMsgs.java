@@ -508,7 +508,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             {
                 if((mob.baseCharStats().ageCategory()>=Race.AGE_VENERABLE)
                 &&(CMLib.dice().rollPercentage()==1)
-                &&(CMLib.dice().rollPercentage()==1))
+                &&(CMLib.dice().rollPercentage()==1)
+                &&(!CMSecurity.isDisabled("AUTODISEASE")))
                 {
                     Ability A=CMClass.getAbility("Disease_Cancer");
                     if((A!=null)&&(mob.fetchEffect(A.ID())==null))
@@ -516,7 +517,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 }
                 else
                 if((mob.baseCharStats().ageCategory()>=Race.AGE_ANCIENT)
-                &&(CMLib.dice().rollPercentage()==1))
+                &&(CMLib.dice().rollPercentage()==1)
+                &&(!CMSecurity.isDisabled("AUTODISEASE")))
                 {
                     Ability A=CMClass.getAbility("Disease_Arthritis");
                     if((A!=null)&&(mob.fetchEffect(A.ID())==null))
@@ -524,7 +526,8 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
                 }
                 else
                 if((mob.baseCharStats().ageCategory()>=Race.AGE_ANCIENT)
-                &&(CMLib.dice().rollPercentage()==1))
+                &&(CMLib.dice().rollPercentage()==1)
+                &&(!CMSecurity.isDisabled("AUTODISEASE")))
                 {
                     Ability A=CMClass.getAbility("Disease_Alzheimers");
                     if((A!=null)&&(mob.fetchEffect(A.ID())==null))

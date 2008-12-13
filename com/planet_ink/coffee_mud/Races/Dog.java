@@ -85,7 +85,7 @@ public class Dog extends StdRace
 	public DeadBody getCorpseContainer(MOB mob, Room room)
 	{
 		DeadBody body=super.getCorpseContainer(mob,room);
-		if((body!=null)&&(CMLib.dice().rollPercentage()<5))
+		if((body!=null)&&(CMLib.dice().rollPercentage()<5)&&(!CMSecurity.isDisabled("AUTODISEASE")))
 		{
 			Ability A=CMClass.getAbility("Disease_Fleas");
 			if(A!=null) body.addNonUninvokableEffect(A);

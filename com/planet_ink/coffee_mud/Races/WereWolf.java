@@ -71,7 +71,8 @@ public class WereWolf extends GiantWolf
 		&&(CMLib.dice().rollPercentage()<50)
 		&&(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)
 		&&(!((MOB)msg.target()).isMonster())
-		&&(((msg.value())>(((MOB)msg.target()).maxState().getHitPoints()/5))))
+		&&(((msg.value())>(((MOB)msg.target()).maxState().getHitPoints()/5)))
+		&&(!CMSecurity.isDisabled("AUTODISEASE")))
 		{
 			Ability A=CMClass.getAbility("Disease_Lycanthropy");
 			if((A!=null)&&(msg.target().fetchEffect(A.ID())==null))
@@ -95,8 +96,11 @@ public class WereWolf extends GiantWolf
 				{
 					Item meat=makeResource
 					("some "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MEAT);
-					Ability A=CMClass.getAbility("Disease_Lycanthropy");
-					if(A!=null)	meat.addNonUninvokableEffect(A);
+					if(!CMSecurity.isDisabled("AUTODISEASE"))
+					{
+						Ability A=CMClass.getAbility("Disease_Lycanthropy");
+						if(A!=null)	meat.addNonUninvokableEffect(A);
+					}
 					resources.addElement(meat);
 					resources.addElement(makeResource
 					("a pound of "+name().toLowerCase()+" meat",RawMaterial.RESOURCE_MEAT));

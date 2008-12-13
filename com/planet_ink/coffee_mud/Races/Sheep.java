@@ -130,7 +130,7 @@ public class Sheep extends StdRace
 	public DeadBody getCorpseContainer(MOB mob, Room room)
 	{
 		DeadBody body=super.getCorpseContainer(mob,room);
-		if((body!=null)&&(CMLib.dice().roll(1,1000,0)==1))
+		if((body!=null)&&(CMLib.dice().roll(1,1000,0)==1)&&(!CMSecurity.isDisabled("AUTODISEASE")))
 		{
 			Ability A=CMClass.getAbility("Disease_Anthrax");
 			if(A!=null) body.addNonUninvokableEffect(A);

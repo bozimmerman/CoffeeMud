@@ -2190,4 +2190,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 48. CoffeeMud-bug values dropped 700 points in overnight debugging.
 # Build 5.5.3 Release ?
 1. New INI entry: DEFAULTPLAYERFLAGS
-2. 
+2. New DISABLE flag: AUTODISEASE

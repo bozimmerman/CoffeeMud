@@ -136,7 +136,7 @@ public class StdSmokable extends StdContainer implements Light
                     {
 						tickStatus=Tickable.STATUS_WEATHER;
 						mob.location().show(mob,this,this,CMMsg.MSG_HANDS,"<S-NAME> puff(s) on <T-NAME>.");
-                        if(CMLib.dice().roll(1,1000,0)==1)
+                        if((CMLib.dice().roll(1,1000,0)==1)&&(!CMSecurity.isDisabled("AUTODISEASE")))
                         {
                             Ability A=CMClass.getAbility("Disease_Cancer");
                             if(A!=null) A.invoke(mob,mob,true,0);

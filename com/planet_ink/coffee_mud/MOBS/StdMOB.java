@@ -2238,7 +2238,8 @@ public class StdMOB implements MOB
 			    if((followers!=null)
 			    &&(followers.contains(msg.source()))
 				&&(CMLib.dice().rollPercentage()==1)
-			    &&(fetchEffect("Disease_Depression")==null))
+			    &&(fetchEffect("Disease_Depression")==null)
+			    &&(!CMSecurity.isDisabled("AUTODISEASE")))
 				{
 				    Ability A=CMClass.getAbility("Disease_Depression");
 				    if(A!=null) A.invoke(this,this,true,0);
@@ -2735,14 +2736,16 @@ public class StdMOB implements MOB
 						curState().adjFatigue(Tickable.TIME_TICK,maxState());
 				        if((curState().getFatigue()>CharState.FATIGUED_MILLIS)
 						&&(!isMonster())
-                     	&&(CMLib.dice().rollPercentage()==1))
+                     	&&(CMLib.dice().rollPercentage()==1)
+                     	&&(!CMSecurity.isDisabled("AUTODISEASE")))
                      	{
                         	Ability theYawns = CMClass.getAbility("Disease_Yawning");
                         	if(theYawns!=null) theYawns.invoke(this, this, true,0);
                      	}
 				        if((curState().getFatigue()>(CharState.FATIGUED_EXHAUSTED_MILLIS))
 						&&(!isMonster())
-                     	&&(CMLib.dice().rollPercentage()==1))
+                     	&&(CMLib.dice().rollPercentage()==1)
+                     	&&(!CMSecurity.isDisabled("AUTODISEASE")))
                      	{
                         	Ability sleep = CMClass.getAbility("Spell_Sleep");
                         	if(sleep!=null) sleep.invoke(this, this, true,0);
