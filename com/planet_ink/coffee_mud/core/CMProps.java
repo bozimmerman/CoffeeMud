@@ -259,7 +259,7 @@ public class CMProps extends Properties
 			CMFile F=new CMFile(filename,null,false);
 			if(F.exists())
 			{
-				this.load(new ByteArrayInputStream(F.raw()));
+				this.load(new ByteArrayInputStream(F.textUnformatted().toString().getBytes()));
 				loaded=true;
 			}
 			else

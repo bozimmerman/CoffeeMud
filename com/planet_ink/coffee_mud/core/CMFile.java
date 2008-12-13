@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.*;
+import java.nio.charset.Charset;
 import java.util.*;
 import java.util.regex.Pattern;
 
@@ -48,6 +49,10 @@ public class CMFile
     private static final int VFS_MASK_NOREADLOCAL=128;
 
     private static final char pathSeparator=File.separatorChar;
+    
+    private static final String inCharSet = Charset.defaultCharset().name();
+    @SuppressWarnings("unused")
+	private static final String outCharSet = Charset.defaultCharset().name();
     
     private static Vector[] vfs=new Vector[256];
     private boolean logErrors=false;
@@ -378,8 +383,11 @@ public class CMFile
         BufferedReader reader = null;
         try
         {
-            FileReader F=new FileReader(getIOReadableLocalPathAndName());
-            reader=new BufferedReader(F);
+        	reader=new BufferedReader(
+        		   new InputStreamReader(
+            	   new FileInputStream(
+		           	getIOReadableLocalPathAndName()
+            ),inCharSet));
             String line="";
             while((line!=null)&&(reader.ready()))
             {
@@ -444,10 +452,13 @@ public class CMFile
             return buf;
         }
 
-        FileReader F = null;
+        Reader F = null;
         try
         {
-            F=new FileReader(getIOReadableLocalPathAndName());
+        	F=new InputStreamReader(
+         	  new FileInputStream(
+	           	getIOReadableLocalPathAndName()
+             ),inCharSet);
             char c=' ';
             while(F.ready())
             {
