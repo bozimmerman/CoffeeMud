@@ -1468,6 +1468,13 @@ public class DefaultSession extends Thread implements Session
 			while((!killFlag)&&((++tries)<5))
 			{
 				MOB newMob=CMClass.getMOB("StdMOB");
+				Vector defaultFlagsV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_DEFAULTPLAYERFLAGS).toUpperCase(),true);
+				for(int v=0;v<defaultFlagsV.size();v++)
+				{
+					int x=CMParms.indexOf(MOB.AUTODESC,(String)defaultFlagsV.elementAt(v));
+					if(x>=0)
+						newMob.setBitmap(newMob.getBitmap()|(int)CMath.pow(2,x));
+				}
 				newMob.setSession(this);
 				mob=newMob;
 				status=Session.STATUS_LOGIN;

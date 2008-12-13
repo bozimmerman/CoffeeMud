@@ -118,6 +118,7 @@ public class CMProps extends Properties
     public static final int SYSTEM_CHARCREATIONSCRIPTS=60;
     public static final int SYSTEM_CHARSETINPUT=61;
     public static final int SYSTEM_CHARSETOUTPUT=62;
+    public static final int SYSTEM_DEFAULTPLAYERFLAGS=63;
     public static final int NUM_SYSTEM=63;
 
     public static final int SYSTEMI_EXPRATE=0;
@@ -708,6 +709,7 @@ public class CMProps extends Properties
         setVar(SYSTEM_SMTPSERVERNAME,getStr("SMTPSERVERNAME"));
         setVar(SYSTEM_EXPCONTACTLINE,getStr("EXPCONTACTLINE"));
         setVar(SYSTEM_AUTOWEATHERPARMS,getStr("AUTOWEATHERPARMS"));
+        setVar(SYSTEM_DEFAULTPLAYERFLAGS,getStr("DEFAULTPLAYERFLAGS"));
         setUpLowVar(SYSTEM_AUTOAREAPROPS,getStr("AUTOAREAPROPS"));
         setUpLowVar(SYSTEM_MXPIMAGEPATH,getStr("MXPIMAGEPATH"));
         setBoolVar(SYSTEMB_ACCOUNTEXPIRATION,getStr("ACCOUNTEXPIRATION").equalsIgnoreCase("YES")?true:false);
