@@ -17,6 +17,11 @@ import java.io.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
+/**
+ * A core singleton class handling various mathematical operations and 
+ * functions, especially dealing with explicit type conversions, and 
+ * special string conversions and functions.
+ */
 public class CMath
 {
     private CMath(){super();}
@@ -169,67 +174,176 @@ public class CMath
         return true;
     }
 
+    /**
+     * Divide a by b, making sure both are cast to doubles
+     * and that the return is precisely double.
+     * @param a the dividend
+     * @param b the divisor
+     * @return the quotient
+     */
     public static double div(double a, double b)
     {
         return a/b;
     }
+    /**
+     * Divide a by b, making sure both are cast to doubles
+     * and that the return is precisely double.
+     * @param a the dividend
+     * @param b the divisor
+     * @return the quotient
+     */
     public static double div(double a, int b)
     {
         return a/((double)b);
     }
+    /**
+     * Divide a by b, making sure both are cast to doubles
+     * and that the return is precisely double.
+     * @param a the dividend
+     * @param b the divisor
+     * @return the quotient
+     */
     public static double div(int a, double b)
     {
         return ((double)a)/b;
     }
+    /**
+     * Divide a by b, making sure both are cast to doubles
+     * and that the return is precisely double.
+     * @param a the dividend
+     * @param b the divisor
+     * @return the quotient
+     */
     public static double div(double a, long b)
     {
         return a/((double)b);
     }
+    /**
+     * Divide a by b, making sure both are cast to doubles
+     * and that the return is precisely double.
+     * @param a the dividend
+     * @param b the divisor
+     * @return the quotient
+     */
     public static double div(long a, double b)
     {
         return ((double)a)/b;
     }
-
+    /**
+     * Multiply a and b, making sure both are cast to doubles
+     * and that the return is precisely double.
+     * @param a the first number
+     * @param b the second number
+     * @return the retult of multiplying a and b
+     */
     public static double mul(double a, double b)
     {
         return a*b;
     }
+    /**
+     * Multiply a and b, making sure both are cast to doubles
+     * and that the return is precisely double.
+     * @param a the first number
+     * @param b the second number
+     * @return the retult of multiplying a and b
+     */
     public static double mul(double a, int b)
     {
         return a*((double)b);
     }
+    /**
+     * Multiply a and b, making sure both are cast to doubles
+     * and that the return is precisely double.
+     * @param a the first number
+     * @param b the second number
+     * @return the retult of multiplying a and b
+     */
     public static double mul(int a, double b)
     {
         return ((double)a)*b;
     }
+    /**
+     * Multiply a and b, making sure both are cast to doubles
+     * and that the return is precisely double.
+     * @param a the first number
+     * @param b the second number
+     * @return the retult of multiplying a and b
+     */
     public static double mul(double a, long b)
     {
         return a*((double)b);
     }
+    /**
+     * Multiply a and b, making sure both are cast to doubles
+     * and that the return is precisely double.
+     * @param a the first number
+     * @param b the second number
+     * @return the retult of multiplying a and b
+     */
     public static double mul(long a, double b)
     {
         return ((double)a)*b;
     }
+    /**
+     * Multiply a and b, making sure both are cast to doubles
+     * and that the return is precisely double.
+     * @param a the first number
+     * @param b the second number
+     * @return the retult of multiplying a and b
+     */
     public static long mul(long a, long b)
     {
         return a*b;
     }
+    /**
+     * Multiply a and b, making sure both are cast to doubles
+     * and that the return is precisely double.
+     * @param a the first number
+     * @param b the second number
+     * @return the retult of multiplying a and b
+     */
     public static int mul(int a, int b)
     {
         return a*b;
     }
+    /**
+     * Divide a by b, making sure both are cast to doubles
+     * and that the return is precisely double.
+     * @param a the dividend
+     * @param b the divisor
+     * @return the quotient
+     */
     public static double div(long a, long b)
     {
         return ((double)a)/((double)b);
     }
+    /**
+     * Divide a by b, making sure both are cast to doubles
+     * and that the return is precisely double.
+     * @param a the dividend
+     * @param b the divisor
+     * @return the quotient
+     */
     public static double div(int a, int b)
     {
         return ((double)a)/((double)b);
     }
+    /**
+     * Raises x to the y power, making sure both are cast to doubles
+     * and that the return is rounded off.
+     * @param x the base number
+     * @param y the power
+     * @return x to the y power, rounded off
+     */
     public static long pow(long x, long y)
     {
         return Math.round(Math.pow(((double)x),((double)y)));
     }
+    /**
+     * Returns x, squared, after being case to a double
+     * @param x the number to square
+     * @return x, squared, and rounded off.
+     */
     public static int squared(int x)
     {
         return (int)Math.round(Math.pow(((double)x),2.0));
