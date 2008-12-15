@@ -348,55 +348,162 @@ public class CMath
     {
         return (int)Math.round(Math.pow(((double)x),2.0));
     }
+    /**
+     * Returns true if the given number has the bits
+     * represented by the given bitmask set.
+     * @param num the number
+     * @param bitmask the bit mask
+     * @return true if the bits are set, false otherwise
+     */
     public static boolean bset(short num, short bitmask)
     {
         return ((num&bitmask)==bitmask);
     }
+    /**
+     * Returns true if the given number has the bits
+     * represented by the given bitmask set.
+     * @param num the number
+     * @param bitmask the bit mask
+     * @return true if the bits are set, false otherwise
+     */
     public static boolean bset(int num, int bitmask)
     {
         return ((num&bitmask)==bitmask);
     }
+    /**
+     * Returns true if the given number has the bits
+     * represented by the given bitmask set.
+     * @param num the number
+     * @param bitmask the bit mask
+     * @return true if the bits are set, false otherwise
+     */
     public static boolean bset(long num, long bitmask)
     {
         return ((num&bitmask)==bitmask);
     }
+    /**
+     * Returns true if the given number has the bits
+     * represented by the given bitmask set.
+     * @param num the number
+     * @param bitmask the bit mask
+     * @return true if the bits are set, false otherwise
+     */
     public static boolean bset(long num, int bitmask)
     {
         return ((num&bitmask)==bitmask);
     }
+    /**
+     * Returns the given number, after having set the
+     * bits represented by the given bit mask.
+     * @param num the number
+     * @param bitmask the bitmask
+     * @return the number | the bitmask
+     */
     public static int setb(int num, int bitmask)
     {
         return num|bitmask;
     }
+    /**
+     * Returns true if any of the bits represented
+     * by the given bitmask are set in the given
+     * number.
+     * @param num the given number
+     * @param bitmask the bitmask of bits to check
+     * @return true if any bits from the mask are set
+     */
     public static boolean banyset(int num, int bitmask)
     {
         return ((num&bitmask)>0);
     }
+    /**
+     * Returns true if any of the bits represented
+     * by the given bitmask are set in the given
+     * number.
+     * @param num the given number
+     * @param bitmask the bitmask of bits to check
+     * @return true if any bits from the mask are set
+     */
     public static boolean banyset(long num, long bitmask)
     {
         return ((num&bitmask)>0);
     }
+    /**
+     * Returns true if any of the bits represented
+     * by the given bitmask are set in the given
+     * number.
+     * @param num the given number
+     * @param bitmask the bitmask of bits to check
+     * @return true if any bits from the mask are set
+     */
     public static boolean banyset(long num, int bitmask)
     {
         return ((num&bitmask)>0);
     }
+    /**
+     * Returns the given number, after having set the
+     * bits represented by the given bit mask.
+     * @param num the number
+     * @param bitmask the bitmask
+     * @return the number | the bitmask
+     */
     public static long setb(long num, int bitmask)
     {
         return num|bitmask;
     }
+    /**
+     * Returns the given number, after having set the
+     * bits represented by the given bit mask.
+     * @param num the number
+     * @param bitmask the bitmask
+     * @return the number | the bitmask
+     */
     public static long setb(long num, long bitmask)
     {
         return num|bitmask;
     }
+    /**
+     * Unsets those bits in the given number which are
+     * turned ON in the given bitmask.
+     * @param num the given number
+     * @param bitmask the given bitmask
+     * @return the number without the bitmasks bits turned on.
+     */
     public static int unsetb(int num, int bitmask) { return num & (~bitmask);}
+    /**
+     * Unsets those bits in the given number which are
+     * turned ON in the given bitmask.
+     * @param num the given number
+     * @param bitmask the given bitmask
+     * @return the number without the bitmasks bits turned on.
+     */
     public static long unsetb(long num, long bitmask) { return num & (~bitmask);}
+    /**
+     * Unsets those bits in the given number which are
+     * turned ON in the given bitmask.
+     * @param num the given number
+     * @param bitmask the given bitmask
+     * @return the number without the bitmasks bits turned on.
+     */
     public static long unsetb(long num, int bitmask) { return num & (~bitmask);}
-    
+    /**
+     * Returns true if the bitnumberth bit (0...) is set 
+     * in the given number
+     * @param number the given number
+     * @param bitnumber the bit to check (0,1,2...)
+     * @return true if the given bitnumberth bit is set
+     */
     public static boolean isSet(int number, int bitnumber)
     {
     	int mask=(int)pow(2,bitnumber);
     	return ((number&mask)==mask);
     }
+    /**
+     * Returns true if the given string represents a 
+     * percentage in the form X% where X is any real
+     * number.
+     * @param s the string to check
+     * @return true if it is a percentage, false otherwise
+     */
     public static boolean isPct(String s)
     {
         if(s==null) return false;
@@ -404,6 +511,15 @@ public class CMath
         if(!s.endsWith("%")) return false;
         return CMath.isNumber(s.substring(0,s.length()-1));
     }
+    /**
+     * Converts the given string to a floating
+     * point number, 1>=N>=0, representing 
+     * the whole percentage of the string.  The
+     * string format is either X or X%, where 100>=X>=0
+     * If the format is bad, 0.0 is returned.
+     * @param s the string to convert
+     * @return the string converted to a real number 
+     */
     public static double s_pct(String s)
     {
     	if(s==null) return 0.0;
@@ -580,12 +696,24 @@ public class CMath
     }
 
 
+    /**
+     * Returns the absolute value (X>=0) of the
+     * given number
+     * @param val the number
+     * @return the absolute value of the number
+     */
     public static int abs(int val)
     {
         if(val>=0) return val;
         return val*-1;
     }
 
+    /**
+     * Returns the absolute value (X>=0) of the
+     * given number
+     * @param val the number
+     * @return the absolute value of the number
+     */
     public static long abs(long val)
     {
         if(val>=0) return val;
@@ -799,15 +927,69 @@ public class CMath
         return alreadyDot;
     }
 
+    /**
+     * @see java.lang.Math#round(double)
+     * @param d the real number
+     * @return the rounded number as a long
+     */
     public long round(double d){return Math.round(d);}
+    /**
+     * @see java.lang.Math#round(float)
+     * @param d the real number
+     * @return the rounded number as a long
+     */
     public long round(float d){return Math.round(d);}
+    /**
+     * @see java.lang.Math#abs(double)
+     * @param d the real number
+     * @return the absolute value of the number
+     */
     public double abs(double d){return Math.abs(d);}
+    /**
+     * @see java.lang.Math#abs(float)
+     * @param d the real number
+     * @return the absolute value of the number
+     */
     public float abs(float d){return Math.abs(d);}
+    /**
+     * @see java.lang.Math#random()
+     * @return a random number
+     */
     public double random(){return Math.random();}
+    /**
+     * @see java.lang.Math#floor(double)
+     * @param d the number to get the floor of
+     * @return the floor of the given number
+     */
     public double floor(double d){return Math.floor(d);}
+    /**
+     * @see java.lang.Math#floor(float)
+     * @param d the number to get the floor of
+     * @return the floor of the given number
+     */
     public float floor(float d){return (float)Math.floor(d);}
+    /**
+     * @see java.lang.Math#floor(double)
+     * @param d the number to get the ceiling of
+     * @return the ceiling of the given number
+     */
     public double ceiling(double d){return Math.ceil(d);}
+    /**
+     * @see java.lang.Math#floor(float)
+     * @param d the number to get the ceiling of
+     * @return the ceiling of the given number
+     */
     public float ceiling(float d){return (float)Math.ceil(d);}
+    /**
+     * @see java.lang.Math#sqrt(double)
+     * @param d the number to get the square root of
+     * @return the square root of the given number
+     */
     public double sqrt(double d){return Math.sqrt(d);}
+    /**
+     * @see java.lang.Math#sqrt(float)
+     * @param d the number to get the square root of
+     * @return the square root of the given number
+     */
     public float sqrt(float d){return (float)Math.sqrt(d);}
 }
