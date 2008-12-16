@@ -4656,8 +4656,8 @@ public class Import extends StdCommand
 				{ "forest",		"3"},
 				{ "hills",		"4"},
 				{ "mountain",	"5"},
-				{ "swim",		"6"},
-				{ "noswim",		"7"},
+				{ "swim",		"6"}, // means it is swimmable
+				{ "noswim",		"7"}, // means it requires a boat
 				{ "unused",		"8"},
 				{ "air",		"9"},
 				{ "desert",		"10"}};
@@ -4665,7 +4665,7 @@ public class Import extends StdCommand
 				if(CMParms.numBits(codeLine)==6) // wierd circlemud exception
 				{
 					codeBits=sectorType;
-					sectorType=1; //TODO: figure out what those faringhal things are.
+					sectorType=1; //TODO: figure out what those faringhal
 				}
 				else
 				if(CMParms.numBits(codeLine)==3)
