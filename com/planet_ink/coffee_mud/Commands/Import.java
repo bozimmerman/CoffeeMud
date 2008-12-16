@@ -4662,6 +4662,12 @@ public class Import extends StdCommand
 				{ "air",		"9"},
 				{ "desert",		"10"}};
 
+				if(CMParms.numBits(codeLine)==6) // wierd circlemud exception
+				{
+					codeBits=sectorType;
+					sectorType=1; //TODO: figure out what those faringhal things are.
+				}
+				else
 				if(CMParms.numBits(codeLine)==3)
 				{
 					codeBits=sectorType;
