@@ -31,6 +31,7 @@ public class CMath
     private static final String[] ROMAN_TENS={"X","XX","XXX","XL","L","LX","LXX","LXXX","XC","C"};
     private static final String[] ROMAN_ONES={"I","II","III","IV","V","VI","VII","VIII","IX","X"};
     private static final String   ROMAN_ALL="CDMPXLIV";
+    private static final java.text.DecimalFormat twoPlaces = new java.text.DecimalFormat("0.#####%");
 
 
     /** Convert an integer to its Roman Numeral equivalent
@@ -526,38 +527,137 @@ public class CMath
     	while(s.trim().endsWith("%")) s=s.trim().substring(0,s.length()-1).trim();
     	return s_double(s)/100.0;
     }
+    
+    /**
+     * Converts a percentage 1>d>0 to a string.
+     * @param d the number to convert
+     * @return the percentage string.
+     */
     public static String toPct(double d)
     {
-        java.text.DecimalFormat twoPlaces = new java.text.DecimalFormat("0.#####%");
         String s=twoPlaces.format(d);
         if(s.endsWith("%%")) return s.substring(0,s.length()-1);
         return s;
 
     }
+    
+    /**
+     * Converts the string to a double percentage and then
+     * converts that back to a percentage.
+     * @param s the string number
+     * @return the percentage %
+     */
     public static String toPct(String s) { return toPct(s_pct(s)); }
 
+    /**
+     * Returns true if the bitnumberth bit (0...) is set 
+     * in the given number
+     * @param number the given number
+     * @param bitnumber the bit to check (0,1,2...)
+     * @return true if the given bitnumberth bit is set
+     */
     public static boolean isSet(long number, int bitnumber)
     {
         if((number&(pow(2,bitnumber)))==(pow(2,bitnumber)))
             return true;
         return false;
     }
-
+    
+    /**
+     * Returns whether the given string is a valid
+     * math expression (5 + 7)/2, etc. Does this
+     * by evaluating the expression and returning
+     * false if an error is found.  No variables
+     * are allowed.
+     * @param st the possible math expression
+     * @return true if it is a math expression
+     */
     public static boolean isMathExpression(String st){
         if((st==null)||(st.length()==0)) return false;
         try{ parseMathExpression(st);}catch(Exception e){ return false;}
         return true;
     }
+    /**
+     * Returns whether the given string is a valid
+     * math expression (@x1 + 7)/2, etc. Does this
+     * by evaluating the expression and returning
+     * false if an error is found.  All necessary
+     * variables MUST be included (@x1=vars[0])
+     * @param st the possible math expression
+     * @param vars the 0 based variables
+     * @return true if it is a math expression
+     */
     public static boolean isMathExpression(String st, double[] vars){
         if((st==null)||(st.length()==0)) return false;
         try{ parseMathExpression(st,vars);}catch(Exception e){ return false;}
         return true;
     }
+    /**
+     * Returns the result of evaluating the given math
+     * expression.  An expression can be a double or int
+     * number, or a full expression using ()+_/*?.
+     * Returns 0.0 on any parsing error
+     * @param st a full math expression string
+     * @return the result of the expression
+     */
     public static double s_parseMathExpression(String st){ try{ return parseMathExpression(st);}catch(Exception e){ return 0.0;}}
+    /**
+     * Returns the result of evaluating the given math
+     * expression.  An expression can be a double or int
+     * number, or a full expression using ()+_/*?.
+     * Variables are included as @x1, etc.. The given
+     * variable values list is 0 based, so @x1 = vars[0].
+     * Returns 0.0 on any parsing error
+     * @param st a full math expression string
+     * @param vars the 0 based variables
+     * @return the result of the expression
+     */
     public static double s_parseMathExpression(String st, double[] vars){ try{ return parseMathExpression(st,vars);}catch(Exception e){ return 0.0;}}
+    /**
+     * Returns the result of evaluating the given math
+     * expression.  An expression can be a double or int
+     * number, or a full expression using ()+_/*?.
+     * Rounds the result to a long.
+     * Returns 0 on any parsing error
+     * @param st a full math expression string
+     * @return the result of the expression
+     */
     public static long s_parseLongExpression(String st){ try{ return parseLongExpression(st);}catch(Exception e){ return 0;}}
+    /**
+     * Returns the result of evaluating the given math
+     * expression.  An expression can be a double or int
+     * number, or a full expression using ()+_/*?.
+     * Variables are included as @x1, etc.. The given
+     * variable values list is 0 based, so @x1 = vars[0].
+     * Rounds the result to a long.
+     * Returns 0 on any parsing error
+     * @param st a full math expression string
+     * @param vars the 0 based variables
+     * @return the result of the expression
+     */
     public static long s_parseLongExpression(String st, double[] vars){ try{ return parseLongExpression(st,vars);}catch(Exception e){ return 0;}}
+    /**
+     * Returns the result of evaluating the given math
+     * expression.  An expression can be a double or int
+     * number, or a full expression using ()+_/*?.  
+     * Round the result to an integer.
+     * Returns 0 on any parsing error
+     * @param st a full math expression string
+     * @return the result of the expression
+     */
     public static int s_parseIntExpression(String st){ try{ return parseIntExpression(st);}catch(Exception e){ return 0;}}
+    /**
+     * Returns the result of evaluating the given math
+     * expression.  An expression can be a double or int
+     * number, or a full expression using ()+_/*?.
+     * Variables are included as @x1, etc.. The given
+     * variable values list is 0 based, so @x1 = vars[0].
+     * Rounds the result to an integer.
+     * Returns 0 on any parsing error
+     * @param st a full math expression string
+     * @param vars the 0 based variables
+     * @return the result of the expression
+     */
     public static int s_parseIntExpression(String st, double[] vars){ try{ return parseIntExpression(st,vars);}catch(Exception e){ return 0;}}
 
     private static double parseMathExpression(StreamTokenizer st, boolean inParen, double[] vars)
@@ -634,18 +734,78 @@ public class CMath
         return finalValue;
     }
 
+    /**
+     * Returns the result of evaluating the given math
+     * expression.  An expression can be a double or int
+     * number, or a full expression using ()+_/*?.
+     * Rounds the result to a long
+     * Throws an exception on any parsing error
+     * @param formula a full math expression string
+     * @return the result of the expression
+     */
     public static long parseLongExpression(String formula)
     {return Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,null));}
+    /**
+     * Returns the result of evaluating the given math
+     * expression.  An expression can be a double or int
+     * number, or a full expression using ()+_/*?.
+     * Variables are included as @x1, etc.. The given
+     * variable values list is 0 based, so @x1 = vars[0].
+     * Rounds the result to a long
+     * Throws an exception on any parsing error
+     * @param formula a full math expression string
+     * @param vars the 0 based variables
+     * @return the result of the expression
+     */
     public static long parseLongExpression(String formula, double[] vars)
     {return Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,vars));}
 
+    /**
+     * Returns the result of evaluating the given math
+     * expression.  An expression can be a double or int
+     * number, or a full expression using ()+_/*?.
+     * Rounds the result to an integer.
+     * Throws an exception on any parsing error
+     * @param formula a full math expression string
+     * @return the result of the expression
+     */
     public static int parseIntExpression(String formula) throws ArithmeticException
     {return (int)Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,null));}
+    /**
+     * Returns the result of evaluating the given math
+     * expression.  An expression can be a double or int
+     * number, or a full expression using ()+_/*?.
+     * Variables are included as @x1, etc.. The given
+     * variable values list is 0 based, so @x1 = vars[0].
+     * Rounds the result to an integer.
+     * Throws an exception on any parsing error
+     * @param formula a full math expression string
+     * @param vars the 0 based variables
+     * @return the result of the expression
+     */
     public static int parseIntExpression(String formula, double[] vars) throws ArithmeticException
     {return (int)Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,vars));}
-
+    /**
+     * Returns the result of evaluating the given math
+     * expression.  An expression can be a double or int
+     * number, or a full expression using ()+_/*?.
+     * Throws an exception on any parsing error
+     * @param formula a full math expression string
+     * @return the result of the expression
+     */
     public static double parseMathExpression(String formula) throws ArithmeticException
     {return parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,null);}
+    /**
+     * Returns the result of evaluating the given math
+     * expression.  An expression can be a double or int
+     * number, or a full expression using ()+_/*?.
+     * Variables are included as @x1, etc.. The given
+     * variable values list is 0 based, so @x1 = vars[0].
+     * Throws an exception on any parsing error
+     * @param formula a full math expression string
+     * @param vars the 0 based variables
+     * @return the result of the expression
+     */
     public static double parseMathExpression(String formula, double[] vars) throws ArithmeticException
     {return parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,vars);}
 
