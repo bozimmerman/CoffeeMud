@@ -693,7 +693,7 @@ public class Import extends StdCommand
 		return R2;
 	}
 
-    protected static int getBitMask(String str, int which)
+    protected static long getBitMask(String str, int which)
 	{
 		String s=CMParms.getCleanBit(str,which);
 		if(s.length()==0)
@@ -702,7 +702,7 @@ public class Import extends StdCommand
 		if((x<0)&&(s.length()>0)&&(CMath.s_int(s)==0))
 		{
 			boolean otherStyle=true;
-			int num=0;
+			long num=0;
 			for(int z=0;z<s.length();z++)
 				if(!Character.isLetter(s.charAt(z)))
 				{
@@ -720,7 +720,7 @@ public class Import extends StdCommand
 				return num;
 		}
 
-		int num=0;
+		long num=0;
 		while(x>0)
 		{
 			num=num|CMath.s_int(s.substring(0,x));
@@ -2053,8 +2053,8 @@ public class Import extends StdCommand
 			}
 			if(mobName.length()==0)
 				mobName="Unknown";
-			int actFlag=getBitMask(codeStr1,0);
-			int affFlag=getBitMask(codeStr1,1);
+			long actFlag=getBitMask(codeStr1,0);
+			long affFlag=getBitMask(codeStr1,1);
 			int aliFlag=CMath.s_int(CMParms.getBit(codeStr1,2));
 			MOB M=CMClass.getMOB("GenMob");
 			String checkName=mobName.trim().toUpperCase();
@@ -2371,9 +2371,9 @@ public class Import extends StdCommand
 
 			if(circleFormat)
 			{
-				int off=getBitMask(codeStr3,0);
-				int imm=getBitMask(codeStr3,1);
-				int res=getBitMask(codeStr3,2);
+				long off=getBitMask(codeStr3,0);
+				long imm=getBitMask(codeStr3,1);
+				long res=getBitMask(codeStr3,2);
 				int size=CMath.s_int(CMParms.getCleanBit(codeStr5,2));
 				switch(size)
 				{
@@ -3051,8 +3051,8 @@ public class Import extends StdCommand
 						break;
 					}
 			}
-			int extraFlag=getBitMask(codeStr1,1);
-			int wearFlag=getBitMask(codeStr1,2);
+			long extraFlag=getBitMask(codeStr1,1);
+			long wearFlag=getBitMask(codeStr1,2);
 
 			Ability adjuster=CMClass.getAbility("Prop_HaveAdjuster");
 			switch(objType)
@@ -3090,10 +3090,10 @@ public class Import extends StdCommand
 			String str2=CMParms.getBit(codeStr2,1);
 			String str3=CMParms.getBit(codeStr2,2);
 			String str4=CMParms.getBit(codeStr2,3);
-			int val1=getBitMask(codeStr2,0);
-			int val2=getBitMask(codeStr2,1);
-			int val3=getBitMask(codeStr2,2);
-			int val4=getBitMask(codeStr2,3);
+			int val1=(int)getBitMask(codeStr2,0);
+			int val2=(int)getBitMask(codeStr2,1);
+			int val3=(int)getBitMask(codeStr2,2);
+			int val4=(int)getBitMask(codeStr2,3);
 			Item I=null;
 			switch(objType)
 			{
@@ -3679,8 +3679,8 @@ public class Import extends StdCommand
 						String codeType=CMParms.getBit(codesLine,0);
 						if(codeType.equals("V"))
 						{
-							int res=getBitMask(codesLine,3);
-							int imm=getBitMask(codesLine,3);
+							long res=getBitMask(codesLine,3);
+							long imm=getBitMask(codesLine,3);
 							String[] resistances={
 								" teleport",
 								" mind",
@@ -3715,7 +3715,7 @@ public class Import extends StdCommand
 						{
 							int dis=0;
 							int sense=0;
-							int codeBits=getBitMask(codesLine,3);
+							long codeBits=getBitMask(codesLine,3);
 							if(CMath.isSet(codeBits,0))
 								sense=sense|EnvStats.CAN_NOT_SEE;
 							if(CMath.isSet(codeBits,1))
@@ -3786,8 +3786,8 @@ public class Import extends StdCommand
 						}
 						else
 						{
-							int res=getBitMask(codesLine,3);
-							int imm=getBitMask(codesLine,3);
+							long res=getBitMask(codesLine,3);
+							long imm=getBitMask(codesLine,3);
 							String[] resistances={
 								" teleport",
 								" mind",
@@ -4639,7 +4639,8 @@ public class Import extends StdCommand
 				if((!R.roomID().startsWith("#"))
 				||(R.displayText().length()==0)
 				||(CMParms.numBits(codeLine)<2)
-				||(CMParms.numBits(codeLine)>3))
+				||(CMParms.numBits(codeLine)>6)
+				||(CMParms.numBits(codeLine)==4))
 				{
 					returnAnError(session,"Malformed room! Aborting this room "+R.roomID()+", display="+R.displayText()+", description="+R.description()+", numBits="+CMParms.numBits(codeLine)+", area="+areaName,compileErrors,commands);
 					continue;
@@ -4647,8 +4648,8 @@ public class Import extends StdCommand
                 
 				R.setRoomID(areaName+R.roomID());
 				R.setArea(A);
-				int codeBits=getBitMask(codeLine,0);
-				int sectorType=getBitMask(codeLine,1);
+				long codeBits=getBitMask(codeLine,0);
+				int sectorType=(int)getBitMask(codeLine,1);
 				final String[][] secTypes={
 				{ "inside",		"0"},
 				{ "city",		"1"},
@@ -4661,18 +4662,27 @@ public class Import extends StdCommand
 				{ "unused",		"8"},
 				{ "air",		"9"},
 				{ "desert",		"10"}};
-
+				boolean circleFormat=false;
 				if(CMParms.numBits(codeLine)==6) // wierd circlemud exception
 				{
+					codeBits=(getBitMask(codeLine,2)<<16)|getBitMask(codeLine,1); // ignoring 3 & 4
+					sectorType=CMath.s_int(CMParms.getBit(codeLine,5));
+					circleFormat=true;
+				}
+				else
+				if(CMParms.numBits(codeLine)==5) // wierd circlemud exception
+				{
 					codeBits=sectorType;
-					sectorType=1; //TODO: figure out what those faringhal
+					codeBits=(getBitMask(codeLine,2)<<16)|getBitMask(codeLine,1); // ignoring 3
+					sectorType=CMath.s_int(CMParms.getBit(codeLine,4));
+					circleFormat=true;
 				}
 				else
 				if(CMParms.numBits(codeLine)==3)
 				{
 					codeBits=sectorType;
 					String secType=CMParms.getBit(codeLine,2);
-					sectorType=getBitMask(codeLine,2);
+					sectorType=(int)getBitMask(codeLine,2);
 					for(int st=0;st<secTypes.length;st++)
 						if(secType.equalsIgnoreCase(secTypes[st][0]))
 						{
@@ -4680,6 +4690,26 @@ public class Import extends StdCommand
 							break;
 						}
 				}
+				if(circleFormat)
+				{
+					switch(sectorType)
+					{
+					case 0:	R=changeRoomClass(R,"StoneRoom"); break;
+					case 1:	R=changeRoomClass(R,"CityStreet"); break;
+					case 2:	R=changeRoomClass(R,"Plains"); break;
+					case 3:	R=changeRoomClass(R,"Woods"); break;
+					case 4:	R=changeRoomClass(R,"Hills"); break;
+					case 5:	R=changeRoomClass(R,"Mountains"); break;
+					case 6:	R=changeRoomClass(R,"ShallowWater"); break;
+					case 7:	R=changeRoomClass(R,"WaterSurface"); break;
+					case 8:	R=changeRoomClass(R,"UnderWater"); break;
+					case 9:	R=changeRoomClass(R,"InTheAir"); break;
+					case 10: R=changeRoomClass(R,"Desert"); break;
+					case 11: R=changeRoomClass(R,"FrozenPlains"); break;
+					case 12: R=changeRoomClass(R,"FrozenMountains"); break;
+					}
+				}
+				else
 				if((codeBits&8)==0)
 				{
 					switch(sectorType)
@@ -4742,86 +4772,155 @@ public class Import extends StdCommand
 
 				if(CMath.isSet(codeBits,21)) // underwater room
 					R=changeRoomClass(R,"UnderWater");
-
-				//if(CMath.isSet(codeBits,1)) //BANKS are forked up in the ROM files, who knows WHAT this is...
-
+				
+				if(CMath.isSet(codeBits,3)) // indoors
+					R=changeRoomClass(R,"StoneRoom");
+				
 				if(CMath.isSet(codeBits,0)) // dark room
 					R.addNonUninvokableEffect(CMClass.getAbility("Prop_RoomDark"));
 
+				//if(CMath.isSet(codeBits,1)) //BANKS are forked up in the ROM files, who knows WHAT this is...
+				// circlemud says this is a death trap -- well, homie dont play dat either
+				
 				if(CMath.isSet(codeBits,2)) // no mobs room
 					R.addNonUninvokableEffect(CMClass.getAbility("Prop_ReqNoMOB"));
+				
+				// 3 is a room type change, so above
 
-				if(CMath.isSet(codeBits,4)) // no summon out room
-					R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoSummon"));
-
-				if(CMath.isSet(codeBits,9)) // two people only room
+				if(circleFormat)
 				{
-					prop_RoomCapacity.setMiscText("2");
-					if(R.fetchEffect(prop_RoomCapacity.ID())==null)
-						R.addNonUninvokableEffect(prop_RoomCapacity);
+					if(CMath.isSet(codeBits,4)) // circle says no violence
+						R.addNonUninvokableEffect(CMClass.getAbility("Prop_Peacemaker"));
+					
+					if(CMath.isSet(codeBits,5)) // circle says quiet
+						R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoChannel"));
+					
+					//if(CMath.isSet(codeBits,6)) // circle says no tracking
+					
+					if(CMath.isSet(codeBits,7)) // circle says no magic
+						R.addNonUninvokableEffect(CMClass.getAbility("Prop_MagicFreedom"));
+					
+					if(CMath.isSet(codeBits,8)) // solitaire room
+					{
+						prop_RoomCapacity.setMiscText("1");
+						if(R.fetchEffect(prop_RoomCapacity.ID())==null)
+							R.addNonUninvokableEffect(prop_RoomCapacity);
+					}
+					
+					if(CMath.isSet(codeBits,9)) // no teleport in
+						R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleport"));
+					
+					if(CMath.isSet(codeBits,10))
+					{
+						prop_RoomLevels.setMiscText("SYSOP");
+						if(R.fetchEffect(prop_RoomLevels.ID())==null)
+							R.addNonUninvokableEffect(prop_RoomLevels);
+					}
+					// 11 is a house
+					// 12 is a savable house
+					// 13 is an atrium
+					// 14 is an olc
+					// 15 is an marked
+					
+					if(CMath.isSet(codeBits,16))
+						R.addNonUninvokableEffect(CMClass.getAbility("Prop_reqPKill"));
+					
+					if(CMath.isSet(codeBits,17))
+						R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoRecall"));
+	
+					// 18 = guarded
+					// 19 pulse damage
+					// 20 no ooc
+					// 21 can fish
+					// 22 can fish
+					// 23 nodig
+					// 24 nobury
+					// 25 twnhs
+					// 26 customhs
+					// 27 requires vehicle
+					// 28 below ground
+					// 29 rooms moves with random currents?!
+					// 30 timed death trap
+					// 31 word map style maps here
+					// 32 mining
+					// 33 mining+10
+					// 34 mining+25
+					// 35 healing/xp bonus
 				}
-				if(CMath.isSet(codeBits,10)) // no fighting
-					R.addNonUninvokableEffect(CMClass.getAbility("Prop_PeaceMaker"));
-
-				if(CMath.isSet(codeBits,11)) // solitaire room
-				{
-					prop_RoomCapacity.setMiscText("1");
-					if(R.fetchEffect(prop_RoomCapacity.ID())==null)
-						R.addNonUninvokableEffect(prop_RoomCapacity);
-				}
-				if(CMath.isSet(codeBits,12))
-					petShops.put(R,R);
 				else
-				if((lastRoom!=null)&&(petShops.get(lastRoom)!=null)&&(petShops.get(lastRoom)==lastRoom))
 				{
-					petShops.remove(lastRoom);
-					petShops.put(R,lastRoom); // now ready to plop stuff!
+					if(CMath.isSet(codeBits,4)) // no summon out room
+						R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoSummon"));
+					
+					if(CMath.isSet(codeBits,9)) // two people only room
+					{
+						prop_RoomCapacity.setMiscText("2");
+						if(R.fetchEffect(prop_RoomCapacity.ID())==null)
+							R.addNonUninvokableEffect(prop_RoomCapacity);
+					}
+					if(CMath.isSet(codeBits,10)) // no fighting
+						R.addNonUninvokableEffect(CMClass.getAbility("Prop_PeaceMaker"));
+	
+					if(CMath.isSet(codeBits,11)) // solitaire room
+					{
+						prop_RoomCapacity.setMiscText("1");
+						if(R.fetchEffect(prop_RoomCapacity.ID())==null)
+							R.addNonUninvokableEffect(prop_RoomCapacity);
+					}
+					if(CMath.isSet(codeBits,12))
+						petShops.put(R,R);
+					else
+					if((lastRoom!=null)&&(petShops.get(lastRoom)!=null)&&(petShops.get(lastRoom)==lastRoom))
+					{
+						petShops.remove(lastRoom);
+						petShops.put(R,lastRoom); // now ready to plop stuff!
+					}
+	
+					if(CMath.isSet(codeBits,13))
+						R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoRecall"));
+	
+					if(CMath.isSet(codeBits,14))
+					{
+						prop_RoomLevels.setMiscText("SYSOP");
+						if(R.fetchEffect(prop_RoomLevels.ID())==null)
+							R.addNonUninvokableEffect(prop_RoomLevels);
+					}
+					if(CMath.isSet(codeBits,15))
+					{
+						prop_RoomLevels.setMiscText(">=93");
+						if(R.fetchEffect(prop_RoomLevels.ID())==null)
+							R.addNonUninvokableEffect(prop_RoomLevels);
+					}
+					if(CMath.isSet(codeBits,16))
+					{
+						prop_RoomLevels.setMiscText(">=91");
+						if(R.fetchEffect(prop_RoomLevels.ID())==null)
+							R.addNonUninvokableEffect(prop_RoomLevels);
+					}
+					if(CMath.isSet(codeBits,17))
+					{
+						prop_RoomLevels.setMiscText("<=5");
+						if(R.fetchEffect(prop_RoomLevels.ID())==null)
+							R.addNonUninvokableEffect(prop_RoomLevels);
+					}
+	
+					if(CMath.isSet(codeBits,18))
+					{
+						R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoSummon"));
+						R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoCharm"));
+					}
+	
+					if(CMath.isSet(codeBits,19))
+						R.addNonUninvokableEffect(CMClass.getAbility("Prop_reqPKill"));
+	
+					if(CMath.isSet(codeBits,20))
+						R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
+	
+					// if(CMath.isSet(codeBits,23)) No "dirt" in CoffeeMud, so this doesn't matter
+	
+					if(CMath.isSet(codeBits,24))
+						R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoChannel"));
 				}
-
-				if(CMath.isSet(codeBits,13))
-					R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoRecall"));
-
-				if(CMath.isSet(codeBits,14))
-				{
-					prop_RoomLevels.setMiscText("SYSOP");
-					if(R.fetchEffect(prop_RoomLevels.ID())==null)
-						R.addNonUninvokableEffect(prop_RoomLevels);
-				}
-				if(CMath.isSet(codeBits,15))
-				{
-					prop_RoomLevels.setMiscText(">=93");
-					if(R.fetchEffect(prop_RoomLevels.ID())==null)
-						R.addNonUninvokableEffect(prop_RoomLevels);
-				}
-				if(CMath.isSet(codeBits,16))
-				{
-					prop_RoomLevels.setMiscText(">=91");
-					if(R.fetchEffect(prop_RoomLevels.ID())==null)
-						R.addNonUninvokableEffect(prop_RoomLevels);
-				}
-				if(CMath.isSet(codeBits,17))
-				{
-					prop_RoomLevels.setMiscText("<=5");
-					if(R.fetchEffect(prop_RoomLevels.ID())==null)
-						R.addNonUninvokableEffect(prop_RoomLevels);
-				}
-
-				if(CMath.isSet(codeBits,18))
-				{
-					R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoSummon"));
-					R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoCharm"));
-				}
-
-				if(CMath.isSet(codeBits,19))
-					R.addNonUninvokableEffect(CMClass.getAbility("Prop_reqPKill"));
-
-				if(CMath.isSet(codeBits,20))
-					R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoTeleportOut"));
-
-				// if(CMath.isSet(codeBits,23)) No "dirt" in CoffeeMud, so this doesn't matter
-
-				if(CMath.isSet(codeBits,24))
-					R.addNonUninvokableEffect(CMClass.getAbility("Prop_NoChannel"));
 
 				roomV.insertElementAt(R.roomID(),0);
 				newRooms.addElement(R);
@@ -4920,11 +5019,6 @@ public class Import extends StdCommand
 							returnAnError(session,"Room: "+R.roomID()+", Unknown direction code: "+dirCode+", aborting exit, area="+areaName,compileErrors,commands);
 							continue;
 						}
-						if(CMParms.numBits(codeStr)!=3)
-						{
-							returnAnError(session,"Room: "+R.roomID()+", Malformed exit codeStr "+codeStr+".  Aborting exit, area="+areaName,compileErrors,commands);
-							continue;
-						}
 						if((R.getRawExit(dirCode)!=null)||(R.rawDoors()[dirCode]!=null))
 						{
 							returnAnError(session,"Room: "+R.roomID()+", Redundant exit codeStr "+nextLine+"/"+codeStr+", dircode="+dirCode+".  Aborting exit, area="+areaName,compileErrors,commands);
@@ -4933,6 +5027,14 @@ public class Import extends StdCommand
 						int exitFlag=( CMath.s_int(CMParms.getCleanBit(codeStr,0)) & 31);
 						int doorState=CMath.s_int(CMParms.getCleanBit(codeStr,1));
 						int linkRoomID=CMath.s_int(CMParms.getCleanBit(codeStr,2));
+						if(CMParms.numBits(codeStr)==11) // wierd circle format
+						{ /* all is well */}
+						else
+						if(CMParms.numBits(codeStr)!=3)
+						{
+							returnAnError(session,"Room: "+R.roomID()+", Malformed exit codeStr "+codeStr+".  Aborting exit, area="+areaName,compileErrors,commands);
+							continue;
+						}
 						Exit E=CMClass.getExit("GenExit");
 						Room linkRoom=CMLib.map().getRoom(doneRooms,areaName,""+linkRoomID);
 						if(linkRoomID>=0)
@@ -5393,7 +5495,7 @@ public class Import extends StdCommand
 				if(s.startsWith("D "))
 				{
 					String roomID=CMParms.getCleanBit(s,2);
-					int dirCode=getBitMask(s,3);
+					int dirCode=(int)getBitMask(s,3);
 					R=CMLib.map().getRoom(doneRooms,areaName,roomID);
 					if(R==null)
 					{
@@ -5434,7 +5536,7 @@ public class Import extends StdCommand
 								returnAnError(session,"Room: "+R.roomID()+", Unknown exit in dir: "+dirCode+" very confusing!, area="+areaName,compileErrors,commands);
 							else
 							{
-								int lockBit=getBitMask(s,4);
+								int lockBit=(int)getBitMask(s,4);
 								boolean HasDoor=E.hasADoor();
 								boolean HasLock=E.hasALock();
 								boolean DefaultsClosed=E.defaultsClosed();
