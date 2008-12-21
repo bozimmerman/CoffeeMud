@@ -96,6 +96,12 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                     M.playerStats().setLastUpdated(M.playerStats().lastDateTime());
                 M.recoverEnvStats();
                 M.recoverCharStats();
+                Ability A=null;
+        		for(int a=0;a<M.numLearnedAbilities();a++)
+        		{
+        			A=M.fetchAbility(a);
+        			if(A!=null) A.autoInvocation(M);
+        		}
             }
             TM.destroy();
         }
