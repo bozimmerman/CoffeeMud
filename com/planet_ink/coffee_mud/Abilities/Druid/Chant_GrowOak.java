@@ -76,13 +76,15 @@ public class Chant_GrowOak extends Chant_SummonPlants
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if(!super.tick(ticking,tickID)) return false;
-		if((PlantsLocation==null)||(littlePlants==null)) return false;
+		Room plantsLocation = PlantsLocation;
+		MOB invoker = invoker();
+		if((plantsLocation==null)||(littlePlants==null)) return false;
 		if(invoker!=null)
 		{
 			if((lastHp>invoker.curState().getHitPoints())&&(lastHp>0))
 			{
 				int dmg=lastHp-invoker.curState().getHitPoints();
-				if(invoker.location()!=PlantsLocation)
+				if(invoker.location()!=plantsLocation)
 					dmg=dmg/2;
 				if(dmg>0)
 				{
@@ -95,9 +97,9 @@ public class Chant_GrowOak extends Chant_SummonPlants
 			}
 			lastHp=invoker.curState().getHitPoints();
 		}
-		for(int i=0;i<PlantsLocation.numInhabitants();i++)
+		for(int i=0;i<plantsLocation.numInhabitants();i++)
 		{
-			MOB M=PlantsLocation.fetchInhabitant(i);
+			MOB M=plantsLocation.fetchInhabitant(i);
 			if(M.fetchEffect("Chopping")!=null)
 			{
 				int dmg=CMLib.dice().roll(1,50,50);
