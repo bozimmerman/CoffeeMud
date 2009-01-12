@@ -56,7 +56,7 @@ public class WillQualify  extends Skills
 		for (int l = 0; l <= highestLevel; l++) 
 		{
 			StringBuffer thisLine = new StringBuffer("");
-			for (Enumeration a = CMLib.ableMapper().getClassAbles(Class); a.hasMoreElements(); ) 
+			for (Enumeration a = CMLib.ableMapper().getClassAbles(Class,true); a.hasMoreElements(); ) 
 			{
 				AbilityMapper.AbilityMapping cimable=(AbilityMapper.AbilityMapping)a.nextElement();
 				if((cimable.qualLevel ==l)&&(!cimable.isSecret))

@@ -85,7 +85,7 @@ public interface AbilityMapper extends CMLibrary
     
 	public void addPreRequisites(String ID, Vector preReqSkillsList, String extraMask);
     public void delCharMappings(String ID);
-    public Enumeration getClassAbles(String ID);
+    public Enumeration getClassAbles(String ID, boolean addAll);
     public boolean qualifiesByAnyCharClass(String abilityID);
     public int lowestQualifyingLevel(String ability);
     public boolean classOnly(String classID, String abilityID);

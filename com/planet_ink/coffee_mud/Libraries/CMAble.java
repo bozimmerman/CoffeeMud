@@ -118,12 +118,17 @@ public class CMAble extends StdLibrary implements AbilityMapper
 		}
 	}
 
-	public Enumeration getClassAbles(String ID)
+	public Enumeration getClassAbles(String ID, boolean addAll)
 	{
 		if(!completeAbleMap.containsKey(ID))
 			completeAbleMap.put(ID,new Hashtable());
 		Hashtable ableMap=(Hashtable)completeAbleMap.get(ID);
-		return ableMap.elements();
+		Hashtable allAbleMap=(Hashtable)completeAbleMap.get("All");
+		if((!addAll)||(allAbleMap==null)) return DVector.s_enum(ableMap, false);
+		Vector V=new Vector();
+		V.addAll(ableMap.values());
+		V.addAll(allAbleMap.values());
+		return V.elements();
 	}
 	
 	public void addCharAbilityMapping(String ID,
@@ -547,6 +552,7 @@ public class CMAble extends StdLibrary implements AbilityMapper
                 CharClass C=CMClass.getCharClass(ID);
                 if((C!=null)&&(C.getLevelCap()>=0))
                     return qualLevel>C.getLevelCap()?-1:qualLevel;
+                return qualLevel;
             }
 		}
 		return -1;
