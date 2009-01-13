@@ -43,20 +43,33 @@ public class Fighter_BlindFighting extends FighterSkill
 	public boolean isAutoInvoked(){return true;}
 	public boolean canBeUninvoked(){return false;}
     public int classificationCode(){ return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
+    protected boolean seeEnabled = false;
 
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		MOB mob=(MOB)affected;
-		if(!mob.isInCombat()) return;
+		if(seeEnabled)
+			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_VICTIM);
+	}
+	
+	public boolean tick(Tickable ticking, int tickID)
+	{
+		if(!super.tick(ticking, tickID))
+			return false;
+		seeEnabled = false;
+		if(!(ticking instanceof MOB)) return true;
+		MOB mob=(MOB)ticking;
+		if(!mob.isInCombat()) return true;
 		if((!CMLib.flags().canBeSeenBy(mob.getVictim(),mob))
 		&&(CMLib.flags().canBeHeardBy(mob.getVictim(),mob))
 		&&((mob.fetchAbility(ID())==null)||proficiencyCheck(mob,0,false)))
 		{
-			affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_VICTIM);
-			helpProficiency(mob);
+			seeEnabled=true;
+			if(CMLib.dice().rollPercentage()<10)
+				helpProficiency(mob);
 		}
+		return true;
 	}
 }
