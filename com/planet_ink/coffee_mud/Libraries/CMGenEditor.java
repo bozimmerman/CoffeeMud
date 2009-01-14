@@ -415,7 +415,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         if((!CMLib.flags().isCataloged(E))
         ||((!(E instanceof MOB))&&(!(E instanceof Item)))
         ||(mob.session()==null))
+        {
+        	if(E instanceof MOB)
+                E.setMiscText(E.text());
             return;
+        }
 
         StringBuffer diffs=CMLib.catalog().checkCatalogIntegrity(E);
         if(diffs!=null)
@@ -442,6 +446,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
 	        else
 	            CMLib.catalog().changeCatalogUsage(E,false);
         }
+        E.setMiscText(E.text());
     }
 
     protected void genImage(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException
@@ -6137,14 +6142,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 showFlag=-1;
                 ok=true;
-                me.recoverEnvStats();
-                if(me.text().length()>=maxLength)
-                {
-                    mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
-                    ok=false;
-                }
             }
         }
+        me.recoverEnvStats();
+        if(me.text().length()>=maxLength)
+            mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.");
     }
 
     protected void modifyGenFood(MOB mob, Food me)
@@ -6187,14 +6189,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 showFlag=-1;
                 ok=true;
-                me.recoverEnvStats();
-                if(me.text().length()>=maxLength)
-                {
-                    mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
-                    ok=false;
-                }
             }
         }
+        me.recoverEnvStats();
+        if(me.text().length()>=maxLength)
+            mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.");
     }
 
     protected void genScripts(MOB mob, MOB E, int showNumber, int showFlag)
@@ -6277,14 +6276,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 showFlag=-1;
                 ok=true;
-                me.recoverEnvStats();
-                if(me.text().length()>=maxLength)
-                {
-                    mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
-                    ok=false;
-                }
             }
         }
+        me.recoverEnvStats();
+        if(me.text().length()>=maxLength)
+            mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.");
     }
 
     protected void modifyGenWallpaper(MOB mob, Item me)
@@ -6313,14 +6309,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 showFlag=-1;
                 ok=true;
-                me.recoverEnvStats();
-                if(me.text().length()>=maxLength)
-                {
-                    mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
-                    ok=false;
-                }
             }
         }
+        me.recoverEnvStats();
+        if(me.text().length()>=maxLength)
+            mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.");
     }
 
     protected void modifyGenMap(MOB mob, com.planet_ink.coffee_mud.Items.interfaces.Map me)
@@ -6360,14 +6353,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 showFlag=-1;
                 ok=true;
-                me.recoverEnvStats();
-                if(me.text().length()>=maxLength)
-                {
-                    mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
-                    ok=false;
-                }
             }
         }
+        me.recoverEnvStats();
+        if(me.text().length()>=maxLength)
+            mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.");
     }
 
     protected void modifyGenContainer(MOB mob, Container me)
@@ -6430,14 +6420,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 showFlag=-1;
                 ok=true;
-                me.recoverEnvStats();
-                if(me.text().length()>=maxLength)
-                {
-                    mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
-                    ok=false;
-                }
             }
         }
+        me.recoverEnvStats();
+        if(me.text().length()>=maxLength)
+            mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.");
     }
 
     protected void modifyGenWeapon(MOB mob, Weapon me)
@@ -6495,14 +6482,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 showFlag=-1;
                 ok=true;
-                me.recoverEnvStats();
-                if(me.text().length()>=maxLength)
-                {
-                    mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
-                    ok=false;
-                }
             }
         }
+        me.recoverEnvStats();
+        if(me.text().length()>=maxLength)
+            mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.");
     }
 
     protected void modifyGenArmor(MOB mob, Armor me)
@@ -6553,14 +6537,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 showFlag=-1;
                 ok=true;
-                me.recoverEnvStats();
-                if(me.text().length()>=maxLength)
-                {
-                    mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
-                    ok=false;
-                }
             }
         }
+        me.recoverEnvStats();
+        if(me.text().length()>=maxLength)
+            mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.");
     }
 
 
@@ -6602,14 +6583,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 showFlag=-1;
                 ok=true;
-                me.recoverEnvStats();
-                if(me.text().length()>=maxLength)
-                {
-                    mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
-                    ok=false;
-                }
             }
         }
+        me.recoverEnvStats();
+        if(me.text().length()>=maxLength)
+            mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.");
     }
 
 
@@ -6651,14 +6629,11 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 showFlag=-1;
                 ok=true;
-                me.recoverEnvStats();
-                if(me.text().length()>=maxLength)
-                {
-                    mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
-                    ok=false;
-                }
             }
         }
+        me.recoverEnvStats();
+        if(me.text().length()>=maxLength)
+            mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.");
     }
 
 
@@ -6742,19 +6717,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 showFlag=-1;
                 ok=true;
-                me.recoverCharStats();
-                me.recoverMaxState();
-                me.recoverEnvStats();
-                me.resetToMaxState();
-
-                if(me.text().length()>=maxLength)
-                {
-                    mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
-                    ok=false;
-                }
-                me.setMiscText(me.text());
             }
         }
+        me.recoverCharStats();
+        me.recoverMaxState();
+        me.recoverEnvStats();
+        me.resetToMaxState();
+        if(me.text().length()>=maxLength)
+            mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.");
     }
 
     public void modifyPlayer(MOB mob, MOB me) throws IOException
@@ -6836,21 +6806,21 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 showFlag=-1;
                 ok=true;
-                me.recoverCharStats();
-                me.recoverMaxState();
-                me.recoverEnvStats();
-                me.resetToMaxState();
-                if(!oldName.equals(me.Name()))
-                {
-                    MOB fakeMe=(MOB)me.copyOf();
-                    fakeMe.setName(oldName);
-                    CMLib.database().DBDeleteMOB(fakeMe);
-                    CMLib.database().DBCreateCharacter(me);
-                }
-                CMLib.database().DBUpdatePlayer(me);
-                CMLib.database().DBUpdateFollowers(me);
             }
         }
+        me.recoverCharStats();
+        me.recoverMaxState();
+        me.recoverEnvStats();
+        me.resetToMaxState();
+        if(!oldName.equals(me.Name()))
+        {
+            MOB fakeMe=(MOB)me.copyOf();
+            fakeMe.setName(oldName);
+            CMLib.database().DBDeleteMOB(fakeMe);
+            CMLib.database().DBCreateCharacter(me);
+        }
+        CMLib.database().DBUpdatePlayer(me);
+        CMLib.database().DBUpdateFollowers(me);
     }
 
 
@@ -7079,15 +7049,15 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 showFlag=-1;
                 ok=true;
-                if(!oldName.equals(C.ID()))
-                {
-                    //cycle through everything changing the name
-                    CMLib.database().DBDeleteClan(C);
-                    CMLib.database().DBCreateClan(C);
-                }
-                C.update();
             }
         }
+        if(!oldName.equals(C.ID()))
+        {
+            //cycle through everything changing the name
+            CMLib.database().DBDeleteClan(C);
+            CMLib.database().DBCreateClan(C);
+        }
+        C.update();
     }
 
     protected void modifyGenShopkeeper(MOB mob, ShopKeeper me)
@@ -7196,18 +7166,14 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             {
                 showFlag=-1;
                 ok=true;
-                mme.recoverCharStats();
-                mme.recoverMaxState();
-                me.recoverEnvStats();
-                mme.resetToMaxState();
-                if(me.text().length()>=maxLength)
-                {
-                    mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.  Please modify!");
-                    ok=false;
-                }
-                me.setMiscText(me.text());
             }
         }
+        mme.recoverCharStats();
+        mme.recoverMaxState();
+        me.recoverEnvStats();
+        mme.resetToMaxState();
+        if(me.text().length()>=maxLength)
+            mob.tell("\n\rThe data entered exceeds the string limit of "+maxLength+" characters.");
     }
     
     public void modifyRoom(MOB mob, Room R) throws IOException
