@@ -74,7 +74,7 @@ public class Prayer_BloodHearth extends Prayer
 
     public int castingQuality(MOB mob, Environmental target)
     {
-        if(mob!=null)
+        if((mob!=null)&&(target instanceof Room))
         {
             if((!CMLib.law().doesOwnThisProperty(mob,mob.location()))
             &&(!((mob.getClanID().length()>0)&&(CMLib.law().doesOwnThisProperty(mob.getClanID(),((Room)target))))))

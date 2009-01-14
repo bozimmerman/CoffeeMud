@@ -11,7 +11,8 @@
         function Poll(action)
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=500,width=650,alwaysRaised=yes,dependent=yes";
-            w=window.open("poll.cmvp?AUTH=@Authenticate?AUTH@&POLL="+action,"Poll",strFeatures, false);
+            w=window.open("poll.cmvp?AUTH=@Authenticate?AUTH@&POLL="+action,
+            	"Poll",strFeatures, false);
         }
         function Clicked(action)
         {

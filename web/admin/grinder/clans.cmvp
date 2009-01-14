@@ -11,7 +11,8 @@
 		function Clan(action)
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-			w=window.open("clan.cmvp?AUTH=@Authenticate?AUTH@&CLAN="+action,"Clan",strFeatures, false);
+			w=window.open("clan.cmvp?AUTH=@Authenticate?AUTH@&CLAN="+action,
+				"Clan",strFeatures, false);
 		}
 		function Clicked(action)
 		{

@@ -23,12 +23,14 @@
 		function Quest(action)
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-			w=window.open("quest.cmvp?AUTH=@Authenticate?AUTH@&QUEST="+action,"Quest",strFeatures, false);
+			w=window.open("quest.cmvp?AUTH=@Authenticate?AUTH@&QUEST="+action,
+				"Quest",strFeatures, false);
 		}
 		function QuestWizard(action)
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-			w=window.open("questmaker.cmvp?AUTH=@Authenticate?AUTH@","Quest",strFeatures, false);
+			w=window.open("questmaker.cmvp?AUTH=@Authenticate?AUTH@",
+				"Quest",strFeatures, false);
 		}
 		function Clicked(quest, action)
 		{

@@ -8,6 +8,7 @@
 	<title>Questmaker</title>
 	<SCRIPT LANGUAGE=JavaScript>
 	<!--
+	    var w;
 		function ClickedBack()
 		{
 			document.QUESTS.FUNCTION.value='BACK';
@@ -31,7 +32,8 @@
 		function AddNewItem()
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-			w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM=NEW&ROOM=ANY","Quest Item",strFeatures, false);
+			w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM=NEW&ROOM=ANY",
+				"Quest_Item",strFeatures, false);
 		}
 		function EditItemDone()
 		{
@@ -41,7 +43,8 @@
 		function AddNewMob()
 		{
 			var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-			w=window.open("editmobform.cmvp?AUTH=@Authenticate?AUTH@&MOB=NEW&ROOM=ANY","Quest MOB",strFeatures, false);
+			w=window.open("editmobform.cmvp?AUTH=@Authenticate?AUTH@&MOB=NEW&ROOM=ANY",
+				"Quest_MOB",strFeatures, false);
 		}
 		function Refresh()
 		{

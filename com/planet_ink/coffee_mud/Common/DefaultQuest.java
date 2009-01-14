@@ -4250,7 +4250,7 @@ public class DefaultQuest implements Quest, Tickable, CMObject
         case 12: // instructions can and should fall through the default
 		default:
             if((code.toUpperCase().trim().equalsIgnoreCase("REMAINING"))&&(running()))
-                ticksRemaining=CMath.s_parseIntExpression(val);
+                ticksRemaining=CMLib.time().parseTickExpression(val);
             else
             {
     			int x=questState.vars.indexOf(code.toUpperCase().trim());

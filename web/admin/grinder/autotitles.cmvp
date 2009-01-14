@@ -13,13 +13,15 @@
             if(confirm('Create a new title?'))
             {
                 var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=150,width=450,alwaysRaised=yes,dependent=yes";
-                w=window.open("autotitle.cmvp?AUTH=@Authenticate?AUTH@&AUTOTITLE=","Title",strFeatures, false);
+                w=window.open("autotitle.cmvp?AUTH=@Authenticate?AUTH@&AUTOTITLE=",
+                	"Title",strFeatures, false);
             }
         }
         function Title(autotitleid,action)
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=150,width=450,alwaysRaised=yes,dependent=yes";
-            w=window.open("autotitle.cmvp?AUTH=@Authenticate?AUTH@&AUTOTITLE="+autotitleid+action,"Title",strFeatures, false);
+            w=window.open("autotitle.cmvp?AUTH=@Authenticate?AUTH@&AUTOTITLE="+autotitleid+action,
+            	"Title",strFeatures, false);
         }
         function Clicked(action)
         {

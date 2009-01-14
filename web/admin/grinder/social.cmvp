@@ -17,7 +17,8 @@
         function AddNewItem(FIELD)
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-            w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM=NEW&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,"Race Item",strFeatures, false);
+            w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM=NEW&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,
+            	"Race_Item",strFeatures, false);
         }
         function AddItem(ME)
         {
@@ -40,7 +41,8 @@
         function EditItem(ME,FIELD)
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-            w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM="+ME+"&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,"Race Item",strFeatures, false);
+            w=window.open("edititemform.cmvp?AUTH=@Authenticate?AUTH@&ITEM="+ME+"&ROOM=ANY&RESPONSEFIELD=RESOURCES.REPLACE&REPLACEFIELD="+FIELD,
+            	"Race_Item",strFeatures, false);
         }
         function AddMember(v)
         {

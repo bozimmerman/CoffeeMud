@@ -11,7 +11,8 @@
         function Social(action)
         {
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=500,width=750,alwaysRaised=yes,dependent=yes";
-            w=window.open("social.cmvp?AUTH=@Authenticate?AUTH@&SOCIAL="+action,"Social",strFeatures, false);
+            w=window.open("social.cmvp?AUTH=@Authenticate?AUTH@&SOCIAL="+action,
+            	"Social",strFeatures, false);
         }
         function Clicked(action)
         {

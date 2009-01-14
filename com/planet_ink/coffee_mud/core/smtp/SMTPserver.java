@@ -553,6 +553,20 @@ public class SMTPserver extends Thread implements Tickable
 		return true;
 	}
 
+	public boolean deleteEmailIfOld(String key, long date, int days)
+	{
+		Calendar IQE=Calendar.getInstance();
+        IQE.setTimeInMillis(date);
+		IQE.add(Calendar.DATE,days);
+		if(IQE.getTimeInMillis()<System.currentTimeMillis())
+		{
+			// email is a goner
+			CMLib.database().DBDeleteJournal(key);
+			return true;
+		}
+		return false;
+	}
+	
 	public void processEmails(Vector emails,
 							  String overrideReplyTo,
 							  boolean usePrivateRules)
@@ -591,19 +605,9 @@ public class SMTPserver extends Thread implements Tickable
 			}
 
 			// check email age
-			if(usePrivateRules)
-			{
-				Calendar IQE=Calendar.getInstance();
-                IQE.setTimeInMillis(date);
-				IQE.add(Calendar.DATE,getEmailDays());
-				if(IQE.getTimeInMillis()<System.currentTimeMillis())
-				{
-					// email is a goner
-					CMLib.database().DBDeleteJournal(key);
-					continue;
-				}
-			}
-
+			if((usePrivateRules)&&(deleteEmailIfOld(key, date, getEmailDays())))
+				continue;
+			
 			if(CMath.bset(toM.getBitmap(),MOB.ATT_AUTOFORWARD)) // forwarding OFF
 				continue;
 
@@ -637,20 +641,9 @@ public class SMTPserver extends Thread implements Tickable
 					oldEmailComplaints.add(toM.Name());
 					Log.errOut("SMTPServer","Unable to find '"+toM.playerStats().getEmail()+"' for '"+toM.name()+"'.");
 				}
-				// it has 5 days to get better.
-                Calendar IQE=Calendar.getInstance();
-                IQE.setTimeInMillis(date);
-				IQE.add(Calendar.DATE,getFailureDays());
-				if(IQE.getTimeInMillis()<System.currentTimeMillis())
-				{
-					// email is a goner
-					CMLib.database().DBDeleteJournal(key);
-				}
+				deleteEmailIfOld(key, date,getFailureDays());
 				continue;
 			}
-
-			// one way or another, this email is HISTORY!
-			CMLib.database().DBDeleteJournal(key);
 
 			String replyTo=(overrideReplyTo!=null)?(overrideReplyTo):from;
 			try
@@ -661,10 +654,16 @@ public class SMTPserver extends Thread implements Tickable
 							   usePrivateRules?toM.playerStats().getEmail():replyTo+"@"+domainName(),
 							   subj,
 							   CMLib.coffeeFilter().simpleOutFilter(msg));
+				//this email is HISTORY!
+				CMLib.database().DBDeleteJournal(key);
 			}
 			catch(java.io.IOException ioe)
 			{
-				Log.errOut("SMTPServer","Unable to send to '"+toM.playerStats().getEmail()+"' for user '"+toM.name()+"': "+ioe.getMessage()+".");
+				// it has FAILUREDAYS days to get better.
+				if(deleteEmailIfOld(key, date,getFailureDays()))
+					Log.errOut("SMTPServer","Permanently unable to send to '"+toM.playerStats().getEmail()+"' for user '"+toM.name()+"': "+ioe.getMessage()+".");
+				else
+					Log.errOut("SMTPServer","Failure to send to '"+toM.playerStats().getEmail()+"' for user '"+toM.name()+".");
 			}
 
 			// kaplah! On to next...

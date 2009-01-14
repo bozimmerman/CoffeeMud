@@ -48,7 +48,7 @@ public class Specialization_Natural extends Specialization_Weapon
 		&&(affected instanceof MOB)
 		&&(msg.amISource((MOB)affected))
 		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
-		&&((msg.tool()==null)))
+		&&((!(msg.tool() instanceof Weapon))||(((Weapon)msg.tool()).weaponClassification()==Weapon.CLASS_NATURAL)))
 			helpProficiency((MOB)affected);
 	}
 

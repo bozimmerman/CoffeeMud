@@ -436,7 +436,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 			return new StringBuffer(append+"levels less than "+lvl.substring(2).trim()+".  ");
 		else
 		if(lvl.startsWith(c+"=")&&(CMath.isNumber(lvl.substring(2).trim())))
-			return new StringBuffer(append+"level "+lvl.substring(2).trim()+" players.  ");
+			return new StringBuffer(append+"level "+lvl.substring(2).trim()+".  ");
 		return new StringBuffer("");
 	}
 

@@ -16,7 +16,8 @@
         	mobcode=encodeURI(mobcode);
         	room=room.replace("#","%23");
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-            w=window.open("editmobform.cmvp?AUTH=@Authenticate?AUTH@&AREA="+area+"&ROOM="+room+"&MOB="+mobcode+"&SINGLEMOB=true","MAP",strFeatures, false);
+            w=window.open("editmobform.cmvp?AUTH=@Authenticate?AUTH@&AREA="+area+"&ROOM="+room+"&MOB="+mobcode+"&SINGLEMOB=true",
+            	"MAP",strFeatures, false);
         }
         
         function pickedRoom(area,room,name)
@@ -27,7 +28,8 @@
         	var mobcode=encodeURI(mobcode);
         	room=room.replace("#","%23");
             var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=600,width=650,alwaysRaised=yes,dependent=yes";
-            w=window.open("editmobform.cmvp?AUTH=@Authenticate?AUTH@&NEWMOBNAME="+name+"&AREA="+area+"&ROOM="+room+"&MOB="+mobcode+"&SINGLEMOB=true","EDITDEITY",strFeatures, false);
+            w=window.open("editmobform.cmvp?AUTH=@Authenticate?AUTH@&NEWMOBNAME="+name+"&AREA="+area+"&ROOM="+room+"&MOB="+mobcode+"&SINGLEMOB=true",
+            	"EDITDEITY",strFeatures, false);
         }
         
         function NewDeity(locitem,name)

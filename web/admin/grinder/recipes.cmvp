@@ -21,7 +21,8 @@
 	            		recipeid +='&CLASSFIELD='+document.RESOURCES.NEWCLASSFIELD1.value;
 	            }
                 var strFeatures="top=0,left=75,resizeable=no,scrollbars=yes,height=550,width=750,alwaysRaised=yes,dependent=yes";
-                w=window.open("recipe.cmvp?AUTH=@Authenticate?AUTH@&ABILITY="+recipeid,"Recipe",strFeatures, false);
+                w=window.open("recipe.cmvp?AUTH=@Authenticate?AUTH@&ABILITY="+recipeid,
+                	"Recipe",strFeatures, false);
             }
         }
         function Select(val)

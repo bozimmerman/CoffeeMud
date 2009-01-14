@@ -3066,11 +3066,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 Area A=null;
                 if(!where.equalsIgnoreCase("world"))
                 {
-                    Environmental E2=getArgumentItem(where,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-                    if(E2 instanceof Area)
-                        A=(Area)E2;
-                    else
-                        A=CMLib.map().getArea(where);
+                	A=CMLib.map().getArea(where);
+                	if(A==null)
+                	{
+	                    Environmental E2=getArgumentItem(where,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+	                    if(E2 != null)
+	                    	A=CMLib.map().areaLocation(E2);
+                	}
                     if(A==null)
                     {
                         logError(scripted,"EXPLORED","Unknown Area",where);
@@ -5161,11 +5163,13 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     Area A=null;
                     if(!where.equalsIgnoreCase("world"))
                     {
-                        Environmental E2=getArgumentItem(where,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
-                        if(E2 instanceof Area)
-                            A=(Area)E2;
-                        else
-                            A=CMLib.map().getArea(where);
+                    	A=CMLib.map().getArea(where);
+                    	if(A==null)
+                    	{
+	                        Environmental E2=getArgumentItem(where,source,monster,scripted,target,primaryItem,secondaryItem,msg,tmp);
+	                        if(E2!=null)
+	                            A=CMLib.map().areaLocation(E2);
+                    	}
                     }
                     if((lastKnownLocation!=null)
                     &&((A!=null)||(where.equalsIgnoreCase("world"))))

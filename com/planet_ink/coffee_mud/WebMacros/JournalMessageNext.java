@@ -78,13 +78,18 @@ public class JournalMessageNext extends StdWebMacro
         String srch=httpReq.getRequestParameter("JOURNALMESSAGESEARCH");
         if(srch!=null) srch=srch.toLowerCase();
 		String last=httpReq.getRequestParameter("JOURNALMESSAGE");
+		int cardinal=CMath.s_int(httpReq.getRequestParameter("JOURNALCARDINAL"));
 		if(parms.containsKey("RESET"))
 		{	
-			if(last!=null) httpReq.removeRequestParameter("JOURNALMESSAGE");
+			if(last!=null){
+				httpReq.removeRequestParameter("JOURNALMESSAGE");
+				httpReq.removeRequestParameter("JOURNALCARDINAL");
+			}
 			return "";
 		}
         MOB M=CMLib.players().getLoadPlayer(Authenticate.getLogin(httpReq));
         boolean priviledged=CMSecurity.isAllowedAnywhere(M,"JOURNALS")&&(!parms.contains("NOPRIV"));
+        cardinal++;
         while(true)
         {
             if(last==null) 
@@ -119,11 +124,12 @@ public class JournalMessageNext extends StdWebMacro
             if(to.equalsIgnoreCase("all")
             ||((M!=null)
                 &&(priviledged
-                        ||to.equalsIgnoreCase(M.Name())
-                        ||(to.toUpperCase().trim().startsWith("MASK=")&&(CMLib.masking().maskCheck(to.trim().substring(5),M,true))))))
+                    ||to.equalsIgnoreCase(M.Name())
+                    ||(to.toUpperCase().trim().startsWith("MASK=")&&(CMLib.masking().maskCheck(to.trim().substring(5),M,true))))))
                 break;
         }
 		
+		httpReq.addRequestParameters("JOURNALCARDINAL",""+cardinal);
 		httpReq.addRequestParameters("JOURNALMESSAGE",last);
 		return "";
 	}
