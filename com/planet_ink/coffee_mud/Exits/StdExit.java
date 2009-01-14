@@ -252,7 +252,7 @@ public class StdExit implements Exit
 		if(openWord().length()==0)
 			return "opened";
 		else
-		if(CMStrings.isVowel(closeWord().charAt(closeWord().length()-1)))
+		if(CMStrings.isVowel(openWord().charAt(openWord().length()-1)))
 			return openWord()+"d";
 		else
 			return openWord()+"ed";

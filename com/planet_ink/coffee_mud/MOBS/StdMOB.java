@@ -2744,11 +2744,11 @@ public class StdMOB implements MOB
                      	}
 				        if((curState().getFatigue()>(CharState.FATIGUED_EXHAUSTED_MILLIS))
 						&&(!isMonster())
-                     	&&(CMLib.dice().rollPercentage()==1)
-                     	&&(!CMSecurity.isDisabled("AUTODISEASE")))
+                     	&&(CMLib.dice().rollPercentage()==1))
                      	{
-                        	Ability sleep = CMClass.getAbility("Spell_Sleep");
-                        	if(sleep!=null) sleep.invoke(this, this, true,0);
+							location().show(this,null,CMMsg.MSG_OK_ACTION,"<S-NAME> fall(s) asleep from exhaustion!!");
+							baseEnvStats().setDisposition(EnvStats.IS_SLEEPING);
+							envStats().setDisposition(EnvStats.IS_SLEEPING);
                      	}
 					}
 				}

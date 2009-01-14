@@ -64,7 +64,7 @@
 #
 #!QUESTMAKER_PAGE Specify the Holders
 #The Holders are the rooms where the items to collect may be found. These must
-#be existing mobs in your world.  The items are created and destroyed whenever
+#be existing rooms in your world.  The items are created and destroyed whenever
 #the quest player enters/exits a valid room, so spells like Locate Object will
 #do the player no good.
 #

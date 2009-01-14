@@ -345,6 +345,11 @@ public class MOBTeacher extends CombatAbilities
 					CMLib.commands().postSay(monster,student,"Try the QUALIFY command.",true,false);
 					return;
 				}
+				if(s.trim().toUpperCase().equals("ALL"))
+				{
+					CMLib.commands().postSay(monster,student,"I can't teach you everything at once. Try the QUALIFY command.",true,false);
+					return;
+				}
 				Ability myAbility=CMClass.findAbility(s.trim().toUpperCase(),monster);
 				if(myAbility==null)
 				{
