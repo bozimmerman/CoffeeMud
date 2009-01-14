@@ -778,7 +778,7 @@ public class Spell_Wish extends Spell
 			||(myWish.indexOf(" WAS A")>=0)
 			||(myWish.indexOf(" TRANSFORM")>=0)))
 			{
-				Race R=CMClass.getRace((String)wishV.lastElement());
+				Race R=CMClass.findRace((String)wishV.lastElement());
 				if(R!=null)
 				{
 					if(!((MOB)target).isMonster())
