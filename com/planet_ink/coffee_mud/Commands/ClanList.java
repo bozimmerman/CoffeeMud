@@ -43,9 +43,9 @@ public class ClanList extends StdCommand
 	    boolean trophySystemActive=CMLib.clans().trophySystemActive();
 		StringBuffer head=new StringBuffer("");
 		head.append("^x[");
-		head.append(CMStrings.padRight("Clan Name",24)+" | ");
-		head.append(CMStrings.padRight("Type",13)+" | ");
-		head.append(CMStrings.padRight("Status",8)+" | ");
+		head.append(CMStrings.padRight("Clan Name",30)+"| ");
+		head.append(CMStrings.padRight("Type",10)+"| ");
+		head.append(CMStrings.padRight("Status",7)+"| ");
 		head.append(CMStrings.padRight("Members",7));
 		if(trophySystemActive)
 			head.append(" | "+CMStrings.padRight("Trophies",8));
@@ -65,8 +65,8 @@ public class ClanList extends StdCommand
                 continue;
             
 			msg.append(" ");
-			msg.append(CMStrings.padRight("^<CLAN^>"+CMStrings.removeColors(thisClan.clanID())+"^</CLAN^>",24)+"   ");
-			msg.append(CMStrings.padRight(thisClan.typeName(),13)+"   ");
+			msg.append("^<CLAN^>"+CMStrings.padRight(CMStrings.removeColors(thisClan.clanID()),30)+"^</CLAN^>  ");
+			msg.append(CMStrings.padRight(thisClan.typeName(),10)+"  ");
 			boolean war=false;
 			for(Enumeration e2=CMLib.clans().clans();e2.hasMoreElements();)
 			{
@@ -86,7 +86,7 @@ public class ClanList extends StdCommand
 				status="Pending";
 				break;
 			}
-			msg.append(CMStrings.padRight(status,8)+"   ");
+			msg.append(CMStrings.padRight(status,7)+"  ");
 			msg.append(CMStrings.padRight(Integer.toString(thisClan.getSize()),7)+"   ");
 	        msg.append(trophySet);
 			msg.append("\n\r");

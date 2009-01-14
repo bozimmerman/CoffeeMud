@@ -675,7 +675,7 @@ public interface Clan extends Cloneable, Tickable, CMCommon, CMModifiable
 
 	/** descriptor table with x axis being Clan.POS_* constants, and y axis being Clan.GVT_* constants.  @see Clan */
 	public static final String[][] ROL_DESCS={
-		{"APPLICANT","MEMBER","STAFF","ENCHANTER","TREASURER","LEADER","BOSS"},
+		{"APPLICANT","MEMBER","STAFF","ENCHANTER","TREASURER","LIEUTENANT","BOSS"},
 		{"APPLICANT","MEMBER","CHIEF","ENCHANTER","TREASURER","SECRETARY","GUILDMASTER"},
 		{"APPLICANT","CITIZEN","SHERIFF","ENCHANTER","TREASURER","SECRETARY","SENATOR"},
 		{"APPLICANT","CITIZEN","SOLDIER","ENCHANTER","TREASURER","MANAGER","FIRST CITIZEN"},
