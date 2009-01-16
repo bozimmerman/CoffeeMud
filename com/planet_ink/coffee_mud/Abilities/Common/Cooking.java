@@ -210,10 +210,10 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					ing=((String)CMParms.parse(I.name()).lastElement()).toUpperCase();
 			else
 				ing=I.name();
-			Integer INT=(Integer)h.get(ing+"/"+I.Name().toUpperCase());
+			Integer INT=(Integer)h.get(ing+"/"+I.secretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/");
 			if(INT==null) INT=new Integer(0);
 			INT=new Integer(INT.intValue()+1);
-			h.put(ing+"/"+I.Name().toUpperCase(),INT);
+			h.put(ing+"/"+I.secretIdentity().toUpperCase()+"/"+I.Name().toUpperCase()+"/",INT);
 		}
 		return h;
 	}
@@ -253,8 +253,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 					{
 						String ingredient2=contents[i].toUpperCase();
 						int amount2=amounts[i];
-						if((ingredient2.startsWith(ingredient+"/"))
-						||(ingredient2.endsWith(ingredient)))
+						if(ingredient2.indexOf(ingredient+"/")>=0)
 						{
 							amounts[i]=amount2-amount;
 							if(amounts[i]<0) NotEnoughForThisRun=true;
@@ -314,8 +313,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			{
 				String ingredient2=((String)Vr.elementAt(vr)).toUpperCase();
 				if((ingredient2.length()>0)
-				&&((ingredient.toUpperCase().startsWith(ingredient2+"/"))
-				||((!perfectOnly)&&ingredient.toUpperCase().endsWith(ingredient2))
+				&&(((!perfectOnly)&&(ingredient.toUpperCase().indexOf(ingredient2+"/"))>=0)
 				||((perfectOnly)&&ingredient.toUpperCase().equalsIgnoreCase(ingredient2))))
 					found=true;
 			}
@@ -348,8 +346,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 				for(Enumeration e=oldPotContents.keys();e.hasMoreElements();)
 				{
 					String ingredient2=((String)e.nextElement()).toUpperCase();
-					if((ingredient2.startsWith(ingredient.toUpperCase()+"/"))
-					||((perfectOnly)&&ingredient2.endsWith(ingredient.toUpperCase()))
+					if((ingredient2.indexOf(ingredient.toUpperCase()+"/")>=0)
 					||((!perfectOnly)&&ingredient2.equalsIgnoreCase(ingredient.toUpperCase())))
 					{ found=true; break;}
 				}
@@ -729,8 +726,7 @@ public class Cooking extends CraftingSkill implements ItemCraftor
 			for(Enumeration e=oldPotContents.keys();e.hasMoreElements();)
 			{
 				String ingredient2=((String)e.nextElement()).toUpperCase();
-				if((ingredient2.startsWith(((String)Vr.elementAt(RCP_MAININGR)).toUpperCase()+"/"))
-				||(ingredient2.endsWith(((String)Vr.elementAt(RCP_MAININGR)).toUpperCase())))
+				if(ingredient2.indexOf(((String)Vr.elementAt(RCP_MAININGR)).toUpperCase()+"/")>=0)
 				{ found=true; break;}
 			}
 			if(found)
