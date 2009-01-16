@@ -1696,7 +1696,7 @@ public class CMMap extends StdLibrary implements WorldMap
                             	if(ticked)
                             	{
                             		// we have a dead group.. let the group handler deal with it.
-	                                Log.errOut(thread.getName(),mob.name()+" in room "+R.roomID()+" unticked in dead group (Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+"."));
+	                                Log.errOut(thread.getName(),mob.name()+" in room "+R.roomID()+" unticked in dead group (Home="+wasFrom+") since: "+CMLib.time().date2String(mob.lastTickedDateTime())+".");
                             		continue;
                             	}
                             	else
