@@ -838,6 +838,7 @@ public class ServiceEngine implements ThreadEngine
                             insertOrderDeathInOrder(orderedDeaths,client.lastStart,msg,almostTock);
                         }
                     }
+                    // no isDEBUGGING check -- just always let her rip.
                     thread.debugDumpStack(almostTock);
                 }
             }
