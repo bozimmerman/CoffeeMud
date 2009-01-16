@@ -365,15 +365,25 @@ public class Catalog extends StdCommand
                 {
                     if(mob.session()!=null)
                     {
-                        String newRate=mob.session().prompt("Enter a new Drop Rate or 0% to disable ("+CMath.toPct(data.getRate())+"): ", CMath.toPct(data.getRate()));
-                        if(!CMath.isPct(newRate))
-                            return false;
-                        data.setRate(CMath.s_pct(newRate));
+                    	Double newPct=null;
+                    	while(newPct == null)
+                    	{
+	                        String newRate=mob.session().prompt("Enter a new Drop Rate or 0% to disable ("+CMath.toPct(data.getRate())+"): ", CMath.toPct(data.getRate()));
+	                        if(newRate.trim().length()==0)
+	                        	return false;
+	                        else
+	                        if(CMath.isPct(newRate))
+	                        	newPct=Double.valueOf(CMath.s_pct(newRate));
+	                        else
+	                        	mob.tell("'"+newRate+"' is not a valid percentage value.  Try something like 10%");
+                    	}
+                        data.setRate(newPct.doubleValue());
                         if(data.getRate()<=0.0)
                         {
                             data.setMaskStr("");
                             data.setRate(0.0);
                             CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)E);
+                            Log.sysOut("Catalog",mob.Name()+" modified catalog item "+E.Name());
                             mob.tell("No drop item.");
                             return false;
                         }
@@ -397,6 +407,7 @@ public class Catalog extends StdCommand
                             data.setMaskStr(newMask);
                         }
                         CMLib.database().DBUpdateItem("CATALOG_ITEMS",(Item)E);
+                        Log.sysOut("Catalog",mob.Name()+" modified catalog item "+E.Name());
                         mob.tell("Item '"+E.Name()+" has been updated.");
                     }
                 }

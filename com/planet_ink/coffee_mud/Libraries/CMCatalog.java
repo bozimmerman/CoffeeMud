@@ -669,7 +669,7 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
         	{
 		        for(int d=0;d<icatalog.size();d++)
 		        {
-		            data=(CatalogLibrary.CataData)icatalog.elementAt(d,3);
+		            data=(CatalogLibrary.CataData)icatalog.elementAt(d,2);
 		            if((data.getWhenLive()==live)
 		            &&(data.getRate()>0.0)
 		            &&(data.getMaskV()!= null)

@@ -561,15 +561,13 @@ public class GrinderItems
                 }
                 else
                 {
+                	if(cataData!=null)
+                	{
+	                    CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(I.Name());
+	                    data.build(cataData.data());
+                	}
                 	CMLib.catalog().updateCatalog(I);
 	                Log.infoOut("GrinderItems",whom.Name()+" updated catalog ITEM "+I.Name());
-                }
-                Item I3=CMLib.catalog().getCatalogItem(itemCode.substring(8));
-                if((I3!=null)&&(cataData!=null))
-                {
-                    CatalogLibrary.CataData data=CMLib.catalog().getCatalogItemData(I3.Name());
-                    if((cataData.getRate()>0.0)&&(cataData.getMaskStr()!=null)&&(cataData.getMaskStr().length()>0))
-                        data.build(cataData.data());
                 }
                 copyItem=I;
 			}

@@ -961,7 +961,7 @@ public class ItemData extends StdWebMacro
                         if(data!=null)
                             old=""+data.getMaskStr();
                     }
-                    str.append(old+", ");
+                    str.append(htmlOutgoingFilter(old)+", ");
                     break;
                 case 91: // bite
                     if((firstTime)&&(I instanceof Food))

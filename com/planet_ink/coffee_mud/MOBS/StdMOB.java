@@ -2433,7 +2433,8 @@ public class StdMOB implements MOB
 			{
 				if((msg.targetMinor()==CMMsg.TYP_SPEAK)
 				 &&(msg.source()!=null)
-				 &&(playerStats()!=null))
+				 &&(playerStats()!=null)
+				 &&(!msg.source().isMonster()))
 					playerStats().setReplyTo(msg.source(),PlayerStats.REPLY_SAY);
 				tell(msg.source(),msg.target(),msg.tool(),msg.targetMessage());
 			}
