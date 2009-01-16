@@ -678,6 +678,11 @@ public class GrinderItems
     				httpReq.addRequestParameters("MOB",RoomData.getMOBCode(R,M));
                 }
 				httpReq.addRequestParameters("ITEM",RoomData.getItemCode(M,I));
+			    if((mobNum.startsWith("CATALOG-"))||(mobNum.startsWith("NEWCATA-")))
+			    {
+			    	CMLib.catalog().updateCatalog(M);
+			    	M.text();
+			    }
 			}
 			if(!copyItem.sameAs(I))
 				Log.sysOut("Grinder",whom.Name()+" modified item "+copyItem.Name()+((M!=null)?" on mob "+M.Name():"")+((R!=null)?" in room "+R.roomID():"")+".");
