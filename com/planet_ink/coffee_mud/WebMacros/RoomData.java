@@ -95,6 +95,7 @@ public class RoomData extends StdWebMacro
 
 	public static Item getItemFromCode(MOB M, String code)
 	{
+        if(M==null) return getItemFromCode(items,code);
 		for(int i=0;i<M.inventorySize();i++)
 			if(getItemCode(M,M.fetchInventory(i)).equals(code))
 				return M.fetchInventory(i);
@@ -120,6 +121,8 @@ public class RoomData extends StdWebMacro
 
 	public static Item getItemFromCode(Vector allitems, String code)
 	{
+        if(code.startsWith("CATALOG-"))
+            return getItemFromCatalog(code);
 		for(int i=0;i<allitems.size();i++)
 			if(getItemCode(allitems,(Item)allitems.elementAt(i)).equals(code))
 				return (Item)allitems.elementAt(i);
@@ -145,6 +148,8 @@ public class RoomData extends StdWebMacro
 
 	public static MOB getMOBFromCode(Vector allmobs, String code)
 	{
+        if(code.startsWith("CATALOG-"))
+            return getMOBFromCatalog(code);
 		for(int i=0;i<allmobs.size();i++)
 			if(getMOBCode(allmobs,((MOB)allmobs.elementAt(i))).equals(code))
 				return ((MOB)allmobs.elementAt(i));

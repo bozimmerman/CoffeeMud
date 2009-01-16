@@ -590,7 +590,8 @@ public class GrinderItems
 				{
 					M.addInventory(I);
 					M.recoverEnvStats();
-					M.text();
+					if(!mobNum.startsWith("CATALOG-"))
+						M.text();
 					if(R!=null) R.recoverRoomStats();
 				}
 			}
@@ -626,7 +627,8 @@ public class GrinderItems
 					M.delInventory(oldI);
 					M.addInventory(I);
 					M.recoverEnvStats();
-					M.text();
+					if(!mobNum.startsWith("CATALOG-"))
+						M.text();
                     if(R!=null) R.recoverRoomStats();
 					for(int i=0;i<M.inventorySize();i++)
 					{

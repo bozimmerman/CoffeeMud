@@ -323,7 +323,7 @@ public class GrinderMobs
     		}
 
 			MOB M=null;
-			if(mobCode.equals("NEW")||mobCode.equals("NEWDEITY")||mobCode.startsWith("CATALOG-")||mobCode.startsWith("NEWCATA-"))
+			if(mobCode.equals("NEW")||mobCode.equals("NEWDEITY")||mobCode.startsWith("NEWCATA-"))
 				M=CMClass.getMOB(newClassID);
 			else
 				M=RoomData.getMOBFromCode(R,mobCode);
@@ -688,7 +688,7 @@ public class GrinderMobs
 					String theprice=httpReq.getRequestParameter("SPRIC"+num);
 					while((MATCHING!=null)&&(theparm!=null))
 					{
-						if(CMath.isNumber(MATCHING))
+						if(CMath.isNumber(MATCHING)&&(inventory.size()>0))
 						{
 							Environmental O=(Environmental)inventory.elementAt(CMath.s_int(MATCHING)-1);
 							if(O!=null)
