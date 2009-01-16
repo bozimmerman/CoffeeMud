@@ -76,6 +76,7 @@ public class AreaData extends StdWebMacro
 				}
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
+			HashSet<String> alreadyHave=new HashSet<String>();
 			for(int i=0;i<theclasses.size();i++)
 			{
 				String theclass=(String)theclasses.elementAt(i);
@@ -88,6 +89,7 @@ public class AreaData extends StdWebMacro
 				str.append("</TD><TD WIDTH=50%>");
 				str.append("<INPUT TYPE=TEXT SIZE=30 NAME=BDATA"+(i+1)+" VALUE=\""+theparm+"\">");
 				str.append("</TD></TR>");
+				alreadyHave.add(theclass.toLowerCase());
 			}
 			str.append("<TR><TD WIDTH=50%>");
 			str.append("<SELECT ONCHANGE=\"AddBehavior(this);\" NAME=BEHAV"+(theclasses.size()+1)+">");
@@ -103,10 +105,11 @@ public class AreaData extends StdWebMacro
 			}
 			sortedB=(new TreeSet(sortMeB)).toArray();
 			for(int r=0;r<sortedB.length;r++)
-			{
-				String cnam=(String)sortedB[r];
-				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
-			}
+				if(!alreadyHave.contains(((String)sortedB[r]).toLowerCase()))
+				{
+					String cnam=(String)sortedB[r];
+					str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+				}
 			str.append("</SELECT>");
 			str.append("</TD><TD WIDTH=50%>");
 			str.append("<INPUT TYPE=TEXT SIZE=30 NAME=BDATA"+(theclasses.size()+1)+" VALUE=\"\">");
@@ -149,9 +152,11 @@ public class AreaData extends StdWebMacro
 				}
 			}
 			str.append("<TABLE WIDTH=100% BORDER=\""+borderSize+"\" CELLSPACING=0 CELLPADDING=0>");
+			HashSet<String> alreadyHave=new HashSet<String>();
 			for(int i=0;i<theclasses.size();i++)
 			{
 				String theclass=(String)theclasses.elementAt(i);
+				alreadyHave.add(theclass.toLowerCase());
 				String theparm=(String)theparms.elementAt(i);
 				str.append("<TR><TD WIDTH=50%>");
 				str.append("<SELECT ONCHANGE=\"EditAffect(this);\" NAME=AFFECT"+(i+1)+">");
@@ -168,9 +173,9 @@ public class AreaData extends StdWebMacro
 			for(Enumeration a=CMClass.abilities();a.hasMoreElements();)
 			{
 				Ability A=(Ability)a.nextElement();
-				if(!A.canAffect(E)) continue;
-				String cnam=A.ID();
-				str.append("<OPTION VALUE=\""+cnam+"\">"+cnam);
+				if((!A.canAffect(E))||(alreadyHave.contains(A.ID().toLowerCase())))
+					continue;
+				str.append("<OPTION VALUE=\""+A.ID()+"\">"+A.ID());
 			}
 			str.append("</SELECT>");
 			str.append("</TD><TD WIDTH=50%>");
