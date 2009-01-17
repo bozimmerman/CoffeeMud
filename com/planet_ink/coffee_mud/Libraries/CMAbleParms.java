@@ -1210,6 +1210,12 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                         AbilityParmEditor A = (AbilityParmEditor)CMLib.ableParms().getEditors().get("RESOURCE_OR_KEYWORD");
                         return A.webField(httpReq,parms,oldVal,fieldName);
                     }
+                    public String webTableField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal) {
+                    	if(oldVal.endsWith("$"))
+                    		return oldVal.substring(0,oldVal.length()-1);
+                    	return oldVal;
+                    }
+                    
                     public String commandLinePrompt(MOB mob, String oldVal, int[] showNumber, int showFlag) throws java.io.IOException
                     {
                         ++showNumber[0];
@@ -1751,6 +1757,8 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
             }
             return "";
         }
+        
+        public String webTableField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal) { return oldVal; }
         
         public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName) {
             int textSize = 50;

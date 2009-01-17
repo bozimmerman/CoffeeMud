@@ -56,6 +56,7 @@ public interface AbilityParameters extends CMLibrary
         public String defaultValue();
         public String webValue(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName);
         public String webField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal, String fieldName);
+        public String webTableField(ExternalHTTPRequests httpReq, Hashtable parms, String oldVal);
     }
     
     public Vector getCodedSpells(String spells);

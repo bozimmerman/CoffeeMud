@@ -223,6 +223,9 @@ public class AbilityRecipeData extends StdWebMacro
                         {
                             str.append("<TD>" + sfont);
                             String val = (String)dataRow.elementAt(c,2);
+                            AbilityParameters.AbilityParmEditor editor =
+                                (AbilityParameters.AbilityParmEditor)CMLib.ableParms().getEditors().get((String)dataRow.elementAt(c,1));
+                            val = editor.webTableField(httpReq, parms, val);
                             str.append(CMStrings.limit(val,(int)Math.round(CMath.div(recipeData.columnLengths()[c],36) * 100.0)));
                             str.append(efont + "</TD>");
                         }
