@@ -547,6 +547,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 p=parse.substring(0,y).trim();
                 if((!p.endsWith(";"))
                 &&(!p.endsWith("\n"))
+                &&(!p.endsWith("~"))
                 &&(!p.endsWith("\r"))
                 &&(p.length()>0))
                 {
