@@ -468,6 +468,24 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	 */
 	public boolean expless();
 
+	/**
+	 * A code designating what kind of armor can be used by this class
+	 * without affecting their skills.  The worn locations this coded
+	 * type refers to locations defined by ARMOR_WEARMASK
+	 * @see com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass#ARMOR_WEARMASK
+	 * @see com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass#ARMOR_ANY
+	 * @return the encoded allowed armor type
+	 */
+	public int allowedArmorLevel();
+	
+	/**
+	 * A code designating what kind of weapons can be used by this class
+	 * without fumbling their usage.
+	 * @see com.planet_ink.coffee_mud.CharClasses.interfaces.CharClass#WEAPONS_ANY
+	 * @return the encoded allowed weapon type
+	 */
+	public int allowedWeaponLevel();
+	
 	/** constant returned by allowedArmorLevel() to designate any allowed armors. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedArmorLevel() */
 	public static final int ARMOR_ANY=0;
 	/** constant returned by allowedArmorLevel() to designate only cloth armors. @see com.planet_ink.coffee_mud.CharClass.StdCharClass#allowedArmorLevel() */

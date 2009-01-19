@@ -260,7 +260,6 @@ public class StdCharClass implements CharClass
 		return false;
 	}
 
-
 	protected boolean armorCheck(MOB mob, int sourceCode, Environmental E)
 	{
 		if(!(E instanceof Ability)) return true;
@@ -276,6 +275,7 @@ public class StdCharClass implements CharClass
 			return false;
 		return true;
 	}
+	
 	protected boolean weaponCheck(MOB mob, int sourceCode, Environmental E)
 	{
 		if((((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_WEAPONATTACK)||((sourceCode&CMMsg.MINOR_MASK)==CMMsg.TYP_THROW))

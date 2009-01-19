@@ -1,4 +1,4 @@
-package com.planet_ink.coffee_mud.Commands;
+ package com.planet_ink.coffee_mud.Commands;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -38,6 +38,102 @@ public class CharGen extends StdCommand
 	private String[] access={"CHARGEN"};
 	public String[] getAccessWords(){return access;}
 
+	protected void equipPlayer(MOB M)
+	{
+		int level = M.baseEnvStats().level();
+		CharClass C=M.baseCharStats().getCurrentClass();
+		for(int pos=0;pos<Item.WORN_CODES.length;pos++)
+		{
+			long wornCode=Item.WORN_CODES[pos];
+			if(wornCode == Item.IN_INVENTORY) continue;
+			if(wornCode == Item.WORN_HELD) continue;
+			if(wornCode==Item.WORN_WIELD)
+			{
+				Weapon W=CMClass.getWeapon("GenWeapon");
+				W.setWeaponClassification(Weapon.CLASS_SWORD);
+				W.setWeaponType(Weapon.TYPE_SLASHING);
+				W.setMaterial(RawMaterial.RESOURCE_STEEL);
+				W.setRawProperLocationBitmap(Item.WORN_WIELD|Item.WORN_HELD);
+				W.setRawLogicalAnd(true);
+				switch(C.allowedWeaponLevel())
+				{
+				case CharClass.WEAPONS_THIEFLIKE:
+				case CharClass.WEAPONS_BURGLAR:
+				case CharClass.WEAPONS_ANY:
+				case CharClass.WEAPONS_EVILCLERIC:
+				case CharClass.WEAPONS_NEUTRALCLERIC:
+					break;
+				case CharClass.WEAPONS_DAGGERONLY:
+					W.setWeaponClassification(Weapon.CLASS_DAGGER);
+					W.setWeaponType(Weapon.TYPE_PIERCING);
+					break;
+				case CharClass.WEAPONS_NATURAL:
+					W.setMaterial(RawMaterial.RESOURCE_OAK);
+					break;
+				case CharClass.WEAPONS_ROCKY:
+					W.setMaterial(RawMaterial.RESOURCE_STONE);
+					break;
+				case CharClass.WEAPONS_GOODCLERIC:
+				case CharClass.WEAPONS_MAGELIKE:
+					W.setMaterial(RawMaterial.RESOURCE_OAK);
+					W.setWeaponClassification(Weapon.CLASS_STAFF);
+					W.setWeaponType(Weapon.TYPE_BASHING);
+					break;
+				case CharClass.WEAPONS_ALLCLERIC:
+					if(CMLib.flags().isGood(M))
+					{
+						W.setMaterial(RawMaterial.RESOURCE_OAK);
+						W.setWeaponClassification(Weapon.CLASS_STAFF);
+						W.setWeaponType(Weapon.TYPE_BASHING);
+					}
+					break;
+				case CharClass.WEAPONS_FLAILONLY:
+					W.setWeaponClassification(Weapon.CLASS_FLAILED);
+					W.setWeaponType(Weapon.TYPE_BASHING);
+					break;
+				}
+				W.baseEnvStats().setLevel(level);
+				W.baseEnvStats().setWeight(8);
+				W.recoverEnvStats();
+				CMLib.itemBuilder().balanceItemByLevel(W);
+				M.addInventory(W);
+				W.wearIfPossible(M);
+			}
+			else
+			if(wornCode != Item.WORN_FLOATING_NEARBY)
+			{
+				Armor A=CMClass.getArmor("GenArmor");
+				A.setRawProperLocationBitmap(wornCode);
+				A.setMaterial(RawMaterial.RESOURCE_STEEL);
+				if((CharClass.ARMOR_WEARMASK & wornCode) > 0)
+				switch(C.allowedArmorLevel())
+				{
+				case CharClass.ARMOR_ANY:
+				case CharClass.ARMOR_METALONLY:
+					break;
+				case CharClass.ARMOR_CLOTH:
+					A.setMaterial(RawMaterial.RESOURCE_COTTON);
+					break;
+				case CharClass.ARMOR_LEATHER:
+					A.setMaterial(RawMaterial.RESOURCE_LEATHER);
+					break;
+				case CharClass.ARMOR_NONMETAL:
+				case CharClass.ARMOR_VEGAN:
+				case CharClass.ARMOR_OREONLY:
+					A.setMaterial(RawMaterial.RESOURCE_OAK);
+					break;
+				}
+				A.baseEnvStats().setLevel(level);
+				A.baseEnvStats().setWeight(8);
+				A.recoverEnvStats();
+				CMLib.itemBuilder().balanceItemByLevel(A);
+				M.addInventory(A);
+				A.wearIfPossible(M);
+			}
+		}
+	}
+	
+	
 	protected MOB levelMOBup(int level, CharClass C)
 	{
 		MOB mob=CMClass.getMOB("StdMOB");
@@ -53,18 +149,16 @@ public class CharGen extends StdCommand
 		mob.baseCharStats().setStat(CharStats.STAT_CHARISMA,10);
 		mob.baseCharStats().setCurrentClass(C);
 		mob.baseCharStats().setClassLevel(C,1);
-		mob.baseEnvStats().setArmor(50);
+		mob.baseEnvStats().setArmor(100);
 		mob.baseEnvStats().setLevel(1);
 		mob.baseEnvStats().setSensesMask(0);
 		mob.baseState().setHitPoints(20);
 		mob.baseState().setMovement(100);
 		mob.baseState().setMana(100);
 		mob.baseCharStats().getMyRace().startRacing(mob,false);
-		CMLib.utensils().outfit(mob,mob.baseCharStats().getMyRace().outfit(mob));
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();
-		mob.resetToMaxState();
 		mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
 
 		int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
@@ -97,7 +191,6 @@ public class CharGen extends StdCommand
 					mob.baseCharStats().setStat(CharStats.STAT_WISDOM,mob.baseCharStats().getStat(CharStats.STAT_WISDOM)+1);
 				break;
 			}
-			int oldattack=mob.baseEnvStats().attackAdjustment();
 			if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
 				CMLib.leveler().level(mob);
 			else
@@ -105,12 +198,12 @@ public class CharGen extends StdCommand
 			mob.recoverEnvStats();
 			mob.recoverCharStats();
 			mob.recoverMaxState();
-			int newAttack=mob.baseEnvStats().attackAdjustment()-oldattack;
-			mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-newAttack);
-			mob.recoverEnvStats();
-			mob.recoverCharStats();
-			mob.recoverMaxState();
 		}
+        equipPlayer(mob);
+		mob.recoverCharStats();
+		mob.recoverEnvStats();
+		mob.recoverMaxState();
+		mob.resetToMaxState();
 		return mob;
 	}
 
@@ -368,7 +461,7 @@ public class CharGen extends StdCommand
 	                R.setArea(A);
 	                A.getTimeObj().setTimeOfDay(CMLib.dice().roll(1,A.getTimeObj().getHoursInDay(),-1));
 	                
-	                MOB M1=CMClass.getMOB("StdMOB");
+	                MOB M1=CMClass.getMOB("StdMOB");  // player stats
 	                M1.baseEnvStats().setLevel(level);
                     M1.baseCharStats().setMyRace(CMClass.getRace("Human"));
 	                M1.setName("GOODGUY");
@@ -382,18 +475,25 @@ public class CharGen extends StdCommand
 	                M1.recoverMaxState();
 	                M1.resetToMaxState();
 	                M1.bringToLife(M1.location(),true);
-	                C.fillOutMOB(M1,level);
+	                C.fillOutMOB(M1,level); // ill advised
+	                M1.baseEnvStats().setSpeed(1.0);
+	                M1.baseEnvStats().setArmor(100);
+	                M1.baseEnvStats().setDamage(0+((level-1)/C.getLevelsPerBonusDamage()));
 	                M1.baseState().setHitPoints(C.getLevelPlayerHP(M1));
 	                M1.setWimpHitPoint(0);
 	                M1.recoverMaxState();
 	                M1.recoverCharStats();
 	                M1.recoverEnvStats();
 	                M1.resetToMaxState();
+	                equipPlayer(M1);
+	                M1.recoverMaxState();
+	                M1.recoverCharStats();
+	                M1.recoverEnvStats();
                     B.setStat("RECORD"," ");
                     B.setStat("PROF","true");
                     B.setStat("LASTSPELL","");
 	                
-                    MOB M2=CMClass.getMOB("StdMOB");
+                    MOB M2=CMClass.getMOB("StdMOB");  // MOB stat
                     M2.baseCharStats().setMyRace(CMClass.getRace("Human"));
                     M2.baseEnvStats().setLevel(level);
                     M2.setName("BADGUY");
@@ -566,7 +666,7 @@ public class CharGen extends StdCommand
 		{
 			try
 			{
-				level=CMath.s_int(mob.session().prompt("Enter a level (1-25): "));
+				level=CMath.s_int(mob.session().prompt("Enter a level (1-"+CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)+"): "));
 			}
 			catch(Exception e){return false;}
 			if(level<=0)
