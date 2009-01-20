@@ -365,7 +365,7 @@ public class CharGen extends StdCommand
 	            }
 	            String behav="CombatAbilities";
                 for(int c=0;c<CAMATCH.length;c++)
-                    if(CAMATCH[c][1].equalsIgnoreCase(CAMATCH[c][0]))
+                    if(C.baseClass().equalsIgnoreCase(CAMATCH[c][0]))
                         behav=CAMATCH[c][1];
                 classSet.addElement(C,behav);
 	        }
@@ -431,9 +431,14 @@ public class CharGen extends StdCommand
                 String[] bestHitSkill=new String[]{""};
                 int[] bestIterScore=new int[]{Integer.MAX_VALUE};
                 String[] bestIterSkill=new String[]{""};
+                
+                int[] closeIterScore=new int[]{0};
+                String[] closeIterSkill=new String[]{""};
+                
                 int[] losses=new int[]{0};
                 long[] avgHits=new long[]{0};
                 int[] avgIters=new int[]{0};
+                int[] lossIters=new int[]{0};
                 
                 /*datum.addElements(new Object[]{
                         C,
@@ -446,6 +451,8 @@ public class CharGen extends StdCommand
                         bestIterSkill,
                         losses
                 });*/
+                int H1=0;
+                int H2=0;
 	            for(int tries=0;tries<TOTAL_ITERATIONS;tries++)
 	            {
 	                Behavior B=CMClass.getBehavior((String)classSet.elementAt(charClassDex,2));
@@ -468,7 +475,6 @@ public class CharGen extends StdCommand
 	                M1.recoverCharStats();
                     M1.recoverEnvStats();
                     M1.setLocation(R);
-	                M1.addBehavior(B);
 	                M1.baseCharStats().getMyRace().setHeightWeight(M1.baseEnvStats(),(char)M1.baseCharStats().getStat(CharStats.STAT_GENDER));
 	                M1.recoverCharStats();
 	                M1.recoverEnvStats();
@@ -485,6 +491,7 @@ public class CharGen extends StdCommand
 	                M1.recoverCharStats();
 	                M1.recoverEnvStats();
 	                M1.resetToMaxState();
+	                M1.addBehavior(B);
 	                equipPlayer(M1);
 	                M1.recoverMaxState();
 	                M1.recoverCharStats();
@@ -506,8 +513,8 @@ public class CharGen extends StdCommand
                     M2.recoverMaxState();
                     M2.resetToMaxState();
                     M2.bringToLife(M2.location(),true);
-                    M2.baseCharStats().getCurrentClass().fillOutMOB(M1,level);
-                    int hp=M2.baseCharStats().getCurrentClass().getLevelPlayerHP(M1);
+                    M2.baseCharStats().getCurrentClass().fillOutMOB(M2,level);
+                    int hp=M2.baseCharStats().getCurrentClass().getLevelPlayerHP(M2);
                     if(hp>M2.baseState().getHitPoints())
                         M2.baseState().setHitPoints(hp);
                     M2.setWimpHitPoint(0);
@@ -519,6 +526,9 @@ public class CharGen extends StdCommand
                     M1.setVictim(M2);
                     M2.setVictim(M1);
 	                
+                    H1=M1.curState().getHitPoints();
+                    H2=M2.curState().getHitPoints();
+                    
                     int iterations=0;
                     int cumScore=0;
                     long t1=System.currentTimeMillis();
@@ -546,22 +556,36 @@ public class CharGen extends StdCommand
                     if((System.currentTimeMillis()-t1)>=20000)
                         Log.errOut("CharGen",level+"/"+tries+"/"+iterations+"/"+B.getStat("LASTSPELL"));
                     else
-                    if(M1.amDead())
-                        losses[0]++;
-                    else
-                    if(M2.amDead())
+                    if(M1.amDead()||M2.amDead())
                     {
+                    	if(M1.amDead())
+                            losses[0]++;
                         avgHits[0]+=cumScore;
-                        avgIters[0]+=iterations;
+                        if(M1.amDead())
+                        	lossIters[0]+=iterations;
+                        else
+	                        avgIters[0]+=iterations;
                         if(cumScore>bestHitScore[0])
                         {
                             bestHitScore[0]=cumScore;
                             bestHitSkill[0]=B.getStat("RECORD");
                         }
-                        if(iterations<bestIterScore[0])
+                        if(M2.amDead())
                         {
-                            bestIterScore[0]=iterations;
-                            bestIterSkill[0]=B.getStat("RECORD");
+                        	if(!M1.amDead())
+	                        if(iterations<bestIterScore[0])
+	                        {
+	                            bestIterScore[0]=iterations;
+	                            bestIterSkill[0]=B.getStat("RECORD");
+	                        }
+                        }
+                        else
+                        {
+	                        if(iterations>closeIterScore[0])
+	                        {
+	                            closeIterScore[0]=iterations;
+	                            closeIterSkill[0]=B.getStat("RECORD");
+	                        }
                         }
                         if(failSkillCheck!=null)
                         {
@@ -594,10 +618,13 @@ public class CharGen extends StdCommand
 	            }
                 avgHits[0]/=TOTAL_ITERATIONS;
                 avgIters[0]/=TOTAL_ITERATIONS;
+                lossIters[0]/=TOTAL_ITERATIONS;
+                mob.tell("HITPOINTS: "+H1+" vs "+H2);
                 mob.tell("BEST ITER: "+bestIterScore[0]+": "+bestIterSkill[0]);
                 mob.tell("BEST HITS: "+bestHitScore[0]+": "+bestHitSkill[0]);
-                mob.tell("BEST ONE : "+bestSingleHitScore[0]+": "+bestSingleHitSkill[0]);
-                mob.tell("AVERAGES : HITS: "+avgHits[0]+", ITERS: "+avgIters[0]);
+                mob.tell("BEST HIT : "+bestSingleHitScore[0]+": "+bestSingleHitSkill[0]);
+                mob.tell("CLOS ITER: "+closeIterScore[0]+": "+closeIterSkill[0]);
+                mob.tell("AVERAGES : HITS: "+avgHits[0]+", LOSS ITERS: "+lossIters[0]+", WIN ITERS: "+avgIters[0]);
                 mob.tell("LOSSES   : "+losses[0]+"/"+TOTAL_ITERATIONS);
                 if((failSkillCheck!=null)&&(failSkillCheck.size()>0))
                 {

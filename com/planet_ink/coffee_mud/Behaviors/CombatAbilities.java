@@ -560,7 +560,8 @@ public class CombatAbilities extends StdBehavior
                 if(record!=null) 
                     record.append("!");
 			}
-			if(record!=null) record.append(tryThisOne.ID()).append("; ");
+			if(record!=null) 
+				record.append(tryThisOne.ID()).append("; ");
 		}
 		
 		// if a skill use failed, take a stab at wanding
