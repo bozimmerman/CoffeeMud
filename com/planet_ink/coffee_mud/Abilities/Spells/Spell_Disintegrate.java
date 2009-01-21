@@ -77,16 +77,17 @@ public class Spell_Disintegrate extends Spell
 
 		if(success)
 		{
+			Room R=mob.location();
 			CMMsg msg=CMClass.getMsg(mob,target,this,affectType,(auto?"":"^S<S-NAME> point(s) at <T-NAMESELF> and utter(s) a treacherous spell!^?")+CMProps.msp("spelldam2.wav",40));
-			if(mob.location().okMessage(mob,msg))
+			if((R!=null)&&(R.okMessage(mob,msg)))
 			{
-				mob.location().send(mob,msg);
+				R.send(mob,msg);
 				if(msg.value()<=0)
 				{
 					Hashtable V=new Hashtable();
-					for(int i=0;i<mob.location().numItems();i++)
+					for(int i=0;i<R.numItems();i++)
 					{
-						Item item=mob.location().fetchItem(i);
+						Item item=R.fetchItem(i);
 						if((item!=null)&&(item instanceof DeadBody))
 							V.put(item,item);
 					}
@@ -96,29 +97,29 @@ public class Spell_Disintegrate extends Spell
 						if(((MOB)target).curState().getHitPoints()>0)
 							CMLib.combat().postDamage(mob,(MOB)target,this,(((MOB)target).curState().getHitPoints()*10),CMMsg.MASK_ALWAYS|CMMsg.TYP_CAST_SPELL,Weapon.TYPE_BURSTING,"^SThe spell <DAMAGE> <T-NAME>!^?");
 						if(((MOB)target).amDead())
-							mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> disintegrate(s)!");
+							R.show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> disintegrate(s)!");
 						else
 							return false;
 					}
 					else
-						mob.location().show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> disintegrate(s)!");
+						R.show(mob,target,CMMsg.MSG_OK_ACTION,"<T-NAME> disintegrate(s)!");
 
 					if(target instanceof Item)
 						((Item)target).destroy();
 					else
 					{
 						int i=0;
-						while(i<mob.location().numItems())
+						while(i<R.numItems())
 						{
-							int s=mob.location().numItems();
-							Item item=mob.location().fetchItem(i);
+							int s=R.numItems();
+							Item item=R.fetchItem(i);
 							if((item!=null)&&(item instanceof DeadBody)&&(V.get(item)==null))
 								item.destroy();
-							if(s==mob.location().numItems())
+							if(s==R.numItems())
 								i++;
 						}
 					}
-					mob.location().recoverRoomStats();
+					R.recoverRoomStats();
 				}
 
 			}

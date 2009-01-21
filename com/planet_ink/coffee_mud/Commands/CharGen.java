@@ -45,8 +45,10 @@ public class CharGen extends StdCommand
 		for(int pos=0;pos<Item.WORN_CODES.length;pos++)
 		{
 			long wornCode=Item.WORN_CODES[pos];
-			if(wornCode == Item.IN_INVENTORY) continue;
-			if(wornCode == Item.WORN_HELD) continue;
+			if((wornCode == Item.IN_INVENTORY) 
+			|| (wornCode == Item.WORN_HELD)
+			|| (wornCode == Item.WORN_MOUTH)) 
+			 	continue;
 			if(wornCode==Item.WORN_WIELD)
 			{
 				Weapon W=CMClass.getWeapon("GenWeapon");
@@ -454,8 +456,14 @@ public class CharGen extends StdCommand
                 int H1=0;
                 int H2=0;
                 boolean playerExampleShown=false;
+                int lastPct=0;
 	            for(int tries=0;tries<TOTAL_ITERATIONS;tries++)
 	            {
+	            	if((CMath.div(tries,TOTAL_ITERATIONS)*100.0)>=lastPct+5)
+	            	{
+	            		lastPct+=5;
+	                    if(mob.session()!=null) mob.session().print(".");
+	            	}
 	                Behavior B=CMClass.getBehavior((String)classSet.elementAt(charClassDex,2));
                     B.setParms(C.ID());
 	                switch(roomRobin)
@@ -484,6 +492,7 @@ public class CharGen extends StdCommand
 	                M1.recoverMaxState();
 	                M1.resetToMaxState();
 	                M1.bringToLife(M1.location(),true);
+	                //CMLib.threads().deleteTick(M1,Tickable.TICKID_MOB);
 	                C.fillOutMOB(M1,level); // ill advised
 	                M1.baseEnvStats().setSpeed(1.0);
 	                M1.baseEnvStats().setArmor(100);
@@ -494,8 +503,13 @@ public class CharGen extends StdCommand
 	                M1.recoverCharStats();
 	                M1.recoverEnvStats();
 	                M1.resetToMaxState();
+                    B.setStat("PRECAST","1");
 	                M1.addBehavior(B);
 	                equipPlayer(M1);
+	                for(int a=0;a<M1.numAbilities();a++)
+	                	M1.fetchAbility(a).setProficiency(100);
+	                for(int a=0;a<M1.numEffects();a++)
+	                	M1.fetchEffect(a).setProficiency(100);
 	                M1.recoverMaxState();
 	                M1.recoverCharStats();
 	                M1.recoverEnvStats();
@@ -503,8 +517,9 @@ public class CharGen extends StdCommand
                     B.setStat("PROF","true");
                     B.setStat("LASTSPELL","");
                     B.setStat("PRECAST","1");
-                    for(int i=0;i<10;i++) // give some pre-cast ticks
+                    for(int i=0;i<20;i++) // give some pre-cast ticks
                     	M1.tick(M1,Tickable.TICKID_MOB);
+	                M1.resetToMaxState();
 	                
                     MOB M2=CMClass.getMOB("StdMOB");  // MOB stat
                     M2.baseCharStats().setMyRace(CMClass.getRace("Human"));
@@ -519,6 +534,7 @@ public class CharGen extends StdCommand
                     M2.recoverMaxState();
                     M2.resetToMaxState();
                     M2.bringToLife(M2.location(),true);
+	                //CMLib.threads().deleteTick(M1,Tickable.TICKID_MOB);
                     M2.baseCharStats().getCurrentClass().fillOutMOB(M2,level);
                     int hp=M2.baseCharStats().getCurrentClass().getLevelPlayerHP(M2);
                     if(hp>M2.baseState().getHitPoints())
@@ -539,6 +555,11 @@ public class CharGen extends StdCommand
             			StringBuffer msg=CMLib.commands().getScore(M1);
             			if(!mob.isMonster())
             				mob.session().wraplessPrintln(msg.toString());
+                        if(mob.session()!=null)
+                        {
+	            			mob.session().println(M1.name()+" has "+B.ID()+" behavior for "+M1.numAbilities()+" abilities.");
+                        	mob.session().print("Working..");
+                        }
                     }
                     
                     H1=M1.curState().getHitPoints();
@@ -634,6 +655,7 @@ public class CharGen extends StdCommand
                 avgHits[0]/=TOTAL_ITERATIONS;
                 avgIters[0]/=TOTAL_ITERATIONS;
                 lossIters[0]/=TOTAL_ITERATIONS;
+                if(mob.session()!=null) mob.session().println("!");
                 mob.tell("HITPOINTS: "+H1+" vs "+H2);
                 mob.tell("BEST ITER: "+bestIterScore[0]+": "+bestIterSkill[0]);
                 mob.tell("BEST HITS: "+bestHitScore[0]+": "+bestHitSkill[0]);
