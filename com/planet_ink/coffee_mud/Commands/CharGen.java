@@ -453,6 +453,7 @@ public class CharGen extends StdCommand
                 });*/
                 int H1=0;
                 int H2=0;
+                boolean playerExampleShown=false;
 	            for(int tries=0;tries<TOTAL_ITERATIONS;tries++)
 	            {
 	                Behavior B=CMClass.getBehavior((String)classSet.elementAt(charClassDex,2));
@@ -476,6 +477,8 @@ public class CharGen extends StdCommand
                     M1.recoverEnvStats();
                     M1.setLocation(R);
 	                M1.baseCharStats().getMyRace().setHeightWeight(M1.baseEnvStats(),(char)M1.baseCharStats().getStat(CharStats.STAT_GENDER));
+	                for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+	                	M1.baseCharStats().setStat(i,15+C.maxStatAdjustments()[i]);
 	                M1.recoverCharStats();
 	                M1.recoverEnvStats();
 	                M1.recoverMaxState();
@@ -499,6 +502,9 @@ public class CharGen extends StdCommand
                     B.setStat("RECORD"," ");
                     B.setStat("PROF","true");
                     B.setStat("LASTSPELL","");
+                    B.setStat("PRECAST","1");
+                    for(int i=0;i<10;i++) // give some pre-cast ticks
+                    	M1.tick(M1,Tickable.TICKID_MOB);
 	                
                     MOB M2=CMClass.getMOB("StdMOB");  // MOB stat
                     M2.baseCharStats().setMyRace(CMClass.getRace("Human"));
@@ -526,6 +532,15 @@ public class CharGen extends StdCommand
                     M1.setVictim(M2);
                     M2.setVictim(M1);
 	                
+                    
+                    if(!playerExampleShown)
+                    {
+                    	playerExampleShown=true;
+            			StringBuffer msg=CMLib.commands().getScore(M1);
+            			if(!mob.isMonster())
+            				mob.session().wraplessPrintln(msg.toString());
+                    }
+                    
                     H1=M1.curState().getHitPoints();
                     H2=M2.curState().getHitPoints();
                     

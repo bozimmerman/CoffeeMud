@@ -46,6 +46,7 @@ public class Bardness extends CombatAbilities
 		makeClass(mob,getParmsMinusCombatMode(),"Bard");
 		newCharacter(mob);
 		//%%%%%att,armor,damage,hp,mana,move
-		setCombatStats(mob,-25,-25,-25,-40,0,0);
+		if((preCastSet==Integer.MAX_VALUE)||(preCastSet<=0))
+			setCombatStats(mob,-25,-25,-25,-40,0,0);
 	}
 }

@@ -752,7 +752,10 @@ public class StdCharClass implements CharClass
     public int getLevelPlayerHP(MOB mob)
     {
         int hp=CMProps.getIntVar(CMProps.SYSTEMI_STARTHP);
-        int newHitPointGain=(int)Math.floor(CMath.div(10,this.getHPDivisor())+(this.getHPDice()*this.getHPDie()/2));
+        int con=10;
+        if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)>10)
+        	con=mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION);
+        int newHitPointGain=(int)Math.floor(CMath.div(con,this.getHPDivisor())+(this.getHPDice()*this.getHPDie()/2));
         return hp+((mob.envStats().level()-1)*newHitPointGain);
     }
 

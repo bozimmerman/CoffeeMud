@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.exceptions.CMException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -43,6 +44,8 @@ public class CombatAbilities extends StdBehavior
 	public Vector skillsAlways=null;
 	protected boolean[] wandUseCheck={false,false};
 	protected boolean proficient=false;
+	protected int preCastSet=Integer.MAX_VALUE;
+	protected int preCastDown=Integer.MAX_VALUE;
 	protected String lastSpell="";
 	protected StringBuffer record=null;
 
@@ -242,8 +245,6 @@ public class CombatAbilities extends StdBehavior
 		super.executeMsg(host,msg);
 	}
 	
-	
-	
 	public void startBehavior(Environmental forMe)
 	{
 		super.startBehavior(forMe);
@@ -273,6 +274,174 @@ public class CombatAbilities extends StdBehavior
 		if(skillsNever!=null) skillsNever.trimToSize();
 	}
 
+	protected boolean isRightCombatAbilities(MOB mob)
+	{
+        // insures we only try this once!
+		Behavior B;
+        for(int b=0;b<mob.numBehaviors();b++)
+        {
+            B=mob.fetchBehavior(b);
+            if((B==null)||(B==this))
+            	return true;
+            else
+            if(B instanceof CombatAbilities)
+                return false;
+        }
+        return true;
+	}
+
+	protected Ability useSkill(MOB mob, MOB victim, MOB leader) throws CMException
+	{
+		int tries=0;
+		Ability tryThisOne=null;
+		// now find a skill to use
+		Ability A=null;
+		
+
+		MOB target = null;
+        int victimQuality=Ability.QUALITY_INDIFFERENT;
+        int selfQuality=Ability.QUALITY_INDIFFERENT;
+        int leaderQuality=Ability.QUALITY_INDIFFERENT;
+		while((tryThisOne==null)&&((++tries)<100)&&(mob.numAbilities()>0))
+		{
+			A=mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
+			
+            if((A==null)
+            ||(A.isAutoInvoked())
+            ||(A.triggerStrings()==null)
+            ||(A.triggerStrings().length==0)
+            ||((skillsAlways!=null)&&(!skillsAlways.contains(A.ID())))
+            ||((skillsNever!=null)&&(skillsNever.contains(A.ID()))))
+                continue;
+            
+			victimQuality=(victim!=null)?A.castingQuality(mob,victim):Ability.QUALITY_INDIFFERENT;
+            selfQuality=A.castingQuality(mob,mob);
+            leaderQuality=((mob==leader)||(leader==null))?Ability.QUALITY_INDIFFERENT:A.castingQuality(mob,leader);
+
+			if(victimQuality==Ability.QUALITY_MALICIOUS)
+			{
+				switch(combatMode)
+				{
+				case COMBAT_RANDOM:
+	                tryThisOne=A;
+					break;
+				case COMBAT_DEFENSIVE:
+					if(CMLib.dice().rollPercentage()<=5)
+		                tryThisOne=A;
+					break;
+				case COMBAT_OFFENSIVE:
+	                tryThisOne=A;
+					break;
+				case COMBAT_MIXEDOFFENSIVE:
+					if(CMLib.dice().rollPercentage()<=75)
+		                tryThisOne=A;
+					break;
+				case COMBAT_MIXEDDEFENSIVE:
+					if(CMLib.dice().rollPercentage()<=25)
+		                tryThisOne=A;
+					break;
+				}
+			}
+			else
+            if((selfQuality==Ability.QUALITY_BENEFICIAL_SELF)
+            ||(leaderQuality==Ability.QUALITY_BENEFICIAL_OTHERS))
+			{
+				switch(combatMode)
+				{
+				case COMBAT_RANDOM:
+	                tryThisOne=A;
+					break;
+				case COMBAT_DEFENSIVE:
+	                tryThisOne=A;
+					break;
+				case COMBAT_OFFENSIVE:
+					if(CMLib.dice().rollPercentage()<=5)
+		                tryThisOne=A;
+					break;
+				case COMBAT_MIXEDOFFENSIVE:
+					if(CMLib.dice().rollPercentage()<=25)
+		                tryThisOne=A;
+					break;
+				case COMBAT_MIXEDDEFENSIVE:
+					if(CMLib.dice().rollPercentage()<=75)
+		                tryThisOne=A;
+					break;
+				}
+			}
+			target=victim;
+			if(selfQuality==Ability.QUALITY_BENEFICIAL_SELF)
+			    target=mob;
+			else
+			if(leaderQuality==Ability.QUALITY_BENEFICIAL_OTHERS)
+			    target=((leader==null)||(mob.location()!=leader.location()))?mob:leader;
+			if((target != null) && (tryThisOne != null) && (target.fetchEffect(tryThisOne.ID())!=null))
+				tryThisOne = null;
+		}
+
+		if(tryThisOne!=null)
+		{
+			if(CMath.bset(tryThisOne.usageType(),Ability.USAGE_MANA))
+			{
+				if((Math.random()>CMath.div(mob.curState().getMana(), mob.maxState().getMana()))
+                ||(mob.curState().getMana() < tryThisOne.usageCost(mob,false)[0]))
+				{
+                   if((CMLib.dice().rollPercentage()>30)
+				   ||(CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMETIME)<=0)
+				   ||((mob.amFollowing()!=null)&&(!mob.amFollowing().isMonster())))
+                	   throw new CMException("Not enough mana");
+				   mob.curState().adjMana(tryThisOne.usageCost(mob,false)[0],mob.maxState());
+				}
+				mob.curState().adjMana(5,mob.maxState());
+			}
+			if(CMath.bset(tryThisOne.usageType(),Ability.USAGE_MOVEMENT))
+			{
+				if((Math.random()>CMath.div(mob.curState().getMovement(),mob.maxState().getMovement()))
+				||(mob.curState().getMovement()<tryThisOne.usageCost(mob,false)[1]))
+             	   throw new CMException("Not enough movement");
+				mob.curState().adjMovement(5,mob.maxState());
+			}
+			if(CMath.bset(tryThisOne.usageType(),Ability.USAGE_HITPOINTS))
+			{
+				if((Math.random()>CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()))
+				   ||(mob.curState().getHitPoints()<tryThisOne.usageCost(mob,false)[2]))
+	             	   throw new CMException("Not enough hp");
+			}
+			
+			if(proficient)
+                tryThisOne.setProficiency(100);
+			else
+			{
+				int qualLevel=CMLib.ableMapper().qualifyingLevel(mob,tryThisOne);
+				if(qualLevel<=0)
+	                tryThisOne.setProficiency(75);
+				else
+				{
+					int levelDiff=mob.baseEnvStats().level()-qualLevel;
+					if((levelDiff>50)||(levelDiff<0)) levelDiff=50;
+					tryThisOne.setProficiency(50+levelDiff);
+				}
+			}
+			Vector V=new Vector();
+			V.addElement(target.name());
+			if(lastSpell!=null)
+			    lastSpell=tryThisOne.ID();
+			boolean skillUsed=true;
+			if(tryThisOne.invoke(mob,V,null,false,0))
+			    skillUsed=true;
+			else
+			{
+	            if(lastSpell!=null)
+    	            lastSpell="!"+tryThisOne.ID();
+                if(record!=null) 
+                    record.append("!");
+			}
+			if(record!=null) 
+				record.append(tryThisOne.ID()).append("; ");
+			return skillUsed?tryThisOne:null;
+		}
+		return null;
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		super.tick(ticking,tickID);
@@ -289,23 +458,24 @@ public class CombatAbilities extends StdBehavior
 		if(!mob.isInCombat())
 		{ 
 		    if(aggro!=null)
-		        aggro=null; 
+		        aggro=null;
+		    if((preCastSet < Integer.MAX_VALUE) && (preCastSet >0) && ((--preCastDown)>=0))
+		    {
+		    	preCastDown=preCastSet;
+				if(!isRightCombatAbilities(mob))
+					return true;
+				try {
+					useSkill(mob,null,null);
+				} catch(CMException cme){}
+		    }
 		    return true;
 		}
 		MOB victim=mob.getVictim();
 		if(victim==null) return true;
 		
         // insures we only try this once!
-		Behavior B;
-        for(int b=0;b<mob.numBehaviors();b++)
-        {
-            B=mob.fetchBehavior(b);
-            if((B==null)||(B==this))
-                break;
-            else
-            if(B instanceof CombatAbilities)
-                return true;
-        }
+		if(!isRightCombatAbilities(mob))
+			return true;
 
         Room R=mob.location();
         if((lastSpell!=null)&&(lastSpell.length()>0))
@@ -419,151 +589,13 @@ public class CombatAbilities extends StdBehavior
 		if(victim==null) return true;
 		
 		MOB leader=mob.amFollowing();
-		// now find a skill to use
-		int tries=0;
-		Ability tryThisOne=null;
-		Ability A=null;
-
-        int victimQuality=Ability.QUALITY_INDIFFERENT;
-        int selfQuality=Ability.QUALITY_INDIFFERENT;
-        int leaderQuality=Ability.QUALITY_INDIFFERENT;
-		while((tryThisOne==null)&&((++tries)<100)&&(mob.numAbilities()>0))
-		{
-			A=mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
-			
-            if((A==null)
-            ||(A.isAutoInvoked())
-            ||(A.triggerStrings()==null)
-            ||(A.triggerStrings().length==0)
-            ||((skillsAlways!=null)&&(!skillsAlways.contains(A.ID())))
-            ||((skillsNever!=null)&&(skillsNever.contains(A.ID()))))
-                continue;
-            
-			victimQuality=A.castingQuality(mob,victim);
-            selfQuality=A.castingQuality(mob,mob);
-            leaderQuality=((mob==leader)||(leader==null))?Ability.QUALITY_INDIFFERENT:A.castingQuality(mob,leader);
-
-			if(victimQuality==Ability.QUALITY_MALICIOUS)
-			{
-				switch(combatMode)
-				{
-				case COMBAT_RANDOM:
-	                tryThisOne=A;
-					break;
-				case COMBAT_DEFENSIVE:
-					if(CMLib.dice().rollPercentage()<=5)
-		                tryThisOne=A;
-					break;
-				case COMBAT_OFFENSIVE:
-	                tryThisOne=A;
-					break;
-				case COMBAT_MIXEDOFFENSIVE:
-					if(CMLib.dice().rollPercentage()<=75)
-		                tryThisOne=A;
-					break;
-				case COMBAT_MIXEDDEFENSIVE:
-					if(CMLib.dice().rollPercentage()<=25)
-		                tryThisOne=A;
-					break;
-				}
-			}
-			else
-            if((selfQuality==Ability.QUALITY_BENEFICIAL_SELF)
-            ||(leaderQuality==Ability.QUALITY_BENEFICIAL_OTHERS))
-			{
-				switch(combatMode)
-				{
-				case COMBAT_RANDOM:
-	                tryThisOne=A;
-					break;
-				case COMBAT_DEFENSIVE:
-	                tryThisOne=A;
-					break;
-				case COMBAT_OFFENSIVE:
-					if(CMLib.dice().rollPercentage()<=5)
-		                tryThisOne=A;
-					break;
-				case COMBAT_MIXEDOFFENSIVE:
-					if(CMLib.dice().rollPercentage()<=25)
-		                tryThisOne=A;
-					break;
-				case COMBAT_MIXEDDEFENSIVE:
-					if(CMLib.dice().rollPercentage()<=75)
-		                tryThisOne=A;
-					break;
-				}
-			}
-		}
-
-		boolean skillUsed=true;
-		if(tryThisOne!=null)
-		{
-			if(CMath.bset(tryThisOne.usageType(),Ability.USAGE_MANA))
-			{
-				if((Math.random()>CMath.div(mob.curState().getMana(), mob.maxState().getMana()))
-                ||(mob.curState().getMana() < tryThisOne.usageCost(mob,false)[0]))
-				{
-                   if((CMLib.dice().rollPercentage()>30)
-				   ||(CMProps.getIntVar(CMProps.SYSTEMI_MANACONSUMETIME)<=0)
-				   ||((mob.amFollowing()!=null)&&(!mob.amFollowing().isMonster())))
-                        return true;
-				   mob.curState().adjMana(tryThisOne.usageCost(mob,false)[0],mob.maxState());
-				}
-				mob.curState().adjMana(5,mob.maxState());
-			}
-			if(CMath.bset(tryThisOne.usageType(),Ability.USAGE_MOVEMENT))
-			{
-				if((Math.random()>CMath.div(mob.curState().getMovement(),mob.maxState().getMovement()))
-				||(mob.curState().getMovement()<tryThisOne.usageCost(mob,false)[1]))
-					return true;
-				mob.curState().adjMovement(5,mob.maxState());
-			}
-			if(CMath.bset(tryThisOne.usageType(),Ability.USAGE_HITPOINTS))
-			{
-				if((Math.random()>CMath.div(mob.curState().getHitPoints(),mob.maxState().getHitPoints()))
-				   ||(mob.curState().getHitPoints()<tryThisOne.usageCost(mob,false)[2]))
-					return true;
-			}
-
-			MOB target=victim;
-			if(selfQuality==Ability.QUALITY_BENEFICIAL_SELF)
-			    target=mob;
-			else
-			if(leaderQuality==Ability.QUALITY_BENEFICIAL_OTHERS)
-			    target=((leader==null)||(mob.location()!=leader.location()))?mob:leader;
-	        
-
-			if(proficient)
-                tryThisOne.setProficiency(100);
-			else
-			{
-				int qualLevel=CMLib.ableMapper().qualifyingLevel(mob,tryThisOne);
-				if(qualLevel<=0)
-	                tryThisOne.setProficiency(75);
-				else
-				{
-					int levelDiff=mob.baseEnvStats().level()-qualLevel;
-					if((levelDiff>50)||(levelDiff<0)) levelDiff=50;
-					tryThisOne.setProficiency(50+levelDiff);
-				}
-			}
-			Vector V=new Vector();
-			V.addElement(target.name());
-			if(lastSpell!=null)
-			    lastSpell=tryThisOne.ID();
-			if(tryThisOne.invoke(mob,V,null,false,0))
-			    skillUsed=true;
-			else
-			{
-	            if(lastSpell!=null)
-    	            lastSpell="!"+tryThisOne.ID();
-                if(record!=null) 
-                    record.append("!");
-			}
-			if(record!=null) 
-				record.append(tryThisOne.ID()).append("; ");
-		}
 		
+		boolean skillUsed=false;
+		try {
+			skillUsed=useSkill(mob, victim, leader)!=null;
+		} catch(CMException cme) { return true;}
+		
+		Ability A=null;
 		// if a skill use failed, take a stab at wanding
 		if((!skillUsed)
         &&(wandUseCheck[1])
@@ -613,12 +645,13 @@ public class CombatAbilities extends StdBehavior
         if(CombatAbilities.CODES==null)
         {
             String[] superCodes=super.getStatCodes();
-            CODES=new String[superCodes.length+3];
+            CODES=new String[superCodes.length+4];
             for(int c=0;c<superCodes.length;c++)
                 CODES[c]=superCodes[c];
-            CODES[CODES.length-3]="RECORD";
-            CODES[CODES.length-2]="PROF";
-            CODES[CODES.length-1]="LASTSPELL";
+            CODES[CODES.length-4]="RECORD";
+            CODES[CODES.length-3]="PROF";
+            CODES[CODES.length-2]="LASTSPELL";
+            CODES[CODES.length-1]="PRECAST";
         }
         return CODES;
     }
@@ -638,6 +671,7 @@ public class CombatAbilities extends StdBehavior
         case 0: return (record==null)?"":record.toString();
         case 1: return Boolean.toString(proficient);
         case 2: return lastSpell!=null?lastSpell:"";
+        case 3: return Integer.toString(preCastSet);
         }
         return "";
     }
@@ -661,6 +695,10 @@ public class CombatAbilities extends StdBehavior
         case 2:
             lastSpell=val;
             break;
+        case 3:
+        	preCastSet=CMath.s_int(val);
+        	preCastDown=CMath.s_int(val);
+        	break;
         }
     }
 }
