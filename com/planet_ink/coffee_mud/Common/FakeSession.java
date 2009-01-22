@@ -1,19 +1,36 @@
 package com.planet_ink.coffee_mud.Common;
 
+import java.io.ByteArrayOutputStream;
 import java.net.Socket;
 import java.util.Vector;
 import com.planet_ink.coffee_mud.Common.interfaces.Session;
 import com.planet_ink.coffee_mud.MOBS.interfaces.MOB;
 import com.planet_ink.coffee_mud.core.CMClass;
 import com.planet_ink.coffee_mud.core.CMFile;
+import com.planet_ink.coffee_mud.core.Log;
 import com.planet_ink.coffee_mud.core.interfaces.CMObject;
 import com.planet_ink.coffee_mud.core.interfaces.Environmental;
 import com.planet_ink.coffee_mud.core.interfaces.Tickable;
+/* 
+Copyright 2000-2008 Bo Zimmerman
 
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+See the License for the specific language governing permissions and
+limitations under the License.
+*/
 @SuppressWarnings("unchecked")
 public class FakeSession implements Session
 {
     CMFile theFile=null;
+    ByteArrayOutputStream bout=null;
     MOB mob = null;
     Vector inputV = new Vector();
     
@@ -23,7 +40,13 @@ public class FakeSession implements Session
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public long getTickStatus(){return 0;}
-    public void initializeSession(Socket s, String introTextStr){ theFile = new CMFile(introTextStr,null,true); }
+    public void initializeSession(Socket s, String introTextStr)
+    {
+    	if(introTextStr.equalsIgnoreCase("MEMORY"))
+    		bout=new ByteArrayOutputStream();
+    	else
+	    	theFile = new CMFile(introTextStr,null,true); 
+    }
     public boolean isLockedUpWriting(){return false;}
     public void initializeClass(){}
     public void start(){}
@@ -38,6 +61,16 @@ public class FakeSession implements Session
             {
                 theFile.saveText(msg,true);
             }
+        }
+        if(bout != null) {
+        	synchronized(bout)
+        	{
+        		try {
+	        		bout.write(msg.getBytes());
+        		} catch(Exception e) {
+        			Log.errOut("FakeSession",e);
+        		}
+        	}
         }
     }
     public void onlyPrint(String msg){ onlyPrint(msg,false); }
@@ -109,7 +142,11 @@ public class FakeSession implements Session
     
     public boolean afkFlag(){return false;}
     public void setAfkFlag(boolean truefalse){}
-    public String afkMessage(){return "";}
+    public String afkMessage(){
+    	if(bout!=null)
+    		return new String(bout.toByteArray());
+    	return "";
+    }
     public void setAFKMessage(String str){}
     
     public Vector previousCMD() { return inputV;}
