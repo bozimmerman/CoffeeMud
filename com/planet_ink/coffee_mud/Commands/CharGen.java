@@ -564,7 +564,7 @@ public class CharGen extends StdCommand
                     B1.setStat("PHYSDAMTAKEN","0");
                     B2.setStat("PHYSDAMTAKEN","0");
                     int zeroCheck=0;
-                    MOB[] ZEROMOBS=null;
+                    //MOB[] ZEROMOBS=null;
                     String ZEROSKILL1=null;
                     String ZEROSKILL2=null;
                     String ALMOSTZEROSKILL=null;
@@ -586,18 +586,28 @@ public class CharGen extends StdCommand
                         
                         int h=h2-(M2.amDead()?0:M2.curState().getHitPoints());
                         h=h-(h1-(M1.amDead()?0:M1.curState().getHitPoints()));
-                        if(h==0)
+                        if((h==0)&&((!M1.amDead())&&(!M2.amDead())))
                         {
                         	zeroCheck++;
                         	if(zeroCheck==1)
                         	{
-                        		ZEROMOBS=new MOB[]{(MOB)M1.copyOf(),(MOB)M2.copyOf()};
+                        		//ZEROMOBS=new MOB[]{(MOB)M1.copyOf(),(MOB)M2.copyOf()};
                         		ZEROSKILL1=ALMOSTZEROSKILL;
                         		ZEROSKILL2=B1.getStat("LASTSPELL");
                         	}
-                            if(zeroCheck==100)
+                        	else
+                            if(zeroCheck==20)
                             	Log.errOut("CharGen","Stale combat warning: "+ZEROSKILL1+"/"+ZEROSKILL2);
+                            else
+                            if(zeroCheck==100)
+                            {
+                            	
+                                Log.errOut("CharGen","Stale Combat Abort: "+level+"/"+tries+"/"+iterations+"/"+ZEROSKILL1+"/"+ZEROSKILL2);
+                                break;
+                            }
                         }
+                        else
+                        	zeroCheck=0;
                         if(h>bestSingleHitScore[0])
                         {
                             bestSingleHitScore[0]=h;
