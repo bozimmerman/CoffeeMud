@@ -198,6 +198,7 @@ public class StdArea implements Area
     {
         envStats=(EnvStats)CMClass.getCommon("DefaultEnvStats");
         baseEnvStats=envStats;
+        amDestroyed=true;
         miscText=null;
         imageName=null;
         affects=null;
@@ -217,7 +218,6 @@ public class StdArea implements Area
         climateObj=null;
         properRoomIDSet=null;
         metroRoomIDSet=null;
-        amDestroyed=true;
     }
     public boolean amDestroyed(){return amDestroyed;}
     public boolean savable(){return ((!amDestroyed) && (!CMath.bset(flags(),Area.FLAG_INSTANCE_CHILD)));}

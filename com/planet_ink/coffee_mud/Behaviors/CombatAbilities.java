@@ -46,8 +46,9 @@ public class CombatAbilities extends StdBehavior
 	protected boolean proficient=false;
 	protected int preCastSet=Integer.MAX_VALUE;
 	protected int preCastDown=Integer.MAX_VALUE;
-	protected String lastSpell="";
+	protected String lastSpell=null;
 	protected StringBuffer record=null;
+	protected int physicalDamageTaken=0;
 
 	public final static int COMBAT_RANDOM=0;
 	public final static int COMBAT_DEFENSIVE=1;
@@ -207,6 +208,8 @@ public class CombatAbilities extends StdBehavior
 			&&(msg.value()>0)
 			&&(msg.source()!=mob))
 			{
+				if((msg.tool()==null)||(msg.tool() instanceof Item))
+					physicalDamageTaken+=msg.value();
 				if(msg.target()==host)
 					adjustAggro(msg.source(),msg.value()*2);
 				else
@@ -423,11 +426,13 @@ public class CombatAbilities extends StdBehavior
 			}
 			Vector V=new Vector();
 			V.addElement(target.name());
-			if(lastSpell!=null)
-			    lastSpell=tryThisOne.ID();
 			boolean skillUsed=true;
 			if(tryThisOne.invoke(mob,V,null,false,0))
+			{
 			    skillUsed=true;
+				if(lastSpell!=null)
+				    lastSpell=tryThisOne.ID();
+			}
 			else
 			{
 	            if(lastSpell!=null)
@@ -645,13 +650,14 @@ public class CombatAbilities extends StdBehavior
         if(CombatAbilities.CODES==null)
         {
             String[] superCodes=super.getStatCodes();
-            CODES=new String[superCodes.length+4];
+            CODES=new String[superCodes.length+5];
             for(int c=0;c<superCodes.length;c++)
                 CODES[c]=superCodes[c];
-            CODES[CODES.length-4]="RECORD";
-            CODES[CODES.length-3]="PROF";
-            CODES[CODES.length-2]="LASTSPELL";
-            CODES[CODES.length-1]="PRECAST";
+            CODES[CODES.length-5]="RECORD";
+            CODES[CODES.length-4]="PROF";
+            CODES[CODES.length-3]="LASTSPELL";
+            CODES[CODES.length-2]="PRECAST";
+            CODES[CODES.length-1]="PHYSDAMTAKEN";
         }
         return CODES;
     }
@@ -672,6 +678,7 @@ public class CombatAbilities extends StdBehavior
         case 1: return Boolean.toString(proficient);
         case 2: return lastSpell!=null?lastSpell:"";
         case 3: return Integer.toString(preCastSet);
+        case 4: return Integer.toString(physicalDamageTaken);
         }
         return "";
     }
@@ -698,6 +705,9 @@ public class CombatAbilities extends StdBehavior
         case 3:
         	preCastSet=CMath.s_int(val);
         	preCastDown=CMath.s_int(val);
+        	break;
+        case 4:
+        	physicalDamageTaken=CMath.s_int(val);
         	break;
         }
     }
