@@ -469,7 +469,11 @@ public class CharGen extends StdCommand
 	                R.setArea(A);
 	                A.getTimeObj().setTimeOfDay(CMLib.dice().roll(1,A.getTimeObj().getHoursInDay(),-1));
 	                
+	                //Session S=(Session)CMClass.getCommon("FakeSession");
+	                //S.initializeSession(null,"MEMORY");
 	                MOB M1=CMClass.getMOB("StdMOB");  // player stats
+	                //M1.setSession(S);
+	                //S.setMob(M1);
 	                M1.baseEnvStats().setLevel(level);
                     M1.baseCharStats().setMyRace(CMClass.getRace("Human"));
 	                M1.setName("GOODGUY");
@@ -581,6 +585,8 @@ public class CharGen extends StdCommand
                         int h1=M1.curState().getHitPoints();
                         int h2=M2.curState().getHitPoints();
                         int l1=CMath.s_int(B2.getStat("PHYSDAMTAKEN"));
+                    	CMLib.commands().postStand(M1,true);
+                    	CMLib.commands().postStand(M2,true);
                         M1.tick(M1,Tickable.TICKID_MOB);
                         M2.tick(M2,Tickable.TICKID_MOB);
                         
@@ -603,6 +609,7 @@ public class CharGen extends StdCommand
                             {
                             	
                                 Log.errOut("CharGen","Stale Combat Abort: "+level+"/"+tries+"/"+iterations+"/"+ZEROSKILL1+"/"+ZEROSKILL2);
+                                //Log.errOut("CharGen",S.afkMessage());
                                 break;
                             }
                         }
