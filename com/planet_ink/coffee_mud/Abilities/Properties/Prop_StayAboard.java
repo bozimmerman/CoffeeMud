@@ -47,6 +47,46 @@ public class Prop_StayAboard extends Property
     	}
     }
     
+    public boolean tick(Tickable ticking, int tickID)
+    {
+    	if(!super.tick(ticking, tickID))
+    		return false;
+    	synchronized(this)
+    	{
+    		if(noRepeat) return true;
+    		try {
+	    		noRepeat=true;
+		    	if((tickID==Tickable.TICKID_MOB)
+		    	&&(ticking instanceof Rider)
+		    	&&(ticking instanceof MOB)
+		    	&&(rideable!=null))
+		    		stayAboard((Rider)ticking);
+    		} finally {
+    			noRepeat=false;
+    		}
+    	}
+    	return true;
+    }
+    
+    public void stayAboard(Rider R)
+    {
+		Room rideR=CMLib.map().roomLocation(rideable);
+		if((rideR!=null)
+		&&((CMLib.map().roomLocation(R)!=rideR)
+			||(R.riding()!=rideable)))
+		{
+			if(R.riding()!=null)
+				R.setRiding(null);
+			if(CMLib.map().roomLocation(R)!=rideR)
+				if(R instanceof Item)
+					rideR.bringItemHere((Item)R,-1,true);
+				else
+				if(R instanceof MOB)
+					rideR.bringMobHere((MOB)R,true);
+			R.setRiding(rideable);
+		}
+    }
+    
     public void affectEnvStats(Environmental E, EnvStats affectableStats)
     {
     	super.affectEnvStats(E, affectableStats);
@@ -62,22 +102,8 @@ public class Prop_StayAboard extends Property
 		    		if(!CMLib.flags().isInTheGame(rideable,true))
 		    			rideable=null;
 		    		else
-		    		{
-		    			Room rideR=CMLib.map().roomLocation(rideable);
-			    		if((CMLib.map().roomLocation(E)!=rideR)
-			    		||(((Rider)E).riding()!=rideable))
-			    		{
-			    			if(((Rider)E).riding()!=null)
-			    				((Rider)E).setRiding(null);
-			    			if(CMLib.map().roomLocation(E)!=rideR)
-			    				if(E instanceof Item)
-			    					rideR.bringItemHere((Item)E,-1,true);
-			    				else
-			    				if(E instanceof MOB)
-			    					rideR.bringMobHere((MOB)E,true);
-			    			((Rider)E).setRiding(rideable);
-			    		}
-		    		}
+		    		if(E instanceof Item)
+		    			stayAboard((Rider)E);
     		} finally {
     			noRepeat=false;
     		}
