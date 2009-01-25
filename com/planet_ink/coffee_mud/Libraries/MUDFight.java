@@ -977,10 +977,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
     public void handleObserveDeath(MOB observer, MOB fighting, CMMsg msg)
     {
+        Room R=observer.location();
         MOB deadmob=msg.source();
-        if(fighting==deadmob)
+        if((fighting==deadmob)&&(R!=null))
         {
-            Room R=observer.location();
             MOB newTargetM=null;
             HashSet hisGroupH=deadmob.getGroupMembers(new HashSet());
             HashSet myGroupH=observer.getGroupMembers(new HashSet());
