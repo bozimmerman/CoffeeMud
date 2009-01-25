@@ -45,7 +45,7 @@ public class Shell extends StdCommand
             {">","COPY","CP"},
             {".","CHANGEDIRECTORY","CD","GO"},
             {"-","DELETE","RM","RD"},
-            {"\\","TYPE","TP"},
+            {"\\","TYPE","CAT","TP"},
             {"+","MAKEDIRECTORY","MKDIR","MD"},
             {"*","FINDFILE","FF"},
             {"&","SEARCHTEXT","GREP","ST"},
