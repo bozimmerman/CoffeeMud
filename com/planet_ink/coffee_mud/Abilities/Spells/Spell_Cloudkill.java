@@ -116,10 +116,10 @@ public class Spell_Cloudkill extends Spell
 						damage = (int)Math.round(CMath.div(damage,2.0));
 
 					if(damage<=0) damage=1;
-					if((target.location()==mob.location())
-					&&(target.charStats().getBodyPart(Race.BODY_LEG)>0))
+					if(target.location()==mob.location())
 					{
-						maliciousAffect(mob,target,asLevel,2,-1);
+						if(target.charStats().getBodyPart(Race.BODY_LEG)>0)
+							maliciousAffect(mob,target,asLevel,2,-1);
 						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>. <T-NAME> collapse(s)!");
 					}
 				}
