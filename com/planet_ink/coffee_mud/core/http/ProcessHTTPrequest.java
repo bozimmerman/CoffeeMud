@@ -915,6 +915,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			headersOnly = false;
 
 			virtualPage = false;
+			sock.setSoTimeout(10000);
             String totalRequest=getHTTPRequest(sock.getInputStream());
 			boolean processOK = process(totalRequest);
 
@@ -1261,14 +1262,15 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 						String s=new String(out.toByteArray());
 						out=new ByteArrayOutputStream();
 						data.addElement(s);
-                        if(s.startsWith("GET ")) return data;
+                        if(s.startsWith("GET ")||s.startsWith("MUD")) return data;
 					}
 				}
 				else
 				if((c!=10)||((contentLength>0)&&(out.size()>0)))
 				{
-					out.write(c);
-                    if(out.size()>100000000){ return data;}
+					if((out.size()>0)||(Character.isLetterOrDigit(c)))
+						out.write(c);
+                    if(out.size()>=(Runtime.getRuntime().freeMemory()/10)){ return data;}
 					if((contentLength>0)&&(out.size()>=contentLength))
                     {
 						data.addElement(out.toByteArray());
