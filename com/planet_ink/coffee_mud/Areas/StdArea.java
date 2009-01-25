@@ -832,7 +832,7 @@ public class StdArea implements Area
 	}
 	public int numEffects()
 	{
-		return affects.size();
+		return (affects==null)?0:affects.size();
 	}
 	public Ability fetchEffect(int index)
 	{
