@@ -55,12 +55,14 @@ public class CombatAbilities extends StdBehavior
 	public final static int COMBAT_OFFENSIVE=2;
 	public final static int COMBAT_MIXEDOFFENSIVE=3;
 	public final static int COMBAT_MIXEDDEFENSIVE=4;
+	public final static int COMBAT_ONLYALWAYS=5;
 	public final static String[] names={
 		"RANDOM",
 		"DEFENSIVE",
 		"OFFENSIVE",
 		"MIXEDOFFENSIVE",
-		"MIXEDDEFENSIVE"
+		"MIXEDDEFENSIVE",
+		"ONLYALWAYS"
 	};
 
 	protected void makeClass(MOB mob, String theParms, String defaultClassName)
@@ -307,7 +309,10 @@ public class CombatAbilities extends StdBehavior
         int leaderQuality=Ability.QUALITY_INDIFFERENT;
 		while((tryThisOne==null)&&((++tries)<100)&&(mob.numAbilities()>0))
 		{
-			A=mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
+			if((combatMode==COMBAT_ONLYALWAYS)&&(this.skillsAlways!=null)&&(this.skillsAlways.size()>0))
+				A=mob.fetchAbility((String)skillsAlways.elementAt(CMLib.dice().roll(1,mob.numAbilities(),-1)));
+			else
+				A=mob.fetchAbility(CMLib.dice().roll(1,mob.numAbilities(),-1));
 			
             if((A==null)
             ||(A.isAutoInvoked())
@@ -326,6 +331,7 @@ public class CombatAbilities extends StdBehavior
 				switch(combatMode)
 				{
 				case COMBAT_RANDOM:
+				case COMBAT_ONLYALWAYS:
 	                tryThisOne=A;
 					break;
 				case COMBAT_DEFENSIVE:
@@ -352,6 +358,7 @@ public class CombatAbilities extends StdBehavior
 				switch(combatMode)
 				{
 				case COMBAT_RANDOM:
+				case COMBAT_ONLYALWAYS:
 	                tryThisOne=A;
 					break;
 				case COMBAT_DEFENSIVE:
@@ -424,10 +431,14 @@ public class CombatAbilities extends StdBehavior
 					tryThisOne.setProficiency(50+levelDiff);
 				}
 			}
-			Vector V=new Vector();
-			V.addElement(target.name());
-			boolean skillUsed=true;
-			if(tryThisOne.invoke(mob,V,null,false,0))
+			boolean skillUsed=tryThisOne.invoke(mob,CMParms.makeVector(target.name()),null,false,0);
+			if((combatMode==COMBAT_ONLYALWAYS)&&(!skillUsed))
+			{
+				int retries=0;
+				while((++retries<10)&&(!skillUsed))
+					skillUsed=tryThisOne.invoke(mob,CMParms.makeVector(target.name()),null,false,0);
+			}
+			if(skillUsed)
 			{
 			    skillUsed=true;
 				if(lastSpell!=null)
@@ -650,14 +661,17 @@ public class CombatAbilities extends StdBehavior
         if(CombatAbilities.CODES==null)
         {
             String[] superCodes=super.getStatCodes();
-            CODES=new String[superCodes.length+5];
+            CODES=new String[superCodes.length+8];
             for(int c=0;c<superCodes.length;c++)
                 CODES[c]=superCodes[c];
-            CODES[CODES.length-5]="RECORD";
-            CODES[CODES.length-4]="PROF";
-            CODES[CODES.length-3]="LASTSPELL";
-            CODES[CODES.length-2]="PRECAST";
-            CODES[CODES.length-1]="PHYSDAMTAKEN";
+            CODES[CODES.length-8]="RECORD";
+            CODES[CODES.length-7]="PROF";
+            CODES[CODES.length-6]="LASTSPELL";
+            CODES[CODES.length-5]="PRECAST";
+            CODES[CODES.length-4]="PHYSDAMTAKEN";
+            CODES[CODES.length-3]="SKILLSALWAYS";
+            CODES[CODES.length-2]="SKILLSNEVER";
+            CODES[CODES.length-1]="COMBATMODE";
         }
         return CODES;
     }
@@ -679,6 +693,9 @@ public class CombatAbilities extends StdBehavior
         case 2: return lastSpell!=null?lastSpell:"";
         case 3: return Integer.toString(preCastSet);
         case 4: return Integer.toString(physicalDamageTaken);
+        case 5: return (skillsAlways==null)?"":CMParms.toSemicolonList(skillsAlways);
+        case 6: return (skillsAlways==null)?"":CMParms.toSemicolonList(skillsNever);
+        case 7: return Integer.toString(combatMode);
         }
         return "";
     }
@@ -708,6 +725,20 @@ public class CombatAbilities extends StdBehavior
         	break;
         case 4:
         	physicalDamageTaken=CMath.s_int(val);
+        	break;
+        case 5:
+        	skillsAlways=CMParms.parseSemicolons(val,true);
+        	if(skillsAlways.size()==0) skillsAlways=null;
+        	break;
+        case 6:
+        	skillsNever=CMParms.parseSemicolons(val,true);
+        	if(skillsNever.size()==0) skillsNever=null;
+        	break;
+        case 7:
+        	if(CMath.isInteger(val))
+	        	combatMode=CMath.s_int(val);
+        	else
+        		combatMode=CMParms.indexOf(names,val.toUpperCase().trim());
         	break;
         }
     }
