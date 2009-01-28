@@ -1276,6 +1276,7 @@ public class StdArea implements Area
         if(R==null) return;
         if(R instanceof GridLocale)
             ((GridLocale)R).clearGrid(null);
+        if(properRooms!=null)
         synchronized(properRooms)
         {
         	if(R.roomID().length()==0)

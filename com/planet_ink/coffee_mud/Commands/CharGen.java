@@ -526,6 +526,7 @@ public class CharGen extends StdCommand
                     M2.recoverEnvStats();
                     M2.setLocation(R);
                     M2.baseCharStats().getMyRace().setHeightWeight(M2.baseEnvStats(),(char)M2.baseCharStats().getStat(CharStats.STAT_GENDER));
+                    M2.baseEnvStats().setAbility(11);
                     M2.recoverCharStats();
                     M2.recoverEnvStats();
                     M2.recoverMaxState();

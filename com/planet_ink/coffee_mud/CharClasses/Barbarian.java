@@ -40,7 +40,7 @@ public class Barbarian extends StdCharClass
 	public int getBonusPracLevel(){return -1;}
 	public int getBonusAttackLevel(){return 2;}
 	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
-	public int getLevelsPerBonusDamage(){ return 1;}
+	public int getLevelsPerBonusDamage(){ return 3;}
 	public int getPracsFirstLevel(){return 3;}
 	public int getTrainsFirstLevel(){return 4;}
 	public int getMovementMultiplier(){return 13;}

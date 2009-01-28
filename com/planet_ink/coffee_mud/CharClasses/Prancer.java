@@ -37,7 +37,6 @@ public class Prancer extends StdCharClass
 	public String ID(){return "Prancer";}
 	public String name(){return "Dancer";}
 	public String baseClass(){return "Bard";}
-	public int getMaxHitPointsLevel(){return 18;}
 	public int getMovementMultiplier(){return 18;}
 	public int getBonusPracLevel(){return 1;}
 	public int getBonusAttackLevel(){return 1;}

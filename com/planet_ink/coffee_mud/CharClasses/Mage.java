@@ -37,7 +37,6 @@ public class Mage extends StdCharClass
 	public String ID(){return "Mage";}
 	public String name(){return "Mage";}
 	public String baseClass(){return ID();}
-	public int getMaxHitPointsLevel(){return 8;}
 	public int getBonusPracLevel(){return 4;}
 	public int getBonusAttackLevel(){return 0;}
 	public int getAttackAttribute(){return CharStats.STAT_INTELLIGENCE;}

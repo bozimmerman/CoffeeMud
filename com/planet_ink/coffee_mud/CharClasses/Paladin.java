@@ -37,12 +37,11 @@ public class Paladin extends StdCharClass
 	public String ID(){return "Paladin";}
 	public String name(){return "Paladin";}
 	public String baseClass(){return "Fighter";}
-	public int getMaxHitPointsLevel(){return 22;}
 	public int getBonusPracLevel(){return 0;}
 	public int getBonusAttackLevel(){return 2;}
 	public int getMovementMultiplier(){return 12;}
 	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
-	public int getLevelsPerBonusDamage(){ return 1;}
+	public int getLevelsPerBonusDamage(){ return 3;}
 	public int getPracsFirstLevel(){return 3;}
 	public int getTrainsFirstLevel(){return 4;}
 	public int getHPDivisor(){return 2;}

@@ -37,11 +37,10 @@ public class Fighter extends StdCharClass
 	public String ID(){return "Fighter";}
 	public String name(){return "Fighter";}
 	public String baseClass(){return ID();}
-	public int getMaxHitPointsLevel(){return 24;}
 	public int getBonusPracLevel(){return -1;}
 	public int getBonusAttackLevel(){return 2;}
 	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
-	public int getLevelsPerBonusDamage(){ return 1;}
+	public int getLevelsPerBonusDamage(){ return 2;}
 	public int getPracsFirstLevel(){return 3;}
 	public int getTrainsFirstLevel(){return 4;}
 	public int getHPDivisor(){return 2;}

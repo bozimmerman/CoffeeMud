@@ -44,56 +44,126 @@ public class TimsItemTable extends StdWebMacro
 		int min=CMath.s_int((httpReq.getRequestParameter("MIN")));
 		if(min>0)
 			endTime=System.currentTimeMillis()+(1000*60*((long)min));
-		
+		Hashtable parms=parseParms(parm);
 		StringBuffer str=new StringBuffer("<TABLE WIDTH=100% BORDER=1>");
-		str.append("<TR><TD>Name</TD><TD>LVL</TD><TD>TVLV</TD><TD>DIFF</TD><TD>DIFF%</TD><TD>ARM</TD><TD>ATT</TD><TD>DAM</TD><TD>ADJ</TD><TD>CAST</TD><TD>RESIST</TD></TR>");
-		Vector onesDone=new Vector();
-		for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
+		if(parms.containsKey("WORLD"))
 		{
-			Area A=(Area)a.nextElement();
-			for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
+			str.append("<TR><TD>Name</TD><TD>LVL</TD><TD>TVLV</TD><TD>DIFF</TD><TD>DIFF%</TD><TD>ARM</TD><TD>ATT</TD><TD>DAM</TD><TD>ADJ</TD><TD>CAST</TD><TD>RESIST</TD></TR>");
+			Vector onesDone=new Vector();
+			for(Enumeration a=CMLib.map().sortedAreas();a.hasMoreElements();)
 			{
-				Room R=(Room)r.nextElement();
-				if((endTime>0)&&(System.currentTimeMillis()>endTime))
-					break;
-				for(int i=0;i<R.numItems();i++)
+				Area A=(Area)a.nextElement();
+				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
-					Item I=R.fetchItem(i);
+					Room R=(Room)r.nextElement();
 					if((endTime>0)&&(System.currentTimeMillis()>endTime))
 						break;
-					if(!doneBefore(onesDone,I)) str.append(addRow(I));
-				}
-				if((endTime>0)&&(System.currentTimeMillis()>endTime))
-					break;
-				for(int m=0;m<R.numInhabitants();m++)
-				{
-					if((endTime>0)&&(System.currentTimeMillis()>endTime))
-						break;
-					MOB M=R.fetchInhabitant(m);
-					if(M==null) continue;
-					for(int i=0;i<M.inventorySize();i++)
+					for(int i=0;i<R.numItems();i++)
 					{
-						Item I=M.fetchInventory(i);
+						Item I=R.fetchItem(i);
 						if((endTime>0)&&(System.currentTimeMillis()>endTime))
 							break;
 						if(!doneBefore(onesDone,I)) str.append(addRow(I));
 					}
 					if((endTime>0)&&(System.currentTimeMillis()>endTime))
 						break;
-					if(!(M instanceof ShopKeeper)) continue;
-					ShopKeeper S=(ShopKeeper)M;
-					Vector V2=S.getShop().getStoreInventory();
-					for(int v=0;v<V2.size();v++)
+					for(int m=0;m<R.numInhabitants();m++)
 					{
 						if((endTime>0)&&(System.currentTimeMillis()>endTime))
 							break;
-						if((V2.elementAt(v) instanceof Item)
-						&&(!doneBefore(onesDone,(Item)V2.elementAt(v))))
-							str.append(addRow((Item)V2.elementAt(v)));
+						MOB M=R.fetchInhabitant(m);
+						if(M==null) continue;
+						for(int i=0;i<M.inventorySize();i++)
+						{
+							Item I=M.fetchInventory(i);
+							if((endTime>0)&&(System.currentTimeMillis()>endTime))
+								break;
+							if(!doneBefore(onesDone,I)) str.append(addRow(I));
+						}
+						if((endTime>0)&&(System.currentTimeMillis()>endTime))
+							break;
+						if(!(M instanceof ShopKeeper)) continue;
+						ShopKeeper S=(ShopKeeper)M;
+						Vector V2=S.getShop().getStoreInventory();
+						for(int v=0;v<V2.size();v++)
+						{
+							if((endTime>0)&&(System.currentTimeMillis()>endTime))
+								break;
+							if((V2.elementAt(v) instanceof Item)
+							&&(!doneBefore(onesDone,(Item)V2.elementAt(v))))
+								str.append(addRow((Item)V2.elementAt(v)));
+						}
 					}
 				}
 			}
 		}
+		else
+		if(parms.containsKey("ITEMS"))
+		{
+			int[] materials={RawMaterial.RESOURCE_STEEL,RawMaterial.RESOURCE_IRON,RawMaterial.RESOURCE_OAK,RawMaterial.RESOURCE_LEATHER,RawMaterial.RESOURCE_COTTON};
+			int[] mindexes=new int[materials.length];
+			for(int m=0;m<mindexes.length;m++)
+				for(int i=0;i<RawMaterial.RESOURCE_DATA.length;i++)
+					if(materials[m]==RawMaterial.RESOURCE_DATA[i][0])
+					{ mindexes[m]=i; break;}
+			
+			str.append("<TR><TD>Type</TD><TD>Level</TD>");
+			for(int m=0;m<materials.length;m++)
+				str.append("<TD>"+RawMaterial.RESOURCE_DESCS[mindexes[m]]+"</TD>");
+			str.append("</TR>");
+			//str.append("<TD>Attack</TD>");
+			//str.append("<TD>Damage</TD>");
+			for(int level=1;level<=91;level++)
+			{
+				str.append("<TR><TD>Armor</TD><TD>"+level+"</TD>");
+				for(int m=0;m<materials.length;m++)
+				{
+					int armorBonus=0;
+					for(int pos=0;pos<Item.WORN_CODES.length;pos++)
+					{
+						long wornCode=Item.WORN_CODES[pos];
+						if((wornCode == Item.IN_INVENTORY) 
+						|| (wornCode == Item.WORN_HELD)
+						|| (wornCode == Item.WORN_WIELD)
+						|| (wornCode == Item.WORN_MOUTH)) 
+						 	continue;
+						Armor A=CMClass.getArmor("GenArmor");
+						A.setRawProperLocationBitmap(wornCode);
+						A.setMaterial(RawMaterial.RESOURCE_STEEL);
+						if((CharClass.ARMOR_WEARMASK & wornCode) > 0)
+							A.setMaterial(materials[m]);
+						A.baseEnvStats().setLevel(level);
+						A.baseEnvStats().setWeight(5);
+						A.recoverEnvStats();
+						CMLib.itemBuilder().balanceItemByLevel(A);
+						armorBonus+=A.baseEnvStats().armor();
+					}
+					str.append("<TD>"+armorBonus+"</TD>");
+				}
+				str.append("</TR>");
+			}
+			for(int level=1;level<=91;level++)
+			{
+				str.append("<TR><TD>Weapons</TD><TD>"+level+"</TD>");
+				for(int m=0;m<materials.length;m++)
+				{
+					Weapon W=CMClass.getWeapon("GenWeapon");
+					W.setWeaponClassification(Weapon.CLASS_SWORD);
+					W.setWeaponType(Weapon.TYPE_SLASHING);
+					W.setMaterial(materials[m]);
+					W.setRawProperLocationBitmap(Item.WORN_WIELD|Item.WORN_HELD);
+					W.setRawLogicalAnd(false);
+					W.baseEnvStats().setLevel(level);
+					W.baseEnvStats().setWeight(8);
+					W.recoverEnvStats();
+					CMLib.itemBuilder().balanceItemByLevel(W);
+					str.append("<TD>"+W.baseEnvStats().attackAdjustment()+"/"+W.baseEnvStats().damage()+"</TD>");
+				}
+				str.append("</TR>");
+			}
+		}
+		else
+			str.append("<TR><TD><FONT COLOR=RED>Unknown parms: "+CMParms.toStringList(parms)+".  Try WORLD or ITEMS.</TD></TR>");
         return clearWebMacros(str)+"</TABLE>";
 	}
 	

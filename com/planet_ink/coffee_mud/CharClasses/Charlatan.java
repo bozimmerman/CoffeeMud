@@ -37,7 +37,6 @@ public class Charlatan extends StdCharClass
 	public String ID(){return "Charlatan";}
 	public String name(){return "Charlatan";}
 	public String baseClass(){return "Bard";}
-	public int getMaxHitPointsLevel(){return 18;}
 	public int getBonusPracLevel(){return 1;}
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.STAT_DEXTERITY;}

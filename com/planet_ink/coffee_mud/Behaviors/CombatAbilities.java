@@ -210,7 +210,9 @@ public class CombatAbilities extends StdBehavior
 			&&(msg.value()>0)
 			&&(msg.source()!=mob))
 			{
-				if((msg.tool()==null)||(msg.tool() instanceof Item))
+				if(((msg.tool()==null)||(msg.tool() instanceof Item))
+				&&(msg.target()==mob)
+				&&(msg.source()==mob.getVictim()))
 					physicalDamageTaken+=msg.value();
 				if(msg.target()==host)
 					adjustAggro(msg.source(),msg.value()*2);

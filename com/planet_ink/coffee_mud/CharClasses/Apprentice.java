@@ -37,7 +37,6 @@ public class Apprentice extends StdCharClass
 	public String ID(){return "Apprentice";}
 	public String name(){return "Apprentice";}
 	public String baseClass(){return "Commoner";}
-	public int getMaxHitPointsLevel(){return 5;}
 	public int getBonusPracLevel(){return 5;}
 	public int getBonusAttackLevel(){return -1;}
 	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}

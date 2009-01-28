@@ -37,7 +37,6 @@ public class Minstrel extends StdCharClass
 	public String ID(){return "Minstrel";}
 	public String name(){return "Minstrel";}
 	public String baseClass(){return "Bard";}
-	public int getMaxHitPointsLevel(){return 18;}
 	public int getBonusPracLevel(){return 1;}
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.STAT_CHARISMA;}

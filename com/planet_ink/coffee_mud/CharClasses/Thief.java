@@ -37,7 +37,6 @@ public class Thief extends StdCharClass
 	public String ID(){return "Thief";}
 	public String name(){return "Thief";}
 	public String baseClass(){return "Thief";}
-	public int getMaxHitPointsLevel(){return 16;}
 	public int getBonusPracLevel(){return 1;}
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.STAT_DEXTERITY;}
