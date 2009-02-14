@@ -110,13 +110,16 @@ public class Prayer_AuraHeal extends Prayer
     {
         if(mob!=null)
         {
-            if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
-                return Ability.QUALITY_INDIFFERENT;
-            if((target instanceof MOB)&&(target!=mob))
-            {
-                if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
-                    return super.castingQuality(mob, target,Ability.QUALITY_MALICIOUS);
-            }
+        	if(target instanceof MOB)
+        	{
+	            if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
+	                return Ability.QUALITY_INDIFFERENT;
+	            if(target!=mob)
+	            {
+	                if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
+	                    return super.castingQuality(mob, target,Ability.QUALITY_MALICIOUS);
+	            }
+        	}
             return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
         }
         return super.castingQuality(mob,target);

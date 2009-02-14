@@ -38,7 +38,7 @@ public class Artisan extends StdCharClass
 	public String name(){return "Artisan";}
 	public String baseClass(){return "Commoner";}
 	public int getBonusPracLevel(){return 2;}
-	public int getBonusAttackLevel(){return 0;}
+	public int getBonusAttackLevel(){return -1;}
 	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
 	public int getLevelsPerBonusDamage(){ return 15;}
 	public int getHPDivisor(){return 6;}

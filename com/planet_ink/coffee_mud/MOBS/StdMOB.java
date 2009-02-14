@@ -3611,9 +3611,9 @@ public class StdMOB implements MOB
     }
     public int fetchFaction(String which)
     {
-		which=which.toUpperCase();
-        if(!factions.containsKey(which)) return Integer.MAX_VALUE;
-        return ((Faction.FactionData)factions.get(which)).value();
+    	Faction.FactionData data=(Faction.FactionData)factions.get(which.toUpperCase());
+    	if(data == null)  return Integer.MAX_VALUE;
+    	return data.value();
     }
     public void removeFaction(String which)
     {

@@ -39,7 +39,7 @@ public class Gaian extends StdCharClass
 	public String name(){return "Gaian";}
 	public String baseClass(){return "Druid";}
 	public int getBonusPracLevel(){return 2;}
-	public int getBonusAttackLevel(){return 1;}
+	public int getBonusAttackLevel(){return 0;}
 	public int getAttackAttribute(){return CharStats.STAT_CONSTITUTION;}
 	public int getLevelsPerBonusDamage(){ return 6;}
 	public int getHPDivisor(){return 2;}

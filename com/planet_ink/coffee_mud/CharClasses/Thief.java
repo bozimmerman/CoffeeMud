@@ -38,9 +38,9 @@ public class Thief extends StdCharClass
 	public String name(){return "Thief";}
 	public String baseClass(){return "Thief";}
 	public int getBonusPracLevel(){return 1;}
-	public int getBonusAttackLevel(){return 1;}
+	public int getBonusAttackLevel(){return 0;}
 	public int getAttackAttribute(){return CharStats.STAT_DEXTERITY;}
-	public int getLevelsPerBonusDamage(){ return 5;}
+	public int getLevelsPerBonusDamage(){ return 2;}
 	public int getMovementMultiplier(){return 10;}
 	public int getHPDivisor(){return 3;}
 	public int getHPDice(){return 1;}
@@ -236,7 +236,7 @@ public class Thief extends StdCharClass
 		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
 		if(dexStat>maxDexStat) dexStat=maxDexStat;
-		int attArmor=(int)Math.round(CMath.div(dexStat,9.0));
+		int attArmor=(int)Math.round(CMath.div(dexStat,18.0));
 		if(dexStat>=25)attArmor+=2;
 		else
 		if(dexStat>=22)attArmor+=1;
@@ -249,7 +249,7 @@ public class Thief extends StdCharClass
 		mob.recoverMaxState();
 	}
 
-	public String otherBonuses(){return "Receives (Dexterity/9)+1 bonus to defence every level after 1st.  Bonus experience for using certain skills.";}
+	public String otherBonuses(){return "Receives bonus to defence every level for high dexterity.  Bonus experience for using certain skills.";}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -264,7 +264,7 @@ public class Thief extends StdCharClass
 					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
 		if(dexStat>maxDexStat) dexStat=maxDexStat;
 		
-		int attArmor=((int)Math.round(CMath.div(dexStat,9.0)));
+		int attArmor=((int)Math.round(CMath.div(dexStat,18.0)));
 		if(dexStat>=25)attArmor+=2;
 		else
 		if(dexStat>=22)attArmor+=1;

@@ -38,7 +38,7 @@ public class Gaoler extends StdCharClass
 	public String name(){return "Gaoler";}
 	public String baseClass(){return "Commoner";}
 	public int getBonusPracLevel(){return 2;}
-	public int getBonusAttackLevel(){return 0;}
+	public int getBonusAttackLevel(){return -1;}
 	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
 	public int getLevelsPerBonusDamage(){ return 15;}
 	public int getHPDivisor(){return 6;}

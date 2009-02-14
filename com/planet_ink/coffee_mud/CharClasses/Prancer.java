@@ -39,7 +39,7 @@ public class Prancer extends StdCharClass
 	public String baseClass(){return "Bard";}
 	public int getMovementMultiplier(){return 18;}
 	public int getBonusPracLevel(){return 1;}
-	public int getBonusAttackLevel(){return 1;}
+	public int getBonusAttackLevel(){return 0;}
 	public int getAttackAttribute(){return CharStats.STAT_CHARISMA;}
 	public int getLevelsPerBonusDamage(){ return 4;}
 	public int getHPDivisor(){return 3;}

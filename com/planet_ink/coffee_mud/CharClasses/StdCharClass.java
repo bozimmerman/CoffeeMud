@@ -43,7 +43,7 @@ public class StdCharClass implements CharClass
 	public String baseClass(){return ID();}
     public int getLevelCap() {return -1;}
 	public int getBonusPracLevel(){return 0;}
-	public int getBonusAttackLevel(){return 1;}
+	public int getBonusAttackLevel(){return 0;}
 	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
 	public int getPracsFirstLevel(){return 5;}
 	public int getTrainsFirstLevel(){return 3;}
@@ -720,7 +720,7 @@ public class StdCharClass implements CharClass
 
 	public int getLevelAttack(MOB mob)
 	{
-		int attGain=(int)Math.round(CMath.div(mob.charStats().getStat(getAttackAttribute()),6.0))+getBonusAttackLevel();
+		int attGain=(int)Math.round(CMath.div(mob.charStats().getStat(getAttackAttribute()),18.0))+getBonusAttackLevel();
 		return ((mob.baseEnvStats().level()-1)*attGain);
 	}
 

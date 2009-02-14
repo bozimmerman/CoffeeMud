@@ -38,9 +38,9 @@ public class Monk extends StdCharClass
 	public String name(){return "Monk";}
 	public String baseClass(){return "Fighter";}
 	public int getBonusPracLevel(){return -1;}
-	public int getBonusAttackLevel(){return 2;}
+	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
-	public int getLevelsPerBonusDamage(){ return 3;}
+	public int getLevelsPerBonusDamage(){ return 4;}
 	public int getPracsFirstLevel(){return 3;}
 	public int getTrainsFirstLevel(){return 4;}
 	public int getHPDivisor(){return 2;}
