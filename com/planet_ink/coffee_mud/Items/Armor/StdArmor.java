@@ -532,10 +532,10 @@ public class StdArmor extends StdContainer implements Armor
 			if(envStats().armor()!=0)
 			{
 				if(amWearingAt(Item.WORN_TORSO))
-					affectableStats.setArmor(affectableStats.armor()-(envStats().ability()*10));
+					affectableStats.setArmor(affectableStats.armor()-(envStats().ability()*5));
 				else
 				if((amWearingAt(Item.WORN_HEAD))||(this.amWearingAt(Item.WORN_HELD)))
-					affectableStats.setArmor(affectableStats.armor()-(envStats().ability()*5));
+					affectableStats.setArmor(affectableStats.armor()-(envStats().ability()*2));
 				else
 				if(!amWearingAt(Item.WORN_FLOATING_NEARBY))
 					affectableStats.setArmor(affectableStats.armor()-envStats().ability());

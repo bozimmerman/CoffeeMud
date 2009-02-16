@@ -931,7 +931,7 @@ public class StdMOB implements MOB
 	{
 		double att=(double)(
 				envStats().attackAdjustment()
-				+((charStats().getStat(CharStats.STAT_STRENGTH)-9)*3));
+				+((charStats().getStat(CharStats.STAT_STRENGTH)-9)));
 		if(curState().getHunger()<1) att=att*.9;
 		if(curState().getThirst()<1) att=att*.9;
 		if(curState().getFatigue()>CharState.FATIGUED_MILLIS) att=att*.8;
@@ -944,7 +944,7 @@ public class StdMOB implements MOB
 
 	public int adjustedArmor()
 	{
-		double arm=(double)(((charStats().getStat(CharStats.STAT_DEXTERITY)-9)*3)
+		double arm=(double)(((charStats().getStat(CharStats.STAT_DEXTERITY)-9))
 							   +50);
 		if((envStats().disposition()&EnvStats.IS_SLEEPING)>0) arm=0.0;
 		if(arm>0.0)
