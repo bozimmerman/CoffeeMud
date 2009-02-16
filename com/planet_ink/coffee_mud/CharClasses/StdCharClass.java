@@ -736,7 +736,7 @@ public class StdCharClass implements CharClass
 
 	public double getLevelSpeed(MOB mob)
 	{
-		return 1.0+Math.floor(CMath.div(mob.baseEnvStats().level(),25.0));
+		return 1.0+Math.floor(CMath.div(mob.baseEnvStats().level(),30.0));
 	}
 
 	public int getLevelMove(MOB mob)
