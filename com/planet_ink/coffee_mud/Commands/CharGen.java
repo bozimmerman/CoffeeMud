@@ -295,7 +295,7 @@ public class CharGen extends StdCommand
 	    int levelEnd=91;
 	    if(commands.size()==0)
 	    {
-	        mob.tell("USAGE: CHARGEN COMBAT ([CHARCLASS(S)]...) (EXPORT=FILENAME) (FAILCHECK) (ITERATIONS=[X])([START LEVEL]) ([END LEVEL])");
+	        mob.tell("USAGE: CHARGEN COMBAT ([CHARCLASS(S)]...) (EXPORT=FILENAME) (FAILCHECK) (ITERATIONS=[X]) (SKIPLEVELS=[X]) ([START LEVEL]) ([END LEVEL])");
 	        return;
 	    }
 	    Hashtable failSkillCheck=null;
@@ -331,6 +331,7 @@ public class CharGen extends StdCommand
 	    boolean classCleared=false;
 	    boolean nextLevel=false;
 	    String fileExp=null;
+	    int skipLevels=1;
 	    for(int i=0;i<commands.size();i++)
 	    {
 	        String s=(String)commands.elementAt(i);
@@ -360,6 +361,12 @@ public class CharGen extends StdCommand
 	        else
             if(s.toUpperCase().startsWith("EXPORT="))
             	fileExp=s.substring("EXPORT=".length());
+	        else
+            if(s.toUpperCase().startsWith("SKIPLEVELS="))
+            {
+            	skipLevels=CMath.s_int(s.substring("SKIPLEVELS=".length()));
+            	if(skipLevels<1) skipLevels=1;
+            }
             else
 	        if(CMClass.findCharClass(s)!=null)
 	        {
@@ -421,7 +428,7 @@ public class CharGen extends StdCommand
         final int DATUM_LOSSES=8;
         
         DVector datum=new DVector(9);*/
-        int[][][] allData=new int[classSet.size()][levelEnd-levelStart+1][15];
+        int[][][] allData=new int[classSet.size()][levelEnd-levelStart+1][16];
         String[][][] allSkills=new String[classSet.size()][levelEnd-levelStart+1][4];
         final String[] allDataHeader={
     		"BestIterScore",
@@ -442,14 +449,15 @@ public class CharGen extends StdCommand
     		"BestIterSkill",
     		"BestHitSkill",
     		"BestSingleHitSkill",
-    		"CloseIterSkill"
+    		"CloseIterSkill",
+    		"PlayerDamage"
         };
         
         
         for(int charClassDex=0;charClassDex<classSet.size();charClassDex++)
         {
             CharClass C=(CharClass)classSet.elementAt(charClassDex,1);
-    	    for(int level=levelStart;level<=levelEnd;level++)
+    	    for(int level=levelStart;level<=levelEnd;level+=skipLevels)
     	    {
                 mob.tell(C.ID()+": "+level);
                 int roomRobin=0;
@@ -474,6 +482,7 @@ public class CharGen extends StdCommand
                 int[] avgIsHitPct=new int[]{0};
                 int[] avgPhysTaken=new int[]{0};
                 int[] lossIters=new int[]{0};
+                double[] playerDamPct = new double[]{0};
                 
                 int H1=0;
                 int H2=0;
@@ -602,7 +611,7 @@ public class CharGen extends StdCommand
                     String ZEROSKILL2=null;
                     String ALMOSTZEROSKILL=null;
                     
-                    //chargen combat charclasses export=test.tab iterations=100 1 91
+                    //chargen combat charclasses export=test.tab iterations=100 skiplevels=20 1 91
                     while((M1.getVictim()==M2)
                          &&(M2.getVictim()==M1)
                          &&(!M1.amDead())
@@ -672,6 +681,7 @@ public class CharGen extends StdCommand
                         avgPhysTaken[0]+=CMath.s_int(B1.getStat("PHYSDAMTAKEN"));
                         avgHitPct[0]+=(CMath.div(hits,iterations)*100);
                         avgIsHitPct[0]+=(CMath.div(ishits,iterations)*100);
+                        playerDamPct[0]+=100-(CMath.div(M1.baseState().getHitPoints(),H1)*100.0);
                         if(M1.amDead())
                         	lossIters[0]+=iterations;
                         else
@@ -734,6 +744,7 @@ public class CharGen extends StdCommand
                 avgHitPct[0]/=TOTAL_ITERATIONS;
                 avgIsHitPct[0]/=TOTAL_ITERATIONS;
                 avgPhysTaken[0]/=TOTAL_ITERATIONS;
+                playerDamPct[0]/=TOTAL_ITERATIONS;
                 allData[charClassDex][level-levelStart][0]=bestIterScore[0];
                 allData[charClassDex][level-levelStart][1]=bestHitScore[0];
                 allData[charClassDex][level-levelStart][2]=bestSingleHitScore[0];
@@ -749,6 +760,7 @@ public class CharGen extends StdCommand
                 allData[charClassDex][level-levelStart][12]=losses[0];
                 allData[charClassDex][level-levelStart][13]=playerArmor;
                 allData[charClassDex][level-levelStart][14]=playerAttack;
+                allData[charClassDex][level-levelStart][15]=(int)Math.round(playerDamPct[0]);
                 
                 allSkills[charClassDex][level-levelStart][0]=bestIterSkill[0];
                 allSkills[charClassDex][level-levelStart][1]=bestHitSkill[0];
@@ -793,17 +805,24 @@ public class CharGen extends StdCommand
         	if(file.canWrite())
         	{
         		StringBuffer buf=new StringBuffer("");
+        		Vector baseClasses=new Vector();
+                for(int charClassDex=0;charClassDex<classSet.size();charClassDex++)
+                {
+                    CharClass C=(CharClass)classSet.elementAt(charClassDex,1);
+                    if(!baseClasses.contains(C.baseClass()))
+                    	baseClasses.addElement(C.baseClass());
+                }
     	    	for(int d=0;d<allData[0][0].length;d++)
     	    	{
-    	    		buf.append(allDataHeader[d]).append("\t");
-            	    for(int level=levelStart;level<=levelEnd;level++)
+    	    		buf.append(allDataHeader[d]).append("\t\t");
+            	    for(int level=levelStart;level<=levelEnd;level+=skipLevels)
             	    	buf.append(level).append('\t');
     	    		buf.append("\n\r");
 	                for(int charClassDex=0;charClassDex<classSet.size();charClassDex++)
 	                {
 	                    CharClass C=(CharClass)classSet.elementAt(charClassDex,1);
-	        	    	buf.append(C.ID()).append("\t");
-	            	    for(int level=levelStart;level<=levelEnd;level++)
+	        	    	buf.append(C.ID()).append("\t").append(C.baseClass()).append("\t");
+	            	    for(int level=levelStart;level<=levelEnd;level+=skipLevels)
 	            	    {
                 	    	buf.append(allData[charClassDex][level-levelStart][d]).append('\t');
 	            	    	//for(int i=0;i<allSkills[charClassDex][level-levelStart].length;i++)
@@ -811,6 +830,32 @@ public class CharGen extends StdCommand
 	            	    }
         	    		buf.append("\n\r");
 	                }
+    	    		buf.append("\n\r");
+    	    		buf.append(allDataHeader[d]).append("\t*****\t");
+            	    for(int level=levelStart;level<=levelEnd;level+=skipLevels)
+            	    	buf.append(level).append('\t');
+    	    		buf.append("\n\r");
+    	    		for(int b=0;b<baseClasses.size();b++)
+    	    		{
+    	    			String baseClass=(String)baseClasses.elementAt(b);
+    	    			int[] levels=new int[levelEnd];
+    	    			double ct=0;
+    	                for(int charClassDex=0;charClassDex<classSet.size();charClassDex++)
+    	                    if(((CharClass)classSet.elementAt(charClassDex,1)).baseClass().equalsIgnoreCase(baseClass))
+    	                    {
+    	                    	ct+=1.0;
+	    	            	    for(int level=levelStart;level<=levelEnd;level+=skipLevels)
+	    	            	    	levels[level]+=allData[charClassDex][level-levelStart][d];
+    	                    }
+    	                if(ct>0)
+    	                {
+		        	    	buf.append(baseClass).append("\t").append(baseClass).append("\t");
+		            	    for(int level=levelStart;level<=levelEnd;level+=skipLevels)
+	                	    	buf.append(Math.round(Integer.valueOf(levels[level]).doubleValue()/ct*100.0)/100).append('\t');
+	        	    		buf.append("\n\r");
+    	                }
+    	    		}
+    	    		buf.append("\n\r");
     	    	}
                 file.saveText(buf);
         	}
