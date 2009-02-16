@@ -93,7 +93,7 @@ public class Specialization_Weapon extends StdAbility
 			&&(msg.tool() instanceof Weapon)
 			&&(!((Weapon)msg.tool()).amWearingAt(Item.IN_INVENTORY))
 			&&(msg.value()>0))
-				msg.setValue(msg.value()+(2*this.getDamageBonus(msg.source(),((Weapon)msg.tool()).weaponType())));
+				msg.setValue(msg.value()+(this.getDamageBonus(msg.source(),((Weapon)msg.tool()).weaponType())));
 		}
 	}
 
@@ -112,8 +112,8 @@ public class Specialization_Weapon extends StdAbility
 			{
 				activated=true;
 				affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
-						+(int)Math.round(15.0*(CMath.div(proficiency(),100.0)))
-						+(10*(getXLEVELLevel((MOB)affected))));
+						+(int)Math.round(10.0*(CMath.div(proficiency(),100.0)))
+						+getXLEVELLevel((MOB)affected));
 					
 			}
 		}
