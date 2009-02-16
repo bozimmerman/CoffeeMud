@@ -62,7 +62,7 @@ public class Specialization_Natural extends Specialization_Weapon
 			activated=true;
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()
 					+(int)Math.round(15.0*(CMath.div(proficiency(),100.0)))
-					+getXLEVELLevel((MOB)affected));
+					+(10*(getXLEVELLevel((MOB)affected))));
 		}
 	}
 }
