@@ -428,29 +428,30 @@ public class CharGen extends StdCommand
         final int DATUM_LOSSES=8;
         
         DVector datum=new DVector(9);*/
-        int[][][] allData=new int[classSet.size()][levelEnd-levelStart+1][16];
+        int[][][] allData=new int[classSet.size()][levelEnd-levelStart+1][17];
         String[][][] allSkills=new String[classSet.size()][levelEnd-levelStart+1][4];
         final String[] allDataHeader={
-    		"BestIterScore",
-    		"BestHitScore",
-    		"BestSingleHitScore",
-    		"BestSingleHitPhys",
-    		"CloseIterScore",
-    		"AvgHits",
-    		"AvgHitPct",
-    		"LossIters",
-    		"AvgIters",
-    		"AvgPhysDone",
-    		"AvgPhysTaken",
-    		"AvgIsHitPct",
-    		"LostRounds",
-    		"PlayerArmor",
-    		"PlayerAttack",
-    		"BestIterSkill",
-    		"BestHitSkill",
-    		"BestSingleHitSkill",
-    		"CloseIterSkill",
-    		"PlayerDamage"
+    		"BestIterScore",//0
+    		"BestHitScore",//1
+    		"BestSingleHitScore",//2
+    		"BestSingleHitPhys",//3
+    		"CloseIterScore",//4
+    		"AvgHits",//5
+    		"AvgHitPct",//6
+    		"LossIters",//7
+    		"AvgIters",//8
+    		"AvgPhysDone",//9
+    		"AvgPhysTaken",//10
+    		"AvgIsHitPct",//11
+    		"LostRounds",//12
+    		"PlayerArmor",//13
+    		"PlayerAttack",//15
+    		"PlayerDamPct",//16
+    		"PlayerManaPct",//17
+    		"BestIterSkill",//18
+    		"BestHitSkill",//19
+    		"BestSingleHitSkill",//20
+    		"CloseIterSkill",//21
         };
         
         
@@ -483,6 +484,7 @@ public class CharGen extends StdCommand
                 int[] avgPhysTaken=new int[]{0};
                 int[] lossIters=new int[]{0};
                 double[] playerDamPct = new double[]{0};
+                double[] playerManaPct = new double[]{0};
                 
                 int H1=0;
                 int H2=0;
@@ -681,7 +683,8 @@ public class CharGen extends StdCommand
                         avgPhysTaken[0]+=CMath.s_int(B1.getStat("PHYSDAMTAKEN"));
                         avgHitPct[0]+=(CMath.div(hits,iterations)*100);
                         avgIsHitPct[0]+=(CMath.div(ishits,iterations)*100);
-                        playerDamPct[0]+=100-(CMath.div(M1.baseState().getHitPoints(),H1)*100.0);
+                        playerDamPct[0]+=100-(CMath.div(M1.curState().getHitPoints(),H1)*100.0);
+                        playerManaPct[0]+=100-(CMath.div(M1.curState().getMana(),M1.maxState().getMana())*100.0);
                         if(M1.amDead())
                         	lossIters[0]+=iterations;
                         else
@@ -745,6 +748,7 @@ public class CharGen extends StdCommand
                 avgIsHitPct[0]/=TOTAL_ITERATIONS;
                 avgPhysTaken[0]/=TOTAL_ITERATIONS;
                 playerDamPct[0]/=TOTAL_ITERATIONS;
+                playerManaPct[0]/=TOTAL_ITERATIONS;
                 allData[charClassDex][level-levelStart][0]=bestIterScore[0];
                 allData[charClassDex][level-levelStart][1]=bestHitScore[0];
                 allData[charClassDex][level-levelStart][2]=bestSingleHitScore[0];
@@ -761,6 +765,7 @@ public class CharGen extends StdCommand
                 allData[charClassDex][level-levelStart][13]=playerArmor;
                 allData[charClassDex][level-levelStart][14]=playerAttack;
                 allData[charClassDex][level-levelStart][15]=(int)Math.round(playerDamPct[0]);
+                allData[charClassDex][level-levelStart][16]=(int)Math.round(playerManaPct[0]);
                 
                 allSkills[charClassDex][level-levelStart][0]=bestIterSkill[0];
                 allSkills[charClassDex][level-levelStart][1]=bestHitSkill[0];
