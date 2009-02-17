@@ -63,7 +63,7 @@ public class Prayer_Ember extends Prayer
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)+3+(2*super.getX1Level(mob)),3);
+					int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel),3+super.getX1Level(mob));
 					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The unholy ember <DAMAGE> <T-NAME>!");
 				}
 			}

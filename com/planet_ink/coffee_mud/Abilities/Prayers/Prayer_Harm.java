@@ -77,7 +77,7 @@ public class Prayer_Harm extends Prayer
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					int harming=CMLib.dice().roll(4,adjustedLevel(mob,asLevel)+24,8);
+					int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)+24,8);
 					CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy spell <DAMAGE> <T-NAME>!");
 				}
 			}

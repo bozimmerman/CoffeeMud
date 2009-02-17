@@ -113,8 +113,7 @@ public class Prayer_CurseFlames extends Prayer
 			{
 				mob.location().send(mob,msg);
 				mob.location().send(mob,msg2);
-                int numDice = (int)Math.round(CMath.div(adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob)),2.0))+1;
-				int damage = CMLib.dice().roll(numDice, 6, 20);
+				int damage = CMLib.dice().roll(1, 2*adjustedLevel(mob,asLevel), (2*super.getX1Level(mob))+1);
 				if((msg.value()>0)||(msg2.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));
 

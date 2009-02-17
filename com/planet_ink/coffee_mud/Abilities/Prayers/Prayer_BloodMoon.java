@@ -70,7 +70,8 @@ public class Prayer_BloodMoon extends Prayer
 		if((msg.amITarget(mob))
 		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
-			int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
+			int recovery=(int)Math.round(CMath.div((msg.value()),10.0));
+			if(recovery<=0) recovery=1;
 			msg.setValue(msg.value()+recovery);
 		}
 		return true;

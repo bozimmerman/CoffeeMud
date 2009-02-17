@@ -106,7 +106,7 @@ public class Prayer_Demonshield extends Prayer
 		if(!(affected instanceof MOB)) return;
 		MOB mob=(MOB)affected;
 
-		affectableStats.setArmor(affectableStats.armor()-(mob.envStats().level()+(2*getXLEVELLevel(invoker()))));
+		affectableStats.setArmor(affectableStats.armor()-(10+(2*getXLEVELLevel(invoker()))));
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

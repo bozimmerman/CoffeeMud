@@ -70,7 +70,9 @@ public class Prayer_Fortress extends Prayer
 		if((msg.amITarget(mob))
 		   &&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
 		{
-			int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
+			int recovery=(int)Math.round(CMath.mul((msg.value()),0.75));
+			if((recovery==msg.value())&&(msg.value()>1))
+				recovery=msg.value()-1;
 			msg.setValue(recovery);
 		}
 		return true;
