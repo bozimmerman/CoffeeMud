@@ -64,8 +64,7 @@ public class Prayer_ChainStrike extends Prayer
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int maxDie=adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob));
-		int damage = CMLib.dice().roll(maxDie,8,1);
+		int damage = CMLib.dice().roll(1,adjustedLevel(mob,asLevel)/2,1+(2*super.getX1Level(mob)));
 
 		boolean success=proficiencyCheck(mob,0,auto);
 		if(success)
@@ -116,7 +115,7 @@ public class Prayer_ChainStrike extends Prayer
 						{
 							CMLib.combat().postDamage(mob,target,this,dmg,CMMsg.MASK_ALWAYS|CMMsg.TYP_ELECTRIC,Weapon.TYPE_STRIKING,"The strike <DAMAGE> <T-NAME>!");
 							damage = (int)Math.round(CMath.div(damage,2.0));
-							if(damage<5){ damage=0; break;}
+							if(damage<2){ damage=0; break;}
 						}
 					}
 				}

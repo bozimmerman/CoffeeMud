@@ -91,7 +91,7 @@ public class Prayer_Monolith extends Prayer
     							&&(M.rangeToTarget()>0)
     							&&(M.rangeToTarget()<3)
     							&&(!M.amDead()))
-    								CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(M.envStats().level()/2,6,0),CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
+    								CMLib.combat().postDamage(invoker,M,this,CMLib.dice().roll(M.envStats().level()/2,4,0),CMMsg.MASK_ALWAYS|CMMsg.TYP_COLD,Weapon.TYPE_PIERCING,"A shard of ice <DAMAGE> <T-NAME>!");
     						}
     					    mob.location().showHappens(CMMsg.MSG_OK_ACTION,"The monolith of ice shatters!!!");
     						((Item)affected).destroy();
