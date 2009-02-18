@@ -448,7 +448,7 @@ public class CharGen extends StdCommand
     		"MedWinIters",//8
     		"MedPhysDone",//9
     		"MedPhysTaken",//10
-    		"AvgIsHitPct",//11
+    		"MedIsHitPct",//11
     		"LostRounds",//12
     		"PlayerArmor",//13
     		"PlayerAttack",//15
@@ -614,6 +614,8 @@ public class CharGen extends StdCommand
                     String ZEROSKILL1=null;
                     String ZEROSKILL2=null;
                     String ALMOSTZEROSKILL=null;
+                    int l1=0, l2=0;
+                    
                     
                     //chargen combat charclasses export=test.tab iterations=100 skiplevels=20 1 91
                     while((M1.getVictim()==M2)
@@ -627,10 +629,12 @@ public class CharGen extends StdCommand
                         ALMOSTZEROSKILL=B1.getStat("LASTSPELL");
                         int h1=M1.curState().getHitPoints();
                         int h2=M2.curState().getHitPoints();
-                        int l1=CMath.s_int(B2.getStat("PHYSDAMTAKEN"));
-                        int l2=CMath.s_int(B1.getStat("PHYSDAMTAKEN"));
-                        if(l1>0) hits++;
-                        if(l2>0) ishits++;
+                        int L1=l1;
+                        int L2=l2;
+                        l1=CMath.s_int(B2.getStat("PHYSDAMTAKEN"));
+                        l2=CMath.s_int(B1.getStat("PHYSDAMTAKEN"));
+                        if(l1>L1) hits++;
+                        if(l2>L2) ishits++;
                         try {
 	                    	CMLib.commands().postStand(M1,true);
 	                    	CMLib.commands().postStand(M2,true);
