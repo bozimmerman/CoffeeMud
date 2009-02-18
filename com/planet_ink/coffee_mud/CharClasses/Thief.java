@@ -40,7 +40,7 @@ public class Thief extends StdCharClass
 	public int getBonusPracLevel(){return 1;}
 	public int getBonusAttackLevel(){return 0;}
 	public int getAttackAttribute(){return CharStats.STAT_DEXTERITY;}
-	public int getLevelsPerBonusDamage(){ return 2;}
+	public int getLevelsPerBonusDamage(){ return 1;}
 	public int getMovementMultiplier(){return 10;}
 	public int getHPDivisor(){return 3;}
 	public int getHPDice(){return 1;}
@@ -136,6 +136,7 @@ public class Thief extends StdCharClass
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_Lore",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Thief_Alertness",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_Sap",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Thief_Panhandling",true);

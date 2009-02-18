@@ -121,6 +121,7 @@ public class Assassin extends Thief
 		CMLib.ableMapper().addCharAbilityMapping(ID(),15,"Specialization_Axe",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Fighter_DualParry",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),16,"Skill_AttackHalf",true);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Fighter_CriticalShot",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),17,"Specialization_Hammer",false);
@@ -145,7 +146,6 @@ public class Assassin extends Thief
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Fighter_Tumble",false);
 		
-		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_AttackHalf",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Fighter_CalledShot",false);
 		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),30,"Thief_Shadowstrike",true);
