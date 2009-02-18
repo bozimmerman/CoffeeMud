@@ -59,10 +59,11 @@ public class CharGen extends StdCommand
 				W.setRawLogicalAnd(true);
 				switch(C.allowedWeaponLevel())
 				{
+				case CharClass.WEAPONS_EVILCLERIC:
+					CMLib.factions().setAlignment(M,Faction.ALIGN_EVIL);
 				case CharClass.WEAPONS_THIEFLIKE:
 				case CharClass.WEAPONS_BURGLAR:
 				case CharClass.WEAPONS_ANY:
-				case CharClass.WEAPONS_EVILCLERIC:
 				case CharClass.WEAPONS_NEUTRALCLERIC:
 					break;
 				case CharClass.WEAPONS_DAGGERONLY:
@@ -76,6 +77,7 @@ public class CharGen extends StdCommand
 					W.setMaterial(RawMaterial.RESOURCE_STONE);
 					break;
 				case CharClass.WEAPONS_GOODCLERIC:
+					CMLib.factions().setAlignment(M,Faction.ALIGN_GOOD);
 				case CharClass.WEAPONS_MAGELIKE:
 					W.setMaterial(RawMaterial.RESOURCE_OAK);
 					W.setWeaponClassification(Weapon.CLASS_STAFF);
@@ -202,6 +204,10 @@ public class CharGen extends StdCommand
 			mob.recoverMaxState();
 		}
         equipPlayer(mob);
+        for(int a=0;a<mob.numAbilities();a++)
+        	mob.fetchAbility(a).setProficiency(100);
+        for(int a=0;a<mob.numEffects();a++)
+        	mob.fetchEffect(a).setProficiency(100);
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();
@@ -535,10 +541,6 @@ public class CharGen extends StdCommand
                     B1.setStat("PRECAST","1");
 	                M1.addBehavior(B1);
 	                equipPlayer(M1);
-	                for(int a=0;a<M1.numAbilities();a++)
-	                	M1.fetchAbility(a).setProficiency(100);
-	                for(int a=0;a<M1.numEffects();a++)
-	                	M1.fetchEffect(a).setProficiency(100);
 	                M1.recoverMaxState();
 	                M1.recoverCharStats();
 	                M1.recoverEnvStats();
@@ -852,7 +854,7 @@ public class CharGen extends StdCommand
     	    		for(int b=0;b<baseClasses.size();b++)
     	    		{
     	    			String baseClass=(String)baseClasses.elementAt(b);
-    	    			int[] levels=new int[levelEnd];
+    	    			int[] levels=new int[levelEnd+1];
     	    			double ct=0;
     	                for(int charClassDex=0;charClassDex<classSet.size();charClassDex++)
     	                    if(((CharClass)classSet.elementAt(charClassDex,1)).baseClass().equalsIgnoreCase(baseClass))
@@ -884,6 +886,7 @@ public class CharGen extends StdCommand
 		if(mob.isMonster())
 			return false;
 		commands.removeElementAt(0);
+		boolean createNewOnly=false;
 		if(commands.size()>0)
 		{
 		    if(((String)commands.firstElement()).equalsIgnoreCase("COMBAT"))
@@ -891,6 +894,12 @@ public class CharGen extends StdCommand
 		        commands.removeElementAt(0);
 		        combatRun(mob,commands);
 		        return true;
+		    }
+		    
+		    if(((String)commands.firstElement()).equalsIgnoreCase("NEW"))
+		    {
+		        commands.removeElementAt(0);
+		        createNewOnly=true;
 		    }
 		}
 		CharClass C=null;
@@ -903,7 +912,7 @@ public class CharGen extends StdCommand
 			level=CMath.s_int(CMParms.combine(commands,1));
 		}
 
-		if((C==null)&&(ClassName.toUpperCase().indexOf("ALL")<0))
+		if((C==null)&&(createNewOnly||(ClassName.toUpperCase().indexOf("ALL")<0)))
 		{
 			mob.tell("Enter 'ALL' for all classes.");
 			try
@@ -913,7 +922,7 @@ public class CharGen extends StdCommand
 			catch(Exception e){return false;}
 
 			C=CMClass.findCharClass(ClassName);
-			if((C==null)&&(ClassName.toUpperCase().indexOf("ALL")<0))
+			if((C==null)&&(createNewOnly||(ClassName.toUpperCase().indexOf("ALL")<0)))
 				return false;
 		}
 
@@ -935,7 +944,7 @@ public class CharGen extends StdCommand
 
 		MOB avgMob=null;
 		if(C!=null)
-			avgMob=AverageClassMOB(mob, level,C, 100);
+			avgMob=AverageClassMOB(mob, level,C, createNewOnly?1:100);
 		else
 			avgMob=AverageAllClassMOB(mob,level, 20, 40);
 
@@ -943,11 +952,16 @@ public class CharGen extends StdCommand
 
 		if(avgMob!=null)
 		{
-			StringBuffer msg=CMLib.commands().getScore(avgMob);
-			if(!mob.isMonster())
-				mob.session().wraplessPrintln(msg.toString());
+			if(createNewOnly)
+				avgMob.bringToLife(mob.location(),true);
+			else
+			{
+				StringBuffer msg=CMLib.commands().getScore(avgMob);
+				if(!mob.isMonster())
+					mob.session().wraplessPrintln(msg.toString());
+		        avgMob.destroy();
+			}
 		}
-        avgMob.destroy();
 		return false;
 	}
 	
