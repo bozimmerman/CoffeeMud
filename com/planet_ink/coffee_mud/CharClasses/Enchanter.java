@@ -39,6 +39,8 @@ public class Enchanter extends SpecialistMage
     public void initializeClass()
     {
         super.initializeClass();
+		CMLib.ableMapper().delCharAbilityMapping(ID(),"Spell_ResistMagicMissiles");
+		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),5,"Spell_Fatigue",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Spell_ManaBurn",25,true);

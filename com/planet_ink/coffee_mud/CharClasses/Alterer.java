@@ -39,6 +39,8 @@ public class Alterer extends SpecialistMage
     public void initializeClass()
     {
         super.initializeClass();
+		CMLib.ableMapper().delCharAbilityMapping(ID(),"Spell_Shield");
+		
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Skill_Spellcraft",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),10,"Spell_MassFeatherfall",25,true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Spell_IncreaseGravity",25,true);
