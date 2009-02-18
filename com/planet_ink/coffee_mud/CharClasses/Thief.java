@@ -241,9 +241,8 @@ public class Thief extends StdCharClass
 		if(dexStat>=25)attArmor+=2;
 		else
 		if(dexStat>=22)attArmor+=1;
-		attArmor=attArmor*-1;
-		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
-		mob.envStats().setArmor(mob.envStats().armor()-attArmor);
+		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()+attArmor);
+		mob.envStats().setArmor(mob.envStats().armor()+attArmor);
 
 		mob.recoverEnvStats();
 		mob.recoverCharStats();
@@ -269,9 +268,11 @@ public class Thief extends StdCharClass
 		if(dexStat>=25)attArmor+=2;
 		else
 		if(dexStat>=22)attArmor+=1;
-		
-		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
-		mob.envStats().setArmor(mob.envStats().armor()-attArmor);
-		mob.tell("^NYour stealthiness grants you a defensive bonus of ^H"+attArmor+"^?.^N");
+		if(attArmor>0)
+		{
+			mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
+			mob.envStats().setArmor(mob.envStats().armor()-attArmor);
+			mob.tell("^NYour stealthiness grants you a defensive bonus of ^H"+attArmor+"^?.^N");
+		}
 	}
 }

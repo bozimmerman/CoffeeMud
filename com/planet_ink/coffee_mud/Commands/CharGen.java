@@ -436,12 +436,12 @@ public class CharGen extends StdCommand
     		"BestSingleHitScore",//2
     		"BestSingleHitPhys",//3
     		"CloseIterScore",//4
-    		"AvgHits",//5
-    		"AvgHitPct",//6
+    		"MedScore",//5
+    		"MedHitPct",//6
     		"LossIters",//7
-    		"AvgIters",//8
-    		"AvgPhysDone",//9
-    		"AvgPhysTaken",//10
+    		"MedWinIters",//8
+    		"MedPhysDone",//9
+    		"MedPhysTaken",//10
     		"AvgIsHitPct",//11
     		"LostRounds",//12
     		"PlayerArmor",//13
@@ -476,15 +476,15 @@ public class CharGen extends StdCommand
                 String[] closeIterSkill=new String[]{""};
                 
                 int[] losses=new int[]{0};
-                int[] avgHits=new int[]{0};
-                int[] avgIters=new int[]{0};
-                int[] avgPhysDone=new int[]{0};
-                int[] avgHitPct=new int[]{0};
-                int[] avgIsHitPct=new int[]{0};
-                int[] avgPhysTaken=new int[]{0};
-                int[] lossIters=new int[]{0};
-                double[] playerDamPct = new double[]{0};
-                double[] playerManaPct = new double[]{0};
+                Vector medScore=new Vector();
+                Vector medWinIters=new Vector();
+                Vector medPhysDone=new Vector();
+                Vector medHitPct=new Vector();
+                Vector medIsHitPct=new Vector();
+                Vector medPhysTaken=new Vector();
+                Vector medLossIters=new Vector();
+                Vector medPlayerDamPct = new Vector();
+                Vector medPlayerManaPct = new Vector();
                 
                 int H1=0;
                 int H2=0;
@@ -678,17 +678,17 @@ public class CharGen extends StdCommand
                     {
                     	if(M1.amDead())
                             losses[0]++;
-                        avgHits[0]+=cumScore;
-                        avgPhysDone[0]+=CMath.s_int(B2.getStat("PHYSDAMTAKEN"));
-                        avgPhysTaken[0]+=CMath.s_int(B1.getStat("PHYSDAMTAKEN"));
-                        avgHitPct[0]+=(CMath.div(hits,iterations)*100);
-                        avgIsHitPct[0]+=(CMath.div(ishits,iterations)*100);
-                        playerDamPct[0]+=100-(CMath.div(M1.curState().getHitPoints(),H1)*100.0);
-                        playerManaPct[0]+=100-(CMath.div(M1.curState().getMana(),M1.maxState().getMana())*100.0);
+                        medScore.addElement(Integer.valueOf(cumScore));
+                        medPhysDone.addElement(Integer.valueOf(CMath.s_int(B2.getStat("PHYSDAMTAKEN"))));
+                        medPhysTaken.addElement(Integer.valueOf(CMath.s_int(B1.getStat("PHYSDAMTAKEN"))));
+                        medHitPct.addElement(Double.valueOf((CMath.div(hits,iterations)*100)));
+                        medIsHitPct.addElement(Double.valueOf((CMath.div(ishits,iterations)*100)));
+                        medPlayerDamPct.addElement(Double.valueOf(100-(CMath.div(M1.curState().getHitPoints(),H1)*100.0)));
+                        medPlayerManaPct.addElement(Double.valueOf(100-(CMath.div(M1.curState().getMana(),M1.maxState().getMana())*100.0)));
                         if(M1.amDead())
-                        	lossIters[0]+=iterations;
+                        	medLossIters.addElement(Integer.valueOf(iterations));
                         else
-	                        avgIters[0]+=iterations;
+	                        medWinIters.addElement(Integer.valueOf(iterations));
                         if(cumScore>bestHitScore[0])
                         {
                             bestHitScore[0]=cumScore;
@@ -740,32 +740,41 @@ public class CharGen extends StdCommand
 	                A.delProperRoom(R);
 	                R.destroy();
 	            }
-                avgHits[0]/=TOTAL_ITERATIONS;
-                avgIters[0]/=TOTAL_ITERATIONS;
-                lossIters[0]/=TOTAL_ITERATIONS;
-                avgPhysDone[0]/=TOTAL_ITERATIONS;
-                avgHitPct[0]/=TOTAL_ITERATIONS;
-                avgIsHitPct[0]/=TOTAL_ITERATIONS;
-                avgPhysTaken[0]/=TOTAL_ITERATIONS;
-                playerDamPct[0]/=TOTAL_ITERATIONS;
-                playerManaPct[0]/=TOTAL_ITERATIONS;
+	            CMParms.sortVector(medScore);
+	            CMParms.sortVector(medHitPct);
+	            CMParms.sortVector(medLossIters);
+	            CMParms.sortVector(medWinIters);
+	            CMParms.sortVector(medPhysDone);
+	            CMParms.sortVector(medPhysTaken);
+	            CMParms.sortVector(medIsHitPct);
+	            CMParms.sortVector(medPlayerDamPct);
+	            CMParms.sortVector(medPlayerManaPct);
                 allData[charClassDex][level-levelStart][0]=bestIterScore[0];
                 allData[charClassDex][level-levelStart][1]=bestHitScore[0];
                 allData[charClassDex][level-levelStart][2]=bestSingleHitScore[0];
                 allData[charClassDex][level-levelStart][3]=bestSingleHitPhys[0];
                 allData[charClassDex][level-levelStart][4]=closeIterScore[0];
-                allData[charClassDex][level-levelStart][5]=avgHits[0];
-                allData[charClassDex][level-levelStart][6]=avgHitPct[0];
-                allData[charClassDex][level-levelStart][7]=lossIters[0];
-                allData[charClassDex][level-levelStart][8]=avgIters[0];
-                allData[charClassDex][level-levelStart][9]=avgPhysDone[0];
-                allData[charClassDex][level-levelStart][10]=avgPhysTaken[0];
-                allData[charClassDex][level-levelStart][11]=avgIsHitPct[0];
+                if(medScore.size()>0)
+	                allData[charClassDex][level-levelStart][5]=((Integer)medScore.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medScore.size()))))).intValue();
+                if(medHitPct.size()>0)
+	                allData[charClassDex][level-levelStart][6]=((Double)medHitPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medHitPct.size()))))).intValue();
+                if(medLossIters.size()>0)
+	                allData[charClassDex][level-levelStart][7]=((Integer)medLossIters.elementAt((int)Math.round(Math.floor(CMath.mul(0.75,medLossIters.size()))))).intValue();
+                if(medWinIters.size()>0)
+	                allData[charClassDex][level-levelStart][8]=((Integer)medWinIters.elementAt((int)Math.round(Math.floor(CMath.mul(0.25,medWinIters.size()))))).intValue();
+                if(medPhysDone.size()>0)
+	                allData[charClassDex][level-levelStart][9]=((Integer)medPhysDone.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPhysDone.size()))))).intValue();
+                if(medPhysTaken.size()>0)
+	                allData[charClassDex][level-levelStart][10]=((Integer)medPhysTaken.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPhysTaken.size()))))).intValue();
+                if(medIsHitPct.size()>0)
+	                allData[charClassDex][level-levelStart][11]=((Double)medIsHitPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medIsHitPct.size()))))).intValue();
                 allData[charClassDex][level-levelStart][12]=losses[0];
                 allData[charClassDex][level-levelStart][13]=playerArmor;
                 allData[charClassDex][level-levelStart][14]=playerAttack;
-                allData[charClassDex][level-levelStart][15]=(int)Math.round(playerDamPct[0]);
-                allData[charClassDex][level-levelStart][16]=(int)Math.round(playerManaPct[0]);
+                if(medPlayerDamPct.size()>0)
+	                allData[charClassDex][level-levelStart][15]=((Double)medPlayerDamPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPlayerDamPct.size()))))).intValue();
+                if(medPlayerManaPct.size()>0)
+	                allData[charClassDex][level-levelStart][16]=((Double)medPlayerManaPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPlayerManaPct.size()))))).intValue();
                 
                 allSkills[charClassDex][level-levelStart][0]=bestIterSkill[0];
                 allSkills[charClassDex][level-levelStart][1]=bestHitSkill[0];
@@ -779,8 +788,8 @@ public class CharGen extends StdCommand
 	                mob.tell("MOST DAM : "+bestHitScore[0]+": "+bestHitSkill[0]);
 	                mob.tell("BEST HIT : "+bestSingleHitScore[0]+", Phys: "+bestSingleHitPhys[0]+", Skill: "+bestSingleHitSkill[0]);
 	                mob.tell("LOSS SURV: "+closeIterScore[0]+": "+closeIterSkill[0]);
-	                mob.tell("AVERAGES : HITS: "+avgHits[0]+" ("+avgHitPct[0]+"%), LOSS ITERS: "+lossIters[0]+", WIN ITERS: "+avgIters[0]);
-	                mob.tell("AVERAGES : PHYS DONE: "+avgPhysDone[0]+", PHYS TAKEN: "+avgPhysTaken[0]+" ("+avgIsHitPct[0]+"%)");
+	                mob.tell("MEDIANS  : HITS: "+allData[charClassDex][level-levelStart][5]+" ("+allData[charClassDex][level-levelStart][6]+"%), LOSS ITERS: "+allData[charClassDex][level-levelStart][7]+", WIN ITERS: "+allData[charClassDex][level-levelStart][8]);
+	                mob.tell("MEDIANS  : PHYS DONE: "+allData[charClassDex][level-levelStart][9]+", PHYS TAKEN: "+allData[charClassDex][level-levelStart][10]+" ("+allData[charClassDex][level-levelStart][11]+"%)");
 	                mob.tell("LOSSES   : "+losses[0]+"/"+TOTAL_ITERATIONS);
 	                if((failSkillCheck!=null)&&(failSkillCheck.size()>0))
 	                {
