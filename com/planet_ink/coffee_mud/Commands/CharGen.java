@@ -166,32 +166,32 @@ public class CharGen extends StdCommand
 		mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
 
 		int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
-		for(int lvl=1;lvl<level;lvl++)
+		for(int lvl=1;lvl<level;lvl+=2)
 		{
-			switch(lvl % 6)
+			switch(CMLib.dice().roll(1,6,-1))
 			{
 			case 0:
-				if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<(max+mob.baseCharStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ)))
+				if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<(max+mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ)))
 					mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)+1);
 				break;
 			case 1:
-				if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<(max+mob.baseCharStats().getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)))
+				if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<(max+mob.charStats().getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)))
 					mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)+1);
 				break;
 			case 2:
-				if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<(max+mob.baseCharStats().getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ)))
+				if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<(max+mob.charStats().getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ)))
 					mob.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)+1);
 				break;
 			case 3:
-				if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<(max+mob.baseCharStats().getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)))
+				if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<(max+mob.charStats().getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)))
 					mob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)+1);
 				break;
 			case 4:
-				if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)<(max+mob.baseCharStats().getStat(CharStats.STAT_MAX_CHARISMA_ADJ)))
+				if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)<(max+mob.charStats().getStat(CharStats.STAT_MAX_CHARISMA_ADJ)))
 					mob.baseCharStats().setStat(CharStats.STAT_CHARISMA,mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)+1);
 				break;
 			case 5:
-				if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<(max+mob.baseCharStats().getStat(CharStats.STAT_MAX_WISDOM_ADJ)))
+				if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<(max+mob.charStats().getStat(CharStats.STAT_MAX_WISDOM_ADJ)))
 					mob.baseCharStats().setStat(CharStats.STAT_WISDOM,mob.baseCharStats().getStat(CharStats.STAT_WISDOM)+1);
 				break;
 			}
