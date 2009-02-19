@@ -105,7 +105,7 @@ public class Chant_Thorns extends Chant
 		if(!(affected instanceof MOB)) return;
 		MOB mob=(MOB)affected;
 
-		affectableStats.setArmor(affectableStats.armor()-mob.envStats().level()-(2*super.getXLEVELLevel(invoker())));
+		affectableStats.setArmor(affectableStats.armor()-10-(2*super.getXLEVELLevel(invoker())));
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

@@ -40,7 +40,7 @@ public class Thief extends StdCharClass
 	public int getBonusPracLevel(){return 1;}
 	public int getBonusAttackLevel(){return 0;}
 	public int getAttackAttribute(){return CharStats.STAT_DEXTERITY;}
-	public int getLevelsPerBonusDamage(){ return 1;}
+	public int getLevelsPerBonusDamage(){ return 4;}
 	public int getMovementMultiplier(){return 10;}
 	public int getHPDivisor(){return 3;}
 	public int getHPDice(){return 1;}
@@ -233,23 +233,26 @@ public class Thief extends StdCharClass
 			return;
 		super.unLevel(mob);
 
-		int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
-		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
-		if(dexStat>maxDexStat) dexStat=maxDexStat;
-		int attArmor=(int)Math.round(CMath.div(dexStat,18.0));
-		if(dexStat>=25)attArmor+=2;
-		else
-		if(dexStat>=22)attArmor+=1;
-		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()+attArmor);
-		mob.envStats().setArmor(mob.envStats().armor()+attArmor);
-
+		mob.recoverEnvStats();
+		if(((mob.baseEnvStats().level()+1) % 3)==0)
+		{
+			int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
+			int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
+						 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
+			if(dexStat>maxDexStat) dexStat=maxDexStat;
+			int attArmor=(int)Math.round(CMath.div(dexStat,18.0));
+			if(dexStat>=25)attArmor+=2;
+			else
+			if(dexStat>=22)attArmor+=1;
+			mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()+attArmor);
+			mob.envStats().setArmor(mob.envStats().armor()+attArmor);
+		}
 		mob.recoverEnvStats();
 		mob.recoverCharStats();
 		mob.recoverMaxState();
 	}
 
-	public String otherBonuses(){return "Receives bonus to defence every level for high dexterity.  Bonus experience for using certain skills.";}
+	public String otherBonuses(){return "Receives bonus to defence for high dexterity.  Bonus experience for using certain skills.";}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -258,21 +261,23 @@ public class Thief extends StdCharClass
 	}
 	public void level(MOB mob, Vector newAbilityIDs)
 	{
-	    if(CMSecurity.isDisabled("LEVELS")) return;
-		int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
-		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
-		if(dexStat>maxDexStat) dexStat=maxDexStat;
-		
-		int attArmor=((int)Math.round(CMath.div(dexStat,18.0)));
-		if(dexStat>=25)attArmor+=2;
-		else
-		if(dexStat>=22)attArmor+=1;
-		if(attArmor>0)
+		if((mob.baseEnvStats().level() % 3)==0)
 		{
-			mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
-			mob.envStats().setArmor(mob.envStats().armor()-attArmor);
-			mob.tell("^NYour stealthiness grants you a defensive bonus of ^H"+attArmor+"^?.^N");
+		    if(CMSecurity.isDisabled("LEVELS")) return;
+			int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
+			int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
+						 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
+			if(dexStat>maxDexStat) dexStat=maxDexStat;
+			int attArmor=((int)Math.round(CMath.div(dexStat,18.0)));
+			if(dexStat>=25)attArmor+=2;
+			else
+			if(dexStat>=22)attArmor+=1;
+			if(attArmor>0)
+			{
+				mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
+				mob.envStats().setArmor(mob.envStats().armor()-attArmor);
+				mob.tell("^NYour stealthiness grants you a defensive bonus of ^H"+attArmor+"^?.^N");
+			}
 		}
 	}
 }

@@ -931,7 +931,7 @@ public class StdMOB implements MOB
 	{
 		double att=(double)(
 				envStats().attackAdjustment()
-				+((charStats().getStat(CharStats.STAT_STRENGTH)-9)));
+				+((charStats().getStat(CharStats.STAT_STRENGTH)-9))*(1+(envStats.level()/10)));
 		if(curState().getHunger()<1) att=att*.9;
 		if(curState().getThirst()<1) att=att*.9;
 		if(curState().getFatigue()>CharState.FATIGUED_MILLIS) att=att*.8;
@@ -940,8 +940,7 @@ public class StdMOB implements MOB
 
 	public int adjustedArmor()
 	{
-		double arm=(double)(((charStats().getStat(CharStats.STAT_DEXTERITY)-9))
-							   +50);
+		double arm=(double)(((charStats().getStat(CharStats.STAT_DEXTERITY)-9)));
 		if((envStats().disposition()&EnvStats.IS_SLEEPING)>0) arm=0.0;
 		if(arm>0.0)
 		{
@@ -972,6 +971,10 @@ public class StdMOB implements MOB
 			damageAmount = (double)(weapon.envStats().damage()+1);
 		else
 			damageAmount = (double)(envStats().damage()+(charStats().getStat(CharStats.STAT_STRENGTH) / 3)-2);
+		double critPct = CMath.div(charStats().getStat(CharStats.STAT_DEXTERITY)- 10,2.5);
+		critPct = critPct * critPct * critPct;
+		if(CMLib.dice().rollPercentage()<Math.round(critPct))
+			damageAmount+=Math.round(CMath.mul(damageAmount,critPct/100.0));
 		if(curState().getHunger() < 1) damageAmount *= .8;
 		if(curState().getFatigue()>CharState.FATIGUED_MILLIS) damageAmount *=.8;
 		if(curState().getThirst() < 1) damageAmount *= .9;

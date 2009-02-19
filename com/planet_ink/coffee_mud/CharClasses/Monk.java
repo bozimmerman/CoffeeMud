@@ -171,26 +171,6 @@ public class Monk extends StdCharClass
 		return super.qualifiesForThisClass(mob,quiet);
 	}
 
-	public void unLevel(MOB mob)
-	{
-		if(mob.envStats().level()<2)
-			return;
-		super.unLevel(mob);
-
-		int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
-		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
-		if(dexStat>maxDexStat) dexStat=maxDexStat;
-		int attArmor=(int)Math.round(CMath.div(dexStat,9.0));
-		attArmor=attArmor*-1;
-		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
-		mob.envStats().setArmor(mob.envStats().armor()-attArmor);
-
-		mob.recoverEnvStats();
-		mob.recoverCharStats();
-		mob.recoverMaxState();
-	}
-
 	public boolean anyWeapons(MOB mob)
 	{
 		for(int i=0;i<mob.inventorySize();i++)
@@ -236,6 +216,27 @@ public class Monk extends StdCharClass
 			affectableStats.getStat(CharStats.STAT_SAVE_TRAPS)
 			+(affectableStats.getClassLevel(this)*2));
 	}
+	public void unLevel(MOB mob)
+	{
+		if(mob.envStats().level()<2)
+			return;
+		super.unLevel(mob);
+
+		int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
+		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
+					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
+		if(dexStat>maxDexStat) dexStat=maxDexStat;
+		int attArmor=(int)Math.round(CMath.div(dexStat,9.0));
+		attArmor=attArmor*-1;
+		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
+		mob.envStats().setArmor(mob.envStats().armor()-attArmor);
+
+		mob.recoverEnvStats();
+		mob.recoverCharStats();
+		mob.recoverMaxState();
+	}
+
+	
 	public void level(MOB mob, Vector newAbilityIDs)
 	{
 	    if(CMSecurity.isDisabled("LEVELS")) return;

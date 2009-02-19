@@ -45,7 +45,7 @@ public class Chant_Barkskin extends Chant
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setArmor(affectableStats.armor() - (2*adjustedLevel(invoker(),0)));
+		affectableStats.setArmor(affectableStats.armor() - 10 - (2*getXLEVELLevel(invoker())));
 	}
 
 	public void unInvoke()
