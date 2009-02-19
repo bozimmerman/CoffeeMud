@@ -278,15 +278,22 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 
 	public void postDamage(MOB attacker,
-								  MOB target,
-								  Environmental weapon,
-								  int damage,
-								  int messageCode,
-								  int damageType,
-								  String allDisplayMessage)
+						   MOB target,
+						   Environmental weapon,
+						   int damage,
+						   int messageCode,
+						   int damageType,
+						   String allDisplayMessage)
 	{
 		if((attacker==null)||(target==null)||(target.location()==null)) return;
 		if(allDisplayMessage!=null) allDisplayMessage="^F^<FIGHT^>"+allDisplayMessage+"^</FIGHT^>^?";
+		if((weapon instanceof Ability)&&(damage>0)&&(attacker != target) && (attacker != null))
+		{
+			double critPct = CMath.div(attacker.charStats().getStat(CharStats.STAT_INTELLIGENCE)- 10,2.5);
+			critPct = critPct * critPct * critPct;
+			if(CMLib.dice().rollPercentage()<Math.round(critPct))
+				damage+=Math.round(CMath.mul(damage,critPct/100.0));
+		}
 		CMMsg msg=CMClass.getMsg(attacker,target,weapon,messageCode,CMMsg.MSG_DAMAGE,messageCode,allDisplayMessage);
 		msg.setValue(damage);
         CMLib.color().fixSourceFightColor(msg);
