@@ -97,7 +97,7 @@ public class Skill_Puppeteer extends BardSkill
 			if(invoker().isInCombat())
 			{
 				boolean isHit=(CMLib.combat().rollToHit(invoker().adjustedAttackBonus(invoker().getVictim())+(5*getXLEVELLevel(invoker()))
-                            +((Item)affected).envStats().attackAdjustment(),invoker().getVictim().adjustedArmor()));
+                            +((Item)affected).envStats().attackAdjustment(),invoker().getVictim().adjustedArmor(), 0));
 				if(!isHit)
 					invoker().location().show(invoker(),invoker().getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else

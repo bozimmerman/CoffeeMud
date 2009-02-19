@@ -126,7 +126,7 @@ public class Dance_Swords extends Dance
 		{
 			if(invoker().isInCombat())
 			{
-				boolean isHit=(CMLib.combat().rollToHit(invoker().adjustedAttackBonus(invoker().getVictim())+((Item)affected).envStats().attackAdjustment(), invoker().getVictim().adjustedArmor()));
+				boolean isHit=(CMLib.combat().rollToHit(invoker().adjustedAttackBonus(invoker().getVictim())+((Item)affected).envStats().attackAdjustment(), invoker().getVictim().adjustedArmor(), 0));
 				if((!isHit)||(!(affected instanceof Weapon)))
 					invoker().location().show(invoker(),invoker().getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else

@@ -88,10 +88,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     public boolean rollToHit(MOB attacker, MOB defender)
     {
         if((attacker==null)||(defender==null)) return false;
-        return rollToHit(attacker.adjustedAttackBonus(defender),defender.adjustedArmor());
+        return rollToHit(attacker.adjustedAttackBonus(defender),defender.adjustedArmor(),(attacker.envStats().level()-defender.envStats().level())*10);
     }
 
-    public boolean rollToHit(int attack, int defence)
+    public boolean rollToHit(int attack, int defence, int adjustment)
     {
         double myArmor=( -( ( (double)defence) - 100.0 ) );
         if(myArmor==0) myArmor=1.0;
@@ -101,7 +101,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         if(hisAttack==0.0) hisAttack=1.0;
         else
         if(hisAttack<0.0) hisAttack=-CMath.div(1.0,myArmor);
-        return CMLib.dice().normalizeAndRollLess((int)Math.round(50.0*(hisAttack/myArmor)));
+        return CMLib.dice().normalizeAndRollLess((int)Math.round(50.0*(hisAttack/myArmor)) + adjustment);
     }
 	public HashSet allCombatants(MOB mob)
 	{

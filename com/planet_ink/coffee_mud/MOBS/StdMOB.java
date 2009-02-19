@@ -935,11 +935,7 @@ public class StdMOB implements MOB
 		if(curState().getHunger()<1) att=att*.9;
 		if(curState().getThirst()<1) att=att*.9;
 		if(curState().getFatigue()>CharState.FATIGUED_MILLIS) att=att*.8;
-		if(mob==null)
-			return (int)Math.round(att);
-	    int diff=envStats().level()-mob.envStats().level();
-		return (diff*CMath.abs(diff))
-			   +(int)Math.round(att);
+		return (int)Math.round(att);
 	}
 
 	public int adjustedArmor()
@@ -2104,7 +2100,7 @@ public class StdMOB implements MOB
 						{	chanceToFail=charStats().getSave(c); break;}
 					if(chanceToFail>Integer.MIN_VALUE)
 					{
-						chanceToFail+=(envStats().level()-msg.source().envStats().level());
+						chanceToFail+=((envStats().level()-msg.source().envStats().level())*10);
 						if(chanceToFail<5)
 							chanceToFail=5;
 						else
