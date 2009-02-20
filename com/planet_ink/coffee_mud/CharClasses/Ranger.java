@@ -42,7 +42,7 @@ public class Ranger extends StdCharClass
 	public int getBonusAttackLevel(){return 0;}
 	public int getMovementMultiplier(){return 12;}
 	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
-	public int getLevelsPerBonusDamage(){ return 4;}
+	public int getLevelsPerBonusDamage(){ return 10;}
 	public int getPracsFirstLevel(){return 3;}
 	public int getTrainsFirstLevel(){return 4;}
 	public int getHPDivisor(){return 2;}

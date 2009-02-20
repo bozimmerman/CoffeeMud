@@ -40,7 +40,7 @@ public class Artisan extends StdCharClass
 	public int getBonusPracLevel(){return 2;}
 	public int getBonusAttackLevel(){return -1;}
 	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	public int getLevelsPerBonusDamage(){ return 15;}
+	public int getLevelsPerBonusDamage(){ return 10;}
 	public int getHPDivisor(){return 6;}
 	public int getHPDice(){return 1;}
 	public int getHPDie(){return 5;}

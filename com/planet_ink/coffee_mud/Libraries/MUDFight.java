@@ -88,7 +88,9 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     public boolean rollToHit(MOB attacker, MOB defender)
     {
         if((attacker==null)||(defender==null)) return false;
-        return rollToHit(attacker.adjustedAttackBonus(defender),defender.adjustedArmor(),(attacker.envStats().level()-defender.envStats().level())*10);
+        int diff = (attacker.envStats().level()-defender.envStats().level());
+        int diffSign = diff < 0 ? -1 : 1;
+        return rollToHit(attacker.adjustedAttackBonus(defender),defender.adjustedArmor(),diffSign * (diff * diff));
     }
 
     public boolean rollToHit(int attack, int defence, int adjustment)

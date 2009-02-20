@@ -98,7 +98,7 @@ public class Prayer_BladeBarrier extends Prayer
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setArmor(affectableStats.armor()-adjustedLevel(invoker(),0));
+		affectableStats.setArmor(affectableStats.armor()-5 - (adjustedLevel(invoker(),0)/10));
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

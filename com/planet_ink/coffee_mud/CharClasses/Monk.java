@@ -40,7 +40,7 @@ public class Monk extends StdCharClass
 	public int getBonusPracLevel(){return -1;}
 	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
-	public int getLevelsPerBonusDamage(){ return 3;}
+	public int getLevelsPerBonusDamage(){ return 6;}
 	public int getPracsFirstLevel(){return 3;}
 	public int getTrainsFirstLevel(){return 4;}
 	public int getHPDivisor(){return 2;}

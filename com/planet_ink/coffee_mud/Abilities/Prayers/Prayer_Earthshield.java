@@ -49,7 +49,7 @@ public class Prayer_Earthshield extends Prayer
 		super.affectEnvStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		affectableStats.setArmor(affectableStats.armor()-(2*adjustedLevel(invoker(),0)));
+		affectableStats.setArmor(affectableStats.armor()-5 - (adjustedLevel(invoker(),0)/5));
 	}
 
 	public void affectCharState(MOB affected, CharState affectableState)

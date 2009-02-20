@@ -40,23 +40,27 @@ public class Spell_GraceOfTheCat extends Spell
 	public int abstractQuality(){ return Ability.QUALITY_BENEFICIAL_OTHERS;}
 	protected int canAffectCode(){return CAN_MOBS;}
 	public int classificationCode(){ return Ability.ACODE_SPELL|Ability.DOMAIN_TRANSMUTATION;}
-
+	int increase = -1;
+	
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		int increase = 4;
-		if (affectableStats.getCurrentClass().baseClass().equals("Thief"))
-			increase = 8;
-		if (affectableStats.getCurrentClass().baseClass().equals("Bard"))
-			increase = 8;
-		if (affectableStats.getCurrentClass().baseClass().equals("Fighter"))
-			increase = 6;
-		if (affectableStats.getCurrentClass().baseClass().equals("Mage"))
-			increase = 6;
-		if (affectableStats.getCurrentClass().baseClass().equals("Cleric"))
+		if(increase <= 0)
+		{
 			increase = 4;
-		if (affectableStats.getCurrentClass().baseClass().equals("Druid"))
-			increase = 4;
+			if (affectableStats.getCurrentClass().baseClass().equals("Thief"))
+				increase = 8;
+			if (affectableStats.getCurrentClass().baseClass().equals("Bard"))
+				increase = 8;
+			if (affectableStats.getCurrentClass().baseClass().equals("Fighter"))
+				increase = 6;
+			if (affectableStats.getCurrentClass().baseClass().equals("Mage"))
+				increase = 6;
+			if (affectableStats.getCurrentClass().baseClass().equals("Cleric"))
+				increase = 4;
+			if (affectableStats.getCurrentClass().baseClass().equals("Druid"))
+				increase = 4;
+		}
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY) + increase);
 	}
 

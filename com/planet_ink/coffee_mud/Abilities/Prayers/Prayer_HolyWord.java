@@ -62,13 +62,13 @@ public class Prayer_HolyWord extends Prayer implements MendingSkill
 		int xlvl=super.getXLEVELLevel(invoker());
 		if(CMLib.flags().isGood(mob))
 		{
-			affectableStats.setArmor(affectableStats.armor()-30-(6*xlvl));
+			affectableStats.setArmor(affectableStats.armor()-15-(6*xlvl));
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+20+(4*xlvl));
 		}
 		else
 		if(CMLib.flags().isEvil(mob))
 		{
-			affectableStats.setArmor(affectableStats.armor()+30+(6*xlvl));
+			affectableStats.setArmor(affectableStats.armor()+15+(6*xlvl));
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()-20-(4*xlvl));
 		}
 	}

@@ -49,7 +49,7 @@ public class Prayer_Rockskin extends Prayer
 	{
 		super.affectEnvStats(affected,affectableStats);
 		int xlvl=super.getXLEVELLevel(invoker());
-		affectableStats.setArmor(affectableStats.armor() - 30-xlvl);
+		affectableStats.setArmor(affectableStats.armor() - 15-xlvl);
 	}
 
 	public void unInvoke()
@@ -119,7 +119,7 @@ public class Prayer_Rockskin extends Prayer
 			{
 				mob.location().send(mob,msg);
 				mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> watch(es) <S-HIS-HER> skin turn hard as rock!");
-				HitsRemaining=5+(adjustedLevel(mob,asLevel)/2);
+				HitsRemaining=3+(adjustedLevel(mob,asLevel)/10);
 				beneficialAffect(mob,target,asLevel,0);
 			}
 		}

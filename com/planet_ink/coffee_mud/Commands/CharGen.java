@@ -166,8 +166,9 @@ public class CharGen extends StdCommand
 		mob.baseCharStats().getCurrentClass().startCharacter(mob,false,false);
 
 		int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
-		for(int lvl=1;lvl<level;lvl+=2)
+		for(int lvl=1;lvl<level;lvl++)
 		{
+			if((lvl % 2)==0)
 			switch(CMLib.dice().roll(1,6,-1))
 			{
 			case 0:
@@ -314,7 +315,7 @@ public class CharGen extends StdCommand
                 {"Thief","Thiefness"},
                 {"Fighter","Fighterness"},
 	    };
-	    int TOTAL_ITERATIONS=1000;
+	    int TOTAL_ITERATIONS=300;
 	    
 	    DVector classSet=new DVector(2);
 	    for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
@@ -337,7 +338,7 @@ public class CharGen extends StdCommand
 	    boolean classCleared=false;
 	    boolean nextLevel=false;
 	    String fileExp=null;
-	    int skipLevels=1;
+	    int skipLevels=0;
 	    for(int i=0;i<commands.size();i++)
 	    {
 	        String s=(String)commands.elementAt(i);
@@ -418,6 +419,16 @@ public class CharGen extends StdCommand
 	        if(s.equalsIgnoreCase("FAILCHECK"))
 	            failSkillCheck=new Hashtable();
 	    }
+	    
+	    if(skipLevels<=0)
+	    {
+	    	skipLevels=1;
+	    	if((levelStart==1)&&(levelEnd==91))
+	    		skipLevels=15;
+	    }
+	    
+	    
+	    	
 	    
         Area A=CMClass.getAreaType("StdArea");
         A.setName("UNKNOWNAREA");

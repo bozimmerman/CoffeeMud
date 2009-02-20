@@ -41,7 +41,7 @@ public class Druid extends StdCharClass
 	public int getBonusPracLevel(){return 2;}
 	public int getBonusAttackLevel(){return 0;}
 	public int getAttackAttribute(){return CharStats.STAT_CONSTITUTION;}
-	public int getLevelsPerBonusDamage(){ return 6;}
+	public int getLevelsPerBonusDamage(){ return 10;}
 	public int getHPDivisor(){return 2;}
 	public int getHPDice(){return 2;}
 	public int getHPDie(){return 7;}

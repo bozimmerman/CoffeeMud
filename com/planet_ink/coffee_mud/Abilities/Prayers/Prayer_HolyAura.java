@@ -58,7 +58,7 @@ public class Prayer_HolyAura extends Prayer implements MendingSkill
 		if(!(affected instanceof MOB)) return;
 
 		int xlvl=super.getXLEVELLevel(invoker());
-		affectableStats.setArmor(affectableStats.armor()-20-(4*xlvl));
+		affectableStats.setArmor(affectableStats.armor()-10-(4*xlvl));
 		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+10+(2*xlvl));
 	}
 

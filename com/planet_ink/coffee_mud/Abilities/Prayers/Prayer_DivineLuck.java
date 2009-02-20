@@ -84,7 +84,7 @@ public class Prayer_DivineLuck extends Prayer
 		{
 			MOB victim=mob.getVictim();
 			if(CMLib.flags().isEvil(victim))
-				affectableStats.setArmor(affectableStats.armor()-10-xlvl);
+				affectableStats.setArmor(affectableStats.armor()-5-xlvl);
 		}
 	}
 

@@ -931,7 +931,7 @@ public class StdMOB implements MOB
 	{
 		double att=(double)(
 				envStats().attackAdjustment()
-				+((charStats().getStat(CharStats.STAT_STRENGTH)-9))*(1+(envStats.level()/10)));
+				+(((charStats().getStat(CharStats.STAT_STRENGTH)-9))*(1+(envStats.level()/10))));
 		if(curState().getHunger()<1) att=att*.9;
 		if(curState().getThirst()<1) att=att*.9;
 		if(curState().getFatigue()>CharState.FATIGUED_MILLIS) att=att*.8;
@@ -2103,7 +2103,9 @@ public class StdMOB implements MOB
 						{	chanceToFail=charStats().getSave(c); break;}
 					if(chanceToFail>Integer.MIN_VALUE)
 					{
-						chanceToFail+=((envStats().level()-msg.source().envStats().level())*10);
+				        int diff = (envStats().level()-msg.source().envStats().level());
+				        int diffSign = diff < 0 ? -1 : 1;
+						chanceToFail+=(diffSign * (diff * diff));
 						if(chanceToFail<5)
 							chanceToFail=5;
 						else

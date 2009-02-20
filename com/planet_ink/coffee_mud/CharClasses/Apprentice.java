@@ -40,7 +40,7 @@ public class Apprentice extends StdCharClass
 	public int getBonusPracLevel(){return 5;}
 	public int getBonusAttackLevel(){return -1;}
 	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	public int getLevelsPerBonusDamage(){ return 25;}
+	public int getLevelsPerBonusDamage(){ return 10;}
 	public int getTrainsFirstLevel(){return 6;}
 	public int getHPDivisor(){return 9;}
 	public int getHPDice(){return 1;}
