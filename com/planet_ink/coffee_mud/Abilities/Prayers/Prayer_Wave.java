@@ -93,7 +93,7 @@ public class Prayer_Wave extends Prayer
 					CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto)|CMMsg.MASK_MALICIOUS,auto?"<T-NAME> <T-IS-ARE> swept away by a great wave!":"^S<S-NAME> sweep(s) <S-HIS-HER> hands over <T-NAMESELF>, "+prayingWord(mob)+".^?");					if(mob.location().okMessage(mob,msg))
 					{
 						mob.location().send(mob,msg);
-						int harming=CMLib.dice().roll(4,adjustedLevel(mob,asLevel)/numEnemies,numEnemies);
+						int harming=CMLib.dice().roll(1,adjustedLevel(mob,asLevel)/numEnemies,numEnemies);
 						CMLib.combat().postDamage(mob,target,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_WATER,Weapon.TYPE_BURSTING,"A crashing wave <DAMAGE> <T-NAME>!");
 						int chanceToStay=10+(target.charStats().getStat(CharStats.STAT_STRENGTH)-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)))*4);
 						int roll=CMLib.dice().rollPercentage();
