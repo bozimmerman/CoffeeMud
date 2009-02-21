@@ -44,9 +44,9 @@ public class Bard extends StdCharClass
 	public int getHPDivisor(){return 3;}
 	public int getHPDice(){return 2;}
 	public int getHPDie(){return 6;}
-	public int getManaDivisor(){return 4;}
+	public int getManaDivisor(){return 6;}
 	public int getManaDice(){return 1;}
-	public int getManaDie(){return 6;}
+	public int getManaDie(){return 2;}
 	protected String armorFailMessage(){return "<S-NAME> armor makes <S-HIM-HER> mess up <S-HIS-HER> <SKILL>!";}
 	public int allowedArmorLevel(){return CharClass.ARMOR_NONMETAL;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}

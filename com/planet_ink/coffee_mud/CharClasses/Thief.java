@@ -38,16 +38,16 @@ public class Thief extends StdCharClass
 	public String name(){return "Thief";}
 	public String baseClass(){return "Thief";}
 	public int getBonusPracLevel(){return 1;}
-	public int getBonusAttackLevel(){return 0;}
+	public int getBonusAttackLevel(){return 1;}
 	public int getAttackAttribute(){return CharStats.STAT_DEXTERITY;}
 	public int getLevelsPerBonusDamage(){ return 5;}
 	public int getMovementMultiplier(){return 10;}
 	public int getHPDivisor(){return 3;}
 	public int getHPDice(){return 1;}
 	public int getHPDie(){return 10;}
-	public int getManaDivisor(){return 4;}
+	public int getManaDivisor(){return 6;}
 	public int getManaDice(){return 1;}
-	public int getManaDie(){return 4;}
+	public int getManaDie(){return 3;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_LEATHER;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_THIEFLIKE;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();

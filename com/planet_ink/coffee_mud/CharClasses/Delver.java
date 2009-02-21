@@ -47,7 +47,7 @@ public class Delver extends StdCharClass
 	public int getHPDie(){return 6;}
 	public int getManaDivisor(){return 4;}
 	public int getManaDice(){return 1;}
-	public int getManaDie(){return 6;}
+	public int getManaDie(){return 4;}
 	protected String armorFailMessage(){return "<S-NAME> watch(es) <S-HIS-HER> armor absorb <S-HIS-HER> magical energy!";}
 	public int allowedArmorLevel(){return CharClass.ARMOR_OREONLY;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_ROCKY;}

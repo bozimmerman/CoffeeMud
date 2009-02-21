@@ -44,9 +44,9 @@ public class Artisan extends StdCharClass
 	public int getHPDivisor(){return 6;}
 	public int getHPDice(){return 1;}
 	public int getHPDie(){return 5;}
-	public int getManaDivisor(){return 4;}
+	public int getManaDivisor(){return 10;}
 	public int getManaDice(){return 1;}
-	public int getManaDie(){return 6;}
+	public int getManaDie(){return 2;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_CLOTH;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_DAGGERONLY;}
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();

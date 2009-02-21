@@ -42,9 +42,9 @@ public class GenCharClass extends StdCharClass
 	protected int hpDivisor=3;
 	protected int hpDice=1;
 	protected int hpDie=6;
-	protected int manaDivisor=3;
+	protected int manaDivisor=6;
 	protected int manaDice=1;
-	protected int manaDie=6;
+	protected int manaDie=3;
     protected int levelCap=-1;
 	protected int bonusPracLevel=0;
 	protected int bonusAttackLevel=1;

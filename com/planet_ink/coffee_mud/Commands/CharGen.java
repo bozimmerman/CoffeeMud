@@ -297,15 +297,28 @@ public class CharGen extends StdCommand
 		return avgMob;
 	}
 
-	public void combatRun(MOB mob, Vector commands) {
+	private class CombatStats
+	{
 	    int levelStart=1;
 	    int levelEnd=91;
+	    int TOTAL_ITERATIONS=100;
+	    int skipLevels=0;
+        int[][][] allData=null;//new int[classSet.size()][levelEnd-levelStart+1][17];
+        String[][][] allSkills=null;//new String[classSet.size()][levelEnd-levelStart+1][4];
+        Area A=null;
+        MOB mob=null;
+	    DVector classSet=new DVector(2);
+	    Hashtable failSkillCheck=null;
+	}
+	
+	public void combatRun(MOB mob, Vector commands) {
+		CombatStats c=new CombatStats();
+		c.mob=mob;
 	    if(commands.size()==0)
 	    {
 	        mob.tell("USAGE: CHARGEN COMBAT ([CHARCLASS(S)]...) (EXPORT=FILENAME) (FAILCHECK) (ITERATIONS=[X]) (SKIPLEVELS=[X]) ([START LEVEL]) ([END LEVEL])");
 	        return;
 	    }
-	    Hashtable failSkillCheck=null;
 	    String[][] CAMATCH={
 	            {"Commoner","CombatAbilities"},
 	            {"Bard","Bardness"},
@@ -315,9 +328,7 @@ public class CharGen extends StdCommand
                 {"Thief","Thiefness"},
                 {"Fighter","Fighterness"},
 	    };
-	    int TOTAL_ITERATIONS=300;
 	    
-	    DVector classSet=new DVector(2);
 	    for(Enumeration e=CMClass.charClasses();e.hasMoreElements();)
 	    {
 	        CharClass C=(CharClass)e.nextElement();
@@ -327,10 +338,10 @@ public class CharGen extends StdCommand
 	        &&(!CMath.bset(C.availabilityCode(),Area.THEME_SKILLONLYMASK)))
 	        {
 	            String behav="CombatAbilities";
-	            for(int c=0;c<CAMATCH.length;c++)
-	                if(C.baseClass().equalsIgnoreCase(CAMATCH[c][0]))
-	                    behav=CAMATCH[c][1];
-	            classSet.addElement(C,behav);
+	            for(int x=0;x<CAMATCH.length;x++)
+	                if(C.baseClass().equalsIgnoreCase(CAMATCH[x][0]))
+	                    behav=CAMATCH[x][1];
+	            c.classSet.addElement(C,behav);
 	        }
 	    }
 	    
@@ -338,7 +349,6 @@ public class CharGen extends StdCommand
 	    boolean classCleared=false;
 	    boolean nextLevel=false;
 	    String fileExp=null;
-	    int skipLevels=0;
 	    for(int i=0;i<commands.size();i++)
 	    {
 	        String s=(String)commands.elementAt(i);
@@ -347,13 +357,13 @@ public class CharGen extends StdCommand
 	            int x=CMath.s_int(s);
 	            if(x>=0)
 	            {
-	                if((nextLevel)&&(x>=levelStart))
-	                    levelEnd=x;
+	                if((nextLevel)&&(x>=c.levelStart))
+	                	c.levelEnd=x;
 	                else
 	                if(!nextLevel)
 	                {
-	                    levelStart=x;
-	                    levelEnd=x;
+	                	c.levelStart=x;
+	                	c.levelEnd=x;
 	                    nextLevel=true;
 	                }
 	            }
@@ -363,7 +373,7 @@ public class CharGen extends StdCommand
             {
                 s=s.substring("ITERATIONS=".length());
                 if(CMath.isInteger(s))
-                    TOTAL_ITERATIONS=CMath.s_int(s);
+                	c.TOTAL_ITERATIONS=CMath.s_int(s);
             }
 	        else
             if(s.toUpperCase().startsWith("EXPORT="))
@@ -371,8 +381,8 @@ public class CharGen extends StdCommand
 	        else
             if(s.toUpperCase().startsWith("SKIPLEVELS="))
             {
-            	skipLevels=CMath.s_int(s.substring("SKIPLEVELS=".length()));
-            	if(skipLevels<1) skipLevels=1;
+            	c.skipLevels=CMath.s_int(s.substring("SKIPLEVELS=".length()));
+            	if(c.skipLevels<1) c.skipLevels=1;
             }
             else
 	        if(CMClass.findCharClass(s)!=null)
@@ -381,13 +391,13 @@ public class CharGen extends StdCommand
 	            if(!classCleared)
 	            {
 	                classCleared=true;
-	                classSet=new DVector(2);
+	                c.classSet=new DVector(2);
 	            }
 	            String behav="CombatAbilities";
-                for(int c=0;c<CAMATCH.length;c++)
-                    if(C.baseClass().equalsIgnoreCase(CAMATCH[c][0]))
-                        behav=CAMATCH[c][1];
-                classSet.addElement(C,behav);
+                for(int x=0;x<CAMATCH.length;x++)
+                    if(C.baseClass().equalsIgnoreCase(CAMATCH[x][0]))
+                        behav=CAMATCH[x][1];
+                c.classSet.addElement(C,behav);
 	        }
             else
             if(s.endsWith("s"))
@@ -405,48 +415,37 @@ public class CharGen extends StdCommand
                         if(!classCleared)
                         {
                             classCleared=true;
-                            classSet=new DVector(2);
+                            c.classSet=new DVector(2);
                         }
                         String behav="CombatAbilities";
-                        for(int c=0;c<CAMATCH.length;c++)
-                            if(C.baseClass().equalsIgnoreCase(CAMATCH[c][0]))
-                                behav=CAMATCH[c][1];
-                        classSet.addElement(C,behav);
+                        for(int x=0;x<CAMATCH.length;x++)
+                            if(C.baseClass().equalsIgnoreCase(CAMATCH[x][0]))
+                                behav=CAMATCH[x][1];
+                        c.classSet.addElement(C,behav);
                     }
                 }
             }
 	        else
 	        if(s.equalsIgnoreCase("FAILCHECK"))
-	            failSkillCheck=new Hashtable();
+	            c.failSkillCheck=new Hashtable();
 	    }
 	    
-	    if(skipLevels<=0)
+	    if(c.skipLevels<=0)
 	    {
-	    	skipLevels=1;
-	    	if((levelStart==1)&&(levelEnd==91))
-	    		skipLevels=15;
+	    	c.skipLevels=1;
+	    	if((c.levelStart==1)&&(c.levelEnd==91))
+	    		c.skipLevels=15;
 	    }
 	    
 	    
 	    	
 	    
-        Area A=CMClass.getAreaType("StdArea");
-        A.setName("UNKNOWNAREA");
-        CMLib.map().addArea(A);
+        c.A=CMClass.getAreaType("StdArea");
+        c.A.setName("UNKNOWNAREA");
+        CMLib.map().addArea(c.A);
+        c.allData=new int[c.classSet.size()][c.levelEnd-c.levelStart+1][17];
+        c.allSkills=new String[c.classSet.size()][c.levelEnd-c.levelStart+1][4];
         
-        /*final int DATUM_CLASS=0; 
-        final int DATUM_LEVEL=1;
-        final int DATUM_BESTSINGLEHITSCORE=2;
-        final int DATUM_BESTSINGLEHITSKILL=3;
-        final int DATUM_BESTHITSCORE=4;
-        final int DATUM_BESTHITSKILLS=5;
-        final int DATUM_BESTITERSCORE=6;
-        final int DATUM_BESTITERSKILLS=7;
-        final int DATUM_LOSSES=8;
-        
-        DVector datum=new DVector(9);*/
-        int[][][] allData=new int[classSet.size()][levelEnd-levelStart+1][17];
-        String[][][] allSkills=new String[classSet.size()][levelEnd-levelStart+1][4];
         final String[] allDataHeader={
     		"BestIterScore",//0
     		"BestHitScore",//1
@@ -472,363 +471,402 @@ public class CharGen extends StdCommand
         };
         
         
-        for(int charClassDex=0;charClassDex<classSet.size();charClassDex++)
+        java.util.concurrent.CountDownLatch latch = new java.util.concurrent.CountDownLatch(c.classSet.size());
+        boolean[] aborted = new boolean[1];
+        aborted[0]=false;
+        for(int charClassDex=0;charClassDex<c.classSet.size();charClassDex++)
         {
-            CharClass C=(CharClass)classSet.elementAt(charClassDex,1);
-    	    for(int level=levelStart;level<=levelEnd;level+=skipLevels)
-    	    {
-                mob.tell(C.ID()+": "+level);
-                int roomRobin=0;
-                Room R=null;
-                
-                int[] bestSingleHitScore=new int[]{0};
-                String[] bestSingleHitSkill=new String[]{""};
-                int[] bestSingleHitPhys=new int[]{0};
-                int[] bestHitScore=new int[]{0};
-                String[] bestHitSkill=new String[]{""};
-                int[] bestIterScore=new int[]{Integer.MAX_VALUE};
-                String[] bestIterSkill=new String[]{""};
-                
-                int[] closeIterScore=new int[]{0};
-                String[] closeIterSkill=new String[]{""};
-                
-                int[] losses=new int[]{0};
-                Vector medScore=new Vector();
-                Vector medWinIters=new Vector();
-                Vector medPhysDone=new Vector();
-                Vector medHitPct=new Vector();
-                Vector medIsHitPct=new Vector();
-                Vector medPhysTaken=new Vector();
-                Vector medLossIters=new Vector();
-                Vector medPlayerDamPct = new Vector();
-                Vector medPlayerManaPct = new Vector();
-                
-                int H1=0;
-                int H2=0;
-                boolean playerExampleShown=false;
-                int lastPct=0;
-                int playerArmor=0;
-                int playerAttack=0;
-	            for(int tries=0;tries<TOTAL_ITERATIONS;tries++)
-	            {
-	            	if((CMath.div(tries,TOTAL_ITERATIONS)*100.0)>=lastPct+5)
-	            	{
-	            		lastPct+=5;
-	                    if(mob.session()!=null) mob.session().print(".");
-	            	}
-	                Behavior B1=CMClass.getBehavior((String)classSet.elementAt(charClassDex,2));
-                    B1.setParms(C.ID());
-	                switch(roomRobin)
-	                {
-	                case 0: R=CMClass.getLocale("Woods"); break; 
-                    case 1: R=CMClass.getLocale("CaveRoom"); break; 
-                    case 2: R=CMClass.getLocale("CityStreet"); break; 
-	                }
-	                if((++roomRobin)>2) roomRobin=0;
-	                R.setRoomID("UNKNOWNAREA#0");
-	                R.setArea(A);
-	                A.getTimeObj().setTimeOfDay(CMLib.dice().roll(1,A.getTimeObj().getHoursInDay(),-1));
-	                
-	                //Session S=(Session)CMClass.getCommon("FakeSession");
-	                //S.initializeSession(null,"MEMORY");
-	                MOB M1=AverageClassMOB(null,level,C,1);
-                    M1.baseCharStats().setMyRace(CMClass.getRace("Human"));
-	                M1.setName("GOODGUY");
-	                M1.recoverCharStats();
-                    M1.recoverEnvStats();
-                    M1.setLocation(R);
-	                M1.baseCharStats().getMyRace().setHeightWeight(M1.baseEnvStats(),(char)M1.baseCharStats().getStat(CharStats.STAT_GENDER));
-	                M1.recoverCharStats();
-	                M1.recoverEnvStats();
-	                M1.recoverMaxState();
-	                M1.resetToMaxState();
-	                M1.bringToLife(M1.location(),true);
-	                CMLib.threads().deleteTick(M1,Tickable.TICKID_MOB);
-	                M1.setWimpHitPoint(0);
-	                M1.recoverMaxState();
-	                M1.recoverCharStats();
-	                M1.recoverEnvStats();
-	                M1.resetToMaxState();
-                    B1.setStat("PRECAST","1");
-	                M1.addBehavior(B1);
-	                equipPlayer(M1);
-	                M1.recoverMaxState();
-	                M1.recoverCharStats();
-	                M1.recoverEnvStats();
-                    B1.setStat("RECORD"," ");
-                    B1.setStat("PROF","true");
-                    B1.setStat("LASTSPELL","");
-                    B1.setStat("PRECAST","1");
-                    for(int i=0;i<20;i++) // give some pre-cast ticks
-                    	M1.tick(M1,Tickable.TICKID_MOB);
-	                M1.resetToMaxState();
-	                playerArmor=M1.adjustedArmor();
-	                playerAttack=M1.adjustedAttackBonus(null);
-	                
-                    MOB M2=CMClass.getMOB("StdMOB");  // MOB stat
-                    Behavior B2=CMClass.getBehavior("CombatAbilities");
-                    M2.baseCharStats().setMyRace(CMClass.getRace("Human"));
-                    M2.baseEnvStats().setLevel(level);
-                    M2.setName("BADGUY");
-                    M2.recoverCharStats();
-                    M2.recoverEnvStats();
-                    M2.setLocation(R);
-                    M2.baseCharStats().getMyRace().setHeightWeight(M2.baseEnvStats(),(char)M2.baseCharStats().getStat(CharStats.STAT_GENDER));
-                    M2.baseEnvStats().setAbility(11);
-                    M2.recoverCharStats();
-                    M2.recoverEnvStats();
-                    M2.recoverMaxState();
-                    M2.resetToMaxState();
-                    M2.addBehavior(B2);
-                    M2.bringToLife(M2.location(),true);
-	                CMLib.threads().deleteTick(M2,Tickable.TICKID_MOB);
-                    M2.baseCharStats().getCurrentClass().fillOutMOB(M2,level);
-                    int hp=M2.baseCharStats().getCurrentClass().getLevelPlayerHP(M2);
-                    if(hp>M2.baseState().getHitPoints())
-                        M2.baseState().setHitPoints(hp);
-                    M2.setWimpHitPoint(0);
-                    M2.recoverMaxState();
-                    M2.recoverCharStats();
-                    M2.recoverEnvStats();
-                    M2.resetToMaxState();
-                    
-                    M1.setVictim(M2);
-                    M2.setVictim(M1);
-	                
-                    
-                    if(!playerExampleShown)
-                    {
-                    	playerExampleShown=true;
-                    	/*
-            			StringBuffer msg=CMLib.commands().getScore(M1);
-            			if(!mob.isMonster())
-            				mob.session().wraplessPrintln(msg.toString());
-                        if(mob.session()!=null)
-                        {
-	            			mob.session().println(M1.name()+" has "+B1.ID()+" behavior for "+M1.numAbilities()+" abilities.");
-                        	mob.session().print("Working..");
-                        }
-                        */
-                    }
-                    
-                    H1=M1.curState().getHitPoints();
-                    H2=M2.curState().getHitPoints();
-                    
-                    int iterations=0;
-                    int cumScore=0;
-                    int hits = 0;
-                    int ishits = 0;
-                    B1.setStat("PHYSDAMTAKEN","0");
-                    B2.setStat("PHYSDAMTAKEN","0");
-                    int zeroCheck=0;
-                    //MOB[] ZEROMOBS=null;
-                    String ZEROSKILL1=null;
-                    String ZEROSKILL2=null;
-                    String ALMOSTZEROSKILL=null;
-                    int l1=0, l2=0;
-                    
-                    
-                    //chargen combat charclasses export=test.tab iterations=100 skiplevels=20 1 91
-                    while((M1.getVictim()==M2)
-                         &&(M2.getVictim()==M1)
-                         &&(!M1.amDead())
-                         &&(!M2.amDead())
-                         &&(M1.location()==M2.location())
-                         &&(iterations<1000))
-                    {
-                        iterations++;
-                        ALMOSTZEROSKILL=B1.getStat("LASTSPELL");
-                        int h1=M1.curState().getHitPoints();
-                        int h2=M2.curState().getHitPoints();
-                        int L1=l1;
-                        int L2=l2;
-                        l1=CMath.s_int(B2.getStat("PHYSDAMTAKEN"));
-                        l2=CMath.s_int(B1.getStat("PHYSDAMTAKEN"));
-                        if(l1>L1) hits++;
-                        if(l2>L2) ishits++;
-                        try {
-	                    	CMLib.commands().postStand(M1,true);
-	                    	CMLib.commands().postStand(M2,true);
-	                        M1.tick(M1,Tickable.TICKID_MOB);
-	                        M2.tick(M2,Tickable.TICKID_MOB);
-                        } catch(Throwable t) {
-                        	Log.errOut("CharGen",t);
-                        }
-                        
-                        int h=h2-(M2.amDead()?0:M2.curState().getHitPoints());
-                        h=h-(h1-(M1.amDead()?0:M1.curState().getHitPoints()));
-                        if((h==0)&&((!M1.amDead())&&(!M2.amDead())))
-                        {
-                        	zeroCheck++;
-                        	if(zeroCheck==1)
-                        	{
-                        		//ZEROMOBS=new MOB[]{(MOB)M1.copyOf(),(MOB)M2.copyOf()};
-                        		ZEROSKILL1=ALMOSTZEROSKILL;
-                        		ZEROSKILL2=B1.getStat("LASTSPELL");
-                        	}
-                        	else
-                            if(zeroCheck==20)
-                            	Log.errOut("CharGen","Stale combat warning: "+ZEROSKILL1+"/"+ZEROSKILL2);
-                            else
-                            if(zeroCheck==100)
-                            {
-                            	
-                                Log.errOut("CharGen","Stale Combat Abort: "+level+"/"+tries+"/"+iterations+"/"+ZEROSKILL1+"/"+ZEROSKILL2);
-                                //Log.errOut("CharGen",S.afkMessage());
-                                break;
-                            }
-                        }
-                        else
-                        	zeroCheck=0;
-                        if(h>bestSingleHitScore[0])
-                        {
-                            bestSingleHitScore[0]=h;
-                            bestSingleHitPhys[0]=CMath.s_int(B2.getStat("PHYSDAMTAKEN"))-l1;
-                            bestSingleHitSkill[0]=B1.getStat("LASTSPELL");
-                        }
-                        cumScore+=h;
-                    }
-                    if(iterations>=1000)
-                        Log.errOut("CharGen","Stale Combat Abort: "+level+"/"+tries+"/"+ZEROSKILL1+"/"+ZEROSKILL2);
-                    else
-                    if(M1.amDead()||M2.amDead())
-                    {
-                    	if(M1.amDead())
-                            losses[0]++;
-                        medScore.addElement(Integer.valueOf(cumScore));
-                        medPhysDone.addElement(Integer.valueOf(CMath.s_int(B2.getStat("PHYSDAMTAKEN"))));
-                        medPhysTaken.addElement(Integer.valueOf(CMath.s_int(B1.getStat("PHYSDAMTAKEN"))));
-                        medHitPct.addElement(Double.valueOf((CMath.div(hits,iterations)*100)));
-                        medIsHitPct.addElement(Double.valueOf((CMath.div(ishits,iterations)*100)));
-                        medPlayerDamPct.addElement(Double.valueOf(100-(CMath.div(M1.curState().getHitPoints(),H1)*100.0)));
-                        medPlayerManaPct.addElement(Double.valueOf(100-(CMath.div(M1.curState().getMana(),M1.maxState().getMana())*100.0)));
-                        if(M1.amDead())
-                        	medLossIters.addElement(Integer.valueOf(iterations));
-                        else
-	                        medWinIters.addElement(Integer.valueOf(iterations));
-                        if(cumScore>bestHitScore[0])
-                        {
-                            bestHitScore[0]=cumScore;
-                            bestHitSkill[0]=B1.getStat("RECORD");
-                        }
-                        if(M2.amDead())
-                        {
-                        	if(!M1.amDead())
-	                        if(iterations<bestIterScore[0])
-	                        {
-	                            bestIterScore[0]=iterations;
-	                            bestIterSkill[0]=B1.getStat("RECORD");
-	                        }
-                        }
-                        else
-                        {
-	                        if(iterations>closeIterScore[0])
-	                        {
-	                            closeIterScore[0]=iterations;
-	                            closeIterSkill[0]=B1.getStat("RECORD");
-	                        }
-                        }
-                        if(failSkillCheck!=null)
-                        {
-                            Vector V=CMParms.parseSemicolons(B1.getStat("RECORD"),true);
-                            for(int v=0;v<V.size();v++)
-                            {
-                                String s=((String)V.elementAt(v)).trim();
-                                boolean failed=false;
-                                if(s.startsWith("!"))
-                                {
-                                    failed=true;
-                                    s=s.substring(1);
-                                }
-                                int[] times=(int[])failSkillCheck.get(s);
-                                if(times==null)
-                                {
-                                    times=new int[2];
-                                    failSkillCheck.put(s,times);
-                                }
-                                times[0]++;
-                                if(failed)
-                                    times[1]++;
-                            }
-                        }
-                    }
-                    M1.destroy();
-                    M2.destroy();
-	                A.delProperRoom(R);
-	                R.destroy();
-	            }
-	            CMParms.sortVector(medScore);
-	            CMParms.sortVector(medHitPct);
-	            CMParms.sortVector(medLossIters);
-	            CMParms.sortVector(medWinIters);
-	            CMParms.sortVector(medPhysDone);
-	            CMParms.sortVector(medPhysTaken);
-	            CMParms.sortVector(medIsHitPct);
-	            CMParms.sortVector(medPlayerDamPct);
-	            CMParms.sortVector(medPlayerManaPct);
-                allData[charClassDex][level-levelStart][0]=bestIterScore[0];
-                allData[charClassDex][level-levelStart][1]=bestHitScore[0];
-                allData[charClassDex][level-levelStart][2]=bestSingleHitScore[0];
-                allData[charClassDex][level-levelStart][3]=bestSingleHitPhys[0];
-                allData[charClassDex][level-levelStart][4]=closeIterScore[0];
-                if(medScore.size()>0)
-	                allData[charClassDex][level-levelStart][5]=((Integer)medScore.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medScore.size()))))).intValue();
-                if(medHitPct.size()>0)
-	                allData[charClassDex][level-levelStart][6]=((Double)medHitPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medHitPct.size()))))).intValue();
-                if(medLossIters.size()>0)
-	                allData[charClassDex][level-levelStart][7]=((Integer)medLossIters.elementAt((int)Math.round(Math.floor(CMath.mul(0.75,medLossIters.size()))))).intValue();
-                if(medWinIters.size()>0)
-	                allData[charClassDex][level-levelStart][8]=((Integer)medWinIters.elementAt((int)Math.round(Math.floor(CMath.mul(0.25,medWinIters.size()))))).intValue();
-                if(medPhysDone.size()>0)
-	                allData[charClassDex][level-levelStart][9]=((Integer)medPhysDone.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPhysDone.size()))))).intValue();
-                if(medPhysTaken.size()>0)
-	                allData[charClassDex][level-levelStart][10]=((Integer)medPhysTaken.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPhysTaken.size()))))).intValue();
-                if(medIsHitPct.size()>0)
-	                allData[charClassDex][level-levelStart][11]=((Double)medIsHitPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medIsHitPct.size()))))).intValue();
-                allData[charClassDex][level-levelStart][12]=losses[0];
-                allData[charClassDex][level-levelStart][13]=playerArmor;
-                allData[charClassDex][level-levelStart][14]=playerAttack;
-                if(medPlayerDamPct.size()>0)
-	                allData[charClassDex][level-levelStart][15]=((Double)medPlayerDamPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPlayerDamPct.size()))))).intValue();
-                if(medPlayerManaPct.size()>0)
-	                allData[charClassDex][level-levelStart][16]=((Double)medPlayerManaPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPlayerManaPct.size()))))).intValue();
-                
-                allSkills[charClassDex][level-levelStart][0]=bestIterSkill[0];
-                allSkills[charClassDex][level-levelStart][1]=bestHitSkill[0];
-                allSkills[charClassDex][level-levelStart][2]=bestSingleHitSkill[0];
-                allSkills[charClassDex][level-levelStart][3]=closeIterSkill[0];
-                if(mob.session()!=null) mob.session().println("!");
-                if(fileExp==null)
-                {
-	                mob.tell("HITPOINTS: "+H1+" vs "+H2);
-	                mob.tell("QUICKEST : "+bestIterScore[0]+": "+bestIterSkill[0]);
-	                mob.tell("MOST DAM : "+bestHitScore[0]+": "+bestHitSkill[0]);
-	                mob.tell("BEST HIT : "+bestSingleHitScore[0]+", Phys: "+bestSingleHitPhys[0]+", Skill: "+bestSingleHitSkill[0]);
-	                mob.tell("LOSS SURV: "+closeIterScore[0]+": "+closeIterSkill[0]);
-	                mob.tell("MEDIANS  : HITS: "+allData[charClassDex][level-levelStart][5]+" ("+allData[charClassDex][level-levelStart][6]+"%), LOSS ITERS: "+allData[charClassDex][level-levelStart][7]+", WIN ITERS: "+allData[charClassDex][level-levelStart][8]);
-	                mob.tell("MEDIANS  : PHYS DONE: "+allData[charClassDex][level-levelStart][9]+", PHYS TAKEN: "+allData[charClassDex][level-levelStart][10]+" ("+allData[charClassDex][level-levelStart][11]+"%)");
-	                mob.tell("LOSSES   : "+losses[0]+"/"+TOTAL_ITERATIONS);
-	                if((failSkillCheck!=null)&&(failSkillCheck.size()>0))
-	                {
-	                    StringBuffer fails=new StringBuffer("SKILLFAILS: ");
-	                    for(Enumeration i=failSkillCheck.keys();i.hasMoreElements();)
-	                    {
-	                        String s=(String)i.nextElement();
-	                        int[] times=(int[])failSkillCheck.get(s);
-	                        if(times[1]>0) {
-	                            int pct=(int)Math.round(100.0*CMath.div(times[1],times[0]));
-	                            if(pct>20)
-	                                fails.append(s+"("+pct+"%) ");
-	                        }
-	                        
-	                    }
-	                    if(fileExp==null)
-		                    mob.tell(fails.toString());
-	                    failSkillCheck.clear();
-	                }
-                }
-	        }
+            new Thread() {
+            	CombatStats c;
+            	int charClassDex;
+            	String fileExp;
+            	java.util.concurrent.CountDownLatch latch = null;
+            	boolean[] aborted;
+            	public void start(CombatStats c, int charClassDex, String fileExp, java.util.concurrent.CountDownLatch latch, boolean[] aborted){
+            		this.c=c;
+            		this.charClassDex=charClassDex;
+            		this.fileExp=fileExp;
+            		this.latch=latch;
+            		this.aborted=aborted;
+            		this.start();
+            	}
+            	public void run() {
+            		MOB mob=c.mob;
+            		int[][][] allData = c.allData;
+            		String[][][] allSkills=c.allSkills;
+            		DVector classSet=c.classSet;
+            		int levelStart=c.levelStart;
+            		int levelEnd=c.levelEnd;
+            		int skipLevels=c.skipLevels;
+		    	    for(int level=c.levelStart;level<=c.levelEnd;level+=c.skipLevels)
+		    	    {
+		                CharClass C=(CharClass)c.classSet.elementAt(charClassDex,1);
+		                mob.tell(C.ID()+": "+level);
+		                int roomRobin=0;
+		                Room R=null;
+		                
+		                int[] bestSingleHitScore=new int[]{0};
+		                String[] bestSingleHitSkill=new String[]{""};
+		                int[] bestSingleHitPhys=new int[]{0};
+		                int[] bestHitScore=new int[]{0};
+		                String[] bestHitSkill=new String[]{""};
+		                int[] bestIterScore=new int[]{Integer.MAX_VALUE};
+		                String[] bestIterSkill=new String[]{""};
+		                
+		                int[] closeIterScore=new int[]{0};
+		                String[] closeIterSkill=new String[]{""};
+		                
+		                int[] losses=new int[]{0};
+		                Vector medScore=new Vector();
+		                Vector medWinIters=new Vector();
+		                Vector medPhysDone=new Vector();
+		                Vector medHitPct=new Vector();
+		                Vector medIsHitPct=new Vector();
+		                Vector medPhysTaken=new Vector();
+		                Vector medLossIters=new Vector();
+		                Vector medPlayerDamPct = new Vector();
+		                Vector medPlayerManaPct = new Vector();
+		                
+		                int H1=0;
+		                int H2=0;
+		                boolean playerExampleShown=false;
+		                int lastPct=0;
+		                int playerArmor=0;
+		                int playerAttack=0;
+			            for(int tries=0;tries<c.TOTAL_ITERATIONS;tries++)
+			            {
+			            	if((CMath.div(tries,c.TOTAL_ITERATIONS)*100.0)>=lastPct+5)
+			            	{
+			            		lastPct+=5;
+			                    if(mob.session()!=null) mob.session().print(".");
+			            	}
+			                Behavior B1=CMClass.getBehavior((String)classSet.elementAt(charClassDex,2));
+		                    B1.setParms(C.ID());
+			                switch(roomRobin)
+			                {
+			                case 0: R=CMClass.getLocale("Woods"); break; 
+		                    case 1: R=CMClass.getLocale("CaveRoom"); break; 
+		                    case 2: R=CMClass.getLocale("CityStreet"); break; 
+			                }
+			                if((++roomRobin)>2) roomRobin=0;
+			                R.setRoomID("UNKNOWNAREA#0");
+			                R.setArea(c.A);
+			                c.A.getTimeObj().setTimeOfDay(CMLib.dice().roll(1,c.A.getTimeObj().getHoursInDay(),-1));
+			                
+			                //Session S=(Session)CMClass.getCommon("FakeSession");
+			                //S.initializeSession(null,"MEMORY");
+			                MOB M1=AverageClassMOB(null,level,C,1);
+		                    M1.baseCharStats().setMyRace(CMClass.getRace("Human"));
+			                M1.setName("GOODGUY");
+			                M1.recoverCharStats();
+		                    M1.recoverEnvStats();
+		                    M1.setLocation(R);
+			                M1.baseCharStats().getMyRace().setHeightWeight(M1.baseEnvStats(),(char)M1.baseCharStats().getStat(CharStats.STAT_GENDER));
+			                M1.recoverCharStats();
+			                M1.recoverEnvStats();
+			                M1.recoverMaxState();
+			                M1.resetToMaxState();
+			                M1.bringToLife(M1.location(),true);
+			                CMLib.threads().deleteTick(M1,Tickable.TICKID_MOB);
+			                M1.setWimpHitPoint(0);
+			                M1.recoverMaxState();
+			                M1.recoverCharStats();
+			                M1.recoverEnvStats();
+			                M1.resetToMaxState();
+		                    B1.setStat("PRECAST","1");
+			                M1.addBehavior(B1);
+			                equipPlayer(M1);
+			                M1.recoverMaxState();
+			                M1.recoverCharStats();
+			                M1.recoverEnvStats();
+		                    B1.setStat("RECORD"," ");
+		                    B1.setStat("PROF","true");
+		                    B1.setStat("LASTSPELL","");
+		                    B1.setStat("PRECAST","1");
+		                    for(int i=0;i<20;i++) // give some pre-cast ticks
+		                    	M1.tick(M1,Tickable.TICKID_MOB);
+			                M1.resetToMaxState();
+			                playerArmor=M1.adjustedArmor();
+			                playerAttack=M1.adjustedAttackBonus(null);
+			                
+		                    MOB M2=CMClass.getMOB("StdMOB");  // MOB stat
+		                    Behavior B2=CMClass.getBehavior("CombatAbilities");
+		                    M2.baseCharStats().setMyRace(CMClass.getRace("Human"));
+		                    M2.baseEnvStats().setLevel(level);
+		                    M2.setName("BADGUY");
+		                    M2.recoverCharStats();
+		                    M2.recoverEnvStats();
+		                    M2.setLocation(R);
+		                    M2.baseCharStats().getMyRace().setHeightWeight(M2.baseEnvStats(),(char)M2.baseCharStats().getStat(CharStats.STAT_GENDER));
+		                    M2.baseEnvStats().setAbility(11);
+		                    M2.recoverCharStats();
+		                    M2.recoverEnvStats();
+		                    M2.recoverMaxState();
+		                    M2.resetToMaxState();
+		                    M2.addBehavior(B2);
+		                    M2.bringToLife(M2.location(),true);
+			                CMLib.threads().deleteTick(M2,Tickable.TICKID_MOB);
+		                    M2.baseCharStats().getCurrentClass().fillOutMOB(M2,level);
+		                    int hp=M2.baseCharStats().getCurrentClass().getLevelPlayerHP(M2);
+		                    if(hp>M2.baseState().getHitPoints())
+		                        M2.baseState().setHitPoints(hp);
+		                    M2.setWimpHitPoint(0);
+		                    M2.recoverMaxState();
+		                    M2.recoverCharStats();
+		                    M2.recoverEnvStats();
+		                    M2.resetToMaxState();
+		                    
+		                    M1.setVictim(M2);
+		                    M2.setVictim(M1);
+			                
+		                    
+		                    if(!playerExampleShown)
+		                    {
+		                    	playerExampleShown=true;
+		                    	/*
+		            			StringBuffer msg=CMLib.commands().getScore(M1);
+		            			if(!mob.isMonster())
+		            				mob.session().wraplessPrintln(msg.toString());
+		                        if(mob.session()!=null)
+		                        {
+			            			mob.session().println(M1.name()+" has "+B1.ID()+" behavior for "+M1.numAbilities()+" abilities.");
+		                        	mob.session().print("Working..");
+		                        }
+		                        */
+		                    }
+		                    
+		                    H1=M1.curState().getHitPoints();
+		                    H2=M2.curState().getHitPoints();
+		                    
+		                    int iterations=0;
+		                    int cumScore=0;
+		                    int hits = 0;
+		                    int ishits = 0;
+		                    B1.setStat("PHYSDAMTAKEN","0");
+		                    B2.setStat("PHYSDAMTAKEN","0");
+		                    int zeroCheck=0;
+		                    //MOB[] ZEROMOBS=null;
+		                    String ZEROSKILL1=null;
+		                    String ZEROSKILL2=null;
+		                    String ALMOSTZEROSKILL=null;
+		                    int l1=0, l2=0;
+		                    
+		                    
+		                    //chargen combat charclasses export=test.tab iterations=100 skiplevels=20 1 91
+		                    while((M1.getVictim()==M2)
+		                         &&(M2.getVictim()==M1)
+		                         &&(!M1.amDead())
+		                         &&(!M2.amDead())
+		                         &&(M1.location()==M2.location())
+		                         &&(iterations<1000))
+		                    {
+		                    	if(aborted[0])
+		                    	{
+		                    		latch.countDown();
+		                    		return;
+		                    	}
+		                        iterations++;
+		                        ALMOSTZEROSKILL=B1.getStat("LASTSPELL");
+		                        int h1=M1.curState().getHitPoints();
+		                        int h2=M2.curState().getHitPoints();
+		                        int L1=l1;
+		                        int L2=l2;
+		                        l1=CMath.s_int(B2.getStat("PHYSDAMTAKEN"));
+		                        l2=CMath.s_int(B1.getStat("PHYSDAMTAKEN"));
+		                        if(l1>L1) hits++;
+		                        if(l2>L2) ishits++;
+		                        try {
+			                    	CMLib.commands().postStand(M1,true);
+			                    	CMLib.commands().postStand(M2,true);
+			                        M1.tick(M1,Tickable.TICKID_MOB);
+			                        M2.tick(M2,Tickable.TICKID_MOB);
+		                        } catch(Throwable t) {
+		                        	Log.errOut("CharGen",t);
+		                        }
+		                        
+		                        int h=h2-(M2.amDead()?0:M2.curState().getHitPoints());
+		                        h=h-(h1-(M1.amDead()?0:M1.curState().getHitPoints()));
+		                        if((h==0)&&((!M1.amDead())&&(!M2.amDead())))
+		                        {
+		                        	zeroCheck++;
+		                        	if(zeroCheck==1)
+		                        	{
+		                        		//ZEROMOBS=new MOB[]{(MOB)M1.copyOf(),(MOB)M2.copyOf()};
+		                        		ZEROSKILL1=ALMOSTZEROSKILL;
+		                        		ZEROSKILL2=B1.getStat("LASTSPELL");
+		                        	}
+		                        	else
+		                            if(zeroCheck==20)
+		                            	Log.errOut("CharGen","Stale combat warning: "+ZEROSKILL1+"/"+ZEROSKILL2);
+		                            else
+		                            if(zeroCheck==100)
+		                            {
+		                            	
+		                                Log.errOut("CharGen","Stale Combat Abort: "+level+"/"+tries+"/"+iterations+"/"+ZEROSKILL1+"/"+ZEROSKILL2);
+		                                //Log.errOut("CharGen",S.afkMessage());
+		                                break;
+		                            }
+		                        }
+		                        else
+		                        	zeroCheck=0;
+		                        if(h>bestSingleHitScore[0])
+		                        {
+		                            bestSingleHitScore[0]=h;
+		                            bestSingleHitPhys[0]=CMath.s_int(B2.getStat("PHYSDAMTAKEN"))-l1;
+		                            bestSingleHitSkill[0]=B1.getStat("LASTSPELL");
+		                        }
+		                        cumScore+=h;
+		                    }
+		                    if(iterations>=1000)
+		                        Log.errOut("CharGen","Stale Combat Abort: "+level+"/"+tries+"/"+ZEROSKILL1+"/"+ZEROSKILL2);
+		                    else
+		                    if(M1.amDead()||M2.amDead())
+		                    {
+		                    	if(M1.amDead())
+		                            losses[0]++;
+		                        medScore.addElement(Integer.valueOf(cumScore));
+		                        medPhysDone.addElement(Integer.valueOf(CMath.s_int(B2.getStat("PHYSDAMTAKEN"))));
+		                        medPhysTaken.addElement(Integer.valueOf(CMath.s_int(B1.getStat("PHYSDAMTAKEN"))));
+		                        medHitPct.addElement(Double.valueOf((CMath.div(hits,iterations)*100)));
+		                        medIsHitPct.addElement(Double.valueOf((CMath.div(ishits,iterations)*100)));
+		                        medPlayerDamPct.addElement(Double.valueOf(100-(CMath.div(M1.curState().getHitPoints(),H1)*100.0)));
+		                        medPlayerManaPct.addElement(Double.valueOf(100-(CMath.div(M1.curState().getMana(),M1.maxState().getMana())*100.0)));
+		                        if(M1.amDead())
+		                        	medLossIters.addElement(Integer.valueOf(iterations));
+		                        else
+			                        medWinIters.addElement(Integer.valueOf(iterations));
+		                        if(cumScore>bestHitScore[0])
+		                        {
+		                            bestHitScore[0]=cumScore;
+		                            bestHitSkill[0]=B1.getStat("RECORD");
+		                        }
+		                        if(M2.amDead())
+		                        {
+		                        	if(!M1.amDead())
+			                        if(iterations<bestIterScore[0])
+			                        {
+			                            bestIterScore[0]=iterations;
+			                            bestIterSkill[0]=B1.getStat("RECORD");
+			                        }
+		                        }
+		                        else
+		                        {
+			                        if(iterations>closeIterScore[0])
+			                        {
+			                            closeIterScore[0]=iterations;
+			                            closeIterSkill[0]=B1.getStat("RECORD");
+			                        }
+		                        }
+		                        if(c.failSkillCheck!=null)
+		                        {
+		                            Vector V=CMParms.parseSemicolons(B1.getStat("RECORD"),true);
+		                            for(int v=0;v<V.size();v++)
+		                            {
+		                                String s=((String)V.elementAt(v)).trim();
+		                                boolean failed=false;
+		                                if(s.startsWith("!"))
+		                                {
+		                                    failed=true;
+		                                    s=s.substring(1);
+		                                }
+		                                int[] times=(int[])c.failSkillCheck.get(s);
+		                                if(times==null)
+		                                {
+		                                    times=new int[2];
+		                                    c.failSkillCheck.put(s,times);
+		                                }
+		                                times[0]++;
+		                                if(failed)
+		                                    times[1]++;
+		                            }
+		                        }
+		                    }
+		                    M1.destroy();
+		                    M2.destroy();
+		                    c.A.delProperRoom(R);
+			                R.destroy();
+			            }
+			            CMParms.sortVector(medScore);
+			            CMParms.sortVector(medHitPct);
+			            CMParms.sortVector(medLossIters);
+			            CMParms.sortVector(medWinIters);
+			            CMParms.sortVector(medPhysDone);
+			            CMParms.sortVector(medPhysTaken);
+			            CMParms.sortVector(medIsHitPct);
+			            CMParms.sortVector(medPlayerDamPct);
+			            CMParms.sortVector(medPlayerManaPct);
+		                allData[charClassDex][level-levelStart][0]=bestIterScore[0];
+		                allData[charClassDex][level-levelStart][1]=bestHitScore[0];
+		                allData[charClassDex][level-levelStart][2]=bestSingleHitScore[0];
+		                allData[charClassDex][level-levelStart][3]=bestSingleHitPhys[0];
+		                allData[charClassDex][level-levelStart][4]=closeIterScore[0];
+		                if(medScore.size()>0)
+			                allData[charClassDex][level-levelStart][5]=((Integer)medScore.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medScore.size()))))).intValue();
+		                if(medHitPct.size()>0)
+			                allData[charClassDex][level-levelStart][6]=((Double)medHitPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medHitPct.size()))))).intValue();
+		                if(medLossIters.size()>0)
+			                allData[charClassDex][level-levelStart][7]=((Integer)medLossIters.elementAt((int)Math.round(Math.floor(CMath.mul(0.75,medLossIters.size()))))).intValue();
+		                if(medWinIters.size()>0)
+			                allData[charClassDex][level-levelStart][8]=((Integer)medWinIters.elementAt((int)Math.round(Math.floor(CMath.mul(0.25,medWinIters.size()))))).intValue();
+		                if(medPhysDone.size()>0)
+			                allData[charClassDex][level-levelStart][9]=((Integer)medPhysDone.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPhysDone.size()))))).intValue();
+		                if(medPhysTaken.size()>0)
+			                allData[charClassDex][level-levelStart][10]=((Integer)medPhysTaken.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPhysTaken.size()))))).intValue();
+		                if(medIsHitPct.size()>0)
+			                allData[charClassDex][level-levelStart][11]=((Double)medIsHitPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medIsHitPct.size()))))).intValue();
+		                allData[charClassDex][level-levelStart][12]=losses[0];
+		                allData[charClassDex][level-levelStart][13]=playerArmor;
+		                allData[charClassDex][level-levelStart][14]=playerAttack;
+		                if(medPlayerDamPct.size()>0)
+			                allData[charClassDex][level-levelStart][15]=((Double)medPlayerDamPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPlayerDamPct.size()))))).intValue();
+		                if(medPlayerManaPct.size()>0)
+			                allData[charClassDex][level-levelStart][16]=((Double)medPlayerManaPct.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medPlayerManaPct.size()))))).intValue();
+		                
+		                allSkills[charClassDex][level-levelStart][0]=bestIterSkill[0];
+		                allSkills[charClassDex][level-levelStart][1]=bestHitSkill[0];
+		                allSkills[charClassDex][level-levelStart][2]=bestSingleHitSkill[0];
+		                allSkills[charClassDex][level-levelStart][3]=closeIterSkill[0];
+		                if(mob.session()!=null) mob.session().println("!");
+		                if(fileExp==null)
+		                {
+			                mob.tell("HITPOINTS: "+H1+" vs "+H2);
+			                mob.tell("QUICKEST : "+bestIterScore[0]+": "+bestIterSkill[0]);
+			                mob.tell("MOST DAM : "+bestHitScore[0]+": "+bestHitSkill[0]);
+			                mob.tell("BEST HIT : "+bestSingleHitScore[0]+", Phys: "+bestSingleHitPhys[0]+", Skill: "+bestSingleHitSkill[0]);
+			                mob.tell("LOSS SURV: "+closeIterScore[0]+": "+closeIterSkill[0]);
+			                mob.tell("MEDIANS  : HITS: "+allData[charClassDex][level-levelStart][5]+" ("+allData[charClassDex][level-levelStart][6]+"%), LOSS ITERS: "+allData[charClassDex][level-levelStart][7]+", WIN ITERS: "+allData[charClassDex][level-levelStart][8]);
+			                mob.tell("MEDIANS  : PHYS DONE: "+allData[charClassDex][level-levelStart][9]+", PHYS TAKEN: "+allData[charClassDex][level-levelStart][10]+" ("+allData[charClassDex][level-levelStart][11]+"%)");
+			                mob.tell("LOSSES   : "+losses[0]+"/"+c.TOTAL_ITERATIONS);
+			                if((c.failSkillCheck!=null)&&(c.failSkillCheck.size()>0))
+			                {
+			                    StringBuffer fails=new StringBuffer("SKILLFAILS: ");
+			                    for(Enumeration i=c.failSkillCheck.keys();i.hasMoreElements();)
+			                    {
+			                        String s=(String)i.nextElement();
+			                        int[] times=(int[])c.failSkillCheck.get(s);
+			                        if(times[1]>0) {
+			                            int pct=(int)Math.round(100.0*CMath.div(times[1],times[0]));
+			                            if(pct>20)
+			                                fails.append(s+"("+pct+"%) ");
+			                        }
+			                        
+			                    }
+			                    if(fileExp==null)
+				                    mob.tell(fails.toString());
+			                    c.failSkillCheck.clear();
+			                }
+		                }
+			        }
+	                latch.countDown();
+            	}
+            }.start(c,charClassDex,fileExp,latch,aborted);
 	    }
+        try {
+        	latch.await();
+        } catch(Exception e) {
+        	aborted[0]=true;
+        	return;
+        }
         mob.tell("");
         if(fileExp!=null)
         {
@@ -837,25 +875,25 @@ public class CharGen extends StdCommand
         	{
         		StringBuffer buf=new StringBuffer("");
         		Vector baseClasses=new Vector();
-                for(int charClassDex=0;charClassDex<classSet.size();charClassDex++)
+                for(int charClassDex=0;charClassDex<c.classSet.size();charClassDex++)
                 {
-                    CharClass C=(CharClass)classSet.elementAt(charClassDex,1);
+                    CharClass C=(CharClass)c.classSet.elementAt(charClassDex,1);
                     if(!baseClasses.contains(C.baseClass()))
                     	baseClasses.addElement(C.baseClass());
                 }
-    	    	for(int d=0;d<allData[0][0].length;d++)
+    	    	for(int d=0;d<c.allData[0][0].length;d++)
     	    	{
     	    		buf.append(allDataHeader[d]).append("\t\t");
-            	    for(int level=levelStart;level<=levelEnd;level+=skipLevels)
+            	    for(int level=c.levelStart;level<=c.levelEnd;level+=c.skipLevels)
             	    	buf.append(level).append('\t');
     	    		buf.append("\n\r");
-	                for(int charClassDex=0;charClassDex<classSet.size();charClassDex++)
+	                for(int charClassDex=0;charClassDex<c.classSet.size();charClassDex++)
 	                {
-	                    CharClass C=(CharClass)classSet.elementAt(charClassDex,1);
+	                    CharClass C=(CharClass)c.classSet.elementAt(charClassDex,1);
 	        	    	buf.append(C.ID()).append("\t").append(C.baseClass()).append("\t");
-	            	    for(int level=levelStart;level<=levelEnd;level+=skipLevels)
+	            	    for(int level=c.levelStart;level<=c.levelEnd;level+=c.skipLevels)
 	            	    {
-                	    	buf.append(allData[charClassDex][level-levelStart][d]).append('\t');
+                	    	buf.append(c.allData[charClassDex][level-c.levelStart][d]).append('\t');
 	            	    	//for(int i=0;i<allSkills[charClassDex][level-levelStart].length;i++)
 	                	    //	buf.append(allSkills[charClassDex][level-levelStart][i]).append('\t');
 	            	    }
@@ -863,25 +901,25 @@ public class CharGen extends StdCommand
 	                }
     	    		buf.append("\n\r");
     	    		buf.append(allDataHeader[d]).append("\t*****\t");
-            	    for(int level=levelStart;level<=levelEnd;level+=skipLevels)
+            	    for(int level=c.levelStart;level<=c.levelEnd;level+=c.skipLevels)
             	    	buf.append(level).append('\t');
     	    		buf.append("\n\r");
     	    		for(int b=0;b<baseClasses.size();b++)
     	    		{
     	    			String baseClass=(String)baseClasses.elementAt(b);
-    	    			int[] levels=new int[levelEnd+1];
+    	    			int[] levels=new int[c.levelEnd+1];
     	    			double ct=0;
-    	                for(int charClassDex=0;charClassDex<classSet.size();charClassDex++)
-    	                    if(((CharClass)classSet.elementAt(charClassDex,1)).baseClass().equalsIgnoreCase(baseClass))
+    	                for(int charClassDex=0;charClassDex<c.classSet.size();charClassDex++)
+    	                    if(((CharClass)c.classSet.elementAt(charClassDex,1)).baseClass().equalsIgnoreCase(baseClass))
     	                    {
     	                    	ct+=1.0;
-	    	            	    for(int level=levelStart;level<=levelEnd;level+=skipLevels)
-	    	            	    	levels[level]+=allData[charClassDex][level-levelStart][d];
+	    	            	    for(int level=c.levelStart;level<=c.levelEnd;level+=c.skipLevels)
+	    	            	    	levels[level]+=c.allData[charClassDex][level-c.levelStart][d];
     	                    }
     	                if(ct>0)
     	                {
 		        	    	buf.append(baseClass).append("\t").append(baseClass).append("\t");
-		            	    for(int level=levelStart;level<=levelEnd;level+=skipLevels)
+		            	    for(int level=c.levelStart;level<=c.levelEnd;level+=c.skipLevels)
 	                	    	buf.append(Math.round(Integer.valueOf(levels[level]).doubleValue()/ct*100.0)/100).append('\t');
 	        	    		buf.append("\n\r");
     	                }
@@ -891,8 +929,8 @@ public class CharGen extends StdCommand
                 file.saveText(buf);
         	}
         }
-        CMLib.map().delArea(A);
-        A.destroy();
+        CMLib.map().delArea(c.A);
+        c.A.destroy();
 	}
 
 	public boolean execute(MOB mob, Vector commands, int metaFlags)

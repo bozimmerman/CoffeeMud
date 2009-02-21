@@ -974,7 +974,7 @@ public class StdMOB implements MOB
 		double critPct = CMath.div(charStats().getStat(CharStats.STAT_DEXTERITY)- 10,2.5);
 		critPct = critPct * critPct * critPct;
 		if(CMLib.dice().rollPercentage()<Math.round(critPct))
-			damageAmount+=Math.round(CMath.mul(damageAmount,critPct/100.0));
+			damageAmount+=Math.round(CMath.mul(damageAmount,critPct/50.0));
 		if(curState().getHunger() < 1) damageAmount *= .8;
 		if(curState().getFatigue()>CharState.FATIGUED_MILLIS) damageAmount *=.8;
 		if(curState().getThirst() < 1) damageAmount *= .9;

@@ -40,13 +40,13 @@ public class Cleric extends StdCharClass
 	public int getBonusPracLevel(){return 2;}
 	public int getBonusAttackLevel(){return 0;}
 	public int getAttackAttribute(){return CharStats.STAT_WISDOM;}
-	public int getLevelsPerBonusDamage(){ return 10;}
+	public int getLevelsPerBonusDamage(){ return 30;}
 	public int getHPDivisor(){return 3;}
 	public int getHPDice(){return 1;}
 	public int getHPDie(){return 10;}
 	public int getManaDivisor(){return 4;}
 	public int getManaDice(){return 1;}
-	public int getManaDie(){return 8;}
+	public int getManaDie(){return 4;}
 	public int allowedArmorLevel(){return CharClass.ARMOR_ANY;}
 	public int allowedWeaponLevel(){return CharClass.WEAPONS_ALLCLERIC;}
 	private HashSet disallowedWeaponsG=buildDisallowedWeaponClasses(CharClass.WEAPONS_GOODCLERIC);
