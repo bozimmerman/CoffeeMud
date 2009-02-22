@@ -168,33 +168,23 @@ public class CharGen extends StdCommand
 		int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
 		for(int lvl=1;lvl<level;lvl++)
 		{
-			if((lvl % 2)==0)
-			switch(CMLib.dice().roll(1,6,-1))
+			if((lvl % 3)==0)
 			{
-			case 0:
-				if(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)<(max+mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ)))
-					mob.baseCharStats().setStat(CharStats.STAT_STRENGTH,mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)+1);
-				break;
-			case 1:
-				if(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)<(max+mob.charStats().getStat(CharStats.STAT_MAX_DEXTERITY_ADJ)))
-					mob.baseCharStats().setStat(CharStats.STAT_DEXTERITY,mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)+1);
-				break;
-			case 2:
-				if(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)<(max+mob.charStats().getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ)))
-					mob.baseCharStats().setStat(CharStats.STAT_INTELLIGENCE,mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)+1);
-				break;
-			case 3:
-				if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)<(max+mob.charStats().getStat(CharStats.STAT_MAX_CONSTITUTION_ADJ)))
-					mob.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)+1);
-				break;
-			case 4:
-				if(mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)<(max+mob.charStats().getStat(CharStats.STAT_MAX_CHARISMA_ADJ)))
-					mob.baseCharStats().setStat(CharStats.STAT_CHARISMA,mob.baseCharStats().getStat(CharStats.STAT_CHARISMA)+1);
-				break;
-			case 5:
-				if(mob.baseCharStats().getStat(CharStats.STAT_WISDOM)<(max+mob.charStats().getStat(CharStats.STAT_MAX_WISDOM_ADJ)))
-					mob.baseCharStats().setStat(CharStats.STAT_WISDOM,mob.baseCharStats().getStat(CharStats.STAT_WISDOM)+1);
-				break;
+				int stat=-1;
+				int bestDiff=0;
+				for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+				{
+					int base = max + mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ + i);
+					int diff = base - mob.baseCharStats().getStat(i);
+					if(diff >= bestDiff)
+					{
+						stat=i;
+						bestDiff = diff;
+					}
+				}
+				if(stat>=0)
+				if(mob.baseCharStats().getStat(stat)<(max+mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ + stat)))
+					mob.baseCharStats().setStat(stat,mob.baseCharStats().getStat(stat)+1);
 			}
 			if(mob.getExpNeededLevel()==Integer.MAX_VALUE)
 				CMLib.leveler().level(mob);
@@ -451,7 +441,7 @@ public class CharGen extends StdCommand
     		"BestHitScore",//1
     		"BestSingleHitScore",//2
     		"BestSingleHitPhys",//3
-    		"CloseIterScore",//4
+    		"Losses",//4
     		"MedScore",//5
     		"MedHitPct",//6
     		"LossIters",//7
@@ -467,16 +457,15 @@ public class CharGen extends StdCommand
     		"BestIterSkill",//18
     		"BestHitSkill",//19
     		"BestSingleHitSkill",//20
-    		"CloseIterSkill",//21
         };
         
         
-        java.util.concurrent.CountDownLatch latch = new java.util.concurrent.CountDownLatch(c.classSet.size());
         boolean[] aborted = new boolean[1];
         aborted[0]=false;
     	final Random r = new Random(System.currentTimeMillis());
         for(int charClassDex=0;charClassDex<c.classSet.size();charClassDex++)
         {
+            java.util.concurrent.CountDownLatch latch = new java.util.concurrent.CountDownLatch(1);
             new Thread() {
             	CombatStats c;
             	int charClassDex;
@@ -512,10 +501,8 @@ public class CharGen extends StdCommand
 		                int[] bestIterScore=new int[]{Integer.MAX_VALUE};
 		                String[] bestIterSkill=new String[]{""};
 		                
-		                int[] closeIterScore=new int[]{0};
-		                String[] closeIterSkill=new String[]{""};
-		                
 		                int[] losses=new int[]{0};
+		                
 		                Vector medScore=new Vector();
 		                Vector medWinIters=new Vector();
 		                Vector medPhysDone=new Vector();
@@ -750,14 +737,6 @@ public class CharGen extends StdCommand
 			                            bestIterSkill[0]=B1.getStat("RECORD");
 			                        }
 		                        }
-		                        else
-		                        {
-			                        if(iterations>closeIterScore[0])
-			                        {
-			                            closeIterScore[0]=iterations;
-			                            closeIterSkill[0]=B1.getStat("RECORD");
-			                        }
-		                        }
 		                        if(c.failSkillCheck!=null)
 		                        {
 		                            Vector V=CMParms.parseSemicolons(B1.getStat("RECORD"),true);
@@ -800,7 +779,7 @@ public class CharGen extends StdCommand
 		                allData[charClassDex][level-levelStart][1]=bestHitScore[0];
 		                allData[charClassDex][level-levelStart][2]=bestSingleHitScore[0];
 		                allData[charClassDex][level-levelStart][3]=bestSingleHitPhys[0];
-		                allData[charClassDex][level-levelStart][4]=closeIterScore[0];
+		                allData[charClassDex][level-levelStart][4]=losses[0];
 		                if(medScore.size()>0)
 			                allData[charClassDex][level-levelStart][5]=((Integer)medScore.elementAt((int)Math.round(Math.floor(CMath.mul(0.5,medScore.size()))))).intValue();
 		                if(medHitPct.size()>0)
@@ -826,7 +805,6 @@ public class CharGen extends StdCommand
 		                allSkills[charClassDex][level-levelStart][0]=bestIterSkill[0];
 		                allSkills[charClassDex][level-levelStart][1]=bestHitSkill[0];
 		                allSkills[charClassDex][level-levelStart][2]=bestSingleHitSkill[0];
-		                allSkills[charClassDex][level-levelStart][3]=closeIterSkill[0];
 		                if(mob.session()!=null) mob.session().println("!");
 		                if(fileExp==null)
 		                {
@@ -834,10 +812,9 @@ public class CharGen extends StdCommand
 			                mob.tell("QUICKEST : "+bestIterScore[0]+": "+bestIterSkill[0]);
 			                mob.tell("MOST DAM : "+bestHitScore[0]+": "+bestHitSkill[0]);
 			                mob.tell("BEST HIT : "+bestSingleHitScore[0]+", Phys: "+bestSingleHitPhys[0]+", Skill: "+bestSingleHitSkill[0]);
-			                mob.tell("LOSS SURV: "+closeIterScore[0]+": "+closeIterSkill[0]);
 			                mob.tell("MEDIANS  : HITS: "+allData[charClassDex][level-levelStart][5]+" ("+allData[charClassDex][level-levelStart][6]+"%), LOSS ITERS: "+allData[charClassDex][level-levelStart][7]+", WIN ITERS: "+allData[charClassDex][level-levelStart][8]);
 			                mob.tell("MEDIANS  : PHYS DONE: "+allData[charClassDex][level-levelStart][9]+", PHYS TAKEN: "+allData[charClassDex][level-levelStart][10]+" ("+allData[charClassDex][level-levelStart][11]+"%)");
-			                mob.tell("LOSSES   : "+losses[0]+"/"+c.TOTAL_ITERATIONS);
+			                mob.tell("LOSSES   : "+losses[0]);
 			                if((c.failSkillCheck!=null)&&(c.failSkillCheck.size()>0))
 			                {
 			                    StringBuffer fails=new StringBuffer("SKILLFAILS: ");
@@ -861,13 +838,13 @@ public class CharGen extends StdCommand
 	                latch.countDown();
             	}
             }.start(c,charClassDex,fileExp,latch,aborted);
+            try {
+            	latch.await();
+            } catch(Exception e) {
+            	aborted[0]=true;
+            	return;
+            }
 	    }
-        try {
-        	latch.await();
-        } catch(Exception e) {
-        	aborted[0]=true;
-        	return;
-        }
         mob.tell("");
         if(fileExp!=null)
         {

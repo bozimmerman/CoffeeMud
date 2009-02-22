@@ -929,9 +929,9 @@ public class StdMOB implements MOB
 	}
 	public int adjustedAttackBonus(MOB mob)
 	{
-		double att=(double)(
-				envStats().attackAdjustment()
-				+(((charStats().getStat(CharStats.STAT_STRENGTH)-9))*(1+(envStats.level()/10))));
+		double att=(double)envStats().attackAdjustment();
+		double str=((double)charStats().getStat(CharStats.STAT_STRENGTH)-9.0)/5.0;
+		att += (str * str * str);
 		if(curState().getHunger()<1) att=att*.9;
 		if(curState().getThirst()<1) att=att*.9;
 		if(curState().getFatigue()>CharState.FATIGUED_MILLIS) att=att*.8;
@@ -940,8 +940,15 @@ public class StdMOB implements MOB
 
 	public int adjustedArmor()
 	{
-		double arm=(double)(((charStats().getStat(CharStats.STAT_DEXTERITY)-9)));
-		if((envStats().disposition()&EnvStats.IS_SLEEPING)>0) arm=0.0;
+		double dex=(double)(charStats().getStat(CharStats.STAT_DEXTERITY)-9.0)/5.0;
+		double arm = 0.0;
+		if((envStats().disposition()&EnvStats.IS_SLEEPING)==0)
+		{
+			if((envStats().disposition()&EnvStats.IS_SITTING)==0) 
+				arm = (dex * dex * dex);
+			else
+				arm = (dex * dex);
+		}
 		if(arm>0.0)
 		{
 			if(curState().getHunger()<1) arm=arm*.85;
