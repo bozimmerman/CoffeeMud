@@ -106,7 +106,7 @@ public class Skill_Bash extends StdSkill
 					w.setName(thisShield.name());
 					w.setDisplayText(thisShield.displayText());
 					w.setDescription(thisShield.description());
-					w.baseEnvStats().setDamage(thisShield.envStats().level()+5+(2*getXLEVELLevel(mob)));
+					w.baseEnvStats().setDamage(thisShield.envStats().level()+(2*getXLEVELLevel(mob)));
 					if((CMLib.combat().postAttack(mob,target,w))
 					&&(target.charStats().getBodyPart(Race.BODY_LEG)>0)
 					&&(target.envStats().weight()<(mob.envStats().weight()*2)))
