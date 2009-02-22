@@ -103,8 +103,6 @@ public class Chant_Thorns extends Chant
 		super.affectEnvStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		MOB mob=(MOB)affected;
-
 		affectableStats.setArmor(affectableStats.armor()-10-(2*super.getXLEVELLevel(invoker())));
 	}
 
