@@ -87,7 +87,7 @@ public class Prayer_Demonshield extends Prayer
 						if(msg2.value()<=0)
 						{
 							int damage = CMLib.dice().roll( 1,
-							                                (int)Math.round( ( adjustedLevel( invoker(), 0 ) + ( 2.0 * ((double)super.getX1Level( invoker() )) ) ) / 3.0 ),
+							                                (int)Math.round( ( adjustedLevel( invoker(), 0 ) + ( 2.0 * ((double)super.getX1Level( invoker() )) ) ) / 5.0 ),
 							                                1 );
 							CMLib.combat().postDamage(mob,source,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_FIRE,Weapon.TYPE_BURNING,"The unholy flames around <S-NAME> flare and <DAMAGE> <T-NAME>!");
 						}
@@ -104,7 +104,7 @@ public class Prayer_Demonshield extends Prayer
 		super.affectEnvStats(affected,affectableStats);
 		if(affected==null) return;
 		if(!(affected instanceof MOB)) return;
-		affectableStats.setArmor(affectableStats.armor()-(5+(2*getXLEVELLevel(invoker()))));
+		affectableStats.setArmor(affectableStats.armor()-(1+(2*getXLEVELLevel(invoker()))));
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)

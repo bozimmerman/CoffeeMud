@@ -76,7 +76,7 @@ public class Prayer_BladeBarrier extends Prayer
 			   ||(CMath.bset(msg.targetMajor(),CMMsg.MASK_MOVE))))
 			{
 				MOB meM=(MOB)msg.target();
-				int damage = CMLib.dice().roll(1,(int)Math.round(adjustedLevel(meM,0)/3.0),1);
+				int damage = CMLib.dice().roll(1,(int)Math.round(adjustedLevel(meM,0)/5.0),1);
 				StringBuffer hitWord=new StringBuffer(CMLib.combat().standardHitWord(-1,damage));
 				if(hitWord.charAt(hitWord.length()-1)==')')
 					hitWord.deleteCharAt(hitWord.length()-1);
@@ -98,7 +98,7 @@ public class Prayer_BladeBarrier extends Prayer
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
-		affectableStats.setArmor(affectableStats.armor()-5 - (adjustedLevel(invoker(),0)/10));
+		affectableStats.setArmor(affectableStats.armor()-1 - (adjustedLevel(invoker(),0)/10));
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
