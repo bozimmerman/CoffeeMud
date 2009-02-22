@@ -474,6 +474,7 @@ public class CharGen extends StdCommand
         java.util.concurrent.CountDownLatch latch = new java.util.concurrent.CountDownLatch(c.classSet.size());
         boolean[] aborted = new boolean[1];
         aborted[0]=false;
+    	final Random r = new Random(System.currentTimeMillis());
         for(int charClassDex=0;charClassDex<c.classSet.size();charClassDex++)
         {
             new Thread() {
@@ -496,8 +497,6 @@ public class CharGen extends StdCommand
             		String[][][] allSkills=c.allSkills;
             		DVector classSet=c.classSet;
             		int levelStart=c.levelStart;
-            		int levelEnd=c.levelEnd;
-            		int skipLevels=c.skipLevels;
 		    	    for(int level=c.levelStart;level<=c.levelEnd;level+=c.skipLevels)
 		    	    {
 		                CharClass C=(CharClass)c.classSet.elementAt(charClassDex,1);
@@ -549,8 +548,10 @@ public class CharGen extends StdCommand
 		                    case 2: R=CMClass.getLocale("CityStreet"); break; 
 			                }
 			                if((++roomRobin)>2) roomRobin=0;
-			                R.setRoomID("UNKNOWNAREA#0");
+			                R.addNonUninvokableEffect(CMClass.getAbility("Spell_Light"));
+			                R.setRoomID(c.A.name()+"#"+r.nextInt(Integer.MAX_VALUE));
 			                R.setArea(c.A);
+			                R.recoverEnvStats();
 			                c.A.getTimeObj().setTimeOfDay(CMLib.dice().roll(1,c.A.getTimeObj().getHoursInDay(),-1));
 			                
 			                //Session S=(Session)CMClass.getCommon("FakeSession");
