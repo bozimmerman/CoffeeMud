@@ -70,7 +70,7 @@ public class Spell_BurningHands extends Spell
 				invoker=mob;
 				mob.location().send(mob,msg2);
 				int damage = 0;
-				int maxDie =  adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob));
+				int maxDie =  (adjustedLevel(mob,asLevel)+(2*super.getX1Level(mob))/2);
 				damage += CMLib.dice().roll(1,maxDie,15);
 				if((msg2.value()>0)||(msg.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));

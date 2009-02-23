@@ -81,7 +81,7 @@ public class Spell_AcidArrow extends Spell
 				R.send(mob,msg);
 				R.send(mob,msg2);
 				invoker=mob;
-                int numDice = adjustedLevel(mob,asLevel)+(2*super.getX1Level(invoker()));
+                int numDice = (adjustedLevel(mob,asLevel)+(2*super.getX1Level(invoker())))/2;
 				int damage = CMLib.dice().roll(1, numDice+10, 5);
 				if((msg2.value()>0)||(msg.value()>0))
 					damage = (int)Math.round(CMath.div(damage,2.0));
