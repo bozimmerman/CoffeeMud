@@ -472,7 +472,7 @@ public class StdMOB implements MOB
     }
 	public int maxFollowers()
 	{
-		return ((int)Math.round(CMath.div(charStats().getStat(CharStats.STAT_CHARISMA),4.0))+1);
+		return ((int)Math.round(CMath.div(charStats().getStat(CharStats.STAT_CHARISMA)-8,4.0))+1);
 	}
 	public int totalFollowers()
 	{
