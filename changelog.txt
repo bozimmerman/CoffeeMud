@@ -2191,3 +2191,8 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 # Build 5.5.3 Release ?
 1. New INI entry: DEFAULTPLAYERFLAGS
 2. New DISABLE flag: AUTODISEASE
+3. Character classes, and mob stats have been rebalanced along pre-3.0 lines.  
+   Thieves and Fighters are most altered classes.  
+   Mobs are an average of players now.
+   Use RESET MOBSTATS WORLD command to pull your mobs into compliance.  This will, as a side affect, reset all area content to db baseline. 
+   
