@@ -42,10 +42,10 @@ public class Consider extends StdCommand
 	public int relativeLevelDiff(MOB mob1, MOB mob2)
 	{
 		if((mob1==null)||(mob2==null)) return 0;
-		int mob2Armor=mob2.adjustedArmor();
-		int mob1Armor=mob1.adjustedArmor();
-		double mob1Attack=(double)mob1.adjustedAttackBonus(mob2);
-        double mob2Attack=(double)mob2.adjustedAttackBonus(mob1);
+		int mob2Armor=CMLib.combat().adjustedArmor(mob2);
+		int mob1Armor=CMLib.combat().adjustedArmor(mob1);
+		double mob1Attack=(double)CMLib.combat().adjustedAttackBonus(mob1,mob2);
+        double mob2Attack=(double)CMLib.combat().adjustedAttackBonus(mob2,mob1);
 		int mob2Dmg=mob2.envStats().damage();
 		int mob1Dmg=mob1.envStats().damage();
 		int mob2Hp=mob2.baseState().getHitPoints();

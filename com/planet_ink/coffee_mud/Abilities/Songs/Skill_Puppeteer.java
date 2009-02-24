@@ -87,22 +87,23 @@ public class Skill_Puppeteer extends BardSkill
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
+		MOB M=invoker();
 		if((affected!=null)
 		&&(affected instanceof Item)
 		&&(((Item)affected).owner()!=null)
 		&&(((Item)affected).owner() instanceof Room)
-		&&(invoker()!=null)
-		&&(invoker().location().isContent((Item)affected)))
+		&&(M!=null)
+		&&(M.location().isContent((Item)affected)))
 		{
-			if(invoker().isInCombat())
+			if(M.isInCombat())
 			{
-				boolean isHit=(CMLib.combat().rollToHit(invoker().adjustedAttackBonus(invoker().getVictim())+(5*getXLEVELLevel(invoker()))
-                            +((Item)affected).envStats().attackAdjustment(),invoker().getVictim().adjustedArmor(), 0));
+				boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(M,M.getVictim())+(5*getXLEVELLevel(M))
+                            +((Item)affected).envStats().attackAdjustment(),CMLib.combat().adjustedArmor(M.getVictim()), 0));
 				if(!isHit)
-					invoker().location().show(invoker(),invoker().getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
+					M.location().show(M,M.getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else
-					CMLib.combat().postDamage(invoker(),invoker().getVictim(),affected,
-											CMLib.dice().roll(1,affected.envStats().level()+(2*getXLEVELLevel(invoker())),1),
+					CMLib.combat().postDamage(M,M.getVictim(),affected,
+											CMLib.dice().roll(1,affected.envStats().level()+(2*getXLEVELLevel(M)),1),
 											CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
 											Weapon.TYPE_BASHING,affected.name()+" attacks and <DAMAGE> <T-NAME>!");
 			}
@@ -111,19 +112,19 @@ public class Skill_Puppeteer extends BardSkill
 			switch(CMLib.dice().roll(1,5,0))
 			{
 			case 1:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" walks around.");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" walks around.");
 				break;
 			case 2:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" waves its little arms.");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" waves its little arms.");
 				break;
 			case 3:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" hugs you.");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" hugs you.");
 				break;
 			case 4:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" makes a few fake attacks.");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" makes a few fake attacks.");
 				break;
 			case 5:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" dances around.");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" dances around.");
 				break;
 			}
 		}

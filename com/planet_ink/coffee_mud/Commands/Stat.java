@@ -478,59 +478,59 @@ public class Stat  extends Skills
 			M.setBaseState((CharState)target.baseState().copyOf());
 			recoverMOB(target);
 			recoverMOB(M);
-			int base=M.adjustedAttackBonus(null);
+			int base=CMLib.combat().adjustedAttackBonus(M,null);
 			str.append("^c"+CMStrings.padRight("Base Attack",40)+": ^W"+base+"\n\r");
 			for(int i=0;i<target.inventorySize();i++)
 			{
 				Item I=target.fetchInventory(i);
-				if(I!=null){ recoverMOB(M); testMOB(target,M,I); int diff=M.adjustedAttackBonus(null)-base; reportOnDiffMOB(I,diff,str);}
+				if(I!=null){ recoverMOB(M); testMOB(target,M,I); int diff=CMLib.combat().adjustedAttackBonus(M,null)-base; reportOnDiffMOB(I,diff,str);}
 			}
 			recoverMOB(M);
 			for(int i=0;i<target.numAllEffects();i++)
 			{
 				Ability A=target.fetchEffect(i);
-				if(A!=null){ recoverMOB(M); testMOB(target,M,A); int diff=M.adjustedAttackBonus(null)-base; reportOnDiffMOB(A,diff,str);}
+				if(A!=null){ recoverMOB(M); testMOB(target,M,A); int diff=CMLib.combat().adjustedAttackBonus(M,null)-base; reportOnDiffMOB(A,diff,str);}
 			}
 			recoverMOB(target);
 			recoverMOB(M);
 			str.append("^W-------------------------\n\r");
-			str.append("^C"+CMStrings.padRight("Total",40)+": ^W"+target.adjustedAttackBonus(null)+"\n\r");
+			str.append("^C"+CMStrings.padRight("Total",40)+": ^W"+CMLib.combat().adjustedAttackBonus(target,null)+"\n\r");
 			str.append("\n\r");
-			base=M.adjustedArmor();
+			base=CMLib.combat().adjustedArmor(M);
 			str.append("^C"+CMStrings.padRight("Base Armor",40)+": ^W"+base+"\n\r");
 			for(int i=0;i<target.inventorySize();i++)
 			{
 				Item I=target.fetchInventory(i);
-				if(I!=null){ recoverMOB(M); testMOB(target,M,I); int diff=M.adjustedArmor()-base; reportOnDiffMOB(I,diff,str);}
+				if(I!=null){ recoverMOB(M); testMOB(target,M,I); int diff=CMLib.combat().adjustedArmor(M)-base; reportOnDiffMOB(I,diff,str);}
 			}
 			recoverMOB(M);
 			for(int i=0;i<target.numAllEffects();i++)
 			{
 				Ability A=target.fetchEffect(i);
-				if(A!=null){ recoverMOB(M); testMOB(target,M,A); int diff=M.adjustedArmor()-base; reportOnDiffMOB(A,diff,str);}
+				if(A!=null){ recoverMOB(M); testMOB(target,M,A); int diff=CMLib.combat().adjustedArmor(M)-base; reportOnDiffMOB(A,diff,str);}
 			}
 			recoverMOB(target);
 			recoverMOB(M);
 			str.append("^W-------------------------\n\r");
-			str.append("^C"+CMStrings.padRight("Total",40)+": ^W"+target.adjustedArmor()+"\n\r");
+			str.append("^C"+CMStrings.padRight("Total",40)+": ^W"+CMLib.combat().adjustedArmor(target)+"\n\r");
 			str.append("\n\r");
-			base=M.adjustedDamage(null,null);
+			base=CMLib.combat().adjustedDamage(M,null,null);
 			str.append("^C"+CMStrings.padRight("Base Damage",40)+": ^W"+base+"\n\r");
 			for(int i=0;i<target.inventorySize();i++)
 			{
 				Item I=target.fetchInventory(i);
-				if(I!=null){ recoverMOB(M); testMOB(target,M,I); int diff=M.adjustedDamage(null,null)-base; reportOnDiffMOB(I,diff,str);}
+				if(I!=null){ recoverMOB(M); testMOB(target,M,I); int diff=CMLib.combat().adjustedDamage(M,null,null)-base; reportOnDiffMOB(I,diff,str);}
 			}
 			recoverMOB(M);
 			for(int i=0;i<target.numAllEffects();i++)
 			{
 				Ability A=target.fetchEffect(i);
-				if(A!=null){ recoverMOB(M); testMOB(target,M,A); int diff=M.adjustedDamage(null,null)-base; reportOnDiffMOB(A,diff,str);}
+				if(A!=null){ recoverMOB(M); testMOB(target,M,A); int diff=CMLib.combat().adjustedDamage(M,null,null)-base; reportOnDiffMOB(A,diff,str);}
 			}
 			recoverMOB(target);
 			recoverMOB(M);
 			str.append("^W-------------------------\n\r");
-			str.append("^C"+CMStrings.padRight("Total",40)+": ^W"+target.adjustedDamage(null,null)+"\n\r");
+			str.append("^C"+CMStrings.padRight("Total",40)+": ^W"+CMLib.combat().adjustedDamage(target,null,null)+"\n\r");
 			str.append("\n\r");
 			base=(int)Math.round(M.envStats().speed()*100);
 			str.append("^C"+CMStrings.padRight("Base Attacks%",40)+": ^W"+base+"\n\r");

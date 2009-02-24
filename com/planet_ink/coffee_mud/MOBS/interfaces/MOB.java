@@ -75,9 +75,6 @@ public interface MOB extends Environmental, Rider, DBIdentifiable
 	public int rangeToTarget();
 	public boolean mayIFight(MOB mob);
 	public boolean mayPhysicallyAttack(MOB mob);
-	public int adjustedAttackBonus(MOB mob);
-	public int adjustedArmor();
-	public int adjustedDamage(Weapon weapon, MOB target);
 	public long peaceTime();
 	
 	public void resetVectors();

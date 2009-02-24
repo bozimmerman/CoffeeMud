@@ -44,9 +44,9 @@ public class GConsider extends StdCommand
 	    MOB mob2=(MOB)mobs.iterator().next();
         if(mob2.amFollowing()!=null) mob2=mob2.amUltimatelyFollowing();
 
-		int mob2Armor=mob2.adjustedArmor();
-		int mob1Armor=mob1.adjustedArmor();
-        double mob1Attack=(double)mob1.adjustedAttackBonus(mob2);
+		int mob2Armor=CMLib.combat().adjustedArmor(mob2);
+		int mob1Armor=CMLib.combat().adjustedArmor(mob1);
+        double mob1Attack=(double)CMLib.combat().adjustedAttackBonus(mob1,mob2);
 		int mob1Dmg=mob1.envStats().damage();
 		int mob2Hp=mob2.baseState().getHitPoints();
 		int mob1Hp=mob1.baseState().getHitPoints();
@@ -55,7 +55,7 @@ public class GConsider extends StdCommand
 		for(Iterator i=mobs.iterator();i.hasNext();)
 		{
 		    MOB mob=(MOB)i.next();
-            double mob2Attack=(double)mob.adjustedAttackBonus(mob1);
+            double mob2Attack=(double)CMLib.combat().adjustedAttackBonus(mob,mob1);
 			int mob2Dmg=mob.envStats().damage();
 			mob2HitRound+=(((CMath.div(CMLib.dice().normalizeBy5((int)Math.round(50.0*mob2Attack/mob1Armor)),100.0))*CMath.div(mob2Dmg,2.0))+1.0)*CMath.mul(mob.envStats().speed(),1.0);
 		}

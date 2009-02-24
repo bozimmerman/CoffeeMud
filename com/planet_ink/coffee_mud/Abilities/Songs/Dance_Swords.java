@@ -92,9 +92,9 @@ public class Dance_Swords extends Dance
 	{
 		if((affected instanceof MOB)&&(!super.tick(ticking,tickID)))
 			return false;
-		if(affected==invoker())
+		MOB M=invoker();
+		if(affected==M)
 		{
-			MOB M=invoker();
 			Weapon sword=null;
 			for(int i=0;i<M.location().numItems();i++)
 			{
@@ -111,7 +111,7 @@ public class Dance_Swords extends Dance
 			if(sword==null) return true;
 			Dance newOne=(Dance)this.copyOf();
 			newOne.invokerManaCost=-1;
-			newOne.startTickDown(invoker(),sword,99999);
+			newOne.startTickDown(M,sword,99999);
 			return true;
 		}
 		else
@@ -119,19 +119,20 @@ public class Dance_Swords extends Dance
 		&&(affected instanceof Item)
 		&&(((Item)affected).owner()!=null)
 		&&(((Item)affected).owner() instanceof Room)
-		&&(invoker()!=null)
-		&&(invoker().location().isContent((Item)affected))
-		&&(invoker().fetchEffect(ID())!=null)
-		&&(CMLib.flags().aliveAwakeMobile(invoker(),true)))
+		&&(M!=null)
+		&&(M.location().isContent((Item)affected))
+		&&(M.fetchEffect(ID())!=null)
+		&&(CMLib.flags().aliveAwakeMobile(M,true)))
 		{
-			if(invoker().isInCombat())
+			MOB victiM=M.getVictim();
+			if(M.isInCombat())
 			{
-				boolean isHit=(CMLib.combat().rollToHit(invoker().adjustedAttackBonus(invoker().getVictim())+((Item)affected).envStats().attackAdjustment(), invoker().getVictim().adjustedArmor(), 0));
+				boolean isHit=(CMLib.combat().rollToHit(CMLib.combat().adjustedAttackBonus(M,victiM)+((Item)affected).envStats().attackAdjustment(), CMLib.combat().adjustedArmor(victiM), 0));
 				if((!isHit)||(!(affected instanceof Weapon)))
-					invoker().location().show(invoker(),invoker().getVictim(),affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
+					M.location().show(M,victiM,affected,CMMsg.MSG_OK_ACTION,"<O-NAME> attacks <T-NAME> and misses!");
 				else
-					CMLib.combat().postDamage(invoker(),invoker().getVictim(),affected,
-											CMLib.dice().roll(1,affected.envStats().damage(),5+getXLEVELLevel(invoker())),
+					CMLib.combat().postDamage(M,victiM,affected,
+											CMLib.dice().roll(1,affected.envStats().damage(),5+getXLEVELLevel(M)),
 											CMMsg.MASK_ALWAYS|CMMsg.TYP_WEAPONATTACK,
 											((Weapon)affected).weaponType(),affected.name()+" attacks and <DAMAGE> <T-NAME>!");
 			}
@@ -140,19 +141,19 @@ public class Dance_Swords extends Dance
 			switch(CMLib.dice().roll(1,5,0))
 			{
 			case 1:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" twiches a bit.");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" twiches a bit.");
 				break;
 			case 2:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" is looking for trouble.");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" is looking for trouble.");
 				break;
 			case 3:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" practices its moves.");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" practices its moves.");
 				break;
 			case 4:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" makes a few fake attacks.");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" makes a few fake attacks.");
 				break;
 			case 5:
-				invoker().location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" dances around.");
+				M.location().showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" dances around.");
 				break;
 			}
 		}

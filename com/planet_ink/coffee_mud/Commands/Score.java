@@ -42,8 +42,8 @@ public class Score extends Affect
     public StringBuffer getScore(MOB mob){return getScore(mob,"");}
 	public StringBuffer getScore(MOB mob, String parm)
 	{
-		int adjustedAttack=mob.adjustedAttackBonus(null);
-		int adjustedArmor=(-mob.adjustedArmor())+50;
+		int adjustedAttack=CMLib.combat().adjustedAttackBonus(mob,null);
+		int adjustedArmor=(-CMLib.combat().adjustedArmor(mob))+50;
 
 		StringBuffer msg=new StringBuffer("^N");
 

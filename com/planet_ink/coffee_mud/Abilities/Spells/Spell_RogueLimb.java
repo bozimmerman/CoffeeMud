@@ -138,8 +138,8 @@ public class Spell_RogueLimb extends Spell
 					rogueLimb=CMClass.getMOB("GenMob");
 					rogueLimb.setName(target.name()+"'s "+limb);
 					rogueLimb.setDisplayText(rogueLimb.name()+" is misbehaving here.");
-					rogueLimb.baseEnvStats().setAttackAdjustment((-target.adjustedArmor())+50);
-					rogueLimb.baseEnvStats().setArmor(100-target.adjustedAttackBonus(null));
+					rogueLimb.baseEnvStats().setAttackAdjustment((-CMLib.combat().adjustedArmor(target))+50);
+					rogueLimb.baseEnvStats().setArmor(100-CMLib.combat().adjustedAttackBonus(target,null));
 					rogueLimb.baseCharStats().setMyRace(theRace);
 					int hp=100;
 					if(hp>(target.baseState().getHitPoints()/3))

@@ -574,8 +574,8 @@ public class CharGen extends StdCommand
 		                    for(int i=0;i<20;i++) // give some pre-cast ticks
 		                    	M1.tick(M1,Tickable.TICKID_MOB);
 			                M1.resetToMaxState();
-			                playerArmor=M1.adjustedArmor();
-			                playerAttack=M1.adjustedAttackBonus(null);
+			                playerArmor=CMLib.combat().adjustedArmor(M1);
+			                playerAttack=CMLib.combat().adjustedAttackBonus(M1,null);
 			                
 		                    MOB M2=CMClass.getMOB("StdMOB");  // MOB stat
 		                    Behavior B2=CMClass.getBehavior("CombatAbilities");

@@ -85,12 +85,44 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return h;
 	}
 
+	public int adjustedAttackBonus(MOB mob, MOB target)
+	{
+		double att=(double)mob.envStats().attackAdjustment();
+		double str=((double)mob.charStats().getStat(CharStats.STAT_STRENGTH)-9.0)/5.0;
+		att += (str * str * str);
+		if(mob.curState().getHunger()<1) att=att*.9;
+		if(mob.curState().getThirst()<1) att=att*.9;
+		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS) att=att*.8;
+		return (int)Math.round(att);
+	}
+
+	public int adjustedArmor(MOB mob)
+	{
+		double dex=(double)(mob.charStats().getStat(CharStats.STAT_DEXTERITY)-9.0)/5.0;
+		double arm = 0.0;
+		if((mob.envStats().disposition()&EnvStats.IS_SLEEPING)==0)
+		{
+			if((mob.envStats().disposition()&EnvStats.IS_SITTING)==0) 
+				arm = (dex * dex * dex);
+			else
+				arm = (dex * dex);
+		}
+		if(arm>0.0)
+		{
+			if(mob.curState().getHunger()<1) arm=arm*.85;
+			if(mob.curState().getThirst()<1) arm=arm*.85;
+			if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS) arm=arm*.85;
+			if((mob.envStats().disposition()&EnvStats.IS_SITTING)>0) arm=arm*.75;
+		}
+		return (int)Math.round(mob.envStats().armor()-arm);
+	}
+
     public boolean rollToHit(MOB attacker, MOB defender)
     {
         if((attacker==null)||(defender==null)) return false;
         int diff = (attacker.envStats().level()-defender.envStats().level());
         int diffSign = diff < 0 ? -1 : 1;
-        return rollToHit(attacker.adjustedAttackBonus(defender),defender.adjustedArmor(),diffSign * (diff * diff));
+        return rollToHit(adjustedAttackBonus(attacker,defender),adjustedArmor(defender),diffSign * (diff * diff));
     }
 
     public boolean rollToHit(int attack, int defence, int adjustment)
@@ -315,6 +347,36 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 	}
 
+	public int adjustedDamage(MOB mob, Weapon weapon, MOB target)
+	{
+		double damageAmount=0.0;
+		if(target!=null)
+		{
+			if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
+				damageAmount = (double)(CMLib.dice().roll(1, weapon.envStats().damage(),1));
+			else
+				damageAmount = (double)(CMLib.dice().roll(1, mob.envStats().damage(), (mob.charStats().getStat(CharStats.STAT_STRENGTH) / 3)-2));
+			if(!CMLib.flags().canBeSeenBy(target,mob)) damageAmount *=.5;
+			if(CMLib.flags().isSleeping(target)) damageAmount *=1.5;
+			else
+			if(CMLib.flags().isSitting(target)) damageAmount *=1.2;
+		}
+		else
+		if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
+			damageAmount = (double)(weapon.envStats().damage()+1);
+		else
+			damageAmount = (double)(mob.envStats().damage()+(mob.charStats().getStat(CharStats.STAT_STRENGTH) / 3)-2);
+		double critPct = CMath.div(mob.charStats().getStat(CharStats.STAT_DEXTERITY)- 10,2.5);
+		critPct = critPct * critPct * critPct;
+		if(CMLib.dice().rollPercentage()<Math.round(critPct))
+			damageAmount+=Math.round(CMath.mul(damageAmount,critPct/50.0));
+		if(mob.curState().getHunger() < 1) damageAmount *= .8;
+		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS) damageAmount *=.8;
+		if(mob.curState().getThirst() < 1) damageAmount *= .9;
+		if(damageAmount<1.0) damageAmount=1.0;
+		return (int)Math.round(damageAmount);
+	}
+
 	public void postWeaponDamage(MOB source, MOB target, Item item, boolean success)
 	{
 		if(source==null) return;
@@ -325,7 +387,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(item instanceof Weapon)
 		{
 			weapon=(Weapon)item;
-			damageInt=source.adjustedDamage(weapon,target);
+			damageInt=CMLib.combat().adjustedDamage(source,weapon,target);
 			damageType=weapon.weaponType();
 		}
 		if(success)

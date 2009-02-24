@@ -37,6 +37,9 @@ public interface CombatLibrary extends CMLibrary
     
     public HashSet allPossibleCombatants(MOB mob, boolean beRuthless);
     public HashSet properTargets(Ability A, MOB caster, boolean beRuthless);
+	public int adjustedArmor(MOB mob);
+	public int adjustedAttackBonus(MOB mob, MOB target);
+	public int adjustedDamage(MOB mob, Weapon weapon, MOB target);
     public boolean rollToHit(MOB attacker, MOB defender);
     public boolean rollToHit(int attack, int defence, int adjustment);
     public HashSet allCombatants(MOB mob);

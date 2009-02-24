@@ -927,68 +927,6 @@ public class StdMOB implements MOB
 		   return false;
 		return true;
 	}
-	public int adjustedAttackBonus(MOB mob)
-	{
-		double att=(double)envStats().attackAdjustment();
-		double str=((double)charStats().getStat(CharStats.STAT_STRENGTH)-9.0)/5.0;
-		att += (str * str * str);
-		if(curState().getHunger()<1) att=att*.9;
-		if(curState().getThirst()<1) att=att*.9;
-		if(curState().getFatigue()>CharState.FATIGUED_MILLIS) att=att*.8;
-		return (int)Math.round(att);
-	}
-
-	public int adjustedArmor()
-	{
-		double dex=(double)(charStats().getStat(CharStats.STAT_DEXTERITY)-9.0)/5.0;
-		double arm = 0.0;
-		if((envStats().disposition()&EnvStats.IS_SLEEPING)==0)
-		{
-			if((envStats().disposition()&EnvStats.IS_SITTING)==0) 
-				arm = (dex * dex * dex);
-			else
-				arm = (dex * dex);
-		}
-		if(arm>0.0)
-		{
-			if(curState().getHunger()<1) arm=arm*.85;
-			if(curState().getThirst()<1) arm=arm*.85;
-			if(curState().getFatigue()>CharState.FATIGUED_MILLIS) arm=arm*.85;
-			if((envStats().disposition()&EnvStats.IS_SITTING)>0) arm=arm*.75;
-		}
-		return (int)Math.round(envStats().armor()-arm);
-	}
-
-	public int adjustedDamage(Weapon weapon, MOB target)
-	{
-		double damageAmount=0.0;
-		if(target!=null)
-		{
-			if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
-				damageAmount = (double)(CMLib.dice().roll(1, weapon.envStats().damage(),1));
-			else
-				damageAmount = (double)(CMLib.dice().roll(1, envStats().damage(), (charStats().getStat(CharStats.STAT_STRENGTH) / 3)-2));
-			if(!CMLib.flags().canBeSeenBy(target,this)) damageAmount *=.5;
-			if(CMLib.flags().isSleeping(target)) damageAmount *=1.5;
-			else
-			if(CMLib.flags().isSitting(target)) damageAmount *=1.2;
-		}
-		else
-		if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
-			damageAmount = (double)(weapon.envStats().damage()+1);
-		else
-			damageAmount = (double)(envStats().damage()+(charStats().getStat(CharStats.STAT_STRENGTH) / 3)-2);
-		double critPct = CMath.div(charStats().getStat(CharStats.STAT_DEXTERITY)- 10,2.5);
-		critPct = critPct * critPct * critPct;
-		if(CMLib.dice().rollPercentage()<Math.round(critPct))
-			damageAmount+=Math.round(CMath.mul(damageAmount,critPct/50.0));
-		if(curState().getHunger() < 1) damageAmount *= .8;
-		if(curState().getFatigue()>CharState.FATIGUED_MILLIS) damageAmount *=.8;
-		if(curState().getThirst() < 1) damageAmount *= .9;
-		if(damageAmount<1.0) damageAmount=1.0;
-		return (int)Math.round(damageAmount);
-	}
-
 	public void setAtRange(int newRange){atRange=newRange;}
 	public int rangeToTarget(){return atRange;}
 	public int maxRange(){return maxRange(null);}
