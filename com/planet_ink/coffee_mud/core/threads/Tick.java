@@ -271,7 +271,7 @@ public class Tick extends Thread implements TickableGroup, Cloneable
     		return "Asleep or Shutdown";
     	if(!awake)
     		return "Sleeping";
-    	return "Ticking: "+lastTicked.ID()+": "+lastTicked.name()+": "+myEngine.getTickStatusSummary(lastTicked);
+    	return "Ticking: "+lastTicked.ID()+": "+lastTicked.name()+": "+((myEngine!=null)?myEngine.getTickStatusSummary(lastTicked):"null");
     }
     
 	public void shutdown()

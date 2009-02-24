@@ -56,9 +56,10 @@ public class Prayer_Conviction extends Prayer
 		&&(mob.getWorshipCharID().equals(invoker().getWorshipCharID())))
 		{
 			int xlvl=super.getXLEVELLevel(invoker());
-			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(affectableStats.attackAdjustment()/(7-xlvl)));
+			if(xlvl>7) xlvl=7;
+			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+(affectableStats.attackAdjustment()/(8-xlvl)));
 			affectableStats.setDamage(affectableStats.damage()+3+xlvl);
-			affectableStats.setArmor(affectableStats.armor()+(affectableStats.armor()/(7-xlvl)));
+			affectableStats.setArmor(affectableStats.armor()+(affectableStats.armor()/(8-xlvl)));
 		}
 	}
 

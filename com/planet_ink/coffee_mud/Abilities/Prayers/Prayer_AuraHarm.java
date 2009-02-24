@@ -92,7 +92,7 @@ public class Prayer_AuraHarm extends Prayer
 				}
 				else
 				{
-					int harming=CMLib.dice().roll(1,CMLib.ableMapper().lowestQualifyingLevel(ID())+3,1);
+					int harming=CMLib.dice().roll(1,CMLib.ableMapper().lowestQualifyingLevel(ID())/3,1);
 					CMLib.combat().postDamage(M,M,this,harming,CMMsg.MASK_ALWAYS|CMMsg.TYP_UNDEAD,Weapon.TYPE_BURSTING,"The unholy aura <DAMAGE> <T-NAME>!");
 				}
 			}
@@ -104,15 +104,13 @@ public class Prayer_AuraHarm extends Prayer
     {
         if(mob!=null)
         {
-        	if(target instanceof MOB)
+        	if(target instanceof Room)
         	{
-	            if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
+        		if(!mob.isInCombat())
+    	            return super.castingQuality(mob, target,Ability.QUALITY_INDIFFERENT);
+	            if(mob.charStats().getMyRace().racialCategory().equals("Undead"))
 	                return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_SELF);
-	            if(target!=mob)
-	            {
-	                if(((MOB)target).charStats().getMyRace().racialCategory().equals("Undead"))
-	                    return super.castingQuality(mob, target,Ability.QUALITY_BENEFICIAL_OTHERS);
-	            }
+	            return super.castingQuality(mob, target,Ability.QUALITY_MALICIOUS);
         	}
         }
         return super.castingQuality(mob,target);

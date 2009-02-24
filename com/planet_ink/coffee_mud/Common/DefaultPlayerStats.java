@@ -372,7 +372,7 @@ public class DefaultPlayerStats implements PlayerStats
 	    for(int t=0;t<titles.size();t++)
 	    {
 	        String s=(String)titles.elementAt(t);
-	        str.append("<TITLE"+t+">"+s+"</TITLE"+t+">");
+	        str.append("<TITLE"+t+">"+CMLib.coffeeFilter().safetyFilter(s)+"</TITLE"+t+">");
 	    }
 	    return str.toString();
 	}
