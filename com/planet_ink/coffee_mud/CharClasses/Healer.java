@@ -264,32 +264,13 @@ public class Healer extends Cleric
 		MOB myChar=(MOB)myHost;
 		if(msg.amISource(myChar)
 		&&(!myChar.isMonster())
-		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+		&&(msg.sourceMinor()==CMMsg.TYP_HEALING)
 		&&(msg.tool() instanceof Ability)
 		&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,msg.tool().ID())>0)
 		&&(myChar.isMine(msg.tool()))
-		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER))
-		{
-			if((msg.target()!=null)
-			   &&(msg.target() instanceof MOB))
-			{
-				MOB tmob=(MOB)msg.target();
-				if(msg.tool().ID().equals("Prayer_CureLight"))
-					tmob.curState().adjHitPoints(CMLib.dice().roll(2,6,4),tmob.maxState());
-				else
-				if(msg.tool().ID().equals("Prayer_CureSerious"))
-					tmob.curState().adjHitPoints(CMLib.dice().roll(2,16,4),tmob.maxState());
-				else
-				if(msg.tool().ID().equals("Prayer_CureCritical"))
-					tmob.curState().adjHitPoints(CMLib.dice().roll(4,16,4),tmob.maxState());
-				else
-				if(msg.tool().ID().equals("Prayer_Heal"))
-					tmob.curState().adjHitPoints(CMLib.dice().roll(5,20,4),tmob.maxState());
-				else
-				if(msg.tool().ID().equals("Prayer_MassHeal"))
-					tmob.curState().adjHitPoints(CMLib.dice().roll(5,20,4),tmob.maxState());
-			}
-		}
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+		&&(msg.value()>0))
+			msg.setValue((int)Math.round(CMath.mul(msg.value(),1.5)));
 	}
 
 	public Vector outfit(MOB myChar)
