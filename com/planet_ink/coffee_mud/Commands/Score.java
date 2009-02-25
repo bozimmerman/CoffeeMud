@@ -42,9 +42,6 @@ public class Score extends Affect
     public StringBuffer getScore(MOB mob){return getScore(mob,"");}
 	public StringBuffer getScore(MOB mob, String parm)
 	{
-		int adjustedAttack=CMLib.combat().adjustedAttackBonus(mob,null);
-		int adjustedArmor=(-CMLib.combat().adjustedArmor(mob))+50;
-
 		StringBuffer msg=new StringBuffer("^N");
 
 		int classLevel=mob.charStats().getClassLevel(mob.charStats().getCurrentClass());
@@ -193,8 +190,8 @@ public class Score extends Affect
     	            msg.append("Your "+CMStrings.padRight("^<HELP^>"+F.name()+"^</HELP^> is",18)+": ^H"+FR.name()+"^?.\n\r");
 		    }
 		}
-		msg.append("Your ^<HELP^>armored defence^</HELP^> is: ^H"+CMLib.combat().armorStr(adjustedArmor)+"^?.\n\r");
-		msg.append("Your ^<HELP^>combat prowess^</HELP^> is : ^H"+CMLib.combat().fightingProwessStr(adjustedAttack)+"^?.\n\r");
+		msg.append("Your ^<HELP^>armored defence^</HELP^> is: ^H"+CMLib.combat().armorStr(mob)+"^?.\n\r");
+		msg.append("Your ^<HELP^>combat prowess^</HELP^> is : ^H"+CMLib.combat().fightingProwessStr(mob)+"^?.\n\r");
 		//if(CMLib.flags().canSeeHidden(mob))
 		//	msg.append("Your ^<HELP^>observation score^</HELP^> : ^H"+CMLib.flags().getDetectScore(mob)+"^?.\n\r");
 		msg.append("Wimpy is set to ^!"+mob.getWimpHitPoint()+"^? hit points.\n\r");

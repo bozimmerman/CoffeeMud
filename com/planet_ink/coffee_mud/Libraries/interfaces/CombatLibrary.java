@@ -38,6 +38,7 @@ public interface CombatLibrary extends CMLibrary
     public HashSet allPossibleCombatants(MOB mob, boolean beRuthless);
     public HashSet properTargets(Ability A, MOB caster, boolean beRuthless);
 	public int adjustedArmor(MOB mob);
+	public int absoluteAdjustedArmorScore(MOB mob);
 	public int adjustedAttackBonus(MOB mob, MOB target);
 	public int adjustedDamage(MOB mob, Weapon weapon, MOB target);
     public boolean rollToHit(MOB attacker, MOB defender);
@@ -60,9 +61,9 @@ public interface CombatLibrary extends CMLibrary
     public HashSet getCombatDividers(MOB killer, MOB killed, CharClass combatCharClass);
     public HashSet getCombatBeneficiaries(MOB killer, MOB killed, CharClass combatCharClass);
     public DeadBody justDie(MOB source, MOB target);
-    public String armorStr(int armor);
+    public String armorStr(MOB mob);
     public String standardHitWord(int type, int damage);
-    public String fightingProwessStr(int prowess);
+    public String fightingProwessStr(MOB mob);
     public String standardMissString(int weaponType, int weaponClassification, String weaponName, boolean useExtendedMissString);
     public String standardHitString(int weaponClass, int damageAmount,  String weaponName);
     public String standardMobCondition(MOB viewer, MOB mob);

@@ -40,6 +40,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     public long lastRes=0;
     public String[][] hitWordIndex=null;
     public String[][] hitWordsChanged=null;
+    
+    private static final int ATTACK_ADJUSTMENT = 50;
 
 	public HashSet allPossibleCombatants(MOB mob, boolean beRuthless)
 	{
@@ -87,7 +89,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
 	public int adjustedAttackBonus(MOB mob, MOB target)
 	{
-		double att=(double)mob.envStats().attackAdjustment();
+		double att=(double)ATTACK_ADJUSTMENT + (double)mob.envStats().attackAdjustment();
 		double str=((double)mob.charStats().getStat(CharStats.STAT_STRENGTH)-9.0)/5.0;
 		att += (str * str * str);
 		if(mob.curState().getHunger()<1) att=att*.9;
@@ -96,6 +98,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return (int)Math.round(att);
 	}
 
+	public int absoluteAdjustedArmorScore(MOB mob) 
+	{ 
+		return ( -( ( adjustedArmor(mob)) - 100 ) ); 
+	}
+	
 	public int adjustedArmor(MOB mob)
 	{
 		double dex=(double)(mob.charStats().getStat(CharStats.STAT_DEXTERITY)-9.0)/5.0;
@@ -131,7 +138,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         if(myArmor==0) myArmor=1.0;
         else
         if(myArmor<0.0) myArmor=-CMath.div(1.0,myArmor);
-        double hisAttack=((double)attack) + 50.0;
+        double hisAttack=(double)attack;
         if(hisAttack==0.0) hisAttack=1.0;
         else
         if(hisAttack<0.0) hisAttack=-CMath.div(1.0,myArmor);
@@ -793,16 +800,23 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         return HIT_WORDS[HIT_WORDS.length-1];
     }
 
-    public String armorStr(int armor){
+    public String armorStr(MOB mob)
+    {
+    	int armor = adjustedArmor(mob);
         int ARMOR_CEILING=CMProps.getIListVar(CMProps.SYSTEML_ARMOR_DESCS_CEILING);
         return (armor<0)?armorDescs()[0]:(
                (armor>=ARMOR_CEILING)?armorDescs()[armorDescs().length-1]+(CMStrings.repeat("!",(armor-ARMOR_CEILING)/100))+" ("+armor+")":(
-                       armorDescs()[(int)Math.round(Math.floor(CMath.mul(CMath.div(armor,ARMOR_CEILING),armorDescs().length)))]+" ("+armor+")"));}
-    public String fightingProwessStr(int prowess){
+                       armorDescs()[(int)Math.round(Math.floor(CMath.mul(CMath.div(armor,ARMOR_CEILING),armorDescs().length)))]+" ("+armor+")"));
+    }
+    
+    public String fightingProwessStr(MOB mob)
+    {
+    	int prowess = adjustedAttackBonus(mob,null) - ATTACK_ADJUSTMENT;
         int PROWESS_CEILING=CMProps.getIListVar(CMProps.SYSTEML_PROWESS_DESCS_CEILING);
         return (prowess<0)?prowessDescs()[0]:(
                (prowess>=PROWESS_CEILING)?prowessDescs()[prowessDescs().length-1]+(CMStrings.repeat("!",(prowess-PROWESS_CEILING)/100))+" ("+prowess+")":(
-                prowessDescs()[(int)Math.round(Math.floor(CMath.mul(CMath.div(prowess,PROWESS_CEILING),prowessDescs().length)))]+" ("+prowess+")"));}
+                prowessDescs()[(int)Math.round(Math.floor(CMath.mul(CMath.div(prowess,PROWESS_CEILING),prowessDescs().length)))]+" ("+prowess+")"));
+    }
 
     public String standardMissString(int weaponType, int weaponClassification, String weaponName, boolean useExtendedMissString)
     {

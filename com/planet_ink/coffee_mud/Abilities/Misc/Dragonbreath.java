@@ -153,13 +153,13 @@ public class Dragonbreath extends StdAbility
 				break;
 
 		}
-
-		if(success)
+		Room R=mob.location();
+		if((success)&&(R!=null))
 		{
-
+			
 			if(text().length()==0)
 				setMiscText("");
-			if(mob.location().show(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?autoPhrase:castPhrase))
+			if(R.show(mob,null,this,CMMsg.MSG_NOISYMOVEMENT,auto?autoPhrase:castPhrase))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();
@@ -169,9 +169,9 @@ public class Dragonbreath extends StdAbility
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				CMMsg msg=CMClass.getMsg(mob,target,this,CMMsg.MSK_MALICIOUS_MOVE|strikeType|(auto?CMMsg.MASK_ALWAYS:0),null);
-				if(mob.location().okMessage(mob,msg))
+				if(R.okMessage(mob,msg))
 				{
-					mob.location().send(mob,msg);
+					R.send(mob,msg);
 					invoker=mob;
 
 					int damage = 0;
