@@ -33,7 +33,8 @@
 	</TR>
 	</TABLE>
 	<FONT SIZE=-1 COLOR=WHITE>
-	@TimsItemTable?ITEMS@
+	<!-- WORLD, ITEMS, CRAFTED -->
+	@TimsItemTable?CRAFTED@
 	</FONT>
 </BODY>
 </HTML>

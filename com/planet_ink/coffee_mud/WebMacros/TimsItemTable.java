@@ -151,7 +151,14 @@ public class TimsItemTable extends StdWebMacro
 				for(int v=0;v<V.size();v++)
 					CMParms.addToVector((Vector)V.elementAt(v),items);
 				for(int i=0;i<items.size();i++)
-					str.append(addRow((Item)items.elementAt(i)));
+				{
+					Item I=(Item)items.elementAt(i);
+					if(I instanceof Weapon)
+						str.append(addRow(I));
+					else
+					if(I instanceof Armor)
+						str.append(addRow(I));
+				}
 			}
 		}
 		else
