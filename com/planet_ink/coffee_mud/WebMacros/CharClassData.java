@@ -891,11 +891,11 @@ public class CharClassData extends StdWebMacro
 				}
 
 				if(parms.containsKey("HITPOINTS"))
-					str.append("20 at first, plus (Constitution/"+C.getHPDivisor()+")+"+C.getHPDice()+"d"+C.getHPDie()+" per level thereafter, ");
+					str.append(CMProps.getIntVar(CMProps.SYSTEMI_STARTHP)+" at first, plus (Constitution/"+C.getHPDivisor()+")+"+C.getHPDice()+"d"+C.getHPDie()+" per level thereafter, ");
 				if(parms.containsKey("MANA"))
-					str.append("100 plus (Intelligence/"+C.getManaDivisor()+")+"+C.getManaDice()+"d"+C.getManaDie()+" per level after first, ");
+					str.append(CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA)+" plus (Intelligence/"+C.getManaDivisor()+")+"+C.getManaDice()+"d"+C.getManaDie()+" per level after first, ");
 				if(parms.containsKey("MOVEMENT"))
-					str.append("100 plus ((Strength/18)*"+C.getMovementMultiplier()+") per level after first, ");
+					str.append(CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE)+" plus ((Strength/18)*"+C.getMovementMultiplier()+") per level after first, ");
 
 				if(parms.containsKey("AVGHITPOINTS"))
 				{

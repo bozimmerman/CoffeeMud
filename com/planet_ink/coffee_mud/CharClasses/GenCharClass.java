@@ -47,11 +47,11 @@ public class GenCharClass extends StdCharClass
 	protected int manaDie=3;
     protected int levelCap=-1;
 	protected int bonusPracLevel=0;
-	protected int bonusAttackLevel=1;
+	protected int bonusAttackLevel=0;
 	protected int attackAttribute=CharStats.STAT_STRENGTH;
 	protected int pracsFirstLevel=5;
 	protected int trainsFirstLevel=3;
-	protected int levelsPerBonusDamage=1;
+	protected int levelsPerBonusDamage=10;
 	protected int movementMultiplier=5;
 	protected int allowedArmorLevel=CharClass.ARMOR_ANY;
 	protected String otherLimitations="";
