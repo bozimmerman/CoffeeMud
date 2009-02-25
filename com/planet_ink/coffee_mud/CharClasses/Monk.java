@@ -185,7 +185,7 @@ public class Monk extends StdCharClass
 	}
 
     public void executeMsg(Environmental host, CMMsg msg){ super.executeMsg(host,msg); Fighter.conquestExperience(this,host,msg);}
-	public String otherBonuses(){return "Receives (Dexterity/9)+1 bonus to defence every level.  Receives 2%/lvl unarmed attack bonus.  Receives bonus attack when unarmed.  Has Slow Fall ability.  Receives 2%/level trap avoidance.  Receives bonus conquest experience.";}
+	public String otherBonuses(){return "Receives defensive bonus for high dexterity.  Receives unarmed attack bonus.  Receives bonus attack when unarmed.  Has Slow Fall ability.  Receives trap avoidance.  Receives bonus conquest experience.";}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 		super.affectEnvStats(affected,affectableStats);
@@ -221,15 +221,17 @@ public class Monk extends StdCharClass
 		if(mob.envStats().level()<2)
 			return;
 		super.unLevel(mob);
-
-		int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
-		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
-		if(dexStat>maxDexStat) dexStat=maxDexStat;
-		int attArmor=(int)Math.round(CMath.div(dexStat,9.0));
-		attArmor=attArmor*-1;
-		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
-		mob.envStats().setArmor(mob.envStats().armor()-attArmor);
+	    if(((mob.baseEnvStats().level()+1) % 2)==0)
+	    {
+			int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
+			int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
+						 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
+			if(dexStat>maxDexStat) dexStat=maxDexStat;
+			int attArmor=(int)Math.round(CMath.div(dexStat,9.0));
+			attArmor=attArmor*-1;
+			mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
+			mob.envStats().setArmor(mob.envStats().armor()-attArmor);
+	    }
 
 		mob.recoverEnvStats();
 		mob.recoverCharStats();
@@ -240,12 +242,15 @@ public class Monk extends StdCharClass
 	public void level(MOB mob, Vector newAbilityIDs)
 	{
 	    if(CMSecurity.isDisabled("LEVELS")) return;
-		int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
-		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
-		if(dexStat>maxDexStat) dexStat=maxDexStat;
-		int attArmor=((int)Math.round(CMath.div(dexStat,9.0)))+1;
-		mob.tell("^NYour stealthiness grants you a defensive bonus of ^H"+attArmor+"^?.^N");
+	    if((mob.baseEnvStats().level() % 2)==0)
+	    {
+			int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
+			int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
+						 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
+			if(dexStat>maxDexStat) dexStat=maxDexStat;
+			int attArmor=((int)Math.round(CMath.div(dexStat,9.0)))+1;
+			mob.tell("^NYour dexterity grants you a defensive bonus of ^H"+attArmor+"^?.^N");
+	    }
 	}
 
 	

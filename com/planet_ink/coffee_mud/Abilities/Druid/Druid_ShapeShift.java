@@ -104,11 +104,11 @@ public class Druid_ShapeShift extends StdAbility
 			newRace.setHeightWeight(affectableStats,(char)((MOB)affected).charStats().getStat(CharStats.STAT_GENDER));
 			if(oldAdd>0) affectableStats.setWeight(affectableStats.weight()+oldAdd);
 			affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+
-												(int)Math.round(CMath.mul(affectableStats.level()+xlvl,attadj[getRaceCode()])));
+												(int)Math.round(CMath.mul(affectableStats.level()+xlvl,attadj[getRaceCode()])/2.0));
 			affectableStats.setArmor(affectableStats.armor()+
-									(int)Math.round(CMath.mul(affectableStats.level()+xlvl,armadj[getRaceCode()])));
+									(int)Math.round(CMath.mul(affectableStats.level()+xlvl,armadj[getRaceCode()])/2.0));
 			affectableStats.setDamage(affectableStats.damage()+
-									(int)Math.round(CMath.mul(affectableStats.level()+xlvl,dmgadj[getRaceCode()])));
+									(int)Math.round(CMath.mul(affectableStats.level()+xlvl,dmgadj[getRaceCode()])/2.0));
 		}
 	}
 

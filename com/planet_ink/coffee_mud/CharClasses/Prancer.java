@@ -234,18 +234,20 @@ public class Prancer extends StdCharClass
 		if(mob.envStats().level()<2)
 			return;
 		super.unLevel(mob);
-
-		int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
-		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
-		if(dexStat>maxDexStat) dexStat=maxDexStat;
-		int attArmor=(int)Math.round(CMath.div(dexStat,9.0));
-		if(dexStat>=25)attArmor+=2;
-		else
-		if(dexStat>=22)attArmor+=1;
-		attArmor=attArmor*-1;
-		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
-		mob.envStats().setArmor(mob.envStats().armor()-attArmor);
+	    if(((mob.baseEnvStats().level()+1) % 3)==0)
+	    {
+			int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
+			int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
+						 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
+			if(dexStat>maxDexStat) dexStat=maxDexStat;
+			int attArmor=(int)Math.round(CMath.div(dexStat,10.0));
+			if(dexStat>=25)attArmor+=2;
+			else
+			if(dexStat>=22)attArmor+=1;
+			attArmor=attArmor*-1;
+			mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
+			mob.envStats().setArmor(mob.envStats().armor()-attArmor);
+	    }
 
 		mob.recoverEnvStats();
 		mob.recoverCharStats();
@@ -254,24 +256,26 @@ public class Prancer extends StdCharClass
 
     public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host,mob,victim,amount,5.0);}
     
-	public String otherBonuses(){return "Receives (Dexterity/9)+1 bonus to defence every level.  Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration experience based on danger level.";}
+	public String otherBonuses(){return "Receives defensive bonus for high dexterity.  Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration experience based on danger level.";}
 
 	public void level(MOB mob, Vector newAbilityIDs)
 	{
 	    if(CMSecurity.isDisabled("LEVELS"))  return;
-		int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
-		int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
-		if(dexStat>maxDexStat) dexStat=maxDexStat;
-		
-		int attArmor=((int)Math.round(CMath.div(dexStat,9.0)))+1;
-		if(dexStat>=25)attArmor+=2;
-		else
-		if(dexStat>=22)attArmor+=1;
-		
-		mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
-		mob.envStats().setArmor(mob.envStats().armor()-attArmor);
-		mob.tell("^NYour grace grants you a defensive bonus of ^H"+attArmor+"^?.^N");
+	    if((mob.baseEnvStats().level() % 3)==0)
+	    {
+			int dexStat=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
+			int maxDexStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
+						 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_DEXTERITY));
+			if(dexStat>maxDexStat) dexStat=maxDexStat;
+			int attArmor=((int)Math.round(CMath.div(dexStat,10.0)))+1;
+			if(dexStat>=25)attArmor+=2;
+			else
+			if(dexStat>=22)attArmor+=1;
+			
+			mob.baseEnvStats().setArmor(mob.baseEnvStats().armor()-attArmor);
+			mob.envStats().setArmor(mob.envStats().armor()-attArmor);
+			mob.tell("^NYour grace grants you a defensive bonus of ^H"+attArmor+"^?.^N");
+	    }
 	}
 }
 
