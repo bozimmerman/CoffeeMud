@@ -802,7 +802,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
     public String armorStr(MOB mob)
     {
-    	int armor = adjustedArmor(mob);
+    	int armor = absoluteAdjustedArmorScore(mob);
         int ARMOR_CEILING=CMProps.getIListVar(CMProps.SYSTEML_ARMOR_DESCS_CEILING);
         return (armor<0)?armorDescs()[0]:(
                (armor>=ARMOR_CEILING)?armorDescs()[armorDescs().length-1]+(CMStrings.repeat("!",(armor-ARMOR_CEILING)/100))+" ("+armor+")":(
