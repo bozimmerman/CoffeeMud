@@ -81,7 +81,10 @@ public class Fighter_ArmorTweaking extends FighterSkill
 	public void affectEnvStats(Environmental affected, EnvStats stats)
 	{
 		if((affected instanceof Item)&&(armorBonus>0)&&(((Item)affected).owner() instanceof MOB))
+		{
 			stats.setArmor(stats.armor()+armorBonus);
+			stats.addAmbiance("^w*^N");
+		}
 	}
 	
     public int castingQuality(MOB mob, Environmental target)
