@@ -98,6 +98,63 @@ public class TimsItemTable extends StdWebMacro
 			}
 		}
 		else
+		if(parms.containsKey("CRAFTED"))
+		{
+			str.append("<TR><TD>Name</TD><TD>LVL</TD><TD>TVLV</TD><TD>DIFF</TD><TD>DIFF%</TD><TD>ARM</TD><TD>ATT</TD><TD>DAM</TD><TD>ADJ</TD><TD>CAST</TD><TD>RESIST</TD></TR>");
+		    Vector V=new Vector();
+		    Vector craftingSkills=new Vector();
+			for(Enumeration e=CMClass.abilities();e.hasMoreElements();)
+			{
+				Ability A=(Ability)e.nextElement();
+				if(A instanceof ItemCraftor)
+					V.addElement(A.copyOf());
+			}
+			while(V.size()>0)
+			{
+				int lowest=Integer.MAX_VALUE;
+				Ability lowestA=null;
+				for(int i=0;i<V.size();i++)
+				{
+				    Ability A=(Ability)V.elementAt(i);
+				    int ii=CMLib.ableMapper().lowestQualifyingLevel(A.ID());
+				    if(ii<lowest)
+				    { 
+				        lowest=ii; 
+				        lowestA=A;
+				    }
+				}
+				if(lowestA==null) 
+				    lowestA=(Ability)V.firstElement();
+				if(lowestA!=null)
+				{
+				    V.removeElement(lowestA);
+				    craftingSkills.addElement(lowestA);
+				}
+				else
+				    break;
+			}
+			ItemCraftor skill;
+			for(int s=0;s<craftingSkills.size();s++)
+			{
+				skill=(ItemCraftor)craftingSkills.elementAt(s);
+				Vector items=new Vector();
+				V=null;
+				Vector V2=new Vector();
+				V=skill.craftAllItemsVectors();
+				if(V!=null)
+				{
+					for(int v=0;v<V.size();v++)
+						V2.addAll((Vector)V.elementAt(v));
+					V=V2;
+				}
+				if(V!=null)
+				for(int v=0;v<V.size();v++)
+					CMParms.addToVector((Vector)V.elementAt(v),items);
+				for(int i=0;i<items.size();i++)
+					str.append(addRow((Item)items.elementAt(i)));
+			}
+		}
+		else
 		if(parms.containsKey("ITEMS"))
 		{
 			int[] materials={RawMaterial.RESOURCE_STEEL,RawMaterial.RESOURCE_IRON,RawMaterial.RESOURCE_OAK,RawMaterial.RESOURCE_LEATHER,RawMaterial.RESOURCE_COTTON};

@@ -41,7 +41,7 @@ public class Jester extends StdCharClass
 	public int getBonusAttackLevel(){return 0;}
 	public int getMovementMultiplier(){return 16;}
 	public int getAttackAttribute(){return CharStats.STAT_CHARISMA;}
-	public int getLevelsPerBonusDamage(){ return 4;}
+	public int getLevelsPerBonusDamage(){ return 1;}
 	public int getHPDivisor(){return 3;}
 	public int getHPDice(){return 2;}
 	public int getHPDie(){return 6;}
@@ -214,7 +214,7 @@ public class Jester extends StdCharClass
 
     public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount){ return Bard.bardAdjustExperienceGain(host, mob,victim,amount,6.0);}
 	public String otherLimitations(){return "";}
-	public String otherBonuses(){return "Receives 2%/level bonus to saves versus poison.  Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration experience based on danger level.";}
+	public String otherBonuses(){return "Receives 2%/level bonus to saves versus poison.  Receives extra natural damaging skill. Receives group bonus combat experience when in an intelligent group, and more for a group of players.  Receives exploration experience based on danger level.";}
 	public Vector outfit(MOB myChar)
 	{
 		if(outfitChoices==null)
