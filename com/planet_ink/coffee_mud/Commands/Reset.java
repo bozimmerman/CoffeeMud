@@ -230,7 +230,23 @@ public class Reset extends StdCommand
 		return warning.toString();
 	}
 	
-	
+	public boolean fixMob(MOB M)
+	{
+		MOB M2=M.baseCharStats().getCurrentClass().fillOutMOB(null,M.baseEnvStats().level());
+		if((M.baseEnvStats().attackAdjustment() != M2.baseEnvStats().attackAdjustment())
+		||(M.baseEnvStats().armor() != M2.baseEnvStats().armor())
+		||(M.baseEnvStats().damage() != M2.baseEnvStats().damage())
+		||(M.baseEnvStats().speed() != M2.baseEnvStats().speed()))
+		{
+			M.baseEnvStats().setAttackAdjustment(M2.baseEnvStats().attackAdjustment());
+			M.baseEnvStats().setArmor(M2.baseEnvStats().armor());
+			M.baseEnvStats().setDamage(M2.baseEnvStats().damage());
+			M.baseEnvStats().setSpeed(M2.baseEnvStats().speed());
+			M.recoverEnvStats();
+			return true;
+		}
+		return false;
+	}
 	
 	public boolean execute(MOB mob, Vector commands, int metaFlags)
 		throws java.io.IOException
@@ -545,6 +561,16 @@ public class Reset extends StdCommand
 			    		for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 							rooms.addElement(r.nextElement());
 			    	}
+			    	MOB[] mobs=CMLib.catalog().getCatalogMobs();
+			    	for(int m=0;m<mobs.length;m++)
+			    	{
+			    		MOB M=mobs[m];
+			    		if(fixMob(M))
+			    		{
+							mob.tell("Catalog mob "+M.Name()+" done.");
+			    			CMLib.catalog().updateCatalog(M);
+			    		}
+			    	}
 			    }catch(NoSuchElementException nse){}
 			}
 			else
@@ -566,15 +592,9 @@ public class Reset extends StdCommand
 					{
 						MOB M=R.fetchInhabitant(m);
 						if((M.savable())
+						&&(!CMLib.flags().isCataloged(M))
 						&&(M.getStartRoom()==R))
-						{
-							MOB M2=M.baseCharStats().getCurrentClass().fillOutMOB(null,M.baseEnvStats().level());
-							M.baseEnvStats().setAttackAdjustment(M2.baseEnvStats().attackAdjustment());
-							M.baseEnvStats().setArmor(M2.baseEnvStats().armor());
-							M.baseEnvStats().setDamage(M2.baseEnvStats().damage());
-							M.recoverEnvStats();
-							somethingDone=true;
-						}
+							somethingDone=fixMob(M) || somethingDone;
 					}
 					if(somethingDone)
 					{
