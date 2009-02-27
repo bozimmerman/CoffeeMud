@@ -9,6 +9,7 @@ import com.planet_ink.coffee_mud.Commands.interfaces.*;
 import com.planet_ink.coffee_mud.Common.interfaces.*;
 import com.planet_ink.coffee_mud.Exits.interfaces.*;
 import com.planet_ink.coffee_mud.Items.interfaces.*;
+import com.planet_ink.coffee_mud.Libraries.Factions;
 import com.planet_ink.coffee_mud.Locales.interfaces.*;
 import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
@@ -172,7 +173,7 @@ public class Purist extends Cleric
 	}
 
 	public String otherBonuses(){return "Receives 1pt/level cold damage reduction.";}
-	public String otherLimitations(){return "Always fumbles evil prayers, and fumbles all prayers when alignment is below 500.  Qualifies and receives good prayers.  Using non-aligned prayers introduces failure chance.  Vulnerable to fire attacks.";}
+	public String otherLimitations(){return "Always fumbles evil prayers, and fumbles all prayers when alignment is below pure neutral.  Qualifies and receives good prayers, and bonus damage from good spells.  Using non-aligned prayers introduces failure chance.  Vulnerable to fire attacks.";}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
@@ -181,6 +182,29 @@ public class Purist extends Cleric
 		if(!super.okMessage(myChar, msg))
 			return false;
 
+		if(msg.amISource(myChar)
+		&&(!myChar.isMonster())
+		&&(msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+		&&(msg.tool() instanceof Ability)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+		&&(myChar.isMine(msg.tool()))
+		&&(isQualifyingAuthority(myChar,(Ability)msg.tool())))
+		{
+			int alignment = myChar.fetchFaction(CMLib.factions().AlignID());
+			int pct = CMLib.factions().getPercent(CMLib.factions().AlignID(), alignment);
+			if(pct < 50)
+			{
+				myChar.tell("Your impurity disrupts the prayer.");
+				return false;
+			}
+			int hq=holyQuality((Ability)msg.tool());
+			if(hq==0)
+			{
+				myChar.tell("You most certainly should not be casting that.");
+				return false;
+			}
+		}
+		
 		if((msg.amITarget(myChar))
 		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 		&&((msg.sourceMinor()==CMMsg.TYP_COLD)
@@ -197,6 +221,16 @@ public class Purist extends Cleric
 			int recovery=msg.value();
 			msg.setValue(msg.value()+recovery);
 		}
+		else
+		if(msg.amISource(myChar)
+		&&(!msg.amITarget(myChar))
+		&&(msg.tool() instanceof Ability)
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+		&&(myChar.isMine(msg.tool()))
+		&&(isQualifyingAuthority(myChar,(Ability)msg.tool()))
+		&&(holyQuality((Ability)msg.tool())==1000))
+			msg.setValue(msg.value()*2);
 		return true;
 	}
 

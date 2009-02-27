@@ -433,13 +433,17 @@ public class Stat  extends Skills
 		if(ableTypes==-4)
 		{
 			str.append("Quests won:");
+			StringBuffer won=new StringBuffer("");
 			for(int q=0;q<CMLib.quests().numQuests();q++)
 			{
 				Quest Q=CMLib.quests().fetchQuest(q);
 				if(Q.wasWinner(target.Name()))
-					str.append(" "+Q.name()+",");
+					won.append(" "+Q.name()+",");
 			}
-			str.deleteCharAt(str.length()-1);
+			if(won.length()==0)
+				won.append(" None!");
+			won.deleteCharAt(str.length()-1);
+			str.append(won);
 			str.append("\n\r");
 		}
         else

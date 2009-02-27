@@ -64,6 +64,9 @@ public class Spell_WizardsChest extends Spell
 		case CMMsg.TYP_UNLOCK:
 			mob.tell(affected.name()+" appears to be magically protected.");
 			return false;
+		case CMMsg.TYP_JUSTICE:
+			if(!CMath.bset(msg.targetMajor(),CMMsg.MASK_DELICATE))
+				return true;
 		case CMMsg.TYP_DELICATE_HANDS_ACT:
 			mob.tell(affected.name()+" appears to be magically protected.");
 			return false;
