@@ -287,7 +287,7 @@ public class Intermud implements Runnable, Persistent, Serializable
                 }
                 if(!connected)
                     for(int e=0;e<connectionStatuses.size();e++)
-                        Log.errOut((String)connectionStatuses.elementAt(e));
+                        Log.errOut("Intermud",(String)connectionStatuses.elementAt(e));
             }
         }
         catch( Exception e ) {
@@ -424,9 +424,13 @@ public class Intermud implements Runnable, Persistent, Serializable
 				if(len>65536)
 				{
 					int skipped=0;
-					while(skipped<len)
-						skipped+=input.skipBytes(len);
-					Log.errOut("Got illegal packet: "+skipped+"/"+len+" bytes.");
+                	try
+                	{ // please don't compress this again
+						while(skipped<len)
+							skipped+=input.skipBytes(len);
+                	}
+                    catch( java.io.IOException e ) {}
+					Log.errOut("Intermud","Got illegal packet: "+skipped+"/"+len+" bytes.");
 					continue;
 				}
                 byte[] tmp = new byte[len];

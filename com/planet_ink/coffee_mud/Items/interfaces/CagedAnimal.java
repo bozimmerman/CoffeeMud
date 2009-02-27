@@ -30,6 +30,9 @@ import com.planet_ink.coffee_mud.Races.interfaces.*;
 */
 public interface CagedAnimal extends Environmental
 {
+	public static final int ABILITY_MOBONPICKUP=0;
+	public static final int ABILITY_MOBPROGRAMMATICALLY=1;
+	
 	public boolean cageMe(MOB M);
 	public MOB unCageMe();
 	public String cageText();

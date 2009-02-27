@@ -801,11 +801,12 @@ public class DefaultFaction implements Faction, MsgListener
 
         CMMsg FacMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,ID);
         FacMsg.setValue(factionAdj);
-        if(source.location()!=null)
+        Room R=source.location();
+        if(R!=null)
         {
-            if(source.location().okMessage(source,FacMsg))
+            if(R.okMessage(source,FacMsg))
             {
-                source.location().send(source, FacMsg);
+                R.send(source, FacMsg);
                 factionAdj=FacMsg.value();
                 if((factionAdj!=Integer.MAX_VALUE)&&(factionAdj!=Integer.MIN_VALUE))
                 {
@@ -816,8 +817,8 @@ public class DefaultFaction implements Faction, MsgListener
                         String relID=((String)e.nextElement());
                         FacMsg=CMClass.getMsg(source,target,null,CMMsg.MASK_ALWAYS|CMMsg.TYP_FACTIONCHANGE,null,CMMsg.NO_EFFECT,null,CMMsg.NO_EFFECT,relID);
                         FacMsg.setValue((int)Math.round(CMath.mul(factionAdj, ((Double)relations.get(relID)).doubleValue())));
-                        if(source.location().okMessage(source,FacMsg))
-                            source.location().send(source, FacMsg);
+                        if(R.okMessage(source,FacMsg))
+                            R.send(source, FacMsg);
                     }
                 }
             }

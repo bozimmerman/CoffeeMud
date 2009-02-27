@@ -297,7 +297,7 @@ public class Pregnancy extends StdAbility
 							babe.resetToMaxState();
 							Item I=CMClass.getItem("GenCaged");
 							((CagedAnimal)I).cageMe(babe);
-							I.baseEnvStats().setAbility(1);
+							I.baseEnvStats().setAbility(CagedAnimal.ABILITY_MOBPROGRAMMATICALLY);
 							I.addNonUninvokableEffect((Ability)AGE.copyOf());
 							I.recoverEnvStats();
 							mob.location().addItem(I);
