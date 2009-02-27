@@ -1548,6 +1548,11 @@ public class List extends StdCommand
                     i++;
                     end=CMath.s_int(s);
                 }
+                else
+                {
+                	mob.tell("Bad "+s+" parameter format after.");
+                	return;
+                }
             }
             else
             if((s.equalsIgnoreCase("back")||(s.equalsIgnoreCase("last"))||(s.equalsIgnoreCase("tail")))
@@ -1559,6 +1564,11 @@ public class List extends StdCommand
                     i++;
                     start=(end-CMath.s_int(s))-1;
                 }
+                else
+                {
+                	mob.tell("Bad "+s+" parameter format after.");
+                	return;
+                }
             }
             else
             if(s.equalsIgnoreCase("skip")
@@ -1569,6 +1579,11 @@ public class List extends StdCommand
                 {
                     i++;
                     start=start+CMath.s_int(s);
+                }
+                else
+                {
+                	mob.tell("Bad "+s+" parameter format after.");
+                	return;
                 }
             }
         }

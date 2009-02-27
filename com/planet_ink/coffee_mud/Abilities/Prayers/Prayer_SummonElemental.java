@@ -144,7 +144,7 @@ public class Prayer_SummonElemental extends Prayer
 			break;
 		case 1:
 			newMOB.baseCharStats().setMyRace(CMClass.getRace("FireElemental"));
-			newMOB.setName("a creature of flame and smoke ");
+			newMOB.setName("a creature of flame and smoke");
 			newMOB.setDisplayText("a creature of flame and smoke is here");
 			newMOB.setDescription("This enormous burning ember is roughly the shape of a humanoid.");
 			ride.setRiderCapacity(0);

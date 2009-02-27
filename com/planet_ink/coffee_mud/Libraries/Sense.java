@@ -735,6 +735,17 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 	public String dispositionString(Environmental seen, int flag_msgType)
 	{
 		String type=null;
+		if(isFalling(seen))
+			type="falls";
+		else
+		if(isSleeping(seen))
+		{
+			if(flag_msgType!=flag_is)
+				type="floats";
+			else
+				type="sleeps";
+		}
+		else
 		if(isSneaking(seen))
 			type="sneaks";
 		else
@@ -749,19 +760,8 @@ public class Sense extends StdLibrary implements CMFlagLibrary
 				type="sits";
 		}
 		else
-		if(isSleeping(seen))
-		{
-			if(flag_msgType!=flag_is)
-				type="floats";
-			else
-				type="sleeps";
-		}
-		else
 		if(isFlying(seen))
 			type="flies";
-		else
-		if(isFalling(seen))
-			type="falls";
 		else
 		if((isClimbing(seen))&&(flag_msgType!=flag_is))
 			type="climbs";
