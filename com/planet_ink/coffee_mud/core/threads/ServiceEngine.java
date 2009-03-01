@@ -588,7 +588,10 @@ public class ServiceEngine implements ThreadEngine
 			//Log.sysOut("ServiceEngine","Shutting down all tick "+which+"/"+numTicks+"...");
 			Tick tock=null;
 			synchronized(tickGroup){tock=(Tick)tickGroup.elementAt(0);}
-			if(tock!=null) tock.shutdown();
+			if(tock!=null){
+				CMProps.setUpAllLowVar(CMProps.SYSTEM_MUDSTATUS,"Shutting down...shutting down Service Engine: killing Tick#" + tock.getCounter()+": "+tock.getStatus());
+				tock.shutdown();
+			}
 			try{Thread.sleep(100);}catch(Exception e){}
 			which++;
 		}
