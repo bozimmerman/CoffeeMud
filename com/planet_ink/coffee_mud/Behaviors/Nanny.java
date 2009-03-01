@@ -295,7 +295,12 @@ public class Nanny extends StdBehavior
         	if(msg.source()!=host)
         	{
 	        	if((host instanceof MOB)&&(msg.source().location()==CMLib.map().roomLocation(host)))
+	        	{
 					CMLib.commands().postSay((MOB)host,msg.source(),"Not in my "+place+" you dont!");
+					MOB victim=msg.source().getVictim();
+					if(victim!=null) victim.makePeace();
+					msg.source().makePeace();
+	        	}
 	        	else
 	        		msg.source().tell("You can't do that here.");
         	}

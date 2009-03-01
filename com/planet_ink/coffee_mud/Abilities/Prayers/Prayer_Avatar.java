@@ -113,12 +113,21 @@ public class Prayer_Avatar extends Prayer
 				if(attack==null)
 				{
 					int dir=-1;
+					Vector<Integer> dirs=new Vector<Integer>();
+					
 					for(int d=Directions.NUM_DIRECTIONS()-1;d>=0;d--)
 					{
 						Room R2=R.getRoomInDir(d);
 						if((R2!=null)
 						&&(R.getExitInDir(d)!=null)
 						&&(R.getExitInDir(d).isOpen()))
+							dirs.addElement(Integer.valueOf(d));
+					}
+					while(dirs.size()>0)
+					{
+						int d=(Integer)dirs.remove(CMLib.dice().roll(1, dirs.size(), -1));
+						Room R2=R.getRoomInDir(d);
+						if(R2!=null)
 						{
 							if((dir<0)||(dir==Directions.UP))
 								dir=d;
@@ -131,7 +140,11 @@ public class Prayer_Avatar extends Prayer
 						}
 					}
 					if(dir>=0)
+					{
+						String godName=mob.getWorshipCharID().length()==0?"Your god":mob.getWorshipCharID();
+						mob.tell(godName+" directs you "+Directions.getInDirectionName(dir));
 						CMLib.tracking().move(mob,dir,false,false);
+					}
 				}
 				if(attack!=null)
 					CMLib.combat().postAttack(mob,attack,mob.fetchWieldedItem());

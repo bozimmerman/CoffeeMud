@@ -82,6 +82,7 @@ public class Spell_ClanDonate extends Spell
 			CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),"^S<S-NAME> invoke(s) a donation spell upon <T-NAMESELF>.^?");
 			if(mob.location().okMessage(mob,msg))
 			{
+				MOB victim=mob.getVictim();
                 boolean proceed=(target instanceof Coins);
                 if(!proceed){
                     Room prevRoom=mob.location();
@@ -110,6 +111,7 @@ public class Spell_ClanDonate extends Spell
                         clanDonateRoom.sendOthers(mob,msg);
                     }
                 }
+                mob.setVictim(victim);
 			}
 
 		}

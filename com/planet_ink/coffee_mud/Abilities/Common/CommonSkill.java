@@ -72,6 +72,23 @@ public class CommonSkill extends StdAbility
 	public int abilityCode(){return yield;}
 	public void setAbilityCode(int newCode){yield=newCode;}
 
+	public boolean okMessage(Environmental myHost, CMMsg msg)
+	{
+		if(!super.okMessage(myHost, msg))
+			return false;
+		if((myHost instanceof MOB)&&(myHost == this.affected)&&(((MOB)myHost).location()!=null))
+		{
+			if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
+			||((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(msg.amISource((MOB)myHost))))
+			{
+				((MOB)myHost).location().show(((MOB)myHost),null,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> stop(s) "+verb+".",null,"<S-NAME> stop(s) "+verb+".");
+				aborted=true;
+				unInvoke();
+			}
+		}
+		return true;
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB)&&(tickID==Tickable.TICKID_MOB))

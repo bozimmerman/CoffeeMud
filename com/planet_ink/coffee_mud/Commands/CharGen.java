@@ -480,7 +480,8 @@ public class CharGen extends StdCommand
             		this.aborted=aborted;
             		this.start();
             	}
-            	public void run() {
+            	public void run() 
+            	{
             		MOB mob=c.mob;
             		int[][][] allData = c.allData;
             		String[][][] allSkills=c.allSkills;
@@ -543,36 +544,66 @@ public class CharGen extends StdCommand
 			                
 			                //Session S=(Session)CMClass.getCommon("FakeSession");
 			                //S.initializeSession(null,"MEMORY");
-			                MOB M1=AverageClassMOB(null,level,C,1);
-		                    M1.baseCharStats().setMyRace(CMClass.getRace("Human"));
-			                M1.setName("GOODGUY");
-			                M1.recoverCharStats();
-		                    M1.recoverEnvStats();
-		                    M1.setLocation(R);
-			                M1.baseCharStats().getMyRace().setHeightWeight(M1.baseEnvStats(),(char)M1.baseCharStats().getStat(CharStats.STAT_GENDER));
-			                M1.recoverCharStats();
-			                M1.recoverEnvStats();
-			                M1.recoverMaxState();
-			                M1.resetToMaxState();
-			                M1.bringToLife(M1.location(),true);
-			                CMLib.threads().deleteTick(M1,Tickable.TICKID_MOB);
-			                M1.setWimpHitPoint(0);
-			                M1.recoverMaxState();
-			                M1.recoverCharStats();
-			                M1.recoverEnvStats();
-			                M1.resetToMaxState();
-		                    B1.setStat("PRECAST","1");
-			                M1.addBehavior(B1);
-			                equipPlayer(M1);
-			                M1.recoverMaxState();
-			                M1.recoverCharStats();
-			                M1.recoverEnvStats();
-		                    B1.setStat("RECORD"," ");
-		                    B1.setStat("PROF","true");
-		                    B1.setStat("LASTSPELL","");
-		                    B1.setStat("PRECAST","1");
-		                    for(int i=0;i<20;i++) // give some pre-cast ticks
-		                    	M1.tick(M1,Tickable.TICKID_MOB);
+			                MOB M1=null;
+			                if(C.ID().equalsIgnoreCase("StdCharClass"))
+			                {
+			                    M1=CMClass.getMOB("StdMOB");  // MOB stat
+			                    Behavior B2=CMClass.getBehavior("CombatAbilities");
+			                    M1.baseCharStats().setMyRace(CMClass.getRace("Human"));
+			                    M1.baseEnvStats().setLevel(level);
+			                    M1.setName("GOODGUY");
+			                    M1.recoverCharStats();
+			                    M1.recoverEnvStats();
+			                    M1.setLocation(R);
+			                    M1.baseCharStats().getMyRace().setHeightWeight(M1.baseEnvStats(),(char)M1.baseCharStats().getStat(CharStats.STAT_GENDER));
+			                    M1.baseEnvStats().setAbility(11);
+			                    M1.recoverCharStats();
+			                    M1.recoverEnvStats();
+			                    M1.recoverMaxState();
+			                    M1.resetToMaxState();
+			                    M1.addBehavior(B2);
+			                    M1.bringToLife(R,true);
+				                CMLib.threads().deleteTick(M1,Tickable.TICKID_MOB);
+			                    M1.baseCharStats().getCurrentClass().fillOutMOB(M1,level);
+			                    //int hp=M1.baseCharStats().getCurrentClass().getLevelPlayerHP(M1);
+			                    M1.setWimpHitPoint(0);
+			                    M1.recoverMaxState();
+			                    M1.recoverCharStats();
+			                    M1.recoverEnvStats();
+			                }
+			                else
+			                {
+				                M1=AverageClassMOB(null,level,C,1);
+			                    M1.baseCharStats().setMyRace(CMClass.getRace("Human"));
+				                M1.setName("GOODGUY");
+				                M1.recoverCharStats();
+			                    M1.recoverEnvStats();
+			                    M1.setLocation(R);
+				                M1.baseCharStats().getMyRace().setHeightWeight(M1.baseEnvStats(),(char)M1.baseCharStats().getStat(CharStats.STAT_GENDER));
+				                M1.recoverCharStats();
+				                M1.recoverEnvStats();
+				                M1.recoverMaxState();
+				                M1.resetToMaxState();
+				                M1.bringToLife(M1.location(),true);
+				                CMLib.threads().deleteTick(M1,Tickable.TICKID_MOB);
+				                M1.setWimpHitPoint(0);
+				                M1.recoverMaxState();
+				                M1.recoverCharStats();
+				                M1.recoverEnvStats();
+				                M1.resetToMaxState();
+			                    B1.setStat("PRECAST","1");
+				                M1.addBehavior(B1);
+				                equipPlayer(M1);
+				                M1.recoverMaxState();
+				                M1.recoverCharStats();
+				                M1.recoverEnvStats();
+			                    B1.setStat("RECORD"," ");
+			                    B1.setStat("PROF","true");
+			                    B1.setStat("LASTSPELL","");
+			                    B1.setStat("PRECAST","1");
+			                    for(int i=0;i<20;i++) // give some pre-cast ticks
+			                    	M1.tick(M1,Tickable.TICKID_MOB);
+			                }
 			                M1.resetToMaxState();
 			                playerArmor=CMLib.combat().adjustedArmor(M1);
 			                playerAttack=CMLib.combat().adjustedAttackBonus(M1,null);

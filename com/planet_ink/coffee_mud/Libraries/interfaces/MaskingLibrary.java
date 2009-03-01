@@ -145,8 +145,6 @@ public interface MaskingLibrary extends CMLibrary
         +"+RESOURCES \"-OAK\" etc.. (Do not <WORD> items of subtracted resources) <BR>"
         +"-JAVACLASS \"+GENMOB\" etc.. (<WORD> only objects of added java class) <BR>"
         +"+JAVACLASS \"-GENITEM\" etc.. (Do not <WORD> objs of subtracted classes) <BR>"
-        +"-RESOURCES \"+OAK\" etc.. (<WORD> only items of added resources) <BR>"
-        +"+RESOURCES \"-OAK\" etc.. (Do not <WORD> items of subtracted resources) <BR>"
         +"-ABILITY X (<WORD> those with magical ability less than X)  <BR>"
         +"+ABILITY X (<WORD> those with magical ability greater than X) <BR>"
         +"-VALUE X (<WORD> those with value or money less than X)  <BR>"

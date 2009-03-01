@@ -194,7 +194,7 @@ public class Fighter_LightningStrike extends FighterSkill
 				if((!anyWeapons(mob))&&(msg.value()<=0))
 				{
 					mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> collapse(s) in exhaustion.");
-					success=maliciousAffect(mob,mob,asLevel,7,-1);
+					success=maliciousAffect(mob,mob,asLevel,9,-1);
 				}
 			}
 		}

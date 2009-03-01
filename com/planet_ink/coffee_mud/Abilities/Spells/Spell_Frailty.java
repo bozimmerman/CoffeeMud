@@ -50,9 +50,15 @@ public class Spell_Frailty extends Spell
 			return true;
 
 		MOB mob=(MOB)affected;
-		if((msg.amITarget(mob))&&(msg.targetMinor()==CMMsg.TYP_DAMAGE))
+		if((msg.amITarget(mob))
+		&&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
+		&&((msg.tool()==null)
+				||(!(msg.tool() instanceof Ability))
+				||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_SKILL)
+				||((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_THIEF_SKILL)
+				))
 		{
-			int recovery=(int)Math.round(CMath.div((msg.value()),2.0));
+			int recovery=(int)Math.round(CMath.div((msg.value()),3.0));
 			msg.setValue(msg.value()+recovery);
 		}
 		return true;
