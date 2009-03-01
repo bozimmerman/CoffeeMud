@@ -64,7 +64,7 @@ public class Minotaur extends Cow
 	}
 	public void affectCharStats(MOB affectedMOB, CharStats affectableStats)
 	{
-		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+10);
+		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH)+5);
 	}
 	public Vector myResources()
 	{
