@@ -338,10 +338,18 @@ public class Age extends StdAbility
 						newMan.giveItem(babe.fetchInventory(i));
 					CMLib.utensils().outfit(newMan,newMan.baseCharStats().getMyRace().outfit(newMan));
 					CMLib.utensils().outfit(newMan,newMan.baseCharStats().getCurrentClass().outfit(newMan));
-					for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
-						newMan.baseCharStats().setStat(i,newMan.baseCharStats().getStat(i)+1);
+					Vector<Integer> qualifiedStats = new Vector<Integer>();
 					for(int i=CharStats.STAT_MAX_STRENGTH_ADJ;i<CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.NUM_BASE_STATS;i++)
-						newMan.baseCharStats().setStat(i,newMan.baseCharStats().getStat(i)+1);
+						if(newMan.baseCharStats().getStat(i)<CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+7)
+							qualifiedStats.addElement(Integer.valueOf(i));
+					if(qualifiedStats.size()>0)
+					{
+						int stat=qualifiedStats.elementAt(CMLib.dice().roll(1,qualifiedStats.size(),-1));
+						newMan.baseCharStats().setStat(stat,newMan.baseCharStats().getStat(stat)+1);
+					}
+					for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
+						if(newMan.baseCharStats().getStat(i)<CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT))
+							newMan.baseCharStats().setStat(i,newMan.baseCharStats().getStat(i)+1);
 					newMan.playerStats().setLastDateTime(System.currentTimeMillis());
 					newMan.playerStats().setLastUpdated(System.currentTimeMillis());
 					newMan.recoverCharStats();

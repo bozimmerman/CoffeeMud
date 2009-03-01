@@ -359,7 +359,7 @@ public class StdExit implements Exit
 			}
 			if(isOpen())
 			{
-				mob.tell("The "+doorName()+" is already "+openWord()+"!");
+				mob.tell("The "+doorName()+" is already "+openWordPastTense()+"!");
 				return false;
 			}
 			if(isLocked()&&hasALock())

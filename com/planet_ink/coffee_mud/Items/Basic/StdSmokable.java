@@ -179,22 +179,6 @@ public class StdSmokable extends StdContainer implements Light
 		return false;
 	}
 
-	public static boolean inTheRain(Room room)
-	{
-		if(room==null) return false;
-		return (((room.domainType()&Room.INDOORS)==0)
-				&&((room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_RAIN)
-				   ||(room.getArea().getClimateObj().weatherType(room)==Climate.WEATHER_THUNDERSTORM)));
-	}
-	public static boolean inTheWater(Room room)
-	{
-		if(room==null) return false;
-		return (room.domainType()==Room.DOMAIN_OUTDOORS_UNDERWATER)
-			   ||(room.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-			   ||(room.domainType()==Room.DOMAIN_INDOORS_UNDERWATER)
-			   ||(room.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE);
-	}
-
     public void getAddictedTo(MOB mob, Item item)
     {
         Ability A=mob.fetchEffect("Addictions");

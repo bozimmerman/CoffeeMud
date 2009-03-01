@@ -165,8 +165,7 @@ public class LightSource extends StdItem implements Light
             return true;
         if((!CMLib.flags().isFlying(mob))
         &&(mob.riding()==null)
-        &&((room.domainType()==Room.DOMAIN_OUTDOORS_WATERSURFACE)
-		   ||(room.domainType()==Room.DOMAIN_INDOORS_WATERSURFACE)))
+        &&(CMLib.flags().isSwimmingInWater(mob)))
             return true;
         return false;
 	}
