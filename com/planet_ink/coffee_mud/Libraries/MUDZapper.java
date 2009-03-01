@@ -1461,7 +1461,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 if(Q==null)
                                     buf.append(str2.substring(1)+", ");
                                 else
-                                if((Q.displayName()!=null)&&(Q.displayName().trim().length()==0))
+                                if((Q.displayName()!=null)&&(Q.displayName().trim().length()>0))
                                     buf.append(Q.displayName()+", ");
                                 else
                                     buf.append(Q.name()+", ");
@@ -1486,7 +1486,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                                 if(Q==null)
                                     buf.append(str2.substring(1)+", ");
                                 else
-                                if((Q.displayName()!=null)&&(Q.displayName().trim().length()==0))
+                                if((Q.displayName()!=null)&&(Q.displayName().trim().length()>0))
                                     buf.append(Q.displayName()+", ");
                                 else
                                     buf.append(Q.name()+", ");
