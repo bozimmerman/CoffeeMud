@@ -1520,6 +1520,12 @@ public class CMMap extends StdLibrary implements WorldMap
         int oldFlag=area.getAreaState();
         area.setAreaState(Area.STATE_FROZEN);
         DVector playersHere=getAllPlayersHere(area,true);
+        for(int p=0;p<playersHere.size();p++)
+        {
+            MOB M=(MOB)playersHere.elementAt(p,1);
+            Room R=M.location();
+            R.delInhabitant(M);
+        }
         for(Enumeration r=area.getProperMap();r.hasMoreElements();)
             resetRoom((Room)r.nextElement());
         area.fillInAreaRooms();
@@ -1527,7 +1533,10 @@ public class CMMap extends StdLibrary implements WorldMap
         {
             MOB M=(MOB)playersHere.elementAt(p,1);
             Room R=getRoom((String)playersHere.elementAt(p,2));
-            if(R!=null) R.bringMobHere(M,false);
+            if(R==null) R=M.getStartRoom();
+            if(R==null) R=getStartRoom(M);
+            if(R!=null) 
+            	R.bringMobHere(M,false);
         }
         area.setAreaState(oldFlag);
     }

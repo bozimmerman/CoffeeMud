@@ -226,6 +226,15 @@ public class Reset extends StdCommand
 			&&(((DeadBody)I).playerCorpse()))
 				warning.append("A player corpse, '"+I.Name()+"' is in "+CMLib.map().getExtendedRoomID(R)+"\n\r");
 		}
+		if(R instanceof GridLocale)
+		{
+			Vector rooms=((GridLocale)R).getAllRooms();
+			for(int r=0;r<rooms.size();r++)
+			{
+				String s=resetWarning(mob,(Room)rooms.elementAt(r));
+				if(s!=null) warning.append(s);
+			}
+		}
 		if(warning.length()==0) return null;
 		return warning.toString();
 	}
