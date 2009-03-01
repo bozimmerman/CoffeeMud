@@ -442,7 +442,7 @@ public class Stat  extends Skills
 			}
 			if(won.length()==0)
 				won.append(" None!");
-			won.deleteCharAt(str.length()-1);
+			won.deleteCharAt(won.length()-1);
 			str.append(won);
 			str.append("\n\r");
 		}
