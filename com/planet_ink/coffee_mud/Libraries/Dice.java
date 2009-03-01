@@ -57,22 +57,17 @@ public class Dice extends StdLibrary implements DiceLibrary
 
 	public int rollHP(int level, int code)
 	{
-		int mul=1;
-		if(code<0)
-		{
-			code=code*-1;
-			mul=-1;
-		}
+		if(code<0) code=0;
 		// new old style
 		if(code<32768)
-			return 10+level+(level * code *mul);
+			return 3+level+(level * code);
 		// old old style
 		//	return 10 +(int)Math.round(CMath.mul(level*level,0.85)) +(roll(level,code,0)*mul);
 		
 		// new style
 		int r=code>>23;
 		int d=(code-(r<<23))>>15;
-		int p=(((code-(r<<23))-(d<<15)))*mul;
+		int p=(((code-(r<<23))-(d<<15)));
 		return roll(r,d,p);
 	}
 	
