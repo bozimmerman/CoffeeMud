@@ -424,6 +424,39 @@ public class Reset extends StdCommand
             }
         }
         else
+		if(s.equalsIgnoreCase("racestatgains"))
+		{
+		    for(Enumeration e=CMClass.races();e.hasMoreElements();)
+		    {
+		        Race R=(Race)e.nextElement();
+		        if(R.isGeneric())
+		        {
+		            CharStats ADJSTAT1=(CharStats)CMClass.getCommon("DefaultCharStats");
+		            ADJSTAT1.setAllValues(0);
+		            CMLib.coffeeMaker().setCharStats(ADJSTAT1,R.getStat("ASTATS"));
+		            boolean save=false;
+		    		for(int i=0;i<CharStats.NUM_STATS;i++)
+		    		{
+		    			if(i<CharStats.NUM_BASE_STATS)
+		    			{
+		    				if(ADJSTAT1.getStat(i)>5)
+		    				{
+		    					ADJSTAT1.setStat(i,5);
+		    					save=true;
+		    				}
+		    			}
+		    		}
+		    		if(save)
+		    		{
+			    		R.setStat("ASTATS",CMLib.coffeeMaker().getCharStatsStr(ADJSTAT1));
+			    		mob.tell("Modified "+R.ID());
+			    		CMLib.database().DBDeleteRace(R.ID());
+			    		CMLib.database().DBCreateRace(R.ID(),R.racialParms());
+		    		}
+		        }
+		    }
+		}
+		else
 		if(s.equalsIgnoreCase("genraceagingcharts"))
 		{
 		    for(Enumeration e=CMClass.races();e.hasMoreElements();)

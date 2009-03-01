@@ -853,7 +853,11 @@ public class StdRace implements Race
 			if(i<CharStats.NUM_BASE_STATS)
 			{
 				SETSTAT.setStat(i,(SETSTAT1.getStat(i)+SETSTAT2.getStat(i))/2);
-				ADJSTAT.setStat(i,(ADJSTAT1.getStat(i)+ADJSTAT2.getStat(i))/2);
+				int newStat=((ADJSTAT1.getStat(i)+ADJSTAT2.getStat(i))/2);
+				if(newStat>5)
+					ADJSTAT.setStat(i,5);
+				else
+					ADJSTAT.setStat(i,newStat);
 			}
 			else
 			if((i!=CharStats.STAT_GENDER)&&(i!=CharStats.STAT_AGE))
