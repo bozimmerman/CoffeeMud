@@ -17,7 +17,7 @@ import java.util.*;
 import com.planet_ink.coffee_mud.Libraries.interfaces.*;
 
 /* 
-   Copyright 2006-2008 Rob McClellan, Bo Zimmerman
+   Copyright 2006-2009 Rob McClellan, Bo Zimmerman
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
