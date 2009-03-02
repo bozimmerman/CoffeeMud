@@ -642,6 +642,11 @@ public class CMCatalog extends StdLibrary implements CatalogLibrary, Runnable
                             if((!cataE.getStat(cataE.getStatCodes()[i]).equals(E.getStat(cataE.getStatCodes()[i]))))
                                 diffs.append(cataE.getStatCodes()[i]+",");
                 	}
+                	if((E instanceof MOB)&&(cataE instanceof MOB))
+                	{
+                		if(!((MOB)E).getClanID().equalsIgnoreCase(((MOB)cataE).getClanID()))
+                			diffs.append("CLANID,");
+                	}
                 	changeCatalogFlag(E,true);
                 	if(data!=null)
                 		data.addReference(E);

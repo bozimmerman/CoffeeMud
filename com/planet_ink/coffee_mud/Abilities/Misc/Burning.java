@@ -161,6 +161,7 @@ public class Burning extends StdAbility
 								((Room)E).recoverRoomStats();
 								return super.tick(ticking,tickID);
 							}
+							((Room)E).showHappens(CMMsg.MSG_OK_VISUAL, affected.name()+" is no longer burning.");
 							((Item)affected).destroy();
 					    }
 						break;
