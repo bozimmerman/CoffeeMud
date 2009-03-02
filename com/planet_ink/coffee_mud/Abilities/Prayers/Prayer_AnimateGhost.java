@@ -120,6 +120,7 @@ public class Prayer_AnimateGhost extends Prayer
 				it++;
 		}
 		body.destroy();
+		newMOB.setStartRoom(null);
 		R.show(newMOB,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to rise!");
 		R.recoverRoomStats();
 	}

@@ -64,14 +64,29 @@ public class Spell_TeleportObject extends Spell
 			mob.tell("You don't seem to have an item '"+objectName+"'.");
 			return false;
 		}
-		if(!target.amWearingAt(Item.IN_INVENTORY))
+		if(target.amWearingAt(Item.IN_INVENTORY))
 		{
 			mob.tell("You seem to be wearing or holding the item '"+objectName+"'.");
 			return false;
 		}
-		
+		String searchWhat=null;
+		if(commands.size()>2)
+		{
+			String s=(String)commands.elementAt(1);
+			if(s.equalsIgnoreCase("room")) searchWhat="R";
+			if(s.equalsIgnoreCase("area")) searchWhat="E";
+			if(s.equalsIgnoreCase("mob")) searchWhat="M";
+			if(s.equalsIgnoreCase("monster")) searchWhat="M";
+			if(s.equalsIgnoreCase("player")) searchWhat="P";
+			if(s.equalsIgnoreCase("user")) searchWhat="P";
+			if(s.equalsIgnoreCase("item")) searchWhat="I";
+			if(s.equalsIgnoreCase("object")) searchWhat="I";
+			if(searchWhat!=null)
+				commands.removeElementAt(1);
+		}
+		if(searchWhat==null) searchWhat="ERIPM";
 		String destinationString=CMParms.combine(commands,1).trim().toUpperCase();
-		Vector candidates=CMLib.map().findWorldRoomsLiberally(mob,destinationString,"ERIPM",10);
+		Vector candidates=CMLib.map().findWorldRoomsLiberally(mob,destinationString,searchWhat,10);
 		if(candidates.size()==0)
 		{
 			mob.tell("You don't know of an place called '"+destinationString.toLowerCase()+"'.");
@@ -117,6 +132,7 @@ public class Spell_TeleportObject extends Spell
 		{
 			oldRoom.send(mob,msg);
 			newRoom.bringMobHere(mob,false);
+			target.unWear();
 			success=CMLib.commands().postDrop(mob,target,true,false) && (!mob.isMine(target));
 			oldRoom.bringMobHere(mob,false);
 			if(success)

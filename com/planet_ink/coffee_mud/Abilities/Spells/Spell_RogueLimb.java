@@ -154,6 +154,7 @@ public class Spell_RogueLimb extends Spell
 					rogueLimb.recoverCharStats();
 					rogueLimb.recoverEnvStats();
 					rogueLimb.resetToMaxState();
+					rogueLimb.setStartRoom(null);
 					rogueLimb.bringToLife(mob.location(),true);
 					CMLib.beanCounter().clearZeroMoney(rogueLimb,null);
 					rogueLimb.setVictim(target);

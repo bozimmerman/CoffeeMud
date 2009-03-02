@@ -147,6 +147,7 @@ public class Prayer_AnimateGhoul extends Prayer
 						it++;
 				}
 				body.destroy();
+				newMOB.setStartRoom(null);
 				mob.location().show(newMOB,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> begin(s) to rise!");
 				mob.location().recoverRoomStats();
 			}

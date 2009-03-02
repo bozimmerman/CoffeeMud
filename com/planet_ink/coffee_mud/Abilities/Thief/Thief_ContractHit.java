@@ -103,6 +103,7 @@ public class Thief_ContractHit extends ThiefSkill
 					M.text(); // this establishes his current state.
 					hitmen.addElement(M);
 					M.bringToLife(mob.location(),true);
+					M.setStartRoom(null);
 					M.setVictim(mob);
 					mob.setVictim(M);
 					Ability A=M.fetchAbility("Thief_Hide");
