@@ -33,29 +33,34 @@ import java.util.*;
 */
 public class Prop_SafePet extends Property
 {
-	boolean disabled=false;
 	public String ID() { return "Prop_SafePet"; }
 	public String name(){ return "Unattackable Pets";}
 	protected int canAffectCode(){return Ability.CAN_MOBS;}
+	boolean disabled=false;
 
 	public String accountForYourself()
 	{ return "Unattackable";	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
 	{
-		if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS)
-        &&(msg.target()==affected)
-        &&(affected instanceof MOB)
-        &&(!disabled)))
+		if((CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		&&(affected instanceof MOB))
 		{
-            if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
-    			msg.source().tell("Ah, leave "+affected.name()+" alone.");
-            ((MOB)affected).makePeace();
-			return false;
+	        if((msg.amITarget(affected))
+	        &&(!disabled))
+			{
+	            if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
+	    			msg.source().tell("Ah, leave "+affected.name()+" alone.");
+	            ((MOB)affected).makePeace();
+				return false;
+			}
+			else
+			if(msg.amISource((MOB)affected))
+				disabled=true;
 		}
 		else
-		if((affected!=null)&&(affected instanceof MOB)&&(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))&&(msg.amISource((MOB)affected)))
-			disabled=true;
+		if(!((MOB)affected).isInCombat())
+			disabled=false;
 		return super.okMessage(myHost,msg);
 	}
 }

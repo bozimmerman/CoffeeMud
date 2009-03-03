@@ -142,7 +142,7 @@ public class Prayer_Avatar extends Prayer
 					if(dir>=0)
 					{
 						String godName=mob.getWorshipCharID().length()==0?"Your god":mob.getWorshipCharID();
-						mob.tell(godName+" directs you "+Directions.getInDirectionName(dir));
+						mob.tell(godName+" directs you "+Directions.getInDirectionName(dir)+".");
 						CMLib.tracking().move(mob,dir,false,false);
 					}
 				}
