@@ -63,6 +63,13 @@ public class Prop_SafePet extends Property
 			if(!((MOB)affected).isInCombat())
 				disabled=false;
 		}
+		else
+		if(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		{
+            if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
+    			msg.source().tell("Ah, leave "+affected.name()+" alone.");
+			return false;
+		}
 		return super.okMessage(myHost,msg);
 	}
 }
