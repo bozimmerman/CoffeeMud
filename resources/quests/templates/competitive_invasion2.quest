@@ -319,14 +319,16 @@ DEATH_PROG
 						mpechoat $n You have killed $t.
 					ENDIF
 				ELSE
-					mpecho No Kill recorded.
+					IF ISFOLLOW($n)
+						mpecho No Kill recorded.
+					ENDIF
 				ENDIF
 			ENDIF
 		ELSE
-			mpecho No Kill recorded.
+			mpechoat $n No Kill recorded.
 		ENDIF
 	ELSE
-		mpecho No Kill recorded.
+		mpechoat $n No Kill recorded.
 	ENDIF
 ~
 
