@@ -64,7 +64,7 @@ public class Prop_SafePet extends Property
 				disabled=false;
 		}
 		else
-		if(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS))
+		if(CMath.bset(msg.targetCode(),CMMsg.MASK_MALICIOUS) && msg.amITarget(affected))
 		{
             if(!CMath.bset(msg.sourceCode(),CMMsg.MASK_ALWAYS))
     			msg.source().tell("Ah, leave "+affected.name()+" alone.");
