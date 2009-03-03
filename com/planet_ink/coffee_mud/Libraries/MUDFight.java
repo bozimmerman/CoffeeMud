@@ -337,7 +337,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			double critPctR = CMath.div(attacker.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)- 10 + levelDiff,2.5);
 			if((critPct>0)&&(critPctR>0))
 			{
-				critPct = critPct * critPctR * ((critPct+critPctR)/2.0);
+				critPct = critPct * critPctR * critPctR;
 				if(CMLib.dice().rollPercentage()<Math.round(critPct))
 					damage+=Math.round(CMath.mul(damage,critPct/100.0));
 			}
@@ -385,7 +385,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		double critPctR = CMath.div(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)- 10 + levelDiff,2.5);
 		if((critPct>0)&&(critPctR>0))
 		{
-			critPct = critPct * critPctR * ((critPct+critPctR)/2.0);
+			critPct = critPct * critPctR * critPctR;
 			if(CMLib.dice().rollPercentage()<Math.round(critPct))
 				damageAmount+=Math.round(CMath.mul(damageAmount,critPct/50.0));
 		}
