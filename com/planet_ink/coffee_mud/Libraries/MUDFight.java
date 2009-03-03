@@ -332,11 +332,15 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(allDisplayMessage!=null) allDisplayMessage="^F^<FIGHT^>"+allDisplayMessage+"^</FIGHT^>^?";
 		if((weapon instanceof Ability)&&(damage>0)&&(attacker != target) && (attacker != null))
 		{
-			double critPct = CMath.div(attacker.charStats().getStat(CharStats.STAT_INTELLIGENCE)- 10,2.5);
-			double critPctR = CMath.div(attacker.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)- 10,2.5);
-			critPct = critPct * critPctR * ((critPct+critPctR)/2.0);
-			if(CMLib.dice().rollPercentage()<Math.round(critPct))
-				damage+=Math.round(CMath.mul(damage,critPct/100.0));
+			int levelDiff = attacker.envStats().level() - target.envStats().level();
+			double critPct = CMath.div(attacker.charStats().getStat(CharStats.STAT_INTELLIGENCE)- 10 + levelDiff,2.5);
+			double critPctR = CMath.div(attacker.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)- 10 + levelDiff,2.5);
+			if((critPct>0)&&(critPctR>0))
+			{
+				critPct = critPct * critPctR * ((critPct+critPctR)/2.0);
+				if(CMLib.dice().rollPercentage()<Math.round(critPct))
+					damage+=Math.round(CMath.mul(damage,critPct/100.0));
+			}
 		}
 		CMMsg msg=CMClass.getMsg(attacker,target,weapon,messageCode,CMMsg.MSG_DAMAGE,messageCode,allDisplayMessage);
 		msg.setValue(damage);
@@ -376,11 +380,15 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			damageAmount = (double)(weapon.envStats().damage()+1);
 		else
 			damageAmount = (double)(mob.envStats().damage()+(mob.charStats().getStat(CharStats.STAT_STRENGTH) / 3)-2);
-		double critPct = CMath.div(mob.charStats().getStat(CharStats.STAT_DEXTERITY)- 10,2.5);
-		double critPctR = CMath.div(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)- 10,2.5);
-		critPct = critPct * critPctR * ((critPct+critPctR)/2.0);
-		if(CMLib.dice().rollPercentage()<Math.round(critPct))
-			damageAmount+=Math.round(CMath.mul(damageAmount,critPct/50.0));
+		int levelDiff = mob.envStats().level() - target.envStats().level();
+		double critPct = CMath.div(mob.charStats().getStat(CharStats.STAT_DEXTERITY)- 10 + levelDiff,2.5);
+		double critPctR = CMath.div(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)- 10 + levelDiff,2.5);
+		if((critPct>0)&&(critPctR>0))
+		{
+			critPct = critPct * critPctR * ((critPct+critPctR)/2.0);
+			if(CMLib.dice().rollPercentage()<Math.round(critPct))
+				damageAmount+=Math.round(CMath.mul(damageAmount,critPct/50.0));
+		}
 		if(mob.curState().getHunger() < 1) damageAmount *= .8;
 		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS) damageAmount *=.8;
 		if(mob.curState().getThirst() < 1) damageAmount *= .9;
