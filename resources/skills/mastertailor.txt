@@ -5,14 +5,14 @@ Large Designer % Pillow	40	10	5	250	GenBoffWeapon	BASHING	0	0		Prop_NoDamage
 Designer % Armbands	33	30	1	18	GenArmor	S-1:ARMS	0	6	0	
 Designer % Sleeves	42	20	3	73	GenArmor	-1:ARMS	0	7	0	
 Designer % Pauldrons	52	30	5	160	GenArmor	-1:ARMS	0	8	0	
-Designer % Housecoat	34	30	10	180	GenArmor	BODY	5	27	0	
+Designer % Housecoat	34	30	10	180	GenArmor	BODY	5	17	0	
 Designer % Blanket	35	10	15	151	GenArmor	M3:BODY	0	0	0	Prop_wearResister;cold 50%
 % Suit Jacket	8	30	6	225	GenArmor	1:BODY	20	3	0	Prop_WearAdjuster;CHA+1
-% Tuxedo	12	30	9	266	GenArmor	BODY	20	6	0	Prop_WearAdjuster;CHA+1
-% Tuxedo With Tails	23	30	12	442	GenArmor	BODY	20	12	0	Prop_WearAdjuster;CHA+2
+% Tuxedo	12	30	9	266	GenArmor	BODY	20	1	0	*Prop_WearAdjuster;CHA+1
+% Tuxedo With Tails	23	30	12	442	GenArmor	BODY	20	2	0	*Prop_WearAdjuster;CHA+2
 Designer % Suit Jacket	39	30	12	1216	GenArmor	1:BODY	20	27	0	Prop_WearAdjuster;CHA+1
-Designer % Tuxedo	48	30	18	1400	GenArmor	BODY	20	30	0	Prop_WearAdjuster;CHA+1
-Designer % Tuxedo With Tails	83	30	24	3200	GenArmor	BODY	20	45	0	Prop_WearAdjuster;CHA+2
+Designer % Tuxedo	48	30	18	1400	GenArmor	BODY	20	10	0	*Prop_WearAdjuster;CHA+1
+Designer % Tuxedo With Tails	83	30	24	3200	GenArmor	BODY	20	15	0	*Prop_WearAdjuster;CHA+2
 Designer % Sheet	35	10	5	50	GenArmor	1:BODY	0	0	0	
 Designer % Apron	43	30	6	142	GenArmor	1:BODY	20	31	0	
 Designer % Poncho	52	30	14	448	GenArmor	1:BODY	0	36	0	

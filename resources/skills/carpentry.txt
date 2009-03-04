@@ -42,7 +42,7 @@ Small % Shield	3	30	15	5	GenShield	HELD	1	6	0
 % Bed	6	50	60	20	GenBed	BED	2		0	
 Small % Chest	6	50	20	20	GenContainer	LOCK	25		0	
 % Ladder	6	40	20	10	GenRideable	LADDER	0		0	
-% Shield	6	50	30	8	GenShield	HELD	1	10	0	
+% Shield	6	50	30	8	GenShield	HELD	1	8	0	
 Large % Box	6	40	40	10	GenContainer	LID	65		0	
 Small % Crib	8	50	20	60	GenContainer		20		0	
 % Bar	12	30	60	20	GenRideable	TABLE	50		0	

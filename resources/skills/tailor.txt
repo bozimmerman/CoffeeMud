@@ -9,8 +9,8 @@ Large % Pillow	10	10	5	27	GenBoffWeapon	BASHING	0	0		Prop_NoDamage
 % Housecoat	2	30	10	30	GenArmor	BODY	5	0	0	
 % Blanket	5	10	15	9	GenArmor	M3:BODY	0	0	0	Prop_wearResister;cold 10%
 % Sheet	5	10	5	3	GenArmor	1:BODY	0	0	0	
-% Apron	8	30	6	50	GenArmor	1:BODY	20	9	0	
-% Poncho	11	30	14	60	GenArmor	1:BODY	0	13	0	
+% Apron	8	30	6	50	GenArmor	1:BODY	20	2	0	
+% Poncho	11	30	14	60	GenArmor	1:BODY	0	3	0	
 % Trenchcoat	25	30	27	141	GenArmor	2:BODY	20	22	0	
 % Slippers	1	10	5	5	GenArmor	-1:FEET	0	0	0	
 % Socks	1	10	2	2	GenArmor	-3:FEET	0	0	0	
@@ -26,7 +26,7 @@ Heavy % Cestus	26	80	10	250	GenArmor	-1:HANDS	0	2	0	prop_WearAdjuster;att+30
 % Cuff	7	20	1	1	GenArmor	-1:LEFT WRIST||RIGHT WRIST	0	1	0	
 % Vambrace	16	30	5	5	GenArmor	-1:LEFT WRIST||RIGHT WRIST	0	2	0	
 % Hose	1	10	3	13	GenArmor	S-4:LEGS	0	0	0	
-% Loincloth	2	10	2	6	GenArmor	S-2:LEGS	0	2	0	
+% Loincloth	2	10	2	6	GenArmor	S-2:LEGS	0	1	0	
 % Leggings	2	20	3	2	GenArmor	-1:LEGS	0	2	0	
 % Skirt	2	20	3	8	GenArmor	S0:LEGS	0	2	0	
 % Pants	3	30	3	10	GenArmor	-1:LEGS	5	2	0	
@@ -57,7 +57,7 @@ Strapless % Dress	3	20	2	18	GenArmor	-1:TORSO&&LEGS	0	2	0
 % Smock	6	20	8	36	GenArmor	-1:TORSO	0	6	0	
 % Corset	7	30	5	40	GenArmor	-1:TORSO	0	6	0	
 % Pinafore	7	40	6	22	GenArmor	-1:TORSO	0	6	0	
-% Vest	7	30	6	27	GenArmor	S-1:TORSO	0	9	0	
+% Vest	7	30	6	27	GenArmor	S-1:TORSO	0	3	0	
 % Waistcoat	11	20	8	27	GenArmor	-1:TORSO	0	8	0	
 % Tunic	12	30	9	36	GenArmor	-1:TORSO	0	9	0	
 % Jerkin	12	40	9	40	GenArmor	-1:TORSO	0	9	0	
