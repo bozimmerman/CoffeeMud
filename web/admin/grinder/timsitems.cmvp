@@ -34,7 +34,7 @@
 	</TABLE>
 	<FONT SIZE=-1 COLOR=WHITE>
 	<!-- WORLD, ITEMS, CRAFTED -->
-	@TimsItemTable?CRAFTED@
+	@TimsItemTable?WORLD@
 	</FONT>
 </BODY>
 </HTML>

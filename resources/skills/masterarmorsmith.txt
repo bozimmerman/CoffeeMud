@@ -1,4 +1,4 @@
-Spiked % Banded Coat	6	85	43	288	GenArmor	1:BODY	0	21	0	Prop_WearAdjuster;Dam+1
+Spiked % Banded Coat	6	85	43	288	GenArmor	1:BODY	0	6	0	*Prop_WearAdjuster;Dam+1
 Spiked % Banded Greaves	10	85	14	216	GenArmor	S1:FEET	0	3	0	Prop_WearAdjuster;Dam+1
 Spiked % Banded Sabottons	10	85	14	216	GenArmor	1:FEET	0	3	0	Prop_WearAdjuster;Dam+1
 Spiked % Banded Gauntlets	10	85	7	108	GenArmor	1:HANDS	0	3	0	Prop_WearAdjuster;Dam+1
