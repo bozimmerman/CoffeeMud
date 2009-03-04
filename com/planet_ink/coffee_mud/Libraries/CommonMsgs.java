@@ -726,7 +726,7 @@ public class CommonMsgs extends StdLibrary implements CommonCommands
             buf.append("You don't see anything special about "+item.name());
         else
             buf.append(item.description());
-        if(msg.targetMinor()==CMMsg.TYP_EXAMINE)
+        if((msg.targetMinor()==CMMsg.TYP_EXAMINE)&&(!item.ID().endsWith("Wallpaper")))
             buf.append(examineItemString(mob,item));
         if(item instanceof Container)
         {

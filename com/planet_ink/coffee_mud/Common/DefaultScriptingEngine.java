@@ -5858,7 +5858,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     {
                         JScriptEvent scope = new JScriptEvent(this,scripted,source,target,monster,primaryItem,secondaryItem,msg);
                         cx.initStandardObjects(scope);
-                        String[] names = { "host", "source", "target", "monster", "item", "item2", "message" ,"getVar", "setVar", "toJavaString","setPlayerSetOverride"};
+                        String[] names = { "host", "source", "target", "monster", "item", "item2", "message" ,"getVar", "setVar", "toJavaString"};
                         scope.defineFunctionProperties(names, JScriptEvent.class,
                                                        ScriptableObject.DONTENUM);
                         cx.evaluateString(scope, jscript.toString(),"<cmd>", 1, null);

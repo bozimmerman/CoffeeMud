@@ -92,7 +92,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		double att=(double)ATTACK_ADJUSTMENT + (double)mob.envStats().attackAdjustment();
 		double str=((double)mob.charStats().getStat(CharStats.STAT_STRENGTH)-9.0)/5.0;
 		double strR=((double)mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)-9.0)/5.0;
-		att += (str * strR * ((str+strR)/2.0));
+		att += (str * strR * strR);
 		if(mob.curState().getHunger()<1) att=att*.9;
 		if(mob.curState().getThirst()<1) att=att*.9;
 		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS) att=att*.8;
@@ -112,7 +112,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if((mob.envStats().disposition()&EnvStats.IS_SLEEPING)==0)
 		{
 			if((mob.envStats().disposition()&EnvStats.IS_SITTING)==0) 
-				arm = (dex * dexR * ((dex+dexR)/2.0));
+				arm = (dex * dexR * dexR);
 			else
 				arm = (dex * dexR);
 		}
@@ -333,6 +333,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if((weapon instanceof Ability)&&(damage>0)&&(attacker != target) && (attacker != null))
 		{
 			int levelDiff = attacker.envStats().level() - target.envStats().level();
+			if(levelDiff > 10) levelDiff = 10;
 			double critPct = CMath.div(attacker.charStats().getStat(CharStats.STAT_INTELLIGENCE)- 10 + levelDiff,2.5);
 			double critPctR = CMath.div(attacker.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)- 10 + levelDiff,2.5);
 			if((critPct>0)&&(critPctR>0))
@@ -381,6 +382,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		else
 			damageAmount = (double)(mob.envStats().damage()+(mob.charStats().getStat(CharStats.STAT_STRENGTH) / 3)-2);
 		int levelDiff = mob.envStats().level() - target.envStats().level();
+		if(levelDiff > 25) levelDiff = 25;
 		double critPct = CMath.div(mob.charStats().getStat(CharStats.STAT_DEXTERITY)- 10 + levelDiff,2.5);
 		double critPctR = CMath.div(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)- 10 + levelDiff,2.5);
 		if((critPct>0)&&(critPctR>0))
