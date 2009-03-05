@@ -1362,6 +1362,8 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			if((inData==null)||(inData.size()==0)||(!(inData.elementAt(0) instanceof String)))
 				return "[400 -- no request received]";
 			String inLine=(String)inData.elementAt(0);
+			if(CMSecurity.isDebugging("HTTPACCESS"))
+				Log.debugOut("HTTP", inLine);
 			if((inLine.startsWith("GET")||inLine.startsWith("HEAD")||inLine.equalsIgnoreCase("MUD")))
 				return inLine;
 			else
