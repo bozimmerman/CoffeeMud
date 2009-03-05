@@ -75,12 +75,12 @@ public class SpecialistMage extends Mage
 	public String otherBonuses()
 	{
 		String chosen=CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[domain()>>5].replace('_',' '));
-		return "At 5th level, receives 2%/lvl bonus damage from "+chosen+".  At 10th level, receives double duration on your "+chosen+" magic, and half duration from malicious "+chosen+" magic.";
+		return "At 5th level, receives bonus damage from "+chosen+" as levels advance.  At 10th level, receives double duration on your "+chosen+" magic, and half duration from malicious "+chosen+" magic.";
 	}
 	public String otherLimitations()
 	{
 		String opposed=CMStrings.capitalizeAndLower(Ability.DOMAIN_DESCS[opposed()>>5].replace('_',' '));
-		return "Unable to cast "+opposed+" spells.  Receives 2%/lvl penalty damage from "+opposed+".  Receives double duration from malicious "+opposed+" magic, half duration on other "+opposed+" effects.";
+		return "Unable to cast "+opposed+" spells.  Receives penalty damage from "+opposed+" as levels advance.  Receives double duration from malicious "+opposed+" magic, half duration on other "+opposed+" effects.";
 	}
 
 	public boolean okMessage(Environmental myHost, CMMsg msg)
@@ -110,7 +110,7 @@ public class SpecialistMage extends Mage
 			{
                 int classLevel=myChar.charStats().getClassLevel(this);
                 if(classLevel>30) classLevel=30;
-                msg.setValue((int)Math.round(CMath.mul(msg.value(),1.0+CMath.mul(0.02,classLevel))));
+                msg.setValue((int)Math.round(CMath.mul(msg.value(),1.0+CMath.mul(0.01,classLevel))));
 			}
 		}
 		else
@@ -123,10 +123,10 @@ public class SpecialistMage extends Mage
             if(classLevel>30) classLevel=30;
 			if((domain==domain())
 			&&(classLevel>=5))
-				msg.setValue((int)Math.round(CMath.div((msg.value()),1.0+CMath.mul(0.02,classLevel))));
+				msg.setValue((int)Math.round(CMath.div((msg.value()),1.0+CMath.mul(0.01,classLevel))));
 			else
 			if(domain==opposed())
-				msg.setValue((int)Math.round(CMath.mul((msg.value()),1.0+CMath.mul(0.02,classLevel))));
+				msg.setValue((int)Math.round(CMath.mul((msg.value()),1.0+CMath.mul(0.01,classLevel))));
 		}
 
 		return super.okMessage(myChar,msg);
