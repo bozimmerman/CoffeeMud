@@ -897,6 +897,8 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("worlditemfixer"))
 		{
+			//TODO: level up to mob holding the item
+			//TODO: add ignore rooms for parameters.
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
 			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
