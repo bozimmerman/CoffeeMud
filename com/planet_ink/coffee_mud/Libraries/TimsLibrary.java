@@ -216,11 +216,36 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return RET;
 	}
 
-	public boolean itemFix(Item I)
+	public boolean itemFix(Item I, int lvlOr0)
 	{
+		if((I instanceof SpellHolder)
+		||((I instanceof Wand)&&(lvlOr0<=0)))
+		{
+			Vector spells=new Vector();
+			if(I instanceof SpellHolder)
+				spells=((SpellHolder)I).getSpells();
+			else
+			if(I instanceof Wand)
+				spells.add(((Wand)I).getSpell());
+			if(spells.size()==0) return false;
+			int levels=0;
+			for(Enumeration<Ability> e=spells.elements();e.hasMoreElements();)
+				levels+=CMLib.ableMapper().lowestQualifyingLevel(e.nextElement().ID());
+			int level=(int)Math.round(CMath.div(levels, spells.size()));
+			if(level==I.baseEnvStats().level()) return false;
+			I.baseEnvStats().setLevel(level);
+			I.envStats().setLevel(level);
+			if(CMLib.flags().isCataloged(I))
+				CMLib.catalog().updateCatalog(I);
+			return true;
+		}
+		else
 		if((I instanceof Weapon)||(I instanceof Armor))
 		{
-			int lvl=I.baseEnvStats().level();
+			int lvl=lvlOr0;
+			if(lvl <=0) lvl=I.baseEnvStats().level();
+			I.baseEnvStats().setLevel(lvl);
+			I.envStats().setLevel(lvl);
 			Ability[] RET=getTimsAdjResCast(I,new int[1]);
 			Ability ADJ=RET[0];
 			Ability RES=RET[1];
@@ -236,75 +261,86 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				I.baseEnvStats().setLevel(lvl);
 				I.recoverEnvStats();
 				fixRejuvItem(I);
+				if(CMLib.flags().isCataloged(I))
+					CMLib.catalog().updateCatalog(I);
 				return true;
 			}
-			if(TLVL<=0) return fixRejuvItem(I);
-			if(TLVL<=(lvl+25)) return fixRejuvItem(I);
-			int FTLVL=TLVL;
-			Vector illegalNums=new Vector();
-			Log.sysOut("Reset",I.name()+"("+I.baseEnvStats().level()+") "+TLVL+", "+I.baseEnvStats().armor()+"/"+I.baseEnvStats().attackAdjustment()+"/"+I.baseEnvStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
-			while((TLVL>(lvl+15))&&(illegalNums.size()<4))
+			if((TLVL>0)&&(TLVL>(lvl+25)))
 			{
-				int highIndex=-1;
-				for(int i=0;i<LVLS.length;i++)
-					if(((highIndex<0)||(LVLS[i]>LVLS[highIndex]))
-					&&(!illegalNums.contains(new Integer(i))))
-						highIndex=i;
-				if(highIndex<0) break;
-				switch(highIndex)
+				int FTLVL=TLVL;
+				Vector illegalNums=new Vector();
+				Log.sysOut("Reset",I.name()+"("+I.baseEnvStats().level()+") "+TLVL+", "+I.baseEnvStats().armor()+"/"+I.baseEnvStats().attackAdjustment()+"/"+I.baseEnvStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
+				while((TLVL>(lvl+15))&&(illegalNums.size()<4))
 				{
-				case 0:
-					if(I instanceof Weapon)
+					int highIndex=-1;
+					for(int i=0;i<LVLS.length;i++)
+						if(((highIndex<0)||(LVLS[i]>LVLS[highIndex]))
+						&&(!illegalNums.contains(new Integer(i))))
+							highIndex=i;
+					if(highIndex<0) break;
+					switch(highIndex)
 					{
-						String s=(ADJ!=null)?ADJ.text():"";
-						int oldAtt=I.baseEnvStats().attackAdjustment();
-						int oldDam=I.baseEnvStats().damage();
-						toneDownWeapon((Weapon)I,ADJ);
-						if((I.baseEnvStats().attackAdjustment()==oldAtt)
-						&&(I.baseEnvStats().damage()==oldDam)
-						&&((ADJ==null)||(ADJ.text().equals(s))))
-							illegalNums.addElement(new Integer(0));
-					}
-					else
-					{
-						String s=(ADJ!=null)?ADJ.text():"";
-						int oldArm=I.baseEnvStats().armor();
-						toneDownArmor((Armor)I,ADJ);
-						if((I.baseEnvStats().armor()==oldArm)
-						&&((ADJ==null)||(ADJ.text().equals(s))))
-							illegalNums.addElement(new Integer(0));
-					}
-					break;
-				case 1:
-					if(I.baseEnvStats().ability()>0)
-						I.baseEnvStats().setAbility(I.baseEnvStats().ability()-1);
-					else
-						illegalNums.addElement(new Integer(1));
-					break;
-				case 2:
-					illegalNums.addElement(new Integer(2));
-					// nothing I can do!;
-					break;
-				case 3:
-					if(ADJ==null)
-						illegalNums.addElement(new Integer(3));
-					else
-					{
-						String oldTxt=ADJ.text();
-						toneDownAdjuster(I,ADJ);
-						if(ADJ.text().equals(oldTxt))
+					case 0:
+						if(I instanceof Weapon)
+						{
+							String s=(ADJ!=null)?ADJ.text():"";
+							int oldAtt=I.baseEnvStats().attackAdjustment();
+							int oldDam=I.baseEnvStats().damage();
+							toneDownWeapon((Weapon)I,ADJ);
+							if((I.baseEnvStats().attackAdjustment()==oldAtt)
+							&&(I.baseEnvStats().damage()==oldDam)
+							&&((ADJ==null)||(ADJ.text().equals(s))))
+								illegalNums.addElement(new Integer(0));
+						}
+						else
+						{
+							String s=(ADJ!=null)?ADJ.text():"";
+							int oldArm=I.baseEnvStats().armor();
+							toneDownArmor((Armor)I,ADJ);
+							if((I.baseEnvStats().armor()==oldArm)
+							&&((ADJ==null)||(ADJ.text().equals(s))))
+								illegalNums.addElement(new Integer(0));
+						}
+						break;
+					case 1:
+						if(I.baseEnvStats().ability()>0)
+							I.baseEnvStats().setAbility(I.baseEnvStats().ability()-1);
+						else
+							illegalNums.addElement(new Integer(1));
+						break;
+					case 2:
+						illegalNums.addElement(new Integer(2));
+						// nothing I can do!;
+						break;
+					case 3:
+						if(ADJ==null)
 							illegalNums.addElement(new Integer(3));
+						else
+						{
+							String oldTxt=ADJ.text();
+							toneDownAdjuster(I,ADJ);
+							if(ADJ.text().equals(oldTxt))
+								illegalNums.addElement(new Integer(3));
+						}
+						break;
 					}
-					break;
+					LVLS=getItemLevels(I,ADJ,RES,CAST);
+					TLVL=totalLevels(LVLS);
 				}
-				LVLS=getItemLevels(I,ADJ,RES,CAST);
-				TLVL=totalLevels(LVLS);
+				Log.sysOut("Reset",I.name()+"("+I.baseEnvStats().level()+") "+FTLVL+"->"+TLVL+", "+I.baseEnvStats().armor()+"/"+I.baseEnvStats().attackAdjustment()+"/"+I.baseEnvStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
+				fixRejuvItem(I);
+				if(CMLib.flags().isCataloged(I))
+					CMLib.catalog().updateCatalog(I);
+				return true;
 			}
-			Log.sysOut("Reset",I.name()+"("+I.baseEnvStats().level()+") "+FTLVL+"->"+TLVL+", "+I.baseEnvStats().armor()+"/"+I.baseEnvStats().attackAdjustment()+"/"+I.baseEnvStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
-			fixRejuvItem(I);
+		}
+		if(fixRejuvItem(I))
+		{
+			if(CMLib.flags().isCataloged(I))
+				CMLib.catalog().updateCatalog(I);
 			return true;
 		}
-		return fixRejuvItem(I);
+		return false;
 	}
 
     public boolean toneDownValue(Item I)

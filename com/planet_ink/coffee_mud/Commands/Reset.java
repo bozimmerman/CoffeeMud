@@ -895,19 +895,28 @@ public class Reset extends StdCommand
 			mob.session().println("done!");
 		}
 		else
-		if(s.equalsIgnoreCase("worldvaluefixer"))
+		if(s.equalsIgnoreCase("worlditemfixer"))
 		{
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
 			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
+				boolean skip=false;
+				for(int i=1;i<commands.size();i++)
+					if(((String)commands.elementAt(i)).equalsIgnoreCase(A.Name())||rest.equalsIgnoreCase(A.Name()))
+						skip=true;
+				if(skip) continue;
 				A.setAreaState(Area.STATE_FROZEN);
 				for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
 				{
 					Room R=(Room)r.nextElement();
 					if(R.roomID().length()>0)
 					{
+						for(int i=1;i<commands.size();i++)
+							if(((String)commands.elementAt(i)).equalsIgnoreCase(R.roomID())||rest.equalsIgnoreCase(R.roomID()))
+								skip=true;
+						if(skip) continue;
 				    	synchronized(("SYNC"+R.roomID()).intern())
 				    	{
 				    		R=CMLib.map().getRoom(R);
@@ -917,7 +926,7 @@ public class Reset extends StdCommand
 							for(int i=0;i<R.numItems();i++)
 							{
 								Item I=R.fetchItem(i);
-								if(CMLib.itemBuilder().itemFix(I))
+								if(CMLib.itemBuilder().itemFix(I,-1))
 									changedItems=true;
 							}
 							for(int m=0;m<R.numInhabitants();m++)
@@ -928,7 +937,11 @@ public class Reset extends StdCommand
 								for(int i=0;i<M.inventorySize();i++)
 								{
 									Item I=M.fetchInventory(i);
-									if(CMLib.itemBuilder().itemFix(I))
+									int lvl=-1;
+									if((I.baseEnvStats().level()>M.baseEnvStats().level())
+									||((I.baseEnvStats().level()>91)&&((I.baseEnvStats().level() + (I.baseEnvStats().level()/10))<M.baseEnvStats().level())))
+										lvl=M.baseEnvStats().level();
+									if(CMLib.itemBuilder().itemFix(I,lvl))
 										changedMOBS=true;
 								}
 								ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
@@ -942,7 +955,7 @@ public class Reset extends StdCommand
 										{
 											Item I=(Item)E;
 											boolean didSomething=false;
-											didSomething=CMLib.itemBuilder().itemFix(I);
+											didSomething=CMLib.itemBuilder().itemFix(I,-1);
 											changedMOBS=changedMOBS||didSomething;
 											if(didSomething)
 											{
@@ -967,79 +980,6 @@ public class Reset extends StdCommand
 			}
 			mob.session().println("done!");
 		}
-        else
-        if(s.equalsIgnoreCase("worldvaluefixer"))
-        {
-            if(mob.session()==null) return false;
-            mob.session().print("working...");
-            for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
-            {
-                Area A=(Area)a.nextElement();
-                A.setAreaState(Area.STATE_FROZEN);
-                for(Enumeration r=A.getCompleteMap();r.hasMoreElements();)
-                {
-                    Room R=(Room)r.nextElement();
-                    if(R.roomID().length()>0)
-                    {
-                        synchronized(("SYNC"+R.roomID()).intern())
-                        {
-                            R=CMLib.map().getRoom(R);
-                            CMLib.map().resetRoom(R);
-                            boolean changedMOBS=false;
-                            boolean changedItems=false;
-                            for(int i=0;i<R.numItems();i++)
-                            {
-                                Item I=R.fetchItem(i);
-                                if(CMLib.itemBuilder().toneDownValue(I))
-                                    changedItems=true;
-                            }
-                            for(int m=0;m<R.numInhabitants();m++)
-                            {
-                                MOB M=R.fetchInhabitant(m);
-                                if(M==mob) continue;
-                                if(!M.savable()) continue;
-                                for(int i=0;i<M.inventorySize();i++)
-                                {
-                                    Item I=M.fetchInventory(i);
-                                    if(CMLib.itemBuilder().toneDownValue(I))
-                                        changedMOBS=true;
-                                }
-                                ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
-                                if(SK!=null)
-                                {
-                                    Vector V=SK.getShop().getStoreInventory();
-                                    for(int i=V.size()-1;i>=0;i--)
-                                    {
-                                        Environmental E=(Environmental)V.elementAt(i);
-                                        if(E instanceof Item)
-                                        {
-                                            Item I=(Item)E;
-                                            boolean didSomething=false;
-                                            didSomething=CMLib.itemBuilder().toneDownValue(I);
-                                            changedMOBS=changedMOBS||didSomething;
-                                            if(didSomething)
-                                            {
-                                                int numInStock=SK.getShop().numberInStock(I);
-                                                int stockPrice=SK.getShop().stockPrice(I);
-                                                SK.getShop().delAllStoreInventory(I);
-                                                SK.getShop().addStoreInventory(I,numInStock,stockPrice);
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                            if(changedItems)
-                                CMLib.database().DBUpdateItems(R);
-                            if(changedMOBS)
-                                CMLib.database().DBUpdateMOBs(R);
-                            mob.session().print(".");
-                        }
-                    }
-                }
-                if(A.getAreaState()>Area.STATE_ACTIVE) A.setAreaState(Area.STATE_ACTIVE);
-            }
-            mob.session().println("done!");
-        }
         else
 		if(s.startsWith("clantick"))
 			CMLib.clans().tickAllClans();

@@ -45,7 +45,7 @@ public interface ItemBalanceLibrary extends CMLibrary
 	public void balanceItemByLevel(Item I);
 	public int levelsFromCaster(Item savedI, Ability CAST);
 	public int levelsFromAdjuster(Item savedI, Ability ADJ);
-	public boolean itemFix(Item I);
+	public boolean itemFix(Item I, int lvlOr0);
 	public Ability[] getTimsAdjResCast(Item I, int[] castMul);
 	public Item enchant(Item I, int pct);
     public int levelsFromAbility(Item savedI);
