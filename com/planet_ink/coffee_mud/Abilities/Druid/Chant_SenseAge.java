@@ -68,7 +68,7 @@ public class Chant_SenseAge extends Chant
 					success=false;
 				}
 				else
-				if((A==null)||(A.displayText().length()==0))
+				if((target instanceof MOB)&&((A==null)||(A.displayText().length()==0)))
 				{
 					MOB M=(MOB)target;
 					if(M.baseCharStats().getStat(CharStats.STAT_AGE)<=0)
