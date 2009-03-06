@@ -381,7 +381,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			damageAmount = (double)(weapon.envStats().damage()+1);
 		else
 			damageAmount = (double)(mob.envStats().damage()+(mob.charStats().getStat(CharStats.STAT_STRENGTH) / 3)-2);
-		int levelDiff = mob.envStats().level() - target.envStats().level();
+		int levelDiff = mob.envStats().level() - ((target==null)?0:target.envStats().level());
 		if(levelDiff > 25) levelDiff = 25;
 		double critPct = CMath.div(mob.charStats().getStat(CharStats.STAT_DEXTERITY)- 10 + levelDiff,2.5);
 		double critPctR = CMath.div(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)- 10 + levelDiff,2.5);
