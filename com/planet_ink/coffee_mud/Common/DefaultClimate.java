@@ -243,6 +243,11 @@ public class DefaultClimate implements Climate
 
 	public void weatherTick(Area A)
 	{
+		if(CMSecurity.isDisabled("WEATHER"))
+		{
+			currentWeather = Climate.WEATHER_CLEAR;
+			return;
+		}
 		if((--weatherTicker)<=0)
 		{
 			// create a seasonal CHANCE graph
@@ -321,8 +326,11 @@ public class DefaultClimate implements Climate
 
 			// remember your olde weather
 			int oldWeather=currentWeather;
-			currentWeather=nextWeather;
-			nextWeather=possibleNextWeather;
+			if(!CMSecurity.isDisabled("WEATHERCHANGES"))
+			{
+				currentWeather=nextWeather;
+				nextWeather=possibleNextWeather;
+			}
 			if(oldWeather!=currentWeather)
 			{
 				switch(CMLib.dice().rollPercentage())
@@ -363,7 +371,7 @@ public class DefaultClimate implements Climate
 				}
 			}
 
-			if(say!=null)
+			if((say!=null)&&!CMSecurity.isDisabled("WEATHERNOTIFIES"))
 			{
 				for(Enumeration r=A.getProperMap();r.hasMoreElements();)
 				{
