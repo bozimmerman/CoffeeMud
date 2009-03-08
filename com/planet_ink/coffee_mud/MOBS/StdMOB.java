@@ -3335,18 +3335,36 @@ public class StdMOB implements MOB
 		return null;
 	}
 
-
+	private void clearExpertiseCache()
+	{
+		Ability A=null;
+		for(int a=0;a<numAbilities();a++)
+		{
+			A=fetchAbility(a);
+			if(A!=null) A.clearExpertiseCache();
+		}
+		for(int a=0;a<numEffects();a++)
+		{
+			A=fetchEffect(a);
+			if(A!=null) A.clearExpertiseCache();
+		}
+	}
+	
 	/** Manipulation of the expertise list */
 	public void addExpertise(String of)
 	{
 		if(expertises==null) expertises=new Vector();
-		if(fetchExpertise(of)==null) expertises.addElement(of);
+		if(fetchExpertise(of)==null) {
+			expertises.addElement(of);
+			clearExpertiseCache();
+		}
 	}
 	public void delExpertise(String of)
 	{
 		of=fetchExpertise(of);
 		if(of!=null){
 		    expertises.removeElement(of);
+			clearExpertiseCache();
 		}
 	}
 	public int numExpertises(){return (expertises==null)?0:expertises.size();}
