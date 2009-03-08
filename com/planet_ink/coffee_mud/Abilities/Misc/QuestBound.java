@@ -76,6 +76,7 @@ public class QuestBound implements Ability
 	public boolean isAutoInvoked(){return true;}
 	public boolean isNowAnAutoEffect(){return true;}
 	public Vector externalFiles(){return null;}
+    public void clearExpertiseCache(){}
 
 	public boolean canBeTaughtBy(MOB teacher, MOB student){return false;}
 	public boolean canBePracticedBy(MOB teacher, MOB student){return false;}

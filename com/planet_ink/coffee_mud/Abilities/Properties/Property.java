@@ -249,6 +249,7 @@ public class Property implements Ability
 	public void makeNonUninvokable(){}
 	private static final int[] cost=new int[3];
 	public int[] usageCost(MOB mob,boolean ignoreCostOverride){return cost;}
+    public void clearExpertiseCache(){}
 
 
 	public void addEffect(Ability to){}

@@ -238,6 +238,7 @@ public class WaterCurrents extends ActiveTicker
         protected void finalize(){ CMClass.unbumpCounter(this,CMClass.OBJECT_ABILITY); }
     	public long expirationDate(){return 0;}
     	public void setExpirationDate(long time){}
+        public void clearExpertiseCache(){}
 
 		public void setName(String newName){}
 		public void setDescription(String newDescription){}

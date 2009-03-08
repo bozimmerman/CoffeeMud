@@ -140,6 +140,12 @@ public class StdAbility implements Ability
     	expertise=null;
     	return 0;
     }
+    
+    public synchronized void clearExpertiseCache()
+    {
+    	expertise=null;
+    }
+    
     protected int getX1Level(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_X1);}
     protected int getX2Level(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_X2);}
     protected int getX3Level(MOB mob){return expertise(mob,ExpertiseLibrary.XFLAG_X3);}

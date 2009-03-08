@@ -556,6 +556,13 @@ public interface Ability extends Environmental
 	public void setProficiency(int newProficiency);
 	
 	/**
+	 * Due to the expense of expertise calculation, it is generally done only once
+	 * per skill.  However, whenever new expertises are added, they need to be 
+	 * recalculated.  This method is called to recalculate expertises.
+	 */
+	public void clearExpertiseCache();
+	
+	/**
 	 * Returns whether the given mob passes their proficiency check in this skill
 	 * at this time.  Will accept a numeric adjustment, positive or negative, to
 	 * their base proficiency.  Will also accept an auto parameter, which forces
