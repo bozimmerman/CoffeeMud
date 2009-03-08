@@ -463,9 +463,8 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
     
     public int getWornCode(String name)
     {
-        int wornNum=0;
         name=name.toLowerCase().trim();
-        for(;wornNum<Item.WORN_DESCS.length-1;wornNum++)
+        for(int wornNum=0;wornNum<Item.WORN_DESCS.length;wornNum++)
             if(Item.WORN_DESCS[wornNum].endsWith(name))
                 return wornNum;
         return -1;
