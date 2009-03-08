@@ -141,11 +141,12 @@ public class CommonSkill extends StdAbility
 	protected int getDuration(int baseTicks, MOB mob, int itemLevel, int minDuration)
 	{
 		int ticks=baseTicks;
-		int level=mob.envStats().level();
-		level+=(2*getXTIMELevel(mob));
-		level-=itemLevel;
+		int level=mob.envStats().level() - itemLevel;
 		double pct=CMath.div(level,CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL))*.5;
 		ticks-=(int)Math.round(CMath.mul(ticks, pct));
+		
+		double quickPct = getXTIMELevel(mob) * 0.05; 
+		ticks-=(int)Math.round(CMath.mul(ticks, quickPct));
 		if(ticks<minDuration) ticks=minDuration;
 		return ticks;
 	}

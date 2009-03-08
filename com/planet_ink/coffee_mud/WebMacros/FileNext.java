@@ -55,10 +55,9 @@ public class FileNext extends StdWebMacro
 		if((directory.canRead())&&(directory.isDirectory()))
 		{
             httpReq.addRequestParameters("PATH",directory.getVFSPathAndName());
-			String[] list=directory.list();
-			for(int l=0;l<list.length;l++)
-				if(list[l].trim().length()>0)
-					fileList.addElement(list[l]);
+            CMFile[] dirs=CMFile.getFileList(path,"",M,false,true);
+            for(int d=0;d<dirs.length;d++)
+				fileList.addElement(dirs[d].getName());
 			
 		}
 		String lastID="";
