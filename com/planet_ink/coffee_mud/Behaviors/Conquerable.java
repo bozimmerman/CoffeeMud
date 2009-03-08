@@ -174,6 +174,12 @@ public class Conquerable extends Arrest
         noMultiFollows=new Vector();
 	}
 
+	public void startBehavior(Environmental E)
+	{
+		super.startBehavior(E);
+		CMLib.map().addGlobalHandler(this, CMMsg.TYP_CLANEVENT);
+	}
+	
 	public boolean isAnyKindOfOfficer(Law laws, MOB M)
 	{
 		if((M!=null)
@@ -222,6 +228,7 @@ public class Conquerable extends Arrest
 		if((!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED))
 		||(CMSecurity.isDisabled("CONQUEST")))
 			return;
+		Clan C=CMLib.clans().getClan(holdingClan);
         String worship=getManadatoryWorshipID();
         prevHoldingClan=holdingClan;
 		for(int v=0;v<clanItems.size();v++)
@@ -284,18 +291,27 @@ public class Conquerable extends Arrest
 				laws.resetLaw();
 				CMLib.database().DBReCreateData(myArea.Name(),"ARREST",myArea.Name()+"/ARREST",laws.rawLawString());
 			}
-
 		}
-		holdingClan="";
-        conquestDate=0;
         synchronized(clanItems)
         {
             try{
-            for(int c=clanItems.size();c>=0;c--)
-                if(((ClanItem)clanItems.elementAt(c)).ciType()!=ClanItem.CI_FLAG)
-                    deRegisterClanItem((ClanItem)clanItems.elementAt(c));
+	            for(int c=clanItems.size()-1;c>=0;c--)
+	            {
+	            	if((C==null)&&(((ClanItem)clanItems.elementAt(c)).clanID().equalsIgnoreCase(holdingClan)))
+	            	{
+	            		((ClanItem)clanItems.elementAt(c)).destroy();
+	            		clanItems.removeElementAt(c);
+	            	}
+	            	else
+	                if(((ClanItem)clanItems.elementAt(c)).ciType()!=ClanItem.CI_FLAG)
+	                    deRegisterClanItem((ClanItem)clanItems.elementAt(c));
+	            }
             }catch(ArrayIndexOutOfBoundsException x){}
+            if((C==null)&&(clanItems.size()==0)&&(myArea!=null))
+				CMLib.database().DBDeleteData(myArea.name(),"CONQITEMS","CONQITEMS/"+myArea.name());
         }
+		holdingClan="";
+        conquestDate=0;
 	}
 
     public int calcItemControlPoints(Area A)
@@ -794,7 +810,7 @@ public class Conquerable extends Arrest
 		Clan C=CMLib.clans().findClan(clanID);
 		if(C==null) return;
 
-        MOB mob=CMLib.map().god(null);
+        MOB mob=CMLib.map().mobCreated();
         mob.setName(clanID);
         if(myArea!=null)
             for(Enumeration e=myArea.getMetroMap();e.hasMoreElements();)
@@ -803,7 +819,7 @@ public class Conquerable extends Arrest
                     Log.errOut("Conquest","Conquest was stopped in "+myArea.name()+" for "+clanID+".");
                     return;
                 }
-        
+        mob.destroy();
         if(CMSecurity.isDebugging("CONQUEST")) 
             Log.debugOut("Conquest","The inhabitants of "+myArea.name()+" are conquered by "+clanID+", vanquishing '"+holdingClan+"'.");
 		if(holdingClan.length()>0)
@@ -887,6 +903,28 @@ public class Conquerable extends Arrest
 					Room R=CMLib.map().roomLocation(I);
 					if((R!=null)&&((A==null)||(A.inMyMetroArea(R.getArea()))))
 						return true;
+				}
+			}
+		}
+		if((holdingClan.length()>0)&&(holdingClan.equalsIgnoreCase(clanID))&&(myArea!=null))
+		{
+			// make a desperation check if we are talking about the holding clan.
+			Room R=null;
+			Item I=null;
+			for(Enumeration e=myArea.getCompleteMap();e.hasMoreElements();)
+			{
+				R=(Room)e.nextElement();
+				for(int i=0;i<R.numItems();i++)
+				{
+					I=R.fetchItem(i);
+					if((I instanceof ClanItem)
+					&&(((ClanItem)I).ciType()==ClanItem.CI_FLAG)
+					&&(((ClanItem)I).clanID().equals(clanID))
+					&&(!I.amDestroyed()))
+					{
+						registerClanItem(I);
+						return true;
+					}
 				}
 			}
 		}
@@ -1003,6 +1041,16 @@ public class Conquerable extends Arrest
 		super.executeMsg(myHost,msg);
         
         boolean debugging=CMSecurity.isDebugging("CONQUEST");
+        if((msg.sourceMinor()==CMMsg.TYP_CLANEVENT)
+        &&(msg.sourceMessage().startsWith("-")))
+        {
+        	if((holdingClan!=null)&&(holdingClan.equalsIgnoreCase(msg.sourceMessage().substring(1))))
+        	{
+                if(debugging) Log.debugOut("Conquest",holdingClan+" no longer exists.");
+        		endClanRule();
+        	}
+        }
+        else
 		if((myHost instanceof Area)
 		&&(CMProps.getBoolVar(CMProps.SYSTEMB_MUDSTARTED)
 		&&(!CMSecurity.isDisabled("CONQUEST")))

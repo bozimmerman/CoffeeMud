@@ -15,6 +15,7 @@ import com.planet_ink.coffee_mud.MOBS.interfaces.*;
 import com.planet_ink.coffee_mud.Races.interfaces.*;
 
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.*;
 /*
    Copyright 2000-2009 Bo Zimmerman
@@ -43,10 +44,11 @@ public class CMMap extends StdLibrary implements WorldMap
     public Vector bankList=new Vector();
 	public final int QUADRANT_WIDTH=10;
 	public Vector space=new Vector();
-    public Hashtable globalHandlers=new Hashtable();
+    public Hashtable<Integer,Vector<WeakReference>> globalHandlers=new Hashtable<Integer,Vector<WeakReference>>();
     public Vector sortedAreas=null;
     private ThreadEngine.SupportThread thread=null;
     public long lastVReset=0;
+    public static MOB deityStandIn=null;
 
     public ThreadEngine.SupportThread getSupportThread() { return thread;}
     
@@ -167,30 +169,59 @@ public class CMMap extends StdLibrary implements WorldMap
 
     public void addGlobalHandler(MsgListener E, int category)
     {
-        Vector V=(Vector)globalHandlers.get(new Integer(category));
+    	if(E==null) return;
+        Vector<WeakReference> V=globalHandlers.get(Integer.valueOf(category));
         if(V==null)
         {
-            V=new Vector();
+            V=new Vector<WeakReference>();
             globalHandlers.put(new Integer(category),V);
         }
         synchronized(V)
         {
-	        if(!V.contains(E))
-	            V.add(E);
+        	for(Enumeration<WeakReference> e=V.elements();e.hasMoreElements();e.nextElement())
+        		if(e.nextElement().get()==E)
+        			return;
+            V.add(new WeakReference(E));
         }
     }
 
     public void delGlobalHandler(MsgListener E, int category)
     {
-        Vector V=(Vector)globalHandlers.get(new Integer(category));
-        if(V==null) return;
+        Vector<WeakReference> V=globalHandlers.get(new Integer(category));
+        if((E==null)||(V==null)) return;
         synchronized(V)
         {
-	        V.removeElement(E);
+        	WeakReference foundW=null;
+        	for(Enumeration<WeakReference> e=V.elements();e.hasMoreElements();e.nextElement())
+        	{
+            	WeakReference W=e.nextElement();
+        		if(W.get()==E)
+        			foundW=W;
+        	}
+        	if(foundW != null)
+	        	V.remove(foundW);
         }
     }
 
-    public MOB god(Room R){
+    public MOB deity() {
+    	if(deities().hasMoreElements())
+    		return (MOB)deities().nextElement();
+    	if((deityStandIn==null)
+    	||(deityStandIn.amDestroyed())
+    	||(deityStandIn.amDead())
+    	||(deityStandIn.location()==null)
+    	||(deityStandIn.location().isInhabitant(deityStandIn)))
+    	{
+    		if(deityStandIn!=null) deityStandIn.destroy();
+            MOB everywhereMOB=CMClass.getMOB("StdMOB");
+            everywhereMOB.setName("god");
+            everywhereMOB.setLocation(this.getRandomRoom());
+            deityStandIn=everywhereMOB;
+    	}
+    	return deityStandIn;
+    }
+    public MOB mobCreated() { return mobCreated(this.getRandomRoom());};
+    public MOB mobCreated(Room R){
         MOB everywhereMOB=CMClass.getMOB("StdMOB");
         everywhereMOB.setName("somebody");
         everywhereMOB.setLocation(R);
@@ -286,17 +317,21 @@ public class CMMap extends StdLibrary implements WorldMap
 
     public boolean sendGlobalMessage(MOB host, int category, CMMsg msg)
     {
-        Vector V=(Vector)globalHandlers.get(new Integer(category));
+        Vector<WeakReference> V=globalHandlers.get(new Integer(category));
         if(V==null) return true;
         synchronized(V)
         {
 	        try{
+	        	Object O=null;
 	            Environmental E=null;
+	            WeakReference W=null;
 	            for(int v=V.size()-1;v>=0;v--)
 	            {
-	            	if(V.elementAt(v) instanceof Environmental)
+	            	W=V.elementAt(v);
+	            	O=W.get();
+	            	if(O instanceof Environmental)
 	            	{
-		                E=(Environmental)V.elementAt(v);
+		                E=(Environmental)O;
 		                if(!CMLib.flags().isInTheGame(E,true))
 		                {
 		                    if(!CMLib.flags().isInTheGame(E,false))
@@ -307,15 +342,22 @@ public class CMMap extends StdLibrary implements WorldMap
 		                    return false;
 	            	}
 	            	else
-	            	if(V.elementAt(v) instanceof MsgListener)
+	            	if(O instanceof MsgListener)
 	            	{
-	            		if(!((MsgListener)V.elementAt(v)).okMessage(host, msg))
+	            		if(!((MsgListener)O).okMessage(host, msg))
 	            			return false;
 	            	}
+	            	else
+	            	if(O==null)
+	            		V.removeElementAt(v);
 	            }
 	            for(int v=V.size()-1;v>=0;v--)
-	            	if(V.elementAt(v) instanceof MsgListener)
-		                ((MsgListener)V.elementAt(v)).executeMsg(host,msg);
+	            {
+	            	W=V.elementAt(v);
+	            	O=W.get();
+	            	if(O instanceof MsgListener)
+		                ((MsgListener)O).executeMsg(host,msg);
+	            }
 	        }
 	        catch(java.lang.ArrayIndexOutOfBoundsException xx){}
 	        catch(Exception x){Log.errOut("CMMap",x);}
@@ -1579,6 +1621,7 @@ public class CMMap extends StdLibrary implements WorldMap
         thread.status("expiration sweep");
         long currentTime=System.currentTimeMillis();
         boolean debug=CMSecurity.isDebugging("VACUUM");
+        MOB expireM=mobCreated(null);
         try
         {
             Vector stuffToGo=new Vector();
@@ -1586,7 +1629,6 @@ public class CMMap extends StdLibrary implements WorldMap
             MOB M=null;
             Room R=null;
             Vector roomsToGo=new Vector();
-            MOB expireM=god(null);
             CMMsg expireMsg=CMClass.getMsg(expireM,R,null,CMMsg.MSG_EXPIRE,null);
             boolean vResetTime=false;
             if((System.currentTimeMillis()-lastVReset)>(12 * 60 * 60 * 1000))
@@ -1723,5 +1765,9 @@ public class CMMap extends StdLibrary implements WorldMap
             }
         }
         catch(java.util.NoSuchElementException e){}
+        finally {
+        	if(expireM!=null)
+        		expireM.destroy();
+        }
     }
 }

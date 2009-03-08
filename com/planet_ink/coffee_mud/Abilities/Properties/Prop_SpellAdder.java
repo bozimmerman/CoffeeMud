@@ -47,6 +47,16 @@ public class Prop_SpellAdder extends Property
     protected Vector compiledMask=null;
     protected Vector unrevocableSpells = null;
     
+    public void finalize()
+    {
+    	super.finalize();
+    	spellV=null;
+    	compiledMask=null;
+    	unrevocableSpells=null;
+    	if((invokerMOB!=null)&&(invokerMOB.Name().equals("invoker")))
+    		invokerMOB.destroy();
+    }
+    
     public String getMaskString(String newText)
     {
         int maskindex=newText.toUpperCase().indexOf("MASK=");
@@ -174,12 +184,12 @@ public class Prop_SpellAdder extends Property
 	        Room R=CMLib.map().roomLocation(target);
 	        if(R==null) R=CMLib.map().roomLocation(target);
 	        if(R==null) R=CMLib.map().getRandomRoom();
-	        mob=CMLib.map().god(R);
+	        mob=CMLib.map().mobCreated(R);
+	        mob.setName("invoker");
 		}
 		invokerMOB=mob;
 		return invokerMOB;
 	}
-
 
     public Vector convertToV2(Vector spellsV, Environmental target)
     {

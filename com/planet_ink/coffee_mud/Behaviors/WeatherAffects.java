@@ -230,7 +230,7 @@ public class WeatherAffects extends PuddleMaker
                     Ability A2=CMClass.getAbility("Spell_IceSheet");
                     if(A2!=null)
                     {
-                        MOB mob=CMLib.map().god(R);
+                        MOB mob=CMLib.map().mobCreated(R);
                         A2.invoke(mob,R,true,0);
                         mob.destroy();
                     }
@@ -246,7 +246,7 @@ public class WeatherAffects extends PuddleMaker
                     Ability A2=CMClass.getAbility("Spell_IceSheet");
                     if(A2!=null)
                     {
-                        MOB mob=CMLib.map().god(R);
+                        MOB mob=CMLib.map().mobCreated(R);
                         A2.invoke(mob,R,true,0);
                         mob.destroy();
                     }
@@ -555,7 +555,7 @@ public class WeatherAffects extends PuddleMaker
                         if(A2!=null)
                         {
                             A2.setMiscText("RENDER MUNDANE"); 
-                            MOB mob=CMLib.map().god(R);
+                            MOB mob=CMLib.map().mobCreated(R);
                             A2.invoke(mob,null,true,0);
                             mob.destroy();
                         }
@@ -673,7 +673,7 @@ public class WeatherAffects extends PuddleMaker
                 case RawMaterial.MATERIAL_WOODEN:
                 {
                     Ability A2=CMClass.getAbility("Burning");
-                    MOB mob=CMLib.map().god(R);
+                    MOB mob=CMLib.map().mobCreated(R);
                     R.showHappens(CMMsg.MSG_OK_VISUAL,I.Name()+" spontaneously combusts in the seering heat!"+CMProps.msp("fire.wav",40));
                     A2.invoke(mob,I,true,0);
                     mob.destroy();
@@ -709,7 +709,7 @@ public class WeatherAffects extends PuddleMaker
                 if(choices.size()>0)
                 {
                     R=(Room)choices.elementAt(CMLib.dice().roll(1,choices.size(),-1));
-                    MOB M=CMLib.map().god(R);
+                    MOB M=CMLib.map().mobCreated(R);
                     Ability A2=CMClass.getAbility("Chant_WindGust");
                     if(A2!=null)
                     {

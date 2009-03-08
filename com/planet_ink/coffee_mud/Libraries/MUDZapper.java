@@ -242,6 +242,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             zapCodes.put("+QUESTWIN",new Integer(114));
             zapCodes.put("-GROUPSIZE",new Integer(115));
             zapCodes.put("+GROUPSIZE",new Integer(116));
+            zapCodes.put("+BASECLASS",new Integer(117));
 		}
 		return zapCodes;
 	}
@@ -541,12 +542,16 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				case 1: // -baseclass
 					{
 						buf.append(skipFirstWord?"Only ":"Allows only ");
+						HashSet seenBase=new HashSet();
 						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
 						{
 							CharClass C=(CharClass)c.nextElement();
-							if((C.ID().equals(C.baseClass()))
-							&&(fromHereStartsWith(V,'+',v+1,CMStrings.padRight(C.name(),4).toUpperCase().trim())))
-								buf.append(C.name()+" types, ");
+							if(!seenBase.contains(C.baseClass()))
+							{
+								seenBase.add(C.baseClass());
+								if(fromHereStartsWith(V,'+',v+1,CMStrings.padRight(C.baseClass(),4).toUpperCase().trim()))
+									buf.append(C.baseClass()+" types, ");
+							}
 						}
 						if(buf.toString().endsWith(", "))
 							buf=new StringBuffer(buf.substring(0,buf.length()-2));
@@ -1877,6 +1882,25 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append((skipFirstWord?"A":"Requires a")+" group size of at least "+val+".  ");
 					break;
+				case 117: // +baseclass
+				{
+					buf.append("Disallows the following types(s): ");
+					HashSet seenBase=new HashSet();
+					for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+					{
+						CharClass C=(CharClass)c.nextElement();
+						if(!seenBase.contains(C.baseClass()))
+						{
+							seenBase.add(C.baseClass());
+							if(fromHereStartsWith(V,'-',v+1,CMStrings.padRight(C.baseClass(),4).toUpperCase().trim()))
+								buf.append(C.baseClass()+" types, ");
+						}
+					}
+					if(buf.toString().endsWith(", "))
+						buf=new StringBuffer(buf.substring(0,buf.length()-2));
+					buf.append(".  ");
+					break;
+				}
 				}
 			else
 			{
@@ -2197,6 +2221,24 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 							{
 								seenBase.add(C.baseClass());
 								if(fromHereStartsWith(V,'+',v+1,CMStrings.padRight(C.baseClass(),4).toUpperCase().trim()))
+									entry.addElement(C.baseClass());
+							}
+						}
+					}
+					break;
+				case 117: // +baseclass
+					{
+						Vector entry=new Vector();
+						buf.addElement(entry);
+						entry.addElement(zapCodes.get(str));
+						HashSet seenBase=new HashSet();
+						for(Enumeration c=CMClass.charClasses();c.hasMoreElements();)
+						{
+							CharClass C=(CharClass)c.nextElement();
+							if(!seenBase.contains(C.baseClass()))
+							{
+								seenBase.add(C.baseClass());
+								if(fromHereStartsWith(V,'-',v+1,CMStrings.padRight(C.baseClass(),4).toUpperCase().trim()))
 									entry.addElement(C.baseClass());
 							}
 						}
@@ -3104,6 +3146,18 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					if(C!=null) baseClass=C.baseClass();
 				}
 				if(!V.contains(baseClass))
+					return false;
+				break;
+			}
+			case 117: // +baseclass
+			{
+				String baseClass=mob.baseCharStats().getCurrentClass().baseClass();
+				if((!actual)&&(!baseClass.equals(mob.charStats().displayClassName())))
+				{
+					CharClass C=CMClass.getCharClass(mob.charStats().displayClassName());
+					if(C!=null) baseClass=C.baseClass();
+				}
+				if(V.contains(baseClass))
 					return false;
 				break;
 			}

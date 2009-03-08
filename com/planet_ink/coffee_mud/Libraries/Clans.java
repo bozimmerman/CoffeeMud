@@ -225,11 +225,15 @@ public class Clans extends StdLibrary implements ClanManager
 		if(!CMSecurity.isDisabled("CLANTICKS"))
 			CMLib.threads().startTickDown(C,Tickable.TICKID_CLAN,CMProps.getIntVar(CMProps.SYSTEMI_TICKSPERMUDDAY));
 		all.put(C.clanID().toUpperCase(),C);
+		CMLib.map().sendGlobalMessage(CMLib.map().deity(), CMMsg.TYP_CLANEVENT, 
+				CMClass.getMsg(CMLib.map().deity(), CMMsg.MSG_CLANEVENT, "+"+C.name()));
 	}
 	public void removeClan(Clan C)
 	{
 		CMLib.threads().deleteTick(C,Tickable.TICKID_CLAN);
 		all.remove(C.clanID().toUpperCase());
+		CMLib.map().sendGlobalMessage(CMLib.map().deity(), CMMsg.TYP_CLANEVENT, 
+				CMClass.getMsg(CMLib.map().deity(), CMMsg.MSG_CLANEVENT, "-"+C.name()));
 	}
 
 	public void tickAllClans()

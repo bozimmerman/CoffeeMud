@@ -18,3 +18,5 @@
 #
 # Example: 
 # {* the dude}=-area "+new area" +midgaard
+
+* is excited=-baseclass +praetor

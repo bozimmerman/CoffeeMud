@@ -45,7 +45,6 @@ public class CraftingSkill extends GatheringSkill
 	protected boolean mending=false;
 	protected boolean refitting=false;
 	protected boolean messedUp=false;
-	protected static Room fakeRoom=null;
 
 	public CraftingSkill(){super();}
 	
@@ -470,8 +469,7 @@ public class CraftingSkill extends GatheringSkill
 		Item building=null;
 		Item key=null;
 		int tries=0;
-		if(fakeRoom==null){ fakeRoom=CMLib.map().getRandomRoom();}
-		MOB mob=CMLib.map().god(fakeRoom);
+		MOB mob=CMLib.map().mobCreated();
 		mob.baseEnvStats().setLevel(Integer.MAX_VALUE/2);
 		mob.baseEnvStats().setSensesMask(mob.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
 		mob.recoverEnvStats();

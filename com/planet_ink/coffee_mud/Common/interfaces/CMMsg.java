@@ -890,6 +890,8 @@ public interface CMMsg extends CMCommon
     public static final int TYP_LIFE=97;
     /** MINOR_MASK minor action code type, denoting a auctioneer bid action*/
     public static final int TYP_BID=98;
+    /** MINOR_MASK minor action code type, denoting a auctioneer bid action*/
+    public static final int TYP_CLANEVENT=99;
 
     /** MINOR_MASK minor action code type, denoting a channel action -- 2000-2047 are channels*/
 	public static final int TYP_CHANNEL=2000; //(2000-2047 are channels)
@@ -914,7 +916,7 @@ public interface CMMsg extends CMCommon
         "TELL", "SITMOVE", "KNOCK", "PRACTICE", "TEACH", "REMOVE", "EXPCHANGE", 
         "DAMAGE", "HEALING", "ROOMRESET", "RELOAD", "SNIFF", "ACTIVATE", "DEACTIVATE", 
         "FACTIONCHANGE", "LOGIN", "LEVEL", "EXAMINE", "ORDER","EXPIRE","BORROW","HUH",
-        "LIFE","BID"
+        "LIFE","BID","CLANEVENT"
     };
     
     /** Index string descriptions of all the MAJOR_MASK code MAKS_s */
@@ -1123,4 +1125,6 @@ public interface CMMsg extends CMCommon
     public static final int MSG_BRINGTOLIFE=MASK_ALWAYS|TYP_LIFE;
     /** combined MAJOR and MINOR codes for useful event message type for a auction bid event */
 	public static final int MSG_BID=MSK_HAGGLE|TYP_BID;
+    /** combined MAJOR and MINOR codes for useful event message type for a clan event */
+	public static final int MSG_CLANEVENT=MASK_ALWAYS|TYP_CLANEVENT;
 }

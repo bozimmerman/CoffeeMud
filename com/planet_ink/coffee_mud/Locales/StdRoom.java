@@ -1267,7 +1267,7 @@ public class StdRoom implements Room
 
 	public void showHappens(int allCode, String allMessage)
 	{
-		MOB everywhereMOB=CMLib.map().god(this);
+		MOB everywhereMOB=CMLib.map().mobCreated(this);
 		CMMsg msg=CMClass.getMsg(everywhereMOB,null,null,allCode,allCode,allCode,allMessage);
 		sendOthers(everywhereMOB,msg);
         everywhereMOB.destroy();

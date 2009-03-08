@@ -141,7 +141,9 @@ public interface WorldMap extends CMLibrary, Runnable
     /************************************************************************/
     public void addGlobalHandler(MsgListener E, int category);
     public void delGlobalHandler(MsgListener E, int category);
-    public MOB god(Room R);
+    public MOB deity();
+    public MOB mobCreated();
+    public MOB mobCreated(Room R);
     public boolean sendGlobalMessage(MOB host, int category, CMMsg msg);
     
     public static class CrossExit

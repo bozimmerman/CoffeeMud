@@ -204,7 +204,7 @@ public class PokerDealer extends StdBehavior
     {
         if(host instanceof MOB)
             return CMClass.getMsg((MOB)host,target,null,code,message);
-        return CMClass.getMsg(CMLib.map().god(CMLib.map().roomLocation(host)),target,null,code,message);
+        return CMClass.getMsg(CMLib.map().deity(),target,null,code,message);
     }
     
     
