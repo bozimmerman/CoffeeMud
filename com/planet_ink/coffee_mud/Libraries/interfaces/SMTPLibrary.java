@@ -16,9 +16,9 @@ public interface SMTPLibrary extends CMLibrary
     public static final int DEFAULT_TIMEOUT=10000;
 
 	public boolean isValidEmailAddress(String addy);
-    public boolean emailIfPossible(String SMTPServerName, String from, String replyTo, String to, String subject, String message)
+    public boolean emailIfPossible(String SMTPServerInfo, String from, String replyTo, String to, String subject, String message)
         throws IOException;
-    public SMTPClient getClient(String hostid, int port)  throws UnknownHostException, IOException;
+    public SMTPClient getClient(String SMTPServerInfo, int port)  throws UnknownHostException, IOException;
     public SMTPClient getClient(String emailAddress) throws IOException, BadEmailAddressException;
     
     public static interface SMTPClient
