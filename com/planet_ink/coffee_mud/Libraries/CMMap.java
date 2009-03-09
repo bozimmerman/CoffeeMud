@@ -178,7 +178,7 @@ public class CMMap extends StdLibrary implements WorldMap
         }
         synchronized(V)
         {
-        	for(Enumeration<WeakReference> e=V.elements();e.hasMoreElements();e.nextElement())
+        	for(Enumeration<WeakReference> e=V.elements();e.hasMoreElements();)
         		if(e.nextElement().get()==E)
         			return;
             V.add(new WeakReference(E));
