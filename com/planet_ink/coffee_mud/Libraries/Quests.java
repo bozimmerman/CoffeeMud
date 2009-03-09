@@ -1503,7 +1503,7 @@ public class Quests extends StdLibrary implements QuestManager
             }
         }
         Vector allItemNames=new Vector();
-        CMClass.addAllItemClassNames(allItemNames,true,false);
+        CMClass.addAllItemClassNames(allItemNames,true,false,false);
         Vector newItems=new Vector();
         for(int a=0;a<allItemNames.size();a++)
         {

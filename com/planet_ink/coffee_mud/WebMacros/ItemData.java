@@ -61,6 +61,7 @@ public class ItemData extends StdWebMacro
       "CURRENCY","DENOM","ISRECIPE","RECIPESKILL","RECIPEDATA",
       "LAYER","SEETHRU","MULTIWEAR","ISCATALOGED","CATARATE",
       "CATALIVE","CATAMASK","BITE"};
+    
     public ItemData()
     {
         super();
@@ -340,13 +341,13 @@ public class ItemData extends StdWebMacro
 				case 1: // classes
 					{
 						if(firstTime) old=CMClass.classID(I);
-						Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-ITEMS2");
+						Object[] sorted=(Object[])Resources.getResource("MUDGRINDER-ITEMS2:"+parms.containsKey("GENERICONLY"));
 						if(sorted==null)
 						{
 							Vector sortMe=new Vector();
-							CMClass.addAllItemClassNames(sortMe,true,false);
+							CMClass.addAllItemClassNames(sortMe,true,false,parms.containsKey("GENERICONLY"));
 							sorted=(new TreeSet(sortMe)).toArray();
-							Resources.submitResource("MUDGRINDER-ITEMS2",sorted);
+							Resources.submitResource("MUDGRINDER-ITEMS2:"+parms.containsKey("GENERICONLY"),sorted);
 						}
                         if(parms.containsKey("CLASSESID"))
                             str.append(old);

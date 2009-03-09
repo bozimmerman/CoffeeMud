@@ -613,7 +613,7 @@ public class RoomData extends StdWebMacro
 				{
 					ilist=new StringBuffer("");
 					Vector sortMe=new Vector();
-					CMClass.addAllItemClassNames(sortMe,true,true);
+					CMClass.addAllItemClassNames(sortMe,true,true,false);
 					Object[] sorted=(new TreeSet(sortMe)).toArray();
 					for(int i=0;i<sorted.length;i++)
 						ilist.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);

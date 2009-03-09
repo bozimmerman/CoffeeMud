@@ -75,7 +75,7 @@ public class CMClass extends ClassLoader
     public static final int OBJECT_COMMON=17;
     public static final int OBJECT_LIBRARY=18;
     public static final int OBJECT_TOTAL=19;
-
+    
     public static int longestWebMacro=-1;
     protected Hashtable common=new Hashtable();
     protected Vector races=new Vector();
@@ -233,12 +233,13 @@ public class CMClass extends ClassLoader
         return str.toString();
     }
 
-	public static void addAllItemClassNames(Vector V, boolean NonArchon, boolean NonGeneric)
+	public static void addAllItemClassNames(Vector V, boolean NonArchon, boolean NonGeneric, boolean NonStandard)
 	{
 		for(Enumeration i=basicItems();i.hasMoreElements();)
 		{
 			Item I=(Item)i.nextElement();
 			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
+			&&((!NonStandard)||(I.isGeneric()))
 			&&((!NonGeneric)||(!I.isGeneric())))
 				V.addElement(CMClass.classID(I));
 		}
@@ -246,6 +247,7 @@ public class CMClass extends ClassLoader
 		{
 			Item I=(Item)i.nextElement();
 			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
+			&&((!NonStandard)||(I.isGeneric()))
 			&&((!NonGeneric)||(!I.isGeneric())))
 				V.addElement(CMClass.classID(I));
 		}
@@ -253,6 +255,7 @@ public class CMClass extends ClassLoader
 		{
 			Item I=(Item)i.nextElement();
 			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
+			&&((!NonStandard)||(I.isGeneric()))
 			&&((!NonGeneric)||(!I.isGeneric())))
 				V.addElement(CMClass.classID(I));
 		}
@@ -260,6 +263,7 @@ public class CMClass extends ClassLoader
 		{
 			Item I=(Item)i.nextElement();
 			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
+			&&((!NonStandard)||(I.isGeneric()))
 			&&((!NonGeneric)||(!I.isGeneric())))
 				V.addElement(CMClass.classID(I));
 		}
@@ -267,6 +271,7 @@ public class CMClass extends ClassLoader
 		{
 			Item I=(Item)i.nextElement();
 			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
+			&&((!NonStandard)||(I.isGeneric()))
 			&&((!NonGeneric)||(!I.isGeneric())))
 				V.addElement(CMClass.classID(I));
 		}
@@ -274,6 +279,7 @@ public class CMClass extends ClassLoader
 		{
 			Item I=(Item)i.nextElement();
 			if(((!NonArchon)||(!(I instanceof ArchonOnly)))
+			&&((!NonStandard)||(I.isGeneric()))
 			&&((!NonGeneric)||(!I.isGeneric())))
 				V.addElement(CMClass.classID(I));
 		}

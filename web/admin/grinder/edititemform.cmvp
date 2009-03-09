@@ -133,7 +133,11 @@
         <INPUT TYPE=HIDDEN NAME=CLASSES VALUE="@ItemData?CLASSES&CLASSESID@"><FONT COLOR=WHITE>@ItemData?CLASSES&CLASSESID@</FONT>
     @else@
 		<SELECT NAME=CLASSES ONCHANGE="ChangedClass();">
-		@ItemData?CLASSES@
+	    @if?CheckReqParm?<ITEM=NEWCATA-@
+			@ItemData?CLASSES&GENERICONLY@
+		@else@
+			@ItemData?CLASSES@
+		@endif@
 		</SELECT>
 	@endif@
 	</TD>
@@ -783,6 +787,7 @@
 <TR><TD WIDTH=600 COLSPAN=3><FONT COLOR="#66FFFF"><B>* Edit this item later to set Auto-Drop rate information!</B></FONT></TD></TR>
 @endif@
 @if?CheckReqParm?<ITEM=CATALOG-@
+@if?ItemData?ISGENERIC@
 <TR>
     <TD WIDTH=150><FONT COLOR="#66FFFF"><B>Auto-Drop Rate %:</B></FONT></TD>
     <TD WIDTH=450 COLSPAN=2><INPUT TYPE=TEXT NAME=CATARATE SIZE=5 VALUE="@ItemData?CATARATE@">
@@ -801,6 +806,7 @@
         <INPUT TYPE=TEXT NAME=CATAMASK SIZE=60 VALUE="@ItemData?CATAMASK@">
     </TD>
 </TR>
+@endif@
 @endif@
 <TR>
 <TD WIDTH=600 COLSPAN=3 ALIGN=CENTER>

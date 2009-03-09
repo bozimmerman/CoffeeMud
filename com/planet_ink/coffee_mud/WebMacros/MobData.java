@@ -788,7 +788,7 @@ public class MobData extends StdWebMacro
 					sortMeA.addElement(CMClass.classID(a.nextElement()));
 				for(Enumeration m=CMClass.mobTypes();m.hasMoreElements();)
 					sortMeA.addElement(CMClass.classID(m.nextElement()));
-				CMClass.addAllItemClassNames(sortMeA,true,true);
+				CMClass.addAllItemClassNames(sortMeA,true,true,false);
 				Object[] sortedA=(new TreeSet(sortMeA)).toArray();
 				for(int r=0;r<sortedA.length;r++)
 				{
@@ -916,7 +916,7 @@ public class MobData extends StdWebMacro
 			{
 				mposs=new StringBuffer("");
 				Vector sortMe=new Vector();
-				CMClass.addAllItemClassNames(sortMe,true,true);
+				CMClass.addAllItemClassNames(sortMe,true,true,false);
 				Object[] sorted=(new TreeSet(sortMe)).toArray();
 				for(int i=0;i<sorted.length;i++)
 					mposs.append("<OPTION VALUE=\""+(String)sorted[i]+"\">"+(String)sorted[i]);
