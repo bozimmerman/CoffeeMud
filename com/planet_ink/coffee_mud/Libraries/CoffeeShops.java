@@ -1435,14 +1435,15 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
 			auctionData.highBid=bid;
             returnMoney(auctionData.highBidderM,auctionData.currency,-bid);
 			bidWords=CMLib.beanCounter().nameCurrencyShort(auctionData.currency,auctionData.bid);
-			auctionAnnounces.addElement("A new bid has been entered for "+I.name()+". The current bid is "+bidWords+".");
+			String yourBidWords = CMLib.beanCounter().abbreviatedPrice(currencyName, auctionData.highBid);
+			auctionAnnounces.addElement("A new bid has been entered for "+I.name()+". The current high bid is "+bidWords+".");
 			if((oldHighBider!=null)&&(oldHighBider==mob))
-				return new String[]{"You have submitted a new bid for "+I.name()+".",null};
+				return new String[]{"You have submitted a new high bid of "+yourBidWords+" for "+I.name()+".",null};
 			else
 			if((oldHighBider!=null)&&(oldHighBider!=mob))
-				return new String[]{"You have the high bid for "+I.name()+".","You have been outbid for "+I.name()+"."};
+				return new String[]{"You have the new high reserve bid of "+yourBidWords+" for "+I.name()+". The current nominal high bid is "+bidWords+".","You have been outbid for "+I.name()+"."};
 			else
-				return new String[]{"You have submitted a bid for "+I.name()+".",null};
+				return new String[]{"You have submitted a bid of "+yourBidWords+" for "+I.name()+".",null};
 		}
 		else
 		if((bid==auctionData.bid)&&(auctionData.highBidderM!=null))
