@@ -96,7 +96,7 @@ public class Fighter_WeaponBreak extends FighterSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=victim.envStats().level()-adjustedLevel(mob,asLevel);
+		int levelDiff=victim.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff>0)
 			levelDiff=levelDiff*5;
 		else

@@ -168,7 +168,7 @@ public class Fighter_LightningStrike extends FighterSkill
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
 			return false;
 
-		int levelDiff=target.envStats().level()-adjustedLevel(mob,asLevel);
+		int levelDiff=target.envStats().level()-(mob.envStats().level()+(2*super.getXLEVELLevel(mob)));
 		if(levelDiff>0)
 			levelDiff=levelDiff*5;
 		else
