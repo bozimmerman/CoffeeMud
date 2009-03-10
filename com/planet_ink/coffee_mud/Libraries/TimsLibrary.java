@@ -265,12 +265,12 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					CMLib.catalog().updateCatalog(I);
 				return true;
 			}
-			if((TLVL>0)&&(TLVL>(lvl+25)))
+			if((TLVL>0)&&(TLVL>(lvl+2)))
 			{
 				int FTLVL=TLVL;
 				Vector illegalNums=new Vector();
 				Log.sysOut("Reset",I.name()+"("+I.baseEnvStats().level()+") "+TLVL+", "+I.baseEnvStats().armor()+"/"+I.baseEnvStats().attackAdjustment()+"/"+I.baseEnvStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
-				while((TLVL>(lvl+15))&&(illegalNums.size()<4))
+				while((TLVL>(lvl+2))&&(illegalNums.size()<4))
 				{
 					int highIndex=-1;
 					for(int i=0;i<LVLS.length;i++)
@@ -278,6 +278,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						&&(!illegalNums.contains(new Integer(i))))
 							highIndex=i;
 					if(highIndex<0) break;
+					I.envStats().setWeight(I.envStats().weight()+2);
 					switch(highIndex)
 					{
 					case 0:
@@ -286,6 +287,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 							String s=(ADJ!=null)?ADJ.text():"";
 							int oldAtt=I.baseEnvStats().attackAdjustment();
 							int oldDam=I.baseEnvStats().damage();
+							I.baseEnvStats().setWeight(I.baseEnvStats().weight()+10);
 							toneDownWeapon((Weapon)I,ADJ);
 							if((I.baseEnvStats().attackAdjustment()==oldAtt)
 							&&(I.baseEnvStats().damage()==oldDam)
