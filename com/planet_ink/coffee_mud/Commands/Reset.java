@@ -897,10 +897,17 @@ public class Reset extends StdCommand
 		else
 		if(s.equalsIgnoreCase("worlditemfixer"))
 		{
-			//TODO: level up to mob holding the item
-			//TODO: add ignore rooms for parameters.
 			if(mob.session()==null) return false;
 			mob.session().print("working...");
+			StringBuffer recordedChanges=null;
+			boolean nosave=false;
+			for(int i=1;i<commands.size();i++)
+				if(((String)commands.elementAt(i)).equalsIgnoreCase("NOSAVE"))
+				{
+					nosave=true;
+					recordedChanges=new StringBuffer("");
+				}
+			
 			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
 				Area A=(Area)a.nextElement();
@@ -928,7 +935,7 @@ public class Reset extends StdCommand
 							for(int i=0;i<R.numItems();i++)
 							{
 								Item I=R.fetchItem(i);
-								if(CMLib.itemBuilder().itemFix(I,-1))
+								if(CMLib.itemBuilder().itemFix(I,-1,recordedChanges))
 									changedItems=true;
 							}
 							for(int m=0;m<R.numInhabitants();m++)
@@ -943,7 +950,7 @@ public class Reset extends StdCommand
 									if((I.baseEnvStats().level()>M.baseEnvStats().level())
 									||((I.baseEnvStats().level()>91)&&((I.baseEnvStats().level() + (I.baseEnvStats().level()/10))<M.baseEnvStats().level())))
 										lvl=M.baseEnvStats().level();
-									if(CMLib.itemBuilder().itemFix(I,lvl))
+									if(CMLib.itemBuilder().itemFix(I,lvl,recordedChanges))
 										changedMOBS=true;
 								}
 								ShopKeeper SK=CMLib.coffeeShops().getShopKeeper(M);
@@ -957,7 +964,7 @@ public class Reset extends StdCommand
 										{
 											Item I=(Item)E;
 											boolean didSomething=false;
-											didSomething=CMLib.itemBuilder().itemFix(I,-1);
+											didSomething=CMLib.itemBuilder().itemFix(I,-1,recordedChanges);
 											changedMOBS=changedMOBS||didSomething;
 											if(didSomething)
 											{
@@ -970,9 +977,9 @@ public class Reset extends StdCommand
 									}
 								}
 							}
-							if(changedItems)
+							if((changedItems)&&(!nosave))
 								CMLib.database().DBUpdateItems(R);
-							if(changedMOBS)
+							if((changedMOBS)&&(!nosave))
 								CMLib.database().DBUpdateMOBs(R);
 							mob.session().print(".");
 				    	}

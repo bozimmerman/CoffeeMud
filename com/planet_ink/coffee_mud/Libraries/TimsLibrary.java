@@ -216,8 +216,24 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return RET;
 	}
 
-	public boolean itemFix(Item I, int lvlOr0)
+	private void reportChanges(Item oldI, Item newI, StringBuffer changes,int TLVL)
 	{
+		if((changes == null)||(oldI==null)) return;
+		changes.append(newI.name()+":"+oldI.baseEnvStats().level()+"->"+newI.baseEnvStats().level()+" ("+TLVL+"), ");
+        for(int i=0;i<oldI.getStatCodes().length;i++)
+            if((!oldI.getStat(oldI.getStatCodes()[i]).equals(newI.getStat(newI.getStatCodes()[i]))))
+            	changes.append(oldI.getStatCodes()[i]+"("+oldI.getStat(newI.getStatCodes()[i])+"->"+newI.getStat(newI.getStatCodes()[i])+", ");
+        EnvStats oldStats=oldI.baseEnvStats();
+        EnvStats newStats=newI.baseEnvStats();
+        for(int i=0;i<oldStats.getStatCodes().length;i++)
+            if((!oldStats.getStat(oldStats.getStatCodes()[i]).equals(newStats.getStat(newStats.getStatCodes()[i]))))
+            	changes.append(oldStats.getStatCodes()[i]+"("+oldStats.getStat(newStats.getStatCodes()[i])+"->"+newStats.getStat(newStats.getStatCodes()[i])+", ");
+	}
+	
+	public boolean itemFix(Item I, int lvlOr0, StringBuffer changes)
+	{
+		Item oldI = (changes!=null)?(Item)I.copyOf():null;
+		
 		if((I instanceof SpellHolder)
 		||((I instanceof Wand)&&(lvlOr0<=0)))
 		{
@@ -237,6 +253,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			I.envStats().setLevel(level);
 			if(CMLib.flags().isCataloged(I))
 				CMLib.catalog().updateCatalog(I);
+			reportChanges(oldI,I,changes,level);
 			return true;
 		}
 		else
@@ -263,14 +280,15 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				fixRejuvItem(I);
 				if(CMLib.flags().isCataloged(I))
 					CMLib.catalog().updateCatalog(I);
+				reportChanges(oldI,I,changes,TLVL);
 				return true;
 			}
-			if((TLVL>0)&&(TLVL>(lvl+2)))
+			if((TLVL>0)&&(TLVL>Math.round(CMath.mul(lvl,1.2))))
 			{
 				int FTLVL=TLVL;
 				Vector illegalNums=new Vector();
 				Log.sysOut("Reset",I.name()+"("+I.baseEnvStats().level()+") "+TLVL+", "+I.baseEnvStats().armor()+"/"+I.baseEnvStats().attackAdjustment()+"/"+I.baseEnvStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
-				while((TLVL>(lvl+2))&&(illegalNums.size()<4))
+				while((TLVL>Math.round(CMath.mul(lvl,1.2)))&&(illegalNums.size()<4))
 				{
 					int highIndex=-1;
 					for(int i=0;i<LVLS.length;i++)
@@ -278,16 +296,16 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						&&(!illegalNums.contains(new Integer(i))))
 							highIndex=i;
 					if(highIndex<0) break;
-					I.envStats().setWeight(I.envStats().weight()+2);
 					switch(highIndex)
 					{
 					case 0:
 						if(I instanceof Weapon)
 						{
+							I.baseEnvStats().setWeight(I.baseEnvStats().weight()+2);
+							I.envStats().setWeight(I.envStats().weight()+2);
 							String s=(ADJ!=null)?ADJ.text():"";
 							int oldAtt=I.baseEnvStats().attackAdjustment();
 							int oldDam=I.baseEnvStats().damage();
-							I.baseEnvStats().setWeight(I.baseEnvStats().weight()+10);
 							toneDownWeapon((Weapon)I,ADJ);
 							if((I.baseEnvStats().attackAdjustment()==oldAtt)
 							&&(I.baseEnvStats().damage()==oldDam)
@@ -333,6 +351,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				fixRejuvItem(I);
 				if(CMLib.flags().isCataloged(I))
 					CMLib.catalog().updateCatalog(I);
+				reportChanges(oldI,I,changes,TLVL);
 				return true;
 			}
 		}
