@@ -290,7 +290,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			}
 			if((TLVL>0)&&(TLVL>Math.round(CMath.mul(lvl,1.2))))
 			{
-				int FTLVL=TLVL;
+				//int FTLVL=TLVL;
 				Vector illegalNums=new Vector();
 				//Log.sysOut("Reset",I.name()+"("+I.baseEnvStats().level()+") "+TLVL+", "+I.baseEnvStats().armor()+"/"+I.baseEnvStats().attackAdjustment()+"/"+I.baseEnvStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
 				while((TLVL>Math.round(CMath.mul(lvl,1.2)))&&(illegalNums.size()<4))
@@ -735,12 +735,12 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		if(fixdam&&(W.baseEnvStats().damage()>=10))
 			W.baseEnvStats().setDamage((int)Math.round(CMath.mul(W.baseEnvStats().damage(),0.9)));
 		else
-		if(fixatt&&(W.baseEnvStats().damage()>0))
+		if(fixatt&&(W.baseEnvStats().damage()>1))
 			W.baseEnvStats().setDamage(W.baseEnvStats().damage()-1);
 		if(fixatt&&(W.baseEnvStats().attackAdjustment()>=10))
 			W.baseEnvStats().setAttackAdjustment((int)Math.round(CMath.mul(W.baseEnvStats().attackAdjustment(),0.9)));
 		else
-		if(fixatt&&(W.baseEnvStats().attackAdjustment()>0))
+		if(fixatt&&(W.baseEnvStats().attackAdjustment()>1))
 			W.baseEnvStats().setAttackAdjustment(W.baseEnvStats().attackAdjustment()-1);
 		W.recoverEnvStats();
 	}
@@ -759,10 +759,10 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				ADJ.setMiscText(ADJ.text().substring(0,a+6)+(num/2)+ADJ.text().substring(a2));
 			}
 		}
-		if(fixit&&(A.baseEnvStats().armor()>=2))
+		if(fixit&&(A.baseEnvStats().armor()>=10))
 			A.baseEnvStats().setArmor((int)Math.round(CMath.mul(A.baseEnvStats().armor(),0.9)));
 		else
-		if(fixit&&(A.baseEnvStats().armor()>0))
+		if(fixit&&(A.baseEnvStats().armor()>1))
 			A.baseEnvStats().setArmor(A.baseEnvStats().armor()-1);
 		A.recoverEnvStats();
 	}
