@@ -910,6 +910,11 @@ public class Reset extends StdCommand
 			
 			for(Enumeration a=CMLib.map().areas();a.hasMoreElements();)
 			{
+				if((recordedChanges!=null)&&(recordedChanges.length()>0))
+				{
+					mob.session().rawOut(recordedChanges.toString());
+					recordedChanges=new StringBuffer("");
+				}
 				Area A=(Area)a.nextElement();
 				boolean skip=false;
 				for(int i=1;i<commands.size();i++)
@@ -941,7 +946,7 @@ public class Reset extends StdCommand
 							for(int m=0;m<R.numInhabitants();m++)
 							{
 								MOB M=R.fetchInhabitant(m);
-								if(M==mob) continue;
+								if((M==mob)||(!M.isMonster())) continue;
 								if(!M.savable()) continue;
 								for(int i=0;i<M.inventorySize();i++)
 								{

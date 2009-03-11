@@ -216,18 +216,21 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		return RET;
 	}
 
-	private void reportChanges(Item oldI, Item newI, StringBuffer changes,int TLVL)
+	private void reportChanges(Item oldI, Item newI, StringBuffer changes,int OTLVL, int TLVL)
 	{
 		if((changes == null)||(oldI==null)) return;
-		changes.append(newI.name()+":"+oldI.baseEnvStats().level()+"->"+newI.baseEnvStats().level()+" ("+TLVL+"), ");
+		Ability[] RET=getTimsAdjResCast(newI,new int[1]);
+		Ability ADJ=RET[0];
+		Ability RES=RET[1];
+		Ability CAST=RET[2];
+		int[] LVLS=getItemLevels(newI,ADJ,RES,CAST);
+		int TLVL2=totalLevels(LVLS);
+		
+		changes.append(newI.name()+":"+newI.baseEnvStats().level()+"("+OTLVL+")=>"+TLVL2+"("+TLVL+"), ");
         for(int i=0;i<oldI.getStatCodes().length;i++)
             if((!oldI.getStat(oldI.getStatCodes()[i]).equals(newI.getStat(newI.getStatCodes()[i]))))
-            	changes.append(oldI.getStatCodes()[i]+"("+oldI.getStat(newI.getStatCodes()[i])+"->"+newI.getStat(newI.getStatCodes()[i])+", ");
-        EnvStats oldStats=oldI.baseEnvStats();
-        EnvStats newStats=newI.baseEnvStats();
-        for(int i=0;i<oldStats.getStatCodes().length;i++)
-            if((!oldStats.getStat(oldStats.getStatCodes()[i]).equals(newStats.getStat(newStats.getStatCodes()[i]))))
-            	changes.append(oldStats.getStatCodes()[i]+"("+oldStats.getStat(newStats.getStatCodes()[i])+"->"+newStats.getStat(newStats.getStatCodes()[i])+", ");
+            	changes.append(oldI.getStatCodes()[i]+"("+oldI.getStat(newI.getStatCodes()[i])+"->"+newI.getStat(newI.getStatCodes()[i])+"), ");
+        changes.append("\n\r");
 	}
 	
 	public boolean itemFix(Item I, int lvlOr0, StringBuffer changes)
@@ -241,10 +244,11 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			if(I instanceof SpellHolder)
 				spells=((SpellHolder)I).getSpells();
 			else
-			if(I instanceof Wand)
+			if((I instanceof Wand)&&(((Wand)I).getSpell()!=null))
 				spells.add(((Wand)I).getSpell());
 			if(spells.size()==0) return false;
 			int levels=0;
+			spells=(Vector<Ability>)spells.clone();
 			for(Enumeration<Ability> e=spells.elements();e.hasMoreElements();)
 				levels+=CMLib.ableMapper().lowestQualifyingLevel(e.nextElement().ID());
 			int level=(int)Math.round(CMath.div(levels, spells.size()));
@@ -253,7 +257,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			I.envStats().setLevel(level);
 			if(CMLib.flags().isCataloged(I))
 				CMLib.catalog().updateCatalog(I);
-			reportChanges(oldI,I,changes,level);
+			reportChanges(oldI,I,changes,level,level);
 			return true;
 		}
 		else
@@ -269,6 +273,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			Ability CAST=RET[2];
 			int[] LVLS=getItemLevels(I,ADJ,RES,CAST);
 			int TLVL=totalLevels(LVLS);
+			int OTLVL=TLVL;
 			if(lvl<0)
 			{
 				if(TLVL<=0)
@@ -280,14 +285,14 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				fixRejuvItem(I);
 				if(CMLib.flags().isCataloged(I))
 					CMLib.catalog().updateCatalog(I);
-				reportChanges(oldI,I,changes,TLVL);
+				reportChanges(oldI,I,changes,OTLVL,TLVL);
 				return true;
 			}
 			if((TLVL>0)&&(TLVL>Math.round(CMath.mul(lvl,1.2))))
 			{
 				int FTLVL=TLVL;
 				Vector illegalNums=new Vector();
-				Log.sysOut("Reset",I.name()+"("+I.baseEnvStats().level()+") "+TLVL+", "+I.baseEnvStats().armor()+"/"+I.baseEnvStats().attackAdjustment()+"/"+I.baseEnvStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
+				//Log.sysOut("Reset",I.name()+"("+I.baseEnvStats().level()+") "+TLVL+", "+I.baseEnvStats().armor()+"/"+I.baseEnvStats().attackAdjustment()+"/"+I.baseEnvStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
 				while((TLVL>Math.round(CMath.mul(lvl,1.2)))&&(illegalNums.size()<4))
 				{
 					int highIndex=-1;
@@ -347,11 +352,11 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					LVLS=getItemLevels(I,ADJ,RES,CAST);
 					TLVL=totalLevels(LVLS);
 				}
-				Log.sysOut("Reset",I.name()+"("+I.baseEnvStats().level()+") "+FTLVL+"->"+TLVL+", "+I.baseEnvStats().armor()+"/"+I.baseEnvStats().attackAdjustment()+"/"+I.baseEnvStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
+				//Log.sysOut("Reset",I.name()+"("+I.baseEnvStats().level()+") "+FTLVL+"->"+TLVL+", "+I.baseEnvStats().armor()+"/"+I.baseEnvStats().attackAdjustment()+"/"+I.baseEnvStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
 				fixRejuvItem(I);
 				if(CMLib.flags().isCataloged(I))
 					CMLib.catalog().updateCatalog(I);
-				reportChanges(oldI,I,changes,TLVL);
+				reportChanges(oldI,I,changes,OTLVL,TLVL);
 				return true;
 			}
 		}
@@ -727,10 +732,16 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				ADJ.setMiscText(ADJ.text().substring(0,a+7)+(num/2)+ADJ.text().substring(a2));
 			}
 		}
-		if(fixdam&&(W.baseEnvStats().damage()>=2))
-			W.baseEnvStats().setDamage(W.baseEnvStats().damage()/2);
-		if(fixatt&&(W.baseEnvStats().attackAdjustment()>=2))
-			W.baseEnvStats().setAttackAdjustment(W.baseEnvStats().attackAdjustment()/2);
+		if(fixdam&&(W.baseEnvStats().damage()>=10))
+			W.baseEnvStats().setDamage((int)Math.round(CMath.mul(W.baseEnvStats().damage(),0.9)));
+		else
+		if(fixatt&&(W.baseEnvStats().damage()>0))
+			W.baseEnvStats().setDamage(W.baseEnvStats().damage()-1);
+		if(fixatt&&(W.baseEnvStats().attackAdjustment()>=10))
+			W.baseEnvStats().setAttackAdjustment((int)Math.round(CMath.mul(W.baseEnvStats().attackAdjustment(),0.9)));
+		else
+		if(fixatt&&(W.baseEnvStats().attackAdjustment()>0))
+			W.baseEnvStats().setAttackAdjustment(W.baseEnvStats().attackAdjustment()-1);
 		W.recoverEnvStats();
 	}
 	public void toneDownArmor(Armor A, Ability ADJ)
@@ -749,10 +760,11 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			}
 		}
 		if(fixit&&(A.baseEnvStats().armor()>=2))
-		{
-			A.baseEnvStats().setArmor(A.baseEnvStats().armor()/2);
-			A.recoverEnvStats();
-		}
+			A.baseEnvStats().setArmor((int)Math.round(CMath.mul(A.baseEnvStats().armor(),0.9)));
+		else
+		if(fixit&&(A.baseEnvStats().armor()>0))
+			A.baseEnvStats().setArmor(A.baseEnvStats().armor()-1);
+		A.recoverEnvStats();
 	}
 
 	public void toneDownAdjuster(Item I, Ability ADJ)
