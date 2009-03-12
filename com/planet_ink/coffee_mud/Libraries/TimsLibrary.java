@@ -288,12 +288,12 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 				reportChanges(oldI,I,changes,OTLVL,TLVL);
 				return true;
 			}
-			if((TLVL>0)&&(TLVL>Math.round(CMath.mul(lvl,1.2))))
+			if((TLVL>0)&&(TLVL>Math.round(CMath.mul(lvl,1.1))))
 			{
 				//int FTLVL=TLVL;
 				Vector illegalNums=new Vector();
 				//Log.sysOut("Reset",I.name()+"("+I.baseEnvStats().level()+") "+TLVL+", "+I.baseEnvStats().armor()+"/"+I.baseEnvStats().attackAdjustment()+"/"+I.baseEnvStats().damage()+"/"+((ADJ!=null)?ADJ.text():"null"));
-				while((TLVL>Math.round(CMath.mul(lvl,1.2)))&&(illegalNums.size()<4))
+				while((TLVL>Math.round(CMath.mul(lvl,1.1)))&&(illegalNums.size()<4))
 				{
 					int highIndex=-1;
 					for(int i=0;i<LVLS.length;i++)
@@ -714,10 +714,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			int a2=ADJ.text().toUpperCase().indexOf(" ",a+4);
 			if(a2<0) a2=ADJ.text().length();
 			int num=CMath.s_int(ADJ.text().substring(a+7,a2));
-			if(num>W.baseEnvStats().damage())
+			int newNum = (int)Math.round(CMath.mul(num,0.9));
+			if((newNum == num) && (newNum > 1))
+				newNum--;
+			if(newNum != 0)
 			{
 				fixdam=false;
-				ADJ.setMiscText(ADJ.text().substring(0,a+7)+(num/2)+ADJ.text().substring(a2));
+				ADJ.setMiscText(ADJ.text().substring(0,a+7)+(int)Math.round(CMath.mul(num,0.9))+ADJ.text().substring(a2));
 			}
 		}
 		if((ADJ!=null)&&(ADJ.text().toUpperCase().indexOf("ATTACK+")>=0))
@@ -726,10 +729,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			int a2=ADJ.text().toUpperCase().indexOf(" ",a+4);
 			if(a2<0) a2=ADJ.text().length();
 			int num=CMath.s_int(ADJ.text().substring(a+7,a2));
-			if(num>W.baseEnvStats().attackAdjustment())
+			int newNum = (int)Math.round(CMath.mul(num,0.9));
+			if((newNum == num) && (newNum > 1))
+				newNum--;
+			if(newNum != 0)
 			{
 				fixatt=false;
-				ADJ.setMiscText(ADJ.text().substring(0,a+7)+(num/2)+ADJ.text().substring(a2));
+				ADJ.setMiscText(ADJ.text().substring(0,a+7)+newNum+ADJ.text().substring(a2));
 			}
 		}
 		if(fixdam&&(W.baseEnvStats().damage()>=10))
@@ -753,10 +759,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			int a2=ADJ.text().toUpperCase().indexOf(" ",a+4);
 			if(a2<0) a2=ADJ.text().length();
 			int num=CMath.s_int(ADJ.text().substring(a+6,a2));
-			if(num>A.baseEnvStats().armor())
+			int newNum = (int)Math.round(CMath.mul(num,0.9));
+			if((newNum == num) && (newNum > 1))
+				newNum--;
+			if(newNum != 0)
 			{
 				fixit=false;
-				ADJ.setMiscText(ADJ.text().substring(0,a+6)+(num/2)+ADJ.text().substring(a2));
+				ADJ.setMiscText(ADJ.text().substring(0,a+6)+newNum+ADJ.text().substring(a2));
 			}
 		}
 		if(fixit&&(A.baseEnvStats().armor()>=10))
@@ -813,7 +822,13 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 						if(proceed)
 						{
 							if((num!=1)&&(num!=-1))
-								s=s.substring(0,plusminus+1)+(num/2)+s.substring(spaceafter);
+							{
+								int newNum = (int)Math.round(CMath.mul(num,0.9));
+								if((newNum == num) && (newNum > 1))
+									newNum--;
+								if(newNum != 0)
+									s=s.substring(0,plusminus+1)+newNum+s.substring(spaceafter);
+							}
 						}
 					}
 				}
