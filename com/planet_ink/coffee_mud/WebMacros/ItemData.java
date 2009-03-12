@@ -266,7 +266,6 @@ public class ItemData extends StdWebMacro
 		{
 			int level=CMath.s_int(httpReq.getRequestParameter("LEVEL"));
 			int material=CMath.s_int(httpReq.getRequestParameter("MATERIALS"));
-			int weight=CMath.s_int(httpReq.getRequestParameter("WEIGHT"));
 			int hands=1;
 			if(httpReq.isRequestParameter("ISTWOHANDED")&&(httpReq.getRequestParameter("ISTWOHANDED").equalsIgnoreCase("on")))
 			   hands=2;

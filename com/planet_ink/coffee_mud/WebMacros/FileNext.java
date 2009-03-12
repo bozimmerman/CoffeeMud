@@ -60,6 +60,7 @@ public class FileNext extends StdWebMacro
 				fileList.addElement(dirs[d].getName());
 			
 		}
+		CMParms.sortVector(fileList);
 		String lastID="";
 		for(int q=0;q<fileList.size();q++)
 		{
