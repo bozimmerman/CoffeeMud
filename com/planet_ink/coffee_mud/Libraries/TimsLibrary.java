@@ -66,7 +66,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		double curDamage=(double)(savedI.baseEnvStats().damage()+otherDam);
 		if(I instanceof Weapon)
 		{
-			double weight=(double)I.baseEnvStats().weight();
+			double weight=(double)8;
 			if(weight<1.0) weight=1.0;
 			double range=(double)savedI.maxRange();
 			level=(int)Math.round(Math.floor((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)))+1;
@@ -306,8 +306,6 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 					case 0:
 						if(I instanceof Weapon)
 						{
-							I.baseEnvStats().setWeight(I.baseEnvStats().weight()+2);
-							I.envStats().setWeight(I.envStats().weight()+2);
 							String s=(ADJ!=null)?ADJ.text():"";
 							int oldAtt=I.baseEnvStats().attackAdjustment();
 							int oldDam=I.baseEnvStats().damage();
@@ -382,8 +380,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
         else
         if(!(I instanceof Armor))
             return false;
-        Hashtable H=timsItemAdjustments(I,I.envStats().level(),I.material(),
-                                        I.baseEnvStats().weight(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
+        Hashtable H=timsItemAdjustments(I,I.envStats().level(),I.material(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
         int newValue=CMath.s_int((String)H.get("VALUE"));
         if((I.baseGoldValue()>newValue)&&(newValue>0))
         {
@@ -402,8 +399,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			hands=I.rawLogicalAnd()?2:1;
 			weaponClass=((Weapon)I).weaponClassification();
 		}
-		Hashtable H=timsItemAdjustments(I,I.envStats().level(),I.material(),
-										I.baseEnvStats().weight(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
+		Hashtable H=timsItemAdjustments(I,I.envStats().level(),I.material(),hands,weaponClass,I.maxRange(),I.rawProperLocationBitmap());
 		if(I instanceof Weapon)
 		{
 			I.baseEnvStats().setDamage(CMath.s_int((String)H.get("DAMAGE")));
@@ -424,7 +420,6 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 	public Hashtable timsItemAdjustments(Item I,
 										 int level,
 										 int material,
-										 int weight,
 										 int hands,
 										 int wclass,
 										 int reach,
@@ -453,7 +448,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			if(wclass==Weapon.CLASS_EDGED){ baseattack=10; basematerial=RawMaterial.MATERIAL_METAL;}
 			if(wclass==Weapon.CLASS_DAGGER){ baseattack=10; basematerial=RawMaterial.MATERIAL_METAL;}
 			if(wclass==Weapon.CLASS_SWORD){ basematerial=RawMaterial.MATERIAL_METAL;}
-			if(weight==0) weight=10;
+			int weight = 8;
 			if(basereach>maxreach) maxreach=basereach;
 			if(reach<basereach)
 			{
@@ -720,7 +715,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			if(newNum != 0)
 			{
 				fixdam=false;
-				ADJ.setMiscText(ADJ.text().substring(0,a+7)+(int)Math.round(CMath.mul(num,0.9))+ADJ.text().substring(a2));
+				ADJ.setMiscText(ADJ.text().substring(0,a+7)+newNum+ADJ.text().substring(a2));
 			}
 		}
 		if((ADJ!=null)&&(ADJ.text().toUpperCase().indexOf("ATTACK+")>=0))
@@ -882,7 +877,7 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 		double curDamage=(double)(I.baseEnvStats().damage()+otherDam);
 		if(I instanceof Weapon)
 		{
-			double weight=(double)(I.baseEnvStats().weight());
+			double weight=(double)8;
 			if(weight<1.0) weight=1.0;
 			double range=(double)(I.maxRange());
 			level=(int)Math.round(Math.floor((2.0*curDamage/(2.0*(I.rawLogicalAnd()?2.0:1.0)+1.0)+(curAttack-weight)/5.0+range)*(range/weight+2.0)))+1;

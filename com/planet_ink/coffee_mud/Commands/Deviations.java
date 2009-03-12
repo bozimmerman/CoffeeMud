@@ -230,7 +230,7 @@ public class Deviations extends StdCommand
 				if(I instanceof Weapon)
 					W=(Weapon)I;
 				Hashtable vals=CMLib.itemBuilder().timsItemAdjustments(
-								I,I.envStats().level(),I.material(),I.baseEnvStats().weight(),
+								I,I.envStats().level(),I.material(),
 								I.rawLogicalAnd()?2:1,
 								(W==null)?0:W.weaponClassification(),
 								I.maxRange(),

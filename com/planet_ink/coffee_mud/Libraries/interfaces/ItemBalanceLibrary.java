@@ -52,7 +52,6 @@ public interface ItemBalanceLibrary extends CMLibrary
     public Hashtable timsItemAdjustments(Item I,
 							             int level,
 							             int material,
-							             int weight,
 							             int hands,
 							             int wclass,
 							             int reach,
