@@ -26,11 +26,11 @@ public class Siplet extends Applet
     public final static boolean debugDataOut=false;
 
 
-    public final static long serialVersionUID=6;
+    public final static long serialVersionUID=7;
     public static final float VERSION_MAJOR=(float)2.0;
     public static final long  VERSION_MINOR=5;
     protected StringBuffer buf=new StringBuffer("");
-    protected String lastURL="coffeemud.homeip.net";
+    protected String lastURL="coffeemud.net";
     protected int lastPort=23;
     protected Socket sock=null;
     protected InputStream rawin=null;
@@ -66,6 +66,8 @@ public class Siplet extends Applet
     public void destroy()
     {
     }
+    
+    public Siplet create() { return new Siplet();}
 
     public void addItem(String newWord)
     {
