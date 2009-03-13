@@ -529,7 +529,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		for(;rooms.hasMoreElements();)
 		{
 			Room room=(Room)rooms.nextElement();
-			if((mob==null)||CMLib.flags().canAccess(mob,room))
+			if((room != null) && ((mob==null)||CMLib.flags().canAccess(mob,room)))
 			{
 				found.addAll(room.fetchInhabitants(srchStr));
 		    	if((returnFirst)&&(found.size()>0)) return found;
@@ -569,7 +569,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		for(;rooms.hasMoreElements();)
 		{
 			Room room=(Room)rooms.nextElement();
-			if((mob==null)||CMLib.flags().canAccess(mob,room))
+			if((room != null) && ((mob==null)||CMLib.flags().canAccess(mob,room)))
 			{
 				for(int m=0;m<room.numInhabitants();m++)
 				{
@@ -659,7 +659,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		for(;rooms.hasMoreElements();)
 		{
 			Room room=(Room)rooms.nextElement();
-			if((mob==null)||CMLib.flags().canAccess(mob,room))
+			if((room != null) && ((mob==null)||CMLib.flags().canAccess(mob,room)))
 			{
 				if(!areas.contains(room.getArea()))
 					areas.add(room.getArea());
@@ -754,7 +754,7 @@ public class CMMap extends StdLibrary implements WorldMap
 		for(;rooms.hasMoreElements();)
 		{
 			Room room=(Room)rooms.nextElement();
-			if((mob==null)||CMLib.flags().canAccess(mob,room))
+			if((room != null) && ((mob==null)||CMLib.flags().canAccess(mob,room)))
 			{
 				found.addAll(anyItems?room.fetchItems(null,srchStr):room.fetchAnyItems(srchStr));
 		    	if((returnFirst)&&(found.size()>0)) return found;
