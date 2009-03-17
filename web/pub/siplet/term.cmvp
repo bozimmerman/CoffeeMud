@@ -6,8 +6,11 @@
 </HEAD>
 <BODY BGCOLOR=BLACK>
 <script language=JavaScript>
+var mynum = top.term.currentWindow;
 var myname='dwindow'+top.term.currentWindow;
+var mydivname='ewindow'+top.term.currentWindow;
 var gauges=new Array();
+var theapplet = null;
 
 var limit=50000;
 var halflimit=limit/2;
@@ -15,13 +18,13 @@ var tenthlimit=limit/10;
 
 function closeWindow()
 {
-    var theapplet=document.getElementById("myApplet");
+    //var theapplet=document.getElementById("myApplet");
     theapplet.disconnectFromURL();
     top.document.location.href='/index.cmvp';
 }
 function reconnect()
 {
-    var theapplet=document.getElementById("myApplet");
+    //var theapplet=document.getElementById("myApplet");
     theapplet.disconnectFromURL();
     setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
 }
@@ -72,7 +75,7 @@ function addToWindow(s)
 }
 function displayData()
 {
-    var theapplet=document.getElementById("myApplet");
+    //var theapplet=document.getElementById("myApplet");
     if(!theapplet.isConnectedToURL())
     {
         var thespan=top.term.document.getElementById(myname+'bar');
@@ -97,7 +100,7 @@ function displayData()
 }
 function sendData(me)
 {
-    var theapplet=document.getElementById("myApplet");
+    //var theapplet=document.getElementById("myApplet");
 	var s=''+me;
     theapplet.sendData(s);
 }
@@ -175,7 +178,7 @@ function NoJava()
 }
 function connect(url,port)
 {
-    var theapplet=document.getElementById("myApplet");
+    //var theapplet=document.getElementById("myApplet");
     window.onerror=new Function('NoJava();');
     var s=theapplet.info();
     window.onerror=null;
@@ -208,7 +211,7 @@ function addToPrompt(x,att)
 }
 function goDefault(x)
 {
-    // do nothing
+	mydivname.zIndex = 0;
 }
 top.term.allwindows[top.term.currentWindow]=this;
 </SCRIPT>
@@ -226,7 +229,8 @@ top.term.allwindows[top.term.currentWindow]=this;
 </DIV>
 <DIV ID=NODISPLAY NAME=NODISPLAY></DIV>
 <script language=JavaScript>
-    var theapplet=document.getElementById("myApplet");
+    theapplet=document.getElementById("myApplet").create();
+    top.term.allapplets[top.term.currentWindow] = theapplet;
     setTimeout('connect("@MudInfo?DOMAIN@",@MudInfo?PORT@);',500);
 //-->
 </script>

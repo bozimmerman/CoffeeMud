@@ -2200,3 +2200,4 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
 5. New Zappermask: +BASECLASS
 6. New DEBUG flag: HTTPACCESS, SMTPCLIENT
 7. SMTPSERVERNAME ini entry expanded to allow SMTP auth support.
+8. Siplet now supports multiple windows.

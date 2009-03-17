@@ -28,7 +28,7 @@ public class Siplet extends Applet
 
     public final static long serialVersionUID=7;
     public static final float VERSION_MAJOR=(float)2.0;
-    public static final long  VERSION_MINOR=5;
+    public static final long  VERSION_MINOR=6;
     protected StringBuffer buf=new StringBuffer("");
     protected String lastURL="coffeemud.net";
     protected int lastPort=23;
@@ -92,6 +92,7 @@ public class Siplet extends Applet
             lastPort=port;
             //addItem("connecting to "+url+":"+port+" ");
             sock=new Socket(InetAddress.getByName(url),port);
+            Thread.sleep(100);
             rawin=sock.getInputStream();
             in=new BufferedReader[1];
             in[0]=new BufferedReader(new InputStreamReader(sock.getInputStream()));

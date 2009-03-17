@@ -5,7 +5,9 @@
 	<link rel="coffeemud icon" href="../images/coffeemud.ico" >
 <SCRIPT LANGUAGE=JavaScript src="floater.js"></SCRIPT>
 <script language=JavaScript>
-var allwindows=new Array();
+var allwindows=new Array(10);
+var alldivs = new Array(10);
+var allapplets=new Array(10);
 
 function closeWindow()
 {
@@ -32,27 +34,56 @@ function goDefault(x)
 {
 	allwindows[currentWindow].goDefault(x);
 }
-var windowsOpen=0;
+
 var currentWindow=0;
+for(var i=0;i<10;i++)
+	alldivs[i]=null;
+
+function windowsOpen() 
+{
+	var num = 0;
+	for(var i=0;i<10;i++)
+		if(alldivs[i]!=null)
+			num++;
+	return num;
+}
+	
 function openWindow()
 {
-	windowsOpen++;
-	currentWindow=windowsOpen;
-	var wname='dwindow'+windowsOpen;
-    var thespan=document.getElementById("DWINDOW");
-    thespan.innerHTML=thespan.innerHTML+getFrameHTML(wname);
-    loadwindow('term.cmvp?wnum='+currentWindow,730,355,wname);
+	var foundX = -1;
+	for(var i=0;i<10;i++)
+		if(alldivs[i]==null)
+		{
+			foundx=i;
+			break;
+		}
+	if(foundx<0)
+	{
+		alert("Unable to open another window.  10 is the limit!");
+	}
+	else
+	{
+		currentWindow=foundx;
+		var wname='dwindow'+currentWindow;
+	    var thespan=document.getElementById("EWINDOW" + currentWindow);
+	    alldivs[currentWindow] = thespan;
+	    thespan.innerHTML=thespan.innerHTML+getFrameHTML(wname,currentWindow);
+	    loadwindow('term.cmvp?wnum='+currentWindow,730,355,wname,currentWindow);
+    }
 }
 
 function rotateWindow()
 {
-	if(windowsOpen==0) return;
+	if(windowsOpen()==0) return;
 	var wname='dwindow'+currentWindow;
     var thespan=document.getElementById(wname);
     thespan.style.display='none';
     
-	currentWindow++;
-	if(currentWindow>windowsOpen) currentWindow=1;
+    currentWindow++;
+    if(currentWindow==10) currentWindow=0;
+    while((currentWindow<10)&&(alldivs[currentWindow]==null))
+    	currentWindow++;
+    if(currentWindow>=10) return;
 	wname='dwindow'+currentWindow;
     thespan=document.getElementById(wname);
     thespan.style.display='';
@@ -60,7 +91,25 @@ function rotateWindow()
 </SCRIPT>
 </HEAD>
 <BODY BGCOLOR=BLACK>
-<DIV ID=DWINDOW NAME=DWINDOW>
+<DIV ID=EWINDOW1 NAME=EWINDOW1>
+</DIV>
+<DIV ID=EWINDOW2 NAME=EWINDOW2>
+</DIV>
+<DIV ID=EWINDOW3 NAME=EWINDOW3>
+</DIV>
+<DIV ID=EWINDOW4 NAME=EWINDOW4>
+</DIV>
+<DIV ID=EWINDOW5 NAME=EWINDOW5>
+</DIV>
+<DIV ID=EWINDOW6 NAME=EWINDOW6>
+</DIV>
+<DIV ID=EWINDOW7 NAME=EWINDOW7>
+</DIV>
+<DIV ID=EWINDOW8 NAME=EWINDOW8>
+</DIV>
+<DIV ID=EWINDOW9 NAME=EWINDOW9>
+</DIV>
+<DIV ID=EWINDOW0 NAME=EWINDOW0>
 </DIV>
 <SCRIPT LANGUAGE=JavaScript>
 window.onload=new Function('openWindow()');

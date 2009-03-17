@@ -8893,7 +8893,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     String check=standardTriggerCheck(script,t,msg.target());
                     if(check!=null)
                     {
-                        enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,check);
+                        enqueResponse(affecting,msg.source(),msg.target(),monster,defaultItem,defaultItem,script,1,check);
                         return;
                     }
                 }

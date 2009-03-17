@@ -38,8 +38,9 @@ function drag_drop(e)
     }
 }
 
-function initializedrag(e,wname)
+function initializedrag(e,wname,wnum)
 {
+	front(wname,wnum);
     offsetx=ie5? event.clientX : e.clientX
     offsety=ie5? event.clientY : e.clientY
     document.getElementById(wname+"content").style.display="none"
@@ -51,7 +52,7 @@ function initializedrag(e,wname)
     document.getElementById(wname).onmousemove=drag_drop;
 }
 
-function loadwindow(url,width,height,wname)
+function loadwindow(url,width,height,wname,wnum)
 {
     if (!ie5&&!ns6)
         window.open(url,"","width=width,height=height,scrollbars=1")
@@ -63,10 +64,11 @@ function loadwindow(url,width,height,wname)
         document.getElementById(wname).style.left=saveLeft=minLeft()+"px"
         document.getElementById(wname).style.top=saveTop=minTop()+"px"
         document.getElementById(wname+"frame").src=url
+        front(wname,wnum);
     }
 }
 
-function maximize(wname)
+function maximize(wname,wnum)
 {
     if (minrestore==0)
     {
@@ -95,39 +97,70 @@ function maximize(wname)
     }
 }
 
-function reposition(wname)
+function reposition(wname,wnum)
 {
     maximize(wname);
     maximize(wname);
 }
 
-function hideit(wname)
+function closewindow(wname,wnum)
+{
+	var obj = alldivs[wnum];
+	var obj2 = document.getElementById(wname);
+    obj2.style.display="none";
+    var obj3 = top.term.allapplets[wnum];
+    obj3.disconnectFromURL();
+	alldivs[wnum]=null;
+	obj2.innerHTML = '';
+	obj.innerHTML = '';
+	for(var i=0;i<10;i++)
+		if(top.term.alldivs[i] != null)
+			top.term.currentWindow = i;
+	front('dwindow'+top.term.currentWindow,top.term.currentWindow);
+}
+function front(wname,wnum)
+{
+    document.getElementById("EWINDOW"+wnum).style.zIndex=10;
+    document.getElementById(wname).style.zIndex=10;
+    for(var i=0;i<10;i++)
+    	if(i!=wnum)
+    	{
+    		var obj = alldivs[i];
+    		if(obj != null)
+    			obj.style.zIndex=0;
+    		obj = document.getElementById("dwindow"+i);
+    		if(obj != null)
+    			obj.style.zIndex=0;
+    	}
+    top.term.currentWindow = wnum;
+}
+function hideit(wname,wnum)
 {
     document.getElementById(wname).style.display="none"
 }
-function unhideit(wname)
+function unhideit(wname,wnum)
 {
     document.getElementById(wname).style.display=""
 }
 
-function stopdrag(wname)
+function stopdrag(wname, wnum)
 {
     dragapproved=false;
     document.getElementById(wname).onmousemove=null;
     document.getElementById(wname+"content").style.display=""
 }
 
-function getFrameHTML(wname)
+function getFrameHTML(wname,wnum)
 {
-    var s='<div id="'+wname+'" style="position:absolute;background-color:#EBEBEB;cursor:hand;left:0px;top:0px;display:none" onMousedown="initializedrag(event,\''+wname+'\')" onMouseup="stopdrag(\''+wname+'\')" onSelectStart="return false">';
+    var s='<div id="'+wname+'" style="position:absolute;background-color:#EBEBEB;cursor:hand;left:0px;top:0px;display:none" onMousedown="initializedrag(event,\''+wname+'\','+wnum+')" onMouseup="stopdrag(\''+wname+'\','+wnum+')" onSelectStart="return false">';
     s+='<div id="'+wname+'bar" style="background-color:red">';
-    s+='<table width=100% border=0 cellspacing=0 cellpadding=0><tr>';
+    s+='<table width=100% border=0 cellspacing=0 cellpadding=0 onclick="front(\''+wname+'\','+wnum+')"><tr>';
     s+='<td width=80% align=left>'
     s+='<div id="'+wname+'content" style="height:100%">';
     s+='<div id="'+wname+'namer" style="background-color:red"></div>';
     s+='</td><td width=20% align=right>'
-    s+='<img src="max.gif" id="'+wname+'max" onClick="maximize(\''+wname+'\')">';
-    //s+='<img src="close.gif" onClick="hideit(\''+wname+'\')">';
+    s+='<img src="max.gif" id="'+wname+'max" onClick="maximize(\''+wname+'\','+wnum+')">';
+    s+='<img src="close.gif" id="'+wname+'close" onClick="closewindow(\''+wname+'\','+wnum+')">';
     s+='</td></tr></table>'
     s+='</div>';
     s+='<div id="'+wname+'extracontent"></div>';
