@@ -795,6 +795,8 @@ public interface Session extends CMCommon
     public static final int TELNET_BINARY=0;
     /** TELNET CODE: echo */
     public static final int TELNET_ECHO=1;
+    /** TELNET CODE: echo */
+    public static final int TELNET_LOGOUT=18;
     /** TELNET CODE: supress go ahead*/
     public static final int TELNET_SUPRESS_GO_AHEAD=3;
     /** TELNET CODE: sending terminal type*/
@@ -837,7 +839,7 @@ public interface Session extends CMCommon
     public static final String[] TELNET_DESCS=
     { 
         "BINARY","ECHO","2","SUPRESS GO AHEAD","4","5","6","7","8","9", //0-9
-        "10","11","12","13","14","15","16","17","18","19", //10-19
+        "10","11","12","13","14","15","16","17","LOGOUT","19", //10-19
         "20","21","22","23","TERMTYPE","25","26","27","28","29", //20-29
         "30","NAWS","32","FLOWCONTROL","LINEMODE","35","36","37","38","39", //30-39
         "40","41","42","43","44","45","46","47","48","49", //40-49

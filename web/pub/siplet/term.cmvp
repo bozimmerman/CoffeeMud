@@ -4,7 +4,7 @@
 	<link rel="coffeemud icon" href="../images/coffeemud.ico" >
 <SCRIPT LANGUAGE=JavaScript src="dropdown.js"></SCRIPT>
 </HEAD>
-<BODY BGCOLOR=BLACK>
+<BODY BGCOLOR=BLACK ONCLICK="top.term.front(myname,mynum);">
 <script language=JavaScript>
 var mynum = top.term.currentWindow;
 var myname='dwindow'+top.term.currentWindow;

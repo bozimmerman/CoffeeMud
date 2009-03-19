@@ -38,6 +38,7 @@ public class TelnetFilter
     protected static final char TELOPT_EOR = 25;
     protected static final char TELOPT_ECHO = 1;
     protected static final char TELOPT_NAWS = 31;
+    protected static final char TELOPT_LOGOUT = 18;
     protected static final char TELOPT_TTYPE = 24;
     protected static final char TELOPT_TSPEED = 32;
     protected static final char MCCP_COMPRESS = 85;
@@ -484,6 +485,11 @@ public class TelnetFilter
                             }
                         }
                         else
+                        if(buf.charAt(i)==TELOPT_LOGOUT)
+                        {
+                        	// goot for you serverdude
+                        }
+                        else
                         if(buf.charAt(i)!=TELOPT_BINARY)
                         {
                             if(debugTelnetCodes) System.out.println("Sent DONT "+((int)buf.charAt(i))+"!");
@@ -541,6 +547,11 @@ public class TelnetFilter
                                 response.flush();
                                 setMSPSupport(true);
                             }
+                        }
+                        else
+                        if(buf.charAt(i)==TELOPT_LOGOUT)
+                        {
+                        	// good for you serverdude
                         }
                         else
                         if(buf.charAt(i)==IAC_MXP)

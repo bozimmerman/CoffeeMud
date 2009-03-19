@@ -24,11 +24,9 @@ limitations under the License.
 public class Siplet extends Applet
 {
     public final static boolean debugDataOut=false;
-
-
     public final static long serialVersionUID=7;
     public static final float VERSION_MAJOR=(float)2.0;
-    public static final long  VERSION_MINOR=6;
+    public static final long  VERSION_MINOR=7;
     protected StringBuffer buf=new StringBuffer("");
     protected String lastURL="coffeemud.net";
     protected int lastPort=23;
@@ -86,6 +84,8 @@ public class Siplet extends Applet
     public boolean connectToURL(String url, int port)
     {
         connected=false;
+        if(sock!=null)
+        	disconnectFromURL();
         try
         {
             lastURL=url;
@@ -114,18 +114,25 @@ public class Siplet extends Applet
     public void disconnectFromURL()
     {
         connected=false;
-        try
-        {
+        try {
+            if(out!=null)
+            {
+            	out.write(new byte[]{(byte)255,(byte)253,18}); //iac, iacdo, logout 
+            	out.flush();
+            }
+        } catch(Exception e) { }
+        try {
             if((in!=null)&&(in[0]!=null))
                 in[0].close();
+        } catch(Exception e) { }
+        try {
             if(out!=null)
                 out.close();
+        } catch(Exception e) { }
+        try {
             if(sock!=null)
                 sock.close();
-        }
-        catch(Exception e)
-        {
-        }
+        } catch(Exception e) { }
         in=null;
         out=null;
         sock=null;

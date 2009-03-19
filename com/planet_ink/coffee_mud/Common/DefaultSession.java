@@ -232,7 +232,7 @@ public class DefaultSession extends Thread implements Session
             telnetSupportSet.add(new Integer(Session.TELNET_TERMTYPE));
             telnetSupportSet.add(new Integer(Session.TELNET_BINARY));
             telnetSupportSet.add(new Integer(Session.TELNET_ECHO));
-            //telnetSupportSet.add(new Integer(Session.TELNET_SUPRESS_GO_AHEAD));
+            telnetSupportSet.add(new Integer(Session.TELNET_LOGOUT));
             telnetSupportSet.add(new Integer(Session.TELNET_TERMTYPE));
             telnetSupportSet.add(new Integer(Session.TELNET_NAWS));
             //telnetSupportSet.add(new Integer(Session.TELNET_COMPRESS2));
@@ -957,6 +957,8 @@ public class DefaultSession extends Thread implements Session
             else
             if(!serverTelnetMode(last))
                 changeTelnetMode(last,true);
+    		if(serverTelnetCodes[TELNET_LOGOUT])
+    			killFlag = true;
 		    break;
 		}
 		case TELNET_DONT:
@@ -985,6 +987,8 @@ public class DefaultSession extends Thread implements Session
             else
             if(!serverTelnetMode(last))
                 changeTelnetModeBackwards(last,true);
+    		if(serverTelnetCodes[TELNET_LOGOUT])
+    			killFlag = true;
             break;
         }
         case TELNET_WONT:
