@@ -134,11 +134,12 @@ public class Score extends Affect
 				msg.append("You are "+role+" of the ^H"+mob.getClanID()+"^?^. Clan.\n\r");
 			}
 		}
-        msg.append("\n\r^NYour stats are: \n\r^!");
+        msg.append("\n\r^NYour stats are: ");
+        msg.append(CMProps.mxpImage(mob," ALIGN=RIGHT H=70 W=70"));
+        msg.append("\n\r");
         int max=CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
         CharStats CT=mob.charStats();
         if(parm.equalsIgnoreCase("BASE")) CT=mob.baseCharStats();
-        msg.append(CMProps.mxpImage(mob," ALIGN=RIGHT H=70 W=70"));
         msg.append("^N^!");
         msg.append(CMStrings.padRight("^<HELP^>Strength^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_STRENGTH)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_STRENGTH_ADJ))+"\n\r");
         msg.append(CMStrings.padRight("^<HELP^>Intelligence^</HELP^>",15)+": "+CMStrings.padRight(Integer.toString(CT.getStat(CharStats.STAT_INTELLIGENCE)),2)+"/"+(max+CT.getStat(CharStats.STAT_MAX_INTELLIGENCE_ADJ))+"\n\r");
