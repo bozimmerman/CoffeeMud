@@ -64,6 +64,8 @@ function loadwindow(url,width,height,wname,wnum)
         document.getElementById(wname).style.left=saveLeft=minLeft()+"px"
         document.getElementById(wname).style.top=saveTop=minTop()+"px"
         document.getElementById(wname+"frame").src=url
+        top.bar.redColor(wnum);
+        top.term.currentWindow=-1;
         front(wname,wnum);
     }
 }
@@ -116,23 +118,31 @@ function closewindow(wname,wnum)
 	for(var i=0;i<10;i++)
 		if(top.term.alldivs[i] != null)
 			top.term.currentWindow = i;
+	top.bar.blackStatus(wnum);
 	front('dwindow'+top.term.currentWindow,top.term.currentWindow);
 }
 function front(wname,wnum)
 {
-    document.getElementById("EWINDOW"+wnum).style.zIndex=10;
-    document.getElementById(wname).style.zIndex=10;
-    for(var i=0;i<10;i++)
-    	if(i!=wnum)
-    	{
-    		var obj = alldivs[i];
-    		if(obj != null)
-    			obj.style.zIndex=0;
-    		obj = document.getElementById("dwindow"+i);
-    		if(obj != null)
-    			obj.style.zIndex=0;
-    	}
-    top.term.currentWindow = wnum;
+	if(top.term.currentWindow != wnum)
+	{
+	    document.getElementById("EWINDOW"+wnum).style.zIndex=10;
+	    document.getElementById(wname).style.zIndex=10;
+	    for(var i=0;i<10;i++)
+	    	if(i!=wnum)
+	    	{
+	    		var obj = alldivs[i];
+	    		if(obj != null)
+	    			obj.style.zIndex=0;
+	    		obj = document.getElementById("dwindow"+i);
+	    		if(obj != null)
+	    			obj.style.zIndex=0;
+	    	}
+	    top.term.currentWindow = wnum;
+    	top.bar.greenColor(wnum);
+	    top.entry.boxFocus();
+	    return false;
+	}
+	return true;
 }
 function hideit(wname,wnum)
 {
@@ -152,7 +162,7 @@ function stopdrag(wname, wnum)
 
 function getFrameHTML(wname,wnum)
 {
-    var s='<div id="'+wname+'" style="position:absolute;background-color:#EBEBEB;cursor:hand;left:0px;top:0px;display:none" onMousedown="initializedrag(event,\''+wname+'\','+wnum+')" onMouseup="stopdrag(\''+wname+'\','+wnum+')" onSelectStart="return false">';
+    var s='<div id="'+wname+'" style="position:absolute;background-color:#EBEBEB;cursor:hand;left:0px;top:0px;display:none" onMousedown="initializedrag(event,\''+wname+'\','+wnum+')" onMouseup="stopdrag(\''+wname+'\','+wnum+')" onSelectStart="return true">';
     s+='<div id="'+wname+'bar" style="background-color:red">';
     s+='<table width=100% border=0 cellspacing=0 cellpadding=0 onclick="front(\''+wname+'\','+wnum+')"><tr>';
     s+='<td width=80% align=left>'
@@ -164,7 +174,7 @@ function getFrameHTML(wname,wnum)
     s+='</td></tr></table>'
     s+='</div>';
     s+='<div id="'+wname+'extracontent"></div>';
-    s+='<iframe id="'+wname+'frame" src="" width=100% height=100%></iframe>';
+    s+='<iframe id="'+wname+'frame" src="" width=100% height=100% onfocus="return front(\''+wname+'\','+wnum+')"></iframe>';
     s+='</div>';
     s+='</div>';
     return s;

@@ -9,6 +9,10 @@ var allwindows=new Array(10);
 var alldivs = new Array(10);
 var allapplets=new Array(10);
 
+var currentWindow=0;
+for(var i=0;i<10;i++)
+	alldivs[i]=null;
+
 function closeWindow()
 {
 	allwindows[currentWindow].closeWindow();
@@ -35,10 +39,6 @@ function goDefault(x)
 	allwindows[currentWindow].goDefault(x);
 }
 
-var currentWindow=0;
-for(var i=0;i<10;i++)
-	alldivs[i]=null;
-
 function windowsOpen() 
 {
 	var num = 0;
@@ -54,22 +54,23 @@ function openWindow()
 	for(var i=0;i<10;i++)
 		if(alldivs[i]==null)
 		{
-			foundx=i;
+			foundX=i;
 			break;
 		}
-	if(foundx<0)
-	{
-		alert("Unable to open another window.  10 is the limit!");
-	}
+	if(foundX<0)
+		window.alert("Unable to open another window.  10 is the limit!");
 	else
-	{
-		currentWindow=foundx;
-		var wname='dwindow'+currentWindow;
-	    var thespan=document.getElementById("EWINDOW" + currentWindow);
-	    alldivs[currentWindow] = thespan;
-	    thespan.innerHTML=thespan.innerHTML+getFrameHTML(wname,currentWindow);
-	    loadwindow('term.cmvp?wnum='+currentWindow,730,355,wname,currentWindow);
-    }
+		openThisWindow(foundX);
+}
+
+function openThisWindow(foundX)
+{
+	currentWindow=foundX;
+	var wname='dwindow'+currentWindow;
+    var thespan=document.getElementById("EWINDOW" + currentWindow);
+    alldivs[currentWindow] = thespan;
+    thespan.innerHTML=thespan.innerHTML+getFrameHTML(wname,currentWindow);
+    loadwindow('term.cmvp?wnum='+currentWindow,730,355,wname,currentWindow);
 }
 
 function rotateWindow()

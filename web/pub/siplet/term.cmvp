@@ -71,6 +71,8 @@ function addToWindow(s)
         }
         thespan.innerHTML=thespan.innerHTML+s;
         theend.scrollIntoView(false);
+        if(mynum != top.term.currentWindow)
+	    	top.bar.lightgreenColor(mynum);
     }
 }
 function displayData()
@@ -82,7 +84,8 @@ function displayData()
         thespan.style.backgroundColor='red'
         thespan=top.term.document.getElementById(myname+'namer');
         thespan.style.backgroundColor='red'
-        alert('Lost connection.');
+        top.bar.redColor(mynum);
+        //alert('Lost connection.'); // red is enough
     }
     else
     {
@@ -198,6 +201,7 @@ function connect(url,port)
         thespan.style.backgroundColor='green'
         thespan=top.term.document.getElementById(myname+'bar');
         thespan.style.backgroundColor='green'
+        top.bar.greenColor(mynum);
         setTimeout('displayData(); top.entry.boxFocus();',100);
     }
 }
@@ -211,7 +215,7 @@ function addToPrompt(x,att)
 }
 function goDefault(x)
 {
-	mydivname.zIndex = 0;
+	top.term.front('dwindow'+x,x);
 }
 top.term.allwindows[top.term.currentWindow]=this;
 </SCRIPT>
