@@ -81,7 +81,6 @@ public class CommonSkill extends StdAbility
 			if((msg.sourceMinor()==CMMsg.TYP_SHUTDOWN)
 			||((msg.sourceMinor()==CMMsg.TYP_QUIT)&&(msg.amISource((MOB)myHost))))
 			{
-				((MOB)myHost).location().show(((MOB)myHost),null,null,CMMsg.MSG_NOISYMOVEMENT,"<S-NAME> stop(s) "+verb+".",null,"<S-NAME> stop(s) "+verb+".");
 				aborted=true;
 				unInvoke();
 			}
