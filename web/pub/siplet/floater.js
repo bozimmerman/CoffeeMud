@@ -98,6 +98,7 @@ function maximize(wname,wnum)
         document.getElementById(wname).style.left=saveLeft
         document.getElementById(wname).style.top=saveTop
     }
+    document.getElementById(wname+"content").style.display="none";
 }
 
 function reposition(wname,wnum)
