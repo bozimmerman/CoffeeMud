@@ -44,24 +44,25 @@ public class Spell_GiantStrength extends Spell
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		int increase = 4;
+		int increase = 1;
 		if (affectableStats.getCurrentClass().baseClass().equals("Fighter"))
-			increase = 8;
+			increase = 4;
 		else
 		if (affectableStats.getCurrentClass().baseClass().equals("Mage"))
-			increase = 5;
+			increase = 3;
 		else
 		if (affectableStats.getCurrentClass().baseClass().equals("Thief"))
-			increase = 7;
+			increase = 2;
 		else
 		if (affectableStats.getCurrentClass().baseClass().equals("Bard"))
-			increase = 7;
+			increase = 2;
 		else
 		if (affectableStats.getCurrentClass().baseClass().equals("Cleric"))
-			increase = 6;
+			increase = 1;
 		else
 		if (affectableStats.getCurrentClass().baseClass().equals("Druid"))
-			increase = 6;
+			increase = 1;
+		increase += (getXLEVELLevel(invoker())+2)/3;
 		affectableStats.setStat(CharStats.STAT_STRENGTH,affectableStats.getStat(CharStats.STAT_STRENGTH) + increase);
 	}
 

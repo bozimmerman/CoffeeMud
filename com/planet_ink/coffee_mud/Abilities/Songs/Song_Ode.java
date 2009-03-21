@@ -277,7 +277,7 @@ public class Song_Ode extends Song
 				V.addElement(e.nextElement());
 			Integer I=(Integer)V.elementAt(CMLib.dice().roll(1,V.size(),-1));
 			String[] chk=stuff[I.intValue()];
-			invoker().location().show(invoker(),null,whom,CMMsg.MSG_SPEAK,"<S-NAME> sing(s) '"+chk[3]+"'.");
+			invoker().location().show(invoker(),this,whom,CMMsg.MSG_SPEAK,"<S-NAME> sing(s) '"+chk[3]+"'.");
 		}
 
 

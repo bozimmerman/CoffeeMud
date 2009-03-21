@@ -123,6 +123,14 @@ public interface CharStats extends CMCommon, CMModifiable
      * @return the value of the given STAT
      */
 	public int getStat(int statNum);
+	
+	/**
+	 * A method that simply calculates the nomimal max of the given
+	 * ordinary stat code from available data.
+	 * @param abilityCode (str, int, etc)
+	 * @return the max stat.
+	 */
+	public int getMaxStat(int abilityCode);
     /**
      * Set the value of one of the STAT_ constants, representing attributes,
      * saving throws, and max attributes, from the CharStats interface.

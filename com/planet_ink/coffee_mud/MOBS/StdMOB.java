@@ -144,12 +144,9 @@ public class StdMOB implements MOB
 	}
 	public int getExpNeededLevel()
 	{
-		if(!isMonster())
-		{
-			if((CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)>0)
-			&&(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)<=baseEnvStats().level()))
-				return Integer.MAX_VALUE;
-		}
+		if((CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)>0)
+		&&(CMProps.getIntVar(CMProps.SYSTEMI_LASTPLAYERLEVEL)<=baseEnvStats().level()))
+			return Integer.MAX_VALUE;
 		if((CMSecurity.isDisabled("EXPERIENCE"))
 		||(charStats().getCurrentClass().expless())
 		||(charStats().getMyRace().expless()))

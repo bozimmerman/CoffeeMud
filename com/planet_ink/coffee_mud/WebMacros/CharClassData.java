@@ -927,7 +927,7 @@ public class CharClassData extends StdWebMacro
 					str.append(preReqName+", ");
 				if(parms.containsKey("ATTACK"))
 				{
-					str.append("("+preReqName+"/6)");
+					str.append("("+preReqName+"/18)");
 					if(C.getBonusAttackLevel()>0)
 						str.append("+"+C.getBonusAttackLevel());
 					else

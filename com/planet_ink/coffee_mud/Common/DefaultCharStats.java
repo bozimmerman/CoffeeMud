@@ -675,6 +675,12 @@ public class DefaultCharStats implements CharStats
 			setStat(STAT_MAX_STRENGTH_ADJ+abilityCode,
 					value-CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT));
 	}
+	
+	public int getMaxStat(int abilityCode)
+	{
+		int baseMax = CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT);
+		return baseMax + getStat(STAT_MAX_STRENGTH_ADJ + abilityCode);
+	}
     
     public void setRacialStat(int abilityCode, int racialMax)
     {

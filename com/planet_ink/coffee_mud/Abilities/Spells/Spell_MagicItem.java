@@ -68,16 +68,19 @@ public class Spell_MagicItem extends Spell
 
 		String spellName=CMParms.combine(commands,0).trim();
 		Spell wandThis=null;
+		Vector ables=new Vector();
 		for(int a=0;a<mob.numAbilities();a++)
 		{
 			Ability A=mob.fetchAbility(a);
 			if((A!=null)
 			&&(A instanceof Spell)
 			&&((!A.savable())||(CMLib.ableMapper().qualifiesByLevel(mob,A)))
-			&&(A.name().toUpperCase().startsWith(spellName.toUpperCase()))
 			&&(!A.ID().equals(this.ID())))
-				wandThis=(Spell)A;
+				ables.addElement(A);
 		}
+		wandThis = (Spell)CMLib.english().fetchEnvironmental(ables,spellName,true);
+		if(wandThis==null)
+			wandThis = (Spell)CMLib.english().fetchEnvironmental(ables,spellName,false);
 		if(wandThis==null)
 		{
 			mob.tell("You don't know how to enchant anything with '"+spellName+"'.");

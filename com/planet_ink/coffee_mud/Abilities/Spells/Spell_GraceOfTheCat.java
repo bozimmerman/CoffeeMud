@@ -47,19 +47,20 @@ public class Spell_GraceOfTheCat extends Spell
 		super.affectCharStats(affected,affectableStats);
 		if(increase <= 0)
 		{
-			increase = 4;
+			increase = 1;
 			if (affectableStats.getCurrentClass().baseClass().equals("Thief"))
-				increase = 8;
+				increase = 2;
 			if (affectableStats.getCurrentClass().baseClass().equals("Bard"))
-				increase = 8;
+				increase = 2;
 			if (affectableStats.getCurrentClass().baseClass().equals("Fighter"))
-				increase = 6;
+				increase = 3;
 			if (affectableStats.getCurrentClass().baseClass().equals("Mage"))
-				increase = 6;
+				increase = 2;
 			if (affectableStats.getCurrentClass().baseClass().equals("Cleric"))
-				increase = 4;
+				increase = 1;
 			if (affectableStats.getCurrentClass().baseClass().equals("Druid"))
-				increase = 4;
+				increase = 1;
+			increase += (getXLEVELLevel(invoker())+2)/3;
 		}
 		affectableStats.setStat(CharStats.STAT_DEXTERITY,affectableStats.getStat(CharStats.STAT_DEXTERITY) + increase);
 	}

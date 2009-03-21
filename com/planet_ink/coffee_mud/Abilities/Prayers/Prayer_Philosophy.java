@@ -45,24 +45,25 @@ public class Prayer_Philosophy extends Prayer
 	public void affectCharStats(MOB affected, CharStats affectableStats)
 	{
 		super.affectCharStats(affected,affectableStats);
-		int increase = 4;
+		int increase = 1;
 		if (affectableStats.getCurrentClass().baseClass().equals("Fighter"))
-			increase = 4;
+			increase = 1;
 		else
 		if (affectableStats.getCurrentClass().baseClass().equals("Mage"))
-			increase = 6;
+			increase = 2;
 		else
 		if (affectableStats.getCurrentClass().baseClass().equals("Thief"))
-			increase = 5;
+			increase = 1;
 		else
 		if (affectableStats.getCurrentClass().baseClass().equals("Bard"))
-			increase = 5;
+			increase = 1;
 		else
 		if (affectableStats.getCurrentClass().baseClass().equals("Cleric"))
-			increase = 7;
+			increase = 3;
 		else
 		if (affectableStats.getCurrentClass().baseClass().equals("Druid"))
-			increase = 7;
+			increase = 3;
+		increase += (super.getXLEVELLevel(invoker())+2)/3;
 		affectableStats.setStat(CharStats.STAT_WISDOM,affectableStats.getStat(CharStats.STAT_WISDOM) + increase);
 	}
 

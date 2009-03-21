@@ -90,8 +90,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	public int adjustedAttackBonus(MOB mob, MOB target)
 	{
 		double att=(double)ATTACK_ADJUSTMENT + (double)mob.envStats().attackAdjustment();
-		double str=((double)mob.charStats().getStat(CharStats.STAT_STRENGTH)-9.0)/5.0;
-		double strR=((double)mob.baseCharStats().getStat(CharStats.STAT_STRENGTH)-9.0)/5.0;
+		int maxStat = mob.charStats().getMaxStat(CharStats.STAT_STRENGTH);
+		int currStat = mob.charStats().getStat(CharStats.STAT_STRENGTH);
+		if(currStat > maxStat) currStat = maxStat;
+		int baseStat = mob.baseCharStats().getStat(CharStats.STAT_STRENGTH);
+		if(baseStat > maxStat) baseStat = maxStat;
+		double str=((double)currStat-9.0)/5.0;
+		double strR=((double)baseStat-9.0)/5.0;
 		att += (str * strR * strR);
 		if(mob.curState().getHunger()<1) att=att*.9;
 		if(mob.curState().getThirst()<1) att=att*.9;
@@ -334,8 +339,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		{
 			int levelDiff = attacker.envStats().level() - target.envStats().level();
 			if(levelDiff > 10) levelDiff = 10;
-			double critPct = CMath.div(attacker.charStats().getStat(CharStats.STAT_INTELLIGENCE)- 10 + levelDiff,2.5);
-			double critPctR = CMath.div(attacker.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE)- 10 + levelDiff,2.5);
+			int maxStat = attacker.charStats().getMaxStat(CharStats.STAT_INTELLIGENCE);
+			int currStat = attacker.charStats().getStat(CharStats.STAT_INTELLIGENCE);
+			if(currStat > maxStat) currStat = maxStat;
+			int baseStat = attacker.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE);
+			if(baseStat > maxStat) baseStat = maxStat;
+			double critPct = CMath.div(currStat - 10 + levelDiff,2.5);
+			double critPctR = CMath.div(baseStat - 10 + levelDiff,2.5);
 			if((critPct>0)&&(critPctR>0))
 			{
 				critPct = critPct * critPctR * critPctR;
@@ -365,6 +375,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	public int adjustedDamage(MOB mob, Weapon weapon, MOB target)
 	{
 		double damageAmount=0.0;
+		int levelDiff = mob.envStats().level() - ((target==null)?0:target.envStats().level());
 		if(target!=null)
 		{
 			if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
@@ -380,11 +391,16 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
 			damageAmount = (double)(weapon.envStats().damage()+1);
 		else
-			damageAmount = (double)(mob.envStats().damage()+(mob.charStats().getStat(CharStats.STAT_STRENGTH) / 3)-2);
-		int levelDiff = mob.envStats().level() - ((target==null)?0:target.envStats().level());
+			damageAmount = (double)mob.envStats().damage() + CMath.div(mob.charStats().getStat(CharStats.STAT_STRENGTH)-10  + levelDiff,2.5);
 		if(levelDiff > 25) levelDiff = 25;
-		double critPct = CMath.div(mob.charStats().getStat(CharStats.STAT_DEXTERITY)- 10 + levelDiff,2.5);
-		double critPctR = CMath.div(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)- 10 + levelDiff,2.5);
+		if(levelDiff > 10) levelDiff = 10;
+		int maxStat = mob.charStats().getMaxStat(CharStats.STAT_DEXTERITY);
+		int currStat = mob.charStats().getStat(CharStats.STAT_DEXTERITY);
+		if(currStat > maxStat) currStat = maxStat;
+		int baseStat = mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY);
+		if(baseStat > maxStat) baseStat = maxStat;
+		double critPct = CMath.div(currStat - 10 + levelDiff,2.5);
+		double critPctR = CMath.div(baseStat - 10 + levelDiff,2.5);
 		if((critPct>0)&&(critPctR>0))
 		{
 			critPct = critPct * critPctR * critPctR;
