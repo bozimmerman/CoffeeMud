@@ -145,59 +145,59 @@ public class StdDeity extends StdMOB implements Deity
 			switch(DT.triggerCode)
 			{
 			case TRIGGER_SAY:
-				buf.append("the player says '"+DT.parm1.toLowerCase()+"'");
+				buf.append("the player should say '"+DT.parm1.toLowerCase()+"'");
 				break;
 			case TRIGGER_READING:
 				if(DT.parm1.equals("0"))
-					buf.append("the player reads something");
+					buf.append("the player should read something");
 				else
-					buf.append("the player reads '"+DT.parm1.toLowerCase()+"'");
+					buf.append("the player should read '"+DT.parm1.toLowerCase()+"'");
 				break;
 			case TRIGGER_TIME:
 				buf.append("the hour of the day is "+DT.parm1.toLowerCase()+"");
 				break;
 			case TRIGGER_PUTTHING:
-				buf.append("the player puts "+DT.parm1.toLowerCase()+" in "+DT.parm2.toLowerCase());
+				buf.append("the player should put "+DT.parm1.toLowerCase()+" in "+DT.parm2.toLowerCase());
 				break;
 			case TRIGGER_BURNTHING:
-				buf.append("the player burns "+DT.parm1.toLowerCase());
+				buf.append("the player should burn "+DT.parm1.toLowerCase());
 				break;
 			case TRIGGER_DRINK:
-				buf.append("the player drinks from "+DT.parm1.toLowerCase());
+				buf.append("the player should drink "+DT.parm1.toLowerCase());
 				break;
 			case TRIGGER_EAT:
-				buf.append("the player eats "+DT.parm1.toLowerCase());
+				buf.append("the player should eat "+DT.parm1.toLowerCase());
 				break;
 			case TRIGGER_INROOM:
 				{
                 if(DT.parm1.equalsIgnoreCase("holy")
                 ||DT.parm1.equalsIgnoreCase("unholy")
                 ||DT.parm1.equalsIgnoreCase("balance"))
-                    buf.append("the player is in the deities room of infused "+DT.parm1.toLowerCase()+"-ness.");
+                    buf.append("the player should be in the deities room of infused "+DT.parm1.toLowerCase()+"-ness.");
                 else
                 {
     				Room R=CMLib.map().getRoom(DT.parm1);
     				if(R==null)
-    					buf.append("the player is in some unknown place");
+    					buf.append("the player should be in some unknown place");
     				else
-    					buf.append("the player is in '"+R.roomTitle(null)+"'");
+    					buf.append("the player should be in '"+R.roomTitle(null)+"'");
                 }
 				}
 				break;
 			case TRIGGER_RIDING:
-				buf.append("the player is on "+DT.parm1.toLowerCase());
+				buf.append("the player should be on "+DT.parm1.toLowerCase());
 				break;
 			case TRIGGER_CAST:
 				{
 				Ability A=CMClass.findAbility(DT.parm1);
 				if(A==null)
-					buf.append("the player casts '"+DT.parm1+"'");
+					buf.append("the player should cast '"+DT.parm1+"'");
 				else
-					buf.append("the player casts '"+A.name()+"'");
+					buf.append("the player should cast '"+A.name()+"'");
 				}
 				break;
 			case TRIGGER_EMOTE:
-				buf.append("the player emotes '"+DT.parm1.toLowerCase()+"'");
+				buf.append("the player should emote '"+DT.parm1.toLowerCase()+"'");
 				break;
 			case TRIGGER_RANDOM:
 				buf.append(DT.parm1+"% of the time");
@@ -206,7 +206,7 @@ public class StdDeity extends StdMOB implements Deity
                 buf.append("wait "+((CMath.s_int(DT.parm1)*Tickable.TIME_TICK)/1000)+" seconds");
                 break;
             case TRIGGER_YOUSAY:
-                buf.append("then you will say '"+DT.parm1.toLowerCase()+"'");
+                buf.append("then you will automatically say '"+DT.parm1.toLowerCase()+"'");
                 break;
             case TRIGGER_OTHERSAY:
                 buf.append("then all others will say '"+DT.parm1.toLowerCase()+"'");
@@ -218,7 +218,7 @@ public class StdDeity extends StdMOB implements Deity
 				buf.append(CMLib.masking().maskDesc(DT.parm1));
 				break;
 			case TRIGGER_PUTVALUE:
-				buf.append("the player puts an item worth at least "+DT.parm1.toLowerCase()+" in "+DT.parm2.toLowerCase());
+				buf.append("the player should put an item worth at least "+DT.parm1.toLowerCase()+" in "+DT.parm2.toLowerCase());
 				break;
 			case TRIGGER_PUTMATERIAL:
 				{
@@ -245,20 +245,20 @@ public class StdDeity extends StdMOB implements Deity
 					if(((t&RawMaterial.RESOURCE_MASK)>0)
 					&&((t&RawMaterial.RESOURCE_MASK)<RawMaterial.RESOURCE_DESCS.length))
 						material=RawMaterial.RESOURCE_DESCS[t&RawMaterial.RESOURCE_MASK].toLowerCase();
-					buf.append("the player burns an item made of "+material);
+					buf.append("the player should burn an item made of "+material);
 				}
 				break;
 			case TRIGGER_BURNVALUE:
-				buf.append("the player burns an item worth at least "+DT.parm1.toLowerCase());
+				buf.append("the player should burn an item worth at least "+DT.parm1.toLowerCase());
 				break;
 			case TRIGGER_SITTING:
-				buf.append("the player sits down");
+				buf.append("the player should sit down");
 				break;
 			case TRIGGER_STANDING:
-				buf.append("the player stands up");
+				buf.append("the player should stand up");
 				break;
 			case TRIGGER_SLEEPING:
-				buf.append("the player goes to sleep");
+				buf.append("the player should go to sleep");
 				break;
 			}
 		}

@@ -674,6 +674,23 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 		            found=true;
 		        }
 			}
+			
+			if(!found)
+			{
+				Deity D = CMLib.map().getDeity(helpStr);
+				if(D != null)
+				{
+					Command CMD=CMClass.getCommand("Deities");
+					Vector commands=CMParms.makeVector("DEITY",D);
+					try {
+						CMD.execute(forMOB, commands, Command.METAFLAG_FORCED);
+						helpStr = D.Name().toUpperCase();
+						if((commands.size()==1)&&(commands.firstElement() instanceof String))
+							thisTag=(String)commands.firstElement();
+					}catch(Exception e){}
+				}
+				
+			}
 		}
 		if(!areaTag)
 			while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<31))

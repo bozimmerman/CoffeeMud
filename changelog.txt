@@ -2195,9 +2195,11 @@ Special/Reserved Quest called holidays can be added to/modified on an area-by-ar
    Thieves and Fighters are most altered classes.  
    Mobs are an average of players now.
    Combat Fudge Factors are more strict, effective, and rational.
+   Bonuses from stats are capped by the players current Max Stat value.  Period.
    Use RESET MOBSTATS WORLD command to pull your mobs into compliance.  This will, as a side affect, reset all area content to db baseline. 
 4. CoffeeMud now supports critical hits for spells and physical damage: high int supports former, and high dex the later.
 5. New Zappermask: +BASECLASS
 6. New DEBUG flag: HTTPACCESS, SMTPCLIENT
 7. SMTPSERVERNAME ini entry expanded to allow SMTP auth support.
 8. Siplet now supports multiple windows.
+9. Players can now get HELP on deities by name.
