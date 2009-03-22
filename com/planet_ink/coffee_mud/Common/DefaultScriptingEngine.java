@@ -8818,7 +8818,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     String check=standardTriggerCheck(script,t,msg.target());
                     if(check!=null)
                     {
-                        enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,check);
+                        enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check);
                         return;
                     }
                 }
@@ -8910,7 +8910,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     {
                         if(lastMsg==msg) break;
                         lastMsg=msg;
-                        enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,check);
+                        enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check);
                         return;
                     }
                 }
@@ -8928,9 +8928,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         if(lastMsg==msg) break;
                         lastMsg=msg;
                         if(msg.target() instanceof Coins)
-                            execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
+                            execute(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
                         else
-                            enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,check);
+                            enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check);
                         return;
                     }
                 }
@@ -8945,7 +8945,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     String check=standardTriggerCheck(script,t,msg.target());
                     if(check!=null)
                     {
-                        enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,check);
+                        enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check);
                         return;
                     }
                 }
@@ -8984,7 +8984,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     String check=standardTriggerCheck(script,t,msg.target());
                     if(check!=null)
                     {
-                        enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),defaultItem,script,1,check);
+                        enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check);
                         return;
                     }
                 }
@@ -9003,9 +9003,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         if(lastMsg==msg) break;
                         lastMsg=msg;
                         if((msg.tool() instanceof Coins)&&(((Item)msg.target()).owner() instanceof Room))
-                            execute(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
+                            execute(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
                         else
-                            enqueResponse(affecting,msg.source(),monster,monster,(Item)msg.target(),(Item)msg.tool(),script,1,check);
+                            enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)msg.tool(),script,1,check);
                         return;
                     }
                 }

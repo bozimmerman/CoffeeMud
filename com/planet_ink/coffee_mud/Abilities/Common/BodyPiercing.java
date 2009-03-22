@@ -103,6 +103,13 @@ public class BodyPiercing extends CommonSkill
 		
 		MOB target=super.getTarget(mob,CMParms.makeVector(name),givenTarget);
 		if(target==null) return false;
+		if((target.isMonster())
+		&&(CMLib.flags().aliveAwakeMobile(target,true))
+		&&(!mob.getGroupMembers(new HashSet()).contains(target)))
+		{
+			mob.tell(target.Name()+" doesn't want any piercings.");
+			return false;
+		}
 		
 		int partNum=-1;
 		StringBuffer allParts=new StringBuffer("");
