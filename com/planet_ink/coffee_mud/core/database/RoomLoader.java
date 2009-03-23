@@ -657,31 +657,33 @@ public class RoomLoader
 						else
 							itemLocs.put(newItem,loc);
 					}
-					if(catalog)
-					{
-					    String text=DBConnections.getResQuietly(R,"CMITTX");
-					    int x=text.lastIndexOf("<CATALOGDATA>");
-					    if((x>0)&&(text.indexOf("</CATALOGDATA>",x)>0))
-				        {
-			                cataData=(Hashtable)stuff.get("CATADATAFOR"+roomID.toUpperCase());
-			                if(cataData==null)
-			                {
-			                    cataData=new Hashtable();
-			                    stuff.put("CATADATAFOR"+roomID.toUpperCase(),cataData);
-			                }
-			                cataData.put(itemNum,text.substring(x));
-			                text=text.substring(0,x);
-				        }
-                        newItem.setMiscText(text);
-					}
-					else
-    					newItem.setMiscText(DBConnections.getResQuietly(R,"CMITTX"));
-					newItem.baseEnvStats().setRejuv((int)DBConnections.getLongRes(R,"CMITRE"));
-					newItem.setUsesRemaining((int)DBConnections.getLongRes(R,"CMITUR"));
-					newItem.baseEnvStats().setLevel((int)DBConnections.getLongRes(R,"CMITLV"));
-					newItem.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
-					newItem.baseEnvStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
-					newItem.recoverEnvStats();
+					try {
+						if(catalog)
+						{
+						    String text=DBConnections.getResQuietly(R,"CMITTX");
+						    int x=text.lastIndexOf("<CATALOGDATA>");
+						    if((x>0)&&(text.indexOf("</CATALOGDATA>",x)>0))
+					        {
+				                cataData=(Hashtable)stuff.get("CATADATAFOR"+roomID.toUpperCase());
+				                if(cataData==null)
+				                {
+				                    cataData=new Hashtable();
+				                    stuff.put("CATADATAFOR"+roomID.toUpperCase(),cataData);
+				                }
+				                cataData.put(itemNum,text.substring(x));
+				                text=text.substring(0,x);
+					        }
+	                        newItem.setMiscText(text);
+						}
+						else
+	    					newItem.setMiscText(DBConnections.getResQuietly(R,"CMITTX"));
+						newItem.baseEnvStats().setRejuv((int)DBConnections.getLongRes(R,"CMITRE"));
+						newItem.setUsesRemaining((int)DBConnections.getLongRes(R,"CMITUR"));
+						newItem.baseEnvStats().setLevel((int)DBConnections.getLongRes(R,"CMITLV"));
+						newItem.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMITAB"));
+						newItem.baseEnvStats().setHeight((int)DBConnections.getLongRes(R,"CMHEIT"));
+						newItem.recoverEnvStats();
+	                } catch(Exception e) { Log.errOut("RoomLoader",e); itemNums.remove(itemNum);}
 				}
 				if(((currentRecordPos%updateBreak)==0)&&(setStatus))
 					CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Loading Items ("+currentRecordPos+" of "+recordCount+")");
@@ -739,22 +741,24 @@ public class RoomLoader
                         newMOB.setStartRoom(thisRoom);
                         newMOB.setLocation(thisRoom);
                     }
-					if((CMProps.getBoolVar(CMProps.SYSTEMB_MOBNOCACHE))
-					&&(!catalog)
-					&&(NUMID.indexOf(MOBID+"@")>=0))
-						newMOB.setMiscText("%DBID>"+roomID+NUMID.substring(NUMID.indexOf("@")));
-					else
-						newMOB.setMiscText(DBConnections.getResQuietly(R,"CMCHTX"));
-					newMOB.baseEnvStats().setLevel(((int)DBConnections.getLongRes(R,"CMCHLV")));
-					newMOB.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMCHAB"));
-					newMOB.baseEnvStats().setRejuv((int)DBConnections.getLongRes(R,"CMCHRE"));
-					String ride=DBConnections.getRes(R,"CMCHRI");
-					if((ride!=null)&&(ride.length()>0))
-						mobRides.put(newMOB,ride);
-					newMOB.recoverCharStats();
-					newMOB.recoverEnvStats();
-					newMOB.recoverMaxState();
-					newMOB.resetToMaxState();
+                    try {
+						if((CMProps.getBoolVar(CMProps.SYSTEMB_MOBNOCACHE))
+						&&(!catalog)
+						&&(NUMID.indexOf(MOBID+"@")>=0))
+							newMOB.setMiscText("%DBID>"+roomID+NUMID.substring(NUMID.indexOf("@")));
+						else
+							newMOB.setMiscText(DBConnections.getResQuietly(R,"CMCHTX"));
+						newMOB.baseEnvStats().setLevel(((int)DBConnections.getLongRes(R,"CMCHLV")));
+						newMOB.baseEnvStats().setAbility((int)DBConnections.getLongRes(R,"CMCHAB"));
+						newMOB.baseEnvStats().setRejuv((int)DBConnections.getLongRes(R,"CMCHRE"));
+						String ride=DBConnections.getRes(R,"CMCHRI");
+						if((ride!=null)&&(ride.length()>0))
+							mobRides.put(newMOB,ride);
+						newMOB.recoverCharStats();
+						newMOB.recoverEnvStats();
+						newMOB.recoverMaxState();
+						newMOB.resetToMaxState();
+                    } catch(Exception e) { Log.errOut("RoomLoader",e); itemNums.remove(NUMID);}
 				}
 				if(((currentRecordPos%updateBreak)==0)&&(setStatus))
 					CMProps.setUpLowVar(CMProps.SYSTEM_MUDSTATUS,"Booting: Loading MOBs ("+currentRecordPos+" of "+recordCount+")");
