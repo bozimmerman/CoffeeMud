@@ -143,8 +143,14 @@ public class DefaultSession extends Thread implements Session
 			{
 			    out.flush();
 			    rawout.flush();
-				try{Thread.sleep(50);}catch(Exception e){}
+				preliminaryRead(250);
+			    out.flush();
+			    rawout.flush();
+				preliminaryRead(250);
 				negotiateTelnetMode(rawout,TELNET_COMPRESS2);
+			    out.flush();
+			    rawout.flush();
+				preliminaryRead(250);
 			    ZOutputStream zOut=new ZOutputStream(rawout, JZlib.Z_DEFAULT_COMPRESSION);
 			    zOut.setFlushMode(JZlib.Z_SYNC_FLUSH);
 				out = new PrintWriter(new OutputStreamWriter(zOut,CMProps.getVar(CMProps.SYSTEM_CHARSETOUTPUT)));
@@ -1493,6 +1499,7 @@ public class DefaultSession extends Thread implements Session
 					    loginMsg.append(getAddress())
 					            .append(" "+terminalType)
 					            .append(((CMath.bset(mob.getBitmap(),MOB.ATT_MXP)&&clientTelnetMode(Session.TELNET_MXP)))?" MXP":"")
+					            .append((clientTelnetMode(Session.TELNET_COMPRESS)||clientTelnetMode(Session.TELNET_COMPRESS2))?" CMP":"")
                                 .append(((CMath.bset(mob.getBitmap(),MOB.ATT_ANSI)&&clientTelnetMode(Session.TELNET_ANSI)))?" ANSI":"")
                                 .append(", login: "+mob.Name());
 						Log.sysOut("Session",loginMsg.toString());

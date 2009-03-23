@@ -1,5 +1,6 @@
 <!-- Elements to support the Automapper -->
 <P>
+<SUPPORT destination iframe>
 <!ELEMENT RName '<B>' FLAG="RoomName">
 <!ELEMENT RDesc EMPTY FLAG='RoomDesc'>
 <!ELEMENT RExits '<FONT COLOR=Blue>' FLAG='RoomExit'>
