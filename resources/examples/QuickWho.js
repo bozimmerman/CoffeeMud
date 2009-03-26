@@ -8,7 +8,7 @@ var commands=CMParms.toStringArray(CMParms.makeVector("QUICKWHO"));
 
 function getAccessWords() { return commands;}
 
-function execute(mob,commands) {
+function execute(mob,commands,x) {
     var e;
     var M;
     for(e=CMLib.players().players();e.hasMoreElements();)
