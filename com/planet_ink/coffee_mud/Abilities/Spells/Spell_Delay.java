@@ -56,6 +56,7 @@ public class Spell_Delay extends Spell
 			return;
 		if(canBeUninvoked())
 		{
+			shooter = (Ability)shooter.copyOf();
 			MOB newCaster=CMClass.getMOB("StdMOB");
 			newCaster.setName("the thin air");
 			newCaster.setDescription(" ");
