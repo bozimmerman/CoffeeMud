@@ -105,7 +105,7 @@ public class Spell_SummonEnemy extends Spell
 		if(caster.location()==null) return null;
 		if(caster.location().getArea()==null) return null;
 		MOB monster=null;
-		int tries=10000000;
+		int tries=10000;
 		while((monster==null)&&((--tries)>0))
 		{
 			Room room=CMLib.map().getRandomRoom();
@@ -115,11 +115,13 @@ public class Spell_SummonEnemy extends Spell
 				if((mob!=null)
 				&&(!(mob instanceof Deity))
 				&&(mob.envStats().level()>=level)
+				&&(mob.envStats().level()<=(level + 1 + CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE)))
 				&&(mob.charStats()!=null)
 				&&(mob.charStats().getMyRace()!=null)
 				&&(CMProps.isTheme(mob.charStats().getMyRace().availabilityCode()))
 				&&(CMath.bset(mob.charStats().getMyRace().availabilityCode(),Area.THEME_SKILLONLYMASK))
-                &&( (CMLib.flags().isGood(caster)&&CMLib.flags().isEvil(mob)) || (CMLib.flags().isEvil(caster)&&CMLib.flags().isGood(mob))))
+                &&((CMLib.flags().isGood(caster)&&CMLib.flags().isEvil(mob)) 
+            		|| (CMLib.flags().isEvil(caster)&&CMLib.flags().isGood(mob))))
         			monster=mob;
 			}
 		}

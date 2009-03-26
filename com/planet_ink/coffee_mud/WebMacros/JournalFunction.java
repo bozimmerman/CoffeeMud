@@ -143,7 +143,7 @@ public class JournalFunction extends StdWebMacro
 	                {
 		                String toName=entry.from;
 		                MOB toM=CMLib.players().getLoadPlayer(toName);
-		                if((M==null)||(M.playerStats()==null)||(M.playerStats().getEmail().indexOf("@")<0))
+		                if((toM==null)||(toM.playerStats()==null)||(toM.playerStats().getEmail().indexOf("@")<0))
 							messages.append("Player '"+toName+"' does not exist, or has no email address.<BR>");
 		                else
 		                {

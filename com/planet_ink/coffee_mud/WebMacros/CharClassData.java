@@ -835,7 +835,7 @@ public class CharClassData extends StdWebMacro
 							str.append(CMStrings.capitalizeAndLower(CharStats.STAT_DESCS[i])+" ("+(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)+C.maxStatAdjustments()[i])+"), ");
 				if(parms.containsKey("PRACS"))
 				{
-					str.append(C.getPracsFirstLevel()+" plus (Wisdom/4)");
+					str.append(C.getPracsFirstLevel()+" plus (Wisdom/6)");
 					if(C.getBonusPracLevel()>0)
 						str.append("+"+C.getBonusPracLevel());
 					else

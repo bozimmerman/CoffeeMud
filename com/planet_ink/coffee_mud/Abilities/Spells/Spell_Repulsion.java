@@ -128,6 +128,7 @@ public class Spell_Repulsion extends Spell
 							int level=2;
 							if((CMLib.ableMapper().qualifyingClassLevel(mob,this)>0)&&((adjustedLevel(mob,asLevel)-CMLib.ableMapper().qualifyingClassLevel(mob,this))>10))
 								level+=((adjustedLevel(mob,asLevel)-CMLib.ableMapper().qualifyingClassLevel(mob,this))-10)/10;
+							if(level<2) level=2;
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) repelled!");
 							if((target.getVictim()!=null)&&(target.rangeToTarget()>0))
 								target.setAtRange(target.rangeToTarget());

@@ -121,7 +121,7 @@ public class Spell_Laughter extends Spell
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
                     int ticks=8-levelDiff;
-                    if(ticks<0) ticks=1;
+                    if(ticks<=0) ticks=1;
 					success=maliciousAffect(mob,target,asLevel,8-levelDiff,-1);
 					if(success)
 						if(target.location()==R)

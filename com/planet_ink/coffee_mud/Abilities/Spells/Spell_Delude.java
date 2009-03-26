@@ -55,6 +55,7 @@ public class Spell_Delude extends Spell
                 mob.playerStats().setLastUpdated(0);
 			CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), previousAlignment-mob.fetchFaction(CMLib.factions().AlignID()));
 			mob.tell("Your attitude returns to normal.");
+			mob.confirmWearability();
 		}
 	}
 
@@ -126,6 +127,7 @@ public class Spell_Delude extends Spell
                                     }
                                 }
             					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), newAlign-mob.fetchFaction(CMLib.factions().AlignID()));
+            					mob.confirmWearability();
                                 return true;
                             case 2:
                                 // find an evil range, set them within that
@@ -142,6 +144,7 @@ public class Spell_Delude extends Spell
                                     }
                                 }
             					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), newAlign-mob.fetchFaction(CMLib.factions().AlignID()));
+            					mob.confirmWearability();
                                 return true;
                         }
 					}
