@@ -782,6 +782,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 						return unpackErr("Room","bad 'iblk' in room "+newRoom.roomID());
 					String iClass=CMLib.xml().getValFromPieces(iblk.contents,"ICLAS");
 					Item newItem=CMClass.getItem(iClass);
+					if(newItem instanceof ArchonOnly) continue;
 					if(newItem==null) return unpackErr("Room","null 'iClass': "+iClass+" in room "+newRoom.roomID());
 					if((newItem instanceof Container)||(newItem instanceof Rideable))
 					{
@@ -1373,6 +1374,9 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 			if(S!=null) S.rawPrint(".");
 			String itemClass=CMLib.xml().getValFromPieces(iblk.contents,"ICLAS");
 			Item newItem=CMClass.getItem(itemClass);
+			if((newItem instanceof ArchonOnly)
+			&&((S==null)||(S.mob()==null)||(!CMSecurity.isASysOp(S.mob()))))
+				continue;
 			if(newItem==null) return unpackErr("Items","null 'iClass': "+itemClass);
 			newItem.baseEnvStats().setLevel(CMLib.xml().getIntFromPieces(iblk.contents,"ILEVL"));
 			newItem.baseEnvStats().setAbility(CMLib.xml().getIntFromPieces(iblk.contents,"IABLE"));
@@ -1888,6 +1892,7 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 				return;
 			}
 			Item newOne=CMClass.getItem(CMLib.xml().getValFromPieces(iblk.contents,"ICLASS"));
+			if(newOne instanceof ArchonOnly) continue;
 			if(newOne==null)
 			{
 				Log.errOut("CoffeeMaker","Unknown item "+CMLib.xml().getValFromPieces(iblk.contents,"ICLASS")+" on "+identifier(M,null)+", skipping.");
