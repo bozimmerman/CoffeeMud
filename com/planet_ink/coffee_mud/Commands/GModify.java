@@ -288,6 +288,8 @@ public class GModify extends StdCommand
                 ((MOB)E).recoverMaxState();
             }
             E.text();
+        	if(CMLib.flags().isCataloged(E))
+        		CMLib.catalog().updateCatalog(E);
         }
         return didAnything;
     }

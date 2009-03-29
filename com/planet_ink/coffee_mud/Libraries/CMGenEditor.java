@@ -424,7 +424,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         StringBuffer diffs=CMLib.catalog().checkCatalogIntegrity(E);
         if(diffs!=null)
         {
-        	Environmental cataE=(Environmental)CMLib.catalog().getCatalogObj(E).copyOf();
+        	Environmental origCataE = CMLib.catalog().getCatalogObj(E);
+        	Environmental cataE=(Environmental)origCataE.copyOf();
         	CMLib.catalog().changeCatalogUsage(cataE,true);
         	StringBuffer detailedDiff=new StringBuffer("");
         	Vector V=CMParms.parseCommas(diffs.toString(),true);
@@ -437,16 +438,35 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         	}
         	cataE.destroy();
         	mob.tell("You have modified the following fields: \n\r"+detailedDiff.toString());
-	        if(mob.session().confirm("This object is cataloged.  Enter Y to update the cataloged version, or N to detach this object from the catalog (Y/n)?","Y"))
+        	String message = "This object is cataloged.  Enter U to update the cataloged version, or D to detach this object from the catalog, or C to Cancel (u/d/C)?";
+        	String choice = mob.session().choose(message, "UDC", "C");
+        	if(choice.equalsIgnoreCase("C"))
+        	{
+        		E.setMiscText(origCataE.text());
+        		E.recoverEnvStats();
+        		if(E instanceof MOB)
+        		{
+        			((MOB)E).recoverCharStats();
+        			((MOB)E).recoverMaxState();
+        		}
+        	}
+        	else
+        	if(choice.equalsIgnoreCase("U"))
 	        {
 	        	CMLib.catalog().updateCatalog(E);
 	            mob.tell("Catalog update complete.");
 	            Log.infoOut("BaseGenerics",mob.Name()+" updated catalog "+((E instanceof MOB)?"MOB":"ITEM")+" "+E.Name());
+	            E.setMiscText(E.text());
 	        }
 	        else
+        	if(choice.equalsIgnoreCase("D"))
+        	{
 	            CMLib.catalog().changeCatalogUsage(E,false);
+	            E.setMiscText(E.text());
+        	}
+        	else
+        		mob.tell("That wasn't a choice?!");
         }
-        E.setMiscText(E.text());
     }
 
     protected void genImage(MOB mob, Environmental E, int showNumber, int showFlag) throws IOException
