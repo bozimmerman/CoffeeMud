@@ -278,6 +278,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 		int loop=0;
 		int lastSpace=0;
 		int firstAlpha=-1;
+		int amperStop = -1;
 
 		while(buf.length()>loop)
 		{
@@ -356,6 +357,9 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 				    }
 				    break;
 				case '&':
+					if(loop < amperStop)
+						break;
+					else
 				    if((S!=null)&&(S.clientTelnetMode(Session.TELNET_MXP)))
 				    {
 						if((!buf.substring(loop,loop+3).equalsIgnoreCase("lt;"))
@@ -815,6 +819,7 @@ public class CoffeeFilter extends StdLibrary implements TelnetFilter
 			&&(buf.charAt(loop)!=13)
 			&&(buf.charAt(loop)!=10))
 			{
+				amperStop=loop;
 				if(buf.charAt(lastSp+1)==' ')
 				{
 					buf.setCharAt(lastSp,(char)13);

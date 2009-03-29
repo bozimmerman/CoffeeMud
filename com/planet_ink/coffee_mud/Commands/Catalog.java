@@ -93,17 +93,41 @@ public class Catalog extends StdCommand
 		if(exactOnly) return (Environmental)data[0];
 		if((data[0]==null)&&((whatKind==0)||(whatKind==1)))
 		{
-			String[] names=CMLib.catalog().getCatalogMobNames();
+			String[] names=(String[])CMLib.catalog().getCatalogMobNames().clone();
 			for(int x=0;x<names.length;x++)
 				if(CMLib.english().containsString(names[x], ID))
 				{	data[0]=CMLib.catalog().getCatalogMob(names[x]); data[1]=Integer.valueOf(1); break;}
+			if(data[0] == null)
+			{
+				for(int s=0;s<names.length;s++)
+					names[s] = CMStrings.removeColors(names[s]);
+				for(int x=0;x<names.length;x++)
+					if(ID.equalsIgnoreCase(names[x]))
+					{	data[0]=CMLib.catalog().getCatalogMob(names[x]); data[1]=Integer.valueOf(1); break;}
+				if(data[0] == null)
+				for(int x=0;x<names.length;x++)
+					if(CMLib.english().containsString(names[x], ID))
+					{	data[0]=CMLib.catalog().getCatalogMob(names[x]); data[1]=Integer.valueOf(1); break;}
+			}
 		}
 		if((data[0]==null)&&((whatKind==0)||(whatKind==2)))
 		{
-			String[] names=CMLib.catalog().getCatalogItemNames();
+			String[] names=(String[])CMLib.catalog().getCatalogItemNames().clone();
 			for(int x=0;x<names.length;x++)
 				if(CMLib.english().containsString(names[x], ID))
 				{	data[0]=CMLib.catalog().getCatalogItem(names[x]); data[1]=Integer.valueOf(2); break;}
+			if(data[0] == null)
+			{
+				for(int s=0;s<names.length;s++)
+					names[s] = CMStrings.removeColors(names[s]);
+				for(int x=0;x<names.length;x++)
+					if(ID.equalsIgnoreCase(names[x]))
+					{	data[0]=CMLib.catalog().getCatalogItem(names[x]); data[1]=Integer.valueOf(2); break;}
+				if(data[0] == null)
+				for(int x=0;x<names.length;x++)
+					if(CMLib.english().containsString(names[x], ID))
+					{	data[0]=CMLib.catalog().getCatalogItem(names[x]); data[1]=Integer.valueOf(2); break;}
+			}
 		}
 		return (Environmental)data[0];
 	}

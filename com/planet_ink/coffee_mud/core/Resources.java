@@ -92,10 +92,10 @@ public class Resources
         Vector V=new Vector();
         if(buf==null) return V;
         StringBuffer str=new StringBuffer("");
-        for(int i=0;i<buf.length()-1;i++)
+        for(int i=0;i<buf.length();i++)
         {
-            if(((buf.charAt(i)=='\n')&&(buf.charAt(i+1)=='\r'))
-               ||((buf.charAt(i)=='\r')&&(buf.charAt(i+1)=='\n')))
+            if(((buf.charAt(i)=='\n')&&(i<buf.length()-1)&&(buf.charAt(i+1)=='\r'))
+               ||((buf.charAt(i)=='\r')&&(i<buf.length()-1)&&(buf.charAt(i+1)=='\n')))
             {
                 i++;
                 V.addElement(str.toString());
