@@ -122,7 +122,7 @@ public class Spell_Laughter extends Spell
 				{
                     int ticks=8-levelDiff;
                     if(ticks<=0) ticks=1;
-					success=maliciousAffect(mob,target,asLevel,8-levelDiff,-1);
+					success=maliciousAffect(mob,target,asLevel,ticks,-1);
 					if(success)
 						if(target.location()==R)
 							R.show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> begin(s) laughing uncontrollably, unable to move!!");

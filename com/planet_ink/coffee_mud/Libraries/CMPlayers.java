@@ -440,7 +440,7 @@ public class CMPlayers extends StdLibrary implements PlayerLibrary
                 if(!protectedOne)
                 {
                     MOB M=getLoadPlayer(name);
-                    if(M!=null)
+                    if((M!=null)&&(!CMSecurity.isASysOp(M))&&(!CMSecurity.isAllowedAnywhere(M, "NOPURGE")))
                     {
                         obliteratePlayer(M,true);
                         Log.sysOut(thread.getName(),"AutoPurged user "+name+". Last logged in "+(CMLib.time().date2String(last))+".");

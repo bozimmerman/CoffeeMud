@@ -229,7 +229,7 @@ public class StdClanItem extends StdItem implements ClanItem
 
 	public static boolean stdOkMessageMOBS(MOB giver, MOB targetMOB, Item myHost)
 	{
-		if(targetMOB.isMonster())
+		if((targetMOB != null)&&(targetMOB.isMonster()))
 		{
 			Item alreadyHasOne=null;
 			for(int i=0;i<targetMOB.inventorySize();i++)
@@ -301,52 +301,57 @@ public class StdClanItem extends StdItem implements ClanItem
 		}
 		else
 		if((msg.amITarget(myHost)||(msg.target()==((ClanItem)myHost).ultimateContainer()))
-        &&(((ClanItem)myHost).clanID().length()>0)
-        &&((msg.targetMinor()==CMMsg.TYP_GET)||(msg.targetMinor()==CMMsg.TYP_CAST_SPELL)))
+        &&(((ClanItem)myHost).clanID().length()>0))
 		{
-			if(msg.source().getClanID().length()==0)
+	        if((msg.targetMinor()==CMMsg.TYP_GET)
+	        ||(msg.targetMinor()==CMMsg.TYP_PUSH)
+	        ||(msg.targetMinor()==CMMsg.TYP_PULL)
+	        ||(msg.targetMinor()==CMMsg.TYP_CAST_SPELL))
 			{
-				msg.source().tell("You must belong to a clan to take a clan item.");
-				return false;
-			}
-			else
-			if((msg.targetMinor()==CMMsg.TYP_GET)
-			&&(!stdOkMessageMOBS(null,msg.source(),(Item)myHost)))
-				return false;
-			else
-			if((!msg.source().getClanID().equals(((ClanItem)myHost).clanID()))
-			&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
-			{
-				Clan C=CMLib.clans().getClan(msg.source().getClanID());
-				int relation=-1;
-				if(C!=null)
-					relation=C.getClanRelations(((ClanItem)myHost).clanID());
-				else
+				if(msg.source().getClanID().length()==0)
 				{
-					C=CMLib.clans().getClan(((ClanItem)myHost).clanID());
-					if(C!=null)
-						relation=C.getClanRelations(msg.source().getClanID());
-				}
-				if(relation!=Clan.REL_WAR)
-				{
-					msg.source().tell("You must be at war with this clan to take one of their items.");
+					msg.source().tell("You must belong to a clan to do that to a clan item.");
 					return false;
 				}
-                Room room=msg.source().location();
-                if((room!=null)&&(room.getArea()!=null))
-                {
-                    LegalBehavior theLaw=CMLib.law().getLegalBehavior(room.getArea());
-                    if((theLaw!=null)&&(theLaw.rulingOrganization()!=null)&&(theLaw.rulingOrganization().equals(((ClanItem)myHost).clanID())))
-                    {
-                        msg.source().tell("You'll need to conquer this area to do that.");
-                        return false;
-                    }
-                    if((theLaw!=null)&&(!theLaw.isFullyControlled()))
-                    {
-                        msg.source().tell("Your clan does not yet fully control the area.");
-                        return false;
-                    }
-                }
+				else
+				if((msg.targetMinor()!=CMMsg.TYP_CAST_SPELL)
+				&&(!stdOkMessageMOBS(null,msg.source(),(Item)myHost)))
+					return false;
+				else
+				if((!msg.source().getClanID().equals(((ClanItem)myHost).clanID()))
+				&&(((ClanItem)myHost).ciType()!=ClanItem.CI_PROPAGANDA))
+				{
+					Clan C=CMLib.clans().getClan(msg.source().getClanID());
+					int relation=-1;
+					if(C!=null)
+						relation=C.getClanRelations(((ClanItem)myHost).clanID());
+					else
+					{
+						C=CMLib.clans().getClan(((ClanItem)myHost).clanID());
+						if(C!=null)
+							relation=C.getClanRelations(msg.source().getClanID());
+					}
+					if(relation!=Clan.REL_WAR)
+					{
+						msg.source().tell("You must be at war with this clan to take one of their items.");
+						return false;
+					}
+	                Room room=msg.source().location();
+	                if((room!=null)&&(room.getArea()!=null))
+	                {
+	                    LegalBehavior theLaw=CMLib.law().getLegalBehavior(room.getArea());
+	                    if((theLaw!=null)&&(theLaw.rulingOrganization()!=null)&&(theLaw.rulingOrganization().equals(((ClanItem)myHost).clanID())))
+	                    {
+	                        msg.source().tell("You'll need to conquer this area to do that.");
+	                        return false;
+	                    }
+	                    if((theLaw!=null)&&(!theLaw.isFullyControlled()))
+	                    {
+	                        msg.source().tell("Your clan does not yet fully control the area.");
+	                        return false;
+	                    }
+	                }
+				}
 			}
         }
 		return true;
