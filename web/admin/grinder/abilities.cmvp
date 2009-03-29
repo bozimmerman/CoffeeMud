@@ -73,7 +73,7 @@
        @endif@
     @back@
     <TR>
-    <TD COLSPAN=4><a href="javascript:Ability(document.RESOURCES.NEWABILITY.value,'&NEWABILITY='+document.RESOURCES.NEWABILITY.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWABILITY SIZE=70></B></FONT></TD>
+    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWABILITY.value!='')Ability(document.RESOURCES.NEWABILITY.value,'&NEWABILITY='+document.RESOURCES.NEWABILITY.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWABILITY SIZE=70></B></FONT></TD>
     </TR>
     </TABLE>
     <P>

@@ -62,7 +62,7 @@
     </TR>
     @back@
     <TR>
-    <TD COLSPAN=4><a href="javascript:Holiday(document.RESOURCES.NEWHOLIDAY.value+'&NEWHOLIDAY='+document.RESOURCES.NEWHOLIDAY.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWHOLIDAY SIZE=70></B></FONT></TD>
+    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWHOLIDAY.value!='')Holiday(document.RESOURCES.NEWHOLIDAY.value+'&NEWHOLIDAY='+document.RESOURCES.NEWHOLIDAY.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWHOLIDAY SIZE=70></B></FONT></TD>
     </TR>
     </TABLE>
     <P>

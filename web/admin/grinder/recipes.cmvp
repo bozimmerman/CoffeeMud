@@ -29,7 +29,13 @@
         {
         	Recipe(val);
         }
-        function AddRecipe() {
+        function AddRecipe() 
+        {
+        	if(document.RESOURCES.ABILITY.selectedIndex<=0)
+        	{
+        		alert('You must select a skill first.');
+        		return;
+        	}
         	Recipe(-1);
         }
         function Clicked(action)

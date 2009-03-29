@@ -82,7 +82,7 @@
         </TR>
     @back@
     <TR>
-    <TD COLSPAN=4><a href="javascript:NewFaction(document.RESOURCES.NEWFACTION.value,'&NEWFACTION='+document.RESOURCES.NEWFACTION.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWFACTION SIZE=70></B></FONT></TD>
+    <TD COLSPAN=4><a href="javascript:if(document.RESOURCES.NEWFACTION.value!='')NewFaction(document.RESOURCES.NEWFACTION.value,'&NEWFACTION='+document.RESOURCES.NEWFACTION.value)"><FONT COLOR=WHITE><B>Create New:</a> <INPUT TYPE=TEXT NAME=NEWFACTION SIZE=70></B></FONT></TD>
     </TR>
     </TABLE>
     <P>
