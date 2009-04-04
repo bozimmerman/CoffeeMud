@@ -86,7 +86,7 @@ public class Spell_TeleportObject extends Spell
 		}
 		if(searchWhat==null) searchWhat="ERIPM";
 		String destinationString=CMParms.combine(commands,1).trim().toUpperCase();
-		Vector candidates=CMLib.map().findWorldRoomsLiberally(mob,destinationString,searchWhat,10);
+		Vector candidates=CMLib.map().findWorldRoomsLiberally(mob,destinationString,searchWhat,10,600);
 		if(candidates.size()==0)
 		{
 			mob.tell("You don't know of an place called '"+destinationString.toLowerCase()+"'.");

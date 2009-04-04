@@ -72,6 +72,32 @@ public class Age extends StdAbility
 	public final static String otherBabyEmoter="min=1 max=5 chance=10;wants its mommy.;wants its daddy.;cries.;doesnt like you.;cries for its mommy.;cries for its daddy.";
 	public final static String downBabyEmoter="min=1 max=2 chance=50;wants its mommy.;wants its daddy.;cries.;cries!;cries.";
 
+	protected Race getMyRace()
+	{
+	    if((myRace==null)&&(affected != null))
+	    {
+	    	if(affected instanceof CagedAnimal)
+	    	{
+		        MOB M=((CagedAnimal)affected).unCageMe();
+		        if(M!=null)
+			        myRace=M.baseCharStats().getMyRace();
+		        else
+		        {
+		            Room R=CMLib.map().roomLocation(affected);
+		            if(R!=null)
+		                R.showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" died.");
+		            ((Item)affected).destroy();
+		        }
+	            M.delEffect(M.fetchEffect(ID()));
+	            M.destroy();
+	    	}
+	    	else
+	    	if(affected instanceof MOB)
+	    		myRace=((MOB)affected).charStats().getMyRace();
+	    }
+	    return myRace;
+	}
+	
     protected MOB getFollowing(Environmental babe)
     {
         MOB following=null;
@@ -134,21 +160,7 @@ public class Age extends StdAbility
 		if((affected instanceof Item)&&(affected instanceof CagedAnimal))
 		{
             ((Item)affected).setExpirationDate(0);
-		    if(myRace==null)
-		    {
-		        MOB M=((CagedAnimal)affected).unCageMe();
-		        if(M!=null)
-			        myRace=M.baseCharStats().getMyRace();
-		        else
-		        {
-		            Room R=CMLib.map().roomLocation(affected);
-		            if(R!=null)
-		                R.showHappens(CMMsg.MSG_OK_VISUAL,affected.name()+" died.");
-		            ((Item)affected).destroy();
-		        }
-                M.delEffect(M.fetchEffect(ID()));
-	            M.destroy();
-		    }
+            if(getMyRace()==null) return;
 			if(ellapsed>=myRace.getAgingChart()[1])
 			{
 				Room R=CMLib.map().roomLocation(affected);
@@ -214,7 +226,7 @@ public class Age extends StdAbility
 		{
 			MOB babe=(MOB)affected;
             MOB following=getFollowing(babe);
-		    if(myRace==null) myRace=babe.charStats().getMyRace();
+            if(getMyRace()==null) return;
 			if((babe.getLiegeID().length()==0)&&(!following.getLiegeID().equals(affected.Name())))
 				babe.setLiegeID(following.Name());
 			babe.setBitmap(CMath.unsetb(babe.getBitmap(),MOB.ATT_AUTOASSIST));
@@ -423,6 +435,7 @@ public class Age extends StdAbility
 		if((affected!=null)
 		&&(!affected.amDestroyed()))
 		{
+            if(getMyRace()==null) return;
             if((msg.target()==affected)
             &&(msg.targetMinor()==CMMsg.TYP_EXAMINE))
             {
@@ -493,7 +506,7 @@ public class Age extends StdAbility
 				    if(affected instanceof MOB)
 				    {
 				        mob=(MOB)affected;
-					    if(myRace==null) myRace=((MOB)affected).charStats().getMyRace();
+			            if(getMyRace()==null) return;
 						if(divisor==0.0)
 						    divisor = (double)( CMLib.time().globalClock().getMonthsInYear() *
 						                        CMLib.time().globalClock().getDaysInMonth() *

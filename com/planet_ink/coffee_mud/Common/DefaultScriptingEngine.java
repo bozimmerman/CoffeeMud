@@ -682,7 +682,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
     	if((imHere!=null)&&(imHere.getArea()!=null))
     		rooms=CMLib.map().findAreaRoomsLiberally(null, imHere.getArea(), thisName, "RIEPM",100);
     	if(rooms.size()==0)
-    		rooms=CMLib.map().findWorldRoomsLiberally(null,thisName, "RIEPM",100);
+    		rooms=CMLib.map().findWorldRoomsLiberally(null,thisName, "RIEPM",100,10);
         if(rooms.size()>0) return (Room)rooms.elementAt(CMLib.dice().roll(1,rooms.size(),-1));
         return room;
     }

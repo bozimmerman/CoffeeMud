@@ -3036,107 +3036,111 @@ public class DefaultQuest implements Quest, Tickable, CMObject
 	        }
 	        if(questState.addons.size()>0)
 	        {
-	            for(int i=questState.addons.size()-1;i>=0;i--)
-	            {
-	                Integer I=(Integer)questState.addons.elementAt(i,2);
-	                if(I.intValue()>0)
-	                {
-	                    questState.addons.setElementAt(i,2,new Integer(I.intValue()-1));
-	                    continue;
-	                }
-	                Vector V=(Vector)questState.addons.elementAt(i,1);
-	                questState.addons.removeElementAt(i);
-	                if(V.size()<2) continue;
-	                Environmental E=(Environmental)V.elementAt(0);
-	                Object O=V.elementAt(1);
-	                if(O instanceof String)
-	                {
-	                    String stat=(String)O;
-	                    String parms=(String)V.elementAt(2);
-	                    if(CMStrings.contains(E.getStatCodes(),stat.toUpperCase().trim()))
-		                    E.setStat(stat,parms);
-	                    else
-	                    if(CMStrings.contains(E.baseEnvStats().getStatCodes(),stat.toUpperCase().trim()))
-	                    {
-	                    	E.baseEnvStats().setStat(stat.toUpperCase().trim(),parms);
-	                    	E.recoverEnvStats();
-	                    }
-	                    else
-	                    if((E instanceof MOB)&&(CMStrings.contains(CharStats.STAT_NAMES,stat.toUpperCase().trim())))
-	                    {
-	                    	((MOB)E).baseCharStats().setStat(CMParms.indexOf(CharStats.STAT_NAMES,stat.toUpperCase().trim()),CMath.s_int(parms));
-	                    	((MOB)E).recoverCharStats();
-	                    }
-	                    else
-	                    if((E instanceof MOB)&&CMStrings.contains(((MOB)E).baseState().getStatCodes(),stat))
-	                    {
-	                    	((MOB)E).baseState().setStat(stat,parms);
-	                    	((MOB)E).recoverMaxState();
-	                    	((MOB)E).resetToMaxState();
-	                    }
-	                }
-	                else
-	                if(O instanceof Behavior)
-	                {
-	                    Behavior B=E.fetchBehavior(((Behavior)O).ID());
-	                    if((E instanceof MOB)&&(B instanceof ScriptingEngine))
-	                        ((ScriptingEngine)B).endQuest(E,(MOB)E,name());
-	                    if((V.size()>2)&&(V.elementAt(2) instanceof String))
-	                    {
-	                        if(B==null){ B=(Behavior)O; E.addBehavior(B);}
-	                        B.setParms((String)V.elementAt(2));
-	                    }
-	                    else
-	                    if(B!=null)
-	                        E.delBehavior(B);
-	                }
-	                else
-	                if(O instanceof ScriptingEngine)
-	                {
-	                    ScriptingEngine S=(ScriptingEngine)O;
-	                    if((E instanceof MOB)&&(!S.isSavable()))
-	                    {
-	                        S.endQuest(E,(MOB)E,name());
-	                        ((MOB)E).delScript(S);
-	                    }
-	                }
-	                else
-	                if(O instanceof Ability)
-	                {
-	                    if((V.size()>2)
-	                    &&(V.elementAt(2) instanceof Ability)
-	                    &&(E instanceof MOB))
-	                    {
-	                        Ability A=((MOB)E).fetchAbility(((Ability)O).ID());
-	                        if((V.size()>3)&&(V.elementAt(3) instanceof String))
-	                        {
-	                            if(A==null){A=(Ability)O; ((MOB)E).addAbility(A);}
-	                            A.setMiscText((String)V.elementAt(3));
-	                        }
-	                        else
-	                        if(A!=null)
-	                            ((MOB)E).delAbility(A);
-	                    }
-	                    else
-	                    {
-	                        Ability A=E.fetchEffect(((Ability)O).ID());
-	                        if((V.size()>2)&&(V.elementAt(2) instanceof String))
-	                        {
-	                            if(A==null){A=(Ability)O; E.addEffect(A);}
-	                            A.setMiscText((String)V.elementAt(2));
-	                        }
-	                        else
-	                        if(A!=null)
-	                        {
-	                            A.unInvoke();
-	                            E.delEffect(A);
-	                        }
-	                    }
-	                }
-	                else
-	                if(O instanceof Item)
-	                    ((Item)O).destroy();
-	            }
+	        	synchronized(questState)
+	        	{
+	        		if(stoppingQuest)
+		            for(int i=questState.addons.size()-1;i>=0;i--)
+		            {
+		                Integer I=(Integer)questState.addons.elementAt(i,2);
+		                if(I.intValue()>0)
+		                {
+		                    questState.addons.setElementAt(i,2,new Integer(I.intValue()-1));
+		                    continue;
+		                }
+		                Vector V=(Vector)questState.addons.elementAt(i,1);
+		                questState.addons.removeElementAt(i);
+		                if(V.size()<2) continue;
+		                Environmental E=(Environmental)V.elementAt(0);
+		                Object O=V.elementAt(1);
+		                if(O instanceof String)
+		                {
+		                    String stat=(String)O;
+		                    String parms=(String)V.elementAt(2);
+		                    if(CMStrings.contains(E.getStatCodes(),stat.toUpperCase().trim()))
+			                    E.setStat(stat,parms);
+		                    else
+		                    if(CMStrings.contains(E.baseEnvStats().getStatCodes(),stat.toUpperCase().trim()))
+		                    {
+		                    	E.baseEnvStats().setStat(stat.toUpperCase().trim(),parms);
+		                    	E.recoverEnvStats();
+		                    }
+		                    else
+		                    if((E instanceof MOB)&&(CMStrings.contains(CharStats.STAT_NAMES,stat.toUpperCase().trim())))
+		                    {
+		                    	((MOB)E).baseCharStats().setStat(CMParms.indexOf(CharStats.STAT_NAMES,stat.toUpperCase().trim()),CMath.s_int(parms));
+		                    	((MOB)E).recoverCharStats();
+		                    }
+		                    else
+		                    if((E instanceof MOB)&&CMStrings.contains(((MOB)E).baseState().getStatCodes(),stat))
+		                    {
+		                    	((MOB)E).baseState().setStat(stat,parms);
+		                    	((MOB)E).recoverMaxState();
+		                    	((MOB)E).resetToMaxState();
+		                    }
+		                }
+		                else
+		                if(O instanceof Behavior)
+		                {
+		                    Behavior B=E.fetchBehavior(((Behavior)O).ID());
+		                    if((E instanceof MOB)&&(B instanceof ScriptingEngine))
+		                        ((ScriptingEngine)B).endQuest(E,(MOB)E,name());
+		                    if((V.size()>2)&&(V.elementAt(2) instanceof String))
+		                    {
+		                        if(B==null){ B=(Behavior)O; E.addBehavior(B);}
+		                        B.setParms((String)V.elementAt(2));
+		                    }
+		                    else
+		                    if(B!=null)
+		                        E.delBehavior(B);
+		                }
+		                else
+		                if(O instanceof ScriptingEngine)
+		                {
+		                    ScriptingEngine S=(ScriptingEngine)O;
+		                    if((E instanceof MOB)&&(!S.isSavable()))
+		                    {
+		                        S.endQuest(E,(MOB)E,name());
+		                        ((MOB)E).delScript(S);
+		                    }
+		                }
+		                else
+		                if(O instanceof Ability)
+		                {
+		                    if((V.size()>2)
+		                    &&(V.elementAt(2) instanceof Ability)
+		                    &&(E instanceof MOB))
+		                    {
+		                        Ability A=((MOB)E).fetchAbility(((Ability)O).ID());
+		                        if((V.size()>3)&&(V.elementAt(3) instanceof String))
+		                        {
+		                            if(A==null){A=(Ability)O; ((MOB)E).addAbility(A);}
+		                            A.setMiscText((String)V.elementAt(3));
+		                        }
+		                        else
+		                        if(A!=null)
+		                            ((MOB)E).delAbility(A);
+		                    }
+		                    else
+		                    {
+		                        Ability A=E.fetchEffect(((Ability)O).ID());
+		                        if((V.size()>2)&&(V.elementAt(2) instanceof String))
+		                        {
+		                            if(A==null){A=(Ability)O; E.addEffect(A);}
+		                            A.setMiscText((String)V.elementAt(2));
+		                        }
+		                        else
+		                        if(A!=null)
+		                        {
+		                            A.unInvoke();
+		                            E.delEffect(A);
+		                        }
+		                    }
+		                }
+		                else
+		                if(O instanceof Item)
+		                    ((Item)O).destroy();
+		            }
+		        }
 	        }
         }
         stoppingQuest=false;

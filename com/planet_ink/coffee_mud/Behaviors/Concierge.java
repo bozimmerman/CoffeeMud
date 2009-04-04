@@ -201,10 +201,11 @@ public class Concierge extends StdBehavior
 		if(C==null) return "Umm.. I'm stupid.";
 		String name=to.Name();
 		if(to instanceof Room) name=CMLib.map().getExtendedRoomID((Room)to);
-		Vector V=CMParms.makeVector("TRAILTO",name,"JUSTTHEFACTS","QUIETLY");
-		try{C.execute(from,V,0);}catch(Exception e){}
-		if(V.size()>0) return ((String)V.elementAt(0));
-		return "I'm confused.";
+        TrackingLibrary.TrackingFlags flags = new TrackingLibrary.TrackingFlags();
+		Vector<Room> set=new Vector<Room>();
+		int radius=100;
+		CMLib.tracking().getRadiantRooms(from.location(),set,flags,null,radius,null);
+		return CMLib.tracking().getTrailToDescription(from.location(),set,name,false,false,radius,null,1);
 	}
 	
 	public void executeMsg(Environmental affecting, CMMsg msg)

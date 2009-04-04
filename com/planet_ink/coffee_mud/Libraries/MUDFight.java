@@ -278,11 +278,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		CMMsg msg=CMClass.getMsg(attacker,target,weapon,CMMsg.MSG_WEAPONATTACK,null);
         Room R=target.location();
-		if(R.okMessage(attacker,msg))
-		{
-			R.send(attacker,msg);
-			return msg.value()>0;
-		}
+        if(R!=null)
+			if(R.okMessage(attacker,msg))
+			{
+				R.send(attacker,msg);
+				return msg.value()>0;
+			}
 		return false;
 	}
 
@@ -297,8 +298,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if((healer==null)||(target==null)||(target.location()==null)) return false;
 		CMMsg msg=CMClass.getMsg(healer,target,tool,messageCode,CMMsg.MSG_HEALING,messageCode,allDisplayMessage);
 		msg.setValue(healing);
-		if(target.location().okMessage(target,msg))
-		{ target.location().send(target,msg); return true;}
+        Room R=target.location();
+        if(R!=null)
+			if(R.okMessage(target,msg))
+			{ R.send(target,msg); return true;}
 		return false;
 	}
 
@@ -356,20 +359,22 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		CMMsg msg=CMClass.getMsg(attacker,target,weapon,messageCode,CMMsg.MSG_DAMAGE,messageCode,allDisplayMessage);
 		msg.setValue(damage);
         CMLib.color().fixSourceFightColor(msg);
-		if(target.location().okMessage(target,msg))
-		{
-			if(damageType>=0)
-				msg.modify(msg.source(),
-						   msg.target(),
-						   msg.tool(),
-						   msg.sourceCode(),
-						   replaceDamageTag(msg.sourceMessage(),msg.value(),damageType),
-						   msg.targetCode(),
-						   replaceDamageTag(msg.targetMessage(),msg.value(),damageType),
-						   msg.othersCode(),
-						   replaceDamageTag(msg.othersMessage(),msg.value(),damageType));
-			target.location().send(target,msg);
-		}
+        Room R=target.location();
+        if(R!=null)
+			if(R.okMessage(target,msg))
+			{
+				if(damageType>=0)
+					msg.modify(msg.source(),
+							   msg.target(),
+							   msg.tool(),
+							   msg.sourceCode(),
+							   replaceDamageTag(msg.sourceMessage(),msg.value(),damageType),
+							   msg.targetCode(),
+							   replaceDamageTag(msg.targetMessage(),msg.value(),damageType),
+							   msg.othersCode(),
+							   replaceDamageTag(msg.othersMessage(),msg.value(),damageType));
+				R.send(target,msg);
+			}
 	}
 
 	public int adjustedDamage(MOB mob, Weapon weapon, MOB target)
@@ -478,9 +483,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 									missString);
             CMLib.color().fixSourceFightColor(msg);
 			// why was there no okaffect here?
-			if((source.location().okMessage(source,msg))
-            &&(source.location()!=null))
-				source.location().send(source,msg);
+            Room R=source.location();
+            if(R!=null)
+			if(R.okMessage(source,msg))
+				R.send(source,msg);
 		}
 	}
 

@@ -49,7 +49,7 @@ public class At extends StdCommand
 		}
 		String cmd=(String)commands.firstElement();
 		commands.removeElementAt(0);
-		Room room=CMLib.map().findWorldRoomLiberally(mob,cmd,"APMIR",100);
+		Room room=CMLib.map().findWorldRoomLiberally(mob,cmd,"APMIR",100,120);
 		if(room==null)
 		{
 			if(CMSecurity.isAllowedAnywhere(mob,"AT"))

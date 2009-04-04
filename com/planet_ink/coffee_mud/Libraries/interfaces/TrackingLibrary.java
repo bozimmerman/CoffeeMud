@@ -32,11 +32,11 @@ import java.util.*;
 public interface TrackingLibrary extends CMLibrary
 {
     public Vector findBastardTheBestWay(Room location, Room destRoom, TrackingFlags flags, int maxRadius);
-    public Vector findBastardTheBestWay(Room location, Vector destRooms, TrackingFlags flags, int maxRadius);
-    public int trackNextDirectionFromHere(Vector theTrail, Room location, boolean openOnly);
+    public Vector findBastardTheBestWay(Room location, Vector<Room> destRooms, TrackingFlags flags, int maxRadius);
+    public int trackNextDirectionFromHere(Vector<Room> theTrail, Room location, boolean openOnly);
     public void stopTracking(MOB mob);
-    public int radiatesFromDir(Room room, Vector rooms);
-    public void getRadiantRooms(Room room, Vector rooms, TrackingFlags flags, Room radiateTo, int maxDepth, HashSet ignoreRooms);
+    public int radiatesFromDir(Room room, Vector<Room> rooms);
+    public void getRadiantRooms(Room room, Vector<Room> rooms, TrackingFlags flags, Room radiateTo, int maxDepth, HashSet<Room> ignoreRooms);
 	public Vector getRadiantRooms(Room room, TrackingFlags flags, int maxDepth);
     public boolean beMobile(MOB mob,
                             boolean dooropen,
@@ -44,7 +44,7 @@ public interface TrackingLibrary extends CMLibrary
                             boolean roomprefer, 
                             boolean roomobject,
                             long[] status,
-                            Vector rooms);
+                            Vector<Room> rooms);
     public void wanderAway(MOB M, boolean mindPCs, boolean andGoHome);
     public void wanderFromTo(MOB M, Room toHere, boolean mindPCs);
     public void wanderIn(MOB M, Room toHere);
@@ -52,8 +52,9 @@ public interface TrackingLibrary extends CMLibrary
     public boolean move(MOB mob, int directionCode, boolean flee, boolean nolook);
     public int findExitDir(MOB mob, Room R, String desc);
     public int findRoomDir(MOB mob, Room R);
-	public Vector findAllTrails(Room from, Room to, Vector radiantTrail);
-	public Vector findAllTrails(Room from, Vector tos, Vector radiantTrail);
+	public Vector findAllTrails(Room from, Room to, Vector<Room> radiantTrail);
+	public Vector findAllTrails(Room from, Vector<Room> tos, Vector<Room> radiantTrail);
+	public String getTrailToDescription(Room R1, Vector<Room> set, String where, boolean areaNames, boolean confirm, int radius, HashSet<Room> ignoreRooms, int maxMins);
 	
 	public static enum TrackingFlag {NOHOMES,OPENONLY,AREAONLY,NOEMPTYGRIDS,NOAIR,NOWATER};
 	
