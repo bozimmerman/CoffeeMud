@@ -337,7 +337,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return H;
 	}
 
-	public String getValFromPieces(Vector V, String tag)
+	public String getValFromPieces(Vector<XMLpiece> V, String tag)
 	{
 		XMLpiece x=getPieceFromPieces(V,tag);
 		if((x!=null)&&(x.value!=null))
@@ -345,7 +345,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return "";
 	}
 
-	public Vector getContentsFromPieces(Vector V, String tag)
+	public Vector getContentsFromPieces(Vector<XMLpiece> V, String tag)
 	{
 		XMLpiece x=getPieceFromPieces(V,tag);
 		if((x!=null)&&(x.contents!=null))
@@ -353,14 +353,14 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return new Vector();
 	}
 
-	public Vector getRealContentsFromPieces(Vector V, String tag)
+	public Vector<XMLpiece> getRealContentsFromPieces(Vector<XMLpiece> V, String tag)
 	{
 		XMLpiece x=getPieceFromPieces(V,tag);
 		if(x!=null)	return x.contents;
 		return null;
 	}
 
-	public XMLpiece getPieceFromPieces(Vector V, String tag)
+	public XMLpiece getPieceFromPieces(Vector<XMLpiece> V, String tag)
 	{
 		if(V==null) return null;
 		for(int v=0;v<V.size();v++)
@@ -369,7 +369,7 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return null;
 	}
 
-	public boolean getBoolFromPieces(Vector V, String tag)
+	public boolean getBoolFromPieces(Vector<XMLpiece> V, String tag)
 	{
 		String val=getValFromPieces(V,tag);
 		if((val==null)||(val.length()==0))
@@ -379,22 +379,22 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return false;
 	}
 
-	public int getIntFromPieces(Vector V, String tag)
+	public int getIntFromPieces(Vector<XMLpiece> V, String tag)
 	{
 		return s_int(getValFromPieces(V,tag));
 	}
 
-	public short getShortFromPieces(Vector V, String tag)
+	public short getShortFromPieces(Vector<XMLpiece> V, String tag)
 	{
 		return s_short(getValFromPieces(V,tag));
 	}
 
-	public long getLongFromPieces(Vector V, String tag)
+	public long getLongFromPieces(Vector<XMLpiece> V, String tag)
 	{
 		return s_long(getValFromPieces(V,tag));
 	}
 
-	public double getDoubleFromPieces(Vector V, String tag)
+	public double getDoubleFromPieces(Vector<XMLpiece> V, String tag)
 	{
 		return s_double(getValFromPieces(V,tag));
 	}
@@ -489,14 +489,14 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 	}
 
 
-	public Vector parseAllXML(String buf)
+	public Vector<XMLpiece> parseAllXML(String buf)
 	{  
         return parseAllXML(new StringBuffer(buf));
     }
 
-	public Vector parseAllXML(StringBuffer buf)
+	public Vector<XMLpiece> parseAllXML(StringBuffer buf)
 	{
-		Vector V=new Vector();
+		Vector<XMLpiece> V=new Vector();
 		int end=-1;
 		XMLpiece next=nextXML(buf,null,end+1);
 		while(next!=null)
@@ -543,14 +543,14 @@ public class XMLManager extends StdLibrary implements XMLLibrary
 		return false;
 	}
 
-	public String getParmValue(Hashtable parmSet, String Tag)
+	public String getParmValue(Hashtable<String,String> parmSet, String Tag)
 	{
         if((parmSet != null)&&(Tag != null))
             return (String)parmSet.get(Tag.toUpperCase().trim());
         return null;
 	}
 
-	public String getXMLList(Vector V)
+	public String getXMLList(Vector<?> V)
     {
         StringBuffer str=new StringBuffer("");
         String s=null;
@@ -565,10 +565,10 @@ public class XMLManager extends StdLibrary implements XMLLibrary
         return str.toString();
     }
     
-    public Vector parseXMLList(String numberedList)
+    public Vector<String> parseXMLList(String numberedList)
     {
-        Vector xml=parseAllXML(numberedList);
-        Vector V=new Vector();
+        Vector<XMLpiece> xml=parseAllXML(numberedList);
+        Vector<String> V=new Vector<String>();
         for(int v=0;v<xml.size();v++)
             V.addElement(this.restoreAngleBrackets(((XMLLibrary.XMLpiece)xml.elementAt(v)).value));
         return V;

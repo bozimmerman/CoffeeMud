@@ -200,7 +200,7 @@ public interface XMLLibrary extends CMLibrary
      * @param V
      * @return
      */
-	public String getXMLList(Vector V);
+	public String getXMLList(Vector<?> V);
     
     /**
      * Return the data value within the first XML block
