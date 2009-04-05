@@ -84,7 +84,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
     }
 
 
-    public boolean evaluateAutoTitles(MOB mob)
+    public synchronized boolean evaluateAutoTitles(MOB mob)
     {
         if(mob==null) return false;
         PlayerStats P=mob.playerStats();
@@ -93,21 +93,40 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
         String title=null;
         Vector mask=null;
         int pdex=0;
-        Vector PT=P.getTitles();
+        Vector ptV=P.getTitles();
         boolean somethingDone=false;
         for(int t=0;t<autoTitles.size();t++)
         {
             mask=(Vector)autoTitles.elementAt(t,3);
             title=(String)autoTitles.elementAt(t,1);
-            pdex=PT.indexOf(title);
+            pdex=ptV.indexOf(title);
+            if(pdex<0)
+	            for(int p=ptV.size()-1;p>=0;p--)
+	            {
+	            	try {
+		            	String tit=(String)ptV.elementAt(p);
+		            	if(tit.equalsIgnoreCase(title))
+		            	{ pdex=p; break;}
+	            	}catch(java.lang.IndexOutOfBoundsException ioe){}
+	            }
+            if(pdex<0)
+                for(int p=ptV.size()-1;p>=0;p--)
+                {
+                	try {
+    	            	String tit=(String)ptV.elementAt(p);
+    	            	if(CMStrings.removeColors(tit).equalsIgnoreCase(CMStrings.removeColors(title)))
+    	            	{ pdex=p; break;}
+                	}catch(java.lang.IndexOutOfBoundsException ioe){}
+                }
+            
             if(CMLib.masking().maskCheck(mask,mob,true))
             {
                 if(pdex<0)
                 {
-                    if(PT.size()>0)
-                        PT.insertElementAt(title,0);
+                    if(ptV.size()>0)
+                    	ptV.insertElementAt(title,0);
                     else
-                        PT.addElement(title);
+                    	ptV.addElement(title);
                     somethingDone=true;
                 }
             }
@@ -115,7 +134,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
             if(pdex>=0)
             {
                 somethingDone=true;
-                PT.removeElementAt(pdex);
+                ptV.removeElementAt(pdex);
             }
         }
         return somethingDone;
