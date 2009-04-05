@@ -79,7 +79,7 @@ public class Corpse extends GenContainer implements DeadBody
 		charStats=newStats;
 		if(charStats!=null) charStats=(CharStats)charStats.copyOf();
 	}
-
+	
 	public void setSecretIdentity(String newIdentity)
 	{
 		if(newIdentity.indexOf("/")>0)
