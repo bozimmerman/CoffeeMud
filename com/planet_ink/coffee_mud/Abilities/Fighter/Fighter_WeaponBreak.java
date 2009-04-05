@@ -112,7 +112,7 @@ public class Fighter_WeaponBreak extends FighterSkill
 		&&((hisWeapon.rawProperLocationBitmap()==Item.WORN_WIELD)
 		   ||(hisWeapon.rawProperLocationBitmap()==Item.WORN_WIELD+Item.WORN_HELD)))
 		{
-			String str=auto?hisWeapon.name()+" break(s) in <T-HIS-HER> hands!":"<S-NAME> disarm(s) <T-NAMESELF> and destroy(s) "+hisWeapon.name()+"!";
+			String str=auto?hisWeapon.name()+" break(s) in <T-HIS-HER> hands!":"<S-NAME> attack(s) <T-NAMESELF> and destroy(s) "+hisWeapon.name()+"!";
 			hisWeapon.unWear();
 			CMMsg msg=CMClass.getMsg(mob,victim,this,CMMsg.MSG_NOISYMOVEMENT,str);
 			if(mob.location().okMessage(mob,msg))
