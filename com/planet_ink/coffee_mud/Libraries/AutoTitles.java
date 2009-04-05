@@ -84,7 +84,7 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
     }
 
 
-    public synchronized boolean evaluateAutoTitles(MOB mob)
+    public boolean evaluateAutoTitles(MOB mob)
     {
         if(mob==null) return false;
         PlayerStats P=mob.playerStats();
@@ -95,47 +95,44 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
         int pdex=0;
         Vector ptV=P.getTitles();
         boolean somethingDone=false;
-        for(int t=0;t<autoTitles.size();t++)
+        synchronized(ptV)
         {
-            mask=(Vector)autoTitles.elementAt(t,3);
-            title=(String)autoTitles.elementAt(t,1);
-            pdex=ptV.indexOf(title);
-            if(pdex<0)
-	            for(int p=ptV.size()-1;p>=0;p--)
+	        for(int t=0;t<autoTitles.size();t++)
+	        {
+	            mask=(Vector)autoTitles.elementAt(t,3);
+	            title=(String)autoTitles.elementAt(t,1);
+	            pdex=ptV.indexOf(title);
+	            if(pdex<0)
 	            {
-	            	try {
-		            	String tit=(String)ptV.elementAt(p);
-		            	if(tit.equalsIgnoreCase(title))
-		            	{ pdex=p; break;}
-	            	}catch(java.lang.IndexOutOfBoundsException ioe){}
+	            	String fixedTitle = CMStrings.removeColors(title).replace('\'', '`');
+	                for(int p=ptV.size()-1;p>=0;p--)
+	                {
+	                	try {
+	    	            	String tit=CMStrings.removeColors((String)ptV.elementAt(p)).replace('\'', '`');
+	    	            	if(tit.equalsIgnoreCase(fixedTitle))
+	    	            	{ pdex=p; break;}
+	                	}catch(java.lang.IndexOutOfBoundsException ioe){}
+	                }
 	            }
-            if(pdex<0)
-                for(int p=ptV.size()-1;p>=0;p--)
-                {
-                	try {
-    	            	String tit=(String)ptV.elementAt(p);
-    	            	if(CMStrings.removeColors(tit).equalsIgnoreCase(CMStrings.removeColors(title)))
-    	            	{ pdex=p; break;}
-                	}catch(java.lang.IndexOutOfBoundsException ioe){}
-                }
-            
-            if(CMLib.masking().maskCheck(mask,mob,true))
-            {
-                if(pdex<0)
-                {
-                    if(ptV.size()>0)
-                    	ptV.insertElementAt(title,0);
-                    else
-                    	ptV.addElement(title);
-                    somethingDone=true;
-                }
-            }
-            else
-            if(pdex>=0)
-            {
-                somethingDone=true;
-                ptV.removeElementAt(pdex);
-            }
+	            
+	            if(CMLib.masking().maskCheck(mask,mob,true))
+	            {
+	                if(pdex<0)
+	                {
+	                    if(ptV.size()>0)
+	                    	ptV.insertElementAt(title,0);
+	                    else
+	                    	ptV.addElement(title);
+	                    somethingDone=true;
+	                }
+	            }
+	            else
+	            if(pdex>=0)
+	            {
+	                somethingDone=true;
+	                ptV.removeElementAt(pdex);
+	            }
+	        }
         }
         return somethingDone;
     }
@@ -143,14 +140,34 @@ public class AutoTitles extends StdLibrary implements AutoTitlesLibrary
     public void dispossesTitle(String title)
     {
         Vector list=CMLib.database().getUserList();
+    	String fixedTitle = CMStrings.removeColors(title).replace('\'', '`');
         for(int v=0;v<list.size();v++)
         {
             MOB M=CMLib.players().getLoadPlayer((String)list.elementAt(v));
-            if((M.playerStats()!=null)&&(M.playerStats().getTitles().contains(title)))
+            if(M.playerStats()!=null)
             {
-                M.playerStats().getTitles().remove(title);
-                if(!CMLib.flags().isInTheGame(M,true))
-                    CMLib.database().DBUpdatePlayerStatsOnly(M);
+            	Vector ptV=M.playerStats().getTitles();
+            	synchronized(ptV)
+            	{
+	                int pdex=ptV.indexOf(title);
+	                if(pdex<0)
+	                {
+	                    for(int p=ptV.size()-1;p>=0;p--)
+	                    {
+	                    	try {
+	        	            	String tit=CMStrings.removeColors((String)ptV.elementAt(p)).replace('\'', '`');
+	        	            	if(tit.equalsIgnoreCase(fixedTitle))
+	        	            	{ pdex=p; break;}
+	                    	}catch(java.lang.IndexOutOfBoundsException ioe){}
+	                    }
+	                }
+	                if(pdex>=0)
+	                {
+		                ptV.removeElementAt(pdex);
+		                if(!CMLib.flags().isInTheGame(M,true))
+		                    CMLib.database().DBUpdatePlayerStatsOnly(M);
+	                }
+	            }
             }
         }
     }
