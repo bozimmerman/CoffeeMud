@@ -1245,6 +1245,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 			int contentLength=-1;
 			byte c=-1;
             long startTime=System.currentTimeMillis();
+            int byteCounter = 0;
 			while(((contentLength<0)||(out.size()<contentLength))
             &&((System.currentTimeMillis()-startTime)<20000))
 			{
@@ -1268,9 +1269,13 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 				else
 				if((c!=10)||((contentLength>0)&&(out.size()>0)))
 				{
-					if((out.size()>0)||(Character.isLetterOrDigit(c)))
-						out.write(c);
-                    if(out.size()>=(Runtime.getRuntime().freeMemory()/10)){ return data;}
+					out.write(c);
+					if((++byteCounter)>1024)
+					{
+						byteCounter=0;
+	                    if(out.size()>=(Runtime.getRuntime().freeMemory()/10))
+	                    	return data;
+					}
 					if((contentLength>0)&&(out.size()>=contentLength))
                     {
 						data.addElement(out.toByteArray());
