@@ -155,6 +155,19 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         return str.toString();
     }
 
+    protected Ability getTrainableAbility(MOB teacher, Ability A)
+    {
+    	if((teacher==null)||(A==null)) return A;
+    	Ability teachableA=teacher.fetchAbility(A.ID());
+    	if(teachableA==null)
+    	{
+    		teachableA=(Ability)A.copyOf();
+    		teacher.addAbility(teachableA);
+    	}
+    	teachableA.setProficiency(100);
+    	return teachableA;
+    }
+    
     protected boolean shownInInventory(MOB seller, MOB buyer, Environmental product, ShopKeeper shopKeeper)
     {
         if(CMSecurity.isAllowed(buyer,buyer.location(),"CMDMOBS")) 
@@ -178,7 +191,7 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         {
         	if(shopKeeper.isSold(ShopKeeper.DEAL_TRAINER))
         	{
-        		if(CMLib.ableMapper().qualifiesByLevel(buyer, (Ability)product))
+        		if(!CMLib.ableMapper().qualifiesByLevel(buyer, (Ability)product))
     				return false;
         	}
         }
@@ -644,7 +657,8 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
                 if(shop.isSold(ShopKeeper.DEAL_TRAINER))
                 {
                     MOB teacher=CMClass.getMOB("Teacher");
-                    if(!((Ability)product).canBeLearnedBy(teacher,buyer))
+                    Ability teachableA=getTrainableAbility(teacher, (Ability)product);
+                    if((teachableA==null)||(!teachableA.canBeLearnedBy(teacher,buyer)))
                     {
                         teacher.destroy();
                         return false;
@@ -1005,7 +1019,9 @@ public class CoffeeShops extends StdLibrary implements ShoppingLibrary
         if(shop.isSold(ShopKeeper.DEAL_TRAINER))
         {
             MOB teacher=CMClass.getMOB("Teacher");
-            A.teach(teacher,mobFor);
+            Ability teachableA=getTrainableAbility(teacher,A);
+            if(teachableA!=null)
+            	teachableA.teach(teacher,mobFor);
             teacher.destroy();
         }
         else
