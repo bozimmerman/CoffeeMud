@@ -1583,9 +1583,14 @@ public class EnglishParser extends StdLibrary implements EnglishParsing
 		}
 		if(gold>0)
 		{
-			if(CMLib.beanCounter().getTotalAbsoluteValue(mob,currency)>=CMath.mul(denomination,gold))
+			double amt = CMLib.beanCounter().getTotalAbsoluteValue(mob, currency);
+			if(amt>=CMath.mul(denomination,gold))
 			{
+				double expectedAmt = amt - CMath.mul(denomination,gold);
 			    CMLib.beanCounter().subtractMoney(mob,currency,denomination,CMath.mul(denomination,gold));
+			    double newAmt = CMLib.beanCounter().getTotalAbsoluteValue(mob, currency);
+			    if(newAmt > expectedAmt)
+				    CMLib.beanCounter().subtractMoney(mob,currency,(newAmt - expectedAmt));
 			    Coins C=(Coins)CMClass.getItem("StdCoins");
 			    C.setCurrency(currency);
 			    C.setDenomination(denomination);
