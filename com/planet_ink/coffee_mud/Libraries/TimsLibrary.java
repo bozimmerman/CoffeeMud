@@ -168,8 +168,8 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			{
 				int stat=CMParms.getParmPlus(newText,CharStats.STAT_DESCS[i].substring(0,3).toLowerCase());
 				int max=CMParms.getParmPlus(newText,("max"+(CharStats.STAT_DESCS[i].substring(0,3).toLowerCase())));
-				level+=(stat*5);
-				level+=(max*5);
+				level+=(stat*10);
+				level+=(max*15);
 			}
 
 			int hit=CMParms.getParmPlus(newText,"hit");
@@ -941,25 +941,25 @@ public class TimsLibrary extends StdLibrary implements ItemBalanceLibrary
 			int att=CMParms.getParmPlus(newText,"att");
 			int dam=CMParms.getParmPlus(newText,"dam");
 			if(savedI instanceof Weapon)
-				level+=(arm*2);
+				level+=arm;
 			else
 			if(savedI instanceof Armor)
 			{
-				level+=(att/2);
+				level+=att;
 				level+=(dam*3);
 			}
 			level+=ab*5;
 			int dis=CMParms.getParmPlus(newText,"dis");
-			if(dis!=0) level+=5;
+			if(dis!=0) level+=10;
 			int sen=CMParms.getParmPlus(newText,"sen");
-			if(sen!=0) level+=5;
+			if(sen!=0) level+=10;
 			level+=(int)Math.round(5.0*CMParms.getParmDoublePlus(newText,"spe"));
 			for(int i=0;i<CharStats.NUM_BASE_STATS;i++)
 			{
 				int stat=CMParms.getParmPlus(newText,CharStats.STAT_DESCS[i].substring(0,3).toLowerCase());
 				int max=CMParms.getParmPlus(newText,("max"+(CharStats.STAT_DESCS[i].substring(0,3).toLowerCase())));
-				level+=(stat*5);
-				level+=(max*5);
+				level+=(stat*10);
+				level+=(max*15);
 			}
 
 			int hit=CMParms.getParmPlus(newText,"hit");
