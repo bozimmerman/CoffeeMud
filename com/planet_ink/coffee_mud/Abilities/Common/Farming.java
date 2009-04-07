@@ -265,6 +265,11 @@ public class Farming extends GatheringSkill
             commonTell(mob,"'"+mineName+"' is not suitable for use as a seed crop.");
             return false;
         }
+        if(!(isPotentialCrop(mob.location(),code)))
+        {
+            commonTell(mob,"'"+mineName+"' does not seem to be taking root here.");
+            return false;
+        }
         
 		found=null;
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
