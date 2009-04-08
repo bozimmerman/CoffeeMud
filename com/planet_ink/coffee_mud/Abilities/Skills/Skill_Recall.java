@@ -52,11 +52,17 @@ public class Skill_Recall extends StdSkill
 		if(success)
 		{
 			Room recalledRoom=mob.location();
+			if(recalledRoom == null) return false;
 			Room recallRoom=CMLib.map().getStartRoom(mob);
             if((recallRoom==null)&&(!mob.isMonster()))
             {
                 mob.setStartRoom(CMLib.login().getDefaultStartRoom(mob));
                 recallRoom=CMLib.map().getStartRoom(mob);
+                if(recallRoom == null)
+                {
+                	mob.tell("You've nowhere to recall TO!");
+                	return false;
+                }
             }
             
 			CMMsg msg=CMClass.getMsg(mob,recalledRoom,this,CMMsg.MSG_RECALL,CMMsg.MSG_LEAVE,CMMsg.MSG_RECALL,auto?"<S-NAME> disappear(s) into the Java Plain!":"<S-NAME> recall(s) body and spirit to the Java Plain!");
