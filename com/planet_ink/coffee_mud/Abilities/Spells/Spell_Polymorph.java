@@ -118,7 +118,7 @@ public class Spell_Polymorph extends Spell
 					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> become(s) a "+newRace.name()+"!");
 					success=beneficialAffect(mob,target,asLevel,0);
 					target.recoverCharStats();
-					target.confirmWearability();
+					CMLib.utensils().confirmWearability(target);
 				}
 			}
 		}

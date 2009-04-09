@@ -171,7 +171,6 @@ public interface MOB extends Environmental, Rider, DBIdentifiable
 
 	public int freeWearPositions(long wornCode, short belowLayer, short layerAttributes);
 	public boolean isMine(Environmental env);
-	public void confirmWearability();
 	public void giveItem(Item thisContainer);
 	public int getWearPositions(long wornCode);
 

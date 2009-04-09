@@ -294,7 +294,7 @@ public class Druid_GolemForm extends StdAbility
 				beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE);
 				raceName=CMStrings.capitalizeAndLower(CMLib.english().startWithAorAn(raceName.toLowerCase()));
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
-				mob.confirmWearability();
+				CMLib.utensils().confirmWearability(mob);
 			}
 		}
 		else

@@ -791,7 +791,7 @@ public class Spell_Wish extends Spell
 					((MOB)target).baseCharStats().setMyRace(R);
 					((MOB)target).baseCharStats().getMyRace().startRacing(((MOB)target),true);
 					((MOB)target).baseCharStats().getMyRace().setHeightWeight(((MOB)target).baseEnvStats(),(char)((MOB)target).baseCharStats().getStat(CharStats.STAT_GENDER));
-					((MOB)target).confirmWearability();
+					CMLib.utensils().confirmWearability((MOB)target);
 					((MOB)target).recoverCharStats();
 					((MOB)target).recoverEnvStats();
 					if(!((MOB)target).isMonster())

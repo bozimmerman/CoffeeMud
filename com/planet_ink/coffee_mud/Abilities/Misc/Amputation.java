@@ -667,7 +667,7 @@ public class Amputation extends StdAbility implements Amputator
 					target.recoverEnvStats();
 					target.recoverMaxState();
 					target.location().recoverRoomStats();
-					target.confirmWearability();
+					CMLib.utensils().confirmWearability(target);
 					target.setVictim(vic);
 					mob.setVictim(vic2);
 				}

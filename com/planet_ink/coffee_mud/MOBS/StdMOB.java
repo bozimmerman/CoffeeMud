@@ -2498,93 +2498,6 @@ public class StdMOB implements MOB
 
 	public void affectCharStats(MOB affectedMob, CharStats affectableStats){}
 
-	protected int processVariableEquipment()
-	{
-		int newLastTickedDateTime=0;
-		for(int i=0;i<location().numInhabitants();i++)
-		{
-			MOB M=location().fetchInhabitant(i);
-			if((M!=null)&&(!M.isMonster())&&(CMSecurity.isAllowed(M,location(),"CMDMOBS")))
-			{ newLastTickedDateTime=-1; break;}
-		}
-		if(newLastTickedDateTime==0)
-		{
-			Vector rivals=new Vector();
-			for(int i=0;i<inventorySize();i++)
-			{
-				Item I=fetchInventory(i);
-				if((I!=null)&&(I.baseEnvStats().rejuv()>0)&&(I.baseEnvStats().rejuv()<Integer.MAX_VALUE))
-				{
-					Vector V=null;
-					for(int r=0;r<rivals.size();r++)
-					{
-						Vector V2=(Vector)rivals.elementAt(r);
-						Item I2=(Item)V2.firstElement();
-						if(I2.rawWornCode()==I.rawWornCode())
-						{ V=V2; break;}
-					}
-					if(V==null){ V=new Vector(); rivals.addElement(V);}
-					V.addElement(I);
-				}
-			}
-			for(int i=0;i<rivals.size();i++)
-			{
-				Vector V=(Vector)rivals.elementAt(i);
-				if((V.size()==1)||(((Item)V.firstElement()).rawWornCode()==0))
-				{
-					for(int r=0;r<V.size();r++)
-					{
-						Item I=(Item)V.elementAt(r);
-						if(CMLib.dice().rollPercentage()<I.baseEnvStats().rejuv())
-							delInventory(I);
-						else
-						{
-							I.baseEnvStats().setRejuv(0);
-							I.envStats().setRejuv(0);
-						}
-					}
-				}
-				else
-				{
-					int totalChance=0;
-					for(int r=0;r<V.size();r++)
-					{
-						Item I=(Item)V.elementAt(r);
-						totalChance+=I.baseEnvStats().rejuv();
-					}
-					int chosenChance=CMLib.dice().roll(1,totalChance,0);
-					totalChance=0;
-					Item chosenI=null;
-					for(int r=0;r<V.size();r++)
-					{
-						Item I=(Item)V.elementAt(r);
-						if(chosenChance<=(totalChance+I.baseEnvStats().rejuv()))
-						{
-							chosenI=I;
-							break;
-						}
-						totalChance+=I.baseEnvStats().rejuv();
-					}
-					for(int r=0;r<V.size();r++)
-					{
-						Item I=(Item)V.elementAt(r);
-						if(chosenI!=I)
-							delInventory(I);
-						else
-						{
-							I.baseEnvStats().setRejuv(0);
-							I.envStats().setRejuv(0);
-						}
-					}
-				}
-			}
-			recoverEnvStats();
-			recoverCharStats();
-			recoverMaxState();
-		}
-		return newLastTickedDateTime;
-	}
-
 	public long getTickStatus(){return tickStatus;}
 
 	public boolean tick(Tickable ticking, int tickID)
@@ -2633,7 +2546,7 @@ public class StdMOB implements MOB
                 &&(location().getArea().getAreaState()<Area.STATE_FROZEN))
 				{
 					if(lastTickedDateTime==-1)
-						lastTickedDateTime=processVariableEquipment();
+						lastTickedDateTime=CMLib.utensils().processVariableEquipment(this);
 					else
 						lastTickedDateTime++;
 				}
@@ -2843,60 +2756,6 @@ public class StdMOB implements MOB
 	}
 
 	public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
-
-	public void confirmWearability()
-	{
-		Race R=charStats().getMyRace();
-		DVector reWearSet=new DVector(2);
-		Item item=null;
-		for(int i=0;i<inventorySize();i++)
-		{
-			item=fetchInventory(i);
-			if((item!=null)&&(!item.amWearingAt(Item.IN_INVENTORY)))
-			{
-				Long oldCode=new Long(item.rawWornCode());
-				item.unWear();
-				if(reWearSet.size()==0)
-					reWearSet.addElement(item,oldCode);
-				else
-				{
-					short layer=(item instanceof Armor)?((Armor)item).getClothingLayer():0;
-					int d=0;
-					for(;d<reWearSet.size();d++)
-						if(reWearSet.elementAt(d,1) instanceof Armor)
-						{
-							if(((Armor)reWearSet.elementAt(d,1)).getClothingLayer()>layer)
-								break;
-						}
-						else
-						if(0>layer)
-							break;
-					if(d>=reWearSet.size())
-						reWearSet.addElement(item,oldCode);
-					else
-						reWearSet.insertElementAt(d,item,oldCode);
-				}
-
-			}
-		}
-		for(int r=0;r<reWearSet.size();r++)
-		{
-			item=(Item)reWearSet.elementAt(r,1);
-			long oldCode=((Long)reWearSet.elementAt(r,2)).longValue();
-			int msgCode=CMMsg.MSG_WEAR;
-			if((oldCode&Item.WORN_WIELD)>0)
-				msgCode=CMMsg.MSG_WIELD;
-			else
-			if((oldCode&Item.WORN_HELD)>0)
-				msgCode=CMMsg.MSG_HOLD;
-			CMMsg msg=CMClass.getMsg(this,item,null,CMMsg.NO_EFFECT,null,msgCode,null,CMMsg.NO_EFFECT,null);
-			if((R.okMessage(this,msg))
-			&&(item.okMessage(item,msg))
-            &&((charStats().getWearableRestrictionsBitmap()&oldCode)==0)
-			&&(item.canWear(this,oldCode)))
-			   item.wearAt(oldCode);
-		}
-	}
 
 	public void addInventory(Item item)
 	{

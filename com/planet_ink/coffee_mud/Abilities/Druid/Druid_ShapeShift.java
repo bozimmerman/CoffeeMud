@@ -362,7 +362,7 @@ public class Druid_ShapeShift extends StdAbility
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> take(s) on "+raceName.toLowerCase()+" form.");
 				beneficialAffect(mob,mob,asLevel,Integer.MAX_VALUE);
 				raceName=CMStrings.capitalizeAndLower(CMLib.english().startWithAorAn(raceName.toLowerCase()));
-				mob.confirmWearability();
+				CMLib.utensils().confirmWearability(mob);
 			}
 		}
 		else

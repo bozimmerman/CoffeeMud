@@ -143,7 +143,7 @@ public class Spell_DemonGate extends Spell
 	{
 		MOB newMOB=CMClass.getMOB("GenRideable");
 		Rideable ride=(Rideable)newMOB;
-		newMOB.baseEnvStats().setAbility(11 + super.getXLEVELLevel(caster));
+		newMOB.baseEnvStats().setAbility(22 + super.getXLEVELLevel(caster));
 		newMOB.baseEnvStats().setLevel(level+ 2 + super.getXLEVELLevel(caster));
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
 		newMOB.baseEnvStats().setWeight(850);

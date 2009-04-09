@@ -98,7 +98,7 @@ public class Spell_Hold extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					success=maliciousAffect(mob,target,asLevel,8-levelDiff,-1);
+					success=maliciousAffect(mob,target,asLevel,7-levelDiff,-1);
 					if(success)
 						if(target.location()==mob.location())
 							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) perfectly still!!");

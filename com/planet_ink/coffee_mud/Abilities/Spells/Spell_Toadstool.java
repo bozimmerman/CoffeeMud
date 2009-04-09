@@ -131,7 +131,7 @@ public class Spell_Toadstool extends Spell
 							M.makePeace();
 					}
 					target.recoverCharStats();
-					target.confirmWearability();
+					CMLib.utensils().confirmWearability(target);
 					target.resetToMaxState();
 				}
 			}

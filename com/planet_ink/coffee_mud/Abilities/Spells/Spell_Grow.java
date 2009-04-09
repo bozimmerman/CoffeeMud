@@ -102,7 +102,7 @@ public class Spell_Grow extends Spell
 				aff=aff*aff;
 				target.baseEnvStats().setWeight((int)Math.round(CMath.mul(target.baseEnvStats().weight(),aff)));
 				beneficialAffect(mob,target,asLevel,0);
-				target.confirmWearability();
+				CMLib.utensils().confirmWearability(target);
 			}
 
 		}

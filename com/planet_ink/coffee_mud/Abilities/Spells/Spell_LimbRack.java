@@ -82,7 +82,7 @@ public class Spell_LimbRack extends Spell
                 if(mob.fetchEffect(A.ID())==null)
                     mob.addNonUninvokableEffect(A);
 		    }
-			mob.confirmWearability();
+			CMLib.utensils().confirmWearability(mob);
 	    }
 	    super.unInvoke();
 	}

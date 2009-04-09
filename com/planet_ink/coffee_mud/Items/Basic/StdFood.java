@@ -112,7 +112,7 @@ public class StdFood extends StdItem implements Food
 				boolean hungry=mob.curState().getHunger()<=0;
 			    if((!hungry)
 			    &&(mob.curState().getHunger()>=mob.maxState().maxHunger(mob.baseWeight()))
-				&&(CMLib.dice().roll(1,500,0)==1)
+				&&(CMLib.dice().roll(1,100,0)==1)
 				&&(!CMLib.flags().isGolem(msg.source()))
 				&&(msg.source().fetchEffect("Disease_Obesity")==null)
 				&&(!CMSecurity.isDisabled("AUTODISEASE")))

@@ -128,7 +128,7 @@ public class Spell_Shrink extends Spell
                 {
     				beneficialAffect(mob,target,asLevel,0);
     				if(target instanceof MOB)
-    					((MOB)target).confirmWearability();
+    					CMLib.utensils().confirmWearability((MOB)target);
                 }
 			}
 		}

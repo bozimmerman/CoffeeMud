@@ -145,7 +145,7 @@ public class Prop_EnterAdjuster extends Property
             mob.recoverCharStats();
             mob.recoverEnvStats();
             mob.recoverMaxState();
-            mob.confirmWearability();
+			CMLib.utensils().confirmWearability(mob);
         }
 		return super.okMessage(myHost,msg);
 	}

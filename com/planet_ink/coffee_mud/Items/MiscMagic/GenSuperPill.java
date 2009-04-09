@@ -174,7 +174,7 @@ public class GenSuperPill extends GenPill implements ArchonOnly
 		mob.recoverCharStats();
 		mob.recoverEnvStats();
 		mob.recoverMaxState();
-		if(redress)	mob.confirmWearability();
+		if(redress)	CMLib.utensils().confirmWearability(mob);
 	}
 
 	public void executeMsg(Environmental myHost, CMMsg msg)

@@ -300,6 +300,121 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
 		}
 	}
 
+	public int processVariableEquipment(MOB mob)
+	{
+		int newLastTickedDateTime=0;
+		if(mob!=null)
+		{
+			Room R=mob.location();
+			if(R!=null)
+			{
+				for(int i=0;i<R.numInhabitants();i++)
+				{
+					MOB M=R.fetchInhabitant(i);
+					if((M!=null)&&(!M.isMonster())&&(CMSecurity.isAllowed(M,R,"CMDMOBS")))
+					{ newLastTickedDateTime=-1; break;}
+				}
+				if(newLastTickedDateTime==0)
+				{
+					Vector rivals=new Vector();
+					for(int i=0;i<mob.inventorySize();i++)
+					{
+						Item I=mob.fetchInventory(i);
+						if((I!=null)&&(I.baseEnvStats().rejuv()>0)&&(I.baseEnvStats().rejuv()<Integer.MAX_VALUE))
+						{
+							Vector V=null;
+							for(int r=0;r<rivals.size();r++)
+							{
+								Vector V2=(Vector)rivals.elementAt(r);
+								Item I2=(Item)V2.firstElement();
+								if(I2.rawWornCode()==I.rawWornCode())
+								{ V=V2; break;}
+							}
+							if(V==null){ V=new Vector(); rivals.addElement(V);}
+							V.addElement(I);
+						}
+					}
+					for(int i=0;i<rivals.size();i++)
+					{
+						Vector V=(Vector)rivals.elementAt(i);
+						if((V.size()==1)||(((Item)V.firstElement()).rawWornCode()==0))
+						{
+							for(int r=0;r<V.size();r++)
+							{
+								Item I=(Item)V.elementAt(r);
+								if(CMLib.dice().rollPercentage()<I.baseEnvStats().rejuv())
+									mob.delInventory(I);
+								else
+								{
+									I.baseEnvStats().setRejuv(0);
+									I.envStats().setRejuv(0);
+								}
+							}
+						}
+						else
+						{
+							int totalChance=0;
+							for(int r=0;r<V.size();r++)
+							{
+								Item I=(Item)V.elementAt(r);
+								totalChance+=I.baseEnvStats().rejuv();
+							}
+							int chosenChance=CMLib.dice().roll(1,totalChance,0);
+							totalChance=0;
+							Item chosenI=null;
+							for(int r=0;r<V.size();r++)
+							{
+								Item I=(Item)V.elementAt(r);
+								if(chosenChance<=(totalChance+I.baseEnvStats().rejuv()))
+								{
+									chosenI=I;
+									break;
+								}
+								totalChance+=I.baseEnvStats().rejuv();
+							}
+							for(int r=0;r<V.size();r++)
+							{
+								Item I=(Item)V.elementAt(r);
+								if(chosenI!=I)
+									mob.delInventory(I);
+								else
+								{
+									I.baseEnvStats().setRejuv(0);
+									I.envStats().setRejuv(0);
+								}
+							}
+						}
+					}
+			        if(mob instanceof ShopKeeper)
+			        {
+			            rivals=new Vector();
+			            CoffeeShop shop = ((ShopKeeper)mob).getShop();
+			            for(int v=0;v<shop.getBaseInventory().size();v++)
+			            {
+			                Environmental E=(Environmental)shop.getBaseInventory().elementAt(v);
+			                if((E.baseEnvStats().rejuv()>0)&&(E.baseEnvStats().rejuv()<Integer.MAX_VALUE))
+			                    rivals.addElement(E);
+			            }
+			            for(int r=0;r<rivals.size();r++)
+			            {
+			                Environmental E=(Environmental)rivals.elementAt(r);
+			                if(CMLib.dice().rollPercentage()>E.baseEnvStats().rejuv())
+			                    shop.delAllStoreInventory(E);
+			                else
+			                {
+			                    E.baseEnvStats().setRejuv(0);
+			                    E.envStats().setRejuv(0);
+			                }
+			            }
+			        }
+					mob.recoverEnvStats();
+					mob.recoverCharStats();
+					mob.recoverMaxState();
+				}
+			}
+		}
+		return newLastTickedDateTime;
+	}
     
     public void recursiveDropMOB(MOB mob,
                                  Room room,
@@ -525,6 +640,65 @@ public class CoffeeUtensils extends StdLibrary implements CMMiscUtils
         return policies;
     }
     
+	public void confirmWearability(MOB mob)
+	{
+		if(mob==null) return;
+		Race R=mob.charStats().getMyRace();
+		DVector reWearSet=new DVector(2);
+		Item item=null;
+		for(int i=0;i<mob.inventorySize();i++)
+		{
+			item=mob.fetchInventory(i);
+			if((item!=null)&&(!item.amWearingAt(Item.IN_INVENTORY)))
+			{
+				Long oldCode=new Long(item.rawWornCode());
+				item.unWear();
+				if(reWearSet.size()==0)
+					reWearSet.addElement(item,oldCode);
+				else
+				{
+					short layer=(item instanceof Armor)?((Armor)item).getClothingLayer():0;
+					int d=0;
+					for(;d<reWearSet.size();d++)
+						if(reWearSet.elementAt(d,1) instanceof Armor)
+						{
+							if(((Armor)reWearSet.elementAt(d,1)).getClothingLayer()>layer)
+								break;
+						}
+						else
+						if(0>layer)
+							break;
+					if(d>=reWearSet.size())
+						reWearSet.addElement(item,oldCode);
+					else
+						reWearSet.insertElementAt(d,item,oldCode);
+				}
+
+			}
+		}
+		for(int r=0;r<reWearSet.size();r++)
+		{
+			item=(Item)reWearSet.elementAt(r,1);
+			long oldCode=((Long)reWearSet.elementAt(r,2)).longValue();
+			int msgCode=CMMsg.MSG_WEAR;
+			if((oldCode&Item.WORN_WIELD)>0)
+				msgCode=CMMsg.MSG_WIELD;
+			else
+			if((oldCode&Item.WORN_HELD)>0)
+				msgCode=CMMsg.MSG_HOLD;
+			CMMsg msg=CMClass.getMsg(mob,item,null,CMMsg.NO_EFFECT,null,msgCode,null,CMMsg.NO_EFFECT,null);
+			if((R.okMessage(mob,msg))
+			&&(item.okMessage(item,msg))
+            &&((mob.charStats().getWearableRestrictionsBitmap()&oldCode)==0)
+			&&(item.canWear(mob,oldCode)))
+			   item.wearAt(oldCode);
+		}
+		// why wasn't that here before?
+		mob.recoverEnvStats();
+		mob.recoverCharStats();
+		mob.recoverMaxState();
+	}
+
     public Item isRuinedLoot(DVector policies, Item I)
     {
         if(I==null) return null;

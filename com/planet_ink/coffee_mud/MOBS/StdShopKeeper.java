@@ -113,35 +113,6 @@ public class StdShopKeeper extends StdMOB implements ShopKeeper
     
     public CoffeeShop getShop(){return shop;}
     
-
-    protected int processVariableEquipment()
-    {
-        int newLastTickedDateTime=super.processVariableEquipment();
-        if(newLastTickedDateTime==0)
-        {
-            Vector rivals=new Vector();
-            for(int v=0;v<shop.getBaseInventory().size();v++)
-            {
-                Environmental E=(Environmental)shop.getBaseInventory().elementAt(v);
-                if((E.baseEnvStats().rejuv()>0)&&(E.baseEnvStats().rejuv()<Integer.MAX_VALUE))
-                    rivals.addElement(E);
-            }
-            for(int r=0;r<rivals.size();r++)
-            {
-                Environmental E=(Environmental)rivals.elementAt(r);
-                if(CMLib.dice().rollPercentage()>E.baseEnvStats().rejuv())
-                    getShop().delAllStoreInventory(E);
-                else
-                {
-                    E.baseEnvStats().setRejuv(0);
-                    E.envStats().setRejuv(0);
-                }
-            }
-        }
-        return newLastTickedDateTime;
-    }
-
-
     public String storeKeeperString(){return CMLib.coffeeShops().storeKeeperString(getShop());}
 	public boolean doISellThis(Environmental thisThang){return CMLib.coffeeShops().doISellThis(thisThang,this);}
     protected Area getStartArea(){
