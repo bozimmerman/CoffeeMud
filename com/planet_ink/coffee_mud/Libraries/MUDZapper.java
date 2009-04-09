@@ -1460,7 +1460,7 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                             String str2=(String)V.elementAt(v2);
                             if(zapCodes.containsKey(str2))
                                 break;
-                            if(str2.startsWith("-"))
+                            if(str2.startsWith("+"))
                             {
                                 Quest Q=CMLib.quests().fetchQuest(str2.substring(1));
                                 if(Q==null)

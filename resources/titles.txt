@@ -20,3 +20,6 @@
 # {* the dude}=-area "+new area" +midgaard
 
 * is excited=-baseclass +praetor
+
+
+* the blah=-questwin +normal_collect_1
