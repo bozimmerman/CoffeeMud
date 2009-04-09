@@ -46,13 +46,22 @@ public class Spell_Clone extends Spell
 	public void executeMsg(Environmental myHost, CMMsg msg)
 	{
 		super.executeMsg(myHost,msg);
-		if((affected!=null)
-		&&(affected instanceof MOB)
-		&&(msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
-		&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
+		if((affected!=null)&&(affected instanceof MOB))
 		{
-			unInvoke();
-			if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+			if((msg.amISource((MOB)affected)||msg.amISource(((MOB)affected).amFollowing()))
+			&&(msg.sourceMinor()==CMMsg.TYP_QUIT))
+			{
+				unInvoke();
+				if(msg.source().playerStats()!=null) msg.source().playerStats().setLastUpdated(0);
+			}
+			else
+			if(msg.amISource((MOB)affected))
+			{
+				if(msg.sourceMinor()==CMMsg.TYP_DEATH)
+				{
+					unInvoke();
+				}
+			}
 		}
 	}
 

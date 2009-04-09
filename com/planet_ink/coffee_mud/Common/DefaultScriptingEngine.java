@@ -9294,9 +9294,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
                         else
                         if(msg.target() instanceof Item)
-                            enqueResponse(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,1,str);
+                            enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str);
                         else
-                            enqueResponse(affecting,msg.source(),null,monster,Tool,defaultItem,script,1,str);
+                            enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
                         return;
                     }
                 }
@@ -9314,9 +9314,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,msg.tool().Name());
                         else
                         if(msg.target() instanceof Item)
-                            enqueResponse(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,1,msg.tool().Name());
+                            enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,msg.tool().Name());
                         else
-                            enqueResponse(affecting,msg.source(),null,monster,Tool,defaultItem,script,1,msg.tool().Name());
+                            enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,msg.tool().Name());
                         return;
                     }
                 }
@@ -9381,9 +9381,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
                         else
                         if(msg.target() instanceof Item)
-                            enqueResponse(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,1,str);
+                            enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str);
                         else
-                            enqueResponse(affecting,msg.source(),null,monster,Tool,defaultItem,script,1,str);
+                            enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
                         return;
                     }
                 }
@@ -9422,9 +9422,9 @@ public class DefaultScriptingEngine implements ScriptingEngine
                             enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
                         else
                         if(msg.target() instanceof Item)
-                            enqueResponse(affecting,msg.source(),null,monster,Tool,(Item)msg.target(),script,1,str);
+                            enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,(Item)msg.target(),script,1,str);
                         else
-                            enqueResponse(affecting,msg.source(),null,monster,Tool,defaultItem,script,1,str);
+                            enqueResponse(affecting,msg.source(),msg.target(),monster,Tool,defaultItem,script,1,str);
                         return;
                     }
                 }

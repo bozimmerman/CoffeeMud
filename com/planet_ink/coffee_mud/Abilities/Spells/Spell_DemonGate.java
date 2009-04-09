@@ -95,17 +95,6 @@ public class Spell_DemonGate extends Spell
 		}
 	}
 
-
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
-	{
-		super.affectEnvStats(affected,affectableStats);
-		int xlvl=super.getXLEVELLevel(invoker());
-		affectableStats.setDamage(affectableStats.damage()+20+xlvl);
-		affectableStats.setAttackAdjustment(affectableStats.attackAdjustment()+100+(5*xlvl));
-		affectableStats.setArmor(affectableStats.armor()+20+(2*xlvl));
-		affectableStats.setSpeed(affectableStats.speed()+2);
-	}
-
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
@@ -154,14 +143,14 @@ public class Spell_DemonGate extends Spell
 	{
 		MOB newMOB=CMClass.getMOB("GenRideable");
 		Rideable ride=(Rideable)newMOB;
-		newMOB.baseEnvStats().setAbility(43);
-		newMOB.baseEnvStats().setLevel(level+10);
+		newMOB.baseEnvStats().setAbility(11 + super.getXLEVELLevel(caster));
+		newMOB.baseEnvStats().setLevel(level+ 2 + super.getXLEVELLevel(caster));
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
 		newMOB.baseEnvStats().setWeight(850);
 		newMOB.baseEnvStats().setRejuv(Integer.MAX_VALUE);
-		newMOB.baseCharStats().setStat(CharStats.STAT_STRENGTH,25);
-		newMOB.baseCharStats().setStat(CharStats.STAT_DEXTERITY,25);
-		newMOB.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,25);
+		newMOB.baseCharStats().setStat(CharStats.STAT_STRENGTH,18);
+		newMOB.baseCharStats().setStat(CharStats.STAT_DEXTERITY,18);
+		newMOB.baseCharStats().setStat(CharStats.STAT_CONSTITUTION,18);
 		newMOB.baseCharStats().setMyRace(CMClass.getRace("Demon"));
 		newMOB.baseCharStats().getMyRace().startRacing(newMOB,false);
 		newMOB.baseCharStats().setStat(CharStats.STAT_GENDER,'M');
