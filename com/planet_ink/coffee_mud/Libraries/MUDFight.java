@@ -338,7 +338,11 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	{
 		if((attacker==null)||(target==null)||(target.location()==null)) return;
 		if(allDisplayMessage!=null) allDisplayMessage="^F^<FIGHT^>"+allDisplayMessage+"^</FIGHT^>^?";
-		if((weapon instanceof Ability)&&(damage>0)&&(attacker != target) && (attacker != null))
+		if((weapon instanceof Ability)
+		&&(damage>0)
+		&&(attacker != target)
+		&&(attacker != null)
+		&&(attacker.isMine(weapon)))
 		{
 			int levelDiff = attacker.envStats().level() - target.envStats().level();
 			if(levelDiff > 10) levelDiff = 10;
