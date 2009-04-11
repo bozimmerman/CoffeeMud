@@ -106,6 +106,9 @@ public class Spell_Scatter extends Spell
 		}
 
 		Vector targets=new Vector();
+	    if(givenTarget != null)
+	    	targets.addElement(givenTarget);
+	    else
 		if(target!=null)
 		    targets.addElement(target);
 		else

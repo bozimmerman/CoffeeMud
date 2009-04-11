@@ -1365,7 +1365,7 @@ Guessing, however, won't work here either. In the case of our
 DEATH_PROG example, we could use the code $m and be sure that, whever
 it appears, the word 'his', 'her', or 'it' will replace it
 appropriately.</p>
-      <p><a name="dollarCode" /> Below is a list of the simple
+      <p><a name="dollarCode"> Below is a list of the simple
 scripting codes, along with their meaning. The term 'monster' below
 refers to whatever object, mob, item, room, exit, etc actually has the
 Scriptable behavior and is running the script. Otherwise, we also refer
@@ -1373,7 +1373,8 @@ to the source of the trigger event and the target of the trigger event.
 For instance, when someone 'A' gets a sword off the ground in front of
 a mob 'B' with the Scriptable behavior, the MASK_PROG might trigger
 with the monster being the mob 'B', the source being the someone 'A',
-and the target being the sword.</p>
+and the target being the sword.</a></p>
+      <a name="dollarCode"> </a>
       <table bgcolor="#add8e6" border="1" width="100%">
         <tbody>
           <tr>
@@ -1577,7 +1578,9 @@ designated in the quest script. Counting starts at 1.</td>
           </tr>
         </tbody>
       </table>
-      <p>Any of the above codes may be followed by a period and a
+      <a name="dollarCode"> </a>
+      <p><a name="dollarCode">Any of the above codes may be followed by
+a period and a
 literal number to designate a particular word inside a string of many
 words. For instance, if $o evaluates to "a magic wand", then $o.1 would
 evalulate to "magic". If $l evaluated to "orc bob hassan", then $l.2
@@ -1587,10 +1590,12 @@ also be used to generate substrings by following the number with two
 periods "..". For instance, of $l evaluates to "orc bob hassan", then
 $l.1.. would give "bob hassan". &nbsp;You can also add .LENGTH# to the
 end of a variable to return the number of words contained inside the
-string.</p>
-      <p><a name="percentCode" /> The last code we are going to discuss
+string.</a></p>
+      <a name="dollarCode"> </a>
+      <p><a name="percentCode"> The last code we are going to discuss
 is also the most powerful. It allows you to fill in a value from a
-function call. The format of this code is as follows:</p>
+function call. The format of this code is as follows:</a></p>
+      <a name="percentCode"> </a>
       <table bgcolor="#add8e6" border="1" width="100%">
         <tbody>
           <tr>
@@ -1602,28 +1607,40 @@ different.</td>
           </tr>
         </tbody>
       </table>
-      <p>The [function name] must be the name of one of the functions
+      <a name="percentCode"> </a>
+      <p><a name="percentCode">The [function name] must be the name of
+one of the functions
 listed in the following chart. All functions must have parenthesis
 after their names, and most functions require one or more parameters
-inside the parenthesis.</p>
-      <p>The parameters usually include a [code]. This may be either
+inside the parenthesis.</a></p>
+      <a name="percentCode"> </a>
+      <p><a name="percentCode">The parameters usually include a [code].
+This may be either
 the string name of either a mob or an item (whichever is appropriate to
 the function), or a code from the previous chart which represents a mob
 or an item. The description for each function will specify whether mob
 names or codes representing mobs are more appropriate, or whether item
-names or codes representing items are more appropriate.</p>
-      <p>Here is an example of this code being used in a say statement:</p>
-      <pre>say I am $%isgood($i)% and my favourite number is $%rand()%.<br /></pre>
-      <p>This string would replace the $%.. codes with the results of
-the given function calls.</p>
-      <p>Here is the list of accepted functions for the $% code. Where
+names or codes representing items are more appropriate.</a></p>
+      <a name="percentCode"> </a>
+      <p><a name="percentCode">Here is an example of this code being
+used in a say statement:</a></p>
+      <a name="percentCode"> </a>
+      <pre><a name="percentCode">say I am $%isgood($i)% and my favourite number is $%rand()%.<br /></a></pre>
+      <a name="percentCode"> </a>
+      <p><a name="percentCode">This string would replace the $%.. codes
+with the results of
+the given function calls.</a></p>
+      <a name="percentCode"> </a>
+      <p><a name="percentCode">Here is the list of accepted functions
+for the $% code. Where
 'monster' is referred to below, you may assume this to be whatever
 object (mob, item, room, exit) which has the Scriptable behavior on it.
 Usually this is an npc mob. In the case of an item, it refers to a mob
 who takes the place of the item for scripting purposes. For this
 reason, using $i and $I codes, or using functions which only return
 information about the scripted monster when an item is being scripted
-is totally useless.</p>
+is totally useless.</a></p>
+      <a name="percentCode"> </a>
       <table bgcolor="#90ee90" border="1" width="100%">
         <tbody>
           <tr>
@@ -2038,6 +2055,7 @@ inventory.</td>
           </tr>
         </tbody>
       </table>
+      <a name="percentCode"> </a>
       <h2><a name="commands">Scripting Commands</a></h2>
       <p>Commands inside your scripts should each be terminated by a
 carriage return (ENTER) or a semicolon, depending upon the manner in
@@ -2883,8 +2901,7 @@ from tick threads). &nbsp;In short, BE CAREFUL!</p>
       <pre>mpechoat $n You said $&lt;$n MYVALUE&gt;.</pre>
       <h3><a name="mppurge">mppurge</a></h3>
       <p>Usage:</p>
-      <pre>mppurge [argument]<br />mppurge room [argument]<br />mppurge my [argument]<span
- style="font-weight: bold;" /><br /></pre>
+      <pre>mppurge [argument]<br />mppurge room [argument]<br />mppurge my [argument]<br /></pre>
       <p>This command destroys the argument item or mob.
 This argument can be a mob keyword, item keyword, character variable,
 or the keyword self. You can also make this command more safe by
