@@ -8984,7 +8984,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                     String check=standardTriggerCheck(script,t,msg.target());
                     if(check!=null)
                     {
-                        enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check);
+                    	if((msg.target() == affecting)
+                    	&&(affecting instanceof Food))
+                            execute(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),(Item)((Item)msg.target()).copyOf(),script,check,newObjs());
+                    	else
+	                        enqueResponse(affecting,msg.source(),msg.target(),monster,(Item)msg.target(),defaultItem,script,1,check);
                         return;
                     }
                 }
