@@ -104,10 +104,12 @@ public interface CharStats extends CMCommon, CMModifiable
     public static final int STAT_SAVE_DETECTION=29;
     /** stat constant for save vs overlooking hidden things */
     public static final int STAT_SAVE_OVERLOOKING=30;
-    /** constant for total number of stat codes */
+    /** stat constant for amount of faith? */
     public static final int STAT_FAITH=31;
+    /** stat constant for additions/subtractions from base weight */
+    public static final int STAT_WEIGHTADJ=32;
     /** constant for total number of stat codes */
-	public final static int NUM_STATS=32;
+	public final static int NUM_STATS=33;
 
 	/**
      * Copies the internal data of this object into another of kind.
@@ -560,7 +562,8 @@ public interface CharStats extends CMCommon, CMModifiable
         "A",
         "vH",
         "vO",
-        "vC"
+        "vC",
+        "Wa"
     };
 
     /** string array of descriptions of each stat code, ordered by numeric value */
@@ -597,7 +600,8 @@ public interface CharStats extends CMCommon, CMModifiable
         "AGE",
         "SAVE VS DETECTION",
         "SAVE VS OVERLOOKING",
-        "SAVE VS CONVERSIONS"
+        "SAVE VS CONVERSIONS",
+        "WEIGHT ADJUSTMENT"
     };
 
     /** string array of descriptions of each stat code, ordered by numeric value */
@@ -634,7 +638,8 @@ public interface CharStats extends CMCommon, CMModifiable
         "AGE",
         "DETECTION",
         "OVERLOOKING",
-        "CONVERSION"
+        "CONVERSION",
+        "WEIGHTADJ"
     };
 
     /** string array of attributable descriptions of each stat code, ordered by numeric value */
@@ -671,7 +676,8 @@ public interface CharStats extends CMCommon, CMModifiable
         "OLD",
         "CONCEALED",
         "WATCHFUL",
-        "DOUBTFUL"
+        "DOUBTFUL",
+        ""
     };
 
     /** an appropriate CMMsg MSG type to correspond to the given saving throw, indexed as STAT_SAVE_ constant */
@@ -708,6 +714,7 @@ public interface CharStats extends CMCommon, CMModifiable
             -1, // save conceilment
             -1, // save overlooking
             -1, // save conversion
+            -1, // weight adjustment
            };
 
 }

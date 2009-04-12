@@ -87,10 +87,16 @@ public class Disease_Obesity extends Disease
         setMiscText(""+(amountOfFat()+change));
 	}
 
+	public void affectCharStats(MOB affectedMob, CharStats affectableStats)
+	{
+		super.affectCharStats(affectedMob, affectableStats);
+	    affectableStats.setStat(CharStats.STAT_WEIGHTADJ, 
+    		affectableStats.getStat(CharStats.STAT_WEIGHTADJ)
+    		+(int)Math.round(CMath.mul(affectedMob.baseEnvStats().weight(),CMath.div(CMath.s_int(text()),100.0))));
+	}
 	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
 	{
 	    super.affectEnvStats(affected,affectableStats);
-	    affectableStats.setWeight(affectableStats.weight()+(int)Math.round(CMath.mul(affectableStats.weight(),CMath.div(CMath.s_int(text()),100.0))));
 	}
 	
 	public void affectCharState(MOB affected, CharState affectableState)

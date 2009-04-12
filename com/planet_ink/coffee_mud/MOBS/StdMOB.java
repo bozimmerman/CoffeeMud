@@ -447,8 +447,11 @@ public class StdMOB implements MOB
 	public int baseWeight()
 	{
 		if(charStats().getMyRace()==baseCharStats().getMyRace())
-			return baseEnvStats().weight();
-		return charStats().getMyRace().lightestWeight()+charStats().getMyRace().weightVariance();
+			return baseEnvStats().weight() 
+				 + charStats().getStat(CharStats.STAT_WEIGHTADJ);
+		return charStats().getMyRace().lightestWeight()
+		        + charStats().getStat(CharStats.STAT_WEIGHTADJ)
+				+ charStats().getMyRace().weightVariance();
 	}
 
 	public int maxCarry()

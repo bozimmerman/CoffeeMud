@@ -63,14 +63,18 @@ public class Prayer_Behemoth extends Prayer
 		super.affectCharStats(affectedMOB,affectedStats);
 		affectedStats.setStat(CharStats.STAT_STRENGTH,affectedStats.getStat(CharStats.STAT_STRENGTH)+5);
 		affectedStats.setStat(CharStats.STAT_DEXTERITY,affectedStats.getStat(CharStats.STAT_DEXTERITY)-5);
+		affectedStats.setStat(CharStats.STAT_WEIGHTADJ,
+				affectedStats.getStat(CharStats.STAT_WEIGHTADJ)
+				+(affectedMOB.baseEnvStats().weight()*4));
 	}
 
 	public void affectEnvStats(Environmental affected, EnvStats affectedStats)
 	{
 		super.affectEnvStats(affected,affectedStats);
-		affectedStats.setWeight(affectedStats.weight()*4);
 		affectedStats.setHeight(affectedStats.height()*3);
 		affectedStats.setName("A BEHEMOTH "+affected.name().toUpperCase());
+		if(!(affected instanceof MOB))
+			affectedStats.setWeight(affectedStats.weight()*4);
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
