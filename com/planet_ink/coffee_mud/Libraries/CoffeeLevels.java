@@ -394,9 +394,8 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
             if(levelLimit>0)
             {
                 double levelFactor=CMath.div(levelDiff,levelLimit);
-                // with our new fudge factors, this is looking unnecessary, let it grow!
-                //if( levelFactor > (double)levelLimit )
-                //    levelFactor = (double)levelLimit;
+                if( levelFactor > (double)levelLimit )
+                    levelFactor = (double)levelLimit;
                 amount=(int)Math.round( ((double)amount) + CMath.mul( levelFactor, amount ) );
             }
         }

@@ -7,7 +7,7 @@
 #!QUESTMAKER_PAGE Quest Name/Duration
 #Enter the unique name and starting time/duration for your new quest.
 #Times are entered as a simple number or math expression to denote a
-#time in default ticks (4 second period), or you mayfollow the expression 
+#time in default ticks (4 second period), or you may follow the expression 
 #with the word seconds, minutes, hours, days, mudhours, muddays, mudweeks,
 #mudmonths, or mudyears.  Time expressions may include numbers, math 
 #symbols, or the ? operator to generate random numbers.  Example:
