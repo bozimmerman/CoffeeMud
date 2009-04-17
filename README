@@ -23,12 +23,14 @@ mud.bat           : set JAVA_HOME, and execute this to run coffeemud in windows
 make.bat          : set JAVA_HOME, and execute this to build coffeemud in windows
 build.xml         : ANT build file for coffeemud binaries
 coffee.ico        : Windows icon file for shortcuts
+pom.xml           : MAVEN build file (modify internal javac path first!)
 
 Linux:
 mudUNIX.sh        : Executing coffeemud. (See installation guide) 
 InstallUNIX.sh    : Configuring mudUNIX.sh (See installation guide)
 Makefile          : Building coffeemud. (See installation guide)
 build.xml         : ANT build file for coffeemud binaries
+pom.xml           : MAVEN build file (modify internal javac path first!)
 
 CoffeeMud:
 coffeemud.ini     : main coffeemud server configuration file
