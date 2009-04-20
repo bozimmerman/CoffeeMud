@@ -147,6 +147,8 @@ public interface MaskingLibrary extends CMLibrary
         +"+JAVACLASS \"-GENITEM\" etc.. (Do not <WORD> objs of subtracted classes) <BR>"
         +"-ABILITY X (<WORD> those with magical ability less than X)  <BR>"
         +"+ABILITY X (<WORD> those with magical ability greater than X) <BR>"
+        +"-IF <CONDITION> (<WORD>, unless they meet a Scriptable condition(s))  <BR>"
+        +"+IF <CONDITION> (never <WORD> anyone who meets a Scriptable condition)<BR>"
         +"-VALUE X (<WORD> those with value or money less than X)  <BR>"
         +"+VALUE X (<WORD> those with value or money greater than X) <BR>"
         +"-WEIGHT X (<WORD> those weighing less than X)  <BR>"

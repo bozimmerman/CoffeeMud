@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Behaviors;
+import com.planet_ink.coffee_mud.core.exceptions.ScriptParseException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -54,6 +55,8 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
         engine().registerDefaultQuest(questName);
     }
     
+    public MOB getMakeMOB(Tickable ticking){ return engine().getMakeMOB(ticking);}
+    
     public boolean endQuest(Environmental hostObj, MOB mob, String quest)
     {
         engine().endQuest(hostObj, mob, quest);
@@ -66,7 +69,7 @@ public class Scriptable extends StdBehavior implements ScriptingEngine
     }
 
     public String getParms() { return engine().getScript();}
-    
+    public String[] parseEval(String evaluable) throws ScriptParseException { return engine().parseEval(evaluable);}
     public void setParms(String newParms)
     {
         engine().setScript(newParms);

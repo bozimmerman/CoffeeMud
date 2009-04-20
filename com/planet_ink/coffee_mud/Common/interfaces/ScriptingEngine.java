@@ -1,4 +1,5 @@
 package com.planet_ink.coffee_mud.Common.interfaces;
+import com.planet_ink.coffee_mud.core.exceptions.ScriptParseException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -81,6 +82,23 @@ public interface ScriptingEngine extends CMCommon, Tickable, MsgListener
      */
     public void dequeResponses();
 
+    
+    /**
+     * Creates a mob from the Tickable object sent, possibly saving it
+     * locally to this object for use later.   
+     * @param ticking
+     * @return a mob from a tickable
+     */
+    public MOB getMakeMOB(Tickable ticking);
+    
+    /**
+     * Receives a string for evaluation by the eval function, and stores 
+     * it as the first element in the given 2 dimensional string array.
+     * @param expression the eval expression
+     * @return EVAL the 1 dimensional array to hold the compiled eval
+     */
+    public String[] parseEval(String evaluable) throws ScriptParseException;
+    
     /**
      * Evaluates a scripting function.  Is called by the execute command
      * to resolve IF, WHILE, and similar expressions that utilize the MOBPROG

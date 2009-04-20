@@ -2064,6 +2064,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         int startEval)
     {
         String[] tt=(String[])eval[0];
+        if(tmp == null) tmp = newObjs();
         Vector stack=new Vector();
         for(int t=startEval;t<tt.length;t++)
         if(tt[t].equals("("))
@@ -9453,8 +9454,8 @@ public class DefaultScriptingEngine implements ScriptingEngine
         if(I==null) return 0;
         return I.intValue();
     }
-
-    protected MOB getMakeMOB(Tickable ticking)
+    
+    public MOB getMakeMOB(Tickable ticking)
     {
         MOB mob=null;
         if(ticking instanceof MOB)
@@ -9469,13 +9470,15 @@ public class DefaultScriptingEngine implements ScriptingEngine
             Room R=CMLib.map().roomLocation((Environmental)ticking);
             if(R!=null) lastKnownLocation=R;
 
-            if((backupMOB==null)||(backupMOB.amDestroyed())||(backupMOB.amDead()))
+            if((backupMOB==null)
+            ||(backupMOB.amDestroyed())
+            ||(backupMOB.amDead()))
             {
                 backupMOB=CMClass.getMOB("StdMOB");
                 if(backupMOB!=null)
                 {
-                    backupMOB.setName(ticking.name());
-                    backupMOB.setDisplayText(ticking.name()+" is here.");
+    	            backupMOB.setName(ticking.name());
+    	            backupMOB.setDisplayText(ticking.name()+" is here.");
                     backupMOB.setDescription("");
                     backupMOB.setAgeHours(-1);
                     mob=backupMOB;
@@ -9488,7 +9491,11 @@ public class DefaultScriptingEngine implements ScriptingEngine
                 backupMOB.setAgeHours(-1);
                 mob=backupMOB;
                 if(backupMOB.location()!=lastKnownLocation)
+                {
                     backupMOB.setLocation(lastKnownLocation);
+    	            backupMOB.setName(ticking.name());
+    	            backupMOB.setDisplayText(ticking.name()+" is here.");
+                }
             }
         }
         return mob;

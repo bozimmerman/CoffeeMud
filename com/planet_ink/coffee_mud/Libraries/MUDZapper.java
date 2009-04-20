@@ -1,5 +1,6 @@
 package com.planet_ink.coffee_mud.Libraries;
 
+import com.planet_ink.coffee_mud.core.exceptions.ScriptParseException;
 import com.planet_ink.coffee_mud.core.interfaces.*;
 import com.planet_ink.coffee_mud.core.*;
 import com.planet_ink.coffee_mud.Abilities.interfaces.*;
@@ -243,6 +244,8 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
             zapCodes.put("-GROUPSIZE",new Integer(115));
             zapCodes.put("+GROUPSIZE",new Integer(116));
             zapCodes.put("+BASECLASS",new Integer(117));
+            zapCodes.put("-IF",new Integer(118));
+            zapCodes.put("+IF",new Integer(119));
 		}
 		return zapCodes;
 	}
@@ -1882,6 +1885,26 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 					val=((++v)<V.size())?CMath.s_int((String)V.elementAt(v)):0;
 					buf.append((skipFirstWord?"A":"Requires a")+" group size of at least "+val+".  ");
 					break;
+				case 118: // -if
+					buf.append((skipFirstWord?"n":"Requires n")+"ot meeting the following condition(s):");
+				    for(int v2=v+1;v2<V.size();v2++)
+				    {
+				        String str2=(String)V.elementAt(v2);
+				        if(zapCodes.containsKey(str2))
+				            break;
+				        buf.append(str2).append(" ");
+				    }
+					break;
+				case 119: // +if
+					buf.append((skipFirstWord?"m":"Requires m")+"meets the following condition(s):");
+				    for(int v2=v+1;v2<V.size();v2++)
+				    {
+				        String str2=(String)V.elementAt(v2);
+				        if(zapCodes.containsKey(str2))
+				            break;
+				        buf.append(str2).append(" ");
+				    }
+					break;
 				case 117: // +baseclass
 				{
 					buf.append("Disallows the following types(s): ");
@@ -2861,6 +2884,41 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 						entry.addElement(new Integer(val));
 						break;
 					}
+                case 118: // -if
+                case 119: // +if
+					{
+                        Vector entry=new Vector();
+                        buf.addElement(entry);
+                        entry.addElement(zapCodes.get(str));
+                        for(int v2=v+1;v2<V.size();v2++)
+                        {
+                            String str2=(String)V.elementAt(v2);
+                            if(zapCodes.containsKey(str2)||(str2.startsWith("+"))||(str2.startsWith("-")))
+                            {
+                                v=v2-1;
+                                break;
+                            }
+                            else
+                            {
+                                ScriptingEngine SE = (ScriptingEngine)CMClass.getCommon("DefaultScriptingEngine");
+                                SE.setSavable(false);
+                                SE.setVarScope("*");
+                                try {
+	                                String[] tt = SE.parseEval(str2);
+	                                entry.addElement(SE);
+	                                String[][] EVAL={tt};
+	                                entry.addElement(EVAL); // the compiled eval
+	                                Object[] tmp = new Object[ScriptingEngine.SPECIAL_NUM_OBJECTS];
+	                                entry.addElement(tmp);
+                                } catch(ScriptParseException spe) {
+                                	Log.errOut("MUDZapper","Script parse Exception for "+str2);
+                                	Log.errOut("MUDZapper",spe);
+                                }
+                            }
+                            v=V.size();
+                        }
+						break;
+					}
 				}
 			else
 			{
@@ -3069,6 +3127,9 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
                 }
 			}
 		}
+		for(int b=0;b<buf.size();b++)
+			if(buf.elementAt(b) instanceof Vector)
+				((Vector)buf.elementAt(b)).trimToSize();
 		buf.trimToSize();
 		return buf;
 	}
@@ -4046,6 +4107,39 @@ public class MUDZapper extends StdLibrary implements MaskingLibrary
 				if((V.size()>1)&&(mob.getGroupMembers(new HashSet(1)).size()>(((Integer)V.elementAt(1)).intValue())))
 				   return false;
 				break;
+			case 118: // -if
+				{
+					boolean oneIsOK = false;
+					for(int v=1;v<V.size();v+=3)
+					{
+						ScriptingEngine SE = (ScriptingEngine)V.elementAt(v);
+						String[][] EVAL = (String[][])V.elementAt(v+1);
+						Object[] tmp = (Object[])V.elementAt(v+2);
+						MOB M = SE.getMakeMOB(E);
+				        Item defaultItem=(E instanceof Item)?(Item)E:null;
+						if(SE.eval(E, M, null,M, defaultItem, null, "", tmp, EVAL, 0))
+						{
+							oneIsOK = true;
+							break;
+						}
+					}
+					if(!oneIsOK) return false;
+					break;
+				}
+			case 119: // +if
+		        {
+					for(int v=1;v<V.size();v+=3)
+					{
+						ScriptingEngine SE = (ScriptingEngine)V.elementAt(v);
+						String[][] EVAL = (String[][])V.elementAt(v+1);
+						Object[] tmp = (Object[])V.elementAt(v+2);
+						MOB M = SE.getMakeMOB(E);
+				        Item defaultItem=(E instanceof Item)?(Item)E:null;
+						if(SE.eval(E, M, null,M, defaultItem, null, "", tmp, EVAL, 0))
+							return true;
+					}
+					break;
+		        }
 			}
             }catch(NullPointerException n){}
 		}
