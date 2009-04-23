@@ -114,7 +114,7 @@ public class Prayer_DemonicConsumption extends Prayer
 
 		}
 		else
-			maliciousFizzle(mob,target,"<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+" treacherously, but fizzles the magic!");
+			maliciousFizzle(mob,target,"<S-NAME> point(s) at <T-NAMESELF> and "+prayWord(mob)+" treacherously, but fizzle(s) the magic!");
 
 
 		// return whether it worked

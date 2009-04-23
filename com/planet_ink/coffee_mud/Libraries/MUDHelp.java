@@ -621,16 +621,6 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				}
 			}
 			if(!found)
-				for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
-				{
-					Area A=(Area)e.nextElement();
-					if(CMLib.english().containsString(A.name(),ahelpStr))
-					{
-						helpStr=A.name();
-						break;
-					}
-				}
-			if(!found)
 			{
 			    String currency=CMLib.english().matchAnyCurrencySet(ahelpStr);
 			    if(currency!=null)
@@ -691,6 +681,16 @@ public class MUDHelp extends StdLibrary implements HelpLibrary
 				}
 				
 			}
+			if(!found)
+				for(Enumeration e=CMLib.map().areas();e.hasMoreElements();)
+				{
+					Area A=(Area)e.nextElement();
+					if(CMLib.english().containsString(A.name(),ahelpStr))
+					{
+						helpStr=A.name();
+						break;
+					}
+				}
 		}
 		if(!areaTag)
 			while((thisTag!=null)&&(thisTag.length()>0)&&(thisTag.length()<31))
