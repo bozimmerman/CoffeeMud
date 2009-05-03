@@ -201,15 +201,15 @@ public class DefaultCharState implements CharState
 		double str=(double)charStats.getStat(CharStats.STAT_STRENGTH);
 		if(getHunger()<1)
 		{
-			con=con*.85;
-			man=man*.75;
-			str=str*.85;
+			con=con*.50;
+			man=man*.50;
+			str=str*.50;
 		}
 		if(getThirst()<1)
 		{
-			con=con*.85;
-			man=man*.75;
-			str=str*.85;
+			con=con*.50;
+			man=man*.50;
+			str=str*.50;
 		}
 		if(getFatigue()>FATIGUED_MILLIS)
 			man=man*.5;

@@ -288,6 +288,16 @@ public class Prop_SpellAdder extends Property
         lastMOB=null;
     }
     
+    public void setAffectedOne(Environmental being) 
+    {
+    	super.setAffectedOne(being);
+    	if(being == null)
+    	{
+    		removeMyAffectsFromLastMOB();
+    		finalize();
+    	}
+    }
+    
 	public void removeMyAffectsFrom(Environmental E)
 	{
         if(E==null)return;
