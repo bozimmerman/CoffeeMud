@@ -156,6 +156,8 @@ public class StdBehavior implements Behavior
 
 	public boolean tick(Tickable ticking, int tickID)
 	{
+		if((ticking instanceof Environmental) && (((Environmental)ticking).amDestroyed()))
+			return false;
 		return true;
 	}
 

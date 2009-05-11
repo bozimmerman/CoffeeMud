@@ -45,6 +45,7 @@ public class Patroller extends ActiveTicker
 	protected boolean rideOk=false;
 	protected boolean rideOnly=false;
 	protected Vector correction=null;
+	protected Vector cachedSteps=null;
 
 	protected volatile int rideCheckCt = 0;
 	
@@ -63,11 +64,15 @@ public class Patroller extends ActiveTicker
 		rideOnly=rideokString.equalsIgnoreCase("only");
 		rideOk=rideOnly||rideokString.equalsIgnoreCase("true");
 		diameter=CMParms.getParmInt(newParms,"diameter",20);
+		cachedSteps = null;
 	}
 
 
 	protected Vector getSteps()
 	{
+		if(cachedSteps != null)
+			return cachedSteps;
+		
 		Vector V=new Vector();
 		String path=getParms().trim();
 		int x=path.indexOf(";");
@@ -96,7 +101,9 @@ public class Patroller extends ActiveTicker
 				if(i<(V.size()-1))
 					V.addElement(V.elementAt(i));
 			}
-		return V;
+		V.trimToSize();
+		cachedSteps = V;
+		return cachedSteps;
 	}
 
 	public boolean okMessage(Environmental host, CMMsg msg)
@@ -124,6 +131,7 @@ public class Patroller extends ActiveTicker
 	{
 		if(!super.tick(ticking,tickID))
 		    return false;
+		
 		if(canAct(ticking,tickID))
 		{
             Vector riders=null;
