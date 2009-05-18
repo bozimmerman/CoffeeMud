@@ -223,7 +223,11 @@ public class Intermud implements Runnable, Persistent, Serializable
                     Vector info = (Vector)ob;
 
                     c.owner = (String)info.elementAt(0);
-                    c.type = ((Integer)info.elementAt(1)).intValue();
+                    if(info.elementAt(1) instanceof Integer)
+	                    c.type = ((Integer)info.elementAt(1)).intValue();
+                    else
+                    if(info.elementAt(1) instanceof Vector)
+                    	Log.errOut("InterMud","Received unexpected channel-reply: " + CMParms.toStringList((Vector)info.elementAt(1)));
                     addChannel(c);
                 }
             }
