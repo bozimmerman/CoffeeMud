@@ -95,14 +95,19 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	public int adjustedAttackBonus(MOB mob, MOB target)
 	{
 		double att=(double)ATTACK_ADJUSTMENT + (double)mob.envStats().attackAdjustment();
-		int maxStat = mob.charStats().getMaxStat(CharStats.STAT_STRENGTH);
-		int currStat = mob.charStats().getStat(CharStats.STAT_STRENGTH);
-		if(currStat > maxStat) currStat = maxStat;
+		int maxStr = mob.charStats().getMaxStat(CharStats.STAT_STRENGTH);
+		int currStr = mob.charStats().getStat(CharStats.STAT_STRENGTH);
+		int strBonus = 0;
+		if(currStr > maxStr)
+		{
+			strBonus = currStr - maxStr;
+			currStr = maxStr;
+		}
 		int baseStat = mob.baseCharStats().getStat(CharStats.STAT_STRENGTH);
-		if(baseStat > maxStat) baseStat = maxStat;
-		double str=((double)currStat-9.0)/5.0;
+		if(baseStat > maxStr) baseStat = maxStr;
+		double str=((double)currStr-9.0)/5.0;
 		double strR=((double)baseStat-9.0)/5.0;
-		att += (str * strR * strR);
+		att += (str * strR * strR) + strBonus;
 		if(mob.curState().getHunger()<1) att=att*.9;
 		if(mob.curState().getThirst()<1) att=att*.9;
 		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS) att=att*.8;
@@ -116,13 +121,23 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	
 	public int adjustedArmor(MOB mob)
 	{
-		double dex=(double)(mob.charStats().getStat(CharStats.STAT_DEXTERITY)-9.0)/5.0;
-		double dexR=(double)(mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY)-9.0)/5.0;
+		int currDex=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
+		int maxDex = mob.charStats().getMaxStat(CharStats.STAT_DEXTERITY);
+		int dexBonus = 0;
+		if(currDex > maxDex)
+		{
+			dexBonus = currDex - maxDex;
+			currDex = maxDex;
+		}
+		double baseDex=(double)mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY);
+		if(baseDex > maxDex) baseDex = maxDex;
 		double arm = 0.0;
+		double dex=((double)currDex-9.0)/5.0;
+		double dexR=((double)baseDex-9.0)/5.0;
 		if((mob.envStats().disposition()&EnvStats.IS_SLEEPING)==0)
 		{
 			if((mob.envStats().disposition()&EnvStats.IS_SITTING)==0) 
-				arm = (dex * dexR * dexR);
+				arm = (dex * dexR * dexR) + dexBonus;
 			else
 				arm = (dex * dexR);
 		}
@@ -131,7 +146,6 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if(mob.curState().getHunger()<1) arm=arm*.85;
 			if(mob.curState().getThirst()<1) arm=arm*.85;
 			if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS) arm=arm*.85;
-			if((mob.envStats().disposition()&EnvStats.IS_SITTING)>0) arm=arm*.75;
 		}
 		return (int)Math.round(mob.envStats().armor()-arm);
 	}
