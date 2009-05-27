@@ -735,6 +735,154 @@ public class CMath
     }
 
     /**
+     * A class representing a single piece of a compiled operation.  Optomized for
+     * speed of execution rather than the obvious wastefulness of storage.
+     */
+    private static final class CompiledOperation
+    {
+    	public static final int OPERATION_VARIABLE=0;
+    	public static final int OPERATION_VALUE=1;
+    	public static final int OPERATION_OPERATION=2;
+    	public static final int OPERATION_LIST=3;
+    	public int type = -1;
+    	public int variableIndex = 0;
+    	public double value = 0.0;
+    	public char operation = ' ';
+    	public LinkedList<CompiledOperation> list = null;
+    	public CompiledOperation(int variableIndex) { type = OPERATION_VARIABLE; this.variableIndex = variableIndex;}  
+    	public CompiledOperation(double value) { type = OPERATION_VALUE; this.value = value;}  
+    	public CompiledOperation(LinkedList<CompiledOperation> list) { type = OPERATION_LIST; this.list = list;}  
+    	public CompiledOperation(char operation) { type = OPERATION_OPERATION; this.operation = operation;}  
+    }
+    
+    /**
+     * Pre-compiles an expression for faster evaluation later on.
+     * @see CMath#parseMathExpression(LinkedList, double[])
+     * @param st the math expression as a string
+     * @returns the pre-compiled expression
+     * @throws ArithmeticException
+     */
+    public static LinkedList<CompiledOperation> compileMathExpression(String formula)
+    {return compileMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false);}
+    
+    /**
+     * Pre-compiles an expression for faster evaluation later on.
+     * @see CMath#parseMathExpression(LinkedList, double[])
+     * @param st the tokenized expression
+     * @param inParen whether or not you are in parenthesis mode 
+     * @returns the pre-compiled expression
+     * @throws ArithmeticException
+     */
+    private static LinkedList<CompiledOperation> compileMathExpression(StreamTokenizer st, boolean inParen)
+    	throws ArithmeticException
+	{
+	    if(!inParen) {
+	        st.ordinaryChar('/');
+	        st.ordinaryChar('x');
+	        st.ordinaryChar('X');
+	    }
+	    LinkedList<CompiledOperation> list = new LinkedList<CompiledOperation>();
+	    
+	    try{
+	        int c=st.nextToken();
+	        char lastOperation='+';
+	        while(c!=StreamTokenizer.TT_EOF)
+	        {
+	            switch(c)
+	            {
+	            case StreamTokenizer.TT_NUMBER:
+	            	list.add(new CompiledOperation(st.nval));
+	                break;
+	            case '(':
+	            	list.add(new CompiledOperation(compileMathExpression(st,true)));
+	                break;
+	            case ')':
+	                if(!inParen)
+	                    throw new ArithmeticException("')' is an unexpected token.");
+	                return list;
+	            case '@':
+	            {
+	                c=st.nextToken();
+	                if((c!='x')&&(c!='X'))
+	                    throw new ArithmeticException("'"+c+"' is an unexpected token after @.");
+	                c=st.nextToken();
+	                if(c!=StreamTokenizer.TT_NUMBER)
+	                    throw new ArithmeticException("'"+c+"' is an unexpected token after @x.");
+	                if((st.nval>10)||(st.nval<1.0))
+	                    throw new ArithmeticException("'"+st.nval+"/10' is an illegal variable reference.");
+	                list.add(new CompiledOperation(((int)st.nval)-1));
+	                break;
+	            }
+	            case '+':
+	            case '-':
+	            case '*':
+	            case '\\':
+	            case '/':
+	            case '?':
+	            {
+	                lastOperation=(char)c;
+	                c=st.nextToken();
+	                continue;
+	            }
+	            default:
+	                throw new ArithmeticException("'"+c+"' is an illegal expression.");
+	            }
+	            switch(lastOperation)
+	            {
+	            case '+':
+	            case '-':
+	            case '*':
+	            case '?':
+	            	list.add(new CompiledOperation(lastOperation));
+	            	break;
+	            case '/':
+	            case '\\':
+	            	list.add(new CompiledOperation('/'));
+	            	break;
+	            }
+	            c=st.nextToken();
+	        }
+	    }
+	    catch(IOException e){}
+	    if(inParen)
+	        throw new ArithmeticException("')' was missing from this expression");
+	    return list;
+	}
+
+    /**
+     * Parse a pre-compiled expression.  Requires a vars variable of at least 10 entries
+     * to ensure NO exceptions (other than /0).
+     * @see CMath#compileMathExpression(StreamTokenizer, boolean)
+     * @param list the pre-compiled expression
+     * @param vars the variable values
+     * @return the final value
+     */
+    public static double parseMathExpression(LinkedList<CompiledOperation> list, double[] vars)
+	{
+        double finalValue=0.0;
+        double curValue=0.0;
+    	for(CompiledOperation o : list)
+    		switch(o.type)
+    		{
+    			case CompiledOperation.OPERATION_VALUE: curValue = o.value; break;
+    			case CompiledOperation.OPERATION_VARIABLE: curValue = vars[o.variableIndex]; break;
+    			case CompiledOperation.OPERATION_LIST: curValue = parseMathExpression(o.list,vars); break;
+    			case CompiledOperation.OPERATION_OPERATION:
+    				switch(o.operation)
+    				{
+    	                case '+': finalValue+=curValue; break;
+    	                case '-': finalValue-=curValue; break;
+    	                case '*': finalValue*=curValue; break;
+    	                case '/': finalValue/=curValue; break;
+    	                case '?': finalValue=((curValue-finalValue)*Math.random())+finalValue; break;
+    				}
+    				break;
+    		}
+    	return finalValue;
+	}
+    
+	
+    /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
      * number, or a full expression using ()+_/*?.
