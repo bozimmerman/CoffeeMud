@@ -36,25 +36,17 @@ import java.util.*;
 public class MUDFight extends StdLibrary implements CombatLibrary
 {
     public String ID(){return "MUDFight";}
-    private static final int ATTACK_ADJUSTMENT = 50;
-    
     public String lastStr="";
     public long lastRes=0;
     public String[][] hitWordIndex=null;
     public String[][] hitWordsChanged=null;
     //protected LinkedList<CMath.CompiledOperation> hitFormula = null;
     
+    private static final int ATTACK_ADJUSTMENT = 50;
 
-    public boolean activate()
-    { 
-    	super.activate();
-    	return true;
-    }
+    public boolean activate(){ return true; }
     
-    public void propertiesLoaded()
-    {
-    	activate();
-    }
+    public void propertiesLoaded(){	activate(); }
     
 	public HashSet allPossibleCombatants(MOB mob, boolean beRuthless)
 	{
