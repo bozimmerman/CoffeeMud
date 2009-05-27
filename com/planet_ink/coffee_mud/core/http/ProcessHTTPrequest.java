@@ -49,6 +49,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
 	private CMProps page;
 	private Socket sock;
+    public void propertiesLoaded(){}
 
 	private static long instanceCnt = 0;
 	private long processStartTime=0;

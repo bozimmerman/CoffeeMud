@@ -287,6 +287,19 @@ public class CMLib
     	return true;
     }
 
+    public static void propertiesLoaded() {
+        CMLib lib=l();
+        Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);
+        for(int l=0;l<lib.libraries.length;l++)
+            if((!privacyV.contains(LIBRARY_DESCS[l])&&(libs[MudHost.MAIN_HOST]!=lib)))
+            {}
+            else
+            if(lib.libraries[l]==null)
+            {}
+            else
+                lib.libraries[l].propertiesLoaded();
+    }
+    
     public static void activateLibraries() {
         CMLib lib=l();
         Vector privacyV=CMParms.parseCommas(CMProps.getVar(CMProps.SYSTEM_PRIVATERESOURCES).toUpperCase(), true);

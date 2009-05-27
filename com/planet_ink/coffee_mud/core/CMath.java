@@ -738,7 +738,7 @@ public class CMath
      * A class representing a single piece of a compiled operation.  Optomized for
      * speed of execution rather than the obvious wastefulness of storage.
      */
-    private static final class CompiledOperation
+    public static final class CompiledOperation
     {
     	public static final int OPERATION_VARIABLE=0;
     	public static final int OPERATION_VALUE=1;

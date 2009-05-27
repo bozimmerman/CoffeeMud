@@ -50,6 +50,7 @@ public class IMudClient implements I3Interface
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public boolean activate(){ return true;}
     public boolean shutdown(){ return true;}
+    public void propertiesLoaded(){}
     public ThreadEngine.SupportThread getSupportThread() { return null;}
     
 	public IMC2Driver imc2=null;

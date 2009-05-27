@@ -24,6 +24,7 @@ public class StdLibrary implements CMLibrary
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     public void initializeClass(){}
     public boolean activate(){ return true;}
+    public void propertiesLoaded(){ }
     public boolean shutdown(){ return true;}
     public ThreadEngine.SupportThread getSupportThread() { return null;}
 }

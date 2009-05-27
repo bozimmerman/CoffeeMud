@@ -45,7 +45,7 @@ public class ServiceEngine implements ThreadEngine
     public CMObject copyOf(){try{return (CMObject)this.clone();}catch(Exception e){return newInstance();}}
     public int compareTo(CMObject o){ return CMClass.classID(this).compareToIgnoreCase(CMClass.classID(o));}
     private ThreadEngine.SupportThread thread=null;
-    
+    public void propertiesLoaded(){}
 	protected Vector tickGroup=new Vector();
 	public Enumeration tickGroups(){return DVector.s_enum(tickGroup);}
     private boolean isSuspended=false;

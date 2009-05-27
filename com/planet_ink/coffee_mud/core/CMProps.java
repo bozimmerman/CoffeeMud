@@ -844,6 +844,7 @@ public class CMProps extends Properties
         resetSecurityVars();
         statCodeExtensions = getStrsStarting("EXTVAR_");
 
+        CMLib.propertiesLoaded();
     }
     
     public void resetSecurityVars() {

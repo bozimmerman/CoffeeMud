@@ -78,6 +78,7 @@ public class DBInterface implements DatabaseEngine
     public DBConnector getConnector(){ return DB;}
     public boolean activate(){ return true;}
     public boolean shutdown(){ return true;}
+    public void propertiesLoaded(){}
     public ThreadEngine.SupportThread getSupportThread() { return null;}
     
 	public void vassals(MOB mob, String liegeID)
