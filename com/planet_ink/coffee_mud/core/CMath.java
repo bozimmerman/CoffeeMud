@@ -596,6 +596,7 @@ public class CMath
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
      * number, or a full expression using ()+_/*?.
+     * Variable @xx will refer to current computed value.
      * Returns 0.0 on any parsing error
      * @param st a full math expression string
      * @return the result of the expression
@@ -607,6 +608,7 @@ public class CMath
      * number, or a full expression using ()+_/*?.
      * Variables are included as @x1, etc.. The given
      * variable values list is 0 based, so @x1 = vars[0].
+     * Variable @xx will refer to current computed value.
      * Returns 0.0 on any parsing error
      * @param st a full math expression string
      * @param vars the 0 based variables
@@ -617,6 +619,7 @@ public class CMath
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
      * number, or a full expression using ()+_/*?.
+     * Variable @xx will refer to current computed value.
      * Rounds the result to a long.
      * Returns 0 on any parsing error
      * @param st a full math expression string
@@ -629,6 +632,7 @@ public class CMath
      * number, or a full expression using ()+_/*?.
      * Variables are included as @x1, etc.. The given
      * variable values list is 0 based, so @x1 = vars[0].
+     * Variable @xx will refer to current computed value.
      * Rounds the result to a long.
      * Returns 0 on any parsing error
      * @param st a full math expression string
@@ -640,6 +644,7 @@ public class CMath
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
      * number, or a full expression using ()+_/*?.  
+     * Variable @xx will refer to current computed value.
      * Round the result to an integer.
      * Returns 0 on any parsing error
      * @param st a full math expression string
@@ -652,6 +657,7 @@ public class CMath
      * number, or a full expression using ()+_/*?.
      * Variables are included as @x1, etc.. The given
      * variable values list is 0 based, so @x1 = vars[0].
+     * Variable @xx will refer to current computed value.
      * Rounds the result to an integer.
      * Returns 0 on any parsing error
      * @param st a full math expression string
@@ -660,7 +666,7 @@ public class CMath
      */
     public static int s_parseIntExpression(String st, double[] vars){ try{ return parseIntExpression(st,vars);}catch(Exception e){ return 0;}}
 
-    private static double parseMathExpression(StreamTokenizer st, boolean inParen, double[] vars)
+    private static double parseMathExpression(StreamTokenizer st, boolean inParen, double[] vars, double previous)
         throws ArithmeticException
     {
         if(!inParen) {
@@ -681,7 +687,7 @@ public class CMath
                     curValue=st.nval;
                     break;
                 case '(':
-                    curValue=parseMathExpression(st,true,vars);
+                    curValue=parseMathExpression(st,true,vars,finalValue);
                     break;
                 case ')':
                     if(!inParen)
@@ -693,13 +699,18 @@ public class CMath
                     if((c!='x')&&(c!='X'))
                         throw new ArithmeticException("'"+c+"' is an unexpected token after @.");
                     c=st.nextToken();
-                    if(c!=StreamTokenizer.TT_NUMBER)
-                        throw new ArithmeticException("'"+c+"' is an unexpected token after @x.");
-                    if(vars==null)
-                        throw new ArithmeticException("vars have not been defined for @x"+st.nval);
-                    if((st.nval>vars.length)||(st.nval<1.0))
-                        throw new ArithmeticException("'"+st.nval+"/"+vars.length+"' is an illegal variable reference.");
-                    curValue=vars[((int)st.nval)-1];
+                    if((c=='x')||(c=='X'))
+                    	curValue=previous;
+                    else
+                    {
+	                    if(c!=StreamTokenizer.TT_NUMBER)
+	                        throw new ArithmeticException("'"+c+"' is an unexpected token after @x.");
+	                    if(vars==null)
+	                        throw new ArithmeticException("vars have not been defined for @x"+st.nval);
+	                    if((st.nval>vars.length)||(st.nval<1.0))
+	                        throw new ArithmeticException("'"+st.nval+"/"+vars.length+"' is an illegal variable reference.");
+	                    curValue=vars[((int)st.nval)-1];
+                    }
                     break;
                 }
                 case '+':
@@ -744,6 +755,7 @@ public class CMath
     	public static final int OPERATION_VALUE=1;
     	public static final int OPERATION_OPERATION=2;
     	public static final int OPERATION_LIST=3;
+    	public static final int OPERATION_PREVIOUSVALUE=4;
     	public int type = -1;
     	public int variableIndex = 0;
     	public double value = 0.0;
@@ -753,6 +765,7 @@ public class CMath
     	public CompiledOperation(double value) { type = OPERATION_VALUE; this.value = value;}  
     	public CompiledOperation(LinkedList<CompiledOperation> list) { type = OPERATION_LIST; this.list = list;}  
     	public CompiledOperation(char operation) { type = OPERATION_OPERATION; this.operation = operation;}  
+    	public CompiledOperation() { type = OPERATION_PREVIOUSVALUE;}  
     }
     
     /**
@@ -806,11 +819,16 @@ public class CMath
 	                if((c!='x')&&(c!='X'))
 	                    throw new ArithmeticException("'"+c+"' is an unexpected token after @.");
 	                c=st.nextToken();
-	                if(c!=StreamTokenizer.TT_NUMBER)
-	                    throw new ArithmeticException("'"+c+"' is an unexpected token after @x.");
-	                if((st.nval>10)||(st.nval<1.0))
-	                    throw new ArithmeticException("'"+st.nval+"/10' is an illegal variable reference.");
-	                list.add(new CompiledOperation(((int)st.nval)-1));
+                    if((c=='x')||(c=='X'))
+		                list.add(new CompiledOperation());
+                    else
+                    {
+		                if(c!=StreamTokenizer.TT_NUMBER)
+		                    throw new ArithmeticException("'"+c+"' is an unexpected token after @x.");
+		                if((st.nval>10)||(st.nval<1.0))
+		                    throw new ArithmeticException("'"+st.nval+"/10' is an illegal variable reference.");
+		                list.add(new CompiledOperation(((int)st.nval)-1));
+                    }
 	                break;
 	            }
 	            case '+':
@@ -857,7 +875,7 @@ public class CMath
      * @param vars the variable values
      * @return the final value
      */
-    public static double parseMathExpression(LinkedList<CompiledOperation> list, double[] vars)
+    public static double parseMathExpression(LinkedList<CompiledOperation> list, double[] vars, double previous)
 	{
         double finalValue=0.0;
         double curValue=0.0;
@@ -866,7 +884,8 @@ public class CMath
     		{
     			case CompiledOperation.OPERATION_VALUE: curValue = o.value; break;
     			case CompiledOperation.OPERATION_VARIABLE: curValue = vars[o.variableIndex]; break;
-    			case CompiledOperation.OPERATION_LIST: curValue = parseMathExpression(o.list,vars); break;
+    			case CompiledOperation.OPERATION_LIST: curValue = parseMathExpression(o.list,vars,finalValue); break;
+    			case CompiledOperation.OPERATION_PREVIOUSVALUE: curValue = previous; break;
     			case CompiledOperation.OPERATION_OPERATION:
     				switch(o.operation)
     				{
@@ -886,19 +905,21 @@ public class CMath
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
      * number, or a full expression using ()+_/*?.
+     * Variable @xx will refer to current computed value.
      * Rounds the result to a long
      * Throws an exception on any parsing error
      * @param formula a full math expression string
      * @return the result of the expression
      */
     public static long parseLongExpression(String formula)
-    {return Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,null));}
+    {return Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,null,0));}
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
      * number, or a full expression using ()+_/*?.
      * Variables are included as @x1, etc.. The given
      * variable values list is 0 based, so @x1 = vars[0].
+     * Variable @xx will refer to current computed value.
      * Rounds the result to a long
      * Throws an exception on any parsing error
      * @param formula a full math expression string
@@ -906,25 +927,27 @@ public class CMath
      * @return the result of the expression
      */
     public static long parseLongExpression(String formula, double[] vars)
-    {return Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,vars));}
+    {return Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,vars,0));}
 
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
      * number, or a full expression using ()+_/*?.
+     * Variable @xx will refer to current computed value.
      * Rounds the result to an integer.
      * Throws an exception on any parsing error
      * @param formula a full math expression string
      * @return the result of the expression
      */
     public static int parseIntExpression(String formula) throws ArithmeticException
-    {return (int)Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,null));}
+    {return (int)Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,null,0));}
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
      * number, or a full expression using ()+_/*?.
      * Variables are included as @x1, etc.. The given
      * variable values list is 0 based, so @x1 = vars[0].
+     * Variable @xx will refer to current computed value.
      * Rounds the result to an integer.
      * Throws an exception on any parsing error
      * @param formula a full math expression string
@@ -932,30 +955,32 @@ public class CMath
      * @return the result of the expression
      */
     public static int parseIntExpression(String formula, double[] vars) throws ArithmeticException
-    {return (int)Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,vars));}
+    {return (int)Math.round(parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,vars,0));}
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
      * number, or a full expression using ()+_/*?.
+     * Variable @xx will refer to current computed value.
      * Throws an exception on any parsing error
      * @param formula a full math expression string
      * @return the result of the expression
      */
     public static double parseMathExpression(String formula) throws ArithmeticException
-    {return parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,null);}
+    {return parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,null,0);}
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
      * number, or a full expression using ()+_/*?.
      * Variables are included as @x1, etc.. The given
      * variable values list is 0 based, so @x1 = vars[0].
+     * Variable @xx will refer to current computed value.
      * Throws an exception on any parsing error
      * @param formula a full math expression string
      * @param vars the 0 based variables
      * @return the result of the expression
      */
     public static double parseMathExpression(String formula, double[] vars) throws ArithmeticException
-    {return parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,vars);}
+    {return parseMathExpression(new StreamTokenizer(new InputStreamReader(new ByteArrayInputStream(formula.getBytes()))),false,vars,0);}
 
 
     /**
