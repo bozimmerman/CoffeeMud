@@ -108,14 +108,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		double str=((double)currStr-9.0)/5.0;
 		double strR=((double)baseStat-9.0)/5.0;
 		att += (str * strR * strR) + strBonus;
-		// (50 + @x1 + (((@x2 - 9)/5) * ((@x3 - 9)/5) * ((@x3 - 9)/5)) + @x4) - (0.1 * @xx * @x5) - (0.1 * @xx * @x6) - (0.2 * @xx * @x7)
-		// @x1 = base attack adj from class or spells
-		// @x2 = current strength score <= current max strength score
-		// @x3 = base strength score <= current max strength score
-		// @x4 = current max strength score - current strength score > 0
-		// @x5 = 1 if hungry, 0 if not
-		// @x6 = 1 if thirsty, 0 if not
-		// @x7 = 1 if fatigued, 0 if not
+		//String formula = " (50 + @x1 + ( ((@x2 - 9)/5) * ((@x3 - 9)/5) * ((@x3 - 9)/5) ) + @x4) - (0.1 * @xx * @x5) - (0.1 * @xx * @x6) - (0.2 * @xx * @x7)";
+		// vars[0] = attack;
+		// vars[1] = curStr > 18 ? 18 : curStr;
+		// vars[2] = baseStr > 18 ? 18 : curStr;
+		// vars[3] = (curStr > 18) ? (curStr-18) : 0;
+		// vars[4] = (hungry == 0)?1:0;
+		// vars[5] = (thirsty == 0)?1:0;
+		// vars[6] = (fatigued == 0)?0:1;
 		if(mob.curState().getHunger()<1) att=att*.9;
 		if(mob.curState().getThirst()<1) att=att*.9;
 		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS) att=att*.8;
