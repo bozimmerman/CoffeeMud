@@ -481,6 +481,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS) damageAmount *=.8;
 		if(mob.curState().getThirst() < 1) damageAmount *= .9;
 		if(damageAmount<1.0) damageAmount=1.0;
+		//TODO: hunger, thirst.
 		//String weaponCritChance = "( ( ((@x2 - 10 + ((@x7 - @x8)<10))/2.5) > 0 * ((@x3 - 10 + ((@x7 - @x8)<10))/2.5) > 0 * ((@x3 - 10 + ((@x7 - @x8)<10))/2.5) ))";
 		//String weaponCritDmg = "( @x0 * ( ((@x2 - 10 + ((@x7 - @x8)<10))/2.5)> 0 * ((@x3 - 10 + ((@x7 - @x8)<10))/2.5) > 0 * ((@x3 - 10 + ((@x7 - @x8)<10))/2.5) ) / 50.0) + @x3";
 		
