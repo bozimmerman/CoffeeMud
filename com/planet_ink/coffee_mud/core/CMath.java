@@ -595,7 +595,7 @@ public class CMath
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
-     * number, or a full expression using ()+_/*?.
+     * number, or a full expression using ()+-/*?<>.
      * Variable @xx will refer to current computed value.
      * Returns 0.0 on any parsing error
      * @param st a full math expression string
@@ -605,7 +605,7 @@ public class CMath
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
-     * number, or a full expression using ()+_/*?.
+     * number, or a full expression using ()+-/*?<>.
      * Variables are included as @x1, etc.. The given
      * variable values list is 0 based, so @x1 = vars[0].
      * Variable @xx will refer to current computed value.
@@ -618,7 +618,7 @@ public class CMath
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
-     * number, or a full expression using ()+_/*?.
+     * number, or a full expression using ()+-/*?<>.
      * Variable @xx will refer to current computed value.
      * Rounds the result to a long.
      * Returns 0 on any parsing error
@@ -629,7 +629,7 @@ public class CMath
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
-     * number, or a full expression using ()+_/*?.
+     * number, or a full expression using ()+-/*?<>.
      * Variables are included as @x1, etc.. The given
      * variable values list is 0 based, so @x1 = vars[0].
      * Variable @xx will refer to current computed value.
@@ -643,7 +643,7 @@ public class CMath
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
-     * number, or a full expression using ()+_/*?.  
+     * number, or a full expression using ()+-/*?<>.  
      * Variable @xx will refer to current computed value.
      * Round the result to an integer.
      * Returns 0 on any parsing error
@@ -654,7 +654,7 @@ public class CMath
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
-     * number, or a full expression using ()+_/*?.
+     * number, or a full expression using ()+-/*?<>.
      * Variables are included as @x1, etc.. The given
      * variable values list is 0 based, so @x1 = vars[0].
      * Variable @xx will refer to current computed value.
@@ -714,6 +714,8 @@ public class CMath
                     break;
                 }
                 case '+':
+                case '<':
+                case '>':
                 case '-':
                 case '*':
                 case '\\':
@@ -729,6 +731,8 @@ public class CMath
                 }
                 switch(lastOperation)
                 {
+                case '<': finalValue = finalValue < curValue? finalValue : curValue; break;
+                case '>': finalValue = finalValue > curValue? finalValue : curValue; break;
                 case '+': finalValue+=curValue; break;
                 case '-': finalValue-=curValue; break;
                 case '*': finalValue*=curValue; break;
@@ -851,6 +855,8 @@ public class CMath
 	            case '-':
 	            case '*':
 	            case '?':
+                case '<':
+                case '>':
 	            	list.add(new CompiledOperation(lastOperation));
 	            	break;
 	            case '/':
@@ -894,6 +900,8 @@ public class CMath
     	                case '*': finalValue*=curValue; break;
     	                case '/': finalValue/=curValue; break;
     	                case '?': finalValue=((curValue-finalValue)*Math.random())+finalValue; break;
+    	                case '<': finalValue = finalValue < curValue? finalValue : curValue; break;
+    	                case '>': finalValue = finalValue > curValue? finalValue : curValue; break;
     				}
     				break;
     		}
@@ -904,7 +912,7 @@ public class CMath
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
-     * number, or a full expression using ()+_/*?.
+     * number, or a full expression using ()+-/*?<>.
      * Variable @xx will refer to current computed value.
      * Rounds the result to a long
      * Throws an exception on any parsing error
@@ -916,7 +924,7 @@ public class CMath
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
-     * number, or a full expression using ()+_/*?.
+     * number, or a full expression using ()+-/*?<>.
      * Variables are included as @x1, etc.. The given
      * variable values list is 0 based, so @x1 = vars[0].
      * Variable @xx will refer to current computed value.
@@ -932,7 +940,7 @@ public class CMath
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
-     * number, or a full expression using ()+_/*?.
+     * number, or a full expression using ()+-/*?<>.
      * Variable @xx will refer to current computed value.
      * Rounds the result to an integer.
      * Throws an exception on any parsing error
@@ -944,7 +952,7 @@ public class CMath
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
-     * number, or a full expression using ()+_/*?.
+     * number, or a full expression using ()+-/*?<>.
      * Variables are included as @x1, etc.. The given
      * variable values list is 0 based, so @x1 = vars[0].
      * Variable @xx will refer to current computed value.
@@ -959,7 +967,7 @@ public class CMath
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
-     * number, or a full expression using ()+_/*?.
+     * number, or a full expression using ()+-/*?<>.
      * Variable @xx will refer to current computed value.
      * Throws an exception on any parsing error
      * @param formula a full math expression string
@@ -970,7 +978,7 @@ public class CMath
     /**
      * Returns the result of evaluating the given math
      * expression.  An expression can be a double or int
-     * number, or a full expression using ()+_/*?.
+     * number, or a full expression using ()+-/*?<>.
      * Variables are included as @x1, etc.. The given
      * variable values list is 0 based, so @x1 = vars[0].
      * Variable @xx will refer to current computed value.
