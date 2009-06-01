@@ -458,6 +458,14 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			damageAmount = (double)(weapon.envStats().damage()+1);
 		else
 			damageAmount = (double)mob.envStats().damage() + CMath.div(mob.charStats().getStat(CharStats.STAT_STRENGTH)-10  + levelDiff,2.5);
+		
+		if(mob.curState().getHunger() < 1) damageAmount *= .8;
+		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS) damageAmount *=.8;
+		if(mob.curState().getThirst() < 1) damageAmount *= .9;
+		if(damageAmount<1.0) damageAmount=1.0;
+		//TODO: Base damage formula
+		 //-  (0.10 * @xx * @x5) - (0.10 * @xx * @x6) - (0.2 * @xx * @x7)
+		
 		if(levelDiff > 10) levelDiff = 10;
 		int maxDex = mob.charStats().getMaxStat(CharStats.STAT_DEXTERITY);
 		int currDex = mob.charStats().getStat(CharStats.STAT_DEXTERITY);
@@ -477,11 +485,6 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if(CMLib.dice().rollPercentage()<Math.round(critPct))
 				damageAmount+=Math.round(CMath.mul(damageAmount,critPct/50.0)) + dexBonus;
 		}
-		if(mob.curState().getHunger() < 1) damageAmount *= .8;
-		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS) damageAmount *=.8;
-		if(mob.curState().getThirst() < 1) damageAmount *= .9;
-		if(damageAmount<1.0) damageAmount=1.0;
-		//TODO: hunger, thirst.
 		//String weaponCritChance = "( ( ((@x2 - 10 + ((@x7 - @x8)<10))/2.5) > 0 * ((@x3 - 10 + ((@x7 - @x8)<10))/2.5) > 0 * ((@x3 - 10 + ((@x7 - @x8)<10))/2.5) ))";
 		//String weaponCritDmg = "( @x0 * ( ((@x2 - 10 + ((@x7 - @x8)<10))/2.5)> 0 * ((@x3 - 10 + ((@x7 - @x8)<10))/2.5) > 0 * ((@x3 - 10 + ((@x7 - @x8)<10))/2.5) ) / 50.0) + @x3";
 		
