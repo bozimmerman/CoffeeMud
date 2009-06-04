@@ -829,8 +829,8 @@ public class CMath
                     {
 		                if(c!=StreamTokenizer.TT_NUMBER)
 		                    throw new ArithmeticException("'"+c+"' is an unexpected token after @x.");
-		                if((st.nval>10)||(st.nval<1.0))
-		                    throw new ArithmeticException("'"+st.nval+"/10' is an illegal variable reference.");
+		                if((st.nval>11)||(st.nval<1.0))
+		                    throw new ArithmeticException("'"+st.nval+"/11' is an illegal variable reference.");
 		                list.add(new CompiledOperation(((int)st.nval)-1));
                     }
 	                break;
