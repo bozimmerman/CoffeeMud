@@ -40,16 +40,24 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     public long lastRes=0;
     public String[][] hitWordIndex=null;
     public String[][] hitWordsChanged=null;
-    protected LinkedList<CMath.CompiledOperation> hitFormula = null;
+    protected LinkedList<CMath.CompiledOperation> attackBonusFormula = null;
     
     private static final int ATTACK_ADJUSTMENT = 50;
 
     public boolean activate()
     {
+		attackBonusFormula = CMath.compileMathExpression("(50 + @x1 + ( ((@x2 - 9)/5) * ((@x3 - 9)/5) * ((@x3 - 9)/5) ) + @x4) - (0.1 * @xx * @x5) - (0.1 * @xx * @x6) - (0.2 * @xx * @x7)");
+		// vars[0] = attack;
+		// vars[1] = curStr > 18 ? 18 : curStr;
+		// vars[2] = baseStr > 18 ? 18 : curStr;
+		// vars[3] = (curStr > 18) ? (curStr-18) : 0;
+		// vars[4] = (hungry == 0)?1:0;
+		// vars[5] = (thirsty == 0)?1:0;
+		// vars[6] = (fatigued == 0)?0:1;
     	return true; 
     }
     
-    public void propertiesLoaded(){	activate(); }
+    public void propertiesLoaded() { activate(); }
     
 	public HashSet allPossibleCombatants(MOB mob, boolean beRuthless)
 	{
@@ -106,25 +114,40 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			strBonus = currStr - maxStr;
 			currStr = maxStr;
 		}
-		int baseStat = mob.baseCharStats().getStat(CharStats.STAT_STRENGTH);
-		if(baseStat > maxStr) baseStat = maxStr;
+		int baseStr = mob.baseCharStats().getStat(CharStats.STAT_STRENGTH);
+		if(baseStr > maxStr) baseStr = maxStr;
 		double str=((double)currStr-9.0)/5.0;
-		double strR=((double)baseStat-9.0)/5.0;
+		double strR=((double)baseStr-9.0)/5.0;
 		att += (str * strR * strR) + strBonus;
-		//String formula = " (50 + @x1 + ( ((@x2 - 9)/5) * ((@x3 - 9)/5) * ((@x3 - 9)/5) ) + @x4) - (0.1 * @xx * @x5) - (0.1 * @xx * @x6) - (0.2 * @xx * @x7)";
-		// vars[0] = attack;
-		// vars[1] = curStr > 18 ? 18 : curStr;
-		// vars[2] = baseStr > 18 ? 18 : curStr;
-		// vars[3] = (curStr > 18) ? (curStr-18) : 0;
-		// vars[4] = (hungry == 0)?1:0;
-		// vars[5] = (thirsty == 0)?1:0;
-		// vars[6] = (fatigued == 0)?0:1;
 		if(mob.curState().getHunger()<1) att=att*.9;
 		if(mob.curState().getThirst()<1) att=att*.9;
 		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS) att=att*.8;
 		return (int)Math.round(att);
 	}
 
+	public int NEWadjustedAttackBonus(MOB mob, MOB target)
+	{
+		int maxStr = mob.charStats().getMaxStat(CharStats.STAT_STRENGTH);
+		int currStr = mob.charStats().getStat(CharStats.STAT_STRENGTH);
+		int strBonus = 0;
+		if(currStr > maxStr)
+		{
+			strBonus = currStr - maxStr;
+			currStr = maxStr;
+		}
+		int baseStr = mob.baseCharStats().getStat(CharStats.STAT_STRENGTH);
+		if(baseStr > maxStr) baseStr = maxStr;
+		double[] vars = {mob.envStats().attackAdjustment(),
+						 currStr,
+						 baseStr,
+						 strBonus,
+						 (mob.curState().getHunger()<1)?1.0:0.0,
+						 (mob.curState().getThirst()<1)?1.0:0.0,
+						 (mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)?1.0:0.0
+						};
+		return (int)Math.round(CMath.parseMathExpression(attackBonusFormula, vars, 0.0));
+	}
+	
 	public int adjustedArmor(MOB mob)
 	{
 		int currDex=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
@@ -153,9 +176,40 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if(mob.curState().getThirst()<1) arm=arm*.85;
 			if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS) arm=arm*.85;
 		}
-		//String sleepingFormula = "@x1";
-		//String sittingFormula = "@x1 - ( ( ((@x2 - 9)/5) * ((@x3 - 9)/5) * ((@x3 - 9)/5) ) -  (0.15 * @xx * @x5) - (0.15 * @xx * @x6) - (0.3 * @xx * @x7))";
-		//String formula = "@x1 - ( ( ((@x2 - 9)/5) * ((@x3 - 9)/5) ) -  (0.15 * @xx * @x5) - (0.15 * @xx * @x6) - (0.3 * @xx * @x7))";
+		return (int)Math.round(mob.envStats().armor()-arm) - 100;
+	}
+
+	public int NEWadjustedArmor(MOB mob)
+	{
+		int currDex=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
+		int maxDex = mob.charStats().getMaxStat(CharStats.STAT_DEXTERITY);
+		int dexBonus = 0;
+		if(currDex > maxDex)
+		{
+			dexBonus = currDex - maxDex;
+			currDex = maxDex;
+		}
+		double baseDex=(double)mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY);
+		if(baseDex > maxDex) baseDex = maxDex;
+		double arm = 0.0;
+		double dex=((double)currDex-9.0)/5.0;
+		double dexR=((double)baseDex-9.0)/5.0;
+		if((mob.envStats().disposition()&EnvStats.IS_SLEEPING)==0)
+		{
+			if((mob.envStats().disposition()&EnvStats.IS_SITTING)==0) 
+				arm = (dex * dexR * dexR) + dexBonus;
+			else
+				arm = (dex * dexR);
+		}
+		if(arm>0.0)
+		{
+			if(mob.curState().getHunger()<1) arm=arm*.85;
+			if(mob.curState().getThirst()<1) arm=arm*.85;
+			if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS) arm=arm*.85;
+		}
+		//String sleepingArmorFormula = "@x1 -100";
+		//String sittingArmorFormula = "(@x1 -( ( ((@x2 - 9)/5) * ((@x3 - 9)/5) * ((@x3 - 9)/5) ) -  (0.15 * @xx>0 * @x5) - (0.15 * @xx>0 * @x6) - (0.3 * @xx>0 * @x7)))-100";
+		//String formula = "(@x1-( ( ((@x2 - 9)/5) * ((@x3 - 9)/5) ) -  (0.15 * @xx>0 * @x5) - (0.15 * @xx>0 * @x6) - (0.3 * @xx>0 * @x7)))-100";
 		
 		// vars[0] = armor;
 		// vars[1] = curDex > 18 ? 18 : curDex;
