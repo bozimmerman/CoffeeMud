@@ -163,7 +163,7 @@ public class Chant_PlantSnare extends Chant
 				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
 				if((troom!=null)&&(troom.okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 				{
-					mob.location().send(mob,msg);
+					troom.send(mob,msg);
 					if(msg.value()<=0)
 					{
 						amountRemaining=400;
