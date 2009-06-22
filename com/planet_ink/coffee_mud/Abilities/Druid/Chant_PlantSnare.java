@@ -147,29 +147,30 @@ public class Chant_PlantSnare extends Chant
 			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
-
+		
 		if(success)
 		{
-			if(mob.location().show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the plants around <S-HIM-HER>.^?"))
+			if(room.show(mob,null,this,verbalCastCode(mob,null,auto),auto?"":"^S<S-NAME> chant(s) to the plants around <S-HIM-HER>.^?"))
 			for(Iterator f=h.iterator();f.hasNext();)
 			{
 				MOB target=(MOB)f.next();
+				Room troom = CMLib.map().roomLocation(target);
 
 				// it worked, so build a copy of this ability,
 				// and add it to the affects list of the
 				// affected MOB.  Then tell everyone else
 				// what happened.
 				CMMsg msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
-				if((mob.location().okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
+				if((troom!=null)&&(troom.okMessage(mob,msg))&&(target.fetchEffect(this.ID())==null))
 				{
 					mob.location().send(mob,msg);
 					if(msg.value()<=0)
 					{
 						amountRemaining=400;
-						if(target.location()==mob.location())
+						if(troom==room)
 						{
 							success=maliciousAffect(mob,target,asLevel,(adjustedLevel(mob,asLevel)*10),-1);
-							target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) stuck as tangling mass of plant life grows onto <S-HIM-HER>!");
+							troom.show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> become(s) stuck as tangling mass of plant life grows onto <S-HIM-HER>!");
 						}
 					}
 				}
