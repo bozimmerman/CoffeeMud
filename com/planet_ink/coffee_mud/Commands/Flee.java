@@ -44,6 +44,7 @@ public class Flee extends Go
 		if(commands.size()>1) direction=CMParms.combine(commands,1);
 		if(mob==null) return false;
 		Room R=mob.location();
+		if(R==null) return false;
 		if((!mob.isMonster())||(mob.amFollowing()!=null))
 		{
 			if((R==null)||(!mob.isInCombat()))

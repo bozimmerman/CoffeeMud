@@ -701,7 +701,10 @@ public class StdMOB implements MOB
         {
             location().delInhabitant(this);
             if((mySession!=null)&&(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN)))
+            {
                 location().show(this,null,CMMsg.MSG_OK_ACTION,"<S-NAME> vanish(es) in a puff of smoke.");
+                new Exception().printStackTrace();
+            }
         }
 		setFollowing(null);
 		DVector oldFollowers=new DVector(2);
@@ -2972,8 +2975,9 @@ public class StdMOB implements MOB
 	{
 		if(list==null) return list;
 		if(!list.contains(this)) list.add(this);
-		if((amFollowing()!=null)&&(!list.contains(amFollowing())))
-			amFollowing().getGroupMembers(list);
+		MOB following = amFollowing();
+		if((following!=null)&&(!list.contains(following)))
+			following.getGroupMembers(list);
 		for(int f=0;f<numFollowers();f++)
 		{
 			MOB follower=fetchFollower(f);
