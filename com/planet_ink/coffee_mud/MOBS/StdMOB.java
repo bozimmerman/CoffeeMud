@@ -703,7 +703,7 @@ public class StdMOB implements MOB
             if((mySession!=null)&&(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN)))
             {
                 location().show(this,null,CMMsg.MSG_OK_ACTION,"<S-NAME> vanish(es) in a puff of smoke.");
-                new Exception().printStackTrace();
+                //Log.debugOut("**************", new Exception());
             }
         }
 		setFollowing(null);
