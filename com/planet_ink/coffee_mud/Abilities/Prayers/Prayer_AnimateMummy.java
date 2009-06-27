@@ -103,13 +103,13 @@ public class Prayer_AnimateMummy extends Prayer
 					newMOB.addNonUninvokableEffect(P);
 				}
 				newMOB.recoverCharStats();
-				newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB));
-				newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB));
+				newMOB.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB));
+				newMOB.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB));
 				newMOB.baseEnvStats().setSensesMask(EnvStats.CAN_SEE_DARK|EnvStats.CAN_SEE_INVISIBLE|EnvStats.CAN_SEE_SNEAKERS);
 				CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
 				newMOB.baseState().setHitPoints(30*newMOB.baseEnvStats().level());
-				newMOB.baseState().setMovement(newMOB.baseCharStats().getCurrentClass().getLevelMove(newMOB));
-				newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
+				newMOB.baseState().setMovement(CMLib.leveler().getLevelMove(newMOB));
+				newMOB.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
 				newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 				newMOB.baseState().setMana(100);
 				newMOB.recoverCharStats();

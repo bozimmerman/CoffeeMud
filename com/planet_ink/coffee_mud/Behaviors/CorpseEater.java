@@ -66,8 +66,8 @@ public class CorpseEater extends ActiveTicker
 			mob.recoverEnvStats();
 			int level=mob.baseEnvStats().level();
 			mob.baseState().setHitPoints(CMLib.dice().rollHP(level,mob.baseEnvStats().ability()));
-			mob.baseState().setMana(mob.baseCharStats().getCurrentClass().getLevelMana(mob));
-			mob.baseState().setMovement(mob.baseCharStats().getCurrentClass().getLevelMove(mob));
+			mob.baseState().setMana(CMLib.leveler().getLevelMana(mob));
+			mob.baseState().setMovement(CMLib.leveler().getLevelMove(mob));
 			mob.recoverMaxState();
 			mob.resetToMaxState();
 			mob.baseCharStats().getMyRace().startRacing(mob,false);

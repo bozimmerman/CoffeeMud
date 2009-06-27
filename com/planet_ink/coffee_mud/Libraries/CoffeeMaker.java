@@ -73,8 +73,8 @@ public class CoffeeMaker extends StdLibrary implements GenericBuilder
 		mob.recoverEnvStats();
 		mob.recoverCharStats();
 		mob.baseState().setHitPoints(CMLib.dice().rollHP(mob.baseEnvStats().level(),mob.baseEnvStats().ability()));
-		mob.baseState().setMana(mob.baseCharStats().getCurrentClass().getLevelMana(mob));
-		mob.baseState().setMovement(mob.baseCharStats().getCurrentClass().getLevelMove(mob));
+		mob.baseState().setMana(CMLib.leveler().getLevelMana(mob));
+		mob.baseState().setMovement(CMLib.leveler().getLevelMove(mob));
 		mob.recoverMaxState();
 		mob.resetToMaxState();
 		if(mob.getWimpHitPoint()>0)

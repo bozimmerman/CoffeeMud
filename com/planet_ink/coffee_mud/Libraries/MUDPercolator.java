@@ -596,8 +596,7 @@ public class MUDPercolator extends StdLibrary implements AreaGenerationLibrary
         if(value != null) {
         	M.setStat("LEVEL", value);
             addDefinition("MOB_LEVEL",M.getStat("LEVEL"),defined);
-            CharClass origClass =M.baseCharStats().getCurrentClass();
-            origClass.fillOutMOB(M,M.baseEnvStats().level());
+            CMLib.leveler().fillOutMOB(M,M.baseEnvStats().level());
         }
         value = findOptionalString("GENDER",piece,defined);
         if(value != null)

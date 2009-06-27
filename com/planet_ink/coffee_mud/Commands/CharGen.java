@@ -564,8 +564,8 @@ public class CharGen extends StdCommand
 			                    M1.addBehavior(B2);
 			                    M1.bringToLife(R,true);
 				                CMLib.threads().deleteTick(M1,Tickable.TICKID_MOB);
-			                    M1.baseCharStats().getCurrentClass().fillOutMOB(M1,level);
-			                    //int hp=M1.baseCharStats().getCurrentClass().getLevelPlayerHP(M1);
+			                    CMLib.leveler().fillOutMOB(M1,level);
+			                    //int hp=M1CMLib.leveler().getLevelMOBPlayerHP(M1);
 			                    M1.setWimpHitPoint(0);
 			                    M1.recoverMaxState();
 			                    M1.recoverCharStats();
@@ -625,8 +625,8 @@ public class CharGen extends StdCommand
 		                    M2.addBehavior(B2);
 		                    M2.bringToLife(M2.location(),true);
 			                CMLib.threads().deleteTick(M2,Tickable.TICKID_MOB);
-		                    M2.baseCharStats().getCurrentClass().fillOutMOB(M2,level);
-		                    int hp=M2.baseCharStats().getCurrentClass().getLevelPlayerHP(M2);
+		                    CMLib.leveler().fillOutMOB(M2,level);
+		                    int hp=CMLib.leveler().getPlayerHitPoints(M2);
 		                    if(hp>M2.baseState().getHitPoints())
 		                        M2.baseState().setHitPoints(hp);
 		                    M2.setWimpHitPoint(0);

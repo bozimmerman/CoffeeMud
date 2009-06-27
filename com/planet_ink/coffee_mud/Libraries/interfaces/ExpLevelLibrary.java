@@ -50,6 +50,76 @@ public interface ExpLevelLibrary extends CMLibrary
 	public void unLevel(MOB mob);
 	
 	/**
+	 * This method fills in combat and rejuvination related stats for the given
+	 * mob of their current base class at the given level.  This method should create a mob
+	 * for the caller if mob==null.
+	 * @param mob the mob to fill out, or null
+	 * @param level the level of the mob
+	 * @return the filled in mob
+	 */
+	public MOB fillOutMOB(MOB mob, int level);
+	
+	/**
+	 * This method fills in combat and rejuvination related stats for the given
+	 * mob of the given class at the given level.  This method should create a mob
+	 * for the caller.
+	 * @param C the class to use.
+	 * @param level the level of the mob
+	 * @return the filled in mob
+	 */
+	public MOB fillOutMOB(CharClass C, int level);
+	
+    /**
+     * Returns the amount of hp the given player would have being
+     * their current base class.
+     * @param mob the mob who would be this class
+     * @return the amount of hp a pc of this class should have
+     */
+	public int getPlayerHitPoints(MOB mob);
+	/**
+	 * Returns the amount of mana the given mob would have being
+	 * their current base class.
+	 * @param mob the mob who would be this class
+	 * @return the amount of mana an npc of this class should have
+	 */
+	public int getLevelMana(MOB mob);
+	/**
+	 * Returns the number of attacks the given mob would have being
+	 * their current base class.
+	 * @param mob the mob who would be this class
+	 * @return the number of attacks an npc of this class should have
+	 */
+	public double getLevelMOBSpeed(MOB mob);
+	/**
+	 * Returns the amount of movement the given mob would have being
+	 * their current base class.
+	 * @param mob the mob who would be this class
+	 * @return the amount of movement an npc of this class should have
+	 */
+	public int getLevelMove(MOB mob);
+	/**
+	 * Returns the amount of combat prowess the given mob would have being
+	 * their current base class.
+	 * @param mob the mob who would be this class
+	 * @return the amount of combat prowess an npc of this class should have
+	 */
+	public int getLevelAttack(MOB mob);
+	/**
+	 * Returns the armor rating the given mob would have being
+	 * their current base class.
+	 * @param mob the mob who would be this class
+	 * @return the armor rating an npc of this class should have
+	 */
+	public int getLevelMOBArmor(MOB mob);
+	/**
+	 * Returns the amount of damage per hit the given mob would have being
+	 * their current base class.
+	 * @param mob the mob who would be this class
+	 * @return the amount of damage per hit an npc of this class should have
+	 */
+	public int getLevelMOBDamage(MOB mob);
+	
+	/**
 	 * Called whenever a player actually gains any experience.  It actually does
 	 * the experience gain for the player as well as determining how much, if any
 	 * should be distributed to leiges or clans.  Will automatically cause a call

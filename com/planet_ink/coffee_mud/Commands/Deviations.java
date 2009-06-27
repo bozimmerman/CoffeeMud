@@ -270,16 +270,16 @@ public class Deviations extends StdCommand
 				mobResults.append(CMStrings.padRight(""+M.envStats().level(),4)+" ");
 				mobResults.append(CMStrings.padRight(""+getDeviation(
 												M.baseEnvStats().attackAdjustment(),
-												M.baseCharStats().getCurrentClass().getLevelAttack(M)),5)+" ");
+												CMLib.leveler().getLevelAttack(M)),5)+" ");
 				mobResults.append(CMStrings.padRight(""+getDeviation(
 												M.baseEnvStats().damage(),
-												(int)Math.round(CMath.div(M.baseCharStats().getCurrentClass().getLevelDamage(M),M.baseEnvStats().speed()))),5)+" ");
+												(int)Math.round(CMath.div(CMLib.leveler().getLevelMOBDamage(M),M.baseEnvStats().speed()))),5)+" ");
 				mobResults.append(CMStrings.padRight(""+getDeviation(
 												M.baseEnvStats().armor(),
-												M.baseCharStats().getCurrentClass().getLevelArmor(M)),5)+" ");
+												CMLib.leveler().getLevelMOBArmor(M)),5)+" ");
 				mobResults.append(CMStrings.padRight(""+getDeviation(
 												(int)Math.round(M.baseEnvStats().speed()),
-												(int)Math.round(M.baseCharStats().getCurrentClass().getLevelSpeed(M))),5)+" ");
+												(int)Math.round(CMLib.leveler().getLevelMOBSpeed(M))),5)+" ");
 				mobResults.append(CMStrings.padRight(""+((M.envStats().rejuv()==Integer.MAX_VALUE)?" MAX":""+M.envStats().rejuv()) ,5)+" ");
 				if(useFaction!=null) 
 				    mobResults.append(CMStrings.padRight(""+(M.fetchFaction(useFaction.factionID())==Integer.MAX_VALUE?"N/A":""+M.fetchFaction(useFaction.factionID())),7)+" ");

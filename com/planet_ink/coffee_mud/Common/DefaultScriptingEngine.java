@@ -6487,7 +6487,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         ((MOB)newTarget).recoverMaxState();
                         if(arg2.equalsIgnoreCase("LEVEL"))
                         {
-                            ((MOB)newTarget).baseCharStats().getCurrentClass().fillOutMOB(((MOB)newTarget),((MOB)newTarget).baseEnvStats().level());
+                            CMLib.leveler().fillOutMOB(((MOB)newTarget),((MOB)newTarget).baseEnvStats().level());
                             ((MOB)newTarget).recoverMaxState();
                             ((MOB)newTarget).recoverCharStats();
                             ((MOB)newTarget).recoverEnvStats();
@@ -6689,7 +6689,7 @@ public class DefaultScriptingEngine implements ScriptingEngine
                         ((MOB)newTarget).recoverMaxState();
                         if(arg2.equalsIgnoreCase("LEVEL"))
                         {
-                            ((MOB)newTarget).baseCharStats().getCurrentClass().fillOutMOB(((MOB)newTarget),((MOB)newTarget).baseEnvStats().level());
+                            CMLib.leveler().fillOutMOB(((MOB)newTarget),((MOB)newTarget).baseEnvStats().level());
                             ((MOB)newTarget).recoverMaxState();
                             ((MOB)newTarget).recoverCharStats();
                             ((MOB)newTarget).recoverEnvStats();

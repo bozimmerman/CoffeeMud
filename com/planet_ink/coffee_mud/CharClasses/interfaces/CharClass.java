@@ -249,65 +249,6 @@ public interface CharClass extends Tickable, StatsAffecting, MsgListener, CMObje
 	public int classDurationModifier(MOB myChar, Ability skill, int duration);
 
 	/**
-	 * This method fills in combat and rejuvination related stats for the given
-	 * mob of this class at the given level.  This method should create a mob
-	 * for the caller if mob==null.
-	 * @param mob the mob to fill out, or null
-	 * @param level the level of the mob
-	 * @return the filled in mob
-	 */
-	public MOB fillOutMOB(MOB mob, int level);
-
-    /**
-     * Returns the amount of hp the given player would have being
-     * this class.
-     * @param mob the mob who would be this class
-     * @return the amount of hp a pc of this class should have
-     */
-	public int getLevelPlayerHP(MOB mob);
-	/**
-	 * Returns the amount of mana the given mob would have being
-	 * this class.
-	 * @param mob the mob who would be this class
-	 * @return the amount of mana an npc of this class should have
-	 */
-	public int getLevelMana(MOB mob);
-	/**
-	 * Returns the number of attacks the given mob would have being
-	 * this class.
-	 * @param mob the mob who would be this class
-	 * @return the number of attacks an npc of this class should have
-	 */
-	public double getLevelSpeed(MOB mob);
-	/**
-	 * Returns the amount of movement the given mob would have being
-	 * this class.
-	 * @param mob the mob who would be this class
-	 * @return the amount of movement an npc of this class should have
-	 */
-	public int getLevelMove(MOB mob);
-	/**
-	 * Returns the amount of combat prowess the given mob would have being
-	 * this class.
-	 * @param mob the mob who would be this class
-	 * @return the amount of combat prowess an npc of this class should have
-	 */
-	public int getLevelAttack(MOB mob);
-	/**
-	 * Returns the armor rating the given mob would have being
-	 * this class.
-	 * @param mob the mob who would be this class
-	 * @return the armor rating an npc of this class should have
-	 */
-	public int getLevelArmor(MOB mob);
-	/**
-	 * Returns the amount of damage per hit the given mob would have being
-	 * this class.
-	 * @param mob the mob who would be this class
-	 * @return the amount of damage per hit an npc of this class should have
-	 */
-	public int getLevelDamage(MOB mob);
-	/**
 	 * Returns the number of bonus practices received by members of
 	 * this class when they gain a level.  This is over and above
 	 * the normal formula applied during the leveling process.

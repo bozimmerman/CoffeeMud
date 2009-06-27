@@ -2337,9 +2337,9 @@ public class Import extends StdCommand
 			if(M.getWimpHitPoint()==2)
 				M.setWimpHitPoint(((int)Math.round(CMath.div(M.baseEnvStats().level()*(11+M.baseEnvStats().ability()),8.0)))+1);
 
-			M.baseEnvStats().setArmor(CMClass.getCharClass("StdCharClass").getLevelArmor(M));
-			M.baseEnvStats().setAttackAdjustment(CMClass.getCharClass("StdCharClass").getLevelAttack(M));
-			M.baseEnvStats().setDamage(CMClass.getCharClass("StdCharClass").getLevelDamage(M));
+			M.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(M));
+			M.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(M));
+			M.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(M));
 			if(circleFormat)
 				M.setMoney(CMath.s_int(CMParms.getCleanBit(codeStr4,3)));
 			else

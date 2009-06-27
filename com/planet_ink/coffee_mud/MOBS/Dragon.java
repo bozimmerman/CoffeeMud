@@ -156,7 +156,7 @@ public class Dragon extends StdMOB
 			default:		PointMod = 3;	CMLib.factions().setAlignment(this,Faction.ALIGN_NEUTRAL);	break;
 		}
 
-        baseCharStats().getCurrentClass().fillOutMOB(this,baseEnvStats().level());
+        CMLib.leveler().fillOutMOB(this,baseEnvStats().level());
 		baseState.setHitPoints(baseState.getHitPoints() * PointMod);
 		setMoney(getMoney()*PointMod);
 		baseEnvStats().setWeight(1500 * DragonAge());

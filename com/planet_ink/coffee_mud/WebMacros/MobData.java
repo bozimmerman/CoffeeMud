@@ -1033,7 +1033,7 @@ public class MobData extends StdWebMacro
 
 		if(((changedLevel)||(changedClass))&&(M.isGeneric()))
 		{
-			M.baseCharStats().getCurrentClass().fillOutMOB(M,CMath.s_int(firstTime?"0":httpReq.getRequestParameter("LEVEL")));
+			CMLib.leveler().fillOutMOB(M,CMath.s_int(firstTime?"0":httpReq.getRequestParameter("LEVEL")));
 			httpReq.addRequestParameters("REJUV",""+M.baseEnvStats().rejuv());
 			httpReq.addRequestParameters("ARMOR",""+M.baseEnvStats().armor());
 			httpReq.addRequestParameters("DAMAGE",""+M.baseEnvStats().damage());

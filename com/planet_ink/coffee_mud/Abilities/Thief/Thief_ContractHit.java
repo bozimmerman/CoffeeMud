@@ -87,12 +87,12 @@ public class Thief_ContractHit extends ThiefSkill
 					MOB M=CMClass.getMOB("Assassin");
 					M.baseEnvStats().setLevel(level);
 					M.recoverEnvStats();
-					M.baseEnvStats().setArmor(C.getLevelArmor(M));
-					M.baseEnvStats().setAttackAdjustment(C.getLevelAttack(M));
-					M.baseEnvStats().setDamage(C.getLevelDamage(M));
+					M.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(M));
+					M.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(M));
+					M.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(M));
 					M.baseEnvStats().setRejuv(0);
-					M.baseState().setMana(C.getLevelMana(M));
-					M.baseState().setMovement(C.getLevelMana(M));
+					M.baseState().setMana(CMLib.leveler().getLevelMana(M));
+					M.baseState().setMovement(CMLib.leveler().getLevelMana(M));
 					M.baseState().setHitPoints((10*level)+CMLib.dice().roll(level,baseEnvStats().ability(),1));
 					Behavior B=CMClass.getBehavior("Thiefness");
 					B.setParms("Assassin");

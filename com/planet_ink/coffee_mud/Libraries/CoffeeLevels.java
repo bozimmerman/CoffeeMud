@@ -37,6 +37,143 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 {
     public String ID(){return "CoffeeLevels";}
 
+	public int getManaBonusNextLevel(MOB mob)
+	{
+		CharClass charClass = mob.baseCharStats().getCurrentClass();
+		int man2Stat=mob.charStats().getStat(charClass.getAttackAttribute());
+		int maxMan2Stat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
+					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+charClass.getAttackAttribute()));
+		if(man2Stat>maxMan2Stat) man2Stat=maxMan2Stat;
+
+		int manStat=mob.charStats().getStat(CharStats.STAT_INTELLIGENCE);
+		int maxManStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
+					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_INTELLIGENCE));
+		if(manStat>maxManStat) manStat=maxManStat;
+		int manaGain=(int)Math.floor(CMath.div(manStat,charClass.getManaDivisor())+CMLib.dice().roll(charClass.getManaDice(),charClass.getManaDie(),0));
+		if(man2Stat>17) manaGain=manaGain+((man2Stat-17)/2);
+		return manaGain;
+	}
+	
+	public int getLevelMana(MOB mob)
+	{
+		return CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA)+
+		    ((mob.baseEnvStats().level()-1)*getManaBonusNextLevel(mob));
+	}
+
+	public int getAttackBonusNextLevel(MOB mob)
+	{
+		CharClass charClass = mob.baseCharStats().getCurrentClass();
+		int attStat=mob.charStats().getStat(charClass.getAttackAttribute());
+		int maxAttStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
+					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+charClass.getAttackAttribute()));
+		if(attStat>=maxAttStat) attStat=maxAttStat;
+		int attGain=(int)Math.floor(CMath.div(attStat,18.0))+charClass.getBonusAttackLevel();
+		if(attStat>=25)attGain+=2;
+		else
+		if(attStat>=22)attGain+=1;
+		return attStat;
+	}
+	
+	public int getLevelAttack(MOB mob)
+	{
+		return ((mob.baseEnvStats().level()-1)*getAttackBonusNextLevel(mob));
+	}
+
+	public int getLevelMOBArmor(MOB mob)
+	{
+		return 100-(int)Math.round(CMath.mul(mob.baseEnvStats().level(),3.0));
+	}
+
+	public int getLevelMOBDamage(MOB mob)
+	{
+		return (mob.baseEnvStats().level());
+	}
+
+	public double getLevelMOBSpeed(MOB mob)
+	{
+		return 1.0+Math.floor(CMath.div(mob.baseEnvStats().level(),30.0));
+	}
+
+	public int getMoveBonusNextLevel(MOB mob)
+	{
+		CharClass charClass = mob.baseCharStats().getCurrentClass();
+		double lvlMul=1.0;//-CMath.div(mob.envStats().level(),100.0);
+		if(lvlMul<0.1) lvlMul=.1;
+		int mvStat=mob.charStats().getStat(CharStats.STAT_STRENGTH);
+		int maxMvStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
+					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_STRENGTH));
+		if(mvStat>maxMvStat) mvStat=maxMvStat;
+		int mvGain=(int)Math.round(lvlMul*CMath.mul(CMath.div(mvStat,18.0),charClass.getMovementMultiplier()));
+		return mvGain;
+	}
+	
+	public int getLevelMove(MOB mob)
+	{
+		int move=CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE);
+		if(mob.baseEnvStats().level()>1)
+			move+=(mob.baseEnvStats().level()-1) * getMoveBonusNextLevel(mob);
+		return move;
+	}
+
+    public int getPlayerHPBonusNextLevel(MOB mob)
+    {
+		CharClass charClass = mob.baseCharStats().getCurrentClass();
+		int conStat=mob.charStats().getStat(CharStats.STAT_CONSTITUTION);
+		int maxConStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
+					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_CONSTITUTION));
+		if(conStat>maxConStat) conStat=maxConStat;
+		int newHitPointGain=(int)Math.floor(CMath.div(conStat,charClass.getHPDivisor())+CMLib.dice().roll(charClass.getHPDice(),charClass.getHPDie(),0));
+		if(newHitPointGain<=0)
+		{
+			if(conStat>=1)
+				return 1;
+			return 0;
+		}
+		return newHitPointGain;
+    }
+    
+    public int getPlayerHitPoints(MOB mob)
+    {
+        int hp=CMProps.getIntVar(CMProps.SYSTEMI_STARTHP);
+        return hp+((mob.envStats().level()-1)*getPlayerHPBonusNextLevel(mob));
+    }
+
+	public MOB fillOutMOB(CharClass C, int level)
+	{
+		MOB mob=CMClass.getMOB("StdMOB");
+		mob.baseCharStats().setCurrentClass(C);
+		mob.charStats().setCurrentClass(C);
+		mob.baseCharStats().setCurrentClassLevel(level);
+		mob.charStats().setCurrentClassLevel(level);
+		mob.baseEnvStats().setLevel(level);
+		mob.envStats().setLevel(level);
+		fillOutMOB(mob,level);
+		return mob;
+	}
+	
+	public MOB fillOutMOB(MOB mob, int level)
+	{
+		if(mob==null) mob=CMClass.getMOB("StdMOB");
+		if(!mob.isMonster()) return mob;
+
+		long rejuv=Tickable.TICKS_PER_RLMIN+Tickable.TICKS_PER_RLMIN+(level*Tickable.TICKS_PER_RLMIN/2);
+		if(rejuv>(Tickable.TICKS_PER_RLMIN*20)) rejuv=(Tickable.TICKS_PER_RLMIN*20);
+		mob.baseEnvStats().setLevel(level);
+		mob.baseEnvStats().setRejuv((int)rejuv);
+		mob.baseEnvStats().setSpeed(getLevelMOBSpeed(mob));
+		mob.baseEnvStats().setArmor(getLevelMOBArmor(mob));
+		mob.baseEnvStats().setDamage(getLevelMOBDamage(mob));
+		mob.baseEnvStats().setAttackAdjustment(getLevelAttack(mob));
+		mob.setMoney(CMLib.dice().roll(1,level,0)+CMLib.dice().roll(1,10,0));
+        mob.baseState().setHitPoints(CMLib.dice().rollHP(mob.baseEnvStats().level(),mob.baseEnvStats().ability()));
+        mob.baseState().setMana(getLevelMana(mob));
+        mob.baseState().setMovement(getLevelMove(mob));
+        if(mob.getWimpHitPoint()>0)
+            mob.setWimpHitPoint((int)Math.round(CMath.mul(mob.curState().getHitPoints(),.10)));
+        mob.setExperience(CMLib.leveler().getLevelExperience(mob.envStats().level()));
+		return mob;
+	}
+
 	public StringBuffer baseLevelAdjuster(MOB mob, int adjuster)
 	{
 		mob.baseEnvStats().setLevel(mob.baseEnvStats().level()+adjuster);
@@ -52,63 +189,25 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 		mob.recoverEnvStats();
 		theNews.append("^HYou are now a "+mob.charStats().displayClassLevel(mob,false)+".^N\n\r");
 
-		int conStat=mob.charStats().getStat(CharStats.STAT_CONSTITUTION);
-		int maxConStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_CONSTITUTION));
-		if(conStat>maxConStat) conStat=maxConStat;
-		int newHitPointGain=(int)Math.floor(CMath.div(conStat,curClass.getHPDivisor())+CMLib.dice().roll(curClass.getHPDice(),curClass.getHPDie(),0));
-		if(newHitPointGain<=0)
-		{
-			if(conStat>=1)
-				newHitPointGain=adjuster;
-		}
-		else
-			newHitPointGain=newHitPointGain*adjuster;
+		int newHitPointGain = getPlayerHPBonusNextLevel(mob) * adjuster;
 		mob.baseState().setHitPoints(mob.baseState().getHitPoints()+newHitPointGain);
 		if(mob.baseState().getHitPoints()<20) mob.baseState().setHitPoints(20);
 		mob.curState().setHitPoints(mob.curState().getHitPoints()+newHitPointGain);
 		theNews.append("^NYou have gained ^H"+newHitPointGain+"^? hit " +
 			(newHitPointGain!=1?"points":"point") + ", ^H");
 
-		double lvlMul=1.0;//-CMath.div(mob.envStats().level(),100.0);
-		if(lvlMul<0.1) lvlMul=.1;
-		int mvStat=mob.charStats().getStat(CharStats.STAT_STRENGTH);
-		int maxMvStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_STRENGTH));
-		if(mvStat>maxMvStat) mvStat=maxMvStat;
-		int mvGain=(int)Math.round(lvlMul*CMath.mul(CMath.div(mvStat,18.0),curClass.getMovementMultiplier()));
-		mvGain=mvGain*adjuster;
+		int mvGain = getMoveBonusNextLevel(mob) * adjuster;
 		mob.baseState().setMovement(mob.baseState().getMovement()+mvGain);
 		mob.curState().setMovement(mob.curState().getMovement()+mvGain);
 		theNews.append(mvGain+"^N move " + (mvGain!=1?"points":"point") + ", ^H");
 
-		int attStat=mob.charStats().getStat(curClass.getAttackAttribute());
-		int maxAttStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+curClass.getAttackAttribute()));
-		if(attStat>=maxAttStat) attStat=maxAttStat;
-		int attGain=(int)Math.floor(CMath.div(attStat,18.0))+curClass.getBonusAttackLevel();
-		if(mvStat>=25)attGain+=2;
-		else
-		if(mvStat>=22)attGain+=1;
-		attGain=attGain*adjuster;
+		int attGain=getAttackBonusNextLevel(mob) * adjuster;
 		mob.baseEnvStats().setAttackAdjustment(mob.baseEnvStats().attackAdjustment()+attGain);
 		mob.envStats().setAttackAdjustment(mob.envStats().attackAdjustment()+attGain);
 		if(attGain>0)
 			theNews.append(attGain+"^N attack " + (attGain!=1?"points":"point") + ", ^H");
 
-		int man2Stat=mob.charStats().getStat(curClass.getAttackAttribute());
-		int maxMan2Stat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+curClass.getAttackAttribute()));
-		if(man2Stat>maxMan2Stat) man2Stat=maxMan2Stat;
-
-		int manStat=mob.charStats().getStat(CharStats.STAT_INTELLIGENCE);
-		int maxManStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
-					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+CharStats.STAT_INTELLIGENCE));
-		if(manStat>maxManStat) manStat=maxManStat;
-		int manaGain=(int)Math.floor(CMath.div(manStat,curClass.getManaDivisor())+CMLib.dice().roll(curClass.getManaDice(),curClass.getManaDie(),0));
-		if(man2Stat>17) manaGain=manaGain+((man2Stat-17)/2);
-		manaGain=manaGain*adjuster;
-
+		int manaGain = getManaBonusNextLevel(mob) * adjuster;
 		mob.baseState().setMana(mob.baseState().getMana()+manaGain);
 		theNews.append(manaGain+"^N " + (manaGain!=1?"points":"point") + " of mana,");
 

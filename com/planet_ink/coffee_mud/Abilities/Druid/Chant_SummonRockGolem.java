@@ -136,10 +136,10 @@ public class Chant_SummonRockGolem extends Chant
 		newMOB.recoverEnvStats();
 		newMOB.recoverCharStats();
 		newMOB.baseEnvStats().setAbility(newMOB.baseEnvStats().ability()*2);
-		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB)+100);
-		newMOB.baseEnvStats().setAttackAdjustment(newMOB.baseCharStats().getCurrentClass().getLevelAttack(newMOB)+100);
-		newMOB.baseEnvStats().setSpeed(newMOB.baseCharStats().getCurrentClass().getLevelSpeed(newMOB)/2.0);
-		newMOB.baseEnvStats().setDamage(newMOB.baseCharStats().getCurrentClass().getLevelDamage(newMOB)+20);
+		newMOB.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB)+100);
+		newMOB.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(newMOB)+100);
+		newMOB.baseEnvStats().setSpeed(CMLib.leveler().getLevelMOBSpeed(newMOB)/2.0);
+		newMOB.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(newMOB)+20);
 		newMOB.baseEnvStats().setSensesMask(newMOB.baseEnvStats().sensesMask()|EnvStats.CAN_SEE_DARK);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		Ability P=CMClass.getAbility("Prop_StatTrainer");

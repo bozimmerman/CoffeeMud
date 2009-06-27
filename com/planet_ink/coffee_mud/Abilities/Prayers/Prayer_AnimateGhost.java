@@ -72,8 +72,8 @@ public class Prayer_AnimateGhost extends Prayer
 		newMOB.baseEnvStats().setDamage(4);
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_EVIL);
 		newMOB.baseState().setHitPoints(10*newMOB.baseEnvStats().level());
-		newMOB.baseState().setMovement(newMOB.baseCharStats().getCurrentClass().getLevelMove(newMOB));
-		newMOB.baseEnvStats().setArmor(newMOB.baseCharStats().getCurrentClass().getLevelArmor(newMOB));
+		newMOB.baseState().setMovement(CMLib.leveler().getLevelMove(newMOB));
+		newMOB.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(newMOB));
 		newMOB.baseState().setMana(100);
 		newMOB.addNonUninvokableEffect(CMClass.getAbility("Prop_ModExperience"));
 		Ability A=CMClass.getAbility("Immunities");

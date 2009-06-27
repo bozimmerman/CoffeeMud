@@ -241,7 +241,7 @@ public class Reset extends StdCommand
 	
 	public boolean fixMob(MOB M)
 	{
-		MOB M2=M.baseCharStats().getCurrentClass().fillOutMOB(null,M.baseEnvStats().level());
+		MOB M2 = CMLib.leveler().fillOutMOB(M.baseCharStats().getCurrentClass(),M.baseEnvStats().level());
 		if((M.baseEnvStats().attackAdjustment() != M2.baseEnvStats().attackAdjustment())
 		||(M.baseEnvStats().armor() != M2.baseEnvStats().armor())
 		||(M.baseEnvStats().damage() != M2.baseEnvStats().damage())
@@ -707,7 +707,7 @@ public class Reset extends StdCommand
 							&&(M.baseEnvStats().armor()==((100-(M.baseEnvStats().level()*7)))))
 							{
 								int oldArmor=M.baseEnvStats().armor();
-								M.baseEnvStats().setArmor(M.baseCharStats().getCurrentClass().getLevelArmor(M));
+								M.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(M));
 								M.recoverEnvStats();
 								Log.sysOut("Reset","Updated "+M.name()+" in room "+R.roomID()+" from "+oldArmor+" to "+M.baseEnvStats().armor()+".");
 								didSomething=true;

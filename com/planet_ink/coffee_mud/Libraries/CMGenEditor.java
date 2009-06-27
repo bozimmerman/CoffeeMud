@@ -6675,7 +6675,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             int oldLevel=me.baseEnvStats().level();
             genLevel(mob,me,++showNumber,showFlag);
             if((oldLevel<2)&&(me.baseEnvStats().level()>1))
-                me.baseCharStats().getCurrentClass().fillOutMOB(me,me.baseEnvStats().level());
+                CMLib.leveler().fillOutMOB(me,me.baseEnvStats().level());
             genRejuv(mob,me,++showNumber,showFlag);
             genRace(mob,me,++showNumber,showFlag);
             Faction F=null;
@@ -7101,7 +7101,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             int oldLevel=me.baseEnvStats().level();
             genLevel(mob,me,++showNumber,showFlag);
             if((oldLevel<2)&&(me.baseEnvStats().level()>1))
-                mme.baseCharStats().getCurrentClass().fillOutMOB(mme,me.baseEnvStats().level());
+                CMLib.leveler().fillOutMOB(mme,me.baseEnvStats().level());
             genRejuv(mob,me,++showNumber,showFlag);
             genRace(mob,mme,++showNumber,showFlag);
             genHeight(mob,me,++showNumber,showFlag);

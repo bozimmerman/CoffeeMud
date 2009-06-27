@@ -685,79 +685,9 @@ public class StdCharClass implements CharClass
 
 	public void unLevel(MOB mob){}
 
-	public MOB fillOutMOB(MOB mob, int level)
-	{
-		if(mob==null) mob=CMClass.getMOB("StdMOB");
-		if(!mob.isMonster()) return mob;
-
-		long rejuv=Tickable.TICKS_PER_RLMIN+Tickable.TICKS_PER_RLMIN+(level*Tickable.TICKS_PER_RLMIN/2);
-		if(rejuv>(Tickable.TICKS_PER_RLMIN*20)) rejuv=(Tickable.TICKS_PER_RLMIN*20);
-		mob.baseEnvStats().setLevel(level);
-		mob.baseEnvStats().setRejuv((int)rejuv);
-		mob.baseEnvStats().setSpeed(getLevelSpeed(mob));
-		mob.baseEnvStats().setArmor(getLevelArmor(mob));
-		mob.baseEnvStats().setDamage(getLevelDamage(mob));
-		mob.baseEnvStats().setAttackAdjustment(getLevelAttack(mob));
-		mob.setMoney(CMLib.dice().roll(1,level,0)+CMLib.dice().roll(1,10,0));
-        mob.baseState().setHitPoints(CMLib.dice().rollHP(mob.baseEnvStats().level(),mob.baseEnvStats().ability()));
-        mob.baseState().setMana(getLevelMana(mob));
-        mob.baseState().setMovement(getLevelMove(mob));
-        if(mob.getWimpHitPoint()>0)
-            mob.setWimpHitPoint((int)Math.round(CMath.mul(mob.curState().getHitPoints(),.10)));
-        mob.setExperience(CMLib.leveler().getLevelExperience(mob.envStats().level()));
-		return mob;
-	}
-
 	public void level(MOB mob, Vector gainedAbilityIDs){}
 
 	public int adjustExperienceGain(MOB host, MOB mob, MOB victim, int amount) { return amount;}
-
-	public int getLevelMana(MOB mob)
-	{
-		return CMProps.getIntVar(CMProps.SYSTEMI_STARTMANA)+
-		    ((mob.baseEnvStats().level()-1)*((int)Math.round(CMath.div(mob.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE),getManaDivisor())))+(getManaDie()*(getManaDice()+1)/2));
-	}
-
-	public int getLevelAttack(MOB mob)
-	{
-		int attGain=(int)Math.round(CMath.div(mob.charStats().getStat(getAttackAttribute()),10.0))+getBonusAttackLevel();
-		return ((mob.baseEnvStats().level()-1)*attGain);
-	}
-
-	public int getLevelArmor(MOB mob)
-	{
-		return 100-(int)Math.round(CMath.mul(mob.baseEnvStats().level(),3.0));
-	}
-
-	public int getLevelDamage(MOB mob)
-	{
-		return (mob.baseEnvStats().level());
-	}
-
-	public double getLevelSpeed(MOB mob)
-	{
-		return 1.0+Math.floor(CMath.div(mob.baseEnvStats().level(),30.0));
-	}
-
-	public int getLevelMove(MOB mob)
-	{
-		int move=CMProps.getIntVar(CMProps.SYSTEMI_STARTMOVE);
-		double lvlMul=1.0;//-CMath.div(mob.envStats().level(),100.0);
-		if(lvlMul<0.1) lvlMul=.1;
-		if(mob.baseEnvStats().level()>1)
-			move+=((int)Math.round(CMath.mul(mob.baseEnvStats().level()-1,CMath.mul(CMath.mul(lvlMul,CMath.div(mob.baseCharStats().getStat(CharStats.STAT_STRENGTH),18.0)),getMovementMultiplier()))));
-		return move;
-	}
-
-    public int getLevelPlayerHP(MOB mob)
-    {
-        int hp=CMProps.getIntVar(CMProps.SYSTEMI_STARTHP);
-        int con=10;
-        if(mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION)>10)
-        	con=mob.baseCharStats().getStat(CharStats.STAT_CONSTITUTION);
-        int newHitPointGain=(int)Math.floor(CMath.div(con,this.getHPDivisor())+(this.getHPDice()*this.getHPDie()/2));
-        return hp+((mob.envStats().level()-1)*newHitPointGain);
-    }
 
 	public boolean isValidClassDivider(MOB killer, MOB killed, MOB mob, HashSet followers)
 	{

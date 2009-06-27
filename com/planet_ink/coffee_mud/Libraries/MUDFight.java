@@ -502,7 +502,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
 				damageAmount = (double)(CMLib.dice().roll(1, weapon.envStats().damage(),(int)Math.round(CMath.div(levelDiff,2.5))));
 			else
-				damageAmount = (double)(CMLib.dice().roll(1, mob.envStats().damage(), (int)Math.round(CMath.div(mob.charStats().getStat(CharStats.STAT_STRENGTH)-10  + levelDiff,2.5))));
+				damageAmount = (double)(CMLib.dice().roll(1, mob.envStats().damage(), (int)Math.round(CMath.div(mob.charStats().getStat(CharStats.STAT_STRENGTH)-10  + levelDiff,5))));
 			if(!CMLib.flags().canBeSeenBy(target,mob)) 
 				damageAmount *=.5;
 			if(CMLib.flags().isSleeping(target)) 
@@ -515,16 +515,16 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
 			damageAmount = (double)(weapon.envStats().damage() + CMath.div(levelDiff,2.5));
 		else
-			damageAmount = (double)mob.envStats().damage() + CMath.div(mob.charStats().getStat(CharStats.STAT_STRENGTH)-10  + levelDiff,2.5);
+			damageAmount = (double)mob.envStats().damage() + CMath.div(mob.charStats().getStat(CharStats.STAT_STRENGTH)-10  + levelDiff,5);
 		
 		if(mob.curState().getHunger() < 1) damageAmount *= .8;
 		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS) damageAmount *=.8;
 		if(mob.curState().getThirst() < 1) damageAmount *= .9;
 		if(damageAmount<1.0) damageAmount=1.0;
 		//String targetedRangedDamage="((1?@x1) + ((@x3-@x4)/2.5) - (0.5 * @xx * @x8) - (1.5 * @xx * @x9) - (1.2 * @xx * @x10) - (0.2 * @xx * @x5) - (0.2 * @xx * @x6) - (0.1 * @xx * @x7))>1";
-		//String targetedMeleeDamage="((1?@x1) + ((@x2-10+@x3-@x4)/2.5) - (0.5 * @xx * @x8) - (1.5 * @xx * @x9) - (1.2 * @xx * @x10) - (0.10 * @xx * @x5) - (0.10 * @xx * @x6) - (0.2 * @xx * @x7))>1";
+		//String targetedMeleeDamage="((1?@x1) + ((@x2-10+@x3-@x4)/5) - (0.5 * @xx * @x8) - (1.5 * @xx * @x9) - (1.2 * @xx * @x10) - (0.10 * @xx * @x5) - (0.10 * @xx * @x6) - (0.2 * @xx * @x7))>1";
 		//String staticRangedDamage="((1?@x1) + ((@x3-@x4)/2.5) - (0.2 * @xx * @x5) - (0.2 * @xx * @x6) - (0.1 * @xx * @x7))>1";
-		//String staticMeleeDamage="((1?@x1) + ((@x2-10+@x3-@x4)/2.5) - (0.10 * @xx * @x5) - (0.10 * @xx * @x6) - (0.2 * @xx * @x7))>1";
+		//String staticMeleeDamage="((1?@x1) + ((@x2-10+@x3-@x4)/5) - (0.10 * @xx * @x5) - (0.10 * @xx * @x6) - (0.2 * @xx * @x7))>1";
 		
 		// vars[0] = weapon base damage;
 		// vars[1] = curStr;

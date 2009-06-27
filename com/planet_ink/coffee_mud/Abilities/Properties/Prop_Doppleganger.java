@@ -133,15 +133,14 @@ public class Prop_Doppleganger extends Property
                     if(level>maxLevel) level=maxLevel;
 					if(level!=mob.baseEnvStats().level())
 					{
-						CharClass C=mob.charStats().getCurrentClass();
 						mob.baseEnvStats().setLevel(level);
-						mob.baseEnvStats().setArmor(C.getLevelArmor(mob));
-						mob.baseEnvStats().setAttackAdjustment(C.getLevelAttack(mob));
-						mob.baseEnvStats().setDamage(C.getLevelDamage(mob));
+						mob.baseEnvStats().setArmor(CMLib.leveler().getLevelMOBArmor(mob));
+						mob.baseEnvStats().setAttackAdjustment(CMLib.leveler().getLevelAttack(mob));
+						mob.baseEnvStats().setDamage(CMLib.leveler().getLevelMOBDamage(mob));
 						mob.baseEnvStats().setSpeed(1.0+(CMath.div(level,100)*4.0));
-						mob.baseState().setHitPoints(CMLib.dice().rollHP(level,11));
-						mob.baseState().setMana(C.getLevelMana(mob));
-						mob.baseState().setMovement(C.getLevelMove(mob));
+						mob.baseState().setHitPoints(CMLib.leveler().getPlayerHitPoints(mob));
+						mob.baseState().setMana(CMLib.leveler().getLevelMana(mob));
+						mob.baseState().setMovement(CMLib.leveler().getLevelMove(mob));
 						mob.recoverEnvStats();
 						mob.recoverCharStats();
 						mob.recoverMaxState();

@@ -159,7 +159,7 @@ public class Spell_SummonMonster extends Spell
             newMOB.resetToMaxState();
             newMOB.recoverEnvStats();
             newMOB.recoverCharStats();
-            newMOB.baseCharStats().getCurrentClass().fillOutMOB(newMOB,level);
+            CMLib.leveler().fillOutMOB(newMOB,level);
             newMOB.recoverMaxState();
             newMOB.resetToMaxState();
             newMOB.recoverEnvStats();

@@ -35,8 +35,8 @@ import java.util.*;
 @SuppressWarnings("unchecked")
 public class CombatSleep extends StdAbility
 {
-	public String ID() { return "Spell_Sleep"; }
-	public String name(){return "Sleep";}
+	public String ID() { return "CombatSleep"; }
+	public String name(){return "Combat Sleep";}
 	public String displayText(){ return "(Asleep)";}
 	protected int canAffectCode(){return CAN_MOBS;}
 	protected int canTargetCode(){return CAN_MOBS;}
