@@ -63,15 +63,12 @@ public class CoffeeLevels extends StdLibrary implements ExpLevelLibrary
 	public int getAttackBonusNextLevel(MOB mob)
 	{
 		CharClass charClass = mob.baseCharStats().getCurrentClass();
-		int attStat=mob.charStats().getStat(charClass.getAttackAttribute());
+		int rawAttStat = mob.charStats().getStat(charClass.getAttackAttribute()); 
+		int attStat= rawAttStat;
 		int maxAttStat=(CMProps.getIntVar(CMProps.SYSTEMI_BASEMAXSTAT)
 					 +mob.charStats().getStat(CharStats.STAT_MAX_STRENGTH_ADJ+charClass.getAttackAttribute()));
 		if(attStat>=maxAttStat) attStat=maxAttStat;
-		int attGain=(int)Math.floor(CMath.div(attStat,18.0))+charClass.getBonusAttackLevel();
-		if(attStat>=25)attGain+=2;
-		else
-		if(attStat>=22)attGain+=1;
-		return attStat;
+		return (int)Math.round(CMath.div(attStat,18.0)) + charClass.getBonusAttackLevel(); 
 	}
 	
 	public int getLevelAttack(MOB mob)
