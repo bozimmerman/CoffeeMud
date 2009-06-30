@@ -6,7 +6,7 @@ var CAN_NOT_SEE =  Packages.com.planet_ink.coffee_mud.Common.interfaces.EnvStats
 var STAT_STRENGTH =  Packages.com.planet_ink.coffee_mud.Common.interfaces.CharStats.STAT_STRENGTH;
 var STAT_INTELLIGENCE =  Packages.com.planet_ink.coffee_mud.Common.interfaces.CharStats.STAT_INTELLIGENCE;
 var STAT_DEXTERITY =  Packages.com.planet_ink.coffee_mud.Common.interfaces.CharStats.STAT_DEXTERITY;
-
+	
 function makemob()
 {
 	var mob = Packages.com.planet_ink.coffee_mud.core.CMClass.getMOB("StdMOB");
@@ -14,6 +14,9 @@ function makemob()
 	var intt = lib.dice().roll(1,10,0);
 	var str = lib.dice().roll(1,10,0);
 	var dex = lib.dice().roll(1,10,0);
+	var intDiff = lib.dice().roll(1,3,0)-1;
+	var strDiff = lib.dice().roll(1,3,0)-1;
+	var dexDiff = lib.dice().roll(1,3,0)-1;
 	var level = lib.dice().roll(1,10,0);
 	var armor = lib.dice().roll(1,300,0);
 	var attack = lib.dice().roll(1,300,0);
@@ -33,6 +36,10 @@ function makemob()
 	
 	mob.addInventory(weap);
 	weap.wearEvenIfImpossible(mob);
+	
+	var A = Packages.com.planet_ink.coffee_mud.core.CMClass.getAbility("Prop_Adjuster");
+	A.setMiscText(toJavaString("str+"+strDiff+" dex+"+dexDiff+" intDiff+"+intDiff));
+	mob.addNonUninvokableEffect(A);
 	
 	mob.baseEnvStats().setLevel(level);
 	mob.baseCharStats().setCurrentClassLevel(level);
