@@ -841,6 +841,8 @@ public class CMath
 	            case '\\':
 	            case '/':
 	            case '?':
+                case '<':
+                case '>':
 	            {
 	                lastOperation=(char)c;
 	                c=st.nextToken();

@@ -81,7 +81,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	    // vars[1] = defenders level
 	    // vars[2] = sign(vars[0] - vars[1]) 
 		spellCritChanceFormula = CMath.compileMathExpression("( ( ((@x2 - 10 + ((@x7 - @x8)<10))/2.5) > 0 * ((@x3 - 10 + ((@x7 - @x8)<10))/2.5) > 0 * ((@x3 - 10 + ((@x7 - @x8)<10))/2.5) ))");
-		spellCritDmgFormula = CMath.compileMathExpression("( @x0 * ( ((@x2 - 10 + ((@x7 - @x8)<10))/2.5)> 0 * ((@x3 - 10 + ((@x7 - @x8)<10))/2.5) > 0 * ((@x3 - 10 + ((@x7 - @x8)<10))/2.5) ) / 100.0) + @x3");
+		spellCritDmgFormula = CMath.compileMathExpression("( @x1 * ( ((@x2 - 10 + ((@x7 - @x8)<10))/2.5)> 0 * ((@x3 - 10 + ((@x7 - @x8)<10))/2.5) > 0 * ((@x3 - 10 + ((@x7 - @x8)<10))/2.5) ) / 100.0) + @x3");
 		// vars[0] = damage;
 		// vars[1] = curInt > 18 ? 18 : curInt;
 		// vars[2] = baseInt > 18 ? 18 : baseInt;
@@ -106,7 +106,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		// vars[8] = (targetIsSleeping)?1:0;
 		// vars[9] = (targetIsSitting)?1:0;
 		weaponCritChanceFormula = CMath.compileMathExpression("( ( ((@x2 - 10 + ((@x7 - @x8)<10))/2.5) > 0 * ((@x3 - 10 + ((@x7 - @x8)<10))/2.5) > 0 * ((@x3 - 10 + ((@x7 - @x8)<10))/2.5) ))");
-		weaponCritDmgFormula = CMath.compileMathExpression("( @x0 * ( ((@x2 - 10 + ((@x7 - @x8)<10))/2.5)> 0 * ((@x3 - 10 + ((@x7 - @x8)<10))/2.5) > 0 * ((@x3 - 10 + ((@x7 - @x8)<10))/2.5) ) / 50.0) + @x3");
+		weaponCritDmgFormula = CMath.compileMathExpression("( @x1 * ( ((@x2 - 10 + ((@x7 - @x8)<10))/2.5)> 0 * ((@x3 - 10 + ((@x7 - @x8)<10))/2.5) > 0 * ((@x3 - 10 + ((@x7 - @x8)<10))/2.5) ) / 50.0) + @x3");
 		// vars[0] = damage;
 		// vars[1] = curDex > 18 ? 18 : curDex;
 		// vars[2] = baseDex > 18 ? 18 : baseDex;
@@ -489,26 +489,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		&&(attacker != null)
 		&&(attacker.isMine(weapon)))
 		{
-			int levelDiff = attacker.envStats().level() - target.envStats().level();
-			if(levelDiff > 10) levelDiff = 10;
-			int maxInt = attacker.charStats().getMaxStat(CharStats.STAT_INTELLIGENCE);
-			int currInt = attacker.charStats().getStat(CharStats.STAT_INTELLIGENCE);
-			int intBonus = 0;
-			if(currInt > maxInt) 
-			{
-				intBonus = currInt - maxInt;
-				currInt = maxInt;
-			}
-			int baseInt = attacker.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE);
-			if(baseInt > maxInt) baseInt = maxInt;
-			double critPct = CMath.div(currInt - 10 + levelDiff,2.5);
-			double critPctR = CMath.div(baseInt - 10 + levelDiff,2.5);
-			if((critPct>0)&&(critPctR>0))
-			{
-				critPct = (critPct * critPctR * critPctR);
-				if(CMLib.dice().rollPercentage()<Math.round(critPct))
-					damage+=Math.round(CMath.mul(damage,critPct/100.0)) + intBonus;
-			}
+			damage += criticalSpellDamage(attacker, target, damage);
 		}
 		CMMsg msg=CMClass.getMsg(attacker,target,weapon,messageCode,CMMsg.MSG_DAMAGE,messageCode,allDisplayMessage);
 		msg.setValue(damage);
@@ -530,70 +511,62 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				R.send(target,msg);
 			}
 	}
-
-	public void NEWpostDamage(MOB attacker,
-							  MOB target,
-							  Environmental weapon,
-							  int damage,
-							  int messageCode,
-							  int damageType,
-							  String allDisplayMessage)
+	
+	public int criticalSpellDamage(MOB attacker, MOB target, int baseDamage)
 	{
-		if((attacker==null)||(target==null)||(target.location()==null)) return;
-		if(allDisplayMessage!=null) allDisplayMessage="^F^<FIGHT^>"+allDisplayMessage+"^</FIGHT^>^?";
-		if((weapon instanceof Ability)
-		&&(damage>0)
-		&&(attacker != target)
-		&&(attacker != null)
-		&&(attacker.isMine(weapon)))
+		int levelDiff = attacker.envStats().level() - target.envStats().level();
+		if(levelDiff > 10) levelDiff = 10;
+		int maxInt = attacker.charStats().getMaxStat(CharStats.STAT_INTELLIGENCE);
+		int currInt = attacker.charStats().getStat(CharStats.STAT_INTELLIGENCE);
+		int intBonus = 0;
+		if(currInt > maxInt) 
 		{
-			int maxInt = attacker.charStats().getMaxStat(CharStats.STAT_INTELLIGENCE);
-			int currInt = attacker.charStats().getStat(CharStats.STAT_INTELLIGENCE);
-			int intBonus = 0;
-			if(currInt > maxInt) 
-			{
-				intBonus = currInt - maxInt;
-				currInt = maxInt;
-			}
-			int baseInt = attacker.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE);
-			if(baseInt > maxInt) baseInt = maxInt;
-			double[] vars = {
-					damage,
-					currInt,
-					baseInt,
-					intBonus,
-					(attacker.curState().getHunger()<1)?1.0:0.0,
-					(attacker.curState().getThirst()<1)?1.0:0.0,
-					(attacker.curState().getFatigue()>CharState.FATIGUED_MILLIS)?1.0:0.0,
-					attacker.envStats().level(),
-					target.envStats().level()
-					};
-			int spellCritChancePct = (int)Math.round(CMath.parseMathExpression(spellCritChanceFormula, vars, 0.0));
-			if(CMLib.dice().rollPercentage()<spellCritChancePct)
-			{
-				int spellCritDamageAmt = (int)Math.round(CMath.parseMathExpression(spellCritDmgFormula, vars, 0.0));
-				damage += spellCritDamageAmt;
-			}
+			intBonus = currInt - maxInt;
+			currInt = maxInt;
 		}
-		CMMsg msg=CMClass.getMsg(attacker,target,weapon,messageCode,CMMsg.MSG_DAMAGE,messageCode,allDisplayMessage);
-		msg.setValue(damage);
-        CMLib.color().fixSourceFightColor(msg);
-        Room R=target.location();
-        if(R!=null)
-			if(R.okMessage(target,msg))
-			{
-				if(damageType>=0)
-					msg.modify(msg.source(),
-							   msg.target(),
-							   msg.tool(),
-							   msg.sourceCode(),
-							   replaceDamageTag(msg.sourceMessage(),msg.value(),damageType),
-							   msg.targetCode(),
-							   replaceDamageTag(msg.targetMessage(),msg.value(),damageType),
-							   msg.othersCode(),
-							   replaceDamageTag(msg.othersMessage(),msg.value(),damageType));
-				R.send(target,msg);
-			}
+		int baseInt = attacker.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE);
+		if(baseInt > maxInt) baseInt = maxInt;
+		double critPct = CMath.div(currInt - 10 + levelDiff,2.5);
+		double critPctR = CMath.div(baseInt - 10 + levelDiff,2.5);
+		if((critPct>0)&&(critPctR>0))
+		{
+			critPct = (critPct * critPctR * critPctR);
+			if(CMLib.dice().rollPercentage()<Math.round(critPct))
+				return (int)Math.round(CMath.mul(baseDamage,critPct/100.0)) + intBonus;
+		}
+		return 0;
+	}
+
+	public int NEWcriticalSpellDamage(MOB attacker, MOB target, int baseDamage)
+	{
+		int maxInt = attacker.charStats().getMaxStat(CharStats.STAT_INTELLIGENCE);
+		int currInt = attacker.charStats().getStat(CharStats.STAT_INTELLIGENCE);
+		int intBonus = 0;
+		if(currInt > maxInt) 
+		{
+			intBonus = currInt - maxInt;
+			currInt = maxInt;
+		}
+		int baseInt = attacker.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE);
+		if(baseInt > maxInt) baseInt = maxInt;
+		double[] vars = {
+				baseDamage,
+				currInt,
+				baseInt,
+				intBonus,
+				(attacker.curState().getHunger()<1)?1.0:0.0,
+				(attacker.curState().getThirst()<1)?1.0:0.0,
+				(attacker.curState().getFatigue()>CharState.FATIGUED_MILLIS)?1.0:0.0,
+				attacker.envStats().level(),
+				target.envStats().level()
+				};
+		int spellCritChancePct = (int)Math.round(CMath.parseMathExpression(spellCritChanceFormula, vars, 0.0));
+		if(CMLib.dice().rollPercentage()<spellCritChancePct)
+		{
+			int spellCritDamageAmt = (int)Math.round(CMath.parseMathExpression(spellCritDmgFormula, vars, 0.0));
+			return spellCritDamageAmt;
+		}
+		return 0;
 	}
 	
 	public int adjustedDamage(MOB mob, Weapon weapon, MOB target)
