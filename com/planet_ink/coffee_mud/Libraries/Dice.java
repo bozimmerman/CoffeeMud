@@ -36,9 +36,9 @@ public class Dice extends StdLibrary implements DiceLibrary
     public String ID(){return "Dice";}
     private Random randomizer = null;
 
-    public void seed()
+    public void seed(long seed)
     {
-        randomizer = new Random(System.currentTimeMillis());
+        randomizer = new Random(seed);
     }
 	
 	public boolean normalizeAndRollLess(int score)
@@ -159,7 +159,7 @@ public class Dice extends StdLibrary implements DiceLibrary
     public int roll(int number, int die, int modifier)
     {
         if (randomizer == null)
-            seed();
+            seed(System.currentTimeMillis());
 
         int total = 0;
 		
@@ -174,7 +174,7 @@ public class Dice extends StdLibrary implements DiceLibrary
     public int rollPercentage()
     {
         if (randomizer == null)
-            seed();
+            seed(System.currentTimeMillis());
         return (Math.abs(randomizer.nextInt() % 100)) + 1;
     }
 
