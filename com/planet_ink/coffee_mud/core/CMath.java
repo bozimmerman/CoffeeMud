@@ -890,10 +890,14 @@ public class CMath
     	for(CompiledOperation o : list)
     		switch(o.type)
     		{
-    			case CompiledOperation.OPERATION_VALUE: curValue = o.value; break;
-    			case CompiledOperation.OPERATION_VARIABLE: curValue = vars[o.variableIndex]; break;
-    			case CompiledOperation.OPERATION_LIST: curValue = parseMathExpression(o.list,vars,finalValue); break;
-    			case CompiledOperation.OPERATION_PREVIOUSVALUE: curValue = previous; break;
+    			case CompiledOperation.OPERATION_VALUE: 
+    				curValue = o.value; break;
+    			case CompiledOperation.OPERATION_VARIABLE: 
+    				curValue = vars[o.variableIndex]; break;
+    			case CompiledOperation.OPERATION_LIST: 
+    				curValue = parseMathExpression(o.list,vars,finalValue); break;
+    			case CompiledOperation.OPERATION_PREVIOUSVALUE: 
+    				curValue = previous; break;
     			case CompiledOperation.OPERATION_OPERATION:
     				switch(o.operation)
     				{

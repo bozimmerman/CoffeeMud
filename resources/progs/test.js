@@ -107,7 +107,23 @@ for(x=0;x<1000;x++)
 	lib.math().setRand(rand2.getRandomizer());
 	var d2=combatlib.NEWadjustedDamage(attacker,attWeap,defender);
 	if(d1 != d2)
+	{
 		mob().tell("Fail #"+x+", adjustedDamage "+d1+" != "+d2);
+		/*
+		if(mob().session().confirm("Try again (Y/n)?","Y"))
+		{
+			rand1.getRandomizer().setSeed(baseSeed);
+			rand2.getRandomizer().setSeed(baseSeed);
+			lib.registerLibrary(rand1);
+			lib.math().setRand(rand1.getRandomizer());
+			d1=combatlib.adjustedDamage(attacker,attWeap,defender);
+			lib.registerLibrary(rand2);
+			lib.math().setRand(rand2.getRandomizer());
+			d2=combatlib.NEWadjustedDamage(attacker,attWeap,defender);
+			mob().tell("!Fail #"+x+", adjustedDamage "+d1+" != "+d2);
+		}
+		*/
+	}
 	
 	rand1.getRandomizer().setSeed(baseSeed);
 	rand2.getRandomizer().setSeed(baseSeed);
