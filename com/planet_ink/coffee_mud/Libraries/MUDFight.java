@@ -67,8 +67,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		// vars[5] = (thirsty == 0)?1:0;
 		// vars[6] = (fatigued == 0)?0:1;
 		sleepingArmorFormula = CMath.compileMathExpression("@x1 -100");
-		sittingArmorFormula = CMath.compileMathExpression("(@x1 -( ( ((@x2 - 9)/5) * ((@x3 - 9)/5) * ((@x3 - 9)/5) ) -  (0.15 * @xx>0 * @x5) - (0.15 * @xx>0 * @x6) - (0.3 * @xx>0 * @x7)))-100");
-		basicArmorFormula = CMath.compileMathExpression("(@x1-( ( ((@x2 - 9)/5) * ((@x3 - 9)/5) ) -  (0.15 * @xx>0 * @x5) - (0.15 * @xx>0 * @x6) - (0.3 * @xx>0 * @x7)))-100");
+		basicArmorFormula= CMath.compileMathExpression("(@x1 -(( ( ((@x2 - 9)/5) * ((@x3 - 9)/5) * ((@x3 - 9)/5) )+@x4) -  (0.15 * @xx>0 * @x5) - (0.15 * @xx>0 * @x6) - (0.3 * @xx>0 * @x7)))-100");
+		sittingArmorFormula = CMath.compileMathExpression("(@x1-( ( ((@x2 - 9)/5) * ((@x3 - 9)/5) ) -  (0.15 * @xx>0 * @x5) - (0.15 * @xx>0 * @x6) - (0.3 * @xx>0 * @x7)))-100");
 		// vars[0] = armor;
 		// vars[1] = curDex > 18 ? 18 : curDex;
 		// vars[2] = baseDex > 18 ? 18 : baseDex;
@@ -234,9 +234,12 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		}
 		if(arm>0.0)
 		{
-			if(mob.curState().getHunger()<1) arm=arm*.85;
-			if(mob.curState().getThirst()<1) arm=arm*.85;
-			if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS) arm=arm*.85;
+			if(mob.curState().getHunger()<1) 
+				arm=arm*.85;
+			if(mob.curState().getThirst()<1) 
+				arm=arm*.85;
+			if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS) 
+				arm=arm*.85;
 		}
 		return (int)Math.round(mob.envStats().armor()-arm) - 100;
 	}

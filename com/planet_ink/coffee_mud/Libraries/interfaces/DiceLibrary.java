@@ -30,7 +30,6 @@ import java.util.*;
 */
 public interface DiceLibrary extends CMLibrary
 {
-    public void seed(long seed);
     public boolean normalizeAndRollLess(int score);
     public int normalizeBy5(int score);
     public int rollHP(int level, int code);
@@ -39,4 +38,5 @@ public interface DiceLibrary extends CMLibrary
     public int[] getHPBreakup(int level, int code);
     public int roll(int number, int die, int modifier);
     public int rollPercentage();
+	public Random getRandomizer();
 }

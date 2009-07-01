@@ -32,7 +32,7 @@ public class CMath
     private static final String[] ROMAN_ONES={"I","II","III","IV","V","VI","VII","VIII","IX","X"};
     private static final String   ROMAN_ALL="CDMPXLIV";
     private static final java.text.DecimalFormat twoPlaces = new java.text.DecimalFormat("0.#####%");
-
+    private static Random rand = new Random(System.currentTimeMillis());
 
     /** Convert an integer to its Roman Numeral equivalent
      *
@@ -738,7 +738,7 @@ public class CMath
                 case '*': finalValue*=curValue; break;
                 case '/':
                 case '\\': finalValue/=curValue; break;
-                case '?': finalValue=((curValue-finalValue)*Math.random())+finalValue; break;
+                case '?': finalValue=((curValue-finalValue)*rand.nextDouble())+finalValue; break;
                 }
                 c=st.nextToken();
             }
@@ -901,7 +901,7 @@ public class CMath
     	                case '-': finalValue-=curValue; break;
     	                case '*': finalValue*=curValue; break;
     	                case '/': finalValue/=curValue; break;
-    	                case '?': finalValue=((curValue-finalValue)*Math.random())+finalValue; break;
+    	                case '?': finalValue=((curValue-finalValue)*rand.nextDouble())+finalValue; break;
     	                case '<': finalValue = finalValue < curValue? finalValue : curValue; break;
     	                case '>': finalValue = finalValue > curValue? finalValue : curValue; break;
     				}
@@ -1205,6 +1205,17 @@ public class CMath
     }
     
     /**
+     * Replaces the internal Random object with the one
+     * passed in.  Intended to be used for debugging purposes
+     * only.
+     * @param rand the random object to use
+     */
+    public static void setRand(Random rand)
+    {
+    	CMath.rand = rand;
+    }
+    
+    /**
      * Returns a long representing either the given value, or 
      * the index of the value in the order
      * they appear in the given string list.
@@ -1298,7 +1309,7 @@ public class CMath
      * @see java.lang.Math#random()
      * @return a random number
      */
-    public double random(){return Math.random();}
+    public double random(){return rand.nextDouble();}
     /**
      * @see java.lang.Math#floor(double)
      * @param d the number to get the floor of

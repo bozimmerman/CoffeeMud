@@ -82,43 +82,51 @@ for(x=0;x<1000;x++)
 	var baseDamage = lib.dice().roll(1,300,0);
 
 	var baseSeed = lib.dice().roll(1,9999999,0);
-	rand1.seed(baseSeed);
-	rand2.seed(baseSeed);
+	rand1.getRandomizer().setSeed(baseSeed);
+	rand2.getRandomizer().setSeed(baseSeed);
 	if(rand1.rollPercentage() != rand2.rollPercentage())
 		mob().tell("Fail #"+x+", ************************* rollPercentage!");
 	
-	rand1.seed(baseSeed);
-	rand2.seed(baseSeed);
+	rand1.getRandomizer().setSeed(baseSeed);
+	rand2.getRandomizer().setSeed(baseSeed);
 	lib.registerLibrary(rand1);
+	lib.math().setRand(rand1.getRandomizer());
 	var s1=combatlib.criticalSpellDamage(attacker,defender,baseDamage);
 	lib.registerLibrary(rand2);
+	lib.math().setRand(rand2.getRandomizer());
 	var s2=combatlib.NEWcriticalSpellDamage(attacker,defender,baseDamage);
 	if(s1 != s2)
 		mob().tell("Fail #"+x+", criticalSpellDamage "+s1+" != "+s2);
 	
-	rand1.seed(baseSeed);
-	rand2.seed(baseSeed);
+	rand1.getRandomizer().setSeed(baseSeed);
+	rand2.getRandomizer().setSeed(baseSeed);
 	lib.registerLibrary(rand1);
+	lib.math().setRand(rand1.getRandomizer());
 	var d1=combatlib.adjustedDamage(attacker,attWeap,defender);
 	lib.registerLibrary(rand2);
+	lib.math().setRand(rand2.getRandomizer());
 	var d2=combatlib.NEWadjustedDamage(attacker,attWeap,defender);
 	if(d1 != d2)
 		mob().tell("Fail #"+x+", adjustedDamage "+d1+" != "+d2);
 	
-	rand1.seed(baseSeed);
-	rand2.seed(baseSeed);
+	rand1.getRandomizer().setSeed(baseSeed);
+	rand2.getRandomizer().setSeed(baseSeed);
 	lib.registerLibrary(rand1);
+	lib.math().setRand(rand1.getRandomizer());
 	var t1=combatlib.adjustedAttackBonus(attacker,defender);
 	lib.registerLibrary(rand2);
+	lib.math().setRand(rand2.getRandomizer());
 	var t2=combatlib.NEWadjustedAttackBonus(attacker,defender);
 	if(t1 != t2)
 		mob().tell("Fail #"+x+", adjustedAttackBonus "+t1+" != "+t2);
 	
-	rand1.seed(baseSeed);
-	rand2.seed(baseSeed);
+	rand1.getRandomizer().setSeed(baseSeed);
+	rand2.getRandomizer().setSeed(baseSeed);
 	lib.registerLibrary(rand1);
+	lib.math().setRand(rand1.getRandomizer());
 	var a1=combatlib.adjustedArmor(attacker);
 	lib.registerLibrary(rand2);
+	lib.math().setRand(rand2.getRandomizer());
 	var a2=combatlib.NEWadjustedArmor(attacker);
 	if(a1 != a2)
 		mob().tell("Fail #"+x+", adjustedArmor "+a1+" != "+a2);
