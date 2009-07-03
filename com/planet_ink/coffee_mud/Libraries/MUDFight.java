@@ -40,10 +40,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
     public long lastRes=0;
     public String[][] hitWordIndex=null;
     public String[][] hitWordsChanged=null;
-    protected LinkedList<CMath.CompiledOperation> attackBonusFormula = null;
-    protected LinkedList<CMath.CompiledOperation>  sleepingArmorFormula = null;
-    protected LinkedList<CMath.CompiledOperation>  sittingArmorFormula = null;
-    protected LinkedList<CMath.CompiledOperation>  basicArmorFormula = null;
+    protected LinkedList<CMath.CompiledOperation> attackAdjustmentFormula = null;
+    protected LinkedList<CMath.CompiledOperation>  armorAdjustmentFormula = null;
     protected LinkedList<CMath.CompiledOperation>  attackerFudgeBonusFormula  = null;
     protected LinkedList<CMath.CompiledOperation>  spellCritChanceFormula = null;
     protected LinkedList<CMath.CompiledOperation>  spellCritDmgFormula = null;
@@ -58,64 +56,17 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 
     public boolean activate()
     {
-		attackBonusFormula = CMath.compileMathExpression("(50 + @x1 + ( ((@x2 - 9)/5) * ((@x3 - 9)/5) * ((@x3 - 9)/5) ) + @x4) - (0.1 * @xx * @x5) - (0.1 * @xx * @x6) - (0.2 * @xx * @x7)");
-		// vars[0] = attack;
-		// vars[1] = curStr > 18 ? 18 : curStr;
-		// vars[2] = baseStr > 18 ? 18 : curStr;
-		// vars[3] = (curStr > 18) ? (curStr-18) : 0;
-		// vars[4] = (hungry == 0)?1:0;
-		// vars[5] = (thirsty == 0)?1:0;
-		// vars[6] = (fatigued == 0)?0:1;
-		sleepingArmorFormula = CMath.compileMathExpression("@x1 -100");
-		basicArmorFormula= CMath.compileMathExpression("(@x1 -( (((@x2-9)/5)*((@x3-9)/5)*((@x3-9)/5)) + @x4 -  (0.15 * @xx>0 * @x5) - (0.15 * @xx>0 * @x6) - (0.3 * @xx>0 * @x7)))-100");
-		sittingArmorFormula = CMath.compileMathExpression("(@x1-( ( ((@x2 - 9)/5) * ((@x3 - 9)/5) ) -  (0.15 * @xx>0 * @x5) - (0.15 * @xx>0 * @x6) - (0.3 * @xx>0 * @x7)))-100");
-		// vars[0] = armor;
-		// vars[1] = curDex > 18 ? 18 : curDex;
-		// vars[2] = baseDex > 18 ? 18 : baseDex;
-		// vars[3] = (curDex > 18) ? (curDex-18) : 0;
-		// vars[4] = (hungry == 0)?1:0;
-		// vars[5] = (thirsty == 0)?1:0;
-		// vars[6] = (fatigued == 0)?0:1;
-	    attackerFudgeBonusFormula = CMath.compileMathExpression("@x3 * (@x1 - @x2)");
-	    // vars[0] = attacker level
-	    // vars[1] = defenders level
-	    // vars[2] = sign(vars[0] - vars[1]) 
-		spellCritChanceFormula = CMath.compileMathExpression("( ( ((@x2 - 10 + ((@x8 - @x9)<10))/2.5) > 0 * ((@x3 - 10 + ((@x8 - @x9)<10))/2.5) > 0 * ((@x3 - 10 + ((@x8 - @x9)<10))/2.5) ))");
-		spellCritDmgFormula = CMath.compileMathExpression("( @x1 * ( ((@x2 - 10 + ((@x8 - @x9)<10))/2.5)> 0 * ((@x3 - 10 + ((@x8 - @x9)<10))/2.5) > 0 * ((@x3 - 10 + ((@x8 - @x9)<10))/2.5) ) / 100.0) + @x4");
-		// vars[0] = damage;
-		// vars[1] = curInt > 18 ? 18 : curInt;
-		// vars[2] = baseInt > 18 ? 18 : baseInt;
-		// vars[3] = (curInt > 18) ? (curInt-18) : 0;
-		// vars[4] = (hungry == 0)?1:0;
-		// vars[5] = (thirsty == 0)?1:0;
-		// vars[6] = (fatigued == 0)?0:1;
-		// vars[7] = attacker level
-		// vars[8] = defender level
-		targetedRangedDamageFormula=CMath.compileMathExpression("((1?@x1) + ((@x3-@x4)/2.5) - (0.5 * @xx * @x8) - (1.5 * @xx * @x9) - (1.2 * @xx * @x10) - (0.2 * @xx * @x5) - (0.2 * @xx * @x6) - (0.1 * @xx * @x7))>1");
-		targetedMeleeDamageFormula=CMath.compileMathExpression("((1?@x1) + ((@x2-10+@x3-@x4)/5) - (0.5 * @xx * @x8) - (1.5 * @xx * @x9) - (1.2 * @xx * @x10) - (0.10 * @xx * @x5) - (0.10 * @xx * @x6) - (0.2 * @xx * @x7))>1");
-		staticRangedDamageFormula=CMath.compileMathExpression("((1?@x1) + ((@x3-@x4)/2.5) - (0.2 * @xx * @x5) - (0.2 * @xx * @x6) - (0.1 * @xx * @x7))>1");
-		staticMeleeDamageFormula=CMath.compileMathExpression("((1?@x1) + ((@x2-10+@x3-@x4)/5) - (0.10 * @xx * @x5) - (0.10 * @xx * @x6) - (0.2 * @xx * @x7))>1");
-		// vars[0] = weapon/mob base damage;
-		// vars[1] = curStr;
-		// vars[2] = attacker level;
-		// vars[3] = defender level>=0;
-		// vars[4] = (hungry == 0)?1:0;
-		// vars[5] = (thirsty == 0)?1:0;
-		// vars[6] = (fatigued == 0)?0:1;
-		// vars[7] = (!canSeeTarget)?1:0;
-		// vars[8] = (targetIsSleeping)?1:0;
-		// vars[9] = (targetIsSitting)?1:0;
-		weaponCritChanceFormula = CMath.compileMathExpression("( ( ((@x2 - 10 + ((@x8 - @x9)<10))/2.5) > 0 * ((@x3 - 10 + ((@x8 - @x9)<10))/2.5) > 0 * ((@x3 - 10 + ((@x8 - @x9)<10))/2.5) ))");
-		weaponCritDmgFormula = CMath.compileMathExpression("( @x1 * ( ((@x2 - 10 + ((@x8 - @x9)<10))/2.5)> 0 * ((@x3 - 10 + ((@x8 - @x9)<10))/2.5) > 0 * ((@x3 - 10 + ((@x8 - @x9)<10))/2.5) ) / 50.0) + @x4");
-		// vars[0] = damage;
-		// vars[1] = curDex > 18 ? 18 : curDex;
-		// vars[2] = baseDex > 18 ? 18 : baseDex;
-		// vars[3] = (curDex > 18) ? (curDex-18) : 0;
-		// vars[4] = (hungry == 0)?1:0;
-		// vars[5] = (thirsty == 0)?1:0;
-		// vars[6] = (fatigued == 0)?0:1;
-		// vars[7] = attacker level
-		// vars[8] = defender level
+		attackAdjustmentFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_ATTACKADJUSTMENT));
+		armorAdjustmentFormula= CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_ARMORADJUSTMENT));
+	    attackerFudgeBonusFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_ATTACKFUDGEBONUS));
+		spellCritChanceFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_CHANCESPELLCRIT));
+		spellCritDmgFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGESPELLCRIT));
+		targetedRangedDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGERANGEDTARGETED));
+		targetedMeleeDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGEMELEETARGETED));
+		staticRangedDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGERANGEDSTATIC));
+		staticMeleeDamageFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGEMELEESTATIC));
+		weaponCritChanceFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_CHANCEWEAPONCRIT));
+		weaponCritDmgFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_DAMAGEWEAPONCRIT));
     	return true; 
     }
     
@@ -164,30 +115,8 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 			h=allPossibleCombatants(caster,beRuthless);
 		return h;
 	}
-
+	
 	public int adjustedAttackBonus(MOB mob, MOB target)
-	{
-		double att=(double)ATTACK_ADJUSTMENT + (double)mob.envStats().attackAdjustment();
-		int maxStr = mob.charStats().getMaxStat(CharStats.STAT_STRENGTH);
-		int currStr = mob.charStats().getStat(CharStats.STAT_STRENGTH);
-		int strBonus = 0;
-		if(currStr > maxStr)
-		{
-			strBonus = currStr - maxStr;
-			currStr = maxStr;
-		}
-		int baseStr = mob.baseCharStats().getStat(CharStats.STAT_STRENGTH);
-		if(baseStr > maxStr) baseStr = maxStr;
-		double str=((double)currStr-9.0)/5.0;
-		double strR=((double)baseStr-9.0)/5.0;
-		att += (str * strR * strR) + strBonus;
-		if(mob.curState().getHunger()<1) att=att*.9;
-		if(mob.curState().getThirst()<1) att=att*.9;
-		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS) att=att*.8;
-		return (int)Math.round(att);
-	}
-
-	public int NEWadjustedAttackBonus(MOB mob, MOB target)
 	{
 		int maxStr = mob.charStats().getMaxStat(CharStats.STAT_STRENGTH);
 		int currStr = mob.charStats().getStat(CharStats.STAT_STRENGTH);
@@ -207,44 +136,10 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 						 (mob.curState().getThirst()<1)?1.0:0.0,
 						 (mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)?1.0:0.0
 						};
-		return (int)Math.round(CMath.parseMathExpression(attackBonusFormula, vars, 0.0));
+		return (int)Math.round(CMath.parseMathExpression(attackAdjustmentFormula, vars, 0.0));
 	}
 	
 	public int adjustedArmor(MOB mob)
-	{
-		int currDex=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
-		int maxDex = mob.charStats().getMaxStat(CharStats.STAT_DEXTERITY);
-		int dexBonus = 0;
-		if(currDex > maxDex)
-		{
-			dexBonus = currDex - maxDex;
-			currDex = maxDex;
-		}
-		double baseDex=(double)mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY);
-		if(baseDex > maxDex) baseDex = maxDex;
-		double arm = 0.0;
-		double dex=((double)currDex-9.0)/5.0;
-		double dexR=((double)baseDex-9.0)/5.0;
-		if((mob.envStats().disposition()&EnvStats.IS_SLEEPING)==0)
-		{
-			if((mob.envStats().disposition()&EnvStats.IS_SITTING)==0) 
-				arm = (dex * dexR * dexR) + dexBonus;
-			else
-				arm = (dex * dexR);
-		}
-		if(arm>0.0)
-		{
-			if(mob.curState().getHunger()<1) 
-				arm=arm*.85;
-			if(mob.curState().getThirst()<1) 
-				arm=arm*.85;
-			if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS) 
-				arm=arm*.7;
-		}
-		return (int)Math.round(mob.envStats().armor()-arm) - 100;
-	}
-
-	public int NEWadjustedArmor(MOB mob)
 	{
 		int currDex=mob.charStats().getStat(CharStats.STAT_DEXTERITY);
 		int maxDex = mob.charStats().getMaxStat(CharStats.STAT_DEXTERITY);
@@ -262,17 +157,13 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				currDex,
 				baseDex,
 				dexBonus,
-				 (mob.curState().getHunger()<1)?1.0:0.0,
-				 (mob.curState().getThirst()<1)?1.0:0.0,
-				 (mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)?1.0:0.0
+				(mob.curState().getHunger()<1)?1.0:0.0,
+				(mob.curState().getThirst()<1)?1.0:0.0,
+				(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS)?1.0:0.0,
+				CMLib.flags().isSitting(mob)?0.0:1.0,
+				CMLib.flags().isSleeping(mob)?0.0:1.0
 				};
-		if(CMLib.flags().isSleeping(mob))
-			return (int)Math.round(CMath.parseMathExpression(sleepingArmorFormula, vars, 0.0));
-		else
-		if(CMLib.flags().isSitting(mob))
-			return (int)Math.round(CMath.parseMathExpression(sittingArmorFormula, vars, 0.0));
-		else
-			return (int)Math.round(CMath.parseMathExpression(basicArmorFormula, vars, 0.0));
+		return (int)Math.round(CMath.parseMathExpression(armorAdjustmentFormula, vars, 0.0));
 	}
 
     public boolean rollToHit(MOB attacker, MOB defender)
@@ -299,6 +190,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
         if(hisAttack<0.0) hisAttack=-CMath.div(1.0,myArmor);
         return CMLib.dice().normalizeAndRollLess((int)Math.round(50.0*(hisAttack/myArmor)) + adjustment);
     }
+    
 	public HashSet allCombatants(MOB mob)
 	{
 		HashSet h=new HashSet();
@@ -514,33 +406,7 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 				R.send(target,msg);
 			}
 	}
-	
 	public int criticalSpellDamage(MOB attacker, MOB target, int baseDamage)
-	{
-		int levelDiff = attacker.envStats().level() - target.envStats().level();
-		if(levelDiff > 10) levelDiff = 10;
-		int maxInt = attacker.charStats().getMaxStat(CharStats.STAT_INTELLIGENCE);
-		int currInt = attacker.charStats().getStat(CharStats.STAT_INTELLIGENCE);
-		int intBonus = 0;
-		if(currInt > maxInt) 
-		{
-			intBonus = currInt - maxInt;
-			currInt = maxInt;
-		}
-		int baseInt = attacker.baseCharStats().getStat(CharStats.STAT_INTELLIGENCE);
-		if(baseInt > maxInt) baseInt = maxInt;
-		double critPct = CMath.div(currInt - 10 + levelDiff,2.5);
-		double critPctR = CMath.div(baseInt - 10 + levelDiff,2.5);
-		if((critPct>0)&&(critPctR>0))
-		{
-			critPct = (critPct * critPctR * critPctR);
-			if(CMLib.dice().rollPercentage()<Math.round(critPct))
-				return (int)Math.round(CMath.mul(baseDamage,critPct/100.0)) + intBonus;
-		}
-		return 0;
-	}
-
-	public int NEWcriticalSpellDamage(MOB attacker, MOB target, int baseDamage)
 	{
 		int maxInt = attacker.charStats().getMaxStat(CharStats.STAT_INTELLIGENCE);
 		int currInt = attacker.charStats().getStat(CharStats.STAT_INTELLIGENCE);
@@ -573,62 +439,6 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 	}
 	
 	public int adjustedDamage(MOB mob, Weapon weapon, MOB target)
-	{
-		double damageAmount=0.0;
-		int levelDiff = mob.envStats().level() - ((target==null)?0:target.envStats().level());
-		
-		if(target!=null)
-		{
-			if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
-				damageAmount = (double)(CMLib.dice().roll(1,weapon.envStats().damage(),(int)Math.round(CMath.div(levelDiff,2.5))));
-			else
-				damageAmount = (double)(CMLib.dice().roll(1,mob.envStats().damage(),(int)Math.round(CMath.div(mob.charStats().getStat(CharStats.STAT_STRENGTH)-10  + levelDiff,5))));
-			if(!CMLib.flags().canBeSeenBy(target,mob)) 
-				damageAmount *=.5;
-			if(CMLib.flags().isSleeping(target)) 
-				damageAmount *=1.5;
-			else
-			if(CMLib.flags().isSitting(target)) 
-				damageAmount *=1.2;
-		}
-		else
-		if((weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)))
-			damageAmount = (double)(weapon.envStats().damage() + CMath.div(levelDiff,2.5));
-		else
-			damageAmount = (double)mob.envStats().damage() + CMath.div(mob.charStats().getStat(CharStats.STAT_STRENGTH)-10  + levelDiff,5);
-		
-		if(mob.curState().getHunger() < 1) 
-			damageAmount *= .8;
-		if(mob.curState().getFatigue()>CharState.FATIGUED_MILLIS) 
-			damageAmount *=.8;
-		if(mob.curState().getThirst() < 1) 
-			damageAmount *= .9;
-		if(damageAmount<1.0) 
-			damageAmount=1.0;
-		
-		if(levelDiff > 10) levelDiff = 10;
-		int maxDex = mob.charStats().getMaxStat(CharStats.STAT_DEXTERITY);
-		int currDex = mob.charStats().getStat(CharStats.STAT_DEXTERITY);
-		int dexBonus = 0;
-		if(currDex > maxDex)
-		{
-			dexBonus = currDex - maxDex;
-			currDex = maxDex;
-		}
-		int baseDex = mob.baseCharStats().getStat(CharStats.STAT_DEXTERITY);
-		if(baseDex > maxDex) baseDex = maxDex;
-		double critPct = CMath.div(currDex - 10 + levelDiff,2.5);
-		double critPctR = CMath.div(maxDex - 10 + levelDiff,2.5);
-		if((critPct>0)&&(critPctR>0))
-		{
-			critPct = critPct * critPctR * critPctR;
-			if(CMLib.dice().rollPercentage()<Math.round(critPct))
-				damageAmount+=Math.round(CMath.mul(damageAmount,critPct/50.0)) + dexBonus;
-		}
-		return (int)Math.round(damageAmount);
-	}
-
-	public int NEWadjustedDamage(MOB mob, Weapon weapon, MOB target)
 	{
 		double damageAmount=0.0;
 		boolean rangedAttack = (weapon!=null)&&((weapon.weaponClassification()==Weapon.CLASS_RANGED)||(weapon.weaponClassification()==Weapon.CLASS_THROWN)); 
