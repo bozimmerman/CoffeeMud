@@ -1057,6 +1057,8 @@ public class CMMap extends StdLibrary implements WorldMap
 			if((sR!=null)
 			&&(!sR.roomID().equals(R.roomID())))
 				return false;
+			if(M.session()!=null)
+				return false;
 		}
 		Item I=null;
 		for(int i=0;i<R.numItems();i++)

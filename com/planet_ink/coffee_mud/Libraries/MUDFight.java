@@ -628,7 +628,6 @@ public class MUDFight extends StdLibrary implements CombatLibrary
 		return (int)Math.round(damageAmount);
 	}
 
-	@SuppressWarnings("null")
 	public int NEWadjustedDamage(MOB mob, Weapon weapon, MOB target)
 	{
 		double damageAmount=0.0;

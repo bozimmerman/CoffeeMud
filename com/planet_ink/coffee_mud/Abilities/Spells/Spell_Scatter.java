@@ -146,8 +146,10 @@ public class Spell_Scatter extends Spell
 					{
 					    target=(Item)targets.elementAt(i);
 						msg=CMClass.getMsg(mob,target,this,verbalCastCode(mob,target,auto),null);
-						Room room=((Area)areas.elementAt(CMLib.dice().roll(1,areas.size(),-1))).getRandomMetroRoom();
-						if(mob.location().okMessage(mob,msg))
+						Room room = null;
+						for(int x = 0; (x < 10) && (room == null); x++)
+							room=((Area)areas.elementAt(CMLib.dice().roll(1,areas.size(),-1))).getRandomMetroRoom();
+						if(mob.location().okMessage(mob,msg) && (room != null))
 						{
 							mob.location().send(mob,msg);
 							if(msg.value()<=0)
