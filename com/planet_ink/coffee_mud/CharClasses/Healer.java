@@ -82,6 +82,7 @@ public class Healer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),6,"Prayer_SenseDisease",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_Bless",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),7,"Prayer_BrighteningAura",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Freedom",true);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),8,"Prayer_Forgive",false);
@@ -99,6 +100,7 @@ public class Healer extends Cleric
         CMLib.ableMapper().addCharAbilityMapping(ID(),12,"Prayer_CureExhaustion",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_ProtectHealth",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),13,"Prayer_MassFreedom",true,CMParms.parseSemicolons("Prayer_Freedom",true));
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_CureCritical",true,CMParms.parseSemicolons("Prayer_CureSerious",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),14,"Prayer_AuraHeal",false);
@@ -118,8 +120,8 @@ public class Healer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_Godstrike",false);
 		CMLib.ableMapper().addCharAbilityMapping(ID(),19,"Prayer_DeathsDoor",false);
 
-		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_MassFreedom",true,CMParms.parseSemicolons("Prayer_Freedom",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Prayer_PeaceRitual",false);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),20,"Skill_AttackHalf",true);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Heal",true,CMParms.parseSemicolons("Prayer_CureCritical",true));
 		CMLib.ableMapper().addCharAbilityMapping(ID(),21,"Prayer_Atonement",false);
