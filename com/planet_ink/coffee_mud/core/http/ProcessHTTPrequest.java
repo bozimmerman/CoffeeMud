@@ -435,6 +435,10 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 	{
 		String foundMacro=null;
 		boolean extend=false;
+        if((i<s.length()-2)
+        &&(!(((s.charAt(i+1)=='X')||(s.charAt(i+1)=='x'))
+    		&&(Character.isDigit(s.charAt(i+2))||(s.charAt(i+1)=='x')||(s.charAt(i+1)=='X')))))
+        		return null;
 		for(int x=i+1;x<s.length();x++)
 		{
 			if((s.charAt(x)=='@')
