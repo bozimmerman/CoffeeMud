@@ -230,14 +230,14 @@ public class Injury extends StdAbility
 	    if((msg.target()==affected)
 	    &&(msg.targetMinor()==CMMsg.TYP_DAMAGE)
 	    &&(msg.value()>0)
-	    &&(affected instanceof MOB)
+	    &&(msg.target() instanceof MOB)
 	    &&(msg.targetMessage()!=null)
         &&(msg.targetMessage().indexOf("<DAMAGE>")>=0)
         &&(text().startsWith(msg.source().Name()+"/")
-	       ||((CMProps.getIntVar(CMProps.SYSTEMI_INJPCTHP)>=(int)Math.round(CMath.div(((MOB)affected).curState().getHitPoints(),((MOB)affected).maxState().getHitPoints())*100.0))
+	       ||((CMProps.getIntVar(CMProps.SYSTEMI_INJPCTHP)>=(int)Math.round(CMath.div(((MOB)msg.target()).curState().getHitPoints(),((MOB)msg.target()).maxState().getHitPoints())*100.0))
 	        &&(CMLib.dice().rollPercentage()<=CMProps.getIntVar(CMProps.SYSTEMI_INJPCTCHANCE)))))
 	    {
-	        MOB mob=(MOB)affected;
+	        MOB mob=(MOB)msg.target();
 	        Amputation A=(Amputation)mob.fetchEffect("Amputation");
 	        if(A==null) A=new Amputation();
 	        Vector remains=A.remainingLimbNameSet(mob);

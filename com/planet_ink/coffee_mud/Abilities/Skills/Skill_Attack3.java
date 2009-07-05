@@ -30,40 +30,13 @@ import java.util.*;
    See the License for the specific language governing permissions and
    limitations under the License.
 */
-public class Skill_Attack3 extends StdSkill
+public class Skill_Attack3 extends Skill_Attack2
 {
 	public String ID() { return "Skill_Attack3"; }
 	public String name(){ return "Third Attack";}
-	public String displayText(){ return "";}
-	protected int canAffectCode(){return CAN_MOBS;}
-	protected int canTargetCode(){return 0;}
-	public int abstractQuality(){return Ability.QUALITY_BENEFICIAL_SELF;}
-    public int classificationCode(){return Ability.ACODE_SKILL|Ability.DOMAIN_MARTIALLORE;}
-	public boolean isAutoInvoked(){return true;}
-	public boolean canBeUninvoked(){return false;}
-
-	public void affectEnvStats(Environmental affected, EnvStats affectableStats)
-	{
-        if((affected instanceof MOB)&&(((MOB)affected).isInCombat()))
-    		affectableStats.setSpeed(affectableStats.speed()+(1.0*(proficiency()/100.0)));
-	}
-
-	public void executeMsg(Environmental myHost, CMMsg msg)
-	{
-		super.executeMsg(myHost,msg);
-
-		if((affected==null)||(!(affected instanceof MOB)))
-			return;
-
-		MOB mob=(MOB)affected;
-
-		if((msg.amISource(mob))
-		&&(msg.targetMinor()==CMMsg.TYP_WEAPONATTACK)
-		&&(CMLib.dice().rollPercentage()>97)
-		&&(mob.isInCombat())
-		&&(!mob.amDead())
-		&&(msg.target() instanceof MOB))
-			helpProficiency(mob);
-	}
-
+	protected int attackToNerf(){ return 3;}
+	protected int roundToNerf(){ return 1;}
+	protected double nerfAmount(){ return .6;}
+	protected double numberOfFullAttacks(){ return 1.0;}
+	
 }

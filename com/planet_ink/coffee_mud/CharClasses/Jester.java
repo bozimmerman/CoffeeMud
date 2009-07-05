@@ -41,7 +41,7 @@ public class Jester extends StdCharClass
 	public int getBonusAttackLevel(){return 0;}
 	public int getMovementMultiplier(){return 16;}
 	public int getAttackAttribute(){return CharStats.STAT_CHARISMA;}
-	public int getLevelsPerBonusDamage(){ return 1;}
+	public int getLevelsPerBonusDamage(){ return 10;}
 	public int getHPDivisor(){return 3;}
 	public int getHPDice(){return 2;}
 	public int getHPDie(){return 6;}

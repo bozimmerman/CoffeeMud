@@ -40,7 +40,7 @@ public class Gaoler extends StdCharClass
 	public int getBonusPracLevel(){return 2;}
 	public int getBonusAttackLevel(){return -1;}
 	public int getAttackAttribute(){return CharStats.STAT_STRENGTH;}
-	public int getLevelsPerBonusDamage(){ return 10;}
+	public int getLevelsPerBonusDamage(){ return 5;}
 	public int getHPDivisor(){return 6;}
 	public int getHPDice(){return 1;}
 	public int getHPDie(){return 5;}

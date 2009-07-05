@@ -40,7 +40,7 @@ public class Mage extends StdCharClass
 	public int getBonusPracLevel(){return 4;}
 	public int getBonusAttackLevel(){return 0;}
 	public int getAttackAttribute(){return CharStats.STAT_INTELLIGENCE;}
-	public int getLevelsPerBonusDamage(){ return 10;}
+	public int getLevelsPerBonusDamage(){ return 30;}
 	public int getPracsFirstLevel(){return 6;}
 	public int getTrainsFirstLevel(){return 3;}
 	public int getMovementMultiplier(){return 8;}

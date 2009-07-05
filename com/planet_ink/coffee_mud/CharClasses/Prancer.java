@@ -41,7 +41,7 @@ public class Prancer extends StdCharClass
 	public int getBonusPracLevel(){return 1;}
 	public int getBonusAttackLevel(){return 0;}
 	public int getAttackAttribute(){return CharStats.STAT_CHARISMA;}
-	public int getLevelsPerBonusDamage(){ return 4;}
+	public int getLevelsPerBonusDamage(){ return 10;}
 	public int getHPDivisor(){return 3;}
 	public int getHPDice(){return 2;}
 	public int getHPDie(){return 6;}
