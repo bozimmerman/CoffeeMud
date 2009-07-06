@@ -136,6 +136,7 @@ public class Healer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_DivineResistance",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Resurrect",true);
+		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_Attack2",false);
 	}
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
@@ -202,9 +203,9 @@ public class Healer extends Cleric
 							A.invoke(myChar,((MOB)e.next()),true,0);
 					}
 				}
-			    downs.setElementAt(x,2,new Integer(fiveDown));
-			    downs.setElementAt(x,3,new Integer(tenDown));
-			    downs.setElementAt(x,4,new Integer(twentyDown));
+			    downs.setElementAt(x,2,Integer.valueOf(fiveDown));
+			    downs.setElementAt(x,3,Integer.valueOf(tenDown));
+			    downs.setElementAt(x,4,Integer.valueOf(twentyDown));
 			}
 			else
 				downs.addElement(myChar.Name(),new Integer(fiveDown),new Integer(tenDown),new Integer(twentyDown));

@@ -512,15 +512,17 @@ public class Dragon extends StdMOB
 	{
 		// ===== move all inhabitants to the dragons location
 		// ===== loop through all inhabitants of the stomach
-	    if(Stomach!=null)
+    	Room room = location();
+    	if(room == null) room = CMLib.map().getRandomRoom();
+	    if((Stomach!=null)&&(room != null))
 	    {
 			int morselCount = Stomach.numInhabitants();
 			for (int x=morselCount-1;x>=0;x--)
 			{
 				// ===== get the tasty morsels
 				MOB TastyMorsel = Stomach.fetchInhabitant(x);
-				if((TastyMorsel!=null)&&(location()!=null))
-					location().bringMobHere(TastyMorsel,false);
+				if(TastyMorsel!=null)
+					room.bringMobHere(TastyMorsel,false);
 			}
 	
 			// =====move the inventory of the stomach to the room
@@ -528,13 +530,13 @@ public class Dragon extends StdMOB
 			for (int y=itemCount-1;y>=0;y--)
 			{
 				Item PartiallyDigestedItem = Stomach.fetchItem(y);
-				if((PartiallyDigestedItem!=null)&&(location()!=null))
+				if(PartiallyDigestedItem!=null)
 				{
-					location().addItemRefuse(PartiallyDigestedItem,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
+					room.addItemRefuse(PartiallyDigestedItem,CMProps.getIntVar(CMProps.SYSTEMI_EXPIRE_PLAYER_DROP));
 					Stomach.delItem(PartiallyDigestedItem);
 				}
 			}
-			this.location().recoverRoomStats();
+			room.recoverRoomStats();
 	    }
 		// ===== Bury Him
 		return super.killMeDead(createBody);
