@@ -109,7 +109,7 @@ public class Spell_Cloudkill extends Spell
 					int damage = target.curState().getHitPoints();
 
 					int midLevel=(int)Math.round(CMath.div(adjustedLevel(mob,asLevel),2.0));
-					if(midLevel<target.envStats().level())
+					if(midLevel>target.envStats().level())
 						damage-=(int)Math.round(CMath.mul(damage,0.90));
 
 					if((msg.value()>0)||(msg2.value()>0))
