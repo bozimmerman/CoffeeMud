@@ -41,8 +41,8 @@ public class Healer extends Cleric
 	private HashSet disallowedWeapons=buildDisallowedWeaponClasses();
 	protected HashSet disallowedWeaponClasses(MOB mob){return disallowedWeapons;}
 	protected int alwaysFlunksThisQuality(){return 0;}
-
-	private DVector downs=new DVector(4);
+	protected volatile long auraCheckTime = System.currentTimeMillis();
+	
 	public Healer()
 	{
         super();
@@ -136,7 +136,6 @@ public class Healer extends Cleric
 		CMLib.ableMapper().addCharAbilityMapping(ID(),24,"Prayer_DivineResistance",false);
 
 		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Prayer_Resurrect",true);
-		CMLib.ableMapper().addCharAbilityMapping(ID(),25,"Skill_Attack2",false);
 	}
 
 	public int availabilityCode(){return Area.THEME_FANTASY;}
@@ -145,74 +144,40 @@ public class Healer extends Cleric
 	{
 		if(!(ticking instanceof MOB)) return super.tick(ticking,tickID);
 		MOB myChar=(MOB)ticking;
-		if((tickID==Tickable.TICKID_MOB)
-		&&(myChar.charStats().getClassLevel(this)>=30)
-		&&(CMLib.flags().isGood(myChar)))
+		if(tickID!=Tickable.TICKID_MOB) return super.tick(ticking, tickID);
+		if((System.currentTimeMillis() - auraCheckTime) > 2 * 60 * 1000)
 		{
-		    int x=downs.indexOf(myChar.Name());
-			int fiveDown=5;
-			int tenDown=10;
-			int twentyDown=20;
-			if(x>=0)
+			if((System.currentTimeMillis() - auraCheckTime) > 3 * 60 * 1000)
 			{
-			    fiveDown=((Integer)downs.elementAt(x,2)).intValue();
-			    tenDown=((Integer)downs.elementAt(x,3)).intValue();
-			    twentyDown=((Integer)downs.elementAt(x,4)).intValue();
-				if(((--fiveDown)<=0)||((--tenDown)<=0)||((--twentyDown)<=0))
-				{
-					HashSet followers=myChar.getGroupMembers(new HashSet());
-					if(myChar.location()!=null)
-						for(int i=0;i<myChar.location().numInhabitants();i++)
-						{
-							MOB M=myChar.location().fetchInhabitant(i);
-							if((M!=null)
-							&&((M.getVictim()==null)||(!followers.contains(M.getVictim()))))
-								followers.add(M);
-						}
-					if((fiveDown)<=0)
-					{
-						fiveDown=5;
-						Ability A=CMClass.getAbility("Prayer_CureLight");
-						if(A!=null)
-						for(Iterator e=followers.iterator();e.hasNext();)
-						{
-						    MOB M=(MOB)e.next();
-						    if(M.curState().getHitPoints()<M.maxState().getHitPoints())
-								A.invoke(myChar,M,true,0);
-						}
-					}
-					else
-					if((tenDown)<=0)
-					{
-						tenDown=10;
-						Ability A=CMClass.getAbility("Prayer_RemovePoison");
-						if(A!=null)
-						for(Iterator e=followers.iterator();e.hasNext();)
-						{
-						    MOB M=(MOB)e.next();
-							A.invoke(myChar,M,true,0);
-						}
-					}
-					else
-					if((twentyDown)<=0)
-					{
-						twentyDown=10;
-						Ability A=CMClass.getAbility("Prayer_CureDisease");
-						if(A!=null)
-						for(Iterator e=followers.iterator();e.hasNext();)
-							A.invoke(myChar,((MOB)e.next()),true,0);
-					}
-				}
-			    downs.setElementAt(x,2,Integer.valueOf(fiveDown));
-			    downs.setElementAt(x,3,Integer.valueOf(tenDown));
-			    downs.setElementAt(x,4,Integer.valueOf(twentyDown));
+				auraCheckTime = System.currentTimeMillis();
 			}
-			else
-				downs.addElement(myChar.Name(),new Integer(fiveDown),new Integer(tenDown),new Integer(twentyDown));
+			affectHealingAura(myChar);
 		}
 		return super.tick(myChar,tickID);
 	}
 
+	public void affectHealingAura(MOB myChar)
+	{
+		Ability A = myChar.fetchEffect("Prayer_HealingAura");
+		if((myChar.charStats().getClassLevel(this)>=30)&&(CMLib.flags().isGood(myChar)))
+		{
+			if(A==null) 
+			{
+				A=CMClass.getAbility("Prayer_HealingAura");
+				if(A!=null)
+				{
+					A.setInvoker(myChar);
+					myChar.addNonUninvokableEffect(A);
+				}
+			}
+		}
+		else
+		{
+			myChar.delEffect(A);
+			A.destroy();
+		}
+	}
+	
 	public String statQualifications(){return "Wisdom 9+ Charisma 9+";}
 	public boolean qualifiesForThisClass(MOB mob, boolean quiet)
 	{
@@ -265,15 +230,19 @@ public class Healer extends Cleric
 		super.executeMsg(myHost,msg);
 		if(!(myHost instanceof MOB)) return;
 		MOB myChar=(MOB)myHost;
-		if(msg.amISource(myChar)
-		&&(!myChar.isMonster())
-		&&(msg.sourceMinor()==CMMsg.TYP_HEALING)
-		&&(msg.tool() instanceof Ability)
-		&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,msg.tool().ID())>0)
-		&&(myChar.isMine(msg.tool()))
-		&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
-		&&(msg.value()>0))
-			msg.setValue((int)Math.round(CMath.mul(msg.value(),1.5)));
+		if(msg.amISource(myChar))
+		{
+			if(msg.sourceMinor()==CMMsg.TYP_LIFE)
+				affectHealingAura(myChar);
+			if((!myChar.isMonster())
+			&&(msg.sourceMinor()==CMMsg.TYP_HEALING)
+			&&(msg.tool() instanceof Ability)
+			&&(CMLib.ableMapper().getQualifyingLevel(ID(),true,msg.tool().ID())>0)
+			&&(myChar.isMine(msg.tool()))
+			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)==Ability.ACODE_PRAYER)
+			&&(msg.value()>0))
+				msg.setValue((int)Math.round(CMath.mul(msg.value(),2.0)));
+		}
 	}
 
 	public Vector outfit(MOB myChar)

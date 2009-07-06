@@ -66,8 +66,7 @@ public class Prayer_HealingAura extends Prayer
 		   return false;
 		if(tickID!=Tickable.TICKID_MOB) return true;
 		MOB myChar=(MOB)affected;
-
-		if((fiveDown>1)&&(tenDown>1)&&(twentyDown>1)) return true;
+		if(((--fiveDown)>0)&&((--tenDown)>0)&&((--twentyDown)>0)) return true;
 
 		HashSet followers=myChar.getGroupMembers(new HashSet());
 		if(myChar.location()!=null)
@@ -78,7 +77,7 @@ public class Prayer_HealingAura extends Prayer
 				&&((M.getVictim()==null)||(!followers.contains(M.getVictim()))))
 					followers.add(M);
 			}
-		if((--fiveDown)<=0)
+		if((fiveDown)<=0)
 		{
 			fiveDown=5;
 			Ability A=CMClass.getAbility("Prayer_CureLight");
@@ -86,7 +85,7 @@ public class Prayer_HealingAura extends Prayer
 			for(Iterator e=followers.iterator();e.hasNext();)
 				A.invoke(myChar,((MOB)e.next()),true,0);
 		}
-		if((--tenDown)<=0)
+		if((tenDown)<=0)
 		{
 			tenDown=10;
 			Ability A=CMClass.getAbility("Prayer_RemovePoison");
@@ -94,9 +93,9 @@ public class Prayer_HealingAura extends Prayer
 			for(Iterator e=followers.iterator();e.hasNext();)
 				A.invoke(myChar,((MOB)e.next()),true,0);
 		}
-		if((--twentyDown)<=0)
+		if((twentyDown)<=0)
 		{
-			twentyDown=10;
+			twentyDown=20;
 			Ability A=CMClass.getAbility("Prayer_CureDisease");
 			if(A!=null)
 			for(Iterator e=followers.iterator();e.hasNext();)
