@@ -130,6 +130,7 @@ public class CMProps extends Properties
     public static final int SYSTEM_FORMULA_DAMAGEMELEESTATIC=72;
     public static final int SYSTEM_FORMULA_CHANCEWEAPONCRIT=73;
     public static final int SYSTEM_FORMULA_DAMAGEWEAPONCRIT=74;
+    public static final int SYSTEM_FORMULA_NPCHITPOINTS=75;
     public static final int NUM_SYSTEM=75;
 
     public static final int SYSTEMI_EXPRATE=0;
@@ -870,6 +871,7 @@ public class CMProps extends Properties
         setUpLowVar(SYSTEM_FORMULA_DAMAGEMELEESTATIC, getStr("FORMULA_DAMAGEMELEESTATIC","((1?@x1)+((@x2-10+@x3-@x4)/5)-(0.2*@xx*@x5)-(0.2*@xx*@x6)-(0.2*@xx*@x7))>1"));
         setUpLowVar(SYSTEM_FORMULA_CHANCEWEAPONCRIT, getStr("FORMULA_CHANCEWEAPONCRIT","((((@x2-10+((@x8-@x9)<10))/2.5)>0 * ((@x3-10+((@x8-@x9)<10))/2.5)>0 * ((@x3-10+((@x8-@x9)<10))/2.5)))"));
         setUpLowVar(SYSTEM_FORMULA_DAMAGEWEAPONCRIT, getStr("FORMULA_DAMAGEWEAPONCRIT","(@x1 * (((@x2-10+((@x8-@x9)<10))/2.5)>0 * ((@x3-10+((@x8-@x9)<10))/2.5)>0 * ((@x3-10+((@x8-@x9)<10))/2.5))/50.0)+@x4"));
+        setUpLowVar(SYSTEM_FORMULA_NPCHITPOINTS, getStr("FORMULA_NPCHITPOINTS","3 + @x1 + (@x1 * @x2)"));
         
         Directions.instance().reInitialize(getInt("DIRECTIONS"));
 

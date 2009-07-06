@@ -35,12 +35,21 @@ public class Dice extends StdLibrary implements DiceLibrary
 {
     public String ID(){return "Dice";}
     private Random randomizer = null;
+    protected LinkedList<CMath.CompiledOperation>  baseNpcHitpointsFormula = null;
 
     public synchronized Random getRandomizer() {
     	if(randomizer == null)
     		randomizer = new Random(System.currentTimeMillis());
     	return randomizer;
     }
+    
+    public boolean activate()
+    {
+    	baseNpcHitpointsFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_NPCHITPOINTS));
+    	return super.activate();
+    }
+    
+    public void propertiesLoaded() { activate(); }
     
 	public boolean normalizeAndRollLess(int score)
 	{
@@ -61,7 +70,8 @@ public class Dice extends StdLibrary implements DiceLibrary
 		if(code<0) code=0;
 		// new old style
 		if(code<32768)
-			return 3+level+(level * code);
+			return (int)Math.round(CMath.parseMathExpression(baseNpcHitpointsFormula, new double[]{level,code,0,0,0,0,0,0,0,0,0},0.0));
+
 		// old old style
 		//	return 10 +(int)Math.round(CMath.mul(level*level,0.85)) +(roll(level,code,0)*mul);
 		
