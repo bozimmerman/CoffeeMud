@@ -172,6 +172,7 @@ public class Healer extends Cleric
 			}
 		}
 		else
+		if(A!=null)
 		{
 			myChar.delEffect(A);
 			A.destroy();
