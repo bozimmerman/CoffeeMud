@@ -60,12 +60,19 @@ public class Spell_Cloudkill extends Spell
 		if((affected==null)||(!(affected instanceof MOB)))
 			return;
 		MOB mob=(MOB)affected;
+		MOB invoker = this.invoker();
 
 		super.unInvoke();
 		if(canBeUninvoked())
 		{
 			mob.tell("You feel less intoxicated.");
 			CMLib.commands().postStand(mob,true);
+			if((invoker!=null)
+			&&(!mob.isInCombat())
+			&&(mob.location()!=null)
+		    &&(mob.location().isInhabitant(invoker))
+		    &&(!mob.amDead()))
+				CMLib.combat().postAttack(mob,invoker,mob.fetchWieldedItem());
 		}
 	}
 
@@ -121,8 +128,15 @@ public class Spell_Cloudkill extends Spell
 						if(target.location()==mob.location())
 						{
 							if(target.charStats().getBodyPart(Race.BODY_LEG)>0)
+							{
 								maliciousAffect(mob,target,asLevel,2,-1);
-							CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>. <T-NAME> collapse(s)!");
+								if(mob!=target)
+								{
+									mob.setVictim(target);
+									target.setVictim(mob);
+								}
+								CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>. <T-NAME> collapse(s)!");
+							}
 						}
 					}
 				}
