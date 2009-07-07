@@ -42,7 +42,7 @@ public class Dice extends StdLibrary implements DiceLibrary
     		randomizer = new Random(System.currentTimeMillis());
     	return randomizer;
     }
-    private Dice()
+    public Dice()
     {
     	super();
     	baseNpcHitpointsFormula=CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_NPCHITPOINTS));
