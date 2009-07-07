@@ -385,7 +385,7 @@ public class Age extends StdAbility
 
 					newMan.playerStats().setLastIP(liege.session().getAddress());
 					Log.sysOut("Age","Created user: "+newMan.Name());
-		            CMLib.login().notifyFriends(newMan,"^X"+newMan.Name()+" just been created.^.^?");
+		            CMLib.login().notifyFriends(newMan,"^X"+newMan.Name()+" has just been created.^.^?");
 
                     Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
                     for(int i=0;i<channels.size();i++)

@@ -4304,7 +4304,7 @@ public class Import extends StdCommand
 					CMLib.database().DBCreateCharacter(M);
 					CMLib.players().addPlayer(M);
 					Log.sysOut("Import","Imported user: "+M.Name());
-		            CMLib.login().notifyFriends(M,"^X"+M.Name()+" just been created.^.^?");
+		            CMLib.login().notifyFriends(M,"^X"+M.Name()+" has just been created.^.^?");
                     Vector channels=CMLib.channels().getFlaggedChannelNames(ChannelsLibrary.ChannelFlag.NEWPLAYERS);
                     for(int i=0;i<channels.size();i++)
                         CMLib.commands().postChannel((String)channels.elementAt(i),M.getClanID(),M.Name()+" has just been created.",true);

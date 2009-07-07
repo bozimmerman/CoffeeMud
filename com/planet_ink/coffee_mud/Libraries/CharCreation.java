@@ -789,7 +789,7 @@ public class CharCreation extends StdLibrary implements CharCreationLibrary
             mob.playerStats().setLastIP(session.getAddress());
             Log.sysOut("FrontDoor","Created user: "+mob.Name());
             CMProps.addNewUserByIP(session.getAddress());
-            notifyFriends(mob,"^X"+mob.Name()+" just been created.^.^?");
+            notifyFriends(mob,"^X"+mob.Name()+" has just been created.^.^?");
             if((CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ALWAYS"))
             &&(!CMath.bset(mob.getBitmap(),MOB.ATT_PLAYERKILL)))
                 mob.setBitmap(mob.getBitmap()|MOB.ATT_PLAYERKILL);

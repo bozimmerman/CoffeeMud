@@ -100,17 +100,27 @@ public class Amputation extends StdAbility implements Amputator
 	
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
-		if((msg.target()==affected)
-		&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
-		&&(CMLib.flags().canBeSeenBy(affected,msg.source()))
-		&&(affected instanceof MOB))
+		if(affected instanceof MOB)
 		{
-			String s=CMLib.utensils().niceCommaList(missingLimbNameSet(),true);
-			if(s.length()>0)
-				msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
-											  CMMsg.MSG_OK_VISUAL,"\n\r"+affected.name()+" is missing "+((MOB)affected).charStats().hisher()+" "+s+".\n\r",
-											  CMMsg.NO_EFFECT,null,
-											  CMMsg.NO_EFFECT,null));
+			MOB M = (MOB)affected;
+			if((msg.target()==M)
+			&&((msg.targetMinor()==CMMsg.TYP_LOOK)||(msg.targetMinor()==CMMsg.TYP_EXAMINE))
+			&&(CMLib.flags().canBeSeenBy(M,msg.source())))
+			{
+				String s=CMLib.utensils().niceCommaList(missingLimbNameSet(),true);
+				if(s.length()>0)
+					msg.addTrailerMsg(CMClass.getMsg(msg.source(),null,null,
+												  CMMsg.MSG_OK_VISUAL,"\n\r"+M.name()+" is missing "+M.charStats().hisher()+" "+s+".\n\r",
+												  CMMsg.NO_EFFECT,null,
+												  CMMsg.NO_EFFECT,null));
+			}
+			if((msg.sourceMinor()==CMMsg.TYP_DEATH)&&(msg.amISource(M)))
+			{
+				M.delEffect(this);
+				M.recoverCharStats();
+				M.recoverEnvStats();
+				M.recoverMaxState();
+			}
 		}
 		super.executeMsg(host,msg);
 	}
