@@ -201,51 +201,54 @@ public class CombatAbilities extends StdBehavior
 	
 	public void executeMsg(Environmental host, CMMsg msg)
 	{
-		MOB mob=(MOB)host;
-		if(mob.isInCombat()) 
+		if(host instanceof MOB)
 		{
-			MOB victim=mob.getVictim();
-			if(victim==null){}else
-			if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
-			&&(msg.value()>0)
-			&&(msg.source()!=mob))
+			MOB mob=(MOB)host;
+			if(mob.isInCombat()) 
 			{
-				if(((msg.tool()==null)||(msg.tool() instanceof Item))
-				&&(msg.target()==mob)
-				&&(msg.source()==mob.getVictim()))
-					physicalDamageTaken+=msg.value();
-				if(msg.target()==host)
-					adjustAggro(msg.source(),msg.value()*2);
-				else
+				MOB victim=mob.getVictim();
+				if(victim==null){}else
+				if((msg.targetMinor()==CMMsg.TYP_DAMAGE)
+				&&(msg.value()>0)
+				&&(msg.source()!=mob))
 				{
-					if((victim==msg.source())
-					||(msg.source().getGroupMembers(new HashSet()).contains(victim)))
-						adjustAggro(msg.source(),msg.value());
+					if(((msg.tool()==null)||(msg.tool() instanceof Item))
+					&&(msg.target()==mob)
+					&&(msg.source()==mob.getVictim()))
+						physicalDamageTaken+=msg.value();
+					if(msg.target()==host)
+						adjustAggro(msg.source(),msg.value()*2);
+					else
+					{
+						if((victim==msg.source())
+						||(msg.source().getGroupMembers(new HashSet()).contains(victim)))
+							adjustAggro(msg.source(),msg.value());
+					}
 				}
-			}
-			else
-			if((msg.targetMinor()==CMMsg.TYP_HEALING)&&(msg.value()>0)
-			&&(msg.source()!=mob)
-			&&(msg.target()!=mob))
-			{
-				if((msg.target()==victim)
-				||(msg.source().getGroupMembers(new HashSet()).contains(victim)))
-					adjustAggro(msg.source(),msg.value()*2);
-			}
-			else
-			if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
-			&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
-			&&(msg.source()!=host)
-			&&(msg.tool() instanceof Ability)
-			&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SONG)
-			&&(msg.source().isInCombat()))
-			{
-				if((msg.source()==victim)
-				||(msg.source().getGroupMembers(new HashSet()).contains(victim)))
+				else
+				if((msg.targetMinor()==CMMsg.TYP_HEALING)&&(msg.value()>0)
+				&&(msg.source()!=mob)
+				&&(msg.target()!=mob))
 				{
-					int level=CMLib.ableMapper().qualifyingLevel(msg.source(),(Ability)msg.tool());
-					if(level<=0) level=CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID());
-					if(level>0) adjustAggro(msg.source(),level);
+					if((msg.target()==victim)
+					||(msg.source().getGroupMembers(new HashSet()).contains(victim)))
+						adjustAggro(msg.source(),msg.value()*2);
+				}
+				else
+				if((msg.sourceMinor()==CMMsg.TYP_CAST_SPELL)
+				&&(!CMath.bset(msg.sourceMajor(),CMMsg.MASK_ALWAYS))
+				&&(msg.source()!=host)
+				&&(msg.tool() instanceof Ability)
+				&&((((Ability)msg.tool()).classificationCode()&Ability.ALL_ACODES)!=Ability.ACODE_SONG)
+				&&(msg.source().isInCombat()))
+				{
+					if((msg.source()==victim)
+					||(msg.source().getGroupMembers(new HashSet()).contains(victim)))
+					{
+						int level=CMLib.ableMapper().qualifyingLevel(msg.source(),(Ability)msg.tool());
+						if(level<=0) level=CMLib.ableMapper().lowestQualifyingLevel(msg.tool().ID());
+						if(level>0) adjustAggro(msg.source(),level);
+					}
 				}
 			}
 		}

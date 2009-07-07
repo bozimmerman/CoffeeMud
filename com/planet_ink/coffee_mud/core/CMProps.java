@@ -131,7 +131,7 @@ public class CMProps extends Properties
     public static final int SYSTEM_FORMULA_CHANCEWEAPONCRIT=73;
     public static final int SYSTEM_FORMULA_DAMAGEWEAPONCRIT=74;
     public static final int SYSTEM_FORMULA_NPCHITPOINTS=75;
-    public static final int NUM_SYSTEM=75;
+    public static final int NUM_SYSTEM=76;
 
     public static final int SYSTEMI_EXPRATE=0;
     public static final int SYSTEMI_SKYSIZE=1;

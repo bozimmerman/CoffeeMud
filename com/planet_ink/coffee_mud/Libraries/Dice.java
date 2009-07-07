@@ -35,14 +35,14 @@ public class Dice extends StdLibrary implements DiceLibrary
 {
     public String ID(){return "Dice";}
     private Random randomizer = null;
-    protected LinkedList<CMath.CompiledOperation>  baseNpcHitpointsFormula = null;
-
     public synchronized Random getRandomizer() {
     	if(randomizer == null)
     		randomizer = new Random(System.currentTimeMillis());
     	return randomizer;
     }
     
+    protected LinkedList<CMath.CompiledOperation>  baseNpcHitpointsFormula = null;
+
     public boolean activate()
     {
     	baseNpcHitpointsFormula = CMath.compileMathExpression(CMProps.getVar(CMProps.SYSTEM_FORMULA_NPCHITPOINTS));

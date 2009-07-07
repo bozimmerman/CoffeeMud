@@ -44,8 +44,9 @@ public class Prop_NewDeathMsg extends Property
 	{
 		if((affected==msg.source())
 		&&(msg.targetMessage()==null)
-		&&(msg.othersMinor()==CMMsg.TYP_OK_VISUAL)
+		&&(msg.othersMinor()==CMMsg.TYP_DEATH)
 		&&(text().length()>0)
+	    &&(msg.othersMessage()!=null)
 		&&(msg.othersMessage().toUpperCase().indexOf("<S-NAME> IS DEAD")>0))
 		{
 			int x=msg.othersMessage().indexOf("\n\r");
