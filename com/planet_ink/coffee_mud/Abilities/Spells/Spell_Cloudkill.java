@@ -127,7 +127,10 @@ public class Spell_Cloudkill extends Spell
 						if(damage<=0) damage=1;
 						if(target.location()==mob.location())
 						{
-							if(target.charStats().getBodyPart(Race.BODY_LEG)>0)
+							String addOn = "";
+							if((target.charStats().getBodyPart(Race.BODY_LEG)>0)
+							&&(msg.value()<=0)
+							&&(msg2.value()<=0))
 							{
 								maliciousAffect(mob,target,asLevel,2,-1);
 								if(mob!=target)
@@ -135,8 +138,10 @@ public class Spell_Cloudkill extends Spell
 									mob.setVictim(target);
 									target.setVictim(mob);
 								}
-								CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>. <T-NAME> collapse(s)!");
+								if(target.fetchEffect(ID())!=null)
+									addOn =" <T-NAME> collapse(s).";
 							}
+							CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>!"+addOn);
 						}
 					}
 				}
