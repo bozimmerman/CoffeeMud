@@ -104,23 +104,26 @@ public class Spell_Cloudkill extends Spell
 				{
 					mob.location().send(mob,msg);
 					mob.location().send(mob,msg2);
-					invoker=mob;
-
-					int damage = target.curState().getHitPoints();
-
-					int midLevel=(int)Math.round(CMath.div(adjustedLevel(mob,asLevel),2.0));
-					if(midLevel<target.envStats().level())
-						damage=(int)Math.round(CMath.mul(damage,0.10));
-
-					if((msg.value()>0)||(msg2.value()>0))
-						damage = (int)Math.round(CMath.div(damage,2.0));
-
-					if(damage<=0) damage=1;
-					if(target.location()==mob.location())
+					if(target.fetchEffect(ID())==null)
 					{
-						if(target.charStats().getBodyPart(Race.BODY_LEG)>0)
-							maliciousAffect(mob,target,asLevel,2,-1);
-						CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>. <T-NAME> collapse(s)!");
+						invoker=mob;
+	
+						int damage = target.curState().getHitPoints();
+	
+						int midLevel=(int)Math.round(CMath.div(adjustedLevel(mob,asLevel),2.0));
+						if(midLevel<target.envStats().level())
+							damage=(int)Math.round(CMath.mul(damage,0.10));
+	
+						if((msg.value()>0)||(msg2.value()>0))
+							damage = (int)Math.round(CMath.div(damage,2.0));
+	
+						if(damage<=0) damage=1;
+						if(target.location()==mob.location())
+						{
+							if(target.charStats().getBodyPart(Race.BODY_LEG)>0)
+								maliciousAffect(mob,target,asLevel,2,-1);
+							CMLib.combat().postDamage(mob,target,this,damage,CMMsg.MASK_ALWAYS|CMMsg.TYP_GAS,Weapon.TYPE_GASSING,"The gas <DAMAGE> <T-NAME>. <T-NAME> collapse(s)!");
+						}
 					}
 				}
 			}

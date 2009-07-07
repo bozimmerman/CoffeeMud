@@ -54,6 +54,8 @@ public class Spell_Delude extends Spell
             if(mob.playerStats()!=null)
                 mob.playerStats().setLastUpdated(0);
 			CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), previousAlignment-mob.fetchFaction(CMLib.factions().AlignID()));
+			if(mob.fetchFaction(CMLib.factions().AlignID()) != previousAlignment)
+				mob.addFaction(CMLib.factions().AlignID(), previousAlignment);
 			mob.tell("Your attitude returns to normal.");
 			CMLib.utensils().confirmWearability(mob);
 		}

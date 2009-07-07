@@ -314,7 +314,11 @@ public class Age extends StdAbility
                             newMan.setClanID(liege.getClanID());
                     }
                     if(newMan.getClanID().length()>0)
+                    {
                         newMan.setClanRole(Clan.POS_MEMBER);
+	                    Clan C = CMLib.clans().findClan(newMan.getClanID());
+	                    if(C!=null) C.addMember(newMan, Clan.POS_MEMBER);
+                    }
 					newMan.setDescription(babe.description());
 					newMan.setDisplayText(babe.displayText());
 					newMan.setExperience(babe.getExperience());
