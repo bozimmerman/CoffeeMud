@@ -701,10 +701,7 @@ public class StdMOB implements MOB
         {
             location().delInhabitant(this);
             if((mySession!=null)&&(!CMProps.getBoolVar(CMProps.SYSTEMB_MUDSHUTTINGDOWN)))
-            {
                 location().show(this,null,CMMsg.MSG_OK_ACTION,"<S-NAME> vanish(es) in a puff of smoke.");
-                Log.debugOut("**************", new Exception());
-            }
         }
 		setFollowing(null);
 		DVector oldFollowers=new DVector(2);
