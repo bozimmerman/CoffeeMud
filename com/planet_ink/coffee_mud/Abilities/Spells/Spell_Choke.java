@@ -45,7 +45,6 @@ public class Spell_Choke extends Spell
 	{
 		super.affectEnvStats(affected,affectableStats);
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_NOT_BREATHE);
-		affectableStats.setSpeed(CMath.div(affectableStats.speed(),2.0));
 	}
 
 	public void unInvoke()

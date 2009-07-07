@@ -56,7 +56,7 @@ public class Order extends StdCommand
 		&&(!mob.isMonster())
 		&&(CMath.bset(mob.getBitmap(),MOB.ATT_AUTOASSIST)))
 		{
-			mob.tell("You may not order someone around with AUTOASSIST off.");
+			mob.tell("You may not order someone around with your AUTOASSIST flag off.");
 			return false;
 		}
 

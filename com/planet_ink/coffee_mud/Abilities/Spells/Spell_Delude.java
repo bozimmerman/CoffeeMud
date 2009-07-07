@@ -94,17 +94,17 @@ public class Spell_Delude extends Spell
 				mob.location().send(mob,msg);
 				if(msg.value()<=0)
 				{
-					previousAlignment=mob.fetchFaction(CMLib.factions().AlignID());
+					previousAlignment=target.fetchFaction(CMLib.factions().AlignID());
 
-					mob.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> undergo(es) a change of attitude");
+					target.location().show(target,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> undergo(es) a change of attitude");
 					success=beneficialAffect(mob,target,asLevel,0);
 					if(success)
 					{
                         int which=0;
-                        if(CMLib.flags().isEvil(mob)) 
+                        if(CMLib.flags().isEvil(target)) 
                             which=1;
                         else 
-                        if(CMLib.flags().isGood(mob)) 
+                        if(CMLib.flags().isGood(target)) 
                             which=2;
                         else
                         if(CMLib.dice().rollPercentage()>50) 
@@ -128,8 +128,8 @@ public class Spell_Delude extends Spell
                                         break;
                                     }
                                 }
-            					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), newAlign-mob.fetchFaction(CMLib.factions().AlignID()));
-            					CMLib.utensils().confirmWearability(mob);
+            					CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(), newAlign-target.fetchFaction(CMLib.factions().AlignID()));
+            					CMLib.utensils().confirmWearability(target);
                                 return true;
                             case 2:
                                 // find an evil range, set them within that
@@ -145,8 +145,8 @@ public class Spell_Delude extends Spell
                                         break;
                                     }
                                 }
-            					CMLib.factions().postFactionChange(mob,this, CMLib.factions().AlignID(), newAlign-mob.fetchFaction(CMLib.factions().AlignID()));
-            					CMLib.utensils().confirmWearability(mob);
+            					CMLib.factions().postFactionChange(target,this, CMLib.factions().AlignID(), newAlign-target.fetchFaction(CMLib.factions().AlignID()));
+            					CMLib.utensils().confirmWearability(target);
                                 return true;
                         }
 					}

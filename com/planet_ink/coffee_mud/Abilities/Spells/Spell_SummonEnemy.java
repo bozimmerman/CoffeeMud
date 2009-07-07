@@ -114,13 +114,14 @@ public class Spell_SummonEnemy extends Spell
 				MOB mob=room.fetchInhabitant(CMLib.dice().roll(1,room.numInhabitants(),-1));
 				if((mob!=null)
 				&&(!(mob instanceof Deity))
-				&&(mob.envStats().level()>=level)
-				&&(mob.envStats().level()<=(level + 1 + CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE)))
+				&&(mob.envStats().level()>=level-(CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE)/2))
+				&&(mob.envStats().level()<=(level+(CMProps.getIntVar(CMProps.SYSTEMI_EXPRATE)/2)))
 				&&(mob.charStats()!=null)
 				&&(mob.charStats().getMyRace()!=null)
 				&&(CMProps.isTheme(mob.charStats().getMyRace().availabilityCode()))
 				&&(CMath.bset(mob.charStats().getMyRace().availabilityCode(),Area.THEME_SKILLONLYMASK))
-                &&((CMLib.flags().isGood(caster)&&CMLib.flags().isEvil(mob)) 
+                &&((CMLib.flags().isGood(caster)&&CMLib.flags().isEvil(mob))
+                	|| (CMLib.flags().isNeutral(mob))
             		|| (CMLib.flags().isEvil(caster)&&CMLib.flags().isGood(mob))))
         			monster=mob;
 			}

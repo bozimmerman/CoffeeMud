@@ -264,6 +264,9 @@ public class CombatAbilities extends StdBehavior
 		for(int v=0;v<V.size();v++)
 		{
 			s=(String)V.elementAt(v);
+			if(s.equalsIgnoreCase("proficient"))
+				proficient=true;
+			else
 			if((s.startsWith("-"))
 			&&((A=CMClass.getAbility(s.substring(1)))!=null))
 			{

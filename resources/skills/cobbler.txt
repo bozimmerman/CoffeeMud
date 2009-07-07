@@ -9,7 +9,7 @@
 Leg Length % Boots	14	70	20	150	GenArmor	FEET&&LEGS	0	4	0	
 Stiletto Heeled % Boots	15	60	15	125	GenArmor	2:FEET	0	4	0	
 % Cowboy Boots	16	45	12	60	GenArmor	1:FEET	0	4	0	
-% Galloshes	16	40	12	20	GenArmor	3:FEET	0	4	0	
+% Galoshes	16	40	12	20	GenArmor	3:FEET	0	4	0	
 High Heeled % Boots	16	50	10	75	GenArmor	2:FEET	0	4	0	
 % Greaves	17	30	8	20	GenArmor	S0:FEET	0	4	0	
 % High Heels	17	30	5	35	GenArmor	S-1:FEET	0	4	0	

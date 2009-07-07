@@ -119,6 +119,12 @@ public class Spell_PolymorphSelf extends Spell
 			return false;
 		}
 
+		if(target.baseCharStats().getMyRace() != target.charStats().getMyRace())
+		{
+			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already polymorphed.");
+			return false;
+		}
+		
 		// the invoke method for spells receives as
 		// parameters the invoker, and the REMAINING
 		// command line parameters, divided into words,

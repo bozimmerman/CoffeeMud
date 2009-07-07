@@ -75,6 +75,8 @@ public class PlayerKill extends StdCommand
 		if(!mob.isMonster())
 		{
 			mob.tell("Turning on this flag will allow you to kill and be killed by other players.");
+			if(CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ONEWAY"))
+				mob.tell("Once turned on, this flag may not be turned off again.");
 			if(mob.session().confirm("Are you absolutely sure (y/N)?","N"))
 			{
 				mob.setBitmap(CMath.setb(mob.getBitmap(),MOB.ATT_PLAYERKILL));
@@ -82,6 +84,8 @@ public class PlayerKill extends StdCommand
 			}
 			else
 				mob.tell("Your playerkill flag remains OFF.");
+			if(!CMProps.getVar(CMProps.SYSTEM_PKILL).startsWith("ONEWAY"))
+				mob.tell("Both players must have their playerkill flag turned on for sparring.");
 		}
 		return false;
 	}

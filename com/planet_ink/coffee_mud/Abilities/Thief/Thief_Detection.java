@@ -58,6 +58,14 @@ public class Thief_Detection extends ThiefSkill
 		affectableStats.setSensesMask(affectableStats.sensesMask()|EnvStats.CAN_SEE_HIDDEN);
 	}
 
+	public void unInvoke()
+	{
+		MOB M=(MOB)affected;
+		super.unInvoke();
+		if((M!=null)&&(!M.amDead()))
+			M.tell("You stop detecting.");
+	}
+	
 	public boolean tick(Tickable ticking, int tickID)
 	{
 		if((affected!=null)&&(affected instanceof MOB))

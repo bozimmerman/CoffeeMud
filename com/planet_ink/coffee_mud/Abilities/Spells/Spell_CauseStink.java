@@ -85,8 +85,12 @@ public class Spell_CauseStink extends Spell
 			{
 				Room R=room.getRoomInDir(d);
 				if((R!=null)&&(R.numPCInhabitants()>0))
-					R.showHappens(CMMsg.MASK_ALWAYS|CMMsg.MASK_SOUND|CMMsg.MASK_EYES|CMMsg.TYP_GENERAL,
-								  "There is a very bad smell coming from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(d))+".");
+					for(int i=0;i<R.numInhabitants();i++)
+					{
+						MOB M=R.fetchInhabitant(i);
+						if((M!=null)&&(!M.isMonster())&&(CMLib.flags().canSmell(M)))
+							M.tell("There is a very bad smell coming from "+Directions.getFromDirectionName(Directions.getOpDirectionCode(d))+".");
+					}
 			}
 		}
 		return true;

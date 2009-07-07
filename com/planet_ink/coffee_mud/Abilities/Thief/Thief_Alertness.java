@@ -95,6 +95,7 @@ public class Thief_Alertness extends ThiefSkill
 		if((M!=null)&&(!M.amDead()))
 			M.tell("You don't feel quite so alert any more.");
 	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;

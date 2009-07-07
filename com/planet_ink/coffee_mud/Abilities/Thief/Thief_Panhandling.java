@@ -172,8 +172,6 @@ public class Thief_Panhandling extends ThiefSkill
 			mob.tell(target,null,null,"<S-NAME> <S-IS-ARE> already panhandling.");
 			return false;
 		}
-		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
-			return false;
 
 		if(!CMLib.flags().isSitting(mob))
 		{
@@ -185,6 +183,9 @@ public class Thief_Panhandling extends ThiefSkill
 			mob.tell("You must be on a city street to panhandle.");
 			return false;
 		}
+		
+		if(!super.invoke(mob,commands,givenTarget,auto,asLevel))
+			return false;
 
 		boolean success=proficiencyCheck(mob,0,auto);
 

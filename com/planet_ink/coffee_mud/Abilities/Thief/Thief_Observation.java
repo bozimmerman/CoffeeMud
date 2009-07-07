@@ -61,6 +61,14 @@ public class Thief_Observation extends ThiefSkill
 		return true;
 	}
 
+	public void unInvoke()
+	{
+		MOB M=(MOB)affected;
+		super.unInvoke();
+		if((M!=null)&&(!M.amDead()))
+			M.tell("You stop observing.");
+	}
+	
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
 	{
 		MOB target=mob;
