@@ -168,10 +168,12 @@ public class GrinderAreas
 					break;
 			A.setClimateType(climate);
 		}
+		else
+			A.setClimateType(0);
 
 		// tech level
 		if(httpReq.isRequestParameter("TECHLEVEL"))
-			A.setClimateType(CMath.s_int(httpReq.getRequestParameter("TECHLEVEL")));
+			A.setTechLevel(CMath.s_int(httpReq.getRequestParameter("TECHLEVEL")));
 
 		// modify subop list
 		String subOps=httpReq.getRequestParameter("SUBOPS");

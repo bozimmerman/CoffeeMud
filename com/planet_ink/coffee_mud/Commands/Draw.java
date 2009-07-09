@@ -69,6 +69,7 @@ public class Draw extends Get
 	{
 		boolean quiet=false;
 		boolean noerrors=false;
+		boolean ifNecessary=false;
 		if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("IFNECESSARY")))
 		{
 			quiet=true;
@@ -94,6 +95,7 @@ public class Draw extends Get
 			}
 			if((commands.size()>0)&&(((String)commands.lastElement()).equalsIgnoreCase("IFNECESSARY")))
 			{
+				ifNecessary=true;
 				commands.removeElementAt(commands.size()-1);
 				noerrors=true;
 			}
@@ -172,6 +174,10 @@ public class Draw extends Get
 				Item getThis=(Item)V.elementAt(i);
 				long wearCode=0;
 				if(container!=null)	wearCode=container.rawWornCode();
+				if((ifNecessary)
+				&&(mob.freeWearPositions(Item.WORN_WIELD,(short)0,(short)0)==0)
+				&&(mob.freeWearPositions(Item.WORN_HELD,(short)0,(short)0)==0))
+					break;
 				if(get(mob,container,getThis,quiet,"draw",false))
 				{
 					if(getThis.container()==null)

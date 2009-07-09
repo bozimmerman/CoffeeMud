@@ -246,10 +246,13 @@ public class AreaData extends StdWebMacro
 				}
 				if(parms.containsKey("TECHLEVEL"))
 				{
+					String level=httpReq.getRequestParameter("TECHLEVEL");
+					if((level==null)||(level.length()==0))
+						level=""+A.getTechLevel();
 					for(int i=1;i<Area.THEME_PHRASE.length;i++)
 					{
 						str.append("<OPTION VALUE="+i);
-						if(i==A.getTechLevel()) str.append(" SELECTED");
+						if(i==CMath.s_int(level)) str.append(" SELECTED");
 						str.append(">"+Area.THEME_PHRASE[i]);
 					}
 				}

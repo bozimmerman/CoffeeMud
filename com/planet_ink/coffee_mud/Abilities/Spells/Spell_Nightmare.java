@@ -134,8 +134,7 @@ public class Spell_Nightmare extends Spell
 					case 10:mob.location().show(mob,null,CMMsg.MSG_OK_ACTION,
 						"<S-NAME> shake(s) in anticipation of horror!"); break;
 					}
-					amountRemaining-=mob.charStats().getStat(CharStats.STAT_INTELLIGENCE*2);
-					amountRemaining-=(mob.envStats().level()+(2*getXLEVELLevel(mob)));
+					amountRemaining-=(int)Math.round(CMath.mul(mob.charStats().getStat(CharStats.STAT_INTELLIGENCE),2.5));
 					if(amountRemaining<0)
 						unInvoke();
 				}
@@ -196,7 +195,7 @@ public class Spell_Nightmare extends Spell
 				if((msg.value()<=0)&&(msg2.value()<=0))
 				{
 					amountRemaining=100;
-					maliciousAffect(mob,target,asLevel,0,-1);
+					maliciousAffect(mob,target,asLevel,10,-1);
 					target.location().show(target,null,CMMsg.MSG_OK_ACTION,"<S-NAME> go(es) into the throws of a horrendous nightmare!!");
 				}
 			}
