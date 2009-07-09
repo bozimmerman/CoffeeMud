@@ -298,7 +298,8 @@ public class Pregnancy extends StdAbility
 							Item I=CMClass.getItem("GenCaged");
 							((CagedAnimal)I).cageMe(babe);
 							I.baseEnvStats().setAbility(CagedAnimal.ABILITY_MOBPROGRAMMATICALLY);
-							I.addNonUninvokableEffect((Ability)AGE.copyOf());
+							if(AGE != null)
+								I.addNonUninvokableEffect((Ability)AGE.copyOf());
 							I.recoverEnvStats();
 							mob.location().addItem(I);
 							Behavior B=CMClass.getBehavior("Emoter");
@@ -320,7 +321,8 @@ public class Pregnancy extends StdAbility
                             String parent=mob.Name();
                             if(mob.isMonster()&&(otherParentM!=null))
                                 parent=otherParentM.Name();
-                            CMLib.database().DBCreateData(parent,"HEAVEN",parent+"/HEAVEN/"+AGE.text(),I.ID()+"/"+I.baseEnvStats().ability()+"/"+I.text());
+                            if(AGE!=null)
+                            	CMLib.database().DBCreateData(parent,"HEAVEN",parent+"/HEAVEN/"+AGE.text(),I.ID()+"/"+I.baseEnvStats().ability()+"/"+I.text());
 						}
 						else
 							mob.tell("You are in labor!!");

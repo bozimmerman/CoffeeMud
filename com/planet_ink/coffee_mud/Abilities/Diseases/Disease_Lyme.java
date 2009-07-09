@@ -96,9 +96,12 @@ public class Disease_Lyme extends Disease
 				A=CMClass.getAbility("Disease_Arthritis");
 			else
 				A=CMClass.getAbility("Disease_Fever");
-			if(A!=null) A.invoke(diseaser,mob,true,0);
-			A=mob.fetchEffect(A.ID());
-			if(A!=null) A.makeLongLasting();
+			if(A!=null) 
+			{
+				A.invoke(diseaser,mob,true,0);
+				A=mob.fetchEffect(A.ID());
+				if(A!=null) A.makeLongLasting();
+			}
 		}
 		else
 		if((!mob.amDead())&&((--diseaseTick)<=0))

@@ -276,12 +276,15 @@ public class Modify extends StdCommand
 	    			R=CMLib.map().getRoom(R);
 					Room reference=CMLib.map().findConnectingRoom(R);
 					String checkID=null;
-					if(reference!=null)
-						checkID=A.getNewRoomID(reference,CMLib.map().getRoomDir(reference,R));
-					else
-						checkID=A.getNewRoomID(R,-1);
-					mob.location().setRoomID(checkID);
-					CMLib.database().DBReCreate(R,oldID);
+					if(A!=null)
+					{
+						if(reference!=null)
+							checkID=A.getNewRoomID(reference,CMLib.map().getRoomDir(reference,R));
+						else
+							checkID=A.getNewRoomID(R,-1);
+						mob.location().setRoomID(checkID);
+						CMLib.database().DBReCreate(R,oldID);
+					}
 	    		}
 			}
 		}

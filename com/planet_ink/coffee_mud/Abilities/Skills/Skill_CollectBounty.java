@@ -175,7 +175,8 @@ public class Skill_CollectBounty extends StdSkill
 				}
 				int gold=0;
 				Ability A=mob.fetchEffect("Skill_HandCuff");
-				if((A!=null)||(mob.fetchEffect("Thief_Bind")!=null)&&(target.amFollowing()==mob))
+				if(A==null) A=mob.fetchEffect("Thief_Bind");
+				if((A!=null)&&(target.amFollowing()==mob))
 			    {
 				    A.setInvoker(officer);
 				    target.setFollowing(officer);

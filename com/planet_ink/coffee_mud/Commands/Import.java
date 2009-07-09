@@ -2525,10 +2525,14 @@ public class Import extends StdCommand
 						B=CMClass.getBehavior("Sounder");
 						if(B!=null) M.addBehavior(B);
 					}
-					if(B.getParms().length()==0)
-						B.setParms(codeLine.substring(1).trim());
-					else
-						B.setParms(B.getParms()+";"+codeLine.substring(1).trim());
+					// no else please
+					if(B!=null)
+					{
+						if(B.getParms().length()==0)
+							B.setParms(codeLine.substring(1).trim());
+						else
+							B.setParms(B.getParms()+";"+codeLine.substring(1).trim());
+					}
 				}
 				else
 				if(s.startsWith("|"))
@@ -3564,10 +3568,14 @@ public class Import extends StdCommand
 						B=CMClass.getBehavior("Sounder");
 						if(B!=null) I.addBehavior(B);
 					}
-					if(B.getParms().length()==0)
-						B.setParms(codeLine.substring(1).trim());
-					else
-						B.setParms(B.getParms()+";"+codeLine.substring(1).trim());
+					// no else please
+					if(B!=null)
+					{
+						if(B.getParms().length()==0)
+							B.setParms(codeLine.substring(1).trim());
+						else
+							B.setParms(B.getParms()+";"+codeLine.substring(1).trim());
+					}
 				}
 				else
 				if(codeLine.equals("A"))

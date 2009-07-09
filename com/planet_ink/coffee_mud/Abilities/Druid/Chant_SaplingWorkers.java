@@ -222,8 +222,11 @@ public class Chant_SaplingWorkers extends Chant
 			A=CMClass.getAbility("Sculpting");
 			break;
 		}
-		A.setProficiency(100);
-		newMOB.addAbility(A);
+		if(A!=null)
+		{
+			A.setProficiency(100);
+			newMOB.addAbility(A);
+		}
 		newMOB.setDescription("");
 		CMLib.factions().setAlignment(newMOB,Faction.ALIGN_NEUTRAL);
 		newMOB.recoverEnvStats();
@@ -246,7 +249,7 @@ public class Chant_SaplingWorkers extends Chant
 		newMOB.setBitmap(MOB.ATT_AUTOASSIST);
 		newMOB.setStartRoom(null);
 		newMOB.location().show(newMOB,null,CMMsg.MSG_OK_ACTION,"<S-NAME> start(s) looking around!");
-		if(start) A.invoke(newMOB,null,false,0);
+		if((start)&&(A!=null)) A.invoke(newMOB,null,false,0);
 		return(newMOB);
 	}
 }

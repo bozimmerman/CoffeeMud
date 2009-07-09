@@ -261,7 +261,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
                     regend=s.indexOf('"',regend+1);
                 if(regend<0){ Log.errOut("Scripts","Syntax error in '"+filename+"', line "+(v+1)); continue;}
                 String replacement=unFilterString(s.substring(regstart+1,regend));
-                currentSection.addElement(cmd,expression,replacement);
+                if(currentSection!=null)
+	                currentSection.addElement(cmd,expression,replacement);
                 currentSectionReplaceStrs.put(expression.toLowerCase(),replacement);
             }
             else
@@ -293,7 +294,8 @@ public class DirtyLanguage extends StdLibrary implements LanguageLibrary
                 try
                 {
                     Pattern expPattern=Pattern.compile(expression, Pattern.CASE_INSENSITIVE);
-                    currentSection.addElement(cmd,expPattern,replacement);
+                    if(currentSection!=null)
+	                    currentSection.addElement(cmd,expPattern,replacement);
                 }
                 catch(Exception e)
                 {

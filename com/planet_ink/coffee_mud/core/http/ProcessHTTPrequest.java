@@ -121,7 +121,7 @@ public class ProcessHTTPrequest extends Thread implements ExternalHTTPRequests
 		sock = a_sock;
 		isAdminServer = a_isAdminServer;
 
-		if (page != null && sock != null)
+		if (page != null && sock != null && a_webServer != null)
         {
             synchronized(a_webServer.activeRequests){
     		    a_webServer.activeRequests.addElement(this,new Long(System.currentTimeMillis()));

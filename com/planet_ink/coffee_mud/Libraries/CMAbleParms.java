@@ -481,6 +481,7 @@ public class CMAbleParms extends StdLibrary implements AbilityParameters
                 AbilityParmEditor A = (AbilityParmEditor)editors.get((String)dataRow.elementAt(c,1));
                 if(A==null)
                     Log.errOut("CMAbleParms","Inexplicable lack of a column: "+((String)dataRow.elementAt(c,1)));
+                else
                 if(headers[c] == null)
                 {
                     headers[c] = A.colHeader();

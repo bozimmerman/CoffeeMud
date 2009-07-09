@@ -204,7 +204,7 @@ public class Quests extends StdLibrary implements QuestManager
                 boolean contains=true;//(areaName==null);
                 if(areaLine!=null)
                 {
-                    if(!contains)
+                    if((!contains) && (areaName != null))
                     for(int l=2;l<areaLine.size();l++)
                         if(areaName.equalsIgnoreCase((String)areaLine.elementAt(l)))
                         {    contains=true; break;}

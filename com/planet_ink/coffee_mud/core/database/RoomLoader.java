@@ -1189,7 +1189,7 @@ public class RoomLoader
 		if(Log.debugChannelOn()&&(CMSecurity.isDebugging("CMAREA")||CMSecurity.isDebugging("DBROOMS")))
 			Log.debugOut("RoomLoader","Creating area "+A.name());
 		if((A==null)||(A.name().length()==0)) {
-			Log.errOut("RoomLoader","Unable to create area "+A.name());
+			Log.errOut("RoomLoader","Unable to create area "+((A!=null)?A.name():"null"));
 			return;
 		}
 

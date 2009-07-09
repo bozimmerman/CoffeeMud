@@ -477,24 +477,28 @@ public class Age extends StdAbility
 					if(B!=null)
 						baby.addBehavior(B);
 				}
-				if(baby.owner() instanceof Room)
+				// no else please
+				if(B!=null)
 				{
-					if(!B.getParms().equalsIgnoreCase(downBabyEmoter))
-						B.setParms(downBabyEmoter);
-				}
-				else
-				if(baby.owner()!=null)
-				{
-					Environmental o=baby.owner();
-					if(baby.description().toUpperCase().indexOf(o.name().toUpperCase())<0)
+					if(baby.owner() instanceof Room)
 					{
-						if(!B.getParms().equalsIgnoreCase(otherBabyEmoter))
-							B.setParms(otherBabyEmoter);
+						if(!B.getParms().equalsIgnoreCase(downBabyEmoter))
+							B.setParms(downBabyEmoter);
 					}
 					else
+					if(baby.owner()!=null)
 					{
-						if(!B.getParms().equalsIgnoreCase(happyBabyEmoter))
-							B.setParms(happyBabyEmoter);
+						Environmental o=baby.owner();
+						if(baby.description().toUpperCase().indexOf(o.name().toUpperCase())<0)
+						{
+							if(!B.getParms().equalsIgnoreCase(otherBabyEmoter))
+								B.setParms(otherBabyEmoter);
+						}
+						else
+						{
+							if(!B.getParms().equalsIgnoreCase(happyBabyEmoter))
+								B.setParms(happyBabyEmoter);
+						}
 					}
 				}
 			}
