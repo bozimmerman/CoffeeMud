@@ -59,12 +59,12 @@ public class Chant_Tether extends Chant
 			if(msg.amISource(mob)
 			&&(msg.target()==null)
 			&&(msg.tool()==null)
-			&&(tetheredTo!=mob.location())
 			&&(msg.sourceMinor()==CMMsg.TYP_DEATH)
 			&&(mob.curState().getHitPoints()>0))
 			{
 				mob.location().show(mob,null,CMMsg.MSG_OK_VISUAL,"<S-NAME> <S-IS-ARE> pulled back by the tether!");
-				tetheredTo.bringMobHere(mob,false);
+				if((tetheredTo!=null)&&(tetheredTo!=mob.location()))
+					tetheredTo.bringMobHere(mob,false);
 				return false;
 			}
 		}
