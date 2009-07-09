@@ -65,7 +65,7 @@ public class Spell_Advancement extends Spell
 		super.unInvoke();
 
 		if(canBeUninvoked())
-			mob.tell("Your temporary advancement has receeded.");
+			mob.tell("Your temporary advancement has receded.");
 	}
 
 	public boolean invoke(MOB mob, Vector commands, Environmental givenTarget, boolean auto, int asLevel)
