@@ -60,7 +60,7 @@ public class Catalog extends StdCommand
         {
             CMLib.catalog().changeCatalogUsage(E,true);
             StringBuffer diffs=CMLib.catalog().checkCatalogIntegrity(E);
-            if(diffs==null)
+            if((diffs==null)||(diffs.length()==0))
             {
                 mob.tell("The object '"+cataE.Name()+"' already exists in the catalog, exactly as it is.");
                 return true;

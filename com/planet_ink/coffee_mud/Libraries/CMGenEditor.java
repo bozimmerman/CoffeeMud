@@ -422,7 +422,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         }
 
         StringBuffer diffs=CMLib.catalog().checkCatalogIntegrity(E);
-        if(diffs!=null)
+        if((diffs!=null)&&(diffs.length()>0))
         {
         	Environmental origCataE = CMLib.catalog().getCatalogObj(E);
         	Environmental cataE=(Environmental)origCataE.copyOf();
@@ -449,6 +449,7 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
         			((MOB)E).recoverCharStats();
         			((MOB)E).recoverMaxState();
         		}
+        		CMLib.catalog().changeCatalogUsage(E, true);
         	}
         	else
         	if(choice.equalsIgnoreCase("U"))
@@ -6538,8 +6539,8 @@ public class CMGenEditor extends StdLibrary implements GenericEditor
             genGettable(mob,me,++showNumber,showFlag);
             genCapacity(mob,me,++showNumber,showFlag);
             genLidsNLocks(mob,me,++showNumber,showFlag);
-            genReadable1(mob,me,++showNumber,showFlag);
-            genReadable2(mob,me,++showNumber,showFlag);
+            //genReadable1(mob,me,++showNumber,showFlag); // since they can have keys, no readability for you.
+            //genReadable2(mob,me,++showNumber,showFlag);
             if(me instanceof Light) genBurnout(mob,(Light)me,++showNumber,showFlag);
             genValue(mob,me,++showNumber,showFlag);
             genWeight(mob,me,++showNumber,showFlag);
